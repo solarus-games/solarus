@@ -864,11 +864,9 @@ dialog{
   next = "_warning_magic",
   text = [[
 You found the
-Lantern!$0 Elle
-t'éclaire dans le
-noir et te permet
-d'allumer des
-braseros.
+Lantern!$0 Use it
+to light up dark
+places and torches.
 ]]
 }
 --------------------
@@ -1253,14 +1251,13 @@ dialog{
   icon = 13,
   text = [[
 You found the
-Pegasus Boots!$0
+Pegasus Shoes!$0
 
-Run, rush through
+Run and rush through
 the toughest 
 enemies!
 Press the Action
-button tu use the
-boots.
+button to wear them.
 ]]
 }
 --------------------
@@ -1303,12 +1300,12 @@ dialog{
   id = "_treasure.apple.1",
   icon = 16,
   text = [[
-Tu as trouvé 3
-Pommes !$0
+You got three
+apples!$0
 
-Consomme-les plus
-tard pour récupérer
-des Coeurs !
+Eat them later
+to recover some
+Hearts!
 ]]
 }
 --------------------
@@ -1318,12 +1315,12 @@ dialog{
   id = "_treasure.pain_au_chocolat.1",
   icon = 17,
   text = [[
-Tu as trouvé un Pain
-au Chocolat !$0
+You got a Chocolate
+Bread!$0
 
-Mange un Pain au
-Chocolat pour
-récupérer de la vie.
+Eat a Chocolate
+Bread to recover
+some life energy.
 ]]
 }
 --------------------
@@ -1333,12 +1330,10 @@ dialog{
   id = "_treasure.croissant.1",
   icon = 18,
   text = [[
-Tu as trouvé un
-Croissant !$0 Il est
-croustillant !
-Mange un Croissant
-pour récupérer
-des Coeurs.
+You got a Croissant!$0
+It's all crispy!
+Eat a Croissant to
+recover some hearts.
 ]]
 }
 --------------------
@@ -1348,8 +1343,8 @@ dialog{
   id = "_treasure.rock_key.1",
   icon = 19,
   text = [[
-Tu as trouvé la
-Clé de Roc !$0
+You found the Rock
+Key!$0
 ]]
 }
 --------------------
@@ -1387,12 +1382,12 @@ dialog{
   id = "_treasure.level_4_way.1",
   icon = 22,
   text = [[
-Tu as trouvé une
-Tarte aux Pommes !$0
-$1...$3 Hmmm, à ta
-place, je n'y goûte-
-rais pas, elle a un
-drôle d'aspect...
+You found an Apple
+Pie!$0
+$1...$3 Hmmm, I
+wouldn't taste it
+if I were you, it
+looks odd...
 ]]
 }
 --------------------
@@ -1402,12 +1397,11 @@ dialog{
   id = "_treasure.level_4_way.2",
   icon = 23,
   text = [[
-Tu as trouvé des
-Lingots d'or !!!$0
+You found some
+Gold Bars!!!$0
 
-Ils brillent et ont
-une valeur
-inestimable !
+They shine and
+are invaluable!
 ]]
 }
 --------------------
@@ -1417,42 +1411,40 @@ dialog{
   id = "_treasure.level_4_way.3",
   icon = 24,
   text = [[
-Tu as trouvé un
-Edelweiss !$0
+You found an
+Edelweiss!$0
 
-Cette jolie fleur
-des montagnes est
-rarissime !
+This pretty flower
+from Hyrule's 
+mountains is rare!
 ]]
 }
 --------------------
 
--- Précis d'escrime
+-- Précis d'escrime / Tiger Scrolls
 dialog{
   id = "_treasure.level_4_way.4",
   icon = 25,
   text = [[
-Tu obtiens le Précis
-d'escrime !$0 Tu
-maîtrises désormais
-la technique oubliée
-de l'attaque
-tournoyante avancée.
+You got the Tiger
+Scrolls!$0 You now
+master the long
+forgotten Whirlwind
+Attack.
 ]]
 }
 --------------------
 
--- Palmes
+-- Palmes / Flippers
 dialog{
   id = "_treasure.flippers.1",
   icon = 26,
   text = [[
-Tu as trouvé les
-Palmes !$0
+You found the
+Flippes!$0
 
-Tu peux maintenant
-nager en eau
-profonde !
+You can now swim
+in deep waters!
 ]]
 }
 --------------------
@@ -1462,12 +1454,12 @@ dialog{
   id = "_treasure.magic_cape.1",
   icon = 27,
   text = [[
-Tu as trouvé la Cape
-Magique !$0
+You found the Magic
+Cape!$0
 
-Elle t'avertira si
-tu t'approches d'un
-mur fragile.
+It will warn you
+if you are close
+to a weak wall.
 ]]
 }
 --------------------
@@ -1477,12 +1469,11 @@ dialog{
   id = "_treasure.iron_key.1",
   icon = 28,
   text = [[
-Tu as trouvé la
-Clé de Fer !$0
+You found the Iron
+Key!$0
 
-Il doit bien y
-avoir une porte qui
-va avec !
+Surely it will open
+a certain door!
 ]]
 }
 --------------------
@@ -1492,12 +1483,11 @@ dialog{
   id = "_treasure.stone_key.1",
   icon = 29,
   text = [[
-Tu as trouvé la
-Clé de Pierre !$0
+You found the Stone
+Key!$0
 
-Mais où est la
-serrure qui
-correspond ?
+Let's find the
+right lock!
 ]]
 }
 --------------------
@@ -1507,11 +1497,11 @@ dialog{
   id = "_treasure.wooden_key.1",
   icon = 30,
   text = [[
-Tu as trouvé la
-Clé de Bois !$0
+You found the Wooden
+Key!$0
 
-A toi de voir où
-tu peux l'utiliser !
+Which door will it
+open?
 ]]
 }
 --------------------
@@ -1521,67 +1511,65 @@ dialog{
   id = "_treasure.ice_key.1",
   icon = 31,
   text = [[
-Tu as trouvé la
-Clé de Glace !$0
+You found the Ice
+Key!$0
 
-Elle protège sans
-doute l'entrée d'un
-lieu glacial...
+It must open the
+way to a frozen
+place...
 ]]
 }
 --------------------
 
--- Poigne de Fer
+-- Poigne de Fer / Iron Gloves
 dialog{
   id = "_treasure.glove.1",
   icon = 32,
   text = [[
-Tu as trouvé la
-Poigne de Fer !$0
+You found the Iron
+Gloves!$0
 
-Elle te permet de
-soulever les
-pierres.
+Now you can lift
+rocks.
 ]]
 }
 --------------------
 
--- Poigne d'Or
+-- Poigne d'Or / Golden Gloves
 dialog{
   id = "_treasure.glove.2",
   icon = 33,
   text = [[
-Tu as trouvé la
-Poigne d'Or !$0
+You found the Golden
+Gloves!$0
 
-Tu peux maintenant
-soulever les pierres
-noires !
+Black rocks won't
+resist them!
 ]]
 }
 --------------------
 
--- Pierre de Feu
+-- Pierre de Feu / Fire Stone
 dialog{
   id = "_treasure.fire_stone.1",
   icon = 34,
   text = [[
-Tu as trouvé une
-Pierre de Feu !
+You found a Fire
+Stone!
 ]]
 }
 --------------------
 
--- Carte du Monde
+-- Carte du Monde / World Map
 dialog{
   id = "_treasure.world_map.1",
   icon = 50,
   text = [[
-Tu as trouvé la
-Carte du Monde !$0
+You found the
+overworld Map !$0
 
-Tu peux l'afficher
-dans l'écran Carte.
+View it on the
+Map screen.
 ]]
 }
 --------------------
@@ -2361,7 +2349,7 @@ dialog{
   skip = "current",
   text = [[
     	Level 2  	 
- 	Caverne de Roc    
+ 	Roc's Cavern    
 ]]
 }
 -----------------------
@@ -2447,7 +2435,7 @@ dialog{
   question = true,
   text = [[
 What do you want to
-do ?
+do?
 Recover your health
 Keep it
 ]]
@@ -2474,7 +2462,7 @@ dialog{
 Do you want to put
 some Water in your
 
-Magic Flask ?
+Magic Flask?
 Yes
 No
 ]]
@@ -2514,11 +2502,11 @@ dialog{
   icon = 8,
   question = true,
   text = [[
-Your Magic Flask contains
-some Water.
+Your Magic Flask
+holds some Water.
 
 What do you want to
-do ?
+do?
 Pour Water
 Keep it
 ]]
@@ -2534,7 +2522,7 @@ dialog{
 Eating an apple will
 restore one heart.
 What do you want to
-do ?
+do?
 Eat an apple
 Nothing
 ]]
@@ -2548,10 +2536,10 @@ dialog{
   question = true,
   text = [[
 Chocolate bread
-restores three hearts.
+restores 3 hearts.
 
 What do you want to
-do ?
+do?
 Eat one
 Nothing
 ]]
@@ -2567,7 +2555,7 @@ dialog{
 A Croissant restores
 seven hearts.
 What do you want to
-do ?
+do?
 Eat one
 Nothing
 ]]
@@ -2580,7 +2568,7 @@ dialog{
   text = [[
 There's surely a
 way of lighting
-this lamp...
+this torch...
 ]]
 }
 -----------------------
@@ -2591,10 +2579,10 @@ dialog{
   skip = "current",
   text = [[
 $2Ancient legends 
-tell that there
-a long time ago,
-existed a magnificent
-kingdom named Hyrule.
+tell that a
+magnificent kingdom
+named Hyrule existed
+a long time ago.
 This kingdom prospered 
 Under the blessing of
 three goddesses
@@ -2617,16 +2605,17 @@ an evil spell seemed to
 threaten Hyrule.
 A mysterious sorcerer
 by the name of Agahnim
-repelled the evil. Praised
-by many, the King trusted
-him with a high-ranked
-status. The sorcerer
-was in fact planning
-against the royal
-family. He wanted to
-bring back Ganondorf,
-king of thieves from
-a forgotten time.
+repelled the evil.
+Praised by many, the
+King trusted him with
+a high-ranked status.
+The sorcerer was in
+fact planning against
+the royal family. He
+wanted to bring back
+Ganondorf, king of
+thieves, from a
+forgotten time.
 ]]
 }
 -----------------------
@@ -2637,9 +2626,10 @@ dialog{
   skip = "current",
   text = [[
 $2It is said that a young
-man dressed in green went
-on a quest, exploring lost
-temples, traveling through
+man dressed in green
+went on a quest,
+exploring lost temples,
+traveling through
 plains and valleys.
 ]]
 }
@@ -2651,11 +2641,12 @@ dialog{
   skip = "current",
   text = [[
 $2Eventually, he who was
-known as the Hero repelled
-the evil. Thanks to his
-courage, he defeated
-Ganondorf, who had built
-an imposing pyramid on the
+known as the Hero
+repelled the evil.
+Thanks to his courage,
+he defeated Ganondorf,
+who had built an
+imposing pyramid on the 
 Golden Land.
 ]]
 }
@@ -2668,13 +2659,13 @@ dialog{
   text = [[
 $2The young Hero then
 wished for Ganondorf
-to be imprisoned forever
-in the Golden Land.
-The King of Hyrule, a
-descendant of the Seven
-Sages, cast him away by
-using the magic of the
-seal.
+to be imprisoned
+forever in the Golden
+Land. The King of
+Hyrule, a descendant
+of the Seven Sages,
+cast him away by using
+the seal's magic.
 ]]
 }
 -----------------------
@@ -2756,9 +2747,9 @@ dialog{
   id = "outside_world.village.monkey.without_shield",
   text = [[
 I do not know what is
-happening, but I wouldn't
-leave town without
-protection.
+happening, but I
+wouldn't leave town
+without protection.
 ]]
 }
 -----------------------
@@ -2810,9 +2801,9 @@ the Action key (space).
 Depending on what you
 are examining, it will
 trigger several actions
-such as looking, talking,
-reading a sign, lifting
-a vase...
+such as looking,
+talking, reading a sign,
+lifting a vase...
 Keep an eye on the icon
 to know when you can 
 interact with your
@@ -2856,9 +2847,9 @@ dialog{
 If you are in need of
 rupees, I recommend not
 going to the Rupees'
-House, as you might just
-end up needing even more
-rupees!
+House, as you might
+just end up needing
+even more rupees!
 Although, you do seem
 smarter than me.
 
@@ -2950,7 +2941,7 @@ dialog{
   next = "outside_world.village.tree_woman.long_text",
   text = [[
 You're lost with the
-HUD ? Let me explain.
+HUD? Let me explain.
 The icons above to the
 ]]
 }
@@ -2966,35 +2957,37 @@ left are aligned like
 the keys on a keyboard
 The C key is the green
 icon, you use the sword
-by pressing it. But when
-the game is paused, the
-icon changes and tells
-you that the C key is
-used to save your game!
+by pressing it. But
+when the game is
+paused, the icon
+changes and tells you
+that the C key is used
+to save your game!
 And when you're talking
 to someone, it allows
 you to end a
 conversation. Just keep
-an eye on the green icon 
-to know what the C key 
-does.
+an eye on the green
+icon to know what the C
+key does.
 The other icons are
 the keys surrounding
 the C key: the orange
 icon (D key) pauses the
 game, the blue icon
-(spacebar) is the Action
-button, and the two grey
-icons are the objects
-assigned to the X and
-V keys. So always keep
-an eye on what the icons
-say. Don't forget that
-you can customize the
-controls in the options
-screen, and that you can
-even play with a gamepad!
-Did you get it all ?
+(spacebar) is the
+Action button, and the
+two grey icons are the
+objects assigned to the
+X and V keys. So always
+keep an eye on what the
+icons say. Don't forget
+thatyou can customize
+the controls in the
+options screen, and that
+you can even play with a
+gamepad!
+Did you get it all?
 Yes
 No, I did not
 ]]
@@ -3030,7 +3023,7 @@ little gift.
 dialog{
   id = "outside_world.village.clay_key_required",
   text = [[
-C'est fermé à clé !
+It's locked!
 ]]
 }
 -----------------------
@@ -3039,7 +3032,7 @@ C'est fermé à clé !
 dialog{
   id = "outside_world.warning_holes_sign",
   text = [[
-Attention aux trous !
+Beware of the holes!
 ]]
 }
 -----------------------
@@ -3049,12 +3042,11 @@ dialog{
   id = "outside_world.how_to_save_npc",
   skip = "all",
   text = [[
-Pour sauvegarder ta
-partie, appuie sur D
-pour mettre le jeu en
-pause, puis sur C.
-N'oublie pas de regar-
-der l'icône verte !
+To save your progress,
+press D to pause the
+game then press C.
+Keep an eye on the
+green icon!
 ]]
 }
 -----------------------
@@ -3063,10 +3055,10 @@ der l'icône verte !
 dialog{
   id = "outside_world.flower_hole_sign",
   text = [[
-Le trou près de la
-fleur n'est pas aussi
-dangereux
-qu'il en a l'air...
+The hole close to
+the flower isn't as
+dangerous as it looks
+like...
 ]]
 }
 -----------------------
@@ -3075,7 +3067,7 @@ qu'il en a l'air...
 dialog{
   id = "outside_world.telepathic_booth_sign",
   text = [[
-Cabine télépathique
+Telepathic Booth
 ]]
 }
 -----------------------
@@ -3084,10 +3076,10 @@ Cabine télépathique
 dialog{
   id = "outside_world.surprise_wall_sign",
   text = [[
- - Mur aux surprises -
-Venez tenter votre
-chance et remporter
-le trésor caché !
+ - Wall of Surprises -
+Come in and try
+your luck to win
+the hidden treasure!
 ]]
 }
 -----------------------
@@ -3096,9 +3088,9 @@ le trésor caché !
 dialog{
   id = "outside_world.billy_cavern_sign",
   text = [[
-Caverne de Billy le
-Téméraire.
-Entrée interdite !
+Billy the Reckless
+cavern.
+Entry Forbidden!
 ]]
 }
 -----------------------

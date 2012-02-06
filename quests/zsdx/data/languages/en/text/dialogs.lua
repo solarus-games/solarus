@@ -1441,7 +1441,7 @@ dialog{
   icon = 26,
   text = [[
 You found the
-Flippes!$0
+Flippers!$0
 
 You can now swim
 in deep waters!
@@ -2290,7 +2290,7 @@ dialog{
   id = "_shop.question",
   question = true,
   text = [[
-Price: $v Rupees.
+Price: $v rupees.
 Buy
 Don't Buy
 ]]
@@ -2845,11 +2845,11 @@ dialog{
   skip = "all",
   text = [[
 If you are in need of
-Rupees, I recommend not
+rupees, I recommend not
 going to the Rupees'
 House, as you might
 just end up needing
-even more Rupees!
+even more rupees!
 Although, you do seem
 smarter than me.
 
@@ -3189,7 +3189,7 @@ dialog{
   text = [[
 Welcome to the mystery
 chest game. Pay 20
-Rupees to open one
+rupees to open one
 of the three chests and
 stand a chance of
 earning more rupee!
@@ -3243,7 +3243,7 @@ dialog{
 Do you want to play
 again?
 
-It's 20 Rupees!
+It's 20 rupees!
 Yes
 No
 ]]
@@ -3270,18 +3270,20 @@ dialog{
   id = "rupee_house.game_2.intro",
   question = true,
   text = [[
-Bienvenue au tout
-nouveau jeu du
-bandit manchot !
-Mise 5 ou 20 rubis et
-tente d'aligner trois
-symboles identiques
-pour gagner plusieurs
-fois ta mise !
+Welcome to the
+brand-new slot
+machine!
+Put in 5 or 20 rupees
+and try your best to
+align three of the same
+same symbol to win
+several times what
+you put in!
 
-Alors, tu veux jouer ?
-Oui
-Non
+So, do you want
+to play?
+Yes
+No
 ]]
 }
 -----------------------
@@ -3302,8 +3304,8 @@ dialog{
   text = [[
 How much do you want
 to bet?
-5 Rupees
-20 Rupees
+5 rupees
+20 rupees
 ]]
 }
 -----------------------
@@ -3348,7 +3350,7 @@ bet.
 dialog{
   id = "rupee_house.game_2.reward.green_rupees",
   text = [[
-Three green Rupees,
+Three green rupees,
 nice!
 You get 5 times your
 bet.
@@ -3360,7 +3362,7 @@ bet.
 dialog{
   id = "rupee_house.game_2.reward.blue_rupees",
   text = [[
-Three blue Rupees!
+Three blue rupees!
 Congratulations, you
 are off with 7 times
 your initial bet!
@@ -3372,7 +3374,7 @@ your initial bet!
 dialog{
   id = "rupee_house.game_2.reward.red_rupees",
   text = [[
-Three red Rupees!!!
+Three red rupees!!!
 That's astonishing!
 You earn no less than
 10 times your bet!
@@ -3385,7 +3387,7 @@ dialog{
   id = "rupee_house.game_2.reward.different_rupees",
   text = [[
 Wow!!! You got three
-Rupees of different
+rupees of different
 color, it doesn't
 happen every day!
 The reward amounts to
@@ -3427,17 +3429,16 @@ dialog{
   id = "rupee_house.game_3.intro",
   question = true,
   text = [[
-Navigate through the
-maze before the time
-is out. You may have
-to push blocks along
-the way to open up a
-passage. You could win
-a Piece of Heart, and 
-I heard those are
-pretty rare...
-It's 10 Rupees only.
-Do you want to play?
+The goal of the game
+is to get through the
+maze within the time
+limit while pushing
+blocks to clear a path.
+It only costs 10 rupees
+and you can win a Heart
+Fragment!
+So, do you want to
+play?
 Yes
 No
 ]]
@@ -3448,7 +3449,7 @@ No
 dialog{
   id = "rupee_house.game_3.go",
   text = [[
-Let's go!
+Here we go.
 Good luck!
 ]]
 }
@@ -3458,7 +3459,7 @@ Good luck!
 dialog{
   id = "rupee_house.game_3.not_playing",
   text = [[
-It's up to you!
+It's your choice...
 ]]
 }
 -----------------------
@@ -3467,8 +3468,8 @@ It's up to you!
 dialog{
   id = "rupee_house.game_3.not_allowed_to_play",
   text = [[
-I'm sorry, you already
-beat this game!
+Sorry, you already beat
+this game!
 ]]
 }
 -----------------------
@@ -3478,11 +3479,10 @@ dialog{
   id = "rupee_house.game_3.restart_question",
   question = true,
   text = [[
-It's 10 Rupees for
-a chance to play
-again.
+You want to restart
+from the beginning?
 
-Try again?
+That will be 10 rupees
 Yes
 No
 ]]
@@ -3503,10 +3503,8 @@ money!
 dialog{
   id = "rupee_house.pay_first",
   text = [[
-Hey! Get your dirty
-hands off my game!
-Pay first, if you want
-to have fun.
+Hey! You have to pay if
+you want to play here!
 ]]
 }
 -----------------------
@@ -3518,7 +3516,8 @@ dialog{
 Help!
 Help!
 
-Our house was robbed!
+The house has been
+robbed!
 ]]
 }
 -----------------------
@@ -3527,9 +3526,9 @@ Our house was robbed!
 dialog{
   id = "rupee_house_broken.help_us_middle",
   text = [[
-The bandits stole
-the Rupees used to
-pay the gains!
+Les bandits ont emporté
+l'argent réservé aux
+gains !
 ]]
 }
 -----------------------
@@ -3538,9 +3537,9 @@ pay the gains!
 dialog{
   id = "rupee_house_broken.help_us_right",
   text = [[
-The culprits were
-headed towards the
-blacksmith's cave!
+Les voleurs sont partis
+en direction de la
+caverne du forgeron !
 ]]
 }
 -----------------------
@@ -3549,12 +3548,12 @@ blacksmith's cave!
 dialog{
   id = "rupee_house_broken.thanks",
   text = [[
-You found our Rupees!
-Thanks to you, we are
-going to get our
-business back up and
-running. I don't know
-how to repay you...
+Tu as retrouvé notre
+argent ! Grâce à toi
+nous allons pouvoir
+reprendre le travail.
+Je ne sais comment te
+remercier...
 ]]
 }
 -----------------------
@@ -3562,7 +3561,7 @@ how to repay you...
 dialog{
   id = "rupee_house_broken.thanks_again",
   text = [[
-Thanks again!
+Encore merci !
 ]]
 }
 -----------------------
@@ -3572,23 +3571,21 @@ dialog{
   id = "grandma_house.sword",
   skip = "all",
   text = [[
-Monsters are lurking
-in the field. That's
-not a good sign : I am
-certain that something
-terrible has happened.
+Les monstres envahis-
+sent la plaine. C'est
+mauvais signe : je suis
+sûre que quelque chose
+de grave est arrivé.
 
-You are looking for a
-sword? With my age, I
-wouldn't know what to
-do with such things...
-You had better go see
-the blacksmith in the
-cave to the North West
-of the village. He is
-a bit grumpy but he
-will be able to help
-you.
+Tu cherches une épée ?
+Ces choses-là ne sont
+plus de mon âge !
+Tu devrais plutôt aller
+voir le forgeron dans
+la grotte au nord-ouest
+du village. Il n'est
+pas très commode mais
+il pourra t'aider.
 ]]
 }
 -----------------------
@@ -3598,17 +3595,15 @@ dialog{
   id = "grandma_house.find_sahasrahla",
   skip = "all",
   text = [[
-With this sword, you
-can slash through the
-bushes protecting the
-village. You are
-looking for Sahasrahla
-the Ancient, are you
-not?
-His house is South West
-of here, close to the
-bakery. You did not
-remember that?
+Avec cette épée, tu
+peux franchir les
+buissons qui protègent
+le village. Tu cherches
+Sahasrahla, l'Ancien ?
+Sa maison est au
+sud-ouest, près de la
+pâtisserie. Tu ne t'en
+souvenais plus ?
 ]]
 }
 -----------------------
@@ -3618,27 +3613,25 @@ dialog{
   id = "grandma_house.go_lyriann_cave",
   skip = "all",
   text = [[
-This key allows you to
-get inside the cavern
-located North of the
-village.
+Avec cette clé, tu peux
+entrer dans la grotte
+au nord du village.
 ]]
 }
 -----------------------
 
 -- Dialogue chez la grand-mère (après avoir fini la grotte de Tom)
--- GoNintendo What are YOU waiting for?
 dialog{
   id = "grandma_house.go_dungeon_1",
   skip = "all",
   text = [[
-One of the four
-children who was
-kidnapped may be held
-in a gloomy dungeon in
-the forest down south
-to the village. What
-are YOU waiting for?
+Il paraît que l'un des
+quatre enfants enlevés
+est retenu dans un
+donjon lugubre dans la
+forêt au sud du
+village. Qu'attends-tu
+pour y aller ?
 ]]
 }
 -----------------------
@@ -3648,10 +3641,11 @@ dialog{
   id = "grandma_house.go_back_sahasrahla",
   skip = "all",
   text = [[
-This time it goes
-beyond my knowledge.
-Sahasrahla would be
-of better help.
+Quelque chose me dit
+que cette fois-ci,
+Sahasrahla est mieux
+placé que moi pour
+t'aider.
 ]]
 }
 -----------------------
@@ -3661,13 +3655,12 @@ dialog{
   id = "grandma_house.go_twin_caves",
   skip = "all",
   text = [[
-So you found a Bow?
-I believe you could
-access the twin caves
-to the South, and
-unveil the secrets
-they withhold.
-Go for them!
+Tu as trouvé un Arc ?
+A mon avis, les secrets
+que renferment les
+grottes jumelles au sud
+sont largement à ta
+portée désormais !
 ]]
 }
 -----------------------
@@ -3677,11 +3670,11 @@ dialog{
   id = "grandma_house.go_dungeon_2",
   skip = "all",
   text = [[
-What a nice key you
-are holding! Isn't it
-time for you to look
-for the second lost
-child?
+C'est une belle clé que
+tu as là ! N'est-il
+pas temps de partir
+à la recherche du
+deuxième enfant ?
 ]]
 }
 -----------------------
@@ -3690,16 +3683,14 @@ dialog{
   id = "grandma_house.go_telepathic_booth",
   skip = "all",
   text = [[
-What is that you say?
-I can't hear you well!
-Come my age, my ears
-are not working as
-well as they used to...
-How about communicating
-through telepathy?
-Modern and more
-convenient for my
-elder body.
+Que dis-tu ? Je ne
+t'entends pas bien !
+Je suis un peu dure
+d'oreille à mon âge !
+Pourquoi n'utilises-tu
+pas un moyen de
+communication moderne
+comme la télépathie ?
 ]]
 }
 -----------------------
@@ -3708,18 +3699,18 @@ dialog{
   id = "grandma_house.dark_world_enabled",
   skip = "all",
   text = [[
-Agahnim seized control
-of the kingdom...
-Evil grows along his
-path. One of the
-castle's soldiers, Tom,
-is considered guilty of
-having taken Sahasrahla
-away, but that is not
-possible!
-Moreover some culprits
-ransacked the Rupees'
-House!
+Agahnim a pris le
+contrôle du royaume...
+Il sème la terreur
+partout sur son
+passage. Tom, un des
+soldats du château,
+est accusé d'avoir
+enlevé Sahasrahla mais
+je n'en crois rien !
+De plus, des bandits
+ont pillé la Maison des
+Rubis !
 ]]
 }
 -----------------------
@@ -3728,8 +3719,8 @@ dialog{
   id = "telepathic_booth.not_working",
   skip = "all",
   text = [[
-Hello? ... Hello? ...
-Anybody there? ...
+Allo ? ... Allo ? ...
+Y'a quelqu'un ? ...
 ]]
 }
 -----------------------
@@ -3738,12 +3729,12 @@ dialog{
   id = "telepathic_booth.go_sahasrahla",
   skip = "all",
   text = [[
-$v, do you hear me?
-It's grandma Lyly!
-Telepathy, it works!
-You should pay a visit
-to Sahasrahla, he has
-things for you.
+$v, tu m'entends ?
+C'est Mamie Lyly ! La
+télépathie, ça marche !
+Tu devrais aller rendre
+visite à Sahasrahla, il
+a des choses pour toi.
 ]]
 }
 -----------------------
@@ -3752,14 +3743,14 @@ dialog{
   id = "telepathic_booth.go_twin_caves",
   skip = "all",
   text = [[
-$v, do you hear me?
-It's grandma Lyly!
-Telepathy, it works!
-Something tells me that
-the twin caves South to
-the forest dungeon,
-hide an important
-treasure...
+$v, tu m'entends ?
+C'est Mamie Lyly ! La
+télépathie, ça marche !
+Quelque chose me dit
+que les cavernes au sud
+du donjon de la forêt
+cachent un trésor
+important...
 ]]
 }
 -----------------------
@@ -3768,12 +3759,12 @@ dialog{
   id = "telepathic_booth.dungeon_2_not_really_finished",
   skip = "all",
   text = [[
-$v, do you hear me?
-It's grandma Lyly!
-Telepathy, it works!
-But are you sure that
-you found everything
-in Roc's Cavern?
+$v, tu m'entends ?
+C'est Mamie Lyly ! La
+télépathie, ça marche !
+Mais tu es sûr que tu
+as tout trouvé dans la
+Caverne de Roc ?
 ]]
 }
 -----------------------
@@ -3782,15 +3773,15 @@ dialog{
   id = "telepathic_booth.go_master_arbror",
   skip = "all",
   text = [[
-$v, do you hear me?
-It's grandma Lyly!
-Telepathy, it works!
-It seems there is a
-path through the trees
-North of here.
-Master Treear is said
-to haunt the land
-flooded by the river.
+$v, tu m'entends ?
+C'est Mamie Lyly ! La
+télépathie, ça marche !
+Il paraît qu'il y a un
+passage dans les arbres
+au nord.
+On dit que Maître
+Arbror hante ces lieux
+inondés par la rivière.
 ]]
 }
 -----------------------
@@ -3799,14 +3790,15 @@ dialog{
   id = "telepathic_booth.go_billy",
   skip = "all",
   text = [[
-$v, do you hear me?
-It's grandma Lyly!
-Telepathy, it works!
-Do you know Billy the
-Reckless? It appears
-he came back safe and
-sound from his journey
-to Mount Terror!
+$v, tu m'entends ?
+C'est Mamie Lyly ! La
+télépathie, ça marche !
+Connais-tu Billy le
+Téméraire ? Il paraît
+qu'il est revenu sain
+et sauf de son
+expédition à la
+Montagne des Terreurs !
 ]]
 }
 -----------------------
@@ -3815,20 +3807,21 @@ dialog{
   id = "telepathic_booth.shop",
   skip = "all",
   text = [[
-$v, do you hear me?
-It's grandma Lyly!
-Telepathy, it works!
-But times are hard.
-Desolation has spread
-across the devastated
-kingdom... It is as if
-life itself had come
-to a halt.
-Except for the town's
-shop! Ever since they
-only sell weapons for
-survival and are making
-real Rupees!
+$v, tu m'entends ?
+C'est Mamie Lyly ! La
+télépathie, ça marche !
+Mais les temps sont
+durs. Le royaume n'est
+plus que désolation et
+dévastation... La vie
+ici semble s'être
+arrêtée.
+Sauf pour la boutique
+du village ! Depuis
+qu'ils ne vendent plus
+que des armes de
+survie, ils font
+fortune !
 ]]
 }
 -----------------------
@@ -3838,16 +3831,18 @@ dialog{
   id = "smith_cave.without_sword",
   question = true,
   text = [[
-I forged this great
-bronze Sword with my
-bare hands.
-You can have it for
-only 75 Rupees!
-With your shield alone
-you won't get far.
-So, interested?
-Yes
-No
+J'ai forgé moi-même
+cette magnifique Epée
+en bronze.
+Je te la vends pour la
+modique somme de 75
+rubis !
+Avec seulement ton
+minable bouclier, tu
+n'iras pas bien loin.
+Alors, ça t'intéresse ?
+Oui
+Non
 ]]
 }
 -----------------------
@@ -3856,10 +3851,9 @@ No
 dialog{
   id = "smith_cave.with_sword",
   text = [[
-Don't go and break
-my Sword because I
-won't forge you another
-one!
+N'abîme pas mon Epée
+car je ne vais pas t'en
+fabriquer une autre !
 ]]
 }
 -----------------------
@@ -3868,10 +3862,9 @@ one!
 dialog{
   id = "smith_cave.not_buying",
   text = [[
-Up to you, but don't
-come back here crying
-if you get in serious
-trouble.
+Comme tu veux, mais tu
+risques d'avoir des
+problèmes sans arme.
 ]]
 }
 -----------------------
@@ -3880,9 +3873,9 @@ trouble.
 dialog{
   id = "smith_cave.not_enough_money",
   text = [[
-Are you trying to rip
-me off? You don't have
-enough Rupees!
+Désolé mais je crains
+que tu n'aies pas les
+moyens...
 ]]
 }
 -----------------------
@@ -3891,10 +3884,12 @@ enough Rupees!
 dialog{
   id = "smith_cave.thank_you",
   text = [[
-Thanks a lot. To swing
-your sword, press C. Or
-hold the C button to
-launch a spin attack!
+Merci beaucoup. Pour
+donner un coup d'épée,
+appuie sur C. Ou laisse
+le bouton enfoncé pour
+déclencher une attaque
+tournoyante !
 ]]
 }
 -----------------------
@@ -3903,8 +3898,9 @@ launch a spin attack!
 dialog{
   id = "lyriann_shop.salesman",
   text = [[
-Welcome. Choose the
-item you wish to buy.
+Bienvenue. Choisis
+l'article que tu
+souhaites acheter.
 ]]
 }
 -----------------------
@@ -3914,10 +3910,9 @@ dialog{
   id = "lyriann_shop.apples",
   next = "_unknown",
   text = [[
-3 freshly picked apples
-from this morning!
-Each apple restores a
-Heart.
+3 Pommes fraîches de ce
+matin ! Chaque pomme
+rapporte un Coeur.
 ]]
 }
 -----------------------
@@ -3929,9 +3924,9 @@ dialog{
   id = "lyriann_shop.lamp",
   next = "_unknown",
   text = [[
-A Lantern.
-Travel through dark
-places!
+Une Lanterne.
+Indispensable pour
+s'éclairer !
 ]]
 }
 -----------------------
@@ -3941,8 +3936,8 @@ dialog{
   id = "lyriann_shop.heart",
   next = "_unknown",
   text = [[
-A Heart to be used
-now.
+Un coeur à consommer
+immédiatement.
 ]]
 }
 -----------------------
@@ -3952,9 +3947,9 @@ dialog{
   id = "lyriann_shop.bomb_bag",
   next = "_unknown",
   text = [[
-A bigger Bomb Bag.
-Really fashionable
-nowadays!
+Un plus grand Sac de
+Bombes. Très à la mode
+en ce moment !
 ]]
 }
 -----------------------
@@ -3964,8 +3959,9 @@ dialog{
   id = "lyriann_shop.quiver",
   next = "_unknown",
   text = [[
-A larger Quiver.
-Useful in these times.
+Un plus grand Carquois.
+Bien utile par les
+temps qui courent.
 ]]
 }
 -----------------------
@@ -3975,8 +3971,9 @@ dialog{
   id = "lyriann_shop.rupee_bag",
   next = "_unknown",
   text = [[
-A new Wallet to carry
-more Rupees.
+Une nouvelle bourse
+pour transporter plus
+de rubis.
 ]]
 }
 -----------------------
@@ -3985,9 +3982,9 @@ more Rupees.
 dialog{
   id = "cake_shop.seller.choose_item",
   text = [[
-Welcome. Choose the
-pastry you wish to
-buy.
+Bienvenue. Choisis la
+pâtisserie que tu
+souhaites acheter.
 ]]
 }
 -----------------------
@@ -3997,9 +3994,9 @@ dialog{
   id = "cake_shop.pain_au_chocolat",
   next = "_unknown",
   text = [[
-A delicious Chocolate
-Bread that will restore
-three Hearts.
+Un pain au chocolat
+savoureux qui te
+redonnera trois Coeurs.
 ]]
 }
 -----------------------
@@ -4009,9 +4006,9 @@ dialog{
   id = "cake_shop.croissant",
   next = "_unknown",
   text = [[
-This crispy croissant
-will restore seven
-Hearts.
+Ce croissant
+croustillant te
+redonnera sept Coeurs.
 ]]
 }
 -----------------------
@@ -4021,8 +4018,8 @@ dialog{
   id = "cake_shop.apple_pie",
   next = "_unknown",
   text = [[
-An Apple Pie.
-Baked for you only!
+Une Tarte aux Pommes.
+Faite grâce à toi !
 ]]
 }
 -----------------------
@@ -4032,14 +4029,15 @@ dialog{
   id = "cake_shop.dont_leave",
   question = true,
   text = [[
-Hey, wait!
-I am looking for apples
-to bake a great tart.
-Six apples should do
-it.
-Do you want to help?
-Yes
-No
+Hé, attends !
+Je cherche des pommes
+pour faire une bonne
+tarte. Je pense que
+6 pommes devraient
+suffire.
+Tu veux bien m'aider ?
+Oui
+Non
 ]]
 }
 -----------------------
@@ -4050,12 +4048,12 @@ dialog{
   skip = "all",
   question = true,
   text = [[
-I am still looking for
-six apples to bake a
-great tart.
-Do you want to help?
-Yes
-No
+Je cherche toujours six
+pommes pour faire une
+bonne tarte.
+Tu veux bien m'aider ?
+Oui
+Non
 ]]
 }
 -----------------------
@@ -4064,9 +4062,9 @@ No
 dialog{
   id = "cake_shop.not_enough_apples",
   text = [[
-Oh, you don't have
-eneough apples... Come
-back later then.
+Oh, tu n'as pas assez
+de pommes... Reviens
+plus tard dans ce cas.
 ]]
 }
 -----------------------
@@ -4075,9 +4073,8 @@ back later then.
 dialog{
   id = "cake_shop.no_apples",
   text = [[
-Thank you... Come back
-to see me if you find
-some!
+Merci... Reviens me
+voir si tu en trouves !
 ]]
 }
 -----------------------
@@ -4086,13 +4083,12 @@ some!
 dialog{
   id = "cake_shop.thank_you",
   text = [[
-Oh, thank you, how nice
-of you! I'm sorry I
-only have this empty
-bottle... It's a small
-reward but I'm sure you
-will make good use of
-it.
+Oh, merci, c'est très
+gentil ! Comment
+pourrais-je te
+remercier ? Je n'ai que
+cette bouteille vide à
+te donner...
 ]]
 }
 -----------------------
@@ -4102,39 +4098,39 @@ dialog{
   id = "sahasrahla_house.beginning",
   next = "sahasrahla_house.beginning.12",
   text = [[
-Oh, $v, you heard my
-call.
-I have important things
-to say. We are in
-critical times.
-Four of the eight
-Solarus' children have
-been kidnapped...
-I fear the Triforce is
-in great danger.
-Someone wants to
-benefit from the King's
-death and get ahold of
-the Triforce.
-Who could have done
-that?
-Surely Ganondorf and
-his minions...
-The Seal of the Seven
-Sages weakened after
-our poor King's
-death. Ganon would have
-managed to escape from
-the Dark World?
-We must not let him
-acquire such power!
-I can feel the courage
-in you, $v.
-Do you feel capable of
-traveling through the
-most dangerous places
-of this land to rescue
-the children and to
+Oh, $v, tu as
+entendu mon appel.
+J'ai des choses
+importantes à te
+révéler. La situation
+est grave.
+Quatre des huit enfants
+du Solarus ont été
+enlevés...
+Je crains que la
+Triforce soit en grand
+danger. Quelqu'un veut
+profiter de la mort du
+Roi pour convoiter la
+Triforce.
+Qui a pu faire cela ?
+Probablement Ganondorf
+et ses sbires...
+Le Sceau des Sept Sages
+a été fragilisé à la
+suite de la mort de
+notre pauvre Roi, et il
+est possible que Ganon
+soit parvenu à fuir de
+son Monde des Ténèbres.
+Il ne faut pas le
+laisser s'emparer d'un
+tel pouvoir !
+Je sens le courage en
+toi, $v.
+Te sens-tu capable de
+partir à la recherche
+des enfants et de
 ]]
 }
 -----------------------
@@ -4146,9 +4142,9 @@ dialog{
   next = "sahasrahla_house.beginning.thanks",
   next2 = "sahasrahla_house.beginning.insisting",
   text = [[
-protect the Triforce?
-I am up to it!
-Never
+protéger la Triforce ?
+C'est d'accord
+Pas question
 ]]
 }
 -----------------------
@@ -4159,12 +4155,12 @@ dialog{
   next = "sahasrahla_house.beginning.thanks",
   next2 = "sahasrahla_house.beginning.insisting",
   text = [[
-$v, I must insist,
-you are our only hope
-to protect the
-kingdom...
-Alright
-No way
+$v, je t'en
+conjure, tu es le seul
+à pouvoir protéger
+notre royaume...
+C'est d'accord
+Pas question
 ]]
 }
 -----------------------
@@ -4174,8 +4170,9 @@ dialog{
   id = "sahasrahla_house.beginning.thanks",
   next = "sahasrahla_house.give_world_map",
   text = [[
-I knew I could count
-on your courage.
+Je savais que je
+pouvais compter sur ton
+courage.
 ]]
 }
 -----------------------
@@ -4183,9 +4180,9 @@ on your courage.
 dialog{
   id = "sahasrahla_house.give_world_map",
   text = [[
-Here's a little item
-that you will find
-useful on your tale...
+Voici un objet qui te
+sera fort utile lors de
+ton périple...
 ]]
 }
 -----------------------
@@ -4194,13 +4191,15 @@ useful on your tale...
 dialog{
   id = "sahasrahla_house.quest_accepted",
   text = [[
-You should check out
-the cave, I store some
-objects that you could
-use. Nothing too fancy
-I guess, it's been a
-while since I went back
-there...
+Tu devrais aller jeter
+un coup d'oeil à la
+cave, j'y garde
+quelques objets qui
+pourraient te servir.
+Mais je ne te promets
+rien car cela fait
+longtemps que je ne
+l'ai pas entretenue...
 ]]
 }
 -----------------------
@@ -4210,14 +4209,15 @@ dialog{
   id = "sahasrahla_house.dungeon_1_finished",
   next = "sahasrahla_house.go_grandma",
   text = [[
-Good job, you managed
-to overcome the
-challenges of the
-forest dungeon. Before
-resuming your journey,
-go back to my cave,
-perhaps new items found
-their way there.
+Bravo, tu es venu à
+bout des épreuves du
+donjon de la forêt.
+Avant de continuer ton
+périple, n'hésite pas à
+descendre dans ma cave
+pour y trouver des
+objets qui te seront
+utiles.
 ]]
 }
 -----------------------
@@ -4228,11 +4228,12 @@ dialog{
   question = true,
   next = "sahasrahla_house.memories.read",
   text = [[
-Sahasrahla's memories.
+Les mémoires de
+Sahasrahla.
 
-Read them?
-Yes
-No
+Veux-tu les lire ?
+Oui
+Non
 ]]
 }
 -----------------------
@@ -4240,7 +4241,8 @@ No
 dialog{
   id = "sahasrahla_house.memories.read",
   text = [[
-That's way too long!
+Hum, c'est beaucoup
+trop long !
 ]]
 }
 -----------------------
@@ -4250,9 +4252,9 @@ dialog{
   id = "sahasrahla_house.frozen_door_advice",
   skip = "all",
   text = [[
-The door is frozen?
-Try melting the ice
-with some water.
+La porte est gelée ?
+Essaie de faire fondre
+la glace avec de l'eau.
 ]]
 }
 -----------------------
@@ -4263,9 +4265,9 @@ dialog{
   skip = "all",
   next = "sahasrahla_house.go_grandma",
   text = [[
-I have faith in you.
-Courage and wisdom will
-guide you.
+J'ai foi en toi.
+Le courage et la
+sagesse te guideront.
 ]]
 }
 -----------------------
@@ -5673,8 +5675,8 @@ dialog{
   id = "dungeon_4.welcome",
   skip = "current",
   text = [[
-        Level 4
-   Beaumont's Palace  
+        Niveau 4
+   Palais de Beaumont  
 ]]
 }
 -----------------------
@@ -5791,8 +5793,8 @@ dialog{
   id = "dungeon_5.welcome",
   skip = "current",
   text = [[
-        Level 5
-     Ancient Castle
+        Niveau 5
+     Ancien Château
 ]]
 }
 -----------------------
@@ -5918,8 +5920,8 @@ dialog{
   id = "dungeon_6.welcome",
   skip = "current",
   text = [[
-        Level 6
-    Inferno's Maze   
+        Niveau 6
+    Dédale d'Inferno   
 ]]
 }
 -----------------------
@@ -6017,8 +6019,8 @@ dialog{
   id = "dungeon_7.welcome",
   skip = "current",
   text = [[
-        Level 7
-   Crystal Temple   
+        Niveau 7
+   Temple du Cristal   
 ]]
 }
 -----------------------
@@ -6117,8 +6119,9 @@ dialog{
   id = "dungeon_8.welcome",
   skip = "current",
   text = [[
-        Level 8
-    Rock Peaks Dungeon
+        Niveau 8
+    Donjon des Pics 
+        Rocheux
 ]]
 }
 -----------------------
@@ -6257,8 +6260,8 @@ dialog{
   id = "dungeon_9.welcome",
   skip = "current",
   text = [[
-        Level 9       
- Temple of Memories
+        Niveau 9       
+ Temple des Souvenirs  
 ]]
 }
 -----------------------
@@ -6267,7 +6270,7 @@ dialog{
   id = "dungeon_9.clockwise_switches_hint",
   skip = "all",
   text = [[
-Go clockwise.
+Tourne comme le temps.
 ]]
 }
 -----------------------

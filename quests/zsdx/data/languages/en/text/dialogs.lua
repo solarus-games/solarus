@@ -1441,7 +1441,7 @@ dialog{
   icon = 26,
   text = [[
 You found the
-Flippes!$0
+Flippers!$0
 
 You can now swim
 in deep waters!
@@ -3270,18 +3270,20 @@ dialog{
   id = "rupee_house.game_2.intro",
   question = true,
   text = [[
-Bienvenue au tout
-nouveau jeu du
-bandit manchot !
-Mise 5 ou 20 rubis et
-tente d'aligner trois
-symboles identiques
-pour gagner plusieurs
-fois ta mise !
+Welcome to the
+brand-new slot
+machine!
+Put in 5 or 20 rupees
+and try your best
+to align three of the
+same symbol to win
+several times what
+you put in!
 
-Alors, tu veux jouer ?
-Oui
-Non
+So, do you want
+to play?
+Yes
+No
 ]]
 }
 -----------------------

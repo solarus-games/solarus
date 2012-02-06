@@ -3449,8 +3449,8 @@ No
 dialog{
   id = "rupee_house.game_3.go",
   text = [[
-Et c'est parti !
-Bonne chance !
+Here we go.
+Good luck!
 ]]
 }
 -----------------------
@@ -3459,7 +3459,7 @@ Bonne chance !
 dialog{
   id = "rupee_house.game_3.not_playing",
   text = [[
-C'est toi qui vois !
+It's your choice...
 ]]
 }
 -----------------------

@@ -3099,11 +3099,10 @@ Entry Forbidden!
 dialog{
   id = "outside_world.beaumont_hill_sign",
   text = [[
-Celui qui plantera un
-edelweiss au sommet de
-la Colline de Beaumont
-passera une bonne
-journée.
+He who will plant an
+edelweiss at the top
+of the Beaumont Hill,
+will have a nice day.
 ]]
 }
 -----------------------
@@ -3112,7 +3111,7 @@ journée.
 dialog{
   id = "outside_world.beaumont_hill_put_edelweiss",
   text = [[
-Tu plantes ton
+You're planting your
 edelweiss...
 ]]
 }
@@ -3122,8 +3121,8 @@ edelweiss...
 dialog{
   id = "outside_world.stone_key_required",
   text = [[
-   - Serrure Pierre -
-C'est fermé à clé !
+   - Stone Lock -
+It's locked!
 ]]
 }
 -----------------------
@@ -3132,8 +3131,8 @@ C'est fermé à clé !
 dialog{
   id = "outside_world.iron_key_required",
   text = [[
-    - Serrure Fer -
-C'est fermé à clé !
+    - Iron Lock -
+It's locked!
 ]]
 }
 -----------------------
@@ -3142,8 +3141,8 @@ C'est fermé à clé !
 dialog{
   id = "outside_world.wooden_key_required",
   text = [[
-    - Serrure Bois -
-C'est fermé à clé !
+    - Wooden Lock -
+It's locked!
 ]]
 }
 -----------------------
@@ -3152,8 +3151,8 @@ C'est fermé à clé !
 dialog{
   id = "outside_world.ice_key_required",
   text = [[
-   - Serrure Glace -
-C'est fermé à clé !
+   - Ice Lock -
+It's locked!
 ]]
 }
 -----------------------
@@ -3163,9 +3162,9 @@ dialog{
   id = "outside_world.mountain_riverfall",
   skip = "all",
   text = [[
-Il y a sûrement un
-moyen de franchir cette
-cascade...
+There must be a way
+to go through this
+waterfall...
 ]]
 }
 -----------------------
@@ -3175,10 +3174,10 @@ dialog{
   id = "link_house.dream",
   text = [[
 ... $v...
-C'est moi...
+It's me...
 ... Sahasrahla...
-Je dois... te parler...
-Viens vite, $v...
+I have... to speak...
+Come quickly, $v...
 ]]
 }
 -----------------------
@@ -3188,15 +3187,16 @@ dialog{
   id = "rupee_house.game_1.intro",
   question = true,
   text = [[
-Bienvenue au jeu du
-coffre-mystère. Paie 20
-rubis pour ouvrir l'un
-des trois coffres et
-tenter de remporter
-plus de rubis !
-Alors, tu veux jouer ?
-Oui
-Non
+Welcome to the mystery
+chest game. Pay 20
+rupees to open one
+of the three chests and
+stand a chance of
+earning more rupee!
+So, do you want to
+play?
+Yes
+No
 ]]
 }
 -----------------------
@@ -3205,11 +3205,12 @@ Non
 dialog{
   id = "rupee_house.game_1.choose_chest",
   text = [[
-Va choisir l'un des
-trois coffres !
+Off you go now, choose
+a chest!
 
-Mais ne compte pas sur
-moi pour t'aider !
+Quit staring at me,
+I won't tell you
+which one to choose!
 ]]
 }
 -----------------------
@@ -3218,8 +3219,7 @@ moi pour t'aider !
 dialog{
   id = "rupee_house.game_1.good_luck",
   text = [[
-Va choisir un coffre
-et bonne chance !
+Good luck!
 ]]
 }
 -----------------------
@@ -3228,9 +3228,9 @@ et bonne chance !
 dialog{
   id = "rupee_house.game_1.not_allowed_to_play",
   text = [[
-Tu as déjà assez gagné
-non ? Nous sommes
-ruinés à cause de toi !
+You've already won
+haven't you? We are
+ruined because of you!
 ]]
 }
 -----------------------
@@ -3240,12 +3240,12 @@ dialog{
   id = "rupee_house.game_1.play_again_question",
   question = true,
   text = [[
-Tu veux retenter ta
-chance ?
+Do you want to play
+again?
 
-C'est 20 rubis !
-Oui
-Non
+It's 20 rupees!
+Yes
+No
 ]]
 }
 -----------------------
@@ -3253,11 +3253,14 @@ Non
 -- Coffre-mystère : quand on refuse de jouer
 -- C'est un clin d'oeil à Link's Awakening, dans le stand
 -- de pêche tout au début du jeu, quand on refuse de jouer ou de rejouer
+-- English Translation taken from the actual LA text dump.
+-- http://www.zeldalegends.net/files/emulation/dumps/zelda4/usa/z4dump(usa).html
 dialog{
   id = "rupee_house.game_1.not_playing",
   text = [[
-Vis ta vie ! Sois
-un peu plus motivé !
+You have to have more
+passion!
+Live a little!
 ]]
 }
 -----------------------
@@ -3287,8 +3290,7 @@ Non
 dialog{
   id = "rupee_house.game_2.not_playing",
   text = [[
-Une autre fois
-peut-être ?
+Next time then...
 ]]
 }
 -----------------------
@@ -3298,9 +3300,10 @@ dialog{
   id = "rupee_house.game_2.choose_bet",
   question = true,
   text = [[
-Combien veux-tu miser ?
-5 rubis
-20 rubis
+How much do you want
+to bet?
+5 rupees
+20 rupees
 ]]
 }
 -----------------------
@@ -3311,7 +3314,7 @@ dialog{
   id = "rupee_house.game_2.just_paid",
   next = "rupee_house.game_2.playing",
   text = [[
-Merci !
+Thanks!
 ]]
 }
 -----------------------
@@ -3320,11 +3323,11 @@ Merci !
 dialog{
   id = "rupee_house.game_2.playing",
   text = [[
-Approche-toi des
-roulettes et appuie sur
-la touche action
-pour les arrêter.
-Bonne chance !
+Stand next to the
+roulettes and press
+the Action button to
+stop them.
+Good luck!
 ]]
 }
 -----------------------
@@ -3333,9 +3336,10 @@ Bonne chance !
 dialog{
   id = "rupee_house.game_2.reward.same_any",
   text = [[
-Trois symboles identi-
-ques, pas mal ! Tu
-gagnes 4 fois ta mise.
+Three identical
+symbols, not bad!
+You win 4 times your
+bet.
 ]]
 }
 -----------------------
@@ -3344,9 +3348,10 @@ gagnes 4 fois ta mise.
 dialog{
   id = "rupee_house.game_2.reward.green_rupees",
   text = [[
-Trois rubis verts,
-joli ! Tu remportes
-5 fois ta mise !
+Three green rupees,
+nice!
+You get 5 times your
+bet.
 ]]
 }
 -----------------------
@@ -3355,10 +3360,10 @@ joli ! Tu remportes
 dialog{
   id = "rupee_house.game_2.reward.blue_rupees",
   text = [[
-Trois rubis bleus !
-Félicitations, tu
-repars avec pas moins
-de 7 fois ta mise !
+Three blue rupees!
+Congratulations, you
+are off with 7 times
+your initial bet!
 ]]
 }
 -----------------------
@@ -3367,11 +3372,10 @@ de 7 fois ta mise !
 dialog{
   id = "rupee_house.game_2.reward.red_rupees",
   text = [[
-Trois rubis rouges !!!
-Je suis très
-impressionné !
-Tu repars avec 10 fois
-ta mise. Bravo !
+Three red rupees!!!
+That's astonishing!
+You earn no less than
+10 times your bet!
 ]]
 }
 -----------------------
@@ -3380,12 +3384,12 @@ ta mise. Bravo !
 dialog{
   id = "rupee_house.game_2.reward.different_rupees",
   text = [[
-Whaou !!! Tu as obtenu
-trois rubis de couleurs
-différentes, c'est pas
-tous les jours qu'on
-voit ça ! Tu remportes
-15 fois ta mise.
+Wow!!! You got three
+rupees of different
+color, it doesn't
+happen every day!
+The reward amounts to
+15 times your bet.
 ]]
 }
 -----------------------
@@ -3394,12 +3398,12 @@ voit ça ! Tu remportes
 dialog{
   id = "rupee_house.game_2.reward.yoshi",
   text = [[
-$1...$3Trois Yoshi ?!
-C'est à peine
-croyable ! C'est la
-meilleure combinaison
-possible... Tu gagnes
-20 fois ta mise !
+$1...$3Three Yoshi?!
+I-n-c-r-e-d-i-b-l-e!
+That's the best
+possible combination...
+Your initial bet is
+multiplied by 20.
 ]]
 }
 -----------------------
@@ -3409,12 +3413,11 @@ dialog{
   id = "rupee_house.game_2.reward.none",
   question = true,
   text = [[
-Pas de chance, tu n'as
-formé aucune
-combinaison.
-Tu veux réessayer ?
-Oui
-Non
+Tough luck, you didn't
+make any combination.
+Want to try again?
+Yes
+No
 ]]
 }
 -----------------------

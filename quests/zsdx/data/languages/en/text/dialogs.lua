@@ -4304,39 +4304,38 @@ dialog{
   question = true,
   next2 = "lyriann_cave.tom.refuse_help",
   text = [[
-Bonjour, jeune
-aventurier. Je suis
-Tom, un ancien garde
-de notre défunt Roi.
-Je ne pensais pas que
-quelqu'un viendrait me
-trouver ici. Que fais-
-tu dans cette caverne
-lugubre ?
-Comment ? La Triforce
-est en danger ? $0Tout
-cela ne serait pas
-arrivé si notre Roi
-était encore là pour la
-protéger...
-Tu cherches à percer
-les mystères de cette
-caverne ?
-Cet endroit regorge
-d'énigmes, de trésors
-et de dangers.
-Cela me semble très
-courageux de ta part !
+Hello, young
+adventurer. I am Tom,
+an ex-guard of our late
+King. I didn't think
+anyone would find me
+here. What are you
+doing in this gloomy
+cavern?
+What? The Triforce is
+danger? $0None of this
+would have happened if
+our King were still
+here to protect it...
+You're trying to solve
+the mysteries of this
+cavern?
+This place is
+overflowing with
+riddles, treasure, and
+danger. You seem very
+courageous!
 
-S'il te plaît, accepte
-mon aide... J'ai
-échoué, je n'ai pas su
-protéger notre Roi.
-Laisse-moi une occasion
-de me racheter !
-Acceptes-tu mon aide ?
-Oui
-Non
+Please, accept my
+help... I have failed,
+I wasn't able to
+protect our King.
+Give me a chance to
+make it up!
+Will you accept my
+help?
+Yes
+No
 ]]
 }
 -----------------------

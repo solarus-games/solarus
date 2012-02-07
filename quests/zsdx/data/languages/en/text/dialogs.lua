@@ -1863,7 +1863,8 @@ chests!
 --------------------
 
 -- Petite clé / Small key
-dialog{
+dialog{It's so rusty that even
+the 
   id = "_treasure.small_key.1",
   icon = 72,
   text = [[
@@ -5541,9 +5542,9 @@ dialog{
   id = "cave_to_dungeon_8.hint",
   skip = "all",
   text = [[
-Seul un observateur
-attentif saura suivre
-le chemin.
+Only an attentive
+observer will be able
+to follow the path.
 ]]
 }
 -----------------------
@@ -5563,8 +5564,7 @@ dialog{
   id = "hidden_palace.door_closed",
   skip = "all",
   text = [[
-Cette porte ne s'ouvre
-pas...
+This door won't open...
 ]]
 }
 -----------------------
@@ -5573,8 +5573,8 @@ dialog{
   id = "hidden_palace.using_bone_key",
   icon = 20,
   text = [[
-$1Tu utilises la Clé
-d'Os...
+$1You use the Bone
+Key...
 ]]
 }
 --------------------
@@ -5617,7 +5617,7 @@ dialog{
   id = "dungeon_3.arbror_direction_hint",
   text = [[
 
-  Nord : Maître Arbror 
+  North: Master Treear
 ]]
 }
 -----------------------
@@ -5625,7 +5625,7 @@ dialog{
 dialog{
   id = "dungeon_3.water_drained_somewhere",
   text = [[
-Au loin... un bruit...
+Far away... a noise...
 ]]
 }
 -----------------------
@@ -5633,21 +5633,21 @@ Au loin... un bruit...
 dialog{
   id = "dungeon_3.arbror_hello",
   text = [[
-Ahh !!! Jamais tu ne me
-vaincras, moi, Maître
-Arbror !
+Haa!!! You'll never
+defeat me, Master
+Treear!
 ]]
 }
 -----------------------
+-- French is ambiguous, escape or manage?
 
 dialog{
   id = "dungeon_3.arbror_killed",
   text = [[
-KARGHHH !!! Je suis
-vaincu mais tu ne t'en
-tireras pas...
-Tu ne réussiras
-jamais...
+KARGHHH!!! I have been
+defeated, but you won't
+escape... You will
+never succeed...
 ]]
 }
 -----------------------
@@ -5706,13 +5706,13 @@ le chemin.
 ]]
 }
 -----------------------
+-- Need context, is Link alone?
 
 dialog{
   id = "dungeon_4.too_cold",
   text = [[
-Il fait beaucoup trop
-froid ici...
-$0Il faut repartir !
+It's too cold here...
+We need to leave!
 ]]
 }
 -----------------------
@@ -5809,9 +5809,9 @@ dialog{
   id = "dungeon_5.pots_hint",
   skip = "all",
   text = [[
-La clé de l'énigme est
-de tourner autour des
-pots dans le bon sens.
+The key to this puzzle
+is to circle the jars
+in the right direction.
 ]]
 }
 -----------------------
@@ -5819,8 +5819,8 @@ pots dans le bon sens.
 dialog{
   id = "dungeon_5.hero_seen_by_guard",
   text = [[
-HALTE !
-On ne bouge plus !
+HALT!
+Don't move!
 ]]
 }
 -----------------------
@@ -5829,8 +5829,9 @@ dialog{
   id = "dungeon_5.prison_1_locked",
   text = [[
     - Serrure Fer -
-Aucune de tes clés ne
-semble rentrer...
+    - Iron Lock -
+None of your keys seem
+to fit...
 ]]
 }
 -----------------------
@@ -5839,17 +5840,17 @@ dialog{
   id = "dungeon_5.prison_1_use_iron_key",
   icon = 28,
   text = [[
-$1Tu utilises la Clé
-de Fer...
+$1You use the Iron
+Key...
 ]]
 }
 --------------------
+-- Not sure if I'm losing anything from this simplification
 
 dialog{
   id = "dungeon_5.prison_2_locked_1",
   text = [[
-Cette serrure est
-fermée !
+It's locked!
 ]]
 }
 -----------------------
@@ -5857,19 +5858,19 @@ fermée !
 dialog{
   id = "dungeon_5.prison_2_locked_2",
   text = [[
-C'est tellement rouillé
-que même la Grande Clé
-n'y ferait rien.
+It's so rusty that even
+the Big Key won't work.
 ]]
 }
 -----------------------
+-- May need to be prettied up
 
 dialog{
   id = "dungeon_5.prison_2_locked_3",
   text = [[
-Il y a peut-être moyen
-de forcer cette vieille
-serrure...
+Perhaps there is a way
+to force open this old
+lock...
 ]]
 }
 -----------------------
@@ -5877,9 +5878,9 @@ serrure...
 dialog{
   id = "dungeon_5.puzzle_solved",
   text = [[
-Dans les profondeurs du
-château, un mécanisme
-se déclenche...
+Somewhere deep within
+the castle, a trigger
+is activated...
 ]]
 }
 -----------------------
@@ -5931,13 +5932,14 @@ dialog{
 ]]
 }
 -----------------------
+-- chute is ambigious, need context
 
 dialog{
   id = "dungeon_6.torches_hint",
   text = [[
-Les trois lumières
-indiquent l'endroit de
-la chute.
+The three lights show
+the way to the
+waterfall.
 ]]
 }
 -----------------------
@@ -5945,8 +5947,7 @@ la chute.
 dialog{
   id = "dungeon_6.dont_fall_hint",
   text = [[
-Ne tombe pas, mais
-saute.
+Do not fall, but jump.
 ]]
 }
 -----------------------
@@ -5954,8 +5955,8 @@ saute.
 dialog{
   id = "dungeon_6.close_way_hint",
   text = [[
-Puis referme le chemin
-derrière toi.
+Then close the path
+behind you.
 ]]
 }
 -----------------------
@@ -6041,12 +6042,14 @@ dialog{
 ]]
 }
 -----------------------
+-- Purposely poetic construction
+-- Alternative: "Under your feet lies a secret."
 
 dialog{
   id = "dungeon_7.2f_weak_floor_hint",
   text = [[
-Sous tes pieds dort un
-secret.
+Under your feet, a
+secret sleeps.
 ]]
 }
 -----------------------
@@ -6054,8 +6057,8 @@ secret.
 dialog{
   id = "dungeon_7.2f_dont_fall_alone_hint",
   text = [[
-La solution consistait
-à ne pas tomber seul.
+The solution was to not
+fall alone.
 ]]
 }
 -----------------------
@@ -6302,7 +6305,7 @@ dialog{
   id = "dungeon_9.3f_door_b_hint_3",
   skip = "all",
   text = [[
-Below.
+Down.
 ]]
 }
 -----------------------

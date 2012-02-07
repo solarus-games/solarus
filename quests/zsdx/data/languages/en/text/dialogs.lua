@@ -1863,8 +1863,7 @@ chests!
 --------------------
 
 -- Petite clé / Small key
-dialog{It's so rusty that even
-the 
+dialog{
   id = "_treasure.small_key.1",
   icon = 72,
   text = [[

@@ -1536,6 +1536,7 @@ rocks.
 --------------------
 
 -- Poigne d'Or / Golden Gloves
+-- Sounds a bit odd "resist". Too French.
 dialog{
   id = "_treasure.glove.2",
   icon = 33,
@@ -1949,7 +1950,6 @@ Use a Bomb
 dialog{
   id = "_treasure.bomb.1.1",
   text = [[
-Use a Bomb 
 to make an enemy or an
 obstacle explode.
 ]]
@@ -2069,6 +2069,8 @@ That's one Rupee!
 --------------------
 
 -- 1 rubis bleu / 1 blue rupee
+-- Possible change "five" to "5" for parallelism? Or maybe under 10 should be written.
+-- Remove these commends once decided.
 dialog{
   id = "_treasure.rupee.2",
   icon = 91,

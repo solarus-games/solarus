@@ -35,17 +35,8 @@ Color Color::cyan;
  * @brief Initializes the color static fields.
  */
 void Color::initialize() {
-<<<<<<< HEAD
-#ifndef __APPLE__
-  format_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1, 32, 0, 0, 0, 0);
-#else
-  format_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1, 32, 0x0000ff00, 0x00ff0000, 0xff000000, 0x00000000);
-#endif
-  
-=======
   format_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1,
       32, 0, 0, 0, 0);
->>>>>>> Remove OSX temporary code
 
   black =    Color(  0,   0,   0); 
   white =    Color(255, 255, 255);

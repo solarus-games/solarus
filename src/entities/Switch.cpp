@@ -63,6 +63,7 @@ Switch::Switch(const std::string& name, Layer layer, int x, int y,
     create_sprite("entities/solid_switch");
     get_sprite().set_current_animation("inactivated");
     set_collision_modes(COLLISION_SPRITE | COLLISION_RECTANGLE);
+    set_optimization_distance(2000); // because of placing a bomb on a switch
   }
 }
 

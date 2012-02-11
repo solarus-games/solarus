@@ -35,6 +35,7 @@ Explosion::Explosion(Layer layer, const Rectangle &xy, bool with_damages):
   // initialize the entity
   create_sprite("entities/explosion");
 
+  set_optimization_distance(2000); // because of placing a bomb on a switch
   get_sprite().enable_pixel_collisions();
   if (with_damages) {
     set_bounding_box_from_sprite();

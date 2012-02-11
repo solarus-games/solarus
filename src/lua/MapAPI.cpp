@@ -2077,7 +2077,7 @@ int Script::map_api_pickable_item_create(lua_State *l) {
  * @brief Places a new destructible item on the map.
  *
  * - Argument 1 (integer): subtype of destructible item ("pot", "bush",
- * "white_stone", "black_stone", "grass" or "bomb_flower
+ * "white_stone", "black_stone", "grass" or "bomb_flower")
  * - Argument 2 (integer): x
  * - Argument 3 (integer): y
  * - Argument 4 (integer): layer
@@ -2117,7 +2117,7 @@ int Script::map_api_destructible_item_create(lua_State* l) {
         treasure_variant = luaL_checkinteger(l, -1);
       }
       else if (key == "treasure_savegame_variable") {
-        treasure_savegame_variable = lua_toboolean(l, -1) != 0;
+        treasure_savegame_variable = luaL_checkinteger(l, -1);
       }
       else if (key == "destruction_callback") {
         // store the callback into the registry

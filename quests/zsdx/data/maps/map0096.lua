@@ -94,33 +94,6 @@ end
 
 function event_switch_activated(switch_name)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	if switch_name=="switch1_1" then
-		if door3==false then
-			sol.map.switch_set_activated("switch2_1",true)
-			sol.map.door_open("door3")
-			sol.main.play_sound("door_open")
- 			sol.main.timer_start(function()
-				if door3==false then
-					sol.map.switch_set_activated("switch1_1",false)
-					sol.map.door_close("door3")
-					sol.main.play_sound("door_closed")
-					sol.map.switch_set_activated("switch2_1",false)
-				end	
-			end,5000)
-		end
-	end
-
-	if switch_name=="switch2_1" then
-		sol.map.door_open("door3")
-		sol.main.play_sound("door_open")
-		sol.map.switch_set_activated("switch1_1",true)
-	end
-
-=======
->>>>>>> Lua: sol.main.door_open/close already plays the appropriate sound
-=======
   if switch_name == "switch1_1" then
     if not door3 then
       sol.map.door_open("door3")
@@ -134,6 +107,5 @@ function event_switch_activated(switch_name)
       end, 5000, true)
     end
   end
->>>>>>> Dungeon 10 is now okay, I have fixed the maps and scripts.
 end
 

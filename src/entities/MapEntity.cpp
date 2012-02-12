@@ -1529,7 +1529,7 @@ bool MapEntity::overlaps_camera() {
     const Sprite* sprite = *it;
     const Rectangle sprite_origin = sprite->get_origin();
     Rectangle sprite_bounding_box = sprite->get_size();
-    sprite_bounding_box.add_xy(get_xy());
+    sprite_bounding_box.set_xy(get_xy());
     sprite_bounding_box.add_xy(-sprite_origin.get_x(), -sprite_origin.get_y());
     found = sprite_bounding_box.overlaps(get_map().get_camera_position());
   }

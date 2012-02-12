@@ -1,4 +1,4 @@
-solarus-0.9.1 (under development)
+solarus-0.9.1 (2012-02-12)
 
 * The player can now run with the action key if he has the ability "run"
 * Fix locked doors and blocks that could consume more than one small key

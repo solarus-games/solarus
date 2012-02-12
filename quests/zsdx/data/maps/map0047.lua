@@ -40,6 +40,10 @@ function event_map_started(destination_point_name)
     sol.map.door_set_open("LD5", true)
   end
 
+  if destination_point_name == "from_hidden_room" then
+    sol.map.enemy_remove_group("room_LD5_enemy")
+  end
+
   -- door to Agahnim open if Billy's heart container was picked
   if sol.game.savegame_get_boolean(729) then
     sol.map.door_set_open("agahnim_door", true)

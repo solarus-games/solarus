@@ -86,7 +86,7 @@ enemies.
 
 -- Boomerang
 dialog{
-  id = "_item_description.boomerang.1",
+  id = "_item_description.Boomerang.1",
   icon = 4,
   skip = "all",
   text = [[
@@ -100,7 +100,7 @@ a certain distance.
 
 -- Super Boomerang
 dialog{
-  id = "_item_description.boomerang.2",
+  id = "_item_description.Boomerang.2",
   icon = 35,
   skip = "all",
   text = [[
@@ -825,7 +825,7 @@ at a safe distance!
 
 -- Boomerang
 dialog{
-  id = "_treasure.boomerang.1",
+  id = "_treasure.Boomerang.1",
   icon = 4,
   text = [[
 You found the
@@ -844,7 +844,7 @@ unravel them!
 
 -- Super Boomerang
 dialog{
-  id = "_treasure.boomerang.2",
+  id = "_treasure.Boomerang.2",
   icon = 35,
   text = [[
 You found the
@@ -4397,7 +4397,7 @@ dialog{
   question = true,
   text = [[
 Is everything all
-right? Use my boomerang
+right? Use my Boomerang
 to overcome obstacles.
 You'll need to attain a
 level of mastery over
@@ -4405,7 +4405,7 @@ it if you want to find
 all the secrets in this
 cavern...
 Don't forget that the
-boomerang always comes
+Boomerang always comes
 back to you, even if
 you move.
 
@@ -4420,7 +4420,7 @@ Return the Boomerang
 
 -- Grotte de Tom : quand on vient de lui rendre son Boomerang sans avoir fini la grotte
 dialog{
-  id = "lyriann_cave.tom.gave_boomerang_back",
+  id = "lyriann_cave.tom.gave_Boomerang_back",
   text = [[
 Thank you. Come see me
 again if you would like
@@ -4459,7 +4459,7 @@ my help.
 -----------------------
 
 -- Grotte de Tom : quand on a trouvé le Réceptacle de Coeur (et donc
--- fini la grotte) mais qu'on ne lui a pas encore rendu son boomerang,
+-- fini la grotte) mais qu'on ne lui a pas encore rendu son Boomerang,
 -- que ce soit en lui parlant directement ou en tentant de quitter la grotte
 dialog{
   id = "lyriann_cave.tom.cavern_finished",

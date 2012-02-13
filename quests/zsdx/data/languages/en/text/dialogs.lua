@@ -4396,24 +4396,24 @@ dialog{
   id = "lyriann_cave.tom.not_finished",
   question = true,
   text = [[
-Tu t'en sors ? Aide-toi
-de mon boomerang pour
-franchir les obstacles.
-Il te faudra sans doute
-acquérir une certaine
-maîtrise du lancer du
-Boomerang pour percer
-tous les secrets de
-cette caverne...
-N'oublie pas que le
-Boomerang revient
-toujours vers toi,
-même si tu te déplaces.
+Is everything all
+right? Use my boomerang
+to overcome obstacles.
+You'll need to attain a
+level of mastery over
+it if you want to find
+all the secrets in this
+cavern...
+Don't forget that the
+boomerang always comes
+back to you, even if
+you move.
 
 
-Que veux-tu faire ?
-Continuer
-Rendre le Boomerang
+What would you like to
+do?
+Continue
+Return the Boomerang
 ]]
 }
 -----------------------
@@ -4422,9 +4422,9 @@ Rendre le Boomerang
 dialog{
   id = "lyriann_cave.tom.gave_boomerang_back",
   text = [[
-Merci. Reviens me voir
-si tu souhaites que je
-t'aide à nouveau.
+Thank you. Come see me
+again if you would like
+my help.
 ]]
 }
 -----------------------

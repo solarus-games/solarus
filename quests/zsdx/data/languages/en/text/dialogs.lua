@@ -3090,7 +3090,7 @@ the hidden treasure!
 dialog{
   id = "outside_world.billy_cavern_sign",
   text = [[
-Billy the Reckless
+Billy the Reckless's
 cavern.
 Entry Forbidden!
 ]]
@@ -4443,18 +4443,17 @@ Hey! Wait!
 dialog{
   id = "lyriann_cave.tom.leaving.cavern_not_finished",
   text = [[
-Tu as déjà fini ton
-exploration ? Il me
-semble que tu n'as pas
-tout trouvé... Si cela
-ne t'embête pas, je
-récupère mon Boomerang.
-Son maniement requiert
-une certaine maîtrise !
-Reviens me voir si tu
-souhaites que je
-t'apporte à nouveau
-mon aide.
+You've already finished
+exploring? I don't
+think you have found
+everything... If you
+don't mind, I'll be
+taking my Boomerang
+back. You need a level
+of skill to be able to
+use it! Come see me
+again if you would like
+my help.
 ]]
 }
 -----------------------
@@ -4466,15 +4465,14 @@ dialog{
   id = "lyriann_cave.tom.cavern_finished",
   next = "lyriann_cave.tom.see_you_later",
   text = [[
-Tu as réussi à déjouer
-les énigmes de cette
-caverne ?
-C'est impressionnant !
-Tu me sembles aussi
-adroit que courageux.
-Si cela ne t'embête
-pas, je vais récupérer
-mon Boomerang.
+You solved the
+mysteries of this
+cavern? Impressive! You
+are just as skilled as
+you are courageous. If
+you don't mind, I'll be
+taking my Boomerang
+back.
 ]]
 }
 -----------------------
@@ -4482,14 +4480,14 @@ mon Boomerang.
 -- Grotte de Tom : fin du dialogue ci-dessus
 -- et également quand on vient le revoir à nouveau après
 -- avoir fini la grotte et rendu le Boomerang
+-- Slightly awkward translation
 dialog{
   id = "lyriann_cave.tom.see_you_later",
   text = [[
-Si tu le souhaites, en
-cas de besoin, je
-viendrai te donner un
-coup de main au cours
-de ton aventure.
+If you like, I can come
+give you a hand during
+your adventures, if
+ever you are in need.
 ]]
 }
 -----------------------
@@ -4523,6 +4521,7 @@ Let's see...
 -----------------------
 -- Need more context on how it is débloqué
 -- to translate it properly
+-- (Remove French when done, leave the first voila though)
 
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.open",
@@ -4539,9 +4538,8 @@ $0Et voilà !
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.finished",
   text = [[
-Fais attention, ça a
-l'air sinistre à
-l'intérieur.
+Be careful, it looks
+ominous in there.
 ]]
 }
 -----------------------

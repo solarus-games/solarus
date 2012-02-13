@@ -216,7 +216,7 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-This fairy will help
+This Fairy will help
 you if needed.
 
 You can also use it
@@ -382,7 +382,7 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-This fairy will help
+This Fairy will help
 you if needed.
 
 You can also use it
@@ -465,7 +465,7 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-This fairy will help
+This Fairy will help
 you if needed.
 
 You can also use it
@@ -2424,7 +2424,7 @@ dialog{
   next = "found_fairy.1",
   text = [[
 You found a
-fairy, she is
+Fairy, she is
 wonderful!
 ]]
 }
@@ -4634,18 +4634,18 @@ dialog{
 dialog{
   id = "fairy_cave.first_time",
   text = [[
-Sois le bienvenu, jeune
-homme plein de sagesse.
-J'attendais ta venue.
-Je suis la Fée des
-Enchantements. Toi qui
-veilles sur la justice,
-permets-moi de t'offrir
-ce présent...
+Welcome, young man,
+full of wisdom. I have
+been awaiting your
+arrival. I am the
+Enchanting Fairy. You,
+who watch over justice,
+allow me to present you
+with this gift...
 
-Tu as prouvé par le
-passé que tu méritais
-de le posséder.
+You have proven in the
+past that you deserve
+it.
 ]]
 }
 -----------------------
@@ -4653,12 +4653,12 @@ de le posséder.
 dialog{
   id = "fairy_cave.restore_health",
   text = [[
-Sois le bienvenu, jeune
-homme plein de sagesse.
+Welcome, young man,
+full of wisdom.
 
-Je suis la Fée des
-Enchantements. Ferme
-les yeux et relaxe-toi.
+I am the Enchanting
+Fairy. Close your eyes
+and relax.
 ]]
 }
 -----------------------
@@ -4666,16 +4666,16 @@ les yeux et relaxe-toi.
 dialog{
   id = "north_fairy_fountain.first_time",
   text = [[
-Sois le bienvenu, jeune
-homme au grand courage.
-J'attendais ta venue.
-Je suis la Fée des
-Voyageurs. Toi qui
-traverses le monde pour
-combattre le mal sans
-relâche, permets-moi de
-te transmettre une
-technique ancestrale...
+Welcome, young man,
+filled with courage.
+I have been awaiting
+your arrival. I am the
+Traveling Fairy. You,
+who travel the world to
+fight evil
+relentlessly, allow me
+to pass on to you an
+ancient technique...
 ]]
 }
 -----------------------
@@ -4683,12 +4683,12 @@ technique ancestrale...
 dialog{
   id = "north_fairy_fountain.restore_health",
   text = [[
-Sois le bienvenu, jeune
-homme au grand courage.
+Welcome, young man,
+filled with courage.
 
-Je suis la Fée des
-Voyageurs. Ferme
-les yeux et relaxe-toi.
+I am the Traveling
+Fairy. Close your eyes
+and relax.
 ]]
 }
 -----------------------
@@ -4707,9 +4707,10 @@ dialog{
   id = "mountain_cave.not_much_done",
   skip = "all",
   text = [[
-Si tu lis ce message,
-c'est que tu n'as pas
-beaucoup avancé.
+If you are reading this
+message, then you
+haven't gotten very
+far.
 ]]
 }
 -----------------------
@@ -4718,9 +4719,9 @@ dialog{
   id = "mountain_cave.patience",
   skip = "all",
   text = [[
-La patience est la
-vertu du vrai héros.
- - Auteur inconnu (?) -
+Patience is the virtue
+of a true hero.
+ - Author unknown (?) -
 ]]
 }
 -----------------------
@@ -4729,8 +4730,8 @@ dialog{
   id = "mountain_cave.almost_done",
   skip = "all",
   text = [[
-Le pire n'est pas
-à venir.
+The worst is yet to
+come.
 ]]
 }
 -----------------------

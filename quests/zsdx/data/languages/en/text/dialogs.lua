@@ -4921,8 +4921,8 @@ dialog{
   id = "outside_world.surprise_wall_guy.thanks",
   next = "outside_world.surprise_wall_guy.open",
   text = [[
-Super ! En remerciement,
-je mange la tarte.
+Super! I'll eat the pie
+in appreciation.
 ]]
 }
 -----------------------
@@ -4974,39 +4974,42 @@ dialog{
 dialog{
   id = "lake_shop.seller",
   text = [[
-Bienvenue à la Boutique
-du Lac ! Nos articles
-sont les moins chers
-de la région.
-Que puis-je pour toi ?
+Welcome to the Lake
+Shop! Our items are the
+cheapest in the area.
+What can I do for you?
 ]]
 }
 -----------------------
+-- A bit difficult to translate. Maybe "discount(ed)" could work
 
 dialog{
   id = "lake_shop.apples",
   text = [[
-Trois pommes de marque
-premier prix.
+Three apples at value
+price.
 ]]
 }
 -----------------------
+-- This is apparently an English expression. Change if you like
 
 dialog{
   id = "lake_shop.bombs",
   text = [[
-Huit bombes. Je te les
-fais à prix coûtant !
+Eight bombs. I'll give
+them to you at cost
+price!
 ]]
 }
 -----------------------
+-- Perhaps a better translation out there? "ratio" maybe?
 
 dialog{
   id = "lake_shop.arrows",
   text = [[
-Dix flèches, un
-excellent rapport
-qualité-prix.
+Ten arrows, an
+excellent value for its
+price.
 ]]
 }
 -----------------------
@@ -5014,9 +5017,9 @@ qualité-prix.
 dialog{
   id = "lake_shop.big_magic_flask",
   text = [[
-Promotion du moment :
-une bouteille d'énergie
-magique.
+Special offer:
+a flask of magic
+energy.
 ]]
 }
 -----------------------
@@ -5025,15 +5028,13 @@ dialog{
   id = "chests_game_cave.first_time",
   next = "chests_game_cave.play_question",
   text = [[
-Comment es-tu arrivé
-ici ??
+How did you get here??
 
-... Maintenant que tu
-es là, je te propose de
-participer en
-exclusivité à mon
-nouveau jeu. La partie
-coûte 30 Rubis.
+... Now that you're
+here, how would you
+like to be the first to
+play my new game? One
+game costs 30 Rupees.
 ]]
 }
 -----------------------
@@ -5075,12 +5076,13 @@ dialog{
   id = "chests_game_cave.start_game_wooden_key",
   skip = "all",
   text = [[
-Merci ! Le jeu consiste
-à ouvrir un coffre au
-choix. Son contenu est
-à toi. Le gros lot du
-du jour est une
-magnifique clé en bois.
+Thanks! To play the
+game, just open one of
+the chests. Its
+contents are yours to
+keep. The grand prize
+of the day is a
+magnificent wooden key.
 ]]
 }
 -----------------------
@@ -5089,12 +5091,13 @@ dialog{
   id = "chests_game_cave.start_game_piece_of_heart",
   skip = "all",
   text = [[
-Merci ! Le jeu consiste
-à ouvrir un coffre au
-choix. Son contenu est
-à toi. Le gros lot du
-du jour est un Fragment
-de Coeur.
+Thanks! To play the
+game, just open one of
+the chests. Its
+contents are yours to
+keep. The grand prize
+of the day is a
+Heart Fragment.
 ]]
 }
 -----------------------
@@ -5106,8 +5109,8 @@ dialog{
   text = [[
 Thanks! You can open
 one of the chests.
-Whatever is inside is
-all yours.
+Its contents are yours
+to keep.
 ]]
 }
 -----------------------
@@ -5126,11 +5129,10 @@ dialog{
   skip = "all",
   text = [[
 
-     Bazar du Coin
+     Junk Shop
 
-Le plus grand choix
-d'articles à un prix
-vraiment exceptionnel !
+The largest selection
+at exceptional prices!
 ]]
 }
 -----------------------
@@ -5139,12 +5141,10 @@ dialog{
   id = "junk_shop.seller",
   skip = "all",
   text = [[
-Bienvenue au Bazar du
-Coin ! Des articles de
-premier choix à des
-prix tout à fait
-exceptionnels !
-Sers-toi !
+Welcome to the Junk
+Shop! Top of the line
+items at extraordinary
+prices! Help yourself!
 ]]
 }
 -----------------------
@@ -5152,8 +5152,8 @@ Sers-toi !
 dialog{
   id = "junk_shop.croissant",
   text = [[
-Un Croissant. Pour
-récupérer des Coeurs.
+One Croissant. To fill
+your Hearts.
 ]]
 }
 -----------------------
@@ -5161,18 +5161,18 @@ récupérer des Coeurs.
 dialog{
   id = "junk_shop.arrows",
   text = [[
-Des Flèches de modèle
-standard.
+Standard Arrows.
 ]]
 }
 -----------------------
+-- Shouldn't start a sentence with "but". "However" sounds too much though
 
 dialog{
   id = "junk_shop.red_rupee",
   text = [[
-Un Rubis Rouge en
-promotion. Mais c'est
-le modèle d'expo.
+A special offer Red
+Rupee. But it's the
+floor model.
 ]]
 }
 -----------------------
@@ -5180,9 +5180,9 @@ le modèle d'expo.
 dialog{
   id = "junk_shop.mystic_mirror",
   text = [[
-Le Miroir Mystique. On
-dit qu'il peut inverser
-le cours de l'eau !
+The Mystic Mirror. They
+say it can reverse the
+flow of water!
 ]]
 }
 -----------------------
@@ -5190,8 +5190,8 @@ le cours de l'eau !
 dialog{
   id = "junk_shop.heart",
   text = [[
-Un Coeur. Pratique si
-tu manques de vitalité.
+A Heart. Useful if you
+need energy.
 ]]
 }
 -----------------------
@@ -5199,8 +5199,8 @@ tu manques de vitalité.
 dialog{
   id = "junk_shop.bombs",
   text = [[
-Huit Bombes à prix
-spécial.
+Eight bombs at a
+reduced price.
 ]]
 }
 -----------------------
@@ -5222,11 +5222,18 @@ recovering Hearts.
 ]]
 }
 -----------------------
+-- Needs work. Won't remove French until it's fixed
 
 dialog{
   id = "castle.welcome",
   skip = "all",
   text = [[
+Welcome to the ancient
+royal castle, listed as
+a historical monument.
+Please refrain from
+disturbing the
+surroundings.
 Bienvenue dans l'ancien
 château royal, classé
 monument historique.

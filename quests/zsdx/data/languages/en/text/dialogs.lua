@@ -4547,45 +4547,44 @@ ominous in there.
 dialog{
   id = "dungeon_1.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda.
-Nous sommes dévoués à
-veiller sur les restes
-de la sainte relique,
-la Triforce, symbole
-laissé par les trois
-déesses après leur
-action sur votre monde.
-Durant des millénaires,
-source de vie et de
-prospérité, la Triforce
-fut aussi source de
-grande convoitise et de
-luttes incessantes
-entre les forces du
-bien et les forces
-maléfiques.
-Aujourd'hui encore, la
-sainte relique est
-menacée.
-Mais l'histoire se
-répète : à chaque fois
-qu'un danger apparut,
-un héros émergea et son
-courage permit de
-repousser les Ténèbres.
-Retrouve mes frères et
-découvre qui est
-derrière tout cela,
-avant que les forces
-des ténèbres plongent
-Hyrule dans le chaos...
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+$2$v... Thank you.
+$2$v... Merci. You
+saved my life. I am one
+of the eight protectors
+called forth by
+Princess Zelda. We are
+devoted to watching
+over the remains of the
+holy relic, the
+Triforce, creed left by
+the tree goddesses
+after the creation of
+your world. Throughout
+the millennia, the
+Triforce, although
+source of life and
+prosperity, was also
+the source of great
+greed and constant
+struggles between the
+forces of good and
+evil. Even today, the
+holy relic is in
+danger. However,
+history repeats itself.
+Wherever there is
+danger, there is a hero
+whose courage drives
+the Darkness away. Find
+my brothers and
+discover who is behind
+all of this, before the
+forces of Darkness
+plunge Hyrule into
+chaos...
+May the hero bring
+peace and prosperity
+to the Kingdom!
 ]]
 }
 -----------------------
@@ -4604,8 +4603,8 @@ dialog{
   id = "dungeon_2.eye_hint",
   skip = "all",
   text = [[
-Les deux yeux doivent
-être transpercés.
+Both eyes must be
+pierced.
 ]]
 }
 -----------------------
@@ -4614,9 +4613,9 @@ dialog{
   id = "dungeon_2.eye_2_hint",
   skip = "all",
   text = [[
-Les yeux doivent être
-transpercés avec
-persévérance.
+Both eyes must be
+pierced with
+perseverance.
 ]]
 }
 -----------------------

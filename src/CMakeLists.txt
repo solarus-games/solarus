@@ -48,7 +48,7 @@ file(
   ../include/snes_spc/*.h
 )
 
-if(APPLE)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   include_directories(
     ${SOLARUS_SOURCE_DIR}/include/lowlevel/osx
   )
@@ -57,7 +57,7 @@ if(APPLE)
     lowlevel/osx/SDLMain.m
     ../include/lowlevel/osx/SDLMain.h
   )
-endif(APPLE)
+endif()
 
 set(main_source_file lowlevel/Main.cc)
 
@@ -72,6 +72,12 @@ add_executable(solarus
 
 # compilation options
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
+
+# compilation options for Mac OS X (10.5+ Intel) deployment
+if(MACOS_DEPLOYMENT)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.5 -arch i386 -arch x86_64 -force_cpusubtype_ALL")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mmacosx-version-min=10.5 -arch i386 -arch x86_64")
+endif(MACOS_DEPLOYMENT)
 
 option(DEBUG_KEYS "Enable the debugging keys." OFF)
 

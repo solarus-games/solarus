@@ -21,10 +21,10 @@ include_directories(
   ${SDLIMAGE_INCLUDE_DIR}
   ${OPENAL_INCLUDE_DIR}
   ${VORBISFILE_INCLUDE_DIR}
+  ${LIBOGG_INCLUDE_DIR}
   ${MODPLUG_INCLUDE_DIR}
   ${LUA_INCLUDE_DIR}
   ${PHYSFS_INCLUDE_DIR}
-  ${LIBOGG_INCLUDE_DIR}
 )
 
 file(
@@ -74,7 +74,7 @@ add_executable(solarus
 )
 
 # compilation options
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x -Wall -Werror -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic")
 
 # compilation options for Mac OS X (10.5+ Intel) deployment
 if(MACOS_DEPLOYMENT)
@@ -100,9 +100,9 @@ target_link_libraries(solarus
   ${SDLTTF_LIBRARY}
   ${OPENAL_LIBRARY}
   ${LUA_LIBRARY}
-  ${LIBOGG_LIBRARY}
   ${PHYSFS_LIBRARY}
   ${VORBISFILE_LIBRARY}
+  ${LIBOGG_LIBRARY}
   ${MODPLUG_LIBRARY}
 )
 

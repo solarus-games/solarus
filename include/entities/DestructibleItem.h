@@ -48,7 +48,7 @@ class DestructibleItem: public Detector {
       STONE_SMALL_BLACK = 4,
       GRASS             = 5,
       BOMB_FLOWER       = 6,
-      SUBTYPE_NUMBER    = 7,
+      SUBTYPE_NUMBER    = 7
     };
 
   private:

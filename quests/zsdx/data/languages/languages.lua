@@ -1,6 +1,11 @@
 language{
   code = "fr",
   name = "Français",
+}
+
+language{
+  code = "en",
+  name = "English",
   default = true
 }
 
@@ -8,12 +13,6 @@ language{
 language{
   code = "de",
   name = "Deutsch"
-}
-
-language{
-  code = "en",
-  name = "English",
-  default = true
 }
 --]]
 

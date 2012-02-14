@@ -86,7 +86,7 @@ enemies.
 
 -- Boomerang
 dialog{
-  id = "_item_description.Boomerang.1",
+  id = "_item_description.boomerang.1",
   icon = 4,
   skip = "all",
   text = [[
@@ -100,7 +100,7 @@ a certain distance.
 
 -- Super Boomerang
 dialog{
-  id = "_item_description.Boomerang.2",
+  id = "_item_description.boomerang.2",
   icon = 35,
   skip = "all",
   text = [[
@@ -825,7 +825,7 @@ at a safe distance!
 
 -- Boomerang
 dialog{
-  id = "_treasure.Boomerang.1",
+  id = "_treasure.boomerang.1",
   icon = 4,
   text = [[
 You found the
@@ -844,7 +844,7 @@ unravel them!
 
 -- Super Boomerang
 dialog{
-  id = "_treasure.Boomerang.2",
+  id = "_treasure.boomerang.2",
   icon = 35,
   text = [[
 You found the
@@ -4420,7 +4420,7 @@ Return the Boomerang
 
 -- Grotte de Tom : quand on vient de lui rendre son Boomerang sans avoir fini la grotte
 dialog{
-  id = "lyriann_cave.tom.gave_Boomerang_back",
+  id = "lyriann_cave.tom.gave_boomerang_back",
   text = [[
 Thank you. Come see me
 again if you would like

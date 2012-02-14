@@ -1536,7 +1536,7 @@ rocks.
 --------------------
 
 -- Poigne d'Or / Golden Gloves
--- Sounds a bit odd "resist". Too French.
+--#Sounds a bit odd "resist". Too French.
 dialog{
   id = "_treasure.glove.2",
   icon = 33,
@@ -2069,8 +2069,8 @@ That's one Rupee!
 --------------------
 
 -- 1 rubis bleu / 1 blue rupee
--- Possible change "five" to "5" for parallelism? Or maybe under 10 should be written.
--- Remove these commends once decided.
+--#Possible change "five" to "5" for parallelism? Or maybe under 10 should be written.
+--#Remove these commends once decided.
 dialog{
   id = "_treasure.rupee.2",
   icon = 91,
@@ -2251,7 +2251,7 @@ dialog{
   id = "_cannot_lift_should_cut",
   skip = "all",
   text = [[
-You would need something
+You will need something
 sharp to cut through these
 bushes.
 ]]
@@ -4364,8 +4364,8 @@ No
 -----------------------
 
 -- Grotte de Tom : quand on accepte son aide
--- I'm not extremely happy with this translation
--- "If you manage...impressed!" Too word for word.
+--#I'm not extremely happy with this translation
+--#"If you manage...impressed!" Too word for word.
 dialog{
   id = "lyriann_cave.tom.accept_help",
   text = [[
@@ -4480,7 +4480,7 @@ back.
 -- Grotte de Tom : fin du dialogue ci-dessus
 -- et également quand on vient le revoir à nouveau après
 -- avoir fini la grotte et rendu le Boomerang
--- Slightly awkward translation
+--#Slightly awkward translation
 dialog{
   id = "lyriann_cave.tom.see_you_later",
   text = [[
@@ -4519,9 +4519,9 @@ Let's see...
 ]]
 }
 -----------------------
--- Need more context on how it is débloqué
--- to translate it properly
--- (Remove French when done, leave the first voila though)
+--#Need more context on how it is débloqué
+--#to translate it properly
+--#(Remove French when done, leave the first voila though)
 
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.open",
@@ -4981,7 +4981,7 @@ What can I do for you?
 ]]
 }
 -----------------------
--- A bit difficult to translate. Maybe "discount(ed)" could work
+--#A bit difficult to translate. Maybe "discount(ed)" could work
 
 dialog{
   id = "lake_shop.apples",
@@ -4991,7 +4991,7 @@ price.
 ]]
 }
 -----------------------
--- This is apparently an English expression. Change if you like
+--#This is apparently an English expression. Change if you like
 
 dialog{
   id = "lake_shop.bombs",
@@ -5002,7 +5002,7 @@ price!
 ]]
 }
 -----------------------
--- Perhaps a better translation out there? "ratio" maybe?
+--#Perhaps a better translation out there? "ratio" maybe?
 
 dialog{
   id = "lake_shop.arrows",
@@ -5101,7 +5101,7 @@ Heart Fragment.
 ]]
 }
 -----------------------
--- Might be able to translate this a little better
+--#Might be able to translate this a little better
 
 dialog{
   id = "chests_game_cave.start_game",
@@ -5165,7 +5165,7 @@ Standard Arrows.
 ]]
 }
 -----------------------
--- Shouldn't start a sentence with "but". "However" sounds too much though
+--#Shouldn't start a sentence with "but". "However" sounds too much though
 
 dialog{
   id = "junk_shop.red_rupee",
@@ -5222,7 +5222,7 @@ recovering Hearts.
 ]]
 }
 -----------------------
--- Needs work. Won't remove French until it's fixed
+--#Needs work. Won't remove French until it's fixed
 
 dialog{
   id = "castle.welcome",
@@ -5645,7 +5645,7 @@ Treear!
 ]]
 }
 -----------------------
--- French is ambiguous, escape or manage?
+--#French is ambiguous, escape or manage?
 
 dialog{
   id = "dungeon_3.arbror_killed",
@@ -5712,7 +5712,7 @@ le chemin.
 ]]
 }
 -----------------------
--- Need context, is Link alone?
+--#Need context, is Link alone?
 
 dialog{
   id = "dungeon_4.too_cold",
@@ -5851,7 +5851,7 @@ Key...
 ]]
 }
 --------------------
--- Not sure if I'm losing anything from this simplification
+--#Not sure if I'm losing anything from this simplification
 
 dialog{
   id = "dungeon_5.prison_2_locked_1",
@@ -5869,7 +5869,7 @@ the Big Key won't work.
 ]]
 }
 -----------------------
--- May need to be prettied up
+--#May need to be prettied up
 
 dialog{
   id = "dungeon_5.prison_2_locked_3",
@@ -5938,7 +5938,7 @@ dialog{
 ]]
 }
 -----------------------
--- chute is ambigious, need context
+--#chute is ambigious, need context
 
 dialog{
   id = "dungeon_6.torches_hint",
@@ -6048,8 +6048,8 @@ dialog{
 ]]
 }
 -----------------------
--- Purposely poetic construction
--- Alternative: "Under your feet lies a secret."
+--#Purposely poetic construction
+--#Alternative: "Under your feet lies a secret."
 
 dialog{
   id = "dungeon_7.2f_weak_floor_hint",

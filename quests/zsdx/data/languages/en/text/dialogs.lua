@@ -4540,7 +4540,7 @@ ominous in there.
 dialog{
   id = "dungeon_1.solarus_child",
   text = [[
-$2$v... Thank you.
+$2$v... Thank you. You
 saved my life. I am one
 of the eight protectors
 called forth by

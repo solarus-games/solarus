@@ -25,7 +25,7 @@
 
 VideoManager* VideoManager::instance = NULL;
 
-#ifndef __APPLE
+#ifndef __APPLE__
 const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
 #else
 /* on Mac OS X the SDL hardware surfaces are buggy */
@@ -356,7 +356,7 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
   SDL_Surface* dst_internal_surface = dst_surface->get_internal_surface();
   SDL_Surface* surface_to_draw;
 
-#ifndef __APPLE
+#ifndef __APPLE__
   surface_to_draw = dst_internal_surface;
 #else
   /* On Mac OS X an intermediate surface is needed.
@@ -387,7 +387,7 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
   SDL_UnlockSurface(surface_to_draw);
   SDL_UnlockSurface(src_internal_surface);
  
-#ifdef __APPLE
+#ifdef __APPLE__
   SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
   SDL_FreeSurface(surface_to_draw);
 #endif
@@ -408,13 +408,13 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
   SDL_Surface* dst_internal_surface = dst_surface->get_internal_surface();
   SDL_Surface* surface_to_draw;
 
-#ifndef __APPLE
+#ifndef __APPLE__
   surface_to_draw = dst_internal_surface;
 #else
   /* On Mac OS X an intermediate surface is needed.
    * FIXME: creating a new surface at each blit is probably a horrible loss
    * of performance */
-  SDL_Surface* surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
+  surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
       dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
 #endif
 
@@ -466,7 +466,7 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
   SDL_UnlockSurface(surface_to_draw);
   SDL_UnlockSurface(src_internal_surface);
  
-#ifdef __APPLE
+#ifdef __APPLE__
   SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
   SDL_FreeSurface(surface_to_draw);
 #endif

@@ -2069,8 +2069,6 @@ That's one Rupee!
 --------------------
 
 -- 1 rubis bleu / 1 blue rupee
---#Possible change "five" to "5" for parallelism? Or maybe under 10 should be written.
---#Remove these commends once decided.
 dialog{
   id = "_treasure.rupee.2",
   icon = 91,
@@ -4519,18 +4517,13 @@ Let's see...
 ]]
 }
 -----------------------
---#Need more context on how it is débloqué
---#to translate it properly
---#(Remove French when done, leave the first voila though)
 
+-- Tom has found a ladder and is opening the access to dungeon 1
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.open",
   text = [[
 I think I can move it.
 $0Voila!
-Je crois que je vais
-pouvoir la débloquer.
-$0Et voilà !
 ]]
 }
 -----------------------
@@ -4548,7 +4541,6 @@ dialog{
   id = "dungeon_1.solarus_child",
   text = [[
 $2$v... Thank you.
-$2$v... Merci. You
 saved my life. I am one
 of the eight protectors
 called forth by
@@ -5645,14 +5637,13 @@ Treear!
 ]]
 }
 -----------------------
---#French is ambiguous, escape or manage?
 
 dialog{
   id = "dungeon_3.arbror_killed",
   text = [[
 KARGHHH!!! I have been
 defeated, but you won't
-escape... You will
+go far... You will
 never succeed...
 ]]
 }
@@ -5712,13 +5703,14 @@ le chemin.
 ]]
 }
 -----------------------
---#Need context, is Link alone?
 
+-- The hero attemps to enter the frozen room in dungeon 4
+-- but doesn't have the blue tunic.
 dialog{
   id = "dungeon_4.too_cold",
   text = [[
 It's too cold here...
-We need to leave!
+You need to leave!
 ]]
 }
 -----------------------
@@ -5851,7 +5843,6 @@ Key...
 ]]
 }
 --------------------
---#Not sure if I'm losing anything from this simplification
 
 dialog{
   id = "dungeon_5.prison_2_locked_1",
@@ -5938,14 +5929,13 @@ dialog{
 ]]
 }
 -----------------------
---#chute is ambigious, need context
 
+-- Hint for the weak floor
 dialog{
   id = "dungeon_6.torches_hint",
   text = [[
 The three lights show
-the way to the
-waterfall.
+the way to the fall.
 ]]
 }
 -----------------------
@@ -6048,9 +6038,12 @@ dialog{
 ]]
 }
 -----------------------
+
 --#Purposely poetic construction
 --#Alternative: "Under your feet lies a secret."
 
+-- The original dialog was a reference
+-- to Link's Awakening
 dialog{
   id = "dungeon_7.2f_weak_floor_hint",
   text = [[

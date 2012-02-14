@@ -18,7 +18,7 @@
 #define SOLARUS_INPUT_EVENT_H
 
 #include "Common.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 /**
  * @brief Represents a low-level event.

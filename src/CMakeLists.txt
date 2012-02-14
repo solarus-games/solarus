@@ -9,6 +9,7 @@ find_package(SDL_image)
 find_package(SDL_ttf)
 find_package(OpenAL)
 find_package(VorbisFile)
+find_package(Ogg)
 find_package(ModPlug)
 find_package(Lua51)
 find_package(PhysFS)
@@ -21,7 +22,7 @@ include_directories(
   ${SDLIMAGE_INCLUDE_DIR}
   ${OPENAL_INCLUDE_DIR}
   ${VORBISFILE_INCLUDE_DIR}
-  ${LIBOGG_INCLUDE_DIR}
+  ${OGG_INCLUDE_DIR}
   ${MODPLUG_INCLUDE_DIR}
   ${LUA_INCLUDE_DIR}
   ${PHYSFS_INCLUDE_DIR}
@@ -102,7 +103,7 @@ target_link_libraries(solarus
   ${LUA_LIBRARY}
   ${PHYSFS_LIBRARY}
   ${VORBISFILE_LIBRARY}
-  ${LIBOGG_LIBRARY}
+  ${OGG_LIBRARY}
   ${MODPLUG_LIBRARY}
 )
 

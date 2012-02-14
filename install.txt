@@ -179,37 +179,47 @@ It is necessary to additionally link with libz.
 ---------------------
 
 * Compile on OSX
-The Apple port of solarus currently doesn't use XCode, so you can compile solarus 
-just by doing the default setting with cmake.
+The Apple port of solarus currently doesn't use XCode, so you can compile 
+solarus just by doing the default setting with cmake.
 If you got some error on the cmake part, you can edit the CMakeCache.txt to
 manually write the include and library directories that cmake did not find.
 
 You can compile for YOUR Mac with the default command, but you probably wish
-to distribute the application on other systems. To do so, use this command to 
-prepare the deployment
+to distribute the application on other systems. To do so, use this command 
+to prepare the deployment
 
 $ cmake -DCMAKE_BUILD_TYPE=Release -MACOS_DEPLOYMENT=ON .
 
 
 * Deploy on OSX
 To deploy a bundle, you need to add a few things to your project.
-First, you have to integrate all non-Mac-native dynamic framework, just by doing
+The final application is a .app suffixed folder, which typcially contains 
+the executable and all the resources it needs. We usually make it once, so 
+you should use the one from the libraries/macosx directory, but you perfectly 
+can make your own one.
+
+First, you have to check if all non-Mac-native frameworks are correctly 
+integrated, just by doing
 
 $ otool -L /dylib/or/binary/I/want/to/check
 
-If one of the embed library has a wrong path, you can modify it with
+This command is to use on all dylib, framework binary and the main binary.
+(if you use the bundle on libraries/macosx, just do it on main binary).
+It show the search path for every dependencies. Just look on the you embed.
+If one of them has a wrong path, you can modify it with
 
 $ install_name_tool -id new_path /dylib/or/binary/I/want/to/modify
 or
 $ install_name_tool -change old_path new_path /dylib/or/binary/I/want/to/modify
 
-The new_path string usually looks like @rpath/dylib.dylib or 
-@rpath/framework.framework/Version/A/thebinary on Mac 10.5+.
-So you have to indicate the runpath search location to the main binary, by doing
+The new_path string usually looks like @rpath/The_dylib.dylib or 
+@rpath/The_framework.framework/Version/A/The_binary on Mac 10.5+.
+So you also have to indicate the runpath search location on the main binary, 
+by doing
 
-$ install_name_tool -add_rpath @loader_path/../Frameworks
+$ install_name_tool -add_rpath @loader_path/../Frameworks main_binary
 
-You also can check every runpath of a binary with
+You also can check every runpath of a binary/dylib with
 
 $ otool -l /dylib/or/binary/I/want/to/check | grep rpath
 
@@ -218,7 +228,19 @@ The last thing you have to do to deploy Solarus is to compile it for every
 processor architecture.
 But if you compile with -MACOS_DEPLOYMENT=ON and without error message, 
 you already have a "universal" (Intel 32+64bit, not PPC) application.
-Check what is your binary compatibility with
+Check what is your binary compatibility with.
 
 $ file /dylib/or/binary/I/want/to/check
 
+
+Last thing : For the current bundle on libraries/macosx , every dylib and 
+binary (including one from frameworks) are only compatible with i386 and 
+x86_64 processor, which cover every Mac since Snow Leopard. 
+If you wish to compile a PPC application, and want to use this bundle 
+(or make this bundle work with all architectures), you have to compile every 
+dependencies for PPC, and replace files by yours, or merge them by using
+
+$ lipo -create dylib_or_binary1 dylib_or_binary2 -output new_dylib
+
+This is not a hack, it's the offical way to do and what gcc do with multi
+-arch flags

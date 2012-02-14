@@ -89,6 +89,8 @@ libraries that are not provided as binaries by their authors, but I don't
 guarantee they are up-to-date.
 The lua readme recommends to link statically against lua, so it's the only one
 you shouldn't embed.
+Also, the OpenAl framework is already part of the OSX system since 10.4, so you
+don't have to embed this one too.
 You can use both .dylib or .framework for the other, but just remember you have 
 to check the version number, runpath search, architechture and backyard 
 compatibility if you want to deploy your application.

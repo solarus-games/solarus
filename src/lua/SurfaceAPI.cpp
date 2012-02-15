@@ -181,7 +181,7 @@ int Script::surface_api_create(lua_State* l) {
     other_surface.blit(Rectangle(x, y, width, height), surface);
   }
 
-  script.surfaces_created.insert(surface);
+  script.increment_refcount(surface);
   push_surface(l, *surface);
 
   return 1;
@@ -202,12 +202,7 @@ int Script::surface_meta_gc(lua_State* l) {
   Surface& surface = check_surface(l, 1);
 
   script.stop_surface_transition(l, 1); // transitions are not garbage collected
-
-  if (script.surfaces_created.count(&surface) > 0) {
-    delete &surface;
-    script.surfaces_created.erase(&surface);
-  }
-  // otherwise don't touch this surface, it belongs to C
+  script.decrement_refcount(&surface);
 
   return 0;
 }

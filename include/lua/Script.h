@@ -18,6 +18,7 @@
 #define SOLARUS_SCRIPT_H
 
 #include "Common.h"
+#include "lowlevel/Debug.h"
 #include <map>
 #include <list>
 #include <set>
@@ -58,20 +59,26 @@ class Script {
     bool has_played_music();
     void do_callback(int callback_ref);
 
+    // userdata garbage collection
+    template <typename T>
+      void increment_refcount(T* userdata);
+    template <typename T>
+      void decrement_refcount(T* userdata);
+
   private:
 
     // script data
     // TODO reimplement timers as userdata? timer:stop, timer:set_with_sound(true)
-    std::map<int, Timer*> timers;                        /**< the timers currently running for this script */
+    std::map<int, Timer*> timers;   /**< the timers currently running for this
+                                     * script */
 
-    // userdata created by Lua (this info is used to know if we can garbage collect them)
-    std::set<Surface*> surfaces_created;                 /**< surfaces created by Lua */
-    std::set<TextSurface*> text_surfaces_created;        /**< text surfaces created by Lua */
-    std::set<Sprite*> sprites_created;                   /**< sprites created by Lua */
-    std::set<Movement*> movements_created;               /**< movements created by Lua */
+    std::map<void*, int> refcounts; /**< for each userdata known this script:
+                                     * number of pointers to the object
+                                     * including the Lua one
+                                     * (0 means that it can be deleted) */
 
     // APIs
-    uint32_t apis_enabled;                               /**< an OR combination of APIs enabled */
+    uint32_t apis_enabled;          /**< an OR combination of APIs enabled */
     static const char* surface_module_name;
     static const char* text_surface_module_name;
     static const char* sprite_module_name;
@@ -449,6 +456,46 @@ class Script {
       movement_api_test_obstacles,
       movement_meta_gc;
 };
+
+/**
+ * @brief Adds 1 to the reference counter of a userdata.
+ *
+ * If the object was not known yet, it is initialized with a refcount of 1.
+ *
+ * @param userdata the userdata
+ */
+template <typename T>
+void Script::increment_refcount(T* userdata) {
+
+  if (refcounts.count(userdata) == 0) {
+    // first time
+    refcounts[userdata] = 1;
+  }
+  else {
+    refcounts[userdata]++;
+  }
+}
+
+/**
+ * @brief Removes 1 to the reference counter of a userdata and possibly
+ * destroys the object.
+ *
+ * If the counters gets to zero, the object is deleted immediately.
+ *
+ * @param userdata the userdata
+ */
+template <typename T>
+void Script::decrement_refcount(T* userdata) {
+
+  Debug::check_assertion(refcounts.count(userdata) > 0,
+      "This userdata is not known by the script");
+
+  int refcount = --refcounts[userdata];
+  if (refcount == 0) {
+    refcounts.erase[userdata];
+    delete userdata;
+  }
+}
 
 #endif
 

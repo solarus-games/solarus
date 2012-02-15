@@ -205,7 +205,7 @@ int Script::text_surface_api_create(lua_State* l) {
   }
 
   text_surface->set_position(x, y);
-  script.text_surfaces_created.insert(text_surface);
+  script.increment_refcount(text_surface);
   push_text_surface(l, *text_surface);
 
   return 1;
@@ -221,15 +221,9 @@ int Script::text_surface_api_create(lua_State* l) {
  */
 int Script::text_surface_meta_gc(lua_State* l) {
 
-  Script& script = get_script(l);
-
   TextSurface* text_surface = *((TextSurface**)
       luaL_checkudata(l, 1, text_surface_module_name));
-  if (script.text_surfaces_created.count(text_surface) > 0) {
-    delete text_surface;
-    script.text_surfaces_created.erase(text_surface);
-  }
-  // otherwise don't touch this text surface, it belongs to C
+  get_script(l).decrement_refcount(text_surface);
 
   return 0;
 }

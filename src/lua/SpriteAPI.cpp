@@ -123,7 +123,7 @@ int Script::sprite_api_create(lua_State* l) {
 
   const std::string& animation_set_id = luaL_checkstring(l, 1);
   Sprite* sprite = new Sprite(animation_set_id);
-  get_script(l).sprites_created.insert(sprite);
+  get_script(l).increment_refcount(sprite);
   push_sprite(l, *sprite);
 
   return 1;
@@ -139,14 +139,8 @@ int Script::sprite_api_create(lua_State* l) {
  */
 int Script::sprite_meta_gc(lua_State* l) {
 
-  Script& script = get_script(l);
-
   Sprite* sprite= *((Sprite**) luaL_checkudata(l, 1, sprite_module_name));
-  if (script.sprites_created.count(sprite) > 0) {
-    delete sprite;
-    script.sprites_created.erase(sprite);
-  }
-  // otherwise don't touch this instance, it belongs to C
+  get_script(l).decrement_refcount(sprite);
 
   return 0;
 }

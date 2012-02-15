@@ -9,6 +9,7 @@ find_package(SDL_image)
 find_package(SDL_ttf)
 find_package(OpenAL)
 find_package(VorbisFile)
+find_package(Ogg)
 find_package(ModPlug)
 find_package(Lua51)
 find_package(PhysFS)
@@ -17,8 +18,11 @@ include_directories(
   ${SOLARUS_SOURCE_DIR}/include
   ${SOLARUS_SOURCE_DIR}/include/snes_spc
   ${SDL_INCLUDE_DIR}
+  ${SDLTTF_INCLUDE_DIR}
+  ${SDLIMAGE_INCLUDE_DIR}
   ${OPENAL_INCLUDE_DIR}
   ${VORBISFILE_INCLUDE_DIR}
+  ${OGG_INCLUDE_DIR}
   ${MODPLUG_INCLUDE_DIR}
   ${LUA_INCLUDE_DIR}
   ${PHYSFS_INCLUDE_DIR}
@@ -48,7 +52,7 @@ file(
   ../include/snes_spc/*.h
 )
 
-if(APPLE)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   include_directories(
     ${SOLARUS_SOURCE_DIR}/include/lowlevel/osx
   )
@@ -57,7 +61,7 @@ if(APPLE)
     lowlevel/osx/SDLMain.m
     ../include/lowlevel/osx/SDLMain.h
   )
-endif(APPLE)
+endif()
 
 set(main_source_file lowlevel/Main.cc)
 
@@ -71,7 +75,13 @@ add_executable(solarus
 )
 
 # compilation options
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic")
+
+# compilation options for Mac OS X (10.5+ Intel) deployment
+if(MACOS_DEPLOYMENT)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.5 -arch i386 -arch x86_64 -force_cpusubtype_ALL")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mmacosx-version-min=10.5 -arch i386 -arch x86_64")
+endif(MACOS_DEPLOYMENT)
 
 option(DEBUG_KEYS "Enable the debugging keys." OFF)
 
@@ -93,6 +103,7 @@ target_link_libraries(solarus
   ${LUA_LIBRARY}
   ${PHYSFS_LIBRARY}
   ${VORBISFILE_LIBRARY}
+  ${OGG_LIBRARY}
   ${MODPLUG_LIBRARY}
 )
 

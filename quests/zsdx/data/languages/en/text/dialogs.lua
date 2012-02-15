@@ -216,7 +216,7 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-This fairy will help
+This Fairy will help
 you if needed.
 
 You can also use it
@@ -382,7 +382,7 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-This fairy will help
+This Fairy will help
 you if needed.
 
 You can also use it
@@ -465,7 +465,7 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-This fairy will help
+This Fairy will help
 you if needed.
 
 You can also use it
@@ -1536,7 +1536,7 @@ rocks.
 --------------------
 
 -- Poigne d'Or / Golden Gloves
--- Sounds a bit odd "resist". Too French.
+--#Sounds a bit odd "resist". Too French.
 dialog{
   id = "_treasure.glove.2",
   icon = 33,
@@ -2069,8 +2069,6 @@ That's one Rupee!
 --------------------
 
 -- 1 rubis bleu / 1 blue rupee
--- Possible change "five" to "5" for parallelism? Or maybe under 10 should be written.
--- Remove these commends once decided.
 dialog{
   id = "_treasure.rupee.2",
   icon = 91,
@@ -2251,7 +2249,7 @@ dialog{
   id = "_cannot_lift_should_cut",
   skip = "all",
   text = [[
-You would need something
+You will need something
 sharp to cut through these
 bushes.
 ]]
@@ -2424,7 +2422,7 @@ dialog{
   next = "found_fairy.1",
   text = [[
 You found a
-fairy, she is
+Fairy, she is
 wonderful!
 ]]
 }
@@ -3090,7 +3088,7 @@ the hidden treasure!
 dialog{
   id = "outside_world.billy_cavern_sign",
   text = [[
-Billy the Reckless
+Billy the Reckless's
 cavern.
 Entry Forbidden!
 ]]
@@ -4364,8 +4362,8 @@ No
 -----------------------
 
 -- Grotte de Tom : quand on accepte son aide
--- I'm not extremely happy with this translation
--- "If you manage...impressed!" Too word for word.
+--#I'm not extremely happy with this translation
+--#"If you manage...impressed!" Too word for word.
 dialog{
   id = "lyriann_cave.tom.accept_help",
   text = [[
@@ -4396,24 +4394,24 @@ dialog{
   id = "lyriann_cave.tom.not_finished",
   question = true,
   text = [[
-Tu t'en sors ? Aide-toi
-de mon boomerang pour
-franchir les obstacles.
-Il te faudra sans doute
-acquérir une certaine
-maîtrise du lancer du
-Boomerang pour percer
-tous les secrets de
-cette caverne...
-N'oublie pas que le
-Boomerang revient
-toujours vers toi,
-même si tu te déplaces.
+Is everything all
+right? Use my Boomerang
+to overcome obstacles.
+You'll need to attain a
+level of mastery over
+it if you want to find
+all the secrets in this
+cavern...
+Don't forget that the
+Boomerang always comes
+back to you, even if
+you move.
 
 
-Que veux-tu faire ?
-Continuer
-Rendre le Boomerang
+What would you like to
+do?
+Continue
+Return the Boomerang
 ]]
 }
 -----------------------
@@ -4422,9 +4420,9 @@ Rendre le Boomerang
 dialog{
   id = "lyriann_cave.tom.gave_boomerang_back",
   text = [[
-Merci. Reviens me voir
-si tu souhaites que je
-t'aide à nouveau.
+Thank you. Come see me
+again if you would like
+my help.
 ]]
 }
 -----------------------
@@ -4443,38 +4441,36 @@ Hey! Wait!
 dialog{
   id = "lyriann_cave.tom.leaving.cavern_not_finished",
   text = [[
-Tu as déjà fini ton
-exploration ? Il me
-semble que tu n'as pas
-tout trouvé... Si cela
-ne t'embête pas, je
-récupère mon Boomerang.
-Son maniement requiert
-une certaine maîtrise !
-Reviens me voir si tu
-souhaites que je
-t'apporte à nouveau
-mon aide.
+You've already finished
+exploring? I don't
+think you have found
+everything... If you
+don't mind, I'll be
+taking my Boomerang
+back. You need a level
+of skill to be able to
+use it! Come see me
+again if you would like
+my help.
 ]]
 }
 -----------------------
 
 -- Grotte de Tom : quand on a trouvé le Réceptacle de Coeur (et donc
--- fini la grotte) mais qu'on ne lui a pas encore rendu son boomerang,
+-- fini la grotte) mais qu'on ne lui a pas encore rendu son Boomerang,
 -- que ce soit en lui parlant directement ou en tentant de quitter la grotte
 dialog{
   id = "lyriann_cave.tom.cavern_finished",
   next = "lyriann_cave.tom.see_you_later",
   text = [[
-Tu as réussi à déjouer
-les énigmes de cette
-caverne ?
-C'est impressionnant !
-Tu me sembles aussi
-adroit que courageux.
-Si cela ne t'embête
-pas, je vais récupérer
-mon Boomerang.
+You solved the
+mysteries of this
+cavern? Impressive! You
+are just as skilled as
+you are courageous. If
+you don't mind, I'll be
+taking my Boomerang
+back.
 ]]
 }
 -----------------------
@@ -4482,14 +4478,14 @@ mon Boomerang.
 -- Grotte de Tom : fin du dialogue ci-dessus
 -- et également quand on vient le revoir à nouveau après
 -- avoir fini la grotte et rendu le Boomerang
+--#Slightly awkward translation
 dialog{
   id = "lyriann_cave.tom.see_you_later",
   text = [[
-Si tu le souhaites, en
-cas de besoin, je
-viendrai te donner un
-coup de main au cours
-de ton aventure.
+If you like, I can come
+give you a hand during
+your adventures, if
+ever you are in need.
 ]]
 }
 -----------------------
@@ -4521,17 +4517,13 @@ Let's see...
 ]]
 }
 -----------------------
--- Need more context on how it is débloqué
--- to translate it properly
 
+-- Tom has found a ladder and is opening the access to dungeon 1
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.open",
   text = [[
 I think I can move it.
 $0Voila!
-Je crois que je vais
-pouvoir la débloquer.
-$0Et voilà !
 ]]
 }
 -----------------------
@@ -4539,9 +4531,8 @@ $0Et voilà !
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.finished",
   text = [[
-Fais attention, ça a
-l'air sinistre à
-l'intérieur.
+Be careful, it looks
+ominous in there.
 ]]
 }
 -----------------------
@@ -4549,45 +4540,43 @@ l'intérieur.
 dialog{
   id = "dungeon_1.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda.
-Nous sommes dévoués à
-veiller sur les restes
-de la sainte relique,
-la Triforce, symbole
-laissé par les trois
-déesses après leur
-action sur votre monde.
-Durant des millénaires,
-source de vie et de
-prospérité, la Triforce
-fut aussi source de
-grande convoitise et de
-luttes incessantes
-entre les forces du
-bien et les forces
-maléfiques.
-Aujourd'hui encore, la
-sainte relique est
-menacée.
-Mais l'histoire se
-répète : à chaque fois
-qu'un danger apparut,
-un héros émergea et son
-courage permit de
-repousser les Ténèbres.
-Retrouve mes frères et
-découvre qui est
-derrière tout cela,
-avant que les forces
-des ténèbres plongent
-Hyrule dans le chaos...
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+$2$v... Thank you. You
+saved my life. I am one
+of the eight protectors
+called forth by
+Princess Zelda. We are
+devoted to watching
+over the remains of the
+holy relic, the
+Triforce, creed left by
+the tree goddesses
+after the creation of
+your world. Throughout
+the millennia, the
+Triforce, although
+source of life and
+prosperity, was also
+the source of great
+greed and constant
+struggles between the
+forces of good and
+evil. Even today, the
+holy relic is in
+danger. However,
+history repeats itself.
+Wherever there is
+danger, there is a hero
+whose courage drives
+the Darkness away. Find
+my brothers and
+discover who is behind
+all of this, before the
+forces of Darkness
+plunge Hyrule into
+chaos...
+May the hero bring
+peace and prosperity
+to the Kingdom!
 ]]
 }
 -----------------------
@@ -4606,8 +4595,8 @@ dialog{
   id = "dungeon_2.eye_hint",
   skip = "all",
   text = [[
-Les deux yeux doivent
-être transpercés.
+Both eyes must be
+pierced.
 ]]
 }
 -----------------------
@@ -4616,9 +4605,9 @@ dialog{
   id = "dungeon_2.eye_2_hint",
   skip = "all",
   text = [[
-Les yeux doivent être
-transpercés avec
-persévérance.
+Both eyes must be
+pierced with
+perseverance.
 ]]
 }
 -----------------------
@@ -4637,18 +4626,18 @@ dialog{
 dialog{
   id = "fairy_cave.first_time",
   text = [[
-Sois le bienvenu, jeune
-homme plein de sagesse.
-J'attendais ta venue.
-Je suis la Fée des
-Enchantements. Toi qui
-veilles sur la justice,
-permets-moi de t'offrir
-ce présent...
+Welcome, young man,
+full of wisdom. I have
+been awaiting your
+arrival. I am the
+Enchanting Fairy. You,
+who watch over justice,
+allow me to present you
+with this gift...
 
-Tu as prouvé par le
-passé que tu méritais
-de le posséder.
+You have proven in the
+past that you deserve
+it.
 ]]
 }
 -----------------------
@@ -4656,12 +4645,12 @@ de le posséder.
 dialog{
   id = "fairy_cave.restore_health",
   text = [[
-Sois le bienvenu, jeune
-homme plein de sagesse.
+Welcome, young man,
+full of wisdom.
 
-Je suis la Fée des
-Enchantements. Ferme
-les yeux et relaxe-toi.
+I am the Enchanting
+Fairy. Close your eyes
+and relax.
 ]]
 }
 -----------------------
@@ -4669,16 +4658,16 @@ les yeux et relaxe-toi.
 dialog{
   id = "north_fairy_fountain.first_time",
   text = [[
-Sois le bienvenu, jeune
-homme au grand courage.
-J'attendais ta venue.
-Je suis la Fée des
-Voyageurs. Toi qui
-traverses le monde pour
-combattre le mal sans
-relâche, permets-moi de
-te transmettre une
-technique ancestrale...
+Welcome, young man,
+filled with courage.
+I have been awaiting
+your arrival. I am the
+Traveling Fairy. You,
+who travel the world to
+fight evil
+relentlessly, allow me
+to pass on to you an
+ancient technique...
 ]]
 }
 -----------------------
@@ -4686,12 +4675,12 @@ technique ancestrale...
 dialog{
   id = "north_fairy_fountain.restore_health",
   text = [[
-Sois le bienvenu, jeune
-homme au grand courage.
+Welcome, young man,
+filled with courage.
 
-Je suis la Fée des
-Voyageurs. Ferme
-les yeux et relaxe-toi.
+I am the Traveling
+Fairy. Close your eyes
+and relax.
 ]]
 }
 -----------------------
@@ -4710,9 +4699,10 @@ dialog{
   id = "mountain_cave.not_much_done",
   skip = "all",
   text = [[
-Si tu lis ce message,
-c'est que tu n'as pas
-beaucoup avancé.
+If you are reading this
+message, then you
+haven't gotten very
+far.
 ]]
 }
 -----------------------
@@ -4721,9 +4711,9 @@ dialog{
   id = "mountain_cave.patience",
   skip = "all",
   text = [[
-La patience est la
-vertu du vrai héros.
- - Auteur inconnu (?) -
+Patience is the virtue
+of a true hero.
+ - Author unknown (?) -
 ]]
 }
 -----------------------
@@ -4732,8 +4722,8 @@ dialog{
   id = "mountain_cave.almost_done",
   skip = "all",
   text = [[
-Le pire n'est pas
-à venir.
+The worst is yet to
+come.
 ]]
 }
 -----------------------
@@ -4923,8 +4913,8 @@ dialog{
   id = "outside_world.surprise_wall_guy.thanks",
   next = "outside_world.surprise_wall_guy.open",
   text = [[
-Super ! En remerciement,
-je mange la tarte.
+Super! I'll eat the pie
+in appreciation.
 ]]
 }
 -----------------------
@@ -4976,39 +4966,42 @@ dialog{
 dialog{
   id = "lake_shop.seller",
   text = [[
-Bienvenue à la Boutique
-du Lac ! Nos articles
-sont les moins chers
-de la région.
-Que puis-je pour toi ?
+Welcome to the Lake
+Shop! Our items are the
+cheapest in the area.
+What can I do for you?
 ]]
 }
 -----------------------
+--#A bit difficult to translate. Maybe "discount(ed)" could work
 
 dialog{
   id = "lake_shop.apples",
   text = [[
-Trois pommes de marque
-premier prix.
+Three apples at value
+price.
 ]]
 }
 -----------------------
+--#This is apparently an English expression. Change if you like
 
 dialog{
   id = "lake_shop.bombs",
   text = [[
-Huit bombes. Je te les
-fais à prix coûtant !
+Eight bombs. I'll give
+them to you at cost
+price!
 ]]
 }
 -----------------------
+--#Perhaps a better translation out there? "ratio" maybe?
 
 dialog{
   id = "lake_shop.arrows",
   text = [[
-Dix flèches, un
-excellent rapport
-qualité-prix.
+Ten arrows, an
+excellent value for its
+price.
 ]]
 }
 -----------------------
@@ -5016,9 +5009,9 @@ qualité-prix.
 dialog{
   id = "lake_shop.big_magic_flask",
   text = [[
-Promotion du moment :
-une bouteille d'énergie
-magique.
+Special offer:
+a flask of magic
+energy.
 ]]
 }
 -----------------------
@@ -5027,15 +5020,13 @@ dialog{
   id = "chests_game_cave.first_time",
   next = "chests_game_cave.play_question",
   text = [[
-Comment es-tu arrivé
-ici ??
+How did you get here??
 
-... Maintenant que tu
-es là, je te propose de
-participer en
-exclusivité à mon
-nouveau jeu. La partie
-coûte 30 Rubis.
+... Now that you're
+here, how would you
+like to be the first to
+play my new game? One
+game costs 30 Rupees.
 ]]
 }
 -----------------------
@@ -5077,12 +5068,13 @@ dialog{
   id = "chests_game_cave.start_game_wooden_key",
   skip = "all",
   text = [[
-Merci ! Le jeu consiste
-à ouvrir un coffre au
-choix. Son contenu est
-à toi. Le gros lot du
-du jour est une
-magnifique clé en bois.
+Thanks! To play the
+game, just open one of
+the chests. Its
+contents are yours to
+keep. The grand prize
+of the day is a
+magnificent wooden key.
 ]]
 }
 -----------------------
@@ -5091,16 +5083,17 @@ dialog{
   id = "chests_game_cave.start_game_piece_of_heart",
   skip = "all",
   text = [[
-Merci ! Le jeu consiste
-à ouvrir un coffre au
-choix. Son contenu est
-à toi. Le gros lot du
-du jour est un Fragment
-de Coeur.
+Thanks! To play the
+game, just open one of
+the chests. Its
+contents are yours to
+keep. The grand prize
+of the day is a
+Heart Fragment.
 ]]
 }
 -----------------------
--- Might be able to translate this a little better
+--#Might be able to translate this a little better
 
 dialog{
   id = "chests_game_cave.start_game",
@@ -5108,8 +5101,8 @@ dialog{
   text = [[
 Thanks! You can open
 one of the chests.
-Whatever is inside is
-all yours.
+Its contents are yours
+to keep.
 ]]
 }
 -----------------------
@@ -5128,11 +5121,10 @@ dialog{
   skip = "all",
   text = [[
 
-     Bazar du Coin
+     Junk Shop
 
-Le plus grand choix
-d'articles à un prix
-vraiment exceptionnel !
+The largest selection
+at exceptional prices!
 ]]
 }
 -----------------------
@@ -5141,12 +5133,10 @@ dialog{
   id = "junk_shop.seller",
   skip = "all",
   text = [[
-Bienvenue au Bazar du
-Coin ! Des articles de
-premier choix à des
-prix tout à fait
-exceptionnels !
-Sers-toi !
+Welcome to the Junk
+Shop! Top of the line
+items at extraordinary
+prices! Help yourself!
 ]]
 }
 -----------------------
@@ -5154,8 +5144,8 @@ Sers-toi !
 dialog{
   id = "junk_shop.croissant",
   text = [[
-Un Croissant. Pour
-récupérer des Coeurs.
+One Croissant. To fill
+your Hearts.
 ]]
 }
 -----------------------
@@ -5163,18 +5153,18 @@ récupérer des Coeurs.
 dialog{
   id = "junk_shop.arrows",
   text = [[
-Des Flèches de modèle
-standard.
+Standard Arrows.
 ]]
 }
 -----------------------
+--#Shouldn't start a sentence with "but". "However" sounds too much though
 
 dialog{
   id = "junk_shop.red_rupee",
   text = [[
-Un Rubis Rouge en
-promotion. Mais c'est
-le modèle d'expo.
+A special offer Red
+Rupee. But it's the
+floor model.
 ]]
 }
 -----------------------
@@ -5182,9 +5172,9 @@ le modèle d'expo.
 dialog{
   id = "junk_shop.mystic_mirror",
   text = [[
-Le Miroir Mystique. On
-dit qu'il peut inverser
-le cours de l'eau !
+The Mystic Mirror. They
+say it can reverse the
+flow of water!
 ]]
 }
 -----------------------
@@ -5192,8 +5182,8 @@ le cours de l'eau !
 dialog{
   id = "junk_shop.heart",
   text = [[
-Un Coeur. Pratique si
-tu manques de vitalité.
+A Heart. Useful if you
+need energy.
 ]]
 }
 -----------------------
@@ -5201,8 +5191,8 @@ tu manques de vitalité.
 dialog{
   id = "junk_shop.bombs",
   text = [[
-Huit Bombes à prix
-spécial.
+Eight bombs at a
+reduced price.
 ]]
 }
 -----------------------
@@ -5224,11 +5214,18 @@ recovering Hearts.
 ]]
 }
 -----------------------
+--#Needs work. Won't remove French until it's fixed
 
 dialog{
   id = "castle.welcome",
   skip = "all",
   text = [[
+Welcome to the ancient
+royal castle, listed as
+a historical monument.
+Please refrain from
+disturbing the
+surroundings.
 Bienvenue dans l'ancien
 château royal, classé
 monument historique.
@@ -5640,14 +5637,13 @@ Treear!
 ]]
 }
 -----------------------
--- French is ambiguous, escape or manage?
 
 dialog{
   id = "dungeon_3.arbror_killed",
   text = [[
 KARGHHH!!! I have been
 defeated, but you won't
-escape... You will
+go far... You will
 never succeed...
 ]]
 }
@@ -5707,13 +5703,14 @@ le chemin.
 ]]
 }
 -----------------------
--- Need context, is Link alone?
 
+-- The hero attemps to enter the frozen room in dungeon 4
+-- but doesn't have the blue tunic.
 dialog{
   id = "dungeon_4.too_cold",
   text = [[
 It's too cold here...
-We need to leave!
+You need to leave!
 ]]
 }
 -----------------------
@@ -5846,7 +5843,6 @@ Key...
 ]]
 }
 --------------------
--- Not sure if I'm losing anything from this simplification
 
 dialog{
   id = "dungeon_5.prison_2_locked_1",
@@ -5864,7 +5860,7 @@ the Big Key won't work.
 ]]
 }
 -----------------------
--- May need to be prettied up
+--#May need to be prettied up
 
 dialog{
   id = "dungeon_5.prison_2_locked_3",
@@ -5933,14 +5929,13 @@ dialog{
 ]]
 }
 -----------------------
--- chute is ambigious, need context
 
+-- Hint for the weak floor
 dialog{
   id = "dungeon_6.torches_hint",
   text = [[
 The three lights show
-the way to the
-waterfall.
+the way to the fall.
 ]]
 }
 -----------------------
@@ -6043,9 +6038,12 @@ dialog{
 ]]
 }
 -----------------------
--- Purposely poetic construction
--- Alternative: "Under your feet lies a secret."
 
+--#Purposely poetic construction
+--#Alternative: "Under your feet lies a secret."
+
+-- The original dialog was a reference
+-- to Link's Awakening
 dialog{
   id = "dungeon_7.2f_weak_floor_hint",
   text = [[

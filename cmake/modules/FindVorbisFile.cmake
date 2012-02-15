@@ -1,5 +1,5 @@
 # - Find vorbisfile
-# Find the native modplug includes and libraries
+# Find the native vorbisfile includes and libraries
 #
 #  VORBISFILE_INCLUDE_DIR - where to find vorbisfile.h, etc.
 #  VORBISFILE_LIBRARIES   - List of libraries when using libvorbisfile.

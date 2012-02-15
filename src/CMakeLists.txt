@@ -80,7 +80,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic")
 # compilation options for Mac OS X (10.5+ Intel) deployment
 if(MACOS_DEPLOYMENT)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.5 -arch i386 -arch x86_64 -force_cpusubtype_ALL")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mmacosx-version-min=10.5 -arch i386 -arch x86_64")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mmacosx-version-min=10.5 -arch i386 -arch x86_64 -Xlinker -rpath -Xlinker @loader_path/../Frameworks/ )
+  set(ENV{MACOS_DEPLOYMENT_TARGET} 10.5)
 endif(MACOS_DEPLOYMENT)
 
 option(DEBUG_KEYS "Enable the debugging keys." OFF)

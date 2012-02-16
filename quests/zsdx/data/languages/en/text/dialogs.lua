@@ -4743,41 +4743,36 @@ dialog{
   id = "billy_cave.hello",
   skip = "current",
   text = [[
-J'espère que tu as
-quelque chose
-d'intéressant à faire
-si tu oses ainsi
-pénétrer dans ma
-caverne.
-Je suis Billy le
-Téméraire, le plus
-grand aventurier de
-tous les temps.
+I hope you have come
+with something worth
+doing if you dare enter
+my cavern. I am Billy
+the Reckless, the
+greatest adventurer of
+all time.
 
 
-Lors de mon expédition
-à la Montagne des
-Terreurs, j'ai rapporté
-un trésor inestimable.
-Même la Princesse Zelda
-ne saurait le trouver.
-C'est une plante
-extrêmement rare.
+During my expedition to
+Mount Terror, I brought
+back a priceless
+treasure. Even Princess
+Zelda would not have
+been able to find it.
+It's an extremely rare
+plant.
 
-Et je suis le seul à en
-avoir. J'ai franchi
-tous les obstacles
-de la Montagne des
-Terreurs, affronté tous
-les périls, et je me
-suis sorti de toutes
-les situations.
+I am the only living
+soul to have one in his
+possession. I cleared
+all of the obstacles of
+Mount Terror, faced
+every danger, and
+walked away unscathed.
 
-C'est donc héroïquement
-que j'ai trouvé cette
-fleur d'une valeur
-incomparable :
-un edelweiss !
+It is heroically so
+that I found this
+flower of extreme
+value: an edelweiss!
 ]]
 }
 -----------------------
@@ -4787,17 +4782,14 @@ dialog{
   skip = "current",
   next = "_unknown",
   text = [[
-Ne compte pas sur moi
-pour te donner mon
-edelweiss gratuitement.
-J'ai été confronté à
-tous les dangers de la
-Montagne des Terreurs
-pour le trouver. Si tu
-n'as rien d'intéressant
-à me proposer, alors
-tu pourras toujours
-courir.
+Don't expect me to give
+you my edelweiss for
+free. I confronted the
+dangers of Mount Terror
+to find it. If you
+don't have anything of
+value to give me, then
+run along.
 ]]
 }
 -----------------------
@@ -4854,9 +4846,8 @@ have any apple pies!
 dialog{
   id = "billy_cave.give_apple_pie",
   text = [[
-Non merci, le marché
-est loin d'être
-équitable...
+No thanks, that's far
+from fair...
 ]]
 }
 -----------------------
@@ -4877,10 +4868,10 @@ flower...
 dialog{
   id = "outside_world.surprise_wall_guy.closed",
   text = [[
-Si tu me donnes quelque
-chose à manger, je te
-laisserai passer de
-l'autre côté de ce mur.
+If you give me
+something to eat, I'll
+let you on the other
+side of this wall.
 ]]
 }
 -----------------------

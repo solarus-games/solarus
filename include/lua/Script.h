@@ -492,7 +492,7 @@ void Script::decrement_refcount(T* userdata) {
 
   int refcount = --refcounts[userdata];
   if (refcount == 0) {
-    refcounts.erase[userdata];
+    refcounts.erase(userdata);
     delete userdata;
   }
 }

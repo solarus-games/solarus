@@ -11,7 +11,7 @@ if(MODPLUG_INCLUDE_DIR)
 endif(MODPLUG_INCLUDE_DIR)
 
 find_path(MODPLUG_INCLUDE_DIR modplug.h
-    PATH_SUFFIXES include include/libmodplug)
+    PATH_SUFFIXES libmodplug)
 
 find_library(MODPLUG_LIBRARY NAMES modplug)
 

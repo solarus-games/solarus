@@ -95,7 +95,7 @@ target_link_libraries(solarus
 set(CMAKE_CXX_FLAGS "-Wall -Werror ${CMAKE_CXX_FLAGS}")
 
 # compilation flags for Mac OS X (Intel) deployment
-if(MACOSX_DEPLOYMENT)
+if(DEFINED MACOSX_DEPLOYMENT)
 #  maybe do an export before running cmake instead of the following line if it doesn't work
   set(ENV{MACOSX_DEPLOYMENT_TARGET} "${MACOSX_DEPLOYMENT}")
 
@@ -108,7 +108,7 @@ if(MACOSX_DEPLOYMENT)
     set(CMAKE_INSTALL_RPATH "@loader_path/../Frameworks/")
     set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
   endif()
-endif(MACOSX_DEPLOYMENT)
+endif(DEFINED MACOSX_DEPLOYMENT)
 
 # solarus options
 option(DEBUG_KEYS "Enable the debugging keys." OFF)

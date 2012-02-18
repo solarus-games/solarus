@@ -98,6 +98,8 @@ set(CMAKE_CXX_FLAGS "-Wall -Werror ${CMAKE_CXX_FLAGS}")
 if(MACOSX_DEPLOYMENT)
   set(CMAKE_OSX_DEPLOYMENT_TARGET "${MACOSX_DEPLOYMENT}")
   set(CMAKE_OSX_ARCHITECTURES "i386;x86_64") 
+
+#TODO replace the two following line by one CMAKE environment var
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT}")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mmacosx-version-min=${MACOSX_DEPLOYMENT} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" )
 

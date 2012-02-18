@@ -92,7 +92,7 @@ target_link_libraries(solarus
 )
 
 # compilation flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic")
+set(CMAKE_CXX_FLAGS "-Wall -Werror ${CMAKE_CXX_FLAGS}")
 
 # compilation flags for Mac OS X (10.5+ Intel) deployment
 if(MACOS_DEPLOYMENT)

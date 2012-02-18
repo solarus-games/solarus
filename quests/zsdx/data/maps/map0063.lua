@@ -16,8 +16,8 @@ function event_map_started(destination_point_name)
 
   -- blocks necessary to go back when found the feather
   if sol.game.savegame_get_boolean(517) then
-    sol.map.block_set_position("s_block_1", 336, 773)
-    sol.map.block_set_position("s_block_2", 368, 773)
+    sol.map.block_set_position("s_block_1", 464, 773)
+    sol.map.block_set_position("s_block_2", 496, 773)
   end
 end
 

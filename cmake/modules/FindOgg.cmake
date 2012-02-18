@@ -11,7 +11,7 @@ if(OGG_INCLUDE_DIR)
 endif(OGG_INCLUDE_DIR)
 
 find_path(OGG_INCLUDE_DIR ogg.h
-    PATH_SUFFIXES include include/ogg)
+    PATH_SUFFIXES ogg)
 
 find_library(OGG_LIBRARY NAMES ogg)
 

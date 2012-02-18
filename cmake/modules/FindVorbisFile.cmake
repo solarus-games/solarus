@@ -11,7 +11,7 @@ if(VORBISFILE_INCLUDE_DIR)
 endif(VORBISFILE_INCLUDE_DIR)
 
 find_path(VORBISFILE_INCLUDE_DIR vorbisfile.h
-    PATH_SUFFIXES include include/vorbis)
+    PATH_SUFFIXES vorbis)
 
 find_library(VORBISFILE_LIBRARY NAMES vorbisfile vorbis)
 

@@ -186,9 +186,9 @@ manually write the include and library directories that cmake did not find.
 
 You can compile for YOUR Mac with the default command, but you probably wish
 to distribute the application on other systems. To do so, use this command 
-to prepare the deployment
+to prepare the deployment (change 10.5 by the min version)
 
-$ cmake -DCMAKE_BUILD_TYPE=Release -MACOS_DEPLOYMENT=ON .
+$ cmake -DCMAKE_BUILD_TYPE=Release -MACOS_DEPLOYMENT=10.5 .
 
 
 * Deploy on OSX
@@ -219,7 +219,7 @@ Replace @rpath/ by @executable_path/../Frameworks/ on older OSX versions.
 
 The last thing you have to do to deploy Solarus is to compile it for every 
 processor architecture.
-But if you compile with -MACOS_DEPLOYMENT=ON and without error message, 
+But if you compile with the -MACOS_DEPLOYMENT flag and without error message, 
 you already have a "universal" (Intel 32+64bit, not PPC) application.
 Check what is your binary compatibility with
 
@@ -237,6 +237,5 @@ $ lipo -create dylib_or_binary1 dylib_or_binary2 -output new_dylib
 
 This is not a hack, it's the offical way to do and what gcc do with multi
 -arch flags
-
-On older Mac version than 10.5, you also have to change the architecture type
-and the deployment version in src/CMakeList.txt 
+Then, you also have to change the architecture type in src/CMakeList.txt 
+for building the main binary with chosen architecture.

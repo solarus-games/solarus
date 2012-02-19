@@ -5278,15 +5278,16 @@ dialog{
   id = "castle.npc_2",
   skip = "all",
   text = [[
-Quand on pense aux gens
-qui ont construit ce
-château...
-C'est une prouesse
-architecturale pour
-l'époque. Il faut dire
-qu'ils n'avaient pas
-les moyens modernes
-d'aujourd'hui !
+Can you believe all the
+efforts that were put
+in the construction of
+this castle?
+I can only wonder how
+they managed to pull
+off such a wonderful
+piece of architecture
+with the means they had
+at that time...
 ]]
 }
 -----------------------
@@ -5295,11 +5296,12 @@ dialog{
   id = "castle.where_is_tom",
   skip = "all",
   text = [[
-Tom, un de nos
-meilleurs soldats, a
-mystérieusement disparu
-alors qu'il était parti
-explorer une caverne.
+Tom, one of our best
+soldiers, has
+mysteriously
+disappeared while he
+was gone exploring a
+cave.
 ]]
 }
 -----------------------
@@ -5308,8 +5310,8 @@ dialog{
   id = "castle.npc_3",
   skip = "all",
   text = [[
-Quel luxe ! C'est une
-magnifique demeure !
+How shiny! It's a
+wonderful home!
 ]]
 }
 -----------------------
@@ -5318,10 +5320,10 @@ dialog{
   id = "castle.prison",
   skip = "all",
   text = [[
-C'est dans ces sombres
-cachots qu'étaient
-autrefois enfermés les
-prisonniers du Roi.
+Prisoners of the King
+were held captive
+inside these dark
+cells.
 ]]
 }
 -----------------------
@@ -5330,11 +5332,10 @@ dialog{
   id = "castle.cannon",
   skip = "all",
   text = [[
-Quel splendide canon !
-A l'époque où le Roi
-l'utilisait, il valait
-mieux ne pas faire
-partie de ses ennemis !
+What a magnificent
+barrel!
+You had better not be
+an enemy of the King!
 ]]
 }
 -----------------------
@@ -5343,21 +5344,21 @@ dialog{
   id = "inferno.first_time",
   next = "inferno.find_fire_stones",
   text = [[
-Qui ose pénétrer sur
-mes terres ? Petit !
-Sache qu'il est très
-grave de déranger le
-grand Inferno, Seigneur
-des Flammes !
-Ton sacrilège ne
-restera pas impuni !
-Pour te racheter, je te
-mets au défi de partir
-à la recherche des
-trois Pierres de Feu
-que j'ai cachées dans
-mes labyrinthes
-lugubres.
+Who dares walk on my
+lands? Child!
+Don't you know how
+foolish it is to
+disturb the great
+Inferno, Lord of
+Flames?!
+You will be punished
+for such behaviour!
+Shall you wish to
+redeem yourself, try
+and find the three
+Fire Stones I hid
+inside my gloomy
+mazes.
 ]]
 }
 -----------------------
@@ -5366,18 +5367,18 @@ dialog{
   id = "inferno.find_fire_stones",
   skip = "current",
   text = [[
-Tu subiras trois
-épreuves de courage.
+You will endure three
+courage ordeals.
 
-Rivière.
-$0Montagne.
+River.
+$0Mountain.
 $0Beaumont.
-Si tu parviens à sortir
-des trois labyrinthes,
-apporte-moi les trois
-Pierres de Feu.
-Ainsi, la rancoeur
-d'Inferno s'apaisera.
+Overcome the challenges
+that await you, bring
+back the three Fire
+Stones, and only then
+shall Inferno's rage
+be calmed.
 ]]
 }
 -----------------------
@@ -5386,15 +5387,17 @@ dialog{
   id = "inferno.found_fire_stones",
   question = true,
   text = [[
-Tu as franchi les trois
-épreuves avec succès !
-Je m'incline devant ta
-bravoure. Demande-moi
-ce que tu tu veux et
-j'accompirai ton désir.
-Que puis-je faire ?
-Les pierres noires...
-100 Rubis ?
+You made it through the
+three ordeals with
+success!
+Your bravery is truly
+unique, I must bow down
+before it.
+I will grant you
+anything you wish.
+What do you want?
+The black stones...
+100 Rupees?
 ]]
 }
 -----------------------
@@ -5402,7 +5405,7 @@ Les pierres noires...
 dialog{
   id = "inferno.want_rupees",
   text = [[
-Soit.
+So be it.
 ]]
 }
 -----------------------
@@ -5410,8 +5413,8 @@ Soit.
 dialog{
   id = "inferno.want_rupees_again",
   text = [[
-Tu as déjà bénéficié de
-cette faveur.
+I already gave you
+this prize.
 ]]
 }
 -----------------------
@@ -5419,15 +5422,14 @@ cette faveur.
 dialog{
   id = "inferno.want_black_stones",
   text = [[
-Avant de soulever ces
-pierres noires, tu
-devras affronter les
-périls d'un lieu
-infernal et vaincre de
-nombreux dangers.
-Laisse-moi te
-transporter vers
-l'enfer des flammes...
+Before you can lift
+these black stones,
+you will have to
+survive in an infernal
+land, and overcome
+many dangers.
+Let me bring you to
+the hell of flames...
 ]]
 }
 -----------------------
@@ -5435,12 +5437,12 @@ l'enfer des flammes...
 dialog{
   id = "potion_shop.witch",
   text = [[
-Bienvenue à la Boutique
-de Potions !
-Héhéhé...
-Rouge donne vie, vert
-donne magie, bleu donne
-vie et magie !
+Welcome to the Potion
+Shop!
+Hehehe...
+Red gives life, green
+gives magic, blue gives
+both life and magic!
 ]]
 }
 -----------------------
@@ -5448,15 +5450,15 @@ vie et magie !
 dialog{
   id = "potion_shop.witch_bottle_offered",
   text = [[
-Bienvenue à la Boutique
-de Potions !
-Héhéhé...
-Un Flacon Magique est
-offert à chaque nouveau
-client ! Héhéhé...
-Rouge donne vie, vert
-donne magie, bleu donne
-vie et magie !
+Welcome to the Potion
+Shop!
+Hehehe...
+A Magic Flask is
+given for free to every
+new client! Hehehe...
+Red gives life, green
+gives magic, blue gives
+both life and magic!
 ]]
 }
 -----------------------

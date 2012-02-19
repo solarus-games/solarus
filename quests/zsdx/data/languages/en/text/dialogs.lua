@@ -5191,8 +5191,8 @@ reduced price.
 dialog{
   id = "junk_shop.piece_of_heart",
   text = [[
-An authentic Heart
-Fragment.
+An authentic Piece of
+Heart.
 ]]
 }
 -----------------------
@@ -5217,11 +5217,6 @@ a historical monument.
 Please refrain from
 disturbing the
 surroundings.
-Bienvenue dans l'ancien
-château royal, classé
-monument historique.
-Merci de respecter les
-lieux.
 ]]
 }
 -----------------------
@@ -5230,11 +5225,11 @@ dialog{
   id = "castle.forbidden_stairs",
   skip = "all",
   text = [[
-Ces escaliers mènent à
-l'étage supérieur et à
-la terrasse.
-Cependant, l'accès est
-interdit au public.
+This stairs lead to the
+upper level and to the
+balcony.
+Access is forbidden to
+the public though.
 ]]
 }
 -----------------------
@@ -5243,10 +5238,9 @@ dialog{
   id = "castle.forbidden_door",
   skip = "all",
   text = [[
-Je regrette Monsieur,
-mais le passage vers
-les cachots n'est pas
-autorisé au public.
+I am sorry sir, but you
+are not allowed access
+to the dungeon cells.
 ]]
 }
 -----------------------
@@ -5257,9 +5251,9 @@ dialog{
 ........$0....?!$#!@&=!??
 .....$0..................
 
-Comment es-tu arrivé
-ici ? L'accès aux
-cachots est interdit !
+How did you get here?
+You are walking on
+a forbidden area!
 ]]
 }
 -----------------------
@@ -5268,12 +5262,14 @@ dialog{
   id = "castle.npc_1",
   skip = "all",
   text = [[
-Jadis, ce château
-appartenait à la
-famille royale.
-Aujourd'hui, c'est un
-lieu très prisé par
-les touristes !
+This castle once
+belonged to the Royal
+family.
+Nowadays, tourists
+from all around Hyrule
+make the trip to
+witness the beauty of
+the place!
 ]]
 }
 -----------------------

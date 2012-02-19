@@ -6135,23 +6135,22 @@ the spades with spades.
 dialog{
   id = "dungeon_8.billy",
   text = [[
-Tu ne pensais peut-être
-pas retrouver ici ton
-vieil ami Billy le
-Téméraire, le plus
-grand héros de tous les
-temps !
-La princesse et les
-huit enfants ne sont
-plus ici.
-Ils avaient en effet
-trouvé refuge dans mon
-palais, et je me suis
-moi-même chargé de les
-livrer à Agahnim...
+You did not think you
+would find your old
+buddy Billy the
+Reckless, greatest
+hero of all times?!
+The princess and the
+eight childs are not
+here anymore.
+They did find shelter
+in my palace, but I
+took the responsability
+of handing them to
+Agahnim...
 
-Maintenant, c'est à ton
-tour de périr !
+Now, it is your turn
+to die!
 ]]
 }
 -----------------------
@@ -6159,21 +6158,20 @@ tour de périr !
 dialog{
   id = "dungeon_8.agahnim",
   text = [[
-$1Ce Billy était vraiment
-un incompétent. Puisque
-ni lui, ni mes autres
-serviteurs ne viennent
-à bout de vous, jeune
-parasite, je vais moi-
-même m'occuper de votre
-cas. Vous allez
-disparaître une bonne
-fois pour toutes. Après
-cela, je pourrai enfin
-m'emparer de la
-Triforce et étendre mon
-pouvoir au monde
-entier. Ah ah ah ah !
+$1That Billy was really
+incapable of anything.
+Seeing as how he, along
+with all my other
+minions, could not end
+you, little parasite, I
+am making it a private
+matter. You will
+disappear once and for
+all. And then, finally,
+I will get my hands on
+the Triforce and extend
+my power to the whole
+world. Ah ah ah ah!
 ]]
 }
 -----------------------
@@ -6181,11 +6179,10 @@ entier. Ah ah ah ah !
 dialog{
   id = "dungeon_8.agahnim_middle",
   text = [[
-$1$0...$0.............$0 Vous
-êtes plutôt coriace, je
-dois vous l'accorder.
-Mais que dites-vous de
-cela ?
+$1$0...$0.............$0 You
+are rather tough, that
+is no lie.
+But what about this?
 ]]
 }
 -----------------------
@@ -6194,21 +6191,18 @@ dialog{
   id = "dungeon_8.agahnim_end",
   text = [[
 $1$0...$0 .........$0
-Je suis vaincu...$0
-C'est la fin...$0
-Je n'ai pas été à la
-hauteur...
+I am defeated...$0
+This is the end...$0
+I was not up to it...
 
-Je m'incline devant
-votre bravoure.$0
+I bow down before your
+bravery.$0
 
-Mais puisque je n'ai
-pas été capable d'en
-finir avec vous, il est
-désormais temps pour
-moi de libérer mon
-Maître...
-Ah ah ah ah ah ah !!!
+Since I was not able
+to defeat you, it is
+now time for me to free
+my Master...
+Ah ah ah ah ah ah!!!
 ]]
 }
 -----------------------
@@ -6216,26 +6210,26 @@ Ah ah ah ah ah ah !!!
 dialog{
   id = "dungeon_8.ganon",
   text = [[
-$1Ainsi vous êtes parvenu
-à défaire à nouveau mon
-alter-ego, le sombre
-sorcier Agahnim... Cela
-n'aura servi à rien
-d'autre que de le
-contraindre à me
-libérer. Pour vous
-remercier, je vous
-invite, vous ainsi que
-la Princesse et les
-huit enfants, à me
-rejoindre dans mon
-palais. Je récupèrerai
-ainsi la Triforce, et
-vous serez au premières
-loges pour admirer cet
-évènement.
-Laissez-vous donc
-transporter l'esprit...
+$1Thus, you have
+managed to defeat my
+alter ego, the dark
+sorcerer Agahnim...
+That was pretty useless
+considering it made him
+free me, the dark times
+are not over! As a
+reward for your work,
+you, the Princess as
+well as the eight
+children, are invited
+to join me in my
+palace. I will take
+the Triforce back and
+you shall be the first
+to witness this amazing
+event.
+Let your spirit travel
+freely...
 ]]
 }
 -----------------------
@@ -6290,10 +6284,9 @@ dialog{
   id = "dungeon_9.5f_childs_hint",
   skip = "all",
   text = [[
-$1Pour pouvoir vaincre
-Ganon, les braseros
-doivent être allumés
-dans le sens du temps.
+$1To defeat Ganon,
+the torches must be
+lit clockwise.
 ]]
 }
 -----------------------
@@ -6301,15 +6294,15 @@ dans le sens du temps.
 dialog{
   id = "dungeon_9.boss",
   text = [[
-Vous voilà enfin, jeune
-gringalet.
+There you are, young
+weakling.
 
-Cela faisait longtemps
-que j'attendais votre
-venue.
-L'heure de notre
-revanche a sonné !
-Préparez-vous à périr.
+I have been waiting
+for you for a long
+time now.
+The time for revenge
+has finally come!
+Prepare to die.
 ]]
 }
 -----------------------
@@ -6317,21 +6310,18 @@ Préparez-vous à périr.
 dialog{
   id = "dungeon_9.zelda",
   text = [[
-$1$v... Merci.
-Avec cette nouvelle
-victoire sur le mal, tu
-montres une fois encore
-que la sagesse et la
-justice finissent
-toujours par triompher
-sur les forces du
-Malin. Grâce à ce que
-tu as accompli, tu
-permets à notre monde
-de retrouver son
-apparence normale.
-Le Royaume d'Hyrule est
-désormais restauré.
+$1$v... Thank you.
+Your victory on evil
+shows once again that
+wisdom and justice
+always triumph over
+the forces of Evil.
+Thanks to your
+accomplishments, our
+world has been restored
+to its original state.
+The Kingdom of Hyrule
+is whole once again.
 ]]
 }
 -----------------------
@@ -6339,30 +6329,27 @@ désormais restauré.
 dialog{
   id = "dungeon_9.zelda_children",
   text = [[
-$1Je dois aujourd'hui
-détruire ce pendentif.
-Le pouvoir du Solarus
-est trop dangereux. En
-le détruisant, il n'y
-aura plus aucun moyen
-de reconstituer les
-fragments de la
-Triforce, que ce soit
-pour faire le bien,
-comme tu le fis jadis,
-ou pour faire régner la
-terreur, comme
-voulurent le faire
-Agahnim puis Ganondorf.
-Le pendentif pourrait
-permettre, à l'aide du
-pouvoir des huit êtres
-engendrés par l'Essence
-du Solarus, d'annuler
-le Sceau créé.
-C'est pourquoi il est
-nécessaire de le
-détruire.
+$1I must destroy this
+relic. The power of
+Solarus is too
+dangerous. By
+destroying it, there
+will be no way to
+restore the Triforce
+from its fragments.
+Even if it is for a
+good purpose as you
+once used it, the evil
+will always try to
+reach for it, like
+Agahnim and Ganondorf.
+With the power of the
+eight beings created
+by the Solarus Essence,
+the relic could break
+the Seal.
+Now you understand why
+I must destroy it.
 ]]
 }
 -----------------------
@@ -6370,11 +6357,13 @@ détruire.
 dialog{
   id = "dungeon_9.zelda_end",
   text = [[
-$1C'est terminé.$0
-Le pouvoir du Solarus
-s'est éteint à jamais.
-La Triforce est scellée
-pour l'éternité.
+$1It is over.$0
+The power of the
+Solarus has vanished
+forever.
+The Triforce will
+remain sealed until
+time ends.
 ]]
 }
 -----------------------

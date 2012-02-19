@@ -30,7 +30,7 @@ static void print_help(int argc, char** argv);
  *
  * Usage: solarus [options] [quest_path]
  *
- * The quest path is the name of directory that contains either the data
+ * The quest path is the name of a directory that contains either the data
  * directory or the data archive (data.solarus).
  * If the quest path is not set, the current directory is used.
  *
@@ -74,7 +74,7 @@ static void print_help(int argc, char **argv) {
   const std::string& binary_name = (argc > 0) ? argv[0] : "solarus";
   std::cout << "Usage: " << binary_name << " [options] [quest_path]"
     << std::endl << std::endl
-    << "The quest path is the name of directory that contains either the data"
+    << "The quest path is the name of a directory that contains either the data"
     << std::endl
     << "directory or the data archive (data.solarus) of the game to run."
     << std::endl

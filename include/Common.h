@@ -23,6 +23,12 @@
 #ifndef SOLARUS_COMMON_H
 #define SOLARUS_COMMON_H
 
+#ifndef DEFAULT_QUEST
+// if no default quest was specified at compilation time,
+// use the current directory
+#define DEFAULT_QUEST "."
+#endif
+
 #include "Types.h"
 
 #endif

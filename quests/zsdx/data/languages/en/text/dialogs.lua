@@ -603,14 +603,14 @@ strange aspect...
 }
 --------------------
 
--- Lingots d'or / Golden bars
+-- Lingots d'or / Gold bars
 dialog{
   id = "_item_description.level_4_way.2",
   icon = 23,
   skip = "all",
   text = [[
 These are 3
-authentic golden
+authentic gold
 bars!
 ]]
 }
@@ -4810,7 +4810,7 @@ dialog{
   question = true,
   text = [[
 What will you give me?
-Golden bars
+Gold bars
 An apple pie
 ]]
 }
@@ -4855,7 +4855,7 @@ from fair...
 dialog{
   id = "billy_cave.give_golden_bars",
   text = [[
-What? You have golden
+What? You have gold
 bars?$1...
 $0...$0....................
 $3Deal!
@@ -5506,10 +5506,10 @@ magic! Hehehe...
 dialog{
   id = "potion_shop.give_bottle",
   text = [[
-Et en tant que nouveau
-client, tu as droit à
-ce Flacon Magique
-gratuit. Héhéhé...
+As a new customer, you
+get to walk away with
+a Magic Flask for free.
+Hehehe...
 ]]
 }
 -----------------------
@@ -5518,9 +5518,10 @@ dialog{
   id = "outside_world.vine_start",
   skip = "all",
   text = [[
-La terre semble très
-fertile ici, mais elle
-manque d'humidité...
+The land seems very
+fertile around here,
+but it lacks
+humidity...
 ]]
 }
 -----------------------
@@ -5540,9 +5541,9 @@ dialog{
   id = "bone_key_cave.hint",
   skip = "all",
   text = [[
-C'est en repoussant la
-lumière que viendra
-la lumière.
+Only by repelling light
+will then shine light
+anew.
 ]]
 }
 -----------------------
@@ -5569,33 +5570,31 @@ Key...
 dialog{
   id = "dungeon_2.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda pour
-veiller sur la
-Triforce. L'amulette du
-Solarus, un pendentif
-porté par la Princesse
-Zelda, est le seul
-moyen de reconstituer 
-la Triforce, dont nous
-avons dissimulé les
-huit fragments dans
-tout le royaume.
-Nous sommes ici pour
-veiller sur les huit
-fragments, alors que
-Zelda veille sur
-l'Amulette du Solarus.
-Il ne faut pas qu'elle
-tombe en de mauvaises
-mains. Mais nous avons
-foi en ton courage.
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+$2$v... Thank you.
+You saved my life.
+I am one of the eight
+protectors called forth
+by Princess Zelda to
+watch over the Triforce.
+Using the power of the
+Solarus amulet, a relic
+worn by Princess Zelda,
+is the only way to
+restore the Triforce.
+We have shattered it
+into eight pieces
+hidden across the
+kingdom. We are here
+to guard the eight
+fragments, as Zelda
+watches over the
+Solarus Amulet.
+It must not fall into
+the wrong hands. We
+trust your courage.
+May the hero bring
+peace and prosperity
+to the Kingdom!
 ]]
 }
 -----------------------
@@ -5641,24 +5640,26 @@ never succeed...
 dialog{
   id = "dungeon_3.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Grâce à toi, cette
-horrible créature ne
-sévira plus jamais.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda.
-La Triforce est
-toujours en danger tant
-que l'un de mes frères
-est encore prisonnier.
-Tu es proche du but.
-Sauve-le et restaure la
-la paix sur le royaume.
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+$2$v... Thank you.
+You saved my life.
+Thanks to you, this
+horrible creature will
+not never trouble the
+Kingdom again.
+I am one of the eight
+protectors called forth
+by Princess Zelda.
+The Triforce is still
+in danger as long as
+one of my brothers is
+held captive.
+The end of your journey
+is near.
+Save him and return
+peace to these lands.
+May the hero bring
+peace and prosperity
+to the Kingdom!
 ]]
 }
 -----------------------
@@ -5676,9 +5677,9 @@ dialog{
 dialog{
   id = "dungeon_4.hint_use_map",
   text = [[
-Lorsque les issues
-ne se dévoilent pas,
-sers-toi de ton plan.
+When the exits do not
+appear upon you, use
+the map.
 ]]
 }
 -----------------------
@@ -5686,9 +5687,9 @@ sers-toi de ton plan.
 dialog{
   id = "dungeon_4.hint_chests",
   text = [[
-Le croisement des
-quatre coffres indique
-le chemin.
+The way is shown by
+the crossing of four
+chests.
 ]]
 }
 -----------------------
@@ -5707,21 +5708,21 @@ You need to leave!
 dialog{
   id = "dungeon_4.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda.
-Tu as fait preuve d'un
-courage remarquable.
-Grâce à toi, nous
-sommes désormais au
-complet et la Triforce
-est en sécurité.
+$2$v... Thank you.
+You saved my life.
+I am one of the eight
+protectors called forth
+by Princess Zelda.
+You have demonstrated
+a remarkable courage.
+Thanks to you, we are
+now all together again,
+and the Triforce is
+safe.
 
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+May the hero bring
+peace and prosperity
+to the Kingdom!
 ]]
 }
 -----------------------
@@ -5730,54 +5731,51 @@ dialog{
   id = "dungeon_4.agahnim",
   text = [[
 $1A G A H N I M !
-$3Et oui, lui-même !
+$3Yes, himself!
 
-Le sorcier revenu de
-l'empire des morts !
-Ah ah ah ah ah ah !!!
-Ainsi donc vous avez
-réussi à retrouver les
-quatre gamins.
-Mais cet enfant ne se
-doute pas de ce qui
-l'attend dehors en
-disant que la Triforce
-est en sécurité...
-Ah ah ah ah ah ah !!!
-Sachez, jeune homme,
-que je ne suis pas
-revenu ici pour libérer
-cet infâme Ganon, lui
-qui a un jour osé
-affirmer que je n'étais
-que son alter-ego...
-Je préfère laisser ce
-sombre bandit enfermé
-dans son Monde des
-Ténèbres ! Ainsi je
-garderai la Triforce
-pour moi et je règnerai
-en seul maître...
-Ah ah ah ah ah !
-En sortant d'ici, vous
-constaterez très vite
-que le royaume est déjà
-sous mon contrôle...
-Ah ah ah ah ah ah ah !
+The sorcerer back from
+the land of the dead!!!
+Ah ah ah ah ah ah!!!
+So you managed to
+gather the four kids?
+This child doesn't have
+a clue of what awaits
+him outside by saying
+that the Triforce is
+safe...
+Ah ah ah ah ah ah!!!
+Acknowledge, young man,
+that I did not come
+back to free the
+despicable Ganon, he
+who once dared call me
+his alter ego...
+I would rather leave
+that filthy culprit
+sealed away in his
+Dark World! Thus I can
+keep the Triforce for
+myself and rule as the
+only master...
+Ah ah ah ah ah!
+Upon leaving this room,
+you will witness my
+control over this
+kingdom...
+Ah ah ah ah ah ah ah!
 
-Quant à vous, jeune
-aventurier
-présomptueux, l'heure
-de notre affrontement
-n'est pas encore venue.
-Pour l'instant, je
-rentre au château !
-Ah ah ah ah ah ! Mais
-nous nous reverrons, et
-mes pouvoirs n'auront
-aucune difficulté à
-vous supprimer !
-Ah ah ah ah ah ah !!!
+Now you, young and
+impetuous adventurer,
+and I shall meet again.
+For the time being, I
+am going back to the
+castle!
+Ah ah ah ah ah! We will
+see each other again,
+and with my powers, I
+will put an end to your
+tale!
+Ah ah ah ah ah ah!!!
 ]]
 }
 -----------------------
@@ -5815,7 +5813,6 @@ Don't move!
 dialog{
   id = "dungeon_5.prison_1_locked",
   text = [[
-    - Serrure Fer -
     - Iron Lock -
 None of your keys seem
 to fit...
@@ -5874,12 +5871,13 @@ is activated...
 dialog{
   id = "dungeon_5.agahnim_beginning",
   text = [[
-Ainsi donc vous avez
-réussi à échapper à mes
-gardes et à déjouer les
-pièges de mon château.
-Mais votre escapade
-s'arrête là !
+You were able to pass
+through the security of
+my guards and avoid the
+traps laid in the
+castle.
+I don't care, your
+flight ends here!
 ]]
 }
 -----------------------
@@ -5888,23 +5886,23 @@ dialog{
   id = "dungeon_5.agahnim_end",
   text = [[
 ...$0...........$0
-Vous m'avez vaincu
-cette fois...
-Mais nous nous
-reverrons !
+You defeated me this
+time...
+But we will meet
+again!
 
-Votre petite aventure
-ne change rien...
-Sahasrahla est en mon
-pouvoir et il va me
-révéler où se trouvent
-la Princesse et les
-huit enfants...
-Ah ah ah ah ah !
+Your little journey
+won't change
+anything...
+Sahasrahla is under
+my control and he will
+tell me where the
+Princess and the eight
+children are...
+Ah ah ah ah ah!
 
-Sur ce, je dois vous
-laisser. A une
-prochaine fois !
+I must leave now. See
+you later!
 ]]
 }
 -----------------------
@@ -5949,14 +5947,12 @@ behind you.
 dialog{
   id = "dungeon_6.tom",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Tu as fait beaucoup de
-chemin et traversé de
-nombreuses épreuves
-depuis que nous nous
-sommes rencontrés
-jadis.
+$2$v... Thank you.
+You saved my life.
+You have gone through a
+lengthy journey and
+overcome many ordeals
+since we last met.
 ]]
 }
 -----------------------
@@ -5964,45 +5960,39 @@ jadis.
 dialog{
   id = "dungeon_6.tom_revelation",
   text = [[
-$2J'ai des choses très
-graves à t'avouer...
-La mort de notre roi
-n'était pas
-accidentelle. C'est moi
-qui l'ai empoisonné.
-J'étais sous le
-contrôle d'Agahnim...
-Il m'avait envoûté et
-j'avais perdu toute
-volonté... Je ne
-pouvais rien faire...
-Ce n'est que lorsque le
-sort a été brisé que
-j'ai réalisé ce qui
-s'était passé... J'ai
-alors décidé de
-m'exiler dans la
-caverne où tu m'as
-rencontré. Puis j'ai
-été fait prisonnier en
-tentant de résister
-lorsque Agahnim a
-envahi le château.
-$v... Tu dois
-maintenant te rendre à
-la Montagne des
-Terreurs. C'est là
-qu'Agahnim est parti à
-la recherche de Zelda.
-Tu dois d'abord libérer
-Sahasrahla avant que le
-sorcier parvienne à
-lui faire avouer où se
-trouvent Zelda et les
-huit enfants...
-Prends donc ceci, c'est
-ma modeste contribution
-pour ta quête...
+$2I need to confess
+some serious facts...
+Our king's death was
+not accidental.
+I poisoned him.
+I was under Agahnim's
+control...
+He cast a spell on me
+and I lost my free
+will... There is
+nothing I could do...
+When the spell broke I
+realised what had
+happened... Thus I
+decided to retire to
+the cave where we first
+met. Then I was thrown
+in jail while trying
+to resist when Agahnim
+seized control of the
+castle...
+$v... You must now
+travel to Mount Terror.
+Agahnim went there
+to look for Zelda.
+You must first free
+Sahasrahla before the
+sorcerer manages to
+get the information
+he needs...
+Please take this, my
+little contribution
+to your quest...
 ]]
 }
 -----------------------
@@ -6033,11 +6023,13 @@ dialog{
 
 -- The original dialog was a reference
 -- to Link's Awakening
+
+-- Replaced translation with Link's Awakening text
 dialog{
   id = "dungeon_7.2f_weak_floor_hint",
   text = [[
-Under your feet, a
-secret sleeps.
+In soil sleeps secrets,
+beneath your soles...
 ]]
 }
 -----------------------
@@ -6054,60 +6046,56 @@ fall alone.
 dialog{
   id = "dungeon_7.sahasrahla",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
+$2$v... Thank you.
+You saved my life.
 
-Si seulement j'avais pu
-tenir une minute de
-plus...
-Ces bandits m'ont forcé
-à révéler où se
-trouvent Zelda et les
-enfants du Solarus.
-Tu dois maintenant les
-protéger avant qu'il ne
-leur arrive malheur...
-Ils sont cachés dans un
-palais à l'est des
-montagnes. Les huit
-êtres du Solarus
-doivent échapper à
-Agahnim, sans quoi le
-sorcier pourrait
-déjouer le sceau créé
-par l'Amulette du
-Solarus, le pendentif
-porté par Zelda et qui
-est nécessaire à la
-reconstitution de la
-Triforce.
-Le mystère du Solarus
-est contenu dans ce
-pendentif.
-Le possesseur du
-pendentif a la
-possibilité d'invoquer
-le pouvoir du Solarus
-dans le but de sceller
-un objet, un lieu ou
-même un monde, comme le
-firent les sept sages
-lorsqu'ils scellèrent
-la Terre d'Or. Zelda
-est l'héritière de ce
-pouvoir. Elle l'a
-utilisé pour sceller
-les fragments de la
-Triforce, par le biais
-des huit êtres créés
-par le Solarus.
-Ainsi, tant qu'elle
-seule connaît le secret
-de ce pendentif, elle
-seule maîtrise le sceau
-de la Triforce. C'est
-pourquoi tu dois
-protéger le sceau.
+Had I only been able
+to resist a while
+more...
+Those culprits coaxed
+me into revealing the
+location of Zelda and
+the Solarus children.
+Protect them from all
+danger, before
+something dreadful
+happens...
+They are hiding in a
+palace sitting east
+of the mountains. The
+eight Solarus beings
+must escape from
+Agahnim, else the
+sorcerer could break
+the seal created by
+the Solarus Amulet, the
+relic worn by Zelda,
+necessary to the
+gathering of the
+Triforce shards.
+The mystery of Solarus
+is kept safe inside
+the relic.
+The relic's owner has
+the ability to summon
+the Solarus power to
+seal an object, a
+place or even a world,
+as the seven sages once
+did when they sealed
+away the Golden Land.
+Zelda is the heiress of
+that power. She used it
+to seal the Triforce
+shards, using the eight
+beings created by the
+Solarus.
+Thus, as long as she
+alone knows the secret
+of the relic, she alone
+masters the Triforce's
+seal. This is why you
+must protect the seal.
 ]]
 }
 -----------------------
@@ -6126,9 +6114,10 @@ dialog{
   id = "dungeon_8.hint_1F",
   skip = "current",
   text = [[
-Pour continuer ton
-chemin, jette-toi dans
-les abysses du donjon.
+Throw yourself into
+the depths of the
+dungeon and carry on
+your journey.
 ]]
 }
 -----------------------
@@ -6137,9 +6126,8 @@ dialog{
   id = "dungeon_8.hint_B1",
   skip = "current",
   text = [[
-Si tu es bloqué,
-combats les pointes par
-les pointes.
+If you are stuck, fight
+the spades with spades.
 ]]
 }
 -----------------------

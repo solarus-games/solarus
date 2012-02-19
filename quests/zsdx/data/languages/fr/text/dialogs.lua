@@ -5410,7 +5410,7 @@ Tu as franchi les trois
 épreuves avec succès !
 Je m'incline devant ta
 bravoure. Demande-moi
-ce que tu tu veux et
+ce que tu veux et
 j'accompirai ton désir.
 Que puis-je faire ?
 Les pierres noires...

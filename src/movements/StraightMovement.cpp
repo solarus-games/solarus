@@ -86,7 +86,7 @@ double StraightMovement::get_y_speed() {
  * @return the speed in pixels per second
  */
 double StraightMovement::get_speed() {
-  return std::hypot(x_speed, y_speed);
+  return std::sqrt(x_speed * x_speed + y_speed * y_speed);
 }
 
 /**

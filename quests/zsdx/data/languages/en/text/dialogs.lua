@@ -6447,7 +6447,7 @@ $1   Special thanks to:$0
 
 19oj19$0           Yohann$0
 MultiSync_XV17$0   Krytzz$0
-HelpTheWretched$0 
+HelpTheWretched$0
 
         Nintendo$0
 

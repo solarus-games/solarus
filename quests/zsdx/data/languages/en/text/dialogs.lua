@@ -2434,8 +2434,7 @@ dialog{
   icon = -1,
   question = true,
   text = [[
-What do you want to
-do?
+What do you want to do?
 Recover your health
 Keep it
 ]]
@@ -2504,9 +2503,8 @@ dialog{
   text = [[
 Your Magic Flask
 holds some Water.
-
-What do you want to
-do?
+What do you
+want to do?
 Pour Water
 Keep it
 ]]
@@ -2519,10 +2517,10 @@ dialog{
   icon = 16,
   question = true,
   text = [[
-Eating an apple will
-restore one heart.
-What do you want to
-do?
+Eating an apple
+will restore one
+heart. What do
+you want to do?
 Eat an apple
 Nothing
 ]]
@@ -2537,9 +2535,8 @@ dialog{
   text = [[
 Chocolate bread
 restores 3 hearts.
-
-What do you want to
-do?
+What do you
+want to do?
 Eat one
 Nothing
 ]]
@@ -2554,8 +2551,8 @@ dialog{
   text = [[
 A Croissant restores
 seven hearts.
-What do you want to
-do?
+What do you
+want to do?
 Eat one
 Nothing
 ]]
@@ -2984,9 +2981,11 @@ keep an eye on what the
 icons say. Don't forget
 thatyou can customize
 the controls in the
-options screen, and that
-you can even play with a
-gamepad!
+options screen, and
+that you can even play
+with a gamepad!
+
+
 Did you get it all?
 Yes
 No, I did not
@@ -3190,11 +3189,10 @@ dialog{
 Welcome to the mystery
 chest game. Pay 20
 Rupees to open one
-of the three chests and
-stand a chance of
-earning more rupee!
-So, do you want to
-play?
+of the three chests
+and stand a chance of
+earning more rupees!
+Do you want to play?
 Yes
 No
 ]]
@@ -3271,17 +3269,15 @@ dialog{
   question = true,
   text = [[
 Welcome to the
-brand-new slot
-machine!
+brand-new slot machine!
 Put in 5 or 20 rupees
 and try your best to
-align three of the same
-same symbol to win
-several times what
-you put in!
+align three of the
+same same symbol to
+win several times
+what you put in!
 
-So, do you want
-to play?
+Do you want to play?
 Yes
 No
 ]]
@@ -3302,8 +3298,7 @@ dialog{
   id = "rupee_house.game_2.choose_bet",
   question = true,
   text = [[
-How much do you want
-to bet?
+How much do you bet?
 5 Rupees
 20 Rupees
 ]]
@@ -3417,6 +3412,7 @@ dialog{
   text = [[
 Tough luck, you didn't
 make any combination.
+
 Want to try again?
 Yes
 No
@@ -3847,6 +3843,8 @@ You can have it for
 only 75 Rupees!
 With your shield alone
 you won't get far.
+
+
 So, interested?
 Yes
 No
@@ -4039,6 +4037,7 @@ I am looking for apples
 to bake a great tart.
 Six apples should do
 it.
+
 Do you want to help?
 Yes
 No
@@ -4232,6 +4231,7 @@ dialog{
   text = [[
 Sahasrahla's memories.
 
+
 Read them?
 Yes
 No
@@ -4309,9 +4309,8 @@ adventurer. I am Tom,
 an ex-guard of our late
 King. I didn't think
 anyone would find me
-here. What are you
-doing in this gloomy
-cavern?
+here. What are you doing
+in this gloomy cavern?
 What? The Triforce is
 danger? $0None of this
 would have happened if
@@ -4319,8 +4318,7 @@ our King were still
 here to protect it...
 You're trying to solve
 the mysteries of this
-cavern?
-This place is
+cavern?  This place is
 overflowing with
 riddles, treasure, and
 danger. You seem very
@@ -4332,8 +4330,8 @@ I wasn't able to
 protect our King.
 Give me a chance to
 make it up!
-Will you accept my
-help?
+
+Do you accept my help?
 Yes
 No
 ]]
@@ -4348,13 +4346,12 @@ dialog{
   next2 = "lyriann_cave.tom.refuse_help",
   text = [[
 Young explorer, accept
-my help. I have
-failed, I wasn't able
-to protect our King.
+my help. I have failed,
+I wasn't able to
+protect our King.
 Give me a chance to
-make it up!
-Will you accept my
-help?
+make it up!  Will you
+accept my help?
 Yes
 No
 ]]
@@ -4401,15 +4398,12 @@ You'll need to attain a
 level of mastery over
 it if you want to find
 all the secrets in this
-cavern...
-Don't forget that the
-Boomerang always comes
-back to you, even if
-you move.
+cavern...  Don't forget
+that the Boomerang
+always comes back to
+you, even if you move.
 
-
-What would you like to
-do?
+What do you want to do?
 Continue
 Return the Boomerang
 ]]
@@ -4882,6 +4876,7 @@ dialog{
   text = [[
 Give me that apple pie!
 
+
 Well?
 OK
 No way
@@ -5037,7 +5032,6 @@ dialog{
   id = "chests_game_cave.play_question",
   question = true,
   text = [[
-
 Do you want to play?
 Yes
 No
@@ -5387,14 +5381,15 @@ dialog{
   id = "inferno.found_fire_stones",
   question = true,
   text = [[
-You made it through the
-three ordeals with
-success!
-Your bravery is truly
-unique, I must bow down
-before it.
+You made it through
+the three ordeals with
+success!  Your bravery
+is truly unique, I must
+bow down before it.
 I will grant you
 anything you wish.
+
+
 What do you want?
 The black stones...
 100 Rupees?

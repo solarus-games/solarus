@@ -368,7 +368,6 @@ void DialogBox::close() {
       previous_issuer_script->event_dialog_finished(previous_dialog_id, last_answer);
     }
   }
-
 }
 
 /**
@@ -465,6 +464,7 @@ void DialogBox::show_all_now() {
       while (!is_full() && char_index >= lines[line_index].size()) {
         char_index = 0;
         line_index++;
+        next_char_date = System::now();
       }
       if (!is_full()) {
         add_character();

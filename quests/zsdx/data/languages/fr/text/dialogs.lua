@@ -6423,7 +6423,7 @@ dialog{
 $1        Crédits$0
 
 
-    Programmation :
+    Programmation :$0
 Christopho$0
 ]]
 }
@@ -6432,14 +6432,14 @@ Christopho$0
 dialog{
   id = "credits_2",
   text = [[
-$1   Maps et énigmes :
+$1   Maps et énigmes :$0
 
 
 Christopho$0
 
 
-Metallizer
-Binbin
+Metallizer$0
+Binbin$0
 Mymy$0
 ]]
 }
@@ -6448,14 +6448,14 @@ Mymy$0
 dialog{
   id = "credits_3",
   text = [[
-$1      Graphismes :     
+$1      Graphismes :$0
 Newlink$0
 
-Neovyse
-@PyroNet
+Neovyse$0
+@PyroNet$0
 Djipi$0
-$1       Musiques :      
-Marine
+$1       Musiques :$0
+Marine$0
 Metallizer$0
 ]]
 }
@@ -6464,14 +6464,14 @@ Metallizer$0
 dialog{
   id = "credits_4",
   text = [[
-$1       Scénario :      
-Guillaume F.
+$1       Scénario :$0
+Guillaume F.$0
 Christopho$0
-$1       Tests :$0      
+$1       Tests :$0
 
 
-Thyb
-Morwenn
+Thyb$0
+Morwenn$0
 BenObiWan$0
 ]]
 }
@@ -6480,13 +6480,13 @@ BenObiWan$0
 dialog{
   id = "credits_6",
   text = [[
-$1     Remerciements     
-       spéciaux :$0      
+$1     Remerciements
+       spéciaux :$0
 
-19oj19
-Yohann
+19oj19$0
+Yohann$0
 HelpTheWretched$0
-krytzz
+krytzz$0
 MultiSync_XV17$0
 
 Nintendo$0

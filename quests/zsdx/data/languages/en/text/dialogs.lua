@@ -1536,7 +1536,7 @@ rocks.
 --------------------
 
 -- Poigne d'Or / Golden Gloves
---#Sounds a bit odd "resist". Too French.
+--#Still sounds odd.
 dialog{
   id = "_treasure.glove.2",
   icon = 33,
@@ -1545,7 +1545,7 @@ You found the Golden
 Gloves!$0
 
 Black rocks won't
-resist them!
+stand a chance!
 ]]
 }
 --------------------
@@ -5142,13 +5142,12 @@ Standard Arrows.
 ]]
 }
 -----------------------
---#Shouldn't start a sentence with "but". "However" sounds too much though
 
 dialog{
   id = "junk_shop.red_rupee",
   text = [[
 A special offer Red
-Rupee. But it's the
+Rupee, but it's the
 floor model.
 ]]
 }
@@ -6012,9 +6011,6 @@ dialog{
 ]]
 }
 -----------------------
-
---#Purposely poetic construction
---#Alternative: "Under your feet lies a secret."
 
 -- The original dialog was a reference
 -- to Link's Awakening

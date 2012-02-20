@@ -95,20 +95,14 @@ target_link_libraries(solarus
 set(CMAKE_CXX_FLAGS "-Wall -Werror ${CMAKE_CXX_FLAGS}")
 
 # compilation flags for Mac OS X (Intel) deployment
-if(DEFINED MACOSX_DEPLOYMENT)
-#  maybe do an export before running cmake instead of the following line if it doesn't work
-  set(ENV{MACOSX_DEPLOYMENT_TARGET} "${MACOSX_DEPLOYMENT}")
+if(NOT $ENV{MACOSX_DEPLOYMENT_TARGET} STREQUAL "")
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "$ENV{MACOSX_DEPLOYMENT_TARGET}" CACHE STRING "Deployment target" FORCE)
+  set(CMAKE_OSX_ARCHITECTURES "i386;x86_64;" CACHE STRING "Compatible i386;x86_64" FORCE)
 
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "${MACOSX_DEPLOYMENT}")
-  set(CMAKE_OSX_ARCHITECTURES "i386;x86_64") 
-
-  if(${MACOSX_DEPLOYMENT} >= 10.5)
-    set(CMAKE_SKIP_BUILD_RPATH FALSE)
-    set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-    set(CMAKE_INSTALL_RPATH "@loader_path/../Frameworks/")
-    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+  if($ENV{MACOSX_DEPLOYMENT_TARGET} STRGREATER "10.4")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" )
   endif()
-endif(DEFINED MACOSX_DEPLOYMENT)
+endif(NOT $ENV{MACOSX_DEPLOYMENT_TARGET} STREQUAL "")
 
 # solarus options
 option(DEBUG_KEYS "Enable the debugging keys." OFF)

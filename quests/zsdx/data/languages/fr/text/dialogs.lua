@@ -6467,12 +6467,12 @@ dialog{
 $1       Scénario :$0
 Guillaume F.$0
 Christopho$0
-$1       Tests :$0
+$1      Traduction
+      anglaise :$0
 
-
-Thyb$0
-Morwenn$0
-BenObiWan$0
+Alex_XelA$0
+Rypervenche$0
+Jeff$0
 ]]
 }
 -----------------------
@@ -6480,20 +6480,23 @@ BenObiWan$0
 dialog{
   id = "credits_6",
   text = [[
+$1        Tests :$0
+
+
+Thyb$0
+Morwenn$0
+BenObiWan$0
 $1     Remerciements
        spéciaux :$0
 
-19oj19$0
-Yohann$0
+19oj19$0           Yohann$0
+MultiSync_XV17$0   Krytzz$0
 HelpTheWretched$0
-krytzz$0
-MultiSync_XV17$0
 
-Nintendo$0
+        Nintendo$0
 
 
 Merci d'avoir joué !$0
-
 
 
 

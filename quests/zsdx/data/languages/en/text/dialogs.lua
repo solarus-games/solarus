@@ -6379,7 +6379,7 @@ dialog{
 $1        Credits$0
 
 
-    Programming:$0
+      Programming:$0
 Christopho$0
 ]]
 }
@@ -6404,13 +6404,13 @@ Mymy$0
 dialog{
   id = "credits_3",
   text = [[
-$1      Graphical assets:$0
+$1   Graphical assets:$0
 Newlink$0
 
 Neovyse$0
 @PyroNet$0
 Djipi$0
-$1       Music:$0
+$1        Music:$0
 Marine$0
 Metallizer$0
 ]]
@@ -6420,15 +6420,15 @@ Metallizer$0
 dialog{
   id = "credits_4",
   text = [[
-$1       Story:$0
+$1        Story:$0
 Guillaume F.$0
 Christopho$0
-$1       Tests:$0      
+$1        English
+     localization :$0
 
-
-Thyb$0
-Morwenn$0
-BenObiWan$0
+Alex_XelA$0
+Rypervenche$0
+Jeff$0
 ]]
 }
 -----------------------
@@ -6436,20 +6436,23 @@ BenObiWan$0
 dialog{
   id = "credits_6",
   text = [[
-$1     Special thanks to:$0      
+$1        Tests:$0
 
 
-19oj19$0
-Yohann$0
-HelpTheWretched$0
-krytzz$0
-MultiSync_XV17$0
+Thyb$0
+Morwenn$0
+BenObiWan$0
+$1   Special thanks to:$0
 
-Nintendo$0
+
+19oj19$0           Yohann$0
+MultiSync_XV17$0   Krytzz$0
+HelpTheWretched$0 
+
+        Nintendo$0
 
 
 Thanks for playing!$0
-
 
 
 

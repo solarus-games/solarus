@@ -468,6 +468,7 @@ void DialogBox::show_all_now() {
       }
       if (!is_full()) {
         add_character();
+        next_char_date = System::now();
       }
     }
   }
@@ -489,7 +490,8 @@ const std::string& DialogBox::get_dialog_id() {
 bool DialogBox::is_full() {
 
   return line_index >= nb_visible_lines - 1
-      && char_index >= lines[nb_visible_lines - 1].size();
+      && char_index >= lines[nb_visible_lines - 1].size()
+      && System::now() >= next_char_date;
 }
 
 /**
@@ -703,3 +705,4 @@ void DialogBox::add_character() {
     }
   }
 }
+

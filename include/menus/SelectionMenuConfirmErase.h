@@ -38,7 +38,7 @@ class SelectionMenuConfirmErase: public SelectionMenuPhase {
     ~SelectionMenuConfirmErase();
 
     // update and display
-    void display(Surface *destination_surface);
+    void display(Surface& dst_surface);
     void notify_event(InputEvent &event);
 };
 

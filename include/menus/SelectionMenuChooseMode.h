@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "menus/SelectionMenuPhase.h"
+#include "lowlevel/Surface.h"
 
 /**
  * @brief Phase of the selection menu where the user chooses the game mode.
@@ -31,8 +32,8 @@ class SelectionMenuChooseMode: public SelectionMenuPhase {
   private:
 
     bool adventure_mode;         /**< the currently selected mode */
-    Surface *mode_img;           /**< image representing the mode choice */
-    Surface *savegame_surface;   /**< an intermediate surface used to draw the selected savegame */
+    Surface mode_img;            /**< image representing the mode choice */
+    Surface savegame_surface;    /**< an intermediate surface used to draw the selected savegame */
 
   public:
 
@@ -43,7 +44,7 @@ class SelectionMenuChooseMode: public SelectionMenuPhase {
     // update and display
     void notify_event(InputEvent &event);
     void update();
-    void display(Surface *screen_surface);
+    void display(Surface& dst_surface);
 };
 
 #endif

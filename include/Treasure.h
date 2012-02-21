@@ -40,7 +40,7 @@ class Treasure {
     int variant;			/**< variant of this content */
     int savegame_variable;		/**< index of the savegame boolean variable corresponding to this treasure,
 					 * or -1 if the treasure state is not saved */
-    Sprite *sprite;			/**< the sprite of the treasure */
+    Sprite* sprite;			/**< the sprite of the treasure */
 
   public:
 
@@ -60,7 +60,7 @@ class Treasure {
     void give_to_player() const;
     bool is_found() const;
 
-    void display(Surface *destination, int x, int y);
+    void display(Surface& dst_surface, int x, int y);
 };
 
 #endif

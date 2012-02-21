@@ -52,7 +52,7 @@ class SelectionMenuChooseName: public SelectionMenuPhase {
 
     // update and display
     void update();
-    void display(Surface *destination_surface);
+    void display(Surface& dst_surface);
     void notify_event(InputEvent &event);
 };
 

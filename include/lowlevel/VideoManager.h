@@ -72,10 +72,10 @@ class VideoManager {
   VideoManager(bool disable_window);
   ~VideoManager();
 
-  void blit(Surface* src_surface, Surface* dst_surface);
-  void blit_stretched(Surface* src_surface, Surface* dst_surface);
-  void blit_scale2x(Surface* src_surface, Surface* dst_surface);
-  void blit_centered(Surface* src_surface, Surface* dst_surface);
+  void blit(Surface& src_surface, Surface& dst_surface);
+  void blit_stretched(Surface& src_surface, Surface& dst_surface);
+  void blit_scale2x(Surface& src_surface, Surface& dst_surface);
+  void blit_centered(Surface& src_surface, Surface& dst_surface);
 
  public:
 
@@ -94,7 +94,7 @@ class VideoManager {
   bool is_fullscreen();
   void switch_fullscreen();
 
-  void display(Surface* src_surface);
+  void display(Surface& src_surface);
 };
 
 #endif

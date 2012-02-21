@@ -53,11 +53,11 @@ class SpriteAnimation {
     void set_map(Map &map);
 
     int get_next_frame(int current_direction, int current_frame) const;
-    void display(Surface *destination, int x, int y,
+    void display(Surface& dst_surface, int x, int y,
 	int current_direction, int current_frame);
 
     int get_nb_directions() const;
-    const SpriteAnimationDirection *get_direction(int direction) const;
+    const SpriteAnimationDirection* get_direction(int direction) const;
     uint32_t get_frame_delay() const;
     bool is_looping() const;
 

@@ -338,7 +338,7 @@ void Game::update_transitions() {
         if (needs_previous_surface) {
           previous_map_surface = new Surface(320, 240);
           current_map->display();
-          current_map->get_visible_surface()->blit(previous_map_surface);
+          current_map->get_visible_surface().display(*previous_map_surface);
         }
 
         // set the next map
@@ -415,35 +415,35 @@ void Game::update_gameover_sequence() {
 
 /**
  * @brief Displays the game.
- * @param screen_surface the surface where the game will be displayed
+ * @param dst_surface the surface where the game will be displayed
  */
-void Game::display(Surface *screen_surface) {
+void Game::display(Surface& dst_surface) {
 
   // display the map
   current_map->display();
   if (transition != NULL) {
     transition->display(current_map->get_visible_surface());
   }
-  current_map->get_visible_surface()->blit(screen_surface);
+  current_map->get_visible_surface().display(dst_surface);
 
   // display the pause screen if any
   if (is_paused()) {
-    pause_menu->display(screen_surface);
+    pause_menu->display(dst_surface);
   }
 
   // display the game over sequence if any
   else if (is_showing_gameover()) {
-    gameover_sequence->display(screen_surface);
+    gameover_sequence->display(dst_surface);
   }
 
   // display the hud
   if (hud_enabled) {
-    hud->display(screen_surface);
+    hud->display(dst_surface);
   }
 
   // display the dialog box if any
   if (is_showing_dialog()) {
-    dialog_box->display(screen_surface);
+    dialog_box->display(dst_surface);
   }
 }
 

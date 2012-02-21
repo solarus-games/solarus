@@ -68,7 +68,7 @@ class Screen {
      *
      * @param screen_surface the surface to draw
      */
-    virtual void display(Surface* screen_surface) = 0;
+    virtual void display(Surface& screen_surface) = 0;
 
     /**
      * @brief Notifies this screen that an event just occurred.

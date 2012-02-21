@@ -390,32 +390,34 @@ void SelectionMenuOptions::notify_event(InputEvent &event) {
 
 /**
  * @brief Displays this selection menu phase.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void SelectionMenuOptions::display(Surface *destination_surface) {
+void SelectionMenuOptions::display(Surface& dst_surface) {
 
   // each option
   for (int i = 0; i < nb_options; i++) {
-    label_texts[i]->display(destination_surface);
-    value_texts[i]->display(destination_surface);
+    label_texts[i]->display(dst_surface);
+    value_texts[i]->display(dst_surface);
   }
 
   // bottom buttons
-  menu->display_bottom_options(destination_surface);
+  menu->display_bottom_options(dst_surface);
 
   // cursor
   if (this->cursor_position == nb_options) {
-    menu->display_savegame_cursor(destination_surface);
+    menu->display_savegame_cursor(dst_surface);
   }
   else {
 
     int y = 80 + 16 * cursor_position;
     if (modifying) {
-      right_arrow_sprite->display(destination_surface, 268, y);
-      left_arrow_sprite->display(destination_surface, 256 - value_texts[cursor_position]->get_width(), y);
+      right_arrow_sprite->display(dst_surface, 268, y);
+      left_arrow_sprite->display(dst_surface,
+          256 - value_texts[cursor_position]->get_width(),
+          y);
     }
     else {
-      right_arrow_sprite->display(destination_surface, 54, y);
+      right_arrow_sprite->display(dst_surface, 54, y);
     }
   }
 }

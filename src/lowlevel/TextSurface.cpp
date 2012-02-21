@@ -409,15 +409,35 @@ void TextSurface::rebuild() {
 /**
  * @brief Displays the text on a surface.
  *
- * This method just blits on the given surface the text surface created
- * when you called set_text().
+ * This method blits the text at the position previously set
+ * (by set_x(), set_y() or set_position()).
  *
- * @param destination the destination surface
+ * @param dst_surface the destination surface
  */
-void TextSurface::display(Surface *destination) {
+void TextSurface::blit_0(Surface& dst_surface) {
 
   if (surface != NULL) {
-    surface->blit(destination, text_position);
+    surface->display(dst_surface, text_position);
   }
 }
 
+/**
+ * @brief Displays the text on a surface.
+ *
+ * This method blits the text at the position previously set
+ * (by set_x(), set_y() or set_position())
+ * plus the parameters x and y.
+ *
+ * @param dst_surface the destination surface
+ * @param x x coordinate of where to display
+ * @param y y coordinate of where to display
+ */
+void TextSurface::blit_xy(Surface& dst_surface, int x, int y) {
+
+  if (surface != NULL) {
+
+    Rectangle dst_position(text_position);
+    dst_position.add_xy(x, y);
+    surface->display(dst_surface, dst_position);
+  }
+}

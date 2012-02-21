@@ -82,7 +82,7 @@ class TitleScreen: public Screen {
     void init_phase_title();
     void exit_phase_title();
     void update_phase_title();
-    void display_phase_title(Surface *destination_surface);
+    void display_phase_title(Surface& dst_surface);
 
     TimeOfDay get_time_of_day();
 
@@ -95,7 +95,7 @@ class TitleScreen: public Screen {
     // update and display
     void notify_event(InputEvent &event);
     void update();
-    void display(Surface *destination_surface);
+    void display(Surface& dst_surface);
 };
 
 #endif

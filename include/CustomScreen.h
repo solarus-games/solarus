@@ -36,7 +36,7 @@ class CustomScreen: public Screen {
     // update and display
     void notify_event(InputEvent& event);
     void update();
-    void display(Surface* destination_surface);
+    void display(Surface& dst_surface);
 
     void start_screen(const std::string& screen_name);
     void start_game(const std::string& savegame_file);

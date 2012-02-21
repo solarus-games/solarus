@@ -154,6 +154,6 @@ void MagicBar::rebuild() {
   // current magic
   Rectangle current_magic_position(46, 24, 0, 8);
   current_magic_position.set_width(2 + current_magic_displayed);
-  img_magic_bar->blit(current_magic_position, surface_drawn);
+  img_magic_bar->display_region(current_magic_position, surface_drawn);
 }
 

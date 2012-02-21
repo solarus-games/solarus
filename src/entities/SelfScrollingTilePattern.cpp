@@ -46,8 +46,9 @@ SelfScrollingTilePattern::~SelfScrollingTilePattern() {
  * @param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
-void SelfScrollingTilePattern::display(Surface* dst_surface, const Rectangle& dst_position,
-    Tileset& tileset, const Rectangle& viewport) {
+void SelfScrollingTilePattern::display(Surface& dst_surface,
+    const Rectangle& dst_position, Tileset& tileset,
+    const Rectangle& viewport) {
 
   Rectangle src = position_in_tileset;
   Rectangle dst = dst_position;
@@ -74,13 +75,13 @@ void SelfScrollingTilePattern::display(Surface* dst_surface, const Rectangle& ds
   offset_y /= 2;
 
   // draw the pattern in four steps
-  Surface* tileset_image = tileset.get_tiles_image();
+  Surface& tileset_image = tileset.get_tiles_image();
 
   src.add_x(offset_x);
   src.add_width(-offset_x);
   src.add_y(offset_y);
   src.add_height(-offset_y);
-  tileset_image->blit(src, dst_surface, dst);
+  tileset_image.display_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -88,7 +89,7 @@ void SelfScrollingTilePattern::display(Surface* dst_surface, const Rectangle& ds
   src.add_height(-offset_y);
   dst.add_x(src.get_width() - offset_x);
   src.set_width(offset_x);
-  tileset_image->blit(src, dst_surface, dst);
+  tileset_image.display_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -96,7 +97,7 @@ void SelfScrollingTilePattern::display(Surface* dst_surface, const Rectangle& ds
   src.add_width(-offset_x);
   dst.add_y(src.get_height() - offset_y);
   src.set_height(offset_y);
-  tileset_image->blit(src, dst_surface, dst);
+  tileset_image.display_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -104,7 +105,7 @@ void SelfScrollingTilePattern::display(Surface* dst_surface, const Rectangle& ds
   src.set_width(offset_x);
   dst.add_y(src.get_height() - offset_y);
   src.set_height(offset_y);
-  tileset_image->blit(src, dst_surface, dst);
+  tileset_image.display_region(src, dst_surface, dst);
 }
 
 /**

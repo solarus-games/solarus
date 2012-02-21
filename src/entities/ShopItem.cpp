@@ -48,25 +48,20 @@ ShopItem::ShopItem(const std::string& name, Layer layer, int x, int y,
   treasure(treasure),
   price(price),
   dialog_id(dialog_id),
+  price_digits(x + 12, y + 21, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP),
+  rupee_icon_sprite("entities/rupee_icon"),
   is_looking_item(false),
   is_asking_question(false) {
 
   std::ostringstream oss;
   oss << price;
-
-  price_digits = new TextSurface(x + 12, y + 21, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
-  price_digits->set_text(oss.str());
-
-  rupee_icon_sprite = new Sprite("entities/rupee_icon");
+  price_digits.set_text(oss.str());
 }
 
 /**
  * @brief Destructor.
  */
 ShopItem::~ShopItem() {
-
-  delete price_digits;
-  delete rupee_icon_sprite;
 }
 
 /**
@@ -251,20 +246,22 @@ void ShopItem::update() {
  */
 void ShopItem::display_on_map() {
 
-  Surface *map_surface = get_map().get_visible_surface();
+  Surface& map_surface = get_map().get_visible_surface();
   int x = get_x();
   int y = get_y();
 
   // display the treasure
-  const Rectangle &camera_position = get_map().get_camera_position();
+  const Rectangle& camera_position = get_map().get_camera_position();
   treasure.display(map_surface,
-      x + 16 - camera_position.get_x(), y + 13 - camera_position.get_y());
+      x + 16 - camera_position.get_x(),
+      y + 13 - camera_position.get_y());
 
   // also display the price
-  price_digits->set_x(x + 12 - camera_position.get_x());
-  price_digits->set_y(y + 21 - camera_position.get_y());
-  price_digits->display(map_surface);
-  rupee_icon_sprite->display(map_surface,
-      x - camera_position.get_x(), y + 22 - camera_position.get_y());
+  price_digits.display(map_surface,
+      x + 12 - camera_position.get_x(),
+      y + 21 - camera_position.get_y());
+  rupee_icon_sprite.display(map_surface,
+      x - camera_position.get_x(),
+      y + 22 - camera_position.get_y());
 }
 

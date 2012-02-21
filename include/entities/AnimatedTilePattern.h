@@ -61,7 +61,7 @@ class AnimatedTilePattern: public TilePattern {
     ~AnimatedTilePattern();
 
     static void update();
-    void display(Surface* destination, const Rectangle& dst_position,
+    void display(Surface& dst_surface, const Rectangle& dst_position,
         Tileset& tileset, const Rectangle& viewport);
     virtual bool is_displayed_at_its_position();
 };

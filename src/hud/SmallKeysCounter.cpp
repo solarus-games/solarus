@@ -93,7 +93,7 @@ void SmallKeysCounter::rebuild() {
   if (counter != NULL) { // the small keys are enabled
 
     // small key icon
-    img_icon->blit(surface_drawn);
+    img_icon->display(surface_drawn);
 
     // current number of small keys
     counter->display(surface_drawn);

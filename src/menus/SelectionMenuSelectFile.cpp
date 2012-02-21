@@ -109,24 +109,24 @@ void SelectionMenuSelectFile::notify_event(InputEvent &event) {
 
 /**
  * @brief Displays this selection menu phase.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void SelectionMenuSelectFile::display(Surface *destination_surface) {
+void SelectionMenuSelectFile::display(Surface& dst_surface) {
 
   // savegames
   for (int i = 0; i < 3; i++) {
-    menu->display_savegame(destination_surface, i);
+    menu->display_savegame(dst_surface, i);
   }
 
   // options
-  menu->display_bottom_options(destination_surface);
+  menu->display_bottom_options(dst_surface);
 
   // cursor
-  menu->display_savegame_cursor(destination_surface);
+  menu->display_savegame_cursor(dst_surface);
 
   // save numbers
   for (int i = 0; i < 3; i++) {
-    menu->display_savegame_number(destination_surface, i);
+    menu->display_savegame_number(dst_surface, i);
   }
 }
 

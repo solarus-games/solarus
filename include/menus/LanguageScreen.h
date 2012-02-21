@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "Screen.h"
+#include "lowlevel/Surface.h"
 
 /**
  * @brief Shows a screen to let the user choose his language.
@@ -32,7 +33,7 @@ class LanguageScreen: public Screen {
   private:
 
     Transition *transition;
-    Surface *intermediate_surface;
+    Surface intermediate_surface;
 
     std::string *language_codes;
     TextSurface **language_texts;
@@ -55,7 +56,7 @@ class LanguageScreen: public Screen {
     // update and display
     void notify_event(InputEvent &event);
     void update();
-    void display(Surface *destination_surface);
+    void display(Surface& dst_surface);
 };
 
 #endif

@@ -51,7 +51,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
     int tunic = equipment.get_ability("tunic");
     Rectangle src_position((tunic - 1) * 16, 96, 16, 16);
     Rectangle dst_position(177, 164);
-    treasures_img.blit(src_position, &quest_items_surface, dst_position);
+    treasures_img.display_region(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.tunic_" << tunic;
     caption_texts[5] = StringResource::get_string(oss.str());
@@ -63,7 +63,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
     int sword = equipment.get_ability("sword");
     Rectangle src_position(80 + sword * 16, 96, 16, 16);
     Rectangle dst_position(211, 164);
-    treasures_img.blit(src_position, &quest_items_surface, dst_position);
+    treasures_img.display_region(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.sword_" << sword;
     caption_texts[6] = StringResource::get_string(oss.str());
@@ -75,7 +75,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
     int shield = equipment.get_ability("shield");
     Rectangle src_position(32 + shield * 16, 96, 16, 16);
     Rectangle dst_position(245, 164);
-    treasures_img.blit(src_position, &quest_items_surface, dst_position);
+    treasures_img.display_region(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.shield_" << shield;
     caption_texts[7] = StringResource::get_string(oss.str());
@@ -88,7 +88,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
     
     Rectangle src_position(rupee_bag * 16, 80, 16, 16);
     Rectangle dst_position(60, 71);
-    treasures_img.blit(src_position, &quest_items_surface, dst_position);
+    treasures_img.display_region(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.rupee_bag_" << rupee_bag;
     caption_texts[0] = StringResource::get_string(oss.str());
@@ -100,7 +100,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   if (bomb_bag != 0) {
     Rectangle src_position(48 + bomb_bag * 16, 80, 16, 16);
     Rectangle dst_position(60, 100);
-    treasures_img.blit(src_position, &quest_items_surface, dst_position);
+    treasures_img.display_region(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.bomb_bag_" << bomb_bag;
     caption_texts[1] = StringResource::get_string(oss.str());
@@ -113,7 +113,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
     
     Rectangle src_position(96 + quiver * 16, 80, 16, 16);
     Rectangle dst_position(60, 130);
-    treasures_img.blit(src_position, &quest_items_surface, dst_position);
+    treasures_img.display_region(src_position, quest_items_surface, dst_position);
 
     oss << "quest_status.caption.quiver_" << quiver;
     caption_texts[2] = StringResource::get_string(oss.str());
@@ -124,7 +124,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   if (equipment.has_item("world_map")) {
     Rectangle src_position(0, 80, 16, 16);
     Rectangle dst_position(60, 164);
-    treasures_img.blit(src_position, &quest_items_surface, dst_position);
+    treasures_img.display_region(src_position, quest_items_surface, dst_position);
 
     caption_texts[3] = StringResource::get_string("quest_status.caption.world_map");
   }
@@ -134,7 +134,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
     int x = 51 * savegame.get_integer(1030);
     Rectangle src_position(x, 0, 51, 50);
     Rectangle dst_position(101, 82);
-    pieces_of_heart_img.blit(src_position, &quest_items_surface, dst_position);
+    pieces_of_heart_img.display_region(src_position, quest_items_surface, dst_position);
 
     caption_texts[4] = StringResource::get_string("quest_status.caption.pieces_of_heart");
   }
@@ -154,7 +154,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
     for (int i = 0; i < 8; i++) {
       if (equipment.is_dungeon_finished(i + 1)) {
         Rectangle src_position(i * 20, 0, 20, 20);
-        dungeons_img.blit(src_position, &quest_items_surface, dst_positions[i]);
+        dungeons_img.display_region(src_position, quest_items_surface, dst_positions[i]);
       }
     }
   }
@@ -289,15 +289,16 @@ void PauseSubmenuQuestStatus::update() {
 
 /**
  * @brief Displays this submenu.
- * @param destination the destination surface
+ * @param dst_surfacethe destination surface
  */
-void PauseSubmenuQuestStatus::display(Surface* destination) {
-  PauseSubmenu::display(destination);
+void PauseSubmenuQuestStatus::display(Surface& dst_surface) {
+
+  PauseSubmenu::display(dst_surface);
 
   // quest items
-  quest_items_surface.blit(destination);
+  quest_items_surface.display(dst_surface);
 
   // cursor
-  cursor_sprite.display(destination, cursor_sprite_position.get_x(), cursor_sprite_position.get_y());
+  cursor_sprite.display(dst_surface, cursor_sprite_position);
 }
 

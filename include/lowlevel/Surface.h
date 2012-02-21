@@ -18,6 +18,7 @@
 #define SOLARUS_SURFACE_H
 
 #include "Common.h"
+#include "Displayable.h"
 #include "lowlevel/Rectangle.h"
 #include <SDL.h>
 
@@ -28,7 +29,7 @@
  * A surface can be drawn or blitted on another surface.
  * This class basically encapsulates a library-dependent surface object.
  */
-class Surface {
+class Surface: public Displayable {
 
   // low-level classes allowed to manipulate directly the internal SDL surface encapsulated
   friend class TextSurface;
@@ -46,15 +47,6 @@ class Surface {
       DIR_LANGUAGE     /**< the language-specific image directory of the data package, for the current language */
     };
 
-  private:
-
-    SDL_Surface* internal_surface;               /**< the SDL_Surface encapsulated */
-    bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
-
-    SDL_Surface* get_internal_surface();
-
-  public:
-
     Surface(int width, int height);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
     Surface(SDL_Surface* internal_surface);
@@ -70,10 +62,22 @@ class Surface {
     void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
-    void blit(Surface* destination);
-    void blit(Surface* destination, const Rectangle& dst_position);
-    void blit(const Rectangle& src_position, Surface* destination);
-    void blit(const Rectangle& src_position, Surface* destination, const Rectangle& dst_position);
+
+    void display_region(const Rectangle& src_position, Surface& dst_surface);
+    void display_region(const Rectangle& src_position, Surface& dst_surface, const Rectangle& dst_position);
+
+  protected:
+
+    // implementation from Displayable
+    void blit_0(Surface& dst_surface);
+    void blit_xy(Surface& dst_surface, int x, int y);
+
+  private:
+
+    SDL_Surface* internal_surface;               /**< the SDL_Surface encapsulated */
+    bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
+
+    SDL_Surface* get_internal_surface();
 };
 
 #endif

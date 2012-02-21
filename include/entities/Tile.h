@@ -45,7 +45,7 @@ class Tile: public MapEntity {
     EntityType get_type();
     void set_map(Map& map);
     void display_on_map();
-    void display(Surface* dst_surface, const Rectangle& viewport);
+    void display(Surface& dst_surface, const Rectangle& viewport);
     TilePattern& get_tile_pattern();
     bool is_animated();
 };

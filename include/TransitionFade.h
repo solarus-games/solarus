@@ -47,7 +47,7 @@ class TransitionFade: public Transition {
     bool is_started();
     bool is_finished();
     void update();
-    void display(Surface *surface);
+    void display(Surface& surface);
 };
 
 #endif

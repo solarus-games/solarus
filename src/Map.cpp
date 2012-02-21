@@ -353,8 +353,8 @@ int Map::get_destination_side() {
  *
  * @return the surface where the map is displayed
  */
-Surface* Map::get_visible_surface() {
-  return visible_surface;
+Surface& Map::get_visible_surface() {
+  return *visible_surface;
 }
 
 /**
@@ -502,8 +502,9 @@ void Map::display_foreground() {
     const Rectangle& camera_position = camera->get_position();
     int x = 320 - hero_position.get_x() + camera_position.get_x();
     int y = 240 - hero_position.get_y() + camera_position.get_y();
-    Rectangle src(x, y, 320, 240);
-    dark_surfaces[hero_direction]->blit(src, visible_surface);
+    Rectangle src_position(x, y, 320, 240);
+    dark_surfaces[hero_direction]->display_region(src_position,
+        *visible_surface);
   }
   // TODO intermediate light levels
 }
@@ -530,7 +531,10 @@ void Map::display_sprite(Sprite &sprite, int x, int y) {
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
   const Rectangle &camera_position = get_camera_position();
-  sprite.display(visible_surface, x - camera_position.get_x(), y - camera_position.get_y());
+  sprite.display(*visible_surface,
+      x - camera_position.get_x(),
+      y - camera_position.get_y()
+  );
 }
 
 /**

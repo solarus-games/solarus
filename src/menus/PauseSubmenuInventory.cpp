@@ -266,12 +266,12 @@ void PauseSubmenuInventory::update() {
 
 /**
  * @brief Displays this submenu.
- * @param destination the destination surface
+ * @param dst_surface the destination surface
  */
-void PauseSubmenuInventory::display(Surface *destination) {
+void PauseSubmenuInventory::display(Surface& dst_surface) {
 
   // display the common part
-  PauseSubmenu::display(destination);
+  PauseSubmenu::display(dst_surface);
 
   // display each inventory item
   Rectangle dst_xy(0, 82);
@@ -289,11 +289,11 @@ void PauseSubmenuInventory::display(Surface *destination) {
       if (equipment.has_item(item_name)) {
 
 	// the player has this item, display the variant he has
-	sprites[k]->display(destination, dst_xy.get_x(), dst_xy.get_y());
+	sprites[k]->display(dst_surface, dst_xy.get_x(), dst_xy.get_y());
 
 	// display the counter (if any)
 	if (counters[k] != NULL) {
-	  counters[k]->display(destination);
+	  counters[k]->display(dst_surface);
 	}
       }
 
@@ -306,12 +306,12 @@ void PauseSubmenuInventory::display(Surface *destination) {
   int x = 64 + 32 * cursor_column;
   int y = 77 + 32 * cursor_row;
 
-  cursor_sprite->display(destination, x, y);
+  cursor_sprite->display(dst_surface, x, y);
 
   // display the item being assigned
   if (item_assigned_movement != NULL) {
-    
-    item_assigned_sprite->display(destination, item_assigned_movement->get_x(), item_assigned_movement->get_y());
+    item_assigned_sprite->display(dst_surface,
+        item_assigned_movement->get_xy());
   }
 }
 

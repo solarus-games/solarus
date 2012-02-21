@@ -117,7 +117,7 @@ void FloorView::rebuild() {
 
       Rectangle src_position(32, src_y, 32, src_height);
 
-      img_floors->blit(src_position, surface_drawn);
+      img_floors->display_region(src_position, surface_drawn);
     }
     else {
       highest_floor = current_floor;
@@ -139,7 +139,7 @@ void FloorView::rebuild() {
     Rectangle src_position(0, src_y, 32, 13);
     Rectangle dst_position(0, dst_y, 0, 0);
 
-    img_floors->blit(src_position, surface_drawn, dst_position);
+    img_floors->display_region(src_position, surface_drawn, dst_position);
   }
 }
 

@@ -685,7 +685,7 @@ void MapEntities::build_non_animated_tiles() {
       Tile& tile = *tiles[layer][i];
       if (!tile.is_animated()) {
         // non-animated tile: optimize its displaying
-        tile.display(non_animated_tiles_surfaces[layer], map_size);
+        tile.display(*non_animated_tiles_surfaces[layer], map_size);
       }
       else {
         // animated tile: mark its region as non-optimizable
@@ -781,7 +781,8 @@ void MapEntities::display() {
 
     // draw the non-animated tiles (with transparent rectangles on the regions of animated tiles
     // since they are already drawn)
-    non_animated_tiles_surfaces[layer]->blit(map.get_camera_position(), map.get_visible_surface());
+    non_animated_tiles_surfaces[layer]->display_region(
+        map.get_camera_position(), map.get_visible_surface());
 
     // draw the first sprites
     list<MapEntity*>::iterator i;

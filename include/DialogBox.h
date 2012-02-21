@@ -88,7 +88,7 @@ class DialogBox {
 
     // update and display
     void update();
-    void display(Surface* destination_surface);
+    void display(Surface& dst_surface);
 
   private:
 

@@ -196,21 +196,24 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
  *
  * The top-left corner of this surface will be blitted on the other's surface top-left corner.
  *
- * @param destination the destination surface
+ * @param dst_surface the destination surface
  */
-void Surface::blit(Surface* destination) {
-  SDL_BlitSurface(internal_surface, NULL, destination->internal_surface, NULL);
+void Surface::blit_0(Surface& dst_surface) {
+
+  SDL_BlitSurface(internal_surface, NULL, dst_surface.internal_surface, NULL);
 }
 
 /**
  * @brief Blits this whole surface on a specified location of another surface.
- * @param dst the destination surface
- * @param dst_position the destination position where the current surface will be blitted on dst
+ * @param dst_surface the destination surface
+ * @param x x coordinate of where to blit on dst_surface
+ * @param x x coordinate of where to blit on dst_surface
  */
-void Surface::blit(Surface* dst, const Rectangle& dst_position) {
+void Surface::blit_xy(Surface& dst_surface, int x, int y) {
 
-  Rectangle dst_position2(dst_position);
-  SDL_BlitSurface(internal_surface, NULL, dst->internal_surface, dst_position2.get_internal_rect());
+  Rectangle dst_position2(x, y);
+  SDL_BlitSurface(internal_surface, NULL, dst_surface.internal_surface,
+      dst_position2.get_internal_rect());
 }
 
 /**
@@ -219,25 +222,28 @@ void Surface::blit(Surface* dst, const Rectangle& dst_position) {
  * The top-left corner of the source subarea will be blitted on the other's surface top-left corner.
  *
  * @param src_position the subrectangle of this surface to pick
- * @param dst the destination surface
+ * @param dst_surface the destination surface
  */
-void Surface::blit(const Rectangle& src_position, Surface* dst) {
+void Surface::display_region(const Rectangle& src_position, Surface& dst_surface) {
 
   Rectangle src_position2(src_position);
-  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(), dst->internal_surface, NULL);
+  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(),
+      dst_surface.internal_surface, NULL);
 }
 
 /**
  * @brief Blits a subarea of this surface on a specified location of another surface.
  * @param src_position the subrectangle of this surface to pick
- * @param dst the destination surface
+ * @param dst_surface the destination surface
  * @param dst_position the destination position where the current surface will be blitted on dst
  */
-void Surface::blit(const Rectangle &src_position, Surface *dst, const Rectangle &dst_position) {
+void Surface::display_region(const Rectangle &src_position, Surface& dst_surface,
+    const Rectangle &dst_position) {
 
   Rectangle src_position2(src_position);
   Rectangle dst_position2(dst_position);
-  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(), dst->internal_surface, dst_position2.get_internal_rect());
+  SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(),
+      dst_surface.internal_surface, dst_position2.get_internal_rect());
 }
 
 /**
@@ -247,7 +253,7 @@ void Surface::blit(const Rectangle &src_position, Surface *dst, const Rectangle 
  *
  * @return the SDL surface encapsulated
  */
-SDL_Surface * Surface::get_internal_surface() {
+SDL_Surface* Surface::get_internal_surface() {
   return internal_surface;
 }
 

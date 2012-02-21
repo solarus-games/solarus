@@ -178,7 +178,8 @@ void HeartsView::rebuild() {
   for (i = 0; i < nb_current_hearts_displayed / 4; i++) {
     heart_position.set_x((i % 10) * 9);
     heart_position.set_y((i / 10) * 9);
-    img_hearts->blit(full_heart_position, surface_drawn, heart_position);
+    img_hearts->display_region(full_heart_position, surface_drawn,
+        heart_position);
   }
 
   // last heart: fraction of heart
@@ -187,7 +188,9 @@ void HeartsView::rebuild() {
 
     heart_position.set_x((i % 10) * 9);
     heart_position.set_y((i / 10) * 9);
-    img_hearts->blit(fraction_heart_positions[remaining_fraction - 1], surface_drawn, heart_position);
+    img_hearts->display_region(
+        fraction_heart_positions[remaining_fraction - 1], surface_drawn,
+        heart_position);
   }
 }
 

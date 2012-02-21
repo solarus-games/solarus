@@ -65,7 +65,7 @@ class PauseMenu {
 
     void key_pressed(GameControls::GameKey key);
     void update();
-    void display(Surface *destination);
+    void display(Surface& dst_surface);
 
     void show_left_submenu();
     void show_right_submenu();

@@ -113,9 +113,10 @@ void RupeesCounter::update() {
 void RupeesCounter::rebuild() {
 
   HudElement::rebuild();
-  
+
   // max rupees (icon)
-  img_rupee_icon->blit(rupee_icon_positions[rupee_bag_displayed - 1], surface_drawn);
+  img_rupee_icon->display_region(
+      rupee_icon_positions[rupee_bag_displayed - 1], surface_drawn);
 
   // current rupees (counter)
   counter->set_maximum(equipment->get_max_money());

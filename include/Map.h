@@ -132,7 +132,7 @@ class Map {
     int get_height8();
 
     // camera
-    Surface* get_visible_surface();
+    Surface& get_visible_surface();
     const Rectangle& get_camera_position();
     void move_camera(int x, int y, int speed);
     void restore_camera();

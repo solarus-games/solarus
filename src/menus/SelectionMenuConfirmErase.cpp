@@ -72,19 +72,19 @@ void SelectionMenuConfirmErase::notify_event(InputEvent &event) {
 
 /**
  * @brief Displays this selection menu phase.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void SelectionMenuConfirmErase::display(Surface *destination_surface) {
+void SelectionMenuConfirmErase::display(Surface& dst_surface) {
 
   // savegame
-  menu->display_savegame(destination_surface, save_number_to_erase);
-  menu->display_savegame_number(destination_surface, save_number_to_erase);
+  menu->display_savegame(dst_surface, save_number_to_erase);
+  menu->display_savegame_number(dst_surface, save_number_to_erase);
 
   // options
-  menu->display_bottom_options(destination_surface);
+  menu->display_bottom_options(dst_surface);
 
   // cursor
-  menu->display_savegame_cursor(destination_surface);
+  menu->display_savegame_cursor(dst_surface);
 }
 
 /**

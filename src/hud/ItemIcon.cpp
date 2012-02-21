@@ -141,7 +141,7 @@ void ItemIcon::rebuild() {
   HudElement::rebuild();
 
   // background image
-  background_img->blit(surface_drawn);
+  background_img->display(surface_drawn);
 
   // item
   if (item_displayed.size() > 0) {

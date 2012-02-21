@@ -54,9 +54,9 @@ PauseSubmenu::~PauseSubmenu() {
  *
  * @param destination the surface to draw
  */
-void PauseSubmenu::display(Surface *destination) {
-  caption_text_1->display(destination);
-  caption_text_2->display(destination);
+void PauseSubmenu::display(Surface& dst_surface) {
+  caption_text_1->display(dst_surface);
+  caption_text_2->display(dst_surface);
 }
 
 /**

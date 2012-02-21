@@ -243,7 +243,7 @@ void Solarus::update() {
 void Solarus::display() {
 
   root_surface->fill_with_color(Color::get_black());
-  current_screen->display(root_surface);
-  VideoManager::get_instance()->display(root_surface);
+  current_screen->display(*root_surface);
+  VideoManager::get_instance()->display(*root_surface);
 }
 

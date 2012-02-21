@@ -108,9 +108,9 @@ void TitleScreen::update() {
 
 /**
  * @brief Displays the title screen.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void TitleScreen::display(Surface *destination_surface) {
+void TitleScreen::display(Surface& dst_surface) {
 
   switch (current_phase) {
 
@@ -120,13 +120,14 @@ void TitleScreen::display(Surface *destination_surface) {
 
   case PHASE_ZS_PRESENTS:
     if (transition_out->is_started()) { // out transition
-      transition_out->display(introduction_message_img);
+      transition_out->display(*introduction_message_img);
     }
-    introduction_message_img->blit(destination_surface, introduction_message_position);
+    introduction_message_img->display(dst_surface,
+        introduction_message_position);
     break;
 
   case PHASE_TITLE:
-    display_phase_title(destination_surface);
+    display_phase_title(dst_surface);
     break;
   }
 }
@@ -310,50 +311,50 @@ void TitleScreen::update_phase_title() {
  * @brief Displays phase 3 of the title screen.
  * @param destination surface the surface to draw
  */
-void TitleScreen::display_phase_title(Surface *destination_surface) {
+void TitleScreen::display_phase_title(Surface& dst_surface) {
 
   // fill with black
   title_surface->fill_with_color(Color::get_black());
 
   // background
-  background_img->blit(title_surface);
+  background_img->display(*title_surface);
 
   // clouds
   Rectangle clouds_dst_position = clouds_position;
-  clouds_img->blit(title_surface, clouds_dst_position);
+  clouds_img->display(*title_surface, clouds_dst_position);
   clouds_dst_position.set_xy(clouds_position.get_x() - 535, clouds_position.get_y());
-  clouds_img->blit(title_surface, clouds_dst_position);
+  clouds_img->display(*title_surface, clouds_dst_position);
   clouds_dst_position.set_xy(clouds_position.get_x(), clouds_position.get_y() - 299);
-  clouds_img->blit(title_surface, clouds_dst_position);
+  clouds_img->display(*title_surface, clouds_dst_position);
   clouds_dst_position.set_xy(clouds_position.get_x() - 535, clouds_position.get_y() - 299);
-  clouds_img->blit(title_surface, clouds_dst_position);
+  clouds_img->display(*title_surface, clouds_dst_position);
 
   // website name and logo
-  website_img->display(title_surface);
-  logo_img->blit(title_surface);
+  website_img->display(*title_surface);
+  logo_img->display(*title_surface);
 
   // logo and other appearing stuff
   if (counter >= 1) {
-    dx_img->blit(title_surface);
+    dx_img->display(*title_surface);
 
     if (counter >= 2) {
-      star_img->blit(title_surface);
+      star_img->display(*title_surface);
 
       if (counter >= 3) {
-	press_space_img->display(title_surface);
+	press_space_img->display(*title_surface);
       }
     }
   }
 
   // transitions
   if (transition_in->is_started()) {
-    transition_in->display(title_surface);
+    transition_in->display(*title_surface);
   }
   else if (transition_out->is_started()) {
-    transition_out->display(title_surface);
+    transition_out->display(*title_surface);
   }
 
-  title_surface->blit(destination_surface);
+  title_surface->display(dst_surface);
 }
 
 /**

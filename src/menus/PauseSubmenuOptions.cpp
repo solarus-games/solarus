@@ -140,9 +140,9 @@ void PauseSubmenuOptions::load_control_texts() {
     const std::string &joypad_text = controls.get_joypad_string(key);
     joypad_control_texts[i]->set_text(joypad_text.substr(0, 9));
 
-    game_key_texts[i]->display(controls_surface);
-    keyboard_control_texts[i]->display(controls_surface);
-    joypad_control_texts[i]->display(controls_surface);
+    game_key_texts[i]->display(*controls_surface);
+    keyboard_control_texts[i]->display(*controls_surface);
+    joypad_control_texts[i]->display(*controls_surface);
   }
 }
 
@@ -267,42 +267,43 @@ void PauseSubmenuOptions::update() {
 
 /**
  * @brief Displays this submenu.
- * @param destination the destination surface
+ * @param dst_surface the destination surface
  */
-void PauseSubmenuOptions::display(Surface *destination) {
-  PauseSubmenu::display(destination);
+void PauseSubmenuOptions::display(Surface& dst_surface) {
+
+  PauseSubmenu::display(dst_surface);
 
   // display the cursor
-  display_cursor(destination);
+  display_cursor(dst_surface);
 
   // display the text
-  video_mode_text->display(destination);
+  video_mode_text->display(dst_surface);
 
-  controls_text->display(destination);
-  keyboard_text->display(destination);
-  joypad_text->display(destination);
+  controls_text->display(dst_surface);
+  keyboard_text->display(dst_surface);
+  joypad_text->display(dst_surface);
 
   Rectangle src_position(0, controls_visible_y, 215, 84);
   static Rectangle dst_position(53, 102);
-  controls_surface->blit(src_position, destination, dst_position);
+  controls_surface->display_region(src_position, dst_surface, dst_position);
 
   // display the arrows
   if (controls_visible_y > 0) {
-    up_arrow_sprite->display(destination, 96, 96);
-    up_arrow_sprite->display(destination, 211, 96);
+    up_arrow_sprite->display(dst_surface, 96, 96);
+    up_arrow_sprite->display(dst_surface, 211, 96);
   }
 
   if (controls_visible_y < 60) {
-    down_arrow_sprite->display(destination, 96, 182);
-    down_arrow_sprite->display(destination, 211, 182);
+    down_arrow_sprite->display(dst_surface, 96, 182);
+    down_arrow_sprite->display(dst_surface, 211, 182);
   }
 }
 
 /**
  * @brief Displays the cursor.
- * @param destination the destination surface
+ * @param dst_surfacethe destination surface
  */
-void PauseSubmenuOptions::display_cursor(Surface *destination) {
-  cursor_sprite->display(destination, cursor_sprite_position.get_x(), cursor_sprite_position.get_y());
+void PauseSubmenuOptions::display_cursor(Surface& dst_surface) {
+  cursor_sprite->display(dst_surface, cursor_sprite_position);
 }
 

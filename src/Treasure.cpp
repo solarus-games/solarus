@@ -61,8 +61,11 @@ Treasure::Treasure(Game& game, const std::string& item_name, int variant, int sa
  * @param other the treasure to copy
  */
 Treasure::Treasure(const Treasure& other):
-  game(other.game), item_name(other.item_name), variant(other.variant),
-  savegame_variable(other.savegame_variable), sprite(NULL) {
+  game(other.game),
+  item_name(other.item_name),
+  variant(other.variant),
+  savegame_variable(other.savegame_variable),
+  sprite(NULL) {
 
 }
 
@@ -200,11 +203,11 @@ void Treasure::give_to_player() const {
 
 /**
  * @brief Displays the treasure.
- * @param destination the surface where to draw
+ * @param dst_surface the surface where to draw
  * @param x the treasure x position on this surface
  * @param y the treasure y position on this surface
  */
-void Treasure::display(Surface *destination, int x, int y) {
+void Treasure::display(Surface& dst_surface, int x, int y) {
 
   if (sprite == NULL) {
     // create the sprite only if needed (many treasures are actually never displayed)
@@ -214,6 +217,6 @@ void Treasure::display(Surface *destination, int x, int y) {
   }
 
   // display the item
-  sprite->display(destination, x, y);
+  sprite->display(dst_surface, x, y);
 }
 

@@ -32,7 +32,7 @@ class SelectionMenuEraseFile: public SelectionMenuPhase {
     ~SelectionMenuEraseFile();
 
     // update and display
-    void display(Surface *destination_surface);
+    void display(Surface& dst_surface);
     void notify_event(InputEvent &event);
 };
 

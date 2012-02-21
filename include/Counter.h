@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/Surface.h"
 
 /**
  * @brief Displays a counter on a surface.
@@ -44,11 +45,11 @@ class Counter {
     bool fill_with_zeros;          /**< indicates to fill the counter with zeros when the number of digits is too low */
     unsigned int maximum;          /**< the counter is shown with a special color when
 				    * this value is reached (0 indicates that there is no maximum) */
-    unsigned int value;
+    unsigned int value;            /**< current value of the counter */
 
-    Surface *surface_drawn;
-    Rectangle destination_position;
-    Surface *img_digits;
+    Surface surface_drawn;         /**< intermediate surface where the counter is drawn */
+    Rectangle dst_position;        /**< destination position when drawing the counter */
+    Surface img_digits;            /**< source surface with digits */
 
     void rebuild_with_value(unsigned int value);
 
@@ -64,8 +65,8 @@ class Counter {
     void increase();
     void decrease();
 
-    void display(Surface *destination);
-    void display(Surface *destination, int x, int y);
+    void display(Surface& dst_surface);
+    void display(Surface& dst_surface, int x, int y);
 };
 
 #endif

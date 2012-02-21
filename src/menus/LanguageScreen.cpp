@@ -19,7 +19,6 @@
 #include "Transition.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Surface.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/IniFile.h"
@@ -30,18 +29,21 @@ const int LanguageScreen::max_visible_languages = 10;
  * @brief Creates a language screen.
  * @param solarus the Solarus object
  */
-LanguageScreen::LanguageScreen(Solarus &solarus):
-  Screen(solarus), transition(NULL), intermediate_surface(NULL), 
-  language_codes(NULL), language_texts(NULL),
-  cursor_position(0), nb_languages(0), finished(false) {
+LanguageScreen::LanguageScreen(Solarus& solarus):
+  Screen(solarus),
+  transition(NULL),
+  intermediate_surface(320, 240),
+  language_codes(NULL),
+  language_texts(NULL),
+  cursor_position(0),
+  nb_languages(0),
+  finished(false) {
 
   if (FileTools::get_language().size() != 0) {
     // a language is already set: skip this screen
     finished = true;
   }
   else {
-    intermediate_surface = new Surface(320, 240);
-
     std::map<std::string, std::string> language_map = FileTools::get_languages();
     nb_languages = language_map.size();
     first_visible_language = 0;
@@ -81,7 +83,6 @@ LanguageScreen::LanguageScreen(Solarus &solarus):
 LanguageScreen::~LanguageScreen() {
 
   delete transition;
-  delete intermediate_surface;
   delete[] language_codes;
   for (int i = 0; i < nb_languages; i++) {
     delete language_texts[i];
@@ -135,11 +136,11 @@ void LanguageScreen::update() {
 
 /**
  * @brief Displays this screen.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void LanguageScreen::display(Surface *destination_surface) {
+void LanguageScreen::display(Surface& dst_surface) {
 
-  intermediate_surface->fill_with_color(Color::get_black());
+  intermediate_surface.fill_with_color(Color::get_black());
 
   for (int i = first_visible_language; i < first_visible_language + nb_visible_languages; i++) {
     language_texts[i]->display(intermediate_surface);
@@ -149,14 +150,14 @@ void LanguageScreen::display(Surface *destination_surface) {
     transition->display(intermediate_surface);
   }
 
-  intermediate_surface->blit(destination_surface);
+  intermediate_surface.display(dst_surface);
 }
 
 /**
  * @brief This function is called by the main loop when there is an input event.
  * @param event the event to handle
  */
-void LanguageScreen::notify_event(InputEvent &event) {
+void LanguageScreen::notify_event(InputEvent& event) {
 
   static const InputEvent::KeyboardKey validation_keys[] = { InputEvent::KEY_SPACE, InputEvent::KEY_RETURN, InputEvent::KEY_NONE };
 

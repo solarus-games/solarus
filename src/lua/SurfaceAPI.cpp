@@ -132,7 +132,7 @@ void Script::push_surface(lua_State* l, Surface& surface) {
  * - Optional argument 2 (boolean, default false): true to load a
  * language-specific image
  *
- * To create a surface from a subrectangle of an existing surface:
+ * To create a surface from a region of an existing surface:
  * - Argument 1 (surface): an existing surface
  * - Argument 2 (integer): x coordinate of the rectangle
  * - Argument 3 (integer): y coordinate of the rectangle
@@ -178,7 +178,7 @@ int Script::surface_api_create(lua_State* l) {
       height = luaL_checkinteger(l, 5);
     }
     surface = new Surface(width, height);
-    other_surface.blit(Rectangle(x, y, width, height), surface);
+    other_surface.display_region(Rectangle(x, y, width, height), *surface);
   }
 
   script.increment_refcount(surface);
@@ -252,7 +252,7 @@ int Script::surface_api_draw(lua_State* l) {
   else if (is_userdata(l, 2, text_surface_module_name)) {
     TextSurface& text_surface = check_text_surface(l, 2);
     text_surface.set_position(x, y);
-    text_surface.display(&destination_surface);
+    text_surface.display(destination_surface);
   }
   else if (is_userdata(l, 2, sprite_module_name)) {
     // TODO
@@ -655,10 +655,10 @@ void Script::display_surface_with_effects(lua_State* l, int index,
     // apply a transition
                                   // ... surface ... effects transition
     Transition* transition = (Transition*) lua_touserdata(l, -1);
-    transition->display(&surface);
+    transition->display(surface);
   }
   lua_pop(l, 2);
 
-  surface.blit(&dst_surface, dst_xy);
+  surface.display(dst_surface, dst_xy);
 }
 

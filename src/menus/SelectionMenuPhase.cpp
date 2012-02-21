@@ -58,9 +58,9 @@ void SelectionMenuPhase::update() {
 
 /**
  * @brief Displays this phase of the selection menu.
- * @param destination_surface surface where this phase has to be drawn
+ * @param dst_surface surface where this phase has to be drawn
  */
-void SelectionMenuPhase::display(Surface *destination_surface) {
+void SelectionMenuPhase::display(Surface& dst_surface) {
   // nothing to do by default (subclasses can redefine this method)
 }
 

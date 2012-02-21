@@ -110,10 +110,11 @@ void AnimatedTilePattern::update() {
  * @param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
-void AnimatedTilePattern::display(Surface* dst_surface, const Rectangle& dst_position,
-    Tileset& tileset, const Rectangle& viewport) {
+void AnimatedTilePattern::display(Surface& dst_surface,
+    const Rectangle& dst_position, Tileset& tileset,
+    const Rectangle& viewport) {
 
-  Surface* tileset_image = tileset.get_tiles_image();
+  Surface& tileset_image = tileset.get_tiles_image();
   const Rectangle& src = position_in_tileset[current_frames[sequence]];
   Rectangle dst(dst_position);
 
@@ -122,7 +123,7 @@ void AnimatedTilePattern::display(Surface* dst_surface, const Rectangle& dst_pos
         viewport.get_y() / ParallaxScrollingTilePattern::ratio);
   }
 
-  tileset_image->blit(src, dst_surface, dst);
+  tileset_image.display_region(src, dst_surface, dst);
 }
 
 /**

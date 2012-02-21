@@ -51,8 +51,8 @@ class SpriteAnimationDirection {
 
     // frames
     int get_nb_frames() const;
-    const Rectangle & get_frame(int frame) const;
-    void display(Surface *destination, int x, int y, int current_frame, Surface *src_image);
+    const Rectangle& get_frame(int frame) const;
+    void display(Surface& dst_surface, int x, int y, int current_frame, Surface& src_image);
 
     // pixel collisions
     void enable_pixel_collisions(Surface *src_image);

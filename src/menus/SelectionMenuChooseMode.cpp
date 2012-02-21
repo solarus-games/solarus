@@ -18,8 +18,6 @@
 #include "menus/SelectionMenu.h"
 #include "Transition.h"
 #include "Savegame.h"
-#include "lowlevel/Surface.h"
-#include "lowlevel/Rectangle.h"
 
 /**
  * @brief Creates a selection phase where the player has to choose the game mode.
@@ -28,10 +26,9 @@
 SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenu *menu):
 //  SelectionMenuPhase(menu, "selection_menu.phase.choose_mode"),
   SelectionMenuPhase(menu, "selection_menu.phase.select_file"),
-  adventure_mode(true) {
-
-  this->mode_img = new Surface("menus/selection_menu_mode.png");
-  this->savegame_surface = new Surface(320, 240);
+  adventure_mode(true),
+  mode_img("menus/selection_menu_mode.png"),
+  savegame_surface(320, 240) {
 
   Transition *transition = Transition::create(Transition::FADE, Transition::OUT);
   transition->start();
@@ -42,8 +39,6 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenu *menu):
  * @brief Destructor.
  */
 SelectionMenuChooseMode::~SelectionMenuChooseMode() {
-  delete mode_img;
-  delete savegame_surface;
 }
 
 /**
@@ -98,9 +93,9 @@ void SelectionMenuChooseMode::update() {
 
 /**
  * @brief Displays this selection menu phase.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void SelectionMenuChooseMode::display(Surface *destination_surface) {
+void SelectionMenuChooseMode::display(Surface& dst_surface) {
 
   // the savegame
   int i = menu->get_cursor_position() - 1;
@@ -112,7 +107,8 @@ void SelectionMenuChooseMode::display(Surface *destination_surface) {
   Rectangle position(57, 75 + i * 27);
 //  Rectangle position = {57, 75};
 
-  savegame_surface->blit(savegame_position, destination_surface, position);
+  savegame_surface.display_region(savegame_position, dst_surface,
+      position);
 
   /*
   // options

@@ -106,13 +106,13 @@ void TransitionFade::update() {
 
 /**
  * @brief Displays the transition effect on a surface.
- * @param surface the destination surface
+ * @param dst_surface the destination surface
  */
-void TransitionFade::display(Surface *surface) {
+void TransitionFade::display(Surface& dst_surface) {
 
   // display the transition effect on the surface
   int alpha_impl = std::min(alpha, 255);
-  surface->set_opacity(alpha_impl);
+  dst_surface.set_opacity(alpha_impl);
 
   // make sure the final displaying was made before finishing
   finished = (alpha == alpha_limit);

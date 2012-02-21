@@ -54,13 +54,14 @@ ParallaxScrollingTilePattern::~ParallaxScrollingTilePattern() {
  * @param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
-void ParallaxScrollingTilePattern::display(Surface* dst_surface, const Rectangle& dst_position,
-    Tileset& tileset, const Rectangle& viewport) {
+void ParallaxScrollingTilePattern::display(Surface& dst_surface,
+    const Rectangle& dst_position, Tileset& tileset,
+    const Rectangle& viewport) {
 
-  Surface* tileset_image = tileset.get_tiles_image();
+  Surface& tileset_image = tileset.get_tiles_image();
   Rectangle dst(dst_position);
   dst.add_xy(viewport.get_x() / ratio, viewport.get_y() / ratio);
-  tileset_image->blit(position_in_tileset, dst_surface, dst);
+  tileset_image.display_region(position_in_tileset, dst_surface, dst);
 
   // one day, we can implement several scrolling layers just by changing the ratio
 }

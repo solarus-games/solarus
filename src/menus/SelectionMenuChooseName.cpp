@@ -132,21 +132,22 @@ void SelectionMenuChooseName::notify_event(InputEvent &event) {
 
 /**
  * @brief Displays the selection menu phase.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void SelectionMenuChooseName::display(Surface *destination_surface) {
+void SelectionMenuChooseName::display(Surface& dst_surface) {
 
   // cursor
-  menu->get_cursor_sprite()->display(destination_surface,
-      51 + 16 * letter_cursor_x, 93 + 18 * letter_cursor_y);
+  menu->get_cursor_sprite()->display(dst_surface,
+      51 + 16 * letter_cursor_x,
+      93 + 18 * letter_cursor_y);
  
   // current name
-  arrow_sprite->display(destination_surface, 57, 76);
-  player_name_text->display(destination_surface);
+  arrow_sprite->display(dst_surface, 57, 76);
+  player_name_text->display(dst_surface);
 
   // letters
   Rectangle position(57, 98);
-  letters_img->blit(destination_surface, position);
+  letters_img->display(dst_surface, position);
 }
 
 /**

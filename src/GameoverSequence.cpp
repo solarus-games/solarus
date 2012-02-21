@@ -33,28 +33,28 @@
  * @param hero_direction direction of the hero sprite before game over
  */
 GameoverSequence::GameoverSequence(Game &game, int hero_direction):
-    game(game), music_id(Music::get_current_music_id()), state(WAITING_START) {
+    game(game),
+    music_id(Music::get_current_music_id()),
+    gameover_menu_img("gameover_menu.png", Surface::DIR_LANGUAGE),
+    hero_dead_sprite(get_tunic_animation()),
+    fade_sprite("hud/gameover_fade"),
+    fairy_sprite("entities/items"),
+    fairy_movement(NULL),
+    state(WAITING_START) {
 
-  gameover_menu_img = new Surface("gameover_menu.png", Surface::DIR_LANGUAGE);
-  fade_sprite = new Sprite("hud/gameover_fade");
-  fade_sprite->stop_animation();
+  fade_sprite.stop_animation();
   red_screen_color = Color(224, 32, 32);
 
-  std::ostringstream oss;
-  oss << "hero/tunic" << game.get_equipment().get_ability("tunic");
-  hero_dead_sprite = new Sprite(oss.str());
-  hero_dead_sprite->set_current_animation("hurt");
-  hero_dead_sprite->set_current_direction(hero_direction);
-  hero_dead_sprite->set_suspended(true);
+  hero_dead_sprite.set_current_animation("hurt");
+  hero_dead_sprite.set_current_direction(hero_direction);
+  hero_dead_sprite.set_suspended(true);
 
   const Rectangle &camera_position = game.get_current_map().get_camera_position();
   const Rectangle &hero_xy = game.get_hero_xy();
   hero_dead_x = hero_xy.get_x() - camera_position.get_x();
   hero_dead_y = hero_xy.get_y() - camera_position.get_y();
 
-  fairy_sprite = new Sprite("entities/items");
-  fairy_sprite->set_current_animation("fairy");
-  fairy_movement = NULL;
+  fairy_sprite.set_current_animation("fairy");
 
   next_state_date = System::now() + 500;
 }
@@ -64,10 +64,6 @@ GameoverSequence::GameoverSequence(Game &game, int hero_direction):
  */
 GameoverSequence::~GameoverSequence() {
 
-  delete gameover_menu_img;
-  delete fade_sprite;
-  delete hero_dead_sprite;
-  delete fairy_sprite;
   delete fairy_movement;
 }
 
@@ -77,43 +73,43 @@ GameoverSequence::~GameoverSequence() {
 void GameoverSequence::update() {
 
   uint32_t now = System::now();
-  hero_dead_sprite->update();
+  hero_dead_sprite.update();
 
   switch (state) {
 
     case WAITING_START:
       if (now >= next_state_date) {
         state = CLOSING_GAME;
-        fade_sprite->restart_animation();
+        fade_sprite.restart_animation();
         Music::play(Music::none);
       }
       break;
 
     case CLOSING_GAME:
-      fade_sprite->update();
+      fade_sprite.update();
 
-      if (fade_sprite->is_animation_finished()) {
+      if (fade_sprite.is_animation_finished()) {
         state = RED_SCREEN;
         Sound::play("hero_dying");
-        hero_dead_sprite->set_suspended(false);
-        hero_dead_sprite->set_current_animation("dying");
-        hero_dead_sprite->set_current_direction(0);
+        hero_dead_sprite.set_suspended(false);
+        hero_dead_sprite.set_current_animation("dying");
+        hero_dead_sprite.set_current_direction(0);
         next_state_date = now + 2000;
       }
       break;
 
     case RED_SCREEN:
-      hero_dead_sprite->update();
+      hero_dead_sprite.update();
 
-      if (hero_dead_sprite->is_last_frame_reached() && now >= next_state_date) {
+      if (hero_dead_sprite.is_last_frame_reached() && now >= next_state_date) {
         state = OPENING_MENU;
-        fade_sprite->set_current_animation("open");
+        fade_sprite.set_current_animation("open");
       }
       break;
 
     case OPENING_MENU:
-      fade_sprite->update();
-      if (fade_sprite->is_animation_finished()) {
+      fade_sprite.update();
+      if (fade_sprite.is_animation_finished()) {
 
         Equipment &equipment = game.get_equipment();
         if (equipment.has_ability("get_back_from_death")) {
@@ -135,7 +131,7 @@ void GameoverSequence::update() {
       break;
 
     case SAVED_BY_FAIRY:
-      fairy_sprite->update();
+      fairy_sprite.update();
       fairy_movement->update();
       fairy_x = fairy_movement->get_x();
       fairy_y = fairy_movement->get_y();
@@ -160,7 +156,7 @@ void GameoverSequence::update() {
       break;
 
     case MENU:
-      fairy_sprite->update();
+      fairy_sprite.update();
       break;
 
   }
@@ -168,34 +164,34 @@ void GameoverSequence::update() {
 
 /**
  * @brief Displays the gameover sequence.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void GameoverSequence::display(Surface *destination_surface) {
+void GameoverSequence::display(Surface& dst_surface) {
 
   if (state > CLOSING_GAME) {
-    destination_surface->fill_with_color(Color::get_black());
+    dst_surface.fill_with_color(Color::get_black());
   }
 
   if (state <= OPENING_MENU) {
 
     if (state == RED_SCREEN) {
-      destination_surface->fill_with_color(red_screen_color);
+      dst_surface.fill_with_color(red_screen_color);
     }
     else {
-      fade_sprite->display(destination_surface, hero_dead_x, hero_dead_y);
+      fade_sprite.display(dst_surface, hero_dead_x, hero_dead_y);
     }
   }
 
   if (state <= WAITING_END) {
-    hero_dead_sprite->display(destination_surface, hero_dead_x, hero_dead_y);
+    hero_dead_sprite.display(dst_surface, hero_dead_x, hero_dead_y);
 
     if (state == SAVED_BY_FAIRY) {
-      fairy_sprite->display(destination_surface, fairy_x, fairy_y);
+      fairy_sprite.display(dst_surface, fairy_x, fairy_y);
     }
   }
   else if (state == MENU) {
-    gameover_menu_img->blit(destination_surface);
-    fairy_sprite->display(destination_surface, fairy_x, fairy_y);
+    gameover_menu_img.display(dst_surface);
+    fairy_sprite.display(dst_surface, fairy_x, fairy_y);
   }
 }
 
@@ -240,7 +236,6 @@ void GameoverSequence::key_pressed(GameControls::GameKey key) {
         case 3: // quit without saving
           game.reset();
           break;
-
       }
     }
   }
@@ -254,3 +249,13 @@ bool GameoverSequence::is_finished() {
   return state == RESUME_GAME;
 }
 
+/**
+ * @brief Returns the animation set id of the hero's tunic sprite.
+ * @return the animation set id of the tunic
+ */
+const std::string GameoverSequence::get_tunic_animation() {
+
+  std::ostringstream oss;
+  oss << "hero/tunic" << game.get_equipment().get_ability("tunic");
+  return oss.str();
+}

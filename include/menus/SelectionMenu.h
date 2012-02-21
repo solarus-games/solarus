@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "Screen.h"
-#include "lowlevel/Rectangle.h"
+#include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
 
 /**
@@ -34,7 +34,7 @@ class SelectionMenu: public Screen {
     // phase
     SelectionMenuPhase *current_phase;                   /**< current phase of the selection menu */
     SelectionMenuPhase *next_phase;                      /**< next phase of the selection menu (NULL if we are not changing the phase) */
-    Surface *surface;                                    /**< surface where the current menu is drawn */
+    Surface surface;                                     /**< surface where the current menu is drawn */
 
     // transitions
     Transition *transition;                              /**< a transition effect currently displayed (or NULL) */
@@ -74,8 +74,8 @@ class SelectionMenu: public Screen {
     void read_savegames();
 
     // displaying elements
-    void display_title_text(Surface *destination_surface);
-    void display_transition(Surface *destination_surface);
+    void display_title_text(Surface& dst_surface);
+    void display_transition(Surface& dst_surface);
 
   public:
 
@@ -85,7 +85,7 @@ class SelectionMenu: public Screen {
 
     // update and display (called by Solarus)
     void update();
-    void display(Surface *screen_surface);
+    void display(Surface& dst_surface);
     void notify_event(InputEvent &event);
 
     // phase
@@ -123,10 +123,10 @@ class SelectionMenu: public Screen {
     void move_cursor_left_or_right();
 
     // displaying elements (subclasses of SelectionMenuPhase may call these functions)
-    void display_savegame(Surface *destination_surface, int save_number);
-    void display_savegame_number(Surface *destination_surface, int save_number);
-    void display_savegame_cursor(Surface *destination_surface);
-    void display_bottom_options(Surface *destination_surface);
+    void display_savegame(Surface& dst_surface, int save_number);
+    void display_savegame_number(Surface& dst_surface, int save_number);
+    void display_savegame_cursor(Surface& dst_surface);
+    void display_bottom_options(Surface& dst_surface);
 };
 
 #endif

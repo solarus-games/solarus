@@ -85,7 +85,8 @@ VideoManager* VideoManager::get_instance() {
  * @brief Constructor.
  */
 VideoManager::VideoManager(bool disable_window):
-  disable_window(disable_window), screen_surface(NULL) {
+  disable_window(disable_window),
+  screen_surface(NULL) {
 
   // initialize the window
   IniFile ini("quest.dat", IniFile::READ);
@@ -288,7 +289,7 @@ void VideoManager::switch_fullscreen() {
  * @brief Blits a surface on the screen with the current video mode.
  * @param src_surface the source surface to display on the screen
  */
-void VideoManager::display(Surface *src_surface) {
+void VideoManager::display(Surface& src_surface) {
 
   if (disable_window) {
     return;
@@ -297,24 +298,24 @@ void VideoManager::display(Surface *src_surface) {
   switch (video_mode) {
 
     case WINDOWED_NORMAL:
-      blit(src_surface, screen_surface);
+      blit(src_surface, *screen_surface);
       break;
 
     case WINDOWED_STRETCHED:
     case FULLSCREEN_NORMAL:
     case FULLSCREEN_WIDE:
-      blit_stretched(src_surface, screen_surface);
+      blit_stretched(src_surface, *screen_surface);
       break;
 
     case WINDOWED_SCALE2X:
     case FULLSCREEN_SCALE2X:
     case FULLSCREEN_SCALE2X_WIDE:
-      blit_scale2x(src_surface, screen_surface);
+      blit_scale2x(src_surface, *screen_surface);
       break;
 
     case FULLSCREEN_CENTERED:
     case FULLSCREEN_CENTERED_WIDE:
-      blit_centered(src_surface, screen_surface);
+      blit_centered(src_surface, *screen_surface);
       break;
 
     default:
@@ -330,8 +331,8 @@ void VideoManager::display(Surface *src_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit(Surface* src_surface, Surface* dst_surface) {
-  src_surface->blit(dst_surface);
+void VideoManager::blit(Surface& src_surface, Surface& dst_surface) {
+  src_surface.display(dst_surface);
 }
 
 /**
@@ -339,8 +340,8 @@ void VideoManager::blit(Surface* src_surface, Surface* dst_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit_centered(Surface* src_surface, Surface* dst_surface) {
-  src_surface->blit(dst_surface, dst_position_centered);
+void VideoManager::blit_centered(Surface& src_surface, Surface& dst_surface) {
+  src_surface.display(dst_surface, dst_position_centered);
 }
 
 /**
@@ -350,10 +351,10 @@ void VideoManager::blit_centered(Surface* src_surface, Surface* dst_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
+void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
 
-  SDL_Surface* src_internal_surface = src_surface->get_internal_surface();
-  SDL_Surface* dst_internal_surface = dst_surface->get_internal_surface();
+  SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
+  SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
   SDL_Surface* surface_to_draw;
 
 #ifndef __APPLE__
@@ -402,10 +403,10 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
+void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
 
-  SDL_Surface* src_internal_surface = src_surface->get_internal_surface();
-  SDL_Surface* dst_internal_surface = dst_surface->get_internal_surface();
+  SDL_Surface* src_internal_surface = src_surface.get_internal_surface();
+  SDL_Surface* dst_internal_surface = dst_surface.get_internal_surface();
   SDL_Surface* surface_to_draw;
 
 #ifndef __APPLE__

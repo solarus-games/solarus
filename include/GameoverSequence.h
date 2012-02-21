@@ -19,7 +19,9 @@
 
 #include "Common.h"
 #include "GameControls.h"
+#include "Sprite.h"
 #include "lowlevel/Color.h"
+#include "lowlevel/Surface.h"
 
 // TODO remove ability get_back_from_death and script the game over sequence
 
@@ -35,20 +37,20 @@ class GameoverSequence {
   private:
 
     // data
-    Game &game;                     /**< the game */
+    Game& game;                     /**< the game */
     MusicId music_id;               /**< the music played before game over */
 
     // graphics
-    Surface *gameover_menu_img;     /**< image of the game over menu */
-    Sprite *hero_dead_sprite;       /**< sprite of the hero dying or dead (different from the real hero which is
+    Surface gameover_menu_img;      /**< image of the game over menu */
+    Sprite hero_dead_sprite;        /**< sprite of the hero dying or dead (different from the real hero which is
 				     * suspended as all map entities) */
     int hero_dead_x;                /**< x position of the hero dead sprite on the screen */
     int hero_dead_y;                /**< y position of the hero dead sprite on the screen */
 
-    Sprite *fade_sprite;            /**< sprite of the fade in / fade out effect */
+    Sprite fade_sprite;             /**< sprite of the fade in / fade out effect */
     Color red_screen_color;         /**< exact color of the red screen */
 
-    Sprite *fairy_sprite;           /**< sprite of the fairy (as rescuing fairy or cursor for the menu) */
+    Sprite fairy_sprite;            /**< sprite of the fairy (as rescuing fairy or cursor for the menu) */
     int fairy_x;                    /**< x position of the fairy on the screen */
     int fairy_y;                    /**< y position of the fairy on the screen */
     TargetMovement *fairy_movement; /**< movement of the fairy */
@@ -72,6 +74,8 @@ class GameoverSequence {
     State state;              /**< current state of the gameover sequence */
     uint32_t next_state_date; /**< date when moving from a state to another one */
 
+    const std::string get_tunic_animation();
+
   public:
 
     // creation and destruction
@@ -83,7 +87,7 @@ class GameoverSequence {
 
     // update and display
     void update();
-    void display(Surface *destination_surface);
+    void display(Surface& dst_surface);
     void key_pressed(GameControls::GameKey key);
 };
 

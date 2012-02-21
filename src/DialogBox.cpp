@@ -548,7 +548,7 @@ void DialogBox::update() {
  * @brief Displays the dialog box on a surface.
  * @param destination_surface the surface
  */
-void DialogBox::display(Surface* destination_surface) {
+void DialogBox::display(Surface& dst_surface) {
 
   int x = box_dst_position.get_x();
   int y = box_dst_position.get_y();
@@ -557,24 +557,23 @@ void DialogBox::display(Surface* destination_surface) {
 
   if (style == STYLE_WITHOUT_FRAME) {
     // display a dark rectangle
-    destination_surface->fill_with_color(Color::get_black(),
-        box_dst_position);
+    dst_surface.fill_with_color(Color::get_black(), box_dst_position);
   }
   else {
     // display the dialog box
-    box_img.blit(box_src_position, &dialog_surface, box_dst_position);
+    box_img.display_region(box_src_position, dialog_surface, box_dst_position);
   }
 
   // display the text
   for (int i = 0; i < nb_visible_lines; i++) {
-    line_surfaces[i]->display(&dialog_surface);
+    line_surfaces[i]->display(dst_surface);
   }
 
   // display the icon
   if (icon_number != -1) {
     Rectangle src_position(0, 0, 16, 16);
     src_position.set_xy(16 * (icon_number % 10), 16 * (icon_number / 10));
-    icons_img.blit(src_position, &dialog_surface, icon_dst_position);
+    icons_img.display_region(src_position, dialog_surface, icon_dst_position);
 
     question_dst_position.set_x(x + 50);
   }
@@ -586,16 +585,17 @@ void DialogBox::display(Surface* destination_surface) {
   if (dialog.is_question()
       && is_full()
       && !has_more_lines()) {
-    box_img.blit(question_src_position, &dialog_surface, question_dst_position);
+    box_img.display_region(question_src_position, dialog_surface,
+        question_dst_position);
   }
 
   // display the end message arrow
   if (is_full()) {
-    end_lines_sprite.display(&dialog_surface, x + 103, y + 56);
+    end_lines_sprite.display(dialog_surface, x + 103, y + 56);
   }
 
   // final blit
-  dialog_surface.blit(destination_surface);
+  dialog_surface.display(dst_surface);
 }
 
 /**

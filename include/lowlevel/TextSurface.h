@@ -18,6 +18,7 @@
 #define SOLARUS_TEXT_SURFACE_H
 
 #include "Common.h"
+#include "Displayable.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Rectangle.h"
 #include <SDL_ttf.h>
@@ -30,7 +31,7 @@
  * horizontal and vertical text alignment, color and other properties.
  * This is the only class related to the font library (SDL_ttf).
  */
-class TextSurface {
+class TextSurface: public Displayable {
 
   public:
 
@@ -72,7 +73,7 @@ class TextSurface {
       int font_size;                                  /**< size of the characters */
       char *buffer;                                   /**< the file loaded into memory */
       SDL_RWops *rw;                                  /**< read/write object used to open the font file from memory */
-      TTF_Font *internal_font;                        /**< the library-dependant font object */
+      TTF_Font *internal_font;                        /**< the library-dependent font object */
     };
 
     static std::map<std::string, FontData> fonts;     /**< the data of each font, loaded from the file text/fonts.dat
@@ -127,7 +128,8 @@ class TextSurface {
     int get_height();
     const Rectangle get_size();
 
-    void display(Surface* destination);
+    void blit_0(Surface& dst_surface);
+    void blit_xy(Surface& dst_surface, int x, int y);
 };
 
 #endif

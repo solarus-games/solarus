@@ -69,7 +69,7 @@ SpriteAnimation::~SpriteAnimation() {
 void SpriteAnimation::set_map(Map &map) {
 
   if (!src_image_loaded) {
-    this->src_image = map.get_tileset().get_entities_image();
+    this->src_image = &map.get_tileset().get_entities_image();
     if (should_enable_pixel_collisions) {
       disable_pixel_collisions(); // to force creating the images again
       do_enable_pixel_collisions();
@@ -137,7 +137,7 @@ int SpriteAnimation::get_next_frame(int current_direction, int current_frame) co
 
 /**
  * @brief Displays a specific frame of this animation on a surface.
- * @param destination the surface on which the sprite will be displayed
+ * @param dst_surface the surface on which the sprite will be displayed
  * @param x x coordinate of the sprite on this surface
  * (the origin point will be displayed at this position)
  * @param y y coordinate of the sprite on this surface
@@ -145,11 +145,11 @@ int SpriteAnimation::get_next_frame(int current_direction, int current_frame) co
  * @param current_direction the direction to show
  * @param current_frame the frame to show in this direction
  */
-void SpriteAnimation::display(Surface *destination, int x, int y,
+void SpriteAnimation::display(Surface& dst_surface, int x, int y,
     int current_direction, int current_frame) {
 
   if (src_image != NULL) {
-    directions[current_direction]->display(destination, x, y, current_frame, src_image);
+    directions[current_direction]->display(dst_surface, x, y, current_frame, *src_image);
   }
 }
 

@@ -67,11 +67,11 @@ void CustomScreen::update() {
 
 /**
  * @brief Displays the screen.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void CustomScreen::display(Surface* destination_surface) {
+void CustomScreen::display(Surface& dst_surface) {
 
-  script.event_display(*destination_surface);
+  script.event_display(dst_surface);
 }
 
 /**

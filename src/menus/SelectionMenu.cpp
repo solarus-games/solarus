@@ -23,10 +23,8 @@
 #include "Game.h"
 #include "Solarus.h"
 #include "lowlevel/TextSurface.h"
-#include "lowlevel/Surface.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
-#include "lowlevel/Color.h"
 #include "lowlevel/System.h"
 #include "StringResource.h"
 #include <sstream>
@@ -36,11 +34,11 @@
  * @param solarus the Solarus object
  */
 SelectionMenu::SelectionMenu(Solarus &solarus):
-  Screen(solarus) {
+  Screen(solarus),
+  surface(320, 240) {
 
   // phases
   next_phase = NULL;
-  surface = new Surface(320, 240);
 
   // fill the arrays
   for (int i = 0; i < 3; i++) {
@@ -94,7 +92,6 @@ SelectionMenu::SelectionMenu(Solarus &solarus):
 SelectionMenu::~SelectionMenu() {
 
   delete current_phase;
-  delete surface;
   delete transition;
 
   delete cloud_img;
@@ -269,12 +266,12 @@ void SelectionMenu::update() {
 
 /**
  * @brief Displays this screen.
- * @param screen_surface the surface where to display
+ * @param dst_surface the surface where to display
  */
-void SelectionMenu::display(Surface *screen_surface) {
+void SelectionMenu::display(Surface& dst_surface) {
 
   // background color
-  surface->fill_with_color(background_color);
+  surface.fill_with_color(background_color);
 
   // display the clouds
   Rectangle position;
@@ -282,28 +279,28 @@ void SelectionMenu::display(Surface *screen_surface) {
 
     position = cloud_positions[i];
 
-    cloud_img->blit(surface, position);
+    cloud_img->display(surface, position);
 
     if (cloud_positions[i].get_x() >= 320 - 80) {
       position.set_xy(cloud_positions[i].get_x() - 320, cloud_positions[i].get_y());
-      cloud_img->blit(surface, position);
+      cloud_img->display(surface, position);
 
       if (cloud_positions[i].get_y() <= 0) {
 	position.set_xy(cloud_positions[i].get_x() - 320, cloud_positions[i].get_y() + 240);
-	cloud_img->blit(surface, position);
+	cloud_img->display(surface, position);
       }
     }
 
     if (cloud_positions[i].get_y() <= 0) {
       position.set_xy(cloud_positions[i].get_x(), cloud_positions[i].get_y() + 240);
-      cloud_img->blit(surface, position);
+      cloud_img->display(surface, position);
     }
   }
 
   // display the background image
   position.set_xy(37, 38);
   position.set_size(246, 165);
-  background_img->blit(surface, position);
+  background_img->display(surface, position);
 
   // make the phase-specific displaying
   display_title_text(surface);
@@ -311,8 +308,8 @@ void SelectionMenu::display(Surface *screen_surface) {
   display_transition(surface);
 
   // blit everything on the screen
-  screen_surface->fill_with_color(Color::get_black());
-  surface->blit(screen_surface);
+  dst_surface.fill_with_color(Color::get_black());
+  surface.display(dst_surface);
 }
 
 /**
@@ -513,41 +510,41 @@ void SelectionMenu::reload_savegames() {
 
 /**
  * @brief Draws the current transition effect (if any).
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void SelectionMenu::display_transition(Surface *destination_surface) {
+void SelectionMenu::display_transition(Surface& dst_surface) {
 
   if (transition != NULL && transition->is_started()) {
-    transition->display(destination_surface);
+    transition->display(dst_surface);
   }
 }
 
 /**
  * @brief Draws the title text.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void SelectionMenu::display_title_text(Surface *destination_surface) {
+void SelectionMenu::display_title_text(Surface& dst_surface) {
   
-  title_text->display(destination_surface);
+  title_text->display(dst_surface);
 }
 
 /**
  * @brief Displays a savegame.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  * @param save_number number of the savegame to display (0 to 2)
  */
-void SelectionMenu::display_savegame(Surface *destination_surface, int save_number) {
+void SelectionMenu::display_savegame(Surface& dst_surface, int save_number) {
 
   // draw the container
   Rectangle position(57, 75 + save_number * 27);
-  save_container_img->blit(destination_surface, position);
+  save_container_img->display(dst_surface, position);
 
   // draw the player's name
-  text_player_names[save_number]->display(destination_surface);
+  text_player_names[save_number]->display(dst_surface);
 
   // draw the life
   if (hearts_views[save_number] != NULL) {
-    hearts_views[save_number]->display(destination_surface);
+    hearts_views[save_number]->display(dst_surface);
   }
 }
 
@@ -558,13 +555,13 @@ void SelectionMenu::display_savegame(Surface *destination_surface, int save_numb
  * because the cursor has to be displayed after the savegame images
  * but before the savegame number.
  *
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  * @param save_number number to display (0 to 2)
  */
-void SelectionMenu::display_savegame_number(Surface *destination_surface, int save_number) {
+void SelectionMenu::display_savegame_number(Surface& dst_surface, int save_number) {
 
   Rectangle position(62, 80 + 27 * save_number);
-  number_imgs[save_number]->blit(destination_surface, position);
+  number_imgs[save_number]->display(dst_surface, position);
 }
 
 /**
@@ -572,31 +569,31 @@ void SelectionMenu::display_savegame_number(Surface *destination_surface, int sa
  *
  * If an option text is empty, it is not displayed.
  *
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void SelectionMenu::display_bottom_options(Surface *destination_surface) {
+void SelectionMenu::display_bottom_options(Surface& dst_surface) {
 
   Rectangle position(0, 158);
 
   if (!option1_text->is_empty()) {
     position.set_x(57);
-    option_container_img->blit(destination_surface, position);
-    option1_text->display(destination_surface);
+    option_container_img->display(dst_surface, position);
+    option1_text->display(dst_surface);
   }
 
   if (!option2_text->is_empty()) {
     position.set_x(165);
-    option_container_img->blit(destination_surface, position);
-    option2_text->display(destination_surface);
+    option_container_img->display(dst_surface, position);
+    option2_text->display(dst_surface);
   }
 }
 
 /**
  * @brief Displays the savegame cursor (i.e. the cursor to select a file)
  * at its current position.
- * @param destination_surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void SelectionMenu::display_savegame_cursor(Surface *destination_surface) {
+void SelectionMenu::display_savegame_cursor(Surface& dst_surface) {
 
   Rectangle position;
 
@@ -613,7 +610,7 @@ void SelectionMenu::display_savegame_cursor(Surface *destination_surface) {
   else {
     position.set_y(159);
   }
-  cursor_sprite->display(destination_surface, position.get_x(), position.get_y());
+  cursor_sprite->display(dst_surface, position);
 }
 
 /**

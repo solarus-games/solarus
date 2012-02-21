@@ -18,7 +18,6 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "lowlevel/Color.h"
-#include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
 
 /**
@@ -29,13 +28,16 @@
  * @param width width of the hud element surface
  * @param height height of the hud element surface
  */
-HudElement::HudElement(Game &game, int x, int y, int width, int height):
-  game(&game), equipment(&game.get_equipment()), keys_effect(&game.get_keys_effect()),
-  visible(true), opacity(255), blinking(false) {
+HudElement::HudElement(Game& game, int x, int y, int width, int height):
+  game(&game),
+  equipment(&game.get_equipment()),
+  keys_effect(&game.get_keys_effect()),
+  surface_drawn(width, height),
+  visible(true),
+  opacity(255),
+  blinking(false) {
 
-  surface_drawn = new Surface(width, height);
-  surface_drawn->set_transparency_color(Color::get_black());
-
+  surface_drawn.set_transparency_color(Color::get_black());
   set_position(x, y);
 }
 
@@ -51,12 +53,15 @@ HudElement::HudElement(Game &game, int x, int y, int width, int height):
  * @param height height of the hud element surface
  */
 HudElement::HudElement(Equipment &equipment, int x, int y, int width, int height):
-  game(NULL), equipment(&equipment), keys_effect(NULL),
-  visible(true), opacity(255), blinking(false) {
+  game(NULL),
+  equipment(&equipment),
+  keys_effect(NULL),
+  surface_drawn(width, height),
+  visible(true),
+  opacity(255),
+  blinking(false) {
 
-  surface_drawn = new Surface(width, height);
-  surface_drawn->set_transparency_color(Color::get_black());
-
+  surface_drawn.set_transparency_color(Color::get_black());
   set_position(x, y);
 }
 
@@ -72,12 +77,15 @@ HudElement::HudElement(Equipment &equipment, int x, int y, int width, int height
  * @param height height of the hud element surface
  */
 HudElement::HudElement(KeysEffect &keys_effect, int x, int y, int width, int height):
-  game(NULL), equipment(NULL), keys_effect(&keys_effect),
-  visible(true), opacity(255), blinking(false) {
+  game(NULL),
+  equipment(NULL),
+  keys_effect(&keys_effect),
+  surface_drawn(width, height),
+  visible(true),
+  opacity(255),
+  blinking(false) {
 
-  surface_drawn = new Surface(width, height);
-  surface_drawn->set_transparency_color(Color::get_black());
-
+  surface_drawn.set_transparency_color(Color::get_black());
   set_position(x, y);
 }
 
@@ -85,7 +93,6 @@ HudElement::HudElement(KeysEffect &keys_effect, int x, int y, int width, int hei
  * @brief Destructor.
  */
 HudElement::~HudElement() {
-  delete surface_drawn;
 }
 
 /**
@@ -95,8 +102,8 @@ HudElement::~HudElement() {
  */
 void HudElement::set_position(int x, int y) {
   
-  destination_position.set_x(x);
-  destination_position.set_y(y);
+  dst_position.set_x(x);
+  dst_position.set_y(y);
 }
 
 /**
@@ -106,7 +113,7 @@ void HudElement::set_position(int x, int y) {
  * the surface with transparent color.
  */
 void HudElement::rebuild() {
-  surface_drawn->fill_with_color(Color::get_black());
+  surface_drawn.fill_with_color(Color::get_black());
 }
 
 /**
@@ -145,7 +152,7 @@ void HudElement::set_opacity(int opacity) {
 
   if (opacity != this->opacity) {
     this->opacity = opacity;
-    surface_drawn->set_opacity(opacity);
+    surface_drawn.set_opacity(opacity);
     rebuild();
   }
 }
@@ -190,10 +197,10 @@ void HudElement::update() {
  * @brief Displays the hud element on a surface.
  * @param destination the destination surface
  */
-void HudElement::display(Surface *destination) {
+void HudElement::display(Surface& dst_surface) {
 
   if (is_visible() && (!blinking || blinking_is_visible)) {
-    surface_drawn->blit(destination, destination_position);
+    surface_drawn.display(dst_surface, dst_position);
   }
 }
 

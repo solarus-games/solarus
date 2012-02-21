@@ -623,27 +623,31 @@ void Sprite::update() {
 }
 
 /**
- * @brief Displays the sprite on a surface, with its current animation, direction and frame.
- * @param destination the surface on which the sprite will be displayed
+ * @brief Displays the sprite on a surface, with its current animation,
+ * direction and frame.
+ * @param dst_surface the surface on which the sprite will be displayed
  * @param x x coordinate of the sprite on this surface
  * (the origin will be placed at this position)
  * @param y y coordinate of the sprite on this surface
  * (the origin will be placed at this position)
  */
-void Sprite::display(Surface *destination, int x, int y) {
+void Sprite::blit_xy(Surface& dst_surface, int x, int y) {
 
-  if (!is_animation_finished() && (blink_delay == 0 || blink_is_sprite_visible)) {
+  if (!is_animation_finished()
+      && (blink_delay == 0 || blink_is_sprite_visible)) {
 
     if (alpha >= 255) {
       // opaque
-      current_animation->display(destination, x, y, current_direction, current_frame);
+      current_animation->display(dst_surface, x, y, current_direction,
+          current_frame);
     }
     else {
       // semi transparent
       alpha_surface->set_opacity(alpha);
       alpha_surface->fill_with_color(Color::get_black());
-      current_animation->display(alpha_surface, x, y, current_direction, current_frame);
-      alpha_surface->blit(destination);
+      current_animation->display(*alpha_surface, x, y, current_direction,
+          current_frame);
+      alpha_surface->display(dst_surface);
     }
   }
 }

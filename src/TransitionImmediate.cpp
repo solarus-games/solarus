@@ -64,9 +64,9 @@ void TransitionImmediate::update() {
 
 /**
  * @brief Displays the transition effect on a surface.
- * @param surface the surface to draw
+ * @param dst_surface the surface to draw
  */
-void TransitionImmediate::display(Surface *surface) {
+void TransitionImmediate::display(Surface& dst_surface) {
 
 }
 

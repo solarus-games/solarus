@@ -18,6 +18,7 @@
 #define SOLARUS_DISPLAYABLE_H
 
 #include "Common.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * @brief Represents anything that can be drawn on a surface.
@@ -26,13 +27,31 @@ class Displayable {
 
   public:
 
+    virtual ~Displayable();
+
+    void display(Surface& dst_surface);
+    void display(Surface& dst_surface, int x, int y);
+    void display(Surface& dst_surface, const Rectangle& dst_position);
+
+  protected:
+
+    Displayable();
+
+    /**
+     * @brief Displays this object on a surface at 0,0.
+     * @param dst_surface the destination surface
+     * @param x x coordinate of where to display
+     * @param y y coordinate of where to display
+     */
+    virtual void blit_0(Surface& dst_surface);
+
     /**
      * @brief Displays this object on a surface.
      * @param dst_surface the destination surface
-     * @param dst_position where to display
+     * @param x x coordinate of where to display
+     * @param y y coordinate of where to display
      */
-    virtual void display(Surface& dst_surface,
-        const Rectangle& dst_position) = 0;
+    virtual void blit_xy(Surface& dst_surface, int x, int y) = 0;
 };
 
 #endif

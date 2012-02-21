@@ -19,7 +19,9 @@
 
 #include "Common.h"
 #include "Treasure.h"
+#include "Sprite.h"
 #include "entities/Detector.h"
+#include "lowlevel/TextSurface.h"
 
 /**
  * @brief An item the hero can buy in a shop.
@@ -39,8 +41,8 @@ class ShopItem: public Detector {
     std::string dialog_id;            /**< id of the dialog describing the shop item */
 
     // displaying
-    TextSurface *price_digits;        /**< the digits that show the price */
-    Sprite *rupee_icon_sprite;        /**< the rupee icon near the price */
+    TextSurface price_digits;         /**< the digits that show the price */
+    Sprite rupee_icon_sprite;         /**< the rupee icon near the price */
 
     // state
     bool is_looking_item;             /**< indicates that the message describing the item is being shown */

@@ -52,8 +52,8 @@ class Tileset {
     TilesetId get_id();
     Color& get_background_color();
     bool is_loaded();
-    Surface* get_tiles_image();
-    Surface* get_entities_image();
+    Surface& get_tiles_image();
+    Surface& get_entities_image();
     TilePattern& get_tile_pattern(int id);
     void set_images(Tileset& other);
 };

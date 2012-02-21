@@ -33,7 +33,9 @@
  * @param game the game
  */
 PauseMenu::PauseMenu(Game &game):
-  game(game), savegame(game.get_savegame()), keys_effect(game.get_keys_effect()) {
+  game(game),
+  savegame(game.get_savegame()),
+  keys_effect(game.get_keys_effect()) {
 
   this->current_submenu = NULL;
   this->backgrounds_surface = new Surface("pause_submenus.png", Surface::DIR_LANGUAGE);
@@ -175,25 +177,25 @@ void PauseMenu::update() {
 
 /**
  * @brief Displays the pause menu.
- * @param destination the surface to draw
+ * @param dst_surface the surface to draw
  */
-void PauseMenu::display(Surface *destination) {
+void PauseMenu::display(Surface& dst_surface) {
 
   // display the background for the current submenu
   int submenu_index = savegame.get_integer(Savegame::PAUSE_LAST_SUBMENU);
   Rectangle src_position(320 * submenu_index, 0, 320, 240);
-  backgrounds_surface->blit(src_position, destination);
+  backgrounds_surface->display_region(src_position, dst_surface);
 
   // display the current submenu content
-  current_submenu->display(destination);
+  current_submenu->display(dst_surface);
 
   // display the save dialog
   if (save_dialog_state > 0) {
-    save_dialog_sprite->display(destination, 50, 87);
-    question_text[0]->display(destination);
-    question_text[1]->display(destination);
-    answer_text[0]->display(destination);
-    answer_text[1]->display(destination);
+    save_dialog_sprite->display(dst_surface, 50, 87);
+    question_text[0]->display(dst_surface);
+    question_text[1]->display(dst_surface);
+    answer_text[0]->display(dst_surface);
+    answer_text[1]->display(dst_surface);
   }
 }
 

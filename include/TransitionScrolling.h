@@ -61,7 +61,7 @@ class TransitionScrolling: public Transition {
     bool is_started();
     bool is_finished();
     void update();
-    void display(Surface *surface);
+    void display(Surface& dst_surface);
 };
 
 #endif

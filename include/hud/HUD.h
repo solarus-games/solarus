@@ -41,7 +41,7 @@ class HUD {
     ~HUD();
 
     void update();
-    void display(Surface *destination);
+    void display(Surface& dst_surface);
 
 };
 

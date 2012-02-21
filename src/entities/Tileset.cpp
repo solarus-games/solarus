@@ -206,16 +206,16 @@ bool Tileset::is_loaded() {
  * @brief Returns the image containing the tiles of this tileset.
  * @return the tiles image
  */
-Surface* Tileset::get_tiles_image() {
-  return tiles_image;
+Surface& Tileset::get_tiles_image() {
+  return *tiles_image;
 }
 
 /**
  * @brief Returns the image containing the skin-dependent dynamic entities for this tileset.
  * @return the image containing the skin-dependent dynamic entities for this tileset
  */
-Surface* Tileset::get_entities_image() {
-  return entities_image;
+Surface& Tileset::get_entities_image() {
+  return *entities_image;
 }
 
 /**
@@ -239,8 +239,8 @@ TilePattern& Tileset::get_tile_pattern(int id) {
 void Tileset::set_images(Tileset& other) {
 
   delete tiles_image;
-  tiles_image = new Surface(*other.get_tiles_image());
+  tiles_image = new Surface(other.get_tiles_image());
   delete entities_image;
-  entities_image = new Surface(*other.get_entities_image());
+  entities_image = new Surface(other.get_entities_image());
   background_color = other.get_background_color();
 }

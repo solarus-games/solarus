@@ -84,25 +84,25 @@ const Rectangle & SpriteAnimationDirection::get_frame(int frame) const {
 
 /**
  * @brief Displays a specific frame on the map.
- * @param destination the surface on which the frame will be displayed
+ * @param dst_surface the surface on which the frame will be displayed
  * @param x x coordinate of the sprite on this surface
  * (the origin point will be displayed at this position)
  * @param y y coordinate of the sprite on this surface
  * (the origin point will be displayed at this position)
  * @param current_frame the frame to show
- * @param src_image the image from wich the frame is extracted
+ * @param src_image the image from which the frame is extracted
  */
-void SpriteAnimationDirection::display(Surface* destination, int x, int y,
-                                       int current_frame, Surface* src_image) {
+void SpriteAnimationDirection::display(Surface& dst_surface, int x, int y,
+    int current_frame, Surface& src_image) {
 
   Rectangle position_top_left; // position of the sprite's upper left corner
 
   const Rectangle& current_frame_rect = frames[current_frame];
 
   position_top_left.set_xy(x - origin.get_x(), y - origin.get_y());
-  position_top_left.set_size(current_frame_rect.get_width(), current_frame_rect.get_height());
+  position_top_left.set_size(current_frame_rect);
 
-  src_image->blit(current_frame_rect, destination, position_top_left);
+  src_image.display_region(current_frame_rect, dst_surface, position_top_left);
 }
 
 /**
@@ -157,7 +157,8 @@ bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
  */
 PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
 
-  SOLARUS_ASSERT(pixel_bits != NULL, "Pixel-precise collisions are not enabled for this sprite");
+  SOLARUS_ASSERT(pixel_bits != NULL,
+      "Pixel-precise collisions are not enabled for this sprite");
   SOLARUS_ASSERT(frame >= 0 && frame < nb_frames, "Invalid frame number");
 
   return *pixel_bits[frame];

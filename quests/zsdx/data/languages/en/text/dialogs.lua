@@ -603,14 +603,14 @@ strange aspect...
 }
 --------------------
 
--- Lingots d'or / Golden bars
+-- Lingots d'or / Gold bars
 dialog{
   id = "_item_description.level_4_way.2",
   icon = 23,
   skip = "all",
   text = [[
 These are 3
-authentic golden
+authentic gold
 bars!
 ]]
 }
@@ -1536,7 +1536,7 @@ rocks.
 --------------------
 
 -- Poigne d'Or / Golden Gloves
---#Sounds a bit odd "resist". Too French.
+--#Still sounds odd.
 dialog{
   id = "_treasure.glove.2",
   icon = 33,
@@ -1545,7 +1545,7 @@ You found the Golden
 Gloves!$0
 
 Black rocks won't
-resist them!
+stand a chance!
 ]]
 }
 --------------------
@@ -2434,8 +2434,7 @@ dialog{
   icon = -1,
   question = true,
   text = [[
-What do you want to
-do?
+What do you want to do?
 Recover your health
 Keep it
 ]]
@@ -2504,9 +2503,8 @@ dialog{
   text = [[
 Your Magic Flask
 holds some Water.
-
-What do you want to
-do?
+What do you
+want to do?
 Pour Water
 Keep it
 ]]
@@ -2519,10 +2517,10 @@ dialog{
   icon = 16,
   question = true,
   text = [[
-Eating an apple will
-restore one heart.
-What do you want to
-do?
+Eating an apple
+will restore one
+heart. What do
+you want to do?
 Eat an apple
 Nothing
 ]]
@@ -2537,9 +2535,8 @@ dialog{
   text = [[
 Chocolate bread
 restores 3 hearts.
-
-What do you want to
-do?
+What do you
+want to do?
 Eat one
 Nothing
 ]]
@@ -2554,8 +2551,8 @@ dialog{
   text = [[
 A Croissant restores
 seven hearts.
-What do you want to
-do?
+What do you
+want to do?
 Eat one
 Nothing
 ]]
@@ -2984,9 +2981,11 @@ keep an eye on what the
 icons say. Don't forget
 thatyou can customize
 the controls in the
-options screen, and that
-you can even play with a
-gamepad!
+options screen, and
+that you can even play
+with a gamepad!
+
+
 Did you get it all?
 Yes
 No, I did not
@@ -3190,11 +3189,10 @@ dialog{
 Welcome to the mystery
 chest game. Pay 20
 Rupees to open one
-of the three chests and
-stand a chance of
-earning more rupee!
-So, do you want to
-play?
+of the three chests
+and stand a chance of
+earning more rupees!
+Do you want to play?
 Yes
 No
 ]]
@@ -3271,17 +3269,15 @@ dialog{
   question = true,
   text = [[
 Welcome to the
-brand-new slot
-machine!
+brand-new slot machine!
 Put in 5 or 20 rupees
 and try your best to
-align three of the same
-same symbol to win
-several times what
-you put in!
+align three of the
+same same symbol to
+win several times
+what you put in!
 
-So, do you want
-to play?
+Do you want to play?
 Yes
 No
 ]]
@@ -3302,8 +3298,7 @@ dialog{
   id = "rupee_house.game_2.choose_bet",
   question = true,
   text = [[
-How much do you want
-to bet?
+How much do you bet?
 5 Rupees
 20 Rupees
 ]]
@@ -3417,6 +3412,7 @@ dialog{
   text = [[
 Tough luck, you didn't
 make any combination.
+
 Want to try again?
 Yes
 No
@@ -3847,6 +3843,8 @@ You can have it for
 only 75 Rupees!
 With your shield alone
 you won't get far.
+
+
 So, interested?
 Yes
 No
@@ -4039,6 +4037,7 @@ I am looking for apples
 to bake a great tart.
 Six apples should do
 it.
+
 Do you want to help?
 Yes
 No
@@ -4232,6 +4231,7 @@ dialog{
   text = [[
 Sahasrahla's memories.
 
+
 Read them?
 Yes
 No
@@ -4309,9 +4309,8 @@ adventurer. I am Tom,
 an ex-guard of our late
 King. I didn't think
 anyone would find me
-here. What are you
-doing in this gloomy
-cavern?
+here. What are you doing
+in this gloomy cavern?
 What? The Triforce is
 danger? $0None of this
 would have happened if
@@ -4319,8 +4318,7 @@ our King were still
 here to protect it...
 You're trying to solve
 the mysteries of this
-cavern?
-This place is
+cavern?  This place is
 overflowing with
 riddles, treasure, and
 danger. You seem very
@@ -4332,8 +4330,8 @@ I wasn't able to
 protect our King.
 Give me a chance to
 make it up!
-Will you accept my
-help?
+
+Do you accept my help?
 Yes
 No
 ]]
@@ -4348,13 +4346,12 @@ dialog{
   next2 = "lyriann_cave.tom.refuse_help",
   text = [[
 Young explorer, accept
-my help. I have
-failed, I wasn't able
-to protect our King.
+my help. I have failed,
+I wasn't able to
+protect our King.
 Give me a chance to
-make it up!
-Will you accept my
-help?
+make it up!  Will you
+accept my help?
 Yes
 No
 ]]
@@ -4401,15 +4398,12 @@ You'll need to attain a
 level of mastery over
 it if you want to find
 all the secrets in this
-cavern...
-Don't forget that the
-Boomerang always comes
-back to you, even if
-you move.
+cavern...  Don't forget
+that the Boomerang
+always comes back to
+you, even if you move.
 
-
-What would you like to
-do?
+What do you want to do?
 Continue
 Return the Boomerang
 ]]
@@ -4810,7 +4804,7 @@ dialog{
   question = true,
   text = [[
 What will you give me?
-Golden bars
+Gold bars
 An apple pie
 ]]
 }
@@ -4855,7 +4849,7 @@ from fair...
 dialog{
   id = "billy_cave.give_golden_bars",
   text = [[
-What? You have golden
+What? You have gold
 bars?$1...
 $0...$0....................
 $3Deal!
@@ -4881,6 +4875,7 @@ dialog{
   question = true,
   text = [[
 Give me that apple pie!
+
 
 Well?
 OK
@@ -5037,7 +5032,6 @@ dialog{
   id = "chests_game_cave.play_question",
   question = true,
   text = [[
-
 Do you want to play?
 Yes
 No
@@ -5148,13 +5142,12 @@ Standard Arrows.
 ]]
 }
 -----------------------
---#Shouldn't start a sentence with "but". "However" sounds too much though
 
 dialog{
   id = "junk_shop.red_rupee",
   text = [[
 A special offer Red
-Rupee. But it's the
+Rupee, but it's the
 floor model.
 ]]
 }
@@ -5191,8 +5184,8 @@ reduced price.
 dialog{
   id = "junk_shop.piece_of_heart",
   text = [[
-An authentic Heart
-Fragment.
+An authentic Piece of
+Heart.
 ]]
 }
 -----------------------
@@ -5217,11 +5210,6 @@ a historical monument.
 Please refrain from
 disturbing the
 surroundings.
-Bienvenue dans l'ancien
-château royal, classé
-monument historique.
-Merci de respecter les
-lieux.
 ]]
 }
 -----------------------
@@ -5230,11 +5218,11 @@ dialog{
   id = "castle.forbidden_stairs",
   skip = "all",
   text = [[
-Ces escaliers mènent à
-l'étage supérieur et à
-la terrasse.
-Cependant, l'accès est
-interdit au public.
+This stairs lead to the
+upper level and to the
+balcony.
+Access is forbidden to
+the public though.
 ]]
 }
 -----------------------
@@ -5243,10 +5231,9 @@ dialog{
   id = "castle.forbidden_door",
   skip = "all",
   text = [[
-Je regrette Monsieur,
-mais le passage vers
-les cachots n'est pas
-autorisé au public.
+I am sorry sir, but you
+are not allowed access
+to the dungeon cells.
 ]]
 }
 -----------------------
@@ -5257,9 +5244,9 @@ dialog{
 ........$0....?!$#!@&=!??
 .....$0..................
 
-Comment es-tu arrivé
-ici ? L'accès aux
-cachots est interdit !
+How did you get here?
+You are walking on
+a forbidden area!
 ]]
 }
 -----------------------
@@ -5268,12 +5255,14 @@ dialog{
   id = "castle.npc_1",
   skip = "all",
   text = [[
-Jadis, ce château
-appartenait à la
-famille royale.
-Aujourd'hui, c'est un
-lieu très prisé par
-les touristes !
+This castle once
+belonged to the Royal
+family.
+Nowadays, tourists
+from all around Hyrule
+make the trip to
+witness the beauty of
+the place!
 ]]
 }
 -----------------------
@@ -5282,15 +5271,16 @@ dialog{
   id = "castle.npc_2",
   skip = "all",
   text = [[
-Quand on pense aux gens
-qui ont construit ce
-château...
-C'est une prouesse
-architecturale pour
-l'époque. Il faut dire
-qu'ils n'avaient pas
-les moyens modernes
-d'aujourd'hui !
+Can you believe all the
+efforts that were put
+in the construction of
+this castle?
+I can only wonder how
+they managed to pull
+off such a wonderful
+piece of architecture
+with the means they had
+at that time...
 ]]
 }
 -----------------------
@@ -5299,11 +5289,12 @@ dialog{
   id = "castle.where_is_tom",
   skip = "all",
   text = [[
-Tom, un de nos
-meilleurs soldats, a
-mystérieusement disparu
-alors qu'il était parti
-explorer une caverne.
+Tom, one of our best
+soldiers, has
+mysteriously
+disappeared while he
+was gone exploring a
+cave.
 ]]
 }
 -----------------------
@@ -5312,8 +5303,8 @@ dialog{
   id = "castle.npc_3",
   skip = "all",
   text = [[
-Quel luxe ! C'est une
-magnifique demeure !
+How shiny! It's a
+wonderful home!
 ]]
 }
 -----------------------
@@ -5322,10 +5313,10 @@ dialog{
   id = "castle.prison",
   skip = "all",
   text = [[
-C'est dans ces sombres
-cachots qu'étaient
-autrefois enfermés les
-prisonniers du Roi.
+Prisoners of the King
+were held captive
+inside these dark
+cells.
 ]]
 }
 -----------------------
@@ -5334,11 +5325,10 @@ dialog{
   id = "castle.cannon",
   skip = "all",
   text = [[
-Quel splendide canon !
-A l'époque où le Roi
-l'utilisait, il valait
-mieux ne pas faire
-partie de ses ennemis !
+What a magnificent
+barrel!
+You had better not be
+an enemy of the King!
 ]]
 }
 -----------------------
@@ -5347,21 +5337,21 @@ dialog{
   id = "inferno.first_time",
   next = "inferno.find_fire_stones",
   text = [[
-Qui ose pénétrer sur
-mes terres ? Petit !
-Sache qu'il est très
-grave de déranger le
-grand Inferno, Seigneur
-des Flammes !
-Ton sacrilège ne
-restera pas impuni !
-Pour te racheter, je te
-mets au défi de partir
-à la recherche des
-trois Pierres de Feu
-que j'ai cachées dans
-mes labyrinthes
-lugubres.
+Who dares walk on my
+lands? Child!
+Don't you know how
+foolish it is to
+disturb the great
+Inferno, Lord of
+Flames?!
+You will be punished
+for such behaviour!
+Shall you wish to
+redeem yourself, try
+and find the three
+Fire Stones I hid
+inside my gloomy
+mazes.
 ]]
 }
 -----------------------
@@ -5370,18 +5360,18 @@ dialog{
   id = "inferno.find_fire_stones",
   skip = "current",
   text = [[
-Tu subiras trois
-épreuves de courage.
+You will endure three
+courage ordeals.
 
-Rivière.
-$0Montagne.
+River.
+$0Mountain.
 $0Beaumont.
-Si tu parviens à sortir
-des trois labyrinthes,
-apporte-moi les trois
-Pierres de Feu.
-Ainsi, la rancoeur
-d'Inferno s'apaisera.
+Overcome the challenges
+that await you, bring
+back the three Fire
+Stones, and only then
+shall Inferno's rage
+be calmed.
 ]]
 }
 -----------------------
@@ -5390,15 +5380,18 @@ dialog{
   id = "inferno.found_fire_stones",
   question = true,
   text = [[
-Tu as franchi les trois
-épreuves avec succès !
-Je m'incline devant ta
-bravoure. Demande-moi
-ce que tu tu veux et
-j'accompirai ton désir.
-Que puis-je faire ?
-Les pierres noires...
-100 Rubis ?
+You made it through
+the three ordeals with
+success!  Your bravery
+is truly unique, I must
+bow down before it.
+I will grant you
+anything you wish.
+
+
+What do you want?
+The black stones...
+100 Rupees?
 ]]
 }
 -----------------------
@@ -5406,7 +5399,7 @@ Les pierres noires...
 dialog{
   id = "inferno.want_rupees",
   text = [[
-Soit.
+So be it.
 ]]
 }
 -----------------------
@@ -5414,8 +5407,8 @@ Soit.
 dialog{
   id = "inferno.want_rupees_again",
   text = [[
-Tu as déjà bénéficié de
-cette faveur.
+I already gave you
+this prize.
 ]]
 }
 -----------------------
@@ -5423,15 +5416,14 @@ cette faveur.
 dialog{
   id = "inferno.want_black_stones",
   text = [[
-Avant de soulever ces
-pierres noires, tu
-devras affronter les
-périls d'un lieu
-infernal et vaincre de
-nombreux dangers.
-Laisse-moi te
-transporter vers
-l'enfer des flammes...
+Before you can lift
+these black stones,
+you will have to
+survive in an infernal
+land, and overcome
+many dangers.
+Let me bring you to
+the hell of flames...
 ]]
 }
 -----------------------
@@ -5439,12 +5431,12 @@ l'enfer des flammes...
 dialog{
   id = "potion_shop.witch",
   text = [[
-Bienvenue à la Boutique
-de Potions !
-Héhéhé...
-Rouge donne vie, vert
-donne magie, bleu donne
-vie et magie !
+Welcome to the Potion
+Shop!
+Hehehe...
+Red gives life, green
+gives magic, blue gives
+both life and magic!
 ]]
 }
 -----------------------
@@ -5452,15 +5444,15 @@ vie et magie !
 dialog{
   id = "potion_shop.witch_bottle_offered",
   text = [[
-Bienvenue à la Boutique
-de Potions !
-Héhéhé...
-Un Flacon Magique est
-offert à chaque nouveau
-client ! Héhéhé...
-Rouge donne vie, vert
-donne magie, bleu donne
-vie et magie !
+Welcome to the Potion
+Shop!
+Hehehe...
+A Magic Flask is
+given for free to every
+new client! Hehehe...
+Red gives life, green
+gives magic, blue gives
+both life and magic!
 ]]
 }
 -----------------------
@@ -5508,10 +5500,10 @@ magic! Hehehe...
 dialog{
   id = "potion_shop.give_bottle",
   text = [[
-Et en tant que nouveau
-client, tu as droit à
-ce Flacon Magique
-gratuit. Héhéhé...
+As a new customer, you
+get to walk away with
+a Magic Flask for free.
+Hehehe...
 ]]
 }
 -----------------------
@@ -5520,9 +5512,10 @@ dialog{
   id = "outside_world.vine_start",
   skip = "all",
   text = [[
-La terre semble très
-fertile ici, mais elle
-manque d'humidité...
+The land seems very
+fertile around here,
+but it lacks
+humidity...
 ]]
 }
 -----------------------
@@ -5542,9 +5535,9 @@ dialog{
   id = "bone_key_cave.hint",
   skip = "all",
   text = [[
-C'est en repoussant la
-lumière que viendra
-la lumière.
+Only by repelling light
+will then shine light
+anew.
 ]]
 }
 -----------------------
@@ -5571,33 +5564,31 @@ Key...
 dialog{
   id = "dungeon_2.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda pour
-veiller sur la
-Triforce. L'amulette du
-Solarus, un pendentif
-porté par la Princesse
-Zelda, est le seul
-moyen de reconstituer 
-la Triforce, dont nous
-avons dissimulé les
-huit fragments dans
-tout le royaume.
-Nous sommes ici pour
-veiller sur les huit
-fragments, alors que
-Zelda veille sur
-l'Amulette du Solarus.
-Il ne faut pas qu'elle
-tombe en de mauvaises
-mains. Mais nous avons
-foi en ton courage.
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+$2$v... Thank you.
+You saved my life.
+I am one of the eight
+protectors called forth
+by Princess Zelda to
+watch over the Triforce.
+Using the power of the
+Solarus amulet, a relic
+worn by Princess Zelda,
+is the only way to
+restore the Triforce.
+We have shattered it
+into eight pieces
+hidden across the
+kingdom. We are here
+to guard the eight
+fragments, as Zelda
+watches over the
+Solarus Amulet.
+It must not fall into
+the wrong hands. We
+trust your courage.
+May the hero bring
+peace and prosperity
+to the Kingdom!
 ]]
 }
 -----------------------
@@ -5643,24 +5634,26 @@ never succeed...
 dialog{
   id = "dungeon_3.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Grâce à toi, cette
-horrible créature ne
-sévira plus jamais.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda.
-La Triforce est
-toujours en danger tant
-que l'un de mes frères
-est encore prisonnier.
-Tu es proche du but.
-Sauve-le et restaure la
-la paix sur le royaume.
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+$2$v... Thank you.
+You saved my life.
+Thanks to you, this
+horrible creature will
+not never trouble the
+Kingdom again.
+I am one of the eight
+protectors called forth
+by Princess Zelda.
+The Triforce is still
+in danger as long as
+one of my brothers is
+held captive.
+The end of your journey
+is near.
+Save him and return
+peace to these lands.
+May the hero bring
+peace and prosperity
+to the Kingdom!
 ]]
 }
 -----------------------
@@ -5678,9 +5671,9 @@ dialog{
 dialog{
   id = "dungeon_4.hint_use_map",
   text = [[
-Lorsque les issues
-ne se dévoilent pas,
-sers-toi de ton plan.
+When the exits do not
+appear upon you, use
+the map.
 ]]
 }
 -----------------------
@@ -5688,9 +5681,9 @@ sers-toi de ton plan.
 dialog{
   id = "dungeon_4.hint_chests",
   text = [[
-Le croisement des
-quatre coffres indique
-le chemin.
+The way is shown by
+the crossing of four
+chests.
 ]]
 }
 -----------------------
@@ -5709,21 +5702,21 @@ You need to leave!
 dialog{
   id = "dungeon_4.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda.
-Tu as fait preuve d'un
-courage remarquable.
-Grâce à toi, nous
-sommes désormais au
-complet et la Triforce
-est en sécurité.
+$2$v... Thank you.
+You saved my life.
+I am one of the eight
+protectors called forth
+by Princess Zelda.
+You have demonstrated
+a remarkable courage.
+Thanks to you, we are
+now all together again,
+and the Triforce is
+safe.
 
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+May the hero bring
+peace and prosperity
+to the Kingdom!
 ]]
 }
 -----------------------
@@ -5732,54 +5725,51 @@ dialog{
   id = "dungeon_4.agahnim",
   text = [[
 $1A G A H N I M !
-$3Et oui, lui-même !
+$3Yes, himself!
 
-Le sorcier revenu de
-l'empire des morts !
-Ah ah ah ah ah ah !!!
-Ainsi donc vous avez
-réussi à retrouver les
-quatre gamins.
-Mais cet enfant ne se
-doute pas de ce qui
-l'attend dehors en
-disant que la Triforce
-est en sécurité...
-Ah ah ah ah ah ah !!!
-Sachez, jeune homme,
-que je ne suis pas
-revenu ici pour libérer
-cet infâme Ganon, lui
-qui a un jour osé
-affirmer que je n'étais
-que son alter-ego...
-Je préfère laisser ce
-sombre bandit enfermé
-dans son Monde des
-Ténèbres ! Ainsi je
-garderai la Triforce
-pour moi et je règnerai
-en seul maître...
-Ah ah ah ah ah !
-En sortant d'ici, vous
-constaterez très vite
-que le royaume est déjà
-sous mon contrôle...
-Ah ah ah ah ah ah ah !
+The sorcerer back from
+the land of the dead!!!
+Ah ah ah ah ah ah!!!
+So you managed to
+gather the four kids?
+This child doesn't have
+a clue of what awaits
+him outside by saying
+that the Triforce is
+safe...
+Ah ah ah ah ah ah!!!
+Acknowledge, young man,
+that I did not come
+back to free the
+despicable Ganon, he
+who once dared call me
+his alter ego...
+I would rather leave
+that filthy culprit
+sealed away in his
+Dark World! Thus I can
+keep the Triforce for
+myself and rule as the
+only master...
+Ah ah ah ah ah!
+Upon leaving this room,
+you will witness my
+control over this
+kingdom...
+Ah ah ah ah ah ah ah!
 
-Quant à vous, jeune
-aventurier
-présomptueux, l'heure
-de notre affrontement
-n'est pas encore venue.
-Pour l'instant, je
-rentre au château !
-Ah ah ah ah ah ! Mais
-nous nous reverrons, et
-mes pouvoirs n'auront
-aucune difficulté à
-vous supprimer !
-Ah ah ah ah ah ah !!!
+Now you, young and
+impetuous adventurer,
+and I shall meet again.
+For the time being, I
+am going back to the
+castle!
+Ah ah ah ah ah! We will
+see each other again,
+and with my powers, I
+will put an end to your
+tale!
+Ah ah ah ah ah ah!!!
 ]]
 }
 -----------------------
@@ -5817,7 +5807,6 @@ Don't move!
 dialog{
   id = "dungeon_5.prison_1_locked",
   text = [[
-    - Serrure Fer -
     - Iron Lock -
 None of your keys seem
 to fit...
@@ -5876,12 +5865,13 @@ is activated...
 dialog{
   id = "dungeon_5.agahnim_beginning",
   text = [[
-Ainsi donc vous avez
-réussi à échapper à mes
-gardes et à déjouer les
-pièges de mon château.
-Mais votre escapade
-s'arrête là !
+You were able to pass
+through the security of
+my guards and avoid the
+traps laid in the
+castle.
+I don't care, your
+flight ends here!
 ]]
 }
 -----------------------
@@ -5890,23 +5880,23 @@ dialog{
   id = "dungeon_5.agahnim_end",
   text = [[
 ...$0...........$0
-Vous m'avez vaincu
-cette fois...
-Mais nous nous
-reverrons !
+You defeated me this
+time...
+But we will meet
+again!
 
-Votre petite aventure
-ne change rien...
-Sahasrahla est en mon
-pouvoir et il va me
-révéler où se trouvent
-la Princesse et les
-huit enfants...
-Ah ah ah ah ah !
+Your little journey
+won't change
+anything...
+Sahasrahla is under
+my control and he will
+tell me where the
+Princess and the eight
+children are...
+Ah ah ah ah ah!
 
-Sur ce, je dois vous
-laisser. A une
-prochaine fois !
+I must leave now. See
+you later!
 ]]
 }
 -----------------------
@@ -5951,14 +5941,12 @@ behind you.
 dialog{
   id = "dungeon_6.tom",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Tu as fait beaucoup de
-chemin et traversé de
-nombreuses épreuves
-depuis que nous nous
-sommes rencontrés
-jadis.
+$2$v... Thank you.
+You saved my life.
+You have gone through a
+lengthy journey and
+overcome many ordeals
+since we last met.
 ]]
 }
 -----------------------
@@ -5966,45 +5954,39 @@ jadis.
 dialog{
   id = "dungeon_6.tom_revelation",
   text = [[
-$2J'ai des choses très
-graves à t'avouer...
-La mort de notre roi
-n'était pas
-accidentelle. C'est moi
-qui l'ai empoisonné.
-J'étais sous le
-contrôle d'Agahnim...
-Il m'avait envoûté et
-j'avais perdu toute
-volonté... Je ne
-pouvais rien faire...
-Ce n'est que lorsque le
-sort a été brisé que
-j'ai réalisé ce qui
-s'était passé... J'ai
-alors décidé de
-m'exiler dans la
-caverne où tu m'as
-rencontré. Puis j'ai
-été fait prisonnier en
-tentant de résister
-lorsque Agahnim a
-envahi le château.
-$v... Tu dois
-maintenant te rendre à
-la Montagne des
-Terreurs. C'est là
-qu'Agahnim est parti à
-la recherche de Zelda.
-Tu dois d'abord libérer
-Sahasrahla avant que le
-sorcier parvienne à
-lui faire avouer où se
-trouvent Zelda et les
-huit enfants...
-Prends donc ceci, c'est
-ma modeste contribution
-pour ta quête...
+$2I need to confess
+some serious facts...
+Our king's death was
+not accidental.
+I poisoned him.
+I was under Agahnim's
+control...
+He cast a spell on me
+and I lost my free
+will... There is
+nothing I could do...
+When the spell broke I
+realised what had
+happened... Thus I
+decided to retire to
+the cave where we first
+met. Then I was thrown
+in jail while trying
+to resist when Agahnim
+seized control of the
+castle...
+$v... You must now
+travel to Mount Terror.
+Agahnim went there
+to look for Zelda.
+You must first free
+Sahasrahla before the
+sorcerer manages to
+get the information
+he needs...
+Please take this, my
+little contribution
+to your quest...
 ]]
 }
 -----------------------
@@ -6030,16 +6012,15 @@ dialog{
 }
 -----------------------
 
---#Purposely poetic construction
---#Alternative: "Under your feet lies a secret."
-
 -- The original dialog was a reference
 -- to Link's Awakening
+
+-- Replaced translation with Link's Awakening text
 dialog{
   id = "dungeon_7.2f_weak_floor_hint",
   text = [[
-Under your feet, a
-secret sleeps.
+In soil sleeps secrets,
+beneath your soles...
 ]]
 }
 -----------------------
@@ -6056,60 +6037,56 @@ fall alone.
 dialog{
   id = "dungeon_7.sahasrahla",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
+$2$v... Thank you.
+You saved my life.
 
-Si seulement j'avais pu
-tenir une minute de
-plus...
-Ces bandits m'ont forcé
-à révéler où se
-trouvent Zelda et les
-enfants du Solarus.
-Tu dois maintenant les
-protéger avant qu'il ne
-leur arrive malheur...
-Ils sont cachés dans un
-palais à l'est des
-montagnes. Les huit
-êtres du Solarus
-doivent échapper à
-Agahnim, sans quoi le
-sorcier pourrait
-déjouer le sceau créé
-par l'Amulette du
-Solarus, le pendentif
-porté par Zelda et qui
-est nécessaire à la
-reconstitution de la
-Triforce.
-Le mystère du Solarus
-est contenu dans ce
-pendentif.
-Le possesseur du
-pendentif a la
-possibilité d'invoquer
-le pouvoir du Solarus
-dans le but de sceller
-un objet, un lieu ou
-même un monde, comme le
-firent les sept sages
-lorsqu'ils scellèrent
-la Terre d'Or. Zelda
-est l'héritière de ce
-pouvoir. Elle l'a
-utilisé pour sceller
-les fragments de la
-Triforce, par le biais
-des huit êtres créés
-par le Solarus.
-Ainsi, tant qu'elle
-seule connaît le secret
-de ce pendentif, elle
-seule maîtrise le sceau
-de la Triforce. C'est
-pourquoi tu dois
-protéger le sceau.
+Had I only been able
+to resist a while
+more...
+Those culprits coaxed
+me into revealing the
+location of Zelda and
+the Solarus children.
+Protect them from all
+danger, before
+something dreadful
+happens...
+They are hiding in a
+palace sitting east
+of the mountains. The
+eight Solarus beings
+must escape from
+Agahnim, else the
+sorcerer could break
+the seal created by
+the Solarus Amulet, the
+relic worn by Zelda,
+necessary to the
+gathering of the
+Triforce shards.
+The mystery of Solarus
+is kept safe inside
+the relic.
+The relic's owner has
+the ability to summon
+the Solarus power to
+seal an object, a
+place or even a world,
+as the seven sages once
+did when they sealed
+away the Golden Land.
+Zelda is the heiress of
+that power. She used it
+to seal the Triforce
+shards, using the eight
+beings created by the
+Solarus.
+Thus, as long as she
+alone knows the secret
+of the relic, she alone
+masters the Triforce's
+seal. This is why you
+must protect the seal.
 ]]
 }
 -----------------------
@@ -6128,9 +6105,10 @@ dialog{
   id = "dungeon_8.hint_1F",
   skip = "current",
   text = [[
-Pour continuer ton
-chemin, jette-toi dans
-les abysses du donjon.
+Throw yourself into
+the depths of the
+dungeon and carry on
+your journey.
 ]]
 }
 -----------------------
@@ -6139,9 +6117,8 @@ dialog{
   id = "dungeon_8.hint_B1",
   skip = "current",
   text = [[
-Si tu es bloqué,
-combats les pointes par
-les pointes.
+If you are stuck, fight
+the spades with spades.
 ]]
 }
 -----------------------
@@ -6149,23 +6126,22 @@ les pointes.
 dialog{
   id = "dungeon_8.billy",
   text = [[
-Tu ne pensais peut-être
-pas retrouver ici ton
-vieil ami Billy le
-Téméraire, le plus
-grand héros de tous les
-temps !
-La princesse et les
-huit enfants ne sont
-plus ici.
-Ils avaient en effet
-trouvé refuge dans mon
-palais, et je me suis
-moi-même chargé de les
-livrer à Agahnim...
+You did not think you
+would find your old
+buddy Billy the
+Reckless, greatest
+hero of all times?!
+The princess and the
+eight childs are not
+here anymore.
+They did find shelter
+in my palace, but I
+took the responsability
+of handing them to
+Agahnim...
 
-Maintenant, c'est à ton
-tour de périr !
+Now, it is your turn
+to die!
 ]]
 }
 -----------------------
@@ -6173,21 +6149,20 @@ tour de périr !
 dialog{
   id = "dungeon_8.agahnim",
   text = [[
-$1Ce Billy était vraiment
-un incompétent. Puisque
-ni lui, ni mes autres
-serviteurs ne viennent
-à bout de vous, jeune
-parasite, je vais moi-
-même m'occuper de votre
-cas. Vous allez
-disparaître une bonne
-fois pour toutes. Après
-cela, je pourrai enfin
-m'emparer de la
-Triforce et étendre mon
-pouvoir au monde
-entier. Ah ah ah ah !
+$1That Billy was really
+incapable of anything.
+Seeing as how he, along
+with all my other
+minions, could not end
+you, little parasite, I
+am making it a private
+matter. You will
+disappear once and for
+all. And then, finally,
+I will get my hands on
+the Triforce and extend
+my power to the whole
+world. Ah ah ah ah!
 ]]
 }
 -----------------------
@@ -6195,11 +6170,10 @@ entier. Ah ah ah ah !
 dialog{
   id = "dungeon_8.agahnim_middle",
   text = [[
-$1$0...$0.............$0 Vous
-êtes plutôt coriace, je
-dois vous l'accorder.
-Mais que dites-vous de
-cela ?
+$1$0...$0.............$0 You
+are rather tough, that
+is no lie.
+But what about this?
 ]]
 }
 -----------------------
@@ -6208,21 +6182,18 @@ dialog{
   id = "dungeon_8.agahnim_end",
   text = [[
 $1$0...$0 .........$0
-Je suis vaincu...$0
-C'est la fin...$0
-Je n'ai pas été à la
-hauteur...
+I am defeated...$0
+This is the end...$0
+I was not up to it...
 
-Je m'incline devant
-votre bravoure.$0
+I bow down before your
+bravery.$0
 
-Mais puisque je n'ai
-pas été capable d'en
-finir avec vous, il est
-désormais temps pour
-moi de libérer mon
-Maître...
-Ah ah ah ah ah ah !!!
+Since I was not able
+to defeat you, it is
+now time for me to free
+my Master...
+Ah ah ah ah ah ah!!!
 ]]
 }
 -----------------------
@@ -6230,26 +6201,26 @@ Ah ah ah ah ah ah !!!
 dialog{
   id = "dungeon_8.ganon",
   text = [[
-$1Ainsi vous êtes parvenu
-à défaire à nouveau mon
-alter-ego, le sombre
-sorcier Agahnim... Cela
-n'aura servi à rien
-d'autre que de le
-contraindre à me
-libérer. Pour vous
-remercier, je vous
-invite, vous ainsi que
-la Princesse et les
-huit enfants, à me
-rejoindre dans mon
-palais. Je récupèrerai
-ainsi la Triforce, et
-vous serez au premières
-loges pour admirer cet
-évènement.
-Laissez-vous donc
-transporter l'esprit...
+$1Thus, you have
+managed to defeat my
+alter ego, the dark
+sorcerer Agahnim...
+That was pretty useless
+considering it made him
+free me, the dark times
+are not over! As a
+reward for your work,
+you, the Princess as
+well as the eight
+children, are invited
+to join me in my
+palace. I will take
+the Triforce back and
+you shall be the first
+to witness this amazing
+event.
+Let your spirit travel
+freely...
 ]]
 }
 -----------------------
@@ -6304,10 +6275,9 @@ dialog{
   id = "dungeon_9.5f_childs_hint",
   skip = "all",
   text = [[
-$1Pour pouvoir vaincre
-Ganon, les braseros
-doivent être allumés
-dans le sens du temps.
+$1To defeat Ganon,
+the torches must be
+lit clockwise.
 ]]
 }
 -----------------------
@@ -6315,15 +6285,15 @@ dans le sens du temps.
 dialog{
   id = "dungeon_9.boss",
   text = [[
-Vous voilà enfin, jeune
-gringalet.
+There you are, young
+weakling.
 
-Cela faisait longtemps
-que j'attendais votre
-venue.
-L'heure de notre
-revanche a sonné !
-Préparez-vous à périr.
+I have been waiting
+for you for a long
+time now.
+The time for revenge
+has finally come!
+Prepare to die.
 ]]
 }
 -----------------------
@@ -6331,21 +6301,18 @@ Préparez-vous à périr.
 dialog{
   id = "dungeon_9.zelda",
   text = [[
-$1$v... Merci.
-Avec cette nouvelle
-victoire sur le mal, tu
-montres une fois encore
-que la sagesse et la
-justice finissent
-toujours par triompher
-sur les forces du
-Malin. Grâce à ce que
-tu as accompli, tu
-permets à notre monde
-de retrouver son
-apparence normale.
-Le Royaume d'Hyrule est
-désormais restauré.
+$1$v... Thank you.
+Your victory on evil
+shows once again that
+wisdom and justice
+always triumph over
+the forces of Evil.
+Thanks to your
+accomplishments, our
+world has been restored
+to its original state.
+The Kingdom of Hyrule
+is whole once again.
 ]]
 }
 -----------------------
@@ -6353,30 +6320,27 @@ désormais restauré.
 dialog{
   id = "dungeon_9.zelda_children",
   text = [[
-$1Je dois aujourd'hui
-détruire ce pendentif.
-Le pouvoir du Solarus
-est trop dangereux. En
-le détruisant, il n'y
-aura plus aucun moyen
-de reconstituer les
-fragments de la
-Triforce, que ce soit
-pour faire le bien,
-comme tu le fis jadis,
-ou pour faire régner la
-terreur, comme
-voulurent le faire
-Agahnim puis Ganondorf.
-Le pendentif pourrait
-permettre, à l'aide du
-pouvoir des huit êtres
-engendrés par l'Essence
-du Solarus, d'annuler
-le Sceau créé.
-C'est pourquoi il est
-nécessaire de le
-détruire.
+$1I must destroy this
+relic. The power of
+Solarus is too
+dangerous. By
+destroying it, there
+will be no way to
+restore the Triforce
+from its fragments.
+Even if it is for a
+good purpose as you
+once used it, the evil
+will always try to
+reach for it, like
+Agahnim and Ganondorf.
+With the power of the
+eight beings created
+by the Solarus Essence,
+the relic could break
+the Seal.
+Now you understand why
+I must destroy it.
 ]]
 }
 -----------------------
@@ -6384,11 +6348,13 @@ détruire.
 dialog{
   id = "dungeon_9.zelda_end",
   text = [[
-$1C'est terminé.$0
-Le pouvoir du Solarus
-s'est éteint à jamais.
-La Triforce est scellée
-pour l'éternité.
+$1It is over.$0
+The power of the
+Solarus has vanished
+forever.
+The Triforce will
+remain sealed until
+time ends.
 ]]
 }
 -----------------------
@@ -6409,7 +6375,7 @@ dialog{
 $1        Credits$0
 
 
-    Programming:
+      Programming:$0
 Christopho$0
 ]]
 }
@@ -6418,14 +6384,14 @@ Christopho$0
 dialog{
   id = "credits_2",
   text = [[
-$1   Maps and puzzles:
+$1   Maps and puzzles:$0
 
 
 Christopho$0
 
 
-Metallizer
-Binbin
+Metallizer$0
+Binbin$0
 Mymy$0
 ]]
 }
@@ -6434,14 +6400,14 @@ Mymy$0
 dialog{
   id = "credits_3",
   text = [[
-$1      Graphical assets:     
+$1   Graphical assets:$0
 Newlink$0
 
-Neovyse
-@PyroNet
+Neovyse$0
+@PyroNet$0
 Djipi$0
-$1       Music:      
-Marine
+$1        Music:$0
+Marine$0
 Metallizer$0
 ]]
 }
@@ -6450,15 +6416,15 @@ Metallizer$0
 dialog{
   id = "credits_4",
   text = [[
-$1       Story:      
-Guillaume F.
+$1        Story:$0
+Guillaume F.$0
 Christopho$0
-$1       Tests:$0      
+$1        English
+     localization :$0
 
-
-Thyb
-Morwenn
-BenObiWan$0
+Alex_XelA$0
+Rypervenche$0
+Jeff$0
 ]]
 }
 -----------------------
@@ -6466,19 +6432,23 @@ BenObiWan$0
 dialog{
   id = "credits_6",
   text = [[
-$1     Special thanks to:$0      
+$1        Tests:$0
 
-19oj19
-Yohann
+
+Thyb$0
+Morwenn$0
+BenObiWan$0
+$1   Special thanks to:$0
+
+
+19oj19$0           Yohann$0
+MultiSync_XV17$0   Krytzz$0
 HelpTheWretched$0
-krytzz
-MultiSync_XV17$0
 
-Nintendo$0
+        Nintendo$0
 
 
 Thanks for playing!$0
-
 
 
 

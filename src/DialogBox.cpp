@@ -368,7 +368,6 @@ void DialogBox::close() {
       previous_issuer_script->event_dialog_finished(previous_dialog_id, last_answer);
     }
   }
-
 }
 
 /**
@@ -465,9 +464,11 @@ void DialogBox::show_all_now() {
       while (!is_full() && char_index >= lines[line_index].size()) {
         char_index = 0;
         line_index++;
+        next_char_date = System::now();
       }
       if (!is_full()) {
         add_character();
+        next_char_date = System::now();
       }
     }
   }
@@ -489,7 +490,8 @@ const std::string& DialogBox::get_dialog_id() {
 bool DialogBox::is_full() {
 
   return line_index >= nb_visible_lines - 1
-      && char_index >= lines[nb_visible_lines - 1].size();
+      && char_index >= lines[nb_visible_lines - 1].size()
+      && System::now() >= next_char_date;
 }
 
 /**
@@ -703,3 +705,4 @@ void DialogBox::add_character() {
     }
   }
 }
+

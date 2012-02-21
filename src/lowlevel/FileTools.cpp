@@ -47,12 +47,8 @@ void FileTools::initialize(int argc, char** argv) {
     }
   }
 
-  // set the quest path
-  std::string quest_path = ".";
-#ifdef DEFAULT_QUEST
-  // by default, use the path defined during the build process
-  quest_path = std::string(DEFAULT_QUEST);
-#endif
+  // set the quest path, by default as defined during the build process
+  std::string quest_path = DEFAULT_QUEST;
 
   // if a command-line argument was specified, use it instead
   if (argc > 1 && argv[argc - 1][0] != '-') {

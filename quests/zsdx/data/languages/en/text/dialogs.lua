@@ -143,7 +143,6 @@ Hookshot.
 --------------------
 
 -- Flacon Magique vide / Empty bottle
---#May need to change "substances"
 dialog{
   id = "_item_description.bottle_1.1",
   icon = 7,
@@ -543,7 +542,7 @@ dialog{
   text = [[
 Eat a Pain au
 Chocolat to recover
-3 Hearts.
+three Hearts.
 ]]
 }
 --------------------
@@ -555,7 +554,7 @@ dialog{
   skip = "all",
   text = [[
 Eat a Croissant to
-recover 7 Hearts.
+recover seven Hearts.
 ]]
 }
 --------------------
@@ -1626,8 +1625,8 @@ dialog{
 You found the Large
 Bomb Bag!$0
 It can hold up to
-30 Bombs instead
-of 10!
+30 Bombs instead of
+10!
 ]]
 }
 --------------------
@@ -1641,8 +1640,8 @@ You found the Giant
 Bomb Bag!$0
 
 It can hold up to
-99 Bombs instead
-of 30!
+99 Bombs instead of
+30!
 ]]
 }
 --------------------
@@ -1656,8 +1655,8 @@ You found the
 Large Quiver!$0
 
 It can hold up to
-30 Arrows instead
-of 10!
+30 Arrows instead of
+10!
 ]]
 }
 --------------------
@@ -1671,8 +1670,8 @@ You found the
 Giant Quiver!$0
 
 It can hold up to
-99 Arrows instead
-of 30!
+99 Arrows instead of
+30!
 ]]
 }
 --------------------
@@ -1903,13 +1902,13 @@ Lair!
 }
 --------------------
 
--- Fragment de Coeur / Heart Fragment
+-- Fragment de Coeur / Piece of Heart
 dialog{
   id = "_treasure.piece_of_heart.1",
   icon = 79,
   text = [[
-You found a Heart
-Fragment!
+You found a Piece of
+Heart!
 ]]
 }
 --------------------
@@ -1955,7 +1954,7 @@ dialog{
   icon = 82,
   next = "_treasure.bomb.1.1",
   text = [[
-You found 3 Bombs!$0
+You found three Bombs!$0
 ]]
 }
 --------------------
@@ -1966,7 +1965,7 @@ dialog{
   icon = 82,
   next = "_treasure.bomb.1.1",
   text = [[
-You found 8 Bombs!$0
+You found eight Bombs!$0
 ]]
 }
 --------------------
@@ -1998,7 +1997,7 @@ dialog{
   icon = 83,
   next = "_treasure.arrow.1.1",
   text = [[
-You found 5 Arrows!$0
+You found five Arrows!$0
 ]]
 }
 --------------------
@@ -2029,10 +2028,10 @@ dialog{
   id = "_treasure.magic_flask.1",
   icon = 85,
   text = [[
-You found a Magic
-Flask!
-Your Magic Meter
-is filled.
+You found a small
+Magic Flask! Your
+Magic Meter is
+slightly filled.
 ]]
 }
 --------------------
@@ -2179,8 +2178,7 @@ magic energy.
 dialog{
   id = "_warning_magic",
   text = [[
-Watch your Magic
-Meter!
+Watch your Magic Meter!
 ]]
 }
 -----------------------
@@ -2202,7 +2200,7 @@ dialog{
   icon = 72,
   skip = "all",
   text = [[
-The door is locked!
+It's locked!
 ]]
 }
 --------------------
@@ -2228,9 +2226,8 @@ dialog{
   icon = 74,
   skip = "all",
   text = [[
-It's the door leading
-to the dungeon's evil
-master!
+This door leads to
+the Boss's Lair!
 You will need the Boss
 Key to open it.
 ]]
@@ -2244,8 +2241,8 @@ dialog{
   skip = "all",
   text = [[
 You will need something
-sharp to cut through these
-bushes.
+sharp to cut through
+these bushes.
 ]]
 }
 -----------------------
@@ -2257,10 +2254,10 @@ dialog{
   id = "_cannot_lift_too_heavy",
   skip = "all",
   text = [[
-Darn it, this is
-way too heavy!
+Darn it, this is way
+too heavy!
 
-You'll never make it
+You'll never manage
 with your bare hands!
 ]]
 }
@@ -2354,7 +2351,7 @@ dialog{
   skip = "current",
   text = [[
     	Level 3  	 
- Master Treear's Lair
+ Master Arbror's Den
 ]]
 }
 -----------------------
@@ -2364,10 +2361,8 @@ dialog{
   icon = 75,
   text = [[
 Collect four pieces
-total to get another
-Heart Container. More
-containers mean more
-life energy!
+to obtain another
+Heart.
 ]]
 }
 --------------------
@@ -2376,10 +2371,8 @@ dialog{
   id = "found_piece_of_heart.second",
   icon = 76,
   text = [[
-So far you've collected
-two pieces. With two
-more pieces, you will
-gain more life energy!
+Two more and you'll
+have another Heart.
 ]]
 }
 --------------------
@@ -2388,11 +2381,10 @@ dialog{
   id = "found_piece_of_heart.third",
   icon = 77,
   text = [[
-Now you've collected
-three pieces! With 
-another piece, your
-life energy will be
-powered up!
+Find one more Piece
+of Heart and you
+will have another
+Heart!
 ]]
 }
 --------------------
@@ -2402,8 +2394,8 @@ dialog{
   icon = 78,
   text = [[
 You found four Pieces
-of Heart. You found
-an extra Heart!
+of Heart. You got an
+extra Heart!
 ]]
 }
 --------------------
@@ -2415,9 +2407,8 @@ dialog{
   skip = "current",
   next = "found_fairy.1",
   text = [[
-You found a
-Fairy, she is
-wonderful!
+You found a Fairy,
+she's wonderful!
 ]]
 }
 --------------------
@@ -2440,20 +2431,21 @@ dialog{
   id = "found_fairy.no_empty_bottle",
   skip = "current",
   text = [[
-You don't have an
-empty Flask!
+You don't have an empty
+Flask!
 ]]
 }
 -----------------------
 
 -- Lorsqu'on trouve de l'eau et qu'on a un Flacon vide
+--#Is there a space there on purpose?
 dialog{
   id = "found_water",
   icon = 8,
   question = true,
   text = [[
 Do you want to put
-some Water in your
+some water in your
 
 Magic Flask?
 Yes
@@ -2467,9 +2459,9 @@ dialog{
   id = "found_water.no_bottle",
   skip = "all",
   text = [[
-There is some Water
-here, but you lack
-a way of storing it...
+There is some water
+here, but you have no
+way of storing it...
 ]]
 }
 -----------------------
@@ -2480,26 +2472,27 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-There is some Water
+There is some water
 here, but you need
-to empty a Magic
-Flask before getting
-it...
+an empty Magic Flask
+to store it...
 ]]
 }
 --------------------
 
 -- Utiliser un Flacon contenant de l'eau
+--#Not sure on question syntax here again
 dialog{
   id = "use_bottle_with_water",
   icon = 8,
   question = true,
   text = [[
 Your Magic Flask
-holds some Water.
-What do you
-want to do?
-Pour Water
+is filled with
+water.
+What do you want to
+do?
+Pour water
 Keep it
 ]]
 }
@@ -2511,10 +2504,10 @@ dialog{
   icon = 16,
   question = true,
   text = [[
-Eating an apple
-will restore one
-heart. What do
-you want to do?
+Eating an apple will
+restore one Heart.
+What do you want to
+do?
 Eat an apple
 Nothing
 ]]
@@ -2527,10 +2520,11 @@ dialog{
   icon = 17,
   question = true,
   text = [[
-Chocolate bread
-restores 3 hearts.
-What do you
-want to do?
+A Pain au Chocolat
+restores three
+hearts.
+What do you want to
+do?
 Eat one
 Nothing
 ]]
@@ -2545,8 +2539,8 @@ dialog{
   text = [[
 A Croissant restores
 seven hearts.
-What do you
-want to do?
+What do you want to
+do?
 Eat one
 Nothing
 ]]
@@ -2557,9 +2551,8 @@ dialog{
   id = "torch.need_lamp",
   skip = "all",
   text = [[
-There's surely a
-way of lighting
-this torch...
+There must be a way to
+light this torch...
 ]]
 }
 -----------------------
@@ -5068,7 +5061,7 @@ the chests. Its
 contents are yours to
 keep. The grand prize
 of the day is a
-Heart Fragment.
+Piece of Heart.
 ]]
 }
 -----------------------

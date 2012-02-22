@@ -78,7 +78,7 @@ dialog{
   skip = "all",
   text = [[
 Shoot Arrows to
-defeat tougher
+defeat tough
 enemies.
 ]]
 }
@@ -122,8 +122,8 @@ dialog{
 Brighten dark places
 and light torches
 with the Lamp, but
-watch your magic
-bar!
+watch your Magic
+Meter!
 ]]
 }
 --------------------
@@ -181,7 +181,7 @@ dialog{
   text = [[
 Drink Red Potion
 to fill up your
-Heart bar.
+Heart Meter.
 ]]
 }
 --------------------
@@ -194,7 +194,7 @@ dialog{
   text = [[
 Drink Green Potion
 to fill up your
-Magic bar.
+Magic Meter.
 ]]
 }
 --------------------
@@ -208,7 +208,7 @@ dialog{
 Drink Blue Potion
 to fill up both your
 Heart and Magic
-bars!
+Meters!
 ]]
 }
 --------------------
@@ -265,7 +265,7 @@ dialog{
   text = [[
 Drink Red Potion
 to fill up your
-Heart bar.
+Heart Meter.
 ]]
 }
 --------------------
@@ -278,7 +278,7 @@ dialog{
   text = [[
 Drink Green Potion
 to fill up your
-Magic bar.
+Magic Meter.
 ]]
 }
 --------------------
@@ -292,7 +292,7 @@ dialog{
 Drink Blue Potion
 to fill up both your
 Heart and Magic
-bars!
+Meters!
 ]]
 }
 --------------------
@@ -349,7 +349,7 @@ dialog{
   text = [[
 Drink Red Potion
 to fill up your
-Heart bar.
+Heart Meter.
 ]]
 }
 --------------------
@@ -362,7 +362,7 @@ dialog{
   text = [[
 Drink Green Potion
 to fill up your
-Magic bar.
+Magic Meter.
 ]]
 }
 --------------------
@@ -376,7 +376,7 @@ dialog{
 Drink Blue Potion
 to fill up both your
 Heart and Magic
-bars!
+Meters!
 ]]
 }
 --------------------
@@ -433,7 +433,7 @@ dialog{
   text = [[
 Drink Red Potion
 to fill up your
-Heart bar.
+Heart Meter.
 ]]
 }
 --------------------
@@ -446,7 +446,7 @@ dialog{
   text = [[
 Drink Green Potion
 to fill up your
-Magic bar.
+Magic Meter.
 ]]
 }
 --------------------
@@ -460,7 +460,7 @@ dialog{
 Drink Blue Potion
 to fill up both your
 Heart and Magic
-bars!
+Meters!
 ]]
 }
 --------------------
@@ -670,9 +670,10 @@ dialog{
   icon = 27,
   skip = "all",
   text = [[
-The Magic Cape warns
-you when you're near
-a weak wall.
+The Magic Cape will
+warn you when you
+are near a weak
+wall.
 ]]
 }
 --------------------
@@ -814,9 +815,8 @@ dialog{
 You found the Bow!$0
 Find some Arrows and
 you will be able to
-defeat tougher
-enemies from a
-distance!
+defeat tough enemies
+from afar!
 ]]
 }
 --------------------
@@ -828,10 +828,8 @@ dialog{
   icon = 3,
   text = [[
 You found the Bow!$0
-You can fight
-tougher ennemies
-from a distance!
-at a safe distance!
+You can fight tough
+enemies from afar!
 ]]
 }
 --------------------
@@ -1301,7 +1299,7 @@ dialog{
   id = "_treasure.apple.1",
   icon = 16,
   text = [[
-You got three
+You found three
 apples!$0
 
 Eat them later to
@@ -1315,7 +1313,7 @@ dialog{
   id = "_treasure.pain_au_chocolat.1",
   icon = 17,
   text = [[
-You got a Pain au
+You found a Pain au
 Chocolat!$0
 
 Eat a Pain au
@@ -1330,10 +1328,11 @@ dialog{
   id = "_treasure.croissant.1",
   icon = 18,
   text = [[
-You got a Croissant!$0
-It's all crispy!
-Eat a Croissant to
-recover Hearts.
+You found a
+Croissant!$0 It's
+all crispy! Eat a
+Croissant to recover
+Hearts.
 ]]
 }
 --------------------
@@ -1393,6 +1392,7 @@ looks odd...
 --------------------
 
 -- Lingots d'or
+--#Really need a better translation
 dialog{
   id = "_treasure.level_4_way.2",
   icon = 23,
@@ -1402,8 +1402,6 @@ Gold Bars!!!$0
 
 They shimmer and
 are very valuable!
-They shine and
-are invaluable!
 ]]
 }
 --------------------
@@ -1418,7 +1416,8 @@ Edelweiss!$0
 
 This pretty flower
 from Hyrule's 
-mountains is rare!
+mountains is
+extremely rare!
 ]]
 }
 --------------------
@@ -1428,7 +1427,7 @@ dialog{
   id = "_treasure.level_4_way.4",
   icon = 25,
   text = [[
-You got the Tiger
+You found the Tiger
 Scrolls!$0 You now
 master the long
 forgotten Whirlwind
@@ -1460,8 +1459,8 @@ You found the Magic
 Cape!$0
 
 It will warn you
-if you are close
-to a weak wall.
+when you are near a
+weak wall.
 ]]
 }
 --------------------
@@ -1474,8 +1473,8 @@ dialog{
 You found the Iron
 Key!$0
 
-Surely it will open
-a certain door!
+Surely it must open
+a some door!
 ]]
 }
 --------------------
@@ -1488,8 +1487,8 @@ dialog{
 You found the Stone
 Key!$0
 
-Let's find the
-right lock!
+But where is the
+lock it opens?
 ]]
 }
 --------------------
@@ -1502,8 +1501,8 @@ dialog{
 You found the Wooden
 Key!$0
 
-Which door will it
-open?
+You must find where
+to use it!
 ]]
 }
 --------------------
@@ -1516,9 +1515,8 @@ dialog{
 You found the Ice
 Key!$0
 
-It must open the
-way to a frozen
-place...
+It must open the way
+to a frozen place...
 ]]
 }
 --------------------
@@ -1531,8 +1529,8 @@ dialog{
 You found the Iron
 Gloves!$0
 
-Now you can lift
-rocks.
+With these you can
+lift rocks.
 ]]
 }
 --------------------
@@ -1546,8 +1544,8 @@ dialog{
 You found the Golden
 Gloves!$0
 
-Black rocks won't
-stand a chance!
+Now you can lift
+black rocks!
 ]]
 }
 --------------------
@@ -1568,67 +1566,67 @@ dialog{
   id = "_treasure.world_map.1",
   icon = 50,
   text = [[
-You found the
-overworld Map !$0
+You found the World
+Map !$0
 
-View it on the
-Map screen.
+View it on the Map
+screen.
 ]]
 }
 --------------------
 
--- Grand sac de rubis / Big Wallet
+-- Grand sac de rubis / Large Rupee Bag
 dialog{
   id = "_treasure.rupee_bag.2",
   icon = 52,
   text = [[
-You found the
-Big Wallet!$0
+You found the Large
+Rupee Bag!$0
 
 It can hold up
-to 300 rupees!
+to 300 Rupees!
 ]]
 }
 --------------------
 
--- Sac de rubis géant / Giant Wallet
+-- Sac de rubis géant / Giant Rupee Bag
 dialog{
   id = "_treasure.rupee_bag.3",
   icon = 53,
   text = [[
-You found the
-Giant Wallet!$0
+You found the Giant
+Rupee Bag!$0
 
 It can hold up
-to 999 rupees!
+to 999 Rupees!
 ]]
 }
 --------------------
 
--- Petit sac de bombes / Small Bomb bag
+-- Petit sac de bombes / Small Bomb Bag
+--#Bomb away vs. bombs away
 dialog{
   id = "_treasure.bomb_bag.1",
   icon = 54,
   text = [[
 You found the Bomb
-bag!$0 It holds
-10 bombs.
-Assign them to a
-key and let's
-start bombing!
+Bag!$0 It holds 10
+Bombs. Assign them
+to a key and bombs
+away!
 ]]
 }
 --------------------
 
--- Grand sac de bombes / Big Bomb bag
+-- Grand sac de bombes / Large Bomb Bag
 dialog{
   id = "_treasure.bomb_bag.2",
   icon = 55,
   text = [[
-You found the Big
+You found the Large
 Bomb Bag!$0
 It can hold up to
-30 bombs instead
+30 Bombs instead
 of 10!
 ]]
 }
@@ -1643,7 +1641,7 @@ You found the Giant
 Bomb Bag!$0
 
 It can hold up to
-99 bombs instead
+99 Bombs instead
 of 30!
 ]]
 }
@@ -1658,7 +1656,7 @@ You found the
 Large Quiver!$0
 
 It can hold up to
-30 arrows instead
+30 Arrows instead
 of 10!
 ]]
 }
@@ -1673,7 +1671,7 @@ You found the
 Giant Quiver!$0
 
 It can hold up to
-99 arrows instead
+99 Arrows instead
 of 30!
 ]]
 }
@@ -1684,14 +1682,12 @@ dialog{
   id = "_treasure.tunic.2",
   icon = 61,
   text = [[
-You found
-the Blue Mail!$0
-This armor reduces
-the damage you take
-from enemies.
-It also protects
-you from a freezing
-environment...
+You found the Blue
+Mail!$0
+It reduces damage
+taken from enemies
+and resists freezing
+temperatures...
 ]]
 }
 --------------------
@@ -1701,12 +1697,11 @@ dialog{
   id = "_treasure.tunic.3",
   icon = 62,
   text = [[
-You found the
-Red Mail!$0 This
-provides even 
+You found the Red
+Mail!$0
+It provides even
 better protection
-than the Blue
-Mail!
+than the Blue Mail!
 ]]
 }
 --------------------
@@ -1719,8 +1714,8 @@ dialog{
 You found the
 Shield!$0
 You can defend
-yourself from
-enemy attacks!
+yourself from enemy
+attacks!
 ]]
 }
 --------------------
@@ -1732,9 +1727,9 @@ dialog{
   text = [[
 You found the
 Fire Shield!$0
-You are now 
-protected from
-fire attacks!
+You are now
+protected from fire
+attacks!
 ]]
 }
 --------------------
@@ -1747,8 +1742,8 @@ dialog{
 You found the
 Mirror Shield!$0
 
-You can now stop
-laser attacks!
+You can now reflect
+lasers!
 ]]
 }
 --------------------
@@ -1758,11 +1753,11 @@ dialog{
   id = "_treasure.sword.1",
   icon = 66,
   text = [[
-You found the
-Sword of Courage!$0
+You found the Sword
+of Courage!$0
 
-You can slash
-and kill your
+You can cross swords
+and confront yours
 enemies!
 ]]
 }
@@ -1776,10 +1771,11 @@ dialog{
   text = [[
 $1You found the
 Hylian Blade!$0$0$0
-This new weapon
+This new sword
 ]]
 }
 --------------------
+--#Previous one or last?
 
 dialog{
   id = "_treasure.sword.2.1",
@@ -1837,13 +1833,11 @@ dialog{
   id = "_treasure.map.1",
   icon = 70,
   text = [[
-You got the Map!
+You found the Map!
 
-You can use it
-to see your
-current position
-and the rest of
-the dungeon.
+Use it to see the
+layout of the
+dungeon.
 ]]
 }
 --------------------
@@ -1854,13 +1848,14 @@ dialog{
   icon = 71,
   text = [[
 You found the
-Compass! 
-Now you can
-pinpoint the lair
-of the dungeon's
-evil master as well
-as the treasure 
-chests!
+Compass! Now you can
+see your position on
+the Map, the
+locations of chests,
+as well as the
+Boss's Lair! Now
+we're getting
+somewhere!
 ]]
 }
 --------------------
@@ -1881,16 +1876,16 @@ this dungeon.
 }
 --------------------
 
--- Grande Clé / Big Key
+-- Grande Clé / Large Key
 dialog{
   id = "_treasure.big_key.1",
   icon = 73,
   text = [[
-You found the Big
-Key!
-You can now open
-special doors and
-get new treasures!
+You found the Large
+Key! You can now
+open special doors
+and find new
+treasures!
 ]]
 }
 --------------------
@@ -1900,22 +1895,21 @@ dialog{
   id = "_treasure.boss_key.1",
   icon = 74,
   text = [[
-You got the Boss
-Key! 
-Now you can get
-inside the chamber
-where the Boss lurks.
+You found the Boss
+Key! Now you can
+enter the Boss's
+Lair!
 ]]
 }
 --------------------
 
--- Fragment de Coeur / Piece of heart
+-- Fragment de Coeur / Heart Fragment
 dialog{
   id = "_treasure.piece_of_heart.1",
   icon = 79,
   text = [[
-You got a Piece of
-Heart!
+You found a Heart
+Fragment!
 ]]
 }
 --------------------
@@ -1925,14 +1919,11 @@ dialog{
   id = "_treasure.heart_container.1",
   icon = 80,
   text = [[
-You got a Heart
+You found a Heart
 Container!
 
-Your maximum life
-energy is increased
-by one heart. Your
-life energy will be
-totally filled.
+Your Heart Meter
+increased by one!
 ]]
 }
 --------------------
@@ -1952,7 +1943,7 @@ Use a Bomb
 dialog{
   id = "_treasure.bomb.1.1",
   text = [[
-to make an enemy or an
+to make an enemy or
 obstacle explode.
 ]]
 }
@@ -2038,7 +2029,7 @@ dialog{
   id = "_treasure.magic_flask.1",
   icon = 85,
   text = [[
-You got a Magic
+You found a Magic
 Flask!
 Your Magic Meter
 is filled.
@@ -2051,9 +2042,10 @@ dialog{
   id = "_treasure.magic_flask.2",
   icon = 86,
   text = [[
-You got a Magic Jar!
-Your Magic Meter
-is greatly filled.
+You found a Magic
+Jar! Your Magic
+Meter is greatly
+filled.
 ]]
 }
 --------------------
@@ -2063,7 +2055,7 @@ dialog{
   id = "_treasure.rupee.1",
   icon = 90,
   text = [[
-You got a Green
+You found a Green
 Rupee!
 That's one Rupee!
 ]]
@@ -2075,7 +2067,7 @@ dialog{
   id = "_treasure.rupee.2",
   icon = 91,
   text = [[
-You got a Blue
+You found a Blue
 Rupee!
 That's five Rupees!
 ]]
@@ -2087,7 +2079,7 @@ dialog{
   id = "_treasure.rupee.3",
   icon = 92,
   text = [[
-You got a Red
+You found a Red
 Rupee!
 That's 20 Rupees!
 ]]
@@ -2223,7 +2215,7 @@ dialog{
   skip = "all",
   text = [[
 Eh? It's locked!
-If you had the Big
+If you had the Large
 Key you might be
 able to open it!
 ]]
@@ -2410,7 +2402,7 @@ dialog{
   icon = 78,
   text = [[
 You found four Pieces
-of Heart. You got
+of Heart. You found
 an extra Heart!
 ]]
 }
@@ -5838,7 +5830,8 @@ dialog{
   id = "dungeon_5.prison_2_locked_2",
   text = [[
 It's so rusty that even
-the Big Key won't work.
+the Large Key won't
+work.
 ]]
 }
 -----------------------

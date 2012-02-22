@@ -41,7 +41,8 @@ dialog{
   text = [[
 Use the feather
 to jump and
-cross obstacles.
+cross over
+obstacles.
 ]]
 }
 --------------------
@@ -53,7 +54,7 @@ dialog{
   skip = "all",
   text = [[
 Use Bombs against
-enemies or to
+enemies and to
 destroy obstacles.
 ]]
 }
@@ -77,7 +78,7 @@ dialog{
   icon = 3,
   skip = "all",
   text = [[
-Throw Arrows to
+Shoot Arrows to
 defeat tougher
 enemies.
 ]]
@@ -91,9 +92,9 @@ dialog{
   skip = "all",
   text = [[
 Use the Boomerang to
-freeze enemies or to
-catch objects from
-a certain distance.
+freeze enemies and
+pick up far-away
+objects.
 ]]
 }
 --------------------
@@ -106,9 +107,8 @@ dialog{
   text = [[
 Use the Super
 Boomerang to freeze
-or to catch objects
-from a certain
-distance.
+enemies and pick up
+far-away objects.
 ]]
 }
 --------------------
@@ -119,12 +119,11 @@ dialog{
   icon = 5,
   skip = "all",
   text = [[
-Light up places
-in the dark or
-start a fire with
-the Lamp. But
-look at your
-magic bar!
+Brighten dark places
+or light torches
+with the Lamp, but
+watch your magic
+bar!
 ]]
 }
 --------------------
@@ -135,38 +134,41 @@ dialog{
   icon = 6,
   skip = "all",
   text = [[
-Hoist yourself to
+Hoist yourself up to
 inaccessible places
-with the help
-of the Hookshot.
+with the help of the
+Hookshot.
 ]]
 }
 --------------------
 
 -- Flacon Magique vide / Empty bottle
+--#May need to change "substances"
 dialog{
   id = "_item_description.bottle_1.1",
   icon = 7,
   skip = "all",
   text = [[
-The magic bottle
-can contain
-various substances!
+The Magic Flask can
+hold various
+substances.
 ]]
 }
 --------------------
 
 -- Eau dans Flacon / Water in Bottle
+--#Second part may need changing
 dialog{
   id = "_item_description.bottle_1.2",
   icon = 8,
   skip = "all",
   text = [[
-Your magic bottle
-contains water!
+Your Magic Flask
+is filled with
+water.
 
 Use it at an
-appropriate spot!
+appropriate spot...
 ]]
 }
 --------------------
@@ -177,9 +179,9 @@ dialog{
   icon = 9,
   skip = "all",
   text = [[
-Drink red potion
-to fill up
-your Heart bar!
+Drink Red Potion
+to fill up your
+Heart bar.
 ]]
 }
 --------------------
@@ -190,9 +192,9 @@ dialog{
   icon = 10,
   skip = "all",
   text = [[
-Drink green potion
-to fill up
-your magic bar!
+Drink Green Potion
+to fill up your
+Magic bar.
 ]]
 }
 --------------------
@@ -203,9 +205,10 @@ dialog{
   icon = 11,
   skip = "all",
   text = [[
-Drink blue potion
-to fill up both
-heart and magic bar!
+Drink Blue Potion
+to fill up both your
+Heart and Magic
+bars!
 ]]
 }
 --------------------
@@ -217,8 +220,7 @@ dialog{
   skip = "all",
   text = [[
 This Fairy will help
-you if needed.
-
+you in time of need.
 You can also use it
 whenever you want to
 recover your Hearts!
@@ -232,9 +234,9 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-The magic bottle
-can contain
-various substances!
+The Magic Flask can
+hold various
+substances.
 ]]
 }
 --------------------
@@ -245,11 +247,12 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Your magic bottle
-contains water!
+Your Magic Flask
+is filled with
+water.
 
 Use it at an
-appropriate spot!
+appropriate spot...
 ]]
 }
 --------------------
@@ -260,9 +263,9 @@ dialog{
   icon = 9,
   skip = "all",
   text = [[
-Drink red potion
-to fill up
-your Heart bar!
+Drink Red Potion
+to fill up your
+Heart bar.
 ]]
 }
 --------------------
@@ -273,9 +276,9 @@ dialog{
   icon = 10,
   skip = "all",
   text = [[
-Drink green potion
-to fill up
-your magic bar!
+Drink Green Potion
+to fill up your
+Magic bar.
 ]]
 }
 --------------------
@@ -286,9 +289,10 @@ dialog{
   icon = 11,
   skip = "all",
   text = [[
-Drink blue potion
-to fill up both
-heart and magic bar!
+Drink Blue Potion
+to fill up both your
+Heart and Magic
+bars!
 ]]
 }
 --------------------
@@ -299,9 +303,8 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-This fairy will help
-you if needed.
-
+This Fairy will help
+you in time of need.
 You can also use it
 whenever you want to
 recover your Hearts!
@@ -315,9 +318,9 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-The magic bottle
-can contain
-various substances!
+The Magic Flask can
+hold various
+substances.
 ]]
 }
 --------------------
@@ -328,11 +331,12 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Your magic bottle
-contains water!
+Your Magic Flask
+is filled with
+water.
 
 Use it at an
-appropriate spot!
+appropriate spot...
 ]]
 }
 --------------------
@@ -343,9 +347,9 @@ dialog{
   icon = 9,
   skip = "all",
   text = [[
-Drink red potion
-to fill up
-your Heart bar!
+Drink Red Potion
+to fill up your
+Heart bar.
 ]]
 }
 --------------------
@@ -356,9 +360,9 @@ dialog{
   icon = 10,
   skip = "all",
   text = [[
-Drink green potion
-to fill up
-your magic bar!
+Drink Green Potion
+to fill up your
+Magic bar.
 ]]
 }
 --------------------
@@ -369,9 +373,10 @@ dialog{
   icon = 11,
   skip = "all",
   text = [[
-Drink blue potion
-to fill up both
-heart and magic bar!
+Drink Blue Potion
+to fill up both your
+Heart and Magic
+bars!
 ]]
 }
 --------------------
@@ -383,8 +388,7 @@ dialog{
   skip = "all",
   text = [[
 This Fairy will help
-you if needed.
-
+you in time of need.
 You can also use it
 whenever you want to
 recover your Hearts!
@@ -398,9 +402,9 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-The magic bottle
-can contain
-various substances!
+The Magic Flask can
+hold various
+substances.
 ]]
 }
 --------------------
@@ -411,11 +415,12 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Your magic bottle
-contains water!
+Your Magic Flask
+is filled with
+water.
 
 Use it at an
-appropriate spot!
+appropriate spot...
 ]]
 }
 --------------------
@@ -426,9 +431,9 @@ dialog{
   icon = 9,
   skip = "all",
   text = [[
-Drink red potion
-to fill up
-your Heart bar!
+Drink Red Potion
+to fill up your
+Heart bar.
 ]]
 }
 --------------------
@@ -439,9 +444,9 @@ dialog{
   icon = 10,
   skip = "all",
   text = [[
-Drink green potion
-to fill up
-your magic bar!
+Drink Green Potion
+to fill up your
+Magic bar.
 ]]
 }
 --------------------
@@ -452,9 +457,10 @@ dialog{
   icon = 11,
   skip = "all",
   text = [[
-Drink blue potion
-to fill up both
-heart and magic bar!
+Drink Blue Potion
+to fill up both your
+Heart and Magic
+bars!
 ]]
 }
 --------------------
@@ -466,8 +472,7 @@ dialog{
   skip = "all",
   text = [[
 This Fairy will help
-you if needed.
-
+you in time of need.
 You can also use it
 whenever you want to
 recover your Hearts!

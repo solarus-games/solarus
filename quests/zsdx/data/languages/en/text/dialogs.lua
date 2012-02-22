@@ -934,8 +934,8 @@ dialog{
 You found some Red
 Potion!$0
 
-Drink it to
-recover your health.
+Drink it to recover
+your health.
 ]]
 }
 --------------------
@@ -948,9 +948,8 @@ dialog{
 You found some
 Green Potion!$0
 
-Drink it to
-recover your magic
-energy.
+Drink it to recover
+your magic energy.
 ]]
 }
 --------------------
@@ -977,14 +976,11 @@ dialog{
   skip = "all",
   text = [[
 You captured a
-Fairy! It will
-come in aid in
-the most desperate
-times.
-You may also use
-it at any time to
-recover some
-Hearts.
+Fairy! It will help
+you in time of need.
+You can also use it
+whenever you want to
+recover your Hearts!
 ]]
 }
 --------------------
@@ -994,11 +990,11 @@ dialog{
   id = "_treasure.bottle_2.1",
   icon = 7,
   text = [[
-You found a Magic
-Flask!$0
+You found a
+Magic Flask!$0
 
 Fill it with
-diverse contents.
+various substances.
 ]]
 }
 --------------------
@@ -1010,7 +1006,7 @@ dialog{
   text = [[
 You filled your
 Magic Flask with
-Water!
+water!
 ]]
 }
 --------------------
@@ -1020,11 +1016,11 @@ dialog{
   id = "_treasure.bottle_2.3",
   icon = 9,
   text = [[
-You found some
-Red Potion!$0
+You found some Red
+Potion!$0
 
-Drink it to
-recover your health.
+Drink it to recover
+your health.
 ]]
 }
 --------------------
@@ -1037,9 +1033,8 @@ dialog{
 You found some
 Green Potion!$0
 
-Drink it to
-recover your magic
-energy.
+Drink it to recover
+your magic energy.
 ]]
 }
 --------------------
@@ -1067,14 +1062,11 @@ dialog{
   skip = "all",
   text = [[
 You captured a
-Fairy! It will
-come in aid in
-the most desperate
-times.
-You may also use
-it at any time to
-recover some
-Hearts.
+Fairy! It will help
+you in time of need.
+You can also use it
+whenever you want to
+recover your Hearts!
 ]]
 }
 
@@ -1085,11 +1077,11 @@ dialog{
   id = "_treasure.bottle_3.1",
   icon = 7,
   text = [[
-You found a Magic
-Flask!$0
+You found a
+Magic Flask!$0
 
 Fill it with
-diverse contents.
+various substances.
 ]]
 }
 --------------------
@@ -1111,11 +1103,11 @@ dialog{
   id = "_treasure.bottle_3.3",
   icon = 9,
   text = [[
-You found some
-Red Potion!$0
+You found some Red
+Potion!$0
 
-Drink it to
-recover your health.
+Drink it to recover
+your health.
 ]]
 }
 --------------------
@@ -1128,9 +1120,8 @@ dialog{
 You found some
 Green Potion!$0
 
-Drink it to
-recover your magic
-energy.
+Drink it to recover
+your magic energy.
 ]]
 }
 --------------------
@@ -1157,14 +1148,11 @@ dialog{
   skip = "all",
   text = [[
 You captured a
-Fairy! It will
-come in aid in
-the most desperate
-times.
-You may also use
-it at any time to
-recover some
-Hearts.
+Fairy! It will help
+you in time of need.
+You can also use it
+whenever you want to
+recover your Hearts!
 ]]
 }
 
@@ -1175,11 +1163,11 @@ dialog{
   id = "_treasure.bottle_4.1",
   icon = 7,
   text = [[
-You found a Magic
-Flask!$0
+You found a
+Magic Flask!$0
 
 Fill it with
-diverse contents.
+various substances.
 ]]
 }
 --------------------
@@ -1201,11 +1189,11 @@ dialog{
   id = "_treasure.bottle_4.3",
   icon = 9,
   text = [[
-You found some
-Red Potion!$0
+You found some Red
+Potion!$0
 
-Drink it to
-recover your health.
+Drink it to recover
+your health.
 ]]
 }
 --------------------
@@ -1218,9 +1206,8 @@ dialog{
 You found some
 Green Potion!$0
 
-Drink it to
-recover your magic
-energy.
+Drink it to recover
+your magic energy.
 ]]
 }
 --------------------
@@ -1247,14 +1234,11 @@ dialog{
   skip = "all",
   text = [[
 You captured a
-Fairy! It will
-come in aid in
-the most desperate
-times.
-You may also use
-it at any time to
-recover some
-Hearts.
+Fairy! It will help
+you in time of need.
+You can also use it
+whenever you want to
+recover your Hearts!
 ]]
 }
 --------------------

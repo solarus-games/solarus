@@ -40,9 +40,8 @@ dialog{
   skip = "all",
   text = [[
 Use the feather
-to jump and
-cross over
-obstacles.
+to jump in place and
+over obstacles.
 ]]
 }
 --------------------
@@ -92,8 +91,8 @@ dialog{
   skip = "all",
   text = [[
 Use the Boomerang to
-freeze enemies and
-pick up far-away
+immobilize enemies
+and pick up far-away
 objects.
 ]]
 }
@@ -106,9 +105,10 @@ dialog{
   skip = "all",
   text = [[
 Use the Super
-Boomerang to freeze
-enemies and pick up
-far-away objects.
+Boomerang to
+immobilize enemies
+and pick up far-away
+objects.
 ]]
 }
 --------------------
@@ -120,7 +120,7 @@ dialog{
   skip = "all",
   text = [[
 Brighten dark places
-or light torches
+and light torches
 with the Lamp, but
 watch your magic
 bar!
@@ -489,8 +489,8 @@ dialog{
 Run as fast as
 lightning by using
 the Pegasus Shoes.
-Press the Action key
-to run.
+Press and hold the
+Action key to run.
 ]]
 }
 --------------------
@@ -502,12 +502,14 @@ dialog{
   skip = "all",
   text = [[
 The Mystic Mirror
-has strange powers.
+has strange
+powers...
 ]]
 }
 --------------------
 
 -- Canne de Somaria / Cane of Somaria
+--#May need "blocks" or "a block"
 dialog{
   id = "_item_description.cane_of_somaria.1",
   icon = 15,
@@ -528,7 +530,7 @@ dialog{
   skip = "all",
   text = [[
 Eat Apples to
-recover some Hearts.
+recover Hearts.
 ]]
 }
 --------------------
@@ -539,8 +541,8 @@ dialog{
   icon = 17,
   skip = "all",
   text = [[
-Eat a Chocolate
-Bread to recover
+Eat a Pain a Pain au
+Chocolat to recover
 3 Hearts.
 ]]
 }
@@ -577,21 +579,23 @@ dialog{
   icon = 20,
   skip = "all",
   text = [[
-How could you use
-the Bone Key ?
+What could the Bone
+Key be used for?
 ]]
 }
 --------------------
 
--- Clé de Terre / Clay Key
+-- Clé de Terre / Earth Key
+--#Check translation
 dialog{
   id = "_item_description.clay_key.1",
   icon = 21,
   skip = "all",
   text = [[
-The Clay Key, that
-lets you open the
-village's cave.
+The Earth Key...
+this allows access
+to the village's
+cave.
 ]]
 }
 --------------------
@@ -602,8 +606,8 @@ dialog{
   icon = 22,
   skip = "all",
   text = [[
-This Apple Pie has a
-strange aspect...
+This Apple Pie looks
+funny...
 ]]
 }
 --------------------
@@ -614,9 +618,8 @@ dialog{
   icon = 23,
   skip = "all",
   text = [[
-These are 3
-authentic gold
-bars!
+Three authentic Gold
+Bars!
 ]]
 }
 --------------------
@@ -628,8 +631,9 @@ dialog{
   skip = "all",
   text = [[
 The Edelweiss is a
-rare flower in the
-Kingdom of Hyrule.
+very rare flower in
+the Kingdom of
+Hyrule.
 ]]
 }
 --------------------
@@ -641,7 +645,7 @@ dialog{
   skip = "all",
   text = [[
 These Tiger scrolls
-let you master
+will let you master
 advanced sword
 techniques.
 ]]
@@ -654,8 +658,8 @@ dialog{
   icon = 26,
   skip = "all",
   text = [[
-The flippers let you
-swim in deep waters.
+Swim in deep waters
+with these flippers.
 ]]
 }
 --------------------
@@ -680,8 +684,8 @@ dialog{
   skip = "all",
   text = [[
 The Iron Key.
-But don't miss
-the right lock!
+Be sure to use it in
+the correct lock!
 ]]
 }
 --------------------
@@ -693,21 +697,22 @@ dialog{
   skip = "all",
   text = [[
 The Stone Key!
-Let's find the
-right lock!
+Let's find the right
+lock!
 ]]
 }
 --------------------
 
 -- Clé de Bois / Wooden Key
+--#May need to be translated better
 dialog{
   id = "_item_description.wooden_key.1",
   icon = 30,
   skip = "all",
   text = [[
-The Wooden Key. But
-one lock is the
-right one!
+The Wooden Key.
+There's only one
+lock for this key!
 ]]
 }
 --------------------
@@ -719,8 +724,8 @@ dialog{
   skip = "all",
   text = [[
 The Ice Key. You must
-find a frozen spot so
-that it'll work!
+find a frozen place for
+it to work!
 ]]
 }
 -----------------------
@@ -731,8 +736,9 @@ dialog{
   icon = 32,
   skip = "all",
   text = [[
-Those Iron gloves
-let you lift rocks.
+These Iron gloves
+will let you lift
+rocks.
 ]]
 }
 --------------------
@@ -743,9 +749,9 @@ dialog{
   icon = 33,
   skip = "all",
   text = [[
-Lift up black rocks
-by using the
-Golden Gloves.
+Lift black rocks
+with these Golden
+Gloves.
 ]]
 }
 --------------------
@@ -768,11 +774,11 @@ dialog{
   id = "_treasure.world_map.1",
   icon = 50,
   text = [[
-You found the
-overworld Map!$0
+You found the World
+Map!$0
 
-View it on the
-Map screen.
+View it on the Map
+screen.
 ]]
 }
 --------------------
@@ -781,7 +787,7 @@ Map screen.
 -- When finding a treasure
 -- ---------------------
 --
--- Messages shown above are seen when the player
+-- Messages shown below are seen when the player
 -- obtain a treasure, usually by opening a chest or by buying it from a
 -- merchant in a shop.
 --------------------
@@ -794,8 +800,8 @@ dialog{
   text = [[
 You found the
 Feather!$0 Use it to
-jump and get over
-obstacles!
+jump in place and
+over obstacles!
 ]]
 }
 --------------------
@@ -806,16 +812,17 @@ dialog{
   icon = 2,
   text = [[
 You found the Bow!$0
-Find some arrows
-and you will be
-able to overcome
-remotely tougher
-enemies!
+Find some Arrows and
+you will be able to
+defeat tougher
+enemies from a
+distance!
 ]]
 }
 --------------------
 
 -- Arc & Flèches / Bow & Arrows
+--#Choose one
 dialog{
   id = "_treasure.bow.2",
   icon = 3,
@@ -823,6 +830,7 @@ dialog{
 You found the Bow!$0
 You can fight
 tougher ennemies
+from a distance!
 at a safe distance!
 ]]
 }
@@ -836,18 +844,18 @@ dialog{
 You found the
 Boomerang!$0 You can
 immobilize enemies
-enemies or catch
-some objects
-remotely.
+and pick up far-away
+objects.
 There are several 
 ways of using it,
 it’s up to you to
-unravel them!
+discover them all!
 ]]
 }
 --------------------
 
 -- Super Boomerang
+--#Check for better word for "ancien"
 dialog{
   id = "_treasure.boomerang.2",
   icon = 35,
@@ -857,7 +865,7 @@ Super Boomerang!$0
 
 It's faster and
 more powerful than
-the older one!
+the original!
 ]]
 }
 --------------------
@@ -869,23 +877,24 @@ dialog{
   next = "_warning_magic",
   text = [[
 You found the
-Lantern!$0 Use it
-to light up dark
-places and torches.
+Lantern!$0 Use it to
+brighten dark places
+and light torches.
 ]]
 }
 --------------------
 
--- Grappin / Hook Shot
+-- Grappin / Hookshot
 dialog{
   id = "_treasure.hookshot.1",
   icon = 6,
   text = [[
 You found the
-Hook Shot!$0
+Hookshot!$0
 
 Immobilize your
-enemies and fly to
+enemies and fling
+yourself to
 inaccessible places!
 ]]
 }

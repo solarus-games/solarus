@@ -541,7 +541,7 @@ dialog{
   icon = 17,
   skip = "all",
   text = [[
-Eat a Pain a Pain au
+Eat a Pain au
 Chocolat to recover
 3 Hearts.
 ]]
@@ -607,7 +607,7 @@ dialog{
   skip = "all",
   text = [[
 This Apple Pie looks
-funny...
+odd...
 ]]
 }
 --------------------
@@ -1251,11 +1251,12 @@ dialog{
 You found the
 Pegasus Shoes!$0
 
-Run and rush through
-the toughest 
+Run and charge
+through the toughest
 enemies!
-Press the Action
-button to wear them.
+Press and hold the
+Action key to use
+them.
 ]]
 }
 --------------------
@@ -1270,13 +1271,14 @@ Mystic Mirror!$0
 
 Its strange powers
 will surely be of
-good help in your
+help in your
 quest...
 ]]
 }
 --------------------
 
 -- Canne de Somaria / Cane of Somaria
+--#Figure out if we want a block or blocks
 dialog{
   id = "_treasure.cane_of_somaria.1",
   icon = 15,
@@ -1286,14 +1288,15 @@ You found the
 Cane of Somaria!$0
 
 You can create
-blocks and grab
-onto them with
-the Hookshot.
+blocks and grab onto
+them with the
+Hookshot.
 ]]
 }
 --------------------
 
 -- 3 Pommes
+--#3 or three?
 dialog{
   id = "_treasure.apple.1",
   icon = 16,
@@ -1301,9 +1304,8 @@ dialog{
 You got three
 apples!$0
 
-Eat them later
-to recover some
-Hearts!
+Eat them later to
+recover Hearts!
 ]]
 }
 --------------------
@@ -1313,12 +1315,12 @@ dialog{
   id = "_treasure.pain_au_chocolat.1",
   icon = 17,
   text = [[
-You got a Chocolate
-Bread!$0
+You got a Pain au
+Chocolat!$0
 
-Eat a Chocolate
-Bread to recover
-some life energy.
+Eat a Pain au
+Chocolat to recover
+some life.
 ]]
 }
 --------------------
@@ -1331,7 +1333,7 @@ dialog{
 You got a Croissant!$0
 It's all crispy!
 Eat a Croissant to
-recover some hearts.
+recover Hearts.
 ]]
 }
 --------------------
@@ -1366,11 +1368,11 @@ dialog{
   id = "_treasure.clay_key.1",
   icon = 21,
   text = [[
-You found the Clay
+You found the Earth
 Key!$0
 
-Now you can open the
-village cave!
+Now you can access
+the village's cave!
 ]]
 }
 --------------------
@@ -1398,6 +1400,8 @@ dialog{
 You found some
 Gold Bars!!!$0
 
+They shimmer and
+are very valuable!
 They shine and
 are invaluable!
 ]]

@@ -29,24 +29,23 @@ class DisplayableWithEffects {
 
   public:
 
-    DisplayableWithEffects(Displayable& displayable);
-    DisplayableWithEffects(Displayable& displayable, Script& script);
+    DisplayableWithEffects(Displayable* displayable, Script* script = NULL);
     ~DisplayableWithEffects();
 
-    void start_movement(Movement& movement);
+    void start_movement(Movement* movement);
     void stop_movement();
-    void set_movement_callback(int movement_callback);
+    void set_movement_callback(int movement_callback_ref);
 
-    void start_transition(Transition& transition);
+    void start_transition(Transition* transition);
     void stop_transition();
-    void set_transition_callback(int transition_callback);
+    void set_transition_callback(int transition_callback_ref);
 
     void update();
-    void display_with_effects(Surface& dst_surface,
-        const Rectangle& dst_position);
+    void display_with_effects(Surface& dst_surface, Rectangle dst_position);
 
   private:
 
+    Displayable* displayable;     /**< the displayable object (will be deleted) */
     Movement* movement;           /**< a movement applied, or NULL (will be
                                    * deleted then if unused elsewhere) */
     int movement_callback_ref;    /**< Lua registry ref of a function to call
@@ -55,7 +54,6 @@ class DisplayableWithEffects {
                                    * (will be deleted then) */
     int transition_callback_ref;  /**< Lua registry ref of a function to call
                                    * when the transition finishes */
-
     Script* script;               /**< the script that owns this object,
                                    * or NULL */
 };

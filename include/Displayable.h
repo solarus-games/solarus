@@ -18,7 +18,6 @@
 #define SOLARUS_DISPLAYABLE_H
 
 #include "Common.h"
-#include "lowlevel/Rectangle.h"
 
 /**
  * @brief Represents anything that can be drawn on a surface.
@@ -52,6 +51,8 @@ class Displayable {
      * @param y y coordinate of where to display
      */
     virtual void blit_xy(Surface& dst_surface, int x, int y) = 0;
+
+    virtual void update();
 };
 
 #endif

@@ -24,6 +24,7 @@
  */
 DisplayableWithEffects::DisplayableWithEffects(Displayable* displayable, Script* script):
   displayable(displayable),
+  position(),
   movement(NULL),
   movement_callback_ref(LUA_REFNIL),
   transition(NULL),
@@ -63,6 +64,9 @@ void DisplayableWithEffects::start_movement(Movement* movement) {
 void DisplayableWithEffects::stop_movement() {
 
   if (movement != NULL) {
+
+    // keep the position after the movement
+    last_position.add_xy(movement->get_xy());
 
     if (script != NULL) {
       delete movement;
@@ -133,6 +137,8 @@ void DisplayableWithEffects::set_transition_callback(int transition_callback_ref
  */
 void DisplayableWithEffects::update() {
 
+  displayable->update();
+
   if (transition != NULL) {
     transition->update();
     if (transition->is_finished()) {
@@ -170,6 +176,7 @@ void DisplayableWithEffects::display_with_effects(Surface& dst_surface,
     transition->display(dst_surface);
   }
 
+  dst_position.add_xy(last_position);
   if (movement != NULL) {
     dst_position.add_xy(movement.get_xy());
   }

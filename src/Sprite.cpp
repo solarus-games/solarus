@@ -557,6 +557,8 @@ bool Sprite::test_collision(Sprite& other, int x1, int y1, int x2, int y2) const
  */
 void Sprite::update() {
 
+  Displayable::update();
+
   if (suspended || paused) {
     return;
   }

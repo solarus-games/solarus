@@ -46,6 +46,8 @@ class DisplayableWithEffects {
   private:
 
     Displayable* displayable;     /**< the displayable object (will be deleted) */
+    Rectangle last_position;      /**< position of this object after its last
+                                   * movement */
     Movement* movement;           /**< a movement applied, or NULL (will be
                                    * deleted then if unused elsewhere) */
     int movement_callback_ref;    /**< Lua registry ref of a function to call

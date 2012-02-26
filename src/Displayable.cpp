@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Displayable.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * @brief Constructor.
@@ -73,3 +74,11 @@ void Displayable::blit_0(Surface& dst_surface) {
   blit_xy(dst_surface, 0, 0);
 }
 
+/**
+ * @brief Updates this object.
+ *
+ * This function is called repeatedly. You can redefine it for your needs.
+ */
+void Displayable::update() {
+  // nothing to do by default
+}

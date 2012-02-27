@@ -70,7 +70,10 @@ class Script {
     // script data
     // TODO reimplement timers as userdata? timer:stop, timer:set_with_sound(true)
     std::map<int, Timer*> timers;   /**< the timers currently running for this
-                                     * script */
+                                     * script, indexed by their callback ref */
+    std::set<DynamicDisplayable*>
+      displayables;                 /**< all displayable objects created by
+                                     * this script*/
 
     std::map<void*, int> refcounts; /**< for each userdata known this script:
                                      * number of pointers to the object
@@ -103,9 +106,10 @@ class Script {
     void initialize_sprite_module();
     void initialize_movement_module();
     static bool is_userdata(lua_State* l, int index, const std::string& module_name);
-    static Surface& check_surface(lua_State* l, int index);
-    static TextSurface& check_text_surface(lua_State* l, int index);
-    static Sprite& check_sprite(lua_State* l, int index);
+    static DynamicDisplayable& check_displayable(lua_State* l, int index);
+    static DynamicSurface& check_surface(lua_State* l, int index);
+    static DynamicTextSurface& check_text_surface(lua_State* l, int index);
+    static DynamicSprite& check_sprite(lua_State* l, int index);
     static Movement& check_movement(lua_State* l, int index);
     static Color check_color(lua_State* l, int index);
 
@@ -113,12 +117,10 @@ class Script {
     void remove_all_timers();
     bool is_new_timer_suspended(void);
 
-    // surfaces and sprites
-    static void get_surface_effects(lua_State* l, int index);
-    static void stop_surface_transition(lua_State* l, int index);
-    void update_surface_effects();
-    static void display_surface_with_effects(lua_State* l, int index,
-        Surface& dst_surface, Rectangle dst_xy);
+    // displayable objects
+    void add_displayable(Displayable* displayable);
+    void remove_displayable(Displayable* displayable);
+    void update_displayables();
 
     // debugging
     void print_stack();

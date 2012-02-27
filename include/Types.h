@@ -153,7 +153,10 @@ class SpriteAnimationSet;
 class SpriteAnimation;
 class SpriteAnimationDirection;
 class Displayable;
-class DisplayableWithEffects;
+class DynamicDisplayable;
+class DynamicSurface;
+class DynamicTextSurface;
+class DynamicSprite;
 
 // transition effects
 class Transition;

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "DisplayableWithEffects.h"
+#include "DynamicDisplayable.h"
 #include "Displayable.h"
 #include "Transition.h"
 #include "movements/Movement.h"
@@ -23,11 +23,11 @@
 
 /**
  * @brief Constructor.
- * @param displayable the displayable object to use
+ * @param displayable the displayable object to encapsulate
  * @param script the owner script of this object, or NULL
  */
-DisplayableWithEffects::DisplayableWithEffects(Displayable* displayable, Script* script):
-  displayable(displayable),
+DynamicDisplayable::DynamicDisplayable(Displayable& displayable, Script* script):
+  displayable(&displayable),
   last_position(),
   movement(NULL),
   movement_callback_ref(LUA_REFNIL),
@@ -40,11 +40,20 @@ DisplayableWithEffects::DisplayableWithEffects(Displayable* displayable, Script*
 /**
  * @brief Destructor.
  */
-DisplayableWithEffects::~DisplayableWithEffects() {
+DynamicDisplayable::~DynamicDisplayable() {
 
   stop_transition();
   stop_movement();
   delete displayable;
+}
+
+/**
+ * @brief Returns the displayable object encapsulated.
+ * @return the displayable object
+ */
+Displayable& DynamicDisplayable::get_displayable() {
+
+  return *displayable;
 }
 
 /**
@@ -53,11 +62,19 @@ DisplayableWithEffects::~DisplayableWithEffects() {
  * Any previous movement is stopped.
  *
  * @param movement the movement to apply
+ * @param callback_ref a Lua registry ref to the function to call when
+ * the movement finishes
  */
-void DisplayableWithEffects::start_movement(Movement* movement) {
+void DynamicDisplayable::start_movement(Movement& movement,
+    int callback_ref) {
 
   stop_movement();
-  this->movement = movement;
+  this->movement = &movement;
+  this->movement_callback_ref = callback_ref;
+
+  if (script != NULL) {
+    script->increment_refcount(this->movement);
+  }
 }
 
 /**
@@ -65,7 +82,7 @@ void DisplayableWithEffects::start_movement(Movement* movement) {
  *
  * The movement is deleted unless the owner script uses it elsewhere.
  */
-void DisplayableWithEffects::stop_movement() {
+void DynamicDisplayable::stop_movement() {
 
   if (movement != NULL) {
 
@@ -88,7 +105,7 @@ void DisplayableWithEffects::stop_movement() {
  * (if you pass LUA_REFNIL, this function removes the previous callback that
  * was set, if any)
  */
-void DisplayableWithEffects::set_movement_callback(int transition_callback_ref) {
+void DynamicDisplayable::set_movement_callback(int transition_callback_ref) {
 
   Debug::check_assertion(script != NULL,
       "Cannot set a transition callback without script");
@@ -101,12 +118,17 @@ void DisplayableWithEffects::set_movement_callback(int transition_callback_ref) 
  *
  * The transition will be automatically deleted when finished or stopped.
  * Any previous transition is stopped.
+ *
+ * @param callback_ref a Lua registry ref to the function to call when
+ * the movement finishes
  */
-void DisplayableWithEffects::start_transition(Transition* transition) {
+void DynamicDisplayable::start_transition(Transition& transition,
+    int callback_ref) {
 
   stop_transition();
-  this->transition = transition;
-  transition->start();
+  this->transition = &transition;
+  this->transition_callback_ref = callback_ref;
+  transition.start();
 }
 
 /**
@@ -114,7 +136,7 @@ void DisplayableWithEffects::start_transition(Transition* transition) {
  *
  * The transition is deleted.
  */
-void DisplayableWithEffects::stop_transition() {
+void DynamicDisplayable::stop_transition() {
 
   delete transition;
   transition = NULL;
@@ -126,7 +148,7 @@ void DisplayableWithEffects::stop_transition() {
  * (if you pass LUA_REFNIL, this function removes the previous callback that
  * was set, if any)
  */
-void DisplayableWithEffects::set_transition_callback(int transition_callback_ref) {
+void DynamicDisplayable::set_transition_callback(int transition_callback_ref) {
 
   Debug::check_assertion(script != NULL,
       "Cannot set a transition callback without script");
@@ -139,7 +161,7 @@ void DisplayableWithEffects::set_transition_callback(int transition_callback_ref
  *
  * This function is called repeatedly.
  */
-void DisplayableWithEffects::update() {
+void DynamicDisplayable::update() {
 
   displayable->update();
 
@@ -173,7 +195,7 @@ void DisplayableWithEffects::update() {
  * @param dst_surface the destination surface
  * @param dst_position where you want the object to be displayed
  */
-void DisplayableWithEffects::display_with_effects(Surface& dst_surface,
+void DynamicDisplayable::display(Surface& dst_surface,
     Rectangle dst_position) {
 
   if (transition != NULL) {

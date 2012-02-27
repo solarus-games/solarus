@@ -18,6 +18,7 @@
 #define SOLARUS_DISPLAYABLE_H
 
 #include "Common.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * @brief Represents anything that can be drawn on a surface.

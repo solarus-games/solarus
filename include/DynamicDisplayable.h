@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_DISPLAYABLE_WITH_EFFECTS_H
-#define SOLARUS_DISPLAYABLE_WITH_EFFECTS_H
+#ifndef SOLARUS_DYNAMIC_DISPLAYABLE_H
+#define SOLARUS_DYNAMIC_DISPLAYABLE_H
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
+#include <lua.hpp>
 
 /**
  * @brief An object that can be drawn on a surface with additional effects.
@@ -26,23 +27,28 @@
  * Possible additional effects are movements and transitions.
  * Lua callbacks may be associated to the end of these effects.
  */
-class DisplayableWithEffects {
+class DynamicDisplayable {
 
   public:
 
-    DisplayableWithEffects(Displayable* displayable, Script* script = NULL);
-    ~DisplayableWithEffects();
+    virtual ~DynamicDisplayable();
 
-    void start_movement(Movement* movement);
+    Displayable& get_displayable();
+
+    void start_movement(Movement& movement, int callback_ref = LUA_REFNIL);
     void stop_movement();
     void set_movement_callback(int movement_callback_ref);
 
-    void start_transition(Transition* transition);
+    void start_transition(Transition& transition, int callback_ref = LUA_REFNIL);
     void stop_transition();
     void set_transition_callback(int transition_callback_ref);
 
     void update();
-    void display_with_effects(Surface& dst_surface, Rectangle dst_position);
+    void display(Surface& dst_surface, Rectangle dst_position);
+
+  protected:
+
+    DynamicDisplayable(Displayable& displayable, Script* script = NULL);
 
   private:
 

@@ -18,6 +18,7 @@
 #define SOLARUS_DISPLAYABLE_WITH_EFFECTS_H
 
 #include "Common.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * @brief An object that can be drawn on a surface with additional effects.

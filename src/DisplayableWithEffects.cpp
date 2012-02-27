@@ -15,7 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "DisplayableWithEffects.h"
+#include "Displayable.h"
+#include "Transition.h"
+#include "movements/Movement.h"
 #include "lua/Script.h"
+#include <lua.hpp>
 
 /**
  * @brief Constructor.
@@ -24,7 +28,7 @@
  */
 DisplayableWithEffects::DisplayableWithEffects(Displayable* displayable, Script* script):
   displayable(displayable),
-  position(),
+  last_position(),
   movement(NULL),
   movement_callback_ref(LUA_REFNIL),
   transition(NULL),
@@ -178,8 +182,9 @@ void DisplayableWithEffects::display_with_effects(Surface& dst_surface,
 
   dst_position.add_xy(last_position);
   if (movement != NULL) {
-    dst_position.add_xy(movement.get_xy());
+    dst_position.add_xy(movement->get_xy());
   }
 
   displayable->display(dst_surface, dst_position);
 }
+

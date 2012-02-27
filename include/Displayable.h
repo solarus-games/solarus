@@ -32,6 +32,8 @@ class Displayable {
     void display(Surface& dst_surface, int x, int y);
     void display(Surface& dst_surface, const Rectangle& dst_position);
 
+    virtual void update();
+
   protected:
 
     Displayable();
@@ -51,8 +53,6 @@ class Displayable {
      * @param y y coordinate of where to display
      */
     virtual void blit_xy(Surface& dst_surface, int x, int y) = 0;
-
-    virtual void update();
 };
 
 #endif

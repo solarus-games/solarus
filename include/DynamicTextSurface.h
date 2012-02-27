@@ -14,23 +14,23 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_DYNAMIC_SURFACE_H
-#define SOLARUS_DYNAMIC_SURFACE_H
+#ifndef SOLARUS_DYNAMIC_TEXT_SURFACE_H
+#define SOLARUS_DYNAMIC_TEXT_SURFACE_H
 
 #include "Common.h"
 #include "DynamicDisplayable.h"
 
 /**
- * @brief A surface that can be displayed with additional effects.
+ * @brief A text surface that can be displayed with additional effects.
  */
-class DynamicSurface: public DynamicDisplayable {
+class DynamicTextSurface: public DynamicDisplayable {
 
   public:
 
-    DynamicSurface(Surface& basic_surface);
-    ~DynamicSurface();
+    DynamicTextSurface(TextSurface& basic_text_surface);
+    ~DynamicTextSurface();
 
-    Surface& get_basic_surface();
+    TextSurface& get_basic_text_surface();
 };
 
 #endif

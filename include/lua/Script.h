@@ -155,9 +155,9 @@ class Script {
     static void add_timer(lua_State* l, uint32_t duration, bool with_sound);
 
     // userdata
-    static void push_surface(lua_State* l, Surface& surface);
-    static void push_text_surface(lua_State* l, TextSurface& text_surface);
-    static void push_sprite(lua_State* l, Sprite& sprite);
+    static void push_surface(lua_State* l, DynamicSurface& surface);
+    static void push_text_surface(lua_State* l, DynamicTextSurface& text_surface);
+    static void push_sprite(lua_State* l, DynamicSprite& sprite);
     static void push_movement(lua_State* l, Movement& movement);
 
   private:
@@ -442,6 +442,10 @@ class Script {
       sprite_api_start_movement,
       sprite_api_stop_movement,
       sprite_meta_gc,
+
+      // displayable (i.e. common to surfaces, text surfaces and sprites)
+      displayable_api_start_movement,
+      displayable_api_stop_movement,
 
       // movement
       movement_api_pixel_movement_create,

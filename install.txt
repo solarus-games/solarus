@@ -219,23 +219,9 @@ Replace @rpath/ by @executable_path/../Frameworks/ on older OSX versions.
 
 The last thing you have to do to deploy Solarus is to compile it for every 
 processor architecture.
-But if you set the MACOSX_DEPLOYMENT_TARGET environment variable, 
-you already have a "universal" (Intel 32+64bit, not PPC) application.
+But if you set the MACOSX_DEPLOYMENT_TARGET environment variable and have the
+10.5 SDK installed on your system, you already have a "universal" application
+(Intel 32+64bit, and PPC 32bit).
 Check what is your binary compatibility with
 
 $ file /dylib/or/binary/I/want/to/check
-
-
-Note : For the current bundle on libraries/macosx , every dylib and 
-binary (including one from frameworks) are only compatible with i386 and 
-x86_64 processor, which cover every Mac since Snow Leopard. 
-If you wish to compile a PPC application, and want to use this bundle 
-(or make this bundle work with all architectures), you have to compile every 
-dependencies for PPC, and replace files by yours, or merge them by using
-
-$ lipo -create dylib_or_binary1 dylib_or_binary2 -output new_dylib
-
-This is not a hack, it's the offical way to do and what gcc do with multi
--arch flags
-Then, you also have to change the architecture type in src/CMakeList.txt 
-for building the main binary with chosen architecture.

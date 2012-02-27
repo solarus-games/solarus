@@ -33,7 +33,7 @@ class DynamicDisplayable {
 
     virtual ~DynamicDisplayable();
 
-    Displayable& get_displayable();
+    Displayable& get_basic_displayable();
 
     void start_movement(Movement& movement, int callback_ref = LUA_REFNIL);
     void stop_movement();
@@ -66,6 +66,15 @@ class DynamicDisplayable {
     Script* script;               /**< the script that owns this object,
                                    * or NULL */
 };
+
+/**
+ * @brief Returns the displayable object encapsulated.
+ * @return the displayable object
+ */
+inline Displayable& DynamicDisplayable::get_basic_displayable() {
+
+  return *displayable;
+}
 
 #endif
 

@@ -41,13 +41,13 @@ void Script::initialize_sprite_module() {
       { "set_ignore_suspend", sprite_api_set_ignore_suspend },
       { "fade", sprite_api_fade },
       { "synchronize", sprite_api_synchronize },
-      { "start_movement", sprite_api_start_movement },
-      { "stop_movement", sprite_api_stop_movement },
+      { "start_movement", displayable_api_start_movement },
+      { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }
   };
 
   static const luaL_Reg metamethods[] = {
-      { "__gc", sprite_meta_gc },
+      { "__gc", displayable_meta_gc },
       { NULL, NULL }
   };
 
@@ -95,6 +95,10 @@ DynamicSprite& Script::check_sprite(lua_State* l, int index) {
  */
 void Script::push_sprite(lua_State* l, DynamicSprite& sprite) {
 
+  Script& script = get_script(l);
+  if (!script.has_displayable(&text_surface)) {
+    script.add_displayable(&text_surface);
+  }
                                   // ...
   DynamicSprite** block_adress =
     (DynamicSprite**) lua_newuserdata(l, sizeof(DynamicSprite*));
@@ -121,29 +125,9 @@ int Script::sprite_api_create(lua_State* l) {
 
   Sprite* basic_sprite = new Sprite(animation_set_id);
   DynamicSprite* sprite = new DynamicSprite(*basic_sprite, this);
-  get_script(l).add_displayable(sprite);
   push_sprite(l, *sprite);
 
   return 1;
-}
-
-/**
- * @brief Finalizes a sprite.
- *
- * - Argument 1: a sprite
- *
- * @param l a Lua state
- * @return number of values to return to Lua
- */
-int Script::sprite_meta_gc(lua_State* l) {
-
-  Script& script = get_script(l);
-
-  DynamicSprite& sprite = check_sprite(l, 1);
-
-  script.remove_displayable(&sprite);
-
-  return 0;
 }
 
 /**
@@ -388,56 +372,3 @@ int Script::sprite_api_synchronize(lua_State *l) {
   return 0;
 }
 
-/**
- * @brief Starts a movement on a sprite.
- *
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (movement): the movement to apply
- * - Optional argument 3 (function): a Lua function to be called when the
- * movement finishes
- *
- * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
- */
-int Script::sprite_api_start_movement(lua_State* l) {
-
-  /*
-  Script& script = get_script(l);
-
-  int callback = LUA_REFNIL;
-
-  Sprite& sprite = check_sprite(l, 1);
-  Movement& movement = check_movement(l, 2);
-
-  // the next argument (if any) is the callback
-  if (lua_gettop(l) >= 3) {
-    // store the callback into the registry
-    lua_settop(l, 3);
-    callback = luaL_ref(l, LUA_REGISTRYINDEX);
-  }
-
-  script.start_sprite_movement(sprite, movement, callback);
-  */
-
-  return 0;
-}
-
-/**
- * @brief Stops the movement (if any) of a sprite.
- *
- * - Argument 1 (sprite): a sprite
- *
- * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
- */
-int Script::sprite_api_stop_movement(lua_State* l) {
-
-  /*
-  Script& script = get_script(l);
-
-  Sprite& sprite = check_sprite(l, 1);
-  script.stop_sprite_movement(sprite);
-  */
-
-  return 0;
-}

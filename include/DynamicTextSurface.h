@@ -27,7 +27,7 @@ class DynamicTextSurface: public DynamicDisplayable {
 
   public:
 
-    DynamicTextSurface(TextSurface& basic_text_surface);
+    DynamicTextSurface(TextSurface& basic_text_surface, Script* script);
     ~DynamicTextSurface();
 
     TextSurface& get_basic_text_surface();

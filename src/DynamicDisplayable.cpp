@@ -48,15 +48,6 @@ DynamicDisplayable::~DynamicDisplayable() {
 }
 
 /**
- * @brief Returns the displayable object encapsulated.
- * @return the displayable object
- */
-Displayable& DynamicDisplayable::get_displayable() {
-
-  return *displayable;
-}
-
-/**
  * @brief Applies a movement to this object.
  *
  * Any previous movement is stopped.

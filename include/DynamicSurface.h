@@ -27,7 +27,7 @@ class DynamicSurface: public DynamicDisplayable {
 
   public:
 
-    DynamicSurface(Surface& basic_surface);
+    DynamicSurface(Surface& basic_surface, Script* script);
     ~DynamicSurface();
 
     Surface& get_basic_surface();

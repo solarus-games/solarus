@@ -20,9 +20,10 @@
 /**
  * @brief Creates a dynamic text surface.
  * @param basic_text_surface the basic text surface to encapsulate
+ * @param script the owner script of this object, or NULL
  */
-DynamicTextSurface::DynamicTextSurface(TextSurface& basic_text_surface):
-  DynamicDisplayable(basic_text_surface) {
+DynamicTextSurface::DynamicTextSurface(TextSurface& basic_text_surface, Script* script):
+  DynamicDisplayable(basic_text_surface, script) {
 
 }
 
@@ -38,6 +39,6 @@ DynamicTextSurface::~DynamicTextSurface() {
  */
 TextSurface& DynamicTextSurface::get_basic_text_surface() {
 
-  return (TextSurface&) get_displayable();
+  return (TextSurface&) get_basic_displayable();
 }
 

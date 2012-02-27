@@ -20,9 +20,10 @@
 /**
  * @brief Creates a dynamic sprite.
  * @param basic_sprite the basic sprite to encapsulate
+ * @param script the owner script of this object, or NULL
  */
-DynamicSprite::DynamicSprite(Sprite& basic_sprite):
-  DynamicDisplayable(basic_sprite) {
+DynamicSprite::DynamicSprite(Sprite& basic_sprite, Script* script):
+  DynamicDisplayable(basic_sprite, script) {
 
 }
 
@@ -38,6 +39,6 @@ DynamicSprite::~DynamicSprite() {
  */
 Sprite& DynamicSprite::get_basic_sprite() {
 
-  return (Sprite&) get_displayable();
+  return (Sprite&) get_basic_displayable();
 }
 

@@ -20,9 +20,10 @@
 /**
  * @brief Creates a dynamic surface.
  * @param basic_surface the basic surface to encapsulate
+ * @param script the owner script of this object, or NULL
  */
-DynamicSurface::DynamicSurface(Surface& basic_surface):
-  DynamicDisplayable(basic_surface) {
+DynamicSurface::DynamicSurface(Surface& basic_surface, Script* script):
+  DynamicDisplayable(basic_surface, script) {
 
 }
 
@@ -38,6 +39,6 @@ DynamicSurface::~DynamicSurface() {
  */
 Surface& DynamicSurface::get_basic_surface() {
 
-  return (Surface&) get_displayable();
+  return (Surface&) get_basic_displayable();
 }
 

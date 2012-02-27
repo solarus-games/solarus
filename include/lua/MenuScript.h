@@ -25,10 +25,6 @@
  */
 class MenuScript: public Script {
 
-  private:
-
-    CustomScreen* screen;    /**< the screen controlled by this script, if any */
-
   public:
 
     MenuScript(const std::string& file_name, CustomScreen* screen);
@@ -38,6 +34,11 @@ class MenuScript: public Script {
 
     void event_menu_started();
     void event_display(Surface& destination);
+
+  private:
+
+    CustomScreen* screen;    /**< the screen controlled by this script, if any */
+    DynamicSurface* surface; /**< intermediate surface to draw */
 };
 
 #endif

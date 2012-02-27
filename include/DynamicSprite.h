@@ -27,7 +27,7 @@ class DynamicSprite: public DynamicDisplayable {
 
   public:
 
-    DynamicSprite(Sprite& basic_sprite);
+    DynamicSprite(Sprite& basic_sprite, Script* script);
     ~DynamicSprite();
 
     Sprite& get_basic_sprite();

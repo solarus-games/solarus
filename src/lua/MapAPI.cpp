@@ -19,6 +19,7 @@
 #include "Map.h"
 #include "DialogBox.h"
 #include "Treasure.h"
+#include "DynamicSprite.h"
 #include "entities/MapEntities.h"
 #include "entities/Door.h"
 #include "entities/NPC.h"
@@ -253,11 +254,11 @@ int Script::map_api_treasure_give(lua_State *l) {
 int Script::map_api_sprite_display(lua_State *l) {
 
   Script& script = get_script(l);
-  Sprite& sprite = check_sprite(l, 1);
+  Sprite& basic_sprite = check_sprite(l, 1).get_basic_sprite();
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
 
-  script.get_map().display_sprite(sprite, x, y);
+  script.get_map().display_sprite(basic_sprite, x, y);
 
   return 0;
 }

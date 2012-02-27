@@ -27,58 +27,6 @@
 const char* Script::surface_module_name = "sol.surface";
 
 /**
- * @brief Check that the userdata at the specified index is a displayable
- * object (surface, text surface of sprite) and returns it.
- * @param l a Lua context
- * @param index an index in the stack
- * @return the surface
- */
-DynamicDisplayable& Script::check_displayable(lua_State* l, int index) {
-
-  DynamicDisplayable** displayable = NULL;
-
-  if (is_userdata(l, index, surface_module_name)
-      || is_userdata(l, index, text_surface_module_name)
-      || is_userdata(l, index, sprite_module_name)) {
-    displayable = (DynamicDisplayable**) lua_touserdata(l, index);
-  }
-  else {
-    luaL_typerror(l, index, "displayable");
-  }
-
-  return **displayable;
-}
-
-/**
- * @brief Registers a displayable object created by this script.
- */
-void Script::add_displayable(Displayable* displayable) {
-
-  increment_refcount(displayable);
-  displayables.insert(displayable);
-}
-
-/**
- * @brief Unregisters a displayable object created by this script.
- */
-void Script::remove_displayable(Displayable* displayable) {
-
-  displayables.erase(displayable);
-  decrement_refcount(displayable);
-}
-
-/**
- * @brief Updates all displayable objects created by this script.
- */
-void Script::update_displayables() {
-
-  std::set<DynamicDisplayable*>::iterator it;
-  for (it = displayables.begin(); it != displayables.end(); it++) {
-    (*it)->update();
-  }
-}
-
-/**
  * @brief Initializes the surface features provided to Lua.
  */
 void Script::initialize_surface_module() {
@@ -92,13 +40,13 @@ void Script::initialize_surface_module() {
       { "set_opacity", surface_api_set_opacity },
       { "fade_in", surface_api_fade_in },
       { "fade_out", surface_api_fade_out },
-      { "start_movement", surface_api_start_movement },
-      { "stop_movement", surface_api_stop_movement },
+      { "start_movement", displayable_api_start_movement },
+      { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }
   };
 
   static const luaL_Reg metamethods[] = {
-      { "__gc", surface_meta_gc },
+      { "__gc", displayable_meta_gc },
       { NULL, NULL }
   };
 
@@ -148,6 +96,10 @@ DynamicSurface& Script::check_surface(lua_State* l, int index) {
  */
 void Script::push_surface(lua_State* l, DynamicSurface& surface) {
 
+  Script& script = get_script(l);
+  if (!script.has_displayable(&text_surface)) {
+    script.add_displayable(&text_surface);
+  }
                                   // ...
   DynamicSurface** block_adress =
     (DynamicSurface**) lua_newuserdata(l, sizeof(DynamicSurface*));
@@ -222,29 +174,9 @@ int Script::surface_api_create(lua_State* l) {
   }
 
   DynamicSurface* surface = new DynamicSurface(*basic_surface, this);
-  script.add_displayable(surface);
   push_surface(l, *surface);
 
   return 1;
-}
-
-/**
- * @brief Finalizes a surface.
- *
- * - Argument 1: a surface
- *
- * @param l a Lua state
- * @return number of values to return to Lua
- */
-int Script::surface_meta_gc(lua_State* l) {
-
-  Script& script = get_script(l);
-
-  DynamicSurface& surface = check_surface(l, 1);
-
-  script.remove_displayable(&surface);
-
-  return 0;
 }
 
 /**
@@ -255,9 +187,9 @@ int Script::surface_meta_gc(lua_State* l) {
  */
 int Script::surface_api_fill_color(lua_State* l) {
 
-  DynamicSurface& surface = check_surface(l, 1);
+  Surface& basic_surface = check_surface(l, 1).get_basic_surface();
   Color color = check_color(l, 2);
-  surface.get_basic_surface().fill_with_color(color);
+  basic_surface.get_basic_surface().fill_with_color(color);
 
   return 0;
 }
@@ -428,65 +360,4 @@ int Script::surface_api_fade_out(lua_State* l) {
 
   return 0;
 }
-
-/**
- * @brief Starts a movement on a surface.
- *
- * - Argument 1 (surface): a surface
- * - Argument 2 (movement): the movement to apply
- * - Optional argument 3 (function): a Lua function to be called when the
- * movement finishes
- *
- * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
- */
-int Script::surface_api_start_movement(lua_State* l) {
-
-  DynamicSurface& surface = check_surface(l, 1);
-  Movement& movement = check_movement(l, 2);
-
-  // the next argument (if any) is the callback
-  bool callback = lua_gettop(l) >= 3;
-  if (callback) {
-    luaL_checktype(l, LUA_TFUNCTION, 3);
-      lua_settop(l, index);
-      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  }
-
-  surface.start_movement(&movement, callback_ref);
-
-  return 0;
-}
-
-/**
- * @brief Stops the movement (if any) of a surface.
- *
- * - Argument 1 (surface): a surface
- *
- * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
- */
-int Script::surface_api_stop_movement(lua_State* l) {
-
-  DynamicSurface& surface = check_surface(l, 1);
-
-  surface.stop_movement();
-
-  return 0;
-}
-
-/**
- * @brief Stops the transition effect (if any) applied to the a surface.
- *
- * @param l a Lua context
- * @param index index of the surface
- */
-void Script::stop_surface_transition(lua_State* l, int index) {
-
-  DynamicSurface& surface = check_surface(l, 1);
-
-  surface.stop_transition();
-}
-
-// TODO update dynamic displayable objects
 

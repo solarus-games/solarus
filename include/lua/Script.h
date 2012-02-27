@@ -118,8 +118,9 @@ class Script {
     bool is_new_timer_suspended(void);
 
     // displayable objects
-    void add_displayable(Displayable* displayable);
-    void remove_displayable(Displayable* displayable);
+    bool has_displayable(DynamicDisplayable* displayable);
+    void add_displayable(DynamicDisplayable* displayable);
+    void remove_displayable(DynamicDisplayable* displayable);
     void update_displayables();
 
     // debugging
@@ -414,15 +415,11 @@ class Script {
       surface_api_set_opacity,
       surface_api_fade_in,
       surface_api_fade_out,
-      surface_api_start_movement,
-      surface_api_stop_movement,
-      surface_meta_gc,
 
       // text surface API
       text_surface_api_create,
       text_surface_api_get_text,
       text_surface_api_set_text,
-      text_surface_meta_gc,
 
       // sprite API
       sprite_api_create,
@@ -439,13 +436,11 @@ class Script {
       sprite_api_set_ignore_suspend,
       sprite_api_fade,
       sprite_api_synchronize,
-      sprite_api_start_movement,
-      sprite_api_stop_movement,
-      sprite_meta_gc,
 
       // displayable (i.e. common to surfaces, text surfaces and sprites)
       displayable_api_start_movement,
       displayable_api_stop_movement,
+      displayable_meta_gc,
 
       // movement
       movement_api_pixel_movement_create,

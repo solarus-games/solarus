@@ -122,7 +122,7 @@ int Script::displayable_api_start_movement(lua_State* l) {
 /**
  * @brief Stops the movement (if any) of a displayable object.
  *
- * - Argument 1 (surface): a displayable object
+ * - Argument 1 (surface, text surface or sprite): a displayable object
  *
  * @param l the Lua context that is calling this function
  * @return the number of values to return to Lua
@@ -139,7 +139,7 @@ int Script::displayable_api_stop_movement(lua_State* l) {
 /**
  * @brief Finalizes a displayable object.
  *
- * - Argument 1: a displayable object
+ * - Argument 1 (surface, text surface or sprite): a displayable object
  *
  * @param l a Lua state
  * @return number of values to return to Lua

@@ -26,7 +26,7 @@ function phase_zs_presents()
   title_surface:draw(zs_presents_img, x, y)
   sol.main.play_sound("intro")
 
-  sol.main.timer_start(phase_title, 2000)
+  --sol.main.timer_start(phase_title, 2000)
 end
 
 function phase_title()

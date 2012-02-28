@@ -107,9 +107,9 @@ class Script {
     void initialize_movement_module();
     static bool is_userdata(lua_State* l, int index, const std::string& module_name);
     static DynamicDisplayable& check_displayable(lua_State* l, int index);
-    static DynamicSurface& check_surface(lua_State* l, int index);
-    static DynamicTextSurface& check_text_surface(lua_State* l, int index);
-    static DynamicSprite& check_sprite(lua_State* l, int index);
+    static Surface& check_surface(lua_State* l, int index);
+    static TextSurface& check_text_surface(lua_State* l, int index);
+    static Sprite& check_sprite(lua_State* l, int index);
     static Movement& check_movement(lua_State* l, int index);
     static Color check_color(lua_State* l, int index);
 
@@ -156,9 +156,9 @@ class Script {
     static void add_timer(lua_State* l, uint32_t duration, bool with_sound);
 
     // userdata
-    static void push_surface(lua_State* l, DynamicSurface& surface);
-    static void push_text_surface(lua_State* l, DynamicTextSurface& text_surface);
-    static void push_sprite(lua_State* l, DynamicSprite& sprite);
+    static void push_surface(lua_State* l, Surface& surface);
+    static void push_text_surface(lua_State* l, TextSurface& text_surface);
+    static void push_sprite(lua_State* l, Sprite& sprite);
     static void push_movement(lua_State* l, Movement& movement);
 
   private:

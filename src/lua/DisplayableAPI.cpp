@@ -52,7 +52,7 @@ DynamicDisplayable& Script::check_displayable(lua_State* l, int index) {
  */
 bool Script::has_displayable(DynamicDisplayable* displayable) {
 
-  return displayables.count(displayable) > 0;;
+  return displayables.count(displayable) > 0;
 }
 
 /**
@@ -63,6 +63,7 @@ void Script::add_displayable(DynamicDisplayable* displayable) {
 
   increment_refcount(displayable);
   displayables.insert(displayable);
+  displayable->set_script(this);
 }
 
 /**
@@ -73,6 +74,7 @@ void Script::remove_displayable(DynamicDisplayable* displayable) {
 
   displayables.erase(displayable);
   decrement_refcount(displayable);
+  displayable->set_script(NULL);
 }
 
 /**
@@ -89,7 +91,7 @@ void Script::update_displayables() {
 /**
  * @brief Starts a movement on a displayable object.
  *
- * - Argument 1 (surface): a displayable object
+ * - Argument 1 (surface, text surface or sprite): a displayable object
  * - Argument 2 (movement): the movement to apply
  * - Optional argument 3 (function): a Lua function to be called when the
  * movement finishes

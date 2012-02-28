@@ -33,8 +33,10 @@ class DynamicDisplayable {
 
     virtual ~DynamicDisplayable();
 
-    Displayable& get_basic_displayable();
+    // owner script
+    void set_script(Script* script);
 
+    // dynamic effects
     void start_movement(Movement& movement, int callback_ref = LUA_REFNIL);
     void stop_movement();
     void set_movement_callback(int movement_callback_ref);
@@ -43,16 +45,26 @@ class DynamicDisplayable {
     void stop_transition();
     void set_transition_callback(int transition_callback_ref);
 
-    void update();
+    // displaying with effects
+    void display(Surface& dst_surface);
+    void display(Surface& dst_surface, int x, int y);
     void display(Surface& dst_surface, Rectangle dst_position);
+
+    /**
+     * @brief Displays this object without applying dynamic effects.
+     * @param dst_surface the destination surface
+     * @param dst_position coordinates on the destination surface
+     */
+    virtual void raw_display(Surface& dst_surface,
+        const Rectangle& dst_position) = 0;
+    virtual void update();
 
   protected:
 
-    DynamicDisplayable(Displayable& displayable, Script* script = NULL);
+    DynamicDisplayable();
 
   private:
 
-    Displayable* displayable;     /**< the displayable object (will be deleted) */
     Rectangle last_position;      /**< position of this object after its last
                                    * movement */
     Movement* movement;           /**< a movement applied, or NULL (will be
@@ -66,15 +78,6 @@ class DynamicDisplayable {
     Script* script;               /**< the script that owns this object,
                                    * or NULL */
 };
-
-/**
- * @brief Returns the displayable object encapsulated.
- * @return the displayable object
- */
-inline Displayable& DynamicDisplayable::get_basic_displayable() {
-
-  return *displayable;
-}
 
 #endif
 

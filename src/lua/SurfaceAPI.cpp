@@ -18,7 +18,6 @@
 #include "lua/Script.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
-#include "lowlevel/TextSurface.h"
 #include "movements/Movement.h"
 #include "Sprite.h"
 #include "TransitionFade.h"
@@ -78,15 +77,15 @@ void Script::initialize_surface_module() {
  * @param index an index in the stack
  * @return the surface
  */
-DynamicSurface& Script::check_surface(lua_State* l, int index) {
+Surface& Script::check_surface(lua_State* l, int index) {
 
   if (index < 0) {
     // ensure a positive index
     index = lua_gettop(l) + index + 1;
   }
 
-  DynamicSurface** surface =
-    (DynamicSurface**) luaL_checkudata(l, index, surface_module_name);
+  Surface** surface =
+    (Surface**) luaL_checkudata(l, index, surface_module_name);
   return **surface;
 }
 
@@ -94,15 +93,15 @@ DynamicSurface& Script::check_surface(lua_State* l, int index) {
  * @brief Pushes a surface userdata onto the stack.
  * @param surface a surface
  */
-void Script::push_surface(lua_State* l, DynamicSurface& surface) {
+void Script::push_surface(lua_State* l, Surface& surface) {
 
   Script& script = get_script(l);
-  if (!script.has_displayable(&text_surface)) {
-    script.add_displayable(&text_surface);
+  if (!script.has_displayable(&surface)) {
+    script.add_displayable(&surface);
   }
                                   // ...
-  DynamicSurface** block_adress =
-    (DynamicSurface**) lua_newuserdata(l, sizeof(DynamicSurface*));
+  Surface** block_adress =
+    (Surface**) lua_newuserdata(l, sizeof(Surface*));
   *block_adress = &surface;
                                   // ... surface
   luaL_getmetatable(l, surface_module_name);
@@ -136,17 +135,15 @@ void Script::push_surface(lua_State* l, DynamicSurface& surface) {
  */
 int Script::surface_api_create(lua_State* l) {
 
-  Script& script = get_script(l);
-
-  Surface* basic_surface;
+  Surface* surface;
   if (lua_gettop(l) == 0) {
     // no arguments: create an empty surface with the screen size
-    basic_surface = new Surface(320, 240);
+    surface = new Surface(320, 240);
   }
   else if (lua_type(l, 1) == LUA_TNUMBER) {
     int width = luaL_checkinteger(l, 1);
     int height = luaL_checkinteger(l, 2);
-    basic_surface = new Surface(width, height);
+    surface = new Surface(width, height);
   }
   else if (lua_type(l, 1) == LUA_TSTRING) {
     const std::string& file_name = lua_tostring(l, 1);
@@ -154,7 +151,7 @@ int Script::surface_api_create(lua_State* l) {
     if (lua_gettop(l) >= 2) {
       language_specific = lua_toboolean(l, 2);
     }
-    basic_surface = new Surface(file_name, language_specific ?
+    surface = new Surface(file_name, language_specific ?
         Surface::DIR_LANGUAGE : Surface::DIR_SPRITES);
   }
   else {
@@ -169,11 +166,10 @@ int Script::surface_api_create(lua_State* l) {
       width = luaL_checkinteger(l, 4);
       height = luaL_checkinteger(l, 5);
     }
-    basic_surface = new Surface(width, height);
+    surface = new Surface(width, height);
     other_surface.display_region(Rectangle(x, y, width, height), *surface);
   }
 
-  DynamicSurface* surface = new DynamicSurface(*basic_surface, this);
   push_surface(l, *surface);
 
   return 1;
@@ -187,9 +183,9 @@ int Script::surface_api_create(lua_State* l) {
  */
 int Script::surface_api_fill_color(lua_State* l) {
 
-  Surface& basic_surface = check_surface(l, 1).get_basic_surface();
+  Surface& surface = check_surface(l, 1);
   Color color = check_color(l, 2);
-  basic_surface.get_basic_surface().fill_with_color(color);
+  surface.fill_with_color(color);
 
   return 0;
 }
@@ -207,7 +203,7 @@ int Script::surface_api_fill_color(lua_State* l) {
  */
 int Script::surface_api_draw(lua_State* l) {
 
-  DynamicSurface& dst_surface = check_surface(l, 1);
+  Surface& dst_surface = check_surface(l, 1);
   DynamicDisplayable& displayable = check_displayable(l, 2);
 
   int x = 0;
@@ -236,10 +232,10 @@ int Script::surface_api_draw(lua_State* l) {
  */
 int Script::surface_api_get_size(lua_State* l) {
 
-  Surface& basic_surface = check_surface(l, 1).get_basic_surface();
+  Surface& surface = check_surface(l, 1);
 
-  lua_pushnumber(l, basic_surface.get_width());
-  lua_pushnumber(l, basic_surface.get_height());
+  lua_pushnumber(l, surface.get_width());
+  lua_pushnumber(l, surface.get_height());
 
   return 2;
 }
@@ -255,9 +251,9 @@ int Script::surface_api_get_size(lua_State* l) {
  */
 int Script::surface_api_set_transparency_color(lua_State* l) {
 
-  Surface& basic_surface = check_surface(l, 1).get_basic_surface();
+  Surface& surface = check_surface(l, 1);
   Color color = check_color(l, 2);
-  basic_surface.set_transparency_color(color);
+  surface.set_transparency_color(color);
 
   return 0;
 }
@@ -273,10 +269,10 @@ int Script::surface_api_set_transparency_color(lua_State* l) {
  */
 int Script::surface_api_set_opacity(lua_State* l) {
 
-  Surface& basic_surface = check_surface(l, 1).get_basic_surface();
+  Surface& surface = check_surface(l, 1);
   int opacity = luaL_checkinteger(l, 2);
 
-  basic_surface.set_opacity(opacity);
+  surface.set_opacity(opacity);
 
   return 0;
 }
@@ -298,7 +294,7 @@ int Script::surface_api_fade_in(lua_State* l) {
   uint32_t delay = 20;
   int callback_ref = 0;
 
-  DynamicSurface& surface = check_surface(l, 1);
+  Surface& surface = check_surface(l, 1);
 
   if (lua_gettop(l) >= 2) {
     // the second argument can be the delay or the callback
@@ -317,7 +313,7 @@ int Script::surface_api_fade_in(lua_State* l) {
 
   TransitionFade* transition = new TransitionFade(Transition::IN);
   transition->set_delay(delay);
-  surface.start_transition(transition, callback_index);
+  surface.start_transition(*transition, callback_ref);
 
   return 0;
 }
@@ -339,6 +335,8 @@ int Script::surface_api_fade_out(lua_State* l) {
   uint32_t delay = 20;
   int callback_ref = 0;
 
+  Surface& surface = check_surface(l, 1);
+
   if (lua_gettop(l) >= 2) {
     // the second argument can be the delay or the callback
     int index = 2;
@@ -356,7 +354,7 @@ int Script::surface_api_fade_out(lua_State* l) {
 
   TransitionFade* transition = new TransitionFade(Transition::OUT);
   transition->set_delay(delay);
-  surface.start_transition(transition, callback_index);
+  surface.start_transition(*transition, callback_ref);
 
   return 0;
 }

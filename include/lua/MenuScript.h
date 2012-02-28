@@ -33,12 +33,11 @@ class MenuScript: public Script {
     CustomScreen& get_screen();
 
     void event_menu_started();
-    void event_display(Surface& destination);
+    void event_display(Surface& dst_surface);
 
   private:
 
     CustomScreen* screen;    /**< the screen controlled by this script, if any */
-    DynamicSurface* surface; /**< intermediate surface to draw */
 };
 
 #endif

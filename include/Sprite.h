@@ -18,7 +18,7 @@
 #define SOLARUS_SPRITE_H
 
 #include "Common.h"
-#include "Displayable.h"
+#include "DynamicDisplayable.h"
 #include <map>
 
 /**
@@ -34,7 +34,7 @@
  * A sprite can be displayed directly on a surface, or it can
  * be attached to a map entity, allowing it to have a position on the map.
  */
-class Sprite: public Displayable {
+class Sprite: public DynamicDisplayable {
 
   private:
 
@@ -141,7 +141,7 @@ class Sprite: public Displayable {
 
     // udpate and display
     void update();
-    void blit_xy(Surface& dst_surface, int x, int y);
+    void raw_display(Surface& dst_surface, const Rectangle& dst_position);
 };
 
 #endif

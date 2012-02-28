@@ -19,7 +19,6 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/StringConcat.h"
 #include "StringResource.h"
-#include "DynamicTextSurface.h"
 
 const char* Script::text_surface_module_name = "sol.text_surface";
 
@@ -68,14 +67,14 @@ void Script::initialize_text_surface_module() {
  * @param index an index in the stack
  * @return the text surface
  */
-DynamicTextSurface& Script::check_text_surface(lua_State* l, int index) {
+TextSurface& Script::check_text_surface(lua_State* l, int index) {
 
   if (index < 0) {
     // ensure a positive index
     index = lua_gettop(l) + index + 1;
   }
 
-  DynamicTextSurface** surface = (DynamicTextSurface**)
+  TextSurface** surface = (TextSurface**)
       luaL_checkudata(l, index, text_surface_module_name);
   return **surface;
 }
@@ -84,16 +83,15 @@ DynamicTextSurface& Script::check_text_surface(lua_State* l, int index) {
  * @brief Pushes a text surface userdata onto the stack.
  * @param text_surface a text surface
  */
-void Script::push_text_surface(lua_State* l,
-    DynamicTextSurface& text_surface) {
+void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {
 
   Script& script = get_script(l);
   if (!script.has_displayable(&text_surface)) {
     script.add_displayable(&text_surface);
   }
                                   // ...
-  DynamicTextSurface** block_adress = (DynamicTextSurface**)
-      lua_newuserdata(l, sizeof(DynamicTextSurface*));
+  TextSurface** block_adress = (TextSurface**)
+      lua_newuserdata(l, sizeof(TextSurface*));
   *block_adress = &text_surface;
                                   // ... text_surface
   luaL_getmetatable(l, text_surface_module_name);
@@ -115,11 +113,9 @@ void Script::push_text_surface(lua_State* l,
  */
 int Script::text_surface_api_create(lua_State* l) {
 
-  Script& script = get_script(l);
-
   luaL_checktype(l, 1, LUA_TTABLE);
 
-  TextSurface* basic_text_surface = new TextSurface(0, 0);
+  TextSurface* text_surface = new TextSurface(0, 0);
   int x = 0;
   int y = 0;
 
@@ -136,7 +132,7 @@ int Script::text_surface_api_create(lua_State* l) {
     }
     else if (key == "font") {
       const std::string& font_id = luaL_checkstring(l, -1);
-      basic_text_surface->set_font(font_id);
+      text_surface->set_font(font_id);
     }
     // TODO there exists a Lua function to get an enum from a string
     else if (key == "rendering_mode") {
@@ -154,7 +150,7 @@ int Script::text_surface_api_create(lua_State* l) {
       else {
         luaL_error(l, "rendering_mode should be one of \"solid\", \"shaded\" or \"blended\"");
       }
-      basic_text_surface->set_rendering_mode(rendering_mode);
+      text_surface->set_rendering_mode(rendering_mode);
     }
     else if (key == "horizontal_alignment") {
       const std::string& alignment_name = luaL_checkstring(l, -1);
@@ -171,7 +167,7 @@ int Script::text_surface_api_create(lua_State* l) {
       else {
         luaL_error(l, "horizontal_alignment should be one of \"left\", \"center\" or \"right\"");
       }
-      basic_text_surface->set_horizontal_alignment(alignment);
+      text_surface->set_horizontal_alignment(alignment);
     }
     else if (key == "vertical_alignment") {
       const std::string& alignment_name = luaL_checkstring(l, -1);
@@ -188,23 +184,23 @@ int Script::text_surface_api_create(lua_State* l) {
       else {
         luaL_error(l, "vertical_alignment should be one of \"top\", \"middle\" or \"bottom\"");
       }
-      basic_text_surface->set_vertical_alignment(alignment);
+      text_surface->set_vertical_alignment(alignment);
     }
     else if (key == "background_color") {
       Color color = check_color(l, -1);
-      basic_text_surface->set_background_color(color);
+      text_surface->set_background_color(color);
     }
     else if (key == "text_color") {
       Color color = check_color(l, -1);
-      basic_text_surface->set_text_color(color);
+      text_surface->set_text_color(color);
     }
     else if (key == "text") {
       const std::string& text = luaL_checkstring(l, -1);
-      basic_text_surface->set_text(text);
+      text_surface->set_text(text);
     }
     else if (key == "text_key") {
       const std::string& text_key = luaL_checkstring(l, -1);
-      basic_text_surface->set_text(StringResource::get_string(text_key));
+      text_surface->set_text(StringResource::get_string(text_key));
     }
     else {
       luaL_error(l, (StringConcat() << "Invalid key '" << key
@@ -212,11 +208,8 @@ int Script::text_surface_api_create(lua_State* l) {
     }
     lua_pop(l, 1); // pop the value, let the key for the iteration
   }
+  text_surface->set_position(x, y);
 
-  basic_text_surface->set_position(x, y);
-
-  DynamicTextSurface* text_surface =
-      new DynamicTextSurface(*basic_text_surface, &script);
   push_text_surface(l, *text_surface);
 
   return 1;
@@ -233,8 +226,8 @@ int Script::text_surface_api_create(lua_State* l) {
  */
 int Script::text_surface_api_get_text(lua_State* l) {
 
-  TextSurface& basic_text_surface = check_text_surface(l, 1).get_basic_text_surface();
-  const std::string text = basic_text_surface.get_text();
+  TextSurface& text_surface = check_text_surface(l, 1);
+  const std::string text = text_surface.get_text();
   lua_pushstring(l, text.c_str());
 
   return 1;
@@ -251,9 +244,9 @@ int Script::text_surface_api_get_text(lua_State* l) {
  */
 int Script::text_surface_api_set_text(lua_State* l) {
 
-  TextSurface& basic_text_surface = check_text_surface(l, 1).get_basic_text_surface();
+  TextSurface& text_surface = check_text_surface(l, 1);
   const std::string& text = luaL_checkstring(l, 2);
-  basic_text_surface.set_text(text);
+  text_surface.set_text(text);
 
   return 0;
 }

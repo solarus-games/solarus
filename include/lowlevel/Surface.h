@@ -18,7 +18,7 @@
 #define SOLARUS_SURFACE_H
 
 #include "Common.h"
-#include "Displayable.h"
+#include "DynamicDisplayable.h"
 #include "lowlevel/Rectangle.h"
 #include <SDL.h>
 
@@ -29,7 +29,7 @@
  * A surface can be drawn or blitted on another surface.
  * This class basically encapsulates a library-dependent surface object.
  */
-class Surface: public Displayable {
+class Surface: public DynamicDisplayable {
 
   // low-level classes allowed to manipulate directly the internal SDL surface encapsulated
   friend class TextSurface;
@@ -68,9 +68,8 @@ class Surface: public Displayable {
 
   protected:
 
-    // implementation from Displayable
-    void blit_0(Surface& dst_surface);
-    void blit_xy(Surface& dst_surface, int x, int y);
+    // implementation from DynamicDisplayable
+    void raw_display(Surface& dst_surface, const Rectangle& dst_position);
 
   private:
 

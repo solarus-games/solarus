@@ -79,7 +79,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const SpriteAnimationSetId &id) {
  * @param id name of an animation set
  */
 Sprite::Sprite(const SpriteAnimationSetId &id):
-
+  DynamicDisplayable(),
   animation_set_id(id),
   animation_set(get_animation_set(id)),
   current_direction(0),
@@ -557,7 +557,7 @@ bool Sprite::test_collision(Sprite& other, int x1, int y1, int x2, int y2) const
  */
 void Sprite::update() {
 
-  Displayable::update();
+  DynamicDisplayable::update();
 
   if (suspended || paused) {
     return;
@@ -627,27 +627,26 @@ void Sprite::update() {
 /**
  * @brief Displays the sprite on a surface, with its current animation,
  * direction and frame.
- * @param dst_surface the surface on which the sprite will be displayed
- * @param x x coordinate of the sprite on this surface
- * (the origin will be placed at this position)
- * @param y y coordinate of the sprite on this surface
+ * @param dst_surface the destination surface
+ * @param dst_position coordinates on the destination surface
  * (the origin will be placed at this position)
  */
-void Sprite::blit_xy(Surface& dst_surface, int x, int y) {
+void Sprite::raw_display(Surface& dst_surface,
+    const Rectangle& dst_position) {
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
     if (alpha >= 255) {
       // opaque
-      current_animation->display(dst_surface, x, y, current_direction,
+      current_animation->display(dst_surface, dst_position, current_direction,
           current_frame);
     }
     else {
       // semi transparent
       alpha_surface->set_opacity(alpha);
       alpha_surface->fill_with_color(Color::get_black());
-      current_animation->display(*alpha_surface, x, y, current_direction,
+      current_animation->display(*alpha_surface, dst_position, current_direction,
           current_frame);
       alpha_surface->display(dst_surface);
     }

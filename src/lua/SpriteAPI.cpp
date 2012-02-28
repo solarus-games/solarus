@@ -77,15 +77,15 @@ void Script::initialize_sprite_module() {
  * @param index an index in the stack
  * @return the sprite
  */
-DynamicSprite& Script::check_sprite(lua_State* l, int index) {
+Sprite& Script::check_sprite(lua_State* l, int index) {
 
   if (index < 0) {
     // ensure a positive index
     index = lua_gettop(l) + index + 1;
   }
 
-  DynamicSprite** sprite =
-    (DynamicSprite**) luaL_checkudata(l, index, sprite_module_name);
+  Sprite** sprite =
+    (Sprite**) luaL_checkudata(l, index, sprite_module_name);
   return **sprite;
 }
 
@@ -93,15 +93,15 @@ DynamicSprite& Script::check_sprite(lua_State* l, int index) {
  * @brief Pushes a sprite userdata onto the stack.
  * @param sprite a sprite
  */
-void Script::push_sprite(lua_State* l, DynamicSprite& sprite) {
+void Script::push_sprite(lua_State* l, Sprite& sprite) {
 
   Script& script = get_script(l);
-  if (!script.has_displayable(&text_surface)) {
-    script.add_displayable(&text_surface);
+  if (!script.has_displayable(&sprite)) {
+    script.add_displayable(&sprite);
   }
                                   // ...
-  DynamicSprite** block_adress =
-    (DynamicSprite**) lua_newuserdata(l, sizeof(DynamicSprite*));
+  Sprite** block_adress =
+    (Sprite**) lua_newuserdata(l, sizeof(Sprite*));
   *block_adress = &sprite;
                                   // ... sprite
   luaL_getmetatable(l, sprite_module_name);
@@ -123,8 +123,7 @@ int Script::sprite_api_create(lua_State* l) {
 
   const std::string& animation_set_id = luaL_checkstring(l, 1);
 
-  Sprite* basic_sprite = new Sprite(animation_set_id);
-  DynamicSprite* sprite = new DynamicSprite(*basic_sprite, this);
+  Sprite* sprite = new Sprite(animation_set_id);
   push_sprite(l, *sprite);
 
   return 1;
@@ -140,7 +139,7 @@ int Script::sprite_api_create(lua_State* l) {
  */
 int Script::sprite_api_get_animation(lua_State* l) {
 
-  const Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
+  const Sprite& sprite = check_sprite(l, 1);
 
   const std::string& animation_name = sprite.get_current_animation();
   lua_pushstring(l, animation_name.c_str());
@@ -158,7 +157,7 @@ int Script::sprite_api_get_animation(lua_State* l) {
  */
 int Script::sprite_api_set_animation(lua_State* l) {
 
-  Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
+  Sprite& sprite = check_sprite(l, 1);
 
   const std::string& animation_name = luaL_checkstring(l, 2);
   sprite.set_current_animation(animation_name);
@@ -177,7 +176,7 @@ int Script::sprite_api_set_animation(lua_State* l) {
  */
 int Script::sprite_api_get_direction(lua_State* l) {
 
-  const Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
+  const Sprite& sprite = check_sprite(l, 1);
 
   lua_pushinteger(l, sprite.get_current_direction());
 
@@ -194,8 +193,7 @@ int Script::sprite_api_get_direction(lua_State* l) {
  */
 int Script::sprite_api_set_direction(lua_State* l) {
 
-  Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
-
+  Sprite& sprite = check_sprite(l, 1);
   int direction = luaL_checkinteger(l, 2);
 
   sprite.set_current_direction(direction);
@@ -213,7 +211,7 @@ int Script::sprite_api_set_direction(lua_State* l) {
  */
 int Script::sprite_api_get_frame(lua_State* l) {
 
-  const Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
+  const Sprite& sprite = check_sprite(l, 1);
 
   lua_pushinteger(l, sprite.get_current_frame());
 
@@ -230,7 +228,7 @@ int Script::sprite_api_get_frame(lua_State* l) {
  */
 int Script::sprite_api_set_frame(lua_State* l) {
 
-  Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
+  Sprite& sprite = check_sprite(l, 1);
 
   int frame = luaL_checkinteger(l, 2);
   sprite.set_current_frame(frame);
@@ -248,7 +246,7 @@ int Script::sprite_api_set_frame(lua_State* l) {
  */
 int Script::sprite_api_get_frame_delay(lua_State* l) {
 
-  const Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
+  const Sprite& sprite = check_sprite(l, 1);
 
   lua_pushinteger(l, sprite.get_frame_delay());
 
@@ -265,7 +263,7 @@ int Script::sprite_api_get_frame_delay(lua_State* l) {
  */
 int Script::sprite_api_set_frame_delay(lua_State* l) {
 
-  Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
+  Sprite& sprite = check_sprite(l, 1);
 
   uint32_t delay = luaL_checkinteger(l, 2);
   sprite.set_frame_delay(delay);
@@ -283,7 +281,7 @@ int Script::sprite_api_set_frame_delay(lua_State* l) {
  */
 int Script::sprite_api_is_paused(lua_State* l) {
 
-  const Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
+  const Sprite& sprite = check_sprite(l, 1);
 
   lua_pushboolean(l, sprite.is_paused());
 
@@ -300,9 +298,9 @@ int Script::sprite_api_is_paused(lua_State* l) {
  */
 int Script::sprite_api_set_paused(lua_State* l) {
 
-  Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
-
+  Sprite& sprite = check_sprite(l, 1);
   bool paused = lua_toboolean(l, 2);
+
   sprite.set_paused(paused);
 
   return 0;
@@ -319,9 +317,9 @@ int Script::sprite_api_set_paused(lua_State* l) {
  */
 int Script::sprite_api_set_ignore_suspend(lua_State *l) {
 
-  Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
-
+  Sprite& sprite = check_sprite(l, 1);
   bool ignore_suspend = lua_toboolean(l, 2);
+
   sprite.set_ignore_suspend(ignore_suspend);
 
   return 0;
@@ -337,9 +335,9 @@ int Script::sprite_api_set_ignore_suspend(lua_State *l) {
  */
 int Script::sprite_api_fade(lua_State *l) {
 
-  Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
-
+  Sprite& sprite = check_sprite(l, 1);
   int direction = luaL_checkinteger(l, 2);
+
   sprite.start_fading(direction);
 
   return 0;
@@ -359,10 +357,10 @@ int Script::sprite_api_fade(lua_State *l) {
  */
 int Script::sprite_api_synchronize(lua_State *l) {
 
-  Sprite& sprite = check_sprite(l, 1).get_basic_sprite();
+  Sprite& sprite = check_sprite(l, 1);
 
   if (!lua_isnil(l, 2)) {
-    Sprite& reference_sprite = check_sprite(l, 2).get_basic_sprite();
+    Sprite& reference_sprite = check_sprite(l, 2);
     sprite.set_synchronized_to(&reference_sprite);
   }
   else {

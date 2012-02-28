@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "DynamicDisplayable.h"
-#include "Displayable.h"
 #include "Transition.h"
 #include "movements/Movement.h"
 #include "lua/Script.h"
@@ -23,17 +22,14 @@
 
 /**
  * @brief Constructor.
- * @param displayable the displayable object to encapsulate
- * @param script the owner script of this object, or NULL
  */
-DynamicDisplayable::DynamicDisplayable(Displayable& displayable, Script* script):
-  displayable(&displayable),
+DynamicDisplayable::DynamicDisplayable():
   last_position(),
   movement(NULL),
   movement_callback_ref(LUA_REFNIL),
   transition(NULL),
   transition_callback_ref(LUA_REFNIL),
-  script(script) {
+  script(NULL) {
 
 }
 
@@ -44,7 +40,15 @@ DynamicDisplayable::~DynamicDisplayable() {
 
   stop_transition();
   stop_movement();
-  delete displayable;
+}
+
+/**
+ * @brief Sets the script that owns this object.
+ * @param script the owner script or NULL
+ */
+void DynamicDisplayable::set_script(Script* script) {
+
+  this->script = script;
 }
 
 /**
@@ -151,10 +155,9 @@ void DynamicDisplayable::set_transition_callback(int transition_callback_ref) {
  * @brief Updates this object.
  *
  * This function is called repeatedly.
+ * You can redefine it for your needs.
  */
 void DynamicDisplayable::update() {
-
-  displayable->update();
 
   if (transition != NULL) {
     transition->update();
@@ -182,9 +185,30 @@ void DynamicDisplayable::update() {
 }
 
 /**
- * @brief Displays this object with the effects applied.
+ * @brief Displays this object, applying dynamic effects.
  * @param dst_surface the destination surface
- * @param dst_position where you want the object to be displayed
+ */
+void DynamicDisplayable::display(Surface& dst_surface) {
+
+  display(dst_surface, Rectangle(0, 0));
+}
+
+/**
+ * @brief Displays this object, applying dynamic effects.
+ * @param dst_surface the destination surface
+ * @param x x coordinate of where to display
+ * @param y y coordinate of where to display
+ */
+void DynamicDisplayable::display(Surface& dst_surface, int x, int y) {
+
+  display(dst_surface, Rectangle(x, y));
+}
+
+/**
+ * @brief Displays this object, applying dynamic effects.
+ * @param dst_surface the destination surface
+ * @param dst_position position on this surface
+ * (will be added to the position obtained by previous movements)
  */
 void DynamicDisplayable::display(Surface& dst_surface,
     Rectangle dst_position) {
@@ -198,6 +222,6 @@ void DynamicDisplayable::display(Surface& dst_surface,
     dst_position.add_xy(movement->get_xy());
   }
 
-  displayable->display(dst_surface, dst_position);
+  raw_display(dst_surface, dst_position);
 }
 

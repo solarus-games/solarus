@@ -138,18 +138,17 @@ int SpriteAnimation::get_next_frame(int current_direction, int current_frame) co
 /**
  * @brief Displays a specific frame of this animation on a surface.
  * @param dst_surface the surface on which the sprite will be displayed
- * @param x x coordinate of the sprite on this surface
- * (the origin point will be displayed at this position)
- * @param y y coordinate of the sprite on this surface
+ * @param dst_position coordinates on the destination surface
  * (the origin point will be displayed at this position)
  * @param current_direction the direction to show
  * @param current_frame the frame to show in this direction
  */
-void SpriteAnimation::display(Surface& dst_surface, int x, int y,
-    int current_direction, int current_frame) {
+void SpriteAnimation::display(Surface& dst_surface,
+    const Rectangle& dst_position, int current_direction, int current_frame) {
 
   if (src_image != NULL) {
-    directions[current_direction]->display(dst_surface, x, y, current_frame, *src_image);
+    directions[current_direction]->display(dst_surface, dst_position,
+        current_frame, *src_image);
   }
 }
 

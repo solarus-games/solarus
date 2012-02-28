@@ -16,8 +16,8 @@
  */
 #include "lua/MenuScript.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Surface.h"
 #include "CustomScreen.h"
-#include "DynamicSurface.h"
 #include <lua.hpp>
 
 /**
@@ -27,8 +27,7 @@
  */
 MenuScript::MenuScript(const std::string& file_name, CustomScreen* screen):
   Script(MAIN_API),
-  screen(screen),
-  surface(NULL) {
+  screen(screen) {
 
   load(file_name);
 }
@@ -71,17 +70,14 @@ void MenuScript::event_menu_started() {
  */
 void MenuScript::event_display(Surface& dst_surface) {
 
-  if (surface == NULL) {
-    // first time: create the intermediate surface, it will be destroyed by Lua
-    Surface* basic_surface = new Surface(320, 240);
-    surface = new DynamicSurface(*basic_surface, this);
-  }
+  // create an intermediate surface, it will be destroyed by Lua
+  static Surface* surface = new Surface(320, 240);
 
   const std::string function_name("event_display");
   find_lua_function(function_name);
   push_surface(l, *surface);
   call_script(1, 0, function_name);
 
-  surface->get_basic_surface().display(dst_surface);
+  surface->display(dst_surface);
 }
 

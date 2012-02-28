@@ -92,6 +92,7 @@ void TextSurface::quit() {
  * @param y y position of the text on the destination surface
  */
 TextSurface::TextSurface(int x, int y):
+  DynamicDisplayable(),
   font_id(default_font_id),
   horizontal_alignment(ALIGN_LEFT),
   vertical_alignment(ALIGN_MIDDLE),
@@ -116,7 +117,7 @@ TextSurface::TextSurface(int x, int y):
 TextSurface::TextSurface(int x, int y,
 			 TextSurface::HorizontalAlignment horizontal_alignment,
 			 TextSurface::VerticalAlignment vertical_alignment):
-
+  DynamicDisplayable(),
   font_id(default_font_id),
   horizontal_alignment(horizontal_alignment),
   vertical_alignment(vertical_alignment),
@@ -145,6 +146,7 @@ TextSurface::~TextSurface() {
  * @param font_id a font
  */
 void TextSurface::set_font(const std::string font_id) {
+
   this->font_id = font_id;
   rebuild();
 }
@@ -410,34 +412,20 @@ void TextSurface::rebuild() {
  * @brief Displays the text on a surface.
  *
  * This method blits the text at the position previously set
- * (by set_x(), set_y() or set_position()).
- *
- * @param dst_surface the destination surface
- */
-void TextSurface::blit_0(Surface& dst_surface) {
-
-  if (surface != NULL) {
-    surface->display(dst_surface, text_position);
-  }
-}
-
-/**
- * @brief Displays the text on a surface.
- *
- * This method blits the text at the position previously set
  * (by set_x(), set_y() or set_position())
- * plus the parameters x and y.
+ * plus the parameter dst_position.
  *
  * @param dst_surface the destination surface
- * @param x x coordinate of where to display
- * @param y y coordinate of where to display
+ * @param dst_position coordinates on the destination surface
  */
-void TextSurface::blit_xy(Surface& dst_surface, int x, int y) {
+void TextSurface::raw_display(Surface& dst_surface,
+    const Rectangle& dst_position) {
 
   if (surface != NULL) {
 
-    Rectangle dst_position(text_position);
-    dst_position.add_xy(x, y);
-    surface->display(dst_surface, dst_position);
+    Rectangle dst_position2(text_position);
+    dst_position2.add_xy(dst_position);
+    surface->raw_display(dst_surface, dst_position2);
   }
 }
+

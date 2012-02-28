@@ -28,6 +28,7 @@
  * @param height the height in pixels
  */
 Surface::Surface(int width, int height):
+  DynamicDisplayable(),
   internal_surface_created(true) {
 
   this->internal_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height,
@@ -40,6 +41,7 @@ Surface::Surface(int width, int height):
  * @param base_directory the base directory to use
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
+  DynamicDisplayable(),
   internal_surface_created(true) {
 
   std::string prefix = "";
@@ -74,6 +76,7 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  * @param internal_surface the internal surface data (the destructor will not free it)
  */
 Surface::Surface(SDL_Surface* internal_surface):
+  DynamicDisplayable(),
   internal_surface(internal_surface),
   internal_surface_created(false) {
 
@@ -84,6 +87,7 @@ Surface::Surface(SDL_Surface* internal_surface):
  * @param other a surface to copy
  */
 Surface::Surface(const Surface& other):
+  DynamicDisplayable(),
   internal_surface(SDL_ConvertSurface(other.internal_surface,
       other.internal_surface->format, other.internal_surface->flags)),
   internal_surface_created(true) {
@@ -133,6 +137,7 @@ const Rectangle Surface::get_size() const {
  * @param color the transparency color to set
  */
 void Surface::set_transparency_color(const Color& color) {
+
   SDL_SetColorKey(internal_surface, SDL_SRCCOLORKEY, color.get_internal_value());
 }
 
@@ -192,32 +197,20 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
 }
 
 /**
- * @brief Blits this whole surface on another surface.
- *
- * The top-left corner of this surface will be blitted on the other's surface top-left corner.
- *
+ * @brief Blits this surface on another surface.
  * @param dst_surface the destination surface
+ * @param dst_position coordinates on the destination surface
  */
-void Surface::blit_0(Surface& dst_surface) {
+void Surface::raw_display(Surface& dst_surface,
+    const Rectangle& dst_position) {
 
-  SDL_BlitSurface(internal_surface, NULL, dst_surface.internal_surface, NULL);
-}
-
-/**
- * @brief Blits this whole surface on a specified location of another surface.
- * @param dst_surface the destination surface
- * @param x x coordinate of where to blit on dst_surface
- * @param x x coordinate of where to blit on dst_surface
- */
-void Surface::blit_xy(Surface& dst_surface, int x, int y) {
-
-  Rectangle dst_position2(x, y);
+  Rectangle dst_position2(dst_position);
   SDL_BlitSurface(internal_surface, NULL, dst_surface.internal_surface,
       dst_position2.get_internal_rect());
 }
 
 /**
- * @brief Blits a subarea of this surface on another surface.
+ * @brief Blits a region of this surface on another surface.
  *
  * The top-left corner of the source subarea will be blitted on the other's surface top-left corner.
  *
@@ -232,7 +225,7 @@ void Surface::display_region(const Rectangle& src_position, Surface& dst_surface
 }
 
 /**
- * @brief Blits a subarea of this surface on a specified location of another surface.
+ * @brief Blits a region of this surface on a specified location of another surface.
  * @param src_position the subrectangle of this surface to pick
  * @param dst_surface the destination surface
  * @param dst_position the destination position where the current surface will be blitted on dst

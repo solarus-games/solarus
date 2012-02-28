@@ -95,10 +95,6 @@ Sprite& Script::check_sprite(lua_State* l, int index) {
  */
 void Script::push_sprite(lua_State* l, Sprite& sprite) {
 
-  Script& script = get_script(l);
-  if (!script.has_displayable(&sprite)) {
-    script.add_displayable(&sprite);
-  }
                                   // ...
   Sprite** block_adress =
     (Sprite**) lua_newuserdata(l, sizeof(Sprite*));
@@ -124,6 +120,7 @@ int Script::sprite_api_create(lua_State* l) {
   const std::string& animation_set_id = luaL_checkstring(l, 1);
 
   Sprite* sprite = new Sprite(animation_set_id);
+  get_script(l).add_displayable(sprite);
   push_sprite(l, *sprite);
 
   return 1;

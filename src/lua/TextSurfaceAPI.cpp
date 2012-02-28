@@ -85,10 +85,6 @@ TextSurface& Script::check_text_surface(lua_State* l, int index) {
  */
 void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {
 
-  Script& script = get_script(l);
-  if (!script.has_displayable(&text_surface)) {
-    script.add_displayable(&text_surface);
-  }
                                   // ...
   TextSurface** block_adress = (TextSurface**)
       lua_newuserdata(l, sizeof(TextSurface*));
@@ -210,6 +206,7 @@ int Script::text_surface_api_create(lua_State* l) {
   }
   text_surface->set_position(x, y);
 
+  get_script(l).add_displayable(text_surface);
   push_text_surface(l, *text_surface);
 
   return 1;

@@ -46,9 +46,9 @@ DynamicDisplayable& Script::check_displayable(lua_State* l, int index) {
 }
 
 /**
- * @brief Returns whether a displayable object is known by this script.
+ * @brief Returns whether a displayable object was created by this script.
  * @param displayable a displayable object
- * @return true if this displayable object is already controlled by this script
+ * @return true if this displayable object belongs to this script
  */
 bool Script::has_displayable(DynamicDisplayable* displayable) {
 
@@ -74,7 +74,6 @@ void Script::remove_displayable(DynamicDisplayable* displayable) {
 
   displayables.erase(displayable);
   decrement_refcount(displayable);
-  displayable->set_script(NULL);
 }
 
 /**
@@ -150,7 +149,10 @@ int Script::displayable_meta_gc(lua_State* l) {
 
   DynamicDisplayable& displayable = check_displayable(l, 1);
 
-  script.remove_displayable(&displayable);
+  if (script.has_displayable(&displayable)) {
+    // the object belongs to the script
+    script.remove_displayable(&displayable);
+  }
 
   return 0;
 }

@@ -75,7 +75,8 @@ class Script {
       displayables;                 /**< all displayable objects created by
                                      * this script*/
 
-    std::map<void*, int> refcounts; /**< for each userdata known this script:
+    std::map<void*, int> refcounts; /**< for each userdata created by this
+                                     * script:
                                      * number of pointers to the object
                                      * including the Lua one
                                      * (0 means that it can be deleted) */

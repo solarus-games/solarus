@@ -95,10 +95,6 @@ Surface& Script::check_surface(lua_State* l, int index) {
  */
 void Script::push_surface(lua_State* l, Surface& surface) {
 
-  Script& script = get_script(l);
-  if (!script.has_displayable(&surface)) {
-    script.add_displayable(&surface);
-  }
                                   // ...
   Surface** block_adress =
     (Surface**) lua_newuserdata(l, sizeof(Surface*));
@@ -170,6 +166,7 @@ int Script::surface_api_create(lua_State* l) {
     other_surface.display_region(Rectangle(x, y, width, height), *surface);
   }
 
+  get_script(l).add_displayable(surface);
   push_surface(l, *surface);
 
   return 1;

@@ -70,14 +70,9 @@ void MenuScript::event_menu_started() {
  */
 void MenuScript::event_display(Surface& dst_surface) {
 
-  // create an intermediate surface, it will be destroyed by Lua
-  static Surface* surface = new Surface(320, 240);
-
   const std::string function_name("event_display");
   find_lua_function(function_name);
-  push_surface(l, *surface);
+  push_surface(l, dst_surface);
   call_script(1, 0, function_name);
-
-  surface->display(dst_surface);
 }
 

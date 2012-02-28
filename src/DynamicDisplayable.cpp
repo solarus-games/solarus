@@ -58,7 +58,7 @@ void DynamicDisplayable::set_script(Script* script) {
  *
  * @param movement the movement to apply
  * @param callback_ref a Lua registry ref to the function to call when
- * the movement finishes
+ * the movement finishes, or LUA_REFNIL
  */
 void DynamicDisplayable::start_movement(Movement& movement,
     int callback_ref) {
@@ -100,12 +100,12 @@ void DynamicDisplayable::stop_movement() {
  * (if you pass LUA_REFNIL, this function removes the previous callback that
  * was set, if any)
  */
-void DynamicDisplayable::set_movement_callback(int transition_callback_ref) {
+void DynamicDisplayable::set_movement_callback(int movement_callback_ref) {
 
   Debug::check_assertion(script != NULL,
       "Cannot set a transition callback without script");
 
-  this->transition_callback_ref = transition_callback_ref;
+  this->movement_callback_ref = movement_callback_ref;
 }
 
 /**
@@ -115,7 +115,7 @@ void DynamicDisplayable::set_movement_callback(int transition_callback_ref) {
  * Any previous transition is stopped.
  *
  * @param callback_ref a Lua registry ref to the function to call when
- * the movement finishes
+ * the transition finishes, or LUA_REFNIL
  */
 void DynamicDisplayable::start_transition(Transition& transition,
     int callback_ref) {
@@ -213,13 +213,13 @@ void DynamicDisplayable::display(Surface& dst_surface, int x, int y) {
 void DynamicDisplayable::display(Surface& dst_surface,
     Rectangle dst_position) {
 
-  if (transition != NULL) {
-    transition->display(dst_surface);
-  }
-
   dst_position.add_xy(last_position);
   if (movement != NULL) {
     dst_position.add_xy(movement->get_xy());
+  }
+
+  if (transition != NULL) {
+    transition->display(dst_surface);
   }
 
   raw_display(dst_surface, dst_position);

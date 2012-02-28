@@ -108,7 +108,7 @@ int Script::displayable_api_start_movement(lua_State* l) {
 
   int callback_ref = LUA_REFNIL;
   if (callback) {
-    luaL_checktype(l, LUA_TFUNCTION, 3);
+    luaL_checktype(l, 3, LUA_TFUNCTION);
     lua_settop(l, 3);
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }

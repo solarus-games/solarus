@@ -289,7 +289,7 @@ int Script::surface_api_set_opacity(lua_State* l) {
 int Script::surface_api_fade_in(lua_State* l) {
 
   uint32_t delay = 20;
-  int callback_ref = 0;
+  int callback_ref = LUA_REFNIL;
 
   Surface& surface = check_surface(l, 1);
 
@@ -302,7 +302,7 @@ int Script::surface_api_fade_in(lua_State* l) {
     }
     // the next argument (if any) is the callback
     if (lua_gettop(l) >= index) {
-      luaL_checktype(l, LUA_TFUNCTION, index);
+      luaL_checktype(l, index, LUA_TFUNCTION);
       lua_settop(l, index);
       callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
     }
@@ -330,7 +330,7 @@ int Script::surface_api_fade_in(lua_State* l) {
 int Script::surface_api_fade_out(lua_State* l) {
 
   uint32_t delay = 20;
-  int callback_ref = 0;
+  int callback_ref = LUA_REFNIL;
 
   Surface& surface = check_surface(l, 1);
 
@@ -343,7 +343,7 @@ int Script::surface_api_fade_out(lua_State* l) {
     }
     // the next argument (if any) is the callback
     if (lua_gettop(l) >= index) {
-      luaL_checktype(l, LUA_TFUNCTION, index);
+      luaL_checktype(l, index, LUA_TFUNCTION);
       lua_settop(l, index);
       callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
     }

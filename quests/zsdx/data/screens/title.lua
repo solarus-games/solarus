@@ -1,7 +1,7 @@
 -- This screen is displayed when the program starts, after the language
 -- selection screen (if any).
 
-local phase
+local phase -- "black", "zs_presents" or "title"
 local title_surface -- surface where everything is drawn
 
 function event_menu_started()
@@ -26,7 +26,7 @@ function phase_zs_presents()
   title_surface:draw(zs_presents_img, x, y)
   sol.main.play_sound("intro")
 
-  --sol.main.timer_start(phase_title, 2000)
+  sol.main.timer_start(phase_title, 2000)
 end
 
 function phase_title()
@@ -58,7 +58,6 @@ function phase_title()
   clouds_img = sol.surface.create("menus/title_" .. time_of_day
       .. "_clouds.png")
   logo_img = sol.surface.create("menus/title_logo.png")
-  logo_img:start_movement(sol.movement.straight_movement_create(32, math.pi))
 
   website_img = sol.text_surface.create{
     font = "dialog",

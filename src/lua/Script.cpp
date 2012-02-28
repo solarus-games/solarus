@@ -234,6 +234,7 @@ void Script::register_apis() {
   initialize_surface_module();
   initialize_text_surface_module();
   initialize_sprite_module();
+  initialize_movement_module();
 }
 
 /**
@@ -1015,8 +1016,9 @@ void Script::event_npc_collision_fire(const std::string &npc_name) {
 
 /**
  * @brief Calls a function stored in the registry with a reference and
- * unreferences it.
- * @param callback_ref (if LUA_REFNIL, nothing is done)
+ * releases this reference.
+ * @param callback_ref reference of the function to call (if LUA_REFNIL,
+ * nothing is done)
  */
 void Script::do_callback(int callback_ref) {
 

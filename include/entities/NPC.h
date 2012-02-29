@@ -39,7 +39,7 @@
  * depending on the movement and the interactions with the hero.
  *
  * On the contrary, a generalized NPC is just assumed to be a solid
- * interactive entity, and the map script has to handle explicitely its
+ * interactive entity, and the map script has to handle explicitly its
  * animations (if any).
  */
 class NPC: public Detector {

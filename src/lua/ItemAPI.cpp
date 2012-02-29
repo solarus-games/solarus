@@ -28,6 +28,34 @@
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
+const char* Script::item_module_name = "sol.item";
+
+/**
+ * @brief Initializes the item features provided to Lua.
+ */
+void Script::initialize_item_module() {
+
+  static const luaL_Reg methods[] = {
+      { "get_variant", item_api_get_variant },
+      { "set_variant", item_api_set_variant },
+      { "get_amount", item_api_get_amount },
+      { "set_amount", item_api_set_amount },
+      { "add_amount", item_api_add_amount },
+      { "remove_amount", item_api_remove_amount },
+      { "get_sprite", item_api_get_sprite },
+      { "get_movement", item_api_get_movement },
+      { "is_following_entity", item_api_is_following_entity },
+      { "start_movement", item_api_start_movement },
+      { "get_position", item_api_get_position },
+      { "set_position", item_api_set_position },
+      { "set_layer_independent_collisions", item_api_set_layer_independent_collisions },
+      { "set_finished", item_api_set_finished },
+      { NULL, NULL }
+  };
+
+  luaL_register(l, item_module_name, methods);
+}
+
 /**
  * @brief Returns the possession state of the current item
  * (only for an item whose possession state is saved).

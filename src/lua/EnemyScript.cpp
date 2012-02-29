@@ -25,7 +25,7 @@
  * @param enemy the enemy to control with this script
  */
 EnemyScript::EnemyScript(CustomEnemy& enemy):
-  Script(MAIN_API | GAME_API | MAP_API | ENEMY_API),
+  Script(GAME_API | MAP_API | ENEMY_API),
   game(enemy.get_game()),
   enemy(enemy) {
 

@@ -61,14 +61,14 @@ void Script::initialize_movement_module() {
   };
 
   // create a table and fill it with the methods
-  luaL_openlib(l, movement_module_name, methods, 0);
+  luaL_register(l, movement_module_name, methods);
                                   // sol.movement
 
   // create the metatable for the type, add it to the Lua registry
   luaL_newmetatable(l, movement_module_name);
                                   // sol.movement mt
   // fill the metatable
-  luaL_openlib(l, NULL, metamethods, 0);
+  luaL_register(l, NULL, metamethods);
                                   // sol.movement mt
   lua_pushvalue(l, -2);
                                   // sol.movement mt sol.movement

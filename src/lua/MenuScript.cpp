@@ -26,7 +26,7 @@
  * @param screen the custom screen to control from this script (or NULL)
  */
 MenuScript::MenuScript(const std::string& file_name, CustomScreen* screen):
-  Script(MAIN_API),
+  Script(),
   screen(screen) {
 
   load(file_name);

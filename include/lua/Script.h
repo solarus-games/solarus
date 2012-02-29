@@ -80,32 +80,36 @@ class Script {
                                      * number of pointers to the object
                                      * including the Lua one
                                      * (0 means that it can be deleted) */
+    bool music_played;
 
     // APIs
-    uint32_t apis_enabled;          /**< an OR combination of APIs enabled */
+    uint32_t apis_enabled;          /**< OR combination of optional APIs */
+    static const char* main_module_name;
+    static const char* game_module_name;
+    static const char* map_module_name;
+    static const char* item_module_name;
+    static const char* enemy_module_name;
     static const char* surface_module_name;
     static const char* text_surface_module_name;
     static const char* sprite_module_name;
     static const char* movement_module_name;
-
-    bool music_played;
 
     // calling C++ from Lua
     static Script& get_script(lua_State* l);
 
     // initialization of modules
     void register_apis();
-    void register_main_api();
-    void register_game_api();
-    void register_map_api();
-    void register_item_api();
-    void register_enemy_api();
-
-    // types
+    void initialize_main_module();
+    void initialize_game_module();
+    void initialize_map_module();
+    void initialize_item_module();
+    void initialize_enemy_module();
     void initialize_surface_module();
     void initialize_text_surface_module();
     void initialize_sprite_module();
     void initialize_movement_module();
+
+    // types
     static bool is_userdata(lua_State* l, int index, const std::string& module_name);
     static DynamicDisplayable& check_displayable(lua_State* l, int index);
     static Surface& check_surface(lua_State* l, int index);
@@ -130,19 +134,18 @@ class Script {
   protected:
 
     /**
-     * @brief The APIs available depending on the type of scripts.
+     * @brief Optional APIs available for some type of scripts.
      */
     enum API {
-      MAIN_API          = 0x0001,
-      GAME_API          = 0x0002,
-      MAP_API           = 0x0004,
-      ITEM_API          = 0x0008,
-      ENEMY_API         = 0x0010
+      GAME_API          = 0x0001,
+      MAP_API           = 0x0002,
+      ITEM_API          = 0x0004,
+      ENEMY_API         = 0x0008
     };
 
     lua_State* l;                        /**< the execution context of the Lua script */
 
-    Script(uint32_t apis_enabled);
+    Script(uint32_t apis_enabled = 0);
 
     // Lua
     bool find_lua_function(const std::string& function_name);

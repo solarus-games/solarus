@@ -30,11 +30,12 @@
 
 /**
  * @brief Creates a script.
- * @param apis_enabled an OR-combination of APIs to enable
+ * @param apis_enabled an OR-combination of optional APIs to enable
+ * (0 for none)
  */
 Script::Script(uint32_t apis_enabled):
-  apis_enabled(apis_enabled),
   music_played(false),
+  apis_enabled(apis_enabled),
   l(NULL) {
 
 }
@@ -214,311 +215,25 @@ CustomScreen& Script::get_screen() {
  */
 void Script::register_apis() {
 
-  if (apis_enabled && MAIN_API) {
-    register_main_api();
-  }
-  if (apis_enabled && GAME_API) {
-    register_game_api();
-  }
-  if (apis_enabled && MAP_API) {
-    register_map_api();
-  }
-  if (apis_enabled && ITEM_API) {
-    register_item_api();
-  }
-  if (apis_enabled && ENEMY_API) {
-    register_enemy_api();
-  }
-
   // modules available to all scripts
+  initialize_main_module();
   initialize_surface_module();
   initialize_text_surface_module();
   initialize_sprite_module();
   initialize_movement_module();
-}
 
-/**
- * @brief Registers to the script the functions of the main API.
- */
-void Script::register_main_api() {
-
-  static const luaL_Reg main_api[] = {
-      { "include", main_api_include },
-      { "exit", main_api_exit },
-      { "start_screen", main_api_start_screen },
-      { "start_game", main_api_start_game },
-      { "play_sound", main_api_play_sound },
-      { "play_music", main_api_play_music },
-      { "timer_start", main_api_timer_start },
-      { "timer_stop_all", main_api_timer_stop_all },
-      { "get_distance", main_api_get_distance },
-      { "get_angle", main_api_get_angle },
-      { NULL, NULL }
-  };
-  luaL_register(l, "sol.main", main_api);
-}
-
-/**
- * @brief Registers to the script the functions of the game API.
- */
-void Script::register_game_api() {
-
-  static const luaL_Reg game_api[] = {
-      { "save", game_api_save },
-      { "reset", game_api_reset },
-      { "restart", game_api_restart },
-      { "savegame_get_string", game_api_savegame_get_string },
-      { "savegame_get_integer", game_api_savegame_get_integer },
-      { "savegame_get_boolean", game_api_savegame_get_boolean },
-      { "savegame_set_string", game_api_savegame_set_string },
-      { "savegame_set_integer", game_api_savegame_set_integer },
-      { "savegame_set_boolean", game_api_savegame_set_boolean },
-      { "savegame_get_name", game_api_savegame_get_name },
-      { "get_life", game_api_get_life },
-      { "add_life", game_api_add_life },
-      { "remove_life", game_api_remove_life },
-      { "get_max_life", game_api_get_max_life },
-      { "set_max_life", game_api_set_max_life },
-      { "add_max_life", game_api_add_max_life },
-      { "get_money", game_api_get_money },
-      { "add_money", game_api_add_money },
-      { "remove_money", game_api_remove_money },
-      { "get_magic", game_api_get_magic},
-      { "add_magic", game_api_add_magic},
-      { "remove_magic", game_api_remove_magic},
-      { "start_decreasing_magic", game_api_start_decreasing_magic},
-      { "stop_decreasing_magic", game_api_stop_decreasing_magic},
-      { "get_max_magic", game_api_get_max_magic},
-      { "set_max_magic", game_api_set_max_magic},
-      { "has_ability", game_api_has_ability },
-      { "get_ability", game_api_get_ability },
-      { "set_ability", game_api_set_ability },
-      { "has_item", game_api_has_item },
-      { "get_item", game_api_get_item },
-      { "set_item", game_api_set_item },
-      { "has_item_amount", game_api_has_item_amount },
-      { "get_item_amount", game_api_get_item_amount },
-      { "add_item_amount", game_api_add_item_amount },
-      { "remove_item_amount", game_api_remove_item_amount },
-      { "is_dungeon_finished", game_api_is_dungeon_finished },
-      { "set_dungeon_finished", game_api_set_dungeon_finished },
-      { NULL, NULL }
-  };
-  luaL_register(l, "sol.game", game_api);
-}
-
-/**
- * @brief Registers to the script the functions of the map API.
- */
-void Script::register_map_api() {
-
-  static const luaL_Reg map_api[] = {
-      { "dialog_start", map_api_dialog_start },
-      { "dialog_set_variable", map_api_dialog_set_variable },
-      { "dialog_set_style", map_api_dialog_set_style },
-      { "hud_set_enabled", map_api_hud_set_enabled },
-      { "hud_set_pause_enabled", map_api_hud_set_pause_enabled },
-      { "light_get", map_api_light_get },
-      { "light_set", map_api_light_set },
-      { "treasure_give", map_api_treasure_give },
-      { "camera_move", map_api_camera_move },
-      { "sprite_display", map_api_sprite_display },
-      { "tileset_get", map_api_tileset_get },
-      { "tileset_set", map_api_tileset_set },
-      { "hero_freeze", map_api_hero_freeze },
-      { "hero_unfreeze", map_api_hero_unfreeze },
-      { "hero_set_map", map_api_hero_set_map },
-      { "hero_set_visible", map_api_hero_set_visible },
-      { "hero_get_direction", map_api_hero_get_direction },
-      { "hero_set_direction", map_api_hero_set_direction },
-      { "hero_get_position", map_api_hero_get_position },
-      { "hero_set_position", map_api_hero_set_position },
-      { "npc_get_position", map_api_npc_get_position },
-      { "npc_set_position", map_api_npc_set_position },
-      { "hero_align_on_sensor", map_api_hero_align_on_sensor },
-      { "hero_save_solid_ground", map_api_hero_save_solid_ground },
-      { "hero_reset_solid_ground", map_api_hero_reset_solid_ground },
-      { "hero_walk", map_api_hero_walk },
-      { "hero_start_jumping", map_api_hero_start_jumping },
-      { "hero_start_victory_sequence", map_api_hero_start_victory_sequence },
-      { "hero_start_boomerang", map_api_hero_start_boomerang },
-      { "hero_start_bow", map_api_hero_start_bow },
-      { "hero_start_hookshot", map_api_hero_start_hookshot },
-      { "hero_start_running", map_api_hero_start_running },
-      { "hero_start_hurt", map_api_hero_start_hurt },
-      { "npc_is_enabled", map_api_npc_is_enabled },
-      { "npc_set_enabled", map_api_npc_set_enabled },
-      { "npc_set_group_enabled", map_api_npc_set_group_enabled },
-      { "npc_start_movement", map_api_npc_start_movement },
-      { "npc_stop_movement", map_api_npc_stop_movement },
-      { "npc_get_sprite", map_api_npc_get_sprite },
-      { "npc_remove", map_api_npc_remove },
-      { "npc_exists", map_api_npc_exists },
-      { "chest_is_open", map_api_chest_is_open },
-      { "chest_set_open", map_api_chest_set_open },
-      { "chest_is_enabled", map_api_chest_is_enabled },
-      { "chest_set_enabled", map_api_chest_set_enabled },
-      { "chest_set_group_enabled", map_api_chest_set_group_enabled },
-      { "tile_is_enabled", map_api_tile_is_enabled },
-      { "tile_set_enabled", map_api_tile_set_enabled },
-      { "tile_set_group_enabled", map_api_tile_set_group_enabled },
-      { "stairs_is_enabled", map_api_stairs_is_enabled },
-      { "stairs_set_enabled", map_api_stairs_set_enabled },
-      { "stairs_set_group_enabled", map_api_stairs_set_group_enabled },
-      { "obstacle_is_enabled", map_api_obstacle_is_enabled },
-      { "obstacle_set_enabled", map_api_obstacle_set_enabled },
-      { "obstacle_set_group_enabled", map_api_obstacle_set_group_enabled },
-      { "sensor_is_enabled", map_api_sensor_is_enabled },
-      { "sensor_set_enabled", map_api_sensor_set_enabled },
-      { "sensor_set_group_enabled", map_api_sensor_set_group_enabled },
-      { "jumper_is_enabled", map_api_jumper_is_enabled },
-      { "jumper_set_enabled", map_api_jumper_set_enabled },
-      { "jumper_set_group_enabled", map_api_jumper_set_group_enabled },
-      { "crystal_is_enabled", map_api_crystal_is_enabled },
-      { "crystal_set_enabled", map_api_crystal_set_enabled },
-      { "crystal_set_group_enabled", map_api_crystal_set_group_enabled },
-      { "crystal_get_state", map_api_crystal_get_state },
-      { "crystal_set_state", map_api_crystal_set_state },
-      { "crystal_change_state", map_api_crystal_change_state },
-      { "teletransporter_is_enabled", map_api_teletransporter_is_enabled },
-      { "teletransporter_set_enabled", map_api_teletransporter_set_enabled },
-      { "teletransporter_set_group_enabled", map_api_teletransporter_set_group_enabled },
-      { "block_is_enabled", map_api_block_is_enabled },
-      { "block_set_enabled", map_api_block_set_enabled },
-      { "block_set_group_enabled", map_api_block_set_group_enabled },
-      { "block_reset", map_api_block_reset },
-      { "block_reset_all", map_api_block_reset_all },
-      { "block_get_position", map_api_block_get_position },
-      { "block_set_position", map_api_block_set_position },
-      { "shop_item_exists", map_api_shop_item_exists },
-      { "shop_item_remove", map_api_shop_item_remove },
-      { "switch_is_activated", map_api_switch_is_activated },
-      { "switch_set_activated", map_api_switch_set_activated },
-      { "switch_set_locked", map_api_switch_set_locked },
-      { "switch_is_enabled", map_api_switch_is_enabled },
-      { "switch_set_enabled", map_api_switch_set_enabled },
-      { "switch_set_group_enabled", map_api_switch_set_group_enabled },
-      { "door_open", map_api_door_open },
-      { "door_close", map_api_door_close },
-      { "door_is_open", map_api_door_is_open },
-      { "door_set_open", map_api_door_set_open },
-      { "pickable_item_create", map_api_pickable_item_create },
-      { "destructible_item_create", map_api_destructible_item_create },
-      { "block_create", map_api_block_create },
-      { "bomb_create", map_api_bomb_create },
-      { "explosion_create", map_api_explosion_create },
-      { "fire_create", map_api_fire_create },
-      { "arrow_remove", map_api_arrow_remove },
-      { "enemy_create", map_api_enemy_create },
-      { "enemy_remove", map_api_enemy_remove },
-      { "enemy_remove_group", map_api_enemy_remove_group },
-      { "enemy_is_enabled", map_api_enemy_is_enabled },
-      { "enemy_set_enabled", map_api_enemy_set_enabled },
-      { "enemy_set_group_enabled", map_api_enemy_set_group_enabled },
-      { "enemy_is_dead", map_api_enemy_is_dead },
-      { "enemy_is_group_dead", map_api_enemy_is_group_dead },
-      { "enemy_get_group_count", map_api_enemy_get_group_count },
-      { "enemy_get_position", map_api_enemy_get_position },
-      { "enemy_set_position", map_api_enemy_set_position },
-      { "enemy_set_treasure", map_api_enemy_set_treasure },
-      { "enemy_set_no_treasure", map_api_enemy_set_no_treasure },
-      { "enemy_set_random_treasure", map_api_enemy_set_random_treasure },
-      { "enemy_get_sprite", map_api_enemy_get_sprite },
-      { NULL, NULL }
-  };
-  luaL_register(l, "sol.map", map_api);
-}
-
-/**
- * @brief Registers to the script the functions of the item API.
- */
-void Script::register_item_api() {
-
-  static const luaL_Reg item_api[] = {
-      { "get_variant", item_api_get_variant },
-      { "set_variant", item_api_set_variant },
-      { "get_amount", item_api_get_amount },
-      { "set_amount", item_api_set_amount },
-      { "add_amount", item_api_add_amount },
-      { "remove_amount", item_api_remove_amount },
-      { "get_sprite", item_api_get_sprite },
-      { "get_movement", item_api_get_movement },
-      { "is_following_entity", item_api_is_following_entity },
-      { "start_movement", item_api_start_movement },
-      { "get_position", item_api_get_position },
-      { "set_position", item_api_set_position },
-      { "set_layer_independent_collisions", item_api_set_layer_independent_collisions },
-      { "set_finished", item_api_set_finished },
-      { NULL, NULL }
-  };
-  luaL_register(l, "sol.item", item_api);
-}
-
-/**
- * @brief Registers to the script the functions of the enemy API.
- */
-void Script::register_enemy_api() {
-
-  static const luaL_Reg enemy_api[] = {
-      { "get_name", enemy_api_get_name },
-      { "get_life", enemy_api_get_life },
-      { "set_life", enemy_api_set_life },
-      { "add_life", enemy_api_add_life },
-      { "remove_life", enemy_api_remove_life },
-      { "get_damage", enemy_api_get_damage },
-      { "set_damage", enemy_api_set_damage },
-      { "get_magic_damage", enemy_api_get_magic_damage },
-      { "set_magic_damage", enemy_api_set_magic_damage },
-      { "is_pushed_back_when_hurt", enemy_api_is_pushed_back_when_hurt },
-      { "set_pushed_back_when_hurt", enemy_api_set_pushed_back_when_hurt },
-      { "get_push_hero_on_sword", enemy_api_get_push_hero_on_sword },
-      { "set_push_hero_on_sword", enemy_api_set_push_hero_on_sword },
-      { "get_can_hurt_hero_running", enemy_api_get_can_hurt_hero_running },
-      { "set_can_hurt_hero_running", enemy_api_set_can_hurt_hero_running },
-      { "get_hurt_style", enemy_api_get_hurt_style },
-      { "set_hurt_style", enemy_api_set_hurt_style },
-      { "get_can_attack", enemy_api_get_can_attack },
-      { "set_can_attack", enemy_api_set_can_attack },
-      { "get_minimum_shield_needed", enemy_api_get_minimum_shield_needed },
-      { "set_minimum_shield_needed", enemy_api_set_minimum_shield_needed },
-      { "set_attack_consequence", enemy_api_set_attack_consequence },
-      { "set_attack_consequence_sprite", enemy_api_set_attack_consequence_sprite },
-      { "set_default_attack_consequences", enemy_api_set_default_attack_consequences },
-      { "set_default_attack_consequences_sprite", enemy_api_set_default_attack_consequences_sprite },
-      { "set_invincible", enemy_api_set_invincible },
-      { "set_invincible_sprite", enemy_api_set_invincible_sprite },
-      { "set_layer_independent_collisions", enemy_api_set_layer_independent_collisions },
-      { "set_treasure", enemy_api_set_treasure },
-      { "set_no_treasure", enemy_api_set_no_treasure },
-      { "set_random_treasure", enemy_api_set_random_treasure },
-      { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
-      { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
-      { "get_optimization_distance", enemy_api_get_optimization_distance },
-      { "set_optimization_distance", enemy_api_set_optimization_distance },
-      { "get_size", enemy_api_get_size },
-      { "set_size", enemy_api_set_size },
-      { "get_origin", enemy_api_get_origin },
-      { "set_origin", enemy_api_set_origin },
-      { "get_position", enemy_api_get_position },
-      { "set_position", enemy_api_set_position },
-      { "get_distance_to_hero", enemy_api_get_distance_to_hero },
-      { "get_angle_to_hero", enemy_api_get_angle_to_hero },
-      { "test_obstacles", enemy_api_test_obstacles },
-      { "snap_to_grid", enemy_api_snap_to_grid },
-      { "get_movement", enemy_api_get_movement },
-      { "start_movement", enemy_api_start_movement },
-      { "stop_movement", enemy_api_stop_movement },
-      { "restart", enemy_api_restart },
-      { "hurt", enemy_api_hurt },
-      { "create_sprite", enemy_api_create_sprite },
-      { "remove_sprite", enemy_api_remove_sprite },
-      { "get_sprite", enemy_api_get_sprite },
-      { "create_son", enemy_api_create_son },
-      { "get_father", enemy_api_get_father },
-      { "send_message", enemy_api_send_message },
-      { NULL, NULL }
-  };
-  luaL_register(l, "sol.enemy", enemy_api);
+  if (apis_enabled && GAME_API) {
+    initialize_game_module();
+  }
+  if (apis_enabled && MAP_API) {
+    initialize_map_module();
+  }
+  if (apis_enabled && ITEM_API) {
+    initialize_item_module();
+  }
+  if (apis_enabled && ENEMY_API) {
+    initialize_enemy_module();
+  }
 }
 
 /**

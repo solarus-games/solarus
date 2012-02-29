@@ -24,6 +24,31 @@
 #include <sstream>
 #include <cmath>
 
+const char* Script::main_module_name = "sol.main";
+
+/**
+ * @brief Initializes the main features provided to Lua.
+ */
+void Script::initialize_main_module() {
+
+  static const luaL_Reg methods[] = {
+      { "include", main_api_include },
+      { "exit", main_api_exit },
+      { "start_screen", main_api_start_screen },
+      { "start_game", main_api_start_game },
+      { "play_sound", main_api_play_sound },
+      { "play_music", main_api_play_music },
+      { "timer_start", main_api_timer_start },
+      { "timer_stop_all", main_api_timer_stop_all },
+      { "get_distance", main_api_get_distance },
+      { "get_angle", main_api_get_angle },
+      { NULL, NULL }
+  };
+
+  luaL_register(l, main_module_name, methods);
+}
+
+
 /**
  * @brief Includes a script into the current Lua context.
  *

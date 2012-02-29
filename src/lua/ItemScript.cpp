@@ -31,7 +31,7 @@
  * @param item_properties the static properties of the item
  */
 ItemScript::ItemScript(Game &game, ItemProperties &item_properties):
-  Script(MAIN_API | GAME_API | MAP_API | ITEM_API),
+  Script(GAME_API | MAP_API | ITEM_API),
   game(game),
   item_properties(item_properties),
   pickable_item(NULL),

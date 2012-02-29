@@ -50,14 +50,14 @@ void Script::initialize_surface_module() {
   };
 
   // create a table and fill it with the methods
-  luaL_openlib(l, surface_module_name, methods, 0);
+  luaL_register(l, surface_module_name, methods);
                                   // sol.surface
 
   // create the metatable for the type, add it to the Lua registry
   luaL_newmetatable(l, surface_module_name);
                                   // sol.surface mt
   // fill the metatable
-  luaL_openlib(l, NULL, metamethods, 0);
+  luaL_register(l, NULL, metamethods);
                                   // sol.surface mt
   lua_pushvalue(l, -2);
                                   // sol.surface mt sol.surface

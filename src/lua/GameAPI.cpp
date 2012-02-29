@@ -22,6 +22,58 @@
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
+const char* Script::game_module_name = "sol.game";
+
+/**
+ * @brief Initializes the game features provided to Lua.
+ */
+void Script::initialize_game_module() {
+
+  static const luaL_Reg methods[] = {
+      { "save", game_api_save },
+      { "reset", game_api_reset },
+      { "restart", game_api_restart },
+      { "savegame_get_string", game_api_savegame_get_string },
+      { "savegame_get_integer", game_api_savegame_get_integer },
+      { "savegame_get_boolean", game_api_savegame_get_boolean },
+      { "savegame_set_string", game_api_savegame_set_string },
+      { "savegame_set_integer", game_api_savegame_set_integer },
+      { "savegame_set_boolean", game_api_savegame_set_boolean },
+      { "savegame_get_name", game_api_savegame_get_name },
+      { "get_life", game_api_get_life },
+      { "add_life", game_api_add_life },
+      { "remove_life", game_api_remove_life },
+      { "get_max_life", game_api_get_max_life },
+      { "set_max_life", game_api_set_max_life },
+      { "add_max_life", game_api_add_max_life },
+      { "get_money", game_api_get_money },
+      { "add_money", game_api_add_money },
+      { "remove_money", game_api_remove_money },
+      { "get_magic", game_api_get_magic},
+      { "add_magic", game_api_add_magic},
+      { "remove_magic", game_api_remove_magic},
+      { "start_decreasing_magic", game_api_start_decreasing_magic},
+      { "stop_decreasing_magic", game_api_stop_decreasing_magic},
+      { "get_max_magic", game_api_get_max_magic},
+      { "set_max_magic", game_api_set_max_magic},
+      { "has_ability", game_api_has_ability },
+      { "get_ability", game_api_get_ability },
+      { "set_ability", game_api_set_ability },
+      { "has_item", game_api_has_item },
+      { "get_item", game_api_get_item },
+      { "set_item", game_api_set_item },
+      { "has_item_amount", game_api_has_item_amount },
+      { "get_item_amount", game_api_get_item_amount },
+      { "add_item_amount", game_api_add_item_amount },
+      { "remove_item_amount", game_api_remove_item_amount },
+      { "is_dungeon_finished", game_api_is_dungeon_finished },
+      { "set_dungeon_finished", game_api_set_dungeon_finished },
+      { NULL, NULL }
+  };
+
+  luaL_register(l, game_module_name, methods);
+}
+
 /**
  * @brief Saves the game.
  */

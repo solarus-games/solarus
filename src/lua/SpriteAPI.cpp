@@ -52,14 +52,14 @@ void Script::initialize_sprite_module() {
   };
 
   // create a table and fill it with the methods
-  luaL_openlib(l, sprite_module_name, methods, 0);
+  luaL_register(l, sprite_module_name, methods);
                                   // sol.sprite
 
   // create the metatable for the type, add it to the Lua registry
   luaL_newmetatable(l, sprite_module_name);
                                   // sol.sprite mt
   // fill the metatable
-  luaL_openlib(l, NULL, metamethods, 0);
+  luaL_register(l, NULL, metamethods);
                                   // sol.sprite mt
   lua_pushvalue(l, -2);
                                   // sol.sprite mt sol.sprite

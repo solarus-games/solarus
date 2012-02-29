@@ -42,14 +42,14 @@ void Script::initialize_text_surface_module() {
   };
 
   // create a table and fill it with the methods
-  luaL_openlib(l, text_surface_module_name, methods, 0);
+  luaL_register(l, text_surface_module_name, methods);
                                   // sol.text_surface module
 
   // create the metatable for the type, add it to the Lua registry
   luaL_newmetatable(l, text_surface_module_name);
                                   // sol.text_surface mt
   // fill the metatable
-  luaL_openlib(l, NULL, meta_methods, 0);
+  luaL_register(l, NULL, meta_methods);
                                   // sol.text_surface mt
   lua_pushvalue(l, -2);
                                   // sol.sol.text_surface mt sol.sol.text_surface

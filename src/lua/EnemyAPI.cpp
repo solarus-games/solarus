@@ -26,6 +26,76 @@
 #include "Map.h"
 #include <lua.hpp>
 
+const char* Script::enemy_module_name = "sol.enemy";
+
+/**
+ * @brief Initializes the enemy features provided to Lua.
+ */
+void Script::initialize_enemy_module() {
+
+  static const luaL_Reg methods[] = {
+      { "get_name", enemy_api_get_name },
+      { "get_life", enemy_api_get_life },
+      { "set_life", enemy_api_set_life },
+      { "add_life", enemy_api_add_life },
+      { "remove_life", enemy_api_remove_life },
+      { "get_damage", enemy_api_get_damage },
+      { "set_damage", enemy_api_set_damage },
+      { "get_magic_damage", enemy_api_get_magic_damage },
+      { "set_magic_damage", enemy_api_set_magic_damage },
+      { "is_pushed_back_when_hurt", enemy_api_is_pushed_back_when_hurt },
+      { "set_pushed_back_when_hurt", enemy_api_set_pushed_back_when_hurt },
+      { "get_push_hero_on_sword", enemy_api_get_push_hero_on_sword },
+      { "set_push_hero_on_sword", enemy_api_set_push_hero_on_sword },
+      { "get_can_hurt_hero_running", enemy_api_get_can_hurt_hero_running },
+      { "set_can_hurt_hero_running", enemy_api_set_can_hurt_hero_running },
+      { "get_hurt_style", enemy_api_get_hurt_style },
+      { "set_hurt_style", enemy_api_set_hurt_style },
+      { "get_can_attack", enemy_api_get_can_attack },
+      { "set_can_attack", enemy_api_set_can_attack },
+      { "get_minimum_shield_needed", enemy_api_get_minimum_shield_needed },
+      { "set_minimum_shield_needed", enemy_api_set_minimum_shield_needed },
+      { "set_attack_consequence", enemy_api_set_attack_consequence },
+      { "set_attack_consequence_sprite", enemy_api_set_attack_consequence_sprite },
+      { "set_default_attack_consequences", enemy_api_set_default_attack_consequences },
+      { "set_default_attack_consequences_sprite", enemy_api_set_default_attack_consequences_sprite },
+      { "set_invincible", enemy_api_set_invincible },
+      { "set_invincible_sprite", enemy_api_set_invincible_sprite },
+      { "set_layer_independent_collisions", enemy_api_set_layer_independent_collisions },
+      { "set_treasure", enemy_api_set_treasure },
+      { "set_no_treasure", enemy_api_set_no_treasure },
+      { "set_random_treasure", enemy_api_set_random_treasure },
+      { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
+      { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
+      { "get_optimization_distance", enemy_api_get_optimization_distance },
+      { "set_optimization_distance", enemy_api_set_optimization_distance },
+      { "get_size", enemy_api_get_size },
+      { "set_size", enemy_api_set_size },
+      { "get_origin", enemy_api_get_origin },
+      { "set_origin", enemy_api_set_origin },
+      { "get_position", enemy_api_get_position },
+      { "set_position", enemy_api_set_position },
+      { "get_distance_to_hero", enemy_api_get_distance_to_hero },
+      { "get_angle_to_hero", enemy_api_get_angle_to_hero },
+      { "test_obstacles", enemy_api_test_obstacles },
+      { "snap_to_grid", enemy_api_snap_to_grid },
+      { "get_movement", enemy_api_get_movement },
+      { "start_movement", enemy_api_start_movement },
+      { "stop_movement", enemy_api_stop_movement },
+      { "restart", enemy_api_restart },
+      { "hurt", enemy_api_hurt },
+      { "create_sprite", enemy_api_create_sprite },
+      { "remove_sprite", enemy_api_remove_sprite },
+      { "get_sprite", enemy_api_get_sprite },
+      { "create_son", enemy_api_create_son },
+      { "get_father", enemy_api_get_father },
+      { "send_message", enemy_api_send_message },
+      { NULL, NULL }
+  };
+
+  luaL_register(l, enemy_module_name, methods);
+}
+
 /**
  * @brief Returns the name of the enemy.
  *

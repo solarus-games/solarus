@@ -106,6 +106,11 @@ void DynamicDisplayable::stop_movement() {
     }
   }
   movement = NULL;
+
+  if (script != NULL) {
+    script->cancel_callback(this->movement_callback_ref);
+    movement_callback_ref = LUA_REFNIL;
+  }
 }
 
 /**
@@ -149,6 +154,11 @@ void DynamicDisplayable::stop_transition() {
 
   delete transition;
   transition = NULL;
+
+  if (script != NULL) {
+    script->cancel_callback(this->transition_callback_ref);
+    transition_callback_ref = LUA_REFNIL;
+  }
 }
 
 /**
@@ -162,6 +172,7 @@ void DynamicDisplayable::set_transition_callback(int transition_callback_ref) {
   Debug::check_assertion(script != NULL,
       "Cannot set a transition callback without script");
 
+  script->cancel_callback(this->transition_callback_ref);
   this->transition_callback_ref = transition_callback_ref;
 }
 

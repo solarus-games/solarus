@@ -92,6 +92,8 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y,
  * @brief Destructor.
  */
 DestructibleItem::~DestructibleItem() {
+
+  get_map_script().cancel_callback(this->destruction_callback_ref);
 }
 
 /**
@@ -377,6 +379,7 @@ void DestructibleItem::play_destroy_animation() {
  */
 void DestructibleItem::set_destruction_callback(int destruction_callback_ref) {
 
+  get_map_script().cancel_callback(this->destruction_callback_ref);
   this->destruction_callback_ref = destruction_callback_ref;
 }
 

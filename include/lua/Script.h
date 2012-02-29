@@ -58,6 +58,7 @@ class Script {
 
     bool has_played_music();
     void do_callback(int callback_ref);
+    void cancel_callback(int callback_ref);
 
     // userdata garbage collection
     template <typename T>

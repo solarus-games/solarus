@@ -754,3 +754,16 @@ void Script::do_callback(int callback_ref) {
   }
 }
 
+/**
+ * @brief Releases the reference to a Lua callback.
+ *
+ * The callback may then be collected by Lua.
+ *
+ * @param callback_ref reference of the function (if LUA_REFNIL,
+ * nothing is done)
+ */
+void Script::cancel_callback(int callback_ref) {
+
+  luaL_unref(l, LUA_REGISTRYINDEX, callback_ref);
+}
+

@@ -63,6 +63,8 @@ class DynamicDisplayable {
 
     DynamicDisplayable();
 
+    virtual Surface* get_surface();
+
   private:
 
     Rectangle last_position;      /**< position of this object after its last

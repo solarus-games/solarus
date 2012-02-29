@@ -105,6 +105,14 @@ Surface::~Surface() {
 }
 
 /**
+ * @brief Returns the surface that represents this displayable object, if any.
+ * @return the surface of this object, or NULL
+ */
+Surface* Surface::get_surface() {
+  return this;
+}
+
+/**
  * @brief Returns the width of the surface.
  * @return the width in pixels
  */

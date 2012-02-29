@@ -142,6 +142,14 @@ TextSurface::~TextSurface() {
 }
 
 /**
+ * @brief Returns the surface that represents this displayable object, if any.
+ * @return the surface of this object, or NULL
+ */
+Surface* TextSurface::get_surface() {
+  return surface;
+}
+
+/**
  * @brief Sets the font to use.
  * @param font_id a font
  */

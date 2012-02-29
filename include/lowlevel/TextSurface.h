@@ -129,6 +129,7 @@ class TextSurface: public DynamicDisplayable {
     const Rectangle get_size();
 
     void raw_display(Surface& dst_surface, const Rectangle& dst_position);
+    Surface* get_surface();
 };
 
 #endif

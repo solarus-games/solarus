@@ -487,7 +487,7 @@ void Script::increment_refcount(T* userdata) {
  * @brief Removes 1 to the reference counter of a userdata and possibly
  * destroys the object.
  *
- * If the counters gets to zero, the object is deleted immediately.
+ * If the counter gets to zero, the object is deleted immediately.
  *
  * @param userdata the userdata
  */

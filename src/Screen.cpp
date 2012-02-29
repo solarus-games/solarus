@@ -37,7 +37,7 @@ Screen::~Screen() {
 
 /**
  * @brief This function can be called by the current screen
- * to indicates that it is finished and to specify
+ * to indicate that it is finished and to specify
  * the next screen.
  * @param next_screen the next screen to show, or NULL
  * to restart the program.

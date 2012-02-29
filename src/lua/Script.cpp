@@ -244,6 +244,7 @@ void Script::register_main_api() {
 
   static const luaL_Reg main_api[] = {
       { "include", main_api_include },
+      { "exit", main_api_exit },
       { "start_screen", main_api_start_screen },
       { "start_game", main_api_start_game },
       { "play_sound", main_api_play_sound },

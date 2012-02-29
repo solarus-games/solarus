@@ -56,6 +56,9 @@ and give the sprite handle as first paramater.
 - <tt>sol.main.include(script_name)</tt>:	
 Includes another script into this one.
 
+- <tt>sol.main.exit()</tt>:
+Exits the program.
+
 - <tt>sol.main.start_screen(screen_name)</tt>:
 Ends the current screen and starts another one.
 Not possible during a game.

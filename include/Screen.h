@@ -64,11 +64,12 @@ class Screen {
     /**
      * @brief Displays this screen on a surface.
      *
-     * This function is called by the main loop depending of the number of frames per second.
+     * This function is called by the main loop depending of the number of
+     * frames per second.
      *
-     * @param screen_surface the surface to draw
+     * @param dst_surface the surface to draw
      */
-    virtual void display(Surface& screen_surface) = 0;
+    virtual void display(Surface& dst_surface) = 0;
 
     /**
      * @brief Notifies this screen that an event just occurred.

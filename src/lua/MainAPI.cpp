@@ -43,6 +43,20 @@ int Script::main_api_include(lua_State *l) {
 }
 
 /**
+ * @brief Stops the program.
+ * @param l the Lua context that is calling this function
+ * @return the number of values to return to Lua
+ */
+int Script::main_api_exit(lua_State* l) {
+
+  Script& script = get_script(l);
+
+  script.get_screen().exit();
+
+  return 0;
+}
+
+/**
  * @brief Ends the current screen and starts another screen.
  *
  * - Argument 1 (string): name of the screen to start

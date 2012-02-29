@@ -16,6 +16,7 @@
  */
 #include "CustomScreen.h"
 #include "Game.h"
+#include "Solarus.h"
 #include "lowlevel/StringConcat.h"
 
 /**
@@ -36,6 +37,16 @@ CustomScreen::CustomScreen(Solarus& solarus, const std::string& screen_name):
  */
 CustomScreen::~CustomScreen() {
 
+}
+
+/**
+ * @brief Exits the program.
+ *
+ * This function returns and the program stops after the current cycle.
+ */
+void CustomScreen::exit() {
+
+  solarus.set_exiting();
 }
 
 /**

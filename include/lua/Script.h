@@ -171,6 +171,7 @@ class Script {
 
       // main API
       main_api_include,
+      main_api_exit,
       main_api_start_screen,
       main_api_start_game,
       main_api_play_sound,

@@ -31,7 +31,7 @@ end
 function event_restart()
 
   if not retracted then
-    local m = sol.main.path_movement_create("000077334444444455110000", 64)
+    local m = sol.movement.path_movement_create("000077334444444455110000", 64)
     m:set_property("ignore_obstacles", true)
     m:set_property("loop", true)
     sol.enemy.start_movement(m)
@@ -39,7 +39,7 @@ function event_restart()
     sol.enemy.stop_movement()
     sol.main.timer_start(function()
       local x, y = sol.map.enemy_get_position(sol.enemy.get_father())
-      local m = sol.main.target_movement_create(48, x, y - 112)
+      local m = sol.movement.target_movement_create(48, x, y - 112)
       sol.enemy.start_movement(m)
       sol.enemy.send_message(sol.enemy.get_father(), "recovering")
     end, retracted_delay)

@@ -131,7 +131,7 @@ function event_custom_attack_received(attack, sprite)
     local x, y = sol.enemy.get_position()
     local hero_x, hero_y = sol.map.hero_get_position()
     local angle = sol.main.get_angle(hero_x, hero_y, x, y)
-    movement = sol.main.straight_movement_create(128, angle)
+    movement = sol.movement.straight_movement_create(128, angle)
     movement:set_property("max_distance", 26)
     movement:set_property("smooth", true)
     sol.enemy.start_movement(movement)
@@ -139,14 +139,14 @@ function event_custom_attack_received(attack, sprite)
 end
 
 function go_random()
-  movement = sol.main.random_path_movement_create(properties.normal_speed)
+  movement = sol.movement.random_path_movement_create(properties.normal_speed)
   sol.enemy.start_movement(movement)
   being_pushed = false
   going_hero = false
 end
 
 function go_hero()
-  movement = sol.main.target_movement_create(properties.faster_speed)
+  movement = sol.movement.target_movement_create(properties.faster_speed)
   sol.enemy.start_movement(movement)
   being_pushed = false
   going_hero = true

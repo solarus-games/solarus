@@ -36,7 +36,7 @@ function go_random()
   local rand4 = math.random(4)
   local direction8 = rand4 * 2 - 1
   local angle = direction8 * math.pi / 4
-  local m = sol.main.straight_movement_create(48, angle)
+  local m = sol.movement.straight_movement_create(48, angle)
   m:set_property("max_distance", 24 + math.random(96))
   sol.enemy.start_movement(m)
 

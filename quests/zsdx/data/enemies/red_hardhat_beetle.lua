@@ -14,7 +14,7 @@ set_properties({
 
 function random_movement_create(speed)
   
-  local m = sol.main.random_movement_create(speed)
+  local m = sol.movement.random_movement_create(speed)
   m:set_property("smooth", true)
   return m
 end

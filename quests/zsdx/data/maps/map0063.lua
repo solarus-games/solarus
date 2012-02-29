@@ -34,7 +34,7 @@ end
 function init_guard(guard_name, path)
 
   local sprite = sol.map.npc_get_sprite(guard_name)
-  local m = sol.main.path_movement_create(path, 48)
+  local m = sol.movement.path_movement_create(path, 48)
   m:set_property("loop", true)
   m:set_property("ignore_obstacles", true)
   sol.map.npc_start_movement(guard_name, m)

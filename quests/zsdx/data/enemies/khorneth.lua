@@ -33,7 +33,7 @@ end
 function event_restart()
 
   -- set the movement
-  local m = sol.main.random_path_movement_create(48)
+  local m = sol.movement.random_path_movement_create(48)
   sol.enemy.start_movement(m)
 
   -- schedule a blade attack

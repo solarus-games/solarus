@@ -53,13 +53,13 @@ function check_hero()
 end
 
 function go_random()
-  local m = sol.main.random_path_movement_create(48)
+  local m = sol.movement.random_path_movement_create(48)
   sol.enemy.start_movement(m)
   going_hero = false
 end
 
 function go_hero()
-  local m = sol.main.target_movement_create(72)
+  local m = sol.movement.target_movement_create(72)
   sol.enemy.start_movement(m)
   going_hero = true
 end

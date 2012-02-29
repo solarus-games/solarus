@@ -15,7 +15,7 @@ end
 -- The enemy was stopped for some reason and should restart
 function event_restart()
 
-  local m = sol.main.straight_movement_create(0, 0)
+  local m = sol.movement.straight_movement_create(0, 0)
   sol.enemy.start_movement(m)
   local direction4 = math.random(4) - 1
   go(direction4)

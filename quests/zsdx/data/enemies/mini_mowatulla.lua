@@ -25,10 +25,10 @@ function event_restart()
   if in_shell then
     local sprite = sol.enemy.get_sprite()
     sprite:set_animation("shell")
-    local m = sol.main.target_movement_create(64)
+    local m = sol.movement.target_movement_create(64)
     sol.enemy.start_movement(m)
   else
-    local m = sol.main.path_finding_movement_create(64)
+    local m = sol.movement.path_finding_movement_create(64)
     sol.enemy.start_movement(m)
   end
 end

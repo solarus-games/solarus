@@ -78,7 +78,7 @@ end
 
 function event_restart()
 
-  local m = sol.main.circle_movement_create(7, father_name, 56)
+  local m = sol.movement.circle_movement_create(7, father_name, 56)
   m:set_property("center_dx", center_xy.x)
   m:set_property("center_dy", center_xy.y)
   m:set_property("radius_speed", 50)

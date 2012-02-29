@@ -12,7 +12,7 @@ end
 
 function event_restart()
 
-  local m = sol.main.path_finding_movement_create(32)
+  local m = sol.movement.path_finding_movement_create(32)
   sol.enemy.start_movement(m)
 end
 

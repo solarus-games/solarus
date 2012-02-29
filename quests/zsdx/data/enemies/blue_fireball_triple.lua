@@ -29,7 +29,7 @@ function event_restart()
   local x, y = sol.enemy.get_position()
   local hero_x, hero_y = sol.map.hero_get_position()
   local angle = sol.main.get_angle(x, y, hero_x, hero_y - 5)
-  local m = sol.main.straight_movement_create(speed, angle)
+  local m = sol.movement.straight_movement_create(speed, angle)
   --m:set_property("ignore_obstacles", true)
   sol.enemy.start_movement(m)
 end

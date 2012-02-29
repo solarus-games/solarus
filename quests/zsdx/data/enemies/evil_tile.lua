@@ -21,7 +21,7 @@ function event_restart()
   local x, y = sol.enemy.get_position()
   initial_y = y
 
-  local m = sol.main.path_movement_create("22", 16)
+  local m = sol.movement.path_movement_create("22", 16)
   sol.enemy.start_movement(m)
   sol.main.timer_start(go_hero, 2000)
   state = "raising"
@@ -32,7 +32,7 @@ function go_hero()
   local x, y = sol.enemy.get_position()
   local hero_x, hero_y = sol.map.hero_get_position()
   local angle = sol.main.get_angle(x, y, hero_x, hero_y)
-  local m = sol.main.straight_movement_create(192, angle)
+  local m = sol.movement.straight_movement_create(192, angle)
   sol.enemy.start_movement(m)
   state = "attacking"
 end

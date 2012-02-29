@@ -46,14 +46,14 @@ end
 function go_back()
 
   local x, y = sol.map.enemy_get_position(sol.enemy.get_father())
-  local m = sol.main.target_movement_create(16, x, y + 48)
+  local m = sol.movement.target_movement_create(16, x, y + 48)
   m:set_property("ignore_obstacles", true)
   sol.enemy.start_movement(m)
 end
 
 function event_movement_finished(movement)
 
-  local m = sol.main.random_movement_create(16)
+  local m = sol.movement.random_movement_create(16)
   m:set_property("max_distance", 16)
   m:set_property("ignore_obstacles", true)
   sol.enemy.start_movement(m)

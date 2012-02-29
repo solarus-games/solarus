@@ -60,7 +60,7 @@ end
 -- Makes the Bubble go towards a diagonal direction (1, 3, 5 or 7)
 function go(direction8)
 
-  local m = sol.main.straight_movement_create(80, 0)
+  local m = sol.movement.straight_movement_create(80, 0)
   sol.enemy.start_movement(m)
 
   m:set_property("speed", 80)

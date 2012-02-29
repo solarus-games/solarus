@@ -29,7 +29,7 @@ function event_restart()
     local x, y = sol.enemy.get_position()
     local hero_x, hero_y = sol.map.hero_get_position()
     local angle = sol.main.get_angle(x, y, hero_x, hero_y)
-    local m = sol.main.straight_movement_create(120, angle)
+    local m = sol.movement.straight_movement_create(120, angle)
     m:set_property("max_distance", 180)
     m:set_property("smooth", false)
     sol.enemy.start_movement(m)
@@ -86,7 +86,7 @@ end
 function go_hero()
 
   sol.enemy.snap_to_grid()
-  local m = sol.main.path_finding_movement_create(40)
+  local m = sol.movement.path_finding_movement_create(40)
   sol.enemy.start_movement(m)
   sol.enemy.set_default_attack_consequences()
   in_egg = false

@@ -548,7 +548,7 @@ void DialogBox::update() {
 
 /**
  * @brief Displays the dialog box on a surface.
- * @param destination_surface the surface
+ * @param dst_surface the surface
  */
 void DialogBox::display(Surface& dst_surface) {
 
@@ -568,7 +568,7 @@ void DialogBox::display(Surface& dst_surface) {
 
   // display the text
   for (int i = 0; i < nb_visible_lines; i++) {
-    line_surfaces[i]->display(dst_surface);
+    line_surfaces[i]->display(dialog_surface);
   }
 
   // display the icon

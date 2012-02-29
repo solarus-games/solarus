@@ -60,8 +60,9 @@ CustomScreen& MenuScript::get_screen() {
 void MenuScript::event_menu_started() {
 
   const std::string function_name("event_menu_started");
-  find_lua_function(function_name);
-  call_script(0, 0, function_name);
+  if (find_lua_function(function_name)) {
+    call_script(0, 0, function_name);
+  }
 }
 
 /**
@@ -71,8 +72,9 @@ void MenuScript::event_menu_started() {
 void MenuScript::event_display(Surface& dst_surface) {
 
   const std::string function_name("event_display");
-  find_lua_function(function_name);
-  push_surface(l, dst_surface);
-  call_script(1, 0, function_name);
+  if (find_lua_function(function_name)) {
+    push_surface(l, dst_surface);
+    call_script(1, 0, function_name);
+  }
 }
 

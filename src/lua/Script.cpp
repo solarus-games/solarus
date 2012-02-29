@@ -455,7 +455,7 @@ bool Script::call_script(int nb_arguments, int nb_results,
     const std::string& function_name) {
 
   if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
-    Debug::print(StringConcat() << "Error in " << function_name << "(): "
+    Debug::die(StringConcat() << "Error in " << function_name << "(): "
         << lua_tostring(l, -1));
     lua_pop(l, 1);
     return false;

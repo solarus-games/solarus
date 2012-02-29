@@ -49,9 +49,9 @@ void Script::initialize_movement_module() {
       { "straight_movement_create", movement_api_straight_movement_create },
       { "circle_movement_create", movement_api_circle_movement_create },
       { "jump_movement_create", movement_api_jump_movement_create },
-      { "movement_get_property", movement_api_get_property },
-      { "movement_set_property", movement_api_set_property },
-      { "movement_test_obstacles", movement_api_test_obstacles },
+      { "get_property", movement_api_get_property },
+      { "set_property", movement_api_set_property },
+      { "test_obstacles", movement_api_test_obstacles },
       { NULL, NULL }
   };
 

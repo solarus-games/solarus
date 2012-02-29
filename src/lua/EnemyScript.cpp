@@ -65,59 +65,6 @@ Enemy& EnemyScript::get_enemy() {
 }
 
 /**
- * @brief Reads some global variables from the sprite to initializes the
- * corresponding properties for the enemy.
- */
-/* I'm not sure allowing to set properties like this is a good idea.
-void EnemyScript::read_globals() {
-
-  lua_State* l = context;
-
-  // life
-  lua_getglobal(l, "life");
-  if (!lua_isnil(l, 1)) {
-    int life = luaL_checkinteger(l, 1);
-    enemy.set_life(life);
-  }
-
-  // damage
-  lua_getglobal(l, "damage");
-  if (!lua_isnil(l, 1)) {
-    int damage = luaL_checkinteger(l, 1);
-    enemy.damage_on_hero = damage;
-  }
-
-  // magic damage
-  lua_getglobal(l, "magic_damage");
-  if (!lua_isnil(l, 1)) {
-    int magic_damage = luaL_checkinteger(l, 1);
-    enemy.magic_damage_on_hero = magic_damage;
-  }
-
-  // pushed back when hurt
-  lua_getglobal(l, "pushed_back_when_hurt");
-  if (!lua_isnil(l, 1)) {
-    bool push_back = lua_toboolean(l, 1);
-    enemy.set_pushed_back_when_hurt(push_back);
-  }
-
-  // hurt sound style
-  lua_getglobal(l, "hurt_sound_style");
-  if (!lua_isnil(l, 1)) {
-    const std::string& style_name = luaL_checkstring(l, 1);
-    enemy.hurt_sound_style = Enemy::get_hurt_sound_style_by_name(style_name);
-  }
-
-  // minimum shield needed
-  lua_getglobal(l, "minimum_shield_needed");
-  if (!lua_isnil(l, 1)) {
-    int shield_level = luaL_checkinteger(l, 1);
-    enemy.minimum_shield_needed = shield_level;
-  }
-}
-*/
-
-/**
  * @brief Updates the script.
  */
 void EnemyScript::update() {
@@ -252,9 +199,10 @@ void EnemyScript::event_obstacle_reached() {
 void EnemyScript::event_movement_changed(Movement& movement) {
 
   const std::string& function_name = "event_movement_changed";
-  find_lua_function(function_name);
-  push_movement(l, movement);
-  call_script(1, 0, function_name);
+  if (find_lua_function(function_name)) {
+    push_movement(l, movement);
+    call_script(1, 0, function_name);
+  }
 }
 
 /**
@@ -264,9 +212,10 @@ void EnemyScript::event_movement_changed(Movement& movement) {
 void EnemyScript::event_movement_finished(Movement& movement) {
 
   const std::string& function_name = "event_movement_finished";
-  find_lua_function(function_name);
-  push_movement(l, movement);
-  call_script(1, 0, function_name);
+  if (find_lua_function(function_name)) {
+    push_movement(l, movement);
+    call_script(1, 0, function_name);
+  }
 }
 
 /**
@@ -279,10 +228,11 @@ void EnemyScript::event_sprite_animation_finished(Sprite& sprite,
     const std::string& animation) {
 
   const std::string& function_name = "event_sprite_animation_finished";
-  find_lua_function(function_name);
-  push_sprite(l, sprite);
-  lua_pushstring(l, animation.c_str());
-  call_script(2, 0, function_name);
+  if (find_lua_function(function_name)) {
+    push_sprite(l, sprite);
+    lua_pushstring(l, animation.c_str());
+    call_script(2, 0, function_name);
+  }
 }
 
 /**
@@ -296,11 +246,12 @@ void EnemyScript::event_sprite_frame_changed(Sprite& sprite,
     const std::string& animation, int frame) {
 
   const std::string& function_name = "event_sprite_frame_changed";
-  find_lua_function(function_name);
-  push_sprite(l, sprite);
-  lua_pushstring(l, animation.c_str());
-  lua_pushinteger(l, frame);
-  call_script(3, 0, function_name);
+  if (find_lua_function(function_name)) {
+    push_sprite(l, sprite);
+    lua_pushstring(l, animation.c_str());
+    lua_pushinteger(l, frame);
+    call_script(3, 0, function_name);
+  }
 }
 
 /**
@@ -315,11 +266,12 @@ void EnemyScript::event_collision_enemy(const std::string& other_name,
     Sprite& other_sprite, Sprite& this_sprite) {
 
   const std::string& function_name = "event_collision_enemy";
-  find_lua_function(function_name);
-  lua_pushstring(l, other_name.c_str());
-  push_sprite(l, other_sprite);
-  push_sprite(l, this_sprite);
-  call_script(3, 0, function_name);
+  if (find_lua_function(function_name)) {
+    lua_pushstring(l, other_name.c_str());
+    push_sprite(l, other_sprite);
+    push_sprite(l, this_sprite);
+    call_script(3, 0, function_name);
+  }
 }
 
 /**
@@ -333,16 +285,17 @@ void EnemyScript::event_custom_attack_received(EnemyAttack attack,
     Sprite* sprite) {
 
   const std::string& function_name = "event_custom_attack_received";
-  find_lua_function(function_name);
-  lua_pushstring(l, Enemy::get_attack_name(attack).c_str());
+  if (find_lua_function(function_name)) {
+    lua_pushstring(l, Enemy::get_attack_name(attack).c_str());
 
-  int nb_arguments = 1;
-  if (sprite != NULL) {
-    // pixel-precise collision
-    push_sprite(l, *sprite);
-    nb_arguments = 2;
+    int nb_arguments = 1;
+    if (sprite != NULL) {
+      // pixel-precise collision
+      push_sprite(l, *sprite);
+      nb_arguments = 2;
+    }
+    call_script(nb_arguments, 0, function_name);
   }
-  call_script(nb_arguments, 0, function_name);
 }
 
 /**

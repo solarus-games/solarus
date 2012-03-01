@@ -240,9 +240,9 @@ void Enemy::notify_map_started() {
  */
 void Enemy::notify_map_opening_transition_finished() {
 
-  MapEntity::notify_map_started();
+  Detector::notify_map_opening_transition_finished();
 
-  if (is_enabled()) {
+  if (is_enabled() && is_in_normal_state()) {
     restart();
   }
 }

@@ -1549,13 +1549,13 @@ screen.
 }
 --------------------
 
--- Grand sac de rubis / Large Rupee Bag
+-- Grand sac de rubis / Big Wallet
 dialog{
   id = "_treasure.rupee_bag.2",
   icon = 52,
   text = [[
-You found the Large
-Rupee Bag!$0
+You found the Big
+Wallet!$0
 
 It can hold up to
 300 Rupees!
@@ -1563,13 +1563,13 @@ It can hold up to
 }
 --------------------
 
--- Sac de rubis géant / Giant Rupee Bag
+-- Sac de rubis géant / Giant Wallet
 dialog{
   id = "_treasure.rupee_bag.3",
   icon = 53,
   text = [[
 You found the Giant
-Rupee Bag!$0
+Wallet!$0
 
 It can hold up to
 999 Rupees!

@@ -148,7 +148,7 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-The Magic Flask can
+The Magic Bottle can
 hold various
 substances.
 ]]
@@ -162,7 +162,7 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Your Magic Flask
+Your Magic Bottle
 is filled with
 water.
 
@@ -233,7 +233,7 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-The Magic Flask can
+The Magic Bottle can
 hold various
 substances.
 ]]
@@ -246,7 +246,7 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Your Magic Flask
+Your Magic Bottle
 is filled with
 water.
 
@@ -317,7 +317,7 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-The Magic Flask can
+The Magic Bottle can
 hold various
 substances.
 ]]
@@ -330,7 +330,7 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Your Magic Flask
+Your Magic Bottle
 is filled with
 water.
 
@@ -401,7 +401,7 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-The Magic Flask can
+The Magic Bottle can
 hold various
 substances.
 ]]
@@ -414,7 +414,7 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Your Magic Flask
+Your Magic Bottle
 is filled with
 water.
 
@@ -897,13 +897,13 @@ inaccessible places!
 }
 --------------------
 
--- Flacon vide / empty Flask
+-- Flacon vide / empty Bottle
 dialog{
   id = "_treasure.bottle_1.1",
   icon = 7,
   text = [[
 You found a
-Magic Flask!$0
+Magic Bottle!$0
 
 Fill it with
 various substances.
@@ -917,7 +917,7 @@ dialog{
   icon = 8,
   text = [[
 You filled your
-Magic Flask with
+Magic Bottle with
 water!
 ]]
 }
@@ -988,7 +988,7 @@ dialog{
   icon = 7,
   text = [[
 You found a
-Magic Flask!$0
+Magic Bottle!$0
 
 Fill it with
 various substances.
@@ -1002,7 +1002,7 @@ dialog{
   icon = 8,
   text = [[
 You filled your
-Magic Flask with
+Magic Bottle with
 water!
 ]]
 }
@@ -1066,7 +1066,6 @@ whenever you want to
 recover your Hearts!
 ]]
 }
-
 --------------------
 
 -- Flacon vide / Empty Flask
@@ -1075,7 +1074,7 @@ dialog{
   icon = 7,
   text = [[
 You found a
-Magic Flask!$0
+Magic Bottle!$0
 
 Fill it with
 various substances.
@@ -1089,7 +1088,7 @@ dialog{
   icon = 8,
   text = [[
 You filled your
-Magic Flask with
+Magic Bottle with
 water!
 ]]
 }
@@ -1152,7 +1151,6 @@ whenever you want to
 recover your Hearts!
 ]]
 }
-
 --------------------
 
 -- Flacon vide / Empty Flask
@@ -1161,7 +1159,7 @@ dialog{
   icon = 7,
   text = [[
 You found a
-Magic Flask!$0
+Magic Bottle!$0
 
 Fill it with
 various substances.
@@ -1175,7 +1173,7 @@ dialog{
   icon = 8,
   text = [[
 You filled your
-Magic Flask with
+Magic Bottle with
 water!
 ]]
 }
@@ -2028,8 +2026,8 @@ dialog{
   id = "_treasure.magic_flask.1",
   icon = 85,
   text = [[
-You found a small
-Magic Flask! Your
+You found a Small
+Magic Jar! Your
 Magic Meter is
 slightly filled.
 ]]
@@ -2041,10 +2039,10 @@ dialog{
   id = "_treasure.magic_flask.2",
   icon = 86,
   text = [[
-You found a Magic
-Jar! Your Magic
-Meter is greatly
-filled.
+You found a Large
+Magic Jar! Your
+Magic Meter is
+greatly filled.
 ]]
 }
 --------------------
@@ -2432,7 +2430,7 @@ dialog{
   skip = "current",
   text = [[
 You don't have an empty
-Flask!
+Bottle!
 ]]
 }
 -----------------------
@@ -2447,7 +2445,7 @@ dialog{
 Do you want to put
 some water in your
 
-Magic Flask?
+Magic Bottle?
 Yes
 No
 ]]
@@ -2474,8 +2472,9 @@ dialog{
   text = [[
 There is some water
 here, but you need
-an empty Magic Flask
-to store it...
+an empty Magic
+Bottle to store
+it...
 ]]
 }
 --------------------
@@ -2561,20 +2560,21 @@ dialog{
   id = "intro0",
   skip = "current",
   text = [[
-$2Ancient legends 
-tell that a
-magnificent kingdom
-named Hyrule existed
-a long time ago.
-This kingdom prospered 
-Under the blessing of
+$2Ancient legends tell
+of a magnificent
+kingdom called Hyrule
+that existed long ago.
+The kingdom prospered
+under the blessing of
 three goddesses
-represented by
-the Triforce.
-Seven sages sealed
-the Triforce in the
-Golden Land. Then
-the centuries passed...
+represented in the form
+of the Triforce. Seven
+sages sealed the
+Triforce in the
+Golden Land, the
+Utopian reflection of
+the world. Centuries
+passed...
 ]]
 }
 -----------------------
@@ -2583,21 +2583,22 @@ dialog{
   id = "intro1",
   skip = "current",
   text = [[
-$2Many generations later,
-an evil spell seemed to
-threaten Hyrule.
-A mysterious sorcerer
-by the name of Agahnim
-repelled the evil.
-Praised by many, the
-King trusted him with
-a high-ranked status.
-The sorcerer was in
-fact planning against
-the royal family. He
-wanted to bring back
-Ganondorf, king of
-thieves, from a
+$2Many generations
+later, an evil spell
+seemed to threaten
+Hyrule. A mysterious
+sorceror named Agahnim
+fought back the
+darkness. Acclaimed by
+the people, the King
+entrusted him with a
+high-ranking status.
+However, the sorceror
+was in fact plotting
+against the royal
+family. He tried to
+bring back Ganondorf,
+King of thieves, from a
 forgotten time.
 ]]
 }
@@ -4076,7 +4077,7 @@ dialog{
 Oh, thank you, how nice
 of you! I'm sorry I
 only have this empty
-Flask... It's a small
+Bottle... It's a small
 reward but I'm sure you
 will make good use of
 it.
@@ -5433,7 +5434,7 @@ dialog{
 Welcome to the Potion
 Shop!
 Hehehe...
-A Magic Flask is
+A Magic Bottle is
 given for free to every
 new client! Hehehe...
 Red gives life, green
@@ -5447,8 +5448,8 @@ dialog{
   id = "potion_shop.no_empty_bottle",
   text = [[
 You can't buy this
-potion without an empty
-Flask! Hehehe...
+Potion without an empty
+Bottle! Hehehe...
 ]]
 }
 -----------------------
@@ -5456,7 +5457,7 @@ Flask! Hehehe...
 dialog{
   id = "potion_shop.red_potion",
   text = [[
-Red potion:
+Red Potion:
 restores life!
 Hehehe...
 ]]
@@ -5466,7 +5467,7 @@ Hehehe...
 dialog{
   id = "potion_shop.green_potion",
   text = [[
-Green potion:
+Green Potion:
 restores your magic
 bar! Hehehe...
 ]]
@@ -5476,7 +5477,7 @@ bar! Hehehe...
 dialog{
   id = "potion_shop.blue_potion",
   text = [[
-Blue potion:
+Blue Potion:
 restores life and
 magic! Hehehe...
 ]]
@@ -5488,8 +5489,8 @@ dialog{
   text = [[
 As a new customer, you
 get to walk away with
-a Magic Flask for free.
-Hehehe...
+a Magic Bottle for
+free. Hehehe...
 ]]
 }
 -----------------------

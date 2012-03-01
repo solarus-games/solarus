@@ -39,7 +39,7 @@ dialog{
   icon = 0,
   skip = "all",
   text = [[
-Use the feather
+Use the Feather
 to jump in place and
 over obstacles.
 ]]
@@ -565,7 +565,7 @@ dialog{
   icon = 19,
   skip = "all",
   text = [[
-The Rock key! But
+The Rock Key! But
 where is the right
 lock ?
 ]]
@@ -1610,9 +1610,9 @@ dialog{
   text = [[
 You found the Bomb
 Bag!$0 It holds 10
-Bombs. Assign them
-to a key and bombs
-away!
+Bombs.
+Assign them to a key
+and bombs away!
 ]]
 }
 --------------------
@@ -2487,9 +2487,8 @@ dialog{
   icon = 8,
   question = true,
   text = [[
-Your Magic Flask
-is filled with
-water.
+Your Magic Bottle is
+filled with water.
 What do you want to
 do?
 Pour water
@@ -6218,7 +6217,7 @@ dialog{
   skip = "current",
   text = [[
         Level 9       
- Temple of Memories
+ Shrine of Memories
 ]]
 }
 -----------------------
@@ -6352,7 +6351,7 @@ dialog{
   skip = "current",
   text = [[
      Secret level     
-     Tower of the Gods
+     Skyward Tower
 ]]
 }
 -----------------------

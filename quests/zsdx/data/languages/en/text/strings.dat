@@ -27,7 +27,7 @@ map.caption.dungeon_name_10       Skyward Tower
 # Quest status submenu
 quest_status.caption.rupee_bag_1    Wallet
 quest_status.caption.rupee_bag_2    Big Wallet
-quest_status.caption.rupee_bag_3    Giant$Wallet
+quest_status.caption.rupee_bag_3    Giant Wallet
 quest_status.caption.bomb_bag_1     Bomb Bag
 quest_status.caption.bomb_bag_2     Large$Bomb Bag
 quest_status.caption.bomb_bag_3     Giant$Bomb Bag

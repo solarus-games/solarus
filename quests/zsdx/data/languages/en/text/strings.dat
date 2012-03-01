@@ -141,8 +141,8 @@ save_dialog.yes                    Yes
 save_dialog.no                     No
 save_dialog.save_question_0        Would you like to
 save_dialog.save_question_1        save your game?
-save_dialog.continue_question_0    Would you like to keep
-save_dialog.continue_question_1    playing?
+save_dialog.continue_question_0    Would you like to
+save_dialog.continue_question_1    keep playing?
 
 # Savegame selection menu (maximum 45 characters)
 selection_menu.phase.select_file         Select a file
@@ -160,11 +160,11 @@ selection_menu.empty                     Empty
 selection_menu.options                   Options
 selection_menu.back                      Back
 selection_menu.options.language          Language
-selection_menu.options.video_mode        Graphics
+selection_menu.options.video_mode        Video
 selection_menu.options.music_volume      Music volume
 selection_menu.options.sound_volume      Sound volume
 
 # Title screen
-title_screen.website        www.zelda-solarus.com
+title_screen.website        www.solarus-engine.org
 title_screen.press_space    Press the space bar
 

@@ -590,7 +590,7 @@ dialog{
   icon = 21,
   skip = "all",
   text = [[
-The Earth Key. This
+The Earth Key. It
 allows access to the
 village's cave.
 ]]
@@ -850,7 +850,7 @@ the original!
 }
 --------------------
 
--- Lanterne / Lantern
+-- Lanterne / Lamp
 dialog{
   id = "_treasure.lamp.1",
   icon = 5,
@@ -1275,9 +1275,7 @@ dialog{
   id = "_treasure.apple.1",
   icon = 16,
   text = [[
-You found three
-Apples!$0
-
+You found 3 Apples!$0
 Eat them later to
 recover Hearts!
 ]]
@@ -1542,8 +1540,8 @@ dialog{
   id = "_treasure.world_map.1",
   icon = 50,
   text = [[
-You found the World
-Map !$0
+You found the
+World Map !$0
 
 View it on the Map
 screen.
@@ -1735,7 +1733,7 @@ You found the Sword
 of Courage!$0
 
 You can cross swords
-and confront yours
+and confront your
 enemies!
 ]]
 }
@@ -1886,8 +1884,8 @@ dialog{
   id = "_treasure.piece_of_heart.1",
   icon = 79,
   text = [[
-You found a Piece of
-Heart!
+You found a
+Piece of Heart!
 ]]
 }
 --------------------
@@ -2049,7 +2047,7 @@ dialog{
   text = [[
 You found a Blue
 Rupee!
-That's five Rupees!
+That's 5 Rupees!
 ]]
 }
 --------------------
@@ -2297,7 +2295,7 @@ dialog{
   skip = "all",
   text = [[
 It's a crystal switch.
-Try hitting it with
+Try to hit it with
 something...
 ]]
 }
@@ -2308,8 +2306,8 @@ dialog{
   id = "dungeon_1",
   skip = "current",
   text = [[
-    	Level 1
-    Forest Dungeon  
+         Level 1
+      Forest Dungeon
 ]]
 }
 -----------------------
@@ -2319,7 +2317,7 @@ dialog{
   id = "dungeon_2",
   skip = "current",
   text = [[
-    	Level 2
+         Level 2
       Roc's Cavern
 ]]
 }
@@ -2330,7 +2328,7 @@ dialog{
   id = "dungeon_3",
   skip = "current",
   text = [[
-    	Level 3
+         Level 3
   Master Arbror's Den
 ]]
 }
@@ -2341,7 +2339,7 @@ dialog{
   icon = 75,
   text = [[
 Collect four pieces
-to obtain another
+to obtain a new
 Heart.
 ]]
 }
@@ -2468,8 +2466,8 @@ dialog{
   text = [[
 Your Magic Bottle is
 filled with water.
-What do you want to
-do?
+What do you
+want to do?
 Pour water
 Keep it
 ]]
@@ -2665,12 +2663,14 @@ royal powers, Princess
 Zelda with the
 Triforce.
 Zelda teamed with eight
-mysterious child to
+mysterious children to
 shatter the Triforce
 into eight fragments
 and to conceal them
 across the kingdom.
 Peace was restored.
+
+
 And so begins our
 journey...
 ]]
@@ -2681,7 +2681,7 @@ journey...
 dialog{
   id = "outside_world.village.welcome_sign",
   text = [[
-        Welcome
+         Welcome
        to Lyriann
 ]]
 }
@@ -2696,8 +2696,8 @@ dialog{
   next = "_unknown",
   text = [[
 Help! Everyone is
-scared since the
-night!
+scared since the night!
+
 The village has been
 surrounded by
 monsters!
@@ -2841,7 +2841,7 @@ true ?
 dialog{
   id = "outside_world.village.rupee_house_sign",
   text = [[
-  - Rupees' House -
+   - Rupees' House -
 Earn some Rupees
 while having fun!
 ]]
@@ -2858,8 +2858,8 @@ dialog{
 Please feel free to
 take our fresh spring
 water home with you.
-      Lyriann
-   Tourist Center
+        Lyriann
+     Tourist Center
 ]]
 }
 -----------------------
@@ -2937,13 +2937,13 @@ the C key: the orange
 icon (D key) pauses the
 game, the blue icon
 (spacebar) is the
-Action button, and the
+Action key, and the
 two grey icons are the
 objects assigned to the
 X and V keys. So always
 keep an eye on what the
 icons say. Don't forget
-thatyou can customize
+that you can customize
 the controls in the
 options screen, and
 that you can even play
@@ -3007,7 +3007,7 @@ dialog{
   text = [[
 To save your progress,
 press D to pause the
-game then press C.
+game and then press C.
 Keep an eye on the
 green icon!
 ]]
@@ -3285,9 +3285,9 @@ dialog{
   id = "rupee_house.game_2.playing",
   text = [[
 Stand next to the
-roulettes and press
-the Action button to
-stop them.
+roulettes and press the
+Action key to stop
+them.
 Good luck!
 ]]
 }
@@ -3535,7 +3535,7 @@ dialog{
   text = [[
 Monsters are lurking
 in the field. That's
-not a good sign : I am
+not a good sign: I am
 certain that something
 terrible has happened.
 
@@ -3804,6 +3804,7 @@ bronze Sword with my
 bare hands.
 You can have it for
 only 75 Rupees!
+
 With your shield alone
 you won't get far.
 
@@ -3855,7 +3856,7 @@ dialog{
   text = [[
 Thanks a lot. To swing
 your sword, press C. Or
-hold the C button to
+hold the C key to
 launch a spin attack!
 ]]
 }
@@ -3876,8 +3877,9 @@ dialog{
   id = "lyriann_shop.apples",
   next = "_unknown",
   text = [[
-3 freshly picked apples
-from this morning!
+Three freshly picked
+apples from this
+morning!
 
 Each apple restores a
 Heart.
@@ -3892,7 +3894,7 @@ dialog{
   id = "lyriann_shop.lamp",
   next = "_unknown",
   text = [[
-A Lantern.
+A Lamp.
 Travel through dark
 places!
 ]]
@@ -3949,8 +3951,7 @@ dialog{
   id = "cake_shop.seller.choose_item",
   text = [[
 Welcome. Choose the
-pastry you wish to
-buy.
+pastry you wish to buy.
 ]]
 }
 -----------------------
@@ -4051,12 +4052,14 @@ dialog{
   id = "cake_shop.thank_you",
   text = [[
 Oh, thank you, how nice
-of you! I'm sorry I
-only have this empty
-Bottle... It's a small
-reward but I'm sure you
-will make good use of
-it.
+of you!
+
+I'm sorry I only have
+this empty Bottle...
+
+It's a small reward but
+I'm sure you will make
+good use of it.
 ]]
 }
 -----------------------
@@ -4086,8 +4089,8 @@ Surely Ganondorf and
 his minions...
 The Seal of the Seven
 Sages weakened after
-our poor King's
-death. Ganon would have
+our poor King's death.
+Ganon would have
 managed to escape from
 the Dark World?
 We must not let him
@@ -4216,7 +4219,7 @@ dialog{
   skip = "all",
   text = [[
 The door is frozen?
-Try melting the ice
+Try to melt the ice
 with some water.
 ]]
 }
@@ -4286,14 +4289,12 @@ overflowing with
 riddles, treasure, and
 danger. You seem very
 courageous!
-
 Please, accept my
 help... I have failed,
 I wasn't able to
 protect our King.
 Give me a chance to
 make it up!
-
 Do you accept my help?
 Yes
 No
@@ -4329,9 +4330,9 @@ dialog{
   text = [[
 Thank you. I can lend
 you this, I hope it
-will be useful. Don't
-forget to return it to
-me once you have
+will be useful.
+Don't forget to return
+it to me once you have
 finished.
 If you manage to obtain
 the Heart Container, I
@@ -4422,11 +4423,12 @@ dialog{
   text = [[
 You solved the
 mysteries of this
-cavern? Impressive! You
-are just as skilled as
-you are courageous. If
-you don't mind, I'll be
-taking my Boomerang
+cavern? Impressive!
+You are just as skilled
+as you are courageous.
+
+If you don't mind, I'll
+be taking my Boomerang
 back.
 ]]
 }
@@ -4879,7 +4881,7 @@ dialog{
   id = "surprise_wall.direction_0",
   text = [[
 
-	Right
+          Right
 ]]
 }
 -----------------------
@@ -4888,7 +4890,7 @@ dialog{
   id = "surprise_wall.direction_1",
   text = [[
 
-	Up
+           Up
 ]]
 }
 -----------------------
@@ -4897,7 +4899,7 @@ dialog{
   id = "surprise_wall.direction_2",
   text = [[
 
-	Left
+          Left
 ]]
 }
 -----------------------
@@ -4906,7 +4908,7 @@ dialog{
   id = "surprise_wall.direction_3",
   text = [[
 
-	 Down
+          Down
 ]]
 }
 -----------------------
@@ -5625,8 +5627,8 @@ dialog{
   id = "dungeon_4.welcome",
   skip = "current",
   text = [[
-        Level 4
-   Beaumont's Palace
+         Level 4
+    Beaumont's Palace
 ]]
 }
 -----------------------
@@ -5741,7 +5743,7 @@ dialog{
   id = "dungeon_5.welcome",
   skip = "current",
   text = [[
-        Level 5
+         Level 5
      Ancient Castle
 ]]
 }
@@ -5869,8 +5871,8 @@ dialog{
   id = "dungeon_6.welcome",
   skip = "current",
   text = [[
-        Level 6
-    Inferno's Maze   
+         Level 6
+     Inferno's Maze
 ]]
 }
 -----------------------
@@ -5959,7 +5961,7 @@ dialog{
   id = "dungeon_7.welcome",
   skip = "current",
   text = [[
-        Level 7
+         Level 7
      Crystal Temple
 ]]
 }
@@ -6057,7 +6059,7 @@ dialog{
   id = "dungeon_8.welcome",
   skip = "current",
   text = [[
-        Level 8
+         Level 8
    Rock Peaks Dungeon
 ]]
 }
@@ -6193,7 +6195,7 @@ dialog{
   id = "dungeon_9.welcome",
   skip = "current",
   text = [[
-        Level 9
+         Level 9
    Shrine of Memories
 ]]
 }

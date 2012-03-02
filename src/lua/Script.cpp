@@ -692,7 +692,7 @@ bool Script::find_lua_function(const std::string& function_name) {
  * and the types of return values to get (see above)
  * @return true if the function was called successfully, false if it does not exist
  */
-bool Script::notify_script(const std::string &function_name, const std::string &format, ...) {
+bool Script::notify_script(const std::string& function_name, const char* format, ...) {
 
   // find the function and push it onto the stack
   bool exists = find_lua_function(function_name);
@@ -706,7 +706,7 @@ bool Script::notify_script(const std::string &function_name, const std::string &
     unsigned int i;
     unsigned int nb_arguments = 0;
     bool end_arguments = false;
-    for (i = 0; i < format.size() && !end_arguments; i++) {
+    for (i = 0; i < strlen(format) && !end_arguments; i++) {
       switch (format[i]) {
         case 'i':	lua_pushinteger(l, va_arg(args, int));	break;
         case 'b':	lua_pushboolean(l, va_arg(args, int));	break; 		// cstdarg refuses bool
@@ -721,7 +721,7 @@ bool Script::notify_script(const std::string &function_name, const std::string &
     }
 
     // call the function
-    int nb_results = format.size() - i;
+    int nb_results = strlen(format) - i;
     if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
       Debug::print(StringConcat() << "Error in " << function_name << "(): "
           << lua_tostring(l, -1));

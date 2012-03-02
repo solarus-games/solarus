@@ -364,7 +364,7 @@ class Script {
     Movement& start_movement(int movement_handle);
 
     // Lua
-    bool notify_script(const std::string &function_name, const std::string &format = "", ...);
+    bool notify_script(const std::string &function_name, const char* format = "", ...);
     void initialize_lua_context();
     void load(const std::string &script_name);
     void load_if_exists(const std::string &script_name);

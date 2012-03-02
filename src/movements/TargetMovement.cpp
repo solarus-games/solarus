@@ -149,7 +149,8 @@ void TargetMovement::recompute_movement() {
     if (std::fabs(angle - get_angle()) > 1E-6 || get_speed() < 1E-6) {
       set_speed(speed);
       set_angle(angle);
-      set_max_distance(Geometry::get_distance(get_x(), get_y(), target_x, target_y));
+      set_max_distance((int) Geometry::get_distance(
+            get_x(), get_y(), target_x, target_y));
     }
   }
 }

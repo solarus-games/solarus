@@ -35,6 +35,9 @@ CustomEnemy::CustomEnemy(const ConstructionParameters &params, const std::string
  */
 CustomEnemy::~CustomEnemy() {
 
+  // movements have to be destroyed before the script
+  clear_movement();
+  clear_old_movements();
   delete script;
 }
 

@@ -95,6 +95,9 @@ Sprite& Script::check_sprite(lua_State* l, int index) {
  */
 void Script::push_sprite(lua_State* l, Sprite& sprite) {
 
+  Script& script = get_script(l);
+
+  script.increment_refcount(&sprite);
                                   // ...
   Sprite** block_adress =
     (Sprite**) lua_newuserdata(l, sizeof(Sprite*));

@@ -61,14 +61,21 @@ class Script {
     void cancel_callback(int callback_ref);
 
     // userdata garbage collection
-    template <typename T>
-      void increment_refcount(T* userdata);
+    bool has_created(void* userdata);
+    void set_created(void* userdata);
+    void increment_refcount(void* userdata);
     template <typename T>
       void decrement_refcount(T* userdata);
 
   private:
 
     // script data
+    std::map<void*, int> refcounts; /**< for each userdata created by this
+                                     * script:
+                                     * number of pointers to the object
+                                     * including the Lua ones
+                                     * (0 means that it can be deleted) */
+
     // TODO reimplement timers as userdata? timer:stop, timer:set_with_sound(true)
     std::map<int, Timer*> timers;   /**< the timers currently running for this
                                      * script, indexed by their callback ref */
@@ -76,11 +83,6 @@ class Script {
       displayables;                 /**< all displayable objects created by
                                      * this script*/
 
-    std::map<void*, int> refcounts; /**< for each userdata created by this
-                                     * script:
-                                     * number of pointers to the object
-                                     * including the Lua one
-                                     * (0 means that it can be deleted) */
     bool music_played;
 
     // APIs
@@ -465,42 +467,23 @@ class Script {
 };
 
 /**
- * @brief Adds 1 to the reference counter of a userdata.
- *
- * If the object was not known yet, it is initialized with a refcount of 1.
- *
- * @param userdata the userdata
- */
-template <typename T>
-void Script::increment_refcount(T* userdata) {
-
-  if (refcounts.count(userdata) == 0) {
-    // first time
-    refcounts[userdata] = 1;
-  }
-  else {
-    refcounts[userdata]++;
-  }
-}
-
-/**
  * @brief Removes 1 to the reference counter of a userdata and possibly
  * destroys the object.
  *
  * If the counter gets to zero, the object is deleted immediately.
+ * If the object was not created by this script, nothing is done.
  *
  * @param userdata the userdata
  */
 template <typename T>
 void Script::decrement_refcount(T* userdata) {
 
-  Debug::check_assertion(refcounts.count(userdata) > 0,
-      "This userdata is not known by the script");
-
-  int refcount = --refcounts[userdata];
-  if (refcount == 0) {
-    refcounts.erase(userdata);
-    delete userdata;
+  if (has_created(userdata)) {
+    int refcount = --refcounts[userdata];
+    if (refcount == 0) {
+      refcounts.erase(userdata);
+      delete userdata;
+    }
   }
 }
 

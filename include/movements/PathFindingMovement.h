@@ -36,7 +36,7 @@ class PathFindingMovement: public PathMovement {
 
   private:
 
-    MapEntity *target;              /**< the entity targeted by this movement (usually the hero) */
+    MapEntity& target;              /**< the entity targeted by this movement (usually the hero) */
     uint32_t next_recomputation_date;
 
   protected:
@@ -46,7 +46,7 @@ class PathFindingMovement: public PathMovement {
 
   public:
 
-    PathFindingMovement(MapEntity *target, int speed);
+    PathFindingMovement(MapEntity& target, int speed);
     ~PathFindingMovement();
 
     bool is_finished();

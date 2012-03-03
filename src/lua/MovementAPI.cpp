@@ -103,6 +103,9 @@ Movement& Script::check_movement(lua_State* l, int index) {
  */
 void Script::push_movement(lua_State* l, Movement& movement) {
 
+  Script& script = get_script(l);
+
+  script.increment_refcount(&movement);
                                   // ...
   Movement** block_adress = (Movement**) lua_newuserdata(l, sizeof(Movement*));
   *block_adress = &movement;
@@ -142,11 +145,14 @@ int Script::movement_meta_gc(lua_State* l) {
  */
 int Script::movement_api_pixel_movement_create(lua_State* l) {
 
+  Script& script = get_script(l);
+
   const std::string& trajectory = luaL_checkstring(l, 1);
   uint32_t delay = luaL_checkinteger(l, 2);
 
   Movement* movement = new PixelMovement(trajectory, delay, false, false);
-  get_script(l).increment_refcount(movement);
+  script.set_created(movement);
+  movement->set_creator_script(&script);
   push_movement(l, *movement);
 
   return 1;
@@ -162,10 +168,13 @@ int Script::movement_api_pixel_movement_create(lua_State* l) {
  */
 int Script::movement_api_random_movement_create(lua_State* l) {
 
+  Script& script = get_script(l);
+
   int speed = luaL_checkinteger(l, 1);
 
   Movement* movement = new RandomMovement(speed, 0);
-  get_script(l).increment_refcount(movement);
+  script.set_created(movement);
+  movement->set_creator_script(&script);
   push_movement(l, *movement);
 
   return 1;
@@ -182,11 +191,14 @@ int Script::movement_api_random_movement_create(lua_State* l) {
  */
 int Script::movement_api_path_movement_create(lua_State* l) {
 
+  Script& script = get_script(l);
+
   const std::string& path = luaL_checkstring(l, 1);
   int speed = luaL_checkinteger(l, 2);
 
   Movement* movement = new PathMovement(path, speed, false, false, false);
-  get_script(l).increment_refcount(movement);
+  script.set_created(movement);
+  movement->set_creator_script(&script);
   push_movement(l, *movement);
 
   return 1;
@@ -202,10 +214,13 @@ int Script::movement_api_path_movement_create(lua_State* l) {
  */
 int Script::movement_api_random_path_movement_create(lua_State* l) {
 
+  Script& script = get_script(l);
+
   int speed = luaL_checkinteger(l, 1);
 
   Movement* movement = new RandomPathMovement(speed);
-  get_script(l).increment_refcount(movement);
+  script.set_created(movement);
+  movement->set_creator_script(&script);
   push_movement(l, *movement);
 
   return 1;
@@ -223,10 +238,12 @@ int Script::movement_api_random_path_movement_create(lua_State* l) {
 int Script::movement_api_path_finding_movement_create(lua_State* l) {
 
   Script& script = get_script(l);
+
   int speed = luaL_checkinteger(l, 1);
 
-  Movement* movement = new PathFindingMovement(&script.get_game().get_hero(), speed);
-  get_script(l).increment_refcount(movement);
+  Movement* movement = new PathFindingMovement(script.get_game().get_hero(), speed);
+  script.set_created(movement);
+  movement->set_creator_script(&script);
   push_movement(l, *movement);
 
   return 1;
@@ -250,6 +267,7 @@ int Script::movement_api_path_finding_movement_create(lua_State* l) {
 int Script::movement_api_target_movement_create(lua_State* l) {
 
   Script& script = get_script(l);
+
   int speed = luaL_checkinteger(l, 1);
 
   TargetMovement* movement;
@@ -267,7 +285,8 @@ int Script::movement_api_target_movement_create(lua_State* l) {
   movement->set_ignore_obstacles(false);
   movement->set_speed(speed);
 
-  get_script(l).increment_refcount(movement);
+  script.set_created(movement);
+  movement->set_creator_script(&script);
   push_movement(l, *movement);
 
   return 1;
@@ -284,13 +303,16 @@ int Script::movement_api_target_movement_create(lua_State* l) {
  */
 int Script::movement_api_straight_movement_create(lua_State* l) {
 
+  Script& script = get_script(l);
+
   int speed = luaL_checkinteger(l, 1);
   double angle = luaL_checknumber(l, 2);
 
   StraightMovement* movement = new StraightMovement(false, false);
   movement->set_speed(speed);
   movement->set_angle(angle);
-  get_script(l).increment_refcount(movement);
+  script.set_created(movement);
+  movement->set_creator_script(&script);
   push_movement(l, *movement);
 
   return 1;
@@ -310,6 +332,7 @@ int Script::movement_api_straight_movement_create(lua_State* l) {
 int Script::movement_api_circle_movement_create(lua_State* l) {
 
   Script& script = get_script(l);
+
   int center_type = luaL_checkinteger(l, 1);
   const std::string& center_name = luaL_checkstring(l, 2);
   int radius = luaL_checkinteger(l, 3);
@@ -320,7 +343,9 @@ int Script::movement_api_circle_movement_create(lua_State* l) {
   CircleMovement* movement = new CircleMovement(true);
   movement->set_center(center_entity);
   movement->set_radius(radius);
-  get_script(l).increment_refcount(movement);
+
+  script.set_created(movement);
+  movement->set_creator_script(&script);
   push_movement(l, *movement);
 
   return 1;
@@ -337,11 +362,14 @@ int Script::movement_api_circle_movement_create(lua_State* l) {
  */
 int Script::movement_api_jump_movement_create(lua_State* l) {
 
+  Script& script = get_script(l);
+
   int direction8 = luaL_checkinteger(l, 1);
   int length = luaL_checkinteger(l, 2);
 
   Movement* movement = new JumpMovement(direction8, length, 0, false);
-  get_script(l).increment_refcount(movement);
+  script.set_created(movement);
+  movement->set_creator_script(&script);
   push_movement(l, *movement);
 
   return 1;

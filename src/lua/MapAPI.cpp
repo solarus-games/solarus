@@ -949,6 +949,7 @@ int Script::map_api_npc_start_movement(lua_State *l) {
   MapEntities& entities = script.get_map().get_entities();
   NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
 
+  script.increment_refcount(&movement);
   npc->clear_movement();
   npc->set_movement(&movement);
 

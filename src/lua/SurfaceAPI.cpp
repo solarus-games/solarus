@@ -95,6 +95,9 @@ Surface& Script::check_surface(lua_State* l, int index) {
  */
 void Script::push_surface(lua_State* l, Surface& surface) {
 
+  Script& script = get_script(l);
+
+  script.increment_refcount(&surface);
                                   // ...
   Surface** block_adress =
     (Surface**) lua_newuserdata(l, sizeof(Surface*));

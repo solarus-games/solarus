@@ -53,6 +53,8 @@ class Movement {
     bool default_ignore_obstacles;			/**< indicates that this movement normally ignores obstacles */
     bool current_ignore_obstacles;			/**< indicates that this movement currently ignores obstacles */
 
+    Script* creator_script;                             /**< the script that created this movement (if any) */
+
   protected:
 
     Movement(bool ignore_obstacles = false);
@@ -115,6 +117,10 @@ class Movement {
     // properties
     virtual const std::string get_property(const std::string &key);
     virtual void set_property(const std::string &key, const std::string &value);
+
+    // script
+    Script* get_creator_script();
+    void set_creator_script(Script* creator_script);
 };
 
 #endif

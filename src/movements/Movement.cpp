@@ -38,7 +38,8 @@ Movement::Movement(bool ignore_obstacles):
   when_suspended(0),
   last_collision_box_on_obstacle(-1, -1),
   default_ignore_obstacles(ignore_obstacles),
-  current_ignore_obstacles(ignore_obstacles) {
+  current_ignore_obstacles(ignore_obstacles),
+  creator_script(NULL) {
 
 }
 
@@ -462,5 +463,23 @@ void Movement::set_property(const std::string &key, const std::string &value) {
 
   Debug::die("Movement::set_property() is not supported by this movement type");
 
+}
+
+/**
+ * @brief Returns the script that created this movement.
+ * @return the creator script or NULL
+ */
+Script* Movement::get_creator_script() {
+
+  return creator_script;
+}
+
+/**
+ * @brief Sets the script that created this movement.
+ * @param creator_script the creator script or NULL
+ */
+void Movement::set_creator_script(Script* creator_script) {
+
+  this->creator_script = creator_script;
 }
 

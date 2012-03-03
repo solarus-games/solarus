@@ -1026,8 +1026,9 @@ int Script::enemy_api_start_movement(lua_State* l) {
   Enemy& enemy = script.get_enemy();
 
   Movement& movement = check_movement(l, 1);
-  movement.set_suspended(false);
 
+  script.increment_refcount(&movement);
+  movement.set_suspended(false);
   enemy.clear_movement();
   enemy.set_movement(&movement);
 

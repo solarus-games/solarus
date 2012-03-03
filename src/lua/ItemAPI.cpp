@@ -263,6 +263,7 @@ int Script::item_api_start_movement(lua_State *l) {
   Debug::check_assertion(pickable_item != NULL,
                 "Cannot call sol.item.start_movement(): there is no current pickable item");
 
+  script.increment_refcount(&movement);
   pickable_item->clear_movement();
   pickable_item->set_movement(&movement);
 

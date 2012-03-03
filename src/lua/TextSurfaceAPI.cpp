@@ -85,6 +85,9 @@ TextSurface& Script::check_text_surface(lua_State* l, int index) {
  */
 void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {
 
+  Script& script = get_script(l);
+
+  script.increment_refcount(&text_surface);
                                   // ...
   TextSurface** block_adress = (TextSurface**)
       lua_newuserdata(l, sizeof(TextSurface*));

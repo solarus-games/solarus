@@ -40,6 +40,7 @@
 #include "entities/Arrow.h"
 #include "entities/Hero.h"
 #include "movements/Movement.h"
+#include "lua/Script.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
@@ -1084,7 +1085,14 @@ void MapEntity::clear_old_movements() {
 
   std::list<Movement*>::iterator it;
   for (it = old_movements.begin(); it != old_movements.end(); it++) {
-    delete *it;
+    Movement* movement = *it;
+    if (movement->get_creator_script() != NULL) {
+      // the movement was created by a script
+      movement->get_creator_script()->decrement_refcount(movement);
+    }
+    else {
+      delete movement;
+    }
   }
   old_movements.clear();
 }

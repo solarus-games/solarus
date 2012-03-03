@@ -28,9 +28,10 @@
  * @param target the entity to target
  * @param speed speed of the movement in pixels per second
  */
-PathFindingMovement::PathFindingMovement(MapEntity *target, int speed):
+PathFindingMovement::PathFindingMovement(MapEntity& target, int speed):
   PathMovement("", speed, false, false, true),
-  target(target), next_recomputation_date(System::now() + 100) {
+  target(target),
+  next_recomputation_date(System::now() + 100) {
 
 }
 
@@ -70,7 +71,7 @@ void PathFindingMovement::update() {
  */
 void PathFindingMovement::recompute_movement() { 
 
-  PathFinding path_finding(get_entity()->get_map(), *get_entity(), *target);
+  PathFinding path_finding(get_entity()->get_map(), *get_entity(), target);
   std::string path = path_finding.compute_path();
 
   uint32_t min_delay;

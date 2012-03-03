@@ -767,3 +767,37 @@ void Script::cancel_callback(int callback_ref) {
   luaL_unref(l, LUA_REGISTRYINDEX, callback_ref);
 }
 
+/**
+ * @brief Returns whether a userdata was created by this script.
+ * @param userdata a userdata
+ */
+bool Script::has_created(void* userdata) {
+
+  return refcounts.count(userdata) > 0;
+}
+
+/**
+ * @brief Marks a userdata as created by this script.
+ * @param userdata a userdata
+ */
+void Script::set_created(void* userdata) {
+
+  if (!has_created(userdata)) {
+    refcounts[userdata] = 0;
+  }
+}
+
+/**
+ * @brief Adds 1 to the reference counter of a userdata.
+ *
+ * If the object was not created by this script, nothing is done.
+ *
+ * @param userdata the userdata
+ */
+void Script::increment_refcount(void* userdata) {
+
+  if (has_created(userdata) > 0) {
+    refcounts[userdata]++;
+  }
+}
+

@@ -126,7 +126,7 @@ void Solarus::main_loop() {
     // handle the input events
     event = InputEvent::get_event();
     if (event != NULL) {
-      notify_event(*event);
+      notify_input(*event);
       delete event;
     }
 
@@ -184,10 +184,10 @@ void Solarus::main_loop() {
  *
  * It handles the events common to all screens:
  * closing the window, pressing F5 or a debug key.
- * The notify_event() method of the current screen
+ * The notify_input() method of the current screen
  * is then called.
  */
-void Solarus::notify_event(InputEvent& event) {
+void Solarus::notify_input(InputEvent& event) {
 
   // handle the common events
   InputEvent::KeyboardKey key = event.get_keyboard_key();
@@ -220,7 +220,7 @@ void Solarus::notify_event(InputEvent& event) {
   }
 
   // send the event to the current screen
-  current_screen->notify_event(event);
+  current_screen->notify_input(event);
 }
 
 /**

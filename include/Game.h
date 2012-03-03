@@ -94,7 +94,7 @@ class Game: public Screen {
     Equipment& get_equipment();
 
     // functions called by the main loop
-    void notify_event(InputEvent &event);
+    void notify_input(InputEvent &event);
     void update();
     void display(Surface& dst_surface);
 

@@ -68,7 +68,7 @@ void SelectionMenuPhase::display(Surface& dst_surface) {
  * @brief This function is called when an input event occurs.
  * @param event the event
  */
-void SelectionMenuPhase::notify_event(InputEvent &event) {
+void SelectionMenuPhase::notify_input(InputEvent &event) {
   // nothing to do by default (subclasses can redefine this method)
 }
 

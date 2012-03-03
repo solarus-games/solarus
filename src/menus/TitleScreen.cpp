@@ -136,7 +136,7 @@ void TitleScreen::display(Surface& dst_surface) {
  * @brief This function is called by the main loop when there is an input event.
  * @param event the event to handle
  */
-void TitleScreen::notify_event(InputEvent &event) {
+void TitleScreen::notify_input(InputEvent &event) {
 
   static const InputEvent::KeyboardKey keys[] = { InputEvent::KEY_SPACE, InputEvent::KEY_RETURN, InputEvent::KEY_NONE };
 

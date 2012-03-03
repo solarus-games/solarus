@@ -44,7 +44,7 @@ SelectionMenuEraseFile::~SelectionMenuEraseFile() {
  * @brief Handles an event in this phase.
  * @param event the event
  */
-void SelectionMenuEraseFile::notify_event(InputEvent &event) {
+void SelectionMenuEraseFile::notify_input(InputEvent &event) {
 
   if (event.is_keyboard_key_pressed(validation_keys) || event.is_joypad_button_pressed()) {
     

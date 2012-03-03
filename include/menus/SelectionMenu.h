@@ -86,7 +86,7 @@ class SelectionMenu: public Screen {
     // update and display (called by Solarus)
     void update();
     void display(Surface& dst_surface);
-    void notify_event(InputEvent &event);
+    void notify_input(InputEvent &event);
 
     // phase
     void set_next_phase(SelectionMenuPhase *next_phase);

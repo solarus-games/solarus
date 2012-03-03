@@ -4,8 +4,10 @@
 We give here the list of Lua functions that are called by the C++ engine
 (such functions are called events),
 and the list of C++ functions that may be called by Lua scripts.
-This documentation page is intented to Lua programers who want to know the functions available.
-For the point of view of the engine, see the documentation of the C++ class Script.
+This documentation page is intented to Lua programers who want to know the
+functions available.
+For the point of view of the engine, see the documentation of the C++ class
+Script and its subclasses.
 
 For now, the following types of scripts exist:
 - The script of a map (<tt>maps/mapXXXX.lua</tt>): controls the map XXXX.
@@ -16,23 +18,31 @@ same time on the current map.
 - The script of an item (<tt>items/XXXX.lua</tt>): controls the item named
 "XXXX" in <tt>items.dat</tt>. For each item, only one Lua state is created for
 the whole game and it persists across map changes.
+- The script of a menu (<tt>menus/XXXX.lua</tt>): controls a menu displayed
+before or during the game.
 
-Other types such as scriptable menus will come eventually.
+Other types or scripts might be available in the future.
 
 A Lua script can call C++ functions through a global table called <tt>sol</tt>.
 The functions are organized into several APIs.
 The APIs that are available to your script depend on the type of script.
 For now, the following APIs are implemented:
-- <tt>sol.main</tt>: functions available to all types of scripts, even outside a game.
+- <tt>sol.main</tt>: basic functions available to all types of scripts, even
+outside a game.
 - <tt>sol.game</tt>: this module represents the current game. It provides
 functions to manage game information such as the savegame and the equipment.
-- <tt>sol.map</tt>: this module respresents the current map.
+- <tt>sol.map</tt>: this module represents the current map.
 It provides functions to manage the entities placed on the map,
 including the hero.
 - <tt>sol.item</tt>: this module represents a particular type of equipment item, and
 possibly, depending on the current context, an instance of pickable item present on the map
 or an instance of inventory item currently being used by the hero.
 - <tt>sol.enemy</tt>: this module represents the current instance of an enemy.
+- <tt>sol.movement</tt>: create and manage movements.
+- <tt>sol.sprite</tt>: display animated images.
+- <tt>sol.surface</tt>: display fixed images.
+- <tt>sol.text_surface</tt>: display text.
+- <tt>sol.input</tt>: handle low-level input events (keyboard, joypad)
 
 The C++ code can also call Lua functions to notify the scripts that an event happened.
 
@@ -892,7 +902,6 @@ Returns the optimization threshold. Above this distance from the visible area
 of the map, the enemy will be suspended.
 A value of 0 means an infinite distance (the enemy is never optimized away).
 
-
 - <tt>sol.enemy.set_optimization_distance(distance)</tt>:
 Sets the optimization threshold. Above this distance from the visible area
 of the map, the enemy will be suspended. The default value is usually fine,
@@ -986,6 +995,31 @@ Sends a string message to another enemy.
 His function event_message_received() will be called,
 and then <tt>sol.enemy.send_message</tt> will return.
 
+@subsection sol.movement Module <tt>sol.movement</tt>
+
+TODO
+
+@subsection sol.sprite Module <tt>sol.movement</tt>
+
+TODO
+
+@subsection sol.surface Module <tt>sol.movement</tt>
+
+TODO
+
+@subsection sol.text_surface Module <tt>sol.movement</tt>
+
+TODO
+
+@subsection sol.input Module <tt>sol.input</tt>
+
+This module notifies the script when low-level keyboard or joypad events
+occur.
+It is only available to scripts of menus because during a game, commands
+are already mapped to game features such as using an item, swinging
+the sword, talking to an NPC, etc.
+
+
 @section cpp_to_lua Calling Lua from C++
 
 The C++ engine sometimes notifies a script that an event just happened.
@@ -993,7 +1027,7 @@ The corresponding event function of the script is called if it exists.
 An event function is a Lua function prefixed by <tt>event_</tt>.
 We give here the list of event functions that the engine will call if
 you define them in your script.
-Each event may be called in one or several types of script.
+Some events may exist in several types of script.
 
 @subsection events_map Map scripts
 
@@ -1259,6 +1293,56 @@ called when the enemy is immobilized
 
 - <tt>event_message_received(src_enemy, message)</tt>:
 Called when the enemy receives a string message from another enemy.
+
+@subsection events_menu Menu scripts
+
+- <tt>event_menu_started</tt>:
+Called when the menu has just started.
+
+- <tt>event_display(dst_surface)</tt>:
+Called when redrawing the screen. You have to display your menu on the
+surface <tt>dst_surface</tt>.
+
+- <tt>event_key_pressed(key, modifiers)</tt>:
+Called when the user has just pressed any keyboard key (directional or not)
+  - <tt>key (string)</tt>: name of the key pressed
+  - <tt>modifiers (table)</tt>: a table whose keys may contain "shift",
+    "control" and "alt" (indicates what modifier keys were pressed during the
+    input event)
+
+- <tt>event_key_released(key)</tt>:
+Called when the user has just released any keyboard key (directional or not)
+  - <tt>key (string)</tt>: name of the key released
+
+- <tt>event_joypad_button_pressed(button)</tt>:
+Called when the user has just pressed a joypad button.
+  - <tt>button (integer)</tt>: number of the button that was pressed
+
+- <tt>event_joypad_button_released(button)</tt>:
+Called when the user has just released a joypad button.
+  - <tt>button (integer)</tt>: number of the button that was released
+
+- <tt>event_joypad_axis_moved(axis, state)</tt>:
+Called when the user has just moved a joypad axis.
+  - <tt>axis (integer)</tt>: number of the axis that was moved
+  - <tt>state (integer)</tt>: the new state of the axis: -1 (left or up),
+    0 (centered) or 1 (right or down)
+
+- <tt>event_joypad_hat_moved(hat, direction8)</tt>:
+Called when the user has just moved a joypad hat.
+  - <tt>hat (integer)</tt>: number of the hat that was moved
+  - <tt>state (integer)</tt>: the new direction of the hat: -1 if the hat is
+    centered, and 0 to 7 if the hat is is one of the eight main directions
+
+- <tt>event_direction_pressed(direction8)</tt>:
+Called when the user has just pressed a directional keyboard key
+or changed a direction on the joypad.
+This function is redundant with <tt>event_keyboard_key_pressed()</tt>,
+<tt>event_joypad_axis_moved</tt> and <tt>event_joypad_hat_moved()</tt>.
+Its only purpose is to provide more easily information about directional
+inputs.
+  - <tt>direction8</tt>: the direction that was pressed, in an 8-direction
+    system (0 to 7)
 
 */
 

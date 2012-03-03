@@ -51,7 +51,7 @@ SelectionMenuSelectFile::~SelectionMenuSelectFile() {
  * @brief Handles an input event in this phase.
  * @param event the event
  */
-void SelectionMenuSelectFile::notify_event(InputEvent &event) {
+void SelectionMenuSelectFile::notify_input(InputEvent &event) {
 
   if (!menu->has_transition()) {
     

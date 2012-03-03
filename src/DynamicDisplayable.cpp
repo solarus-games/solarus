@@ -18,6 +18,7 @@
 #include "Transition.h"
 #include "movements/Movement.h"
 #include "lua/Script.h"
+#include "lowlevel/Debug.h"
 #include <lua.hpp>
 
 /**

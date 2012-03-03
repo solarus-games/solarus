@@ -157,7 +157,7 @@ void LanguageScreen::display(Surface& dst_surface) {
  * @brief This function is called by the main loop when there is an input event.
  * @param event the event to handle
  */
-void LanguageScreen::notify_event(InputEvent& event) {
+void LanguageScreen::notify_input(InputEvent& event) {
 
   static const InputEvent::KeyboardKey validation_keys[] = { InputEvent::KEY_SPACE, InputEvent::KEY_RETURN, InputEvent::KEY_NONE };
 

@@ -32,8 +32,17 @@ class MenuScript: public Script {
 
     CustomScreen& get_screen();
 
+    void notify_input(InputEvent& event);
+
     void event_menu_started();
     void event_display(Surface& dst_surface);
+    void event_key_pressed(InputEvent& event);
+    void event_key_released(InputEvent& event);
+    void event_joypad_button_pressed(InputEvent& event);
+    void event_joypad_button_released(InputEvent& event);
+    void event_joypad_axis_moved(InputEvent& event);
+    void event_joypad_hat_moved(InputEvent& event);
+    void event_direction_pressed(InputEvent& event);
 
   private:
 

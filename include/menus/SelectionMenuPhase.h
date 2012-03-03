@@ -42,7 +42,7 @@ class SelectionMenuPhase {
     // update and display
     virtual void update();
     virtual void display(Surface& dst_surface);
-    virtual void notify_event(InputEvent &event);
+    virtual void notify_input(InputEvent &event);
 
 };
 

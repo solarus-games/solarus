@@ -36,7 +36,7 @@ class Solarus {
 
     void launch_adventure_mode(Savegame* savegame);
 
-    void notify_event(InputEvent& event);
+    void notify_input(InputEvent& event);
     void display();
     void update();
 

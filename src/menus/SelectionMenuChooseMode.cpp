@@ -45,7 +45,7 @@ SelectionMenuChooseMode::~SelectionMenuChooseMode() {
  * @brief Handles an event in this phase.
  * @param event the event
  */
-void SelectionMenuChooseMode::notify_event(InputEvent &event) {
+void SelectionMenuChooseMode::notify_input(InputEvent &event) {
 /*
   // TODO also allow joypad and check last_cursor_move_date
   if (!menu->has_transition() && event.is_keyboard_key_pressed()) {

@@ -316,7 +316,7 @@ void SelectionMenu::display(Surface& dst_surface) {
  * @brief This function is called by the program main loop when there is an input event.
  * @param event the event to handle
  */
-void SelectionMenu::notify_event(InputEvent &event) {
+void SelectionMenu::notify_input(InputEvent &event) {
 
   if (event.is_keyboard_key_pressed(InputEvent::KEY_ESCAPE)) {
     solarus.set_exiting();
@@ -326,7 +326,7 @@ void SelectionMenu::notify_event(InputEvent &event) {
     bool notify = true;
     if (event.is_joypad_axis_moved() && !event.is_joypad_axis_centered()) {
 
-      // the cursor moves to much when using a joypad axis
+      // the cursor moves too much when using a joypad axis
       uint32_t now = System::now();
       if (now > allow_cursor_date) {
 	allow_cursor_date = now + 200;
@@ -338,7 +338,7 @@ void SelectionMenu::notify_event(InputEvent &event) {
 
     if (notify) {
       // notify the current phase
-      current_phase->notify_event(event);
+      current_phase->notify_input(event);
     }
   }
 }

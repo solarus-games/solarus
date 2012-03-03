@@ -33,7 +33,7 @@
  * - update(): to update your screen's internal data (this function is
  * called repeatedly). This is useful to update the
  * state of objects that depend on time (e.g. the ones that are animated or moving).
- * - notify_event(): to take into account input events that occur
+ * - notify_input(): to take into account input events that occur
  * (such as a keyboard key or a joypad button that was just pressed).
  *
  * Basically, the program main loop calls these three functions. If it has enough
@@ -78,7 +78,7 @@ class Screen {
      *
      * @param event the event to handle
      */
-    virtual void notify_event(InputEvent& event) = 0;
+    virtual void notify_input(InputEvent& event) = 0;
 
   private:
 

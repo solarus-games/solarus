@@ -335,7 +335,7 @@ void SelectionMenuOptions::update() {
  * @brief Handles an input event in this phase.
  * @param event the event
  */
-void SelectionMenuOptions::notify_event(InputEvent &event) {
+void SelectionMenuOptions::notify_input(InputEvent &event) {
 
   if (event.is_direction_pressed()) {
 

@@ -42,7 +42,7 @@ class SelectionMenuChooseMode: public SelectionMenuPhase {
     ~SelectionMenuChooseMode();
 
     // update and display
-    void notify_event(InputEvent &event);
+    void notify_input(InputEvent &event);
     void update();
     void display(Surface& dst_surface);
 };

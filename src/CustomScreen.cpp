@@ -89,7 +89,8 @@ void CustomScreen::display(Surface& dst_surface) {
  * @brief This function is called when there is an input event.
  * @param event the event to handle
  */
-void CustomScreen::notify_event(InputEvent& event) {
+void CustomScreen::notify_input(InputEvent& event) {
 
+  script.notify_input(event);
 }
 

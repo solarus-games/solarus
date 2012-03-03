@@ -70,7 +70,7 @@ void SelectionMenuChooseName::update() {
  * @brief Handles an event in this phase.
  * @param event the event
  */
-void SelectionMenuChooseName::notify_event(InputEvent &event) {
+void SelectionMenuChooseName::notify_input(InputEvent &event) {
 
   static const InputEvent::KeyboardKey letter_keys[] = { InputEvent::KEY_c, InputEvent::KEY_SPACE, InputEvent::KEY_NONE };
 

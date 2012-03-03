@@ -165,7 +165,7 @@ int GameControls::get_wanted_direction8() {
  * @brief This function is called by the game when a low-level input event occurs.
  * @param event an input event
  */
-void GameControls::notify_event(InputEvent &event) {
+void GameControls::notify_input(InputEvent &event) {
 
   /*
    * If no game key is being customized, we look for a binding

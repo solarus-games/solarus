@@ -18,7 +18,7 @@
 #define SOLARUS_SCRIPT_H
 
 #include "Common.h"
-#include "lowlevel/Debug.h"
+#include "lowlevel/InputEvent.h"
 #include <map>
 #include <list>
 #include <set>
@@ -67,7 +67,44 @@ class Script {
     template <typename T>
       void decrement_refcount(T* userdata);
 
+  protected:
+
+    /**
+     * @brief Optional APIs available for some type of scripts.
+     */
+    enum API {
+      GAME_API          = 0x0001,
+      MAP_API           = 0x0002,
+      ITEM_API          = 0x0004,
+      ENEMY_API         = 0x0008,
+      INPUT_API         = 0x0016
+    };
+
+    lua_State* l;                        /**< the execution context of the Lua script */
+
+    Script(uint32_t apis_enabled = 0);
+
+    // Lua
+    bool find_lua_function(const std::string& function_name);
+    bool notify_script(const std::string& function_name, const char* format = "", ...);
+    bool call_script(int nb_arguments, int nb_results, const std::string& function_name);
+    void initialize_lua_context();
+    void load(const std::string &script_name);
+    void load_if_exists(const std::string &script_name);
+    bool is_loaded();
+
+    // modules
+    static void add_timer(lua_State* l, uint32_t duration, bool with_sound);
+    static void push_surface(lua_State* l, Surface& surface);
+    static void push_text_surface(lua_State* l, TextSurface& text_surface);
+    static void push_sprite(lua_State* l, Sprite& sprite);
+    static void push_movement(lua_State* l, Movement& movement);
+    const std::string& input_get_key_name(InputEvent::KeyboardKey key);
+
   private:
+
+    typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be
+                                                              * called by a Lua script */
 
     // script data
     std::map<void*, int> refcounts; /**< for each userdata created by this
@@ -96,6 +133,10 @@ class Script {
     static const char* text_surface_module_name;
     static const char* sprite_module_name;
     static const char* movement_module_name;
+    static const char* input_module_name;
+
+    static std::map<InputEvent::KeyboardKey, std::string>
+      input_key_names; /**< names of all existing keyboard keys in Lua */
 
     // calling C++ from Lua
     static Script& get_script(lua_State* l);
@@ -111,6 +152,7 @@ class Script {
     void initialize_text_surface_module();
     void initialize_sprite_module();
     void initialize_movement_module();
+    void initialize_input_module();
 
     // types
     static bool is_userdata(lua_State* l, int index, const std::string& module_name);
@@ -133,44 +175,6 @@ class Script {
 
     // debugging
     void print_stack();
-
-  protected:
-
-    /**
-     * @brief Optional APIs available for some type of scripts.
-     */
-    enum API {
-      GAME_API          = 0x0001,
-      MAP_API           = 0x0002,
-      ITEM_API          = 0x0004,
-      ENEMY_API         = 0x0008
-    };
-
-    lua_State* l;                        /**< the execution context of the Lua script */
-
-    Script(uint32_t apis_enabled = 0);
-
-    // Lua
-    bool find_lua_function(const std::string& function_name);
-    bool notify_script(const std::string& function_name, const char* format = "", ...);
-    bool call_script(int nb_arguments, int nb_results, const std::string& function_name);
-    void initialize_lua_context();
-    void load(const std::string &script_name);
-    void load_if_exists(const std::string &script_name);
-    bool is_loaded();
-
-    // timers
-    static void add_timer(lua_State* l, uint32_t duration, bool with_sound);
-
-    // userdata
-    static void push_surface(lua_State* l, Surface& surface);
-    static void push_text_surface(lua_State* l, TextSurface& text_surface);
-    static void push_sprite(lua_State* l, Sprite& sprite);
-    static void push_movement(lua_State* l, Movement& movement);
-
-  private:
-
-    typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be called by a Lua script */
 
     // implementation of the APIs
     static FunctionAvailableToScript 

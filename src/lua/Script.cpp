@@ -34,9 +34,9 @@
  * (0 for none)
  */
 Script::Script(uint32_t apis_enabled):
+  l(NULL),
   music_played(false),
-  apis_enabled(apis_enabled),
-  l(NULL) {
+  apis_enabled(apis_enabled) {
 
 }
 
@@ -233,6 +233,9 @@ void Script::register_apis() {
   }
   if (apis_enabled && ENEMY_API) {
     initialize_enemy_module();
+  }
+  if (apis_enabled && INPUT_API) {
+    initialize_input_module();
   }
 }
 

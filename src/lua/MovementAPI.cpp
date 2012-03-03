@@ -139,7 +139,7 @@ int Script::movement_meta_gc(lua_State* l) {
  *
  * - Argument 1 (string): the pixel-by-pixel trajectory of the movement
  * - Argument 2 (int): the delay in milliseconds between each step of the trajectory
- * - Return value (movement): a handle to the movement created
+ * - Return value (movement): the movement created
  *
  * @param l the Lua context that is calling this function
  */
@@ -162,7 +162,7 @@ int Script::movement_api_pixel_movement_create(lua_State* l) {
  * @brief Creates a movement of type RandomMovement.
  *
  * - Argument 1 (int): the speed of the movement in pixels per second
- * - Return value (movement): a handle to the movement created
+ * - Return value (movement): the movement created
  *
  * @param l the Lua context that is calling this function
  */
@@ -185,7 +185,7 @@ int Script::movement_api_random_movement_create(lua_State* l) {
  *
  * - Argument 1 (string): the square-by-square trajectory of the movement
  * - Argument 2 (int): the speed in pixels per second
- * - Return value (movement): a handle to the movement created
+ * - Return value (movement): the movement created
  *
  * @param l the Lua context that is calling this function
  */
@@ -208,7 +208,7 @@ int Script::movement_api_path_movement_create(lua_State* l) {
  * @brief Creates a movement of type RandomPathMovement.
  *
  * - Argument 1 (int): the speed in pixels per second
- * - Return value (movement): a handle to the movement created
+ * - Return value (movement): the movement created
  *
  * @param l the Lua context that is calling this function
  */
@@ -231,7 +231,7 @@ int Script::movement_api_random_path_movement_create(lua_State* l) {
  *
  * The movement will compute a path to the hero.
  * - Argument 1 (int): the speed in pixels per second
- * - Return value (movement): a handle to the movement created
+ * - Return value (movement): the movement created
  *
  * @param l the Lua context that is calling this function
  */
@@ -260,7 +260,7 @@ int Script::movement_api_path_finding_movement_create(lua_State* l) {
  * (if unspecified, the target will be the hero)
  * - Optional argument 3 (int): y coordinate of the point to target
  * (if unspecified, the target will be the hero)
- * - Return value (movement): a handle to the movement created
+ * - Return value (movement): the movement created
  *
  * @param l the Lua context that is calling this function
  */
@@ -297,7 +297,7 @@ int Script::movement_api_target_movement_create(lua_State* l) {
  *
  * - Argument 1 (int): the speed in pixels per second
  * - Argument 2 (float): angle of the speed vector in radians
- * - Return value (movement): a handle to the movement created
+ * - Return value (movement): the movement created
  *
  * @param l the Lua context that is calling this function
  */
@@ -325,7 +325,7 @@ int Script::movement_api_straight_movement_create(lua_State* l) {
  * (must match the enumeration EntityType)
  * - Argument 2 (string): name of the center entity
  * - Argument 3 (int): the radius of the circle in pixels
- * - Return value (movement): a handle to the movement created
+ * - Return value (movement): the movement created
  *
  * @param l the Lua context that is calling this function
  */
@@ -356,7 +356,7 @@ int Script::movement_api_circle_movement_create(lua_State* l) {
  *
  * - Argument 1 (int): direction of the jump (0 to 7)
  * - Argument 2 (int): length of the jump in pixels
- * - Return value (movement): a handle to the movement created
+ * - Return value (movement): the movement created
  *
  * @param l the Lua context that is calling this function
  */

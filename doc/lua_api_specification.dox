@@ -55,13 +55,7 @@ through the <tt>sol</tt> object.
 
 The <tt>sol.main</tt> module is available to any type of Lua script,
 even when no game is running.
-It contains functions to play sounds or musics, set timers,
-and manage sprites and movements.
-
-Your script can create a sprite or get a handle to an existing sprite
-(e.g. a sprite attached to an NPC).
-In both cases, you can then call all sprite-related functions
-and give the sprite handle as first paramater.
+It contains functions to play sounds or musics and set timers.
 
 - <tt>sol.main.include(script_name)</tt>:	
 Includes another script into this one.
@@ -90,91 +84,8 @@ starts a timer which will calls a function once finished
 - <tt>sol.main.timer_stop_all()</tt>:
 stops all timers started by your script
 
-- <tt>sol.main.sprite_create(sprite_name)</tt>:
-Creates a sprite given its name (i.e. its animation set)
-and returns a handle to it.
-
-- <tt>sol.main.sprite_get_animation(sprite)</tt>:
-returns the name of the current animation of a sprite
-
-- <tt>sol.main.sprite_set_animation(sprite, animation_name)</tt>:
-sets the current animation of a sprite
-
-- <tt>sol.main.sprite_get_direction(sprite)</tt>:
-returns the current direction of a sprite
-(<tt>0</tt> to <tt>nb_directions-1</tt>)
-
-- <tt>sol.main.sprite_set_direction(sprite, direction)</tt>:
-sets the current direction of a sprite
-(<tt>0</tt> to <tt>nb_directions-1</tt>)
-
-- <tt>sol.main.sprite_get_frame(sprite)</tt>:
-returns the index of the current frame of a sprite
-(<tt>0</tt> to <tt>nb_frames-1</tt>)
-
-- <tt>sol.main.sprite_set_frame(sprite, frame)</tt>:
-sets the current frame of a sprite
-(<tt>0</tt> to <tt>nb_frames-1</tt>)
-
-- <tt>sol.main.sprite_get_frame_delay(sprite)</tt>:
-returns the delay between two frames of a sprite, in milliseconds
-
-- <tt>sol.main.sprite_set_frame_delay(sprite, delay)</tt>:
-sets the delay between two frames of a sprite, in milliseconds
-
-- <tt>sol.main.sprite_is_paused(sprite)</tt>:
-returns whether a sprite is paused
-
-- <tt>sol.main.sprite_set_paused(sprite, paused)</tt>:
-pauses or resumes the animation of a sprite
-
-- <tt>sol.main.sprite_set_animation_ignore_suspend(sprite, ignore)</tt>:
-sets whether the animation should continue even when the sprite is suspended
-
-- <tt>sol.main.sprite_fade(sprite, direction)</tt>:
-shows a fade effect on a sprite (0: fade-in, 1: fade-out)
-
-- <tt>sol.main.sprite_synchronize(sprite, reference_sprite)</tt>:
-Synchronizes the frames of a sprite with the frames of a reference sprite
-when their animation name match.
-Stops any previous synchronization if <tt>reference_sprite</tt> is <tt>nil</tt>.
-
-- <tt>sol.main.pixel_movement_create(trajectory, delay)</tt>:
-creates a movement of type PixelMovement that will be accessible from this script
-
-- <tt>sol.main.random_movement_create(speed)</tt>:
-creates a movement of type RandomMovement that will be accessible from this script
-
-- <tt>sol.main.path_movement_create(path, speed)</tt>:
-creates a movement of type PathMovement that will be accessible from this script
-
-- <tt>sol.main.random_path_movement_create(speed)</tt>:
-creates a movement of type RandomPathMovement that will be accessible from this script
-
-- <tt>sol.main.path_finding_movement_create(speed)</tt>:
-creates a movement of type PathFindingMovement (targeting the hero) and that will be accessible from this script
-
-- <tt>sol.main.target_movement_create(speed, target_x, target_y)</tt>:
-creates a movement of type TargetMovement that will be accessible from this script; target_x and target_y are optional, the default behavior is to track the hero
-
-- <tt>sol.main.straight_movement_create(speed, angle)</tt>:
-creates a movement of type StraightMovement that will be accessible from this script
-
-- <tt>sol.main.circle_movement_create(center_type, center_name, radius)</tt>:
-creates a movement of type CircleMovement that will be accessible from this script
-
-- <tt>sol.main.jump_movement_create(direction, length)</tt>:
-creates a movement of type JumpMovement that will be accessible from this script
-
-- <tt>sol.main.movement_get_property(movement, key)</tt>:
-returns a string property from a movement (warning: it always returns a string!)
-
-- <tt>sol.main.movement_set_property(movement, key, value)</tt>:
-sets a property of a movement (the value may be a string, an integer or a boolean)
-
-- <tt>sol.main.movement_test_obstacles(movement, dx, dy)</tt>:
-Returns whether there would be a collision if the entity controlled by a movement
-object was translated with the given parameters.
+- <tt>sol.main.get_distance(x1, y1, x2, y2)</tt>:
+Returns the distance in pixels between two points.
 
 - <tt>sol.main.get_angle(x1, y1, x2, y2)</tt>:
 Returns the angle in radians between the specified vector and the x axis.
@@ -197,19 +108,19 @@ restarts the game, continuing on the same savegame even if it is not saved
 - <tt>sol.game.savegame_get_string(index)</tt>:
 returns a string saved
 
-- <tt>sol.game.savegame_get_integer(index)</tt>: 
+- <tt>sol.game.savegame_get_integer(index)</tt>:
 returns an integer saved
 
-- <tt>sol.game.savegame_get_boolean(index)</tt>: 
+- <tt>sol.game.savegame_get_boolean(index)</tt>:
 returns a boolean saved
 
-- <tt>sol.game.savegame_set_string(index, value)</tt>: 
+- <tt>sol.game.savegame_set_string(index, value)</tt>:
 sets a string in the savegame
 
-- <tt>sol.game.savegame_set_integer(index, value)</tt>: 
+- <tt>sol.game.savegame_set_integer(index, value)</tt>:
 sets an integer in the savegame
 
-- <tt>sol.game.savegame_set_boolean(index, value)</tt>: 
+- <tt>sol.game.savegame_set_boolean(index, value)</tt>:
 sets a boolean in the savegame
 
 - <tt>sol.game.savegame_get_name()</tt>:
@@ -319,14 +230,14 @@ Specifies a value to display inside a dialog (for example the
 player's name). In this dialog, the sequence <tt>$v</tt> will
 be substituted by this value.
 
-- <tt>sol.map.dialog_set_style(style)</tt>: 
+- <tt>sol.map.dialog_set_style(style)</tt>:
 Sets the style of the dialog box for subsequent dialogs (0: usual dialog box,
 1: no dialog box, only display the text)
 
-- <tt>sol.map.hud_set_pause_enabled(bool enabled)</tt>: 
+- <tt>sol.map.hud_set_pause_enabled(bool enabled)</tt>:
 Allows or disallows to pause the game (and thus to save the game).
 
-- <tt>sol.map.hud_set_enabled(enabled)</tt>: 
+- <tt>sol.map.hud_set_enabled(enabled)</tt>:
 Hides or restores the HUD (the player can still use his items
 and pause the game).
 
@@ -336,7 +247,7 @@ returns the current light level of the map
 - <tt>sol.map.light_set(light_level)</tt>:
 sets the light level of the map (0: no light, positive values: full light)
 
-- <tt>sol.map.camera_move(x, y, speed, function, delay_before, delay_after)</tt>: 
+- <tt>sol.map.camera_move(x, y, speed, function, delay_before, delay_after)</tt>:
 moves the camera to a target point (a usual speed value is 250),
 waits a delay in milliseconds (default is 1000), calls a function,
 waits another delay (default is 1000) and restores the camera;
@@ -357,13 +268,13 @@ image of the new tileset.
 Displays a sprite at the given position (relative to the the map top-left
 corner). The origin point of the sprite will be displayed at this location.
 
-- <tt>sol.map.treasure_give(item_name, variant, savegame_variable)</tt>: 
+- <tt>sol.map.treasure_give(item_name, variant, savegame_variable)</tt>:
 gives a treasure to the player (without using a chest)
 
-- <tt>sol.map.hero_freeze()</tt>: 
+- <tt>sol.map.hero_freeze()</tt>:
 prevents the hero from moving until you call <tt>sol.map.hero_unfreeze()</tt>
 
-- <tt>sol.map.hero_unfreeze()</tt>: 
+- <tt>sol.map.hero_unfreeze()</tt>:
 restores the control to the hero, typically after a call to <tt>sol.map.hero_freeze()</tt>
 
 - <tt>sol.map.hero_set_map(map_id, destination_point, transition)</tt>:
@@ -997,17 +908,161 @@ and then <tt>sol.enemy.send_message</tt> will return.
 
 @subsection sol.movement Module <tt>sol.movement</tt>
 
+This module provides functions to create movements and manage their
+properties. It is available to all scripts.
+When you create a movement, you get a value of type movement with several
+methods available.
+
+- <tt>sol.movement.pixel_movement_create(trajectory, delay)</tt>:
+Creates a movement that follows a pixel precise trajectory.
+  - <tt>trajectory</tt> (string): the whole trajectory, with the
+    syntax "dx1 dy1 dx2 dy2 dx3 dy3 ..."
+  - <tt>delay (number): delay in milliseconds between two translations
+  - Return value (movement): the movement created
+
+- <tt>sol.movement.random_movement_create(speed)</tt>:
+Creates a movement that goes in random directions.
+  - <tt>speed</tt> (number): speed in pixels per second
+  - Return value (movement): the movement created
+
+- <tt>sol.movement.path_movement_create(path, speed)</tt>:
+Creates a movement composed of a specified sucession of movements of 8 pixels
+  - <tt>path</tt> (string): the succession of basic moves (each character
+    represents a direction between '0' and '7')
+  - <tt>speed</tt> (number): speed in pixels per second
+  - Return value (movement): the movement created
+
+- <tt>sol.movement.random_path_movement_create(speed)</tt>:
+Creates a movement composed of random successions of movements of 8 pixels
+  - <tt>speed</tt> (number): speed in pixels per second
+  - Return value (movement): the movement created
+
+- <tt>sol.movement.path_finding_movement_create(speed)</tt>:
+Creates a movement that calculates a path to the hero.
+  - <tt>speed</tt> (number): speed in pixels per second
+  - Return value (movement): the movement created
+
+- <tt>sol.movement.target_movement_create(speed, target_x, target_y)</tt>:
+Creates a movement that goes towards the hero or a fixed point.
+If <tt>target_x</tt> and <tt>target_y</tt> are unspecified, the movement tracks
+the hero and updates itself when the hero moves.
+  - <tt>speed</tt> (number): speed in pixels per second
+  - <tt>target_x</tt> (number, optional): x cordinate of a fixed point to target
+  - <tt>target_y</tt> (number, optional): y cordinate of a fixed point to target
+  - Return value (movement): the movement created
+
+- <tt>sol.movement.straight_movement_create(speed, angle)</tt>:
+Creates a rectilinear movement.
+  - <tt>speed</tt> (number): speed in pixels per second
+  - <tt>angle</tt> (number): angle in radians
+  - Return value (movement): the movement created
+
+- <tt>sol.movement.circle_movement_create(center_type, center_name, radius)</tt>:
+Creates a circular movement around a map entity.
+TODO: change the prototype to make it easier to use and allow to specify a fixed point
+  - <tt>center_type</tt> (number): type of the center entity (see the
+    EntityType enum)
+  - <tt>center_name</tt> (string): name of the center entity
+  - <tt>radius</tt> (number): radius of circles to make in pixels
+  - Return value (movement): the movement created
+
+- <tt>sol.movement.jump_movement_create(direction, length)</tt>:
+Creates a jump movement.
+  - <tt>direction</tt> (number): direction of the jump (0 to 7)
+  - <tt>length</tt> (number): length of the jump in pixels
+  - Return value (movement): the movement created
+
+- <tt>movement:get_property(key)</tt>:
+Returns a string property from this movement (warning: it always returns a string!).
+  - <tt>key</tt> (string): name of the property to get
+  - Return value (string): the value of this property
+
+- <tt>movement:set_property(key, value)</tt>:
+Sets a property of this movement.
+  - <tt>key</tt> (string): name of the property to set
+  - <tt>value</tt> (string, number or boolean): the value to set
+
+- <tt>movement:test_obstacles(dx, dy)</tt>:
+Tests whether there would be a collision if the map entity controlled by this
+movement was translated with the given parameters.
+  - <tt>dx</tt> (number): x translation in pixels
+  - <tt>dy</tt> (number): y translation in pixels
+
+
+@subsection sol.sprite Module <tt>sol.sprite</tt>
+
+Your script can create sprites or access existing ones
+(e.g. a sprite attached to an NPC).
+In both cases, the following methods are available.
+
+- <tt>sol.sprite.create(sprite_name)</tt>:
+Creates a sprite.
+  - <tt>sprite_name</tt> (string): name of the animation set to use
+  - Return value (sprite): the sprite created
+
+- <tt>sprite:get_animation()</tt>:
+Returns the name of the current animation of this sprite.
+  - Return value (string): name of the current animation
+
+- <tt>sprite:set_animation(animation_name)</tt>:
+Sets the current animation of this sprite.
+  - <tt>animation_name</tt> (string): name of the animation to set
+
+- <tt>sprite:get_direction()</tt>:
+Returns the current direction of this sprite.
+  - Return value (number): the current direction
+    (<tt>0</tt> to <tt>nb_directions-1</tt>)
+
+- <tt>sprite:set_direction(direction)</tt>:
+Sets the current direction of this sprite.
+  - <tt>direction</tt> (number): the direction to set
+    (<tt>0</tt> to <tt>nb_directions-1</tt>)
+
+- <tt>sprite:get_frame()</tt>:
+Returns the index of the current frame of this sprite.
+  - Return value (number): the current frame
+    (<tt>0</tt> to <tt>nb_frames-1</tt>)
+
+- <tt>sprite:set_frame(frame)</tt>:
+Sets the current frame of this sprite.
+  - <tt>frame</tt> (number) the frame to set
+    (<tt>0</tt> to <tt>nb_frames-1</tt>)
+
+- <tt>sprite:get_frame_delay()</tt>:
+Returns the delay between two frames of this sprite.
+  - Return value (number): the delay in milliseconds between two frames
+
+- <tt>sprite:set_frame_delay(delay)</tt>:
+Sets the delay between two frames of this sprite.
+  - <tt>delay</tt> (number): the delay to set in millisecons
+
+- <tt>sprite:is_paused()</tt>:
+Returns whether this sprite is paused.
+  - Return value (boolean): true if this sprite is paused
+
+- <tt>sprite:set_paused(paused)</tt>:
+Pauses or resumes the animation of this sprite.
+  - <tt>paused</tt> (boolean): true to pause the sprite, false to unpause it
+
+- <tt>sprite:set_animation_ignore_suspend(ignore)</tt>:
+Sets whether the animation should continue even when this sprite is suspended.
+  - <tt>ignore</tt> (boolean): true to continue animation even when suspended
+
+- <tt>sprite:fade(direction)</tt>:
+Shows a fade effect on this sprite.
+  - <tt>direction</tt> (number): 0 for fade-in effect, 1 for a fade-out effect
+
+- <tt>sprite:synchronize(reference_sprite)</tt>:
+Synchronizes the frames of this sprite with the frames of a reference sprite.
+The synchronization will be performed whenever their animation names match.
+  - <tt>reference_sprite</tt> (sprite, optional): the reference sprite
+    (if <tt>nil</tt>, any previous synchronization is stopped)
+
+@subsection sol.surface Module <tt>sol.surface</tt>
+
 TODO
 
-@subsection sol.sprite Module <tt>sol.movement</tt>
-
-TODO
-
-@subsection sol.surface Module <tt>sol.movement</tt>
-
-TODO
-
-@subsection sol.text_surface Module <tt>sol.movement</tt>
+@subsection sol.text_surface Module <tt>sol.text_surface</tt>
 
 TODO
 
@@ -1305,33 +1360,33 @@ surface <tt>dst_surface</tt>.
 
 - <tt>event_key_pressed(key, modifiers)</tt>:
 Called when the user has just pressed any keyboard key (directional or not)
-  - <tt>key (string)</tt>: name of the key pressed
-  - <tt>modifiers (table)</tt>: a table whose keys may contain "shift",
+  - <tt>key</tt> (string): name of the key pressed
+  - <tt>modifiers</tt> (table): a table whose keys may contain "shift",
     "control" and "alt" (indicates what modifier keys were pressed during the
     input event)
 
 - <tt>event_key_released(key)</tt>:
 Called when the user has just released any keyboard key (directional or not)
-  - <tt>key (string)</tt>: name of the key released
+  - <tt>key</tt> (string): name of the key released
 
 - <tt>event_joypad_button_pressed(button)</tt>:
 Called when the user has just pressed a joypad button.
-  - <tt>button (integer)</tt>: number of the button that was pressed
+  - <tt>button</tt> (number): number of the button that was pressed
 
 - <tt>event_joypad_button_released(button)</tt>:
 Called when the user has just released a joypad button.
-  - <tt>button (integer)</tt>: number of the button that was released
+  - <tt>button</tt> (number): number of the button that was released
 
 - <tt>event_joypad_axis_moved(axis, state)</tt>:
 Called when the user has just moved a joypad axis.
-  - <tt>axis (integer)</tt>: number of the axis that was moved
-  - <tt>state (integer)</tt>: the new state of the axis: -1 (left or up),
+  - <tt>axis</tt> (number): number of the axis that was moved
+  - <tt>state</tt> (number): the new state of the axis: -1 (left or up),
     0 (centered) or 1 (right or down)
 
 - <tt>event_joypad_hat_moved(hat, direction8)</tt>:
 Called when the user has just moved a joypad hat.
-  - <tt>hat (integer)</tt>: number of the hat that was moved
-  - <tt>state (integer)</tt>: the new direction of the hat: -1 if the hat is
+  - <tt>hat</tt> (number): number of the hat that was moved
+  - <tt>state</tt> (number): the new direction of the hat: -1 if the hat is
     centered, and 0 to 7 if the hat is is one of the eight main directions
 
 - <tt>event_direction_pressed(direction8)</tt>:
@@ -1341,7 +1396,7 @@ This function is redundant with <tt>event_keyboard_key_pressed()</tt>,
 <tt>event_joypad_axis_moved</tt> and <tt>event_joypad_hat_moved()</tt>.
 Its only purpose is to provide more easily information about directional
 inputs.
-  - <tt>direction8</tt>: the direction that was pressed, in an 8-direction
+  - <tt>direction8</tt> (number): the direction that was pressed, in an 8-direction
     system (0 to 7)
 
 */

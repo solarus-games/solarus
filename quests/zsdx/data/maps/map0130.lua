@@ -175,10 +175,10 @@ end
 function check_torches()
   
   local states = {
-    sol.map.npc_get_sprite("torch_1")):get_animation() == "lit",
-    sol.map.npc_get_sprite("torch_2")):get_animation() == "lit",
-    sol.map.npc_get_sprite("torch_3")):get_animation() == "lit",
-    sol.map.npc_get_sprite("torch_4")):get_animation() == "lit"
+    sol.map.npc_get_sprite("torch_1"):get_animation() == "lit",
+    sol.map.npc_get_sprite("torch_2"):get_animation() == "lit",
+    sol.map.npc_get_sprite("torch_3"):get_animation() == "lit",
+    sol.map.npc_get_sprite("torch_4"):get_animation() == "lit"
   }
   local on = {}
 

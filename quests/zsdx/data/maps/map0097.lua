@@ -23,17 +23,17 @@ end
 function are_group1_torches_on()
 
   return sol.map.npc_exists("torch1_1")
-  and sol.map.npc_get_sprite("torch1_1")):get_animation() == "lit"
-  and sol.map.npc_get_sprite("torch1_2")):get_animation() == "lit"
-  and sol.map.npc_get_sprite("torch1_3")):get_animation() == "lit"
+  and sol.map.npc_get_sprite("torch1_1"):get_animation() == "lit"
+  and sol.map.npc_get_sprite("torch1_2"):get_animation() == "lit"
+  and sol.map.npc_get_sprite("torch1_3"):get_animation() == "lit"
 end
 
 function are_group2_torches_on()
 
   return sol.map.npc_exists("torch2_1")
-  and sol.map.npc_get_sprite("torch2_1")):get_animation() == "lit"
-  and sol.map.npc_get_sprite("torch2_2")):get_animation() == "lit"
-  and sol.map.npc_get_sprite("torch2_3")):get_animation() == "lit"
+  and sol.map.npc_get_sprite("torch2_1"):get_animation() == "lit"
+  and sol.map.npc_get_sprite("torch2_2"):get_animation() == "lit"
+  and sol.map.npc_get_sprite("torch2_3"):get_animation() == "lit"
 end
 
 

@@ -6,11 +6,11 @@ remove_water_delay = 500 -- delay between each step when some water is disappear
 function are_all_torches_on()
 
   return sol.map.npc_exists("torch_1")
-      and sol.map.npc_get_sprite("torch_1")):get_animation() == "lit"
-      and sol.map.npc_get_sprite("torch_2")):get_animation() == "lit"
-      and sol.map.npc_get_sprite("torch_3")):get_animation() == "lit"
-      and sol.map.npc_get_sprite("torch_4")):get_animation() == "lit" 
-      and sol.map.npc_get_sprite("torch_5")):get_animation() == "lit" 
+      and sol.map.npc_get_sprite("torch_1"):get_animation() == "lit"
+      and sol.map.npc_get_sprite("torch_2"):get_animation() == "lit"
+      and sol.map.npc_get_sprite("torch_3"):get_animation() == "lit"
+      and sol.map.npc_get_sprite("torch_4"):get_animation() == "lit" 
+      and sol.map.npc_get_sprite("torch_5"):get_animation() == "lit" 
 end
 
 -- Makes all five torches on forever

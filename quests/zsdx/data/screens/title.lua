@@ -157,3 +157,32 @@ function display_phase_title(destination_surface)
   destination_surface:draw(title_surface)
 end
 
+function event_key_pressed(key)
+
+  if key == "escape" then
+    -- stop the program
+    sol.main.exit()
+
+  elseif key == "space" or key == "return" then
+    try_finish_title()
+  end
+end
+
+function event_joypad_button_pressed(button)
+
+  try_finish_title()
+end
+
+-- Ends the title screen (if possible)
+-- and starts the savegame selection screen
+function try_finish_title()
+
+  if phase == "title"
+      and dx_img ~= nil
+      and not finished then
+    finished = true
+    -- TODO go to the savegame screen
+    sol.main.play_sound("secret")
+  end
+end
+

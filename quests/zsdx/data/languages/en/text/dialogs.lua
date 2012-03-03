@@ -39,9 +39,8 @@ dialog{
   icon = 0,
   skip = "all",
   text = [[
-Use the feather
-to jump in place and
-over obstacles.
+Use the Feather to
+jump over obstacles.
 ]]
 }
 --------------------
@@ -65,8 +64,8 @@ dialog{
   icon = 2,
   skip = "all",
   text = [[
-You don't have
-any Arrows left!
+You don't have any
+Arrows left!
 ]]
 }
 --------------------
@@ -148,7 +147,7 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-The Magic Flask can
+The Magic Bottle can
 hold various
 substances.
 ]]
@@ -162,7 +161,7 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Your Magic Flask
+Your Magic Bottle
 is filled with
 water.
 
@@ -233,7 +232,7 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-The Magic Flask can
+The Magic Bottle can
 hold various
 substances.
 ]]
@@ -246,7 +245,7 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Your Magic Flask
+Your Magic Bottle
 is filled with
 water.
 
@@ -317,7 +316,7 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-The Magic Flask can
+The Magic Bottle can
 hold various
 substances.
 ]]
@@ -330,7 +329,7 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Your Magic Flask
+Your Magic Bottle
 is filled with
 water.
 
@@ -401,7 +400,7 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-The Magic Flask can
+The Magic Bottle can
 hold various
 substances.
 ]]
@@ -414,7 +413,7 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Your Magic Flask
+Your Magic Bottle
 is filled with
 water.
 
@@ -565,7 +564,7 @@ dialog{
   icon = 19,
   skip = "all",
   text = [[
-The Rock key! But
+The Rock Key! But
 where is the right
 lock ?
 ]]
@@ -591,10 +590,9 @@ dialog{
   icon = 21,
   skip = "all",
   text = [[
-The Earth Key...
-this allows access
-to the village's
-cave.
+The Earth Key. It
+allows access to the
+village's cave.
 ]]
 }
 --------------------
@@ -643,7 +641,7 @@ dialog{
   icon = 25,
   skip = "all",
   text = [[
-These Tiger scrolls
+These Tiger Scrolls
 will let you master
 advanced sword
 techniques.
@@ -669,10 +667,9 @@ dialog{
   icon = 27,
   skip = "all",
   text = [[
-The Magic Cape will
-warn you when you
-are near a weak
-wall.
+The Magic Cape warns
+you when you are
+near a weak wall.
 ]]
 }
 --------------------
@@ -736,7 +733,7 @@ dialog{
   icon = 32,
   skip = "all",
   text = [[
-These Iron gloves
+These Iron Gloves
 will let you lift
 rocks.
 ]]
@@ -769,26 +766,12 @@ them to Inferno.
 }
 --------------------
 
--- Carte du Monde / World Map
-dialog{
-  id = "_treasure.world_map.1",
-  icon = 50,
-  text = [[
-You found the World
-Map!$0
-
-View it on the Map
-screen.
-]]
-}
---------------------
-
 -- ---------------------
 -- When finding a treasure
 -- ---------------------
 --
 -- Messages shown below are seen when the player
--- obtain a treasure, usually by opening a chest or by buying it from a
+-- obtains a treasure, usually by opening a chest or by buying it from a
 -- merchant in a shop.
 --------------------
 
@@ -867,14 +850,14 @@ the original!
 }
 --------------------
 
--- Lanterne / Lantern
+-- Lanterne / Lamp
 dialog{
   id = "_treasure.lamp.1",
   icon = 5,
   next = "_warning_magic",
   text = [[
 You found the
-Lantern!$0 Use it to
+Lamp!$0 Use it to
 brighten dark places
 and light torches.
 ]]
@@ -897,13 +880,13 @@ inaccessible places!
 }
 --------------------
 
--- Flacon vide / empty Flask
+-- Flacon vide / empty Bottle
 dialog{
   id = "_treasure.bottle_1.1",
   icon = 7,
   text = [[
 You found a
-Magic Flask!$0
+Magic Bottle!$0
 
 Fill it with
 various substances.
@@ -917,7 +900,7 @@ dialog{
   icon = 8,
   text = [[
 You filled your
-Magic Flask with
+Magic Bottle with
 water!
 ]]
 }
@@ -988,7 +971,7 @@ dialog{
   icon = 7,
   text = [[
 You found a
-Magic Flask!$0
+Magic Bottle!$0
 
 Fill it with
 various substances.
@@ -1002,7 +985,7 @@ dialog{
   icon = 8,
   text = [[
 You filled your
-Magic Flask with
+Magic Bottle with
 water!
 ]]
 }
@@ -1066,7 +1049,6 @@ whenever you want to
 recover your Hearts!
 ]]
 }
-
 --------------------
 
 -- Flacon vide / Empty Flask
@@ -1075,7 +1057,7 @@ dialog{
   icon = 7,
   text = [[
 You found a
-Magic Flask!$0
+Magic Bottle!$0
 
 Fill it with
 various substances.
@@ -1089,7 +1071,7 @@ dialog{
   icon = 8,
   text = [[
 You filled your
-Magic Flask with
+Magic Bottle with
 water!
 ]]
 }
@@ -1152,7 +1134,6 @@ whenever you want to
 recover your Hearts!
 ]]
 }
-
 --------------------
 
 -- Flacon vide / Empty Flask
@@ -1161,7 +1142,7 @@ dialog{
   icon = 7,
   text = [[
 You found a
-Magic Flask!$0
+Magic Bottle!$0
 
 Fill it with
 various substances.
@@ -1175,7 +1156,7 @@ dialog{
   icon = 8,
   text = [[
 You filled your
-Magic Flask with
+Magic Bottle with
 water!
 ]]
 }
@@ -1268,14 +1249,12 @@ Mystic Mirror!$0
 
 Its strange powers
 will surely be of
-help in your
-quest...
+help in your quest.
 ]]
 }
 --------------------
 
 -- Canne de Somaria / Cane of Somaria
---#Figure out if we want a block or blocks
 dialog{
   id = "_treasure.cane_of_somaria.1",
   icon = 15,
@@ -1283,24 +1262,20 @@ dialog{
   text = [[
 You found the
 Cane of Somaria!$0
-
-You can create
-blocks and grab onto
-them with the
+You can create a
+block and grab onto
+it with the
 Hookshot.
 ]]
 }
 --------------------
 
 -- 3 Pommes
---#3 or three?
 dialog{
   id = "_treasure.apple.1",
   icon = 16,
   text = [[
-You found three
-apples!$0
-
+You found 3 Apples!$0
 Eat them later to
 recover Hearts!
 ]]
@@ -1565,8 +1540,8 @@ dialog{
   id = "_treasure.world_map.1",
   icon = 50,
   text = [[
-You found the World
-Map !$0
+You found the
+World Map !$0
 
 View it on the Map
 screen.
@@ -1574,30 +1549,30 @@ screen.
 }
 --------------------
 
--- Grand sac de rubis / Large Rupee Bag
+-- Grand sac de rubis / Big Wallet
 dialog{
   id = "_treasure.rupee_bag.2",
   icon = 52,
   text = [[
-You found the Large
-Rupee Bag!$0
+You found the Big
+Wallet!$0
 
-It can hold up
-to 300 Rupees!
+It can hold up to
+300 Rupees!
 ]]
 }
 --------------------
 
--- Sac de rubis géant / Giant Rupee Bag
+-- Sac de rubis géant / Giant Wallet
 dialog{
   id = "_treasure.rupee_bag.3",
   icon = 53,
   text = [[
 You found the Giant
-Rupee Bag!$0
+Wallet!$0
 
-It can hold up
-to 999 Rupees!
+It can hold up to
+999 Rupees!
 ]]
 }
 --------------------
@@ -1610,9 +1585,9 @@ dialog{
   text = [[
 You found the Bomb
 Bag!$0 It holds 10
-Bombs. Assign them
-to a key and bombs
-away!
+Bombs.
+Assign them to a key
+and bombs away!
 ]]
 }
 --------------------
@@ -1624,9 +1599,9 @@ dialog{
   text = [[
 You found the Large
 Bomb Bag!$0
-It can hold up to
-30 Bombs instead of
-10!
+
+It can hold up to 30
+Bombs instead of 10!
 ]]
 }
 --------------------
@@ -1639,9 +1614,8 @@ dialog{
 You found the Giant
 Bomb Bag!$0
 
-It can hold up to
-99 Bombs instead of
-30!
+It can hold up to 99
+Bombs instead of 30!
 ]]
 }
 --------------------
@@ -1698,6 +1672,7 @@ dialog{
   text = [[
 You found the Red
 Mail!$0
+
 It provides even
 better protection
 than the Blue Mail!
@@ -1712,6 +1687,7 @@ dialog{
   text = [[
 You found the
 Shield!$0
+
 You can defend
 yourself from enemy
 attacks!
@@ -1726,6 +1702,7 @@ dialog{
   text = [[
 You found the
 Fire Shield!$0
+
 You are now
 protected from fire
 attacks!
@@ -1756,7 +1733,7 @@ You found the Sword
 of Courage!$0
 
 You can cross swords
-and confront yours
+and confront your
 enemies!
 ]]
 }
@@ -1820,9 +1797,10 @@ dialog{
   icon = 99,
   text = [[
 You found the Half
-Magic Meter! Your
-Magic Meter just
-doubled!
+Magic Meter!$0
+
+Your Magic Meter
+just doubled!
 ]]
 }
 --------------------
@@ -1833,10 +1811,8 @@ dialog{
   icon = 70,
   text = [[
 You found the Map!
-
 Use it to see the
-layout of the
-dungeon.
+dungeon's layout.
 ]]
 }
 --------------------
@@ -1868,8 +1844,7 @@ You found a Small
 Key!
 
 This key will open
-a locked door. You
-can use it only in
+a locked door in
 this dungeon.
 ]]
 }
@@ -1881,10 +1856,11 @@ dialog{
   icon = 73,
   text = [[
 You found the Large
-Key! You can now
-open special doors
-and find new
-treasures!
+Key!
+
+You can now open
+special doors and
+find new treasures!
 ]]
 }
 --------------------
@@ -1895,9 +1871,10 @@ dialog{
   icon = 74,
   text = [[
 You found the Boss
-Key! Now you can
-enter the Boss's
-Lair!
+Key!
+
+Now you can enter
+the Boss's Lair!
 ]]
 }
 --------------------
@@ -1907,8 +1884,8 @@ dialog{
   id = "_treasure.piece_of_heart.1",
   icon = 79,
   text = [[
-You found a Piece of
-Heart!
+You found a
+Piece of Heart!
 ]]
 }
 --------------------
@@ -1934,7 +1911,6 @@ dialog{
   next = "_treasure.bomb.1.1",
   text = [[
 You found a Bomb!$0
-Use a Bomb 
 ]]
 }
 --------------------
@@ -1942,8 +1918,9 @@ Use a Bomb
 dialog{
   id = "_treasure.bomb.1.1",
   text = [[
-to make an enemy or
-obstacle explode.
+Use a Bomb to make an
+enemy or obstacle
+explode.
 ]]
 }
 -----------------------
@@ -1954,7 +1931,8 @@ dialog{
   icon = 82,
   next = "_treasure.bomb.1.1",
   text = [[
-You found three Bombs!$0
+You found three
+Bombs!$0
 ]]
 }
 --------------------
@@ -1965,7 +1943,8 @@ dialog{
   icon = 82,
   next = "_treasure.bomb.1.1",
   text = [[
-You found eight Bombs!$0
+You found eight
+Bombs!$0
 ]]
 }
 --------------------
@@ -1997,7 +1976,7 @@ dialog{
   icon = 83,
   next = "_treasure.arrow.1.1",
   text = [[
-You found five Arrows!$0
+You found 5 Arrows!$0
 ]]
 }
 --------------------
@@ -2028,8 +2007,8 @@ dialog{
   id = "_treasure.magic_flask.1",
   icon = 85,
   text = [[
-You found a small
-Magic Flask! Your
+You found a Small
+Magic Jar! Your
 Magic Meter is
 slightly filled.
 ]]
@@ -2041,10 +2020,10 @@ dialog{
   id = "_treasure.magic_flask.2",
   icon = 86,
   text = [[
-You found a Magic
-Jar! Your Magic
-Meter is greatly
-filled.
+You found a Large
+Magic Jar! Your
+Magic Meter is
+greatly filled.
 ]]
 }
 --------------------
@@ -2068,7 +2047,7 @@ dialog{
   text = [[
 You found a Blue
 Rupee!
-That's five Rupees!
+That's 5 Rupees!
 ]]
 }
 --------------------
@@ -2159,8 +2138,7 @@ dialog{
 You found some Blue
 Potion!$0
 
-Drink it to
-completely restore
+Drink it to restore
 both your life and
 magic energy.
 ]]
@@ -2228,8 +2206,8 @@ dialog{
   text = [[
 This door leads to
 the Boss's Lair!
-You will need the Boss
-Key to open it.
+You will need the
+Boss Key to open it.
 ]]
 }
 --------------------
@@ -2317,7 +2295,7 @@ dialog{
   skip = "all",
   text = [[
 It's a crystal switch.
-Try hitting it with
+Try to hit it with
 something...
 ]]
 }
@@ -2328,8 +2306,8 @@ dialog{
   id = "dungeon_1",
   skip = "current",
   text = [[
-    	Level 1  	 
-   Forest Dungeon  
+         Level 1
+      Forest Dungeon
 ]]
 }
 -----------------------
@@ -2339,8 +2317,8 @@ dialog{
   id = "dungeon_2",
   skip = "current",
   text = [[
-    	Level 2  	 
- 	Roc's Cavern    
+         Level 2
+      Roc's Cavern
 ]]
 }
 -----------------------
@@ -2350,8 +2328,8 @@ dialog{
   id = "dungeon_3",
   skip = "current",
   text = [[
-    	Level 3  	 
- Master Arbror's Den
+         Level 3
+  Master Arbror's Den
 ]]
 }
 -----------------------
@@ -2361,7 +2339,7 @@ dialog{
   icon = 75,
   text = [[
 Collect four pieces
-to obtain another
+to obtain a new
 Heart.
 ]]
 }
@@ -2381,10 +2359,9 @@ dialog{
   id = "found_piece_of_heart.third",
   icon = 77,
   text = [[
-Find one more Piece
-of Heart and you
-will have another
-Heart!
+Find one more and
+you will have
+another Heart!
 ]]
 }
 --------------------
@@ -2432,13 +2409,12 @@ dialog{
   skip = "current",
   text = [[
 You don't have an empty
-Flask!
+Bottle!
 ]]
 }
 -----------------------
 
 -- Lorsqu'on trouve de l'eau et qu'on a un Flacon vide
---#Is there a space there on purpose?
 dialog{
   id = "found_water",
   icon = 8,
@@ -2447,7 +2423,7 @@ dialog{
 Do you want to put
 some water in your
 
-Magic Flask?
+Magic Bottle?
 Yes
 No
 ]]
@@ -2474,8 +2450,9 @@ dialog{
   text = [[
 There is some water
 here, but you need
-an empty Magic Flask
-to store it...
+an empty Magic
+Bottle to store
+it...
 ]]
 }
 --------------------
@@ -2487,11 +2464,10 @@ dialog{
   icon = 8,
   question = true,
   text = [[
-Your Magic Flask
-is filled with
-water.
-What do you want to
-do?
+Your Magic Bottle is
+filled with water.
+What do you
+want to do?
 Pour water
 Keep it
 ]]
@@ -2522,9 +2498,8 @@ dialog{
   text = [[
 A Pain au Chocolat
 restores three
-hearts.
-What do you want to
-do?
+hearts. What do you
+want to do?
 Eat one
 Nothing
 ]]
@@ -2538,9 +2513,8 @@ dialog{
   question = true,
   text = [[
 A Croissant restores
-seven hearts.
-What do you want to
-do?
+seven hearts. What
+do you want to do?
 Eat one
 Nothing
 ]]
@@ -2562,20 +2536,21 @@ dialog{
   id = "intro0",
   skip = "current",
   text = [[
-$2Ancient legends 
-tell that a
-magnificent kingdom
-named Hyrule existed
-a long time ago.
-This kingdom prospered 
-Under the blessing of
+$2Ancient legends tell
+of a magnificent
+kingdom called Hyrule
+that existed long ago.
+The kingdom prospered
+under the blessing of
 three goddesses
-represented by
-the Triforce.
-Seven sages sealed
-the Triforce in the
-Golden Land. Then
-the centuries passed...
+represented in the form
+of the Triforce. Seven
+sages sealed the
+Triforce in the
+Golden Land, the
+Utopian reflection of
+the world. Centuries
+passed...
 ]]
 }
 -----------------------
@@ -2584,21 +2559,22 @@ dialog{
   id = "intro1",
   skip = "current",
   text = [[
-$2Many generations later,
-an evil spell seemed to
-threaten Hyrule.
-A mysterious sorcerer
-by the name of Agahnim
-repelled the evil.
-Praised by many, the
-King trusted him with
-a high-ranked status.
-The sorcerer was in
-fact planning against
-the royal family. He
-wanted to bring back
-Ganondorf, king of
-thieves, from a
+$2Many generations
+later, an evil spell
+seemed to threaten
+Hyrule. A mysterious
+sorceror named Agahnim
+fought back the
+darkness. Acclaimed by
+the people, the King
+entrusted him with a
+high-ranking status.
+However, the sorceror
+was in fact plotting
+against the royal
+family. He tried to
+bring back Ganondorf,
+King of thieves, from a
 forgotten time.
 ]]
 }
@@ -2630,7 +2606,7 @@ repelled the evil.
 Thanks to his courage,
 he defeated Ganondorf,
 who had built an
-imposing pyramid on the 
+imposing pyramid on the
 Golden Land.
 ]]
 }
@@ -2687,12 +2663,14 @@ royal powers, Princess
 Zelda with the
 Triforce.
 Zelda teamed with eight
-mysterious child to
+mysterious children to
 shatter the Triforce
 into eight fragments
 and to conceal them
 across the kingdom.
 Peace was restored.
+
+
 And so begins our
 journey...
 ]]
@@ -2703,20 +2681,23 @@ journey...
 dialog{
   id = "outside_world.village.welcome_sign",
   text = [[
-       Welcome
+         Welcome
        to Lyriann
 ]]
 }
 -----------------------
 
 -- Dialogue avec le singe tout au début du jeu
+-- _unknown car on sait qu'il va y avoir une suite, mais on ne sait pas encore laquelle
+-- cela permet d'indiquer au moteur d'afficher une flèche en bas de la boîte de dialogue et non un carré
+-- Suite du dialogue avec le singe, dans le cas où on n'a pas le bouclier
 dialog{
   id = "outside_world.village.monkey",
   next = "_unknown",
   text = [[
 Help! Everyone is
-scared since the
-night!
+scared since the night!
+
 The village has been
 surrounded by
 monsters!
@@ -2724,9 +2705,6 @@ monsters!
 }
 -----------------------
 
--- _unknown car on sait qu'il va y avoir une suite, mais on ne sait pas encore laquelle
--- cela permet d'indiquer au moteur d'afficher une flèche en bas de la boîte de dialogue et non un carré
--- Suite du dialogue avec le singe, dans le cas où on n'a pas le bouclier
 dialog{
   id = "outside_world.village.monkey.without_shield",
   text = [[
@@ -2849,10 +2827,9 @@ dialog{
   id = "outside_world.village.hat_man_npc_waterfall",
   skip = "all",
   text = [[ 
-There is supposed
-to be a treasure 
-hidden by the
-waterfall behind
+There is supposed to be
+a treasure hidden by
+the waterfall behind
 the ancient castle.
 Do you believe it's
 true ?
@@ -2864,7 +2841,7 @@ true ?
 dialog{
   id = "outside_world.village.rupee_house_sign",
   text = [[
-  - Rupees' House -
+   - Rupees' House -
 Earn some Rupees
 while having fun!
 ]]
@@ -2881,8 +2858,8 @@ dialog{
 Please feel free to
 take our fresh spring
 water home with you.
-      Lyriann
-  Tourist Center
+        Lyriann
+     Tourist Center
 ]]
 }
 -----------------------
@@ -2892,7 +2869,7 @@ dialog{
   id = "outside_world.village.cake_shop_sign",
   text = [[
 
-       Bakery
+         Bakery
 ]]
 }
 -----------------------
@@ -2902,7 +2879,7 @@ dialog{
   id = "outside_world.village.shop_sign",
   text = [[
 
-        Shop
+          Shop
 ]]
 }
 -----------------------
@@ -2960,13 +2937,13 @@ the C key: the orange
 icon (D key) pauses the
 game, the blue icon
 (spacebar) is the
-Action button, and the
+Action key, and the
 two grey icons are the
 objects assigned to the
 X and V keys. So always
 keep an eye on what the
 icons say. Don't forget
-thatyou can customize
+that you can customize
 the controls in the
 options screen, and
 that you can even play
@@ -3030,7 +3007,7 @@ dialog{
   text = [[
 To save your progress,
 press D to pause the
-game then press C.
+game and then press C.
 Keep an eye on the
 green icon!
 ]]
@@ -3041,8 +3018,8 @@ green icon!
 dialog{
   id = "outside_world.flower_hole_sign",
   text = [[
-The hole close to
-the flower isn't as
+The hole close to the
+flower isn't as
 dangerous as it looks
 like...
 ]]
@@ -3063,9 +3040,9 @@ dialog{
   id = "outside_world.surprise_wall_sign",
   text = [[
  - Wall of Surprises -
-Come in and try
-your luck to win
-the hidden treasure!
+Come in and try your
+luck to win the
+hidden treasure!
 ]]
 }
 -----------------------
@@ -3308,9 +3285,9 @@ dialog{
   id = "rupee_house.game_2.playing",
   text = [[
 Stand next to the
-roulettes and press
-the Action button to
-stop them.
+roulettes and press the
+Action key to stop
+them.
 Good luck!
 ]]
 }
@@ -3333,9 +3310,8 @@ dialog{
   id = "rupee_house.game_2.reward.green_rupees",
   text = [[
 Three green Rupees,
-nice!
-You get 5 times your
-bet.
+nice! You get 5 times
+your bet.
 ]]
 }
 -----------------------
@@ -3559,7 +3535,7 @@ dialog{
   text = [[
 Monsters are lurking
 in the field. That's
-not a good sign : I am
+not a good sign: I am
 certain that something
 terrible has happened.
 
@@ -3773,7 +3749,7 @@ Telepathy, it works!
 It seems there is a
 path through the trees
 north of here.
-Master Treear is said
+Master Arbror is said
 to haunt the land
 flooded by the river.
 ]]
@@ -3828,6 +3804,7 @@ bronze Sword with my
 bare hands.
 You can have it for
 only 75 Rupees!
+
 With your shield alone
 you won't get far.
 
@@ -3843,10 +3820,9 @@ No
 dialog{
   id = "smith_cave.with_sword",
   text = [[
-Don't go and break
-my Sword because I
-won't forge you another
-one!
+Don't go and break my
+Sword because I won't
+forge you another one!
 ]]
 }
 -----------------------
@@ -3880,7 +3856,7 @@ dialog{
   text = [[
 Thanks a lot. To swing
 your sword, press C. Or
-hold the C button to
+hold the C key to
 launch a spin attack!
 ]]
 }
@@ -3901,8 +3877,10 @@ dialog{
   id = "lyriann_shop.apples",
   next = "_unknown",
   text = [[
-3 freshly picked apples
-from this morning!
+Three freshly picked
+apples from this
+morning!
+
 Each apple restores a
 Heart.
 ]]
@@ -3916,7 +3894,7 @@ dialog{
   id = "lyriann_shop.lamp",
   next = "_unknown",
   text = [[
-A Lantern.
+A Lamp.
 Travel through dark
 places!
 ]]
@@ -3929,7 +3907,7 @@ dialog{
   next = "_unknown",
   text = [[
 A Heart to be used
-now.
+right now.
 ]]
 }
 -----------------------
@@ -3973,8 +3951,7 @@ dialog{
   id = "cake_shop.seller.choose_item",
   text = [[
 Welcome. Choose the
-pastry you wish to
-buy.
+pastry you wish to buy.
 ]]
 }
 -----------------------
@@ -3984,9 +3961,9 @@ dialog{
   id = "cake_shop.pain_au_chocolat",
   next = "_unknown",
   text = [[
-A delicious Chocolate
-Bread that will restore
-three Hearts.
+A delicious Pain au
+Chocolat that will
+restore three Hearts.
 ]]
 }
 -----------------------
@@ -4009,7 +3986,7 @@ dialog{
   next = "_unknown",
   text = [[
 An Apple Pie.
-Baked for you only!
+Baked with your help!
 ]]
 }
 -----------------------
@@ -4021,7 +3998,7 @@ dialog{
   text = [[
 Hey, wait!
 I am looking for apples
-to bake a great tart.
+to bake an apple pie.
 Six apples should do
 it.
 
@@ -4040,7 +4017,7 @@ dialog{
   text = [[
 I am still looking for
 six apples to bake a
-great tart.
+great apple pie.
 Do you want to help?
 Yes
 No
@@ -4075,12 +4052,14 @@ dialog{
   id = "cake_shop.thank_you",
   text = [[
 Oh, thank you, how nice
-of you! I'm sorry I
-only have this empty
-Flask... It's a small
-reward but I'm sure you
-will make good use of
-it.
+of you!
+
+I'm sorry I only have
+this empty Bottle...
+
+It's a small reward but
+I'm sure you will make
+good use of it.
 ]]
 }
 -----------------------
@@ -4110,8 +4089,8 @@ Surely Ganondorf and
 his minions...
 The Seal of the Seven
 Sages weakened after
-our poor King's
-death. Ganon would have
+our poor King's death.
+Ganon would have
 managed to escape from
 the Dark World?
 We must not let him
@@ -4240,7 +4219,7 @@ dialog{
   skip = "all",
   text = [[
 The door is frozen?
-Try melting the ice
+Try to melt the ice
 with some water.
 ]]
 }
@@ -4310,14 +4289,12 @@ overflowing with
 riddles, treasure, and
 danger. You seem very
 courageous!
-
 Please, accept my
 help... I have failed,
 I wasn't able to
 protect our King.
 Give me a chance to
 make it up!
-
 Do you accept my help?
 Yes
 No
@@ -4353,9 +4330,9 @@ dialog{
   text = [[
 Thank you. I can lend
 you this, I hope it
-will be useful. Don't
-forget to return it to
-me once you have
+will be useful.
+Don't forget to return
+it to me once you have
 finished.
 If you manage to obtain
 the Heart Container, I
@@ -4446,11 +4423,12 @@ dialog{
   text = [[
 You solved the
 mysteries of this
-cavern? Impressive! You
-are just as skilled as
-you are courageous. If
-you don't mind, I'll be
-taking my Boomerang
+cavern? Impressive!
+You are just as skilled
+as you are courageous.
+
+If you don't mind, I'll
+be taking my Boomerang
 back.
 ]]
 }
@@ -4530,7 +4508,7 @@ devoted to watching
 over the remains of the
 holy relic, the
 Triforce, creed left by
-the tree goddesses
+the three goddesses
 after the creation of
 your world. Throughout
 the millennia, the
@@ -4670,7 +4648,7 @@ dialog{
   id = "mountain_cave.mountain_sign",
   skip = "all",
   text = [[
-Mount Terror
+    Mount Terror
         --->
 ]]
 }
@@ -4680,10 +4658,9 @@ dialog{
   id = "mountain_cave.not_much_done",
   skip = "all",
   text = [[
-If you are reading this
-message, then you
-haven't gotten very
-far.
+If you are reading this,
+then you haven't gotten
+very far.
 ]]
 }
 -----------------------
@@ -4904,7 +4881,7 @@ dialog{
   id = "surprise_wall.direction_0",
   text = [[
 
-	Right
+          Right
 ]]
 }
 -----------------------
@@ -4913,7 +4890,7 @@ dialog{
   id = "surprise_wall.direction_1",
   text = [[
 
-	Up
+           Up
 ]]
 }
 -----------------------
@@ -4922,7 +4899,7 @@ dialog{
   id = "surprise_wall.direction_2",
   text = [[
 
-	Left
+          Left
 ]]
 }
 -----------------------
@@ -4931,7 +4908,7 @@ dialog{
   id = "surprise_wall.direction_3",
   text = [[
 
-	 Down
+          Down
 ]]
 }
 -----------------------
@@ -4983,7 +4960,7 @@ dialog{
   id = "lake_shop.big_magic_flask",
   text = [[
 Special offer:
-a flask of magic
+a jar of magic
 energy.
 ]]
 }
@@ -5180,7 +5157,7 @@ Heart.
 dialog{
   id = "junk_shop.pain_au_chocolat",
   text = [[
-A Chocolate Bread for
+A Pain au Chocolat for
 recovering Hearts.
 ]]
 }
@@ -5369,7 +5346,7 @@ dialog{
   text = [[
 You made it through
 the three ordeals with
-success!  Your bravery
+success! Your bravery
 is truly unique, I must
 bow down before it.
 I will grant you
@@ -5434,7 +5411,7 @@ dialog{
 Welcome to the Potion
 Shop!
 Hehehe...
-A Magic Flask is
+A Magic Bottle is
 given for free to every
 new client! Hehehe...
 Red gives life, green
@@ -5448,8 +5425,8 @@ dialog{
   id = "potion_shop.no_empty_bottle",
   text = [[
 You can't buy this
-potion without an empty
-Flask! Hehehe...
+Potion without an empty
+Bottle! Hehehe...
 ]]
 }
 -----------------------
@@ -5457,7 +5434,7 @@ Flask! Hehehe...
 dialog{
   id = "potion_shop.red_potion",
   text = [[
-Red potion:
+Red Potion:
 restores life!
 Hehehe...
 ]]
@@ -5467,7 +5444,7 @@ Hehehe...
 dialog{
   id = "potion_shop.green_potion",
   text = [[
-Green potion:
+Green Potion:
 restores your magic
 bar! Hehehe...
 ]]
@@ -5477,7 +5454,7 @@ bar! Hehehe...
 dialog{
   id = "potion_shop.blue_potion",
   text = [[
-Blue potion:
+Blue Potion:
 restores life and
 magic! Hehehe...
 ]]
@@ -5488,8 +5465,8 @@ dialog{
   id = "potion_shop.give_bottle",
   text = [[
 As a new customer, you
-get to walk away with
-a Magic Flask for free.
+get to walk away with a
+Magic Bottle for free.
 Hehehe...
 ]]
 }
@@ -5584,7 +5561,7 @@ dialog{
   id = "dungeon_3.arbror_direction_hint",
   text = [[
 
-  North: Master Treear
+  North: Master Arbror
 ]]
 }
 -----------------------
@@ -5602,7 +5579,7 @@ dialog{
   text = [[
 Haa!!! You'll never
 defeat me, Master
-Treear!
+Arbror!
 ]]
 }
 -----------------------
@@ -5612,7 +5589,8 @@ dialog{
   text = [[
 KARGHHH!!! I have been
 defeated, but you won't
-go far... You will
+go far...
+You will
 never succeed...
 ]]
 }
@@ -5649,8 +5627,8 @@ dialog{
   id = "dungeon_4.welcome",
   skip = "current",
   text = [[
-        Level 4
-   Beaumont's Palace  
+         Level 4
+    Beaumont's Palace
 ]]
 }
 -----------------------
@@ -5765,7 +5743,7 @@ dialog{
   id = "dungeon_5.welcome",
   skip = "current",
   text = [[
-        Level 5
+         Level 5
      Ancient Castle
 ]]
 }
@@ -5775,7 +5753,7 @@ dialog{
   id = "dungeon_5.pots_hint",
   skip = "all",
   text = [[
-The key to this puzzle
+The key to the puzzle
 is to circle the jars
 in the right direction.
 ]]
@@ -5794,7 +5772,7 @@ Don't move!
 dialog{
   id = "dungeon_5.prison_1_locked",
   text = [[
-    - Iron Lock -
+     - Iron Lock -
 None of your keys seem
 to fit...
 ]]
@@ -5893,8 +5871,8 @@ dialog{
   id = "dungeon_6.welcome",
   skip = "current",
   text = [[
-        Level 6
-    Inferno's Maze   
+         Level 6
+     Inferno's Maze
 ]]
 }
 -----------------------
@@ -5983,8 +5961,8 @@ dialog{
   id = "dungeon_7.welcome",
   skip = "current",
   text = [[
-        Level 7
-   Crystal Temple   
+         Level 7
+     Crystal Temple
 ]]
 }
 -----------------------
@@ -6002,8 +5980,6 @@ dialog{
 
 -- The original dialog was a reference
 -- to Link's Awakening
-
--- Replaced translation with Link's Awakening text
 dialog{
   id = "dungeon_7.2f_weak_floor_hint",
   text = [[
@@ -6083,8 +6059,8 @@ dialog{
   id = "dungeon_8.welcome",
   skip = "current",
   text = [[
-        Level 8
-    Rock Peaks Dungeon
+         Level 8
+   Rock Peaks Dungeon
 ]]
 }
 -----------------------
@@ -6128,6 +6104,7 @@ took the responsability
 of handing them to
 Agahnim...
 
+
 Now, it is your turn
 to die!
 ]]
@@ -6158,9 +6135,9 @@ world. Ah ah ah ah!
 dialog{
   id = "dungeon_8.agahnim_middle",
   text = [[
-$1$0...$0.............$0 You
-are rather tough, that
-is no lie.
+$1$0...$0.............$0
+You are rather tough,
+that is no lie.
 But what about this?
 ]]
 }
@@ -6173,6 +6150,7 @@ $1$0...$0 .........$0
 I am defeated...$0
 This is the end...$0
 I was not up to it...
+
 
 I bow down before your
 bravery.$0
@@ -6217,8 +6195,8 @@ dialog{
   id = "dungeon_9.welcome",
   skip = "current",
   text = [[
-        Level 9       
- Temple of Memories
+         Level 9
+   Shrine of Memories
 ]]
 }
 -----------------------
@@ -6294,7 +6272,7 @@ Your victory on evil
 shows once again that
 wisdom and justice
 always triumph over
-the forces of Evil.
+the forces of evil.
 Thanks to your
 accomplishments, our
 world has been restored
@@ -6337,6 +6315,8 @@ dialog{
   id = "dungeon_9.zelda_end",
   text = [[
 $1It is over.$0
+
+
 The power of the
 Solarus has vanished
 forever.
@@ -6351,8 +6331,8 @@ dialog{
   id = "dungeon_10.welcome",
   skip = "current",
   text = [[
-     Secret level     
-     Tower of the Gods
+     Secret level
+     Skyward Tower
 ]]
 }
 -----------------------
@@ -6444,3 +6424,4 @@ Thanks for playing!$0
 ]]
 }
 -----------------------
+

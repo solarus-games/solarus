@@ -150,7 +150,7 @@ class Script {
 
     // Lua
     bool find_lua_function(const std::string& function_name);
-    bool notify_script(const std::string &function_name, const std::string &format = "", ...);
+    bool notify_script(const std::string& function_name, const char* format = "", ...);
     bool call_script(int nb_arguments, int nb_results, const std::string& function_name);
     void initialize_lua_context();
     void load(const std::string &script_name);

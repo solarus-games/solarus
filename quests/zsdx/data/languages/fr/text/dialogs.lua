@@ -1813,7 +1813,7 @@ dialog{
   icon = 99,
   text = [[
 Tu as trouvé le Demi
-de Magie ! Ta barre
+de Magie !$0 Ta barre
 magique a doublé !
 ]]
 }
@@ -2736,6 +2736,8 @@ dialog{
 -----------------------
 
 -- Dialogue avec le singe tout au début du jeu
+-- _unknown car on sait qu'il va y avoir une suite, mais on ne sait pas encore laquelle
+-- cela permet d'indiquer au moteur d'afficher une flèche en bas de la boîte de dialogue et non un carré
 dialog{
   id = "outside_world.village.monkey",
   next = "_unknown",
@@ -2750,8 +2752,6 @@ monstres !
 }
 -----------------------
 
--- _unknown car on sait qu'il va y avoir une suite, mais on ne sait pas encore laquelle
--- cela permet d'indiquer au moteur d'afficher une flèche en bas de la boîte de dialogue et non un carré
 -- Suite du dialogue avec le singe, dans le cas où on n'a pas le bouclier
 dialog{
   id = "outside_world.village.monkey.without_shield",

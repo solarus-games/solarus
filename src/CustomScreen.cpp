@@ -60,7 +60,7 @@ void CustomScreen::start_screen(const std::string& screen_name) {
 
 /**
  * @brief Shows a game that will replace this custom screen.
- * @param screen_name name of the Lua script that controls the new screen
+ * @param savegame_file savegame to load, relative to the savegames directory
  */
 void CustomScreen::start_game(const std::string& savegame_file) {
 

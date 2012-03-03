@@ -52,7 +52,7 @@ PauseSubmenu::~PauseSubmenu() {
  *
  * The subclasses should call this function.
  *
- * @param destination the surface to draw
+ * @param dst_surface the surface to draw
  */
 void PauseSubmenu::display(Surface& dst_surface) {
   caption_text_1->display(dst_surface);

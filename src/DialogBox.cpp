@@ -160,13 +160,12 @@ void DialogBox::set_variable(const std::string& dialog_id,
 }
 
 /**
- * @brief Same thing as set_variable(string, string) but with an integer
- * parameter.
+ * @brief Same as set_variable(string, string) but with an integer parameter.
  *
  * This function just converts the integer value to a string
  * add calls the other function.
  *
- * @param dialog id id of the dialog where this value will appear
+ * @param dialog_id id of the dialog where this value will appear
  * @param value the value to set
  */
 void DialogBox::set_variable(const std::string& dialog_id, int value) {

@@ -91,6 +91,7 @@ Surface& Script::check_surface(lua_State* l, int index) {
 
 /**
  * @brief Pushes a surface userdata onto the stack.
+ * @param l a Lua context
  * @param surface a surface
  */
 void Script::push_surface(lua_State* l, Surface& surface) {

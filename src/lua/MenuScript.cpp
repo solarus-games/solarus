@@ -107,7 +107,7 @@ void MenuScript::event_menu_started() {
 
 /**
  * @brief Displays the content of the menu on a surface
- * @param destination the destination surface
+ * @param dst_surface the destination surface
  */
 void MenuScript::event_display(Surface& dst_surface) {
 

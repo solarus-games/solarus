@@ -773,6 +773,7 @@ void Script::cancel_callback(int callback_ref) {
 /**
  * @brief Returns whether a userdata was created by this script.
  * @param userdata a userdata
+ * @return true if this script created the userdata
  */
 bool Script::has_created(void* userdata) {
 

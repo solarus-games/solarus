@@ -173,7 +173,7 @@ void TextSurface::set_horizontal_alignment(HorizontalAlignment horizontal_alignm
 
 /**
  * @brief Sets the vertical text alignment.
- * @param horizontal_alignment horizontal alignment of the text: ALIGN_TOP,
+ * @param vertical_alignment vertical alignment of the text: ALIGN_TOP,
  * ALIGN_MIDDLE or ALIGN_BOTTOM
  */
 void TextSurface::set_vertical_alignment(VerticalAlignment vertical_alignment) {

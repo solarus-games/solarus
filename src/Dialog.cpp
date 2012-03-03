@@ -54,6 +54,7 @@ Dialog::~Dialog() {
 /**
  * @brief Assignment operator.
  * @param other the dialog to copy
+ * @return this dialog
  */
 Dialog& Dialog::operator=(const Dialog& other) {
 
@@ -200,8 +201,7 @@ const std::list<std::string>& Dialog::get_lines() const {
  *
  * Lines must be separated by '\n'. The last line of text may end with '\n'.
  *
- *
- * @return the text of this dialog
+ * @param text the text of this dialog
  */
 void Dialog::set_text(const std::string& text) {
 

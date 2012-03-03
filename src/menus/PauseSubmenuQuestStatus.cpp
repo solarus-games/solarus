@@ -289,7 +289,7 @@ void PauseSubmenuQuestStatus::update() {
 
 /**
  * @brief Displays this submenu.
- * @param dst_surfacethe destination surface
+ * @param dst_surface the destination surface
  */
 void PauseSubmenuQuestStatus::display(Surface& dst_surface) {
 

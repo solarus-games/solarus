@@ -175,7 +175,7 @@ void Counter::decrease() {
  *
  * The counter is displayed at the position specified when the constructor was called.
  *
- * @param destination the destination surface
+ * @param dst_surface the destination surface
  */
 void Counter::display(Surface& dst_surface) {
 
@@ -184,7 +184,7 @@ void Counter::display(Surface& dst_surface) {
 
 /**
  * @brief Displays the counter on a surface, specifying the position.
- * @param destination the destination surface
+ * @param dst_surface the destination surface
  * @param x x coordinate of the top-left corner of the counter on the destination surface
  * @param y y coordinate of the top-left corner of the counter on the destination surface
  */

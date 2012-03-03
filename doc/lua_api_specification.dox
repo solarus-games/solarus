@@ -917,7 +917,7 @@ methods available.
 Creates a movement that follows a pixel precise trajectory.
   - <tt>trajectory</tt> (string): the whole trajectory, with the
     syntax "dx1 dy1 dx2 dy2 dx3 dy3 ..."
-  - <tt>delay (number): delay in milliseconds between two translations
+  - <tt>delay</tt> (number): delay in milliseconds between two translations
   - Return value (movement): the movement created
 
 - <tt>sol.movement.random_movement_create(speed)</tt>:

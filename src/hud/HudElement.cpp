@@ -195,7 +195,7 @@ void HudElement::update() {
 
 /**
  * @brief Displays the hud element on a surface.
- * @param destination the destination surface
+ * @param dst_surface the destination surface
  */
 void HudElement::display(Surface& dst_surface) {
 

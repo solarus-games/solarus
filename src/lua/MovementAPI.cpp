@@ -99,6 +99,7 @@ Movement& Script::check_movement(lua_State* l, int index) {
 
 /**
  * @brief Pushes a movement userdata onto the stack.
+ * @param l a Lua context
  * @param movement a movement
  */
 void Script::push_movement(lua_State* l, Movement& movement) {

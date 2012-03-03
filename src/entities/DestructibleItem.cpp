@@ -373,7 +373,7 @@ void DestructibleItem::play_destroy_animation() {
 /**
  * @brief Sets a Lua function to be called when this destructible item is
  * destroyed.
- * @param destroy_callback_ref a Lua ref to the callback in the registry
+ * @param destruction_callback_ref a Lua ref to the callback in the registry
  * (if you pass LUA_REFNIL, this function removes the previous callback that
  * was set, if any)
  */

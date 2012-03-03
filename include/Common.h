@@ -24,8 +24,9 @@
 #define SOLARUS_COMMON_H
 
 #ifndef DEFAULT_QUEST
-// if no default quest was specified at compilation time,
-// use the current directory
+/**
+ * @brief Path of the quest to run when none is specified in the command line
+ */
 #define DEFAULT_QUEST "."
 #endif
 

@@ -134,6 +134,7 @@ void DynamicDisplayable::set_movement_callback(int movement_callback_ref) {
  * The transition will be automatically deleted when finished or stopped.
  * Any previous transition is stopped.
  *
+ * @param transition the transition to start
  * @param callback_ref a Lua registry ref to the function to call when
  * the transition finishes, or LUA_REFNIL
  */
@@ -164,7 +165,7 @@ void DynamicDisplayable::stop_transition() {
 
 /**
  * @brief Sets a Lua function to be called when the transition is finished.
- * @param tansition_callback_ref a Lua ref to the callback in the registry
+ * @param transition_callback_ref a Lua ref to the callback in the registry
  * (if you pass LUA_REFNIL, this function removes the previous callback that
  * was set, if any)
  */

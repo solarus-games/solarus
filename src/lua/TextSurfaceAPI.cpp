@@ -81,6 +81,7 @@ TextSurface& Script::check_text_surface(lua_State* l, int index) {
 
 /**
  * @brief Pushes a text surface userdata onto the stack.
+ * @param l a Lua context
  * @param text_surface a text surface
  */
 void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {

@@ -4508,7 +4508,7 @@ devoted to watching
 over the remains of the
 holy relic, the
 Triforce, creed left by
-the tree goddesses
+the three goddesses
 after the creation of
 your world. Throughout
 the millennia, the

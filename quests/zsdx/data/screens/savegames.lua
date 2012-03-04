@@ -2,6 +2,8 @@
 
 function event_menu_started()
 
+  -- music
+  sol.main.play_music("game_over.spc")
 end
 
 function event_key_pressed(key)

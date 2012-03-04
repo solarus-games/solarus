@@ -181,8 +181,11 @@ function try_finish_title()
       and dx_img ~= nil
       and not finished then
     finished = true
-    sol.main.stop_music()
-    sol.main.start_screen("savegames")
+
+    title_surface:fade_out(30, function()
+      sol.main.stop_music()
+      sol.main.start_screen("savegames")
+    end)
   end
 end
 

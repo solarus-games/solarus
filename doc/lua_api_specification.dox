@@ -64,12 +64,10 @@ Includes another script into this one.
 Exits the program.
 
 - <tt>sol.main.start_screen(screen_name)</tt>:
-Ends the current screen and starts another one.
-Not possible during a game.
+Ends the current scripted screen and starts another one.
 
 - <tt>sol.main.start_game(savegame_file)</tt>:
-Ends the current screen and starts a game.
-Not possible during a game.
+Ends the current scripted screen and starts a game.
 
 - <tt>sol.main.play_sound(sound_id)</tt>:
 Plays a sound.

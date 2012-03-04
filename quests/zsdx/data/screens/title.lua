@@ -112,12 +112,12 @@ function phase_title()
   title_surface:fade_in(30)
 end
 
-function event_display(destination_surface)
+function event_display(dst_surface)
 
   if phase ~= "title" then
-    destination_surface:draw(title_surface)
+    dst_surface:draw(title_surface)
   else
-    display_phase_title(destination_surface)
+    display_phase_title(dst_surface)
   end
 end
 
@@ -181,8 +181,7 @@ function try_finish_title()
       and dx_img ~= nil
       and not finished then
     finished = true
-    -- TODO go to the savegame screen
-    sol.main.play_sound("secret")
+    sol.main.start_screen("savegames")
   end
 end
 

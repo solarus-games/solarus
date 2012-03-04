@@ -371,7 +371,6 @@ bool SelectionMenu::is_transition_finished() {
   return transition != NULL && transition->is_finished();
 }
 
-
 /**
  * @brief Sets the text of title to display on the top of the screen.
  * @param title_string_key key of the title string
@@ -380,7 +379,6 @@ void SelectionMenu::set_title_text(const std::string &title_string_key) {
 
   title_text->set_text(StringResource::get_string(title_string_key));
 }
-
 
 /**
  * @brief Sets the text of the two options to display in the bottom of the screen.

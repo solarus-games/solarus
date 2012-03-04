@@ -189,24 +189,24 @@ void DynamicDisplayable::update() {
   if (transition != NULL) {
     transition->update();
     if (transition->is_finished()) {
-      stop_transition();
 
       if (script != NULL) {
         script->do_callback(transition_callback_ref);
         transition_callback_ref = LUA_REFNIL;
       }
+      stop_transition();
     }
   }
 
   if (movement != NULL) {
     movement->update();
     if (movement->is_finished()) {
-      stop_movement();
 
       if (script != NULL) {
         script->do_callback(movement_callback_ref);
         movement_callback_ref = LUA_REFNIL;
       }
+      stop_movement();
     }
   }
 }

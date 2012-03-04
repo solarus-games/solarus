@@ -76,13 +76,13 @@ max_life = 12
 
 @subsection projet_db Project database
 
-The <tt>project_db.dat</tt> file is NOT used by the engine,
-but only by the quest editor. The quest editor is still in development and
+The <tt>project_db.dat</tt> file is used by the quest editor.
+The quest editor is still in development and
 there is no stable release.
 This file contains a list of all resources (maps, musics, sprites, items, enemies, etc.)
 of the quest and their human-readable names.
 Each resource is usually represented by a data file.
-The map editor needs it only to provide graphical components that let the user choose a resource
+The quest editor needs it only to provide graphical components that let the user choose a resource
 in a list of human-readable names.
 
 For instance, when the user creates a teletransporter on the map, a graphical list
@@ -110,9 +110,10 @@ The current types of resources are:
 - 2: a music (the id is the music file name with its extension),
 - 3: a sprite (the id is the sprite file name without extension),
 - 4: a sound (the id is the music file name with its extension),
-- 5: an item (the id is the name of item's Lua script without its extension),
-- 6: an enemy (the id is the name of enemy's Lua script without its extension),
-- 7: a dialogs file (the id is the dialogs file)
+- 5: an item (the id is the name of the item's Lua script without its extension),
+- 6: an enemy (the id is the name of the enemy's Lua script without its extension),
+- 7: a language (the id is the language code),
+- 8: a screen script (the id is the name of the screen's Lua script without its extension).
 
 @section sounds Sounds
 

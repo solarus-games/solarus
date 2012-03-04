@@ -329,7 +329,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
             return;
         }
 
-        ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceType.DIALOGS);
+        ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceType.LANGUAGE);
         dialog.setLocationRelativeTo(DialogsEditorWindow.this);
         dialog.pack();
         dialog.setVisible(true);

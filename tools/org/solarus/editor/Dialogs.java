@@ -74,7 +74,7 @@ public class Dialogs extends Observable {
 
         this.name = "New Dialogs";
         this.description = "";
-        Resource dialogResource = Project.getResource(ResourceType.DIALOGS);
+        Resource dialogResource = Project.getResource(ResourceType.LANGUAGE);
 
         sections = new ArrayList<DialogSection>();
         filteredSections = new ArrayList<DialogSection>();
@@ -110,7 +110,7 @@ public class Dialogs extends Observable {
         String line =  "";
         try {
             // get the dialogs file name in the game resource database
-            Resource mapResource = Project.getResource(ResourceType.DIALOGS);
+            Resource mapResource = Project.getResource(ResourceType.LANGUAGE);
             setName(mapResource.getElementName(dialogsId));
 
             File dialogsFile = Project.getDialogsFile(dialogsId);

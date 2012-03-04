@@ -171,7 +171,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
 				break;
 			    }
 
-			    case DIALOGS:
+			    case LANGUAGE:
 			    {
 				/* TODO uncomment this when the dialog editor works
 				Dialogs d = new Dialogs(element.id);
@@ -209,8 +209,13 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
 				break;
 			    }
 
-			    default:
-				// this type of resource is not supported by the editor (yet...)
+			    case SCREEN:
+			    {
+				File f = new File(Project.getScreenScriptFile(element.id));
+				FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+				editorWindow.addEditor(fileEditor);
+				break;
+			    }
 			}
 		    }
 		}

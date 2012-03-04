@@ -12,7 +12,8 @@ public enum ResourceType {
     SOUND(false, "Sound"),
     ITEM(false, "Item"),
     ENEMY(false, "Enemy"),
-    DIALOGS(false, "Dialogs File");
+    LANGUAGE(false, "Language"),
+    SCREEN(false, "Screen");
 
     /**
      * Indicates that the id of elements from this resource type is an integer

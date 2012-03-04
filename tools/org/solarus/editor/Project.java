@@ -417,17 +417,15 @@ public class Project {
 	observers.remove(observer);
     }
 
-
-
- 
     public static String getEnemyScriptFile(String name) {
-        String formatedName = name.replace(" ", "_").toLowerCase();
-	return getDataPath() + "/enemies/" + formatedName + ".lua";
+	return getDataPath() + "/enemies/" + name + ".lua";
     }
 
-
     public static String getItemScriptFile(String name) {
-        String formatedName = name.replace(" ", "_").toLowerCase();
-	return getDataPath() + "/items/" + formatedName + ".lua";
+	return getDataPath() + "/items/" + name + ".lua";
+    }
+
+    public static String getScreenScriptFile(String name) {
+	return getDataPath() + "/screens/" + name + ".lua";
     }
 }

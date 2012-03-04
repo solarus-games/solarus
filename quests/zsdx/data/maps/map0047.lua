@@ -112,7 +112,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.sensor_set_enabled("DS4", false)
   elseif sensor_name == "start_boss_sensor" then
     if not fighting_boss and not sol.game.savegame_get_boolean(727) then
-      sol.main.play_music("none")
+      sol.main.stop_music()
       sol.map.door_close("boss_door")
       sol.map.npc_set_enabled("billy_npc", true)
       sol.map.hero_freeze()

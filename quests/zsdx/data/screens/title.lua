@@ -181,6 +181,7 @@ function try_finish_title()
       and dx_img ~= nil
       and not finished then
     finished = true
+    sol.main.stop_music()
     sol.main.start_screen("savegames")
   end
 end

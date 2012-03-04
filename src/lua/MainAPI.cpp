@@ -38,6 +38,7 @@ void Script::initialize_main_module() {
       { "start_game", main_api_start_game },
       { "play_sound", main_api_play_sound },
       { "play_music", main_api_play_music },
+      { "stop_music", main_api_stop_music },
       { "timer_start", main_api_timer_start },
       { "timer_stop_all", main_api_timer_stop_all },
       { "get_distance", main_api_get_distance },
@@ -47,7 +48,6 @@ void Script::initialize_main_module() {
 
   luaL_register(l, main_module_name, methods);
 }
-
 
 /**
  * @brief Includes a script into the current Lua context.
@@ -60,7 +60,7 @@ void Script::initialize_main_module() {
 int Script::main_api_include(lua_State *l) {
 
   Script& script = get_script(l);
-  const std::string &file_name = luaL_checkstring(l, 1);
+  const std::string& file_name = luaL_checkstring(l, 1);
 
   script.load(file_name);
 
@@ -146,6 +146,20 @@ int Script::main_api_play_music(lua_State *l) {
   Script& script = get_script(l);
   const MusicId &music_id = luaL_checkstring(l, 1);
   Music::play(music_id);
+  script.music_played = true;
+
+  return 0;
+}
+
+/**
+ * @brief Stops playing any music.
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_stop_music(lua_State* l) {
+
+  Script& script = get_script(l);
+
+  Music::play(Music::none);
   script.music_played = true;
 
   return 0;

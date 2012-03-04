@@ -186,6 +186,7 @@ class Script {
       main_api_start_game,
       main_api_play_sound,
       main_api_play_music,
+      main_api_stop_music,
       main_api_timer_start,
       main_api_timer_stop_all,
       main_api_get_distance,

@@ -149,7 +149,7 @@ function event_hero_on_sensor(sensor_name)
   elseif sensor_name == "close_boss_door_sensor"
       and sol.map.door_is_open("boss_door") then
     sol.map.door_close("boss_door")
-    sol.main.play_music("none")
+    sol.main.stop_music()
 
   -- boss
   elseif sensor_name == "start_boss_sensor"

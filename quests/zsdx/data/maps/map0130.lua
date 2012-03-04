@@ -76,7 +76,7 @@ function event_dialog_finished(dialog_id)
       sol.map.dialog_start("dungeon_9.zelda_children")
     end, 1000)
   elseif dialog_id == "dungeon_9.zelda_children" then
-    sol.main.play_music("none")
+    sol.main.stop_music()
     sol.main.play_sound("world_warp")
     sol.main.timer_start(function()
       for i = 1, 8 do

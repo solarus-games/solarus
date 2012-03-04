@@ -97,7 +97,7 @@ function event_dialog_finished(dialog_id)
 
   if dialog_id == "dungeon_6.tom" then
 
-    sol.main.play_music("none")
+    sol.main.stop_music()
     sol.main.timer_start(function()
       sol.main.play_music("legend.spc")
       sol.map.dialog_start("dungeon_6.tom_revelation")

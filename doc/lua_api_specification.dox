@@ -74,6 +74,11 @@ Plays a sound.
 
 - <tt>sol.main.play_music(music_id)</tt>:
 Plays a music.
+  - <tt>music_id</tt>: name of the music file to play, relative to the
+    <tt>music</tt> directory, or <tt>"none"</tt> or <tt>"same"</tt>
+
+- <tt>sol.main.stop_music()</tt>:
+Stops playing music (equivalent to <tt>sol.main.play_music("none")</tt>).
 
 - <tt>sol.main.timer_start(function, duration, with_sound)</tt>:
 starts a timer which will calls a function once finished

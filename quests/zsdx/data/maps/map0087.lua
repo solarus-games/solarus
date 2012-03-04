@@ -52,7 +52,7 @@ function agahnim_sequence_2()
 
   local sprite = sol.map.npc_get_sprite("solarus_child")
   sprite:fade(1)
-  sol.main.play_music("none")
+  sol.main.stop_music()
   sol.main.play_sound("warp")
   sol.main.timer_start(agahnim_sequence_3, 3000)
 end

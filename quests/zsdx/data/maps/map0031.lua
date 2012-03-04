@@ -100,7 +100,7 @@ function event_hero_on_sensor(sensor_name)
       and sol.map.door_is_open("boss_door")
       and not sol.game.savegame_get_boolean(93)
       and not fighting_boss then
-    sol.main.play_music("none")
+    sol.main.stop_music()
     sol.map.door_close("boss_door")
 
   elseif sensor_name == "save_solid_ground_sensor" then

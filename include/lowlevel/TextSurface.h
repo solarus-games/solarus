@@ -107,7 +107,7 @@ class TextSurface: public DynamicDisplayable {
         VerticalAlignment vertical_alignment);
     ~TextSurface();
 
-    void set_font(const std::string font_id);
+    void set_font(const std::string& font_id);
     void set_horizontal_alignment(HorizontalAlignment horizontal_alignment);
     void set_vertical_alignment(VerticalAlignment vertical_alignment);
     void set_alignment(HorizontalAlignment horizontal_alignment,

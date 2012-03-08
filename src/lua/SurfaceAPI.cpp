@@ -32,9 +32,9 @@ void Script::initialize_surface_module() {
 
   static const luaL_Reg methods[] = {
       { "create", surface_api_create },
+      { "get_size", surface_api_get_size },
       { "fill_color", surface_api_fill_color },
       { "draw", surface_api_draw },
-      { "get_size", surface_api_get_size },
       { "set_transparency_color", surface_api_set_transparency_color },
       { "set_opacity", surface_api_set_opacity },
       { "fade_in", surface_api_fade_in },
@@ -177,6 +177,26 @@ int Script::surface_api_create(lua_State* l) {
 }
 
 /**
+ * @brief Returns the size of a surface.
+ *
+ * - Argument 1 (surface): a surface
+ * - Return value 1 (integer): width in pixels
+ * - Return value 2 (integer): height in pixels
+ *
+ * @param l the Lua context that is calling this function
+ * @return the number of values to return to Lua
+ */
+int Script::surface_api_get_size(lua_State* l) {
+
+  Surface& surface = check_surface(l, 1);
+
+  lua_pushnumber(l, surface.get_width());
+  lua_pushnumber(l, surface.get_height());
+
+  return 2;
+}
+
+/**
  * @brief Fills a surface with a color.
  *
  * - Argument 1 (surface): the surface to fill
@@ -219,26 +239,6 @@ int Script::surface_api_draw(lua_State* l) {
   }
 
   return 0;
-}
-
-/**
- * @brief Returns the size of a surface.
- *
- * - Argument 1 (surface): a surface
- * - Return value 1 (integer): width in pixels
- * - Return value 2 (integer): height in pixels
- *
- * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
- */
-int Script::surface_api_get_size(lua_State* l) {
-
-  Surface& surface = check_surface(l, 1);
-
-  lua_pushnumber(l, surface.get_width());
-  lua_pushnumber(l, surface.get_height());
-
-  return 2;
 }
 
 /**

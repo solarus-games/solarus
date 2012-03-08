@@ -105,7 +105,7 @@ void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {
  *
  * To create an empty surface:
  * - Argument 1 (table): properties, possible keys are
- * x, y, horizontal_alignment, vertical_alignment, font, rendering_mode
+ * horizontal_alignment, vertical_alignment, font, rendering_mode
  * background_color, text_color, text, text_key
  *
  * @param l the Lua context that is calling this function
@@ -124,13 +124,7 @@ int Script::text_surface_api_create(lua_State* l) {
   while (lua_next(l, 1) != 0) {
 
     const std::string& key = luaL_checkstring(l, 2);
-    if (key == "x") {
-      x = luaL_checkinteger(l, -1);
-    }
-    else if (key == "y") {
-      y = luaL_checkinteger(l, -1);
-    }
-    else if (key == "font") {
+    if (key == "font") {
       const std::string& font_id = luaL_checkstring(l, -1);
       text_surface->set_font(font_id);
     }
@@ -208,7 +202,6 @@ int Script::text_surface_api_create(lua_State* l) {
     }
     lua_pop(l, 1); // pop the value, let the key for the iteration
   }
-  text_surface->set_position(x, y);
 
   get_script(l).add_displayable(text_surface);
   push_text_surface(l, *text_surface);

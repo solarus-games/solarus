@@ -996,7 +996,8 @@ movement was translated with the given parameters.
 
 Your script can create sprites or access existing ones
 (e.g. a sprite attached to an NPC).
-In both cases, the following methods are available.
+In both cases, the following methods are available on the type
+<tt>sprite</tt>.
 
 - <tt>sol.sprite.create(sprite_name)</tt>:
 Creates a sprite.
@@ -1063,11 +1064,109 @@ The synchronization will be performed whenever their animation names match.
 
 @subsection sol.surface Module <tt>sol.surface</tt>
 
-TODO
+The <tt>sol.surface</tt> module provides the type surface,
+which represents a 2D image. You can draw displayable objects
+(i.e. other surfaces, text surfaces and sprites) on a surface.
+
+- <tt>sol.surface.create(width, height)</tt>:
+Creates an empty surface. The default size is the size of the screen.
+  - <tt>width</tt> (number, optional): width of the surface to create in pixels
+  - <tt>height</tt> (number, optional): height of the surface to create in pixels
+  - Return value (surface): the surface created
+
+- <tt>sol.surface.create(file_name, language_specific)</tt>:
+Creates a surface from an image file.
+  - <tt>file_name</tt> (string): name of the image file to load
+  - <tt>language_specific</tt> (boolean, optional): true to load the image
+    from the <tt>images</tt> subdirectory of the current language directory
+    (default is false and loads the image from the <tt>sprites</tt> directory)
+  - Return value (surface): the surface created
+
+- <tt>sol.surface.create(surface, x, y, width, height)</tt>:
+Creates a surface from a region of an existing surface
+  - <tt>surface</tt> (surface): an existing surface
+  - <tt>x</tt> (integer): x coordinate of the region in pixels
+  - <tt>y</tt> (integer): y coordinate of the region in pixels
+  - <tt>width</tt> (integer): width of the region in pixels
+  - <tt>height</tt> (integer): height of the region in pixels
+  - Return value (surface): the surface created
+
+- <tt>surface:get_size()</tt>:
+Returns the size of this surface.
+  - Return value 1 (number): width of the surface in pixels
+  - Return value 2 (number): width of the surface in pixels
+
+- <tt>surface:fill_color(color)</tt>:
+Fills this surface with a color.
+  - <tt>color</tt> (table): the color as an array of 3 RGB values (0 to 255)
+
+- <tt>surface:draw(displayable, x, y)</tt>:
+Draws a displayable object on this surface.
+  - <tt>displayable</tt> (surface, text surface or sprite): the displayable
+    object to draw on this surface
+  - <tt>x</tt> (number, optional): x coordinate of where to draw the object
+  - <tt>y</tt> (number, optional): y coordinate of where to draw the object
+
+- <tt>surface:set_transparency_color(color)</tt>:
+Sets a transparency color to this surface. Pixels in that color won't be
+displayed.
+  - <tt>color</tt> (table): the color as an array of 3 RGB values (0 to 255)
+
+- <tt>surface:set_opacity(opacity)</tt>:
+Sets the opacity of this surface.
+  - <tt>opacity</tt> (integer): the opacity (0 (transparent) to 255 (opaque),
+    default is 255)
+
+- <tt>surface:fade_in(delay, callback)</tt>:
+Starts a fade-in effect on this surface.
+  - <tt>delay</tt> (number, optional): delay in milliseconds between two
+    frames of the fade-in animation (default is 20)
+  - <tt>callback</tt> (function, optional): a function to call when the
+    fade-in effect finishes
+
+- <tt>surface:fade_out(delay, callback)</tt>:
+Starts a fade-out effect on this surface.
+  - <tt>delay</tt> (number, optional): delay in milliseconds between two
+    frames of the fade-out animation (default is 20)
+  - <tt>callback</tt> (function, optional): a function to call when the
+    fade-out effect finishes
 
 @subsection sol.text_surface Module <tt>sol.text_surface</tt>
 
-TODO
+<tt>sol.text_surface</tt> provides features to display some text.
+The text surface type can be seen as a special surface able to
+contain text.
+
+<tt>sol.text_surface.create(properties)</tt>:
+Creates a text surface with the specified properties.
+  - <tt>properties</tt> (table): a table that describes all properties
+    of the text surface to create. Its key-value pairs are all optinoal,
+    they can be:
+    - <tt>horizontal_alignement</tt> (string, default "left"): "left",
+      "center" or "right". When the text surface is displayed at some
+      coordinates on a surface, the left/center/right part of the text is
+      displayed at those coordinates.
+    - <tt>vertical_alignement</tt> (string, default "middle"): "top",
+      "middle" or "bottom". When the text surface is displayed at some
+      coordinates on a surface, the top/middle/bottom part of the text is
+      displayed at those coordinates.
+    - <tt>font</tt> (string): name of the font to use (the default is the one
+      defined in file <tt>text/fonts.dat</tt>)
+    - <tt>rendering_mode</tt> (string, default "solid"): "solid" (normal),
+      "shaded" (smooth effect but the text surface won't support transparency,
+      a background color will be applied)
+      or "blended" (smooth effect keeping transparency, a bit slower)
+    - <tt>background_color</tt> (table, default black): a background
+      color (array of 3 RGB values between 0 and 255) to apply to the
+      text surface (only used in rendering mode "shaded")
+    - <tt>text_color</tt> (table, default white): color of the text to display
+      (array of 3 RGB values between 0 and 255)
+    - <tt>text</tt> (string, default ""): the text to show
+      (must be valid UTF-8)
+    - <tt>text_key</tt> (string, default nil): key of the localized text
+      string to get from the <tt>text/strings.dat</tt> file of the
+      current language
+    - Return value (text surface): the text surface created
 
 @subsection sol.input Module <tt>sol.input</tt>
 

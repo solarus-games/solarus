@@ -421,9 +421,9 @@ class Script {
 
       // surface API
       surface_api_create,
+      surface_api_get_size,
       surface_api_fill_color,
       surface_api_draw,
-      surface_api_get_size,
       surface_api_set_transparency_color,
       surface_api_set_opacity,
       surface_api_fade_in,

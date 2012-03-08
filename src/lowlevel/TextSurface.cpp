@@ -153,7 +153,7 @@ Surface* TextSurface::get_surface() {
  * @brief Sets the font to use.
  * @param font_id a font
  */
-void TextSurface::set_font(const std::string font_id) {
+void TextSurface::set_font(const std::string& font_id) {
 
   this->font_id = font_id;
   rebuild();

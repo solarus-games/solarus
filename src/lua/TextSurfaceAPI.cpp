@@ -116,8 +116,6 @@ int Script::text_surface_api_create(lua_State* l) {
   luaL_checktype(l, 1, LUA_TTABLE);
 
   TextSurface* text_surface = new TextSurface(0, 0);
-  int x = 0;
-  int y = 0;
 
   // traverse the table, looking for properties
   lua_pushnil(l); // first key

@@ -553,7 +553,8 @@ dialog{
   skip = "all",
   text = [[
 Eat a Croissant to
-recover seven Hearts.
+recover seven
+Hearts.
 ]]
 }
 --------------------

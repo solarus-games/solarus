@@ -447,7 +447,7 @@ int Script::game_api_remove_magic(lua_State *l) {
 /**
  * @brief Starts a continuous decrease of the magic points.
  *
- * - Argument 1 (integer): delay in miliseconds between each decrease of 1 point
+ * - Argument 1 (integer): delay in milliseconds between each loss of 1 point
  */
 int Script::game_api_start_decreasing_magic(lua_State *l) {
 

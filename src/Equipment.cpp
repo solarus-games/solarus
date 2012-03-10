@@ -423,7 +423,7 @@ bool Equipment::is_magic_decreasing() {
 
 /**
  * @brief Starts removing magic continuously.
- * @param delay delay in miliseconds between two decreases
+ * @param delay delay in milliseconds between two decreases
  */
 void Equipment::start_removing_magic(uint32_t delay) {
 

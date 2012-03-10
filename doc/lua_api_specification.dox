@@ -64,21 +64,23 @@ Includes another script into this one.
 Exits the program.
 
 - <tt>sol.main.start_screen(screen_name)</tt>:
-Ends the current scripted screen and starts another one.
-
-- <tt>sol.main.start_game(savegame_file)</tt>:
-Ends the current scripted screen and starts a game.
+Ends the scripted screen or game that was running and starts a scripted screen.
+  - <tt>screen_name</tt> (string): name of the scripted to load, relative to
+    the <tt>screens</tt>directory (without the <tt>.lua</tt> extension)
 
 - <tt>sol.main.play_sound(sound_id)</tt>:
 Plays a sound.
+  - <tt>sound_id</tt>: name of the sound file to play, relative to the
+    <tt>sounds</tt> directory, without extension
 
 - <tt>sol.main.play_music(music_id)</tt>:
 Plays a music.
   - <tt>music_id</tt>: name of the music file to play, relative to the
-    <tt>music</tt> directory, or <tt>"none"</tt> or <tt>"same"</tt>
+    <tt>musics</tt> directory, or <tt>"none"</tt> or <tt>"same"</tt>
 
 - <tt>sol.main.stop_music()</tt>:
-Stops playing music (equivalent to <tt>sol.main.play_music("none")</tt>).
+Stops playing music.
+Equivalent to <tt>sol.main.play_music("none")</tt>.
 
 - <tt>sol.main.timer_start(function, duration, with_sound)</tt>:
 starts a timer which will calls a function once finished
@@ -95,127 +97,234 @@ Returns the angle in radians between the specified vector and the x axis.
 
 @subsection sol.game Module <tt>sol.game</tt>
 
-The <tt>sol.game</tt> module is available to scripts running into a game.
-<tt>sol.game</tt> can be seen as an object that represents the current game.
-It provides functions to manage the game data.
+This module provides a datatype "game" that represents a savegame.
+This type provides methods to manage the game data.
 
-- <tt>sol.game.save()</tt>:
-saves the game
+- <tt>sol.game.exists(file_name)</tt>:
+Returns whether the specified savegame file exists.
+  - <tt>file_name</tt> (string): name of the file to test, relative to the
+    savegames directory.
+  - Return value (boolean): true if this savegame file exists
 
-- <tt>sol.game.reset()</tt>:
-resets the game (comes back to the title screen)
+- <tt>sol.game.load(file_name)</tt>:
+Loads an existing savegame, or creates a new one if the file does not exist.
+This function does not start the game, it just loads the savegame file.
+Then you can access the data saved in the file.
+To actually run the game, call the <tt>start()</tt> method.
+  - <tt>file_name</tt> (string): name of the file to load or create, relative
+    to the savegames directory
+  - Return value (game): the loaded (or created) game
 
-- <tt>sol.game.restart()</tt>:
-restarts the game, continuing on the same savegame even if it is not saved
+- <tt>game:save()</tt>:
+Saves this game into its savegame file.
 
-- <tt>sol.game.savegame_get_string(index)</tt>:
-returns a string saved
+- <tt>game:start()</tt>:
+Ends the scripted screen or game that was running and starts this game.
+You can call this function to restart the current game itself,
+even if it was not saved recently (no data will be lost).
 
-- <tt>sol.game.savegame_get_integer(index)</tt>:
-returns an integer saved
+- <tt>game:get_string(index)</tt>:
+Returns a string saved.
+  - <tt>index</tt> (number): index of the string variable to get from the
+    savegame (0 to 63)
+  - Return value (string): the corresponding string
 
-- <tt>sol.game.savegame_get_boolean(index)</tt>:
-returns a boolean saved
+- <tt>game:set_string(index, value)</tt>:
+Sets a string in the savegame.
+  - <tt>index</tt> (number): index of the string variable to set (32 to 63)
+  - <tt>value</tt> (string): the string value to set
 
-- <tt>sol.game.savegame_set_string(index, value)</tt>:
-sets a string in the savegame
+- <tt>game:get_integer(index)</tt>:
+Returns an integer saved.
+  - <tt>index</tt> (number): index of the integer variable to get from the
+    savegame (0 to 2047)
+  - Return value (number): the corresponding integer
 
-- <tt>sol.game.savegame_set_integer(index, value)</tt>:
-sets an integer in the savegame
+- <tt>game:set_integer(index, value)</tt>:
+Sets an integer in the savegame.
+  - <tt>index</tt> (number): index of the integer variable to set (1024 to 2047)
+  - <tt>value</tt> (number): the integer value to set
 
-- <tt>sol.game.savegame_set_boolean(index, value)</tt>:
-sets a boolean in the savegame
+- <tt>game:get_boolean(index)</tt>:
+Returns a boolean saved.
+  - <tt>index</tt> (number): index of the boolean variable to get from the
+    savegame (0 to 32767)
+  - Return value (boolean): the corresponding boolean
 
-- <tt>sol.game.savegame_get_name()</tt>:
-returns the name of the hero (cannot exceed 5 characters)
+- <tt>game:set_boolean(index, value)</tt>:
+Sets an boolean in the savegame.
+  - <tt>index</tt> (number): index of the boolean variable to set (0 to 32767)
+  - <tt>value</tt> (boolean): the boolean value to set
 
-- <tt>sol.game.get_life()</tt>:
-returns the current level of life of the player
+- <tt>game:get_player_name()</tt>:
+Returns the name of the player.
+  - Return value (string): name of the player
 
-- <tt>sol.game.add_life(life)</tt>:
-adds some life to the player
+- <tt>game:set_player_name(name)</tt>:
+Sets the name of the player.
+  - <tt>name</tt> (string): name of the player.
 
-- <tt>sol.game.remove_life(life)</tt>:
-removes some life from the player
+- <tt>game:get_life()</tt>:
+Returns the current level of life of the player.
+  - Return value (number): the current life
 
-- <tt>sol.game.get_max_life()</tt>:
-returns the maximum level of life of the player
+- <tt>game:set_life(life)</tt>:
+Sets the level of life of the player.
+A negative value will be replaced by zero. A value greater than
+than the maximum level of life will be replaced by the maximum value.
+  - <tt>life</tt> (number): number of life points to set
 
-- <tt>sol.game.add_max_life(life)</tt>:
-increases the maximum level of life of the player
+- <tt>game:add_life(life)</tt>:
+Adds some life to the player.
+  - <tt>life</tt> (number): number of life points to add
 
-- <tt>sol.game.get_money()</tt>:
-returns the amount of money of the player
+- <tt>game:remove_life(life)</tt>:
+Removes some life from the player.
+  - <tt>life</tt> (number): number of life points to remove
 
-- <tt>sol.game.add_money(money)</tt>:
-adds some money to the player
+- <tt>game:get_max_life()</tt>:
+Returns the maximum level of life of the player.
+  - Return value (number): the maximum number of life points
 
-- <tt>sol.game.remove_money(money)</tt>:
-removes some money from the player
+- <tt>game:set_max_life(life)</tt>:
+Sets the maximum level of life of the player.
+  - <tt>life</tt> (number): maximum number of life points to set
 
-- <tt>sol.game.get_magic()</tt>:
-returns the current number of magic points
+- <tt>game:add_max_life(life)</tt>:
+Increases the maximum level of life of the player.
+  - <tt>life</tt> (number): maximum number of life points to set
 
-- <tt>sol.game.add_magic(magic)</tt>:
-adds some magic points
+- <tt>game:get_money()</tt>:
+Returns the amount of money of the player.
+  - Return value (number): the current amount of money
 
-- <tt>sol.game.remove_magic(magic)</tt>:
-removes some magic points
+- <tt>game:set_money(money)</tt>:
+Sets the amount of money of the player.
+  - <tt>money</tt> (number): the amount of money to set
 
-- <tt>sol.game.start_decreasing_magic(delay)</tt>:
-starts removing magic points continuously
+- <tt>game:add_money(money)</tt>:
+Adds some money to the player.
+  - <tt>money</tt> (number): amount of money to add
 
-- <tt>sol.game.stop_decreasing_magic()</tt>:
-stops removing magic points continuously
+- <tt>game:remove_money(money)</tt>:
+Removes some money from the player.
+  - <tt>money</tt> (number): amount of money to remove
 
-- <tt>sol.game.get_max_magic()</tt>:
-returns the maximum number of magic points
+- <tt>game:get_magic()</tt>:
+Returns the current number of magic points.
+  - Return value (number): the current number of magic points
 
-- <tt>sol.game.set_max_magic(magic)</tt>:
-sets the maximum number of magic points
+- <tt>game:set_magic(magic)</tt>:
+Sets the amount of magic points of the player.
+  - <tt>magic</tt> (number): the number of magic points to set
 
-- <tt>sol.game.has_ability(ability_name)</tt>:
-Returns whether the player has an ability. Equivalent to
-<tt>sol.game.get_ability(ability_name) > 0</tt>.
+- <tt>game:add_magic(magic)</tt>:
+Adds some magic points to the player.
+  - <tt>magic</tt> (number): number of magic points to add
 
-- <tt>sol.game.get_ability(ability_name)</tt>:
-returns the level of an ability
+- <tt>game:remove_magic(magic)</tt>:
+Removes some magic points from the player.
+  - <tt>magic</tt> (number): number of magic points to remove
 
-- <tt>sol.game.set_ability(ability_name, level)</tt>:
-sets the level of an ability
+- <tt>game:start_decreasing_magic(delay)</tt>:
+Starts removing magic points continuously.
+Only possible when the game is running.
+  - <tt>delay</tt> (number): delay in milliseconds between each loss of 1
+    point
 
-- <tt>sol.game.has_item(item_name)</tt>:
-Returns whether the player has an item. Equivalent to
-<tt>sol.game.get_item(item_name) > 0</tt>.
+- <tt>game:stop_decreasing_magic()</tt>:
+Stops removing magic points continuously.
+Only possible when the game is running.
 
-- <tt>sol.game.get_item(item_name)</tt>:
-returns the possession state of an item
+- <tt>game:get_max_magic()</tt>:
+Returns the maximum number of magic points.
+  - Return value (number): the maximum number of magic points
 
-- <tt>sol.game.set_item(item_name, variant)</tt>:
-sets the possession state of an item
+- <tt>game:set_max_magic(magic)</tt>:
+Sets the maximum number of magic points.
+  - <tt>magic</tt> (number): the maximum number of magic points to set
 
-- <tt>sol.game.has_item_amount(item_name, amount)</tt>:
-Returns whether the player has at least the specified amount of an item
-(the item must have a counter). Equivalent to
-<tt>sol.game.get_item_amount(item_name) > 0</tt>.
+- <tt>game:has_ability(ability_name)</tt>:
+Returns whether the player has an ability.
+Equivalent to <tt>game:get_ability(ability_name) > 0</tt>.
+  - <tt>ability_name</tt>: name of the ability to get (must be a valid
+    built-in ability name)
+  - Return value (boolean): true if the player has this ability
 
-- <tt>sol.game.get_item_amount(item_name)</tt>:
-Returns the amount the player has for an item
-(the item must have a counter).
+- <tt>game:get_ability(ability_name)</tt>:
+Returns the level of an ability.
+  - <tt>ability_name</tt> (string): name of the ability to get (must be a valid
+    built-in ability name)
+  - Return value (number): level of this ability
+    (0 means not having this ability yet)
 
-- <tt>sol.game.add_item_amount(item_name, amount)</tt>:
-Adds an amount of the specified item (the item
-must have a counter).
+- <tt>game:set_ability(ability_name, level)</tt>:
+Sets the level of an ability.
+  - <tt>ability_name</tt> (string): name of the ability to set (must be a valid
+    built-in ability name)
+  - <tt>level</tt> (number): level of this ability to set
+    (0 removes the ability)
 
-- <tt>sol.game.remove_item_amount(item_name, amount)</tt>:
-Removes an amount of the specified item (the item
-must have a counter).
+- <tt>game:has_item(item_name)</tt>:
+Returns whether the player has an item.
+Equivalent to <tt>game:get_item(item_name) > 0</tt>.
+  - <tt>item_name</tt> (string): name of the item to get (must be an item
+    defined in <tt>items.dat</tt>)
+  - Return value (boolean): true if the player has this item
 
-- <tt>sol.game.is_dungeon_finished(dungeon)</tt>:
-returns whether the specified dungeon is finished
+- <tt>game:get_item(item_name)</tt>:
+Returns the possession state (variant) of an item.
+  - <tt>item_name</tt> (string): name of the item to get (must be an item
+    defined in <tt>items.dat</tt>)
+  - Return value (number): the variant of this item possessed by the player
+    (0 means not having this item yet, 1 means the first variant, etc.)
 
-- <tt>sol.game.set_dungeon_finished(dungeon)</tt>:
-sets the specified dungeon as finished
+- <tt>game:set_item(item_name, variant)</tt>:
+Sets the possession state (variant) of an item.
+  - <tt>item_name</tt> (string): name of the item to set (must be an item
+    defined in <tt>items.dat</tt>)
+  - <tt>variant</tt> (number): the variant of this item possessed by the player
+    (0 means not having this item yet, 1 means the first variant, etc.)
+
+- <tt>game:has_item_amount(item_name, amount)</tt>:
+Returns whether the player has at least the specified amount of an item.
+The item must have a counter (i.e. a notion of amount).
+Equivalent to <tt>game:get_item_amount(item_name) > 0</tt>.
+  - <tt>item_name</tt> (string): name of the item to get (the item must
+    have a counter)
+  - <tt>amount</tt> (number): the amount to check
+  - Return value (boolean): true if the player has at least this amount of the
+    item
+
+- <tt>game:get_item_amount(item_name)</tt>:
+Returns the amount the player has for an item.
+The item must have a counter (i.e. a notion of amount).
+  - <tt>item_name</tt> (string): name of the item to get (the item must
+    have a counter)
+  - Return value (number): the amount of this item
+
+- <tt>game:add_item_amount(item_name, amount)</tt>:
+Adds an amount of the specified item.
+The item must have a counter (i.e. a notion of amount).
+  - <tt>item_name</tt> (string): name of the item to get (the item must
+    have a counter)
+  - <tt>amount</tt> (number): the amount to add
+
+- <tt>game:remove_item_amount(item_name, amount)</tt>:
+Removes an amount of the specified item.
+The item must have a counter (i.e. a notion of amount).
+  - <tt>item_name</tt> (string): name of the item to get (the item must
+    have a counter)
+  - <tt>amount</tt> (number): the amount to remove
+
+- <tt>game:is_dungeon_finished(dungeon)</tt>:
+Returns whether the specified dungeon is finished.
+  - <tt>dungeon</tt> (number): id of the dungeon to get (the first one is 1)
+  - Return value (boolean): true if this dungeon is finished
+
+- <tt>game:set_dungeon_finished(dungeon)</tt>:
+Sets the specified dungeon as finished.
+  - <tt>dungeon</tt> (number): id of the dungeon to get (the first one is 1)
 
 @subsection sol.map Module <tt>sol.map</tt>
 

@@ -29,8 +29,8 @@ The APIs that are available to your script depend on the type of script.
 For now, the following APIs are implemented:
 - <tt>sol.main</tt>: basic functions available to all types of scripts, even
 outside a game.
-- <tt>sol.game</tt>: this module represents the current game. It provides
-functions to manage game information such as the savegame and the equipment.
+- <tt>sol.savegame</tt>: this module provides functions to manage savegames
+and the data saved (life, equipment, etc.)
 - <tt>sol.map</tt>: this module represents the current map.
 It provides functions to manage the entities placed on the map,
 including the hero.
@@ -95,18 +95,18 @@ Returns the distance in pixels between two points.
 - <tt>sol.main.get_angle(x1, y1, x2, y2)</tt>:
 Returns the angle in radians between the specified vector and the x axis.
 
-@subsection sol.game Module <tt>sol.game</tt>
+@subsection sol.savegame Module <tt>sol.savegame</tt>
 
 This module provides a datatype "game" that represents a savegame.
 This type provides methods to manage the game data.
 
-- <tt>sol.game.exists(file_name)</tt>:
+- <tt>sol.savegame.exists(file_name)</tt>:
 Returns whether the specified savegame file exists.
   - <tt>file_name</tt> (string): name of the file to test, relative to the
     savegames directory.
   - Return value (boolean): true if this savegame file exists
 
-- <tt>sol.game.load(file_name)</tt>:
+- <tt>sol.savegame.load(file_name)</tt>:
 Loads an existing savegame, or creates a new one if the file does not exist.
 This function does not start the game, it just loads the savegame file.
 Then you can access the data saved in the file.
@@ -114,6 +114,11 @@ To actually run the game, call the <tt>start()</tt> method.
   - <tt>file_name</tt> (string): name of the file to load or create, relative
     to the savegames directory
   - Return value (game): the loaded (or created) game
+
+- <tt>sol.savegame.delete(file_name)</tt>:
+Deletes a savegame file.
+  - <tt>file_name</tt> (string): name of the file to delete, relative
+    to the savegames directory
 
 - <tt>game:save()</tt>:
 Saves this game into its savegame file.

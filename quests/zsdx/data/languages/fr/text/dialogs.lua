@@ -1942,7 +1942,7 @@ un ennemi ou un
 obstacle.
 ]]
 }
------------------------
+--------------------
 
 -- 3 Bombes
 dialog{
@@ -1991,7 +1991,7 @@ des ennemis à
 distance.
 ]]
 }
------------------------
+--------------------
 
 -- 5 Flèches
 dialog{
@@ -2188,7 +2188,7 @@ Mais surveille ton
 compteur magique !
 ]]
 }
------------------------
+--------------------
 
 -- Lorsqu'on ouvre un coffre vide
 dialog{

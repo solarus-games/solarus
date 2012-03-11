@@ -2088,8 +2088,8 @@ dialog{
   id = "_treasure.rupee.5",
   icon = 90,
   text = [[
-You found 100 Rupees!
-Fantastic!
+You found 100
+Rupees! Fantastic!
 ]]
 }
 --------------------
@@ -5203,8 +5203,9 @@ dialog{
   skip = "all",
   text = [[
 I am sorry sir, but you
-are not allowed access
-to the dungeon cells.
+are not allowed to
+access to the dungeon
+cells.
 ]]
 }
 -----------------------
@@ -5229,11 +5230,10 @@ dialog{
 This castle once
 belonged to the Royal
 family.
-Nowadays, tourists
-from all around Hyrule
-make the trip to
-witness the beauty of
-the place!
+Nowadays, tourists from
+all around Hyrule make
+the trip to witness the
+beauty of the place!
 ]]
 }
 -----------------------

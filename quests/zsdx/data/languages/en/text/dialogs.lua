@@ -4734,6 +4734,7 @@ Mount Terror, faced
 every danger, and
 walked away unscathed.
 
+
 It is heroically so
 that I found this
 flower of extreme
@@ -5729,7 +5730,6 @@ you will witness my
 control over this
 kingdom...
 Ah ah ah ah ah ah ah!
-
 Now you, young and
 impetuous adventurer,
 and I shall meet again.

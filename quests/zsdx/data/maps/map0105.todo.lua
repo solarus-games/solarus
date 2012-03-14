@@ -99,7 +99,7 @@ function sol.map.on_opening_transition_finished(destination)
   end
 end
 
-function sol.map.on_update()
+function sol.map.on_updated()
 
   -- hidden enemies
   local x, y = hero:get_position()
@@ -287,7 +287,7 @@ function puzzle_a_switches:on_activated()
     for _, v in ipairs(to_change[index]) do
       local red_tile = sol.map.entity["puzzle_a_red_switch_" .. v]
       local green_tile = sol.map.entity["puzzle_a_green_switch_" .. v]
-      local on = sol.map.get():is_enabled()
+      local on = red_tile:is_enabled()
       green_tile:set_enabled(on)
       red_tile:set_enabled(not on)
     end
@@ -320,7 +320,7 @@ end
 -- Torches on this map interact with the map script
 -- because we don't want usual behavior from items/lamp.lua:
 -- we want a shorter delay and we want torches to enable the bridge
-function torches:on_interaction()
+function torches:on_interact()
   sol.map.dialog_start("torch.need_lamp")
 end
 

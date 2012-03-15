@@ -140,32 +140,27 @@ end
 -- Torches on this map interact with the map script
 -- because we don't want usual behavior from items/lamp.lua:
 -- we want a longer delay and special Ganon interaction 
-function event_npc_interaction(npc_name)
-
-  if string.find(npc_name, "^torch") then
-    sol.map.start_dialog("torch.need_lamp")
-  end
+function torches:on_interaction()
+  sol.map:start_dialog("torch.need_lamp")
 end
 
 -- Called when fire touches an NPC linked to this map
-function event_npc_collision_fire(npc_name)
+function torches:on_collision_fire()
 
-  if string.find(npc_name, "^torch") then
-    
-    local torch_sprite = sol.map.npc_get_sprite(npc_name)
+  local torch_sprite = self:get_sprite()
     if torch_sprite:get_animation() == "unlit" then
       -- temporarily light the torch up
       torch_sprite:set_animation("lit")
       check_torches()
-      sol.main.timer_start(function()
+      sol.timer.start(torches_delay, function()
         torch_sprite:set_animation("unlit")
-	if sol.map.switch_is_enabled("switch_1") then
-	  sol.map.tile_set_group_enabled("switch_floor", false)
-	  sol.map.switch_set_group_enabled("switch", false)
-	  sol.main.play_sound("door_closed")
+	if switch_1:is_enabled() then
+          floor_switch_tiles:set_enabled(false)
+          switches:set_enabled(false)
+	  sol.audio.play_sound("door_closed")
 	end
         check_torches()
-      end, torches_delay)
+      end)
     end
   end
 end
@@ -173,18 +168,18 @@ end
 function unlight_torches()
 
   for i = 1, 4 do
-    sol.map.npc_get_sprite("torch_" .. i):set_animation("unlit")
+    sol.map:get_entity("torch_" .. i):get_sprite():set_animation("unlit")
   end
-  sol.main.timer_stop_all()
+  sol.timer.stop_all()
 end
 
 function check_torches()
   
   local states = {
-    sol.map.npc_get_sprite("torch_1"):get_animation() == "lit",
-    sol.map.npc_get_sprite("torch_2"):get_animation() == "lit",
-    sol.map.npc_get_sprite("torch_3"):get_animation() == "lit",
-    sol.map.npc_get_sprite("torch_4"):get_animation() == "lit"
+    torch_1:get_sprite().get_animation() == "lit",
+    torch_2:get_sprite().get_animation() == "lit",
+    torch_3:get_sprite().get_animation() == "lit",
+    torch_4:get_sprite().get_animation() == "lit"
   }
   local on = {}
 
@@ -199,17 +194,14 @@ function check_torches()
     return
   end
 
-  --print("torches on:", #on)
-
   if #on == #states then
    -- all torches are on
     if torches_error then
-      sol.main.play_sound("wrong")
+      sol.audio.play_sound("wrong")
       torches_error = false
       torches_next = nil
       torches_nb_on = 0
       unlight_torches()
-      --print("wrong")
     else
       torches_solved()
       torches_next = on[1] % #states + 1
@@ -219,13 +211,10 @@ function check_torches()
     -- no torch is on
     torches_error = false
     torches_next = nil
-    --print("no torch is on")
 
   elseif #on == 1 then
-    --print("a first torch is on: ", on[1])
     torches_error = false
     torches_next = on[1] % #states + 1
-    --print("next should be ", torches_next)
       
   elseif not torches_error then
 
@@ -234,11 +223,8 @@ function check_torches()
       if states[torches_next] then
         -- it's the correct one
         torches_next = torches_next % #states + 1
-        --print("another torch is on, it's the correct one")
-	--print("next should be ", torches_next)
       else
 	torches_error = true
-        --print("another torch is on, it's a wrong one")
       end
     end
   end
@@ -251,22 +237,23 @@ function create_stone()
 
   -- we have to check the position of Ganon and the hero
   local x, y
-  local boss_x, boss_y = sol.map.enemy_get_position("boss")
+  local boss_x, boss_y = boss:get_position()
   if boss_x < 240 then
     x = 280
   else
     x = 200
   end
-  local hero_x, hero_y = sol.map.hero_get_position()
+  local hero_x, hero_y = hero:get_position()
   if hero_y < 240 then
     y = 285
   else
     y = 205
   end
 
-  sol.map.destructible_item_create("black_stone", x, y, 0, {
+  sol.map.create_destructible{
+    id = "black_stone", x = x, y = y, layer = 0,
     treasure_item = "_none",
-    destruction_callback = on_stone_destroyed})
+    destruction_callback = on_stone_destroyed}
   allow_stone_creation = false
 end
 
@@ -277,26 +264,26 @@ end
 
 function torches_solved()
 
-  if sol.map.tile_is_enabled("floor_down_1") then
+  if floor_down_1:is_enabled() then
     -- phase 1
     if allow_stone_creation then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       create_stone()
     end
   else
     -- phase 2
-    sol.main.play_sound("secret")
-    sol.main.play_sound("door_open")
-    sol.map.tile_set_group_enabled("switch_floor", true)
-    sol.map.switch_set_group_enabled("switch", true)
+    sol.audio.play_sound("secret")
+    sol.audio.play_sound("door_open")
+    floor_switch_tiles:set_enabled()
+    switches:set_enabled()
     for i = 1, 4 do
-      sol.map.switch_set_activated("switch_" .. i, false)
+      sol.map:get_entity("switch_" .. i):set_activated(false)
       bonuses_done[i] = nil
     end
   end
 end
 
-function event_switch_activated(switch_name)
+function switches:on_activated()
 
   -- deterministic verion: local index = tonumber(switch_name:match("^switch_([1-4])$"))
 
@@ -308,25 +295,26 @@ function event_switch_activated(switch_name)
 
   if index == 1 then
     -- kill small enemies
-    if sol.map.enemy_get_group_count("boss_") > 0 then
-      sol.main.play_sound("enemy_killed")
-      sol.map.enemy_remove_group("boss_")
+    local enemies = sol.map:find_all("boss_")
+    if #enemies > 0 then
+      sol.audio.play_sound("enemy_killed")
+      enemies:destroy()
     end
 
   elseif index == 2 then
     -- create the stone that makes Ganon vulnerable
     if allow_stone_creation then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       create_stone()
     end
 
   elseif index == 3 then
     -- create pickable items
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     create_pickables()
 
   else
-    sol.main.play_sound("wrong")
+    sol.audio.play_sound("wrong")
     create_bats()
   end
 end
@@ -352,7 +340,8 @@ function create_pickables()
       item_name = "fairy"
       variant = 1
     end
-    sol.map.pickable_item_create(item_name, variant, -1, v.x, v.y, 0)
+    sol.map:create_pickable{
+      item = item_name, variant = variant, x = v.x, y = v.y, layer = 0}
   end
 end
 
@@ -360,7 +349,9 @@ function create_bats()
 
   for i, v in ipairs(bats) do
     nb_bats_created = nb_bats_created + 1
-    sol.map.enemy_create("bat_" .. nb_bats_created, "fire_bat", 0, v.x, v.y)
+    sol.map:create_enemy{
+      id = "bat_" .. nb_bats_created,
+      breed = "fire_bat", x = v.x, y = v.y, layer = 0}
   end
 end
 

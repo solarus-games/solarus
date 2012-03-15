@@ -83,7 +83,7 @@ function self:on_immobilized()
     self:set_hurt_style("boss")
 
     -- make a protection
-    if #sol.map.find(self:get_id() .. "_bats_") < 9 then
+    if #sol.map:find(self:get_id() .. "_bats_") < 9 then
       attacking = false
       throw_bats()
       cancel_next_attack = true -- otherwise two attacks would be scheduled
@@ -94,7 +94,7 @@ end
 function jump()
 
   local x, y = self:get_position()
-  local hero_x, hero_y = sol.map.get_hero():get_position()
+  local hero_x, hero_y = sol.map:get_hero():get_position()
   local angle = sol.main.get_angle(hero_x, hero_y, x, y)
   local m = sol.movement.target_movement_create{
     speed = 128, target_x = 240, target_y = 245}
@@ -158,10 +158,10 @@ function destroy_floor(prefix, first, last)
       sol.audio.play_sound("stone")
     end
  
-    sol.map.entity[prefix .. index]:set_enabled(false)
+    sol.map:get_entity(prefix .. index):set_enabled(false)
 
     if index ~= last then
-      sol.timer.create(delay, repeat_change)
+      sol.timer.start(delay, repeat_change)
     end
     index = index + 1
   end
@@ -207,7 +207,7 @@ function throw_flames()
     self:create_son{id = son_id, breed = "red_flame", dy = -24}
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      sol.timer.create(150, repeat_throw_flame)
+      sol.timer.start(150, repeat_throw_flame)
     else
       attacking = false
       attack_scheduled = false
@@ -249,7 +249,7 @@ function throw_bats()
 
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      sol.timer.create(233, repeat_throw_bat)
+      sol.timer.start(233, repeat_throw_bat)
     else
       attacking = false
       attack_scheduled = false
@@ -266,7 +266,7 @@ end
 
 function schedule_attack()
 
-  sol.timer.create(math.random(3000, 6000), attack)
+  sol.timer.start(math.random(3000, 6000), attack)
   attack_scheduled = true
 end
 

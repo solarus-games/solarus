@@ -40,7 +40,7 @@ function self:on_obtaining(variant, savegame_variable)
       or sol.game:has_item("bottle_4") then
 
     -- the player has a bottle: start the dialog
-    sol.map.dialog_start("found_fairy")
+    sol.map:start_dialog("found_fairy")
 
   else
     -- the player has no bottle: just restore 7 hearts
@@ -48,7 +48,7 @@ function self:on_obtaining(variant, savegame_variable)
   end
 end
 
-function sol.language.dialog["found_fairy"].on_finished(answer)
+function sol.language.get_dialog("found_fairy").on_finished(answer)
 
   if answer ~= 1 then
     -- restore 7 hearts
@@ -58,7 +58,7 @@ function sol.language.dialog["found_fairy"].on_finished(answer)
     local first_empty_bottle = get_first_empty_bottle()
     if first_empty_bottle == nil then
       -- no empty bottle
-      sol.map.dialog_start("found_fairy.no_empty_bottle")
+      sol.map:start_dialog("found_fairy.no_empty_bottle")
       sol.audio.play_sound("wrong")
     else
       -- okay, empty bottle 
@@ -68,13 +68,13 @@ function sol.language.dialog["found_fairy"].on_finished(answer)
   end
 end
 
-function sol.language.dialog["found_fairy.no_empty_bottle"].on_finished(answer)
+function sol.language.get_dialog("found_fairy.no_empty_bottle").on_finished(answer)
   -- after the 'no empty bottle' message, restore 7 hearts
   sol.game:add_life(7 * 4)
 end
 
 -- Returns the item name of an empty bottle or nil if there is no empty bottle
-function self:get_first_empty_bottle()
+function get_first_empty_bottle()
 
   local result = ""
 

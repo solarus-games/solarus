@@ -1,32 +1,32 @@
 -- Dungeon 9 1F
 
 -- puzzle A
-local puzzle_a_switches = sol.map.find_all("puzzle_a_switch")
-local puzzle_a_red_tiles = sol.map.find_all("puzzle_a_red_tile")
-local puzzle_a_green_tiles = sol.map.find_all("puzzle_a_green_tile")
+local puzzle_a_switches = sol.map:find_all("puzzle_a_switch")
+local puzzle_a_red_tiles = sol.map:find_all("puzzle_a_red_tile")
+local puzzle_a_green_tiles = sol.map:find_all("puzzle_a_green_tile")
 
 -- puzzle B
-local puzzle_b_switches = sol.map.find_all("puzzle_b_switch")
+local puzzle_b_switches = sol.map:find_all("puzzle_b_switch")
 local puzzle_b_next = nil -- index of the next correct switch (nil = error or not started)
 local puzzle_b_nb_activated = 0
-local close_puzzle_b_door_sensors = sol.map.find_all("close_puzzle_b_door_sensor")
+local close_puzzle_b_door_sensors = sol.map:find_all("close_puzzle_b_door_sensor")
 
 -- bridges that appear when a torch is lit 
 local nb_torches_lit = 0
-local bridge_tiles = sol.map.find_all("bridge_tile")
+local bridge_tiles = sol.map:find_all("bridge_tile")
 
 -- other useful lists of entities
-local torches = sol.map.find_all("torch")
-local nw_switches = sol.map.find_all("nw_switch")
-local s_door_enemies = sol.map.find_all("s_door_enemy")
-local e_room_enemies = sol.map.find_all("e_room_enemy")
-local c_room_switches = sol.map.find_all("c_room_switch")
-local close_c_door_sensors = sol.map.find_all("close_c_doors_sensor")
-local reset_solid_ground_sensors = sol.map.find_all("reset_solid_ground_sensor")
-local hidden_enemies = sol.map.create_list{hidden_enemy_1, hidden_enemy_2}
--- same result as: local hidden_enemies = sol.map.find_all("hidden_enemy")
+local torches = sol.map:find_all("torch")
+local nw_switches = sol.map:find_all("nw_switch")
+local s_door_enemies = sol.map:find_all("s_door_enemy")
+local e_room_enemies = sol.map:find_all("e_room_enemy")
+local c_room_switches = sol.map:find_all("c_room_switch")
+local close_c_door_sensors = sol.map:find_all("close_c_doors_sensor")
+local reset_solid_ground_sensors = sol.map:find_all("reset_solid_ground_sensor")
+local hidden_enemies = sol.map:create_list{hidden_enemy_1, hidden_enemy_2}
+-- same result as: local hidden_enemies = sol.map:find_all("hidden_enemy")
 
-function sol.map.on_started(destination)
+function sol.map:on_started(destination)
 
   -- hidden Gibdos and chest
   hidden_enemies:set_enabled(false)
@@ -91,15 +91,15 @@ function sol.map.on_started(destination)
   end
 end
 
-function sol.map.on_opening_transition_finished(destination)
+function sol.map:on_opening_transition_finished(destination)
 
   -- show the welcome message
   if destination == from_outside then
-    sol.map.dialog_start("dungeon_9.welcome")
+    sol.map:start_dialog("dungeon_9.welcome")
   end
 end
 
-function sol.map.on_updated()
+function sol.map:on_updated()
 
   -- hidden enemies
   local x, y = hero:get_position()
@@ -118,9 +118,9 @@ end
 -- hidden enemies
 function hidden_enemies:on_killed()
 
-  if #sol.map.find("hidden_enemy") == 0
+  if #sol.map:find("hidden_enemy") == 0
       and not hidden_enemy_chest:is_enabled() then
-    sol.map.camera_move(1128, 2040, 250, function()
+    sol.map:camera_move(1128, 2040, 250, function()
       sol.audio.play_sound("chest_appears")
       hidden_enemy_chest:set_enabled()
     end)
@@ -130,9 +130,9 @@ end
 -- south door
 function s_door_enemies:on_killed()
 
-  if #sol.map.find("s_door_enemy") == 0
+  if #sol.map:find("s_door_enemy") == 0
       and not s_door:is_open() then
-    sol.map.camera_move(1768, 1800, 250, function()
+    sol.map:camera_move(1768, 1800, 250, function()
       sol.audio.play_sound("secret")
       s_door:open()
     end)
@@ -142,9 +142,9 @@ end
 -- east enemies room
 function e_room_enemies:on_killed()
 
-  if #sol.map.find("e_room_enemy") == 0
+  if #sol.map:find("e_room_enemy") == 0
       and not e_room_chest:is_enabled() then
-    sol.map.camera_move(2136, 1120, 250, function()
+    sol.map:camera_move(2136, 1120, 250, function()
       sol.audio.play_sound("chest_appears")
       e_room_chest:set_enabled()
     end)
@@ -179,20 +179,20 @@ function close_w_room_sensor:on_collision_hero()
     w_room_door:close()
 
     function w_room_enemy_killed()
-      if #sol.map.find("w_room_enemy") == 0 then
+      if #sol.map:find("w_room_enemy") == 0 then
 	sol.audio.play_sound("chest_appears")
 	w_room_chest:set_enabled()
 	w_room_door:open()
       end
     end
 
-    sol.map.create_enemy{
+    sol.map:create_enemy{
       id = "w_room_enemy_1", x = 752, y = 877, layer = 1,
       breed = "blue_pig_soldier", on_killed = w_room_enemy_killed }
-    sol.map.create_enemy{
+    sol.map:create_enemy{
       id = "w_room_enemy_2", x = 808, y = 885, layer = 1,
       breed = "red_pig_soldier", on_killed = w_room_enemy_killed }
-    sol.map.create_enemy{
+    sol.map:create_enemy{
       id = "w_room_enemy_3", x = 864, y = 877, layer = 1,
       breed = "blue_pig_soldier", on_killed = w_room_enemy_killed }
   end
@@ -267,7 +267,7 @@ end
 function puzzle_b_door_switch:on_activated()
 
   if not puzzle_b_door:is_open() then
-    sol.map.camera_move(808, 1544, 250, function()
+    sol.map:camera_move(808, 1544, 250, function()
       sol.audio.play_sound("secret")
       puzzle_b_door:open()
       puzzle_b_door_switch:set_activated()
@@ -285,8 +285,8 @@ function puzzle_a_switches:on_activated()
 
     -- invert the neighboors
     for _, v in ipairs(to_change[index]) do
-      local red_tile = sol.map.entity["puzzle_a_red_switch_" .. v]
-      local green_tile = sol.map.entity["puzzle_a_green_switch_" .. v]
+      local red_tile = sol.map:get("puzzle_a_red_switch_" .. v)
+      local green_tile = sol.map:get("puzzle_a_green_switch_" .. v)
       local on = red_tile:is_enabled()
       green_tile:set_enabled(on)
       red_tile:set_enabled(not on)
@@ -295,7 +295,7 @@ function puzzle_a_switches:on_activated()
     -- check the success
     local success = true
     for i = 1, 6 do
-      local red_tile = sol.map.entity["puzzle_a_red_switch_" .. i]
+      local red_tile = sol.map:get("puzzle_a_red_switch_" .. i)
       if red_tile:is_enabled() then
         success = false
         break
@@ -303,7 +303,7 @@ function puzzle_a_switches:on_activated()
     end
     if success then
       puzzle_a_switches:set_enabled(false)
-      sol.map.camera_move(896, 1896, 250, function()
+      sol.map:camera_move(896, 1896, 250, function()
         sol.audio.play_sound("chest_appears")
         puzzle_a_chest:set_enabled()
         sol.game:set_boolean(802, true)
@@ -321,7 +321,7 @@ end
 -- because we don't want usual behavior from items/lamp.lua:
 -- we want a shorter delay and we want torches to enable the bridge
 function torches:on_interact()
-  sol.map.dialog_start("torch.need_lamp")
+  sol.map:start_dialog("torch.need_lamp")
 end
 
 -- Called when fire touches an NPC linked to this map
@@ -335,7 +335,7 @@ function torches:on_collision_fire()
       bridge_tiles:set_enabled()
     end
     nb_torches_lit = nb_torches_lit + 1
-    sol.timer.create(4000, function()
+    sol.timer.start(4000, function()
       torch_sprite:set_animation("unlit")
       nb_torches_lit = nb_torches_lit - 1
       if nb_torches_lit == 0 then

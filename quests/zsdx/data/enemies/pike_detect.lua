@@ -103,7 +103,7 @@ function go_back()
   elseif state == "going_back" then
 
     state = "paused"
-    sol.main.timer_start(unpause, 500)
+    sol.timer.start(500, unpause)
   end
 end
 

@@ -39,7 +39,7 @@ function event_npc_interaction_item(npc_name, item_name, variant)
     sol.audio.play_sound("item_in_water")
     frozen_door_sprite:set_animation("disappearing")
     frozen_door_opposite_sprite:set_animation("disappearing")
-    sol.main.timer_start(timer_frozen_door, 800)
+    sol.timer.start(800, timer_frozen_door)
     sol.game.set_item(item_name, 1) -- make the bottle empty
     return true
   end

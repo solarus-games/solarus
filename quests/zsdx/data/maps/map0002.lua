@@ -227,7 +227,7 @@ function event_dialog_finished(dialog_id, answer)
     end
 
   elseif dialog_id == "rupee_house.game_3.go" then 
-    sol.main.timer_start(game_3_timer, 8000, true);
+    sol.timer.start(8000, true, game_3_timer)
     sol.map.sensor_set_enabled("game_3_sensor", true);
 
   -- stop game 3 when the player founds the piece of heart
@@ -319,7 +319,7 @@ function event_update()
 	  sol.map.hero_unfreeze()
 	else
 	  playing_game_2 = false
-	  sol.main.timer_start(game_2_timer, 500)
+	  sol.timer.start(500, game_2_timer)
 	end
       end
     end

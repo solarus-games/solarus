@@ -17,7 +17,7 @@ end
 function event_restart()
 
   sol.enemy.set_can_attack(false)
-  sol.main.timer_start(function()
+  sol.timer.start(1000, function()
     local sprite = sol.enemy.get_sprite()
     sprite:set_animation("disappearing")
     sol.audio.play_sound("ice")
@@ -32,7 +32,7 @@ function event_restart()
       local x, y, layer = sol.enemy.get_position()
       sol.map.destructible_item_create("black_stone", x, y, layer)
     end
-  end, 1000)
+  end)
 end
 
 function event_sprite_animation_finished(sprite, animation)

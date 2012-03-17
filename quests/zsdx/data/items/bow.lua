@@ -3,7 +3,7 @@ function event_use()
   if sol.item.get_amount() == 0 then
     sol.audio.play_sound("wrong")
   else
-    sol.main.timer_start(remove_arrow, 300)
+    sol.timer.start(300, remove_arrow)
     sol.map.hero_start_bow()
   end
   sol.item.set_finished()

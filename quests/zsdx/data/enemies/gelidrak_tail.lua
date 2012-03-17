@@ -37,12 +37,12 @@ function event_restart()
     sol.enemy.start_movement(m)
   else
     sol.enemy.stop_movement()
-    sol.main.timer_start(function()
+    sol.timer.start(retracted_delay, function()
       local x, y = sol.map.enemy_get_position(sol.enemy.get_father())
       local m = sol.movement.target_movement_create(48, x, y - 112)
       sol.enemy.start_movement(m)
       sol.enemy.send_message(sol.enemy.get_father(), "recovering")
-    end, retracted_delay)
+    end)
   end
 end
 

@@ -40,13 +40,13 @@ function event_restart()
 
   if not finished then
     sprite:fade(1)
-    sol.main.timer_start(hide, 700)
+    sol.timer.start(700, hide)
   else
     sprite:set_animation("hurt")
     sol.map.hero_freeze()
-    sol.main.timer_start(end_dialog, 500)
-    sol.main.timer_start(fade_out, 1000)
-    sol.main.timer_start(escape, 1500)
+    sol.timer.start(500, end_dialog)
+    sol.timer.start(1000, fade_out)
+    sol.timer.start(1500, escape)
   end
 end
 
@@ -54,7 +54,7 @@ function hide()
 
   vulnerable = false
   sol.enemy.set_position(-100, -100)
-  sol.main.timer_start(unhide, 500)
+  sol.timer.start(500, unhide)
 end
 
 function unhide()
@@ -64,14 +64,14 @@ function unhide()
   local sprite = sol.enemy.get_sprite()
   sprite:set_direction(position.direction4)
   sprite:fade(0)
-  sol.main.timer_start(fire_step_1, 1000)
+  sol.timer.start(1000, fire_step_1)
 end
 
 function fire_step_1()
 
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("arms_up")
-  sol.main.timer_start(fire_step_2, 1000)
+  sol.timer.start(1000, fire_step_2)
 end
 
 function fire_step_2()
@@ -83,7 +83,7 @@ function fire_step_2()
     sprite:set_animation("preparing_red_fireball")
   end
   sol.audio.play_sound("boss_charge")
-  sol.main.timer_start(fire_step_3, 1500)
+  sol.timer.start(1500, fire_step_3)
 end
 
 function fire_step_3()
@@ -102,7 +102,7 @@ function fire_step_3()
   sol.audio.play_sound(sound)
 
   vulnerable = true
-  sol.main.timer_start(sol.enemy.restart, 700)
+  sol.timer.start(700, sol.enemy.restart)
 
   function throw_fire()
 
@@ -113,8 +113,8 @@ function fire_step_3()
 
   throw_fire()
   if sol.enemy.get_life() <= initial_life / 2 then
-    sol.main.timer_start(throw_fire, 200)
-    sol.main.timer_start(throw_fire, 400)
+    sol.timer.start(200, throw_fire)
+    sol.timer.start(400, throw_fire)
   end
 end
 

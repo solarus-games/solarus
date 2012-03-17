@@ -96,7 +96,7 @@ function check_hero()
   elseif not near_hero and going_hero then
     go_random()
   end
-  sol.main.timer_start(check_hero, 1000)
+  sol.timer.start(1000, check_hero)
 end
 
 function event_movement_changed()

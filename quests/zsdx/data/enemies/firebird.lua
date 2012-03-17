@@ -33,7 +33,7 @@ function event_restart()
   local m = sol.movement.random_movement_create(64)
   sol.enemy.start_movement(m)
   sol.main.timer_stop_all()
-  sol.main.timer_start(prepare_flames, math.random(2000, 6000))
+  sol.timer.start(math.random(2000, 6000), prepare_flames)
 end
 
 function prepare_flames()
@@ -50,12 +50,12 @@ function prepare_flames()
     sol.enemy.create_son(son_name, "red_flame", 0, -16, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      sol.main.timer_start(repeat_throw_flame, 200)
+      sol.timer.start(200, repeat_throw_flame)
     end
   end
   repeat_throw_flame()
 
-  sol.main.timer_start(prepare_flames, math.random(4000, 6000))
+  sol.timer.start(math.random(4000, 6000), prepare_flames)
 end
 
 function event_hurt(attack, life_lost)

@@ -31,11 +31,11 @@ function event_restart()
   elseif immobilized then
     sprite:set_animation("hurt_long")
     sol.main.timer_stop_all()
-    sol.main.timer_start(disappear, 10000)
+    sol.timer.start(10000, disappear)
     sol.enemy.stop_movement()
     sol.enemy.set_can_attack(false)
   else
-    sol.main.timer_start(go, 1000)
+    sol.timer.start(1000, go)
     sol.enemy.set_can_attack(true)
   end
 end

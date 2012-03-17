@@ -167,7 +167,7 @@ function destroy_floor(prefix, first, last)
     sol.map.tile_set_enabled(prefix .. index, false)
 
     if index ~= last then
-      sol.main.timer_start(repeat_change, delay)
+      sol.timer.start(delay, repeat_change)
     end
     index = index + 1
   end
@@ -217,7 +217,7 @@ function throw_flames()
     sol.enemy.create_son(son_name, "red_flame", 0, -24, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      sol.main.timer_start(repeat_throw_flame, 150)
+      sol.timer.start(150, repeat_throw_flame)
     else
       attacking = false
       attack_scheduled = false
@@ -261,7 +261,7 @@ function throw_bats()
 
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      sol.main.timer_start(repeat_throw_bat, 233)
+      sol.timer.start(233, repeat_throw_bat)
     else
       attacking = false
       attack_scheduled = false
@@ -278,7 +278,7 @@ end
 
 function schedule_attack()
 
-  sol.main.timer_start(attack, math.random(3000, 6000))
+  sol.timer.start(math.random(3000, 6000), attack)
   attack_scheduled = true
 end
 

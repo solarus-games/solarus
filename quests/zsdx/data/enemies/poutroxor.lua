@@ -34,12 +34,12 @@ function event_restart()
     local m = sol.movement.random_movement_create(32)
     sol.enemy.start_movement(m)
     sol.main.timer_stop_all()
-    sol.main.timer_start(skeleton_attack, math.random(2000, 3000))
+    sol.timer.start(math.random(2000, 3000), skeleton_attack)
   else
     local m = sol.movement.random_movement_create(80)
     sol.enemy.start_movement(m)
     sol.main.timer_stop_all()
-    sol.main.timer_start(big_attack, math.random(3000, 5000))
+    sol.timer.start(math.random(3000, 5000), big_attack)
   end
 end
 
@@ -48,7 +48,7 @@ function skeleton_attack()
 
   skeleton:set_animation("attack")
   sol.audio.play_sound("ice")
-  sol.main.timer_start(function()
+  sol.timer.start(500, function()
     skeleton:set_animation("walking")
     nb_flames_created = nb_flames_created + 1
     local son_name = sol.enemy.get_name() .. "_son_" .. nb_flames_created
@@ -57,8 +57,8 @@ function skeleton_attack()
     local hero_x, hero_y = sol.map.hero_get_position()
     local angle = sol.main.get_angle(x, y, hero_x, hero_y)
     sol.enemy.send_message(son_name, angle)
-    sol.main.timer_start(skeleton_attack, math.random(1000, 3000))
-  end, 500)
+    sol.timer.start(math.random(1000, 3000), skeleton_attack)
+  end)
 end
 
 function event_hurt(attack, life_lost)
@@ -85,7 +85,7 @@ function big_attack()
   sol.enemy.stop_movement()
   head:set_animation("attack")
   sol.audio.play_sound("lamp")
-  sol.main.timer_start(repeat_flame, 500)
+  sol.timer.start(500, repeat_flame)
 end
 
 function repeat_flame()
@@ -97,9 +97,9 @@ function repeat_flame()
     sol.enemy.create_son(son_name, "blue_flame", 0, 16)
     sol.enemy.send_message(son_name, tostring(angle))
     sol.audio.play_sound("lamp")
-    sol.main.timer_start(repeat_flame, 150)
+    sol.timer.start(150, repeat_flame)
   else
-    sol.main.timer_start(sol.enemy.restart, 500)
+    sol.timer.start(500, sol.enemy.restart)
   end
 end
 

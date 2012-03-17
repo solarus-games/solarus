@@ -113,10 +113,10 @@ function event_hero_on_sensor(sensor_name)
       sol.map.sensor_set_group_enabled("boss_floor_sensor", false)
       boss_restore_floor(true)
       boss_change_floor(1, 92, 1, false)
-      sol.main.timer_start(function()
+      sol.timer.start(10000, function()
         sol.map.sensor_set_group_enabled("boss_floor_sensor", true)
 	boss_change_floor(92, 1, -1, true)
-      end, 10000)
+      end)
     end
 
   elseif sensor_name == "boss_floor_sensor_2" then
@@ -126,10 +126,10 @@ function event_hero_on_sensor(sensor_name)
       sol.map.sensor_set_group_enabled("boss_floor_sensor", false)
       boss_restore_floor(true)
       boss_change_floor(92, 1, -1, false)
-      sol.main.timer_start(function()
+      sol.timer.start(10000, function()
         sol.map.sensor_set_group_enabled("boss_floor_sensor", true)
 	boss_change_floor(1, 92, 1, true)
-      end, 10000)
+      end)
     end
   end
 end
@@ -144,7 +144,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.main.timer_start(open_final_room, 9000)
+    sol.timer.start(9000, open_final_room)
     sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
@@ -189,7 +189,7 @@ function boss_change_floor(first, last, inc, enable)
     end
 
     if index ~= last then
-      sol.main.timer_start(repeat_change, delay)
+      sol.timer.start(delay, repeat_change)
     end
     index = index + inc
   end

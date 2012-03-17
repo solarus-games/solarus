@@ -44,9 +44,9 @@ function go_random()
   sprite:set_direction(rand4 - 1)
 
   sol.main.timer_stop_all()
-  sol.main.timer_start(function()
+  sol.timer.start(300 + math.random(1500), function()
     sprite:set_animation("bite")
-  end, 300 + math.random(1500))
+  end)
 end
 
 function event_sprite_animation_finished(sprite, animation)

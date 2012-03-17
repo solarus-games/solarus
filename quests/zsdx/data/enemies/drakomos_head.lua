@@ -32,14 +32,13 @@ function event_restart()
   sol.main.timer_stop_all()
 
   nb_fire_created = 0
-  sol.main.timer_start(function()
-      sol.enemy.stop_movement()
-      local sprite = sol.enemy.get_sprite()
-      sprite:set_animation("preparing_fire")
-      sol.audio.play_sound("lamp")
-      sol.main.timer_start(repeat_fire, 500)
-    end,
-    2000 + math.random(8000))
+  sol.timer.start(2000 + math.random(8000), function()
+    sol.enemy.stop_movement()
+    local sprite = sol.enemy.get_sprite()
+    sprite:set_animation("preparing_fire")
+    sol.audio.play_sound("lamp")
+    sol.timer.start(500, repeat_fire)
+  end)
 end
 
 function event_hurt(attack, life_lost)
@@ -67,9 +66,9 @@ function repeat_fire()
     sol.enemy.create_son(son_name, "fireball_simple", 0, 16)
     sol.enemy.send_message(son_name, tostring(angle))
     sol.audio.play_sound("lamp")
-    sol.main.timer_start(repeat_fire, 150)
+    sol.timer.start(150, repeat_fire)
   else
-    sol.main.timer_start(sol.enemy.restart, 500)
+    sol.timer.start(500, sol.enemy.restart)
   end
 end
 

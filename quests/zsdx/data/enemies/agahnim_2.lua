@@ -55,7 +55,7 @@ function event_restart()
   local sprite = sol.enemy.get_sprite()
   sprite:set_ignore_suspend(false)
   sprite:fade(1)
-  sol.main.timer_start(hide, 700)
+  sol.timer.start(700, hide)
 end
 
 function event_update()
@@ -79,7 +79,7 @@ function hide()
   -- disappear for a while
   vulnerable = false
   sol.enemy.set_position(-100, -100)
-  sol.main.timer_start(unhide, 500)
+  sol.timer.start(500, unhide)
 end
 
 function unhide()
@@ -90,7 +90,7 @@ function unhide()
   local sprite = sol.enemy.get_sprite()
   sprite:set_direction(get_direction4_to_hero())
   sprite:fade(0)
-  sol.main.timer_start(fire_step_1, 1000)
+  sol.timer.start(1000, fire_step_1)
 end
 
 function fire_step_1()
@@ -98,7 +98,7 @@ function fire_step_1()
   -- before preparing a fireball
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("arms_up")
-  sol.main.timer_start(fire_step_2, 1000)
+  sol.timer.start(1000, fire_step_2)
   sol.enemy.set_can_attack(true)
 end
 
@@ -127,7 +127,7 @@ function fire_step_2()
     next_fireball_breed = "red_fireball_triple"
   end
   sol.audio.play_sound("boss_charge")
-  sol.main.timer_start(fire_step_3, 1500)
+  sol.timer.start(1500, fire_step_3)
 end
 
 function fire_step_3()
@@ -144,7 +144,7 @@ function fire_step_3()
   else
     delay = 3000 -- red fireball: stay longer to play ping-pong
   end
-  sol.main.timer_start(sol.enemy.restart, delay)
+  sol.timer.start(delay, sol.enemy.restart)
 
   function throw_fire()
     nb_sons_created = nb_sons_created + 1
@@ -157,11 +157,11 @@ function fire_step_3()
   -- shoot more fireballs if the life becomes short
   local life = sol.enemy.get_life()
   if life <= initial_life / 2 then
-    sol.main.timer_start(throw_fire, 200)
-    sol.main.timer_start(throw_fire, 400)
+    sol.timer.start(200, throw_fire)
+    sol.timer.start(400, throw_fire)
     if life <= initial_life / 4 then
-      sol.main.timer_start(throw_fire, 600)
-      sol.main.timer_start(throw_fire, 800)
+      sol.timer.start(600, throw_fire)
+      sol.timer.start(800, throw_fire)
     end
   end
 

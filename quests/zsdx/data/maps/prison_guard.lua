@@ -8,7 +8,7 @@ hero_seen = false
 function dialog_check_guard(dialog_id)
 
   if dialog_id == "dungeon_5.hero_seen_by_guard" then
-    sol.main.timer_start(send_hero_to_prison, 1000)
+    sol.timer.start(1000, send_hero_to_prison)
   end
 end
 
@@ -46,7 +46,7 @@ function seen_by_guard(guard_name)
   sprite:set_animation("walking")
   local m = sol.movement.target_movement_create(96)
   sol.map.npc_start_movement(guard_name, m)
-  sol.main.timer_start(prison_dialog, 500)
+  sol.timer.start(500, prison_dialog)
   sol.audio.play_sound("hero_seen")
 end
 

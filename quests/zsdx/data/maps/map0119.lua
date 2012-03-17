@@ -66,7 +66,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.stairs_set_enabled("roof_stairs", false)
     sol.map.teletransporter_set_enabled("roof_teletransporter", false)
     sol.audio.play_sound("door_closed")
-    sol.main.timer_start(start_boss, 1000)
+    sol.timer.start(1000, start_boss)
   end
 end
 
@@ -76,7 +76,7 @@ function start_boss()
   sol.map.enemy_set_enabled("boss", true)
   sol.map.hero_unfreeze()
   fighting_boss = true
-  sol.main.timer_start(repeat_give_arrows, 20000)
+  sol.timer.start(20000, repeat_give_arrows)
 end
 
 function repeat_give_arrows()
@@ -90,7 +90,7 @@ function repeat_give_arrows()
     arrow_xy = positions[math.random(#positions)]
     sol.map.pickable_item_create("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 1)
   end
-  sol.main.timer_start(repeat_give_arrows, 20000)
+  sol.timer.start(20000, repeat_give_arrows)
 end
 
 function event_enemy_dead(enemy_name)
@@ -127,7 +127,7 @@ function event_hero_victory_sequence_finished()
   sol.map.hero_set_map(119, "from_dungeon_10", 1)
   sol.map.enemy_set_group_enabled("", true) -- enable simple enemies back
 
-  sol.main.timer_start(function()
+  sol.timer.start(function()
     if sol.game.savegame_get_boolean(905) then
       sol.audio.play_music("dark_mountain")
     else
@@ -139,7 +139,7 @@ end
 function event_dialog_finished(dialog_id)
 
   if dialog_id == "credits_6" then
-   sol.main.timer_start(ending_next, 2000)
+   sol.timer.start(2000, ending_next)
   end
 end
 

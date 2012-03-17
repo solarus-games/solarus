@@ -106,19 +106,19 @@ function fill_water_step_1()
   sol.audio.play_sound("water_fill_begin")
   sol.audio.play_sound("water_fill")
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", true)
-  sol.main.timer_start(fill_water_step_2, water_delay)
+  sol.timer.start(fill_water_step_2, water_delay)
 end
 
 function fill_water_step_2()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", true)
-  sol.main.timer_start(fill_water_step_3, water_delay)
+  sol.timer.start(fill_water_step_3, water_delay)
 end
 
 function fill_water_step_3()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", true)
-  sol.main.timer_start(fill_water_step_4, water_delay)
+  sol.timer.start(fill_water_step_4, water_delay)
 end
 
 function fill_water_step_4()
@@ -134,19 +134,19 @@ function drain_water_step_1()
   sol.audio.play_sound("water_drain")
   sol.map.tile_set_enabled("water_"..current_pool_index.."_full", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", true)
-  sol.main.timer_start(drain_water_step_2, water_delay)
+  sol.timer.start(drain_water_step_2, water_delay)
 end
 
 function drain_water_step_2()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", true)
-  sol.main.timer_start(drain_water_step_3, water_delay)
+  sol.timer.start(drain_water_step_3, water_delay)
 end
 
 function drain_water_step_3()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", true)
-  sol.main.timer_start(drain_water_step_4, water_delay)
+  sol.timer.start(drain_water_step_4, water_delay)
 end
 
 function drain_water_step_4()

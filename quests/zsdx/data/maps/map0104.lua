@@ -14,7 +14,7 @@ function event_switch_activated(switch_name)
       and not sol.map.door_is_open("door") then
     sol.audio.play_sound("secret")
     sol.map.door_open("door")
-    sol.main.timer_start(function()
+    sol.timer.start(function()
       if door_allow_close then
         sol.map.door_close("door")
         sol.map.switch_set_activated(switch_name, true)

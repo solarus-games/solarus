@@ -23,7 +23,7 @@ function event_dialog_finished(dialog_id)
     next_fresco()
   else
     fresco_sprite:fade(1)
-    sol.main.timer_start(next_fresco, 600)
+    sol.timer.start(600, next_fresco)
   end
 end
 

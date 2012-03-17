@@ -23,7 +23,7 @@ function event_hero_on_sensor(sensor_name)
     -- the miniboss is alive
     sol.map.door_close("miniboss_door")
     sol.map.hero_freeze()
-    sol.main.timer_start(miniboss_timer, 1000)
+    sol.timer.start(1000, miniboss_timer)
     fighting_miniboss = true
   end
 end

@@ -23,7 +23,7 @@ end
 function event_restart()
 
   sol.main.timer_stop_all()
-  sol.main.timer_start(egg_phase_soon, 2000)
+  sol.timer.start(2000, egg_phase_soon)
   go()
 end
 
@@ -59,10 +59,10 @@ function egg_phase_soon()
   local nb_sons = sol.map.enemy_get_group_count(sons_prefix)
   if nb_sons >= 5 then
     -- delay the egg phase if there are already too much sons
-    sol.main.timer_start(egg_phase_soon, 5000)
+    sol.timer.start(5000, egg_phase_soon)
   else
     sol.enemy.stop_movement()
-    sol.main.timer_start(egg_phase, 500)
+    sol.timer.start(500, egg_phase)
   end
 end
 
@@ -71,7 +71,7 @@ function egg_phase()
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("preparing_egg")
   sol.audio.play_sound("boss_charge")
-  sol.main.timer_start(throw_egg, 1500)
+  sol.timer.start(1500, throw_egg)
 
   -- The more the boss is hurt, the more it will throw eggs...
   nb_eggs_to_create = boss_starting_hp - sol.enemy.get_life() + 1
@@ -91,16 +91,16 @@ function throw_egg()
   nb_eggs_to_create = nb_eggs_to_create - 1
   if nb_eggs_to_create > 0 then
     -- throw another egg in 0.5 second
-    sol.main.timer_start(throw_egg, 500)
+    sol.timer.start(500, throw_egg)
   else
     -- finish the egg phase
     local sprite = sol.enemy.get_sprite()
     sprite:set_animation("walking")
-    -- Don't throw eggs when desperate!
+    -- don't throw eggs when desperate!
     if sol.enemy.get_life() > 1 then
-      -- Schedule the next one in a few seconds
-      local duration = 3500 + (math.random(3) * 1000)
-      sol.main.timer_start(egg_phase_soon, duration)
+      -- schedule the next one in a few seconds
+      local delay = 3500 + (math.random(3) * 1000)
+      sol.timer.start(duration, egg_phase_soon)
     end
     go()
   end

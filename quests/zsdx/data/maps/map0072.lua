@@ -13,14 +13,14 @@ function event_hero_on_sensor(sensor_name)
       and not sol.game.savegame_get_boolean(156) then
     sol.map.door_close("door")
     sol.map.hero_freeze()
-    sol.main.timer_start(start_music, 1000)
+    sol.timer.start(1000, start_music)
   end
 end
 
 function start_music()
 
   sol.audio.play_music("soldiers")
-  sol.main.timer_start(start_fight, 1500)
+  sol.timer.start(1500, start_fight)
 end
 
 function start_fight()

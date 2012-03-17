@@ -51,7 +51,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.door_close("boss_door")
     sol.map.door_close("final_room_door")
     sol.map.hero_freeze()
-    sol.main.timer_start(start_boss, 1000)
+    sol.timer.start(1000, start_boss)
     fighting_boss = true
   end
 end
@@ -66,7 +66,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.main.timer_start(open_final_room, 9000)
+    sol.timer.start(9000, open_final_room)
     sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)

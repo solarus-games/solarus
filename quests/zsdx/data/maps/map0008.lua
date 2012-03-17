@@ -54,7 +54,7 @@ end
 function event_dialog_finished(dialog_id)
 
   if dialog_id == "credits_1" then
-   sol.main.timer_start(ending_next, 2000)
+   sol.timer.start(2000, ending_next)
   end
 end
 

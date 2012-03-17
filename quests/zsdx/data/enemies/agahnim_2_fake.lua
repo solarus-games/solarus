@@ -51,7 +51,7 @@ function event_restart()
     sol.main.timer_stop_all()
     local sprite = sol.enemy.get_sprite()
     sprite:fade(1)
-    sol.main.timer_start(hide, 500)
+    sol.timer.start(500, hide)
   end
 end
 
@@ -73,7 +73,7 @@ end
 function hide()
 
   sol.enemy.set_position(-100, -100)
-  sol.main.timer_start(unhide, 500)
+  sol.timer.start(500, unhide)
 end
 
 function unhide()
@@ -83,14 +83,14 @@ function unhide()
   local sprite = sol.enemy.get_sprite()
   sprite:set_direction(get_direction4_to_hero())
   sprite:fade(0)
-  sol.main.timer_start(fire_step_1, 1000)
+  sol.timer.start(1000, fire_step_1)
 end
 
 function fire_step_1()
 
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("arms_up")
-  sol.main.timer_start(fire_step_2, 1000)
+  sol.timer.start(1000, fire_step_2)
   sol.enemy.set_can_attack(true)
 end
 
@@ -115,7 +115,7 @@ function fire_step_2()
     next_fireball_breed = "red_fireball_triple"
   end
   sol.audio.play_sound("boss_charge")
-  sol.main.timer_start(fire_step_3, 1500)
+  sol.timer.start(1500, fire_step_3)
 end
 
 function fire_step_3()
@@ -123,7 +123,7 @@ function fire_step_3()
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("stopped")
   sol.audio.play_sound(next_fireball_sound)
-  sol.main.timer_start(sol.enemy.restart, 700)
+  sol.timer.start(700, sol.enemy.restart)
 
   function throw_fire()
 
@@ -149,9 +149,9 @@ function disappear()
   sol.enemy.set_can_attack(false)
   sprite:fade(1)
   sol.main.timer_stop_all()
-  sol.main.timer_start(function()
+  sol.timer.start(500, function()
     sol.map.enemy_remove(sol.enemy.get_name())
-  end, 500)
+  end)
 end
 
 function event_collision_enemy(other_name, other_sprite, my_sprite)

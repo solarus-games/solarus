@@ -23,7 +23,7 @@ function event_restart()
 
   local m = sol.movement.path_movement_create("22", 16)
   sol.enemy.start_movement(m)
-  sol.main.timer_start(go_hero, 2000)
+  sol.timer.start(2000, go_hero)
   state = "raising"
 end
 

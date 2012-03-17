@@ -123,7 +123,7 @@ function event_npc_movement_finished(npc_name)
 
   if monkey_jumps == 1 then
     -- first jump finished: wait a little amount of time before jumping again
-    sol.main.timer_start(monkey_timer, 300)
+    sol.timer.start(300, monkey_timer)
   elseif monkey_jumps == 2 then
     -- second jump finished: start the last jump
     sol.audio.play_sound("monkey")

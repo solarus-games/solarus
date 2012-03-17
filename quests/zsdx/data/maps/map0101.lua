@@ -112,7 +112,7 @@ function event_switch_activated(switch_name)
     sol.audio.play_sound("secret")
     sol.map.door_open("door_a")
     door_a_allow_close = true
-    sol.main.timer_start(function()
+    sol.timer.start(function()
       sol.map.switch_set_activated("door_a_switch", false)
       if door_a_allow_close then
 	sol.map.door_close("door_a")
@@ -126,7 +126,7 @@ function event_switch_activated(switch_name)
     sol.audio.play_sound("secret")
     sol.map.door_open("door_b")
     door_b_allow_close = true
-    sol.main.timer_start(function()
+    sol.timer.start(function()
       sol.map.switch_set_activated("door_b_switch", false)
       if door_b_allow_close then
 	sol.map.door_close("door_b")

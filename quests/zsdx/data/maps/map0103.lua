@@ -55,7 +55,7 @@ function event_block_moved(block_name)
       sol.map.teletransporter_set_enabled("hole_a_teletransporter", true)
       sol.game.savegame_set_boolean(623, true)
       sol.audio.play_sound("jump")
-      sol.main.timer_start(function() sol.audio.play_sound("bomb") end, 500)
+      sol.timer.start(function() sol.audio.play_sound("bomb") end, 500)
     end
   end
 end
@@ -118,7 +118,7 @@ function event_camera_back()
   -- set up a timer when the camera movement is finished
   if just_removed_special_torch then
     just_removed_special_torch = false
-    sol.main.timer_start(function()
+    sol.timer.start(function()
       sol.audio.play_sound("door_closed")
       sol.map.tile_set_enabled("special_torch", true)
       sol.map.switch_set_activated("special_torch_switch", false)
@@ -126,7 +126,7 @@ function event_camera_back()
 
   elseif current_door_name ~= nil then
     local door_name = current_door_name
-    sol.main.timer_start(function()
+    sol.timer.start(function()
       if door_timers[door_name] ~= nil then
 	sol.map.door_close(door_name)
 	sol.map.switch_set_activated(door_name .. "_switch", false)
@@ -190,7 +190,7 @@ function start_boss()
   sol.map.enemy_set_enabled("boss", true)
   fighting_boss = true
 
-  sol.main.timer_start(repeat_give_arrows, 20000)
+  sol.timer.start(20000, repeat_give_arrows)
 end
 
 function repeat_give_arrows()
@@ -206,7 +206,7 @@ function repeat_give_arrows()
     arrow_xy = positions[math.random(#positions)]
     sol.map.pickable_item_create("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 0)
   end
-  sol.main.timer_start(repeat_give_arrows, 20000)
+  sol.timer.start(20000, repeat_give_arrows)
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)
@@ -215,7 +215,7 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
     sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
-    sol.main.timer_start(start_final_sequence, 9000)
+    sol.timer.start(9000, start_final_sequence)
   end
 end
 

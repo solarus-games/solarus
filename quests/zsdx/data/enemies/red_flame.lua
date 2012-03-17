@@ -21,7 +21,7 @@ function event_restart()
   local m = sol.movement.target_movement_create(144, x, y)
   m:set_property("ignore_obstacles", true)
   sol.enemy.start_movement(m)
-  sol.main.timer_start(event_movement_finished, 2000)
+  sol.timer.start(2000, event_movement_finished)
 end
 
 function event_movement_finished(movement)

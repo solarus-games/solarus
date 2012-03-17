@@ -29,7 +29,7 @@ function event_restart()
 
   if not vulnerable then
     sol.main.timer_stop_all()
-    sol.main.timer_start(throw_flames, math.random(2000, 5000))
+    sol.timer.start(math.random(2000, 5000), throw_flames)
     go_back()
   else
     sol.enemy.set_can_attack(false)
@@ -57,7 +57,7 @@ function event_movement_finished(movement)
   m:set_property("max_distance", 16)
   m:set_property("ignore_obstacles", true)
   sol.enemy.start_movement(m)
-  sol.main.timer_start(go_back, 5000)
+  sol.timer.start(5000, go_back)
 end
 
 function event_message_received(src_enemy, message)
@@ -72,13 +72,13 @@ function event_message_received(src_enemy, message)
       local sprite = sol.enemy.get_sprite()
       sprite:set_animation("walking")
       sol.main.timer_stop_all()
-      sol.main.timer_start(function()
+      sol.timer.start(vulnerable_delay, function()
 	vulnerable = false
 	event_restart()
 	sol.enemy.set_can_attack(true)
         sol.enemy.set_attack_consequence("sword", "protected")
 	sol.enemy.send_message(sol.enemy.get_father(), "recovered")
-      end, vulnerable_delay)
+      end)
     end
   end
 end
@@ -108,7 +108,7 @@ function throw_flames()
     local sprite = sol.enemy.get_sprite()
     sprite:set_animation("preparing_flame")
     sol.audio.play_sound("lamp")
-    sol.main.timer_start(repeat_flame, 500)
+    sol.timer.start(500, repeat_flame)
   end
 end
 
@@ -122,9 +122,9 @@ function repeat_flame()
     sol.enemy.create_son(son_name, "blue_flame", 0, 16)
     sol.enemy.send_message(son_name, tostring(angle))
     sol.audio.play_sound("lamp")
-    sol.main.timer_start(repeat_flame, 150)
+    sol.timer.start(150, repeat_flame)
   else
-    sol.main.timer_start(sol.enemy.restart, 500)
+    sol.timer.start(500, sol.enemy.restart)
   end
 end
 

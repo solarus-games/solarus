@@ -20,7 +20,7 @@ function event_restart()
   sol.main.timer_start(function()
     local sprite = sol.enemy.get_sprite()
     sprite:set_animation("disappearing")
-    sol.main.play_sound("ice")
+    sol.audio.play_sound("ice")
 
     if math.random(2) == 1 or sol.enemy.get_distance_to_hero() < 24 then
       local son_name = sol.enemy.get_name() .. "_son"

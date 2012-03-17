@@ -36,7 +36,7 @@ function event_restart()
       sol.enemy.stop_movement()
       local sprite = sol.enemy.get_sprite()
       sprite:set_animation("preparing_fire")
-      sol.main.play_sound("lamp")
+      sol.audio.play_sound("lamp")
       sol.main.timer_start(repeat_fire, 500)
     end,
     2000 + math.random(8000))
@@ -66,7 +66,7 @@ function repeat_fire()
     local angle = angle_start + nb_fire_created * (angle_end - angle_start) / max_fire_created
     sol.enemy.create_son(son_name, "fireball_simple", 0, 16)
     sol.enemy.send_message(son_name, tostring(angle))
-    sol.main.play_sound("lamp")
+    sol.audio.play_sound("lamp")
     sol.main.timer_start(repeat_fire, 150)
   else
     sol.main.timer_start(sol.enemy.restart, 500)

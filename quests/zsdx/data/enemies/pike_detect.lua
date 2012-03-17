@@ -98,7 +98,7 @@ function go_back()
     local m = sol.movement.target_movement_create(64, initial_xy.x, initial_xy.y)
     m:set_property("smooth", false)
     sol.enemy.start_movement(m)
-    sol.main.play_sound("sword_tapping")
+    sol.audio.play_sound("sword_tapping")
 
   elseif state == "going_back" then
 

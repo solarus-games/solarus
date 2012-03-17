@@ -82,7 +82,7 @@ function fire_step_2()
   else
     sprite:set_animation("preparing_red_fireball")
   end
-  sol.main.play_sound("boss_charge")
+  sol.audio.play_sound("boss_charge")
   sol.main.timer_start(fire_step_3, 1500)
 end
 
@@ -99,7 +99,7 @@ function fire_step_3()
     breed = "red_fireball_triple"
   end
   sprite:set_animation("stopped")
-  sol.main.play_sound(sound)
+  sol.audio.play_sound(sound)
 
   vulnerable = true
   sol.main.timer_start(sol.enemy.restart, 700)

@@ -10,7 +10,7 @@ function event_map_started(destination_point_name)
     sol.map.hero_set_visible(false)
     sol.map.hud_set_enabled(false)
     sol.map.enemy_set_group_enabled("", false)
-    sol.main.play_music("fanfare.spc")
+    sol.audio.play_music("fanfare")
   end
 
   sol.map.door_set_open("miniboss_door", true)
@@ -56,7 +56,7 @@ end
 
 function open_torches_door()
 
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.door_open("torches_door")
   lock_torches()
 end
@@ -71,7 +71,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.door_close("miniboss_door")
     fighting_miniboss = true
     sol.main.timer_start(function()
-      sol.main.play_music("boss.spc")
+      sol.audio.play_music("boss")
       sol.map.enemy_set_group_enabled("miniboss", true)
       sol.map.tile_set_group_enabled("miniboss_fake_floor", false)
       sol.map.hero_unfreeze()
@@ -85,7 +85,7 @@ function event_enemy_dead(enemy_name)
   if string.find(enemy_name, "^miniboss")
       and sol.map.enemy_is_group_dead("miniboss") then
 
-    sol.main.play_music("dark_world_dungeon.spc")
+    sol.audio.play_music("dark_world_dungeon")
     sol.map.door_open("miniboss_door")
     sol.game.savegame_set_boolean(320, true)
   end

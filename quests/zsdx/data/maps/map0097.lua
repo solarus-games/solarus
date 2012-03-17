@@ -89,14 +89,14 @@ function event_switch_activated(switch_name)
     and sol.map.switch_is_activated("switch1_2") 
     and sol.map.switch_is_activated("switch1_3")
     and sol.map.switch_is_activated("switch1_4") then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.pickable_item_create("small_key", 1, 227, 144, 504, 0)
   end
 end
 
 function switch1_error()
 
-  sol.main.play_sound("wrong")
+  sol.audio.play_sound("wrong")
   sol.map.switch_set_activated("switch1_1", false)
   sol.map.switch_set_activated("switch1_2", false)
   sol.map.switch_set_activated("switch1_3", false)
@@ -111,7 +111,7 @@ function event_enemy_dead(enemy_name)
 
     sol.map.camera_move(328, 320, 250, function()
       sol.map.pickable_item_create("small_key", 1, 221, 328, 325, 1)
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
     end)
   end
 end
@@ -119,16 +119,16 @@ end
 function explode_block1() 
 
   sol.map.explosion_create(536, 256, 1)
-  sol.main.play_sound("explosion")
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("explosion")
+  sol.audio.play_sound("secret")
   sol.map.block_set_enabled("block1_1",false)
 end
 
 function explode_block2() 
 
   sol.map.explosion_create(552, 256, 1)
-  sol.main.play_sound("explosion")
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("explosion")
+  sol.audio.play_sound("secret")
   sol.map.block_set_enabled("block2_1",false)
 end
 

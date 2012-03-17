@@ -103,7 +103,7 @@ function jump()
   local angle = sol.main.get_angle(hero_x, hero_y, x, y)
   local m = sol.movement.target_movement_create(128, 240, 245)
   sol.enemy.start_movement(m)
-  sol.main.play_sound("jump")
+  sol.audio.play_sound("jump")
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("jumping")
   sol.enemy.set_attack_consequence("sword", "protected")
@@ -161,7 +161,7 @@ function destroy_floor(prefix, first, last)
 
   function repeat_change()
     if index % 10 == 1 then
-      sol.main.play_sound("stone")
+      sol.audio.play_sound("stone")
     end
     
     sol.map.tile_set_enabled(prefix .. index, false)
@@ -211,7 +211,7 @@ function throw_flames()
       return
     end
 
-    sol.main.play_sound("lamp")
+    sol.audio.play_sound("lamp")
     nb_flames_created = nb_flames_created + 1
     local son_name = prefix .. nb_flames_created
     sol.enemy.create_son(son_name, "red_flame", 0, -24, 0)
@@ -248,7 +248,7 @@ function throw_bats()
 
   function repeat_throw_bat()
 
-    sol.main.play_sound("lamp")
+    sol.audio.play_sound("lamp")
     nb_bats_created = nb_bats_created + 1
     local son_name = prefix .. nb_bats_created
     sol.enemy.create_son(son_name, "fire_bat", 0, -21, 0)

@@ -18,7 +18,7 @@ function event_npc_interaction_item(npc_name, item_name, variant)
     -- using the mirror with the waterfall: reverse the waterfall
     -- and traverse it
     sol.map.hero_freeze()
-    sol.main.play_sound("water_drain")
+    sol.audio.play_sound("water_drain")
     sol.main.timer_stop_all()
     sol.map.tile_set_group_enabled("riverfall_", false)
 
@@ -36,7 +36,7 @@ function event_npc_interaction_item(npc_name, item_name, variant)
       if i <= 8 then
         sol.main.timer_start(repeat_change_riverfall, 350)
       else
-        sol.main.play_sound("secret")
+        sol.audio.play_sound("secret")
         sol.map.hero_walk(path, false, true)
         sol.main.timer_start(repeat_restore_riverfall, 2000)
       end
@@ -63,7 +63,7 @@ end
 function event_use()
 
   -- using the mirror at a wrong place
-  sol.main.play_sound("wrong")
+  sol.audio.play_sound("wrong")
   sol.map.hero_unfreeze()
 end
 

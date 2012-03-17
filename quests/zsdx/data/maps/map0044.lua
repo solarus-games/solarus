@@ -38,7 +38,7 @@ function start_evil_tiles()
   -- plays a sound repeatedly as long as at least one tile is moving
   function repeat_sound()
 
-    sol.main.play_sound("walk_on_grass")
+    sol.audio.play_sound("walk_on_grass")
 
     -- repeat the sound until the last tile starts animation "destroy"
     local again = false

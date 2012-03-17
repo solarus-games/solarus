@@ -77,14 +77,14 @@ function event_switch_activated(switch_name)
   elseif switch_name == "shortcut_a_switch" then
     sol.map.tile_set_group_enabled("shortcut_a", false)
     sol.game.savegame_set_boolean(908, true)
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   elseif switch_name == "shortcut_b_switch" then
     sol.map.tile_set_group_enabled("shortcut_b", false)
     sol.game.savegame_set_boolean(909, true)
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   elseif switch_name == "n_switch" then
     sol.map.camera_move(280, 56, 250, function()
-      sol.main.play_sound("chest_appears")
+      sol.audio.play_sound("chest_appears")
       sol.map.chest_set_enabled("n_chest", true)
       sol.game.savegame_set_boolean(950, true)
     end)
@@ -92,19 +92,19 @@ function event_switch_activated(switch_name)
 end
 
 function open_e_door()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.door_open("e_door")
 end
 
 function open_barrier()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.tile_set_enabled("barrier", false)
   sol.game.savegame_set_boolean(127, true)
 end
 
 function remove_se_water()
-  sol.main.play_sound("water_drain_begin")
-  sol.main.play_sound("water_drain")
+  sol.audio.play_sound("water_drain_begin")
+  sol.audio.play_sound("water_drain")
   sol.map.tile_set_enabled("se_water_out", true)
   sol.map.tile_set_enabled("se_water_source", false)
   sol.main.timer_start(remove_se_water_2, remove_water_delay)
@@ -138,21 +138,21 @@ function remove_se_water_6()
   sol.map.jumper_set_group_enabled("se_water_on_jumper", false)
   sol.map.obstacle_set_group_enabled("se_water_off_obstacle", true)
   sol.game.savegame_set_boolean(128, true)
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
 end
 
 function remove_1f_n_water()
 
-  sol.main.play_sound("water_drain_begin")
-  sol.main.play_sound("water_drain")
+  sol.audio.play_sound("water_drain_begin")
+  sol.audio.play_sound("water_drain")
   sol.map.dialog_start("dungeon_3.water_drained_somewhere")
   sol.game.savegame_set_boolean(131, true)
 end
 
 function remove_1f_e_water()
 
-  sol.main.play_sound("water_drain_begin")
-  sol.main.play_sound("water_drain")
+  sol.audio.play_sound("water_drain_begin")
+  sol.audio.play_sound("water_drain")
   sol.map.dialog_start("dungeon_3.water_drained_somewhere")
   sol.game.savegame_set_boolean(122, true)
 end

@@ -36,7 +36,7 @@ function event_npc_interaction_item(npc_name, item_name, variant)
 
     -- using water on the frozen door
     sol.map.hero_freeze()
-    sol.main.play_sound("item_in_water")
+    sol.audio.play_sound("item_in_water")
     frozen_door_sprite:set_animation("disappearing")
     frozen_door_opposite_sprite:set_animation("disappearing")
     sol.main.timer_start(timer_frozen_door, 800)
@@ -49,7 +49,7 @@ end
 
 -- Function called when the door is unfreezed
 function timer_frozen_door()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.game.savegame_set_boolean(35, true)
   sol.map.npc_remove("frozen_door")
   sol.map.npc_remove("frozen_door_opposite")

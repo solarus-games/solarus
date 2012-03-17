@@ -9,12 +9,12 @@ function event_map_started(destination_point_name)
     sol.map.hero_set_visible(false)
     sol.map.hud_set_enabled(false)
     sol.map.enemy_set_group_enabled("", false)
-    sol.main.play_music("fanfare.spc")
+    sol.audio.play_music("fanfare")
     sol.map.tile_set_group_enabled("broken_rupee_house", false)
   else
     -- enable dark world
     if sol.game.savegame_get_boolean(905) then
-      sol.main.play_music("dark_world.spc")
+      sol.audio.play_music("dark_world")
       sol.map.tileset_set(13)
     end
 
@@ -64,8 +64,8 @@ function event_npc_interaction(npc_name)
 
     -- open the door if the player has the clay key
     if sol.game.has_item("clay_key") then
-      sol.main.play_sound("door_open")
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("door_open")
+      sol.audio.play_sound("secret")
       sol.game.savegame_set_boolean(36, true)
       remove_village_cave_door()
     else
@@ -76,8 +76,8 @@ function event_npc_interaction(npc_name)
 
     -- open the door if the player has the stone key
     if sol.game.has_item("stone_key") then
-      sol.main.play_sound("door_open")
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("door_open")
+      sol.audio.play_sound("secret")
       sol.game.savegame_set_boolean(159, true)
       remove_stone_lock()
     else
@@ -108,7 +108,7 @@ function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "waterfall_sensor" then
     sol.map.hero_start_jumping(6, 288, true)
-    sol.main.play_sound("jump")
+    sol.audio.play_sound("jump")
   end
 end
 
@@ -123,7 +123,7 @@ function event_hero_still_on_sensor(sensor_name)
       if sol.map.hero_get_direction() == 1
           and sol.map.tile_is_enabled(entrances[i] .. "_door") then
         sol.map.tile_set_enabled(entrances[i] .. "_door", false)
-        sol.main.play_sound("door_open")
+        sol.audio.play_sound("door_open")
       end
       break
     end

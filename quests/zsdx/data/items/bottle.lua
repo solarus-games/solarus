@@ -8,7 +8,7 @@ function event_use()
 
   -- empty bottle
   if variant == 1 then
-    sol.main.play_sound("wrong")
+    sol.audio.play_sound("wrong")
     sol.item.set_finished()
 
     -- water
@@ -55,7 +55,7 @@ function event_dialog_finished(dialog_id, answer)
 
       -- empty the water
       sol.item.set_variant(1) -- make the bottle empty
-      sol.main.play_sound("item_in_water")
+      sol.audio.play_sound("item_in_water")
 
     end
     sol.item.set_finished()

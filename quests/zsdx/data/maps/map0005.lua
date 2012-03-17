@@ -4,7 +4,7 @@ function event_map_started(destination_point_name)
 
   -- enable dark world
   if sol.game.savegame_get_boolean(905) then
-    sol.main.play_music("dark_world.spc")
+    sol.audio.play_music("dark_world")
     sol.map.tileset_set(13)
   end
 
@@ -48,8 +48,8 @@ function event_dialog_finished(dialog_id, answer)
     sol.map.tile_set_enabled("surprise_wall_door_tile", false)
     sol.map.npc_remove("surprise_wall_door")
     sol.game.savegame_set_boolean(136, true)
-    sol.main.play_sound("secret")
-    sol.main.play_sound("door_open")
+    sol.audio.play_sound("secret")
+    sol.audio.play_sound("door_open")
   end
 end
 

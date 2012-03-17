@@ -125,6 +125,7 @@ class Script {
     // APIs
     uint32_t apis_enabled;          /**< OR combination of optional APIs */
     static const char* main_module_name;
+    static const char* audio_module_name;
     static const char* game_module_name;
     static const char* map_module_name;
     static const char* item_module_name;
@@ -144,6 +145,7 @@ class Script {
     // initialization of modules
     void register_apis();
     void initialize_main_module();
+    void initialize_audio_module();
     void initialize_game_module();
     void initialize_map_module();
     void initialize_item_module();
@@ -184,13 +186,15 @@ class Script {
       main_api_exit,
       main_api_start_screen,
       main_api_start_game,
-      main_api_play_sound,
-      main_api_play_music,
-      main_api_stop_music,
       main_api_timer_start,
       main_api_timer_stop_all,
       main_api_get_distance,
       main_api_get_angle,
+
+      // audio API
+      audio_api_play_sound,
+      audio_api_play_music,
+      audio_api_stop_music,
 
       // game API
       game_api_save,

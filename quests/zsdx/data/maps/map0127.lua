@@ -20,7 +20,7 @@ end
 function event_treasure_obtaining(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
-    sol.main.play_music("excalibur.spc")
+    sol.audio.play_music("excalibur")
   end
 end
 
@@ -34,6 +34,6 @@ end
 function event_hero_victory_sequence_finished()
 
   sol.map.hero_unfreeze()
-  sol.main.play_music("light_world_dungeon.spc")
+  sol.audio.play_music("light_world_dungeon")
 end
 

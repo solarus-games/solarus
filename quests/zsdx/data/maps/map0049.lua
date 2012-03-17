@@ -34,7 +34,7 @@ function button_room_test_combination()
     and sol.map.switch_is_activated("BRoom8")
     and sol.map.switch_is_activated("BRoom9") then
     if not sol.map.door_is_open("LD15") then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("LD15")
       sol.map.switch_set_activated("BRoomReset", true)
     end
@@ -123,11 +123,11 @@ end
 
 function event_npc_interaction(npc_name)
   if npc_name == "TD01" then
-    sol.main.play_sound("warp")
+    sol.audio.play_sound("warp")
     hero_x, hero_y = sol.map.hero_get_position()
     sol.map.hero_set_position(hero_x - 320, hero_y)
   elseif npc_name == "TD02" then
-    sol.main.play_sound("warp")
+    sol.audio.play_sound("warp")
     hero_x, hero_y = sol.map.hero_get_position()
     sol.map.hero_set_position(hero_x + 320, hero_y)
   end
@@ -137,7 +137,7 @@ function event_enemy_dead(enemy_name)
   if string.find(enemy_name, "^rupee_enemy") and sol.map.enemy_is_group_dead("rupee_enemy") then	
     -- 100 rupee room: kill all enemies
     if not sol.map.chest_is_enabled("RC100") then
-      sol.main.play_sound("chest_appears")
+      sol.audio.play_sound("chest_appears")
       sol.map.chest_set_enabled("RC100", true)
     end
   end

@@ -69,7 +69,7 @@ function event_custom_attack_received(attack, sprite)
       right_blade_sprite:set_animation("stopped")
     end
     sol.enemy.stop_movement()
-    sol.main.play_sound("boss_hurt")
+    sol.audio.play_sound("boss_hurt")
     left_blade_life = left_blade_life - 1
     sol.main.timer_start(stop_hurting_left_blade, 400)
 
@@ -83,7 +83,7 @@ function event_custom_attack_received(attack, sprite)
       left_blade_sprite:set_animation("stopped")
     end
     sol.enemy.stop_movement()
-    sol.main.play_sound("boss_hurt")
+    sol.audio.play_sound("boss_hurt")
     right_blade_life = right_blade_life - 1
     sol.main.timer_start(stop_hurting_right_blade, 400)
   end
@@ -134,7 +134,7 @@ function stop_hurting_left_blade()
 
   sol.enemy.restart()
   if left_blade_life <= 0 then
-    sol.main.play_sound("stone")
+    sol.audio.play_sound("stone")
     sol.enemy.remove_sprite(left_blade_sprite)
 
     if not has_right_blade() then
@@ -147,7 +147,7 @@ function stop_hurting_right_blade()
 
   sol.enemy.restart()
   if right_blade_life <= 0 then
-    sol.main.play_sound("stone")
+    sol.audio.play_sound("stone")
     sol.enemy.remove_sprite(right_blade_sprite)
 
     if not has_left_blade() then

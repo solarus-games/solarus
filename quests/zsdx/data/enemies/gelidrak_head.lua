@@ -107,7 +107,7 @@ function throw_flames()
     sol.enemy.stop_movement()
     local sprite = sol.enemy.get_sprite()
     sprite:set_animation("preparing_flame")
-    sol.main.play_sound("lamp")
+    sol.audio.play_sound("lamp")
     sol.main.timer_start(repeat_flame, 500)
   end
 end
@@ -121,7 +121,7 @@ function repeat_flame()
     local angle = math.random(360) * math.pi / 180
     sol.enemy.create_son(son_name, "blue_flame", 0, 16)
     sol.enemy.send_message(son_name, tostring(angle))
-    sol.main.play_sound("lamp")
+    sol.audio.play_sound("lamp")
     sol.main.timer_start(repeat_flame, 150)
   else
     sol.main.timer_start(sol.enemy.restart, 500)

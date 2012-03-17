@@ -40,7 +40,7 @@ function event_update()
   if not has_fairy_appeared()
       and are_all_torches_on() then
 
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.game.savegame_set_boolean(929, true)
     show_fairy()
   end

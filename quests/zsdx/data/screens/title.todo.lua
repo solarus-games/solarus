@@ -35,7 +35,7 @@ function phase_title()
   phase = "title"
 
   -- start music
-  sol.audio.play_music("title_screen.spc")
+  sol.audio.play_music("title_screen")
 
   -- show a background that depends on the hour of the day
   local hours = tonumber(os.date("%H"))

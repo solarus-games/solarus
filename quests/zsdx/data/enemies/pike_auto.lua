@@ -39,7 +39,7 @@ function event_obstacle_reached()
   if recent_obstacle == 0
       and math.abs(x - hero_x) < 184
       and math.abs(y - hero_y) < 144 then
-    sol.main.play_sound("sword_tapping")
+    sol.audio.play_sound("sword_tapping")
   end
 
   recent_obstacle = 8

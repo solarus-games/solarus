@@ -21,13 +21,13 @@ function event_npc_interaction(npc_name)
       if next_sign < 32 then
         sol.map.dialog_start("surprise_wall.direction_"..directions[next_sign])
       elseif next_sign == 32 then
-        sol.main.play_sound("secret")
+        sol.audio.play_sound("secret")
 	sol.map.tile_set_enabled("secret_way", false)
 	sol.game.savegame_set_boolean(139, true)
       end
       next_sign = next_sign + 1
     else
-      sol.main.play_sound("wrong")
+      sol.audio.play_sound("wrong")
       next_sign = 1
     end
   end

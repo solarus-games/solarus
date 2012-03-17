@@ -6,7 +6,7 @@ function event_hero_on_sensor(sensor_name)
 
     if not sol.game.savegame_get_boolean(816) then
       -- the end: make a shortcut from 1F
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.game.savegame_set_boolean(816, true)
     end
 

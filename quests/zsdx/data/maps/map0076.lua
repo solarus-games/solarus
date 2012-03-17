@@ -31,46 +31,46 @@ function event_hero_on_sensor(sensor_name)
 end
 
 function remove_torch_a()
-  sol.main.play_sound("door_open")
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("door_open")
+  sol.audio.play_sound("secret")
   sol.map.tile_set_group_enabled("torch_a", false)
   sol.map.switch_set_activated("torch_a_switch", true)
 end
 
 function remove_torch_b()
-  sol.main.play_sound("door_open")
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("door_open")
+  sol.audio.play_sound("secret")
   sol.map.tile_set_group_enabled("torch_b", false)
   sol.map.switch_set_activated("torch_b_switch", true)
 end
 
 function remove_torch_c()
-  sol.main.play_sound("door_open")
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("door_open")
+  sol.audio.play_sound("secret")
   sol.map.tile_set_group_enabled("torch_c", false)
 end
 
 function remove_torch_d()
-  sol.main.play_sound("door_open")
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("door_open")
+  sol.audio.play_sound("secret")
   sol.map.tile_set_group_enabled("torch_d", false)
 end
 
 function remove_torch_e()
-  sol.main.play_sound("door_open")
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("door_open")
+  sol.audio.play_sound("secret")
   sol.map.tile_set_group_enabled("torch_e", false)
 end
 
 function put_torch_a()
-  sol.main.play_sound("door_closed")
+  sol.audio.play_sound("door_closed")
   sol.map.tile_set_group_enabled("torch_a", true)
   sol.map.switch_set_activated("torch_a_switch", false)
   sol.map.switch_set_activated("torch_a_switch_2", false)
 end
 
 function put_torch_b()
-  sol.main.play_sound("door_closed")
+  sol.audio.play_sound("door_closed")
   sol.map.tile_set_group_enabled("torch_b", true)
   sol.map.switch_set_activated("torch_b_switch", false)
   sol.map.switch_set_activated("torch_b_switch_2", false)

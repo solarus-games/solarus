@@ -128,8 +128,8 @@ function event_dialog_finished(dialog_id, answer)
   dialog_check_guard(dialog_id)
 
   if dialog_id == "dungeon_5.prison_1_use_iron_key" then
-    sol.main.play_sound("secret")
-    sol.main.play_sound("door_open")
+    sol.audio.play_sound("secret")
+    sol.audio.play_sound("door_open")
     sol.map.npc_remove("prison_1_lock")
     sol.game.savegame_set_boolean(511, true)
   end
@@ -150,8 +150,8 @@ function event_npc_interaction(npc_name)
     if prison_2_nb_messages <= 3 then
       sol.map.dialog_start("dungeon_5.prison_2_locked_"..prison_2_nb_messages)
     else
-      sol.main.play_sound("secret")
-      sol.main.play_sound("door_open")
+      sol.audio.play_sound("secret")
+      sol.audio.play_sound("door_open")
       sol.map.npc_set_position("prison_2_lock", 648, -32)
       sol.game.savegame_set_boolean(512, true)
     end
@@ -161,7 +161,7 @@ end
 function event_door_open(door_name)
 
   if door_name:find("^weak_wall") then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   end
 end
 

@@ -54,8 +54,8 @@ function event_block_moved(block_name)
       sol.map.tile_set_enabled("hole_a", true)
       sol.map.teletransporter_set_enabled("hole_a_teletransporter", true)
       sol.game.savegame_set_boolean(623, true)
-      sol.main.play_sound("jump")
-      sol.main.timer_start(function() sol.main.play_sound("bomb") end, 500)
+      sol.audio.play_sound("jump")
+      sol.main.timer_start(function() sol.audio.play_sound("bomb") end, 500)
     end
   end
 end
@@ -89,14 +89,14 @@ function event_switch_activated(switch_name)
   -- north-east room
   if switch_name == "ne_switch" then
     sol.map.camera_move(960, 312, 250, function()
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("ne_door")
     end)
 
   -- switch that removes the special torch
   elseif switch_name == "special_torch_switch" then
     sol.map.camera_move(960, 120, 250, function()
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.tile_set_enabled("special_torch", false)
       just_removed_special_torch = true
     end)
@@ -119,7 +119,7 @@ function event_camera_back()
   if just_removed_special_torch then
     just_removed_special_torch = false
     sol.main.timer_start(function()
-      sol.main.play_sound("door_closed")
+      sol.audio.play_sound("door_closed")
       sol.map.tile_set_enabled("special_torch", true)
       sol.map.switch_set_activated("special_torch_switch", false)
     end, 8000, true)
@@ -149,7 +149,7 @@ function event_hero_on_sensor(sensor_name)
   elseif sensor_name == "close_boss_door_sensor"
       and sol.map.door_is_open("boss_door") then
     sol.map.door_close("boss_door")
-    sol.main.stop_music()
+    sol.audio.stop_music()
 
   -- boss
   elseif sensor_name == "start_boss_sensor"
@@ -160,7 +160,7 @@ function event_hero_on_sensor(sensor_name)
 
   -- west room
   elseif sensor_name:find("w_room_sensor") then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     local state = sol.map.tile_is_enabled("w_room_tile_1")
     sol.map.tile_set_enabled("w_room_tile_1", not state)
     sol.map.tile_set_enabled("w_room_tile_2", state)
@@ -186,7 +186,7 @@ end
 
 function start_boss()
 
-  sol.main.play_music("boss.spc")
+  sol.audio.play_music("boss")
   sol.map.enemy_set_enabled("boss", true)
   fighting_boss = true
 
@@ -212,7 +212,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.main.play_music("victory.spc")
+    sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
     sol.main.timer_start(start_final_sequence, 9000)
@@ -221,7 +221,7 @@ end
 
 function start_final_sequence()
 
-  sol.main.play_music("dungeon_finished.spc")
+  sol.audio.play_music("dungeon_finished")
   sol.map.hero_set_direction(1)
   sol.map.npc_set_position("sahasrahla", 544, 717)
   sol.map.camera_move(544, 712, 100, function()

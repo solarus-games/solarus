@@ -8,7 +8,7 @@ function event_map_started(destination_point_name)
     sol.map.hero_set_visible(false)
     sol.map.hud_set_enabled(false)
     sol.map.enemy_set_group_enabled("", false)
-    sol.main.play_music("fanfare.spc")
+    sol.audio.play_music("fanfare")
   else
     -- enable dark world
     if sol.game.savegame_get_boolean(905) then
@@ -41,8 +41,8 @@ function event_npc_interaction(npc_name)
 
     -- open the door if the player has the ice key
     if sol.game.has_item("ice_key") then
-      sol.main.play_sound("door_open")
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("door_open")
+      sol.audio.play_sound("secret")
       sol.game.savegame_set_boolean(919, true)
       remove_dungeon_7_lock()
     else

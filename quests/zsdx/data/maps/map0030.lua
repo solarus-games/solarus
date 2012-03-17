@@ -46,7 +46,7 @@ function event_hero_on_sensor(sensor_name)
 end
 
 function miniboss_timer()
-  sol.main.play_music("boss.spc")
+  sol.audio.play_music("boss")
   sol.map.enemy_set_enabled("miniboss", true)
   sol.map.hero_unfreeze()
 end
@@ -54,7 +54,7 @@ end
 function event_enemy_dead(enemy_name)
 
   if enemy_name == "miniboss" then
-    sol.main.play_music("light_world_dungeon.spc")
+    sol.audio.play_music("light_world_dungeon")
     sol.map.door_open("miniboss_door")
   end
 end
@@ -69,7 +69,7 @@ function event_switch_activated(switch_name)
     sol.map.switch_set_activated("pegasus_run_switch_2", true)
     sol.map.camera_move(904, 88, 250, pegasus_run_camera_timer)
   elseif switch_name == "pegasus_run_switch_2" then
-    sol.main.play_sound("door_open")
+    sol.audio.play_sound("door_open")
     sol.map.tile_set_enabled("pegasus_run_barrier", false)
     sol.map.switch_set_activated("pegasus_run_switch", true)
   elseif switch_name == "left_eye_switch" then
@@ -94,41 +94,41 @@ function check_eye_statues()
     sol.map.switch_set_activated("right_eye_switch", false)
 
     if not sol.game.savegame_get_boolean(90) then
-      sol.main.play_sound("switch")
+      sol.audio.play_sound("switch")
       sol.map.camera_move(456, 232, 250, hidden_stairs_timer)
     elseif not sol.game.savegame_get_boolean(91) then
-      sol.main.play_sound("switch")
+      sol.audio.play_sound("switch")
       sol.map.camera_move(520, 320, 250, hidden_door_timer)
     end
   end
 end
 
 function barrier_camera_timer()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.tile_set_enabled("barrier", false)
   sol.game.savegame_set_boolean(78, true)
 end
 
 function pegasus_run_camera_timer()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.tile_set_enabled("pegasus_run_barrier", false)
 end
 
 function pegasus_run_timer()
-  sol.main.play_sound("door_closed")
+  sol.audio.play_sound("door_closed")
   sol.map.tile_set_enabled("pegasus_run_barrier", true)
   sol.map.switch_set_activated("pegasus_run_switch", false)
   sol.map.switch_set_activated("pegasus_run_switch_2", false)
 end
 
 function hidden_stairs_timer()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   open_hidden_stairs()
   sol.game.savegame_set_boolean(90, true)
 end
 
 function hidden_door_timer()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   open_hidden_door()
   sol.game.savegame_set_boolean(91, true)
 end

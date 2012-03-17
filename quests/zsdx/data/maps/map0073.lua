@@ -12,7 +12,7 @@ end
 function event_door_open(door_name)
 
   if door_name == "door" then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   end
 end
 

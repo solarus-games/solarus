@@ -93,8 +93,8 @@ end
 
 function open_statue_door()
 
-  sol.main.play_sound("secret")
-  sol.main.play_sound("door_open")
+  sol.audio.play_sound("secret")
+  sol.audio.play_sound("door_open")
   sol.map.door_open("statue_door")
 end
 
@@ -119,7 +119,7 @@ function event_update()
   if not sol.map.door_is_open("torches_door")
       and are_all_torches_on() then
 
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.door_open("torches_door")
     lock_torches()
   end
@@ -132,7 +132,7 @@ function event_sensor_collision_explosion(sensor_name)
 
     sol.map.tile_set_enabled("weak_floor", false)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.game.savegame_set_boolean(515, true)
     sol.main.timer_start(weak_floor_block_fall, 1500)
   end
@@ -141,19 +141,19 @@ end
 function weak_floor_block_fall()
 
   sol.map.block_set_enabled("weak_floor_block", false)
-  sol.main.play_sound("jump")
+  sol.audio.play_sound("jump")
   sol.main.timer_start(weak_floor_block_fall_end, 200)
 end
 
 function weak_floor_block_fall_end()
 
-  sol.main.play_sound("bomb")
+  sol.audio.play_sound("bomb")
 end
 
 function puzzle_solved()
 
   sol.map.hero_freeze()
-  sol.main.play_sound("enemy_awake")
+  sol.audio.play_sound("enemy_awake")
   sol.main.timer_start(puzzle_solved_2, 1000)
 end
 
@@ -164,7 +164,7 @@ end
 
 function puzzle_solved_3()
 
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.game.savegame_set_boolean(519, true)
   sol.map.dialog_start("dungeon_5.puzzle_solved")
 end

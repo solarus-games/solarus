@@ -50,7 +50,7 @@ local torches = sol.map:find_all("torch")
 function sol.map:on_started(destination)
 
   if not sol.game:get_boolean(881) then
-    sol.audio.play_music("ganon_appears.spc")
+    sol.audio.play_music("ganon_appears")
     boss:set_enabled()
     zelda:set_enabled(false)
     childs:set_enabled(false)

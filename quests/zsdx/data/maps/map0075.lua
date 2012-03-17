@@ -63,7 +63,7 @@ function event_dialog_finished(dialog_id, answer)
           sol.map.dialog_start("chests_game_cave.start_game")
         end
       else
-        sol.main.play_sound("wrong")
+        sol.audio.play_sound("wrong")
         sol.map.dialog_start("chests_game_cave.not_enough_money")
       end
     end
@@ -90,7 +90,7 @@ function event_chest_empty(chest_name)
     sol.map.treasure_give(rewards[index].item_name, rewards[index].variant, rewards[index].savegame_variable)
     playing = false
   else
-    sol.main.play_sound("wrong")
+    sol.audio.play_sound("wrong")
     sol.map.chest_set_open(chest_name, false)
   end
 end

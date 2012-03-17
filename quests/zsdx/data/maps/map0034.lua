@@ -32,7 +32,7 @@ function event_update()
   if not door_open and are_all_torches_on() then
 
     lock_torches()
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.door_open("door")
   end
 end

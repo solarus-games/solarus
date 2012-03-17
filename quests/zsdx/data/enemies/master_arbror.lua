@@ -74,7 +74,7 @@ function prepare_son()
     if sol.map.enemy_get_group_count(son_prefix) < nb_sons_immobilized_needed then
       local sprite = sol.enemy.get_sprite()
       sprite:set_animation("preparing_son")
-      sol.main.play_sound("hero_pushes")
+      sol.audio.play_sound("hero_pushes")
       sol.main.timer_start(create_son, 1000)
       sol.enemy.stop_movement()
     end
@@ -92,7 +92,7 @@ function create_son()
   sol.enemy.create_son(son_name, "arbror_root", x, 80)
   local speed = 48 + (initial_life - sol.enemy.get_life()) * 5
   sol.enemy.send_message(son_name, speed)
-  sol.main.play_sound("stone")
+  sol.audio.play_sound("stone")
 end
 
 function event_sprite_animation_finished(sprite, animation)
@@ -110,7 +110,7 @@ function event_sprite_animation_finished(sprite, animation)
       sol.enemy.set_attack_consequence("arrow", 2)
       sol.enemy.stop_movement()
       sprite:set_animation("vulnerable")
-      sol.main.play_sound("boss_hurt")
+      sol.audio.play_sound("boss_hurt")
       sol.main.timer_stop_all()
       sol.main.timer_start(stop_vulnerable, 4000)
       remove_sons()

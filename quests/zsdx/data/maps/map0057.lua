@@ -49,7 +49,7 @@ function start_boss()
   sol.map.door_close("boss_door")
   sol.main.timer_start(function()
 
-    sol.main.play_music("boss.spc")
+    sol.audio.play_music("boss")
     sol.map.enemy_set_enabled("boss", true)
     sol.map.hero_unfreeze()
     sol.main.timer_start(repeat_lava_spawner, 3000)
@@ -73,7 +73,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.main.play_music("victory.spc")
+    sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
     sol.main.timer_start(start_final_sequence, 9000)
@@ -84,7 +84,7 @@ end
 
 function start_final_sequence()
 
-  sol.main.play_music("dungeon_finished.spc")
+  sol.audio.play_music("dungeon_finished")
   sol.map.hero_set_direction(1)
   sol.map.npc_set_position("tom", 272, 237)
   sol.map.camera_move(272, 232, 100, function()
@@ -97,9 +97,9 @@ function event_dialog_finished(dialog_id)
 
   if dialog_id == "dungeon_6.tom" then
 
-    sol.main.stop_music()
+    sol.audio.stop_music()
     sol.main.timer_start(function()
-      sol.main.play_music("legend.spc")
+      sol.audio.play_music("legend")
       sol.map.dialog_start("dungeon_6.tom_revelation")
       sol.map.dialog_set_variable("dungeon_6.tom_revelation", sol.game.savegame_get_name());
     end,

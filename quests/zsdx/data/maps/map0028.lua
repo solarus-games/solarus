@@ -44,13 +44,13 @@ function jump_from_bed()
   sol.map.hero_start_jumping(4, 24, true)
   sol.map.hud_set_pause_enabled(true)
   bed_sprite:set_animation("empty_open")
-  sol.main.play_sound("hero_lands");
+  sol.audio.play_sound("hero_lands");
 end
 
 function event_door_open(door_name)
 
   if door_name == "weak_wall" then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   end
 end
 

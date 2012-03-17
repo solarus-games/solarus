@@ -8,11 +8,11 @@ function event_use()
 
   local magic_needed = 2 -- number of magic points required
   if sol.game.get_magic() >= magic_needed then
-    sol.main.play_sound("lamp")
+    sol.audio.play_sound("lamp")
     sol.game.remove_magic(magic_needed)
     create_fire()
   else
-    sol.main.play_sound("wrong")
+    sol.audio.play_sound("wrong")
   end
   sol.item.set_finished()
 end

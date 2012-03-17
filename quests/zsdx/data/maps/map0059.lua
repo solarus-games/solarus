@@ -19,21 +19,21 @@ function event_hero_on_sensor(sensor_name)
       sol.main.timer_start(start_evil_tiles, 2000)
     end
   elseif sensor_name == "sensor_1" and sol.map.tile_is_enabled("sensor_1_off") then
-    sol.main.play_sound("switch")
+    sol.audio.play_sound("switch")
     sol.map.tile_set_group_enabled("sensor_1_on", true)
     sol.map.tile_set_group_enabled("sensor_1_off", false)
   elseif sensor_name == "sensor_2" and sol.map.tile_is_enabled("sensor_2_off") then
-    sol.main.play_sound("switch")
+    sol.audio.play_sound("switch")
     sol.map.tile_set_group_enabled("sensor_2_on", true)
     sol.map.tile_set_group_enabled("sensor_2_off", false)
   elseif sensor_name == "sensor_3" and sol.map.tile_is_enabled("sensor_3_off") then
-    sol.main.play_sound("switch")
+    sol.audio.play_sound("switch")
     sol.map.tile_set_group_enabled("sensor_3_off", false)
   elseif sensor_name == "sensor_4" then
-    sol.main.play_sound("switch")
+    sol.audio.play_sound("switch")
     sol.map.tile_set_group_enabled("sensor_4_on", not sol.map.tile_is_enabled("sensor_4_on"))
   elseif sensor_name == "sensor_5" and sol.map.tile_is_enabled("sensor_2_on") then
-    sol.main.play_sound("switch")
+    sol.audio.play_sound("switch")
     sol.map.tile_set_group_enabled("sensor_2_on", false)
   end
 end
@@ -70,7 +70,7 @@ function start_evil_tiles()
   -- plays a sound repeatedly as long as at least one tile is moving
   function repeat_sound()
 
-    sol.main.play_sound("walk_on_grass")
+    sol.audio.play_sound("walk_on_grass")
 
     -- repeat the sound until the last tile starts animation "destroy"
     local again = false

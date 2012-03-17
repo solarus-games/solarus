@@ -108,11 +108,11 @@ function event_npc_interaction(npc_name)
 	--	 end
 	-----------
 
-	sol.main.play_sound("switch")
+	sol.audio.play_sound("switch")
 	sol.map.hero_freeze()
       end
     else
-      sol.main.play_sound("wrong")
+      sol.audio.play_sound("wrong")
       sol.map.dialog_start("rupee_house.pay_first")
     end
   end
@@ -135,7 +135,7 @@ function event_dialog_finished(dialog_id, answer)
 
       if sol.game.get_money() < 20 then
 	-- not enough money
-	sol.main.play_sound("wrong")
+	sol.audio.play_sound("wrong")
 	sol.map.dialog_start("rupee_house.not_enough_money")
 
       else
@@ -173,7 +173,7 @@ function event_dialog_finished(dialog_id, answer)
 
     if sol.game.get_money() < game_2_bet then
       -- not enough money
-      sol.main.play_sound("wrong")
+      sol.audio.play_sound("wrong")
       sol.map.dialog_start("rupee_house.not_enough_money")
     else
       -- enough money: pay and start the game
@@ -207,7 +207,7 @@ function event_dialog_finished(dialog_id, answer)
 
       if sol.game.get_money() < 10 then
 	-- not enough money
-	sol.main.play_sound("wrong")
+	sol.audio.play_sound("wrong")
 	sol.map.dialog_start("rupee_house.not_enough_money")
 
       else
@@ -233,7 +233,7 @@ function event_dialog_finished(dialog_id, answer)
   -- stop game 3 when the player founds the piece of heart
   elseif string.find(dialog_id, "^found_piece_of_heart") then
     sol.map.tile_set_enabled("game_3_final_barrier", false)
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     playing_game_3 = false
   end
 end
@@ -247,7 +247,7 @@ function event_chest_empty(chest_name)
     -- trying to open a chest but not playing yet
     sol.map.dialog_start("rupee_house.pay_first") -- the game man is angry
     sol.map.chest_set_open(chest_name, false) -- close the chest again
-    sol.main.play_sound("wrong")
+    sol.audio.play_sound("wrong")
     sol.map.hero_unfreeze() -- restore the control
   else
     -- give a random reward
@@ -279,7 +279,7 @@ end
 
 -- Function called when the timer of game 3 ends.
 function game_3_timer()
-  sol.main.play_sound("door_closed")
+  sol.audio.play_sound("door_closed")
   sol.map.tile_set_enabled("game_3_middle_barrier", true)
 end
 
@@ -289,7 +289,7 @@ function event_hero_on_sensor(sensor_name)
   if sensor_name == "game_3_sensor" then
     -- stop the timer when the player reaches this point
     sol.main.timer_stop_all()
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.sensor_set_enabled("game_3_sensor", false)
   end
 end
@@ -379,9 +379,9 @@ function game_2_timer()
   end
 
   if game_2_reward ~= 0 then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   else
-    sol.main.play_sound("wrong")
+    sol.audio.play_sound("wrong")
   end
 
   sol.map.hero_unfreeze()

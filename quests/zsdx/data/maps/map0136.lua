@@ -11,10 +11,10 @@ end
 function event_switch_activated(switch_name)
 
   if switch_name:find("^holes_a_switch") then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     change_holes(true)
   elseif switch_name:find("^holes_b_switch") then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     change_holes(false)
   end
 end

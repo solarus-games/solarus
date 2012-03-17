@@ -105,8 +105,8 @@ function set_water_drained(i)
 end
 
 function fill_water_step_1()
-  sol.main.play_sound("water_fill_begin")
-  sol.main.play_sound("water_fill")
+  sol.audio.play_sound("water_fill_begin")
+  sol.audio.play_sound("water_fill")
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", true)
   sol.main.timer_start(fill_water_step_2, water_delay)
 end
@@ -132,8 +132,8 @@ function fill_water_step_4()
 end
 
 function drain_water_step_1()
-  sol.main.play_sound("water_drain_begin")
-  sol.main.play_sound("water_drain")
+  sol.audio.play_sound("water_drain_begin")
+  sol.audio.play_sound("water_drain")
   sol.map.tile_set_enabled("water_"..current_pool_index.."_full", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", true)
   sol.main.timer_start(drain_water_step_2, water_delay)

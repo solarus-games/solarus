@@ -6,7 +6,7 @@ function event_map_started(destination_point_name)
 
   -- enable dark world
   if sol.game.savegame_get_boolean(905) then
-    sol.main.play_music("dark_world.spc")
+    sol.audio.play_music("dark_world")
     sol.map.tileset_set(13)
   end
 
@@ -73,7 +73,7 @@ function event_dialog_finished(dialog_id, answer)
     tom_sprite:set_direction(1)
     sol.main.timer_start(tom_timer_1, 1500)
   elseif dialog_id == "outside_world.tom_dungeon_1_entrance.let_me_see" then
-    sol.main.play_sound("jump")
+    sol.audio.play_sound("jump")
     local m = sol.movement.jump_movement_create(4, 16)
     m:set_property("ignore_obstacles", true)
     sol.map.npc_start_movement("tom", m)
@@ -114,20 +114,20 @@ function tom_timer_3()
 end
 
 function ladder_step1()
-  sol.main.play_sound("door_open")
+  sol.audio.play_sound("door_open")
   sol.map.tile_set_group_enabled("ladder_step1", true)
   sol.map.tile_set_group_enabled("no_ladder_step1", false)
   sol.main.timer_start(ladder_step2, 1000)
 end
 
 function ladder_step2()
-  sol.main.play_sound("door_open")
+  sol.audio.play_sound("door_open")
   sol.map.tile_set_group_enabled("ladder_step2", true)
   sol.main.timer_start(ladder_step3, 1000)
 end
 
 function ladder_step3()
-  sol.main.play_sound("door_open")
+  sol.audio.play_sound("door_open")
   sol.map.tile_set_group_enabled("ladder_step3", true)
   sol.main.timer_start(ladder_step4, 1000)
 end
@@ -135,7 +135,7 @@ end
 function ladder_step4()
   sol.map.tile_set_group_enabled("no_ladder", false)
   sol.map.sensor_set_enabled("tom_appears_sensor", false)
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.game.savegame_set_boolean(52, true)
   sol.map.hero_unfreeze()
 end
@@ -150,7 +150,7 @@ end
 
 function edelweiss_explode()
 
-  sol.main.play_sound("explosion")
+  sol.audio.play_sound("explosion")
   sol.map.explosion_create(160, 72, 0)
   sol.map.tile_set_enabled("beaumont_cave_hole", true)
   sol.map.teletransporter_set_enabled("to_beaumont_cave", true)
@@ -160,7 +160,7 @@ function edelweiss_explode()
 end
 
 function edelweiss_end()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.hero_unfreeze()
 end
 

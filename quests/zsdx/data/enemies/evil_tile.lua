@@ -56,7 +56,7 @@ function destroy()
     sol.enemy.set_can_attack(false)
     sol.enemy.stop_movement()
     sprite:set_animation("destroy")
-    sol.main.play_sound("stone")
+    sol.audio.play_sound("stone")
     sol.main.timer_stop_all()
   end
 end

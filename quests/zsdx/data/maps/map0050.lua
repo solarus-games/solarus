@@ -39,10 +39,10 @@ function event_block_moved(block_name)
   if x >= 1096 and x <= 1160
       and y >= 893 and y <= 925 then
     sol.map.block_set_enabled("STT5", false)
-    sol.main.play_sound("jump")
+    sol.audio.play_sound("jump")
     sol.game.savegame_set_boolean(725, true)
     sol.main.timer_start(function()
-      sol.main.play_sound("bomb")
+      sol.audio.play_sound("bomb")
     end, 500)
   end
 end
@@ -52,21 +52,21 @@ function event_switch_activated(switch_name)
     sol.game.savegame_set_boolean(720, true)
     if sol.game.savegame_get_boolean(721) then
       sol.map.door_open("LD14")
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
     end
   elseif switch_name == "DB2" then
     sol.game.savegame_set_boolean(721, true)
     if sol.game.savegame_get_boolean(720) then
       sol.map.door_open("LD14")
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
     end
   elseif switch_name == "DB3" then
     sol.map.door_open("LD12")
     sol.map.door_open("LD13")
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   end
   if DB1_status == true and DB2_status == true then
     sol.map.door_open("LD14")
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   end
 end

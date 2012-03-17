@@ -12,7 +12,7 @@ function event_npc_interaction(npc_name)
   if npc_name == "solarus_child" then
     if sol.game.is_dungeon_finished(1) then
       -- dialog already done
-      sol.main.play_sound("warp")
+      sol.audio.play_sound("warp")
       sol.map.hero_set_map(6, "from_dungeon_1_1F", 1)
     else
       -- start the final sequence

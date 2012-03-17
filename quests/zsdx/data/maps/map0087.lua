@@ -13,7 +13,7 @@ function event_npc_interaction(npc_name)
   if npc_name == "solarus_child" then
     if sol.game.is_dungeon_finished(4) then
       -- dialog already done
-      sol.main.play_sound("warp")
+      sol.audio.play_sound("warp")
       sol.map.hero_set_map(66, "from_dungeon_4", 1)
     else
       -- start the final sequence
@@ -52,15 +52,15 @@ function agahnim_sequence_2()
 
   local sprite = sol.map.npc_get_sprite("solarus_child")
   sprite:fade(1)
-  sol.main.stop_music()
-  sol.main.play_sound("warp")
+  sol.audio.stop_music()
+  sol.audio.play_sound("warp")
   sol.main.timer_start(agahnim_sequence_3, 3000)
 end
 
 function agahnim_sequence_3()
 
   sol.map.npc_set_position("agahnim", 160, 141)
-  sol.main.play_music("agahnim.spc")
+  sol.audio.play_music("agahnim")
   sol.main.timer_start(agahnim_sequence_4, 1000)
 end
 
@@ -74,7 +74,7 @@ function agahnim_sequence_5()
 -- FIXME not working
 --  s = sol.map.npc_get_sprite("agahnim")
 --  s:fade(1)
---  sol.main.play_sound("warp")
+--  sol.audio.play_sound("warp")
   sol.main.timer_start(agahnim_sequence_6, 2000)
 end
 

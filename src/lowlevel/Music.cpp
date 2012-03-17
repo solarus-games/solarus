@@ -34,7 +34,7 @@ const MusicId Music::unchanged = "same";
 
 /**
  * @brief Creates a new music.
- * @param music_id id of the music (a file name)
+ * @param music_id id of the music (file name without extension)
  */
 Music::Music(const MusicId& music_id):
   id(music_id) {
@@ -43,26 +43,23 @@ Music::Music(const MusicId& music_id):
     return;
   }
 
-  // compute the file name
-  file_name = (std::string) "musics/" + music_id;
-
-  // get the format
-  size_t index = music_id.find_last_of(".");
-  Debug::check_assertion(index != std::string::npos && index != music_id.size(),
-    StringConcat() << "Invalid music file name: " << music_id);
-  std::string extension = music_id.substr(index + 1);
-
-  if (extension == "spc" || extension == "SPC" || extension == "Spc") {
-    format = SPC;
-  }
-  else if (extension == "it" || extension == "IT" || extension == "It") {
-    format = IT;
-  }
-  else if (extension == "ogg" || extension == "OGG" || extension == "Ogg") {
+  // find the file
+  std::string file_name_start = (std::string) "musics/" + music_id;
+  if (FileTools::data_file_exists(file_name_start + ".ogg")) {
     format = OGG;
+    file_name = file_name_start + ".ogg";
+  }
+  else if (FileTools::data_file_exists(file_name_start + ".it")) {
+    format = IT;
+    file_name = file_name_start + ".it";
+  }
+  else if (FileTools::data_file_exists(file_name_start + ".spc")) {
+    format = SPC;
+    file_name = file_name_start + ".spc";
   }
   else {
-    Debug::die(StringConcat() << "Unrecognized music file format: " << music_id);
+    Debug::die(StringConcat() << "Cannot find music file 'musics/" << music_id
+        << "' (tried extensions .ogg, .it and .spc)");
   }
 
   for (int i = 0; i < nb_buffers; i++) {
@@ -167,7 +164,7 @@ const MusicId& Music::get_current_music_id() {
  * The music specified can also be Music::none_id (then the current music is just stopped)
  * or even Music::unchanged_id (nothing is done in this case).
  *
- * @param music_id id of the music to play
+ * @param music_id id of the music to play (file name without extension)
  */
 void Music::play(const MusicId& music_id) {
 

@@ -19,7 +19,7 @@ end
 
 function start_music()
 
-  sol.main.play_music("soldiers.spc")
+  sol.audio.play_music("soldiers")
   sol.main.timer_start(start_fight, 1500)
 end
 

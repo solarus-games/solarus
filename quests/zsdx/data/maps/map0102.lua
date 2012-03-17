@@ -91,7 +91,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.door_close("miniboss_door")
     fighting_miniboss = true
     sol.main.timer_start(function()
-      sol.main.play_music("boss.spc")
+      sol.audio.play_music("boss")
       sol.map.enemy_set_group_enabled("miniboss", true)
       sol.map.hero_unfreeze()
     end,
@@ -125,13 +125,13 @@ function event_switch_activated(switch_name)
   -- door F
   if switch_name == "door_f_switch" then
     sol.map.camera_move(1040, 760, 250, function()
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("door_f")
     end)
 
   -- door D
   elseif switch_name == "door_d_switch" then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.door_open("door_d")
 
   -- shortcut to the boss
@@ -139,7 +139,7 @@ function event_switch_activated(switch_name)
     sol.map.tile_set_group_enabled("shortcut_on", true)
     sol.map.tile_set_group_enabled("shortcut_off", false)
     sol.game.savegame_set_boolean(628, true)
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
  
   -- code
   else
@@ -156,14 +156,14 @@ function event_switch_activated(switch_name)
         if code_next_index == 9 then
 	  if not sol.map.door_is_open("door_a") then
 	    sol.map.camera_move(72, 552, 250, function()
-	      sol.main.play_sound("secret")
+	      sol.audio.play_sound("secret")
 	      sol.map.door_open("door_a")
 	    end)
 	  else
-	    sol.main.play_sound("secret")
+	    sol.audio.play_sound("secret")
 	  end
 	else
-	  sol.main.play_sound("wrong")
+	  sol.audio.play_sound("wrong")
 	  for i = 1, 8 do
 	    sol.map.switch_set_activated("code_switch_" .. i, false)
 	  end
@@ -197,7 +197,7 @@ function event_enemy_dead(enemy_name)
   -- west enemies room
   if string.find(enemy_name, "^w_room_enemy")
       and sol.map.enemy_is_group_dead("w_room_enemy") then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     if not sol.map.door_is_open("door_c") then
       sol.map.door_open("door_c")
     end
@@ -209,8 +209,8 @@ function event_enemy_dead(enemy_name)
   elseif string.find(enemy_name, "^miniboss")
       and sol.map.enemy_is_group_dead("miniboss") then
 
-    sol.main.play_music("dark_world_dungeon.spc")
-    sol.main.play_sound("secret")
+    sol.audio.play_music("dark_world_dungeon")
+    sol.audio.play_sound("secret")
     sol.map.door_open("miniboss_door")
     sol.game.savegame_set_boolean(620, true)
   end
@@ -241,7 +241,7 @@ function event_update()
 
     lock_torches()
     sol.map.camera_move(32, 120, 250, function()
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.npc_set_position("nw_hint_stone", 32, 125)
     end)
   end
@@ -255,7 +255,7 @@ function event_sensor_collision_explosion(sensor_name)
     sol.map.tile_set_group_enabled("weak_floor", false)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.map.teletransporter_set_enabled("weak_floor_teletransporter", true)
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.game.savegame_set_boolean(619, true)
   end
 end

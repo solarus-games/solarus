@@ -25,19 +25,19 @@ function event_switch_activated(switch_name)
 end
 
 function camera_1_timer()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.tile_set_enabled("barrier", false)
   sol.game.savegame_set_boolean(38, true)
 end
 
 function battle_1_camera_timer()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.tile_set_enabled("battle_1_barrier", false)
 end
 
 
 function battle_2_camera_timer()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.tile_set_enabled("battle_2_barrier", false)
 end
 
@@ -70,7 +70,7 @@ function event_dialog_finished(message_id, answer)
   elseif message_id == "lyriann_cave.tom.accept_help" then
     sol.map.treasure_give("boomerang", 1, 41)
   elseif message_id == "lyriann_cave.tom.leaving" then
-    sol.main.play_sound("warp")
+    sol.audio.play_sound("warp")
     sol.map.hero_set_direction(1)
     sol.main.timer_start(start_moving_tom, 1700)
   elseif message_id == "lyriann_cave.tom.not_finished" and answer == 1 then

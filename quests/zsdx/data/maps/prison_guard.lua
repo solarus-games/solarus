@@ -47,7 +47,7 @@ function seen_by_guard(guard_name)
   local m = sol.movement.target_movement_create(96)
   sol.map.npc_start_movement(guard_name, m)
   sol.main.timer_start(prison_dialog, 500)
-  sol.main.play_sound("hero_seen")
+  sol.audio.play_sound("hero_seen")
 end
 
 function prison_dialog()

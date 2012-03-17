@@ -48,7 +48,7 @@ function start_evil_tiles()
   -- plays a sound repeatedly as long as at least one tile is moving
   function repeat_sound()
 
-    sol.main.play_sound("walk_on_grass")
+    sol.audio.play_sound("walk_on_grass")
 
     -- repeat the sound until the last tile starts animation "destroy"
     local again = false
@@ -97,12 +97,12 @@ function event_switch_activated(switch_name)
   if switch_name == "switch1_1" then
     if not door3 then
       sol.map.door_open("door3")
-      sol.main.play_sound("door_open")
+      sol.audio.play_sound("door_open")
       sol.main.timer_start(function()
         if not door3 then
           sol.map.switch_set_activated("switch1_1", false)
           sol.map.door_close("door3")
-          sol.main.play_sound("door_closed")
+          sol.audio.play_sound("door_closed")
         end
       end, 5000, true)
     end

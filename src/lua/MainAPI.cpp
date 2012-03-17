@@ -15,8 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/Script.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/Music.h"
 #include "lowlevel/Geometry.h"
 #include "Timer.h"
 #include "CustomScreen.h"
@@ -36,9 +34,6 @@ void Script::initialize_main_module() {
       { "exit", main_api_exit },
       { "start_screen", main_api_start_screen },
       { "start_game", main_api_start_game },
-      { "play_sound", main_api_play_sound },
-      { "play_music", main_api_play_music },
-      { "stop_music", main_api_stop_music },
       { "timer_start", main_api_timer_start },
       { "timer_stop_all", main_api_timer_stop_all },
       { "get_distance", main_api_get_distance },
@@ -113,54 +108,6 @@ int Script::main_api_start_game(lua_State* l) {
   const std::string savegame_file = luaL_checkstring(l, 1);
 
   script.get_screen().start_game(savegame_file);
-
-  return 0;
-}
-
-/**
- * @brief Plays a sound.
- *
- * - Argument 1 (string): name of the sound
- *
- * @param l the Lua context that is calling this function
- */
-int Script::main_api_play_sound(lua_State *l) {
-
-  get_script(l);
-  const SoundId &sound_id = luaL_checkstring(l, 1);
-
-  Sound::play(sound_id);
-
-  return 0;
-}
-
-/**
- * @brief Plays a music.
- *
- * - Argument 1 (string): name of the music (possibly "none" or "same")
- *
- * @param l the Lua context that is calling this function
- */
-int Script::main_api_play_music(lua_State *l) {
-
-  Script& script = get_script(l);
-  const MusicId &music_id = luaL_checkstring(l, 1);
-  Music::play(music_id);
-  script.music_played = true;
-
-  return 0;
-}
-
-/**
- * @brief Stops playing any music.
- * @param l the Lua context that is calling this function
- */
-int Script::main_api_stop_music(lua_State* l) {
-
-  Script& script = get_script(l);
-
-  Music::play(Music::none);
-  script.music_played = true;
 
   return 0;
 }

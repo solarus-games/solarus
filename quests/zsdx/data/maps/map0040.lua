@@ -81,7 +81,7 @@ function event_update()
 
     lock_torches()
     sol.map.camera_move(584, 360, 250, function()
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("torches_door")
     end)
   end
@@ -99,18 +99,18 @@ function event_switch_activated(switch_name)
 end
 
 function open_se_door()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.door_open("se_door")
 end
 
 function open_ce_door()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.door_open("ce_door")
 end
 
 function remove_c_water()
-  sol.main.play_sound("water_drain_begin")
-  sol.main.play_sound("water_drain")
+  sol.audio.play_sound("water_drain_begin")
+  sol.audio.play_sound("water_drain")
   sol.map.tile_set_enabled("c_water_out", true)
   sol.map.tile_set_enabled("c_water_source", false)
   sol.main.timer_start(remove_c_water_2, remove_water_delay)
@@ -144,6 +144,6 @@ function remove_c_water_6()
   sol.map.jumper_set_group_enabled("c_water_on_jumper", false)
   sol.map.obstacle_set_group_enabled("c_water_off_obstacle", true)
   sol.game.savegame_set_boolean(121, true)
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
 end
 

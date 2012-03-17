@@ -10,7 +10,7 @@ function event_menu_started()
   phase = "black"
 
   title_surface = sol.surface.create()
-  sol.main.timer_start(phase_zs_presents, 300)
+  sol.timer.start(300, phase_zs_presents)
 end
 
 function phase_zs_presents()
@@ -24,9 +24,9 @@ function phase_zs_presents()
   local width, height = zs_presents_img:get_size()
   local x, y = 160 - width / 2, 120 - height / 2
   title_surface:draw(zs_presents_img, x, y)
-  sol.main.play_sound("intro")
+  sol.audio.play_sound("intro")
 
-  sol.main.timer_start(phase_title, 2000)
+  sol.timer.start(2000, phase_title)
 end
 
 function phase_title()
@@ -35,7 +35,7 @@ function phase_title()
   phase = "title"
 
   -- start music
-  sol.main.play_music("title_screen.spc")
+  sol.audio.play_music("title_screen")
 
   -- show a background that depends on the hour of the day
   local hours = tonumber(os.date("%H"))
@@ -76,21 +76,21 @@ function phase_title()
   }
 
   -- set up the appearance of images and texts
-  sol.main.timer_start(function()
-    sol.main.play_sound("ok")
+  sol.timer.start(5000, function()
+    sol.audio.play_sound("ok")
     dx_img = sol.surface.create("menus/title_dx.png")
-  end, 5000)
+  end)
 
-  sol.main.timer_start(function()
+  sol.timer.start(6000, function()
     star_img = sol.surface.create("menus/title_star.png")
-  end, 6000)
+  end)
 
   show_press_space = false
   function switch_press_space()
     show_press_space = not show_press_space
-    sol.main.timer_start(switch_press_space, 500)
+    sol.timer.start(500, switch_press_space)
   end
-  sol.main.timer_start(switch_press_space, 6500)
+  sol.timer.start(6500, switch_press_space)
 
   -- make the clouds move
   clouds_xy = {x = 320, y = 240}
@@ -104,9 +104,9 @@ function phase_title()
     if clouds_xy.y < 0 then
       clouds_xy.y = clouds_xy.y + 299
     end
-    sol.main.timer_start(move_clouds, 50)
+    sol.timer.start(50, move_clouds)
   end
-  sol.main.timer_start(move_clouds, 50)
+  sol.timer.start(50, move_clouds)
 
   -- show an opening transition
   title_surface:fade_in(30)
@@ -183,7 +183,7 @@ function try_finish_title()
     finished = true
 
     title_surface:fade_out(30, function()
-      sol.main.stop_music()
+      sol.audio.stop_music()
       sol.main.start_screen("savegames")
     end)
   end

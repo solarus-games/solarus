@@ -8,7 +8,7 @@ function event_map_started(destination_point_name)
 
   if sol.game.savegame_get_boolean(905) then
     -- enable dark world
-    new_music = "dark_world.spc"
+    new_music = "dark_world"
     sol.map.tileset_set(13)
     sol.map.tile_set_group_enabled("castle_east_bridge", false)
     sol.map.tile_set_group_enabled("castle_east_bridge_off", true)
@@ -37,7 +37,7 @@ function event_map_started(destination_point_name)
   end
 
   if new_music ~= nil then
-    sol.main.play_music(new_music)
+    sol.audio.play_music(new_music)
   end
 end
 
@@ -52,8 +52,8 @@ function open_castle_door()
 
   sol.map.tile_set_enabled("castle_door", false)
   sol.game.savegame_set_boolean(907, true)
-  sol.main.play_sound("secret")
-  sol.main.play_sound("door_open")
+  sol.audio.play_sound("secret")
+  sol.audio.play_sound("door_open")
 end
 
 function event_npc_interaction(npc_name)
@@ -67,7 +67,7 @@ function event_npc_interaction(npc_name)
       local x, y = sol.map.npc_get_position(npc_name)
       sol.map.hero_set_position(x, y, 0)
       sol.map.hero_set_visible(false)
-      sol.main.play_sound("bomb")
+      sol.audio.play_sound("bomb")
       sol.main.timer_start(cannon_jump, 2000)
     end
   end
@@ -75,7 +75,7 @@ end
 
 function cannon_jump()
 
-  sol.main.play_sound("explosion")
+  sol.audio.play_sound("explosion")
   sol.map.explosion_create(296, 384, 0)
   sol.map.hero_start_jumping(6, 424, true)
   sol.map.hero_set_visible(true)
@@ -93,14 +93,14 @@ function event_hero_on_sensor(sensor_name)
     sol.map.tile_set_group_enabled("castle_roof_entrance", false)
     sol.map.stairs_set_enabled("castle_roof_stairs", false)
     sol.map.teletransporter_set_enabled("teletransporter_dw_roof", false)
-    sol.main.play_sound("door_closed")
+    sol.audio.play_sound("door_closed")
     sol.main.timer_start(start_boss, 1000)
   end
 end
 
 function start_boss()
 
-  sol.main.play_music("ganon_appears.spc")
+  sol.audio.play_music("ganon_appears")
   sol.map.enemy_set_enabled("boss", true)
   sol.map.dialog_start("dungeon_5.agahnim_beginning")
   sol.map.hero_unfreeze()
@@ -110,7 +110,7 @@ end
 function event_dialog_finished(dialog_id, answer)
 
   if dialog_id == "dungeon_5.agahnim_beginning" then
-    sol.main.play_music("ganon_battle.spc")
+    sol.audio.play_music("ganon_battle")
   end
 end
 
@@ -119,7 +119,7 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
   if item_name == "heart_container" then
     sol.game.set_dungeon_finished(5)
     sol.main.timer_start(leave_boss, 9000)
-    sol.main.play_music("victory.spc")
+    sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
   end
@@ -132,6 +132,6 @@ function leave_boss()
 end
 
 function restore_music()
-  sol.main.play_music("dark_world.spc")
+  sol.audio.play_music("dark_world")
 end
 

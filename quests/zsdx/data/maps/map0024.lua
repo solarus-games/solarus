@@ -25,14 +25,14 @@ end
 function start_boss()
 
   sol.map.enemy_set_enabled("boss", true)
-  sol.main.play_music("boss.spc")
+  sol.audio.play_music("boss")
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.main.timer_start(open_final_room, 9000)
-    sol.main.play_music("victory.spc")
+    sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
   end
@@ -47,7 +47,7 @@ end
 
 function open_se_door()
 
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.door_open("se_door")
   sol.map.switch_set_activated("se_switch", true)
 end
@@ -55,7 +55,7 @@ end
 function open_final_room()
 
   sol.map.door_open("final_room_door")
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.hero_unfreeze()
 end
 

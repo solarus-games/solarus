@@ -10,7 +10,7 @@ function event_map_started(destination_point_name)
 
   -- enable dark world
   if sol.game.savegame_get_boolean(905) then
-    sol.main.play_music("dark_world.spc")
+    sol.audio.play_music("dark_world")
     sol.map.tileset_set(13)
   end
 
@@ -59,10 +59,10 @@ function event_npc_interaction(npc_name)
 
     if not sol.game.savegame_get_boolean(24) then
       -- monkey first dialog
-      sol.main.play_sound("monkey")
+      sol.audio.play_sound("monkey")
       sol.map.dialog_start("outside_world.village.monkey")
     else
-      sol.main.play_sound("monkey")
+      sol.audio.play_sound("monkey")
       sol.map.dialog_start("outside_world.dungeon_2_entrance.monkey")
     end
   
@@ -70,8 +70,8 @@ function event_npc_interaction(npc_name)
 
     -- open the door if the player has the Rock Key
     if sol.game.has_item("rock_key") then
-      sol.main.play_sound("door_open")
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("door_open")
+      sol.audio.play_sound("secret")
       sol.game.savegame_set_boolean(89, true)
       remove_dungeon_2_door()
     else
@@ -104,7 +104,7 @@ function event_dialog_finished(dialog_id, answer)
   elseif dialog_id == "outside_world.village.monkey.with_shield" then
     -- make the monkey leave
     sol.map.hero_freeze()
-    sol.main.play_sound("monkey")
+    sol.audio.play_sound("monkey")
     local m = sol.movement.jump_movement_create(1, 24)
     m:set_property("ignore_obstacles", true)
     m:set_property("speed", monkey_jump_speed)
@@ -126,7 +126,7 @@ function event_npc_movement_finished(npc_name)
     sol.main.timer_start(monkey_timer, 300)
   elseif monkey_jumps == 2 then
     -- second jump finished: start the last jump
-    sol.main.play_sound("monkey")
+    sol.audio.play_sound("monkey")
     local m = sol.movement.jump_movement_create(1, 64)
     m:set_property("ignore_obstacles", true)
     m:set_property("speed", monkey_jump_speed)
@@ -143,7 +143,7 @@ end
 -- Function called when the monkey timer expires.
 function monkey_timer()
   -- start the second jump
-  sol.main.play_sound("monkey")
+  sol.audio.play_sound("monkey")
   local m = sol.movement.jump_movement_create(2, 56)
   m:set_property("ignore_obstacles", true)
   m:set_property("speed", monkey_jump_speed)
@@ -155,7 +155,7 @@ end
 function event_door_open(door_name)
 
   if door_name == "dungeon_3_entrance_weak_block" then
-    sol.main.play_sound("secret") -- play the sound only once
+    sol.audio.play_sound("secret") -- play the sound only once
   end
 end
 
@@ -175,7 +175,7 @@ function event_hero_still_on_sensor(sensor_name)
       if sol.map.hero_get_direction() == 1
           and sol.map.tile_is_enabled(entrances[i] .. "_door") then
         sol.map.tile_set_enabled(entrances[i] .. "_door", false)
-        sol.main.play_sound("door_open")
+        sol.audio.play_sound("door_open")
       end
       break
     end

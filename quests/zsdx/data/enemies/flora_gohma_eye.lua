@@ -80,7 +80,7 @@ function event_custom_attack_received(attack, sprite)
 	    "hurt") then
       petals[i].life = petals[i].life - 1
       sol.enemy.hurt(0)
-      sol.main.play_sound("enemy_hurt")
+      sol.audio.play_sound("enemy_hurt")
       petals[i].sprite:set_animation("petal_hurt_"..i)
       sol.main.timer_start(function()
 
@@ -89,7 +89,7 @@ function event_custom_attack_received(attack, sprite)
 	  petals[i].sprite:set_animation("petal_"..i)
 	else
 	  -- destroy the petal
-	  sol.main.play_sound("stone")
+	  sol.audio.play_sound("stone")
 	  sol.enemy.remove_sprite(petals[i].sprite)
 	  petals[i].sprite = nil
 

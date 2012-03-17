@@ -28,7 +28,7 @@ function event_dialog_finished(dialog_id, answer)
       -- wants to buy the sword
       if sol.game.get_money() < sword_price then
         -- not enough money
-        sol.main.play_sound("wrong")
+        sol.audio.play_sound("wrong")
         sol.map.dialog_start("smith_cave.not_enough_money")
       else
         -- enough money: buy the sword
@@ -43,7 +43,7 @@ end
 function event_treasure_obtaining(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
-    sol.main.play_sound("treasure")
+    sol.audio.play_sound("treasure")
   end
 end
 

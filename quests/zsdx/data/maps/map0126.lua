@@ -24,9 +24,9 @@ end
 function event_dialog_finished(dialog_id)
 
   if dialog_id == "hidden_palace.using_bone_key" then
-    sol.main.play_sound("door_open")
-    sol.main.play_sound("door_unlocked")
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("door_open")
+    sol.audio.play_sound("door_unlocked")
+    sol.audio.play_sound("secret")
     sol.map.npc_remove("bone_key_door")
     sol.game.savegame_set_boolean(934, true)
   end

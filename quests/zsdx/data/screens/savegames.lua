@@ -3,7 +3,7 @@
 function event_menu_started()
 
   -- music
-  sol.main.play_music("game_over.spc")
+  sol.audio.play_music("game_over")
 end
 
 function event_key_pressed(key)

@@ -11,12 +11,12 @@ function event_map_started(destination_point_name)
     sol.map.hero_set_visible(false)
     sol.map.hud_set_enabled(false)
     sol.map.enemy_set_group_enabled("", false)
-    new_music = "fanfare.spc"
+    new_music = "fanfare"
     sol.map.tile_set_group_enabled("roof_entrance", false)
   else
     -- enable dark world
     if sol.game.savegame_get_boolean(905) then
-      new_music = "dark_mountain.spc"
+      new_music = "dark_mountain"
       sol.map.tileset_set(13)
     end
 
@@ -42,7 +42,7 @@ function event_map_started(destination_point_name)
   end
 
   if new_music ~= nil then
-    sol.main.play_music(new_music)
+    sol.audio.play_music(new_music)
   end
 end
 
@@ -65,14 +65,14 @@ function event_hero_on_sensor(sensor_name)
     sol.map.tile_set_group_enabled("roof_entrance", false)
     sol.map.stairs_set_enabled("roof_stairs", false)
     sol.map.teletransporter_set_enabled("roof_teletransporter", false)
-    sol.main.play_sound("door_closed")
+    sol.audio.play_sound("door_closed")
     sol.main.timer_start(start_boss, 1000)
   end
 end
 
 function start_boss()
 
-  sol.main.play_music("boss.spc")
+  sol.audio.play_music("boss")
   sol.map.enemy_set_enabled("boss", true)
   sol.map.hero_unfreeze()
   fighting_boss = true
@@ -110,7 +110,7 @@ end
 function event_treasure_obtaining(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
-    sol.main.play_music("excalibur.spc")
+    sol.audio.play_music("excalibur")
   end
 end
 
@@ -129,9 +129,9 @@ function event_hero_victory_sequence_finished()
 
   sol.main.timer_start(function()
     if sol.game.savegame_get_boolean(905) then
-      sol.main.play_music("dark_mountain.spc")
+      sol.audio.play_music("dark_mountain")
     else
-      sol.main.play_music("overworld.spc")
+      sol.audio.play_music("overworld")
     end
   end, 1000)
 end

@@ -8,7 +8,7 @@ function event_hero_on_sensor(sensor_name)
       sol.map.tile_set_enabled("laser_eye_open", false)
       sol.map.tile_set_enabled("laser_eye_closed", true)
       sol.map.enemy_set_enabled("laser", false)
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
     end
   end
 end

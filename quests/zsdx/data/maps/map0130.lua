@@ -45,7 +45,7 @@ local bonuses_done = {}
 function event_map_started(destination_point_name)
 
   if not sol.game.savegame_get_boolean(881) then
-    sol.main.play_music("ganon_appears.spc")
+    sol.audio.play_music("ganon_appears")
     sol.map.enemy_set_enabled("boss", true)
     sol.map.npc_set_enabled("zelda", false)
     sol.map.npc_set_group_enabled("child", false)
@@ -70,14 +70,14 @@ end
 function event_dialog_finished(dialog_id)
 
   if dialog_id == "dungeon_9.boss" then
-    sol.main.play_music("ganon_battle.spc")
+    sol.audio.play_music("ganon_battle")
   elseif dialog_id == "dungeon_9.zelda" then
     sol.main.timer_start(function()
       sol.map.dialog_start("dungeon_9.zelda_children")
     end, 1000)
   elseif dialog_id == "dungeon_9.zelda_children" then
-    sol.main.stop_music()
-    sol.main.play_sound("world_warp")
+    sol.audio.stop_music()
+    sol.audio.play_sound("world_warp")
     sol.main.timer_start(function()
       for i = 1, 8 do
 	sol.map.npc_get_sprite("child_" .. i):fade(1)
@@ -104,7 +104,7 @@ function start_final_sequence()
 
   sol.map.hero_freeze()
   sol.map.hero_set_direction(3)
-  sol.main.play_music("victory.spc")
+  sol.audio.play_music("victory")
   sol.main.timer_start(function()
     sol.map.hero_set_map(130, "from_boss", 1)
   end, 9000)
@@ -113,7 +113,7 @@ end
 
 function start_zelda_sequence()
 
-  sol.main.play_music("triforce.spc")
+  sol.audio.play_music("triforce")
   sol.map.hero_freeze()
   sol.map.hero_set_direction(1)
   sol.map.npc_set_enabled("zelda", true)
@@ -156,7 +156,7 @@ function event_npc_collision_fire(npc_name)
 	if sol.map.switch_is_enabled("switch_1") then
 	  sol.map.tile_set_group_enabled("switch_floor", false)
 	  sol.map.switch_set_group_enabled("switch", false)
-	  sol.main.play_sound("door_closed")
+	  sol.audio.play_sound("door_closed")
 	end
         check_torches()
       end, torches_delay)
@@ -198,7 +198,7 @@ function check_torches()
   if #on == #states then
    -- all torches are on
     if torches_error then
-      sol.main.play_sound("wrong")
+      sol.audio.play_sound("wrong")
       torches_error = false
       torches_next = nil
       torches_nb_on = 0
@@ -274,13 +274,13 @@ function torches_solved()
   if sol.map.tile_is_enabled("floor_down_1") then
     -- phase 1
     if allow_stone_creation then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       create_stone()
     end
   else
     -- phase 2
-    sol.main.play_sound("secret")
-    sol.main.play_sound("door_open")
+    sol.audio.play_sound("secret")
+    sol.audio.play_sound("door_open")
     sol.map.tile_set_group_enabled("switch_floor", true)
     sol.map.switch_set_group_enabled("switch", true)
     for i = 1, 4 do
@@ -303,24 +303,24 @@ function event_switch_activated(switch_name)
   if index == 1 then
     -- kill small enemies
     if sol.map.enemy_get_group_count("boss_") > 0 then
-      sol.main.play_sound("enemy_killed")
+      sol.audio.play_sound("enemy_killed")
       sol.map.enemy_remove_group("boss_")
     end
 
   elseif index == 2 then
     -- create the stone that makes Ganon vulnerable
     if allow_stone_creation then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       create_stone()
     end
 
   elseif index == 3 then
     -- create pickable items
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     create_pickables()
 
   else
-    sol.main.play_sound("wrong")
+    sol.audio.play_sound("wrong")
     create_bats()
   end
 end

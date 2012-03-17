@@ -4,7 +4,7 @@ function event_map_started(destination_point_name)
 
   -- enable dark world
   if sol.game.savegame_get_boolean(905) then
-    sol.main.play_music("dark_world.spc")
+    sol.audio.play_music("dark_world")
     sol.map.tileset_set(13)
   end
 
@@ -50,8 +50,8 @@ function event_npc_interaction(npc_name)
 
     -- open the door if the player has the iron key
     if sol.game.has_item("iron_key") then
-      sol.main.play_sound("door_open")
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("door_open")
+      sol.audio.play_sound("secret")
       sol.game.savegame_set_boolean(193, true)
       remove_iron_lock()
     else
@@ -62,8 +62,8 @@ function event_npc_interaction(npc_name)
 
     -- open the door if the player has the wooden key
     if sol.game.has_item("wooden_key") then
-      sol.main.play_sound("door_open")
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("door_open")
+      sol.audio.play_sound("secret")
       sol.game.savegame_set_boolean(194, true)
       remove_wooden_lock()
     else
@@ -113,14 +113,14 @@ function event_hero_still_on_sensor(sensor_name)
     if sol.map.hero_get_direction() == 1
         and sol.map.tile_is_enabled("potion_shop_door") then
       sol.map.tile_set_enabled("potion_shop_door", false)
-      sol.main.play_sound("door_open")
+      sol.audio.play_sound("door_open")
     end
   end
 end
 
 function inferno_open_finish()
 
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.hero_unfreeze()
   sol.game.savegame_set_boolean(914, true)
   inferno_set_open()

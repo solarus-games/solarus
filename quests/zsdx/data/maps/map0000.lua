@@ -19,7 +19,7 @@ function event_dialog_finished(dialog_id)
 
   if fresco == 0 then
     sol.map.tile_set_enabled("black_screen", false)
-    sol.main.play_music("legend.spc")
+    sol.audio.play_music("legend")
     next_fresco()
   else
     fresco_sprite:fade(1)

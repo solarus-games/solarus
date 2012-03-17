@@ -45,7 +45,7 @@ function prepare_flames()
   local nb_to_create = 3 + life_lost
 
   function repeat_throw_flame()
-    sol.main.play_sound("lamp")
+    sol.audio.play_sound("lamp")
     local son_name = prefix .. nb_sons_created
     sol.enemy.create_son(son_name, "red_flame", 0, -16, 0)
     nb_to_create = nb_to_create - 1

@@ -73,26 +73,26 @@ function event_switch_activated(switch_name)
   elseif switch_name == "BB2" then
     -- LB2 room
     sol.map.tile_set_enabled("LB2", false)
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   elseif switch_name == "DB4" then
     sol.map.door_open("LD4")
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   elseif switch_name == "DB06" then
     -- 4 statues room door opening
     sol.map.door_open("LD6")
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   elseif string.match(switch_name, "^RPS") then
     -- Resets position of statues
     sol.map.block_reset("STT1")
     sol.map.block_reset("STT2")
     sol.map.block_reset("STT3")
-    sol.main.play_sound("warp")
+    sol.audio.play_sound("warp")
   end
 end
 
 function BB1_remove_barrier()
   sol.map.tile_set_enabled("LB1", false)
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
 end
 
 function event_hero_on_sensor(sensor_name)
@@ -112,7 +112,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.sensor_set_enabled("DS4", false)
   elseif sensor_name == "start_boss_sensor" then
     if not fighting_boss and not sol.game.savegame_get_boolean(727) then
-      sol.main.stop_music()
+      sol.audio.stop_music()
       sol.map.door_close("boss_door")
       sol.map.npc_set_enabled("billy_npc", true)
       sol.map.hero_freeze()
@@ -130,26 +130,26 @@ function event_enemy_dead(enemy_name)
     if not sol.map.door_is_open("LD1") then
       sol.map.door_open("LD1")
       sol.map.door_open("LD2")
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
     end
   elseif string.match(enemy_name, "^room_LD5_enemy") and sol.map.enemy_is_group_dead("room_LD5_enemy") and not sol.map.door_is_open("LD5") then
     -- LD5 room: kill all enemies will open the door LD5
     sol.map.door_open("LD5")
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   elseif string.match(enemy_name, "^map_enemy") and sol.map.enemy_is_group_dead("map_enemy") then
     -- Map chest room: kill all enemies and the chest will appear
     if not sol.game.savegame_get_boolean(700) then
       sol.map.chest_set_enabled("MAP", true)
-      sol.main.play_sound("chest_appears")
+      sol.audio.play_sound("chest_appears")
     elseif not sol.map.door_is_open("LD3") then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
     end
     sol.map.door_open("LD3")
   elseif string.match(enemy_name, "^room_big_enemy") and sol.map.enemy_is_group_dead("room_big_enemy") then
     -- Big key chest room: kill all enemies and the chest will appear
     if not sol.game.savegame_get_boolean(705) then
       sol.map.chest_set_enabled("BK01", true)
-      sol.main.play_sound("chest_appears")
+      sol.audio.play_sound("chest_appears")
     end
   end
 end
@@ -157,13 +157,13 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.main.play_music("victory.spc")
+    sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
     sol.main.timer_start(function()
       sol.map.door_open("boss_door")
       sol.map.door_open("agahnim_door")
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.hero_unfreeze()
     end, 9000)
   end
@@ -172,7 +172,7 @@ end
 function event_dialog_finished(dialog_id)
 
   if dialog_id == "dungeon_8.billy" then
-    sol.main.play_music("boss.spc")
+    sol.audio.play_music("boss")
     sol.map.hero_unfreeze()
     sol.map.enemy_set_enabled("boss", true)
     sol.map.npc_set_enabled("billy_npc", false)
@@ -184,7 +184,7 @@ function event_door_open(door_name)
   if door_name == "boss_key_door" then
     sol.map.enemy_remove("boss_key_door_laser")
   elseif door_name == "WW01" then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   end
 end
 

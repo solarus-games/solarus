@@ -126,7 +126,7 @@ function fire_step_2()
     next_fireball_sound = "boss_fireball"
     next_fireball_breed = "red_fireball_triple"
   end
-  sol.main.play_sound("boss_charge")
+  sol.audio.play_sound("boss_charge")
   sol.main.timer_start(fire_step_3, 1500)
 end
 
@@ -135,7 +135,7 @@ function fire_step_3()
   -- throw the fireball(s)
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("stopped")
-  sol.main.play_sound(next_fireball_sound)
+  sol.audio.play_sound(next_fireball_sound)
   vulnerable = true
 
   local delay -- delay before fading out and going somewhere else
@@ -185,7 +185,7 @@ function event_message_received(src_enemy, message)
       sol.enemy.hurt(1)
     else
       -- play ping-pong
-      sol.main.play_sound("boss_fireball")
+      sol.audio.play_sound("boss_fireball")
       sol.enemy.send_message(src_enemy, "bounce")
       hurt_proba = hurt_proba + 20
     end

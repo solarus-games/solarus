@@ -156,7 +156,7 @@ function wake_up()
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation(properties.awaking_animation)
   if properties.awakening_sound ~= nil then
-      sol.main.play_sound(properties.awakening_sound)
+      sol.audio.play_sound(properties.awakening_sound)
   end
 end
 

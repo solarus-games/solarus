@@ -66,7 +66,7 @@ function son_phase()
 
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("preparing_son")
-  sol.main.play_sound("stone")
+  sol.audio.play_sound("stone")
   sol.main.timer_start(throw_son, 1500)
 
   if sol.enemy.get_life() < 3 then
@@ -83,7 +83,7 @@ function throw_son()
   nb_sons_created = nb_sons_created + 1
   local son_name = sol.enemy.get_name().."_minillosaur_"..nb_sons_created
   sol.enemy.create_son(son_name, "mini_mowatulla", 0, 40)
-  sol.main.play_sound("ice")
+  sol.audio.play_sound("ice")
 
   -- see what to do next
   nb_sons_to_create = nb_sons_to_create - 1
@@ -141,6 +141,6 @@ function jump_phase()
   sol.enemy.start_movement(m)
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("jumping")
-  sol.main.play_sound("jump")
+  sol.audio.play_sound("jump")
 end
 

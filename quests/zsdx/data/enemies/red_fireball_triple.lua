@@ -69,7 +69,7 @@ function event_custom_attack_received(attack, sprite)
     local angle = sol.main.get_angle(hero_x, hero_y - 5, x, y)
     local m = sol.movement.straight_movement_create(speed, angle)
     sol.enemy.start_movement(m)
-    sol.main.play_sound("boss_fireball")
+    sol.audio.play_sound("boss_fireball")
     used_sword = true
   end
 end

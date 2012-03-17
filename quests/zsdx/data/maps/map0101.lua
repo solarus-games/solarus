@@ -91,13 +91,13 @@ function event_npc_interaction(npc_name)
         sol.map.dialog_start("surprise_wall.direction_" .. directions[next_sign])
       elseif next_sign == #directions + 1 then
 	sol.map.camera_move(376, 984, 250, function()
-	  sol.main.play_sound("secret")
+	  sol.audio.play_sound("secret")
 	  sol.map.door_open("sw_door")
 	end)
       end
       next_sign = next_sign + 1
     else
-      sol.main.play_sound("wrong")
+      sol.audio.play_sound("wrong")
       next_sign = 1
     end
   end
@@ -109,7 +109,7 @@ function event_switch_activated(switch_name)
   if switch_name == "door_a_switch" 
       and not sol.map.door_is_open("door_a") then
     -- open the door and close it in a few seconds
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.door_open("door_a")
     door_a_allow_close = true
     sol.main.timer_start(function()
@@ -123,7 +123,7 @@ function event_switch_activated(switch_name)
   elseif switch_name == "door_b_switch" 
       and not sol.map.door_is_open("door_b") then
     -- open the door and close it in a few seconds
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.door_open("door_b")
     door_b_allow_close = true
     sol.main.timer_start(function()

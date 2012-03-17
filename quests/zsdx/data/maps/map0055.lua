@@ -43,7 +43,7 @@ function event_sensor_collision_explosion(sensor_name)
     sol.map.tile_set_enabled("weak_floor", false)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.map.teletransporter_set_enabled("weak_floor_teletransporter", true)
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.game.savegame_set_boolean(314, true)
   end
 end
@@ -57,8 +57,8 @@ function event_switch_activated(switch_name)
 end
 
 function remove_water()
-  sol.main.play_sound("water_drain_begin")
-  sol.main.play_sound("water_drain")
+  sol.audio.play_sound("water_drain_begin")
+  sol.audio.play_sound("water_drain")
   sol.map.tile_set_enabled("water_less_1", true)
   sol.map.tile_set_enabled("water_full", false)
   sol.main.timer_start(remove_water_2, remove_water_delay)
@@ -81,6 +81,6 @@ function remove_water_4()
   sol.map.jumper_set_group_enabled("water_on_jumper", false)
   sol.map.obstacle_set_group_enabled("water_off_obstacle", true)
   sol.game.savegame_set_boolean(319, true)
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
 end
 

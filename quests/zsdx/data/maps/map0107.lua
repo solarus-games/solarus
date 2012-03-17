@@ -19,7 +19,7 @@ function event_enemy_dead(enemy_name)
     if not sol.map.door_is_open("door_a")
         and sol.map.enemy_is_group_dead("door_a_enemy") then
       sol.map.camera_move(2248, 648, 250, function()
-	sol.main.play_sound("secret")
+	sol.audio.play_sound("secret")
 	sol.map.door_open("door_a")
       end)
     end
@@ -28,8 +28,8 @@ function event_enemy_dead(enemy_name)
   elseif string.find(enemy_name, "^miniboss")
       and sol.map.enemy_is_group_dead("miniboss") then
 
-    sol.main.play_music("southern_shrine.ogg")
-    sol.main.play_sound("secret")
+    sol.audio.play_music("southern_shrine")
+    sol.audio.play_sound("secret")
     sol.map.door_open("miniboss_door")
     sol.game.savegame_set_boolean(866, true)
   end
@@ -50,13 +50,13 @@ function event_npc_interaction(npc_name)
 	  sol.game.savegame_set_integer(1202, index)
 	else
 	  sol.map.camera_move(1928, 1928, 500, function()
-	    sol.main.play_sound("secret")
+	    sol.audio.play_sound("secret")
 	    sol.map.door_open("door_b")
 	  end)
 	end
       else
 	-- wrong
-	sol.main.play_sound("wrong")
+	sol.audio.play_sound("wrong")
 	sol.game.savegame_set_integer(1202, 0)
       end
     end
@@ -74,7 +74,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.door_close("miniboss_e_door")
     fighting_miniboss = true
     sol.main.timer_start(function()
-      sol.main.play_music("boss.spc")
+      sol.audio.play_music("boss")
       sol.map.enemy_set_group_enabled("miniboss", true)
       sol.map.hero_unfreeze()
     end,

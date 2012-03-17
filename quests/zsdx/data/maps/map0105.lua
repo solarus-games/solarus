@@ -95,7 +95,7 @@ function event_update()
       and not sol.map.enemy_is_enabled("hidden_enemy_1")
       and not sol.map.enemy_is_enabled("hidden_enemy_2") then
 
-    sol.main.play_sound("cane")
+    sol.audio.play_sound("cane")
     sol.map.enemy_set_enabled("hidden_enemy_1", true)
     sol.map.enemy_set_enabled("hidden_enemy_2", true)
   end
@@ -108,7 +108,7 @@ function event_enemy_dead(enemy_name)
       and sol.map.enemy_is_group_dead("hidden_enemy")
       and not sol.map.chest_is_enabled("hidden_enemy_chest") then
     sol.map.camera_move(1128, 2040, 250, function()
-      sol.main.play_sound("chest_appears")
+      sol.audio.play_sound("chest_appears")
       sol.map.chest_set_enabled("hidden_enemy_chest", true)
     end)
 
@@ -117,14 +117,14 @@ function event_enemy_dead(enemy_name)
       and sol.map.enemy_is_group_dead("s_door_enemy")
       and not sol.map.door_is_open("s_door") then
     sol.map.camera_move(1768, 1800, 250, function()
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("s_door")
     end)
     
   -- west enemies room
   elseif enemy_name:find("^w_room_enemy")
       and sol.map.enemy_is_group_dead("w_room_enemy") then
-    sol.main.play_sound("chest_appears")
+    sol.audio.play_sound("chest_appears")
     sol.map.chest_set_enabled("w_room_chest", true)
     if not sol.map.door_is_open("w_room_door") then
       sol.map.door_open("w_room_door")
@@ -135,7 +135,7 @@ function event_enemy_dead(enemy_name)
       and sol.map.enemy_is_group_dead("e_room_enemy")
       and not sol.map.chest_is_enabled("e_room_chest") then
     sol.map.camera_move(2136, 1120, 250, function()
-      sol.main.play_sound("chest_appears")
+      sol.audio.play_sound("chest_appears")
       sol.map.chest_set_enabled("e_room_chest", true)
     end)
   end
@@ -147,7 +147,7 @@ function event_switch_activated(switch_name)
   if switch_name == "puzzle_b_door_switch" then
     if not sol.map.door_is_open("puzzle_b_door") then
       sol.map.camera_move(808, 1544, 250, function()
-	sol.main.play_sound("secret")
+	sol.audio.play_sound("secret")
 	sol.map.door_open("puzzle_b_door")
 	sol.map.switch_set_activated("puzzle_b_door_switch", true)
       end)
@@ -158,7 +158,7 @@ function event_switch_activated(switch_name)
     if not sol.map.chest_is_enabled("nw_chest")
         and sol.map.switch_is_activated("nw_switch_1")
         and sol.map.switch_is_activated("nw_switch_2") then
-      sol.main.play_sound("chest_appears")
+      sol.audio.play_sound("chest_appears")
       sol.map.chest_set_enabled("nw_chest", true)
     end
 
@@ -168,7 +168,7 @@ function event_switch_activated(switch_name)
         and sol.map.switch_is_activated("c_room_switch_2")
         and sol.map.switch_is_activated("c_room_switch_3")
         and sol.map.switch_is_activated("c_room_switch_4") then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("c_door")
     end
 
@@ -194,7 +194,7 @@ function event_switch_activated(switch_name)
       -- the 4 switches are on, was there an error?
       if puzzle_b_next == nil then
 	-- error
-	sol.main.play_sound("wrong")
+	sol.audio.play_sound("wrong")
 	for i = 1, 4 do
 	  sol.map.switch_set_activated("puzzle_b_switch_" .. i, false)
 	end
@@ -203,7 +203,7 @@ function event_switch_activated(switch_name)
 	-- to avoid the switch to be activated again immediately
       else
 	-- correct
-	sol.main.play_sound("secret")
+	sol.audio.play_sound("secret")
 	sol.map.door_open("puzzle_b_door")
         sol.map.switch_set_activated("puzzle_b_door_switch", true)
       end
@@ -211,7 +211,7 @@ function event_switch_activated(switch_name)
 
   -- puzzle A: each switch changes its neighboors in the 4 main directions
   elseif switch_name:find("^puzzle_a_switch") then
-    sol.main.play_sound("switch")
+    sol.audio.play_sound("switch")
     local to_change = { {2,4}, {1,3,5}, {2,6}, {1,5}, {2,4,6}, {3,5} }
     local index = tonumber(switch_name:match("^puzzle_a_switch_([1-6])$"))
     if index then
@@ -235,7 +235,7 @@ function event_switch_activated(switch_name)
 	sol.map.tile_set_group_enabled("puzzle_a_switch", false)
 	sol.map.switch_set_group_enabled("puzzle_a_switch", false)
 	sol.map.camera_move(896, 1896, 250, function()
-	  sol.main.play_sound("chest_appears")
+	  sol.audio.play_sound("chest_appears")
 	  sol.map.chest_set_enabled("puzzle_a_chest", true)
 	  sol.game.savegame_set_boolean(802, true)
 	end)

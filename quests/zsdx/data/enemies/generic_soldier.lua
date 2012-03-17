@@ -90,7 +90,7 @@ function check_hero()
 
   if near_hero and not going_hero then
     if properties.play_hero_seen_sound then
-      sol.main.play_sound("hero_seen")
+      sol.audio.play_sound("hero_seen")
     end
     go_hero()
   elseif not near_hero and going_hero then
@@ -126,7 +126,7 @@ end
 function event_custom_attack_received(attack, sprite)
 
   if attack == "sword" and sprite == sword_sprite then
-    sol.main.play_sound("sword_tapping")
+    sol.audio.play_sound("sword_tapping")
     being_pushed = true
     local x, y = sol.enemy.get_position()
     local hero_x, hero_y = sol.map.hero_get_position()

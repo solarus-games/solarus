@@ -65,26 +65,26 @@ function event_switch_activated(switch_name)
 
   -- north barrier
   if switch_name == "n_barrier_switch" then
-    sol.main.play_sound("secret")
-    sol.main.play_sound("door_open")
+    sol.audio.play_sound("secret")
+    sol.audio.play_sound("door_open")
     sol.map.tile_set_enabled("n_barrier", false)
     sol.game.savegame_set_boolean(812, true)
 
   -- door A
   elseif switch_name == "door_a_switch" then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.door_open("door_a")
 
   -- door E
   elseif switch_name == "door_e_switch" then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.door_open("door_e")
 
   -- door G
   elseif switch_name == "door_g_switch"
       and not sol.map.door_is_open("door_g") then
     sol.map.camera_move(1760, 520, 1000, function()
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("door_g")
       door_g_finished = false
     end)
@@ -111,7 +111,7 @@ function event_switch_activated(switch_name)
       -- the 8 switches are on, was there an error?
       if nw_switches_next == nil then
 	-- error
-	sol.main.play_sound("wrong")
+	sol.audio.play_sound("wrong")
 	for i = 1, 8 do
 	  sol.map.switch_set_activated("nw_switch_" .. i, false)
 	end
@@ -120,7 +120,7 @@ function event_switch_activated(switch_name)
 	-- to avoid the switch to be activated again immediately
       else
 	-- correct
-	sol.main.play_sound("secret")
+	sol.audio.play_sound("secret")
 	sol.map.door_open("door_d")
       end
     end
@@ -157,7 +157,7 @@ function event_hero_on_sensor(sensor_name)
       -- correct
       ne_puzzle_set_step(ne_puzzle_step + 1)
       if ne_puzzle_step == 5 then
-	sol.main.play_sound("secret")
+	sol.audio.play_sound("secret")
       end
     else
       -- wrong
@@ -167,13 +167,13 @@ function event_hero_on_sensor(sensor_name)
   -- door G
   elseif sensor_name == "door_g_success_sensor"
       and not door_g_finished then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     door_g_finished = true
 
   elseif sensor_name:find("^close_door_g_sensor")
       and not door_g_finished
       and sol.map.door_is_open("door_g") then
-    sol.main.play_sound("wrong")
+    sol.audio.play_sound("wrong")
     sol.map.camera_move(1760, 520, 1000, function()
       sol.map.door_close("door_g")
       sol.map.switch_set_activated("door_g_switch", false)
@@ -211,7 +211,7 @@ function event_enemy_dead(enemy_name)
   if enemy_name:find("^door_b_enemy") then
     if sol.map.enemy_is_group_dead("door_b_enemy")
         and not sol.map.door_is_open("door_b") then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("door_b")
     end
 
@@ -219,7 +219,7 @@ function event_enemy_dead(enemy_name)
   elseif enemy_name:find("^door_c_enemy") then
     if sol.map.enemy_is_group_dead("door_c_enemy")
         and not sol.map.door_is_open("door_c") then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("door_c")
     end
 
@@ -252,7 +252,7 @@ function event_chest_empty(chest_name)
 	chests_puzzle_step = chests_puzzle_step + 1
       end
     else
-      sol.main.play_sound("wrong")
+      sol.audio.play_sound("wrong")
       sol.map.hero_unfreeze()
       chests_puzzle_step = 1
       for i = 1, 7 do
@@ -300,7 +300,7 @@ function event_block_moved(block_name)
 
   if block_name == "door_f_block"
       and not sol.map.door_is_open("door_f") then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.door_open("door_f")
   end
 end

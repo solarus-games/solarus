@@ -25,7 +25,7 @@ function event_switch_activated(switch_name)
     sol.map.camera_move(176, 392, 250, sw_camera_timer)
     current_room = "sw"
   elseif switch_name == "map_room_switch" then
-    sol.main.play_sound("chest_appears")
+    sol.audio.play_sound("chest_appears")
     sol.map.chest_set_enabled("map_chest", true)
   end
 end
@@ -35,7 +35,7 @@ function sw_camera_timer()
 end
 
 function compass_room_timer()
-  sol.main.play_sound("chest_appears")
+  sol.audio.play_sound("chest_appears")
   sol.map.chest_set_enabled("compass_chest", true)
 end
 
@@ -55,7 +55,7 @@ function event_hero_on_sensor(sensor_name)
 end
 
 function open_sw_door()
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.door_open("sw_door")
   sol.map.switch_set_activated("sw_switch", true)
   sol.map.switch_set_activated("nw_switch", true)
@@ -78,7 +78,7 @@ end
 function event_door_open(door_name)
 
   if door_name == "weak_wall" then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
   end
 end
 

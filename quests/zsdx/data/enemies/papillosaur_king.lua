@@ -70,7 +70,7 @@ function egg_phase()
 
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("preparing_egg")
-  sol.main.play_sound("boss_charge")
+  sol.audio.play_sound("boss_charge")
   sol.main.timer_start(throw_egg, 1500)
 
   -- The more the boss is hurt, the more it will throw eggs...
@@ -85,7 +85,7 @@ function throw_egg()
   local egg_name = sol.enemy.get_name().."_minillosaur_"..nb_eggs_created
   sol.enemy.create_son(egg_name, "minillosaur_egg_thrown", 0, 16)
   sol.map.enemy_set_treasure(egg_name, "_none", 1, -1)
-  sol.main.play_sound("boss_fireball")
+  sol.audio.play_sound("boss_fireball")
 
   -- see what to do next
   nb_eggs_to_create = nb_eggs_to_create - 1

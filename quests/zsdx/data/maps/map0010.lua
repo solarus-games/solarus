@@ -37,7 +37,7 @@ function event_npc_interaction_item(npc_name, item_name, variant)
     sol.map.npc_remove("vine_start")
     sol.game.set_item(item_name, 1) -- make the bottle empty
     sol.game.savegame_set_boolean(921, true)
-    sol.main.play_sound("item_in_water")
+    sol.audio.play_sound("item_in_water")
     sol.main.timer_start(show_vine, 1000)
     return true
   end
@@ -48,7 +48,7 @@ end
 function show_vine()
 
   sol.map.camera_move(608, 136, 136, function()
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.hero_unfreeze()
     sol.game.savegame_set_boolean(921, true)
   end)

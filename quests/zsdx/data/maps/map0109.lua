@@ -13,13 +13,13 @@ function event_block_moved(block_name)
   -- door A
   if block_name == "door_a_block" then
     if not sol.map.door_is_open("door_a") then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("door_a")
     end
 
   -- doors B and C
   elseif block_name == "door_bc_block" then
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     sol.map.door_open("door_b")
     sol.map.door_open("door_c")
   end
@@ -78,7 +78,7 @@ function event_enemy_dead(enemy_name)
   -- door D
   if enemy_name == "door_d_enemy" then
     if not sol.map.door_is_open("door_d") then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("door_d")
     end
 
@@ -86,7 +86,7 @@ function event_enemy_dead(enemy_name)
   elseif enemy_name:find("^door_b_enemy") then
     if sol.map.enemy_is_group_dead("door_b_enemy")
         and not sol.map.door_is_open("door_b") then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("door_b")
     end
  
@@ -94,7 +94,7 @@ function event_enemy_dead(enemy_name)
   elseif enemy_name:find("^door_c_enemy") then
     if sol.map.enemy_is_group_dead("door_c_enemy")
         and not sol.map.door_is_open("door_c") then
-      sol.main.play_sound("secret")
+      sol.audio.play_sound("secret")
       sol.map.door_open("door_c")
     end
   end

@@ -22,10 +22,10 @@ function event_enemy_dead(enemy_name)
       and sol.map.enemy_is_group_dead("enemy2")
       and not sol.game.savegame_get_boolean(234) then
     sol.map.pickable_item_create("big_key", 1, 234, 672, 80, 1)
-    sol.main.play_sound("secret")
+    sol.audio.play_sound("secret")
     if not sol.map.door_is_open("door_a") then
       sol.map.door_open("door_a")
-      sol.main.play_music("eagle_tower.it")
+      sol.audio.play_music("eagle_tower")
     end
   end
 end
@@ -36,7 +36,7 @@ function event_hero_on_sensor(sensor_name)
       and sol.map.door_is_open("door_a")
       and not sol.map.enemy_is_group_dead("enemy2")
       and not sol.game.savegame_get_boolean(234) then
-    sol.main.play_music("boss.spc")
+    sol.audio.play_music("boss")
     sol.map.door_close("door_a")
     sol.map.enemy_set_group_enabled("enemy2", true)
     sol.map.sensor_set_enabled("sensor1_1", false)
@@ -77,8 +77,8 @@ end
 
 function drain_water_step_1()
 
-  sol.main.play_sound("water_drain_begin")
-  sol.main.play_sound("water_drain")
+  sol.audio.play_sound("water_drain_begin")
+  sol.audio.play_sound("water_drain")
   sol.map.tile_set_enabled("water_full", false)
   sol.map.tile_set_enabled("water_less_1", true)
   sol.main.timer_start(drain_water_step_2, water_delay)
@@ -102,7 +102,7 @@ function drain_water_step_4()
 
   sol.map.tile_set_enabled("water_less_3", false)
   sol.game.savegame_set_boolean(297, true)
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   set_water_drained()
 end
 

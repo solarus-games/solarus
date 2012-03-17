@@ -59,7 +59,7 @@ function event_custom_attack_received(attack, sprite)
   if attack == "sword" and sprite:get_animation() == "egg" then
     -- the egg is hit by the sword
     break_egg()
-    sol.main.play_sound("monster_hurt")
+    sol.audio.play_sound("monster_hurt")
   end
 end
 

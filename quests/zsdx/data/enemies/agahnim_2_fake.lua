@@ -114,7 +114,7 @@ function fire_step_2()
     next_fireball_sound = "boss_fireball"
     next_fireball_breed = "red_fireball_triple"
   end
-  sol.main.play_sound("boss_charge")
+  sol.audio.play_sound("boss_charge")
   sol.main.timer_start(fire_step_3, 1500)
 end
 
@@ -122,7 +122,7 @@ function fire_step_3()
 
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("stopped")
-  sol.main.play_sound(next_fireball_sound)
+  sol.audio.play_sound(next_fireball_sound)
   sol.main.timer_start(sol.enemy.restart, 700)
 
   function throw_fire()
@@ -138,7 +138,7 @@ end
 
 function event_custom_attack_received(attack, sprite)
 
-  sol.main.play_sound("enemy_hurt")
+  sol.audio.play_sound("enemy_hurt")
   disappear()
 end
 

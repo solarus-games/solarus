@@ -63,7 +63,7 @@ function event_switch_activated(switch_name)
       if switches_puzzle_correct then
 	sol.map.camera_move(240, 328, 250, boss_key_chest_timer)
       else
-	sol.main.play_sound("wrong")
+	sol.audio.play_sound("wrong")
 	switches_puzzle_nb_enabled = 0
 	switches_puzzle_correct = true
 	sol.map.switch_set_locked(switch_name, true)
@@ -86,7 +86,7 @@ end
 
 function boss_key_chest_timer()
   sol.map.chest_set_enabled("boss_key_chest", true)
-  sol.main.play_sound("chest_appears")
+  sol.audio.play_sound("chest_appears")
 end
 
 function event_hero_on_sensor(sensor_name)
@@ -100,7 +100,7 @@ function event_hero_on_sensor(sensor_name)
       and sol.map.door_is_open("boss_door")
       and not sol.game.savegame_get_boolean(93)
       and not fighting_boss then
-    sol.main.stop_music()
+    sol.audio.stop_music()
     sol.map.door_close("boss_door")
 
   elseif sensor_name == "save_solid_ground_sensor" then
@@ -138,14 +138,14 @@ function start_boss()
 
   fighting_boss = true
   sol.map.enemy_set_enabled("boss", true)
-  sol.main.play_music("boss.spc")
+  sol.audio.play_music("boss")
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.main.timer_start(open_final_room, 9000)
-    sol.main.play_music("victory.spc")
+    sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
   end
@@ -153,7 +153,7 @@ end
 
 function open_final_room()
 
-  sol.main.play_sound("secret")
+  sol.audio.play_sound("secret")
   sol.map.door_open("final_room_door")
   sol.map.tile_set_enabled("boss_killed_floor", true)
   sol.map.hero_unfreeze()
@@ -175,7 +175,7 @@ function boss_change_floor(first, last, inc, enable)
   function repeat_change()
     if (enable and index % 10 == 0)
       or (not enable and index % 5 == 0) then
-      sol.main.play_sound("stone")
+      sol.audio.play_sound("stone")
     end
     
     -- enable/disable the tile

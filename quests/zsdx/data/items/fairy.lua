@@ -62,11 +62,11 @@ function event_dialog_finished(dialog_id, answer)
       if first_empty_bottle == "" then
         -- no empty bottle
         sol.map.dialog_start("found_fairy.no_empty_bottle")
-        sol.main.play_sound("wrong")
+        sol.audio.play_sound("wrong")
       else
         -- okay, empty bottle 
         sol.game.set_item(first_empty_bottle, 6)
-        sol.main.play_sound("danger")
+        sol.audio.play_sound("danger")
       end
     end
 

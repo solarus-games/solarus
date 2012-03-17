@@ -131,18 +131,18 @@ void MapScript::notify_camera_reached_target() {
 
   lua_settop(l, 0);
 
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
-  int delay_before = lua_tointeger(l, -1);
-  lua_pop(l, 1);
+  // create a timer to execute the function
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before"); // delay
+  lua_pushcfunction(l, camera_execute_function); // callback
+  timer_api_start(l);
 
-  // set a timer to execute the function
-  lua_pushcfunction(l, camera_execute_function);
-  add_timer(l, delay_before, false);
+  lua_settop(l, 0);
 }
 
 /**
  * @brief Executes the function of a camera movement.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int MapScript::camera_execute_function(lua_State* l) {
 
@@ -155,11 +155,12 @@ int MapScript::camera_execute_function(lua_State* l) {
   }
 
   // set a second timer to restore the camera
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
-  int delay_after = lua_tointeger(l, -1);
-  lua_pop(l, 1);
-  lua_pushcfunction(l, camera_restore);
-  add_timer(l, delay_after, false);
+  lua_settop(l, 0);
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after"); // delay
+  lua_pushcfunction(l, camera_restore); // callback
+  timer_api_start(l);
+
+  lua_settop(l, 0);
 
   return 0;
 }
@@ -167,13 +168,13 @@ int MapScript::camera_execute_function(lua_State* l) {
 /**
  * @brief Moves the camera back to the hero.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int MapScript::camera_restore(lua_State* l) {
 
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
-  Script* script = (Script*) lua_touserdata(l, -1);
+  Script& script = get_script(l);
 
-  script->get_game().get_current_map().restore_camera();
+  script.get_game().get_current_map().restore_camera();
 
   return 0;
 }

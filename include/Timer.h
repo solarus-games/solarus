@@ -26,6 +26,16 @@
  */
 class Timer {
 
+  public:
+
+    Timer(uint32_t duration, bool with_sound);
+    ~Timer();
+
+    bool is_finished();
+
+    void update();
+    void set_suspended(bool suspended);
+
   private:
 
     // timer
@@ -36,17 +46,7 @@ class Timer {
     uint32_t when_suspended;         /**< date when the timer was suspended */
 
     // sound
-    uint32_t next_sound_date;        /**< date when the next countdown sound effect is played */
-
-  public:
-
-    Timer(uint32_t duration, bool with_sound);
-    ~Timer();
-
-    bool is_finished();
-
-    void update();
-    void set_suspended(bool suspended);
+    uint32_t next_sound_date;        /**< date when the next clock sound effect is played */
 };
 
 #endif

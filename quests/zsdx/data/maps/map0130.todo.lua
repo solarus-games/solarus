@@ -148,29 +148,30 @@ end
 function torches:on_collision_fire()
 
   local torch_sprite = self:get_sprite()
-    if torch_sprite:get_animation() == "unlit" then
-      -- temporarily light the torch up
-      torch_sprite:set_animation("lit")
+  if torch_sprite:get_animation() == "unlit" then
+    -- temporarily light the torch up
+    torch_sprite:set_animation("lit")
+    check_torches()
+    self.timer = sol.timer.start(torches_delay, function()
+      torch_sprite:set_animation("unlit")
+      if switch_1:is_enabled() then
+	floor_switch_tiles:set_enabled(false)
+	switches:set_enabled(false)
+	sol.audio.play_sound("door_closed")
+      end
       check_torches()
-      sol.timer.start(torches_delay, function()
-        torch_sprite:set_animation("unlit")
-	if switch_1:is_enabled() then
-          floor_switch_tiles:set_enabled(false)
-          switches:set_enabled(false)
-	  sol.audio.play_sound("door_closed")
-	end
-        check_torches()
-      end)
-    end
+    end)
   end
 end
 
 function unlight_torches()
 
   for i = 1, 4 do
-    sol.map:get_entity("torch_" .. i):get_sprite():set_animation("unlit")
+    local torch = sol.map:get_entity("torch_" .. i)
+    torch:get_sprite():set_animation("unlit")
+    torch.timer:stop()
+    torch.timer = nil
   end
-  sol.timer.stop_all()
 end
 
 function check_torches()

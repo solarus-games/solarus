@@ -34,8 +34,6 @@ void Script::initialize_main_module() {
       { "exit", main_api_exit },
       { "start_screen", main_api_start_screen },
       { "start_game", main_api_start_game },
-      { "timer_start", main_api_timer_start },
-      { "timer_stop_all", main_api_timer_stop_all },
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
       { NULL, NULL }
@@ -108,41 +106,6 @@ int Script::main_api_start_game(lua_State* l) {
   const std::string savegame_file = luaL_checkstring(l, 1);
 
   script.get_screen().start_game(savegame_file);
-
-  return 0;
-}
-
-/**
- * @brief Starts a timer to run a Lua function after a delay.
- *
- * - Argument 1 (function): a Lua function to call without arguments when the timer is finished
- * - Argument 2 (integer): the timer duration in milliseconds
- * - Optional argument 3 (boolean): plays a clock sound until the timer expires (default is false)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::main_api_timer_start(lua_State *l) {
-
-  luaL_checktype(l, 1, LUA_TFUNCTION);
-  uint32_t duration = luaL_checkinteger(l, 2);
-
-  bool with_sound = (lua_gettop(l) >= 3 && lua_toboolean(l, 3));
-  lua_settop(l, 1); // now the function is on top of the stack
-
-  add_timer(l, duration, with_sound);
-
-  return 0;
-}
-
-/**
- * @brief Stops all timers of the script.
- * @param l the Lua context that is calling this function
- */
-int Script::main_api_timer_stop_all(lua_State *l) {
-
-  Script& script = get_script(l);
-
-  script.remove_all_timers();
 
   return 0;
 }

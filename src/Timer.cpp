@@ -21,16 +21,16 @@
 
 /**
  * @brief Creates and starts a timer.
- * @param duration duration of the timer in milliseconds
+ * @param delay duration of the timer in milliseconds
  * @param with_sound plays a sound until the timer expires
  */
-Timer::Timer(uint32_t duration, bool with_sound):
+Timer::Timer(uint32_t delay, bool with_sound):
   finished(false),
   suspended(false),
   when_suspended(0) {
 
   uint32_t now = System::now();
-  expiration_date = now + duration;
+  expiration_date = now + delay;
   next_sound_date = with_sound ? now : 0;
 }
 

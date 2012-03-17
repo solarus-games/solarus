@@ -16,7 +16,6 @@
  */
 #include <lua.hpp>
 #include "lua/Script.h"
-#include "movements/Movement.h"
 #include "Sprite.h"
 
 const char* Script::sprite_module_name = "sol.sprite";

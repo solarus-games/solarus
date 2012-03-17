@@ -20,7 +20,6 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Color.h"
-#include "Game.h"
 #include "Map.h"
 #include "Timer.h"
 #include "Sprite.h"
@@ -50,12 +49,10 @@ Script::~Script() {
     lua_close(l);
   }
 
-  // delete the timers
-  {
-    std::map<int, Timer*>::iterator it;
-    for (it = timers.begin(); it != timers.end(); it++) {
-      delete it->second;
-    }
+  // delete unfinished timers
+  std::map<Timer*, int>::iterator it;
+  for (it = timers.begin(); it != timers.end(); it++) {
+    delete it->first;
   }
 }
 
@@ -217,6 +214,8 @@ void Script::register_apis() {
 
   // modules available to all scripts
   initialize_main_module();
+  initialize_audio_module();
+  initialize_timer_module();
   initialize_surface_module();
   initialize_text_surface_module();
   initialize_sprite_module();
@@ -471,39 +470,8 @@ bool Script::call_script(int nb_arguments, int nb_results,
  * @brief Updates the script.
  */
 void Script::update() {
-
-  // displayable objects
   update_displayables();
-
-  // timers
-  std::map<int, Timer*>::iterator it;
-
-  for (it = timers.begin(); it != timers.end(); it++) {
-
-    int ref = it->first;
-    Timer* timer = it->second;
-
-    timer->update();
-    if (timer->is_finished()) {
-
-      // delete the C++ timer
-      timers.erase(it);
-      delete timer;
-
-      // retrieve the Lua function and call it
-      lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
-      if (lua_pcall(l, 0, 0, 0) != 0) {
-        Debug::print(StringConcat() << "Error in the function of the timer: "
-            << lua_tostring(l, -1));
-        lua_pop(l, 1);
-      }
-
-      // delete the Lua function
-      luaL_unref(l, LUA_REGISTRYINDEX, ref);
-
-      break;
-    }
-  }
+  update_timers();
 }
 
 /**
@@ -515,9 +483,9 @@ void Script::set_suspended(bool suspended) {
   if (l != NULL) {
 
     // notify the timers
-    std::map<int, Timer*>::iterator it;
+    std::map<Timer*, int>::iterator it;
     for (it = timers.begin(); it != timers.end(); it++) {
-      it->second->set_suspended(suspended);
+      it->first->set_suspended(suspended);
     }
   }
 }
@@ -529,75 +497,6 @@ void Script::set_suspended(bool suspended) {
  */
 bool Script::has_played_music() {
   return music_played;
-}
-
-/**
- * @brief Starts a timer to run a Lua function after the delay.
- *
- * The Lua function must be on the top of the stack and will be popped.
- * If the duration is set to zero, the function is executed immediately.
- *
- * @param l a Lua state
- * @param duration the timer duration in milliseconds
- * @param with_sound true to play a clock sound until the timer expires
- */
-void Script::add_timer(lua_State* l, uint32_t duration, bool with_sound) {
-
-  if (duration == 0) {
-    // directly call the function
-    if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::print(StringConcat() << "Error in the function of the timer: "
-          << lua_tostring(l, -1));
-      lua_pop(l, 1);
-    }
-  }
-  else {
-    // store the function into the Lua registry
-    int ref = luaL_ref(l, LUA_REGISTRYINDEX);
-
-    // retrieve the script
-    lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
-    Script* script = (Script*) lua_touserdata(l, -1);
-    lua_pop(l, 1);
-
-    // create the timer
-    Timer* timer = new Timer(duration, with_sound);
-    if (script->is_new_timer_suspended()) {
-      timer->set_suspended(true);
-    }
-    script->timers[ref] = timer;
-  }
-}
-
-/**
- * @brief Removes all timers started by this script.
- */
-void Script::remove_all_timers() {
-
-  std::map<int, Timer*>::iterator it;
-
-  for (it = timers.begin(); it != timers.end(); it++) {
-    int ref = it->first;
-    luaL_unref(l, LUA_REGISTRYINDEX, ref);
-    delete it->second;
-  }
-
-  timers.clear();
-}
-
-/**
- * @brief Returns whether a timer just created should be initially suspended.
- * @return true to initially suspend a new timer
- */
-bool Script::is_new_timer_suspended(void) {
-
-  if (apis_enabled & GAME_API) {
-    // start the timer even if the game is suspended (e.g. a timer started during a camera movement)
-    // except when it is suspended because of a dialog box
-    return get_game().is_showing_dialog();
-  }
-
-  return false;
 }
 
 /**

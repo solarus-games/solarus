@@ -84,7 +84,10 @@ class Script {
 
     Script(uint32_t apis_enabled = 0);
 
-    // Lua
+    // calling C++ from Lua
+    static Script& get_script(lua_State* l);
+
+    // calling Lua from C++
     bool find_lua_function(const std::string& function_name);
     bool notify_script(const std::string& function_name, const char* format = "", ...);
     bool call_script(int nb_arguments, int nb_results, const std::string& function_name);
@@ -94,7 +97,7 @@ class Script {
     bool is_loaded();
 
     // modules
-    static void add_timer(lua_State* l, uint32_t duration, bool with_sound);
+    static void push_timer(lua_State* l, Timer& timer);
     static void push_surface(lua_State* l, Surface& surface);
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
     static void push_sprite(lua_State* l, Sprite& sprite);
@@ -113,12 +116,11 @@ class Script {
                                      * including the Lua ones
                                      * (0 means that it can be deleted) */
 
-    // TODO reimplement timers as userdata? timer:stop, timer:set_with_sound(true)
-    std::map<int, Timer*> timers;   /**< the timers currently running for this
-                                     * script, indexed by their callback ref */
+    std::map<Timer*, int> timers;   /**< the timers currently running for this
+                                     * script, associated to their callback ref */
     std::set<DynamicDisplayable*>
       displayables;                 /**< all displayable objects created by
-                                     * this script*/
+                                     * this script */
 
     bool music_played;
 
@@ -126,6 +128,7 @@ class Script {
     uint32_t apis_enabled;          /**< OR combination of optional APIs */
     static const char* main_module_name;
     static const char* audio_module_name;
+    static const char* timer_module_name;
     static const char* game_module_name;
     static const char* map_module_name;
     static const char* item_module_name;
@@ -139,13 +142,11 @@ class Script {
     static std::map<InputEvent::KeyboardKey, std::string>
       input_key_names; /**< names of all existing keyboard keys in Lua */
 
-    // calling C++ from Lua
-    static Script& get_script(lua_State* l);
-
     // initialization of modules
     void register_apis();
     void initialize_main_module();
     void initialize_audio_module();
+    void initialize_timer_module();
     void initialize_game_module();
     void initialize_map_module();
     void initialize_item_module();
@@ -158,6 +159,7 @@ class Script {
 
     // types
     static bool is_userdata(lua_State* l, int index, const std::string& module_name);
+    static Timer& check_timer(lua_State* l, int index);
     static DynamicDisplayable& check_displayable(lua_State* l, int index);
     static Surface& check_surface(lua_State* l, int index);
     static TextSurface& check_text_surface(lua_State* l, int index);
@@ -166,8 +168,10 @@ class Script {
     static Color check_color(lua_State* l, int index);
 
     // timers
-    void remove_all_timers();
     bool is_new_timer_suspended(void);
+    void add_timer(Timer* timer, int callback_ref);
+    void remove_timer(Timer* timer);
+    void update_timers();
 
     // displayable objects
     bool has_displayable(DynamicDisplayable* displayable);
@@ -178,6 +182,8 @@ class Script {
     // debugging
     void print_stack();
 
+  protected:
+
     // implementation of the APIs
     static FunctionAvailableToScript 
 
@@ -186,8 +192,6 @@ class Script {
       main_api_exit,
       main_api_start_screen,
       main_api_start_game,
-      main_api_timer_start,
-      main_api_timer_stop_all,
       main_api_get_distance,
       main_api_get_angle,
 
@@ -195,6 +199,12 @@ class Script {
       audio_api_play_sound,
       audio_api_play_music,
       audio_api_stop_music,
+
+      // timer API
+      timer_api_start,
+      timer_api_stop,
+      timer_api_stop_all,
+      timer_meta_gc,
 
       // game API
       game_api_save,

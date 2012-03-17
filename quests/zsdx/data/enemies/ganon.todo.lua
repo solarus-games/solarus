@@ -28,6 +28,7 @@ local nb_flames_created = 0
 local nb_bats_created = 0
 local cancel_next_attack = false
 local sprite
+local timers = {}
 
 function self:on_appeared()
 
@@ -207,7 +208,7 @@ function throw_flames()
     self:create_son{id = son_id, breed = "red_flame", dy = -24}
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      sol.timer.start(150, repeat_throw_flame)
+      timers[#timers + 1] = sol.timer.start(150, repeat_throw_flame)
     else
       attacking = false
       attack_scheduled = false
@@ -245,13 +246,13 @@ function throw_bats()
     end
     son:go_circle()
     local go_hero_delay = 2000 + (nb_to_create * 150)
-    sol.timer.start(go_hero_delay, function()
+    timers[#timers + 1] = sol.timer.start(go_hero_delay, function()
       son:go_hero()
     end)
 
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      sol.timer.start(233, repeat_throw_bat)
+      timers[#timers + 1] = sol.timer.start(233, repeat_throw_bat)
     else
       attacking = false
       attack_scheduled = false
@@ -268,14 +269,14 @@ end
 
 function schedule_attack()
 
-  sol.timer.start(math.random(3000, 6000), attack)
+  timers[#timers + 1] = sol.timer.start(math.random(3000, 6000), attack)
   attack_scheduled = true
 end
 
-function on_hurt(attack, life_lost)
+function self:on_hurt(attack, life_lost)
 
   if self:get_life() <= 0 then
-    sol.timer.stop_all()
+    sol.timer.stop_all(timers)
   end
 end
 

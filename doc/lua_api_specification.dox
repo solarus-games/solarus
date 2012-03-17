@@ -29,8 +29,10 @@ The APIs that are available to your script depend on the type of script.
 For now, the following APIs are implemented:
 - <tt>sol.main</tt>: basic functions available to all types of scripts, even
 outside a game.
+- <tt>sol.audio</tt>: functions to play musics and sounds.
+- <tt>sol.timer</tt>: making an action later will a delay.
 - <tt>sol.savegame</tt>: this module provides functions to manage savegames
-and the data saved (life, equipment, etc.)
+and the data saved (life, equipment, etc.).
 - <tt>sol.map</tt>: this module represents the current map.
 It provides functions to manage the entities placed on the map,
 including the hero.
@@ -68,32 +70,57 @@ Ends the scripted screen or game that was running and starts a scripted screen.
   - <tt>screen_name</tt> (string): name of the scripted to load, relative to
     the <tt>screens</tt>directory (without the <tt>.lua</tt> extension)
 
-- <tt>sol.main.play_sound(sound_id)</tt>:
-Plays a sound.
-  - <tt>sound_id</tt>: name of the sound file to play, relative to the
-    <tt>sounds</tt> directory, without extension
-
-- <tt>sol.main.play_music(music_id)</tt>:
-Plays a music.
-  - <tt>music_id</tt>: name of the music file to play, relative to the
-    <tt>musics</tt> directory, or <tt>"none"</tt> or <tt>"same"</tt>
-
-- <tt>sol.main.stop_music()</tt>:
-Stops playing music.
-Equivalent to <tt>sol.main.play_music("none")</tt>.
-
-- <tt>sol.main.timer_start(function, duration, with_sound)</tt>:
-starts a timer which will calls a function once finished
-(with_sound is optional, default is false)
-
-- <tt>sol.main.timer_stop_all()</tt>:
-stops all timers started by your script
-
 - <tt>sol.main.get_distance(x1, y1, x2, y2)</tt>:
 Returns the distance in pixels between two points.
 
 - <tt>sol.main.get_angle(x1, y1, x2, y2)</tt>:
 Returns the angle in radians between the specified vector and the x axis.
+
+@subsection sol.audio Module <tt>sol.audio</tt>
+
+This module provides functions to play musics and sound effects.
+
+- <tt>sol.audio.play_sound(sound_id)</tt>:
+Plays a sound effect. The sound cannot be interrupted later.
+Several sounds can be played in parallel.
+  - <tt>sound_id</tt>: name of the sound file to play, relative to the
+    <tt>sounds</tt> directory and without extension (.ogg is implicit)
+
+- <tt>sol.audio.play_music(music_id)</tt>:
+Plays a music. Only one music can be played at a time.
+If a music was already playing, it will be stopped and replaced by the new
+one.
+  - <tt>music_id</tt>: name of the music file to play, relative to the
+    <tt>musics</tt> directory and without extension (.ogg, .it and .spc
+    will be tried), or <tt>"none"</tt> or <tt>"same"</tt>
+
+- <tt>sol.audio.stop_music()</tt>:
+Stops playing music.
+Equivalent to <tt>sol.main.play_music("none")</tt>.
+
+@subsection sol.timer Module <tt>sol.timer</tt>
+
+This module provides a datatype timer that allows to execute a function
+later, with a specified delay.
+
+- <tt>sol.timer.start(delay, with_sound, callback)</tt>:
+Starts a timer which will calls a function once finished.
+  - <tt>delay</tt> (number): delay before calling the function in milliseconds
+  - <tt>with_sound</tt> (boolean, optional): true to play a clock sound
+    (default is false)
+  - <tt>callback</tt> (function): a function to be called when the timer
+    finishes
+  - Return value (timer): the timer created
+
+- <tt>timer:stop()</tt>:
+Cancels a timer. If the timer was already finished, nothing happens.
+
+- <tt>sol.timer.stop_all(timers)</tt>:
+Stops a list of timers.
+  - <tt>timers</tt> (table): a table of timers to stop
+    (the type of keys does not matter).
+    If some timers of the table are already finished, they are ignored.
+    The table is then cleared.
 
 @subsection sol.savegame Module <tt>sol.savegame</tt>
 

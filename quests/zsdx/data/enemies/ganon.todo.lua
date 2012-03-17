@@ -243,9 +243,11 @@ function throw_bats()
     if math.random(6) == 1 then
       son:set_treasure("magic_flask", 1, -1)
     end
-    self:send_message(son, "circle")
+    son:go_circle()
     local go_hero_delay = 2000 + (nb_to_create * 150)
-    self:send_message(son, "go_hero " .. go_hero_delay)
+    sol.timer.start(go_hero_delay, function()
+      son:go_hero()
+    end)
 
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then

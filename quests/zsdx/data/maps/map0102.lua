@@ -90,12 +90,11 @@ function event_hero_on_sensor(sensor_name)
     sol.map.hero_freeze()
     sol.map.door_close("miniboss_door")
     fighting_miniboss = true
-    sol.timer.start(function()
+    sol.timer.start(1000, function()
       sol.audio.play_music("boss")
       sol.map.enemy_set_group_enabled("miniboss", true)
       sol.map.hero_unfreeze()
-    end,
-    1000)
+    end)
 
   -- pipes
   else
@@ -171,9 +170,9 @@ function event_switch_activated(switch_name)
 
 	  -- make sure the switch index won't get reactivated right now
 	  sol.map.switch_set_locked(switch_name, true)
-	  sol.timer.start(function()
+	  sol.timer.start(500, function()
 	    sol.map.switch_set_locked(switch_name, false)
-	  end, 500)
+	  end)
 	end
       end
     end

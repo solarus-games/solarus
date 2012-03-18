@@ -11,6 +11,8 @@
 -- BB: Barrier Button
 -- DS: Door Sensor
 
+local timer
+
 function event_map_started(destination_point_name)
   if not sol.game.savegame_get_boolean(711) then
     sol.map.chest_set_enabled("RC100", false)
@@ -118,7 +120,7 @@ function DB16_time_out()
 end
 
 function event_camera_back()
-  sol.timer.start(DB16_time_out, 10000, true)
+  timer = sol.timer.start(DB16_time_out, 10000, true)
 end
 
 function event_npc_interaction(npc_name)
@@ -146,7 +148,10 @@ end
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "dont_close_LD16_sensor" then
-    sol.main.timer_stop_all()
+    if timer ~= nil then
+      timer:stop()
+      timer = nil
+    end
     sol.map.sensor_set_enabled(sensor_name, false)
   end
 end

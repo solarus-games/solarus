@@ -1,17 +1,18 @@
 -- Dungeon 7 3F
 
-fighting_boss = false
-just_removed_special_torch = false
+local fighting_boss = false
+local just_removed_special_torch = false
 
-doors = { -- properties of the 5 timed doors
+local doors = { -- properties of the 5 timed doors
   door_a = { x = 920, y = 640, delay = 12000 },
   door_b = { x = 864, y = 808, delay = 15000 },
   door_c = { x = 1024, y = 840, delay = 12000 },
   door_d = { x = 832, y = 936, delay = 4000 },
   door_e = { x = 976, y = 952, delay = 4000 }
 }
-current_door_name = nil -- current door during a camera movement
-door_timers = {} -- doors that currently have a timer running
+local current_door_name = nil -- current door during a camera movement
+local door_timers = {} -- doors that currently have a timer running
+local arrows_timer
 
 function event_map_started(destination_point_name)
 
@@ -55,7 +56,7 @@ function event_block_moved(block_name)
       sol.map.teletransporter_set_enabled("hole_a_teletransporter", true)
       sol.game.savegame_set_boolean(623, true)
       sol.audio.play_sound("jump")
-      sol.timer.start(function() sol.audio.play_sound("bomb") end, 500)
+      sol.timer.start(500, function() sol.audio.play_sound("bomb") end)
     end
   end
 end
@@ -118,21 +119,21 @@ function event_camera_back()
   -- set up a timer when the camera movement is finished
   if just_removed_special_torch then
     just_removed_special_torch = false
-    sol.timer.start(function()
+    sol.timer.start(8000, true, function()
       sol.audio.play_sound("door_closed")
       sol.map.tile_set_enabled("special_torch", true)
       sol.map.switch_set_activated("special_torch_switch", false)
-    end, 8000, true)
+    end)
 
   elseif current_door_name ~= nil then
     local door_name = current_door_name
-    sol.timer.start(function()
+    sol.timer.start(doors[door_name].delay, true, function()
       if door_timers[door_name] ~= nil then
 	sol.map.door_close(door_name)
 	sol.map.switch_set_activated(door_name .. "_switch", false)
 	door_timers[door_name] = nil
       end
-    end, doors[door_name].delay, true)
+    end)
     door_timers[door_name] = true
     current_door_name = nil
 
@@ -190,7 +191,7 @@ function start_boss()
   sol.map.enemy_set_enabled("boss", true)
   fighting_boss = true
 
-  sol.timer.start(20000, repeat_give_arrows)
+  arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
 
 function repeat_give_arrows()
@@ -206,7 +207,7 @@ function repeat_give_arrows()
     arrow_xy = positions[math.random(#positions)]
     sol.map.pickable_item_create("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 0)
   end
-  sol.timer.start(20000, repeat_give_arrows)
+  arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)
@@ -247,7 +248,10 @@ function event_enemy_dead(enemy_name)
   if enemy_name == "boss" then
     -- create the heart container manually to be sure it won't be in a hole
     sol.map.pickable_item_create("heart_container", 1, 626, 544, 789, 0)
-    sol.main.timer_stop_all()
+    if arrows_timer ~= nil then
+      arrows_timer:stop()
+      arrows_timer = nil
+    end
   end
 end
 

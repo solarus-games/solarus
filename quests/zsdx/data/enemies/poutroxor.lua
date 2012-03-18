@@ -6,6 +6,7 @@ local bird, head, skeleton -- sprites
 local phase = 1
 local nb_flames_created = 0
 local max_flames_created = 10
+local timers = {}
 
 function event_appear()
 
@@ -33,13 +34,13 @@ function event_restart()
   if phase == 1 then
     local m = sol.movement.random_movement_create(32)
     sol.enemy.start_movement(m)
-    sol.main.timer_stop_all()
-    sol.timer.start(math.random(2000, 3000), skeleton_attack)
+    sol.timer.stop_all(timers)
+    timers[#timers + 1] = sol.timer.start(math.random(2000, 3000), skeleton_attack)
   else
     local m = sol.movement.random_movement_create(80)
     sol.enemy.start_movement(m)
-    sol.main.timer_stop_all()
-    sol.timer.start(math.random(3000, 5000), big_attack)
+    sol.timer.stop_all(timers)
+    timers[#timers + 1] = sol.timer.start(math.random(3000, 5000), big_attack)
   end
 end
 
@@ -48,7 +49,7 @@ function skeleton_attack()
 
   skeleton:set_animation("attack")
   sol.audio.play_sound("ice")
-  sol.timer.start(500, function()
+  timers[#timers + 1] = sol.timer.start(500, function()
     skeleton:set_animation("walking")
     nb_flames_created = nb_flames_created + 1
     local son_name = sol.enemy.get_name() .. "_son_" .. nb_flames_created
@@ -57,13 +58,13 @@ function skeleton_attack()
     local hero_x, hero_y = sol.map.hero_get_position()
     local angle = sol.main.get_angle(x, y, hero_x, hero_y)
     sol.enemy.send_message(son_name, angle)
-    sol.timer.start(math.random(1000, 3000), skeleton_attack)
+    timers[#timers + 1] = sol.timer.start(math.random(1000, 3000), skeleton_attack)
   end)
 end
 
 function event_hurt(attack, life_lost)
 
-  sol.main.timer_stop_all()
+  sol.timer.stop_all(timers)
   if phase == 1 and sol.enemy.get_life() <= 7 then
     sol.enemy.stop_movement()
     sol.audio.play_sound("enemy_killed")
@@ -85,7 +86,7 @@ function big_attack()
   sol.enemy.stop_movement()
   head:set_animation("attack")
   sol.audio.play_sound("lamp")
-  sol.timer.start(500, repeat_flame)
+  timers[#timers + 1] = sol.timer.start(500, repeat_flame)
 end
 
 function repeat_flame()
@@ -97,9 +98,9 @@ function repeat_flame()
     sol.enemy.create_son(son_name, "blue_flame", 0, 16)
     sol.enemy.send_message(son_name, tostring(angle))
     sol.audio.play_sound("lamp")
-    sol.timer.start(150, repeat_flame)
+    timers[#timers + 1] = sol.timer.start(150, repeat_flame)
   else
-    sol.timer.start(500, sol.enemy.restart)
+    timers[#timers + 1] = sol.timer.start(500, sol.enemy.restart)
   end
 end
 

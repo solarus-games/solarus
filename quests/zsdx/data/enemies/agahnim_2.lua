@@ -25,6 +25,7 @@ local vulnerable = false
 local hurt_proba
 local middle_dialog = false
 local nb_fakes_created = 0
+local timers = {}
 
 function event_appear()
 
@@ -51,11 +52,11 @@ end
 function event_restart()
 
   vulnerable = false
-  sol.main.timer_stop_all()
+  sol.timer.stop_all(timers)
   local sprite = sol.enemy.get_sprite()
   sprite:set_ignore_suspend(false)
   sprite:fade(1)
-  sol.timer.start(700, hide)
+  timers[#timers + 1] = sol.timer.start(700, hide)
 end
 
 function event_update()
@@ -79,7 +80,7 @@ function hide()
   -- disappear for a while
   vulnerable = false
   sol.enemy.set_position(-100, -100)
-  sol.timer.start(500, unhide)
+  timers[#timers + 1] = sol.timer.start(500, unhide)
 end
 
 function unhide()
@@ -90,7 +91,7 @@ function unhide()
   local sprite = sol.enemy.get_sprite()
   sprite:set_direction(get_direction4_to_hero())
   sprite:fade(0)
-  sol.timer.start(1000, fire_step_1)
+  timers[#timers + 1] = sol.timer.start(1000, fire_step_1)
 end
 
 function fire_step_1()
@@ -98,7 +99,7 @@ function fire_step_1()
   -- before preparing a fireball
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("arms_up")
-  sol.timer.start(1000, fire_step_2)
+  timers[#timers + 1] = sol.timer.start(1000, fire_step_2)
   sol.enemy.set_can_attack(true)
 end
 
@@ -127,7 +128,7 @@ function fire_step_2()
     next_fireball_breed = "red_fireball_triple"
   end
   sol.audio.play_sound("boss_charge")
-  sol.timer.start(1500, fire_step_3)
+  timers[#timers + 1] = sol.timer.start(1500, fire_step_3)
 end
 
 function fire_step_3()
@@ -144,7 +145,7 @@ function fire_step_3()
   else
     delay = 3000 -- red fireball: stay longer to play ping-pong
   end
-  sol.timer.start(delay, sol.enemy.restart)
+  timers[#timers + 1] = sol.timer.start(delay, sol.enemy.restart)
 
   function throw_fire()
     nb_sons_created = nb_sons_created + 1
@@ -157,11 +158,11 @@ function fire_step_3()
   -- shoot more fireballs if the life becomes short
   local life = sol.enemy.get_life()
   if life <= initial_life / 2 then
-    sol.timer.start(200, throw_fire)
-    sol.timer.start(400, throw_fire)
+    timers[#timers + 1] = sol.timer.start(200, throw_fire)
+    timers[#timers + 1] = sol.timer.start(400, throw_fire)
     if life <= initial_life / 4 then
-      sol.timer.start(600, throw_fire)
-      sol.timer.start(800, throw_fire)
+      timers[#timers + 1] = sol.timer.start(600, throw_fire)
+      timers[#timers + 1] = sol.timer.start(800, throw_fire)
     end
   end
 
@@ -180,7 +181,7 @@ function event_message_received(src_enemy, message)
 
     -- receive a fireball: get hurt or throw it back
     if math.random(100) <= hurt_proba then
-      sol.main.timer_stop_all()
+      sol.timer.stop_all(timers)
       sol.map.enemy_remove(src_enemy)
       sol.enemy.hurt(1)
     else
@@ -202,7 +203,7 @@ function event_hurt(attack, life_lost)
     sol.map.enemy_remove_group(sol.enemy.get_name() .. "_")
     sprite:set_ignore_suspend(true)
     sol.map.dialog_start("dungeon_8.agahnim_end")
-    sol.main.timer_stop_all()
+    sol.timer.stop_all(timers)
   elseif life <= initial_life * 2 / 3 then
     -- not dying yet: start creating fakes after a few hits
     sprite:set_ignore_suspend(true)

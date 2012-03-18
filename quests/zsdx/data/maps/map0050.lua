@@ -41,9 +41,9 @@ function event_block_moved(block_name)
     sol.map.block_set_enabled("STT5", false)
     sol.audio.play_sound("jump")
     sol.game.savegame_set_boolean(725, true)
-    sol.timer.start(function()
+    sol.timer.start(500, function()
       sol.audio.play_sound("bomb")
-    end, 500)
+    end)
   end
 end
 

@@ -1,6 +1,7 @@
 -- Outside world C3
 
-fighting_boss = false
+local fighting_boss = false
+local arrows_timer
 
 function event_map_started(destination_point_name)
 
@@ -76,7 +77,7 @@ function start_boss()
   sol.map.enemy_set_enabled("boss", true)
   sol.map.hero_unfreeze()
   fighting_boss = true
-  sol.timer.start(20000, repeat_give_arrows)
+  arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
 
 function repeat_give_arrows()
@@ -90,7 +91,7 @@ function repeat_give_arrows()
     arrow_xy = positions[math.random(#positions)]
     sol.map.pickable_item_create("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 1)
   end
-  sol.timer.start(20000, repeat_give_arrows)
+  arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
 
 function event_enemy_dead(enemy_name)
@@ -103,7 +104,10 @@ function event_enemy_dead(enemy_name)
       variant = 3
     end
     sol.map.pickable_item_create("sword", variant, 298, 440, 189, 1)
-    sol.main.timer_stop_all()
+    if arrows_timer ~= nil then
+      arrows_timer:stop()
+      arrows_timer = nil
+    end
   end
 end
 
@@ -127,13 +131,13 @@ function event_hero_victory_sequence_finished()
   sol.map.hero_set_map(119, "from_dungeon_10", 1)
   sol.map.enemy_set_group_enabled("", true) -- enable simple enemies back
 
-  sol.timer.start(function()
+  sol.timer.start(1000, function()
     if sol.game.savegame_get_boolean(905) then
       sol.audio.play_music("dark_mountain")
     else
       sol.audio.play_music("overworld")
     end
-  end, 1000)
+  end)
 end
 
 function event_dialog_finished(dialog_id)

@@ -1,7 +1,8 @@
 -- A spider boss from Newlink
 
-nb_sons_to_create = 0
-nb_sons_created = 0
+local nb_sons_to_create = 0
+local nb_sons_created = 0
+local timers = {}
 
 function event_appear()
 
@@ -17,7 +18,7 @@ end
 
 function event_restart()
 
-  sol.timer.start(500, jump_or_son_phase)
+  timers[#timers + 1] = sol.timer.start(500, jump_or_son_phase)
   go()
 end
 
@@ -41,7 +42,7 @@ end
 
 function event_hurt(attack, life_lost)
 
-  sol.main.timer_stop_all()
+  sol.timer.stop_all(timers)
   if sol.enemy.get_life() <= 0 then
     -- I am dying: remove the sons
     local sons_prefix = sol.enemy.get_name().."_son"
@@ -59,7 +60,7 @@ end
 function son_phase_soon()
 
   sol.enemy.stop_movement()
-  sol.timer.start(500, son_phase)
+  timers[#timers + 1] = sol.timer.start(500, son_phase)
 end
 
 function son_phase()
@@ -67,7 +68,7 @@ function son_phase()
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("preparing_son")
   sol.audio.play_sound("stone")
-  sol.timer.start(1500, throw_son)
+  timers[#timers + 1] = sol.timer.start(1500, throw_son)
 
   if sol.enemy.get_life() < 3 then
     nb_sons_to_create = 3
@@ -89,14 +90,14 @@ function throw_son()
   nb_sons_to_create = nb_sons_to_create - 1
   if nb_sons_to_create > 0 then
     -- throw another son in 0.5 second
-    sol.timer.start(500, throw_son)
+    timers[#timers + 1] = sol.timer.start(500, throw_son)
   else
     -- finish the son phase
     local sprite = sol.enemy.get_sprite()
     sprite:set_animation("walking")
     local delay = 3500 + (math.random(3) * 1000)
-    sol.timer.start(delay, jump_or_son_phase)
-    sol.timer.start(500, go)
+    timers[#timers + 1] = sol.timer.start(delay, jump_or_son_phase)
+    timers[#timers + 1] = sol.timer.start(500, go)
   end
 end
 

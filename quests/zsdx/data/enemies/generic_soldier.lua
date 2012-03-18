@@ -20,12 +20,13 @@
 -- Its values are all optional except main_sprite
 -- and sword_sprite.
 
-properties = {}
-going_hero = false
-being_pushed = false
-movement = nil
-main_sprite = nil
-sword_sprite = nil
+local properties = {}
+local going_hero = false
+local being_pushed = false
+local movement = nil
+local main_sprite = nil
+local sword_sprite = nil
+local timer
 
 function set_properties(prop)
 
@@ -78,7 +79,10 @@ function event_restart()
 end
 
 function event_hurt()
-  sol.main.timer_stop_all()
+  if timer ~= nil then
+    timer:stop()
+    timer = nil
+  end
 end
 
 function check_hero()
@@ -96,7 +100,7 @@ function check_hero()
   elseif not near_hero and going_hero then
     go_random()
   end
-  sol.timer.start(1000, check_hero)
+  timer = sol.timer.start(1000, check_hero)
 end
 
 function event_movement_changed()

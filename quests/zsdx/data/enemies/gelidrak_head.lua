@@ -3,6 +3,7 @@
 local vulnerable = false      -- becomes vulnerable when the tail is hurt
 local vulnerable_delay = 5000 -- delay while the head remains vulnerable
 local nb_flames_created = 0
+local timers = {}
 
 function event_appear()
 
@@ -28,8 +29,8 @@ end
 function event_restart()
 
   if not vulnerable then
-    sol.main.timer_stop_all()
-    sol.timer.start(math.random(2000, 5000), throw_flames)
+    sol.timer.stop_all(timers)
+    timers[#timers + 1] = sol.timer.start(math.random(2000, 5000), throw_flames)
     go_back()
   else
     sol.enemy.set_can_attack(false)
@@ -57,7 +58,7 @@ function event_movement_finished(movement)
   m:set_property("max_distance", 16)
   m:set_property("ignore_obstacles", true)
   sol.enemy.start_movement(m)
-  sol.timer.start(5000, go_back)
+  timers[#timers + 1] = sol.timer.start(5000, go_back)
 end
 
 function event_message_received(src_enemy, message)
@@ -71,8 +72,8 @@ function event_message_received(src_enemy, message)
       sol.enemy.set_attack_consequence("sword", 1)
       local sprite = sol.enemy.get_sprite()
       sprite:set_animation("walking")
-      sol.main.timer_stop_all()
-      sol.timer.start(vulnerable_delay, function()
+      sol.timer.stop_all(timers)
+      timers[#timers + 1] = sol.timer.start(vulnerable_delay, function()
 	vulnerable = false
 	event_restart()
 	sol.enemy.set_can_attack(true)
@@ -89,7 +90,7 @@ function event_hurt(attack, life_lost)
     -- notify the body (so that it is hurt too)
     sol.enemy.send_message(sol.enemy.get_father(), "hurt")
   else
-    sol.main.timer_stop_all()
+    sol.timer.stop_all(timers)
     sol.enemy.send_message(sol.enemy.get_father(), "dying")
   end
 end
@@ -108,7 +109,7 @@ function throw_flames()
     local sprite = sol.enemy.get_sprite()
     sprite:set_animation("preparing_flame")
     sol.audio.play_sound("lamp")
-    sol.timer.start(500, repeat_flame)
+    timers[#timers + 1] = sol.timer.start(500, repeat_flame)
   end
 end
 
@@ -122,9 +123,9 @@ function repeat_flame()
     sol.enemy.create_son(son_name, "blue_flame", 0, 16)
     sol.enemy.send_message(son_name, tostring(angle))
     sol.audio.play_sound("lamp")
-    sol.timer.start(150, repeat_flame)
+    timers[#timers + 1] = sol.timer.start(150, repeat_flame)
   else
-    sol.timer.start(500, sol.enemy.restart)
+    timers[#timers + 1] = sol.timer.start(500, sol.enemy.restart)
   end
 end
 

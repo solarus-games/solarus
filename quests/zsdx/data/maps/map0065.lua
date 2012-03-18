@@ -170,9 +170,7 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
   if item_name == "boss_key" then
     -- the hero was unfreezed by the chest, so cancel a possible previous guard
     -- (putting chests in the area of guards is probably not a good idea)
-    sol.main.timer_stop_all()
-    hero_seen = false
-    guard_name = nil
+    cancel_prison()
   end
 end
 

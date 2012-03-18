@@ -1,6 +1,7 @@
-shadow_sprite = nil
-initial_y = nil
-state = nil -- "raising", "attacking", "destroying"
+local shadow_sprite = nil
+local initial_y = nil
+local state = nil -- "raising", "attacking", "destroying"
+local timer
 
 function event_appear()
 
@@ -23,7 +24,7 @@ function event_restart()
 
   local m = sol.movement.path_movement_create("22", 16)
   sol.enemy.start_movement(m)
-  sol.timer.start(2000, go_hero)
+  timer = sol.timer.start(2000, go_hero)
   state = "raising"
 end
 
@@ -57,7 +58,9 @@ function destroy()
     sol.enemy.stop_movement()
     sprite:set_animation("destroy")
     sol.audio.play_sound("stone")
-    sol.main.timer_stop_all()
+    if timer ~= nil then
+      timer:stop()
+    end
   end
 end
 

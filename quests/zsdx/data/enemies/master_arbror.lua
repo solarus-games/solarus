@@ -5,6 +5,7 @@ local nb_sons_immobilized = 0
 local nb_sons_immobilized_needed = 3 -- number of sons immobilized needed to get him vulnerable
 local vulnerable = false
 local initial_life = 8
+local timers = {}
 
 function event_appear()
 
@@ -40,8 +41,8 @@ function go()
   m:set_property("max_distance", 16)
   --m:set_property("ignore_obstacles", true)
   sol.enemy.start_movement(m)
-  sol.main.timer_stop_all()
-  sol.timer.start(math.random(2000, 3000), prepare_son)
+  sol.timer.stop_all(timers)
+  timers[#timers + 1] = sol.timer.start(math.random(2000, 3000), prepare_son)
 end
 
 function event_hurt(attack, life_lost)
@@ -51,7 +52,7 @@ function event_hurt(attack, life_lost)
     local sprite = sol.enemy.get_sprite()
     sprite:set_ignore_suspend(true)
     sol.map.dialog_start("dungeon_3.arbror_killed")
-    sol.main.timer_stop_all()
+    sol.timer.stop_all(timers)
     remove_sons()
   else
     if life > 9 then 
@@ -75,12 +76,12 @@ function prepare_son()
       local sprite = sol.enemy.get_sprite()
       sprite:set_animation("preparing_son")
       sol.audio.play_sound("hero_pushes")
-      sol.timer.start(1000, create_son)
+      timers[#timers + 1] = sol.timer.start(1000, create_son)
       sol.enemy.stop_movement()
     end
   end
 
-  sol.timer.start(math.random(2000, 5000), prepare_son)
+  timers[#timers + 1] = sol.timer.start(math.random(2000, 5000), prepare_son)
 end
 
 function create_son()
@@ -111,8 +112,8 @@ function event_sprite_animation_finished(sprite, animation)
       sol.enemy.stop_movement()
       sprite:set_animation("vulnerable")
       sol.audio.play_sound("boss_hurt")
-      sol.main.timer_stop_all()
-      sol.timer.start(4000, stop_vulnerable)
+      sol.timer.stop_all(timers)
+      timers[#timers + 1] = sol.timer.start(4000, stop_vulnerable)
       remove_sons()
     else
       sprite:set_animation("walking")

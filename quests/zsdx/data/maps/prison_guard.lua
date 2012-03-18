@@ -1,14 +1,16 @@
 -- This script is included by the maps of dungeon 5.
 -- It handles sending the hero to prison when a guard sees him.
 
-guard_name = nil
-hero_seen = false
+local guard_name = nil
+local hero_seen = false
+local prison_go_timer = nil
+local prison_dialog_timer = nil
 
 -- This function should be called by event_dialog_finished in your map.
 function dialog_check_guard(dialog_id)
 
   if dialog_id == "dungeon_5.hero_seen_by_guard" then
-    sol.timer.start(1000, send_hero_to_prison)
+    prison_go_timer = sol.timer.start(1000, send_hero_to_prison)
   end
 end
 
@@ -46,7 +48,7 @@ function seen_by_guard(guard_name)
   sprite:set_animation("walking")
   local m = sol.movement.target_movement_create(96)
   sol.map.npc_start_movement(guard_name, m)
-  sol.timer.start(500, prison_dialog)
+  prison_dialog_timer = sol.timer.start(500, prison_dialog)
   sol.audio.play_sound("hero_seen")
 end
 
@@ -57,11 +59,28 @@ end
 
 function send_hero_to_prison()
   hero_seen = false
-  sol.main.timer_stop_all()
+  if prison_dialog_timer ~= nil then
+    prison_dialog_timer:stop()
+    prison_dialog_timer = nil
+  end
+  prison_go_timer = nil
   sol.map.hero_set_map(65, "prison", 1)
   if init_prison ~= nil then
     -- special case: we are already on the map of the prison
     init_prison()
   end
+end
+
+function cancel_prison()
+  if prison_dialog_timer ~= nil then
+    prison_dialog_timer:stop()
+    prison_dialog_timer = nil
+  end
+  if prison_go_timer ~= nil then
+    prison_go_timer:stop()
+    prison_go_timer = nil
+  end
+  hero_seen = false
+  guard_name = nil
 end
 

@@ -1,5 +1,7 @@
 -- Dungeon 9 4F
 
+local chest_a_timer
+
 function event_map_started(destination_point_name)
 
   -- chest A
@@ -23,13 +25,13 @@ function event_switch_activated(switch_name)
       -- open door A, wait 1 second and go to door B
       sol.audio.play_sound("secret")
       sol.map.door_open("door_a")
-      sol.timer.start(function()
+      sol.timer.start(1000, function()
 	sol.map.camera_move(1608, 360, 250, function()
 	  -- open door B
 	  sol.audio.play_sound("secret")
 	  sol.map.door_open("door_b")
 	end) -- camera to door B
-      end, 1000) -- timer before going from door A to door B
+      end) -- timer before going from door A to door B
     end, 1000, 5000) -- camera to door A (don't go back too soon)
 
   -- chest A
@@ -47,13 +49,13 @@ function event_camera_back()
   local x, y = sol.map.hero_get_position()
   if y < 360 then
     -- chest A
-    sol.timer.start(function()
+    chest_a_timer = sol.timer.start(5000, true, function()
       if not sol.map.chest_is_open("chest_a") then
 	sol.audio.play_sound("door_closed")
 	sol.map.chest_set_enabled("chest_a", false)
 	sol.map.switch_set_activated("chest_a_switch", false)
       end
-    end, 5000, true)
+    end)
   end
 end
 
@@ -61,7 +63,10 @@ function event_treasure_obtaining(item_name, variant, savegame_variable)
 
   -- chest A
   if savegame_variable == 872 then
-    sol.main.timer_stop_all()
+    if chest_a_timer ~= nil then
+      chest_a_timer:stop()
+      chest_a_timer = nil
+    end
   end
 end
 

@@ -4,6 +4,7 @@ local main_sprite = nil
 local claw_sprite = nil
 local nb_sons_created = 0
 local initial_life = 7
+local timers = {}
 
 function event_appear()
 
@@ -32,8 +33,8 @@ function event_restart()
   claw_sprite:set_animation("claw")
   local m = sol.movement.random_movement_create(64)
   sol.enemy.start_movement(m)
-  sol.main.timer_stop_all()
-  sol.timer.start(math.random(2000, 6000), prepare_flames)
+  sol.timer.stop_all(timers)
+  timers[#timers + 1] = sol.timer.start(math.random(2000, 6000), prepare_flames)
 end
 
 function prepare_flames()
@@ -50,17 +51,17 @@ function prepare_flames()
     sol.enemy.create_son(son_name, "red_flame", 0, -16, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      sol.timer.start(200, repeat_throw_flame)
+      timers[#timers + 1] = sol.timer.start(200, repeat_throw_flame)
     end
   end
   repeat_throw_flame()
 
-  sol.timer.start(math.random(4000, 6000), prepare_flames)
+  timers[#timers + 1] = sol.timer.start(math.random(4000, 6000), prepare_flames)
 end
 
 function event_hurt(attack, life_lost)
 
-  sol.main.timer_stop_all()
+  sol.timer.stop_all(timers)
   if sol.enemy.get_life() <= 0 then
     sol.map.enemy_remove_group(sol.enemy.get_name() .. "_")
   end

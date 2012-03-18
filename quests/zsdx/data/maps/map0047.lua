@@ -117,9 +117,9 @@ function event_hero_on_sensor(sensor_name)
       sol.map.npc_set_enabled("billy_npc", true)
       sol.map.hero_freeze()
       fighting_boss = true
-      sol.timer.start(function()
+      sol.timer.start(1000, function()
 	sol.map.dialog_start("dungeon_8.billy")
-      end, 1000)
+      end)
     end
   end
 end
@@ -160,12 +160,12 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
     sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
-    sol.timer.start(function()
+    sol.timer.start(9000, function()
       sol.map.door_open("boss_door")
       sol.map.door_open("agahnim_door")
       sol.audio.play_sound("secret")
       sol.map.hero_unfreeze()
-    end, 9000)
+    end)
   end
 end
 

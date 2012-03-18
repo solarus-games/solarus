@@ -27,6 +27,7 @@ local nb_floors_destroyed = 0
 local nb_flames_created = 0
 local nb_bats_created = 0
 local cancel_next_attack = false
+local timers = {}
 
 function event_appear()
 
@@ -217,7 +218,7 @@ function throw_flames()
     sol.enemy.create_son(son_name, "red_flame", 0, -24, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      sol.timer.start(150, repeat_throw_flame)
+      timers[#timers + 1] = sol.timer.start(150, repeat_throw_flame)
     else
       attacking = false
       attack_scheduled = false
@@ -261,7 +262,7 @@ function throw_bats()
 
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      sol.timer.start(233, repeat_throw_bat)
+      timers[#timers + 1] = sol.timer.start(233, repeat_throw_bat)
     else
       attacking = false
       attack_scheduled = false
@@ -278,14 +279,14 @@ end
 
 function schedule_attack()
 
-  sol.timer.start(math.random(3000, 6000), attack)
+  timers[#timers + 1] = sol.timer.start(math.random(3000, 6000), attack)
   attack_scheduled = true
 end
 
 function event_hurt(attack, life_lost)
 
   if sol.enemy.get_life() <= 0 then
-    sol.main.timer_stop_all()
+    sol.timer.stop_all(timers)
   end
 end
 

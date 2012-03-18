@@ -1,7 +1,7 @@
 -- Dungeon 2 B1
 
 -- correct order of the switches
-switches_puzzle_order = {
+local switches_puzzle_order = {
   switch_a = 1,
   switch_b = 2,
   switch_c = 3,
@@ -10,8 +10,8 @@ switches_puzzle_order = {
   switch_f = 6
 }
 
-switches_puzzle_nb_enabled = 0
-switches_puzzle_correct = true
+local switches_puzzle_nb_enabled = 0
+local switches_puzzle_correct = true
 
 -- boss
 local boss_arrows = {
@@ -20,7 +20,8 @@ local boss_arrows = {
   [55] = { x = 1024, y = 341, created = true },
   [80] = { x = 1056, y = 477, created = true },
 }
-fighting_boss = false
+local fighting_boss = false
+local timers = {}
 
 function event_map_started(destination_point)
 
@@ -61,7 +62,10 @@ function event_switch_activated(switch_name)
     if switches_puzzle_nb_enabled == 6 then
 
       if switches_puzzle_correct then
-	sol.map.camera_move(240, 328, 250, boss_key_chest_timer)
+	sol.map.camera_move(240, 328, 250, function()
+	  sol.map.chest_set_enabled("boss_key_chest", true)
+	  sol.audio.play_sound("chest_appears")
+	end)
       else
 	sol.audio.play_sound("wrong")
 	switches_puzzle_nb_enabled = 0
@@ -82,11 +86,6 @@ function event_switch_left(switch_name)
       sol.map.switch_set_locked(k, false)
     end
   end
-end
-
-function boss_key_chest_timer()
-  sol.map.chest_set_enabled("boss_key_chest", true)
-  sol.audio.play_sound("chest_appears")
 end
 
 function event_hero_on_sensor(sensor_name)
@@ -113,7 +112,7 @@ function event_hero_on_sensor(sensor_name)
       sol.map.sensor_set_group_enabled("boss_floor_sensor", false)
       boss_restore_floor(true)
       boss_change_floor(1, 92, 1, false)
-      sol.timer.start(10000, function()
+      timers[#timers + 1] = sol.timer.start(10000, function()
         sol.map.sensor_set_group_enabled("boss_floor_sensor", true)
 	boss_change_floor(92, 1, -1, true)
       end)
@@ -126,7 +125,7 @@ function event_hero_on_sensor(sensor_name)
       sol.map.sensor_set_group_enabled("boss_floor_sensor", false)
       boss_restore_floor(true)
       boss_change_floor(92, 1, -1, false)
-      sol.timer.start(10000, function()
+      timers[#timers + 1] = sol.timer.start(10000, function()
         sol.map.sensor_set_group_enabled("boss_floor_sensor", true)
 	boss_change_floor(1, 92, 1, true)
       end)
@@ -189,7 +188,7 @@ function boss_change_floor(first, last, inc, enable)
     end
 
     if index ~= last then
-      sol.timer.start(delay, repeat_change)
+      timers[#timers + 1] = sol.timer.start(delay, repeat_change)
     end
     index = index + inc
   end
@@ -200,7 +199,7 @@ function boss_restore_floor(with_arrows)
 
   -- restore the whole floor immediately
   sol.map.tile_set_group_enabled("boss_floor", true)
-  sol.main.timer_stop_all()
+  sol.timer.stop_all(timers)
 
   if with_arrows then
     for k, v in pairs(boss_arrows) do
@@ -225,7 +224,7 @@ function event_enemy_dead(enemy_name)
   if enemy_name == "boss" then
     -- create the heart container manually to be sure it won't be in lava
     sol.map.pickable_item_create("heart_container", 1, 103, 960, 437, 0)
-    sol.main.timer_stop_all()
+    sol.timer.stop_all(timers)
   end
 end
 

@@ -31,7 +31,7 @@ function start_evil_tiles()
     sol.map.tile_set_enabled("evil_tile_after_"..next, true)
     next = next + 1
     if next <= total then
-      sol.timer.start(repeat_spawn, spawn_delay)
+      sol.timer.start(spawn_delay, repeat_spawn)
     end
   end
 

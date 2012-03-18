@@ -1,7 +1,8 @@
 -- Script of the Lamp
 
-temporary_lit_torches = {} -- list of torches that will be unlit by timers soon (FIFO)
-was_dark_room = false
+local temporary_lit_torches = {} -- list of torches that will be unlit by timers soon (FIFO)
+local was_dark_room = false
+local timers = {}
 
 -- Called when the hero uses the Lamp
 function event_use()
@@ -38,9 +39,9 @@ end
 -- Unlights the oldest torch still lit
 function unlight_oldest_torch()
 
-  local entity = table.remove(temporary_lit_torches, 1)                   -- remove the torch from the FIFO
-  if sol.map.npc_exists(entity) then                       -- see if it still exists
-    local torch_sprite = sol.map.npc_get_sprite(entity)    -- get its sprite
+  local entity = table.remove(temporary_lit_torches, 1)  -- remove the torch from the FIFO
+  if sol.map.npc_exists(entity) then                     -- see if it still exists
+    local torch_sprite = sol.map.npc_get_sprite(entity)  -- get its sprite
     torch_sprite:set_animation("unlit")                  -- change the animation
   end
 
@@ -64,7 +65,7 @@ function event_map_changed()
 
   -- cancel all torch timers so that the previous map does not interfer with
   -- the new one
-  sol.main.timer_stop_all()
+  sol.timer.stop_all(timers)
   temporary_lit_torches = {}
   was_dark_room = false
 end
@@ -87,7 +88,7 @@ function event_npc_collision_fire(npc_name)
     if torch_sprite:get_animation() == "unlit" then
       -- temporarily light the torch up
       torch_sprite:set_animation("lit")
-      sol.timer.start(10000, unlight_oldest_torch)
+      timers[#timers + 1] = sol.timer.start(10000, unlight_oldest_torch)
       table.insert(temporary_lit_torches, npc_name)
 
       if sol.map.light_get() == 0 then

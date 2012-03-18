@@ -47,16 +47,13 @@ function start_boss()
 
   sol.map.hero_freeze()
   sol.map.door_close("boss_door")
-  sol.timer.start(function()
-
+  sol.timer.start(1000, function()
     sol.audio.play_music("boss")
     sol.map.enemy_set_enabled("boss", true)
     sol.map.hero_unfreeze()
     sol.timer.start(3000, repeat_lava_spawner)
     fighting_boss = true
-
-  end,
-  1000)
+  end)
 end
 
 function repeat_lava_spawner()
@@ -66,7 +63,7 @@ function repeat_lava_spawner()
     local index = math.random(#spawner_xy)
     sol.map.enemy_create("spawner_"..nb_spawners_created,
     "drakomos_lava_spawner", 1, spawner_xy[index].x, spawner_xy[index].y)
-    sol.timer.start(repeat_lava_spawner, 5000 + math.random(10000))
+    sol.timer.start(5000 + math.random(10000), repeat_lava_spawner)
   end
 end
 
@@ -98,12 +95,11 @@ function event_dialog_finished(dialog_id)
   if dialog_id == "dungeon_6.tom" then
 
     sol.audio.stop_music()
-    sol.timer.start(function()
+    sol.timer.start(1000, function()
       sol.audio.play_music("legend")
       sol.map.dialog_start("dungeon_6.tom_revelation")
       sol.map.dialog_set_variable("dungeon_6.tom_revelation", sol.game.savegame_get_name());
-    end,
-    1000)
+    end)
   elseif dialog_id == "dungeon_6.tom_revelation" then
     local variant = 2
     if sol.game.savegame_get_boolean(939) then

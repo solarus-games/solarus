@@ -3,6 +3,7 @@
 local immobilized = false
 local disappearing = false
 local speed = 32
+local timer
 
 function event_appear()
 
@@ -30,12 +31,14 @@ function event_restart()
     sol.enemy.set_can_attack(false)
   elseif immobilized then
     sprite:set_animation("hurt_long")
-    sol.main.timer_stop_all()
-    sol.timer.start(10000, disappear)
+    if timer ~= nil then
+      timer:stop()
+    end
+    timer = sol.timer.start(10000, disappear)
     sol.enemy.stop_movement()
     sol.enemy.set_can_attack(false)
   else
-    sol.timer.start(1000, go)
+    timer = sol.timer.start(1000, go)
     sol.enemy.set_can_attack(true)
   end
 end
@@ -56,7 +59,9 @@ function event_hurt(attack, life_points)
     if father_name ~= "" then
       sol.enemy.send_message(father_name, "begin immobilized")
     end
-    sol.main.timer_stop_all()
+    if timer ~= nil then
+      timer:stop()
+    end
   end
 end
 
@@ -79,7 +84,9 @@ function disappear()
     if father_name ~= "" then
       sol.enemy.send_message(father_name, "end immobilized")
     end
-    sol.main.timer_stop_all()
+    if timer ~= nil then
+      timer:stop()
+    end
     disappearing = true
   end
 end

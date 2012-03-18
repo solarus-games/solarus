@@ -21,6 +21,7 @@ local blue_fireball_proba = 33 -- percent
 local next_fireball_sound
 local next_fireball_breed
 local disappearing = false
+local timers = {}
 
 function event_appear()
 
@@ -48,10 +49,10 @@ end
 function event_restart()
 
   if not disappearing then
-    sol.main.timer_stop_all()
+    sol.timer.stop_all(timers)
     local sprite = sol.enemy.get_sprite()
     sprite:fade(1)
-    sol.timer.start(500, hide)
+    timers[#timers + 1] = sol.timer.start(500, hide)
   end
 end
 
@@ -73,7 +74,7 @@ end
 function hide()
 
   sol.enemy.set_position(-100, -100)
-  sol.timer.start(500, unhide)
+  timers[#timers + 1] = sol.timer.start(500, unhide)
 end
 
 function unhide()
@@ -83,14 +84,14 @@ function unhide()
   local sprite = sol.enemy.get_sprite()
   sprite:set_direction(get_direction4_to_hero())
   sprite:fade(0)
-  sol.timer.start(1000, fire_step_1)
+  timers[#timers + 1] = sol.timer.start(1000, fire_step_1)
 end
 
 function fire_step_1()
 
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("arms_up")
-  sol.timer.start(1000, fire_step_2)
+  timers[#timers + 1] = sol.timer.start(1000, fire_step_2)
   sol.enemy.set_can_attack(true)
 end
 
@@ -115,7 +116,7 @@ function fire_step_2()
     next_fireball_breed = "red_fireball_triple"
   end
   sol.audio.play_sound("boss_charge")
-  sol.timer.start(1500, fire_step_3)
+  timers[#timers + 1] = sol.timer.start(1500, fire_step_3)
 end
 
 function fire_step_3()
@@ -123,7 +124,7 @@ function fire_step_3()
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("stopped")
   sol.audio.play_sound(next_fireball_sound)
-  sol.timer.start(700, sol.enemy.restart)
+  timers[#timers + 1] = sol.timer.start(700, sol.enemy.restart)
 
   function throw_fire()
 
@@ -148,8 +149,8 @@ function disappear()
   disappearing = true
   sol.enemy.set_can_attack(false)
   sprite:fade(1)
-  sol.main.timer_stop_all()
-  sol.timer.start(500, function()
+  sol.timer.stop_all(timers)
+  timers[#timers + 1] = sol.timer.start(500, function()
     sol.map.enemy_remove(sol.enemy.get_name())
   end)
 end
@@ -161,7 +162,7 @@ function event_collision_enemy(other_name, other_sprite, my_sprite)
     local x = sol.enemy.get_position()
     if x > 0 then
       -- collision with another Agahnim
-      sol.main.timer_stop_all()
+      sol.timer.stop_all(timers)
       hide() -- go somewhere else
     end
   end

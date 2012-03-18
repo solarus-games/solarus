@@ -1,5 +1,7 @@
 -- Snap Dragon
 
+local timer
+
 function event_appear()
 
   sol.enemy.set_life(3)
@@ -27,7 +29,10 @@ end
 
 function event_hurt(attack, life_lost)
 
-  sol.main.timer_stop_all()
+  if timer ~= nil then
+    timer:stop()
+    timer = nil
+  end
 end
 
 function go_random()
@@ -43,8 +48,10 @@ function go_random()
   local sprite = sol.enemy.get_sprite()
   sprite:set_direction(rand4 - 1)
 
-  sol.main.timer_stop_all()
-  sol.timer.start(300 + math.random(1500), function()
+  if timer ~= nil then
+    timer:stop()
+  end
+  timer = sol.timer.start(300 + math.random(1500), function()
     sprite:set_animation("bite")
   end)
 end

@@ -27,9 +27,10 @@
 -- The parameter of set_properties() is a table.
 -- Its values are all optional except the sprites.
 
-properties = {}
-going_hero = false
-awaken = false
+local properties = {}
+local going_hero = false
+local awaken = false
+local timer
 
 function set_properties(prop)
 
@@ -113,7 +114,10 @@ end
 
 function event_hurt()
 
-  sol.main.timer_stop_all()
+  if timer ~= nil then
+    timer:stop
+    timer = nil
+  end
 end
 
 function check_hero()
@@ -132,7 +136,7 @@ function check_hero()
   elseif not awaken and near_hero then
     wake_up()
   end
-  sol.timer.start(1000, check_hero)
+  timer = sol.timer.start(1000, check_hero)
 end
 
 --  The animation of a sprite is finished
@@ -173,3 +177,4 @@ function go_hero()
   sol.enemy.start_movement(m)
   going_hero = true
 end
+

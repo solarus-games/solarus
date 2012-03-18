@@ -73,12 +73,11 @@ function event_hero_on_sensor(sensor_name)
     sol.map.hero_freeze()
     sol.map.door_close("miniboss_e_door")
     fighting_miniboss = true
-    sol.timer.start(function()
+    sol.timer.start(1000, function()
       sol.audio.play_music("boss")
       sol.map.enemy_set_group_enabled("miniboss", true)
       sol.map.hero_unfreeze()
-    end,
-    1000)
+    end)
   end
 end
 

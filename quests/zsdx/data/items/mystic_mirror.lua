@@ -1,7 +1,8 @@
 -- The mystic mirror allows the hero to traverse a specific waterfall
 -- in the mountains
 
-i = 1 -- index of the waterfall tiles
+local i = 1 -- index of the waterfall tiles
+local timer
 
 function event_npc_interaction(npc_name)
 
@@ -19,7 +20,9 @@ function event_npc_interaction_item(npc_name, item_name, variant)
     -- and traverse it
     sol.map.hero_freeze()
     sol.audio.play_sound("water_drain")
-    sol.main.timer_stop_all()
+    if timer ~= nil then
+      timer:stop()
+    end
     sol.map.tile_set_group_enabled("riverfall_", false)
 
     local path
@@ -34,11 +37,11 @@ function event_npc_interaction_item(npc_name, item_name, variant)
       sol.map.tile_set_enabled("riverfall_" .. i, true)
       i = i + 1
       if i <= 8 then
-        sol.timer.start(350, repeat_change_riverfall)
+        timer = sol.timer.start(350, repeat_change_riverfall)
       else
         sol.audio.play_sound("secret")
         sol.map.hero_walk(path, false, true)
-        sol.timer.start(2000, repeat_restore_riverfall)
+        timer = sol.timer.start(2000, repeat_restore_riverfall)
       end
     end
 
@@ -46,11 +49,11 @@ function event_npc_interaction_item(npc_name, item_name, variant)
       i = i - 1
       sol.map.tile_set_enabled("riverfall_" .. i, false)
       if i > 1 then
-        sol.timer.start(350, repeat_restore_riverfall)
+        timer = sol.timer.start(350, repeat_restore_riverfall)
       end
     end
 
-    sol.timer.start(350, repeat_change_riverfall)
+    timer = sol.timer.start(350, repeat_change_riverfall)
 
     -- tell the engine that an interaction occured:
     -- event_use() won't be called
@@ -70,6 +73,9 @@ end
 function event_map_changed()
 
   -- stop disabling tiles, they don't exist anymore
-  sol.main.timer_stop_all()
+  if timer ~= nil then
+    timer:stop()
+    timer = nil
+  end
 end
 

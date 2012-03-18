@@ -1,6 +1,7 @@
 -- Billy
 
-going_hero = false
+local going_hero = false
+local timer
 
 function event_appear()
 
@@ -38,7 +39,9 @@ function event_restart()
 end
 
 function event_hurt()
-  sol.main.timer_stop_all()
+  if timer ~= nil then
+    sol.main.timer_stop_all()
+  end
 end
 
 function check_hero()
@@ -49,7 +52,7 @@ function check_hero()
   elseif not near_hero and going_hero then
     go_random()
   end
-  sol.timer.start(1000, check_hero)
+  timer = sol.timer.start(1000, check_hero)
 end
 
 function go_random()

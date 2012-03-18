@@ -41,7 +41,7 @@ function start_evil_tiles()
     sol.map.tile_set_enabled("evil_after_" .. next, true)
     next = next + 1
     if next <= total then
-      sol.timer.start(repeat_spawn, spawn_delay)
+      sol.timer.start(spawn_delay, repeat_spawn)
     end
   end
 
@@ -98,13 +98,13 @@ function event_switch_activated(switch_name)
     if not door3 then
       sol.map.door_open("door3")
       sol.audio.play_sound("door_open")
-      sol.timer.start(function()
+      sol.timer.start(5000, true, function()
         if not door3 then
           sol.map.switch_set_activated("switch1_1", false)
           sol.map.door_close("door3")
           sol.audio.play_sound("door_closed")
         end
-      end, 5000, true)
+      end)
     end
   end
 end

@@ -1,21 +1,21 @@
 -- Rupee house
 
 -- Initializations made when the map has just been loaded
-playing_game_1 = false
-playing_game_2 = false
-playing_game_3 = false
-already_played_game_1 = false
-game_1_rewards = {5, 20, 50} -- possible rupee rewards in game 1
-game_2_bet = 0
-game_2_reward = 0
-game_2_man_sprite = nil
-
--- game 2 behavior
-game_2_slots = {
+local playing_game_1 = false
+local playing_game_2 = false
+local playing_game_3 = false
+local already_played_game_1 = false
+local game_1_rewards = {5, 20, 50} -- possible rupee rewards in game 1
+local game_2_bet = 0
+local game_2_reward = 0
+local game_2_man_sprite = nil
+local game_2_timer
+local game_2_slots = {
   slot_machine_left =   {initial_frame = 6, initial_delay = 70, current_delay = 0, symbol = -1, sprite = nil},
   slot_machine_middle = {initial_frame = 15, initial_delay = 90, current_delay = 0, symbol = -1, sprite = nil},
   slot_machine_right =  {initial_frame = 9, initial_delay = 60, current_delay = 0, symbol = -1, sprite = nil}
 } -- the key is also the entity name
+local game_3_timer
 
 -- Function called when the map starts
 function event_map_started(destination_point_name)
@@ -213,12 +213,15 @@ function event_dialog_finished(dialog_id, answer)
       else
 	-- enough money: reset the game, pay and start the game
 
-	sol.map.block_reset_all();
-	sol.map.tile_set_enabled("game_3_barrier_1", false);
-	sol.map.tile_set_enabled("game_3_barrier_2", false);
-	sol.map.tile_set_enabled("game_3_barrier_3", false);
-	sol.map.tile_set_enabled("game_3_middle_barrier", false);
-	sol.main.timer_stop_all()
+	sol.map.block_reset_all()
+	sol.map.tile_set_enabled("game_3_barrier_1", false)
+	sol.map.tile_set_enabled("game_3_barrier_2", false)
+	sol.map.tile_set_enabled("game_3_barrier_3", false)
+	sol.map.tile_set_enabled("game_3_middle_barrier", false)
+	if game_3_timer ~= nil then
+	  game_3_timer:stop()
+	  game_3_timer = nil
+	end
 
 	sol.game.remove_money(10)
 	sol.map.dialog_start("rupee_house.game_3.go")
@@ -227,7 +230,7 @@ function event_dialog_finished(dialog_id, answer)
     end
 
   elseif dialog_id == "rupee_house.game_3.go" then 
-    sol.timer.start(8000, true, game_3_timer)
+    game_3_timer = sol.timer.start(8000, true, game_3_timeout)
     sol.map.sensor_set_enabled("game_3_sensor", true);
 
   -- stop game 3 when the player founds the piece of heart
@@ -278,7 +281,7 @@ function event_chest_empty(chest_name)
 end
 
 -- Function called when the timer of game 3 ends.
-function game_3_timer()
+function game_3_timeout()
   sol.audio.play_sound("door_closed")
   sol.map.tile_set_enabled("game_3_middle_barrier", true)
 end
@@ -288,7 +291,10 @@ function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "game_3_sensor" then
     -- stop the timer when the player reaches this point
-    sol.main.timer_stop_all()
+    if game_3_timer ~= nil then
+      game_3_timer:stop()
+      game_3_timer = nil
+    end
     sol.audio.play_sound("secret")
     sol.map.sensor_set_enabled("game_3_sensor", false)
   end
@@ -319,7 +325,7 @@ function event_update()
 	  sol.map.hero_unfreeze()
 	else
 	  playing_game_2 = false
-	  sol.timer.start(500, game_2_timer)
+	  game_2_timer = sol.timer.start(500, game_2_timeout)
 	end
       end
     end
@@ -327,7 +333,7 @@ function event_update()
 end
 
 -- This function gives the reward to the player in the slot machine game
-function game_2_timer()
+function game_2_timeout()
 
   -- see if the player has won
   local i = 1

@@ -1,5 +1,7 @@
 -- Dungeon 9 B1
 
+local door_timer
+
 function event_map_started(destination_point_name)
 
   if destination_point_name == "from_1f_w" then
@@ -14,12 +16,10 @@ function event_switch_activated(switch_name)
       and not sol.map.door_is_open("door") then
     sol.audio.play_sound("secret")
     sol.map.door_open("door")
-    sol.timer.start(function()
-      if door_allow_close then
-        sol.map.door_close("door")
-        sol.map.switch_set_activated(switch_name, true)
-      end
-    end, 12000, true)
+    door_timer = sol.timer.start(12000, true, function()
+      sol.map.door_close("door")
+      sol.map.switch_set_activated(switch_name, false)
+    end)
   end
 end
 
@@ -27,7 +27,10 @@ function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "door_dont_close_sensor" then
     -- disable the timer that would close the door
-    sol.main.timer_stop_all()
+    if door_timer ~= nil then
+      door_timer:stop()
+      door_timer = nil
+    end
     sol.map.sensor_set_enabled(sensor_name, false)
   end
 end

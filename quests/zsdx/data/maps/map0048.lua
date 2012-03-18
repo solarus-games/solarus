@@ -11,6 +11,8 @@
 -- BB: Barrier Button
 -- DS: Door Sensor
 
+local timer
+
 function event_map_started(destination_point_name)
   sol.map.door_set_open("LD9", true)
 
@@ -91,13 +93,16 @@ function CB03_time_out()
 end
 
 function event_camera_back()
-  sol.timer.start(CB03_time_out, 8000, true)
+  timer = sol.timer.start(8000, true, CB03_time_out)
 end
 
 function event_treasure_obtaining(item_name, variant, savegame_variable)
 
   if savegame_variable == 706 then
-    sol.main.timer_stop_all()
+    if timer ~= nil then
+      timer:stop()
+      timer = nil
+    end
   end
 end
 

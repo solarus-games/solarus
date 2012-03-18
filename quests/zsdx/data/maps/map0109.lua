@@ -65,11 +65,11 @@ function event_hero_on_sensor(sensor_name)
       local sprite = sol.map.npc_get_sprite("child_" .. i)
       sprite:set_ignore_suspend(true)
     end
-    sol.timer.start(function()
+    sol.timer.start(3000, function()
       sol.map.hero_unfreeze()
       sol.map.sensor_set_enabled(sensor_name, false)
       sol.map.dialog_start("dungeon_9.5f_childs_hint")
-    end, 3000)
+    end)
   end
 end
 

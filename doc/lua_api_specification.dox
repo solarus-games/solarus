@@ -105,6 +105,7 @@ later, with a specified delay.
 
 - <tt>sol.timer.start(delay, with_sound, callback)</tt>:
 Starts a timer which will calls a function once finished.
+If the delay is set to zero, the function is immediately called.
   - <tt>delay</tt> (number): delay before calling the function in milliseconds
   - <tt>with_sound</tt> (boolean, optional): true to play a clock sound
     (default is false)

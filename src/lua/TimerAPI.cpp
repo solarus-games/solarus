@@ -207,11 +207,17 @@ int Script::timer_api_start(lua_State *l) {
   luaL_checktype(l, index, LUA_TFUNCTION);
   lua_settop(l, index); // make sure the function is on top of the stack
 
-  // create the timer
   int callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  Timer* timer = new Timer(delay, with_sound);
-  script.add_timer(timer, callback_ref);
-  push_timer(l, *timer);
+  if (delay > 0) {
+    // create the timer
+    Timer* timer = new Timer(delay, with_sound);
+    script.add_timer(timer, callback_ref);
+    push_timer(l, *timer);
+  }
+  else {
+    // delay is zero: call the function right now
+    script.do_callback(callback_ref);
+  }
 
   return 0;
 }

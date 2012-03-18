@@ -73,7 +73,7 @@ SelectionMenu::SelectionMenu(Solarus &solarus):
   title_text->set_font("fixed");
 
   // music
-  Music::play("game_over.spc");
+  Music::play("game_over");
 
   // transitions
   transition = Transition::create(Transition::FADE, Transition::IN);

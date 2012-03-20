@@ -42,12 +42,11 @@ function event_obstacle_reached()
   local try2 = (last_direction8 + 6) % 8;
   local try3 = (last_direction8 + 4) % 8;
 
-  local m = sol.enemy.get_movement()
-  if not m:test_obstacles(dxy[try1 + 1].x, dxy[try1 + 1].y) then
+  if not sol.enemy.test_obstacles(dxy[try1 + 1].x, dxy[try1 + 1].y) then
 
     local x, y = sol.enemy.get_position()
     go(try1)
-  elseif not m:test_obstacles(dxy[try2 + 1].x, dxy[try2 + 1].y) then
+  elseif not sol.enemy.test_obstacles(dxy[try2 + 1].x, dxy[try2 + 1].y) then
 
     local x, y = sol.enemy.get_position()
     go(try2)

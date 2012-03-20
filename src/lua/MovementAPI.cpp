@@ -51,7 +51,6 @@ void Script::initialize_movement_module() {
       { "jump_movement_create", movement_api_jump_movement_create },
       { "get_property", movement_api_get_property },
       { "set_property", movement_api_set_property },
-      { "test_obstacles", movement_api_test_obstacles },
       { NULL, NULL }
   };
 
@@ -435,28 +434,5 @@ int Script::movement_api_set_property(lua_State* l) {
   movement.set_property(key, value);
 
   return 0;
-}
-
-/**
- * @brief Returns whether there would be a collision if the entity controlled by a movement
- * object was translated with the given parameters.
- *
- * - Argument 1 (movement): a movement
- * - Argument 2 (integer): x translation in pixels
- * - Argument 3 (integer): y translation in pixels
- * - Return value (boolean): true if this translation would make the entity overlap obstacles
- *
- * @param l the Lua context that is calling this function
- */
-int Script::movement_api_test_obstacles(lua_State* l) {
-
-  Movement& movement = check_movement(l, 1);
-  int dx = luaL_checkinteger(l, 2);
-  int dy = luaL_checkinteger(l, 3);
-
-  bool result = movement.test_collision_with_obstacles(dx, dy);
-  lua_pushboolean(l, result);
-
-  return 1;
 }
 

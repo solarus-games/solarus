@@ -42,8 +42,8 @@ function event_obstacle_reached()
     -- (works good with horizontal and vertical walls)
     local m = sol.enemy.get_movement()
     local angle = m:get_property("angle")
-    if not m:test_obstacles(1, 0)
-      and not m:test_obstacles(-1, 0) then
+    if not sol.enemy.test_obstacles(1, 0)
+      and not sol.enemy.test_obstacles(-1, 0) then
       angle = -angle
     else
       angle = math.pi - angle

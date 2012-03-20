@@ -481,7 +481,6 @@ class Script {
       movement_api_jump_movement_create,
       movement_api_get_property,
       movement_api_set_property,
-      movement_api_test_obstacles,
       movement_meta_gc;
 };
 

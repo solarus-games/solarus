@@ -1053,15 +1053,78 @@ and then <tt>sol.enemy.send_message</tt> will return.
 
 @subsection sol.movement Module <tt>sol.movement</tt>
 
-This module provides functions to create movements and manage their
-properties. It is available to all scripts.
-When you create a movement, you get a value of type movement with several
-methods available.
+This module provides functions to create movements and manage their properties.
+When you create a movement, you get a value of type <tt>movement</tt>.
+To get and set its properties (like the speed, the angle, etc.),
+the type <tt>movement</tt> has several methods available.
+As detailed below, these methods depend on the kind
+of movement, because all kinds of movements don't share the same properties.
+
+- <tt>sol.movement.create(kind)</tt>:
+Creates a movement. Depending on the kind of movement, several methods are
+then available to get and set its properties.
+  - <tt>kind</tt> (string): kind of movement to create. Must be one of:
+    - <tt>"straight"</tt>: follows a rectilinear trajectory.
+    - <tt>"random"</tt>: like "straight" but with random, changing angles.
+    - <tt>"target"</tt>: like "straight" but goes into the direction of a
+      fixed point or a moving entity.
+    - <tt>"path"</tt>: follows a specified succession of basic moves on a
+      grid of 8*8 pixels.
+    - <tt>"random_path"</tt>: like "path" but computes the path randomly.
+    - <tt>"path_finding"</tt>: like "path" but computes the shortest path to
+      the hero, avoiding obstacles of the map (only possible in game).
+    - <tt>"circle"</tt>: follows a circular trajectory around a center.
+    - <tt>"pixel"</tt>: follows a trajectory specified pixel by pixel.
+  - Return value (movement): the movement created
+
+- <tt>movement:get_ignore_obstacles()</tt>:
+  Returns whether this movement ignores obstacles of the map.
+  This method is available for the following movement kinds:
+  <tt>"straight", "random", "target", "path", "random_path", "path_finding",
+  "circle", "pixel"</tt>.
+  - Return value (boolean): true if this movement ignores obstacles
+
+- <tt>movement:set_ignore_obstacles(ignore_obstacles)</tt>:
+  Sets whether an entity controlled by this movement should ignore obstacles of
+  the map. If the movement is not attached to a map entity yet, it is not an
+  error to call this function: your choice will have an effect when the
+  movement gets attached to a map entity.
+  This method is available for the following movement kinds:
+  <tt>"straight", "random", "target", "path", "random_path", "path_finding",
+  "circle", "pixel"</tt>.
+  - <tt>ignore_obstacles</tt> (boolean): true to make this movement ignore
+    obstacles of the map
+
+- <tt>movement:get_speed()</tt>:
+  Returns the speed of this movement.
+  This method is available for the following movement kinds:
+  <tt>"straight", "random", "target", "path", "random_path", "path_finding"</tt>.
+  - Return value (number): the speed in pixels per second
+
+- <tt>movement:set_speed(speed)</tt>:
+  Sets the speed of this movement.
+  This method is available for the following movement kinds:
+  <tt>"straight", "random", "target", "path", "random_path", "path_finding"</tt>.
+  - <tt>speed</tt> (number): the new speed in pixels per second
+
+
+TODO: document the following methods for movements:
+
+straight: ignore_obstacles speed angle max_distance smooth displayed_direction (ro)
+random: ignore_obstacles speed angle (ro) max_distance displayed_direction (ro)
+target: ignore_obstacles speed angle (ro) smooth displayed_direction (ro)
+path: speed ignore_obstacles speed path loop snap_to_grid
+random_path: ignore_obstacles speed displayed_direction (ro)
+path_finding: ignore_obstacles speed displayed_direction (ro)
+circle: ignore_obstacles center center_dxy radius radius_speed clockwise initial_angle angle_speed max_rotations duration loop_delay
+pixel: ignore_obstacles trajectory delay loop
+
+TODO: remove the deprecated movement API:
 
 - <tt>sol.movement.pixel_movement_create(trajectory, delay)</tt>:
 Creates a movement that follows a pixel precise trajectory.
-  - <tt>trajectory</tt> (string): the whole trajectory, with the
-    syntax "dx1 dy1 dx2 dy2 dx3 dy3 ..."
+  - <tt>trajectory</tt> (table): the whole trajectory, as an array of integers:
+    {dx1 dy1 dx2 dy2 dx3 dy3 ...}
   - <tt>delay</tt> (number): delay in milliseconds between two translations
   - Return value (movement): the movement created
 
@@ -1126,12 +1189,6 @@ Returns a string property from this movement (warning: it always returns a strin
 Sets a property of this movement.
   - <tt>key</tt> (string): name of the property to set
   - <tt>value</tt> (string, number or boolean): the value to set
-
-- <tt>movement:test_obstacles(dx, dy)</tt>:
-Tests whether there would be a collision if the map entity controlled by this
-movement was translated with the given parameters.
-  - <tt>dx</tt> (number): x translation in pixels
-  - <tt>dy</tt> (number): y translation in pixels
 
 
 @subsection sol.sprite Module <tt>sol.sprite</tt>

@@ -48,7 +48,7 @@ class CircleMovement: public Movement {
   public:
 
     /**
-     * @brief Possibles directions when making circles.
+     * @brief Possible directions when making circles.
      */
     enum Direction {
       COUNTER_CLOCKWISE,

@@ -553,7 +553,8 @@ dialog{
   skip = "all",
   text = [[
 Eat a Croissant to
-recover seven Hearts.
+recover seven
+Hearts.
 ]]
 }
 --------------------
@@ -856,10 +857,10 @@ dialog{
   icon = 5,
   next = "_warning_magic",
   text = [[
-You found the
-Lamp!$0 Use it to
-brighten dark places
-and light torches.
+You found the Lamp!$0
+Use it to brighten
+dark places and
+light torches.
 ]]
 }
 --------------------
@@ -1918,12 +1919,12 @@ You found a Bomb!$0
 dialog{
   id = "_treasure.bomb.1.1",
   text = [[
-Use a Bomb to make an
-enemy or obstacle
+Use a Bomb to make
+an enemy or obstacle
 explode.
 ]]
 }
------------------------
+--------------------
 
 -- 3 Bombes / 3 Bombs
 dialog{
@@ -1956,6 +1957,8 @@ dialog{
   next = "_treasure.arrow.1.1",
   text = [[
 You found an Arrow!$0
+Use the Bow and
+Arrows to defeat
 ]]
 }
 --------------------
@@ -1963,12 +1966,11 @@ You found an Arrow!$0
 dialog{
   id = "_treasure.arrow.1.1",
   text = [[
-Use the Bow and Arrows
-to defeat tough
-enemies from afar.
+tough enemies from
+afar.
 ]]
 }
------------------------
+--------------------
 
 -- 5 Flèches / 5 Arrows
 dialog{
@@ -1977,6 +1979,8 @@ dialog{
   next = "_treasure.arrow.1.1",
   text = [[
 You found 5 Arrows!$0
+Use the Bow and
+Arrows to defeat
 ]]
 }
 --------------------
@@ -1988,6 +1992,8 @@ dialog{
   next = "_treasure.arrow.1.1",
   text = [[
 You found 10 Arrows!$0
+Use the Bow and
+Arrows to defeat
 ]]
 }
 --------------------
@@ -2082,8 +2088,8 @@ dialog{
   id = "_treasure.rupee.5",
   icon = 90,
   text = [[
-You found 100 Rupees!
-Fantastic!
+You found 100
+Rupees! Fantastic!
 ]]
 }
 --------------------
@@ -2156,10 +2162,11 @@ magic energy.
 dialog{
   id = "_warning_magic",
   text = [[
-Watch your Magic Meter!
+Watch your Magic
+Meter!
 ]]
 }
------------------------
+--------------------
 
 -- Lorsqu'on ouvre un coffre vide
 dialog{
@@ -2370,9 +2377,9 @@ dialog{
   id = "found_piece_of_heart.fourth",
   icon = 78,
   text = [[
-You found four Pieces
-of Heart. You got an
-extra Heart!
+You found four
+Pieces of Heart. You
+got an extra Heart!
 ]]
 }
 --------------------
@@ -4727,6 +4734,7 @@ Mount Terror, faced
 every danger, and
 walked away unscathed.
 
+
 It is heroically so
 that I found this
 flower of extreme
@@ -5196,8 +5204,9 @@ dialog{
   skip = "all",
   text = [[
 I am sorry sir, but you
-are not allowed access
-to the dungeon cells.
+are not allowed to
+access to the dungeon
+cells.
 ]]
 }
 -----------------------
@@ -5222,11 +5231,10 @@ dialog{
 This castle once
 belonged to the Royal
 family.
-Nowadays, tourists
-from all around Hyrule
-make the trip to
-witness the beauty of
-the place!
+Nowadays, tourists from
+all around Hyrule make
+the trip to witness the
+beauty of the place!
 ]]
 }
 -----------------------
@@ -5722,7 +5730,6 @@ you will witness my
 control over this
 kingdom...
 Ah ah ah ah ah ah ah!
-
 Now you, young and
 impetuous adventurer,
 and I shall meet again.

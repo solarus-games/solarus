@@ -1,0 +1,128 @@
+/**
+\page lua_api_input Keyboard and joypad inputs
+
+
+This module notifies the script when low-level keyboard or joypad events
+occur.
+It is only available to scripts of menus because during a game, commands
+are already mapped to game features such as using an item, swinging
+the sword, talking to an NPC, etc.
+
+- \c event_update():
+called at each cycle (so take care of the performances)
+
+- \c event_set_suspended(suspended):
+called when the game is suspended or resumed
+
+- \c event_dialog_started(dialog_id):
+Called when a dialog box starts, even if the dialog was started by another
+script.
+
+- \c event_dialog_finished(dialog_id, answer):
+Called when a dialog finishes (i.e. once its last group of 3 lines is
+finished), even if the dialog was started by another script.
+If there was a question, answer is 0 if the first answer was chosen,
+or 1 if the second one was chosen.
+If there was no question, answer is -1.
+
+- \c event_camera_back(): 
+Called when the camera (previously sent by \c sol.map.camera_move())
+is back to the hero.
+
+- \c event_treasure_obtaining(item_name, variant, savegame_variable): 
+Called when the player is obtaining a treasure (coming from a chest or not),
+just before the dialog starts.
+
+- \c event_treasure_obtained(item_name, variant, savegame_variable): 
+Called when the player has finished obtaining a treasure, just after the
+dialog.
+
+- \c event_map_started(destination_point_name):
+called when the map starts, before the opening transition
+
+- \c event_map_opening_transition_finished(destination_point_name):
+called after the opening transition of the map
+
+- \c event_switch_activated(switch_name):
+Called when a switch has just been activated.
+
+- \c event_switch_inactivated(switch_name):
+Called when a switch has just been inactivated.
+
+- \c event_switch_left(switch_name):
+called when an entity placed on a switch (the hero or a block)
+has just left the switch, no matter if the switch was activated or not
+
+- \c event_hero_victory_sequence_finished():
+Called when the victory animation of the hero
+(started with \c sol.map.hero_start_victory_sequence())
+is finished.
+
+- \c event_hero_on_sensor(sensor_name):
+Called when the hero arrives on a sensor. The bounding box of the hero must
+be entirely inside the sensor's bounding box.
+
+- \c event_hero_still_on_sensor(sensor_name):
+Called continuously while the hero is on a sensor.
+
+- \c event_npc_interaction(npc_name)
+(triggered only if the NPC has the property to call the map script):
+called when the hero interacts with an NPC by pressing the action key
+
+- \c event_npc_interaction_finished(npc_name):
+(triggered only if the NPC has the property to call the map script):
+called when the hero has just interacted with an NPC by pressing the action key
+
+- \c event_npc_interaction_item(npc_name, item_name, variant)
+(triggered only if the NPC has the property to call the map script):
+called when the hero interacts with an NPC by using ANY inventory item;
+returns true if an interaction actually happened
+
+- \c event_npc_interaction_item_finished(npc_name, item_name, variant):
+called when the hero has just interacted with an NPC
+by using ANY inventory item
+
+- \c event_npc_movement_finished(npc_name):
+called when an NPC has finished its movement
+
+- \c event_npc_collision_fire(npc_name)
+(triggered only if the NPC has the property to call the map script):
+called when some fire touches an NPC
+
+- \c event_sensor_collision_explosion(sensor_name):
+called when an explosion overlaps a sensor
+
+- \c event_chest_empty(chest_name):
+Called when the hero opens an empty chest.
+The hero remains freezed.
+Your script has
+to define what happens (for example giving a treasure or show
+an error message). If you don't give a treasure,
+you have to unblock the hero explicitely by calling
+\c sol.map.hero_unfreeze().
+
+- \c event_shop_item_buying(shop_item_name):
+Called when the player wants to buy an item in a shop
+and has enough money: if you return false, the player cannot buy it.
+
+- \c event_shop_item_bought(shop_item_name):
+called when the player has just bought an item in a shop
+
+- \c event_door_open(door_name):
+called when a door has just been open
+
+- \c event_door_closed(door_name):
+called when a door has just been closed
+
+- \c event_block_moved(block_name):
+called when a block has just been pushed or pulled
+by the hero on a section of 16 pixels (or less if there was an obstacle)
+
+- \c event_enemy_dying(enemy_name):
+Called when an enemy of this map is dying (its kill animation starts).
+
+- \c event_enemy_dead(enemy_name):
+Called when an enemy of this map is dead (and its kill animation is finished).
+
+*/
+

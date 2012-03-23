@@ -1,5 +1,5 @@
 /**
-@page dungeon_syntax Dungeon files
+\page dungeon_syntax Dungeon files
 
 A dungeon is an exploration phase where the hero usually has to solve puzzles
 and beat enemies.
@@ -8,21 +8,21 @@ The player can display a minimap of the dungeon if he has found the "Map" item.
 If he has found the "Compass" item, he can also see the location of the chest
 and the bosses in the dungeon.
 
-The <tt>maps/dungeons</tt> subdirectory contains all files required by the engine to
+The \c maps/dungeons subdirectory contains all files required by the engine to
 show the minimap of each dungeon.
 It contains PNG images that represent the floors of the dungeons.
 Each PNG image is called mapX_Y.png, where X is the dungeon number and Y is the floor number.
 The floor number is between -16 and 15.
 0 means the first floor, 1 the second floor, etc.
 
-The file <tt>maps/dungeons/dungeons.dat</tt> gives the information needed to display this minimap.
+The file \c maps/dungeons/dungeons.dat gives the information needed to display this minimap.
 Thanks to this file, the engine does not need to open the map files of a dungeon to display its minimap.
 For each floor of the dungeon, it gives
 its size (a floor may be composed of several maps) and the location of all elements that should be displayed
 on the minimap when the player has the compass: the bosses and the chests.
 Here is an example of what could be the beginning of this file:
 
-@verbatim
+\verbatim
 [dungeon_1.floor_-1]
 width = 1040
 height = 696
@@ -91,7 +91,7 @@ x = 552
 y = 392
 save = 85
 big = 0
-@endverbatim
+\endverbatim
 
 The first part of the file contains the size of each floor for each dungeon.
 The groups are called here [dungeon_X.floor_Y] where X is the dungeon number
@@ -109,10 +109,10 @@ this file easily when a map is modified even if the floor contains several maps)
 and Z is the chest or boss number.
 The location is given with the floor and the coordinates of the element
 relative to the floor.
-The value <tt>big</tt> (0 or 1) indicates whether the chest is a big chest 
+The value \c big (0 or 1) indicates whether the chest is a big chest 
 or a small chest, or whether the boss is the big boss of the dungeon
 or a miniboss.
-The value <tt>save</tt> indicates the index of the savegame variable that stores
+The value \c save indicates the index of the savegame variable that stores
 the state of the chest or the boss in your quest.
 
 */

@@ -1,21 +1,21 @@
 /**
-@page dialog_syntax Text and dialog files syntax specification
+\page dialog_syntax Text and dialog files syntax specification
 
 We specify here the data files that provide the strings and the dialogs displayed during the game.
-Such files are locaed in the directory <tt>languages/XX/text</tt> where <tt>XX</tt>
-should be replaced by the language code (e.g. <tt>en</tt> or <tt>fr</tt>).
+Such files are locaed in the directory \c languages/XX/text where \c XX
+should be replaced by the language code (e.g. \c en or \c fr).
 When translating the game, most of the work consists in translating those files.
-See the @ref translation page if you are interested in translating the game
+See the \ref translation page if you are interested in translating the game
 (and you should also contact us).
 
-@section strings Strings
+\section strings Strings
 
 The engine needs to display some string in the menus.
-All these strings are loaded from the file <tt>languages/XX/text/strings.dat</tt>.
-As an example, we give here the <tt>languages/fr/text/strings.dat</tt> file of Zelda Mystery of Solarus DX.
+All these strings are loaded from the file \c languages/XX/text/strings.dat.
+As an example, we give here the \c languages/fr/text/strings.dat file of Zelda Mystery of Solarus DX.
 The syntax and the translation instructions are explained in the comments.
 
-@verbatim
+\verbatim
 # Language: French
 
 # This file contains the strings displayed during the game in the current language.
@@ -185,13 +185,13 @@ selection_menu.options.sound_volume	Volume des sons
 # Title screen
 title_screen.website		www.zelda-solarus.com
 title_screen.press_space	Appuyez sur espace
-@endverbatim
+\endverbatim
 
-@section dialogs Dialogs
+\section dialogs Dialogs
 
 Dialogs are all messages shown to the player in the dialog box during the game.
 They are all defined in the file
-<tt>languages/XX/text/dialogs.lua</tt>.
+\c languages/XX/text/dialogs.lua.
 Some dialogs are triggered by the engine and others by the quest.
 
 It is a Lua file encoded in UTF-8.
@@ -201,69 +201,69 @@ with instructions for quest makers and translators.
 
 Before solarus 0.9.1, the dialogs were an ini file with a more complicated
 syntax. Translating dialogs was error prone.
-In <tt>tools/data_files_converstion/</tt>, we provide a script to convert
+In \c tools/data_files_converstion/, we provide a script to convert
 your old dialog files to the new Lua format.
 
 Lines starting with the characters '--' are comments and are ignored by the
 engine.
 
-The definition of a dialog starts with <tt>dialog{</tt> and ends with
-<tt>}</tt>.
+The definition of a dialog starts with \c dialog{ and ends with
+\c }.
 Inside the braces, the properties of the dialog are specified.
-Properties are declared with the syntax <tt>key = value</tt> and
+Properties are declared with the syntax \c key = value and
 separated with commas. It is allowed to have an extra comma after
 the last property. Properties with string values should be enclosed between
 double quotes, except when specified otherwise.
 Each dialog may have the following properties:
 
-- <tt>id</tt>: a string (between double quotes) identifying the dialog.
+- \c id: a string (between double quotes) identifying the dialog.
 The id allows the engine and the scripts to refer to the message they want to
 display.
 If you are translating dialogs, you must never translate the id!
 
-- <tt>text</tt>: content of the dialog.
-If you are translating dialogs, <tt>text</tt> is the only value to translate.
+- \c text: content of the dialog.
+If you are translating dialogs, \c text is the only value to translate.
 The text has usually several lines.
 In the game, it will be displayed in groups of 3 lines because the dialog box
 has space for 3 lines. Each group of 3 lines is called a message.
-The text should be enclosed between <tt>[[</tt> and <tt>]]</tt>, which is
+The text should be enclosed between \c [[ and \c ]], which is
 the Lua notation for multiline strings.
 A line shoud not exceed 23 characters.
 To make sure you don't exceed this limit, you can put a comment
 of 23 dashes (but place this comment outside the string).
 And you should use an editor with a fixed width font.
 
-- <tt>skip</tt>: defines what happens when the player
+- \c skip: defines what happens when the player
 tries to skip the dialog (by pressing the sword key).
 There are three possible values:
-  - <tt>"none"</tt> or <tt>nil</tt> (default): the message cannot be skipped.
-  - <tt>"current"</tt>: if the key is pressed, the current group of 3 lines
+  - \c "none" or \c nil (default): the message cannot be skipped.
+  - \c "current": if the key is pressed, the current group of 3 lines
     is immediately shown (instead of being displayed letter by letter).
     This allows to get to the next message faster.
-  - <tt>"all"</tt>: the whole sequence of messages can be skipped.
+  - \c "all": the whole sequence of messages can be skipped.
     The dialog box is immediataly closed and
     the next groups of 3 lines will not be displayed at all.
     Use this only for non-essential dialogs that can be read again later.
-The value of <tt>skip</tt> takes effect applies until the dialog box is closed.
+The value of \c skip takes effect applies until the dialog box is closed.
 
-- <tt>icon</tt>: displays a small image of 16*16 pixels in the dialog box.
+- \c icon: displays a small image of 16*16 pixels in the dialog box.
 The value is a number
 that identifies the icon in the icon image file.
 The icon (if any) is displayed on the left of the message
 and the text cannot exceed 20 characters (instead of 23 when there is no
 icon). The icon remains displayed in the next message, until its value
-is changed or the dialog box is closed. A value of -1 or <tt>nil</tt>
+is changed or the dialog box is closed. A value of -1 or \c nil
 means that you want to remove the icon.
 
-- <tt>next</tt>: id of the next dialog to display, between double quotes.
+- \c next: id of the next dialog to display, between double quotes.
 If this value is not set, the dialog box is closed
 when the current dialog is finished.
 
 During the last message (group of 3 lines) of a dialog,
-if <tt>next</tt> is set, then an arrow is displayed on the
+if \c next is set, then an arrow is displayed on the
 bottom of the dialog box to indicate that there will
 be a next dialog.
-If <tt>next</tt> is not set, then this arrow is replaced
+If \c next is not set, then this arrow is replaced
 by a square to indicate that this message was the last one.
 A message having a question (see below) is always displayed 
 with an arrow.
@@ -273,13 +273,13 @@ want to show an arrow.
 This is typically the case when you know that another
 dialog will start immediately, but you don't know which one yet
 (a script will decide at the last moment). In this case, you can
-set an empty string (<tt>""</tt>) as the value of <tt>next</tt>
+set an empty string (\c "") as the value of \c next
 to indicate that the dialog will be followed by another one,
 unknown for now.
 This will display the arrow instead of the square, but everything
-works exactly as if the value <tt>next</tt> was not set.
+works exactly as if the value \c next was not set.
 
-- <tt>question</tt>: if set to <tt>true</tt>, the last message
+- \c question: if set to \c true, the last message
 (group of 3 lines) of the dialog will be displayed as a question
 with two choices. The first line of the message is considered as the question
 and the two other lines are the two possible answers.
@@ -288,29 +288,29 @@ when there is no question) because a cursor lets the player choose his answer.
 It is possible to have both a question and an icon: then, the maximum
 number of character is the last two lines is 17.
 
-If there is a question, you can define a value <tt>next2</tt>.
-<tt>next</tt> specifies the message to show when the first answer is selected.
-<tt>next2</tt> specifies the message to show when the second answer is
+If there is a question, you can define a value \c next2.
+\c next specifies the message to show when the first answer is selected.
+\c next2 specifies the message to show when the second answer is
 selected.
-As for <tt>next</tt>, if <tt>next2</tt> is unspecified and the player chooses
+As for \c next, if \c next2 is unspecified and the player chooses
 the second answer, the sequence stops and the dialog box is closed.
-If the value of <tt>skip</tt> is <tt>"all"</tt> in a dialog with a
-question, then everything works as if it was <tt>"current"</tt> instead of
-<tt>"all"</tt>.
+If the value of \c skip is \c "all" in a dialog with a
+question, then everything works as if it was \c "current" instead of
+\c "all".
 
 - Finally, there exists special characters that you can put in the text of a
 message:
-  - <tt>$0</tt>: makes a break of one second in the letter scrolling,
-  - <tt>$1</tt>: set the letter scrolling speed to slow,
-  - <tt>$2</tt>: set the letter scrolling speed to medium,
-  - <tt>$3</tt>: set the letter scrolling speed to fast (default),
-  - <tt>$v</tt>: inserts the value of a variable in the message
+  - \c $0: makes a break of one second in the letter scrolling,
+  - \c $1: set the letter scrolling speed to slow,
+  - \c $2: set the letter scrolling speed to medium,
+  - \c $3: set the letter scrolling speed to fast (default),
+  - \c $v: inserts the value of a variable in the message
   (but the engine or a script must specify this value).
 The letter scrolling speed applies until the dialog box is closed.
 
 Here is an small example of a dialog file.
 
-@verbatim
+\verbatim
 dialog{
   id = "wise_man",
   skip = "current",
@@ -353,7 +353,7 @@ your immense bravery.
 }
 -----------------------
 
-@endverbatim
+\endverbatim
 
 */
 

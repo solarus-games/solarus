@@ -1,5 +1,5 @@
 /**
-@page map_syntax Map syntax specification
+\page map_syntax Map syntax specification
 
 A map is composed of the following information:
 - a size in pixels,
@@ -12,38 +12,38 @@ A map is composed of the following information:
 (small keys of different dungeons are not compatible),
 - all entities of the map (tiles, enemies, chests, pots, switches, etc.).
 
-All of this is stored in a file <tt>maps/mapXXXX.dat</tt> where
+All of this is stored in a file \c maps/mapXXXX.dat where
 XXXX is the id of the map (an integer on four digits).
 This page describes the syntax of this file.
-Another file <tt>maps/mapXXXX.lua</tt> contains the script of the map,
+Another file \c maps/mapXXXX.lua contains the script of the map,
 i.e. the dynamic events that occur on the map.
-See the @ref lua_api_specification to know how a map script can
+See the \ref lua_api to know how a map script can
 interact with the game.
 
 Most of the information listed above is given in the first line of
-<tt>maps/mapXXXX.dat</tt>.
+\c maps/mapXXXX.dat.
 The first line has the following syntax:
 
-@verbatim
+\verbatim
 width	height	world	floor	x	y	small_keys_variable	tileset_id	music_id
-@endverbatim
+\endverbatim
 
-<tt>width</tt> and <tt>height</tt> give the size of the map in pixels.
+\c width and \c height give the size of the map in pixels.
 
-<tt>world</tt> indicates the world the map belongs to:
+\c world indicates the world the map belongs to:
 - 0: the map is in the outside world
 - -1: the map is in the inside world, but not a dungeon
 - 1 to 20: the map is in the dungeon whose number is specified
 When the player shows the minimap screen, this world property is used to determine
 what map is shown and how the hero's position on the minimap is calculated.
 
-<tt>floor</tt> indicates in what floor the map is located, between -16 and 15.
+\c floor indicates in what floor the map is located, between -16 and 15.
 The floor is displayed on the screen during a few seconds when the player gets in it.
 If the map is not on a floor (like all maps of the outside world and most of non-dungeon maps),
 the value is -100. There is also a special value, -99, that corresponds to an unknown floor:
 the '?' symbol will be displayed instead of the floor when arriving there.
 
-<tt>x</tt> and <tt>y</tt> are the coordinates of the map in pixels, relative to its context.
+\c x and \c y are the coordinates of the map in pixels, relative to its context.
 If the map is in a dungeon, they are the coordinates of the top-left corner
 of the map relative to the whole floor (in big dungeons, a floor can have several maps).
 If the map is in the outside world, they are the coordinates of the top-left corner
@@ -52,42 +52,42 @@ If the map is in the inside world (but not a dungeon), they are the coordinates
 of the place on the outside world (this allows to show the hero's location on
 the outside world minimap when the player shows the minimap screen).
 
-<tt>small_keys_variable</tt> is the index of the variable that stores in the savegame
+\c small_keys_variable is the index of the variable that stores in the savegame
 the number of small keys of this map. This value is the same for all the map
 of the same dungeon. A value of -1 means that there is no small key counter in this map
 (this is the case most of the time for non-dungeon maps).
 
-<tt>tileset_id</tt> is the index of the tileset used to draw the map.
+\c tileset_id is the index of the tileset used to draw the map.
 
-<tt>music_id</tt> is the file name of the background music to play (relative to the <tt>musics</tt> directory)
-or <tt>none</tt> to play no music on the map, or <tt>same</tt> to let the previous music continue.
+\c music_id is the file name of the background music to play (relative to the \c musics directory)
+or \c none to play no music on the map, or \c same to let the previous music continue.
 
 Then, each line of the file describes an entity of the map.
 Here is the general syntax of the line of en entity
 (elements in square brackets are present only for some types of entities):
 
-@verbatim
+\verbatim
 entity_type	layer	x	y	[width]	[height]	[entity_name]	[direction]	[subtype]	[specific_info…]
-@endverbatim
+\endverbatim
 
-<tt>entity_type</tt> indicates what type of entity it is (according to the enumeration EntityType):
+\c entity_type indicates what type of entity it is (according to the enumeration EntityType):
 a tile, an enemy, a chest, a teletransporter, etc.
 
 The following three values are common to all types of entities:
 
-<tt>layer</tt> is the layer where the entity is placed:
+\c layer is the layer where the entity is placed:
 - 0 (low layer): the entity is always displayed below the hero (like most of the tiles)
 - 1 (intermediate layer): the hero may be above or below the entity (e.g. a platform)
 - 2 (high layer): the entity is always above the hero (e.g. a tree or the upper part of doors)
 
-<tt>x</tt> and <tt>y</tt> are the coordinates in pixels where the entity is placed relative to the map.
+\c x and \c y are the coordinates in pixels where the entity is placed relative to the map.
 More precisely, its origin point is placed on this point.
 
-Then, <tt>width</tt> and <tt>height</tt> are the size of the entity in pixels
+Then, \c width and \c height are the size of the entity in pixels
 (only for entities with variable size). The width and height are always multiples
 of 8 pixels.
 
-If the entity can be identified, <tt>entity_name</tt> is its name.
+If the entity can be identified, \c entity_name is its name.
 Some types of entities have a name which allows to identify uniquely an instance
 (an enemy, a switch) at runtime, typically by the script of the map.
 For instance, is you want to make a switch open a door,
@@ -95,13 +95,13 @@ your script needs to refer to this particular switch and this particular door.
 The name is chosen by the creator of the map and cannot start with the character '_'
 or have whitespaces.
 
-If the entity has a direction property, it is given in the value <tt>direction</tt>, which is an integer number.
+If the entity has a direction property, it is given in the value \c direction, which is an integer number.
 Some types of entities have a direction property (enemies, NPCs, conveyor belts…)
 while other do not (tiles, pots, teletransporters, chests…).
 
-Then, <tt>subtype</tt> indicates the subtype of this entity (only for some types of entity).
+Then, \c subtype indicates the subtype of this entity (only for some types of entity).
 
-The remaining part of the line (<tt>specific_info</tt>) may contain specific information
+The remaining part of the line (\c specific_info) may contain specific information
 depending on the type of entity.
 
 For now, the following types of entities are available when creating a map:
@@ -129,7 +129,7 @@ For now, the following types of entities are available when creating a map:
 
 We detail below the exact syntax of each entity type.
 
-@section tile Tile (0)
+\section tile Tile (0)
 
 A tile has no direction and no name.
 This means that you cannot modify, add or remove a tile at runtime:
@@ -138,17 +138,17 @@ A tile has a size: you can indeed repeat its pattern several times instead of
 placing many times the same tile on the map.
 
 Syntax of a tile:
-@verbatim
+\verbatim
 0	layer	x	y	width	height	tile_pattern_id
-@endverbatim
+\endverbatim
 
-<tt>tile_pattern_id</tt> is the index of the tile pattern in the tileset, as defined by the tileset file.
+\c tile_pattern_id is the index of the tile pattern in the tileset, as defined by the tileset file.
 
 Note that tiles in the same layer can overlap. They are placed on the map in the same order as they appear
 in the map file. In other words, if two tiles overlap, the one that appears last in the file
 is placed above.
 
-@section destination_point Destination point (1)
+\section destination_point Destination point (1)
 
 A destination point is a point of the map which is used as the destination of a teletransporter.
 A destination point has a direction between 0 and 3: this is the direction that the hero takes
@@ -158,70 +158,70 @@ A destination point also has a name (used by the teletransporters).
 Its size is fixed (16*16 which is the size of the hero).
 
 Syntax of a destination point:
-@verbatim
+\verbatim
 1	layer	x	y	entity_name	direction	subtype
-@endverbatim
+\endverbatim
 
 Subtypes of destination points:
 - 0: usual, non-visible destination point
 - 1: visible destination point, displayed with an image of teletransporter destination
 
-@section teletransporter Teletransporter (2)
+\section teletransporter Teletransporter (2)
 
 A teletransporter is a sensor that sends the hero to a destination point on the same map or on another map.
 You can specify its size and a name.
 
 Syntax of a teletransporter:
-@verbatim
+\verbatim
 2	layer	x	y	width	height	entity_name	subtype	transition	destination_map	destination_point
-@endverbatim
+\endverbatim
 
 Subtypes of teletransporters:
 - 0: invisible teletransporter (for usual changes of maps)
 - 1: visible teletransporter (that displays a sprite of teletransporter)
 
-<tt>transition</tt> is a number that indicates the type of transition played
+\c transition is a number that indicates the type of transition played
 when taking the teletransporter, according to the enumeration Transition.
 
-<tt>destination_map</tt> is the id of the map where the player is sent (possibly the same one).
+\c destination_map is the id of the map where the player is sent (possibly the same one).
 
-<tt>destination_point</tt> is the name of the destination point where the player is placed on the
-destination map. Two special values are also supported: <tt>_side</tt> and <tt>_same</tt>.
-<tt>_side</tt> can be used for a teletransporter placed on the side of the original map,
+\c destination_point is the name of the destination point where the player is placed on the
+destination map. Two special values are also supported: \c _side and \c _same.
+\c _side can be used for a teletransporter placed on the side of the original map,
 and that sends the hero on the corresponding side of the destination map. The new coordinates
 are automatically calculated.
-<tt>_same</tt> means that the coordinates of the hero remain the same as in the previous map.
+\c _same means that the coordinates of the hero remain the same as in the previous map.
 This can be used when falling into a hole.
-No destination point entity is needed when the value is <tt>_side</tt> or <tt>_same</tt>.
+No destination point entity is needed when the value is \c _side or \c _same.
 
-@section pickable_item Pickable item (3)
+\section pickable_item Pickable item (3)
 
 A pickable item is a treasure directly placed on the floor.
 The hero can pick it.
 
 Syntax of a pickable item:
-@verbatim
+\verbatim
 3	layer	x	y	treasure_name	treasure_variant	treasure_savegame_variable
-@endverbatim
+\endverbatim
 
-<tt>treasure_name</tt>, <tt>treasure_variant</tt> and <tt>treasure_savegame_variable</tt>
+\c treasure_name, \c treasure_variant and \c treasure_savegame_variable
 define the treasure to give to the player
-when he picks the item. <tt>treasure_name</tt> must be an item declared in the file <tt>items.dat</tt>
-and <tt>treasure_variant</tt> is an integer that must be a valid variant for this item.
+when he picks the item. \c treasure_name must be an item declared in the file \c items.dat
+and \c treasure_variant is an integer that must be a valid variant for this item.
 
-<tt>treasure_savegame_variable</tt> is used for items that can be obtained only once and need to be saved
+\c treasure_savegame_variable is used for items that can be obtained only once and need to be saved
 (e.g. a key).
 It is the index of the variable that stores the pickable item's state in the savegame.
 A value of -1 indicates that the item is not saved.
 
-@section destructible_item Destructible item (4)
+\section destructible_item Destructible item (4)
 
 Destructible items are the ones that can hide pickable items and that the hero
 can lift or cut (or both).
 
-@verbatim
+\verbatim
 4	layer	x	y	subtype	treasure_name	treasure_variant	treasure_savegame_variable
-@endverbatim
+\endverbatim
 
 Subtypes of destructible items:
 - 0: a pot
@@ -232,82 +232,82 @@ Subtypes of destructible items:
 - 5: grass
 - 6: bomb flower
 
-<tt>treasure_name</tt>, <tt>treasure_variant</tt> and <tt>treasure_savegame_variable</tt>
+\c treasure_name, \c treasure_variant and \c treasure_savegame_variable
 define the pickable item hidden under the destructible item.
 See the previous section for their meaning.
-<tt>treasure_name</tt> can be "_random" or "_none".
+\c treasure_name can be "_random" or "_none".
 
-@section chest Chest (5)
+\section chest Chest (5)
 
 A chest contains a treasure. The hero can open it to obtain the treasure.
 
 Syntax of a chest:
-@verbatim
+\verbatim
 5	layer	x	y	entity_name	is_big_chest	treasure_name	treasure_variant	treasure_savegame_variable
-@endverbatim
+\endverbatim
 
-<tt>is_big_chest</tt> is a boolean (0 ou 1) that indicates whether
+\c is_big_chest is a boolean (0 ou 1) that indicates whether
 this is a big chest (1) or a normal chest (0).
 
-<tt>treasure_name</tt> is a string identifying the item placed
+\c treasure_name is a string identifying the item placed
 in the chest, according to the file items.dat.
 A value of "_none" means that the chest is empty or controlled by the script of the map.
 
-<tt>treasure_variant</tt> is an integer that corresponds to the possession
+\c treasure_variant is an integer that corresponds to the possession
 state of the item. Most items have only one variant and for them, this value is set to 1.
 
-<tt>treasure_savegame_variable</tt> is the index of the savegame variable
+\c treasure_savegame_variable is the index of the savegame variable
 that stores the state of this chest.
 A value of -1 means that the chest is not saved.
 
-@section jumper Jumper (6)
+\section jumper Jumper (6)
 
 A jumper is an invisible sensor that makes the hero jump a number of pixels into a direction,
 with a direction that depends on the shape of the sensor.
 During the jump, the hero cannot be controlled by the player and he can traverse obstacles.
 
 Syntax of a jumper:
-@verbatim
+\verbatim
 6	layer	x	y	width	height	entity_name	direction	jump_length
-@endverbatim
+\endverbatim
 
-The <tt>direction</tt> property of the jumper (0 to 7) determines both
+The \c direction property of the jumper (0 to 7) determines both
 the shape of the sensor and the direction of the jump.
 
 The size is cutomizable in order to allow jumps from different places along the cliff.
 For diagonal jumpers, the size of the bounding box is always square.
 
-<tt>jump_length</tt> is the length of the jump in pixels.
+\c jump_length is the length of the jump in pixels.
 Make sure the length cannot send the hero into a wall.
 
-@section enemy Enemy (7)
+\section enemy Enemy (7)
 
 Syntax of an enemy:
-@verbatim
+\verbatim
 7	layer	x	y	entity_name	direction	breed	rank	savegame_variable	treasure_name	treasure_variant	treasure_savegame_variable
-@endverbatim
+\endverbatim
 
 There are various kind of enemies. A kind of enemy is called its breed.
 Each breed is implemented as a Lua script.
 
-<tt>breed</tt> is the name of the breed of the enemy.
-It must correspond to a Lua script located in the <tt>enemies</tt> directory.
+\c breed is the name of the breed of the enemy.
+It must correspond to a Lua script located in the \c enemies directory.
 
-<tt>rank</tt> indicates whether the enemy is considered as a normal enemy (0),
+\c rank indicates whether the enemy is considered as a normal enemy (0),
 a miniboss (1) or a boss (2). It has an influence on the minimap of dungeons
 (the boss of a dungeon is represented on the minimap) and on the dying animation
 of the enemy.
 
-<tt>savegame_variable</tt> is used for enemies that can be killed only once in the game.
+\c savegame_variable is used for enemies that can be killed only once in the game.
 It indicates the index of the boolean variable that stores the state of the enemy
 in the savegame. A value of -1 means that the enemy is not saved.
 
-<tt>treasure_name</tt>, <tt>treasure_variant</tt> and <tt>treasure_savegame_variable</tt>
+\c treasure_name, \c treasure_variant and \c treasure_savegame_variable
 define the pickable item dropped by this enemy when it is killed,
 (see the section about pickable items above).
-<tt>treasure_name</tt> can be "_random" or "_none".
+\c treasure_name can be "_random" or "_none".
 
-@section npc NPC (8)
+\section npc NPC (8)
 
 An NPC is an entity that the hero can interact with
 by pressing the action key or using an inventory item just in front of it.
@@ -317,43 +317,43 @@ The hero may talk to it, read what it shows or do another action.
 Most of the time, the action consists in starting a dialog,
 but you can define a custom action with a script.
 
-@verbatim
+\verbatim
 8	layer	x	y	entity_name	direction	subtype	sprite_name	behavior
-@endverbatim
+\endverbatim
 
 Subtypes of NPCs:
 - 0: generalized NPC (a solid interactive entity)
 - 1: a usual NPC (a sprite is required, with four directions and the animations "stopped" and possibly "walking")
 
-<tt>direction</tt> has a different meaning depending on the subtype of NPC.
+\c direction has a different meaning depending on the subtype of NPC.
 For a usual NPC, it indicates the initial direction of its sprite (0 to 4)
 For a generalized NPC, it indicates the direction where the interaction is possible (0 to 4,
 or -1 to allow the interaction in any direction). For example, if the direction is 3,
 the interaction will be started only if the hero touches the south face of the entity.
 
-<tt>sprite_name</tt> is the name of the animation set of the sprite to display with this entity
-(or <tt>_none</tt> to make the entity invisible)
+\c sprite_name is the name of the animation set of the sprite to display with this entity
+(or \c _none to make the entity invisible)
 
-<tt>behavior</tt> describes what happens when the player presses the action key near this entity.
+\c behavior describes what happens when the player presses the action key near this entity.
 There are three possible options:
 - dialog#XXX: starts the dialog with id XXX
 - map: calls the map script (event_hero_interaction)
 - item#XXX calls the script of the item XXX (event_hero_interaction)
 
-@section block Block (9)
+\section block Block (9)
 
 Syntax of a block:
-@verbatim
+\verbatim
 9	layer	x	y	entity_name	direction	sprite_name	pushable	pullable	maximum_moves
-@endverbatim
+\endverbatim
 
-<tt>sprite_name</tt> is the animation set id of the sprite to display for this block.
+\c sprite_name is the animation set id of the sprite to display for this block.
 
-<tt>pushable</tt> (0 or 1) indicates whether the block can be pushed.
+\c pushable (0 or 1) indicates whether the block can be pushed.
 
-<tt>pullable</tt> (0 or 1) indicates whether the block can be pulled.
+\c pullable (0 or 1) indicates whether the block can be pulled.
 
-<tt>maximum_moves</tt> indicates what happens when the hero tries to push or pull the block:
+\c maximum_moves indicates what happens when the hero tries to push or pull the block:
 - 0: cannot be moved
 - 1: can be moved only once
 - 2: can be moved without limit
@@ -362,22 +362,22 @@ The direction of the block indicates in which direction (0 to 3) it can be pushe
 A value of -1 means that it can be pushed or pulled in any direction.
 
 
-@section dynamic_tile Dynamic tile (10)
+\section dynamic_tile Dynamic tile (10)
 
 A dynamic tile is a tile with the specialy ability to be enabled or disabled by the script of the map.
 Dynamic tiles need to be separated from normal tiles because normal tiles are optimized for the detection of collisions.
 
 Syntax of a dynamic tile:
-@verbatim
+\verbatim
 10	layer	x	y	width	height	entity_name	tile_pattern_id	enabled_at_start
-@endverbatim
+\endverbatim
 
-<tt>tile_id</tt> is the id of the tile pattern from the tileset, like in the case of normal tiles.
-<tt>enabled_at_start</tt> is a boolean value (0 ou 1) that indictaes whether the tile is enabled
+\c tile_id is the id of the tile pattern from the tileset, like in the case of normal tiles.
+\c enabled_at_start is a boolean value (0 ou 1) that indictaes whether the tile is enabled
 when the map starts.
 When the tile is disabled, it is invisible and can be traversed.
 
-@section switch Switch (11)
+\section switch Switch (11)
 
 When the hero triggers a switch, the map script is called.
 Some switches can only be activated by a block.
@@ -386,9 +386,9 @@ The size of a switch is always 16*16 pixels.
 Its sprite depends on its subtype.
 
 Syntax of a switch:
-@verbatim
+\verbatim
 11	layer	x	y	entity_name	subtype	needs_block	inactivate_when_leaving
-@endverbatim
+\endverbatim
 
 Subtypes of switches:
 - 0: pressure plate, invisible
@@ -396,51 +396,51 @@ Subtypes of switches:
 - 2: target for an arrow
 - 3: solid switch to activate with the sword or other weapons
 
-<tt>needs_block</tt> is a boolean value indicating that a switch
+\c needs_block is a boolean value indicating that a switch
 of subtype pressure plate needs a block to
 be activated (nothing happens when the hero walks on it).
 
-<tt>inactivate_when_leaving</tt> is a boolean value indicating that when the hero (or the block)
+\c inactivate_when_leaving is a boolean value indicating that when the hero (or the block)
 leaves the switch, the switch is inactivated.
 
-@section custom_obstacle Custom obstacle (12)
+\section custom_obstacle Custom obstacle (12)
 
 A custom obstacle is an invisible entity of variable size where some types of moving entities cannot pass.
 
 Syntax of a custom obstacle:
-@verbatim
+\verbatim
 12	layer	x	y	width	height	entity_name	stops_hero    stops_enemies	stops_npcs	stops_blocks
-@endverbatim
+\endverbatim
 
 The last four values are boolean values that indicate whether this custom obstacle is an obstacle
 for the hero, the enemies, the non-playing characters and the blocks, respectively.
 
-@section sensor Sensor (13)
+\section sensor Sensor (13)
 
 A sensor is an invisible place of variable size that triggers something when the player walks on it.
 Unlike a switch, a sensor cannot be avoided by a jump.
 If you want the hero to be detected for sure when he enters somewhere, use a sensor rather than an invisible switch.
 
 Syntax of a sensor:
-@verbatim
+\verbatim
 13	layer	x	y	width	height	entity_name	subtype
-@endverbatim
+\endverbatim
 
 Subtypes of sensors:
 - 0: custom (the script is called)
 - 1: change the layer (the hero takes the layer of the sensor) 
 - 2: place to get back when the hero falls into a hole or some other bad ground 
 
-@section crystal Crystal (14)
+\section crystal Crystal (14)
 
 When a crystal is activated, some colored blocks in the ground are lowered or raised.
 
 Syntax of a crystal:
-@verbatim
+\verbatim
 14	layer	x	y
-@endverbatim
+\endverbatim
 
-@section crystal_block Crystal block (15)
+\section crystal_block Crystal block (15)
 
 These are the blocks controlled by a crystal.
 Such blocks can have two colors.
@@ -448,24 +448,24 @@ When they are lowered in the ground, they can be traversed.
 When they are raised, they are obstacle.
 Activating a crystal inverts their configuration.
 
-@verbatim
+\verbatim
 15	layer	x	y	width	height	subtype
-@endverbatim
+\endverbatim
 
 Subtypes of crystal blocks:
 - 0: orange blocks (initially lowered)
 - 1: blue blocks (initially raised)
 
-@section shop_item Shop item (16)
+\section shop_item Shop item (16)
 
 A shop item is a treasure one can buy in a shop in exchange for money.
 
 Syntax of a shop item:
-@verbatim
+\verbatim
 16	layer	x	y	entity_name	treasure_name	treasure_variant	treasure_savegame_variable	price	dialog_id
-@endverbatim
+\endverbatim
 
-<tt>treasure_name</tt>, <tt>treasure_variant</tt> and <tt>treasure_savegame_variable</tt>
+\c treasure_name, \c treasure_variant and \c treasure_savegame_variable
 define the treasure to give to the player when he buys the item (see Treasure.h).
 The behavior of these values is identical to the case of chests.
 When loading the map, is the savegame indicates that the player has already bought the item,
@@ -474,29 +474,29 @@ When the player buys the item, it is removed from the map.
 If the treasure is not saved, the item can be bought several times
 and is not removed from the map.
 
-<tt>price</tt> is the number of rupees to pay to buy the item.
+\c price is the number of rupees to pay to buy the item.
 
-<tt>dialog_id</tt> is the id of the dialog to show when the player looks at the item.
+\c dialog_id is the id of the dialog to show when the player looks at the item.
 The dialog describes the item. It is automatically followed by a dialog that asks to the player
 if he wants to buy the item.
 
-@section conveyor_belt Conveyor belt (17)
+\section conveyor_belt Conveyor belt (17)
 
 When the hero walks on a conveyor belt, he is moved automatically in the direction
 of the conveyor belt. The player does not control his movements anymore.
 
-@verbatim
+\verbatim
 17	layer	x	y	width	height	direction
-@endverbatim
+\endverbatim
 
-<tt>direction</tt> is one of the 8 directions (0 to 7).
+\c direction is one of the 8 directions (0 to 7).
 
-@section door Door (18)
+\section door Door (18)
 
 Syntax of a door: 
-@verbatim
+\verbatim
 18	layer	x	y	entity_name	direction	subtype	savegame_variable
-@endverbatim
+\endverbatim
 
 Subtypes of doors:
 - 0 (closed): usual closed door
@@ -510,24 +510,24 @@ Subtypes of doors:
 - 8 (weak block): a block to blast with an explosion
 
 The sprite of a door depends on its subtype and the tileset of the map.
-If the door is called <tt>doorname</tt>, hen the door is closed, all dynamic tiles with the prefix
-<tt>doorname_closed</tt> are enabled and the ones with the prefix <tt>doorname_open</tt>
+If the door is called \c doorname, hen the door is closed, all dynamic tiles with the prefix
+\c doorname_closed are enabled and the ones with the prefix \c doorname_open
 are disabled.
 When the door is open, this is the opposite.
 
-<tt>savegame_variable</tt> indicates the index of the boolean value that stores this door's state
+\c savegame_variable indicates the index of the boolean value that stores this door's state
 in the savegame.
-For usual closed doors (i.e. if the <tt>subtype</tt> is 0),
+For usual closed doors (i.e. if the \c subtype is 0),
 the value may be -1: this means that the door is not saved.
 
-@section stairs Stairs (19)
+\section stairs Stairs (19)
 
 Stairs allow the hero to change his floor, or to get on a platform inside the same floor.
 
 Syntax of a stairs entity:
-@verbatim
+\verbatim
 19	layer	x	y	entity_name	direction	subtype
-@endverbatim
+\endverbatim
 
 Subtypes of stairs:
 - 0 (spiral, upstairs): go upstairs with a spiral staircase

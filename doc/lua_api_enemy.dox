@@ -1,0 +1,327 @@
+/**
+\page lua_api_enemy Enemies
+
+The \c sol.enemy module is available to scripts attached to an enemy.
+\c sol.enemy represents a particular instance of enemy.
+Each breed of enemy is controlled by a Lua script.
+If several enemies of the same breed exist on the map, they all have their
+own Lua world, which means they don't share global values.
+
+- \c sol.enemy.get_name():
+returns the name of the current enemy
+
+- \c sol.enemy.get_life():
+returns the current level of life of the enemy
+
+- \c sol.enemy.set_life(life):
+sets the level of life of the enemy
+(default is 1 when the enemy is created)
+
+- \c sol.enemy.add_life(life):
+adds some life to the enemy
+
+- \c sol.enemy.remove_life(life):
+remove some life from the enemy
+
+- \c sol.enemy.get_damage():
+returns the number of life points that the enemy removes from the hero when touching him
+(when the hero's defense level is minimal)
+
+- \c sol.enemy.set_damage(damage):
+sets the number of life points that the enemy removes from the hero when touching him
+(when the hero's defense level is minimal)
+(default is 1)
+
+- \c sol.enemy.get_magic_damage():
+returns the number of magic points that the enemy removes from the hero when touching him
+
+- \c sol.enemy.set_magic_damage(magic_damage):
+sets the number of magic points that the enemy removes from the hero when touching him
+(default is 0)
+
+- \c sol.enemy.is_pushed_back_when_hurt():
+returns whether the enemy is pushed away when it is hurt
+
+- \c sol.enemy.set_pushed_back_when_hurt(pushed_back_when_hurt):
+sets whether the enemy is pushed away when it is hurt
+(default is true)
+
+- \c sol.enemy.get_push_hero_on_sword():
+returns whether the hero is pushed away when he strikes the enemy with the sword
+
+- \c sol.enemy.set_push_hero_on_sword(push_hero_on_sword):
+sets whether the hero is pushed away when he strikes the enemy with the sword
+(default is false)
+
+- \c sol.enemy.get_can_hurt_hero_running(can_hurt_hero_running):
+returns whether the enemy can hurt the hero even when the hero is running
+
+- \c sol.enemy.set_can_hurt_hero_running(can_hurt_hero_running):
+sets whether the enemy can hurt the hero even when the hero is running
+(default is false)
+
+- \c sol.enemy.get_hurt_style():
+returns the style of sounds and animations to play when the enemy is hurt:
+"normal", "monster" or "boss"
+
+- \c sol.enemy.set_hurt_style(style):
+sets the style of sounds and animations to play when the enemy is hurt:
+"normal", "monster" or "boss" (default is "normal" for usual enemies
+and "boss" for bosses and minibosses)
+
+- \c sol.enemy.get_can_attack():
+returns whether the enemy can currently attack the hero
+
+- \c sol.enemy.set_can_attack(can_attack):
+Sets whether the enemy can currently attack the hero (default is true).
+When the enemy restarts after being hurt, \c can_attack is always
+reset to true.
+
+- \c sol.enemy.get_minimum_shield_needed():
+returns the minimum hero's level of shield that allows him to stop attacks from this enemy
+(0 means that he cannot stop the attacks)
+
+- \c sol.enemy.set_minimum_shield_needed(shield_level):
+returns the minimum hero's level of shield that allows him to stop attacks from this enemy
+(0 means that he cannot stop the attacks and is the default)
+
+- \c sol.enemy.set_attack_consequence(attack, consequence):
+Sets how the enemy reacts when it receives an attack.
+\c attack can be "sword", "thrown_item", "explosion",
+"arrow", "hookshot", "boomerang", or "fire".
+\c consequence can be an integer that indicates the number
+of life points to remove, or the string
+"ignored", "protected", "immobilize" or "custom".
+This reaction will be applied unless the sprite that receives the attack
+has a specific reaction (see \c sol.enemy.set_attack_consequence_sprite). 
+
+- \c sol.enemy.set_attack_consequence_sprite(sprite, attack, consequence):
+Sets how the enemy reacts when a particular sprite receives an attack.
+\c attack and \c consequence can have the same values
+as \c sol.enemy.set_attack_consequence.
+
+- \c sol.enemy.set_default_attack_consequences():
+Sets the default attack consequences for the enemy.
+
+- \c sol.enemy.set_default_attack_consequences_sprite(sprite):
+Sets the default attack consequences for a particular sprite of the enemy.
+
+- \c sol.enemy.set_invincible():
+Makes the enemy ignore all attacks.
+Equivalent to calling \c sol.enemy.set_attack_consequence(attack,
+"ignored") for each attack.
+
+- \c sol.enemy.set_invincible_sprite(sprite):
+Makes a particular sprite of the enemy ignore all attacks.
+Equivalent to calling \c sol.enemy.set_attack_consequence_sprite(sprite,
+attack, "ignored") for each attack.
+
+- \c sol.enemy.set_layer_independent_collisions(independent):
+Sets whether the collisions with the enemy should be detected
+from every layer (default is false).
+
+- \c sol.enemy.set_treasure(item_name, variant, savegame_variable):
+Sets the treasure of the enemy.
+\c item_name can be the name of a valid item, "_none"
+or "_random".
+\c savegame_variable can be -1 if you don't want the item
+to be saved.
+
+- \c sol.enemy.set_no_treasure():
+Sets no treasure of the enemy.
+Equivalent to \c sol.enemy.set_treasure("_none", 1, -1).
+
+- \c sol.enemy.set_random_treasure():
+Sets a random treasure for the enemy (this is the default behavior).
+Equivalent to \c sol.enemy.set_treasure("_random", 1, -1).
+
+- \c sol.enemy.get_obstacle_behavior():
+Returns how the enemy behaves with obstacles: "normal", "flying" or "swimming".
+
+- \c sol.enemy.set_obstacle_behavior(behavior):
+Sets how the enemy behaves with obstacles: "normal", "flying" or "swimming".
+"flying" will ignore obstacles like holes, water or lava.
+"swimming" will ignore water.
+
+- \c sol.enemy.get_optimization_distance(distance):
+Returns the optimization threshold. Above this distance from the visible area
+of the map, the enemy will be suspended.
+A value of 0 means an infinite distance (the enemy is never optimized away).
+
+- \c sol.enemy.set_optimization_distance(distance):
+Sets the optimization threshold. Above this distance from the visible area
+of the map, the enemy will be suspended. The default value is usually fine,
+but you may need to increase it in some cases, for example for a boss in a
+huge room. A value of 0 means an infinite distance (the enemy is never
+optimized away).
+
+- \c sol.enemy.get_size():
+Returns the size of the enemy's bounding box (two return values: width and height in pixels).
+
+- \c sol.enemy.set_size(width, height):
+Sets the size of the enemy's bounding box (default: 16, 16).
+This is the effective size used to detect obstacles when moving,
+but the sprite of the enemy may be larger, especially for a boss.
+
+- \c sol.enemy.get_origin():
+Returns the coordinates of the origin point of the enemy, relative to its
+bounding box top-left corner (two returns values: x and y).
+
+- \c sol.enemy.set_origin(x, y):
+Sets the coordinates of the origin point of the enemy, relative to its
+bounding box top-left corner (default: 0, 0).
+
+- \c sol.enemy.get_position():
+Returns the current position of the enemy on the map
+(i.e. the position of its origin point relative to the map's top-left corner).
+Three values are returned: x, y and the layer.
+
+- \c sol.enemy.set_position(x, y, layer):
+Sets the position of the enemy on the map
+(i.e. the position of its origin point relative to the map's top-left corner).
+The layer is optional: by default, is is unchanged.
+
+- \c sol.enemy.get_distance_to_hero():
+Returns the distance in pixels between the enemy and the hero.
+
+- \c sol.enemy.get_angle_to_hero():
+Returns the angle in radians of the vector from the enemy to the hero.
+
+- \c sol.enemy.test_obstacles(dx, dy):
+Returns whether there would be a collision if the enemy was translated
+with the given parameters.
+
+- \c sol.enemy.snap_to_grid():
+Makes sure the enemy's top-left corner is aligned with the 8*8 grid of the map.
+Be careful: this function does not check collisions with obstacles.
+
+- \c sol.enemy.get_movement():
+Returns the current movement of the enemy.
+
+- \c sol.enemy.start_movement(movement):
+Sets a movement to the enemy (any previous movement is destroyed).
+
+- \c sol.enemy.stop_movement():
+Stops and destroys the current movement of the enemy (if any).
+
+- \c sol.enemy.restart():
+Restarts the enemy. This plays animation "walking" on its sprites
+and triggers event_restart().
+
+- \c sol.enemy.hurt(life_points):
+Hurts the enemy.
+
+- \c sol.enemy.create_sprite(animation_set):
+Creates a sprite attached to the enemy and returns it.
+
+- \c sol.enemy.remove_sprite(sprite):
+Removes and destroys a sprite of this enemy. If \c sprite is not
+specified, the first sprite that was created is removed.
+
+- \c sol.enemy.get_sprite():
+Returns the sprite of the enemy. If the enemy has several sprites, the first
+one that was created is returned.
+If you have created several sprites, this function is probably not for you:
+you should memorize the return value of each call to
+\c sol.enemy.create_sprite instead.
+
+- \c sol.enemy.create_son(enemy_name, breed, x, y, layer):
+Creates another enemy, specifying its coordinates as relative to the current
+enemy. The layer is optional: by default, the enemy is created on the same
+layer as the current one.
+
+- \c sol.enemy.get_father():
+Returns the name of the father of the enemy (if any).
+The father is the enemy that created
+the current one by calling \c sol.enemy.create_son,
+Returns an empty string if the current enemy has no father.
+
+- \c sol.enemy.send_message(dst_enemy, message):
+Sends a string message to another enemy.
+His function event_message_received() will be called,
+and then \c sol.enemy.send_message will return.
+
+- \c event_update():
+called at each cycle (so take care of the performances)
+
+- \c event_set_suspended(suspended):
+called when the game is suspended or resumed
+
+- \c event_dialog_started(dialog_id):
+(triggered only if this enemy script started the dialog):
+called when a dialog starts
+
+- \c event_dialog_finished(dialog_id, answer):
+(triggered only if this enemy script started the dialog):
+called when a dialog finishes (i.e. once its last group of 3 lines is finished)
+
+- \c event_appear():
+called when an instance of the enemy controlled by this script has just been created on the map
+
+- \c event_enabled():
+called when the enemy has just been enabled
+
+- \c event_disabled():
+called when the enemy has just been disabled
+
+- \c event_restart():
+Called when the enemy is restarting its movement because
+something happended (for example the enemy has just been created,
+or it was just hurt).
+If your enemy moves, it is usual to create its movement in this function.
+
+- \c event_pre_display():
+called just before the enemy is displayed (you may display additional things below the enemy)
+
+- \c event_post_display():
+called just after the enemy is displayed (you may display additional things above the enemy)
+
+- \c event_position_changed(x, y):
+called when the enemy has moved
+
+- \c event_layer_changed(layer):
+called when the layer of the enemy has changed
+
+- \c event_obstacle_reached():
+called when the movement of the enemy was stopped because of an obstacle.
+
+- \c event_movement_changed(movement):
+called when something changes in the movement of the enemy
+
+- \c event_movement_finished(movement):
+called when the movement of the enemy is finished
+
+- \c event_sprite_frame_changed(sprite, animation, frame):
+called when the current frame of a sprite of the enemy has changed
+
+- \c event_sprite_animation_finished(sprite, animation):
+called when the animation of a sprite of the enemy has just finished
+
+- \c event_collision_enemy(other_name, other_sprite, my_sprite):
+called when the enemy detects a collision with another enemy
+
+- \c event_custom_attack_received(attack, sprite):
+Called when the enemy receives an attack with a custom effect.
+\c attack can be "sword", "thrown_item", "explosion",
+"arrow", "hookshot", "boomerang", or "fire".
+You have to define what happens, for example hurting the enemy, making a
+special reaction, etc. If the attacks comes from a pixel-precise collision
+test, the sprite that receives the attack is passed as a parameter.
+
+- \c event_hurt(attack, life_lost):
+Called when the enemy is hurt.
+\c attack can be "sword", "thrown_item", "explosion",
+"arrow", "hookshot", "boomerang", or "fire".
+This function is called after removing \c life_lost life points.
+
+- \c event_dead():
+called when the enemy is killed and has finished to die
+
+- \c event_immobilized():
+called when the enemy is immobilized
+
+- \c event_message_received(src_enemy, message):
+Called when the enemy receives a string message from another enemy.
+
+*/
+

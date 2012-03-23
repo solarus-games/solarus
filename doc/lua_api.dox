@@ -1,0 +1,66 @@
+/**
+\page lua_api Lua scripting API specification
+
+This is the API specification of Lua functions and types defined by Solarus.
+This documentation page is intented to quest makers who want to need to write
+scripts for their maps, enemies and screens.
+For the point of view of the engine, see the documentation of the C++ class
+Script.
+
+Most of the data types defined in the C++ engine (like sprites, map entities,
+movements, savagames, etc.) are exported as Lua types in the scripting API of
+Solarus.
+We give here the full specification of these types and the functions available
+for each type.
+The API exports C++ functions that may be called by your scripts.
+Examples of such functions are creating a sprite, drawing an image or moving
+an NPC.
+In the opposite way, Solarus will also call your own Lua functions (if you
+define them), for example to notify your script that an enemy has reached an
+obstacle, that a timer has expired or that the player is talking to a
+particular NPC.
+
+The following types of scripts exist:
+- The script of a map (\c maps/mapXXXX.lua): controls the map XXXX.
+- The script of an enemy (\c enemies/XXXX.lua): controls an enemy whose
+breed is "XXXX". Each instance of enemy has its own Lua state (in particular
+its own global values), even if several enemies of the same breed exist at the
+same time on the current map.
+- The script of an item (\c items/XXXX.lua): controls the item named
+"XXXX" in \c items.dat. For each item, only one Lua state is created for
+the whole game and it persists across map changes.
+- The script of a menu (\c menus/XXXX.lua): controls a menu displayed
+before or during the game.
+
+
+A Lua script can call the engine (and be called by it)
+through a global table called \c sol. This table is automatically created
+when your script is loaded by the engine.
+The whole Solarus Lua API is available in the \c sol table.
+It contains modules, functions, types and values that allow you to
+interact with the C++ engine.
+
+The following modules are defined in the \c sol table.
+
+- \subpage lua_api_main "sol.main": some general-purpose functions.
+- \subpage lua_api_audio "sol.audio": playing musics and sounds.
+- \subpage lua_api_timer "sol.timer": making an action later with a delay.
+- \subpage lua_api_savegame "sol.savegame": handling savegames
+  and data saved (life, equipment, etc.).
+- \subpage lua_api_map "sol.map": handling the map and entities
+  placed on the map (only during a game).
+- \subpage lua_api_item "sol.item": controls a particular type of
+  equipment item and its behavior.
+- \subpage lua_api_enemy "sol.enemy": controls an instance of an enemy.
+- \subpage lua_api_movement "sol.movement": creating and managing movements.
+- \subpage lua_api_sprite "sol.sprite": displaying animated images.
+- \subpage lua_api_surface "sol.surface": displaying fixed images.
+- \subpage lua_api_text_surface "sol.text_surface": displaying text.
+- \subpage lua_api_input "sol.input": handling low-level input events
+  (keyboard and joypad).
+- \subpage lua_api_menu "sol.menu": handling a scripted menu.
+
+See the specification page of each module for more details.
+
+*/
+

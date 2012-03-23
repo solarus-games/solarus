@@ -1,0 +1,73 @@
+/**
+\page lua_api_sprite Sprites
+
+Your script can create sprites or access existing ones
+(e.g. a sprite attached to an NPC).
+In both cases, the following methods are available on the type
+\c sprite.
+
+- \c sol.sprite.create(sprite_name):
+Creates a sprite.
+  - \c sprite_name (string): name of the animation set to use
+  - Return value (sprite): the sprite created
+
+- \c sprite:get_animation():
+Returns the name of the current animation of this sprite.
+  - Return value (string): name of the current animation
+
+- \c sprite:set_animation(animation_name):
+Sets the current animation of this sprite.
+  - \c animation_name (string): name of the animation to set
+
+- \c sprite:get_direction():
+Returns the current direction of this sprite.
+  - Return value (number): the current direction
+    (\c 0 to \c nb_directions-1)
+
+- \c sprite:set_direction(direction):
+Sets the current direction of this sprite.
+  - \c direction (number): the direction to set
+    (\c 0 to \c nb_directions-1)
+
+- \c sprite:get_frame():
+Returns the index of the current frame of this sprite.
+  - Return value (number): the current frame
+    (\c 0 to \c nb_frames-1)
+
+- \c sprite:set_frame(frame):
+Sets the current frame of this sprite.
+  - \c frame (number) the frame to set
+    (\c 0 to \c nb_frames-1)
+
+- \c sprite:get_frame_delay():
+Returns the delay between two frames of this sprite.
+  - Return value (number): the delay in milliseconds between two frames
+
+- \c sprite:set_frame_delay(delay):
+Sets the delay between two frames of this sprite.
+  - \c delay (number): the delay to set in millisecons
+
+- \c sprite:is_paused():
+Returns whether this sprite is paused.
+  - Return value (boolean): true if this sprite is paused
+
+- \c sprite:set_paused(paused):
+Pauses or resumes the animation of this sprite.
+  - \c paused (boolean): true to pause the sprite, false to unpause it
+
+- \c sprite:set_animation_ignore_suspend(ignore):
+Sets whether the animation should continue even when this sprite is suspended.
+  - \c ignore (boolean): true to continue animation even when suspended
+
+- \c sprite:fade(direction):
+Shows a fade effect on this sprite.
+  - \c direction (number): 0 for fade-in effect, 1 for a fade-out effect
+
+- \c sprite:synchronize(reference_sprite):
+Synchronizes the frames of this sprite with the frames of a reference sprite.
+The synchronization will be performed whenever their animation names match.
+  - \c reference_sprite (sprite, optional): the reference sprite
+    (if \c nil, any previous synchronization is stopped)
+
+*/
+

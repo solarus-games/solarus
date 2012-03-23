@@ -1,0 +1,62 @@
+/**
+\page lua_api_main General functions
+
+The \c sol.main module contains some general functions that are not related
+to a particular Solarus type.
+
+\section functions Functions of sol.main
+
+\subsection include sol.main.include(file_name)
+
+Includes another Lua file into this one.
+
+This function lets Solarus
+determine how to locate and open the file. 
+Lua files, as all data files of your quest, may indeed be located inside an
+archive instead of being regular files. Therefore, you need this function to be
+able to load another file.
+- \c file_name (string): Name of the Lua file to include, relative to the
+  root data directory of your quest (without extension).
+
+<hr>
+    
+\subsection exit sol.main.exit()
+
+Exits the program after the current cycle.
+
+<hr>
+    
+\subsection start_screen sol.main.start_screen(screen_name)
+
+Ends the scripted screen or game that was running and starts a scripted screen.
+
+- \c screen_name (string): Name of the scripted screen to load, relative to
+  the \c screens directory (without extension).
+
+<hr>
+
+\subsection get_distance sol.main.get_distance(x1, y1, x2, y2)
+
+Returns the distance in pixels between two points.
+- \c x1 (number): X coordinate of the first point.
+- \c y1 (number): Y coordinate of the first point.
+- \c x2 (number): X coordinate of the second point.
+- \c y2 (number): Y coordinate of the second point.
+- Return value (number): the distance in pixels
+
+<hr>
+
+\subsection get_angle sol.main.get_angle(x1, y1, x2, y2)
+
+Returns the angle in radians between the x axis and the specified vector.
+- \c x1 (number): X coordinate of the first point.
+- \c y1 (number): Y coordinate of the first point.
+- \c x2 (number): X coordinate of the second point.
+- \c y2 (number): Y coordinate of the second point.
+- Return value (number): the angle in radians between the x axis and this
+  vector.
+
+<hr>
+
+*/
+

@@ -1,0 +1,239 @@
+/**
+\page lua_api_savegame Savegames
+
+This module provides a datatype "game" that represents a savegame.
+This type provides methods to manage the game data.
+
+- \c sol.savegame.exists(file_name):
+Returns whether the specified savegame file exists.
+  - \c file_name (string): name of the file to test, relative to the
+    savegames directory.
+  - Return value (boolean): true if this savegame file exists
+
+- \c sol.savegame.load(file_name):
+Loads an existing savegame, or creates a new one if the file does not exist.
+This function does not start the game, it just loads the savegame file.
+Then you can access the data saved in the file.
+To actually run the game, call the \c start() method.
+  - \c file_name (string): name of the file to load or create, relative
+    to the savegames directory
+  - Return value (game): the loaded (or created) game
+
+- \c sol.savegame.delete(file_name):
+Deletes a savegame file.
+  - \c file_name (string): name of the file to delete, relative
+    to the savegames directory
+
+- \c game:save():
+Saves this game into its savegame file.
+
+- \c game:start():
+Ends the scripted screen or game that was running and starts this game.
+You can call this function to restart the current game itself,
+even if it was not saved recently (no data will be lost).
+
+- \c game:get_string(index):
+Returns a string saved.
+  - \c index (number): index of the string variable to get from the
+    savegame (0 to 63)
+  - Return value (string): the corresponding string
+
+- \c game:set_string(index, value):
+Sets a string in the savegame.
+  - \c index (number): index of the string variable to set (32 to 63)
+  - \c value (string): the string value to set
+
+- \c game:get_integer(index):
+Returns an integer saved.
+  - \c index (number): index of the integer variable to get from the
+    savegame (0 to 2047)
+  - Return value (number): the corresponding integer
+
+- \c game:set_integer(index, value):
+Sets an integer in the savegame.
+  - \c index (number): index of the integer variable to set (1024 to 2047)
+  - \c value (number): the integer value to set
+
+- \c game:get_boolean(index):
+Returns a boolean saved.
+  - \c index (number): index of the boolean variable to get from the
+    savegame (0 to 32767)
+  - Return value (boolean): the corresponding boolean
+
+- \c game:set_boolean(index, value):
+Sets an boolean in the savegame.
+  - \c index (number): index of the boolean variable to set (0 to 32767)
+  - \c value (boolean): the boolean value to set
+
+- \c game:get_player_name():
+Returns the name of the player.
+  - Return value (string): name of the player
+
+- \c game:set_player_name(name):
+Sets the name of the player.
+  - \c name (string): name of the player.
+
+- \c game:get_life():
+Returns the current level of life of the player.
+  - Return value (number): the current life
+
+- \c game:set_life(life):
+Sets the level of life of the player.
+A negative value will be replaced by zero. A value greater than
+than the maximum level of life will be replaced by the maximum value.
+  - \c life (number): number of life points to set
+
+- \c game:add_life(life):
+Adds some life to the player.
+  - \c life (number): number of life points to add
+
+- \c game:remove_life(life):
+Removes some life from the player.
+  - \c life (number): number of life points to remove
+
+- \c game:get_max_life():
+Returns the maximum level of life of the player.
+  - Return value (number): the maximum number of life points
+
+- \c game:set_max_life(life):
+Sets the maximum level of life of the player.
+  - \c life (number): maximum number of life points to set
+
+- \c game:add_max_life(life):
+Increases the maximum level of life of the player.
+  - \c life (number): maximum number of life points to set
+
+- \c game:get_money():
+Returns the amount of money of the player.
+  - Return value (number): the current amount of money
+
+- \c game:set_money(money):
+Sets the amount of money of the player.
+  - \c money (number): the amount of money to set
+
+- \c game:add_money(money):
+Adds some money to the player.
+  - \c money (number): amount of money to add
+
+- \c game:remove_money(money):
+Removes some money from the player.
+  - \c money (number): amount of money to remove
+
+- \c game:get_magic():
+Returns the current number of magic points.
+  - Return value (number): the current number of magic points
+
+- \c game:set_magic(magic):
+Sets the amount of magic points of the player.
+  - \c magic (number): the number of magic points to set
+
+- \c game:add_magic(magic):
+Adds some magic points to the player.
+  - \c magic (number): number of magic points to add
+
+- \c game:remove_magic(magic):
+Removes some magic points from the player.
+  - \c magic (number): number of magic points to remove
+
+- \c game:start_decreasing_magic(delay):
+Starts removing magic points continuously.
+Only possible when the game is running.
+  - \c delay (number): delay in milliseconds between each loss of 1
+    point
+
+- \c game:stop_decreasing_magic():
+Stops removing magic points continuously.
+Only possible when the game is running.
+
+- \c game:get_max_magic():
+Returns the maximum number of magic points.
+  - Return value (number): the maximum number of magic points
+
+- \c game:set_max_magic(magic):
+Sets the maximum number of magic points.
+  - \c magic (number): the maximum number of magic points to set
+
+- \c game:has_ability(ability_name):
+Returns whether the player has an ability.
+Equivalent to \c game:get_ability(ability_name) > 0.
+  - \c ability_name: name of the ability to get (must be a valid
+    built-in ability name)
+  - Return value (boolean): true if the player has this ability
+
+- \c game:get_ability(ability_name):
+Returns the level of an ability.
+  - \c ability_name (string): name of the ability to get (must be a valid
+    built-in ability name)
+  - Return value (number): level of this ability
+    (0 means not having this ability yet)
+
+- \c game:set_ability(ability_name, level):
+Sets the level of an ability.
+  - \c ability_name (string): name of the ability to set (must be a valid
+    built-in ability name)
+  - \c level (number): level of this ability to set
+    (0 removes the ability)
+
+- \c game:has_item(item_name):
+Returns whether the player has an item.
+Equivalent to \c game:get_item(item_name) > 0.
+  - \c item_name (string): name of the item to get (must be an item
+    defined in \c items.dat)
+  - Return value (boolean): true if the player has this item
+
+- \c game:get_item(item_name):
+Returns the possession state (variant) of an item.
+  - \c item_name (string): name of the item to get (must be an item
+    defined in \c items.dat)
+  - Return value (number): the variant of this item possessed by the player
+    (0 means not having this item yet, 1 means the first variant, etc.)
+
+- \c game:set_item(item_name, variant):
+Sets the possession state (variant) of an item.
+  - \c item_name (string): name of the item to set (must be an item
+    defined in \c items.dat)
+  - \c variant (number): the variant of this item possessed by the player
+    (0 means not having this item yet, 1 means the first variant, etc.)
+
+- \c game:has_item_amount(item_name, amount):
+Returns whether the player has at least the specified amount of an item.
+The item must have a counter (i.e. a notion of amount).
+Equivalent to \c game:get_item_amount(item_name) > 0.
+  - \c item_name (string): name of the item to get (the item must
+    have a counter)
+  - \c amount (number): the amount to check
+  - Return value (boolean): true if the player has at least this amount of the
+    item
+
+- \c game:get_item_amount(item_name):
+Returns the amount the player has for an item.
+The item must have a counter (i.e. a notion of amount).
+  - \c item_name (string): name of the item to get (the item must
+    have a counter)
+  - Return value (number): the amount of this item
+
+- \c game:add_item_amount(item_name, amount):
+Adds an amount of the specified item.
+The item must have a counter (i.e. a notion of amount).
+  - \c item_name (string): name of the item to get (the item must
+    have a counter)
+  - \c amount (number): the amount to add
+
+- \c game:remove_item_amount(item_name, amount):
+Removes an amount of the specified item.
+The item must have a counter (i.e. a notion of amount).
+  - \c item_name (string): name of the item to get (the item must
+    have a counter)
+  - \c amount (number): the amount to remove
+
+- \c game:is_dungeon_finished(dungeon):
+Returns whether the specified dungeon is finished.
+  - \c dungeon (number): id of the dungeon to get (the first one is 1)
+  - Return value (boolean): true if this dungeon is finished
+
+- \c game:set_dungeon_finished(dungeon):
+Sets the specified dungeon as finished.
+  - \c dungeon (number): id of the dungeon to get (the first one is 1)
+
+*/
+

@@ -1,14 +1,14 @@
 /**
-@page tileset_syntax Tileset syntax specification
+\page tileset_syntax Tileset syntax specification
 
 A tileset is the skin of a map.
 It is composed of a set of tile patterns that a map can use.
-The <tt>tilesets</tt> directory contains the tilesets and their images.
+The \c tilesets directory contains the tilesets and their images.
 For a tileset whose id is XXXX (an integer number on four digits, like the maps),
-the file <tt>tilesetXXXX.dat</tt> describes all its tile patterns.
+the file \c tilesetXXXX.dat describes all its tile patterns.
 We give here the detailed specification of the format of this file.
 
-The images of the tile patterns are picked in the file <tt>tilesetXXXX_tiles.png</tt>.
+The images of the tile patterns are picked in the file \c tilesetXXXX_tiles.png.
 A tile pattern is a rectangle image inside this PNG file, with any size multiple of 8*8 pixels,
 and some obstacle and animation properties.
 
@@ -78,7 +78,7 @@ Thus, the default layer property is only used by the map editor, not by the game
 A tileset description file is a clear text file.
 Here is an example of such a file:
 
-@verbatim
+\verbatim
 255	255	255
 1	0	0	0	16	0	16	16
 2	0	0	0	32	0	16	16
@@ -88,7 +88,7 @@ Here is an example of such a file:
 166	0	1	0	200	240	32	24
 167	0	1	0	232	240	24	32
 168	0	1	0	200	264	24	32
-@endverbatim
+\endverbatim
 
 The first line is the background color of the maps 
 using this tileset (with the RGB notation).
@@ -97,35 +97,35 @@ The first element of the line is always the id of the tile pattern (an integer n
 the second one is the animation type, and 
 the remaining part of the line depends on the number of frames of the pattern.
 
-@section single_frame_patterns Single-frame patterns
+\section single_frame_patterns Single-frame patterns
 
 Syntax of patterns having only one frame (i.e. fixed patterns,
 self scrolling patterns, time scrolling patterns and parallax scrolling
 patterns):
 
-@verbatim
+\verbatim
 id   animation_type   obstacle   default_layer   x   y   width   height
-@endverbatim
+\endverbatim
 
-<tt>id</tt> identifies the pattern. <tt>animation_type</tt> indicates the type
+\c id identifies the pattern. \c animation_type indicates the type
 of animation (can be 0, 2, 3 or 4).
-<tt>obstacle</tt> and <tt>default_layer</tt> are the properties explained above.
-<tt>x</tt>, <tt>y</tt>, <tt>width</tt> and <tt>height</tt> define the rectangle
+\c obstacle and \c default_layer are the properties explained above.
+\c x, \c y, \c width and \c height define the rectangle
 of the tile pattern in the PNG image.
 
-@section multi_frame_patterns Multi-frame patterns
+\section multi_frame_patterns Multi-frame patterns
 
 Syntax of animations patterns with three frames (i.e. 3-frame patterns
 and 3-frame + parallax patterns):
 
-@verbatim
+\verbatim
 id   animation_type   obstacle   default_layer   animation_sequence   width   height   x1   y1   x2   y2   x3   y3
-@endverbatim
+\endverbatim
 
-<tt>animation_type</tt> indicates the type of animation (can be 1 or 5).
-<tt>animation_sequence</tt> determines how the three frames of the animation are played:
+\c animation_type indicates the type of animation (can be 1 or 5).
+\c animation_sequence determines how the three frames of the animation are played:
 1 means 0-1-2-0, and 2 means 0-1-2-1-0.
-<tt>width</tt>, <tt>height</tt>, <tt>x1</tt>, <tt>y1</tt>, <tt>x2</tt>, <tt>y2</tt>, <tt>x3</tt> and <tt>y3</tt>
+\c width, \c height, \c x1, \c y1, \c x2, \c y2, \c x3 and \c y3
 define the location of the three rectangles in the PNG image (the size is the same for all rectangles).
 
 */

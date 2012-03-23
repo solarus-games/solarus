@@ -1,0 +1,40 @@
+/**
+\page lua_api_text_surface Text surfaces
+
+\c sol.text_surface provides features to display some text.
+The text surface type can be seen as a special surface able to
+contain text.
+
+\c sol.text_surface.create(properties):
+Creates a text surface with the specified properties.
+  - \c properties (table): a table that describes all properties
+    of the text surface to create. Its key-value pairs are all optinoal,
+    they can be:
+    - \c horizontal_alignement (string, default "left"): "left",
+      "center" or "right". When the text surface is displayed at some
+      coordinates on a surface, the left/center/right part of the text is
+      displayed at those coordinates.
+    - \c vertical_alignement (string, default "middle"): "top",
+      "middle" or "bottom". When the text surface is displayed at some
+      coordinates on a surface, the top/middle/bottom part of the text is
+      displayed at those coordinates.
+    - \c font (string): name of the font to use (the default is the one
+      defined in file \c text/fonts.dat)
+    - \c rendering_mode (string, default "solid"): "solid" (normal),
+      "shaded" (smooth effect but the text surface won't support transparency,
+      a background color will be applied)
+      or "blended" (smooth effect keeping transparency, a bit slower)
+    - \c background_color (table, default black): a background
+      color (array of 3 RGB values between 0 and 255) to apply to the
+      text surface (only used in rendering mode "shaded")
+    - \c text_color (table, default white): color of the text to display
+      (array of 3 RGB values between 0 and 255)
+    - \c text (string, default ""): the text to show
+      (must be valid UTF-8)
+    - \c text_key (string, default nil): key of the localized text
+      string to get from the \c text/strings.dat file of the
+      current language
+    - Return value (text surface): the text surface created
+
+*/
+

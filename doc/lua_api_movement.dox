@@ -1,0 +1,149 @@
+/**
+\page lua_api_movement Movements
+
+This module provides functions to create movements and manage their properties.
+When you create a movement, you get a value of type \c movement.
+To get and set its properties (like the speed, the angle, etc.),
+the type \c movement has several methods available.
+As detailed below, these methods depend on the kind
+of movement, because all kinds of movements don't share the same properties.
+
+- \c sol.movement.create(kind):
+Creates a movement. Depending on the kind of movement, several methods are
+then available to get and set its properties.
+  - \c kind (string): kind of movement to create. Must be one of:
+    - \c "straight": follows a rectilinear trajectory.
+    - \c "random": like "straight" but with random, changing angles.
+    - \c "target": like "straight" but goes into the direction of a
+      fixed point or a moving entity.
+    - \c "path": follows a specified succession of basic moves on a
+      grid of 8*8 pixels.
+    - \c "random_path": like "path" but computes the path randomly.
+    - \c "path_finding": like "path" but computes the shortest path to
+      the hero, avoiding obstacles of the map (only possible in game).
+    - \c "circle": follows a circular trajectory around a center.
+    - \c "pixel": follows a trajectory specified pixel by pixel.
+  - Return value (movement): the movement created
+
+Straight movement
+
+- \c movement:get_ignore_obstacles():
+  Returns whether this movement ignores obstacles of the map.
+  This method is available for the following movement kinds:
+  \c "straight", "random", "target", "path", "random_path", "path_finding",
+  "circle", "pixel".
+  - Return value (boolean): true if this movement ignores obstacles
+
+- \c movement:set_ignore_obstacles(ignore_obstacles):
+  Sets whether an entity controlled by this movement should ignore obstacles of
+  the map. If the movement is not attached to a map entity yet, it is not an
+  error to call this function: your choice will have an effect when the
+  movement gets attached to a map entity.
+  This method is available for the following movement kinds:
+  \c "straight", "random", "target", "path", "random_path", "path_finding",
+  "circle", "pixel".
+  - \c ignore_obstacles (boolean): true to make this movement ignore
+    obstacles of the map
+
+- \c movement:get_speed():
+  Returns the speed of this movement.
+  This method is available for the following movement kinds:
+  \c "straight", "random", "target", "path", "random_path", "path_finding".
+  - Return value (number): the speed in pixels per second
+
+- \c movement:set_speed(speed):
+  Sets the speed of this movement.
+  This method is available for the following movement kinds:
+  \c "straight", "random", "target", "path", "random_path", "path_finding".
+  - \c speed (number): the new speed in pixels per second
+
+- \c movement:get_angle():
+  Returns the angle of the speed vector of this movement.
+  This methods is available for the following movement kinds:
+  \c "straight", "random", "target".
+  - Return value (number): the angle of the movement in radians
+
+TODO: document the following methods for movements:
+
+straight: ignore_obstacles speed angle max_distance smooth displayed_direction (ro)
+random: ignore_obstacles speed angle (ro) max_distance displayed_direction (ro)
+target: ignore_obstacles speed angle (ro) smooth displayed_direction (ro)
+path: speed ignore_obstacles speed path loop snap_to_grid
+random_path: ignore_obstacles speed displayed_direction (ro)
+path_finding: ignore_obstacles speed displayed_direction (ro)
+circle: ignore_obstacles center center_dxy radius radius_speed clockwise initial_angle angle_speed max_rotations duration loop_delay
+pixel: ignore_obstacles trajectory delay loop
+
+TODO: remove the deprecated movement API:
+
+- \c sol.movement.pixel_movement_create(trajectory, delay):
+Creates a movement that follows a pixel precise trajectory.
+  - \c trajectory (table): the whole trajectory, as an array of integers:
+    {dx1 dy1 dx2 dy2 dx3 dy3 ...}
+  - \c delay (number): delay in milliseconds between two translations
+  - Return value (movement): the movement created
+
+- \c sol.movement.random_movement_create(speed):
+Creates a movement that goes in random directions.
+  - \c speed (number): speed in pixels per second
+  - Return value (movement): the movement created
+
+- \c sol.movement.path_movement_create(path, speed):
+Creates a movement composed of a specified sucession of movements of 8 pixels
+  - \c path (string): the succession of basic moves (each character
+    represents a direction between '0' and '7')
+  - \c speed (number): speed in pixels per second
+  - Return value (movement): the movement created
+
+- \c sol.movement.random_path_movement_create(speed):
+Creates a movement composed of random successions of movements of 8 pixels
+  - \c speed (number): speed in pixels per second
+  - Return value (movement): the movement created
+
+- \c sol.movement.path_finding_movement_create(speed):
+Creates a movement that calculates a path to the hero.
+  - \c speed (number): speed in pixels per second
+  - Return value (movement): the movement created
+
+- \c sol.movement.target_movement_create(speed, target_x, target_y):
+Creates a movement that goes towards the hero or a fixed point.
+If \c target_x and \c target_y are unspecified, the movement tracks
+the hero and updates itself when the hero moves.
+  - \c speed (number): speed in pixels per second
+  - \c target_x (number, optional): x cordinate of a fixed point to target
+  - \c target_y (number, optional): y cordinate of a fixed point to target
+  - Return value (movement): the movement created
+
+- \c sol.movement.straight_movement_create(speed, angle):
+Creates a rectilinear movement.
+  - \c speed (number): speed in pixels per second
+  - \c angle (number): angle in radians
+  - Return value (movement): the movement created
+
+- \c sol.movement.circle_movement_create(center_type, center_name, radius):
+Creates a circular movement around a map entity.
+TODO: change the prototype to make it easier to use and allow to specify a fixed point
+  - \c center_type (number): type of the center entity (see the
+    EntityType enum)
+  - \c center_name (string): name of the center entity
+  - \c radius (number): radius of circles to make in pixels
+  - Return value (movement): the movement created
+
+- \c sol.movement.jump_movement_create(direction, length):
+Creates a jump movement.
+  - \c direction (number): direction of the jump (0 to 7)
+  - \c length (number): length of the jump in pixels
+  - Return value (movement): the movement created
+
+- \c movement:get_property(key):
+Returns a string property from this movement (warning: it always returns a string!).
+  - \c key (string): name of the property to get
+  - Return value (string): the value of this property
+
+- \c movement:set_property(key, value):
+Sets a property of this movement.
+  - \c key (string): name of the property to set
+  - \c value (string, number or boolean): the value to set
+
+*/
+

@@ -1,0 +1,28 @@
+/**
+\page lua_api_timer Timers
+
+This module provides a datatype timer that allows to execute a function
+later, with a specified delay.
+
+- \c sol.timer.start(delay, with_sound, callback):
+Starts a timer which will calls a function once finished.
+If the delay is set to zero, the function is immediately called.
+  - \c delay (number): delay before calling the function in milliseconds
+  - \c with_sound (boolean, optional): true to play a clock sound
+    (default is false)
+  - \c callback (function): a function to be called when the timer
+    finishes
+  - Return value (timer): the timer created
+
+- \c timer:stop():
+Cancels a timer. If the timer was already finished, nothing happens.
+
+- \c sol.timer.stop_all(timers):
+Stops a list of timers.
+  - \c timers (table): a table of timers to stop
+    (the type of keys does not matter).
+    If some timers of the table are already finished, they are ignored.
+    The table is then cleared.
+
+*/
+

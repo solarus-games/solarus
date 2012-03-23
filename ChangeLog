@@ -1,3 +1,37 @@
+solarus-1.0.0 (under development)
+
+The "I love Lua" release.
+
+This is a major release. The version number switches from 0.x to 1.x
+because the scripting API is now complete and will remain more stable in the
+future.
+I now consider that Solarus can be used to create your own Zelda-like
+games in decent conditions.
+By "in decent conditions", I essentially mean: with a clean and stable
+scripting API. Clean because there are nice datatypes now and the API is much
+easier to use, less error-prone and more with the Lua spirit.
+Stable because future versions of the scripting API will now try to keep
+compatibility with existing scripts. Any API change that breaks compatibility
+will now be clearly documented and conversion scripts will be provided.
+
+Data files and scripts written for solarus 0.x are not compatible with
+solarus 1.x.
+Which is not a problem since until now, I never said you could create a quest
+in decent conditions :)
+More seriously, I guess I'm the only one to have a lot of data files and
+scripts created for solarus 0.x.
+Anyway, conversion scripts are provided to upgrade existing data files,
+but not for scripts (the scripting API, which was working but ugly and
+unstable, has totally changed).
+
+Changes:
+
+* Rewrite the Lua scripting API from scratch. Cleaner, real datatypes, much
+easier to use, less error-prone.
+* Add support of scripted menus. They are no longer hardcoded into the engine.
+* Data files are also in Lua now (no more ini files or custom text files).
+* Add conversion scripts to upgrade existing data files (but not scripts).
+
 solarus-0.9.2 (under development)
 
 * Fix a crash using a teletransporter to the same map while an enemy is dying

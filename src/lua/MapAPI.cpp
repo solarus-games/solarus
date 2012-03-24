@@ -1252,7 +1252,7 @@ int Script::map_api_stairs_is_enabled(lua_State *l) {
  *
  * All dynamic tiles whose prefix is "<stairsname>_enabled"
  * and "<stairsame>_disabled" will be updated depending on the stairs state
- * (where <stairsname> is the name of the stairs).
+ * (where "<stairsname>" is the name of the stairs).
  * - Argument 1 (string): name of the stairs
  * - Argument 2 (boolean): true to enable them, false to disable them
  *

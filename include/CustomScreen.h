@@ -30,7 +30,7 @@ class CustomScreen: public Screen {
   public:
 
     // creation and destruction
-    CustomScreen(Solarus& solarus, const std::string& screen_name);
+    CustomScreen(MainLoop& main_loop, const std::string& screen_name);
     ~CustomScreen();
 
     // update and display

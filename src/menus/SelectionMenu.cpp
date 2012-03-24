@@ -21,7 +21,7 @@
 #include "KeysEffect.h"
 #include "Savegame.h"
 #include "Game.h"
-#include "Solarus.h"
+#include "MainLoop.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
@@ -33,7 +33,7 @@
  * @brief Creates the selection menu.
  * @param solarus the Solarus object
  */
-SelectionMenu::SelectionMenu(Solarus &solarus):
+SelectionMenu::SelectionMenu(MainLoop &solarus):
   Screen(solarus),
   surface(320, 240) {
 
@@ -210,14 +210,14 @@ void SelectionMenu::set_next_phase(SelectionMenuPhase *next_phase) {
  * @param savegame the savegame to play
  */
 void SelectionMenu::start_game(Savegame &savegame) {
-  set_next_screen(new Game(solarus, savegame));
+  set_next_screen(new Game(main_loop, savegame));
 }
 
 /**
  * @brief Ends the program.
  */
 void SelectionMenu::set_exiting() {
-  solarus.set_exiting();
+  main_loop.set_exiting();
 }
 
 /**
@@ -319,7 +319,7 @@ void SelectionMenu::display(Surface& dst_surface) {
 void SelectionMenu::notify_input(InputEvent &event) {
 
   if (event.is_keyboard_key_pressed(InputEvent::KEY_ESCAPE)) {
-    solarus.set_exiting();
+    main_loop.set_exiting();
   }
   else {
 

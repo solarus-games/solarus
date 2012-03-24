@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Solarus.h"
+#include "MainLoop.h"
 #include "lowlevel/System.h"
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Color.h"
@@ -31,7 +31,7 @@
  * @param argc number of arguments of the command line
  * @param argv command-line arguments
  */
-Solarus::Solarus(int argc, char** argv):
+MainLoop::MainLoop(int argc, char** argv):
   current_screen(NULL),
   root_surface(NULL),
   debug_keys(NULL),
@@ -49,7 +49,7 @@ Solarus::Solarus(int argc, char** argv):
 /**
  * @brief Cleans everything.
  */
-Solarus::~Solarus() {
+MainLoop::~MainLoop() {
 
   delete root_surface;
   delete current_screen;
@@ -61,7 +61,7 @@ Solarus::~Solarus() {
  * @brief Returns the debugging keys object.
  * @return the debbuging keys object
  */
-DebugKeys& Solarus::get_debug_keys() {
+DebugKeys& MainLoop::get_debug_keys() {
 
   return *debug_keys;
 }
@@ -74,7 +74,7 @@ DebugKeys& Solarus::get_debug_keys() {
  *
  * @param savegame_file name of the savegame file to load
  */
-void Solarus::skip_menus(const std::string& savegame_file) {
+void MainLoop::skip_menus(const std::string& savegame_file) {
 
   if (FileTools::data_file_exists(savegame_file)) {
 
@@ -93,14 +93,14 @@ void Solarus::skip_menus(const std::string& savegame_file) {
  *
  * @return true if the user wants to exit the program
  */
-bool Solarus::is_exiting() {
+bool MainLoop::is_exiting() {
   return exiting;
 }
 
 /**
  * @brief Sets whether the user wants to quit the program.
  */
-void Solarus::set_exiting() {
+void MainLoop::set_exiting() {
   exiting = true;
 }
 
@@ -111,7 +111,7 @@ void Solarus::set_exiting() {
  * The input events are forwarded to the current screen.
  * The current screen is redrawn when necessary.
  */
-void Solarus::main_loop() {
+void MainLoop::run() {
 
   // main loop
   InputEvent *event;
@@ -187,7 +187,7 @@ void Solarus::main_loop() {
  * The notify_input() method of the current screen
  * is then called.
  */
-void Solarus::notify_input(InputEvent& event) {
+void MainLoop::notify_input(InputEvent& event) {
 
   // handle the common events
   InputEvent::KeyboardKey key = event.get_keyboard_key();
@@ -228,7 +228,7 @@ void Solarus::notify_input(InputEvent& event) {
  *
  * This function is called repeatedly by the main loop.
  */
-void Solarus::update() {
+void MainLoop::update() {
 
   debug_keys->update();
   current_screen->update();
@@ -240,7 +240,7 @@ void Solarus::update() {
  *
  * This function is called repeatedly by the main loop.
  */
-void Solarus::display() {
+void MainLoop::display() {
 
   root_surface->fill_with_color(Color::get_black());
   current_screen->display(*root_surface);

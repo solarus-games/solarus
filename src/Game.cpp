@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Game.h"
-#include "Solarus.h"
+#include "MainLoop.h"
 #include "Map.h"
 #include "Savegame.h"
 #include "KeysEffect.h"
@@ -41,12 +41,12 @@ Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from quest.dat
 
 /**
  * @brief Creates a game.
- * @param solarus the application object
+ * @param main_loop the Solarus main loop object
  * @param savegame the saved data of this game (the specified object will be copied and stored into the game)
  */
-Game::Game(Solarus &solarus, Savegame &savegame):
+Game::Game(MainLoop& main_loop, Savegame& savegame):
 
-  Screen(solarus),
+  Screen(main_loop),
   savegame(savegame),
   pause_key_available(true),
   pause_menu(NULL), 
@@ -67,7 +67,7 @@ Game::Game(Solarus &solarus, Savegame &savegame):
 
   // notify objects
   get_equipment().set_game(*this);
-  solarus.get_debug_keys().set_game(this);
+  main_loop.get_debug_keys().set_game(this);
 
   // initialize members
   controls = new GameControls(*this);
@@ -295,17 +295,17 @@ void Game::update_transitions() {
 
     if (reseting) {
       current_map->unload();
-      solarus.get_debug_keys().set_game(NULL);
+      main_loop.get_debug_keys().set_game(NULL);
 
       IniFile ini("quest.dat", IniFile::READ);
       ini.set_group("info");
       std::string screen_name = ini.get_string_value("first_screen");
-      set_next_screen(new CustomScreen(solarus, screen_name));
+      set_next_screen(new CustomScreen(main_loop, screen_name));
     }
     else if (restarting) {
       current_map->unload();
-      solarus.get_debug_keys().set_game(NULL);
-      set_next_screen(new Game(solarus, savegame));
+      main_loop.get_debug_keys().set_game(NULL);
+      set_next_screen(new Game(main_loop, savegame));
     }
     else if (transition_direction == Transition::OUT) {
 

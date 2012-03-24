@@ -29,7 +29,7 @@ const int LanguageScreen::max_visible_languages = 10;
  * @brief Creates a language screen.
  * @param solarus the Solarus object
  */
-LanguageScreen::LanguageScreen(Solarus& solarus):
+LanguageScreen::LanguageScreen(MainLoop& solarus):
   Screen(solarus),
   transition(NULL),
   intermediate_surface(320, 240),
@@ -195,5 +195,5 @@ void LanguageScreen::start_next_screen() {
   IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("info");
   std::string script_file = ini.get_string_value("first_screen");
-  set_next_screen(new CustomScreen(solarus, script_file));
+  set_next_screen(new CustomScreen(main_loop, script_file));
 }

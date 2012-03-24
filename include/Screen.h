@@ -87,9 +87,9 @@ class Screen {
 
   protected:
 
-    Solarus& solarus;           /**< the main object of the program (it manages the screens) */
+    MainLoop& main_loop;           /**< the main object of the program (it manages the screens) */
 
-    Screen(Solarus& solarus);
+    Screen(MainLoop& main_loop);
     void set_next_screen(Screen* next_screen);
 };
 

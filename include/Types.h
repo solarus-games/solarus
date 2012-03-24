@@ -63,7 +63,7 @@ typedef std::string SpriteAnimationSetId;
 // declaration of all classes to avoid dependencies between the header files
 
 // main classes
-class Solarus;
+class MainLoop;
 class Screen;
 class Configuration;
 class KeysEffect;

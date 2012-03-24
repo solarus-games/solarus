@@ -32,15 +32,15 @@ class DebugKeys {
 
   private:
 
-    Solarus &solarus;      /**< the Solarus object */
-    Game *game;            /**< the current game, or NULL if no game is started */
+    MainLoop& main_loop;   /**< the Solarus main loop object */
+    Game* game;            /**< the current game, or NULL if no game is started */
 
   public:
 
-    DebugKeys(Solarus &solarus);
+    DebugKeys(MainLoop& main_loop);
     ~DebugKeys();
 
-    void set_game(Game *game);
+    void set_game(Game* game);
 
     void key_pressed(InputEvent::KeyboardKey key);
     void key_released(InputEvent::KeyboardKey key);

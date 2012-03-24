@@ -15,16 +15,16 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Screen.h"
-#include "Solarus.h"
+#include "MainLoop.h"
 
 /**
  * @brief Creates a screen.
- * @param solarus the application object (some screens need it)
+ * @param main_loop the application object (some screens need it)
  */
-Screen::Screen(Solarus& solarus):
+Screen::Screen(MainLoop& main_loop):
   screen_finished(false),
   next_screen(NULL),
-  solarus(solarus) {
+  main_loop(main_loop) {
 
 }
 

@@ -20,7 +20,7 @@
   #include "SDL.h" // SDLmain
 #endif
 
-#include "Solarus.h"
+#include "MainLoop.h"
 #include <iostream>
 
 static void print_help(int argc, char** argv);
@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
   }
   else {
     // run the window
-    Solarus(argc, argv).main_loop();
+    MainLoop(argc, argv).run();
   }
 
   return 0;

@@ -16,17 +16,17 @@
  */
 #include "CustomScreen.h"
 #include "Game.h"
-#include "Solarus.h"
+#include "MainLoop.h"
 #include "lowlevel/StringConcat.h"
 
 /**
  * @brief Creates a custom screen.
- * @param solarus the Solarus object
+ * @param main_loop the Solarus main loop object
  * @param screen_name name of the Lua script that controls this screen
  * (no extension), relative to the screens directory
  */
-CustomScreen::CustomScreen(Solarus& solarus, const std::string& screen_name):
-  Screen(solarus),
+CustomScreen::CustomScreen(MainLoop& main_loop, const std::string& screen_name):
+  Screen(main_loop),
   script(StringConcat() << "screens/" << screen_name, this) {
 
   script.event_menu_started();
@@ -46,7 +46,7 @@ CustomScreen::~CustomScreen() {
  */
 void CustomScreen::exit() {
 
-  solarus.set_exiting();
+  main_loop.set_exiting();
 }
 
 /**
@@ -55,7 +55,7 @@ void CustomScreen::exit() {
  */
 void CustomScreen::start_screen(const std::string& screen_name) {
 
-  set_next_screen(new CustomScreen(solarus, screen_name));
+  set_next_screen(new CustomScreen(main_loop, screen_name));
 }
 
 /**
@@ -65,7 +65,7 @@ void CustomScreen::start_screen(const std::string& screen_name) {
 void CustomScreen::start_game(const std::string& savegame_file) {
 
   Savegame savegame(savegame_file);
-  set_next_screen(new Game(solarus, savegame));
+  set_next_screen(new Game(main_loop, savegame));
 }
 
 /**

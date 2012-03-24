@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_SOLARUS_H
-#define SOLARUS_SOLARUS_H
+#ifndef MAIN_LOOP_H
+#define MAIN_LOOP_H
 
 #include "Common.h"
 
@@ -24,7 +24,7 @@
  *
  * It starts the program and handles the succession of its screens.
  */
-class Solarus {
+class MainLoop {
 
   private:
 
@@ -42,10 +42,10 @@ class Solarus {
 
   public:
 
-    Solarus(int argc, char** argv);
-    ~Solarus();
+    MainLoop(int argc, char** argv);
+    ~MainLoop();
 
-    void main_loop();
+    void run();
     void set_exiting();
     bool is_exiting();
 

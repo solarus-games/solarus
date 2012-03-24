@@ -22,7 +22,6 @@
 #include "Transition.h"
 #include "Savegame.h"
 #include "Sprite.h"
-#include "Solarus.h"
 
 /**
  * @brief Creates a selection menu phase where the player selects a file.

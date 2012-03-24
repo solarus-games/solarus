@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses	*/
 #include "DebugKeys.h"
-#include "Solarus.h"
+#include "MainLoop.h"
 #include "Game.h"
 #include "Map.h"
 #include "DialogBox.h"
@@ -25,10 +25,10 @@
 
 /**
  * @brief Constructor.
- * @param solarus the application object
+ * @param main_loop the Solarus main loop object
  */
-DebugKeys::DebugKeys(Solarus &solarus):
-  solarus(solarus), game(NULL) {
+DebugKeys::DebugKeys(MainLoop& main_loop):
+  main_loop(main_loop), game(NULL) {
 }
 
 /**
@@ -42,7 +42,7 @@ DebugKeys::~DebugKeys() {
  * @brief Sets the current game.
  * @param game the current game, or NULL if there is no game
  */
-void DebugKeys::set_game(Game *game) {
+void DebugKeys::set_game(Game* game) {
   this->game = game;
 }
 
@@ -166,13 +166,13 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
   else {
     // no game yet
     if (key == InputEvent::KEY_F1) {
-      solarus.skip_menus("save1.dat");
+      main_loop.skip_menus("save1.dat");
     }
     else if (key == InputEvent::KEY_F2) {
-      solarus.skip_menus("save2.dat");
+      main_loop.skip_menus("save2.dat");
     }
     else if (key == InputEvent::KEY_F3) {
-      solarus.skip_menus("save3.dat");
+      main_loop.skip_menus("save3.dat");
     }
   }
 #endif

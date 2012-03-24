@@ -1,67 +1,298 @@
 /**
 \page lua_api_movement Movements
 
-This module provides functions to create movements and manage their properties.
+If you need to move an enemy of the map, a sprite in a menu
+or anything, you can create a
+movement object and set its properties.
 When you create a movement, you get a value of type \c movement.
 To get and set its properties (like the speed, the angle, etc.),
-the type \c movement has several methods available.
-As detailed below, these methods depend on the kind
-of movement, because all kinds of movements don't share the same properties.
+a movement object has several methods available.
+As detailed below, these methods differ depending on the kind of movement
+because all kinds of movements don't have the same properties.
 
-- \c sol.movement.create(kind):
-Creates a movement. Depending on the kind of movement, several methods are
+<hr>
+
+\section lua_api_movement_functions Functions of sol.movement
+
+<hr>
+
+\subsection lua_api_movement_create sol.movement.create(kind)
+
+Creates a movement.
+
+Depending on the kind of movement, several methods are
 then available to get and set its properties.
-  - \c kind (string): kind of movement to create. Must be one of:
-    - \c "straight": follows a rectilinear trajectory.
-    - \c "random": like "straight" but with random, changing angles.
-    - \c "target": like "straight" but goes into the direction of a
-      fixed point or a moving entity.
-    - \c "path": follows a specified succession of basic moves on a
-      grid of 8*8 pixels.
-    - \c "random_path": like "path" but computes the path randomly.
-    - \c "path_finding": like "path" but computes the shortest path to
-      the hero, avoiding obstacles of the map (only possible in game).
-    - \c "circle": follows a circular trajectory around a center.
-    - \c "pixel": follows a trajectory specified pixel by pixel.
-  - Return value (movement): the movement created
+- \c kind (string): Kind of movement to create. Must be one of:
+  - \c "straight": Follows a rectilinear trajectory.
+  - \c "random": Like "straight" but with random, changing angles.
+  - \c "target": Like "straight" but goes into the direction of a
+    fixed point or a moving entity.
+  - \c "path": Follows a specified succession of basic moves on a
+    grid of 8*8 pixels.
+  - \c "random_path": Like "path" but computes the path randomly.
+  - \c "path_finding": Like "path" but computes the shortest path to
+   the hero, avoiding obstacles of the map (only possible in game).
+  - \c "circle": Follows a circular trajectory around a center.
+  - \c "pixel": Follows a trajectory specified pixel by pixel.
+- Return value (movement): The movement created. See the sections below to
+  know the get and set methods available for your kind of movement.
 
-Straight movement
+<hr>
 
-- \c movement:get_ignore_obstacles():
-  Returns whether this movement ignores obstacles of the map.
-  This method is available for the following movement kinds:
-  \c "straight", "random", "target", "path", "random_path", "path_finding",
-  "circle", "pixel".
-  - Return value (boolean): true if this movement ignores obstacles
+\section lua_api_straight_movement_methods Methods of type straight movement
 
-- \c movement:set_ignore_obstacles(ignore_obstacles):
-  Sets whether an entity controlled by this movement should ignore obstacles of
-  the map. If the movement is not attached to a map entity yet, it is not an
-  error to call this function: your choice will have an effect when the
-  movement gets attached to a map entity.
-  This method is available for the following movement kinds:
-  \c "straight", "random", "target", "path", "random_path", "path_finding",
-  "circle", "pixel".
-  - \c ignore_obstacles (boolean): true to make this movement ignore
-    obstacles of the map
+<hr>
 
-- \c movement:get_speed():
-  Returns the speed of this movement.
-  This method is available for the following movement kinds:
-  \c "straight", "random", "target", "path", "random_path", "path_finding".
-  - Return value (number): the speed in pixels per second
+\subsection lua_api_straight_movement_get_ignore_obstacles straight_movement:get_ignore_obstacles()
 
-- \c movement:set_speed(speed):
-  Sets the speed of this movement.
-  This method is available for the following movement kinds:
-  \c "straight", "random", "target", "path", "random_path", "path_finding".
-  - \c speed (number): the new speed in pixels per second
+Returns whether this movement ignores obstacles of the map.
 
-- \c movement:get_angle():
-  Returns the angle of the speed vector of this movement.
-  This methods is available for the following movement kinds:
-  \c "straight", "random", "target".
-  - Return value (number): the angle of the movement in radians
+If the movement is not attached to a map entity yet, it is not an error to
+call this function: the result will have an effect when the movement gets
+attached to a map entity.
+- Return value (boolean): \c true if this movement ignores obstacles.
+
+<hr>
+
+\subsection lua_api_straight_movement_set_ignore_obstacles straight_movement:set_ignore_obstacles(ignore_obstacles)
+
+Sets whether an entity controlled by this movement should ignore obstacles of
+the map.
+
+If the movement is not attached to a map entity yet, it is not an error to
+call this function: your choice will have an effect when the movement gets
+attached to a map entity.
+- \c ignore_obstacles (boolean): \c true to make this movement ignore
+  obstacles of the map.
+
+<hr>
+
+\subsection lua_api_straight_movement_get_speed straight_movement:get_speed()
+
+Returns the speed of this movement.
+- Return value (number): The speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_straight_movement_set_speed straight_movement:set_speed(speed)
+
+Sets the speed of this movement.
+- \c speed (number): The new speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_straight_movement_get_angle straight_movement:get_angle()
+
+Returns the angle of the trajectory in radians.
+
+East is \c 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
+<tt>3 * math.pi / 2</tt> and any intermediate value is possible.
+
+- Return value (number): The angle in radians. 
+
+\remark If you prefer a value in a 4-direction system, see
+\ref lua_api_straight_movement_get_direction4.
+
+<hr>
+
+\subsection lua_api_straight_movement_set_angle straight_movement:set_angle(angle)
+
+Sets the angle of the trajectory in radians.
+
+East is \c 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
+<tt>3 * math.pi / 2</tt> and any intermediate value is possible.
+Negative values and values above <tt>2 * math.pi</tt> are also accepted.
+- \c angle (number): The new angle in radians.
+
+\remark If you prefer to specify a value in a 4-direction system, see
+\ref lua_api_straight_movement_set_direction4.
+
+<hr>
+
+\subsection lua_api_straight_movement_get_direction4 straight_movement:get_direction4()
+
+Converts the current angle into one of the four main directions.
+
+East is 0, North is 1, West is 2, South is 3.
+As the angle is not necessarily one of the four main directions, it will be
+rounded to the closest one.
+
+If you use this movement to control a sprite or an entity that has a sprite,
+you can use this function to make the sprite face the direction of the
+movement.
+- Return value (number): The closest direction corresponding to the
+  angle of this movement.
+
+\remark Use \ref lua_api_straight_movement_get_angle if you need to get the
+exact angle.
+
+<hr>
+
+\subsection lua_api_straight_movement_set_direction4 straight_movement:set_direction4(direction4)
+
+Sets the angle as one of the four main directions.
+
+East is 0, North is 1, West is 2, South is 3.
+- \c direction4 (number): A integer between 0 and 3.
+
+\remark Use \ref lua_api_straight_movement_set_angle if you don't want to be
+restricted to the four main directions.
+
+<hr>
+
+\subsection lua_api_straight_movement_get_max_distance straight_movement:get_max_distance()
+
+Returns the maximum distance of this movement.
+
+The movement will stop when this distance is reached.
+- Return value (number): The maximum distance in pixels (0 means no limit).
+
+<hr>
+
+\subsection lua_api_straight_movement_set_max_distance straight_movement:set_max_distance(max_distance)
+
+Sets the maximum distance of this movement.
+
+The movement will stop when this distance is reached.
+- \c max_distance (number): The maximum distance in pixels (0 means no limit).
+
+<hr>
+
+\subsection lua_api_straight_movement_is_smooth straight_movement:is_smooth()
+
+Returns whether this movement adjusts its trajectory when an obstacle of the
+map is reached.
+This property has no effect if the movement is not attached to a map entity
+or if the movement ignores obstacles.
+- Return value (boolean): \c true if this movement is smooth
+
+<hr>
+
+\subsection lua_api_straight_movement_set_smooth straight_movement:set_smooth(smooth)
+
+Sets whether this movement should adjust its trajectory when an obstacle of the
+map is reached.
+This property has no effect if the movement is not attached to a map entity
+or if the movement ignores obstacles.
+- \c smooth (boolean): \c true to make this movement smooth
+
+<hr>
+
+\section lua_api_random_movement_methods Methods of type random movement
+
+<hr>
+
+\subsection lua_api_random_movement_get_ignore_obstacles random_movement:get_ignore_obstacles()
+
+Returns whether this movement ignores obstacles of the map.
+
+If the movement is not attached to a map entity yet, it is not an error to
+call this function: the result will have an effect when the movement gets
+attached to a map entity.
+- Return value (boolean): \c true if this movement ignores obstacles.
+
+<hr>
+
+\subsection lua_api_random_movement_set_ignore_obstacles random_movement:set_ignore_obstacles(ignore_obstacles)
+
+Sets whether an entity controlled by this movement should ignore obstacles of
+the map.
+
+If the movement is not attached to a map entity yet, it is not an error to
+call this function: your choice will have an effect when the movement gets
+attached to a map entity.
+- \c ignore_obstacles (boolean): \c true to make this movement ignore
+  obstacles of the map.
+
+<hr>
+
+\subsection lua_api_random_movement_get_speed random_movement:get_speed()
+
+Returns the speed of this movement.
+- Return value (number): The speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_random_movement_set_speed random_movement:set_speed(speed)
+
+Sets the speed of this movement.
+- \c speed (number): The new speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_random_movement_get_angle random_movement:get_angle()
+
+Returns the angle of the current trajectory in radians.
+
+East is \c 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
+<tt>3 * math.pi / 2</tt> and any intermediate value is possible.
+- Return value (number): The angle in radians. 
+
+\remark If you prefer a value in a 4-direction system, see
+\ref lua_api_random_movement_get_direction4.
+
+<hr>
+
+\subsection lua_api_random_movement_get_direction4 random_movement:get_direction4()
+
+Converts the current angle into one of the four main directions.
+
+East is 0, North is 1, West is 2, South is 3.
+As the angle is not necessarily one of the four main directions, it will be
+rounded to the closest one.
+
+If you use this movement to control a sprite or an entity that has a sprite,
+you can use this function to make the sprite face the direction of the
+movement.
+- Return value (number): The closest direction corresponding to the
+  angle of this movement.
+
+Example of use:
+\verbatim
+-- Example of code from an enemy script.
+
+-- This function is called when the enemy should start or restart its movement.
+function self:on_restart()
+  local movement = sol.movement.create("random")
+  self:start_movement(movement)
+end
+
+\remark Use \ref lua_api_straight_movement_get_angle if you need to get the
+exact angle.
+
+-- This function is called when a property of the enemy's movement changes.
+function self:on_movement_changed(movement)
+  -- The angle of the movement has changed: update the sprite accordingly.
+  local direction = movement:get_direction4()
+  self:get_sprite():set_direction(direction)
+end
+\endverbatim
+
+<hr>
+
+\subsection lua_api_random_movement_get_max_distance random_movement:get_max_distance()
+
+Returns the maximum distance of this movement.
+
+The movement will stop when this distance is reached.
+- Return value (number): The maximum distance in pixels (0 means no limit).
+
+<hr>
+
+\subsection lua_api_random_movement_set_max_distance random_movement:set_max_distance(max_distance)
+
+Sets the maximum distance of this movement.
+
+The movement will stop when this distance is reached.
+- \c max_distance (number): The maximum distance in pixels (0 means no limit).
+
+<hr>
+
+\section lua_api_target_movement_methods Methods of type target movement
+
+<hr>
+
+
 
 TODO: document the following methods for movements:
 

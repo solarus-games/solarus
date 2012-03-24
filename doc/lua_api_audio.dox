@@ -1,25 +1,47 @@
 /**
 \page lua_api_audio Audio
 
-This module provides functions to play musics and sound effects.
+You can play musics and sound effects through \c sol.audio.
 
-- \c sol.audio.play_sound(sound_id):
-Plays a sound effect. The sound cannot be interrupted later.
+<hr>
+
+\section lua_api_audio_functions Functions of sol.audio
+
+<hr>
+
+\subsection lua_api_audio_play_sound sol.audio.play_sound(sound_id)
+
+Plays a sound effect.
+
+The sound cannot be interrupted later.
 Several sounds can be played in parallel.
-  - \c sound_id: name of the sound file to play, relative to the
-    \c sounds directory and without extension (.ogg is implicit)
+- \c sound_id (string): Name of the sound file to play, relative to the
+  \c sounds directory and without extension (<tt>.ogg</tt> is implicit).
 
-- \c sol.audio.play_music(music_id):
-Plays a music. Only one music can be played at a time.
+<hr>
+
+\subsection lua_api_audio_play_music sol.audio.play_music(music_id)
+
+Plays a music.
+
+Only one music can be played at a time.
 If a music was already playing, it will be stopped and replaced by the new
 one.
-  - \c music_id: name of the music file to play, relative to the
-    \c musics directory and without extension (.ogg, .it and .spc
-    will be tried), or \c "none" or \c "same"
+- \c music_id (string): Name of the music file to play, relative to the
+  \c musics directory and without extension (\c <tt>.ogg</tt>, \c <tt>.it</tt>
+  and \c <tt>.spc</tt> will be tried in this order). You can also specify the
+  special value \c "none" to stop playing any music, or \c "same" to let the
+  music unchanged.
 
-- \c sol.audio.stop_music():
+<hr>
+
+\subsection lua_api_audio_stop_music sol.audio.stop_music()
+
 Stops playing music.
-Equivalent to \c sol.main.play_music("none").
+
+This is equivalent to <tt>sol.audio.play_music("none")</tt>.
+
+<hr>
 
 */
 

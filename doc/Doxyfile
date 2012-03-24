@@ -618,6 +618,7 @@ FILE_PATTERNS          = *.c \
                          *.php \
                          *.php3 \
                          *.inc \
+			 *.lua \
                          *.m \
                          *.mm \
                          *.dox \
@@ -647,7 +648,7 @@ RECURSIVE              = YES
 # excluded from the INPUT source files. This way you can easily exclude a
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE                = ../include/simpleini ../include/snes_spc ../src/snes_spc
+EXCLUDE                = ../include/simpleini ../include/snes_spc ../src/snes_spc ../include/lowlevel/osx src/lowlevel/osx
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or
 # directories that are symbolic links (a Unix filesystem feature) are excluded
@@ -717,7 +718,7 @@ INPUT_FILTER           =
 # info on how filters are used. If FILTER_PATTERNS is empty, INPUT_FILTER
 # is applied to all files.
 
-FILTER_PATTERNS        =
+FILTER_PATTERNS        = *.lua=lua2dox
 
 # If the FILTER_SOURCE_FILES tag is set to YES, the input filter (if set using
 # INPUT_FILTER) will be used to filter the input files when producing source

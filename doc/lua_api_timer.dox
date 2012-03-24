@@ -1,28 +1,66 @@
 /**
 \page lua_api_timer Timers
 
-This module provides a datatype timer that allows to execute a function
-later, with a specified delay.
+Timers allow you to call a function in the future with a specified delay.
 
-- \c sol.timer.start(delay, with_sound, callback):
-Starts a timer which will calls a function once finished.
+<hr>
+
+\section lua_api_timer_functions Functions of sol.timer
+
+<hr>
+
+\subsection lua_api_timer_start sol.timer.start(delay, with_sound, callback)
+
+Starts a timer to call a function once finished.
+
 If the delay is set to zero, the function is immediately called.
-  - \c delay (number): delay before calling the function in milliseconds
-  - \c with_sound (boolean, optional): true to play a clock sound
-    (default is false)
-  - \c callback (function): a function to be called when the timer
-    finishes
-  - Return value (timer): the timer created
+- \c delay (number): Delay before calling the function in milliseconds.
+- \c with_sound (boolean, optional): True to play a clock sound
+  repeatedly (default is \c false).
+- \c callback (function): The function to be called when the timer finishes.
+- Return value (timer): the timer created.
 
-- \c timer:stop():
-Cancels a timer. If the timer was already finished, nothing happens.
+Examples of use:
 
-- \c sol.timer.stop_all(timers):
+\verbatim
+-- Play sound "secret" in one second.
+sol.timer.start(1000, play_secret_sound)
+
+function play_secret_sound()
+  sol.audio.play_sound("secret")
+end
+\endverbatim
+
+\verbatim
+-- Equivalent code using an anonymous function.
+sol.timer.start(1000, function()
+  sol.audio.play_sound("secret")
+end)
+\endverbatim
+
+<hr>
+
+\subsection lua_api_timer_stop_all sol.timer.stop_all(timers)
+
 Stops a list of timers.
-  - \c timers (table): a table of timers to stop
-    (the type of keys does not matter).
-    If some timers of the table are already finished, they are ignored.
-    The table is then cleared.
+- \c timers (table): A table of timers to stop
+  (the type of keys does not matter).
+  If some timers of the table are already finished, they are ignored.
+  The table is then cleared.
+
+<hr>
+
+\section lua_api_timer_methods Methods of type timer
+
+<hr>
+
+\subsection lua_api_timer_stop timer:stop()
+
+Cancels this timer.
+
+If the timer was already finished, nothing happens.
+
+<hr>
 
 */
 

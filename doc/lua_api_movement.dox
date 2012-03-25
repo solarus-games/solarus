@@ -4,11 +4,30 @@
 If you need to move an enemy of the map, a sprite in a menu
 or anything, you can create a
 movement object and set its properties.
-When you create a movement, you get a value of type \c movement.
-To get and set its properties (like the speed, the angle, etc.),
+There are several types of movements. They differ by the kind of trajectory
+they can make.
+When you create a movement, you obtain a value of the movement type you chose.
+Then, to get and set its properties (like the speed, the angle, etc.),
 a movement object has several methods available.
-As detailed below, these methods differ depending on the kind of movement
-because all kinds of movements don't have the same properties.
+As detailed below, the methods available differ depending on the movement type
+because all movement types don't have the same properties.
+
+- \ref lua_api_movement_functions "Functions of sol.movement"
+- \ref lua_api_movement_methods "Movement methods"
+- \ref lua_api_straight_movement_methods "Straight movement methods"
+- \ref lua_api_random_movement_methods "Random movement methods"
+- \ref lua_api_target_movement_methods "Target movement methods"
+- \ref lua_api_path_movement_methods "Path movement methods"
+- \ref lua_api_random_path_movement_methods "Random path movement methods"
+- \ref lua_api_path_finding_movement_methods "Path finding movement methods"
+- \ref lua_api_circle_movement_methods "Circle movement methods"
+- \ref lua_api_pixel_movement_methods "Pixel movement methods"
+
+Movements can be applied in-game to map entities, but also
+outside a game, typically in a menu to move a sprite or an image.
+However, some properties of movements (like \c set_ignore_obstacles())
+take effect only when the movement is applied to a map entity
+because they refer to map-specific notions.
 
 <hr>
 
@@ -16,34 +35,38 @@ because all kinds of movements don't have the same properties.
 
 <hr>
 
-\subsection lua_api_movement_create sol.movement.create(kind)
+\subsection lua_api_movement_create sol.movement.create(movement_type)
 
 Creates a movement.
 
-Depending on the kind of movement, several methods are
+Depending on the movement type, several methods are
 then available to get and set its properties.
-- \c kind (string): Kind of movement to create. Must be one of:
+- \c movement_type (string): Type of movement to create. Must be one of:
   - \c "straight": Follows a rectilinear trajectory.
   - \c "random": Like "straight" but with random, changing angles.
   - \c "target": Like "straight" but goes into the direction of a
     fixed point or a moving entity.
-  - \c "path": Follows a specified succession of basic moves on a
-    grid of 8*8 pixels.
+  - \c "path": Follows a specified succession of basic moves on an
+    8*8 pixels grid.
   - \c "random_path": Like "path" but computes the path randomly.
   - \c "path_finding": Like "path" but computes the shortest path to
    the hero, avoiding obstacles of the map (only possible in game).
   - \c "circle": Follows a circular trajectory around a center.
   - \c "pixel": Follows a trajectory specified pixel by pixel.
 - Return value (movement): The movement created. See the sections below to
-  know the get and set methods available for your kind of movement.
+  know the get and set methods available for your movement type.
 
 <hr>
 
-\section lua_api_straight_movement_methods Methods of type straight movement
+\section lua_api_movement_methods Movement methods
 
 <hr>
 
-\subsection lua_api_straight_movement_get_ignore_obstacles straight_movement:get_ignore_obstacles()
+These methods exist in all movement types.
+
+<hr>
+
+\subsection lua_api_movement_get_ignore_obstacles movement:get_ignore_obstacles()
 
 Returns whether this movement ignores obstacles of the map.
 
@@ -54,9 +77,9 @@ attached to a map entity.
 
 <hr>
 
-\subsection lua_api_straight_movement_set_ignore_obstacles straight_movement:set_ignore_obstacles(ignore_obstacles)
+\subsection lua_api_movement_set_ignore_obstacles movement:set_ignore_obstacles(ignore_obstacles)
 
-Sets whether an entity controlled by this movement should ignore obstacles of
+Sets whether a map entity controlled by this movement should ignore obstacles of
 the map.
 
 If the movement is not attached to a map entity yet, it is not an error to
@@ -64,6 +87,17 @@ call this function: your choice will have an effect when the movement gets
 attached to a map entity.
 - \c ignore_obstacles (boolean): \c true to make this movement ignore
   obstacles of the map.
+
+<hr>
+
+\section lua_api_straight_movement_methods Straight movement methods
+
+<hr>
+
+These methods are specific to the straight movement type.
+
+A straight movement follows a rectilinear trajectory. You can define the
+trajectory as an angle and a speed.
 
 <hr>
 
@@ -117,7 +151,7 @@ East is 0, North is 1, West is 2, South is 3.
 As the angle is not necessarily one of the four main directions, it will be
 rounded to the closest one.
 
-If you use this movement to control a sprite or an entity that has a sprite,
+If you use this movement to control a sprite or a map entity that has a sprite,
 you can use this function to make the sprite face the direction of the
 movement.
 - Return value (number): The closest direction corresponding to the
@@ -178,7 +212,15 @@ or if the movement ignores obstacles.
 
 <hr>
 
-\section lua_api_random_movement_methods Methods of type random movement
+\section lua_api_random_movement_methods Random movement methods
+
+<hr>
+
+These methods are specific to the random movement type.
+
+This type of movement is a rectilinear movement whose trajectory changes
+randomly over time. It can be seen as a particular case of the straight
+movement type, where the angle is automatically changed after random delays.
 
 <hr>
 
@@ -195,7 +237,7 @@ attached to a map entity.
 
 \subsection lua_api_random_movement_set_ignore_obstacles random_movement:set_ignore_obstacles(ignore_obstacles)
 
-Sets whether an entity controlled by this movement should ignore obstacles of
+Sets whether a map entity controlled by this movement should ignore obstacles of
 the map.
 
 If the movement is not attached to a map entity yet, it is not an error to
@@ -241,11 +283,14 @@ East is 0, North is 1, West is 2, South is 3.
 As the angle is not necessarily one of the four main directions, it will be
 rounded to the closest one.
 
-If you use this movement to control a sprite or an entity that has a sprite,
+If you use this movement to control a sprite or a map entity that has a sprite,
 you can use this function to make the sprite face the direction of the
 movement.
 - Return value (number): The closest direction corresponding to the
   angle of this movement.
+
+\remark Use \ref lua_api_straight_movement_get_angle if you need to get the
+exact angle.
 
 Example of use:
 \verbatim
@@ -256,9 +301,6 @@ function self:on_restart()
   local movement = sol.movement.create("random")
   self:start_movement(movement)
 end
-
-\remark Use \ref lua_api_straight_movement_get_angle if you need to get the
-exact angle.
 
 -- This function is called when a property of the enemy's movement changes.
 function self:on_movement_changed(movement)
@@ -288,7 +330,269 @@ The movement will stop when this distance is reached.
 
 <hr>
 
-\section lua_api_target_movement_methods Methods of type target movement
+\section lua_api_target_movement_methods Target movement methods
+
+<hr>
+
+These methods are specific to the target movement type.
+
+A target movement goes towards a target point.
+The target point can be a fixed point of an entity of the map.
+If the target is a moving map entity, the movement updates its angle to
+continue to go towards the entity.
+By default, the target is the hero if there is a current map.
+
+This type of movement can be seen as a particular case of the
+straight movement type, where the angle is set automatically to go towards
+the target.
+
+<hr>
+
+\subsection lua_api_target_movement_set_target target_movement:set_target(x, y), target_movement:set_target(entity)
+
+Sets the target of this movement as a fixed point of a map entity.
+
+To target a fixed point:
+- \c x (integer): X coordinate of the target.
+- \c y (integer): Y coordinate of the target.
+
+To target a map entity:
+- \c entity (entity): The entity to target.
+
+<hr>
+
+\subsection lua_api_target_movement_get_speed target_movement:get_speed()
+
+Returns the speed of this movement.
+- Return value (number): The speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_target_movement_set_speed target_movement:set_speed(speed)
+
+Sets the speed of this movement.
+- \c speed (number): The new speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_target_movement_get_angle target_movement:get_angle()
+
+Returns the angle of the trajectory in radians.
+
+East is \c 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
+<tt>3 * math.pi / 2</tt> and any intermediate value is possible.
+
+- Return value (number): The angle in radians. 
+
+\remark If you prefer a value in a 4-direction system, see
+\ref lua_api_target_movement_get_direction4.
+
+<hr>
+
+\subsection lua_api_target_movement_get_direction4 target_movement:get_direction4()
+
+Converts the current angle into one of the four main directions.
+
+East is 0, North is 1, West is 2, South is 3.
+As the angle is not necessarily one of the four main directions, it will be
+rounded to the closest one.
+
+If you use this movement to control a sprite or a map entity that has a sprite,
+you can use this function to make the sprite face the direction of the
+movement.
+- Return value (number): The closest direction corresponding to the
+  angle of this movement.
+
+\remark Use \ref lua_api_target_movement_get_angle if you need to get the
+exact angle.
+
+<hr>
+
+\subsection lua_api_target_movement_is_smooth target_movement:is_smooth()
+
+Returns whether this movement adjusts its trajectory when an obstacle of the
+map is reached.
+This property has no effect if the movement is not attached to a map entity
+or if the movement ignores obstacles.
+- Return value (boolean): \c true if this movement is smooth
+
+<hr>
+
+\subsection lua_api_target_movement_set_smooth target_movement:set_smooth(smooth)
+
+Sets whether this movement should adjust its trajectory when an obstacle of the
+map is reached.
+This property has no effect if the movement is not attached to a map entity
+or if the movement ignores obstacles.
+- \c smooth (boolean): \c true to make this movement smooth
+
+<hr>
+
+\section lua_api_path_movement_methods Path movement methods
+
+<hr>
+
+These methods are specific to the path movement type.
+
+A path movement follows a specified path on an 8*8 pixels grid, in an
+8-direction system.
+A path is a succession of steps of 8 pixels in one of the 8 main directions.
+You can define each step of the path and make it repeated if you want.
+
+<hr>
+
+\subsection lua_api_path_movement_get_speed path_movement:get_speed()
+
+Returns the speed of this movement.
+- Return value (number): The speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_path_movement_set_speed path_movement:set_speed(speed)
+
+Sets the speed of this movement.
+- \c speed (number): The new speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_path_movement_get_path path_movement:get_path()
+
+Returns the path of this movement.
+- Return value (table): The path as an array of integers. Each value
+  is a number between 0 and 7 that represents a step (move of 8 pixels)
+  in the path. 0 is East, 1 is North-East, etc.
+
+<hr>
+
+\subsection lua_api_path_movement_set_path path_movement:set_path(path)
+
+Sets the path of this movement.
+- \c path (table): The path as an array of integers. Each value
+  is a number between 0 and 7 that represents a step (move of 8 pixels)
+  in the path. 0 is East, 1 is North-East, etc.
+
+<hr>
+
+\subsection lua_api_path_movement_get_loop path_movement:get_loop()
+
+Returns whether this movement repeats itself once the end of the path is
+reached.
+- Return value (boolean): \c true if the path repeats itself.
+
+<hr>
+
+\subsection lua_api_path_movement_set_loop path_movement:set_loop(loop)
+
+Sets whether this movement repeats itself once the end of the path is
+reached.
+- \c loop (boolean): \c true to make the path repeat itself.
+
+<hr>
+
+\subsection lua_api_path_movement_get_snap_to_grid path_movement:get_snap_to_grid()
+
+Returns whether this movement automatically snaps to the map grid the map
+entity that it controls.
+
+The map grid is composed of squares of 8*8 pixels. All tiles are aligned to
+the grid.
+This property has no effect if there is no current map of if this movement is
+not attached to a map entity.
+- Return value (boolean): \c true if this movement automatically snaps its map
+  entity to the map grid.
+
+<hr>
+
+\subsection lua_api_path_movement_set_snap_to_grid path_movement:set_snap_to_grid(snap)
+
+Sets whether this movement should automatically snap to the map grid the map
+entity that it controls.
+
+The map grid is composed of squares of 8*8 pixels. All tiles are aligned to
+the grid.
+This property has no effect if there is no current map of if this movement is
+not attached to a map entity.
+- \c snap (boolean): \c true to make this movement automatically snap its map
+  entity to the map grid.
+
+<hr>
+
+\subsection lua_api_path_movement_get_direction4 path_movement:get_direction4()
+
+Returns the direction of the current step of the path.
+
+East is 0, North is 1, West is 2, South is 3.
+If you use this movement to control a sprite or a map entity that has a sprite,
+you can use this function to make the sprite face the direction of the
+movement.
+- Return value (number): The direction of the current step (0 to 3).
+
+<hr>
+
+\section lua_api_random_path_movement_methods Random path movement methods
+
+<hr>
+
+These methods are specific to the random path movement type.
+
+The random path movement is a particular case of path movement,
+where the path is chosen automatically.
+The resulting movement is composed of repeated random steps 
+in the four main directions only and with a length that is a multiple of
+8 pixels.
+
+\remark This movement is a typical random walk movement.
+You should probably use it for NPCs.
+
+<hr>
+
+\subsection lua_api_random_path_movement_get_speed random_path_movement:get_speed()
+
+Returns the speed of this movement.
+- Return value (number): The speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_random_path_movement_set_speed random_path_movement:set_speed(speed)
+
+Sets the speed of this movement.
+- \c speed (number): The new speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_random_path_movement_get_direction4 random_path_movement:get_direction4()
+
+Returns the direction of the current step of the path.
+
+East is 0, North is 1, West is 2, South is 3.
+If you use this movement to control a sprite or a map entity that has a sprite,
+you can use this function to make the sprite face the direction of the
+movement.
+- Return value (number): The direction of the current step (0 to 3).
+
+<hr>
+
+\section lua_api_path_finding_movement_methods Path finding movement methods
+
+<hr>
+
+These methods are specific to the path finding movement type.
+
+<hr>
+
+\section lua_api_circle_movement_methods Circle movement methods
+
+<hr>
+
+These methods are specific to the circle movement type.
+
+<hr>
+
+\section lua_api_pixel_movement_methods Pixel movement methods
+
+<hr>
+
+These methods are specific to the pixel movement type.
 
 <hr>
 
@@ -298,10 +602,10 @@ TODO: document the following methods for movements:
 
 straight: ignore_obstacles speed angle max_distance smooth displayed_direction (ro)
 random: ignore_obstacles speed angle (ro) max_distance displayed_direction (ro)
-target: ignore_obstacles speed angle (ro) smooth displayed_direction (ro)
-path: speed ignore_obstacles speed path loop snap_to_grid
+target: ignore_obstacles target speed angle (ro) smooth displayed_direction (ro)
+path: ignore_obstacles speed path loop snap_to_grid displayed_direction (ro)
 random_path: ignore_obstacles speed displayed_direction (ro)
-path_finding: ignore_obstacles speed displayed_direction (ro)
+path_finding: ignore_obstacles target speed angle (ro) displayed_direction (ro)
 circle: ignore_obstacles center center_dxy radius radius_speed clockwise initial_angle angle_speed max_rotations duration loop_delay
 pixel: ignore_obstacles trajectory delay loop
 

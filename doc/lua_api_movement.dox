@@ -119,7 +119,7 @@ Sets the speed of this movement.
 
 Returns the angle of the trajectory in radians.
 
-East is \c 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
+East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 <tt>3 * math.pi / 2</tt> and any intermediate value is possible.
 
 - Return value (number): The angle in radians. 
@@ -133,9 +133,9 @@ East is \c 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 
 Sets the angle of the trajectory in radians.
 
-East is \c 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
+East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 <tt>3 * math.pi / 2</tt> and any intermediate value is possible.
-Negative values and values above <tt>2 * math.pi</tt> are also accepted.
+Negative values and values greater to <tt>2 * math.pi</tt> are also accepted.
 - \c angle (number): The new angle in radians.
 
 \remark If you prefer to specify a value in a 4-direction system, see
@@ -151,7 +151,7 @@ East is 0, North is 1, West is 2, South is 3.
 As the angle is not necessarily one of the four main directions, it will be
 rounded to the closest one.
 
-If you use this movement to control a sprite or a map entity that has a sprite,
+If you use this movement to control a sprite (or a map entity that has a sprite),
 you can use this function to make the sprite face the direction of the
 movement.
 - Return value (number): The closest direction corresponding to the
@@ -266,7 +266,7 @@ Sets the speed of this movement.
 
 Returns the angle of the current trajectory in radians.
 
-East is \c 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
+East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 <tt>3 * math.pi / 2</tt> and any intermediate value is possible.
 - Return value (number): The angle in radians. 
 
@@ -387,7 +387,7 @@ Sets the speed of this movement.
 
 Returns the angle of the trajectory in radians.
 
-East is \c 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
+East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 <tt>3 * math.pi / 2</tt> and any intermediate value is possible.
 
 - Return value (number): The angle in radians. 
@@ -449,20 +449,6 @@ You can define each step of the path and make it repeated if you want.
 
 <hr>
 
-\subsection lua_api_path_movement_get_speed path_movement:get_speed()
-
-Returns the speed of this movement.
-- Return value (number): The speed in pixels per second.
-
-<hr>
-
-\subsection lua_api_path_movement_set_speed path_movement:set_speed(speed)
-
-Sets the speed of this movement.
-- \c speed (number): The new speed in pixels per second.
-
-<hr>
-
 \subsection lua_api_path_movement_get_path path_movement:get_path()
 
 Returns the path of this movement.
@@ -478,6 +464,35 @@ Sets the path of this movement.
 - \c path (table): The path as an array of integers. Each value
   is a number between 0 and 7 that represents a step (move of 8 pixels)
   in the path. 0 is East, 1 is North-East, etc.
+
+Example of use:
+\verbatim
+-- Example of code from a map script.
+-- Assume that there is an NPC called "scared_cat" on this map.
+function scared_cat:on_interaction()
+  -- The hero is talking to me: run away!
+  sol.audio.play_sound("meow")
+  local movement = sol.movement.create("path")
+  -- This path is arbitrary, it's just an example (North and then West).
+  movement:set_path{2,2,2,2,2,2,4,4,4,4}
+  movement:set_speed(80)
+  self:start_movement(movement)
+end
+\endverbatim
+
+<hr>
+
+\subsection lua_api_path_movement_get_speed path_movement:get_speed()
+
+Returns the speed of this movement.
+- Return value (number): The speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_path_movement_set_speed path_movement:set_speed(speed)
+
+Sets the speed of this movement.
+- \c speed (number): The new speed in pixels per second.
 
 <hr>
 
@@ -550,7 +565,17 @@ in the four main directions only and with a length that is a multiple of
 8 pixels.
 
 \remark This movement is a typical random walk movement.
-You should probably use it for NPCs.
+You will probably use it for NPCs.
+
+Example of use:
+\verbatim
+-- Example of code from a map script.
+-- Assume that there is an NPC called "bob" on this map.
+function sol.map:on_started()
+  -- The map has just started: make bob walk.
+  bob:start_movement(sol.movement.create("random"))
+end
+\endverbatim
 
 <hr>
 
@@ -640,6 +665,188 @@ movement.
 
 These methods are specific to the circle movement type.
 
+A circle movement makes a circular trajectory around a center point or
+a map entity.
+
+<hr>
+
+\subsection lua_api_circle_movement_set_center circle_movement:set_center(x, y), circle_movement:set_center(entity, dx, dy)
+
+Sets the center of this movement as a fixed point of a map entity.
+
+To make circles around a fixed point:
+- \c x (integer): X coordinate of the center.
+- \c y (integer): Y coordinate of the center.
+
+To make circles around a map entity:
+- \c entity (entity): The center entity.
+- \c dx (number, optional): X offset to add to the center entity's coordinates
+  (default 0).
+- \c dy (number, optional): Y offset to add to the center entity's coordinates
+  (default 0).
+
+<hr>
+
+\subsection lua_api_circle_movement_get_radius circle_movement:get_radius()
+
+Returns the radius of circles to make.
+
+If \ref lua_api_circle_movement_get_radius_speed is not 0,
+radius changes are made gradually.
+- Return value (number): The wanted radius in pixels.
+
+<hr>
+
+\subsection lua_api_circle_movement_set_radius circle_movement:set_radius(radius)
+
+Sets the radius of circles to make.
+
+If \ref lua_api_circle_movement_get_radius_speed is not 0,
+the radius will be updated gradually.
+- \c radius (number): The new wanted radius in pixels.
+
+<hr>
+
+\subsection lua_api_circle_movement_get_radius_speed circle_movement:get_radius_speed()
+
+Returns the speed of radius changes.
+- Return value (number): The speed in pixels per second, or 0 if radius
+  changes are immediate.
+
+<hr>
+
+\subsection lua_api_circle_movement_set_radius_speed circle_movement:set_radius_speed(radius_speed)
+
+Sets the radius to be updated immediately of gradually (at the specified
+speed) towards its wanted value.
+- \c radius_speed (number): The speed of radius changes in pixels per
+  second, or 0 to make radius changes immediate.
+
+<hr>
+
+\subsection lua_api_circle_movement_is_clockwise circle_movement:is_clockwise()
+
+Returns whether circles are made clockwise or counter-clockwise.
+- Return value (boolean): \c true if circles are clockwise.
+
+<hr>
+
+\subsection lua_api_circle_movement_set_clockwise circle_movement:set_clockwise(clockwise)
+
+Sets whether circles are made clockwise or counter-clockwise.
+- \c clockwise (boolean): \c true to make circles clockwise.
+
+<hr>
+
+\subsection lua_api_circle_movement_get_initial_angle circle_movement:get_initial_angle()
+
+Returns the angle from where the first circle starts.
+- Return value (number): The initial angle in radians.
+
+<hr>
+
+\subsection lua_api_circle_movement_set_initial_angle circle_movement:set_initial_angle(initial_angle)
+
+Sets the angle from where the first circle should start.
+- \c initial_angle (number): The initial angle in radians.
+
+<hr>
+
+\subsection lua_api_circle_movement_get_angle_speed circle_movement:get_angle_speed()
+
+Returns the speed of the angle variation.
+- Return value (number): The angle speed in radians per second.
+
+<hr>
+
+\subsection lua_api_circle_movement_set_angle_speed circle_movement:set_angle_speed(angle_speed)
+
+Sets the speed of the angle variation.
+- \c angle_speed (number): The new angle speed in radians per second.
+
+<hr>
+
+\subsection lua_api_circle_movement_get_max_rotations circle_movement:get_max_rotations()
+
+Returns the maximum number of rotations of this movement.
+
+When this number of rotations is reached, the movement stops.
+- Return value (number): The maximum number of rotations to make (0
+  means infinite).
+
+<hr>
+
+\subsection lua_api_circle_movement_set_max_rotations circle_movement:set_max_rotations(max_rotations)
+
+Sets the maximum number of rotations of this movement.
+
+When this number of rotations is reached, the movement stops.
+- \c max_rotations (number): The maximum number of rotations to make (0
+  means infinite).
+
+\remark The movement is stopped by automatically setting its radius to 0.
+Therefore, if the radius is set to change gradually (see
+\ref lua_api_circle_movement_get_radius_speed),
+the movement will continue for a while until the radius reaches 0.
+
+\remark When the movement has stopped, it will then restart if it was set
+to loop (see \ref lua_api_circle_movement_get_loop_delay),
+and again, possibly gradually.
+
+<hr>
+
+\subsection lua_api_circle_movement_get_duration circle_movement:get_duration()
+
+Returns the maximum duration of this movement.
+
+When this delay is reached, the movement stops.
+- Return value (number): The duration of the movement in milliseconds
+  (0 means infinite).
+
+<hr>
+
+\subsection lua_api_circle_movement_set_duration circle_movement:set_duration(duration)
+
+Sets the maximum duration of this movement.
+
+When this delay is reached, the movement stops.
+- \c duration (number): The duration of the movement in milliseconds
+  (0 means infinite).
+
+\remark The movement is stopped by automatically setting its radius to 0.
+Therefore, if the radius is set to change gradually (see
+\ref lua_api_circle_movement_get_radius_speed),
+the movement will continue for a while until the radius reaches 0.
+
+\remark When the movement has stopped, it will then restart if it was set
+to loop (see \ref lua_api_circle_movement_set_loop_delay),
+and again, possibly gradually.
+
+<hr>
+
+\subsection lua_api_circle_movement_get_loop_delay circle_movement:get_loop_delay()
+
+Returns the delay after which this movement restarts.
+- Return value (number): The restart delay in milliseconds (0 means no
+  restart).
+
+<hr>
+
+\subsection lua_api_circle_movement_set_loop_delay circle_movement:set_loop_delay(loop_delay)
+
+Sets the delay after which this movement restarts.
+- \c loop_delay (number): The restart delay in milliseconds (0 means no
+  restart).
+
+\remark This delay is applied if the movement get stopped by reaching the
+\ref lua_api_circle_movement_get_max_rotations "maximum number of rotations"
+or the 
+\ref lua_api_circle_movement_get_duration "maximum duration".
+
+\remark When the movement restarts, the radius starts from 0 and gets back
+to its previous value, possibly gradually
+(see \ref lua_api_circle_movement_set_radius_speed).
+
 <hr>
 
 \section lua_api_pixel_movement_methods Pixel movement methods
@@ -648,91 +855,56 @@ These methods are specific to the circle movement type.
 
 These methods are specific to the pixel movement type.
 
+A pixel movement makes a succession of translations,
+where each translation is a pixel-precise specified move.
+
 <hr>
 
+\subsection lua_api_pixel_movement_get_trajectory pixel_movement:get_trajectory()
 
+Returns the trajectory of this movement.
+- Return value (table): An array of all successive translations.
+  Each translation is itself an array of two integers (x and y).
 
-TODO: document the following methods for movements:
+<hr>
 
-straight: ignore_obstacles speed angle max_distance smooth displayed_direction (ro)
-random: ignore_obstacles speed angle (ro) max_distance displayed_direction (ro)
-target: ignore_obstacles target speed angle (ro) smooth displayed_direction (ro)
-path: ignore_obstacles speed path loop snap_to_grid displayed_direction (ro)
-random_path: ignore_obstacles speed displayed_direction (ro)
-path_finding: ignore_obstacles target speed angle (ro) displayed_direction (ro)
-circle: ignore_obstacles center center_dxy radius radius_speed clockwise initial_angle angle_speed max_rotations duration loop_delay
-pixel: ignore_obstacles trajectory delay loop
+\subsection lua_api_pixel_movement_set_trajectory pixel_movement:set_trajectory(trajectory)
 
-TODO: remove the deprecated movement API:
+Sets the trajectory of this movement.
 
-- \c sol.movement.pixel_movement_create(trajectory, delay):
-Creates a movement that follows a pixel precise trajectory.
-  - \c trajectory (table): the whole trajectory, as an array of integers:
-    {dx1 dy1 dx2 dy2 dx3 dy3 ...}
-  - \c delay (number): delay in milliseconds between two translations
-  - Return value (movement): the movement created
+Any previous trajectory is removed and the movement starts at the beginning
+of the new trajectory.
+- trajectory (table): An array of all successive translations to make.
+  Each translation should be an array of two integers (x and y).
 
-- \c sol.movement.random_movement_create(speed):
-Creates a movement that goes in random directions.
-  - \c speed (number): speed in pixels per second
-  - Return value (movement): the movement created
+Example of use:
+\verbatim
+-- Example of code from script of the equipment item "rupee".
 
-- \c sol.movement.path_movement_create(path, speed):
-Creates a movement composed of a specified sucession of movements of 8 pixels
-  - \c path (string): the succession of basic moves (each character
-    represents a direction between '0' and '7')
-  - \c speed (number): speed in pixels per second
-  - Return value (movement): the movement created
+function self:on_pickable_appeared(pickable)
+  -- A rupee has just appeared on the map: make it bounce on the floor.
+  -- (Here we overwrite the default movement of a pickable that appears.)
+  local movement = sol.movement.create("pixel")
+  movement:set_trajectory{{0,-1}, {0,-1}, {0,1}, {0,-1}, {0,1}}
+  pickable:start_movement(movement)
+end
+\endverbatim
 
-- \c sol.movement.random_path_movement_create(speed):
-Creates a movement composed of random successions of movements of 8 pixels
-  - \c speed (number): speed in pixels per second
-  - Return value (movement): the movement created
+\remark Pixel movements are not often needed. Most of the time, you don't
+need to specify pixel-by-pixel trajectories. Higher-level types of movements
+like \ref lua_api_path_movement_methods "path movement" or
+\ref lua_api_target_movement_methods "target movement"
+usually provide what you want.
+For pickables, there is actually already a default built-in movement that
+makes them bounce onto the floor.
 
-- \c sol.movement.path_finding_movement_create(speed):
-Creates a movement that calculates a path to the hero.
-  - \c speed (number): speed in pixels per second
-  - Return value (movement): the movement created
+<hr>
 
-- \c sol.movement.target_movement_create(speed, target_x, target_y):
-Creates a movement that goes towards the hero or a fixed point.
-If \c target_x and \c target_y are unspecified, the movement tracks
-the hero and updates itself when the hero moves.
-  - \c speed (number): speed in pixels per second
-  - \c target_x (number, optional): x cordinate of a fixed point to target
-  - \c target_y (number, optional): y cordinate of a fixed point to target
-  - Return value (movement): the movement created
+\todo document other methods of pixel movement
 
-- \c sol.movement.straight_movement_create(speed, angle):
-Creates a rectilinear movement.
-  - \c speed (number): speed in pixels per second
-  - \c angle (number): angle in radians
-  - Return value (movement): the movement created
+<hr>
 
-- \c sol.movement.circle_movement_create(center_type, center_name, radius):
-Creates a circular movement around a map entity.
-TODO: change the prototype to make it easier to use and allow to specify a fixed point
-  - \c center_type (number): type of the center entity (see the
-    EntityType enum)
-  - \c center_name (string): name of the center entity
-  - \c radius (number): radius of circles to make in pixels
-  - Return value (movement): the movement created
-
-- \c sol.movement.jump_movement_create(direction, length):
-Creates a jump movement.
-  - \c direction (number): direction of the jump (0 to 7)
-  - \c length (number): length of the jump in pixels
-  - Return value (movement): the movement created
-
-- \c movement:get_property(key):
-Returns a string property from this movement (warning: it always returns a string!).
-  - \c key (string): name of the property to get
-  - Return value (string): the value of this property
-
-- \c movement:set_property(key, value):
-Sets a property of this movement.
-  - \c key (string): name of the property to set
-  - \c value (string, number or boolean): the value to set
+\todo document jump movement
 
 */
 

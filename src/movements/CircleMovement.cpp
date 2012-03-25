@@ -245,7 +245,7 @@ void CircleMovement::set_duration(uint32_t duration) {
  * @brief Returns the number of rotations of the movement.
  *
  * When this number of rotations is reached, the movement stops.
- * Note that is the radius changes gradually, the movement will continue
+ * Note that if the radius changes gradually, the movement will continue
  * for a while until the radius reaches zero.
  *
  * @return the number of rotations to make (0 means infinite rotations)

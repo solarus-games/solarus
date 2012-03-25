@@ -50,7 +50,7 @@ Stops a list of timers.
 
 <hr>
 
-\section lua_api_timer_methods Methods of type timer
+\section lua_api_timer_methods Timer methods
 
 <hr>
 

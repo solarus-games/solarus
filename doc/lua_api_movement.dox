@@ -21,6 +21,7 @@ because all movement types don't have the same properties.
 - \ref lua_api_random_path_movement_methods "Random path movement methods"
 - \ref lua_api_path_finding_movement_methods "Path finding movement methods"
 - \ref lua_api_circle_movement_methods "Circle movement methods"
+- \ref lua_api_jump_movement_methods "Jump movement methods"
 - \ref lua_api_pixel_movement_methods "Pixel movement methods"
 
 Movements can be applied in-game to map entities, but also
@@ -52,6 +53,7 @@ then available to get and set its properties.
   - \c "path_finding": Like "path" but computes the shortest path to
    the hero, avoiding obstacles of the map (only possible in game).
   - \c "circle": Follows a circular trajectory around a center.
+  - \c "jump": Makes a jump above a rectilinear trajectory.
   - \c "pixel": Follows a trajectory specified pixel by pixel.
 - Return value (movement): The movement created. See the sections below to
   know the get and set methods available for your movement type.
@@ -849,14 +851,92 @@ to its previous value, possibly gradually
 
 <hr>
 
+\section lua_api_jump_movement_methods Jump movement methods
+
+<hr>
+
+These methods are specific to the jump movement type.
+
+This type of movement makes a jump above a specified rectilinear trajectory.
+We call this rectilinear trajectory the baseline.
+To use a jump movement, you typically specify the baseline
+(direction and distance), and the movement will jump above this baseline.
+The speed is adjusted automatically depending on the distance, but you
+can change it if you want.
+
+For now, the baseline can only have one of the 8 main
+directions. This restriction may be removed in the future.
+
+<hr>
+
+\subsection lua_api_jump_movement_get_direction8 jump_movement:get_direction8()
+
+Returns the direction of the baseline of this jump.
+The baseline always has one of the 8 main directions.
+0 is East, 1 is North-East, etc.
+- Return value (number): The direction (0 to 7).
+
+<hr>
+
+\subsection lua_api_jump_movement_set_direction8 jump_movement:set_direction8(direction8)
+
+Sets the direction of the baseline of this jump.
+The baseline always has one of the 8 main directions.
+0 is East, 1 is North-East, etc.
+- \c direction8 (number): The direction (0 to 7).
+
+<hr>
+
+\subsection lua_api_jump_movement_get_distance jump_movement:get_distance()
+
+Returns the distance of the baseline of this jump.
+- Return value (number): The distance of the jump in pixels.
+
+<hr>
+
+\subsection lua_api_jump_movement_set_distance jump_movement:set_distance(distance)
+
+Sets the distance of the baseline of this jump.
+- \c distance (number): The new distance of the jump in pixels.
+
+<hr>
+
+\subsection lua_api_jump_movement_get_speed jump_movement:get_speed()
+
+Returns the speed of this movement.
+- Return value (number): The speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_jump_movement_set_speed jump_movement:set_speed(speed)
+
+Sets the speed of this movement.
+- \c speed (number): The new speed in pixels per second. 0 means to set
+  automatically a speed based on the distance of the jump.
+
+<hr>
+
 \section lua_api_pixel_movement_methods Pixel movement methods
 
 <hr>
 
 These methods are specific to the pixel movement type.
 
-A pixel movement makes a succession of translations,
-where each translation is a pixel-precise specified move.
+A pixel movement makes a succession of basic translations,
+where each translation is a pixel-precise specified move
+(for example <tt>(+2,-1)</tt>).
+Each translation is immediate.
+
+Unlike most other types of movements, there is no notion of speed in pixels
+per seconds. That's because a translation can transport the object
+instantly to another place - the movement is not necessarily continuous.
+Instead, you can set the delay between each translation.
+
+\remark Pixel movements are not often needed. Most of the time, you don't
+want to specify pixel-by-pixel trajectories. Higher-level types of movements
+like \ref lua_api_path_movement_methods "path movement" or
+\ref lua_api_target_movement_methods "target movement"
+usually fit your needs.
 
 <hr>
 
@@ -877,34 +957,37 @@ of the new trajectory.
 - trajectory (table): An array of all successive translations to make.
   Each translation should be an array of two integers (x and y).
 
-Example of use:
-\verbatim
--- Example of code from script of the equipment item "rupee".
+<hr>
 
-function self:on_pickable_appeared(pickable)
-  -- A rupee has just appeared on the map: make it bounce on the floor.
-  -- (Here we overwrite the default movement of a pickable that appears.)
-  local movement = sol.movement.create("pixel")
-  movement:set_trajectory{{0,-1}, {0,-1}, {0,1}, {0,-1}, {0,1}}
-  pickable:start_movement(movement)
-end
-\endverbatim
+\subsection lua_api_pixel_movement_get_loop pixel_movement:get_loop()
 
-\remark Pixel movements are not often needed. Most of the time, you don't
-need to specify pixel-by-pixel trajectories. Higher-level types of movements
-like \ref lua_api_path_movement_methods "path movement" or
-\ref lua_api_target_movement_methods "target movement"
-usually provide what you want.
-For pickables, there is actually already a default built-in movement that
-makes them bounce onto the floor.
+Returns whether this movement restarts automatically when the trajectory is
+finished.
+- Return value (boolean): \c true if the movement loops.
 
 <hr>
 
-\todo document other methods of pixel movement
+\subsection lua_api_pixel_movement_set_loop pixel_movement:set_loop(loop)
+
+Sets whether this movement should restart automatically when the trajectory is
+finished.
+- \c loop (boolean): \c true to make the movement loop.
 
 <hr>
 
-\todo document jump movement
+\subsection lua_api_pixel_movement_get_delay pixel_movement:get_delay()
+
+Returns the delay between two steps of the trajectory.
+- Return value (number): The delay between two steps in milliseconds.
+
+<hr>
+
+\subsection lua_api_pixel_movement_set_delay pixel_movement:set_delay(delay)
+
+Sets the delay between two steps of the trajectory.
+- \c delay (number): The delay between two steps in milliseconds.
+
+<hr>
 
 */
 

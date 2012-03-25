@@ -10,6 +10,8 @@
 tags
 callgrind.out.*
 doc/html/
+doc/0.*
+doc/1.*
 tools/javadoc/
 tools/solaruskeystore
 work/unversioned/

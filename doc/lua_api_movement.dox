@@ -346,6 +346,14 @@ This type of movement can be seen as a particular case of the
 straight movement type, where the angle is set automatically to go towards
 the target.
 
+\remark This type of movement goes straight towards the target.
+If you set the \c smooth property to \c true, it will try to avoid simple
+obstacles by moving to a side.
+This is usually enough for simple enemies that target the hero.
+If you want a more complex technique that calculates a intelligent path to
+the target,
+see the \ref lua_api_path_finding_movement_methods "path finding movement".
+
 <hr>
 
 \subsection lua_api_target_movement_set_target target_movement:set_target(x, y), target_movement:set_target(entity)
@@ -577,6 +585,52 @@ movement.
 <hr>
 
 These methods are specific to the path finding movement type.
+
+A path finding movement is a particular
+\ref lua_api_path_movement_methods "path movement" where
+the path is calculated to reach a target.
+The target is a map entity (by default the hero). The movement calculates
+repeatedly the shortest path towards the target entity, taking into account
+obstacles of the map.
+
+\remark This type of movement computes a precise path on the map grid and
+avoids complex obstacles by using an advanced A.I. algorithm (A*).
+If you just need to go straight towards a target,
+which may be more natural for basic enemies,
+see the \ref lua_api_target_movement_methods "target movement".
+
+<hr>
+
+\subsection lua_api_path_finding_movement_set_target path_finding_movement:set_target(entity)
+
+Sets the target entity of this movement.
+- \c entity (entity): The entity to target.
+
+<hr>
+
+\subsection lua_api_path_finding_movement_get_speed path_finding_movement:get_speed()
+
+Returns the speed of this movement.
+- Return value (number): The speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_path_finding_movement_set_speed path_finding_movement:set_speed(speed)
+
+Sets the speed of this movement.
+- \c speed (number): The new speed in pixels per second.
+
+<hr>
+
+\subsection lua_api_path_finding_movement_get_direction4 path_finding_movement:get_direction4()
+
+Returns the direction of the current step of the path.
+
+East is 0, North is 1, West is 2, South is 3.
+If you use this movement to control a sprite or a map entity that has a sprite,
+you can use this function to make the sprite face the direction of the
+movement.
+- Return value (number): The direction of the current step (0 to 3).
 
 <hr>
 

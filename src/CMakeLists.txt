@@ -2,7 +2,7 @@ if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 NEW)
 endif(COMMAND cmake_policy)
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
+set(CMAKE_MODULE_PATH "${SOLARUS_SOURCE_DIR}/cmake/modules/")
 
 # find the headers and the libraries of dependencies
 find_package(SDL REQUIRED)

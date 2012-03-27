@@ -50,7 +50,7 @@ Returns the distance in pixels between two points.
 
 \todo Replace \c sol.main.get_distance() by
 \c entity:get_distance(other_entity), \c entity:get_distance(x, y) and
-\c sol.movement.get_distance(x1, y1, x2, y2)
+\c sol.util.get_distance(x1, y1, x2, y2)
 
 <hr>
 
@@ -65,7 +65,7 @@ Returns the angle in radians between the x axis and the specified vector.
   vector.
 
 \todo Replace \c sol.main.get_angle() by \c entity:get_angle(other_entity),
-\c entity:get_angle(x, y) and \c sol.movement.get_angle(x1, x2, y1, y2)
+\c entity:get_angle(x, y) and \c sol.util.get_angle(x1, x2, y1, y2)
 
 <hr>
 

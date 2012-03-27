@@ -92,6 +92,42 @@ attached to a map entity.
 
 <hr>
 
+\subsection lua_api_movement_get_direction4 movement:get_direction4()
+
+From the four main directions, returns the closest one to the current
+trajectory.
+
+East is 0, North is 1, West is 2, South is 3.
+As the real trajectory does not necessarily follows one of the four main
+directions, it will be converted to the closest one.
+
+If you use this movement to control a sprite (or a map entity that has a sprite),
+you can use this function to make the sprite face the direction of the
+movement.
+- Return value (number): The closest direction corresponding to the
+  angle of this movement.
+
+Example of use:
+\verbatim
+-- Example of code from an enemy script.
+
+-- This function is called when the enemy should start or restart its movement.
+function self:on_restart()
+  -- Create a movement that makes random straight trajectories.
+  local movement = sol.movement.create("random")
+  self:start_movement(movement)
+end
+
+-- This function is called when a property of the enemy's movement changes.
+function self:on_movement_changed(movement)
+  -- The angle of the movement has changed: update the sprite accordingly.
+  local direction = movement:get_direction4()
+  self:get_sprite():set_direction(direction)
+end
+\endverbatim
+
+<hr>
+
 \section lua_api_straight_movement_methods Straight movement methods
 
 <hr>
@@ -127,7 +163,7 @@ East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 - Return value (number): The angle in radians. 
 
 \remark If you prefer a value in a 4-direction system, see
-\ref lua_api_straight_movement_get_direction4.
+\ref lua_api_movement_get_direction4.
 
 <hr>
 
@@ -139,40 +175,6 @@ East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 <tt>3 * math.pi / 2</tt> and any intermediate value is possible.
 Negative values and values greater to <tt>2 * math.pi</tt> are also accepted.
 - \c angle (number): The new angle in radians.
-
-\remark If you prefer to specify a value in a 4-direction system, see
-\ref lua_api_straight_movement_set_direction4.
-
-<hr>
-
-\subsection lua_api_straight_movement_get_direction4 straight_movement:get_direction4()
-
-Converts the current angle into one of the four main directions.
-
-East is 0, North is 1, West is 2, South is 3.
-As the angle is not necessarily one of the four main directions, it will be
-rounded to the closest one.
-
-If you use this movement to control a sprite (or a map entity that has a sprite),
-you can use this function to make the sprite face the direction of the
-movement.
-- Return value (number): The closest direction corresponding to the
-  angle of this movement.
-
-\remark Use \ref lua_api_straight_movement_get_angle if you need to get the
-exact angle.
-
-<hr>
-
-\subsection lua_api_straight_movement_set_direction4 straight_movement:set_direction4(direction4)
-
-Sets the angle as one of the four main directions.
-
-East is 0, North is 1, West is 2, South is 3.
-- \c direction4 (number): A integer between 0 and 3.
-
-\remark Use \ref lua_api_straight_movement_set_angle if you don't want to be
-restricted to the four main directions.
 
 <hr>
 
@@ -226,30 +228,6 @@ movement type, where the angle is automatically changed after random delays.
 
 <hr>
 
-\subsection lua_api_random_movement_get_ignore_obstacles random_movement:get_ignore_obstacles()
-
-Returns whether this movement ignores obstacles of the map.
-
-If the movement is not attached to a map entity yet, it is not an error to
-call this function: the result will have an effect when the movement gets
-attached to a map entity.
-- Return value (boolean): \c true if this movement ignores obstacles.
-
-<hr>
-
-\subsection lua_api_random_movement_set_ignore_obstacles random_movement:set_ignore_obstacles(ignore_obstacles)
-
-Sets whether a map entity controlled by this movement should ignore obstacles of
-the map.
-
-If the movement is not attached to a map entity yet, it is not an error to
-call this function: your choice will have an effect when the movement gets
-attached to a map entity.
-- \c ignore_obstacles (boolean): \c true to make this movement ignore
-  obstacles of the map.
-
-<hr>
-
 \subsection lua_api_random_movement_get_speed random_movement:get_speed()
 
 Returns the speed of this movement.
@@ -273,44 +251,7 @@ East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 - Return value (number): The angle in radians. 
 
 \remark If you prefer a value in a 4-direction system, see
-\ref lua_api_random_movement_get_direction4.
-
-<hr>
-
-\subsection lua_api_random_movement_get_direction4 random_movement:get_direction4()
-
-Converts the current angle into one of the four main directions.
-
-East is 0, North is 1, West is 2, South is 3.
-As the angle is not necessarily one of the four main directions, it will be
-rounded to the closest one.
-
-If you use this movement to control a sprite or a map entity that has a sprite,
-you can use this function to make the sprite face the direction of the
-movement.
-- Return value (number): The closest direction corresponding to the
-  angle of this movement.
-
-\remark Use \ref lua_api_straight_movement_get_angle if you need to get the
-exact angle.
-
-Example of use:
-\verbatim
--- Example of code from an enemy script.
-
--- This function is called when the enemy should start or restart its movement.
-function self:on_restart()
-  local movement = sol.movement.create("random")
-  self:start_movement(movement)
-end
-
--- This function is called when a property of the enemy's movement changes.
-function self:on_movement_changed(movement)
-  -- The angle of the movement has changed: update the sprite accordingly.
-  local direction = movement:get_direction4()
-  self:get_sprite():set_direction(direction)
-end
-\endverbatim
+\ref lua_api_movement_get_direction4.
 
 <hr>
 
@@ -318,7 +259,8 @@ end
 
 Returns the maximum distance of this movement.
 
-The movement will stop when this distance is reached.
+If the movement goes further than this distance, it
+automatically comes back towards the initial position.
 - Return value (number): The maximum distance in pixels (0 means no limit).
 
 <hr>
@@ -327,7 +269,8 @@ The movement will stop when this distance is reached.
 
 Sets the maximum distance of this movement.
 
-The movement will stop when this distance is reached.
+If the movement goes further than this distance, it
+automatically comes back towards the initial position.
 - \c max_distance (number): The maximum distance in pixels (0 means no limit).
 
 <hr>
@@ -395,26 +338,7 @@ East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 - Return value (number): The angle in radians. 
 
 \remark If you prefer a value in a 4-direction system, see
-\ref lua_api_target_movement_get_direction4.
-
-<hr>
-
-\subsection lua_api_target_movement_get_direction4 target_movement:get_direction4()
-
-Converts the current angle into one of the four main directions.
-
-East is 0, North is 1, West is 2, South is 3.
-As the angle is not necessarily one of the four main directions, it will be
-rounded to the closest one.
-
-If you use this movement to control a sprite or a map entity that has a sprite,
-you can use this function to make the sprite face the direction of the
-movement.
-- Return value (number): The closest direction corresponding to the
-  angle of this movement.
-
-\remark Use \ref lua_api_target_movement_get_angle if you need to get the
-exact angle.
+\ref lua_api_target_get_direction4.
 
 <hr>
 
@@ -542,18 +466,6 @@ not attached to a map entity.
 
 <hr>
 
-\subsection lua_api_path_movement_get_direction4 path_movement:get_direction4()
-
-Returns the direction of the current step of the path.
-
-East is 0, North is 1, West is 2, South is 3.
-If you use this movement to control a sprite or a map entity that has a sprite,
-you can use this function to make the sprite face the direction of the
-movement.
-- Return value (number): The direction of the current step (0 to 3).
-
-<hr>
-
 \section lua_api_random_path_movement_methods Random path movement methods
 
 <hr>
@@ -592,18 +504,6 @@ Returns the speed of this movement.
 
 Sets the speed of this movement.
 - \c speed (number): The new speed in pixels per second.
-
-<hr>
-
-\subsection lua_api_random_path_movement_get_direction4 random_path_movement:get_direction4()
-
-Returns the direction of the current step of the path.
-
-East is 0, North is 1, West is 2, South is 3.
-If you use this movement to control a sprite or a map entity that has a sprite,
-you can use this function to make the sprite face the direction of the
-movement.
-- Return value (number): The direction of the current step (0 to 3).
 
 <hr>
 
@@ -646,18 +546,6 @@ Returns the speed of this movement.
 
 Sets the speed of this movement.
 - \c speed (number): The new speed in pixels per second.
-
-<hr>
-
-\subsection lua_api_path_finding_movement_get_direction4 path_finding_movement:get_direction4()
-
-Returns the direction of the current step of the path.
-
-East is 0, North is 1, West is 2, South is 3.
-If you use this movement to control a sprite or a map entity that has a sprite,
-you can use this function to make the sprite face the direction of the
-movement.
-- Return value (number): The direction of the current step (0 to 3).
 
 <hr>
 

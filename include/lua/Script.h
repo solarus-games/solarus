@@ -106,9 +106,6 @@ class Script {
 
   private:
 
-    typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be
-                                                              * called by a Lua script */
-
     // script data
     std::map<void*, int> refcounts; /**< for each userdata created by this
                                      * script:
@@ -185,6 +182,8 @@ class Script {
   protected:
 
     // implementation of the APIs
+    typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be
+                                                              * called by a Lua script */
     static FunctionAvailableToScript 
 
       // main API

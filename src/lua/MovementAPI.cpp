@@ -40,17 +40,10 @@ const char* Script::movement_module_name = "sol.movement";
 void Script::initialize_movement_module() {
 
   static const luaL_Reg methods[] = {
-      { "pixel_movement_create", movement_api_pixel_movement_create },
-      { "random_movement_create", movement_api_random_movement_create },
-      { "path_movement_create", movement_api_path_movement_create },
-      { "random_path_movement_create", movement_api_random_path_movement_create },
-      { "path_finding_movement_create", movement_api_path_finding_movement_create },
-      { "target_movement_create", movement_api_target_movement_create },
-      { "straight_movement_create", movement_api_straight_movement_create },
-      { "circle_movement_create", movement_api_circle_movement_create },
-      { "jump_movement_create", movement_api_jump_movement_create },
-      { "get_property", movement_api_get_property },
-      { "set_property", movement_api_set_property },
+      { "create", movement_api_create },
+      { "get_ignore_obstacles", movement_api_get_ignore_obstacles },
+      { "set_ignore_obstacles", movement_api_set_ignore_obstacles },
+      { "get_direction4", movement_api_get_direction4 },
       { NULL, NULL }
   };
 

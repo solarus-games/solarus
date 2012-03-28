@@ -19,21 +19,20 @@
 #include "lowlevel/Music.h"
 #include <lua.hpp>
 
-const char* Script::audio_module_name = "sol.audio";
+const std::string Script::audio_module_name = "sol.audio";
 
 /**
  * @brief Initializes the audio features provided to Lua.
  */
-void Script::initialize_audio_module() {
+void Script::register_audio_module() {
 
-  static const luaL_Reg methods[] = {
+  static const luaL_Reg functions[] = {
       { "play_sound", audio_api_play_sound },
       { "play_music", audio_api_play_music },
       { "stop_music", audio_api_stop_music },
       { NULL, NULL }
   };
-
-  luaL_register(l, audio_module_name, methods);
+  register_functions(audio_module_name, functions);
 }
 
 /**

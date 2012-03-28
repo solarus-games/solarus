@@ -49,6 +49,8 @@ class PlayerMovement: public StraightMovement {
     void set_moving_speed(int moving_speed);
     int get_wanted_direction8();
     void compute_movement();
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

@@ -18,13 +18,14 @@
 #define SOLARUS_TIMER_H
 
 #include "Common.h"
+#include "lua/ExportableToLua.h"
 
 /**
  * @brief Represents a timer that any class can start.
  *
  * Timers are mostly used by the scripts.
  */
-class Timer {
+class Timer: public ExportableToLua {
 
   public:
 
@@ -35,6 +36,8 @@ class Timer {
 
     void update();
     void set_suspended(bool suspended);
+
+    virtual const std::string& get_lua_type_name() const;
 
   private:
 

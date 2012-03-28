@@ -82,9 +82,7 @@ class PixelMovement: public Movement {
     virtual void update();
     virtual void set_suspended(bool suspended);
 
-    // properties
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

@@ -16,6 +16,7 @@
  */
 #include "movements/PathMovement.h"
 #include "entities/MapEntity.h"
+#include "lua/Script.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
@@ -440,88 +441,10 @@ const std::string PathMovement::create_random_path() {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - path
- * - speed
- * - loop
- * - ignore_obstacles
- * - snap_to_grid
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string PathMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "path") {
-    oss << initial_path;
-  }
-  else if (key == "speed") {
-    oss << speed;
-  }
-  else if (key == "loop") {
-    oss << loop;
-  }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
-  }
-  else if (key == "snap_to_grid") {
-    oss << snap_to_grid;
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of PathMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - path
- * - speed
- * - loop
- * - ignore_obstacles
- * - snap_to_grid
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void PathMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "path") {
-    std::string path;
-    iss >> path;
-    set_path(path);
-  }
-  else if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "loop") {
-    bool loop;
-    iss >> loop;
-    set_loop(loop);
-  }
-  else if (key == "ignore_obstacles") {
-    bool ignore_obstacles;
-    iss >> ignore_obstacles;
-    set_default_ignore_obstacles(ignore_obstacles);
-  }
-  else if (key == "snap_to_grid") {
-    bool snap_to_grid;
-    iss >> snap_to_grid;
-    set_snap_to_grid(snap_to_grid);
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of PathMovement: '" << key << "'");
-  }
+const std::string& PathMovement::get_lua_type_name() const {
+  return Script::path_movement_module_name;
 }
 

@@ -20,12 +20,12 @@
 #include "lowlevel/StringConcat.h"
 #include "StringResource.h"
 
-const char* Script::text_surface_module_name = "sol.text_surface";
+const std::string Script::text_surface_module_name = "sol.text_surface";
 
 /**
  * @brief Initializes the text surface features provided to Lua.
  */
-void Script::initialize_text_surface_module() {
+void Script::register_text_surface_module() {
 
   static const luaL_Reg methods[] = {
       { "create", text_surface_api_create },
@@ -35,29 +35,11 @@ void Script::initialize_text_surface_module() {
       { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }
   };
-
-  static const luaL_Reg meta_methods[] = {
+  static const luaL_Reg metamethods[] = {
       { "__gc", displayable_meta_gc },
       { NULL, NULL }
   };
-
-  // create a table and fill it with the methods
-  luaL_register(l, text_surface_module_name, methods);
-                                  // sol.text_surface module
-
-  // create the metatable for the type, add it to the Lua registry
-  luaL_newmetatable(l, text_surface_module_name);
-                                  // sol.text_surface mt
-  // fill the metatable
-  luaL_register(l, NULL, meta_methods);
-                                  // sol.text_surface mt
-  lua_pushvalue(l, -2);
-                                  // sol.sol.text_surface mt sol.sol.text_surface
-  // metatable.__index = sol.sol.text_surface
-  lua_setfield(l, -2, "__index");
-                                  // sol.sol.text_surface mt
-  lua_pop(l, 2);
-                                  // --
+  register_type(text_surface_module_name, methods, metamethods);
 }
 
 /**
@@ -68,36 +50,17 @@ void Script::initialize_text_surface_module() {
  * @return the text surface
  */
 TextSurface& Script::check_text_surface(lua_State* l, int index) {
-
-  if (index < 0) {
-    // ensure a positive index
-    index = lua_gettop(l) + index + 1;
-  }
-
-  TextSurface** surface = (TextSurface**)
-      luaL_checkudata(l, index, text_surface_module_name);
-  return **surface;
+  return static_cast<TextSurface&>(
+      check_userdata(l, index, text_surface_module_name));
 }
 
 /**
  * @brief Pushes a text surface userdata onto the stack.
  * @param l a Lua context
- * @param text_surface a text surface
+ * @param surface a surface
  */
 void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {
-
-  Script& script = get_script(l);
-
-  script.increment_refcount(&text_surface);
-                                  // ...
-  TextSurface** block_adress = (TextSurface**)
-      lua_newuserdata(l, sizeof(TextSurface*));
-  *block_adress = &text_surface;
-                                  // ... text_surface
-  luaL_getmetatable(l, text_surface_module_name);
-                                  // ... text_surface mt
-  lua_setmetatable(l, -2);
-                                  // ... text_surface
+  push_userdata(l, text_surface);
 }
 
 /**

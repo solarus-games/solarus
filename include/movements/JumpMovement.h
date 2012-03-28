@@ -63,8 +63,8 @@ class JumpMovement: public PixelMovement {
     int get_displayed_direction4();
     const Rectangle get_displayed_xy();
 
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);};
+    virtual const std::string& get_lua_type_name() const;
+};
 
 #endif
 

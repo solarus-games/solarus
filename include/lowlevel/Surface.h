@@ -66,6 +66,8 @@ class Surface: public DynamicDisplayable {
     void display_region(const Rectangle& src_position, Surface& dst_surface);
     void display_region(const Rectangle& src_position, Surface& dst_surface, const Rectangle& dst_position);
 
+    const std::string& get_lua_type_name() const;
+
   protected:
 
     // implementation from DynamicDisplayable

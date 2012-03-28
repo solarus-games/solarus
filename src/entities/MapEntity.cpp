@@ -1087,7 +1087,7 @@ void MapEntity::clear_old_movements() {
   for (it = old_movements.begin(); it != old_movements.end(); it++) {
     Movement* movement = *it;
     if (movement->get_creator_script() != NULL) {
-      // the movement was created by a script
+      // the movement was created by a script: this script is responsible
       movement->get_creator_script()->decrement_refcount(movement);
     }
     else {

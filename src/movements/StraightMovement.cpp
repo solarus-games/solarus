@@ -16,6 +16,7 @@
  */
 #include "movements/StraightMovement.h"
 #include "entities/MapEntity.h"
+#include "lua/Script.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
@@ -662,94 +663,10 @@ void StraightMovement::update() {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - angle
- * - max_distance
- * - ignore_obstacles
- * - smooth
- * - displayed_direction
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string StraightMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "speed") {
-    oss << get_speed();
-  }
-  else if (key == "angle") {
-    oss << get_angle();
-  }
-  else if (key == "max_distance") {
-    oss << get_max_distance();
-  }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
-  }
-  else if (key == "smooth") {
-    oss << is_smooth();
-  }
-  else if (key == "displayed_direction") {
-    oss << get_displayed_direction4();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of StraightMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - angle
- * - ignore_obstacles
- * - max_distance
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void StraightMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "angle") {
-    double angle;
-    iss >> angle;
-    set_angle(angle);
-  }
-  else if (key == "max_distance") {
-    int max_distance;
-    iss >> max_distance;
-    set_max_distance(max_distance);
-  }
-  else if (key == "ignore_obstacles") {
-    bool ignore_obstacles;
-    iss >> ignore_obstacles;
-    set_default_ignore_obstacles(ignore_obstacles);
-  }
-  else if (key == "smooth") {
-    bool smooth;
-    iss >> smooth;
-    set_smooth(smooth);
-  }
-  else if (key == "displayed_direction") {
-    Debug::die("The property 'displayed_direction' of StraightMovement is read-only");
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of StraightMovement: '" << key << "'");
-  }
+const std::string& StraightMovement::get_lua_type_name() const {
+  return Script::straight_movement_module_name;
 }
 

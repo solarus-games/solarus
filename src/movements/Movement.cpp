@@ -16,9 +16,9 @@
  */
 #include "movements/Movement.h"
 #include "entities/MapEntity.h"
-#include "Map.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
+#include "Map.h"
 
 int Movement::next_unique_id = 0;
 
@@ -38,8 +38,7 @@ Movement::Movement(bool ignore_obstacles):
   when_suspended(0),
   last_collision_box_on_obstacle(-1, -1),
   default_ignore_obstacles(ignore_obstacles),
-  current_ignore_obstacles(ignore_obstacles),
-  creator_script(NULL) {
+  current_ignore_obstacles(ignore_obstacles) {
 
 }
 
@@ -432,54 +431,5 @@ int Movement::get_displayed_direction4() {
  */
 const Rectangle Movement::get_displayed_xy() {
   return get_xy();
-}
-
-/**
- * @brief Returns the value of a property of this movement.
- *
- * Subclasses whose movement type is available to the script API should redefine this function
- * to allow scripts to interact with the movement.
- *
- * @param key key of the property to get (the accepted keys depend on the movement type)
- * @return the corresponding value as a string
- */
-const std::string Movement::get_property(const std::string &key) {
-
-  Debug::die("Movement::get_property() is not supported by this movement type");
-
-  return "";
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Subclasses whose movement type is available to the script API should redefine this function
- * to allow scripts to interact with the movement.
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void Movement::set_property(const std::string &key, const std::string &value) {
-
-  Debug::die("Movement::set_property() is not supported by this movement type");
-
-}
-
-/**
- * @brief Returns the script that created this movement.
- * @return the creator script or NULL
- */
-Script* Movement::get_creator_script() {
-
-  return creator_script;
-}
-
-/**
- * @brief Sets the script that created this movement.
- * @param creator_script the creator script or NULL
- */
-void Movement::set_creator_script(Script* creator_script) {
-
-  this->creator_script = creator_script;
 }
 

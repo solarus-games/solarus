@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/TargetMovement.h"
+#include "lua/Script.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
@@ -165,75 +166,10 @@ bool TargetMovement::is_finished() {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - ignore_obstacles
- * - smooth
- * - displayed_direction
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string TargetMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "speed") {
-    oss << get_speed();
-  }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
-  }
-  else if (key == "smooth") {
-    oss << is_smooth();
-  }
-  else if (key == "displayed_direction") {
-    oss << get_displayed_direction4();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of TargetMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - ignore_obstacles
- * - smooth
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void TargetMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "ignore_obstacles") {
-    bool ignore_obstacles;
-    iss >> ignore_obstacles;
-    set_default_ignore_obstacles(ignore_obstacles);
-  }
-  else if (key == "smooth") {
-    bool smooth;
-    iss >> smooth;
-    set_smooth(smooth);
-  }
-  else if (key == "displayed_direction") {
-    Debug::die("The property 'displayed_direction' of TargetMovement is read-only");
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of TargetMovement: '" << key << "'");
-  }
+const std::string& TargetMovement::get_lua_type_name() const {
+  return Script::target_movement_module_name;
 }
 

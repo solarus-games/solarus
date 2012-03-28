@@ -130,6 +130,8 @@ class TextSurface: public DynamicDisplayable {
 
     void raw_display(Surface& dst_surface, const Rectangle& dst_position);
     Surface* get_surface();
+
+    const std::string& get_lua_type_name() const;
 };
 
 #endif

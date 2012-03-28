@@ -18,6 +18,7 @@
 #define SOLARUS_MOVEMENT_H
 
 #include "Common.h"
+#include "lua/ExportableToLua.h"
 #include "lowlevel/Rectangle.h"
 
 /**
@@ -27,7 +28,7 @@
  * An instance of Movement can be applied to a map entity during the game,
  * or to any arbitrary coordinates.
  */
-class Movement {
+class Movement: public ExportableToLua {
 
   private:
 
@@ -113,14 +114,6 @@ class Movement {
     // displaying moving objects
     virtual int get_displayed_direction4();
     virtual const Rectangle get_displayed_xy();
-
-    // properties
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);
-
-    // script
-    Script* get_creator_script();
-    void set_creator_script(Script* creator_script);
 };
 
 #endif

@@ -18,12 +18,12 @@
 #include "lua/Script.h"
 #include "Sprite.h"
 
-const char* Script::sprite_module_name = "sol.sprite";
+const std::string Script::sprite_module_name = "sol.sprite";
 
 /**
  * @brief Initializes the sprite features provided to Lua.
  */
-void Script::initialize_sprite_module() {
+void Script::register_sprite_module() {
 
   static const luaL_Reg methods[] = {
       { "create", sprite_api_create },
@@ -44,29 +44,11 @@ void Script::initialize_sprite_module() {
       { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }
   };
-
   static const luaL_Reg metamethods[] = {
       { "__gc", displayable_meta_gc },
       { NULL, NULL }
   };
-
-  // create a table and fill it with the methods
-  luaL_register(l, sprite_module_name, methods);
-                                  // sol.sprite
-
-  // create the metatable for the type, add it to the Lua registry
-  luaL_newmetatable(l, sprite_module_name);
-                                  // sol.sprite mt
-  // fill the metatable
-  luaL_register(l, NULL, metamethods);
-                                  // sol.sprite mt
-  lua_pushvalue(l, -2);
-                                  // sol.sprite mt sol.sprite
-  // metatable.__index = sol.sprite
-  lua_setfield(l, -2, "__index");
-                                  // sol.sprite mt
-  lua_pop(l, 2);
-                                  // --
+  register_type(sprite_module_name, methods, metamethods);
 }
 
 /**
@@ -77,36 +59,16 @@ void Script::initialize_sprite_module() {
  * @return the sprite
  */
 Sprite& Script::check_sprite(lua_State* l, int index) {
-
-  if (index < 0) {
-    // ensure a positive index
-    index = lua_gettop(l) + index + 1;
-  }
-
-  Sprite** sprite =
-    (Sprite**) luaL_checkudata(l, index, sprite_module_name);
-  return **sprite;
+  return static_cast<Sprite&>(check_userdata(l, index, sprite_module_name));
 }
 
 /**
  * @brief Pushes a sprite userdata onto the stack.
  * @param l a Lua context
- * @param sprite a sprite
+ * @param surface a surface
  */
 void Script::push_sprite(lua_State* l, Sprite& sprite) {
-
-  Script& script = get_script(l);
-
-  script.increment_refcount(&sprite);
-                                  // ...
-  Sprite** block_adress =
-    (Sprite**) lua_newuserdata(l, sizeof(Sprite*));
-  *block_adress = &sprite;
-                                  // ... sprite
-  luaL_getmetatable(l, sprite_module_name);
-                                  // ... sprite mt
-  lua_setmetatable(l, -2);
-                                  // ... sprite
+  push_userdata(l, sprite);
 }
 
 /**
@@ -123,6 +85,7 @@ int Script::sprite_api_create(lua_State* l) {
   const std::string& animation_set_id = luaL_checkstring(l, 1);
 
   Sprite* sprite = new Sprite(animation_set_id);
+
   get_script(l).add_displayable(sprite);
   push_sprite(l, *sprite);
 

@@ -22,14 +22,14 @@
 #include <sstream>
 #include <cmath>
 
-const char* Script::main_module_name = "sol.main";
+const std::string Script::main_module_name = "sol.main";
 
 /**
  * @brief Initializes the main features provided to Lua.
  */
-void Script::initialize_main_module() {
+void Script::register_main_module() {
 
-  static const luaL_Reg methods[] = {
+  static const luaL_Reg functions[] = {
       { "include", main_api_include },
       { "exit", main_api_exit },
       { "start_screen", main_api_start_screen },
@@ -38,8 +38,7 @@ void Script::initialize_main_module() {
       { "get_angle", main_api_get_angle },
       { NULL, NULL }
   };
-
-  luaL_register(l, main_module_name, methods);
+  register_functions(main_module_name, functions);
 }
 
 /**

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/CircleMovement.h"
+#include "lua/Script.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
@@ -447,160 +448,10 @@ void CircleMovement::stop() {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - center_type
- * - center_name
- * - center_dx
- * - center_dy
- * - radius
- * - radius_speed
- * - direction
- * - initial_angle
- * - angle_speed
- * - max_rotations
- * - duration
- * - loop
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string CircleMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "center_type") {
-    oss << (center_entity != NULL) ? center_entity->get_type() : -1;
-  }
-  else if (key == "center_name") {
-    oss << (center_entity != NULL) ? center_entity->get_name() : "";
-  }
-  else if (key == "center_dx") {
-    oss << center_point.get_x();
-  }
-  else if (key == "center_dy") {
-    oss << center_point.get_y();
-  }
-  else if (key == "radius_speed") {
-    oss << get_radius_speed();
-  }
-  else if (key == "radius") {
-    oss << get_radius();
-  }
-  else if (key == "direction") {
-    oss << get_direction();
-  }
-  else if (key == "initial_angle") {
-    oss << get_initial_angle();
-  }
-  else if (key == "angle_speed") {
-    oss << get_angle_speed();
-  }
-  else if (key == "max_rotations") {
-    oss << get_max_rotations();
-  }
-  else if (key == "duration") {
-    oss << get_duration();
-  }
-  else if (key == "loop") {
-    oss << get_loop();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of CircleMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - center_type
- * - center_name
- * - center_dx
- * - center_dy
- * - radius
- * - radius_speed
- * - direction
- * - initial_angle
- * - angle_speed
- * - max_rotations
- * - duration
- * - loop
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void CircleMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "center_type") {
-    int center_type;
-    iss >> center_type;
-    this->center_type = EntityType(center_type);
-  }
-  else if (key == "center_name") {
-    std::string center_name;
-    iss >> center_name;
-    MapEntities& entities = get_entity()->get_map().get_entities();
-    MapEntity* entity = entities.get_entity(center_type, center_name);
-    set_center(entity, 0, 0);
-  }
-  else if (key == "center_dx") {
-    int dx;
-    iss >> dx;
-    set_center(center_entity, dx, center_point.get_y());
-  }
-  else if (key == "center_dy") {
-    int dy;
-    iss >> dy;
-    set_center(center_entity, center_point.get_x(), dy);
-  }
-  else if (key == "radius") {
-    int radius;
-    iss >> radius;
-    set_radius(radius);
-  }
-  else if (key == "radius_speed") {
-    int radius_speed;
-    iss >> radius_speed;
-    set_radius_speed(radius_speed);
-  }
-  else if (key == "direction") {
-    int direction;
-    iss >> direction;
-    set_direction(Direction(direction));
-  }
-  else if (key == "initial_angle") {
-    int initial_angle;
-    iss >> initial_angle;
-    set_initial_angle(initial_angle);
-  }
-  else if (key == "angle_speed") {
-    int angle_speed;
-    iss >> angle_speed;
-    set_angle_speed(angle_speed);
-  }
-  else if (key == "max_rotations") {
-    int max_rotations;
-    iss >> max_rotations;
-    set_max_rotations(max_rotations);
-  }
-  else if (key == "duration") {
-    uint32_t duration;
-    iss >> duration;
-    set_duration(duration);
-  }
-  else if (key == "loop") {
-    uint32_t loop;
-    iss >> loop;
-    set_loop(loop);
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of CircleMovement: '" << key << "'");
-  }
+const std::string& CircleMovement::get_lua_type_name() const {
+  return Script::circle_movement_module_name;
 }
 

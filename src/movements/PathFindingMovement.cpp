@@ -16,6 +16,7 @@
  */
 #include "movements/PathFindingMovement.h"
 #include "movements/PathFinding.h"
+#include "lua/Script.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/System.h"
@@ -104,56 +105,11 @@ bool PathFindingMovement::is_finished() {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - displayed_direction
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string PathFindingMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "speed") {
-    oss << get_speed();
-  }
-  else if (key == "displayed_direction") {
-    oss << get_displayed_direction4();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of PathFindingMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void PathFindingMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "displayed_direction") {
-    Debug::die("The property 'displayed_direction' of PathFindingMovement is read-only");
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of PathFindingMovement: '" << key << "'");
-  }
+const std::string& PathFindingMovement::get_lua_type_name() const {
+  return Script::path_finding_movement_module_name;
 }
 
 

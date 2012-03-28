@@ -18,6 +18,7 @@
 #define SOLARUS_DYNAMIC_DISPLAYABLE_H
 
 #include "Common.h"
+#include "lua/ExportableToLua.h"
 #include "lowlevel/Rectangle.h"
 #include <lua.hpp>
 
@@ -27,14 +28,11 @@
  * Possible additional effects are movements and transitions.
  * Lua callbacks may be associated to the end of these effects.
  */
-class DynamicDisplayable {
+class DynamicDisplayable: public ExportableToLua {
 
   public:
 
     virtual ~DynamicDisplayable();
-
-    // owner script
-    void set_script(Script* script);
 
     // dynamic effects
     void start_movement(Movement& movement, int callback_ref = LUA_REFNIL);
@@ -77,8 +75,6 @@ class DynamicDisplayable {
                                    * (will be deleted then) */
     int transition_callback_ref;  /**< Lua registry ref of a function to call
                                    * when the transition finishes */
-    Script* script;               /**< the script that owns this object,
-                                   * or NULL */
 };
 
 #endif

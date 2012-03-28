@@ -20,6 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lua/Script.h"
 #include <SDL_image.h>
 
 /**
@@ -256,5 +257,13 @@ void Surface::display_region(const Rectangle &src_position, Surface& dst_surface
  */
 SDL_Surface* Surface::get_internal_surface() {
   return internal_surface;
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
+ */
+const std::string& Surface::get_lua_type_name() const {
+  return Script::surface_module_name;
 }
 

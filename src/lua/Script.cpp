@@ -74,8 +74,8 @@ void Script::initialize_lua_context() {
   lua_newtable(l);
   lua_setglobal(l, "sol");
 
-  // register the C++ functions accessible to the script
-  register_apis();
+  // register the C++ functions and types accessible by the script
+  register_modules();
 }
 
 /**
@@ -210,32 +210,78 @@ CustomScreen& Script::get_screen() {
 /**
  * @brief Tells the Lua context what C++ functions it can call.
  */
-void Script::register_apis() {
+void Script::register_modules() {
 
   // modules available to all scripts
-  initialize_main_module();
-  initialize_audio_module();
-  initialize_timer_module();
-  initialize_surface_module();
-  initialize_text_surface_module();
-  initialize_sprite_module();
-  initialize_movement_module();
+  register_main_module();
+  register_audio_module();
+  register_timer_module();
+  register_surface_module();
+  register_text_surface_module();
+  register_sprite_module();
+  register_movement_module();
 
   if (apis_enabled && GAME_API) {
-    initialize_game_module();
+    register_game_module();
   }
   if (apis_enabled && MAP_API) {
-    initialize_map_module();
+    register_map_module();
   }
   if (apis_enabled && ITEM_API) {
-    initialize_item_module();
+    register_item_module();
   }
   if (apis_enabled && ENEMY_API) {
-    initialize_enemy_module();
+    register_enemy_module();
   }
   if (apis_enabled && INPUT_API) {
-    initialize_input_module();
+    register_input_module();
   }
+}
+
+/**
+ * @brief Defines some C++ functions into a Lua table.
+ * @param module_name name of the table that will contain the functions
+ * (e.g. "sol.main")
+ * @param functions list of functions to define in the table
+ * (must end with {NULLL, NULL})
+ */
+void Script::register_functions(const std::string& module_name,
+    const luaL_Reg* functions) {
+
+  // create a table and fill it with the methods
+  luaL_register(l, module_name.c_str(), functions);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Defines some C++ functions into a new Lua userdata type.
+ * @param module_name name of the table that will contain the functions
+ * (e.g. "sol.movement") - this string will also identify the type
+ * @param functions list of functions to define on the type
+ * (must end with {NULLL, NULL})
+ * @param metamethods metamethods to define on the type (can be NULL)
+ */
+void Script::register_type(const std::string& module_name,
+    const luaL_Reg* functions, const luaL_Reg* metamethods) {
+
+  // create a table and fill it with the methods
+  luaL_register(l, module_name.c_str(), functions);
+                                  // module
+  // create the metatable for the type, add it to the Lua registry
+  luaL_newmetatable(l, module_name.c_str());
+                                  // module mt
+  if (metamethods != NULL) {
+    // fill the metatable
+    luaL_register(l, NULL, metamethods);
+                                  // module mt
+  }
+  lua_pushvalue(l, -2);
+                                  // module mt module
+  // metatable.__index = module
+  lua_setfield(l, -2, "__index");
+                                  // module mt
+  lua_pop(l, 2);
+                                  // --
 }
 
 /**
@@ -533,6 +579,68 @@ bool Script::is_userdata(lua_State* l, int index, const std::string& module_name
 }
 
 /**
+ * @brief Pushes a userdata onto the stack.
+ * @param l a Lua context
+ * @param userdata a userdata
+ */
+void Script::push_userdata(lua_State* l, ExportableToLua& userdata) {
+
+  Script& script = get_script(l);
+
+  script.increment_refcount(&userdata);
+                                  // ...
+  ExportableToLua** block_adress =
+    (ExportableToLua**) lua_newuserdata(l, sizeof(ExportableToLua*));
+  *block_adress = &userdata;
+                                  // ... userdata
+  luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
+                                  // ... userdata mt
+  lua_setmetatable(l, -2);
+                                  // ... userdata
+}
+
+/**
+ * @brief Checks that the value at the given index is userdata of the
+ * specified type and returns it.
+ *
+ * TODO allow the type to be specified as a prefix
+ *
+ * @param l a Lua state
+ * @param index an index in the Lua stack
+ * @return the color at this index
+ */
+ExportableToLua& Script::check_userdata(lua_State* l, int index,
+    const std::string& module_name) {
+
+  if (index < 0) {
+    // ensure a positive index
+    index = lua_gettop(l) + index + 1;
+  }
+
+  ExportableToLua** userdata =
+    (ExportableToLua**) luaL_checkudata(l, index, module_name.c_str());
+  return **userdata;
+}
+
+/**
+ * @brief Finalizes a userdata.
+ *
+ * - Argument 1: a userdata
+ *
+ * @param l a Lua state
+ * @return number of values to return to Lua
+ */
+int Script::userdata_meta_gc(lua_State* l) {
+
+  Script& script = get_script(l);
+
+  ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, 1);
+  script.decrement_refcount(*userdata);
+
+  return 0;
+}
+
+/**
  * @brief Checks that the value at the given index is a color and returns it.
  * @param l a Lua state
  * @param index an index in the Lua stack
@@ -674,20 +782,16 @@ void Script::cancel_callback(int callback_ref) {
  * @param userdata a userdata
  * @return true if this script created the userdata
  */
-bool Script::has_created(void* userdata) {
-
-  return refcounts.count(userdata) > 0;
+bool Script::has_created(ExportableToLua* userdata) {
+  return userdata->get_creator_script() == this;
 }
 
 /**
  * @brief Marks a userdata as created by this script.
  * @param userdata a userdata
  */
-void Script::set_created(void* userdata) {
-
-  if (!has_created(userdata)) {
-    refcounts[userdata] = 0;
-  }
+void Script::set_created(ExportableToLua* userdata) {
+  userdata->set_creator_script(this);
 }
 
 /**
@@ -697,10 +801,29 @@ void Script::set_created(void* userdata) {
  *
  * @param userdata the userdata
  */
-void Script::increment_refcount(void* userdata) {
+void Script::increment_refcount(ExportableToLua* userdata) {
 
-  if (has_created(userdata) > 0) {
-    refcounts[userdata]++;
+  if (has_created(userdata)) {
+    userdata->increment_refcount();
+  }
+}
+
+/**
+ * @brief Removes 1 to the reference counter of a userdata and possibly
+ * destroys the object.
+ *
+ * If the counter gets to zero, the object is deleted immediately.
+ * If the object was not created by this script, nothing is done.
+ *
+ * @param userdata the userdata
+ */
+void Script::decrement_refcount(ExportableToLua* userdata) {
+
+  if (has_created(userdata)) {
+    userdata->decrement_refcount();
+    if (userdata->get_refcount() == 0) {
+      delete userdata;
+    }
   }
 }
 

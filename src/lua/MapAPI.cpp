@@ -40,14 +40,14 @@
 #include "lowlevel/Sound.h"
 #include <lua.hpp>
 
-const char* Script::map_module_name = "sol.map";
+const std::string Script::map_module_name = "sol.map";
 
 /**
  * @brief Initializes the map features provided to Lua.
  */
-void Script::initialize_map_module() {
+void Script::register_map_module() {
 
-  static const luaL_Reg methods[] = {
+  static const luaL_Reg functions[] = {
       { "dialog_start", map_api_dialog_start },
       { "dialog_set_variable", map_api_dialog_set_variable },
       { "dialog_set_style", map_api_dialog_set_style },
@@ -161,7 +161,7 @@ void Script::initialize_map_module() {
       { "enemy_get_sprite", map_api_enemy_get_sprite },
       { NULL, NULL }
   };
-  luaL_register(l, map_module_name, methods);
+  register_functions(map_module_name, functions);
 }
 
 /**
@@ -993,7 +993,7 @@ int Script::map_api_npc_get_sprite(lua_State* l) {
 
   MapEntities& entities = script.get_map().get_entities();
   NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, entity_name);
-  push_sprite(l, npc->get_sprite());
+  push_userdata(l, npc->get_sprite());
 
   return 1;
 }
@@ -2770,7 +2770,7 @@ int Script::map_api_enemy_get_sprite(lua_State *l) {
 
   MapEntities& entities = script.get_map().get_entities();
   Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
-  push_sprite(l, enemy->get_sprite());
+  push_userdata(l, enemy->get_sprite());
 
   return 1;
 }

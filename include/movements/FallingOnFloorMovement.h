@@ -40,7 +40,6 @@ class FallingOnFloorMovement: public PixelMovement {
     // construction and destruction
     FallingOnFloorMovement(FallingHeight height);
     ~FallingOnFloorMovement();
-
 };
 
 #endif

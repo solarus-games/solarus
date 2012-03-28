@@ -52,7 +52,6 @@ DynamicDisplayable& Script::check_displayable(lua_State* l, int index) {
 void Script::add_displayable(DynamicDisplayable* displayable) {
 
   set_created(displayable);
-  displayable->set_script(this);
   displayables.insert(displayable);
 }
 
@@ -141,8 +140,9 @@ int Script::displayable_meta_gc(lua_State* l) {
   if (script.has_created(&displayable)) {
     // the object was created by the script
     script.remove_displayable(&displayable);
-    script.decrement_refcount(&displayable);
   }
+
+  userdata_meta_gc(l);
 
   return 0;
 }

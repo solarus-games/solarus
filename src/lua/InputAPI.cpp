@@ -19,7 +19,7 @@
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
-const char* Script::input_module_name = "sol.input";
+const std::string Script::input_module_name = "sol.input";
 
 std::map<InputEvent::KeyboardKey, std::string>
   Script::input_key_names;
@@ -27,14 +27,14 @@ std::map<InputEvent::KeyboardKey, std::string>
 /**
  * @brief Initializes the input features provided to Lua.
  */
-void Script::initialize_input_module() {
+void Script::register_input_module() {
 
-  static const luaL_Reg methods[] = {
+  static const luaL_Reg functions[] = {
       // no function from Lua to C++ for inputs (yet?)
       { NULL, NULL }
   };
-
-  luaL_register(l, input_module_name, methods);
+  // create the "sol.input" table anyway
+  register_functions(input_module_name, functions);
 
   // initialize the map of keyboard key names
   input_key_names[InputEvent::KEY_BACKSPACE]             = "backspace";

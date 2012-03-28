@@ -128,9 +128,7 @@ class CircleMovement: public Movement {
     uint32_t get_loop();
     void set_loop(uint32_t delay);
 
-    // properties
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

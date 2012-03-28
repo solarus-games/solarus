@@ -21,6 +21,7 @@
 #include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lua/Script.h"
 
 std::map<std::string, TextSurface::FontData> TextSurface::fonts;
 std::string TextSurface::default_font_id = "";
@@ -435,5 +436,13 @@ void TextSurface::raw_display(Surface& dst_surface,
     dst_position2.add_xy(dst_position);
     surface->raw_display(dst_surface, dst_position2);
   }
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
+ */
+const std::string& TextSurface::get_lua_type_name() const {
+  return Script::text_surface_module_name;
 }
 

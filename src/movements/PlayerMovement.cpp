@@ -17,6 +17,7 @@
 #include "movements/PlayerMovement.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/Debug.h"
 #include "Game.h"
 #include "GameControls.h"
 
@@ -132,5 +133,14 @@ void PlayerMovement::compute_movement() {
     // indeed, the entity may need to update its sprites
     get_entity()->notify_movement_changed();
   }
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
+ */
+const std::string& PlayerMovement::get_lua_type_name() const {
+  Debug::die("No Lua binding for PlayerMovement");
+  throw;
 }
 

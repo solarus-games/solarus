@@ -22,14 +22,14 @@
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
-const char* Script::game_module_name = "sol.game";
+const std::string Script::game_module_name = "sol.game";
 
 /**
  * @brief Initializes the game features provided to Lua.
  */
-void Script::initialize_game_module() {
+void Script::register_game_module() {
 
-  static const luaL_Reg methods[] = {
+  static const luaL_Reg functions[] = {
       { "save", game_api_save },
       { "reset", game_api_reset },
       { "restart", game_api_restart },
@@ -70,8 +70,7 @@ void Script::initialize_game_module() {
       { "set_dungeon_finished", game_api_set_dungeon_finished },
       { NULL, NULL }
   };
-
-  luaL_register(l, game_module_name, methods);
+  register_functions(game_module_name, functions);
 }
 
 /**

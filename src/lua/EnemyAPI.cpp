@@ -24,16 +24,17 @@
 #include "lowlevel/Geometry.h"
 #include "Game.h"
 #include "Map.h"
+#include "Sprite.h"
 #include <lua.hpp>
 
-const char* Script::enemy_module_name = "sol.enemy";
+const std::string Script::enemy_module_name = "sol.enemy";
 
 /**
  * @brief Initializes the enemy features provided to Lua.
  */
-void Script::initialize_enemy_module() {
+void Script::register_enemy_module() {
 
-  static const luaL_Reg methods[] = {
+  static const luaL_Reg functions[] = {
       { "get_name", enemy_api_get_name },
       { "get_life", enemy_api_get_life },
       { "set_life", enemy_api_set_life },
@@ -92,8 +93,7 @@ void Script::initialize_enemy_module() {
       { "send_message", enemy_api_send_message },
       { NULL, NULL }
   };
-
-  luaL_register(l, enemy_module_name, methods);
+  register_functions(enemy_module_name, functions);
 }
 
 /**
@@ -1005,7 +1005,7 @@ int Script::enemy_api_get_movement(lua_State *l) {
     lua_pushnil(l);
   }
   else {
-    push_movement(l, *movement);
+    push_userdata(l, *movement);
   }
 
   return 1;
@@ -1103,7 +1103,7 @@ int Script::enemy_api_create_sprite(lua_State *l) {
 
   const std::string& animation_set_id = luaL_checkstring(l, 1);
   Sprite& sprite = enemy.create_sprite(animation_set_id, true);
-  push_sprite(l, sprite);
+  push_userdata(l, sprite);
 
   return 1;
 }
@@ -1148,7 +1148,7 @@ int Script::enemy_api_get_sprite(lua_State *l) {
 
   Script& script = get_script(l);
   Enemy& enemy = script.get_enemy();
-  push_sprite(l, enemy.get_sprite());
+  push_userdata(l, enemy.get_sprite());
 
   return 1;
 }

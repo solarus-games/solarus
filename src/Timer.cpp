@@ -16,6 +16,7 @@
  */
 #include "Timer.h"
 #include "Game.h"
+#include "lua/Script.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
@@ -105,5 +106,13 @@ void Timer::set_suspended(bool suspended) {
       }
     }
   }
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
+ */
+const std::string& Timer::get_lua_type_name() const {
+  return Script::timer_module_name;
 }
 

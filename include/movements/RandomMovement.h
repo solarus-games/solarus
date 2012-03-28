@@ -59,9 +59,7 @@ class RandomMovement: public StraightMovement {
 
     void set_max_distance(int max_distance);
 
-    // properties
-    const std::string get_property(const std::string& key);
-    void set_property(const std::string& key, const std::string& value);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

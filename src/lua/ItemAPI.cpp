@@ -24,18 +24,19 @@
 #include "Game.h"
 #include "Map.h"
 #include "InventoryItem.h"
+#include "Sprite.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
-const char* Script::item_module_name = "sol.item";
+const std::string Script::item_module_name = "sol.item";
 
 /**
  * @brief Initializes the item features provided to Lua.
  */
-void Script::initialize_item_module() {
+void Script::register_item_module() {
 
-  static const luaL_Reg methods[] = {
+  static const luaL_Reg functions[] = {
       { "get_variant", item_api_get_variant },
       { "set_variant", item_api_set_variant },
       { "get_amount", item_api_get_amount },
@@ -52,8 +53,7 @@ void Script::initialize_item_module() {
       { "set_finished", item_api_set_finished },
       { NULL, NULL }
   };
-
-  luaL_register(l, item_module_name, methods);
+  register_functions(item_module_name, functions);
 }
 
 /**
@@ -200,7 +200,7 @@ int Script::item_api_get_sprite(lua_State *l) {
   Debug::check_assertion(pickable_item != NULL,
                 "Cannot call sol.item.get_sprite(): there is no current pickable item");
 
-  push_sprite(l, pickable_item->get_sprite());
+  push_userdata(l, pickable_item->get_sprite());
 
   return 1;
 }
@@ -230,7 +230,7 @@ int Script::item_api_get_movement(lua_State *l) {
                 "Cannot call sol.item.get_movement(): there is no current pickable item");
 
   Movement *movement = pickable_item->get_movement();
-  push_movement(l, *movement);
+  push_userdata(l, *movement);
 
   return 1;
 }

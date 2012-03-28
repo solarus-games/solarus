@@ -142,6 +142,8 @@ class Sprite: public DynamicDisplayable {
     // udpate and display
     void update();
     void raw_display(Surface& dst_surface, const Rectangle& dst_position);
+
+    const std::string& get_lua_type_name() const;
 };
 
 #endif

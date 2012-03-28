@@ -113,7 +113,7 @@ void MenuScript::event_display(Surface& dst_surface) {
 
   const std::string function_name("event_display");
   if (find_lua_function(function_name)) {
-    push_surface(l, dst_surface);
+    push_userdata(l, dst_surface);
     call_script(1, 0, function_name);
   }
 }

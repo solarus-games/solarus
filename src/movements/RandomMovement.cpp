@@ -16,6 +16,7 @@
  */
 #include "movements/RandomMovement.h"
 #include "entities/MapEntity.h"
+#include "lua/Script.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Geometry.h"
@@ -141,82 +142,10 @@ void RandomMovement::notify_obstacle_reached() {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - max_distance
- * - ignore_obstacles
- * - angle
- * - displayed_direction
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string RandomMovement::get_property(const std::string& key) {
-
-  std::ostringstream oss;
-
-  if (key == "speed") {
-    oss << get_speed();
-  }
-  else if (key == "max_distance") {
-    oss << max_distance;
-  }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
-  }
-  else if (key == "angle") {
-    oss << Geometry::radians_to_degrees(get_angle());
-  }
-  else if (key == "displayed_direction") {
-    oss << get_displayed_direction4();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of RandomMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - speed
- * - max_distance
- * - ignore_obstacles
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void RandomMovement::set_property(const std::string& key, const std::string& value) {
-
-  std::istringstream iss(value);
-
-  if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "max_distance") {
-    int max_distance;
-    iss >> max_distance;
-    set_max_distance(max_distance);
-  }
-  else if (key == "ignore_obstacles") {
-    bool ignore_obstacles;
-    iss >> ignore_obstacles;
-    set_default_ignore_obstacles(ignore_obstacles);
-  }
-  else if (key == "angle") {
-    Debug::die("The property 'angle' of RandomMovement is read-only");
-  }
-  else if (key == "displayed_direction") {
-    Debug::die("The property 'displayed_direction' of RandomMovement is read-only");
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of RandomMovement: '" << key << "'");
-  }
+const std::string& RandomMovement::get_lua_type_name() const {
+  return Script::random_movement_module_name;
 }
 

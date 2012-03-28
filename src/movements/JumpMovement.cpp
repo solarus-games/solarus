@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/JumpMovement.h"
+#include "lua/Script.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <sstream>
@@ -161,78 +162,10 @@ void JumpMovement::notify_step_done(int step_index, bool success) {
 }
 
 /**
- * @brief Returns the value of a property of this movement.
- *
- * Accepted keys:
- * - direction8
- * - length
- * - speed
- * - ignore_obstacles
- *
- * @param key key of the property to get
- * @return the corresponding value as a string
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
  */
-const std::string JumpMovement::get_property(const std::string &key) {
-
-  std::ostringstream oss;
-
-  if (key == "direction8") {
-    oss << direction8;
-  }
-  else if (key == "length") {
-    oss << length;
-  }
-  else if (key == "speed") {
-    oss << speed;
-  }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of JumpMovement: '" << key << "'");
-  }
-
-  return oss.str();
-}
-
-/**
- * @brief Sets the value of a property of this movement.
- *
- * Accepted keys:
- * - direction8
- * - length
- * - speed
- * - ignore_obstacles
- *
- * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param value the value to set
- */
-void JumpMovement::set_property(const std::string &key, const std::string &value) {
-
-  std::istringstream iss(value);
-
-  if (key == "direction8") {
-    int direction8;
-    iss >> direction8;
-    set_direction8(direction8);
-  }
-  else if (key == "length") {
-    int length;
-    iss >> length;
-    set_length(length);
-  }
-  else if (key == "speed") {
-    int speed;
-    iss >> speed;
-    set_speed(speed);
-  }
-  else if (key == "ignore_obstacles") {
-    bool ignore_obstacles;
-    iss >> ignore_obstacles;
-    set_default_ignore_obstacles(ignore_obstacles);
-  }
-  else {
-    Debug::die(StringConcat() << "Unknown property of JumpMovement: '" << key << "'");
-  }
+const std::string& JumpMovement::get_lua_type_name() const {
+  return Script::jump_movement_module_name;
 }
 

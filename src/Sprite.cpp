@@ -20,6 +20,7 @@
 #include "SpriteAnimationDirection.h"
 #include "Game.h"
 #include "Map.h"
+#include "lua/Script.h"
 #include "lowlevel/PixelBits.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/System.h"
@@ -651,5 +652,13 @@ void Sprite::raw_display(Surface& dst_surface,
       alpha_surface->display(dst_surface);
     }
   }
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
+ */
+const std::string& Sprite::get_lua_type_name() const {
+  return Script::sprite_module_name;
 }
 

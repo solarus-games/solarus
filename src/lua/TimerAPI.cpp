@@ -19,12 +19,12 @@
 #include "Game.h"
 #include <lua.hpp>
 
-const char* Script::timer_module_name = "sol.timer";
+const std::string Script::timer_module_name = "sol.timer";
 
 /**
  * @brief Initializes the timer features provided to Lua.
  */
-void Script::initialize_timer_module() {
+void Script::register_timer_module() {
 
   static const luaL_Reg methods[] = {
       { "start", timer_api_start },
@@ -32,29 +32,11 @@ void Script::initialize_timer_module() {
       { "stop_all", timer_api_stop_all},
       { NULL, NULL }
   };
-
   static const luaL_Reg metamethods[] = {
-      { "__gc", timer_meta_gc },
+      { "__gc", userdata_meta_gc },
       { NULL, NULL }
   };
-
-  // create a table and fill it with the methods
-  luaL_register(l, timer_module_name, methods);
-                                  // sol.timer
-
-  // create the metatable for the type, add it to the Lua registry
-  luaL_newmetatable(l, timer_module_name);
-                                  // sol.timer mt
-  // fill the metatable
-  luaL_register(l, NULL, metamethods);
-                                  // sol.timer mt
-  lua_pushvalue(l, -2);
-                                  // sol.timer mt sol.timer
-  // metatable.__index = sol.timer
-  lua_setfield(l, -2, "__index");
-                                  // sol.timer mt
-  lua_pop(l, 2);
-                                  // --
+  register_type(timer_module_name, methods, metamethods);
 }
 
 /**
@@ -130,15 +112,7 @@ bool Script::is_new_timer_suspended(void) {
  * @return the timer
  */
 Timer& Script::check_timer(lua_State* l, int index) {
-
-  if (index < 0) {
-    // ensure a positive index
-    index = lua_gettop(l) + index + 1;
-  }
-
-  Timer** timer =
-    (Timer**) luaL_checkudata(l, index, timer_module_name);
-  return **timer;
+  return static_cast<Timer&>(check_userdata(l, index, timer_module_name));
 }
 
 /**
@@ -147,37 +121,7 @@ Timer& Script::check_timer(lua_State* l, int index) {
  * @param timer a timer
  */
 void Script::push_timer(lua_State* l, Timer& timer) {
-
-  Script& script = get_script(l);
-
-  script.increment_refcount(&timer);
-                                  // ...
-  Timer** block_adress =
-    (Timer**) lua_newuserdata(l, sizeof(Timer*));
-  *block_adress = &timer;
-                                  // ... timer
-  luaL_getmetatable(l, timer_module_name);
-                                  // ... timer mt
-  lua_setmetatable(l, -2);
-                                  // ... timer
-}
-
-/**
- * @brief Finalizes a timer.
- *
- * - Argument 1 (timer): a timer
- *
- * @param l a Lua state
- * @return number of values to return to Lua
- */
-int Script::timer_meta_gc(lua_State* l) {
-
-  Script& script = get_script(l);
-  Timer& timer = check_timer(l, 1);
-
-  script.decrement_refcount(&timer);
-
-  return 0;
+  push_userdata(l, timer);
 }
 
 /**

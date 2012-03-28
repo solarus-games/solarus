@@ -24,6 +24,7 @@
 #include <set>
 
 struct lua_State;
+struct luaL_Reg;
 
 /**
  * @brief Handles a Lua script that is running.
@@ -33,6 +34,31 @@ struct lua_State;
 class Script {
 
   public:
+
+    // functions and types
+    static const std::string main_module_name;
+    static const std::string audio_module_name;
+    static const std::string timer_module_name;
+    static const std::string game_module_name;
+    static const std::string map_module_name;
+    static const std::string item_module_name;
+    static const std::string enemy_module_name;
+    static const std::string surface_module_name;
+    static const std::string text_surface_module_name;
+    static const std::string sprite_module_name;
+    static const std::string input_module_name;
+    static const std::string movement_module_name;
+
+    // subtypes
+    static const std::string straight_movement_module_name;
+    static const std::string random_movement_module_name;
+    static const std::string target_movement_module_name;
+    static const std::string path_movement_module_name;
+    static const std::string random_path_movement_module_name;
+    static const std::string path_finding_movement_module_name;
+    static const std::string circle_movement_module_name;
+    static const std::string jump_movement_module_name;
+    static const std::string pixel_movement_module_name;
 
     virtual ~Script();
 
@@ -61,11 +87,10 @@ class Script {
     void cancel_callback(int callback_ref);
 
     // userdata garbage collection
-    bool has_created(void* userdata);
-    void set_created(void* userdata);
-    void increment_refcount(void* userdata);
-    template <typename T>
-      void decrement_refcount(T* userdata);
+    bool has_created(ExportableToLua* userdata);
+    void set_created(ExportableToLua* userdata);
+    void increment_refcount(ExportableToLua* userdata);
+    void decrement_refcount(ExportableToLua* userdata);
 
   protected:
 
@@ -97,6 +122,7 @@ class Script {
     bool is_loaded();
 
     // modules
+    static void push_userdata(lua_State* l, ExportableToLua& userdata);
     static void push_timer(lua_State* l, Timer& timer);
     static void push_surface(lua_State* l, Surface& surface);
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
@@ -107,12 +133,6 @@ class Script {
   private:
 
     // script data
-    std::map<void*, int> refcounts; /**< for each userdata created by this
-                                     * script:
-                                     * number of pointers to the object
-                                     * including the Lua ones
-                                     * (0 means that it can be deleted) */
-
     std::map<Timer*, int> timers;   /**< the timers currently running for this
                                      * script, associated to their callback ref */
     std::set<DynamicDisplayable*>
@@ -123,39 +143,33 @@ class Script {
 
     // APIs
     uint32_t apis_enabled;          /**< OR combination of optional APIs */
-    static const char* main_module_name;
-    static const char* audio_module_name;
-    static const char* timer_module_name;
-    static const char* game_module_name;
-    static const char* map_module_name;
-    static const char* item_module_name;
-    static const char* enemy_module_name;
-    static const char* surface_module_name;
-    static const char* text_surface_module_name;
-    static const char* sprite_module_name;
-    static const char* movement_module_name;
-    static const char* input_module_name;
 
     static std::map<InputEvent::KeyboardKey, std::string>
       input_key_names; /**< names of all existing keyboard keys in Lua */
 
     // initialization of modules
-    void register_apis();
-    void initialize_main_module();
-    void initialize_audio_module();
-    void initialize_timer_module();
-    void initialize_game_module();
-    void initialize_map_module();
-    void initialize_item_module();
-    void initialize_enemy_module();
-    void initialize_surface_module();
-    void initialize_text_surface_module();
-    void initialize_sprite_module();
-    void initialize_movement_module();
-    void initialize_input_module();
+    void register_modules();
+    void register_functions(const std::string& module_name, const luaL_Reg* functions);
+    void register_type(const std::string& module_name, const luaL_Reg* functions,
+        const luaL_Reg* metamethods);
+    void register_main_module();
+    void register_audio_module();
+    void register_timer_module();
+    void register_game_module();
+    void register_map_module();
+    void register_item_module();
+    void register_enemy_module();
+    void register_surface_module();
+    void register_text_surface_module();
+    void register_sprite_module();
+    void register_movement_module();
+    void register_input_module();
 
     // types
-    static bool is_userdata(lua_State* l, int index, const std::string& module_name);
+    static bool is_userdata(lua_State* l, int index,
+        const std::string& module_name);
+    static ExportableToLua& check_userdata(lua_State* l, int index,
+        const std::string& module_name);
     static Timer& check_timer(lua_State* l, int index);
     static DynamicDisplayable& check_displayable(lua_State* l, int index);
     static Surface& check_surface(lua_State* l, int index);
@@ -203,7 +217,6 @@ class Script {
       timer_api_start,
       timer_api_stop,
       timer_api_stop_all,
-      timer_meta_gc,
 
       // game API
       game_api_save,
@@ -473,7 +486,6 @@ class Script {
       movement_api_get_ignore_obstacles,
       movement_api_set_ignore_obstacles,
       movement_api_get_direction4,
-      movement_meta_gc,
       straight_movement_api_get_speed,
       straight_movement_api_set_speed,
       straight_movement_api_get_angle,
@@ -526,29 +538,11 @@ class Script {
       jump_movement_api_get_distance,
       jump_movement_api_set_distance,
       jump_movement_api_get_speed,
-      jump_movement_api_set_speed;
+      jump_movement_api_set_speed,
+
+      // common to all userdata types
+      userdata_meta_gc;
 };
-
-/**
- * @brief Removes 1 to the reference counter of a userdata and possibly
- * destroys the object.
- *
- * If the counter gets to zero, the object is deleted immediately.
- * If the object was not created by this script, nothing is done.
- *
- * @param userdata the userdata
- */
-template <typename T>
-void Script::decrement_refcount(T* userdata) {
-
-  if (has_created(userdata)) {
-    int refcount = --refcounts[userdata];
-    if (refcount == 0) {
-      refcounts.erase(userdata);
-      delete userdata;
-    }
-  }
-}
 
 #endif
 

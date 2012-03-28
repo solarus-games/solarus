@@ -111,9 +111,7 @@ class StraightMovement: public Movement {
     void set_finished();
     void stop();
 
-    // properties
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

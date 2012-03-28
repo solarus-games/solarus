@@ -23,12 +23,12 @@
 #include "TransitionFade.h"
 #include <iostream>
 
-const char* Script::surface_module_name = "sol.surface";
+const std::string Script::surface_module_name = "sol.surface";
 
 /**
  * @brief Initializes the surface features provided to Lua.
  */
-void Script::initialize_surface_module() {
+void Script::register_surface_module() {
 
   static const luaL_Reg methods[] = {
       { "create", surface_api_create },
@@ -43,31 +43,11 @@ void Script::initialize_surface_module() {
       { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }
   };
-
   static const luaL_Reg metamethods[] = {
       { "__gc", displayable_meta_gc },
       { NULL, NULL }
   };
-
-  // create a table and fill it with the methods
-  luaL_register(l, surface_module_name, methods);
-                                  // sol.surface
-
-  // create the metatable for the type, add it to the Lua registry
-  luaL_newmetatable(l, surface_module_name);
-                                  // sol.surface mt
-  // fill the metatable
-  luaL_register(l, NULL, metamethods);
-                                  // sol.surface mt
-  lua_pushvalue(l, -2);
-                                  // sol.surface mt sol.surface
-  // metatable.__index = sol.surface
-  // this allows to write my_surface:method(args) for
-  // sol.surface.method(my_surface, args)
-  lua_setfield(l, -2, "__index");
-                                  // sol.surface mt
-  lua_pop(l, 2);
-                                  // --
+  register_type(surface_module_name, methods, metamethods);
 }
 
 /**
@@ -78,15 +58,7 @@ void Script::initialize_surface_module() {
  * @return the surface
  */
 Surface& Script::check_surface(lua_State* l, int index) {
-
-  if (index < 0) {
-    // ensure a positive index
-    index = lua_gettop(l) + index + 1;
-  }
-
-  Surface** surface =
-    (Surface**) luaL_checkudata(l, index, surface_module_name);
-  return **surface;
+  return static_cast<Surface&>(check_userdata(l, index, surface_module_name));
 }
 
 /**
@@ -95,19 +67,7 @@ Surface& Script::check_surface(lua_State* l, int index) {
  * @param surface a surface
  */
 void Script::push_surface(lua_State* l, Surface& surface) {
-
-  Script& script = get_script(l);
-
-  script.increment_refcount(&surface);
-                                  // ...
-  Surface** block_adress =
-    (Surface**) lua_newuserdata(l, sizeof(Surface*));
-  *block_adress = &surface;
-                                  // ... surface
-  luaL_getmetatable(l, surface_module_name);
-                                  // ... surface mt
-  lua_setmetatable(l, -2);
-                                  // ... surface
+  push_userdata(l, surface);
 }
 
 /**

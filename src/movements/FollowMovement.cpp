@@ -16,6 +16,7 @@
  */
 #include "movements/FollowMovement.h"
 #include "entities/MapEntity.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Creates a follow movement.
@@ -110,5 +111,14 @@ const Rectangle FollowMovement::get_displayed_xy() {
   Rectangle displayed_xy = get_xy();
   displayed_xy.add_xy(dx, dy);
   return displayed_xy;
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return the name identifying this type in Lua
+ */
+const std::string& FollowMovement::get_lua_type_name() const {
+  Debug::die("No Lua binding for FollowMovement");
+  throw;
 }
 

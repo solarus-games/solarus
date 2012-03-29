@@ -91,26 +91,17 @@ int Script::surface_api_create(lua_State* l) {
   else if (lua_type(l, 1) == LUA_TSTRING) {
     // load from a file
     const std::string& file_name = lua_tostring(l, 1);
-    bool language_specific = false;
-    if (lua_gettop(l) >= 2) {
-      language_specific = lua_toboolean(l, 2);
-    }
+    bool language_specific = lua_toboolean(l, 2); // default is false
     surface = new Surface(file_name, language_specific ?
         Surface::DIR_LANGUAGE : Surface::DIR_SPRITES);
   }
   else {
     // create from an existing surface
     Surface& other_surface = check_surface(l, 1);
-    int x = 0;
-    int y = 0;
-    int width = other_surface.get_width();
-    int height = other_surface.get_height();
-    if (lua_gettop(l) >= 2) {
-      x = luaL_checkinteger(l, 2);
-      y = luaL_checkinteger(l, 3);
-      width = luaL_checkinteger(l, 4);
-      height = luaL_checkinteger(l, 5);
-    }
+    int x = luaL_optinteger(l, 2, 0);
+    int y = luaL_optinteger(l, 3, 0);
+    int width = luaL_optinteger(l, 4, other_surface.get_width());
+    int height = luaL_optinteger(l, 5, other_surface.get_height());
     surface = new Surface(width, height);
     other_surface.display_region(Rectangle(x, y, width, height), *surface);
   }
@@ -159,17 +150,9 @@ int Script::surface_api_draw(lua_State* l) {
 
   Surface& dst_surface = check_surface(l, 1);
   DynamicDisplayable& displayable = check_displayable(l, 2);
-
-  int x = 0;
-  int y = 0;
-  if (lua_gettop(l) >= 3) {
-    x = luaL_checkinteger(l, 3);
-    y = luaL_checkinteger(l, 4);
-    displayable.display(dst_surface, x, y);
-  }
-  else {
-    displayable.display(dst_surface);
-  }
+  int x = luaL_optinteger(l, 3, 0);
+  int y = luaL_optinteger(l, 4, 0);
+  displayable.display(dst_surface, x, y);
 
   return 0;
 }

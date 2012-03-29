@@ -83,57 +83,28 @@ int Script::text_surface_api_create(lua_State* l) {
       const std::string& font_id = luaL_checkstring(l, -1);
       text_surface->set_font(font_id);
     }
-    // TODO there exists a Lua function to get an enum from a string
     else if (key == "rendering_mode") {
-      const std::string& rendering_mode_name = luaL_checkstring(l, -1);
-      TextSurface::RenderingMode rendering_mode = TextSurface::TEXT_SOLID;
-      if (rendering_mode_name == "solid") {
-        rendering_mode = TextSurface::TEXT_SOLID;
-      }
-      else if (rendering_mode_name == "shaded") {
-        rendering_mode = TextSurface::TEXT_SHADED;
-      }
-      else if (rendering_mode_name == "blended") {
-        rendering_mode = TextSurface::TEXT_BLENDED;
-      }
-      else {
-        luaL_error(l, "rendering_mode should be one of \"solid\", \"shaded\" or \"blended\"");
-      }
-      text_surface->set_rendering_mode(rendering_mode);
+      static const char* rendering_mode_names[] = {
+        "solid", "shaded", "blended", NULL
+      };
+      int mode = luaL_checkoption(l, -1, NULL, rendering_mode_names);
+      text_surface->set_rendering_mode(TextSurface::RenderingMode(mode));
     }
     else if (key == "horizontal_alignment") {
-      const std::string& alignment_name = luaL_checkstring(l, -1);
-      TextSurface::HorizontalAlignment alignment = TextSurface::ALIGN_LEFT;
-      if (alignment_name == "left") {
-        alignment = TextSurface::ALIGN_LEFT;
-      }
-      else if (alignment_name == "center") {
-        alignment = TextSurface::ALIGN_CENTER;
-      }
-      else if (alignment_name == "right") {
-        alignment = TextSurface::ALIGN_RIGHT;
-      }
-      else {
-        luaL_error(l, "horizontal_alignment should be one of \"left\", \"center\" or \"right\"");
-      }
-      text_surface->set_horizontal_alignment(alignment);
+      static const char* horizontal_alignment_names[] = {
+        "left", "center", "right", NULL
+      };
+      int alignment = luaL_checkoption(l, -1, NULL, horizontal_alignment_names);
+      text_surface->set_horizontal_alignment(
+          TextSurface::HorizontalAlignment(alignment));
     }
     else if (key == "vertical_alignment") {
-      const std::string& alignment_name = luaL_checkstring(l, -1);
-      TextSurface::VerticalAlignment alignment = TextSurface::ALIGN_MIDDLE;
-      if (alignment_name == "top") {
-        alignment = TextSurface::ALIGN_TOP;
-      }
-      else if (alignment_name == "middle") {
-        alignment = TextSurface::ALIGN_MIDDLE;
-      }
-      else if (alignment_name == "bottom") {
-        alignment = TextSurface::ALIGN_BOTTOM;
-      }
-      else {
-        luaL_error(l, "vertical_alignment should be one of \"top\", \"middle\" or \"bottom\"");
-      }
-      text_surface->set_vertical_alignment(alignment);
+      static const char* vertical_alignment_names[] = {
+        "top", "middle", "bottom", NULL
+      };
+      int alignment = luaL_checkoption(l, -1, NULL, vertical_alignment_names);
+      text_surface->set_vertical_alignment(
+          TextSurface::VerticalAlignment(alignment));
     }
     else if (key == "background_color") {
       Color color = check_color(l, -1);

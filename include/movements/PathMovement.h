@@ -32,15 +32,41 @@
  * The notion of path is specific to PathMovement and its subclasses (like PathFindingMovement and RandomPathMovement).
  * A "trajectory" is a move of 8 pixels in the sense of the PixelMovement class.
  * A path is composed of several trajectories. The notion of trajectory is hidden from the public interface of PathMovement.
- *
- * Properties:
- * - path
- * - speed
- * - loop
- * - ignore_obstacles
- * - snap_to_grid
  */
 class PathMovement: public PixelMovement {
+
+  public:
+
+    PathMovement(const std::string& path, int speed, bool loop, bool ignore_obstacles, bool snap_to_grid);
+    ~PathMovement();
+
+    void set_entity(MapEntity* entity);
+    virtual void update();
+    virtual void set_suspended(bool suspended);
+    virtual bool is_finished();
+    void restart();
+
+    const std::string& get_path();
+    void set_path(const std::string& path);
+    int get_speed();
+    void set_speed(int speed);
+    bool get_loop();
+    void set_loop(bool loop);
+    bool get_snap_to_grid();
+    void set_snap_to_grid(bool snap_to_grid);
+
+    Rectangle get_xy_change();
+    int get_current_direction();
+    int get_total_distance_covered();
+    int get_displayed_direction4();
+
+    static const std::string create_random_path();
+
+    virtual const std::string& get_lua_type_name() const;
+
+  protected:
+
+    void notify_step_done(int step_index, bool success);
 
   private:
 
@@ -61,46 +87,13 @@ class PathMovement: public PixelMovement {
 
     static const std::string elementary_moves[];		/**< 8 pixel trajectory (in the PixelMovement sense) for each direction (0 to 7) */
 
-  private:
-
     static uint32_t speed_to_delay(int speed, int direction);
 
     void start_next_elementary_move();
     bool is_current_elementary_move_finished();
 
     void snap();
-    void set_snapping_trajectory(const Rectangle &src, const Rectangle &dst);
-
-  protected:
-
-    void notify_step_done(int step_index, bool success);
-
-  public:
-
-    PathMovement(const std::string &path, int speed, bool loop, bool ignore_obstacles, bool snap_to_grid);
-    ~PathMovement();
-
-    void set_entity(MapEntity *entity);
-    virtual void update();
-    virtual void set_suspended(bool suspended);
-    virtual bool is_finished();
-    void restart();
-
-    void set_path(const std::string &path);
-    int get_speed();
-    void set_speed(int speed);
-    bool get_loop();
-    void set_loop(bool loop);
-    void set_snap_to_grid(bool snap_to_grid);
-
-    Rectangle get_xy_change();
-    int get_current_direction();
-    int get_total_distance_covered();
-    int get_displayed_direction4();
-
-    static const std::string create_random_path();
-
-    virtual const std::string& get_lua_type_name() const;
+    void set_snapping_trajectory(const Rectangle& src, const Rectangle& dst);
 };
 
 #endif

@@ -45,7 +45,7 @@ const std::string PathMovement::elementary_moves[] = {
  * @param ignore_obstacles true to make the movement ignore obstacles
  * @param must_be_aligned true to snap the entity to the map grid before moving it
  */
-PathMovement::PathMovement(const std::string &path, int speed,
+PathMovement::PathMovement(const std::string& path, int speed,
     bool loop, bool ignore_obstacles, bool must_be_aligned):
 
   PixelMovement("", 0, false, ignore_obstacles),
@@ -69,12 +69,21 @@ PathMovement::~PathMovement() {
 }
 
 /**
+ * @brief Returns the path of this movement.
+ * @return the path
+ */
+const std::string& PathMovement::get_path() {
+
+  return initial_path;
+}
+
+/**
  * @brief Sets the path of this movement.
  * @param path the succession of basic moves
  * composing this movement (each character represents
  * a direction between '0' and '7')
  */
-void PathMovement::set_path(const std::string &path) {
+void PathMovement::set_path(const std::string& path) {
 
   this->initial_path = path;
   restart();
@@ -122,6 +131,16 @@ void PathMovement::set_loop(bool loop) {
 }
 
 /**
+ * @brief Returns whether the entity is snapped to the map grid before the
+ * path starts.
+ * @return true if the entity is made aligned to the grid
+ */
+bool PathMovement::get_snap_to_grid() {
+
+  return snap_to_grid;
+}
+
+/**
  * @brief Sets whether the entity is snapped to the map grid before the path starts.
  * @param snap_to_grid true to make the entity aligned to the grid
  */
@@ -134,7 +153,7 @@ void PathMovement::set_snap_to_grid(bool snap_to_grid) {
  * @brief Sets the entity to be controlled by this movement object.
  * @param entity the entity to control
  */
-void PathMovement::set_entity(MapEntity *entity) {
+void PathMovement::set_entity(MapEntity* entity) {
 
   Movement::set_entity(entity);
   restart();

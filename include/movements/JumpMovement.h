@@ -23,12 +23,6 @@
 /**
  * @brief Movement of an entity that jumps towards a direction.
  *
- * Properties:
- * - direction8
- * - length
- * - speed
- * - ignore_obstacles
- *
  * TODO: inherit StraightMovement instead?
  */
 class JumpMovement: public PixelMovement {

@@ -24,13 +24,6 @@
 /**
  * @brief A movement that makes successive steps of random directions
  * and (possibly) stays inside a limited rectangle.
- *
- * Properties:
- * - speed
- * - max_distance
- * - ignore_obstacles
- * - angle (read-only)
- * - displayed_direction (read-only)
  */
 class RandomMovement: public StraightMovement {
 

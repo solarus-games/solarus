@@ -24,12 +24,6 @@
  * @brief Movement of an object that goes to a target point.
  *
  * The target point may be a fixed point or a moving entity.
- *
- * Properties:
- * - speed
- * - ignore_obstacles
- * - smooth
- * - displayed_direction (read-only)
  */
 class TargetMovement: public StraightMovement {
 

@@ -26,10 +26,6 @@
  * The movement is composed of small random moves. Each
  * random move goes to one of the 4 main directions
  * and with a length that is a multiple of 8 pixels.
- *
- * Properties:
- * - speed
- * - displayed_direction (read-only)
  */
 class RandomPathMovement: public PathMovement {
 

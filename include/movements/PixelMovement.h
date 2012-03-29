@@ -24,12 +24,6 @@
 
 /**
  * @brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
- *
- * Properties:
- * - trajectory
- * - delay
- * - loop
- * - ignore_obstacles
  */
 class PixelMovement: public Movement {
 

@@ -87,8 +87,8 @@ the map.
 If the movement is not attached to a map entity yet, it is not an error to
 call this function: your choice will have an effect when the movement gets
 attached to a map entity.
-- \c ignore_obstacles (boolean): \c true to make this movement ignore
-  obstacles of the map.
+- \c ignore_obstacles (boolean, optional): \c true to make this movement ignore
+  obstacles of the map (default \c true).
 
 <hr>
 
@@ -212,7 +212,7 @@ Sets whether this movement should adjust its trajectory when an obstacle of the
 map is reached.
 This property has no effect if the movement is not attached to a map entity
 or if the movement ignores obstacles.
-- \c smooth (boolean): \c true to make this movement smooth
+- \c smooth (boolean): \c true to make this movement smooth (default \true).
 
 <hr>
 

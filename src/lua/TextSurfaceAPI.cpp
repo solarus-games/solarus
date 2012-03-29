@@ -80,21 +80,21 @@ int Script::text_surface_api_create(lua_State* l) {
 
     const std::string& key = luaL_checkstring(l, 2);
     if (key == "font") {
-      const std::string& font_id = luaL_checkstring(l, -1);
+      const std::string& font_id = luaL_checkstring(l, 3);
       text_surface->set_font(font_id);
     }
     else if (key == "rendering_mode") {
       static const char* rendering_mode_names[] = {
         "solid", "shaded", "blended", NULL
       };
-      int mode = luaL_checkoption(l, -1, NULL, rendering_mode_names);
+      int mode = luaL_checkoption(l, 3, NULL, rendering_mode_names);
       text_surface->set_rendering_mode(TextSurface::RenderingMode(mode));
     }
     else if (key == "horizontal_alignment") {
       static const char* horizontal_alignment_names[] = {
         "left", "center", "right", NULL
       };
-      int alignment = luaL_checkoption(l, -1, NULL, horizontal_alignment_names);
+      int alignment = luaL_checkoption(l, 3, NULL, horizontal_alignment_names);
       text_surface->set_horizontal_alignment(
           TextSurface::HorizontalAlignment(alignment));
     }
@@ -102,24 +102,24 @@ int Script::text_surface_api_create(lua_State* l) {
       static const char* vertical_alignment_names[] = {
         "top", "middle", "bottom", NULL
       };
-      int alignment = luaL_checkoption(l, -1, NULL, vertical_alignment_names);
+      int alignment = luaL_checkoption(l, 3, NULL, vertical_alignment_names);
       text_surface->set_vertical_alignment(
           TextSurface::VerticalAlignment(alignment));
     }
     else if (key == "background_color") {
-      Color color = check_color(l, -1);
+      Color color = check_color(l, 3);
       text_surface->set_background_color(color);
     }
     else if (key == "text_color") {
-      Color color = check_color(l, -1);
+      Color color = check_color(l, 3);
       text_surface->set_text_color(color);
     }
     else if (key == "text") {
-      const std::string& text = luaL_checkstring(l, -1);
+      const std::string& text = luaL_checkstring(l, 3);
       text_surface->set_text(text);
     }
     else if (key == "text_key") {
-      const std::string& text_key = luaL_checkstring(l, -1);
+      const std::string& text_key = luaL_checkstring(l, 3);
       text_surface->set_text(StringResource::get_string(text_key));
     }
     else {

@@ -82,11 +82,9 @@ void CircleMovement::set_center(const Rectangle &center_point) {
  * @param x x coordinate of where the center should be placed relative to the entity's origin
  * @param y y coordinate of where the center should be placed relative to the entity's origin
  */
-void CircleMovement::set_center(MapEntity *center_entity, int x, int y) {
+void CircleMovement::set_center(MapEntity& center_entity, int x, int y) {
 
-  Debug::check_assertion(center_entity != NULL,  "The center entity is NULL");
-
-  this->center_entity = center_entity;
+  this->center_entity = &center_entity;
   this->center_point.set_xy(x, y);
   recompute_position();
 }

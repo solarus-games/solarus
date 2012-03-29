@@ -175,8 +175,17 @@ class Script {
     static Surface& check_surface(lua_State* l, int index);
     static TextSurface& check_text_surface(lua_State* l, int index);
     static Sprite& check_sprite(lua_State* l, int index);
-    static Movement& check_movement(lua_State* l, int index);
     static Color check_color(lua_State* l, int index);
+    static Movement& check_movement(lua_State* l, int index);
+    static StraightMovement& check_straight_movement(lua_State* l, int index);
+    static RandomMovement& check_random_movement(lua_State* l, int index);
+    static TargetMovement& check_target_movement(lua_State* l, int index);
+    static PathMovement& check_path_movement(lua_State* l, int index);
+    static RandomPathMovement& check_random_path_movement(lua_State* l, int index);
+    static PathFindingMovement& check_path_finding_movement(lua_State* l, int index);
+    static CircleMovement& check_circle_movement(lua_State* l, int index);
+    static JumpMovement& check_jump_movement(lua_State* l, int index);
+    static PixelMovement& check_pixel_movement(lua_State* l, int index);
 
     // timers
     bool is_new_timer_suspended(void);
@@ -508,6 +517,8 @@ class Script {
       path_movement_api_set_path,
       path_movement_api_get_speed,
       path_movement_api_set_speed,
+      path_movement_api_get_loop,
+      path_movement_api_set_loop,
       path_movement_api_get_snap_to_grid,
       path_movement_api_set_snap_to_grid,
       random_path_movement_api_get_speed,

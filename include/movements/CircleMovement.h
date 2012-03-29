@@ -26,22 +26,6 @@
  * @brief Movement that makes circles around a center.
  *
  * This movement is used by entities that makes a circle around a center point or another entity.
- * Properties:
- * - center_type
- * - center_name
- * - center_dx
- * - center_dy
- * - radius
- * - radius_speed
- * - direction
- * - initial_angle
- * - angle_speed
- * - max_rotations
- * - duration
- * - loop
- *
- * FIXME: center_type+center_name too complicated both for the user and for the source code
- * (specify an entity type and its name by a single string? "enemy:khotor", "npc:tom")
  */
 class CircleMovement: public Movement {
 
@@ -110,7 +94,7 @@ class CircleMovement: public Movement {
 
     // properties
     void set_center(const Rectangle &center_point);
-    void set_center(MapEntity *center_entity, int x = 0, int y = 0);
+    void set_center(MapEntity& center_entity, int x = 0, int y = 0);
     int get_radius();
     void set_radius(int radius);
     int get_radius_speed();

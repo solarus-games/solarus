@@ -117,6 +117,8 @@ void Script::register_movement_module() {
       { "set_path", path_movement_api_set_path },
       { "get_speed", path_movement_api_get_speed },
       { "set_speed", path_movement_api_set_speed },
+      { "get_loop", path_movement_api_get_loop },
+      { "set_loop", path_movement_api_set_loop },
       { "get_snap_to_grid", path_movement_api_get_snap_to_grid },
       { "set_snap_to_grid", path_movement_api_set_snap_to_grid },
       { NULL, NULL }
@@ -203,7 +205,7 @@ void Script::register_movement_module() {
 
 /**
  * @brief Checks that the userdata at the specified index of the stack is a
- * movement and returns it.
+ * movement (of any subtype) and returns it.
  * @param l a Lua context
  * @param index an index in the stack
  * @return the sprite
@@ -296,3 +298,648 @@ int Script::movement_api_create(lua_State* l) {
   return 1;
 }
 
+/**
+ * @brief Implementation of \ref lua_api_movement_get_ignore_obstacles.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::movement_api_get_ignore_obstacles(lua_State* l) {
+
+  Movement& movement = check_movement(l, 1);
+  lua_pushboolean(l, movement.are_obstacles_ignored());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_movement_set_ignore_obstacles.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::movement_api_set_ignore_obstacles(lua_State* l) {
+
+  Movement& movement = check_movement(l, 1);
+  bool ignore_obstacles = true; // true if unspecified
+  if (lua_isboolean(l, 2)) {
+    ignore_obstacles = lua_toboolean(l, 2);
+  }
+
+  movement.set_ignore_obstacles(ignore_obstacles);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_movement_get_direction4.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::movement_api_get_direction4(lua_State* l) {
+
+  Movement& movement = check_movement(l, 1);
+  lua_pushinteger(l, movement.get_displayed_direction4());
+  return 1;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * straight movement and returns it.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @return the movement
+ */
+StraightMovement& Script::check_straight_movement(lua_State* l, int index) {
+
+  return static_cast<StraightMovement&>(
+      check_userdata(l, index, straight_movement_module_name));
+}
+
+/**
+ * @brief Implementation of \ref lua_api_straight_movement_get_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::straight_movement_api_get_speed(lua_State* l) {
+
+  StraightMovement& movement = check_straight_movement(l, 1);
+  lua_pushinteger(l, movement.get_speed());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_straight_movement_set_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::straight_movement_api_set_speed(lua_State* l) {
+
+  StraightMovement& movement = check_straight_movement(l, 1);
+  int speed = luaL_checkinteger(l, 2);
+  movement.set_speed(speed);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_straight_movement_get_angle.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::straight_movement_api_get_angle(lua_State* l) {
+
+  StraightMovement& movement = check_straight_movement(l, 1);
+  lua_pushnumber(l, movement.get_angle());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_straight_movement_set_angle.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::straight_movement_api_set_angle(lua_State* l) {
+
+  StraightMovement& movement = check_straight_movement(l, 1);
+  double angle = luaL_checknumber(l, 2);
+  movement.set_angle(angle);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_straight_movement_get_max_distance.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::straight_movement_api_get_max_distance(lua_State* l) {
+
+  StraightMovement& movement = check_straight_movement(l, 1);
+  lua_pushinteger(l, movement.get_max_distance());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_straight_movement_set_max_distance.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::straight_movement_api_set_max_distance(lua_State* l) {
+
+  StraightMovement& movement = check_straight_movement(l, 1);
+  int max_distance = luaL_checkinteger(l, 2);
+  movement.set_max_distance(max_distance);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_straight_movement_is_smooth.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::straight_movement_api_is_smooth(lua_State* l) {
+
+  StraightMovement& movement = check_straight_movement(l, 1);
+  lua_pushboolean(l, movement.is_smooth());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_straight_movement_set_smooth.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::straight_movement_api_set_smooth(lua_State* l) {
+
+  StraightMovement& movement = check_straight_movement(l, 1);
+  bool smooth = true; // true if unspecified
+  if (lua_isboolean(l, 2)) {
+    smooth = lua_toboolean(l, 2);
+  }
+  movement.set_smooth(smooth);
+
+  return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * random movement and returns it.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @return the movement
+ */
+RandomMovement& Script::check_random_movement(lua_State* l, int index) {
+  return static_cast<RandomMovement&>(
+      check_userdata(l, index, random_movement_module_name));
+}
+
+/**
+ * @brief Implementation of \ref lua_api_random_movement_get_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::random_movement_api_get_speed(lua_State* l) {
+
+  RandomMovement& movement = check_random_movement(l, 1);
+  lua_pushinteger(l, movement.get_speed());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_random_movement_set_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::random_movement_api_set_speed(lua_State* l) {
+
+  RandomMovement& movement = check_random_movement(l, 1);
+  int speed = luaL_checkinteger(l, 2);
+  movement.set_speed(speed);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_random_movement_get_angle.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::random_movement_api_get_angle(lua_State* l) {
+
+  RandomMovement& movement = check_random_movement(l, 1);
+  lua_pushnumber(l, movement.get_angle());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_random_movement_get_max_distance.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::random_movement_api_get_max_distance(lua_State* l) {
+
+  RandomMovement& movement = check_random_movement(l, 1);
+  lua_pushinteger(l, movement.get_max_distance());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_random_movement_set_max_distance.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::random_movement_api_set_max_distance(lua_State* l) {
+
+  RandomMovement& movement = check_random_movement(l, 1);
+  int max_distance = luaL_checkinteger(l, 2);
+  movement.set_max_distance(max_distance);
+  return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * target movement and returns it.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @return the movement
+ */
+TargetMovement& Script::check_target_movement(lua_State* l, int index) {
+  return static_cast<TargetMovement&>(
+      check_userdata(l, index, target_movement_module_name));
+}
+
+/**
+ * @brief Implementation of \ref lua_api_target_movement_set_target.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::target_movement_api_set_target(lua_State* l) {
+
+  TargetMovement& movement = check_target_movement(l, 1);
+  if (lua_isnumber(l, 3)) {
+    // the target is a fixed point
+    int x = luaL_checkinteger(l, 2);
+    int y = luaL_checkinteger(l, 3);
+    movement.set_target(x, y);
+  }
+  else {
+    // the target is an entity
+
+    // TODO: MapEntity& target = check_entity(l, 2);
+    // The entity type is not implemented yet. In the meantime, we use
+    // two parameters to make it work: the entity type and its name.
+    int entity_type = luaL_checkinteger(l, 2);
+    const std::string& entity_name = luaL_checkstring(l, 3);
+    MapEntities& entities = get_script(l).get_map().get_entities();
+    MapEntity* target = entities.get_entity(EntityType(entity_type), entity_name);
+
+    movement.set_target(target);
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_target_movement_get_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::target_movement_api_get_speed(lua_State* l) {
+
+  TargetMovement& movement = check_target_movement(l, 1);
+  lua_pushinteger(l, movement.get_speed());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_target_movement_set_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::target_movement_api_set_speed(lua_State* l) {
+
+  TargetMovement& movement = check_target_movement(l, 1);
+  int speed = luaL_checkinteger(l, 2);
+  movement.set_speed(speed);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_target_movement_get_angle.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::target_movement_api_get_angle(lua_State* l) {
+
+  TargetMovement& movement = check_target_movement(l, 1);
+  lua_pushnumber(l, movement.get_angle());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_target_movement_is_smooth.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::target_movement_api_is_smooth(lua_State* l) {
+
+  TargetMovement& movement = check_target_movement(l, 1);
+  lua_pushboolean(l, movement.is_smooth());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_target_movement_set_smooth.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::target_movement_api_set_smooth(lua_State* l) {
+
+  TargetMovement& movement = check_target_movement(l, 1);
+  bool smooth = true; // true if unspecified
+  if (lua_isboolean(l, 2)) {
+    smooth = lua_toboolean(l, 2);
+  }
+  movement.set_smooth(smooth);
+
+  return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * path movement and returns it.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @return the movement
+ */
+PathMovement& Script::check_path_movement(lua_State* l, int index) {
+  return static_cast<PathMovement&>(
+      check_userdata(l, index, path_movement_module_name));
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_get_path.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::path_movement_api_get_path(lua_State* l) {
+
+  PathMovement& movement = check_path_movement(l, 1);
+
+  const std::string& path = movement.get_path();
+  // build a Lua array containing the path
+  lua_newtable(l);
+  for (size_t i; i < path.size(); i++) {
+    int direction8 = path[i] - '0';
+    lua_pushinteger(l, i);
+    lua_pushinteger(l, direction8);
+    lua_settable(l, -3);
+  }
+
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_path.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::path_movement_api_set_path(lua_State* l) {
+
+  PathMovement& movement = check_path_movement(l, 1);
+  luaL_checktype(l, 2, LUA_TTABLE);
+
+  // build the path as a string from the Lua table
+  std::string path = "";
+  lua_pushnil(l); // first key
+  while (lua_next(l, 2) != 0) {
+    int direction8 = luaL_checkinteger(l, 4);
+    path += ('0' + direction8);
+    lua_pop(l, 1); // pop the value, let the key for the iteration
+  }
+  movement.set_path(path);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_get_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::path_movement_api_get_speed(lua_State* l) {
+
+  PathMovement& movement = check_path_movement(l, 1);
+  lua_pushinteger(l, movement.get_speed());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::path_movement_api_set_speed(lua_State* l) {
+
+  PathMovement& movement = check_path_movement(l, 1);
+  int speed = luaL_checkinteger(l, 2);
+  movement.set_speed(speed);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_get_loop.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::path_movement_api_get_loop(lua_State* l) {
+
+  PathMovement& movement = check_path_movement(l, 1);
+  lua_pushboolean(l, movement.get_loop());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_loop.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::path_movement_api_set_loop(lua_State* l) {
+
+  PathMovement& movement = check_path_movement(l, 1);
+  bool loop = true; // true if unspecified
+  if (lua_isboolean(l, 2)) {
+    loop = lua_toboolean(l, 2);
+  }
+  movement.set_loop(loop);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_get_snap_to_grid.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::path_movement_api_get_snap_to_grid(lua_State* l) {
+
+  PathMovement& movement = check_path_movement(l, 1);
+  lua_pushboolean(l, movement.get_snap_to_grid());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_snap_to_grid.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::path_movement_api_set_snap_to_grid(lua_State* l) {
+
+  PathMovement& movement = check_path_movement(l, 1);
+  bool snap_to_grid = true; // true if unspecified
+  if (lua_isboolean(l, 2)) {
+    snap_to_grid = lua_toboolean(l, 2);
+  }
+  movement.set_snap_to_grid(snap_to_grid);
+
+  return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * random path movement and returns it.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @return the movement
+ */
+RandomPathMovement& Script::check_random_path_movement(lua_State* l, int index) {
+  return static_cast<RandomPathMovement&>(
+      check_userdata(l, index, random_path_movement_module_name));
+}
+
+/**
+ * @brief Implementation of \ref lua_api_random_path_movement_get_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::random_path_movement_api_get_speed(lua_State* l) {
+
+  RandomPathMovement& movement = check_random_path_movement(l, 1);
+  lua_pushinteger(l, movement.get_speed());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_random_path_movement_set_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::random_path_movement_api_set_speed(lua_State* l) {
+
+  RandomPathMovement& movement = check_random_path_movement(l, 1);
+  int speed = luaL_checkinteger(l, 2);
+  movement.set_speed(speed);
+  return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * path finding movement and returns it.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @return the movement
+ */
+PathFindingMovement& Script::check_path_finding_movement(lua_State* l, int index) {
+  return static_cast<PathFindingMovement&>(
+      check_userdata(l, index, path_finding_movement_module_name));
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_finding_movement_set_target.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::path_finding_movement_api_set_target(lua_State* l) {
+
+  PathFindingMovement& movement = check_path_finding_movement(l, 1);
+  // TODO: MapEntity& target = check_entity(l, 2);
+  // The entity type is not implemented yet. In the meantime, we use
+  // two parameters to make it work: the entity type and its name.
+  int entity_type = luaL_checkinteger(l, 2);
+  const std::string& entity_name = luaL_checkstring(l, 3);
+  MapEntities& entities = get_script(l).get_map().get_entities();
+  MapEntity& target = *entities.get_entity(EntityType(entity_type), entity_name);
+
+  movement.set_target(target);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_finding_movement_get_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::path_finding_movement_api_get_speed(lua_State* l) {
+
+  PathFindingMovement& movement = check_path_finding_movement(l, 1);
+  lua_pushinteger(l, movement.get_speed());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_finding_movement_set_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::path_finding_movement_api_set_speed(lua_State* l) {
+
+  PathFindingMovement& movement = check_path_finding_movement(l, 1);
+  int speed = luaL_checkinteger(l, 2);
+  movement.set_speed(speed);
+  return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * circle movement and returns it.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @return the movement
+ */
+CircleMovement& Script::check_circle_movement(lua_State* l, int index) {
+  return static_cast<CircleMovement&>(
+      check_userdata(l, index, circle_movement_module_name));
+}
+
+/**
+ * @brief Implementation of \ref lua_api_circle_movement_set_center.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_set_center(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  if (lua_isnumber(l, 3)) {
+    // the center is a fixed point
+    int x = luaL_checkinteger(l, 2);
+    int y = luaL_checkinteger(l, 3);
+    movement.set_center(Rectangle(x, y));
+  }
+  else {
+    // the center is an entity
+
+    // TODO: MapEntity& center = check_entity(l, 2);
+    // The entity type is not implemented yet. In the meantime, we use
+    // two parameters to make it work: the entity type and its name.
+    int entity_type = luaL_checkinteger(l, 2);
+    const std::string& entity_name = luaL_checkstring(l, 3);
+    MapEntities& entities = get_script(l).get_map().get_entities();
+    MapEntity& center = *entities.get_entity(EntityType(entity_type), entity_name);
+
+    int dx = luaL_optinteger(l, 4, 0); // TODO 3
+    int dy = luaL_optinteger(l, 5, 0); // TODO 4
+    movement.set_center(center, dx, dy);
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * jump movement and returns it.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @return the movement
+ */
+JumpMovement& Script::check_jump_movement(lua_State* l, int index) {
+  return static_cast<JumpMovement&>(
+      check_userdata(l, index, jump_movement_module_name));
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * pixel movement and returns it.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @return the movement
+ */
+PixelMovement& Script::check_pixel_movement(lua_State* l, int index) {
+  return static_cast<PixelMovement&>(
+      check_userdata(l, index, pixel_movement_module_name));
+}

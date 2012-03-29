@@ -23,14 +23,6 @@
 /**
  * @brief A straight movement represented as a speed vector
  * whose properties (speed and angle) can be changed.
- *
- * Properties:
- * - speed
- * - angle
- * - max_distance
- * - ignore_obstacles
- * - smooth
- * - displayed_direction (read-only)
  */
 class StraightMovement: public Movement {
 

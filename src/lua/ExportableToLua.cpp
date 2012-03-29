@@ -31,11 +31,13 @@ ExportableToLua::ExportableToLua():
  */
 ExportableToLua::~ExportableToLua() {
 
+  Debug::check_assertion(refcount == 0, StringConcat()
+      << "This object is still used somewhere else: refcount is " << refcount);
 }
 
 /**
  * @brief Returns the script that created this object if any.
- * @return the owner script or NULL
+ * @return the creator script or NULL
  */
 Script* ExportableToLua::get_creator_script() const {
   return creator_script;
@@ -56,6 +58,8 @@ void ExportableToLua::set_creator_script(Script* creator_script) {
 
 /**
  * @brief Returns the current refcount of this object.
+ *
+ * You must not delete this object if its refcount is not zero.
  */
 int ExportableToLua::get_refcount() const {
   return refcount;
@@ -74,3 +78,4 @@ void ExportableToLua::increment_refcount() {
 void ExportableToLua::decrement_refcount() {
   refcount--;
 }
+

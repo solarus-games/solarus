@@ -36,29 +36,29 @@ class Script {
   public:
 
     // functions and types
-    static const std::string main_module_name;
-    static const std::string audio_module_name;
-    static const std::string timer_module_name;
-    static const std::string game_module_name;
-    static const std::string map_module_name;
-    static const std::string item_module_name;
-    static const std::string enemy_module_name;
-    static const std::string surface_module_name;
-    static const std::string text_surface_module_name;
-    static const std::string sprite_module_name;
-    static const std::string input_module_name;
-    static const std::string movement_module_name;
+    static const std::string main_module_name;                   /**< sol.main */
+    static const std::string audio_module_name;                  /**< sol.audio */
+    static const std::string timer_module_name;                  /**< sol.timer */
+    static const std::string game_module_name;                   /**< sol.game */
+    static const std::string map_module_name;                    /**< sol.map */
+    static const std::string item_module_name;                   /**< sol.item */
+    static const std::string enemy_module_name;                  /**< sol.enemy */
+    static const std::string surface_module_name;                /**< sol.surface */
+    static const std::string text_surface_module_name;           /**< sol.text_surface */
+    static const std::string sprite_module_name;                 /**< sol.sprite */
+    static const std::string input_module_name;                  /**< sol.input */
+    static const std::string movement_module_name;               /**< sol.movement */
 
     // subtypes
-    static const std::string straight_movement_module_name;
-    static const std::string random_movement_module_name;
-    static const std::string target_movement_module_name;
-    static const std::string path_movement_module_name;
-    static const std::string random_path_movement_module_name;
-    static const std::string path_finding_movement_module_name;
-    static const std::string circle_movement_module_name;
-    static const std::string jump_movement_module_name;
-    static const std::string pixel_movement_module_name;
+    static const std::string straight_movement_module_name;      /**< sol.movement.straight */
+    static const std::string random_movement_module_name;        /**< sol.movement.random */
+    static const std::string target_movement_module_name;        /**< sol.movement.target */
+    static const std::string path_movement_module_name;          /**< sol.movement.path */
+    static const std::string random_path_movement_module_name;   /**< sol.movement.random_path */
+    static const std::string path_finding_movement_module_name;  /**< sol.movement.path_finding */
+    static const std::string circle_movement_module_name;        /**< sol.movement.circle */
+    static const std::string jump_movement_module_name;          /**< sol.movement.jump */
+    static const std::string pixel_movement_module_name;         /**< sol.movement.pixel */
 
     virtual ~Script();
 

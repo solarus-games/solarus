@@ -240,23 +240,59 @@ void Script::push_movement(lua_State* l, Movement& movement) {
 }
 
 /**
- * @brief TODO
+ * @brief Implementation of \ref lua_api_movement_create.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
 int Script::movement_api_create(lua_State* l) {
 
-  /*
   Script& script = get_script(l);
 
-  const std::string& trajectory = luaL_checkstring(l, 1);
-  uint32_t delay = luaL_checkinteger(l, 2);
+  const std::string& type = luaL_checkstring(l, 1);
 
-  Movement* movement = new PixelMovement(trajectory, delay, false, false);
+  Movement* movement = NULL;
+  if (type == "straight") {
+    movement = new StraightMovement(false, true);
+  }
+  else if (type == "random") {
+    movement = new RandomMovement(32);
+  }
+  else if (type == "target") {
+    movement = new TargetMovement(0, 0, 32);
+  }
+  else if (type == "path") {
+    movement = new PathMovement("", 32, false, false, false);
+  }
+  else if (type == "random_path") {
+    movement = new RandomPathMovement(32);
+  }
+  else if (type == "path_finding") {
+    movement = new PathFindingMovement(32);
+  }
+  else if (type == "circle") {
+    movement = new CircleMovement(false);
+  }
+  else if (type == "jump") {
+    movement = new JumpMovement(0, 0, 0, false);
+  }
+  else if (type == "pixel") {
+    movement = new PixelMovement("", 30, false, false);
+  }
+  else {
+    luaL_argerror(l, 1, "should be one of: "
+        "\"straight\", "
+        "\"random\", "
+        "\"target\", "
+        "\"path\", "
+        "\"random_path\", "
+        "\"path_finding\", "
+        "\"circle\", "
+        "\"jump\" or "
+        "\"pixel\"");
+  }
+
   script.set_created(movement);
-  movement->set_creator_script(&script);
   push_movement(l, *movement);
-  */
 
   return 1;
 }

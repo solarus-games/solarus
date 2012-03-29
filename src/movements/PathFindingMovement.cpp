@@ -26,13 +26,11 @@
 
 /**
  * @brief Creates a chase movement.
- * @param target the entity to target
  * @param speed speed of the movement in pixels per second
  */
-PathFindingMovement::PathFindingMovement(MapEntity& target, int speed):
+PathFindingMovement::PathFindingMovement(int speed):
   PathMovement("", speed, false, false, true),
-  target(target),
-  next_recomputation_date(System::now() + 100) {
+  target(NULL) {
 
 }
 
@@ -41,6 +39,15 @@ PathFindingMovement::PathFindingMovement(MapEntity& target, int speed):
  */
 PathFindingMovement::~PathFindingMovement() {
 
+}
+
+/**
+ * @brief Sets the entity to target with this movement.
+ */
+void PathFindingMovement::set_target(MapEntity& target) {
+
+  this->target = &target;
+  next_recomputation_date = System::now() + 100;
 }
 
 /**
@@ -57,7 +64,9 @@ void PathFindingMovement::update() {
   if (PathMovement::is_finished()) {
 
     // there was a collision or the path was made
-    if (System::now() >= next_recomputation_date && get_entity()->is_aligned_to_grid()) {
+    if (target != NULL
+        && System::now() >= next_recomputation_date
+        && get_entity()->is_aligned_to_grid()) {
       recompute_movement();
     }
     else {
@@ -72,7 +81,7 @@ void PathFindingMovement::update() {
  */
 void PathFindingMovement::recompute_movement() { 
 
-  PathFinding path_finding(get_entity()->get_map(), *get_entity(), target);
+  PathFinding path_finding(get_entity()->get_map(), *get_entity(), *target);
   std::string path = path_finding.compute_path();
 
   uint32_t min_delay;
@@ -111,5 +120,4 @@ bool PathFindingMovement::is_finished() {
 const std::string& PathFindingMovement::get_lua_type_name() const {
   return Script::path_finding_movement_module_name;
 }
-
 

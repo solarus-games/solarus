@@ -61,6 +61,8 @@ void ExportableToLua::set_creator_script(Script* creator_script) {
  * @brief Returns the current refcount of this object.
  *
  * You must not delete this object if its refcount is not zero.
+ *
+ * @return the current refcount of this object
  */
 int ExportableToLua::get_refcount() const {
   return refcount;

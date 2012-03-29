@@ -65,7 +65,7 @@ Sprite& Script::check_sprite(lua_State* l, int index) {
 /**
  * @brief Pushes a sprite userdata onto the stack.
  * @param l a Lua context
- * @param surface a surface
+ * @param sprite a sprite
  */
 void Script::push_sprite(lua_State* l, Sprite& sprite) {
   push_userdata(l, sprite);

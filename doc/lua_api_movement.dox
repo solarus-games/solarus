@@ -338,7 +338,7 @@ East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 - Return value (number): The angle in radians. 
 
 \remark If you prefer a value in a 4-direction system, see
-\ref lua_api_target_get_direction4.
+\ref lua_api_movement_get_direction4.
 
 <hr>
 

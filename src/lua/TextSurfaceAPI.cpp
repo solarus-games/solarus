@@ -57,7 +57,7 @@ TextSurface& Script::check_text_surface(lua_State* l, int index) {
 /**
  * @brief Pushes a text surface userdata onto the stack.
  * @param l a Lua context
- * @param surface a surface
+ * @param text_surface a text surface
  */
 void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {
   push_userdata(l, text_surface);
@@ -66,7 +66,6 @@ void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {
 /**
  * @brief Creates and returns a text surface.
  *
- * To create an empty surface:
  * - Argument 1 (table): properties, possible keys are
  * horizontal_alignment, vertical_alignment, font, rendering_mode
  * background_color, text_color, text, text_key

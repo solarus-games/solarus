@@ -16,6 +16,7 @@
  */
 #include "lua/ExportableToLua.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Creates an object exportable to Lua.

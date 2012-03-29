@@ -539,6 +539,12 @@ class Script {
       jump_movement_api_set_distance,
       jump_movement_api_get_speed,
       jump_movement_api_set_speed,
+      pixel_movement_api_get_trajectory,
+      pixel_movement_api_set_trajectory,
+      pixel_movement_api_get_loop,
+      pixel_movement_api_set_loop,
+      pixel_movement_api_get_delay,
+      pixel_movement_api_set_delay,
 
       // common to all userdata types
       userdata_meta_gc;

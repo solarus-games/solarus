@@ -48,19 +48,27 @@ const std::string Script::pixel_movement_module_name = "sol.movement.pixel";
  */
 void Script::register_movement_module() {
 
-  static const luaL_Reg movement_methods[] = {
+  // sol.movement
+  static const luaL_Reg movement_functions[] = {
+      { "create", movement_api_create },
+      { NULL, NULL }
+  };
+  register_functions(movement_module_name, movement_functions);
+
+  // methods common to all movement types
+  static const luaL_Reg common_methods[] = {
       { "create", movement_api_create },
       { "get_ignore_obstacles", movement_api_get_ignore_obstacles },
       { "set_ignore_obstacles", movement_api_set_ignore_obstacles },
       { "get_direction4", movement_api_get_direction4 },
       { NULL, NULL }
   };
-  static const luaL_Reg movement_metamethods[] = {
+  static const luaL_Reg common_metamethods[] = {
       { "__gc", userdata_meta_gc },
       { NULL, NULL }
   };
-  register_type(movement_module_name, movement_methods, movement_metamethods);
 
+  // straight movement
   static const luaL_Reg straight_movement_methods[] = {
       { "get_speed", straight_movement_api_get_speed },
       { "set_speed", straight_movement_api_set_speed },
@@ -72,8 +80,125 @@ void Script::register_movement_module() {
       { "set_smooth", straight_movement_api_set_smooth },
       { NULL, NULL }
   };
-  register_functions(straight_movement_module_name, movement_methods);
-  register_type(straight_movement_module_name, straight_movement_methods, movement_metamethods);
+  register_functions(straight_movement_module_name, common_methods);
+  register_type(straight_movement_module_name, straight_movement_methods,
+      common_metamethods);
+
+  // random movement
+  static const luaL_Reg random_movement_methods[] = {
+      { "get_speed", random_movement_api_get_speed },
+      { "set_speed", random_movement_api_set_speed },
+      { "get_angle", random_movement_api_get_angle },
+      { "get_max_distance", random_movement_api_get_max_distance },
+      { "set_max_distance", random_movement_api_set_max_distance },
+      { NULL, NULL }
+  };
+  register_functions(random_movement_module_name, common_methods);
+  register_type(random_movement_module_name, random_movement_methods,
+      common_metamethods);
+
+  // target movement
+  static const luaL_Reg target_movement_methods[] = {
+      { "set_target", target_movement_api_set_target },
+      { "get_speed", target_movement_api_get_speed },
+      { "set_speed", target_movement_api_set_speed },
+      { "get_angle", target_movement_api_get_angle },
+      { "is_smooth", target_movement_api_is_smooth },
+      { "set_smooth", target_movement_api_set_smooth },
+      { NULL, NULL }
+  };
+  register_functions(target_movement_module_name, common_methods);
+  register_type(target_movement_module_name, target_movement_methods,
+      common_metamethods);
+
+  // path movement
+  static const luaL_Reg path_movement_methods[] = {
+      { "get_path", path_movement_api_get_path },
+      { "set_path", path_movement_api_set_path },
+      { "get_speed", path_movement_api_get_speed },
+      { "set_speed", path_movement_api_set_speed },
+      { "get_snap_to_grid", path_movement_api_get_snap_to_grid },
+      { "set_snap_to_grid", path_movement_api_set_snap_to_grid },
+      { NULL, NULL }
+  };
+  register_functions(path_movement_module_name, common_methods);
+  register_type(path_movement_module_name, path_movement_methods,
+      common_metamethods);
+
+  // random path movement
+  static const luaL_Reg random_path_movement_methods[] = {
+      { "get_speed", random_path_movement_api_get_speed },
+      { "set_speed", random_path_movement_api_set_speed },
+      { NULL, NULL }
+  };
+  register_functions(random_path_movement_module_name, common_methods);
+  register_type(random_path_movement_module_name, random_path_movement_methods,
+      common_metamethods);
+
+  // path finding movement
+  static const luaL_Reg path_finding_movement_methods[] = {
+      { "set_target", path_finding_movement_api_set_target },
+      { "get_speed", path_finding_movement_api_get_speed },
+      { "set_speed", path_finding_movement_api_set_speed },
+      { NULL, NULL }
+  };
+  register_functions(path_finding_movement_module_name, common_methods);
+  register_type(path_finding_movement_module_name, path_finding_movement_methods,
+      common_metamethods);
+
+  // circle movement
+  static const luaL_Reg circle_movement_methods[] = {
+      { "set_center", circle_movement_api_set_center },
+      { "get_radius", circle_movement_api_get_radius },
+      { "set_radius", circle_movement_api_set_radius },
+      { "get_radius_speed", circle_movement_api_get_radius_speed },
+      { "set_radius_speed", circle_movement_api_set_radius_speed },
+      { "is_clockwise", circle_movement_api_is_clockwise },
+      { "set_clockwise", circle_movement_api_set_clockwise },
+      { "get_initial_angle", circle_movement_api_get_initial_angle },
+      { "set_initial_angle", circle_movement_api_set_initial_angle },
+      { "get_angle_speed", circle_movement_api_get_angle_speed },
+      { "set_angle_speed", circle_movement_api_set_angle_speed },
+      { "get_max_rotations", circle_movement_api_get_max_rotations },
+      { "set_max_rotations", circle_movement_api_set_max_rotations },
+      { "get_duration", circle_movement_api_get_duration },
+      { "set_duration", circle_movement_api_set_duration },
+      { "get_loop_delay", circle_movement_api_get_loop_delay },
+      { "set_loop_delay", circle_movement_api_set_loop_delay },
+      { NULL, NULL }
+  };
+  register_functions(circle_movement_module_name, common_methods);
+  register_type(circle_movement_module_name, circle_movement_methods,
+      common_metamethods);
+
+  // jump movement
+  static const luaL_Reg jump_movement_methods[] = {
+      { "get_direction8", jump_movement_api_get_direction8 },
+      { "set_direction8", jump_movement_api_set_direction8 },
+      { "get_distance", jump_movement_api_get_distance },
+      { "set_distance", jump_movement_api_set_distance },
+      { "get_speed", jump_movement_api_get_speed },
+      { "set_speed", jump_movement_api_set_speed },
+      { NULL, NULL }
+  };
+  register_functions(jump_movement_module_name, common_methods);
+  register_type(jump_movement_module_name, jump_movement_methods,
+      common_metamethods);
+
+  // pixel movement
+  static const luaL_Reg pixel_movement_methods[] = {
+      { "get_trajectory", pixel_movement_api_get_trajectory },
+      { "set_trajectory", pixel_movement_api_set_trajectory },
+      { "get_loop", pixel_movement_api_get_loop },
+      { "set_loop", pixel_movement_api_set_loop },
+      { "get_delay", pixel_movement_api_get_delay },
+      { "set_delay", pixel_movement_api_set_delay },
+      { NULL, NULL }
+  };
+  register_functions(pixel_movement_module_name, common_methods);
+  register_type(pixel_movement_module_name, pixel_movement_methods,
+      common_metamethods);
+
 }
 
 /**

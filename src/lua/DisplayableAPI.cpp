@@ -76,15 +76,9 @@ void Script::update_displayables() {
 }
 
 /**
- * @brief Starts a movement on a displayable object.
- *
- * - Argument 1 (surface, text surface or sprite): a displayable object
- * - Argument 2 (movement): the movement to apply
- * - Optional argument 3 (function): a Lua function to be called when the
- * movement finishes
- *
+ * @brief Implementation of \ref lua_api_displayable_start_movement.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::displayable_api_start_movement(lua_State* l) {
 
@@ -107,12 +101,9 @@ int Script::displayable_api_start_movement(lua_State* l) {
 }
 
 /**
- * @brief Stops the movement (if any) of a displayable object.
- *
- * - Argument 1 (surface, text surface or sprite): a displayable object
- *
+ * @brief Implementation of \ref lua_api_displayable_stop_movement.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::displayable_api_stop_movement(lua_State* l) {
 
@@ -124,17 +115,13 @@ int Script::displayable_api_stop_movement(lua_State* l) {
 }
 
 /**
- * @brief Finalizes a displayable object.
- *
- * - Argument 1 (surface, text surface or sprite): a displayable object
- *
- * @param l a Lua state
+ * @brief Finalizer of types sprite, surface and text surface.
+ * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
 int Script::displayable_meta_gc(lua_State* l) {
 
   Script& script = get_script(l);
-
   DynamicDisplayable& displayable = check_displayable(l, 1);
 
   if (script.has_created(&displayable)) {

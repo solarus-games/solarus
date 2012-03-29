@@ -71,41 +71,25 @@ void Script::push_surface(lua_State* l, Surface& surface) {
 }
 
 /**
- * @brief Creates and returns a surface.
- *
- * To create an empty surface:
- * - Optional argument 1 (integer): width in pixels
- * - Optional argument 2 (integer): height in pixels
- * The default size is the size of the screen.
- *
- * To create a surface from an image file:
- * - Argument 1 (string): name of the image file to load
- * - Optional argument 2 (boolean, default false): true to load a
- * language-specific image
- *
- * To create a surface from a region of an existing surface:
- * - Argument 1 (surface): an existing surface
- * - Argument 2 (integer): x coordinate of the rectangle
- * - Argument 3 (integer): y coordinate of the rectangle
- * - Argument 4 (integer): width of the rectangle
- * - Argument 5 (integer): height of the rectangle
- *
+ * @brief Implementation of \ref lua_api_surface_create.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::surface_api_create(lua_State* l) {
 
   Surface* surface;
   if (lua_gettop(l) == 0) {
-    // no arguments: create an empty surface with the screen size
+    // create an empty surface with the screen size
     surface = new Surface(320, 240);
   }
   else if (lua_type(l, 1) == LUA_TNUMBER) {
+    // create an empty surface with the specified size
     int width = luaL_checkinteger(l, 1);
     int height = luaL_checkinteger(l, 2);
     surface = new Surface(width, height);
   }
   else if (lua_type(l, 1) == LUA_TSTRING) {
+    // load from a file
     const std::string& file_name = lua_tostring(l, 1);
     bool language_specific = false;
     if (lua_gettop(l) >= 2) {
@@ -115,6 +99,7 @@ int Script::surface_api_create(lua_State* l) {
         Surface::DIR_LANGUAGE : Surface::DIR_SPRITES);
   }
   else {
+    // create from an existing surface
     Surface& other_surface = check_surface(l, 1);
     int x = 0;
     int y = 0;
@@ -137,14 +122,9 @@ int Script::surface_api_create(lua_State* l) {
 }
 
 /**
- * @brief Returns the size of a surface.
- *
- * - Argument 1 (surface): a surface
- * - Return value 1 (integer): width in pixels
- * - Return value 2 (integer): height in pixels
- *
+ * @brief Implementation of \ref lua_api_surface_get_size.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::surface_api_get_size(lua_State* l) {
 
@@ -157,10 +137,9 @@ int Script::surface_api_get_size(lua_State* l) {
 }
 
 /**
- * @brief Fills a surface with a color.
- *
- * - Argument 1 (surface): the surface to fill
- * - Argument 2 (table): color (array of RGB values from 0 to 255)
+ * @brief Implementation of \ref lua_api_surface_fill_color.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::surface_api_fill_color(lua_State* l) {
 
@@ -172,15 +151,9 @@ int Script::surface_api_fill_color(lua_State* l) {
 }
 
 /**
- * @brief Draws something on a surface.
- *
- * - Argument 1 (surface): the destination surface to modify
- * - Argument 2 (surface, text surface or sprite): the object to draw on this surface
- * - Optional argument 3 (integer): x coordinate of where to draw the object
- * - Optional argument 4 (integer): y coordinate of where to draw the object
- *
+ * @brief Implementation of \ref lua_api_surface_draw.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::surface_api_draw(lua_State* l) {
 
@@ -202,13 +175,9 @@ int Script::surface_api_draw(lua_State* l) {
 }
 
 /**
- * @brief Sets the transparency color of a surface.
- *
- * - Argument 1 (surface): a surface
- * - Argument 2 (table): color (array of RGB values from 0 to 255)
- *
+ * @brief Implementation of \ref lua_api_surface_set_transparency_color.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::surface_api_set_transparency_color(lua_State* l) {
 
@@ -220,13 +189,9 @@ int Script::surface_api_set_transparency_color(lua_State* l) {
 }
 
 /**
- * @brief Sets the opacity of a surface.
- *
- * - Argument 1 (surface): the surface to set
- * - Argument 2 (integer): the opacity (0 to 255)
- *
+ * @brief Implementation of \ref lua_api_surface_set_opacity.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::surface_api_set_opacity(lua_State* l) {
 
@@ -239,16 +204,9 @@ int Script::surface_api_set_opacity(lua_State* l) {
 }
 
 /**
- * @brief Starts playing a fade-in effect on a surface.
- *
- * - Argument 1 (surface): a surface
- * - Optional argument 2 (number): delay in milliseconds between two frames
- * in the fade-in animation (default 20)
- * - Optional argument 3 (function): a Lua function to be called when the
- * fade-in effect finishes (can be the second argument if you don't set a delay)
- *
+ * @brief Implementation of \ref lua_api_surface_fade_in.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::surface_api_fade_in(lua_State* l) {
 
@@ -280,16 +238,9 @@ int Script::surface_api_fade_in(lua_State* l) {
 }
 
 /**
- * @brief Starts playing a fade-out effect on a surface.
- *
- * - Argument 1 (surface): a surface
- * - Optional argument 2 (number): delay in milliseconds between two frames
- * in the fade-out animation (default 20)
- * - Optional argument 3 (function): a Lua function to be called when the
- * fade-out effect finishes (can be the second argument if you don't set a delay)
- *
+ * @brief Implementation of \ref lua_api_surface_fade_out.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::surface_api_fade_out(lua_State* l) {
 

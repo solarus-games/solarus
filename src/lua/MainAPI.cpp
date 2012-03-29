@@ -33,7 +33,6 @@ void Script::register_main_module() {
       { "include", main_api_include },
       { "exit", main_api_exit },
       { "start_screen", main_api_start_screen },
-      { "start_game", main_api_start_game },
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
       { NULL, NULL }
@@ -81,21 +80,6 @@ int Script::main_api_start_screen(lua_State* l) {
   const std::string screen_name = luaL_checkstring(l, 1);
 
   script.get_screen().start_screen(screen_name);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_main_start_game.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int Script::main_api_start_game(lua_State* l) {
-
-  Script& script = get_script(l);
-  const std::string savegame_file = luaL_checkstring(l, 1);
-
-  script.get_screen().start_game(savegame_file);
 
   return 0;
 }

@@ -36,11 +36,9 @@ void Script::register_audio_module() {
 }
 
 /**
- * @brief Plays a sound.
- *
- * - Argument 1 (string): name of the sound
- *
+ * @brief Implementation of \ref lua_api_audio_play_sound.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::audio_api_play_sound(lua_State *l) {
 
@@ -52,12 +50,9 @@ int Script::audio_api_play_sound(lua_State *l) {
 }
 
 /**
- * @brief Plays a music.
- *
- * - Argument 1 (string): name of the music without extension
- * (possibly "none" or "same")
- *
+ * @brief Implementation of \ref lua_api_audio_play_music.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::audio_api_play_music(lua_State *l) {
 
@@ -71,8 +66,9 @@ int Script::audio_api_play_music(lua_State *l) {
 }
 
 /**
- * @brief Stops playing any music.
+ * @brief Implementation of \ref lua_api_audio_stop_music.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::audio_api_stop_music(lua_State* l) {
 

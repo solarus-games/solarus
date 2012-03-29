@@ -72,13 +72,9 @@ void Script::push_sprite(lua_State* l, Sprite& sprite) {
 }
 
 /**
- * @brief Creates and returns a sprite.
- *
- * - Argument 1 (string): the animation set for the new sprite
- * - Return value (sprite): the sprite created
- *
+ * @brief Implementation of \ref lua_api_sprite_create.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_create(lua_State* l) {
 
@@ -93,12 +89,9 @@ int Script::sprite_api_create(lua_State* l) {
 }
 
 /**
- * @brief Returns the current animation of a sprite.
- *
- * - Argument 1 (sprite): a sprite
- * - Return value (string): name of the current animation
- *
+ * @brief Implementation of \ref lua_api_sprite_get_animation.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_get_animation(lua_State* l) {
 
@@ -111,12 +104,9 @@ int Script::sprite_api_get_animation(lua_State* l) {
 }
 
 /**
- * @brief Sets the current animation of a sprite.
- *
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (string): name of the animation to set
- *
+ * @brief Implementation of \ref lua_api_sprite_set_animation.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_set_animation(lua_State* l) {
 
@@ -130,12 +120,9 @@ int Script::sprite_api_set_animation(lua_State* l) {
 }
 
 /**
- * @brief Returns the current direction of a sprite.
- *
- * - Argument 1 (sprite): a sprite
- * - Return value (integer): direction of the sprite
- *
+ * @brief Implementation of \ref lua_api_sprite_get_direction.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_get_direction(lua_State* l) {
 
@@ -147,12 +134,9 @@ int Script::sprite_api_get_direction(lua_State* l) {
 }
 
 /**
- * @brief Sets the current direction of a sprite.
- *
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (integer): direction to set
- *
+ * @brief Implementation of \ref lua_api_sprite_set_direction.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_set_direction(lua_State* l) {
 
@@ -165,12 +149,9 @@ int Script::sprite_api_set_direction(lua_State* l) {
 }
 
 /**
- * @brief Returns the current frame of a sprite.
- *
- * - Argument 1 (sprite): a sprite
- * - Return value (integer): index of the current frame of the animation
- *
+ * @brief Implementation of \ref lua_api_sprite_get_frame.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_get_frame(lua_State* l) {
 
@@ -182,12 +163,9 @@ int Script::sprite_api_get_frame(lua_State* l) {
 }
 
 /**
- * @brief Sets the current frame of a sprite.
- *
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (integer): index of the frame to set in the animation
- *
+ * @brief Implementation of \ref lua_api_sprite_set_frame.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_set_frame(lua_State* l) {
 
@@ -200,12 +178,9 @@ int Script::sprite_api_set_frame(lua_State* l) {
 }
 
 /**
- * @brief Returns the delay between two frames of the animation of a sprite.
- *
- * - Argument 1 (sprite): a sprite
- * - Return value: the delay between two frames in milliseconds
- *
+ * @brief Implementation of \ref lua_api_sprite_get_frame_delay.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_get_frame_delay(lua_State* l) {
 
@@ -217,12 +192,9 @@ int Script::sprite_api_get_frame_delay(lua_State* l) {
 }
 
 /**
- * @brief Sets the delay between two frames of the animation of a sprite.
- *
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (integer): the new delay in milliseconds
- *
+ * @brief Implementation of \ref lua_api_sprite_set_frame_delay.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_set_frame_delay(lua_State* l) {
 
@@ -235,12 +207,9 @@ int Script::sprite_api_set_frame_delay(lua_State* l) {
 }
 
 /**
- * @brief Returns whether the animation of a sprite is paused.
- *
- * - Argument 1 (sprite): a sprite
- * - Return value (boolean): true if the animation is currently paused
- *
+ * @brief Implementation of \ref lua_api_sprite_is_paused.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_is_paused(lua_State* l) {
 
@@ -252,12 +221,9 @@ int Script::sprite_api_is_paused(lua_State* l) {
 }
 
 /**
- * @brief Pauses or resumes the animation of a sprite.
- *
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (boolean): true to pause the animation, false to resume it
- *
+ * @brief Implementation of \ref lua_api_sprite_set_paused.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_set_paused(lua_State* l) {
 
@@ -270,13 +236,9 @@ int Script::sprite_api_set_paused(lua_State* l) {
 }
 
 /**
- * @brief Sets whether the animation of a sprite should continue even when
- * the sprite receives a set_suspended(true) call.
- *
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (boolean): true to continue the animation when the sprite is suspended
- *
+ * @brief Implementation of \ref lua_api_sprite_set_ignore_suspend.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_set_ignore_suspend(lua_State *l) {
 
@@ -289,12 +251,9 @@ int Script::sprite_api_set_ignore_suspend(lua_State *l) {
 }
 
 /**
- * @brief Starts a fade-in or a fade-out effect on a sprite.
- *
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (integer): direction of the effect: 0 for fade-in, 1 for fade-out
- *
+ * @brief Implementation of \ref lua_api_sprite_fade.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_fade(lua_State *l) {
 
@@ -307,16 +266,9 @@ int Script::sprite_api_fade(lua_State *l) {
 }
 
 /**
- * @brief Synchronizes the frames of a sprite with the frames on a reference sprite
- * when the name of their current animation is the same.
- * From now on, when both sprites have the same current animation,
- * the first sprite will stop changing frames with time and it will take the same
- * frames as the reference sprite instead.
- *
- * - Argument 1 (sprite): the sprite to synchronize
- * - Argument 2 (sprite): the reference sprite, or nil to stop any previous synchronization
- *
+ * @brief Implementation of \ref lua_api_sprite_synchronize.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::sprite_api_synchronize(lua_State *l) {
 

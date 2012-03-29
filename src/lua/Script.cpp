@@ -538,7 +538,7 @@ void Script::set_suspended(bool suspended) {
 
 /**
  * @brief Returns whether this script has played a music,
- * i.e. called the sol.main.play_music(music_id).
+ * i.e. called \ref lua_api_audio_play_music.
  * @return true if this script has played a music
  */
 bool Script::has_played_music() {
@@ -602,7 +602,6 @@ void Script::push_userdata(lua_State* l, ExportableToLua& userdata) {
 /**
  * @brief Checks that the value at the given index is userdata of the
  * specified type and returns it.
- *
  * @param l a Lua state
  * @param index an index in the Lua stack
  * @param module_name name identifying the userdata type
@@ -622,18 +621,15 @@ ExportableToLua& Script::check_userdata(lua_State* l, int index,
 }
 
 /**
- * @brief Finalizes a userdata.
- *
- * - Argument 1: a userdata
- *
+ * @brief Finalizer a userdata types.
  * @param l a Lua state
  * @return number of values to return to Lua
  */
 int Script::userdata_meta_gc(lua_State* l) {
 
   Script& script = get_script(l);
-
   ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, 1);
+
   script.decrement_refcount(*userdata);
 
   return 0;

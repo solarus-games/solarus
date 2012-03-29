@@ -204,7 +204,6 @@ class Script {
       main_api_include,
       main_api_exit,
       main_api_start_screen,
-      main_api_start_game,
       main_api_get_distance,  // TODO remove
       main_api_get_angle,     // TODO remove
 

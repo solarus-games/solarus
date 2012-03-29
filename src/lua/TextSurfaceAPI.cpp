@@ -64,14 +64,9 @@ void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {
 }
 
 /**
- * @brief Creates and returns a text surface.
- *
- * - Argument 1 (table): properties, possible keys are
- * horizontal_alignment, vertical_alignment, font, rendering_mode
- * background_color, text_color, text, text_key
- *
+ * @brief Implementation of \ref lua_api_text_surface_create.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::text_surface_api_create(lua_State* l) {
 
@@ -170,12 +165,8 @@ int Script::text_surface_api_create(lua_State* l) {
 }
 
 /**
- * @brief Returns the string of a text surface.
- *
- * - Argument 1: a text surface
- * - Return value: the text
- *
- * @param l a Lua state
+ * @brief Implementation of \ref lua_api_text_surface_get_text.
+ * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
 int Script::text_surface_api_get_text(lua_State* l) {
@@ -188,12 +179,8 @@ int Script::text_surface_api_get_text(lua_State* l) {
 }
 
 /**
- * @brief Sets the string of a text surface.
- *
- * - Argument 1: a text surface
- * - Argument 2: the text
- *
- * @param l a Lua state
+ * @brief Implementation of \ref lua_api_text_surface_set_text.
+ * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
 int Script::text_surface_api_set_text(lua_State* l) {

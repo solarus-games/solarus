@@ -42,12 +42,9 @@ void Script::register_main_module() {
 }
 
 /**
- * @brief Includes a script into the current Lua context.
- *
- * - Argument 1 (string): file name of the script without extension,
- *   relative to the data directory of the quest
- *
+ * @brief Implementation of \ref lua_api_main_include.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::main_api_include(lua_State *l) {
 
@@ -60,9 +57,9 @@ int Script::main_api_include(lua_State *l) {
 }
 
 /**
- * @brief Stops the program.
+ * @brief Implementation of \ref lua_api_main_exit.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::main_api_exit(lua_State* l) {
 
@@ -74,12 +71,9 @@ int Script::main_api_exit(lua_State* l) {
 }
 
 /**
- * @brief Ends the current screen and starts another screen.
- *
- * - Argument 1 (string): name of the screen to start
- *
+ * @brief Implementation of \ref lua_api_main_start_screen.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::main_api_start_screen(lua_State* l) {
 
@@ -92,12 +86,9 @@ int Script::main_api_start_screen(lua_State* l) {
 }
 
 /**
- * @brief Ends the current screen and starts a game.
- *
- * - Argument 1 (string): name of the savegame file to load
- *
+ * @brief Implementation of \ref lua_api_main_start_game.
  * @param l the Lua context that is calling this function
- * @return the number of values to return to Lua
+ * @return number of values to return to Lua
  */
 int Script::main_api_start_game(lua_State* l) {
 
@@ -110,15 +101,9 @@ int Script::main_api_start_game(lua_State* l) {
 }
 
 /**
- * @brief Returns the distance in pixels between two points.
- *
- * - Argument 1 (integer): x coordinate of the first point
- * - Argument 2 (integer): y coordinate of the first point
- * - Argument 3 (integer): x coordinate of the second point
- * - Argument 4 (integer): y coordinate of the second point
- * - Return value (integer): the distance in pixels
- *
+ * @brief Implementation of \ref lua_api_main_get_distance.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::main_api_get_distance(lua_State *l) {
 
@@ -134,15 +119,9 @@ int Script::main_api_get_distance(lua_State *l) {
 }
 
 /**
- * @brief Returns the angle between the specified vector and the x axis.
- *
- * - Argument 1 (integer): x coordinate of the first point of the vector
- * - Argument 2 (integer): y coordinate of the first point of the vector
- * - Argument 3 (integer): x coordinate of the second point of the vector
- * - Argument 4 (integer): y coordinate of the second point of the vector
- * - Return value (float): the angle between the vector and the x axis in radians
- *
+ * @brief Implementation of \ref lua_api_main_get_angle.
  * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
  */
 int Script::main_api_get_angle(lua_State *l) {
 

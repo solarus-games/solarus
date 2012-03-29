@@ -247,7 +247,6 @@ void Script::push_movement(lua_State* l, Movement& movement) {
 int Script::movement_api_create(lua_State* l) {
 
   Script& script = get_script(l);
-
   const std::string& type = luaL_checkstring(l, 1);
 
   Movement* movement = NULL;

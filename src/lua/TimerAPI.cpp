@@ -125,21 +125,13 @@ void Script::push_timer(lua_State* l, Timer& timer) {
 }
 
 /**
- * @brief Creates a timer.
- *
- * - Argument 1 (number): the timer duration in milliseconds
- * - Optional argument 2 (boolean): plays a clock sound until the timer
- * finishes (default is false)
- * - Argument 3 (function): a Lua function to call (without arguments)
- * when the timer finishes
- * - Return value (timer): the timer created
- *
+ * @brief Implementation of \ref lua_api_timer_start.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
 int Script::timer_api_start(lua_State *l) {
 
-  // get the parameters
+  // parameters: delay [with_sound] callback
   Script& script = get_script(l);
   uint32_t delay = luaL_checkinteger(l, 1);
   bool with_sound = false;
@@ -167,10 +159,7 @@ int Script::timer_api_start(lua_State *l) {
 }
 
 /**
- * @brief Cancels a timer.
- *
- * Argument 1 (timer): the timer to cancel
- *
+ * @brief Implementation of \ref lua_api_timer_stop.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -185,10 +174,7 @@ int Script::timer_api_stop(lua_State* l) {
 }
 
 /**
- * @brief Stops a list of timers.
- *
- * Argument 1 (table): a table whose values are timers
- *
+ * @brief Implementation of \ref lua_api_timer_stop_all.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */

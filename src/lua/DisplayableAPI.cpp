@@ -36,7 +36,7 @@ DynamicDisplayable& Script::check_displayable(lua_State* l, int index) {
   if (is_userdata(l, index, surface_module_name)
       || is_userdata(l, index, text_surface_module_name)
       || is_userdata(l, index, sprite_module_name)) {
-    displayable = (DynamicDisplayable**) lua_touserdata(l, index);
+    displayable = static_cast<DynamicDisplayable**>(lua_touserdata(l, index));
   }
   else {
     luaL_typerror(l, index, "displayable");

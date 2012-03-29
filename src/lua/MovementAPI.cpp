@@ -209,7 +209,25 @@ void Script::register_movement_module() {
  * @return the sprite
  */
 Movement& Script::check_movement(lua_State* l, int index) {
-  return static_cast<Movement&>(check_userdata(l, index, movement_module_name));
+
+  Movement** movement = NULL;
+
+  if (is_userdata(l, index, straight_movement_module_name)
+      || is_userdata(l, index, random_movement_module_name)
+      || is_userdata(l, index, target_movement_module_name)
+      || is_userdata(l, index, path_movement_module_name)
+      || is_userdata(l, index, random_path_movement_module_name)
+      || is_userdata(l, index, path_finding_movement_module_name)
+      || is_userdata(l, index, circle_movement_module_name)
+      || is_userdata(l, index, jump_movement_module_name)
+      || is_userdata(l, index, pixel_movement_module_name)) {
+    movement = static_cast<Movement**>(lua_touserdata(l, index));
+  }
+  else {
+    luaL_typerror(l, index, "movement");
+  }
+
+  return **movement;
 }
 
 /**

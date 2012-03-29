@@ -603,11 +603,10 @@ void Script::push_userdata(lua_State* l, ExportableToLua& userdata) {
  * @brief Checks that the value at the given index is userdata of the
  * specified type and returns it.
  *
- * TODO allow the type to be specified as a prefix
- *
  * @param l a Lua state
  * @param index an index in the Lua stack
- * @return the color at this index
+ * @param module_name name identifying the userdata type
+ * @return the userdata at this index
  */
 ExportableToLua& Script::check_userdata(lua_State* l, int index,
     const std::string& module_name) {

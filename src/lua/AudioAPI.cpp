@@ -28,6 +28,7 @@ void Script::register_audio_module() {
 
   static const luaL_Reg functions[] = {
       { "play_sound", audio_api_play_sound },
+      { "preload_sounds", audio_api_preload_sounds },
       { "play_music", audio_api_play_music },
       { "stop_music", audio_api_stop_music },
       { NULL, NULL }
@@ -43,11 +44,21 @@ void Script::register_audio_module() {
 int Script::audio_api_play_sound(lua_State *l) {
 
   const SoundId& sound_id = luaL_checkstring(l, 1);
-
   Sound::play(sound_id);
-
   return 0;
 }
+
+/**
+ * @brief Implementation of \ref lua_api_audio_preload_sounds.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::audio_api_preload_sounds(lua_State *l) {
+
+  Sound::load_all();
+  return 0;
+}
+
 
 /**
  * @brief Implementation of \ref lua_api_audio_play_music.

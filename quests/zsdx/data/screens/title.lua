@@ -11,6 +11,9 @@ function event_menu_started()
 
   title_surface = sol.surface.create()
   sol.timer.start(300, phase_zs_presents)
+
+  -- use these 0.3 seconds to preload all sound effects
+  sol.audio.preload_sounds()
 end
 
 function phase_zs_presents()

@@ -47,6 +47,7 @@ class Sound {
     static std::map<SoundId,Sound> all_sounds;   /**< all sounds created before */
 
     static bool initialized;                     /**< indicates that the audio system is initialized */
+    static bool sounds_preloaded;                /**< true if load_all() was called */
     static float volume;                         /**< the volume of sound effects (0.0 to 1.0) */
 
     ALuint decode_file(const std::string &file_name);

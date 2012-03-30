@@ -72,9 +72,6 @@ LanguageScreen::LanguageScreen(MainLoop& solarus):
     FileTools::set_language(language_codes[0]);
     finished = true;
   }
-
-  // preload all sounds
-  Sound::load_all();
 }
 
 /**

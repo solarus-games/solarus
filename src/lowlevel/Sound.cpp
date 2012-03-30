@@ -29,6 +29,7 @@
 ALCdevice* Sound::device = NULL;
 ALCcontext* Sound::context = NULL;
 bool Sound::initialized = false;
+bool Sound::sounds_preloaded = false;
 float Sound::volume = 1.0;
 std::list<Sound*> Sound::current_sounds;
 std::map<SoundId,Sound> Sound::all_sounds;
@@ -182,10 +183,10 @@ bool Sound::is_initialized() {
  */
 void Sound::load_all() {
 
-  if (is_initialized()) {
+  if (is_initialized() && !sounds_preloaded) {
 
     // open the resource database file
-    const std::string file_name = "project_db.dat";
+    static const std::string file_name = "project_db.dat";
     std::istream& database_file = FileTools::data_file_open(file_name);
     std::string line;
 
@@ -212,6 +213,8 @@ void Sound::load_all() {
       }
     }
     FileTools::data_file_close(database_file);
+ 
+    sounds_preloaded = true;
   }
 }
 

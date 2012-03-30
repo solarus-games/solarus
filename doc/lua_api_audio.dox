@@ -13,10 +13,31 @@ You can play musics and sound effects through \c sol.audio.
 
 Plays a sound effect.
 
-The sound cannot be interrupted later.
+A sound cannot be interrupted after you start playing it.
 Several sounds can be played in parallel.
+
+A file access is made only the first time you play each sound.
+You can use \ref lua_api_audio_preload_sounds to make this first access
+as fast as the other ones.
+
 - \c sound_id (string): Name of the sound file to play, relative to the
   \c sounds directory and without extension (<tt>.ogg</tt> is implicit).
+
+<hr>
+
+\subsection lua_api_audio_preload_sounds sol.audio.preload_sounds()
+
+Load all sounds effects into memory for faster future access.
+
+If you don't call this function, you can still play sound effects, but the
+first access to each sound effect will require a file access that might be
+perceptible.
+It is recommended to call this function at the beginning of your first screen.
+
+The list of sounds files to load is read from the
+\ref project_db project database file.
+
+This function does nothing if sounds are already loaded.
 
 <hr>
 

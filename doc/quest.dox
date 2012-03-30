@@ -37,7 +37,7 @@ We specify here the details for all those categories.
 \section root Root directory
 
 Two files are directly placed inside the \c data directory: \c info.dat and
-\c project_db.solarus.
+\c project_db.dat.
 
 \subsection info General quest information file
 
@@ -73,7 +73,7 @@ max_life = 12
 
 \endverbatim
 
-\subsection projet_db Project database
+\subsection project_db Project database
 
 The \c project_db.dat file is used by the quest editor.
 The quest editor is still in development and

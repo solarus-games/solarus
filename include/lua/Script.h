@@ -219,6 +219,7 @@ class Script {
 
       // audio API
       audio_api_play_sound,
+      audio_api_preload_sounds,
       audio_api_play_music,
       audio_api_stop_music,
 

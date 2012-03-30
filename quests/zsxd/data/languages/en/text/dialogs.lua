@@ -3741,7 +3741,14 @@ I'm busy at the moment?
 
 How rude are people
 nowadays!
+]]
+}
+-----------------------
 
+dialog{
+  id = "crazy_house.guichet_43f",
+  skip = "all",
+  text = [[
 Roh... what was I
 saying?...
 ]]

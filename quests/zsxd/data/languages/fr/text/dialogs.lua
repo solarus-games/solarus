@@ -3858,7 +3858,14 @@ pas que je suis
 occupée ?
 Ce que les gens peuvent
 être mal élevés !
+]]
+}
+-----------------------
 
+dialog{
+  id = "crazy_house.guichet_43f",
+  skip = "all",
+  text = [[
 Roh... où j'en étais
 moi ?...
 ]]

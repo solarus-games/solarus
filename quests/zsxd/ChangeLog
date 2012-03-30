@@ -1,3 +1,7 @@
+zsxd-1.5.1 (under development)
+
+* Fix a crash during a dialog, introduced by zsxd 1.5
+
 zsxd-1.5 (2012-02-12)
 
 * Use solarus-0.9.1

@@ -933,7 +933,7 @@ int Script::circle_movement_api_get_radius(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_radius.
+ * @brief Implementation of \ref lua_api_circle_movement_set_radius.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -958,7 +958,7 @@ int Script::circle_movement_api_get_radius_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_radius_speed.
+ * @brief Implementation of \ref lua_api_circle_movement_set_radius_speed.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -983,7 +983,7 @@ int Script::circle_movement_api_is_clockwise(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_clockwise.
+ * @brief Implementation of \ref lua_api_circle_movement_set_clockwise.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1012,7 +1012,7 @@ int Script::circle_movement_api_get_initial_angle(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_initial_angle.
+ * @brief Implementation of \ref lua_api_circle_movement_set_initial_angle.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1037,7 +1037,7 @@ int Script::circle_movement_api_get_angle_speed(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_angle_speed.
+ * @brief Implementation of \ref lua_api_circle_movement_set_angle_speed.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1062,7 +1062,7 @@ int Script::circle_movement_api_get_max_rotations(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_max_rotations.
+ * @brief Implementation of \ref lua_api_circle_movement_set_max_rotations.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1087,7 +1087,7 @@ int Script::circle_movement_api_get_duration(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_duration.
+ * @brief Implementation of \ref lua_api_circle_movement_set_duration.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -1112,7 +1112,7 @@ int Script::circle_movement_api_get_loop_delay(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_path_movement_set_loop_delay.
+ * @brief Implementation of \ref lua_api_circle_movement_set_loop_delay.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */

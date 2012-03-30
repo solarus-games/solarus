@@ -29,25 +29,12 @@
  */
 class CircleMovement: public Movement {
 
-  public:
-
-    /**
-     * @brief Possible directions when making circles.
-     */
-    enum Direction {
-      COUNTER_CLOCKWISE,
-      CLOCKWISE
-    };
-
   private:
 
     // center of the circle
     MapEntity *center_entity;                       /**< the entity to make circles around (NULL if only a point is used) */
     Rectangle center_point;                         /**< absolute coordinates of the center if only a point is used,
                                                      * or coordinates relative to the center entity otherwise */
-
-    // used only by set_property()
-    EntityType center_type;                         /**< type of the entity to make circles around */
 
     // angle
     int current_angle;                              /**< current angle in the circle in degrees */
@@ -103,8 +90,8 @@ class CircleMovement: public Movement {
     void set_angle_speed(int angle_speed);
     int get_initial_angle();
     void set_initial_angle(int initial_angle);
-    Direction get_direction();
-    void set_direction(Direction direction);
+    bool is_clockwise();
+    void set_clockwise(bool clockwise);
     uint32_t get_duration();
     void set_duration(uint32_t duration);
     int get_max_rotations();

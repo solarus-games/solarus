@@ -921,6 +921,98 @@ int Script::circle_movement_api_set_center(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_circle_movement_get_radius.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_get_radius(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  lua_pushinteger(l, movement.get_radius());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_radius.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_set_radius(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  int radius = luaL_checkinteger(l, 2);
+  movement.set_radius(radius);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_circle_movement_get_radius_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_get_radius_speed(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  lua_pushinteger(l, movement.get_radius_speed());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_radius_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_set_radius_speed(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  int radius_speed = luaL_checkinteger(l, 2);
+  movement.set_radius_speed(radius_speed);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_circle_movement_is_clockwise.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_is_clockwise(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  lua_pushboolean(l, movement.is_clockwise());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_clockwise.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_set_clockwise(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  bool clockwise = true; // true if unspecified
+  if (lua_isboolean(l, 2)) {
+    clockwise = lua_toboolean(l, 2);
+  }
+  movement.set_clockwise(clockwise);
+
+  return 0;
+}
+
+/*
+circle_movement_api_get_initial_angle,
+circle_movement_api_set_initial_angle,
+circle_movement_api_get_angle_speed,
+circle_movement_api_set_angle_speed,
+circle_movement_api_get_max_rotations,
+circle_movement_api_set_max_rotations,
+circle_movement_api_get_duration,
+circle_movement_api_set_duration,
+circle_movement_api_get_loop_delay,
+circle_movement_api_set_loop_delay,
+*/
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * jump movement and returns it.
  * @param l a Lua context

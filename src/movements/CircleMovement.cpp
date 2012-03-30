@@ -32,7 +32,6 @@ CircleMovement::CircleMovement(bool ignore_obstacles):
 
   Movement(ignore_obstacles),
   center_entity(NULL),
-  center_type(ENEMY),
   current_angle(0),
   initial_angle(0),
   angle_increment(1),
@@ -193,21 +192,21 @@ void CircleMovement::set_initial_angle(int initial_angle) {
 }
 
 /**
- * @brief Returns the direction of the circles;
- * @return CLOCKWISE or COUNTER_CLOCKWISE
+ * @brief Returns the direction of the circles.
+ * @return true if circles are clockwise
  */
-CircleMovement::Direction CircleMovement::get_direction() {
+bool CircleMovement::is_clockwise() {
 
-  return angle_increment > 0 ? COUNTER_CLOCKWISE : CLOCKWISE;
+  return angle_increment < 0;
 }
 
 /**
- * @brief Sets the direction of the circles.
- * @param direction CLOCKWISE or COUNTER_CLOCKWISE 
+ * @brief Sets the direction of circles.
+ * @param clockwise true to make clockwise circles
  */
-void CircleMovement::set_direction(Direction direction) {
+void CircleMovement::set_clockwise(bool clockwise) {
 
-  this->angle_increment = (direction == CLOCKWISE) ? -1 : 1;
+  this->angle_increment = clockwise ? -1 : 1;
 }
 
 /**

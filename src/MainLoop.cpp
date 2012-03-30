@@ -51,8 +51,8 @@ MainLoop::MainLoop(int argc, char** argv):
  */
 MainLoop::~MainLoop() {
 
-  delete root_surface;
   delete current_screen;
+  delete root_surface;
   delete debug_keys;
   System::quit();
 }

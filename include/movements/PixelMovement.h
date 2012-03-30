@@ -55,12 +55,12 @@ class PixelMovement: public Movement {
   public:
 
     // creation and destruction
-    PixelMovement(const std::string &trajectory_string, uint32_t delay, bool loop, bool ignore_obstacles);
+    PixelMovement(const std::string& trajectory_string, uint32_t delay, bool loop, bool ignore_obstacles);
     virtual ~PixelMovement();
 
     // properties
-    const std::string &get_trajectory();
-    void set_trajectory(const std::list<Rectangle> &trajectory);
+    const std::list<Rectangle>& get_trajectory();
+    void set_trajectory(const std::list<Rectangle>& trajectory);
     void set_trajectory(const std::string &trajectory_string);
     uint32_t get_delay();
     void set_delay(uint32_t delay);

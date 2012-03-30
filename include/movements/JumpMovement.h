@@ -27,37 +27,40 @@
  */
 class JumpMovement: public PixelMovement {
 
-  private:
-
-    static const std::string basic_trajectories[];		/**< one-pixel trajectory of each direction */
-
-    // properties
-    int direction8;						/**< direction of the jump (0 to 7) */
-    int length;							/**< jump length in pixels */
-    int speed;							/**< speed in pixels per second */
-
-    // state
-    int jump_height;						/**< current height of the object while jumping */
-
-    void restart();
-
-  protected:
-
-    void notify_step_done(int step_index, bool success);
-
   public:
 
-    JumpMovement(int direction8, int length, int speed, bool ignore_obstacles);
+    JumpMovement(int direction8, int distance, int speed, bool ignore_obstacles);
     ~JumpMovement();
 
+    int get_direction8();
     void set_direction8(int direction8);
-    void set_length(int length);
+    int get_distance();
+    void set_distance(int distance);
+    int get_speed();
     void set_speed(int speed);
 
     int get_displayed_direction4();
     const Rectangle get_displayed_xy();
 
     virtual const std::string& get_lua_type_name() const;
+
+  protected:
+
+    void notify_step_done(int step_index, bool success);
+
+  private:
+
+    static const std::string basic_trajectories[];  /**< one-pixel trajectory of each direction */
+
+    // properties
+    int direction8;                                 /**< direction of the jump (0 to 7) */
+    int distance;                                   /**< jump length in pixels */
+    int speed;                                      /**< speed in pixels per second */
+
+    // state
+    int jump_height;                                /**< current height of the object while jumping */
+
+    void restart();
 };
 
 #endif

@@ -32,7 +32,7 @@ class CircleMovement: public Movement {
   private:
 
     // center of the circle
-    MapEntity *center_entity;                       /**< the entity to make circles around (NULL if only a point is used) */
+    MapEntity* center_entity;                       /**< the entity to make circles around (NULL if only a point is used) */
     Rectangle center_point;                         /**< absolute coordinates of the center if only a point is used,
                                                      * or coordinates relative to the center entity otherwise */
 
@@ -88,8 +88,8 @@ class CircleMovement: public Movement {
     void set_radius_speed(int radius_speed);
     int get_angle_speed();
     void set_angle_speed(int angle_speed);
-    int get_initial_angle();
-    void set_initial_angle(int initial_angle);
+    double get_initial_angle();
+    void set_initial_angle(double initial_angle);
     bool is_clockwise();
     void set_clockwise(bool clockwise);
     uint32_t get_duration();

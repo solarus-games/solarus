@@ -663,12 +663,12 @@ int Script::path_movement_api_get_path(lua_State* l) {
 
   const std::string& path = movement.get_path();
   // build a Lua array containing the path
+  lua_settop(l, 1);
   lua_newtable(l);
   for (size_t i; i < path.size(); i++) {
     int direction8 = path[i] - '0';
-    lua_pushinteger(l, i);
     lua_pushinteger(l, direction8);
-    lua_settable(l, -3);
+    lua_rawseti(l, 2, i);
   }
 
   return 1;
@@ -999,18 +999,130 @@ int Script::circle_movement_api_set_clockwise(lua_State* l) {
   return 0;
 }
 
-/*
-circle_movement_api_get_initial_angle,
-circle_movement_api_set_initial_angle,
-circle_movement_api_get_angle_speed,
-circle_movement_api_set_angle_speed,
-circle_movement_api_get_max_rotations,
-circle_movement_api_set_max_rotations,
-circle_movement_api_get_duration,
-circle_movement_api_set_duration,
-circle_movement_api_get_loop_delay,
-circle_movement_api_set_loop_delay,
-*/
+/**
+ * @brief Implementation of \ref lua_api_circle_movement_get_initial_angle.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_get_initial_angle(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  lua_pushnumber(l, movement.get_initial_angle());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_initial_angle.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_set_initial_angle(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  double initial_angle = luaL_checknumber(l, 2);
+  movement.set_initial_angle(initial_angle);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_circle_movement_get_angle_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_get_angle_speed(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  lua_pushinteger(l, movement.get_angle_speed());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_angle_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_set_angle_speed(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  int angle_speed = luaL_checkinteger(l, 2);
+  movement.set_angle_speed(angle_speed);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_circle_movement_get_max_rotations.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_get_max_rotations(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  lua_pushinteger(l, movement.get_max_rotations());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_max_rotations.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_set_max_rotations(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  int max_rotations = luaL_checkinteger(l, 2);
+  movement.set_max_rotations(max_rotations);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_circle_movement_get_duration.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_get_duration(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  lua_pushinteger(l, movement.get_duration());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_duration.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_set_duration(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  int duration = luaL_checkinteger(l, 2);
+  movement.set_duration(duration);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_circle_movement_get_loop_delay.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_get_loop_delay(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  lua_pushinteger(l, movement.get_loop());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_path_movement_set_loop_delay.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::circle_movement_api_set_loop_delay(lua_State* l) {
+
+  CircleMovement& movement = check_circle_movement(l, 1);
+  int loop_delay = luaL_checkinteger(l, 2);
+  movement.set_loop(loop_delay);
+  return 0;
+}
 
 /**
  * @brief Checks that the userdata at the specified index of the stack is a
@@ -1025,6 +1137,81 @@ JumpMovement& Script::check_jump_movement(lua_State* l, int index) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_jump_movement_get_direction8.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::jump_movement_api_get_direction8(lua_State* l) {
+
+  JumpMovement& movement = check_jump_movement(l, 1);
+  lua_pushinteger(l, movement.get_direction8());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_jump_movement_set_direction8.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::jump_movement_api_set_direction8(lua_State* l) {
+
+  JumpMovement& movement = check_jump_movement(l, 1);
+  int direction8 = luaL_checkinteger(l, 2);
+  movement.set_direction8(direction8);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_jump_movement_get_distance.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::jump_movement_api_get_distance(lua_State* l) {
+
+  JumpMovement& movement = check_jump_movement(l, 1);
+  lua_pushinteger(l, movement.get_distance());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_jump_movement_set_distance.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::jump_movement_api_set_distance(lua_State* l) {
+
+  JumpMovement& movement = check_jump_movement(l, 1);
+  int distance = luaL_checkinteger(l, 2);
+  movement.set_distance(distance);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_jump_movement_get_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::jump_movement_api_get_speed(lua_State* l) {
+
+  JumpMovement& movement = check_jump_movement(l, 1);
+  lua_pushinteger(l, movement.get_speed());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_jump_movement_set_speed.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::jump_movement_api_set_speed(lua_State* l) {
+
+  JumpMovement& movement = check_jump_movement(l, 1);
+  int speed = luaL_checkinteger(l, 2);
+  movement.set_speed(speed);
+  return 0;
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * pixel movement and returns it.
  * @param l a Lua context
@@ -1035,3 +1222,114 @@ PixelMovement& Script::check_pixel_movement(lua_State* l, int index) {
   return static_cast<PixelMovement&>(
       check_userdata(l, index, pixel_movement_module_name));
 }
+
+/**
+ * @brief Implementation of \ref lua_api_pixel_movement_get_trajectory.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::pixel_movement_api_get_trajectory(lua_State* l) {
+
+  PixelMovement& movement = check_pixel_movement(l, 1);
+
+  const std::list<Rectangle>& trajectory = movement.get_trajectory();
+  // build a Lua array containing the trajectory
+  lua_settop(l, 1);
+  lua_newtable(l);
+  int i = 0;
+  std::list<Rectangle>::const_iterator it;
+  for (it = trajectory.begin(); it != trajectory.end(); it++) {
+    const Rectangle& xy = *it;
+    lua_newtable(l);
+    lua_pushinteger(l, xy.get_x());
+    lua_rawseti(l, 3, 1);
+    lua_pushinteger(l, xy.get_y());
+    lua_rawseti(l, 3, 2);
+    lua_rawseti(l, 2, i);
+    i++;
+  }
+
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_pixel_movement_set_trajectory.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::pixel_movement_api_set_trajectory(lua_State* l) {
+
+  PixelMovement& movement = check_pixel_movement(l, 1);
+  luaL_checktype(l, 2, LUA_TTABLE);
+
+  // build the trajectory as a string from the Lua table
+  std::list<Rectangle> trajectory;
+  lua_pushnil(l); // first key
+  while (lua_next(l, 2) != 0) {
+    luaL_checktype(l, 4, LUA_TTABLE);
+    lua_rawgeti(l, 4, 1);
+    lua_rawgeti(l, 4, 2);
+    int x = luaL_checkinteger(l, 5);
+    int y = luaL_checkinteger(l, 6);
+    trajectory.push_back(Rectangle(x, y));
+    lua_settop(l, 3); // let the key for the iteration
+  }
+  movement.set_trajectory(trajectory);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_pixel_movement_get_loop.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::pixel_movement_api_get_loop(lua_State* l) {
+
+  PixelMovement& movement = check_pixel_movement(l, 1);
+  lua_pushboolean(l, movement.get_loop());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_pixel_movement_set_loop.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::pixel_movement_api_set_loop(lua_State* l) {
+
+  PixelMovement& movement = check_pixel_movement(l, 1);
+  bool loop = true; // true if unspecified
+  if (lua_isboolean(l, 2)) {
+    loop = lua_toboolean(l, 2);
+  }
+  movement.set_loop(loop);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_pixel_movement_get_delay.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::pixel_movement_api_get_delay(lua_State* l) {
+
+  PixelMovement& movement = check_pixel_movement(l, 1);
+  lua_pushinteger(l, movement.get_delay());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_pixel_movement_set_delay.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::pixel_movement_api_set_delay(lua_State* l) {
+
+  PixelMovement& movement = check_pixel_movement(l, 1);
+  int delay = luaL_checkinteger(l, 2);
+  movement.set_delay(delay);
+  return 0;
+}
+

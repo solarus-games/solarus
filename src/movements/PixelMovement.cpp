@@ -46,26 +46,10 @@ PixelMovement::~PixelMovement() {
 
 /**
  * @brief Returns the trajectory of this movement.
- * @return a string describing the succession of translations that compose this movement
+ * @return the succession of translations that compose this movement
  */
-const std::string& PixelMovement::get_trajectory() {
-
-  // compute the trajectory string on demand
-  if (trajectory.size() > 0 && trajectory_string.size() == 0) {
-
-    // the trajectory does not exist as string yet
-
-    std::list<Rectangle>::iterator it;
-    std::ostringstream oss;
-    for (it = trajectory.begin(); it != trajectory.end(); it++) {
-
-      const Rectangle &step = *it;
-      oss << step.get_x() << " " << step.get_y() << "  ";
-    }
-    trajectory_string = oss.str();
-  }
-
-  return trajectory_string;
+const std::list<Rectangle>& PixelMovement::get_trajectory() {
+  return trajectory;
 }
 
 /**
@@ -87,7 +71,7 @@ void PixelMovement::set_trajectory(const std::list<Rectangle> &trajectory) {
 }
 
 /**
- * @brief Sets the trajectory of this movement.
+ * @brief Sets the trajectory of this movement from a string.
  *
  * This function can be called even if the object was moving with a previous trajectory.
  * The old trajectory is replaced and the movement starts the from beginning of the

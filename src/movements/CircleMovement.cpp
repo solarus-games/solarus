@@ -173,22 +173,24 @@ void CircleMovement::set_angle_speed(int angle_speed) {
 
 /**
  * @brief Returns the angle from where the first circle starts.
- * @return the angle in degrees
+ * @return the angle in radians
  */
-int CircleMovement::get_initial_angle() {
-  return initial_angle;
+double CircleMovement::get_initial_angle() {
+
+  return Geometry::degrees_to_radians(initial_angle);
 }
 
 /**
  * @brief Sets the angle from where the first circle starts.
- * @param initial_angle angle in degrees
+ * @param initial_angle angle in radians
  */
-void CircleMovement::set_initial_angle(int initial_angle) {
+void CircleMovement::set_initial_angle(double initial_angle) {
 
-  Debug::check_assertion(initial_angle >= 0 && initial_angle < 360,
+  Debug::check_assertion(initial_angle >= 0 && initial_angle < Geometry::TWO_PI,
       StringConcat() << "Invalid initial angle: " << initial_angle);
 
-  this->initial_angle = initial_angle;
+  // convert to degrees (everything works in degrees in this class)
+  this->initial_angle = Geometry::radians_to_degrees(initial_angle);
 }
 
 /**
@@ -219,6 +221,7 @@ void CircleMovement::set_clockwise(bool clockwise) {
  * @return duration of the movement in milliseconds, (0 means infinite)
  */
 uint32_t CircleMovement::get_duration() {
+
   return duration;
 }
 

@@ -29,18 +29,18 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  * @param direction8 direction of the jump (0 to 7)
- * @param length length of the jump in pixels
+ * @param distance distance of the jump in pixels
  * @param ignore_obstacles true to make the movement ignore obstacles
  * @param with_sound true to play the "jump" sound
  * @param movement_delay delay between each one-pixel move in the jump movement (0: default)
  */
-Hero::JumpingState::JumpingState(Hero &hero, int direction8, int length,
+Hero::JumpingState::JumpingState(Hero &hero, int direction8, int distance,
     bool ignore_obstacles, bool with_sound, uint32_t movement_delay):
   
   State(hero),
   carried_item(NULL) {
 
-  this->movement = new JumpMovement(direction8, length, 0, ignore_obstacles);
+  this->movement = new JumpMovement(direction8, distance, 0, ignore_obstacles);
   this->direction8 = direction8;
   this->with_sound = with_sound;
 }

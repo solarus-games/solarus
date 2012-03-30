@@ -37,14 +37,14 @@ const std::string JumpMovement::basic_trajectories[8] = {
 /**
  * @brief Creates a jump movement.
  * @param direction8 of the movement (0 to 7)
- * @param length length of the jump in pixels
+ * @param distance distance of the jump in pixels
  * @param speed speed of the movement in pixels per second (0: default, based on the jump length)
  * @param ignore_obstacles true to make the movement ignore obstacles
  */
-JumpMovement::JumpMovement(int direction8, int length, int speed, bool ignore_obstacles):
+JumpMovement::JumpMovement(int direction8, int distance, int speed, bool ignore_obstacles):
   PixelMovement("", 10, false, ignore_obstacles),
   direction8(direction8),
-  length(length),
+  distance(distance),
   speed(0),
   jump_height(0) {
 
@@ -66,11 +66,19 @@ void JumpMovement::restart() {
 
   std::ostringstream oss;
 
-  for (int i = 0; i < length; i++) {
+  for (int i = 0; i < distance; i++) {
     oss << basic_trajectories[direction8] << "  ";
   }
 
   set_trajectory(oss.str());
+}
+
+/**
+ * @brief Returns the direction of this movement.
+ * @return the direction (0 to 7)
+ */
+int JumpMovement::get_direction8() {
+  return direction8;
 }
 
 /**
@@ -87,16 +95,32 @@ void JumpMovement::set_direction8(int direction8) {
 }
 
 /**
- * @brief Changes the length of this movement.
+ * @brief Returns the distance of the jump.
+ * @return the distance in pixels
+ */
+int JumpMovement::get_distance() {
+  return distance;
+}
+
+/**
+ * @brief Changes the distance of the jump.
  *
  * The movement is restarted.
  *
- * @param length the new length in pixels
+ * @param distance the new distance in pixels
  */
-void JumpMovement::set_length(int length) {
+void JumpMovement::set_distance(int distance) {
 
-  this->length = length;
+  this->distance = distance;
   restart();
+}
+
+/**
+ * @brief Returns the speed of the movement.
+ * @return the speed in pixels per second
+ */
+int JumpMovement::get_speed() {
+  return speed;
 }
 
 /**
@@ -106,11 +130,12 @@ void JumpMovement::set_length(int length) {
 void JumpMovement::set_speed(int speed) {
 
   if (speed == 0) {
-    set_delay(std::max(4, 14 - length / 10));
+    set_delay(std::max(4, 14 - distance / 10));
   }
   else {
     set_delay(1000 / speed);
   }
+  this->speed = speed;
   restart();
 }
 

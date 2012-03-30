@@ -52,7 +52,7 @@ Script::~Script() {
   // delete unfinished timers
   std::map<Timer*, int>::iterator it;
   for (it = timers.begin(); it != timers.end(); it++) {
-    delete it->first;
+    remove_timer(it->first);
   }
 }
 

@@ -44,15 +44,12 @@ Script::Script(uint32_t apis_enabled):
  */
 Script::~Script() {
 
+  // cancel unfinished timers
+  remove_all_timers();
+
   // close the Lua execution context
   if (l != NULL) {
     lua_close(l);
-  }
-
-  // delete unfinished timers
-  std::map<Timer*, int>::iterator it;
-  for (it = timers.begin(); it != timers.end(); it++) {
-    remove_timer(it->first);
   }
 }
 

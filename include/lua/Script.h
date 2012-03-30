@@ -191,6 +191,7 @@ class Script {
     bool is_new_timer_suspended(void);
     void add_timer(Timer* timer, int callback_ref);
     void remove_timer(Timer* timer);
+    void remove_all_timers();
     void update_timers();
 
     // displayable objects

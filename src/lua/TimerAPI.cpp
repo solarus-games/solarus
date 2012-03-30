@@ -70,6 +70,22 @@ void Script::remove_timer(Timer* timer) {
 }
 
 /**
+ * @brief Unregisters all timers created by this script.
+ */
+void Script::remove_all_timers() {
+
+  std::map<Timer*, int>::iterator it;
+  for (it = timers.begin(); it != timers.end(); it++) {
+    Timer* timer = it->first;
+    if (!timer->is_finished()) {
+      luaL_unref(l, LUA_REGISTRYINDEX, it->second);
+    }
+    decrement_refcount(timer);
+  }
+  timers.clear();
+}
+
+/**
  * @brief Updates all timers currently running for this script.
  */
 void Script::update_timers() {

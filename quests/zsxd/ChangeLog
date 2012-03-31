@@ -1,4 +1,8 @@
-zsxd-1.5.1 (under development)
+zsxd-1.5.2 (2012-03-31)
+
+* Fix missing empty lines in the credits dialogs
+
+zsxd-1.5.1 (2012-03-31)
 
 * Fix a crash during a dialog, introduced by zsxd 1.5
 

@@ -5088,18 +5088,22 @@ dialog{
   text = [[
 $1This game parody was
 made in seven weeks
-by the team of
-Zelda: Mystery of
-Solarus on the occasion
-of April 1st, 2011
+by the team of Zelda:
+Mystery of Solarus DX
+on the occasion of
+April 1st, 2011
 with help from some
 pizzas and high doses
 of caffeine.
+
         CREDITS        
+
       Programming:
 Christopho
+
           Maps
         creation:
+
 Christopho
 Metallizer
 Yoshi04
@@ -5108,6 +5112,7 @@ Sam101
 Mymy
        Dungeons
       conception:
+
     Lost and Found     
        Office:        
 Metallizer
@@ -5116,15 +5121,19 @@ Metallizer
 Christopho
 These guys are
 sadistics!
+
       Additional
        graphics:
 Newlink
          English
        translation:
+
 BAFelton
 KageNoSensei
+
         Special
         thanks:
+
 19oj19
 Neovyse
 Thyb
@@ -5136,11 +5145,12 @@ HelpTheWretched
 Vincent Jouillat
 JB
 Nintendo
+
 Congratulations on
 reaching the end!
 
 
- www.zelda-solarus.com
+ www.solarus-engine.org
 ]]
 }
 -----------------------

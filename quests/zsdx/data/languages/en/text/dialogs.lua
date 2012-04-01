@@ -1449,7 +1449,7 @@ You found the Iron
 Key!$0
 
 Surely it must open
-a some door!
+a door!
 ]]
 }
 --------------------
@@ -5078,7 +5078,7 @@ dialog{
   skip = "all",
   text = [[
 
-     Junk Shop
+       Junk Shop
 
 The largest selection
 at exceptional prices!

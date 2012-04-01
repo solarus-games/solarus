@@ -4980,6 +4980,7 @@ dialog{
   text = [[
 How did you get here??
 
+
 ... Now that you're
 here, how would you
 like to be the first to

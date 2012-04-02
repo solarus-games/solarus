@@ -5150,7 +5150,7 @@ Congratulations on
 reaching the end!
 
 
- www.solarus-engine.org
+ www.solarus-games.org
 ]]
 }
 -----------------------

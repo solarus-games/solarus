@@ -6427,7 +6427,7 @@ Thanks for playing!$0
 
 
 
- www.zelda-solarus.com$0
+ www.solarus-games.org$0
 ]]
 }
 -----------------------

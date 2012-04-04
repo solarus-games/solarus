@@ -110,7 +110,7 @@ $ cmake -DCMAKE_BUILD_TYPE=Release .
 
 This generates the appropriate Makefiles for your system.
 The -DCMAKE_BUILD_TYPE=Release parameter optimizes the compilation and
-disable debugging assertions. Games will run significantly faster.
+disables debugging assertions. Games will run significantly faster.
 
 Then you can compile the engine with:
 
@@ -138,7 +138,7 @@ You may want to install solarus in another directory
 (e.g. so that no root access is necessary). You can specify this directory
 as a parameter of cmake:
 
-$ cmake -D CMAKE_INSTALL_PREFIX=/home/your_directory .
+$ cmake -DCMAKE_INSTALL_PREFIX=/home/your_directory .
 $ make
 $ make install
 

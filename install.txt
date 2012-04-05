@@ -188,7 +188,7 @@ You can compile for YOUR Mac with the default command, but you probably wish
 to distribute the application on other systems. To do so, use this command 
 to prepare the deployment (change 10.5 by the min version)
 
-$ export MACOSX_DEPLOYMENT_TARGET=10.5 && -DCMAKE_BUILD_TYPE=Release .
+$ export MACOSX_DEPLOYMENT_TARGET=10.5 && cmake -DCMAKE_BUILD_TYPE=Release .
 
 
 * Deploy on OSX

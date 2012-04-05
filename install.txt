@@ -157,7 +157,7 @@ If the command-line argument is not specified, the preprocessor constant
 DEFAULT_QUEST is used.
 The DEFAULT_QUEST constant can be configured from your cmake command by using:
 
-$ cmake -DEFAULT_QUEST=/path/to/your/quest .
+$ cmake -DDEFAULT_QUEST=/path/to/your/quest .
 
 Finally, if the DEFAULT_QUEST constant is not set either, then the engine looks
 into the current directory.
@@ -188,7 +188,8 @@ You can compile for YOUR Mac with the default command, but you probably wish
 to distribute the application on other systems. To do so, use this command 
 to prepare the deployment (change 10.5 by the min version)
 
-$ export MACOSX_DEPLOYMENT_TARGET=10.5 && cmake -DCMAKE_BUILD_TYPE=Release .
+$ export MACOSX_DEPLOYMENT_TARGET=10.5 
+$ cmake -DCMAKE_BUILD_TYPE=Release -DDEFAULT_QUEST=../Resources/ .
 
 
 * Deploy on OSX
@@ -199,8 +200,8 @@ you should use the one from the official application available on the solarus
 website, but you perfectly can make your own one.
 
 All non-Mac-native frameworks frameworks are placed in 
-Solarus.app/Contents/Frameworks and main binary and its quest in 
-Solarus.app/Contents/Resources
+Solarus.app/Contents/Frameworks/ , the main binary in 
+Solarus.app/Contents/MacOS/ and the quest in Solarus.app/Contents/Resources/
 First, you have to check if dependencies search path are correctly integrated,
 just by doing
 

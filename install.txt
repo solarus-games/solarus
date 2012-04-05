@@ -198,8 +198,11 @@ the executable and all the resources it needs. We usually make it once, so
 you should use the one from the official application available on the solarus 
 website, but you perfectly can make your own one.
 
-First, you have to check if all non-Mac-native frameworks are correctly 
-integrated, just by doing
+All non-Mac-native frameworks frameworks are placed in 
+Solarus.app/Contents/Frameworks and main binary and its quest in 
+Solarus.app/Contents/Resources
+First, you have to check if dependencies search path are correctly integrated,
+just by doing
 
 $ otool -L /dylib/or/binary/I/want/to/check
 

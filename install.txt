@@ -157,7 +157,7 @@ If the command-line argument is not specified, the preprocessor constant
 DEFAULT_QUEST is used.
 The DEFAULT_QUEST constant can be configured from your cmake command by using:
 
-$ cmake -DEFAULT_QUEST=/path/to/your/quest .
+$ cmake -DDEFAULT_QUEST=/path/to/your/quest .
 
 Finally, if the DEFAULT_QUEST constant is not set either, then the engine looks
 into the current directory.
@@ -195,16 +195,19 @@ $ export MACOSX_DEPLOYMENT_TARGET=10.5 && cmake -DCMAKE_BUILD_TYPE=Release .
 To deploy a bundle, you need to add a few things to your project.
 The final application is a .app suffixed folder, which typcially contains 
 the executable and all the resources it needs. We usually make it once, so 
-you should use the one from the libraries/macosx directory, but you perfectly 
-can make your own one.
+you should use the one from the official application available on the solarus 
+website, but you perfectly can make your own one.
 
-First, you have to check if all non-Mac-native frameworks are correctly 
-integrated, just by doing
+All non-Mac-native frameworks frameworks are placed in 
+Solarus.app/Contents/Frameworks/ , and the main binary and its quest in 
+Solarus.app/Contents/Resources/
+First, you have to check if dependencies search path are correctly integrated,
+just by doing
 
 $ otool -L /dylib/or/binary/I/want/to/check
 
 This command is to use on all dylib, framework binary and the main binary.
-(if you use the bundle on libraries/macosx, just do it on main binary).
+(if you use the "official" bundle, just do it on main binary).
 It show the search path for every dependencies. Just look on the one you embed.
 If one of them has a wrong path, you can modify it with
 
@@ -214,7 +217,7 @@ $ install_name_tool -change old_path new_path /dylib/or/binary/I/want/to/modify
 
 The new_path string usually looks like @rpath/The_dylib.dylib or 
 @rpath/The_framework.framework/Version/A/The_binary on Mac 10.5+.
-Replace @rpath/ by @executable_path/../Frameworks/ on older OSX versions.
+Replace @rpath/ by @executable_path/../Frameworks/ on earlier OSX versions.
 
 
 The last thing you have to do to deploy Solarus is to compile it for every 

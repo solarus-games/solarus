@@ -91,8 +91,14 @@ target_link_libraries(solarus
   ${MODPLUG_LIBRARY}
 )
 
-# compilation flags
-set(CMAKE_CXX_FLAGS "-Wall -Werror ${CMAKE_CXX_FLAGS}")
+# default compilation flags
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+  endif(NOT CMAKE_BUILD_TYPE)
+set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
 # compilation flags for Mac OS X (Intel) deployment
 if(CMAKE_BUILD_TYPE MATCHES "Release")

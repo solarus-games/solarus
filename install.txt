@@ -194,13 +194,12 @@ $ export MACOSX_DEPLOYMENT_TARGET=10.5 && cmake -DCMAKE_BUILD_TYPE=Release .
 * Deploy on OSX
 To deploy a bundle, you need to add a few things to your project.
 The final application is a .app suffixed folder, which typcially contains 
-the executable and all the resources it needs. We usually make it once, so 
-you should use the one from the official application available on the solarus 
+the executable and all resources it needs. We usually make it once, so you
+should use the one from the official application available on the solarus 
 website, but you perfectly can make your own one.
 
-All non-Mac-native frameworks frameworks are placed in 
-Solarus.app/Contents/Frameworks/ , and the main binary and its quest in 
-Solarus.app/Contents/Resources/
+All non-Mac-native frameworks are placed in Solarus.app/Contents/Frameworks/
+and the main binary and its quest in Solarus.app/Contents/Resources/
 First, you have to check if dependencies search path are correctly integrated,
 just by doing
 

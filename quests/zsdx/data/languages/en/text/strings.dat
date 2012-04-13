@@ -165,6 +165,6 @@ selection_menu.options.music_volume      Music volume
 selection_menu.options.sound_volume      Sound volume
 
 # Title screen
-title_screen.website        www.solarus-engine.org
+title_screen.website        www.solarus-games.org
 title_screen.press_space    Press the space bar
 

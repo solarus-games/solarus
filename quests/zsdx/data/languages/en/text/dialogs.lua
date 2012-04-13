@@ -27,7 +27,7 @@
 
 -- ****** More documentation ******
 -- If you have a doubt, please refer to the doc:
--- http://www.solarus-engine.org/doc/dialog_syntax.html
+-- http://www.solarus-games.org/doc/latest/dialog_syntax.html
 -- or just ask.
 
 -- Thanks for your contribution!

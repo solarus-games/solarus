@@ -27,11 +27,11 @@
 
 -- ****** More documentation ******
 -- If you have a doubt, please refer to the doc:
--- http://www.solarus-games.org/doc/dialog_syntax.html
--- or just ask.
+-- http://www.solarus-games.org/doc/latest/dialog_syntax.html
+-- or just ask on IRC (see below).
 --
--- ****** Team work *******/
--- If you contribute, please join our IRC channel to organize the work:
+-- ****** Team work *******
+-- Please join our IRC channel to organize the work with us:
 -- irc.zelda-solarus.com #solarus
 
 -- Thanks for your contribution!

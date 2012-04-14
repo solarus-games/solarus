@@ -3815,7 +3815,6 @@ only 75 Rupees!
 With your shield alone
 you won't get far.
 
-
 So, interested?
 Yes
 No

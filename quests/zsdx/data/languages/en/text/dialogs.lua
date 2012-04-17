@@ -5275,8 +5275,8 @@ dialog{
   id = "castle.npc_3",
   skip = "all",
   text = [[
-How shiny! It's a
-wonderful home!
+What luxury! This
+place is magnificent!
 ]]
 }
 -----------------------

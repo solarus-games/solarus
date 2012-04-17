@@ -1,14 +1,14 @@
 -- Zelda Mystery of Solarus DX:
--- English dialogs
+-- Spanish dialogs
 
 -- ****** Contributors ******
 -- Please add your name to this list if you helped.
 -- These names will appear in the English localization credits
 -- at the end of the game.
--- * AleX_XelA
--- * Christopho
--- * JeFF
--- * rypervenche
+-- * 
+-- * 
+-- * 
+-- * 
 
 -- ****** Please respect the limit of each line! ******
 -- 23 chars for normal lines,
@@ -28,12 +28,26 @@
 -- ****** More documentation ******
 -- If you have a doubt, please refer to the doc:
 -- http://www.solarus-games.org/doc/latest/dialog_syntax.html
--- or just ask.
+-- or just ask on IRC (see below).
+--
+-- ****** Team work *******
+-- Please join our IRC channel to organize the work with us:
+-- irc.zelda-solarus.com #solarus
+-- Before translating any dialog, please tell us on IRC to avoid
+-- conflicts.
 
 -- Thanks for your contribution!
 
 
--- Plume / Feather
+-- --------------------
+-- 1. Item descriptions
+-- --------------------
+--
+-- The following dialogs are seen when the player
+-- shows information about an item in the inventory menu.
+--------------------
+
+-- Feather
 dialog{
   id = "_item_description.feather.1",
   icon = 0,
@@ -45,7 +59,7 @@ jump over obstacles.
 }
 --------------------
 
--- Bombes / Bombs
+-- Bombs
 dialog{
   id = "_item_description.bombs_counter.1",
   icon = 1,
@@ -58,7 +72,7 @@ destroy obstacles.
 }
 --------------------
 
--- Arc / Bow
+-- Bow
 dialog{
   id = "_item_description.bow.1",
   icon = 2,
@@ -70,7 +84,7 @@ Arrows left!
 }
 --------------------
 
--- Arc & Flèches / Bow & Arrows
+-- Bow & Arrows
 dialog{
   id = "_item_description.bow.2",
   icon = 3,
@@ -112,7 +126,7 @@ objects.
 }
 --------------------
 
--- Lanterne / Lamp
+-- Lamp
 dialog{
   id = "_item_description.lamp.1",
   icon = 5,
@@ -127,7 +141,7 @@ Meter!
 }
 --------------------
 
--- Grappin / Hookshot
+-- Hookshot
 dialog{
   id = "_item_description.hookshot.1",
   icon = 6,
@@ -141,7 +155,7 @@ Hookshot.
 }
 --------------------
 
--- Flacon Magique vide / Empty bottle
+-- Empty bottle
 dialog{
   id = "_item_description.bottle_1.1",
   icon = 7,
@@ -154,8 +168,7 @@ substances.
 }
 --------------------
 
--- Eau dans Flacon / Water in Bottle
---#Second part may need changing
+-- Water in Bottle
 dialog{
   id = "_item_description.bottle_1.2",
   icon = 8,
@@ -171,7 +184,7 @@ appropriate spot...
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Red potion
 dialog{
   id = "_item_description.bottle_1.3",
   icon = 9,
@@ -184,7 +197,7 @@ Heart Meter.
 }
 --------------------
 
--- Potion verte / Red potion
+-- Green potion
 dialog{
   id = "_item_description.bottle_1.4",
   icon = 10,
@@ -197,7 +210,7 @@ Magic Meter.
 }
 --------------------
 
--- Potion bleue / Red potion
+-- Blue potion
 dialog{
   id = "_item_description.bottle_1.5",
   icon = 11,
@@ -211,7 +224,7 @@ Meters!
 }
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fairy in Bottle
 dialog{
   id = "_item_description.bottle_1.6",
   icon = 12,
@@ -226,7 +239,7 @@ recover your Hearts!
 }
 --------------------
 
--- Flacon Magique vide / Empty bottle
+-- Empty bottle
 dialog{
   id = "_item_description.bottle_2.1",
   icon = 7,
@@ -239,7 +252,7 @@ substances.
 }
 --------------------
 
--- Eau dans Flacon / Water in Bottle
+-- Water in Bottle
 dialog{
   id = "_item_description.bottle_2.2",
   icon = 8,
@@ -255,7 +268,7 @@ appropriate spot...
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Red potion
 dialog{
   id = "_item_description.bottle_2.3",
   icon = 9,
@@ -268,7 +281,7 @@ Heart Meter.
 }
 --------------------
 
--- Potion verte / Green potion
+-- Green potion
 dialog{
   id = "_item_description.bottle_2.4",
   icon = 10,
@@ -281,7 +294,7 @@ Magic Meter.
 }
 --------------------
 
--- Potion bleue / Blue potion
+-- Blue potion
 dialog{
   id = "_item_description.bottle_2.5",
   icon = 11,
@@ -295,7 +308,7 @@ Meters!
 }
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fairy in Bottle
 dialog{
   id = "_item_description.bottle_2.6",
   icon = 12,
@@ -310,7 +323,7 @@ recover your Hearts!
 }
 --------------------
 
--- Flacon Magique vide / Empty bottle
+-- Empty bottle
 dialog{
   id = "_item_description.bottle_3.1",
   icon = 7,
@@ -323,7 +336,7 @@ substances.
 }
 --------------------
 
--- Eau dans Flacon / Water in Bottle
+-- Water in Bottle
 dialog{
   id = "_item_description.bottle_3.2",
   icon = 8,
@@ -339,7 +352,7 @@ appropriate spot...
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Red potion
 dialog{
   id = "_item_description.bottle_3.3",
   icon = 9,
@@ -352,7 +365,7 @@ Heart Meter.
 }
 --------------------
 
--- Potion verte / Green potion
+-- Green potion
 dialog{
   id = "_item_description.bottle_3.4",
   icon = 10,
@@ -365,7 +378,7 @@ Magic Meter.
 }
 --------------------
 
--- Potion bleue / Blue potion
+-- Blue potion
 dialog{
   id = "_item_description.bottle_3.5",
   icon = 11,
@@ -379,7 +392,7 @@ Meters!
 }
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fairy in Bottle
 dialog{
   id = "_item_description.bottle_3.6",
   icon = 12,
@@ -394,7 +407,7 @@ recover your Hearts!
 }
 --------------------
 
--- Flacon Magique vide / Empty bottle
+-- Empty bottle
 dialog{
   id = "_item_description.bottle_4.1",
   icon = 7,
@@ -407,7 +420,7 @@ substances.
 }
 --------------------
 
--- Eau dans Flacon / Water in Bottle
+-- Water in Bottle
 dialog{
   id = "_item_description.bottle_4.2",
   icon = 8,
@@ -423,7 +436,7 @@ appropriate spot...
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Red potion
 dialog{
   id = "_item_description.bottle_4.3",
   icon = 9,
@@ -436,7 +449,7 @@ Heart Meter.
 }
 --------------------
 
--- Potion verte / Red potion
+-- Green potion
 dialog{
   id = "_item_description.bottle_4.4",
   icon = 10,
@@ -449,7 +462,7 @@ Magic Meter.
 }
 --------------------
 
--- Potion bleue / Red potion
+-- Blue potion
 dialog{
   id = "_item_description.bottle_4.5",
   icon = 11,
@@ -463,7 +476,7 @@ Meters!
 }
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fairy in Bottle
 dialog{
   id = "_item_description.bottle_4.6",
   icon = 12,
@@ -478,7 +491,7 @@ recover your Hearts!
 }
 --------------------
 
--- Bottes de Pégase / Pegasus Shoes
+-- Pegasus Shoes
 dialog{
   id = "_item_description.pegasus_shoes.1",
   icon = 13,
@@ -493,7 +506,7 @@ Action key to run.
 }
 --------------------
 
--- Miroir Mystique / Mystic Mirror
+-- Mystic Mirror
 dialog{
   id = "_item_description.mystic_mirror.1",
   icon = 14,
@@ -506,8 +519,7 @@ powers...
 }
 --------------------
 
--- Canne de Somaria / Cane of Somaria
---#May need "blocks" or "a block"
+-- Cane of Somaria
 dialog{
   id = "_item_description.cane_of_somaria.1",
   icon = 15,
@@ -521,7 +533,7 @@ using the Hookshot.
 }
 --------------------
 
--- Pommes / Apples
+-- Apples
 dialog{
   id = "_item_description.apples_counter.1",
   icon = 16,
@@ -533,7 +545,7 @@ recover Hearts.
 }
 --------------------
 
--- Pains au Chocolat / Pains au Chocolat
+-- PPains au Chocolat
 dialog{
   id = "_item_description.pains_au_chocolat_counter.1",
   icon = 17,
@@ -546,7 +558,7 @@ three Hearts.
 }
 --------------------
 
--- Croissant / Croissant
+-- Croissants
 dialog{
   id = "_item_description.croissants_counter.1",
   icon = 18,
@@ -559,7 +571,7 @@ Hearts.
 }
 --------------------
 
--- Clé de Roc / Rock Key
+-- Rock Key
 dialog{
   id = "_item_description.rock_key.1",
   icon = 19,
@@ -572,7 +584,7 @@ lock ?
 }
 --------------------
 
--- Clé d'Os / Bone Key
+-- Bone Key
 dialog{
   id = "_item_description.bone_key.1",
   icon = 20,
@@ -584,8 +596,7 @@ Key be used for?
 }
 --------------------
 
--- Clé de Terre / Earth Key
---#Check translation
+-- Earth Key
 dialog{
   id = "_item_description.clay_key.1",
   icon = 21,
@@ -598,7 +609,7 @@ village's cave.
 }
 --------------------
 
--- Tarte aux Pommes / Apple Pie
+-- Apple Pie
 dialog{
   id = "_item_description.level_4_way.1",
   icon = 22,
@@ -610,7 +621,7 @@ odd...
 }
 --------------------
 
--- Lingots d'or / Gold bars
+-- Gold bars
 dialog{
   id = "_item_description.level_4_way.2",
   icon = 23,
@@ -622,7 +633,7 @@ Bars!
 }
 --------------------
 
--- Edelweiss / Edelweiss
+-- Edelweiss
 dialog{
   id = "_item_description.level_4_way.3",
   icon = 24,
@@ -636,7 +647,7 @@ Hyrule.
 }
 --------------------
 
--- Précis d'escrime / Tiger scrolls
+-- Tiger scrolls
 dialog{
   id = "_item_description.level_4_way.4",
   icon = 25,
@@ -650,7 +661,7 @@ techniques.
 }
 --------------------
 
--- Palmes / Flippers
+-- Flippers
 dialog{
   id = "_item_description.flippers.1",
   icon = 26,
@@ -662,7 +673,7 @@ with these flippers.
 }
 --------------------
 
--- Cape magique / Magic Cape
+-- Magic Cape
 dialog{
   id = "_item_description.magic_cape.1",
   icon = 27,
@@ -675,7 +686,7 @@ near a weak wall.
 }
 --------------------
 
--- Clé de Fer / Iron Key
+-- Iron Key
 dialog{
   id = "_item_description.iron_key.1",
   icon = 28,
@@ -688,7 +699,7 @@ the correct lock!
 }
 --------------------
 
--- Clé de Pierre / Stone Key
+-- Stone Key
 dialog{
   id = "_item_description.stone_key.1",
   icon = 29,
@@ -701,8 +712,7 @@ lock!
 }
 --------------------
 
--- Clé de Bois / Wooden Key
---#May need to be translated better
+-- Wooden Key
 dialog{
   id = "_item_description.wooden_key.1",
   icon = 30,
@@ -715,7 +725,7 @@ lock for this key!
 }
 --------------------
 
--- Clé de Glace / Ice Key
+-- Ice Key
 dialog{
   id = "_item_description.ice_key.1",
   icon = 31,
@@ -728,7 +738,7 @@ it to work!
 }
 -----------------------
 
--- Poigne de Fer / Iron Glove
+-- Iron Gloves
 dialog{
   id = "_item_description.glove.1",
   icon = 32,
@@ -741,7 +751,7 @@ rocks.
 }
 --------------------
 
--- Poigne d'Or / Golden Glove
+-- Golden Gloves
 dialog{
   id = "_item_description.glove.2",
   icon = 33,
@@ -754,7 +764,7 @@ Gloves.
 }
 --------------------
 
--- Pierres de Feu / Fire Stones
+-- Fire Stones
 dialog{
   id = "_item_description.fire_stones_counter.1",
   icon = 34,
@@ -767,16 +777,16 @@ them to Inferno.
 }
 --------------------
 
--- ---------------------
--- When finding a treasure
--- ---------------------
+-- --------------------
+-- 2. Finding treasures
+-- --------------------
 --
--- Messages shown below are seen when the player
+-- The following dialogs are below are shown when the player
 -- obtains a treasure, usually by opening a chest or by buying it from a
 -- merchant in a shop.
 --------------------
 
--- Plume / Feather
+-- Feather
 dialog{
   id = "_treasure.feather.1",
   icon = 0,
@@ -790,7 +800,7 @@ over obstacles!
 }
 --------------------
 
--- Arc seul / Bow alone
+-- Bow alone
 dialog{
   id = "_treasure.bow.1",
   icon = 2,
@@ -804,8 +814,7 @@ from afar!
 }
 --------------------
 
--- Arc & Flèches / Bow & Arrows
---#Choose one
+-- Bow & Arrows
 dialog{
   id = "_treasure.bow.2",
   icon = 3,
@@ -836,7 +845,6 @@ discover them all!
 --------------------
 
 -- Super Boomerang
---#Check for better word for "ancien"
 dialog{
   id = "_treasure.boomerang.2",
   icon = 35,
@@ -851,7 +859,7 @@ the original!
 }
 --------------------
 
--- Lanterne / Lamp
+-- Lamp
 dialog{
   id = "_treasure.lamp.1",
   icon = 5,
@@ -865,7 +873,7 @@ light torches.
 }
 --------------------
 
--- Grappin / Hookshot
+-- Hookshot
 dialog{
   id = "_treasure.hookshot.1",
   icon = 6,
@@ -881,7 +889,7 @@ inaccessible places!
 }
 --------------------
 
--- Flacon vide / empty Bottle
+-- Empty Bottle
 dialog{
   id = "_treasure.bottle_1.1",
   icon = 7,
@@ -895,7 +903,7 @@ various substances.
 }
 --------------------
 
--- Eau / Water
+-- Water
 dialog{
   id = "_treasure.bottle_1.2",
   icon = 8,
@@ -907,7 +915,7 @@ water!
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Red potion
 dialog{
   id = "_treasure.bottle_1.3",
   icon = 9,
@@ -921,7 +929,7 @@ your health.
 }
 --------------------
 
--- Potion verte / Green potion
+-- Green potion
 dialog{
   id = "_treasure.bottle_1.4",
   icon = 10,
@@ -935,7 +943,7 @@ your magic energy.
 }
 --------------------
 
--- Potion bleue / Blue potion
+-- Blue potion
 dialog{
   id = "_treasure.bottle_1.5",
   icon = 11,
@@ -950,7 +958,7 @@ health and magic!
 }
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fairy in Bottle
 dialog{
   id = "_treasure.bottle_1.6",
   icon = 12,
@@ -966,7 +974,7 @@ recover your Hearts!
 }
 --------------------
 
--- Flacon vide / Empty Flask
+-- Empty Bottle
 dialog{
   id = "_treasure.bottle_2.1",
   icon = 7,
@@ -980,7 +988,7 @@ various substances.
 }
 --------------------
 
--- Eau / Water
+-- Water
 dialog{
   id = "_treasure.bottle_2.2",
   icon = 8,
@@ -992,7 +1000,7 @@ water!
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Red potion
 dialog{
   id = "_treasure.bottle_2.3",
   icon = 9,
@@ -1006,7 +1014,7 @@ your health.
 }
 --------------------
 
--- Potion verte / Green potion
+-- Green potion
 dialog{
   id = "_treasure.bottle_2.4",
   icon = 10,
@@ -1020,7 +1028,7 @@ your magic energy.
 }
 --------------------
 
--- Potion bleue / Blue potion
+-- Blue potion
 dialog{
   id = "_treasure.bottle_2.5",
   icon = 11,
@@ -1033,10 +1041,9 @@ restore both your
 health and magic!
 ]]
 }
-
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fairy in Bottle
 dialog{
   id = "_treasure.bottle_2.6",
   icon = 12,
@@ -1052,7 +1059,7 @@ recover your Hearts!
 }
 --------------------
 
--- Flacon vide / Empty Flask
+-- Empty Bottle
 dialog{
   id = "_treasure.bottle_3.1",
   icon = 7,
@@ -1066,7 +1073,7 @@ various substances.
 }
 --------------------
 
--- Eau / Water
+-- Water
 dialog{
   id = "_treasure.bottle_3.2",
   icon = 8,
@@ -1078,7 +1085,7 @@ water!
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Red potion
 dialog{
   id = "_treasure.bottle_3.3",
   icon = 9,
@@ -1092,7 +1099,7 @@ your health.
 }
 --------------------
 
--- Potion verte / Green potion
+-- Green potion
 dialog{
   id = "_treasure.bottle_3.4",
   icon = 10,
@@ -1106,7 +1113,7 @@ your magic energy.
 }
 --------------------
 
--- Potion bleue / Blue potion
+-- Blue potion
 dialog{
   id = "_treasure.bottle_3.5",
   icon = 11,
@@ -1121,7 +1128,7 @@ health and magic!
 }
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fairy in Bottle
 dialog{
   id = "_treasure.bottle_3.6",
   icon = 12,
@@ -1137,7 +1144,7 @@ recover your Hearts!
 }
 --------------------
 
--- Flacon vide / Empty Flask
+-- Empty Bottle
 dialog{
   id = "_treasure.bottle_4.1",
   icon = 7,
@@ -1151,7 +1158,7 @@ various substances.
 }
 --------------------
 
--- Eau / Water
+-- Water
 dialog{
   id = "_treasure.bottle_4.2",
   icon = 8,
@@ -1163,7 +1170,7 @@ water!
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Red potion
 dialog{
   id = "_treasure.bottle_4.3",
   icon = 9,
@@ -1177,7 +1184,7 @@ your health.
 }
 --------------------
 
--- Potion verte / Green potion
+-- Green potion
 dialog{
   id = "_treasure.bottle_4.4",
   icon = 10,
@@ -1191,7 +1198,7 @@ your magic energy.
 }
 --------------------
 
--- Potion bleue / Blue potion
+-- Blue potion
 dialog{
   id = "_treasure.bottle_4.5",
   icon = 11,
@@ -1206,7 +1213,7 @@ health and magic!
 }
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fairy in Bottle
 dialog{
   id = "_treasure.bottle_4.6",
   icon = 12,
@@ -1222,7 +1229,7 @@ recover your Hearts!
 }
 --------------------
 
--- Bottes de Pégase / Pegasus Boots
+-- Pegasus Boots
 dialog{
   id = "_treasure.pegasus_shoes.1",
   icon = 13,
@@ -1240,7 +1247,7 @@ them.
 }
 --------------------
 
--- Miroir Mystique / Mystic Mirror
+-- Mystic Mirror
 dialog{
   id = "_treasure.mystic_mirror.1",
   icon = 14,
@@ -1255,7 +1262,7 @@ help in your quest.
 }
 --------------------
 
--- Canne de Somaria / Cane of Somaria
+-- Cane of Somaria
 dialog{
   id = "_treasure.cane_of_somaria.1",
   icon = 15,
@@ -1271,7 +1278,7 @@ Hookshot.
 }
 --------------------
 
--- 3 Pommes
+-- 3 Apples
 dialog{
   id = "_treasure.apple.1",
   icon = 16,
@@ -1312,7 +1319,7 @@ Hearts.
 }
 --------------------
 
--- Clé de Roc
+-- Rock Key
 dialog{
   id = "_treasure.rock_key.1",
   icon = 19,
@@ -1323,7 +1330,7 @@ Key!$0
 }
 --------------------
 
--- Clé d'os
+-- Bone Key
 dialog{
   id = "_treasure.bone_key.1",
   icon = 20,
@@ -1337,7 +1344,7 @@ used for?
 }
 --------------------
 
--- Clé de Terre
+-- Earth Key
 dialog{
   id = "_treasure.clay_key.1",
   icon = 21,
@@ -1351,7 +1358,7 @@ the village's cave!
 }
 --------------------
 
--- Tarte aux Pommes
+-- Apple Pie
 dialog{
   id = "_treasure.level_4_way.1",
   icon = 22,
@@ -1366,8 +1373,7 @@ looks odd...
 }
 --------------------
 
--- Lingots d'or
---#Really need a better translation
+-- Gold Bars
 dialog{
   id = "_treasure.level_4_way.2",
   icon = 23,
@@ -1397,7 +1403,7 @@ extremely rare!
 }
 --------------------
 
--- Précis d'escrime / Tiger Scrolls
+-- Tiger Scrolls
 dialog{
   id = "_treasure.level_4_way.4",
   icon = 25,
@@ -1411,7 +1417,7 @@ Attack.
 }
 --------------------
 
--- Palmes / Flippers
+-- Flippers
 dialog{
   id = "_treasure.flippers.1",
   icon = 26,
@@ -1425,7 +1431,7 @@ in deep waters!
 }
 --------------------
 
--- Cape Magique
+-- Magic Cape
 dialog{
   id = "_treasure.magic_cape.1",
   icon = 27,
@@ -1440,7 +1446,7 @@ weak wall.
 }
 --------------------
 
--- Clé de Fer
+-- Iron Key
 dialog{
   id = "_treasure.iron_key.1",
   icon = 28,
@@ -1454,7 +1460,7 @@ a door!
 }
 --------------------
 
--- Clé de Pierre
+-- Stone Key
 dialog{
   id = "_treasure.stone_key.1",
   icon = 29,
@@ -1468,7 +1474,7 @@ lock it opens?
 }
 --------------------
 
--- Clé de Bois
+-- Wooden Key
 dialog{
   id = "_treasure.wooden_key.1",
   icon = 30,
@@ -1482,7 +1488,7 @@ to use it!
 }
 --------------------
 
--- Clé de Glace
+-- Ice Key
 dialog{
   id = "_treasure.ice_key.1",
   icon = 31,
@@ -1496,7 +1502,7 @@ to a frozen place...
 }
 --------------------
 
--- Poigne de Fer / Iron Gloves
+-- Iron Gloves
 dialog{
   id = "_treasure.glove.1",
   icon = 32,
@@ -1510,8 +1516,7 @@ lift rocks.
 }
 --------------------
 
--- Poigne d'Or / Golden Gloves
---#Still sounds odd.
+-- Golden Gloves
 dialog{
   id = "_treasure.glove.2",
   icon = 33,
@@ -1525,7 +1530,7 @@ black rocks!
 }
 --------------------
 
--- Pierre de Feu / Fire Stone
+-- Fire Stone
 dialog{
   id = "_treasure.fire_stone.1",
   icon = 34,
@@ -1536,7 +1541,7 @@ Stone!
 }
 --------------------
 
--- Carte du Monde / World Map
+-- World Map
 dialog{
   id = "_treasure.world_map.1",
   icon = 50,
@@ -1550,7 +1555,7 @@ screen.
 }
 --------------------
 
--- Grand sac de rubis / Big Wallet
+-- Big Wallet
 dialog{
   id = "_treasure.rupee_bag.2",
   icon = 52,
@@ -1564,7 +1569,7 @@ It can hold up to
 }
 --------------------
 
--- Sac de rubis géant / Giant Wallet
+-- Giant Wallet
 dialog{
   id = "_treasure.rupee_bag.3",
   icon = 53,
@@ -1578,8 +1583,7 @@ It can hold up to
 }
 --------------------
 
--- Petit sac de bombes / Small Bomb Bag
---#Bomb away vs. bombs away
+-- Small Bomb Bag
 dialog{
   id = "_treasure.bomb_bag.1",
   icon = 54,
@@ -1593,7 +1597,7 @@ and bombs away!
 }
 --------------------
 
--- Grand sac de bombes / Large Bomb Bag
+-- Large Bomb Bag
 dialog{
   id = "_treasure.bomb_bag.2",
   icon = 55,
@@ -1607,7 +1611,7 @@ Bombs instead of 10!
 }
 --------------------
 
--- Sac de bombes géant / Giant Bomb Bag
+-- Giant Bomb Bag
 dialog{
   id = "_treasure.bomb_bag.3",
   icon = 56,
@@ -1621,7 +1625,7 @@ Bombs instead of 30!
 }
 --------------------
 
--- Grand carquois / Large Quiver
+-- Large Quiver
 dialog{
   id = "_treasure.quiver.2",
   icon = 58,
@@ -1636,7 +1640,7 @@ It can hold up to
 }
 --------------------
 
--- Carquois géant / Giant Quiver
+-- Giant Quiver
 dialog{
   id = "_treasure.quiver.3",
   icon = 59,
@@ -1651,7 +1655,7 @@ It can hold up to
 }
 --------------------
 
--- Cotte de mailles bleue / Blue Mail
+-- Blue Mail
 dialog{
   id = "_treasure.tunic.2",
   icon = 61,
@@ -1666,7 +1670,7 @@ temperatures...
 }
 --------------------
 
--- Cotte de mailles rouge / Red Mail
+-- Red Mail
 dialog{
   id = "_treasure.tunic.3",
   icon = 62,
@@ -1681,7 +1685,7 @@ than the Blue Mail!
 }
 --------------------
 
--- Bouclier / Shield
+-- Shield
 dialog{
   id = "_treasure.shield.1",
   icon = 63,
@@ -1696,7 +1700,7 @@ attacks!
 }
 --------------------
 
--- Bouclier de Feu / Fire Shield
+-- Fire Shield
 dialog{
   id = "_treasure.shield.2",
   icon = 64,
@@ -1711,7 +1715,7 @@ attacks!
 }
 --------------------
 
--- Bouclier Miroir / Mirror Shield
+-- Mirror Shield
 dialog{
   id = "_treasure.shield.3",
   icon = 65,
@@ -1725,7 +1729,7 @@ lasers!
 }
 --------------------
 
--- Epée 1 (Epée du courage) / First Sword
+-- First Sword
 dialog{
   id = "_treasure.sword.1",
   icon = 66,
@@ -1740,7 +1744,7 @@ enemies!
 }
 --------------------
 
--- Epée 2 (Glaive Hylien) / Hylian Blade
+-- Hylian Blade
 dialog{
   id = "_treasure.sword.2",
   icon = 67,
@@ -1752,7 +1756,6 @@ This new sword
 ]]
 }
 --------------------
---#Previous one or last?
 
 dialog{
   id = "_treasure.sword.2.1",
@@ -1764,7 +1767,7 @@ previous one!
 }
 -----------------------
 
--- Epée 3 (Sabre du Héros) / Hero's Sword
+-- Hero's Sword
 dialog{
   id = "_treasure.sword.3",
   icon = 68,
@@ -1777,7 +1780,7 @@ This new blade
 }
 --------------------
 
--- Epée 4 (Lame Purificatrice) / Master Sword
+-- Master Sword
 dialog{
   id = "_treasure.sword.4",
   icon = 69,
@@ -1792,7 +1795,7 @@ everything...
 }
 --------------------
 
--- Demi de magie / Half Magic Meter
+-- Half Magic Meter
 dialog{
   id = "_treasure.magic_bar.2",
   icon = 99,
@@ -1806,7 +1809,7 @@ just doubled!
 }
 --------------------
 
--- Carte / Map
+-- Map
 dialog{
   id = "_treasure.map.1",
   icon = 70,
@@ -1818,7 +1821,7 @@ dungeon's layout.
 }
 --------------------
 
--- Boussole / Compass
+-- Compass
 dialog{
   id = "_treasure.compass.1",
   icon = 71,
@@ -1836,7 +1839,7 @@ somewhere!
 }
 --------------------
 
--- Petite clé / Small key
+-- Small key
 dialog{
   id = "_treasure.small_key.1",
   icon = 72,
@@ -1851,7 +1854,7 @@ this dungeon.
 }
 --------------------
 
--- Grande Clé / Large Key
+-- Large Key
 dialog{
   id = "_treasure.big_key.1",
   icon = 73,
@@ -1866,7 +1869,7 @@ find new treasures!
 }
 --------------------
 
--- Clé du Maître / Boss Key
+-- Boss Key
 dialog{
   id = "_treasure.boss_key.1",
   icon = 74,
@@ -1880,7 +1883,7 @@ the Boss's Lair!
 }
 --------------------
 
--- Fragment de Coeur / Piece of Heart
+-- Piece of Heart
 dialog{
   id = "_treasure.piece_of_heart.1",
   icon = 79,
@@ -1891,7 +1894,7 @@ Piece of Heart!
 }
 --------------------
 
--- Réceptacle de Coeur / Heart Container
+-- Heart Container
 dialog{
   id = "_treasure.heart_container.1",
   icon = 80,
@@ -1905,7 +1908,7 @@ increased by one!
 }
 --------------------
 
--- 1 Bombe / 1 Bomb
+-- 1 Bomb
 dialog{
   id = "_treasure.bomb.1",
   icon = 82,
@@ -1926,7 +1929,7 @@ explode.
 }
 --------------------
 
--- 3 Bombes / 3 Bombs
+-- 3 Bombs
 dialog{
   id = "_treasure.bomb.2",
   icon = 82,
@@ -1938,7 +1941,7 @@ Bombs!$0
 }
 --------------------
 
--- 8 Bombes / 8 Bombs
+-- 8 Bombs
 dialog{
   id = "_treasure.bomb.3",
   icon = 82,
@@ -1950,7 +1953,7 @@ Bombs!$0
 }
 --------------------
 
--- 1 Flèche / 1 Arrow
+-- 1 Arrow
 dialog{
   id = "_treasure.arrow.1",
   icon = 83,
@@ -1972,7 +1975,7 @@ afar.
 }
 --------------------
 
--- 5 Flèches / 5 Arrows
+-- 5 Arrows
 dialog{
   id = "_treasure.arrow.2",
   icon = 83,
@@ -1985,7 +1988,7 @@ Arrows to defeat
 }
 --------------------
 
--- 10 Flèches / 10 Arrows
+-- 10 Arrows
 dialog{
   id = "_treasure.arrow.3",
   icon = 83,
@@ -1998,7 +2001,7 @@ Arrows to defeat
 }
 --------------------
 
--- 1 Coeur / 1 Heart
+-- 1 Heart
 dialog{
   id = "_treasure.heart.1",
   icon = 84,
@@ -2008,7 +2011,7 @@ You found a Heart!
 }
 --------------------
 
--- Petite bouteille de magie / Magic Flask
+-- Small Magic Jar
 dialog{
   id = "_treasure.magic_flask.1",
   icon = 85,
@@ -2021,7 +2024,7 @@ slightly filled.
 }
 --------------------
 
--- Grande bouteille de magie / Magic Jar
+-- Large Magic Jar
 dialog{
   id = "_treasure.magic_flask.2",
   icon = 86,
@@ -2034,7 +2037,7 @@ greatly filled.
 }
 --------------------
 
--- 1 rubis vert / 1 green rupee
+-- 1 green rupee
 dialog{
   id = "_treasure.rupee.1",
   icon = 90,
@@ -2046,7 +2049,7 @@ That's one Rupee!
 }
 --------------------
 
--- 1 rubis bleu / 1 blue rupee
+-- 1 blue rupee
 dialog{
   id = "_treasure.rupee.2",
   icon = 91,
@@ -2058,7 +2061,7 @@ That's 5 Rupees!
 }
 --------------------
 
--- 1 rubis rouge / 1 red rupee
+-- 1 red rupee
 dialog{
   id = "_treasure.rupee.3",
   icon = 92,
@@ -2070,8 +2073,8 @@ That's 20 Rupees!
 }
 --------------------
 
--- 50 rubis / 50 rupees
--- Remarque : clin d'oeil à Link's Awakening
+-- 50 rupees
+-- Note: reference to Link's Awakening
 dialog{
   id = "_treasure.rupee.4",
   icon = 90,
@@ -2082,8 +2085,8 @@ Marvelous!
 }
 --------------------
 
--- 100 rubis / 100 rupees
--- Remarque : clin d'oeil à Link's Awakening
+-- 100 rupees
+-- Note: reference to Link's Awakening
 dialog{
   id = "_treasure.rupee.5",
   icon = 90,
@@ -2094,8 +2097,8 @@ Rupees! Fantastic!
 }
 --------------------
 
--- 300 rubis / 300 rupees
--- Remarque : clin d'oeil à Link's Awakening
+-- 300 rupees
+-- Note: reference to Link's Awakening
 dialog{
   id = "_treasure.rupee.6",
   icon = 90,
@@ -2106,7 +2109,7 @@ How wonderful!
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Red potion
 dialog{
   id = "_treasure.red_potion.1",
   icon = 96,
@@ -2121,7 +2124,7 @@ your life energy.
 }
 --------------------
 
--- Potion verte / Green potion
+-- Green potion
 dialog{
   id = "_treasure.green_potion.1",
   icon = 97,
@@ -2136,7 +2139,7 @@ your magic energy.
 }
 --------------------
 
--- Potion bleue / Blue potion
+-- Blue potion
 dialog{
   id = "_treasure.blue_potion.1",
   icon = 98,
@@ -2151,14 +2154,14 @@ magic energy.
 }
 --------------------
 
--- ---------------
--- Autres messages
--- ---------------
+-- --------------------
+-- Other engine dialogs
+-- --------------------
 --
--- Autres messages divers affichés par le moteur de jeu
--- Affiché à la fin des dialogues expliquant
--- que le joueur a obtenu un objet qui consomme
--- de l'énergie magique (même message que dans ALTTP)
+-- The following dialogs are various dialogs shown by the engine.
+
+-- End of a dialog of obtaining a treasure
+-- that consumes magic (same message as ALTTP).
 dialog{
   id = "_warning_magic",
   text = [[
@@ -2168,7 +2171,7 @@ Meter!
 }
 --------------------
 
--- Lorsqu'on ouvre un coffre vide
+-- Opening an empty chest.
 dialog{
   id = "_empty_chest",
   text = [[
@@ -2178,8 +2181,7 @@ Too bad!
 }
 -----------------------
 
--- Lorsqu'on regarde une porte verrouillé ou un bloc verrouillé
--- et qu'on ne possède pas de Petite Clé
+-- Looking at a locked door without small key.
 dialog{
   id = "_small_key_required",
   icon = 72,
@@ -2190,8 +2192,7 @@ It's locked!
 }
 --------------------
 
--- Lorsqu'on regarde le grand coffre ou une porte verrouillée nécessitant la Grande Clé
--- et qu'on ne possède pas celle-ci
+-- Looking at a large chest or a large key door without the large key.
 dialog{
   id = "_big_key_required",
   icon = 73,
@@ -2205,7 +2206,7 @@ able to open it!
 }
 --------------------
 
--- Lorsqu'on regarde la porte du boss sans avoir la Clé du Maître
+-- Looking at the boss door without the boss key.
 dialog{
   id = "_boss_key_required",
   icon = 74,
@@ -2219,8 +2220,7 @@ Boss Key to open it.
 }
 --------------------
 
--- Lorsqu'on tente de soulever un buisson
--- au lieu de le couper avec l'épée
+-- Trying to lift a bush instead of using the sword.
 dialog{
   id = "_cannot_lift_should_cut",
   skip = "all",
@@ -2232,9 +2232,8 @@ these bushes.
 }
 -----------------------
 
--- Lorsqu'on tente de soulever une pierre
--- sans avoir de bracelet de force
--- (Clin d'oeil à Link's Awakening)
+-- Trying to lift a stone without the Iron Gloves
+-- (reference to Link's Awakening).
 dialog{
   id = "_cannot_lift_too_heavy",
   skip = "all",
@@ -2248,8 +2247,8 @@ with your bare hands!
 }
 -----------------------
 
--- Lorsqu'on tente de soulever une pierre vraiment lourde
--- en ayant seulement la poigne de fer
+-- Trying to lift a black stone without the Golden Gloves
+-- but with the Iron Gloves.
 dialog{
   id = "_cannot_lift_still_too_heavy",
   skip = "all",
@@ -2260,8 +2259,7 @@ for you!
 }
 -----------------------
 
--- Lorsqu'on regarde un objet vendu dans un magasin
--- (message affiché après avoir lu la description de l'objet)
+-- After watching a shop item.
 dialog{
   id = "_shop.question",
   question = true,
@@ -2273,8 +2271,7 @@ Don't Buy
 }
 -----------------------
 
--- Lorsqu'on veut acheter un objet dans un magasin
--- mais qu'on n'a pas assez de Rubis
+-- Trying to buy a shop item, but not enough rupees.
 dialog{
   id = "_shop.not_enough_money",
   skip = "all",
@@ -2285,9 +2282,8 @@ have enough Rupees!
 }
 -----------------------
 
--- Lorsqu'on veut acheter un objet dans un magasin
--- mais qu'on a déjà le maximum de la quantité possible
--- (pour des Bombes, des Flèches, etc.)
+-- Trying to buy a shop item, but this item is already at its maximum amount
+-- (for items like bombs, arrows, etc.).
 dialog{
   id = "_shop.amount_full",
   text = [[
@@ -2296,7 +2292,7 @@ You are already full!
 }
 -----------------------
 
--- Lorsqu'on regarde un interrupteur de cristal
+-- Watching a crystal.
 dialog{
   id = "_crystal",
   skip = "all",
@@ -2308,7 +2304,7 @@ something...
 }
 -----------------------
 
--- Lorsqu'on pénètre dans le donjon 1
+-- Entering dungeon 1.
 dialog{
   id = "dungeon_1",
   skip = "current",
@@ -2319,7 +2315,7 @@ dialog{
 }
 -----------------------
 
--- Lorsqu'on pénètre dans le donjon 2
+-- Entering dungeon 2.
 dialog{
   id = "dungeon_2",
   skip = "current",
@@ -2330,7 +2326,7 @@ dialog{
 }
 -----------------------
 
--- Lorsqu'on pénètre dans le donjon 3
+-- Entering dungeon 3.
 dialog{
   id = "dungeon_3",
   skip = "current",
@@ -2384,7 +2380,8 @@ got an extra Heart!
 }
 --------------------
 
--- Lorsqu'on trouve une Fée en ayant au moins un Flacon (même dialogue que dans ALTTP)
+-- Finding a Fairy while having at least a Bottle
+-- (same dialog as ALTTP).
 dialog{
   id = "found_fairy",
   icon = 81,
@@ -2410,7 +2407,7 @@ Keep it
 }
 --------------------
 
--- Lorsqu'on veut conserver une Fée mais qu'on n'a pas de Flacon vide
+-- Trying to keep a Fairy, but no empty Bottle.
 dialog{
   id = "found_fairy.no_empty_bottle",
   skip = "current",
@@ -2421,7 +2418,7 @@ Bottle!
 }
 -----------------------
 
--- Lorsqu'on trouve de l'eau et qu'on a un Flacon vide
+-- Finding water while having an empty Bottle.
 dialog{
   id = "found_water",
   icon = 8,
@@ -2437,7 +2434,7 @@ No
 }
 --------------------
 
--- Lorsqu'on trouve de l'eau mais qu'on n'a aucun Flacon
+-- Finding water while having no empty Bottle.
 dialog{
   id = "found_water.no_bottle",
   skip = "all",
@@ -2449,7 +2446,7 @@ way of storing it...
 }
 -----------------------
 
--- Lorsqu'on trouve de l'eau et qu'on a au moins un Flacon, mais pas de Flacon vide
+-- Finding water while having at least one Bottle, but no empty one.
 dialog{
   id = "found_water.no_empty_bottle",
   icon = 8,
@@ -2464,8 +2461,7 @@ it...
 }
 --------------------
 
--- Utiliser un Flacon contenant de l'eau
---#Not sure on question syntax here again
+-- Using a bottle with water.
 dialog{
   id = "use_bottle_with_water",
   icon = 8,
@@ -2481,7 +2477,7 @@ Keep it
 }
 --------------------
 
--- Utiliser une Pomme
+-- Using an apple.
 dialog{
   id = "use_apples",
   icon = 16,
@@ -2497,7 +2493,7 @@ Nothing
 }
 --------------------
 
--- Use chocolate bread
+-- Using a chocolate bread.
 dialog{
   id = "use_pains_au_chocolat",
   icon = 17,
@@ -2513,7 +2509,7 @@ Nothing
 }
 --------------------
 
--- Utiliser un Croissant
+-- Using a Croissant.
 dialog{
   id = "use_croissants",
   icon = 18,
@@ -2538,7 +2534,7 @@ light this torch...
 }
 -----------------------
 
--- Intro : écran noir
+-- Intro: black screen
 dialog{
   id = "intro0",
   skip = "current",
@@ -2561,7 +2557,7 @@ passed...
 ]]
 }
 -----------------------
--- Intro : fresque 1
+-- Intro : fresco 1
 dialog{
   id = "intro1",
   skip = "current",
@@ -2587,7 +2583,7 @@ forgotten time.
 }
 -----------------------
 
--- Intro : fresque 2
+-- Intro : fresco 2
 dialog{
   id = "intro2",
   skip = "current",
@@ -2602,7 +2598,7 @@ plains and valleys.
 }
 -----------------------
 
--- Intro : fresque 3
+-- Intro : fresco 3
 dialog{
   id = "intro3",
   skip = "current",
@@ -2619,7 +2615,7 @@ Golden Land.
 }
 -----------------------
 
--- Intro : fresque 4
+-- Intro : fresco 4
 dialog{
   id = "intro4",
   skip = "current",
@@ -2637,6 +2633,7 @@ the seal's magic.
 }
 -----------------------
 
+-- Intro : fresco 5
 dialog{
   id = "intro5",
   skip = "current",
@@ -2657,7 +2654,7 @@ weakened once again.
 }
 -----------------------
 
--- Intro : fresque 6
+-- Intro : fresco 6
 dialog{
   id = "intro6",
   skip = "current",
@@ -2684,7 +2681,7 @@ journey...
 }
 -----------------------
 
--- Pancarte du village
+-- Village sign.
 dialog{
   id = "outside_world.village.welcome_sign",
   text = [[
@@ -2694,10 +2691,9 @@ dialog{
 }
 -----------------------
 
--- Dialogue avec le singe tout au début du jeu
--- _unknown car on sait qu'il va y avoir une suite, mais on ne sait pas encore laquelle
--- cela permet d'indiquer au moteur d'afficher une flèche en bas de la boîte de dialogue et non un carré
--- Suite du dialogue avec le singe, dans le cas où on n'a pas le bouclier
+-- Dialog with the monkey at the beginning.
+-- "_unknown" means that we know there will be a next dialog but we don't know which one yet.
+-- This makes the engine show an arrow in the bottom part of the dialog box instead of a square.
 dialog{
   id = "outside_world.village.monkey",
   next = "_unknown",
@@ -2712,6 +2708,7 @@ monsters!
 }
 -----------------------
 
+-- Next part of the monkey dialog, not having the shield.
 dialog{
   id = "outside_world.village.monkey.without_shield",
   text = [[
@@ -2723,7 +2720,7 @@ without protection.
 }
 -----------------------
 
--- Suite du dialogue avec le singe, dans le cas où on a le bouclier
+-- Next part of the monkey dialog, having the shield.
 dialog{
   id = "outside_world.village.monkey.with_shield",
   text = [[
@@ -2736,7 +2733,6 @@ Be cautious!
 }
 -----------------------
 
--- Dialogue avec l'enfant
 dialog{
   id = "outside_world.village.grand_son_npc",
   skip = "current",
@@ -2758,7 +2754,6 @@ a kid!
 }
 -----------------------
 
--- Dialogue avec la femme au chignon
 dialog{
   id = "outside_world.village.chignon_woman",
   skip = "all",
@@ -2793,7 +2788,6 @@ Funny, isn't it ?
 }
 -----------------------
 
--- Dialogue avec le vieux près de la grotte de Tom dans le village
 dialog{
   id = "outside_world.village.cliff_man_npc",
   skip = "all",
@@ -2808,7 +2802,6 @@ spots.
 }
 -----------------------
 
--- Dialogue avec l'homme au chapeau vert dans le village
 dialog{
   id = "outside_world.village.hat_man_npc",
   skip = "all",
@@ -2828,8 +2821,6 @@ better than me!
 }
 -----------------------
 
--- Dialogue avec l'homme au chapeau vert dans le village
--- (une fois le donjon 1 terminé
 dialog{
   id = "outside_world.village.hat_man_npc_waterfall",
   skip = "all",
@@ -2844,7 +2835,6 @@ true ?
 }
 -----------------------
 
--- Pancarte à l'entrée de la maison des rubis
 dialog{
   id = "outside_world.village.rupee_house_sign",
   text = [[
@@ -2855,10 +2845,9 @@ while having fun!
 }
 -----------------------
 
--- Pancarte près de la cascade du village
--- C'est un clin d'oeil à Majora's Mask
--- dans les Marais du Sud où on trouve
--- le même type de pancarte.
+-- Sign near the village waterfall.
+-- Reference to Majora's Mask in the southern swamp
+-- where there is the same kind of signs.
 dialog{
   id = "outside_world.village.waterfall_sign",
   text = [[
@@ -2871,7 +2860,6 @@ water home with you.
 }
 -----------------------
 
--- Pancarte à l'entrée de la pâtisserie
 dialog{
   id = "outside_world.village.cake_shop_sign",
   text = [[
@@ -2881,7 +2869,6 @@ dialog{
 }
 -----------------------
 
--- Pancarte à l'entrée de la boutique
 dialog{
   id = "outside_world.village.shop_sign",
   text = [[
@@ -2891,7 +2878,7 @@ dialog{
 }
 -----------------------
 
--- Message affiché quand on regarde une boîte aux lettres
+-- Watching a mail box.
 dialog{
   id = "outside_world.village.letter_box",
   skip = "all",
@@ -2902,7 +2889,6 @@ into what's not yours!
 }
 -----------------------
 
--- Long message de la femme près de l'arbre dans le village
 dialog{
   id = "outside_world.village.tree_woman",
   skip = "all",
@@ -2989,7 +2975,7 @@ little gift.
 }
 -----------------------
 
--- Message affiché lorsqu'on tente d'ouvrir la grotte de Tom sans avoir la Clé de Terre
+-- Trying to open the village cave without the Earth Key.
 dialog{
   id = "outside_world.village.clay_key_required",
   text = [[
@@ -2998,7 +2984,7 @@ It's locked!
 }
 -----------------------
 
--- Pancarte en haut de la falaise du village
+-- Sign above the cliff of the village.
 dialog{
   id = "outside_world.warning_holes_sign",
   text = [[
@@ -3007,7 +2993,6 @@ Beware of the holes!
 }
 -----------------------
 
--- Dialogue avec l'homme qui explique comment sauvegarder
 dialog{
   id = "outside_world.how_to_save_npc",
   skip = "all",
@@ -3021,7 +3006,7 @@ green icon!
 }
 -----------------------
 
--- Pancarte dans la forêt à l'est du village
+-- Sign in the eastern forest.
 dialog{
   id = "outside_world.flower_hole_sign",
   text = [[
@@ -3033,7 +3018,6 @@ like...
 }
 -----------------------
 
--- Pancarte à l'entrée de la cabine télépathique
 dialog{
   id = "outside_world.telepathic_booth_sign",
   text = [[
@@ -3042,7 +3026,6 @@ Telepathic Booth
 }
 -----------------------
 
--- Pancarte à l'entrée du mur aux surprises
 dialog{
   id = "outside_world.surprise_wall_sign",
   text = [[
@@ -3054,7 +3037,6 @@ hidden treasure!
 }
 -----------------------
 
--- Pancarte à l'entrée de la caverne de Billy
 dialog{
   id = "outside_world.billy_cavern_sign",
   text = [[
@@ -3065,7 +3047,6 @@ Entry Forbidden!
 }
 -----------------------
 
--- Pancarte près de la Colline de Beaumont
 dialog{
   id = "outside_world.beaumont_hill_sign",
   text = [[
@@ -3077,7 +3058,7 @@ will have a nice day.
 }
 -----------------------
 
--- Le joueur plante l'edelweiss au sommet de la Colline de Beaumont
+-- Planting an edelweiss at the top of Beaumont Hill.
 dialog{
   id = "outside_world.beaumont_hill_put_edelweiss",
   text = [[
@@ -3087,7 +3068,6 @@ edelweiss...
 }
 -----------------------
 
--- Tenter d'ouvrir la grotte du jeu des coffres sans avoir la Clé de Pierre
 dialog{
   id = "outside_world.stone_key_required",
   text = [[
@@ -3097,7 +3077,6 @@ It's locked!
 }
 -----------------------
 
--- Tenter d'ouvrir la fin de la grotte de la fée sans avoir la Clé de Fer
 dialog{
   id = "outside_world.iron_key_required",
   text = [[
@@ -3107,7 +3086,6 @@ It's locked!
 }
 -----------------------
 
--- Tenter d'ouvrir la grotte de la cascade sans avoir la Clé de Bois
 dialog{
   id = "outside_world.wooden_key_required",
   text = [[
@@ -3117,7 +3095,6 @@ It's locked!
 }
 -----------------------
 
--- Tenter d'ouvrir le donjon 7 sans avoir la Clé de Glace
 dialog{
   id = "outside_world.ice_key_required",
   text = [[
@@ -3127,7 +3104,7 @@ It's locked!
 }
 -----------------------
 
--- Cascade au nord-est des montagnes
+-- Waterfall, north-east of mountains.
 dialog{
   id = "outside_world.mountain_riverfall",
   skip = "all",
@@ -3139,7 +3116,7 @@ waterfall...
 }
 -----------------------
 
--- Link qui entend Sahasrahla en rêve en dormant dans son lit après l'intro
+-- Link hearing Sahasrahla in a dream, sleeping in his bed after the intro.
 dialog{
   id = "link_house.dream",
   text = [[
@@ -3152,7 +3129,7 @@ Come quickly, $v...
 }
 -----------------------
 
--- Jeu du coffre-mystère dans la maison des rubis
+-- Mystery chest game in the rupee house.
 dialog{
   id = "rupee_house.game_1.intro",
   question = true,
@@ -3170,7 +3147,7 @@ No
 }
 -----------------------
 
--- Coffre-mystère : quand on parle au vendeur après avoir déjà payé
+-- Mystery chest game: talking to the guy after the payment.
 dialog{
   id = "rupee_house.game_1.choose_chest",
   text = [[
@@ -3184,7 +3161,7 @@ which one to choose!
 }
 -----------------------
 
--- Coffre-mystère : quand on accepte de jouer
+-- Mystery chest game: accepted to play.
 dialog{
   id = "rupee_house.game_1.good_luck",
   text = [[
@@ -3193,7 +3170,7 @@ Good luck!
 }
 -----------------------
 
--- Coffre-mystère : quand on a déjà trop gagné pour avoir le droit de rejouer
+-- Mystery chest game: won too much, cannot play anymore.
 dialog{
   id = "rupee_house.game_1.not_allowed_to_play",
   text = [[
@@ -3204,7 +3181,7 @@ ruined because of you!
 }
 -----------------------
 
--- Coffre-mystère : veut-on rejouer ?
+-- Mystery chest game: play again?
 dialog{
   id = "rupee_house.game_1.play_again_question",
   question = true,
@@ -3219,11 +3196,8 @@ No
 }
 -----------------------
 
--- Coffre-mystère : quand on refuse de jouer
--- C'est un clin d'oeil à Link's Awakening, dans le stand
--- de pêche tout au début du jeu, quand on refuse de jouer ou de rejouer
--- English Translation taken from the actual LA text dump.
--- http://www.zeldalegends.net/files/emulation/dumps/zelda4/usa/z4dump(usa).html
+-- Mystery chest game: refusing to play again.
+-- Reference to Link's Awakening in the fishing game.
 dialog{
   id = "rupee_house.game_1.not_playing",
   text = [[
@@ -3234,7 +3208,7 @@ Live a little!
 }
 -----------------------
 
--- Jeu du bandit manchot dans la maison des rubis
+-- Slot machine in the rupee house.
 dialog{
   id = "rupee_house.game_2.intro",
   question = true,
@@ -3255,7 +3229,7 @@ No
 }
 -----------------------
 
--- Bandit manchot : quand on refuse de jouer
+-- Slot machine: refused to play.
 dialog{
   id = "rupee_house.game_2.not_playing",
   text = [[
@@ -3264,7 +3238,7 @@ Next time then...
 }
 -----------------------
 
--- Bandit manchot : quand on accepte de jouer
+-- Slot machine: accepted to play.
 dialog{
   id = "rupee_house.game_2.choose_bet",
   question = true,
@@ -3276,8 +3250,7 @@ How much do you bet?
 }
 -----------------------
 
--- Bandit manchot : quand on a choisi une des deux sommes à miser
--- et qu'on a effectiement assez d'argent
+-- Slot machine: choosed a bet, having enough money.
 dialog{
   id = "rupee_house.game_2.just_paid",
   next = "rupee_house.game_2.playing",
@@ -3287,7 +3260,7 @@ Thanks!
 }
 -----------------------
 
--- Bandit manchot : quand on reparle au vendeur pendant que les roulettes tournent déjà
+-- Slot machine: talking to the NPC again while playing.
 dialog{
   id = "rupee_house.game_2.playing",
   text = [[
@@ -3300,7 +3273,7 @@ Good luck!
 }
 -----------------------
 
--- Bandit manchot : quand on obtient 3 symboles identiques qui ne rapportent rien d'exceptionnel
+-- Slot machine: obtained 3 identical symbols, nothing incredible though.
 dialog{
   id = "rupee_house.game_2.reward.same_any",
   text = [[
@@ -3312,7 +3285,7 @@ bet.
 }
 -----------------------
 
--- Bandit manchot : quand on obtient 3 symboles de rubis verts
+-- Slot machine: obtained 3 green rupee symbols.
 dialog{
   id = "rupee_house.game_2.reward.green_rupees",
   text = [[
@@ -3323,7 +3296,7 @@ your bet.
 }
 -----------------------
 
--- Bandit manchot : quand on obtient 3 symboles de rubis bleus
+-- Slot machine: obtained 3 blue rupee symbols.
 dialog{
   id = "rupee_house.game_2.reward.blue_rupees",
   text = [[
@@ -3335,7 +3308,7 @@ your initial bet!
 }
 -----------------------
 
--- Bandit manchot : quand on obtient 3 symboles de rubis rouges
+-- Slot machine: obtained 3 red rupee symbols.
 dialog{
   id = "rupee_house.game_2.reward.red_rupees",
   text = [[
@@ -3347,7 +3320,7 @@ You earn no less than
 }
 -----------------------
 
--- Bandit manchot : quand on obtient 3 symboles de rubis différents
+-- Slot machine: obtained 3 different rupee symbols.
 dialog{
   id = "rupee_house.game_2.reward.different_rupees",
   text = [[
@@ -3361,7 +3334,7 @@ The reward amounts to
 }
 -----------------------
 
--- Bandit manchot : quand on obtient 3 symboles Yoshi (c'est la récompense maximale)
+-- Slot machine: obtained 3 Yoshi symbols (maximum reward).
 dialog{
   id = "rupee_house.game_2.reward.yoshi",
   text = [[
@@ -3375,7 +3348,7 @@ multiplied by 20.
 }
 -----------------------
 
--- Bandit manchot : quand on n'obtient rien
+-- Slot machine: not obtained anything.
 dialog{
   id = "rupee_house.game_2.reward.none",
   question = true,
@@ -3390,7 +3363,7 @@ No
 }
 -----------------------
 
--- Jeu du labyrinthe dans la maison des rubis
+-- Maze game in the rupee house.
 dialog{
   id = "rupee_house.game_3.intro",
   question = true,
@@ -3414,7 +3387,7 @@ No
 }
 -----------------------
 
--- Jeu du labyrinthe : quand on accepte de jouer et qu'on a assez d'argent
+-- Maze game: accepted to play, having enough money.
 dialog{
   id = "rupee_house.game_3.go",
   text = [[
@@ -3424,7 +3397,7 @@ Good luck!
 }
 -----------------------
 
--- Jeu du labyrinthe : quand on refuse de jouer
+-- Maze game: refused to play.
 dialog{
   id = "rupee_house.game_3.not_playing",
   text = [[
@@ -3433,7 +3406,7 @@ It's your choice...
 }
 -----------------------
 
--- Jeu du labyrinthe : quand on parle au vendeur alors qu'on a déjà obtenu le fragment de coeur
+-- Maze game: talking to the NPC but the piece of heart was already found.
 dialog{
   id = "rupee_house.game_3.not_allowed_to_play",
   text = [[
@@ -3443,7 +3416,7 @@ this game!
 }
 -----------------------
 
--- Jeu du labyrinthe : quand on parle au vendeur alors que le jeu est déjà commencé
+-- Maze game: talking to the NPC when the game is already started.
 dialog{
   id = "rupee_house.game_3.restart_question",
   question = true,
@@ -3458,7 +3431,7 @@ No
 }
 -----------------------
 
--- Maison des rubis : quand on n'a pas assez d'argent (quel que soit le jeu)
+-- Rupee house: not having enough money (for all three games).
 dialog{
   id = "rupee_house.not_enough_money",
   text = [[
@@ -3468,7 +3441,7 @@ money!
 }
 -----------------------
 
--- Maison des rubis : quand on interagit avec le jeu sans avoir payé (coffre-mystère et bandit manchot)
+-- Rupee house: interacting with a game without paying.
 dialog{
   id = "rupee_house.pay_first",
   text = [[
@@ -3478,7 +3451,7 @@ you want to play here!
 }
 -----------------------
 
--- Maison des rubis dévalisée (PNJ de gauche)
+-- Broken rupee house (left NPC).
 dialog{
   id = "rupee_house_broken.help_us_left",
   text = [[
@@ -3491,7 +3464,7 @@ robbed!
 }
 -----------------------
 
--- Maison des rubis dévalisée (PNJ du milieu)
+-- Broken rupee house (middle NPC).
 dialog{
   id = "rupee_house_broken.help_us_middle",
   text = [[
@@ -3502,7 +3475,7 @@ pay the gains!
 }
 -----------------------
 
--- Maison des rubis dévalisée (PNJ de droite)
+-- Broken rupee house (right NPC).
 dialog{
   id = "rupee_house_broken.help_us_right",
   text = [[
@@ -3513,7 +3486,7 @@ blacksmith's cave!
 }
 -----------------------
 
--- Maison des rubis dévalisée (voleurs battus)
+-- Broken rupee house: solved the problem.
 dialog{
   id = "rupee_house_broken.thanks",
   text = [[
@@ -3535,7 +3508,7 @@ Thanks again!
 }
 -----------------------
 
--- Dialogue chez la grand-mère (au début du jeu)
+-- Grandma: beginning of the game.
 dialog{
   id = "grandma_house.sword",
   skip = "all",
@@ -3561,7 +3534,7 @@ you.
 }
 -----------------------
 
--- Dialogue chez la grand-mère (après avoir obtenu l'épée)
+-- Grandma: after finding the sword.
 dialog{
   id = "grandma_house.find_sahasrahla",
   skip = "all",
@@ -3581,7 +3554,7 @@ remember that?
 }
 -----------------------
 
--- Dialogue chez la grand-mère (après avoir obtenu la clé de terre)
+-- Grandma: after finding the Earth Key.
 dialog{
   id = "grandma_house.go_lyriann_cave",
   skip = "all",
@@ -3594,8 +3567,7 @@ village.
 }
 -----------------------
 
--- Dialogue chez la grand-mère (après avoir fini la grotte de Tom)
--- GoNintendo What are YOU waiting for?
+-- Grandma: after the village cave.
 dialog{
   id = "grandma_house.go_dungeon_1",
   skip = "all",
@@ -3611,7 +3583,7 @@ are YOU waiting for?
 }
 -----------------------
 
--- Dialogue chez la grand-mère (après avoir fini le donjon 1)
+-- Grandma: after dungeon 1.
 dialog{
   id = "grandma_house.go_back_sahasrahla",
   skip = "all",
@@ -3624,7 +3596,7 @@ of better help.
 }
 -----------------------
 
--- Dialogue chez la grand-mère (après avoir obtenu l'arc)
+-- Grandma: after finding the bow.
 dialog{
   id = "grandma_house.go_twin_caves",
   skip = "all",
@@ -3640,7 +3612,7 @@ Go for them!
 }
 -----------------------
 
--- Dialogue chez la grand-mère (après avoir obtenu la clé de roc)
+-- Grandma: after finding the Rock Key.
 dialog{
   id = "grandma_house.go_dungeon_2",
   skip = "all",
@@ -3801,7 +3773,7 @@ real Rupees!
 }
 -----------------------
 
--- Dialogue avec le forgeron
+-- Blacksmith dialog.
 dialog{
   id = "smith_cave.without_sword",
   question = true,
@@ -3822,7 +3794,7 @@ No
 }
 -----------------------
 
--- Dialogue avec le forgeron: quand on a déjà acheté l'épée
+-- Blacksmith: already bought the sword.
 dialog{
   id = "smith_cave.with_sword",
   text = [[
@@ -3833,7 +3805,7 @@ forge you another one!
 }
 -----------------------
 
--- Dialogue avec le forgeron: quand on refuse d'acheter l'épée
+-- Blacksmith: refused to buy the sword.
 dialog{
   id = "smith_cave.not_buying",
   text = [[
@@ -3845,7 +3817,7 @@ trouble.
 }
 -----------------------
 
--- Dialogue avec le forgeron : quand on n'a pas assez d'argent
+-- Blacksmith: not enough money to buy the sword.
 dialog{
   id = "smith_cave.not_enough_money",
   text = [[
@@ -3856,7 +3828,7 @@ enough Rupees!
 }
 -----------------------
 
--- Dialogue avec le forgeron : quand on achète l'épée
+-- Blacksmith: buying the sword.
 dialog{
   id = "smith_cave.thank_you",
   text = [[
@@ -3868,7 +3840,7 @@ launch a spin attack!
 }
 -----------------------
 
--- Boutique : quand on parle au vendeur
+-- Shop: talking to the NPC.
 dialog{
   id = "lyriann_shop.salesman",
   text = [[
@@ -3878,7 +3850,7 @@ item you wish to buy.
 }
 -----------------------
 
--- Boutique : quand on regarde les pommes
+-- Shop: watching the Apples.
 dialog{
   id = "lyriann_shop.apples",
   next = "_unknown",
@@ -3893,9 +3865,7 @@ Heart.
 }
 -----------------------
 
--- _unknown car c'est le moteur qui se chargera de la suite pour gérer la vente
--- cela permet d'afficher une flèche en bas de la boîte de dialogue au lieu du carré
--- Boutique : quand on regarde la lanterne
+-- Shop: watching the Lamp.
 dialog{
   id = "lyriann_shop.lamp",
   next = "_unknown",
@@ -3907,7 +3877,7 @@ places!
 }
 -----------------------
 
--- Boutique : quand on regarde le coeur
+-- Shop: watching the Heart.
 dialog{
   id = "lyriann_shop.heart",
   next = "_unknown",
@@ -3918,7 +3888,7 @@ right now.
 }
 -----------------------
 
--- Boutique : quand on regarde le sac de bombes 2 ou 3
+-- Shop: watching the Large or Huge Bomb Bag.
 dialog{
   id = "lyriann_shop.bomb_bag",
   next = "_unknown",
@@ -3930,7 +3900,7 @@ nowadays!
 }
 -----------------------
 
--- Boutique : quand on regarde le carquois 2 ou 3
+-- Shop: watching the Large or Huge Quiver.
 dialog{
   id = "lyriann_shop.quiver",
   next = "_unknown",
@@ -3941,7 +3911,7 @@ Useful in these times.
 }
 -----------------------
 
--- Boutique : quand on regarde le sac de rubis 2
+-- Shop: watching the Large Wallet.
 dialog{
   id = "lyriann_shop.rupee_bag",
   next = "_unknown",
@@ -3952,7 +3922,7 @@ more Rupees.
 }
 -----------------------
 
--- Pâtisserie : quand on parle à la vendeuse
+-- Bakery: talking to the NPC.
 dialog{
   id = "cake_shop.seller.choose_item",
   text = [[
@@ -3962,7 +3932,7 @@ pastry you wish to buy.
 }
 -----------------------
 
--- Pâtisserie : quand on regarde le pain au chocolat
+-- Bakery: watching the Pain au Chocolat.
 dialog{
   id = "cake_shop.pain_au_chocolat",
   next = "_unknown",
@@ -3974,7 +3944,7 @@ restore three Hearts.
 }
 -----------------------
 
--- Pâtisserie : quand on regarde les croissants
+-- Bakery: watching the Croissant.
 dialog{
   id = "cake_shop.croissant",
   next = "_unknown",
@@ -3986,7 +3956,7 @@ Hearts.
 }
 -----------------------
 
--- Pâtisserie : quand on regarde la tarte aux pommes
+-- Bakery: watching the Apple Pie.
 dialog{
   id = "cake_shop.apple_pie",
   next = "_unknown",
@@ -3997,7 +3967,7 @@ Baked with your help!
 }
 -----------------------
 
--- Pâtisserie : quand on est sur le point de partir
+-- Bakery: leaving the store.
 dialog{
   id = "cake_shop.dont_leave",
   question = true,
@@ -4015,7 +3985,7 @@ No
 }
 -----------------------
 
--- Pâtisserie : quand on parle à la vendeuse une fois qu'elle a déjà parlé des pommes
+-- Bakery: talking to the NPC after the first request about Apples.
 dialog{
   id = "cake_shop.seller.ask_apples_again",
   skip = "all",
@@ -4031,7 +4001,7 @@ No
 }
 -----------------------
 
--- Pâtisserie : quand on accepte d'aider la vendeuse en ayant des pommes mais pas assez
+-- Bakery: accepted to help her, having not enough Apples yet.
 dialog{
   id = "cake_shop.not_enough_apples",
   text = [[
@@ -4042,7 +4012,7 @@ back later then.
 }
 -----------------------
 
--- Pâtisserie : quand on accepte d'aider la vendeuse sans avoir de pommes
+-- Bakery: accepted to help her, having no Apples yet.
 dialog{
   id = "cake_shop.no_apples",
   text = [[
@@ -4053,7 +4023,7 @@ some!
 }
 -----------------------
 
--- Pâtisserie : quand on accepte d'aider la vendeuse en ayant assez de pommes
+-- Bakery: accepted to help her, having enough Apples.
 dialog{
   id = "cake_shop.thank_you",
   text = [[
@@ -4070,7 +4040,7 @@ good use of it.
 }
 -----------------------
 
--- Chez Sahasrahla : première visite
+-- Sahasrahla: first talk.
 dialog{
   id = "sahasrahla_house.beginning",
   next = "sahasrahla_house.beginning.12",
@@ -4142,7 +4112,7 @@ No way
 }
 -----------------------
 
--- Chez Sahasrahla : quand on accepte la demande
+-- Sahasrahla: accepted the quest.
 dialog{
   id = "sahasrahla_house.beginning.thanks",
   next = "sahasrahla_house.give_world_map",
@@ -4163,7 +4133,7 @@ useful on your tale...
 }
 -----------------------
 
--- Chez Sahasrahla : quand on lui reparle après avoir accepté
+-- Sahasrahla: talking again after the quest has been accepted.
 dialog{
   id = "sahasrahla_house.quest_accepted",
   text = [[
@@ -4178,7 +4148,7 @@ there...
 }
 -----------------------
 
--- Chez Sahasrahla : quand on lui reparle après avoir fini le donjon 1
+-- Sahasrahla: after dungeon 1.
 dialog{
   id = "sahasrahla_house.dungeon_1_finished",
   next = "sahasrahla_house.go_grandma",
@@ -4195,7 +4165,7 @@ their way there.
 }
 -----------------------
 
--- Chez Sahasrahla : quand on regarde sa bibliothèque
+-- Sahasrahla: watching the books.
 dialog{
   id = "sahasrahla_house.memories",
   question = true,
@@ -4219,7 +4189,7 @@ That's way too long!
 }
 -----------------------
 
--- Chez Sahasrahla : quand on lui reparle après avoir vu la porte gelée dans la cave
+-- Sahasrahla: seen the frozen door.
 dialog{
   id = "sahasrahla_house.frozen_door_advice",
   skip = "all",
@@ -4231,7 +4201,7 @@ with some water.
 }
 -----------------------
 
--- Chez Sahasrahla : dialogue par défaut quand il n'a rien de spécial à dire pour guider le joueur
+-- Sahasrahla: default dialog, nothing special to say right now.
 dialog{
   id = "sahasrahla_house.default",
   skip = "all",
@@ -4258,7 +4228,7 @@ about the area.
 }
 -----------------------
 
--- Cave de Sahasrahla : quand on regarde la porte gelée
+-- Sahasrahla: watching the frozen door.
 dialog{
   id = "sahasrahla_house.frozen_door",
   skip = "all",
@@ -4270,7 +4240,7 @@ melt the ice!
 }
 -----------------------
 
--- Grotte de Tom : premier dialogue avec Tom
+-- Boomerang cave: first dialog with Tom.
 dialog{
   id = "lyriann_cave.tom.first_time",
   question = true,
@@ -4308,8 +4278,7 @@ No
 }
 -----------------------
 
--- Grotte de Tom : quand on lui reparle sans avoir son Boomerang,
--- car on a refusé son aide ou bien on lui a déjà rendu le Boomerang mais sans finir la grotte
+-- Boomerang cave: talking to Tom again without the Boomerang.
 dialog{
   id = "lyriann_cave.tom.not_first_time",
   question = true,
@@ -4328,9 +4297,7 @@ No
 }
 -----------------------
 
--- Grotte de Tom : quand on accepte son aide
---#I'm not extremely happy with this translation
---#"If you manage...impressed!" Too word for word.
+-- Boomerang cave: accepted Tom's help.
 dialog{
   id = "lyriann_cave.tom.accept_help",
   text = [[
@@ -4347,7 +4314,7 @@ will be very impressed!
 }
 -----------------------
 
--- Grotte de Tom : quand on refuse son aide
+-- Boomerang cave: refused Tom's help.
 dialog{
   id = "lyriann_cave.tom.refuse_help",
   text = [[
@@ -4356,7 +4323,7 @@ Fine, as you wish.
 }
 -----------------------
 
--- Grotte de Tom : quand on lui reparle en ayant son Boomerang et sans avoir fini la grotte
+-- Boomerang cave: talking to Tom again, having the Boomerang, and the maze not finished yet.
 dialog{
   id = "lyriann_cave.tom.not_finished",
   question = true,
@@ -4380,7 +4347,7 @@ Return the Boomerang
 }
 -----------------------
 
--- Grotte de Tom : quand on vient de lui rendre son Boomerang sans avoir fini la grotte
+-- Boomerang cave: just gave the Boomerang back and the maze is not finished yet.
 dialog{
   id = "lyriann_cave.tom.gave_boomerang_back",
   text = [[
@@ -4391,7 +4358,7 @@ my help.
 }
 -----------------------
 
--- Grotte de Tom : quand on tente de quitter la grotte sans lui avoir rendu son Boomerang
+-- Boomerang cave: trying to leave the cave with Tom's Boomerang.
 dialog{
   id = "lyriann_cave.tom.leaving",
   text = [[
@@ -4400,8 +4367,7 @@ Hey! Wait!
 }
 -----------------------
 
--- Grotte de Tom : quand on tente de quitter la grotte sans lui avoir rendu son Boomerang
--- et sans avoir trouvé le Réceptacle de Coeur
+-- Boomerang cave: trying to leave the cave with Tom's Boomerang (maze not finished).
 dialog{
   id = "lyriann_cave.tom.leaving.cavern_not_finished",
   text = [[
@@ -4420,9 +4386,7 @@ my help.
 }
 -----------------------
 
--- Grotte de Tom : quand on a trouvé le Réceptacle de Coeur (et donc
--- fini la grotte) mais qu'on ne lui a pas encore rendu son Boomerang,
--- que ce soit en lui parlant directement ou en tentant de quitter la grotte
+-- Boomerang cave: giving the Boomerang back (maze finished).
 dialog{
   id = "lyriann_cave.tom.cavern_finished",
   next = "lyriann_cave.tom.see_you_later",
@@ -4440,10 +4404,7 @@ back.
 }
 -----------------------
 
--- Grotte de Tom : fin du dialogue ci-dessus
--- et également quand on vient le revoir à nouveau après
--- avoir fini la grotte et rendu le Boomerang
---#Slightly awkward translation
+-- Boomerange cave: last dialog of Tom.
 dialog{
   id = "lyriann_cave.tom.see_you_later",
   text = [[
@@ -4455,8 +4416,7 @@ ever you are in need.
 }
 -----------------------
 
--- Entrée du donjon 1 : quand on s'approche
--- de la falaise en ayant fini la grotte de Tom
+-- Dungeon 1 entrance: approaching the cliff (Boomerang cave finished).
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.hey",
   text = [[
@@ -4483,7 +4443,7 @@ Let's see...
 }
 -----------------------
 
--- Tom has found a ladder and is opening the access to dungeon 1
+-- Tom has found a ladder and is opening the access to dungeon 1.
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.open",
   text = [[
@@ -4546,8 +4506,6 @@ to the Kingdom!
 }
 -----------------------
 
--- Message affiché lorsqu'on tente d'ouvrir la porte d'entrée
--- du donjon 2 sans avoir la Clé de Roc
 dialog{
   id = "outside_world.rock_key_required",
   text = [[
@@ -4930,7 +4888,6 @@ What can I do for you?
 ]]
 }
 -----------------------
---#A bit difficult to translate. Maybe "discount(ed)" could work
 
 dialog{
   id = "lake_shop.apples",
@@ -4940,7 +4897,6 @@ price.
 ]]
 }
 -----------------------
---#This is apparently an English expression. Change if you like
 
 dialog{
   id = "lake_shop.bombs",
@@ -4951,7 +4907,6 @@ price!
 ]]
 }
 -----------------------
---#Perhaps a better translation out there? "ratio" maybe?
 
 dialog{
   id = "lake_shop.arrows",
@@ -5050,7 +5005,6 @@ Piece of Heart.
 ]]
 }
 -----------------------
---#Might be able to translate this a little better
 
 dialog{
   id = "chests_game_cave.start_game",
@@ -5170,7 +5124,6 @@ recovering Hearts.
 ]]
 }
 -----------------------
---#Needs work. Won't remove French until it's fixed
 
 dialog{
   id = "castle.welcome",
@@ -5662,7 +5615,7 @@ chests.
 -----------------------
 
 -- The hero attemps to enter the frozen room in dungeon 4
--- but doesn't have the blue tunic.
+-- but doesn't have the blue mail.
 dialog{
   id = "dungeon_4.too_cold",
   text = [[
@@ -5813,7 +5766,6 @@ work.
 ]]
 }
 -----------------------
---#May need to be prettied up
 
 dialog{
   id = "dungeon_5.prison_2_locked_3",
@@ -5985,7 +5937,7 @@ dialog{
 -----------------------
 
 -- The original dialog was a reference
--- to Link's Awakening
+-- to Link's Awakening.
 dialog{
   id = "dungeon_7.2f_weak_floor_hint",
   text = [[

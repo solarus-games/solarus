@@ -567,7 +567,7 @@
 13	1	1456	349	16	16	stop_timer_c_sensor_2	0
 13	1	1288	341	16	16	close_door_b_sensor	0
 13	1	1456	285	16	16	close_door_c_sensor	0
-3	1	1336	61	piece_of_heart	1	291
+3	1	1288	61	piece_of_heart	1	291
 8	1	1112	333	sign	3	0	entities/sign	dialog#dungeon_1.stupid_run_sign
 4	1	1264	549	0	_random	1	-1
 4	1	1280	549	0	heart	1	-1

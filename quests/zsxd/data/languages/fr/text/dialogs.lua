@@ -3858,7 +3858,14 @@ pas que je suis
 occupée ?
 Ce que les gens peuvent
 être mal élevés !
+]]
+}
+-----------------------
 
+dialog{
+  id = "crazy_house.guichet_43f",
+  skip = "all",
+  text = [[
 Roh... où j'en étais
 moi ?...
 ]]
@@ -5246,11 +5253,15 @@ du 1er avril 2011,
 avec l'aide de quelques
 pizzas et de fortes
 doses de café.
+
          Crédits
+
      Programmation :
 Christopho
+
       Réalisation
        des maps :
+
 Christopho
 Metallizer
 Yoshi04
@@ -5259,23 +5270,28 @@ Sam101
 Mymy
        Conception
       des donjons :
+
       Bureau des
-    Objets Trouvés :
+   Objets Trouvés :
 Metallizer
        Temple des
-       Stupidités :
+      Stupidités :
 Christopho
 Ces gens sont des
 sadiques !
+
        Graphismes
-     supplémentaires :
+    supplémentaires :
 Newlink
-         English
-       translation:
+       Traduction
+       anglaise :
+
 BAFelton
 KageNoSensei
+
      Remerciements
        spéciaux :
+
 19oj19
 Neovyse
 Thyb
@@ -5287,6 +5303,7 @@ HelpTheWretched
 Vincent Jouillat
 JB
 Nintendo
+
 Et bravo à vous d'être
 arrivé jusqu'à la fin !
 

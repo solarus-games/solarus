@@ -2,7 +2,7 @@ if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 NEW)
 endif(COMMAND cmake_policy)
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
+set(CMAKE_MODULE_PATH "${SOLARUS_SOURCE_DIR}/cmake/modules/")
 
 # find the headers and the libraries of dependencies
 find_package(SDL REQUIRED)
@@ -91,22 +91,31 @@ target_link_libraries(solarus
   ${MODPLUG_LIBRARY}
 )
 
-# compilation flags
-set(CMAKE_CXX_FLAGS "-Wall -Werror ${CMAKE_CXX_FLAGS}")
+# default compilation flags
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING
+      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+  endif(NOT CMAKE_BUILD_TYPE)
+set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
 # compilation flags for Mac OS X (Intel) deployment
-if(NOT $ENV{MACOSX_DEPLOYMENT_TARGET} STREQUAL "")
+if(CMAKE_BUILD_TYPE MATCHES "Release")
   if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
     set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk" CACHE STRING "OS version whose headers you'll use" FORCE)
     set(CMAKE_OSX_ARCHITECTURES "ppc;i386;x86_64;" CACHE STRING "Compatible ppc,i386,x86_64" FORCE)
   endif()
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "$ENV{MACOSX_DEPLOYMENT_TARGET}" CACHE STRING "the oldest OS version supported" FORCE)
-
-
-  if($ENV{MACOSX_DEPLOYMENT_TARGET} STRGREATER "10.4")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" )
+  if(NOT $ENV{MACOSX_DEPLOYMENT_TARGET} STREQUAL "")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "$ENV{MACOSX_DEPLOYMENT_TARGET}" CACHE STRING "the oldest OS version supported" FORCE)
+    if($ENV{MACOSX_DEPLOYMENT_TARGET} STRGREATER "10.4")
+      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" )
+      if($ENV{MACOSX_DEPLOYMENT_TARGET} STREQUAL "10.5")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -no_compact_linkedit" )
+      endif()
+    endif()
   endif()
-endif(NOT $ENV{MACOSX_DEPLOYMENT_TARGET} STREQUAL "")
+endif(CMAKE_BUILD_TYPE MATCHES "Release")
 
 # solarus options
 option(DEBUG_KEYS "Enable the debugging keys." OFF)

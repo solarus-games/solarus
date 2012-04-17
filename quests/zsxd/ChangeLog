@@ -1,3 +1,16 @@
+zsxd-1.5.3 (under development)
+
+* Dungeon 2: the piece of heart could be obtained very easily with the sword
+* Change the English website url in the credits dialogs
+
+zsxd-1.5.2 (2012-03-31)
+
+* Fix missing empty lines in the credits dialogs
+
+zsxd-1.5.1 (2012-03-31)
+
+* Fix a crash during a dialog, introduced by zsxd 1.5
+
 zsxd-1.5 (2012-02-12)
 
 * Use solarus-0.9.1

@@ -1,7 +1,13 @@
-zsdx-1.5 (under development)
+zsdx-1.5.1 (under development)
 
+* English dialogs: fix the blacksmith question to buy the sword
+
+zsdx-1.5.0 (2012-04-03)
+
+* Use solarus 0.9.2
 * English translation available
 * Dungeon 5: the piece of heart could be obtained very easily with the sword
+* Dungeon 5: a black guard was never seeing the hero
 
 zsdx-1.4.1 (2012-02-18)
 

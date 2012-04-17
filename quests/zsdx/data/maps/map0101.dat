@@ -1045,8 +1045,8 @@
 7	1	568	93	enemy_9	3	lizalfos	0	-1	_random	1	-1
 9	1	336	725	block_4	-1	entities/statue	1	1	2
 4	1	816	725	0	magic_flask	2	-1
-4	1	816	741	0	_random	2	-1
-4	1	800	741	0	_random	2	-1
+4	1	816	741	0	_random	1	-1
+4	1	800	741	0	_random	1	-1
 1	1	832	349	tmp	3	0
 12	1	1024	656	16	16	custom_obstacle_56	0	1	0	0
 0	2	880	32	64	8	304

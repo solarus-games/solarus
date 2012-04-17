@@ -2613,8 +2613,8 @@ repelled the evil.
 Thanks to his courage,
 he defeated Ganondorf,
 who had built an
-imposing pyramid on the
-Golden Land.
+impressive pyramid
+within the Golden Land.
 ]]
 }
 -----------------------

@@ -57,7 +57,7 @@
 18	0	528	608	door_e_2	2	0	-1
 5	0	392	552	chest	0	map	1	509
 4	0	384	701	0	heart	1	-1
-4	0	400	701	0	heart	1	-1
+4	0	400	701	0	bomb	3	-1
 4	0	416	701	0	heart	1	-1
 12	0	432	616	16	16	custom_obstacle_26	0	1	0	0
 12	0	528	616	16	16	custom_obstacle_27	0	1	0	0

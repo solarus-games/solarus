@@ -1,0 +1,1966 @@
+-- Zelda Mystery of Solarus DX:
+-- Spanish dialogs (part 4)
+
+-- ****** Please respect the limit of each line! ******
+-- 23 chars for normal lines,
+-- 20 chars for dialogs with an icon or lines that are answers to a question,
+-- 17 chars for lines with both an icon and an answer.
+-- Each dialog ends with a comment with dashes indicating the maximum line size.
+-- Please don't exceed the maximum size of lines,
+-- and don't break lines too early either.
+-- Don't try to reproduce the exact same lines: it's normal for dialogs to be
+-- shorter or longer than in the language you are translating from.
+-- It's also normal for lines to end on different words.
+
+-- ****** Typo warning! ******
+-- Remember that ponctuation characters like ! ? : ; are preceeded by a space
+-- character in French and NOT in English.
+
+-- ****** More documentation ******
+-- If you have a doubt, please refer to the doc:
+-- http://www.solarus-games.org/doc/latest/dialog_syntax.html
+-- or just ask on IRC (see below).
+--
+-- ****** Team work *******
+-- Please join our IRC channel to organize the work with us:
+-- irc.zelda-solarus.com #solarus
+-- Before translating any dialog, please tell us on IRC to avoid
+-- conflicts.
+
+-- Thanks for your contribution!
+
+dialog{
+  id = "dungeon_1.solarus_child",
+  text = [[
+$2$v... Gracias. Me has
+salvado la vida. Soy
+uno de los ocho 
+protectores llamados
+por la Princesa Zelda.
+Nos dedicamos a velar
+por los restos de la
+santa reliquia,
+La Trifuerza ,creada por
+tres diosas antes de la
+creación de tu mundo.
+A lo largo de los
+milenios,la Trifuerza,
+pese a ser fuente de 
+vida y prosperidad,
+fue también gran fuente
+de la codicia y de las
+constantes luchas entre
+las fuerzas del bien
+y el mal. Incluso hoy
+en día, la sagrada 
+reliquia está en 
+peligro. Sin embargo,
+la historia se repite.
+Donde quiera que haya
+peligro, hay un héroe
+cuyo valor conduce a 
+la oscuridad lejos.
+Busca a mis hermanos
+y descubre quién está
+detrás de todo esto, 
+antes que las fuerzas
+de la oscuridad hagan
+caer a Hyrule en
+el caos ...
+¡Puede que el héroe
+traiga paz y 
+prosperidad al Reino!
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.rock_key_required",
+  text = [[
+¡Está cerrado!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_2.eye_hint",
+  skip = "all",
+  text = [[
+Ambos ojos deben ser
+perforados.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_2.eye_2_hint",
+  skip = "all",
+  text = [[
+Ambos ojos deben ser
+perforados con
+perseverancia.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_2.code_hint",
+  skip = "all",
+  text = [[
+       F | B | E 
+      ---|---|---
+       C | D | A 
+]]
+}
+-----------------------
+
+dialog{
+  id = "fairy_cave.first_time",
+  text = [[
+Bienvenido, joven
+lleno de sabiduría. He
+estado esperando tu
+llegada.Soy el Hada
+Encantada.Tú, que
+velas por la justicia
+me permito darte
+este regalo...
+
+Has demostrado en
+el pasado que te lo
+mereces.
+]]
+}
+-----------------------
+
+dialog{
+  id = "fairy_cave.restore_health",
+  text = [[
+Bienvenido, joven
+lleno de sabiduría.
+
+Soy el Hada Encantada.
+Cierra tus ojos
+y relájate.
+]]
+}
+-----------------------
+
+dialog{
+  id = "north_fairy_fountain.first_time",
+  text = [[
+Bienvenido, joven
+lleno de coraje. He
+estado esperando tu
+llegada. Soy el Hada
+Viajera. Tú,
+que recorres el mundo
+luchando contra el mal
+sin descanso me permito
+transmitirte una
+antigua técnica...
+]]
+}
+-----------------------
+
+dialog{
+  id = "north_fairy_fountain.restore_health",
+  text = [[
+Bienvenido, joven
+lleno de coraje.
+
+Soy el Hada Viajera.
+Cierra tus ojos
+y relájate.
+]]
+}
+-----------------------
+
+dialog{
+  id = "mountain_cave.mountain_sign",
+  skip = "all",
+  text = [[
+    Monte Terror
+        --->
+]]
+}
+-----------------------
+
+dialog{
+  id = "mountain_cave.not_much_done",
+  skip = "all",
+  text = [[
+Si estás leyendo esto,
+entonces no has llegado
+muy lejos.
+]]
+}
+-----------------------
+
+dialog{
+  id = "mountain_cave.patience",
+  skip = "all",
+  text = [[
+La paciencia es la virtud
+del verdadero héroe
+Patience is the virtue
+of a true hero.
+ - Autor Desconocido (¿?) -
+]]
+}
+-----------------------
+
+dialog{
+  id = "mountain_cave.almost_done",
+  skip = "all",
+  text = [[
+Lo peor está
+por venir.
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.old_castle_sign",
+  skip = "all",
+  text = [[
+
+     Castillo Antiguo
+         <---
+]]
+}
+-----------------------
+
+dialog{
+  id = "billy_cave.hello",
+  skip = "current",
+  text = [[
+Espero que hayas venido
+con algo que valga la
+pena hacer si te
+atreves a entrar en mi
+caverna. Soy Billy el
+temerario, el mejor
+aventurero de todos los
+tiempos.
+
+De mi expedición al
+Monte Terror, traje un
+tesoro de valor
+incalculable. Incluso
+la Princesa Zelda no
+hubiera podido
+encontrarlo. Es una
+planta extremadamente
+rara.
+Soy la única persona
+viva que posee una.
+Superé los obstáculos
+del Monte Terror,
+afronté cada peligro
+y sali completamente
+ileso.
+
+
+De esta forma tan
+heroica encontré
+esta flor de extremo
+valor: ¡Una edelweiss!
+]]
+}
+-----------------------
+
+dialog{
+  id = "billy_cave.what_do_you_have",
+  skip = "current",
+  next = "_unknown",
+  text = [[
+No esperes que te dé mi
+edelweiss gratis.
+Afronté los peligros
+del Monte Terror para
+encontrarla. Si no
+tienes nada valioso
+para darme, entonces
+pasa de largo.
+]]
+}
+-----------------------
+
+dialog{
+  id = "billy_cave.without_golden_bars",
+  question = true,
+  text = [[
+¿Qué me darás?
+Un Cruasán
+Un Pastel de Manzana
+]]
+}
+-----------------------
+
+dialog{
+  id = "billy_cave.with_golden_bars",
+  question = true,
+  text = [[
+¿Qué me darás?
+Barras de Oro
+Un Pastel de Manzana
+]]
+}
+-----------------------
+
+dialog{
+  id = "billy_cave.give_croissant_without",
+  text = [[
+¡Ni siquiera tienes un
+cruasán! ¡Ladrón!
+]]
+}
+-----------------------
+
+dialog{
+  id = "billy_cave.give_croissant",
+  text = [[
+¿Un cruasán?
+¿Acaso estás bromeando?
+]]
+}
+-----------------------
+
+dialog{
+  id = "billy_cave.give_apple_pie_without",
+  text = [[
+¡Pfft! ¡Ni siquiera
+tienes un pastel de
+manzana!
+]]
+}
+-----------------------
+
+dialog{
+  id = "billy_cave.give_apple_pie",
+  text = [[
+No gracias, Eso está
+lejos de ser justo...
+]]
+}
+-----------------------
+
+dialog{
+  id = "billy_cave.give_golden_bars",
+  text = [[
+¿Qué? Tienes barras de
+oro?$1...
+$0...$0....................
+$3¡Trato hecho!
+Toma tu estúpida flor..
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.surprise_wall_guy.closed",
+  text = [[
+Si me das algo para
+comer, te dejaré pasar
+al otro lado de esta
+pared.
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.surprise_wall_guy.give_me_apple_pie",
+  question = true,
+  text = [[
+¡Dame ese pastel de
+manzana!
+
+¿Y bien?
+Vale
+De ninguna forma
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.surprise_wall_guy.open",
+  text = [[
+Algunas personas creen
+que hay tesoros detrás
+de esta pared, pero
+nunca he encontrado
+nada.
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.surprise_wall_guy.thanks",
+  next = "outside_world.surprise_wall_guy.open",
+  text = [[
+¡Súper! Comeré el
+pastel con aprecio.
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.surprise_wall_closed",
+  text = [[
+¡Está cerrado!
+]]
+}
+-----------------------
+
+dialog{
+  id = "surprise_wall.direction_0",
+  text = [[
+
+        Derecha
+]]
+}
+-----------------------
+
+dialog{
+  id = "surprise_wall.direction_1",
+  text = [[
+
+         Arriba
+]]
+}
+-----------------------
+
+dialog{
+  id = "surprise_wall.direction_2",
+  text = [[
+
+       Izquierda
+]]
+}
+-----------------------
+
+dialog{
+  id = "surprise_wall.direction_3",
+  text = [[
+
+         Abajo
+]]
+}
+-----------------------
+
+dialog{
+  id = "lake_shop.seller",
+  text = [[
+¡Bienvenido a la Tienda
+del Lago! Nuestros
+artículos son los más
+baratos del área. ¿Qué
+puedo hacer por tí?
+]]
+}
+-----------------------
+
+dialog{
+  id = "lake_shop.apples",
+  text = [[
+Tres manzanas a precio
+de descuento.
+]]
+}
+-----------------------
+
+dialog{
+  id = "lake_shop.bombs",
+  text = [[
+Ocho Bombas. ¡Te las
+daré a precio de costo!
+]]
+}
+-----------------------
+
+dialog{
+  id = "lake_shop.arrows",
+  text = [[
+Diez flechas, excelente
+calidad y precio.
+]]
+}
+-----------------------
+
+dialog{
+  id = "lake_shop.big_magic_flask",
+  text = [[
+Oferta especial:
+Una jarra de energía
+mágica.
+]]
+}
+-----------------------
+
+dialog{
+  id = "chests_game_cave.first_time",
+  next = "chests_game_cave.play_question",
+  text = [[
+¿¿Cómo entraste hasta
+aquí??
+
+... Ya que estás aquí,
+¿Te gustaría ser el
+primero en probar mi
+nuevo juego? Una
+partida cuesta 
+30 Rupias.
+]]
+}
+-----------------------
+
+dialog{
+  id = "chests_game_cave.not_first_time",
+  skip = "current",
+  next = "chests_game_cave.play_question",
+  text = [[
+¡Hola! Una partida
+cuesta 30 Rupias.
+]]
+}
+-----------------------
+
+dialog{
+  id = "chests_game_cave.play_question",
+  question = true,
+  text = [[
+¿Quieres jugar?
+Sí
+No
+]]
+}
+-----------------------
+
+dialog{
+  id = "chests_game_cave.not_enough_money",
+  skip = "all",
+  text = [[
+¡No tienes suficientes
+Rupias!
+]]
+}
+-----------------------
+
+dialog{
+  id = "chests_game_cave.start_game_wooden_key",
+  skip = "all",
+  text = [[
+¡Gracias! Para jugar,
+simplemente abre uno de
+los cofres y podrás
+conservar su contenido.
+El gran premio del día
+es una magnífica llave
+de madera.
+]]
+}
+-----------------------
+
+dialog{
+  id = "chests_game_cave.start_game_piece_of_heart",
+  skip = "all",
+  text = [[
+¡Gracias! Para jugar,
+simplemente abre uno de
+los cofres y podrás
+conservar su contenido.
+El gran premio del día
+es una Pieza de 
+Corazón.
+]]
+}
+-----------------------
+
+dialog{
+  id = "chests_game_cave.start_game",
+  skip = "all",
+  text = [[
+¡Gracias! Puedes abrir
+uno de los cofres y
+conservar su contenido.
+]]
+}
+-----------------------
+
+dialog{
+  id = "chests_game_cave.already_playing",
+  skip = "all",
+  text = [[
+¡Elige un cofre!
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.junk_shop_sign",
+  skip = "all",
+  text = [[
+
+  Tienda de Chatarra
+
+¡La selección más
+grande a precios
+excepcionales!
+]]
+}
+-----------------------
+
+dialog{
+  id = "junk_shop.seller",
+  skip = "all",
+  text = [[
+¡Bienvenido a la Tienda
+de Chatarra! ¡Artículos
+de la mejor calidad a
+precios
+extraordinarios!
+]]
+}
+-----------------------
+
+dialog{
+  id = "junk_shop.croissant",
+  text = [[
+Un Cruasán. Para llenar
+tus Corazones.
+]]
+}
+-----------------------
+
+dialog{
+  id = "junk_shop.arrows",
+  text = [[
+Flechas estándar.
+]]
+}
+-----------------------
+
+dialog{
+  id = "junk_shop.red_rupee",
+  text = [[
+Una Rupia Roja de
+oferta especial, pero
+es el modelo de pie.
+]]
+}
+-----------------------
+
+dialog{
+  id = "junk_shop.mystic_mirror",
+  text = [[
+El Espejo Místico.
+¡Dicen que puede
+invertir el flujo del
+agua!
+]]
+}
+-----------------------
+
+dialog{
+  id = "junk_shop.heart",
+  text = [[
+Un Corazón. Útil si
+necesitas energía.
+]]
+}
+-----------------------
+
+dialog{
+  id = "junk_shop.bombs",
+  text = [[
+Ocho Bombas a precio
+reducido.
+]]
+}
+-----------------------
+
+dialog{
+  id = "junk_shop.piece_of_heart",
+  text = [[
+Una Pieza de Corazón
+auténtica.
+]]
+}
+-----------------------
+
+dialog{
+  id = "junk_shop.pain_au_chocolat",
+  text = [[
+Un Pan de Chocolate
+para recuperar
+Corazones.
+]]
+}
+-----------------------
+
+dialog{
+  id = "castle.welcome",
+  skip = "all",
+  text = [[
+Bienvenido al antiguo
+castillo real,
+catalogado como
+monumento histórico.
+Por favor, no molestar
+en los alrededores.
+]]
+}
+-----------------------
+
+dialog{
+  id = "castle.forbidden_stairs",
+  skip = "all",
+  text = [[
+Esta escalera lleva 
+hasta el nivel superior 
+y al balcón.
+Sin embargo el acceso
+está prohibido para el
+público.
+]]
+}
+-----------------------
+
+dialog{
+  id = "castle.forbidden_door",
+  skip = "all",
+  text = [[
+Lo siento señor, pero 
+no tiene permiso para
+acceder a los 
+calabozos.
+]]
+}
+-----------------------
+
+dialog{
+  id = "castle.forbidden_door_wtf",
+  text = [[
+........$0....?!$#!@&=!??
+.....$0..................
+
+¿Cómo has llegado hasta 
+aquí? ¡Estás en un área 
+restringida!
+]]
+}
+-----------------------
+
+dialog{
+  id = "castle.npc_1",
+  skip = "all",
+  text = [[
+Este castillo en su día
+perteneció a la
+familia real.
+¡Hoy en día, turistas
+de todo Hyrule viajan
+para contemplarlo!
+]]
+}
+-----------------------
+
+dialog{
+  id = "castle.npc_2",
+  skip = "all",
+  text = [[
+¿Te imaginas cuanto
+esfuerzo costó el
+construir este 
+castillo?
+¿Cómo consiguieron
+hacerlo con los medios
+que tenian en aquel
+momento? ¡Es increíble!
+]]
+}
+-----------------------
+
+dialog{
+  id = "castle.where_is_tom",
+  skip = "all",
+  text = [[
+Tom, uno de nuestros
+mejores soldados,
+desapareció cuando fue
+a explorar una cueva.
+]]
+}
+-----------------------
+
+dialog{
+  id = "castle.npc_3",
+  skip = "all",
+  text = [[
+¡Cuánto lujo!
+¡Es una casa
+maravillosa!
+]]
+}
+-----------------------
+
+dialog{
+  id = "castle.prison",
+  skip = "all",
+  text = [[
+Los prisioneros del rey
+estuvieron encerrados
+dentro de estas oscuras
+celdas.
+]]
+}
+-----------------------
+
+dialog{
+  id = "castle.cannon",
+  skip = "all",
+  text = [[
+¡Que increíble cañón!
+¡Es mejor no ser
+enemigo del rey!
+]]
+}
+-----------------------
+
+dialog{
+  id = "inferno.first_time",
+  next = "inferno.find_fire_stones",
+  text = [[
+¿Quién osa caminar por
+mis tierras?
+¡Chico! ¿Sabes la
+estupidez que has
+cometido al molestar
+a Inferno, señor de
+las llamas?
+Serás castigado por
+tal comportamiento.
+Si quieres redimirte
+trata de encontrar las
+tres Piedras de Fuego
+escondidas en mi 
+sombrío laberinto
+]]
+}
+-----------------------
+
+dialog{
+  id = "inferno.find_fire_stones",
+  skip = "current",
+  text = [[
+Tendrás que superar
+las tres duras pruebas
+
+Río.
+$0Montaña.
+$0Beaumont.
+¡Supera los retos que
+te esperan, trae de
+vuelta las tres piedras
+de fuego y sólo
+entonces calmarás
+la furia de Inferno.
+]]
+}
+-----------------------
+
+dialog{
+  id = "inferno.found_fire_stones",
+  question = true,
+  text = [[
+¡Has superado
+las tres pruebas con
+éxito! Tu valentía es
+en verdad única, he
+de inclinarme ante 
+ella. Te concederé
+lo que desees.
+
+
+¿Qué quieres?
+Las piedras negras...
+¿100 Rupias?
+]]
+}
+-----------------------
+
+dialog{
+  id = "inferno.want_rupees",
+  text = [[
+Que así sea.
+]]
+}
+-----------------------
+
+dialog{
+  id = "inferno.want_rupees_again",
+  text = [[
+Ya te he dado
+ese premio.
+]]
+}
+-----------------------
+
+dialog{
+  id = "inferno.want_black_stones",
+  text = [[
+Antes de poder 
+cargar con estas
+piedras negras, habrás 
+de sobrevivir en una 
+tierra infernal, y 
+superar muchos 
+peligros.
+Let me bring you to                                      // nose como traducirlo :S - Clow_eriol
+the hell of flames...
+]]
+}
+-----------------------
+
+dialog{
+  id = "potion_shop.witch",
+  text = [[
+¡Bienvenido a la tienda
+de pociones!
+Hehehe...
+La Roja da vida, la
+verde da magia, la azul
+da ¡vida y magia!
+]]
+}
+-----------------------
+
+dialog{
+  id = "potion_shop.witch_bottle_offered",
+  text = [[
+¡Bienvenido a la tienda
+de pociones!
+Hehehe...
+¡Una Botella Mágica por
+ cada nuevo cliente
+ gratis! Hehehe...
+La Roja da vida, la
+verde da magia, la azul
+da ¡vida y magia!
+]]
+}
+-----------------------
+
+dialog{
+  id = "potion_shop.no_empty_bottle",
+  text = [[
+¡No puedes comprar esta
+Poción sin una Botella
+vacía! Hehehe...
+]]
+}
+-----------------------
+
+dialog{
+  id = "potion_shop.red_potion",
+  text = [[
+Poción Roja:
+¡restaura vida!
+Hehehe...
+]]
+}
+-----------------------
+
+dialog{
+  id = "potion_shop.green_potion",
+  text = [[
+Poción Verde:
+¡restaura tu barra de
+magia! Hehehe...
+]]
+}
+-----------------------
+
+dialog{
+  id = "potion_shop.blue_potion",
+  text = [[
+Poción Azul:
+¡restaura vida y magia!
+Hehehe...
+]]
+}
+-----------------------
+
+dialog{
+  id = "potion_shop.give_bottle",
+  text = [[
+Como nuevo cliente,
+te llevas una Botella
+Mágica de regalo.
+Hehehe...
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.vine_start",
+  skip = "all",
+  text = [[
+La tierra parece muy
+fértil por aquí,
+pero carece de
+humedad...
+]]
+}
+-----------------------
+
+dialog{
+  id = "cave_to_dungeon_8.hint",
+  skip = "all",
+  text = [[
+Sólo un observador
+atento podrá seguir
+el camino.
+]]
+}
+-----------------------
+
+dialog{
+  id = "bone_key_cave.hint",
+  skip = "all",
+  text = [[
+Sólo al repeler la luz
+hará brillar la luz
+de nuevo.
+]]
+}
+-----------------------
+
+dialog{
+  id = "hidden_palace.door_closed",
+  skip = "all",
+  text = [[
+Esta puerta no se abre...
+]]
+}
+-----------------------
+
+dialog{
+  id = "hidden_palace.using_bone_key",
+  icon = 20,
+  text = [[
+$1Usas la Llave
+de Hueso...
+]]
+}
+--------------------
+
+dialog{
+  id = "dungeon_2.solarus_child",
+  text = [[
+$2$v... Gracias. Me has
+salvado la vida. Soy
+uno de los ocho 
+protectores llamados
+por la Princesa Zelda.
+Nos dedicamos a velar
+por la Trifuerza
+Usando el poder del
+amuleto Solarus, una
+reliquia usada por la
+Princesa Zelda, es la
+única manera de 
+restaurar la Trifuerza.
+Lo hemos roto en ocho
+pedazos ocultos por 
+todo el reino.
+Estamos aquí para
+proteger los ocho
+fragmentos, como Zelda
+vela por el amuleto
+Solarus.
+No debe caer en manos
+equivocadas.
+Confiamos en tu valor.
+¡Puede que el héroe
+traiga paz y 
+prosperidad al Reino!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_3.arbror_direction_hint",
+  text = [[
+
+  Norte: Maestro Arbror
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_3.water_drained_somewhere",
+  text = [[
+A lo lejos ... un ruido ...
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_3.arbror_hello",
+  text = [[
+¡¡¡Haa!!! ¡Nunca me
+vencerás, Maestro
+Arbror!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_3.arbror_killed",
+  text = [[
+¡¡¡KARGHHH!!! He sido
+derrotado, pero no
+llegarás muy lejos...
+Tú jamás
+lo lograrás...
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_3.solarus_child",
+  text = [[
+$2$v... Gracias. Me has
+salvado la vida.
+Gracias a ti, esta 
+horrible criatura nunca
+volverá a molestar al
+Reino.
+Soy uno de los ocho
+protectores llamados
+por la Princesa Zelda.
+La Trifuerza sigue en
+peligro siempre que 
+uno de mis hermanos
+esté preso.
+El final de tu viaje 
+está cerca.
+Sálvale y devuelve 
+la paz a estas tierras.
+¡Puede que el héroe
+traiga paz y 
+prosperidad al Reino!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_4.welcome",
+  skip = "current",
+  text = [[
+         Level 4
+    Palacio de Beaumont
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_4.hint_use_map",
+  text = [[
+Cuando la salida no
+aparezca ante ti, usa
+el mapa.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_4.hint_chests",
+  text = [[
+El camino se muestra 
+por el cruce de los 
+cuatro cofres.
+]]
+}
+-----------------------
+
+-- The hero attemps to enter the frozen room in dungeon 4
+-- but doesn't have the blue mail.
+dialog{
+  id = "dungeon_4.too_cold",
+  text = [[
+Hace mucho frío aquí...
+¡Tienes que irte!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_4.solarus_child",
+  text = [[
+$2$v... Thank you.
+You saved my life.
+I am one of the eight
+protectors called forth
+by Princess Zelda.
+You have demonstrated
+a remarkable courage.
+Thanks to you, we are
+now all together again,
+and the Triforce is
+safe.
+
+May the hero bring
+peace and prosperity
+to the Kingdom!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_4.agahnim",
+  text = [[
+$1A G A H N I M !
+$3Yes, himself!
+
+The sorcerer back from
+the land of the dead!!!
+Ah ah ah ah ah ah!!!
+So you managed to
+gather the four kids?
+This child doesn't have
+a clue of what awaits
+him outside by saying
+that the Triforce is
+safe...
+Ah ah ah ah ah ah!!!
+Acknowledge, young man,
+that I did not come
+back to free the
+despicable Ganon, he
+who once dared call me
+his alter ego...
+I would rather leave
+that filthy culprit
+sealed away in his
+Dark World! Thus I can
+keep the Triforce for
+myself and rule as the
+only master...
+Ah ah ah ah ah!
+Upon leaving this room,
+you will witness my
+control over this
+kingdom...
+Ah ah ah ah ah ah ah!
+Now you, young and
+impetuous adventurer,
+and I shall meet again.
+For the time being, I
+am going back to the
+castle!
+Ah ah ah ah ah! We will
+see each other again,
+and with my powers, I
+will put an end to your
+tale!
+Ah ah ah ah ah ah!!!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_5.welcome",
+  skip = "current",
+  text = [[
+         Level 5
+     Ancient Castle
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_5.pots_hint",
+  skip = "all",
+  text = [[
+The key to the puzzle
+is to circle the jars
+in the right direction.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_5.hero_seen_by_guard",
+  text = [[
+¡ALTO!
+¡No te muevas!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_5.prison_1_locked",
+  text = [[
+     - Cerradura de Hierro -
+Ninguna de tus llaves
+parece encajar...
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_5.prison_1_use_iron_key",
+  icon = 28,
+  text = [[
+$1Usas la Llave de
+Hierro
+]]
+}
+--------------------
+
+dialog{
+  id = "dungeon_5.prison_2_locked_1",
+  text = [[
+¡Está cerrado!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_5.prison_2_locked_2",
+  text = [[
+It's so rusty that even
+the Large Key won't
+work.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_5.prison_2_locked_3",
+  text = [[
+Perhaps there is a way
+to force open this old
+lock...
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_5.puzzle_solved",
+  text = [[
+En algún lugar de las
+profundidades del
+castillo, un mecanismo
+se ha activado...
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_5.agahnim_beginning",
+  text = [[
+You were able to pass
+through the security of
+my guards and avoid the
+traps laid in the
+castle.
+I don't care, your
+flight ends here!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_5.agahnim_end",
+  text = [[
+...$0...........$0
+Me has vencido esta
+vez...
+¡ Pero volveremos a
+encontrarnos !
+
+Tu pequeño viaje
+no cambiará
+nada...
+Sahasrahla está bajo
+mi control y me 
+dirá dónde están
+Zelda y los ocho
+Hijos de Solarus...
+Ah ah ah ah ah!
+Ahora he de irme.
+¡Nos vemos!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_6.welcome",
+  skip = "current",
+  text = [[
+         Nivel 6
+     Laberinto de Inferno
+]]
+}
+-----------------------
+
+-- Hint for the weak floor
+dialog{
+  id = "dungeon_6.torches_hint",
+  text = [[
+The three lights show
+the way to the fall.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_6.dont_fall_hint",
+  text = [[
+No caigas; salta.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_6.close_way_hint",
+  text = [[
+Después cierra el
+camino tras de ti.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_6.tom",
+  text = [[
+$2$v... Gracias.
+Me has salvado la vida.
+You have gone through a
+lengthy journey and
+overcome many ordeals
+since we last met.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_6.tom_revelation",
+  text = [[
+$2I need to confess
+some serious facts...
+Our king's death was
+not accidental.
+I poisoned him.
+I was under Agahnim's
+control...
+He cast a spell on me
+and I lost my free
+will... There is
+nothing I could do...
+When the spell broke I
+realised what had
+happened... Thus I
+decided to retire to
+the cave where we first
+met. Then I was thrown
+in jail while trying
+to resist when Agahnim
+seized control of the
+castle...
+$v... You must now
+travel to Mount Terror.
+Agahnim went there
+to look for Zelda.
+You must first free
+Sahasrahla before the
+sorcerer manages to
+get the information
+he needs...
+Please take this, my
+little contribution
+to your quest...
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_7.welcome",
+  skip = "current",
+  text = [[
+         Level 7
+     Templo de Cristal
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_7.code",
+  skip = "all",
+  text = [[
+        4  7  2        
+        6  1  8        
+           3  5        
+]]
+}
+-----------------------
+
+-- The original dialog was a reference
+-- to Link's Awakening.
+dialog{
+  id = "dungeon_7.2f_weak_floor_hint",
+  text = [[
+En el suelo duermen
+secretos, bajo tus
+pies...
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_7.2f_dont_fall_alone_hint",
+  text = [[
+La solución era
+no caer solo.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_7.sahasrahla",
+  text = [[
+$2$v... Gracias.
+Me has salvado la vida.
+
+Si pudiera haber
+resistido sólo un
+poco más...
+Those culprits coaxed
+me into revealing the
+location of Zelda and
+the Solarus children.
+Protect them from all
+danger, before
+something dreadful
+happens...
+They are hiding in a
+palace sitting east
+of the mountains. The
+eight Solarus beings
+must escape from
+Agahnim, else the
+sorcerer could break
+the seal created by
+the Solarus Amulet, the
+relic worn by Zelda,
+necessary to the
+gathering of the
+Triforce shards.
+The mystery of Solarus
+is kept safe inside
+the relic.
+The relic's owner has
+the ability to summon
+the Solarus power to
+seal an object, a
+place or even a world,
+as the seven sages once
+did when they sealed
+away the Golden Land.
+Zelda is the heiress of
+that power. She used it
+to seal the Triforce
+shards, using the eight
+beings created by the
+Solarus.
+Thus, as long as she
+alone knows the secret
+of the relic, she alone
+masters the Triforce's
+seal. This is why you
+must protect the seal.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_8.welcome",
+  skip = "current",
+  text = [[
+         Nivel 8
+   Mazmorra de la Cima Rocosa (“Mazmorra Rocosa” o “Cima Rocosa”)  
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_8.hint_1F",
+  skip = "current",
+  text = [[
+Lánzate a las
+profundidades de la
+mazmorra y continúa
+con tu aventura. 
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_8.hint_B1",
+  skip = "current",
+  text = [[
+Si te ves encallado,
+combate las palas con
+más palas.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_8.billy",
+  text = [[
+¿¡Ni se te ocurrió que
+podrías encontrarte
+con tu viejo amigo
+Billy el Temerario,
+el héroe más grande
+de todos los tiempos?!
+La Princesa y los
+niños no están aquí.
+Encontraron refugio
+en mi palacio, pero mi
+misión era la de
+entregarlos a
+Agahnim...
+
+
+¡Ahora, prepárate para
+morir!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_8.agahnim",
+  text = [[
+$1Finalmente Billy no
+ha sido capaz de nada. 
+Viendo que ni él ni
+mis otros acólitos han
+contigo, pequeño
+parásito, va a ser 
+hora que me encargue
+personalmente de ti.
+Te haré desaparecer
+para siempre. Y será
+entonces cuando ponga
+mis manos sobre la
+Trifuerza y extienda
+mi poder por el mundo.
+¡Mua ja ja ja ja!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_8.agahnim_middle",
+  text = [[
+$1$0...$0.............$0
+Eres bastante duro,
+en verdad. Pero,
+¿qué te parece
+esto?
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_8.agahnim_end",
+  text = [[
+$1$0...$0 .........$0
+He sido derrotado...$0
+esto es el fin...$0
+No estaba a la altura...
+
+
+Me arrodillo ante tu
+valentía.$0
+
+Ya que no he sido
+capaz de derrotarte,
+es hora de que libere
+a mi Maestro...
+¡¡¡Ah ah ah ah ah ah!!!
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_8.ganon",
+  text = [[
+$1Así que has conseguido
+derrotar a mi alter
+ego, el oscuro
+hechicero Agahnim...
+Algo bastante inútil,
+puesto que ello me ha
+liberado, ¡los tiempos
+de oscuridad no han
+acabado! Como 
+recompensa por tu 
+trabajo, tú, la 
+Princesa y también los
+ocho niños, estáis 
+invitados a mi 
+palacio.
+Allí recuperaré la
+Trifuerza seréis los
+primeros testigos de
+tal maravilla.
+Deja que tu espíritu
+viaje libre...
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_9.welcome",
+  skip = "current",
+  text = [[
+         Nivel 9
+   Capilla de las Memorias
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_9.clockwise_switches_hint",
+  skip = "all",
+  text = [[
+Ve en sentido horario.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_9.3f_door_b_hint_0",
+  skip = "all",
+  text = [[
+Ve a la derecha.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_9.3f_door_b_hint_2",
+  skip = "all",
+  text = [[
+Hacia la izquierda.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_9.3f_door_b_hint_3",
+  skip = "all",
+  text = [[
+Abajo.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_9.5f_childs_hint",
+  skip = "all",
+  text = [[
+$1Para vencer a Ganon,
+las antorchas deben
+encenderse en el
+sentido horario.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_9.boss",
+  text = [[
+Aquí estás, joven
+enclenque.
+
+He estado esperándote
+durante mucho tiempo.
+¡Al fin ha llegado la
+hora de mi venganza!
+
+Prepárate para morir.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_9.zelda",
+  text = [[
+$1$v... Gracias.
+Tu victoria sobre el
+mal demuestra de nuevo 
+que la sabiduría
+y la justicia siempre
+prevalecerán ante
+las fuerzas del mal.
+Gracias a tu hazaña,
+nuestro mundo ha sido
+devuelto a su estado
+original. El Reino
+de Hyrule está entero
+de nuevo.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_9.zelda_children",
+  text = [[
+$1Debo destruir esta
+relíquia. El poder de
+Solarus es demasiado
+peligroso. 
+Pero destuyéndolo,
+no habrá forma de 
+restaurar la Trifuerza
+de sus fragmentos.
+Incluso si es para un
+buen fin como tú una
+vez usaste, el mal
+siempre tratará de
+llegar a él, al igual
+que Agahnim y
+Ganondorf.
+Con el poder de los 
+ocho seres creados por
+la Esencia Solarus, la
+reliquia podría romper
+el sello.
+Ahora entiendes por qué
+debo que destruirlo.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_9.zelda_end",
+  text = [[
+$1Es el final.$0
+
+
+El poder de Solarus
+ha desaparecido
+para siempre.
+La Trifuerza quedará
+sellada hasta el fin
+de los tiempos.
+]]
+}
+-----------------------
+
+dialog{
+  id = "dungeon_10.welcome",
+  skip = "current",
+  text = [[
+     Nivel secreto
+     Torre de los Cielos
+]]
+}
+-----------------------
+
+dialog{
+  id = "credits_1",
+  text = [[
+$1        Créditos$0
+
+
+      Programación:$0
+Christopho$0
+]]
+}
+-----------------------
+
+dialog{
+  id = "credits_2",
+  text = [[
+$1   Mapas y puzzles:$0
+
+
+Christopho$0
+
+
+Metallizer$0
+Binbin$0
+Mymy$0
+]]
+}
+-----------------------
+
+dialog{
+  id = "credits_3",
+  text = [[
+$1   Elementos gráficos:$0
+Newlink$0
+
+Neovyse$0
+@PyroNet$0
+Djipi$0
+$1        Música:$0
+Marine$0
+Metallizer$0
+]]
+}
+-----------------------
+
+dialog{
+  id = "credits_4",
+  text = [[
+$1        Historia:$0
+Guillaume F.$0
+Christopho$0
+$1        Localización
+     al castellano:$0
+
+Alex_XelA$0
+Rypervenche$0
+Jeff$0
+]]
+}
+-----------------------
+
+dialog{
+  id = "credits_6",
+  text = [[
+$1        Pruebas:$0
+
+
+Thyb$0
+Morwenn$0
+BenObiWan$0
+$1   Agradecimientos a:$0
+
+
+19oj19$0           Yohann$0
+MultiSync_XV17$0   Krytzz$0
+HelpTheWretched$0
+
+        Nintendo$0
+
+
+¡Gracias por jugar!$0
+
+
+
+ www.solarus-games.org$0
+]]
+}
+-----------------------
+

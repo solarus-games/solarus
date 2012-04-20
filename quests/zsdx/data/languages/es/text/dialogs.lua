@@ -1,14 +1,5 @@
 -- Zelda Mystery of Solarus DX:
--- Spanish dialogs
-
--- ****** Contributors ******
--- Please add your name to this list if you helped.
--- These names will appear in the English localization credits
--- at the end of the game.
--- * 
--- * 
--- * 
--- * 
+-- Spanish dialogs (part 1)
 
 -- ****** Please respect the limit of each line! ******
 -- 23 chars for normal lines,
@@ -49,733 +40,524 @@
 
 -- Feather
 dialog{
-  id = "_item_description.feather.1",
-  icon = 0,
-  skip = "all",
-  text = [[
-Use the Feather to
-jump over obstacles.
+  id = "_item_description.feather.1",
+  icon = 0,
+  skip = "all",
+  text = [[
+Usa la Pluma para
+saltar los
+obstáculos.
 ]]
 }
 --------------------
 
 -- Bombs
 dialog{
-  id = "_item_description.bombs_counter.1",
-  icon = 1,
-  skip = "all",
-  text = [[
-Use Bombs against
-enemies and to
-destroy obstacles.
+  id = "_item_description.bombs_counter.1",
+  icon = 1,
+  skip = "all",
+  text = [[
+Usa las Bombas
+contra los enemigos
+y para destruir
+obstáculos.
 ]]
 }
 --------------------
 
 -- Bow
 dialog{
-  id = "_item_description.bow.1",
-  icon = 2,
-  skip = "all",
-  text = [[
-You don't have any
-Arrows left!
+  id = "_item_description.bow.1",
+  icon = 2,
+  skip = "all",
+  text = [[
+¡No te queda ninguna
+Flecha!
 ]]
 }
 --------------------
 
 -- Bow & Arrows
 dialog{
-  id = "_item_description.bow.2",
-  icon = 3,
-  skip = "all",
-  text = [[
-Shoot Arrows to
-defeat tough
-enemies.
+  id = "_item_description.bow.2",
+  icon = 3,
+  skip = "all",
+  text = [[
+Dispara Flechas para
+derrotar enemigos
+a distancia.
 ]]
 }
 --------------------
 
 -- Boomerang
 dialog{
-  id = "_item_description.boomerang.1",
-  icon = 4,
-  skip = "all",
-  text = [[
-Use the Boomerang to
-immobilize enemies
-and pick up far-away
-objects.
+  id = "_item_description.boomerang.1",
+  icon = 4,
+  skip = "all",
+  text = [[
+Usa el Bumerán para
+inmovilizar a los 
+enemigos y recoger
+objetos lejanos.
 ]]
 }
 --------------------
 
 -- Super Boomerang
 dialog{
-  id = "_item_description.boomerang.2",
-  icon = 35,
-  skip = "all",
-  text = [[
-Use the Super
-Boomerang to
-immobilize enemies
-and pick up far-away
-objects.
+  id = "_item_description.boomerang.2",
+  icon = 35,
+  skip = "all",
+  text = [[
+Usa el Súper
+Bumerán para
+inmovilizar a los 
+enemigos y recoger
+objetos lejanos.
 ]]
 }
 --------------------
 
 -- Lamp
 dialog{
-  id = "_item_description.lamp.1",
-  icon = 5,
-  skip = "all",
-  text = [[
-Brighten dark places
-and light torches
-with the Lamp, but
-watch your Magic
-Meter!
+  id = "_item_description.lamp.1",
+  icon = 5,
+  skip = "all",
+  text = [[
+Ilumina los lugares 
+oscuros y enciende
+las antorchas con
+ella, ¡Vigila el
+consumo de Magia!
 ]]
 }
 --------------------
 
 -- Hookshot
 dialog{
-  id = "_item_description.hookshot.1",
-  icon = 6,
-  skip = "all",
-  text = [[
-Hoist yourself up to
-inaccessible places
-with the help of the
-Hookshot.
+  id = "_item_description.hookshot.1",
+  icon = 6,
+  skip = "all",
+  text = [[
+Elévate hasta
+lugares inaccesibles
+con ayuda de la
+Zarpa.
 ]]
 }
 --------------------
 
 -- Empty bottle
 dialog{
-  id = "_item_description.bottle_1.1",
-  icon = 7,
-  skip = "all",
-  text = [[
-The Magic Bottle can
-hold various
-substances.
+  id = "_item_description.bottle_1.1",
+  icon = 7,
+  skip = "all",
+  text = [[
+Botella Mágica que
+puede contener
+varias sustancias.
 ]]
 }
 --------------------
 
 -- Water in Bottle
 dialog{
-  id = "_item_description.bottle_1.2",
-  icon = 8,
-  skip = "all",
-  text = [[
-Your Magic Bottle
-is filled with
-water.
+  id = "_item_description.bottle_1.2",
+  icon = 8,
+  skip = "all",
+  text = [[
+Tu Botella Mágica
+está llena de agua.
 
-Use it at an
-appropriate spot...
+Úsala en un lugar
+adecuado...
 ]]
 }
 --------------------
 
 -- Red potion
 dialog{
-  id = "_item_description.bottle_1.3",
-  icon = 9,
-  skip = "all",
-  text = [[
-Drink Red Potion
-to fill up your
-Heart Meter.
+  id = "_item_description.bottle_1.3",
+  icon = 9,
+  skip = "all",
+  text = [[
+Bebe la Poción Roja
+para recuperar tu
+vida.
 ]]
 }
 --------------------
 
 -- Green potion
 dialog{
-  id = "_item_description.bottle_1.4",
-  icon = 10,
-  skip = "all",
-  text = [[
-Drink Green Potion
-to fill up your
-Magic Meter.
+  id = "_item_description.bottle_1.4",
+  icon = 10,
+  skip = "all",
+  text = [[
+Bebe la Poción Verde
+para recuperar tu
+magia.
 ]]
 }
 --------------------
 
 -- Blue potion
 dialog{
-  id = "_item_description.bottle_1.5",
-  icon = 11,
-  skip = "all",
-  text = [[
-Drink Blue Potion
-to fill up both your
-Heart and Magic
-Meters!
+  id = "_item_description.bottle_1.5",
+  icon = 11,
+  skip = "all",
+  text = [[
+Bebe la Poción Azul
+para recuperar tu
+vida y magia.
 ]]
 }
 --------------------
 
 -- Fairy in Bottle
 dialog{
-  id = "_item_description.bottle_1.6",
-  icon = 12,
-  skip = "all",
-  text = [[
-This Fairy will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
-]]
-}
---------------------
-
--- Empty bottle
-dialog{
-  id = "_item_description.bottle_2.1",
-  icon = 7,
-  skip = "all",
-  text = [[
-The Magic Bottle can
-hold various
-substances.
-]]
-}
---------------------
-
--- Water in Bottle
-dialog{
-  id = "_item_description.bottle_2.2",
-  icon = 8,
-  skip = "all",
-  text = [[
-Your Magic Bottle
-is filled with
-water.
-
-Use it at an
-appropriate spot...
-]]
-}
---------------------
-
--- Red potion
-dialog{
-  id = "_item_description.bottle_2.3",
-  icon = 9,
-  skip = "all",
-  text = [[
-Drink Red Potion
-to fill up your
-Heart Meter.
-]]
-}
---------------------
-
--- Green potion
-dialog{
-  id = "_item_description.bottle_2.4",
-  icon = 10,
-  skip = "all",
-  text = [[
-Drink Green Potion
-to fill up your
-Magic Meter.
-]]
-}
---------------------
-
--- Blue potion
-dialog{
-  id = "_item_description.bottle_2.5",
-  icon = 11,
-  skip = "all",
-  text = [[
-Drink Blue Potion
-to fill up both your
-Heart and Magic
-Meters!
-]]
-}
---------------------
-
--- Fairy in Bottle
-dialog{
-  id = "_item_description.bottle_2.6",
-  icon = 12,
-  skip = "all",
-  text = [[
-This Fairy will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
-]]
-}
---------------------
-
--- Empty bottle
-dialog{
-  id = "_item_description.bottle_3.1",
-  icon = 7,
-  skip = "all",
-  text = [[
-The Magic Bottle can
-hold various
-substances.
-]]
-}
---------------------
-
--- Water in Bottle
-dialog{
-  id = "_item_description.bottle_3.2",
-  icon = 8,
-  skip = "all",
-  text = [[
-Your Magic Bottle
-is filled with
-water.
-
-Use it at an
-appropriate spot...
-]]
-}
---------------------
-
--- Red potion
-dialog{
-  id = "_item_description.bottle_3.3",
-  icon = 9,
-  skip = "all",
-  text = [[
-Drink Red Potion
-to fill up your
-Heart Meter.
-]]
-}
---------------------
-
--- Green potion
-dialog{
-  id = "_item_description.bottle_3.4",
-  icon = 10,
-  skip = "all",
-  text = [[
-Drink Green Potion
-to fill up your
-Magic Meter.
-]]
-}
---------------------
-
--- Blue potion
-dialog{
-  id = "_item_description.bottle_3.5",
-  icon = 11,
-  skip = "all",
-  text = [[
-Drink Blue Potion
-to fill up both your
-Heart and Magic
-Meters!
-]]
-}
---------------------
-
--- Fairy in Bottle
-dialog{
-  id = "_item_description.bottle_3.6",
-  icon = 12,
-  skip = "all",
-  text = [[
-This Fairy will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
-]]
-}
---------------------
-
--- Empty bottle
-dialog{
-  id = "_item_description.bottle_4.1",
-  icon = 7,
-  skip = "all",
-  text = [[
-The Magic Bottle can
-hold various
-substances.
-]]
-}
---------------------
-
--- Water in Bottle
-dialog{
-  id = "_item_description.bottle_4.2",
-  icon = 8,
-  skip = "all",
-  text = [[
-Your Magic Bottle
-is filled with
-water.
-
-Use it at an
-appropriate spot...
-]]
-}
---------------------
-
--- Red potion
-dialog{
-  id = "_item_description.bottle_4.3",
-  icon = 9,
-  skip = "all",
-  text = [[
-Drink Red Potion
-to fill up your
-Heart Meter.
-]]
-}
---------------------
-
--- Green potion
-dialog{
-  id = "_item_description.bottle_4.4",
-  icon = 10,
-  skip = "all",
-  text = [[
-Drink Green Potion
-to fill up your
-Magic Meter.
-]]
-}
---------------------
-
--- Blue potion
-dialog{
-  id = "_item_description.bottle_4.5",
-  icon = 11,
-  skip = "all",
-  text = [[
-Drink Blue Potion
-to fill up both your
-Heart and Magic
-Meters!
-]]
-}
---------------------
-
--- Fairy in Bottle
-dialog{
-  id = "_item_description.bottle_4.6",
-  icon = 12,
-  skip = "all",
-  text = [[
-This Fairy will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
+  id = "_item_description.bottle_1.6",
+  icon = 12,
+  skip = "all",
+  text = [[
+Esta Hada te ayudará
+cuando lo necesites.
+¡También la puedes
+usar cuando lo desees
+para recuperar tus
+corazones!
 ]]
 }
 --------------------
 
 -- Pegasus Shoes
 dialog{
-  id = "_item_description.pegasus_shoes.1",
-  icon = 13,
-  skip = "all",
-  text = [[
-Run as fast as
-lightning by using
-the Pegasus Shoes.
-Press and hold the
-Action key to run.
+  id = "_item_description.pegasus_shoes.1",
+  icon = 13,
+  skip = "all",
+  text = [[
+Corre tan rápido
+como el rayo usando
+las Botas de Pegaso.
+Pulsa y mantén la
+tecla Acción para
+correr.
 ]]
 }
 --------------------
 
 -- Mystic Mirror
 dialog{
-  id = "_item_description.mystic_mirror.1",
-  icon = 14,
-  skip = "all",
-  text = [[
-The Mystic Mirror
-has strange
-powers...
+  id = "_item_description.mystic_mirror.1",
+  icon = 14,
+  skip = "all",
+  text = [[
+El Espejo Místico
+tiene extraños
+poderes...
 ]]
 }
 --------------------
 
 -- Cane of Somaria
 dialog{
-  id = "_item_description.cane_of_somaria.1",
-  icon = 15,
-  skip = "all",
-  next = "_warning_magic",
-  text = [[
-Create a block and
-hook yourself to it
-using the Hookshot.
+  id = "_item_description.cane_of_somaria.1",
+  icon = 15,
+  skip = "all",
+  next = "_warning_magic",
+  text = [[
+Crea un bloque y
+engánchate a el
+usando la Zarpa.
 ]]
 }
 --------------------
 
 -- Apples
 dialog{
-  id = "_item_description.apples_counter.1",
-  icon = 16,
-  skip = "all",
-  text = [[
-Eat Apples to
-recover Hearts.
+  id = "_item_description.apples_counter.1",
+  icon = 16,
+  skip = "all",
+  text = [[
+Come Manzanas para
+recuperar Corazones.
 ]]
 }
 --------------------
 
 -- PPains au Chocolat
 dialog{
-  id = "_item_description.pains_au_chocolat_counter.1",
-  icon = 17,
-  skip = "all",
-  text = [[
-Eat a Pain au
-Chocolat to recover
-three Hearts.
+  id = "_item_description.pains_au_chocolat_counter.1",
+  icon = 17,
+  skip = "all",
+  text = [[
+Come un Pan de
+Chocolate para
+recuperar tres
+Corazones.
 ]]
 }
 --------------------
 
 -- Croissants
 dialog{
-  id = "_item_description.croissants_counter.1",
-  icon = 18,
-  skip = "all",
-  text = [[
-Eat a Croissant to
-recover seven
-Hearts.
+  id = "_item_description.croissants_counter.1",
+  icon = 18,
+  skip = "all",
+  text = [[
+Come un Cruasán para
+recuperar siete
+Corazones.
 ]]
 }
 --------------------
 
 -- Rock Key
 dialog{
-  id = "_item_description.rock_key.1",
-  icon = 19,
-  skip = "all",
-  text = [[
-The Rock Key! But
-where is the right
-lock ?
+  id = "_item_description.rock_key.1",
+  icon = 19,
+  skip = "all",
+  text = [[
+¡La Llave del Roc!
+¿Pero dónde está la
+cerradura correcta?
 ]]
 }
 --------------------
 
 -- Bone Key
 dialog{
-  id = "_item_description.bone_key.1",
-  icon = 20,
-  skip = "all",
-  text = [[
-What could the Bone
-Key be used for?
+  id = "_item_description.bone_key.1",
+  icon = 20,
+  skip = "all",
+  text = [[
+¿Para que se podrá
+utilizar la Llave de
+Hueso?
 ]]
 }
 --------------------
 
 -- Earth Key
 dialog{
-  id = "_item_description.clay_key.1",
-  icon = 21,
-  skip = "all",
-  text = [[
-The Earth Key. It
-allows access to the
-village's cave.
+  id = "_item_description.clay_key.1",
+  icon = 21,
+  skip = "all",
+  text = [[
+La Llave de la
+Tierra. Permite
+acceso a la caverna
+de la aldea.
 ]]
 }
 --------------------
 
 -- Apple Pie
 dialog{
-  id = "_item_description.level_4_way.1",
-  icon = 22,
-  skip = "all",
-  text = [[
-This Apple Pie looks
-odd...
+  id = "_item_description.level_4_way.1",
+  icon = 22,
+  skip = "all",
+  text = [[
+Este Pastel de
+Manzana se ve
+extraño...
 ]]
 }
 --------------------
 
 -- Gold bars
 dialog{
-  id = "_item_description.level_4_way.2",
-  icon = 23,
-  skip = "all",
-  text = [[
-Three authentic Gold
-Bars!
+  id = "_item_description.level_4_way.2",
+  icon = 23,
+  skip = "all",
+  text = [[
+¡Tres Barras de Oro
+auténticas!
 ]]
 }
 --------------------
 
 -- Edelweiss
 dialog{
-  id = "_item_description.level_4_way.3",
-  icon = 24,
-  skip = "all",
-  text = [[
-The Edelweiss is a
-very rare flower in
-the Kingdom of
-Hyrule.
+  id = "_item_description.level_4_way.3",
+  icon = 24,
+  skip = "all",
+  text = [[
+La Edelweiss es una
+flor muy rara en el
+Reino de Hyrule.
 ]]
 }
 --------------------
 
 -- Tiger scrolls
 dialog{
-  id = "_item_description.level_4_way.4",
-  icon = 25,
-  skip = "all",
-  text = [[
-These Tiger Scrolls
-will let you master
-advanced sword
-techniques.
+  id = "_item_description.level_4_way.4",
+  icon = 25,
+  skip = "all",
+  text = [[
+Estos Pergaminos de
+Tigre te permitirán
+dominar técnicas
+avanzadas con la
+espada.
 ]]
 }
 --------------------
 
 -- Flippers
 dialog{
-  id = "_item_description.flippers.1",
-  icon = 26,
-  skip = "all",
-  text = [[
-Swim in deep waters
-with these flippers.
+  id = "_item_description.flippers.1",
+  icon = 26,
+  skip = "all",
+  text = [[
+Nada en aguas
+profundas con estas
+aletas.
 ]]
 }
 --------------------
 
 -- Magic Cape
 dialog{
-  id = "_item_description.magic_cape.1",
-  icon = 27,
-  skip = "all",
-  text = [[
-The Magic Cape warns
-you when you are
-near a weak wall.
+  id = "_item_description.magic_cape.1",
+  icon = 27,
+  skip = "all",
+  text = [[
+La Capa Mágica te
+avisa cuando estás
+cerca de una pared
+débil.
 ]]
 }
 --------------------
 
 -- Iron Key
 dialog{
-  id = "_item_description.iron_key.1",
-  icon = 28,
-  skip = "all",
-  text = [[
-The Iron Key.
-Be sure to use it in
-the correct lock!
+  id = "_item_description.iron_key.1",
+  icon = 28,
+  skip = "all",
+  text = [[
+La Llave de Hierro.
+¡Asegúrate de usarla
+en la cerradura
+correcta!
 ]]
 }
 --------------------
 
 -- Stone Key
 dialog{
-  id = "_item_description.stone_key.1",
-  icon = 29,
-  skip = "all",
-  text = [[
-The Stone Key!
-Let's find the right
-lock!
+  id = "_item_description.stone_key.1",
+  icon = 29,
+  skip = "all",
+  text = [[
+¡La Llave de Piedra!
+¡Encontremos la
+cerradura correcta!
 ]]
 }
 --------------------
 
 -- Wooden Key
 dialog{
-  id = "_item_description.wooden_key.1",
-  icon = 30,
-  skip = "all",
-  text = [[
-The Wooden Key.
-There's only one
-lock for this key!
+  id = "_item_description.wooden_key.1",
+  icon = 30,
+  skip = "all",
+  text = [[
+La Llave de Madera.
+¡Sólo hay una
+cerradura para esta
+llave!
 ]]
 }
 --------------------
 
 -- Ice Key
 dialog{
-  id = "_item_description.ice_key.1",
-  icon = 31,
-  skip = "all",
-  text = [[
-The Ice Key. You must
-find a frozen place for
-it to work!
+  id = "_item_description.ice_key.1",
+  icon = 31,
+  skip = "all",
+  text = [[
+La Llave de Hielo.
+¡Debes encontrar un
+lugar congelado para
+que funcione!
 ]]
 }
------------------------
+--------------------
 
 -- Iron Gloves
 dialog{
-  id = "_item_description.glove.1",
-  icon = 32,
-  skip = "all",
-  text = [[
-These Iron Gloves
-will let you lift
-rocks.
+  id = "_item_description.glove.1",
+  icon = 32,
+  skip = "all",
+  text = [[
+Estos Guantes de
+Hierro te permiten
+levantar rocas.
 ]]
 }
 --------------------
 
 -- Golden Gloves
 dialog{
-  id = "_item_description.glove.2",
-  icon = 33,
-  skip = "all",
-  text = [[
-Lift black rocks
-with these Golden
-Gloves.
+  id = "_item_description.glove.2",
+  icon = 33,
+  skip = "all",
+  text = [[
+Levanta rocas negras
+con estos Guantes de
+Oro.
 ]]
 }
 --------------------
 
 -- Fire Stones
 dialog{
-  id = "_item_description.fire_stones_counter.1",
-  icon = 34,
-  skip = "all",
-  text = [[
-Find all three Fire
-Stones and bring
-them to Inferno.
+  id = "_item_description.fire_stones_counter.1",
+  icon = 34,
+  skip = "all",
+  text = [[
+Encuentra las tres
+Piedras de Fuego y 
+llévaselas a
+Inferno.
 ]]
 }
 --------------------
+
+-- Zelda Mystery of Solarus DX:
+-- Spanish dialogs (part 2)
+
+-- ****** Please respect the limit of each line! ******
+-- 23 chars for normal lines,
+-- 20 chars for dialogs with an icon or lines that are answers to a question,
+-- 17 chars for lines with both an icon and an answer.
+-- Each dialog ends with a comment with dashes indicating the maximum line size.
+-- Please don't exceed the maximum size of lines,
+-- and don't break lines too early either.
+-- Don't try to reproduce the exact same lines: it's normal for dialogs to be
+-- shorter or longer than in the language you are translating from.
+-- It's also normal for lines to end on different words.
+
+-- ****** Typo warning! ******
+-- Remember that ponctuation characters like ! ? : ; are preceeded by a space
+-- character in French and NOT in English.
+
+-- ****** More documentation ******
+-- If you have a doubt, please refer to the doc:
+-- http://www.solarus-games.org/doc/latest/dialog_syntax.html
+-- or just ask on IRC (see below).
+--
+-- ****** Team work *******
+-- Please join our IRC channel to organize the work with us:
+-- irc.zelda-solarus.com #solarus
+-- Before translating any dialog, please tell us on IRC to avoid
+-- conflicts.
+
+-- Thanks for your contribution!
 
 -- --------------------
 -- 2. Finding treasures
@@ -788,1287 +570,1322 @@ them to Inferno.
 
 -- Feather
 dialog{
-  id = "_treasure.feather.1",
-  icon = 0,
-  skip = "all",
-  text = [[
-You found the
-Feather!$0 Use it to
-jump in place and
-over obstacles!
+  id = "_treasure.feather.1",
+  icon = 0,
+  skip = "all",
+  text = [[
+¡Encontraste la
+Pluma!$0
+
+¡Úsala para saltar
+en un lugar y sobre
+obstáculos!
 ]]
 }
 --------------------
 
 -- Bow alone
 dialog{
-  id = "_treasure.bow.1",
-  icon = 2,
-  text = [[
-You found the Bow!$0
-Find some Arrows and
-you will be able to
-defeat tough enemies
-from afar!
+  id = "_treasure.bow.1",
+  icon = 2,
+  text = [[
+¡Encontraste el Arco!$0
+
+¡Encuenta algunas
+Flechas y podrás
+vencer enemigos
+difíciles a
+distancia!
 ]]
 }
 --------------------
 
 -- Bow & Arrows
 dialog{
-  id = "_treasure.bow.2",
-  icon = 3,
-  text = [[
-You found the Bow!$0
-You can fight tough
-enemies from afar!
+  id = "_treasure.bow.2",
+  icon = 3,
+  text = [[
+Encontraste el Arco!$0
+¡Puedes enfrentar
+enemigos difíciles
+a distancia!
 ]]
 }
 --------------------
 
 -- Boomerang
 dialog{
-  id = "_treasure.boomerang.1",
-  icon = 4,
-  text = [[
-You found the
-Boomerang!$0 You can
-immobilize enemies
-and pick up far-away
-objects.
-There are several 
-ways of using it,
-it’s up to you to
-discover them all!
+  id = "_treasure.boomerang.1",
+  icon = 4,
+  text = [[
+¡Encontraste el
+Bumerán!$0 
+
+Puedes inmovilizar
+enemigos y recoger
+objetos lejanos.
+Hay varias formas de
+usarlo, ¡depende de
+ti descubrirlas
+todas!
 ]]
 }
 --------------------
 
 -- Super Boomerang
 dialog{
-  id = "_treasure.boomerang.2",
-  icon = 35,
-  text = [[
-You found the
-Super Boomerang!$0
+  id = "_treasure.boomerang.2",
+  icon = 35,
+  text = [[
+Encontraste el Súper
+Bumerán!$0
 
-It's faster and
-more powerful than
-the original!
+¡Es mas rápido y
+poderoso que el
+original!
 ]]
 }
 --------------------
 
 -- Lamp
 dialog{
-  id = "_treasure.lamp.1",
-  icon = 5,
-  next = "_warning_magic",
-  text = [[
-You found the Lamp!$0
-Use it to brighten
-dark places and
-light torches.
+  id = "_treasure.lamp.1",
+  icon = 5,
+  next = "_warning_magic",
+  text = [[
+¡Encontraste la
+Lámpara!$0
+
+¡Úsala para iluminar
+lugares oscuros y
+encender antorchas!
 ]]
 }
 --------------------
 
 -- Hookshot
 dialog{
-  id = "_treasure.hookshot.1",
-  icon = 6,
-  text = [[
-You found the
-Hookshot!$0
+  id = "_treasure.hookshot.1",
+  icon = 6,
+  text = [[
+¡Encontraste la
+Zarpa!$0
 
-Immobilize your
-enemies and fling
-yourself to
-inaccessible places!
+¡Inmoviliza a tus
+enemigos y lánzate a
+sitios inaccesibles!
 ]]
 }
 --------------------
 
 -- Empty Bottle
 dialog{
-  id = "_treasure.bottle_1.1",
-  icon = 7,
-  text = [[
-You found a
-Magic Bottle!$0
+  id = "_treasure.bottle_1.1",
+  icon = 7,
+  text = [[
+¡Encontraste una
+Botella Mágica!$0
 
-Fill it with
-various substances.
+Llénala con diversas
+sustancias.
 ]]
 }
 --------------------
 
 -- Water
 dialog{
-  id = "_treasure.bottle_1.2",
-  icon = 8,
-  text = [[
-You filled your
-Magic Bottle with
-water!
+  id = "_treasure.bottle_1.2",
+  icon = 8,
+  text = [[
+¡Llenaste tu Botella
+Mágica con agua!
 ]]
 }
 --------------------
 
 -- Red potion
 dialog{
-  id = "_treasure.bottle_1.3",
-  icon = 9,
-  text = [[
-You found some Red
-Potion!$0
+  id = "_treasure.bottle_1.3",
+  icon = 9,
+  text = [[
+¡Encontraste un poco
+de Poción Roja!$0
 
-Drink it to recover
-your health.
+Bébela para
+recuperar tu salud.
 ]]
 }
 --------------------
 
 -- Green potion
 dialog{
-  id = "_treasure.bottle_1.4",
-  icon = 10,
-  text = [[
-You found some
-Green Potion!$0
+  id = "_treasure.bottle_1.4",
+  icon = 10,
+  text = [[
+¡Encontraste un poco
+de Poción Verde!$0
 
-Drink it to recover
-your magic energy.
+Bébela para
+recuperar tu energía
+mágica.
 ]]
 }
 --------------------
 
 -- Blue potion
 dialog{
-  id = "_treasure.bottle_1.5",
-  icon = 11,
-  text = [[
-You found some 
-Blue Potion!$0
+  id = "_treasure.bottle_1.5",
+  icon = 11,
+  text = [[
+¡Encontraste un poco
+de Poción Azul!$0
 
-Drink it to fully
-restore both your
-health and magic!
+¡Bébela para
+restaurar por
+completo tu salud y
+energía mágica!
 ]]
 }
 --------------------
 
 -- Fairy in Bottle
 dialog{
-  id = "_treasure.bottle_1.6",
-  icon = 12,
-  skip = "all",
-  text = [[
-You captured a
-Fairy! It will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
+  id = "_treasure.bottle_1.6",
+  icon = 12,
+  skip = "all",
+  text = [[
+¡Capturaste un Hada!
+Te ayudará cuando lo
+necesites. ¡También
+puedes usarla cuando
+quieras para
+recuperar corazones!
 ]]
 }
 --------------------
 
 -- Empty Bottle
 dialog{
-  id = "_treasure.bottle_2.1",
-  icon = 7,
-  text = [[
-You found a
-Magic Bottle!$0
+  id = "_treasure.bottle_2.1",
+  icon = 7,
+  text = [[
+¡Encontraste una
+Botella Mágica!$0
 
-Fill it with
-various substances.
+Llénala con diversas
+sustancias.
 ]]
 }
 --------------------
 
 -- Water
 dialog{
-  id = "_treasure.bottle_2.2",
-  icon = 8,
-  text = [[
-You filled your
-Magic Bottle with
-water!
+  id = "_treasure.bottle_2.2",
+  icon = 8,
+  text = [[
+¡Llenaste tu Botella
+Mágica con agua!
 ]]
 }
 --------------------
 
 -- Red potion
 dialog{
-  id = "_treasure.bottle_2.3",
-  icon = 9,
-  text = [[
-You found some Red
-Potion!$0
+  id = "_treasure.bottle_2.3",
+  icon = 9,
+  text = [[
+¡Encontraste un poco
+de Poción Roja!$0
 
-Drink it to recover
-your health.
+Bébela para
+recuperar tu salud.
 ]]
 }
 --------------------
 
 -- Green potion
 dialog{
-  id = "_treasure.bottle_2.4",
-  icon = 10,
-  text = [[
-You found some
-Green Potion!$0
+  id = "_treasure.bottle_2.4",
+  icon = 10,
+  text = [[
+¡Encontraste un poco
+de Poción Verde!$0
 
-Drink it to recover
-your magic energy.
+Bébela para
+recuperar tu energía
+mágica.
 ]]
 }
 --------------------
 
 -- Blue potion
 dialog{
-  id = "_treasure.bottle_2.5",
-  icon = 11,
-  text = [[
-You found some 
-Blue Potion!$0
+  id = "_treasure.bottle_2.5",
+  icon = 11,
+  text = [[
+¡Encontraste un poco
+de Poción Azul!$0
 
-Drink it to fully
-restore both your
-health and magic!
+¡Bébela para
+restaurar por
+completo tu salud y
+energía mágica!
 ]]
 }
 --------------------
 
 -- Fairy in Bottle
 dialog{
-  id = "_treasure.bottle_2.6",
-  icon = 12,
-  skip = "all",
-  text = [[
-You captured a
-Fairy! It will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
+  id = "_treasure.bottle_2.6",
+  icon = 12,
+  skip = "all",
+  text = [[
+¡Capturaste un Hada!
+Te ayudará cuando lo
+necesites. ¡También
+puedes usarla cuando
+quieras para
+recuperar corazones!
 ]]
 }
 --------------------
 
 -- Empty Bottle
 dialog{
-  id = "_treasure.bottle_3.1",
-  icon = 7,
-  text = [[
-You found a
-Magic Bottle!$0
+  id = "_treasure.bottle_3.1",
+  icon = 7,
+  text = [[
+¡Encontraste una
+Botella Mágica!$0
 
-Fill it with
-various substances.
+Llénala con diversas
+sustancias.
 ]]
 }
 --------------------
 
 -- Water
 dialog{
-  id = "_treasure.bottle_3.2",
-  icon = 8,
-  text = [[
-You filled your
-Magic Bottle with
-water!
+  id = "_treasure.bottle_3.2",
+  icon = 8,
+  text = [[
+¡Llenaste tu Botella
+Mágica con agua!
 ]]
 }
 --------------------
 
 -- Red potion
 dialog{
-  id = "_treasure.bottle_3.3",
-  icon = 9,
-  text = [[
-You found some Red
-Potion!$0
+  id = "_treasure.bottle_3.3",
+  icon = 9,
+  text = [[
+¡Encontraste un poco
+de Poción Roja!$0
 
-Drink it to recover
-your health.
+Bébela para
+recuperar tu salud.
 ]]
 }
 --------------------
 
 -- Green potion
 dialog{
-  id = "_treasure.bottle_3.4",
-  icon = 10,
-  text = [[
-You found some
-Green Potion!$0
+  id = "_treasure.bottle_3.4",
+  icon = 10,
+  text = [[
+¡Encontraste un poco
+de Poción Verde!$0
 
-Drink it to recover
-your magic energy.
+Bébela para
+recuperar tu energía
+mágica.
 ]]
 }
 --------------------
 
 -- Blue potion
 dialog{
-  id = "_treasure.bottle_3.5",
-  icon = 11,
-  text = [[
-You found some 
-Blue Potion!$0
+  id = "_treasure.bottle_3.5",
+  icon = 11,
+  text = [[
+¡Encontraste un poco
+de Poción Azul!$0
 
-Drink it to fully
-restore both your
-health and magic!
+¡Bébela para
+restaurar por
+completo tu salud y
+energía mágica!
 ]]
 }
 --------------------
 
 -- Fairy in Bottle
 dialog{
-  id = "_treasure.bottle_3.6",
-  icon = 12,
-  skip = "all",
-  text = [[
-You captured a
-Fairy! It will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
+  id = "_treasure.bottle_3.6",
+  icon = 12,
+  skip = "all",
+  text = [[
+¡Capturaste un Hada!
+Te ayudará cuando lo
+necesites. ¡También
+puedes usarla cuando
+quieras para
+recuperar corazones!
 ]]
 }
 --------------------
 
 -- Empty Bottle
 dialog{
-  id = "_treasure.bottle_4.1",
-  icon = 7,
-  text = [[
-You found a
-Magic Bottle!$0
+  id = "_treasure.bottle_4.1",
+  icon = 7,
+  text = [[
+¡Encontraste una
+Botella Mágica!$0
 
-Fill it with
-various substances.
+Llénala con diversas
+sustancias.
 ]]
 }
 --------------------
 
 -- Water
 dialog{
-  id = "_treasure.bottle_4.2",
-  icon = 8,
-  text = [[
-You filled your
-Magic Bottle with
-water!
+  id = "_treasure.bottle_4.2",
+  icon = 8,
+  text = [[
+¡Llenaste tu Botella
+Mágica con agua!
 ]]
 }
 --------------------
 
 -- Red potion
 dialog{
-  id = "_treasure.bottle_4.3",
-  icon = 9,
-  text = [[
-You found some Red
-Potion!$0
+  id = "_treasure.bottle_4.3",
+  icon = 9,
+  text = [[
+¡Encontraste un poco
+de Poción Roja!$0
 
-Drink it to recover
-your health.
+Bébela para
+recuperar tu salud.
 ]]
 }
 --------------------
 
 -- Green potion
 dialog{
-  id = "_treasure.bottle_4.4",
-  icon = 10,
-  text = [[
-You found some
-Green Potion!$0
+  id = "_treasure.bottle_4.4",
+  icon = 10,
+  text = [[
+¡Encontraste un poco
+de Poción Verde!$0
 
-Drink it to recover
-your magic energy.
+Bébela para
+recuperar tu energía
+mágica.
 ]]
 }
 --------------------
 
 -- Blue potion
 dialog{
-  id = "_treasure.bottle_4.5",
-  icon = 11,
-  text = [[
-You found some 
-Blue Potion!$0
+  id = "_treasure.bottle_4.5",
+  icon = 11,
+  text = [[
+¡Encontraste un poco
+de Poción Azul!$0
 
-Drink it to fully
-restore both your
-health and magic!
+¡Bébela para
+restaurar por
+completo tu salud y
+energía mágica!
 ]]
 }
 --------------------
 
 -- Fairy in Bottle
 dialog{
-  id = "_treasure.bottle_4.6",
-  icon = 12,
-  skip = "all",
-  text = [[
-You captured a
-Fairy! It will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
+  id = "_treasure.bottle_4.6",
+  icon = 12,
+  skip = "all",
+  text = [[
+¡Capturaste un Hada!
+Te ayudará cuando lo
+necesites. ¡También
+puedes usarla cuando
+quieras para
+recuperar corazones!
 ]]
 }
 --------------------
 
 -- Pegasus Boots
 dialog{
-  id = "_treasure.pegasus_shoes.1",
-  icon = 13,
-  text = [[
-You found the
-Pegasus Shoes!$0
+  id = "_treasure.pegasus_shoes.1",
+  icon = 13,
+  text = [[
+¡Encontraste las
+Botas de Pegaso!$0
 
-Run and charge
-through the toughest
-enemies!
-Press and hold the
-Action key to use
-them.
-]]
+¡Corre y carga a
+través de los
+enemigos mas
+difíciles!  Pulsa y
+mantén pulsada la
+tecla Acción para
+usarlas.
 }
 --------------------
 
 -- Mystic Mirror
 dialog{
-  id = "_treasure.mystic_mirror.1",
-  icon = 14,
-  text = [[
-You found the
-Mystic Mirror!$0
+  id = "_treasure.mystic_mirror.1",
+  icon = 14,
+  text = [[
+¡Encontraste el
+Espejo Místico!$0
 
-Its strange powers
-will surely be of
-help in your quest.
+Sus extraños poderes
+de seguro te serán
+útiles en tu
+aventura.
 ]]
 }
 --------------------
 
 -- Cane of Somaria
 dialog{
-  id = "_treasure.cane_of_somaria.1",
-  icon = 15,
-  next = "_warning_magic",
-  text = [[
-You found the
-Cane of Somaria!$0
-You can create a
-block and grab onto
-it with the
-Hookshot.
+  id = "_treasure.cane_of_somaria.1",
+  icon = 15,
+  next = "_warning_magic",
+  text = [[
+¡Encontraste la Vara
+de Somaria!$0
+
+Puedes crear un
+bloque y sujetarte a
+el con la Zarpa.
 ]]
 }
 --------------------
 
 -- 3 Apples
 dialog{
-  id = "_treasure.apple.1",
-  icon = 16,
-  text = [[
-You found 3 Apples!$0
-Eat them later to
-recover Hearts!
+  id = "_treasure.apple.1",
+  icon = 16,
+  text = [[
+¡Encontraste 3
+Manzanas!$0
+
+¡Cómetelas mas tarde
+para recuperar
+corazones!
 ]]
 }
 --------------------
 
 -- 1 Pain au Chocolat
 dialog{
-  id = "_treasure.pain_au_chocolat.1",
-  icon = 17,
-  text = [[
-You found a Pain au
-Chocolat!$0
+  id = "_treasure.pain_au_chocolat.1",
+  icon = 17,
+  text = [[
+¡Encontraste un Pan
+de Chocolate!$0
 
-Eat a Pain au
-Chocolat to recover
-some life.
+Come un Pan de
+Chocolate para
+recuperar un poco de
+vida.
 ]]
 }
 --------------------
 
 -- 1 Croissant
 dialog{
-  id = "_treasure.croissant.1",
-  icon = 18,
-  text = [[
-You found a
-Croissant!$0 It's
-all crispy! Eat a
-Croissant to recover
-Hearts.
+  id = "_treasure.croissant.1",
+  icon = 18,
+  text = [[
+¡Encontraste un 
+Cruasán!$0 
+
+¡Es crujiente! Come
+un Cruasán para
+recuperar corazones.
 ]]
 }
 --------------------
 
 -- Rock Key
 dialog{
-  id = "_treasure.rock_key.1",
-  icon = 19,
-  text = [[
-You found the Rock
-Key!$0
+  id = "_treasure.rock_key.1",
+  icon = 19,
+  text = [[
+¡Encontraste la
+Llave del Roc!$0
 ]]
 }
 --------------------
 
 -- Bone Key
 dialog{
-  id = "_treasure.bone_key.1",
-  icon = 20,
-  text = [[
-You found the Bone
-Key!$0
+  id = "_treasure.bone_key.1",
+  icon = 20,
+  text = [[
+¡Encontraste la
+Llave de Hueso!$0
 
-But what could it be
-used for?
+¿Pero para qué
+podría ser usada?
 ]]
 }
 --------------------
 
 -- Earth Key
 dialog{
-  id = "_treasure.clay_key.1",
-  icon = 21,
-  text = [[
-You found the Earth
-Key!$0
+  id = "_treasure.clay_key.1",
+  icon = 21,
+  text = [[
+¡Encontraste la
+Llave de la Tierra!$0
 
-Now you can access
-the village's cave!
+¡Ahora puedes
+acceder a la caverna
+de la aldea!
 ]]
 }
 --------------------
 
 -- Apple Pie
 dialog{
-  id = "_treasure.level_4_way.1",
-  icon = 22,
-  text = [[
-You found an Apple
-Pie!$0
-$1...$3 Hmmm, I
-wouldn't taste it
-if I were you, it
-looks odd...
+  id = "_treasure.level_4_way.1",
+  icon = 22,
+  text = [[
+¡Encontraste un
+Pastel de Manzana!$0
+$1...$3 Hmmm, Yo no lo
+probaría si fuera
+tú, se ve extraño...
 ]]
 }
 --------------------
 
 -- Gold Bars
 dialog{
-  id = "_treasure.level_4_way.2",
-  icon = 23,
-  text = [[
-You found some
-Gold Bars!!!$0
+  id = "_treasure.level_4_way.2",
+  icon = 23,
+  text = [[
+¡¡¡Encontraste unas
+Barras de Oro!!!$0
 
-They shimmer and
-are very valuable!
+¡Brillan y son muy
+valiosas!
 ]]
 }
 --------------------
 
 -- Edelweiss
 dialog{
-  id = "_treasure.level_4_way.3",
-  icon = 24,
-  text = [[
-You found an
+  id = "_treasure.level_4_way.3",
+  icon = 24,
+  text = [[
+¡Encontraste una
 Edelweiss!$0
 
-This pretty flower
-from Hyrule's 
-mountains is
-extremely rare!
+¡Esta bonita flor de
+las montañas de
+Hyrule es
+extremadamente rara!
 ]]
 }
 --------------------
 
 -- Tiger Scrolls
 dialog{
-  id = "_treasure.level_4_way.4",
-  icon = 25,
-  text = [[
-You found the Tiger
-Scrolls!$0 You now
-master the long
-forgotten Whirlwind
-Attack.
+  id = "_treasure.level_4_way.4",
+  icon = 25,
+  text = [[
+¡Encontraste los
+Pergaminos de Tigre!$0
+
+¡Ahora dominas el
+hace mucho tiempo
+olvidado Ataque
+Torbellino!
 ]]
 }
 --------------------
 
 -- Flippers
 dialog{
-  id = "_treasure.flippers.1",
-  icon = 26,
-  text = [[
-You found the
-Flippers!$0
+  id = "_treasure.flippers.1",
+  icon = 26,
+  text = [[
+¡Encontraste las
+Aletas!$0
 
-You can now swim
-in deep waters!
+¡Ahora puedes nadar
+en aguas profundas!
 ]]
 }
 --------------------
 
 -- Magic Cape
 dialog{
-  id = "_treasure.magic_cape.1",
-  icon = 27,
-  text = [[
-You found the Magic
-Cape!$0
+  id = "_treasure.magic_cape.1",
+  icon = 27,
+  text = [[
+¡Encontraste la Capa
+Mágica!$0
 
-It will warn you
-when you are near a
-weak wall.
+Te avisará cuando
+estés cerca a una
+pared débil.
 ]]
 }
 --------------------
 
 -- Iron Key
 dialog{
-  id = "_treasure.iron_key.1",
-  icon = 28,
-  text = [[
-You found the Iron
-Key!$0
+  id = "_treasure.iron_key.1",
+  icon = 28,
+  text = [[
+¡Encontraste la
+Llave de Hierro!$0
 
-Surely it must open
-a door!
+¡Seguramente debe
+abrir alguna puerta!
 ]]
 }
 --------------------
 
 -- Stone Key
 dialog{
-  id = "_treasure.stone_key.1",
-  icon = 29,
-  text = [[
-You found the Stone
-Key!$0
+  id = "_treasure.stone_key.1",
+  icon = 29,
+  text = [[
+¡Encontraste la
+Llave de Piedra!$0
 
-But where is the
-lock it opens?
+¿Pero dónde está la
+cerradura que abre?
 ]]
 }
 --------------------
 
 -- Wooden Key
 dialog{
-  id = "_treasure.wooden_key.1",
-  icon = 30,
-  text = [[
-You found the Wooden
-Key!$0
+  id = "_treasure.wooden_key.1",
+  icon = 30,
+  text = [[
+¡Encontraste la
+Llave de Madera!$0
 
-You must find where
-to use it!
+¡Debes encontrar
+donde usarla!
 ]]
 }
 --------------------
 
 -- Ice Key
 dialog{
-  id = "_treasure.ice_key.1",
-  icon = 31,
-  text = [[
-You found the Ice
-Key!$0
+  id = "_treasure.ice_key.1",
+  icon = 31,
+  text = [[
+¡Encontraste la
+Llave de Hielo!$0
 
-It must open the way
-to a frozen place...
+Debe abrir el camino
+a un lugar
+congelado...
 ]]
 }
 --------------------
 
 -- Iron Gloves
 dialog{
-  id = "_treasure.glove.1",
-  icon = 32,
-  text = [[
-You found the Iron
-Gloves!$0
+  id = "_treasure.glove.1",
+  icon = 32,
+  text = [[
+¡Encontraste los
+Guantes de Hierro!$0
 
-With these you can
-lift rocks.
+Con ellos puedes
+levantar rocas.
 ]]
 }
 --------------------
 
 -- Golden Gloves
 dialog{
-  id = "_treasure.glove.2",
-  icon = 33,
-  text = [[
-You found the Golden
-Gloves!$0
+  id = "_treasure.glove.2",
+  icon = 33,
+  text = [[
+¡Encontraste los
+Guantes de Oro!$0
 
-Now you can lift
-black rocks!
+¡Ahora puedes
+levantar rocas
+negras!
 ]]
 }
 --------------------
 
 -- Fire Stone
 dialog{
-  id = "_treasure.fire_stone.1",
-  icon = 34,
-  text = [[
-You found a Fire
-Stone!
+  id = "_treasure.fire_stone.1",
+  icon = 34,
+  text = [[
+¡Encontraste una
+Piedra de Fuego!
 ]]
 }
 --------------------
 
 -- World Map
 dialog{
-  id = "_treasure.world_map.1",
-  icon = 50,
-  text = [[
-You found the
-World Map !$0
+  id = "_treasure.world_map.1",
+  icon = 50,
+  text = [[
+¡Encontraste el Mapa
+del Mundo!$0
 
-View it on the Map
-screen.
+Míralo en la
+pantalla del Mapa.
 ]]
 }
 --------------------
 
 -- Big Wallet
 dialog{
-  id = "_treasure.rupee_bag.2",
-  icon = 52,
-  text = [[
-You found the Big
-Wallet!$0
+  id = "_treasure.rupee_bag.2",
+  icon = 52,
+  text = [[
+¡Encontraste la
+Bolsa Grande!$0
 
-It can hold up to
-300 Rupees!
+¡Puede contener
+hasta 300 Rupias!
 ]]
 }
 --------------------
 
 -- Giant Wallet
 dialog{
-  id = "_treasure.rupee_bag.3",
-  icon = 53,
-  text = [[
-You found the Giant
-Wallet!$0
+  id = "_treasure.rupee_bag.3",
+  icon = 53,
+  text = [[
+¡Encontraste la
+Bolsa Gigante!$0
 
-It can hold up to
-999 Rupees!
+¡Puede contener
+hasta 999 Rupias!
 ]]
 }
 --------------------
 
 -- Small Bomb Bag
 dialog{
-  id = "_treasure.bomb_bag.1",
-  icon = 54,
-  text = [[
-You found the Bomb
-Bag!$0 It holds 10
-Bombs.
-Assign them to a key
-and bombs away!
+  id = "_treasure.bomb_bag.1",
+  icon = 54,
+  text = [[
+¡Encontraste el Saco
+de Bombas!$0 Contiene
+10 Bombas.
+¡Asígnalas a una
+tecla y Bombas
+fuera!
 ]]
 }
 --------------------
 
 -- Large Bomb Bag
 dialog{
-  id = "_treasure.bomb_bag.2",
-  icon = 55,
-  text = [[
-You found the Large
-Bomb Bag!$0
+  id = "_treasure.bomb_bag.2",
+  icon = 55,
+  text = [[
+¡Encontraste el Saco
+de Bombas Grande!$0
 
-It can hold up to 30
-Bombs instead of 10!
+¡Puede contener
+hasta 30 Bombas en
+vez de 10!
 ]]
 }
 --------------------
 
 -- Giant Bomb Bag
 dialog{
-  id = "_treasure.bomb_bag.3",
-  icon = 56,
-  text = [[
-You found the Giant
-Bomb Bag!$0
+  id = "_treasure.bomb_bag.3",
+  icon = 56,
+  text = [[
+¡Encontraste el saco
+de Bombas Gigante!$0
 
-It can hold up to 99
-Bombs instead of 30!
+¡Puede contener
+hasta 99 Bombas en
+vez de 30!
 ]]
 }
 --------------------
 
 -- Large Quiver
 dialog{
-  id = "_treasure.quiver.2",
-  icon = 58,
-  text = [[
-You found the 
-Large Quiver!$0
+  id = "_treasure.quiver.2",
+  icon = 58,
+  text = [[
+¡Encontraste el
+Carcaj Grande!$0
 
-It can hold up to
-30 Arrows instead of
-10!
+¡Puede contener
+hasta 30 Flechas en
+vez de 10!
 ]]
 }
 --------------------
 
 -- Giant Quiver
 dialog{
-  id = "_treasure.quiver.3",
-  icon = 59,
-  text = [[
-You found the
-Giant Quiver!$0
+  id = "_treasure.quiver.3",
+  icon = 59,
+  text = [[
+¡Encontraste el
+Carcaj Gigante!$0
 
-It can hold up to
-99 Arrows instead of
-30!
+¡Puede contener
+hasta 99 Flechas en
+vez de 30!
 ]]
 }
 --------------------
 
 -- Blue Mail
 dialog{
-  id = "_treasure.tunic.2",
-  icon = 61,
-  text = [[
-You found the Blue
-Mail!$0
-It reduces damage
-taken from enemies
-and resists freezing
-temperatures...
+  id = "_treasure.tunic.2",
+  icon = 61,
+  text = [[
+¡Encontraste la
+Túnica Azul!$0
+
+Reduce el daño
+recibido de los
+enemigos y resiste
+temperaturas bajo
+cero...
 ]]
 }
 --------------------
 
 -- Red Mail
 dialog{
-  id = "_treasure.tunic.3",
-  icon = 62,
-  text = [[
-You found the Red
-Mail!$0
+  id = "_treasure.tunic.3",
+  icon = 62,
+  text = [[
+¡Encontraste la
+Túnica Roja!$0
 
-It provides even
-better protection
-than the Blue Mail!
+¡Provee incluso
+mejor protección que
+la Túnica Azul!
 ]]
 }
 --------------------
 
 -- Shield
 dialog{
-  id = "_treasure.shield.1",
-  icon = 63,
-  text = [[
-You found the
-Shield!$0
+  id = "_treasure.shield.1",
+  icon = 63,
+  text = [[
+¡Encontraste el
+Escudo!$0
 
-You can defend
-yourself from enemy
-attacks!
+¡Te puedes defender
+de ataques enemigos!
 ]]
 }
 --------------------
 
 -- Fire Shield
 dialog{
-  id = "_treasure.shield.2",
-  icon = 64,
-  text = [[
-You found the
-Fire Shield!$0
+  id = "_treasure.shield.2",
+  icon = 64,
+  text = [[
+¡Encontraste el
+Escudo de Fuego!$0
 
-You are now
-protected from fire
-attacks!
+¡Ahora estás
+protegido de ataques
+de fuego!
 ]]
 }
 --------------------
 
 -- Mirror Shield
 dialog{
-  id = "_treasure.shield.3",
-  icon = 65,
-  text = [[
-You found the
-Mirror Shield!$0
+  id = "_treasure.shield.3",
+  icon = 65,
+  text = [[
+¡Encontraste el
+Escudo Espejo!$0
 
-You can now reflect
-lasers!
+¡Ahora puedes
+reflejar lásers!
 ]]
 }
 --------------------
 
 -- First Sword
 dialog{
-  id = "_treasure.sword.1",
-  icon = 66,
-  text = [[
-You found the Sword
-of Courage!$0
+  id = "_treasure.sword.1",
+  icon = 66,
+  text = [[
+¡Encontraste la
+Espada del Coraje!$0
 
-You can cross swords
-and confront your
-enemies!
+¡Puedes cruzar
+espadas y enfrentar
+a tus enemigos!
 ]]
 }
 --------------------
 
 -- Hylian Blade
 dialog{
-  id = "_treasure.sword.2",
-  icon = 67,
-  next = "_treasure.sword.2.1",
-  text = [[
-$1You found the
-Hylian Blade!$0$0$0
-This new sword
+  id = "_treasure.sword.2",
+  icon = 67,
+  next = "_treasure.sword.2.1",
+  text = [[
+$1¡Encontraste la
+Espada Hyliana!$0$0$0
+¡Esta nueva espada
 ]]
 }
 --------------------
 
 dialog{
-  id = "_treasure.sword.2.1",
-  text = [[
-is twice as
-powerful as the
-previous one!
+  id = "_treasure.sword.2.1",
+  text = [[
+es el doble de
+poderosa que la
+anterior!
 ]]
 }
 -----------------------
 
 -- Hero's Sword
 dialog{
-  id = "_treasure.sword.3",
-  icon = 68,
-  next = "_treasure.sword.2.1",
-  text = [[
-$1You found the
-Hero's Sword!$0$0$0
-This new blade
+  id = "_treasure.sword.3",
+  icon = 68,
+  next = "_treasure.sword.2.1",
+  text = [[
+$1¡Encontraste la
+Espada del Héroe!$0$0$0
+¡Esta nueva espada
 ]]
 }
 --------------------
 
 -- Master Sword
 dialog{
-  id = "_treasure.sword.4",
-  icon = 69,
-  text = [[
-You found the
-Master Sword!$0
-The power of
-this ultimate
-sword is beyond
-everything...
+  id = "_treasure.sword.4",
+  icon = 69,
+  text = [[
+¡Encontraste la
+Espada Maestra!$0
+
+El poder de esta
+espada final esta
+mas allá de todo...
 ]]
 }
 --------------------
 
 -- Half Magic Meter
 dialog{
-  id = "_treasure.magic_bar.2",
-  icon = 99,
-  text = [[
-You found the Half
-Magic Meter!$0
-
-Your Magic Meter
-just doubled!
+  id = "_treasure.magic_bar.2",
+  icon = 99,
+  text = [[
+¡Encontraste el
+Medio Medidor de
+Magia!$0
+¡Tu Medidor de Magia
+se ha duplicado!
 ]]
 }
 --------------------
 
 -- Map
 dialog{
-  id = "_treasure.map.1",
-  icon = 70,
-  text = [[
-You found the Map!
-Use it to see the
-dungeon's layout.
+  id = "_treasure.map.1",
+  icon = 70,
+  text = [[
+¡Encontraste el
+Mapa! Úsalo para ver
+el plano de la
+mazmorra.
 ]]
 }
 --------------------
 
 -- Compass
 dialog{
-  id = "_treasure.compass.1",
-  icon = 71,
-  text = [[
-You found the
-Compass! Now you can
-see your position on
-the Map, the
-locations of chests,
-as well as the
-Boss's Lair! Now
-we're getting
-somewhere!
+  id = "_treasure.compass.1",
+  icon = 71,
+  text = [[
+¡Encontraste la
+Brújula! ¡Ya puedes
+ver tu posición en
+el Mapa, la
+ubicación de los
+cofres y la guarida
+del Jefe! ¡Ahora si
+estamos llegando a
+alguna parte!
 ]]
 }
 --------------------
 
 -- Small key
 dialog{
-  id = "_treasure.small_key.1",
-  icon = 72,
-  text = [[
-You found a Small
-Key!
+  id = "_treasure.small_key.1",
+  icon = 72,
+  text = [[
+¡Encontraste una
+Llave Pequeña!
 
-This key will open
-a locked door in
-this dungeon.
+Esta llave abrirá
+una puerta cerrada
+en esta mazmorra.
 ]]
 }
 --------------------
 
 -- Large Key
 dialog{
-  id = "_treasure.big_key.1",
-  icon = 73,
-  text = [[
-You found the Large
-Key!
+  id = "_treasure.big_key.1",
+  icon = 73,
+  text = [[
+¡Encontraste la
+Llave Grande!
 
-You can now open
-special doors and
-find new treasures!
+¡Ahora puedes abrir
+puertas especiales y
+encontrar nuevos
+tesoros!
 ]]
 }
 --------------------
 
 -- Boss Key
 dialog{
-  id = "_treasure.boss_key.1",
-  icon = 74,
-  text = [[
-You found the Boss
-Key!
+  id = "_treasure.boss_key.1",
+  icon = 74,
+  text = [[
+¡Encontraste la
+Llave del Jefe!
 
-Now you can enter
-the Boss's Lair!
+¡Ahora puedes entrar
+a la guarida del
+Jefe!
 ]]
 }
 --------------------
 
 -- Piece of Heart
 dialog{
-  id = "_treasure.piece_of_heart.1",
-  icon = 79,
-  text = [[
-You found a
-Piece of Heart!
+  id = "_treasure.piece_of_heart.1",
+  icon = 79,
+  text = [[
+¡Encontraste una
+Pieza de Corazón!
 ]]
 }
 --------------------
 
 -- Heart Container
 dialog{
-  id = "_treasure.heart_container.1",
-  icon = 80,
-  text = [[
-You found a Heart
-Container!
+  id = "_treasure.heart_container.1",
+  icon = 80,
+  text = [[
+¡Encontraste un
+Contenedor de
+Corazón!
 
-Your Heart Meter
-increased by one!
+¡Tu medidor de
+corazones se ha
+incrementado por
+uno!
 ]]
 }
 --------------------
 
 -- 1 Bomb
 dialog{
-  id = "_treasure.bomb.1",
-  icon = 82,
-  next = "_treasure.bomb.1.1",
-  text = [[
-You found a Bomb!$0
+  id = "_treasure.bomb.1",
+  icon = 82,
+  next = "_treasure.bomb.1.1",
+  text = [[
+¡Encontraste una
+Bomba!$0
 ]]
 }
 --------------------
 
 dialog{
-  id = "_treasure.bomb.1.1",
-  text = [[
-Use a Bomb to make
-an enemy or obstacle
-explode.
+  id = "_treasure.bomb.1.1",
+  text = [[
+Usa una Bomba para
+hacer explotar a un
+enemigo u obstáculo.
 ]]
 }
 --------------------
 
 -- 3 Bombs
 dialog{
-  id = "_treasure.bomb.2",
-  icon = 82,
-  next = "_treasure.bomb.1.1",
-  text = [[
-You found three
-Bombs!$0
+  id = "_treasure.bomb.2",
+  icon = 82,
+  next = "_treasure.bomb.1.1",
+  text = [[
+¡Encontraste tres
+Bombas!$0
 ]]
 }
 --------------------
 
 -- 8 Bombs
 dialog{
-  id = "_treasure.bomb.3",
-  icon = 82,
-  next = "_treasure.bomb.1.1",
-  text = [[
-You found eight
-Bombs!$0
+  id = "_treasure.bomb.3",
+  icon = 82,
+  next = "_treasure.bomb.1.1",
+  text = [[
+¡Encontraste ocho
+Bombas!$0
 ]]
 }
 --------------------
 
 -- 1 Arrow
 dialog{
-  id = "_treasure.arrow.1",
-  icon = 83,
-  next = "_treasure.arrow.1.1",
-  text = [[
-You found an Arrow!$0
-Use the Bow and
-Arrows to defeat
+  id = "_treasure.arrow.1",
+  icon = 83,
+  next = "_treasure.arrow.1.1",
+  text = [[
+¡Encontraste una
+Flecha!$0 Usa el Arco
+y Flechas para
 ]]
 }
 --------------------
 
 dialog{
-  id = "_treasure.arrow.1.1",
-  text = [[
-tough enemies from
-afar.
+  id = "_treasure.arrow.1.1",
+  text = [[
+vencer enemigos
+difíciles a
+distancia.
 ]]
 }
 --------------------
 
 -- 5 Arrows
 dialog{
-  id = "_treasure.arrow.2",
-  icon = 83,
-  next = "_treasure.arrow.1.1",
-  text = [[
-You found 5 Arrows!$0
-Use the Bow and
-Arrows to defeat
+  id = "_treasure.arrow.2",
+  icon = 83,
+  next = "_treasure.arrow.1.1",
+  text = [[
+¡Encontraste cinco
+Flechas!$0 Usa el Arco
+y Flechas para
 ]]
 }
 --------------------
 
 -- 10 Arrows
 dialog{
-  id = "_treasure.arrow.3",
-  icon = 83,
-  next = "_treasure.arrow.1.1",
-  text = [[
-You found 10 Arrows!$0
-Use the Bow and
-Arrows to defeat
+  id = "_treasure.arrow.3",
+  icon = 83,
+  next = "_treasure.arrow.1.1",
+  text = [[
+¡Encontraste diez
+Flechas!$0 Usa el Arco
+y Flechas para
 ]]
 }
 --------------------
 
 -- 1 Heart
 dialog{
-  id = "_treasure.heart.1",
-  icon = 84,
-  text = [[
-You found a Heart!
+  id = "_treasure.heart.1",
+  icon = 84,
+  text = [[
+¡Encontraste un
+Corazón!
 ]]
 }
 --------------------
 
 -- Small Magic Jar
 dialog{
-  id = "_treasure.magic_flask.1",
-  icon = 85,
-  text = [[
-You found a Small
-Magic Jar! Your
-Magic Meter is
-slightly filled.
+  id = "_treasure.magic_flask.1",
+  icon = 85,
+  text = [[
+¡Encontraste una
+Jarra Mágica
+Pequeña!
+Tu Medidor Mágico es
+llenado un poco.
 ]]
 }
 --------------------
 
 -- Large Magic Jar
 dialog{
-  id = "_treasure.magic_flask.2",
-  icon = 86,
-  text = [[
-You found a Large
-Magic Jar! Your
-Magic Meter is
-greatly filled.
+  id = "_treasure.magic_flask.2",
+  icon = 86,
+  text = [[
+¡Encontraste una
+Jarra Mágica Grande!
+Tu Medidor Mágico es
+llenado bastante.
 ]]
 }
 --------------------
 
 -- 1 green rupee
 dialog{
-  id = "_treasure.rupee.1",
-  icon = 90,
-  text = [[
-You found a Green
-Rupee!
-That's one Rupee!
+  id = "_treasure.rupee.1",
+  icon = 90,
+  text = [[
+¡Encontraste una
+Rupia Verde!
+¡Es una Rupia!
 ]]
 }
 --------------------
 
 -- 1 blue rupee
 dialog{
-  id = "_treasure.rupee.2",
-  icon = 91,
-  text = [[
-You found a Blue
-Rupee!
-That's 5 Rupees!
+  id = "_treasure.rupee.2",
+  icon = 91,
+  text = [[
+¡Encontraste una
+Rupia Azul!
+¡Son 5 Rupias!
 ]]
 }
 --------------------
 
 -- 1 red rupee
 dialog{
-  id = "_treasure.rupee.3",
-  icon = 92,
-  text = [[
-You found a Red
-Rupee!
-That's 20 Rupees!
+  id = "_treasure.rupee.3",
+  icon = 92,
+  text = [[
+¡Encontraste una
+Rupia Roja!
+¡Son 20 Rupias!
 ]]
 }
 --------------------
@@ -2076,11 +1893,11 @@ That's 20 Rupees!
 -- 50 rupees
 -- Note: reference to Link's Awakening
 dialog{
-  id = "_treasure.rupee.4",
-  icon = 90,
-  text = [[
-You found 50 Rupees!
-Marvelous!
+  id = "_treasure.rupee.4",
+  icon = 90,
+  text = [[
+¡Encontraste 50
+Rupias! ¡Estupendo!
 ]]
 }
 --------------------
@@ -2088,11 +1905,11 @@ Marvelous!
 -- 100 rupees
 -- Note: reference to Link's Awakening
 dialog{
-  id = "_treasure.rupee.5",
-  icon = 90,
-  text = [[
-You found 100
-Rupees! Fantastic!
+  id = "_treasure.rupee.5",
+  icon = 90,
+  text = [[
+¡Encontraste 100
+Rupias! ¡Fantástico!
 ]]
 }
 --------------------
@@ -2100,134 +1917,140 @@ Rupees! Fantastic!
 -- 300 rupees
 -- Note: reference to Link's Awakening
 dialog{
-  id = "_treasure.rupee.6",
-  icon = 90,
-  text = [[
-You found 300 Rupees!
-How wonderful!
+  id = "_treasure.rupee.6",
+  icon = 90,
+  text = [[
+¡Encontraste 300
+Rupias! ¡Qué 
+maravilloso!
 ]]
 }
 --------------------
 
 -- Red potion
 dialog{
-  id = "_treasure.red_potion.1",
-  icon = 96,
-  text = [[
-You found some Red
-Potion!$0
+  id = "_treasure.red_potion.1",
+  icon = 96,
+  text = [[
+¡Encontraste un poco
+de Poción Roja!$0
 
-Drink it to
-completely restore
-your life energy.
+Bébela para
+recuperar por
+completo tu energía
+vital.
 ]]
 }
 --------------------
 
 -- Green potion
 dialog{
-  id = "_treasure.green_potion.1",
-  icon = 97,
-  text = [[
-You found some Green
-Potion!$0
+  id = "_treasure.green_potion.1",
+  icon = 97,
+  text = [[
+¡Encontraste un poco
+de Poción Verde!$0
 
-Drink it to
-completely restore
-your magic energy.
+Bébela para
+recuperar por
+completo tu energía
+mágica.
 ]]
 }
 --------------------
 
 -- Blue potion
 dialog{
-  id = "_treasure.blue_potion.1",
-  icon = 98,
-  text = [[
-You found some Blue
-Potion!$0
+  id = "_treasure.blue_potion.1",
+  icon = 98,
+  text = [[
+¡Encontraste un poco
+de Poción Azul!$0
 
-Drink it to restore
-both your life and
-magic energy.
+Bébela para
+recuperar por
+completo tu energía
+vital y mágica.
 ]]
 }
 --------------------
 
--- --------------------
--- Other engine dialogs
--- --------------------
+-- -------------------------------
+-- 3. Miscellaneous engine dialogs
+-- -------------------------------
 --
 -- The following dialogs are various dialogs shown by the engine.
 
 -- End of a dialog of obtaining a treasure
 -- that consumes magic (same message as ALTTP).
 dialog{
-  id = "_warning_magic",
-  text = [[
-Watch your Magic
-Meter!
+  id = "_warning_magic",
+  text = [[
+¡Vigila tu Medidor
+Mágico!
 ]]
 }
 --------------------
 
 -- Opening an empty chest.
 dialog{
-  id = "_empty_chest",
-  text = [[
-This chest is empty!
-Too bad!
+  id = "_empty_chest",
+  text = [[
+¡El cofre esta
+vacío! ¡Qué mal!
 ]]
 }
 -----------------------
 
 -- Looking at a locked door without small key.
 dialog{
-  id = "_small_key_required",
-  icon = 72,
-  skip = "all",
-  text = [[
-It's locked!
+  id = "_small_key_required",
+  icon = 72,
+  skip = "all",
+  text = [[
+¡Está cerrada!
 ]]
 }
 --------------------
 
 -- Looking at a large chest or a large key door without the large key.
 dialog{
-  id = "_big_key_required",
-  icon = 73,
-  skip = "all",
-  text = [[
-Eh? It's locked!
-If you had the Large
-Key you might be
-able to open it!
+  id = "_big_key_required",
+  icon = 73,
+  skip = "all",
+  text = [[
+¿Eh? ¡Está cerrado!
+¡Si tuvieras la
+Llave Grande podrías
+abrirlo! 
 ]]
 }
 --------------------
 
 -- Looking at the boss door without the boss key.
 dialog{
-  id = "_boss_key_required",
-  icon = 74,
-  skip = "all",
-  text = [[
-This door leads to
-the Boss's Lair!
-You will need the
-Boss Key to open it.
+  id = "_boss_key_required",
+  icon = 74,
+  skip = "all",
+  text = [[
+¡Esta puerta conduce
+a la guarida del
+Jefe! Necesitarás la
+Llave del Jefe para
+abrirla.
 ]]
 }
 --------------------
 
 -- Trying to lift a bush instead of using the sword.
 dialog{
-  id = "_cannot_lift_should_cut",
-  skip = "all",
-  text = [[
-You will need something
-sharp to cut through
-these bushes.
+  id = "_cannot_lift_should_cut",
+  skip = "all",
+  text = [[
+Necesitas algo afilado
+para abrirte paso a
+través de éstos
+arbustos.
 ]]
 }
 -----------------------
@@ -2235,14 +2058,14 @@ these bushes.
 -- Trying to lift a stone without the Iron Gloves
 -- (reference to Link's Awakening).
 dialog{
-  id = "_cannot_lift_too_heavy",
-  skip = "all",
-  text = [[
-Darn it, this is way
-too heavy!
+  id = "_cannot_lift_too_heavy",
+  skip = "all",
+  text = [[
+¡Rayos, esto es muy
+pesado!
 
-You'll never manage
-with your bare hands!
+¡Nunca lo lograrás con
+tus manos desnudas!
 ]]
 }
 -----------------------
@@ -2250,34 +2073,34 @@ with your bare hands!
 -- Trying to lift a black stone without the Golden Gloves
 -- but with the Iron Gloves.
 dialog{
-  id = "_cannot_lift_still_too_heavy",
-  skip = "all",
-  text = [[
-It's still too heavy
-for you!
+  id = "_cannot_lift_still_too_heavy",
+  skip = "all",
+  text = [[
+¡Aún es demasiado
+pesado para ti!
 ]]
 }
 -----------------------
 
 -- After watching a shop item.
 dialog{
-  id = "_shop.question",
-  question = true,
-  text = [[
-Price: $v Rupees.
-Buy
-Don't Buy
+  id = "_shop.question",
+  question = true,
+  text = [[
+Precio: $v Rupias.
+Comprar
+No Comprar
 ]]
 }
 -----------------------
 
 -- Trying to buy a shop item, but not enough rupees.
 dialog{
-  id = "_shop.not_enough_money",
-  skip = "all",
-  text = [[
-Sorry, you don't
-have enough Rupees!
+  id = "_shop.not_enough_money",
+  skip = "all",
+  text = [[
+¡Lo siento, no tienes
+suficientes Rupias!
 ]]
 }
 -----------------------
@@ -2285,97 +2108,99 @@ have enough Rupees!
 -- Trying to buy a shop item, but this item is already at its maximum amount
 -- (for items like bombs, arrows, etc.).
 dialog{
-  id = "_shop.amount_full",
-  text = [[
-You are already full!
+  id = "_shop.amount_full",
+  text = [[
+¡No puedes llevar más!
 ]]
 }
 -----------------------
 
 -- Watching a crystal.
 dialog{
-  id = "_crystal",
-  skip = "all",
-  text = [[
-It's a crystal switch.
-Try to hit it with
-something...
+  id = "_crystal",
+  skip = "all",
+  text = [[
+Es un cristal 
+interruptor. Trata de
+golpearlo con algo...
 ]]
 }
 -----------------------
 
 -- Entering dungeon 1.
 dialog{
-  id = "dungeon_1",
-  skip = "current",
-  text = [[
-         Level 1
-      Forest Dungeon
+  id = "dungeon_1",
+  skip = "current",
+  text = [[
+         Nivel 1
+  Mazmorra del Bosque
 ]]
 }
 -----------------------
 
 -- Entering dungeon 2.
 dialog{
-  id = "dungeon_2",
-  skip = "current",
-  text = [[
-         Level 2
-      Roc's Cavern
+  id = "dungeon_2",
+  skip = "current",
+  text = [[
+         Nivel 2
+    Caverna del Roc
 ]]
 }
 -----------------------
 
 -- Entering dungeon 3.
 dialog{
-  id = "dungeon_3",
-  skip = "current",
-  text = [[
-         Level 3
-  Master Arbror's Den
+  id = "dungeon_3",
+  skip = "current",
+  text = [[
+         Nivel 3
+  Guarida del Maestro
+            Arbor
 ]]
 }
 -----------------------
 
 dialog{
-  id = "found_piece_of_heart.first",
-  icon = 75,
-  text = [[
-Collect four pieces
-to obtain a new
-Heart.
+  id = "found_piece_of_heart.first",
+  icon = 75,
+  text = [[
+Recoge cuatro Piezas
+para obtener un
+nuevo Corazón.
 ]]
 }
 --------------------
 
 dialog{
-  id = "found_piece_of_heart.second",
-  icon = 76,
-  text = [[
-Two more and you'll
-have another Heart.
+  id = "found_piece_of_heart.second",
+  icon = 76,
+  text = [[
+Dos más y tendrás
+otro Corazón.
 ]]
 }
 --------------------
 
 dialog{
-  id = "found_piece_of_heart.third",
-  icon = 77,
-  text = [[
-Find one more and
-you will have
-another Heart!
+  id = "found_piece_of_heart.third",
+  icon = 77,
+  text = [[
+¡Encuentra una más y
+tendrás otro
+Corazón!
 ]]
 }
 --------------------
 
 dialog{
-  id = "found_piece_of_heart.fourth",
-  icon = 78,
-  text = [[
-You found four
-Pieces of Heart. You
-got an extra Heart!
+  id = "found_piece_of_heart.fourth",
+  icon = 78,
+  text = [[
+Encontraste cuatro
+Piezas de Corazón.
+¡Obtienes un Corazón
+extra!
 ]]
 }
 --------------------
@@ -2383,52 +2208,53 @@ got an extra Heart!
 -- Finding a Fairy while having at least a Bottle
 -- (same dialog as ALTTP).
 dialog{
-  id = "found_fairy",
-  icon = 81,
-  skip = "current",
-  next = "found_fairy.1",
-  text = [[
-You found a Fairy,
-she's wonderful!
+  id = "found_fairy",
+  icon = 81,
+  skip = "current",
+  next = "found_fairy.1",
+  text = [[
+¡Encontraste un
+Hada!
+¡Es maravillosa!
 ]]
 }
 --------------------
 
 -- |--------------------___|
 dialog{
-  id = "found_fairy.1",
-  icon = -1,
-  question = true,
-  text = [[
-What do you want to do?
-Recover your health
-Keep it
+  id = "found_fairy.1",
+  icon = -1,
+  question = true,
+  text = [[
+¿Qué quieres hacer?
+Recuperar tu salud
+Conservarla
 ]]
 }
 --------------------
 
 -- Trying to keep a Fairy, but no empty Bottle.
 dialog{
-  id = "found_fairy.no_empty_bottle",
-  skip = "current",
-  text = [[
-You don't have an empty
-Bottle!
+  id = "found_fairy.no_empty_bottle",
+  skip = "current",
+  text = [[
+¡No tienes una Botella
+vacía!
 ]]
 }
 -----------------------
 
 -- Finding water while having an empty Bottle.
 dialog{
-  id = "found_water",
-  icon = 8,
-  question = true,
-  text = [[
-Do you want to put
-some water in your
+  id = "found_water",
+  icon = 8,
+  question = true,
+  text = [[
+¿Quieres poner algo
+de agua en tu
 
-Magic Bottle?
-Yes
+Botella Mágica?
+Sí
 No
 ]]
 }
@@ -2436,257 +2262,300 @@ No
 
 -- Finding water while having no empty Bottle.
 dialog{
-  id = "found_water.no_bottle",
-  skip = "all",
-  text = [[
-There is some water
-here, but you have no
-way of storing it...
+  id = "found_water.no_bottle",
+  skip = "all",
+  text = [[
+Aquí hay algo de agua
+pero no tienes forma de
+almacenarla...
 ]]
 }
 -----------------------
 
 -- Finding water while having at least one Bottle, but no empty one.
 dialog{
-  id = "found_water.no_empty_bottle",
-  icon = 8,
-  skip = "all",
-  text = [[
-There is some water
-here, but you need
-an empty Magic
-Bottle to store
-it...
+  id = "found_water.no_empty_bottle",
+  icon = 8,
+  skip = "all",
+  text = [[
+Aquí hay algo de
+agua, pero necesitas
+una Botella Mágica
+vacía para
+almacenarla...
 ]]
 }
 --------------------
 
 -- Using a bottle with water.
 dialog{
-  id = "use_bottle_with_water",
-  icon = 8,
-  question = true,
-  text = [[
-Your Magic Bottle is
-filled with water.
-What do you
-want to do?
-Pour water
-Keep it
+  id = "use_bottle_with_water",
+  icon = 8,
+  question = true,
+  text = [[
+Tu Botella Mágica
+está llena de agua.
+
+¿Qué deseas hacer?
+Verter el agua
+Conservarla
 ]]
 }
 --------------------
 
 -- Using an apple.
 dialog{
-  id = "use_apples",
-  icon = 16,
-  question = true,
-  text = [[
-Eating an apple will
-restore one Heart.
-What do you want to
-do?
-Eat an apple
-Nothing
+  id = "use_apples",
+  icon = 16,
+  question = true,
+  text = [[
+Comer una manzana
+recupera un corazón.
+
+¿Qué deseas hacer?
+Comer una manzana
+Nada
 ]]
 }
 --------------------
 
 -- Using a chocolate bread.
 dialog{
-  id = "use_pains_au_chocolat",
-  icon = 17,
-  question = true,
-  text = [[
-A Pain au Chocolat
-restores three
-hearts. What do you
-want to do?
-Eat one
-Nothing
+  id = "use_pains_au_chocolat",
+  icon = 17,
+  question = true,
+  text = [[
+Un pan de Chocolate
+recupera tres
+corazones.
+¿Qué deseas hacer?
+Comer uno
+Nada
 ]]
 }
 --------------------
 
 -- Using a Croissant.
 dialog{
-  id = "use_croissants",
-  icon = 18,
-  question = true,
-  text = [[
-A Croissant restores
-seven hearts. What
-do you want to do?
-Eat one
-Nothing
+  id = "use_croissants",
+  icon = 18,
+  question = true,
+  text = [[
+Un Cruasán recupera
+siete corazones.
+
+¿Qué deseas hacer?
+Comer uno
+Nada
 ]]
 }
 --------------------
 
 dialog{
-  id = "torch.need_lamp",
-  skip = "all",
-  text = [[
-There must be a way to
-light this torch...
+  id = "torch.need_lamp",
+  skip = "all",
+  text = [[
+Debe haber una forma de
+encender esta
+antorcha...
 ]]
 }
 -----------------------
 
+-- Zelda Mystery of Solarus DX:
+-- Spanish dialogs (part 3)
+
+-- ****** Please respect the limit of each line! ******
+-- 23 chars for normal lines,
+-- 20 chars for dialogs with an icon or lines that are answers to a question,
+-- 17 chars for lines with both an icon and an answer.
+-- Each dialog ends with a comment with dashes indicating the maximum line size.
+-- Please don't exceed the maximum size of lines,
+-- and don't break lines too early either.
+-- Don't try to reproduce the exact same lines: it's normal for dialogs to be
+-- shorter or longer than in the language you are translating from.
+-- It's also normal for lines to end on different words.
+
+-- ****** Typo warning! ******
+-- Remember that ponctuation characters like ! ? : ; are preceeded by a space
+-- character in French and NOT in English.
+
+-- ****** More documentation ******
+-- If you have a doubt, please refer to the doc:
+-- http://www.solarus-games.org/doc/latest/dialog_syntax.html
+-- or just ask on IRC (see below).
+--
+-- ****** Team work *******
+-- Please join our IRC channel to organize the work with us:
+-- irc.zelda-solarus.com #solarus
+-- Before translating any dialog, please tell us on IRC to avoid
+-- conflicts.
+
+-- Thanks for your contribution!
+
+-- ----------------
+-- 4. Quest dialogs
+-- ----------------
+--
+-- The remaining dialogs are all dialogs of the quest itself:
+-- NPCs, hints, cutscenes, etc.
+
+
 -- Intro: black screen
 dialog{
-  id = "intro0",
-  skip = "current",
-  text = [[
-$2Ancient legends tell
-of a magnificent
-kingdom called Hyrule
-that existed long ago.
-The kingdom prospered
-under the blessing of
-three goddesses
-represented in the form
-of the Triforce. Seven
-sages sealed the
-Triforce in the
-Golden Land, the
-Utopian reflection of
-the world. Centuries
-passed...
+  id = "intro0",
+  skip = "current",
+  text = [[
+$2Antiguas leyendas
+hablan de un magnifico
+reino llamado Hyrule
+que existió hace
+mucho tiempo.
+El reino prosperó
+bajo la bendición de
+tres dioses
+representados en la 
+Trifuerza. Siete
+sabios sellaron la
+Trifuerza en la
+Tierra Dorada, la
+reflexión utópica del
+mundo. Y los siglos
+pasaron...
 ]]
 }
 -----------------------
 -- Intro : fresco 1
 dialog{
-  id = "intro1",
-  skip = "current",
-  text = [[
-$2Many generations
-later, an evil spell
-seemed to threaten
-Hyrule. A mysterious
-sorceror named Agahnim
-fought back the
-darkness. Acclaimed by
-the people, the King
-entrusted him with a
-high-ranking status.
-However, the sorceror
-was in fact plotting
-against the royal
-family. He tried to
-bring back Ganondorf,
-King of thieves, from a
-forgotten time.
+  id = "intro1",
+  skip = "current",
+  text = [[
+$2Varias generaciones más
+tarde, un hechizo
+maligno parecía
+amenazar Hyrule. Un
+misterioso hechicero
+llamado Agahnim logró
+defenderse contra la
+oscuridad. Aclamado por
+el pueblo, el rey le
+concedió un alto cargo.
+Aún así, el hechicero
+estaba tramando un plan
+contra la familia real.
+Trataba de traer de
+vuelta a Ganondorf, Rey
+de los ladrones, a
+través de una época
+olvidada.
 ]]
 }
 -----------------------
 
 -- Intro : fresco 2
 dialog{
-  id = "intro2",
-  skip = "current",
-  text = [[
-$2It is said that a young
-man dressed in green
-went on a quest,
-exploring lost temples,
-traveling through
-plains and valleys.
+  id = "intro2",
+  skip = "current",
+  text = [[
+$2Dicen que un joven
+vestido de verde
+se emprendió en una
+misión, explorando
+templos perdidos,
+viajando a través de
+valles y montañas.
 ]]
 }
 -----------------------
 
 -- Intro : fresco 3
 dialog{
-  id = "intro3",
-  skip = "current",
-  text = [[
-$2Eventually, he who was
-known as the Hero
-repelled the evil.
-Thanks to his courage,
-he defeated Ganondorf,
-who had built an
-imposing pyramid on the
-Golden Land.
+  id = "intro3",
+  skip = "current",
+  text = [[
+$2Con el tiempo, fue
+conocido como el héroe
+que vencio al mal.
+Gracias a su coraje
+derrotó a Ganondorf,
+que había construido
+una gran pirámide en la
+Tierra Dorada.
 ]]
 }
 -----------------------
 
 -- Intro : fresco 4
 dialog{
-  id = "intro4",
-  skip = "current",
-  text = [[
-$2The young Hero then
-wished for Ganondorf
-to be imprisoned
-forever in the Golden
-Land. The King of
-Hyrule, a descendant
-of the Seven Sages,
-cast him away by using
-the seal's magic.
+  id = "intro4",
+  skip = "current",
+  text = [[
+$2El joven héroe deseó
+que Ganondorf fuera
+encerrado para siempre
+en la Tierra Dorada.
+El Rey de Hyrule, un
+descenciente de los
+siete sabios, le
+desterró usando un
+sello mágico.
 ]]
 }
 -----------------------
 
 -- Intro : fresco 5
 dialog{
-  id = "intro5",
-  skip = "current",
-  text = [[
-$2But a few years
-later, Hyrule's King
-became ill beyond
-any chance of curing.
-Doctors from across
-the kingdom tried to
-cure him but to no
-avail... The King
-vanished and so did
-his power. The seal
-of the Seven Sages
-weakened once again.
+  id = "intro5",
+  skip = "current",
+  text = [[
+$2Pero unos años
+después, el Rey de Hyrule
+cayó enfermo sin
+ninguna posibilidad de cura.
+Doctores de todo
+el reino trataron de 
+curarle  pero fue
+en vano... El rey
+desapareció junto con
+su poder. El sello
+de los siete sabios
+se debilitó una vez más.
 ]]
 }
 -----------------------
 
 -- Intro : fresco 6
 dialog{
-  id = "intro6",
-  skip = "current",
-  text = [[
-$2The Hero, under the
-guidance of his master
-Sahasrahla, trusted
-the heiress of the
-royal powers, Princess
-Zelda with the
-Triforce.
-Zelda teamed with eight
-mysterious children to
-shatter the Triforce
-into eight fragments
-and to conceal them
-across the kingdom.
-Peace was restored.
+  id = "intro6",
+  skip = "current",
+  text = [[
+$2El héroe, bajo el
+consejo de su maestro
+Sahasrahla, confió en
+la heredera de los
+poderes reales, la
+Princesa Zelda.
+Zelda, junto con ocho
+misteriosos rompió
+la Trifuerza en ocho
+fragmentos y los
+ocultaron por todo
+el reino para
+restaurar la paz.
 
 
-And so begins our
-journey...
+Y aquí comienza nuestro
+viaje...
 ]]
 }
 -----------------------
 
 -- Village sign.
 dialog{
-  id = "outside_world.village.welcome_sign",
-  text = [[
-         Welcome
-       to Lyriann
+  id = "outside_world.village.welcome_sign",
+  text = [[
+         Bienvenido
+       a Lyriann
 ]]
 }
 -----------------------
@@ -2695,152 +2564,152 @@ dialog{
 -- "_unknown" means that we know there will be a next dialog but we don't know which one yet.
 -- This makes the engine show an arrow in the bottom part of the dialog box instead of a square.
 dialog{
-  id = "outside_world.village.monkey",
-  next = "_unknown",
-  text = [[
-Help! Everyone is
-scared since the night!
+  id = "outside_world.village.monkey",
+  next = "_unknown",
+  text = [[
+¡Ayuda! ¡Todo el mundo
+está asustado esta noche!
 
-The village has been
-surrounded by
-monsters!
+¡El pueblo ha sido
+rodeado por
+monstruos!
 ]]
 }
 -----------------------
 
 -- Next part of the monkey dialog, not having the shield.
 dialog{
-  id = "outside_world.village.monkey.without_shield",
-  text = [[
-I do not know what is
-happening, but I
-wouldn't leave town
-without protection.
+  id = "outside_world.village.monkey.without_shield",
+  text = [[
+No sé qué está
+pasando, pero no
+voy a dejar al pueblo
+sin protección.
 ]]
 }
 -----------------------
 
 -- Next part of the monkey dialog, having the shield.
 dialog{
-  id = "outside_world.village.monkey.with_shield",
-  text = [[
-I do not know what is
-happening, but you are
-right to at least have
-a Shield with you...
-Be cautious!
+  id = "outside_world.village.monkey.with_shield",
+  text = [[
+No sé qué está
+pasando, pero tienes razón 
+al menos tienes un 
+Escudo contigo...
+¡Ten cuidado!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.grand_son_npc",
-  skip = "current",
-  text = [[
-If you do not know
-what to do at one
-point in your journey,
-you should go see
-Grandma Lyly, she
-loves giving advice
-and guiding
-adventurers.
-She lives next to
-the Rupees' House.
-But I don't know
-much more, I'm just
-a kid!
+  id = "outside_world.village.grand_son_npc",
+  skip = "current",
+  text = [[
+Si no sabes qué
+hacer en algún
+momento de tu viaje
+deberías ir a ver a la
+Abuela Lyly, le
+gusta dar consejo
+y guiar a los
+aventureros.
+Ella vive cerca de
+la Casa de las Rupias
+Pero yo no sé
+mucho más, ¡solo
+soy un niño!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.chignon_woman",
-  skip = "all",
-  text = [[
-When the blue icon
-appears, it tells what
-you can do by pressing
-the Action key (space).
-Depending on what you
-are examining, it will
-trigger several actions
-such as looking,
-talking, reading a sign,
-lifting a vase...
-Keep an eye on the icon
-to know when you can 
-interact with your
-environment!
+  id = "outside_world.village.chignon_woman",
+  skip = "all",
+  text = [[
+Cuando el icono azul
+aparece, esto te indica qué
+puedes hacer pulsando
+la tecla de acción (espacio).
+Dependiendo de lo que estés
+examinando, te indicará
+diferentes acciones tales
+como mirar,
+hablar, leer un cartel,
+levantar una vasija...
+¡Échale un ojo al icono
+para saber cuándo puedes
+interactuar con el
+entorno!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.chignon_woman_dungeons",
-  skip = "all",
-  text = [[
-It is said that every
-dungeon hides a Piece
-of Heart...
-Funny, isn't it ?
+  id = "outside_world.village.chignon_woman_dungeons",
+  skip = "all",
+  text = [[
+Dicen que en cada
+mazmorra se escondé una Pieza
+de Corazón
+Divertido, ¿no crees?
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.cliff_man_npc",
-  skip = "all",
-  text = [[
-Did you know that
-you can jump off
-certain cliffs ?
-It could allow you
-to reach particular
-spots.
+  id = "outside_world.village.cliff_man_npc",
+  skip = "all",
+  text = [[
+¿Sabías que
+puedes saltar
+ciertos acantilados?
+Esto te podría permitir
+alcanzar ciertos
+lugares.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.hat_man_npc",
-  skip = "all",
-  text = [[
-If you are in need of
-Rupees, I recommend not
-going to the Rupees'
-House, as you might
-just end up needing
-even more Rupees!
-Although, you do seem
-smarter than me.
+  id = "outside_world.village.hat_man_npc",
+  skip = "all",
+  text = [[
+Si vas en búsqueda de
+Rupias, no te recomiendo
+ir a la casa de las
+Rupias, ¡podrías
+acabar necesitando
+todavía más Rupias!
+Aunque tú pareces
+mas listo que yo.
 
-Perhaps you'll do
-better than me!
+¡Tal vez tú lo hagas
+mejor que yo!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.hat_man_npc_waterfall",
-  skip = "all",
-  text = [[ 
-There is supposed to be
-a treasure hidden by
-the waterfall behind
-the ancient castle.
-Do you believe it's
-true ?
+  id = "outside_world.village.hat_man_npc_waterfall",
+  skip = "all",
+  text = [[ 
+Se supone que hay
+un tesoro oculto
+detrás de la cascada
+del castillo antiguo.
+¿Crees que será
+verdad?
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.rupee_house_sign",
-  text = [[
-   - Rupees' House -
-Earn some Rupees
-while having fun!
+  id = "outside_world.village.rupee_house_sign",
+  text = [[
+   - Rupees' House -
+¡Gana unas cuantas rupias
+mientras te diviertes!
 ]]
 }
 -----------------------
@@ -2849,299 +2718,298 @@ while having fun!
 -- Reference to Majora's Mask in the southern swamp
 -- where there is the same kind of signs.
 dialog{
-  id = "outside_world.village.waterfall_sign",
-  text = [[
-Please feel free to
-take our fresh spring
-water home with you.
-        Lyriann
-     Tourist Center
+  id = "outside_world.village.waterfall_sign",
+  text = [[
+Por favor, siéntete libre
+de coger nuestra agua de
+manantial.
+        Lyriann
+     Centro turístico
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.cake_shop_sign",
-  text = [[
+  id = "outside_world.village.cake_shop_sign",
+  text = [[
 
-         Bakery
+         Panadería
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.shop_sign",
-  text = [[
+  id = "outside_world.village.shop_sign",
+  text = [[
 
-          Shop
+          Tienda
 ]]
 }
 -----------------------
 
 -- Watching a mail box.
 dialog{
-  id = "outside_world.village.letter_box",
-  skip = "all",
-  text = [[
-Don't start looking
-into what's not yours!
+  id = "outside_world.village.letter_box",
+  skip = "all",
+  text = [[
+¡No mires dentro
+de lo que no es tuyo!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.tree_woman",
-  skip = "all",
-  next = "outside_world.village.tree_woman.long_text",
-  text = [[
-You're lost with the
-HUD? Let me explain.
-The icons above to the
+  id = "outside_world.village.tree_woman",
+  skip = "all",
+  next = "outside_world.village.tree_woman.long_text",
+  text = [[
+¿Perdido con la pantalla?
+Deja que te explique.
+Los iconos de arriba a la
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.tree_woman.long_text",
-  question = true,
-  next = "outside_world.village.tree_woman.thank_you",
-  next2 = "outside_world.village.tree_woman.again",
-  text = [[
-left are aligned like
-the keys on a keyboard
-The C key is the green
-icon, you use the sword
-by pressing it. But
-when the game is
-paused, the icon
-changes and tells you
-that the C key is used
-to save your game!
-And when you're talking
-to someone, it allows
-you to end a
-conversation. Just keep
-an eye on the green
-icon to know what the C
-key does.
-The other icons are
-the keys surrounding
-the C key: the orange
-icon (D key) pauses the
-game, the blue icon
-(spacebar) is the
-Action key, and the
-two grey icons are the
-objects assigned to the
-X and V keys. So always
-keep an eye on what the
-icons say. Don't forget
-that you can customize
-the controls in the
-options screen, and
-that you can even play
-with a gamepad!
+  id = "outside_world.village.tree_woman.long_text",
+  question = true,
+  next = "outside_world.village.tree_woman.thank_you",
+  next2 = "outside_world.village.tree_woman.again",
+  text = [[
+izquierda están alineados
+como las teclas de un
+teclado. La tecla C es
+el icono verde, usas
+la espada pulsándola.
+¡Pero cuando el juego
+está en pausa, el icono
+cambia y significa que
+la tecla C se usa para
+guardar la partida!
+Y cuando estás hablando
+con alguien, te permite
+finalizar la conversación.
+Tan solo mantén la vista
+en el icono verde para
+saber qué hace la tecla C.
+Los otros iconos son
+las teclas que rodean a la
+tecla C: el icono naranja
+(tecla D) pausa el juego,
+el icono azul (barra
+espaciadora) es la tecla
+Acción, y los dos iconos
+grises son los objetos
+asignados a las teclas
+X y V. Así que vigila
+siempre lo que dicen los
+iconos. ¡No olvides que
+puedes redefinir los
+controles en la pantalla
+de opciones, y que puedes
+incluso jugar con un
+gamepad!
 
-
-Did you get it all?
-Yes
-No, I did not
+¿Lo has entendido todo?
+Sí
+No, no lo hice
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.tree_woman.again",
-  next = "outside_world.village.tree_woman.long_text",
-  text = [[
-Well, let me explain
-once again, but listen
-carefully this time.
-The icons above to the
+  id = "outside_world.village.tree_woman.again",
+  next = "outside_world.village.tree_woman.long_text",
+  text = [[
+Bien, deja que te lo explique
+otra vez, pero escucha
+con atención esta vez.
+Los iconos de arriba a la
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.village.tree_woman.thank_you",
-  text = [[
-Thank you for listening
-to the whole
-explanation!
-I am really thankful!
-Here, you deserve this
-little gift.
+  id = "outside_world.village.tree_woman.thank_you",
+  text = [[
+¡Gracias por escuchar
+la explicación completa!
+¡Me siento realmente
+agradecida!
+Te mereces un
+pequeño obsequio.
 ]]
 }
 -----------------------
 
 -- Trying to open the village cave without the Earth Key.
 dialog{
-  id = "outside_world.village.clay_key_required",
-  text = [[
-It's locked!
+  id = "outside_world.village.clay_key_required",
+  text = [[
+¡Está cerrada!
 ]]
 }
 -----------------------
 
 -- Sign above the cliff of the village.
 dialog{
-  id = "outside_world.warning_holes_sign",
-  text = [[
-Beware of the holes!
+  id = "outside_world.warning_holes_sign",
+  text = [[
+¡Cuidado con los
+agujeros!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.how_to_save_npc",
-  skip = "all",
-  text = [[
-To save your progress,
-press D to pause the
-game and then press C.
-Keep an eye on the
-green icon!
+  id = "outside_world.how_to_save_npc",
+  skip = "all",
+  text = [[
+Para guardar tus progresos,
+pulsa D para pausar el
+juego y, después, pulsa
+C. ¡Fíjate en el icono verde!
 ]]
 }
 -----------------------
 
 -- Sign in the eastern forest.
 dialog{
-  id = "outside_world.flower_hole_sign",
-  text = [[
-The hole close to the
-flower isn't as
-dangerous as it looks
-like...
+  id = "outside_world.flower_hole_sign",
+  text = [[
+El agujero cercano a
+las flores no es tan
+peligroso como parece...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.telepathic_booth_sign",
-  text = [[
-Telepathic Booth
+  id = "outside_world.telepathic_booth_sign",
+  text = [[
+Cabina Telepática
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.surprise_wall_sign",
-  text = [[
- - Wall of Surprises -
-Come in and try your
-luck to win the
-hidden treasure!
+  id = "outside_world.surprise_wall_sign",
+  text = [[
+ - Muro de Sorpresas -
+ ¡Ven y tienta a la suerte
+ para ganar el tesoro
+ escondido!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.billy_cavern_sign",
-  text = [[
-Billy the Reckless's
-cavern.
-Entry Forbidden!
+  id = "outside_world.billy_cavern_sign",
+  text = [[
+Cueva de Billy el
+Temerario.
+¡Entrada Prohibida!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.beaumont_hill_sign",
-  text = [[
-He who will plant an
-edelweiss at the top
-of the Beaumont Hill,
-will have a nice day.
+  id = "outside_world.beaumont_hill_sign",
+  text = [[
+Aquel que plante un
+edeweiss en la cima de
+la Colina Beaumont Hill,
+tendrá un buen día.
 ]]
 }
 -----------------------
 
 -- Planting an edelweiss at the top of Beaumont Hill.
 dialog{
-  id = "outside_world.beaumont_hill_put_edelweiss",
-  text = [[
-You're planting your
+  id = "outside_world.beaumont_hill_put_edelweiss",
+  text = [[
+Estás plantando tu
 edelweiss...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.stone_key_required",
-  text = [[
-   - Stone Lock -
-It's locked!
+  id = "outside_world.stone_key_required",
+  text = [[
+   - Cerradura de Piedra -
+¡Está cerrada!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.iron_key_required",
-  text = [[
-    - Iron Lock -
-It's locked!
+  id = "outside_world.iron_key_required",
+  text = [[
+    - Cerradura de Hierro -
+¡Está cerrada!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.wooden_key_required",
-  text = [[
-    - Wooden Lock -
-It's locked!
+  id = "outside_world.wooden_key_required",
+  text = [[
+    - Cerradura de Madera -
+¡Está cerrada!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.ice_key_required",
-  text = [[
-   - Ice Lock -
-It's locked!
+  id = "outside_world.ice_key_required",
+  text = [[
+
+   - Cerradura de Hielo -
+¡Está cerrada!
 ]]
 }
 -----------------------
 
 -- Waterfall, north-east of mountains.
 dialog{
-  id = "outside_world.mountain_riverfall",
-  skip = "all",
-  text = [[
-There must be a way
-to go through this
-waterfall...
+  id = "outside_world.mountain_riverfall",
+  skip = "all",
+  text = [[
+Tiene que haber una
+forma de cruzar esta
+cascada...
 ]]
 }
 -----------------------
 
 -- Link hearing Sahasrahla in a dream, sleeping in his bed after the intro.
 dialog{
-  id = "link_house.dream",
-  text = [[
+  id = "link_house.dream",
+  text = [[
 ... $v...
-It's me...
+Soy yo...
 ... Sahasrahla...
-I have... to speak...
-Come quickly, $v...
+Tengo que... hablar...
+Ven deprisa, $v...
 ]]
 }
 -----------------------
 
 -- Mystery chest game in the rupee house.
 dialog{
-  id = "rupee_house.game_1.intro",
-  question = true,
-  text = [[
-Welcome to the mystery
-chest game. Pay 20
-Rupees to open one
-of the three chests
-and stand a chance of
-earning more rupees!
-Do you want to play?
-Yes
+  id = "rupee_house.game_1.intro",
+  question = true,
+  text = [[
+Bienvenido al juego de
+los cofres misteriosos.
+¡Paga 20 Rupias para
+abrir uno de los tres
+cofres y ten la
+posibilidad de ganar
+más rupias!
+¿Quieres jugar?
+Sí
 No
 ]]
 }
@@ -3149,48 +3017,46 @@ No
 
 -- Mystery chest game: talking to the guy after the payment.
 dialog{
-  id = "rupee_house.game_1.choose_chest",
-  text = [[
-Off you go now, choose
-a chest!
+  id = "rupee_house.game_1.choose_chest",
+  text = [[
+¡Vamos allá, escoge un
+cofre!
 
-Quit staring at me,
-I won't tell you
-which one to choose!
+¡Deja de mirarme, no te 
+pienso decir cuál escoger!
 ]]
 }
 -----------------------
 
 -- Mystery chest game: accepted to play.
 dialog{
-  id = "rupee_house.game_1.good_luck",
-  text = [[
-Good luck!
+  id = "rupee_house.game_1.good_luck",
+  text = [[
+¡Buena suerte!
 ]]
 }
 -----------------------
 
 -- Mystery chest game: won too much, cannot play anymore.
 dialog{
-  id = "rupee_house.game_1.not_allowed_to_play",
-  text = [[
-You've already won
-haven't you? We are
-ruined because of you!
+  id = "rupee_house.game_1.not_allowed_to_play",
+  text = [[
+Ya has ganado antes,
+¿no? ¡Nos hemos
+arruinado por tu culpa!
 ]]
 }
 -----------------------
 
 -- Mystery chest game: play again?
 dialog{
-  id = "rupee_house.game_1.play_again_question",
-  question = true,
-  text = [[
-Do you want to play
-again?
+  id = "rupee_house.game_1.play_again_question",
+  question = true,
+  text = [[
+¿Quieres jugar otra vez?
 
-It's 20 Rupees!
-Yes
+¡Son 20 Rupias!
+Sí
 No
 ]]
 }
@@ -3199,31 +3065,31 @@ No
 -- Mystery chest game: refusing to play again.
 -- Reference to Link's Awakening in the fishing game.
 dialog{
-  id = "rupee_house.game_1.not_playing",
-  text = [[
-You have to have more
-passion!
-Live a little!
+  id = "rupee_house.game_1.not_playing",
+  text = [[
+¡Debes tener más pasión!
+¡Vive un poco!
 ]]
 }
 -----------------------
 
 -- Slot machine in the rupee house.
 dialog{
-  id = "rupee_house.game_2.intro",
-  question = true,
-  text = [[
-Welcome to the
-brand-new slot machine!
-Put in 5 or 20 rupees
-and try your best to
-align three of the
-same same symbol to
-win several times
-what you put in!
+  id = "rupee_house.game_2.intro",
+  question = true,
+  text = [[
+¡Bienvenido a la 
+nueva máquina
+tragaperras!
+Apuesta 5 ó 20 rupias
+y trata de alinear
+tres símbolos
+iguales para
+multiplicar tu
+apuesta.
 
-Do you want to play?
-Yes
+¿Quieres jugar?
+Sí
 No
 ]]
 }
@@ -3231,133 +3097,137 @@ No
 
 -- Slot machine: refused to play.
 dialog{
-  id = "rupee_house.game_2.not_playing",
-  text = [[
-Next time then...
+  id = "rupee_house.game_2.not_playing",
+  text = [[
+Será la próxima
+vez...
 ]]
 }
 -----------------------
 
 -- Slot machine: accepted to play.
 dialog{
-  id = "rupee_house.game_2.choose_bet",
-  question = true,
-  text = [[
-How much do you bet?
-5 Rupees
-20 Rupees
+  id = "rupee_house.game_2.choose_bet",
+  question = true,
+  text = [[
+¿Cuánto apuestas?
+5 Rupias
+20 Rupias
 ]]
 }
 -----------------------
 
 -- Slot machine: choosed a bet, having enough money.
 dialog{
-  id = "rupee_house.game_2.just_paid",
-  next = "rupee_house.game_2.playing",
-  text = [[
-Thanks!
+  id = "rupee_house.game_2.just_paid",
+  next = "rupee_house.game_2.playing",
+  text = [[
+¡Gracias!
 ]]
 }
 -----------------------
 
 -- Slot machine: talking to the NPC again while playing.
 dialog{
-  id = "rupee_house.game_2.playing",
-  text = [[
-Stand next to the
-roulettes and press the
-Action key to stop
-them.
-Good luck!
+  id = "rupee_house.game_2.playing",
+  text = [[
+Mantente al lado de
+las ruletas y pulsa
+el botón Acción para
+detenerlas.
+¡Buena suerte!
 ]]
 }
 -----------------------
 
 -- Slot machine: obtained 3 identical symbols, nothing incredible though.
 dialog{
-  id = "rupee_house.game_2.reward.same_any",
-  text = [[
-Three identical
-symbols, not bad!
-You win 4 times your
-bet.
+  id = "rupee_house.game_2.reward.same_any",
+  text = [[
+Tres símbolos
+idénticos. ¡No está
+mal!
+Ganas 4 veces tu
+apuesta.
 ]]
 }
 -----------------------
 
 -- Slot machine: obtained 3 green rupee symbols.
 dialog{
-  id = "rupee_house.game_2.reward.green_rupees",
-  text = [[
-Three green Rupees,
-nice! You get 5 times
-your bet.
+  id = "rupee_house.game_2.reward.green_rupees",
+  text = [[
+Tres Rupias verdes.
+¡Bien! Ganas 5 veces
+tu apuesta.
 ]]
 }
 -----------------------
 
 -- Slot machine: obtained 3 blue rupee symbols.
 dialog{
-  id = "rupee_house.game_2.reward.blue_rupees",
-  text = [[
-Three blue Rupees!
-Congratulations, you
-are off with 7 times
-your initial bet!
+  id = "rupee_house.game_2.reward.blue_rupees",
+  text = [[
+¡Tres Rupias azules!
+¡Enhorabuena, has
+ganado 7 veces tu
+apuesta inicial!
 ]]
 }
 -----------------------
 
 -- Slot machine: obtained 3 red rupee symbols.
 dialog{
-  id = "rupee_house.game_2.reward.red_rupees",
-  text = [[
-Three red Rupees!!!
-That's astonishing!
-You earn no less than
-10 times your bet!
+  id = "rupee_house.game_2.reward.red_rupees",
+  text = [[
+¡¡¡Tres Rupias rojas!!!
+¡Asombroso!
+¡Ganas nada menos
+que 10 veces tu apuesta!
 ]]
 }
 -----------------------
 
 -- Slot machine: obtained 3 different rupee symbols.
 dialog{
-  id = "rupee_house.game_2.reward.different_rupees",
-  text = [[
-Wow!!! You got three
-Rupees of different
-color, it doesn't
-happen every day!
-The reward amounts to
-15 times your bet.
+  id = "rupee_house.game_2.reward.different_rupees",
+  text = [[
+¡Guau! Tienes tres
+Rupias de diferente
+color, ¡eso no ocurre
+todos los días!
+La recompensa es
+15 veces tu apuesta.
 ]]
 }
 -----------------------
 
 -- Slot machine: obtained 3 Yoshi symbols (maximum reward).
 dialog{
-  id = "rupee_house.game_2.reward.yoshi",
-  text = [[
-$1...$3Three Yoshi?!
-I-n-c-r-e-d-i-b-l-e!
-That's the best
-possible combination...
-Your initial bet is
-multiplied by 20.
+  id = "rupee_house.game_2.reward.yoshi",
+  text = [[
+$1...$3¡¿Tres Yoshis?!
+¡I-n-c-r-e-i-b-l-e!
+Es la mejor
+combinación posible...
+Tu apuesta inicial se
+multiplica por 20.
 ]]
 }
 -----------------------
 
 -- Slot machine: not obtained anything.
 dialog{
-  id = "rupee_house.game_2.reward.none",
-  question = true,
-  text = [[
-Tough luck, you didn't
-make any combination.
+  id = "rupee_house.game_2.reward.none",
+  question = true,
+  text = [[
+Mala suerte, no
+conseguiste hacer
+ninguna combinación.
 
-Want to try again?
-Yes
+¿Quieres probar
+de nuevo?
+Sí
 No
 ]]
 }
@@ -3365,23 +3235,24 @@ No
 
 -- Maze game in the rupee house.
 dialog{
-  id = "rupee_house.game_3.intro",
-  question = true,
-  text = [[
-Navigate through the
-maze before the time
-is out. You may have
-to push blocks along
-the way to open up a
-passage. You could win
-a Piece of Heart, and 
-I heard those are
-pretty rare...
-It's 10 Rupees only.
+  id = "rupee_house.game_3.intro",
+  question = true,
+  text = [[
+Navega por el
+laberinto antes de que
+el tiempo se agote.
+Puede ser que tengas
+que empujar bloques
+para abrir pasadizos.
+Puedes ganar una
+Pieza de Corazón, y
+oí que son muy
+raras...
+Son sólo 10 Rupias.
 
 
-Do you want to play?
-Yes
+¿Quieres jugar?
+Sí
 No
 ]]
 }
@@ -3389,43 +3260,43 @@ No
 
 -- Maze game: accepted to play, having enough money.
 dialog{
-  id = "rupee_house.game_3.go",
-  text = [[
-Here we go!
-Good luck!
+  id = "rupee_house.game_3.go",
+  text = [[
+¡Allá vamos!
+¡Buena suerte!
 ]]
 }
 -----------------------
 
 -- Maze game: refused to play.
 dialog{
-  id = "rupee_house.game_3.not_playing",
-  text = [[
-It's your choice...
+  id = "rupee_house.game_3.not_playing",
+  text = [[
+Es tu elección...
 ]]
 }
 -----------------------
 
 -- Maze game: talking to the NPC but the piece of heart was already found.
 dialog{
-  id = "rupee_house.game_3.not_allowed_to_play",
-  text = [[
-Sorry, you already beat
-this game!
+  id = "rupee_house.game_3.not_allowed_to_play",
+  text = [[
+¡Perdona, pero ya
+completaste este juego!
 ]]
 }
 -----------------------
 
 -- Maze game: talking to the NPC when the game is already started.
 dialog{
-  id = "rupee_house.game_3.restart_question",
-  question = true,
-  text = [[
-You want to restart
-from the beginning?
+  id = "rupee_house.game_3.restart_question",
+  question = true,
+  text = [[
+¿Quieres volver a
+empezar?
 
-That will be 10 rupees.
-Yes
+Serán 10 rupias.
+Sí
 No
 ]]
 }
@@ -3433,2183 +3304,1264 @@ No
 
 -- Rupee house: not having enough money (for all three games).
 dialog{
-  id = "rupee_house.not_enough_money",
-  text = [[
-You don't have enough
-money!
+  id = "rupee_house.not_enough_money",
+  text = [[
+¡No tienes suficiente
+dinero!
 ]]
 }
 -----------------------
 
 -- Rupee house: interacting with a game without paying.
 dialog{
-  id = "rupee_house.pay_first",
-  text = [[
-Hey! You have to pay if
-you want to play here!
+  id = "rupee_house.pay_first",
+  text = [[
+¡Hey! ¡Tienes que pagar
+si quieres jugar aquí!
 ]]
 }
 -----------------------
 
 -- Broken rupee house (left NPC).
 dialog{
-  id = "rupee_house_broken.help_us_left",
-  text = [[
-Help!
-Help!
+  id = "rupee_house_broken.help_us_left",
+  text = [[
+¡Ayuda!
+¡Ayuda!
 
-The house has been
-robbed!
+¡Han robado en
+la casa!
 ]]
 }
 -----------------------
 
 -- Broken rupee house (middle NPC).
 dialog{
-  id = "rupee_house_broken.help_us_middle",
-  text = [[
-The bandits stole
-the Rupees used to
-pay the gains!
+  id = "rupee_house_broken.help_us_middle",
+  text = [[
+¡Los bandidos robaron
+las Rupias destinadas
+a pagar los sueldos!
 ]]
 }
 -----------------------
 
 -- Broken rupee house (right NPC).
 dialog{
-  id = "rupee_house_broken.help_us_right",
-  text = [[
-The culprits were
-headed towards the
-blacksmith's cave!
+  id = "rupee_house_broken.help_us_right",
+  text = [[
+¡Los culpables se
+dirigieron hacia la
+cueva del herrero!
 ]]
 }
 -----------------------
 
 -- Broken rupee house: solved the problem.
 dialog{
-  id = "rupee_house_broken.thanks",
-  text = [[
-You found our Rupees!
-Thanks to you, we are
-going to get our
-business back up and
-running. I don't know
-how to repay you...
+  id = "rupee_house_broken.thanks",
+  text = [[
+¡Encontraste nuestras
+Rupias! Gracias a ti
+vamos a recuperar
+nuestro negocio. No
+sé cómo 
+compensarte...
+]]
+}
+-----------------------
+
+dialog{
+  id = "rupee_house_broken.thanks_again",
+  text = [[
+¡Gracias de nuevo!
 ]]
 }
 -----------------------
 
-dialog{
-  id = "rupee_house_broken.thanks_again",
-  text = [[
-Thanks again!
-]]
-}
------------------------
-
--- Grandma: beginning of the game.
-dialog{
-  id = "grandma_house.sword",
-  skip = "all",
-  text = [[
-Monsters are lurking
-in the field. That's
-not a good sign: I am
-certain that something
-terrible has happened.
-
-You are looking for a
-sword? With my age, I
-wouldn't know what to
-do with such things...
-You had better go see
-the blacksmith in the
-cave to the northwest
-of the village. He is
-a bit grumpy but he
-will be able to help
-you.
-]]
-}
------------------------
-
--- Grandma: after finding the sword.
-dialog{
-  id = "grandma_house.find_sahasrahla",
-  skip = "all",
-  text = [[
-With this sword, you
-can slash through the
-bushes protecting the
-village. You are
-looking for Sahasrahla
-the Ancient, are you
-not?
-His house is southwest
-of here, close to the
-bakery. You did not
-remember that?
-]]
-}
------------------------
-
--- Grandma: after finding the Earth Key.
-dialog{
-  id = "grandma_house.go_lyriann_cave",
-  skip = "all",
-  text = [[
-This key allows you to
-get inside the cavern
-located north of the
-village.
-]]
-}
------------------------
-
--- Grandma: after the village cave.
-dialog{
-  id = "grandma_house.go_dungeon_1",
-  skip = "all",
-  text = [[
-One of the four
-children who was
-kidnapped may be held
-in a gloomy dungeon in
-the forest down south
-to the village. What
-are YOU waiting for?
-]]
-}
------------------------
-
--- Grandma: after dungeon 1.
-dialog{
-  id = "grandma_house.go_back_sahasrahla",
-  skip = "all",
-  text = [[
-This time it goes
-beyond my knowledge.
-Sahasrahla would be
-of better help.
-]]
-}
------------------------
-
--- Grandma: after finding the bow.
-dialog{
-  id = "grandma_house.go_twin_caves",
-  skip = "all",
-  text = [[
-So you found a Bow?
-I believe you could
-access the twin caves
-to the south, and
-unveil the secrets
-they withhold.
-Go for them!
-]]
-}
------------------------
-
--- Grandma: after finding the Rock Key.
-dialog{
-  id = "grandma_house.go_dungeon_2",
-  skip = "all",
-  text = [[
-What a nice key you
-are holding! Isn't it
-time for you to look
-for the second lost
-child?
-]]
-}
------------------------
-
-dialog{
-  id = "grandma_house.go_telepathic_booth",
-  skip = "all",
-  text = [[
-What is that you say?
-I can't hear you well!
-Come my age, my ears
-are not working as
-well as they used to...
-How about communicating
-through telepathy?
-Modern and more
-convenient for my
-elder body.
-]]
-}
------------------------
-
-dialog{
-  id = "grandma_house.dark_world_enabled",
-  skip = "all",
-  text = [[
-Agahnim seized control
-of the kingdom...
-Evil grows along his
-path. One of the
-castle's soldiers, Tom,
-is considered guilty of
-having taken Sahasrahla
-away, but that is not
-possible!
-Moreover some culprits
-ransacked the Rupees'
-House!
-]]
-}
------------------------
-
-dialog{
-  id = "telepathic_booth.not_working",
-  skip = "all",
-  text = [[
-Hello? ... Hello? ...
-Anybody there? ...
-]]
-}
------------------------
-
-dialog{
-  id = "telepathic_booth.go_sahasrahla",
-  skip = "all",
-  text = [[
-$v, do you hear me?
-It's Grandma Lyly!
-Telepathy, it works!
-You should pay a visit
-to Sahasrahla, he has
-things for you.
-]]
-}
------------------------
-
-dialog{
-  id = "telepathic_booth.go_twin_caves",
-  skip = "all",
-  text = [[
-$v, do you hear me?
-It's Grandma Lyly!
-Telepathy, it works!
-Something tells me that
-the twin caves south to
-the forest dungeon,
-hide an important
-treasure...
-]]
-}
------------------------
-
-dialog{
-  id = "telepathic_booth.dungeon_2_not_really_finished",
-  skip = "all",
-  text = [[
-$v, do you hear me?
-It's Grandma Lyly!
-Telepathy, it works!
-But are you sure that
-you found everything
-in Roc's Cavern?
-]]
-}
------------------------
-
-dialog{
-  id = "telepathic_booth.go_master_arbror",
-  skip = "all",
-  text = [[
-$v, do you hear me?
-It's Grandma Lyly!
-Telepathy, it works!
-It seems there is a
-path through the trees
-north of here.
-Master Arbror is said
-to haunt the land
-flooded by the river.
-]]
-}
------------------------
-
-dialog{
-  id = "telepathic_booth.go_billy",
-  skip = "all",
-  text = [[
-$v, do you hear me?
-It's Grandma Lyly!
-Telepathy, it works!
-Do you know Billy the
-Reckless? It appears
-he came back safe and
-sound from his journey
-to Mount Terror!
-]]
-}
------------------------
-
-dialog{
-  id = "telepathic_booth.shop",
-  skip = "all",
-  text = [[
-$v, do you hear me?
-It's Grandma Lyly!
-Telepathy, it works!
-But times are hard.
-Desolation has spread
-across the devastated
-kingdom... It is as if
-life itself had come
-to a halt.
-Except for the town's
-shop! Ever since they
-only sell weapons for
-survival and are making
-real Rupees!
-]]
-}
------------------------
-
--- Blacksmith dialog.
-dialog{
-  id = "smith_cave.without_sword",
-  question = true,
-  text = [[
-I forged this great
-bronze Sword with my
-bare hands.
-You can have it for
-only 75 Rupees!
-
-With your shield alone
-you won't get far.
-
-So, interested?
-Yes
-No
-]]
-}
------------------------
-
--- Blacksmith: already bought the sword.
-dialog{
-  id = "smith_cave.with_sword",
-  text = [[
-Don't go and break my
-Sword because I won't
-forge you another one!
-]]
-}
------------------------
-
--- Blacksmith: refused to buy the sword.
-dialog{
-  id = "smith_cave.not_buying",
-  text = [[
-Up to you, but don't
-come back here crying
-if you get in serious
-trouble.
-]]
-}
------------------------
-
--- Blacksmith: not enough money to buy the sword.
-dialog{
-  id = "smith_cave.not_enough_money",
-  text = [[
-Are you trying to rip
-me off? You don't have
-enough Rupees!
-]]
-}
------------------------
-
--- Blacksmith: buying the sword.
-dialog{
-  id = "smith_cave.thank_you",
-  text = [[
-Thanks a lot. To swing
-your sword, press C. Or
-hold the C key to
-launch a spin attack!
-]]
-}
------------------------
-
--- Shop: talking to the NPC.
-dialog{
-  id = "lyriann_shop.salesman",
-  text = [[
-Welcome. Choose the
-item you wish to buy.
-]]
-}
------------------------
-
--- Shop: watching the Apples.
-dialog{
-  id = "lyriann_shop.apples",
-  next = "_unknown",
-  text = [[
-Three freshly picked
-apples from this
-morning!
-
-Each apple restores a
-Heart.
-]]
-}
------------------------
-
--- Shop: watching the Lamp.
-dialog{
-  id = "lyriann_shop.lamp",
-  next = "_unknown",
-  text = [[
-A Lamp.
-Travel through dark
-places!
-]]
-}
------------------------
-
--- Shop: watching the Heart.
-dialog{
-  id = "lyriann_shop.heart",
-  next = "_unknown",
-  text = [[
-A Heart to be used
-right now.
-]]
-}
------------------------
-
--- Shop: watching the Large or Huge Bomb Bag.
-dialog{
-  id = "lyriann_shop.bomb_bag",
-  next = "_unknown",
-  text = [[
-A bigger Bomb Bag.
-Really fashionable
-nowadays!
-]]
-}
------------------------
-
--- Shop: watching the Large or Huge Quiver.
-dialog{
-  id = "lyriann_shop.quiver",
-  next = "_unknown",
-  text = [[
-A larger Quiver.
-Useful in these times.
-]]
-}
------------------------
-
--- Shop: watching the Large Wallet.
-dialog{
-  id = "lyriann_shop.rupee_bag",
-  next = "_unknown",
-  text = [[
-A new Wallet to carry
-more Rupees.
-]]
-}
------------------------
-
--- Bakery: talking to the NPC.
-dialog{
-  id = "cake_shop.seller.choose_item",
-  text = [[
-Welcome. Choose the
-pastry you wish to buy.
-]]
-}
------------------------
-
--- Bakery: watching the Pain au Chocolat.
-dialog{
-  id = "cake_shop.pain_au_chocolat",
-  next = "_unknown",
-  text = [[
-A delicious Pain au
-Chocolat that will
-restore three Hearts.
-]]
-}
------------------------
-
--- Bakery: watching the Croissant.
-dialog{
-  id = "cake_shop.croissant",
-  next = "_unknown",
-  text = [[
-This crispy croissant
-will restore seven
-Hearts.
-]]
-}
------------------------
-
--- Bakery: watching the Apple Pie.
-dialog{
-  id = "cake_shop.apple_pie",
-  next = "_unknown",
-  text = [[
-An Apple Pie.
-Baked with your help!
-]]
-}
------------------------
-
--- Bakery: leaving the store.
-dialog{
-  id = "cake_shop.dont_leave",
-  question = true,
-  text = [[
-Hey, wait!
-I am looking for apples
-to bake an apple pie.
-Six apples should do
-it.
-
-Do you want to help?
-Yes
-No
-]]
-}
------------------------
-
--- Bakery: talking to the NPC after the first request about Apples.
-dialog{
-  id = "cake_shop.seller.ask_apples_again",
-  skip = "all",
-  question = true,
-  text = [[
-I am still looking for
-six apples to bake a
-great apple pie.
-Do you want to help?
-Yes
-No
-]]
-}
------------------------
-
--- Bakery: accepted to help her, having not enough Apples yet.
-dialog{
-  id = "cake_shop.not_enough_apples",
-  text = [[
-Oh, you don't have
-eneough apples... Come
-back later then.
-]]
-}
------------------------
-
--- Bakery: accepted to help her, having no Apples yet.
-dialog{
-  id = "cake_shop.no_apples",
-  text = [[
-Thank you... Come back
-to see me if you find
-some!
-]]
-}
------------------------
-
--- Bakery: accepted to help her, having enough Apples.
-dialog{
-  id = "cake_shop.thank_you",
-  text = [[
-Oh, thank you, how nice
-of you!
-
-I'm sorry I only have
-this empty Bottle...
-
-It's a small reward but
-I'm sure you will make
-good use of it.
-]]
-}
------------------------
-
--- Sahasrahla: first talk.
-dialog{
-  id = "sahasrahla_house.beginning",
-  next = "sahasrahla_house.beginning.12",
-  text = [[
-Oh, $v, you heard my
-call.
-I have important things
-to say. We are in
-critical times.
-Four of the eight
-Solarus' children have
-been kidnapped...
-I fear the Triforce is
-in great danger.
-Someone wants to
-benefit from the King's
-death and get ahold of
-the Triforce.
-Who could have done
-that?
-Surely Ganondorf and
-his minions...
-The Seal of the Seven
-Sages weakened after
-our poor King's death.
-Ganon would have
-managed to escape from
-the Dark World?
-We must not let him
-acquire such power!
-I can feel the courage
-in you, $v.
-Do you feel capable of
-traveling through the
-most dangerous places
-of this land to rescue
-the children and to
-]]
-}
------------------------
-
-dialog{
-  id = "sahasrahla_house.beginning.12",
-  skip = "none",
-  question = true,
-  next = "sahasrahla_house.beginning.thanks",
-  next2 = "sahasrahla_house.beginning.insisting",
-  text = [[
-protect the Triforce?
-I am up to it!
-Never
-]]
-}
------------------------
-
-dialog{
-  id = "sahasrahla_house.beginning.insisting",
-  question = true,
-  next = "sahasrahla_house.beginning.thanks",
-  next2 = "sahasrahla_house.beginning.insisting",
-  text = [[
-$v, I must insist,
-you are our only hope
-to protect the
-kingdom...
-Alright
-No way
-]]
-}
------------------------
-
--- Sahasrahla: accepted the quest.
-dialog{
-  id = "sahasrahla_house.beginning.thanks",
-  next = "sahasrahla_house.give_world_map",
-  text = [[
-I knew I could count
-on your courage.
-]]
-}
------------------------
-
-dialog{
-  id = "sahasrahla_house.give_world_map",
-  text = [[
-Here's a little item
-that you will find
-useful on your tale...
-]]
-}
------------------------
-
--- Sahasrahla: talking again after the quest has been accepted.
-dialog{
-  id = "sahasrahla_house.quest_accepted",
-  text = [[
-You should check out
-the cave, I store some
-objects that you could
-use. Nothing too fancy
-I guess, it's been a
-while since I went back
-there...
-]]
-}
------------------------
-
--- Sahasrahla: after dungeon 1.
-dialog{
-  id = "sahasrahla_house.dungeon_1_finished",
-  next = "sahasrahla_house.go_grandma",
-  text = [[
-Good job, you managed
-to overcome the
-challenges of the
-forest dungeon. Before
-resuming your journey,
-go back to my cave,
-perhaps new items found
-their way there.
-]]
-}
------------------------
-
--- Sahasrahla: watching the books.
-dialog{
-  id = "sahasrahla_house.memories",
-  question = true,
-  next = "sahasrahla_house.memories.read",
-  text = [[
-Sahasrahla's memories.
-
-
-Read them?
-Yes
-No
-]]
-}
------------------------
-
-dialog{
-  id = "sahasrahla_house.memories.read",
-  text = [[
-That's way too long!
-]]
-}
------------------------
-
--- Sahasrahla: seen the frozen door.
-dialog{
-  id = "sahasrahla_house.frozen_door_advice",
-  skip = "all",
-  text = [[
-The door is frozen?
-Try to melt the ice
-with some water.
-]]
-}
------------------------
-
--- Sahasrahla: default dialog, nothing special to say right now.
-dialog{
-  id = "sahasrahla_house.default",
-  skip = "all",
-  next = "sahasrahla_house.go_grandma",
-  text = [[
-I have faith in you.
-Courage and wisdom will
-guide you.
-]]
-}
------------------------
-
-dialog{
-  id = "sahasrahla_house.go_grandma",
-  text = [[
-If you are lost during
-your adventure, go
-visit Grandma Lyly,
-east of the village.
-She's an old friend
-and knows everything
-about the area.
-]]
-}
------------------------
-
--- Sahasrahla: watching the frozen door.
-dialog{
-  id = "sahasrahla_house.frozen_door",
-  skip = "all",
-  text = [[
-This door is frozen.
-There must be a way to
-melt the ice!
-]]
-}
------------------------
-
--- Boomerang cave: first dialog with Tom.
-dialog{
-  id = "lyriann_cave.tom.first_time",
-  question = true,
-  next2 = "lyriann_cave.tom.refuse_help",
-  text = [[
-Hello, young
-adventurer. I am Tom,
-an ex-guard of our late
-King. I didn't think
-anyone would find me
-here. What are you doing
-in this gloomy cavern?
-What? The Triforce is
-danger? $0None of this
-would have happened if
-our King were still
-here to protect it...
-You're trying to solve
-the mysteries of this
-cavern?  This place is
-overflowing with
-riddles, treasure, and
-danger. You seem very
-courageous!
-Please, accept my
-help... I have failed,
-I wasn't able to
-protect our King.
-Give me a chance to
-make it up!
-Do you accept my help?
-Yes
-No
-]]
-}
------------------------
-
--- Boomerang cave: talking to Tom again without the Boomerang.
-dialog{
-  id = "lyriann_cave.tom.not_first_time",
-  question = true,
-  next2 = "lyriann_cave.tom.refuse_help",
-  text = [[
-Young explorer, accept
-my help. I have failed,
-I wasn't able to
-protect our King.
-Give me a chance to
-make it up!  Will you
-accept my help?
-Yes
-No
-]]
-}
------------------------
-
--- Boomerang cave: accepted Tom's help.
-dialog{
-  id = "lyriann_cave.tom.accept_help",
-  text = [[
-Thank you. I can lend
-you this, I hope it
-will be useful.
-Don't forget to return
-it to me once you have
-finished.
-If you manage to obtain
-the Heart Container, I
-will be very impressed!
-]]
-}
------------------------
+-- Zelda Mystery of Solarus DX:
+-- Spanish dialogs (part 4)
 
--- Boomerang cave: refused Tom's help.
-dialog{
-  id = "lyriann_cave.tom.refuse_help",
-  text = [[
-Fine, as you wish.
-]]
-}
------------------------
+-- ****** Please respect the limit of each line! ******
+-- 23 chars for normal lines,
+-- 20 chars for dialogs with an icon or lines that are answers to a question,
+-- 17 chars for lines with both an icon and an answer.
+-- Each dialog ends with a comment with dashes indicating the maximum line size.
+-- Please don't exceed the maximum size of lines,
+-- and don't break lines too early either.
+-- Don't try to reproduce the exact same lines: it's normal for dialogs to be
+-- shorter or longer than in the language you are translating from.
+-- It's also normal for lines to end on different words.
 
--- Boomerang cave: talking to Tom again, having the Boomerang, and the maze not finished yet.
-dialog{
-  id = "lyriann_cave.tom.not_finished",
-  question = true,
-  text = [[
-Is everything all
-right? Use my Boomerang
-to overcome obstacles.
-You'll need to attain a
-level of mastery over
-it if you want to find
-all the secrets in this
-cavern...  Don't forget
-that the Boomerang
-always comes back to
-you, even if you move.
-
-What do you want to do?
-Continue
-Return the Boomerang
-]]
-}
------------------------
+-- ****** Typo warning! ******
+-- Remember that ponctuation characters like ! ? : ; are preceeded by a space
+-- character in French and NOT in English.
 
--- Boomerang cave: just gave the Boomerang back and the maze is not finished yet.
-dialog{
-  id = "lyriann_cave.tom.gave_boomerang_back",
-  text = [[
-Thank you. Come see me
-again if you would like
-my help.
-]]
-}
------------------------
+-- ****** More documentation ******
+-- If you have a doubt, please refer to the doc:
+-- http://www.solarus-games.org/doc/latest/dialog_syntax.html
+-- or just ask on IRC (see below).
+--
+-- ****** Team work *******
+-- Please join our IRC channel to organize the work with us:
+-- irc.zelda-solarus.com #solarus
+-- Before translating any dialog, please tell us on IRC to avoid
+-- conflicts.
 
--- Boomerang cave: trying to leave the cave with Tom's Boomerang.
-dialog{
-  id = "lyriann_cave.tom.leaving",
-  text = [[
-Hey! Wait!
-]]
-}
------------------------
+-- Thanks for your contribution!
 
--- Boomerang cave: trying to leave the cave with Tom's Boomerang (maze not finished).
 dialog{
-  id = "lyriann_cave.tom.leaving.cavern_not_finished",
-  text = [[
-You've already finished
-exploring? I don't
-think you have found
-everything... If you
-don't mind, I'll be
-taking my Boomerang
-back. You need a level
-of skill to be able to
-use it! Come see me
-again if you would like
-my help.
+  id = "dungeon_1.solarus_child",
+  text = [[
+$2$v... Gracias. Me has
+salvado la vida. Soy
+uno de los ocho 
+protectores llamados
+por la Princesa Zelda.
+Nos dedicamos a velar
+por los restos de la
+santa reliquia, la
+Trifuerza, creada por
+tres diosas antes de la
+creación de tu mundo.
+A lo largo de los
+milenios, a pesar de
+ser fuente de vida y 
+prosperidad, fue
+también gran fuente
+de la codicia y de las
+constantes luchas entre
+las fuerzas del bien
+y el mal. Incluso hoy
+en día, la sagrada 
+reliquia está en 
+peligro. Sin embargo,
+la historia se repite.
+Donde quiera que haya
+peligro, hay un héroe
+cuyo valor conduce a 
+la oscuridad lejos.
+Busca a mis hermanos
+y descubre quién está
+detrás de todo esto, 
+antes que las fuerzas
+de la oscuridad hagan
+caer a Hyrule en
+el caos ...
+¡Puede que el héroe
+traiga paz y 
+prosperidad al Reino!
 ]]
 }
 -----------------------
 
--- Boomerang cave: giving the Boomerang back (maze finished).
 dialog{
-  id = "lyriann_cave.tom.cavern_finished",
-  next = "lyriann_cave.tom.see_you_later",
-  text = [[
-You solved the
-mysteries of this
-cavern? Impressive!
-You are just as skilled
-as you are courageous.
-
-If you don't mind, I'll
-be taking my Boomerang
-back.
+  id = "outside_world.rock_key_required",
+  text = [[
+¡Está cerrado!
 ]]
 }
 -----------------------
 
--- Boomerange cave: last dialog of Tom.
 dialog{
-  id = "lyriann_cave.tom.see_you_later",
-  text = [[
-If you like, I can come
-give you a hand during
-your adventures, if
-ever you are in need.
+  id = "dungeon_2.eye_hint",
+  skip = "all",
+  text = [[
+Ambos ojos deben ser
+perforados.
 ]]
 }
 -----------------------
 
--- Dungeon 1 entrance: approaching the cliff (Boomerang cave finished).
 dialog{
-  id = "outside_world.tom_dungeon_1_entrance.hey",
-  text = [[
-Hey!
+  id = "dungeon_2.eye_2_hint",
+  skip = "all",
+  text = [[
+Ambos ojos deben ser
+perforados con
+perseverancia.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.tom_dungeon_1_entrance.need_help",
-  text = [[
-Do you need any help?
+  id = "dungeon_2.code_hint",
+  skip = "all",
+  text = [[
+       F | B | E 
+      ---|---|---
+       C | D | A 
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.tom_dungeon_1_entrance.let_me_see",
-  text = [[
-Hmmm, I bet there is a
-ladder hidden here.
-Let's see...
-]]
-}
------------------------
+  id = "fairy_cave.first_time",
+  text = [[
+Bienvenido, joven
+lleno de sabiduría. He
+estado esperando tu
+llegada.Soy el Hada
+Encantada. Tú, que
+velas por la justicia,
+me permito darte
+este regalo...
 
--- Tom has found a ladder and is opening the access to dungeon 1.
-dialog{
-  id = "outside_world.tom_dungeon_1_entrance.open",
-  text = [[
-I think I can move it.
-$0Voila!
+Has demostrado en
+el pasado que te lo
+mereces.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.tom_dungeon_1_entrance.finished",
-  text = [[
-Be careful, it looks
-ominous in there.
-]]
-}
------------------------
+  id = "fairy_cave.restore_health",
+  text = [[
+Bienvenido, joven
+lleno de sabiduría.
 
-dialog{
-  id = "dungeon_1.solarus_child",
-  text = [[
-$2$v... Thank you. You
-saved my life. I am one
-of the eight protectors
-called forth by
-Princess Zelda. We are
-devoted to watching
-over the remains of the
-holy relic, the
-Triforce, creed left by
-the three goddesses
-after the creation of
-your world. Throughout
-the millennia, the
-Triforce, although
-source of life and
-prosperity, was also
-the source of great
-greed and constant
-struggles between the
-forces of good and
-evil. Even today, the
-holy relic is in
-danger. However,
-history repeats itself.
-Wherever there is
-danger, there is a hero
-whose courage drives
-the Darkness away. Find
-my brothers and
-discover who is behind
-all of this, before the
-forces of Darkness
-plunge Hyrule into
-chaos...
-May the hero bring
-peace and prosperity
-to the Kingdom!
+Soy el Hada Encantada.
+Cierra tus ojos
+y relájate.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.rock_key_required",
-  text = [[
-It's locked!
+  id = "north_fairy_fountain.first_time",
+  text = [[
+Bienvenido, joven
+lleno de coraje. He
+estado esperando tu
+llegada. Soy el Hada
+Viajera. Tú, que
+recorres el mundo
+luchando contra el mal
+sin descanso me permito
+transmitirte una
+antigua técnica...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_2.eye_hint",
-  skip = "all",
-  text = [[
-Both eyes must be
-pierced.
-]]
-}
------------------------
+  id = "north_fairy_fountain.restore_health",
+  text = [[
+Bienvenido, joven
+lleno de coraje.
 
-dialog{
-  id = "dungeon_2.eye_2_hint",
-  skip = "all",
-  text = [[
-Both eyes must be
-pierced with
-perseverance.
+Soy el Hada Viajera.
+Cierra tus ojos
+y relájate.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_2.code_hint",
-  skip = "all",
-  text = [[
-       F | B | E 
-      ---|---|---
-       C | D | A 
+  id = "mountain_cave.mountain_sign",
+  skip = "all",
+  text = [[
+    Monte Terror
+        --->
 ]]
 }
 -----------------------
 
 dialog{
-  id = "fairy_cave.first_time",
-  text = [[
-Welcome, young man,
-full of wisdom. I have
-been awaiting your
-arrival. I am the
-Enchanting Fairy. You,
-who watch over justice,
-allow me to present you
-with this gift...
-
-You have proven in the
-past that you deserve
-it.
+  id = "mountain_cave.not_much_done",
+  skip = "all",
+  text = [[
+Si estás leyendo esto,
+entonces no has llegado
+muy lejos.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "fairy_cave.restore_health",
-  text = [[
-Welcome, young man,
-full of wisdom.
-
-I am the Enchanting
-Fairy. Close your eyes
-and relax.
-]]
-}
------------------------
+  id = "mountain_cave.patience",
+  skip = "all",
+  text = [[
+La paciencia es la virtud
+del verdadero héroe
 
-dialog{
-  id = "north_fairy_fountain.first_time",
-  text = [[
-Welcome, young man,
-filled with courage.
-I have been awaiting
-your arrival. I am the
-Traveling Fairy. You,
-who travel the world to
-fight evil
-relentlessly, allow me
-to pass on to you an
-ancient technique...
+ - Autor Desconocido -
 ]]
 }
 -----------------------
 
 dialog{
-  id = "north_fairy_fountain.restore_health",
-  text = [[
-Welcome, young man,
-filled with courage.
-
-I am the Traveling
-Fairy. Close your eyes
-and relax.
+  id = "mountain_cave.almost_done",
+  skip = "all",
+  text = [[
+Lo peor está
+por venir.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "mountain_cave.mountain_sign",
-  skip = "all",
-  text = [[
-    Mount Terror
-        --->
-]]
-}
------------------------
+  id = "outside_world.old_castle_sign",
+  skip = "all",
+  text = [[
 
-dialog{
-  id = "mountain_cave.not_much_done",
-  skip = "all",
-  text = [[
-If you are reading this,
-then you haven't gotten
-very far.
+     Castillo Antiguo
+         <---
 ]]
 }
 -----------------------
 
 dialog{
-  id = "mountain_cave.patience",
-  skip = "all",
-  text = [[
-Patience is the virtue
-of a true hero.
- - Author unknown (?) -
-]]
-}
------------------------
+  id = "billy_cave.hello",
+  skip = "current",
+  text = [[
+Espero que hayas venido
+con algo que valga la
+pena hacer si te
+atreves a entrar en mi
+caverna. Soy Billy el
+Temerario, el mejor
+aventurero de todos los
+tiempos.
 
-dialog{
-  id = "mountain_cave.almost_done",
-  skip = "all",
-  text = [[
-The worst is yet to
-come.
-]]
-}
------------------------
+De mi expedición al
+Monte Terror, traje un
+tesoro de valor
+incalculable. Incluso
+la Princesa Zelda no
+hubiera podido
+encontrarlo. Es una
+planta extremadamente
+rara.
+Soy la única persona
+viva que posee una.
+Superé los obstáculos
+del Monte Terror,
+afronté cada peligro
+y salí completamente
+ileso.
 
-dialog{
-  id = "outside_world.old_castle_sign",
-  skip = "all",
-  text = [[
-
-     Ancient Castle
-         <---
-]]
-}
------------------------
 
-dialog{
-  id = "billy_cave.hello",
-  skip = "current",
-  text = [[
-I hope you have come
-with something worth
-doing if you dare enter
-my cavern. I am Billy
-the Reckless, the
-greatest adventurer of
-all time.
-
-
-During my expedition to
-Mount Terror, I brought
-back a priceless
-treasure. Even Princess
-Zelda would not have
-been able to find it.
-It's an extremely rare
-plant.
-
-I am the only living
-soul to have one in his
-possession. I cleared
-all of the obstacles of
-Mount Terror, faced
-every danger, and
-walked away unscathed.
-
-
-It is heroically so
-that I found this
-flower of extreme
-value: an edelweiss!
+De esta forma tan
+heroica encontré
+esta flor de extremo
+valor: ¡Una edelweiss!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "billy_cave.what_do_you_have",
-  skip = "current",
-  next = "_unknown",
-  text = [[
-Don't expect me to give
-you my edelweiss for
-free. I confronted the
-dangers of Mount Terror
-to find it. If you
-don't have anything of
-value to give me, then
-run along.
+  id = "billy_cave.what_do_you_have",
+  skip = "current",
+  next = "_unknown",
+  text = [[
+No esperes que te dé mi
+edelweiss gratis.
+Afronté los peligros
+del Monte Terror para
+encontrarla. Si no
+tienes nada valioso
+para darme, entonces
+pasa de largo.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "billy_cave.without_golden_bars",
-  question = true,
-  text = [[
-What will you give me?
-A croissant
-An apple pie
+  id = "billy_cave.without_golden_bars",
+  question = true,
+  text = [[
+¿Qué me darás?
+Un Cruasán
+Un Pastel de Manzana
 ]]
 }
 -----------------------
 
 dialog{
-  id = "billy_cave.with_golden_bars",
-  question = true,
-  text = [[
-What will you give me?
-Gold bars
-An apple pie
+  id = "billy_cave.with_golden_bars",
+  question = true,
+  text = [[
+¿Qué me darás?
+Barras de Oro
+Un Pastel de Manzana
 ]]
 }
 -----------------------
 
 dialog{
-  id = "billy_cave.give_croissant_without",
-  text = [[
-You don't even have a
-croissant! Thief!
+  id = "billy_cave.give_croissant_without",
+  text = [[
+¡Ni siquiera tienes un
+cruasán! ¡Ladrón!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "billy_cave.give_croissant",
-  text = [[
-A croissant?
-Are you kidding me?
+  id = "billy_cave.give_croissant",
+  text = [[
+¿Un cruasán?
+¿Acaso estás bromeando?
 ]]
 }
 -----------------------
 
 dialog{
-  id = "billy_cave.give_apple_pie_without",
-  text = [[
-Pfft! You don't even
-have any apple pies!
+  id = "billy_cave.give_apple_pie_without",
+  text = [[
+¡Pfft! ¡Ni siquiera
+tienes un pastel de
+manzana!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "billy_cave.give_apple_pie",
-  text = [[
-No thanks, that's far
-from fair...
+  id = "billy_cave.give_apple_pie",
+  text = [[
+No gracias, Eso está
+lejos de ser justo...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "billy_cave.give_golden_bars",
-  text = [[
-What? You have gold
-bars?$1...
+  id = "billy_cave.give_golden_bars",
+  text = [[
+¿Qué? Tienes barras de
+oro?$1...
 $0...$0....................
-$3Deal!
-Here, take your stupid
-flower...
+$3¡Trato hecho!
+Toma tu estúpida flor..
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.surprise_wall_guy.closed",
-  text = [[
-If you give me
-something to eat, I'll
-let you on the other
-side of this wall.
+  id = "outside_world.surprise_wall_guy.closed",
+  text = [[
+Si me das algo para
+comer, te dejaré pasar
+al otro lado de esta
+pared.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.surprise_wall_guy.give_me_apple_pie",
-  question = true,
-  text = [[
-Give me that apple pie!
+  id = "outside_world.surprise_wall_guy.give_me_apple_pie",
+  question = true,
+  text = [[
+¡Dame ese pastel de
+manzana!
 
-
-Well?
-OK
-No way
+¿Y bien?
+Vale
+De ninguna forma
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.surprise_wall_guy.open",
-  text = [[
-Some people believe
-there is treasure
-behind this wall, but
-I've never found any.
+  id = "outside_world.surprise_wall_guy.open",
+  text = [[
+Algunas personas creen
+que hay tesoros detrás
+de esta pared, pero
+nunca he encontrado
+nada.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.surprise_wall_guy.thanks",
-  next = "outside_world.surprise_wall_guy.open",
-  text = [[
-Super! I'll eat the pie
-in appreciation.
+  id = "outside_world.surprise_wall_guy.thanks",
+  next = "outside_world.surprise_wall_guy.open",
+  text = [[
+¡Súper! Comeré el
+pastel con aprecio.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.surprise_wall_closed",
-  text = [[
-It's closed!
+  id = "outside_world.surprise_wall_closed",
+  text = [[
+¡Está cerrado!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "surprise_wall.direction_0",
-  text = [[
+  id = "surprise_wall.direction_0",
+  text = [[
 
-          Right
+        Derecha
 ]]
 }
 -----------------------
 
 dialog{
-  id = "surprise_wall.direction_1",
-  text = [[
+  id = "surprise_wall.direction_1",
+  text = [[
 
-           Up
+         Arriba
 ]]
 }
 -----------------------
 
 dialog{
-  id = "surprise_wall.direction_2",
-  text = [[
+  id = "surprise_wall.direction_2",
+  text = [[
 
-          Left
+       Izquierda
 ]]
 }
 -----------------------
 
 dialog{
-  id = "surprise_wall.direction_3",
-  text = [[
+  id = "surprise_wall.direction_3",
+  text = [[
 
-          Down
+         Abajo
 ]]
 }
 -----------------------
 
 dialog{
-  id = "lake_shop.seller",
-  text = [[
-Welcome to the Lake
-Shop! Our items are the
-cheapest in the area.
-What can I do for you?
+  id = "lake_shop.seller",
+  text = [[
+¡Bienvenido a la Tienda
+del Lago! Nuestros
+artículos son los más
+baratos del área. ¿Qué
+puedo hacer por tí?
 ]]
 }
 -----------------------
 
 dialog{
-  id = "lake_shop.apples",
-  text = [[
-Three apples at value
-price.
+  id = "lake_shop.apples",
+  text = [[
+Tres manzanas a precio
+de descuento.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "lake_shop.bombs",
-  text = [[
-Eight bombs. I'll give
-them to you at cost
-price!
+  id = "lake_shop.bombs",
+  text = [[
+Ocho Bombas. ¡Te las
+daré a precio de costo!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "lake_shop.arrows",
-  text = [[
-Ten arrows, an
-excellent value for its
-price.
+  id = "lake_shop.arrows",
+  text = [[
+Diez flechas, excelente
+calidad y precio.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "lake_shop.big_magic_flask",
-  text = [[
-Special offer:
-a jar of magic
-energy.
+  id = "lake_shop.big_magic_flask",
+  text = [[
+Oferta especial:
+Una jarra de energía
+mágica.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "chests_game_cave.first_time",
-  next = "chests_game_cave.play_question",
-  text = [[
-How did you get here??
+  id = "chests_game_cave.first_time",
+  next = "chests_game_cave.play_question",
+  text = [[
+¿¿Cómo llegaste hasta
+aquí??
 
-
-... Now that you're
-here, how would you
-like to be the first to
-play my new game? One
-game costs 30 Rupees.
+... Ya que estás aquí,
+¿Te gustaría ser el
+primero en probar mi
+nuevo juego? Una
+partida cuesta 
+30 Rupias.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "chests_game_cave.not_first_time",
-  skip = "current",
-  next = "chests_game_cave.play_question",
-  text = [[
-Hi! One game costs 30
-Rupees.
+  id = "chests_game_cave.not_first_time",
+  skip = "current",
+  next = "chests_game_cave.play_question",
+  text = [[
+¡Hola! Una partida
+cuesta 30 Rupias.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "chests_game_cave.play_question",
-  question = true,
-  text = [[
-Do you want to play?
-Yes
+  id = "chests_game_cave.play_question",
+  question = true,
+  text = [[
+¿Quieres jugar?
+Sí
 No
 ]]
 }
 -----------------------
 
 dialog{
-  id = "chests_game_cave.not_enough_money",
-  skip = "all",
-  text = [[
-You don't have enough
-Rupees!
+  id = "chests_game_cave.not_enough_money",
+  skip = "all",
+  text = [[
+¡No tienes suficientes
+Rupias!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "chests_game_cave.start_game_wooden_key",
-  skip = "all",
-  text = [[
-Thanks! To play the
-game, just open one of
-the chests. Its
-contents are yours to
-keep. The grand prize
-of the day is a
-magnificent wooden key.
+  id = "chests_game_cave.start_game_wooden_key",
+  skip = "all",
+  text = [[
+¡Gracias! Para jugar,
+simplemente abre uno de
+los cofres y podrás
+conservar su contenido.
+El gran premio del día
+es una magnífica llave
+de madera.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "chests_game_cave.start_game_piece_of_heart",
-  skip = "all",
-  text = [[
-Thanks! To play the
-game, just open one of
-the chests. Its
-contents are yours to
-keep. The grand prize
-of the day is a
-Piece of Heart.
+  id = "chests_game_cave.start_game_piece_of_heart",
+  skip = "all",
+  text = [[
+¡Gracias! Para jugar,
+simplemente abre uno de
+los cofres y podrás
+conservar su contenido.
+El gran premio del día
+es una Pieza de 
+Corazón.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "chests_game_cave.start_game",
-  skip = "all",
-  text = [[
-Thanks! You can open
-one of the chests.
-Its contents are yours
-to keep.
+  id = "chests_game_cave.start_game",
+  skip = "all",
+  text = [[
+¡Gracias! Puedes abrir
+uno de los cofres y
+conservar su contenido.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "chests_game_cave.already_playing",
-  skip = "all",
-  text = [[
-Pick a chest!
+  id = "chests_game_cave.already_playing",
+  skip = "all",
+  text = [[
+¡Elige un cofre!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.junk_shop_sign",
-  skip = "all",
-  text = [[
+  id = "outside_world.junk_shop_sign",
+  skip = "all",
+  text = [[
 
-       Junk Shop
+  Tienda de Chatarra
 
-The largest selection
-at exceptional prices!
+¡La selección más
+grande a precios
+excepcionales!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "junk_shop.seller",
-  skip = "all",
-  text = [[
-Welcome to the Junk
-Shop! Top of the line
-items at extraordinary
-prices! Help yourself!
+  id = "junk_shop.seller",
+  skip = "all",
+  text = [[
+¡Bienvenido a la Tienda
+de Chatarra! ¡Artículos
+de la mejor calidad a
+precios
+extraordinarios!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "junk_shop.croissant",
-  text = [[
-One Croissant. To fill
-your Hearts.
+  id = "junk_shop.croissant",
+  text = [[
+Un Cruasán. Para llenar
+tus Corazones.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "junk_shop.arrows",
-  text = [[
-Standard Arrows.
+  id = "junk_shop.arrows",
+  text = [[
+Flechas estándar.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "junk_shop.red_rupee",
-  text = [[
-A special offer Red
-Rupee, but it's the
-floor model.
+  id = "junk_shop.red_rupee",
+  text = [[
+Una Rupia Roja de
+oferta especial, pero
+es el modelo de pie.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "junk_shop.mystic_mirror",
-  text = [[
-The Mystic Mirror. They
-say it can reverse the
-flow of water!
+  id = "junk_shop.mystic_mirror",
+  text = [[
+El Espejo Místico.
+¡Dicen que puede
+invertir el flujo del
+agua!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "junk_shop.heart",
-  text = [[
-A Heart. Useful if you
-need energy.
+  id = "junk_shop.heart",
+  text = [[
+Un Corazón. Útil si
+necesitas energía.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "junk_shop.bombs",
-  text = [[
-Eight bombs at a
-reduced price.
+  id = "junk_shop.bombs",
+  text = [[
+Ocho Bombas a precio
+reducido.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "junk_shop.piece_of_heart",
-  text = [[
-An authentic Piece of
-Heart.
+  id = "junk_shop.piece_of_heart",
+  text = [[
+Una Pieza de Corazón
+auténtica.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "junk_shop.pain_au_chocolat",
-  text = [[
-A Pain au Chocolat for
-recovering Hearts.
+  id = "junk_shop.pain_au_chocolat",
+  text = [[
+Un Pan de Chocolate
+para recuperar
+Corazones.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "castle.welcome",
-  skip = "all",
-  text = [[
-Welcome to the ancient
-royal castle, listed as
-a historical monument.
-Please refrain from
-disturbing the
-surroundings.
+  id = "castle.welcome",
+  skip = "all",
+  text = [[
+Bienvenido al antiguo
+castillo real,
+catalogado como
+monumento histórico.
+Por favor, no molestar
+en los alrededores.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "castle.forbidden_stairs",
-  skip = "all",
-  text = [[
-This stairs lead to the
-upper level and to the
-balcony.
-Access is forbidden to
-the public though.
+  id = "castle.forbidden_stairs",
+  skip = "all",
+  text = [[
+Esta escalera lleva 
+hasta el nivel superior 
+y al balcón.
+Sin embargo el acceso
+está prohibido para el
+público.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "castle.forbidden_door",
-  skip = "all",
-  text = [[
-I am sorry sir, but you
-are not allowed to
-access to the dungeon
-cells.
+  id = "castle.forbidden_door",
+  skip = "all",
+  text = [[
+Lo siento señor, pero 
+no tiene permiso para
+acceder a los 
+calabozos.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "castle.forbidden_door_wtf",
-  text = [[
+  id = "castle.forbidden_door_wtf",
+  text = [[
 ........$0....?!$#!@&=!??
 .....$0..................
 
-How did you get here?
-You are walking on
-a forbidden area!
+¿Cómo has llegado hasta 
+aquí? ¡Estás en un área 
+restringida!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "castle.npc_1",
-  skip = "all",
-  text = [[
-This castle once
-belonged to the Royal
-family.
-Nowadays, tourists from
-all around Hyrule make
-the trip to witness the
-beauty of the place!
+  id = "castle.npc_1",
+  skip = "all",
+  text = [[
+Este castillo en su día
+perteneció a la
+familia real.
+¡Hoy en día, turistas
+de todo Hyrule viajan
+para contemplarlo!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "castle.npc_2",
-  skip = "all",
-  text = [[
-Can you believe all the
-efforts that were put
-in the construction of
-this castle?
-I can only wonder how
-they managed to pull
-off such a wonderful
-piece of architecture
-with the means they had
-at that time...
+  id = "castle.npc_2",
+  skip = "all",
+  text = [[
+¿Te imaginas cuanto
+esfuerzo costó el
+construir este 
+castillo?
+¿Cómo consiguieron
+hacerlo con los medios
+que tenian en aquel
+momento? ¡Es increíble!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "castle.where_is_tom",
-  skip = "all",
-  text = [[
-Tom, one of our best
-soldiers, has
-mysteriously
-disappeared while he
-was gone exploring a
-cave.
+  id = "castle.where_is_tom",
+  skip = "all",
+  text = [[
+Tom, uno de nuestros
+mejores soldados,
+desapareció cuando fue
+a explorar una cueva.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "castle.npc_3",
-  skip = "all",
-  text = [[
-How shiny! It's a
-wonderful home!
+  id = "castle.npc_3",
+  skip = "all",
+  text = [[
+¡Cuánto lujo!
+¡Es una casa
+maravillosa!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "castle.prison",
-  skip = "all",
-  text = [[
-Prisoners of the King
-were held captive
-inside these dark
-cells.
+  id = "castle.prison",
+  skip = "all",
+  text = [[
+Los prisioneros del rey
+estuvieron encerrados
+dentro de estas oscuras
+celdas.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "castle.cannon",
-  skip = "all",
-  text = [[
-What a magnificent
-barrel!
-You had better not be
-an enemy of the King!
+  id = "castle.cannon",
+  skip = "all",
+  text = [[
+¡Qué increíble cañón!
+¡Es mejor no ser
+enemigo del rey!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "inferno.first_time",
-  next = "inferno.find_fire_stones",
-  text = [[
-Who dares walk on my
-lands? Child!
-Don't you know how
-foolish it is to
-disturb the great
-Inferno, Lord of
-Flames?!
-You will be punished
-for such behaviour!
-Shall you wish to
-redeem yourself, try
-and find the three
-Fire Stones I hid
-inside my gloomy
-mazes.
+  id = "inferno.first_time",
+  next = "inferno.find_fire_stones",
+  text = [[
+¿Quién osa caminar por
+mis tierras?
+¡Chico! ¿Sabes la
+estupidez que has
+cometido al molestar
+a Inferno, señor de
+las llamas?
+Serás castigado por
+tal comportamiento.
+Si quieres redimirte
+trata de encontrar las
+tres Piedras de Fuego
+escondidas en mi 
+sombrio laberinto
 ]]
 }
 -----------------------
 
 dialog{
-  id = "inferno.find_fire_stones",
-  skip = "current",
-  text = [[
-You will endure three
-courage ordeals.
+  id = "inferno.find_fire_stones",
+  skip = "current",
+  text = [[
+Tendrás que superar
+las tres duras pruebas
 
-River.
-$0Mountain.
+Río.
+$0Montaña.
 $0Beaumont.
-Overcome the challenges
-that await you, bring
-back the three Fire
-Stones, and only then
-shall Inferno's rage
-be calmed.
+¡Supera los retos que
+te esperan, trae de
+vuelta las tres piedras
+de fuego y sólo
+entonces calmarás
+la furia de Inferno.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "inferno.found_fire_stones",
-  question = true,
-  text = [[
-You made it through
-the three ordeals with
-success! Your bravery
-is truly unique, I must
-bow down before it.
-I will grant you
-anything you wish.
+  id = "inferno.found_fire_stones",
+  question = true,
+  text = [[
+¡Has superado
+las tres pruebas con
+éxito! Tu valentía es
+en verdad única, he
+de inclinarme ante 
+ella. Te concederé
+lo que desees.
 
 
-What do you want?
-The black stones...
-100 Rupees?
+¿Qué quieres?
+Las piedras negras...
+¿100 Rupias?
 ]]
 }
 -----------------------
 
 dialog{
-  id = "inferno.want_rupees",
-  text = [[
-So be it.
+  id = "inferno.want_rupees",
+  text = [[
+Que así sea.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "inferno.want_rupees_again",
-  text = [[
-I already gave you
-this prize.
+  id = "inferno.want_rupees_again",
+  text = [[
+Ya te he dado
+ese premio.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "inferno.want_black_stones",
-  text = [[
-Before you can lift
-these black stones,
-you will have to
-survive in an infernal
-land, and overcome
-many dangers.
-Let me bring you to
-the hell of flames...
+  id = "inferno.want_black_stones",
+  text = [[
+Antes de poder 
+cargar con estas
+piedras negras, habrás 
+de sobrevivir en una 
+tierra infernal, y 
+superar muchos 
+peligros.
+Permíteme guiarte hacia
+un infierno de llamas..
 ]]
 }
 -----------------------
 
 dialog{
-  id = "potion_shop.witch",
-  text = [[
-Welcome to the Potion
-Shop!
+  id = "potion_shop.witch",
+  text = [[
+¡Bienvenido a la tienda
+de pociones!
 Hehehe...
-Red gives life, green
-gives magic, blue gives
-both life and magic!
+La Roja da vida, la
+verde da magia, la azul
+da ¡vida y magia!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "potion_shop.witch_bottle_offered",
-  text = [[
-Welcome to the Potion
-Shop!
+  id = "potion_shop.witch_bottle_offered",
+  text = [[
+¡Bienvenido a la tienda
+de pociones!
 Hehehe...
-A Magic Bottle is
-given for free to every
-new client! Hehehe...
-Red gives life, green
-gives magic, blue gives
-both life and magic!
+¡Una Botella Mágica por
+ cada nuevo cliente
+ gratis! Hehehe...
+La Roja da vida, la
+verde da magia, la azul
+da ¡vida y magia!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "potion_shop.no_empty_bottle",
-  text = [[
-You can't buy this
-Potion without an empty
-Bottle! Hehehe...
+  id = "potion_shop.no_empty_bottle",
+  text = [[
+¡No puedes comprar esta
+Poción sin una Botella
+vacía! Hehehe...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "potion_shop.red_potion",
-  text = [[
-Red Potion:
-restores life!
-Hehehe...
-]]
-}
------------------------
-
-dialog{
-  id = "potion_shop.green_potion",
-  text = [[
-Green Potion:
-restores your magic
-bar! Hehehe...
-]]
-}
------------------------
-
-dialog{
-  id = "potion_shop.blue_potion",
-  text = [[
-Blue Potion:
-restores life and
-magic! Hehehe...
-]]
-}
------------------------
-
-dialog{
-  id = "potion_shop.give_bottle",
-  text = [[
-As a new customer, you
-get to walk away with a
-Magic Bottle for free.
+  id = "potion_shop.red_potion",
+  text = [[
+Poción Roja:
+¡restaura vida!
 Hehehe...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "outside_world.vine_start",
-  skip = "all",
-  text = [[
-The land seems very
-fertile around here,
-but it lacks
-humidity...
+  id = "potion_shop.green_potion",
+  text = [[
+Poción Verde:
+¡restaura tu barra de
+magia! Hehehe...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "cave_to_dungeon_8.hint",
-  skip = "all",
-  text = [[
-Only an attentive
-observer will be able
-to follow the path.
+  id = "potion_shop.blue_potion",
+  text = [[
+Poción Azul:
+¡restaura vida y magia!
+Hehehe...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "bone_key_cave.hint",
-  skip = "all",
-  text = [[
-Only by repelling light
-will then shine light
-anew.
+  id = "potion_shop.give_bottle",
+  text = [[
+Como nuevo cliente,
+te llevas una Botella
+Mágica de regalo.
+Hehehe...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "hidden_palace.door_closed",
-  skip = "all",
-  text = [[
-This door won't open...
+  id = "outside_world.vine_start",
+  skip = "all",
+  text = [[
+La tierra parece muy
+fértil por aquí,
+pero carece de
+humedad...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "hidden_palace.using_bone_key",
-  icon = 20,
-  text = [[
-$1You use the Bone
-Key...
+  id = "cave_to_dungeon_8.hint",
+  skip = "all",
+  text = [[
+Sólo un observador
+atento podrá seguir
+el camino.
+]]
+}
+-----------------------
+
+dialog{
+  id = "bone_key_cave.hint",
+  skip = "all",
+  text = [[
+Sólo al repeler la luz
+hará brillar la luz
+de nuevo.
+]]
+}
+-----------------------
+
+dialog{
+  id = "hidden_palace.door_closed",
+  skip = "all",
+  text = [[
+Esta puerta no se abre...
+]]
+}
+-----------------------
+
+dialog{
+  id = "hidden_palace.using_bone_key",
+  icon = 20,
+  text = [[
+$1Usas la Llave
+de Hueso...
 ]]
 }
 --------------------
 
 dialog{
-  id = "dungeon_2.solarus_child",
-  text = [[
-$2$v... Thank you.
-You saved my life.
-I am one of the eight
-protectors called forth
-by Princess Zelda to
-watch over the Triforce.
-Using the power of the
-Solarus amulet, a relic
-worn by Princess Zelda,
-is the only way to
-restore the Triforce.
-We have shattered it
-into eight pieces
-hidden across the
-kingdom. We are here
-to guard the eight
-fragments, as Zelda
-watches over the
-Solarus Amulet.
-It must not fall into
-the wrong hands. We
-trust your courage.
-May the hero bring
-peace and prosperity
-to the Kingdom!
+  id = "dungeon_2.solarus_child",
+  text = [[
+$2$v... Gracias. Me has
+salvado la vida. Soy
+uno de los ocho 
+protectores llamados
+por la Princesa Zelda.
+Nos dedicamos a velar
+por la Trifuerza
+Usando el poder del
+amuleto Solarus, una
+reliquia usada por la
+Princesa Zelda, es la
+única manera de 
+restaurar la Trifuerza.
+Lo hemos roto en ocho
+pedazos ocultos por 
+todo el reino.
+Estamos aquí para
+proteger los ocho
+fragmentos, como Zelda
+vela por el amuleto
+Solarus.
+No debe caer en manos
+equivocadas.
+Confiamos en tu valor.
+¡Puede que el héroe
+traiga paz y 
+prosperidad al Reino!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_3.arbror_direction_hint",
-  text = [[
+  id = "dungeon_3.arbror_direction_hint",
+  text = [[
 
-  North: Master Arbror
+  Norte: Maestro Arbror
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_3.water_drained_somewhere",
-  text = [[
-Far away... a noise...
+  id = "dungeon_3.water_drained_somewhere",
+  text = [[
+A lo lejos ... un ruido ...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_3.arbror_hello",
-  text = [[
-Haa!!! You'll never
-defeat me, Master
+  id = "dungeon_3.arbror_hello",
+  text = [[
+¡¡¡Haa!!! ¡Nunca me
+vencerás, Maestro
 Arbror!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_3.arbror_killed",
-  text = [[
-KARGHHH!!! I have been
-defeated, but you won't
-go far...
-You will
-never succeed...
+  id = "dungeon_3.arbror_killed",
+  text = [[
+¡¡¡KARGHHH!!! He sido
+derrotado, pero no
+llegarás muy lejos...
+Tú jamás
+lo lograrás...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_3.solarus_child",
-  text = [[
-$2$v... Thank you.
-You saved my life.
-Thanks to you, this
-horrible creature will
-not never trouble the
-Kingdom again.
-I am one of the eight
-protectors called forth
-by Princess Zelda.
-The Triforce is still
-in danger as long as
-one of my brothers is
-held captive.
-The end of your journey
-is near.
-Save him and return
-peace to these lands.
-May the hero bring
-peace and prosperity
-to the Kingdom!
+  id = "dungeon_3.solarus_child",
+  text = [[
+$2$v... Gracias. Me has
+salvado la vida.
+Gracias a ti, esta 
+horrible criatura nunca
+volverá a molestar al
+Reino.
+Soy uno de los ocho
+protectores llamados
+por la Princesa Zelda.
+La Trifuerza sigue en
+peligro siempre que 
+uno de mis hermanos
+esté preso.
+El final de tu viaje 
+está cerca.
+Sálvale y devuelve 
+la paz a estas tierras.
+¡Puede que el héroe
+traiga paz y 
+prosperidad al Reino!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_4.welcome",
-  skip = "current",
-  text = [[
-         Level 4
-    Beaumont's Palace
+  id = "dungeon_4.welcome",
+  skip = "current",
+  text = [[
+         Nivel 4
+    Palacio de Beaumont
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_4.hint_use_map",
-  text = [[
-When the exits do not
-appear upon you, use
-the map.
+  id = "dungeon_4.hint_use_map",
+  text = [[
+Cuando la salida no
+aparezca ante ti, usa
+el mapa.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_4.hint_chests",
-  text = [[
-The way is shown by
-the crossing of four
-chests.
+  id = "dungeon_4.hint_chests",
+  text = [[
+El camino se muestra 
+por el cruce de los 
+cuatro cofres.
 ]]
 }
 -----------------------
@@ -5617,321 +4569,329 @@ chests.
 -- The hero attemps to enter the frozen room in dungeon 4
 -- but doesn't have the blue mail.
 dialog{
-  id = "dungeon_4.too_cold",
-  text = [[
-It's too cold here...
-You need to leave!
+  id = "dungeon_4.too_cold",
+  text = [[
+Hace mucho frío aquí...
+¡Tienes que irte!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_4.solarus_child",
-  text = [[
+  id = "dungeon_4.solarus_child",
+  text = [[
 $2$v... Thank you.
-You saved my life.
-I am one of the eight
-protectors called forth
-by Princess Zelda.
-You have demonstrated
-a remarkable courage.
-Thanks to you, we are
-now all together again,
-and the Triforce is
-safe.
-
-May the hero bring
-peace and prosperity
-to the Kingdom!
+Me has salvado la vida.
+Soy uno de los ocho
+protectores nombrados
+por la princesa zelda.
+Has mostrado tener
+un gran coraje.
+Gracias a ti volvemos
+a estar todos juntos de
+nuevo, y la trifuerza
+está a salvo.
+¡Que el héroe traiga
+la paz y la prosperidad
+al reino!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_4.agahnim",
-  text = [[
+  id = "dungeon_4.agahnim",
+  text = [[
 $1A G A H N I M !
-$3Yes, himself!
+$3SI, el mismo!
 
-The sorcerer back from
-the land of the dead!!!
-Ah ah ah ah ah ah!!!
-So you managed to
-gather the four kids?
-This child doesn't have
-a clue of what awaits
-him outside by saying
-that the Triforce is
-safe...
-Ah ah ah ah ah ah!!!
-Acknowledge, young man,
-that I did not come
-back to free the
-despicable Ganon, he
-who once dared call me
-his alter ego...
-I would rather leave
-that filthy culprit
-sealed away in his
-Dark World! Thus I can
-keep the Triforce for
-myself and rule as the
-only master...
-Ah ah ah ah ah!
-Upon leaving this room,
-you will witness my
-control over this
-kingdom...
-Ah ah ah ah ah ah ah!
-Now you, young and
-impetuous adventurer,
-and I shall meet again.
-For the time being, I
-am going back to the
-castle!
-Ah ah ah ah ah! We will
-see each other again,
-and with my powers, I
-will put an end to your
-tale!
-Ah ah ah ah ah ah!!!
+¡¡El hechicero ha
+vuelto de la tierra
+de la muerte!!
+¡¡Ja ja ja ja ja!!
+Asi que te las has
+arreglado para reunir
+a los cuatro chicos.
+Este crio no tiene ni
+idea de lo que le 
+espera ahí fuera al
+decir que la trifuerza
+está a salvo...
+¡¡Ja ja ja ja ja!!
+Reconozco ,hombrecito,
+que no he vuelto para
+liberar al despreciable
+Ganon, aquel que una vez
+se atrevió a llamarme
+su alter ego...
+¡Prefiero dejar ese
+delincuente inmundo
+en el Dark World!
+Así, yo guardare la
+trifuerza y gobernare
+como único maestro...
+¡¡¡Ja ja ja ja ja!!!
+Cuando salgas de esta
+sala, serás testigo de
+mi control sobre el 
+reino...
+¡¡¡Ja ja ja ja ja!!!
+¡De momento me vuelvo
+al castillo!
+Eso sí, joven e 
+impetuoso aventurero,
+volveremos a vernos
+las caras de nuevo.
+¡Y cuando eso ocurra,
+yo y mis poderes
+pondremos fin a tu
+historia!
+¡¡¡Ja ja ja ja!!!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_5.welcome",
-  skip = "current",
-  text = [[
-         Level 5
-     Ancient Castle
+  id = "dungeon_5.welcome",
+  skip = "current",
+  text = [[
+         Nivel 5
+     Castillo antiguo
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_5.pots_hint",
-  skip = "all",
-  text = [[
-The key to the puzzle
-is to circle the jars
-in the right direction.
+  id = "dungeon_5.pots_hint",
+  skip = "all",
+  text = [[
+La clave para el
+puzzle es el circulo
+de jarras en la
+dirección correcta.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_5.hero_seen_by_guard",
-  text = [[
-HALT!
-Don't move!
+  id = "dungeon_5.hero_seen_by_guard",
+  text = [[
+¡ALTO!
+¡No te muevas!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_5.prison_1_locked",
-  text = [[
-     - Iron Lock -
-None of your keys seem
-to fit...
+  id = "dungeon_5.prison_1_locked",
+  text = [[
+     - Cerradura de Hierro -
+Ninguna de tus llaves
+parece encajar...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_5.prison_1_use_iron_key",
-  icon = 28,
-  text = [[
-$1You use the Iron
-Key...
+  id = "dungeon_5.prison_1_use_iron_key",
+  icon = 28,
+  text = [[
+$1Usas la Llave de
+Hierro
 ]]
 }
 --------------------
 
 dialog{
-  id = "dungeon_5.prison_2_locked_1",
-  text = [[
-It's locked!
+  id = "dungeon_5.prison_2_locked_1",
+  text = [[
+¡Está cerrado!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_5.prison_2_locked_2",
-  text = [[
-It's so rusty that even
-the Large Key won't
-work.
+  id = "dungeon_5.prison_2_locked_2",
+  text = [[
+Está tan oxidado que
+ni siquiera la llave
+grande funcionará.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_5.prison_2_locked_3",
-  text = [[
-Perhaps there is a way
-to force open this old
-lock...
+  id = "dungeon_5.prison_2_locked_3",
+  text = [[
+Puede que haya una
+manera de forzar esta
+vieja cerradura...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_5.puzzle_solved",
-  text = [[
-Somewhere deep within
-the castle, a trigger
-is activated...
+  id = "dungeon_5.puzzle_solved",
+  text = [[
+En algún lugar de las
+profundidades del
+castillo, un mecanismo
+se ha activado...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_5.agahnim_beginning",
-  text = [[
-You were able to pass
-through the security of
-my guards and avoid the
-traps laid in the
-castle.
-I don't care, your
-flight ends here!
+  id = "dungeon_5.agahnim_beginning",
+  text = [[
+Fuiste capaz de pasar
+mis guardias y evitar
+las trampas instaladas
+en el castillo.
+¡Pero no importa, tu
+viaje termina aquí!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_5.agahnim_end",
-  text = [[
+  id = "dungeon_5.agahnim_end",
+  text = [[
 ...$0...........$0
-You defeated me this
-time...
-But we will meet
-again!
+Me has vencido esta
+vez...
+¡ Pero volveremos a
+encontrarnos !
 
-Your little journey
-won't change
-anything...
-Sahasrahla is under
-my control and he will
-tell me where the
-Princess and the eight
-children are...
+Tu pequeño viaje
+no cambiará
+nada...
+Sahasrahla está bajo
+mi control y me 
+dirá dónde están
+Zelda y los ocho
+Hijos de Solarus...
 Ah ah ah ah ah!
-I must leave now. See
-you later!
+Ahora he de irme.
+¡Nos vemos!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_6.welcome",
-  skip = "current",
-  text = [[
-         Level 6
-     Inferno's Maze
+  id = "dungeon_6.welcome",
+  skip = "current",
+  text = [[
+         Nivel 6
+     Laberinto de Inferno
 ]]
 }
 -----------------------
 
 -- Hint for the weak floor
 dialog{
-  id = "dungeon_6.torches_hint",
-  text = [[
-The three lights show
-the way to the fall.
+  id = "dungeon_6.torches_hint",
+  text = [[
+Las tres antorchas
+te mostrarán la 
+manera de caer.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_6.dont_fall_hint",
-  text = [[
-Do not fall, but jump.
+  id = "dungeon_6.dont_fall_hint",
+  text = [[
+No caigas; salta.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_6.close_way_hint",
-  text = [[
-Then close the path
-behind you.
+  id = "dungeon_6.close_way_hint",
+  text = [[
+Después cierra el
+camino tras de ti.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_6.tom",
-  text = [[
-$2$v... Thank you.
-You saved my life.
-You have gone through a
-lengthy journey and
-overcome many ordeals
-since we last met.
+  id = "dungeon_6.tom",
+  text = [[
+$2$v... Gracias.
+Me has salvado la vida.
+Has recorrido un largo
+camino y superado
+numerosas y duras
+pruebas desde que
+la última vez que 
+nos vimos.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_6.tom_revelation",
-  text = [[
-$2I need to confess
-some serious facts...
-Our king's death was
-not accidental.
-I poisoned him.
-I was under Agahnim's
-control...
-He cast a spell on me
-and I lost my free
-will... There is
-nothing I could do...
-When the spell broke I
-realised what had
-happened... Thus I
-decided to retire to
-the cave where we first
-met. Then I was thrown
-in jail while trying
-to resist when Agahnim
-seized control of the
-castle...
-$v... You must now
-travel to Mount Terror.
-Agahnim went there
-to look for Zelda.
-You must first free
-Sahasrahla before the
-sorcerer manages to
-get the information
-he needs...
-Please take this, my
-little contribution
-to your quest...
+  id = "dungeon_6.tom_revelation",
+  text = [[
+$2Necesito confesarte
+algunos hechos graves.
+La muerte de nuestro
+rey no fue casualidad.
+Yo lo envenené, estaba
+bajo el control de
+Agahnim...
+El me lanzo un hechizo
+y perdí el control 
+sobre mí mismo... No
+hubo nada que pudiera
+hacer...
+Cuando el hechizo se
+rompió, me di cuenta
+de lo que había pasado.
+Cuando eso ocurrió,
+decidí el retirarme
+a la cueva donde nos
+vimos por primera vez.
+Entonces me encerraron
+en la cárcel al oponer
+resistencia cuando 
+Agahnim tomó el control
+del castillo...
+$v...Ahora debes viajar
+a la Montaña del
+Terror.
+Agahnim fue allí en
+busca de la Zelda.
+Primero debes liberar a
+Sahasrahla antes de que
+el hechicero se las
+arregle para conseguir
+la información que el
+necesita...
+Por favor, toma esto,
+es una pequeña ayuda
+para tu aventura...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_7.welcome",
-  skip = "current",
-  text = [[
-         Level 7
-     Crystal Temple
+  id = "dungeon_7.welcome",
+  skip = "current",
+  text = [[
+         Nivel 7
+     Templo de Cristal
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_7.code",
-  skip = "all",
-  text = [[
-        4  7  2        
-        6  1  8        
-           3  5        
+  id = "dungeon_7.code",
+  skip = "all",
+  text = [[
+        4  7  2        
+        6  1  8        
+           3  5        
 ]]
 }
 -----------------------
@@ -5939,378 +4899,397 @@ dialog{
 -- The original dialog was a reference
 -- to Link's Awakening.
 dialog{
-  id = "dungeon_7.2f_weak_floor_hint",
-  text = [[
-In soil sleeps secrets,
-beneath your soles...
+  id = "dungeon_7.2f_weak_floor_hint",
+  text = [[
+En el suelo duermen
+secretos, bajo tus
+pies...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_7.2f_dont_fall_alone_hint",
-  text = [[
-The solution was to not
-fall alone.
+  id = "dungeon_7.2f_dont_fall_alone_hint",
+  text = [[
+La solución era
+no caer solo.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_7.sahasrahla",
-  text = [[
-$2$v... Thank you.
-You saved my life.
+  id = "dungeon_7.sahasrahla",
+  text = [[
+$2$v... Gracias.
+Me has salvado la vida.
 
-Had I only been able
-to resist a while
-more...
-Those culprits coaxed
-me into revealing the
-location of Zelda and
-the Solarus children.
-Protect them from all
-danger, before
-something dreadful
-happens...
-They are hiding in a
-palace sitting east
-of the mountains. The
-eight Solarus beings
-must escape from
-Agahnim, else the
-sorcerer could break
-the seal created by
-the Solarus Amulet, the
-relic worn by Zelda,
-necessary to the
-gathering of the
-Triforce shards.
-The mystery of Solarus
-is kept safe inside
-the relic.
-The relic's owner has
-the ability to summon
-the Solarus power to
-seal an object, a
-place or even a world,
-as the seven sages once
-did when they sealed
-away the Golden Land.
-Zelda is the heiress of
-that power. She used it
-to seal the Triforce
-shards, using the eight
-beings created by the
-Solarus.
-Thus, as long as she
-alone knows the secret
-of the relic, she alone
-masters the Triforce's
-seal. This is why you
-must protect the seal.
+Si pudiera haber
+resistido sólo un
+poco más...
+Aquellos delincuentes
+me persuadieron para
+que les revelase la
+ubicación de Zelda y
+los Jóvenes Solarus.
+Protégelos de cualquier
+peligro, antes de que
+algo les ocurra...
+Ellos están ocultos en
+en un palacio situado
+al este de las
+montañas. Los ocho
+Solarus no deben caer
+en manos de Agahnim,
+de lo contrario
+el hechicero podría
+romper el sello creado
+por el amuleto de 
+Solarus, la reliquia
+que porta Zelda, y 
+que se necesita 
+para  conseguir 
+los fragmentos de
+la trifuerza.
+El misterio de Solarus
+se mantiene a salvo en
+el interior de la 
+reliquia.
+El portador de esta
+reliquia, tiene la 
+habilidad de invocar
+el poder de Solarus
+para mantener encerrado
+en su interior un
+objeto, un lugar o 
+incluso un mundo, como
+los siete sabios
+hicieron cuando 
+encerraron la Tierra
+Dorada.
+Zelda es la heredera
+de ese poder. Ella lo
+usa para encerrar los
+fragmentos de la
+trifuerza, a través de
+los ocho seres creados
+por Solarus.
+Así, mientras solo ella
+sepa el secreto de la
+reliquia, solo ella
+sera quien controle el
+sello de la trifuerza.
+Esta es la razón por
+la que debes proteger
+el sello.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_8.welcome",
-  skip = "current",
-  text = [[
-         Level 8
-   Rock Peaks Dungeon
+  id = "dungeon_8.welcome",
+  skip = "current",
+  text = [[
+         Nivel 8
+   Mazmorra de la Cima Rocosa (“Mazmorra Rocosa” o “Cima Rocosa”)  
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_8.hint_1F",
-  skip = "current",
-  text = [[
-Throw yourself into
-the depths of the
-dungeon and carry on
-your journey.
+  id = "dungeon_8.hint_1F",
+  skip = "current",
+  text = [[
+Lánzate a las
+profundidades de la
+mazmorra y continúa
+con tu aventura. 
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_8.hint_B1",
-  skip = "current",
-  text = [[
-If you are stuck, fight
-the spades with spades.
+  id = "dungeon_8.hint_B1",
+  skip = "current",
+  text = [[
+Si te ves encallado,
+combate las palas con
+más palas.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_8.billy",
-  text = [[
-You did not think you
-would find your old
-buddy Billy the
-Reckless, greatest
-hero of all times?!
-The princess and the
-eight childs are not
-here anymore.
-They did find shelter
-in my palace, but I
-took the responsability
-of handing them to
+  id = "dungeon_8.billy",
+  text = [[
+¿¡Ni se te ocurrió que
+podrías encontrarte
+con tu viejo amigo
+Billy el Temerario,
+el héroe más grande
+de todos los tiempos?!
+La Princesa y los
+niños no están aquí.
+Encontraron refugio
+en mi palacio, pero mi
+misión era la de
+entregarlos a
 Agahnim...
 
 
-Now, it is your turn
-to die!
+¡Ahora, prepárate para
+morir!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_8.agahnim",
-  text = [[
-$1That Billy was really
-incapable of anything.
-Seeing as how he, along
-with all my other
-minions, could not end
-you, little parasite, I
-am making it a private
-matter. You will
-disappear once and for
-all. And then, finally,
-I will get my hands on
-the Triforce and extend
-my power to the whole
-world. Ah ah ah ah!
+  id = "dungeon_8.agahnim",
+  text = [[
+$1Finalmente Billy no
+ha sido capaz de nada. 
+Viendo que ni él ni
+mis otros acólitos han
+podido contigo, pequeño
+parásito, va a ser 
+hora que me encargue
+personalmente de ti.
+Te haré desaparecer
+para siempre. Y será
+entonces cuando ponga
+mis manos sobre la
+Trifuerza y extienda
+mi poder por el mundo.
+¡Mua ja ja ja ja!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_8.agahnim_middle",
-  text = [[
+  id = "dungeon_8.agahnim_middle",
+  text = [[
 $1$0...$0.............$0
-You are rather tough,
-that is no lie.
-But what about this?
+Eres bastante duro,
+la verdad. Pero,
+¿qué te parece
+esto?
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_8.agahnim_end",
-  text = [[
+  id = "dungeon_8.agahnim_end",
+  text = [[
 $1$0...$0 .........$0
-I am defeated...$0
-This is the end...$0
-I was not up to it...
+He sido derrotado...$0
+esto es el fin...$0
+No estaba a la altura...
 
 
-I bow down before your
-bravery.$0
+Me arrodillo ante tu
+valentía.$0
 
-Since I was not able
-to defeat you, it is
-now time for me to free
-my Master...
-Ah ah ah ah ah ah!!!
+Ya que no he sido
+capaz de derrotarte,
+es hora de que libere
+a mi Maestro...
+¡¡¡Ah ah ah ah ah ah!!!
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_8.ganon",
-  text = [[
-$1Thus, you have
-managed to defeat my
-alter ego, the dark
-sorcerer Agahnim...
-That was pretty useless
-considering it made him
-free me, the dark times
-are not over! As a
-reward for your work,
-you, the Princess as
-well as the eight
-children, are invited
-to join me in my
-palace. I will take
-the Triforce back and
-you shall be the first
-to witness this amazing
-event.
-Let your spirit travel
-freely...
+  id = "dungeon_8.ganon",
+  text = [[
+$1Así que has conseguido
+derrotar a mi alter
+ego, el oscuro
+hechicero Agahnim...
+Algo bastante inútil,
+puesto que ello me ha
+liberado, ¡los tiempos
+de oscuridad no han
+acabado! Como 
+recompensa por tu 
+trabajo, tú, la 
+Princesa y también los
+ocho niños, estáis 
+invitados a mi 
+palacio.
+Allí recuperaré la
+Trifuerza y seréis los
+primeros testigos de
+tal maravilla.
+Deja que tu espíritu
+viaje libre...
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_9.welcome",
-  skip = "current",
-  text = [[
-         Level 9
-   Shrine of Memories
+  id = "dungeon_9.welcome",
+  skip = "current",
+  text = [[
+         Nivel 9
+   Capilla de las Memorias
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_9.clockwise_switches_hint",
-  skip = "all",
-  text = [[
-Go clockwise.
+  id = "dungeon_9.clockwise_switches_hint",
+  skip = "all",
+  text = [[
+Ve en sentido horario.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_9.3f_door_b_hint_0",
-  skip = "all",
-  text = [[
-To the right.
+  id = "dungeon_9.3f_door_b_hint_0",
+  skip = "all",
+  text = [[
+Ve a la derecha.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_9.3f_door_b_hint_2",
-  skip = "all",
-  text = [[
-To the left.
+  id = "dungeon_9.3f_door_b_hint_2",
+  skip = "all",
+  text = [[
+Hacia la izquierda.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_9.3f_door_b_hint_3",
-  skip = "all",
-  text = [[
-Down.
+  id = "dungeon_9.3f_door_b_hint_3",
+  skip = "all",
+  text = [[
+Abajo.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_9.5f_childs_hint",
-  skip = "all",
-  text = [[
-$1To defeat Ganon,
-the torches must be
-lit clockwise.
+  id = "dungeon_9.5f_childs_hint",
+  skip = "all",
+  text = [[
+$1Para vencer a Ganon,
+las antorchas deben
+encenderse en el
+sentido horario.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_9.boss",
-  text = [[
-There you are, young
-weakling.
+  id = "dungeon_9.boss",
+  text = [[
+Aquí estás, joven
+enclenque.
 
-I have been waiting
-for you for a long
-time now.
-The time for revenge
-has finally come!
-Prepare to die.
+He estado esperándote
+durante mucho tiempo.
+¡Al fin ha llegado la
+hora de mi venganza!
+
+Prepárate para morir.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_9.zelda",
-  text = [[
-$1$v... Thank you.
-Your victory on evil
-shows once again that
-wisdom and justice
-always triumph over
-the forces of evil.
-Thanks to your
-accomplishments, our
-world has been restored
-to its original state.
-The Kingdom of Hyrule
-is whole once again.
+  id = "dungeon_9.zelda",
+  text = [[
+$1$v... Gracias.
+Tu victoria sobre el
+mal demuestra de nuevo 
+que la sabiduría
+y la justicia siempre
+prevalecerán ante
+las fuerzas del mal.
+Gracias a tu hazaña,
+nuestro mundo ha sido
+devuelto a su estado
+original. El Reino
+de Hyrule está entero
+de nuevo.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_9.zelda_children",
-  text = [[
-$1I must destroy this
-relic. The power of
-Solarus is too
-dangerous. By
-destroying it, there
-will be no way to
-restore the Triforce
-from its fragments.
-Even if it is for a
-good purpose as you
-once used it, the evil
-will always try to
-reach for it, like
-Agahnim and Ganondorf.
-With the power of the
-eight beings created
-by the Solarus Essence,
-the relic could break
-the Seal.
-Now you understand why
-I must destroy it.
+  id = "dungeon_9.zelda_children",
+  text = [[
+$1Debo destruir esta
+relíquia. El poder de
+Solarus es demasiado
+peligroso. 
+Pero destuyéndolo,
+no habrá forma de 
+restaurar la Trifuerza
+de sus fragmentos.
+Incluso si es para un
+buen fin como tú una
+vez la usaste, el mal
+siempre tratará de
+llegar a él, al igual
+que Agahnim y
+Ganondorf.
+Con el poder de los 
+ocho seres creados por
+la Esencia Solarus, la
+reliquia podría romper
+el sello.
+Ahora entiendes por qué
+debo que destruirlo.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_9.zelda_end",
-  text = [[
-$1It is over.$0
+  id = "dungeon_9.zelda_end",
+  text = [[
+$1Es el final.$0
 
 
-The power of the
-Solarus has vanished
-forever.
-The Triforce will
-remain sealed until
-time ends.
+El poder de Solarus
+ha desaparecido
+para siempre.
+La Trifuerza quedará
+sellada hasta el fin
+de los tiempos.
 ]]
 }
 -----------------------
 
 dialog{
-  id = "dungeon_10.welcome",
-  skip = "current",
-  text = [[
-     Secret level
-     Skyward Tower
+  id = "dungeon_10.welcome",
+  skip = "current",
+  text = [[
+     Nivel secreto
+     Torre Celestial
 ]]
 }
 -----------------------
 
 dialog{
-  id = "credits_1",
-  text = [[
-$1        Credits$0
+  id = "credits_1",
+  text = [[
+$1        Créditos$0
 
 
-      Programming:$0
+      Programación:$0
 Christopho$0
 ]]
 }
 -----------------------
 
 dialog{
-  id = "credits_2",
-  text = [[
-$1   Maps and puzzles:$0
+  id = "credits_2",
+  text = [[
+$1   Mapas y puzzles:$0
 
 
 Christopho$0
@@ -6324,15 +5303,15 @@ Mymy$0
 -----------------------
 
 dialog{
-  id = "credits_3",
-  text = [[
-$1   Graphical assets:$0
+  id = "credits_3",
+  text = [[
+$1   Elementos gráficos:$0
 Newlink$0
 
 Neovyse$0
 @PyroNet$0
 Djipi$0
-$1        Music:$0
+$1        Música:$0
 Marine$0
 Metallizer$0
 ]]
@@ -6340,13 +5319,13 @@ Metallizer$0
 -----------------------
 
 dialog{
-  id = "credits_4",
-  text = [[
-$1        Story:$0
+  id = "credits_4",
+  text = [[
+$1        Historia:$0
 Guillaume F.$0
 Christopho$0
-$1        English
-     localization :$0
+$1        Localización
+     al castellano:$0
 
 Alex_XelA$0
 Rypervenche$0
@@ -6356,29 +5335,1026 @@ Jeff$0
 -----------------------
 
 dialog{
-  id = "credits_6",
-  text = [[
-$1        Tests:$0
+  id = "credits_6",
+  text = [[
+$1        Pruebas:$0
 
 
 Thyb$0
 Morwenn$0
 BenObiWan$0
-$1   Special thanks to:$0
+$1   Agradecimientos a:$0
 
 
-19oj19$0           Yohann$0
-MultiSync_XV17$0   Krytzz$0
+19oj19$0           Yohann$0
+MultiSync_XV17$0   Krytzz$0
 HelpTheWretched$0
 
-        Nintendo$0
+        Nintendo$0
 
 
-Thanks for playing!$0
+¡Gracias por jugar!$0
 
 
 
- www.solarus-games.org$0
+ www.solarus-games.org$0
+]]
+}
+-----------------------
+
+-- Zelda Mystery of Solarus DX:
+-- Spanish dialogs (part 5)
+
+-- ****** Please respect the limit of each line! ******
+-- 23 chars for normal lines,
+-- 20 chars for dialogs with an icon or lines that are answers to a question,
+-- 17 chars for lines with both an icon and an answer.
+-- Each dialog ends with a comment with dashes indicating the maximum line size.
+-- Please don't exceed the maximum size of lines,
+-- and don't break lines too early either.
+-- Don't try to reproduce the exact same lines: it's normal for dialogs to be
+-- shorter or longer than in the language you are translating from.
+-- It's also normal for lines to end on different words.
+
+-- ****** Typo warning! ******
+-- Remember that ponctuation characters like ! ? : ; are preceeded by a space
+-- character in French and NOT in English.
+
+-- ****** More documentation ******
+-- If you have a doubt, please refer to the doc:
+-- http://www.solarus-games.org/doc/latest/dialog_syntax.html
+-- or just ask on IRC (see below).
+--
+-- ****** Team work *******
+-- Please join our IRC channel to organize the work with us:
+-- irc.zelda-solarus.com #solarus
+-- Before translating any dialog, please tell us on IRC to avoid
+-- conflicts.
+
+-- Thanks for your contribution!
+
+-- Grandma: beginning of the game.
+dialog{
+  id = "grandma_house.sword",
+  skip = "all",
+  text = [[
+Monstruos acechan por
+los campos. Eso no es
+buena señal: Estoy
+segura de que algo
+terrible ha sucedido.
+
+¿Estás buscando una
+espada? Con mi edad no
+sabría de esas cosas...
+Mejor ve a visitar al
+herrero en la cueva al
+noroeste de la aldea.
+Es un poco gruñón pero
+podrá ayudarte.
+]]
+}
+-----------------------
+
+-- Grandma: after finding the sword.
+dialog{
+  id = "grandma_house.find_sahasrahla",
+  skip = "all",
+  text = [[
+Con esta espada, puedes
+cortar a través de los
+arbustos que protegen
+la aldea. ¿Buscas a
+Sahasrahla el Antiguo,
+no es así?
+Su casa está al
+suroeste de aquí, cerca
+de la pastelería. ¿No
+lo recordabas?
+]]
+}
+-----------------------
+
+-- Grandma: after finding the Earth Key.
+dialog{
+  id = "grandma_house.go_lyriann_cave",
+  skip = "all",
+  text = [[
+Esta llave te permite
+entrar a la caverna
+ubicada al norte de la
+aldea.
+]]
+}
+-----------------------
+
+-- Grandma: after the village cave.
+dialog{
+  id = "grandma_house.go_dungeon_1",
+  skip = "all",
+  text = [[
+Uno de los cuatro niños
+que fueron secuestrados
+podría estar retenido
+en una sombría mazmorra
+en el bosque al sur de
+la aldea. ¿A qué ESTÁS
+esperando?
+]]
+}
+-----------------------
+
+-- Grandma: after dungeon 1.
+dialog{
+  id = "grandma_house.go_back_sahasrahla",
+  skip = "all",
+  text = [[
+Esta vez va mas allá de
+mi conocimiento.
+Sahasrahla sería de
+mejor ayuda.
+]]
+}
+-----------------------
+
+-- Grandma: after finding the bow.
+dialog{
+  id = "grandma_house.go_twin_caves",
+  skip = "all",
+  text = [[
+¿Así que encontraste un
+Arco? Creo que puedes
+acceder a las cavernas
+gemelas al sur, y
+descubrir los secretos
+que contienen. ¡Ve a por
+ellas!
+]]
+}
+-----------------------
+
+-- Grandma: after finding the Rock Key.
+dialog{
+  id = "grandma_house.go_dungeon_2",
+  skip = "all",
+  text = [[
+¡Qué buena llave la que
+tienes! ¿No es hora de
+que busques al segundo
+niño perdido?
+]]
+}
+-----------------------
+
+dialog{
+  id = "grandma_house.go_telepathic_booth",
+  skip = "all",
+  text = [[
+¿Qué es lo que dices? 
+¡No puedo oírte
+bien! A mi edad mis
+oídos no funcionan tan
+bien como antes... ¿Qué
+tal comunicarnos por
+telepatía? Es moderna y
+mucho mas conveniente
+para mi anciano cuerpo.
+]]
+}
+-----------------------
+
+dialog{
+  id = "grandma_house.dark_world_enabled",
+  skip = "all",
+  text = [[
+Agahnim tomó control
+del reino... El mal
+crece a lo largo de su
+camino. Uno de los
+soldados del castillo,
+Tom, es considerado
+culpable de haberse
+llevado a Sahasrahla,
+¡pero eso es imposible!
+¡Además algunos bandidos
+saquearon la Casa de
+las Rupias!
+]]
+}
+-----------------------
+
+dialog{
+  id = "telepathic_booth.not_working",
+  skip = "all",
+  text = [[
+¿Hola? ... ¿Hola? ...
+¿Hay alguien ahí? ...
+]]
+}
+-----------------------
+
+dialog{
+  id = "telepathic_booth.go_sahasrahla",
+  skip = "all",
+  text = [[
+$v, ¿me oyes?
+¡Soy la Abuela Lyly!
+¡La telepatía funciona!
+Deberías visitar a
+Sahasrahla, tiene
+algunas cosas para ti.
+]]
+}
+-----------------------
+
+dialog{
+  id = "telepathic_booth.go_twin_caves",
+  skip = "all",
+  text = [[
+$v, ¿me oyes?
+¡Soy la Abuela Lyly!
+¡La telepatía funciona!
+Algo me dice que las
+cavernas gemelas al sur
+de la mazmorra del
+bosque esconden un
+tesoro importante...
+]]
+}
+-----------------------
+
+dialog{
+  id = "telepathic_booth.dungeon_2_not_really_finished",
+  skip = "all",
+  text = [[
+$v, ¿me oyes?
+¡Soy la Abuela Lyly!
+¡La telepatía funciona!
+¿Pero estás seguro de
+que encontraste todo en
+la Caverna del Roc?
+]]
+}
+-----------------------
+
+dialog{
+  id = "telepathic_booth.go_master_arbror",
+  skip = "all",
+  text = [[
+$v, ¿me oyes?
+¡Soy la Abuela Lyly!
+¡La telepatía funciona!
+Parece que hay una vía
+a través de los árboles
+al norte de aquí. Se
+dice que el Maestro
+Arbor ronda las tierras
+inundadas por el río.
+]]
+}
+-----------------------
+
+dialog{
+  id = "telepathic_booth.go_billy",
+  skip = "all",
+  text = [[
+$v, ¿me oyes?
+¡Soy la Abuela Lyly!
+¡La telepatía funciona!
+¿Conoces a Billy el
+Temerario? ¡Parece que
+volvió sano y salvo de
+su viaje al Monte
+Terror!
+]]
+}
+-----------------------
+
+dialog{
+  id = "telepathic_booth.shop",
+  skip = "all",
+  text = [[
+$v, ¿me oyes?
+¡Soy la Abuela Lyly!
+¡La telepatía funciona!
+Pero los tiempos son
+difíciles. La
+desolación se ha
+extendido a lo largo
+del devastado reino...
+Es como si la vida
+misma se hubiera
+detenido. ¡Excepto por
+la tienda de la aldea!
+¡Desde que solo venden
+armas para sobrevivir
+están ganando Rupias de
+verdad!
+]]
+}
+-----------------------
+
+-- Blacksmith dialog.
+dialog{
+  id = "smith_cave.without_sword",
+  question = true,
+  text = [[
+Forjé esta gran Espada
+de bronce con mis propias
+manos. ¡Puedes
+tenerla por solo 75
+Rupias!
+
+Solo con tu escudo no
+llegarás muy lejos.
+
+Entonces, ¿interesado?
+Sí
+No
+]]
+}
+-----------------------
+
+-- Blacksmith: already bought the sword.
+dialog{
+  id = "smith_cave.with_sword",
+  text = [[
+¡No vayas a romper mi
+Espada porque no te
+forjaré otra!
+]]
+}
+-----------------------
+
+-- Blacksmith: refused to buy the sword.
+dialog{
+  id = "smith_cave.not_buying",
+  text = [[
+Depende de ti, pero no
+vayas a volver llorando
+si te metes en serios
+problemas.
+]]
+}
+-----------------------
+
+-- Blacksmith: not enough money to buy the sword.
+dialog{
+  id = "smith_cave.not_enough_money",
+  text = [[
+¿Estás tratando de
+estafarme? ¡No tienes
+suficientes Rupias!
+]]
+}
+-----------------------
+
+-- Blacksmith: buying the sword.
+dialog{
+  id = "smith_cave.thank_you",
+  text = [[
+Muchas gracias. Para
+blandir tu espada,
+pulsa C. ¡O mantén
+pulsada la tecla C para
+lanzar un ataque
+giratorio!
+]]
+}
+-----------------------
+
+-- Shop: talking to the NPC.
+dialog{
+  id = "lyriann_shop.salesman",
+  text = [[
+Bienvenido. Escoge el
+objeto que desees
+comprar.
+]]
+}
+-----------------------
+
+-- Shop: watching the Apples.
+dialog{
+  id = "lyriann_shop.apples",
+  next = "_unknown",
+  text = [[
+¡Tres manzanas recién
+cortadas esta mañana!
+
+Cada manzana recupera
+un Corazón.
+]]
+}
+-----------------------
+
+-- Shop: watching the Lamp.
+dialog{
+  id = "lyriann_shop.lamp",
+  next = "_unknown",
+  text = [[
+Una Lámpara.
+¡Viaja por lugares
+oscuros!
+]]
+}
+-----------------------
+
+-- Shop: watching the Heart.
+dialog{
+  id = "lyriann_shop.heart",
+  next = "_unknown",
+  text = [[
+Un Corazón para uso
+inmediato.
+]]
+}
+-----------------------
+
+-- Shop: watching the Large or Huge Bomb Bag.
+dialog{
+  id = "lyriann_shop.bomb_bag",
+  next = "_unknown",
+  text = [[
+Un Saco de Bombas más
+grande. ¡Muy de moda en
+estos días!
+]]
+}
+-----------------------
+
+-- Shop: watching the Large or Huge Quiver.
+dialog{
+  id = "lyriann_shop.quiver",
+  next = "_unknown",
+  text = [[
+Un Carcaj grande.
+Útil en estos tiempos.
+]]
+}
+-----------------------
+
+-- Shop: watching the Large Wallet.
+dialog{
+  id = "lyriann_shop.rupee_bag",
+  next = "_unknown",
+  text = [[
+Una nueva Bolsa para
+cargar más Rupias.
+]]
+}
+-----------------------
+
+-- Bakery: talking to the NPC.
+dialog{
+  id = "cake_shop.seller.choose_item",
+  text = [[
+Bienvenido. Escoge el
+pastel que desees
+comprar.
+]]
+}
+-----------------------
+
+-- Bakery: watching the Pain au Chocolat.
+dialog{
+  id = "cake_shop.pain_au_chocolat",
+  next = "_unknown",
+  text = [[
+Un delicioso Pan de
+Chocolate que recupera
+tres Corazones.
+]]
+}
+-----------------------
+
+-- Bakery: watching the Croissant.
+dialog{
+  id = "cake_shop.croissant",
+  next = "_unknown",
+  text = [[
+Este crujiente Cruasán
+recuperará siete
+Corazones.
+]]
+}
+-----------------------
+
+-- Bakery: watching the Apple Pie.
+dialog{
+  id = "cake_shop.apple_pie",
+  next = "_unknown",
+  text = [[
+Un Pastel de Manzana.
+¡Horneado con tu ayuda!
+]]
+}
+-----------------------
+
+-- Bakery: leaving the store.
+dialog{
+  id = "cake_shop.dont_leave",
+  question = true,
+  text = [[
+¡Hey, espera!
+Estoy buscando manzanas
+para hornear un Pastel
+de Manzana. Seis serían
+suficientes.
+
+¿Quieres ayudar?
+Sí
+No
+]]
+}
+-----------------------
+
+-- Bakery: talking to the NPC after the first request about Apples.
+dialog{
+  id = "cake_shop.seller.ask_apples_again",
+  skip = "all",
+  question = true,
+  text = [[
+Aún estoy buscando seis
+manzanas para hornear
+un gran Pastel de
+Manzana.
+
+¿Quieres ayudar?
+Sí
+No
+]]
+}
+-----------------------
+
+-- Bakery: accepted to help her, having not enough Apples yet.
+dialog{
+  id = "cake_shop.not_enough_apples",
+  text = [[
+Oh, no tienes
+suficientes manzanas...
+Vuelve más tarde.
+]]
+}
+-----------------------
+
+-- Bakery: accepted to help her, having no Apples yet.
+dialog{
+  id = "cake_shop.no_apples",
+  text = [[
+Gracias... ¡Vuelve a
+visitarme si encuentras
+algunas!
+]]
+}
+-----------------------
+
+-- Bakery: accepted to help her, having enough Apples.
+dialog{
+  id = "cake_shop.thank_you",
+  text = [[
+Oh, gracias, ¡Qué
+amable por tu parte!
+
+Lo siento, solo tengo
+esta Botella vacía...
+
+Es una recompensa
+pequeña pero estoy
+seguro que harás buen
+uso de ella.
+]]
+}
+-----------------------
+
+-- Sahasrahla: first talk.
+dialog{
+  id = "sahasrahla_house.beginning",
+  next = "sahasrahla_house.beginning.12",
+  text = [[
+Oh, $v, escuchaste
+mi llamada.
+Tengo cosas importantes
+que decirte. Estamos en
+tiempos críticos.
+Cuatro de los ocho
+hijos de Solarus han
+sido secuestrados...
+Temo que la Trifuerza
+está en gran peligro.
+Alguien quiere
+aprovechar la muerte
+del Rey y apoderarse
+de la Trifuerza.
+¿Quién podría haber
+hecho eso?
+Seguro que Ganondorf y
+sus secuaces...
+El Sello de los Siete
+Sabios se debilitó
+después de la muerte de
+nuestro pobre Rey.
+Ganon pudo haber
+logrado escapar del
+Mundo Oscuro.
+¡No podemos permitirle
+adquirir semejante
+poder!
+Puedo sentir el coraje
+en ti, $v.
+¿Te sientes capaz de
+viajar por los más
+peligrosos lugares de
+esta tierra para salvar
+a los niños y
+]]
+}
+-----------------------
+
+dialog{
+  id = "sahasrahla_house.beginning.12",
+  skip = "none",
+  question = true,
+  next = "sahasrahla_house.beginning.thanks",
+  next2 = "sahasrahla_house.beginning.insisting",
+  text = [[
+proteger la Trifuerza?
+¡Estoy a la altura!
+¡Nunca!
+]]
+}
+-----------------------
+
+dialog{
+  id = "sahasrahla_house.beginning.insisting",
+  question = true,
+  next = "sahasrahla_house.beginning.thanks",
+  next2 = "sahasrahla_house.beginning.insisting",
+  text = [[
+$v, debo insistir,
+eres nuestra única
+esperanza para proteger
+al reino...
+¡De acuerdo!
+¡Ni hablar!
+]]
+}
+-----------------------
+
+-- Sahasrahla: accepted the quest.
+dialog{
+  id = "sahasrahla_house.beginning.thanks",
+  next = "sahasrahla_house.give_world_map",
+  text = [[
+Sabía que podría contar
+con tu coraje.
+]]
+}
+-----------------------
+
+dialog{
+  id = "sahasrahla_house.give_world_map",
+  text = [[
+Aquí tienes un pequeño
+objeto que encontrarás
+útil en tu aventura...
+]]
+}
+-----------------------
+
+-- Sahasrahla: talking again after the quest has been accepted.
+dialog{
+  id = "sahasrahla_house.quest_accepted",
+  text = [[
+Deberías revisar la
+caverna, almaceno
+objetos que podrías
+utilizar. Nada muy
+lujoso supongo, ha
+pasado mucho tiempo
+desde que volví de
+allí...
+]]
+}
+-----------------------
+
+-- Sahasrahla: after dungeon 1.
+dialog{
+  id = "sahasrahla_house.dungeon_1_finished",
+  next = "sahasrahla_house.go_grandma",
+  text = [[
+Buen trabajo,
+conseguiste superar los
+retos de la mazmorra
+del bosque.
+Antes de proseguir tu
+viaje, vuelve a mi
+cueva, quizás puedas 
+encontrar allí nuevos
+objetos.
+]]
+}
+-----------------------
+
+-- Sahasrahla: watching the books.
+dialog{
+  id = "sahasrahla_house.memories",
+  question = true,
+  next = "sahasrahla_house.memories.read",
+  text = [[
+Memorias de Sahasrahla.
+
+¿Leerlas?
+Sí
+No
+]]
+}
+-----------------------
+
+dialog{
+  id = "sahasrahla_house.memories.read",
+  text = [[
+¡Es muy largo!
+]]
+}
+-----------------------
+
+-- Sahasrahla: seen the frozen door.
+dialog{
+  id = "sahasrahla_house.frozen_door_advice",
+  skip = "all",
+  text = [[
+¿La puerta está
+congelada?
+Intenta fundir el
+hielo con algo de
+agua.
+]]
+}
+-----------------------
+
+-- Sahasrahla: default dialog, nothing special to say right now.
+dialog{
+  id = "sahasrahla_house.default",
+  skip = "all",
+  next = "sahasrahla_house.go_grandma",
+  text = [[
+Tengo fe en ti.
+Que el valor y la
+sabiduría te guíen.
+]]
+}
+-----------------------
+
+dialog{
+  id = "sahasrahla_house.go_grandma",
+  text = [[
+Si te pierdes durante
+la aventura, ve a 
+visitar a la Abuela
+Lyly, al este del
+pueblo. Ella es una
+vieja amiga y lo sabe 
+todo sobre este lugar.
+]]
+}
+-----------------------
+
+-- Sahasrahla: watching the frozen door.
+dialog{
+  id = "sahasrahla_house.frozen_door",
+  skip = "all",
+  text = [[
+Esta puerta está
+congelada. ¡Debe haber
+alguna manera de 
+derretir el hielo!
+]]
+}
+-----------------------
+
+-- Boomerang cave: first dialog with Tom.
+dialog{
+  id = "lyriann_cave.tom.first_time",
+  question = true,
+  next2 = "lyriann_cave.tom.refuse_help",
+  text = [[
+Hola, joven aventurero.
+Soy Tom, un ex-guardia
+de nuestro último Rey.
+No pensaba que nadie
+me encontraría aquí.
+¿Qué haces en esta
+triste caverna?
+¿Qué? ¿La Trifuerza
+está en peligro?
+$0Nada de esto hubiera
+pasado si nuestro Rey
+estuviera todavía aquí
+para protegerla.
+¿Estás intentando
+resolver los misterios
+de esta caverna?
+Este lugar rebosa
+de enigmas, tesoros
+y peligros. ¡Pareces
+muy valiente!
+Por favor, acepta mi
+ayuda.. He fallado. No
+fui capaz de proteger a
+nuestro Rey. Dame la
+oportunidad de 
+enmendarlo. ¿Aceptas
+mi ayuda?
+Sí
+No
+]]
+}
+-----------------------
+
+-- Boomerang cave: talking to Tom again without the Boomerang.
+dialog{
+  id = "lyriann_cave.tom.not_first_time",
+  question = true,
+  next2 = "lyriann_cave.tom.refuse_help",
+  text = [[
+Joven explorador,
+acepta mi ayuda. He
+fallado, no fui capaz
+de proteger a nuestro
+Rey. Dame la
+oportunidad de 
+enmendarlo.
+¿Aceptas mi ayuda?
+Sí
+No
+]]
+}
+-----------------------
+
+-- Boomerang cave: accepted Tom's help.
+dialog{
+  id = "lyriann_cave.tom.accept_help",
+  text = [[
+Gracias. Puedo
+prestarte esto, espero
+que te sea de utilidad.
+No olvides devolvérmelo
+cuando hayas terminado.
+¡Si consigues obtener
+el Contenedor de
+Corazón, estaré muy
+impresionado!
+]]
+}
+-----------------------
+
+-- Boomerang cave: refused Tom's help.
+dialog{
+  id = "lyriann_cave.tom.refuse_help",
+  text = [[
+Bien, como desees.
+]]
+}
+-----------------------
+
+-- Boomerang cave: talking to Tom again, having the Boomerang, and the maze not finished yet.
+dialog{
+  id = "lyriann_cave.tom.not_finished",
+  question = true,
+  text = [[
+¿Está todo bien?
+Usa mi Bumerán para
+superar obstáculos.
+Necesitarás llegar
+a dominarlo si quieres
+encontrar todos los
+secretos de esta
+caverna... No olvides
+que el Bumerán siempre
+vuelve a ti, incluso
+si te has movido.
+
+¿Qué quieres hacer?
+Continuar
+Devolver el Bumerán
+]]
+}
+-----------------------
+
+-- Boomerang cave: just gave the Boomerang back and the maze is not finished yet.
+dialog{
+  id = "lyriann_cave.tom.gave_boomerang_back",
+  text = [[
+Gracias. Vuelve a verme
+de nuevo si necesitas
+mi ayuda.
+]]
+}
+-----------------------
+
+-- Boomerang cave: trying to leave the cave with Tom's Boomerang.
+dialog{
+  id = "lyriann_cave.tom.leaving",
+  text = [[
+¡Hey! ¡Espera!
+]]
+}
+-----------------------
+
+-- Boomerang cave: trying to leave the cave with Tom's Boomerang (maze not finished).
+dialog{
+  id = "lyriann_cave.tom.leaving.cavern_not_finished",
+  text = [[
+¿Has terminado de
+explorar? No creo que
+hayas encontrado
+todo...
+Si no te importa,
+devuélveme mi
+Bumerán. ¡Necesitas
+cierto nivel de 
+habilidad para usarlo!
+Vuelve a verme de nuevo
+si necesitas mi ayuda.
+]]
+}
+-----------------------
+
+-- Boomerang cave: giving the Boomerang back (maze finished).
+dialog{
+  id = "lyriann_cave.tom.cavern_finished",
+  next = "lyriann_cave.tom.see_you_later",
+  text = [[
+¿Resolviste el misterio
+de esta caverna?
+¡Impresionante!
+Eres tan habilidoso
+como valiente.
+
+Si no te importa,
+devuélveme mi Bumerán.
+]]
+}
+-----------------------
+
+-- Boomerange cave: last dialog of Tom.
+dialog{
+  id = "lyriann_cave.tom.see_you_later",
+  text = [[
+Si quieres, puedo 
+echarte una mano 
+durante la aventura, 
+siempre que lo
+necesites.
+]]
+}
+-----------------------
+
+-- Dungeon 1 entrance: approaching the cliff (Boomerang cave finished).
+dialog{
+  id = "outside_world.tom_dungeon_1_entrance.hey",
+  text = [[
+¡Hey!
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.tom_dungeon_1_entrance.need_help",
+  text = [[
+¿Necesitas ayuda?
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.tom_dungeon_1_entrance.let_me_see",
+  text = [[
+Hmmm, apuesto a que
+hay una escalera
+escondida aquí. Vamos
+a ver...
+]]
+}
+-----------------------
+
+-- Tom has found a ladder and is opening the access to dungeon 1.
+dialog{
+  id = "outside_world.tom_dungeon_1_entrance.open",
+  text = [[
+Creo que puedo
+moverla.
+$0Voilà!
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.tom_dungeon_1_entrance.finished",
+  text = [[
+Ten cuidado, parece
+muy oscuro ahí dentro.
 ]]
 }
 -----------------------

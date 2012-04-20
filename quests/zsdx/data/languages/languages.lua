@@ -9,6 +9,11 @@ language{
   default = true
 }
 
+language{
+  code = "es",
+  name = "Español"
+}
+
 --[[
 language{
   code = "de",

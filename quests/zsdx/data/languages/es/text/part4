@@ -312,7 +312,7 @@ dialog{
   id = "billy_cave.give_croissant_without",
   text = [[
 ¡Ni siquiera tienes un
-cruasán! ¡Ladrón!
+Cruasán! ¡Ladrón!
 ]]
 }
 -----------------------
@@ -320,7 +320,7 @@ cruasán! ¡Ladrón!
 dialog{
   id = "billy_cave.give_croissant",
   text = [[
-¿Un cruasán?
+¿Un Cruasán?
 ¿Acaso estás bromeando?
 ]]
 }
@@ -330,8 +330,8 @@ dialog{
   id = "billy_cave.give_apple_pie_without",
   text = [[
 ¡Pfft! ¡Ni siquiera
-tienes un pastel de
-manzana!
+tienes un Pastel de
+Manzana!
 ]]
 }
 -----------------------
@@ -372,12 +372,12 @@ dialog{
   id = "outside_world.surprise_wall_guy.give_me_apple_pie",
   question = true,
   text = [[
-¡Dame ese pastel de
-manzana!
+¡Dame ese Pastel de
+Manzana!
 
 ¿Y bien?
-Vale
-De ninguna forma
+De acuerdo
+De ninguna manera
 ]]
 }
 -----------------------
@@ -398,8 +398,9 @@ dialog{
   id = "outside_world.surprise_wall_guy.thanks",
   next = "outside_world.surprise_wall_guy.open",
   text = [[
-¡Súper! Comeré el
-pastel con aprecio.
+¡Súper! Disfrutaré
+mucho comiéndome el
+pastel.
 ]]
 }
 -----------------------
@@ -454,7 +455,7 @@ dialog{
 ¡Bienvenido a la Tienda
 del Lago! Nuestros
 artículos son los más
-baratos del área. ¿Qué
+baratos de la zona.¿Qué
 puedo hacer por tí?
 ]]
 }
@@ -508,8 +509,8 @@ aquí??
 ¿Te gustaría ser el
 primero en probar mi
 nuevo juego? Una
-partida cuesta 
-30 Rupias.
+partida cuesta 30
+Rupias.
 ]]
 }
 -----------------------
@@ -942,8 +943,8 @@ dialog{
 de pociones!
 Hehehe...
 ¡Una Botella Mágica por
- cada nuevo cliente
- gratis! Hehehe...
+cada nuevo cliente
+gratis! Hehehe...
 La Roja da vida, la
 verde da magia, la azul
 da ¡vida y magia!
@@ -1146,11 +1147,11 @@ uno de mis hermanos
 esté preso.
 El final de tu viaje 
 está cerca.
-Sálvale y devuelve 
+Sálvales y devuelve 
 la paz a estas tierras.
-¡Puede que el héroe
-traiga paz y 
-prosperidad al Reino!
+¡Que el héroe traiga
+la paz y la prosperidad
+al Reino!
 ]]
 }
 -----------------------
@@ -1203,16 +1204,16 @@ $2$v... Thank you.
 Me has salvado la vida.
 Soy uno de los ocho
 protectores nombrados
-por la princesa zelda.
+por la Princesa Zelda.
 Has mostrado tener
 un gran coraje.
 Gracias a ti volvemos
 a estar todos juntos de
-nuevo, y la trifuerza
+nuevo, y la Trifuerza
 está a salvo.
 ¡Que el héroe traiga
 la paz y la prosperidad
-al reino!
+al Reino!
 ]]
 }
 -----------------------
@@ -1221,32 +1222,33 @@ dialog{
   id = "dungeon_4.agahnim",
   text = [[
 $1A G A H N I M !
-$3SI, el mismo!
+$3¡Sí, el mismo!
 
 ¡¡El hechicero ha
 vuelto de la tierra
 de la muerte!!
 ¡¡Ja ja ja ja ja!!
-Asi que te las has
+Así que te las has
 arreglado para reunir
 a los cuatro chicos.
-Este crio no tiene ni
+Este crío no tiene ni
 idea de lo que le 
 espera ahí fuera al
-decir que la trifuerza
+decir que la Trifuerza
 está a salvo...
 ¡¡Ja ja ja ja ja!!
-Reconozco ,hombrecito,
+Reconozco, hombrecito,
 que no he vuelto para
 liberar al despreciable
-Ganon, aquel que una vez
-se atrevió a llamarme
-su alter ego...
-¡Prefiero dejar ese
+Ganon, aquel que una
+vez se atrevió a
+llamarme su alter
+ego...
+¡Prefiero dejar a ese
 delincuente inmundo
 en el Dark World!
-Así, yo guardare la
-trifuerza y gobernare
+Así, yo guardaré la
+Trifuerza y gobernaré
 como único maestro...
 ¡¡¡Ja ja ja ja ja!!!
 Cuando salgas de esta
@@ -1284,8 +1286,8 @@ dialog{
   skip = "all",
   text = [[
 La clave para el
-puzzle es el circulo
-de jarras en la
+puzzle consiste en
+girar las jarras en la
 dirección correcta.
 ]]
 }
@@ -1333,7 +1335,7 @@ dialog{
   text = [[
 Está tan oxidado que
 ni siquiera la llave
-grande funcionará.
+grande funcionaría.
 ]]
 }
 -----------------------
@@ -1378,8 +1380,8 @@ dialog{
 ...$0...........$0
 Me has vencido esta
 vez...
-¡ Pero volveremos a
-encontrarnos !
+¡Pero volveremos a
+encontrarnos!
 
 Tu pequeño viaje
 no cambiará
@@ -1389,9 +1391,10 @@ mi control y me 
 dirá dónde están
 Zelda y los ocho
 Hijos de Solarus...
-Ah ah ah ah ah!
+¡Ha ha ha ha ha!
 Ahora he de irme.
-¡Nos vemos!
+¡Nos volveremos
+a ver muy pronto!
 ]]
 }
 -----------------------
@@ -1442,7 +1445,7 @@ Me has salvado la vida.
 Has recorrido un largo
 camino y superado
 numerosas y duras
-pruebas desde que
+pruebas desde
 la última vez que 
 nos vimos.
 ]]
@@ -1455,11 +1458,11 @@ dialog{
 $2Necesito confesarte
 algunos hechos graves.
 La muerte de nuestro
-rey no fue casualidad.
+Rey no fue casualidad.
 Yo lo envenené, estaba
 bajo el control de
 Agahnim...
-El me lanzo un hechizo
+Él me lanzó un hechizo
 y perdí el control 
 sobre mí mismo... No
 hubo nada que pudiera
@@ -1468,7 +1471,7 @@ Cuando el hechizo se
 rompió, me di cuenta
 de lo que había pasado.
 Cuando eso ocurrió,
-decidí el retirarme
+decidí retirarme
 a la cueva donde nos
 vimos por primera vez.
 Entonces me encerraron
@@ -1480,12 +1483,12 @@ $v...Ahora debes viajar
 a la Montaña del
 Terror.
 Agahnim fue allí en
-busca de la Zelda.
+busca de Zelda.
 Primero debes liberar a
 Sahasrahla antes de que
 el hechicero se las
 arregle para conseguir
-la información que el
+la información que él
 necesita...
 Por favor, toma esto,
 es una pequeña ayuda
@@ -1568,7 +1571,7 @@ que porta Zelda, y 
 que se necesita 
 para  conseguir 
 los fragmentos de
-la trifuerza.
+la Trifuerza.
 El misterio de Solarus
 se mantiene a salvo en
 el interior de la 
@@ -1592,11 +1595,11 @@ fragmentos de la
 trifuerza, a través de
 los ocho seres creados
 por Solarus.
-Así, mientras solo ella
+Así, mientras sólo ella
 sepa el secreto de la
-reliquia, solo ella
-sera quien controle el
-sello de la trifuerza.
+reliquia, sólo ella
+será quien controle el
+sello de la Trifuerza.
 Esta es la razón por
 la que debes proteger
 el sello.
@@ -1609,7 +1612,7 @@ dialog{
   skip = "current",
   text = [[
          Nivel 8
-   Mazmorra de la Cima Rocosa (“Mazmorra Rocosa” o “Cima Rocosa”)  
+   Mazmorra de los Picos Rocosos
 ]]
 }
 -----------------------
@@ -1640,7 +1643,7 @@ más palas.
 dialog{
   id = "dungeon_8.billy",
   text = [[
-¿¡Ni se te ocurrió que
+¿¡No se te ocurrió que
 podrías encontrarte
 con tu viejo amigo
 Billy el Temerario,
@@ -1665,7 +1668,7 @@ dialog{
   id = "dungeon_8.agahnim",
   text = [[
 $1Finalmente Billy no
-ha sido capaz de nada. 
+ha sido capaz de nada.
 Viendo que ni él ni
 mis otros acólitos han
 podido contigo, pequeño
@@ -1701,7 +1704,8 @@ dialog{
 $1$0...$0 .........$0
 He sido derrotado...$0
 esto es el fin...$0
-No estaba a la altura...
+No he estado a la 
+altura...
 
 
 Me arrodillo ante tu
@@ -1728,11 +1732,11 @@ puesto que ello me ha
 liberado, ¡los tiempos
 de oscuridad no han
 acabado! Como 
-recompensa por tu 
+recompensa por tu
 trabajo, tú, la 
 Princesa y también los
-ocho niños, estáis 
-invitados a mi 
+ocho niños, estáis
+invitados a mi
 palacio.
 Allí recuperaré la
 Trifuerza y seréis los
@@ -1749,7 +1753,7 @@ dialog{
   skip = "current",
   text = [[
          Nivel 9
-   Capilla de las Memorias
+   Templo de los Recuerdos
 ]]
 }
 -----------------------
@@ -1842,10 +1846,10 @@ dialog{
   id = "dungeon_9.zelda_children",
   text = [[
 $1Debo destruir esta
-relíquia. El poder de
+reliquia. El poder de
 Solarus es demasiado
 peligroso. 
-Pero destuyéndolo,
+Pero destruyéndolo,
 no habrá forma de 
 restaurar la Trifuerza
 de sus fragmentos.
@@ -1862,7 +1866,7 @@ la Esencia Solarus, la
 reliquia podría romper
 el sello.
 Ahora entiendes por qué
-debo que destruirlo.
+debo destruirlo.
 ]]
 }
 -----------------------
@@ -1946,9 +1950,13 @@ Christopho$0
 $1        Localización
      al castellano:$0
 
-Alex_XelA$0
-Rypervenche$0
-Jeff$0
+- LuisCa$0
+- Clow_eriol$0
+- Musty$0
+- Xadou$0
+- Guopich$0
+- falvarez$0
+Emujioda$0
 ]]
 }
 -----------------------

@@ -224,7 +224,7 @@ dialog{
 Esta Hada te ayudará
 cuando lo necesites.
 ¡También la puedes
-usar cuando lo desees
+usar cuando quieras
 para recuperar tus
 corazones!
 ]]
@@ -240,7 +240,7 @@ dialog{
 Corre tan rápido
 como el rayo usando
 las Botas de Pegaso.
-Pulsa y mantén la
+Mantén pulsada la
 tecla Acción para
 correr.
 ]]
@@ -397,7 +397,7 @@ dialog{
   icon = 25,
   skip = "all",
   text = [[
-Estos Pergaminos de
+Estos Pergaminos del
 Tigre te permitirán
 dominar técnicas
 avanzadas con la

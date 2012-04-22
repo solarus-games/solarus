@@ -57,10 +57,10 @@ inventory.caption.item.boomerang.2           Súper Bumerán
 inventory.caption.item.lamp.1                Lámpara
 inventory.caption.item.hookshot.1            Zarpa
 inventory.caption.item.bottle_1.1            Botella Mágica$(Vacía)
-inventory.caption.item.bottle_1.2            Botella Mágica $(Agua)
-inventory.caption.item.bottle_1.3            Botella Mágica $(Poción Roja)
-inventory.caption.item.bottle_1.4            Botella Mágica $(Poción Verde)
-inventory.caption.item.bottle_1.5            Botella Mágica $(Poción Azul)
+inventory.caption.item.bottle_1.2            Botella Mágica$(Agua)
+inventory.caption.item.bottle_1.3            Botella Mágica$(Poción Roja)
+inventory.caption.item.bottle_1.4            Botella Mágica$(Poción Verde)
+inventory.caption.item.bottle_1.5            Botella Mágica$(Poción Azul)
 inventory.caption.item.bottle_1.6            Botella Mágica$(Hada)
 
 inventory.caption.item.pegasus_shoes.1       Botas de Pegaso
@@ -92,7 +92,7 @@ inventory.caption.item.bottle_3.4            Botella Mágica$(Poción
 inventory.caption.item.bottle_3.5            Botella Mágica$(Poción Azul)
 inventory.caption.item.bottle_3.6            Botella Mágica$(Hada)
 
-inventory.caption.item.iron_key.1           Llave de Hierro
+inventory.caption.item.iron_key.1            Llave de Hierro
 inventory.caption.item.stone_key.1           Llave de Piedra
 inventory.caption.item.wooden_key.1          Llave de Madera
 inventory.caption.item.ice_key.1             Llave de Hielo

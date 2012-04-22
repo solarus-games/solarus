@@ -65,7 +65,7 @@ Sahasrahla el Antiguo,
 no es así?
 Su casa está al
 suroeste de aquí, cerca
-de la pastelería. ¿No
+de la panadería. ¿No
 lo recordabas?
 ]]
 }
@@ -123,7 +123,7 @@ Arco? Creo que puedes
 acceder a las cavernas
 gemelas al sur, y
 descubrir los secretos
-que contienen. ¡Ve a por
+que contienen. ¡Ve por
 ellas!
 ]]
 }
@@ -147,11 +147,11 @@ dialog{
   skip = "all",
   text = [[
 ¿Qué es lo que dices? 
-¡No puedo oírte
-bien! A mi edad mis
-oídos no funcionan tan
-bien como antes... ¿Qué
-tal comunicarnos por
+¡No puedo oírte bien!
+A mi edad mis oídos no
+funcionan tan bien como
+antes... ¿Qué tal
+comunicarnos por
 telepatía? Es moderna y
 mucho mas conveniente
 para mi anciano cuerpo.
@@ -172,7 +172,7 @@ Tom, es considerado
 culpable de haberse
 llevado a Sahasrahla,
 ¡pero eso es imposible!
-¡Además algunos bandidos
+¡Además unos bandidos
 saquearon la Casa de
 las Rupias!
 ]]
@@ -244,8 +244,9 @@ Parece que hay una vía
 a través de los árboles
 al norte de aquí. Se
 dice que el Maestro
-Arbor ronda las tierras
-inundadas por el río.
+Arbror ronda las
+tierras inundadas por
+el río.
 ]]
 }
 -----------------------
@@ -282,7 +283,7 @@ Es como si la vida
 misma se hubiera
 detenido. ¡Excepto por
 la tienda de la aldea!
-¡Desde que solo venden
+¡Desde que sólo venden
 armas para sobrevivir
 están ganando Rupias de
 verdad!
@@ -296,12 +297,12 @@ dialog{
   question = true,
   text = [[
 Forjé esta gran Espada
-de bronce con mis propias
-manos. ¡Puedes
-tenerla por solo 75
+de bronce con mis
+propias manos. ¡Puedes
+tenerla por sólo 75
 Rupias!
 
-Solo con tu escudo no
+Sólo con tu escudo no
 llegarás muy lejos.
 
 Entonces, ¿interesado?
@@ -516,6 +517,7 @@ manzanas para hornear
 un gran Pastel de
 Manzana.
 
+
 ¿Quieres ayudar?
 Sí
 No
@@ -571,12 +573,12 @@ dialog{
 Oh, $v, escuchaste
 mi llamada.
 Tengo cosas importantes
-que decirte. Estamos en
-tiempos críticos.
+que decirte. Son
+tiempos difíciles.
 Cuatro de los ocho
 hijos de Solarus han
 sido secuestrados...
-Temo que la Trifuerza
+Me temo que la Trifuerza
 está en gran peligro.
 Alguien quiere
 aprovechar la muerte
@@ -736,7 +738,7 @@ dialog{
   next = "sahasrahla_house.go_grandma",
   text = [[
 Tengo fe en ti.
-Que el valor y la
+Qué el valor y la
 sabiduría te guíen.
 ]]
 }
@@ -796,7 +798,7 @@ de enigmas, tesoros
 y peligros. ¡Pareces
 muy valiente!
 Por favor, acepta mi
-ayuda.. He fallado. No
+ayuda... He fallado. No
 fui capaz de proteger a
 nuestro Rey. Dame la
 oportunidad de 

@@ -59,7 +59,8 @@ dialog{
   id = "_treasure.bow.1",
   icon = 2,
   text = [[
-¡Encontraste el Arco!$0
+¡Encontraste el
+Arco!$0
 
 ¡Encuenta algunas
 Flechas y podrás
@@ -75,7 +76,9 @@ dialog{
   id = "_treasure.bow.2",
   icon = 3,
   text = [[
-Encontraste el Arco!$0
+¡Encontraste el 
+Arco!$0
+
 ¡Puedes enfrentar
 enemigos difíciles
 a distancia!
@@ -107,8 +110,8 @@ dialog{
   id = "_treasure.boomerang.2",
   icon = 35,
   text = [[
-Encontraste el Súper
-Bumerán!$0
+¡Encontraste el 
+Súper Bumerán!$0
 
 ¡Es mas rápido y
 poderoso que el
@@ -142,7 +145,7 @@ dialog{
 Zarpa!$0
 
 ¡Inmoviliza a tus
-enemigos y lánzate a
+enemigos y alcanza
 sitios inaccesibles!
 ]]
 }
@@ -678,8 +681,8 @@ dialog{
   icon = 25,
   text = [[
 ¡Encontraste los
-Pergaminos de Tigre!$0
-
+Pergaminos del 
+Tigre!$0
 ¡Ahora dominas el
 hace mucho tiempo
 olvidado Ataque
@@ -1001,7 +1004,7 @@ dialog{
 Escudo Espejo!$0
 
 ¡Ahora puedes
-reflejar lásers!
+reflejar los rayos!
 ]]
 }
 --------------------
@@ -1305,8 +1308,8 @@ dialog{
 ¡Encontraste una
 Jarra Mágica
 Pequeña!
-Tu Medidor Mágico es
-llenado un poco.
+Tu Medidor Mágico se
+ha llenado un poco.
 ]]
 }
 --------------------
@@ -1318,8 +1321,8 @@ dialog{
   text = [[
 ¡Encontraste una
 Jarra Mágica Grande!
-Tu Medidor Mágico es
-llenado bastante.
+Tu Medidor Mágico se
+ha llenado bastante.
 ]]
 }
 --------------------
@@ -1626,7 +1629,7 @@ dialog{
   text = [[
          Nivel 3
   Guarida del Maestro
-            Arbor
+            Arbror
 ]]
 }
 -----------------------

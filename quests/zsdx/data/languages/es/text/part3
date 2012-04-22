@@ -42,22 +42,26 @@ dialog{
   id = "intro0",
   skip = "current",
   text = [[
-$2Antiguas leyendas
-hablan de un magnifico
+$2Cuenta la leyenda que
+hace mucho tiempo
+existía un prospero
 reino llamado Hyrule
-que existió hace
-mucho tiempo.
-El reino prosperó
-bajo la bendición de
-tres dioses
-representados en la 
-Trifuerza. Siete
-sabios sellaron la
-Trifuerza en la
-Tierra Dorada, la
-reflexión utópica del
-mundo. Y los siglos
-pasaron...
+surgido de la bendición
+de tres diosas.
+Su poder en la tierra
+se representó con la
+Trifuerza.
+Tras el intento por
+parte del rey de los
+ladrones, Ganondorf,
+de conseguir su poder,
+siete sabios rompieron
+en 7 fragmentos ese
+poder, ocultándolos en
+la Tierra Dorada y
+desterrando a Ganon
+para siempre.
+Y los siglos pasaron..
 ]]
 }
 -----------------------
@@ -66,24 +70,24 @@ dialog{
   id = "intro1",
   skip = "current",
   text = [[
-$2Varias generaciones más
-tarde, un hechizo
-maligno parecía
-amenazar Hyrule. Un
-misterioso hechicero
-llamado Agahnim logró
-defenderse contra la
-oscuridad. Aclamado por
-el pueblo, el rey le
-concedió un alto cargo.
-Aún así, el hechicero
-estaba tramando un plan
-contra la familia real.
-Trataba de traer de
-vuelta a Ganondorf, Rey
-de los ladrones, a
-través de una época
-olvidada.
+$2Siglos más tarde, una
+extraña oscuridad se
+cernió sobre Hyrule, y
+con ella apareció
+un misterioso 
+hechicero, Agahnim.
+Este hechicero disipó
+la misteriosa oscuridad
+y consiguió el favor
+del pueblo y también
+del mismo Rey, que lo
+nombró consejero real.
+Pero el plan de Agahnim
+pasaba por traicionar a
+la familia real y traer
+de vuelta a Ganondorf,
+olvidado ya en el
+tiempo.
 ]]
 }
 -----------------------
@@ -93,13 +97,18 @@ dialog{
   id = "intro2",
   skip = "current",
   text = [[
-$2Dicen que un joven
+$2Dicen que
+surgió un joven
 vestido de verde
-se emprendió en una
-misión, explorando
-templos perdidos,
-viajando a través de
-valles y montañas.
+nacido de una
+familia de antiguos
+protectores de la
+familia real. Se
+enfrentó a numerosos
+peligros, atravesando
+valles, montañas y 
+explorando templos
+perdidos.
 ]]
 }
 -----------------------
@@ -109,14 +118,14 @@ dialog{
   id = "intro3",
   skip = "current",
   text = [[
-$2Con el tiempo, fue
-conocido como el héroe
-que vencio al mal.
-Gracias a su coraje
-derrotó a Ganondorf,
-que había construido
-una gran pirámide en la
-Tierra Dorada.
+$2Con el tiempo fue 
+conocido como el Héroe
+que venció al mal.
+Gracias a su valentía,
+rescató a las 7 
+descendientes de los
+sabios, incluyendo a 
+la princesa Zelda y...
 ]]
 }
 -----------------------
@@ -126,15 +135,14 @@ dialog{
   id = "intro4",
   skip = "current",
   text = [[
-$2El joven héroe deseó
-que Ganondorf fuera
-encerrado para siempre
-en la Tierra Dorada.
-El Rey de Hyrule, un
-descenciente de los
-siete sabios, le
-desterró usando un
-sello mágico.
+$2...reunió el poder que
+necesitaba para
+derrotar a Ganondorf en
+la pirámide que habÌa
+construido para dominar
+Hyrule, desterrándolo
+de nuevo con el poder
+del sello mágico.
 ]]
 }
 -----------------------
@@ -144,18 +152,17 @@ dialog{
   id = "intro5",
   skip = "current",
   text = [[
-$2Pero unos años
-después, el Rey de Hyrule
-cayó enfermo sin
-ninguna posibilidad de cura.
-Doctores de todo
-el reino trataron de 
-curarle  pero fue
-en vano... El rey
-desapareció junto con
-su poder. El sello
-de los siete sabios
-se debilitó una vez más.
+$2Años después, el rey de
+Hyrule, que ayudó en el
+destierro de Ganondorf,
+cayó enfermo y ni los
+médicos de todo el
+reino lograron curarlo.
+Se perdió al rey y con
+él, parte del poder que
+tenía el sello, 
+debilitándose una vez
+más.
 ]]
 }
 -----------------------
@@ -165,20 +172,19 @@ dialog{
   id = "intro6",
   skip = "current",
   text = [[
-$2El héroe, bajo el
+$2El Héroe, bajo el sabio
 consejo de su maestro
 Sahasrahla, confió en
-la heredera de los
-poderes reales, la
-Princesa Zelda.
-Zelda, junto con ocho
-misteriosos rompió
-la Trifuerza en ocho
-fragmentos y los
-ocultaron por todo
-el reino para
-restaurar la paz.
-
+la heredera de los 
+poderes reales, la 
+princesa Zelda, que
+junto a ocho jóvenes
+misteriosos, hicieron
+de la Trifuerza ocho
+fragmentos para poder
+ocultarlos por todo el
+reino y restaurar la
+paz.
 
 Y aquí comienza nuestro
 viaje...
@@ -203,8 +209,9 @@ dialog{
   id = "outside_world.village.monkey",
   next = "_unknown",
   text = [[
-¡Ayuda! ¡Todo el mundo
-está asustado esta noche!
+¡Ayuda! ¡Esta noche
+la gente ha pasado
+mucho miedo!
 
 ¡El pueblo ha sido
 rodeado por
@@ -217,10 +224,10 @@ monstruos!
 dialog{
   id = "outside_world.village.monkey.without_shield",
   text = [[
-No sé qué está
-pasando, pero no
-voy a dejar al pueblo
-sin protección.
+No deber dejarte
+pasar, no dejar
+que nadie ande
+por ahí sin protección.
 ]]
 }
 -----------------------
@@ -229,8 +236,8 @@ sin protección.
 dialog{
   id = "outside_world.village.monkey.with_shield",
   text = [[
-No sé qué está
-pasando, pero tienes razón 
+No deberia dejarte
+pasar, pero bueno, 
 al menos tienes un 
 Escudo contigo...
 ¡Ten cuidado!
@@ -318,7 +325,7 @@ Rupias, ¡podrías
 acabar necesitando
 todavía más Rupias!
 Aunque tú pareces
-mas listo que yo.
+más listo que yo.
 
 ¡Tal vez tú lo hagas
 mejor que yo!
@@ -986,7 +993,7 @@ a pagar los sueldos!
 dialog{
   id = "rupee_house_broken.help_us_right",
   text = [[
-¡Los culpables se
+¡Los delincuentes se
 dirigieron hacia la
 cueva del herrero!
 ]]

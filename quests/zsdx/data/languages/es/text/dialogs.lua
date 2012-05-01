@@ -3007,7 +3007,6 @@ controles en la pantalla
 de opciones, y que puedes
 incluso jugar con un
 gamepad!
-
 ¿Lo has entendido todo?
 Sí
 No, no lo hice
@@ -3206,6 +3205,8 @@ abrir uno de los tres
 cofres y ten la
 posibilidad de ganar
 más rupias!
+
+
 ¿Quieres jugar?
 Sí
 No
@@ -3253,6 +3254,7 @@ dialog{
   text = [[
 ¿Quieres jugar otra vez?
 
+
 ¡Son 20 Rupias!
 Sí
 No
@@ -3285,7 +3287,6 @@ tres símbolos
 iguales para
 multiplicar tu
 apuesta.
-
 ¿Quieres jugar?
 Sí
 No
@@ -3447,7 +3448,6 @@ Pieza de Corazón, y
 oí que son muy
 raras...
 Son sólo 10 Rupias.
-
 
 ¿Quieres jugar?
 Sí
@@ -6212,6 +6212,7 @@ dialog{
   text = [[
 Memorias de Sahasrahla.
 
+
 ¿Leerlas?
 Sí
 No
@@ -6312,8 +6313,9 @@ ayuda... He fallado. No
 fui capaz de proteger a
 nuestro Rey. Dame la
 oportunidad de 
-enmendarlo. ¿Aceptas
-mi ayuda?
+enmendarlo.
+
+¿Aceptas mi ayuda?
 Sí
 No
 ]]
@@ -6333,6 +6335,8 @@ de proteger a nuestro
 Rey. Dame la
 oportunidad de 
 enmendarlo.
+
+
 ¿Aceptas mi ayuda?
 Sí
 No

@@ -925,6 +925,7 @@
 7	1	736	293	enemy_2	3	blue_hardhat_beetle	0	-1	_random	1	-1
 12	1	824	328	16	16	custom_obstacle_6	0	1	0	0
 12	1	480	616	32	16	custom_obstacle_17	0	1	0	0
+1	1	488	525	from_3f_s_hole	-1	0
 0	2	912	136	8	96	441
 0	2	888	136	8	96	442
 0	2	768	600	8	96	441

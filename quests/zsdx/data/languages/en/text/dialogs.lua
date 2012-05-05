@@ -2613,8 +2613,8 @@ repelled the evil.
 Thanks to his courage,
 he defeated Ganondorf,
 who had built an
-imposing pyramid on the
-Golden Land.
+impressive pyramid
+within the Golden Land.
 ]]
 }
 -----------------------
@@ -5275,8 +5275,8 @@ dialog{
   id = "castle.npc_3",
   skip = "all",
   text = [[
-How shiny! It's a
-wonderful home!
+What luxury! This
+place is magnificent!
 ]]
 }
 -----------------------

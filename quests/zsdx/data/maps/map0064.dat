@@ -487,8 +487,8 @@
 7	0	248	349	enemy_3	3	red_knight_soldier	0	-1	_random	1	-1
 7	0	816	189	enemy_4	3	red_knight_soldier	0	-1	_random	1	-1
 7	0	576	437	enemy_5	3	green_knight_soldier	0	-1	_random	1	-1
-4	0	592	373	0	_random	2	-1
-4	0	592	357	0	_random	2	-1
+4	0	592	373	0	_random	1	-1
+4	0	592	357	0	_random	1	-1
 12	0	720	464	16	16	custom_obstacle_23	0	1	0	0
 12	0	624	464	16	16	custom_obstacle_24	0	1	0	0
 11	0	584	656	c_door_switch	3	0	0

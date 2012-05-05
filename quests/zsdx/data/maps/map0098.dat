@@ -54,7 +54,6 @@
 18	0	200	104	door_2	1	2	232
 3	0	904	293	small_key	1	231
 7	0	216	157	enemy1_1	3	lizalfos	0	-1	_random	1	-1
-7	0	408	365	enemy1_4	0	lizalfos	0	0	_random	1	-1
 19	0	896	160	stairs_5	1	4
 0	1	552	56	64	192	392
 0	1	616	56	80	48	392

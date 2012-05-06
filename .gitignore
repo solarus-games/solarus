@@ -20,11 +20,8 @@ install_manifest.txt
 CMakeFiles/
 Makefile
 cmake_install.cmake
-src/CMakeFiles/
-src/Makefile
-src/cmake_install.cmake
-src/libsolarus_static.a
-src/solarus
+libsolarus_static.a
+solarus
 error.txt
 quests/*/CMakeFiles/
 quests/*/Makefile
@@ -32,7 +29,4 @@ quests/*/cmake_install.cmake
 quests/*/data.solarus
 quests/zsdx/zsdx
 quests/zsxd/zsxd
-tests/CTestTestfile.cmake
-tests/*.bin
-tests/Testing/
 

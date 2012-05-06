@@ -259,7 +259,15 @@ int Script::movement_api_create(lua_State* l) {
     movement = new RandomMovement(32);
   }
   else if (type == "target") {
-    movement = new TargetMovement(0, 0, 32);
+    if (script.apis_enabled & MAP_API)
+    {
+      // If we are on a map, the default target is the hero.
+      movement = new TargetMovement(&script.get_map().get_entities().get_hero(), 96);
+    }
+    else
+    {
+      movement = new TargetMovement(0, 0, 32);
+    }
   }
   else if (type == "path") {
     movement = new PathMovement("", 32, false, false, false);
@@ -595,7 +603,7 @@ int Script::target_movement_api_set_speed(lua_State* l) {
 
   TargetMovement& movement = check_target_movement(l, 1);
   int speed = luaL_checkinteger(l, 2);
-  movement.set_speed(speed);
+  movement.set_moving_speed(speed);
   return 0;
 }
 

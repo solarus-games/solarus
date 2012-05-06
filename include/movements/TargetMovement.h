@@ -35,7 +35,7 @@ class TargetMovement: public StraightMovement {
 
     int sign_x;                        /**< sign of the x movement (1: right, -1: left) */
     int sign_y;                        /**< sign of the y movement (1: down, -1: up) */
-    int speed;                         /**< movement's speed */
+    int moving_speed;                  /**< speed when moving */
 
     static const uint32_t recomputation_delay; /**< delay between two recomputations */
     uint32_t next_recomputation_date;  /**< date when the movement is recalculated */
@@ -45,12 +45,15 @@ class TargetMovement: public StraightMovement {
 
   public:
 
-    TargetMovement(int target_x, int target_y, int speed);
-    TargetMovement(MapEntity* target_entity, int speed);
+    TargetMovement(int target_x, int target_y, int moving_speed);
+    TargetMovement(MapEntity* target_entity, int moving_speed);
     ~TargetMovement();
 
     void set_target(int target_x, int target_y);
     void set_target(MapEntity* target_entity);
+
+    int get_moving_speed();
+    void set_moving_speed(int moving_speed);
 
     bool is_finished();
     void update();

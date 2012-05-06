@@ -30,9 +30,9 @@ const uint32_t TargetMovement::recomputation_delay = 150;
  * @brief Creates a new target movement towards a fixed point.
  * @param target_x x coordinate of the target point
  * @param target_y y coordinate of the target point
- * @param speed speed of the movement
+ * @param moving_speed speed of the movement when not stopped
  */
-TargetMovement::TargetMovement(int target_x, int target_y, int speed):
+TargetMovement::TargetMovement(int target_x, int target_y, int moving_speed):
 
   StraightMovement(true, true),
   target_x(target_x),
@@ -40,7 +40,7 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
   target_entity(NULL),
   sign_x(0),
   sign_y(0),
-  speed(speed),
+  moving_speed(moving_speed),
   next_recomputation_date(System::now()),
   finished(false) {
 
@@ -52,9 +52,9 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
  * The movement will update its trajectory if the entity's position is changed.
  *
  * @param target_entity the target entity
- * @param speed speed of the movement
+ * @param moving_speed speed of the movement when not stopped
  */
-TargetMovement::TargetMovement(MapEntity* target_entity, int speed):
+TargetMovement::TargetMovement(MapEntity* target_entity, int moving_speed):
 
   StraightMovement(true, true),
   target_x(target_entity->get_x()),
@@ -62,7 +62,7 @@ TargetMovement::TargetMovement(MapEntity* target_entity, int speed):
   target_entity(target_entity),
   sign_x(0),
   sign_y(0),
-  speed(speed),
+  moving_speed(moving_speed),
   next_recomputation_date(System::now()),
   finished(false) {
 
@@ -99,6 +99,23 @@ void TargetMovement::set_target(MapEntity* target_entity) {
   this->target_y = target_y;
   recompute_movement();
   next_recomputation_date = System::now() + recomputation_delay;
+}
+
+/**
+ * @brief Returns the speed of this movement when it is not stopped.
+ * @return the speed when moving, in pixels per second
+ */
+int TargetMovement::get_moving_speed() {
+  return moving_speed;
+}
+
+/**
+ * @brief Sets the speed of this movement when it is not stopped.
+ * @param moving_speed the speed when moving, in pixels per second
+ */
+void TargetMovement::set_moving_speed(int moving_speed) {
+  this->moving_speed = moving_speed;
+  recompute_movement();
 }
 
 /**
@@ -148,7 +165,8 @@ void TargetMovement::recompute_movement() {
     sign_y = (dy >= 0) ? 1 : -1;
 
     if (std::fabs(angle - get_angle()) > 1E-6 || get_speed() < 1E-6) {
-      set_speed(speed);
+      // The angle has changed or the movement was stopped.
+      set_speed(moving_speed);
       set_angle(angle);
       set_max_distance((int) Geometry::get_distance(
             get_x(), get_y(), target_x, target_y));

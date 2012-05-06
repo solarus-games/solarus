@@ -46,7 +46,8 @@ end
 function go()
 
   if not immobilized then
-    local m = sol.movement.path_finding_movement_create(speed)
+    local m = sol.movement.movement_create("path_finding")
+    m:set_speed(speed)
     sol.enemy.start_movement(m)
   end
 end

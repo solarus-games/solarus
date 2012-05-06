@@ -6,7 +6,7 @@ puzzle_next_sensor = 1
 
 function event_map_started(destination_point_name)
 
-  init_guard("guard_3", "666666666666666666644444222222222222222222200000")
+  init_guard("guard_3", {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,4,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0})
 
   if sol.game.savegame_get_boolean(515) then
     sol.map.tile_set_enabled("weak_floor", false)
@@ -34,9 +34,11 @@ end
 function init_guard(guard_name, path)
 
   local sprite = sol.map.npc_get_sprite(guard_name)
-  local m = sol.movement.path_movement_create(path, 48)
-  m:set_property("loop", true)
-  m:set_property("ignore_obstacles", true)
+  local m = sol.movement.create("path")
+  m:set_path(path)
+  m:set_speed(48)
+  m:set_loop(true)
+  m:set_ignore_obstacles(true)
   sol.map.npc_start_movement(guard_name, m)
   sprite:set_animation("walking")
 end

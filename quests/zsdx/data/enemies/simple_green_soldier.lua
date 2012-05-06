@@ -15,7 +15,8 @@ end
 -- The enemy was stopped for some reason and should restart
 function event_restart()
 
-  local m = sol.movement.straight_movement_create(0, 0)
+  local m = sol.movement.create("straight")
+  m:set_speed(0)
   sol.enemy.start_movement(m)
   local direction4 = math.random(4) - 1
   go(direction4)
@@ -61,10 +62,10 @@ function go(direction4)
   -- set the movement
   local m = sol.enemy.get_movement()
   local max_distance = 40 + math.random(120)
-  m:set_property("max_distance", max_distance)
-  m:set_property("smooth", true)
-  m:set_property("speed", 40)
-  m:set_property("angle", direction4 * math.pi / 2)
+  m:set_max_distance(max_distance)
+  m:set_smooth(true)
+  m:set_speed(40)
+  m:set_angle(direction4 * math.pi / 2)
 end
 
 -- Makes the soldier look to its left or to its right (random choice)

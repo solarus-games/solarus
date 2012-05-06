@@ -28,7 +28,8 @@ function event_map_started(destination_point_name)
     end
   end
 
-  local m = sol.movement.random_path_movement_create(32)
+  local m = sol.movement.create("random_path")
+  m:set_speed(32)
   sol.map.npc_start_movement("chignon_woman", m)
   sol.map.npc_get_sprite("chignon_woman"):set_animation("walking")
 

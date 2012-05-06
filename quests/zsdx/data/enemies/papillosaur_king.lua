@@ -45,10 +45,12 @@ end
 function go()
   local m
   if sol.enemy.get_life() > 1 then
-    m = sol.movement.random_path_movement_create(boss_movement_speed)
+    m = sol.movement.create("random_path")
+    m:set_speed(boss_movement_speed)
   else
     -- The enemy is now desperate and angry against our hero
-    m = sol.movement.target_movement_create(boss_movement_speed)
+    m = sol.movement.create("target")
+    m:set_speed(boss_movement_speed)
   end
   sol.enemy.start_movement(m)
 end

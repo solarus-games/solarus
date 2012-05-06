@@ -49,7 +49,9 @@ function event_restart()
     end
   end
 
-  local m = sol.movement.target_movement_create(speed, initial_xy.x, initial_xy.y)
+  local m = sol.movement.create("target")
+  m:set_speed(speed)
+  m:set_target(initial_xy.x, initial_xy.y)
   sol.enemy.start_movement(m)
   sol.timer.stop_all(timers)
 
@@ -110,8 +112,9 @@ end
 
 function event_movement_finished(movement)
 
-  local m = sol.movement.random_movement_create(speed)
-  m:set_property("max_distance", 24)
+  local m = sol.movement.create("random")
+  m:set_speed(speed)
+  m:set_max_distance(24)
   sol.enemy.start_movement(m)
 end
 

@@ -31,15 +31,19 @@ end
 function event_restart()
 
   if not retracted then
-    local m = sol.movement.path_movement_create("000077334444444455110000", 64)
-    m:set_property("ignore_obstacles", true)
-    m:set_property("loop", true)
+    local m = sol.movement.create("path")
+    m:set_path{0,0,0,0,7,7,3,3,4,4,4,4,4,4,4,4,5,5,1,1,0,0,0,0}
+    m:set_speed(64)
+    m:set_ignore_obstacles(true)
+    m:set_loop(true)
     sol.enemy.start_movement(m)
   else
     sol.enemy.stop_movement()
     sol.timer.start(retracted_delay, function()
       local x, y = sol.map.enemy_get_position(sol.enemy.get_father())
-      local m = sol.movement.target_movement_create(48, x, y - 112)
+      local m = sol.movement.create("target")
+      m:set_speed(48)
+      m:set_target(x, y - 112)
       sol.enemy.start_movement(m)
       sol.enemy.send_message(sol.enemy.get_father(), "recovering")
     end)

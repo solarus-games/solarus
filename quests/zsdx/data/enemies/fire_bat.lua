@@ -33,19 +33,23 @@ function go_hero()
   local x, y = sol.enemy.get_position()
   local hero_x, hero_y = sol.map.hero_get_position()
   local angle = sol.main.get_angle(x, y, hero_x, hero_y)
-  local m = sol.movement.straight_movement_create(192, angle)
-  m:set_property("max_distance", 320)
-  m:set_property("ignore_obstacles", true)
+  local m = sol.movement.create("straight")
+  m:set_speed(192)
+  m:set_angle(angle)
+  m:set_max_distance(320)
+  m:set_ignore_obstacles(true)
   sol.enemy.start_movement(m)
 end
 
 function go_circle()
 
   -- make a circle around the father
-  local m = sol.movement.circle_movement_create(7, sol.enemy.get_father(), 48)
-  m:set_property("center_dy", -21)
-  m:set_property("initial_angle", 90)
-  m:set_property("angle_speed", 150)
+  local m = sol.movement.create("circle")
+  m:set_center(7, sol.enemy.get_father())
+  m:set_radius(48)
+  m:set_center_dy(-21)
+  m:set_initial_angle(90)
+  m:set_angle_speed(150)
   sol.enemy.start_movement(m)
 end
 

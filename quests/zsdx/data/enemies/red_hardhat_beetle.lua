@@ -12,10 +12,10 @@ set_properties({
   movement_create = random_movement_create
 })
 
-function random_movement_create(speed)
+function random_movement_create()
   
-  local m = sol.movement.random_movement_create(speed)
-  m:set_property("smooth", true)
+  local m = sol.movement.create("random")
+  m:set_smooth(true)
   return m
 end
 

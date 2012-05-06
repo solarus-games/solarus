@@ -20,7 +20,9 @@ function event_message_received(src_enemy, message)
 
   -- the message is the angle to take
   local angle = tonumber(message)
-  local m = sol.movement.straight_movement_create(192, angle)
+  local m = sol.movement.create("straight")
+  m:set_speed(192)
+  m:set_angle(angle)
   sol.enemy.start_movement(m)
 end
 

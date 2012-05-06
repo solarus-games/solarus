@@ -18,8 +18,10 @@ function event_restart()
   local x, y = sol.map.hero_get_position()
   x = x + math.random(-32, 32)
   y = y + math.random(-32, 32)
-  local m = sol.movement.target_movement_create(144, x, y)
-  m:set_property("ignore_obstacles", true)
+  local m = sol.movement.create("target")
+  m:set_speed(144)
+  m:set_target(x, y)
+  m:set_ignore_obstacles(true)
   sol.enemy.start_movement(m)
   sol.timer.start(2000, event_movement_finished)
 end
@@ -36,9 +38,11 @@ function event_message_received(src_enemy, message)
 
   -- the message is the angle to take
   local angle = tonumber(message)
-  local m = sol.movement.straight_movement_create(144, angle)
-  m:set_property("ignore_obstacles", true)
-  m:set_property("max_distance", 320)
+  local m = sol.movement.create("straight")
+  m:set_speed(144)
+  m:set_angle(angle)
+  m:set_ignore_obstacles(true)
+  m:set_max_distance(320)
   sol.enemy.start_movement(m)
 end
 

@@ -9,14 +9,15 @@ end
 
 function event_restart()
 
-  local m = sol.movement.path_finding_movement_create(32)
+  local m = sol.movement.create("path_finding")
+  m:set_speed(32)
   sol.enemy.start_movement(m)
 end
 
 function event_movement_changed()
 
   local m = sol.enemy.get_movement()
-  local direction4 = m:get_property("displayed_direction")
+  local direction4 = m:get_direction4()
   local sprite = sol.enemy.get_sprite()
   sprite:set_direction(direction4)
 end

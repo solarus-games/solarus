@@ -29,8 +29,9 @@ function event_restart()
   local x, y = sol.enemy.get_position()
   local hero_x, hero_y = sol.map.hero_get_position()
   local angle = sol.main.get_angle(x, y, hero_x, hero_y - 5)
-  local m = sol.movement.straight_movement_create(speed, angle)
-  --m:set_property("ignore_obstacles", true)
+  local m = sol.movement.create("straight")
+  m:set_speed(speed)
+  m:set_angle(angle)
   sol.enemy.start_movement(m)
 end
 
@@ -41,7 +42,7 @@ function event_obstacle_reached()
     -- compute the bouncing angle
     -- (works good with horizontal and vertical walls)
     local m = sol.enemy.get_movement()
-    local angle = m:get_property("angle")
+    local angle = m:get_angle()
     if not sol.enemy.test_obstacles(1, 0)
       and not sol.enemy.test_obstacles(-1, 0) then
       angle = -angle
@@ -49,8 +50,8 @@ function event_obstacle_reached()
       angle = math.pi - angle
     end
 
-    m:set_property("angle", angle)
-    m:set_property("speed", speed)
+    m:set_angle(angle)
+    m:set_speed(speed)
 
     bounces = bounces + 1
     speed = speed + 48
@@ -74,7 +75,7 @@ end
 function event_pre_display()
 
   local m = sol.enemy.get_movement()
-  local angle = m:get_property("angle")
+  local angle = m:get_angle()
   local x, y = sol.enemy.get_position()
 
   local x2 = x - math.cos(angle) * 12

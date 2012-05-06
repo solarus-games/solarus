@@ -89,7 +89,7 @@ end
 function event_movement_changed()
 
   local m = sol.enemy.get_movement()
-  local direction4 = m:get_property("displayed_direction")
+  local direction4 = m:get_direction4()
   local sprite = sol.enemy.get_sprite()
   sprite:set_direction(direction4)
 end
@@ -166,14 +166,16 @@ end
 
 function go_random()
 
-  local m = sol.movement.random_movement_create(properties.normal_speed)
+  local m = sol.movement.create("random")
+  m:set_speed(properties.normal_speed)
   sol.enemy.start_movement(m)
   going_hero = false
 end
 
 function go_hero()
 
-  local m = sol.movement.target_movement_create(properties.faster_speed)
+  local m = sol.movement.create("target"=
+  m:set_speed(properties.faster_speed)
   sol.enemy.start_movement(m)
   going_hero = true
 end

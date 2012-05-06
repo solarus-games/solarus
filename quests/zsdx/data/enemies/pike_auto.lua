@@ -23,8 +23,10 @@ function event_restart()
 
   local sprite = sol.enemy.get_sprite()
   local direction4 = sprite:get_direction()
-  local m = sol.movement.path_movement_create(tostring(direction4 * 2), 192)
-  m:set_property("loop", true)
+  local m = sol.movement.create("path")
+  m:set_path{direction4 * 2}
+  m:set_speed(192)
+  m:set_loop(true)
   sol.enemy.start_movement(m)
 end
 

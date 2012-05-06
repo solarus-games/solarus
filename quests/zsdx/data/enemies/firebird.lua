@@ -31,7 +31,8 @@ end
 function event_restart()
 
   claw_sprite:set_animation("claw")
-  local m = sol.movement.random_movement_create(64)
+  local m = sol.movement.create("random")
+  m:set_speed(64)
   sol.enemy.start_movement(m)
   sol.timer.stop_all(timers)
   timers[#timers + 1] = sol.timer.start(math.random(2000, 6000), prepare_flames)

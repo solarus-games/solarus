@@ -8,6 +8,8 @@ set_properties({
   normal_speed = 32,
   faster_speed = 32,
   hurt_style = "monster",
-  movement_create = sol.movement.random_movement_create
+  movement_create = function()
+    return sol.movement.create("random")
+  end
 })
 

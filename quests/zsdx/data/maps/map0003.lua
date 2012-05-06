@@ -46,7 +46,8 @@ end
 
 function random_walk(npc_name)
 
-  local m = sol.movement.random_path_movement_create(32)
+  local m = sol.movement.create("random_path")
+  m:set_speed(32)
   sol.map.npc_start_movement(npc_name, m)
   sol.map.npc_get_sprite(npc_name):set_animation("walking")
 end
@@ -105,9 +106,11 @@ function event_dialog_finished(dialog_id, answer)
     -- make the monkey leave
     sol.map.hero_freeze()
     sol.audio.play_sound("monkey")
-    local m = sol.movement.jump_movement_create(1, 24)
-    m:set_property("ignore_obstacles", true)
-    m:set_property("speed", monkey_jump_speed)
+    local m = sol.movement.create("jump")
+    m:set_direction8(1)
+    m:set_distance(24)
+    m:set_ignore_obstacles(true)
+    m:set_speed(monkey_jump_speed)
     sol.map.npc_start_movement("monkey", m)
     monkey_sprite:set_animation("jumping")
     monkey_jumps = 1
@@ -127,9 +130,11 @@ function event_npc_movement_finished(npc_name)
   elseif monkey_jumps == 2 then
     -- second jump finished: start the last jump
     sol.audio.play_sound("monkey")
-    local m = sol.movement.jump_movement_create(1, 64)
-    m:set_property("ignore_obstacles", true)
-    m:set_property("speed", monkey_jump_speed)
+    local m = sol.movement.create("jump")
+    m:set_direction8(1)
+    m:set_distance(64)
+    m:set_ignore_obstacles(true)
+    m:set_speed(monkey_jump_speed)
     sol.map.npc_start_movement("monkey", m)
     monkey_sprite:set_animation("jumping")
     monkey_jumps = 3
@@ -144,9 +149,11 @@ end
 function monkey_timer()
   -- start the second jump
   sol.audio.play_sound("monkey")
-  local m = sol.movement.jump_movement_create(2, 56)
-  m:set_property("ignore_obstacles", true)
-  m:set_property("speed", monkey_jump_speed)
+  local m = sol.movement.create("jump")
+  m:set_direction8(2)
+  m:set_distance(56)
+  m:set_ignore_obstacles(true)
+  m:set_speed(monkey_jump_speed)
   sol.map.npc_start_movement("monkey", m)
   monkey_sprite:set_animation("jumping")
   monkey_jumps = 2

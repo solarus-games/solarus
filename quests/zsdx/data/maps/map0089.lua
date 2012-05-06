@@ -28,7 +28,8 @@ end
 
 function random_walk(npc_name)
 
-  local m = sol.movement.random_path_movement_create(32)
+  local m = sol.movement.create("random_path")
+  m:set_speed(32)
   sol.map.npc_start_movement(npc_name, m)
   sol.map.npc_get_sprite(npc_name):set_animation("walking")
 end
@@ -49,7 +50,9 @@ end
 function event_dialog_finished(dialog_id)
 
   if dialog_id == "castle.forbidden_door_wtf" then
-    local m = sol.movement.path_movement_create("22", 32)
+    local m = sol.movement.create("path")
+    m:set_path{2,2}
+    m:set_speed(32)
     local npc_name = "forbidden_door_npc"
     local sprite = sol.map.npc_get_sprite(npc_name)
     sol.map.npc_start_movement(npc_name, m)
@@ -81,7 +84,9 @@ function event_hero_on_sensor(sensor_name)
     x, y = sol.map.npc_get_position(npc_name)
     if y < 877 then
       local sprite = sol.map.npc_get_sprite(npc_name)
-      local m = sol.movement.path_movement_create("66", 32)
+      local m = sol.movement.create("path")
+      m:set_path{6,6}
+      m:set_speed(32)
       sol.map.npc_start_movement(npc_name, m)
       sprite:set_animation("walking")
       sol.map.hero_freeze()

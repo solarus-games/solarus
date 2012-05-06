@@ -25,7 +25,8 @@ end
 function event_restart()
 
   -- set the movement
-  local m = sol.movement.random_path_movement_create(40)
+  local m = sol.movement.create("random_path")
+  m:set_speed(40)
   sol.enemy.start_movement(m)
 
   sol.map.enemy_set_enabled(chain_name, true)

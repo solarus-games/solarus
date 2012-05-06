@@ -15,7 +15,10 @@
 --   hurt_style = "normal",
 --   push_hero_on_sword = false,
 --   pushed_when_hurt = true,
---   movement_create = sol.movement.random_path_movement_create
+--   movement_create = function()
+--     local m = sol.movement.create("random_path")
+--     return m
+--   end
 -- })
 
 -- The parameter of set_properties() is a table.
@@ -51,7 +54,10 @@ function set_properties(prop)
     properties.push_hero_on_sword = false
   end
   if properties.movement_create == nil then 
-    properties.movement_create = sol.movement.random_path_movement_create
+    properties.movement_create = function()
+      local m = sol.movement.create("random_path")
+      return m
+    end
   end
 end
 
@@ -70,7 +76,7 @@ end
 function event_movement_changed()
 
   local m = sol.enemy.get_movement()
-  local direction4 = m:get_property("displayed_direction")
+  local direction4 = m:get_direction4()
   local sprite = sol.enemy.get_sprite()
   sprite:set_direction(direction4)
 end
@@ -111,13 +117,15 @@ function check_hero()
 end
 
 function go_random()
-  local m = properties.movement_create(properties.normal_speed)
+  local m = properties.movement_create()
+  m:set_speed(properties.normal_speed)
   sol.enemy.start_movement(m)
   going_hero = false
 end
 
 function go_hero()
-  local m = sol.movement.target_movement_create(properties.faster_speed)
+  local m = sol.movement.create("target")
+  m:set_speed(properties.faster_speed)
   sol.enemy.start_movement(m)
   going_hero = true
 end

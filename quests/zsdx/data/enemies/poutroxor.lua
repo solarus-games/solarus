@@ -32,12 +32,14 @@ end
 function event_restart()
 
   if phase == 1 then
-    local m = sol.movement.random_movement_create(32)
+    local m = sol.movement.create("random")
+    m:set_speed(32)
     sol.enemy.start_movement(m)
     sol.timer.stop_all(timers)
     timers[#timers + 1] = sol.timer.start(math.random(2000, 3000), skeleton_attack)
   else
-    local m = sol.movement.random_movement_create(80)
+    local m = sol.movement.create("random")
+    m:set_speed(80)
     sol.enemy.start_movement(m)
     sol.timer.stop_all(timers)
     timers[#timers + 1] = sol.timer.start(math.random(3000, 5000), big_attack)

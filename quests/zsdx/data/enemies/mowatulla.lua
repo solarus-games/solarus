@@ -51,7 +51,8 @@ function event_hurt(attack, life_lost)
 end
 
 function go()
-  local m = sol.movement.random_path_movement_create(64)
+  local m = sol.movement.create("random_path")
+  m:set_speed(64)
   sol.enemy.start_movement(m)
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("walking")
@@ -137,8 +138,10 @@ function jump_phase()
     end
   end
 
-  local m = sol.movement.jump_movement_create(direction8, 112)
-  m:set_property("speed", 96)
+  local m = sol.movement.create("jump")
+  m:set_direction8(direction8)
+  m:set_distance(112)
+  m:set_speed(96)
   sol.enemy.start_movement(m)
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("jumping")

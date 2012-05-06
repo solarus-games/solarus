@@ -52,7 +52,8 @@ function event_restart()
     sol.enemy.set_can_attack(false)
   else
     sprite:set_animation("walking")
-    local m = sol.movement.random_movement_create(32)
+    local m = sol.movement.create("random")
+    m:set_speed(32)
     sol.enemy.start_movement(m)
   end
   current_xy.x, current_xy.y = sol.enemy.get_position()

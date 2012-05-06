@@ -52,7 +52,8 @@ function event_restart()
 
   if not jumping and not attacking then
     if not vulnerable then
-      m = sol.movement.path_finding_movement_create(64)
+      m = sol.movement.create("path_finding")
+      m:set_speed(64)
       sol.enemy.start_movement(m)
       sol.enemy.set_hurt_style("normal")
       if not attack_scheduled then
@@ -68,7 +69,7 @@ function event_movement_changed()
 
   -- take the appropriate sprite direction
   m = sol.enemy.get_movement()
-  direction4 = m:get_property("displayed_direction")
+  direction4 = m:get_direction4()
   sprite = sol.enemy.get_sprite()
   if direction4 == 1 then
     sprite:set_direction(1)
@@ -102,7 +103,9 @@ function jump()
   local x, y = sol.enemy.get_position()
   local hero_x, hero_y = sol.map.hero_get_position()
   local angle = sol.main.get_angle(hero_x, hero_y, x, y)
-  local m = sol.movement.target_movement_create(128, 240, 245)
+  local m = sol.movement.create("target")
+  m:set_speed(128)
+  m:set_target(240, 245)
   sol.enemy.start_movement(m)
   sol.audio.play_sound("jump")
   local sprite = sol.enemy.get_sprite()

@@ -52,7 +52,8 @@ function self:on_restarted()
 
   if not jumping and not attacking then
     if not vulnerable then
-      local m = sol.movement.path_finding_movement_create{speed = 64}
+      local m = sol.movement.create("path_finding")
+      m:set_speed(64)
       self:start_movement(m)
       self:set_hurt_style("normal")
       if not attack_scheduled then
@@ -97,8 +98,9 @@ function jump()
   local x, y = self:get_position()
   local hero_x, hero_y = sol.map:get_hero():get_position()
   local angle = sol.main.get_angle(hero_x, hero_y, x, y)
-  local m = sol.movement.target_movement_create{
-    speed = 128, target_x = 240, target_y = 245}
+  local m = sol.movement.create("target")
+  m:set_speed(128)
+  m:set_target(240, 245)
   self:start_movement(m)
   sol.audio.play_sound("jump")
   sprite:set_animation("jumping")

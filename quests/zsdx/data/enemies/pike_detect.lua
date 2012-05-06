@@ -64,9 +64,11 @@ function go(direction4)
 
     local x, y = sol.enemy.get_position()
     local angle = direction4 * math.pi / 2
-    local m = sol.movement.straight_movement_create(192, angle)
-    m:set_property("max_distance", 104)
-    m:set_property("smooth", false)
+    local m = sol.movement.create("straight")
+    m:set_speed(192)
+    m:set_angle(angle)
+    m:set_max_distance(104)
+    m:set_smooth(false)
     sol.enemy.start_movement(m)
   end
 end
@@ -95,8 +97,10 @@ function go_back()
 
     state = "going_back"
 
-    local m = sol.movement.target_movement_create(64, initial_xy.x, initial_xy.y)
-    m:set_property("smooth", false)
+    local m = sol.movement.create("target")
+    m:set_speed(64)
+    m:set_target(initial_xy.x, initial_xy.y)
+    m:set_smooth(false)
     sol.enemy.start_movement(m)
     sol.audio.play_sound("sword_tapping")
 

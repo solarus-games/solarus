@@ -29,7 +29,7 @@ When it is installed, the project is divided in two parts:
 This readme is about compiling and installing solarus (the engine).
 To execute it, you will also need a quest with all its game data files
 (graphics, musics, sounds, scripts, dialogs, etc.). Our quests can be found on
-the development blog: http://www.solarus-engine.org.
+the development blog: http://www.solarus-games.org.
 
 
 ------------------------

@@ -16,8 +16,8 @@ The release versions require the quest files to be in a zip archive called \c da
 The debug versions first look in a subdirectory of the quest path called \c data (if existing) and directly pick
 the data files in this subdirectory.
 Thus, when developping your quest, you should use the development version (see
-the documentation to <a href="http://www.solarus-engine.org/source-code">get the source</a>
-and <a href="http://www.solarus-engine.org/source-code/compilation-instructions">compile it</a>).
+the documentation to <a href="http://www.solarus-games.org/source-code">get the source</a>
+and <a href="http://www.solarus-games.org/source-code/compilation-instructions">compile it</a>).
 You will then be able to edit your quest and see the changes immediately in the game without having
 to rebuild the zip archive. In fact, when you modify a map, you don't even need to restart the game.
 
@@ -225,7 +225,7 @@ the compiled script (\c .luac) is used.
 In debug versions, the engine first tries to open the source file (\c .lua) if it exists.
 Thus, you don't need to compile your scripts to test them when you make a change.
 The Lua source files of the zsdx quest are available on the
-<a href="http://www.solarus-engine.org/source-code">subversion</a> repository. 
+<a href="http://www.solarus-games.org/source-code">subversion</a> repository. 
 
 The \c maps/dungeons subdirectory contains important information for each dungeon.
 See the \subpage dungeon_syntax page for the specification of those files.

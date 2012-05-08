@@ -445,8 +445,8 @@ bool Script::notify_script(const std::string& function_name, const char* format,
     for (i = 0; i < strlen(format) && !end_arguments; i++) {
       switch (format[i]) {
         case 'i':	lua_pushinteger(l, va_arg(args, int));	break;
-        case 'b':	lua_pushboolean(l, va_arg(args, int));	break; 		// cstdarg refuses bool
-        case 's':	lua_pushstring(l, va_arg(args, const char*));	break;	// and std::string
+        case 'b':	lua_pushboolean(l, va_arg(args, int));	break; 	         // cstdarg refuses bool
+        case 's':	lua_pushstring(l, va_arg(args, const char*));	break;  // and std::string
         case ' ':	end_arguments = true;	break;
         default:	Debug::die(StringConcat() << "Invalid character '" << format[i] << "' in format string '" << format);
       }

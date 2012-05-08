@@ -125,8 +125,9 @@ class Dialog;
 class DialogResource;
 class DialogBox;
 
-// scripts
+// Lua
 class ExportableToLua;
+class LuaContext;
 class Script;
 class MapScript;
 class ItemScript;

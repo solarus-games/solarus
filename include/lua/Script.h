@@ -27,9 +27,15 @@ struct lua_State;
 struct luaL_Reg;
 
 /**
- * @brief Handles a Lua script that is running.
+ * @brief Handles a Lua script that is running in its own Lua context.
  *
  * This class and its subclasses provide an API that allows Lua scripts to call C++ functions.
+ *
+ * TODO: The Lua bindings are currently being modified so that all scripts use
+ * only one shared Lua context. This shared context is managed by the
+ * LuaContext class.
+ * The Script class will become obsolete once all scripts are converted to
+ * the LuaContext class.
  */
 class Script {
 

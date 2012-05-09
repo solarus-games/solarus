@@ -50,7 +50,6 @@ class Screen {
     virtual ~Screen();
 
     MainLoop& get_main_loop();
-    void set_main_loop(MainLoop& main_loop);
     LuaContext& get_lua_context();
 
     // functions to implement in subclasses and that will be called by the main loop
@@ -83,11 +82,11 @@ class Screen {
 
   protected:
 
-    Screen();
+    Screen(MainLoop& main_loop);
 
   private:
 
-    MainLoop* main_loop;           /**< the main object of the program (it manages the screens) */
+    MainLoop& main_loop;  /**< The Solarus main object (it manages the screens). */
 };
 
 #endif

@@ -22,11 +22,13 @@
 
 /**
  * @brief Creates a custom screen.
- * @param screen_name name of the Lua script that controls this screen
- * (no extension), relative to the screens directory
+ * @param main_loop The Solarus root object.
+ * @param screen_name Name of the Lua script that controls this screen
+ * (no extension), relative to the screens directory.
  */
-CustomScreen::CustomScreen(const std::string& screen_name):
-  Screen() {
+CustomScreen::CustomScreen(MainLoop& main_loop,
+    const std::string& screen_name):
+  Screen(main_loop) {
 
   // Load the menu script.
   std::ostringstream oss;
@@ -52,7 +54,8 @@ CustomScreen::~CustomScreen() {
 void CustomScreen::start_game(const std::string& savegame_file) {
 
   Savegame savegame(savegame_file);
-  get_main_loop().set_next_screen(new Game(savegame));
+  MainLoop& main_loop = get_main_loop();
+  main_loop.set_next_screen(new Game(main_loop, savegame));
 }
 
 /**

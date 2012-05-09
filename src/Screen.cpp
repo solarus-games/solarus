@@ -19,9 +19,10 @@
 
 /**
  * @brief Creates a screen.
+ * @param main_loop The Solarus main loop object.
  */
-Screen::Screen():
-  main_loop(NULL) {
+Screen::Screen(MainLoop& main_loop):
+  main_loop(main_loop) {
 
 }
 
@@ -37,15 +38,7 @@ Screen::~Screen() {
  * @return The Solarus main loop manager.
  */
 MainLoop& Screen::get_main_loop() {
-  return *main_loop;
-}
-
-/**
- * @brief Sets the Solarus main loop that controls this screen.
- * @param main_loop The Solarus main loop manager.
- */
-void Screen::set_main_loop(MainLoop& main_loop) {
-  this->main_loop = &main_loop;
+  return main_loop;
 }
 
 /**

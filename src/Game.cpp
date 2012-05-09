@@ -41,11 +41,13 @@ Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from quest.dat
 
 /**
  * @brief Creates a game.
- * @param savegame the saved data of this game (the specified object will be copied and stored into the game)
+ * @param main_loop The Solarus root object.
+ * @param savegame The saved data of this game
+ * (the specified object will be copied and stored into the game).
  */
-Game::Game(Savegame& savegame):
+Game::Game(MainLoop& main_loop, Savegame& savegame):
 
-  Screen(),
+  Screen(main_loop),
   savegame(savegame),
   pause_key_available(true),
   pause_menu(NULL), 
@@ -300,12 +302,12 @@ void Game::update_transitions() {
       IniFile ini("quest.dat", IniFile::READ);
       ini.set_group("info");
       std::string screen_name = ini.get_string_value("first_screen");
-      main_loop.set_next_screen(new CustomScreen(screen_name));
+      main_loop.set_next_screen(new CustomScreen(main_loop, screen_name));
     }
     else if (restarting) {
       current_map->unload();
       main_loop.get_debug_keys().set_game(NULL);
-      main_loop.set_next_screen(new Game(savegame));
+      main_loop.set_next_screen(new Game(main_loop, savegame));
     }
     else if (transition_direction == Transition::OUT) {
 

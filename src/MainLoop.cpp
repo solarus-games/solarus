@@ -48,8 +48,7 @@ MainLoop::MainLoop(int argc, char** argv):
   lua_context = new LuaContext(*this);
 
   // create the first screen
-  current_screen = new LanguageScreen();
-  current_screen->set_main_loop(*this);
+  current_screen = new LanguageScreen(*this);
 }
 
 /**
@@ -94,7 +93,7 @@ void MainLoop::skip_menus(const std::string& savegame_file) {
   if (FileTools::data_file_exists(savegame_file)) {
 
     Savegame savegame(savegame_file);
-    Game* game = new Game(savegame);
+    Game* game = new Game(*this, savegame);
     delete current_screen;
     current_screen = game;
   }
@@ -130,11 +129,9 @@ void MainLoop::set_next_screen(Screen* next_screen) {
   Debug::check_assertion(this->next_screen == NULL,
       "Another new screen is already set to be started");
 
-  if (next_screen == NULL)
-  {
-    next_screen = new LanguageScreen();
+  if (next_screen == NULL) {
+    next_screen = new LanguageScreen(*this);
   }
-  next_screen->set_main_loop(*this);
   this->next_screen = next_screen;
 }
 

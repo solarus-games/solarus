@@ -29,8 +29,8 @@ const int LanguageScreen::max_visible_languages = 10;
 /**
  * @brief Creates a language screen.
  */
-LanguageScreen::LanguageScreen():
-  Screen(),
+LanguageScreen::LanguageScreen(MainLoop& main_loop):
+  Screen(main_loop),
   transition(NULL),
   intermediate_surface(320, 240),
   language_codes(NULL),
@@ -192,5 +192,6 @@ void LanguageScreen::start_next_screen() {
   IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("info");
   const std::string& screen_name = ini.get_string_value("first_screen");
-  get_main_loop().set_next_screen(new CustomScreen(screen_name));
+  MainLoop& main_loop = get_main_loop();
+  main_loop.set_next_screen(new CustomScreen(main_loop, screen_name));
 }

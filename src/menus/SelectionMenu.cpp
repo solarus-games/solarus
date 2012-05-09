@@ -31,9 +31,10 @@
 
 /**
  * @brief Creates the selection menu.
+ * @param main_loop The Solarus main loop object.
  */
-SelectionMenu::SelectionMenu():
-  Screen(),
+SelectionMenu::SelectionMenu(MainLoop& main_loop):
+  Screen(main_loop),
   surface(320, 240) {
 
   // phases
@@ -209,13 +210,16 @@ void SelectionMenu::set_next_phase(SelectionMenuPhase *next_phase) {
  * @param savegame the savegame to play
  */
 void SelectionMenu::start_game(Savegame &savegame) {
-  get_main_loop().set_next_screen(new Game(savegame));
+
+  MainLoop& main_loop = get_main_loop();
+  main_loop.set_next_screen(new Game(main_loop, savegame));
 }
 
 /**
  * @brief Ends the program.
  */
 void SelectionMenu::set_exiting() {
+
   get_main_loop().set_exiting();
 }
 

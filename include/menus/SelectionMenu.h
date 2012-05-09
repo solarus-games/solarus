@@ -80,7 +80,7 @@ class SelectionMenu: public Screen {
   public:
 
     // creation and destruction
-    SelectionMenu(MainLoop &solarus);
+    SelectionMenu();
     ~SelectionMenu();
 
     // update and display (called by Solarus)

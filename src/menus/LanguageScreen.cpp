@@ -15,22 +15,22 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "menus/LanguageScreen.h"
-#include "CustomScreen.h"
-#include "Transition.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/IniFile.h"
+#include "MainLoop.h"
+#include "CustomScreen.h"
+#include "Transition.h"
 
 const int LanguageScreen::max_visible_languages = 10;
 
 /**
  * @brief Creates a language screen.
- * @param solarus the Solarus object
  */
-LanguageScreen::LanguageScreen(MainLoop& solarus):
-  Screen(solarus),
+LanguageScreen::LanguageScreen():
+  Screen(),
   transition(NULL),
   intermediate_surface(320, 240),
   language_codes(NULL),
@@ -191,6 +191,6 @@ void LanguageScreen::start_next_screen() {
 
   IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("info");
-  std::string script_file = ini.get_string_value("first_screen");
-  set_next_screen(new CustomScreen(main_loop, script_file));
+  const std::string& screen_name = ini.get_string_value("first_screen");
+  get_main_loop().set_next_screen(new CustomScreen(screen_name));
 }

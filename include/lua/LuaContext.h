@@ -36,23 +36,34 @@ class LuaContext: public Script {
 
   public:
 
-    LuaContext();
+    LuaContext(MainLoop& main_loop);
     ~LuaContext();
 
     void load_menu(const std::string& menu_id);
-    void run_menu(const std::string& menu_id);
-
-    void menu_on_started(const std::string& menu_id);
-    void menu_on_display(const std::string& menu_id, Surface& dst_surface);
-    void menu_on_input(const std::string& menu_id, InputEvent& event);
+    void start_menu(const std::string& menu_id);
+    void update_menu(const std::string& menu_id);
+    void display_menu(const std::string& menu_id, Surface& dst_surface);
+    void notify_input_menu(const std::string& menu_id, InputEvent& event);
 
   private:
 
     void load(const std::string& script_name);
+    bool find_local_function(const std::string& function_name);
     bool find_local_function(int index, const std::string& function_name);
 
     void register_menu_module();
     void push_menu_script(const std::string& menu_id);
+
+    void menu_on_started();
+    void menu_on_update();
+    void menu_on_display(Surface& dst_surface);
+    void menu_on_key_pressed(InputEvent& event);
+    void menu_on_key_released(InputEvent& event);
+    void menu_on_joypad_button_pressed(InputEvent& event);
+    void menu_on_joypad_button_released(InputEvent& event);
+    void menu_on_joypad_axis_moved(InputEvent& event);
+    void menu_on_joypad_hat_moved(InputEvent& event);
+    void menu_on_direction_pressed(InputEvent& event);
 };
 
 #endif

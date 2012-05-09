@@ -30,6 +30,7 @@ class MainLoop {
 
     Screen* current_screen;     /**< the screen currently displayed (may be the title screen,
                                  * the selection menu, the game, etc.) */
+    Screen* next_screen;        /**< the new screen to show at the next cycle */
     Surface* root_surface;      /**< the surface where everything is drawn (always 320*240) */
     DebugKeys* debug_keys;      /**< special keys to debug the game, e.g. to traverse walls (disabled in release mode) */
     LuaContext* lua_context;    /**< the Lua world where scripts are run */
@@ -49,6 +50,7 @@ class MainLoop {
     void run();
     void set_exiting();
     bool is_exiting();
+    void set_next_screen(Screen* next_screen);
 
     void skip_menus(const std::string& savegame_file);
     DebugKeys& get_debug_keys();

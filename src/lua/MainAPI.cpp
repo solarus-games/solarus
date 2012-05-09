@@ -16,6 +16,7 @@
  */
 #include "lua/Script.h"
 #include "lowlevel/Geometry.h"
+#include "MainLoop.h"
 #include "Timer.h"
 #include "CustomScreen.h"
 #include <lua.hpp>
@@ -64,7 +65,7 @@ int Script::main_api_exit(lua_State* l) {
 
   Script& script = get_script(l);
 
-  script.get_screen().exit();
+  script.get_main_loop().set_exiting();
 
   return 0;
 }
@@ -77,9 +78,10 @@ int Script::main_api_exit(lua_State* l) {
 int Script::main_api_start_screen(lua_State* l) {
 
   Script& script = get_script(l);
-  const std::string screen_name = luaL_checkstring(l, 1);
+  const std::string& screen_name = luaL_checkstring(l, 1);
 
-  script.get_screen().start_screen(screen_name);
+  MainLoop& main_loop = script.get_main_loop();
+  main_loop.set_next_screen(new CustomScreen(screen_name));
 
   return 0;
 }

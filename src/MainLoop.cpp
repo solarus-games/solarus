@@ -20,12 +20,13 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
 #include "menus/LanguageScreen.h"
+#include "lua/LuaContext.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "StringResource.h"
 #include "DebugKeys.h"
-#include "lua/LuaContext.h"
 
 /**
  * @brief Initializes the game engine.
@@ -34,6 +35,7 @@
  */
 MainLoop::MainLoop(int argc, char** argv):
   current_screen(NULL),
+  next_screen(NULL),
   root_surface(NULL),
   debug_keys(NULL),
   lua_context(NULL),
@@ -43,10 +45,11 @@ MainLoop::MainLoop(int argc, char** argv):
   System::initialize(argc, argv);
   root_surface = new Surface(320, 240);
   debug_keys = new DebugKeys(*this);
-  lua_context = new LuaContext();
+  lua_context = new LuaContext(*this);
 
   // create the first screen
-  current_screen = new LanguageScreen(*this);
+  current_screen = new LanguageScreen();
+  current_screen->set_main_loop(*this);
 }
 
 /**
@@ -56,6 +59,7 @@ MainLoop::~MainLoop() {
 
   delete lua_context;
   delete current_screen;
+  delete next_screen;
   delete root_surface;
   delete debug_keys;
   System::quit();
@@ -90,7 +94,7 @@ void MainLoop::skip_menus(const std::string& savegame_file) {
   if (FileTools::data_file_exists(savegame_file)) {
 
     Savegame savegame(savegame_file);
-    Game* game = new Game(*this, savegame);
+    Game* game = new Game(savegame);
     delete current_screen;
     current_screen = game;
   }
@@ -113,6 +117,25 @@ bool MainLoop::is_exiting() {
  */
 void MainLoop::set_exiting() {
   exiting = true;
+}
+
+/**
+ * @brief Marks the current screen as finished and sets another one to be
+ * started at the next cycle.
+ * @param next_screen The next screen to show, or NULL
+ * to restart the program.
+ */
+void MainLoop::set_next_screen(Screen* next_screen) {
+
+  Debug::check_assertion(this->next_screen == NULL,
+      "Another new screen is already set to be started");
+
+  if (next_screen == NULL)
+  {
+    next_screen = new LanguageScreen();
+  }
+  next_screen->set_main_loop(*this);
+  this->next_screen = next_screen;
 }
 
 /**
@@ -145,16 +168,10 @@ void MainLoop::run() {
     update();
 
     // go to another screen?
-    if (current_screen->is_screen_finished()) {
-      Screen *next_screen = current_screen->get_next_screen();
+    if (next_screen != NULL) {
       delete current_screen;
-
-      if (next_screen != NULL) {
-        current_screen = next_screen;
-      }
-      else {
-        current_screen = new LanguageScreen(*this);
-      }
+      current_screen = next_screen;
+      next_screen = NULL;
     }
     else {
 
@@ -243,6 +260,7 @@ void MainLoop::update() {
 
   debug_keys->update();
   current_screen->update();
+  lua_context->update();
   System::update();
 }
 

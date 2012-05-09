@@ -29,7 +29,7 @@
  * @param map the map
  */
 MapScript::MapScript(Map& map):
-  Script(GAME_API | MAP_API),
+  Script(map.get_game().get_main_loop(), GAME_API | MAP_API),
   map(map) {
 
 }

@@ -82,7 +82,7 @@ class Game: public Screen {
   public:
 
     // creation and destruction
-    Game(MainLoop& main_loop, Savegame& savegame);
+    Game(Savegame& savegame);
     ~Game();
 
     // global objects

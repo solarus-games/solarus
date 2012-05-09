@@ -41,12 +41,11 @@ Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from quest.dat
 
 /**
  * @brief Creates a game.
- * @param main_loop the Solarus main loop object
  * @param savegame the saved data of this game (the specified object will be copied and stored into the game)
  */
-Game::Game(MainLoop& main_loop, Savegame& savegame):
+Game::Game(Savegame& savegame):
 
-  Screen(main_loop),
+  Screen(),
   savegame(savegame),
   pause_key_available(true),
   pause_menu(NULL), 
@@ -67,7 +66,7 @@ Game::Game(MainLoop& main_loop, Savegame& savegame):
 
   // notify objects
   get_equipment().set_game(*this);
-  main_loop.get_debug_keys().set_game(this);
+  get_main_loop().get_debug_keys().set_game(this);
 
   // initialize members
   controls = new GameControls(*this);
@@ -293,6 +292,7 @@ void Game::update_transitions() {
     delete transition;
     transition = NULL;
 
+    MainLoop& main_loop = get_main_loop();
     if (reseting) {
       current_map->unload();
       main_loop.get_debug_keys().set_game(NULL);
@@ -300,12 +300,12 @@ void Game::update_transitions() {
       IniFile ini("quest.dat", IniFile::READ);
       ini.set_group("info");
       std::string screen_name = ini.get_string_value("first_screen");
-      set_next_screen(new CustomScreen(main_loop, screen_name));
+      main_loop.set_next_screen(new CustomScreen(screen_name));
     }
     else if (restarting) {
       current_map->unload();
       main_loop.get_debug_keys().set_game(NULL);
-      set_next_screen(new Game(main_loop, savegame));
+      main_loop.set_next_screen(new Game(savegame));
     }
     else if (transition_direction == Transition::OUT) {
 

@@ -49,8 +49,8 @@ class Screen {
 
     virtual ~Screen();
 
-    bool is_screen_finished();
-    Screen* get_next_screen();
+    MainLoop& get_main_loop();
+    void set_main_loop(MainLoop& main_loop);
     LuaContext& get_lua_context();
 
     // functions to implement in subclasses and that will be called by the main loop
@@ -81,17 +81,13 @@ class Screen {
      */
     virtual void notify_input(InputEvent& event) = 0;
 
-  private:
-
-    bool screen_finished;       /**< indicates that the current screen is finished and should be destroyed */
-    Screen* next_screen;        /**< when the current screen is finished, indicates the next screen */
-
   protected:
 
-    MainLoop& main_loop;           /**< the main object of the program (it manages the screens) */
+    Screen();
 
-    Screen(MainLoop& main_loop);
-    void set_next_screen(Screen* next_screen);
+  private:
+
+    MainLoop* main_loop;           /**< the main object of the program (it manages the screens) */
 };
 
 #endif

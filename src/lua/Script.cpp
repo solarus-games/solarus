@@ -20,6 +20,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Color.h"
+#include "MainLoop.h"
 #include "Map.h"
 #include "Timer.h"
 #include "Sprite.h"
@@ -29,11 +30,13 @@
 
 /**
  * @brief Creates a script.
+ * @param main_loop The Solarus main loop manager.
  * @param apis_enabled an OR-combination of optional APIs to enable
  * (0 for none)
  */
-Script::Script(uint32_t apis_enabled):
+Script::Script(MainLoop& main_loop, uint32_t apis_enabled):
   l(NULL),
+  main_loop(main_loop),
   music_played(false),
   apis_enabled(apis_enabled) {
 
@@ -192,16 +195,11 @@ Enemy& Script::get_enemy() {
 }
 
 /**
- * @brief Returns the screen controlled by this script (if any).
- *
- * Scripts that want to control the screen must redefine this function.
- *
- * @return the screen controlled by this script
+ * @brief Returns the Solarus main loop object.
+ * @return The main loop manager.
  */
-CustomScreen& Script::get_screen() {
-
-  Debug::die("This script does not control the screen");
-  throw;
+MainLoop& Script::get_main_loop() {
+  return main_loop;
 }
 
 /**
@@ -217,6 +215,7 @@ void Script::register_modules() {
   register_text_surface_module();
   register_sprite_module();
   register_movement_module();
+  register_input_module();
 
   if (apis_enabled && GAME_API) {
     register_game_module();
@@ -229,9 +228,6 @@ void Script::register_modules() {
   }
   if (apis_enabled && ENEMY_API) {
     register_enemy_module();
-  }
-  if (apis_enabled && INPUT_API) {
-    register_input_module();
   }
 }
 

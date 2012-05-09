@@ -22,12 +22,11 @@
 
 /**
  * @brief Creates a custom screen.
- * @param main_loop the Solarus main loop object
  * @param screen_name name of the Lua script that controls this screen
  * (no extension), relative to the screens directory
  */
-CustomScreen::CustomScreen(MainLoop& main_loop, const std::string& screen_name):
-  Screen(main_loop) {
+CustomScreen::CustomScreen(const std::string& screen_name):
+  Screen() {
 
   // Load the menu script.
   std::ostringstream oss;
@@ -36,8 +35,7 @@ CustomScreen::CustomScreen(MainLoop& main_loop, const std::string& screen_name):
 
   LuaContext& lua_context = get_lua_context();
   lua_context.load_menu(menu_id);
-  lua_context.run_menu(menu_id);
-  lua_context.menu_on_started(menu_id);
+  lua_context.start_menu(menu_id);
 }
 
 /**
@@ -48,32 +46,13 @@ CustomScreen::~CustomScreen() {
 }
 
 /**
- * @brief Exits the program.
- *
- * This function returns and the program stops after the current cycle.
- */
-void CustomScreen::exit() {
-
-  main_loop.set_exiting();
-}
-
-/**
- * @brief Shows another custom screen that will replace this one.
- * @param screen_name name of the Lua script that controls the new screen
- */
-void CustomScreen::start_screen(const std::string& screen_name) {
-
-  set_next_screen(new CustomScreen(main_loop, screen_name));
-}
-
-/**
  * @brief Shows a game that will replace this custom screen.
  * @param savegame_file savegame to load, relative to the savegames directory
  */
 void CustomScreen::start_game(const std::string& savegame_file) {
 
   Savegame savegame(savegame_file);
-  set_next_screen(new Game(main_loop, savegame));
+  get_main_loop().set_next_screen(new Game(savegame));
 }
 
 /**
@@ -81,7 +60,7 @@ void CustomScreen::start_game(const std::string& savegame_file) {
  */
 void CustomScreen::update() {
 
-  // TODO script.update();
+  get_lua_context().update_menu(menu_id);
 }
 
 /**
@@ -90,7 +69,7 @@ void CustomScreen::update() {
  */
 void CustomScreen::display(Surface& dst_surface) {
 
-  get_lua_context().menu_on_display(menu_id, dst_surface);
+  get_lua_context().display_menu(menu_id, dst_surface);
 }
 
 /**
@@ -99,6 +78,6 @@ void CustomScreen::display(Surface& dst_surface) {
  */
 void CustomScreen::notify_input(InputEvent& event) {
 
-  // TODO script.notify_input(event);
+  get_lua_context().notify_input_menu(menu_id, event);
 }
 

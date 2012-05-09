@@ -69,11 +69,13 @@ class Script {
     virtual ~Script();
 
     // possible scripted objects (each type of script may control some of them)
+
     virtual Game& get_game();
     virtual Map& get_map();
     virtual ItemProperties& get_item_properties();
     virtual Enemy& get_enemy();
-    virtual CustomScreen& get_screen();
+
+    MainLoop& get_main_loop();
 
     // main loop
     virtual void update();
@@ -107,13 +109,12 @@ class Script {
       GAME_API          = 0x0001,
       MAP_API           = 0x0002,
       ITEM_API          = 0x0004,
-      ENEMY_API         = 0x0008,
-      INPUT_API         = 0x0016
+      ENEMY_API         = 0x0008
     };
 
     lua_State* l;                        /**< the execution context of the Lua script */
 
-    Script(uint32_t apis_enabled = 0);
+    Script(MainLoop& main_loop, uint32_t apis_enabled = 0);
 
     // calling C++ from Lua
     static Script& get_script(lua_State* l);
@@ -136,9 +137,13 @@ class Script {
     static void push_movement(lua_State* l, Movement& movement);
     const std::string& input_get_key_name(InputEvent::KeyboardKey key);
 
+    // debugging
+    void print_stack();
+
   private:
 
     // script data
+    MainLoop& main_loop;            /**< the Solarus main loop */
     std::map<Timer*, int> timers;   /**< the timers currently running for this
                                      * script, associated to their callback ref */
     std::set<DynamicDisplayable*>
@@ -205,9 +210,6 @@ class Script {
     void add_displayable(DynamicDisplayable* displayable);
     void remove_displayable(DynamicDisplayable* displayable);
     void update_displayables();
-
-    // debugging
-    void print_stack();
 
   protected:
 

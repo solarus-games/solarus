@@ -20,7 +20,6 @@
 #include "Common.h"
 #include "Screen.h"
 #include "lowlevel/Surface.h"
-#include "lua/MenuScript.h"
 
 /**
  * @brief A screen controlled by a script.
@@ -30,7 +29,7 @@ class CustomScreen: public Screen {
   public:
 
     // creation and destruction
-    CustomScreen(MainLoop& main_loop, const std::string& screen_name);
+    CustomScreen(const std::string& screen_name);
     ~CustomScreen();
 
     // update and display
@@ -39,8 +38,6 @@ class CustomScreen: public Screen {
     void display(Surface& dst_surface);
 
     // terminating this screen
-    void exit();
-    void start_screen(const std::string& screen_name);
     void start_game(const std::string& savegame_file);
 
   private:

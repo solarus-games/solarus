@@ -19,12 +19,9 @@
 
 /**
  * @brief Creates a screen.
- * @param main_loop the application object (some screens need it)
  */
-Screen::Screen(MainLoop& main_loop):
-  screen_finished(false),
-  next_screen(NULL),
-  main_loop(main_loop) {
+Screen::Screen():
+  main_loop(NULL) {
 
 }
 
@@ -36,40 +33,19 @@ Screen::~Screen() {
 }
 
 /**
- * @brief This function can be called by the current screen
- * to indicate that it is finished and to specify
- * the next screen.
- * @param next_screen the next screen to show, or NULL
- * to restart the program.
+ * @brief Returns the Solarus main loop that controls this screen.
+ * @return The Solarus main loop manager.
  */
-void Screen::set_next_screen(Screen* next_screen) {
-
-  this->screen_finished = true;
-  this->next_screen = next_screen;
+MainLoop& Screen::get_main_loop() {
+  return *main_loop;
 }
 
 /**
- * @brief When this screen is finished, returns the
- * screen that should be displayed now.
- * @return the next screen
+ * @brief Sets the Solarus main loop that controls this screen.
+ * @param main_loop The Solarus main loop manager.
  */
-Screen* Screen::get_next_screen() {
-
-  return next_screen;
-}
-
-/**
- * @brief Returns whether this screen is finished.
- *
- * If true is returned, the get_next_screen()
- * function indicates what screen should be
- * displayed now.
- *
- * @return true if the screen finished
- */
-bool Screen::is_screen_finished() {
-
-  return screen_finished;
+void Screen::set_main_loop(MainLoop& main_loop) {
+  this->main_loop = &main_loop;
 }
 
 /**
@@ -77,6 +53,6 @@ bool Screen::is_screen_finished() {
  * @return The Lua context where all scripts are run.
  */
 LuaContext& Screen::get_lua_context() {
-  return main_loop.get_lua_context();
+  return get_main_loop().get_lua_context();
 }
 

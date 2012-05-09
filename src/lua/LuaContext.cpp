@@ -23,8 +23,10 @@
 
 /**
  * @brief Creates a Lua context.
+ * @param main_loop The Solarus main loop manager.
  */
-LuaContext::LuaContext() {
+LuaContext::LuaContext(MainLoop& main_loop):
+  Script(main_loop) {
 
   initialize_lua_context();
 
@@ -65,6 +67,20 @@ void LuaContext::load(const std::string& script_name) {
 }
 
 /**
+ * @brief Gets a local Lua function from the environment of another one
+ * on top of the stack.
+ *
+ * This is equivalent to find_local_function(-1, function_name).
+ *
+ * @param function_name Name of the function to find in the environment of the
+ * first one.
+ * @return true if the function was found.
+ */
+bool LuaContext::find_local_function(const std::string& function_name) {
+  return find_local_function(-1, function_name);
+}
+
+/**
  * @brief Gets a local Lua function from the environment of another one.
  *
  * The function found is placed on top the stack if it exists.
@@ -76,6 +92,7 @@ void LuaContext::load(const std::string& script_name) {
  * @return true if the function was found.
  */
 bool LuaContext::find_local_function(int index, const std::string& function_name) {
+
                                   // ... f1 ...
   lua_getfenv(l, index);
                                   // ... f1 ... env
@@ -93,5 +110,4 @@ bool LuaContext::find_local_function(int index, const std::string& function_name
 
   return exists;
 }
-
 

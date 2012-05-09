@@ -45,6 +45,9 @@ CustomScreen::CustomScreen(MainLoop& main_loop,
  */
 CustomScreen::~CustomScreen() {
 
+  LuaContext& lua_context = get_lua_context();
+  lua_context.stop_menu(menu_id);
+  lua_context.unload_menu(menu_id);
 }
 
 /**

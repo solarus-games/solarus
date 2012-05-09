@@ -69,6 +69,25 @@ void LuaContext::load_menu(const std::string& menu_id) {
 }
 
 /**
+ * @brief Unloads from Lua a scripted menu previously loaded.
+ * @param menu_id Id of the menu to stop.
+ */
+void LuaContext::unload_menu(const std::string& menu_id) {
+
+                                  // ...
+  lua_getglobal(l, "sol");
+                                  // ... sol
+  lua_getfield(l, -1, "menus");
+                                  // ... sol menus
+  lua_pushnil(l);
+                                  // ... sol menus nil
+  lua_setfield(l, -2, menu_id.c_str());
+                                  // ... sol menus
+  lua_pop(l, 2);
+                                  // ...
+}
+
+/**
  * @brief Pushes on top of the stack the previously loaded function of a menu.
  * @param menu_id id of the menu script to get
  */
@@ -105,6 +124,15 @@ void LuaContext::start_menu(const std::string& menu_id) {
   menu_on_started();
   lua_pop(l, 1);
                                   // ...
+}
+
+/**
+ * @brief Stops a scripted menu previously loaded.
+ * @param menu_id Id of the menu to stop.
+ */
+void LuaContext::stop_menu(const std::string& menu_id) {
+
+  // TODO stop timers created by this scripted menu
 }
 
 /**

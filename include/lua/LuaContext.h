@@ -40,7 +40,9 @@ class LuaContext: public Script {
     ~LuaContext();
 
     void load_menu(const std::string& menu_id);
+    void unload_menu(const std::string& menu_id);
     void start_menu(const std::string& menu_id);
+    void stop_menu(const std::string& menu_id);
     void update_menu(const std::string& menu_id);
     void display_menu(const std::string& menu_id, Surface& dst_surface);
     void notify_input_menu(const std::string& menu_id, InputEvent& event);

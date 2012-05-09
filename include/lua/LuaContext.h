@@ -47,6 +47,8 @@ class LuaContext: public Script {
     void display_menu(CustomMenu& menu, Surface& dst_surface);
     void notify_input_menu(CustomMenu& menu, InputEvent& event);
 
+    void update();
+
   private:
 
     void load(const std::string& script_name);

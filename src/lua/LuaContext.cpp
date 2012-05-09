@@ -49,6 +49,17 @@ LuaContext::~LuaContext() {
 
 }
 
+void LuaContext::update() {
+    Script::update();
+
+    lua_getglobal(l, "Main");  /* get function */
+    lua_pushstring(l, "update");
+    lua_gettable(l, -2);  /* get Main.update */
+
+    // this basically does pcall
+    call_script(0, 0, "Main.update");
+}
+
 /**
  * @brief Opens a script and lets it on top of the stack as a function.
  * @param script_name File name of the script without extension,

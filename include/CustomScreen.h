@@ -37,9 +37,6 @@ class CustomScreen: public Screen {
     void update();
     void display(Surface& dst_surface);
 
-    // terminating this screen
-    void start_game(const std::string& savegame_file);
-
   private:
 
     std::string menu_id;  // Id of the Lua menu showed in this screen.

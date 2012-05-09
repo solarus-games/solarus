@@ -51,8 +51,8 @@ class MainLoop {
     void set_exiting();
     bool is_exiting();
     void set_next_screen(Screen* next_screen);
+    void start_game(const std::string& savegame_file);
 
-    void skip_menus(const std::string& savegame_file);
     DebugKeys& get_debug_keys();
     LuaContext& get_lua_context();
 };

@@ -166,13 +166,13 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
   else {
     // no game yet
     if (key == InputEvent::KEY_F1) {
-      main_loop.skip_menus("save1.dat");
+      main_loop.start_game("save1.dat");
     }
     else if (key == InputEvent::KEY_F2) {
-      main_loop.skip_menus("save2.dat");
+      main_loop.start_game("save2.dat");
     }
     else if (key == InputEvent::KEY_F3) {
-      main_loop.skip_menus("save3.dat");
+      main_loop.start_game("save3.dat");
     }
   }
 #endif

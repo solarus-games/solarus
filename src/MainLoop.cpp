@@ -81,25 +81,6 @@ LuaContext& MainLoop::get_lua_context() {
 }
 
 /**
- * @brief Skips the menus and starts the game immediately.
- *
- * This function can be called during the title screen or the selection menu to skip them
- * and start the game immediately with a savegame (for debugging purposes).
- *
- * @param savegame_file name of the savegame file to load
- */
-void MainLoop::skip_menus(const std::string& savegame_file) {
-
-  if (FileTools::data_file_exists(savegame_file)) {
-
-    Savegame savegame(savegame_file);
-    Game* game = new Game(*this, savegame);
-    delete current_screen;
-    current_screen = game;
-  }
-}
-
-/**
  * @brief Returns whether the user just closed the window.
  *
  * When this function returns true, you should stop immediately
@@ -133,6 +114,23 @@ void MainLoop::set_next_screen(Screen* next_screen) {
     next_screen = new LanguageScreen(*this);
   }
   this->next_screen = next_screen;
+}
+
+/**
+ * @brief Marks the current screen as finished and starts a game.
+ *
+ * This function is equivalent to:
+ * set_next_screen(new Game(*this, Savegame(savegame_file))),
+ * except that if the savegame file does not exists, nothing happens.
+ *
+ * @param savegame_file name of the savegame file to load
+ */
+void MainLoop::start_game(const std::string& savegame_file) {
+
+  if (FileTools::data_file_exists(savegame_file)) {
+    Savegame savegame(savegame_file);
+    set_next_screen(new Game(*this, savegame));
+  }
 }
 
 /**

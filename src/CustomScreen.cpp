@@ -48,17 +48,6 @@ CustomScreen::~CustomScreen() {
 }
 
 /**
- * @brief Shows a game that will replace this custom screen.
- * @param savegame_file savegame to load, relative to the savegames directory
- */
-void CustomScreen::start_game(const std::string& savegame_file) {
-
-  Savegame savegame(savegame_file);
-  MainLoop& main_loop = get_main_loop();
-  main_loop.set_next_screen(new Game(main_loop, savegame));
-}
-
-/**
  * @brief Updates the screen.
  */
 void CustomScreen::update() {

@@ -100,7 +100,7 @@ void MenuScript::notify_input(InputEvent& event) {
 void MenuScript::event_menu_started() {
 
   const std::string function_name("event_menu_started");
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     call_script(0, 0, function_name);
   }
 }
@@ -112,7 +112,7 @@ void MenuScript::event_menu_started() {
 void MenuScript::event_display(Surface& dst_surface) {
 
   const std::string function_name("event_display");
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     push_userdata(l, dst_surface);
     call_script(1, 0, function_name);
   }
@@ -126,7 +126,7 @@ void MenuScript::event_display(Surface& dst_surface) {
 void MenuScript::event_key_pressed(InputEvent& event) {
 
   const std::string function_name("event_key_pressed");
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
 
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // this key exists in the Lua API
@@ -161,7 +161,7 @@ void MenuScript::event_key_pressed(InputEvent& event) {
 void MenuScript::event_key_released(InputEvent& event) {
 
   const std::string function_name("event_key_released");
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
 
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // this key exists in the Lua API
@@ -178,7 +178,7 @@ void MenuScript::event_key_released(InputEvent& event) {
 void MenuScript::event_joypad_button_pressed(InputEvent& event) {
 
   const std::string function_name("event_joypad_button_pressed");
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
@@ -193,7 +193,7 @@ void MenuScript::event_joypad_button_pressed(InputEvent& event) {
 void MenuScript::event_joypad_button_released(InputEvent& event) {
 
   const std::string function_name("event_joypad_button_released");
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
@@ -208,7 +208,7 @@ void MenuScript::event_joypad_button_released(InputEvent& event) {
 void MenuScript::event_joypad_axis_moved(InputEvent& event) {
 
   const std::string function_name("event_joypad_axis_moved");
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     int axis = event.get_joypad_axis();
     int state = event.get_joypad_axis_state();
 
@@ -225,7 +225,7 @@ void MenuScript::event_joypad_axis_moved(InputEvent& event) {
 void MenuScript::event_joypad_hat_moved(InputEvent& event) {
 
   const std::string function_name("event_joypad_hat_moved");
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     int hat = event.get_joypad_hat();
     int direction8 = event.get_joypad_hat_direction();
 
@@ -243,7 +243,7 @@ void MenuScript::event_joypad_hat_moved(InputEvent& event) {
 void MenuScript::event_direction_pressed(InputEvent& event) {
 
   const std::string function_name("event_direction_pressed");
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     int direction8 = event.get_direction();
 
     lua_pushinteger(l, direction8);

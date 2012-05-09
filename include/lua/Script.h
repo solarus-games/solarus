@@ -119,7 +119,7 @@ class Script {
     static Script& get_script(lua_State* l);
 
     // calling Lua from C++
-    bool find_lua_function(const std::string& function_name);
+    bool find_global_function(const std::string& function_name);
     bool notify_script(const std::string& function_name, const char* format = "", ...);
     bool call_script(int nb_arguments, int nb_results, const std::string& function_name);
     void initialize_lua_context();

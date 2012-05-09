@@ -38,6 +38,21 @@ class LuaContext: public Script {
 
     LuaContext();
     ~LuaContext();
+
+    void load_menu(const std::string& menu_id);
+    void run_menu(const std::string& menu_id);
+
+    void menu_on_started(const std::string& menu_id);
+    void menu_on_display(const std::string& menu_id, Surface& dst_surface);
+    void menu_on_input(const std::string& menu_id, InputEvent& event);
+
+  private:
+
+    void load(const std::string& script_name);
+    bool find_local_function(int index, const std::string& function_name);
+
+    void register_menu_module();
+    void push_menu_script(const std::string& menu_id);
 };
 
 #endif

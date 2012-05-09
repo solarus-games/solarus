@@ -199,7 +199,7 @@ void EnemyScript::event_obstacle_reached() {
 void EnemyScript::event_movement_changed(Movement& movement) {
 
   const std::string& function_name = "event_movement_changed";
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     push_movement(l, movement);
     call_script(1, 0, function_name);
   }
@@ -212,7 +212,7 @@ void EnemyScript::event_movement_changed(Movement& movement) {
 void EnemyScript::event_movement_finished(Movement& movement) {
 
   const std::string& function_name = "event_movement_finished";
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     push_movement(l, movement);
     call_script(1, 0, function_name);
   }
@@ -228,7 +228,7 @@ void EnemyScript::event_sprite_animation_finished(Sprite& sprite,
     const std::string& animation) {
 
   const std::string& function_name = "event_sprite_animation_finished";
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     push_sprite(l, sprite);
     lua_pushstring(l, animation.c_str());
     call_script(2, 0, function_name);
@@ -246,7 +246,7 @@ void EnemyScript::event_sprite_frame_changed(Sprite& sprite,
     const std::string& animation, int frame) {
 
   const std::string& function_name = "event_sprite_frame_changed";
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     push_sprite(l, sprite);
     lua_pushstring(l, animation.c_str());
     lua_pushinteger(l, frame);
@@ -266,7 +266,7 @@ void EnemyScript::event_collision_enemy(const std::string& other_name,
     Sprite& other_sprite, Sprite& this_sprite) {
 
   const std::string& function_name = "event_collision_enemy";
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     lua_pushstring(l, other_name.c_str());
     push_sprite(l, other_sprite);
     push_sprite(l, this_sprite);
@@ -285,7 +285,7 @@ void EnemyScript::event_custom_attack_received(EnemyAttack attack,
     Sprite* sprite) {
 
   const std::string& function_name = "event_custom_attack_received";
-  if (find_lua_function(function_name)) {
+  if (find_global_function(function_name)) {
     lua_pushstring(l, Enemy::get_attack_name(attack).c_str());
 
     int nb_arguments = 1;

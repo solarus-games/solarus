@@ -17,6 +17,7 @@
 #include "CustomScreen.h"
 #include "Game.h"
 #include "MainLoop.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/StringConcat.h"
 
 /**
@@ -26,10 +27,17 @@
  * (no extension), relative to the screens directory
  */
 CustomScreen::CustomScreen(MainLoop& main_loop, const std::string& screen_name):
-  Screen(main_loop),
-  script(StringConcat() << "screens/" << screen_name, this) {
+  Screen(main_loop) {
 
-  script.event_menu_started();
+  // Load the menu script.
+  std::ostringstream oss;
+  oss << "screens/" << screen_name;
+  menu_id = oss.str();
+
+  LuaContext& lua_context = get_lua_context();
+  lua_context.load_menu(menu_id);
+  lua_context.run_menu(menu_id);
+  lua_context.menu_on_started(menu_id);
 }
 
 /**
@@ -73,7 +81,7 @@ void CustomScreen::start_game(const std::string& savegame_file) {
  */
 void CustomScreen::update() {
 
-  script.update();
+  // TODO script.update();
 }
 
 /**
@@ -82,7 +90,7 @@ void CustomScreen::update() {
  */
 void CustomScreen::display(Surface& dst_surface) {
 
-  script.event_display(dst_surface);
+  get_lua_context().menu_on_display(menu_id, dst_surface);
 }
 
 /**
@@ -91,6 +99,6 @@ void CustomScreen::display(Surface& dst_surface) {
  */
 void CustomScreen::notify_input(InputEvent& event) {
 
-  script.notify_input(event);
+  // TODO script.notify_input(event);
 }
 

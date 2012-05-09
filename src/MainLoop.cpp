@@ -25,6 +25,7 @@
 #include "Savegame.h"
 #include "StringResource.h"
 #include "DebugKeys.h"
+#include "lua/LuaContext.h"
 
 /**
  * @brief Initializes the game engine.
@@ -35,12 +36,14 @@ MainLoop::MainLoop(int argc, char** argv):
   current_screen(NULL),
   root_surface(NULL),
   debug_keys(NULL),
+  lua_context(NULL),
   exiting(false) {
 
   // initialize lowlevel features (audio, video, files...)
   System::initialize(argc, argv);
   root_surface = new Surface(320, 240);
   debug_keys = new DebugKeys(*this);
+  lua_context = new LuaContext();
 
   // create the first screen
   current_screen = new LanguageScreen(*this);
@@ -51,6 +54,7 @@ MainLoop::MainLoop(int argc, char** argv):
  */
 MainLoop::~MainLoop() {
 
+  delete lua_context;
   delete current_screen;
   delete root_surface;
   delete debug_keys;
@@ -62,8 +66,15 @@ MainLoop::~MainLoop() {
  * @return the debbuging keys object
  */
 DebugKeys& MainLoop::get_debug_keys() {
-
   return *debug_keys;
+}
+
+/**
+ * @brief Returns the shared Lua context.
+ * @return The Lua context where all scripts are run.
+ */
+LuaContext& MainLoop::get_lua_context() {
+  return *lua_context;
 }
 
 /**

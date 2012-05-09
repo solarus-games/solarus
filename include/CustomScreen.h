@@ -45,7 +45,7 @@ class CustomScreen: public Screen {
 
   private:
 
-    MenuScript script;
+    std::string menu_id;  // Id of the Lua menu showed in this screen.
 };
 
 #endif

@@ -51,6 +51,7 @@ class Screen {
 
     bool is_screen_finished();
     Screen* get_next_screen();
+    LuaContext& get_lua_context();
 
     // functions to implement in subclasses and that will be called by the main loop
 

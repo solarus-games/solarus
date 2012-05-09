@@ -72,3 +72,11 @@ bool Screen::is_screen_finished() {
   return screen_finished;
 }
 
+/**
+ * @brief Returns the shared Lua context.
+ * @return The Lua context where all scripts are run.
+ */
+LuaContext& Screen::get_lua_context() {
+  return main_loop.get_lua_context();
+}
+

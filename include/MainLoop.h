@@ -32,6 +32,7 @@ class MainLoop {
                                  * the selection menu, the game, etc.) */
     Surface* root_surface;      /**< the surface where everything is drawn (always 320*240) */
     DebugKeys* debug_keys;      /**< special keys to debug the game, e.g. to traverse walls (disabled in release mode) */
+    LuaContext* lua_context;    /**< the Lua world where scripts are run */
     bool exiting;               /**< indicates that the program is about to stop */
 
     void launch_adventure_mode(Savegame* savegame);
@@ -51,6 +52,7 @@ class MainLoop {
 
     void skip_menus(const std::string& savegame_file);
     DebugKeys& get_debug_keys();
+    LuaContext& get_lua_context();
 };
 
 #endif

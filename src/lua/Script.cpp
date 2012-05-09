@@ -337,10 +337,10 @@ void Script::print_stack() {
  *
  * If the function is not found, the stack is left unchanged.
  *
- * @param function_name of the function to find
+ * @param function_name name of the function to find
  * @return true if the function was found
  */
-bool Script::find_lua_function(const std::string& function_name) {
+bool Script::find_global_function(const std::string& function_name) {
 
   if (l == NULL) {
     return false;
@@ -431,7 +431,7 @@ bool Script::find_lua_function(const std::string& function_name) {
 bool Script::notify_script(const std::string& function_name, const char* format, ...) {
 
   // find the function and push it onto the stack
-  bool exists = find_lua_function(function_name);
+  bool exists = find_global_function(function_name);
 
   if (exists) {
 

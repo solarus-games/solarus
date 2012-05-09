@@ -31,6 +31,15 @@ LuaContext::LuaContext(MainLoop& main_loop):
   initialize_lua_context();
 
   register_menu_module();
+
+  // Load the file.
+  load("main");
+  if (lua_pcall(l, 0, 0, 0) != 0) {
+      Debug::die(StringConcat() << "Error: failed to load script 'main.lua'"
+              << "': " << lua_tostring(l, -1));
+      lua_pop(l, 1);
+  }
+
 }
 
 /**

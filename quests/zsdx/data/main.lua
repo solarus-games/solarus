@@ -6,15 +6,11 @@ tickers = { }
 -- just a collection of static methods
 Main = { }
 
--- called every tick by the engine!
-function Main.update()
-
-    print("hi")
-
-    for t in tickers do
+-- special function: called every tick by the engine!
+function sol.events.update()
+    for k, t in ipairs(Main.tickers) do
         t:update()
     end
 
 end
 
-print("hi")

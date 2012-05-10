@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "menus/CustomMenu.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Surface.h"
@@ -50,19 +51,20 @@ void LuaContext::register_menu_module() {
 
 /**
  * @brief Loads the script of a menu into this Lua world.
- * @param menu_id file name of the script without extension,
- * relative to the data directory.
+ * @param menu The menu script to load.
  */
-void LuaContext::load_menu(const std::string& menu_id) {
+void LuaContext::load_menu(CustomMenu& menu) {
 
                                   // ...
   lua_getglobal(l, "sol");
                                   // ... sol
   lua_getfield(l, -1, "menus");
                                   // ... sol menus
-  load(menu_id);
-                                  // ... sol menus menu_function
-  lua_setfield(l, -2, menu_id.c_str());
+  lua_pushlightuserdata(l, &menu);
+                                  // ... sol menus menu
+  load(menu.get_id());
+                                  // ... sol menus menu menu_fct
+  lua_settable(l, -3);
                                   // ... sol menus
   lua_pop(l, 2);
                                   // ...
@@ -70,18 +72,20 @@ void LuaContext::load_menu(const std::string& menu_id) {
 
 /**
  * @brief Unloads from Lua a scripted menu previously loaded.
- * @param menu_id Id of the menu to stop.
+ * @param menu The scripted menu to stop.
  */
-void LuaContext::unload_menu(const std::string& menu_id) {
+void LuaContext::unload_menu(CustomMenu& menu) {
 
                                   // ...
   lua_getglobal(l, "sol");
                                   // ... sol
   lua_getfield(l, -1, "menus");
                                   // ... sol menus
+  lua_pushlightuserdata(l, &menu);
+                                  // ... sol menus menu
   lua_pushnil(l);
-                                  // ... sol menus nil
-  lua_setfield(l, -2, menu_id.c_str());
+                                  // ... sol menus menu nil
+  lua_settable(l, -3);
                                   // ... sol menus
   lua_pop(l, 2);
                                   // ...
@@ -89,18 +93,21 @@ void LuaContext::unload_menu(const std::string& menu_id) {
 
 /**
  * @brief Pushes on top of the stack the previously loaded function of a menu.
- * @param menu_id id of the menu script to get
+ * @param menu The scripted menu to get.
  */
-void LuaContext::push_menu_script(const std::string& menu_id) {
+void LuaContext::push_menu_script(CustomMenu& menu) {
+
                                   // ...
   lua_getglobal(l, "sol");
                                   // ... sol
   lua_getfield(l, -1, "menus");
                                   // ... sol menus
-  lua_getfield(l, -1, menu_id.c_str());
+  lua_pushlightuserdata(l, &menu);
+                                  // ... sol menus menu
+  lua_gettable(l, -2);
                                   // ... sol menus menu_fct/nil
   Debug::check_assertion(!lua_isnil(l, -1), StringConcat()
-      << "Unknown menu '" << menu_id << "'");
+      << "Cannot find this menu. Did you forget to load its script?");
                                   // ... sol menus menu_fct
   lua_remove(l, -2);
                                   // ... sol menu_fct
@@ -109,17 +116,17 @@ void LuaContext::push_menu_script(const std::string& menu_id) {
 }
 
 /**
- * @brief Starts a menu script previously loaded.
- * @param menu_id Id of the menu to start.
+ * @brief Starts a scripted menu previously loaded.
+ * @param menu The scripted menu to start.
  */
-void LuaContext::start_menu(const std::string& menu_id) {
+void LuaContext::start_menu(CustomMenu& menu) {
 
                                   // ...
-  push_menu_script(menu_id);
+  push_menu_script(menu);
                                   // ... menu_fct
   lua_pushvalue(l, -1);
                                   // ... menu_fct menu_fct
-  call_script(0, 0, menu_id);
+  call_script(0, 0, menu.get_id());
                                   // ... menu_fct
   menu_on_started();
   lua_pop(l, 1);
@@ -128,11 +135,11 @@ void LuaContext::start_menu(const std::string& menu_id) {
 
 /**
  * @brief Stops a scripted menu previously loaded.
- * @param menu_id Id of the menu to stop.
+ * @param menu The scripted menu to stop.
  */
-void LuaContext::stop_menu(const std::string& menu_id) {
+void LuaContext::stop_menu(CustomMenu& menu) {
 
-  // TODO stop timers created by this scripted menu
+  // TODO stop timers attached to this scripted menu
 }
 
 /**
@@ -140,40 +147,40 @@ void LuaContext::stop_menu(const std::string& menu_id) {
  *
  * This function is called at each cycle.
  *
- * @param menu_id Id of a menu.
+ * @param menu A scripted menu.
  */
-void LuaContext::update_menu(const std::string& menu_id) {
+void LuaContext::update_menu(CustomMenu& menu) {
 
-  push_menu_script(menu_id);
+  push_menu_script(menu);
   menu_on_update();
   lua_pop(l, 1);
 }
 
 /**
  * @brief Displays the content of a scripted menu on a surface.
- * @param menu_id Id of a menu.
+ * @param menu A scripted menu.
  * @param dst_surface The destination surface.
  */
-void LuaContext::display_menu(const std::string& menu_id, Surface& dst_surface) {
+void LuaContext::display_menu(CustomMenu& menu, Surface& dst_surface) {
 
-  push_menu_script(menu_id);
+  push_menu_script(menu);
   menu_on_display(dst_surface);
   lua_pop(l, 1);
 }
 
 /**
  * @brief Notifies a scripted menu that a low-level input event has occurred.
- * @param menu_id Id of a menu.
+ * @param menu A scripted menu.
  * @param event The event to handle.
  */
-void LuaContext::notify_input_menu(const std::string& menu_id, InputEvent& event) {
+void LuaContext::notify_input_menu(CustomMenu& menu, InputEvent& event) {
 
-  // get the menu script
-  push_menu_script(menu_id);
+  // Get the menu in Lua.
+  push_menu_script(menu);
 
-  // call the Lua function(s) corresponding to this input event
+  // Call the Lua function(s) corresponding to this input event.
   if (event.is_keyboard_event()) {
-    // keyboard
+    // Keyboard.
     if (event.is_keyboard_key_pressed()) {
       menu_on_key_pressed(event);
     }
@@ -182,7 +189,7 @@ void LuaContext::notify_input_menu(const std::string& menu_id, InputEvent& event
     }
   }
   else if (event.is_joypad_event()) {
-    // joypad
+    // Joypad.
     if (event.is_joypad_button_pressed()) {
       menu_on_joypad_button_pressed(event);
     }
@@ -198,11 +205,11 @@ void LuaContext::notify_input_menu(const std::string& menu_id, InputEvent& event
   }
 
   if (event.is_direction_pressed()) {
-    // keyboard or joypad direction
+    // Keyboard or joypad direction.
     menu_on_direction_pressed(event);
   }
 
-  // pop the menu script
+  // Pop the menu.
   lua_pop(l, 1);
 }
 

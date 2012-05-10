@@ -20,11 +20,12 @@
 #include "Common.h"
 
 /**
- * @brief Represents an execution phase of the program.
+ * @brief An execution phase of the program.
  *
  * A screen is an execution phase of the program, like the title
  * screen, the selection menu or the game itself.
- * There is always a current screen and it is controlled by the main loop of the program.
+ * There is always a current screen and it is controlled by the
+ * main loop of the program.
  *
  * To create a screen, you have to implement a subclass of Screen.
  * The main loop will call three methods that you must implement:
@@ -41,7 +42,8 @@
  * to sleep between two loops.
  *
  * When your screen is finished and you want to go to another screen,
- * you have to call set_next_screen() with the new screen as parameter.
+ * you have to call get_main_loop().set_next_screen() with the new screen as
+ * parameter.
  */
 class Screen {
 

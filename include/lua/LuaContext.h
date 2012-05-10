@@ -27,7 +27,7 @@
  * Such scripts includes map scripts, enemy scripts, menu scripts, etc.
  * Data files are not managed by this class even if they are written in Lua.
  *
- * TODO: menu scripts, map scripts, enemy scripts and item scripts currently
+ * TODO: map scripts, enemy scripts and item scripts currently
  * have still their own Lua world (they inherit Script).
  * Once they are all converted to this shared Lua context,
  * the Script class will be removed.
@@ -36,16 +36,18 @@ class LuaContext: public Script {
 
   public:
 
+    static const std::string menu_module_name;  /**< sol.menu */
+
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
 
-    void load_menu(const std::string& menu_id);
-    void unload_menu(const std::string& menu_id);
-    void start_menu(const std::string& menu_id);
-    void stop_menu(const std::string& menu_id);
-    void update_menu(const std::string& menu_id);
-    void display_menu(const std::string& menu_id, Surface& dst_surface);
-    void notify_input_menu(const std::string& menu_id, InputEvent& event);
+    void load_menu(CustomMenu& menu);
+    void unload_menu(CustomMenu& menu);
+    void start_menu(CustomMenu& menu);
+    void stop_menu(CustomMenu& menu);
+    void update_menu(CustomMenu& menu);
+    void display_menu(CustomMenu& menu, Surface& dst_surface);
+    void notify_input_menu(CustomMenu& menu, InputEvent& event);
 
   private:
 
@@ -54,7 +56,7 @@ class LuaContext: public Script {
     bool find_local_function(int index, const std::string& function_name);
 
     void register_menu_module();
-    void push_menu_script(const std::string& menu_id);
+    void push_menu_script(CustomMenu& menu);
 
     void menu_on_started();
     void menu_on_update();

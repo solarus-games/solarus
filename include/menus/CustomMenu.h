@@ -14,26 +14,26 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_CUSTOM_SCREEN_H
-#define SOLARUS_CUSTOM_SCREEN_H
+#ifndef SOLARUS_CUSTOM_MENU_H
+#define SOLARUS_CUSTOM_MENU_H
 
 #include "Common.h"
-#include "Screen.h"
-#include "menus/CustomMenu.h"
 
 /**
- * @brief An execution phase of the program fully controlled by a Lua script.
+ * @brief A menu controlled by a Lua script.
  *
- * This class just encapsulates a CustomMenu that will be displayed in the
- * screen.
+ * The menu may be used as an entire phase of the program (a screen)
+ * or as a piece of an interface (pause menu, HUD, etc.).
  */
-class CustomScreen: public Screen {
+class CustomMenu {
 
   public:
 
     // creation and destruction
-    CustomScreen(MainLoop& main_loop, const std::string& screen_name);
-    ~CustomScreen();
+    CustomMenu(LuaContext& lua_context, const std::string& menu_id);
+    ~CustomMenu();
+
+    const std::string& get_id() const;
 
     // update and display
     void notify_input(InputEvent& event);
@@ -42,7 +42,8 @@ class CustomScreen: public Screen {
 
   private:
 
-    CustomMenu menu;  /**< The menu showed in this screen. */
+    std::string id;           /**< Id of this menu (also the script file name). */
+    LuaContext& lua_context;  /**< The Lua context that shows this menu. */
 };
 
 #endif

@@ -91,6 +91,7 @@ class StringConcat;
 // menus
 class LanguageScreen;
 class CustomScreen;
+class CustomMenu;
 class SelectionMenu;
 class SelectionMenuPhase;
 class SelectionMenuEraseFile;

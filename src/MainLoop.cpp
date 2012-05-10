@@ -56,9 +56,9 @@ MainLoop::MainLoop(int argc, char** argv):
  */
 MainLoop::~MainLoop() {
 
-  delete lua_context;
   delete current_screen;
   delete next_screen;
+  delete lua_context;
   delete root_surface;
   delete debug_keys;
   System::quit();

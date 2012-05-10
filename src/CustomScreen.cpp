@@ -15,29 +15,21 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "CustomScreen.h"
-#include "Game.h"
 #include "MainLoop.h"
-#include "lua/LuaContext.h"
 #include "lowlevel/StringConcat.h"
 
 /**
  * @brief Creates a custom screen.
  * @param main_loop The Solarus root object.
- * @param screen_name Name of the Lua script that controls this screen
- * (no extension), relative to the screens directory.
+ * @param screen_name Name of the Lua script that controls the menu to show
+ * in this screen (no extension), relative to the screens directory.
  */
 CustomScreen::CustomScreen(MainLoop& main_loop,
     const std::string& screen_name):
-  Screen(main_loop) {
+  Screen(main_loop),
+  menu(main_loop.get_lua_context(),
+      StringConcat() << "screens/" << screen_name) {
 
-  // Load the menu script.
-  std::ostringstream oss;
-  oss << "screens/" << screen_name;
-  menu_id = oss.str();
-
-  LuaContext& lua_context = get_lua_context();
-  lua_context.load_menu(menu_id);
-  lua_context.start_menu(menu_id);
 }
 
 /**
@@ -45,9 +37,6 @@ CustomScreen::CustomScreen(MainLoop& main_loop,
  */
 CustomScreen::~CustomScreen() {
 
-  LuaContext& lua_context = get_lua_context();
-  lua_context.stop_menu(menu_id);
-  lua_context.unload_menu(menu_id);
 }
 
 /**
@@ -55,7 +44,7 @@ CustomScreen::~CustomScreen() {
  */
 void CustomScreen::update() {
 
-  get_lua_context().update_menu(menu_id);
+  menu.update();
 }
 
 /**
@@ -64,7 +53,7 @@ void CustomScreen::update() {
  */
 void CustomScreen::display(Surface& dst_surface) {
 
-  get_lua_context().display_menu(menu_id, dst_surface);
+  menu.display(dst_surface);
 }
 
 /**
@@ -73,6 +62,6 @@ void CustomScreen::display(Surface& dst_surface) {
  */
 void CustomScreen::notify_input(InputEvent& event) {
 
-  get_lua_context().notify_input_menu(menu_id, event);
+  menu.notify_input(event);
 }
 

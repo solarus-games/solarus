@@ -4,7 +4,7 @@
 local phase -- "black", "zs_presents" or "title"
 local title_surface -- surface where everything is drawn
 
-function event_menu_started()
+function on_menu_started()
 
   -- black screen during 0.3 seconds
   phase = "black"
@@ -115,7 +115,7 @@ function phase_title()
   title_surface:fade_in(30)
 end
 
-function event_display(dst_surface)
+function on_display(dst_surface)
 
   if phase ~= "title" then
     dst_surface:draw(title_surface)
@@ -160,7 +160,7 @@ function display_phase_title(destination_surface)
   destination_surface:draw(title_surface)
 end
 
-function event_key_pressed(key)
+function on_key_pressed(key)
 
   if key == "escape" then
     -- stop the program
@@ -171,7 +171,7 @@ function event_key_pressed(key)
   end
 end
 
-function event_joypad_button_pressed(button)
+function on_joypad_button_pressed(button)
 
   try_finish_title()
 end

@@ -1,12 +1,12 @@
 -- Savegame selection screen, displayed after the title screen
 
-function event_menu_started()
+function on_menu_started()
 
   -- music
   sol.audio.play_music("game_over")
 end
 
-function event_key_pressed(key)
+function on_key_pressed(key)
 
   if key == "escape" then
     -- stop the program
@@ -14,7 +14,7 @@ function event_key_pressed(key)
   end
 end
 
-function event_display(dst_surface)
+function on_display(dst_surface)
 
   dst_surface:fill_color({255, 255, 0})
 end

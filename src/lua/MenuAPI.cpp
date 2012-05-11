@@ -21,16 +21,16 @@
 #include "lowlevel/Surface.h"
 #include <lua.hpp>
 
-static const std::string& on_started_name = "event_menu_started";
-static const std::string& on_update_name = "event_update";
-static const std::string& on_display_name = "event_display";
-static const std::string& on_key_pressed_name = "event_key_pressed";
-static const std::string& on_key_released_name = "event_key_released";
-static const std::string& on_joyad_button_pressed_name = "event_joyad_button_pressed";
-static const std::string& on_joyad_button_released_name = "event_joyad_button_released";
-static const std::string& on_joyad_axis_moved_name = "event_joyad_axis_moved";
-static const std::string& on_joyad_hat_moved_name = "event_joyad_hat_moved";
-static const std::string& on_direction_pressed_name = "event_direction_pressed";
+static const std::string& on_started_name = "on_menu_started";
+static const std::string& on_update_name = "on_update";
+static const std::string& on_display_name = "on_display";
+static const std::string& on_key_pressed_name = "on_key_pressed";
+static const std::string& on_key_released_name = "on_key_released";
+static const std::string& on_joyad_button_pressed_name = "on_joyad_button_pressed";
+static const std::string& on_joyad_button_released_name = "on_joyad_button_released";
+static const std::string& on_joyad_axis_moved_name = "on_joyad_axis_moved";
+static const std::string& on_joyad_hat_moved_name = "on_joyad_hat_moved";
+static const std::string& on_direction_pressed_name = "on_direction_pressed";
 
 /**
  * @brief Initializes the menu features provided to Lua.

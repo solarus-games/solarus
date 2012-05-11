@@ -1,12 +1,21 @@
 -- Savegame selection screen, displayed after the title screen
 
-function on_menu_started()
+local savegame_menu = {}
+
+function savegame_menu:new()
+  local object = {}
+  setmetatable(object, self)
+  self.__index = self
+  return object
+end
+
+function savegame_menu:on_started()
 
   -- music
   sol.audio.play_music("game_over")
 end
 
-function on_key_pressed(key)
+function savegame_menu:on_key_pressed(key)
 
   if key == "escape" then
     -- stop the program
@@ -14,8 +23,10 @@ function on_key_pressed(key)
   end
 end
 
-function on_display(dst_surface)
+function savegame_menu:on_display(dst_surface)
 
   dst_surface:fill_color({255, 255, 0})
 end
+
+return savegame_menu
 

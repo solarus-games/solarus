@@ -29,7 +29,6 @@ CustomMenu::CustomMenu(LuaContext& lua_context,
   lua_context(lua_context) {
 
   // Load the menu script.
-  lua_context.load_menu(*this);
   lua_context.start_menu(*this);
 }
 
@@ -39,7 +38,6 @@ CustomMenu::CustomMenu(LuaContext& lua_context,
 CustomMenu::~CustomMenu() {
 
   lua_context.stop_menu(*this);
-  lua_context.unload_menu(*this);
 }
 
 /**

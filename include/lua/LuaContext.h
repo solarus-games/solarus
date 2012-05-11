@@ -41,8 +41,6 @@ class LuaContext: public Script {
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
 
-    void load_menu(CustomMenu& menu);
-    void unload_menu(CustomMenu& menu);
     void start_menu(CustomMenu& menu);
     void stop_menu(CustomMenu& menu);
     void update_menu(CustomMenu& menu);
@@ -52,12 +50,14 @@ class LuaContext: public Script {
   private:
 
     void load(const std::string& script_name);
-    bool find_local_function(const std::string& function_name);
     bool find_local_function(int index, const std::string& function_name);
+    bool find_local_function(const std::string& function_name);
+    bool find_method(int index, const std::string& function_name);
+    bool find_method(const std::string& function_name);
 
     void register_menu_module();
-    void push_menu_script(CustomMenu& menu);
 
+    static void push_menu(lua_State* l, CustomMenu& menu);
     void menu_on_started();
     void menu_on_update();
     void menu_on_display(Surface& dst_surface);

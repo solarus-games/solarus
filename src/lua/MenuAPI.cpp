@@ -21,7 +21,7 @@
 #include "lowlevel/Surface.h"
 #include <lua.hpp>
 
-static const std::string& on_started_name = "on_menu_started";
+static const std::string& on_started_name = "on_started";
 static const std::string& on_update_name = "on_update";
 static const std::string& on_display_name = "on_display";
 static const std::string& on_key_pressed_name = "on_key_pressed";
@@ -37,7 +37,7 @@ static const std::string& on_direction_pressed_name = "on_direction_pressed";
  */
 void LuaContext::register_menu_module() {
 
-  // Create a table sol.menus to store all menu scripts.
+  // Create a table sol.menus to store all menus.
                                   // ...
   lua_getglobal(l, "sol");
                                   // ... sol
@@ -47,99 +47,96 @@ void LuaContext::register_menu_module() {
                                   // ... sol
   lua_pop(l, 1);
                                   // ...
+
+  // TODO simplify the storage method:
+  // use luaL_ref or move more management code to Lua?
 }
 
 /**
- * @brief Loads the script of a menu into this Lua world.
+ * @brief Loads a menu class into this Lua world.
  * @param menu The menu script to load.
- */
-void LuaContext::load_menu(CustomMenu& menu) {
-
-                                  // ...
-  lua_getglobal(l, "sol");
-                                  // ... sol
-  lua_getfield(l, -1, "menus");
-                                  // ... sol menus
-  lua_pushlightuserdata(l, &menu);
-                                  // ... sol menus menu
-  load(menu.get_id());
-                                  // ... sol menus menu menu_fct
-  lua_settable(l, -3);
-                                  // ... sol menus
-  lua_pop(l, 2);
-                                  // ...
-}
-
-/**
- * @brief Unloads from Lua a scripted menu previously loaded.
- * @param menu The scripted menu to stop.
- */
-void LuaContext::unload_menu(CustomMenu& menu) {
-
-                                  // ...
-  lua_getglobal(l, "sol");
-                                  // ... sol
-  lua_getfield(l, -1, "menus");
-                                  // ... sol menus
-  lua_pushlightuserdata(l, &menu);
-                                  // ... sol menus menu
-  lua_pushnil(l);
-                                  // ... sol menus menu nil
-  lua_settable(l, -3);
-                                  // ... sol menus
-  lua_pop(l, 2);
-                                  // ...
-}
-
-/**
- * @brief Pushes on top of the stack the previously loaded function of a menu.
- * @param menu The scripted menu to get.
- */
-void LuaContext::push_menu_script(CustomMenu& menu) {
-
-                                  // ...
-  lua_getglobal(l, "sol");
-                                  // ... sol
-  lua_getfield(l, -1, "menus");
-                                  // ... sol menus
-  lua_pushlightuserdata(l, &menu);
-                                  // ... sol menus menu
-  lua_gettable(l, -2);
-                                  // ... sol menus menu_fct/nil
-  Debug::check_assertion(!lua_isnil(l, -1), StringConcat()
-      << "Cannot find this menu. Did you forget to load its script?");
-                                  // ... sol menus menu_fct
-  lua_remove(l, -2);
-                                  // ... sol menu_fct
-  lua_remove(l, -2);
-                                  // ... menu_fct
-}
-
-/**
- * @brief Starts a scripted menu previously loaded.
- * @param menu The scripted menu to start.
  */
 void LuaContext::start_menu(CustomMenu& menu) {
 
                                   // ...
-  push_menu_script(menu);
-                                  // ... menu_fct
+  lua_getglobal(l, "sol");
+                                  // ... sol
+  lua_getfield(l, -1, "menus");
+                                  // ... sol menus
+  lua_pushlightuserdata(l, &menu);
+                                  // ... sol menus cmenu
+  load(menu.get_id());
+                                  // ... sol menus cmenu menu_fct
+  call_script(0, 1, menu.get_id());
+                                  // ... sol menus cmenu menu_class
+  Debug::check_assertion(lua_istable(l, -1), StringConcat()
+      << "Bad return value from menu '" << menu.get_id()
+      << "': expected table, got " << luaL_typename(l, -1));
+
+  lua_getfield(l, -1, "new");
+                                  // ... sol menus cmenu menu_class new_f
+  Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
+      << "Missing function 'new()' in menu '" << menu.get_id() << "'.");
+  // TODO set a default new() function?
+
+  lua_insert(l, -2);
+                                  // ... sol menus cmenu new_f menu_class
+  call_script(1, 1, "new");
+                                  // ... sol menus cmenu menu
   lua_pushvalue(l, -1);
-                                  // ... menu_fct menu_fct
-  call_script(0, 0, menu.get_id());
-                                  // ... menu_fct
+                                  // ... sol menus cmenu menu menu
+  lua_insert(l, -3);
+                                  // ... sol menus menu cmenu menu
+  lua_settable(l, -4);
+                                  // ... sol menus menu
   menu_on_started();
-  lua_pop(l, 1);
+                                  // ... sol menus menu
+  lua_pop(l, 3);
                                   // ...
 }
 
 /**
- * @brief Stops a scripted menu previously loaded.
+ * @brief Stops a scripted menu previously started.
  * @param menu The scripted menu to stop.
  */
 void LuaContext::stop_menu(CustomMenu& menu) {
 
+                                  // ...
+  lua_getglobal(l, "sol");
+                                  // ... sol
+  lua_getfield(l, -1, "menus");
+                                  // ... sol menus
+  lua_pushlightuserdata(l, &menu);
+                                  // ... sol menus cmenu
+  lua_pushnil(l);
+                                  // ... sol menus cmenu nil
+  lua_settable(l, -3);
+                                  // ... sol menus
+  lua_pop(l, 2);
+                                  // ...
   // TODO stop timers attached to this scripted menu
+}
+
+/**
+ * @brief Pushes a menu onto the stack.
+ * @param l The Lua context.
+ * @param menu A scripted menu.
+ */
+void LuaContext::push_menu(lua_State* l, CustomMenu& menu) {
+
+                                  // ...
+  lua_getglobal(l, "sol");
+                                  // ... sol
+  lua_getfield(l, -1, "menus");
+                                  // ... sol menus
+  lua_pushlightuserdata(l, &menu);
+                                  // ... sol menus cmenu
+  lua_gettable(l, -2);
+                                  // ... sol menus menu
+  lua_remove(l, -2);
+                                  // ... sol menu
+  lua_remove(l, -2);
+                                  // ... menu
 }
 
 /**
@@ -151,7 +148,7 @@ void LuaContext::stop_menu(CustomMenu& menu) {
  */
 void LuaContext::update_menu(CustomMenu& menu) {
 
-  push_menu_script(menu);
+  push_menu(l, menu);
   menu_on_update();
   lua_pop(l, 1);
 }
@@ -163,7 +160,7 @@ void LuaContext::update_menu(CustomMenu& menu) {
  */
 void LuaContext::display_menu(CustomMenu& menu, Surface& dst_surface) {
 
-  push_menu_script(menu);
+  push_menu(l, menu);
   menu_on_display(dst_surface);
   lua_pop(l, 1);
 }
@@ -176,7 +173,7 @@ void LuaContext::display_menu(CustomMenu& menu, Surface& dst_surface) {
 void LuaContext::notify_input_menu(CustomMenu& menu, InputEvent& event) {
 
   // Get the menu in Lua.
-  push_menu_script(menu);
+  push_menu(l, menu);
 
   // Call the Lua function(s) corresponding to this input event.
   if (event.is_keyboard_event()) {
@@ -219,8 +216,8 @@ void LuaContext::notify_input_menu(CustomMenu& menu, InputEvent& event) {
  */
 void LuaContext::menu_on_started() {
 
-  if (find_local_function(-1, on_started_name)) {
-    call_script(0, 0, on_started_name);
+  if (find_method(on_started_name)) {
+    call_script(1, 0, on_started_name);
   }
 }
 
@@ -231,8 +228,8 @@ void LuaContext::menu_on_started() {
  */
 void LuaContext::menu_on_update() {
 
-  if (find_local_function(-1, on_update_name)) {
-    call_script(0, 0, on_update_name);
+  if (find_method(-1, on_update_name)) {
+    call_script(1, 0, on_update_name);
   }
 }
 
@@ -242,9 +239,9 @@ void LuaContext::menu_on_update() {
  */
 void LuaContext::menu_on_display(Surface& dst_surface) {
 
-  if (find_local_function(on_display_name)) {
-    push_userdata(l, dst_surface);
-    call_script(1, 0, on_display_name);
+  if (find_method(on_display_name)) {
+    push_surface(l, dst_surface);
+    call_script(2, 0, on_display_name);
   }
 }
 
@@ -256,32 +253,33 @@ void LuaContext::menu_on_display(Surface& dst_surface) {
  */
 void LuaContext::menu_on_key_pressed(InputEvent& event) {
 
-  if (find_local_function(on_key_pressed_name)) {
+  if (find_method(on_key_pressed_name)) {
 
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
-    if (!key_name.empty()) { // this key exists in the Lua API
+    if (!key_name.empty()) { // This key exists in the Lua API.
 
       lua_pushstring(l, key_name.c_str());
       lua_newtable(l);
 
       if (event.is_with_shift()) {
-        lua_pushnil(l);
+        lua_pushboolean(l, 1);
         lua_setfield(l, -2, "shift");
       }
 
       if (event.is_with_control()) {
-        lua_pushnil(l);
+        lua_pushboolean(l, 1);
         lua_setfield(l, -2, "control");
       }
 
       if (event.is_with_alt()) {
-        lua_pushnil(l);
+        lua_pushboolean(l, 1);
         lua_setfield(l, -2, "alt");
       }
-      call_script(2, 0, on_key_pressed_name);
+      call_script(3, 0, on_key_pressed_name);
     }
     else {
-      lua_pop(l, 1);
+      // The method exists but the key is unknown.
+      lua_pop(l, 2);
     }
   }
 }
@@ -294,15 +292,16 @@ void LuaContext::menu_on_key_pressed(InputEvent& event) {
  */
 void LuaContext::menu_on_key_released(InputEvent& event) {
 
-  if (find_local_function(on_key_released_name)) {
+  if (find_method(on_key_released_name)) {
 
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
-    if (!key_name.empty()) { // this key exists in the Lua API
+    if (!key_name.empty()) { // This key exists in the Lua API.
       lua_pushstring(l, key_name.c_str());
-      call_script(1, 0, on_key_released_name);
+      call_script(2, 0, on_key_released_name);
     }
     else {
-      lua_pop(l, 1);
+      // The method exists but the key is unknown.
+      lua_pop(l, 2);
     }
   }
 }
@@ -314,11 +313,11 @@ void LuaContext::menu_on_key_released(InputEvent& event) {
  */
 void LuaContext::menu_on_joypad_button_pressed(InputEvent& event) {
 
-  if (find_local_function(on_joyad_button_pressed_name)) {
+  if (find_method(on_joyad_button_pressed_name)) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_script(1, 0, on_joyad_button_pressed_name);
+    call_script(2, 0, on_joyad_button_pressed_name);
   }
 }
 
@@ -329,11 +328,11 @@ void LuaContext::menu_on_joypad_button_pressed(InputEvent& event) {
  */
 void LuaContext::menu_on_joypad_button_released(InputEvent& event) {
 
-  if (find_local_function(on_joyad_button_released_name)) {
+  if (find_method(on_joyad_button_released_name)) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_script(1, 0, on_joyad_button_released_name);
+    call_script(2, 0, on_joyad_button_released_name);
   }
 }
 
@@ -344,13 +343,13 @@ void LuaContext::menu_on_joypad_button_released(InputEvent& event) {
  */
 void LuaContext::menu_on_joypad_axis_moved(InputEvent& event) {
 
-  if (find_local_function(on_joyad_axis_moved_name)) {
+  if (find_method(on_joyad_axis_moved_name)) {
     int axis = event.get_joypad_axis();
     int state = event.get_joypad_axis_state();
 
     lua_pushinteger(l, axis);
     lua_pushinteger(l, state);
-    call_script(2, 0, on_joyad_axis_moved_name);
+    call_script(3, 0, on_joyad_axis_moved_name);
   }
 }
 
@@ -361,13 +360,13 @@ void LuaContext::menu_on_joypad_axis_moved(InputEvent& event) {
  */
 void LuaContext::menu_on_joypad_hat_moved(InputEvent& event) {
 
-  if (find_global_function(on_joyad_hat_moved_name)) {
+  if (find_method(on_joyad_hat_moved_name)) {
     int hat = event.get_joypad_hat();
     int direction8 = event.get_joypad_hat_direction();
 
     lua_pushinteger(l, hat);
     lua_pushinteger(l, direction8);
-    call_script(2, 0, on_joyad_hat_moved_name);
+    call_script(3, 0, on_joyad_hat_moved_name);
   }
 }
 
@@ -379,11 +378,11 @@ void LuaContext::menu_on_joypad_hat_moved(InputEvent& event) {
  */
 void LuaContext::menu_on_direction_pressed(InputEvent& event) {
 
-  if (find_global_function(on_direction_pressed_name)) {
+  if (find_method(on_direction_pressed_name)) {
     int direction8 = event.get_direction();
 
     lua_pushinteger(l, direction8);
-    call_script(1, 0, on_direction_pressed_name);
+    call_script(2, 0, on_direction_pressed_name);
   }
 }
 

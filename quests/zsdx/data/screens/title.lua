@@ -4,7 +4,7 @@
 local phase -- "black", "zs_presents" or "title"
 local title_surface -- surface where everything is drawn
 
-function on_menu_started()
+function on_started()
 
   -- black screen during 0.3 seconds
   phase = "black"

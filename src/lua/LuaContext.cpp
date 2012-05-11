@@ -77,6 +77,7 @@ void LuaContext::load(const std::string& script_name) {
  * @return true if the function was found.
  */
 bool LuaContext::find_local_function(const std::string& function_name) {
+
   return find_local_function(-1, function_name);
 }
 
@@ -97,15 +98,68 @@ bool LuaContext::find_local_function(int index, const std::string& function_name
   lua_getfenv(l, index);
                                   // ... f1 ... env
   lua_getfield(l, -1, function_name.c_str());
-                                  // ... f1 ... env f2/nil
+                                  // ... f1 ... env f2/?
   bool exists = lua_isfunction(l, -1);
 
   // Restore the stack.
   if (exists) {
     lua_remove(l, -2);
+                                  // ... f1 ... f2
   }
   else {
     lua_pop(l, 2);
+                                  // ... f1 ...
+  }
+
+  return exists;
+}
+
+/**
+ * @brief Gets a method of the object on top of the stack.
+ *
+ * This is equivalent to find_method(-1, function_name).
+ *
+ * @param function_name Name of the function to find in the object.
+ * @return true if the function was found.
+ */
+bool LuaContext::find_method(const std::string& function_name) {
+
+  return find_method(-1, function_name);
+}
+
+/**
+ * @brief Gets a method of an object.
+ *
+ * If the method exists, the method and the object are both pushed
+ * so that you can call the method immediately with the object as first parameter.
+ * If the method is not found, the stack is left unchanged.
+ *
+ * @param index Index of the object in the stack.
+ * @param function_name Name of the function to find in the object.
+ * @return true if the function was found.
+ */
+bool LuaContext::find_method(int index, const std::string& function_name) {
+
+  if (index < 0) {
+    // ensure a positive index
+    index = lua_gettop(l) + index + 1;
+  }
+
+                                  // ... object ...
+  lua_getfield(l, index, function_name.c_str());
+                                  // ... object ... method/?
+
+  bool exists = lua_isfunction(l, -1);
+
+  if (exists) {
+                                  // ... object ... method
+    lua_pushvalue(l, index);
+                                  // ... object ... method object
+  }
+  else {
+    // Restore the stack.
+    lua_pop(l, 1);
+                                  // ... object ...
   }
 
   return exists;

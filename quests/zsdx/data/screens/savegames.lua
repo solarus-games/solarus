@@ -28,5 +28,5 @@ function savegame_menu:on_display(dst_surface)
   dst_surface:fill_color({255, 255, 0})
 end
 
-return savegame_menu
+return savegame_menu:new()
 

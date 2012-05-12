@@ -68,20 +68,6 @@ void LuaContext::start_menu(CustomMenu& menu) {
   load(menu.get_id());
                                   // ... sol menus cmenu menu_fct
   call_script(0, 1, menu.get_id());
-                                  // ... sol menus cmenu menu_class
-  Debug::check_assertion(lua_istable(l, -1), StringConcat()
-      << "Bad return value from menu '" << menu.get_id()
-      << "': expected table, got " << luaL_typename(l, -1));
-
-  lua_getfield(l, -1, "new");
-                                  // ... sol menus cmenu menu_class new_f
-  Debug::check_assertion(lua_isfunction(l, -1), StringConcat()
-      << "Missing function 'new()' in menu '" << menu.get_id() << "'.");
-  // TODO set a default new() function?
-
-  lua_insert(l, -2);
-                                  // ... sol menus cmenu new_f menu_class
-  call_script(1, 1, "new");
                                   // ... sol menus cmenu menu
   lua_pushvalue(l, -1);
                                   // ... sol menus cmenu menu menu

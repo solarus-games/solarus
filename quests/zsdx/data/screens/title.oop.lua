@@ -206,5 +206,5 @@ function title_screen:try_finish_title()
   end
 end
 
-return title_screen
+return title_screen:new()
 

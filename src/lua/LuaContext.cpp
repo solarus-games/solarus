@@ -31,21 +31,11 @@ LuaContext::LuaContext(MainLoop& main_loop):
   initialize_lua_context();
 
   register_menu_module();
+  register_events_module();
 
-  // sol.events = { }
-  lua_getglobal(l, "sol");
-  lua_newtable(l);
-  lua_setfield(l, -2, "events");
-
-  // Load the file.
+  // Load the main file.
   load("main");
-
-  if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::die(StringConcat() << "Error: failed to load script 'main.lua'"
-              << "': " << lua_tostring(l, -1));
-      lua_pop(l, 1);
-  }
-
+  call_script(0, 0, "main");
 }
 
 /**
@@ -55,24 +45,33 @@ LuaContext::~LuaContext() {
 
 }
 
+/**
+ * @brief Updates the Lua world.
+ *
+ * This function is called at each cycle.
+ */
 void LuaContext::update() {
-    Script::update();
 
-    lua_getglobal(l, "sol");     // sol
-    lua_pushstring(l, "events"); //  .events
-    lua_gettable(l, -2);
-    lua_pushstring(l, "update"); //  .update
-    lua_gettable(l, -2);
+  Script::update();
 
-    // Ignore otherwise
-    if( lua_isfunction (l, -1) ) {
-        // this basically does pcall
-        call_script(0, 0, "sol.events.update");
-    } else {
-        lua_pop(l, 1);
-    }
-    // pop the sol.events table from stack for good measure
+  // Call sol.events.update.
+  lua_getglobal(l, "sol");
+                                  // sol
+  lua_getfield(l, -1, "events");
+                                  // sol events
+  lua_getfield(l, -1, "update");
+                                  // sol events update/?
+
+  // Ignore otherwise.
+  if (lua_isfunction (l, -1)) {
+    // This basically does pcall.
+    call_script(0, 0, "sol.events.update");
+  } else {
     lua_pop(l, 1);
+  }
+
+  // Pop the sol and sol.events tables from stack for good measure.
+  lua_pop(l, 2);
 }
 
 /**

@@ -58,7 +58,6 @@ class LuaContext: public Script {
     bool find_method(const std::string& function_name);
 
     void register_menu_module();
-
     static void push_menu(lua_State* l, CustomMenu& menu);
     void menu_on_started();
     void menu_on_update();
@@ -70,6 +69,8 @@ class LuaContext: public Script {
     void menu_on_joypad_axis_moved(InputEvent& event);
     void menu_on_joypad_hat_moved(InputEvent& event);
     void menu_on_direction_pressed(InputEvent& event);
+
+    void register_events_module();
 };
 
 #endif

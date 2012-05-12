@@ -6,7 +6,6 @@
 -- All data are stored in the self instance.
 
 local title_screen = {}
-local self
 
 function title_screen:new()
   local object = {}
@@ -21,13 +20,15 @@ function title_screen:on_started()
   self.phase = "black"
 
   self.title_surface = sol.surface.create()
-  sol.timer.start(300, phase_zs_presents)
+  sol.timer.start(300, function()
+    self:phase_zs_presents()
+  end)
 
   -- use these 0.3 seconds to preload all sound effects
   sol.audio.preload_sounds()
 end
 
-function phase_zs_presents()
+function title_screen:phase_zs_presents()
 
   -- "Zelda Solarus presents" displayed for two seconds
   self.phase = "zs_presents"
@@ -40,10 +41,12 @@ function phase_zs_presents()
   self.title_surface:draw(zs_presents_img, x, y)
   sol.audio.play_sound("intro")
 
-  sol.timer.start(2000, phase_title)
+  sol.timer.start(2000, function()
+    self:phase_title()
+  end)
 end
 
-function phase_title()
+function title_screen:phase_title()
 
   -- actual title screen
   self.phase = "title"
@@ -131,11 +134,11 @@ function title_screen:on_display(dst_surface)
   if self.phase ~= "title" then
     dst_surface:draw(self.title_surface)
   else
-    display_phase_title(dst_surface)
+    self:display_phase_title(dst_surface)
   end
 end
 
-function display_phase_title(destination_surface)
+function title_screen:display_phase_title(destination_surface)
 
   -- background
   self.title_surface:fill_color({0, 0, 0})
@@ -178,18 +181,18 @@ function title_screen:on_key_pressed(key)
     sol.main.exit()
 
   elseif key == "space" or key == "return" then
-    try_finish_title()
+    self:try_finish_title()
   end
 end
 
-function on_joypad_button_pressed(button)
+function title_screen:on_joypad_button_pressed(button)
 
-  try_finish_title()
+  self:try_finish_title()
 end
 
 -- Ends the title screen (if possible)
 -- and starts the savegame selection screen
-function try_finish_title()
+function title_screen:try_finish_title()
 
   if self.phase == "title"
       and self.dx_img ~= nil
@@ -203,6 +206,5 @@ function try_finish_title()
   end
 end
 
-self = title_screen:new()
-return self
+return title_screen:new()
 

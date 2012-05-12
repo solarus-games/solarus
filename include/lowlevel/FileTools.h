@@ -36,6 +36,7 @@ class FileTools {
 
   private:
 
+    /**< directory containing the quest dir or archive */
     static std::map<std::string, std::string> languages; /**< the languages available (code -> language name) */
     static std::string language_code;                    /**< code of the current language (e.g. "en", "fr", etc.) */
     static std::string default_language_code;            /**< code of the default language */

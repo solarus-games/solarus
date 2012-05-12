@@ -33,9 +33,7 @@ LuaContext::LuaContext(MainLoop& main_loop):
   register_menu_module();
   register_events_module();
 
-  // Load the main file.
-  load("main");
-  call_script(0, 0, "main");
+  start_main_script();
 }
 
 /**
@@ -76,28 +74,50 @@ void LuaContext::update() {
 
 /**
  * @brief Opens a script and lets it on top of the stack as a function.
+ * @param l A Lua state.
  * @param script_name File name of the script without extension,
  * relative to the data directory.
  */
-void LuaContext::load(const std::string& script_name) {
+void LuaContext::load(lua_State* l, const std::string& script_name) {
+
+  if (!load_if_exists(l, script_name)) {
+    Debug::die(StringConcat() << "Cannot find script file '"
+        << script_name << "'");
+  }
+}
+
+/**
+ * @brief Opens a script if it exists and lets it on top of the stack as a
+ * function.
+ * @param l A Lua state.
+ * @param script_name File name of the script without extension,
+ * relative to the data directory.
+ * @return true if the script exists and was loaded.
+ */
+bool LuaContext::load_if_exists(lua_State* l,
+    const std::string& script_name) {
 
   // Determine the file name (.lua).
   std::ostringstream oss;
   oss << script_name << ".lua";
   std::string file_name = oss.str();
 
-  // Load the file.
-  size_t size;
-  char* buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  int result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
-  FileTools::data_file_close_buffer(buffer);
+  if (FileTools::data_file_exists(file_name)) {
+    // Load the file.
+    size_t size;
+    char* buffer;
+    FileTools::data_file_open_buffer(file_name, &buffer, &size);
+    int result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
+    FileTools::data_file_close_buffer(buffer);
 
-  if (result != 0)
-  {
-    Debug::die(StringConcat() << "Error: failed to load script '"
-        << script_name << "': " << lua_tostring(l, -1));
+    if (result != 0)
+    {
+      Debug::die(StringConcat() << "Error: failed to load script '"
+          << script_name << "': " << lua_tostring(l, -1));
+    }
+    return true;
   }
+  return false;
 }
 
 /**
@@ -197,5 +217,50 @@ bool LuaContext::find_method(int index, const std::string& function_name) {
   }
 
   return exists;
+}
+
+/**
+ * @brief Loads and executes main.lua.
+ */
+void LuaContext::start_main_script() {
+
+  // Make require() able to load Lua files even from the data.solarus archive.
+                                  // ...
+  lua_getglobal(l, "sol");
+                                  // ... sol
+  lua_pushcfunction(l, l_loader);
+                                  // ... sol loader
+  lua_setfield(l, -2, "loader");
+                                  // ... sol
+  luaL_dostring(l, "table.insert(package.loaders, 2, sol.loader)");
+                                  // ... sol
+  lua_pushnil(l);
+                                  // ... sol nil
+  lua_setfield(l, -2, "loader");
+                                  // ... sol
+  lua_pop(l, 1);
+                                  // ...
+
+  // Load the main file.
+  load(l, "main");
+  call_script(0, 0, "main");
+}
+
+/**
+ * @brief A loader that makes require() able to load quest scripts.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::l_loader(lua_State* l) {
+
+  const std::string& script_name = luaL_checkstring(l, 1);
+  bool exists = load_if_exists(l, script_name);
+
+  if (!exists) {
+    std::ostringstream oss;
+    oss << "\n\tno quest file '" << script_name << ".lua' in 'data' or 'data.solarus'";
+    lua_pushstring(l, oss.str().c_str());
+  }
+  return 1;
 }
 

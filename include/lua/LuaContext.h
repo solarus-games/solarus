@@ -51,11 +51,15 @@ class LuaContext: public Script {
 
   private:
 
-    void load(const std::string& script_name);
+    static void load(lua_State* l, const std::string& script_name);
+    static bool load_if_exists(lua_State* l, const std::string& script_name);
     bool find_local_function(int index, const std::string& function_name);
     bool find_local_function(const std::string& function_name);
     bool find_method(int index, const std::string& function_name);
     bool find_method(const std::string& function_name);
+
+    void start_main_script();
+    static int l_loader(lua_State* l);
 
     void register_menu_module();
     static void push_menu(lua_State* l, CustomMenu& menu);

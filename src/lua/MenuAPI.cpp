@@ -65,7 +65,7 @@ void LuaContext::start_menu(CustomMenu& menu) {
                                   // ... sol menus
   lua_pushlightuserdata(l, &menu);
                                   // ... sol menus cmenu
-  load(menu.get_id());
+  load(l, menu.get_id());
                                   // ... sol menus cmenu menu_fct
   call_script(0, 1, menu.get_id());
                                   // ... sol menus cmenu menu

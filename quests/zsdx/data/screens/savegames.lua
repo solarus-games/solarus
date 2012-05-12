@@ -1,5 +1,8 @@
 -- Savegame selection screen, displayed after the title screen
 
+-- This menu is scripted in an object-oriented style:
+-- we create a class savegame_menu and return instance of this class.
+
 local savegame_menu = {}
 
 function savegame_menu:new()

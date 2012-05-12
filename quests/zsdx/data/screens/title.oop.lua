@@ -1,6 +1,10 @@
 -- This screen is displayed when the program starts, after the language
 -- selection screen (if any).
 
+-- This menu is scripted in an object-oriented style:
+-- we create a class title_screen and return instance of this class.
+-- All data are stored in the self instance.
+
 local title_screen = {}
 
 function title_screen:new()

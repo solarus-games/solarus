@@ -1,10 +1,28 @@
 -- This screen is displayed when the program starts, after the language
 -- selection screen (if any).
 
+-- This menu is scripted in a basic style (no object-oriented programming).
+-- All data are simply local variables and no "self" is used.
+-- Of course, no inheritance is possible.
+-- An equivalent title screen script in OOP style is available as
+-- an example in screens/title.oop.lua.
+
 local phase -- "black", "zs_presents" or "title"
 local title_surface -- surface where everything is drawn
+local background_img
+local clouds_img
+local logo_img
+local website_img
+local press_space_img
+local dx_img
+local star_img
+local show_press_space
+local clouds_xy
+local finished
 
-function on_started()
+local title_screen = {}
+
+function title_screen:on_started()
 
   -- black screen during 0.3 seconds
   phase = "black"
@@ -115,7 +133,7 @@ function phase_title()
   title_surface:fade_in(30)
 end
 
-function on_display(dst_surface)
+function title_screen:on_display(dst_surface)
 
   if phase ~= "title" then
     dst_surface:draw(title_surface)
@@ -160,7 +178,7 @@ function display_phase_title(destination_surface)
   destination_surface:draw(title_surface)
 end
 
-function on_key_pressed(key)
+function title_screen:on_key_pressed(key)
 
   if key == "escape" then
     -- stop the program
@@ -171,7 +189,7 @@ function on_key_pressed(key)
   end
 end
 
-function on_joypad_button_pressed(button)
+function title_screen:on_joypad_button_pressed(button)
 
   try_finish_title()
 end
@@ -191,4 +209,6 @@ function try_finish_title()
     end)
   end
 end
+
+return title_screen
 

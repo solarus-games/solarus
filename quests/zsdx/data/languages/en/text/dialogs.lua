@@ -3886,7 +3886,6 @@ dialog{
 Three freshly picked
 apples from this
 morning!
-
 Each apple restores a
 Heart.
 ]]

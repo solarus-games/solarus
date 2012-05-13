@@ -41,21 +41,22 @@ class LuaContext: public Script {
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
 
-    void start_menu(CustomMenu& menu);
-    void stop_menu(CustomMenu& menu);
-    void update_menu(CustomMenu& menu);
-    void display_menu(CustomMenu& menu, Surface& dst_surface);
-    void notify_input_menu(CustomMenu& menu, InputEvent& event);
+    void notify_display(Surface& dst_surface);
+    void notify_input(InputEvent& event);
 
     /// Notificator for the very start of the game.
     void notify_start();
 
     void update();
 
+    /// Deletes a reference.
+    void ref_unref(int ref);
+
   private:
 
     static void load(lua_State* l, const std::string& script_name);
     static bool load_if_exists(lua_State* l, const std::string& script_name);
+    bool find_event_function(const std::string& function_name);
     bool find_local_function(int index, const std::string& function_name);
     bool find_local_function(const std::string& function_name);
     bool find_method(int index, const std::string& function_name);
@@ -65,17 +66,16 @@ class LuaContext: public Script {
     static int l_loader(lua_State* l);
 
     void register_menu_module();
-    static void push_menu(lua_State* l, CustomMenu& menu);
-    void menu_on_started();
-    void menu_on_update();
-    void menu_on_display(Surface& dst_surface);
-    void menu_on_key_pressed(InputEvent& event);
-    void menu_on_key_released(InputEvent& event);
-    void menu_on_joypad_button_pressed(InputEvent& event);
-    void menu_on_joypad_button_released(InputEvent& event);
-    void menu_on_joypad_axis_moved(InputEvent& event);
-    void menu_on_joypad_hat_moved(InputEvent& event);
-    void menu_on_direction_pressed(InputEvent& event);
+    void on_start();
+    void on_update();
+    void on_display(Surface& dst_surface);
+    void on_key_pressed(InputEvent& event);
+    void on_key_released(InputEvent& event);
+    void on_joypad_button_pressed(InputEvent& event);
+    void on_joypad_button_released(InputEvent& event);
+    void on_joypad_axis_moved(InputEvent& event);
+    void on_joypad_hat_moved(InputEvent& event);
+    void on_direction_pressed(InputEvent& event);
 
     void register_events_module();
 };

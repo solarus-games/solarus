@@ -78,10 +78,11 @@ int Script::main_api_exit(lua_State* l) {
 int Script::main_api_start_screen(lua_State* l) {
 
   Script& script = get_script(l);
-  const std::string& screen_name = luaL_checkstring(l, 1);
+  // Store the screen object
+  int screen_ref = luaL_ref(l, LUA_REGISTRYINDEX);
 
   MainLoop& main_loop = script.get_main_loop();
-  main_loop.set_next_screen(new CustomScreen(main_loop, screen_name));
+  main_loop.set_next_screen(new CustomScreen(main_loop, screen_ref));
 
   return 0;
 }

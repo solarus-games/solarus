@@ -44,32 +44,10 @@ LuaContext::~LuaContext() {
 }
 
 /**
- * @brief Updates the Lua world.
- *
- * This function is called at each cycle.
+ * @brief Frees a lua reference.
  */
-void LuaContext::update() {
-
-  Script::update();
-
-  // Call sol.events.update.
-  lua_getglobal(l, "sol");
-                                  // sol
-  lua_getfield(l, -1, "events");
-                                  // sol events
-  lua_getfield(l, -1, "update");
-                                  // sol events update/?
-
-  // Ignore otherwise.
-  if (lua_isfunction (l, -1)) {
-    // This basically does pcall.
-    call_script(0, 0, "sol.events.update");
-  } else {
-    lua_pop(l, 1);
-  }
-
-  // Pop the sol and sol.events tables from stack for good measure.
-  lua_pop(l, 2);
+void LuaContext::ref_unref(int ref) {
+  luaL_unref(l, LUA_REGISTRYINDEX, ref);
 }
 
 /**
@@ -118,6 +96,40 @@ bool LuaContext::load_if_exists(lua_State* l,
     return true;
   }
   return false;
+}
+
+/**
+ * @brief Gets a local Lua function from the sol.events table.
+ *
+ * @param function_name Name of the function to find in the sol.events table.
+ *
+ * @return true if the function was found.
+ */
+bool LuaContext::find_event_function(const std::string& function_name) {
+
+  // Debug::print(function_name);
+
+  // Call sol.events.update.
+  lua_getglobal(l, "sol");
+                                  // sol
+  lua_getfield(l, -1, "events");
+                                  // sol sol.events
+  lua_remove(l, -2);
+                                  // sol.events
+  lua_getfield(l, -1, function_name.c_str());
+                                  // sol.events sol.events.function_name
+  lua_remove(l, -2);
+                                  // sol.events.function_name
+
+  bool exists = lua_isfunction(l, -1);
+
+  // Restore the stack.
+  if (!exists) {
+    lua_pop(l, 1);
+  }
+
+  return exists;
+
 }
 
 /**
@@ -263,28 +275,3 @@ int LuaContext::l_loader(lua_State* l) {
   }
   return 1;
 }
-
-/**
- * @brief Notifies the lua context that the game starts.
- */
-void LuaContext::notify_start() {
-  // Call sol.events.update.
-  lua_getglobal(l, "sol");
-                                  // sol
-  lua_getfield(l, -1, "events");
-                                  // sol events
-  lua_getfield(l, -1, "start");
-                                  // sol events update/?
-
-  // Ignore otherwise.
-  if (lua_isfunction (l, -1)) {
-    // This basically does pcall.
-    call_script(0, 0, "sol.events.start");
-  } else {
-    lua_pop(l, 1);
-  }
-
-  // Pop the sol table from stack for good measure.
-  lua_pop(l, 1);
-}
-

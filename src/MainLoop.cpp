@@ -253,6 +253,7 @@ void MainLoop::notify_input(InputEvent& event) {
 
   // send the event to the current screen
   current_screen->notify_input(event);
+  lua_context->notify_input(event);
 }
 
 /**
@@ -277,6 +278,7 @@ void MainLoop::display() {
 
   root_surface->fill_with_color(Color::get_black());
   current_screen->display(*root_surface);
+  lua_context->notify_display(*root_surface);
   VideoManager::get_instance()->display(*root_surface);
 }
 

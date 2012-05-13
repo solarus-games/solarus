@@ -264,3 +264,27 @@ int LuaContext::l_loader(lua_State* l) {
   return 1;
 }
 
+/**
+ * @brief Notifies the lua context that the game starts.
+ */
+void LuaContext::notify_start() {
+  // Call sol.events.update.
+  lua_getglobal(l, "sol");
+                                  // sol
+  lua_getfield(l, -1, "events");
+                                  // sol events
+  lua_getfield(l, -1, "start");
+                                  // sol events update/?
+
+  // Ignore otherwise.
+  if (lua_isfunction (l, -1)) {
+    // This basically does pcall.
+    call_script(0, 0, "sol.events.start");
+  } else {
+    lua_pop(l, 1);
+  }
+
+  // Pop the sol table from stack for good measure.
+  lua_pop(l, 1);
+}
+

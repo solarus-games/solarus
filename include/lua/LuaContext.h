@@ -47,6 +47,9 @@ class LuaContext: public Script {
     void display_menu(CustomMenu& menu, Surface& dst_surface);
     void notify_input_menu(CustomMenu& menu, InputEvent& event);
 
+    /// Notificator for the very start of the game.
+    void notify_start();
+
     void update();
 
   private:

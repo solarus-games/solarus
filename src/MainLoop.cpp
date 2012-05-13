@@ -47,8 +47,17 @@ MainLoop::MainLoop(int argc, char** argv):
   debug_keys = new DebugKeys(*this);
   lua_context = new LuaContext(*this);
 
-  // create the first screen
-  current_screen = new LanguageScreen(*this);
+  // Fire up the lua context. This should should call start_screen somewhere.
+  lua_context->notify_start();
+
+  // The lua main script MUST have set an initial screen.
+  Debug::check_assertion(this->next_screen != NULL,
+      "Error: No initial screen to run!");
+
+  // Set the next screen to current to fire things up.
+  current_screen = next_screen;
+  next_screen = NULL;
+
 }
 
 /**

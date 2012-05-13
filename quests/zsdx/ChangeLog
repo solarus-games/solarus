@@ -1,6 +1,6 @@
 zsdx-1.5.1 (under development)
 
-* English dialogs: fix the blacksmith question to buy the sword
+* English dialogs: fix dialogs with questions
 * English dialogs: various improvements
 * Dungeon 10: the hero could land in a wall when falling into a hole
 * Dungeon 5 B1: give bombs to make sure the hero can pass the weak walls

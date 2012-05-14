@@ -278,7 +278,7 @@ void MainLoop::display() {
 
   root_surface->fill_with_color(Color::get_black());
   current_screen->display(*root_surface);
-  lua_context->notify_display(*root_surface);
+  lua_context->notify_after_display(*root_surface);
   VideoManager::get_instance()->display(*root_surface);
 }
 

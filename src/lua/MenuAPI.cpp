@@ -73,12 +73,37 @@ void LuaContext::update() {
 }
 
 /**
- * @brief Calls the display event.
+ * @brief Calls the display event for a screen object.
+ * @param dst_surface The destination surface.
+ * @param screen_ref A reference to the screen object.
+ */
+void LuaContext::notify_screen_display(Surface& dst_surface, int screen_ref) {
+
+  // Push the object ref
+  ref_push(screen_ref);
+  // Find its on_display method
+  bool exists = find_method("on_display");
+
+  // This needs to exist!
+  Debug::check_assertion(exists, "A screen object needs to expose an on_display callback!");
+
+  // Push the surface
+  push_surface(l, dst_surface);
+
+  // Call it.
+  call_script(2, 0, "on_display");
+
+  // Pop the object ref.
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the after_display event.
  * @param dst_surface The destination surface.
  */
-void LuaContext::notify_display(Surface& dst_surface) {
+void LuaContext::notify_after_display(Surface& dst_surface) {
 
-  if (find_event_function("display")) {
+  if (find_event_function("after_display")) {
     push_surface(l, dst_surface);
     call_script(1, 0, "sol.events.display");
   }

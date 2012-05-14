@@ -16,7 +16,6 @@ end
 
 function title_screen:on_started()
 
-  events["display"] = self
   events["joypad_button_pressed"] = self
   events["key_pressed"] = self
 

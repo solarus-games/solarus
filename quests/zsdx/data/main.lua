@@ -1,5 +1,4 @@
 events = {
-    display = nil,
     key_pressed = nil,
     key_released = nil,
     joyad_button_pressed = nil,
@@ -25,12 +24,6 @@ function sol.events.start()
 
     -- Maybe this should be called from a start_screen callback?
     t:on_started()
-end
-
-function sol.events.display(dst)
-    if events["display"] then
-        events["display"]:on_display(dst)
-    end
 end
 
 function sol.events.key_pressed(key, mods)

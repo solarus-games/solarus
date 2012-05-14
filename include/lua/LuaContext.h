@@ -41,7 +41,8 @@ class LuaContext: public Script {
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
 
-    void notify_display(Surface& dst_surface);
+    void notify_screen_display(Surface& dst_surface, int screen_ref);
+    void notify_after_display(Surface& dst_surface);
     void notify_input(InputEvent& event);
 
     /// Notificator for the very start of the game.

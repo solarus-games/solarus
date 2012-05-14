@@ -41,20 +41,30 @@ CustomScreen::~CustomScreen() {
 }
 
 /**
+ * @brief Displays the screen.
+ * This is what's special about CustomScreen, it doesn't draw anything itself
+ * but instead delegates that call to lua entirely.
+ * @param dst_surface the surface to draw
+ */
+void CustomScreen::display(Surface& dst_surface) {
+
+  // Delegate the call to the custom screen object.
+  get_lua_context().notify_screen_display(dst_surface, screen_ref);
+
+}
+
+/**
  * @brief Updates the screen.
+ * This does not need to be forwarded since the lua api provides events for
+ * this on its own.
  */
 void CustomScreen::update() {
 }
 
 /**
- * @brief Displays the screen.
- * @param dst_surface the surface to draw
- */
-void CustomScreen::display(Surface& dst_surface) {
-}
-
-/**
  * @brief This function is called when there is an input event.
+ * This does not need to be forwarded since the lua api provides events for
+ * this on its own.
  * @param event the event to handle
  */
 void CustomScreen::notify_input(InputEvent& event) {

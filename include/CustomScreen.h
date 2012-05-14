@@ -19,20 +19,19 @@
 
 #include "Common.h"
 #include "Screen.h"
-#include "menus/CustomMenu.h"
 
 /**
  * @brief An execution phase of the program fully controlled by a Lua script.
  *
- * This class just encapsulates a CustomMenu that will be displayed in the
- * screen.
+ * This class is basically just a dummy that does nothing. All events are
+ * handled in the lua api.
  */
 class CustomScreen: public Screen {
 
   public:
 
     // creation and destruction
-    CustomScreen(MainLoop& main_loop, const std::string& screen_name);
+    CustomScreen(MainLoop& main_loop, int screen_ref);
     ~CustomScreen();
 
     // update and display
@@ -41,8 +40,8 @@ class CustomScreen: public Screen {
     void display(Surface& dst_surface);
 
   private:
+    int screen_ref;
 
-    CustomMenu menu;  /**< The menu showed in this screen. */
 };
 
 #endif

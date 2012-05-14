@@ -16,6 +16,9 @@ end
 
 function title_screen:on_started()
 
+  events["joypad_button_pressed"] = self
+  events["key_pressed"] = self
+
   -- black screen during 0.3 seconds
   self.phase = "black"
 
@@ -199,6 +202,9 @@ function title_screen:try_finish_title()
       and not self.finished then
     self.finished = true
 
+    events["joypad_button_pressed"] = nil
+    events["key_pressed"] = nil
+
     self.title_surface:fade_out(30, function()
       sol.audio.stop_music()
       sol.main.start_screen("savegames")
@@ -206,5 +212,5 @@ function title_screen:try_finish_title()
   end
 end
 
-return title_screen:new()
+return title_screen
 

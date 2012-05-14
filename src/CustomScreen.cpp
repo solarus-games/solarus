@@ -16,6 +16,7 @@
  */
 #include "CustomScreen.h"
 #include "MainLoop.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/StringConcat.h"
 
 /**
@@ -25,10 +26,10 @@
  * in this screen (no extension), relative to the screens directory.
  */
 CustomScreen::CustomScreen(MainLoop& main_loop,
-    const std::string& screen_name):
+    int screen_ref):
   Screen(main_loop),
-  menu(main_loop.get_lua_context(),
-      StringConcat() << "screens/" << screen_name) {
+  screen_ref(screen_ref) {
+
 
 }
 
@@ -36,32 +37,36 @@ CustomScreen::CustomScreen(MainLoop& main_loop,
  * @brief Destroys the screen.
  */
 CustomScreen::~CustomScreen() {
+    get_lua_context().ref_unref(screen_ref);
+}
+
+/**
+ * @brief Displays the screen.
+ * This is what's special about CustomScreen, it doesn't draw anything itself
+ * but instead delegates that call to lua entirely.
+ * @param dst_surface the surface to draw
+ */
+void CustomScreen::display(Surface& dst_surface) {
+
+  // Delegate the call to the custom screen object.
+  get_lua_context().notify_screen_display(dst_surface, screen_ref);
 
 }
 
 /**
  * @brief Updates the screen.
+ * This does not need to be forwarded since the lua api provides events for
+ * this on its own.
  */
 void CustomScreen::update() {
-
-  menu.update();
-}
-
-/**
- * @brief Displays the screen.
- * @param dst_surface the surface to draw
- */
-void CustomScreen::display(Surface& dst_surface) {
-
-  menu.display(dst_surface);
 }
 
 /**
  * @brief This function is called when there is an input event.
+ * This does not need to be forwarded since the lua api provides events for
+ * this on its own.
  * @param event the event to handle
  */
 void CustomScreen::notify_input(InputEvent& event) {
-
-  menu.notify_input(event);
 }
 

@@ -62,6 +62,9 @@ class LuaContext: public Script {
     bool find_method(int index, const std::string& function_name);
     bool find_method(const std::string& function_name);
 
+    /// Pushes a reference.
+    void ref_push(int ref);
+
     void start_main_script();
     static int l_loader(lua_State* l);
 

@@ -51,6 +51,13 @@ void LuaContext::ref_unref(int ref) {
 }
 
 /**
+ * @brief Pushes a lua reference on the stack.
+ */
+void LuaContext::ref_push(int ref) {
+  lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
+}
+
+/**
  * @brief Opens a script and lets it on top of the stack as a function.
  * @param l A Lua state.
  * @param script_name File name of the script without extension,

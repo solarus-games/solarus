@@ -15,231 +15,148 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
-#include "menus/CustomMenu.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Surface.h"
 #include <lua.hpp>
 
-static const std::string& on_started_name = "on_started";
-static const std::string& on_update_name = "on_update";
-static const std::string& on_display_name = "on_display";
-static const std::string& on_key_pressed_name = "on_key_pressed";
-static const std::string& on_key_released_name = "on_key_released";
-static const std::string& on_joyad_button_pressed_name = "on_joyad_button_pressed";
-static const std::string& on_joyad_button_released_name = "on_joyad_button_released";
-static const std::string& on_joyad_axis_moved_name = "on_joyad_axis_moved";
-static const std::string& on_joyad_hat_moved_name = "on_joyad_hat_moved";
-static const std::string& on_direction_pressed_name = "on_direction_pressed";
+static const std::string& on_started_name = "start";
+static const std::string& on_update_name = "update";
+static const std::string& on_display_name = "display";
+static const std::string& on_key_pressed_name = "key_pressed";
+static const std::string& on_key_released_name = "key_released";
+static const std::string& on_joyad_button_pressed_name = "joyad_button_pressed";
+static const std::string& on_joyad_button_released_name = "joyad_button_released";
+static const std::string& on_joyad_axis_moved_name = "joyad_axis_moved";
+static const std::string& on_joyad_hat_moved_name = "joyad_hat_moved";
+static const std::string& on_direction_pressed_name = "direction_pressed";
 
 /**
  * @brief Initializes the menu features provided to Lua.
  */
 void LuaContext::register_menu_module() {
-
-  // Create a table sol.menus to store all menus.
-                                  // ...
-  lua_getglobal(l, "sol");
-                                  // ... sol
-  lua_newtable(l);
-                                  // ... sol menus
-  lua_setfield(l, -2, "menus");
-                                  // ... sol
-  lua_pop(l, 1);
-                                  // ...
-
   // TODO simplify the storage method:
   // use luaL_ref or move more management code to Lua?
 }
 
 /**
- * @brief Loads a menu class into this Lua world.
- * @param menu The menu script to load.
+ *
+ * @brief Notifies the lua context that the game starts.
+ *
+ * This function is called once at the beginning of the game.
  */
-void LuaContext::start_menu(CustomMenu& menu) {
+void LuaContext::notify_start() {
 
-                                  // ...
-  lua_getglobal(l, "sol");
-                                  // ... sol
-  lua_getfield(l, -1, "menus");
-                                  // ... sol menus
-  lua_pushlightuserdata(l, &menu);
-                                  // ... sol menus cmenu
-  load(l, menu.get_id());
-                                  // ... sol menus cmenu menu_fct
-  call_script(0, 1, menu.get_id());
-                                  // ... sol menus cmenu menu
-  lua_pushvalue(l, -1);
-                                  // ... sol menus cmenu menu menu
-  lua_insert(l, -3);
-                                  // ... sol menus menu cmenu menu
-  lua_settable(l, -4);
-                                  // ... sol menus menu
-  menu_on_started();
-                                  // ... sol menus menu
-  lua_pop(l, 3);
-                                  // ...
+  // Nothing special here - If the function exists
+  if(find_event_function(on_started_name)) {
+    // Call it.
+    call_script(0, 0, "sol.events.start");
+  }
+
 }
 
 /**
- * @brief Stops a scripted menu previously started.
- * @param menu The scripted menu to stop.
- */
-void LuaContext::stop_menu(CustomMenu& menu) {
-
-                                  // ...
-  lua_getglobal(l, "sol");
-                                  // ... sol
-  lua_getfield(l, -1, "menus");
-                                  // ... sol menus
-  lua_pushlightuserdata(l, &menu);
-                                  // ... sol menus cmenu
-  lua_pushnil(l);
-                                  // ... sol menus cmenu nil
-  lua_settable(l, -3);
-                                  // ... sol menus
-  lua_pop(l, 2);
-                                  // ...
-  // TODO stop timers attached to this scripted menu
-}
-
-/**
- * @brief Pushes a menu onto the stack.
- * @param l The Lua context.
- * @param menu A scripted menu.
- */
-void LuaContext::push_menu(lua_State* l, CustomMenu& menu) {
-
-                                  // ...
-  lua_getglobal(l, "sol");
-                                  // ... sol
-  lua_getfield(l, -1, "menus");
-                                  // ... sol menus
-  lua_pushlightuserdata(l, &menu);
-                                  // ... sol menus cmenu
-  lua_gettable(l, -2);
-                                  // ... sol menus menu
-  lua_remove(l, -2);
-                                  // ... sol menu
-  lua_remove(l, -2);
-                                  // ... menu
-}
-
-/**
- * @brief Updates a scripted menu.
+ * @brief Updates the Lua world.
  *
  * This function is called at each cycle.
- *
- * @param menu A scripted menu.
  */
-void LuaContext::update_menu(CustomMenu& menu) {
+void LuaContext::update() {
 
-  push_menu(l, menu);
-  menu_on_update();
+  Script::update();
+
+  // Nothing special here - If the function exists
+  if(find_event_function(on_update_name)) {
+    // Call it.
+    call_script(0, 0, "sol.events.update");
+  }
+
+}
+
+/**
+ * @brief Calls the display event for a screen object.
+ * @param dst_surface The destination surface.
+ * @param screen_ref A reference to the screen object.
+ */
+void LuaContext::notify_screen_display(Surface& dst_surface, int screen_ref) {
+
+  // Push the object ref
+  ref_push(screen_ref);
+  // Find its on_display method
+  bool exists = find_method("on_display");
+
+  // This needs to exist!
+  Debug::check_assertion(exists, "A screen object needs to expose an on_display callback!");
+
+  // Push the surface
+  push_surface(l, dst_surface);
+
+  // Call it.
+  call_script(2, 0, "on_display");
+
+  // Pop the object ref.
   lua_pop(l, 1);
 }
 
 /**
- * @brief Displays the content of a scripted menu on a surface.
- * @param menu A scripted menu.
+ * @brief Calls the after_display event.
  * @param dst_surface The destination surface.
  */
-void LuaContext::display_menu(CustomMenu& menu, Surface& dst_surface) {
+void LuaContext::notify_after_display(Surface& dst_surface) {
 
-  push_menu(l, menu);
-  menu_on_display(dst_surface);
-  lua_pop(l, 1);
+  if (find_event_function("after_display")) {
+    push_surface(l, dst_surface);
+    call_script(1, 0, "sol.events.display");
+  }
 }
 
 /**
- * @brief Notifies a scripted menu that a low-level input event has occurred.
- * @param menu A scripted menu.
+ * @brief Delegates an input event.
  * @param event The event to handle.
  */
-void LuaContext::notify_input_menu(CustomMenu& menu, InputEvent& event) {
-
-  // Get the menu in Lua.
-  push_menu(l, menu);
+void LuaContext::notify_input(InputEvent& event) {
 
   // Call the Lua function(s) corresponding to this input event.
   if (event.is_keyboard_event()) {
     // Keyboard.
     if (event.is_keyboard_key_pressed()) {
-      menu_on_key_pressed(event);
+      on_key_pressed(event);
     }
     else if (event.is_keyboard_key_released()) {
-      menu_on_key_released(event);
+      on_key_released(event);
     }
   }
   else if (event.is_joypad_event()) {
     // Joypad.
     if (event.is_joypad_button_pressed()) {
-      menu_on_joypad_button_pressed(event);
+      on_joypad_button_pressed(event);
     }
     else if (event.is_joypad_button_released()) {
-      menu_on_joypad_button_released(event);
+      on_joypad_button_released(event);
     }
     else if (event.is_joypad_axis_moved()) {
-      menu_on_joypad_axis_moved(event);
+      on_joypad_axis_moved(event);
     }
     else if (event.is_joypad_hat_moved()) {
-      menu_on_joypad_hat_moved(event);
+      on_joypad_hat_moved(event);
     }
   }
 
   if (event.is_direction_pressed()) {
     // Keyboard or joypad direction.
-    menu_on_direction_pressed(event);
+    on_direction_pressed(event);
   }
 
-  // Pop the menu.
-  lua_pop(l, 1);
 }
 
 /**
- * @brief Notifies the menu script on top of the stack
- * that it has just started.
- */
-void LuaContext::menu_on_started() {
-
-  if (find_method(on_started_name)) {
-    call_script(1, 0, on_started_name);
-  }
-}
-
-/**
- * @brief Updates the scripted menu on top of the stack.
- *
- * This function is called at each cycle.
- */
-void LuaContext::menu_on_update() {
-
-  if (find_method(-1, on_update_name)) {
-    call_script(1, 0, on_update_name);
-  }
-}
-
-/**
- * @brief Displays the scripted menu on top of the stack.
- * @param dst_surface The destination surface.
- */
-void LuaContext::menu_on_display(Surface& dst_surface) {
-
-  if (find_method(on_display_name)) {
-    push_surface(l, dst_surface);
-    call_script(2, 0, on_display_name);
-  }
-}
-
-/**
- * @brief Notifies the scripted menu on top of the stack
- * that a keyboard key was just pressed
+ * @brief Notifies the lua context that
+ * a keyboard key was just pressed
  * (including if it is a directional key).
  * @param event The corresponding input event.
  */
-void LuaContext::menu_on_key_pressed(InputEvent& event) {
+void LuaContext::on_key_pressed(InputEvent& event) {
 
-  if (find_method(on_key_pressed_name)) {
+  if (find_event_function(on_key_pressed_name)) {
 
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Lua API.
@@ -261,98 +178,98 @@ void LuaContext::menu_on_key_pressed(InputEvent& event) {
         lua_pushboolean(l, 1);
         lua_setfield(l, -2, "alt");
       }
-      call_script(3, 0, on_key_pressed_name);
+      call_script(2, 0, on_key_pressed_name);
     }
     else {
       // The method exists but the key is unknown.
-      lua_pop(l, 2);
+      lua_pop(l, 1);
     }
   }
 }
 
 /**
- * @brief Notifies the scripted menu on top of the stack
+ * @brief Notifies the lua context
  * that a keyboard key was just released
  * (including if it is a directional key).
  * @param event The corresponding input event.
  */
-void LuaContext::menu_on_key_released(InputEvent& event) {
+void LuaContext::on_key_released(InputEvent& event) {
 
-  if (find_method(on_key_released_name)) {
+  if (find_event_function(on_key_released_name)) {
 
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Lua API.
       lua_pushstring(l, key_name.c_str());
-      call_script(2, 0, on_key_released_name);
+      call_script(1, 0, on_key_released_name);
     }
     else {
       // The method exists but the key is unknown.
-      lua_pop(l, 2);
+      lua_pop(l, 1);
     }
   }
 }
 
 /**
- * @brief Notifies the scripted menu on top of the stack
+ * @brief Notifies the lua context
  * that a joypad button was just pressed.
  * @param event The corresponding input event.
  */
-void LuaContext::menu_on_joypad_button_pressed(InputEvent& event) {
+void LuaContext::on_joypad_button_pressed(InputEvent& event) {
 
-  if (find_method(on_joyad_button_pressed_name)) {
+  if (find_event_function(on_joyad_button_pressed_name)) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_script(2, 0, on_joyad_button_pressed_name);
+    call_script(1, 0, on_joyad_button_pressed_name);
   }
 }
 
 /**
- * @brief Notifies the scripted menu on top of the stack
+ * @brief Notifies the lua context
  * that a joypad button was just released.
  * @param event The corresponding input event.
  */
-void LuaContext::menu_on_joypad_button_released(InputEvent& event) {
+void LuaContext::on_joypad_button_released(InputEvent& event) {
 
-  if (find_method(on_joyad_button_released_name)) {
+  if (find_event_function(on_joyad_button_released_name)) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_script(2, 0, on_joyad_button_released_name);
+    call_script(1, 0, on_joyad_button_released_name);
   }
 }
 
 /**
- * @brief Notifies the scripted menu on top of the stack
+ * @brief Notifies the lua context
  * that a joypad axis was just moved.
  * @param event The corresponding input event.
  */
-void LuaContext::menu_on_joypad_axis_moved(InputEvent& event) {
+void LuaContext::on_joypad_axis_moved(InputEvent& event) {
 
-  if (find_method(on_joyad_axis_moved_name)) {
+  if (find_event_function(on_joyad_axis_moved_name)) {
     int axis = event.get_joypad_axis();
     int state = event.get_joypad_axis_state();
 
     lua_pushinteger(l, axis);
     lua_pushinteger(l, state);
-    call_script(3, 0, on_joyad_axis_moved_name);
+    call_script(2, 0, on_joyad_axis_moved_name);
   }
 }
 
 /**
- * @brief Notifies the scripted menu on top of the stack
+ * @brief Notifies the lua context
  * that a joypad hat was just moved.
  * @param event The corresponding input event.
  */
-void LuaContext::menu_on_joypad_hat_moved(InputEvent& event) {
+void LuaContext::on_joypad_hat_moved(InputEvent& event) {
 
-  if (find_method(on_joyad_hat_moved_name)) {
+  if (find_event_function(on_joyad_hat_moved_name)) {
     int hat = event.get_joypad_hat();
     int direction8 = event.get_joypad_hat_direction();
 
     lua_pushinteger(l, hat);
     lua_pushinteger(l, direction8);
-    call_script(3, 0, on_joyad_hat_moved_name);
+    call_script(2, 0, on_joyad_hat_moved_name);
   }
 }
 
@@ -362,13 +279,13 @@ void LuaContext::menu_on_joypad_hat_moved(InputEvent& event) {
  * or that a joypad directional command has just changed.
  * @param event The corresponding input event.
  */
-void LuaContext::menu_on_direction_pressed(InputEvent& event) {
+void LuaContext::on_direction_pressed(InputEvent& event) {
 
-  if (find_method(on_direction_pressed_name)) {
+  if (find_event_function(on_direction_pressed_name)) {
     int direction8 = event.get_direction();
 
     lua_pushinteger(l, direction8);
-    call_script(2, 0, on_direction_pressed_name);
+    call_script(1, 0, on_direction_pressed_name);
   }
 }
 

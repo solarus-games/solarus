@@ -189,9 +189,11 @@ void LanguageScreen::notify_input(InputEvent& event) {
  */
 void LanguageScreen::start_next_screen() {
 
-  IniFile ini("quest.dat", IniFile::READ);
-  ini.set_group("info");
-  const std::string& screen_name = ini.get_string_value("first_screen");
-  MainLoop& main_loop = get_main_loop();
-  main_loop.set_next_screen(new CustomScreen(main_loop, screen_name));
+  /* TODO write some compatibility here, not sure how to do that..
+      IniFile ini("quest.dat", IniFile::READ);
+      ini.set_group("info");
+      const std::string& screen_name = ini.get_string_value("first_screen");
+      MainLoop& main_loop = get_main_loop();
+      main_loop.set_next_screen(new CustomScreen(main_loop, screen_name));
+  */
 }

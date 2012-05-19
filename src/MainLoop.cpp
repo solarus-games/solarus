@@ -41,21 +41,15 @@ MainLoop::MainLoop(int argc, char** argv):
   lua_context(NULL),
   exiting(false) {
 
-  // initialize lowlevel features (audio, video, files...)
+  // Initialize low-level features (audio, video, files...).
   System::initialize(argc, argv);
   root_surface = new Surface(320, 240);
   debug_keys = new DebugKeys(*this);
   lua_context = new LuaContext(*this);
-  lua_context->start();
+  lua_context->initialize();
 
-  // The Lua main script must have set an initial screen.
-  Debug::check_assertion(this->next_screen != NULL,
-      "Lua must start an initial screen!");
-
-  // Set the next screen to current to fire things up.
-  current_screen = next_screen;
-  next_screen = NULL;
-
+  // The first screen is the built-in language selection screen.
+  current_screen = new LanguageScreen(*this);
 }
 
 /**

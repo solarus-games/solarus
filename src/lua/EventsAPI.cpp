@@ -45,10 +45,12 @@ void LuaContext::push_events(lua_State* l) {
 }
 
 /**
- * @brief Notifies the Lua event manager that the program starts.
+ * @brief Call sol.events.on_started().
  *
- * This function is called once at the beginning of the program.
- * sol.events.on_started() is called if it exists.
+ * This function is called when the engine requests Lua to show an
+ * initial screen, i.e. at the beginning of the program
+ * (after any built-in screens like the language selection screen)
+ * or when the program is reset.
  */
 void LuaContext::events_on_started() {
 
@@ -58,10 +60,9 @@ void LuaContext::events_on_started() {
 }
 
 /**
- * @brief Updates the Lua event manager.
+ * @brief Calls sol.events.on_update() if it exists.
  *
- * This function is called at each cycle.
- * sol.events.on_update() is called if existing.
+ * This function is called at each cycle by the main loop.
  */
 void LuaContext::events_on_update() {
 
@@ -71,9 +72,9 @@ void LuaContext::events_on_update() {
 }
 
 /**
- * @brief Notifies the Lua event manager that an input event has just occurred.
+ * @brief Notifies Lua that an input event has just occurred.
  *
- * The appropriate callback in sol.events is notified if it exists.
+ * The appropriate callback in sol.events is triggered if it exists.
  *
  * @param event The input event to handle.
  */

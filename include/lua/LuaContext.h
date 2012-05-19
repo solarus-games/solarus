@@ -42,7 +42,7 @@ class LuaContext: public Script {
     ~LuaContext();
 
     // Main loop from C++.
-    void start();
+    void initialize();
     void update();
     void notify_input(InputEvent& event);
 

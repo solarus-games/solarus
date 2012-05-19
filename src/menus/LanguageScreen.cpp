@@ -20,6 +20,7 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/IniFile.h"
+#include "lua/LuaContext.h"
 #include "MainLoop.h"
 #include "CustomScreen.h"
 #include "Transition.h"
@@ -158,28 +159,28 @@ void LanguageScreen::notify_input(InputEvent& event) {
 
   static const InputEvent::KeyboardKey validation_keys[] = { InputEvent::KEY_SPACE, InputEvent::KEY_RETURN, InputEvent::KEY_NONE };
 
-  if (transition == NULL) {
+  if (transition == NULL && !finished) {
 
     if (event.is_direction_pressed()) {
 
       int direction = event.get_direction();
       if (direction == 2) {
-	// up
-	set_cursor_position((cursor_position - 1 + nb_languages) % nb_languages);
-	Sound::play("cursor");
+        // up
+        set_cursor_position((cursor_position - 1 + nb_languages) % nb_languages);
+        Sound::play("cursor");
       }
       else if (direction == 6) {
-	// down
-	set_cursor_position((cursor_position + 1) % nb_languages);
-	Sound::play("cursor");
+        // down
+        set_cursor_position((cursor_position + 1) % nb_languages);
+        Sound::play("cursor");
       }
     }
     else if (event.is_keyboard_key_pressed(validation_keys)
-	|| event.is_joypad_button_pressed()) {
+        || event.is_joypad_button_pressed()) {
 
-	FileTools::set_language(language_codes[cursor_position]);
-	transition = Transition::create(Transition::FADE, Transition::OUT);
-	transition->start();
+      FileTools::set_language(language_codes[cursor_position]);
+      transition = Transition::create(Transition::FADE, Transition::OUT);
+      transition->start();
     }
   }
 }
@@ -189,11 +190,6 @@ void LanguageScreen::notify_input(InputEvent& event) {
  */
 void LanguageScreen::start_next_screen() {
 
-  /* TODO write some compatibility here, not sure how to do that..
-      IniFile ini("quest.dat", IniFile::READ);
-      ini.set_group("info");
-      const std::string& screen_name = ini.get_string_value("first_screen");
-      MainLoop& main_loop = get_main_loop();
-      main_loop.set_next_screen(new CustomScreen(main_loop, screen_name));
-  */
+  // Let Lua show its screens (usually, a title screen will be shown now).
+  get_lua_context().events_on_started();
 }

@@ -201,7 +201,7 @@ bool LuaContext::find_method(int index, const std::string& function_name) {
 /**
  * @brief Loads and executes main.lua.
  */
-void LuaContext::start() {
+void LuaContext::initialize() {
 
   // Make require() able to load Lua files even from the data.solarus archive.
                                   // ...
@@ -223,7 +223,6 @@ void LuaContext::start() {
   // Load the main file.
   load(l, "main");
   call_function(0, 0, "main");
-  events_on_started();
 }
 
 /**

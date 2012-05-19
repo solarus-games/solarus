@@ -91,6 +91,8 @@ void Script::register_movement_module() {
       { "get_angle", random_movement_api_get_angle },
       { "get_max_distance", random_movement_api_get_max_distance },
       { "set_max_distance", random_movement_api_set_max_distance },
+      { "is_smooth", random_movement_api_is_smooth },
+      { "set_smooth", random_movement_api_set_smooth },
       { NULL, NULL }
   };
   register_functions(random_movement_module_name, common_methods);
@@ -536,6 +538,35 @@ int Script::random_movement_api_set_max_distance(lua_State* l) {
   RandomMovement& movement = check_random_movement(l, 1);
   int max_distance = luaL_checkinteger(l, 2);
   movement.set_max_distance(max_distance);
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_random_movement_is_smooth.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::random_movement_api_is_smooth(lua_State* l) {
+
+  RandomMovement& movement = check_random_movement(l, 1);
+  lua_pushboolean(l, movement.is_smooth());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_random_movement_set_smooth.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::random_movement_api_set_smooth(lua_State* l) {
+
+  RandomMovement& movement = check_random_movement(l, 1);
+  bool smooth = true; // true if unspecified
+  if (lua_isboolean(l, 2)) {
+    smooth = lua_toboolean(l, 2);
+  }
+  movement.set_smooth(smooth);
+
   return 0;
 }
 

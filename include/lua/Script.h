@@ -517,6 +517,8 @@ class Script {
       random_movement_api_get_angle,
       random_movement_api_get_max_distance,
       random_movement_api_set_max_distance,
+      random_movement_api_is_smooth,
+      random_movement_api_set_smooth,
       target_movement_api_set_target,
       target_movement_api_get_speed,
       target_movement_api_set_speed,

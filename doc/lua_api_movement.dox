@@ -275,6 +275,26 @@ automatically comes back towards the initial position.
 
 <hr>
 
+\subsection lua_api_random_movement_is_smooth random_movement:is_smooth()
+
+Returns whether this movement adjusts its trajectory when an obstacle of the
+map is reached.
+This property has no effect if the movement is not attached to a map entity
+or if the movement ignores obstacles.
+- Return value (boolean): \c true if this movement is smooth
+
+<hr>
+
+\subsection lua_api_random_movement_set_smooth random_movement:set_smooth(smooth)
+
+Sets whether this movement should adjust its trajectory when an obstacle of the
+map is reached.
+This property has no effect if the movement is not attached to a map entity
+or if the movement ignores obstacles.
+- \c smooth (boolean): \c true to make this movement smooth (default \c true).
+
+<hr>
+
 \section lua_api_target_movement_methods Target movement methods
 
 <hr>

@@ -46,6 +46,11 @@ class LuaContext: public Script {
     void update();
     void notify_input(InputEvent& event);
 
+    // Timers.
+    void enable_timers(int table_ref);
+    void disable_timers(int table_ref);
+    void remove_table_timer(Timer* timer);
+
     // Main Lua script (sol.events).
     void events_on_update();
     void events_on_input(InputEvent& event);
@@ -61,6 +66,12 @@ class LuaContext: public Script {
 
   private:
 
+    // TODO store this into Lua instead?
+    // map<table, map<timer, callback_ref>>
+    std::map<const void*, std::map<Timer*, int> >
+        table_timers;  /**< the timers currently running in each
+                        * table, and their callback ref */
+
     static void load(lua_State* l, const std::string& script_name);
     static bool load_if_exists(lua_State* l, const std::string& script_name);
     bool find_local_function(int index, const std::string& function_name);
@@ -72,6 +83,11 @@ class LuaContext: public Script {
 
     void register_events_module();
     void register_menu_module();
+
+    void add_table_timer(Timer* timer, int table_index, int callback_index);
+    void remove_table_timer(Timer* timer, int table_index);
+    void remove_table_timers(int table_index);
+    void update_table_timers();
 
     static void push_events(lua_State* l);
 
@@ -86,6 +102,12 @@ class LuaContext: public Script {
     void on_direction_pressed(InputEvent& event);
     void on_started();
     void on_finished();
+
+    static FunctionAvailableToScript
+
+      // table timer API
+      table_timer_api_start_timer,
+      table_timer_api_stop_timers;
 };
 
 #endif

@@ -95,6 +95,7 @@ class Script {
     void event_npc_collision_fire(const std::string& npc_name);
 
     bool has_played_music();
+    bool is_new_timer_suspended(void);
     void do_callback(int callback_ref);
     void cancel_callback(int callback_ref);
 
@@ -204,7 +205,6 @@ class Script {
     static PixelMovement& check_pixel_movement(lua_State* l, int index);
 
     // timers
-    bool is_new_timer_suspended(void);
     void add_timer(Timer* timer, int callback_ref);
     void remove_timer(Timer* timer);
     void remove_all_timers();

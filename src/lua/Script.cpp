@@ -767,11 +767,7 @@ void Script::do_callback(int callback_ref) {
           << luaL_typename(l, -1) << ")");
     }
 
-    if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::print(StringConcat() << "Error in callback function:"
-          << lua_tostring(l, -1));
-      lua_pop(l, 1);
-    }
+    call_function(0, 0, "callback");
     luaL_unref(l, LUA_REGISTRYINDEX, callback_ref);
   }
 }

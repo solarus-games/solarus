@@ -44,6 +44,7 @@ CustomScreen::~CustomScreen() {
  */
 void CustomScreen::start() {
 
+  get_lua_context().enable_timers(menu_ref);
   get_lua_context().menu_on_started(menu_ref);
 }
 
@@ -52,6 +53,7 @@ void CustomScreen::start() {
  */
 void CustomScreen::stop() {
 
+  get_lua_context().disable_timers(menu_ref);
   get_lua_context().menu_on_finished(menu_ref);
 }
 

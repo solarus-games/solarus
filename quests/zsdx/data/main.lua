@@ -40,7 +40,7 @@ end
 
 function sol.events.joypad_button_pressed(button)
   if events["joypad_button_pressed"] then
-    events["joypad_button_pressed"]:on_joypad_button_presed(button)
+    events["joypad_button_pressed"]:on_joypad_button_pressed(button)
   end
 end
 

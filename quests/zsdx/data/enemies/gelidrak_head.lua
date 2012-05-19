@@ -29,7 +29,7 @@ end
 function event_restart()
 
   if not vulnerable then
-    sol.timer.stop_all(timers)
+    sol.timer.stop(timers)
     timers[#timers + 1] = sol.main:start_timer(math.random(2000, 5000), throw_flames)
     go_back()
   else
@@ -75,7 +75,7 @@ function event_message_received(src_enemy, message)
       sol.enemy.set_attack_consequence("sword", 1)
       local sprite = sol.enemy.get_sprite()
       sprite:set_animation("walking")
-      sol.timer.stop_all(timers)
+      sol.timer.stop(timers)
       timers[#timers + 1] = sol.main:start_timer(vulnerable_delay, function()
 	vulnerable = false
 	event_restart()
@@ -93,7 +93,7 @@ function event_hurt(attack, life_lost)
     -- notify the body (so that it is hurt too)
     sol.enemy.send_message(sol.enemy.get_father(), "hurt")
   else
-    sol.timer.stop_all(timers)
+    sol.timer.stop(timers)
     sol.enemy.send_message(sol.enemy.get_father(), "dying")
   end
 end

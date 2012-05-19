@@ -278,7 +278,7 @@ end
 function self:on_hurt(attack, life_lost)
 
   if self:get_life() <= 0 then
-    sol.timer.stop_all(timers)
+    sol.timer.stop(timers)
   end
 end
 

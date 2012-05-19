@@ -42,7 +42,7 @@ end
 
 function event_hurt(attack, life_lost)
 
-  sol.timer.stop_all(timers)
+  sol.timer.stop(timers)
   if sol.enemy.get_life() <= 0 then
     -- I am dying: remove the sons
     local sons_prefix = sol.enemy.get_name().."_son"

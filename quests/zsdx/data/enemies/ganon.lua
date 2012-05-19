@@ -289,7 +289,7 @@ end
 function event_hurt(attack, life_lost)
 
   if sol.enemy.get_life() <= 0 then
-    sol.timer.stop_all(timers)
+    sol.timer.stop(timers)
   end
 end
 

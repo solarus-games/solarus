@@ -41,7 +41,7 @@ function go()
   m:set_speed(16)
   m:set_max_distance(16)
   sol.enemy.start_movement(m)
-  sol.timer.stop_all(timers)
+  sol.timer.stop(timers)
   timers[#timers + 1] = sol.main:start_timer(math.random(2000, 3000), prepare_son)
 end
 
@@ -52,7 +52,7 @@ function event_hurt(attack, life_lost)
     local sprite = sol.enemy.get_sprite()
     sprite:set_ignore_suspend(true)
     sol.map.dialog_start("dungeon_3.arbror_killed")
-    sol.timer.stop_all(timers)
+    sol.timer.stop(timers)
     remove_sons()
   else
     if life > 9 then 
@@ -112,7 +112,7 @@ function event_sprite_animation_finished(sprite, animation)
       sol.enemy.stop_movement()
       sprite:set_animation("vulnerable")
       sol.audio.play_sound("boss_hurt")
-      sol.timer.stop_all(timers)
+      sol.timer.stop(timers)
       timers[#timers + 1] = sol.main:start_timer(4000, stop_vulnerable)
       remove_sons()
     else

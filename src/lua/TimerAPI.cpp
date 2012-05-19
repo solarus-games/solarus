@@ -286,10 +286,24 @@ int Script::timer_api_start_timer(lua_State *l) {
  */
 int Script::timer_api_stop(lua_State* l) {
 
-  LuaContext& lua_context = (LuaContext&) get_script(l);
-  Timer& timer = check_timer(l, 1);
+  Script& script = get_script(l);
 
-  lua_context.remove_timer(&timer);
+  if (lua_type(l, 1) == LUA_TTABLE) {
+    // Stop a list of timers.
+    // TODO: deprecate this, it's useless since timers are associated to a table.
+    lua_pushnil(l); // first key
+    while (lua_next(l, 1) != 0) {
+
+      Timer& timer = check_timer(l, -1);
+      script.remove_timer(&timer);
+      lua_pop(l, 1); // pop the value, let the key for the iteration
+    }
+  }
+  else {
+    // Stop an individual timer.
+    Timer& timer = check_timer(l, 1);
+    script.remove_timer(&timer);
+  }
 
   return 0;
 }

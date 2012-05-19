@@ -34,7 +34,7 @@ function event_restart()
   local m = sol.movement.create("random")
   m:set_speed(64)
   sol.enemy.start_movement(m)
-  sol.timer.stop_all(timers)
+  sol.timer.stop(timers)
   timers[#timers + 1] = sol.main:start_timer(math.random(2000, 6000), prepare_flames)
 end
 
@@ -62,7 +62,7 @@ end
 
 function event_hurt(attack, life_lost)
 
-  sol.timer.stop_all(timers)
+  sol.timer.stop(timers)
   if sol.enemy.get_life() <= 0 then
     sol.map.enemy_remove_group(sol.enemy.get_name() .. "_")
   end

@@ -45,8 +45,10 @@ class TargetMovement: public StraightMovement {
 
   public:
 
-    TargetMovement(int target_x, int target_y, int moving_speed);
-    TargetMovement(MapEntity* target_entity, int moving_speed);
+    TargetMovement(int target_x, int target_y, int moving_speed,
+        bool ignore_obstacles);
+    TargetMovement(MapEntity* target_entity, int moving_speed,
+        bool ignore_obstacles);
     ~TargetMovement();
 
     void set_target(int target_x, int target_y);

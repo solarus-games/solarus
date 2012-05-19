@@ -30,11 +30,13 @@ const uint32_t TargetMovement::recomputation_delay = 150;
  * @brief Creates a new target movement towards a fixed point.
  * @param target_x x coordinate of the target point
  * @param target_y y coordinate of the target point
- * @param moving_speed speed of the movement when not stopped
+ * @param moving_speed speed of the movement when not stoppedstopped
+ * @param ignore_obstacles true to ignore obstacles (if on a map)
  */
-TargetMovement::TargetMovement(int target_x, int target_y, int moving_speed):
+TargetMovement::TargetMovement(int target_x, int target_y, int moving_speed,
+    bool ignore_obstacles):
 
-  StraightMovement(true, true),
+  StraightMovement(ignore_obstacles, true),
   target_x(target_x),
   target_y(target_y),
   target_entity(NULL),
@@ -53,10 +55,12 @@ TargetMovement::TargetMovement(int target_x, int target_y, int moving_speed):
  *
  * @param target_entity the target entity
  * @param moving_speed speed of the movement when not stopped
+ * @param ignore_obstacles true to ignore obstacles (if on a map)
  */
-TargetMovement::TargetMovement(MapEntity* target_entity, int moving_speed):
+TargetMovement::TargetMovement(MapEntity* target_entity, int moving_speed,
+    bool ignore_obstacles):
 
-  StraightMovement(true, true),
+  StraightMovement(ignore_obstacles, true),
   target_x(target_entity->get_x()),
   target_y(target_entity->get_y()),
   target_entity(target_entity),

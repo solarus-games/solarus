@@ -116,7 +116,7 @@ void GameoverSequence::update() {
           state = SAVED_BY_FAIRY;
           fairy_x = hero_dead_x + 12;
           fairy_y = hero_dead_y + 21;
-          fairy_movement = new TargetMovement(240, 22, 96);
+          fairy_movement = new TargetMovement(240, 22, 96, true);
           fairy_movement->set_xy(fairy_x, fairy_y);
           equipment.notify_ability_used("get_back_from_death");
         }

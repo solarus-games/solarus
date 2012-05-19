@@ -135,7 +135,7 @@ void Camera::move(int target_x, int target_y) {
   target_x = std::min(std::max(target_x, 160), map_location.get_width() - 160);
   target_y = std::min(std::max(target_y, 120), map_location.get_height() - 120);
 
-  movement = new TargetMovement(target_x, target_y, speed);
+  movement = new TargetMovement(target_x, target_y, speed, true);
   movement->set_xy(position.get_x() + 160, position.get_y() + 120);
 
   fixed_on_hero = false;

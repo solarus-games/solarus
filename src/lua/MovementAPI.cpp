@@ -264,11 +264,12 @@ int Script::movement_api_create(lua_State* l) {
     if (script.apis_enabled & MAP_API)
     {
       // If we are on a map, the default target is the hero.
-      movement = new TargetMovement(&script.get_map().get_entities().get_hero(), 96);
+      movement = new TargetMovement(
+          &script.get_map().get_entities().get_hero(), 96, false);
     }
     else
     {
-      movement = new TargetMovement(0, 0, 32);
+      movement = new TargetMovement(0, 0, 32, false);
     }
   }
   else if (type == "path") {

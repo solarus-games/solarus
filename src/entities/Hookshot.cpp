@@ -283,7 +283,7 @@ void Hookshot::update() {
 
       if (has_to_go_back) {
         going_back = true;
-        Movement *movement = new TargetMovement(&get_hero(), 192);
+        Movement *movement = new TargetMovement(&get_hero(), 192, true);
         clear_movement();
         set_movement(movement);
       }

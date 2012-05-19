@@ -254,8 +254,6 @@ void LuaContext::update() {
 
   Script::update();
 
-  update_table_timers();
-
   // Call sol.events.on_update().
   events_on_update();
 }

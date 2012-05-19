@@ -95,7 +95,6 @@ class Script {
     void event_npc_collision_fire(const std::string& npc_name);
 
     bool has_played_music();
-    bool is_new_timer_suspended(void);
     void do_callback(int callback_ref);
     void cancel_callback(int callback_ref);
 
@@ -142,6 +141,8 @@ class Script {
     static void push_movement(lua_State* l, Movement& movement);
     static void push_ref(lua_State* l, int ref);
     const std::string& input_get_key_name(InputEvent::KeyboardKey key);
+    void enable_timers(int table_index);
+    void disable_timers(int table_index);
 
     // debugging
     void print_stack();
@@ -150,8 +151,12 @@ class Script {
 
     // script data
     MainLoop& main_loop;            /**< the Solarus main loop */
-    std::map<Timer*, int> timers;   /**< the timers currently running for this
-                                     * script, associated to their callback ref */
+    // TODO store this into Lua instead?
+    // map<table, map<timer, callback_ref>>
+    std::map<const void*, std::map<Timer*, int> >
+        table_timers;  /**< the timers currently running in each
+                        * table, and their callback ref */
+
     std::set<DynamicDisplayable*>
       displayables;                 /**< all displayable objects created by
                                      * this script */
@@ -205,10 +210,13 @@ class Script {
     static PixelMovement& check_pixel_movement(lua_State* l, int index);
 
     // timers
-    void add_timer(Timer* timer, int callback_ref);
+    bool is_new_timer_suspended(void);
+    void add_timer(Timer* timer, int table_index, int callback_index);
+    void remove_timer(Timer* timer, int table_index);
     void remove_timer(Timer* timer);
-    void remove_all_timers();
-    void update_timers();
+    void remove_timers(int table_index);
+    void remove_timers();
+    void update_table_timers();
 
     // displayable objects
     bool has_displayable(DynamicDisplayable* displayable);
@@ -237,9 +245,9 @@ class Script {
       audio_api_stop_music,
 
       // timer API
-      timer_api_start,
+      timer_api_start_timer,
       timer_api_stop,
-      timer_api_stop_all,
+      timer_api_stop_timers,
 
       // game API
       game_api_save,

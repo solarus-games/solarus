@@ -28,9 +28,7 @@ const std::string Script::timer_module_name = "sol.timer";
 void Script::register_timer_module() {
 
   static const luaL_Reg methods[] = {
-      { "start", timer_api_start },
       { "stop", timer_api_stop },
-      { "stop_all", timer_api_stop_all},
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -38,72 +36,11 @@ void Script::register_timer_module() {
       { NULL, NULL }
   };
   register_type(timer_module_name, methods, metamethods);
-}
 
-/**
- * @brief Registers a timer created by this script.
- * @param timer a timer
- * @param callback_ref registry ref of a function to call when the timer
- * finishes
- */
-void Script::add_timer(Timer* timer, int callback_ref) {
-
-  set_created(timer);
-  timers[timer] = callback_ref;
-
-  if (is_new_timer_suspended()) {
-    timer->set_suspended(true);
-  }
-  increment_refcount(timer);
-}
-
-/**
- * @brief Unregisters a timer created by this script.
- * @param timer a timer
- */
-void Script::remove_timer(Timer* timer) {
-
-  if (!timer->is_finished()) {
-    luaL_unref(l, LUA_REGISTRYINDEX, timers[timer]);
-  }
-  timers.erase(timer);
-  decrement_refcount(timer); // will be deleted if Lua has already collected it
-}
-
-/**
- * @brief Unregisters all timers created by this script.
- */
-void Script::remove_all_timers() {
-
-  std::map<Timer*, int>::iterator it;
-  for (it = timers.begin(); it != timers.end(); it++) {
-    Timer* timer = it->first;
-    if (!timer->is_finished()) {
-      luaL_unref(l, LUA_REGISTRYINDEX, it->second);
-    }
-    decrement_refcount(timer);
-  }
-  timers.clear();
-}
-
-/**
- * @brief Updates all timers currently running for this script.
- */
-void Script::update_timers() {
-
-  std::map<Timer*, int>::iterator it;
-  for (it = timers.begin(); it != timers.end(); ++it) {
-
-    Timer* timer = it->first;
-    int callback_ref = it->second;
-
-    timer->update();
-    if (timer->is_finished()) {
-      do_callback(callback_ref);
-      remove_timer(timer);
-      break;
-    }
-  }
+  // Make sol.main able to store timers to allow global timers.
+  lua_getglobal(l, "sol");
+  lua_getfield(l, -1, "main");
+  enable_timers(-1);
 }
 
 /**
@@ -142,114 +79,40 @@ void Script::push_timer(lua_State* l, Timer& timer) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_start.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int Script::timer_api_start(lua_State *l) {
-
-  // parameters: delay [with_sound] callback
-  Script& script = get_script(l);
-  uint32_t delay = luaL_checkinteger(l, 1);
-  bool with_sound = false;
-  int index = 2;
-  if (lua_isboolean(l, index)) {
-    with_sound = lua_toboolean(l, 2);
-    index++;
-  }
-  luaL_checktype(l, index, LUA_TFUNCTION);
-  lua_settop(l, index); // make sure the function is on top of the stack
-
-  int callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  if (delay > 0) {
-    // create the timer
-    Timer* timer = new Timer(delay, with_sound);
-    script.add_timer(timer, callback_ref);
-    push_timer(l, *timer);
-  }
-  else {
-    // delay is zero: call the function right now
-    script.do_callback(callback_ref);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_timer_stop.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int Script::timer_api_stop(lua_State* l) {
-
-  LuaContext& lua_context = (LuaContext&) get_script(l);
-  Timer& timer = check_timer(l, 1);
-
-  lua_context.remove_table_timer(&timer);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_timer_stop_all.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int Script::timer_api_stop_all(lua_State *l) {
-
-  Script& script = get_script(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
-
-  // traverse the table
-  lua_pushnil(l); // first key
-  while (lua_next(l, 1) != 0) {
-
-    Timer& timer = check_timer(l, -1);
-    script.remove_timer(&timer);
-    lua_pop(l, 1); // pop the value, let the key for the iteration
-  }
-
-  return 0;
-}
-
-/**
  * @brief Makes a Lua object capable of running timers.
  *
  * The object will then have a start_timer() method and a stop_timers()
  * methods.
  *
- * @param table_ref Lua ref of an object.
+ * @param table_index Index of a Lua table.
  */
-void LuaContext::enable_timers(int ref) {
+void Script::enable_timers(int table_index) {
 
-                                  // ...
-  push_ref(l, ref);
-                                  // ... object/?
-  luaL_checktype(l, -1, LUA_TTABLE);
-                                  // ... object
-  lua_pushcfunction(l, table_timer_api_start_timer);
-                                  // ... object start_timer
-  lua_setfield(l, -2, "start_timer");
-                                  // ... object
-  lua_pushcfunction(l, table_timer_api_stop_timers);
-                                  // ... object stop_timers
+  if (table_index < 0) {
+    // ensure a positive index
+    table_index = lua_gettop(l) + table_index + 1;
+  }
+
+  luaL_checktype(l, table_index, LUA_TTABLE);
+                                  // ... object ...
+  lua_pushcfunction(l, timer_api_start_timer);
+                                  // ... object ... start_timer
+  lua_setfield(l, table_index, "start_timer");
+                                  // ... object ...
+  lua_pushcfunction(l, timer_api_stop_timers);
+                                  // ... object ... stop_timers
   lua_setfield(l, -2, "stop_timers");
-                                  // ... object
-  lua_pop(l, -1);
-                                  // ...
+                                  // ... object ...
 }
 
 /**
  * @brief Stops all timers currently running for a Lua object.
- * @param table_ref Lua ref of an object.
+ * @param table_index Index of a Lua table.
  */
-void LuaContext::disable_timers(int ref) {
+void Script::disable_timers(int table_index) {
 
-  push_ref(l, ref);
-  remove_table_timers(-1);
-  lua_pop(l, 1);
+  remove_timers(table_index);
 }
-
 
 /**
  * @brief Registers a timer into a table.
@@ -257,7 +120,7 @@ void LuaContext::disable_timers(int ref) {
  * @param table_index Index of a table in the stack.
  * @param callback_index Index of the function to call when the timer finishes.
  */
-void LuaContext::add_table_timer(Timer* timer, int table_index, int callback_index) {
+void Script::add_timer(Timer* timer, int table_index, int callback_index) {
 
   const void* table_pointer = lua_topointer(l, table_index);
   lua_pushvalue(l, callback_index);
@@ -277,7 +140,7 @@ void LuaContext::add_table_timer(Timer* timer, int table_index, int callback_ind
  * @brief Unregisters a timer associated to a table.
  * @param timer A timer.
  */
-void LuaContext::remove_table_timer(Timer* timer) {
+void Script::remove_timer(Timer* timer) {
 
   bool found = false;
   std::map<const void*, std::map<Timer*, int> >::iterator it;
@@ -302,7 +165,7 @@ void LuaContext::remove_table_timer(Timer* timer) {
  * @param timer A timer.
  * @param table_index Index of the table containing this timer.
  */
-void LuaContext::remove_table_timer(Timer* timer, int table_index) {
+void Script::remove_timer(Timer* timer, int table_index) {
 
   const void* table_pointer = lua_topointer(l, table_index);
   if (!timer->is_finished()) {
@@ -316,7 +179,7 @@ void LuaContext::remove_table_timer(Timer* timer, int table_index) {
  * @brief Unregisters all timers associated to a table.
  * @param table_index Index of a table.
  */
-void LuaContext::remove_table_timers(int table_index) {
+void Script::remove_timers(int table_index) {
 
   const void* table_pointer = lua_topointer(l, table_index);
   std::map<Timer*, int>::iterator it;
@@ -331,9 +194,32 @@ void LuaContext::remove_table_timers(int table_index) {
 }
 
 /**
+ * @brief Unregisters all existing timers.
+ */
+void Script::remove_timers() {
+
+  std::map<const void*, std::map<Timer*, int> >::iterator it;
+  for (it = table_timers.begin(); it != table_timers.end(); ++it) {
+
+    std::map<Timer*, int> timers = it->second;
+
+    std::map<Timer*, int>::iterator it2;
+    for (it2 = timers.begin(); it2 != timers.end(); ++it2) {
+      Timer* timer = it2->first;
+      if (!timer->is_finished()) {
+        destroy_ref(it2->second);
+      }
+      decrement_refcount(timer);
+    }
+    timers.clear();
+  }
+  table_timers.clear();
+}
+
+/**
  * @brief Updates all timers currently running for this script.
  */
-void LuaContext::update_table_timers() {
+void Script::update_table_timers() {
 
   std::map<const void*, std::map<Timer*, int> >::iterator it;
   for (it = table_timers.begin(); it != table_timers.end(); ++it) {
@@ -350,7 +236,7 @@ void LuaContext::update_table_timers() {
       if (timer->is_finished()) {
         do_callback(callback_ref);
         lua_pushlightuserdata(l, (void*) table_pointer);
-        remove_table_timer(timer, -1);
+        remove_timer(timer, -1);
         lua_pop(l, 1);
         break;
       }
@@ -359,11 +245,11 @@ void LuaContext::update_table_timers() {
 }
 
 /**
- * @brief Implementation of \ref TODO.
+ * @brief Implementation of \ref lua_api_timer_start_timer.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::table_timer_api_start_timer(lua_State *l) {
+int Script::timer_api_start_timer(lua_State *l) {
 
   // parameters: delay [with_sound] callback
   LuaContext& lua_context = (LuaContext&) get_script(l);
@@ -382,7 +268,7 @@ int LuaContext::table_timer_api_start_timer(lua_State *l) {
   if (delay > 0) {
     // create the timer
     Timer* timer = new Timer(delay, with_sound);
-    lua_context.add_table_timer(timer, 1, index);
+    lua_context.add_timer(timer, 1, index);
     push_timer(l, *timer);
   }
   else {
@@ -394,17 +280,32 @@ int LuaContext::table_timer_api_start_timer(lua_State *l) {
 }
 
 /**
- * @brief Implementation of \ref TODO.
+ * @brief Implementation of \ref lua_api_timer_stop.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::table_timer_api_stop_timers(lua_State *l) {
+int Script::timer_api_stop(lua_State* l) {
+
+  LuaContext& lua_context = (LuaContext&) get_script(l);
+  Timer& timer = check_timer(l, 1);
+
+  lua_context.remove_timer(&timer);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_timer_stop_timers.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::timer_api_stop_timers(lua_State *l) {
 
   LuaContext& lua_context = (LuaContext&) get_script(l);
 
   luaL_checktype(l, 1, LUA_TTABLE);
 
-  lua_context.remove_table_timers(1);
+  lua_context.remove_timers(1);
 
   return 0;
 }

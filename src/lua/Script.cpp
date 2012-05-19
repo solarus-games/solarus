@@ -47,10 +47,10 @@ Script::Script(MainLoop& main_loop, uint32_t apis_enabled):
  */
 Script::~Script() {
 
-  // cancel unfinished timers
-  remove_all_timers();
+  // Destroy unfinished timers.
+  remove_timers();
 
-  // close the Lua execution context
+  // Close the Lua execution context.
   if (l != NULL) {
     lua_close(l);
   }
@@ -533,8 +533,9 @@ bool Script::call_function(int nb_arguments, int nb_results,
  * @brief Updates the script.
  */
 void Script::update() {
+
   update_displayables();
-  update_timers();
+  update_table_timers();
 }
 
 /**
@@ -545,10 +546,16 @@ void Script::set_suspended(bool suspended) {
 
   if (l != NULL) {
 
-    // notify the timers
-    std::map<Timer*, int>::iterator it;
-    for (it = timers.begin(); it != timers.end(); it++) {
-      it->first->set_suspended(suspended);
+    // Notify the timers.
+    std::map<const void*, std::map<Timer*, int> >::iterator it;
+    for (it = table_timers.begin(); it != table_timers.end(); ++it) {
+
+      std::map<Timer*, int> timers = it->second;
+
+      std::map<Timer*, int>::iterator it2;
+      for (it2 = timers.begin(); it2 != timers.end(); ++it2) {
+        it2->first->set_suspended(suspended);
+      }
     }
   }
 }

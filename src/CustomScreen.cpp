@@ -29,7 +29,7 @@ CustomScreen::CustomScreen(MainLoop& main_loop,
   Screen(main_loop),
   menu_ref(menu_ref) {
 
-  get_lua_context().menu_on_start(menu_ref);
+  get_lua_context().menu_on_started(menu_ref);
 }
 
 /**

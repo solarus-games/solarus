@@ -47,12 +47,12 @@ class LuaContext: public Script {
     void notify_input(InputEvent& event);
 
     // Main Lua script (sol.events).
-    void events_on_start();
+    void events_on_started();
     void events_on_update();
     void events_on_input(InputEvent& event);
 
     // Lua menus events.
-    void menu_on_start(int menu_ref);
+    void menu_on_started(int menu_ref);
     void menu_on_update(int menu_ref);
     void menu_on_display(int menu_ref, Surface& dst_surface);
     void menu_on_input(int menu_ref, InputEvent& event);
@@ -72,7 +72,7 @@ class LuaContext: public Script {
     void register_events_module();
     void register_menu_module();
 
-    void on_start();
+    void on_started();
     void on_update();
     void on_input(InputEvent& event);
     void on_key_pressed(InputEvent& event);

@@ -17,7 +17,7 @@
 #include "lua/LuaContext.h"
 #include <lua.hpp>
 
-static const std::string& on_start_name = "on_start";
+static const std::string& on_started_name = "on_started";
 static const std::string& on_update_name = "on_update";
 
 /**
@@ -37,12 +37,12 @@ void LuaContext::register_events_module() {
  * @brief Notifies the Lua event manager that the program starts.
  *
  * This function is called once at the beginning of the program.
- * sol.events.on_start() is called if it exists.
+ * sol.events.on_started() is called if it exists.
  */
-void LuaContext::events_on_start() {
+void LuaContext::events_on_started() {
 
-  if (find_event_function(on_start_name)) {
-    call_function(0, 0, on_start_name);
+  if (find_event_function(on_started_name)) {
+    call_function(0, 0, on_started_name);
   }
 }
 

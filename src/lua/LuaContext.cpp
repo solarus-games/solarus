@@ -21,7 +21,7 @@
 #include <sstream>
 #include <lua.hpp>
 
-static const std::string& on_start_name = "on_start";
+static const std::string& on_started_name = "on_started";
 static const std::string& on_update_name = "on_update";
 static const std::string& on_key_pressed_name = "on_key_pressed";
 static const std::string& on_key_released_name = "on_key_released";
@@ -255,7 +255,7 @@ void LuaContext::start() {
   // Load the main file.
   load(l, "main");
   call_function(0, 0, "main");
-  events_on_start();
+  events_on_started();
 }
 
 /**
@@ -314,12 +314,12 @@ void LuaContext::notify_input(InputEvent& event) {
 }
 
 /**
- * @brief Calls the on_start() method of the object on top of the stack.
+ * @brief Calls the on_started() method of the object on top of the stack.
  */
-void LuaContext::on_start() {
+void LuaContext::on_started() {
 
-  if (find_method(on_start_name)) {
-    call_function(1, 0, on_start_name);
+  if (find_method(on_started_name)) {
+    call_function(1, 0, on_started_name);
   }
 }
 

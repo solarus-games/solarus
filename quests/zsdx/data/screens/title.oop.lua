@@ -14,7 +14,7 @@ function title_screen:new()
   return object
 end
 
-function title_screen:on_start()
+function title_screen:on_started()
 
   -- black screen during 0.3 seconds
   self.phase = "black"

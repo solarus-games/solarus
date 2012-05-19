@@ -28,16 +28,16 @@ void LuaContext::register_menu_module() {
 }
 
 /**
- * @brief Calls the on_start() method of a Lua menu.
+ * @brief Calls the on_started() method of a Lua menu.
  * @param menu_ref A reference to the menu object.
  */
-void LuaContext::menu_on_start(int menu_ref) {
+void LuaContext::menu_on_started(int menu_ref) {
 
   // Push the menu object.
   push_ref(l, menu_ref);
 
-  // Call its on_start() method if it exists.
-  on_start();
+  // Call its on_started() method if it exists.
+  on_started();
 
   // Pop the object ref.
   lua_pop(l, 1);

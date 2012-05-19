@@ -13,7 +13,7 @@ function sol.events:on_update()
 
 end
 
-function sol.events:on_start()
+function sol.events:on_started()
   -- Just need this here, no need to require globally
   local title_screen = require 'screens/title.oop'
 

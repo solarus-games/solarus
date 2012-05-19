@@ -645,7 +645,22 @@ ExportableToLua& Script::check_userdata(lua_State* l, int index,
 }
 
 /**
- * @brief Finalizer a userdata types.
+ * @brief Compares two userdata of the same type.
+ * @param l a Lua state
+ * @return number of values to return to Lua
+ */
+int Script::userdata_meta_eq(lua_State* l) {
+
+  ExportableToLua** userdata1 = (ExportableToLua**) lua_touserdata(l, 1);
+  ExportableToLua** userdata2 = (ExportableToLua**) lua_touserdata(l, 2);
+
+  lua_pushboolean(l, *userdata1 == *userdata2);
+
+  return 1;
+}
+
+/**
+ * @brief Finalizer of a userdata type.
  * @param l a Lua state
  * @return number of values to return to Lua
  */

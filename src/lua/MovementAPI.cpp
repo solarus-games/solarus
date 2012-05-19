@@ -64,6 +64,7 @@ void Script::register_movement_module() {
       { NULL, NULL }
   };
   static const luaL_Reg common_metamethods[] = {
+      { "__eq", userdata_meta_eq },
       { "__gc", userdata_meta_gc },
       { NULL, NULL }
   };

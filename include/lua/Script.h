@@ -582,6 +582,7 @@ class Script {
       pixel_movement_api_set_delay,
 
       // common to all userdata types
+      userdata_meta_eq,
       userdata_meta_gc;
 };
 

@@ -36,6 +36,7 @@ void Script::register_text_surface_module() {
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
+      { "__eq", userdata_meta_eq },
       { "__gc", displayable_meta_gc },
       { NULL, NULL }
   };

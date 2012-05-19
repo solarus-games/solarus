@@ -21,7 +21,6 @@
 #include <sstream>
 #include <lua.hpp>
 
-static const std::string& on_started_name = "on_started";
 static const std::string& on_update_name = "on_update";
 static const std::string& on_key_pressed_name = "on_key_pressed";
 static const std::string& on_key_released_name = "on_key_released";
@@ -30,6 +29,8 @@ static const std::string& on_joyad_button_released_name = "on_joyad_button_relea
 static const std::string& on_joyad_axis_moved_name = "on_joyad_axis_moved";
 static const std::string& on_joyad_hat_moved_name = "on_joyad_hat_moved";
 static const std::string& on_direction_pressed_name = "on_direction_pressed";
+static const std::string& on_started_name = "on_started";
+static const std::string& on_finished_name = "on_finished";
 
 /**
  * @brief Creates a Lua context.
@@ -281,16 +282,6 @@ void LuaContext::notify_input(InputEvent& event) {
 }
 
 /**
- * @brief Calls the on_started() method of the object on top of the stack.
- */
-void LuaContext::on_started() {
-
-  if (find_method(on_started_name)) {
-    call_function(1, 0, on_started_name);
-  }
-}
-
-/**
  * @brief Calls the on_update() method of the object on top of the stack.
  */
 void LuaContext::on_update() {
@@ -476,6 +467,26 @@ void LuaContext::on_direction_pressed(InputEvent& event) {
 
     lua_pushinteger(l, direction8);
     call_function(1, 0, on_direction_pressed_name);
+  }
+}
+
+/**
+ * @brief Calls the on_started() method of the object on top of the stack.
+ */
+void LuaContext::on_started() {
+
+  if (find_method(on_started_name)) {
+    call_function(1, 0, on_started_name);
+  }
+}
+
+/**
+ * @brief Calls the on_finished() method of the object on top of the stack.
+ */
+void LuaContext::on_finished() {
+
+  if (find_method(on_finished_name)) {
+    call_function(1, 0, on_finished_name);
   }
 }
 

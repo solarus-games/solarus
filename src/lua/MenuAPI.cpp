@@ -28,22 +28,6 @@ void LuaContext::register_menu_module() {
 }
 
 /**
- * @brief Calls the on_started() method of a Lua menu.
- * @param menu_ref A reference to the menu object.
- */
-void LuaContext::menu_on_started(int menu_ref) {
-
-  // Push the menu object.
-  push_ref(l, menu_ref);
-
-  // Call its on_started() method if it exists.
-  on_started();
-
-  // Pop the object ref.
-  lua_pop(l, 1);
-}
-
-/**
  * @brief Calls the on_update() method of a Lua menu.
  * @param menu_ref A reference to the menu object.
  */
@@ -88,6 +72,28 @@ void LuaContext::menu_on_input(int menu_ref, InputEvent& event) {
   on_input(event);
 
   // Remove the menu from the stack.
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_started() method of a Lua menu.
+ * @param menu_ref A reference to the menu object.
+ */
+void LuaContext::menu_on_started(int menu_ref) {
+
+  push_ref(l, menu_ref);
+  on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_finished() method of a Lua menu.
+ * @param menu_ref A reference to the menu object.
+ */
+void LuaContext::menu_on_finished(int menu_ref) {
+
+  push_ref(l, menu_ref);
+  on_finished();
   lua_pop(l, 1);
 }
 

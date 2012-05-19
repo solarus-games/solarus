@@ -45,21 +45,6 @@ void LuaContext::push_events(lua_State* l) {
 }
 
 /**
- * @brief Call sol.events.on_started().
- *
- * This function is called when the engine requests Lua to show an
- * initial screen, i.e. at the beginning of the program
- * (after any built-in screens like the language selection screen)
- * or when the program is reset.
- */
-void LuaContext::events_on_started() {
-
-  push_events(l);
-  on_started();
-  lua_pop(l, 1);
-}
-
-/**
  * @brief Calls sol.events.on_update() if it exists.
  *
  * This function is called at each cycle by the main loop.
@@ -82,6 +67,33 @@ void LuaContext::events_on_input(InputEvent& event) {
 
   push_events(l);
   on_input(event);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls sol.events.on_started() if it exists.
+ *
+ * This function is called when the engine requests Lua to show an
+ * initial screen, i.e. at the beginning of the program
+ * (after any built-in screens like the language selection screen)
+ * or when the program is reset.
+ */
+void LuaContext::events_on_started() {
+
+  push_events(l);
+  on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls sol.events.on_finished() if it exists.
+ *
+ * This function is called when the program is reset or stopped.
+ */
+void LuaContext::events_on_finished() {
+
+  push_events(l);
+  on_finished();
   lua_pop(l, 1);
 }
 

@@ -21,10 +21,7 @@
 #include "Screen.h"
 
 /**
- * @brief An execution phase of the program fully controlled by a Lua script.
- *
- * This class is basically just a dummy that does nothing. All events are
- * handled in the lua api.
+ * @brief An execution phase of the program fully controlled by Lua menu.
  */
 class CustomScreen: public Screen {
 
@@ -33,6 +30,9 @@ class CustomScreen: public Screen {
     // creation and destruction
     CustomScreen(MainLoop& main_loop, int menu_ref);
     ~CustomScreen();
+
+    void start();
+    void stop();
 
     // update and display
     void notify_input(InputEvent& event);

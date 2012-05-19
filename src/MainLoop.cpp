@@ -97,6 +97,9 @@ bool MainLoop::is_exiting() {
  * @brief Sets whether the user wants to quit the program.
  */
 void MainLoop::set_exiting() {
+
+  // Stop the program.
+  lua_context->events_on_finished();
   exiting = true;
 }
 
@@ -112,6 +115,8 @@ void MainLoop::set_next_screen(Screen* next_screen) {
       "Another new screen is already set to be started");
 
   if (next_screen == NULL) {
+    // Reset the program.
+    lua_context->events_on_finished();
     next_screen = new LanguageScreen(*this);
   }
   this->next_screen = next_screen;
@@ -165,9 +170,11 @@ void MainLoop::run() {
 
     // go to another screen?
     if (next_screen != NULL) {
+      current_screen->stop();
       delete current_screen;
       current_screen = next_screen;
       next_screen = NULL;
+      current_screen->start();
     }
     else {
 

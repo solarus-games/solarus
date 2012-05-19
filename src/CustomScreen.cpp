@@ -29,7 +29,6 @@ CustomScreen::CustomScreen(MainLoop& main_loop,
   Screen(main_loop),
   menu_ref(menu_ref) {
 
-  get_lua_context().menu_on_started(menu_ref);
 }
 
 /**
@@ -38,6 +37,22 @@ CustomScreen::CustomScreen(MainLoop& main_loop,
 CustomScreen::~CustomScreen() {
 
   get_lua_context().destroy_ref(menu_ref);
+}
+
+/**
+ * @brief Starts this screen.
+ */
+void CustomScreen::start() {
+
+  get_lua_context().menu_on_started(menu_ref);
+}
+
+/**
+ * @brief Ends this screen.
+ */
+void CustomScreen::stop() {
+
+  get_lua_context().menu_on_finished(menu_ref);
 }
 
 /**

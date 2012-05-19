@@ -56,6 +56,9 @@ class Screen {
 
     // functions to implement in subclasses and that will be called by the main loop
 
+    virtual void start();
+    virtual void stop();
+
     /**
      * @brief Updates this screen.
      *

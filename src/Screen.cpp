@@ -49,3 +49,17 @@ LuaContext& Screen::get_lua_context() {
   return get_main_loop().get_lua_context();
 }
 
+/**
+ * @brief Starts this screen.
+ */
+void Screen::start() {
+  // Nothing done by default.
+}
+
+/**
+ * @brief Ends this screen.
+ */
+void Screen::stop() {
+  // Nothing done by default.
+}
+

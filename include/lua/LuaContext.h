@@ -47,15 +47,17 @@ class LuaContext: public Script {
     void notify_input(InputEvent& event);
 
     // Main Lua script (sol.events).
-    void events_on_started();
     void events_on_update();
     void events_on_input(InputEvent& event);
+    void events_on_started();
+    void events_on_finished();
 
     // Lua menus events.
-    void menu_on_started(int menu_ref);
     void menu_on_update(int menu_ref);
     void menu_on_display(int menu_ref, Surface& dst_surface);
     void menu_on_input(int menu_ref, InputEvent& event);
+    void menu_on_started(int menu_ref);
+    void menu_on_finished(int menu_ref);
 
   private:
 
@@ -73,7 +75,6 @@ class LuaContext: public Script {
 
     static void push_events(lua_State* l);
 
-    void on_started();
     void on_update();
     void on_input(InputEvent& event);
     void on_key_pressed(InputEvent& event);
@@ -83,6 +84,8 @@ class LuaContext: public Script {
     void on_joypad_axis_moved(InputEvent& event);
     void on_joypad_hat_moved(InputEvent& event);
     void on_direction_pressed(InputEvent& event);
+    void on_started();
+    void on_finished();
 };
 
 #endif

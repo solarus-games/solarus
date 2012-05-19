@@ -59,7 +59,7 @@ function event_dialog_finished(dialog_id)
     sprite:set_animation("walking")
     sol.map.hero_freeze()
   elseif dialog_id == "credits_4" then
-   sol.timer.start(2000, ending_next)
+   sol.main:start_timer(2000, ending_next)
   end
 end
 

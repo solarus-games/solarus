@@ -39,7 +39,7 @@ function event_restart()
     sol.enemy.start_movement(m)
   else
     sol.enemy.stop_movement()
-    sol.timer.start(retracted_delay, function()
+    sol.main:start_timer(retracted_delay, function()
       local x, y = sol.map.enemy_get_position(sol.enemy.get_father())
       local m = sol.movement.create("target")
       m:set_speed(48)

@@ -93,7 +93,7 @@ function CB03_time_out()
 end
 
 function event_camera_back()
-  timer = sol.timer.start(8000, true, CB03_time_out)
+  timer = sol.main:start_timer(8000, true, CB03_time_out)
 end
 
 function event_treasure_obtaining(item_name, variant, savegame_variable)

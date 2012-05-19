@@ -40,7 +40,7 @@ function event_hero_on_sensor(sensor_name)
     -- the miniboss is alive
     sol.map.door_close("miniboss_door")
     sol.map.hero_freeze()
-    sol.timer.start(1000, miniboss_timer)
+    sol.main:start_timer(1000, miniboss_timer)
     fighting_miniboss = true
   end
 end
@@ -82,7 +82,7 @@ end
 function event_camera_back()
 
   if current_switch == "pegasus_run_switch" then
-    sol.timer.start(7000, true, pegasus_run_timer)
+    sol.main:start_timer(7000, true, pegasus_run_timer)
   end
 end
 

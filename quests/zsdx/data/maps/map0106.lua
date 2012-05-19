@@ -285,7 +285,7 @@ function event_npc_collision_fire(npc_name)
         sol.map.tile_set_group_enabled("bridge", true)
       end
       nb_torches_lit = nb_torches_lit + 1
-      sol.timer.start(8000, function()
+      sol.main:start_timer(8000, function()
         torch_sprite:set_animation("unlit")
         nb_torches_lit = nb_torches_lit - 1
         if nb_torches_lit == 0 then

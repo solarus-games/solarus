@@ -35,7 +35,7 @@ function event_restart()
   m:set_speed(64)
   sol.enemy.start_movement(m)
   sol.timer.stop_all(timers)
-  timers[#timers + 1] = sol.timer.start(math.random(2000, 6000), prepare_flames)
+  timers[#timers + 1] = sol.main:start_timer(math.random(2000, 6000), prepare_flames)
 end
 
 function prepare_flames()
@@ -52,12 +52,12 @@ function prepare_flames()
     sol.enemy.create_son(son_name, "red_flame", 0, -16, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      timers[#timers + 1] = sol.timer.start(200, repeat_throw_flame)
+      timers[#timers + 1] = sol.main:start_timer(200, repeat_throw_flame)
     end
   end
   repeat_throw_flame()
 
-  timers[#timers + 1] = sol.timer.start(math.random(4000, 6000), prepare_flames)
+  timers[#timers + 1] = sol.main:start_timer(math.random(4000, 6000), prepare_flames)
 end
 
 function event_hurt(attack, life_lost)

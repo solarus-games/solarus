@@ -73,7 +73,7 @@ function event_dialog_finished(dialog_id, answer)
     tom_sprite:set_animation("walking")
   elseif dialog_id == "outside_world.tom_dungeon_1_entrance.need_help" then
     tom_sprite:set_direction(1)
-    sol.timer.start(1500, tom_timer_1)
+    sol.main:start_timer(1500, tom_timer_1)
   elseif dialog_id == "outside_world.tom_dungeon_1_entrance.let_me_see" then
     sol.audio.play_sound("jump")
     local m = sol.movement.create("jump")
@@ -83,10 +83,10 @@ function event_dialog_finished(dialog_id, answer)
     sol.map.npc_start_movement("tom", m)
   elseif dialog_id == "outside_world.tom_dungeon_1_entrance.open" then
     tom_sprite:set_animation("walking")
-    sol.timer.start(300, tom_timer_3)
+    sol.main:start_timer(300, tom_timer_3)
   elseif dialog_id == "outside_world.beaumont_hill_put_edelweiss" then
     sol.map.hero_freeze()
-    sol.timer.start(1000, edelweiss_explode)
+    sol.main:start_timer(1000, edelweiss_explode)
   end
 
 end
@@ -99,7 +99,7 @@ function event_npc_movement_finished(npc_name)
     sol.map.dialog_start("outside_world.tom_dungeon_1_entrance.need_help")
   else
     tom_sprite:set_direction(1)
-    sol.timer.start(1000, tom_timer_2)
+    sol.main:start_timer(1000, tom_timer_2)
   end
 end
 
@@ -121,19 +121,19 @@ function ladder_step1()
   sol.audio.play_sound("door_open")
   sol.map.tile_set_group_enabled("ladder_step1", true)
   sol.map.tile_set_group_enabled("no_ladder_step1", false)
-  sol.timer.start(1000, ladder_step2)
+  sol.main:start_timer(1000, ladder_step2)
 end
 
 function ladder_step2()
   sol.audio.play_sound("door_open")
   sol.map.tile_set_group_enabled("ladder_step2", true)
-  sol.timer.start(1000, ladder_step3)
+  sol.main:start_timer(1000, ladder_step3)
 end
 
 function ladder_step3()
   sol.audio.play_sound("door_open")
   sol.map.tile_set_group_enabled("ladder_step3", true)
-  sol.timer.start(1000, ladder_step4)
+  sol.main:start_timer(1000, ladder_step4)
 end
 
 function ladder_step4()
@@ -160,7 +160,7 @@ function edelweiss_explode()
   sol.map.teletransporter_set_enabled("to_beaumont_cave", true)
   sol.game.savegame_set_boolean(153, true)
   sol.game.set_item("level_4_way", 0)
-  sol.timer.start(1000, edelweiss_end)
+  sol.main:start_timer(1000, edelweiss_end)
 end
 
 function edelweiss_end()

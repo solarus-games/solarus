@@ -73,22 +73,22 @@ function event_dialog_finished(dialog_id)
   if dialog_id == "dungeon_9.boss" then
     sol.audio.play_music("ganon_battle")
   elseif dialog_id == "dungeon_9.zelda" then
-    sol.timer.start(1000, function()
+    sol.main:start_timer(1000, function()
       sol.map.dialog_start("dungeon_9.zelda_children")
     end)
   elseif dialog_id == "dungeon_9.zelda_children" then
     sol.audio.stop_music()
     sol.audio.play_sound("world_warp")
-    sol.timer.start(1000, function()
+    sol.main:start_timer(1000, function()
       for i = 1, 8 do
 	sol.map.npc_get_sprite("child_" .. i):fade(1)
       end
     end)
-    sol.timer.start(5000, function()
+    sol.main:start_timer(5000, function()
       sol.map.dialog_start("dungeon_9.zelda_end")
     end)
   elseif dialog_id == "dungeon_9.zelda_end" then
-    sol.timer.start(2000, function()
+    sol.main:start_timer(2000, function()
       sol.map.hero_set_map(8, "from_ending", 1)
     end)
   end
@@ -97,7 +97,7 @@ end
 function event_enemy_dead(enemy_name)
 
   if enemy_name == "boss" then
-    sol.timer.start(1000, start_final_sequence)
+    sol.main:start_timer(1000, start_final_sequence)
   end
 end
 
@@ -106,10 +106,10 @@ function start_final_sequence()
   sol.map.hero_freeze()
   sol.map.hero_set_direction(3)
   sol.audio.play_music("victory")
-  sol.timer.start(9000, function()
+  sol.main:start_timer(9000, function()
     sol.map.hero_set_map(130, "from_boss", 1)
   end)
-  sol.timer.start(9100, start_zelda_sequence)
+  sol.main:start_timer(9100, start_zelda_sequence)
 end
 
 function start_zelda_sequence()
@@ -126,7 +126,7 @@ function start_zelda_sequence()
     sprite:fade(0)
   end
 
-  sol.timer.start(3000, function()
+  sol.main:start_timer(3000, function()
     sol.map.dialog_start("dungeon_9.zelda")
     sol.map.dialog_set_variable("dungeon_9.zelda", sol.game.savegame_get_name())
   end)
@@ -152,7 +152,7 @@ function event_npc_collision_fire(npc_name)
       -- temporarily light the torch up
       torch_sprite:set_animation("lit")
       check_torches()
-      torches_timers[npc_name] = sol.timer.start(torches_delay, function()
+      torches_timers[npc_name] = sol.main:start_timer(torches_delay, function()
         torch_sprite:set_animation("unlit")
 	if sol.map.switch_is_enabled("switch_1") then
 	  sol.map.tile_set_group_enabled("switch_floor", false)

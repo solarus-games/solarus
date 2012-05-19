@@ -113,30 +113,30 @@ function remove_c_water()
   sol.audio.play_sound("water_drain")
   sol.map.tile_set_enabled("c_water_out", true)
   sol.map.tile_set_enabled("c_water_source", false)
-  sol.timer.start(remove_water_delay, remove_c_water_2)
+  sol.main:start_timer(remove_water_delay, remove_c_water_2)
 end
 
 function remove_c_water_2()
   sol.map.tile_set_enabled("c_water_middle", false)
-  sol.timer.start(remove_water_delay, remove_c_water_3)
+  sol.main:start_timer(remove_water_delay, remove_c_water_3)
 end
 
 function remove_c_water_3()
   sol.map.tile_set_enabled("c_water", false)
   sol.map.tile_set_enabled("c_water_less_1", true)
-  sol.timer.start(remove_water_delay, remove_c_water_4)
+  sol.main:start_timer(remove_water_delay, remove_c_water_4)
 end
 
 function remove_c_water_4()
   sol.map.tile_set_enabled("c_water_less_1", false)
   sol.map.tile_set_enabled("c_water_less_2", true)
-  sol.timer.start(remove_water_delay, remove_c_water_5)
+  sol.main:start_timer(remove_water_delay, remove_c_water_5)
 end
 
 function remove_c_water_5()
   sol.map.tile_set_enabled("c_water_less_2", false)
   sol.map.tile_set_enabled("c_water_less_3", true)
-  sol.timer.start(remove_water_delay, remove_c_water_6)
+  sol.main:start_timer(remove_water_delay, remove_c_water_6)
 end
 
 function remove_c_water_6()

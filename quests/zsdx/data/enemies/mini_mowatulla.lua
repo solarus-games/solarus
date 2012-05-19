@@ -16,7 +16,7 @@ function event_appear()
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("shell")
   in_shell = true
-  sol.timer.start(1000, break_shell)
+  sol.main:start_timer(1000, break_shell)
 end
 
 -- The enemy was stopped for some reason and should restart

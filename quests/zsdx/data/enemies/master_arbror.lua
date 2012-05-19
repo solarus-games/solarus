@@ -42,7 +42,7 @@ function go()
   m:set_max_distance(16)
   sol.enemy.start_movement(m)
   sol.timer.stop_all(timers)
-  timers[#timers + 1] = sol.timer.start(math.random(2000, 3000), prepare_son)
+  timers[#timers + 1] = sol.main:start_timer(math.random(2000, 3000), prepare_son)
 end
 
 function event_hurt(attack, life_lost)
@@ -76,12 +76,12 @@ function prepare_son()
       local sprite = sol.enemy.get_sprite()
       sprite:set_animation("preparing_son")
       sol.audio.play_sound("hero_pushes")
-      timers[#timers + 1] = sol.timer.start(1000, create_son)
+      timers[#timers + 1] = sol.main:start_timer(1000, create_son)
       sol.enemy.stop_movement()
     end
   end
 
-  timers[#timers + 1] = sol.timer.start(math.random(2000, 5000), prepare_son)
+  timers[#timers + 1] = sol.main:start_timer(math.random(2000, 5000), prepare_son)
 end
 
 function create_son()
@@ -113,7 +113,7 @@ function event_sprite_animation_finished(sprite, animation)
       sprite:set_animation("vulnerable")
       sol.audio.play_sound("boss_hurt")
       sol.timer.stop_all(timers)
-      timers[#timers + 1] = sol.timer.start(4000, stop_vulnerable)
+      timers[#timers + 1] = sol.main:start_timer(4000, stop_vulnerable)
       remove_sons()
     else
       sprite:set_animation("walking")

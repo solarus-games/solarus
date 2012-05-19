@@ -107,30 +107,30 @@ function remove_se_water()
   sol.audio.play_sound("water_drain")
   sol.map.tile_set_enabled("se_water_out", true)
   sol.map.tile_set_enabled("se_water_source", false)
-  sol.timer.start(remove_water_delay, remove_se_water_2)
+  sol.main:start_timer(remove_water_delay, remove_se_water_2)
 end
 
 function remove_se_water_2()
   sol.map.tile_set_enabled("se_water_middle", false)
-  sol.timer.start(remove_water_delay, remove_se_water_3)
+  sol.main:start_timer(remove_water_delay, remove_se_water_3)
 end
 
 function remove_se_water_3()
   sol.map.tile_set_enabled("se_water_initial", false)
   sol.map.tile_set_enabled("se_water_less_a", true)
-  sol.timer.start(remove_water_delay, remove_se_water_4)
+  sol.main:start_timer(remove_water_delay, remove_se_water_4)
 end
 
 function remove_se_water_4()
   sol.map.tile_set_enabled("se_water_less_a", false)
   sol.map.tile_set_enabled("se_water_less_b", true)
-  sol.timer.start(remove_water_delay, remove_se_water_5)
+  sol.main:start_timer(remove_water_delay, remove_se_water_5)
 end
 
 function remove_se_water_5()
   sol.map.tile_set_enabled("se_water_less_b", false)
   sol.map.tile_set_enabled("se_water_less_c", true)
-  sol.timer.start(remove_water_delay, remove_se_water_6)
+  sol.main:start_timer(remove_water_delay, remove_se_water_6)
 end
 
 function remove_se_water_6()

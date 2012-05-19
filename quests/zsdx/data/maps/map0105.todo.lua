@@ -335,7 +335,7 @@ function torches:on_collision_fire()
       bridge_tiles:set_enabled()
     end
     nb_torches_lit = nb_torches_lit + 1
-    sol.timer.start(4000, function()
+    sol.main:start_timer(4000, function()
       torch_sprite:set_animation("unlit")
       nb_torches_lit = nb_torches_lit - 1
       if nb_torches_lit == 0 then

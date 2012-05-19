@@ -72,7 +72,7 @@ function event_dialog_finished(message_id, answer)
   elseif message_id == "lyriann_cave.tom.leaving" then
     sol.audio.play_sound("warp")
     sol.map.hero_set_direction(1)
-    sol.timer.start(1700, start_moving_tom)
+    sol.main:start_timer(1700, start_moving_tom)
   elseif message_id == "lyriann_cave.tom.not_finished" and answer == 1 then
     give_boomerang_back()
     sol.map.dialog_start("lyriann_cave.tom.gave_boomerang_back")

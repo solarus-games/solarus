@@ -81,21 +81,21 @@ function drain_water_step_1()
   sol.audio.play_sound("water_drain")
   sol.map.tile_set_enabled("water_full", false)
   sol.map.tile_set_enabled("water_less_1", true)
-  sol.timer.start(water_delay, drain_water_step_2)
+  sol.main:start_timer(water_delay, drain_water_step_2)
 end
 
 function drain_water_step_2()
 
   sol.map.tile_set_enabled("water_less_1", false)
   sol.map.tile_set_enabled("water_less_2", true)
-  sol.timer.start(water_delay, drain_water_step_3)
+  sol.main:start_timer(water_delay, drain_water_step_3)
 end
 
 function drain_water_step_3()
 
   sol.map.tile_set_enabled("water_less_2", false)
   sol.map.tile_set_enabled("water_less_3", true)
-  sol.timer.start(water_delay, drain_water_step_4)
+  sol.main:start_timer(water_delay, drain_water_step_4)
 end
 
 function drain_water_step_4()

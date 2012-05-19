@@ -136,7 +136,7 @@ function event_sensor_collision_explosion(sensor_name)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.audio.play_sound("secret")
     sol.game.savegame_set_boolean(515, true)
-    sol.timer.start(1500, weak_floor_block_fall)
+    sol.main:start_timer(1500, weak_floor_block_fall)
   end
 end
 
@@ -144,7 +144,7 @@ function weak_floor_block_fall()
 
   sol.map.block_set_enabled("weak_floor_block", false)
   sol.audio.play_sound("jump")
-  sol.timer.start(200, weak_floor_block_fall_end)
+  sol.main:start_timer(200, weak_floor_block_fall_end)
 end
 
 function weak_floor_block_fall_end()
@@ -156,12 +156,12 @@ function puzzle_solved()
 
   sol.map.hero_freeze()
   sol.audio.play_sound("enemy_awake")
-  sol.timer.start(1000, puzzle_solved_2)
+  sol.main:start_timer(1000, puzzle_solved_2)
 end
 
 function puzzle_solved_2()
 
-  sol.timer.start(1000, puzzle_solved_3)
+  sol.main:start_timer(1000, puzzle_solved_3)
 end
 
 function puzzle_solved_3()

@@ -20,7 +20,7 @@ function event_hero_on_sensor(sensor_name)
       sol.map.door_close("boss_door")
       sol.map.hero_freeze()
       sol.audio.play_music("agahnim")
-      sol.timer.start(1000, function()
+      sol.main:start_timer(1000, function()
 	sol.map.dialog_start("dungeon_8.agahnim")
       end)
 
@@ -28,10 +28,10 @@ function event_hero_on_sensor(sensor_name)
       -- Agahnim already killed but Ganon's sequence not done yet
       -- (possible if the player dies or exits while Agahnim is dying)
       sol.map.hero_freeze()
-      sol.timer.start(100, function()
+      sol.main:start_timer(100, function()
         sol.map.hero_set_map(52, "ganon_dialog_destination_point", 1)
       end)
-      sol.timer.start(200, start_ganon_sequence)
+      sol.main:start_timer(200, start_ganon_sequence)
     end
   end
 end
@@ -40,14 +40,14 @@ function event_dialog_finished(dialog_id)
 
   if dialog_id == "dungeon_8.agahnim" then
     sol.map.hero_set_map(52, "boss_destination_point", 1)
-    sol.timer.start(100, function()
+    sol.main:start_timer(100, function()
       sol.audio.play_music("ganon_battle")
       sol.map.enemy_set_enabled("boss", true)
       sol.map.npc_set_enabled("agahnim_npc", false)
     end)
   elseif dialog_id == "dungeon_8.ganon" then
     sol.audio.play_sound("world_warp")
-    sol.timer.start(1000, function()
+    sol.main:start_timer(1000, function()
       sol.map.hud_set_pause_enabled(true)
       sol.map.hero_set_map(105, "from_outside", 1)
     end)
@@ -57,16 +57,16 @@ end
 function event_enemy_dead(enemy_name)
 
   if enemy_name == "boss" then
-    sol.timer.start(1000, function()
+    sol.main:start_timer(1000, function()
       sol.audio.play_music("victory")
       sol.game.set_dungeon_finished(8)
       sol.map.hud_set_pause_enabled(false)
       sol.map.hero_freeze()
       sol.map.hero_set_direction(3)
-      sol.timer.start(9000, function()
+      sol.main:start_timer(9000, function()
 	sol.map.hero_set_map(52, "ganon_dialog_destination_point", 1)
       end)
-      sol.timer.start(9100, start_ganon_sequence)
+      sol.main:start_timer(9100, start_ganon_sequence)
     end)
   end
 end
@@ -77,7 +77,7 @@ function start_ganon_sequence()
   sol.map.hero_freeze()
   sol.map.npc_set_enabled("ganon_npc", true)
 
-  sol.timer.start(1000, function()
+  sol.main:start_timer(1000, function()
     sol.audio.play_music("ganon_theme")
     sol.map.dialog_start("dungeon_8.ganon")
   end)

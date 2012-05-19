@@ -38,7 +38,7 @@ function event_npc_interaction_item(npc_name, item_name, variant)
     sol.game.set_item(item_name, 1) -- make the bottle empty
     sol.game.savegame_set_boolean(921, true)
     sol.audio.play_sound("item_in_water")
-    sol.timer.start(1000, show_vine)
+    sol.main:start_timer(1000, show_vine)
     return true
   end
 

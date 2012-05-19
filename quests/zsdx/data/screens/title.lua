@@ -28,7 +28,7 @@ function title_screen:on_started()
   phase = "black"
 
   title_surface = sol.surface.create()
-  sol.timer.start(300, phase_zs_presents)
+  sol.main:start_timer(300, phase_zs_presents)
 
   -- use these 0.3 seconds to preload all sound effects
   sol.audio.preload_sounds()
@@ -47,7 +47,7 @@ function phase_zs_presents()
   title_surface:draw(zs_presents_img, x, y)
   sol.audio.play_sound("intro")
 
-  sol.timer.start(2000, phase_title)
+  sol.main:start_timer(2000, phase_title)
 end
 
 function phase_title()
@@ -97,21 +97,21 @@ function phase_title()
   }
 
   -- set up the appearance of images and texts
-  sol.timer.start(5000, function()
+  sol.main:start_timer(5000, function()
     sol.audio.play_sound("ok")
     dx_img = sol.surface.create("menus/title_dx.png")
   end)
 
-  sol.timer.start(6000, function()
+  sol.main:start_timer(6000, function()
     star_img = sol.surface.create("menus/title_star.png")
   end)
 
   show_press_space = false
   function switch_press_space()
     show_press_space = not show_press_space
-    sol.timer.start(500, switch_press_space)
+    sol.main:start_timer(500, switch_press_space)
   end
-  sol.timer.start(6500, switch_press_space)
+  sol.main:start_timer(6500, switch_press_space)
 
   -- make the clouds move
   clouds_xy = {x = 320, y = 240}
@@ -125,9 +125,9 @@ function phase_title()
     if clouds_xy.y < 0 then
       clouds_xy.y = clouds_xy.y + 299
     end
-    sol.timer.start(50, move_clouds)
+    sol.main:start_timer(50, move_clouds)
   end
-  sol.timer.start(50, move_clouds)
+  sol.main:start_timer(50, move_clouds)
 
   -- show an opening transition
   title_surface:fade_in(30)

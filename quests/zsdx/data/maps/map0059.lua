@@ -16,7 +16,7 @@ function event_hero_on_sensor(sensor_name)
     if sol.map.door_is_open("evil_tiles_door")
         and not sol.map.enemy_is_dead("evil_tile_1") then
       sol.map.door_close("evil_tiles_door")
-      sol.timer.start(2000, start_evil_tiles)
+      sol.main:start_timer(2000, start_evil_tiles)
     end
   elseif sensor_name == "sensor_1" and sol.map.tile_is_enabled("sensor_1_off") then
     sol.audio.play_sound("switch")
@@ -63,7 +63,7 @@ function start_evil_tiles()
     sol.map.tile_set_enabled("evil_tile_after_"..next, true)
     next = next + 1
     if next <= total then
-      sol.timer.start(spawn_delay, repeat_spawn)
+      sol.main:start_timer(spawn_delay, repeat_spawn)
     end
   end
 
@@ -83,7 +83,7 @@ function start_evil_tiles()
     end
 
     if again then
-      sol.timer.start(150, repeat_sound)
+      sol.main:start_timer(150, repeat_sound)
     else 
       finish_evil_tiles()
     end

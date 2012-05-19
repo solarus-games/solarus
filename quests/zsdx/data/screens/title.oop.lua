@@ -14,10 +14,7 @@ function title_screen:new()
   return object
 end
 
-function title_screen:on_started()
-
-  events["joypad_button_pressed"] = self
-  events["key_pressed"] = self
+function title_screen:on_start()
 
   -- black screen during 0.3 seconds
   self.phase = "black"

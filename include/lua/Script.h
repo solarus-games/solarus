@@ -82,7 +82,7 @@ class Script {
     virtual void set_suspended(bool suspended);
 
     // Lua refs.
-    void create_ref();
+    int create_ref();
     void destroy_ref(int ref);
 
     // calling specific Lua functions

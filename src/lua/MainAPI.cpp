@@ -80,11 +80,11 @@ int Script::main_api_start_screen(lua_State* l) {
   Script& script = get_script(l);
   luaL_checktype(l, 1, LUA_TTABLE);
 
-  // Store the screen object.
-  int screen_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  // Store the menu object.
+  int menu_ref = script.create_ref();
 
   MainLoop& main_loop = script.get_main_loop();
-  main_loop.set_next_screen(new CustomScreen(main_loop, screen_ref));
+  main_loop.set_next_screen(new CustomScreen(main_loop, menu_ref));
 
   return 0;
 }

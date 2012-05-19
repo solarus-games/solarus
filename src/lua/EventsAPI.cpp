@@ -17,6 +17,9 @@
 #include "lua/LuaContext.h"
 #include <lua.hpp>
 
+static const std::string& on_start_name = "on_start";
+static const std::string& on_update_name = "on_update";
+
 /**
  * @brief Initializes the events features provided to Lua.
  */
@@ -26,5 +29,57 @@ void LuaContext::register_events_module() {
   lua_getglobal(l, "sol");
   lua_newtable(l);
   lua_setfield(l, -2, "events");
+  lua_pop(l, 1);
+}
+
+
+/**
+ * @brief Notifies the Lua event manager that the program starts.
+ *
+ * This function is called once at the beginning of the program.
+ * sol.events.on_start() is called if it exists.
+ */
+void LuaContext::events_on_start() {
+
+  if (find_event_function(on_start_name)) {
+    call_function(0, 0, on_start_name);
+  }
+}
+
+/**
+ * @brief Updates the Lua event manager.
+ *
+ * This function is called at each cycle.
+ * sol.events.on_update() is called if existing.
+ */
+void LuaContext::events_on_update() {
+
+  if (find_event_function(on_update_name)) {
+    // Call it.
+    call_function(0, 0, on_update_name);
+  }
+}
+
+/**
+ * @brief Notifies the Lua event manager that an input event has just occurred.
+ *
+ * The appropriate callback in sol.events is notified if it exists.
+ *
+ * @param event The input event to handle.
+ */
+void LuaContext::events_on_input(InputEvent& event) {
+
+  // Get the appropriate callback in sol.events.
+  lua_getglobal(l, "sol");
+                                  // ... sol
+  lua_getfield(l, -1, "events");
+                                  // ... sol events
+  lua_remove(l, -2);
+                                  // ... events
+  // Call it.
+  on_input(event);
+                                  // ... events
+  lua_pop(l, 1);
+                                  // ...
 }
 

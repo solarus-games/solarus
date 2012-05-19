@@ -22,14 +22,14 @@
 /**
  * @brief Creates a custom screen.
  * @param main_loop The Solarus root object.
- * @param screen_ref Lua ref of the object that controls the menu to show.
+ * @param menu_ref Lua ref of the object that controls the menu to show.
  */
 CustomScreen::CustomScreen(MainLoop& main_loop,
-    int screen_ref):
+    int menu_ref):
   Screen(main_loop),
-  screen_ref(screen_ref) {
+  menu_ref(menu_ref) {
 
-
+  get_lua_context().menu_on_start(menu_ref);
 }
 
 /**
@@ -37,7 +37,16 @@ CustomScreen::CustomScreen(MainLoop& main_loop,
  */
 CustomScreen::~CustomScreen() {
 
-  get_lua_context().destroy_ref(screen_ref);
+  get_lua_context().destroy_ref(menu_ref);
+}
+
+/**
+ * @brief Updates the screen.
+ */
+void CustomScreen::update() {
+
+  // Delegate the call to Lua.
+  get_lua_context().menu_on_update(menu_ref);
 }
 
 /**
@@ -50,26 +59,15 @@ CustomScreen::~CustomScreen() {
  */
 void CustomScreen::display(Surface& dst_surface) {
 
-  // Delegate the call to the custom screen object.
-  get_lua_context().notify_screen_display(dst_surface, screen_ref);
-}
-
-/**
- * @brief Updates the screen.
- * This does not need to be forwarded since the Lua api provides events for
- * this on its own.
- */
-void CustomScreen::update() {
+  get_lua_context().menu_on_display(menu_ref, dst_surface);
 }
 
 /**
  * @brief This function is called when there is an input event.
- *
- * This does not need to be forwarded since the Lua api provides events for
- * this on its own.
- *
  * @param event the event to handle
  */
 void CustomScreen::notify_input(InputEvent& event) {
+
+  get_lua_context().menu_on_input(menu_ref, event);
 }
 

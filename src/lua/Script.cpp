@@ -331,8 +331,8 @@ void Script::print_stack() {
 /**
  * @brief Creates a reference to the Lua value on top of the stack.
  */
-void Script::create_ref() {
-  luaL_ref(l, LUA_REGISTRYINDEX);
+int Script::create_ref() {
+  return luaL_ref(l, LUA_REGISTRYINDEX);
 }
 
 /**

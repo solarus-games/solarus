@@ -46,13 +46,11 @@ MainLoop::MainLoop(int argc, char** argv):
   root_surface = new Surface(320, 240);
   debug_keys = new DebugKeys(*this);
   lua_context = new LuaContext(*this);
+  lua_context->start();
 
-  // Fire up the lua context. This should should call start_screen somewhere.
-  lua_context->notify_start();
-
-  // The lua main script MUST have set an initial screen.
+  // The Lua main script must have set an initial screen.
   Debug::check_assertion(this->next_screen != NULL,
-      "Error: No initial screen to run!");
+      "Lua must start an initial screen!");
 
   // Set the next screen to current to fire things up.
   current_screen = next_screen;
@@ -278,7 +276,6 @@ void MainLoop::display() {
 
   root_surface->fill_with_color(Color::get_black());
   current_screen->display(*root_surface);
-  lua_context->notify_after_display(*root_surface);
   VideoManager::get_instance()->display(*root_surface);
 }
 

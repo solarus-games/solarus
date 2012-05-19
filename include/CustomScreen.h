@@ -31,7 +31,7 @@ class CustomScreen: public Screen {
   public:
 
     // creation and destruction
-    CustomScreen(MainLoop& main_loop, int screen_ref);
+    CustomScreen(MainLoop& main_loop, int menu_ref);
     ~CustomScreen();
 
     // update and display
@@ -41,7 +41,7 @@ class CustomScreen: public Screen {
 
   private:
 
-    int screen_ref;  /**< The Lua ref of the screen object. */
+    int menu_ref;  /**< The Lua ref of the menu shown in this screen. */
 
 };
 

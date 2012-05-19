@@ -41,13 +41,21 @@ class LuaContext: public Script {
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
 
-    void notify_screen_display(Surface& dst_surface, int screen_ref);
-    void notify_after_display(Surface& dst_surface);
+    // Main loop from C++.
+    void start();
+    void update();
     void notify_input(InputEvent& event);
 
-    void notify_start();
+    // Main Lua script (sol.events).
+    void events_on_start();
+    void events_on_update();
+    void events_on_input(InputEvent& event);
 
-    void update();
+    // Lua menus events.
+    void menu_on_start(int menu_ref);
+    void menu_on_update(int menu_ref);
+    void menu_on_display(int menu_ref, Surface& dst_surface);
+    void menu_on_input(int menu_ref, InputEvent& event);
 
   private:
 
@@ -59,13 +67,14 @@ class LuaContext: public Script {
     bool find_method(int index, const std::string& function_name);
     bool find_method(const std::string& function_name);
 
-    void start_main_script();
     static int l_loader(lua_State* l);
 
+    void register_events_module();
     void register_menu_module();
+
     void on_start();
     void on_update();
-    void on_display(Surface& dst_surface);
+    void on_input(InputEvent& event);
     void on_key_pressed(InputEvent& event);
     void on_key_released(InputEvent& event);
     void on_joypad_button_pressed(InputEvent& event);
@@ -73,8 +82,6 @@ class LuaContext: public Script {
     void on_joypad_axis_moved(InputEvent& event);
     void on_joypad_hat_moved(InputEvent& event);
     void on_direction_pressed(InputEvent& event);
-
-    void register_events_module();
 };
 
 #endif

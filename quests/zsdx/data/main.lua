@@ -1,20 +1,12 @@
-events = {
-  key_pressed = nil,
-  key_released = nil,
-  joyad_button_pressed = nil,
-  joyad_button_released = nil,
-  joyad_axis_moved = nil,
-  joyad_hat_moved = nil,
-  direction_pressed = nil,
-}
+-- Main script of the quest.
 
--- special function: called every tick by the engine!
+-- Special function: called every tick by the engine!
 function sol.events:on_update()
 
 end
 
 function sol.events:on_started()
-  -- Just need this here, no need to require globally
+  -- Just need this here, no need to require globally.
   local title_screen = require 'screens/title.oop'
 
   t = title_screen:new()

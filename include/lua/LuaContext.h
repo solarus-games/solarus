@@ -61,7 +61,6 @@ class LuaContext: public Script {
 
     static void load(lua_State* l, const std::string& script_name);
     static bool load_if_exists(lua_State* l, const std::string& script_name);
-    bool find_event_function(const std::string& function_name);
     bool find_local_function(int index, const std::string& function_name);
     bool find_local_function(const std::string& function_name);
     bool find_method(int index, const std::string& function_name);
@@ -71,6 +70,8 @@ class LuaContext: public Script {
 
     void register_events_module();
     void register_menu_module();
+
+    static void push_events(lua_State* l);
 
     void on_started();
     void on_update();

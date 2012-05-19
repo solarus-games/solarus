@@ -100,38 +100,6 @@ bool LuaContext::load_if_exists(lua_State* l,
 }
 
 /**
- * @brief Gets a local Lua function from the sol.events table.
- *
- * @param function_name Name of the function to find in the sol.events table.
- *
- * @return true if the function was found.
- */
-bool LuaContext::find_event_function(const std::string& function_name) {
-
-  // Debug::print(function_name);
-
-  lua_getglobal(l, "sol");
-                                  // ... sol
-  lua_getfield(l, -1, "events");
-                                  // ... sol events
-  lua_remove(l, -2);
-                                  // ... events
-  lua_getfield(l, -1, function_name.c_str());
-                                  // ... events function
-  lua_remove(l, -2);
-                                  // ... function
-
-  bool exists = lua_isfunction(l, -1);
-
-  // Restore the stack.
-  if (!exists) {
-    lua_pop(l, 1);
-  }
-
-  return exists;
-}
-
-/**
  * @brief Gets a local Lua function from the environment of another one
  * on top of the stack.
  *

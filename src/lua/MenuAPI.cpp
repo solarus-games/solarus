@@ -22,7 +22,7 @@
 
 static const std::string& on_started_name = "start";
 static const std::string& on_update_name = "update";
-static const std::string& on_display_name = "display";
+static const std::string& on_display_name = "on_display";
 static const std::string& on_key_pressed_name = "key_pressed";
 static const std::string& on_key_released_name = "key_released";
 static const std::string& on_joyad_button_pressed_name = "joyad_button_pressed";
@@ -35,8 +35,7 @@ static const std::string& on_direction_pressed_name = "direction_pressed";
  * @brief Initializes the menu features provided to Lua.
  */
 void LuaContext::register_menu_module() {
-  // TODO simplify the storage method:
-  // use luaL_ref or move more management code to Lua?
+
 }
 
 /**
@@ -47,12 +46,11 @@ void LuaContext::register_menu_module() {
  */
 void LuaContext::notify_start() {
 
-  // Nothing special here - If the function exists
-  if(find_event_function(on_started_name)) {
+  // Nothing special here - If the function exists.
+  if (find_event_function(on_started_name)) {
     // Call it.
-    call_script(0, 0, "sol.events.start");
+    call_function(0, 0, "sol.events.start");
   }
-
 }
 
 /**
@@ -67,7 +65,7 @@ void LuaContext::update() {
   // Nothing special here - If the function exists
   if(find_event_function(on_update_name)) {
     // Call it.
-    call_script(0, 0, "sol.events.update");
+    call_function(0, 0, "sol.events.update");
   }
 
 }
@@ -79,19 +77,18 @@ void LuaContext::update() {
  */
 void LuaContext::notify_screen_display(Surface& dst_surface, int screen_ref) {
 
-  // Push the object ref
-  ref_push(screen_ref);
-  // Find its on_display method
-  bool exists = find_method("on_display");
+  // Push the screen object.
+  push_ref(l, screen_ref);
 
-  // This needs to exist!
-  Debug::check_assertion(exists, "A screen object needs to expose an on_display callback!");
+  // Find its on_display method.
+  if (find_method(on_display_name)) {
 
-  // Push the surface
-  push_surface(l, dst_surface);
+    // Push the surface.
+    push_surface(l, dst_surface);
 
-  // Call it.
-  call_script(2, 0, "on_display");
+    // Call it.
+    call_function(2, 0, on_display_name);
+  }
 
   // Pop the object ref.
   lua_pop(l, 1);
@@ -105,7 +102,7 @@ void LuaContext::notify_after_display(Surface& dst_surface) {
 
   if (find_event_function("after_display")) {
     push_surface(l, dst_surface);
-    call_script(1, 0, "sol.events.display");
+    call_function(1, 0, "sol.events.display");
   }
 }
 
@@ -178,7 +175,7 @@ void LuaContext::on_key_pressed(InputEvent& event) {
         lua_pushboolean(l, 1);
         lua_setfield(l, -2, "alt");
       }
-      call_script(2, 0, on_key_pressed_name);
+      call_function(2, 0, on_key_pressed_name);
     }
     else {
       // The method exists but the key is unknown.
@@ -200,7 +197,7 @@ void LuaContext::on_key_released(InputEvent& event) {
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Lua API.
       lua_pushstring(l, key_name.c_str());
-      call_script(1, 0, on_key_released_name);
+      call_function(1, 0, on_key_released_name);
     }
     else {
       // The method exists but the key is unknown.
@@ -220,7 +217,7 @@ void LuaContext::on_joypad_button_pressed(InputEvent& event) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_script(1, 0, on_joyad_button_pressed_name);
+    call_function(1, 0, on_joyad_button_pressed_name);
   }
 }
 
@@ -235,7 +232,7 @@ void LuaContext::on_joypad_button_released(InputEvent& event) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_script(1, 0, on_joyad_button_released_name);
+    call_function(1, 0, on_joyad_button_released_name);
   }
 }
 
@@ -252,7 +249,7 @@ void LuaContext::on_joypad_axis_moved(InputEvent& event) {
 
     lua_pushinteger(l, axis);
     lua_pushinteger(l, state);
-    call_script(2, 0, on_joyad_axis_moved_name);
+    call_function(2, 0, on_joyad_axis_moved_name);
   }
 }
 
@@ -269,7 +266,7 @@ void LuaContext::on_joypad_hat_moved(InputEvent& event) {
 
     lua_pushinteger(l, hat);
     lua_pushinteger(l, direction8);
-    call_script(2, 0, on_joyad_hat_moved_name);
+    call_function(2, 0, on_joyad_hat_moved_name);
   }
 }
 
@@ -285,7 +282,7 @@ void LuaContext::on_direction_pressed(InputEvent& event) {
     int direction8 = event.get_direction();
 
     lua_pushinteger(l, direction8);
-    call_script(1, 0, on_direction_pressed_name);
+    call_function(1, 0, on_direction_pressed_name);
   }
 }
 

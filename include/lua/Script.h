@@ -81,6 +81,10 @@ class Script {
     virtual void update();
     virtual void set_suspended(bool suspended);
 
+    // Lua refs.
+    void create_ref();
+    void destroy_ref(int ref);
+
     // calling specific Lua functions
     void event_map_changed(Map &map);
     void event_dialog_started(const std::string& dialog_id);
@@ -122,7 +126,7 @@ class Script {
     // calling Lua from C++
     bool find_global_function(const std::string& function_name);
     bool notify_script(const std::string& function_name, const char* format = "", ...);
-    bool call_script(int nb_arguments, int nb_results, const std::string& function_name);
+    bool call_function(int nb_arguments, int nb_results, const std::string& function_name);
     void initialize_lua_context();
     void load(const std::string &script_name);
     void load_if_exists(const std::string &script_name);
@@ -135,6 +139,7 @@ class Script {
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
     static void push_sprite(lua_State* l, Sprite& sprite);
     static void push_movement(lua_State* l, Movement& movement);
+    static void push_ref(lua_State* l, int ref);
     const std::string& input_get_key_name(InputEvent::KeyboardKey key);
 
     // debugging

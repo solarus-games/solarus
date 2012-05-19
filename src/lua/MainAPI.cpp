@@ -78,7 +78,9 @@ int Script::main_api_exit(lua_State* l) {
 int Script::main_api_start_screen(lua_State* l) {
 
   Script& script = get_script(l);
-  // Store the screen object
+  luaL_checktype(l, 1, LUA_TTABLE);
+
+  // Store the screen object.
   int screen_ref = luaL_ref(l, LUA_REGISTRYINDEX);
 
   MainLoop& main_loop = script.get_main_loop();

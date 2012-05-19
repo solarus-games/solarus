@@ -201,7 +201,7 @@ void EnemyScript::event_movement_changed(Movement& movement) {
   const std::string& function_name = "event_movement_changed";
   if (find_global_function(function_name)) {
     push_movement(l, movement);
-    call_script(1, 0, function_name);
+    call_function(1, 0, function_name);
   }
 }
 
@@ -214,7 +214,7 @@ void EnemyScript::event_movement_finished(Movement& movement) {
   const std::string& function_name = "event_movement_finished";
   if (find_global_function(function_name)) {
     push_movement(l, movement);
-    call_script(1, 0, function_name);
+    call_function(1, 0, function_name);
   }
 }
 
@@ -231,7 +231,7 @@ void EnemyScript::event_sprite_animation_finished(Sprite& sprite,
   if (find_global_function(function_name)) {
     push_sprite(l, sprite);
     lua_pushstring(l, animation.c_str());
-    call_script(2, 0, function_name);
+    call_function(2, 0, function_name);
   }
 }
 
@@ -250,7 +250,7 @@ void EnemyScript::event_sprite_frame_changed(Sprite& sprite,
     push_sprite(l, sprite);
     lua_pushstring(l, animation.c_str());
     lua_pushinteger(l, frame);
-    call_script(3, 0, function_name);
+    call_function(3, 0, function_name);
   }
 }
 
@@ -270,7 +270,7 @@ void EnemyScript::event_collision_enemy(const std::string& other_name,
     lua_pushstring(l, other_name.c_str());
     push_sprite(l, other_sprite);
     push_sprite(l, this_sprite);
-    call_script(3, 0, function_name);
+    call_function(3, 0, function_name);
   }
 }
 
@@ -294,7 +294,7 @@ void EnemyScript::event_custom_attack_received(EnemyAttack attack,
       push_sprite(l, *sprite);
       nb_arguments = 2;
     }
-    call_script(nb_arguments, 0, function_name);
+    call_function(nb_arguments, 0, function_name);
   }
 }
 

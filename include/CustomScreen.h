@@ -40,7 +40,8 @@ class CustomScreen: public Screen {
     void display(Surface& dst_surface);
 
   private:
-    int screen_ref;
+
+    int screen_ref;  /**< The Lua ref of the screen object. */
 
 };
 

@@ -329,6 +329,30 @@ void Script::print_stack() {
 }
 
 /**
+ * @brief Creates a reference to the Lua value on top of the stack.
+ */
+void Script::create_ref() {
+  luaL_ref(l, LUA_REGISTRYINDEX);
+}
+
+/**
+ * @brief Frees a Lua reference.
+ * @param ref The Lua reference to unref.
+ */
+void Script::destroy_ref(int ref) {
+  luaL_unref(l, LUA_REGISTRYINDEX, ref);
+}
+
+/**
+ * @brief Pushes a Lua value from its reference.
+ * @param l A Lua state.
+ * @param ref A Lua reference.
+ */
+void Script::push_ref(lua_State* l, int ref) {
+  lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
+}
+
+/**
  * @brief Looks up the specified global Lua function and places it onto the stack if it exists.
  *
  * If the function is not found, the stack is left unchanged.
@@ -454,7 +478,7 @@ bool Script::notify_script(const std::string& function_name, const char* format,
 
     // call the function
     int nb_results = strlen(format) - i;
-    if (!call_script(nb_arguments, nb_results, function_name)) {
+    if (!call_function(nb_arguments, nb_results, function_name)) {
       nb_results = 0;
     }
 
@@ -492,7 +516,7 @@ bool Script::notify_script(const std::string& function_name, const char* format,
  * the error message if any)
  * @return true in case of success
  */
-bool Script::call_script(int nb_arguments, int nb_results,
+bool Script::call_function(int nb_arguments, int nb_results,
     const std::string& function_name) {
 
   if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {

@@ -44,20 +44,6 @@ LuaContext::~LuaContext() {
 }
 
 /**
- * @brief Frees a lua reference.
- */
-void LuaContext::ref_unref(int ref) {
-  luaL_unref(l, LUA_REGISTRYINDEX, ref);
-}
-
-/**
- * @brief Pushes a lua reference on the stack.
- */
-void LuaContext::ref_push(int ref) {
-  lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
-}
-
-/**
  * @brief Opens a script and lets it on top of the stack as a function.
  * @param l A Lua state.
  * @param script_name File name of the script without extension,
@@ -116,7 +102,6 @@ bool LuaContext::find_event_function(const std::string& function_name) {
 
   // Debug::print(function_name);
 
-  // Call sol.events.update.
   lua_getglobal(l, "sol");
                                   // sol
   lua_getfield(l, -1, "events");
@@ -124,9 +109,9 @@ bool LuaContext::find_event_function(const std::string& function_name) {
   lua_remove(l, -2);
                                   // sol.events
   lua_getfield(l, -1, function_name.c_str());
-                                  // sol.events sol.events.function_name
+                                  // sol.events sol.events.function
   lua_remove(l, -2);
-                                  // sol.events.function_name
+                                  // sol.events.function
 
   bool exists = lua_isfunction(l, -1);
 
@@ -136,7 +121,6 @@ bool LuaContext::find_event_function(const std::string& function_name) {
   }
 
   return exists;
-
 }
 
 /**
@@ -262,7 +246,7 @@ void LuaContext::start_main_script() {
 
   // Load the main file.
   load(l, "main");
-  call_script(0, 0, "main");
+  call_function(0, 0, "main");
 }
 
 /**

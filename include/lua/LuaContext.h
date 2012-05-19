@@ -45,13 +45,9 @@ class LuaContext: public Script {
     void notify_after_display(Surface& dst_surface);
     void notify_input(InputEvent& event);
 
-    /// Notificator for the very start of the game.
     void notify_start();
 
     void update();
-
-    /// Deletes a reference.
-    void ref_unref(int ref);
 
   private:
 
@@ -62,9 +58,6 @@ class LuaContext: public Script {
     bool find_local_function(const std::string& function_name);
     bool find_method(int index, const std::string& function_name);
     bool find_method(const std::string& function_name);
-
-    /// Pushes a reference.
-    void ref_push(int ref);
 
     void start_main_script();
     static int l_loader(lua_State* l);

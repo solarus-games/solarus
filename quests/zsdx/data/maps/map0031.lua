@@ -27,7 +27,7 @@ function event_map_started(destination_point)
 
   sol.map.chest_set_enabled("boss_key_chest", false)
 
-  if sol.game.savegame_get_boolean(81) then
+  if sol.map.get_game():get_boolean(81) then
     -- boss key chest already found
     for k,v in pairs(switches_puzzle_order) do
       sol.map.switch_set_activated(k, true)
@@ -36,14 +36,14 @@ function event_map_started(destination_point)
 
   sol.map.door_set_open("boss_door", true)
   if destination_point_name == "from_final_room"
-      or sol.game.savegame_get_boolean(103) then
+      or sol.map.get_game():get_boolean(103) then
     sol.map.door_set_open("final_room_door", true)
   end
 
-  if sol.game.savegame_get_boolean(103) then
+  if sol.map.get_game():get_boolean(103) then
     -- boss heart container already picked
     sol.map.tile_set_enabled("boss_killed_floor", true)
-  elseif sol.game.savegame_get_boolean(93) then
+  elseif sol.map.get_game():get_boolean(93) then
     -- boss killed, heart container not picked
     sol.map.pickable_item_create("heart_container", 1, 103, 960, 437, 0)
   end
@@ -91,13 +91,13 @@ end
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_boss_sensor"
-      and not sol.game.savegame_get_boolean(93)
+      and not sol.map.get_game():get_boolean(93)
       and not fighting_boss then
     start_boss()
 
   elseif sensor_name == "close_boss_door_sensor"
       and sol.map.door_is_open("boss_door")
-      and not sol.game.savegame_get_boolean(93)
+      and not sol.map.get_game():get_boolean(93)
       and not fighting_boss then
     sol.audio.stop_music()
     sol.map.door_close("boss_door")

@@ -17,7 +17,7 @@ dont_close_LD06 = false
 function event_map_started()
 
   sol.map.light_set(0)
-  if not sol.game.savegame_get_boolean(725) then
+  if not sol.map.get_game():get_boolean(725) then
     sol.map.block_set_enabled("STT5", false)
     sol.map.tile_set_enabled("from_hole_tile", false)
   end

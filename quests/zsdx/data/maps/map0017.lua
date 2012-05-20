@@ -4,11 +4,11 @@ function event_map_started(destination_point_name)
 
   sol.map.light_set(1)
 
-  if sol.game.savegame_get_boolean(201) then
+  if sol.map.get_game():get_boolean(201) then
     lock_torches()
   end
 
-  if sol.game.savegame_get_boolean(228) then
+  if sol.map.get_game():get_boolean(228) then
     sol.map.block_set_enabled("block_13", false)
   else
     sol.map.block_set_enabled("block_saved", false)
@@ -37,7 +37,7 @@ function event_enemy_dead(enemy_name)
 
   if enemy_name:find("enemy_group1")
       and sol.map.enemy_is_group_dead("enemy_group1")
-      and not sol.game.savegame_get_boolean(200) then
+      and not sol.map.get_game():get_boolean(200) then
     sol.map.camera_move(616, 552, 250, function()
       sol.map.pickable_item_create("small_key", 1, 200, 616, 557, 1)
       sol.audio.play_sound("secret")
@@ -74,8 +74,8 @@ end
 
 function event_update()
 
-  if not sol.game.savegame_get_boolean(201) and are_all_torches_on() then
-    sol.game.savegame_set_boolean(201, true)
+  if not sol.map.get_game():get_boolean(201) and are_all_torches_on() then
+    sol.map.get_game():set_boolean(201, true)
     lock_torches()
     sol.map.camera_move(232, 488, 250, function()
       sol.audio.play_sound("secret")
@@ -87,7 +87,7 @@ end
 function event_block_moved(block_name)
 
   if block_name == "block_13" then
-    sol.game.savegame_set_boolean(228, true)
+    sol.map.get_game():set_boolean(228, true)
   end
 end
 

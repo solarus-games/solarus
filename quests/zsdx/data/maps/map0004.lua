@@ -13,13 +13,13 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_group_enabled("broken_rupee_house", false)
   else
     -- enable dark world
-    if sol.game.savegame_get_boolean(905) then
+    if sol.map.get_game():get_boolean(905) then
       sol.audio.play_music("dark_world")
       sol.map.tileset_set(13)
     end
 
     -- broken rupee house
-    if sol.game.savegame_get_boolean(155) then
+    if sol.map.get_game():get_boolean(155) then
       sol.map.teletransporter_set_enabled("to_rupee_house", false)
       sol.map.tile_set_enabled("rupee_house_door", false)
     else
@@ -34,12 +34,12 @@ function event_map_started(destination_point_name)
   sol.map.npc_get_sprite("chignon_woman"):set_animation("walking")
 
   -- remove Tom's cave door if open
-  if sol.game.savegame_get_boolean(36) then
+  if sol.map.get_game():get_boolean(36) then
     remove_village_cave_door()
   end
 
   -- remove the stone lock if open
-  if sol.game.savegame_get_boolean(159) then
+  if sol.map.get_game():get_boolean(159) then
     remove_stone_lock()
   end
 
@@ -67,7 +67,7 @@ function event_npc_interaction(npc_name)
     if sol.game.has_item("clay_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
-      sol.game.savegame_set_boolean(36, true)
+      sol.map.get_game():set_boolean(36, true)
       remove_village_cave_door()
     else
       sol.map.dialog_start("outside_world.village.clay_key_required")
@@ -79,7 +79,7 @@ function event_npc_interaction(npc_name)
     if sol.game.has_item("stone_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
-      sol.game.savegame_set_boolean(159, true)
+      sol.map.get_game():set_boolean(159, true)
       remove_stone_lock()
     else
       sol.map.dialog_start("outside_world.stone_key_required")

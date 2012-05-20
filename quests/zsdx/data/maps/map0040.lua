@@ -26,17 +26,17 @@ end
 -- Called when the map starts 
 function event_map_started(destination_point_name)
 
-  if sol.game.savegame_get_boolean(904) then
+  if sol.map.get_game():get_boolean(904) then
     -- the door before the five torches is open
     sol.map.switch_set_activated("ce_door_switch", true)
   end
 
-  if sol.game.savegame_get_boolean(113) then
+  if sol.map.get_game():get_boolean(113) then
     -- the door after the five torches is open
     lock_torches()
   end
 
-  if sol.game.savegame_get_boolean(121) then
+  if sol.map.get_game():get_boolean(121) then
     -- the water at the center is removed
     sol.map.tile_set_group_enabled("c_water", false)
     sol.map.tile_set_group_enabled("c_water_out", true)
@@ -45,7 +45,7 @@ function event_map_started(destination_point_name)
     sol.map.obstacle_set_group_enabled("c_water_off_obstacle", false)
   end
 
-  if sol.game.savegame_get_boolean(122) then
+  if sol.map.get_game():get_boolean(122) then
     -- the east water is removed
     sol.map.tile_set_group_enabled("e_water", false)
     sol.map.tile_set_group_enabled("e_water_out", true)
@@ -54,7 +54,7 @@ function event_map_started(destination_point_name)
     sol.map.obstacle_set_group_enabled("e_water_off_obstacle", false)
   end
 
-  if sol.game.savegame_get_boolean(131) then
+  if sol.map.get_game():get_boolean(131) then
     -- the north water is removed
     sol.map.tile_set_group_enabled("n_water", false)
     sol.map.tile_set_group_enabled("n_water_out", true)
@@ -76,7 +76,7 @@ end
 
 function event_update()
 
-  if not sol.game.savegame_get_boolean(113)
+  if not sol.map.get_game():get_boolean(113)
     and are_all_torches_on() then
 
     lock_torches()
@@ -93,7 +93,7 @@ function event_switch_activated(switch_name)
     sol.map.camera_move(800, 728, 250, open_se_door)
   elseif switch_name == "ce_door_switch" and not sol.map.door_is_open("ce_door") then
     sol.map.camera_move(736, 552, 250, open_ce_door)
-  elseif switch_name == "c_water_switch" and not sol.game.savegame_get_boolean(121) then
+  elseif switch_name == "c_water_switch" and not sol.map.get_game():get_boolean(121) then
     sol.map.camera_move(344, 736, 250, remove_c_water, 1000, 3500)
   end
 end
@@ -143,7 +143,7 @@ function remove_c_water_6()
   sol.map.tile_set_enabled("c_water_less_3", false)
   sol.map.jumper_set_group_enabled("c_water_on_jumper", false)
   sol.map.obstacle_set_group_enabled("c_water_off_obstacle", true)
-  sol.game.savegame_set_boolean(121, true)
+  sol.map.get_game():set_boolean(121, true)
   sol.audio.play_sound("secret")
 end
 

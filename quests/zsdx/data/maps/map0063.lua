@@ -8,14 +8,14 @@ function event_map_started(destination_point_name)
 
   init_guard("guard_3", {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,4,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0})
 
-  if sol.game.savegame_get_boolean(515) then
+  if sol.map.get_game():get_boolean(515) then
     sol.map.tile_set_enabled("weak_floor", false)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.map.block_set_enabled("weak_floor_block", false)
   end
 
   -- blocks necessary to go back when found the feather
-  if sol.game.savegame_get_boolean(517) then
+  if sol.map.get_game():get_boolean(517) then
     sol.map.block_set_position("s_block_1", 464, 773)
     sol.map.block_set_position("s_block_2", 496, 773)
   end
@@ -51,14 +51,14 @@ function event_hero_on_sensor(sensor_name)
     puzzle_next_sensor = 1
   elseif sensor_name == "save_s_blocks_sensor" then
     if sol.game.has_item("feather")
-        and not sol.game.savegame_get_boolean(517) then
+        and not sol.map.get_game():get_boolean(517) then
       -- solved the blocks puzzle necessary to exit this floor
-      sol.game.savegame_set_boolean(517, true)
+      sol.map.get_game():set_boolean(517, true)
     end
   else
     local i = string.match(sensor_name, "puzzle_sensor_([1-4])")
     if i ~= nil
-        and not sol.game.savegame_get_boolean(519) then
+        and not sol.map.get_game():get_boolean(519) then
       i = tonumber(i)
       if puzzle_next_sensor == 5 and i == 1 then
         puzzle_solved()
@@ -135,7 +135,7 @@ function event_sensor_collision_explosion(sensor_name)
     sol.map.tile_set_enabled("weak_floor", false)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.audio.play_sound("secret")
-    sol.game.savegame_set_boolean(515, true)
+    sol.map.get_game():set_boolean(515, true)
     sol.main:start_timer(1500, weak_floor_block_fall)
   end
 end
@@ -167,7 +167,7 @@ end
 function puzzle_solved_3()
 
   sol.audio.play_sound("secret")
-  sol.game.savegame_set_boolean(519, true)
+  sol.map.get_game():set_boolean(519, true)
   sol.map.dialog_start("dungeon_5.puzzle_solved")
 end
 

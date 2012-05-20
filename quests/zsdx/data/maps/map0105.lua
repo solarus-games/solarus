@@ -11,12 +11,12 @@ function event_map_started(destination_point_name)
 
   -- hidden Gibdo and chest
   sol.map.enemy_set_group_enabled("hidden_enemy", false)
-  if not sol.game.savegame_get_boolean(800) then
+  if not sol.map.get_game():get_boolean(800) then
     sol.map.chest_set_enabled("hidden_enemy_chest", false)
   end
 
   -- puzzle A
-  if sol.game.savegame_get_boolean(802) then
+  if sol.map.get_game():get_boolean(802) then
     -- already solved
     sol.map.tile_set_group_enabled("puzzle_a_switch_red", false)
     sol.map.switch_set_group_enabled("puzzle_a_switch", false)
@@ -42,7 +42,7 @@ function event_map_started(destination_point_name)
   sol.map.tile_set_group_enabled("bridge", false)
 
   -- west enemies room
-  if not sol.game.savegame_get_boolean(806) then
+  if not sol.map.get_game():get_boolean(806) then
     sol.map.chest_set_enabled("w_room_chest", false)
   else
     sol.map.door_set_open("w_room_door", true)
@@ -53,12 +53,12 @@ function event_map_started(destination_point_name)
   sol.map.door_set_open("c_door_s", true)
 
   -- east enemies room
-  if not sol.game.savegame_get_boolean(808) then
+  if not sol.map.get_game():get_boolean(808) then
     sol.map.chest_set_enabled("e_room_chest", false)
   end
 
   -- north-west chest
-  if not sol.game.savegame_get_boolean(810) then
+  if not sol.map.get_game():get_boolean(810) then
     sol.map.chest_set_enabled("nw_chest", false)
   else
     sol.map.switch_set_activated("nw_switch_1", true)
@@ -66,7 +66,7 @@ function event_map_started(destination_point_name)
   end
 
   -- shortcut to the boss
-  if not sol.game.savegame_get_boolean(816) then
+  if not sol.map.get_game():get_boolean(816) then
     sol.map.tile_set_enabled("shortcut", false)
     sol.map.teletransporter_set_enabled("shortcut_teletransporter", false)
   end
@@ -233,7 +233,7 @@ function event_switch_activated(switch_name)
 	sol.map.camera_move(896, 1896, 250, function()
 	  sol.audio.play_sound("chest_appears")
 	  sol.map.chest_set_enabled("puzzle_a_chest", true)
-	  sol.game.savegame_set_boolean(802, true)
+	  sol.map.get_game():set_boolean(802, true)
 	end)
       end
     end

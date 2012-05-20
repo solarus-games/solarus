@@ -8,7 +8,7 @@ directions = {
 
 function event_map_started(destination_point_name)
   
-  if sol.game.savegame_get_boolean(139) then
+  if sol.map.get_game():get_boolean(139) then
     sol.map.tile_set_enabled("secret_way", false)
   end
 end
@@ -23,7 +23,7 @@ function event_npc_interaction(npc_name)
       elseif next_sign == 32 then
         sol.audio.play_sound("secret")
 	sol.map.tile_set_enabled("secret_way", false)
-	sol.game.savegame_set_boolean(139, true)
+	sol.map.get_game():set_boolean(139, true)
       end
       next_sign = next_sign + 1
     else

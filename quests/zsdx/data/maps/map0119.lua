@@ -16,7 +16,7 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_group_enabled("roof_entrance", false)
   else
     -- enable dark world
-    if sol.game.savegame_get_boolean(905) then
+    if sol.map.get_game():get_boolean(905) then
       new_music = "dark_mountain"
       sol.map.tileset_set(13)
     end
@@ -24,11 +24,11 @@ function event_map_started(destination_point_name)
     -- boss fight
     if destination_point_name == "from_dungeon_10_5f" then
 
-      if not sol.game.savegame_get_boolean(299) then
+      if not sol.map.get_game():get_boolean(299) then
 	-- boss not killed yet
         new_music = "none"
         sol.map.enemy_set_group_enabled("", false) -- disable all simple enemies
-      elseif not sol.game.savegame_get_boolean(298) then
+      elseif not sol.map.get_game():get_boolean(298) then
 	-- boss killed but sword not got yet
 	local variant = 2
 	if sol.game.get_ability("sword") >= 2 then
@@ -58,7 +58,7 @@ end
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_boss_sensor"
-      and not sol.game.savegame_get_boolean(299)
+      and not sol.map.get_game():get_boolean(299)
       and not fighting_boss then
 
     -- boss fight
@@ -132,7 +132,7 @@ function event_hero_victory_sequence_finished()
   sol.map.enemy_set_group_enabled("", true) -- enable simple enemies back
 
   sol.main:start_timer(1000, function()
-    if sol.game.savegame_get_boolean(905) then
+    if sol.map.get_game():get_boolean(905) then
       sol.audio.play_music("dark_mountain")
     else
       sol.audio.play_music("overworld")

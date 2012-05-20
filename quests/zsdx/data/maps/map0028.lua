@@ -23,7 +23,7 @@ end
 
 function sahasrahla_dream()
   sol.map.dialog_start("link_house.dream")
-  sol.map.dialog_set_variable("link_house.dream", sol.game.savegame_get_name())
+  sol.map.dialog_set_variable("link_house.dream", sol.map.get_game():get_player_name())
 end
 
 function event_dialog_finished(dialog_id)

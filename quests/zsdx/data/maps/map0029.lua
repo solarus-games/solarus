@@ -2,7 +2,7 @@
 
 function event_map_started(destination_point_name)
   
-  if sol.game.savegame_get_boolean(69) then
+  if sol.map.get_game():get_boolean(69) then
     sol.map.tile_set_enabled("barrier", false)
     sol.map.switch_set_activated("barrier_switch", true)
   end
@@ -24,7 +24,7 @@ end
 function barrier_timer()
   sol.map.tile_set_enabled("barrier", false)
   sol.audio.play_sound("secret")
-  sol.game.savegame_set_boolean(69, true)
+  sol.map.get_game():set_boolean(69, true)
 end
 
 function door_timer()

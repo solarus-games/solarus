@@ -4,11 +4,11 @@ local water_delay = 500 -- delay between each water step
 
 function event_map_started(destination_point_name)
 
-  if sol.game.savegame_get_boolean(234) then
+  if sol.map.get_game():get_boolean(234) then
     sol.map.sensor_set_enabled("sensor1_1",false)
   end
 
-  if sol.game.savegame_get_boolean(297) then
+  if sol.map.get_game():get_boolean(297) then
     set_water_drained()
     sol.map.block_set_position("water_block", 656, 333)
   end
@@ -20,7 +20,7 @@ function event_enemy_dead(enemy_name)
 
   if enemy_name:find("enemy2")
       and sol.map.enemy_is_group_dead("enemy2")
-      and not sol.game.savegame_get_boolean(234) then
+      and not sol.map.get_game():get_boolean(234) then
     sol.map.pickable_item_create("big_key", 1, 234, 672, 80, 1)
     sol.audio.play_sound("secret")
     if not sol.map.door_is_open("door_a") then
@@ -35,7 +35,7 @@ function event_hero_on_sensor(sensor_name)
   if sensor_name == "sensor1_1"
       and sol.map.door_is_open("door_a")
       and not sol.map.enemy_is_group_dead("enemy2")
-      and not sol.game.savegame_get_boolean(234) then
+      and not sol.map.get_game():get_boolean(234) then
     sol.audio.play_music("boss")
     sol.map.door_close("door_a")
     sol.map.enemy_set_group_enabled("enemy2", true)
@@ -101,7 +101,7 @@ end
 function drain_water_step_4()
 
   sol.map.tile_set_enabled("water_less_3", false)
-  sol.game.savegame_set_boolean(297, true)
+  sol.map.get_game():set_boolean(297, true)
   sol.audio.play_sound("secret")
   set_water_drained()
 end

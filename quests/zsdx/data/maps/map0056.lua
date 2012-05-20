@@ -15,11 +15,11 @@ function event_map_started(destination_point_name)
 
   sol.map.door_set_open("miniboss_door", true)
   sol.map.enemy_set_group_enabled("miniboss", false)
-  if sol.game.savegame_get_boolean(320) then
+  if sol.map.get_game():get_boolean(320) then
     sol.map.tile_set_group_enabled("miniboss_fake_floor", false)
   end
 
-  if sol.game.savegame_get_boolean(323) then
+  if sol.map.get_game():get_boolean(323) then
     lock_torches()
   end
 end
@@ -64,7 +64,7 @@ end
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_miniboss_sensor"
-      and not sol.game.savegame_get_boolean(320)
+      and not sol.map.get_game():get_boolean(320)
       and not fighting_miniboss then
 
     sol.map.hero_freeze()
@@ -86,7 +86,7 @@ function event_enemy_dead(enemy_name)
 
     sol.audio.play_music("dark_world_dungeon")
     sol.map.door_open("miniboss_door")
-    sol.game.savegame_set_boolean(320, true)
+    sol.map.get_game():set_boolean(320, true)
   end
 end
 

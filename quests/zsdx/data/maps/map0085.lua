@@ -23,7 +23,7 @@ end
 
 function start_final_sequence()
   sol.map.dialog_start("dungeon_3.solarus_child")
-  sol.map.dialog_set_variable("dungeon_3.solarus_child", sol.game.savegame_get_name());
+  sol.map.dialog_set_variable("dungeon_3.solarus_child", sol.map.get_game():get_player_name());
 end
 
 function event_dialog_finished(dialog_id, answer)

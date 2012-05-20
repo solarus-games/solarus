@@ -2,7 +2,7 @@
 
 function event_map_started(destination_point)
 
-  if sol.game.savegame_get_boolean(37) then -- if the Lyriann cave is finished
+  if sol.map.get_game():get_boolean(37) then -- if the Lyriann cave is finished
     sol.map.door_set_open("door", sol.game.is_dungeon_finished(1)) -- don't allow the player to obtain the bow until the first dungeon is finished
   end
 
@@ -21,7 +21,7 @@ function event_npc_interaction(npc_name)
     if not has_obtained_world_map() then
       -- first visit
       sol.map.dialog_start("sahasrahla_house.beginning")
-      sol.map.dialog_set_variable("sahasrahla_house.beginning", sol.game.savegame_get_name())
+      sol.map.dialog_set_variable("sahasrahla_house.beginning", sol.map.get_game():get_player_name())
 
     elseif has_seen_frozen_door() and not has_open_frozen_door() then
       -- the player has seen the frozen door but was not able to unfreeze it
@@ -45,23 +45,23 @@ function event_npc_interaction(npc_name)
 end
 
 function has_obtained_world_map()
-  return sol.game.savegame_get_boolean(33)
+  return sol.map.get_game():get_boolean(33)
 end
 
 function has_seen_frozen_door()
-  return sol.game.savegame_get_boolean(34)
+  return sol.map.get_game():get_boolean(34)
 end
 
 function has_open_frozen_door()
-  return sol.game.savegame_get_boolean(35)
+  return sol.map.get_game():get_boolean(35)
 end
 
 function has_obtained_clay_key()
-  return sol.game.savegame_get_boolean(28)
+  return sol.map.get_game():get_boolean(28)
 end
 
 function has_obtained_bow()
-  return sol.game.savegame_get_boolean(26)
+  return sol.map.get_game():get_boolean(26)
 end
 
 -- Function called when the dialog box is being closed

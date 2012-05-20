@@ -14,7 +14,7 @@
 local timer
 
 function event_map_started(destination_point_name)
-  if not sol.game.savegame_get_boolean(711) then
+  if not sol.map.get_game():get_boolean(711) then
     sol.map.chest_set_enabled("RC100", false)
   end
   if destination_point_name == "from_B3_C" then

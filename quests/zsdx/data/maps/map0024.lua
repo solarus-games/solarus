@@ -5,10 +5,10 @@ function event_map_started(destination_point_name)
   if destination_point_name == "from_1F_hole" then
     -- we are in the boss room
 
-    if sol.game.savegame_get_boolean(63) then
+    if sol.map.get_game():get_boolean(63) then
       -- the boss is already dead
 
-      if sol.game.savegame_get_boolean(64) then
+      if sol.map.get_game():get_boolean(64) then
         -- the heart container was also picked: open the final room door
         sol.map.door_set_open("final_room_door", true)
       end

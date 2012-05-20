@@ -6,7 +6,7 @@ function event_map_started(destination_point_name)
 
   sol.map.chest_set_enabled("map_chest", false)
   sol.map.chest_set_enabled("compass_chest", false)
-  if sol.game.savegame_get_boolean(54) then
+  if sol.map.get_game():get_boolean(54) then
     sol.map.switch_set_activated("map_room_switch", true)
   end
 end

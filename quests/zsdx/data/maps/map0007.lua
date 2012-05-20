@@ -3,18 +3,18 @@
 function event_map_started(destination_point_name)
 
   -- enable dark world
-  if sol.game.savegame_get_boolean(905) then
+  if sol.map.get_game():get_boolean(905) then
     sol.audio.play_music("dark_world")
     sol.map.tileset_set(13)
   end
 
   -- remove the iron lock if open
-  if sol.game.savegame_get_boolean(193) then
+  if sol.map.get_game():get_boolean(193) then
     remove_iron_lock()
   end
 
   -- remove the wooden lock if open
-  if sol.game.savegame_get_boolean(194) then
+  if sol.map.get_game():get_boolean(194) then
     remove_wooden_lock()
   end
 
@@ -24,11 +24,11 @@ function event_map_started(destination_point_name)
   else
     local sprite = sol.map.npc_get_sprite("inferno")
     sprite:set_ignore_suspend(true)
-    if sol.game.savegame_get_boolean(914) then
+    if sol.map.get_game():get_boolean(914) then
       inferno_set_open()
     end
   end
-  if not sol.game.savegame_get_boolean(914) then
+  if not sol.map.get_game():get_boolean(914) then
     sol.map.teletransporter_set_enabled("to_dungeon_6", false)
   end
   sol.map.sensor_set_enabled("inferno_sensor", false)
@@ -52,7 +52,7 @@ function event_npc_interaction(npc_name)
     if sol.game.has_item("iron_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
-      sol.game.savegame_set_boolean(193, true)
+      sol.map.get_game():set_boolean(193, true)
       remove_iron_lock()
     else
       sol.map.dialog_start("outside_world.iron_key_required")
@@ -64,7 +64,7 @@ function event_npc_interaction(npc_name)
     if sol.game.has_item("wooden_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
-      sol.game.savegame_set_boolean(194, true)
+      sol.map.get_game():set_boolean(194, true)
       remove_wooden_lock()
     else
       sol.map.dialog_start("outside_world.wooden_key_required")
@@ -72,11 +72,11 @@ function event_npc_interaction(npc_name)
 
   elseif npc_name == "inferno" then
 
-    if not sol.game.savegame_get_boolean(915) then
+    if not sol.map.get_game():get_boolean(915) then
       -- first time
       sol.map.dialog_start("inferno.first_time")
-      sol.game.savegame_set_boolean(915, true)
-    elseif not sol.game.savegame_get_boolean(914) then
+      sol.map.get_game():set_boolean(915, true)
+    elseif not sol.map.get_game():get_boolean(914) then
       -- not open yet
       if sol.game.get_item_amount("fire_stones_counter") < 3 then
         sol.map.dialog_start("inferno.find_fire_stones")
@@ -122,7 +122,7 @@ function inferno_open_finish()
 
   sol.audio.play_sound("secret")
   sol.map.hero_unfreeze()
-  sol.game.savegame_set_boolean(914, true)
+  sol.map.get_game():set_boolean(914, true)
   inferno_set_open()
 end
 
@@ -142,7 +142,7 @@ function event_dialog_finished(dialog_id, answer)
       sol.map.dialog_start("inferno.want_black_stones")
     else
       -- 100 rupees
-      if not sol.game.savegame_get_boolean(916) then
+      if not sol.map.get_game():get_boolean(916) then
         sol.map.dialog_start("inferno.want_rupees")
       else
         sol.map.dialog_start("inferno.want_rupees_again")

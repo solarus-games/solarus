@@ -1,11 +1,11 @@
 -- Fairy cave
 
 function has_fairy_appeared()
-  return sol.game.savegame_get_boolean(99)
+  return sol.map.get_game():get_boolean(99)
 end
 
 function has_boomerang_from_fairy()
-  return sol.game.savegame_get_boolean(100)
+  return sol.map.get_game():get_boolean(100)
 end
 
 function show_fairy()
@@ -42,7 +42,7 @@ function event_update()
       and are_all_torches_on() then
 
     sol.audio.play_sound("secret")
-    sol.game.savegame_set_boolean(99, true)
+    sol.map.get_game():set_boolean(99, true)
     show_fairy()
   end
 end

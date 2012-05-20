@@ -5,7 +5,7 @@ remove_water_delay = 500
 function event_map_started(destination_point_name)
 
   -- weak floor
-  if sol.game.savegame_get_boolean(314) then
+  if sol.map.get_game():get_boolean(314) then
     sol.map.tile_set_enabled("weak_floor", false)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
   else
@@ -13,7 +13,7 @@ function event_map_started(destination_point_name)
   end
 
   -- water
-  if sol.game.savegame_get_boolean(319) then
+  if sol.map.get_game():get_boolean(319) then
     sol.map.tile_set_group_enabled("water", false)
     sol.map.jumper_set_group_enabled("water_on_jumper", false)
     sol.map.switch_set_activated("water_switch", true)
@@ -44,14 +44,14 @@ function event_sensor_collision_explosion(sensor_name)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.map.teletransporter_set_enabled("weak_floor_teletransporter", true)
     sol.audio.play_sound("secret")
-    sol.game.savegame_set_boolean(314, true)
+    sol.map.get_game():set_boolean(314, true)
   end
 end
 
 function event_switch_activated(switch_name)
 
   if switch_name == "water_switch"
-      and not sol.game.savegame_get_boolean(319) then
+      and not sol.map.get_game():get_boolean(319) then
     sol.map.camera_move(616, 192, 250, remove_water, 1000, 2500)
   end
 end
@@ -80,7 +80,7 @@ function remove_water_4()
   sol.map.tile_set_enabled("water_less_3", false)
   sol.map.jumper_set_group_enabled("water_on_jumper", false)
   sol.map.obstacle_set_group_enabled("water_off_obstacle", true)
-  sol.game.savegame_set_boolean(319, true)
+  sol.map.get_game():set_boolean(319, true)
   sol.audio.play_sound("secret")
 end
 

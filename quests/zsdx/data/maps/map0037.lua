@@ -4,7 +4,7 @@ billy_leave_step = 0
 
 function event_map_started(destination_point_name)
 
-  if sol.game.savegame_get_boolean(134) then
+  if sol.map.get_game():get_boolean(134) then
     -- the player already gave the golden bars and obtained the edelweiss
     sol.map.npc_remove("billy")
   end
@@ -17,9 +17,9 @@ end
 function event_npc_interaction(npc_name)
 
   if npc_name == "billy" then
-    if not sol.game.savegame_get_boolean(135) then
+    if not sol.map.get_game():get_boolean(135) then
       sol.map.dialog_start("billy_cave.hello")
-      sol.game.savegame_set_boolean(135, true)
+      sol.map.get_game():set_boolean(135, true)
     else
       sol.map.dialog_start("billy_cave.what_do_you_have")
     end

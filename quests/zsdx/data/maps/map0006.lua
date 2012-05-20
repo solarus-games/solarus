@@ -5,7 +5,7 @@ tom_sprite = nil
 function event_map_started(destination_point_name)
 
   -- enable dark world
-  if sol.game.savegame_get_boolean(905) then
+  if sol.map.get_game():get_boolean(905) then
     sol.audio.play_music("dark_world")
     sol.map.tileset_set(13)
   end
@@ -36,17 +36,17 @@ function event_map_started(destination_point_name)
 end
 
 function is_ladder_activated()
-  return sol.game.savegame_get_boolean(52)
+  return sol.map.get_game():get_boolean(52)
 end
 
 function is_beaumont_cave_open()
-  return sol.game.savegame_get_boolean(153)
+  return sol.map.get_game():get_boolean(153)
 end
 
 
 function event_hero_on_sensor(sensor_name)
 
-  local has_finished_tom_cave = sol.game.savegame_get_boolean(37)
+  local has_finished_tom_cave = sol.map.get_game():get_boolean(37)
 
   if sensor_name == "tom_appears_sensor"
       and has_finished_tom_cave
@@ -140,7 +140,7 @@ function ladder_step4()
   sol.map.tile_set_group_enabled("no_ladder", false)
   sol.map.sensor_set_enabled("tom_appears_sensor", false)
   sol.audio.play_sound("secret")
-  sol.game.savegame_set_boolean(52, true)
+  sol.map.get_game():set_boolean(52, true)
   sol.map.hero_unfreeze()
 end
 
@@ -158,7 +158,7 @@ function edelweiss_explode()
   sol.map.explosion_create(160, 72, 0)
   sol.map.tile_set_enabled("beaumont_cave_hole", true)
   sol.map.teletransporter_set_enabled("to_beaumont_cave", true)
-  sol.game.savegame_set_boolean(153, true)
+  sol.map.get_game():set_boolean(153, true)
   sol.game.set_item("level_4_way", 0)
   sol.main:start_timer(1000, edelweiss_end)
 end

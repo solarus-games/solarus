@@ -6,14 +6,14 @@ function event_map_started(destination_point_name)
 
   local new_music = nil
 
-  if sol.game.savegame_get_boolean(905) then
+  if sol.map.get_game():get_boolean(905) then
     -- enable dark world
     new_music = "dark_world"
     sol.map.tileset_set(13)
     sol.map.tile_set_group_enabled("castle_east_bridge", false)
     sol.map.tile_set_group_enabled("castle_east_bridge_off", true)
 
-    if sol.game.savegame_get_boolean(907) then
+    if sol.map.get_game():get_boolean(907) then
       sol.map.switch_set_activated("castle_door_switch", true)
     else
       sol.map.tile_set_enabled("castle_door", true)
@@ -23,8 +23,8 @@ function event_map_started(destination_point_name)
 
     -- Agahnim fight
     if destination_point_name == "from_dungeon_5_2F_ne"
-        and sol.game.savegame_get_boolean(507)
-        and not sol.game.savegame_get_boolean(520) then
+        and sol.map.get_game():get_boolean(507)
+        and not sol.map.get_game():get_boolean(520) then
 
       new_music = "none"
       sol.map.npc_remove("cannon")
@@ -51,7 +51,7 @@ end
 function open_castle_door()
 
   sol.map.tile_set_enabled("castle_door", false)
-  sol.game.savegame_set_boolean(907, true)
+  sol.map.get_game():set_boolean(907, true)
   sol.audio.play_sound("secret")
   sol.audio.play_sound("door_open")
 end
@@ -60,7 +60,7 @@ function event_npc_interaction(npc_name)
 
   if npc_name == "cannon" then
 
-    if not sol.game.savegame_get_boolean(905) then
+    if not sol.map.get_game():get_boolean(905) then
       sol.map.dialog_start("castle.cannon")
     else
       sol.map.hero_freeze()
@@ -84,8 +84,8 @@ end
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_boss_sensor"
-      and sol.game.savegame_get_boolean(507)
-      and not sol.game.savegame_get_boolean(520)
+      and sol.map.get_game():get_boolean(507)
+      and not sol.map.get_game():get_boolean(520)
       and not fighting_boss then
 
     -- Agahnim fight

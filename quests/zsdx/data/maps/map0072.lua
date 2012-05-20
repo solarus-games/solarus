@@ -10,7 +10,7 @@ function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "close_door_sensor"
       and sol.map.door_is_open("door")
-      and not sol.game.savegame_get_boolean(156) then
+      and not sol.map.get_game():get_boolean(156) then
     sol.map.door_close("door")
     sol.map.hero_freeze()
     sol.main:start_timer(1000, start_music)
@@ -38,7 +38,7 @@ end
 
 function event_hero_victory_sequence_finished()
 
-  sol.game.savegame_set_boolean(156, true)
+  sol.map.get_game():set_boolean(156, true)
   sol.map.hero_set_map(3, "out_smith_cave", 1)
 end
 

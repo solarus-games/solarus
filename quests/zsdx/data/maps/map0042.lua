@@ -5,7 +5,7 @@ function event_map_started(destination_point_name)
   sol.map.light_set(0)
 
   -- weak floor
-  if sol.game.savegame_get_boolean(133) then
+  if sol.map.get_game():get_boolean(133) then
     sol.map.tile_set_enabled("weak_floor", false)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
   else
@@ -13,7 +13,7 @@ function event_map_started(destination_point_name)
   end
 
   -- piece of heart
-  if sol.game.savegame_get_boolean(132) then
+  if sol.map.get_game():get_boolean(132) then
     sol.map.tile_set_enabled("barrier", false)
     sol.map.switch_set_activated("barrier_switch", true)
   end
@@ -42,7 +42,7 @@ function event_sensor_collision_explosion(sensor_name)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.map.teletransporter_set_enabled("weak_floor_teletransporter", true)
     sol.audio.play_sound("secret")
-    sol.game.savegame_set_boolean(133, true)
+    sol.map.get_game():set_boolean(133, true)
   end
 end
 

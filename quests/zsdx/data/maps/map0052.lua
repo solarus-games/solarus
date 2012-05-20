@@ -4,7 +4,7 @@ function event_map_started(destination_point_name)
 
   sol.map.npc_set_enabled("ganon_npc", false)
   if destination_point_name == "from_1F" then
-    if sol.game.savegame_get_boolean(728) then
+    if sol.map.get_game():get_boolean(728) then
       -- Agahnim already killed
       sol.map.npc_set_enabled("agahnim_npc", false)
     end
@@ -15,7 +15,7 @@ function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_boss_sensor" then
 
-    if not sol.game.savegame_get_boolean(728) then
+    if not sol.map.get_game():get_boolean(728) then
 
       sol.map.door_close("boss_door")
       sol.map.hero_freeze()

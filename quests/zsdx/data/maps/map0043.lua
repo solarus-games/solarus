@@ -5,7 +5,7 @@ function event_map_started(destination_point_name)
   sol.map.door_set_open("miniboss_door", true)
   sol.map.door_set_open("boss_door", true)
   if destination_point_name == "from_5f_c"
-      or sol.game.savegame_get_boolean(903) then
+      or sol.map.get_game():get_boolean(903) then
     sol.map.door_set_open("final_room_door", true)
   end
 end
@@ -16,20 +16,20 @@ fighting_boss = false
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_miniboss_sensor"
-      and not sol.game.savegame_get_boolean(901)
+      and not sol.map.get_game():get_boolean(901)
       and not fighting_miniboss then
     -- the miniboss is alive
     sol.map.door_close("miniboss_door")
     sol.map.hero_walk(666666, false, false)
   elseif sensor_name == "start_miniboss_sensor_2"
-      and not sol.game.savegame_get_boolean(901)
+      and not sol.map.get_game():get_boolean(901)
       and not fighting_miniboss then
     sol.map.hero_freeze()
     sol.audio.stop_music()
     sol.main:start_timer(1000, miniboss_timer)
     fighting_miniboss = true
   elseif sensor_name == "start_boss_sensor"
-      and not sol.game.savegame_get_boolean(902)
+      and not sol.map.get_game():get_boolean(902)
       and not fighting_boss then
     sol.map.hero_freeze()
     sol.map.door_close("boss_door")

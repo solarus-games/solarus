@@ -19,7 +19,7 @@ end
 
 function event_hero_on_sensor(sensor_name)
 
-  if sensor_name == "start_miniboss_sensor" and not sol.game.savegame_get_boolean(62) and not fighting_miniboss then
+  if sensor_name == "start_miniboss_sensor" and not sol.map.get_game():get_boolean(62) and not fighting_miniboss then
     -- the miniboss is alive
     sol.map.door_close("miniboss_door")
     sol.map.hero_freeze()

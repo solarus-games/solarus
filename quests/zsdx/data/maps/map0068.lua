@@ -20,7 +20,7 @@ function event_map_started(destination_point_name)
 
   -- initialize all pools
   for i, pool in ipairs(pools) do
-    if pool.initially_filled ~= sol.game.savegame_get_boolean(savegame_variable + i) then
+    if pool.initially_filled ~= sol.map.get_game():get_boolean(savegame_variable + i) then
       -- this pool is filled
       set_water_filled(i)
     else
@@ -126,7 +126,7 @@ end
 function fill_water_step_4()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_full", true)
-  sol.game.savegame_set_boolean(savegame_variable + current_pool_index,
+  sol.map.get_game():set_boolean(savegame_variable + current_pool_index,
     not pools[current_pool_index].initially_filled)
   set_water_filled(current_pool_index)
 end
@@ -153,7 +153,7 @@ end
 
 function drain_water_step_4()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", false)
-  sol.game.savegame_set_boolean(savegame_variable + current_pool_index,
+  sol.map.get_game():set_boolean(savegame_variable + current_pool_index,
     pools[current_pool_index].initially_filled)
   set_water_drained(current_pool_index)
 end

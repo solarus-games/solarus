@@ -7,17 +7,17 @@ local message_id = {
 
 function event_obtained(variant)
 
-  local nb_pieces_of_heart = sol.game.savegame_get_integer(1030)
+  local nb_pieces_of_heart = sol.map.get_game():get_integer(1030)
   sol.map.dialog_start(message_id[nb_pieces_of_heart + 1])
 end
 
 function event_dialog_finished(dialog_id, answer)
 
-  local nb_pieces_of_heart = sol.game.savegame_get_integer(1030)
+  local nb_pieces_of_heart = sol.map.get_game():get_integer(1030)
 
   if dialog_id == message_id[nb_pieces_of_heart + 1] then
 
-    sol.game.savegame_set_integer(1030, (nb_pieces_of_heart + 1) % 4)
+    sol.map.get_game():set_integer(1030, (nb_pieces_of_heart + 1) % 4)
     if (nb_pieces_of_heart == 3) then
       sol.game.add_max_life(4)
     end
@@ -65,7 +65,7 @@ function print_pieces_of_heart()
 
   local nb_found = 0
   for i, v in ipairs(pieces) do
-    if sol.game.savegame_get_boolean(v.savegame_variable) then
+    if sol.map.get_game():get_boolean(v.savegame_variable) then
       nb_found = nb_found + 1
     else
       print("You don't have piece of heart #" .. i .. ": " .. v.description)

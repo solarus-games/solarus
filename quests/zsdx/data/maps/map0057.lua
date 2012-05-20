@@ -35,7 +35,7 @@ function event_hero_on_sensor(sensor_name)
       sol.map.door_open("ne_door")
     end
   elseif sensor_name == "start_boss_sensor"
-      and not sol.game.savegame_get_boolean(321)
+      and not sol.map.get_game():get_boolean(321)
       and not fighting_boss then
 
     sol.map.sensor_set_enabled("start_boss_sensor", false)
@@ -58,7 +58,7 @@ end
 
 function repeat_lava_spawner()
 
-  if not sol.game.savegame_get_boolean(321) then
+  if not sol.map.get_game():get_boolean(321) then
     nb_spawners_created = nb_spawners_created + 1
     local index = math.random(#spawner_xy)
     sol.map.enemy_create("spawner_"..nb_spawners_created,
@@ -86,7 +86,7 @@ function start_final_sequence()
   sol.map.npc_set_position("tom", 272, 237)
   sol.map.camera_move(272, 232, 100, function()
     sol.map.dialog_start("dungeon_6.tom")
-    sol.map.dialog_set_variable("dungeon_6.tom", sol.game.savegame_get_name());
+    sol.map.dialog_set_variable("dungeon_6.tom", sol.map.get_game():get_player_name());
   end)
 end
 
@@ -98,11 +98,11 @@ function event_dialog_finished(dialog_id)
     sol.main:start_timer(1000, function()
       sol.audio.play_music("legend")
       sol.map.dialog_start("dungeon_6.tom_revelation")
-      sol.map.dialog_set_variable("dungeon_6.tom_revelation", sol.game.savegame_get_name());
+      sol.map.dialog_set_variable("dungeon_6.tom_revelation", sol.map.get_game():get_player_name());
     end)
   elseif dialog_id == "dungeon_6.tom_revelation" then
     local variant = 2
-    if sol.game.savegame_get_boolean(939) then
+    if sol.map.get_game():get_boolean(939) then
       variant = 3
     end
     sol.map.treasure_give("quiver", variant, 941)
@@ -111,7 +111,7 @@ end
 
 function event_hero_victory_sequence_finished()
   sol.game.set_dungeon_finished(6)
-  sol.game.savegame_set_boolean(155, false) -- reopen the rupee house
+  sol.map.get_game():set_boolean(155, false) -- reopen the rupee house
   sol.map.hero_set_map(7, "from_dungeon_6", 1)
 end
 

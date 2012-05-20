@@ -2,7 +2,7 @@
 
 function event_shop_item_buying(item_name)
 
-  if not sol.game.savegame_get_boolean(911)
+  if not sol.map.get_game():get_boolean(911)
       and not sol.game.has_item("bottle_2") then
     -- give bottle 2
     sol.game.set_item("bottle_2", 1)
@@ -19,9 +19,9 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if string.find(item_name, "_potion$")
-      and not sol.game.savegame_get_boolean(911) then
+      and not sol.map.get_game():get_boolean(911) then
     -- tell the player we juste gave him the bottle 2
-    sol.game.savegame_set_boolean(911, true)
+    sol.map.get_game():set_boolean(911, true)
     sol.map.dialog_start("potion_shop.give_bottle")
   end
 end
@@ -30,7 +30,7 @@ function event_npc_interaction(npc_name)
 
   if npc_name == "witch" then
 
-    if not sol.game.savegame_get_boolean(911) then
+    if not sol.map.get_game():get_boolean(911) then
       sol.map.dialog_start("potion_shop.witch_bottle_offered")
     else
       sol.map.dialog_start("potion_shop.witch")

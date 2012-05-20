@@ -6,7 +6,7 @@ frozen_door_opposite_sprite = nil
 -- Function called when the map starts
 function event_map_started(destination_point_name)
 
-  if sol.game.savegame_get_boolean(35) then
+  if sol.map.get_game():get_boolean(35) then
     -- remove the frozen door
     sol.map.npc_remove("frozen_door")
     sol.map.npc_remove("frozen_door_opposite")
@@ -24,7 +24,7 @@ function event_npc_interaction(npc_name)
 
   if npc_name == "frozen_door" then
     sol.map.dialog_start("sahasrahla_house.frozen_door")
-    sol.game.savegame_set_boolean(34, true)
+    sol.map.get_game():set_boolean(34, true)
   end
 end
 
@@ -50,7 +50,7 @@ end
 -- Function called when the door is unfreezed
 function timer_frozen_door()
   sol.audio.play_sound("secret")
-  sol.game.savegame_set_boolean(35, true)
+  sol.map.get_game():set_boolean(35, true)
   sol.map.npc_remove("frozen_door")
   sol.map.npc_remove("frozen_door_opposite")
   sol.map.hero_unfreeze()

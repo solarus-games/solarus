@@ -24,7 +24,7 @@ end
 
 function start_final_sequence()
   sol.map.dialog_start("dungeon_4.solarus_child")
-  sol.map.dialog_set_variable("dungeon_4.solarus_child", sol.game.savegame_get_name());
+  sol.map.dialog_set_variable("dungeon_4.solarus_child", sol.map.get_game():get_player_name());
 end
 
 function event_dialog_finished(dialog_id, answer)
@@ -81,8 +81,8 @@ end
 function agahnim_sequence_6()
 
   sol.game.set_dungeon_finished(4)
-  sol.game.savegame_set_boolean(905, true) -- enable the dark world
-  sol.game.savegame_set_boolean(155, true) -- break the rupee house
+  sol.map.get_game():set_boolean(905, true) -- enable the dark world
+  sol.map.get_game():set_boolean(155, true) -- break the rupee house
   sol.map.hero_set_map(66, "from_dungeon_4", 1)
 end
 

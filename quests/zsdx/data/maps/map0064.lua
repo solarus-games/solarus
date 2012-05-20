@@ -5,17 +5,17 @@ sol.main.include("maps/prison_guard")
 function event_map_started(destination_point_name)
 
   -- torches door
-  if sol.game.savegame_get_boolean(514) then
+  if sol.map.get_game():get_boolean(514) then
     lock_torches()
   end
 
   -- middle door
-  if sol.game.savegame_get_boolean(522) then
+  if sol.map.get_game():get_boolean(522) then
     sol.map.switch_set_activated("c_door_switch", true)
   end
 
   -- block falled from 2F
-  if not sol.game.savegame_get_boolean(515) then
+  if not sol.map.get_game():get_boolean(515) then
     sol.map.block_set_enabled("block_from_2f", false)
   end
 end
@@ -62,7 +62,7 @@ end
 
 function event_update()
 
-  if not sol.game.savegame_get_boolean(514)
+  if not sol.map.get_game():get_boolean(514)
       and are_all_torches_on() then
     sol.audio.play_sound("secret")
     sol.map.door_open("w_door")

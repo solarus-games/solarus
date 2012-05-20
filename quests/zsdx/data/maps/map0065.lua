@@ -17,27 +17,27 @@ function event_map_started(destination_point_name)
     sol.map.hero_set_direction(2)
   end
 
-  if not sol.game.savegame_get_boolean(907) then
+  if not sol.map.get_game():get_boolean(907) then
     -- this door is open until the main entrance door of
     -- the castle is open
     sol.map.door_set_open("n_door", true)
   end
 
-  if sol.game.savegame_get_boolean(511) then
+  if sol.map.get_game():get_boolean(511) then
     sol.map.npc_remove("prison_1_lock")
   end
 
-  if sol.game.savegame_get_boolean(512) then
+  if sol.map.get_game():get_boolean(512) then
     prison_2_nb_messages = 3
   end
 
-  if not sol.game.savegame_get_boolean(519) then
+  if not sol.map.get_game():get_boolean(519) then
     sol.map.chest_set_enabled("boss_key_chest", false)
   end
 
   -- bomb bag 2 or 3
   local variant = 2
-  if sol.game.savegame_get_boolean(938) then
+  if sol.map.get_game():get_boolean(938) then
     -- already has the other one
     variant = 3
   end
@@ -145,7 +145,7 @@ function event_dialog_finished(dialog_id, answer)
     sol.audio.play_sound("secret")
     sol.audio.play_sound("door_open")
     sol.map.npc_remove("prison_1_lock")
-    sol.game.savegame_set_boolean(511, true)
+    sol.map.get_game():set_boolean(511, true)
   end
 end
 
@@ -167,7 +167,7 @@ function event_npc_interaction(npc_name)
       sol.audio.play_sound("secret")
       sol.audio.play_sound("door_open")
       sol.map.npc_set_position("prison_2_lock", 648, -32)
-      sol.game.savegame_set_boolean(512, true)
+      sol.map.get_game():set_boolean(512, true)
     end
   end
 end

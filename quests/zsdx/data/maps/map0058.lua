@@ -2,7 +2,7 @@
 
 function event_map_started(destination_point_name)
 
-  if sol.game.savegame_get_boolean(313) then
+  if sol.map.get_game():get_boolean(313) then
     -- the torches are lit
     lock_torches()
   else
@@ -32,12 +32,12 @@ end
 
 function event_update()
 
-  if not sol.game.savegame_get_boolean(313)
+  if not sol.map.get_game():get_boolean(313)
     and are_all_torches_on() then
 
     sol.audio.play_sound("chest_appears")
     sol.map.chest_set_enabled("torches_chest", true)
-    sol.game.savegame_set_boolean(313, true)
+    sol.map.get_game():set_boolean(313, true)
     lock_torches()
   end
 end

@@ -3,11 +3,11 @@
 -- The player talks to grandma
 function event_npc_interaction(npc_name)
 
-  local has_smith_sword = sol.game.savegame_get_boolean(30)
-  local has_clay_key = sol.game.savegame_get_boolean(28)
-  local has_finished_lyriann_cave = sol.game.savegame_get_boolean(37)
-  local has_bow = sol.game.savegame_get_boolean(26)
-  local has_rock_key = sol.game.savegame_get_boolean(68)
+  local has_smith_sword = sol.map.get_game():get_boolean(30)
+  local has_clay_key = sol.map.get_game():get_boolean(28)
+  local has_finished_lyriann_cave = sol.map.get_game():get_boolean(37)
+  local has_bow = sol.map.get_game():get_boolean(26)
+  local has_rock_key = sol.map.get_game():get_boolean(68)
 
   if not has_smith_sword then
     -- beginning: go get a sword

@@ -14,7 +14,7 @@ function event_map_started(destination_point_name)
   sol.map.tile_set_group_enabled("pipe_under", true)
   sol.map.obstacle_set_group_enabled("pipe_border", false)
 
-  if sol.game.savegame_get_boolean(621) then
+  if sol.map.get_game():get_boolean(621) then
     sol.map.switch_set_activated("ne_door_switch", true)
     sol.map.switch_set_locked("ne_door_switch", true)
   end

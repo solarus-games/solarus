@@ -32,10 +32,10 @@ function event_npc_interaction(npc_name)
 
   if playing then
     sol.map.dialog_start("chests_game_cave.already_playing")
-  elseif not sol.game.savegame_get_boolean(160) then
+  elseif not sol.map.get_game():get_boolean(160) then
     -- first time
     sol.map.dialog_start("chests_game_cave.first_time")
-    sol.game.savegame_set_boolean(160, true)
+    sol.map.get_game():set_boolean(160, true)
   else
     sol.map.dialog_start("chests_game_cave.not_first_time")
   end
@@ -55,9 +55,9 @@ function event_dialog_finished(dialog_id, answer)
           sol.map.chest_set_open(chest_open, false)
         end
 
-        if not sol.game.savegame_get_boolean(180) then
+        if not sol.map.get_game():get_boolean(180) then
           sol.map.dialog_start("chests_game_cave.start_game_wooden_key")
-        elseif not sol.game.savegame_get_boolean(181) then
+        elseif not sol.map.get_game():get_boolean(181) then
           sol.map.dialog_start("chests_game_cave.start_game_piece_of_heart")
         else
           sol.map.dialog_start("chests_game_cave.start_game")
@@ -82,7 +82,7 @@ function event_chest_empty(chest_name)
     local index = math.random(#rewards)
 
     while rewards[index].savegame_variable ~= -1 and
-        sol.game.savegame_get_boolean(rewards[index].savegame_variable) do
+        sol.map.get_game():get_boolean(rewards[index].savegame_variable) do
       -- don't give a saved reward twice (wooden key or piece of heart)
       index = math.random(#rewards)
     end

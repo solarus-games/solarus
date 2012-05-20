@@ -9,19 +9,19 @@ monkey_jump_speed = 48
 function event_map_started(destination_point_name)
 
   -- enable dark world
-  if sol.game.savegame_get_boolean(905) then
+  if sol.map.get_game():get_boolean(905) then
     sol.audio.play_music("dark_world")
     sol.map.tileset_set(13)
   end
 
-  if sol.game.savegame_get_boolean(24) then
+  if sol.map.get_game():get_boolean(24) then
     -- remove the monkey from Link's house entrance
     sol.map.npc_remove("monkey")
   else
     monkey_sprite = sol.map.npc_get_sprite("monkey")
   end
 
-  if sol.game.savegame_get_boolean(89) then
+  if sol.map.get_game():get_boolean(89) then
     -- remove the dungeon 2 door
     remove_dungeon_2_door()
   end
@@ -37,7 +37,7 @@ function event_map_started(destination_point_name)
   end
 
   -- smith cave with thiefs
-  if sol.game.savegame_get_boolean(155) and not sol.game.savegame_get_boolean(156) then
+  if sol.map.get_game():get_boolean(155) and not sol.map.get_game():get_boolean(156) then
     sol.map.teletransporter_set_enabled("to_smith_cave", false)
   else
     sol.map.teletransporter_set_enabled("to_smith_cave_thiefs", false)
@@ -58,7 +58,7 @@ function event_npc_interaction(npc_name)
 
   if string.find(npc_name, "monkey") then
 
-    if not sol.game.savegame_get_boolean(24) then
+    if not sol.map.get_game():get_boolean(24) then
       -- monkey first dialog
       sol.audio.play_sound("monkey")
       sol.map.dialog_start("outside_world.village.monkey")
@@ -73,7 +73,7 @@ function event_npc_interaction(npc_name)
     if sol.game.has_item("rock_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
-      sol.game.savegame_set_boolean(89, true)
+      sol.map.get_game():set_boolean(89, true)
       remove_dungeon_2_door()
     else
       sol.map.dialog_start("outside_world.rock_key_required")
@@ -114,7 +114,7 @@ function event_dialog_finished(dialog_id, answer)
     sol.map.npc_start_movement("monkey", m)
     monkey_sprite:set_animation("jumping")
     monkey_jumps = 1
-    sol.game.savegame_set_boolean(24, true)
+    sol.map.get_game():set_boolean(24, true)
 
   elseif dialog_id == "outside_world.village.tree_woman" then
     sol.map.treasure_give("rupee", 1, -1)

@@ -168,6 +168,6 @@ function escape()
   sol.map.pickable_item_create("heart_container", 1, 521, x, y, 0)
   sol.map.hero_unfreeze()
   sol.map.enemy_remove(sol.enemy.get_name())
-  sol.game.savegame_set_boolean(520, true)
+  sol.map.get_game():set_boolean(520, true)
 end
 

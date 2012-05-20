@@ -4,7 +4,7 @@ fighting_boss = false
 
 function event_map_started(destination_point_name)
 
-  if sol.game.savegame_get_boolean(412) then
+  if sol.map.get_game():get_boolean(412) then
     sol.map.tile_set_enabled("weak_floor", false)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
   else
@@ -39,14 +39,14 @@ function event_sensor_collision_explosion(sensor_name)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.map.teletransporter_set_enabled("weak_floor_teletransporter", true)
     sol.audio.play_sound("secret")
-    sol.game.savegame_set_boolean(412, true)
+    sol.map.get_game():set_boolean(412, true)
   end
 end
 
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_boss_sensor"
-      and not sol.game.savegame_get_boolean(415)
+      and not sol.map.get_game():get_boolean(415)
       and not fighting_boss then
     sol.map.door_close("boss_door")
     sol.map.door_close("final_room_door")

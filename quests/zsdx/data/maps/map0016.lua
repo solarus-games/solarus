@@ -6,7 +6,7 @@ local sword_price = 75
 function event_npc_interaction(npc_name)
 
   -- smith dialog
-  if not sol.game.savegame_get_boolean(30) then
+  if not sol.map.get_game():get_boolean(30) then
     -- the player has no sword yet
     sol.map.dialog_start("smith_cave.without_sword")
   else

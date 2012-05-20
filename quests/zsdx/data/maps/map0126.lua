@@ -4,7 +4,7 @@ function event_map_started(destination_point_name)
 
   sol.map.light_set(0)
 
-  if sol.game.savegame_get_boolean(934) then
+  if sol.map.get_game():get_boolean(934) then
     sol.map.npc_remove("bone_key_door")
   end
 end
@@ -28,7 +28,7 @@ function event_dialog_finished(dialog_id)
     sol.audio.play_sound("door_unlocked")
     sol.audio.play_sound("secret")
     sol.map.npc_remove("bone_key_door")
-    sol.game.savegame_set_boolean(934, true)
+    sol.map.get_game():set_boolean(934, true)
   end
 end
 

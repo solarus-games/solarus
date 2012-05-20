@@ -10,7 +10,7 @@ door_g_finished = false
 function event_map_started(destination_point_name)
 
   -- north barrier
-  if sol.game.savegame_get_boolean(812) then
+  if sol.map.get_game():get_boolean(812) then
     sol.map.switch_set_activated("n_barrier_switch", true)
     sol.map.tile_set_enabled("n_barrier", false)
   end
@@ -31,7 +31,7 @@ function event_map_started(destination_point_name)
   end
 
   -- compass
-  if sol.game.savegame_get_boolean(814) then
+  if sol.map.get_game():get_boolean(814) then
     for i = 1, 7 do
       sol.map.chest_set_open("compass_chest_" .. i, true)
     end
@@ -68,7 +68,7 @@ function event_switch_activated(switch_name)
     sol.audio.play_sound("secret")
     sol.audio.play_sound("door_open")
     sol.map.tile_set_enabled("n_barrier", false)
-    sol.game.savegame_set_boolean(812, true)
+    sol.map.get_game():set_boolean(812, true)
 
   -- door A
   elseif switch_name == "door_a_switch" then

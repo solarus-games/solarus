@@ -17,30 +17,30 @@ local arrows_timer
 function event_map_started(destination_point_name)
 
   -- block fallen into the hole
-  if sol.game.savegame_get_boolean(623) then
+  if sol.map.get_game():get_boolean(623) then
     sol.map.block_set_enabled("nw_block", false)
   end
 
   -- NW door
-  if sol.game.savegame_get_boolean(624) then
+  if sol.map.get_game():get_boolean(624) then
     sol.map.door_set_open("ne_door", true)
   end
 
   -- door A (timed doors)
-  if sol.game.savegame_get_boolean(627) then
+  if sol.map.get_game():get_boolean(627) then
     sol.map.switch_set_activated("door_a_switch", true)
   end
 
   -- boss
   sol.map.door_set_open("boss_door", true)
-  if sol.game.savegame_get_boolean(625)
-    and not sol.game.savegame_get_boolean(626) then
+  if sol.map.get_game():get_boolean(625)
+    and not sol.map.get_game():get_boolean(626) then
     -- boss killed, heart container not picked
     sol.map.pickable_item_create("heart_container", 1, 626, 544, 789, 0)
   end
 
   -- special torch door
-  if sol.game.savegame_get_boolean(624) then
+  if sol.map.get_game():get_boolean(624) then
     sol.map.switch_set_activated("ne_switch", true)
   end
 end
@@ -54,7 +54,7 @@ function event_block_moved(block_name)
       sol.map.block_set_enabled(block_name, false)
       sol.map.tile_set_enabled("hole_a", true)
       sol.map.teletransporter_set_enabled("hole_a_teletransporter", true)
-      sol.game.savegame_set_boolean(623, true)
+      sol.map.get_game():set_boolean(623, true)
       sol.audio.play_sound("jump")
       sol.main:start_timer(500, function() sol.audio.play_sound("bomb") end)
     end
@@ -63,7 +63,7 @@ end
 
 function event_update()
 
-  if not sol.game.savegame_get_boolean(623) then
+  if not sol.map.get_game():get_boolean(623) then
     -- blocks cannot overlap holes or teletransporters with the current engine,
     -- so we disable the hole A and its teletransporter when necessary
 
@@ -154,7 +154,7 @@ function event_hero_on_sensor(sensor_name)
 
   -- boss
   elseif sensor_name == "start_boss_sensor"
-      and not sol.game.savegame_get_boolean(625)
+      and not sol.map.get_game():get_boolean(625)
       and not fighting_boss then
     
     start_boss()
@@ -227,7 +227,7 @@ function start_final_sequence()
   sol.map.npc_set_position("sahasrahla", 544, 717)
   sol.map.camera_move(544, 712, 100, function()
     sol.map.dialog_start("dungeon_7.sahasrahla")
-    sol.map.dialog_set_variable("dungeon_7.sahasrahla", sol.game.savegame_get_name());
+    sol.map.dialog_set_variable("dungeon_7.sahasrahla", sol.map.get_game():get_player_name());
   end)
 end
 

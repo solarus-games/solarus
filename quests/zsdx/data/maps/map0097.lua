@@ -2,17 +2,17 @@
 
 function event_map_started(destination_point_name)
 
-  if sol.game.savegame_get_boolean(205) then
+  if sol.map.get_game():get_boolean(205) then
     sol.map.block_set_enabled("block1_1",false)
     lock_torches_group1()
   end
 
-  if sol.game.savegame_get_boolean(206) then
+  if sol.map.get_game():get_boolean(206) then
     sol.map.block_set_enabled("block2_1",false)
     lock_torches_group2()
   end
 
-  if sol.game.savegame_get_boolean(227) then
+  if sol.map.get_game():get_boolean(227) then
     sol.map.switch_set_activated("switch1_1", true)
     sol.map.switch_set_activated("switch1_2", true)
     sol.map.switch_set_activated("switch1_3", true)
@@ -107,7 +107,7 @@ function event_enemy_dead(enemy_name)
 
   if enemy_name:find("enemy_group2") 
       and sol.map.enemy_is_group_dead("enemy_group2")
-      and not sol.game.savegame_get_boolean(221) then
+      and not sol.map.get_game():get_boolean(221) then
 
     sol.map.camera_move(328, 320, 250, function()
       sol.map.pickable_item_create("small_key", 1, 221, 328, 325, 1)
@@ -134,16 +134,16 @@ end
 
 function event_update()
 
-  if not sol.game.savegame_get_boolean(205)
+  if not sol.map.get_game():get_boolean(205)
       and are_group1_torches_on() then
-    sol.game.savegame_set_boolean(205, true)
+    sol.map.get_game():set_boolean(205, true)
     lock_torches_group1()
     sol.map.camera_move(536, 256, 250, explode_block1)
   end
 
-  if not sol.game.savegame_get_boolean(206)
+  if not sol.map.get_game():get_boolean(206)
       and are_group2_torches_on() then
-    sol.game.savegame_set_boolean(206, true)
+    sol.map.get_game():set_boolean(206, true)
     lock_torches_group2()
     sol.map.camera_move(552, 256, 250, explode_block2)
   end

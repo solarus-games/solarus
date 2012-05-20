@@ -45,7 +45,7 @@ local bonuses_done = {}
 
 function event_map_started(destination_point_name)
 
-  if not sol.game.savegame_get_boolean(881) then
+  if not sol.map.get_game():get_boolean(881) then
     sol.audio.play_music("ganon_appears")
     sol.map.enemy_set_enabled("boss", true)
     sol.map.npc_set_enabled("zelda", false)
@@ -60,7 +60,7 @@ end
 function event_map_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "from_6f" then
-    if not sol.game.savegame_get_boolean(881) then
+    if not sol.map.get_game():get_boolean(881) then
       sol.map.dialog_start("dungeon_9.boss")
     else
       start_zelda_sequence()
@@ -128,7 +128,7 @@ function start_zelda_sequence()
 
   sol.main:start_timer(3000, function()
     sol.map.dialog_start("dungeon_9.zelda")
-    sol.map.dialog_set_variable("dungeon_9.zelda", sol.game.savegame_get_name())
+    sol.map.dialog_set_variable("dungeon_9.zelda", sol.map.get_game():get_player_name())
   end)
 end
 

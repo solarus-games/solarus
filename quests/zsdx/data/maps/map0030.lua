@@ -6,18 +6,18 @@ fighting_miniboss = false
 function event_map_started(destination_point_name)
 
   -- west barrier
-  if sol.game.savegame_get_boolean(78) then
+  if sol.map.get_game():get_boolean(78) then
     sol.map.tile_set_enabled("barrier", false)
     sol.map.switch_set_activated("barrier_switch", true)
   end
 
   -- hidden stairs
-  if sol.game.savegame_get_boolean(90) then
+  if sol.map.get_game():get_boolean(90) then
     open_hidden_stairs()
   end
 
   -- hidden door
-  if sol.game.savegame_get_boolean(91) then
+  if sol.map.get_game():get_boolean(91) then
     open_hidden_door()
   end
 
@@ -36,7 +36,7 @@ end
 
 function event_hero_on_sensor(sensor_name)
 
-  if sensor_name == "start_miniboss_sensor" and not sol.game.savegame_get_boolean(92) and not fighting_miniboss then
+  if sensor_name == "start_miniboss_sensor" and not sol.map.get_game():get_boolean(92) and not fighting_miniboss then
     -- the miniboss is alive
     sol.map.door_close("miniboss_door")
     sol.map.hero_freeze()
@@ -93,10 +93,10 @@ function check_eye_statues()
     sol.map.switch_set_activated("left_eye_switch", false)
     sol.map.switch_set_activated("right_eye_switch", false)
 
-    if not sol.game.savegame_get_boolean(90) then
+    if not sol.map.get_game():get_boolean(90) then
       sol.audio.play_sound("switch")
       sol.map.camera_move(456, 232, 250, hidden_stairs_timer)
-    elseif not sol.game.savegame_get_boolean(91) then
+    elseif not sol.map.get_game():get_boolean(91) then
       sol.audio.play_sound("switch")
       sol.map.camera_move(520, 320, 250, hidden_door_timer)
     end
@@ -106,7 +106,7 @@ end
 function barrier_camera_timer()
   sol.audio.play_sound("secret")
   sol.map.tile_set_enabled("barrier", false)
-  sol.game.savegame_set_boolean(78, true)
+  sol.map.get_game():set_boolean(78, true)
 end
 
 function pegasus_run_camera_timer()
@@ -124,13 +124,13 @@ end
 function hidden_stairs_timer()
   sol.audio.play_sound("secret")
   open_hidden_stairs()
-  sol.game.savegame_set_boolean(90, true)
+  sol.map.get_game():set_boolean(90, true)
 end
 
 function hidden_door_timer()
   sol.audio.play_sound("secret")
   open_hidden_door()
-  sol.game.savegame_set_boolean(91, true)
+  sol.map.get_game():set_boolean(91, true)
 end
 
 function open_hidden_stairs()

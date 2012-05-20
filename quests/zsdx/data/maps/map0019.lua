@@ -8,11 +8,11 @@ function event_map_started(destination_point_name)
 end
 
 function has_talked_about_apples()
-  return sol.game.savegame_get_boolean(46)
+  return sol.map.get_game():get_boolean(46)
 end
 
 function has_obtained_bottle()
-  return sol.game.savegame_get_boolean(32)
+  return sol.map.get_game():get_boolean(32)
 end
 
 function event_hero_on_sensor(sensor_name)
@@ -27,7 +27,7 @@ function event_dialog_finished(dialog_id, answer)
   if dialog_id == "cake_shop.dont_leave" 
     or dialog_id == "cake_shop.seller.ask_apples_again" then
 
-    sol.game.savegame_set_boolean(46, true)
+    sol.map.get_game():set_boolean(46, true)
 
     if answer == 0 then
       if sol.game.has_item("apples_counter") then

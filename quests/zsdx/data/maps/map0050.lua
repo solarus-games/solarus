@@ -13,16 +13,16 @@
 
 function event_map_started(destination_point_name)
   sol.map.door_set_open("LD12", true)
-  if sol.game.savegame_get_boolean(725) then
+  if sol.map.get_game():get_boolean(725) then
     sol.map.block_set_enabled("STT5", false)
   end
-  if sol.game.savegame_get_boolean(720) then
+  if sol.map.get_game():get_boolean(720) then
     sol.map.switch_set_activated("DB1", true)
   end
-  if sol.game.savegame_get_boolean(721) then
+  if sol.map.get_game():get_boolean(721) then
     sol.map.switch_set_activated("DB2", true)
   end
-  if sol.game.savegame_get_boolean(720) and sol.game.savegame_get_boolean(721) then
+  if sol.map.get_game():get_boolean(720) and sol.map.get_game():get_boolean(721) then
     sol.map.door_set_open("LD14", true)
   end
 end
@@ -40,7 +40,7 @@ function event_block_moved(block_name)
       and y >= 893 and y <= 925 then
     sol.map.block_set_enabled("STT5", false)
     sol.audio.play_sound("jump")
-    sol.game.savegame_set_boolean(725, true)
+    sol.map.get_game():set_boolean(725, true)
     sol.main:start_timer(500, function()
       sol.audio.play_sound("bomb")
     end)
@@ -49,14 +49,14 @@ end
 
 function event_switch_activated(switch_name)
   if switch_name == "DB1" then
-    sol.game.savegame_set_boolean(720, true)
-    if sol.game.savegame_get_boolean(721) then
+    sol.map.get_game():set_boolean(720, true)
+    if sol.map.get_game():get_boolean(721) then
       sol.map.door_open("LD14")
       sol.audio.play_sound("secret")
     end
   elseif switch_name == "DB2" then
-    sol.game.savegame_set_boolean(721, true)
-    if sol.game.savegame_get_boolean(720) then
+    sol.map.get_game():set_boolean(721, true)
+    if sol.map.get_game():get_boolean(720) then
       sol.map.door_open("LD14")
       sol.audio.play_sound("secret")
     end

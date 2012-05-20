@@ -21,12 +21,12 @@ function event_map_started(destination_point_name)
   sol.map.door_set_open("boss_door", true)
 
   -- Map chest hide if not already opened
-  if not sol.game.savegame_get_boolean(700) then
+  if not sol.map.get_game():get_boolean(700) then
     sol.map.chest_set_enabled("MAP", false)
   end
 
   -- Big key chest hide if not already opened
-  if not sol.game.savegame_get_boolean(705) then
+  if not sol.map.get_game():get_boolean(705) then
     sol.map.chest_set_enabled("BK01", false)
   end
 
@@ -45,17 +45,17 @@ function event_map_started(destination_point_name)
   end
 
   -- door to Agahnim open if Billy's heart container was picked
-  if sol.game.savegame_get_boolean(729) then
+  if sol.map.get_game():get_boolean(729) then
     sol.map.door_set_open("agahnim_door", true)
   end
 
   -- statues puzzle
-  if sol.game.savegame_get_boolean(723) then
+  if sol.map.get_game():get_boolean(723) then
     sol.map.switch_set_activated("DB06", true)
   end
 
   -- boss key door and laser
-  if sol.game.savegame_get_boolean(730) then
+  if sol.map.get_game():get_boolean(730) then
     sol.map.enemy_remove("boss_key_door_laser")
   end
 end
@@ -111,7 +111,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.door_close("LD4")
     sol.map.sensor_set_enabled("DS4", false)
   elseif sensor_name == "start_boss_sensor" then
-    if not fighting_boss and not sol.game.savegame_get_boolean(727) then
+    if not fighting_boss and not sol.map.get_game():get_boolean(727) then
       sol.audio.stop_music()
       sol.map.door_close("boss_door")
       sol.map.npc_set_enabled("billy_npc", true)
@@ -138,7 +138,7 @@ function event_enemy_dead(enemy_name)
     sol.audio.play_sound("secret")
   elseif string.match(enemy_name, "^map_enemy") and sol.map.enemy_is_group_dead("map_enemy") then
     -- Map chest room: kill all enemies and the chest will appear
-    if not sol.game.savegame_get_boolean(700) then
+    if not sol.map.get_game():get_boolean(700) then
       sol.map.chest_set_enabled("MAP", true)
       sol.audio.play_sound("chest_appears")
     elseif not sol.map.door_is_open("LD3") then
@@ -147,7 +147,7 @@ function event_enemy_dead(enemy_name)
     sol.map.door_open("LD3")
   elseif string.match(enemy_name, "^room_big_enemy") and sol.map.enemy_is_group_dead("room_big_enemy") then
     -- Big key chest room: kill all enemies and the chest will appear
-    if not sol.game.savegame_get_boolean(705) then
+    if not sol.map.get_game():get_boolean(705) then
       sol.map.chest_set_enabled("BK01", true)
       sol.audio.play_sound("chest_appears")
     end

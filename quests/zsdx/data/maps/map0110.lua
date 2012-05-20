@@ -4,10 +4,10 @@ function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "puzzle_end_sensor" then
 
-    if not sol.game.savegame_get_boolean(816) then
+    if not sol.map.get_game():get_boolean(816) then
       -- the end: make a shortcut from 1F
       sol.audio.play_sound("secret")
-      sol.game.savegame_set_boolean(816, true)
+      sol.map.get_game():set_boolean(816, true)
     end
 
   else

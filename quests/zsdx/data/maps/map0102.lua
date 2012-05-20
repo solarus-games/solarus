@@ -15,31 +15,31 @@ function event_map_started(destination_point_name)
 
   -- west enemies room
   sol.map.door_set_open("door_c", true)
-  if sol.game.savegame_get_boolean(616) then
+  if sol.map.get_game():get_boolean(616) then
     local enemy_name = "w_room_enemy_4"
     local x, y = sol.map.enemy_get_position(enemy_name)
     sol.map.enemy_set_position(enemy_name, x, y, 1)
   end
 
   -- saved door A (code)
-  if sol.game.savegame_get_boolean(630) then
+  if sol.map.get_game():get_boolean(630) then
     for i = 1, 8 do
       sol.map.switch_set_activated("code_switch_" .. i, true)
     end
   end
 
   -- saved door D
-  if sol.game.savegame_get_boolean(615) then
+  if sol.map.get_game():get_boolean(615) then
     sol.map.switch_set_activated("door_d_switch", true)
   end
 
   -- torches
-  if sol.game.savegame_get_boolean(618) then
+  if sol.map.get_game():get_boolean(618) then
     lock_torches()
   end
 
   -- weak floor
-  if sol.game.savegame_get_boolean(619) then
+  if sol.map.get_game():get_boolean(619) then
     sol.map.tile_set_group_enabled("weak_floor", false)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
   else
@@ -52,17 +52,17 @@ function event_map_started(destination_point_name)
 
   -- save the north-west door from 1F
   if destination_point_name == "from_1f_ne" then 
-    sol.game.savegame_set_boolean(621, true)
+    sol.map.get_game():set_boolean(621, true)
   end
 
   -- block fallen from 3F
-  if not sol.game.savegame_get_boolean(623) then
+  if not sol.map.get_game():get_boolean(623) then
     sol.map.tile_set_enabled("from_hole_a_tile", false)
     sol.map.block_set_enabled("from_hole_a_block", false)
   end
 
   -- shortcut to the boss
-  local shortcut = sol.game.savegame_get_boolean(628)
+  local shortcut = sol.map.get_game():get_boolean(628)
   sol.map.switch_set_activated("shortcut_switch", shortcut)
   sol.map.tile_set_group_enabled("shortcut_on", shortcut)
   sol.map.tile_set_group_enabled("shortcut_off", not shortcut)
@@ -84,7 +84,7 @@ function event_hero_on_sensor(sensor_name)
 
   -- miniboss
   elseif sensor_name == "start_miniboss_sensor"
-      and not sol.game.savegame_get_boolean(620)
+      and not sol.map.get_game():get_boolean(620)
       and not fighting_miniboss then
 
     sol.map.hero_freeze()
@@ -137,7 +137,7 @@ function event_switch_activated(switch_name)
   elseif switch_name == "shortcut_switch" then
     sol.map.tile_set_group_enabled("shortcut_on", true)
     sol.map.tile_set_group_enabled("shortcut_off", false)
-    sol.game.savegame_set_boolean(628, true)
+    sol.map.get_game():set_boolean(628, true)
     sol.audio.play_sound("secret")
  
   -- code
@@ -211,7 +211,7 @@ function event_enemy_dead(enemy_name)
     sol.audio.play_music("dark_world_dungeon")
     sol.audio.play_sound("secret")
     sol.map.door_open("miniboss_door")
-    sol.game.savegame_set_boolean(620, true)
+    sol.map.get_game():set_boolean(620, true)
   end
 end
 
@@ -235,7 +235,7 @@ end
 
 function event_update()
 
-  if not sol.game.savegame_get_boolean(618)
+  if not sol.map.get_game():get_boolean(618)
     and are_all_torches_on() then
 
     lock_torches()
@@ -255,7 +255,7 @@ function event_sensor_collision_explosion(sensor_name)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.map.teletransporter_set_enabled("weak_floor_teletransporter", true)
     sol.audio.play_sound("secret")
-    sol.game.savegame_set_boolean(619, true)
+    sol.map.get_game():set_boolean(619, true)
   end
 end
 

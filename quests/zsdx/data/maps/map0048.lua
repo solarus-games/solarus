@@ -21,12 +21,12 @@ function event_map_started(destination_point_name)
     sol.map.obstacle_set_enabled("LO4", false)
   end
 
-  if sol.game.savegame_get_boolean(706) then
+  if sol.map.get_game():get_boolean(706) then
     sol.map.switch_set_activated("CB03", true)
   else
     sol.map.chest_set_enabled("KC03", false)
   end
-  if not sol.game.savegame_get_boolean(707) then
+  if not sol.map.get_game():get_boolean(707) then
     sol.map.chest_set_enabled("KC04", false)
   end
 
@@ -66,7 +66,7 @@ end
 
 function event_switch_activated(switch_name)
   if switch_name == "CB03" then
-    if not sol.game.savegame_get_boolean(706) then
+    if not sol.map.get_game():get_boolean(706) then
       sol.map.camera_move(1488, 1152, 250, CB03_chest_appears)
     end
   elseif switch_name == "CB04" then

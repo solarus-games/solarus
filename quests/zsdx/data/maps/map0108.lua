@@ -5,14 +5,14 @@ local chest_a_timer
 function event_map_started(destination_point_name)
 
   -- chest A
-  if sol.game.savegame_get_boolean(872) then
+  if sol.map.get_game():get_boolean(872) then
     sol.map.switch_set_activated("chest_a_switch", true)
   else
     sol.map.chest_set_enabled("chest_a", false)
   end
 
   -- chest C
-  if not sol.game.savegame_get_boolean(876) then
+  if not sol.map.get_game():get_boolean(876) then
     sol.map.chest_set_enabled("chest_c", false)
   end
 end

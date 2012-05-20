@@ -39,7 +39,7 @@ function event_npc_interaction(npc_name)
     else
 
       -- see if the player can still play
-      local unauthorized = sol.game.savegame_get_boolean(16)
+      local unauthorized = sol.map.get_game():get_boolean(16)
 
       if unauthorized then
 	-- the player already won much money
@@ -74,7 +74,7 @@ function event_npc_interaction(npc_name)
       sol.map.dialog_start("rupee_house.game_3.restart_question")
     else
       -- see if the player can still play
-      unauthorized = sol.game.savegame_get_boolean(17)
+      unauthorized = sol.map.get_game():get_boolean(17)
 
       if unauthorized then
 	-- the player already won this game
@@ -272,7 +272,7 @@ function event_chest_empty(chest_name)
 
     if amount == 50 then
       -- the maximum reward was found: the game will now refuse to let the hero play again
-      sol.game.savegame_set_boolean(16, true)
+      sol.map.get_game():set_boolean(16, true)
     end
 
     playing_game_1 = false

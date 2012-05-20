@@ -11,13 +11,13 @@ function event_map_started(destination_point_name)
     sol.audio.play_music("fanfare")
   else
     -- enable dark world
-    if sol.game.savegame_get_boolean(905) then
+    if sol.map.get_game():get_boolean(905) then
       sol.map.tileset_set(13)
     end
   end
 
   -- remove the dungeon 7 lock if open
-  if sol.game.savegame_get_boolean(919) then
+  if sol.map.get_game():get_boolean(919) then
     remove_dungeon_7_lock()
   end
 end
@@ -43,7 +43,7 @@ function event_npc_interaction(npc_name)
     if sol.game.has_item("ice_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
-      sol.game.savegame_set_boolean(919, true)
+      sol.map.get_game():set_boolean(919, true)
       remove_dungeon_7_lock()
     else
       sol.map.dialog_start("outside_world.ice_key_required")

@@ -1,11 +1,11 @@
 -- North Fairy Fountain
 
 function has_fairy_appeared()
-  return sol.game.savegame_get_boolean(929)
+  return sol.map.get_game():get_boolean(929)
 end
 
 function has_tiger_scrolls()
-  return sol.game.savegame_get_boolean(930)
+  return sol.map.get_game():get_boolean(930)
 end
 
 function show_fairy()
@@ -41,7 +41,7 @@ function event_update()
       and are_all_torches_on() then
 
     sol.audio.play_sound("secret")
-    sol.game.savegame_set_boolean(929, true)
+    sol.map.get_game():set_boolean(929, true)
     show_fairy()
   end
 end

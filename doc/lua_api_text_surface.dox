@@ -7,7 +7,7 @@ contain text.
 
 \c sol.text_surface.create(properties):
 Creates a text surface with the specified properties.
-  - \c properties (table): a table that describes all properties
+  - \c properties (optional table): a table that describes all properties
     of the text surface to create. Its key-value pairs are all optinoal,
     they can be:
     - \c horizontal_alignement (string, default "left"): "left",

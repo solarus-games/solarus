@@ -139,6 +139,7 @@ class Script {
     static void push_surface(lua_State* l, Surface& surface);
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
     static void push_sprite(lua_State* l, Sprite& sprite);
+    static void push_game(lua_State* l, Equipment& game);
     static void push_movement(lua_State* l, Movement& movement);
     static void push_ref(lua_State* l, int ref);
     const std::string& input_get_key_name(InputEvent::KeyboardKey key);
@@ -196,6 +197,7 @@ class Script {
     static TextSurface& check_text_surface(lua_State* l, int index);
     static Sprite& check_sprite(lua_State* l, int index);
     static Color check_color(lua_State* l, int index);
+    static Equipment& check_game(lua_State* l, int index);
     static Movement& check_movement(lua_State* l, int index);
     static StraightMovement& check_straight_movement(lua_State* l, int index);
     static RandomMovement& check_random_movement(lua_State* l, int index);
@@ -249,26 +251,32 @@ class Script {
       timer_api_stop_timers,
 
       // game API
+      game_api_exists,
+      game_api_delete,
+      game_api_load,
       game_api_save,
-      game_api_reset,
-      game_api_restart,
-      game_api_savegame_get_string,
-      game_api_savegame_get_integer,
-      game_api_savegame_get_boolean,
-      game_api_savegame_set_string,
-      game_api_savegame_set_integer,
-      game_api_savegame_set_boolean,
-      game_api_savegame_get_name,
+      game_api_start,
+      game_api_get_string,
+      game_api_get_integer,
+      game_api_get_boolean,
+      game_api_set_string,
+      game_api_set_integer,
+      game_api_set_boolean,
+      game_api_get_player_name,
+      game_api_set_player_name,
       game_api_get_life,
+      game_api_set_life,
       game_api_add_life,
       game_api_remove_life,
       game_api_get_max_life,
       game_api_set_max_life,
       game_api_add_max_life,
       game_api_get_money,
+      game_api_set_money,
       game_api_add_money,
       game_api_remove_money,
       game_api_get_magic,
+      game_api_set_magic,
       game_api_add_magic,
       game_api_remove_magic,
       game_api_start_decreasing_magic,
@@ -289,8 +297,7 @@ class Script {
       game_api_set_dungeon_finished,
 
       // map API
-      map_api_hero_freeze,
-      map_api_hero_unfreeze,
+      map_api_get_game,
       map_api_dialog_start,
       map_api_dialog_set_variable,
       map_api_dialog_set_style,
@@ -303,6 +310,8 @@ class Script {
       map_api_tileset_get,
       map_api_tileset_set,
       map_api_treasure_give,
+      map_api_hero_freeze,
+      map_api_hero_unfreeze,
       map_api_hero_set_map,
       map_api_hero_set_visible,
       map_api_hero_get_direction,

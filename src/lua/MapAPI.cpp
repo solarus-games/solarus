@@ -48,6 +48,7 @@ const std::string Script::map_module_name = "sol.map";
 void Script::register_map_module() {
 
   static const luaL_Reg functions[] = {
+      { "get_game", map_api_get_game },
       { "dialog_start", map_api_dialog_start },
       { "dialog_set_variable", map_api_dialog_set_variable },
       { "dialog_set_style", map_api_dialog_set_style },
@@ -68,8 +69,6 @@ void Script::register_map_module() {
       { "hero_set_direction", map_api_hero_set_direction },
       { "hero_get_position", map_api_hero_get_position },
       { "hero_set_position", map_api_hero_set_position },
-      { "npc_get_position", map_api_npc_get_position },
-      { "npc_set_position", map_api_npc_set_position },
       { "hero_align_on_sensor", map_api_hero_align_on_sensor },
       { "hero_save_solid_ground", map_api_hero_save_solid_ground },
       { "hero_reset_solid_ground", map_api_hero_reset_solid_ground },
@@ -89,6 +88,8 @@ void Script::register_map_module() {
       { "npc_get_sprite", map_api_npc_get_sprite },
       { "npc_remove", map_api_npc_remove },
       { "npc_exists", map_api_npc_exists },
+      { "npc_get_position", map_api_npc_get_position },
+      { "npc_set_position", map_api_npc_set_position },
       { "chest_is_open", map_api_chest_is_open },
       { "chest_set_open", map_api_chest_set_open },
       { "chest_is_enabled", map_api_chest_is_enabled },
@@ -162,6 +163,20 @@ void Script::register_map_module() {
       { NULL, NULL }
   };
   register_functions(map_module_name, functions);
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_get_game.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::map_api_get_game(lua_State *l) {
+
+  Script& script = get_script(l);
+
+  push_game(l, script.get_game().get_equipment());
+
+  return 1;
 }
 
 /**

@@ -10,6 +10,11 @@ Returns whether the specified savegame file exists.
     savegames directory.
   - Return value (boolean): true if this savegame file exists
 
+- \c sol.game.delete(file_name):
+Deletes a savegame file.
+  - \c file_name (string): name of the file to delete, relative
+    to the savegames directory
+
 - \c sol.game.load(file_name):
 Loads an existing savegame, or creates a new one if the file does not exist.
 This function does not start the game, it just loads the savegame file.
@@ -18,11 +23,6 @@ To actually run the game, call the \c start() method.
   - \c file_name (string): name of the file to load or create, relative
     to the savegames directory
   - Return value (game): the loaded (or created) game
-
-- \c sol.game.delete(file_name):
-Deletes a savegame file.
-  - \c file_name (string): name of the file to delete, relative
-    to the savegames directory
 
 - \c game:save():
 Saves this game into its savegame file.
@@ -211,6 +211,13 @@ The item must have a counter (i.e. a notion of amount).
   - \c item_name (string): name of the item to get (the item must
     have a counter)
   - Return value (number): the amount of this item
+
+- \c game:set_item_amount(item_name, amount):
+Sets the amount the player has for an item.
+The item must have a counter (i.e. a notion of amount).
+  - \c item_name (string): name of the item to get (the item must
+    have a counter)
+  - \c amount (number): the new amount to set
 
 - \c game:add_item_amount(item_name, amount):
 Adds an amount of the specified item.

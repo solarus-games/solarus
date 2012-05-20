@@ -29,27 +29,33 @@ const std::string Script::game_module_name = "sol.game";
  */
 void Script::register_game_module() {
 
-  static const luaL_Reg functions[] = {
+  static const luaL_Reg methods[] = {
+      { "exists", game_api_exists },
+      { "delete", game_api_delete },
+      { "load", game_api_load },
       { "save", game_api_save },
-      { "reset", game_api_reset },
-      { "restart", game_api_restart },
-      { "savegame_get_string", game_api_savegame_get_string },
-      { "savegame_get_integer", game_api_savegame_get_integer },
-      { "savegame_get_boolean", game_api_savegame_get_boolean },
-      { "savegame_set_string", game_api_savegame_set_string },
-      { "savegame_set_integer", game_api_savegame_set_integer },
-      { "savegame_set_boolean", game_api_savegame_set_boolean },
-      { "savegame_get_name", game_api_savegame_get_name },
+      { "start", game_api_start },
+      { "get_string", game_api_get_string },
+      { "get_integer", game_api_get_integer },
+      { "get_boolean", game_api_get_boolean },
+      { "set_string", game_api_set_string },
+      { "set_integer", game_api_set_integer },
+      { "set_boolean", game_api_set_boolean },
+      { "get_player_name", game_api_get_player_name },
+      { "set_player_name", game_api_set_player_name },
       { "get_life", game_api_get_life },
+      { "set_life", game_api_set_life },
       { "add_life", game_api_add_life },
       { "remove_life", game_api_remove_life },
       { "get_max_life", game_api_get_max_life },
       { "set_max_life", game_api_set_max_life },
       { "add_max_life", game_api_add_max_life },
       { "get_money", game_api_get_money },
+      { "set_money", game_api_set_money },
       { "add_money", game_api_add_money },
       { "remove_money", game_api_remove_money },
       { "get_magic", game_api_get_magic},
+      { "set_magic", game_api_set_magic},
       { "add_magic", game_api_add_magic},
       { "remove_magic", game_api_remove_magic},
       { "start_decreasing_magic", game_api_start_decreasing_magic},
@@ -70,11 +76,73 @@ void Script::register_game_module() {
       { "set_dungeon_finished", game_api_set_dungeon_finished },
       { NULL, NULL }
   };
-  register_functions(game_module_name, functions);
+  static const luaL_Reg metamethods[] = {
+      { "__eq", userdata_meta_eq },
+      { NULL, NULL }
+  };
+  register_type(game_module_name, methods, metamethods);
 }
 
 /**
- * @brief Saves the game.
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * game and returns it.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @return the game
+ */
+Equipment& Script::check_game(lua_State* l, int index) {
+  return static_cast<Equipment&>(check_userdata(l, index, game_module_name));
+}
+
+/**
+ * @brief Pushes a game userdata onto the stack.
+ * @param l a Lua context
+ * @param sprite a sprite
+ */
+void Script::push_game(lua_State* l, Equipment& game) {
+  push_userdata(l, game);
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_exists.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_api_exists(lua_State *l) {
+
+  // TODO
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_delete.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_api_delete(lua_State *l) {
+
+  // TODO
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_load.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_api_load(lua_State *l) {
+
+  // TODO
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_save.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_save(lua_State *l) {
 
@@ -86,24 +154,11 @@ int Script::game_api_save(lua_State *l) {
 }
 
 /**
- * @brief Resets the game (comes back to the title screen).
+ * @brief Implementation of \ref lua_api_game_start.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_reset(lua_State* l) {
-
-  Script& script = get_script(l);
-
-  script.get_game().reset();
-
-  return 0;
-}
-
-/**
- * @brief Restarts the game with the current savegame.
- *
- * The game is restarted with the current savegame state,
- * even if it is not saved.
- */
-int Script::game_api_restart(lua_State *l) {
+int Script::game_api_start(lua_State *l) {
 
   Script& script = get_script(l);
 
@@ -113,12 +168,11 @@ int Script::game_api_restart(lua_State *l) {
 }
 
 /**
- * @brief Returns a string value saved.
- *
- * - Argument 1 (integer): index of the string value to get (0 to 63)
- * - Return value (string): the string saved at this index
+ * @brief Implementation of \ref lua_api_game_get_string.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_savegame_get_string(lua_State* l) {
+int Script::game_api_get_string(lua_State* l) {
 
   Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
@@ -133,12 +187,11 @@ int Script::game_api_savegame_get_string(lua_State* l) {
 }
 
 /**
- * @brief Returns an integer value saved.
- *
- * - Argument 1 (integer): index of the integer value to get (0 to 2047)
- * - Return value (integer): the integer saved at this index
+ * @brief Implementation of \ref lua_api_game_get_integer.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_savegame_get_integer(lua_State *l) {
+int Script::game_api_get_integer(lua_State *l) {
 
   Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
@@ -153,12 +206,11 @@ int Script::game_api_savegame_get_integer(lua_State *l) {
 }
 
 /**
- * @brief Returns a boolean value saved.
- *
- * - Argument 1 (integer): index of the boolean value to get
- * - Return value (boolean): the boolean saved at this index
+ * @brief Implementation of \ref lua_api_game_get_boolean.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_savegame_get_boolean(lua_State *l) {
+int Script::game_api_get_boolean(lua_State *l) {
 
   Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
@@ -173,13 +225,11 @@ int Script::game_api_savegame_get_boolean(lua_State *l) {
 }
 
 /**
- * @brief Sets a string value saved.
- *
- * - Argument 1 (integer): index of the string value to set, between 32 and 63
- * (lower indices are writable only by the game engine)
- * - Argument 2 (string): the string value to store at this index
+ * @brief Implementation of \ref lua_api_game_set_string.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_savegame_set_string(lua_State *l) {
+int Script::game_api_set_string(lua_State *l) {
 
   Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
@@ -197,13 +247,11 @@ int Script::game_api_savegame_set_string(lua_State *l) {
 }
 
 /**
- * @brief Sets an integer value saved.
- *
- * - Argument 1 (integer): index of the integer value to set, between 1024 and 2047
- * (lower indices are writable only by the game engine)
- * - Argument 2 (integer): the integer value to store at this index
+ * @brief Implementation of \ref lua_api_game_set_integer.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_savegame_set_integer(lua_State *l) {
+int Script::game_api_set_integer(lua_State *l) {
 
   Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
@@ -221,12 +269,11 @@ int Script::game_api_savegame_set_integer(lua_State *l) {
 }
 
 /**
- * @brief Sets a boolean value saved.
- *
- * - Argument 1 (integer): index of the boolean value to set, between 0 and 32767
- * - Argument 2 (boolean): the boolean value to store at this index
+ * @brief Implementation of \ref lua_api_game_set_boolean.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_savegame_set_boolean(lua_State *l) {
+int Script::game_api_set_boolean(lua_State *l) {
 
   Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
@@ -241,11 +288,11 @@ int Script::game_api_savegame_set_boolean(lua_State *l) {
 }
 
 /**
- * @brief Returns a string representing the name of the player.
- *
- * - Return value (string): the player's name
+ * @brief Implementation of \ref lua_api_game_get_player_name.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::game_api_savegame_get_name(lua_State *l) {
+int Script::game_api_get_player_name(lua_State *l) {
 
   Script& script = get_script(l);
 
@@ -256,9 +303,21 @@ int Script::game_api_savegame_get_name(lua_State *l) {
 }
 
 /**
- * @brief Returns the current level of life of the player.
- *
- * - Return value (integer): the level of life
+ * @brief Implementation of \ref lua_api_game_set_player_name.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_api_set_player_name(lua_State *l) {
+
+  // TODO
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_get_life.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_get_life(lua_State *l) {
 
@@ -271,9 +330,21 @@ int Script::game_api_get_life(lua_State *l) {
 }
 
 /**
- * @brief Gives some life to the player.
- *
- * - Argument 1 (integer): amount of life to add
+ * @brief Implementation of \ref lua_api_game_set_life.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_api_set_life(lua_State *l) {
+
+  // TODO
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_add_life.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_add_life(lua_State *l) {
 
@@ -287,9 +358,9 @@ int Script::game_api_add_life(lua_State *l) {
 }
 
 /**
- * @brief Removes some life from the player.
- *
- * - Argument 1 (integer): amount of life to remove
+ * @brief Implementation of \ref lua_api_game_remove_life.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_remove_life(lua_State *l) {
 
@@ -303,9 +374,9 @@ int Script::game_api_remove_life(lua_State *l) {
 }
 
 /**
- * @brief Returns the maximum level of life of the player.
- *
- * - Return value (integer): the maximum level of life
+ * @brief Implementation of \ref lua_api_game_get_max_life.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_get_max_life(lua_State *l) {
 
@@ -318,9 +389,9 @@ int Script::game_api_get_max_life(lua_State *l) {
 }
 
 /**
- * @brief Sets the maximum level of life of the player.
- *
- * - Argument 1 (integer): the maximum level of life to set
+ * @brief Implementation of \ref lua_api_game_set_max_life.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_set_max_life(lua_State *l) {
 
@@ -333,9 +404,9 @@ int Script::game_api_set_max_life(lua_State *l) {
 }
 
 /**
- * @brief Increases the maximum level of life of the player.
- *
- * - Argument 1 (integer): amount of life to add to the current maximum
+ * @brief Implementation of \ref lua_api_game_add_max_life.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_add_max_life(lua_State *l) {
 
@@ -350,9 +421,9 @@ int Script::game_api_add_max_life(lua_State *l) {
 }
 
 /**
- * @brief Returns the current amount of money of the player.
- *
- * - Return value (integer): the amount of money
+ * @brief Implementation of \ref lua_api_game_get_money.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_get_money(lua_State *l) {
 
@@ -365,9 +436,21 @@ int Script::game_api_get_money(lua_State *l) {
 }
 
 /**
- * @brief Gives some money to the player.
- *
- * - Argument 1 (integer): amount of money to add
+ * @brief Implementation of \ref lua_api_game_set_money.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_api_set_money(lua_State *l) {
+
+  // TODO
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_add_money.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_add_money(lua_State *l) {
 
@@ -381,9 +464,9 @@ int Script::game_api_add_money(lua_State *l) {
 }
 
 /**
- * @brief Removes some money from the player.
- *
- * - Argument 1 (integer): amount of money to remove
+ * @brief Implementation of \ref lua_api_game_remove_money.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_remove_money(lua_State *l) {
 
@@ -397,9 +480,9 @@ int Script::game_api_remove_money(lua_State *l) {
 }
 
 /**
- * @brief Returns the current number of magic points.
- *
- * - Return value: the current number of magic points
+ * @brief Implementation of \ref lua_api_game_get_magic.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_get_magic(lua_State *l) {
 
@@ -412,9 +495,21 @@ int Script::game_api_get_magic(lua_State *l) {
 }
 
 /**
- * @brief Gives some magic points to the player.
- *
- * - Argument 1 (integer): number of magic points to add
+ * @brief Implementation of \ref lua_api_game_set_magic.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_api_set_magic(lua_State *l) {
+
+  // TODO
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_add_magic.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_add_magic(lua_State *l) {
 
@@ -428,9 +523,9 @@ int Script::game_api_add_magic(lua_State *l) {
 }
 
 /**
- * @brief Removes some magic points from the player.
- *
- * - Argument 1 (integer): number of magic points to remove
+ * @brief Implementation of \ref lua_api_game_remove_magic.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_remove_magic(lua_State *l) {
 
@@ -444,9 +539,9 @@ int Script::game_api_remove_magic(lua_State *l) {
 }
 
 /**
- * @brief Starts a continuous decrease of the magic points.
- *
- * - Argument 1 (integer): delay in milliseconds between each loss of 1 point
+ * @brief Implementation of \ref lua_api_game_start_decreasing_magic.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_start_decreasing_magic(lua_State *l) {
 
@@ -460,7 +555,9 @@ int Script::game_api_start_decreasing_magic(lua_State *l) {
 }
 
 /**
- * @brief Stops a continuous decrease of the magic points.
+ * @brief Implementation of \ref lua_api_game_stop_decreasing_magic.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_stop_decreasing_magic(lua_State *l) {
 
@@ -472,9 +569,9 @@ int Script::game_api_stop_decreasing_magic(lua_State *l) {
 }
 
 /**
- * @brief Returns the maximum number of magic points of the player.
- *
- * - Return value (integer): the maximum number of magic points
+ * @brief Implementation of \ref lua_api_game_get_max_magic.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_get_max_magic(lua_State *l) {
 
@@ -487,9 +584,9 @@ int Script::game_api_get_max_magic(lua_State *l) {
 }
 
 /**
- * @brief Sets the maximum number of magic points of the player.
- *
- * - Argument 1 (integer): the maximum number of magic points to set
+ * @brief Implementation of \ref lua_api_game_set_max_magic.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_set_max_magic(lua_State *l) {
 
@@ -502,12 +599,9 @@ int Script::game_api_set_max_magic(lua_State *l) {
 }
 
 /**
- * @brief Returns whether the player has the specified ability.
- *
- * This is equivalent to equipment_get_ability(ability_name) > 0.
- *
- * - Argument 1 (string): name of the ability to get
- * - Return value (boolean): true if the level of this ability is greater than 0
+ * @brief Implementation of \ref lua_api_game_has_ability.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_has_ability(lua_State *l) {
 
@@ -522,31 +616,9 @@ int Script::game_api_has_ability(lua_State *l) {
 }
 
 /**
- * @brief Sets the level of an ability of the player.
- *
- * This function is typically called when the player obtains
- * an item that gives an ability
- *
- * - Argument 1 (string): name of the ability to set
- * - Argument 2 (integer): the level of this ability
- */
-int Script::game_api_set_ability(lua_State *l) {
-
-  Script& script = get_script(l);
-
-  const std::string &ability_name = luaL_checkstring(l, 1);
-  int level = luaL_checkinteger(l, 2);
-
-  script.get_game().get_equipment().set_ability(ability_name, level);
-
-  return 0;
-}
-
-/**
- * @brief Returns the level of an ability of the player.
- *
- * - Argument 1 (string): name of the ability to get
- * - Return value (integer): the level of this ability
+ * @brief Implementation of \ref lua_api_game_get_ability.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_get_ability(lua_State *l) {
 
@@ -561,12 +633,26 @@ int Script::game_api_get_ability(lua_State *l) {
 }
 
 /**
- * @brief Returns whether the player has the specified item.
- *
- * This is equivalent to equipment_get_item(item_name) > 0.
- *
- * - Argument 1 (string): an item name
- * - Return value (boolean): true if the player has this item
+ * @brief Implementation of \ref lua_api_game_set_ability.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_api_set_ability(lua_State *l) {
+
+  Script& script = get_script(l);
+
+  const std::string &ability_name = luaL_checkstring(l, 1);
+  int level = luaL_checkinteger(l, 2);
+
+  script.get_game().get_equipment().set_ability(ability_name, level);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_has_item.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_has_item(lua_State *l) {
 
@@ -581,11 +667,9 @@ int Script::game_api_has_item(lua_State *l) {
 }
 
 /**
- * @brief Returns the possession state (also called the variant) of an item.
- *
- * - Argument 1 (string): an item name
- * - Return value (integer): the possession state of this item
- *   (0 if the player does not have the item)
+ * @brief Implementation of \ref lua_api_game_get_item.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_get_item(lua_State *l) {
 
@@ -600,11 +684,9 @@ int Script::game_api_get_item(lua_State *l) {
 }
 
 /**
- * @brief Sets the possession state of an item.
- *
- * - Argument 1 (string): an item name
- * - Argument 2 (integer): the possession state of this inventory item
- * (a value of 0 removes the item)
+ * @brief Implementation of \ref lua_api_game_set_item.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_set_item(lua_State *l) {
 
@@ -619,13 +701,9 @@ int Script::game_api_set_item(lua_State *l) {
 }
 
 /**
- * @brief Returns whether the player has at least the specified amount of an item.
- *
- * This is equivalent to equipment_get_item_amount(item_name, amount) > 0.
- *
- * - Argument 1 (string): the name of an item having an amount
- * - Argument 2 (integer): the amount to check
- * - Return value (integer): true if the player has at least this amount
+ * @brief Implementation of \ref lua_api_game_has_item_amount.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_has_item_amount(lua_State *l) {
 
@@ -641,10 +719,9 @@ int Script::game_api_has_item_amount(lua_State *l) {
 }
 
 /**
- * @brief Returns the amount the player has for an item.
- *
- * - Argument 1 (string): the name of an item having an amount
- * - Return value (integer): the amount possessed
+ * @brief Implementation of \ref lua_api_game_get_item_amount.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_get_item_amount(lua_State *l) {
 
@@ -659,10 +736,9 @@ int Script::game_api_get_item_amount(lua_State *l) {
 }
 
 /**
- * @brief Adds an amount of the specified item.
- *
- * - Argument 1 (string): the name of an item having an amount
- * - Argument 2 (integer): the amount to add
+ * @brief Implementation of \ref lua_api_game_add_item_amount.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_add_item_amount(lua_State *l) {
 
@@ -677,10 +753,9 @@ int Script::game_api_add_item_amount(lua_State *l) {
 }
 
 /**
- * @brief Removes an amount of the specified item.
- *
- * - Argument 1 (string): the name of an item having an amount
- * - Argument 2 (integer): the amount to remove
+ * @brief Implementation of \ref lua_api_game_remove_item_amount.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_remove_item_amount(lua_State *l) {
 
@@ -695,15 +770,9 @@ int Script::game_api_remove_item_amount(lua_State *l) {
 }
 
 /**
- * @brief Returns whether a dungeon is finished.
- *
- * A dungeon is considered as finished if the function dungeon_set_finished() was
- * called from the script of a map in that dungeon.
- * This information is saved by the engine (see include/Savegame.h).
- * - Argument 1 (integer): number of the dungeon to test
- * - Return value (boolean): true if that dungeon is finished
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_game_is_dungeon_finished.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_is_dungeon_finished(lua_State *l) {
 
@@ -717,13 +786,9 @@ int Script::game_api_is_dungeon_finished(lua_State *l) {
 }
 
 /**
- * @brief Sets a dungeon as finished.
- *
- * You should call this function when the final dialog of the dungeon ending
- * sequence is finished.
- * - Argument 1 (integer): number of the dungeon to set
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_game_set_dungeon_finished.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::game_api_set_dungeon_finished(lua_State *l) {
 

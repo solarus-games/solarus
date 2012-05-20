@@ -32,7 +32,7 @@ function event_restart()
   m:set_speed(48)
   m:set_target(initial_xy.x, initial_xy.y)
   sol.enemy.start_movement(m)
-  sol.timer.stop(timers)
+  for _, t in ipairs(timers) do t:stop() end
 
   nb_fire_created = 0
   timers[#timers + 1] = sol.main:start_timer(2000 + math.random(8000), function()
@@ -47,7 +47,7 @@ end
 function event_hurt(attack, life_lost)
 
   if life_lost > 0 then
-    sol.timer.stop(timers)
+    for _, t in ipairs(timers) do t:stop() end
   end
 end
 

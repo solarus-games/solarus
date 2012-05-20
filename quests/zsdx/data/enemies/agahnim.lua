@@ -36,7 +36,7 @@ end
 function event_restart()
 
   vulnerable = false
-  sol.timer.stop(timers)
+  for _, t in ipairs(timers) do t:stop() end
   local sprite = sol.enemy.get_sprite()
 
   if not finished then
@@ -124,7 +124,7 @@ function event_message_received(src_enemy, message)
   if string.find(src_enemy, "^agahnim_fireball")
       and vulnerable then
 
-    sol.timer.stop(timers)
+    for _, t in ipairs(timers) do t:stop() end
     sol.map.enemy_remove(src_enemy)
     sol.enemy.hurt(1)
   end

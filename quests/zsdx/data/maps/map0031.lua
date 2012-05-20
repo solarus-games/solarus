@@ -199,7 +199,7 @@ function boss_restore_floor(with_arrows)
 
   -- restore the whole floor immediately
   sol.map.tile_set_group_enabled("boss_floor", true)
-  sol.timer.stop(timers)
+  for _, t in ipairs(timers) do t:stop() end
 
   if with_arrows then
     for k, v in pairs(boss_arrows) do
@@ -224,7 +224,7 @@ function event_enemy_dead(enemy_name)
   if enemy_name == "boss" then
     -- create the heart container manually to be sure it won't be in lava
     sol.map.pickable_item_create("heart_container", 1, 103, 960, 437, 0)
-    sol.timer.stop(timers)
+    for _, t in ipairs(timers) do t:stop() end
   end
 end
 

@@ -49,7 +49,7 @@ end
 function event_restart()
 
   if not disappearing then
-    sol.timer.stop(timers)
+    for _, t in ipairs(timers) do t:stop() end
     local sprite = sol.enemy.get_sprite()
     sprite:fade(1)
     timers[#timers + 1] = sol.main:start_timer(500, hide)
@@ -149,7 +149,7 @@ function disappear()
   disappearing = true
   sol.enemy.set_can_attack(false)
   sprite:fade(1)
-  sol.timer.stop(timers)
+  for _, t in ipairs(timers) do t:stop() end
   timers[#timers + 1] = sol.main:start_timer(500, function()
     sol.map.enemy_remove(sol.enemy.get_name())
   end)
@@ -162,7 +162,7 @@ function event_collision_enemy(other_name, other_sprite, my_sprite)
     local x = sol.enemy.get_position()
     if x > 0 then
       -- collision with another Agahnim
-      sol.timer.stop(timers)
+      for _, t in ipairs(timers) do t:stop() end
       hide() -- go somewhere else
     end
   end

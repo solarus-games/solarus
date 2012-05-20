@@ -65,7 +65,7 @@ function event_map_changed()
 
   -- cancel all torch timers so that the previous map does not interfer with
   -- the new one
-  sol.timer.stop(timers)
+  for _, t in ipairs(timers) do t:stop() end
   temporary_lit_torches = {}
   was_dark_room = false
 end

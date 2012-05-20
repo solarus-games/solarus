@@ -22,14 +22,14 @@ end
 
 function event_restart()
 
-  sol.timer.stop(timers)
+  for _, t in ipairs(timers) do t:stop() end
   timers[#timers + 1] = sol.main:start_timer(2000, egg_phase_soon)
   go()
 end
 
 function event_hurt(attack, life_lost)
 
-  sol.timer.stop(timers)
+  for _, t in ipairs(timers) do t:stop() end
   local boss_hp = sol.enemy.get_life()
   if boss_hp <= 0 then
     -- I am dying: remove the minillosaur eggs

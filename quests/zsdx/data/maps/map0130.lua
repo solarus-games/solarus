@@ -170,7 +170,7 @@ function unlight_torches()
   for i = 1, 4 do
     sol.map.npc_get_sprite("torch_" .. i):set_animation("unlit")
   end
-  sol.timer.stop(torches_timers)
+  for _, t in ipairs(torches_timers) do t:stop() end
 end
 
 function check_torches()

@@ -42,7 +42,7 @@ end
 
 function event_hurt(attack, life_lost)
 
-  sol.timer.stop(timers)
+  for _, t in ipairs(timers) do t:stop() end
   if sol.enemy.get_life() <= 0 then
     -- I am dying: remove the sons
     local sons_prefix = sol.enemy.get_name().."_son"

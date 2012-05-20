@@ -35,13 +35,13 @@ function event_restart()
     local m = sol.movement.create("random")
     m:set_speed(32)
     sol.enemy.start_movement(m)
-    sol.timer.stop(timers)
+    for _, t in ipairs(timers) do t:stop() end
     timers[#timers + 1] = sol.main:start_timer(math.random(2000, 3000), skeleton_attack)
   else
     local m = sol.movement.create("random")
     m:set_speed(80)
     sol.enemy.start_movement(m)
-    sol.timer.stop(timers)
+    for _, t in ipairs(timers) do t:stop() end
     timers[#timers + 1] = sol.main:start_timer(math.random(3000, 5000), big_attack)
   end
 end
@@ -66,7 +66,7 @@ end
 
 function event_hurt(attack, life_lost)
 
-  sol.timer.stop(timers)
+  for _, t in ipairs(timers) do t:stop() end
   if phase == 1 and sol.enemy.get_life() <= 7 then
     sol.enemy.stop_movement()
     sol.audio.play_sound("enemy_killed")

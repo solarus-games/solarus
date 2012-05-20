@@ -52,7 +52,7 @@ end
 function event_restart()
 
   vulnerable = false
-  sol.timer.stop(timers)
+  for _, t in ipairs(timers) do t:stop() end
   local sprite = sol.enemy.get_sprite()
   sprite:set_ignore_suspend(false)
   sprite:fade(1)
@@ -181,7 +181,7 @@ function event_message_received(src_enemy, message)
 
     -- receive a fireball: get hurt or throw it back
     if math.random(100) <= hurt_proba then
-      sol.timer.stop(timers)
+      for _, t in ipairs(timers) do t:stop() end
       sol.map.enemy_remove(src_enemy)
       sol.enemy.hurt(1)
     else
@@ -203,7 +203,7 @@ function event_hurt(attack, life_lost)
     sol.map.enemy_remove_group(sol.enemy.get_name() .. "_")
     sprite:set_ignore_suspend(true)
     sol.map.dialog_start("dungeon_8.agahnim_end")
-    sol.timer.stop(timers)
+    for _, t in ipairs(timers) do t:stop() end
   elseif life <= initial_life * 2 / 3 then
     -- not dying yet: start creating fakes after a few hits
     sprite:set_ignore_suspend(true)

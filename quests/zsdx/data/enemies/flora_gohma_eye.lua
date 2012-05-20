@@ -53,7 +53,7 @@ function event_restart()
   m:set_speed(speed)
   m:set_target(initial_xy.x, initial_xy.y)
   sol.enemy.start_movement(m)
-  sol.timer.stop(timers)
+  for _, t in ipairs(timers) do t:stop() end
 
   repeat_create_son()
 end
@@ -123,7 +123,7 @@ function event_hurt(attack, life_lost)
   if sol.enemy.get_life() <= 0 then
     -- notify the body to make it stop moving
     sol.enemy.send_message(sol.enemy.get_father(), "dying")
-    sol.timer.stop(timers)
+    for _, t in ipairs(timers) do t:stop() end
 
     -- remove the sons
     for i = 1, nb_sons_created do

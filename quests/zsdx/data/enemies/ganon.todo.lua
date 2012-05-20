@@ -278,7 +278,7 @@ end
 function self:on_hurt(attack, life_lost)
 
   if self:get_life() <= 0 then
-    sol.timer.stop(timers)
+    for _, t in ipairs(timers) do t:stop() end
   end
 end
 

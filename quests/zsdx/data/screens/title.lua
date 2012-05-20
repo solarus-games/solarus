@@ -200,9 +200,9 @@ function title_screen:try_finish_title()
     self.finished = true
 
     self.title_surface:fade_out(30, function()
-      local savegame_screen = require("screens/savegames")
+      local savegame_menu = require("screens/savegames")
       sol.audio.stop_music()
-      sol.main.start_screen(savegame_screen:new())
+      sol.main.start_screen(savegame_menu:new())
     end)
   end
 end

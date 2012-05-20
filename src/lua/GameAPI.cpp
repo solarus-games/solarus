@@ -18,6 +18,7 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
@@ -90,8 +91,8 @@ void Script::register_game_module() {
  * @param index an index in the stack
  * @return the game
  */
-Equipment& Script::check_game(lua_State* l, int index) {
-  return static_cast<Equipment&>(check_userdata(l, index, game_module_name));
+Savegame& Script::check_game(lua_State* l, int index) {
+  return static_cast<Savegame&>(check_userdata(l, index, game_module_name));
 }
 
 /**
@@ -99,7 +100,7 @@ Equipment& Script::check_game(lua_State* l, int index) {
  * @param l a Lua context
  * @param sprite a sprite
  */
-void Script::push_game(lua_State* l, Equipment& game) {
+void Script::push_game(lua_State* l, Savegame& game) {
   push_userdata(l, game);
 }
 
@@ -110,9 +111,12 @@ void Script::push_game(lua_State* l, Equipment& game) {
  */
 int Script::game_api_exists(lua_State *l) {
 
-  // TODO
+  const std::string& file_name = luaL_checkstring(l, 1);
 
-  return 0;
+  bool exists = FileTools::data_file_exists(file_name);
+  lua_pushboolean(l, exists);
+
+  return 1;
 }
 
 /**
@@ -122,7 +126,9 @@ int Script::game_api_exists(lua_State *l) {
  */
 int Script::game_api_delete(lua_State *l) {
 
-  // TODO
+  const std::string& file_name = luaL_checkstring(l, 1);
+
+  FileTools::data_file_delete(file_name);
 
   return 0;
 }
@@ -134,9 +140,12 @@ int Script::game_api_delete(lua_State *l) {
  */
 int Script::game_api_load(lua_State *l) {
 
-  // TODO
+  const std::string& file_name = luaL_checkstring(l, 1);
 
-  return 0;
+  Savegame* savegame = new Savegame(file_name);
+  push_game(l, *savegame);
+
+  return 1;
 }
 
 /**

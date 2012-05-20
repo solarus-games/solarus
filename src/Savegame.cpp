@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Savegame.h"
+#include "lua/Script.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/IniFile.h"
@@ -26,7 +27,9 @@
  * @param file_name name of the savegame file (can be a new file), relative to the savegames directory
  */
 Savegame::Savegame(const std::string &file_name):
-  file_name(file_name), equipment(*this) {
+  ExportableToLua(),
+  file_name(file_name),
+  equipment(*this) {
 
   if (!FileTools::data_file_exists(file_name)) {
     // this save slot is free
@@ -66,7 +69,7 @@ Savegame::Savegame(const std::string &file_name):
  * @param other the savegame to copy
  */
 Savegame::Savegame(const Savegame &other):
-
+  ExportableToLua(),
   empty(other.empty),
   file_name(other.file_name),
   saved_data(other.saved_data),
@@ -268,5 +271,13 @@ void Savegame::set_boolean(int index, bool value) {
   if (value) {
     saved_data.booleans[index / 32] |= mask;
   }
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Savegame::get_lua_type_name() const {
+  return Script::game_module_name;
 }
 

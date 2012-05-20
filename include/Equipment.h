@@ -18,7 +18,6 @@
 #define SOLARUS_EQUIPMENT_H
 
 #include "Common.h"
-#include "lua/ExportableToLua.h"
 #include <map>
 
 /**
@@ -29,7 +28,7 @@
  * You should call this class to get information about the current equipment
  * (sword, money, inventory…) and to modify it.
  */
-class Equipment: public ExportableToLua {
+class Equipment {
 
   private:
 
@@ -55,8 +54,6 @@ class Equipment: public ExportableToLua {
     ~Equipment();
     void set_game(Game &game);
     void set_map(Map &map);
-
-    virtual const std::string& get_lua_type_name() const;
 
     void update();
     void set_suspended(bool suspended);

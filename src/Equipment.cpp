@@ -33,7 +33,6 @@
  * @param savegame the savegame to encapsulate
  */
 Equipment::Equipment(Savegame &savegame):
-  ExportableToLua(),
   savegame(savegame),
   game(NULL),
   suspended(true),
@@ -1133,13 +1132,4 @@ void Equipment::add_item(const std::string &item_name, int variant) {
     }
   }
 }
-
-/**
- * @brief Returns the name identifying this type in Lua.
- * @return The name identifying this type in Lua.
- */
-const std::string& Equipment::get_lua_type_name() const {
-  return Script::game_module_name;
-}
-
 

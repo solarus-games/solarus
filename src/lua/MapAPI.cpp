@@ -174,7 +174,7 @@ int Script::map_api_get_game(lua_State *l) {
 
   Script& script = get_script(l);
 
-  push_game(l, script.get_game().get_equipment());
+  push_game(l, script.get_game().get_savegame());
 
   return 1;
 }

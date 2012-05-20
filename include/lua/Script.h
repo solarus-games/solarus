@@ -139,7 +139,7 @@ class Script {
     static void push_surface(lua_State* l, Surface& surface);
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
     static void push_sprite(lua_State* l, Sprite& sprite);
-    static void push_game(lua_State* l, Equipment& game);
+    static void push_game(lua_State* l, Savegame& game);
     static void push_movement(lua_State* l, Movement& movement);
     static void push_ref(lua_State* l, int ref);
     const std::string& input_get_key_name(InputEvent::KeyboardKey key);
@@ -197,7 +197,7 @@ class Script {
     static TextSurface& check_text_surface(lua_State* l, int index);
     static Sprite& check_sprite(lua_State* l, int index);
     static Color check_color(lua_State* l, int index);
-    static Equipment& check_game(lua_State* l, int index);
+    static Savegame& check_game(lua_State* l, int index);
     static Movement& check_movement(lua_State* l, int index);
     static StraightMovement& check_straight_movement(lua_State* l, int index);
     static RandomMovement& check_random_movement(lua_State* l, int index);

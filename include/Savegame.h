@@ -19,13 +19,14 @@
 
 #include "Common.h"
 #include "Equipment.h"
+#include "lua/ExportableToLua.h"
 
 /**
  * @brief Manages the game data saved.
  *
  * This class provides read and write access to the saved data.
  */
-class Savegame {
+class Savegame: public ExportableToLua {
 
   public:
 
@@ -51,6 +52,8 @@ class Savegame {
 
     // unsaved data
     Equipment& get_equipment();
+
+    virtual const std::string& get_lua_type_name() const;
 
     /**
      * @brief Index of each string saved in the file by the engine.
@@ -229,7 +232,6 @@ class Savegame {
       char strings[64][64];     /**< 64 NULL-terminated strings of 64 bytes each (4 Ko) */
       uint32_t integers[2048];  /**< 2048 integers (8 Ko) */
       uint32_t booleans[1024];  /**< 32768 boolean values (4 Ko) */
-
     } SavedData;
 
     bool empty;

@@ -1,59 +1,55 @@
 -- This screen is displayed when the program starts, after the language
 -- selection screen (if any).
 
--- This menu is scripted in a basic style (no object-oriented programming).
--- All data are simply local variables and no "self" is used.
--- Of course, no inheritance is possible.
--- An equivalent title screen script in OOP style is available as
--- an example in screens/title.oop.lua.
-
-local phase -- "black", "zs_presents" or "title"
-local title_surface -- surface where everything is drawn
-local background_img
-local clouds_img
-local logo_img
-local website_img
-local press_space_img
-local dx_img
-local star_img
-local show_press_space
-local clouds_xy
-local finished
+-- This menu is scripted in an object-oriented style:
+-- we create a class title_screen and return it.
+-- All data are stored in the self instance.
 
 local title_screen = {}
+
+function title_screen:new()
+  local object = {}
+  setmetatable(object, self)
+  self.__index = self
+  return object
+end
 
 function title_screen:on_started()
 
   -- black screen during 0.3 seconds
-  phase = "black"
+  self.phase = "black"
 
-  title_surface = sol.surface.create()
-  sol.main:start_timer(300, phase_zs_presents)
+  self.title_surface = sol.surface.create()
+  self:start_timer(300, function()
+    self:phase_zs_presents()
+  end)
 
   -- use these 0.3 seconds to preload all sound effects
   sol.audio.preload_sounds()
 end
 
-function phase_zs_presents()
+function title_screen:phase_zs_presents()
 
   -- "Zelda Solarus presents" displayed for two seconds
-  phase = "zs_presents"
+  self.phase = "zs_presents"
 
   local zs_presents_img =
       sol.surface.create("title_screen_initialization.png", true)
 
   local width, height = zs_presents_img:get_size()
   local x, y = 160 - width / 2, 120 - height / 2
-  title_surface:draw(zs_presents_img, x, y)
+  self.title_surface:draw(zs_presents_img, x, y)
   sol.audio.play_sound("intro")
 
-  sol.main:start_timer(2000, phase_title)
+  self:start_timer(2000, function()
+    self:phase_title()
+  end)
 end
 
-function phase_title()
+function title_screen:phase_title()
 
   -- actual title screen
-  phase = "title"
+  self.phase = "title"
 
   -- start music
   sol.audio.play_music("title_screen")
@@ -74,13 +70,13 @@ function phase_title()
   end
 
   -- create all images
-  background_img = sol.surface.create("menus/title_" .. time_of_day
+  self.background_img = sol.surface.create("menus/title_" .. time_of_day
       .. "_background.png")
-  clouds_img = sol.surface.create("menus/title_" .. time_of_day
+  self.clouds_img = sol.surface.create("menus/title_" .. time_of_day
       .. "_clouds.png")
-  logo_img = sol.surface.create("menus/title_logo.png")
+  self.logo_img = sol.surface.create("menus/title_logo.png")
 
-  website_img = sol.text_surface.create{
+  self.website_img = sol.text_surface.create{
     font = "dialog",
     rendering_mode = "blended",
     text_color = hour_text_color,
@@ -88,7 +84,7 @@ function phase_title()
     horizontal_alignment = "center"
   }
 
-  press_space_img = sol.text_surface.create{
+  self.press_space_img = sol.text_surface.create{
     font = "dialog_big",
     rendering_mode = "blended",
     text_color = hour_text_color,
@@ -97,85 +93,85 @@ function phase_title()
   }
 
   -- set up the appearance of images and texts
-  sol.main:start_timer(5000, function()
+  self:start_timer(5000, function()
     sol.audio.play_sound("ok")
-    dx_img = sol.surface.create("menus/title_dx.png")
+    self.dx_img = sol.surface.create("menus/title_dx.png")
   end)
 
-  sol.main:start_timer(6000, function()
-    star_img = sol.surface.create("menus/title_star.png")
+  self:start_timer(6000, function()
+    self.star_img = sol.surface.create("menus/title_star.png")
   end)
 
-  show_press_space = false
+  self.show_press_space = false
   function switch_press_space()
-    show_press_space = not show_press_space
-    sol.main:start_timer(500, switch_press_space)
+    self.show_press_space = not self.show_press_space
+    self:start_timer(500, switch_press_space)
   end
-  sol.main:start_timer(6500, switch_press_space)
+  self:start_timer(6500, switch_press_space)
 
   -- make the clouds move
-  clouds_xy = {x = 320, y = 240}
+  self.clouds_xy = {x = 320, y = 240}
   function move_clouds()
 
-    clouds_xy.x = clouds_xy.x + 1
-    clouds_xy.y = clouds_xy.y - 1
-    if clouds_xy.x >= 535 then
-      clouds_xy.x = clouds_xy.x - 535
+    self.clouds_xy.x = self.clouds_xy.x + 1
+    self.clouds_xy.y = self.clouds_xy.y - 1
+    if self.clouds_xy.x >= 535 then
+      self.clouds_xy.x = self.clouds_xy.x - 535
     end
-    if clouds_xy.y < 0 then
-      clouds_xy.y = clouds_xy.y + 299
+    if self.clouds_xy.y < 0 then
+      self.clouds_xy.y = self.clouds_xy.y + 299
     end
-    sol.main:start_timer(50, move_clouds)
+    self:start_timer(50, move_clouds)
   end
-  sol.main:start_timer(50, move_clouds)
+  self:start_timer(50, move_clouds)
 
   -- show an opening transition
-  title_surface:fade_in(30)
+  self.title_surface:fade_in(30)
 end
 
 function title_screen:on_display(dst_surface)
 
-  if phase ~= "title" then
-    dst_surface:draw(title_surface)
+  if self.phase ~= "title" then
+    dst_surface:draw(self.title_surface)
   else
-    display_phase_title(dst_surface)
+    self:display_phase_title(dst_surface)
   end
 end
 
-function display_phase_title(destination_surface)
+function title_screen:display_phase_title(destination_surface)
 
   -- background
-  title_surface:fill_color({0, 0, 0})
-  title_surface:draw(background_img)
+  self.title_surface:fill_color({0, 0, 0})
+  self.title_surface:draw(self.background_img)
 
   -- clouds
-  local x, y = clouds_xy.x, clouds_xy.y
-  title_surface:draw(clouds_img, x, y)
-  x = clouds_xy.x - 535
-  title_surface:draw(clouds_img, x, y)
-  x = clouds_xy.x
-  y = clouds_xy.y - 299
-  title_surface:draw(clouds_img, x, y)
-  x = clouds_xy.x - 535
-  y = clouds_xy.y - 299
-  title_surface:draw(clouds_img, x, y)
+  local x, y = self.clouds_xy.x, self.clouds_xy.y
+  self.title_surface:draw(self.clouds_img, x, y)
+  x = self.clouds_xy.x - 535
+  self.title_surface:draw(self.clouds_img, x, y)
+  x = self.clouds_xy.x
+  y = self.clouds_xy.y - 299
+  self.title_surface:draw(self.clouds_img, x, y)
+  x = self.clouds_xy.x - 535
+  y = self.clouds_xy.y - 299
+  self.title_surface:draw(self.clouds_img, x, y)
 
   -- website name and logo
-  title_surface:draw(website_img, 160, 220)
-  title_surface:draw(logo_img)
+  self.title_surface:draw(self.website_img, 160, 220)
+  self.title_surface:draw(self.logo_img)
 
-  if dx_img then
-    title_surface:draw(dx_img)
+  if self.dx_img then
+    self.title_surface:draw(self.dx_img)
   end
-  if star_img then
-    title_surface:draw(star_img)
+  if self.star_img then
+    self.title_surface:draw(self.star_img)
   end
-  if show_press_space then
-    title_surface:draw(press_space_img, 160, 190)
+  if self.show_press_space then
+    self.title_surface:draw(self.press_space_img, 160, 190)
   end
 
   -- final blit
-  destination_surface:draw(title_surface)
+  destination_surface:draw(self.title_surface)
 end
 
 function title_screen:on_key_pressed(key)
@@ -185,27 +181,28 @@ function title_screen:on_key_pressed(key)
     sol.main.exit()
 
   elseif key == "space" or key == "return" then
-    try_finish_title()
+    self:try_finish_title()
   end
 end
 
 function title_screen:on_joypad_button_pressed(button)
 
-  try_finish_title()
+  self:try_finish_title()
 end
 
 -- Ends the title screen (if possible)
 -- and starts the savegame selection screen
-function try_finish_title()
+function title_screen:try_finish_title()
 
-  if phase == "title"
-      and dx_img ~= nil
-      and not finished then
-    finished = true
+  if self.phase == "title"
+      and self.dx_img ~= nil
+      and not self.finished then
+    self.finished = true
 
-    title_surface:fade_out(30, function()
+    self.title_surface:fade_out(30, function()
+      local savegame_screen = require("screens/savegames")
       sol.audio.stop_music()
-      sol.main.start_screen("savegames")
+      sol.main.start_screen(savegame_screen:new())
     end)
   end
 end

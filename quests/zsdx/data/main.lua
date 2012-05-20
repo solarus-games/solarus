@@ -9,7 +9,7 @@ end
 function sol.events:on_started()
 
   -- Just need this here, no need to require globally.
-  local title_screen = require 'screens/title.oop'
+  local title_screen = require("screens/title")
   t = title_screen:new()
 
   -- Show the title screen initially.

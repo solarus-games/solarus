@@ -1,7 +1,7 @@
 -- Savegame selection screen, displayed after the title screen
 
 -- This menu is scripted in an object-oriented style:
--- we create a class savegame_menu and return instance of this class.
+-- we create a class savegame_menu and return it.
 
 local savegame_menu = {}
 
@@ -31,5 +31,5 @@ function savegame_menu:on_display(dst_surface)
   dst_surface:fill_color({255, 255, 0})
 end
 
-return savegame_menu:new()
+return savegame_menu
 

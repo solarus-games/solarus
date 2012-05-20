@@ -110,7 +110,6 @@ class Script {
      * @brief Optional APIs available for some type of scripts.
      */
     enum API {
-      GAME_API          = 0x0001,
       MAP_API           = 0x0002,
       ITEM_API          = 0x0004,
       ENEMY_API         = 0x0008

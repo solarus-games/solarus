@@ -58,27 +58,27 @@ void SelectionMenuSelectFile::notify_input(InputEvent &event) {
 
       menu->play_ok_sound();
       int cursor_position = menu->get_cursor_position();
-    
+
       if (cursor_position == 5) {
-	// the user chose "Options"
-	menu->set_next_phase(new SelectionMenuOptions(menu));
+        // the user chose "Options"
+        menu->set_next_phase(new SelectionMenuOptions(menu));
       }
       else if (cursor_position == 4) {
-	// the user chose "Erase"
-	menu->set_next_phase(new SelectionMenuEraseFile(menu));
+        // the user chose "Erase"
+        menu->set_next_phase(new SelectionMenuEraseFile(menu));
       }
       else {
-	// the user chose a save
+        // the user chose a save
 
-	Savegame **savegames = menu->get_savegames();
-	if (savegames[cursor_position - 1]->is_empty()) {
-	  // the savegame doesn't exist: ask the name
-	  menu->set_next_phase(new SelectionMenuChooseName(menu));
-	}
-	else {
-	  // the savegame exists: choose the mode and then start the game
-	  menu->set_next_phase(new SelectionMenuChooseMode(menu));
-	}
+        Savegame **savegames = menu->get_savegames();
+        if (savegames[cursor_position - 1]->is_empty()) {
+          // the savegame doesn't exist: ask the name
+          menu->set_next_phase(new SelectionMenuChooseName(menu));
+        }
+        else {
+          // the savegame exists: choose the mode and then start the game
+          menu->set_next_phase(new SelectionMenuChooseMode(menu));
+        }
       }
     }
 
@@ -86,21 +86,21 @@ void SelectionMenuSelectFile::notify_input(InputEvent &event) {
 
       switch (event.get_direction()) {
 
-	case 6: // down
-	  menu->move_cursor_down();
-	  break;
+        case 6: // down
+          menu->move_cursor_down();
+          break;
 
-	case 2: // up
-	  menu->move_cursor_up();
-	  break;
+        case 2: // up
+          menu->move_cursor_up();
+          break;
 
-	case 0: // right
-	case 4: // left
-	  menu->move_cursor_left_or_right();
-	  break;
+        case 0: // right
+        case 4: // left
+          menu->move_cursor_left_or_right();
+          break;
 
-	default:
-	  break;
+        default:
+          break;
       }
     }
   }

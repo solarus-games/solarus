@@ -289,8 +289,8 @@ void SelectionMenu::display(Surface& dst_surface) {
       cloud_img->display(surface, position);
 
       if (cloud_positions[i].get_y() <= 0) {
-	position.set_xy(cloud_positions[i].get_x() - 320, cloud_positions[i].get_y() + 240);
-	cloud_img->display(surface, position);
+        position.set_xy(cloud_positions[i].get_x() - 320, cloud_positions[i].get_y() + 240);
+        cloud_img->display(surface, position);
       }
     }
 
@@ -332,10 +332,10 @@ void SelectionMenu::notify_input(InputEvent &event) {
       // the cursor moves too much when using a joypad axis
       uint32_t now = System::now();
       if (now > allow_cursor_date) {
-	allow_cursor_date = now + 200;
+        allow_cursor_date = now + 200;
       }
       else {
-	notify = false;
+        notify = false;
       }
     }
 

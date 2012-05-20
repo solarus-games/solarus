@@ -25,7 +25,7 @@ function event_restart()
     if math.random(2) == 1 or sol.enemy.get_distance_to_hero() < 24 then
       local son_name = sol.enemy.get_name() .. "_son"
       sol.enemy.create_son(son_name, "red_helmasaur", 0, 0)
-      if sol.game.get_life() <= sol.game.get_max_life() / 3 then
+      if sol.map.get_game():get_life() <= sol.map.get_game():get_max_life() / 3 then
         sol.map.enemy_set_treasure(son_name, "heart", 1, -1)
       end
     else

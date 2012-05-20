@@ -2,7 +2,7 @@
 
 function event_map_started(destination_point_name)
 
-  if sol.game.is_dungeon_finished(4)
+  if sol.map.get_game():is_dungeon_finished(4)
       and (not sol.map.get_game():get_boolean(938)
            or not sol.map.get_game():get_boolean(939)
            or not sol.map.get_game():get_boolean(940)) then
@@ -40,8 +40,8 @@ function event_map_started(destination_point_name)
     sol.map.shop_item_remove("quiver_3")
     sol.map.shop_item_remove("rupee_bag")
 
-    if sol.game.get_item("rupee_bag") >= 2
-        and not sol.game.is_dungeon_finished(2) then
+    if sol.map.get_game():get_item("rupee_bag") >= 2
+        and not sol.map.get_game():is_dungeon_finished(2) then
       sol.map.shop_item_remove("lamp")
     end
   end

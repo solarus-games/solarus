@@ -133,7 +133,7 @@ function event_dialog_finished(dialog_id, answer)
     else
       -- wants to play game 1
 
-      if sol.game.get_money() < 20 then
+      if sol.map.get_game():get_money() < 20 then
 	-- not enough money
 	sol.audio.play_sound("wrong")
 	sol.map.dialog_start("rupee_house.not_enough_money")
@@ -144,7 +144,7 @@ function event_dialog_finished(dialog_id, answer)
 	sol.map.chest_set_open("chest_2", false)
 	sol.map.chest_set_open("chest_3", false)
 
-	sol.game.remove_money(20)
+	sol.map.get_game():remove_money(20)
 	sol.map.dialog_start("rupee_house.game_1.good_luck")
 	playing_game_1 = true
       end
@@ -171,13 +171,13 @@ function event_dialog_finished(dialog_id, answer)
       game_2_bet = 20
     end
 
-    if sol.game.get_money() < game_2_bet then
+    if sol.map.get_game():get_money() < game_2_bet then
       -- not enough money
       sol.audio.play_sound("wrong")
       sol.map.dialog_start("rupee_house.not_enough_money")
     else
       -- enough money: pay and start the game
-      sol.game.remove_money(game_2_bet)
+      sol.map.get_game():remove_money(game_2_bet)
       sol.map.dialog_start("rupee_house.game_2.just_paid")
       playing_game_2 = true
 
@@ -193,7 +193,7 @@ function event_dialog_finished(dialog_id, answer)
     end
   elseif string.find(dialog_id, "^rupee_house.game_2.reward.") then
     -- reward in game 2
-    sol.game.add_money(game_2_reward)
+    sol.map.get_game():add_money(game_2_reward)
 
   elseif dialog_id == "rupee_house.game_3.intro" or 
     dialog_id == "rupee_house.game_3.restart_question" then
@@ -205,7 +205,7 @@ function event_dialog_finished(dialog_id, answer)
     else
       -- wants to play game 3
 
-      if sol.game.get_money() < 10 then
+      if sol.map.get_game():get_money() < 10 then
 	-- not enough money
 	sol.audio.play_sound("wrong")
 	sol.map.dialog_start("rupee_house.not_enough_money")
@@ -223,7 +223,7 @@ function event_dialog_finished(dialog_id, answer)
 	  game_3_timer = nil
 	end
 
-	sol.game.remove_money(10)
+	sol.map.get_game():remove_money(10)
 	sol.map.dialog_start("rupee_house.game_3.go")
 	playing_game_3 = true
       end

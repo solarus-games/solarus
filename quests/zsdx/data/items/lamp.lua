@@ -8,9 +8,9 @@ local timers = {}
 function event_use()
 
   local magic_needed = 2 -- number of magic points required
-  if sol.game.get_magic() >= magic_needed then
+  if sol.map.get_game():get_magic() >= magic_needed then
     sol.audio.play_sound("lamp")
-    sol.game.remove_magic(magic_needed)
+    sol.map.get_game():remove_magic(magic_needed)
     create_fire()
   else
     sol.audio.play_sound("wrong")
@@ -55,8 +55,8 @@ end
 function event_obtained(variant, savegame_variable)
   
   -- give the magic bar if necessary
-  if sol.game.get_max_magic() == 0 then
-    sol.game.set_max_magic(42)
+  if sol.map.get_game():get_max_magic() == 0 then
+    sol.map.get_game():set_max_magic(42)
   end
 end
 

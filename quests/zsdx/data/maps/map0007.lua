@@ -19,7 +19,7 @@ function event_map_started(destination_point_name)
   end
 
   -- Inferno
-  if not sol.game.is_dungeon_finished(5) then
+  if not sol.map.get_game():is_dungeon_finished(5) then
     sol.map.npc_remove("inferno")
   else
     local sprite = sol.map.npc_get_sprite("inferno")
@@ -49,7 +49,7 @@ function event_npc_interaction(npc_name)
   if npc_name == "iron_lock" then
 
     -- open the door if the player has the iron key
-    if sol.game.has_item("iron_key") then
+    if sol.map.get_game():has_item("iron_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
       sol.map.get_game():set_boolean(193, true)
@@ -61,7 +61,7 @@ function event_npc_interaction(npc_name)
   elseif npc_name == "wooden_lock" then
 
     -- open the door if the player has the wooden key
-    if sol.game.has_item("wooden_key") then
+    if sol.map.get_game():has_item("wooden_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
       sol.map.get_game():set_boolean(194, true)
@@ -78,7 +78,7 @@ function event_npc_interaction(npc_name)
       sol.map.get_game():set_boolean(915, true)
     elseif not sol.map.get_game():get_boolean(914) then
       -- not open yet
-      if sol.game.get_item_amount("fire_stones_counter") < 3 then
+      if sol.map.get_game():get_item_amount("fire_stones_counter") < 3 then
         sol.map.dialog_start("inferno.find_fire_stones")
       else
         sol.map.dialog_start("inferno.found_fire_stones")

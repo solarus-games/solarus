@@ -2,7 +2,7 @@
 
 function event_map_opening_transition_finished(destination_point_name)
 
-  if sol.game.get_item("tunic") < 2 then
+  if sol.map.get_game():get_item("tunic") < 2 then
 
     sol.map.dialog_start("dungeon_4.too_cold")
   end

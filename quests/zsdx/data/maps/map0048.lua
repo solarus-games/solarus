@@ -17,7 +17,7 @@ function event_map_started(destination_point_name)
   sol.map.door_set_open("LD9", true)
 
   -- Link has mirror shield: no laser obstacles
-  if sol.game.get_ability("shield") >= 3 then
+  if sol.map.get_game():get_ability("shield") >= 3 then
     sol.map.obstacle_set_enabled("LO4", false)
   end
 

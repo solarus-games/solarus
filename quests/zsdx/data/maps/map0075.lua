@@ -23,7 +23,7 @@ rewards = {
 
 function event_map_started(destination_point_name)
 
-  if not sol.game.is_dungeon_finished(6) then
+  if not sol.map.get_game():is_dungeon_finished(6) then
     sol.map.npc_remove("mini_game_npc")
   end
 end
@@ -47,8 +47,8 @@ function event_dialog_finished(dialog_id, answer)
       or dialog_id == "chests_game_cave.not_first_time" then
 
     if answer == 0 then
-      if sol.game.get_money() >= 30 then
-        sol.game.remove_money(30)
+      if sol.map.get_game():get_money() >= 30 then
+        sol.map.get_game():remove_money(30)
         playing = true
 
         if chest_open ~= "" then

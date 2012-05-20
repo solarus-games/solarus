@@ -110,7 +110,7 @@ function event_dialog_finished(dialog_id)
 end
 
 function event_hero_victory_sequence_finished()
-  sol.game.set_dungeon_finished(6)
+  sol.map.get_game():set_dungeon_finished(6)
   sol.map.get_game():set_boolean(155, false) -- reopen the rupee house
   sol.map.hero_set_map(7, "from_dungeon_6", 1)
 end

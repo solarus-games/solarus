@@ -197,7 +197,7 @@ end
 function repeat_give_arrows()
 
   -- give arrows if necessary during the boss fight
-  if sol.game.get_item_amount("bow") == 0 then
+  if sol.map.get_game():get_item_amount("bow") == 0 then
     local positions = {
       { x = 416, y = 685 },
       { x = 672, y = 685 },
@@ -239,7 +239,7 @@ function event_dialog_finished(dialog_id)
 end
 
 function event_hero_victory_sequence_finished()
-  sol.game.set_dungeon_finished(7)
+  sol.map.get_game():set_dungeon_finished(7)
   sol.map.hero_set_map(8, "from_dungeon_7", 1)
 end
 

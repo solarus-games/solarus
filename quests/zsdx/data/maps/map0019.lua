@@ -2,7 +2,7 @@
 
 function event_map_started(destination_point_name)
 
-  if not has_obtained_bottle() or not sol.game.is_dungeon_finished(1) then
+  if not has_obtained_bottle() or not sol.map.get_game():is_dungeon_finished(1) then
     sol.map.shop_item_remove("apple_pie")
   end
 end
@@ -30,10 +30,10 @@ function event_dialog_finished(dialog_id, answer)
     sol.map.get_game():set_boolean(46, true)
 
     if answer == 0 then
-      if sol.game.has_item("apples_counter") then
-	if sol.game.get_item_amount("apples_counter") >= 6 then
+      if sol.map.get_game():has_item("apples_counter") then
+	if sol.map.get_game():get_item_amount("apples_counter") >= 6 then
 	  sol.map.dialog_start("cake_shop.thank_you")
-	  sol.game.remove_item_amount("apples_counter", 6)
+	  sol.map.get_game():remove_item_amount("apples_counter", 6)
 	else
 	  sol.map.dialog_start("cake_shop.not_enough_apples")
 	end

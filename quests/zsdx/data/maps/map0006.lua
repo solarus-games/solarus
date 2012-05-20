@@ -29,7 +29,7 @@ function event_map_started(destination_point_name)
   end
 
   -- Dungeon 9 entrance
-  if not sol.game.is_dungeon_finished(8) then
+  if not sol.map.get_game():is_dungeon_finished(8) then
     sol.map.teletransporter_set_enabled("dungeon_9_teletransporter", false)
     sol.map.tile_set_enabled("dungeon_9_entrance", false)
   end
@@ -53,7 +53,7 @@ function event_hero_on_sensor(sensor_name)
       and not is_ladder_activated() then
     sol.map.dialog_start("outside_world.tom_dungeon_1_entrance.hey")
   elseif sensor_name == "edelweiss_sensor"
-      and sol.game.get_item("level_4_way") == 3 -- the player has the edelweiss
+      and sol.map.get_game():get_item("level_4_way") == 3 -- the player has the edelweiss
       and not is_beaumont_cave_open() then
     put_edelweiss()
   end
@@ -159,7 +159,7 @@ function edelweiss_explode()
   sol.map.tile_set_enabled("beaumont_cave_hole", true)
   sol.map.teletransporter_set_enabled("to_beaumont_cave", true)
   sol.map.get_game():set_boolean(153, true)
-  sol.game.set_item("level_4_way", 0)
+  sol.map.get_game():set_item("level_4_way", 0)
   sol.main:start_timer(1000, edelweiss_end)
 end
 

@@ -10,7 +10,7 @@ end
 function event_npc_interaction(npc_name)
 
   if npc_name == "solarus_child" then
-    if sol.game.is_dungeon_finished(3) then
+    if sol.map.get_game():is_dungeon_finished(3) then
       -- dialog already done
       sol.audio.play_sound("warp")
       sol.map.hero_set_map(3, "from_dungeon_3", 1)
@@ -35,7 +35,7 @@ function event_dialog_finished(dialog_id, answer)
 end
 
 function event_hero_victory_sequence_finished()
-  sol.game.set_dungeon_finished(3)
+  sol.map.get_game():set_dungeon_finished(3)
   sol.map.hero_set_map(3, "from_dungeon_3", 1)
 end
 

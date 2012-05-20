@@ -24,7 +24,7 @@ function event_hero_on_sensor(sensor_name)
 	sol.map.dialog_start("dungeon_8.agahnim")
       end)
 
-    elseif not sol.game.is_dungeon_finished(8) then
+    elseif not sol.map.get_game():is_dungeon_finished(8) then
       -- Agahnim already killed but Ganon's sequence not done yet
       -- (possible if the player dies or exits while Agahnim is dying)
       sol.map.hero_freeze()
@@ -59,7 +59,7 @@ function event_enemy_dead(enemy_name)
   if enemy_name == "boss" then
     sol.main:start_timer(1000, function()
       sol.audio.play_music("victory")
-      sol.game.set_dungeon_finished(8)
+      sol.map.get_game():set_dungeon_finished(8)
       sol.map.hud_set_pause_enabled(false)
       sol.map.hero_freeze()
       sol.map.hero_set_direction(3)

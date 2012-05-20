@@ -3,11 +3,11 @@
 function event_map_started(destination_point)
 
   if sol.map.get_game():get_boolean(37) then -- if the Lyriann cave is finished
-    sol.map.door_set_open("door", sol.game.is_dungeon_finished(1)) -- don't allow the player to obtain the bow until the first dungeon is finished
+    sol.map.door_set_open("door", sol.map.get_game():is_dungeon_finished(1)) -- don't allow the player to obtain the bow until the first dungeon is finished
   end
 
-  if sol.game.is_dungeon_finished(4)
-      and not sol.game.is_dungeon_finished(7) then
+  if sol.map.get_game():is_dungeon_finished(4)
+      and not sol.map.get_game():is_dungeon_finished(7) then
     -- Sahasrahla has been kidnapped
     sol.map.npc_remove("sahasrahla")
   end
@@ -35,7 +35,7 @@ function event_npc_interaction(npc_name)
   elseif not has_obtained_world_map() then
     -- the player has obtained the clay key: give him the world map now if he didn't talk the first time
     sol.map.dialog_start("sahasrahla_house.give_world_map")
-  elseif sol.game.is_dungeon_finished(1) and not has_obtained_bow() then -- glove
+  elseif sol.map.get_game():is_dungeon_finished(1) and not has_obtained_bow() then -- glove
     -- the player should now go downstairs to obtain the bow
     sol.map.dialog_start("sahasrahla_house.dungeon_1_finished")
   else

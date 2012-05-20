@@ -35,7 +35,7 @@ function event_npc_interaction_item(npc_name, item_name, variant)
     -- using water on the vine bottom
     sol.map.hero_freeze()
     sol.map.npc_remove("vine_start")
-    sol.game.set_item(item_name, 1) -- make the bottle empty
+    sol.map.get_game():set_item(item_name, 1) -- make the bottle empty
     sol.map.get_game():set_boolean(921, true)
     sol.audio.play_sound("item_in_water")
     sol.main:start_timer(1000, show_vine)

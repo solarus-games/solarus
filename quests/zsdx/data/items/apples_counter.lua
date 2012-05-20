@@ -4,7 +4,7 @@ function event_use()
     sol.audio.play_sound("wrong")
   else
     sol.item.remove_amount(1)
-    sol.game.add_life(4)
+    sol.map.get_game():add_life(4)
   end
   sol.item.set_finished()
 end

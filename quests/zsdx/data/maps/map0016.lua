@@ -26,13 +26,13 @@ function event_dialog_finished(dialog_id, answer)
       sol.map.dialog_start("smith_cave.not_buying")
     else
       -- wants to buy the sword
-      if sol.game.get_money() < sword_price then
+      if sol.map.get_game():get_money() < sword_price then
         -- not enough money
         sol.audio.play_sound("wrong")
         sol.map.dialog_start("smith_cave.not_enough_money")
       else
         -- enough money: buy the sword
-        sol.game.remove_money(sword_price)
+        sol.map.get_game():remove_money(sword_price)
         sol.map.treasure_give("sword", 1, 30)
       end
     end

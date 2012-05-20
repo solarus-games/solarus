@@ -44,7 +44,7 @@ function event_map_started(destination_point_name)
   end
 
   -- NPC
-  if sol.game.is_dungeon_finished(1) then
+  if sol.map.get_game():is_dungeon_finished(1) then
     sol.map.npc_remove("cliff_man")
   end
 end
@@ -64,7 +64,7 @@ function event_npc_interaction(npc_name)
   if npc_name == "tom_cave_door" then
 
     -- open the door if the player has the clay key
-    if sol.game.has_item("clay_key") then
+    if sol.map.get_game():has_item("clay_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
       sol.map.get_game():set_boolean(36, true)
@@ -76,7 +76,7 @@ function event_npc_interaction(npc_name)
   elseif npc_name == "stone_lock" then
 
     -- open the door if the player has the stone key
-    if sol.game.has_item("stone_key") then
+    if sol.map.get_game():has_item("stone_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
       sol.map.get_game():set_boolean(159, true)
@@ -87,7 +87,7 @@ function event_npc_interaction(npc_name)
 
   elseif npc_name == "chignon_woman" then
 
-    if sol.game.is_dungeon_finished(2) then
+    if sol.map.get_game():is_dungeon_finished(2) then
       sol.map.dialog_start("outside_world.village.chignon_woman_dungeons")
     else
       sol.map.dialog_start("outside_world.village.chignon_woman")

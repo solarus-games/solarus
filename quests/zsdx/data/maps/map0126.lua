@@ -13,7 +13,7 @@ end
 function event_npc_interaction(npc_name)
 
   if npc_name == "bone_key_door" then
-    if not sol.game.has_item("bone_key") then
+    if not sol.map.get_game():has_item("bone_key") then
       sol.map.dialog_start("hidden_palace.door_closed")
     else
       sol.map.dialog_start("hidden_palace.using_bone_key")

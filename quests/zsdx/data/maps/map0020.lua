@@ -94,7 +94,7 @@ function event_dialog_finished(message_id, answer)
 end
 
 function give_boomerang_back()
-  sol.game.set_item("boomerang", 0)
+  sol.map.get_game():set_item("boomerang", 0)
   sol.map.get_game():set_boolean(41, false)
 end
 

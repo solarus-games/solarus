@@ -3,9 +3,9 @@
 function event_shop_item_buying(item_name)
 
   if not sol.map.get_game():get_boolean(911)
-      and not sol.game.has_item("bottle_2") then
+      and not sol.map.get_game():has_item("bottle_2") then
     -- give bottle 2
-    sol.game.set_item("bottle_2", 1)
+    sol.map.get_game():set_item("bottle_2", 1)
   end
 
   if get_first_empty_bottle() == "" then
@@ -44,13 +44,13 @@ function get_first_empty_bottle()
 
   local result = ""
 
-  if sol.game.get_item("bottle_1") == 1 then
+  if sol.map.get_game():get_item("bottle_1") == 1 then
     result = "bottle_1"
-  elseif sol.game.get_item("bottle_2") == 1 then
+  elseif sol.map.get_game():get_item("bottle_2") == 1 then
     result = "bottle_2"
-  elseif sol.game.get_item("bottle_3") == 1 then
+  elseif sol.map.get_game():get_item("bottle_3") == 1 then
     result = "bottle_3"
-  elseif sol.game.get_item("bottle_4") == 1 then
+  elseif sol.map.get_game():get_item("bottle_4") == 1 then
     result = "bottle_4"
   end
 

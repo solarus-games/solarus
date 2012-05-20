@@ -3,7 +3,7 @@ created = false -- indicates a Somaria block has been created on the current map
 function event_use()
 
   local magic_needed = 7
-  if sol.game.get_magic() >= magic_needed then
+  if sol.map.get_game():get_magic() >= magic_needed then
 
     local x, y, layer = get_block_position_from_hero()
 
@@ -11,7 +11,7 @@ function event_use()
 
       sol.audio.play_sound("cane")
       sol.audio.play_sound("magic_bar")
-      sol.game.remove_magic(magic_needed)
+      sol.map.get_game():remove_magic(magic_needed)
 
       -- create the Somaria block
       sol.map.block_create(x, y, layer, "somaria_block",
@@ -29,7 +29,7 @@ function event_use()
 
 	sol.audio.play_sound("cane")
 	sol.audio.play_sound("magic_bar")
-	sol.game.remove_magic(magic_needed)
+	sol.map.get_game():remove_magic(magic_needed)
 
 	sol.map.block_set_position("somaria_block", x, y, layer)
       end
@@ -80,8 +80,8 @@ end
 function event_obtained(variant, savegame_variable)
   
   -- give the magic bar if necessary
-  if sol.game.get_max_magic() == 0 then
-    sol.game.set_max_magic(42)
+  if sol.map.get_game():get_max_magic() == 0 then
+    sol.map.get_game():set_max_magic(42)
   end
 end
 

@@ -9,7 +9,7 @@ function event_map_started(destination_point_name)
   end
 
   -- don't allow to go to the surprise wall before dungeon 3 is finished
-  if not sol.game.is_dungeon_finished(3) then
+  if not sol.map.get_game():is_dungeon_finished(3) then
     sol.map.npc_remove("surprise_wall_guy")
   end
 
@@ -36,13 +36,13 @@ end
 function event_dialog_finished(dialog_id, answer)
 
   if dialog_id == "outside_world.surprise_wall_guy.closed" then
-    if sol.game.get_item("level_4_way") == 1 then
+    if sol.map.get_game():get_item("level_4_way") == 1 then
       -- the player has the apple pie
       sol.map.dialog_start("outside_world.surprise_wall_guy.give_me_apple_pie")
     end
   elseif dialog_id == "outside_world.surprise_wall_guy.give_me_apple_pie"
       and answer == 0 then
-    sol.game.set_item("level_4_way", 0)
+    sol.map.get_game():set_item("level_4_way", 0)
     sol.map.dialog_start("outside_world.surprise_wall_guy.thanks")
   elseif dialog_id == "outside_world.surprise_wall_guy.thanks" then
     sol.map.tile_set_enabled("surprise_wall_door_tile", false)

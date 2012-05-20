@@ -11,7 +11,7 @@ end
 function event_npc_interaction(npc_name)
 
   if npc_name == "solarus_child" then
-    if sol.game.is_dungeon_finished(4) then
+    if sol.map.get_game():is_dungeon_finished(4) then
       -- dialog already done
       sol.audio.play_sound("warp")
       sol.map.hero_set_map(66, "from_dungeon_4", 1)
@@ -80,7 +80,7 @@ end
 
 function agahnim_sequence_6()
 
-  sol.game.set_dungeon_finished(4)
+  sol.map.get_game():set_dungeon_finished(4)
   sol.map.get_game():set_boolean(905, true) -- enable the dark world
   sol.map.get_game():set_boolean(155, true) -- break the rupee house
   sol.map.hero_set_map(66, "from_dungeon_4", 1)

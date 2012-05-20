@@ -19,9 +19,9 @@ function event_dialog_finished(dialog_id, answer)
 
     sol.map.get_game():set_integer(1030, (nb_pieces_of_heart + 1) % 4)
     if (nb_pieces_of_heart == 3) then
-      sol.game.add_max_life(4)
+      sol.map.get_game():add_max_life(4)
     end
-    sol.game.add_life(sol.game.get_max_life())
+    sol.map.get_game():add_life(sol.map.get_game():get_max_life())
   end
 end
 

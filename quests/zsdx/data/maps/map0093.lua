@@ -68,7 +68,7 @@ function event_dialog_finished(dialog_id, answer)
     sol.map.treasure_give("level_4_way", 4, 930)
   elseif dialog_id == "north_fairy_fountain.restore_health" then
     sol.map.hero_unfreeze()
-    sol.game.add_life(sol.game.get_max_life())
+    sol.map.get_game():add_life(sol.map.get_game():get_max_life())
   end
 end
 

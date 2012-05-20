@@ -19,21 +19,21 @@ function event_use()
 
     -- red potion
   elseif variant == 3 then
-    sol.game.add_life(sol.game.get_max_life())
+    sol.map.get_game():add_life(sol.map.get_game():get_max_life())
     sol.item.set_variant(1)
     sol.item.set_finished()
 
     -- green potion
   elseif variant == 4 then
-    sol.game.add_magic(sol.game.get_max_magic())
+    sol.map.get_game():add_magic(sol.map.get_game():get_max_magic())
     sol.item.set_variant(1)
     sol.item.set_finished()
 
     -- blue potion
   elseif variant == 5 then
-    sol.game.add_life(sol.game.get_max_life())
+    sol.map.get_game():add_life(sol.map.get_game():get_max_life())
     sol.item.set_variant(1)
-    sol.game.add_magic(sol.game.get_max_magic())
+    sol.map.get_game():add_magic(sol.map.get_game():get_max_magic())
     sol.item.set_finished()
 
     -- fairy
@@ -101,9 +101,9 @@ function event_variant_changed(variant)
 
   -- the possession state of a bottle has changed: see if the player has at least a fairy
   if has_bottle_with(6) then
-    sol.game.set_ability("get_back_from_death", 1)
+    sol.map.get_game():set_ability("get_back_from_death", 1)
   else
-    sol.game.set_ability("get_back_from_death", 0)
+    sol.map.get_game():set_ability("get_back_from_death", 0)
   end
 end
 
@@ -116,7 +116,7 @@ function event_ability_used(ability_name)
   -- one should remove its fairy
 
   if ability_name == "get_back_from_death"
-    and sol.game.has_ability("get_back_from_death") then
+    and sol.map.get_game():has_ability("get_back_from_death") then
 
     bottle_to_make_empty = get_first_bottle_with(6)
   end
@@ -125,17 +125,17 @@ end
 function event_update()
 
   if bottle_to_make_empty ~= "" then
-    sol.game.set_item(bottle_to_make_empty, 1)
+    sol.map.get_game():set_item(bottle_to_make_empty, 1)
     bottle_to_make_empty = ""
   end
 end
 
 function has_bottle()
 
-  return sol.game.has_item("bottle_1")
-    or sol.game.has_item("bottle_2")
-    or sol.game.has_item("bottle_3")
-    or sol.game.has_item("bottle_4")
+  return sol.map.get_game():has_item("bottle_1")
+    or sol.map.get_game():has_item("bottle_2")
+    or sol.map.get_game():has_item("bottle_3")
+    or sol.map.get_game():has_item("bottle_4")
 end
 
 function has_empty_bottle()
@@ -157,13 +157,13 @@ function get_first_bottle_with(variant)
 
   local result = ""
 
-  if sol.game.get_item("bottle_1") == variant then
+  if sol.map.get_game():get_item("bottle_1") == variant then
     result = "bottle_1"
-  elseif sol.game.get_item("bottle_2") == variant then
+  elseif sol.map.get_game():get_item("bottle_2") == variant then
     result = "bottle_2"
-  elseif sol.game.get_item("bottle_3") == variant then
+  elseif sol.map.get_game():get_item("bottle_3") == variant then
     result = "bottle_3"
-  elseif sol.game.get_item("bottle_4") == variant then
+  elseif sol.map.get_game():get_item("bottle_4") == variant then
     result = "bottle_4"
   end
 

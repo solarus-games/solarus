@@ -29,7 +29,7 @@ end
 function event_dialog_finished(dialog_id, answer)
 
   if dialog_id == "billy_cave.what_do_you_have" then
-    if sol.game.get_item("level_4_way") == 2 then
+    if sol.map.get_game():get_item("level_4_way") == 2 then
       -- the player has the golden bars
       sol.map.dialog_start("billy_cave.with_golden_bars")
     else 
@@ -57,7 +57,7 @@ end
 
 function give_croissant()
 
-  if sol.game.has_item_amount("croissants_counter", 1) then
+  if sol.map.get_game():has_item_amount("croissants_counter", 1) then
     sol.map.dialog_start("billy_cave.give_croissant")
   else
     sol.map.dialog_start("billy_cave.give_croissant_without")
@@ -65,7 +65,7 @@ function give_croissant()
 end
 
 function give_apple_pie()
-  if sol.game.get_item("level_4_way") == 1 then
+  if sol.map.get_game():get_item("level_4_way") == 1 then
     sol.map.dialog_start("billy_cave.give_apple_pie")
   else
     sol.map.dialog_start("billy_cave.give_apple_pie_without")

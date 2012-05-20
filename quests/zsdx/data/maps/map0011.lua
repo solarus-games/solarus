@@ -18,7 +18,7 @@ function event_npc_interaction(npc_name)
   elseif not has_finished_lyriann_cave then
     -- with the clay key: go to the cave
     sol.map.dialog_start("grandma_house.go_lyriann_cave")
-  elseif not sol.game.is_dungeon_finished(1) then
+  elseif not sol.map.get_game():is_dungeon_finished(1) then
     -- lyriann cave finished: go to the first dungeon
     sol.map.dialog_start("grandma_house.go_dungeon_1")
   elseif not has_bow then
@@ -27,13 +27,13 @@ function event_npc_interaction(npc_name)
   elseif not has_rock_key then
     -- with the bow: go to the twin caves
     sol.map.dialog_start("grandma_house.go_twin_caves")
-  elseif not sol.game.is_dungeon_finished(2) then
+  elseif not sol.map.get_game():is_dungeon_finished(2) then
     -- with the rock key: go to the second dungeon
     sol.map.dialog_start("grandma_house.go_dungeon_2")
-  elseif not sol.game.is_dungeon_finished(4) then
+  elseif not sol.map.get_game():is_dungeon_finished(4) then
     -- use the telepathic booth
     sol.map.dialog_start("grandma_house.go_telepathic_booth")
-  elseif not sol.game.is_dungeon_finished(5) then
+  elseif not sol.map.get_game():is_dungeon_finished(5) then
     -- rupee house broken
     sol.map.dialog_start("grandma_house.dark_world_enabled")
   else

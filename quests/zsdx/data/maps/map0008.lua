@@ -40,7 +40,7 @@ function event_npc_interaction(npc_name)
   if npc_name == "dungeon_7_lock" then
 
     -- open the door if the player has the ice key
-    if sol.game.has_item("ice_key") then
+    if sol.map.get_game():has_item("ice_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
       sol.map.get_game():set_boolean(919, true)

@@ -9,7 +9,7 @@ function event_chest_empty(chest_name)
 
   if chest_name == "sword_chest" then
     local variant = 2
-    if sol.game.get_ability("sword") >= 2 then
+    if sol.map.get_game():get_ability("sword") >= 2 then
       -- already got sword 2
       variant = 3
     end

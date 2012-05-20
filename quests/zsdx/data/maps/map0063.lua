@@ -50,7 +50,7 @@ function event_hero_on_sensor(sensor_name)
   if sensor_name == "puzzle_wrong_sensor" then
     puzzle_next_sensor = 1
   elseif sensor_name == "save_s_blocks_sensor" then
-    if sol.game.has_item("feather")
+    if sol.map.get_game():has_item("feather")
         and not sol.map.get_game():get_boolean(517) then
       -- solved the blocks puzzle necessary to exit this floor
       sol.map.get_game():set_boolean(517, true)

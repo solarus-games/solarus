@@ -30,7 +30,7 @@ function event_map_started(destination_point_name)
   random_walk("hat_man")
   random_walk("grand_son")
 
-  if sol.game.is_dungeon_finished(1) then
+  if sol.map.get_game():is_dungeon_finished(1) then
     sol.map.npc_remove("how_to_save_npc")
   else
     random_walk("how_to_save_npc")
@@ -70,7 +70,7 @@ function event_npc_interaction(npc_name)
   elseif npc_name == "dungeon_2_door" then
 
     -- open the door if the player has the Rock Key
-    if sol.game.has_item("rock_key") then
+    if sol.map.get_game():has_item("rock_key") then
       sol.audio.play_sound("door_open")
       sol.audio.play_sound("secret")
       sol.map.get_game():set_boolean(89, true)
@@ -81,7 +81,7 @@ function event_npc_interaction(npc_name)
 
   elseif npc_name == "hat_man" then
 
-    if sol.game.is_dungeon_finished(1) then
+    if sol.map.get_game():is_dungeon_finished(1) then
       sol.map.dialog_start("outside_world.village.hat_man_npc_waterfall")
     else
       sol.map.dialog_start("outside_world.village.hat_man_npc")
@@ -96,7 +96,7 @@ function event_dialog_finished(dialog_id, answer)
   if dialog_id == "outside_world.village.monkey" then
 
     -- show another message depending on the shield
-    if sol.game.has_ability("shield") then
+    if sol.map.get_game():has_ability("shield") then
       sol.map.dialog_start("outside_world.village.monkey.with_shield")
     else
       sol.map.dialog_start("outside_world.village.monkey.without_shield")

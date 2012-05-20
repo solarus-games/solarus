@@ -40,7 +40,7 @@ function event_npc_interaction_item(npc_name, item_name, variant)
     frozen_door_sprite:set_animation("disappearing")
     frozen_door_opposite_sprite:set_animation("disappearing")
     sol.main:start_timer(800, timer_frozen_door)
-    sol.game.set_item(item_name, 1) -- make the bottle empty
+    sol.map.get_game():set_item(item_name, 1) -- make the bottle empty
     return true
   end
 

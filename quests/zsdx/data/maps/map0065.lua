@@ -153,7 +153,7 @@ function event_npc_interaction(npc_name)
 
   if npc_name == "prison_1_lock" then
 
-    if not sol.game.has_item("iron_key") then
+    if not sol.map.get_game():has_item("iron_key") then
       sol.map.dialog_start("dungeon_5.prison_1_locked")
     else
       sol.map.dialog_start("dungeon_5.prison_1_use_iron_key")

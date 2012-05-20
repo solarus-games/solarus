@@ -139,15 +139,15 @@ void Equipment::update() {
 
     // update the decreasing magic bar
     if (magic_decrease_delay != 0
-	&& System::now() > next_magic_decrease_date) {
+        && System::now() > next_magic_decrease_date) {
 
       remove_magic(1);
 
       if (get_magic() > 0) {
-	next_magic_decrease_date += magic_decrease_delay;
+        next_magic_decrease_date += magic_decrease_delay;
       }
       else {
-	stop_removing_magic();
+        stop_removing_magic();
       }
     }
   }
@@ -205,16 +205,16 @@ int Equipment::get_money() {
 
 
 /**
- * @brief Sets the player's current number of money.
+ * @brief Sets the player's current amount of money.
  *
- * Exits with an error message if the given amount of money is not valid.
+ * If the amount is lower than zero, it is replaced by zero.
+ * If the amount is greater than get_max_money(), it is replaced by that value.
  *
- * @param money the player's new amount of money
+ * @param money The player's new amount of money.
  */
 void Equipment::set_money(int money) {
 
-  Debug::check_assertion(money >= 0 && money <= get_max_money(), StringConcat() << "Illegal amount of money: " << money);
-
+  money = std::max(0, std::min(get_max_money(), money));
   savegame.set_integer(Savegame::CURRENT_MONEY, money);
 }
 
@@ -227,10 +227,7 @@ void Equipment::set_money(int money) {
  */
 void Equipment::add_money(int money_to_add) {
 
-  int max_money = get_max_money();
-  int total = get_money() + money_to_add;
-
-  set_money(std::min(total, max_money));
+  set_money(get_money() + money_to_add);
 }
 
 /**
@@ -242,9 +239,7 @@ void Equipment::add_money(int money_to_add) {
  */
 void Equipment::remove_money(int money_to_remove) {
 
-  int total = get_money() - money_to_remove;
-
-  set_money(std::max(total, 0));
+  set_money(get_money() - money_to_remove);
 }
 
 // life
@@ -283,14 +278,14 @@ int Equipment::get_life() {
 /**
  * @brief Sets the current life of the player.
  *
- * The program exits with an error message if the specified life.
+ * If the life is lower than zero, it is replaced by zero.
+ * If the life is greater than get_max_life(), it is replaced by that value.
  *
- * @param life the player's new level of life
+ * @param life The player's new level of life.
  */
 void Equipment::set_life(int life) {
 
-  Debug::check_assertion(life >= 0 && life <= get_max_life(), StringConcat() << "Illegal level of life: " << life);
-
+  life = std::max(0, std::min(get_max_life(), life));
   savegame.set_integer(Savegame::CURRENT_LIFE, life);
 }
 
@@ -303,9 +298,7 @@ void Equipment::set_life(int life) {
  */
 void Equipment::add_life(int life_to_add) {
 
-  int total = get_life() + life_to_add;
-
-  set_life(std::min(total, get_max_life()));
+  set_life(get_life() + life_to_add);
 }
 
 /**
@@ -314,15 +307,14 @@ void Equipment::add_life(int life_to_add) {
  */
 void Equipment::remove_life(int life_to_remove) {
 
-  int total = get_life() - life_to_remove;
-
-  set_life(std::max(total, 0));
+  set_life(get_life() - life_to_remove);
 }
 
 /**
  * @brief Restores all the life.
  */
 void Equipment::restore_all_life() {
+
   set_life(get_max_life());
 }
 
@@ -364,15 +356,14 @@ int Equipment::get_magic() {
 /**
  * @brief Sets the current number of magic points of the player.
  *
- * The program exits with an error message if the given value
- * is not valid.
- * 
- * @param magic the player's new number of magic points
+ * If the value is lower than zero, it is replaced by zero.
+ * If the value is greater than get_max_life(), it is replaced by that value.
+ *
+ * @param magic The player's new number of magic points.
  */
 void Equipment::set_magic(int magic) {
 
-  Debug::check_assertion(magic >= 0 && magic <= get_max_magic(), StringConcat() << "Illegal number of magic points: " << magic);
-
+  magic = std::max(0, std::min(get_max_magic(), magic));
   savegame.set_integer(Savegame::CURRENT_MAGIC, magic);
 }
 
@@ -385,9 +376,7 @@ void Equipment::set_magic(int magic) {
  */
 void Equipment::add_magic(int magic_to_add) {
 
-  int total = get_magic() + magic_to_add;
-
-  set_magic(std::min(total, get_max_magic()));
+  set_magic(get_magic() + magic_to_add);
 }
 
 /**
@@ -400,15 +389,14 @@ void Equipment::add_magic(int magic_to_add) {
  */
 void Equipment::remove_magic(int magic_to_remove) {
 
-  int total = get_magic() - magic_to_remove;
-
-  set_magic(std::max(total, 0));
+  set_magic(get_magic() - magic_to_remove);
 }
 
 /**
  * @brief Restores all magic points.
  */
 void Equipment::restore_all_magic() {
+
   set_magic(get_max_magic());
 }
 
@@ -417,6 +405,7 @@ void Equipment::restore_all_magic() {
  * @return true if the magic bar is decreasing, false otherwise
  */
 bool Equipment::is_magic_decreasing() {
+
   return this->magic_decrease_delay != 0;
 }
 
@@ -440,6 +429,7 @@ void Equipment::start_removing_magic(uint32_t delay) {
  * @brief Stops removing magic continuously.
  */
 void Equipment::stop_removing_magic() {
+
   this->magic_decrease_delay = 0;
 }
 
@@ -556,11 +546,11 @@ int Equipment::get_item_amount(const std::string &item_name) {
 void Equipment::set_item_amount(const std::string &item_name, int amount) {
 
   int counter_index = get_item_properties(item_name).get_counter_savegame_variable();
-  int max = get_item_maximum(item_name);
 
-  Debug::check_assertion(counter_index != -1, StringConcat() << "No amount for item '" << item_name << "'");
-  Debug::check_assertion(amount >= 0 && amount <= max, StringConcat() << "Illegal amount for item '" << item_name << "': " << amount);
+  Debug::check_assertion(counter_index != -1, StringConcat()
+      << "No amount for item '" << item_name << "'");
 
+  amount = std::max(0, std::min(get_item_maximum(item_name), amount));
   savegame.set_integer(counter_index, amount);
 
   get_item_script(item_name).event_amount_changed(amount);
@@ -576,8 +566,7 @@ void Equipment::set_item_amount(const std::string &item_name, int amount) {
  */
 void Equipment::add_item_amount(const std::string &item_name, int amount_to_add) {
 
-  int total = get_item_amount(item_name) + amount_to_add;
-  set_item_amount(item_name, std::min(total, get_item_maximum(item_name)));
+  set_item_amount(item_name, get_item_amount(item_name) + amount_to_add);
 }
 
 /**
@@ -590,8 +579,7 @@ void Equipment::add_item_amount(const std::string &item_name, int amount_to_add)
  */
 void Equipment::remove_item_amount(const std::string &item_name, int amount_to_remove) {
 
-  int total = get_item_amount(item_name) - amount_to_remove;
-  set_item_amount(item_name, std::max(total, 0));
+  set_item_amount(item_name, get_item_amount(item_name) - amount_to_remove);
 }
 
 /**

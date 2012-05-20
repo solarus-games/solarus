@@ -191,5 +191,5 @@ void LanguageScreen::notify_input(InputEvent& event) {
 void LanguageScreen::start_next_screen() {
 
   // Let Lua show its screens (usually, a title screen will be shown now).
-  get_lua_context().events_on_started();
+  get_lua_context().start();
 }

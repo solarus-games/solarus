@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Geometry.h"
 #include "MainLoop.h"
 #include "Timer.h"
@@ -39,6 +39,21 @@ void Script::register_main_module() {
       { NULL, NULL }
   };
   register_functions(main_module_name, functions);
+}
+
+/**
+ * @brief Pushes the sol.main table onto the stack.
+ * @param l A Lua state.
+ */
+void LuaContext::push_main(lua_State* l) {
+
+                                  // ...
+  lua_getglobal(l, "sol");
+                                  // ... sol
+  lua_getfield(l, -1, "main");
+                                  // ... sol main
+  lua_remove(l, -2);
+                                  // ... main
 }
 
 /**
@@ -123,5 +138,60 @@ int Script::main_api_get_angle(lua_State *l) {
   lua_pushnumber(l, angle);
 
   return 1;
+}
+
+/**
+ * @brief Calls sol.main.on_update() if it exists.
+ *
+ * This function is called at each cycle by the main loop.
+ */
+void LuaContext::main_on_update() {
+
+  push_main(l);
+  on_update();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Notifies Lua that an input event has just occurred.
+ *
+ * The appropriate callback in sol.main is triggered if it exists.
+ *
+ * @param event The input event to handle.
+ */
+void LuaContext::main_on_input(InputEvent& event) {
+
+  push_main(l);
+  on_input(event);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls sol.main.on_started() if it exists.
+ *
+ * This function is called when the engine requests Lua to show an
+ * initial screen, i.e. at the beginning of the program
+ * (after any built-in screens like the language selection screen)
+ * or when the program is reset.
+ */
+void LuaContext::main_on_started() {
+
+  push_main(l);
+  enable_timers(l, -1);
+  on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls sol.main.on_finished() if it exists.
+ *
+ * This function is called when the program is reset or stopped.
+ */
+void LuaContext::main_on_finished() {
+
+  push_main(l);
+  on_finished();
+  disable_timers(l, -1);
+  lua_pop(l, 1);
 }
 

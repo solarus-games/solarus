@@ -42,15 +42,16 @@ class LuaContext: public Script {
     ~LuaContext();
 
     // Main loop from C++.
-    void initialize();
+    void start();
+    void stop();
     void update();
     void notify_input(InputEvent& event);
 
-    // Main Lua script (sol.events).
-    void events_on_update();
-    void events_on_input(InputEvent& event);
-    void events_on_started();
-    void events_on_finished();
+    // Main Lua script (sol.main).
+    void main_on_update();
+    void main_on_input(InputEvent& event);
+    void main_on_started();
+    void main_on_finished();
 
     // Lua menus events.
     void start_menu(int menu_ref);
@@ -72,10 +73,9 @@ class LuaContext: public Script {
 
     static int l_loader(lua_State* l);
 
-    void register_events_module();
     void register_menu_module();
 
-    static void push_events(lua_State* l);
+    static void push_main(lua_State* l);
 
     void on_update();
     void on_input(InputEvent& event);

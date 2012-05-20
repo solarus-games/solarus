@@ -39,10 +39,6 @@ static const std::string& on_finished_name = "on_finished";
 LuaContext::LuaContext(MainLoop& main_loop):
   Script(main_loop) {
 
-  initialize_lua_context();
-
-  register_events_module();
-  register_menu_module();
 }
 
 /**
@@ -199,7 +195,11 @@ bool LuaContext::find_method(int index, const std::string& function_name) {
 /**
  * @brief Loads and executes main.lua.
  */
-void LuaContext::initialize() {
+void LuaContext::start() {
+
+  initialize_lua_context();
+
+  register_menu_module();
 
   // Make require() able to load Lua files even from the data.solarus archive.
                                   // ...
@@ -221,6 +221,15 @@ void LuaContext::initialize() {
   // Load the main file.
   load(l, "main");
   call_function(0, 0, "main");
+  main_on_started();
+}
+
+/**
+ * @brief Cleans Lua.
+ */
+void LuaContext::stop() {
+
+  main_on_finished();
 }
 
 /**
@@ -245,37 +254,29 @@ int LuaContext::l_loader(lua_State* l) {
  * @brief Updates the Lua world.
  *
  * This function is called at each cycle.
- * sol.events.on_update() is called if it exists.
+ * sol.main.on_update() is called if it exists.
  */
 void LuaContext::update() {
 
   Script::update();
 
-  // Call sol.events.on_update().
-  events_on_update();
+  // Call sol.main.on_update().
+  main_on_update();
 }
 
 /**
  * @brief Notifies the general Lua script that an input event has just occurred.
  *
- * The appropriate callback in sol.events is notified.
+ * The appropriate callback in sol.main is notified.
  *
  * @param event The input event to handle.
  */
 void LuaContext::notify_input(InputEvent& event) {
 
-  // Call the appropriate callback in sol.events (if it exists).
-
-  lua_getglobal(l, "sol");
-                                  // ... sol
-  lua_getfield(l, -1, "events");
-                                  // ... sol events
-  lua_remove(l, -2);
-                                  // ... events
+  // Call the appropriate callback in sol.main (if it exists).
+  push_main(l);
   on_input(event);
-                                  // ... events
   lua_pop(l, 1);
-                                  // ...
 }
 
 /**

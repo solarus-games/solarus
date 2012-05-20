@@ -46,7 +46,6 @@ MainLoop::MainLoop(int argc, char** argv):
   root_surface = new Surface(320, 240);
   debug_keys = new DebugKeys(*this);
   lua_context = new LuaContext(*this);
-  lua_context->initialize();
 
   // The first screen is the built-in language selection screen.
   current_screen = new LanguageScreen(*this);
@@ -99,7 +98,7 @@ bool MainLoop::is_exiting() {
 void MainLoop::set_exiting() {
 
   // Stop the program.
-  lua_context->events_on_finished();
+  lua_context->stop();
   exiting = true;
 }
 
@@ -116,7 +115,7 @@ void MainLoop::set_next_screen(Screen* next_screen) {
 
   if (next_screen == NULL) {
     // Reset the program.
-    lua_context->events_on_finished();
+    lua_context->stop();
     next_screen = new LanguageScreen(*this);
   }
   this->next_screen = next_screen;

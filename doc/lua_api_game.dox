@@ -1,16 +1,16 @@
 /**
-\page lua_api_savegame Savegames
+\page lua_api_game Game and savegames
 
 This module provides a datatype "game" that represents a savegame.
 This type provides methods to manage the game data.
 
-- \c sol.savegame.exists(file_name):
+- \c sol.game.exists(file_name):
 Returns whether the specified savegame file exists.
   - \c file_name (string): name of the file to test, relative to the
     savegames directory.
   - Return value (boolean): true if this savegame file exists
 
-- \c sol.savegame.load(file_name):
+- \c sol.game.load(file_name):
 Loads an existing savegame, or creates a new one if the file does not exist.
 This function does not start the game, it just loads the savegame file.
 Then you can access the data saved in the file.
@@ -19,7 +19,7 @@ To actually run the game, call the \c start() method.
     to the savegames directory
   - Return value (game): the loaded (or created) game
 
-- \c sol.savegame.delete(file_name):
+- \c sol.game.delete(file_name):
 Deletes a savegame file.
   - \c file_name (string): name of the file to delete, relative
     to the savegames directory

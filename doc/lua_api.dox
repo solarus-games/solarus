@@ -45,7 +45,7 @@ The following modules are defined in the \c sol table.
 - \subpage lua_api_main "sol.main": some general-purpose functions.
 - \subpage lua_api_audio "sol.audio": playing musics and sounds.
 - \subpage lua_api_timer "sol.timer": making an action later with a delay.
-- \subpage lua_api_savegame "sol.savegame": handling savegames
+- \subpage lua_api_game "sol.savegame": handling savegames
   and data saved (life, equipment, etc.).
 - \subpage lua_api_map "sol.map": handling the map and entities
   placed on the map (only during a game).

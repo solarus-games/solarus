@@ -203,7 +203,6 @@ void Script::register_movement_module() {
   register_functions(pixel_movement_module_name, common_methods);
   register_type(pixel_movement_module_name, pixel_movement_methods,
       common_metamethods);
-
 }
 
 /**

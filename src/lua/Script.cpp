@@ -47,19 +47,13 @@ Script::Script(MainLoop& main_loop, uint32_t apis_enabled):
  */
 Script::~Script() {
 
-  // Destroy unfinished timers.
-  remove_timers();
-
-  // Close the Lua execution context.
-  if (l != NULL) {
-    lua_close(l);
-  }
+  exit();
 }
 
 /**
  * @brief Initializes the Lua context for this script.
  */
-void Script::initialize_lua_context() {
+void Script::initialize() {
 
   // create an execution context
   l = lua_open();
@@ -76,6 +70,23 @@ void Script::initialize_lua_context() {
 
   // register the C++ functions and types accessible by the script
   register_modules();
+}
+
+/**
+ * @brief Uninitializes Lua.
+ */
+void Script::exit() {
+
+  // Close the Lua execution context.
+  if (l != NULL) {
+
+    // Destroy unfinished timers.
+    remove_timers();
+
+    lua_close(l);
+    l = NULL;
+    music_played = false;
+  }
 }
 
 /**
@@ -102,7 +113,7 @@ void Script::load(const std::string &script_name) {
 void Script::load_if_exists(const std::string& script_name) {
 
   if (l == NULL) {
-    initialize_lua_context();
+    initialize();
   }
 
   // determine the file name (.lua)
@@ -124,9 +135,7 @@ void Script::load_if_exists(const std::string& script_name) {
     }
   }
   else {
-    // uninitialize Lua
-    lua_close(l);
-    l = NULL;
+    exit();
   }
 }
 

@@ -24,6 +24,12 @@ able to load another file.
 
 <hr>
     
+\subsection lua_api_main_reset sol.main.reset()
+
+Resets the program after the current cycle.
+
+<hr>
+
 \subsection lua_api_main_exit sol.main.exit()
 
 Exits the program after the current cycle.

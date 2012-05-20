@@ -297,13 +297,7 @@ void Game::update_transitions() {
     MainLoop& main_loop = get_main_loop();
     if (reseting) {
       current_map->unload();
-      main_loop.get_debug_keys().set_game(NULL);
-
-      IniFile ini("quest.dat", IniFile::READ);
-      ini.set_group("info");
-      Debug::check_assertion(false, "TODO, Resetting should reload the lua context!");
-      // std::string screen_name = ini.get_string_value("first_screen");
-      // main_loop.set_next_screen(new CustomScreen(main_loop, screen_name));
+      main_loop.set_resetting();
     }
     else if (restarting) {
       current_map->unload();

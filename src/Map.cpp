@@ -257,10 +257,10 @@ void Map::unload() {
 
   delete tileset;
   delete visible_surface;
+  delete script;
   delete entities;
   entities = NULL;
 
-  delete script;
   delete camera;
 
   for (int i = 0; i < 4; i++) {

@@ -42,8 +42,8 @@ class LuaContext: public Script {
     ~LuaContext();
 
     // Main loop from C++.
-    void start();
-    void stop();
+    void initialize();
+    void exit();
     void update();
     void notify_input(InputEvent& event);
 

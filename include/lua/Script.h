@@ -121,11 +121,12 @@ class Script {
     Script(MainLoop& main_loop, uint32_t apis_enabled = 0);
 
     // Helper functions.
+    void initialize();
+    void exit();
     static Script& get_script(lua_State* l);
     bool find_global_function(const std::string& function_name);
     bool notify_script(const std::string& function_name, const char* format = "", ...);
     bool call_function(int nb_arguments, int nb_results, const std::string& function_name);
-    void initialize_lua_context();
     void load(const std::string &script_name);
     void load_if_exists(const std::string &script_name);
     bool is_loaded();
@@ -230,6 +231,7 @@ class Script {
 
       // main API
       main_api_include,
+      main_api_reset,
       main_api_exit,
       main_api_start_screen,
       main_api_get_distance,  // TODO remove

@@ -19,5 +19,8 @@ end
 function sol.main:on_key_pressed(key, mods)
 
   -- print("A key was pressed: " .. key .. "!")
+  if key == "pause" then
+    sol.main.reset()
+  end
 end
 

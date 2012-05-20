@@ -46,6 +46,66 @@ LuaContext::LuaContext(MainLoop& main_loop):
  */
 LuaContext::~LuaContext() {
 
+  this->exit();
+}
+
+/**
+ * @brief Initializes Lua.
+ */
+void LuaContext::initialize() {
+
+  Script::initialize();
+  register_menu_module();
+
+  // Make require() able to load Lua files even from the data.solarus archive.
+                                  // ...
+  lua_getglobal(l, "sol");
+                                  // ... sol
+  lua_pushcfunction(l, l_loader);
+                                  // ... sol loader
+  lua_setfield(l, -2, "loader");
+                                  // ... sol
+  luaL_dostring(l, "table.insert(package.loaders, 2, sol.loader)");
+                                  // ... sol
+  lua_pushnil(l);
+                                  // ... sol nil
+  lua_setfield(l, -2, "loader");
+                                  // ... sol
+  lua_pop(l, 1);
+                                  // ...
+
+  // Load the main file.
+  load(l, "main");
+  call_function(0, 0, "main");
+}
+
+/**
+ * @brief Cleans Lua.
+ */
+void LuaContext::exit() {
+
+  if (l != NULL) {
+    main_on_finished();
+  }
+  Script::exit();
+}
+
+/**
+ * @brief A loader that makes require() able to load quest scripts.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::l_loader(lua_State* l) {
+
+  const std::string& script_name = luaL_checkstring(l, 1);
+  bool exists = load_if_exists(l, script_name);
+
+  if (!exists) {
+    std::ostringstream oss;
+    oss << "\n\tno quest file '" << script_name << ".lua' in 'data' or 'data.solarus'";
+    lua_pushstring(l, oss.str().c_str());
+  }
+  return 1;
 }
 
 /**
@@ -190,64 +250,6 @@ bool LuaContext::find_method(int index, const std::string& function_name) {
   }
 
   return exists;
-}
-
-/**
- * @brief Loads and executes main.lua.
- */
-void LuaContext::start() {
-
-  initialize_lua_context();
-
-  register_menu_module();
-
-  // Make require() able to load Lua files even from the data.solarus archive.
-                                  // ...
-  lua_getglobal(l, "sol");
-                                  // ... sol
-  lua_pushcfunction(l, l_loader);
-                                  // ... sol loader
-  lua_setfield(l, -2, "loader");
-                                  // ... sol
-  luaL_dostring(l, "table.insert(package.loaders, 2, sol.loader)");
-                                  // ... sol
-  lua_pushnil(l);
-                                  // ... sol nil
-  lua_setfield(l, -2, "loader");
-                                  // ... sol
-  lua_pop(l, 1);
-                                  // ...
-
-  // Load the main file.
-  load(l, "main");
-  call_function(0, 0, "main");
-  main_on_started();
-}
-
-/**
- * @brief Cleans Lua.
- */
-void LuaContext::stop() {
-
-  main_on_finished();
-}
-
-/**
- * @brief A loader that makes require() able to load quest scripts.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int LuaContext::l_loader(lua_State* l) {
-
-  const std::string& script_name = luaL_checkstring(l, 1);
-  bool exists = load_if_exists(l, script_name);
-
-  if (!exists) {
-    std::ostringstream oss;
-    oss << "\n\tno quest file '" << script_name << ".lua' in 'data' or 'data.solarus'";
-    lua_pushstring(l, oss.str().c_str());
-  }
-  return 1;
 }
 
 /**

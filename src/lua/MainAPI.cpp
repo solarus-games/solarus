@@ -32,6 +32,7 @@ void Script::register_main_module() {
 
   static const luaL_Reg functions[] = {
       { "include", main_api_include },
+      { "reset", main_api_reset },
       { "exit", main_api_exit },
       { "start_screen", main_api_start_screen },
       { "get_distance", main_api_get_distance },
@@ -67,6 +68,20 @@ int Script::main_api_include(lua_State *l) {
   const std::string& file_name = luaL_checkstring(l, 1);
 
   script.load(file_name);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_main_reset.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::main_api_reset(lua_State* l) {
+
+  Script& script = get_script(l);
+
+  script.get_main_loop().set_resetting();
 
   return 0;
 }

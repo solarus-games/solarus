@@ -19,6 +19,7 @@
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "menus/LanguageScreen.h"
@@ -39,6 +40,7 @@ MainLoop::MainLoop(int argc, char** argv):
   root_surface(NULL),
   debug_keys(NULL),
   lua_context(NULL),
+  resetting(false),
   exiting(false) {
 
   // Initialize low-level features (audio, video, files...).
@@ -46,6 +48,7 @@ MainLoop::MainLoop(int argc, char** argv):
   root_surface = new Surface(320, 240);
   debug_keys = new DebugKeys(*this);
   lua_context = new LuaContext(*this);
+  lua_context->initialize();
 
   // The first screen is the built-in language selection screen.
   current_screen = new LanguageScreen(*this);
@@ -98,26 +101,31 @@ bool MainLoop::is_exiting() {
 void MainLoop::set_exiting() {
 
   // Stop the program.
-  lua_context->stop();
   exiting = true;
+}
+
+/**
+ * @brief Marks the current screen as finished and sets the initial screen
+ * to be started at the next cycle.
+ */
+void MainLoop::set_resetting() {
+
+  // Reset the program.
+  resetting = true;
+  get_debug_keys().set_game(NULL);
+  set_next_screen(new LanguageScreen(*this));
 }
 
 /**
  * @brief Marks the current screen as finished and sets another one to be
  * started at the next cycle.
- * @param next_screen The next screen to show, or NULL
- * to restart the program.
+ * @param next_screen The next screen to show
  */
 void MainLoop::set_next_screen(Screen* next_screen) {
 
   Debug::check_assertion(this->next_screen == NULL,
       "Another new screen is already set to be started");
 
-  if (next_screen == NULL) {
-    // Reset the program.
-    lua_context->stop();
-    next_screen = new LanguageScreen(*this);
-  }
   this->next_screen = next_screen;
 }
 
@@ -173,6 +181,14 @@ void MainLoop::run() {
       delete current_screen;
       current_screen = next_screen;
       next_screen = NULL;
+
+      if (resetting) {
+        resetting = false;
+        lua_context->exit();
+        lua_context->initialize();
+        Music::play(Music::none);
+      }
+
       current_screen->start();
     }
     else {

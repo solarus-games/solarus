@@ -82,7 +82,7 @@ void LuaContext::menu_on_input(int menu_ref, InputEvent& event) {
 void LuaContext::menu_on_started(int menu_ref) {
 
   push_ref(l, menu_ref);
-  enable_timers(-1);
+  enable_timers(l, -1);
   on_started();
   lua_pop(l, 1);
 }
@@ -95,7 +95,7 @@ void LuaContext::menu_on_finished(int menu_ref) {
 
   push_ref(l, menu_ref);
   on_finished();
-  disable_timers(-1);
+  disable_timers(l, -1);
   lua_pop(l, 1);
 }
 

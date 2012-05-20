@@ -120,10 +120,8 @@ class Script {
 
     Script(MainLoop& main_loop, uint32_t apis_enabled = 0);
 
-    // calling C++ from Lua
+    // Helper functions.
     static Script& get_script(lua_State* l);
-
-    // calling Lua from C++
     bool find_global_function(const std::string& function_name);
     bool notify_script(const std::string& function_name, const char* format = "", ...);
     bool call_function(int nb_arguments, int nb_results, const std::string& function_name);
@@ -131,8 +129,10 @@ class Script {
     void load(const std::string &script_name);
     void load_if_exists(const std::string &script_name);
     bool is_loaded();
+    static int get_positive_index(lua_State* l, int index);
+    void print_stack();
 
-    // modules
+    // Modules.
     static void push_userdata(lua_State* l, ExportableToLua& userdata);
     static void push_timer(lua_State* l, Timer& timer);
     static void push_surface(lua_State* l, Surface& surface);
@@ -141,11 +141,8 @@ class Script {
     static void push_movement(lua_State* l, Movement& movement);
     static void push_ref(lua_State* l, int ref);
     const std::string& input_get_key_name(InputEvent::KeyboardKey key);
-    void enable_timers(int table_index);
-    void disable_timers(int table_index);
-
-    // debugging
-    void print_stack();
+    static void enable_timers(lua_State* l, int table_index);
+    static void disable_timers(lua_State* l, int table_index);
 
   private:
 
@@ -216,7 +213,7 @@ class Script {
     void remove_timer(Timer* timer);
     void remove_timers(int table_index);
     void remove_timers();
-    void update_table_timers();
+    void update_timers();
 
     // displayable objects
     bool has_displayable(DynamicDisplayable* displayable);

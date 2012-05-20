@@ -174,10 +174,7 @@ bool LuaContext::find_method(const std::string& function_name) {
  */
 bool LuaContext::find_method(int index, const std::string& function_name) {
 
-  if (index < 0) {
-    // ensure a positive index
-    index = lua_gettop(l) + index + 1;
-  }
+  index = get_positive_index(l, index);
 
                                   // ... object ...
   lua_getfield(l, index, function_name.c_str());

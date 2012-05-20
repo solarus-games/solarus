@@ -329,6 +329,20 @@ void Script::print_stack() {
 }
 
 /**
+ * @brief For an index in the Lua stack, returns an equivalent positive index.
+ * @param l A Lua state.
+ * @param index An index in the stack (positive or negative).
+ * @return The corresponding positive index.
+ */
+int Script::get_positive_index(lua_State* l, int index) {
+
+  if (index < 0) {
+    index = lua_gettop(l) + index + 1;
+  }
+  return index;
+}
+
+/**
  * @brief Creates a reference to the Lua value on top of the stack.
  */
 int Script::create_ref() {
@@ -535,7 +549,7 @@ bool Script::call_function(int nb_arguments, int nb_results,
 void Script::update() {
 
   update_displayables();
-  update_table_timers();
+  update_timers();
 }
 
 /**
@@ -576,14 +590,12 @@ bool Script::has_played_music() {
  * @param module_name name of a userdata metatable in the registry
  * @return true if the value is a userdata with this metatable
  */
-bool Script::is_userdata(lua_State* l, int index, const std::string& module_name) {
+bool Script::is_userdata(lua_State* l, int index,
+    const std::string& module_name) {
 
-  if (index < 0) {
-    // ensure a positive index
-    index = lua_gettop(l) + index + 1;
-  }
+  index = get_positive_index(l, index);
 
-                                  /* ... udata ... */
+                                  // ... udata ...
   void *udata = lua_touserdata(l, index);
   if (udata == NULL) {
     // it's not a userdata
@@ -593,12 +605,12 @@ bool Script::is_userdata(lua_State* l, int index, const std::string& module_name
     // the userdata has no metatable
     return false;
   }
-                                  /* ... udata ... mt_found */
+                                  // ... udata ... mt_found
   lua_getfield(l, LUA_REGISTRYINDEX, module_name.c_str());
-                                  /* ... udata ... mt_found mt_expected */
+                                  // ... udata ... mt_found mt_expected
   bool result = lua_rawequal(l, -1, -2);
   lua_pop(l, 2);
-                                  /* ... udata ... */
+                                  // ... udata ...
   return result;
 }
 
@@ -634,10 +646,7 @@ void Script::push_userdata(lua_State* l, ExportableToLua& userdata) {
 ExportableToLua& Script::check_userdata(lua_State* l, int index,
     const std::string& module_name) {
 
-  if (index < 0) {
-    // ensure a positive index
-    index = lua_gettop(l) + index + 1;
-  }
+  index = get_positive_index(l, index);
 
   ExportableToLua** userdata =
     (ExportableToLua**) luaL_checkudata(l, index, module_name.c_str());
@@ -682,10 +691,7 @@ int Script::userdata_meta_gc(lua_State* l) {
  */
 Color Script::check_color(lua_State* l, int index) {
 
-  if (index < 0) {
-    // ensure a positive index
-    index = lua_gettop(l) + index + 1;
-  }
+  index = get_positive_index(l, index);
 
   luaL_checktype(l, index, LUA_TTABLE);
   lua_rawgeti(l, index, 1);

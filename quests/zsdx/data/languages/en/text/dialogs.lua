@@ -3886,7 +3886,6 @@ dialog{
 Three freshly picked
 apples from this
 morning!
-
 Each apple restores a
 Heart.
 ]]
@@ -4301,6 +4300,8 @@ I wasn't able to
 protect our King.
 Give me a chance to
 make it up!
+
+
 Do you accept my help?
 Yes
 No

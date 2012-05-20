@@ -148,26 +148,26 @@
 7	0	512	1085	pike_10	2	pike_detect	0	-1	_random	1	-1
 1	0	512	1117	tmp	2	0
 7	0	512	1053	pike_9	2	pike_detect	0	-1	_random	1	-1
-12	0	504	1088	16	16	custom_obstacle_33	0	1	0	0
-12	0	504	1056	16	16	custom_obstacle_34	0	1	0	0
+12	0	512	1088	8	8	custom_obstacle_33	0	1	0	0
+12	0	512	1056	8	16	custom_obstacle_34	0	1	0	0
 7	0	512	1021	pike_8	2	pike_detect	0	-1	_random	1	-1
 7	0	512	989	pike_7	2	pike_detect	0	-1	_random	1	-1
-12	0	504	1024	16	16	custom_obstacle_35	0	1	0	0
-12	0	504	992	16	16	custom_obstacle_36	0	1	0	0
+12	0	512	1024	8	16	custom_obstacle_35	0	1	0	0
+12	0	512	992	8	16	custom_obstacle_36	0	1	0	0
 7	0	512	957	pike_6	2	pike_detect	0	-1	_random	1	-1
-12	0	504	960	16	16	custom_obstacle_37	0	1	0	0
+12	0	512	960	8	16	custom_obstacle_37	0	1	0	0
 7	0	368	1085	pike_1	2	pike_detect	0	-1	_random	1	-1
 7	0	368	1053	pike_2	2	pike_detect	0	-1	_random	1	-1
-12	0	360	1088	16	16	custom_obstacle_38	0	1	0	0
-12	0	360	1056	16	16	custom_obstacle_39	0	1	0	0
+12	0	360	1088	8	8	custom_obstacle_38	0	1	0	0
+12	0	360	1056	8	16	custom_obstacle_39	0	1	0	0
 7	0	368	1021	pike_3	2	pike_detect	0	-1	_random	1	-1
 7	0	368	989	pike_4	2	pike_detect	0	-1	_random	1	-1
-12	0	360	1024	16	16	custom_obstacle_40	0	1	0	0
-12	0	360	992	16	16	custom_obstacle_41	0	1	0	0
+12	0	360	1024	8	16	custom_obstacle_40	0	1	0	0
+12	0	360	992	8	16	custom_obstacle_41	0	1	0	0
 7	0	368	957	pike_5	2	pike_detect	0	-1	_random	1	-1
-12	0	360	960	16	16	custom_obstacle_42	0	1	0	0
-12	0	504	928	16	16	custom_obstacle_43	0	1	0	0
-12	0	360	928	16	16	custom_obstacle_44	0	1	0	0
+12	0	360	960	8	16	custom_obstacle_42	0	1	0	0
+12	0	512	936	8	8	custom_obstacle_43	0	1	0	0
+12	0	360	936	8	8	custom_obstacle_44	0	1	0	0
 7	0	416	1133	enemy	3	green_knight_soldier	0	-1	_random	1	-1
 7	0	440	917	enemy_3	3	green_knight_soldier	0	-1	_random	1	-1
 0	1	808	616	8	48	238
@@ -1262,7 +1262,7 @@
 1	1	888	581	destination_point_8	-1	1
 1	1	1104	581	destination_point_9	-1	1
 1	1	888	797	destination_point_10	-1	1
-8	1	1008	421	npc	3	0	entities/hint_stone	dialog#dungeon_5.pots_hint
+8	1	648	733	npc	3	0	entities/hint_stone	dialog#dungeon_5.pots_hint
 2	1	928	784	16	16	teletransporter_7	1	1	63	destination_point_4
 2	1	928	736	16	16	teletransporter_8	1	1	63	destination_point_10
 3	1	1104	749	piece_of_heart	1	506

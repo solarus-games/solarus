@@ -1,9 +1,13 @@
 zsdx-1.5.1 (under development)
 
-* English dialogs: fix the blacksmith question to buy the sword
+* English dialogs: fix dialogs with questions
 * English dialogs: various improvements
 * Dungeon 10: the hero could land in a wall when falling into a hole
+* Dungeon 10: fix minor mapping errors
 * Dungeon 5 B1: give bombs to make sure the hero can pass the weak walls
+* Dungeon 5 2F: move the hint stone to the room of the corresponding puzzle
+* Dungeon 5 2F: two enemies could be stopped by strange invisible walls
+* Dungeon 6 3F: really fix the breach
 * Savegame variable 0 was used twice (no consequence)
 * Always set the variant of _none and _random treasures to 1
 

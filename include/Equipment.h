@@ -33,7 +33,6 @@ class Equipment {
   private:
 
     Savegame &savegame;							/**< the savegame encapsulated by this equipment object */
-    Game *game;								/**< the current game (may be NULL when the savegame is loaded outside a game) */
     bool suspended;							/**< indicates that the game is suspended */
 
     // items
@@ -52,6 +51,7 @@ class Equipment {
     // creation and destruction
     Equipment(Savegame &savegame);
     ~Equipment();
+
     void set_game(Game &game);
     void set_map(Map &map);
 

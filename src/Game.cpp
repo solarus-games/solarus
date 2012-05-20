@@ -52,7 +52,7 @@ Game::Game(MainLoop& main_loop, Savegame& savegame):
   pause_key_available(true),
   pause_menu(NULL), 
   gameover_sequence(NULL),
-  reseting(false),
+  resetting(false),
   restarting(false),
   keys_effect(NULL),
   current_map(NULL),
@@ -67,7 +67,7 @@ Game::Game(MainLoop& main_loop, Savegame& savegame):
   dialog_box(NULL) {
 
   // notify objects
-  get_equipment().set_game(*this);
+  get_savegame().set_game(this);
   get_main_loop().get_debug_keys().set_game(this);
 
   // initialize members
@@ -230,7 +230,7 @@ void Game::update() {
   // update the transitions between maps
   update_transitions();
 
-  if (reseting || restarting) {
+  if (resetting || restarting) {
     return; // the game may have just been reset
   }
 
@@ -295,7 +295,7 @@ void Game::update_transitions() {
     transition = NULL;
 
     MainLoop& main_loop = get_main_loop();
-    if (reseting) {
+    if (resetting) {
       current_map->unload();
       main_loop.set_resetting();
     }
@@ -705,13 +705,13 @@ void Game::load_dungeon() {
 }
 
 /**
- * @brief Goes back to the title screen.
+ * @brief Ends the game and goes back to the initial screen.
  */
 void Game::reset() {
 
   transition = Transition::create(Transition::FADE, Transition::OUT, this);
   transition->start();
-  reseting = true;
+  resetting = true;
 }
 
 /**

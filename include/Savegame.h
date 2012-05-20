@@ -52,6 +52,8 @@ class Savegame: public ExportableToLua {
 
     // unsaved data
     Equipment& get_equipment();
+    Game* get_game();
+    void set_game(Game* game);
 
     virtual const std::string& get_lua_type_name() const;
 
@@ -238,6 +240,7 @@ class Savegame: public ExportableToLua {
     std::string file_name;
     SavedData saved_data;
     Equipment equipment;
+    Game* game;             /**< NULL if this savegame is not currently running */
 
     void set_initial_values();
     void set_default_keyboard_controls();

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/Script.h"
+#include "MainLoop.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
@@ -155,9 +156,8 @@ int Script::game_api_load(lua_State *l) {
  */
 int Script::game_api_save(lua_State *l) {
 
-  Script& script = get_script(l);
-
-  script.get_game().get_savegame().save();
+  Savegame& savegame = check_game(l, 1);
+  savegame.save();
 
   return 0;
 }
@@ -170,8 +170,19 @@ int Script::game_api_save(lua_State *l) {
 int Script::game_api_start(lua_State *l) {
 
   Script& script = get_script(l);
+  Savegame& savegame = check_game(l, 1);
 
-  script.get_game().restart();
+  Game* game = savegame.get_game();
+  if (game != NULL) {
+    // Restart the current game.
+    game->restart();
+  }
+  else {
+    // Create a game to run.
+    MainLoop& main_loop = script.get_main_loop();
+    Game* game = new Game(main_loop, savegame);
+    main_loop.set_next_screen(game);
+  }
 
   return 0;
 }

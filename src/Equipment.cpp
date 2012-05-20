@@ -34,7 +34,6 @@
  */
 Equipment::Equipment(Savegame &savegame):
   savegame(savegame),
-  game(NULL),
   suspended(true),
   magic_decrease_delay(0) {
 
@@ -87,10 +86,6 @@ ItemScript& Equipment::get_item_script(const std::string &item_name) {
  */
 void Equipment::set_game(Game &game) {
 
-  Debug::check_assertion(this->game == NULL, "The game is already set");
-
-  this->game = &game;
-
   // create the scripts
   std::map<std::string, ItemProperties*>::const_iterator it;
   for (it = item_properties.begin(); it != item_properties.end(); it++) {
@@ -128,6 +123,7 @@ void Equipment::set_map(Map &map) {
  */
 void Equipment::update() {
 
+  Game* game = savegame.get_game();
   if (game == NULL) {
     // nothing dynamic when there is no game
     return;
@@ -755,7 +751,7 @@ int Equipment::get_item_slot(const std::string &item_name) {
  * @return true if the small keys are enabled in the current map
  */
 bool Equipment::are_small_keys_enabled() {
-  return game->get_current_map().has_small_keys();
+  return savegame.get_game()->get_current_map().has_small_keys();
 }
 
 /**
@@ -771,7 +767,7 @@ int Equipment::get_small_keys_variable() {
 
   Debug::check_assertion(are_small_keys_enabled(), "The small keys are not enabled on this map");
 
-  return game->get_current_map().get_small_keys_variable();
+  return savegame.get_game()->get_current_map().get_small_keys_variable();
 }
 
 /**
@@ -934,7 +930,8 @@ void Equipment::notify_ability_used(const std::string &ability_name) {
  */
 int Equipment::get_current_dungeon() {
 
-  if (!game->is_in_dungeon()) {
+  Game* game = savegame.get_game();
+  if (game == NULL || !game->is_in_dungeon()) {
     return 0;
   }
 

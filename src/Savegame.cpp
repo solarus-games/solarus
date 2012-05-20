@@ -202,6 +202,27 @@ Equipment& Savegame::get_equipment() {
 }
 
 /**
+ * @brief If this savegame is currently running in a game, return that game.
+ * @return A game or NULL.
+ */
+Game* Savegame::get_game() {
+  return game;
+}
+
+/**
+ * @brief Sets the game that is running this savegame.
+ * @param game A game or NULL.
+ */
+void Savegame::set_game(Game* game) {
+
+  this->game = game;
+  if (game != NULL) {
+    // Notify the equipment.
+    equipment.set_game(*game);
+  }
+}
+
+/**
  * @brief Returns a string value saved.
  * @param index index of the value to get, between 0 and 63
  * (see enum StringIndex for their definition)

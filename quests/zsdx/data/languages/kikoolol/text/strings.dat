@@ -1,0 +1,170 @@
+# Language: kikoolol
+
+# This file contains the strings displayed during the game in the current language.
+# Each line represents a string, representing by its key and then its value.
+# The key and the value are separated by one or several tabulation characters.
+# The key cannot contain whitespaces and cannot be changed. Only the value has to be translated.
+# This file must be encoded in UTF-8.
+
+# The strings having a key with "caption" are displayed
+# in the caption text area of the pause menu. They can have one or two lines
+# (separated by the '$' character) and a line should never exceed 20 characters.
+# For all other strings, the maximum length is indicated in the comments below.
+
+# Map submenu
+map.caption.world_map			Karte du Monde
+map.caption.dungeon_name_1		Dongeon de la Foré
+map.caption.dungeon_name_2		Kaverne de Rock
+map.caption.dungeon_name_3		Antr de$Métre Arblol
+map.caption.dungeon_name_4		Palé de Lolmont
+map.caption.dungeon_name_5		Ancien$Chapito
+map.caption.dungeon_name_6		Dédal d'Inferlol
+map.caption.dungeon_name_7		Templ dé Kristo
+map.caption.dungeon_name_8		Dongeon des$Piques Rocheu
+map.caption.dungeon_name_9		Tampl dé Souvenirs ll
+map.caption.dungeon_name_10		Tourre dé sieu
+
+# Quest status submenu
+quest_status.caption.rupee_bag_1	Sac de Ruby
+quest_status.caption.rupee_bag_2	Gran$Sac de Ruby
+quest_status.caption.rupee_bag_3	Sac 2 Rubis$Supayr gran
+quest_status.caption.bomb_bag_1		Sac 2 Bombe mdr
+quest_status.caption.bomb_bag_2		Plu Gran$Sack de Bombe
+quest_status.caption.bomb_bag_3		Sac de Bombes$Tro Géan
+quest_status.caption.quiver_1		Karkoi
+quest_status.caption.quiver_2		Grand Karkoi
+quest_status.caption.quiver_3		Karkoi de ouf
+quest_status.caption.world_map		Kart du Mond
+quest_status.caption.pieces_of_heart	Fragmen de <3
+quest_status.caption.tunic_1		Cotte de Mailles$vairte
+quest_status.caption.tunic_2		Kotte de Maille$bleu
+quest_status.caption.tunic_3		Cotte de Maille$Ki maille
+quest_status.caption.sword_1		Aipai du Courage
+quest_status.caption.sword_2		Gléve Lolien
+quest_status.caption.sword_3		Sabr du Hairos
+quest_status.caption.sword_4		Lame Purificamdr
+quest_status.caption.shield_1		Bouclié
+quest_status.caption.shield_2		Bouclié de Feu!!!!!
+quest_status.caption.shield_3		Bouclié Miroire
+
+# Inventory submenu
+inventory.caption.item.feather.1			Plumes
+inventory.caption.item.bombs_counter.1			Bombe
+inventory.caption.item.bow.1				Ark
+inventory.caption.item.bow.2				Ark & Flaiche
+inventory.caption.item.boomerang.1			Boumeurangue
+inventory.caption.item.boomerang.2			Super Boumeurangue
+inventory.caption.item.lamp.1				Lantern
+inventory.caption.item.hookshot.1			Grapin
+inventory.caption.item.bottle_1.1			Flakon Magique$(ri1)
+inventory.caption.item.bottle_1.2			Flakon Magique$(o)
+inventory.caption.item.bottle_1.3			Flakon Magique$(Possion rouge)
+inventory.caption.item.bottle_1.4			Flakon Magique$(Possion verte)
+inventory.caption.item.bottle_1.5			Flakon Magique$(Possion bleue)
+inventory.caption.item.bottle_1.6			Flakon Magique$(Fai)
+
+inventory.caption.item.pegasus_shoes.1			Bottes de Pet-gas
+inventory.caption.item.mystic_mirror.1			Miroir Mistik!!
+inventory.caption.item.cane_of_somaria.1		Kanne de Lolmaria
+inventory.caption.item.apples_counter.1			Pome
+inventory.caption.item.pains_au_chocolat_counter.1	P1 au Schokobon
+inventory.caption.item.croissants_counter.1		Kroassan
+inventory.caption.item.bottle_2.1			Flakon Magique$(Ri1)
+inventory.caption.item.bottle_2.2			Flakon Magique$(O)
+inventory.caption.item.bottle_2.3			Flakon Magique$(Possion rouge)
+inventory.caption.item.bottle_2.4			Flakon Magique$(Possion verte)
+inventory.caption.item.bottle_2.5			Flakon Magique$(Possion bleue)
+inventory.caption.item.bottle_2.6			Flakon Magique$(Fai)
+
+inventory.caption.item.rock_key.1			Clai de Rocl
+inventory.caption.item.bone_key.1			Clai d'Osse
+inventory.caption.item.clay_key.1			Clai Pomme de Terre
+inventory.caption.item.level_4_way.1			Tart o Pomme
+inventory.caption.item.level_4_way.2			Lingo d'or!!!!
+inventory.caption.item.level_4_way.3			Fleur bizar
+inventory.caption.item.level_4_way.4			Praissis d'escrim
+inventory.caption.item.flippers.1			Truk pour nagé
+inventory.caption.item.magic_cape.1			Truk pour volé
+inventory.caption.item.bottle_3.1			Flakon Magique$(Vide)
+inventory.caption.item.bottle_3.2			Flakon Magique$(Eau)
+inventory.caption.item.bottle_3.3			Flakon Magique$(Potion rouge)
+inventory.caption.item.bottle_3.4			Flakon Magique$(Potion verte)
+inventory.caption.item.bottle_3.5			Flakon Magique$(Potion bleue)
+inventory.caption.item.bottle_3.6			Flakon Magique$(Fée)
+
+inventory.caption.item.iron_key.1			Clai de Faire
+inventory.caption.item.stone_key.1			Clai de Pier
+inventory.caption.item.wooden_key.1			Clai de Boa
+inventory.caption.item.ice_key.1			Clai de Glasse
+inventory.caption.item.glove.1				Poagne de Ferre
+inventory.caption.item.glove.2				Poagne d'Orre
+inventory.caption.item.fire_stones_counter.1		Pier de Feu
+inventory.caption.item.bottle_4.1			Flakon Magie$(Vide)
+inventory.caption.item.bottle_4.2			Flakon Magie$(Eau)
+inventory.caption.item.bottle_4.3			Flakon Magie$(Potion rouge)
+inventory.caption.item.bottle_4.4			Flakon Magie$(Potion verte)
+inventory.caption.item.bottle_4.5			Flakon Magie$(Potion bleue)
+inventory.caption.item.bottle_4.6			Flakon Magie$(Fée)
+
+# Options submenu
+options.caption.press_action_change_mode	Apui sur Action$pour changé 2 mod
+options.caption.press_action_customize_key	Appuié sur Action pour$configuré cet touch
+options.caption.press_key			Appui sur 1 touch$du clavié ou du joypad lol
+# names of video modes (maximum 26 characters)
+options.video_mode_0				Fenêtre petite
+options.video_mode_1				Fenêtre petite et lisse
+options.video_mode_2				Fenêtre tro petite lol
+options.video_mode_3				Plein écran étirai
+options.video_mode_4				Plein écran étirai (kom ta mere lol)
+options.video_mode_5				Plein écran liss
+options.video_mode_6				Plein écran liss (kom ta mere lol)
+options.video_mode_7				Pl1 écran centrai
+options.video_mode_8				Pl1 écran centrai (kom ta mere lol)
+# column headers of the keyboard/joypad customization table (maximum 10 characters)
+options.commands_column				Kommande
+options.keyboard_column				Christian Klavier
+options.joypad_column				Jouipad
+
+# Game controls customization (maximum 10 characters)
+controls.game_key_1		Akssion
+controls.game_key_2		Aipai
+controls.game_key_3		Obj goche
+controls.game_key_4		Obj droa
+controls.game_key_5		Pose
+controls.game_key_6		Droate
+controls.game_key_7		Ho
+controls.game_key_8		Goche
+controls.game_key_9		Ba
+
+# Dialog to save the game
+save_dialog.yes			wi lol
+save_dialog.no			non mdr
+save_dialog.save_question_0	Tu ve sauvé ton jeu????
+save_dialog.save_question_1	stp di oui !!
+save_dialog.continue_question_0	Tu veu continué ton jeu
+save_dialog.continue_question_1	stp ?
+
+# Savegame selection menu (with maximum 45 characters for phase titles)
+selection_menu.phase.select_file	Choisi 1 fichié
+selection_menu.phase.choose_mode	Choisi 1 mod de jeu
+selection_menu.phase.choose_name	ASL? Cé koi ton non
+selection_menu.phase.confirm_erase	Tu jur ?
+selection_menu.phase.erase_file		Quel fichié tu ve zigouiller lol ?
+selection_menu.phase.options		Appui sur Espace stuveu
+selection_menu.phase.options.changing	<  > : choisir, Espace : validé
+selection_menu.erase			Effasser
+selection_menu.cancel			Annulé
+selection_menu.big_yes			OUI OUI
+selection_menu.big_no			NON JÉDI
+selection_menu.empty			Vid
+selection_menu.options			Optssons
+selection_menu.back			Retourre
+selection_menu.options.language		Langue lol
+selection_menu.options.video_mode	Mod
+selection_menu.options.music_volume	Volume de la zik
+selection_menu.options.sound_volume	Volume des ssons
+
+# Title screen
+title_screen.website		www.zelda-lolarus.com
+title_screen.press_space	Appuyi sur espasse
+

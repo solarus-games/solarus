@@ -277,7 +277,7 @@ void Map::unload() {
  */
 void Map::load(Game &game) {
 
-  this->visible_surface = new Surface(320, 240);
+  this->visible_surface = new Surface(SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT);
   entities = new MapEntities(game, *this);
 
   // read the map file
@@ -500,9 +500,9 @@ void Map::display_foreground() {
     int hero_direction = get_entities().get_hero().get_animation_direction();
     const Rectangle& hero_position = get_entities().get_hero().get_center_point();
     const Rectangle& camera_position = camera->get_position();
-    int x = 320 - hero_position.get_x() + camera_position.get_x();
-    int y = 240 - hero_position.get_y() + camera_position.get_y();
-    Rectangle src_position(x, y, 320, 240);
+    int x = SOLARUS_GAME_WIDTH - hero_position.get_x() + camera_position.get_x();
+    int y = SOLARUS_GAME_HEIGHT - hero_position.get_y() + camera_position.get_y();
+    Rectangle src_position(x, y, SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT);
     dark_surfaces[hero_direction]->display_region(src_position,
         *visible_surface);
   }

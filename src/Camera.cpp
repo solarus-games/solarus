@@ -30,7 +30,7 @@ Camera::Camera(Map& map):
   map(map),
   fixed_on_hero(true),
   restoring(false),
-  position(0, 0, 320, 240),
+  position(0, 0, SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT),
   speed(120),
   movement(NULL) {
 
@@ -59,12 +59,14 @@ void Camera::update() {
     const Rectangle& hero_center = map.get_entities().get_hero().get_center_point();
     x = hero_center.get_x();
     y = hero_center.get_y();
-    x = std::min(std::max(x - 160, 0), map_location.get_width() - 320);
-    y = std::min(std::max(y - 120, 0), map_location.get_height() - 240);
+    x = std::min(std::max(x - SOLARUS_GAME_WIDTH_MIDDLE, 0), map_location.get_width() - SOLARUS_GAME_WIDTH);
+    if (map_location.get_width() < SOLARUS_GAME_WIDTH)
+	x = (map_location.get_width()-SOLARUS_GAME_WIDTH )/2;
+    y = std::min(std::max(y - 120, 0), map_location.get_height() - SOLARUS_GAME_HEIGHT);
   }
   else if (movement != NULL) {
     movement->update();
-    x = movement->get_x() - 160;
+    x = movement->get_x() - SOLARUS_GAME_WIDTH_MIDDLE;
     y = movement->get_y() - 120;
 
     if (movement->is_finished()) {
@@ -132,11 +134,11 @@ void Camera::move(int target_x, int target_y) {
   }
 
   const Rectangle& map_location = map.get_location();
-  target_x = std::min(std::max(target_x, 160), map_location.get_width() - 160);
+  target_x = std::min(std::max(target_x, SOLARUS_GAME_WIDTH_MIDDLE), map_location.get_width() - SOLARUS_GAME_WIDTH_MIDDLE);
   target_y = std::min(std::max(target_y, 120), map_location.get_height() - 120);
 
   movement = new TargetMovement(target_x, target_y, speed, true);
-  movement->set_xy(position.get_x() + 160, position.get_y() + 120);
+  movement->set_xy(position.get_x() + SOLARUS_GAME_WIDTH_MIDDLE, position.get_y() + 120);
 
   fixed_on_hero = false;
 }

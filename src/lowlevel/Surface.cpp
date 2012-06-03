@@ -33,7 +33,11 @@ Surface::Surface(int width, int height):
   internal_surface_created(true) {
 
   this->internal_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height,
+#if !defined(CAANOO) && !defined(PANDORA)
       32, 0, 0, 0, 0);
+#else
+      16, 0, 0, 0, 0);
+#endif
 }
 
 /**

@@ -45,7 +45,7 @@ MainLoop::MainLoop(int argc, char** argv):
 
   // Initialize low-level features (audio, video, files...).
   System::initialize(argc, argv);
-  root_surface = new Surface(320, 240);
+  root_surface = new Surface(SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT);
   debug_keys = new DebugKeys(*this);
   lua_context = new LuaContext(*this);
   lua_context->initialize();
@@ -256,6 +256,11 @@ void MainLoop::notify_input(InputEvent& event) {
       // Alt + F4: quit the program
       exiting = true;
     }
+#if defined(PANDORA)
+    else if (key == InputEvent::KEY_ESCAPE) {
+      exiting = true;
+    }
+#endif
     else {
       debug_keys->key_pressed(key);
     }

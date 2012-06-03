@@ -131,7 +131,7 @@ void Savegame::set_initial_values() {
 void Savegame::set_default_keyboard_controls() {
 
   set_integer(KEYBOARD_ENUM_VERSION, InputEvent::KEYBOARD_ENUM_VERSION);
-
+#ifndef PANDORA
   set_integer(KEYBOARD_ACTION_KEY, InputEvent::KEY_SPACE);
   set_integer(KEYBOARD_SWORD_KEY, InputEvent::KEY_c);
   set_integer(KEYBOARD_ITEM_1_KEY, InputEvent::KEY_x);
@@ -141,6 +141,17 @@ void Savegame::set_default_keyboard_controls() {
   set_integer(KEYBOARD_UP_KEY, InputEvent::KEY_UP);
   set_integer(KEYBOARD_LEFT_KEY, InputEvent::KEY_LEFT);
   set_integer(KEYBOARD_DOWN_KEY, InputEvent::KEY_DOWN);
+#else
+  set_integer(KEYBOARD_ACTION_KEY, SDLK_PAGEDOWN);
+  set_integer(KEYBOARD_SWORD_KEY, SDLK_HOME);
+  set_integer(KEYBOARD_ITEM_1_KEY, SDLK_PAGEUP);
+  set_integer(KEYBOARD_ITEM_2_KEY, SDLK_END);
+  set_integer(KEYBOARD_PAUSE_KEY, SDLK_LALT);
+  set_integer(KEYBOARD_RIGHT_KEY, InputEvent::KEY_RIGHT);
+  set_integer(KEYBOARD_UP_KEY, InputEvent::KEY_UP);
+  set_integer(KEYBOARD_LEFT_KEY, InputEvent::KEY_LEFT);
+  set_integer(KEYBOARD_DOWN_KEY, InputEvent::KEY_DOWN);
+#endif
 }
 
 /**

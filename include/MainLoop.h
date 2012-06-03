@@ -46,7 +46,7 @@ class MainLoop {
     Screen* current_screen;     /**< the screen currently displayed (may be the title screen,
                                  * the selection menu, the game, etc.) */
     Screen* next_screen;        /**< the new screen to show at the next cycle */
-    Surface* root_surface;      /**< the surface where everything is drawn (always 320*240) */
+    Surface* root_surface;      /**< the surface where everything is drawn (always SOLARUS_GAME_WIDTH * SOLARUS_GAME_HEIGHT) */
     DebugKeys* debug_keys;      /**< special keys to debug the game, e.g. to traverse walls (disabled in release mode) */
     LuaContext* lua_context;    /**< the Lua world where scripts are run */
     bool resetting;             /**< indicates that the program is about to reset */

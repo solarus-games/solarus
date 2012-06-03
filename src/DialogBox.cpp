@@ -44,7 +44,7 @@ const uint32_t DialogBox::char_delays[] = {
 DialogBox::DialogBox(Game &game):
   game(game),
   issuer_script(NULL),
-  dialog_surface(320, 240),
+  dialog_surface(SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT),
   box_img("hud/dialog_box.png"),
   icons_img("hud/dialog_icons.png"),
   end_lines_sprite("hud/dialog_box_message_end"),
@@ -122,7 +122,7 @@ void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
   }
 
   // set the coordinates of graphic objects
-  int x = 50;
+  int x = SOLARUS_GAME_WIDTH_MIDDLE-110;
   int y = (vertical_position == POSITION_TOP) ? 32 : 144;
 
   if (style == STYLE_WITHOUT_FRAME) {

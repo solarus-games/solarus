@@ -28,7 +28,7 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenu *menu):
   SelectionMenuPhase(menu, "selection_menu.phase.select_file"),
   adventure_mode(true),
   mode_img("menus/selection_menu_mode.png"),
-  savegame_surface(320, 240) {
+  savegame_surface() {
 
   Transition *transition = Transition::create(Transition::FADE, Transition::OUT);
   transition->start();

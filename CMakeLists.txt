@@ -131,6 +131,19 @@ if(DEFAULT_QUEST)
   add_definitions(-DDEFAULT_QUEST=\"${DEFAULT_QUEST}\")
 endif(DEFAULT_QUEST)
 
+if(PANDORA)
+  set(GAME_WIDTH 400 CACHE INTEGER "Width of the screen in pixels")
+else(PANDORA)
+  set(GAME_WIDTH 320 CACHE INTEGER "Width of the screen in pixels")
+endif(PANDORA)
+set(GAME_HEIGHT 240 CACHE INTEGER "Height of the screen in pixels")
+if (GAME_WIDTH)
+  add_definitions(-DSOLARUS_GAME_WIDTH=${GAME_WIDTH})
+endif(GAME_WIDTH)
+if (GAME_HEIGHT)
+  add_definitions(-DSOLARUS_GAME_HEIGHT=${GAME_HEIGHT})
+endif(GAME_HEIGHT)
+
 # files to install with make install
 install(TARGETS	solarus
   RUNTIME DESTINATION bin

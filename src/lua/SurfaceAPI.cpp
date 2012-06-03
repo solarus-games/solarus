@@ -81,7 +81,7 @@ int Script::surface_api_create(lua_State* l) {
   Surface* surface;
   if (lua_gettop(l) == 0) {
     // create an empty surface with the screen size
-    surface = new Surface(320, 240);
+    surface = new Surface();
   }
   else if (lua_type(l, 1) == LUA_TNUMBER) {
     // create an empty surface with the specified size

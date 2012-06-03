@@ -2740,7 +2740,6 @@ fragmentos para poder
 ocultarlos por todo el
 reino y restaurar la
 paz.
-
 Y aquí comienza nuestro
 viaje...
 ]]
@@ -2751,7 +2750,7 @@ viaje...
 dialog{
   id = "outside_world.village.welcome_sign",
   text = [[
-         Bienvenido
+       Bienvenido
        a Lyriann
 ]]
 }
@@ -2767,7 +2766,6 @@ dialog{
 ¡Ayuda! ¡Esta noche
 la gente ha pasado
 mucho miedo!
-
 ¡El pueblo ha sido
 rodeado por
 monstruos!
@@ -2922,7 +2920,7 @@ Por favor, siéntete libre
 de coger nuestra agua de
 manantial.
         Lyriann
-     Centro turístico
+    Centro turístico
 ]]
 }
 -----------------------
@@ -3423,8 +3421,8 @@ dialog{
 Mala suerte, no
 conseguiste hacer
 ninguna combinación.
-
 ¿Quieres probar
+
 de nuevo?
 Sí
 No
@@ -5494,19 +5492,15 @@ Metallizer$0
 dialog{
   id = "credits_4",
   text = [[
-$1        Historia:$0
+$1       Historia:$0
 Guillaume F.$0
 Christopho$0
-$1        Localización
+$1      Localización
      al castellano:$0
 
-- LuisCa$0
-- Clow_eriol$0
-- Musty$0
-- Xadou$0
-- Guopich$0
-- falvarez$0
-Emujioda$0
+Clow_eriol$0    Emujioda$0
+LuisCa$0   Musty$0   Xadou$0
+Guopich$0       falvarez$0
 ]]
 }
 -----------------------

@@ -10,6 +10,7 @@ function event_appear()
   sol.enemy.set_invincible()
   sol.enemy.set_obstacle_behavior("flying")
   sol.enemy.set_layer_independent_collisions(true)
+  sol.enemy.set_optimization_distance(0)
 end
 
 function event_movement_finished(movement)

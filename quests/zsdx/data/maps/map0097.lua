@@ -109,8 +109,8 @@ function event_enemy_dead(enemy_name)
       and sol.map.enemy_is_group_dead("enemy_group2")
       and not sol.map.get_game():get_boolean(221) then
 
-    sol.map.camera_move(328, 320, 250, function()
-      sol.map.pickable_item_create("small_key", 1, 221, 328, 325, 1)
+    sol.map.camera_move(232, 728, 250, function()
+      sol.map.pickable_item_create("small_key", 1, 221, 232, 733, 1)
       sol.audio.play_sound("secret")
     end)
   end

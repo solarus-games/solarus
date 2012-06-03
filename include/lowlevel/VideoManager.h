@@ -19,11 +19,8 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
- 
 /**
  * @brief Displays the window and handles the video mode.
- *
- * TODO: don't hardcode the screen size 320*240
  */
 class VideoManager {
 
@@ -33,37 +30,37 @@ class VideoManager {
    * @brief The different possible video modes.
    */
   enum VideoMode {
-    WINDOWED_STRETCHED,       /**< the 320*240 game surface is stretched into a 640*480 window (default) */
-    WINDOWED_SCALE2X,         /**< the 320*240 game surface is scaled into a 640*480 window with the Scale2x algorithm */
-    WINDOWED_NORMAL,          /**< the 320*240 game surface is directly displayed on a 320*240 window */
-    FULLSCREEN_NORMAL,        /**< the 320*240 game surface is directly displayed on a 320*240 screen */
-    FULLSCREEN_WIDE,          /**< the 320*240 game surface is stretched into a 640*480 surface
-                               * and then displayed on a widescreen resolution if possible (768*480 or 720*480)
+    NO_MODE = -1,             /**< special value to mean no information */
+    WINDOWED_STRETCHED,       /**< the game surface is stretched into a double-size window (default) */
+    WINDOWED_SCALE2X,         /**< the game surface is scaled into a double-size window with the Scale2x algorithm */
+    WINDOWED_NORMAL,          /**< the game surface is displayed on a window of the same size */
+    FULLSCREEN_NORMAL,        /**< the game surface is displayed in fullscreen */
+    FULLSCREEN_WIDE,          /**< the game surface is stretched into a double-size surface
+                               * and then displayed on a widescreen resolution if possible
                                * with two black side bars */
-    FULLSCREEN_SCALE2X,       /**< the 320*240 game surface is scaled into a 640*480 screen with the Scale2x algorithm */
-    FULLSCREEN_SCALE2X_WIDE,  /**< the 320*240 game surface is scaled into a 640*480 surface with the Scale2x algorithm
-                               * and then displayed on a widescreen resolution if possible (768*480 or 720*480)
+    FULLSCREEN_SCALE2X,       /**< the game surface is scaled into a double-size screen with the Scale2x algorithm */
+    FULLSCREEN_SCALE2X_WIDE,  /**< the game surface is scaled into a double-size surface with the Scale2x algorithm
+                               * and then displayed on a widescreen resolution if possible
                                * with two black side bars */
-    FULLSCREEN_CENTERED,      /**< the 320*240 game surface is displayed as a box inside a 640*480 screen */
-    FULLSCREEN_CENTERED_WIDE, /**< the 320*240 game surface is displayed as a box inside a widescreen resolution (768*480 or 720*480) */
     NB_MODES                  /**< number of existing video modes */
   };
+
+  static const VideoMode* proposed_modes;           /**< video modes proposed on the platform at compile time (NULL means all). The first one will be the default one. */
+  static const int bits_per_pixel;                  /**< number of bits per pixel for surfaces on this platform */
+  static const int surface_flags;                   /**< SDL flags for surfaces */
 
  private:
 
   static VideoManager* instance;                    /**< the only instance */
   static Rectangle default_mode_sizes[NB_MODES];    /**< default size of the surface for each video mode */
-  static const int surface_flags;                   /**< SDL flags for surfaces */
 
   bool disable_window;                              /**< indicates that no window is displayed (used for unitary tests) */
   Rectangle mode_sizes[NB_MODES];                   /**< verified size of the surface for each video mode */
-  Rectangle dst_position_wide;                      /**< position of the 640*480 surface on the 768*480 or 720*480
-                                                     * video surface */
+  Rectangle dst_position_wide;                      /**< position of the double-size surface on the wider video surface */
 
   VideoMode video_mode;                             /**< current video mode of the screen */
   Surface* screen_surface;                          /**< the screen surface */
 
-  Rectangle dst_position_centered;                  /**< position of the 320*240 game surface on the screen surface */
   int width;                                        /**< width of the current screen surface */
   int offset;                                       /**< width of a side bar when using a widescreen resolution */
   int end_row_increment;                            /**< increment used by the stretching and scaling functions
@@ -75,7 +72,6 @@ class VideoManager {
   void blit(Surface* src_surface, Surface* dst_surface);
   void blit_stretched(Surface* src_surface, Surface* dst_surface);
   void blit_scale2x(Surface* src_surface, Surface* dst_surface);
-  void blit_centered(Surface* src_surface, Surface* dst_surface);
 
  public:
 

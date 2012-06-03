@@ -55,7 +55,7 @@ class Surface {
 
   public:
 
-    Surface(int width, int height);
+    Surface(int width = SOLARUS_GAME_WIDTH, int height = SOLARUS_GAME_HEIGHT);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
     Surface(SDL_Surface* internal_surface);
     Surface(const Surface& other);

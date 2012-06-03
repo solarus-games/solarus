@@ -30,7 +30,7 @@ const int LanguageScreen::max_visible_languages = 10;
  * @param solarus the Solarus object
  */
 LanguageScreen::LanguageScreen(Solarus &solarus):
-  Screen(solarus), transition(NULL), intermediate_surface(NULL), 
+  Screen(solarus), transition(NULL), intermediate_surface(), 
   language_codes(NULL), language_texts(NULL),
   cursor_position(0), nb_languages(0), finished(false) {
 
@@ -53,7 +53,7 @@ LanguageScreen::LanguageScreen(Solarus &solarus):
     std::map<std::string, std::string>::iterator it;
     for (it = language_map.begin(); it != language_map.end(); it++) {
       language_codes[i] = it->first;
-      language_texts[i] = new TextSurface(160, 0, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+      language_texts[i] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE, 0, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
       language_texts[i]->set_font("fixed");
       language_texts[i]->set_text(it->second);
       if (language_codes[i] == FileTools::get_default_language()) {

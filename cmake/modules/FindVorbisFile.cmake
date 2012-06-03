@@ -11,6 +11,7 @@ if(VORBISFILE_INCLUDE_DIR)
 endif(VORBISFILE_INCLUDE_DIR)
 
 find_path(VORBISFILE_INCLUDE_DIR vorbisfile.h
+    HINTS /usr/local/angstrom/arm/arm-angstrom-linux-gnueabi/usr
     PATH_SUFFIXES vorbis)
 
 find_library(VORBISFILE_LIBRARY NAMES vorbisfile vorbis)

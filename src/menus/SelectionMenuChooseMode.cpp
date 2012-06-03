@@ -31,7 +31,7 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenu *menu):
   adventure_mode(true) {
 
   this->mode_img = new Surface("menus/selection_menu_mode.png");
-  this->savegame_surface = new Surface(320, 240);
+  this->savegame_surface = new Surface();
 
   Transition *transition = Transition::create(Transition::FADE, Transition::OUT);
   transition->start();

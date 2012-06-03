@@ -152,14 +152,14 @@ void DynamicTile::display_on_map() {
       y < limit_y;
       y += tile_pattern->get_height()) {
 
-    if (y <= 240 && y + tile_pattern->get_height() > 0) {
+    if (y <= SOLARUS_GAME_HEIGHT && y + tile_pattern->get_height() > 0) {
       dst.set_y(y);
 
       for (int x = get_top_left_x() - camera_position.get_x();
           x < limit_x;
           x += tile_pattern->get_width()) {
 
-        if (x <= 320 && x + tile_pattern->get_width() > 0) {
+        if (x <= SOLARUS_GAME_WIDTH && x + tile_pattern->get_width() > 0) {
           dst.set_x(x);
           tile_pattern->display(map_surface, dst, get_map().get_tileset(), get_map().get_camera_position());
         }

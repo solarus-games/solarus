@@ -23,26 +23,70 @@
 #include "lowlevel/StringConcat.h"
 #include "Configuration.h"
 
-VideoManager* VideoManager::instance = NULL;
+VideoManager *VideoManager::instance = NULL;
 
-#ifndef __APPLE__
-const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+// Resolutions.
+#ifdef CAANOO
+const VideoManager::VideoMode* VideoManager::proposed_modes = {
+  VideoManager::WINDOWED_NORMAL,
+  VideoManager::NO_MODE
+};
+#elif defined(PANDORA)
+const VideoManager::VideoMode* VideoManager::proposed_modes = {
+  VideoManager::FULLSCREEN_SCALE2X,
+  VideoManager::NO_MODE
+};
 #else
-/* on Mac OS X the SDL hardware surfaces are buggy */
-const int VideoManager::surface_flags = SDL_SWSURFACE;
+const VideoManager::VideoMode* VideoManager::proposed_modes = NULL;
 #endif
 
+// Size of the screen in each video mode.
 Rectangle VideoManager::default_mode_sizes[] = {
-  Rectangle(0, 0, 640, 480),         // WINDOWED_STRETCHED
-  Rectangle(0, 0, 640, 480),         // WINDOWED_SCALE2X
-  Rectangle(0, 0, 320, 240),         // WINDOWED_NORMAL
-  Rectangle(0, 0, 640, 480),         // FULLSCREEN_NORMAL
-  Rectangle(0, 0,   0,   0),         // FULLSCREEN_WIDE
-  Rectangle(0, 0, 640, 480),         // FULLSCREEN_SCALE2X
-  Rectangle(0, 0,   0,   0),         // FULLSCREEN_SCALE2X_WIDE
-  Rectangle(0, 0, 640, 480),         // FULLSCREEN_CENTERED
-  Rectangle(0, 0, 640, 400),         // FULLSCREEN_CENTERED_WIDE
+  Rectangle(0, 0, SOLARUS_GAME_WIDTH * 2, SOLARUS_GAME_HEIGHT * 2),  // WINDOWED_STRETCHED
+  Rectangle(0, 0, SOLARUS_GAME_WIDTH * 2, SOLARUS_GAME_HEIGHT * 2),  // WINDOWED_SCALE2X
+  Rectangle(0, 0, SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT),          // WINDOWED_NORMAL
+  Rectangle(0, 0, SOLARUS_GAME_WIDTH * 2, SOLARUS_GAME_HEIGHT * 2),  // FULLSCREEN_NORMAL
+  Rectangle(0, 0, 0, 0),                                             // FULLSCREEN_WIDE
+  Rectangle(0, 0, SOLARUS_GAME_WIDTH * 2, SOLARUS_GAME_HEIGHT * 2),  // FULLSCREEN_SCALE2X
+  Rectangle(0, 0, 0, 0),                                             // FULLSCREEN_SCALE2X_WIDE
 };
+
+// Properties of SDL surfaces.
+#ifdef CAANOO
+const int VideoManager::bits_per_pixel = 16;
+#else
+const int VideoManager::bits_per_pixel = 32;
+#endif
+
+#ifdef __APPLE__
+// on Mac OS X the SDL hardware surfaces are buggy
+const int VideoManager::surface_flags = SDL_SWSURFACE;
+#else
+const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+#endif
+
+/**
+ * @brief Switch from windowed to fullscreen or from fullscreen to windowed,
+ * keeping an equivalent video mode.
+ */
+void VideoManager::switch_fullscreen() {
+
+  static const VideoMode next_modes[] = {
+      FULLSCREEN_NORMAL,      // WINDOWED_STRETCHED
+      FULLSCREEN_SCALE2X,     // WINDOWED_SCALE2X
+      FULLSCREEN_NORMAL,      // WINDOWED_NORMAL
+      WINDOWED_STRETCHED,     // FULLSCREEN_NORMAL
+      WINDOWED_STRETCHED,     // FULLSCREEN_WIDE
+      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X
+      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X_WIDE
+  };
+
+  VideoMode mode = next_modes[get_video_mode()];
+  if (is_mode_supported(mode)) {
+    set_video_mode(mode);
+  }
+}
+
 
 /**
  * @brief Initializes the video system and creates the window.
@@ -54,7 +98,7 @@ Rectangle VideoManager::default_mode_sizes[] = {
  * @param argc command-line arguments number
  * @param argv command-line arguments
  */
-void VideoManager::initialize(int argc, char** argv) {
+void VideoManager::initialize(int argc, char **argv) {
 
   // check the -no-video option
   bool disable = false;
@@ -95,23 +139,21 @@ VideoManager::VideoManager(bool disable_window):
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 
-  // detect what widescreen resolution is supported (768*480 or 720*480)
+  // detect what widescreen resolution is supported (16:10 or 15:10)
 
   for (int i = 0; i < NB_MODES; i++) {
     mode_sizes[i] = default_mode_sizes[i];
   }
-
-  int flags = surface_flags | SDL_FULLSCREEN;
-
+  int flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN;
   if (SDL_VideoModeOK(768, 480, 32, flags)) {
     mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
     mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);
-    dst_position_wide.set_xy(64, 0);
+    dst_position_wide.set_xy((768 - SOLARUS_GAME_WIDTH * 2) / 2, 0);
   }
   else if (SDL_VideoModeOK(720, 480, 32, flags)) {
     mode_sizes[FULLSCREEN_WIDE].set_size(720, 480);
     mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(720, 480);
-    dst_position_wide.set_xy(40, 0);
+    dst_position_wide.set_xy((720 - SOLARUS_GAME_WIDTH * 2) / 2, 0);
   }
 
   /* debug (see the fullscreen video modes supported)
@@ -139,6 +181,17 @@ VideoManager::~VideoManager() {
  */
 bool VideoManager::is_mode_supported(VideoMode mode) {
 
+  if (proposed_modes != NULL) {
+    bool found = false;
+    int i = 0;
+    while (proposed_modes[i] != NO_MODE && !found) {
+      found = (mode == proposed_modes[i]);
+    }
+    if (!found) {
+      return false;
+    }
+  }
+
   const Rectangle* size = &mode_sizes[mode];
 
   if (size->get_width() == 0) {
@@ -146,12 +199,20 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
   }
 
   int flags = surface_flags;
-
   if (is_fullscreen(mode)) {
     flags |= SDL_FULLSCREEN;
   }
 
   return SDL_VideoModeOK(size->get_width(), size->get_height(), 32, flags) != 0;
+}
+
+/**
+ * @brief Returns whether a video mode is in fullscreen.
+ * @param mode a video mode
+ * @return true if this video mode is in fullscreen
+ */
+bool VideoManager::is_fullscreen(VideoMode mode) {
+  return mode >= FULLSCREEN_NORMAL;
 }
 
 /**
@@ -188,19 +249,26 @@ void VideoManager::set_initial_video_mode() {
  * @brief Sets the default video mode.
  */
 void VideoManager::set_default_video_mode() {
-  set_video_mode(WINDOWED_STRETCHED);
+
+  VideoMode mode;
+  if (proposed_modes != NULL) {
+    mode = proposed_modes[0];
+  }
+  else {
+    mode = WINDOWED_STRETCHED;
+  }
+
+  set_video_mode(mode);
 }
 
 /**
  * @brief Sets the video mode.
  *
- * The specified video mode must be supported.
+ * The specified video mode is supposed to be supported.
  *
  * @param mode the video mode
  */
 void VideoManager::set_video_mode(VideoMode mode) {
-
-  const Rectangle &size = mode_sizes[mode];
 
   int flags = surface_flags;
   int show_cursor;
@@ -212,29 +280,30 @@ void VideoManager::set_video_mode(VideoMode mode) {
     show_cursor = SDL_ENABLE;
   }
 
-  if (size.get_width() > 640) {
-    dst_position_centered.set_xy(dst_position_wide.get_x() + 160, 0);
-    width = size.get_width();
+  const Rectangle& size = mode_sizes[mode];
+  if (size.get_width() > SOLARUS_GAME_WIDTH * 2) {
+    // Wide screen resolution with two black side bars.
     offset = dst_position_wide.get_x();
   }
   else {
-    dst_position_centered.set_xy(160, (mode == FULLSCREEN_CENTERED_WIDE) ? 80 : 120);
-    width = 640;
+    // No side bars.
     offset = 0;
   }
+  width = size.get_width();
   end_row_increment = 2 * offset + width;
 
   if (!disable_window) {
-    SDL_Surface* screen_internal_surface = SDL_SetVideoMode(size.get_width(), size.get_height(), 32, flags);
+    SDL_Surface* screen_internal_surface = SDL_SetVideoMode(size.get_width(), size.get_height(), bits_per_pixel, flags);
 
     Debug::check_assertion(screen_internal_surface != NULL, StringConcat() << "Cannot create the video surface for mode " << mode);
 
     SDL_ShowCursor(show_cursor);
+    delete this->screen_surface;
     this->screen_surface = new Surface(screen_internal_surface);
   }
   this->video_mode = mode;
 
-  // write the configuration file
+  // Write the configuration file.
   Configuration::set_value("video_mode", mode);
 }
 
@@ -244,44 +313,6 @@ void VideoManager::set_video_mode(VideoMode mode) {
  */
 VideoManager::VideoMode VideoManager::get_video_mode() {
   return video_mode;
-}
-
-/**
- * @brief Returns whether a video mode is in fullscreen.
- * @param mode a video mode
- * @return true if this video mode is in fullscreen
- */
-bool VideoManager::is_fullscreen(VideoMode mode) {
-  return mode >= FULLSCREEN_NORMAL;
-}
-
-/**
- * @brief Returns whether the current video mode is in fullscreen.
- * @return true if this video mode is in fullscreen
- */
-bool VideoManager::is_fullscreen() {
-  return is_fullscreen(get_video_mode());
-}
-
-/**
- * @brief Switch from windowed to fullscreen or from fullscreen to windowed,
- * keeping an equivalent video mode.
- */
-void VideoManager::switch_fullscreen() {
-
-  static const VideoMode next_modes[] = {
-      FULLSCREEN_NORMAL,      // WINDOWED_STRETCHED
-      FULLSCREEN_SCALE2X,     // WINDOWED_SCALE2X
-      FULLSCREEN_NORMAL,      // WINDOWED_NORMAL
-      WINDOWED_STRETCHED,     // FULLSCREEN_NORMAL
-      WINDOWED_STRETCHED,     // FULLSCREEN_WIDE
-      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X
-      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X_WIDE
-      WINDOWED_STRETCHED,     // FULLSCREEN_CENTERED
-      WINDOWED_STRETCHED,     // FULLSCREEN_CENTERED_WIDE
-  };
-
-  set_video_mode(next_modes[get_video_mode()]);
 }
 
 /**
@@ -312,11 +343,6 @@ void VideoManager::display(Surface *src_surface) {
       blit_scale2x(src_surface, screen_surface);
       break;
 
-    case FULLSCREEN_CENTERED:
-    case FULLSCREEN_CENTERED_WIDE:
-      blit_centered(src_surface, screen_surface);
-      break;
-
     default:
       Debug::die(StringConcat() << "Unknown video mode " << video_mode);
       break;
@@ -326,7 +352,8 @@ void VideoManager::display(Surface *src_surface) {
 }
 
 /**
- * @brief Blits a 320*240 surface on a 320*240 surface.
+ * @brief Blits a SOLARUS_GAME_WIDTH*SOLARUS_GAME_HEIGHT surface on a
+ * SOLARUS_GAME_WIDTH*SOLARUS_GAME_HEIGHT surface.
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
@@ -335,18 +362,11 @@ void VideoManager::blit(Surface* src_surface, Surface* dst_surface) {
 }
 
 /**
- * @brief Blits a 320*240 surface on a 640*480 or 640*400 surface, centering the image.
- * @param src_surface the source surface
- * @param dst_surface the destination surface
- */
-void VideoManager::blit_centered(Surface* src_surface, Surface* dst_surface) {
-  src_surface->blit(dst_surface, dst_position_centered);
-}
-
-/**
- * @brief Blits a 320*240 surface on a 640*480, 768*480 or 720*480 surface, stretching the image.
+ * @brief Blits a SOLARUS_GAME_WIDTH*SOLARUS_GAME_HEIGHT surface on a
+ * double-size surface, stretching the image.
  *
- * Two black side bars are added if the destination surface is wider than 640.
+ * Two black side bars are added if the destination surface is wider than SOLARUS_GAME_WIDTH * 2.
+ *
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
@@ -363,7 +383,7 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
    * FIXME: creating a new surface at each blit is probably a horrible loss
    * of performance */
   surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
-      dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
+      dst_internal_surface->w, dst_internal_surface->h, bits_per_pixel, 0, 0, 0, 0);
 #endif
 
   SDL_LockSurface(src_internal_surface);
@@ -373,9 +393,8 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
   uint32_t* dst = (uint32_t*) surface_to_draw->pixels;
 
   int p = offset;
-  for (int i = 0; i < 240; i++) {
-
-    for (int j = 0; j < 320; j++) {
+  for (int i = 0; i < SOLARUS_GAME_HEIGHT; i++) {
+    for (int j = 0; j < SOLARUS_GAME_WIDTH; j++) {
       dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = *src;
       p += 2;
       src++;
@@ -384,20 +403,17 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
     p += end_row_increment;
   }
 
-  SDL_UnlockSurface(surface_to_draw);
+  SDL_UnlockSurface(dst_internal_surface);
   SDL_UnlockSurface(src_internal_surface);
- 
-#ifdef __APPLE__
-  SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
-  SDL_FreeSurface(surface_to_draw);
-#endif
 }
 
 /**
- * @brief Blits a 320*240 surface on a 640*480, 768*480 or 720*480 surface.
+ * @brief Blits a SOLARUS_GAME_WIDTH*SOLARUS_GAME_HEIGHT surface on a
+ * double-size surface.
  *
  * The image is scaled with an implementation of the Scale2x algorithm.
- * Two black side bars if the destination surface is wider than 640.
+ * Two black side bars if the destination surface is wider than
+ * SOLARUS_GAME_WIDTH * 2.
  *
  * @param src_surface the source surface
  * @param dst_surface the destination surface
@@ -415,7 +431,7 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
    * FIXME: creating a new surface at each blit is probably a horrible loss
    * of performance */
   surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
-      dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
+      dst_internal_surface->w, dst_internal_surface->h, bits_per_pixel, 0, 0, 0, 0);
 #endif
 
   SDL_LockSurface(src_internal_surface);
@@ -426,20 +442,20 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
 
   int b, d, e = 0, f,  h;
   int e1 = offset, e2, e3, e4;
-  for (int row = 0; row < 240; row++) {
-    for (int col = 0; col < 320; col++) {
+  for (int row = 0; row < SOLARUS_GAME_HEIGHT; row++) {
+    for (int col = 0; col < SOLARUS_GAME_WIDTH; col++) {
 
       // compute a to i
 
-      b = e - 320;
+      b = e - SOLARUS_GAME_WIDTH;
       d = e - 1;
       f = e + 1;
-      h = e + 320;
+      h = e + SOLARUS_GAME_WIDTH;
 
       if (row == 0)   { b = e; }
-      if (row == 239) { h = e; }
+      if (row == SOLARUS_GAME_HEIGHT - 1) { h = e; }
       if (col == 0)   { d = e; }
-      if (col == 319) { f = e; }
+      if (col == SOLARUS_GAME_WIDTH - 1) { f = e; }
 
       // compute e1 to e4
       e2 = e1 + 1;

@@ -11,6 +11,7 @@ if(OGG_INCLUDE_DIR)
 endif(OGG_INCLUDE_DIR)
 
 find_path(OGG_INCLUDE_DIR ogg.h
+    HINTS /usr/local/angstrom/arm/arm-angstrom-linux-gnueabi/usr
     PATH_SUFFIXES ogg)
 
 find_library(OGG_LIBRARY NAMES ogg)

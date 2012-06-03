@@ -11,6 +11,7 @@ if(MODPLUG_INCLUDE_DIR)
 endif(MODPLUG_INCLUDE_DIR)
 
 find_path(MODPLUG_INCLUDE_DIR modplug.h
+    HINTS /usr/local/angstrom/arm/arm-angstrom-linux-gnueabi/usr
     PATH_SUFFIXES modplug libmodplug)
 
 find_library(MODPLUG_LIBRARY NAMES modplug)

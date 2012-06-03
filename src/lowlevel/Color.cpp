@@ -35,8 +35,11 @@ Color Color::cyan;
  * @brief Initializes the color static fields.
  */
 void Color::initialize() {
-  format_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1,
-      32, 0, 0, 0, 0);
+#if !defined(CAANOO) && !defined(PANDORA)
+  format_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1, 32, 0, 0, 0, 0);
+#else
+  format_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1, 16, 0, 0, 0, 0);
+#endif
 
   black =    Color(  0,   0,   0); 
   white =    Color(255, 255, 255);

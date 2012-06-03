@@ -62,7 +62,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu &pause_menu, Game &game):
 
       int amount = equipment.get_item_amount(item_names[k]);
       int maximum = equipment.get_item_maximum(item_names[k]);
-      int x = 60 + (k % 7) * 32;
+      int x = SOLARUS_GAME_WIDTH_MIDDLE-100 + (k % 7) * 32;
       int y = 81 + (k / 7) * 32;
 
       counters[k] = new Counter(2, false, x, y);
@@ -279,7 +279,7 @@ void PauseSubmenuInventory::display(Surface *destination) {
   int k = 0;
   for (int i = 0; i < 4; i++) {
 
-    dst_xy.set_x(64);
+    dst_xy.set_x(SOLARUS_GAME_WIDTH_MIDDLE-96);
 
     for (int j = 0; j < 7; j++, k++) {
 
@@ -303,7 +303,7 @@ void PauseSubmenuInventory::display(Surface *destination) {
   }
 
   // display the cursor
-  int x = 64 + 32 * cursor_column;
+  int x = SOLARUS_GAME_WIDTH_MIDDLE-96 + 32 * cursor_column;
   int y = 77 + 32 * cursor_row;
 
   cursor_sprite->display(destination, x, y);

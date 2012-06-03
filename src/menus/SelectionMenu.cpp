@@ -36,7 +36,8 @@
  * @param solarus the Solarus object
  */
 SelectionMenu::SelectionMenu(Solarus &solarus):
-  Screen(solarus) {
+  Screen(solarus),
+  surface() {
 
   // phases
   next_phase = NULL;
@@ -69,9 +70,9 @@ SelectionMenu::SelectionMenu(Solarus &solarus):
   allow_cursor_date = 0;
 
   // texts
-  option1_text = new TextSurface(90, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
-  option2_text = new TextSurface(198, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
-  title_text = new TextSurface(160, 54, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  option1_text = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE-70, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
+  option2_text = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE+38, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
+  title_text = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE, 54, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   title_text->set_font("fixed");
 
   // music
@@ -184,7 +185,7 @@ void SelectionMenu::read_savegames() {
       delete text_player_names[i];
     }
 
-    text_player_names[i] = new TextSurface(87, 88 + i * 27,
+    text_player_names[i] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE-73, 88 + i * 27,
 					   TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
     text_player_names[i]->set_text(player_name);
 
@@ -195,7 +196,7 @@ void SelectionMenu::read_savegames() {
     }
 
     if (!savegames[i]->is_empty()) {
-      hearts_views[i] = new HeartsView(savegames[i]->get_equipment(), 168, 78 + i * 27);
+      hearts_views[i] = new HeartsView(savegames[i]->get_equipment(), SOLARUS_GAME_WIDTH_MIDDLE+8, 78 + i * 27);
     }
   }
 }
@@ -236,12 +237,12 @@ void SelectionMenu::update() {
       cloud_positions[i].add_x(1);
       cloud_positions[i].add_y(-1);
 
-      if (cloud_positions[i].get_x() >= 320) {
+      if (cloud_positions[i].get_x() >= SOLARUS_GAME_WIDTH) {
 	cloud_positions[i].set_x(0);
       }
 
       if (cloud_positions[i].get_y() <= -44) {
-	cloud_positions[i].set_y(240 - 44);
+	cloud_positions[i].set_y(SOLARUS_GAME_HEIGHT - 44);
       }
     }
 
@@ -284,24 +285,24 @@ void SelectionMenu::display(Surface *screen_surface) {
 
     cloud_img->blit(surface, position);
 
-    if (cloud_positions[i].get_x() >= 320 - 80) {
-      position.set_xy(cloud_positions[i].get_x() - 320, cloud_positions[i].get_y());
+    if (cloud_positions[i].get_x() >= SOLARUS_GAME_WIDTH - 80) {
+      position.set_xy(cloud_positions[i].get_x() - SOLARUS_GAME_WIDTH, cloud_positions[i].get_y());
       cloud_img->blit(surface, position);
 
       if (cloud_positions[i].get_y() <= 0) {
-	position.set_xy(cloud_positions[i].get_x() - 320, cloud_positions[i].get_y() + 240);
-	cloud_img->blit(surface, position);
+        position.set_xy(cloud_positions[i].get_x() - SOLARUS_GAME_WIDTH, cloud_positions[i].get_y() + SOLARUS_GAME_HEIGHT);
+        cloud_img->blit(surface, position);
       }
     }
 
     if (cloud_positions[i].get_y() <= 0) {
-      position.set_xy(cloud_positions[i].get_x(), cloud_positions[i].get_y() + 240);
+      position.set_xy(cloud_positions[i].get_x(), cloud_positions[i].get_y() + SOLARUS_GAME_HEIGHT);
       cloud_img->blit(surface, position);
     }
   }
 
   // display the background image
-  position.set_xy(37, 38);
+  position.set_xy(SOLARUS_GAME_WIDTH_MIDDLE - 123, 38);
   position.set_size(246, 165);
   background_img->blit(surface, position);
 
@@ -539,7 +540,7 @@ void SelectionMenu::display_title_text(Surface *destination_surface) {
 void SelectionMenu::display_savegame(Surface *destination_surface, int save_number) {
 
   // draw the container
-  Rectangle position(57, 75 + save_number * 27);
+  Rectangle position(SOLARUS_GAME_WIDTH_MIDDLE - 103, 75 + save_number * 27);
   save_container_img->blit(destination_surface, position);
 
   // draw the player's name
@@ -563,7 +564,7 @@ void SelectionMenu::display_savegame(Surface *destination_surface, int save_numb
  */
 void SelectionMenu::display_savegame_number(Surface *destination_surface, int save_number) {
 
-  Rectangle position(62, 80 + 27 * save_number);
+  Rectangle position(SOLARUS_GAME_WIDTH_MIDDLE - 98, 80 + 27 * save_number);
   number_imgs[save_number]->blit(destination_surface, position);
 }
 
@@ -579,13 +580,13 @@ void SelectionMenu::display_bottom_options(Surface *destination_surface) {
   Rectangle position(0, 158);
 
   if (!option1_text->is_empty()) {
-    position.set_x(57);
+    position.set_x(SOLARUS_GAME_WIDTH_MIDDLE - 103);
     option_container_img->blit(destination_surface, position);
     option1_text->display(destination_surface);
   }
 
   if (!option2_text->is_empty()) {
-    position.set_x(165);
+    position.set_x(SOLARUS_GAME_WIDTH_MIDDLE + 5);
     option_container_img->blit(destination_surface, position);
     option2_text->display(destination_surface);
   }
@@ -601,10 +602,10 @@ void SelectionMenu::display_savegame_cursor(Surface *destination_surface) {
   Rectangle position;
 
   if (cursor_position != 5) {
-    position.set_x(58);
+    position.set_x(SOLARUS_GAME_WIDTH_MIDDLE-102);
   }
   else {
-    position.set_x(166);
+    position.set_x(SOLARUS_GAME_WIDTH_MIDDLE+6);
   }
 
   if (cursor_position < 4) {

@@ -29,6 +29,23 @@
 #define DEFAULT_QUEST "."
 #endif
 
+// Game size.
+#ifndef SOLARUS_GAME_WIDTH
+#  ifdef PANDORA
+#    define SOLARUS_GAME_WIDTH 400
+#  else
+#    define SOLARUS_GAME_WIDTH 320
+#  endif
+#endif
+
+#ifndef SOLARUS_GAME_HEIGHT
+#  define SOLARUS_GAME_HEIGHT 240
+#endif
+
+#define SOLARUS_GAME_WIDTH_MIDDLE (SOLARUS_GAME_WIDTH / 2)
+#define SOLARUS_GAME_HEIGHT_MIDDLE (SOLARUS_GAME_HEIGHT / 2)
+
+
 #include "Types.h"
 
 #endif

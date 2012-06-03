@@ -47,15 +47,15 @@ PauseMenu::PauseMenu(Game &game):
   keys_effect.save_action_key_effect();
   keys_effect.save_sword_key_effect();
 
-  question_text[0] = new TextSurface(160, 112, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  question_text[0] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE, 112, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   question_text[0]->set_text_color(8, 8, 8);
-  question_text[1] = new TextSurface(160, 128, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  question_text[1] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE, 128, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   question_text[1]->set_text_color(8, 8, 8);
 
-  answer_text[0] = new TextSurface(100, 148, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  answer_text[0] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE-60, 148, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   answer_text[0]->set_text_color(8, 8, 8);
   answer_text[0]->set_text(StringResource::get_string("save_dialog.yes"));
-  answer_text[1] = new TextSurface(219, 148, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  answer_text[1] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE+59, 148, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   answer_text[1]->set_text_color(8, 8, 8);
   answer_text[1]->set_text(StringResource::get_string("save_dialog.no"));
 
@@ -182,14 +182,15 @@ void PauseMenu::display(Surface *destination) {
   // display the background for the current submenu
   int submenu_index = savegame.get_integer(Savegame::PAUSE_LAST_SUBMENU);
   Rectangle src_position(320 * submenu_index, 0, 320, 240);
-  backgrounds_surface->blit(src_position, destination);
+  Rectangle dst_position((SOLARUS_GAME_WIDTH - 320) / 2, (SOLARUS_GAME_HEIGHT - 240) / 2);
+  backgrounds_surface->blit(src_position, destination, dst_position);
 
   // display the current submenu content
   current_submenu->display(destination);
 
   // display the save dialog
   if (save_dialog_state > 0) {
-    save_dialog_sprite->display(destination, 50, 87);
+    save_dialog_sprite->display(destination, SOLARUS_GAME_WIDTH_MIDDLE - 110, 87);
     question_text[0]->display(destination);
     question_text[1]->display(destination);
     answer_text[0]->display(destination);

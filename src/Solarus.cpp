@@ -39,7 +39,7 @@ Solarus::Solarus(int argc, char** argv):
 
   // initialize lowlevel features (audio, video, files...)
   System::initialize(argc, argv);
-  root_surface = new Surface(320, 240);
+  root_surface = new Surface(SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT);
   debug_keys = new DebugKeys(*this);
 
   // create the first screen
@@ -210,6 +210,11 @@ void Solarus::notify_event(InputEvent& event) {
       // Alt + F4: quit the program
       exiting = true;
     }
+#if defined(PANDORA)
+    else if (key == InputEvent::KEY_ESCAPE) {
+      exiting = true;
+    }
+#endif
     else {
       debug_keys->key_pressed(key);
     }

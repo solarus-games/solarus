@@ -471,10 +471,10 @@ const std::string CircleMovement::get_property(const std::string &key) {
   std::ostringstream oss;
 
   if (key == "center_type") {
-    oss << (center_entity != NULL) ? center_entity->get_type() : -1;
+    oss << ((center_entity != NULL) ? center_entity->get_type() : -1);
   }
   else if (key == "center_name") {
-    oss << (center_entity != NULL) ? center_entity->get_name() : "";
+    oss << ((center_entity != NULL) ? center_entity->get_name() : "");
   }
   else if (key == "center_dx") {
     oss << center_point.get_x();

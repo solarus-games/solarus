@@ -6,7 +6,7 @@
 
 #include "blargg_common.h"
 
-class SPC_DSP {
+struct SPC_DSP {
 public:
 	typedef BOOST::uint8_t uint8_t;
 	

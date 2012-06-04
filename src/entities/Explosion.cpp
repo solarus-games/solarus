@@ -182,7 +182,7 @@ void Explosion::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_o
 void Explosion::notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_RECTANGLE) {
-    sensor.notify_collision_with_explosion(*this);
+    sensor.notify_collision_with_explosion(*this, collision_mode);
   }
 }
 

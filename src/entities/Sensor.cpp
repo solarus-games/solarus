@@ -132,10 +132,11 @@ void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
 /**
  * @brief This function is called when an explosion detects a collision with this entity.
  * @param explosion an explosion
+ * @param collision_mode the collision mode that detected the collision
  */
-void Sensor::notify_collision_with_explosion(Explosion& explosion) {
+void Sensor::notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode) {
 
-  if (subtype == CUSTOM) {
+  if (subtype == CUSTOM && collision_mode == COLLISION_RECTANGLE) {
     get_map_script().event_sensor_collision_explosion(get_name());
   }
 }

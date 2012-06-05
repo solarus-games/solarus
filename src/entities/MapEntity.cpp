@@ -1749,6 +1749,15 @@ void MapEntity::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_m
 }
 
 /**
+ * @brief This function is called when an explosion detects a collision with this entity.
+ * @param explosion the explosion
+ * @param collision_mode the collision mode that detected the event
+ */
+void MapEntity::notify_collision_with_explosion(Explosion& explosion,
+    CollisionMode collision_mode) {
+}
+
+/**
  * @brief This function is called when an explosion's sprite
  * detects a pixel-perfect collision with a sprite of this entity.
  * @param explosion the explosion

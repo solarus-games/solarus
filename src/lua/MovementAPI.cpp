@@ -705,7 +705,7 @@ int Script::path_movement_api_get_path(lua_State* l) {
   // build a Lua array containing the path
   lua_settop(l, 1);
   lua_newtable(l);
-  for (size_t i; i < path.size(); i++) {
+  for (size_t i = 0; i < path.size(); i++) {
     int direction8 = path[i] - '0';
     lua_pushinteger(l, direction8);
     lua_rawseti(l, 2, i);

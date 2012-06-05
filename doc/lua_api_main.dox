@@ -1,8 +1,11 @@
 /**
 \page lua_api_main General functions
 
-\c sol.main contains some general functions that are not related
-to a particular Solarus type.
+\c sol.main contains general features that are global to the execution
+of the program.
+
+- \ref lua_api_main_functions "Functions of sol.main"
+- \ref lua_api_main_events "Events of sol.main"
 
 <hr>
 
@@ -27,6 +30,7 @@ able to load another file.
 \subsection lua_api_main_reset sol.main.reset()
 
 Resets the program after the current cycle.
+Lua will be entirely shut down and then initialized again.
 
 <hr>
 
@@ -36,12 +40,11 @@ Exits the program after the current cycle.
 
 <hr>
     
-\subsection lua_api_main_start_screen sol.main.start_screen(screen_name)
+\subsection lua_api_main_start_screen sol.main.start_screen(screen)
 
 Ends the scripted screen or game that was running and starts a scripted screen.
 
-- \c screen_name (string): Name of the scripted screen to load, relative to
-  the \c screens directory (without extension).
+- \c screen (table): The scripted screen object to load.
 
 <hr>
 
@@ -74,6 +77,81 @@ Returns the angle in radians between the x axis and the specified vector.
 \c entity:get_angle(x, y) and \c sol.util.get_angle(x1, x2, y1, y2)
 
 <hr>
+
+\section lua_api_main_events Events of sol.main
+
+<hr>
+
+\subsection lua_api_main_on_update sol.main.on_update()
+
+Called at each cycle of the main loop.
+
+<hr>
+
+\subsection lua_api_main_on_started sol.main.on_started()
+
+Called at the beginning of the program.
+
+This function is called when the engine requests Lua to show an initial
+screen (after any built-in screens like the language selection screen).
+In other words, the function is called when the program begins or after it
+was reset.
+
+<hr>
+
+\subsection lua_api_main_on_started sol.main.on_finished()
+
+Called at the end of the program.
+
+This function is called when Lua is about to be shut down, i.e.,
+just before the program stops or is reset. 
+
+<hr>
+
+\subsection lua_api_main_on_key_pressed sol.main.on_key_pressed(key, modifiers)
+
+Called when the user pressed a keyboard key.
+- \c key (string): Name of the key that was pressed.
+- \c modifiers (tables): A table whose keys indicate what modifiers were
+down during the event ("shift", "control", "alt"). Values don't matter.
+
+<hr>
+
+\subsection lua_api_main_on_key_released sol.main.on_key_released(key, modifiers)
+
+Called when the user releases a keyboard key.
+- \c key (string): Name of the key that was released.
+- \c modifiers (tables): A table whose keys indicate what modifiers were
+down during the event ("shift", "control", "alt"). Values don't matter.
+
+<hr>
+
+\subsection lua_api_main_on_ sol.main.on_()
+
+<hr>
+
+\subsection lua_api_main_on_ sol.main.on_()
+
+<hr>
+
+\subsection lua_api_main_on_ sol.main.on_()
+
+
+<hr>
+
+\subsection lua_api_main_on_ sol.main.on_()
+
+<hr>
+
+\subsection lua_api_main_on_ sol.main.on_()
+
+<hr>
+
+\subsection lua_api_main_on_ sol.main.on_()
+
+
+
+
 
 */
 

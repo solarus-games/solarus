@@ -104,6 +104,7 @@ class Map {
     MapScript* script;            /**< Lua script of this map */
 
     void set_suspended(bool suspended);
+    void display_background();
     void display_foreground();
 
   public:

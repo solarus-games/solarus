@@ -454,8 +454,8 @@ void Map::update() {
   TilePattern::update();
   entities->update();
   script->update();
-  camera->update(); /* update the camera after the entities since this might 
-		       be the last update() call for this map */
+  camera->update();  // update the camera after the entities since this might
+                     // be the last update() call for this map */
   set_clipping_rectangle(clipping_rectangle);
 }
 
@@ -480,13 +480,21 @@ void Map::check_suspended() {
 void Map::display() {
 
   // background
-  visible_surface->fill_with_color(tileset->get_background_color());
+  display_background();
 
   // display all entities (including the hero)
   entities->display();
 
   // foreground
   display_foreground();
+}
+
+/**
+ * @brief Displays the background of the map.
+ */
+void Map::display_background() {
+
+  visible_surface->fill_with_color(tileset->get_background_color());
 }
 
 /**
@@ -506,6 +514,25 @@ void Map::display_foreground() {
     dark_surfaces[hero_direction]->blit(src_position, visible_surface);
   }
   // TODO intermediate light levels
+
+  // If the map is too small for the screen, add black bars outside the map.
+  const int map_width = get_width();
+  if (map_width < SOLARUS_GAME_WIDTH) {
+    int bar_width = (SOLARUS_GAME_WIDTH - map_width) / 2;
+    Rectangle dst_position(0, 0, bar_width, SOLARUS_GAME_HEIGHT);
+    visible_surface->fill_with_color(Color::get_black(), dst_position);
+    dst_position.set_x(bar_width + map_width);
+    visible_surface->fill_with_color(Color::get_black(), dst_position);
+  }
+
+  const int map_height = get_height();
+  if (map_height < SOLARUS_GAME_HEIGHT) {
+    int bar_height = (SOLARUS_GAME_HEIGHT - map_height) / 2;
+    Rectangle dst_position(0, 0, SOLARUS_GAME_WIDTH, bar_height);
+    visible_surface->fill_with_color(Color::get_black(), dst_position);
+    dst_position.set_y(bar_height + map_height);
+    visible_surface->fill_with_color(Color::get_black(), dst_position);
+  }
 }
 
 /**

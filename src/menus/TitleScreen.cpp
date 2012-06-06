@@ -178,8 +178,9 @@ void TitleScreen::init_phase_introduction_message() {
 
   introduction_message_img = new Surface("title_screen_initialization.png", Surface::DIR_LANGUAGE);
   Sound::play("intro");
-  introduction_message_position.set_x(160 - (introduction_message_img->get_width() / 2));
-  introduction_message_position.set_y(120 - (introduction_message_img->get_height() / 2));
+  introduction_message_position.set_xy(
+      SOLARUS_GAME_WIDTH_MIDDLE - (introduction_message_img->get_width() / 2),
+      SOLARUS_GAME_HEIGHT_MIDDLE - (introduction_message_img->get_height() / 2));
 
   next_phase_date = System::now() + 2000; // intro: 2 seconds
   transition_out = new TransitionFade(Transition::OUT);
@@ -218,19 +219,23 @@ void TitleScreen::init_phase_title() {
   dx_img = new Surface("menus/title_dx.png");
   star_img = new Surface("menus/title_star.png");
 
-  website_img = new TextSurface(160, 220, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  website_img = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE,
+      SOLARUS_GAME_HEIGHT_MIDDLE + 100,
+      TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   website_img->set_font("dialog");
   website_img->set_rendering_mode(TextSurface::TEXT_BLENDED);
   website_img->set_text_color(text_colors[time_of_day]);
   website_img->set_text(StringResource::get_string("title_screen.website"));
-  press_space_img = new TextSurface(160, 190, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  press_space_img = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE,
+      SOLARUS_GAME_HEIGHT_MIDDLE + 70,
+      TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   press_space_img->set_font("dialog_big");
   press_space_img->set_rendering_mode(TextSurface::TEXT_BLENDED);
   press_space_img->set_text_color(text_colors[time_of_day]);
   press_space_img->set_text(StringResource::get_string("title_screen.press_space"));
-  title_surface = new Surface(320, 240);
+  title_surface = new Surface();
 
-  clouds_position.set_xy(320, 30);
+  clouds_position.set_xy(SOLARUS_GAME_WIDTH, 30);
   uint32_t now = System::now();
   next_clouds_move_date = now;
 

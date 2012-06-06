@@ -39,7 +39,7 @@ LanguageScreen::LanguageScreen(Solarus &solarus):
     finished = true;
   }
   else {
-    intermediate_surface = new Surface(320, 240);
+    intermediate_surface = new Surface();
 
     std::map<std::string, std::string> language_map = FileTools::get_languages();
     nb_languages = language_map.size();
@@ -101,7 +101,7 @@ void LanguageScreen::set_cursor_position(int cursor_position) {
     first_visible_language = cursor_position - max_visible_languages + 1;
   }
 
-  int y = 120 - 8 * nb_visible_languages;
+  int y = SOLARUS_GAME_HEIGHT_MIDDLE - 8 * nb_visible_languages;
   for (int i = first_visible_language; i < first_visible_language + nb_visible_languages; i++) {
     language_texts[i]->set_y(y);
     y += 16;

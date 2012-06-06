@@ -47,15 +47,23 @@ PauseMenu::PauseMenu(Game &game):
   keys_effect.save_action_key_effect();
   keys_effect.save_sword_key_effect();
 
-  question_text[0] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE, 112, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  question_text[0] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE,
+      SOLARUS_GAME_HEIGHT_MIDDLE - 8,
+      TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   question_text[0]->set_text_color(8, 8, 8);
-  question_text[1] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE, 128, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  question_text[1] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE,
+      SOLARUS_GAME_HEIGHT_MIDDLE + 8,
+      TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   question_text[1]->set_text_color(8, 8, 8);
 
-  answer_text[0] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE-60, 148, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  answer_text[0] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE - 60,
+      SOLARUS_GAME_HEIGHT_MIDDLE + 28,
+      TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   answer_text[0]->set_text_color(8, 8, 8);
   answer_text[0]->set_text(StringResource::get_string("save_dialog.yes"));
-  answer_text[1] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE+59, 148, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  answer_text[1] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE + 59,
+      SOLARUS_GAME_HEIGHT_MIDDLE + 28,
+      TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   answer_text[1]->set_text_color(8, 8, 8);
   answer_text[1]->set_text(StringResource::get_string("save_dialog.no"));
 
@@ -190,7 +198,8 @@ void PauseMenu::display(Surface *destination) {
 
   // display the save dialog
   if (save_dialog_state > 0) {
-    save_dialog_sprite->display(destination, SOLARUS_GAME_WIDTH_MIDDLE - 110, 87);
+    save_dialog_sprite->display(destination,
+        SOLARUS_GAME_WIDTH_MIDDLE - 110, SOLARUS_GAME_HEIGHT_MIDDLE - 33);
     question_text[0]->display(destination);
     question_text[1]->display(destination);
     answer_text[0]->display(destination);

@@ -30,7 +30,7 @@ class Solarus {
 
     Screen* current_screen;		/**< the screen currently displayed (may be the title screen,
 					 * the selection menu, the game, etc.) */
-    Surface* root_surface;		/**< the surface where everything is drawn (always SOLARUS_GAME_WIDTH * SOLARUS_GAME_HEIGHT) */
+    Surface* root_surface;		/**< the surface where everything is drawn (always SOLARUS_SCREEN_WIDTH * SOLARUS_SCREEN_HEIGHT) */
     DebugKeys* debug_keys;		/**< special keys to debug the game, e.g. to traverse walls (disabled in release mode) */
     bool exiting;			/**< indicates that the program is about to stop */
 

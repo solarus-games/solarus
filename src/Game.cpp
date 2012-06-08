@@ -332,7 +332,7 @@ void Game::update_transitions() {
         // before closing the map, draw it on a backup surface for transition effects
         // that want to display both maps at the same time
         if (needs_previous_surface) {
-          previous_map_surface = new Surface(SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT);
+          previous_map_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
           current_map->display();
           current_map->get_visible_surface()->blit(previous_map_surface);
         }

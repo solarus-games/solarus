@@ -277,7 +277,7 @@ void Map::unload() {
  */
 void Map::load(Game &game) {
 
-  this->visible_surface = new Surface(SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT);
+  this->visible_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
   entities = new MapEntities(game, *this);
 
   // read the map file
@@ -508,27 +508,27 @@ void Map::display_foreground() {
     int hero_direction = get_entities().get_hero().get_animation_direction();
     const Rectangle& hero_position = get_entities().get_hero().get_center_point();
     const Rectangle& camera_position = camera->get_position();
-    int x = SOLARUS_GAME_WIDTH - hero_position.get_x() + camera_position.get_x();
-    int y = SOLARUS_GAME_HEIGHT - hero_position.get_y() + camera_position.get_y();
-    Rectangle src_position(x, y, SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT);
+    int x = SOLARUS_SCREEN_WIDTH - hero_position.get_x() + camera_position.get_x();
+    int y = SOLARUS_SCREEN_HEIGHT - hero_position.get_y() + camera_position.get_y();
+    Rectangle src_position(x, y, SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
     dark_surfaces[hero_direction]->blit(src_position, visible_surface);
   }
   // TODO intermediate light levels
 
   // If the map is too small for the screen, add black bars outside the map.
   const int map_width = get_width();
-  if (map_width < SOLARUS_GAME_WIDTH) {
-    int bar_width = (SOLARUS_GAME_WIDTH - map_width) / 2;
-    Rectangle dst_position(0, 0, bar_width, SOLARUS_GAME_HEIGHT);
+  if (map_width < SOLARUS_SCREEN_WIDTH) {
+    int bar_width = (SOLARUS_SCREEN_WIDTH - map_width) / 2;
+    Rectangle dst_position(0, 0, bar_width, SOLARUS_SCREEN_HEIGHT);
     visible_surface->fill_with_color(Color::get_black(), dst_position);
     dst_position.set_x(bar_width + map_width);
     visible_surface->fill_with_color(Color::get_black(), dst_position);
   }
 
   const int map_height = get_height();
-  if (map_height < SOLARUS_GAME_HEIGHT) {
-    int bar_height = (SOLARUS_GAME_HEIGHT - map_height) / 2;
-    Rectangle dst_position(0, 0, SOLARUS_GAME_WIDTH, bar_height);
+  if (map_height < SOLARUS_SCREEN_HEIGHT) {
+    int bar_height = (SOLARUS_SCREEN_HEIGHT - map_height) / 2;
+    Rectangle dst_position(0, 0, SOLARUS_SCREEN_WIDTH, bar_height);
     visible_surface->fill_with_color(Color::get_black(), dst_position);
     dst_position.set_y(bar_height + map_height);
     visible_surface->fill_with_color(Color::get_black(), dst_position);

@@ -37,7 +37,7 @@ Surface *Sprite::alpha_surface = NULL;
 void Sprite::initialize() {
 
   // create only once an intermediary surface that will be used by transparent sprites
-  alpha_surface = new Surface(SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT);
+  alpha_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
   alpha_surface->set_transparency_color(Color::get_black());
 }
 

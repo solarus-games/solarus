@@ -126,9 +126,9 @@ if(DEBUG_KEYS)
   add_definitions(-DSOLARUS_DEBUG_KEYS)
 endif(DEBUG_KEYS)
 
+set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
 if(DEFAULT_QUEST)
-  set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
-  add_definitions(-DDEFAULT_QUEST=\"${DEFAULT_QUEST}\")
+  add_definitions(-DSOLARUS_DEFAULT_QUEST=\"${DEFAULT_QUEST}\")
 endif(DEFAULT_QUEST)
 
 if(PANDORA)

@@ -79,7 +79,7 @@ static void print_help(int argc, char **argv) {
     << "directory or the data archive (data.solarus) of the game to run."
     << std::endl
     << "If the quest path is not specified, the default directory will be: '"
-    << DEFAULT_QUEST << "'."
+    << SOLARUS_DEFAULT_QUEST << "'."
     << std::endl
     << std::endl
     << "Options:"

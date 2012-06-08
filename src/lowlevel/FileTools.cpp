@@ -48,7 +48,7 @@ void FileTools::initialize(int argc, char** argv) {
   }
 
   // set the quest path, by default as defined during the build process
-  std::string quest_path = DEFAULT_QUEST;
+  std::string quest_path = SOLARUS_DEFAULT_QUEST;
 
   // if a command-line argument was specified, use it instead
   if (argc > 1 && argv[argc - 1][0] != '-') {

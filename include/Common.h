@@ -23,10 +23,10 @@
 #ifndef SOLARUS_COMMON_H
 #define SOLARUS_COMMON_H
 
-#ifndef DEFAULT_QUEST
+#ifndef SOLARUS_DEFAULT_QUEST
 // if no default quest was specified at compilation time,
 // use the current directory
-#define DEFAULT_QUEST "."
+#define SOLARUS_DEFAULT_QUEST "."
 #endif
 
 // Game size.

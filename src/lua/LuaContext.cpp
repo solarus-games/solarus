@@ -381,7 +381,7 @@ void LuaContext::on_key_released(InputEvent& event) {
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Lua API.
       lua_pushstring(l, key_name.c_str());
-      call_function(1, 0, on_key_released_name);
+      call_function(2, 0, on_key_released_name);
     }
     else {
       // The method exists but the key is unknown.
@@ -401,7 +401,7 @@ void LuaContext::on_joypad_button_pressed(InputEvent& event) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_function(1, 0, on_joyad_button_pressed_name);
+    call_function(2, 0, on_joyad_button_pressed_name);
   }
 }
 
@@ -416,7 +416,7 @@ void LuaContext::on_joypad_button_released(InputEvent& event) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_function(1, 0, on_joyad_button_released_name);
+    call_function(2, 0, on_joyad_button_released_name);
   }
 }
 
@@ -433,7 +433,7 @@ void LuaContext::on_joypad_axis_moved(InputEvent& event) {
 
     lua_pushinteger(l, axis);
     lua_pushinteger(l, state);
-    call_function(2, 0, on_joyad_axis_moved_name);
+    call_function(3, 0, on_joyad_axis_moved_name);
   }
 }
 
@@ -450,7 +450,7 @@ void LuaContext::on_joypad_hat_moved(InputEvent& event) {
 
     lua_pushinteger(l, hat);
     lua_pushinteger(l, direction8);
-    call_function(2, 0, on_joyad_hat_moved_name);
+    call_function(3, 0, on_joyad_hat_moved_name);
   }
 }
 
@@ -466,7 +466,7 @@ void LuaContext::on_direction_pressed(InputEvent& event) {
     int direction8 = event.get_direction();
 
     lua_pushinteger(l, direction8);
-    call_function(1, 0, on_direction_pressed_name);
+    call_function(2, 0, on_direction_pressed_name);
   }
 }
 

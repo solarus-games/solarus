@@ -31,6 +31,7 @@ void Script::register_text_surface_module() {
       { "create", text_surface_api_create },
       { "get_text", text_surface_api_get_text },
       { "set_text", text_surface_api_set_text },
+      { "set_text_key", text_surface_api_set_text_key },
       { "start_movement", displayable_api_start_movement },
       { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }
@@ -161,6 +162,20 @@ int Script::text_surface_api_set_text(lua_State* l) {
   TextSurface& text_surface = check_text_surface(l, 1);
   const std::string& text = luaL_checkstring(l, 2);
   text_surface.set_text(text);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_text_surface_set_text_key.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::text_surface_api_set_text_key(lua_State* l) {
+
+  TextSurface& text_surface = check_text_surface(l, 1);
+  const std::string& key = luaL_checkstring(l, 2);
+  text_surface.set_text(StringResource::get_string(key));
 
   return 0;
 }

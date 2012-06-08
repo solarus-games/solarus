@@ -74,7 +74,7 @@ void PauseSubmenu::set_caption_text(const std::string &text) {
 
   if (index == std::string::npos) {
     // only one line
-    caption_text_1->set_y(209);
+    caption_text_1->set_y(SOLARUS_SCREEN_HEIGHT_MIDDLE + 89);
     caption_text_1->set_text(text);
     caption_text_2->set_text("");
   }
@@ -84,8 +84,8 @@ void PauseSubmenu::set_caption_text(const std::string &text) {
     const std::string line1 = text.substr(0, index);
     const std::string line2 = text.substr(index + 1);
 
-    caption_text_1->set_y(203);
-    caption_text_2->set_y(215);
+    caption_text_1->set_y(SOLARUS_SCREEN_HEIGHT_MIDDLE + 83);
+    caption_text_2->set_y(SOLARUS_SCREEN_HEIGHT_MIDDLE + 95);
     caption_text_1->set_text(line1);
     caption_text_2->set_text(line2);
   }

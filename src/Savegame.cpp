@@ -29,7 +29,8 @@
 Savegame::Savegame(const std::string &file_name):
   ExportableToLua(),
   file_name(file_name),
-  equipment(*this) {
+  equipment(*this),
+  game(NULL) {
 
   if (!FileTools::data_file_exists(file_name)) {
     // this save slot is free

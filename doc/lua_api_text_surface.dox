@@ -36,5 +36,12 @@ Creates a text surface with the specified properties.
       current language
     - Return value (text surface): the text surface created
 
+TODO
+get_text
+set_text
+set_text_key
+start_movement
+stop_movement
+
 */
 

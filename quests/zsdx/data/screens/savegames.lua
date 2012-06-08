@@ -11,6 +11,7 @@ end
 
 function savegame_menu:on_started()
 
+  self.surface = sol.surface.create(320, 240)
   self.background_color = { 104, 144, 240 }
   self.save_container_img = sol.surface.create("menus/selection_menu_save_container.png")
 
@@ -30,19 +31,23 @@ end
 
 function savegame_menu:on_display(dst_surface)
 
-  dst_surface:fill_color(self.background_color)
+  self.surface:fill_color(self.background_color)
 
   -- Display the savegame slots.
   for i = 1, 3 do
-    self:display_savegame(dst_surface, i)
+    self:display_savegame(i)
   end
+
+  -- The menu makes 320*240 pixels, but dst_surface may be larger.
+  local width, height = dst_surface:get_size()
+  dst_surface:draw(self.surface, width / 2 - 160, height / 2 - 120)
 end
 
-function savegame_menu:display_savegame(dst_surface, slot_index)
+function savegame_menu:display_savegame(slot_index)
 
   local slot = self.slots[slot_index]
-  dst_surface:draw(self.save_container_img, 57, 75 + slot_index * 27)
-  dst_surface:draw(slot.player_name_text, 87, 88 + slot_index * 27)
+  self.surface:draw(self.save_container_img, 57, 75 + slot_index * 27)
+  self.surface:draw(slot.player_name_text, 87, 88 + slot_index * 27)
 end
 
 function savegame_menu:read_savegames()

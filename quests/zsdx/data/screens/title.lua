@@ -19,7 +19,7 @@ function title_screen:on_started()
   -- black screen during 0.3 seconds
   self.phase = "black"
 
-  self.title_surface = sol.surface.create()
+  self.surface = sol.surface.create(320, 240)
   self:start_timer(300, function()
     self:phase_zs_presents()
   end)
@@ -38,7 +38,7 @@ function title_screen:phase_zs_presents()
 
   local width, height = zs_presents_img:get_size()
   local x, y = 160 - width / 2, 120 - height / 2
-  self.title_surface:draw(zs_presents_img, x, y)
+  self.surface:draw(zs_presents_img, x, y)
   sol.audio.play_sound("intro")
 
   self:start_timer(2000, function()
@@ -126,52 +126,51 @@ function title_screen:phase_title()
   self:start_timer(50, move_clouds)
 
   -- show an opening transition
-  self.title_surface:fade_in(30)
+  self.surface:fade_in(30)
 end
 
 function title_screen:on_display(dst_surface)
 
-  if self.phase ~= "title" then
-    dst_surface:draw(self.title_surface)
-  else
+  if self.phase == "title" then
     self:display_phase_title(dst_surface)
   end
+
+  -- final blit (dst_surface may be larger)
+  local width, height = dst_surface:get_size()
+  dst_surface:draw(self.surface, width / 2 - 160, height / 2 - 120)
 end
 
-function title_screen:display_phase_title(destination_surface)
+function title_screen:display_phase_title()
 
   -- background
-  self.title_surface:fill_color({0, 0, 0})
-  self.title_surface:draw(self.background_img)
+  self.surface:fill_color({0, 0, 0})
+  self.surface:draw(self.background_img)
 
   -- clouds
   local x, y = self.clouds_xy.x, self.clouds_xy.y
-  self.title_surface:draw(self.clouds_img, x, y)
+  self.surface:draw(self.clouds_img, x, y)
   x = self.clouds_xy.x - 535
-  self.title_surface:draw(self.clouds_img, x, y)
+  self.surface:draw(self.clouds_img, x, y)
   x = self.clouds_xy.x
   y = self.clouds_xy.y - 299
-  self.title_surface:draw(self.clouds_img, x, y)
+  self.surface:draw(self.clouds_img, x, y)
   x = self.clouds_xy.x - 535
   y = self.clouds_xy.y - 299
-  self.title_surface:draw(self.clouds_img, x, y)
+  self.surface:draw(self.clouds_img, x, y)
 
   -- website name and logo
-  self.title_surface:draw(self.website_img, 160, 220)
-  self.title_surface:draw(self.logo_img)
+  self.surface:draw(self.website_img, 160, 220)
+  self.surface:draw(self.logo_img)
 
   if self.dx_img then
-    self.title_surface:draw(self.dx_img)
+    self.surface:draw(self.dx_img)
   end
   if self.star_img then
-    self.title_surface:draw(self.star_img)
+    self.surface:draw(self.star_img)
   end
   if self.show_press_space then
-    self.title_surface:draw(self.press_space_img, 160, 190)
+    self.surface:draw(self.press_space_img, 160, 190)
   end
-
-  -- final blit
-  destination_surface:draw(self.title_surface)
 end
 
 function title_screen:on_key_pressed(key)
@@ -199,7 +198,7 @@ function title_screen:try_finish_title()
       and not self.finished then
     self.finished = true
 
-    self.title_surface:fade_out(30, function()
+    self.surface:fade_out(30, function()
       local savegame_menu = require("screens/savegames")
       sol.audio.stop_music()
       sol.main.start_screen(savegame_menu:new())

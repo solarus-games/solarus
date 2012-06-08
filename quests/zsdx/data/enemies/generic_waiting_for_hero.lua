@@ -115,7 +115,7 @@ end
 function event_hurt()
 
   if timer ~= nil then
-    timer:stop
+    timer:stop()
     timer = nil
   end
 end
@@ -174,7 +174,7 @@ end
 
 function go_hero()
 
-  local m = sol.movement.create("target"=
+  local m = sol.movement.create("target")
   m:set_speed(properties.faster_speed)
   sol.enemy.start_movement(m)
   going_hero = true

@@ -45,7 +45,7 @@ MainLoop::MainLoop(int argc, char** argv):
 
   // Initialize low-level features (audio, video, files...).
   System::initialize(argc, argv);
-  root_surface = new Surface(SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT);
+  root_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
   debug_keys = new DebugKeys(*this);
   lua_context = new LuaContext(*this);
   lua_context->initialize();

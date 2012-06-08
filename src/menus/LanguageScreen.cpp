@@ -57,7 +57,7 @@ LanguageScreen::LanguageScreen(MainLoop& main_loop):
     std::map<std::string, std::string>::iterator it;
     for (it = language_map.begin(); it != language_map.end(); it++) {
       language_codes[i] = it->first;
-      language_texts[i] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE, 0, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+      language_texts[i] = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE, 0, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
       language_texts[i]->set_font("fixed");
       language_texts[i]->set_text(it->second);
       if (language_codes[i] == FileTools::get_default_language()) {
@@ -104,7 +104,7 @@ void LanguageScreen::set_cursor_position(int cursor_position) {
     first_visible_language = cursor_position - max_visible_languages + 1;
   }
 
-  int y = 120 - 8 * nb_visible_languages;
+  int y = SOLARUS_SCREEN_HEIGHT_MIDDLE - 8 * nb_visible_languages;
   for (int i = first_visible_language; i < first_visible_language + nb_visible_languages; i++) {
     language_texts[i]->set_y(y);
     y += 16;

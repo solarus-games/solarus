@@ -67,9 +67,15 @@ SelectionMenu::SelectionMenu(MainLoop& main_loop):
   allow_cursor_date = 0;
 
   // texts
-  option1_text = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE-70, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
-  option2_text = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE+38, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
-  title_text = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE, 54, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
+  option1_text = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE - 70,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE + 52,
+      TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
+  option2_text = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE + 38,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE + 52,
+      TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
+  title_text = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE - 66,
+      TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   title_text->set_font("fixed");
 
   // music
@@ -181,8 +187,9 @@ void SelectionMenu::read_savegames() {
       delete text_player_names[i];
     }
 
-    text_player_names[i] = new TextSurface(SOLARUS_GAME_WIDTH_MIDDLE-73, 88 + i * 27,
-					   TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
+    text_player_names[i] = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE - 73,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE - 32 + i * 27,
+        TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
     text_player_names[i]->set_text(player_name);
 
     // hearts
@@ -192,7 +199,9 @@ void SelectionMenu::read_savegames() {
     }
 
     if (!savegames[i]->is_empty()) {
-      hearts_views[i] = new HeartsView(savegames[i]->get_equipment(), SOLARUS_GAME_WIDTH_MIDDLE+8, 78 + i * 27);
+      hearts_views[i] = new HeartsView(savegames[i]->get_equipment(),
+          SOLARUS_SCREEN_WIDTH_MIDDLE + 8,
+          SOLARUS_SCREEN_HEIGHT_MIDDLE - 42 + i * 27);
     }
   }
 }
@@ -236,12 +245,12 @@ void SelectionMenu::update() {
       cloud_positions[i].add_x(1);
       cloud_positions[i].add_y(-1);
 
-      if (cloud_positions[i].get_x() >= SOLARUS_GAME_WIDTH) {
+      if (cloud_positions[i].get_x() >= SOLARUS_SCREEN_WIDTH) {
 	cloud_positions[i].set_x(0);
       }
 
       if (cloud_positions[i].get_y() <= -44) {
-	cloud_positions[i].set_y(SOLARUS_GAME_HEIGHT - 44);
+	cloud_positions[i].set_y(SOLARUS_SCREEN_HEIGHT - 44);
       }
     }
 
@@ -284,24 +293,25 @@ void SelectionMenu::display(Surface& dst_surface) {
 
     cloud_img->display(surface, position);
 
-    if (cloud_positions[i].get_x() >= SOLARUS_GAME_WIDTH - 80) {
-      position.set_xy(cloud_positions[i].get_x() - SOLARUS_GAME_WIDTH, cloud_positions[i].get_y());
+    if (cloud_positions[i].get_x() >= SOLARUS_SCREEN_WIDTH - 80) {
+      position.set_xy(cloud_positions[i].get_x() - SOLARUS_SCREEN_WIDTH, cloud_positions[i].get_y());
       cloud_img->display(surface, position);
 
       if (cloud_positions[i].get_y() <= 0) {
-        position.set_xy(cloud_positions[i].get_x() - SOLARUS_GAME_WIDTH, cloud_positions[i].get_y() + SOLARUS_GAME_HEIGHT);
+        position.set_xy(cloud_positions[i].get_x() - SOLARUS_SCREEN_WIDTH, cloud_positions[i].get_y() + SOLARUS_SCREEN_HEIGHT);
         cloud_img->display(surface, position);
       }
     }
 
     if (cloud_positions[i].get_y() <= 0) {
-      position.set_xy(cloud_positions[i].get_x(), cloud_positions[i].get_y() + SOLARUS_GAME_HEIGHT);
+      position.set_xy(cloud_positions[i].get_x(), cloud_positions[i].get_y() + SOLARUS_SCREEN_HEIGHT);
       cloud_img->display(surface, position);
     }
   }
 
   // display the background image
-  position.set_xy(SOLARUS_GAME_WIDTH_MIDDLE - 123, 38);
+  position.set_xy(SOLARUS_SCREEN_WIDTH_MIDDLE - 123,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE - 82);
   position.set_size(246, 165);
   background_img->display(surface, position);
 
@@ -391,7 +401,8 @@ void SelectionMenu::set_title_text(const std::string &title_string_key) {
  * @param left_string_key key of the first option string (on the left)
  * @param right_string_key key of the second option string (on the right)
  */
-void SelectionMenu::set_bottom_options(const std::string &left_string_key, const std::string &right_string_key) {
+void SelectionMenu::set_bottom_options(const std::string &left_string_key,
+    const std::string &right_string_key) {
 
   if (left_string_key.size() != 0) {
     option1_text->set_text(StringResource::get_string(left_string_key));
@@ -537,7 +548,7 @@ void SelectionMenu::display_title_text(Surface& dst_surface) {
 void SelectionMenu::display_savegame(Surface& dst_surface, int save_number) {
 
   // draw the container
-  Rectangle position(SOLARUS_GAME_WIDTH_MIDDLE - 103, 75 + save_number * 27);
+  Rectangle position(SOLARUS_SCREEN_WIDTH_MIDDLE - 103, 75 + save_number * 27);
   save_container_img->display(dst_surface, position);
 
   // draw the player's name
@@ -561,7 +572,7 @@ void SelectionMenu::display_savegame(Surface& dst_surface, int save_number) {
  */
 void SelectionMenu::display_savegame_number(Surface& dst_surface, int save_number) {
 
-  Rectangle position(SOLARUS_GAME_WIDTH_MIDDLE - 98, 80 + 27 * save_number);
+  Rectangle position(SOLARUS_SCREEN_WIDTH_MIDDLE - 98, 80 + 27 * save_number);
   number_imgs[save_number]->display(dst_surface, position);
 }
 
@@ -574,16 +585,16 @@ void SelectionMenu::display_savegame_number(Surface& dst_surface, int save_numbe
  */
 void SelectionMenu::display_bottom_options(Surface& dst_surface) {
 
-  Rectangle position(0, 158);
+  Rectangle position(0, SOLARUS_SCREEN_HEIGHT_MIDDLE + 38);
 
   if (!option1_text->is_empty()) {
-    position.set_x(SOLARUS_GAME_WIDTH_MIDDLE - 103);
+    position.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE - 103);
     option_container_img->display(dst_surface, position);
     option1_text->display(dst_surface);
   }
 
   if (!option2_text->is_empty()) {
-    position.set_x(SOLARUS_GAME_WIDTH_MIDDLE + 5);
+    position.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE + 5);
     option_container_img->display(dst_surface, position);
     option2_text->display(dst_surface);
   }
@@ -599,17 +610,17 @@ void SelectionMenu::display_savegame_cursor(Surface& dst_surface) {
   Rectangle position;
 
   if (cursor_position != 5) {
-    position.set_x(SOLARUS_GAME_WIDTH_MIDDLE-102);
+    position.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE - 102);
   }
   else {
-    position.set_x(SOLARUS_GAME_WIDTH_MIDDLE+6);
+    position.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE + 6);
   }
 
   if (cursor_position < 4) {
-    position.set_y(49 + cursor_position * 27);
+    position.set_y(SOLARUS_SCREEN_HEIGHT_MIDDLE - 71 + cursor_position * 27);
   }
   else {
-    position.set_y(159);
+    position.set_y(SOLARUS_SCREEN_HEIGHT_MIDDLE + 39);
   }
   cursor_sprite->display(dst_surface, position);
 }

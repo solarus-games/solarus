@@ -28,8 +28,8 @@
  */
 const Rectangle TransitionScrolling::previous_map_dst_positions[] = {
   Rectangle(0,   0),  // scroll to the east
-  Rectangle(0, SOLARUS_GAME_HEIGHT),  // scroll to the north
-  Rectangle(SOLARUS_GAME_WIDTH,  0), // scroll to the west
+  Rectangle(0, SOLARUS_SCREEN_HEIGHT),  // scroll to the north
+  Rectangle(SOLARUS_SCREEN_WIDTH,  0), // scroll to the west
   Rectangle(0 ,  0),  // scroll to the south
 };
 
@@ -65,8 +65,8 @@ void TransitionScrolling::start() {
   scrolling_direction = (game->get_current_map().get_destination_side() + 2) % 4;
 
   const int scrolling_step = 5;
-  int width = SOLARUS_GAME_WIDTH;
-  int height = SOLARUS_GAME_HEIGHT;
+  int width = SOLARUS_SCREEN_WIDTH;
+  int height = SOLARUS_SCREEN_HEIGHT;
   if (scrolling_direction % 2 == 0) {
     // right or left
     width *= 2;
@@ -86,7 +86,7 @@ void TransitionScrolling::start() {
   current_map_dst_position = previous_map_dst_positions[(scrolling_direction + 2) % 4];
   current_scrolling_position = previous_map_dst_position;
 
-  current_scrolling_position.set_size(SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT);
+  current_scrolling_position.set_size(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
 
   next_scroll_date = System::now();
 }

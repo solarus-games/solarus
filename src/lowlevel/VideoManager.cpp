@@ -42,12 +42,12 @@ const VideoManager::VideoMode* VideoManager::proposed_modes = NULL;
 
 // Size of the screen in each video mode.
 Rectangle VideoManager::default_mode_sizes[] = {
-  Rectangle(0, 0, SOLARUS_GAME_WIDTH * 2, SOLARUS_GAME_HEIGHT * 2),  // WINDOWED_STRETCHED
-  Rectangle(0, 0, SOLARUS_GAME_WIDTH * 2, SOLARUS_GAME_HEIGHT * 2),  // WINDOWED_SCALE2X
-  Rectangle(0, 0, SOLARUS_GAME_WIDTH, SOLARUS_GAME_HEIGHT),          // WINDOWED_NORMAL
-  Rectangle(0, 0, SOLARUS_GAME_WIDTH * 2, SOLARUS_GAME_HEIGHT * 2),  // FULLSCREEN_NORMAL
+  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // WINDOWED_STRETCHED
+  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // WINDOWED_SCALE2X
+  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT),          // WINDOWED_NORMAL
+  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // FULLSCREEN_NORMAL
   Rectangle(0, 0, 0, 0),                                             // FULLSCREEN_WIDE
-  Rectangle(0, 0, SOLARUS_GAME_WIDTH * 2, SOLARUS_GAME_HEIGHT * 2),  // FULLSCREEN_SCALE2X
+  Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // FULLSCREEN_SCALE2X
   Rectangle(0, 0, 0, 0),                                             // FULLSCREEN_SCALE2X_WIDE
 };
 
@@ -149,12 +149,12 @@ VideoManager::VideoManager(bool disable_window):
   if (SDL_VideoModeOK(768, 480, 32, flags)) {
     mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
     mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);
-    dst_position_wide.set_xy((768 - SOLARUS_GAME_WIDTH * 2) / 2, 0);
+    dst_position_wide.set_xy((768 - SOLARUS_SCREEN_WIDTH * 2) / 2, 0);
   }
   else if (SDL_VideoModeOK(720, 480, 32, flags)) {
     mode_sizes[FULLSCREEN_WIDE].set_size(720, 480);
     mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(720, 480);
-    dst_position_wide.set_xy((720 - SOLARUS_GAME_WIDTH * 2) / 2, 0);
+    dst_position_wide.set_xy((720 - SOLARUS_SCREEN_WIDTH * 2) / 2, 0);
   }
 
   /* debug (see the fullscreen video modes supported)
@@ -282,7 +282,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
   }
 
   const Rectangle& size = mode_sizes[mode];
-  if (size.get_width() > SOLARUS_GAME_WIDTH * 2) {
+  if (size.get_width() > SOLARUS_SCREEN_WIDTH * 2) {
     // Wide screen resolution with two black side bars.
     offset = dst_position_wide.get_x();
   }
@@ -353,8 +353,8 @@ void VideoManager::display(Surface& src_surface) {
 }
 
 /**
- * @brief Blits a SOLARUS_GAME_WIDTH*SOLARUS_GAME_HEIGHT surface on a
- * SOLARUS_GAME_WIDTH*SOLARUS_GAME_HEIGHT surface.
+ * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface on a
+ * SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface.
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
@@ -363,10 +363,10 @@ void VideoManager::blit(Surface& src_surface, Surface& dst_surface) {
 }
 
 /**
- * @brief Blits a SOLARUS_GAME_WIDTH*SOLARUS_GAME_HEIGHT surface on a
+ * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface on a
  * double-size surface, stretching the image.
  *
- * Two black side bars are added if the destination surface is wider than SOLARUS_GAME_WIDTH * 2.
+ * Two black side bars are added if the destination surface is wider than SOLARUS_SCREEN_WIDTH * 2.
  *
  * @param src_surface the source surface
  * @param dst_surface the destination surface
@@ -394,8 +394,8 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
   uint32_t* dst = (uint32_t*) surface_to_draw->pixels;
 
   int p = offset;
-  for (int i = 0; i < SOLARUS_GAME_HEIGHT; i++) {
-    for (int j = 0; j < SOLARUS_GAME_WIDTH; j++) {
+  for (int i = 0; i < SOLARUS_SCREEN_HEIGHT; i++) {
+    for (int j = 0; j < SOLARUS_SCREEN_WIDTH; j++) {
       dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = *src;
       p += 2;
       src++;
@@ -409,12 +409,12 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
 }
 
 /**
- * @brief Blits a SOLARUS_GAME_WIDTH*SOLARUS_GAME_HEIGHT surface on a
+ * @brief Blits a SOLARUS_SCREEN_WIDTH*SOLARUS_SCREEN_HEIGHT surface on a
  * double-size surface.
  *
  * The image is scaled with an implementation of the Scale2x algorithm.
  * Two black side bars if the destination surface is wider than
- * SOLARUS_GAME_WIDTH * 2.
+ * SOLARUS_SCREEN_WIDTH * 2.
  *
  * @param src_surface the source surface
  * @param dst_surface the destination surface
@@ -443,20 +443,20 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
 
   int b, d, e = 0, f,  h;
   int e1 = offset, e2, e3, e4;
-  for (int row = 0; row < SOLARUS_GAME_HEIGHT; row++) {
-    for (int col = 0; col < SOLARUS_GAME_WIDTH; col++) {
+  for (int row = 0; row < SOLARUS_SCREEN_HEIGHT; row++) {
+    for (int col = 0; col < SOLARUS_SCREEN_WIDTH; col++) {
 
       // compute a to i
 
-      b = e - SOLARUS_GAME_WIDTH;
+      b = e - SOLARUS_SCREEN_WIDTH;
       d = e - 1;
       f = e + 1;
-      h = e + SOLARUS_GAME_WIDTH;
+      h = e + SOLARUS_SCREEN_WIDTH;
 
       if (row == 0)   { b = e; }
-      if (row == SOLARUS_GAME_HEIGHT - 1) { h = e; }
+      if (row == SOLARUS_SCREEN_HEIGHT - 1) { h = e; }
       if (col == 0)   { d = e; }
-      if (col == SOLARUS_GAME_WIDTH - 1) { f = e; }
+      if (col == SOLARUS_SCREEN_WIDTH - 1) { f = e; }
 
       // compute e1 to e4
       e2 = e1 + 1;

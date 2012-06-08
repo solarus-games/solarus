@@ -47,7 +47,7 @@ class Surface: public DynamicDisplayable {
       DIR_LANGUAGE     /**< the language-specific image directory of the data package, for the current language */
     };
 
-    Surface(int width = SOLARUS_GAME_WIDTH, int height = SOLARUS_GAME_HEIGHT);
+    Surface(int width = SOLARUS_SCREEN_WIDTH, int height = SOLARUS_SCREEN_HEIGHT);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
     Surface(SDL_Surface* internal_surface);
     Surface(const Surface& other);

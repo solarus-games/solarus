@@ -32,6 +32,10 @@ easier to use, less error-prone.
 * Data files are also in Lua now (no more ini files or custom text files).
 * Add conversion scripts to upgrade existing data files (but not scripts).
 
+solarus-0.9.3 (under development)
+
+* The game screen size can now be set at compilation time.
+
 solarus-0.9.2 (2012-04-03)
 
 * Fix a crash using a teletransporter to the same map while an enemy is dying

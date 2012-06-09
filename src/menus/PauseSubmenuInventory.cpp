@@ -62,8 +62,8 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu &pause_menu, Game &game):
 
       int amount = equipment.get_item_amount(item_names[k]);
       int maximum = equipment.get_item_maximum(item_names[k]);
-      int x = SOLARUS_SCREEN_WIDTH_MIDDLE-100 + (k % 7) * 32;
-      int y = 81 + (k / 7) * 32;
+      int x = SOLARUS_SCREEN_WIDTH_MIDDLE - 100 + (k % 7) * 32;
+      int y = SOLARUS_SCREEN_HEIGHT_MIDDLE - 39 + (k / 7) * 32;
 
       counters[k] = new Counter(2, false, x, y);
       counters[k]->set_maximum(maximum);
@@ -274,12 +274,12 @@ void PauseSubmenuInventory::display(Surface& dst_surface) {
   PauseSubmenu::display(dst_surface);
 
   // display each inventory item
-  Rectangle dst_xy(0, 82);
+  Rectangle dst_xy(0, SOLARUS_SCREEN_HEIGHT_MIDDLE - 38);
 
   int k = 0;
   for (int i = 0; i < 4; i++) {
 
-    dst_xy.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE-96);
+    dst_xy.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE - 96);
 
     for (int j = 0; j < 7; j++, k++) {
 
@@ -303,8 +303,8 @@ void PauseSubmenuInventory::display(Surface& dst_surface) {
   }
 
   // display the cursor
-  int x = SOLARUS_SCREEN_WIDTH_MIDDLE-96 + 32 * cursor_column;
-  int y = 77 + 32 * cursor_row;
+  int x = SOLARUS_SCREEN_WIDTH_MIDDLE - 96 + 32 * cursor_column;
+  int y = SOLARUS_SCREEN_HEIGHT_MIDDLE - 43 + 32 * cursor_row;
 
   cursor_sprite->display(dst_surface, x, y);
 
@@ -328,7 +328,8 @@ void PauseSubmenuInventory::show_info_message() {
   std::ostringstream oss;
   oss << "_item_description." << item_name << '.' << variant;
 
-  DialogBox::VerticalPosition vertical_position = (cursor_row >= 2) ? DialogBox::POSITION_TOP : DialogBox::POSITION_BOTTOM;
+  DialogBox::VerticalPosition vertical_position = (cursor_row >= 2) ?
+    DialogBox::POSITION_TOP : DialogBox::POSITION_BOTTOM;
 
   game.get_dialog_box().start_dialog(oss.str(), NULL, vertical_position);
 }
@@ -367,10 +368,10 @@ void PauseSubmenuInventory::assign_item(int slot) {
   Sound::play("throw");
 
   // compute the movement
-  int x1 = 60 + 32 * cursor_column;
-  int y1 = 75 + 32 * cursor_row;
-  int x2 = (slot == 0) ? 20 : 72;
-  int y2 = 46;
+  int x1 = SOLARUS_SCREEN_WIDTH_MIDDLE - 100 + 32 * cursor_column;
+  int y1 = SOLARUS_SCREEN_HEIGHT_MIDDLE - 45 + 32 * cursor_row;
+  int x2 = SOLARUS_SCREEN_WIDTH_MIDDLE - ((slot == 0) ? 140 : 88);
+  int y2 = SOLARUS_SCREEN_HEIGHT_MIDDLE - 74;
 
   item_assigned_movement = new TargetMovement(x2, y2, 500, true);
   item_assigned_movement->set_xy(x1, y1);

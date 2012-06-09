@@ -122,8 +122,9 @@ void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
   }
 
   // set the coordinates of graphic objects
-  int x = SOLARUS_SCREEN_WIDTH_MIDDLE-110;
-  int y = (vertical_position == POSITION_TOP) ? 32 : 144;
+  int x = SOLARUS_SCREEN_WIDTH_MIDDLE - 110;
+  int y = (vertical_position == POSITION_TOP) ? 32
+      : SOLARUS_SCREEN_HEIGHT - 96;
 
   if (style == STYLE_WITHOUT_FRAME) {
     y += (vertical_position == POSITION_TOP) ? (-24) : 24;

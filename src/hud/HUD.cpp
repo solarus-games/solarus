@@ -36,15 +36,15 @@ HUD::HUD(Game &game):
   nb_elements(0),
   showing_dialog(false) {
 
-  elements[nb_elements++] = new HeartsView(game, 216, 6);
-  elements[nb_elements++] = new RupeesCounter(game, 8, 220);
-  elements[nb_elements++] = new MagicBar(game, 216, 27);
+  elements[nb_elements++] = new HeartsView(game, SOLARUS_SCREEN_WIDTH - 104, 6);
+  elements[nb_elements++] = new RupeesCounter(game, 8, SOLARUS_SCREEN_HEIGHT - 20);
+  elements[nb_elements++] = new MagicBar(game, SOLARUS_SCREEN_WIDTH - 104, 27);
   elements[nb_elements++] = new ItemIcon(game, 0, 8, 29);
   elements[nb_elements++] = new ItemIcon(game, 1, 60, 29);
   elements[nb_elements++] = new SwordIcon(game, 10, 29);
   elements[nb_elements++] = new PauseIcon(game, -3, 7);
   elements[nb_elements++] = new ActionIcon(game, 23, 51);
-  elements[nb_elements++] = new SmallKeysCounter(game, 284, 222);
+  elements[nb_elements++] = new SmallKeysCounter(game, SOLARUS_SCREEN_WIDTH - 36, SOLARUS_SCREEN_HEIGHT - 18);
   elements[nb_elements++] = new FloorView(game, 5, 70);
 }
 

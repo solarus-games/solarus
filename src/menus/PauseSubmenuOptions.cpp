@@ -47,18 +47,26 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu &pause_menu, Game &game):
   caption_strings[2] = StringResource::get_string("options.caption.press_key");
 
   // create the text surfaces
-  video_mode_text = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE+104, 62, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_TOP);
+  video_mode_text = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE + 104,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE - 58,
+      TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_TOP);
   video_mode_text->set_font("fixed");
 
-  controls_text = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE-76, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
+  controls_text = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE - 76,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE - 37,
+      TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
   controls_text->set_font("fixed");
   controls_text->set_text(StringResource::get_string("options.commands_column"));
 
-  keyboard_text = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE-7, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
+  keyboard_text = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE - 7,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE - 37,
+      TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
   keyboard_text->set_font("fixed");
   keyboard_text->set_text(StringResource::get_string("options.keyboard_column"));
 
-  joypad_text = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE+69, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
+  joypad_text = new TextSurface(SOLARUS_SCREEN_WIDTH_MIDDLE + 69,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE - 37,
+      TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
   joypad_text->set_font("fixed");
   joypad_text->set_text(StringResource::get_string("options.joypad_column"));
 
@@ -157,7 +165,8 @@ void PauseSubmenuOptions::set_cursor_position(int position) {
 
     if (position == 0) { // screen mode
       set_caption_text(caption_strings[0]);
-      cursor_sprite_position.set_xy(SOLARUS_SCREEN_WIDTH_MIDDLE-56, 62);
+      cursor_sprite_position.set_xy(SOLARUS_SCREEN_WIDTH_MIDDLE - 56,
+          SOLARUS_SCREEN_HEIGHT_MIDDLE - 58);
       cursor_sprite->set_current_animation("big");
     }
     else { // key customization
@@ -165,17 +174,18 @@ void PauseSubmenuOptions::set_cursor_position(int position) {
 
       // make sure the selected key is visible
       while (position < highest_visible_key) {
-	highest_visible_key--;
-	controls_visible_y -= 16;
+        highest_visible_key--;
+        controls_visible_y -= 16;
       }
 
       while (position > highest_visible_key + 4) {
-	highest_visible_key++;
-	controls_visible_y += 16;
+        highest_visible_key++;
+        controls_visible_y += 16;
       }
 
-      cursor_sprite_position.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE-105);
-      cursor_sprite_position.set_y(104 + (position - highest_visible_key) * 16);
+      cursor_sprite_position.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE - 105);
+      cursor_sprite_position.set_y(
+          SOLARUS_SCREEN_HEIGHT_MIDDLE - 16 + (position - highest_visible_key) * 16);
       cursor_sprite->set_current_animation("small");
     }
   }
@@ -283,18 +293,27 @@ void PauseSubmenuOptions::display(Surface *destination) {
   joypad_text->display(destination);
 
   Rectangle src_position(0, controls_visible_y, 215, 84);
-  static Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 107, 102);
+  static Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 107,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE - 18);
   controls_surface->blit(src_position, destination, dst_position);
 
   // display the arrows
   if (controls_visible_y > 0) {
-    up_arrow_sprite->display(destination, 96, 96);
-    up_arrow_sprite->display(destination, 211, 96);
+    up_arrow_sprite->display(destination,
+        SOLARUS_SCREEN_WIDTH_MIDDLE - 64,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE - 24);
+    up_arrow_sprite->display(destination,
+        SOLARUS_SCREEN_WIDTH_MIDDLE + 91,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE - 24);
   }
 
   if (controls_visible_y < 60) {
-    down_arrow_sprite->display(destination, 96, 182);
-    down_arrow_sprite->display(destination, 211, 182);
+    down_arrow_sprite->display(destination,
+        SOLARUS_SCREEN_WIDTH_MIDDLE - 64,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 62);
+    down_arrow_sprite->display(destination,
+        SOLARUS_SCREEN_WIDTH_MIDDLE + 91,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 62);
   }
 }
 

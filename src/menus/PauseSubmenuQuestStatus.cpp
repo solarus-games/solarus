@@ -50,7 +50,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   {
     int tunic = equipment.get_ability("tunic");
     Rectangle src_position((tunic - 1) * 16, 96, 16, 16);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE + 17, 164);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE + 17,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 44);
     treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.tunic_" << tunic;
@@ -62,7 +63,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   if (equipment.has_ability("sword")) {
     int sword = equipment.get_ability("sword");
     Rectangle src_position(80 + sword * 16, 96, 16, 16);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE + 51, 164);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE + 51,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 44);
     treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.sword_" << sword;
@@ -74,7 +76,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   if (equipment.has_ability("shield")) {
     int shield = equipment.get_ability("shield");
     Rectangle src_position(32 + shield * 16, 96, 16, 16);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE + 85, 164);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE + 85,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 44);
     treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.shield_" << shield;
@@ -87,7 +90,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
     int rupee_bag = equipment.get_item_variant("rupee_bag");
     
     Rectangle src_position(rupee_bag * 16, 80, 16, 16);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 100, 71);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 100,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE - 49);
     treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.rupee_bag_" << rupee_bag;
@@ -99,7 +103,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   int bomb_bag = equipment.get_item_variant("bomb_bag");
   if (bomb_bag != 0) {
     Rectangle src_position(48 + bomb_bag * 16, 80, 16, 16);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 100, 100);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 100,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE - 20);
     treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.bomb_bag_" << bomb_bag;
@@ -112,7 +117,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   if (quiver != 0) {
     
     Rectangle src_position(96 + quiver * 16, 80, 16, 16);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 100, 130);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 100,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 10);
     treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.quiver_" << quiver;
@@ -123,7 +129,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   // world map
   if (equipment.has_item("world_map")) {
     Rectangle src_position(0, 80, 16, 16);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 100, 164);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 100,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 44);
     treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     caption_texts[3] = StringResource::get_string("quest_status.caption.world_map");
@@ -133,7 +140,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   {
     int x = 51 * savegame.get_integer(1030);
     Rectangle src_position(x, 0, 51, 50);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 59, 82);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 59,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE -38);
     pieces_of_heart_img.blit(src_position, &quest_items_surface, dst_position);
 
     caption_texts[4] = StringResource::get_string("quest_status.caption.pieces_of_heart");
@@ -142,14 +150,22 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   // dungeons finished
   {
     static const Rectangle dst_positions[] = {
-        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 49, 69),
-        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 72, 74),
-        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 83, 97),
-        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 72, 120),
-        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 49, 127),
-        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 26, 120),
-        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 15, 97),
-        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 26, 74)
+        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 49,
+            SOLARUS_SCREEN_HEIGHT_MIDDLE - 51),
+        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 72,
+            SOLARUS_SCREEN_HEIGHT_MIDDLE - 46),
+        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 83,
+            SOLARUS_SCREEN_HEIGHT_MIDDLE - 23),
+        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 72,
+            SOLARUS_SCREEN_HEIGHT_MIDDLE),
+        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 49,
+            SOLARUS_SCREEN_HEIGHT_MIDDLE + 7),
+        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 26,
+            SOLARUS_SCREEN_HEIGHT_MIDDLE),
+        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 15,
+            SOLARUS_SCREEN_HEIGHT_MIDDLE - 23),
+        Rectangle(SOLARUS_SCREEN_WIDTH_MIDDLE + 26,
+            SOLARUS_SCREEN_HEIGHT_MIDDLE - 46)
     };
     for (int i = 0; i < 8; i++) {
       if (equipment.is_dungeon_finished(i + 1)) {
@@ -181,35 +197,36 @@ void PauseSubmenuQuestStatus::set_cursor_position(int position) {
     this->cursor_position = position;
 
     if (position <= 3) {
-      cursor_sprite_position.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE-92);
+      cursor_sprite_position.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE-  92);
     }
     else if (position == 4) {
-      cursor_sprite_position.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE-34);
+      cursor_sprite_position.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE - 34);
     }
     else {
-      cursor_sprite_position.set_x(SOLARUS_SCREEN_WIDTH_MIDDLE-141 + 34 * position - 4);
+      cursor_sprite_position.set_x(
+          SOLARUS_SCREEN_WIDTH_MIDDLE - 141 + 34 * position - 4);
     }
 
     switch (position) {
 
       case 0:
-        cursor_sprite_position.set_y(79);
+        cursor_sprite_position.set_y(SOLARUS_SCREEN_HEIGHT_MIDDLE - 41);
         break;
 
       case 1:
-        cursor_sprite_position.set_y(108);
+        cursor_sprite_position.set_y(SOLARUS_SCREEN_HEIGHT_MIDDLE - 12);
         break;
 
       case 2:
-        cursor_sprite_position.set_y(138);
+        cursor_sprite_position.set_y(SOLARUS_SCREEN_HEIGHT_MIDDLE + 18);
         break;
 
       case 4:
-        cursor_sprite_position.set_y(107);
+        cursor_sprite_position.set_y(SOLARUS_SCREEN_HEIGHT_MIDDLE - 13);
         break;
 
       default:
-        cursor_sprite_position.set_y(172);
+        cursor_sprite_position.set_y(SOLARUS_SCREEN_HEIGHT_MIDDLE + 52);
         break;
     }
 
@@ -298,6 +315,7 @@ void PauseSubmenuQuestStatus::display(Surface* destination) {
   quest_items_surface.blit(destination);
 
   // cursor
-  cursor_sprite.display(destination, cursor_sprite_position.get_x(), cursor_sprite_position.get_y());
+  cursor_sprite.display(destination,
+      cursor_sprite_position.get_x(), cursor_sprite_position.get_y());
 }
 

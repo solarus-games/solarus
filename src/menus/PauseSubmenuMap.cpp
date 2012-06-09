@@ -67,7 +67,8 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu &pause_menu, Game &game):
       world_minimap_visible_y = 0;
     }
     moving_visible_y = 0;
-    hero_position.add_xy(48 - 8, 59 - 6);
+    hero_position.add_xy(SOLARUS_SCREEN_WIDTH_MIDDLE - 120,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE - 67);
     hero_point_sprite = NULL;
 
     if (equipment.has_ability("see_outside_world_minimap")) {
@@ -87,7 +88,8 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu &pause_menu, Game &game):
     dungeon_map_background = new Surface("menus/dungeon_map_background.png");
     dungeon_map_icons = new Surface("menus/dungeon_map_icons.png");
 
-    small_keys_counter = new Counter(2, false, SOLARUS_SCREEN_WIDTH_MIDDLE-36, 182);
+    small_keys_counter = new Counter(2, false,
+        SOLARUS_SCREEN_WIDTH_MIDDLE - 36, SOLARUS_SCREEN_HEIGHT_MIDDLE + 62);
     small_keys_counter->set_value(equipment.get_small_keys());
 
     // floors
@@ -397,7 +399,8 @@ void PauseSubmenuMap::display_world_map(Surface *destination) {
 
   // display the surface
   Rectangle src_position(0, world_minimap_visible_y, 225, 133);
-  static Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE-112, 59, 0, 0);
+  static Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 112,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE - 61, 0, 0);
 
   world_map_img->blit(src_position, destination, dst_position);
 
@@ -412,13 +415,17 @@ void PauseSubmenuMap::display_world_map(Surface *destination) {
 
     // display the arrows
     if (world_minimap_visible_y > 0) {
-      up_arrow_sprite->display(destination, 96, 55);
-      up_arrow_sprite->display(destination, 211, 55);
+      up_arrow_sprite->display(destination,
+          SOLARUS_SCREEN_WIDTH_MIDDLE - 64, SOLARUS_SCREEN_HEIGHT_MIDDLE - 65);
+      up_arrow_sprite->display(destination,
+          SOLARUS_SCREEN_WIDTH_MIDDLE + 51, SOLARUS_SCREEN_HEIGHT_MIDDLE - 65);
     }
 
     if (world_minimap_visible_y < 388 - 133) {
-      down_arrow_sprite->display(destination, 96, 188);
-      down_arrow_sprite->display(destination, 211, 188);
+      down_arrow_sprite->display(destination,
+          SOLARUS_SCREEN_WIDTH_MIDDLE - 64, SOLARUS_SCREEN_HEIGHT_MIDDLE + 68);
+      down_arrow_sprite->display(destination,
+          SOLARUS_SCREEN_WIDTH_MIDDLE + 51, SOLARUS_SCREEN_HEIGHT_MIDDLE + 68);
     }
   }
 }
@@ -430,7 +437,8 @@ void PauseSubmenuMap::display_world_map(Surface *destination) {
 void PauseSubmenuMap::display_dungeon_map(Surface *destination) {
 
   // show the special background
-  Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 112, 59);
+  Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 112,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE - 61);
   dungeon_map_background->blit(destination, dst_position);
 
   // show the dungeon items
@@ -440,7 +448,8 @@ void PauseSubmenuMap::display_dungeon_map(Surface *destination) {
   display_dungeon_floors(destination);
 
   // show the map itself
-  dst_position.set_xy(SOLARUS_SCREEN_WIDTH_MIDDLE - 17, 66);
+  dst_position.set_xy(SOLARUS_SCREEN_WIDTH_MIDDLE - 17,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE - 54);
   dungeon_map_img->blit(destination, dst_position);
 
   if (hero_point_sprite != NULL && selected_floor == hero_floor) {
@@ -457,34 +466,39 @@ void PauseSubmenuMap::display_dungeon_items(Surface *destination) {
   // rooms
   if (equipment.has_ability("see_dungeon_minimap_rooms")) {
     Rectangle src_position(0, 0, 17, 17);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 110, 168);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 110,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
     dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
   // elements
   if (equipment.has_ability("see_dungeon_minimap_elements")) {
     Rectangle src_position(17, 0, 17, 17);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 91, 168);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 91,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
     dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
   // big key
   if (equipment.has_ability("open_dungeon_big_locks")) {
     Rectangle src_position(34, 0, 17, 17);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 72, 168);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 72,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
     dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
   // boss key
   if (equipment.has_ability("open_dungeon_boss_locks")) {
     Rectangle src_position(51, 0, 17, 17);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 53, 168);
+    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 53,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
     dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
   // small keys
   Rectangle src_position(68, 0, 9, 17);
-  Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 34, 168);
+  Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 34,
+      SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
   dungeon_map_icons->blit(src_position, destination, dst_position);
   small_keys_counter->display(destination);
 }
@@ -499,7 +513,7 @@ void PauseSubmenuMap::display_dungeon_floors(Surface *destination) {
   int src_y = (15 - highest_floor_displayed) * 12;
   int src_height = nb_floors_displayed * 12 + 1;
 
-  int dst_y = 70 + (7 - nb_floors_displayed) * 6;
+  int dst_y = SOLARUS_SCREEN_HEIGHT_MIDDLE - 50 + (7 - nb_floors_displayed) * 6;
 
   Rectangle src_position(96, src_y, 32, src_height);
   Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 81, dst_y);
@@ -535,11 +549,13 @@ void PauseSubmenuMap::display_dungeon_floors(Surface *destination) {
 
   // display the arrows
   if (lowest_floor_displayed > lowest_floor) {
-    down_arrow_sprite->display(destination, SOLARUS_SCREEN_WIDTH_MIDDLE - 71, 151);
+    down_arrow_sprite->display(destination, SOLARUS_SCREEN_WIDTH_MIDDLE - 71,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE + 31);
   }
 
   if (highest_floor_displayed < highest_floor) {
-    up_arrow_sprite->display(destination, SOLARUS_SCREEN_WIDTH_MIDDLE - 71, 66);
+    up_arrow_sprite->display(destination, SOLARUS_SCREEN_WIDTH_MIDDLE - 71,
+        SOLARUS_SCREEN_HEIGHT_MIDDLE - 64);
   }
 }
 

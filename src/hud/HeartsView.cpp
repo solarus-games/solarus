@@ -76,7 +76,6 @@ void HeartsView::create() {
   rebuild();
 }
 
-
 /**
  * @brief Destructor.
  */

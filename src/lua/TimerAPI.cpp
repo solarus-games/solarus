@@ -81,10 +81,10 @@ void Script::push_timer(lua_State* l, Timer& timer) {
 }
 
 /**
- * @brief Makes a Lua object capable of running timers.
+ * @brief Makes a Lua table capable of running timers.
  *
- * The object will then have a start_timer() method and a stop_timers()
- * methods.
+ * The table will then have a start_timer() method and a stop_timers()
+ * methods. It may be a regular table or the metatable of a userdata type.
  *
  * @param l A Lua state.
  * @param table_index Index of a Lua table.
@@ -255,7 +255,8 @@ int Script::timer_api_start_timer(lua_State *l) {
   // Parameters: table delay [with_sound] callback.
   LuaContext& lua_context = (LuaContext&) get_script(l);
 
-  luaL_checktype(l, 1, LUA_TTABLE);
+// TODO only allow table or userdata  luaL_checktype(l, 1, LUA_TTABLE);
+
   uint32_t delay = luaL_checkinteger(l, 2);
   bool with_sound = false;
   int index = 3;
@@ -303,7 +304,7 @@ int Script::timer_api_stop_timers(lua_State *l) {
 
   LuaContext& lua_context = (LuaContext&) get_script(l);
 
-  luaL_checktype(l, 1, LUA_TTABLE);
+// TODO only allow table or userdata  luaL_checktype(l, 1, LUA_TTABLE);
 
   lua_context.remove_timers(1);
 

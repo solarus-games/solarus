@@ -255,6 +255,8 @@ class Script {
       game_api_load,
       game_api_save,
       game_api_start,
+      game_api_is_started,
+      game_api_is_suspended,
       game_api_get_string,
       game_api_get_integer,
       game_api_get_boolean,

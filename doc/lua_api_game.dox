@@ -32,6 +32,16 @@ Ends the scripted screen or game that was running and starts this game.
 You can call this function to restart the current game itself,
 even if it was not saved recently (no data will be lost).
 
+- \c game:is_started():
+Returns whether this game is currently being played.
+  - Return value (boolean): \c true if this game is started.
+
+- \c game:is_suspended():
+Returns whether this game is started and is currently suspended.
+  - Return value (boolean): \c true if this game is suspended, for example
+    because it is paused or a dialog is being shown. Only possible when the
+    game is started.
+
 - \c game:get_string(index):
 Returns a string saved.
   - \c index (number): index of the string variable to get from the

@@ -37,6 +37,8 @@ void Script::register_game_module() {
       { "load", game_api_load },
       { "save", game_api_save },
       { "start", game_api_start },
+      { "is_started", game_api_is_started },
+      { "is_suspended", game_api_is_suspended },
       { "get_string", game_api_get_string },
       { "get_integer", game_api_get_integer },
       { "get_boolean", game_api_get_boolean },
@@ -184,6 +186,38 @@ int Script::game_api_start(lua_State *l) {
   }
 
   return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_is_started.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_api_is_started(lua_State *l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  bool is_started = game != NULL;
+
+  lua_pushboolean(l, is_started);
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_is_suspended.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_api_is_suspended(lua_State *l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  bool is_suspended = game != NULL && game->is_suspended();
+
+  lua_pushboolean(l, is_suspended);
+  return 1;
 }
 
 /**

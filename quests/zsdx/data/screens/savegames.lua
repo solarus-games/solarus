@@ -38,7 +38,7 @@ function savegame_menu:on_key_pressed(key)
   if key == "escape" then
     -- stop the program
     sol.main.exit()
-  elseif not finished then
+  elseif not self.finished then
 
     -- Phase-specific direction_pressed method.
     local method_name = "key_pressed_phase_" .. self.phase
@@ -46,25 +46,12 @@ function savegame_menu:on_key_pressed(key)
   end
 end
 
-function savegame_menu:key_pressed_phase_select_file(key)
+function savegame_menu:on_joypad_button_pressed(button)
 
-  -- Phase "select a file".
-  if key == "space" or key == "return" then
-    sol.audio.play_sound("ok")
-    if self.cursor_position == 5 then
-      -- The user chooses "Options".
-      -- TODO
-    elseif self.cursor_position == 4 then
-      -- The user chooses "Erase".
-      -- TODO
-    else
-      -- The user chooses a savegame: run it after a fade-out effect.
-      self.finished = true
-      self.surface:fade_out(function()
-        local slot = self.slots[self.cursor_position]
-        slot.savegame:start()
-      end)
-    end
+  if not self.finished then
+    -- Phase-specific joypad_button_pressed method.
+    local method_name = "joypad_button_pressed_phase_" .. self.phase
+    self[method_name](self, button)
   end
 end
 
@@ -81,18 +68,6 @@ function savegame_menu:on_direction_pressed(direction8)
     -- Phase-specific direction_pressed method.
     local method_name = "direction_pressed_phase_" .. self.phase
     self[method_name](self, direction8)
-  end
-end
-
-function savegame_menu:direction_pressed_phase_select_file(direction8)
-
-  -- Phase "select a file".
-  if direction8 == 6 then  -- Down.
-    self:move_cursor_down()
-  elseif direction8 == 2 then  -- Up.
-    self:move_cursor_up()
-  elseif direction8 == 0 or direction8 == 4 then  -- Right or Left.
-    self:move_cursor_left_or_right()
   end
 end
 
@@ -122,6 +97,10 @@ function savegame_menu:display_savegame(slot_index)
   local slot = self.slots[slot_index]
   self.surface:draw(self.save_container_img, 57, 48 + slot_index * 27)
   self.surface:draw(slot.player_name_text, 87, 61 + slot_index * 27)
+  
+  if slot.hearts_view ~= nil then
+    slot.hearts_view:display(self.surface, 168, 51 + slot_index * 27)
+  end
 end
 
 function savegame_menu:display_savegame_cursor()
@@ -162,46 +141,30 @@ function savegame_menu:display_bottom_options()
   end
 end
 
-function savegame_menu:display_phase_select_file()
-
-  -- Initial phase (select a file).
-
-  -- Savegame slots.
-  for i = 1, 3 do
-    self:display_savegame(i)
-  end
-
-  -- Options.
-  self:display_bottom_options()
-
-  -- Cursor
-  self:display_savegame_cursor()
-
-  -- Save numbers.
-  for i = 1, 3 do
-    self:display_savegame_number(i)
-  end
-end
-
 function savegame_menu:read_savegames()
 
   self.slots = {}
   for i = 1, 3 do
     local slot = {}
-    slot.savegame = sol.game.load("save" .. i .. ".dat")
-    slot.player_name_text = sol.text_surface.create()
-    slot.player_name_text:set_text(slot.savegame:get_player_name())
+    slot.file_name = "save" .. i .. ".dat"
+    slot.savegame = sol.game.load(slot.file_name)
     slot.number_img = sol.surface.create("menus/selection_menu_save" .. i .. ".png")
+    
+    slot.player_name_text = sol.text_surface.create()
+    if sol.game.exists(slot.file_name) then
+      -- Existing file.
+      slot.player_name_text:set_text(slot.savegame:get_player_name())
+
+      -- Hearts.
+      local hearts_class = require("hud/hearts")
+      slot.hearts_view = hearts_class:new(slot.savegame)
+    else
+      -- New file.
+      slot.player_name_text:set_text_key("selection_menu.empty")
+    end
+
     self.slots[i] = slot
   end
-end
-
-function savegame_menu:init_phase_select_file()
-
-  self.phase = "select_file"
-  self.title_text:set_text_key("selection_menu.phase.select_file")
-  self:set_bottom_options("selection_menu.erase", "selection_menu.options")
-  self.cursor_sprite:set_animation("blue")
 end
 
 function savegame_menu:set_bottom_options(key1, key2)
@@ -247,6 +210,113 @@ function savegame_menu:set_cursor_position(cursor_position)
 
   self.cursor_position = cursor_position
   self.cursor_sprite:set_frame(0)  -- Restart the animation.
+end
+
+---------------------------
+-- Phase "select a file" --
+---------------------------
+function savegame_menu:init_phase_select_file()
+
+  self.phase = "select_file"
+  self.title_text:set_text_key("selection_menu.phase.select_file")
+  self:set_bottom_options("selection_menu.erase", "selection_menu.options")
+  self.cursor_sprite:set_animation("blue")
+end
+
+function savegame_menu:key_pressed_phase_select_file(key)
+
+  if key == "space" or key == "return" then
+    sol.audio.play_sound("ok")
+    if self.cursor_position == 5 then
+      -- The user chooses "Options".
+      -- TODO
+    elseif self.cursor_position == 4 then
+      -- The user chooses "Erase".
+      self:init_phase_erase_file()
+    else
+      -- The user chooses a savegame: run it after a fade-out effect.
+      self.finished = true
+      self.surface:fade_out(function()
+        local slot = self.slots[self.cursor_position]
+        slot.savegame:start()
+      end)
+    end
+  end
+end
+
+function savegame_menu:joypad_button_pressed_phase_select_file(button)
+
+  self:key_pressed_phase_select_file("space")
+end
+
+function savegame_menu:direction_pressed_phase_select_file(direction8)
+
+  if direction8 == 6 then  -- Down.
+    self:move_cursor_down()
+  elseif direction8 == 2 then  -- Up.
+    self:move_cursor_up()
+  elseif direction8 == 0 or direction8 == 4 then  -- Right or Left.
+    self:move_cursor_left_or_right()
+  end
+end
+
+function savegame_menu:display_phase_select_file()
+
+  -- Savegame slots.
+  for i = 1, 3 do
+    self:display_savegame(i)
+  end
+
+  -- Options.
+  self:display_bottom_options()
+
+  -- Cursor
+  self:display_savegame_cursor()
+
+  -- Save numbers.
+  for i = 1, 3 do
+    self:display_savegame_number(i)
+  end
+end
+
+--------------------------
+-- Phase "erase a file" --
+--------------------------
+function savegame_menu:init_phase_erase_file()
+
+  self.phase = "erase_file"
+  self.title_text:set_text_key("selection_menu.phase.erase_file")
+  self:set_bottom_options("selection_menu.cancel", "")
+  self.cursor_sprite():set_animation("red")
+end
+
+function savegame_menu:key_pressed_phase_erase_file(key)
+
+  if self.cursor_position == 4 then
+    -- The user chose "Cancel".
+    sol.audio.play_sound("ok")
+    self:init_phase_select_file()
+  elseif self.cursor_position > 0 and self.cursor_position <= 3 then
+    -- The user chose a savegame to delete.
+    local slot = self.slots[self.cursor_position]
+    if not sol.game.exists(slot.file_name) then
+      -- The savegame doesn't exist: error sound
+      sol.audio.play_sound("wrong")
+    end
+  end
+end
+
+function savegame_menu:joypad_button_pressed_phase_select_file(button)
+
+  self:key_pressed_phase_erase_file("space")
+end
+
+function savegame_menu:direction_pressed_phase_erase_file(direction8)
+
+end
+
+function savegame_menu:display_phase_erase_file()
+
 end
 
 return savegame_menu

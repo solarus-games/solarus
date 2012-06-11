@@ -149,7 +149,7 @@ function savegame_menu:read_savegames()
     slot.file_name = "save" .. i .. ".dat"
     slot.savegame = sol.game.load(slot.file_name)
     slot.number_img = sol.surface.create("menus/selection_menu_save" .. i .. ".png")
-    
+
     slot.player_name_text = sol.text_surface.create()
     if sol.game.exists(slot.file_name) then
       -- Existing file.
@@ -160,7 +160,8 @@ function savegame_menu:read_savegames()
       slot.hearts_view = hearts_class:new(slot.savegame)
     else
       -- New file.
-      slot.player_name_text:set_text_key("selection_menu.empty")
+      local name = "- " .. sol.language.get_string("selection_menu.empty") .. " -"
+      slot.player_name_text:set_text(name)
     end
 
     self.slots[i] = slot
@@ -169,8 +170,17 @@ end
 
 function savegame_menu:set_bottom_options(key1, key2)
 
-  self.option1_text:set_text_key(key1)
-  self.option2_text:set_text_key(key2)
+  if key1 ~= nil then
+    self.option1_text:set_text_key(key1)
+  else
+    self.option1_text:set_text("")
+  end
+
+  if key2 ~= nil then
+    self.option2_text:set_text_key(key2)
+  else
+    self.option2_text:set_text("")
+  end
 end
 
 function savegame_menu:move_cursor_up()
@@ -270,7 +280,7 @@ function savegame_menu:display_phase_select_file()
   -- Options.
   self:display_bottom_options()
 
-  -- Cursor
+  -- Cursor.
   self:display_savegame_cursor()
 
   -- Save numbers.
@@ -286,37 +296,119 @@ function savegame_menu:init_phase_erase_file()
 
   self.phase = "erase_file"
   self.title_text:set_text_key("selection_menu.phase.erase_file")
-  self:set_bottom_options("selection_menu.cancel", "")
-  self.cursor_sprite():set_animation("red")
+  self:set_bottom_options("selection_menu.cancel", nil)
+  self.cursor_sprite:set_animation("red")
 end
 
 function savegame_menu:key_pressed_phase_erase_file(key)
 
-  if self.cursor_position == 4 then
-    -- The user chose "Cancel".
-    sol.audio.play_sound("ok")
-    self:init_phase_select_file()
-  elseif self.cursor_position > 0 and self.cursor_position <= 3 then
-    -- The user chose a savegame to delete.
-    local slot = self.slots[self.cursor_position]
-    if not sol.game.exists(slot.file_name) then
-      -- The savegame doesn't exist: error sound
-      sol.audio.play_sound("wrong")
+  if key == "space" or key == "return" then
+    if self.cursor_position == 4 then
+      -- The user chooses "Cancel".
+      sol.audio.play_sound("ok")
+      self:init_phase_select_file()
+    elseif self.cursor_position > 0 and self.cursor_position <= 3 then
+      -- The user chooses a savegame to delete.
+      local slot = self.slots[self.cursor_position]
+      if not sol.game.exists(slot.file_name) then
+        -- The savegame doesn't exist: error sound.
+        sol.audio.play_sound("wrong")
+      else
+        -- The savegame exists: confirm deletion.
+        sol.audio.play_sound("ok")
+        self:init_phase_confirm_erase()
+      end
     end
   end
 end
 
-function savegame_menu:joypad_button_pressed_phase_select_file(button)
+function savegame_menu:joypad_button_pressed_phase_erase_file(button)
 
   self:key_pressed_phase_erase_file("space")
 end
 
 function savegame_menu:direction_pressed_phase_erase_file(direction8)
 
+  if direction8 == 6 then  -- Down.
+    self:move_cursor_down()
+  elseif direction8 == 2 then  -- Up.
+    self:move_cursor_up()
+  end
 end
 
 function savegame_menu:display_phase_erase_file()
 
+  -- Savegame slots.
+  for i = 1, 3 do
+    self:display_savegame(i)
+  end
+
+  -- Options.
+  self:display_bottom_options()
+
+  -- Cursor.
+  self:display_savegame_cursor()
+
+  -- Save numbers.
+  for i = 1, 3 do
+    self:display_savegame_number(i)
+  end
+end
+
+---------------------------
+-- Phase "Are you sure?" --
+---------------------------
+function savegame_menu:init_phase_confirm_erase()
+
+  self.phase = "confirm_erase"
+  self.title_text:set_text_key("selection_menu.phase.confirm_erase")
+  self:set_bottom_options("selection_menu.big_no", "selection_menu.big_yes")
+  self.save_number_to_erase = self.cursor_position
+  self.cursor_position = 4  -- Select "no" by default.
+end
+
+function savegame_menu:key_pressed_phase_confirm_erase(key)
+
+  if key == "space" or key == "return" then
+   if self.cursor_position == 5 then
+      -- The user chooses "yes".
+      sol.audio.play_sound("boss_killed")
+      local slot = self.slots[self.save_number_to_erase]
+      sol.game.delete(slot.file_name)
+      self.cursor_position = self.save_number_to_erase
+      self:read_savegames()
+      self:init_phase_select_file()
+    elseif self.cursor_position == 4 then
+      -- The user chooses "no".
+      sol.audio.play_sound("ok")
+      self:init_phase_select_file()
+    end
+  end
+end
+
+function savegame_menu:joypad_button_pressed_phase_confirm_erase(button)
+
+  -- To erase a savegame file, we don't allow joypad buttons.
+end
+
+function savegame_menu:direction_pressed_phase_confirm_erase(direction8)
+
+  if direction8 == 0 or direction8 == 4 then  -- Right or Left.
+    self:move_cursor_left_or_right()
+  end
+end
+
+function savegame_menu:display_phase_confirm_erase()
+
+  -- Current savegame slot.
+  self:display_savegame(self.save_number_to_erase)
+  self:display_savegame_number(self.save_number_to_erase)
+
+  -- Options.
+  self:display_bottom_options()
+
+  -- Cursor.
+  self:display_savegame_cursor()
 end
 
 return savegame_menu

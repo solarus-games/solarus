@@ -55,6 +55,7 @@ LuaContext::~LuaContext() {
 void LuaContext::initialize() {
 
   Script::initialize();
+  register_language_module();
   register_menu_module();
 
   // Make require() able to load Lua files even from the data.solarus archive.

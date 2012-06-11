@@ -133,6 +133,10 @@ class Script {
     void print_stack();
 
     // Modules.
+    void register_functions(const std::string& module_name, const luaL_Reg* functions);
+    void register_type(const std::string& module_name, const luaL_Reg* functions,
+        const luaL_Reg* metamethods);
+
     static void push_userdata(lua_State* l, ExportableToLua& userdata);
     static void push_timer(lua_State* l, Timer& timer);
     static void push_surface(lua_State* l, Surface& surface);
@@ -169,9 +173,6 @@ class Script {
 
     // initialization of modules
     void register_modules();
-    void register_functions(const std::string& module_name, const luaL_Reg* functions);
-    void register_type(const std::string& module_name, const luaL_Reg* functions,
-        const luaL_Reg* metamethods);
     void register_main_module();
     void register_audio_module();
     void register_timer_module();
@@ -248,6 +249,14 @@ class Script {
       timer_api_start_timer,
       timer_api_stop,
       timer_api_stop_timers,
+
+      // language API
+      language_api_get_language,
+      language_api_set_language,
+      language_api_get_language_name,
+      language_api_get_languages,
+      language_api_get_string,
+      language_api_get_dialog,
 
       // game API
       game_api_exists,

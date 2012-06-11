@@ -205,7 +205,7 @@ int FileTools::l_language(lua_State* l) {
  */
 void FileTools::set_language(const std::string& language_code) {
 
-  Debug::check_assertion(languages[language_code].size() > 0,
+  Debug::check_assertion(languages.count(language_code) > 0,
       StringConcat() << "Unknown language '" << language_code << "'");
   FileTools::language_code = language_code;
   Configuration::set_value("language", language_code);

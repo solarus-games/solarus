@@ -1,0 +1,14 @@
+/**
+\page lua_api_language Language functions
+
+TODO
+
+sol.language.get_language()
+sol.language.set_language(code)
+sol.language.get_language_name(code)
+sol.language.get_languages()
+sol.language.get_string(key)
+sol.language.get_dialog(key)
+
+*/
+

@@ -36,7 +36,8 @@ class LuaContext: public Script {
 
   public:
 
-    static const std::string menu_module_name;  /**< sol.menu */
+    static const std::string menu_module_name;      /**< sol.menu */
+    static const std::string language_module_name;  /**< sol.language */
 
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
@@ -74,6 +75,7 @@ class LuaContext: public Script {
     static int l_loader(lua_State* l);
 
     void register_menu_module();
+    void register_language_module();
 
     static void push_main(lua_State* l);
 

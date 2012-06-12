@@ -41,9 +41,22 @@ void Script::register_text_surface_module() {
 
   static const luaL_Reg methods[] = {
       { "create", text_surface_api_create },
+      { "get_horizontal_alignment", text_surface_api_get_horizontal_alignment },
+      { "set_horizontal_alignment", text_surface_api_set_horizontal_alignment },
+      { "get_vertical_alignment", text_surface_api_get_vertical_alignment },
+      { "set_vertical_alignment", text_surface_api_set_vertical_alignment },
+      { "get_font", text_surface_api_get_font },
+      { "set_font", text_surface_api_set_font },
+      { "get_rendering_mode", text_surface_api_get_rendering_mode },
+      { "set_rendering_mode", text_surface_api_set_rendering_mode },
+      { "get_background_color", text_surface_api_get_background_color },
+      { "set_background_color", text_surface_api_set_background_color },
+      { "get_text_color", text_surface_api_get_text_color },
+      { "set_text_color", text_surface_api_set_text_color },
       { "get_text", text_surface_api_get_text },
       { "set_text", text_surface_api_set_text },
       { "set_text_key", text_surface_api_set_text_key },
+      { "get_size", text_surface_api_get_size },
       { "start_movement", displayable_api_start_movement },
       { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }
@@ -364,5 +377,20 @@ int Script::text_surface_api_set_text_key(lua_State* l) {
   text_surface.set_text(StringResource::get_string(key));
 
   return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_text_surface_get_size.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::text_surface_api_get_size(lua_State* l) {
+
+  TextSurface& text_surface = check_text_surface(l, 1);
+
+  lua_pushnumber(l, text_surface.get_width());
+  lua_pushnumber(l, text_surface.get_height());
+
+  return 2;
 }
 

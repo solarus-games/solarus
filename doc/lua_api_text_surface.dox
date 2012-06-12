@@ -52,6 +52,7 @@ set_text_color
 get_text
 set_text
 set_text_key
+get_size
 start_movement
 stop_movement
 

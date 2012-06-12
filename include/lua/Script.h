@@ -535,6 +535,7 @@ class Script {
       text_surface_api_get_text,
       text_surface_api_set_text,
       text_surface_api_set_text_key,
+      text_surface_api_get_size,
 
       // sprite API
       sprite_api_create,

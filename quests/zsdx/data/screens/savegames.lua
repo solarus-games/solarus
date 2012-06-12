@@ -306,7 +306,7 @@ function savegame_menu:key_pressed_phase_select_file(key)
     sol.audio.play_sound("ok")
     if self.cursor_position == 5 then
       -- The user chooses "Options".
-      -- TODO
+      self:init_phase_options()
     elseif self.cursor_position == 4 then
       -- The user chooses "Erase".
       self:init_phase_erase_file()
@@ -476,6 +476,83 @@ function savegame_menu:display_phase_confirm_erase()
 
   -- Cursor.
   self:display_savegame_cursor()
+end
+
+----------------------
+-- Phase "optiopns" --
+----------------------
+function savegame_menu:init_phase_options()
+
+  self.phase = "options"
+  self.title_text:set_text_key("selection_menu.phase.options")
+  self.modifying_option = false
+  self.options_cursor_position = 0
+
+  -- Option texts and values.
+  self.options = {
+    { name = "language", values = sol.language.get_languages() },
+    { name = "video_mode", values = sol.video.get_modes() },
+    { name = "music_volume", values = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100} },
+    { name = "sound_volume", values = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100} },
+  };
+
+  for _, option in ipairs(self.options) do
+
+    option.current_index = nil
+
+    -- Label.
+    option.label_text = sol.text_surface.create{
+      font = "fixed",
+      text_key = "selection_menu.options." .. option.name
+    }
+
+    -- Value.
+    option.value_text = sol.text_surface.create{
+      font = "fixed"
+    }
+  end
+
+  -- Sprites.
+  self.left_arrow_sprite = sol.sprite.create("menus/arrow")
+  self.left_arrow_sprite:set_animation("blink")
+  self.left_arrow_sprite:set_direction(2)
+
+  self.right_arrow_sprite = sol.sprite.create("menus/arrow")
+  self.right_arrow_sprite:set_animation("blink")
+  self.right_arrow_sprite:set_direction(0)
+
+  self:set_bottom_options("selection_menu.back", nil)
+  self:set_options_cursor_position(1)
+end
+
+function savegame_menu:key_pressed_phase_options(key)
+
+end
+
+function savegame_menu:joypad_button_pressed_phase_options(button)
+
+end
+
+function savegame_menu:direction_pressed_phase_options(direction8)
+
+end
+
+function savegame_menu:display_phase_options()
+
+end
+
+function savegame_menu:set_options_cursor_position(position)
+
+  if self.options_cursor_position <= #self.options then
+    -- An option line was selected.
+    -- TODO
+  end
+end
+
+-- Creates and returns an array of all possible values
+-- for the specified option.
+function load_option_values(option_name)
+  return values
 end
 
 return savegame_menu

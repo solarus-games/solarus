@@ -72,7 +72,13 @@ int Script::language_api_set_language(lua_State* l) {
  */
 int Script::language_api_get_language_name(lua_State* l) {
 
-  const std::string& language_code = luaL_checkstring(l, 1);
+  std::string language_code;
+  if (lua_gettop(l) >= 1) {
+    language_code = luaL_checkstring(l, 1);
+  }
+  else {
+    language_code = FileTools::get_language();
+  }
 
   const std::map<std::string, std::string>& languages =
     FileTools::get_languages();

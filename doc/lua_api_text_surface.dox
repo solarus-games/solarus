@@ -8,7 +8,7 @@ contain text.
 \c sol.text_surface.create(properties):
 Creates a text surface with the specified properties.
   - \c properties (optional table): a table that describes all properties
-    of the text surface to create. Its key-value pairs are all optinoal,
+    of the text surface to create. Its key-value pairs are all optional,
     they can be:
     - \c horizontal_alignement (string, default "left"): "left",
       "center" or "right". When the text surface is displayed at some
@@ -37,6 +37,18 @@ Creates a text surface with the specified properties.
     - Return value (text surface): the text surface created
 
 TODO
+get_horizontal_alignment
+set_horizontal_alignment
+get_vertical_alignment
+set_vertical_alignment
+get_font
+set_font
+get_rendering_mode
+set_rendering_mode
+get_background_color
+set_background_color
+get_text_color
+set_text_color
 get_text
 set_text
 set_text_key

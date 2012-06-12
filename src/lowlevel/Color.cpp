@@ -115,3 +115,16 @@ SDL_Color* Color::get_internal_color() {
   return &internal_color;
 }
 
+/**
+ * @brief Returns the red, green and blue values of this color.
+ * @param r Red component to write.
+ * @param g Green component to write.
+ * @param v Blue component to write.
+ */
+void Color::get_components(int& r, int& g, int& b) const {
+
+  r = internal_color.r;
+  g = internal_color.g;
+  b = internal_color.b;
+}
+

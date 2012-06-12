@@ -34,9 +34,9 @@ class Color {
 
   private:
 
-    static SDL_Surface *format_surface;		/**< a dummy surface used to get a pixel format */
-    uint32_t internal_value;			/**< the SDL 32-bit value representing this color */
-    SDL_Color internal_color;			/**< the SDL color encapsulated */
+    static SDL_Surface *format_surface;	  /**< a dummy surface used to get a pixel format */
+    uint32_t internal_value;              /**< the SDL 32-bit value representing this color */
+    SDL_Color internal_color;             /**< the SDL color encapsulated */
 
     // some predefined colors
     static Color black;
@@ -68,6 +68,8 @@ class Color {
     Color();
     Color(const Color &other);
     Color(int r, int g, int b);
+
+    void get_components(int& r, int& g, int& b) const;
 };
 
 /**

@@ -713,6 +713,24 @@ Color Script::check_color(lua_State* l, int index) {
 }
 
 /**
+ * @brief Pushes a color onto the stack.
+ * @param l A Lua context.
+ * @param color A color.
+ */
+void Script::push_color(lua_State* l, const Color& color) {
+
+  int r, g, b;
+  color.get_components(r, g, b);
+  lua_newtable(l);
+  lua_pushinteger(l, r);
+  lua_rawseti(l, -2, 1);
+  lua_pushinteger(l, g);
+  lua_rawseti(l, -2, 2);
+  lua_pushinteger(l, b);
+  lua_rawseti(l, -2, 3);
+}
+
+/**
  * @brief Notifies the script that another map has just been started.
  * @param map the new current map
  */

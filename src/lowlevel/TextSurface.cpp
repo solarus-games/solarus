@@ -151,8 +151,16 @@ Surface* TextSurface::get_surface() {
 }
 
 /**
+ * @brief Returns the font used to display this text.
+ * @return Id of a font.
+ */
+const std::string& TextSurface::get_font() {
+  return font_id;
+}
+
+/**
  * @brief Sets the font to use.
- * @param font_id a font
+ * @param font_id A font.
  */
 void TextSurface::set_font(const std::string& font_id) {
 
@@ -161,9 +169,18 @@ void TextSurface::set_font(const std::string& font_id) {
 }
 
 /**
+ * @brief Returns the horizontal text alignment.
+ * @return Horizontal alignment of the text: ALIGN_LEFT,
+ * ALIGN_CENTER or ALIGN_RIGHT.
+ */
+TextSurface::HorizontalAlignment TextSurface::get_horizontal_alignment() {
+  return horizontal_alignment;
+}
+
+/**
  * @brief Sets the horizontal text alignment.
- * @param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
- * ALIGN_CENTER or ALIGN_RIGHT
+ * @param horizontal_alignment Horizontal alignment of the text: ALIGN_LEFT,
+ * ALIGN_CENTER or ALIGN_RIGHT.
  */
 void TextSurface::set_horizontal_alignment(HorizontalAlignment horizontal_alignment) {
 
@@ -173,9 +190,18 @@ void TextSurface::set_horizontal_alignment(HorizontalAlignment horizontal_alignm
 }
 
 /**
+ * @brief Returns the vertical text alignment.
+ * @return Vertical alignment of the text: ALIGN_TOP,
+ * ALIGN_MIDDLE or ALIGN_BOTTOM.
+ */
+TextSurface::VerticalAlignment TextSurface::get_vertical_alignment() {
+  return vertical_alignment;
+}
+
+/**
  * @brief Sets the vertical text alignment.
- * @param vertical_alignment vertical alignment of the text: ALIGN_TOP,
- * ALIGN_MIDDLE or ALIGN_BOTTOM
+ * @param vertical_alignment Vertical alignment of the text: ALIGN_TOP,
+ * ALIGN_MIDDLE or ALIGN_BOTTOM.
  */
 void TextSurface::set_vertical_alignment(VerticalAlignment vertical_alignment) {
 
@@ -200,20 +226,36 @@ void TextSurface::set_alignment(HorizontalAlignment horizontal_alignment,
 }
 
 /**
+ * @brief Returns the rendering mode of the text.
+ * @return The rendering mode: TEXT_SOLID, TEXT_SHADED or TEXT_BLENDED.
+ */
+TextSurface::RenderingMode TextSurface::get_rendering_mode() {
+  return rendering_mode;
+}
+
+/**
  * @brief Sets the rendering mode of the text.
- * @param rendering_mode rendering mode: TEXT_SOLID, TEXT_SHADED or TEXT_BLENDED
+ * @param rendering_mode Rendering mode: TEXT_SOLID, TEXT_SHADED or TEXT_BLENDED.
  */
 void TextSurface::set_rendering_mode(TextSurface::RenderingMode rendering_mode) {
-  this->rendering_mode = rendering_mode;
 
+  this->rendering_mode = rendering_mode;
   rebuild();
 }
 
 /**
- * @brief Sets the color of the text.
- * @param color the color to set
+ * @brief Returns the color of the text.
+ * @return The text color.
  */
-void TextSurface::set_text_color(Color &color) {
+const Color& TextSurface::get_text_color() {
+  return text_color;
+}
+
+/**
+ * @brief Sets the color of the text.
+ * @param color The color to set.
+ */
+void TextSurface::set_text_color(const Color &color) {
   this->text_color = color;
   rebuild();
 }
@@ -230,26 +272,45 @@ void TextSurface::set_text_color(int r, int g, int b) {
 }
 
 /**
+ * @brief Returns the background color of the text.
+ *
+ * This is only useful for the TEXT_SHADED rendering.
+ *
+ * @return The background color.
+ */
+const Color& TextSurface::get_background_color() {
+  return background_color;
+}
+
+/**
  * @brief Sets the background color of the text.
  *
  * This is only useful for the TEXT_SHADED rendering.
  *
  * @param color the background color to set
  */
-void TextSurface::set_background_color(Color &color) {
+void TextSurface::set_background_color(const Color &color) {
   this->background_color = color;
   rebuild();
 }
 
 /**
  * @brief Sets the position of the text on the destination surface.
- * @param x x position of the text on the destination surface
- * @param y y position of the text on the destination surface
+ * @param x X position of the text on the destination surface.
+ * @param y Y position of the text on the destination surface.
  */
 void TextSurface::set_position(int x, int y) {
   this->x = x;
   this->y = y;
   rebuild();
+}
+
+/**
+ * @brief Returns the x position of the text on the destination surface.
+ * @return X position of the text.
+ */
+int TextSurface::get_x() {
+  return x;
 }
 
 /**
@@ -262,12 +323,36 @@ void TextSurface::set_x(int x) {
 }
 
 /**
+ * @brief Returns the y position of the text on the destination surface.
+ * @return y position of the text.
+ */
+int TextSurface::get_y() {
+  return y;
+}
+
+/**
  * @brief Sets the y position of the text on the destination surface.
  * @param y y position of the text
  */
 void TextSurface::set_y(int y) {
   this->y = y;
   rebuild();
+}
+
+/**
+ * @brief Returns whether the current text is an empty string.
+ * @return true if there is no texte
+ */
+bool TextSurface::is_empty() {
+  return text.empty();
+}
+
+/**
+ * @brief Returns the text currently displayed.
+ * @return the text currently displayed, or NULL if there is no text
+ */
+const std::string & TextSurface::get_text() {
+  return text;
 }
 
 /**
@@ -296,22 +381,6 @@ void TextSurface::set_text(const std::string &text) {
  */
 void TextSurface::add_char(char c) {
   set_text(text + c);
-}
-
-/**
- * @brief Returns the text currently displayed.
- * @return the text currently displayed, or NULL if there is no text
- */
-const std::string & TextSurface::get_text() {
-  return text;
-}
-
-/**
- * @brief Returns whether the current text is an empty string.
- * @return true if there is no texte
- */
-bool TextSurface::is_empty() {
-  return text.empty();
 }
 
 /**

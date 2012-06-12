@@ -142,6 +142,7 @@ class Script {
     static void push_surface(lua_State* l, Surface& surface);
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
     static void push_sprite(lua_State* l, Sprite& sprite);
+    static void push_color(lua_State* l, const Color& color);
     static void push_game(lua_State* l, Savegame& game);
     static void push_movement(lua_State* l, Movement& movement);
     static void push_ref(lua_State* l, int ref);
@@ -519,6 +520,18 @@ class Script {
 
       // text surface API
       text_surface_api_create,
+      text_surface_api_get_horizontal_alignment,
+      text_surface_api_set_horizontal_alignment,
+      text_surface_api_get_vertical_alignment,
+      text_surface_api_set_vertical_alignment,
+      text_surface_api_get_font,
+      text_surface_api_set_font,
+      text_surface_api_get_rendering_mode,
+      text_surface_api_set_rendering_mode,
+      text_surface_api_get_background_color,
+      text_surface_api_set_background_color,
+      text_surface_api_get_text_color,
+      text_surface_api_set_text_color,
       text_surface_api_get_text,
       text_surface_api_set_text,
       text_surface_api_set_text_key,

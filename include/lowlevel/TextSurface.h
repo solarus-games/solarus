@@ -107,20 +107,29 @@ class TextSurface: public DynamicDisplayable {
         VerticalAlignment vertical_alignment);
     ~TextSurface();
 
+    const std::string& get_font();
     void set_font(const std::string& font_id);
+    HorizontalAlignment get_horizontal_alignment();
     void set_horizontal_alignment(HorizontalAlignment horizontal_alignment);
+    VerticalAlignment get_vertical_alignment();
     void set_vertical_alignment(VerticalAlignment vertical_alignment);
     void set_alignment(HorizontalAlignment horizontal_alignment,
         VerticalAlignment vertical_alignment);
+    RenderingMode get_rendering_mode();
     void set_rendering_mode(RenderingMode rendering_mode);
-    void set_text_color(Color& color);
+    const Color& get_text_color();
+    void set_text_color(const Color& color);
     void set_text_color(int r, int g, int b);
-    void set_background_color(Color& color);
+    const Color& get_background_color();
+    void set_background_color(const Color& color);
+
     void set_position(int x, int y);
+    int get_x();
     void set_x(int x);
+    int get_y();
     void set_y(int y);
-    void set_text(const std::string& text);
     const std::string& get_text();
+    void set_text(const std::string& text);
     bool is_empty();
     void add_char(char c);
 

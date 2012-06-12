@@ -36,6 +36,7 @@ class LuaContext: public Script {
 
   public:
 
+    static const std::string video_module_name;     /**< sol.video */
     static const std::string menu_module_name;      /**< sol.menu */
     static const std::string language_module_name;  /**< sol.language */
 
@@ -74,6 +75,7 @@ class LuaContext: public Script {
 
     static int l_loader(lua_State* l);
 
+    void register_video_module();
     void register_menu_module();
     void register_language_module();
 

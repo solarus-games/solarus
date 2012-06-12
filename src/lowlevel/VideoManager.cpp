@@ -66,29 +66,6 @@ const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
 #endif
 
 /**
- * @brief Switch from windowed to fullscreen or from fullscreen to windowed,
- * keeping an equivalent video mode.
- */
-void VideoManager::switch_fullscreen() {
-
-  static const VideoMode next_modes[] = {
-      FULLSCREEN_NORMAL,      // WINDOWED_STRETCHED
-      FULLSCREEN_SCALE2X,     // WINDOWED_SCALE2X
-      FULLSCREEN_NORMAL,      // WINDOWED_NORMAL
-      WINDOWED_STRETCHED,     // FULLSCREEN_NORMAL
-      WINDOWED_STRETCHED,     // FULLSCREEN_WIDE
-      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X
-      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X_WIDE
-  };
-
-  VideoMode mode = next_modes[get_video_mode()];
-  if (is_mode_supported(mode)) {
-    set_video_mode(mode);
-  }
-}
-
-
-/**
  * @brief Initializes the video system and creates the window.
  *
  * This method should be called when the application starts.
@@ -209,11 +186,53 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
 
 /**
  * @brief Returns whether a video mode is in fullscreen.
- * @param mode a video mode
- * @return true if this video mode is in fullscreen
+ * @param mode A video mode.
+ * @return true if this video mode is in fullscreen.
  */
 bool VideoManager::is_fullscreen(VideoMode mode) {
   return mode >= FULLSCREEN_NORMAL;
+}
+
+/**
+ * @brief Returns whether the current video mode is in fullscreen.
+ * @return true if the current video mode is in fullscreen.
+ */
+bool VideoManager::is_fullscreen() {
+  return is_fullscreen(get_video_mode());
+}
+
+/**
+ * @brief Sets the video mode to fullscreen or windowed,
+ * keeping an equivalent resolution.
+ * @param fullscreen true to make fullscreen.
+ */
+void VideoManager::set_fullscreen(bool fullscreen) {
+
+  if (fullscreen != is_fullscreen()) {
+    switch_fullscreen();
+  }
+}
+
+/**
+ * @brief Switches from windowed to fullscreen or from fullscreen to windowed,
+ * keeping an equivalent resolution.
+ */
+void VideoManager::switch_fullscreen() {
+
+  static const VideoMode next_modes[] = {
+      FULLSCREEN_NORMAL,      // WINDOWED_STRETCHED
+      FULLSCREEN_SCALE2X,     // WINDOWED_SCALE2X
+      FULLSCREEN_NORMAL,      // WINDOWED_NORMAL
+      WINDOWED_STRETCHED,     // FULLSCREEN_NORMAL
+      WINDOWED_STRETCHED,     // FULLSCREEN_WIDE
+      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X
+      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X_WIDE
+  };
+
+  VideoMode mode = next_modes[get_video_mode()];
+  if (is_mode_supported(mode)) {
+    set_video_mode(mode);
+  }
 }
 
 /**

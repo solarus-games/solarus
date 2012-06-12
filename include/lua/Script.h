@@ -249,6 +249,14 @@ class Script {
       audio_api_get_music_volume,
       audio_api_set_music_volume,
 
+      // video API
+      video_api_get_mode,
+      video_api_set_mode,
+      video_api_switch_mode,
+      video_api_is_mode_supported,
+      video_api_is_fullscreen,
+      video_api_set_fullscreen,
+
       // timer API
       timer_api_start_timer,
       timer_api_stop,

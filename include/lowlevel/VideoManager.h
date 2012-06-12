@@ -88,6 +88,7 @@ class VideoManager {
 
   bool is_fullscreen(VideoMode mode);
   bool is_fullscreen();
+  void set_fullscreen(bool fullscreen);
   void switch_fullscreen();
 
   void display(Surface& src_surface);

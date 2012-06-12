@@ -1,0 +1,21 @@
+/**
+\page lua_api_video Audio
+
+
+<hr>
+
+\section lua_api_video_functions Functions of sol.video
+
+<hr>
+
+TODO
+
+sol.video.get_mode()
+sol.video.set_mode(mode_name)
+sol.video.switch_mode()
+sol.video.is_mode_supported(mode_name)
+sol.video.is_fullscreen()
+sol.video.switch_fullscreen()
+
+*/
+

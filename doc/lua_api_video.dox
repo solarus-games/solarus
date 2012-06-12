@@ -14,6 +14,7 @@ sol.video.get_mode()
 sol.video.set_mode(mode_name)
 sol.video.switch_mode()
 sol.video.is_mode_supported(mode_name)
+sol.video.get_modes()
 sol.video.is_fullscreen()
 sol.video.switch_fullscreen()
 

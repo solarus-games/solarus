@@ -336,6 +336,22 @@ VideoManager::VideoMode VideoManager::get_video_mode() {
 }
 
 /**
+ * @brief Returns a list of all supported video modes.
+ * @return The list of supported video modes.
+ */
+const std::list<VideoManager::VideoMode> VideoManager::get_video_modes() {
+
+  std::list<VideoManager::VideoMode> modes;
+  for (int i = 0; i < NB_MODES; i++) {
+    VideoMode mode = VideoMode(i);
+    if (is_mode_supported(mode)) {
+      modes.push_back(mode);
+    }
+  }
+  return modes;
+}
+
+/**
  * @brief Blits a surface on the screen with the current video mode.
  * @param src_surface the source surface to display on the screen
  */

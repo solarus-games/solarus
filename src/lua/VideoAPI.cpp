@@ -44,6 +44,7 @@ void LuaContext::register_video_module() {
       { "set_mode", video_api_set_mode },
       { "switch_mode", video_api_switch_mode },
       { "is_mode_supported", video_api_is_mode_supported },
+      { "get_modes", video_api_get_modes },
       { "is_fullscreen", video_api_is_fullscreen },
       { "set_fullscreen", video_api_set_fullscreen },
       { NULL, NULL }
@@ -90,6 +91,30 @@ int Script::video_api_switch_mode(lua_State *l) {
   VideoManager::get_instance()->switch_video_mode();
 
   return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_video_get_modes.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::video_api_get_modes(lua_State* l) {
+
+  const std::list<VideoManager::VideoMode> modes =
+    VideoManager::get_instance()->get_video_modes();
+
+  lua_newtable(l);
+
+  std::list<VideoManager::VideoMode>::const_iterator it;
+  int i = 1;
+  for (it = modes.begin(); it != modes.end(); it++) {
+    VideoManager::VideoMode mode = *it;
+    lua_pushstring(l, video_mode_names[mode]);
+    lua_rawseti(l, -2, i);
+    ++i;
+  }
+
+  return 1;
 }
 
 /**

@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
+#include <list>
+
 /**
  * @brief Displays the window and handles the video mode.
  */
@@ -79,12 +81,13 @@ class VideoManager {
   static void quit();
   static VideoManager* get_instance();
 
+  VideoMode get_video_mode();
+  void set_video_mode(VideoMode mode);
   void switch_video_mode();
   void set_initial_video_mode();
   void set_default_video_mode();
   bool is_mode_supported(VideoMode mode);
-  void set_video_mode(VideoMode mode);
-  VideoMode get_video_mode();
+  const std::list<VideoMode> get_video_modes();
 
   bool is_fullscreen(VideoMode mode);
   bool is_fullscreen();

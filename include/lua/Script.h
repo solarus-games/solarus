@@ -254,6 +254,7 @@ class Script {
       video_api_set_mode,
       video_api_switch_mode,
       video_api_is_mode_supported,
+      video_api_get_modes,
       video_api_is_fullscreen,
       video_api_set_fullscreen,
 

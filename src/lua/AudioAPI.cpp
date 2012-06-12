@@ -31,6 +31,10 @@ void Script::register_audio_module() {
       { "preload_sounds", audio_api_preload_sounds },
       { "play_music", audio_api_play_music },
       { "stop_music", audio_api_stop_music },
+      { "get_sound_volume", audio_api_get_sound_volume },
+      { "set_sound_volume", audio_api_set_sound_volume },
+      { "get_music_volume", audio_api_get_music_volume },
+      { "set_music_volume", audio_api_set_music_volume },
       { NULL, NULL }
   };
   register_functions(audio_module_name, functions);
@@ -87,6 +91,56 @@ int Script::audio_api_stop_music(lua_State* l) {
 
   Music::play(Music::none);
   script.music_played = true;
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_audio_get_sound_volume.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::audio_api_get_sound_volume(lua_State* l) {
+
+  lua_pushinteger(l, Sound::get_volume());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_audio_set_sound_volume.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::audio_api_set_sound_volume(lua_State* l) {
+
+  int volume = luaL_checkinteger(l, 1);
+
+  Sound::set_volume(volume);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_audio_get_music_volume.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::audio_api_get_music_volume(lua_State* l) {
+
+  lua_pushinteger(l, Music::get_volume());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_audio_set_music_volume.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::audio_api_set_music_volume(lua_State* l) {
+
+  int volume = luaL_checkinteger(l, 1);
+
+  Music::set_volume(volume);
 
   return 0;
 }

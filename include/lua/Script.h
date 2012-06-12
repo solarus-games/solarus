@@ -244,6 +244,10 @@ class Script {
       audio_api_preload_sounds,
       audio_api_play_music,
       audio_api_stop_music,
+      audio_api_get_sound_volume,
+      audio_api_set_sound_volume,
+      audio_api_get_music_volume,
+      audio_api_set_music_volume,
 
       // timer API
       timer_api_start_timer,

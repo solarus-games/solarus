@@ -64,5 +64,12 @@ This is equivalent to <tt>sol.audio.play_music("none")</tt>.
 
 <hr>
 
+TODO
+
+sol.audio.get_sound_volume()
+sol.audio.set_sound_volume(volume)
+sol.audio.get_music_volume()
+sol.audio.set_music_volume(volume)
+
 */
 

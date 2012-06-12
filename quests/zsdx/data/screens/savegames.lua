@@ -11,9 +11,11 @@ end
 
 function savegame_menu:on_started()
 
+  -- Create all graphic objects.
   self.surface = sol.surface.create(320, 240)
   self.background_color = { 104, 144, 240 }
   self.background_img = sol.surface.create("menus/selection_menu_background.png")
+  self.cloud_img = sol.surface.create("menus/selection_menu_cloud.png")
   self.save_container_img = sol.surface.create("menus/selection_menu_save_container.png")
   self.option_container_img = sol.surface.create("menus/selection_menu_option_container.png")
   self.option1_text = sol.text_surface.create()
@@ -27,9 +29,31 @@ function savegame_menu:on_started()
   self.allow_cursor_move = true
   self.finished = false
   self.phase = nil
+
+  -- Start the clouds.
+  self.cloud_positions = {
+    { x =  20, y =  40 },
+    { x =  50, y = 160 },
+    { x = 160, y =  30 },
+    { x = 270, y = 200 },
+    { x = 200, y = 120 },
+    { x =  90, y = 120 },
+    { x = 300, y = 100 },
+    { x = 240, y =  10 },
+    { x =  60, y = 190 },
+    { x = 150, y = 120 },
+    { x = 310, y = 220 },
+    { x =  70, y =  20 },
+    { x = 130, y = 180 },
+    { x = 200, y = 700 },
+    { x =  20, y = 120 },
+    { x = 170, y = 220 }
+  }
+  self:repeat_move_clouds()
+
+  -- Run the menu.
   self:read_savegames()
   sol.audio.play_music("game_over")
-
   self:init_phase_select_file()
 end
 
@@ -77,7 +101,29 @@ function savegame_menu:on_display(dst_surface)
   self.surface:fill_color(self.background_color)
 
   -- Clouds.
-  -- TODO
+  local width, height = self.surface:get_size()
+  for _, position in ipairs(self.cloud_positions) do
+    local x, y = position.x, position.y
+    self.surface:draw(self.cloud_img, x, y)
+
+    if position.x >= width - 80 then
+      x = position.x - width
+      y = position.y
+      self.surface:draw(self.cloud_img, x, y)
+
+      if position.y <= 0 then
+        x = position.x - width
+        y = position.y + height
+        self.surface:draw(self.cloud_img, x, y)
+      end
+    end
+
+    if position.y <= 0 then
+      x = position.x
+      y = position.y + height
+      self.surface:draw(self.cloud_img, x, y)
+    end
+  end
 
   -- Savegames container.
   self.surface:draw(self.background_img, 37, 38)
@@ -220,6 +266,27 @@ function savegame_menu:set_cursor_position(cursor_position)
 
   self.cursor_position = cursor_position
   self.cursor_sprite:set_frame(0)  -- Restart the animation.
+end
+
+function savegame_menu:repeat_move_clouds()
+
+  local width, height = self.surface:get_size()
+  for _, position in ipairs(self.cloud_positions) do
+
+    position.x = position.x + 1
+    if position.x >= width then
+      position.x = 0
+    end
+
+    position.y = position.y - 1
+    if position.y <= -44 then
+      position.y = height - 44
+    end
+  end
+
+  self:start_timer(100, function()
+    self:repeat_move_clouds()
+  end)
 end
 
 ---------------------------

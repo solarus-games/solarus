@@ -171,7 +171,7 @@ function savegame_menu:display_savegame_number(slot_index)
   self.surface:draw(slot.number_img, 62, 53 + slot_index * 27)
 end
 
-function savegame_menu:display_bottom_options()
+function savegame_menu:display_bottom_buttons()
 
   local x
   local y = 158
@@ -214,7 +214,7 @@ function savegame_menu:read_savegames()
   end
 end
 
-function savegame_menu:set_bottom_options(key1, key2)
+function savegame_menu:set_bottom_buttons(key1, key2)
 
   if key1 ~= nil then
     self.option1_text:set_text_key(key1)
@@ -296,7 +296,7 @@ function savegame_menu:init_phase_select_file()
 
   self.phase = "select_file"
   self.title_text:set_text_key("selection_menu.phase.select_file")
-  self:set_bottom_options("selection_menu.erase", "selection_menu.options")
+  self:set_bottom_buttons("selection_menu.erase", "selection_menu.options")
   self.cursor_sprite:set_animation("blue")
 end
 
@@ -344,8 +344,8 @@ function savegame_menu:display_phase_select_file()
     self:display_savegame(i)
   end
 
-  -- Options.
-  self:display_bottom_options()
+  -- Bottom buttons.
+  self:display_bottom_buttons()
 
   -- Cursor.
   self:display_savegame_cursor()
@@ -363,7 +363,7 @@ function savegame_menu:init_phase_erase_file()
 
   self.phase = "erase_file"
   self.title_text:set_text_key("selection_menu.phase.erase_file")
-  self:set_bottom_options("selection_menu.cancel", nil)
+  self:set_bottom_buttons("selection_menu.cancel", nil)
   self.cursor_sprite:set_animation("red")
 end
 
@@ -410,8 +410,8 @@ function savegame_menu:display_phase_erase_file()
     self:display_savegame(i)
   end
 
-  -- Options.
-  self:display_bottom_options()
+  -- Bottom buttons.
+  self:display_bottom_buttons()
 
   -- Cursor.
   self:display_savegame_cursor()
@@ -429,7 +429,7 @@ function savegame_menu:init_phase_confirm_erase()
 
   self.phase = "confirm_erase"
   self.title_text:set_text_key("selection_menu.phase.confirm_erase")
-  self:set_bottom_options("selection_menu.big_no", "selection_menu.big_yes")
+  self:set_bottom_buttons("selection_menu.big_no", "selection_menu.big_yes")
   self.save_number_to_erase = self.cursor_position
   self.cursor_position = 4  -- Select "no" by default.
 end
@@ -471,22 +471,22 @@ function savegame_menu:display_phase_confirm_erase()
   self:display_savegame(self.save_number_to_erase)
   self:display_savegame_number(self.save_number_to_erase)
 
-  -- Options.
-  self:display_bottom_options()
+  -- Bottom buttons.
+  self:display_bottom_buttons()
 
   -- Cursor.
   self:display_savegame_cursor()
 end
 
 ----------------------
--- Phase "optiopns" --
+-- Phase "options" --
 ----------------------
 function savegame_menu:init_phase_options()
 
   self.phase = "options"
   self.title_text:set_text_key("selection_menu.phase.options")
   self.modifying_option = false
-  self.options_cursor_position = 0
+  self.options_cursor_position = 1
 
   -- Option texts and values.
   self.options = {
@@ -521,7 +521,7 @@ function savegame_menu:init_phase_options()
   self.right_arrow_sprite:set_animation("blink")
   self.right_arrow_sprite:set_direction(0)
 
-  self:set_bottom_options("selection_menu.back", nil)
+  self:set_bottom_buttons("selection_menu.back", nil)
   self:set_options_cursor_position(1)
 end
 
@@ -530,29 +530,151 @@ function savegame_menu:key_pressed_phase_options(key)
 end
 
 function savegame_menu:joypad_button_pressed_phase_options(button)
-
+  self:key_pressed_phase_options("space")
 end
 
 function savegame_menu:direction_pressed_phase_options(direction8)
 
+  if not self.modifying_option then
+    -- Just moving the options cursor (not modifying any option).
+
+    if direction8 == 2 then  -- Up.
+      sol.audio.play_sound("cursor")
+      self.left_arrow_sprite:set_frame(0)
+      local position = self.options_cursor_position - 1
+      if position == 0 then
+        position = #self.options + 1
+      end
+      self:set_options_cursor_position(position)
+
+    elseif direction8 == 6 then  -- Down.
+      sol.audio.play_sound("cursor")
+      self.left_arrow_sprite:set_frame(0)
+      local position = self.options_cursor_position + 1
+      if position > #self.options + 1 then
+        position = 1
+      end
+      self:set_options_cursor_position(position)
+    end
+      
+  else
+    -- An option is currently being modified.
+
+    if direction8 == 0 then  -- Right.
+      local option = self.options[self.options_cursor_position]
+      local index = (option.current_index % #option.values) + 1
+      self:set_option_value(option, index)
+      sol.audio.play_sound("cursor")
+      self.left_arrow_sprite:set_frame(0)
+      self.right_arrow_sprite:set_frame(0)
+
+    elseif direction8 == 4 then  -- Left.
+      local option = self.options[self.options_cursor_position]
+      local index = (option.current_index % #options.values) + #options.values - 1
+      self:set_option_value(option, index)
+      sol.audio.play_sound("cursor")
+      self.left_arrow_sprite:set_frame(0)
+      self.right_arrow_sprite:set_frame(0)
+
+    end
+  end
 end
 
 function savegame_menu:display_phase_options()
 
+  -- All options.
+  for i, option in ipairs(self.options) do
+    local y = 70 + i * 16
+    self.surface:draw(option.label_text, 64, y)
+    self.surface:draw(option.value_text, 266, y)
+  end
+
+  -- Bottom buttons.
+  self:display_bottom_buttons()
+
+  -- Cursor.
+  if self.options_cursor_position > #self.options then
+    -- The cursor is on the bottom button.
+    self:display_savegame_cursor()
+  else
+    -- The cursor is on an option line.
+    local y = 64 + self.options_cursor_position * 16
+    if self.modifying then
+      local option = self.options[self.options_cursor_position]
+      self.surface:draw(self.left_arrow_sprite,
+          256 - option.value_text:get_width(), y)
+      self.surface:draw(self.right_arrow_sprite, 268, y)
+    else
+      self.surface:draw(self.right_arrow_sprite, 54, y)
+    end
+  end
 end
 
 function savegame_menu:set_options_cursor_position(position)
 
   if self.options_cursor_position <= #self.options then
-    -- An option line was selected.
-    -- TODO
+    -- An option line was previously selected.
+    local option = self.options[self.options_cursor_position]
+    option.label_text:set_text_color{255, 255, 255}
+  end
+
+  self.options_cursor_position = position
+  if position > #self.options then
+    self:set_cursor_position(4)
+  end
+
+  if position <= #self.options then
+    -- An option line is now selected.
+    local option = self.options[self.options_cursor_position]
+    option.label_text:set_text_color{255, 255, 0}
   end
 end
 
--- Creates and returns an array of all possible values
--- for the specified option.
-function load_option_values(option_name)
-  return values
+-- Sets the value of an option.
+function savegame_menu:set_option_value(option, index)
+
+  if option.current_index ~= index then
+    option.current_index = index
+    local value = option.values[index]
+
+    if option.name == "language" then
+      sol.language.set_language(value)
+      option.value_text:set_text(sol.language.get_language_name(value))
+      self:reload_strings()
+
+    elseif option_name == "video_mode" then
+      sol.video.set_mode(value)
+      option.value_text:set_text_key("options.video_mode." .. value)
+
+    elseif option_name == "music_volume" then
+      sol.audio.set_music_volume(tonumber(value))
+      option.value_text:set_text(value)
+
+    elseif option_name == "sound_volume" then
+      sol.audio.set_sound_volume(tonumber(value))
+      option.value_text:set_text(value)
+    end
+  end
+end
+
+-- Reloads all strings displayed on the menu.
+-- This function is called when the language has just been changed.
+function savegame_menu:reload_strings()
+
+  -- Update the label of each option.
+  for _, option in ipairs(self.options) do
+
+    option.label_text:set_text_key("selection_menu.options." .. option.name)
+
+    -- And the value of the video mode.
+    if option.name == "video_mode" then
+      option.value_text:set_text_key("selection_menu.video_mode." .. option.values[option.current_index])
+    end
+  end
+
+  -- Other menu elements
+  self.title_text:set_text_key("selection_menu.phase.options")
+  self:set_bottom_buttons("selection_menu.back", nil)
 end
 
 return savegame_menu

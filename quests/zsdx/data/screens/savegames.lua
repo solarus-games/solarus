@@ -490,26 +490,52 @@ function savegame_menu:init_phase_options()
 
   -- Option texts and values.
   self.options = {
-    { name = "language", values = sol.language.get_languages() },
-    { name = "video_mode", values = sol.video.get_modes() },
-    { name = "music_volume", values = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100} },
-    { name = "sound_volume", values = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100} },
+    {
+      name = "language",
+      values = sol.language.get_languages(),
+      initial_value = sol.language.get_language()
+    },
+    {
+      name = "video_mode",
+      values = sol.video.get_modes(),
+      initial_value = sol.video.get_mode()
+    },
+    {
+      name = "music_volume",
+      values = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100},
+      initial_value = math.floor((sol.audio.get_music_volume() + 5) / 10) * 10
+    },
+    {
+      name = "sound_volume",
+      values = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100},
+      initial_value = math.floor((sol.audio.get_sound_volume() + 5) / 10) * 10
+    }
   };
 
   for _, option in ipairs(self.options) do
 
     option.current_index = nil
 
-    -- Label.
+    -- Text surface of the label.
     option.label_text = sol.text_surface.create{
       font = "fixed",
       text_key = "selection_menu.options." .. option.name
     }
 
-    -- Value.
+    -- Text surface of the value.
     option.value_text = sol.text_surface.create{
-      font = "fixed"
+      font = "fixed",
+      horizontal_alignment = "right"
     }
+  end
+
+  for _, option in ipairs(self.options) do
+    -- Initial value.
+    for i, value in ipairs(option.values) do
+      if value == option.initial_value then
+	self:set_option_value(option, i)
+      end
+    end
   end
 
   -- Sprites.
@@ -527,6 +553,33 @@ end
 
 function savegame_menu:key_pressed_phase_options(key)
 
+  if key == "space" or key == "return" then
+    if self.options_cursor_position > #self.options then
+      -- Back.
+      sol.audio.play_sound("ok")
+      self:init_phase_select_file()
+    else
+      -- Set an option.
+      local option = self.options[self.options_cursor_position]
+      if not self.modifying_option then
+	sol.audio.play_sound("ok")
+	self.left_arrow_sprite:set_frame(0)
+	self.right_arrow_sprite:set_frame(0)
+	option.label_text:set_text_color{255, 255, 255}
+	option.value_text:set_text_color{255, 255, 0}
+	self.title_text:set_text_key("selection_menu.phase.options.changing")
+	self.modifying_option = true
+      else
+	sol.audio.play_sound("danger")
+	option.label_text:set_text_color{255, 255, 0}
+	option.value_text:set_text_color{255, 255, 255}
+	self.left_arrow_sprite:set_frame(0)
+	self.right_arrow_sprite:set_frame(0)
+	self.title_text:set_text_key("selection_menu.phase.options")
+	self.modifying_option = false
+      end
+    end
+  end
 end
 
 function savegame_menu:joypad_button_pressed_phase_options(button)
@@ -570,7 +623,7 @@ function savegame_menu:direction_pressed_phase_options(direction8)
 
     elseif direction8 == 4 then  -- Left.
       local option = self.options[self.options_cursor_position]
-      local index = (option.current_index % #options.values) + #options.values - 1
+      local index = (option.current_index + #option.values - 2) % #option.values + 1
       self:set_option_value(option, index)
       sol.audio.play_sound("cursor")
       self.left_arrow_sprite:set_frame(0)
@@ -599,10 +652,10 @@ function savegame_menu:display_phase_options()
   else
     -- The cursor is on an option line.
     local y = 64 + self.options_cursor_position * 16
-    if self.modifying then
+    if self.modifying_option then
       local option = self.options[self.options_cursor_position]
-      self.surface:draw(self.left_arrow_sprite,
-          256 - option.value_text:get_width(), y)
+      local width, _ = option.value_text:get_size()
+      self.surface:draw(self.left_arrow_sprite, 256 - width, y)
       self.surface:draw(self.right_arrow_sprite, 268, y)
     else
       self.surface:draw(self.right_arrow_sprite, 54, y)
@@ -638,28 +691,30 @@ function savegame_menu:set_option_value(option, index)
     local value = option.values[index]
 
     if option.name == "language" then
-      sol.language.set_language(value)
       option.value_text:set_text(sol.language.get_language_name(value))
-      self:reload_strings()
+      if value ~= sol.language.get_language() then
+	sol.language.set_language(value)
+	self:reload_options_strings()
+      end
 
-    elseif option_name == "video_mode" then
-      sol.video.set_mode(value)
+    elseif option.name == "video_mode" then
       option.value_text:set_text_key("options.video_mode." .. value)
+      sol.video.set_mode(value)
 
-    elseif option_name == "music_volume" then
-      sol.audio.set_music_volume(tonumber(value))
+    elseif option.name == "music_volume" then
       option.value_text:set_text(value)
+      sol.audio.set_music_volume(value)
 
-    elseif option_name == "sound_volume" then
-      sol.audio.set_sound_volume(tonumber(value))
+    elseif option.name == "sound_volume" then
       option.value_text:set_text(value)
+      sol.audio.set_sound_volume(value)
     end
   end
 end
 
 -- Reloads all strings displayed on the menu.
 -- This function is called when the language has just been changed.
-function savegame_menu:reload_strings()
+function savegame_menu:reload_options_strings()
 
   -- Update the label of each option.
   for _, option in ipairs(self.options) do
@@ -667,8 +722,9 @@ function savegame_menu:reload_strings()
     option.label_text:set_text_key("selection_menu.options." .. option.name)
 
     -- And the value of the video mode.
-    if option.name == "video_mode" then
-      option.value_text:set_text_key("selection_menu.video_mode." .. option.values[option.current_index])
+    if option.name == "video_mode" and option.current_index ~= nil then
+      local mode = option.values[option.current_index]
+      option.value_text:set_text_key("options.video_mode." .. mode)
     end
   end
 

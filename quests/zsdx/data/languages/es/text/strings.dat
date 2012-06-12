@@ -109,9 +109,17 @@ inventory.caption.item.bottle_4.6            Botella Mágica$(Hada)
 # Options submenu
 options.caption.press_action_change_mode     Pulsa Acción para$otro modo de vídeo
 options.caption.press_action_customize_key   Pulsa Acción para$configurar tecla
-options.caption.press_key           Pulsa alguna tecla$del teclado o mando
+options.caption.press_key                    Pulsa alguna tecla$del teclado o mando
 
 # name of video modes (maximum 26 characters)
+options.video_mode.windowed_stretched        Ventana 640x480
+options.video_mode.windowed_scale2x          Ventana 640x480 suavizado
+options.video_mode.windowed_normal           Ventana 320x240
+options.video_mode.fullscreen_normal         Pantalla completa estirada
+options.video_mode.fullscreen_wide           Pant comp estirada(grande)
+options.video_mode.fullscreen_scale2x        Pant completa suavizada
+options.video_mode.fullscreen_scale2x_wide   Pant comp suavizad(grande)
+# old video modes kept for compatibility (still used by the built-in pause menu)
 options.video_mode_0                Ventana 640x480
 options.video_mode_1                Ventana 640x480 suavizado
 options.video_mode_2                Ventana 320x240
@@ -119,8 +127,6 @@ options.video_mode_3                Pantalla completa estirada
 options.video_mode_4                Pant comp estirada(grande)
 options.video_mode_5                Pant completa suavizada
 options.video_mode_6                Pant comp suavizad(grande)
-options.video_mode_7                Pantalla completa centrada
-options.video_mode_8                Pant comp centrada(grande)
 # column headers of the keyboard/joypad customization table (maximum 10 characters)
 options.commands_column             Controles
 options.keyboard_column             Teclado

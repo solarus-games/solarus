@@ -75,8 +75,10 @@ int Script::video_api_set_mode(lua_State *l) {
 
   int mode = luaL_checkoption(l, 1, NULL, video_mode_names);
 
-  VideoManager::get_instance()->set_video_mode(
-      VideoManager::VideoMode(mode));
+  if (VideoManager::get_instance()->get_video_mode() != mode) {
+    VideoManager::get_instance()->set_video_mode(
+        VideoManager::VideoMode(mode));
+  }
 
   return 0;
 }

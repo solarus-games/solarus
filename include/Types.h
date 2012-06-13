@@ -89,7 +89,6 @@ class Debug;
 class StringConcat;
 
 // menus
-class LanguageScreen;
 class CustomScreen;
 class CustomMenu;
 class PauseMenu;

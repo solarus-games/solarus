@@ -22,7 +22,6 @@
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-#include "menus/LanguageScreen.h"
 #include "lua/LuaContext.h"
 #include "Game.h"
 #include "Savegame.h"
@@ -49,9 +48,6 @@ MainLoop::MainLoop(int argc, char** argv):
   debug_keys = new DebugKeys(*this);
   lua_context = new LuaContext(*this);
   lua_context->initialize();
-
-  // The first screen is the built-in language selection screen.
-  current_screen = new LanguageScreen(*this);
 }
 
 /**
@@ -113,7 +109,6 @@ void MainLoop::set_resetting() {
   // Reset the program.
   resetting = true;
   get_debug_keys().set_game(NULL);
-  set_next_screen(new LanguageScreen(*this));
 }
 
 /**
@@ -177,8 +172,10 @@ void MainLoop::run() {
 
     // go to another screen?
     if (next_screen != NULL) {
-      current_screen->stop();
-      delete current_screen;
+      if (current_screen != NULL) {
+        current_screen->stop();
+        delete current_screen;
+      }
       current_screen = next_screen;
       next_screen = NULL;
 
@@ -271,7 +268,9 @@ void MainLoop::notify_input(InputEvent& event) {
   }
 
   // send the event to the current screen
-  current_screen->notify_input(event);
+  if (current_screen != NULL) {
+    current_screen->notify_input(event);
+  }
   lua_context->notify_input(event);
 }
 
@@ -283,7 +282,9 @@ void MainLoop::notify_input(InputEvent& event) {
 void MainLoop::update() {
 
   debug_keys->update();
-  current_screen->update();
+  if (current_screen != NULL) {
+    current_screen->update();
+  }
   lua_context->update();
   System::update();
 }
@@ -296,7 +297,9 @@ void MainLoop::update() {
 void MainLoop::display() {
 
   root_surface->fill_with_color(Color::get_black());
-  current_screen->display(*root_surface);
+  if (current_screen != NULL) {
+    current_screen->display(*root_surface);
+  }
   VideoManager::get_instance()->display(*root_surface);
 }
 

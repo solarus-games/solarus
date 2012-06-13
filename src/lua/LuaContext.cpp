@@ -79,6 +79,7 @@ void LuaContext::initialize() {
   // Load the main file.
   load(l, "main");
   call_function(0, 0, "main");
+  main_on_started();
 }
 
 /**

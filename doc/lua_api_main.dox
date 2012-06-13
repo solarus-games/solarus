@@ -92,8 +92,7 @@ Called at each cycle of the main loop.
 
 Called at the beginning of the program.
 
-This function is called when the engine requests Lua to show an initial
-screen (after any built-in screens like the language selection screen).
+This function is called when the engine requests Lua to show an initial screen.
 In other words, the function is called when the program begins or after it
 was reset.
 

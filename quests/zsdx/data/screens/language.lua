@@ -1,0 +1,140 @@
+-- This menu is displayed when the program starts, before the title screen.
+-- The user can select his language.
+-- If a language is already set, we go directly to the title screen.
+
+local language_menu = {}
+
+function language_menu:new()
+  local object = {}
+  setmetatable(object, self)
+  self.__index = self
+  return object
+end
+
+function language_menu:on_started()
+
+  if sol.language.get_language() ~= nil then
+    -- A language is already set: skip this screen.
+    self:start_title_screen()
+  else
+
+    local ids = sol.language.get_languages()
+    local default_id = sol.language.get_default_language()
+    local index = 1
+    local cursor_position = 1
+    self.surface = sol.surface.create(320, 240)
+    self.finished = false
+    self.first_visible_language = 1
+    self.max_visible_languages = 10
+    self.nb_visible_languages = math.min(#ids, self.max_visible_languages)
+    self.languages = {}
+    for _, id in ipairs(ids) do
+      local language = {}
+      language.id = id
+      language.text = sol.text_surface.create{
+        font = "fixed",
+        text = sol.language.get_language_name(id),
+        horizontal_alignment = "center"
+      }
+
+      if id == default_id then
+        cursor_position = index
+      end
+
+      self.languages[index] = language
+      index = index + 1
+    end
+
+    if #self.languages == 1 then
+      -- No choice: skip this screen.
+      sol.language.set_language(self.languages[1].id)
+      self:start_title_screen()
+    end
+
+    self:set_cursor_position(cursor_position)
+  end
+end
+
+function language_menu:on_display(dst_surface)
+
+  self.surface:fill_color{0, 0, 0}
+
+  local y = 120 - 8 * self.nb_visible_languages
+  local first = self.first_visible_language
+  local last = self.first_visible_language + self.nb_visible_languages - 1
+  for i = first, last do
+    self.languages[i].y = y
+    y = y + 16
+    self.surface:draw(self.languages[i].text, 160, y)
+  end
+
+  -- The menu makes 320*240 pixels, but dst_surface may be larger.
+  local width, height = dst_surface:get_size()
+  dst_surface:draw(self.surface, width / 2 - 160, height / 2 - 120)
+end
+
+function language_menu:on_key_pressed(key)
+
+  if key == "escape" then
+    -- Stop the program.
+    sol.main.exit()
+
+  elseif key == "space" or key == "return" then
+
+    if not self.finished then
+      local language = self.languages[self.cursor_position]
+      sol.language.set_language(language.id)
+      self.finished = true
+      self.surface:fade_out(function()
+        self:start_title_screen()
+      end)
+    end
+  end
+end
+
+function language_menu:on_direction_pressed(direction8)
+
+  if not self.finished then
+
+    local n = #self.languages
+    if direction8 == 2 then  -- Up.
+      sol.audio.play_sound("cursor")
+      self:set_cursor_position((self.cursor_position + n - 2) % n + 1)
+    elseif direction8 == 6 then  -- Down.
+      sol.audio.play_sound("cursor")
+      self:set_cursor_position(self.cursor_position % n + 1)
+    end
+  end
+end
+
+function language_menu:on_joypad_button_pressed(button)
+
+  self:on_key_pressed("space")
+end
+
+function language_menu:set_cursor_position(cursor_position)
+
+  if self.cursor_position ~= nil then
+    self.languages[self.cursor_position].text:set_text_color{255, 255, 255}
+  end
+  self.languages[cursor_position].text:set_text_color{255, 255, 0}
+
+  if cursor_position < self.first_visible_language then
+    self.first_visible_language = cursor_position
+  end
+
+  if cursor_position >= self.first_visible_language + self.max_visible_languages then
+    self.first_visible_language = cursor_position - self.max_visible_languages + 1
+  end
+
+  self.cursor_position = cursor_position
+end
+
+function language_menu:start_title_screen()
+
+  local title_screen = require("screens/title")
+  sol.main.start_screen(title_screen:new())
+end
+
+return language_menu
+

@@ -186,7 +186,6 @@ void LuaContext::main_on_input(InputEvent& event) {
  *
  * This function is called when the engine requests Lua to show an
  * initial screen, i.e. at the beginning of the program
- * (after any built-in screens like the language selection screen)
  * or when the program is reset.
  */
 void LuaContext::main_on_started() {

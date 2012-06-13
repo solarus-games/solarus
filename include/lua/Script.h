@@ -269,6 +269,7 @@ class Script {
       language_api_set_language,
       language_api_get_language_name,
       language_api_get_languages,
+      language_api_get_default_language,
       language_api_get_string,
       language_api_get_dialog,
 

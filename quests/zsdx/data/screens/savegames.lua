@@ -311,12 +311,18 @@ function savegame_menu:key_pressed_phase_select_file(key)
       -- The user chooses "Erase".
       self:init_phase_erase_file()
     else
-      -- The user chooses a savegame: run it after a fade-out effect.
-      self.finished = true
-      self.surface:fade_out(function()
-        local slot = self.slots[self.cursor_position]
-        slot.savegame:start()
-      end)
+      -- The user chooses a savegame.
+      local slot = self.slots[self.cursor_position]
+      if sol.game.exists(slot.file_name) then
+        -- The file exists: run it after a fade-out effect.
+        self.finished = true
+        self.surface:fade_out(function()
+          slot.savegame:start()
+        end)
+      else
+        -- It's a new savegame: choose the player's name.
+        self:init_phase_choose_name()
+      end
     end
   end
 end
@@ -731,6 +737,160 @@ function savegame_menu:reload_options_strings()
   -- Other menu elements
   self.title_text:set_text_key("selection_menu.phase.options")
   self:set_bottom_buttons("selection_menu.back", nil)
+  self:read_savegames()  -- To update "- Empty -" mentions.
+end
+
+------------------------------
+-- Phase "choose your name" --
+------------------------------
+function savegame_menu:init_phase_choose_name()
+
+  self.phase = "choose_name"
+  self.title_text:set_text_key("selection_menu.phase.choose_name")
+  self.cursor_sprite:set_animation("letters")
+  self.player_name = ""
+  self.player_name_text = sol.text_surface.create()
+  self.letter_cursor = { x = 0, y = 0 }
+  self.letters_img = sol.surface.create("menus/selection_menu_letters.png")
+  self.name_arrow_sprite = sol.sprite.create("menus/arrow")
+  self.name_arrow_sprite:set_direction(0)
+  self.can_add_letter_player_name = true
+end
+
+function savegame_menu:key_pressed_phase_choose_name(key)
+
+  local finished = false
+  if key == "return" then
+    -- Directly validate the name.
+    finished = self:validate_player_name()
+
+  elseif key == "space" or key == "c" then
+
+    if self.can_add_letter_player_name then
+      -- Choose a letter
+      finished = self:add_letter_player_name()
+      self.player_name_text:set_text(self.player_name)
+      self.can_add_letter_player_name = false
+      self:start_timer(300, function()
+        self.can_add_letter_player_name = true
+      end)
+    end
+  end
+
+  if finished then
+    self:init_phase_select_file()
+  end
+end
+
+function savegame_menu:joypad_button_pressed_phase_choose_name(button)
+
+  self:key_pressed_phase_choose_name("space")
+end
+
+function savegame_menu:direction_pressed_phase_choose_name(direction8)
+
+  if direction8 == 0 then  -- Right.
+    sol.audio.play_sound("cursor")
+    self.letter_cursor.x = (self.letter_cursor.x + 1) % 13
+
+  elseif direction8 == 2 then  -- Up.
+    sol.audio.play_sound("cursor")
+    self.letter_cursor.y = (self.letter_cursor.y + 4) % 5
+
+  elseif direction8 == 4 then  -- Left.
+    sol.audio.play_sound("cursor")
+    self.letter_cursor.x = (self.letter_cursor.x + 12) % 13
+
+  elseif direction8 == 6 then  -- Down.
+    sol.audio.play_sound("cursor")
+    self.letter_cursor.y = (self.letter_cursor.y + 1) % 5
+  end
+end
+
+function savegame_menu:display_phase_choose_name()
+
+  -- Letter cursor.
+  self.surface:draw(self.cursor_sprite,
+      51 + 16 * self.letter_cursor.x,
+      93 + 18 * self.letter_cursor.y)
+
+  -- Name and letters.
+  self.surface:draw(self.name_arrow_sprite, 57, 76)
+  self.surface:draw(self.player_name_text, 67, 85)
+  self.surface:draw(self.letters_img, 57, 98)
+end
+
+function savegame_menu:add_letter_player_name()
+
+  local size = self.player_name:len()
+  local letter_cursor = self.letter_cursor
+  local letter_to_add = nil
+  local finished = false
+
+  if letter_cursor.y == 0 then  -- Uppercase letter from A to M.
+    letter_to_add = string.char(string.byte("A") + letter_cursor.x)
+
+  elseif letter_cursor.y == 1 then  -- Uppercase letter from N to Z.
+    letter_to_add = string.char(string.byte("N") + letter_cursor.x)
+
+  elseif letter_cursor.y == 2 then  -- Lowercase letter from a to m.
+    letter_to_add = string.char(string.byte("a") + letter_cursor.x)
+
+  elseif letter_cursor.y == 3 then  -- Lowercase letter from n to z.
+    letter_to_add = string.char(string.byte("n") + letter_cursor.x)
+
+  elseif letter_cursor.y == 4 then  -- Digit or special command.
+    if letter_cursor.x <= 9 then
+      -- Digit.
+      letter_to_add = string.char(string.byte("0") + letter_cursor.x)
+    else
+      -- Special command.
+
+      if letter_cursor.x == 10 then  -- Remove the last letter.
+        if size == 0 then
+          sol.audio.play_sound("wrong")
+        else
+          sol.audio.play_sound("danger")
+          self.player_name = self.player_name:sub(1, size - 1)
+        end
+
+      elseif letter_cursor.x == 11 then  -- Validate the choice.
+        finished = self:validate_player_name()
+
+      elseif letter_cursor.x == 12 then  -- Cancel.
+        sol.audio.play_sound("danger")
+        finished = true
+      end
+    end
+  end
+
+  if letter_to_add ~= nil then
+    -- A letter was selected.
+    if size < 6 then
+      sol.audio.play_sound("danger")
+      self.player_name = self.player_name .. letter_to_add
+    else
+      sol.audio.play_sound("wrong")
+    end
+  end
+
+  return finished
+end
+
+function savegame_menu:validate_player_name()
+
+  if self.player_name:len() == 0 then
+    sol.audio.play_sound("wrong")
+    return false
+  end
+
+  sol.audio.play_sound("ok")
+
+  local savegame = self.slots[self.cursor_position].savegame
+  savegame:set_player_name(self.player_name)
+  savegame:save()
+  self:read_savegames()
+  return true
 end
 
 return savegame_menu

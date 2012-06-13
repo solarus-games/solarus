@@ -182,9 +182,10 @@ function title_screen:on_key_pressed(key)
   elseif key == "space" or key == "return" then
     self:try_finish_title()
 
-  elseif key == "left shift" or key == "right shift" then
-    -- TODO: remove (debug only)
-    finish_title()
+--  Debug.
+--  elseif key == "left shift" or key == "right shift" then
+--    finish_title()
+
   end
 end
 

@@ -29,8 +29,9 @@ void LuaContext::register_language_module() {
   static const luaL_Reg functions[] = {
       { "get_language", language_api_get_language },
       { "set_language", language_api_set_language },
-      { "get_languages", language_api_get_languages },
       { "get_language_name", language_api_get_language_name },
+      { "get_languages", language_api_get_languages },
+      { "get_default_language", language_api_get_default_language },
       { "get_string", language_api_get_string },
       { "get_dialog", language_api_get_dialog },
       { NULL, NULL }
@@ -47,7 +48,12 @@ int Script::language_api_get_language(lua_State* l) {
 
   const std::string& language = FileTools::get_language();
 
-  lua_pushstring(l, language.c_str());
+  if (language.empty()) {  // Return nil if no language is set.
+    lua_pushnil(l);
+  }
+  else  {  // Return the language code.
+    lua_pushstring(l, language.c_str());
+  }
   return 1;
 }
 
@@ -114,6 +120,19 @@ int Script::language_api_get_languages(lua_State* l) {
     ++i;
   }
 
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_language_get_default_language.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::language_api_get_default_language(lua_State* l) {
+
+  const std::string& language = FileTools::get_default_language();
+
+  lua_pushstring(l, language.c_str());
   return 1;
 }
 

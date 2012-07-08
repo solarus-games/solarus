@@ -73,7 +73,7 @@ void FileTools::initialize(int argc, char** argv) {
         << argv[0] << " path/to/quest");
   }
 
-  // then set the write directory to a ".solarus/quest_dir" subdirectory of the user home
+  // then set the write directory to a "SOLARUS_WRITE_DIR/quest_dir" subdirectory of the user home
 
   // first, create the directory
    if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
@@ -81,11 +81,7 @@ void FileTools::initialize(int argc, char** argv) {
   }
   IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("info");
-#ifndef __APPLE__
-  std::string write_dir = (std::string) ".solarus/" + ini.get_string_value("write_dir");
-#else
-  std::string write_dir = (std::string) "Library/Application Support/Solarus/" + ini.get_string_value("write_dir");
-#endif
+  std::string write_dir = (std::string) SOLARUS_WRITE_DIR + "/" + ini.get_string_value("write_dir");
   PHYSFS_mkdir(write_dir.c_str());
 
   // then set this directory as the write directory

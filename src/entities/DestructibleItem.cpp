@@ -93,7 +93,10 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y,
  */
 DestructibleItem::~DestructibleItem() {
 
-  get_map_script().cancel_callback(this->destruction_callback_ref);
+  MapScript* script = get_map_script_if_exists();
+  if (script != NULL) {  // Maybe the script was already destroyed.
+    script->cancel_callback(this->destruction_callback_ref);
+  }
 }
 
 /**

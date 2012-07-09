@@ -148,6 +148,7 @@ class Map {
     void unload();
     Game& get_game();
     MapScript& get_script();
+    MapScript* get_script_if_exists();
     void notify_opening_transition_finished();
 
     // entities

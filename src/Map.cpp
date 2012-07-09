@@ -113,6 +113,14 @@ MapScript& Map::get_script() {
 }
 
 /**
+ * @brief Returns the script of the this map, or NULL.
+ * @return The map script if it is running, NULL otherwise.
+ */
+MapScript* Map::get_script_if_exists() {
+  return script;
+}
+
+/**
  * @brief Returns the world where this map is.
  * @return 0 if this map is outside, -1 if it is inside, 1 to 20 if it is in a dungeon
  */
@@ -259,10 +267,10 @@ void Map::unload() {
   tileset = NULL;
   delete visible_surface;
   visible_surface = NULL;
-  delete entities;
-  entities = NULL;
   delete script;
   script = NULL;
+  delete entities;
+  entities = NULL;
   delete camera;
   camera = NULL;
 

@@ -360,6 +360,14 @@ MapScript& MapEntity::get_map_script() {
 }
 
 /**
+ * @brief Returns the script of the current map, or NULL.
+ * @return The map script if it is running, NULL otherwise.
+ */
+MapScript* MapEntity::get_map_script_if_exists() {
+  return map->get_script_if_exists();
+}
+
+/**
  * @brief Returns the current equipment.
  * @return the equipment
  */
@@ -988,7 +996,10 @@ void MapEntity::clear_old_sprites() {
 
     if (sprite->get_creator_script() != NULL) {
       // the sprite was created by a script: this script is responsible
-      sprite->get_creator_script()->decrement_refcount(sprite);
+      sprite->decrement_refcount();
+      if (sprite->get_refcount() == 0) {
+        delete sprite;
+      }
     }
     else {
       delete sprite;
@@ -1096,7 +1107,10 @@ void MapEntity::clear_old_movements() {
     Movement* movement = *it;
     if (movement->get_creator_script() != NULL) {
       // the movement was created by a script: this script is responsible
-      movement->get_creator_script()->decrement_refcount(movement);
+      movement->decrement_refcount();
+      if (movement->get_refcount() == 0) {
+        delete movement;
+      }
     }
     else {
       delete movement;

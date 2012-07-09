@@ -39,6 +39,7 @@
 PickableItem::PickableItem(Layer layer, int x, int y, const Treasure &treasure):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, "", layer, x, y, 0, 0),
   treasure(treasure),
+  shadow_sprite(NULL),
   shadow_xy(Rectangle(x, y)),
   appear_date(System::now()),
   entity_followed(NULL) {
@@ -145,6 +146,7 @@ void PickableItem::initialize_sprites() {
   ItemProperties &properties = treasure.get_item_properties();
 
   // create the shadow
+  delete shadow_sprite;
   switch (properties.get_shadow_size()) {
 
     case ItemProperties::SHADOW_SMALL:

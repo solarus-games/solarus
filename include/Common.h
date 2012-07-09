@@ -37,6 +37,13 @@
 #define SOLARUS_WRITE_DIR ".solarus"
 #endif
 
+#ifndef SOLARUS_WRITE_DIR
+/**
+ * @brief Where savegames are stored, relative to the user's home directory.
+ */
+#define SOLARUS_WRITE_DIR ".solarus"
+#endif
+
 // Game size.
 #ifndef SOLARUS_SCREEN_WIDTH
 #  ifdef PANDORA

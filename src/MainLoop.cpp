@@ -171,7 +171,7 @@ void MainLoop::run() {
     update();
 
     // go to another screen?
-    if (next_screen != NULL) {
+    if (next_screen != NULL || resetting) {
       if (current_screen != NULL) {
         current_screen->stop();
         delete current_screen;
@@ -179,14 +179,15 @@ void MainLoop::run() {
       current_screen = next_screen;
       next_screen = NULL;
 
-      if (resetting) {
+      if (current_screen != NULL) {
+        current_screen->start();
+      }
+      else if (resetting) {
         resetting = false;
         lua_context->exit();
         lua_context->initialize();
         Music::play(Music::none);
       }
-
-      current_screen->start();
     }
     else {
 

@@ -417,30 +417,32 @@ void Game::update_gameover_sequence() {
 void Game::display(Surface& dst_surface) {
 
   // display the map
-  current_map->display();
-  if (transition != NULL) {
-    transition->display(current_map->get_visible_surface());
-  }
-  current_map->get_visible_surface().display(dst_surface);
+  if (current_map->is_loaded()) {
+    current_map->display();
+    if (transition != NULL) {
+      transition->display(current_map->get_visible_surface());
+    }
+    current_map->get_visible_surface().display(dst_surface);
 
-  // display the pause screen if any
-  if (is_paused()) {
-    pause_menu->display(dst_surface);
-  }
+    // display the pause screen if any
+    if (is_paused()) {
+      pause_menu->display(dst_surface);
+    }
 
-  // display the game over sequence if any
-  else if (is_showing_gameover()) {
-    gameover_sequence->display(dst_surface);
-  }
+    // display the game over sequence if any
+    else if (is_showing_gameover()) {
+      gameover_sequence->display(dst_surface);
+    }
 
-  // display the hud
-  if (hud_enabled) {
-    hud->display(dst_surface);
-  }
+    // display the hud
+    if (hud_enabled) {
+      hud->display(dst_surface);
+    }
 
-  // display the dialog box if any
-  if (is_showing_dialog()) {
-    dialog_box->display(dst_surface);
+    // display the dialog box if any
+    if (is_showing_dialog()) {
+      dialog_box->display(dst_surface);
+    }
   }
 }
 
@@ -599,8 +601,13 @@ bool Game::is_playing_transition() {
  * @return true if the game is suspended
  */
 bool Game::is_suspended() {
-  return current_map == NULL || is_paused() || is_showing_dialog() ||
-    is_playing_transition() || is_showing_gameover() || !current_map->is_camera_fixed_on_hero();
+
+  return current_map == NULL
+      || is_paused()
+      || is_showing_dialog()
+      || is_playing_transition()
+      || is_showing_gameover()
+      || !current_map->is_camera_fixed_on_hero();
 }
 
 /**

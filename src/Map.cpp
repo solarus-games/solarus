@@ -256,15 +256,19 @@ bool Map::is_loaded() {
 void Map::unload() {
 
   delete tileset;
+  tileset = NULL;
   delete visible_surface;
-  delete script;
+  visible_surface = NULL;
   delete entities;
   entities = NULL;
-
+  delete script;
+  script = NULL;
   delete camera;
+  camera = NULL;
 
   for (int i = 0; i < 4; i++) {
     delete dark_surfaces[i];
+    dark_surfaces[i] = NULL;
   }
 }
 
@@ -479,14 +483,16 @@ void Map::check_suspended() {
  */
 void Map::display() {
 
-  // background
-  display_background();
+  if (is_loaded()) {
+    // background
+    display_background();
 
-  // display all entities (including the hero)
-  entities->display();
+    // display all entities (including the hero)
+    entities->display();
 
-  // foreground
-  display_foreground();
+    // foreground
+    display_foreground();
+  }
 }
 
 /**

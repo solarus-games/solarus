@@ -983,8 +983,16 @@ void MapEntity::clear_old_sprites() {
 
   std::list<Sprite*>::iterator it;
   for (it = old_sprites.begin(); it != old_sprites.end(); it++) {
-    sprites.remove(*it);
-    delete *it;
+    Sprite* sprite = *it;
+    sprites.remove(sprite);
+
+    if (sprite->get_creator_script() != NULL) {
+      // the sprite was created by a script: this script is responsible
+      sprite->get_creator_script()->decrement_refcount(sprite);
+    }
+    else {
+      delete sprite;
+    }
   }
   old_sprites.clear();
 }

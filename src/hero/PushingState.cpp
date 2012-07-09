@@ -142,7 +142,6 @@ bool Hero::PushingState::is_moving_grabbed_entity() {
  */
 void Hero::PushingState::notify_grabbed_entity_collision() {
 
-  //std::cout << "stop moving block: the block has reached an obstacle\n";
   stop_moving_pushed_entity();
 }
 
@@ -153,7 +152,6 @@ void Hero::PushingState::notify_movement_finished() {
 
   if (is_moving_grabbed_entity()) {
     // the 16 pixels of the path are completed
-    //std::cout << "stop moving block: 16 pixels were completed\n";
     stop_moving_pushed_entity();
   }
 }
@@ -166,7 +164,6 @@ void Hero::PushingState::notify_obstacle_reached() {
 
   if (is_moving_grabbed_entity()) {
     // an obstacle is reached before the 16 pixels are completed
-    //std::cout << "stop moving block: the hero has reached an obstacle\n";
     stop_moving_pushed_entity();
   }
 }
@@ -184,12 +181,11 @@ void Hero::PushingState::notify_position_changed() {
     PathMovement *movement = (PathMovement*) hero.get_movement();
 
     bool horizontal = pushing_direction4 % 2 == 0;
-    bool has_reached_grid = movement->get_total_distance_covered() > 8
+    bool has_reached_grid = movement->get_total_distance_covered() >= 16
       && ((horizontal && pushed_entity->is_aligned_to_grid_x())
           || (!horizontal && pushed_entity->is_aligned_to_grid_y()));
 
     if (has_reached_grid) {
-      //std::cout << "stop moving block: the entity has reached the grid\n";
       stop_moving_pushed_entity();
     }
   }

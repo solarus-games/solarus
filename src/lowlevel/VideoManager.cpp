@@ -439,8 +439,13 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
     p += end_row_increment;
   }
 
-  SDL_UnlockSurface(dst_internal_surface);
+  SDL_UnlockSurface(surface_to_draw);
   SDL_UnlockSurface(src_internal_surface);
+  
+#ifdef __APPLE__
+  SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
+  SDL_FreeSurface(surface_to_draw);
+#endif
 }
 
 /**

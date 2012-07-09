@@ -116,10 +116,10 @@ function hearts:rebuild_surface()
   -- Display the hearts.
   for i = 0, self.nb_max_hearts_displayed - 1 do
     local x, y = (i % 10) * 9, math.floor(i / 10) * 9
-    self.surface:draw(self.empty_heart_sprite, x, y)
+    self.empty_heart_sprite:draw(self.surface, x, y)
     if i < math.floor(self.nb_current_hearts_displayed / 4) then
       -- This heart is full.
-      self.surface:draw(self.heart_imgs[4], x, y)
+      self.heart_imgs[4]:draw(self.surface, x, y)
     end
   end
 
@@ -128,14 +128,14 @@ function hearts:rebuild_surface()
   local remaining_fraction = self.nb_current_hearts_displayed % 4
   if remaining_fraction ~= 0 then
     local x, y = (i % 10) * 9, math.floor(i / 10) * 9
-    self.surface:draw(self.heart_imgs[remaining_fraction], x, y)
+    self.heart_imgs[remaining_fraction]:draw(self.surface, x, y)
   end
 end
 
 function hearts:display(dst_surface, x, y)
 
   -- Everything was already drawn on self.surface.
-  dst_surface:draw(self.surface, x, y)
+  self.surface:draw(dst_surface, x, y)
 end
 
 return hearts

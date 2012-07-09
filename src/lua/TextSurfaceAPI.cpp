@@ -57,6 +57,7 @@ void Script::register_text_surface_module() {
       { "set_text", text_surface_api_set_text },
       { "set_text_key", text_surface_api_set_text_key },
       { "get_size", text_surface_api_get_size },
+      { "draw", displayable_api_draw },
       { "start_movement", displayable_api_start_movement },
       { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }

@@ -65,12 +65,12 @@ function language_menu:on_display(dst_surface)
   for i = first, last do
     self.languages[i].y = y
     y = y + 16
-    self.surface:draw(self.languages[i].text, 160, y)
+    self.languages[i].text:draw(self.surface, 160, y)
   end
 
   -- The menu makes 320*240 pixels, but dst_surface may be larger.
   local width, height = dst_surface:get_size()
-  dst_surface:draw(self.surface, width / 2 - 160, height / 2 - 120)
+  self.surface:draw(dst_surface, width / 2 - 160, height / 2 - 120)
 end
 
 function language_menu:on_key_pressed(key)

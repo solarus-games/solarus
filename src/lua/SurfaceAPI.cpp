@@ -34,11 +34,11 @@ void Script::register_surface_module() {
       { "create", surface_api_create },
       { "get_size", surface_api_get_size },
       { "fill_color", surface_api_fill_color },
-      { "draw", surface_api_draw },
       { "set_transparency_color", surface_api_set_transparency_color },
       { "set_opacity", surface_api_set_opacity },
       { "fade_in", surface_api_fade_in },
       { "fade_out", surface_api_fade_out },
+      { "draw", displayable_api_draw },
       { "start_movement", displayable_api_start_movement },
       { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }
@@ -138,22 +138,6 @@ int Script::surface_api_fill_color(lua_State* l) {
   Surface& surface = check_surface(l, 1);
   Color color = check_color(l, 2);
   surface.fill_with_color(color);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_surface_draw.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int Script::surface_api_draw(lua_State* l) {
-
-  Surface& dst_surface = check_surface(l, 1);
-  DynamicDisplayable& displayable = check_displayable(l, 2);
-  int x = luaL_optinteger(l, 3, 0);
-  int y = luaL_optinteger(l, 4, 0);
-  displayable.display(dst_surface, x, y);
 
   return 0;
 }

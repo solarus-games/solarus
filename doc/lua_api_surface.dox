@@ -37,12 +37,11 @@ Returns the size of this surface.
 Fills this surface with a color.
   - \c color (table): the color as an array of 3 RGB values (0 to 255)
 
-- \c surface:draw(displayable, x, y):
-Draws a displayable object on this surface.
-  - \c displayable (surface, text surface or sprite): the displayable
-    object to draw on this surface
-  - \c x (number, optional): x coordinate of where to draw the object
-  - \c y (number, optional): y coordinate of where to draw the object
+- \c surface:draw(dst_surface, x, y):
+Displays this surface on another surface.
+  - \c dst_surface (surface): The destination surface.
+  - \c x (number, optional): X coordinate of where to draw this surface.
+  - \c y (number, optional): Y coordinate of where to draw this surface.
 
 - \c surface:set_transparency_color(color):
 Sets a transparency color to this surface. Pixels in that color won't be

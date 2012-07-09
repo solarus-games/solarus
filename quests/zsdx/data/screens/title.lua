@@ -38,7 +38,7 @@ function title_screen:phase_zs_presents()
 
   local width, height = zs_presents_img:get_size()
   local x, y = 160 - width / 2, 120 - height / 2
-  self.surface:draw(zs_presents_img, x, y)
+  zs_presents_img:draw(self.surface, x, y)
   sol.audio.play_sound("intro")
 
   self:start_timer(2000, function()
@@ -137,39 +137,39 @@ function title_screen:on_display(dst_surface)
 
   -- final blit (dst_surface may be larger)
   local width, height = dst_surface:get_size()
-  dst_surface:draw(self.surface, width / 2 - 160, height / 2 - 120)
+  self.surface:draw(dst_surface, width / 2 - 160, height / 2 - 120)
 end
 
 function title_screen:display_phase_title()
 
   -- background
   self.surface:fill_color({0, 0, 0})
-  self.surface:draw(self.background_img)
+  self.background_img:draw(self.surface)
 
   -- clouds
   local x, y = self.clouds_xy.x, self.clouds_xy.y
-  self.surface:draw(self.clouds_img, x, y)
+  self.clouds_img:draw(self.surface, x, y)
   x = self.clouds_xy.x - 535
-  self.surface:draw(self.clouds_img, x, y)
+  self.clouds_img:draw(self.surface, x, y)
   x = self.clouds_xy.x
   y = self.clouds_xy.y - 299
-  self.surface:draw(self.clouds_img, x, y)
+  self.clouds_img:draw(self.surface, x, y)
   x = self.clouds_xy.x - 535
   y = self.clouds_xy.y - 299
-  self.surface:draw(self.clouds_img, x, y)
+  self.clouds_img:draw(self.surface, x, y)
 
   -- website name and logo
-  self.surface:draw(self.website_img, 160, 220)
-  self.surface:draw(self.logo_img)
+  self.website_img:draw(self.surface, 160, 220)
+  self.logo_img:draw(self.surface)
 
   if self.dx_img then
-    self.surface:draw(self.dx_img)
+    self.dx_img:draw(self.surface)
   end
   if self.star_img then
-    self.surface:draw(self.star_img)
+    self.star_img:draw(self.surface)
   end
   if self.show_press_space then
-    self.surface:draw(self.press_space_img, 160, 190)
+    self.press_space_img:draw(self.surface, 160, 190)
   end
 end
 

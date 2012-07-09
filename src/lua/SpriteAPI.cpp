@@ -40,6 +40,7 @@ void Script::register_sprite_module() {
       { "set_ignore_suspend", sprite_api_set_ignore_suspend },
       { "fade", sprite_api_fade },
       { "synchronize", sprite_api_synchronize },
+      { "draw", displayable_api_draw },
       { "start_movement", displayable_api_start_movement },
       { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }

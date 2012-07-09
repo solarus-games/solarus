@@ -104,30 +104,30 @@ function savegame_menu:on_display(dst_surface)
   local width, height = self.surface:get_size()
   for _, position in ipairs(self.cloud_positions) do
     local x, y = position.x, position.y
-    self.surface:draw(self.cloud_img, x, y)
+    self.cloud_img:draw(self.surface, x, y)
 
     if position.x >= width - 80 then
       x = position.x - width
       y = position.y
-      self.surface:draw(self.cloud_img, x, y)
+      self.cloud_img:draw(self.surface, x, y)
 
       if position.y <= 0 then
         x = position.x - width
         y = position.y + height
-        self.surface:draw(self.cloud_img, x, y)
+        self.cloud_img:draw(self.surface, x, y)
       end
     end
 
     if position.y <= 0 then
       x = position.x
       y = position.y + height
-      self.surface:draw(self.cloud_img, x, y)
+      self.cloud_img:draw(self.surface, x, y)
     end
   end
 
   -- Savegames container.
-  self.surface:draw(self.background_img, 37, 38)
-  self.surface:draw(self.title_text, 160, 54)
+  self.background_img:draw(self.surface, 37, 38)
+  self.title_text:draw(self.surface, 160, 54)
 
   -- Phase-specific display method.
   local method_name = "display_phase_" .. self.phase
@@ -135,14 +135,14 @@ function savegame_menu:on_display(dst_surface)
 
   -- The menu makes 320*240 pixels, but dst_surface may be larger.
   local width, height = dst_surface:get_size()
-  dst_surface:draw(self.surface, width / 2 - 160, height / 2 - 120)
+  self.surface:draw(dst_surface, width / 2 - 160, height / 2 - 120)
 end
 
 function savegame_menu:display_savegame(slot_index)
 
   local slot = self.slots[slot_index]
-  self.surface:draw(self.save_container_img, 57, 48 + slot_index * 27)
-  self.surface:draw(slot.player_name_text, 87, 61 + slot_index * 27)
+  self.save_container_img:draw(self.surface, 57, 48 + slot_index * 27)
+  slot.player_name_text:draw(self.surface, 87, 61 + slot_index * 27)
   
   if slot.hearts_view ~= nil then
     slot.hearts_view:display(self.surface, 168, 51 + slot_index * 27)
@@ -162,13 +162,13 @@ function savegame_menu:display_savegame_cursor()
   else
     y = 159
   end
-  self.surface:draw(self.cursor_sprite, x, y)
+  self.cursor_sprite:draw(self.surface, x, y)
 end
 
 function savegame_menu:display_savegame_number(slot_index)
 
   local slot = self.slots[slot_index]
-  self.surface:draw(slot.number_img, 62, 53 + slot_index * 27)
+  slot.number_img:draw(self.surface, 62, 53 + slot_index * 27)
 end
 
 function savegame_menu:display_bottom_buttons()
@@ -177,13 +177,13 @@ function savegame_menu:display_bottom_buttons()
   local y = 158
   if self.option1_text:get_text():len() > 0 then
     x = 57
-    self.surface:draw(self.option_container_img, x, y)
-    self.surface:draw(self.option1_text, 90, 172)
+    self.option_container_img:draw(self.surface, x, y)
+    self.option1_text:draw(self.surface, 90, 172)
   end
   if self.option2_text:get_text():len() > 0 then
     x = 165
-    self.surface:draw(self.option_container_img, x, y)
-    self.surface:draw(self.option2_text, 198, 172)
+    self.option_container_img:draw(self.surface, x, y)
+    self.option2_text:draw(self.surface, 198, 172)
   end
 end
 
@@ -644,8 +644,8 @@ function savegame_menu:display_phase_options()
   -- All options.
   for i, option in ipairs(self.options) do
     local y = 70 + i * 16
-    self.surface:draw(option.label_text, 64, y)
-    self.surface:draw(option.value_text, 266, y)
+    option.label_text:draw(self.surface, 64, y)
+    option.value_text:draw(self.surface, 266, y)
   end
 
   -- Bottom buttons.
@@ -661,10 +661,10 @@ function savegame_menu:display_phase_options()
     if self.modifying_option then
       local option = self.options[self.options_cursor_position]
       local width, _ = option.value_text:get_size()
-      self.surface:draw(self.left_arrow_sprite, 256 - width, y)
-      self.surface:draw(self.right_arrow_sprite, 268, y)
+      self.left_arrow_sprite:draw(self.surface, 256 - width, y)
+      self.right_arrow_sprite:draw(self.surface, 268, y)
     else
-      self.surface:draw(self.right_arrow_sprite, 54, y)
+      self.right_arrow_sprite:draw(self.surface, 54, y)
     end
   end
 end
@@ -810,14 +810,14 @@ end
 function savegame_menu:display_phase_choose_name()
 
   -- Letter cursor.
-  self.surface:draw(self.cursor_sprite,
+  self.cursor_sprite:draw(self.surface,
       51 + 16 * self.letter_cursor.x,
       93 + 18 * self.letter_cursor.y)
 
   -- Name and letters.
-  self.surface:draw(self.name_arrow_sprite, 57, 76)
-  self.surface:draw(self.player_name_text, 67, 85)
-  self.surface:draw(self.letters_img, 57, 98)
+  self.name_arrow_sprite:draw(self.surface, 57, 76)
+  self.player_name_text:draw(self.surface, 67, 85)
+  self.letters_img:draw(self.surface, 57, 98)
 end
 
 function savegame_menu:add_letter_player_name()

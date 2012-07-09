@@ -55,6 +55,7 @@ set_text_key
 get_size
 start_movement
 stop_movement
+draw
 
 */
 

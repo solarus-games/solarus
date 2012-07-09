@@ -76,6 +76,22 @@ void Script::update_displayables() {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_displayable_draw.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::displayable_api_draw(lua_State* l) {
+
+  DynamicDisplayable& displayable = check_displayable(l, 1);
+  Surface& dst_surface = check_surface(l, 2);
+  int x = luaL_optinteger(l, 3, 0);
+  int y = luaL_optinteger(l, 4, 0);
+  displayable.display(dst_surface, x, y);
+
+  return 0;
+}
+
+/**
  * @brief Implementation of \ref lua_api_displayable_start_movement.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua

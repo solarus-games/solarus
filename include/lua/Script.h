@@ -513,7 +513,6 @@ class Script {
       surface_api_create,
       surface_api_get_size,
       surface_api_fill_color,
-      surface_api_draw,
       surface_api_set_transparency_color,
       surface_api_set_opacity,
       surface_api_fade_in,
@@ -557,6 +556,7 @@ class Script {
       // displayable API (i.e. common to surfaces, text surfaces and sprites)
       displayable_api_start_movement,
       displayable_api_stop_movement,
+      displayable_api_draw,
       displayable_meta_gc,
 
       // movement API

@@ -11,6 +11,12 @@ Creates a sprite.
   - \c sprite_name (string): name of the animation set to use
   - Return value (sprite): the sprite created
 
+- \c sol.sprite.draw(dst_surface, x, y):
+Displays this sprite on a surface.
+  - \c dst_surface (surface): The destination surface.
+  - \c x (number, optional): X coordinate of where to draw this sprite.
+  - \c y (number, optional): Y coordinate of where to draw this sprite.
+
 - \c sprite:get_animation():
 Returns the name of the current animation of this sprite.
   - Return value (string): name of the current animation

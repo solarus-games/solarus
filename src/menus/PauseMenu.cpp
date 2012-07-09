@@ -147,11 +147,11 @@ void PauseMenu::key_pressed(GameControls::GameKey key) {
       save_dialog_state = 2;
  
       if (save_dialog_choice == 0) {
-	savegame.save();
-	Sound::play("piece_of_heart");
+        savegame.save();
+        Sound::play("piece_of_heart");
       }
       else {
-	Sound::play("danger");
+        Sound::play("danger");
       }
 
       question_text[0]->set_text(StringResource::get_string("save_dialog.continue_question_0"));
@@ -168,9 +168,9 @@ void PauseMenu::key_pressed(GameControls::GameKey key) {
       keys_effect.set_sword_key_effect(sword_key_effect_saved);
 
       if (save_dialog_choice == 1) {
-	game.reset();
-	quit();
-	game.set_paused(false);
+        game.reset();
+        quit();
+        game.set_paused(false);
       }
     }
   }
@@ -200,7 +200,8 @@ void PauseMenu::display(Surface& dst_surface) {
 
   // display the save dialog
   if (save_dialog_state > 0) {
-    save_dialog_sprite->display(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 110, 87);
+    save_dialog_sprite->display(dst_surface,
+        SOLARUS_SCREEN_WIDTH_MIDDLE - 110, SOLARUS_SCREEN_HEIGHT_MIDDLE - 33);
     question_text[0]->display(dst_surface);
     question_text[1]->display(dst_surface);
     answer_text[0]->display(dst_surface);

@@ -3,7 +3,7 @@ project(SOLARUS_ENGINE)
 
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 NEW)
-endif(COMMAND cmake_policy)
+endif()
 
 set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
 
@@ -99,7 +99,7 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING
       "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
       FORCE)
-  endif(NOT CMAKE_BUILD_TYPE)
+endif()
 set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
@@ -117,19 +117,19 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND CMAKE_BUILD_TYPE MATCHES "Release")
     if($ENV{MACOSX_DEPLOYMENT_TARGET} STRLESS "10.6")
       set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
     endif()
-  endif(NOT $ENV{MACOSX_DEPLOYMENT_TARGET} EQUAL "")
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND CMAKE_BUILD_TYPE MATCHES "Release")
+  endif()
+endif()
 
 # solarus options
 option(DEBUG_KEYS "Enable the debugging keys." OFF)
 if(DEBUG_KEYS)
   add_definitions(-DSOLARUS_DEBUG_KEYS)
-endif(DEBUG_KEYS)
+endif()
 
 set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
 if(DEFAULT_QUEST)
   add_definitions(-DSOLARUS_DEFAULT_QUEST=\"${DEFAULT_QUEST}\")
-endif(DEFAULT_QUEST)
+endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(DEFAULT_WRITE_DIR "Library/Application Support/Solarus")
@@ -142,17 +142,18 @@ if(WRITE_DIR)
 endif()
 
 if(PANDORA)
-  set(SCREEN_WIDTH 400 CACHE INTEGER "Width of the logical screen in pixels")
-else(PANDORA)
-  set(SCREEN_WIDTH 320 CACHE INTEGER "Width of the logical screen in pixels")
-endif(PANDORA)
+  set(DEFAULT_SCREEN_WIDTH 400)
+else()
+  set(DEFAULT_SCREEN_WIDTH 320)
+endif()
+set(SCREEN_WIDTH ${DEFAULT_SCREEN_WIDTH} CACHE INTEGER "Width of the logical screen in pixels")
 set(SCREEN_HEIGHT 240 CACHE INTEGER "Height of the logical screen in pixels")
-if (SCREEN_WIDTH)
+if(SCREEN_WIDTH)
   add_definitions(-DSOLARUS_SCREEN_WIDTH=${SCREEN_WIDTH})
-endif(SCREEN_WIDTH)
-if (SCREEN_HEIGHT)
+endif()
+if(SCREEN_HEIGHT)
   add_definitions(-DSOLARUS_SCREEN_HEIGHT=${SCREEN_HEIGHT})
-endif(SCREEN_HEIGHT)
+endif()
 
 # files to install with make install
 install(TARGETS	solarus

@@ -66,7 +66,7 @@ function event_dialog_finished(dialog_id, answer)
     sol.map.hero_set_direction(0)
     sol.map.npc_set_position("tom", 528, 245)
     local m = sol.movement.create("path")
-    m:set_trajectory{4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,2,2,2}
+    m:set_path{4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,2,2,2}
     m:set_speed(48)
     m:set_ignore_obstacles(true)
     sol.map.npc_start_movement("tom", m)

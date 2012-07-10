@@ -84,7 +84,7 @@ function event_dialog_finished(message_id, answer)
     local x, y = sol.map.npc_get_position("tom")
     if y ~= tom_initial_y then
       local m = sol.movement.create("path")
-      m:set_trajectory{2,2,2,2,2,2,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}
+      m:set_path{2,2,2,2,2,2,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}
       m:set_speed(48)
       sol.map.npc_start_movement("tom", m)
       tom_sprite:set_animation("walking")

@@ -508,7 +508,7 @@ int InputEvent::get_joypad_hat() {
  * this joypad hat event.
  *
  * The value returned is -1 if the hat is centered,
- * and 0 to 7 if the hat is is one of the eight main directions.
+ * and 0 to 7 if the hat is in one of the eight main directions.
  * If this is not a joypad hat event, -1 is returned.
  *
  * @return the new direction of the hat moved during this joypad hat event

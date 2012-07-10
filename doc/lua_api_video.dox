@@ -1,12 +1,58 @@
 /**
-\page lua_api_video Audio
+\page lua_api_video Video
 
+\c sol.video allows you to change the video mode.
+
+The screen size is fixed at compilation time: it's usually 320*240
+unless you set otherwise with the appropriate compilation flags.
+What we call "screen" or "logcial screen" on this page is the logical
+surface where the game or the menus take place.
+Its size never changes at runtime.
+
+At runtime, the video mode can be changed. The video mode determines
+the size of the window and how the logical screen is displayed on this
+window when the window is larger.
+
+The video mode is automatically saved (as well as the language and the volume),
+independently of savegames.
+
+The following video modes are implemented:
+  - \c "windowed_stretched" (default): The logical screen is stretched onto a
+    double-sized window.
+  - \c "windowed_scale2x": The logical screen is scaled onto a double-sized
+    window with the Scale2X algorithm.
+  - \c "windowed_normal": The logical screen is displayed onto a window of the
+    same size.
+  - \c "fullscreen_normal": The logical screen is displayed in fullscreen with
+    a resolution of the same size.
+  - \c "fullscreen_wide": The logical screen is stretched on a double-sized surface
+    and then displayed in fullscreen onto a widescreen resolution with two black
+    side bars.
+    This video mode is adapted to wide devices.
+  - \c "fullscreen_scale2x": The logical screen is scaled onto a double-sized
+    fullscreen resolution with the Scale2X algorithm.
+  - \c "fullscreen_scale2x_wide": The logical screen is scaled on a double-sized
+    surface with the Scale2X algorithm, and then displayed in fullscreen
+    onto a widescreen resolution with two black side bars.
+    This video mode is adapted to wide devices.
+
+
+\remark On some platforms, some video modes may be unavailable or disabled
+  at compilation time. Use \ref lua_api_video_get_modes to know the list of
+  video modes available at runtime.
 
 <hr>
 
 \section lua_api_video_functions Functions of sol.video
 
 <hr>
+
+\subsection lua_api_video_get_mode sol.video.get_mode()
+
+Returns the current video mode.
+
+- Return value (string): Name of the video mode (see the list above).
+
 
 TODO
 

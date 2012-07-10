@@ -1,5 +1,5 @@
 /**
-\page lua_api_main General functions
+\page lua_api_main General features
 
 \c sol.main contains general features that are global to the execution
 of the program.
@@ -15,15 +15,20 @@ of the program.
 
 \subsection lua_api_main_include sol.main.include(script_name)
 
-Includes another Lua file into this one.
+Loads and runs another Lua file into the current context.
 
-This function lets Solarus
-determine how to locate and open the file. 
-Lua files, as all data files of your quest, may indeed be located inside an
-archive instead of being regular files. Therefore, you need this function to be
-able to load another file.
+Lua files, as all data files of your quest, may be located inside an
+archive instead of being regular files. Therefore, you should not use
+functions that load files from a file system (like \c load_file).
+Use this function instead to let Solarus determine how to locate and open the
+file.
 - \c script_name (string): Name of the Lua file to include, relative to the
   root data directory of your quest (without extension).
+
+\remark Note however that you can use \c require normally, because it is
+  a higher-level function than \c load_file.
+  A specific loader is automatically set so that \c require looks in the
+  archive if necessary. Using \c require is considered as a good practice.
 
 <hr>
     
@@ -39,10 +44,11 @@ Lua will be entirely shut down and then initialized again.
 Exits the program after the current cycle.
 
 <hr>
-    
+ 
 \subsection lua_api_main_start_screen sol.main.start_screen(screen)
 
-Ends the scripted screen or game that was running and starts a scripted screen.
+Ends the scripted screen or game that was running and starts a scripted screen
+after the current cycle.
 
 - \c screen (table): The scripted screen object to load.
 
@@ -92,13 +98,15 @@ Called at each cycle of the main loop.
 
 Called at the beginning of the program.
 
-This function is called when the engine requests Lua to show an initial screen.
+This function is called when Lua starts.
 In other words, the function is called when the program begins or after it
 was reset.
+In this function, you will usually start an initial screen
+like a title screen or a language selection screen.
 
 <hr>
 
-\subsection lua_api_main_on_started sol.main.on_finished()
+\subsection lua_api_main_on_finished sol.main.on_finished()
 
 Called at the end of the program.
 
@@ -109,10 +117,11 @@ just before the program stops or is reset.
 
 \subsection lua_api_main_on_key_pressed sol.main.on_key_pressed(key, modifiers)
 
-Called when the user pressed a keyboard key.
+Called when the user presses a keyboard key.
 - \c key (string): Name of the key that was pressed.
-- \c modifiers (tables): A table whose keys indicate what modifiers were
-down during the event ("shift", "control", "alt"). Values don't matter.
+- \c modifiers (table): A table whose keys indicate what modifiers were
+  down during the event. Possible keys are \c "shift", \c "control" and
+  \c "alt". Values don't matter.
 
 <hr>
 
@@ -120,37 +129,57 @@ down during the event ("shift", "control", "alt"). Values don't matter.
 
 Called when the user releases a keyboard key.
 - \c key (string): Name of the key that was released.
-- \c modifiers (tables): A table whose keys indicate what modifiers were
-down during the event ("shift", "control", "alt"). Values don't matter.
+- \c modifiers (table): A table whose keys indicate what modifiers were
+  down during the event. Possible keys are \c "shift", \c "control" and
+  \c "alt". Values don't matter.
 
 <hr>
 
-\subsection lua_api_main_on_ sol.main.on_()
+\subsection lua_api_main_on_joypad_button_pressed sol.main.on_joypad_button_pressed(button)
+
+Called when the user presses a joypad button.
+- \c button (number): Index of the button that was pressed.
 
 <hr>
 
-\subsection lua_api_main_on_ sol.main.on_()
+\subsection lua_api_main_on_joypad_button_released sol.main.on_joypad_button_released(button)
+
+Called when the user releases a joypad button.
+- \c button (number): Index of the button that was released.
 
 <hr>
 
-\subsection lua_api_main_on_ sol.main.on_()
+\subsection lua_api_main_on_joypad_axis_moved sol.main.on_joypad_axis_moved(axis, state)
 
-
-<hr>
-
-\subsection lua_api_main_on_ sol.main.on_()
-
-<hr>
-
-\subsection lua_api_main_on_ sol.main.on_()
+Called when the user moves a joypad axis.
+- \c axis (number): Index of the axis that was moved. Usually, \c 0 is an
+  horizontal axis and \c 1 is a vertical axis.
+- \c state (number): The new state of the axis that was moved. \c -1 means
+  left or up, \c 0 means centered and \c 1 means right or down.
 
 <hr>
 
-\subsection lua_api_main_on_ sol.main.on_()
+\subsection lua_api_main_on_joypad_hat_moved sol.main.on_joypad_hat_moved(hat, direction8)
 
+Called when the user moves a joypad hat.
+- \c hat (number): Index of the hat that was moved.
+- \c direction8 (number): The new direction of the hat. \c -1 means that the
+  hat is centered. \c 0 to \c 7 indicates that the hat is in one of the eight
+  main directions.
 
+<hr>
 
+\subsection lua_api_main_on_direction_pressed sol.main.on_direction_pressed(direction8)
 
+Called when the user presses a directional key of the keyboard or a
+directional button of the joypad.
+
+Note that this is only a convenient event: the information can already be
+determined with a combination of
+\ref lua_api_main_on_key_pressed,
+\ref lua_api_main_on_joypad_axis_moved and
+\ref lua_api_main_on_joypad_hat_moved.
+- \c direction8 (number): The direction that was pressed (\c 0 to \c 7).
 
 */
 

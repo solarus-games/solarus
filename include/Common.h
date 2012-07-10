@@ -57,7 +57,14 @@
 #  define SOLARUS_SCREEN_HEIGHT 240
 #endif
 
+/**
+ * @brief Half of the logical screen width.
+ */
 #define SOLARUS_SCREEN_WIDTH_MIDDLE (SOLARUS_SCREEN_WIDTH / 2)
+
+/**
+ * @brief Half of the logical screen height.
+ */
 #define SOLARUS_SCREEN_HEIGHT_MIDDLE (SOLARUS_SCREEN_HEIGHT / 2)
 
 

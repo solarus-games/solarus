@@ -103,8 +103,8 @@ Savegame& Script::check_game(lua_State* l, int index) {
 
 /**
  * @brief Pushes a game userdata onto the stack.
- * @param l a Lua context
- * @param sprite a sprite
+ * @param l A Lua context.
+ * @param game A game.
  */
 void Script::push_game(lua_State* l, Savegame& game) {
   push_userdata(l, game);

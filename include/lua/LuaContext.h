@@ -56,8 +56,6 @@ class LuaContext: public Script {
     void main_on_finished();
 
     // Lua menus events.
-    void start_menu(int menu_ref);
-    void stop_menu(int menu_ref);
     void menu_on_update(int menu_ref);
     void menu_on_display(int menu_ref, Surface& dst_surface);
     void menu_on_input(int menu_ref, InputEvent& event);

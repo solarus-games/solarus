@@ -16,30 +16,32 @@ window when the window is larger.
 The video mode is automatically saved (as well as the language and the volume),
 independently of savegames.
 
-The following video modes are implemented:
+Video modes are identified by strings in the Lua API.
+The following modes are implemented:
   - \c "windowed_stretched" (default): The logical screen is stretched onto a
-    double-sized window.
-  - \c "windowed_scale2x": The logical screen is scaled onto a double-sized
-    window with the Scale2X algorithm.
+    window of double size.
+  - \c "windowed_scale2x": The logical screen is scaled onto a window of
+    double size with the Scale2X algorithm.
   - \c "windowed_normal": The logical screen is displayed onto a window of the
     same size.
   - \c "fullscreen_normal": The logical screen is displayed in fullscreen with
     a resolution of the same size.
-  - \c "fullscreen_wide": The logical screen is stretched on a double-sized surface
-    and then displayed in fullscreen onto a widescreen resolution with two black
-    side bars.
+  - \c "fullscreen_wide": The logical screen is stretched on a surface of
+    double size and then displayed in fullscreen onto a widescreen resolution
+    with two black side bars.
     This video mode is adapted to wide devices.
-  - \c "fullscreen_scale2x": The logical screen is scaled onto a double-sized
-    fullscreen resolution with the Scale2X algorithm.
-  - \c "fullscreen_scale2x_wide": The logical screen is scaled on a double-sized
-    surface with the Scale2X algorithm, and then displayed in fullscreen
+  - \c "fullscreen_scale2x": The logical screen is scaled onto a surface of
+    double size with the Scale2X algorithm, and then displayed in fullscreen
+    with a resolution of this double size.
+  - \c "fullscreen_scale2x_wide": The logical screen is scaled on a surface of
+    double size with the Scale2X algorithm, and then displayed in fullscreen
     onto a widescreen resolution with two black side bars.
     This video mode is adapted to wide devices.
 
-
 \remark On some platforms, some video modes may be unavailable or disabled
-  at compilation time. Use \ref lua_api_video_get_modes to know the list of
-  video modes available at runtime.
+  at compilation time. Use \ref lua_api_video_is_mode_supported to test a
+  video mode, and \ref lua_api_video_get_modes to know the list of
+  video modes supported.
 
 <hr>
 
@@ -50,19 +52,50 @@ The following video modes are implemented:
 \subsection lua_api_video_get_mode sol.video.get_mode()
 
 Returns the current video mode.
-
 - Return value (string): Name of the video mode (see the list above).
 
+<hr>
 
-TODO
+\subsection lua_api_video_set_mode sol.video.set_mode(video_mode)
 
-sol.video.get_mode()
-sol.video.set_mode(mode_name)
-sol.video.switch_mode()
-sol.video.is_mode_supported(mode_name)
-sol.video.get_modes()
-sol.video.is_fullscreen()
-sol.video.switch_fullscreen()
+Sets the current video mode.
+- \c video_mode (string): Name of the video mode (see the list above).
+
+<hr>
+
+\subsection lua_api_video_switch_mode sol.video.switch_mode()
+
+Sets the next video mode in the list of video modes supported.
+
+You can use this function if you want to change the video mode without
+specifying which one to use.
+
+<hr>
+
+\subsection lua_api_video_is_mode_supported sol.video.is_mode_supported()
+
+Returns whether a video mode is supported.
+- \c video_mode (string): Name of a video mode (see the list above).
+
+<hr>
+
+\subsection lua_api_video_get_modes sol.video.get_modes()
+
+Returns an array of all video modes supported.
+- \c video_mode (string): Name of a video mode (see the list above).
+
+<hr>
+
+\subsection lua_api_video_is_fullscreen sol.video.is_fullscreen()
+
+Returns whether the current video mode is fullscreen.
+- Return value (boolean): \c true if the video mode is fullscreen.
+
+<hr>
+
+\subsection lua_api_video_switch_fullscreen sol.video.switch_fullscreen()
+
+Turns on or turns off fullscreen, keeping an equivalent video mode.
 
 */
 

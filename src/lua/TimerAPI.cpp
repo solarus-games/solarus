@@ -38,11 +38,6 @@ void Script::register_timer_module() {
       { NULL, NULL }
   };
   register_type(timer_module_name, methods, metamethods);
-
-  // To allow global timers, make sol.main able to create and store timers.
-  lua_getglobal(l, "sol");
-  lua_getfield(l, -1, "main");
-  enable_timers(l, -1);
 }
 
 /**

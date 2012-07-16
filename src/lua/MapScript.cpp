@@ -137,7 +137,7 @@ void MapScript::notify_camera_reached_target() {
   lua_remove(l, -2);
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before"); // delay
   lua_pushcfunction(l, camera_execute_function); // callback
-  timer_api_start_timer(l);
+  timer_api_start(l);
 
   lua_settop(l, 0);
 }
@@ -164,7 +164,7 @@ int MapScript::camera_execute_function(lua_State* l) {
   lua_remove(l, -2);
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after"); // delay
   lua_pushcfunction(l, camera_restore); // callback
-  timer_api_start_timer(l);
+  timer_api_start(l);
 
   lua_settop(l, 0);
 

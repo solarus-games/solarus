@@ -78,8 +78,7 @@ void Script::register_game_module() {
       { "remove_item_amount", game_api_remove_item_amount },
       { "is_dungeon_finished", game_api_is_dungeon_finished },
       { "set_dungeon_finished", game_api_set_dungeon_finished },
-      { "start_timer", timer_api_start_timer },
-      { "stop_timers", timer_api_stop_timers },
+      { "start_timer", timer_api_start },
       // TODO stop timers when the game is stopped
       { NULL, NULL }
   };

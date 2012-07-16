@@ -260,9 +260,8 @@ class Script {
       video_api_set_fullscreen,
 
       // timer API
-      timer_api_start_timer,
+      timer_api_start,
       timer_api_stop,
-      timer_api_stop_timers,
 
       // language API
       language_api_get_language,

@@ -3,23 +3,6 @@
 
 Timers allow you to call a function in the future with a specified delay.
 
-<hr>
-
-\section lua_api_timer_functions Functions of sol.timer
-
-<hr>
-
-\subsection lua_api_timer_start sol.timer.start(delay, with_sound, callback)
-
-Starts a timer to call a function once finished.
-
-If the delay is set to zero, the function is immediately called.
-- \c delay (number): Delay before calling the function in milliseconds.
-- \c with_sound (boolean, optional): True to play a clock sound
-  repeatedly (default is \c false).
-- \c callback (function): The function to be called when the timer finishes.
-- Return value (timer): the timer created.
-
 Examples of use:
 
 \verbatim
@@ -38,15 +21,36 @@ sol.timer.start(1000, function()
 end)
 \endverbatim
 
+- \ref lua_api_timer_functions "Functions of sol.timer"
+- \ref lua_api_timer_methods "Timer methods"
+
 <hr>
 
-\subsection lua_api_timer_stop_all sol.timer.stop_all(timers)
+\section lua_api_timer_functions Functions of sol.timer
 
-Stops a list of timers.
-- \c timers (table): A table of timers to stop
-  (the type of keys does not matter).
-  If some timers of the table are already finished, they are ignored.
-  The table is then cleared.
+\subsection lua_api_timer_start sol.timer.start(delay, callback, [context])
+
+Sets a function to be called after a delay.
+
+If the delay is set to zero, the function is called immediately.
+- \c delay (number): Delay before calling the function in milliseconds.
+- \c callback (function): The function to be called when the timer finishes.
+- \c context (table, game, map or enemy; optional): Determines the lifetime
+  of the timer. If the context is destroyed before the timer is finished, then
+  the timer is canceled. More precisely, the following rules are applied.
+  - If the context is a game, the timer is canceled when the game is closed.
+  - If the context is a map, the timer is canceled when the map changes.
+  - If the context is an enemy, the timer is canceled when the enemy is
+    killed or removed.
+  - If the context is the table of a \ref lua_api_menu "menu", the timer is
+    canceled when the menu is closed.
+  - If the context is the \c sol.main table, the timer is canceled when
+    Lua is closed. Thus, it will be a global timer.
+  - If the context is \c nil or not set, then a default context is chosen
+    (the current map during a game, and the current menu otherwise).
+- Return value (timer): The timer created. There is no problem if that return
+  value is garbage-collected: the timer persists until its completion or the
+  destruction of its context.
 
 <hr>
 
@@ -59,6 +63,16 @@ Stops a list of timers.
 Cancels this timer.
 
 If the timer was already finished, nothing happens.
+
+<hr>
+
+\subsection lua_api_timer_set_with_sound timer:set_with_sound(with_sound)
+
+Sets whether a clock sound is played repeatedly with this timer.
+
+Before you call this function, no sound is played.
+- \c with_sound (boolean, optional): True to play a clock sound
+  repeatedly (default is \c true).
 
 <hr>
 

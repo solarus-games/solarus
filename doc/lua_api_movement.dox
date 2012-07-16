@@ -79,7 +79,7 @@ attached to a map entity.
 
 <hr>
 
-\subsection lua_api_movement_set_ignore_obstacles movement:set_ignore_obstacles(ignore_obstacles)
+\subsection lua_api_movement_set_ignore_obstacles movement:set_ignore_obstacles([ignore_obstacles])
 
 Sets whether a map entity controlled by this movement should ignore obstacles of
 the map.
@@ -580,7 +580,7 @@ a map entity.
 
 <hr>
 
-\subsection lua_api_circle_movement_set_center circle_movement:set_center(x, y), circle_movement:set_center(entity, dx, dy)
+\subsection lua_api_circle_movement_set_center circle_movement:set_center(x, y), circle_movement:set_center(entity, [dx, dy])
 
 Sets the center of this movement as a fixed point of a map entity.
 

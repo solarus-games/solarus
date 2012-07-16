@@ -88,13 +88,13 @@ Returns the angle in radians between the x axis and the specified vector.
 
 <hr>
 
-\subsection lua_api_main_on_update sol.main.on_update()
+\subsection lua_api_main_on_update sol.main:on_update()
 
 Called at each cycle of the main loop.
 
 <hr>
 
-\subsection lua_api_main_on_started sol.main.on_started()
+\subsection lua_api_main_on_started sol.main:on_started()
 
 Called at the beginning of the program.
 
@@ -106,7 +106,7 @@ like a title screen or a language selection screen.
 
 <hr>
 
-\subsection lua_api_main_on_finished sol.main.on_finished()
+\subsection lua_api_main_on_finished sol.main:on_finished()
 
 Called at the end of the program.
 
@@ -115,7 +115,7 @@ just before the program stops or is reset.
 
 <hr>
 
-\subsection lua_api_main_on_key_pressed sol.main.on_key_pressed(key, modifiers)
+\subsection lua_api_main_on_key_pressed sol.main:on_key_pressed(key, modifiers)
 
 Called when the user presses a keyboard key.
 - \c key (string): Name of the key that was pressed.
@@ -125,7 +125,7 @@ Called when the user presses a keyboard key.
 
 <hr>
 
-\subsection lua_api_main_on_key_released sol.main.on_key_released(key, modifiers)
+\subsection lua_api_main_on_key_released sol.main:on_key_released(key, modifiers)
 
 Called when the user releases a keyboard key.
 - \c key (string): Name of the key that was released.
@@ -135,21 +135,21 @@ Called when the user releases a keyboard key.
 
 <hr>
 
-\subsection lua_api_main_on_joypad_button_pressed sol.main.on_joypad_button_pressed(button)
+\subsection lua_api_main_on_joypad_button_pressed sol.main:on_joypad_button_pressed(button)
 
 Called when the user presses a joypad button.
 - \c button (number): Index of the button that was pressed.
 
 <hr>
 
-\subsection lua_api_main_on_joypad_button_released sol.main.on_joypad_button_released(button)
+\subsection lua_api_main_on_joypad_button_released sol.main:on_joypad_button_released(button)
 
 Called when the user releases a joypad button.
 - \c button (number): Index of the button that was released.
 
 <hr>
 
-\subsection lua_api_main_on_joypad_axis_moved sol.main.on_joypad_axis_moved(axis, state)
+\subsection lua_api_main_on_joypad_axis_moved sol.main:on_joypad_axis_moved(axis, state)
 
 Called when the user moves a joypad axis.
 - \c axis (number): Index of the axis that was moved. Usually, \c 0 is an
@@ -159,7 +159,7 @@ Called when the user moves a joypad axis.
 
 <hr>
 
-\subsection lua_api_main_on_joypad_hat_moved sol.main.on_joypad_hat_moved(hat, direction8)
+\subsection lua_api_main_on_joypad_hat_moved sol.main:on_joypad_hat_moved(hat, direction8)
 
 Called when the user moves a joypad hat.
 - \c hat (number): Index of the hat that was moved.
@@ -169,7 +169,7 @@ Called when the user moves a joypad hat.
 
 <hr>
 
-\subsection lua_api_main_on_direction_pressed sol.main.on_direction_pressed(direction8)
+\subsection lua_api_main_on_direction_pressed sol.main:on_direction_pressed(direction8)
 
 Called when the user presses a directional key of the keyboard or a
 directional button of the joypad.

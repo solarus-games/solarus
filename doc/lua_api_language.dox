@@ -34,7 +34,7 @@ Changes the current language.
 
 <hr>
 
-\subsection lua_api_language_get_language_name sol.language.get_language_name(code)
+\subsection lua_api_language_get_language_name sol.language.get_language_name([code])
 
 Returns the human-readable name of a language.
 - \c code (string, optional): The code of a language. By default, the current

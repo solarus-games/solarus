@@ -27,7 +27,14 @@ const std::string Script::timer_module_name = "sol.timer";
  */
 void Script::register_timer_module() {
 
-  // Create the timer type.
+  // Functions of sol.timer.
+  static const luaL_Reg functions[] = {
+      { "start", timer_api_start },
+      { NULL, NULL }
+  };
+  register_functions(timer_module_name, functions);
+
+  // Methods of the timer type.
   static const luaL_Reg methods[] = {
       { "stop", timer_api_stop },
       { NULL, NULL }
@@ -90,13 +97,9 @@ void Script::enable_timers(lua_State* l, int table_index) {
 
   luaL_checktype(l, table_index, LUA_TTABLE);
                                   // ... object ...
-  lua_pushcfunction(l, timer_api_start_timer);
+  lua_pushcfunction(l, timer_api_start);
                                   // ... object ... start_timer
   lua_setfield(l, table_index, "start_timer");
-                                  // ... object ...
-  lua_pushcfunction(l, timer_api_stop_timers);
-                                  // ... object ... stop_timers
-  lua_setfield(l, -2, "stop_timers");
                                   // ... object ...
 }
 
@@ -241,11 +244,13 @@ void Script::update_timers() {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_start_timer.
+ * @brief Implementation of \ref lua_api_timer_start.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::timer_api_start_timer(lua_State *l) {
+int Script::timer_api_start(lua_State *l) {
+
+  // TODO remove with_sound and implement timer_api_set_with_sound
 
   // Parameters: table delay [with_sound] callback.
   LuaContext& lua_context = (LuaContext&) get_script(l);
@@ -286,22 +291,6 @@ int Script::timer_api_stop(lua_State* l) {
   Script& script = get_script(l);
   Timer& timer = check_timer(l, 1);
   script.remove_timer(&timer);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_timer_stop_timers.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int Script::timer_api_stop_timers(lua_State *l) {
-
-  LuaContext& lua_context = (LuaContext&) get_script(l);
-
-// TODO only allow table or userdata  luaL_checktype(l, 1, LUA_TTABLE);
-
-  lua_context.remove_timers(1);
 
   return 0;
 }

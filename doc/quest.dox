@@ -162,11 +162,10 @@ size = 11
 
 \section languages Language-specific files
 
-When running the game for the first time, a language selection menu is displayed
-before the title screen. The language selected is then saved
-(independently of the savegames) and can be changed later from the options menu.
-The \c languages directory contains all language-specific data files
-(strings, dialogs and sprites).
+Language features allow to translate a quest.
+The language selected is saved independently of the savegames.
+All language-specific data files (strings, dialogs and sprites)
+are saved in the \c languages directory.
 
 The \c languages/languages.lua file gives the list of the supported language
 and indicates the default one.
@@ -190,12 +189,14 @@ language{
 }
 \endverbatim
 
-The value \c code represents the name of the directory
-containing the language-specific files of this language.
+The value \c code identifies the language.
+It represents the name of the directory
+containing the language-specific files of this translation.
 The value \c name is a human-readable name for the language.
-This name is displayed to the user in the language selection screen and in the options menu.
+You can show this name to the user in your language selection menu.
 
-The directory \c languages is divided into several directories (one for each language).
+The directory \c languages is divided into several directories
+(one for each translation).
 Then, there are two subdirectories:
 - \c text: contains all strings and game dialogs localized in this language.
 See the \subpage dialog_syntax page to know the syntax of these files.

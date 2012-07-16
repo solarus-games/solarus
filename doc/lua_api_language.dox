@@ -1,15 +1,86 @@
 /**
 \page lua_api_language Language functions
 
-TODO
+\c sol.language lets you get and set the current language
+and manage language-specific data.
+Each language is identified by a code (like \c "en") and has a
+human-readable name (like \c "English").
+The language code corresponds to the name of the directory with files
+translated in this language (sprites, strings and dialogs).
 
-sol.language.get_language()
-sol.language.set_language(code)
-sol.language.get_language_name(code)
-sol.language.get_languages()
-sol.language.get_default_language()
-sol.language.get_string(key)
-sol.language.get_dialog(key)
+The list of languages available in your quest is specified in the data file
+\c languages/language.lua.
+See the \ref languages "Quest data files specification"
+page for more information.
+
+<hr>
+
+\section lua_api_language_functions Functions of sol.language
+
+<hr>
+
+\subsection lua_api_language_get_language sol.language.get_language()
+
+Returns the code of the current language.
+- Return value (string): The code that identifies the current language.
+
+<hr>
+
+\subsection lua_api_language_set_language sol.language.set_language(code)
+
+Changes the current language.
+- \c code (string): The code that identifies the new language to set.
+  It must be a valid code as defined in \c languages/language.lua.
+
+<hr>
+
+\subsection lua_api_language_get_language_name sol.language.get_language_name(code)
+
+Returns the human-readable name of a language.
+- \c code (string, optional): The code of a language. By default, the current
+  language is considered.
+- Return value (string): the human-readable name of this language.
+
+<hr>
+
+\subsection lua_api_language_get_languages sol.language.get_languages()
+
+Returns the list of available languages.
+- Return value (table): An array of all language codes defined in
+  \c languages/language.lua.
+
+<hr>
+
+\subsection lua_api_language_get_default_language sol.language.get_default_language()
+
+Returns the code of the default language.
+The default language is the one selected when no language is saved.
+- Return value (string): The code of the default language as defined in
+  \c languages/language.lua.
+
+<hr>
+
+\subsection lua_api_language_get_string sol.language.get_string(key)
+
+Returns a string translated in the current language.
+Translated strings are defined in the file \c text/strings.dat of the
+language-specific directory (e.g. \c languages/en/text/strings.dat).
+- \c key (string): Key of the string to get. The corresponding key-value
+  pair must be defined in \c strings.dat.
+- Return value (string): The value associated to this key in \c strings.dat.
+
+<hr>
+
+\subsection lua_api_language_get_dialog sol.language.get_dialog(key)
+
+Returns a dialog translated in the current language.
+Translated dialogs are defined in the file \c text/dialogs.lua of the
+language-specific directory (e.g. \c languages/en/text/dialogs.lua).
+- \c key (string): Key of the dialog to get. This dialog must exist in
+  dialogs.lua.
+- Return value (string): The corresponding dialog in \c dialogs.lua
+
+\todo This function is not implemented yet.
 
 */
 

@@ -93,9 +93,10 @@ Returns whether the current video mode is fullscreen.
 
 <hr>
 
-\subsection lua_api_video_switch_fullscreen sol.video.switch_fullscreen()
+\subsection lua_api_video_set_fullscreen sol.video.set_fullscreen(fullscreen)
 
 Turns on or turns off fullscreen, keeping an equivalent video mode.
+- \c fullscreen (boolean, optional): \c true to set fullscreen (default).
 
 */
 

@@ -2,6 +2,7 @@
 
 local fighting_boss = false
 local just_removed_special_torch = false
+local special_torch_timer = nil
 
 local doors = { -- properties of the 5 timed doors
   door_a = { x = 920, y = 640, delay = 12000 },
@@ -119,10 +120,11 @@ function event_camera_back()
   -- set up a timer when the camera movement is finished
   if just_removed_special_torch then
     just_removed_special_torch = false
-    sol.main:start_timer(8000, true, function()
+    special_torch_timer = sol.main:start_timer(8000, true, function()
       sol.audio.play_sound("door_closed")
       sol.map.tile_set_enabled("special_torch", true)
       sol.map.switch_set_activated("special_torch_switch", false)
+      special_torch_timer = nil
     end)
 
   elseif current_door_name ~= nil then
@@ -144,7 +146,10 @@ function event_hero_on_sensor(sensor_name)
 
   -- special torch
   if sensor_name == "special_torch_dont_close_sensor" then
-    sol.main.timer_stop_all()
+    if special_torch_timer ~= nil then
+      special_torch_timer:stop()
+      special_torch_timer = nil
+    end
 
   -- boss door
   elseif sensor_name == "close_boss_door_sensor"

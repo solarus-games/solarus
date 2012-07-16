@@ -54,7 +54,14 @@ function seen_by_guard(guard_name)
 end
 
 function prison_dialog()
-  sol.main.timer_stop_all()
+  if prison_dialog_timer ~= nil then
+    prison_dialog_timer:stop()
+    prison_dialog_timer = nil
+  end
+  if prison_go_timer ~= nil then
+    prison_go_timer:stop()
+    prison_go_timer = nil
+  end
   sol.map.dialog_start("dungeon_5.hero_seen_by_guard")
 end
 

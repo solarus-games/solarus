@@ -40,7 +40,8 @@ end
 
 function event_hurt()
   if timer ~= nil then
-    sol.main.timer_stop_all()
+    timer:stop()
+    timer = nil
   end
 end
 

@@ -1,52 +1,132 @@
 /**
 \page lua_api_menu Menus
 
-- \c event_menu_started:
-Called when the menu has just started.
+To display various information such as a title screen,
+a HUD (head-up display) or a pause screen, you can use a menu.
 
-- \c event_display(dst_surface):
-Called when redrawing the menu. You have to display your menu on the
-surface \c dst_surface.
+A menu is an arbitrary Lua table.
+The engine will call events that you define in this table,
+i.e. methods like \ref lua_api_menu_on_started,
+\ref lua_api_menu_on_display, etc.
 
-- \c event_key_pressed(key, modifiers):
-Called when the user has just pressed any keyboard key (directional or not)
-  - \c key (string): name of the key pressed
-  - \c modifiers (table): a table whose keys may contain "shift",
-    "control" and "alt" (indicates what modifier keys were pressed during the
-    input event)
+To make the engine aware of your menu (and call your events
+automatically), you have to attach it to a context
+such as a map a game or a whole screen.
+- If you attach your menu to a map, it is displayed above the map surface.
+  It will disappear when the map changes.
+  It is useful to show head-up information local to a precise map.<br>
+  Example: a counter that only exists on a specific map.<br>
+  See \ref lua_api_map_start_menu.
+- If you attach your menu to the current game, it will be global to all maps.
+  As long as you keep your menu active, it will persist accross map changes.<br>
+  Example: the player's life counter.<br>
+  See \ref lua_api_game_start_menu.
+- If you attach your menu to a whole screen, it means that you create a
+  dedicated new phase of the program to display your menu.
+  The current screen or game is closed and only your menu is shown.<br>
+  Examples: a title screen or a savegame selection screen.<br>
+  See \ref lua_api_main_start_screen.
+- If you don't attach your menu to anything, you can still handle it in pure
+  Lua by calling its events manually.
 
-- \c event_key_released(key):
-Called when the user has just released any keyboard key (directional or not)
-  - \c key (string): name of the key released
+<hr>
 
-- \c event_joypad_button_pressed(button):
-Called when the user has just pressed a joypad button.
-  - \c button (number): number of the button that was pressed
+\section lua_api_menu_events Events of a menu
 
-- \c event_joypad_button_released(button):
-Called when the user has just released a joypad button.
-  - \c button (number): number of the button that was released
+<hr>
 
-- \c event_joypad_axis_moved(axis, state):
-Called when the user has just moved a joypad axis.
-  - \c axis (number): number of the axis that was moved
-  - \c state (number): the new state of the axis: -1 (left or up),
-    0 (centered) or 1 (right or down)
+\subsection lua_api_menu_on_update menu:on_update()
 
-- \c event_joypad_hat_moved(hat, direction8):
-Called when the user has just moved a joypad hat.
-  - \c hat (number): number of the hat that was moved
-  - \c state (number): the new direction of the hat: -1 if the hat is
-    centered, and 0 to 7 if the hat is is one of the eight main directions
+Called at each cycle of the main loop while your menu is active.
 
-- \c event_direction_pressed(direction8):
-Called when the user has just pressed a directional keyboard key
-or changed a direction on the joypad.
-This function is redundant with \c event_keyboard_key_pressed(),
-\c event_joypad_axis_moved and \c event_joypad_hat_moved().
-Its only purpose is to provide more easily information about directional
-inputs.
-  - \c direction8 (number): the direction that was pressed, in an 8-direction
-    system (0 to 7)
+<hr>
+
+\subsection lua_api_menu_on_started menu:on_started()
+
+Called when your menu is started.
+
+<hr>
+
+\subsection lua_api_menu_on_finished menu:on_finished()
+
+Called when your menu is destroyed.
+
+<hr>
+
+\subsection lua_api_menu_on_display menu:on_display(dst_surface)
+
+Called when your menu has to be redrawn.
+
+Use this event to draw your menu.
+- \c dst_surface (surface): The surface where your should display your menu.
+
+<hr>
+
+\subsection lua_api_menu_on_key_pressed menu:on_key_pressed(key, modifiers)
+
+Called when the user presses a keyboard key while your menu is active.
+- \c key (string): Name of the key that was pressed.
+- \c modifiers (table): A table whose keys indicate what modifiers were
+  down during the event. Possible keys are \c "shift", \c "control" and
+  \c "alt". Values don't matter.
+
+<hr>
+
+\subsection lua_api_menu_on_key_released menu:on_key_released(key, modifiers)
+
+Called when the user releases a keyboard key while your menu is active.
+- \c key (string): Name of the key that was released.
+- \c modifiers (table): A table whose keys indicate what modifiers were
+  down during the event. Possible keys are \c "shift", \c "control" and
+  \c "alt". Values don't matter.
+
+<hr>
+
+\subsection lua_api_menu_on_joypad_button_pressed menu:on_joypad_button_pressed(button)
+
+Called when the user presses a joypad button while your menu is active.
+- \c button (number): Index of the button that was pressed.
+
+<hr>
+
+\subsection lua_api_menu_on_joypad_button_released menu:on_joypad_button_released(button)
+
+Called when the user releases a joypad button while your menu is active.
+- \c button (number): Index of the button that was released.
+
+<hr>
+
+\subsection lua_api_menu_on_joypad_axis_moved menu:on_joypad_axis_moved(axis, state)
+
+Called when the user moves a joypad axis while your menu is active.
+- \c axis (number): Index of the axis that was moved. Usually, \c 0 is an
+  horizontal axis and \c 1 is a vertical axis.
+- \c state (number): The new state of the axis that was moved. \c -1 means
+  left or up, \c 0 means centered and \c 1 means right or down.
+
+<hr>
+
+\subsection lua_api_menu_on_joypad_hat_moved menu:on_joypad_hat_moved(hat, direction8)
+
+Called when the user moves a joypad hat while your menu is active.
+- \c hat (number): Index of the hat that was moved.
+- \c direction8 (number): The new direction of the hat. \c -1 means that the
+  hat is centered. \c 0 to \c 7 indicates that the hat is in one of the eight
+  menu directions.
+
+<hr>
+
+\subsection lua_api_menu_on_direction_pressed menu:on_direction_pressed(direction8)
+
+Called when the user presses a directional key of the keyboard or a
+directional button of the joypad while your menu is active.
+- \c direction8 (number): The direction that was pressed (\c 0 to \c 7).
+
+\remark This is only a convenient event: the information can already be
+determined with a combination of
+\ref lua_api_menu_on_key_pressed,
+\ref lua_api_menu_on_joypad_axis_moved and
+\ref lua_api_menu_on_joypad_hat_moved.
+
 */
 

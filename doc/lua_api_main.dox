@@ -173,13 +173,13 @@ Called when the user moves a joypad hat.
 
 Called when the user presses a directional key of the keyboard or a
 directional button of the joypad.
+- \c direction8 (number): The direction that was pressed (\c 0 to \c 7).
 
-Note that this is only a convenient event: the information can already be
+\remark This is only a convenient event: the information can already be
 determined with a combination of
 \ref lua_api_main_on_key_pressed,
 \ref lua_api_main_on_joypad_axis_moved and
 \ref lua_api_main_on_joypad_hat_moved.
-- \c direction8 (number): The direction that was pressed (\c 0 to \c 7).
 
 */
 

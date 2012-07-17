@@ -76,7 +76,7 @@ function hearts:check()
 
       if self.empty_heart_sprite:get_animation() ~= "danger" then
 	self.empty_heart_sprite:set_animation("danger")
-	self.game:start_timer(250, function()
+	sol.timer.start(self.game, 250, function()
 	  self:repeat_danger_sound()
 	end)
       end
@@ -91,7 +91,7 @@ function hearts:check()
   end
 
   -- Schedule the next check.
-  self.game:start_timer(50, function()
+  sol.timer.start(self.game, 50, function()
     self:check()
   end)
 end
@@ -102,7 +102,7 @@ function hearts:repeat_danger_sound()
       and not self.game:is_suspended() then
 
     sol.audio.play_sound("danger")
-    self.game:start_timer(750, function()
+    sol.timer.start(self.game, 750, function()
       self:repeat_danger_sound()
     end)
   end

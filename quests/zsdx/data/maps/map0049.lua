@@ -120,7 +120,7 @@ function DB16_time_out()
 end
 
 function event_camera_back()
-  timer = sol.main:start_timer(DB16_time_out, 10000, true)
+  timer = sol.timer.start(DB16_time_out, 10000, true)
 end
 
 function event_npc_interaction(npc_name)

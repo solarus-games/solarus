@@ -10,7 +10,7 @@ local prison_dialog_timer = nil
 function dialog_check_guard(dialog_id)
 
   if dialog_id == "dungeon_5.hero_seen_by_guard" then
-    prison_go_timer = sol.main:start_timer(1000, send_hero_to_prison)
+    prison_go_timer = sol.timer.start(1000, send_hero_to_prison)
   end
 end
 
@@ -49,7 +49,7 @@ function seen_by_guard(guard_name)
   local m = sol.movement.create("target")
   m:set_speed(96)
   sol.map.npc_start_movement(guard_name, m)
-  prison_dialog_timer = sol.main:start_timer(500, prison_dialog)
+  prison_dialog_timer = sol.timer.start(500, prison_dialog)
   sol.audio.play_sound("hero_seen")
 end
 

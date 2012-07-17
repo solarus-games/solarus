@@ -17,7 +17,7 @@ end
 function event_restart()
 
   sol.enemy.set_can_attack(false)
-  sol.main:start_timer(1000, function()
+  sol.timer.start(1000, function()
     local sprite = sol.enemy.get_sprite()
     sprite:set_animation("disappearing")
     sol.audio.play_sound("ice")

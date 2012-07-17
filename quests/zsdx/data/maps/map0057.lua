@@ -47,11 +47,11 @@ function start_boss()
 
   sol.map.hero_freeze()
   sol.map.door_close("boss_door")
-  sol.main:start_timer(1000, function()
+  sol.timer.start(1000, function()
     sol.audio.play_music("boss")
     sol.map.enemy_set_enabled("boss", true)
     sol.map.hero_unfreeze()
-    sol.main:start_timer(3000, repeat_lava_spawner)
+    sol.timer.start(3000, repeat_lava_spawner)
     fighting_boss = true
   end)
 end
@@ -63,7 +63,7 @@ function repeat_lava_spawner()
     local index = math.random(#spawner_xy)
     sol.map.enemy_create("spawner_"..nb_spawners_created,
     "drakomos_lava_spawner", 1, spawner_xy[index].x, spawner_xy[index].y)
-    sol.main:start_timer(5000 + math.random(10000), repeat_lava_spawner)
+    sol.timer.start(5000 + math.random(10000), repeat_lava_spawner)
   end
 end
 
@@ -73,7 +73,7 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
     sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
-    sol.main:start_timer(9000, start_final_sequence)
+    sol.timer.start(9000, start_final_sequence)
   elseif item_name == "quiver" then
     sol.map.hero_start_victory_sequence()
   end
@@ -95,7 +95,7 @@ function event_dialog_finished(dialog_id)
   if dialog_id == "dungeon_6.tom" then
 
     sol.audio.stop_music()
-    sol.main:start_timer(1000, function()
+    sol.timer.start(1000, function()
       sol.audio.play_music("legend")
       sol.map.dialog_start("dungeon_6.tom_revelation")
       sol.map.dialog_set_variable("dungeon_6.tom_revelation", sol.map.get_game():get_player_name());

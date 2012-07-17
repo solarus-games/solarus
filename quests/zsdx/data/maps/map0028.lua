@@ -15,7 +15,7 @@ function event_map_started(destination_point_name)
     bed_sprite:set_animation("hero_sleeping")
     sol.map.hero_freeze()
     sol.map.hero_set_visible(false)
-    sol.main:start_timer(2000, sahasrahla_dream)
+    sol.timer.start(2000, sahasrahla_dream)
   else
     sol.map.npc_remove("snores")
   end
@@ -29,14 +29,14 @@ end
 function event_dialog_finished(dialog_id)
   
   if dialog_id == "link_house.dream" then
-    sol.main:start_timer(1000, wake_up)
+    sol.timer.start(1000, wake_up)
   end
 end
 
 function wake_up()
   sol.map.npc_remove("snores")
   bed_sprite:set_animation("hero_waking")
-  sol.main:start_timer(500, jump_from_bed)
+  sol.timer.start(500, jump_from_bed)
 end
 
 function jump_from_bed()

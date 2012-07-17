@@ -85,7 +85,7 @@ function event_custom_attack_received(attack, sprite)
       sol.enemy.hurt(0)
       sol.audio.play_sound("enemy_hurt")
       petals[i].sprite:set_animation("petal_hurt_"..i)
-      timers[#timers + 1] = sol.main:start_timer(300, function()
+      timers[#timers + 1] = sol.timer.start(300, function()
 
 	if petals[i].life > 0 then
 	  -- restore the petal animation
@@ -155,6 +155,6 @@ function repeat_create_son()
     end
   end
 
-  timers[#timers + 1] = sol.main:start_timer(1000 + math.random(1000), repeat_create_son)
+  timers[#timers + 1] = sol.timer.start(1000 + math.random(1000), repeat_create_son)
 end
 

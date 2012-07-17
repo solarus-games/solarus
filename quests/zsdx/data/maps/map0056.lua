@@ -70,7 +70,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.hero_freeze()
     sol.map.door_close("miniboss_door")
     fighting_miniboss = true
-    sol.main:start_timer(1000, function()
+    sol.timer.start(1000, function()
       sol.audio.play_music("boss")
       sol.map.enemy_set_group_enabled("miniboss", true)
       sol.map.tile_set_group_enabled("miniboss_fake_floor", false)
@@ -93,7 +93,7 @@ end
 function event_dialog_finished(dialog_id)
 
   if dialog_id == "credits_3" then
-   sol.main:start_timer(2000, ending_next)
+   sol.timer.start(2000, ending_next)
   end
 end
 

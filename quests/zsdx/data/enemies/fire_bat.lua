@@ -62,7 +62,7 @@ function event_message_received(src_enemy, message)
   else
     local delay = tonumber(message:match("^go_hero ([0-9]*)$"))
     if delay then
-      sol.main:start_timer(delay, function()
+      sol.timer.start(delay, function()
 	go_hero()
       end)
     end

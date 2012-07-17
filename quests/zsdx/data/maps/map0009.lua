@@ -68,7 +68,7 @@ function event_npc_interaction(npc_name)
       sol.map.hero_set_position(x, y, 0)
       sol.map.hero_set_visible(false)
       sol.audio.play_sound("bomb")
-      sol.main:start_timer(2000, cannon_jump)
+      sol.timer.start(2000, cannon_jump)
     end
   end
 end
@@ -94,7 +94,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.stairs_set_enabled("castle_roof_stairs", false)
     sol.map.teletransporter_set_enabled("teletransporter_dw_roof", false)
     sol.audio.play_sound("door_closed")
-    sol.main:start_timer(1000, start_boss)
+    sol.timer.start(1000, start_boss)
   end
 end
 
@@ -118,7 +118,7 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.map.get_game():set_dungeon_finished(5)
-    sol.main:start_timer(9000, leave_boss)
+    sol.timer.start(9000, leave_boss)
     sol.audio.play_music("victory")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
@@ -128,7 +128,7 @@ end
 function leave_boss()
 
   sol.map.hero_set_map(9, "from_dungeon_5_1F", 1)
-  sol.main:start_timer(700, restore_music)
+  sol.timer.start(700, restore_music)
 end
 
 function restore_music()

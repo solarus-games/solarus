@@ -77,7 +77,7 @@ function sol.languages.get_dialog("dungeon_9.boss"):on_finished(answer)
 end
 
 function sol.languages.get_dialog("dungeon_9.zelda"):on_finished(answer)
-  sol.main:start_timer(1000, function()
+  sol.timer.start(1000, function()
     sol.map:start_dialog("dungeon_9.zelda_children")
   end)
 end
@@ -86,25 +86,25 @@ function sol.languages.get_dialog("dungeon_9.zelda_children"):on_finished(answer
 
   sol.audio.stop_music()
   sol.audio.play_sound("world_warp")
-  sol.main:start_timer(1000, function()
+  sol.timer.start(1000, function()
     for i = 1, 8 do
       sol.map:get_entity("child_" .. i):get_sprite():fade_out()
     end
   end)
-  sol.main:start_timer(5000, function()
+  sol.timer.start(5000, function()
     sol.map:start_dialog("dungeon_9.zelda_end")
   end)
 end
 
 function sol.languages.get_dialog("dungeon_9.zelda_end"):on_finished(answer)
-  sol.main:start_timer(2000, function()
+  sol.timer.start(2000, function()
     hero:set_map("8", "from_ending")
   end
 end
 
 function boss:on_killed()
 
-  sol.main:start_timer(1000, start_final_sequence)
+  sol.timer.start(1000, start_final_sequence)
 end
 
 function start_final_sequence()
@@ -112,10 +112,10 @@ function start_final_sequence()
   hero:freeze()
   hero:set_direction(3)
   sol.audio.play_music("victory")
-  sol.main:start_timer(9000, function()
+  sol.timer.start(9000, function()
     hero:set_map("130", "from_boss")
   end)
-  sol.main:start_timer(9100, start_zelda_sequence)
+  sol.timer.start(9100, start_zelda_sequence)
 end
 
 function start_zelda_sequence()
@@ -132,7 +132,7 @@ function start_zelda_sequence()
     sprite:fade_in()
   end
 
-  sol.main:start_timer(3000, function()
+  sol.timer.start(3000, function()
     sol.map:start_dialog("dungeon_9.zelda", sol.game:get_player_name())
   end)
 end
@@ -152,7 +152,7 @@ function torches:on_collision_fire()
     -- temporarily light the torch up
     torch_sprite:set_animation("lit")
     check_torches()
-    self.timer = sol.main:start_timer(torches_delay, function()
+    self.timer = sol.timer.start(torches_delay, function()
       torch_sprite:set_animation("unlit")
       if switch_1:is_enabled() then
 	floor_switch_tiles:set_enabled(false)

@@ -106,10 +106,10 @@ function billy_leave()
     sprite:set_animation("walking")
   elseif billy_leave_step == 2 then
     sprite:set_direction(1)
-    sol.main:start_timer(500, billy_leave)
+    sol.timer.start(500, billy_leave)
   elseif billy_leave_step == 3 then
     sol.map.door_open("door")
-    sol.main:start_timer(500, billy_leave)
+    sol.timer.start(500, billy_leave)
   elseif billy_leave_step == 4 then
     local m = sol.movement.create("path")
     m:set_path{2,2,2,2,2,2,2,2}

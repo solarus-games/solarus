@@ -36,13 +36,13 @@ function event_restart()
     m:set_speed(32)
     sol.enemy.start_movement(m)
     for _, t in ipairs(timers) do t:stop() end
-    timers[#timers + 1] = sol.main:start_timer(math.random(2000, 3000), skeleton_attack)
+    timers[#timers + 1] = sol.timer.start(math.random(2000, 3000), skeleton_attack)
   else
     local m = sol.movement.create("random")
     m:set_speed(80)
     sol.enemy.start_movement(m)
     for _, t in ipairs(timers) do t:stop() end
-    timers[#timers + 1] = sol.main:start_timer(math.random(3000, 5000), big_attack)
+    timers[#timers + 1] = sol.timer.start(math.random(3000, 5000), big_attack)
   end
 end
 
@@ -51,7 +51,7 @@ function skeleton_attack()
 
   skeleton:set_animation("attack")
   sol.audio.play_sound("ice")
-  timers[#timers + 1] = sol.main:start_timer(500, function()
+  timers[#timers + 1] = sol.timer.start(500, function()
     skeleton:set_animation("walking")
     nb_flames_created = nb_flames_created + 1
     local son_name = sol.enemy.get_name() .. "_son_" .. nb_flames_created
@@ -60,7 +60,7 @@ function skeleton_attack()
     local hero_x, hero_y = sol.map.hero_get_position()
     local angle = sol.main.get_angle(x, y, hero_x, hero_y)
     sol.enemy.send_message(son_name, angle)
-    timers[#timers + 1] = sol.main:start_timer(math.random(1000, 3000), skeleton_attack)
+    timers[#timers + 1] = sol.timer.start(math.random(1000, 3000), skeleton_attack)
   end)
 end
 
@@ -88,7 +88,7 @@ function big_attack()
   sol.enemy.stop_movement()
   head:set_animation("attack")
   sol.audio.play_sound("lamp")
-  timers[#timers + 1] = sol.main:start_timer(500, repeat_flame)
+  timers[#timers + 1] = sol.timer.start(500, repeat_flame)
 end
 
 function repeat_flame()
@@ -100,9 +100,9 @@ function repeat_flame()
     sol.enemy.create_son(son_name, "blue_flame", 0, 16)
     sol.enemy.send_message(son_name, tostring(angle))
     sol.audio.play_sound("lamp")
-    timers[#timers + 1] = sol.main:start_timer(150, repeat_flame)
+    timers[#timers + 1] = sol.timer.start(150, repeat_flame)
   else
-    timers[#timers + 1] = sol.main:start_timer(500, sol.enemy.restart)
+    timers[#timers + 1] = sol.timer.start(500, sol.enemy.restart)
   end
 end
 

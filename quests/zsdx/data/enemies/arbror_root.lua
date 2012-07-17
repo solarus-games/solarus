@@ -34,11 +34,11 @@ function event_restart()
     if timer ~= nil then
       timer:stop()
     end
-    timer = sol.main:start_timer(10000, disappear)
+    timer = sol.timer.start(10000, disappear)
     sol.enemy.stop_movement()
     sol.enemy.set_can_attack(false)
   else
-    timer = sol.main:start_timer(1000, go)
+    timer = sol.timer.start(1000, go)
     sol.enemy.set_can_attack(true)
   end
 end

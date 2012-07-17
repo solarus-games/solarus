@@ -3,7 +3,7 @@
 function event_map_started(destination_point_name)
 
   init_evil_tiles()
-  sol.main:start_timer(2000, start_evil_tiles)
+  sol.timer.start(2000, start_evil_tiles)
 end
 
 -- Initializes evil tiles (this function should be called
@@ -31,7 +31,7 @@ function start_evil_tiles()
     sol.map.tile_set_enabled("evil_tile_after_"..next, true)
     next = next + 1
     if next <= total then
-      sol.main:start_timer(spawn_delay, repeat_spawn)
+      sol.timer.start(spawn_delay, repeat_spawn)
     end
   end
 
@@ -51,7 +51,7 @@ function start_evil_tiles()
     end
 
     if again then
-      sol.main:start_timer(150, repeat_sound)
+      sol.timer.start(150, repeat_sound)
     end
   end
 

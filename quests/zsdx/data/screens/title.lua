@@ -20,7 +20,7 @@ function title_screen:on_started()
   self.phase = "black"
 
   self.surface = sol.surface.create(320, 240)
-  self:start_timer(300, function()
+  sol.timer.start(300, function()
     self:phase_zs_presents()
   end)
 
@@ -41,7 +41,7 @@ function title_screen:phase_zs_presents()
   zs_presents_img:draw(self.surface, x, y)
   sol.audio.play_sound("intro")
 
-  self:start_timer(2000, function()
+  sol.timer.start(2000, function()
     self:phase_title()
   end)
 end
@@ -93,21 +93,21 @@ function title_screen:phase_title()
   }
 
   -- set up the appearance of images and texts
-  self:start_timer(5000, function()
+  sol.timer.start(5000, function()
     sol.audio.play_sound("ok")
     self.dx_img = sol.surface.create("menus/title_dx.png")
   end)
 
-  self:start_timer(6000, function()
+  sol.timer.start(6000, function()
     self.star_img = sol.surface.create("menus/title_star.png")
   end)
 
   self.show_press_space = false
   function switch_press_space()
     self.show_press_space = not self.show_press_space
-    self:start_timer(500, switch_press_space)
+    sol.timer.start(500, switch_press_space)
   end
-  self:start_timer(6500, switch_press_space)
+  sol.timer.start(6500, switch_press_space)
 
   -- make the clouds move
   self.clouds_xy = {x = 320, y = 240}
@@ -121,9 +121,9 @@ function title_screen:phase_title()
     if self.clouds_xy.y < 0 then
       self.clouds_xy.y = self.clouds_xy.y + 299
     end
-    self:start_timer(50, move_clouds)
+    sol.timer.start(50, move_clouds)
   end
-  self:start_timer(50, move_clouds)
+  sol.timer.start(50, move_clouds)
 
   -- show an opening transition
   self.surface:fade_in(30)

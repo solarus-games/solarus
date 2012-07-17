@@ -40,7 +40,7 @@ function event_restart()
   -- schedule a blade attack
   if has_blade() then
     local delay = 1000 * (1 + math.random(4))
-    sol.main:start_timer(delay, start_blade_attack)
+    sol.timer.start(delay, start_blade_attack)
     blade_attack = false
   end
 end
@@ -72,7 +72,7 @@ function event_custom_attack_received(attack, sprite)
     sol.enemy.stop_movement()
     sol.audio.play_sound("boss_hurt")
     left_blade_life = left_blade_life - 1
-    sol.main:start_timer(400, stop_hurting_left_blade)
+    sol.timer.start(400, stop_hurting_left_blade)
 
   elseif has_right_blade()
     and sprite == right_blade_sprite
@@ -86,7 +86,7 @@ function event_custom_attack_received(attack, sprite)
     sol.enemy.stop_movement()
     sol.audio.play_sound("boss_hurt")
     right_blade_life = right_blade_life - 1
-    sol.main:start_timer(400, stop_hurting_right_blade)
+    sol.timer.start(400, stop_hurting_right_blade)
   end
 end
 

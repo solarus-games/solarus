@@ -25,7 +25,7 @@ function event_switch_activated(switch_name)
       -- open door A, wait 1 second and go to door B
       sol.audio.play_sound("secret")
       sol.map.door_open("door_a")
-      sol.main:start_timer(1000, function()
+      sol.timer.start(1000, function()
 	sol.map.camera_move(1608, 360, 250, function()
 	  -- open door B
 	  sol.audio.play_sound("secret")
@@ -49,7 +49,7 @@ function event_camera_back()
   local x, y = sol.map.hero_get_position()
   if y < 360 then
     -- chest A
-    chest_a_timer = sol.main:start_timer(5000, true, function()
+    chest_a_timer = sol.timer.start(5000, true, function()
       if not sol.map.chest_is_open("chest_a") then
 	sol.audio.play_sound("door_closed")
 	sol.map.chest_set_enabled("chest_a", false)

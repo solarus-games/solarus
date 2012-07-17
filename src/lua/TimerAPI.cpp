@@ -269,7 +269,8 @@ int Script::timer_api_start(lua_State *l) {
 
   if (delay > 0) {
     // Create the timer.
-    Timer* timer = new Timer(delay, with_sound);
+    Timer* timer = new Timer(delay);
+    timer->set_with_sound(with_sound);
     lua_context.add_timer(timer, 1, index);
     push_timer(l, *timer);
   }

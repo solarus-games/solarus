@@ -23,16 +23,14 @@
 /**
  * @brief Creates and starts a timer.
  * @param delay duration of the timer in milliseconds
- * @param with_sound plays a sound until the timer expires
  */
-Timer::Timer(uint32_t delay, bool with_sound):
+Timer::Timer(uint32_t delay):
+  expiration_date(System::now() + delay),
   finished(false),
   suspended(false),
-  when_suspended(0) {
+  when_suspended(0),
+  next_sound_date(0) {
 
-  uint32_t now = System::now();
-  expiration_date = now + delay;
-  next_sound_date = with_sound ? now : 0;
 }
 
 /**
@@ -40,6 +38,22 @@ Timer::Timer(uint32_t delay, bool with_sound):
  */
 Timer::~Timer() {
 
+}
+
+/**
+ * @brief Returns whether a clock sound is played during this timer.
+ * @return true if a clock sound is played.
+ */
+bool Timer::is_with_sound() {
+  return next_sound_date != 0;
+}
+
+/**
+ * @brief Sets whether a clock sound is played during this timer.
+ * @param with_sound true to play a clock sound during this timer.
+ */
+void Timer::set_with_sound(bool with_sound) {
+  next_sound_date = with_sound ? System::now() : 0;
 }
 
 /**
@@ -64,7 +78,7 @@ void Timer::update() {
   finished = (now >= expiration_date);
 
   // play the sound
-  if (next_sound_date != 0 && now >= next_sound_date) {
+  if (is_with_sound() && now >= next_sound_date) {
 
     uint32_t remaining_time = expiration_date - now;
     if (remaining_time > 6000) {
@@ -101,7 +115,7 @@ void Timer::set_suspended(bool suspended) {
     // recalculate the expiration date
     if (when_suspended != 0) {
       expiration_date += now - when_suspended;
-      if (next_sound_date != 0) {
+      if (is_with_sound()) {
         next_sound_date += now - when_suspended;
       }
     }

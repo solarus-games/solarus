@@ -29,9 +29,11 @@ class Timer: public ExportableToLua {
 
   public:
 
-    Timer(uint32_t duration, bool with_sound);
+    Timer(uint32_t duration);
     ~Timer();
 
+    bool is_with_sound();
+    void set_with_sound(bool with_sound);
     bool is_finished();
 
     void update();

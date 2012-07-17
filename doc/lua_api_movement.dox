@@ -13,16 +13,16 @@ As detailed below, the methods available differ depending on the movement type
 because all movement types don't have the same properties.
 
 - \ref lua_api_movement_functions "Functions of sol.movement"
-- \ref lua_api_movement_methods "Movement methods"
-- \ref lua_api_straight_movement_methods "Straight movement methods"
-- \ref lua_api_random_movement_methods "Random movement methods"
-- \ref lua_api_target_movement_methods "Target movement methods"
-- \ref lua_api_path_movement_methods "Path movement methods"
-- \ref lua_api_random_path_movement_methods "Random path movement methods"
-- \ref lua_api_path_finding_movement_methods "Path finding movement methods"
-- \ref lua_api_circle_movement_methods "Circle movement methods"
-- \ref lua_api_jump_movement_methods "Jump movement methods"
-- \ref lua_api_pixel_movement_methods "Pixel movement methods"
+- \ref lua_api_movement_methods "Methods all movement types"
+- \ref lua_api_straight_movement_methods "Methods of the straight movement type"
+- \ref lua_api_random_movement_methods "Methods of the random movement type"
+- \ref lua_api_target_movement_methods "Methods of the target movement type"
+- \ref lua_api_path_movement_methods "Methods of the path movement type"
+- \ref lua_api_random_path_movement_methods "Methods of the random path movement type"
+- \ref lua_api_path_finding_movement_methods "Methods of the path finding movement type"
+- \ref lua_api_circle_movement_methods "Methods of the circle movement type"
+- \ref lua_api_jump_movement_methods "Methods of the jump movement type"
+- \ref lua_api_pixel_movement_methods "Methods of the pixel movement type"
 
 Movements can be applied in-game to map entities, but also
 outside a game, typically in a menu to move a sprite or an image.

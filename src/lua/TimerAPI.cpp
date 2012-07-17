@@ -214,28 +214,31 @@ void Script::set_suspended_timers(bool suspended) {
  */
 int Script::timer_api_start(lua_State *l) {
 
-  // Parameters: delay callback [context].
+  // Parameters: [context] delay callback.
   Script& script = get_script(l);
 
-  uint32_t delay = luaL_checkinteger(l, 1);
-  luaL_checktype(l, 2, LUA_TFUNCTION);
-  if (lua_gettop(l) >= 3) {
-    if (lua_type(l, 3) != LUA_TTABLE
-        && lua_type(l, 3) != LUA_TUSERDATA
-        && lua_type(l, 3) != LUA_TNIL) {
-      luaL_typerror(l, 3, "table, userdata or nil");
+  if (lua_type(l, 1) != LUA_TNUMBER) {
+    // The first parameter is the context.
+    if (lua_type(l, 1) != LUA_TTABLE
+        && lua_type(l, 1) != LUA_TUSERDATA) {
+      luaL_typerror(l, 1, "table or userdata");
     }
   }
-  if (lua_gettop(l) < 3 || lua_type(l, 3) == LUA_TNIL) {
-    // Set a default context
-    lua_settop(l, 2);
+  else {
+    // No context specified: set a default context.
     LuaContext::push_main(l);
-    // TODO: during a game, push the map instead of sol.main.
+    // TODO: instead of sol.main: during a game, use the current map,
+    // and outside a game, use the current menu.
+    lua_insert(l, 1);
   }
+  // Now the first parameter is the context.
+
+  uint32_t delay = luaL_checkinteger(l, 2);
+  luaL_checktype(l, 3, LUA_TFUNCTION);
 
   if (delay == 0) {
     // The delay is zero: call the function right now.
-    lua_settop(l, 2);
+    lua_settop(l, 3);
     script.call_function(0, 0, "callback");
     lua_pushnil(l);
   }

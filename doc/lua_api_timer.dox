@@ -28,27 +28,31 @@ end)
 
 \section lua_api_timer_functions Functions of sol.timer
 
-\subsection lua_api_timer_start sol.timer.start(delay, callback, [context])
+\subsection lua_api_timer_start sol.timer.start([context], delay, callback)
 
 Sets a function to be called after a delay.
 
 If the delay is set to zero, the function is called immediately.
-- \c delay (number): Delay before calling the function in milliseconds.
-- \c callback (function): The function to be called when the timer finishes.
-- \c context (table, game, map or enemy; optional): Determines the lifetime
-  of the timer. If the context is destroyed before the timer is finished, then
+- \c context (table, game, map or enemy; optional): Determines the lifetime of
+  the timer. This parameter is optional: its default value is adapted to some
+  usual situations.<br>
+  The context is where the timer belongs.
+  If the context is destroyed before the timer is finished, then
   the timer is canceled. More precisely, the following rules are applied.
   - If the context is a game, the timer is canceled when the game is closed.
-  - If the context is a map, the timer is canceled when the map changes.
+  - If the context is a map, the timer is canceled when the player goes to
+    another map.
   - If the context is an enemy, the timer is canceled when the enemy is
     killed or removed.
   - If the context is the table of a \ref lua_api_menu "menu", the timer is
     canceled when the menu is closed.
-  - If the context is the \c sol.main table, the timer is canceled when
-    Lua is closed. Thus, it will be a global timer.
-  - If the context is \c nil or not set, then a default context is chosen
+  - If the context is the \ref \lua_api_main sol.main table, the timer is
+    canceled when Lua is closed. Thus, it will be a global timer.
+  - If the context is not set, then a default context is chosen
     (the current map during a game, and the current menu otherwise).
-- Return value (timer): The timer created (or \c nil if \c delay was \c 0).
+- \c delay (number): Delay before calling the function in milliseconds.
+- \c callback (function): The function to be called when the timer finishes.
+- Return value (timer): The timer created (or \c nil if \c delay is \c 0).
   There is no problem if the timer returned is garbage-collected: the timer
   persists until its completion or the destruction of its context.
   Usually, you will store the return value only if you need to stop the timer
@@ -56,7 +60,7 @@ If the delay is set to zero, the function is called immediately.
 
 <hr>
 
-\section lua_api_timer_methods Timer methods
+\section lua_api_timer_methods Methods of the timer type
 
 <hr>
 

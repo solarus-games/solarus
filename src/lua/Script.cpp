@@ -560,8 +560,9 @@ void Script::update() {
 }
 
 /**
- * @brief This function is called when the game (if any) is being suspended or resumed.
- * @param suspended true if the game is suspended, false if it is resumed
+ * @brief This function is called when the game (if any) is being suspended
+ * or resumed.
+ * @param suspended true if the game is suspended, false if it is resumed.
  */
 void Script::set_suspended(bool suspended) {
 
@@ -569,12 +570,12 @@ void Script::set_suspended(bool suspended) {
 
     // Notify the timers.
     std::map<const void*, std::map<Timer*, int> >::iterator it;
-    for (it = table_timers.begin(); it != table_timers.end(); ++it) {
+    for (it = timers.begin(); it != timers.end(); ++it) {
 
-      std::map<Timer*, int> timers = it->second;
+      std::map<Timer*, int> context_timers = it->second;
 
       std::map<Timer*, int>::iterator it2;
-      for (it2 = timers.begin(); it2 != timers.end(); ++it2) {
+      for (it2 = context_timers.begin(); it2 != context_timers.end(); ++it2) {
         it2->first->set_suspended(suspended);
       }
     }

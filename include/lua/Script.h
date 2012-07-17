@@ -147,18 +147,25 @@ class Script {
     static void push_movement(lua_State* l, Movement& movement);
     static void push_ref(lua_State* l, int ref);
     const std::string& input_get_key_name(InputEvent::KeyboardKey key);
-    static void enable_timers(lua_State* l, int table_index);
-    static void disable_timers(lua_State* l, int table_index);
+
+    // Timers.
+    bool is_new_timer_suspended(void);
+    void add_timer(Timer* timer, int context_index, int callback_index);
+    void remove_timer(Timer* timer, int context_index);
+    void remove_timer(Timer* timer);
+    void remove_timers(int context_index);
+    void remove_timers();
+    void update_timers();
 
   private:
 
     // script data
     MainLoop& main_loop;            /**< the Solarus main loop */
     // TODO store this into Lua instead?
-    // map<table, map<timer, callback_ref>>
+    // map<context, map<timer, callback_ref> >
     std::map<const void*, std::map<Timer*, int> >
-        table_timers;  /**< the timers currently running in each
-                        * table, and their callback ref */
+        timers;                     /**< the timers currently running in each
+                                     * context, and their callback ref */
 
     std::set<DynamicDisplayable*>
       displayables;                 /**< all displayable objects created by
@@ -210,15 +217,6 @@ class Script {
     static JumpMovement& check_jump_movement(lua_State* l, int index);
     static PixelMovement& check_pixel_movement(lua_State* l, int index);
 
-    // timers
-    bool is_new_timer_suspended(void);
-    void add_timer(Timer* timer, int table_index, int callback_index);
-    void remove_timer(Timer* timer, int table_index);
-    void remove_timer(Timer* timer);
-    void remove_timers(int table_index);
-    void remove_timers();
-    void update_timers();
-
     // displayable objects
     bool has_displayable(DynamicDisplayable* displayable);
     void add_displayable(DynamicDisplayable* displayable);
@@ -262,6 +260,8 @@ class Script {
       // timer API
       timer_api_start,
       timer_api_stop,
+      timer_api_is_with_sound,
+      timer_api_set_with_sound,
 
       // language API
       language_api_get_language,

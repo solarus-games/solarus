@@ -37,6 +37,8 @@ void Script::register_timer_module() {
   // Methods of the timer type.
   static const luaL_Reg methods[] = {
       { "stop", timer_api_stop },
+      { "is_with_sound", timer_api_is_with_sound },
+      { "set_with_sound", timer_api_set_with_sound },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -83,51 +85,20 @@ void Script::push_timer(lua_State* l, Timer& timer) {
 }
 
 /**
- * @brief Makes a Lua table capable of running timers.
- *
- * The table will then have a start_timer() method and a stop_timers()
- * methods. It may be a regular table or the metatable of a userdata type.
- *
- * @param l A Lua state.
- * @param table_index Index of a Lua table.
- */
-void Script::enable_timers(lua_State* l, int table_index) {
-
-  table_index = get_positive_index(l, table_index);
-
-  luaL_checktype(l, table_index, LUA_TTABLE);
-                                  // ... object ...
-  lua_pushcfunction(l, timer_api_start);
-                                  // ... object ... start_timer
-  lua_setfield(l, table_index, "start_timer");
-                                  // ... object ...
-}
-
-/**
- * @brief Stops all timers currently running for a Lua object.
- * @param l A Lua state.
- * @param table_index Index of a Lua table.
- */
-void Script::disable_timers(lua_State* l, int table_index) {
-
-  get_script(l).remove_timers(table_index);
-}
-
-/**
- * @brief Registers a timer into a table.
+ * @brief Registers a timer into a context (table or a userdata).
  * @param timer A timer.
- * @param table_index Index of a table in the stack.
+ * @param context_index Index of the table or userdata in the stack.
  * @param callback_index Index of the function to call when the timer finishes.
  */
-void Script::add_timer(Timer* timer, int table_index, int callback_index) {
+void Script::add_timer(Timer* timer, int context_index, int callback_index) {
 
-  const void* table_pointer = lua_topointer(l, table_index);
+  const void* context_pointer = lua_topointer(l, context_index);
   lua_pushvalue(l, callback_index);
   int callback_ref = create_ref();
   lua_pop(l, 1);
 
   set_created(timer);
-  table_timers[table_pointer][timer] = callback_ref;
+  timers[context_pointer][timer] = callback_ref;
 
   if (get_script(l).is_new_timer_suspended()) {
     timer->set_suspended(true);
@@ -136,14 +107,14 @@ void Script::add_timer(Timer* timer, int table_index, int callback_index) {
 }
 
 /**
- * @brief Unregisters a timer associated to a table.
+ * @brief Unregisters a timer associated to a context.
  * @param timer A timer.
  */
 void Script::remove_timer(Timer* timer) {
 
   bool found = false;
   std::map<const void*, std::map<Timer*, int> >::iterator it;
-  for (it = table_timers.begin(); it != table_timers.end() && !found; ++it) {
+  for (it = timers.begin(); it != timers.end() && !found; ++it) {
 
     std::map<Timer*, int> timers = it->second;
     if (timers.count(timer) > 0) {
@@ -152,7 +123,7 @@ void Script::remove_timer(Timer* timer) {
         destroy_ref(timers[timer]);
       }
       timers.erase(timer);
-      decrement_refcount(timer); // will be deleted if Lua has already collected it
+      decrement_refcount(timer);  // Deleted if Lua has already collected it.
     }
   }
 
@@ -160,36 +131,36 @@ void Script::remove_timer(Timer* timer) {
 }
 
 /**
- * @brief Unregisters a timer associated to a table.
+ * @brief Unregisters a timer associated to a context.
  * @param timer A timer.
- * @param table_index Index of the table containing this timer.
+ * @param context_index Index of the table or userdata containing this timer.
  */
-void Script::remove_timer(Timer* timer, int table_index) {
+void Script::remove_timer(Timer* timer, int context_index) {
 
-  const void* table_pointer = lua_topointer(l, table_index);
+  const void* context_pointer = lua_topointer(l, context_index);
   if (!timer->is_finished()) {
-    destroy_ref(table_timers[table_pointer][timer]);
+    destroy_ref(timers[context_pointer][timer]);
   }
-  table_timers[table_pointer].erase(timer);
-  decrement_refcount(timer); // will be deleted if Lua has already collected it
+  timers[context_pointer].erase(timer);
+  decrement_refcount(timer);  // Deleted if Lua has already collected it.
 }
 
 /**
- * @brief Unregisters all timers associated to a table.
- * @param table_index Index of a table.
+ * @brief Unregisters all timers associated to a context.
+ * @param context_index Index of a table or userdata containing timers.
  */
-void Script::remove_timers(int table_index) {
+void Script::remove_timers(int context_index) {
 
-  const void* table_pointer = lua_topointer(l, table_index);
+  const void* context_pointer = lua_topointer(l, context_index);
   std::map<Timer*, int>::iterator it;
-  for (it = table_timers[table_pointer].begin(); it != table_timers[table_pointer].end(); it++) {
+  for (it = timers[context_pointer].begin(); it != timers[context_pointer].end(); it++) {
     Timer* timer = it->first;
     if (!timer->is_finished()) {
       destroy_ref(it->second);
     }
     decrement_refcount(timer);
   }
-  table_timers[table_pointer].clear();
+  timers[context_pointer].clear();
 }
 
 /**
@@ -198,21 +169,21 @@ void Script::remove_timers(int table_index) {
 void Script::remove_timers() {
 
   std::map<const void*, std::map<Timer*, int> >::iterator it;
-  for (it = table_timers.begin(); it != table_timers.end(); ++it) {
+  for (it = timers.begin(); it != timers.end(); ++it) {
 
-    std::map<Timer*, int> timers = it->second;
+    std::map<Timer*, int> context_timers = it->second;
 
     std::map<Timer*, int>::iterator it2;
-    for (it2 = timers.begin(); it2 != timers.end(); ++it2) {
+    for (it2 = context_timers.begin(); it2 != context_timers.end(); ++it2) {
       Timer* timer = it2->first;
       if (!timer->is_finished()) {
         destroy_ref(it2->second);
       }
       decrement_refcount(timer);
     }
-    timers.clear();
+    context_timers.clear();
   }
-  table_timers.clear();
+  timers.clear();
 }
 
 /**
@@ -221,20 +192,20 @@ void Script::remove_timers() {
 void Script::update_timers() {
 
   std::map<const void*, std::map<Timer*, int> >::iterator it;
-  for (it = table_timers.begin(); it != table_timers.end(); ++it) {
+  for (it = timers.begin(); it != timers.end(); ++it) {
 
-    const void* table_pointer = it->first;
-    std::map<Timer*, int> timers = it->second;
+    const void* context_pointer = it->first;
+    std::map<Timer*, int> context_timers = it->second;
 
     std::map<Timer*, int>::iterator it2;
-    for (it2 = timers.begin(); it2 != timers.end(); ++it2) {
+    for (it2 = context_timers.begin(); it2 != context_timers.end(); ++it2) {
       Timer* timer = it2->first;
       int callback_ref = it2->second;
 
       timer->update();
       if (timer->is_finished()) {
         do_callback(callback_ref);
-        lua_pushlightuserdata(l, (void*) table_pointer);
+        lua_pushlightuserdata(l, (void*) context_pointer);
         remove_timer(timer, -1);
         lua_pop(l, 1);
         break;
@@ -250,10 +221,8 @@ void Script::update_timers() {
  */
 int Script::timer_api_start(lua_State *l) {
 
-  // TODO remove with_sound and implement timer_api_set_with_sound
-
-  // Parameters: table delay [with_sound] callback.
-  LuaContext& lua_context = (LuaContext&) get_script(l);
+  // Parameters: context delay callback.
+  Script& script = get_script(l);
 
 // TODO only allow table or userdata  luaL_checktype(l, 1, LUA_TTABLE);
 
@@ -271,12 +240,12 @@ int Script::timer_api_start(lua_State *l) {
     // Create the timer.
     Timer* timer = new Timer(delay);
     timer->set_with_sound(with_sound);
-    lua_context.add_timer(timer, 1, index);
+    script.add_timer(timer, 1, index);
     push_timer(l, *timer);
   }
   else {
     // The delay is zero: call the function right now.
-    lua_context.call_function(0, 0, "callback");
+    script.call_function(0, 0, "callback");
   }
 
   return 0;
@@ -292,6 +261,37 @@ int Script::timer_api_stop(lua_State* l) {
   Script& script = get_script(l);
   Timer& timer = check_timer(l, 1);
   script.remove_timer(&timer);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_timer_is_with_sound.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::timer_api_is_with_sound(lua_State* l) {
+
+  Timer& timer = check_timer(l, 1);
+
+  lua_pushboolean(l, timer.is_with_sound());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_timer_set_with_sound.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::timer_api_set_with_sound(lua_State* l) {
+
+  Timer& timer = check_timer(l, 1);
+  bool with_sound = true;
+  if (lua_gettop(l) > 1) {
+    with_sound = lua_toboolean(l, 2);
+  }
+
+  timer.set_with_sound(with_sound);
 
   return 0;
 }

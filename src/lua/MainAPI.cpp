@@ -191,7 +191,6 @@ void LuaContext::main_on_input(InputEvent& event) {
 void LuaContext::main_on_started() {
 
   push_main(l);
-  enable_timers(l, -1);
   on_started();
   lua_pop(l, 1);
 }
@@ -205,7 +204,7 @@ void LuaContext::main_on_finished() {
 
   push_main(l);
   on_finished();
-  disable_timers(l, -1);
+  remove_timers(-1);  // Stop timers associated to sol.main.
   lua_pop(l, 1);
 }
 

@@ -66,12 +66,19 @@ If the timer was already finished, nothing happens.
 
 <hr>
 
+\subsection lua_api_timer_is_with_sound timer:is_with_sound()
+
+Returns whether a clock sound is played repeatedly during this timer.
+- Return value (boolean): \c true if a clock sound is played with this timer.
+
+<hr>
+
 \subsection lua_api_timer_set_with_sound timer:set_with_sound(with_sound)
 
-Sets whether a clock sound is played repeatedly with this timer.
+Sets whether a clock sound is played repeatedly during this timer.
 
 Before you call this function, no sound is played.
-- \c with_sound (boolean, optional): True to play a clock sound
+- \c with_sound (boolean, optional): \c true to play a clock sound
   repeatedly (default is \c true).
 
 <hr>

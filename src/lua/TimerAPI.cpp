@@ -92,13 +92,14 @@ void Script::push_timer(lua_State* l, Timer& timer) {
  */
 void Script::add_timer(Timer* timer, int context_index, int callback_index) {
 
-  const void* context_pointer = lua_topointer(l, context_index);
+  const void* context = lua_topointer(l, context_index);
   lua_pushvalue(l, callback_index);
   int callback_ref = create_ref();
   lua_pop(l, 1);
 
   set_created(timer);
-  timers[context_pointer][timer] = callback_ref;
+  timers[timer].callback_ref = callback_ref;
+  timers[timer].context = context;
 
   if (get_script(l).is_new_timer_suspended()) {
     timer->set_suspended(true);
@@ -112,36 +113,13 @@ void Script::add_timer(Timer* timer, int context_index, int callback_index) {
  */
 void Script::remove_timer(Timer* timer) {
 
-  bool found = false;
-  std::map<const void*, std::map<Timer*, int> >::iterator it;
-  for (it = timers.begin(); it != timers.end() && !found; ++it) {
+  Debug::check_assertion(timers.count(timer) > 0,
+      "Cannot remove this timer: timer not found");
 
-    std::map<Timer*, int> timers = it->second;
-    if (timers.count(timer) > 0) {
-
-      if (!timer->is_finished()) {
-        destroy_ref(timers[timer]);
-      }
-      timers.erase(timer);
-      decrement_refcount(timer);  // Deleted if Lua has already collected it.
-    }
-  }
-
-  Debug::check_assertion(found, "Failed to remove this timer: timer not found");
-}
-
-/**
- * @brief Unregisters a timer associated to a context.
- * @param timer A timer.
- * @param context_index Index of the table or userdata containing this timer.
- */
-void Script::remove_timer(Timer* timer, int context_index) {
-
-  const void* context_pointer = lua_topointer(l, context_index);
   if (!timer->is_finished()) {
-    destroy_ref(timers[context_pointer][timer]);
+    destroy_ref(timers[timer].callback_ref);
   }
-  timers[context_pointer].erase(timer);
+  timers.erase(timer);
   decrement_refcount(timer);  // Deleted if Lua has already collected it.
 }
 
@@ -151,16 +129,25 @@ void Script::remove_timer(Timer* timer, int context_index) {
  */
 void Script::remove_timers(int context_index) {
 
-  const void* context_pointer = lua_topointer(l, context_index);
-  std::map<Timer*, int>::iterator it;
-  for (it = timers[context_pointer].begin(); it != timers[context_pointer].end(); it++) {
+  std::list<Timer*> timers_to_remove;
+
+  const void* context = lua_topointer(l, context_index);
+  std::map<Timer*, LuaTimerData>::iterator it;
+  for (it = timers.begin(); it != timers.end(); ++it) {
     Timer* timer = it->first;
-    if (!timer->is_finished()) {
-      destroy_ref(it->second);
+    if (it->second.context == context) {
+      if (!timer->is_finished()) {
+        destroy_ref(it->second.callback_ref);
+      }
+      decrement_refcount(timer);
+      timers_to_remove.push_back(timer);
     }
-    decrement_refcount(timer);
   }
-  timers[context_pointer].clear();
+
+  std::list<Timer*>::iterator it2;
+  for (it2 = timers_to_remove.begin(); it2 != timers_to_remove.end(); ++it2) {
+    timers.erase(*it2);
+  }
 }
 
 /**
@@ -168,20 +155,14 @@ void Script::remove_timers(int context_index) {
  */
 void Script::remove_timers() {
 
-  std::map<const void*, std::map<Timer*, int> >::iterator it;
+  std::map<Timer*, LuaTimerData>::iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
 
-    std::map<Timer*, int> context_timers = it->second;
-
-    std::map<Timer*, int>::iterator it2;
-    for (it2 = context_timers.begin(); it2 != context_timers.end(); ++it2) {
-      Timer* timer = it2->first;
-      if (!timer->is_finished()) {
-        destroy_ref(it2->second);
-      }
-      decrement_refcount(timer);
+    Timer* timer = it->first;
+    if (!timer->is_finished()) {
+      destroy_ref(it->second.callback_ref);
     }
-    context_timers.clear();
+    decrement_refcount(timer);
   }
   timers.clear();
 }
@@ -191,26 +172,38 @@ void Script::remove_timers() {
  */
 void Script::update_timers() {
 
-  std::map<const void*, std::map<Timer*, int> >::iterator it;
+  std::list<Timer*> timers_to_remove;
+
+  std::map<Timer*, LuaTimerData>::iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
 
-    const void* context_pointer = it->first;
-    std::map<Timer*, int> context_timers = it->second;
-
-    std::map<Timer*, int>::iterator it2;
-    for (it2 = context_timers.begin(); it2 != context_timers.end(); ++it2) {
-      Timer* timer = it2->first;
-      int callback_ref = it2->second;
-
-      timer->update();
-      if (timer->is_finished()) {
-        do_callback(callback_ref);
-        lua_pushlightuserdata(l, (void*) context_pointer);
-        remove_timer(timer, -1);
-        lua_pop(l, 1);
-        break;
-      }
+    Timer* timer = it->first;
+    timer->update();
+    if (timer->is_finished()) {
+      do_callback(it->second.callback_ref);
+      lua_pushlightuserdata(l, (void*) it->second.context);
+      timers_to_remove.push_back(timer);
+      lua_pop(l, 1);
+      break;
     }
+  }
+
+  std::list<Timer*>::iterator it2;
+  for (it2 = timers_to_remove.begin(); it2 != timers_to_remove.end(); ++it2) {
+    remove_timer(*it2);
+  }
+}
+
+/**
+ * @brief This function is called when the game (if any) is being suspended
+ * or resumed.
+ * @param suspended true if the game is suspended, false if it is resumed.
+ */
+void Script::set_suspended_timers(bool suspended) {
+
+  std::map<Timer*, LuaTimerData>::iterator it;
+  for (it = timers.begin(); it != timers.end(); ++it) {
+    it->first->set_suspended(suspended);
   }
 }
 
@@ -221,34 +214,39 @@ void Script::update_timers() {
  */
 int Script::timer_api_start(lua_State *l) {
 
-  // Parameters: context delay callback.
+  // Parameters: delay callback [context].
   Script& script = get_script(l);
 
-// TODO only allow table or userdata  luaL_checktype(l, 1, LUA_TTABLE);
-
-  uint32_t delay = luaL_checkinteger(l, 2);
-  bool with_sound = false;
-  int index = 3;
-  if (lua_isboolean(l, index)) {
-    with_sound = lua_toboolean(l, index);
-    index++;
+  uint32_t delay = luaL_checkinteger(l, 1);
+  luaL_checktype(l, 2, LUA_TFUNCTION);
+  if (lua_gettop(l) >= 3) {
+    if (lua_type(l, 3) != LUA_TTABLE
+        && lua_type(l, 3) != LUA_TUSERDATA
+        && lua_type(l, 3) != LUA_TNIL) {
+      luaL_typerror(l, 3, "table, userdata or nil");
+    }
   }
-  luaL_checktype(l, index, LUA_TFUNCTION);
-  lua_settop(l, index); // make sure the function is on top of the stack
+  if (lua_gettop(l) < 3 || lua_type(l, 3) == LUA_TNIL) {
+    // Set a default context
+    lua_settop(l, 2);
+    LuaContext::push_main(l);
+    // TODO: during a game, push the map instead of sol.main.
+  }
 
-  if (delay > 0) {
-    // Create the timer.
-    Timer* timer = new Timer(delay);
-    timer->set_with_sound(with_sound);
-    script.add_timer(timer, 1, index);
-    push_timer(l, *timer);
+  if (delay == 0) {
+    // The delay is zero: call the function right now.
+    lua_settop(l, 2);
+    script.call_function(0, 0, "callback");
+    lua_pushnil(l);
   }
   else {
-    // The delay is zero: call the function right now.
-    script.call_function(0, 0, "callback");
+    // Create the timer.
+    Timer* timer = new Timer(delay);
+    script.add_timer(timer, 3, 2);
+    push_timer(l, *timer);
   }
 
-  return 0;
+  return 1;
 }
 
 /**

@@ -566,19 +566,9 @@ void Script::update() {
  */
 void Script::set_suspended(bool suspended) {
 
+  // Notify the timers.
   if (l != NULL) {
-
-    // Notify the timers.
-    std::map<const void*, std::map<Timer*, int> >::iterator it;
-    for (it = timers.begin(); it != timers.end(); ++it) {
-
-      std::map<Timer*, int> context_timers = it->second;
-
-      std::map<Timer*, int>::iterator it2;
-      for (it2 = context_timers.begin(); it2 != context_timers.end(); ++it2) {
-        it2->first->set_suspended(suspended);
-      }
-    }
+    set_suspended_timers(suspended);
   }
 }
 
@@ -835,8 +825,7 @@ void Script::do_callback(int callback_ref) {
  * nothing is done)
  */
 void Script::cancel_callback(int callback_ref) {
-
-  luaL_unref(l, LUA_REGISTRYINDEX, callback_ref);
+  destroy_ref(callback_ref);
 }
 
 /**

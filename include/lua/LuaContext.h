@@ -77,8 +77,6 @@ class LuaContext: public Script {
     void register_menu_module();
     void register_language_module();
 
-    static void push_main(lua_State* l);
-
     void on_update();
     void on_input(InputEvent& event);
     void on_key_pressed(InputEvent& event);

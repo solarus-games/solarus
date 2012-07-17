@@ -46,7 +46,7 @@ void Script::register_main_module() {
  * @brief Pushes the sol.main table onto the stack.
  * @param l A Lua state.
  */
-void LuaContext::push_main(lua_State* l) {
+void Script::push_main(lua_State* l) {
 
                                   // ...
   lua_getglobal(l, "sol");

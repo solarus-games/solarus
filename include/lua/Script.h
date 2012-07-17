@@ -115,6 +115,14 @@ class Script {
       ENEMY_API         = 0x0008
     };
 
+    /**
+     * @brief Data associated to any Lua timer.
+     */
+    struct LuaTimerData {
+      int callback_ref;     /**< Lua ref of the function to call after the timer. */
+      const void* context;  /**< Lua table or userdata the timer is attached to. */
+    };
+
     lua_State* l;                        /**< the execution context of the Lua script */
 
     Script(MainLoop& main_loop, uint32_t apis_enabled = 0);
@@ -137,6 +145,7 @@ class Script {
     void register_type(const std::string& module_name, const luaL_Reg* functions,
         const luaL_Reg* metamethods);
 
+    static void push_main(lua_State* l);
     static void push_userdata(lua_State* l, ExportableToLua& userdata);
     static void push_timer(lua_State* l, Timer& timer);
     static void push_surface(lua_State* l, Surface& surface);
@@ -151,21 +160,19 @@ class Script {
     // Timers.
     bool is_new_timer_suspended(void);
     void add_timer(Timer* timer, int context_index, int callback_index);
-    void remove_timer(Timer* timer, int context_index);
     void remove_timer(Timer* timer);
     void remove_timers(int context_index);
     void remove_timers();
     void update_timers();
+    void set_suspended_timers(bool suspended);
 
   private:
 
     // script data
     MainLoop& main_loop;            /**< the Solarus main loop */
-    // TODO store this into Lua instead?
-    // map<context, map<timer, callback_ref> >
-    std::map<const void*, std::map<Timer*, int> >
-        timers;                     /**< the timers currently running in each
-                                     * context, and their callback ref */
+    std::map<Timer*, LuaTimerData>
+        timers;                     /**< the timers currently running, with
+                                     * their context and callback ref */
 
     std::set<DynamicDisplayable*>
       displayables;                 /**< all displayable objects created by

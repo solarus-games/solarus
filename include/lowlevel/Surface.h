@@ -72,7 +72,7 @@ class Surface: public DynamicDisplayable {
 
     // implementation from DynamicDisplayable
     void raw_display(Surface& dst_surface, const Rectangle& dst_position);
-    Surface* get_surface();
+    void display_transition(Transition& transition);
 
   private:
 

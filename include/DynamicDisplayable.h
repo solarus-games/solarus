@@ -50,18 +50,30 @@ class DynamicDisplayable: public ExportableToLua {
 
     /**
      * @brief Displays this object without applying dynamic effects.
+     *
+     * Redefine this function to draw your object onto the destination
+     * surface.
+     *
      * @param dst_surface the destination surface
      * @param dst_position coordinates on the destination surface
      */
     virtual void raw_display(Surface& dst_surface,
         const Rectangle& dst_position) = 0;
+
+    /**
+     * @brief Draws a transition effect on this displayable object.
+     *
+     * Redefine this function to apply the transition effect on the surface
+     * of your object.
+     *
+     * @param transition The transition effect to apply.
+     */
+    virtual void display_transition(Transition& transition) = 0;
     virtual void update();
 
   protected:
 
     DynamicDisplayable();
-
-    virtual Surface* get_surface();
 
   private:
 

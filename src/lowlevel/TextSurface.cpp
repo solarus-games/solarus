@@ -22,6 +22,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lua/Script.h"
+#include "Transition.h"
 
 std::map<std::string, TextSurface::FontData> TextSurface::fonts;
 std::string TextSurface::default_font_id = "";
@@ -140,14 +141,6 @@ TextSurface::~TextSurface() {
     SDL_FreeSurface(surface->get_internal_surface());
   }
   delete surface;
-}
-
-/**
- * @brief Returns the surface that represents this displayable object, if any.
- * @return the surface of this object, or NULL
- */
-Surface* TextSurface::get_surface() {
-  return surface;
 }
 
 /**
@@ -505,6 +498,14 @@ void TextSurface::raw_display(Surface& dst_surface,
     dst_position2.add_xy(dst_position);
     surface->raw_display(dst_surface, dst_position2);
   }
+}
+
+/**
+ * @brief Draws a transition effect on this displayable object.
+ * @param transition The transition effect to apply.
+ */
+void TextSurface::display_transition(Transition& transition) {
+  transition.display(*surface);
 }
 
 /**

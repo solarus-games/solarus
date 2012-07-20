@@ -655,6 +655,14 @@ void Sprite::raw_display(Surface& dst_surface,
 }
 
 /**
+ * @brief Draws a transition effect on this displayable object.
+ * @param transition The transition effect to apply.
+ */
+void Sprite::display_transition(Transition& transition) {
+  // TODO use an intermediate source surface.
+}
+
+/**
  * @brief Returns the name identifying this type in Lua.
  * @return the name identifying this type in Lua
  */

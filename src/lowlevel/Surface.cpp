@@ -21,6 +21,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lua/Script.h"
+#include "Transition.h"
 #include <SDL_image.h>
 
 /**
@@ -107,14 +108,6 @@ Surface::~Surface() {
   if (internal_surface_created) {
     SDL_FreeSurface(internal_surface);
   }
-}
-
-/**
- * @brief Returns the surface that represents this displayable object, if any.
- * @return the surface of this object, or NULL
- */
-Surface* Surface::get_surface() {
-  return this;
 }
 
 /**
@@ -220,6 +213,14 @@ void Surface::raw_display(Surface& dst_surface,
   Rectangle dst_position2(dst_position);
   SDL_BlitSurface(internal_surface, NULL, dst_surface.internal_surface,
       dst_position2.get_internal_rect());
+}
+
+/**
+ * @brief Draws a transition effect on this displayable object.
+ * @param transition The transition effect to apply.
+ */
+void Surface::display_transition(Transition& transition) {
+  transition.display(*this);
 }
 
 /**

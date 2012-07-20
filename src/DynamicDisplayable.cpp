@@ -43,20 +43,6 @@ DynamicDisplayable::~DynamicDisplayable() {
 }
 
 /**
- * @brief Returns the surface that represents this displayable object, if any.
- *
- * This function is used for transitions.
- * If you return a valid surface, transitions will be applied to
- * that surface.
- * If you return NULL, transitions will have no visible effect.
- *
- * @return the surface of this object, or NULL
- */
-Surface* DynamicDisplayable::get_surface() {
-  return NULL;
-}
-
-/**
  * @brief Applies a movement to this object.
  *
  * Any previous movement is stopped.
@@ -231,11 +217,7 @@ void DynamicDisplayable::display(Surface& dst_surface,
   }
 
   if (transition != NULL) {
-    Surface* surface = get_surface();
-    if (surface != NULL) {
-      // this class defines a source surface: we can show the transition
-      transition->display(*surface);
-    }
+    display_transition(*transition);
   }
 
   raw_display(dst_surface, dst_position);

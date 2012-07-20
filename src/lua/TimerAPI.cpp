@@ -245,7 +245,7 @@ int Script::timer_api_start(lua_State *l) {
   else {
     // Create the timer.
     Timer* timer = new Timer(delay);
-    script.add_timer(timer, 3, 2);
+    script.add_timer(timer, 1, 3);
     push_timer(l, *timer);
   }
 

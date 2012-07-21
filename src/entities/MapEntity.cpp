@@ -1879,21 +1879,6 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 }
 
 /**
- * @brief Displays a fade-in or fade-out effect on the entity's sprites.
- * @param direction fade direction (0: in, 1: out)
- */
-void MapEntity::start_fading(int direction) {
-
-  // update the sprites
-  std::list<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
-    
-    Sprite& sprite = *(*it);
-    sprite.start_fading(direction);
-  }
-}
-
-/**
  * @brief Updates the entity.
  *
  * This function is called repeatedly by the map. By default, it updates the position

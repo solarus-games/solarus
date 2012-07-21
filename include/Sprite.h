@@ -92,8 +92,6 @@ class Sprite: public DynamicDisplayable {
     void set_blinking(uint32_t blink_delay);
     int get_alpha() const;
     void set_alpha(int alpha);
-    bool is_fading() const;
-    void start_fading(int direction);
 
     // collisions
     bool test_collision(Sprite& other, int x1, int y1, int x2, int y2) const;
@@ -134,19 +132,14 @@ class Sprite: public DynamicDisplayable {
                                         * when they have the same animation name (or NULL) */
 
     // effects
-
+    Surface* intermediate_surface;     /**< an intermediate surface used to show transitions and other effects */
     uint32_t blink_delay;              /**< blink delay of the sprite, or zero if the sprite is not blinking */
     bool blink_is_sprite_visible;      /**< when blinking, true if the sprite is visible or false if it is invisible */
     uint32_t blink_next_change_date;   /**< date of the next change when blinking: visible or not */
 
-    int alpha;                         /**< alpha effect applied on the sprite (0: transparent, 255: opaque) */
-    uint32_t alpha_next_change_date;   /**< date of the next alpha change when applying a fade-in or fade-out effect */
-    int alpha_increment;               /**< increment of the alpha value while fading */
-    static Surface* alpha_surface;     /**< an intermediate surface used when blitting with transparency (deprecated) */
-    Surface* intermediate_surface;     /**< an intermediate surface used to show transitions and other effects */
-
     static SpriteAnimationSet& get_animation_set(const std::string& id);
     int get_next_frame() const;
+    Surface& get_intermediate_surface();
 };
 
 #endif

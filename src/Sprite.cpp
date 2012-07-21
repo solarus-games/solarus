@@ -29,16 +29,12 @@
 #include "lowlevel/StringConcat.h"
 
 std::map<std::string, SpriteAnimationSet*> Sprite::all_animation_sets;
-Surface *Sprite::alpha_surface = NULL;
 
 /**
  * @brief Initializes the sprites system.
  */
 void Sprite::initialize() {
 
-  // create only once an intermediary surface that will be used by transparent sprites
-  alpha_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
-  alpha_surface->set_transparency_color(Color::get_black());
 }
 
 /**
@@ -52,9 +48,6 @@ void Sprite::quit() {
     delete it->second;
   }
   all_animation_sets.clear();
-
-  // delete the static alpha_surface
-  delete alpha_surface;
 }
 
 /**
@@ -90,10 +83,8 @@ Sprite::Sprite(const std::string &id):
   paused(false),
   finished(false),
   synchronize_to(NULL),
-  blink_delay(0),
-  alpha(255),
-  alpha_next_change_date(0),
-  intermediate_surface(NULL) {
+  intermediate_surface(NULL),
+  blink_delay(0) {
 
   set_current_animation(animation_set.get_default_animation());
 }
@@ -395,9 +386,6 @@ void Sprite::set_suspended(bool suspended) {
       uint32_t now = System::now();
       next_frame_date = now + get_frame_delay();
       blink_next_change_date = now;
-      if (alpha_next_change_date != 0) {
-        alpha_next_change_date = now;
-      }
     }
     else {
       blink_is_sprite_visible = true;
@@ -502,40 +490,6 @@ void Sprite::set_blinking(uint32_t blink_delay) {
     blink_next_change_date = System::now();
   }
 }
- 
-/**
- * @brief Returns the alpha value currently applied to the sprite.
- * @return the transparency rate: 0 (tranparent) to 255 (opaque)
- */
-int Sprite::get_alpha() const {
-  return alpha;
-}
-
-/**
- * @brief Sets the alpha value applied to the sprite.
- * @param alpha the opacity rate: 0 (tranparent) to 255 (opaque)
- */
-void Sprite::set_alpha(int alpha) {
-  this->alpha = alpha;
-}
-
-/**
- * @brief Returns whether the entity's sprites are currently displaying a fade-in or fade-out effect.
- * @return true if there is currently a fade effect
- */
-bool Sprite::is_fading() const {
-  return alpha_next_change_date != 0;
-}
-
-/**
- * @brief Starts a fade-in or fade_out effect on this sprite.
- * @param direction direction of the effect (0: fade-in, 1: fade-out)
- */
-void Sprite::start_fading(int direction) {
-  alpha_next_change_date = System::now();
-  alpha_increment = (direction == 0) ? 20 : -20;
-  set_alpha((direction == 0) ? 0 : 255);
-}
 
 /**
  * @brief Tests whether this sprite's pixels are overlapping another sprite.
@@ -618,21 +572,6 @@ void Sprite::update() {
       blink_next_change_date += blink_delay;
     }
   }
-
-  if (is_fading() && now >= alpha_next_change_date) {
-    // the sprite is fading
-
-    int rate = get_alpha();
-    rate += alpha_increment;
-    rate = std::max(0, std::min(255, rate));
-    if (rate == 0 || rate == 255) { // fade finished
-      alpha_next_change_date = 0;
-    }
-    else {
-      alpha_next_change_date += 40;
-    }
-    set_alpha(rate);
-  }
 }
 
 /**
@@ -645,31 +584,18 @@ void Sprite::update() {
 void Sprite::raw_display(Surface& dst_surface,
     const Rectangle& dst_position) {
 
-  // TODO remove alpha_surface
-
-  Surface* surface_to_draw = intermediate_surface != NULL
-      ? intermediate_surface : &dst_surface;
-
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    if (alpha >= 255) {
-      // opaque
-      current_animation->display(*surface_to_draw, dst_position, current_direction,
-          current_frame);
+    if (intermediate_surface == NULL) {
+      current_animation->display(dst_surface, dst_position,
+          current_direction, current_frame);
     }
     else {
-      // semi transparent
-      alpha_surface->set_opacity(alpha);
-      alpha_surface->fill_with_color(Color::get_black());
-      current_animation->display(*alpha_surface, dst_position, current_direction,
-          current_frame);
-      alpha_surface->display(*surface_to_draw);
+      current_animation->display(*intermediate_surface, dst_position,
+        current_direction, current_frame);
+      intermediate_surface->display(dst_surface);
     }
-  }
-
-  if (intermediate_surface != NULL) {
-    intermediate_surface->display(dst_surface);
   }
 }
 
@@ -679,11 +605,23 @@ void Sprite::raw_display(Surface& dst_surface,
  */
 void Sprite::display_transition(Transition& transition) {
 
+  transition.display(get_intermediate_surface());
+}
+
+/**
+ * @brief Returns the intermediate surface used for transitions and other
+ * effects for this sprite.
+ *
+ * Creates this intermediate surface if it does not exist yet.
+ *
+ * @return The intermediate surface of this sprite.
+ */
+Surface& Sprite::get_intermediate_surface() {
+
   if (intermediate_surface == NULL) {
     intermediate_surface = new Surface(get_max_size());
   }
-
-  transition.display(*intermediate_surface);
+  return *intermediate_surface;
 }
 
 /**

@@ -166,7 +166,7 @@ const std::string& DestructibleItem::get_animation_set_id() {
  * @brief Returns the id of the sound to play when this item is destroyed.
  * @return the destruction sound id
  */
-const SoundId& DestructibleItem::get_destruction_sound_id() {
+const std::string& DestructibleItem::get_destruction_sound_id() {
   return features[subtype].destruction_sound_id;
 }
 

@@ -344,7 +344,7 @@ void PickableItem::give_item_to_player() {
   ItemProperties& properties = treasure.get_item_properties();
 
   // play the sound
-  const SoundId& sound_id = properties.get_sound_when_picked();
+  const std::string& sound_id = properties.get_sound_when_picked();
   if (!sound_id.empty()) {
     Sound::play(sound_id);
   }

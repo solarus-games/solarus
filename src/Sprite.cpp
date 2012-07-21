@@ -28,7 +28,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
-std::map<SpriteAnimationSetId, SpriteAnimationSet*> Sprite::all_animation_sets;
+std::map<std::string, SpriteAnimationSet*> Sprite::all_animation_sets;
 Surface *Sprite::alpha_surface = NULL;
 
 /**
@@ -47,7 +47,7 @@ void Sprite::initialize() {
 void Sprite::quit() {
 
   // delete the animations loaded
-  std::map<SpriteAnimationSetId, SpriteAnimationSet*>::iterator it;
+  std::map<std::string, SpriteAnimationSet*>::iterator it;
   for (it = all_animation_sets.begin(); it != all_animation_sets.end(); it++) {
     delete it->second;
   }
@@ -66,7 +66,7 @@ void Sprite::quit() {
  * @param id id of the animation set
  * @return the corresponding animation set
  */
-SpriteAnimationSet& Sprite::get_animation_set(const SpriteAnimationSetId &id) {
+SpriteAnimationSet& Sprite::get_animation_set(const std::string &id) {
 
   if (all_animation_sets.count(id) == 0) {
     all_animation_sets[id] = new SpriteAnimationSet(id);
@@ -79,7 +79,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const SpriteAnimationSetId &id) {
  * @brief Creates a sprite with the specified animation set.
  * @param id name of an animation set
  */
-Sprite::Sprite(const SpriteAnimationSetId &id):
+Sprite::Sprite(const std::string &id):
   DynamicDisplayable(),
   animation_set_id(id),
   animation_set(get_animation_set(id)),
@@ -108,18 +108,18 @@ Sprite::~Sprite() {
  * @brief Returns the id of the animation set of this sprite.
  * @return the animation set id of this sprite
  */
-const SpriteAnimationSetId& Sprite::get_animation_set_id() const {
+const std::string& Sprite::get_animation_set_id() const {
   return animation_set_id;
 }
 
 /**
  * @brief Returns whether the id of the animation set of this sprite
  * contains the specified string.
- * @param s the string to check
+ * @param sequence the string to check
  * @return true if the animation set id contains this string
  */
-bool Sprite::contains(const std::string &s) const {
-  return animation_set_id.find(s) != std::string::npos;
+bool Sprite::contains(const std::string& sequence) const {
+  return animation_set_id.find(sequence) != std::string::npos;
 }
 
 /**

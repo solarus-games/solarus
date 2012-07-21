@@ -317,7 +317,7 @@ class Hero: public MapEntity {
     void start_grabbing();
     void start_boomerang(int max_distance, int speed,
         const std::string& tunic_preparing_animation,
-        const SpriteAnimationSetId& sprite_name);
+        const std::string& sprite_name);
     void start_bow();
     void start_hookshot();
     void start_back_to_solid_ground(bool use_memorized_xy,

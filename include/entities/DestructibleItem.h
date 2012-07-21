@@ -58,8 +58,8 @@ class DestructibleItem: public Detector {
      */
     struct Features {
       std::string name;                          /**< name of this subtype of destructible item */
-      SpriteAnimationSetId animation_set_id;     /**< animation set for the sprite */
-      SoundId destruction_sound_id;              /**< sound played when the item is destroyed */
+      std::string animation_set_id;              /**< animation set for the sprite */
+      std::string destruction_sound_id;          /**< sound played when the item is destroyed */
       bool can_be_lifted;                        /**< indicates that this item is an obstacle and can be lifted */
       bool can_be_cut;                           /**< indicates that this item can be cut with the sword */
       bool can_explode;                          /**< indicates that this item explodes after a delay */
@@ -96,7 +96,7 @@ class DestructibleItem: public Detector {
     bool is_displayed_in_y_order();
 
     const std::string& get_animation_set_id();
-    const SoundId& get_destruction_sound_id();
+    const std::string& get_destruction_sound_id();
     int get_damage_on_enemies();
     bool has_special_ground();
     Ground get_special_ground();

@@ -55,7 +55,7 @@ class Map {
     Tileset* tileset;             /**< tileset of the map: every tile of this map
                                    * is extracted from this tileset */
 
-    MusicId music_id;             /**< id of the background music of the map: 
+    std::string music_id;         /**< id of the background music of the map:
                                    * can be a valid music, Music::none or Music::unchanged */
 
     int world;                    /**< the world where this map is:

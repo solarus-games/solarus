@@ -49,7 +49,7 @@
  * of item XXX  (with an event_hero_interaction() call)
  */
 NPC::NPC(Game& game, const std::string& name, Layer layer, int x, int y,
-    Subtype subtype, SpriteAnimationSetId sprite_name,
+    Subtype subtype, std::string sprite_name,
     int direction, const std::string& behavior_string):
   Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, name, layer, x, y, 0, 0),
   subtype(subtype),
@@ -103,9 +103,7 @@ NPC::~NPC() {
 MapEntity* NPC::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   int direction, subtype;
-  std::string name;
-  SpriteAnimationSetId sprite_name;
-  std::string behavior;
+  std::string name, sprite_name, behavior;
 
   FileTools::read(is, name);
   FileTools::read(is, direction);
@@ -145,7 +143,7 @@ bool NPC::is_displayed_in_y_order() {
  * @param initial_direction direction of the entity's sprite (ignored if there is no sprite
  * of if the direction specified is -1)
  */
-void NPC::initialize_sprite(SpriteAnimationSetId& sprite_name, int initial_direction) {
+void NPC::initialize_sprite(std::string& sprite_name, int initial_direction) {
 
   if (sprite_name != "_none") {
     create_sprite(sprite_name);

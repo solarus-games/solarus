@@ -79,7 +79,7 @@ class Detector: public MapEntity {
     virtual bool interaction_with_inventory_item(InventoryItem &item);
     virtual bool start_movement_by_hero();
     virtual void stop_movement_by_hero();
-    virtual SoundId get_sword_tapping_sound();
+    virtual std::string get_sword_tapping_sound();
 };
 
 #endif

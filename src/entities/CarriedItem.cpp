@@ -59,8 +59,8 @@ const std::string CarriedItem::lifting_trajectories[4] = {
  * or 0 if the item does not explode
  */
 CarriedItem::CarriedItem(Hero& hero, MapEntity& original_entity,
-    const SpriteAnimationSetId& animation_set_id,
-    const SoundId& destruction_sound_id,
+    const std::string& animation_set_id,
+    const std::string& destruction_sound_id,
     int damage_on_enemies, uint32_t explosion_date):
 
   MapEntity(),

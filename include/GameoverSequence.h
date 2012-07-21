@@ -38,7 +38,7 @@ class GameoverSequence {
 
     // data
     Game& game;                     /**< the game */
-    MusicId music_id;               /**< the music played before game over */
+    std::string music_id;           /**< the music played before game over */
 
     // graphics
     Surface gameover_menu_img;      /**< image of the game over menu */

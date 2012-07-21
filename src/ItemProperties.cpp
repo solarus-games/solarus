@@ -247,7 +247,7 @@ bool ItemProperties::is_brandished_when_picked() {
  * @brief Returns the sound to play when this item is picked on the ground.
  * @return the sound to play when this item is picked
  */
-const SoundId& ItemProperties::get_sound_when_picked() {
+const std::string& ItemProperties::get_sound_when_picked() {
   return sound_when_picked;
 }
 
@@ -255,7 +255,7 @@ const SoundId& ItemProperties::get_sound_when_picked() {
  * @brief Returns the sound to play when this item is brandished.
  * @return the sound to play when this item is brandished
  */
-const SoundId& ItemProperties::get_sound_when_brandished() {
+const std::string& ItemProperties::get_sound_when_brandished() {
   return sound_when_brandished;
 }
 

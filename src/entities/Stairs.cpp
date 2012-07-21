@@ -200,7 +200,7 @@ int Stairs::get_animation_direction(Way way) {
  */
 void Stairs::play_sound(Way way) {
 
-  SoundId sound_id;
+  std::string sound_id;
   if (is_inside_floor()) {
     // choose the sound depending on whether we are going upstairs or downstairs
     sound_id = (way == NORMAL_WAY) ? "stairs_up_end" : "stairs_down_end";

@@ -940,13 +940,14 @@ std::list<Sprite*>& MapEntity::get_sprites() {
 
 /**
  * @brief Adds a sprite to this entity.
- * @param id id of the sprite's animation set to use
+ * @param animation_set_id id of the sprite's animation set to use
  * @param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
  * @return the sprite created
  */
-Sprite& MapEntity::create_sprite(const SpriteAnimationSetId& id, bool enable_pixel_collisions) {
+Sprite& MapEntity::create_sprite(const std::string& animation_set_id,
+    bool enable_pixel_collisions) {
 
-  Sprite* sprite = new Sprite(id);
+  Sprite* sprite = new Sprite(animation_set_id);
 
   if (enable_pixel_collisions) {
     sprite->enable_pixel_collisions();

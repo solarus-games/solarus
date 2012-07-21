@@ -32,7 +32,7 @@ SpriteAnimationSet::SpriteAnimationSet() {
  * @brief Loads the animations of a sprite from a file.
  * @param id id of the sprite (used to determine the sprite file)
  */
-SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
+SpriteAnimationSet::SpriteAnimationSet(const std::string& id) {
 
   // compute the file name
   std::string file_name = (std::string) "sprites/" + id + ".dat";
@@ -127,7 +127,7 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
 SpriteAnimationSet::~SpriteAnimationSet() {
 
   // delete the animations
-  std::map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
+  std::map<std::string, SpriteAnimation*>::const_iterator it;
 
   for (it = animations.begin(); it != animations.end(); it++) {
     delete it->second;
@@ -143,7 +143,7 @@ SpriteAnimationSet::~SpriteAnimationSet() {
  */
 void SpriteAnimationSet::set_map(Map &map) {
 
-  std::map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
+  std::map<std::string, SpriteAnimation*>::const_iterator it;
 
   for (it = animations.begin(); it != animations.end(); it++) {
     it->second->set_map(map);
@@ -164,7 +164,7 @@ bool SpriteAnimationSet::has_animation(const std::string& animation_name) const 
  * @param animation_name name of the animation to get
  * @return the specified animation
  */
-const SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation_name) const {
+const SpriteAnimation* SpriteAnimationSet::get_animation(const std::string& animation_name) const {
 
   Debug::check_assertion(has_animation(animation_name),
       StringConcat() << "No animation '" << animation_name << "' in this animation set");
@@ -177,7 +177,7 @@ const SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &ani
  * @param animation_name name of the animation to get
  * @return the specified animation
  */
-SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation_name) {
+SpriteAnimation* SpriteAnimationSet::get_animation(const std::string& animation_name) {
 
   Debug::check_assertion(has_animation(animation_name),
       StringConcat() << "No animation '" << animation_name << "' in this animation set");
@@ -200,7 +200,7 @@ void SpriteAnimationSet::enable_pixel_collisions() {
 
   if (!are_pixel_collisions_enabled()) {
 
-    std::map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
+    std::map<std::string, SpriteAnimation*>::const_iterator it;
 
     for (it = animations.begin(); it != animations.end(); it++) {
       it->second->enable_pixel_collisions();

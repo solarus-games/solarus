@@ -43,7 +43,7 @@ class Boomerang: public MapEntity {
   public:
 
     Boomerang(Hero& hero, int max_distance, int speed, double angle,
-        const SpriteAnimationSetId& sprite_name);
+        const std::string& sprite_name);
     ~Boomerang();
 
     EntityType get_type();

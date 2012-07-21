@@ -83,9 +83,9 @@ class MapEntities {
 
     std::list<Stairs*> stairs[LAYER_NB];            /**< all stairs of the map */
     std::list<CrystalBlock*>
-      crystal_blocks[LAYER_NB];				/**< all crystal blocks of the map */
+      crystal_blocks[LAYER_NB];	                    /**< all crystal blocks of the map */
     Boomerang *boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
-    MusicId music_before_miniboss;                  /**< the music that was played before starting a miniboss fight */
+    std::string music_before_miniboss;              /**< the music that was played before starting a miniboss fight */
 
     void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
     void build_non_animated_tiles();

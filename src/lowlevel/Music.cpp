@@ -27,16 +27,16 @@ SpcDecoder* Music::spc_decoder = NULL;
 ItDecoder* Music::it_decoder = NULL;
 float Music::volume = 1.0;
 Music* Music::current_music = NULL;
-std::map<MusicId,Music> Music::all_musics;
+std::map<std::string, Music> Music::all_musics;
 
-const MusicId Music::none = "none";
-const MusicId Music::unchanged = "same";
+const std::string Music::none = "none";
+const std::string Music::unchanged = "same";
 
 /**
  * @brief Creates a new music.
  * @param music_id id of the music (file name without extension)
  */
-Music::Music(const MusicId& music_id):
+Music::Music(const std::string& music_id):
   id(music_id) {
 
   if (!is_initialized() || music_id == none) {
@@ -152,7 +152,7 @@ Music* Music::get_current_music() {
  * @brief Returns the id of the music currently playing.
  * @return the id of the current music, or "none" if no music is being played
  */
-const MusicId& Music::get_current_music_id() {
+const std::string& Music::get_current_music_id() {
   return current_music != NULL ? current_music->id : none;
 }
 
@@ -166,7 +166,7 @@ const MusicId& Music::get_current_music_id() {
  *
  * @param music_id id of the music to play (file name without extension)
  */
-void Music::play(const MusicId& music_id) {
+void Music::play(const std::string& music_id) {
 
   if (music_id != unchanged && music_id != get_current_music_id()) {
     // the music is changed

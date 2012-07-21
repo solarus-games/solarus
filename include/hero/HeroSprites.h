@@ -47,18 +47,18 @@ class HeroSprites {
     Sprite *ground_sprite;		/**< ground displayed under the hero (e.g. grass or shallow water) */
     Sprite *trail_sprite;		/**< trail of dust that the hero lets behind him (e.g. when running) */
 
-    SoundId sword_sound_id;		/**< sound id of the current sword */
-    SoundId ground_sound_id;		/**< sound id of the current ground displayed under the hero */
+    std::string sword_sound_id;          /**< sound id of the current sword */
+    std::string ground_sound_id;         /**< sound id of the current ground displayed under the hero */
 
     static const int animation_directions[8][2];		/**< possible directions of the animation for each movement direction */
 
-    static const SpriteAnimationSetId tunic_sprite_ids[];	/**< name of each tunic sprite */
-    static const SpriteAnimationSetId sword_sprite_ids[];	/**< name of each sword sprite */
-    static const SpriteAnimationSetId sword_stars_sprite_ids[];	/**< name of each sword stars sprite */
-    static const SpriteAnimationSetId shield_sprite_ids[];	/**< name of each shield sprite */
-    static const SpriteAnimationSetId ground_sprite_ids[];	/**< name of each ground sprite */
-    static const SoundId sword_sound_ids[];			/**< name of each sword sound */
-    static const SoundId ground_sound_ids[];			/**< name of each ground sound */
+    static const std::string tunic_sprite_ids[];        /**< name of each tunic sprite */
+    static const std::string sword_sprite_ids[];        /**< name of each sword sprite */
+    static const std::string sword_stars_sprite_ids[];  /**< name of each sword stars sprite */
+    static const std::string shield_sprite_ids[];       /**< name of each shield sprite */
+    static const std::string ground_sprite_ids[];       /**< name of each ground sprite */
+    static const std::string sword_sound_ids[];         /**< name of each sword sound */
+    static const std::string ground_sound_ids[];        /**< name of each ground sound */
 
     int animation_direction_saved;	/**< direction of the hero's sprites, saved before
 					 * showing a sprite animation having only one direction */

@@ -407,7 +407,7 @@ void Door::action_key_pressed() {
  * @brief This function is called when the player is tapping his sword against this detector.
  * @return the sound to play when tapping this detector with the sword
  */
-SoundId Door::get_sword_tapping_sound() {
+std::string Door::get_sword_tapping_sound() {
   return requires_explosion() ? "sword_tapping_weak_wall" : "sword_tapping";
 }
 

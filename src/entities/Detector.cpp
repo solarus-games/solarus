@@ -384,7 +384,7 @@ void Detector::stop_movement_by_hero() {
  * @brief This function is called when the player is tapping his sword against this detector.
  * @return the sound to play when tapping this detector with the sword
  */
-SoundId Detector::get_sword_tapping_sound() {
+std::string Detector::get_sword_tapping_sound() {
   return "sword_tapping";
 }
 

@@ -43,7 +43,7 @@
  * be moved (0: none, 1: once: 2: infinite)
  */
 Block::Block(const std::string& name, Layer layer, int x, int y, int direction,
-    const SpriteAnimationSetId& sprite_name,
+    const std::string& sprite_name,
     bool can_be_pushed, bool can_be_pulled, int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   maximum_moves(maximum_moves),

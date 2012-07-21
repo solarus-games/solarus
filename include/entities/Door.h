@@ -83,7 +83,7 @@ class Door: public Detector {
     void set_suspended(bool suspended);
     void update();
     void display_on_map();
-    SoundId get_sword_tapping_sound();
+    std::string get_sword_tapping_sound();
     void action_key_pressed();
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity &entity, Sprite &this_sprite, Sprite &other_sprite);

@@ -32,7 +32,7 @@ bool Sound::initialized = false;
 bool Sound::sounds_preloaded = false;
 float Sound::volume = 1.0;
 std::list<Sound*> Sound::current_sounds;
-std::map<SoundId,Sound> Sound::all_sounds;
+std::map<std::string, Sound> Sound::all_sounds;
 ov_callbacks Sound::ogg_callbacks = {
     cb_read,
     NULL,
@@ -45,7 +45,7 @@ ov_callbacks Sound::ogg_callbacks = {
  * @param sound_id id of the sound: name of a .ogg file in the sounds subdirectory,
  * without the extension (.ogg is added automatically)
  */
-Sound::Sound(const SoundId& sound_id):
+Sound::Sound(const std::string& sound_id):
   id(sound_id),
   buffer(AL_NONE) {
 
@@ -95,16 +95,7 @@ void Sound::initialize(int argc, char** argv) {
 
   // initialize OpenAL
 
-/*
-  const ALCchar* devices = alcGetString(NULL, ALC_DEVICE_SPECIFIER);
-  while (devices[0] != '\0') {
-    std::cout << "Audio device: " << devices << std::endl;
-    devices += strlen(devices) + 1;
-  }
-  */
-
   device = alcOpenDevice(NULL);
-//  device = alcOpenDevice("ALSA Software on ATI IXP");
   if (!device) {
     std::cout << "Cannot open audio device" << std::endl;
     return;
@@ -142,16 +133,6 @@ void Sound::quit() {
 
   if (is_initialized()) {
 
-/*
-    // stop the sound sources
-    ALuint source;
-    std::list<ALuint>::iterator it;
-    for (it = all_sources.begin(); it != all_sources.end(); it++) {
-      source = (*it);
-      alSourcei(source, AL_BUFFER, 0);
-      alDeleteSources(1, &source);
-    }
-*/
     // uninitialize the music subsystem
     Music::quit();
 
@@ -223,7 +204,7 @@ void Sound::load_all() {
  * @param sound_id id of the sound to test
  * @return true if the sound exists
  */
-bool Sound::exists(const SoundId& sound_id) {
+bool Sound::exists(const std::string& sound_id) {
 
   std::ostringstream oss;
   oss << "sounds/" << sound_id << ".ogg";
@@ -234,7 +215,7 @@ bool Sound::exists(const SoundId& sound_id) {
  * @brief Starts playing the specified sound.
  * @param sound_id id of the sound to play
  */
-void Sound::play(const SoundId& sound_id) {
+void Sound::play(const std::string& sound_id) {
 
   if (all_sounds.count(sound_id) == 0) {
     all_sounds[sound_id] = Sound(sound_id);

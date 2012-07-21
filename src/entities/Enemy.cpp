@@ -845,7 +845,7 @@ const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack,
  */
 void Enemy::play_hurt_sound() {
 
-  SoundId sound_id = "";
+  std::string sound_id = "";
   switch (hurt_style) {
 
     case HURT_NORMAL:

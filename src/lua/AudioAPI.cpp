@@ -47,7 +47,7 @@ void Script::register_audio_module() {
  */
 int Script::audio_api_play_sound(lua_State *l) {
 
-  const SoundId& sound_id = luaL_checkstring(l, 1);
+  const std::string& sound_id = luaL_checkstring(l, 1);
   Sound::play(sound_id);
   return 0;
 }
@@ -72,7 +72,7 @@ int Script::audio_api_preload_sounds(lua_State *l) {
 int Script::audio_api_play_music(lua_State *l) {
 
   Script& script = get_script(l);
-  const MusicId& music_id = luaL_checkstring(l, 1);
+  const std::string& music_id = luaL_checkstring(l, 1);
 
   Music::play(music_id);
   script.music_played = true;

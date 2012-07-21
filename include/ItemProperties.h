@@ -39,29 +39,29 @@ class ItemProperties {
 
   private:
 
-    std::string name;				/**< name that identifies this item */
-    int savegame_variable;			/**< savegame variable that stores the possession state */
-    int nb_variants;				/**< number of variants of this item */
-    int initial_variant;			/**< initial possession state of this item */
-    int counter_savegame_variable;		/**< savegame variable that stores the counter associated to this item
-						 * or -1 if there is no counter */
-    int fixed_limit;				/**< limit of the counter associated to this item, or 0 */
-    std::string item_limiting;			/**< name of an item that limits the counter of this item (or an empty string) */
-    std::string item_limited;			/**< name of an item whose counter is limited by this item (or an empty string) */
-    std::string item_counter_changed;		/**< name of an item whose counter is changed by this item (or an empty string) */
-    int *amounts;				/**< amount to consider when limited_counter_name or changed_counter_name
-						 * is defined (for each variant) */
-    int *probabilities;				/**< probability of getting this item when a pickable item is choosen
-						 * randomly (for each variant) */
-    bool allow_assigned;			/**< indicates that this item can be assigned to an item key an then
-						 * be used explicitely */
-    bool disappears;				/**< when the item is dropped on the ground, indicates that it will disappear 
-						 * after some time */
-    bool brandish_when_picked;			/**< when the item is picked on the ground, indicates that the hero
-						 * brandishes it */
-    SoundId sound_when_picked;			/**< sound to play when the item is picked on the ground (or an empty string) */
-    SoundId sound_when_brandished;		/**< sound to play when the item is brandished (or an empty string )*/
-    ShadowSize shadow_size;			/**< size of the shadow when the item is on the ground */
+    std::string name;                    /**< name that identifies this item */
+    int savegame_variable;               /**< savegame variable that stores the possession state */
+    int nb_variants;                     /**< number of variants of this item */
+    int initial_variant;                 /**< initial possession state of this item */
+    int counter_savegame_variable;       /**< savegame variable that stores the counter associated to this item
+                                          * or -1 if there is no counter */
+    int fixed_limit;                     /**< limit of the counter associated to this item, or 0 */
+    std::string item_limiting;           /**< name of an item that limits the counter of this item (or an empty string) */
+    std::string item_limited;            /**< name of an item whose counter is limited by this item (or an empty string) */
+    std::string item_counter_changed;    /**< name of an item whose counter is changed by this item (or an empty string) */
+    int* amounts;                        /**< amount to consider when limited_counter_name or changed_counter_name
+                                          * is defined (for each variant) */
+    int* probabilities;                  /**< probability of getting this item when a pickable item is choosen
+                                          * randomly (for each variant) */
+    bool allow_assigned;                 /**< indicates that this item can be assigned to an item key an then
+                                          * be used explicitely */
+    bool disappears;                     /**< when the item is dropped on the ground, indicates that it will disappear
+                                          * after some time */
+    bool brandish_when_picked;           /**< when the item is picked on the ground, indicates that the hero
+                                          * brandishes it */
+    std::string sound_when_picked;       /**< sound to play when the item is picked on the ground (or an empty string) */
+    std::string sound_when_brandished;   /**< sound to play when the item is brandished (or an empty string )*/
+    ShadowSize shadow_size;              /**< size of the shadow when the item is on the ground */
 
   public:
 
@@ -85,8 +85,8 @@ class ItemProperties {
     bool can_be_assigned();
     bool can_disappear();
     bool is_brandished_when_picked();
-    const SoundId& get_sound_when_picked();
-    const SoundId& get_sound_when_brandished();
+    const std::string& get_sound_when_picked();
+    const std::string& get_sound_when_brandished();
     ShadowSize get_shadow_size();
 };
 

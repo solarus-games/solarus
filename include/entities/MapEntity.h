@@ -149,7 +149,8 @@ class MapEntity {
     void set_optimization_distance(int distance);
 
     // sprites
-    Sprite& create_sprite(const SpriteAnimationSetId& id, bool enable_pixel_collisions = false);
+    Sprite& create_sprite(const std::string& animation_set_id,
+        bool enable_pixel_collisions = false);
     void remove_sprite(Sprite* sprite);
     void clear_sprites();
     void clear_old_sprites();

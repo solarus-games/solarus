@@ -31,13 +31,13 @@ class Hero::BoomerangState: public Hero::State {
     int speed;                                   /**< speed of the movement in pixels per second */
     const std::string tunic_preparing_animation; /**< animation name of the hero's tunic
                                                   * when preparing the boomerang */
-    const SpriteAnimationSetId sprite_name;      /**< animation set id that represents the boomerang */
+    const std::string sprite_name;               /**< animation set id that represents the boomerang */
 
   public:
 
     BoomerangState(Hero& hero, int max_distance, int speed,
         const std::string& hero_preparing_animation,
-        const SpriteAnimationSetId& sprite_name);
+        const std::string& sprite_name);
     ~BoomerangState();
 
     void start(State* previous_state);

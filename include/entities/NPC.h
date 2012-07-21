@@ -70,13 +70,13 @@ class NPC: public Detector {
     std::string dialog_to_show;         /**< dialog to show when an interaction occurs, or an empty string */
     Script* script_to_call;             /**< map script or item script to call when an interaction occurs, or NULL */
 
-    void initialize_sprite(SpriteAnimationSetId& sprite_name, int initial_direction);
+    void initialize_sprite(std::string& sprite_name, int initial_direction);
     void call_script_hero_interaction();
 
   public:
 
     NPC(Game& game, const std::string& name, Layer layer, int x, int y,
-        Subtype subtype, SpriteAnimationSetId sprite_name,
+        Subtype subtype, std::string sprite_name,
         int initial_direction, const std::string& behavior_string);
     ~NPC();
     static CreationFunction parse;

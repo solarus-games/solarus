@@ -47,7 +47,7 @@ class Block: public Detector {
   public:
 
     Block(const std::string& name, Layer layer, int x, int y, int direction,
-        const SpriteAnimationSetId& sprite_name,
+        const std::string& sprite_name,
         bool can_be_pushed, bool can_be_pulled, int maximum_moves);
     ~Block();
     static CreationFunction parse;

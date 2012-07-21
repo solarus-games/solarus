@@ -99,7 +99,7 @@ void Hero::SwordTappingState::update() {
       if (get_sprites().get_current_frame() == 3 && now >= next_sound_date) {
 
         Detector* facing_entity = hero.get_facing_entity();
-        SoundId sound_id;
+        std::string sound_id;
         if (facing_entity != NULL) {
           sound_id = facing_entity->get_sword_tapping_sound();
         }

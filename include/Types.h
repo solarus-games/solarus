@@ -31,11 +31,6 @@
 // types of the id of each resource.
 
 /**
- * @brief Type of the id of images.
- */
-typedef std::string ImageId;
-
-/**
  * @brief Type of the id of maps.
  */
 typedef uint32_t MapId;
@@ -44,21 +39,6 @@ typedef uint32_t MapId;
  * @brief Type of the id of tilesets.
  */
 typedef uint32_t TilesetId;
-
-/**
- * @brief Type of the id of musics.
- */
-typedef std::string MusicId;
-
-/**
- * @brief Type of the id of sounds.
- */
-typedef std::string SoundId;
-
-/**
- * @brief Type of the id of sprite animation sets.
- */
-typedef std::string SpriteAnimationSetId;
 
 // declaration of all classes to avoid dependencies between the header files
 

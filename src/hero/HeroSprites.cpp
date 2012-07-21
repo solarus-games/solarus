@@ -53,7 +53,7 @@ const int HeroSprites::animation_directions[][2] = {
 /**
  * @brief String constants corresponding to the sprites of the tunics.
  */
-const SpriteAnimationSetId HeroSprites::tunic_sprite_ids[] = {
+const std::string HeroSprites::tunic_sprite_ids[] = {
   "hero/tunic1", // green tunic
   "hero/tunic2", // blue tunic
   "hero/tunic3", // red tunic
@@ -62,7 +62,7 @@ const SpriteAnimationSetId HeroSprites::tunic_sprite_ids[] = {
 /**
  * @brief String constants corresponding to the sprites of the swords.
  */
-const SpriteAnimationSetId HeroSprites::sword_sprite_ids[] = {
+const std::string HeroSprites::sword_sprite_ids[] = {
   "hero/sword1",
   "hero/sword2",
   "hero/sword3",
@@ -72,7 +72,7 @@ const SpriteAnimationSetId HeroSprites::sword_sprite_ids[] = {
 /**
  * @brief String constants corresponding to the sprites of the stars of the swords.
  */
-const SpriteAnimationSetId HeroSprites::sword_stars_sprite_ids[] = {
+const std::string HeroSprites::sword_stars_sprite_ids[] = {
   "hero/sword_stars1",
   "hero/sword_stars1",
   "hero/sword_stars2",
@@ -82,7 +82,7 @@ const SpriteAnimationSetId HeroSprites::sword_stars_sprite_ids[] = {
 /**
  * @brief String constants corresponding to the sprites of the shields.
  */
-const SpriteAnimationSetId HeroSprites::shield_sprite_ids[] = {
+const std::string HeroSprites::shield_sprite_ids[] = {
   "hero/shield1",
   "hero/shield2",
   "hero/shield3",
@@ -91,7 +91,7 @@ const SpriteAnimationSetId HeroSprites::shield_sprite_ids[] = {
 /**
  * @brief String constants corresponding to the sprites of the ground displayed under the hero.
  */
-const SpriteAnimationSetId HeroSprites::ground_sprite_ids[] = {
+const std::string HeroSprites::ground_sprite_ids[] = {
   "hero/ground1",
   "hero/ground2",
 };
@@ -99,7 +99,7 @@ const SpriteAnimationSetId HeroSprites::ground_sprite_ids[] = {
 /**
  * @brief String constants corresponding to the sounds of the swords.
  */
-const SoundId HeroSprites::sword_sound_ids[] = {
+const std::string HeroSprites::sword_sound_ids[] = {
   "sword1",
   "sword2",
   "sword3",
@@ -109,7 +109,7 @@ const SoundId HeroSprites::sword_sound_ids[] = {
 /**
  * @brief String constants corresponding to the sounds of the ground under the hero.
  */
-const SoundId HeroSprites::ground_sound_ids[] = {
+const std::string HeroSprites::ground_sound_ids[] = {
   "walk_on_grass",
   "walk_on_water",
 };

@@ -43,7 +43,7 @@ class Music { // TODO make a subclass for each format, or at least make a better
       OGG       /**< Ogg Vorbis */
     };
 
-    MusicId id;                                  /**< id of this music */
+    std::string id;                              /**< id of this music */
     std::string file_name;                       /**< name of the file to play */
     Format format;                               /**< format of the music, detected from the file name */
 
@@ -60,16 +60,16 @@ class Music { // TODO make a subclass for each format, or at least make a better
     static float volume;                         /**< volume of musics (0.0 to 1.0) */
 
     static Music *current_music;                 /**< the music currently played (if any) */
-    static std::map<MusicId,Music> all_musics;   /**< all musics created before */
+    static std::map<std::string, Music> all_musics;   /**< all musics created before */
 
     void update_playing();
 
   public:
 
-    static const MusicId none;                   /**< special id indicating that there is no music */
-    static const MusicId unchanged;              /**< special id indicating that the music is the same as before */
+    static const std::string none;               /**< special id indicating that there is no music */
+    static const std::string unchanged;          /**< special id indicating that the music is the same as before */
 
-    Music(const MusicId& music_id = none);
+    Music(const std::string& music_id = none);
     ~Music();
 
     static void initialize();
@@ -80,9 +80,9 @@ class Music { // TODO make a subclass for each format, or at least make a better
     static int get_volume();
     static void set_volume(int volume);
 
-    static void play(const MusicId& music_id);
+    static void play(const std::string& music_id);
     static Music* get_current_music();
-    static const MusicId& get_current_music_id();
+    static const std::string& get_current_music_id();
 
     bool start();
     void stop();

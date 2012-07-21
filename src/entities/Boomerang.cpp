@@ -39,7 +39,7 @@
  * @param sprite_name animation set id representing the boomerang
  */
 Boomerang::Boomerang(Hero& hero, int max_distance, int speed, double angle,
-    const SpriteAnimationSetId& sprite_name):
+    const std::string& sprite_name):
   MapEntity(),
   hero(hero),
   has_to_go_back(false),

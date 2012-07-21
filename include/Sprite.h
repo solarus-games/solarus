@@ -43,13 +43,13 @@ class Sprite: public DynamicDisplayable {
     static void quit();
 
     // creation and destruction
-    Sprite(const SpriteAnimationSetId& id);
+    Sprite(const std::string& id);
     ~Sprite();
 
     void set_map(Map& map);
 
     // animation set
-    const SpriteAnimationSetId& get_animation_set_id() const;
+    const std::string& get_animation_set_id() const;
     bool contains(const std::string& s) const;
     SpriteAnimationSet& get_animation_set();
     void enable_pixel_collisions();
@@ -107,14 +107,14 @@ class Sprite: public DynamicDisplayable {
   private:
 
     // animation set
-    static std::map<SpriteAnimationSetId, SpriteAnimationSet*> all_animation_sets;
-    const SpriteAnimationSetId animation_set_id;    /**< id of this sprite's animation set */
-    SpriteAnimationSet& animation_set;              /**< animation set of this sprite */
+    static std::map<std::string, SpriteAnimationSet*> all_animation_sets;
+    const std::string animation_set_id;  /**< id of this sprite's animation set */
+    SpriteAnimationSet& animation_set;   /**< animation set of this sprite */
 
     // current state of the sprite
 
-    std::string current_animation_name;             /**< name of the current animation */
-    SpriteAnimation* current_animation;             /**< the current animation */
+    std::string current_animation_name;  /**< name of the current animation */
+    SpriteAnimation* current_animation;  /**< the current animation */
     int current_direction;             /**< current direction of the animation (the first one is number 0);
                                         * it can be different from the movement direction
                                         * of the entity, because sometimes a sprite can
@@ -143,7 +143,7 @@ class Sprite: public DynamicDisplayable {
     int alpha_increment;               /**< increment of the alpha value while fading */
     static Surface* alpha_surface;     /**< an intermediate surface used when blitting with transparency */
 
-    static SpriteAnimationSet& get_animation_set(const SpriteAnimationSetId& id);
+    static SpriteAnimationSet& get_animation_set(const std::string& id);
     int get_next_frame() const;
 };
 

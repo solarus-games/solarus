@@ -2211,7 +2211,7 @@ void Hero::start_grabbing() {
  */
 void Hero::start_boomerang(int max_distance, int speed,
     const std::string& tunic_preparing_animation,
-    const SpriteAnimationSetId& sprite_name) {
+    const std::string& sprite_name) {
 
   set_state(new BoomerangState(*this, max_distance, speed,
       tunic_preparing_animation, sprite_name));

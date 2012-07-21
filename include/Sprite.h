@@ -36,48 +36,6 @@
  */
 class Sprite: public DynamicDisplayable {
 
-  private:
-
-    // animation set
-    static std::map<SpriteAnimationSetId, SpriteAnimationSet*> all_animation_sets;
-    const SpriteAnimationSetId animation_set_id;	/**< id of this sprite's animation set */
-    SpriteAnimationSet &animation_set;			/**< animation set of this sprite */
-
-    // current state of the sprite
-
-    std::string current_animation_name;			/**< name of the current animation */
-    SpriteAnimation *current_animation;			/**< the current animation */
-    int current_direction;				/**< current direction of the animation (the first one is number 0);
-							 * it can be different from the movement direction
-							 * of the entity, because sometimes a sprite can
-							 * go backwards. */
-    int current_frame;					/**< current frame of the animation (the first one is number 0) */
-    bool frame_changed;					/**< indicates that the frame has just changed */
-
-    uint32_t frame_delay;				/**< delay between two frames in milliseconds */
-    uint32_t next_frame_date;				/**< date of the next frame */
-
-    bool suspended;					/**< true if the game is suspended */
-    bool ignore_suspend;				/**< true to continue playing the animation even when the game is suspended */
-    bool paused;					/**< true if the animation is paused */
-    bool finished;					/**< true if the animation has been stopped because the last frame is finished */
-    Sprite* synchronize_to;				/**< another sprite to synchronize the frame to
-							 * when they have the same animation name (or NULL) */
-
-    // effects
-
-    uint32_t blink_delay;				/**< blink delay of the sprite, or zero if the sprite is not blinking */
-    bool blink_is_sprite_visible;			/**< when blinking, true if the sprite is visible or false if it is invisible */
-    uint32_t blink_next_change_date;			/**< date of the next change when blinking: visible or not */
-
-    int alpha;						/**< alpha effect applied on the sprite (0: transparent, 255: opaque) */
-    uint32_t alpha_next_change_date;			/**< date of the next alpha change when applying a fade-in or fade-out effect */
-    int alpha_increment;				/**< increment of the alpha value while fading */
-    static Surface *alpha_surface;			/**< an intermediary surface used when blitting with transparency */
-
-    static SpriteAnimationSet& get_animation_set(const SpriteAnimationSetId &id);
-    int get_next_frame() const;
-
   public:
 
     // initialization
@@ -85,14 +43,14 @@ class Sprite: public DynamicDisplayable {
     static void quit();
 
     // creation and destruction
-    Sprite(const SpriteAnimationSetId &id);
+    Sprite(const SpriteAnimationSetId& id);
     ~Sprite();
 
-    void set_map(Map &map);
+    void set_map(Map& map);
 
     // animation set
     const SpriteAnimationSetId& get_animation_set_id() const;
-    bool contains(const std::string &s) const;
+    bool contains(const std::string& s) const;
     SpriteAnimationSet& get_animation_set();
     void enable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;
@@ -137,7 +95,7 @@ class Sprite: public DynamicDisplayable {
     void start_fading(int direction);
 
     // collisions
-    bool test_collision(Sprite &other, int x1, int y1, int x2, int y2) const;
+    bool test_collision(Sprite& other, int x1, int y1, int x2, int y2) const;
 
     // udpate and display
     void update();
@@ -145,6 +103,48 @@ class Sprite: public DynamicDisplayable {
     void display_transition(Transition& transition);
 
     const std::string& get_lua_type_name() const;
+
+  private:
+
+    // animation set
+    static std::map<SpriteAnimationSetId, SpriteAnimationSet*> all_animation_sets;
+    const SpriteAnimationSetId animation_set_id;    /**< id of this sprite's animation set */
+    SpriteAnimationSet& animation_set;              /**< animation set of this sprite */
+
+    // current state of the sprite
+
+    std::string current_animation_name;             /**< name of the current animation */
+    SpriteAnimation* current_animation;             /**< the current animation */
+    int current_direction;             /**< current direction of the animation (the first one is number 0);
+                                        * it can be different from the movement direction
+                                        * of the entity, because sometimes a sprite can
+                                        * go backwards. */
+    int current_frame;                 /**< current frame of the animation (the first one is number 0) */
+    bool frame_changed;                /**< indicates that the frame has just changed */
+
+    uint32_t frame_delay;              /**< delay between two frames in milliseconds */
+    uint32_t next_frame_date;          /**< date of the next frame */
+
+    bool suspended;                    /**< true if the game is suspended */
+    bool ignore_suspend;               /**< true to continue playing the animation even when the game is suspended */
+    bool paused;                       /**< true if the animation is paused */
+    bool finished;                     /**< true if the animation has been stopped because the last frame is finished */
+    Sprite* synchronize_to;            /**< another sprite to synchronize the frame to
+                                        * when they have the same animation name (or NULL) */
+
+    // effects
+
+    uint32_t blink_delay;              /**< blink delay of the sprite, or zero if the sprite is not blinking */
+    bool blink_is_sprite_visible;      /**< when blinking, true if the sprite is visible or false if it is invisible */
+    uint32_t blink_next_change_date;   /**< date of the next change when blinking: visible or not */
+
+    int alpha;                         /**< alpha effect applied on the sprite (0: transparent, 255: opaque) */
+    uint32_t alpha_next_change_date;   /**< date of the next alpha change when applying a fade-in or fade-out effect */
+    int alpha_increment;               /**< increment of the alpha value while fading */
+    static Surface* alpha_surface;     /**< an intermediate surface used when blitting with transparency */
+
+    static SpriteAnimationSet& get_animation_set(const SpriteAnimationSetId& id);
+    int get_next_frame() const;
 };
 
 #endif

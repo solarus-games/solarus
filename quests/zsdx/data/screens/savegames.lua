@@ -55,6 +55,9 @@ function savegame_menu:on_started()
   self:read_savegames()
   sol.audio.play_music("game_over")
   self:init_phase_select_file()
+
+  -- Show an opening transition.
+  self.surface:fade_in()
 end
 
 function savegame_menu:on_key_pressed(key)

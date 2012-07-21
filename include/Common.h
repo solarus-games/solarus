@@ -57,6 +57,15 @@
 #  define SOLARUS_SCREEN_HEIGHT 240
 #endif
 
+// Bits per pixel.
+#ifndef SOLARUS_COLOR_DEPTH
+#  if defined(CAANOO) || defined(PANDORA)
+#    define SOLARUS_COLOR_DEPTH 16
+#  else
+#    define SOLARUS_COLOR_DEPTH 32
+#  endif
+#endif
+
 /**
  * @brief Half of the logical screen width.
  */

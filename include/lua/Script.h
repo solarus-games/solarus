@@ -554,7 +554,6 @@ class Script {
       sprite_api_is_paused,
       sprite_api_set_paused,
       sprite_api_set_ignore_suspend,
-      sprite_api_fade,
       sprite_api_synchronize,
 
       // displayable API (i.e. common to surfaces, text surfaces and sprites)

@@ -38,7 +38,6 @@ void Script::register_sprite_module() {
       { "is_paused", sprite_api_is_paused },
       { "set_paused", sprite_api_set_paused },
       { "set_ignore_suspend", sprite_api_set_ignore_suspend },
-      { "fade", sprite_api_fade },
       { "synchronize", sprite_api_synchronize },
       { "draw", displayable_api_draw },
       { "fade_in", displayable_api_fade_in },
@@ -250,21 +249,6 @@ int Script::sprite_api_set_ignore_suspend(lua_State *l) {
   bool ignore_suspend = lua_toboolean(l, 2);
 
   sprite.set_ignore_suspend(ignore_suspend);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_sprite_fade.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int Script::sprite_api_fade(lua_State *l) {
-
-  Sprite& sprite = check_sprite(l, 1);
-  int direction = luaL_checkinteger(l, 2);
-
-  sprite.start_fading(direction);
 
   return 0;
 }

@@ -16,6 +16,7 @@
  */
 #include "lua/Script.h"
 #include "DynamicDisplayable.h"
+#include "TransitionFade.h"
 #include <lua.hpp>
 
 /* This file contains common code for all displayable types known by Lua,
@@ -87,6 +88,76 @@ int Script::displayable_api_draw(lua_State* l) {
   int x = luaL_optinteger(l, 3, 0);
   int y = luaL_optinteger(l, 4, 0);
   displayable.display(dst_surface, x, y);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_surface_fade_in,
+ * \ref lua_api_text_surface_fade_in and \ref lua_api_sprite_fade_in.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int Script::displayable_api_fade_in(lua_State* l) {
+
+  uint32_t delay = 20;
+  int callback_ref = LUA_REFNIL;
+
+  DynamicDisplayable& displayable = check_displayable(l, 1);
+
+  if (lua_gettop(l) >= 2) {
+    // the second argument can be the delay or the callback
+    int index = 2;
+    if (lua_isnumber(l, index)) {
+      delay = lua_tonumber(l, index);
+      index++;
+    }
+    // the next argument (if any) is the callback
+    if (lua_gettop(l) >= index) {
+      luaL_checktype(l, index, LUA_TFUNCTION);
+      lua_settop(l, index);
+      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+    }
+  }
+
+  TransitionFade* transition = new TransitionFade(Transition::IN);
+  transition->set_delay(delay);
+  displayable.start_transition(*transition, callback_ref);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_surface_fade_out,
+ * \ref lua_api_text_surface_fade_out and \ref lua_api_sprite_fade_out.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::displayable_api_fade_out(lua_State* l) {
+
+  uint32_t delay = 20;
+  int callback_ref = LUA_REFNIL;
+
+  DynamicDisplayable& displayable = check_displayable(l, 1);
+
+  if (lua_gettop(l) >= 2) {
+    // the second argument can be the delay or the callback
+    int index = 2;
+    if (lua_isnumber(l, index)) {
+      delay = lua_tonumber(l, index);
+      index++;
+    }
+    // the next argument (if any) is the callback
+    if (lua_gettop(l) >= index) {
+      luaL_checktype(l, index, LUA_TFUNCTION);
+      lua_settop(l, index);
+      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+    }
+  }
+
+  TransitionFade* transition = new TransitionFade(Transition::OUT);
+  transition->set_delay(delay);
+  displayable.start_transition(*transition, callback_ref);
 
   return 0;
 }

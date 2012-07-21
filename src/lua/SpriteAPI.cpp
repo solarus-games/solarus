@@ -41,6 +41,8 @@ void Script::register_sprite_module() {
       { "fade", sprite_api_fade },
       { "synchronize", sprite_api_synchronize },
       { "draw", displayable_api_draw },
+      { "fade_in", displayable_api_fade_in },
+      { "fade_out", displayable_api_fade_out },
       { "start_movement", displayable_api_start_movement },
       { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }

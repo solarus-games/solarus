@@ -21,7 +21,6 @@
 #include "movements/Movement.h"
 #include "Sprite.h"
 #include "TransitionFade.h"
-#include <iostream>
 
 const std::string Script::surface_module_name = "sol.surface";
 
@@ -36,9 +35,9 @@ void Script::register_surface_module() {
       { "fill_color", surface_api_fill_color },
       { "set_transparency_color", surface_api_set_transparency_color },
       { "set_opacity", surface_api_set_opacity },
-      { "fade_in", surface_api_fade_in },
-      { "fade_out", surface_api_fade_out },
       { "draw", displayable_api_draw },
+      { "fade_in", displayable_api_fade_in },
+      { "fade_out", displayable_api_fade_out },
       { "start_movement", displayable_api_start_movement },
       { "stop_movement", displayable_api_stop_movement },
       { NULL, NULL }
@@ -167,74 +166,6 @@ int Script::surface_api_set_opacity(lua_State* l) {
   int opacity = luaL_checkinteger(l, 2);
 
   surface.set_opacity(opacity);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_surface_fade_in.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int Script::surface_api_fade_in(lua_State* l) {
-
-  uint32_t delay = 20;
-  int callback_ref = LUA_REFNIL;
-
-  Surface& surface = check_surface(l, 1);
-
-  if (lua_gettop(l) >= 2) {
-    // the second argument can be the delay or the callback
-    int index = 2;
-    if (lua_isnumber(l, index)) {
-      delay = lua_tonumber(l, index);
-      index++;
-    }
-    // the next argument (if any) is the callback
-    if (lua_gettop(l) >= index) {
-      luaL_checktype(l, index, LUA_TFUNCTION);
-      lua_settop(l, index);
-      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-    }
-  }
-
-  TransitionFade* transition = new TransitionFade(Transition::IN);
-  transition->set_delay(delay);
-  surface.start_transition(*transition, callback_ref);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_surface_fade_out.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int Script::surface_api_fade_out(lua_State* l) {
-
-  uint32_t delay = 20;
-  int callback_ref = LUA_REFNIL;
-
-  Surface& surface = check_surface(l, 1);
-
-  if (lua_gettop(l) >= 2) {
-    // the second argument can be the delay or the callback
-    int index = 2;
-    if (lua_isnumber(l, index)) {
-      delay = lua_tonumber(l, index);
-      index++;
-    }
-    // the next argument (if any) is the callback
-    if (lua_gettop(l) >= index) {
-      luaL_checktype(l, index, LUA_TFUNCTION);
-      lua_settop(l, index);
-      callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-    }
-  }
-
-  TransitionFade* transition = new TransitionFade(Transition::OUT);
-  transition->set_delay(delay);
-  surface.start_transition(*transition, callback_ref);
 
   return 0;
 }

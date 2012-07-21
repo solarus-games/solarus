@@ -55,7 +55,7 @@ function event_restart()
   for _, t in ipairs(timers) do t:stop() end
   local sprite = sol.enemy.get_sprite()
   sprite:set_ignore_suspend(false)
-  sprite:fade(1)
+  sprite:fade_out()
   timers[#timers + 1] = sol.timer.start(700, hide)
 end
 
@@ -90,7 +90,7 @@ function unhide()
   sol.enemy.set_position(position.x, position.y)
   local sprite = sol.enemy.get_sprite()
   sprite:set_direction(get_direction4_to_hero())
-  sprite:fade(0)
+  sprite:fade_in()
   timers[#timers + 1] = sol.timer.start(1000, fire_step_1)
 end
 

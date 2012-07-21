@@ -51,7 +51,7 @@ end
 function agahnim_sequence_2()
 
   local sprite = sol.map.npc_get_sprite("solarus_child")
-  sprite:fade(1)
+  sprite:fade_out()
   sol.audio.stop_music()
   sol.audio.play_sound("warp")
   sol.timer.start(3000, agahnim_sequence_3)
@@ -73,7 +73,7 @@ function agahnim_sequence_5()
 
 -- FIXME not working
 --  s = sol.map.npc_get_sprite("agahnim")
---  s:fade(1)
+--  s:fade_in()
 --  sol.audio.play_sound("warp")
   sol.timer.start(2000, agahnim_sequence_6)
 end

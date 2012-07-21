@@ -81,7 +81,7 @@ function event_dialog_finished(dialog_id)
     sol.audio.play_sound("world_warp")
     sol.timer.start(1000, function()
       for i = 1, 8 do
-	sol.map.npc_get_sprite("child_" .. i):fade(1)
+	sol.map.npc_get_sprite("child_" .. i):fade_out()
       end
     end)
     sol.timer.start(5000, function()
@@ -123,7 +123,7 @@ function start_zelda_sequence()
     sol.map.npc_set_enabled(npc_name, true)
     local sprite = sol.map.npc_get_sprite(npc_name)
     sprite:set_ignore_suspend(true)
-    sprite:fade(0)
+    sprite:fade_in()
   end
 
   sol.timer.start(3000, function()

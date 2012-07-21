@@ -51,7 +51,7 @@ function event_restart()
   if not disappearing then
     for _, t in ipairs(timers) do t:stop() end
     local sprite = sol.enemy.get_sprite()
-    sprite:fade(1)
+    sprite:fade_out()
     timers[#timers + 1] = sol.timer.start(500, hide)
   end
 end
@@ -83,7 +83,7 @@ function unhide()
   sol.enemy.set_position(position.x, position.y)
   local sprite = sol.enemy.get_sprite()
   sprite:set_direction(get_direction4_to_hero())
-  sprite:fade(0)
+  sprite:fade_in()
   timers[#timers + 1] = sol.timer.start(1000, fire_step_1)
 end
 
@@ -148,7 +148,7 @@ function disappear()
   local sprite = sol.enemy.get_sprite()
   disappearing = true
   sol.enemy.set_can_attack(false)
-  sprite:fade(1)
+  sprite:fade_out()
   for _, t in ipairs(timers) do t:stop() end
   timers[#timers + 1] = sol.timer.start(500, function()
     sol.map.enemy_remove(sol.enemy.get_name())

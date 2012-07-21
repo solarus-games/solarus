@@ -22,7 +22,7 @@ function event_dialog_finished(dialog_id)
     sol.audio.play_music("legend")
     next_fresco()
   else
-    fresco_sprite:fade(1)
+    fresco_sprite:fade_out()
     sol.timer.start(600, next_fresco)
   end
 end
@@ -33,7 +33,7 @@ function next_fresco()
     fresco = fresco + 1
     sol.map.dialog_start("intro"..fresco)
     fresco_sprite:set_animation(fresco)
-    fresco_sprite:fade(0)
+    fresco_sprite:fade_in()
   else
     sol.map.dialog_set_style(0)
     next_map()

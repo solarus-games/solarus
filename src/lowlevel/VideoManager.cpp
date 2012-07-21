@@ -52,12 +52,6 @@ Rectangle VideoManager::default_mode_sizes[] = {
 };
 
 // Properties of SDL surfaces.
-#ifdef CAANOO
-const int VideoManager::bits_per_pixel = 16;
-#else
-const int VideoManager::bits_per_pixel = 32;
-#endif
-
 #ifdef __APPLE__
 // on Mac OS X the SDL hardware surfaces are buggy
 const int VideoManager::surface_flags = SDL_SWSURFACE;
@@ -293,7 +287,8 @@ void VideoManager::set_video_mode(VideoMode mode) {
   end_row_increment = 2 * offset + width;
 
   if (!disable_window) {
-    SDL_Surface* screen_internal_surface = SDL_SetVideoMode(size.get_width(), size.get_height(), bits_per_pixel, flags);
+    SDL_Surface* screen_internal_surface = SDL_SetVideoMode(
+        size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, flags);
 
     Debug::check_assertion(screen_internal_surface != NULL, StringConcat() << "Cannot create the video surface for mode " << mode);
 

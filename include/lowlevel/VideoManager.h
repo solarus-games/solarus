@@ -46,7 +46,6 @@ class VideoManager {
   };
 
   static const VideoMode* proposed_modes;           /**< video modes proposed on the platform at compile time (NULL means all). The first one will be the default one. */
-  static const int bits_per_pixel;                  /**< number of bits per pixel for surfaces on this platform */
   static const int surface_flags;                   /**< SDL flags for surfaces */
 
  private:

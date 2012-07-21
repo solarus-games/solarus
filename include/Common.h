@@ -52,6 +52,14 @@
 #define SOLARUS_SCREEN_WIDTH_MIDDLE (SOLARUS_SCREEN_WIDTH / 2)
 #define SOLARUS_SCREEN_HEIGHT_MIDDLE (SOLARUS_SCREEN_HEIGHT / 2)
 
+// Bits per pixel.
+#ifndef SOLARUS_COLOR_DEPTH
+#  if defined(CAANOO) || defined(PANDORA)
+#    define SOLARUS_COLOR_DEPTH 16
+#  else
+#    define SOLARUS_COLOR_DEPTH 32
+#  endif
+#endif
 
 #include "Types.h"
 

@@ -30,12 +30,20 @@
 Surface::Surface(int width, int height):
   internal_surface_created(true) {
 
-  this->internal_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height,
-#if !defined(CAANOO) && !defined(PANDORA)
-      32, 0, 0, 0, 0);
-#else
-      16, 0, 0, 0, 0);
-#endif
+  this->internal_surface = SDL_CreateRGBSurface(
+      SDL_HWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+}
+
+/**
+ * @brief Creates a empty surface with the specified size.
+ * @param size The size in pixels.
+ */
+Surface::Surface(const Rectangle& size):
+  DynamicDisplayable(),
+  internal_surface_created(true) {
+
+  this->internal_surface = SDL_CreateRGBSurface(
+      SDL_HWSURFACE, size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
 }
 
 /**

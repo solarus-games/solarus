@@ -31,7 +31,7 @@ class SpriteAnimation {
     Surface *src_image;          /**< image from which the frames are extracted;
                                   * this image is the same for
                                   * all directions of the sprite's animation */
-    bool src_image_loaded;       /**< indicates that src_image was loaded from this class */
+    bool src_image_loaded;       /**< indicates that src_image was loaded from this instance */
     const int nb_directions;     /**< number of directions of this animation */
     SpriteAnimationDirection **directions; /**< array of directions:
                                             * each direction is a sequence of images */
@@ -46,9 +46,10 @@ class SpriteAnimation {
 
   public:
 
-    SpriteAnimation(const std::string &image_file_name, 
-	int nb_directions, SpriteAnimationDirection **directions, uint32_t frame_interval, int loop_on_frame);
-    virtual ~SpriteAnimation();
+    SpriteAnimation(const std::string& image_file_name,
+        int nb_directions, SpriteAnimationDirection** directions,
+        uint32_t frame_interval, int loop_on_frame);
+    ~SpriteAnimation();
 
     void set_map(Map &map);
 

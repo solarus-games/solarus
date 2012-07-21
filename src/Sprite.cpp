@@ -92,8 +92,9 @@ Sprite::Sprite(const std::string &id):
   synchronize_to(NULL),
   blink_delay(0),
   alpha(255),
-  alpha_next_change_date(0) {
- 
+  alpha_next_change_date(0),
+  intermediate_surface(NULL) {
+
   set_current_animation(animation_set.get_default_animation());
 }
 
@@ -102,6 +103,7 @@ Sprite::Sprite(const std::string &id):
  */
 Sprite::~Sprite() {
 
+  delete intermediate_surface;
 }
 
 /**
@@ -171,6 +173,14 @@ const Rectangle& Sprite::get_size() const {
 
   const SpriteAnimation *animation = animation_set.get_animation(current_animation_name);
   return animation->get_direction(current_direction)->get_size();
+}
+
+/**
+ * @brief Returns the maximum frame size of the animation set of this sprite.
+ * @return The maximum frame size.
+ */
+const Rectangle& Sprite::get_max_size() const {
+  return animation_set.get_max_size();
 }
 
 /**
@@ -635,12 +645,17 @@ void Sprite::update() {
 void Sprite::raw_display(Surface& dst_surface,
     const Rectangle& dst_position) {
 
+  // TODO remove alpha_surface
+
+  Surface* surface_to_draw = intermediate_surface != NULL
+      ? intermediate_surface : &dst_surface;
+
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
     if (alpha >= 255) {
       // opaque
-      current_animation->display(dst_surface, dst_position, current_direction,
+      current_animation->display(*surface_to_draw, dst_position, current_direction,
           current_frame);
     }
     else {
@@ -649,8 +664,12 @@ void Sprite::raw_display(Surface& dst_surface,
       alpha_surface->fill_with_color(Color::get_black());
       current_animation->display(*alpha_surface, dst_position, current_direction,
           current_frame);
-      alpha_surface->display(dst_surface);
+      alpha_surface->display(*surface_to_draw);
     }
+  }
+
+  if (intermediate_surface != NULL) {
+    intermediate_surface->display(dst_surface);
   }
 }
 
@@ -659,7 +678,12 @@ void Sprite::raw_display(Surface& dst_surface,
  * @param transition The transition effect to apply.
  */
 void Sprite::display_transition(Transition& transition) {
-  // TODO use an intermediate source surface.
+
+  if (intermediate_surface == NULL) {
+    intermediate_surface = new Surface(get_max_size());
+  }
+
+  transition.display(*intermediate_surface);
 }
 
 /**

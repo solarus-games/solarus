@@ -57,6 +57,7 @@ class Sprite: public DynamicDisplayable {
 
     // size and origin point
     const Rectangle& get_size() const;
+    const Rectangle& get_max_size() const;
     const Rectangle& get_origin() const;
 
     // animation state
@@ -141,7 +142,8 @@ class Sprite: public DynamicDisplayable {
     int alpha;                         /**< alpha effect applied on the sprite (0: transparent, 255: opaque) */
     uint32_t alpha_next_change_date;   /**< date of the next alpha change when applying a fade-in or fade-out effect */
     int alpha_increment;               /**< increment of the alpha value while fading */
-    static Surface* alpha_surface;     /**< an intermediate surface used when blitting with transparency */
+    static Surface* alpha_surface;     /**< an intermediate surface used when blitting with transparency (deprecated) */
+    Surface* intermediate_surface;     /**< an intermediate surface used to show transitions and other effects */
 
     static SpriteAnimationSet& get_animation_set(const std::string& id);
     int get_next_frame() const;

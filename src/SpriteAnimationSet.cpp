@@ -87,6 +87,9 @@ SpriteAnimationSet::SpriteAnimationSet(const std::string& id) {
       FileTools::read(iss, nb_frames);
       FileTools::read(iss, columns);
 
+      max_size.set_width(std::max(width, max_size.get_width()));
+      max_size.set_height(std::max(height, max_size.get_height()));
+
       if (nb_frames % columns == 0) {
         rows = nb_frames / columns;
       }
@@ -214,5 +217,13 @@ void SpriteAnimationSet::enable_pixel_collisions() {
  */
 bool SpriteAnimationSet::are_pixel_collisions_enabled() const {
   return animations.begin()->second->are_pixel_collisions_enabled();
+}
+
+/**
+ * @brief Returns a rectangle big enough to contain any frame of this animation set.
+ * @return The maximum size of a frame in this animation set.
+ */
+const Rectangle& SpriteAnimationSet::get_max_size() const {
+  return max_size;
 }
 

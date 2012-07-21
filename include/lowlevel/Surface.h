@@ -48,6 +48,7 @@ class Surface: public DynamicDisplayable {
     };
 
     Surface(int width = SOLARUS_SCREEN_WIDTH, int height = SOLARUS_SCREEN_HEIGHT);
+    Surface(const Rectangle& size);
     Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
     Surface(SDL_Surface* internal_surface);
     Surface(const Surface& other);

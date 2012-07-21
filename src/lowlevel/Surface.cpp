@@ -25,7 +25,7 @@
 #include <SDL_image.h>
 
 /**
- * @brief Creates a empty surface with the specified size.
+ * @brief Creates an empty surface with the specified size.
  * @param width the width in pixels
  * @param height the height in pixels
  */
@@ -34,6 +34,23 @@ Surface::Surface(int width, int height):
   internal_surface_created(true) {
 
   this->internal_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height,
+#if !defined(CAANOO) && !defined(PANDORA)
+      32, 0, 0, 0, 0);
+#else
+      16, 0, 0, 0, 0);
+#endif
+}
+
+/**
+ * @brief Creates a empty surface with the specified size.
+ * @param size The size in pixels.
+ */
+Surface::Surface(const Rectangle& size):
+  DynamicDisplayable(),
+  internal_surface_created(true) {
+
+  this->internal_surface = SDL_CreateRGBSurface(
+      SDL_HWSURFACE, size.get_width(), size.get_height(),
 #if !defined(CAANOO) && !defined(PANDORA)
       32, 0, 0, 0, 0);
 #else

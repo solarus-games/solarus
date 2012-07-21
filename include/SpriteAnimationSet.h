@@ -39,7 +39,6 @@ class SpriteAnimationSet {
 
   public:
 
-    SpriteAnimationSet();
     SpriteAnimationSet(const std::string& id);
     ~SpriteAnimationSet();
 

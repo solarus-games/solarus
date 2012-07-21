@@ -22,13 +22,6 @@
 #include "lowlevel/StringConcat.h"
 
 /**
- * @brief Empty constructor.
- */
-SpriteAnimationSet::SpriteAnimationSet() {
-
-}
-
-/**
  * @brief Loads the animations of a sprite from a file.
  * @param id id of the sprite (used to determine the sprite file)
  */
@@ -111,7 +104,8 @@ SpriteAnimationSet::SpriteAnimationSet(const std::string& id) {
       directions[i] = new SpriteAnimationDirection(nb_frames, positions_in_src, x_origin, y_origin);
     }
 
-    Debug::check_assertion(animations.count(name) == 0, StringConcat() << "Animation '" << name << "' is defined twice in sprite '" << id << "'");
+    Debug::check_assertion(animations.count(name) == 0,
+        StringConcat() << "Animation '" << name << "' is defined twice in sprite '" << id << "'");
     animations[name] = new SpriteAnimation(image_file_name, nb_directions, directions,
 					   frame_delay, loop_on_frame);
 

@@ -33,7 +33,7 @@ Savegame::Savegame(const std::string &file_name):
   game(NULL) {
 
   if (!FileTools::data_file_exists(file_name)) {
-    // this save slot is free
+    // this save does not exist yet
     empty = true;
     set_initial_values();
   }

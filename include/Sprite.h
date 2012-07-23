@@ -90,8 +90,6 @@ class Sprite: public DynamicDisplayable {
     // effects
     bool is_blinking() const;
     void set_blinking(uint32_t blink_delay);
-    int get_alpha() const;
-    void set_alpha(int alpha);
 
     // collisions
     bool test_collision(Sprite& other, int x1, int y1, int x2, int y2) const;

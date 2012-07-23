@@ -93,8 +93,7 @@ int Script::displayable_api_draw(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_surface_fade_in,
- * \ref lua_api_text_surface_fade_in and \ref lua_api_sprite_fade_in.
+ * @brief Implementation of \ref lua_api_displayable_fade_in.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -128,8 +127,7 @@ int Script::displayable_api_fade_in(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_surface_fade_out,
- * \ref lua_api_text_surface_fade_out and \ref lua_api_sprite_fade_out.
+ * @brief Implementation of \ref lua_api_displayable_fade_out.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */

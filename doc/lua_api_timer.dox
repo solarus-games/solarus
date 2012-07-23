@@ -21,8 +21,8 @@ sol.timer.start(1000, function()
 end)
 \endverbatim
 
-- \ref lua_api_timer_functions "Functions of sol.timer"
-- \ref lua_api_timer_methods "Timer methods"
+- \ref lua_api_timer_functions
+- \ref lua_api_timer_methods
 
 <hr>
 
@@ -46,7 +46,7 @@ If the delay is set to zero, the function is called immediately.
     killed or removed.
   - If the context is the table of a \ref lua_api_menu "menu", the timer is
     canceled when the menu is closed.
-  - If the context is the \ref \lua_api_main sol.main table, the timer is
+  - If the context is the \ref lua_api_main "sol.main" table, the timer is
     canceled when Lua is closed. Thus, it will be a global timer.
   - If the context is not set, then a default context is chosen
     (the current map during a game, and the current menu otherwise).
@@ -60,7 +60,7 @@ If the delay is set to zero, the function is called immediately.
 
 <hr>
 
-\section lua_api_timer_methods Methods of the timer type
+\section lua_api_timer_methods Methods of the type timer
 
 <hr>
 

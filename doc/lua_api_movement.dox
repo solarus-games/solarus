@@ -12,17 +12,17 @@ a movement object has several methods available.
 As detailed below, the methods available differ depending on the movement type
 because all movement types don't have the same properties.
 
-- \ref lua_api_movement_functions "Functions of sol.movement"
-- \ref lua_api_movement_methods "Methods all movement types"
-- \ref lua_api_straight_movement_methods "Methods of the straight movement type"
-- \ref lua_api_random_movement_methods "Methods of the random movement type"
-- \ref lua_api_target_movement_methods "Methods of the target movement type"
-- \ref lua_api_path_movement_methods "Methods of the path movement type"
-- \ref lua_api_random_path_movement_methods "Methods of the random path movement type"
-- \ref lua_api_path_finding_movement_methods "Methods of the path finding movement type"
-- \ref lua_api_circle_movement_methods "Methods of the circle movement type"
-- \ref lua_api_jump_movement_methods "Methods of the jump movement type"
-- \ref lua_api_pixel_movement_methods "Methods of the pixel movement type"
+- \ref lua_api_movement_functions
+- \ref lua_api_movement_methods
+- \ref lua_api_straight_movement_methods
+- \ref lua_api_random_movement_methods
+- \ref lua_api_target_movement_methods
+- \ref lua_api_path_movement_methods
+- \ref lua_api_random_path_movement_methods
+- \ref lua_api_path_finding_movement_methods
+- \ref lua_api_circle_movement_methods
+- \ref lua_api_jump_movement_methods
+- \ref lua_api_pixel_movement_methods
 
 Movements can be applied in-game to map entities, but also
 outside a game, typically in a menu to move a sprite or an image.
@@ -60,7 +60,7 @@ then available to get and set its properties.
 
 <hr>
 
-\section lua_api_movement_methods Movement methods
+\section lua_api_movement_methods Methods of all movement types.
 
 <hr>
 
@@ -128,7 +128,7 @@ end
 
 <hr>
 
-\section lua_api_straight_movement_methods Straight movement methods
+\section lua_api_straight_movement_methods Methods of the type straight movement
 
 <hr>
 
@@ -216,7 +216,7 @@ or if the movement ignores obstacles.
 
 <hr>
 
-\section lua_api_random_movement_methods Random movement methods
+\section lua_api_random_movement_methods Methods of the type random movement
 
 <hr>
 
@@ -295,7 +295,7 @@ or if the movement ignores obstacles.
 
 <hr>
 
-\section lua_api_target_movement_methods Target movement methods
+\section lua_api_target_movement_methods Methods of the type target movement
 
 <hr>
 
@@ -382,7 +382,7 @@ or if the movement ignores obstacles.
 
 <hr>
 
-\section lua_api_path_movement_methods Path movement methods
+\section lua_api_path_movement_methods Methods of the type path movement
 
 <hr>
 
@@ -486,7 +486,7 @@ not attached to a map entity.
 
 <hr>
 
-\section lua_api_random_path_movement_methods Random path movement methods
+\section lua_api_random_path_movement_methods Methods of the type random path movement
 
 <hr>
 
@@ -527,7 +527,7 @@ Sets the speed of this movement.
 
 <hr>
 
-\section lua_api_path_finding_movement_methods Path finding movement methods
+\section lua_api_path_finding_movement_methods Methods of the type path finding movement
 
 <hr>
 
@@ -569,7 +569,7 @@ Sets the speed of this movement.
 
 <hr>
 
-\section lua_api_circle_movement_methods Circle movement methods
+\section lua_api_circle_movement_methods Methods of the type circle movement
 
 <hr>
 
@@ -759,7 +759,7 @@ to its previous value, possibly gradually
 
 <hr>
 
-\section lua_api_jump_movement_methods Jump movement methods
+\section lua_api_jump_movement_methods Methods of the type jump movement
 
 <hr>
 
@@ -824,7 +824,7 @@ Sets the speed of this movement.
 
 <hr>
 
-\section lua_api_pixel_movement_methods Pixel movement methods
+\section lua_api_pixel_movement_methods Methods of the type pixel movement
 
 <hr>
 

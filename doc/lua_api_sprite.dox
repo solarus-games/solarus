@@ -126,15 +126,16 @@ Returns whether this sprite is paused.
 \subsection lua_api_sprite_set_paused sprite:set_paused([paused])
 
 Pauses or resumes the animation of this sprite.
-- \c paused (boolean, optional): \c true to pause the sprite (default),
-  \c false to unpause it.
+- \c paused (boolean, optional): \c true to pause the sprite,
+  \c false to unpause it. No value means \c true.
 
 <hr>
 
-\subsection lua_api_sprite_set_ignore_suspend sprite:set_ignore_suspend(ignore)
+\subsection lua_api_sprite_set_ignore_suspend sprite:set_ignore_suspend([ignore])
 
 Sets whether the animation should continue even when this sprite is suspended.
-- \c ignore (boolean): \c true to continue animation even when suspended.
+- \c ignore (boolean): \c true to continue animation even when suspended
+  \c false otherwise. No value means \c true.
 
 <hr>
 
@@ -143,7 +144,7 @@ Sets whether the animation should continue even when this sprite is suspended.
 Synchronizes the frames of this sprite with the frames of a reference sprite.
 The synchronization will be performed whenever their animation names match.
 - \c reference_sprite (sprite, optional): The reference sprite. \c nil means
-  to stop any previous synchronization.
+  stopping any previous synchronization.
 
 */
 

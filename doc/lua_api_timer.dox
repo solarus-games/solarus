@@ -30,6 +30,8 @@ end)
 
 \section lua_api_timer_functions Functions of sol.timer
 
+<hr>
+
 \subsection lua_api_timer_start sol.timer.start([context], delay, callback)
 
 Sets a function to be called after a delay.

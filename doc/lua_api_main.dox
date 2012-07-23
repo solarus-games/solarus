@@ -47,12 +47,13 @@ Exits the program after the current cycle.
 
 <hr>
  
-\subsection lua_api_main_start_screen sol.main.start_screen(screen)
+\subsection lua_api_main_start_screen sol.main.start_screen(menu)
 
-Ends the scripted screen or game that was running and starts a scripted screen
-after the current cycle.
+Ends the menu or game that was running and starts a menu after the current
+cycle.
 
-- \c screen (table): The scripted screen object to load.
+- \c menu (table): A table representing the menu to show (see
+  \ref lua_api_menu).
 
 <hr>
 

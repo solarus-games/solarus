@@ -11,7 +11,7 @@ i.e. methods like \ref lua_api_menu_on_started,
 
 To make the engine aware of your menu (and call your events
 automatically), you have to attach it to a context
-such as a map a game or a whole screen.
+such as a map, a game or a whole screen.
 - If you attach your menu to a map, it is displayed above the map surface.
   It will disappear when the map changes.
   It is useful to show head-up information local to a precise map.<br>

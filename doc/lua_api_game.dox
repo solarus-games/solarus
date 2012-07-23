@@ -1,256 +1,448 @@
 /**
-\page lua_api_game Game and savegames
+\page lua_api_game Games and savegames
 
 This module provides a datatype "game" that represents a savegame.
-This type provides methods to manage the game data.
 
-- \c sol.game.exists(file_name):
+When a game is running, more methods are available
+(like pausing the game, starting a menu, etc.).
+Only one game can be running at a time.
+
+\section Contents
+
+- \ref lua_api_game_functions
+- \ref lua_api_game_methods
+
+<hr>
+
+\section lua_api_game_functions Functions of sol.game
+
+<hr>
+
+\subsection lua_api_game_exists sol.game.exists(file_name)
+
 Returns whether the specified savegame file exists.
-  - \c file_name (string): name of the file to test, relative to the
-    savegames directory.
-  - Return value (boolean): true if this savegame file exists
+- \c file_name (string): Name of the file to test, relative to the
+  savegames directory.
+- Return value (boolean): \c true if this savegame file exists.
 
-- \c sol.game.delete(file_name):
+<hr>
+
+\subsection lua_api_game_delete sol.game.delete(file_name)
+
 Deletes a savegame file.
-  - \c file_name (string): name of the file to delete, relative
-    to the savegames directory
+- \c file_name (string): Name of the file to delete, relative
+  to the savegames directory.
 
-- \c sol.game.load(file_name):
-Loads an existing savegame, or creates a new one if the file does not exist.
-This function does not start the game, it just loads the savegame file.
+<hr>
+
+\subsection lua_api_game_load sol.game.load(file_name)
+
+Loads an existing savegame, or initializes a new one if it does not exist
+(but does not save it).
+- \c file_name (string): Name of a savegame file, relative to the savegames
+  directory.
+- Return value (game): The loaded (or created) game.
+
+\remark This function does not start the game, it just loads the savegame file.
 Then you can access the data saved in the file.
-To actually run the game, call the \c start() method.
-  - \c file_name (string): name of the file to load or create, relative
-    to the savegames directory
-  - Return value (game): the loaded (or created) game
+To actually run the game, call \ref lua_api_game_start.
 
-- \c game:save():
+<hr>
+
+\section lua_api_game_methods Methods of the type game
+
+<hr>
+
+\subsection lua_api_game_save game:save()
+
 Saves this game into its savegame file.
 
-- \c game:start():
-Ends the scripted screen or game that was running and starts this game.
+<hr>
+
+\subsection lua_api_game_start game:start()
+
+Ends the scripted screen or game that was running and runs this game.
+
 You can call this function to restart the current game itself,
 even if it was not saved recently (no data will be lost).
 
-- \c game:is_started():
+<hr>
+
+\subsection lua_api_game_is_started game:is_started()
+
 Returns whether this game is currently being played.
-  - Return value (boolean): \c true if this game is started.
 
-- \c game:is_suspended():
+Only one game can be running at a time.
+- Return value (boolean): \c true if this game is running.
+
+<hr>
+
+\subsection lua_api_game_is_suspended game:is_suspended()
+
 Returns whether this game is started and is currently suspended.
-  - Return value (boolean): \c true if this game is suspended, for example
-    because it is paused or a dialog is being shown. Only possible when the
-    game is started.
+- Return value (boolean): \c true if this game is suspended, for example
+  because it is paused or because a dialog is being shown.
+  Only possible when the game is running.
 
-- \c game:get_string(index):
+<hr>
+
+\subsection lua_api_game_get_string game:get_string(index)
+
 Returns a string saved.
-  - \c index (number): index of the string variable to get from the
-    savegame (0 to 63)
-  - Return value (string): the corresponding string
+- \c index (number): Index of a string variable to get from the
+  savegame (\c 0 to \c 63).
+- Return value (string): The corresponding string.
 
-- \c game:set_string(index, value):
+<hr>
+
+\subsection lua_api_game_set_string game:set_string(index, value)
+
 Sets a string in the savegame.
-  - \c index (number): index of the string variable to set (32 to 63)
-  - \c value (string): the string value to set
+- \c index (number): Index of the string variable to set (\c 32 to \c 63).
+- \c value (string): The string value to set.
 
-- \c game:get_integer(index):
+<hr>
+
+\subsection lua_api_game_get_integer game:get_integer(index)
+
 Returns an integer saved.
-  - \c index (number): index of the integer variable to get from the
-    savegame (0 to 2047)
-  - Return value (number): the corresponding integer
+- \c index (number): Index of an integer variable to get from the
+  savegame (\c 0 to \c 2047).
+- Return value (number): The corresponding integer.
 
-- \c game:set_integer(index, value):
+<hr>
+
+\subsection lua_api_game_set_integer game:set_integer(index, value)
+
 Sets an integer in the savegame.
-  - \c index (number): index of the integer variable to set (1024 to 2047)
-  - \c value (number): the integer value to set
+- \c index (number): Index of the integer variable to set (\c 1024 to \c 2047).
+- \c value (number): The integer value to set.
 
-- \c game:get_boolean(index):
+<hr>
+
+\subsection lua_api_game_get_boolean game:get_boolean(index)
+
 Returns a boolean saved.
-  - \c index (number): index of the boolean variable to get from the
-    savegame (0 to 32767)
-  - Return value (boolean): the corresponding boolean
+- \c index (number): Index of the boolean variable to get from the
+  savegame (\c 0 to \c 32767).
+- Return value (boolean): The corresponding boolean.
 
-- \c game:set_boolean(index, value):
+<hr>
+
+\subsection lua_api_game_set_boolean game:set_boolean(index, value)
+
 Sets an boolean in the savegame.
-  - \c index (number): index of the boolean variable to set (0 to 32767)
-  - \c value (boolean): the boolean value to set
+- \c index (number): Index of the boolean variable to set (\c 0 to \c 32767).
+- \c value (boolean): The boolean value to set.
 
-- \c game:get_player_name():
+<hr>
+
+\subsection lua_api_game_get_player_name game:get_player_name()
+
 Returns the name of the player.
-  - Return value (string): name of the player
+- Return value (string): Name of the player.
 
-- \c game:set_player_name(name):
+<hr>
+
+\subsection lua_api_game_set_player_name game:set_player_name(name)
+
 Sets the name of the player.
-  - \c name (string): name of the player.
+- \c name (string): Name of the player.
 
-- \c game:get_life():
+<hr>
+
+\subsection lua_api_game_get_life game:get_life()
+
 Returns the current level of life of the player.
-  - Return value (number): the current life
+- Return value (number): The current life.
 
-- \c game:set_life(life):
+<hr>
+
+\subsection lua_api_game_set_life game:set_life(life)
+
 Sets the level of life of the player.
+
 A negative value will be replaced by zero. A value greater than
 than the maximum level of life will be replaced by the maximum value.
-  - \c life (number): number of life points to set
+- \c life (number): Number of life points to set.
 
-- \c game:add_life(life):
+<hr>
+
+\subsection lua_api_game_add_life game:add_life(life)
+
 Adds some life to the player.
-  - \c life (number): number of life points to add
+- \c life (number): Number of life points to add.
 
-- \c game:remove_life(life):
+<hr>
+
+\subsection lua_api_game_remove_life game:remove_life(life)
+
 Removes some life from the player.
-  - \c life (number): number of life points to remove
+- \c life (number): Number of life points to remove.
 
-- \c game:get_max_life():
+<hr>
+
+\subsection lua_api_game_get_max_life game:get_max_life()
+
 Returns the maximum level of life of the player.
-  - Return value (number): the maximum number of life points
+- Return value (number): The maximum number of life points.
 
-- \c game:set_max_life(life):
+<hr>
+
+\subsection lua_api_game_set_max_life game:set_max_life(life)
+
 Sets the maximum level of life of the player.
-  - \c life (number): maximum number of life points to set
+- \c life (number): Maximum number of life points to set.
 
-- \c game:add_max_life(life):
+<hr>
+
+\subsection lua_api_game_add_max_life game:add_max_life(life)
+
 Increases the maximum level of life of the player.
-  - \c life (number): maximum number of life points to set
+- \c life (number): Maximum number of life points to set.
 
-- \c game:get_money():
+<hr>
+
+\subsection lua_api_game_get_money game:get_money()
+
 Returns the amount of money of the player.
-  - Return value (number): the current amount of money
+- Return value (number): The current amount of money.
 
-- \c game:set_money(money):
+<hr>
+
+\subsection lua_api_game_set_money game:set_money(money)
+
 Sets the amount of money of the player.
-  - \c money (number): the amount of money to set
+- \c money (number): The amount of money to set.
 
-- \c game:add_money(money):
+<hr>
+
+\subsection lua_api_game_add_money game:add_money(money)
+
 Adds some money to the player.
-  - \c money (number): amount of money to add
+- \c money (number): Amount of money to add.
 
-- \c game:remove_money(money):
+<hr>
+
+\subsection lua_api_game_remove_money game:remove_money(money)
+
 Removes some money from the player.
-  - \c money (number): amount of money to remove
+- \c money (number): Amount of money to remove.
 
-- \c game:get_magic():
+<hr>
+
+\subsection lua_api_game_get_magic game:get_magic()
+
 Returns the current number of magic points.
-  - Return value (number): the current number of magic points
+- Return value (number): The current number of magic points.
 
-- \c game:set_magic(magic):
+<hr>
+
+\subsection lua_api_game_set_magic game:set_magic(magic)
+
 Sets the amount of magic points of the player.
-  - \c magic (number): the number of magic points to set
+- \c magic (number): The number of magic points to set.
 
-- \c game:add_magic(magic):
+<hr>
+
+\subsection lua_api_game_add_magic game:add_magic(magic)
+
 Adds some magic points to the player.
-  - \c magic (number): number of magic points to add
+- \c magic (number): Number of magic points to add.
 
-- \c game:remove_magic(magic):
+<hr>
+
+\subsection lua_api_game_remove_magic game:remove_magic(magic)
+
 Removes some magic points from the player.
-  - \c magic (number): number of magic points to remove
+- \c magic (number): Number of magic points to remove.
 
-- \c game:start_decreasing_magic(delay):
+<hr>
+
+\subsection lua_api_game_start_decreasing_magic game:start_decreasing_magic(delay)
+
 Starts removing magic points continuously.
-Only possible when the game is running.
-  - \c delay (number): delay in milliseconds between each loss of 1
-    point
 
-- \c game:stop_decreasing_magic():
+Only possible when the game is running.
+- \c delay (number): Delay in milliseconds between each loss of 1 point.
+
+<hr>
+
+\subsection lua_api_game_stop_decreasing_magic game:stop_decreasing_magic()
+
 Stops removing magic points continuously.
+
 Only possible when the game is running.
 
-- \c game:get_max_magic():
+<hr>
+
+\subsection lua_api_game_get_max_magic game:get_max_magic()
+
 Returns the maximum number of magic points.
-  - Return value (number): the maximum number of magic points
+- Return value (number): The maximum number of magic points.
 
-- \c game:set_max_magic(magic):
+<hr>
+
+\subsection lua_api_game_set_max_magic set_max_magic(magic)
+
 Sets the maximum number of magic points.
-  - \c magic (number): the maximum number of magic points to set
+- \c magic (number): The maximum number of magic points to set.
 
-- \c game:has_ability(ability_name):
+<hr>
+
+\subsection lua_api_game_has_ability game:has_ability(ability_name)
+
 Returns whether the player has an ability.
-Equivalent to \c game:get_ability(ability_name) > 0.
-  - \c ability_name: name of the ability to get (must be a valid
-    built-in ability name)
-  - Return value (boolean): true if the player has this ability
+- \c ability_name: Name of the ability to get (must be a valid
+  built-in ability name).
+- Return value (boolean): \c true if the player has this ability.
 
-- \c game:get_ability(ability_name):
+\remark Equivalent to <tt>game:get_ability(ability_name) > 0</tt>.
+
+<hr>
+
+\subsection lua_api_game_get_ability game:get_ability(ability_name)
+
 Returns the level of an ability.
-  - \c ability_name (string): name of the ability to get (must be a valid
-    built-in ability name)
-  - Return value (number): level of this ability
-    (0 means not having this ability yet)
+- \c ability_name (string): Name of the ability to get (must be a valid
+  built-in ability name).
+- Return value (number): Level of this ability
+  (\c 0 means not having this ability yet).
 
-- \c game:set_ability(ability_name, level):
+<hr>
+
+\subsection lua_api_game_set_ability game:set_ability(ability_name, level)
+
 Sets the level of an ability.
-  - \c ability_name (string): name of the ability to set (must be a valid
-    built-in ability name)
-  - \c level (number): level of this ability to set
-    (0 removes the ability)
+- \c ability_name (string): Name of the ability to set (must be a valid
+  built-in ability name).
+- \c level (number): Level of this ability to set (0 removes the ability).
 
-- \c game:has_item(item_name):
+<hr>
+
+\subsection lua_api_game_has_item game:has_item(item_name)
+
 Returns whether the player has an item.
-Equivalent to \c game:get_item(item_name) > 0.
-  - \c item_name (string): name of the item to get (must be an item
-    defined in \c items.dat)
-  - Return value (boolean): true if the player has this item
+- \c item_name (string): Name of the item to get (must be an item
+  defined in \c items.dat).
+- Return value (boolean): \c true if the player has this item.
 
-- \c game:get_item(item_name):
+\remark Equivalent to <tt>game:get_item(item_name) > 0</tt>.
+
+<hr>
+
+\subsection lua_api_game_get_item game:get_item(item_name)
+
 Returns the possession state (variant) of an item.
-  - \c item_name (string): name of the item to get (must be an item
-    defined in \c items.dat)
-  - Return value (number): the variant of this item possessed by the player
-    (0 means not having this item yet, 1 means the first variant, etc.)
+- \c item_name (string): Name of the item to get (must be an item
+  defined in \c items.dat).
+- Return value (number): The variant of this item possessed by the player.
+  \c 0 means not having this item yet, \c 1 means the first variant, etc.
 
-- \c game:set_item(item_name, variant):
+<hr>
+
+\subsection lua_api_game_set_item game:set_item(item_name, variant)
+
 Sets the possession state (variant) of an item.
-  - \c item_name (string): name of the item to set (must be an item
-    defined in \c items.dat)
-  - \c variant (number): the variant of this item possessed by the player
-    (0 means not having this item yet, 1 means the first variant, etc.)
+- \c item_name (string): Name of the item to set (must be an item
+  defined in \c items.dat).
+- \c variant (number): The variant of this item possessed by the player.
+  \c 0 remove the item, 1 sets the first variant, etc.
 
-- \c game:has_item_amount(item_name, amount):
+<hr>
+
+\subsection lua_api_game_has_item_amount game:has_item_amount(item_name, amount)
+
 Returns whether the player has at least the specified amount of an item.
-The item must have a counter (i.e. a notion of amount).
-Equivalent to \c game:get_item_amount(item_name) > 0.
-  - \c item_name (string): name of the item to get (the item must
-    have a counter)
-  - \c amount (number): the amount to check
-  - Return value (boolean): true if the player has at least this amount of the
-    item
 
-- \c game:get_item_amount(item_name):
+The item must have a counter (i.e. a notion of amount).
+- \c item_name (string): Name of the item to get (the item must have a
+  counter).
+- \c amount (number): The amount to check.
+- Return value (boolean): \c true if the player has at least this amount of the
+  item.
+
+\remark Equivalent to <tt>\c game:get_item_amount(item_name) > 0</tt>.
+
+<hr>
+
+\subsection lua_api_game_get_item_amount game:get_item_amount(item_name)
+
 Returns the amount the player has for an item.
-The item must have a counter (i.e. a notion of amount).
-  - \c item_name (string): name of the item to get (the item must
-    have a counter)
-  - Return value (number): the amount of this item
 
-- \c game:set_item_amount(item_name, amount):
+The item must have a counter (i.e. a notion of amount).
+- \c item_name (string): Name of the item to get (the item must
+  have a counter).
+- Return value (number): The amount of this item.
+
+<hr>
+
+\subsection lua_api_game_set_item_amount game:set_item_amount(item_name, amount)
+
 Sets the amount the player has for an item.
-The item must have a counter (i.e. a notion of amount).
-  - \c item_name (string): name of the item to get (the item must
-    have a counter)
-  - \c amount (number): the new amount to set
 
-- \c game:add_item_amount(item_name, amount):
+The item must have a counter (i.e. a notion of amount).
+- \c item_name (string): Name of the item to change (the item must
+  have a counter).
+- \c amount (number): The new amount to set.
+
+<hr>
+
+\subsection lua_api_game_add_item_amount game:add_item_amount(item_name, amount)
+
 Adds an amount of the specified item.
-The item must have a counter (i.e. a notion of amount).
-  - \c item_name (string): name of the item to get (the item must
-    have a counter)
-  - \c amount (number): the amount to add
 
-- \c game:remove_item_amount(item_name, amount):
+The item must have a counter (i.e. a notion of amount).
+- \c item_name (string): Name of the item to change (the item must
+  have a counter).
+- \c amount (number): The amount to add.
+
+<hr>
+
+\subsection lua_api_game_remove_item_amount game:remove_item_amount(item_name, amount)
+
 Removes an amount of the specified item.
+
 The item must have a counter (i.e. a notion of amount).
-  - \c item_name (string): name of the item to get (the item must
-    have a counter)
-  - \c amount (number): the amount to remove
+- \c item_name (string): Name of the item to change (the item must
+  have a counter).
+- \c amount (number): The amount to remove.
 
-- \c game:is_dungeon_finished(dungeon):
+<hr>
+
+\subsection lua_api_game_is_dungeon_finished game:is_dungeon_finished(dungeon)
+
 Returns whether the specified dungeon is finished.
-  - \c dungeon (number): id of the dungeon to get (the first one is 1)
-  - Return value (boolean): true if this dungeon is finished
+- \c dungeon (number): Id of the dungeon to get (the first one is \c 1).
+- Return value (boolean): \c true if this dungeon is finished.
 
-- \c game:set_dungeon_finished(dungeon):
-Sets the specified dungeon as finished.
-  - \c dungeon (number): id of the dungeon to get (the first one is 1)
+<hr>
+
+\subsection lua_api_game_set_dungeon_finished game:set_dungeon_finished(dungeon)
+
+Marks the specified dungeon as finished.
+- \c dungeon (number): Id of the dungeon to set (the first one is \c 1).
+
+<hr>
+
+\subsection lua_api_game_start_menu game:start_menu(menu)
+
+Starts a menu attached to this game.
+
+Only possible when the game is running.
+The menu will persist accross map changes.
+- \c menu (table): A table representing the menu to show (see
+  \ref lua_api_menu).
+
+\see lua_api_map_start_menu, lua_api_main_start_screen
+
+<hr>
+
+\subsection lua_api_game_stop_menu game:stop_menu(menu)
+
+Removes a menu previously attached to this game with
+\ref lua_api_game_start_menu.
+- \c menu (table): The menu to stop.
 
 */
 

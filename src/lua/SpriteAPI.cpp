@@ -249,7 +249,10 @@ int Script::sprite_api_set_paused(lua_State* l) {
 int Script::sprite_api_set_ignore_suspend(lua_State *l) {
 
   Sprite& sprite = check_sprite(l, 1);
-  bool ignore_suspend = lua_toboolean(l, 2);
+  bool ignore_suspend = true;  // true if unspecified.
+  if (lua_isboolean(l, 2)) {
+    ignore_suspend = lua_toboolean(l, 2);
+  }
 
   sprite.set_ignore_suspend(ignore_suspend);
 

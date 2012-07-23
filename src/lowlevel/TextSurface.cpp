@@ -344,7 +344,7 @@ bool TextSurface::is_empty() {
  * @brief Returns the text currently displayed.
  * @return the text currently displayed, or NULL if there is no text
  */
-const std::string & TextSurface::get_text() {
+const std::string& TextSurface::get_text() {
   return text;
 }
 
@@ -355,7 +355,7 @@ const std::string & TextSurface::get_text() {
  *
  * @param text the text to display (cannot be NULL)
  */
-void TextSurface::set_text(const std::string &text) {
+void TextSurface::set_text(const std::string& text) {
 
   if (text != this->text) {
 

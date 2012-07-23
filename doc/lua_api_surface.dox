@@ -62,7 +62,7 @@ See the \ref lua_api_displayable_methods to know these methods.
 
 \section lua_api_surface_methods Methods of the type surface
 
-The following methods are specific to the type surface.
+The following methods are specific to surfaces.
 
 <hr>
 
@@ -81,7 +81,7 @@ Fills this surface with a color.
 
 <hr>
 
-\subsection lua_api_surface_set_transparency_color surface:set_transparency_color(color):
+\subsection lua_api_surface_set_transparency_color surface:set_transparency_color(color)
 
 Sets a transparency color to this surface. Pixels in that color won't be
 displayed.
@@ -92,8 +92,9 @@ displayed.
 \subsection lua_api_surface_set_opacity surface:set_opacity(opacity)
 
 Sets the opacity of this surface.
+
+All surfaces are initially opaque.
 - \c opacity (integer): The opacity: \c 0 (transparent) to \c 255 (opaque).
-  A surface is initially opaque (255).
 
 */
 

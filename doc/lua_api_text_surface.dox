@@ -1,61 +1,211 @@
 /**
 \page lua_api_text_surface Text surfaces
 
-\c sol.text_surface provides features to display some text.
-The text surface type can be seen as a special surface able to
-contain text.
+A text surface is a line of text that you can display.
+A text surface can be seen as a special
+\ref lua_api_surface surface "surface" able to contain text.
+\c sol.text_surface provides features to handle text surfaces.
 
-\c sol.text_surface.create(properties):
+- \ref lua_api_text_surface_functions
+- \ref lua_api_text_surface_displayable_methods
+- \ref lua_api_text_surface_methods
+
+<hr>
+
+\section lua_api_text_surface_functions Functions of sol.text_surface
+
+<hr>
+
+\subsection lua_api_text_surface_create sol.text_surface.create([properties]):
+
 Creates a text surface with the specified properties.
-  - \c properties (optional table): a table that describes all properties
-    of the text surface to create. Its key-value pairs are all optional,
-    they can be:
-    - \c horizontal_alignement (string, default "left"): "left",
-      "center" or "right". When the text surface is displayed at some
-      coordinates on a surface, the left/center/right part of the text is
-      displayed at those coordinates.
-    - \c vertical_alignement (string, default "middle"): "top",
-      "middle" or "bottom". When the text surface is displayed at some
-      coordinates on a surface, the top/middle/bottom part of the text is
-      displayed at those coordinates.
-    - \c font (string): name of the font to use (the default is the one
-      defined in file \c text/fonts.dat)
-    - \c rendering_mode (string, default "solid"): "solid" (normal),
-      "shaded" (smooth effect but the text surface won't support transparency,
-      a background color will be applied)
-      or "blended" (smooth effect keeping transparency, a bit slower)
-    - \c background_color (table, default black): a background
-      color (array of 3 RGB values between 0 and 255) to apply to the
-      text surface (only used in rendering mode "shaded")
-    - \c text_color (table, default white): color of the text to display
-      (array of 3 RGB values between 0 and 255)
-    - \c text (string, default ""): the text to show
-      (must be valid UTF-8)
-    - \c text_key (string, default nil): key of the localized text
-      string to get from the \c text/strings.dat file of the
-      current language
-    - Return value (text surface): the text surface created
+- \c properties (optional table): A table that describes all properties
+  of the text surface to create. Its key-value pairs are all optional,
+  they can be:
+  - \c horizontal_alignement (string, default \c "left"): \c "left",
+    \c "center" or \c "right". When you display the text surface at some
+    coordinates on a destination surface, it is anchored at this position.
+  - \c vertical_alignement (string, default \c "middle"): \c "top",
+    \c "middle" or \c "bottom". When you display text surface at some
+    coordinates on a destination surface, it is anchored at this position.
+  - \c font (string): Name of the font to use. It must be a valid font
+    defined in \c text/fonts.dat.
+  - \c rendering_mode (string, default \c "solid"): \c "solid" (normal),
+    \c "blended" (smooth effect on letters),
+    \c "shaded" (faster smooth effect but the text surface won't support
+    transparency: a background color will be applied).
+  - \c background_color (table, default black): A background
+    color (array of 3 RGB values between 0 and 255) to apply to the
+    text surface (only used in rendering mode \c "shaded").
+  - \c text_color (table, default white): color of the text to display
+    (array of 3 RGB values between 0 and 255)
+  - \c text (string, default \c ""): The text to show
+    (must be valid UTF-8).
+  - \c text_key (string, default \c nil): Key of the localized text
+    to show. The string must exist in the file \c text/strings.dat of the
+    current language.
+  - Return value (text surface): The text surface created.
 
-TODO
-get_horizontal_alignment
-set_horizontal_alignment
-get_vertical_alignment
-set_vertical_alignment
-get_font
-set_font
-get_rendering_mode
-set_rendering_mode
-get_background_color
-set_background_color
-get_text_color
-set_text_color
-get_text
-set_text
-set_text_key
-get_size
-start_movement
-stop_movement
-draw
+<hr>
+
+\section lua_api_text_surface_displayable_methods Methods inherited from the type displayable
+
+Text surfaces are particular displayable objects.
+Thus, they inherit all methods from the type displayable.
+
+See the \ref lua_api_displayable_methods to know these methods.
+
+<hr>
+
+\section lua_api_text_surface_methods Methods of the type text surface
+
+The following methods are specific to text surfaces.
+
+<hr>
+
+\subsection lua_api_text_surface_get_horizontal_alignment text_surface:get_horizontal_alignment()
+
+Returns the horizontal alignment of the text.
+
+When you display the text surface at some
+coordinates on a destination surface, it is anchored at this position.
+- Return value (string): \c "left", \c "center" or \c "right".
+
+<hr>
+
+\subsection lua_api_text_surface_set_horizontal_alignment text_surface:set_horizontal_alignment(horizontal_alignment)
+
+Sets the horizontal alignment of the text.
+
+When you display the text surface at some
+coordinates on a destination surface, it is anchored at this position.
+- \c horizontal_alignment (string): \c "left", \c "center" or \c "right".
+
+<hr>
+
+\subsection lua_api_text_surface_get_vertical_alignment text_surface:get_vertical_alignment()
+
+Returns the vertical alignment of the text.
+
+When you display the text surface at some
+coordinates on a destination surface, it is anchored at this position.
+- Return value (string): \c "top", \c "middle" or \c "bottom".
+
+<hr>
+
+\subsection lua_api_text_surface_set_vertical_alignment text_surface:set_vertical_alignment(vertical_alignment)
+
+Sets the vertical alignment of the text.
+
+When you display the text surface at some
+coordinates on a destination surface, it is anchored at this position.
+- \c vertical_alignment (string): \c "top", \c "middle" or \c "bottom".
+
+<hr>
+
+\subsection lua_api_text_surface_get_font text_surface:get_font()
+
+Returns the font used to displayed this text surface.
+- Return value (string): Id of the font of this text surface.
+
+<hr>
+
+\subsection lua_api_text_surface_set_font text_surface:set_font(font_id)
+
+Sets the font used to displayed this text surface.
+- \c font_id (string): Id of the font to apply to this text surface.
+  It must be a valid font defined in \c text/fonts.dat.
+
+<hr>
+
+\subsection lua_api_text_surface_get_rendering_mode text_surface:get_rendering_mode()
+
+Returns the rendering mode of the text.
+- Return value (string): \c "solid" (normal),
+  \c "blended" (smooth effect on letters),
+  \c "shaded" (faster smooth effect but the text surface won't support transparency:
+  a background color will be applied).
+
+<hr>
+
+\subsection lua_api_text_surface_set_rendering_mode text_surface:set_rendering_mode(rendering_mode)
+
+Sets the rendering mode of the text.
+- \c rendering_mode (string): \c "solid" (normal),
+  \c "blended" (smooth effect on letters),
+  \c "shaded" (faster smooth effect but the text surface won't support transparency:
+  a background color will be applied).
+
+<hr>
+
+\subsection lua_api_text_surface_get_background_color text_surface:get_background_color()
+
+Returns the background color displayed behind the text when the rendering mode
+is \c "shaded".
+
+This background color has no effect in other rendering modes.
+- Return value (table): The backgrond color as an array of 3 RGB values (\c 0 to \c 255).
+
+<hr>
+
+\subsection lua_api_text_surface_set_background_color text_surface:set_background_color(background_color)
+
+Sets the background color displayed behind the text when the rendering mode
+is \c "shaded".
+
+This background color has no effect in other rendering modes.
+- \c background_color (table): The backgrond color as an array of 3 RGB values (\c 0 to \c 255).
+
+<hr>
+
+\subsection lua_api_text_surface_get_text_color text_surface:get_text_color()
+
+Returns the color used to display the text.
+- Return value (table): The text color as an array of 3 RGB values (\c 0 to \c 255).
+
+<hr>
+
+\subsection lua_api_text_surface_set_text_color text_surface:set_text_color(text_color)
+
+Sets the color used to display the text.
+- \c text_color (table): The text color as an array of 3 RGB values (\c 0 to \c 255).
+
+<hr>
+
+\subsection lua_api_text_surface_get_text text_surface:get_text()
+
+Returns the string displayed in this object.
+- Return value (string): The current text.
+
+<hr>
+
+\subsection lua_api_text_surface_set_text text_surface:set_text(text)
+
+Sets the string displayed in this object.
+
+The string must be encoded in UTF-8.
+- \c text (string): The text to set.
+
+<hr>
+
+\subsection lua_api_text_surface_set_text_key text_surface:set_text_key(key)
+
+Sets the text as a localized string in the current language.
+- \c text (string): The text to set.
+
+\remark This function is exactly equivalent to
+<tt>text_surface:set_text(sol.language.get_string(key))</tt>.
+
+<hr>
+
+\subsection lua_api_text_surface_get_size text_surface:get_size()
+
+Returns the size of this text surface.
+- Return value 1 (number): Width of the text surface in pixels.
+- Return value 2 (number): Height of the text surface in pixels.
+
+\remark Note that you cannot set the size of a text surface.
+The size is determined by the text and the font.
 
 */
 

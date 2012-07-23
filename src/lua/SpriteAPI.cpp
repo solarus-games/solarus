@@ -231,7 +231,10 @@ int Script::sprite_api_is_paused(lua_State* l) {
 int Script::sprite_api_set_paused(lua_State* l) {
 
   Sprite& sprite = check_sprite(l, 1);
-  bool paused = lua_toboolean(l, 2);
+  bool paused = true;  // true if unspecified.
+  if (lua_isboolean(l, 2)) {
+    paused = lua_toboolean(l, 2);
+  }
 
   sprite.set_paused(paused);
 

@@ -6,6 +6,8 @@ A text surface can be seen as a special
 \ref lua_api_surface surface "surface" able to contain text.
 \c sol.text_surface provides features to handle text surfaces.
 
+\section Contents
+
 - \ref lua_api_text_surface_functions
 - \ref lua_api_text_surface_displayable_methods
 - \ref lua_api_text_surface_methods

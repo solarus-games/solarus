@@ -32,7 +32,7 @@
  * the same SpriteAnimationSet object).
  *
  * A sprite can be displayed directly on a surface, or it can
- * be attached to a map entity, allowing it to have a position on the map.
+ * be attached to a map entity.
  */
 class Sprite: public DynamicDisplayable {
 

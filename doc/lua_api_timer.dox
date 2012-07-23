@@ -21,6 +21,8 @@ sol.timer.start(1000, function()
 end)
 \endverbatim
 
+\section Contents
+
 - \ref lua_api_timer_functions
 - \ref lua_api_timer_methods
 

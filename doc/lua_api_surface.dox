@@ -5,6 +5,8 @@ A surface is a 2D image. Its main feature is that you can draw objects
 on it. Such objects are called displayable objects and they include
 other surfaces, text surfaces and sprites.
 
+\section Contents
+
 - \ref lua_api_surface_functions
 - \ref lua_api_surface_displayable_methods
 - \ref lua_api_surface_methods
@@ -16,6 +18,7 @@ other surfaces, text surfaces and sprites.
 <hr>
 
 \subsection lua_api_surface_create_empty sol.surface.create([width, height])
+
 Creates an empty surface.
 - \c width (number, optional): Width of the surface to create in pixels.
   The default value is the width of the screen.

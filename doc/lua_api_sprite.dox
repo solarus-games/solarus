@@ -1,79 +1,149 @@
 /**
 \page lua_api_sprite Sprites
 
-Your script can create sprites or access existing ones
-(e.g. a sprite attached to an NPC).
-In both cases, the following methods are available on the type
-\c sprite.
+A sprite is an animated image.
+It is managed by an animation set. The animation set defines
+which animations are available and describes, for each animation,
+a sequence of images in each direction.
 
-- \c sol.sprite.create(sprite_name):
+A sprite has the following properties:
+- a current animation from its animation set (like "walking" or "hurt"),
+- a current direction that indicates where the sprite is facing,
+- a current frame: the index of the current individual image in the sequence.
+
+\section Contents
+
+- \ref lua_api_sprite_functions
+- \ref lua_api_sprite_displayable_methods
+- \ref lua_api_sprite_methods
+
+<hr>
+
+\section lua_api_sprite_functions Functions of sol.sprite
+
+<hr>
+
+\subsection lua_api_sprite_create sol.sprite.create(animation_set_id)
+
 Creates a sprite.
-  - \c sprite_name (string): name of the animation set to use
-  - Return value (sprite): the sprite created
+- \c animation_set_id (string): Name of the animation set to use. This name
+  must correspond to a valid sprite file in the \c sprites directory
+  (without its extension).
+- Return value (sprite): The sprite created.
 
-- \c sol.sprite.draw(dst_surface, x, y):
-Displays this sprite on a surface.
-  - \c dst_surface (surface): The destination surface.
-  - \c x (number, optional): X coordinate of where to draw this sprite.
-  - \c y (number, optional): Y coordinate of where to draw this sprite.
+<hr>
 
-- \c sprite:get_animation():
+\section lua_api_sprite_displayable_methods Methods inherited from the type displayable
+
+Sprites are particular displayable objects.
+Thus, they inherit all methods from the type displayable.
+
+See the \ref lua_api_displayable_methods to know these methods.
+
+<hr>
+
+\section lua_api_sprite_methods Methods of the type sprite
+
+The following methods are specific to sprites.
+
+<hr>
+
+\subsection lua_api_sprite_get_animation sprite:get_animation()
+
 Returns the name of the current animation of this sprite.
-  - Return value (string): name of the current animation
+- Return value (string): Name of the current animation.
 
-- \c sprite:set_animation(animation_name):
+<hr>
+
+\subsection lua_api_sprite_set_animation sprite:set_animation()
+
 Sets the current animation of this sprite.
-  - \c animation_name (string): name of the animation to set
+- \c animation_name (string): Name of the animation to set.
 
-- \c sprite:get_direction():
+<hr>
+
+\subsection lua_api_sprite_get_direction sprite:get_direction()
+
 Returns the current direction of this sprite.
-  - Return value (number): the current direction
-    (\c 0 to \c nb_directions-1)
+- Return value (number): The current direction (the first one is \c 0).
 
-- \c sprite:set_direction(direction):
+<hr>
+
+\subsection lua_api_sprite_set_direction sprite:set_direction(direction)
+
 Sets the current direction of this sprite.
-  - \c direction (number): the direction to set
-    (\c 0 to \c nb_directions-1)
+- \c direction (number): The direction to set (the first one is \c 0).
+  This direction must exist in the current animation.
 
-- \c sprite:get_frame():
+<hr>
+
+\subsection lua_api_sprite_get_frame sprite:get_frame()
+
 Returns the index of the current frame of this sprite.
-  - Return value (number): the current frame
-    (\c 0 to \c nb_frames-1)
+- Return value (number): The current frame (the first one is \c 0).
 
-- \c sprite:set_frame(frame):
+<hr>
+
+\subsection lua_api_sprite_set_frame sprite:set_frame(frame)
+
 Sets the current frame of this sprite.
-  - \c frame (number) the frame to set
-    (\c 0 to \c nb_frames-1)
+- \c frame (number): The frame to set (the first one is \c 0).
+  This frame must exist in the current direction.
 
-- \c sprite:get_frame_delay():
-Returns the delay between two frames of this sprite.
-  - Return value (number): the delay in milliseconds between two frames
+<hr>
 
-- \c sprite:set_frame_delay(delay):
-Sets the delay between two frames of this sprite.
-  - \c delay (number): the delay to set in millisecons
+\subsection lua_api_sprite_get_frame_delay sprite:get_frame_delay()
 
-- \c sprite:is_paused():
+Returns the delay between two frames of this sprite in the current animation.
+
+This delay is defined by the current animation but may be changed
+by lua_api_sprite_set_frame_delay.
+A value of \c 0 means an infinite delay and
+is only possible for single-frame animations.
+- Return value (number): The delay in milliseconds between two frames in
+  the current animation (\c 0 means infinite).
+
+<hr>
+
+\subsection lua_api_sprite_set_frame_delay sprite:set_frame_delay(delay)
+
+Changes the delay between two frames of this sprite in the current animation.
+
+Use this function if you want to override the normal delay
+(the one defined in the sprite file).
+- \c delay (number): The new delay in milliseconds. \c 0 means infinite
+  and is only allowed for single-frame animations.
+
+<hr>
+
+\subsection lua_api_sprite_is_paused sprite:is_paused()
+
 Returns whether this sprite is paused.
-  - Return value (boolean): true if this sprite is paused
+- Return value (boolean): \c true if this sprite is paused.
 
-- \c sprite:set_paused(paused):
+<hr>
+
+\subsection lua_api_sprite_set_paused sprite:set_paused([paused])
+
 Pauses or resumes the animation of this sprite.
-  - \c paused (boolean): true to pause the sprite, false to unpause it
+- \c paused (boolean, optional): \c true to pause the sprite (default),
+  \c false to unpause it.
 
-- \c sprite:set_animation_ignore_suspend(ignore):
+<hr>
+
+\subsection lua_api_sprite_set_ignore_suspend sprite:set_ignore_suspend(ignore)
+
 Sets whether the animation should continue even when this sprite is suspended.
-  - \c ignore (boolean): true to continue animation even when suspended
+- \c ignore (boolean): \c true to continue animation even when suspended.
 
-- \c sprite:fade(direction):
-Shows a fade effect on this sprite.
-  - \c direction (number): 0 for fade-in effect, 1 for a fade-out effect
+<hr>
 
-- \c sprite:synchronize(reference_sprite):
+\subsection lua_api_sprite_synchronize sprite:synchronize(reference_sprite)
+
 Synchronizes the frames of this sprite with the frames of a reference sprite.
 The synchronization will be performed whenever their animation names match.
-  - \c reference_sprite (sprite, optional): the reference sprite
-    (if \c nil, any previous synchronization is stopped)
+- \c reference_sprite (sprite, optional): The reference sprite. \c nil means
+  to stop any previous synchronization.
 
 */
 

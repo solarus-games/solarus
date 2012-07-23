@@ -12,6 +12,8 @@ a movement object has several methods available.
 As detailed below, the methods available differ depending on the movement type
 because all movement types don't have the same properties.
 
+\section Contents
+
 - \ref lua_api_movement_functions
 - \ref lua_api_movement_methods
 - \ref lua_api_straight_movement_methods

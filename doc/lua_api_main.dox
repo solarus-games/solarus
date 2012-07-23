@@ -4,6 +4,8 @@
 \c sol.main contains general features that are global to the execution
 of the program.
 
+\section Contents
+
 - \ref lua_api_main_functions "Functions of sol.main"
 - \ref lua_api_main_events "Events of sol.main"
 

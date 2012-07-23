@@ -78,7 +78,7 @@ function title_screen:phase_title()
 
   self.website_img = sol.text_surface.create{
     font = "dialog",
-    rendering_mode = "blended",
+    rendering_mode = "antialiasing",
     text_color = hour_text_color,
     text_key = "title_screen.website",
     horizontal_alignment = "center"
@@ -86,7 +86,7 @@ function title_screen:phase_title()
 
   self.press_space_img = sol.text_surface.create{
     font = "dialog_big",
-    rendering_mode = "blended",
+    rendering_mode = "antialiasing",
     text_color = hour_text_color,
     text_key = "title_screen.press_space",
     horizontal_alignment = "center"

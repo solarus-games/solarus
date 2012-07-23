@@ -88,7 +88,6 @@ void TextSurface::quit() {
  * - vertical alignment: middle
  * - rendering mode: solid
  * - text color: white
- * - background color: black
  *
  * @param x x position of the text on the destination surface
  * @param y y position of the text on the destination surface
@@ -103,7 +102,6 @@ TextSurface::TextSurface(int x, int y):
 
   text = "";
   set_text_color(Color::get_white());
-  set_background_color(Color::get_black());
   set_position(x, y);
 }
 
@@ -128,7 +126,6 @@ TextSurface::TextSurface(int x, int y,
 
   text = "";
   set_text_color(Color::get_white());
-  set_background_color(Color::get_black());
   set_position(x, y);
 }
 
@@ -220,7 +217,7 @@ void TextSurface::set_alignment(HorizontalAlignment horizontal_alignment,
 
 /**
  * @brief Returns the rendering mode of the text.
- * @return The rendering mode: TEXT_SOLID, TEXT_SHADED or TEXT_BLENDED.
+ * @return The rendering mode: TEXT_SOLID or TEXT_ANTIALIASING.
  */
 TextSurface::RenderingMode TextSurface::get_rendering_mode() {
   return rendering_mode;
@@ -228,7 +225,7 @@ TextSurface::RenderingMode TextSurface::get_rendering_mode() {
 
 /**
  * @brief Sets the rendering mode of the text.
- * @param rendering_mode Rendering mode: TEXT_SOLID, TEXT_SHADED or TEXT_BLENDED.
+ * @param rendering_mode Rendering mode: TEXT_SOLID or TEXT_ANTIALIASING.
  */
 void TextSurface::set_rendering_mode(TextSurface::RenderingMode rendering_mode) {
 
@@ -261,29 +258,6 @@ void TextSurface::set_text_color(const Color &color) {
  */
 void TextSurface::set_text_color(int r, int g, int b) {
   this->text_color = Color(r, g, b);
-  rebuild();
-}
-
-/**
- * @brief Returns the background color of the text.
- *
- * This is only useful for the TEXT_SHADED rendering.
- *
- * @return The background color.
- */
-const Color& TextSurface::get_background_color() {
-  return background_color;
-}
-
-/**
- * @brief Sets the background color of the text.
- *
- * This is only useful for the TEXT_SHADED rendering.
- *
- * @param color the background color to set
- */
-void TextSurface::set_background_color(const Color &color) {
-  this->background_color = color;
   rebuild();
 }
 
@@ -429,12 +403,7 @@ void TextSurface::rebuild() {
     internal_surface = TTF_RenderUTF8_Solid(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color());
     break;
 
-  case TEXT_SHADED:
-    internal_surface = TTF_RenderUTF8_Shaded(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color(),
-	*background_color.get_internal_color());
-    break;
-
-  case TEXT_BLENDED:
+  case TEXT_ANTIALIASING:
     internal_surface = TTF_RenderUTF8_Blended(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color());
     break;
   }

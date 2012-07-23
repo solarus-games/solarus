@@ -532,8 +532,6 @@ class Script {
       text_surface_api_set_font,
       text_surface_api_get_rendering_mode,
       text_surface_api_set_rendering_mode,
-      text_surface_api_get_background_color,
-      text_surface_api_set_background_color,
       text_surface_api_get_text_color,
       text_surface_api_set_text_color,
       text_surface_api_get_text,

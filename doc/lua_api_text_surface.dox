@@ -30,13 +30,8 @@ Creates a text surface with the specified properties.
     coordinates on a destination surface, it is anchored at this position.
   - \c font (string): Name of the font to use. It must be a valid font
     defined in \c text/fonts.dat.
-  - \c rendering_mode (string, default \c "solid"): \c "solid" (normal),
-    \c "blended" (smooth effect on letters),
-    \c "shaded" (faster smooth effect but the text surface won't support
-    transparency: a background color will be applied).
-  - \c background_color (table, default black): A background
-    color (array of 3 RGB values between 0 and 255) to apply to the
-    text surface (only used in rendering mode \c "shaded").
+  - \c rendering_mode (string, default \c "solid"): \c "solid" (faster)
+    or \c "antialiasing" (smooth effect on letters).
   - \c text_color (table, default white): color of the text to display
     (array of 3 RGB values between 0 and 255)
   - \c text (string, default \c ""): The text to show
@@ -121,40 +116,16 @@ Sets the font used to displayed this text surface.
 \subsection lua_api_text_surface_get_rendering_mode text_surface:get_rendering_mode()
 
 Returns the rendering mode of the text.
-- Return value (string): \c "solid" (normal),
-  \c "blended" (smooth effect on letters),
-  \c "shaded" (faster smooth effect but the text surface won't support transparency:
-  a background color will be applied).
+- Return value (string): \c "solid" (faster)
+    or \c "antialiasing" (smooth effect on letters).
 
 <hr>
 
 \subsection lua_api_text_surface_set_rendering_mode text_surface:set_rendering_mode(rendering_mode)
 
 Sets the rendering mode of the text.
-- \c rendering_mode (string): \c "solid" (normal),
-  \c "blended" (smooth effect on letters),
-  \c "shaded" (faster smooth effect but the text surface won't support transparency:
-  a background color will be applied).
-
-<hr>
-
-\subsection lua_api_text_surface_get_background_color text_surface:get_background_color()
-
-Returns the background color displayed behind the text when the rendering mode
-is \c "shaded".
-
-This background color has no effect in other rendering modes.
-- Return value (table): The backgrond color as an array of 3 RGB values (\c 0 to \c 255).
-
-<hr>
-
-\subsection lua_api_text_surface_set_background_color text_surface:set_background_color(background_color)
-
-Sets the background color displayed behind the text when the rendering mode
-is \c "shaded".
-
-This background color has no effect in other rendering modes.
-- \c background_color (table): The backgrond color as an array of 3 RGB values (\c 0 to \c 255).
+- \c rendering_mode (string): \c "solid" (faster)
+    or \c "antialiasing" (smooth effect on letters).
 
 <hr>
 

@@ -58,9 +58,8 @@ class TextSurface: public DynamicDisplayable {
      * Rendering mode of the text.
      */
     enum RenderingMode {
-      TEXT_SOLID,                                     /**< the text is displayed without smooth effect */
-      TEXT_SHADED,                                    /**< the text is displayed with a smooth effect for an unicolor background */
-      TEXT_BLENDED                                    /**< the text is displayed with a smooth effect for any background */
+      TEXT_SOLID,                                     /**< letter are displayed without effect (faster, visible pixels) */
+      TEXT_ANTIALIASING                               /**< letters are displayed with a smooth effect (slower) */
     };
 
   private:
@@ -85,7 +84,6 @@ class TextSurface: public DynamicDisplayable {
     VerticalAlignment vertical_alignment;             /**< vertical alignment of the current text surface */
     RenderingMode rendering_mode;                     /**< rendering mode of the current text surface */
     Color text_color;                                 /**< color of the text */
-    Color background_color;                           /**< color of the background (only for the TEXT_SHADED rendering mode) */
 
     int x;                                            /**< x coordinate of where the text is aligned */
     int y;                                            /**< y coordinate of where the text is aligned */
@@ -120,8 +118,6 @@ class TextSurface: public DynamicDisplayable {
     const Color& get_text_color();
     void set_text_color(const Color& color);
     void set_text_color(int r, int g, int b);
-    const Color& get_background_color();
-    void set_background_color(const Color& color);
 
     void set_position(int x, int y);
     int get_x();

@@ -23,7 +23,7 @@
 const std::string Script::text_surface_module_name = "sol.text_surface";
 
 static const char* rendering_mode_names[] = {
-    "solid", "shaded", "blended", NULL
+    "solid", "antialiasing", NULL
 };
 
 static const char* horizontal_alignment_names[] = {
@@ -49,8 +49,6 @@ void Script::register_text_surface_module() {
       { "set_font", text_surface_api_set_font },
       { "get_rendering_mode", text_surface_api_get_rendering_mode },
       { "set_rendering_mode", text_surface_api_set_rendering_mode },
-      { "get_background_color", text_surface_api_get_background_color },
-      { "set_background_color", text_surface_api_set_background_color },
       { "get_text_color", text_surface_api_get_text_color },
       { "set_text_color", text_surface_api_set_text_color },
       { "get_text", text_surface_api_get_text },
@@ -127,10 +125,6 @@ int Script::text_surface_api_create(lua_State* l) {
         int alignment = luaL_checkoption(l, 3, NULL, vertical_alignment_names);
         text_surface->set_vertical_alignment(
             TextSurface::VerticalAlignment(alignment));
-      }
-      else if (key == "background_color") {
-        Color color = check_color(l, 3);
-        text_surface->set_background_color(color);
       }
       else if (key == "text_color") {
         Color color = check_color(l, 3);
@@ -273,36 +267,6 @@ int Script::text_surface_api_set_rendering_mode(lua_State* l) {
   int mode = luaL_checkoption(l, 1, NULL, rendering_mode_names);
 
   text_surface.set_rendering_mode(TextSurface::RenderingMode(mode));
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_text_surface_get_background_color.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int Script::text_surface_api_get_background_color(lua_State* l) {
-
-  TextSurface& text_surface = check_text_surface(l, 1);
-
-  const Color& background_color = text_surface.get_background_color();
-
-  push_color(l, background_color);
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_text_surface_set_background_color.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int Script::text_surface_api_set_background_color(lua_State* l) {
-
-  TextSurface& text_surface = check_text_surface(l, 1);
-  const Color& background_color = check_color(l, 2);
-
-  text_surface.set_background_color(background_color);
 
   return 0;
 }

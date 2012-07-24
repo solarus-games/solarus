@@ -84,28 +84,11 @@ void Script::register_game_module() {
   static const luaL_Reg metamethods[] = {
       { "__eq", userdata_meta_eq },
       { "__gc", userdata_meta_gc },
-      { "__newindex", game_meta_newindex },
-      { "__index", game_meta_index },
+      { "__newindex", userdata_meta_newindex_as_table },
+      { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
   register_type(game_module_name, methods, metamethods);
-
-  // Create a table to store the table of each game.
-  luaL_getmetatable(l, game_module_name.c_str());
-                                  // meta
-  lua_newtable(l);
-                                  // meta games
-  lua_newtable(l);
-                                  // meta games games_meta
-  lua_pushstring(l, "k");
-                                  // meta games games_meta "k"
-  lua_setfield(l, -2, "__mode");
-                                  // meta games games_meta
-  lua_setmetatable(l, -2);
-                                  // meta games
-  lua_setfield(l, -2, "games");
-                                  // meta
-  lua_pop(l, 1);
 }
 
 /**
@@ -129,101 +112,56 @@ void Script::push_game(lua_State* l, Savegame& game) {
 }
 
 /**
- * @brief Implementation of __newindex for the type game.
+ * @brief Implementation of __newindex that allow userdata to be like tables.
+ *
+ * Lua code can make "object[key] = value" if object is a userdata with this
+ * __newindex metamethod.
+ *
+ * This metamethod must be used with its corresponding __index
+ * metamethod (see userdata_meta_index_as_table).
+ *
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_meta_newindex(lua_State* l) {
+int Script::userdata_meta_newindex_as_table(lua_State* l) {
 
-  check_game(l, 1);
+  luaL_checktype(l, 1, LUA_TUSERDATA);
   luaL_checkany(l, 2);
   luaL_checkany(l, 3);
 
-  /* The user wants to make game[key] = value but game is a userdata.
-   * So what we make instead is game_tables[game][key] = value.
+  /* The user wants to make udata[key] = value but udata is a userdata.
+   * So what we make instead is udata_tables[udata][key] = value.
    * This redirection is totally transparent from the Lua side.
-   * Note that game_tables is stored in the metatable of the game type.
    */
 
-  luaL_getmetatable(l, game_module_name.c_str());
-                                  // ... meta
-  lua_getfield(l, -1, "games");
-                                  // ... meta game_tables
+  lua_pushstring(l, "sol.userdata_tables");
+  lua_gettable(l, LUA_REGISTRYINDEX);
+                                  // ... udata_tables
   lua_pushvalue(l, 1);
-                                  // ... meta game_tables game
+                                  // ... udata_tables udata
   lua_gettable(l, -2);
-                                  // ... meta game_tables game_table/nil
+                                  // ... udata_tables udata_table/nil
   if (lua_isnil(l, -1)) {
-    // Create the game table if it does not exist yet.
-                                  // ... meta game_tables nil
+    // Create the userdata table if it does not exist yet.
+                                  // ... udata_tables nil
     lua_pop(l, 1);
-                                  // ... meta game_tables
+                                  // ... udata_tables
     lua_newtable(l);
-                                  // ... meta game_tables game_table
+                                  // ... udata_tables udata_table
     lua_pushvalue(l, 1);
-                                  // ... meta game_tables game_table game
+                                  // ... udata_tables udata_table udata
     lua_pushvalue(l, -2);
-                                  // ... meta game_tables game_table game game_table
+                                  // ... udata_tables udata_table udata udata_table
     lua_settable(l, -4);
-                                  // ... meta game_tables game_table
+                                  // ... udata_tables udata_table
   }
   lua_pushvalue(l, 2);
-                                  // ... meta game_tables game_table key
+                                  // ... udata_tables udata_table key
   lua_pushvalue(l, 3);
-                                  // ... meta game_tables game_table key value
+                                  // ... udata_tables udata_table key value
   lua_settable(l, -3);
-                                  // ... meta game_tables game_table
+                                  // ... udata_tables udata_table
   return 0;
-}
-
-/**
- * @brief Implementation of __index for the type game.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int Script::game_meta_index(lua_State* l) {
-
-  /* The user wants to retrieve game[key] but game is a userdata.
-   * So what we retrieve instead is game_tables[game][key].
-   * This redirection is totally transparent from the Lua side.
-   * If game_tables[game][key] does not exist, we fall back
-   * to the usual __index for userdata, i.e. we look for a method
-   * in sol.game.
-   */
-
-  check_game(l, 1);
-  luaL_checkany(l, 2);
-
-  bool found = false;
-  luaL_getmetatable(l, game_module_name.c_str());
-                                  // ... meta
-  lua_getfield(l, -1, "games");
-                                  // ... meta game_tables
-  lua_pushvalue(l, 1);
-                                  // ... meta game_tables game
-  lua_gettable(l, -2);
-                                  // ... meta game_tables game_table/nil
-  if (!lua_isnil(l, -1)) {
-    lua_pushvalue(l, 2);
-                                  // ... game_table key
-    lua_gettable(l, -2);
-                                  // ... game_table value
-    found = !lua_isnil(l, -1);
-  }
-
-  if (!found) {
-                                  // ...
-    lua_getglobal(l, "sol");
-                                  // ... sol
-    lua_getfield(l, -1, "game");
-                                  // ... sol sol.game
-    lua_pushvalue(l, 2);
-                                  // ... sol sol.game key
-    lua_gettable(l, -2);
-                                  // ... sol sol.game value
-  }
-
-  return 1;
 }
 
 /**

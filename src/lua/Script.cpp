@@ -55,16 +55,32 @@ Script::~Script() {
  */
 void Script::initialize() {
 
-  // create an execution context
+  // Create an execution context.
   l = lua_open();
   luaL_openlibs(l);
 
-  // put a pointer to this Script object in the Lua context
+  // Put a pointer to this Script object in the Lua context.
   lua_pushstring(l, "sol.cpp_object");
   lua_pushlightuserdata(l, this);
   lua_settable(l, LUA_REGISTRYINDEX); // registry["sol.cpp_object"] = this
 
-  // create the Solarus table that will be available to the script
+  // Allow userdata to behave like tables if they want.
+  lua_pushstring(l, "sol.userdata_tables");
+                                  // "sol..." udata_tables
+  lua_newtable(l);
+                                  // "sol..." udata_tables
+  lua_newtable(l);
+                                  // "sol..." udata_tables meta
+  lua_pushstring(l, "k");
+                                  // "sol..." udata_tables meta "k"
+  lua_setfield(l, -2, "__mode");
+                                  // "sol..." udata_tables _meta
+  lua_setmetatable(l, -2);
+                                  // "sol..." udata_tables
+  // registry["sol.userdata_tables"] = {}  -- a new weak table
+  lua_settable(l, LUA_REGISTRYINDEX);
+
+  // Create the Solarus table that will be available to the script.
   lua_newtable(l);
   lua_setglobal(l, "sol");
 
@@ -276,14 +292,19 @@ void Script::register_type(const std::string& module_name,
                                   // module mt
   }
 
-  // make metatable.__index = module unless __index is already defined
+  // make metatable.__index = module
+  // (or metatable.usual_index = module if __index is already defined)
   lua_getfield(l, -1, "__index");
                                   // module mt __index/nil
-  if (lua_isnil(l, -1)) {
-    lua_pushvalue(l, -3);
-                                  // module mt nil module
+  lua_pushvalue(l, -3);
+                                  // module mt __index/nil module
+  if (lua_isnil(l, -2)) {
     lua_setfield(l, -3, "__index");
                                   // module mt nil
+  }
+  else {
+    lua_setfield(l, -3, "usual_index");
+                                  // module mt __index
   }
   lua_pop(l, 3);
                                   // --
@@ -684,6 +705,63 @@ int Script::userdata_meta_gc(lua_State* l) {
   script.decrement_refcount(*userdata);
 
   return 0;
+}
+
+/**
+ * @brief Implementation of __index that allow userdata to be like tables.
+ *
+ * Lua code can get "object[key]" for an arbitrary key previously set.
+ *
+ * This metamethod must be used with its corresponding __newindex
+ * metamethod (see userdata_meta_newindex_as_table).
+ *
+ * @brief Implementation of __index for the type game.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::userdata_meta_index_as_table(lua_State* l) {
+
+  /* The user wants to make udata[key] but udata is a userdata.
+   * So what we retrieve instead is udata_tables[udata][key].
+   * This redirection is totally transparent from the Lua side.
+   * If udata_tables[udata][key] does not exist, we fall back
+   * to the usual __index for userdata, i.e. we look for a method
+   * in its type.
+   */
+
+  luaL_checktype(l, 1, LUA_TUSERDATA);
+  luaL_checkany(l, 2);
+
+  bool found = false;
+  lua_pushstring(l, "sol.userdata_tables");
+  lua_gettable(l, LUA_REGISTRYINDEX);
+                                  // ... udata_tables
+  lua_pushvalue(l, 1);
+                                  // ... udata_tables udata
+  lua_gettable(l, -2);
+                                  // ... udata_tables udata_table/nil
+  if (!lua_isnil(l, -1)) {
+    lua_pushvalue(l, 2);
+                                  // ... udata_tables udata_table key
+    lua_gettable(l, -2);
+                                  // ... udata_tables udata_table value
+    found = !lua_isnil(l, -1);
+  }
+
+  // Nothing in the userdata's table: do the usual __index instead
+  // (look in the userdata's type)
+  if (!found) {
+    lua_getmetatable(l, 1);
+                                  // ... meta
+    lua_getfield(l, -1, "usual_index");
+                                  // ... meta module
+    lua_pushvalue(l, 2);
+                                  // ... meta module key
+    lua_gettable(l, -2);
+                                  // ... meta module value
+  }
+
+  return 1;
 }
 
 /**

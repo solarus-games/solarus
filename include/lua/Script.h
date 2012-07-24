@@ -325,8 +325,6 @@ class Script {
       game_api_remove_item_amount,
       game_api_is_dungeon_finished,
       game_api_set_dungeon_finished,
-      game_meta_newindex,
-      game_meta_index,
 
       // map API
       map_api_get_game,
@@ -632,9 +630,11 @@ class Script {
       pixel_movement_api_get_delay,
       pixel_movement_api_set_delay,
 
-      // common to all userdata types
+      // available to all userdata types
       userdata_meta_eq,
-      userdata_meta_gc;
+      userdata_meta_gc,
+      userdata_meta_newindex_as_table,
+      userdata_meta_index_as_table;
 };
 
 #endif

@@ -183,8 +183,8 @@ function title_screen:on_key_pressed(key)
     self:try_finish_title()
 
 --  Debug.
---  elseif key == "left shift" or key == "right shift" then
---    finish_title()
+  elseif key == "left shift" or key == "right shift" then
+    finish_title()
 
   end
 end

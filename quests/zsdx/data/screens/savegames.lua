@@ -320,7 +320,7 @@ function savegame_menu:key_pressed_phase_select_file(key)
         -- The file exists: run it after a fade-out effect.
         self.finished = true
         self.surface:fade_out(function()
-          slot.savegame:start()
+	  self:start_game(slot.savegame)
         end)
       else
         -- It's a new savegame: choose the player's name.
@@ -894,6 +894,14 @@ function savegame_menu:validate_player_name()
   savegame:save()
   self:read_savegames()
   return true
+end
+
+function savegame_menu:start_game(game)
+
+  function game:on_started()
+    print("it works!")
+  end
+  game:start()
 end
 
 return savegame_menu

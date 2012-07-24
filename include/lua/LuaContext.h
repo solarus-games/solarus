@@ -34,6 +34,8 @@
  */
 class LuaContext: public Script {
 
+  friend class Script;  // don't worry, it's temporary
+
   public:
 
     static const std::string video_module_name;     /**< sol.video */

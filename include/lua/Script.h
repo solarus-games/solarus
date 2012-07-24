@@ -326,6 +326,8 @@ class Script {
       game_api_remove_item_amount,
       game_api_is_dungeon_finished,
       game_api_set_dungeon_finished,
+      game_meta_newindex,
+      game_meta_index,
 
       // map API
       map_api_get_game,

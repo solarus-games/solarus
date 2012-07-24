@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "MainLoop.h"
 #include "Game.h"
 #include "Savegame.h"
@@ -83,9 +83,29 @@ void Script::register_game_module() {
   };
   static const luaL_Reg metamethods[] = {
       { "__eq", userdata_meta_eq },
+      { "__gc", userdata_meta_gc },
+      { "__newindex", game_meta_newindex },
+      { "__index", game_meta_index },
       { NULL, NULL }
   };
   register_type(game_module_name, methods, metamethods);
+
+  // Create a table to store the table of each game.
+  luaL_getmetatable(l, game_module_name.c_str());
+                                  // meta
+  lua_newtable(l);
+                                  // meta games
+  lua_newtable(l);
+                                  // meta games games_meta
+  lua_pushstring(l, "k");
+                                  // meta games games_meta "k"
+  lua_setfield(l, -2, "__mode");
+                                  // meta games games_meta
+  lua_setmetatable(l, -2);
+                                  // meta games
+  lua_setfield(l, -2, "games");
+                                  // meta
+  lua_pop(l, 1);
 }
 
 /**
@@ -106,6 +126,68 @@ Savegame& Script::check_game(lua_State* l, int index) {
  */
 void Script::push_game(lua_State* l, Savegame& game) {
   push_userdata(l, game);
+}
+
+/**
+ * @brief Implementation of __newindex for the type game.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_meta_newindex(lua_State* l) {
+
+  check_game(l, 1);
+  luaL_checkany(l, 2);
+  luaL_checkany(l, 3);
+
+  luaL_getmetatable(l, game_module_name.c_str());
+                                  // ... meta
+  lua_getfield(l, -1, "games");
+                                  // ... meta game_tables
+  lua_pushvalue(l, 1);
+                                  // ... meta game_tables game
+  lua_gettable(l, -2);
+                                  // ... meta game_tables game_table/nil
+  if (lua_isnil(l, -1)) {
+                                  // ... meta game_tables nil
+    lua_pop(l, 1);
+                                  // ... meta game_tables
+    lua_newtable(l);
+                                  // ... meta game_tables game_table
+  }
+  lua_pushvalue(l, 2);
+                                  // ... meta game_tables game_table key
+  lua_pushvalue(l, 3);
+                                  // ... meta game_tables game_table key value
+  lua_settable(l, -3);
+                                  // ... meta game_tables game_table
+  return 0;
+}
+
+/**
+ * @brief Implementation of __index for the type game.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::game_meta_index(lua_State* l) {
+
+  check_game(l, 1);
+  luaL_checkany(l, 2);
+
+  luaL_getmetatable(l, game_module_name.c_str());
+                                  // ... meta
+  lua_getfield(l, -1, "games");
+                                  // ... meta game_tables
+  lua_pushvalue(l, 1);
+                                  // ... meta game_tables game
+  lua_gettable(l, -2);
+                                  // ... meta game_tables game_table/nil
+  if (!lua_isnil(l, -1)) {
+    lua_pushvalue(l, 2);
+                                  // ... meta game_tables game_table key
+    lua_gettable(l, -2);
+                                  // ... meta game_tables game_table value
+  }
+  return 1;
 }
 
 /**
@@ -172,7 +254,7 @@ int Script::game_api_save(lua_State *l) {
  */
 int Script::game_api_start(lua_State *l) {
 
-  Script& script = get_script(l);
+  LuaContext& lua_context = (LuaContext&) get_script(l);
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
@@ -182,9 +264,11 @@ int Script::game_api_start(lua_State *l) {
   }
   else {
     // Create a new game to run.
-    MainLoop& main_loop = script.get_main_loop();
+    MainLoop& main_loop = lua_context.get_main_loop();
     main_loop.set_next_screen(new Game(main_loop, savegame));
   }
+
+  lua_context.on_started();
 
   return 0;
 }

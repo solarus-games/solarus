@@ -139,6 +139,12 @@ int Script::game_meta_newindex(lua_State* l) {
   luaL_checkany(l, 2);
   luaL_checkany(l, 3);
 
+  /* The user wants to make game[key] = value but game is a userdata.
+   * So what we make instead is game_tables[game][key] = value.
+   * This redirection is totally transparent from the Lua side.
+   * Note that game_tables is stored in the metatable of the game type.
+   */
+
   luaL_getmetatable(l, game_module_name.c_str());
                                   // ... meta
   lua_getfield(l, -1, "games");
@@ -148,10 +154,17 @@ int Script::game_meta_newindex(lua_State* l) {
   lua_gettable(l, -2);
                                   // ... meta game_tables game_table/nil
   if (lua_isnil(l, -1)) {
+    // Create the game table if it does not exist yet.
                                   // ... meta game_tables nil
     lua_pop(l, 1);
                                   // ... meta game_tables
     lua_newtable(l);
+                                  // ... meta game_tables game_table
+    lua_pushvalue(l, 1);
+                                  // ... meta game_tables game_table game
+    lua_pushvalue(l, -2);
+                                  // ... meta game_tables game_table game game_table
+    lua_settable(l, -4);
                                   // ... meta game_tables game_table
   }
   lua_pushvalue(l, 2);
@@ -170,9 +183,18 @@ int Script::game_meta_newindex(lua_State* l) {
  */
 int Script::game_meta_index(lua_State* l) {
 
+  /* The user wants to retrieve game[key] but game is a userdata.
+   * So what we retrieve instead is game_tables[game][key].
+   * This redirection is totally transparent from the Lua side.
+   * If game_tables[game][key] does not exist, we fall back
+   * to the usual __index for userdata, i.e. we look for a method
+   * in sol.game.
+   */
+
   check_game(l, 1);
   luaL_checkany(l, 2);
 
+  bool found = false;
   luaL_getmetatable(l, game_module_name.c_str());
                                   // ... meta
   lua_getfield(l, -1, "games");
@@ -183,10 +205,24 @@ int Script::game_meta_index(lua_State* l) {
                                   // ... meta game_tables game_table/nil
   if (!lua_isnil(l, -1)) {
     lua_pushvalue(l, 2);
-                                  // ... meta game_tables game_table key
+                                  // ... game_table key
     lua_gettable(l, -2);
-                                  // ... meta game_tables game_table value
+                                  // ... game_table value
+    found = !lua_isnil(l, -1);
   }
+
+  if (!found) {
+                                  // ...
+    lua_getglobal(l, "sol");
+                                  // ... sol
+    lua_getfield(l, -1, "game");
+                                  // ... sol sol.game
+    lua_pushvalue(l, 2);
+                                  // ... sol sol.game key
+    lua_gettable(l, -2);
+                                  // ... sol sol.game value
+  }
+
   return 1;
 }
 
@@ -268,6 +304,7 @@ int Script::game_api_start(lua_State *l) {
     main_loop.set_next_screen(new Game(main_loop, savegame));
   }
 
+  // Call game:on_started()
   lua_context.on_started();
 
   return 0;

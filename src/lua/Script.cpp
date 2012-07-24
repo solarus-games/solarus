@@ -264,7 +264,7 @@ void Script::register_functions(const std::string& module_name,
 void Script::register_type(const std::string& module_name,
     const luaL_Reg* functions, const luaL_Reg* metamethods) {
 
-  // create a table and fill it with the methods
+  // create a table and fill it with the functions
   luaL_register(l, module_name.c_str(), functions);
                                   // module
   // create the metatable for the type, add it to the Lua registry
@@ -275,12 +275,17 @@ void Script::register_type(const std::string& module_name,
     luaL_register(l, NULL, metamethods);
                                   // module mt
   }
-  lua_pushvalue(l, -2);
-                                  // module mt module
-  // metatable.__index = module
-  lua_setfield(l, -2, "__index");
-                                  // module mt
-  lua_pop(l, 2);
+
+  // make metatable.__index = module unless __index is already defined
+  lua_getfield(l, -1, "__index");
+                                  // module mt __index/nil
+  if (lua_isnil(l, -1)) {
+    lua_pushvalue(l, -3);
+                                  // module mt nil module
+    lua_setfield(l, -3, "__index");
+                                  // module mt nil
+  }
+  lua_pop(l, 3);
                                   // --
 }
 

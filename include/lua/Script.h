@@ -157,6 +157,28 @@ class Script {
     static void push_ref(lua_State* l, int ref);
     const std::string& input_get_key_name(InputEvent::KeyboardKey key);
 
+    static bool is_userdata(lua_State* l, int index,
+        const std::string& module_name);
+    static ExportableToLua& check_userdata(lua_State* l, int index,
+        const std::string& module_name);
+    static Timer& check_timer(lua_State* l, int index);
+    static DynamicDisplayable& check_displayable(lua_State* l, int index);
+    static Surface& check_surface(lua_State* l, int index);
+    static TextSurface& check_text_surface(lua_State* l, int index);
+    static Sprite& check_sprite(lua_State* l, int index);
+    static Color check_color(lua_State* l, int index);
+    static Savegame& check_game(lua_State* l, int index);
+    static Movement& check_movement(lua_State* l, int index);
+    static StraightMovement& check_straight_movement(lua_State* l, int index);
+    static RandomMovement& check_random_movement(lua_State* l, int index);
+    static TargetMovement& check_target_movement(lua_State* l, int index);
+    static PathMovement& check_path_movement(lua_State* l, int index);
+    static RandomPathMovement& check_random_path_movement(lua_State* l, int index);
+    static PathFindingMovement& check_path_finding_movement(lua_State* l, int index);
+    static CircleMovement& check_circle_movement(lua_State* l, int index);
+    static JumpMovement& check_jump_movement(lua_State* l, int index);
+    static PixelMovement& check_pixel_movement(lua_State* l, int index);
+
     // Timers.
     bool is_new_timer_suspended(void);
     void add_timer(Timer* timer, int context_index, int callback_index);
@@ -200,29 +222,6 @@ class Script {
     void register_sprite_module();
     void register_movement_module();
     void register_input_module();
-
-    // types
-    static bool is_userdata(lua_State* l, int index,
-        const std::string& module_name);
-    static ExportableToLua& check_userdata(lua_State* l, int index,
-        const std::string& module_name);
-    static Timer& check_timer(lua_State* l, int index);
-    static DynamicDisplayable& check_displayable(lua_State* l, int index);
-    static Surface& check_surface(lua_State* l, int index);
-    static TextSurface& check_text_surface(lua_State* l, int index);
-    static Sprite& check_sprite(lua_State* l, int index);
-    static Color check_color(lua_State* l, int index);
-    static Savegame& check_game(lua_State* l, int index);
-    static Movement& check_movement(lua_State* l, int index);
-    static StraightMovement& check_straight_movement(lua_State* l, int index);
-    static RandomMovement& check_random_movement(lua_State* l, int index);
-    static TargetMovement& check_target_movement(lua_State* l, int index);
-    static PathMovement& check_path_movement(lua_State* l, int index);
-    static RandomPathMovement& check_random_path_movement(lua_State* l, int index);
-    static PathFindingMovement& check_path_finding_movement(lua_State* l, int index);
-    static CircleMovement& check_circle_movement(lua_State* l, int index);
-    static JumpMovement& check_jump_movement(lua_State* l, int index);
-    static PixelMovement& check_pixel_movement(lua_State* l, int index);
 
     // displayable objects
     bool has_displayable(DynamicDisplayable* displayable);

@@ -34,8 +34,6 @@
  */
 class LuaContext: public Script {
 
-  friend class Script;  // don't worry, it's temporary
-
   public:
 
     static const std::string video_module_name;     /**< sol.video */
@@ -78,6 +76,8 @@ class LuaContext: public Script {
     void register_video_module();
     void register_menu_module();
     void register_language_module();
+
+  public:  // TODO make private once Script is removed
 
     void on_update();
     void on_input(InputEvent& event);

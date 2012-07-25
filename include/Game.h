@@ -85,6 +85,9 @@ class Game: public Screen {
     Game(MainLoop& main_loop, Savegame& savegame);
     ~Game();
 
+    void start();
+    void stop();
+
     // global objects
     Hero& get_hero();
     const Rectangle& get_hero_xy();

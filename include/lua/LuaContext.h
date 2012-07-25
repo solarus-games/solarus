@@ -55,12 +55,16 @@ class LuaContext: public Script {
     void main_on_started();
     void main_on_finished();
 
-    // Lua menus events.
+    // Menu events.
     void menu_on_update(int menu_ref);
     void menu_on_display(int menu_ref, Surface& dst_surface);
     void menu_on_input(int menu_ref, InputEvent& event);
     void menu_on_started(int menu_ref);
     void menu_on_finished(int menu_ref);
+
+    // Game events.
+    void game_on_started(Game& game);
+    void game_on_finished(Game& game);
 
   private:
 

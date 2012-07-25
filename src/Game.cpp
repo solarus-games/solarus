@@ -26,6 +26,7 @@
 #include "GameoverSequence.h"
 #include "DebugKeys.h"
 #include "CustomScreen.h"
+#include "lua/LuaContext.h"
 #include "hud/HUD.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
@@ -86,6 +87,7 @@ Game::Game(MainLoop& main_loop, Savegame& savegame):
  */
 Game::~Game() {
 
+  get_lua_context().game_on_finished(*this);
   Music::play(Music::none);
 
   delete current_map;
@@ -102,6 +104,20 @@ Game::~Game() {
   if (previous_map_surface != NULL) {
     delete previous_map_surface;
   }
+}
+
+/**
+ * @brief Starts this screen.
+ */
+void Game::start() {
+  get_lua_context().game_on_started(*this);
+}
+
+/**
+ * @brief Ends this screen.
+ */
+void Game::stop() {
+  get_lua_context().game_on_finished(*this);
 }
 
 /**
@@ -179,7 +195,7 @@ void Game::notify_input(InputEvent &event) {
  */
 void Game::key_pressed(GameControls::GameKey key) {
 
-  if (!is_suspended()) {    
+  if (!is_suspended()) {
 
     if (key == GameControls::PAUSE) {
       if (can_pause()) {

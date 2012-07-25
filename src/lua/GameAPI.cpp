@@ -242,9 +242,6 @@ int Script::game_api_start(lua_State *l) {
     main_loop.set_next_screen(new Game(main_loop, savegame));
   }
 
-  // Call game:on_started()
-  lua_context.on_started();
-
   return 0;
 }
 
@@ -898,5 +895,29 @@ int Script::game_api_set_dungeon_finished(lua_State *l) {
   savegame.get_equipment().set_dungeon_finished(dungeon);
 
   return 0;
+}
+
+/**
+ * @brief Calls the on_started() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_started(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_finished() method of a Lua game.
+ *
+ * This function is called when the program is reset or stopped.
+ */
+void LuaContext::game_on_finished(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_finished();
+  // TODO remove_timers(-1);  // Stop timers associated to this game
+  lua_pop(l, 1);
 }
 

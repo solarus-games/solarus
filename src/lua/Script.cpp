@@ -62,23 +62,14 @@ void Script::initialize() {
   // Put a pointer to this Script object in the Lua context.
   lua_pushstring(l, "sol.cpp_object");
   lua_pushlightuserdata(l, this);
-  lua_settable(l, LUA_REGISTRYINDEX); // registry["sol.cpp_object"] = this
+  lua_settable(l, LUA_REGISTRYINDEX);  // registry["sol.cpp_object"] = this
 
   // Allow userdata to behave like tables if they want.
   lua_pushstring(l, "sol.userdata_tables");
                                   // "sol..." udata_tables
   lua_newtable(l);
                                   // "sol..." udata_tables
-  lua_newtable(l);
-                                  // "sol..." udata_tables meta
-  lua_pushstring(l, "k");
-                                  // "sol..." udata_tables meta "k"
-  lua_setfield(l, -2, "__mode");
-                                  // "sol..." udata_tables _meta
-  lua_setmetatable(l, -2);
-                                  // "sol..." udata_tables
-  // registry["sol.userdata_tables"] = {}  -- a new weak table
-  lua_settable(l, LUA_REGISTRYINDEX);
+  lua_settable(l, LUA_REGISTRYINDEX);  // registry["sol.userdata_tables"] = {}
 
   // Create the Solarus table that will be available to the script.
   lua_newtable(l);

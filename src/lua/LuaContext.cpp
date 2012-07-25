@@ -104,7 +104,8 @@ int LuaContext::l_loader(lua_State* l) {
 
   if (!exists) {
     std::ostringstream oss;
-    oss << "\n\tno quest file '" << script_name << ".lua' in 'data' or 'data.solarus'";
+    oss << std::endl << "\tno quest file '" << script_name
+      << ".lua' in 'data' or 'data.solarus'";
     lua_pushstring(l, oss.str().c_str());
   }
   return 1;

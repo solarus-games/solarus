@@ -758,6 +758,59 @@ int Script::userdata_meta_gc(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of __newindex that allow userdata to be like tables.
+ *
+ * Lua code can make "object[key] = value" if object is a userdata with this
+ * __newindex metamethod.
+ *
+ * This metamethod must be used with its corresponding __index
+ * metamethod (see userdata_meta_index_as_table).
+ *
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::userdata_meta_newindex_as_table(lua_State* l) {
+
+  luaL_checktype(l, 1, LUA_TUSERDATA);
+  luaL_checkany(l, 2);
+  luaL_checkany(l, 3);
+
+  /* The user wants to make udata[key] = value but udata is a userdata.
+   * So what we make instead is udata_tables[udata][key] = value.
+   * This redirection is totally transparent from the Lua side.
+   */
+
+  lua_pushstring(l, "sol.userdata_tables");
+  lua_gettable(l, LUA_REGISTRYINDEX);
+                                  // ... udata_tables
+  lua_pushvalue(l, 1);
+                                  // ... udata_tables udata
+  lua_gettable(l, -2);
+                                  // ... udata_tables udata_table/nil
+  if (lua_isnil(l, -1)) {
+    // Create the userdata table if it does not exist yet.
+                                  // ... udata_tables nil
+    lua_pop(l, 1);
+                                  // ... udata_tables
+    lua_newtable(l);
+                                  // ... udata_tables udata_table
+    lua_pushvalue(l, 1);
+                                  // ... udata_tables udata_table udata
+    lua_pushvalue(l, -2);
+                                  // ... udata_tables udata_table udata udata_table
+    lua_settable(l, -4);
+                                  // ... udata_tables udata_table
+  }
+  lua_pushvalue(l, 2);
+                                  // ... udata_tables udata_table key
+  lua_pushvalue(l, 3);
+                                  // ... udata_tables udata_table key value
+  lua_settable(l, -3);
+                                  // ... udata_tables udata_table
+  return 0;
+}
+
+/**
  * @brief Implementation of __index that allow userdata to be like tables.
  *
  * Lua code can get "object[key]" for an arbitrary key previously set.

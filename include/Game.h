@@ -35,7 +35,7 @@ class Game: public Screen {
   private:
 
     // savegame
-    Savegame savegame;         /**< the game data saved */
+    Savegame* savegame;        /**< the game data saved */
 
     // the hero
     Hero *hero;
@@ -82,7 +82,7 @@ class Game: public Screen {
   public:
 
     // creation and destruction
-    Game(MainLoop& main_loop, Savegame& savegame);
+    Game(MainLoop& main_loop, Savegame* savegame);
     ~Game();
 
     void start();

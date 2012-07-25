@@ -43,10 +43,9 @@ Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from quest.dat
 /**
  * @brief Creates a game.
  * @param main_loop The Solarus root object.
- * @param savegame The saved data of this game
- * (the specified object will be copied and stored into the game).
+ * @param savegame The saved data of this game.
  */
-Game::Game(MainLoop& main_loop, Savegame& savegame):
+Game::Game(MainLoop& main_loop, Savegame* savegame):
 
   Screen(main_loop),
   savegame(savegame),
@@ -79,7 +78,8 @@ Game::Game(MainLoop& main_loop, Savegame& savegame):
   hud = new HUD(*this);
 
   // launch the starting map
-  set_current_map(savegame.get_integer(Savegame::STARTING_MAP), "", Transition::FADE);
+  set_current_map(get_savegame().get_integer(Savegame::STARTING_MAP),
+      "", Transition::FADE);
 }
 
 /**
@@ -87,7 +87,9 @@ Game::Game(MainLoop& main_loop, Savegame& savegame):
  */
 Game::~Game() {
 
-  get_lua_context().game_on_finished(*this);
+  if (savegame != NULL) {
+    get_lua_context().decrement_refcount(savegame);
+  }
   Music::play(Music::none);
 
   delete current_map;
@@ -164,7 +166,7 @@ KeysEffect& Game::get_keys_effect() {
  * @return the saved data
  */
 Savegame& Game::get_savegame() {
-  return savegame;
+  return *savegame;
 }
 
 /**
@@ -175,7 +177,7 @@ Savegame& Game::get_savegame() {
  * @return the equipment
  */
 Equipment& Game::get_equipment() {
-  return savegame.get_equipment();
+  return get_savegame().get_equipment();
 }
 
 /**
@@ -319,6 +321,7 @@ void Game::update_transitions() {
       current_map->unload();
       main_loop.get_debug_keys().set_game(NULL);
       main_loop.set_next_screen(new Game(main_loop, savegame));
+      savegame = NULL;  // The new game is the owner.
     }
     else if (transition_direction == Transition::OUT) {
 
@@ -342,8 +345,8 @@ void Game::update_transitions() {
           crystal_state = false;
 
           // save the location
-          savegame.set_integer(Savegame::STARTING_MAP, next_map->get_id());
-          savegame.set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
+          get_savegame().set_integer(Savegame::STARTING_MAP, next_map->get_id());
+          get_savegame().set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
         }
 
         // before closing the map, draw it on a backup surface for transition effects
@@ -516,7 +519,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
 
   // initialize the destination point, from the specified name or from the savegame
   if (destination_point_name == "") {
-    next_map->set_destination_point(savegame.get_string(Savegame::STARTING_POINT));
+    next_map->set_destination_point(get_savegame().get_string(Savegame::STARTING_POINT));
   }
   else {
     next_map->set_destination_point(destination_point_name);

@@ -136,7 +136,7 @@ void MainLoop::set_next_screen(Screen* next_screen) {
 void MainLoop::start_game(const std::string& savegame_file) {
 
   if (FileTools::data_file_exists(savegame_file)) {
-    Savegame savegame(savegame_file);
+    Savegame* savegame = new Savegame(savegame_file);
     set_next_screen(new Game(*this, savegame));
   }
 }

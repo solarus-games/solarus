@@ -103,8 +103,8 @@ endif()
 set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
-# compilation flags for Mac OS X (Intel) deployment
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND CMAKE_BUILD_TYPE MATCHES "Release")
+# compilation flags for Mac OS X deployment
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Release")
   if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
     set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk" CACHE STRING "OS version whose headers you'll use" FORCE)
     set(CMAKE_OSX_ARCHITECTURES "ppc;i386;x86_64;" CACHE STRING "Compile for these processor architecture" FORCE)

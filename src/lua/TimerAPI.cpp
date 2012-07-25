@@ -18,6 +18,7 @@
 #include "lowlevel/Debug.h"
 #include "Timer.h"
 #include "Game.h"
+#include "CustomScreen.h"
 #include <lua.hpp>
 
 const std::string Script::timer_module_name = "sol.timer";
@@ -225,10 +226,25 @@ int Script::timer_api_start(lua_State *l) {
     }
   }
   else {
-    // No context specified: set a default context.
-    LuaContext::push_main(l);
-    // TODO: instead of sol.main: during a game, use the current map,
-    // and outside a game, use the current menu.
+    // No context specified: set a default context:
+    // - during a game: the current map,
+    // - outside a game: the current menu.
+
+    Game* current_game = script.get_current_game();
+    if (current_game != NULL) {
+      // TODO once the new map API is implemented, push the current map instead of the current game
+      push_game(l, current_game->get_savegame());
+    }
+    else {
+      CustomScreen* current_screen = script.get_current_screen();
+      if (current_screen != NULL) {
+        push_ref(l, current_screen->get_menu_ref());
+      }
+      else {
+        LuaContext::push_main(l);
+      }
+    }
+
     lua_insert(l, 1);
   }
   // Now the first parameter is the context.

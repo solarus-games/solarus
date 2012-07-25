@@ -31,6 +31,8 @@ class CustomScreen: public Screen {
     CustomScreen(MainLoop& main_loop, int menu_ref);
     ~CustomScreen();
 
+    int get_menu_ref();
+
     void start();
     void stop();
 

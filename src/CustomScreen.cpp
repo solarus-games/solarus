@@ -40,6 +40,13 @@ CustomScreen::~CustomScreen() {
 }
 
 /**
+ * @brief Returns the Lua ref of the object that controls this menu.
+ */
+int CustomScreen::get_menu_ref() {
+  return menu_ref;
+}
+
+/**
  * @brief Starts this screen.
  */
 void CustomScreen::start() {

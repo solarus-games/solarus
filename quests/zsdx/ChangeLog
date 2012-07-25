@@ -1,3 +1,8 @@
+zsdx-1.5.2 (under development)
+
+* Castle 1F: fix NPCs possibly overlapping the hero (#44).
+* West mountains cave: fix a chest possibly overlapping the hero (#37).
+
 zsdx-1.5.1 (2012-05-20)
 
 * Spanish dialogs available (beta)

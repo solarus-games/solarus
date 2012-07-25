@@ -37,6 +37,8 @@
 Script::Script(MainLoop& main_loop, uint32_t apis_enabled):
   l(NULL),
   main_loop(main_loop),
+  current_game(NULL),
+  current_screen(NULL),
   music_played(false),
   apis_enabled(apis_enabled) {
 
@@ -243,6 +245,38 @@ Enemy& Script::get_enemy() {
  */
 MainLoop& Script::get_main_loop() {
   return main_loop;
+}
+
+/**
+ * @brief If a game is currently running, returns that game.
+ * @return The game currently running if any, NULL otherwise.
+ */
+Game* Script::get_current_game() {
+  return current_game;
+}
+
+/**
+ * @brief Sets the game currently running.
+ * @return The game currently running if any, NULL otherwise.
+ */
+void Script::set_current_game(Game* current_game) {
+  this->current_game = current_game;
+}
+
+/**
+ * @brief If no game is currently running, returns the current menu.
+ * @return The current menu if any, NULL otherwise.
+ */
+CustomScreen* Script::get_current_screen() {
+  return current_screen;
+}
+
+/**
+ * @brief Sets the current menu.
+ * @return The current menu if any, NULL otherwise.
+ */
+void Script::set_current_screen(CustomScreen* current_screen) {
+  this->current_screen = current_screen;
 }
 
 /**

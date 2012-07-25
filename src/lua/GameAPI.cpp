@@ -187,7 +187,10 @@ int Script::game_api_start(lua_State *l) {
   else {
     // Create a new game to run.
     MainLoop& main_loop = lua_context.get_main_loop();
-    main_loop.set_next_screen(new Game(main_loop, &savegame));
+    Game* game = new Game(main_loop, &savegame);
+    lua_context.set_current_screen(NULL);
+    lua_context.set_current_game(game);
+    main_loop.set_next_screen(game);
   }
 
   return 0;

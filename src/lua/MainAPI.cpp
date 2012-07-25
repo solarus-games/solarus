@@ -130,7 +130,10 @@ int Script::main_api_start_screen(lua_State* l) {
   int menu_ref = script.create_ref();
 
   MainLoop& main_loop = script.get_main_loop();
-  main_loop.set_next_screen(new CustomScreen(main_loop, menu_ref));
+  CustomScreen* screen = new CustomScreen(main_loop, menu_ref);
+  script.set_current_screen(screen);
+  script.set_current_game(NULL);
+  main_loop.set_next_screen(screen);
 
   return 0;
 }

@@ -127,6 +127,11 @@ class Script {
 
     Script(MainLoop& main_loop, uint32_t apis_enabled = 0);
 
+    Game* get_current_game();
+    void set_current_game(Game* current_game);
+    CustomScreen* get_current_screen();
+    void set_current_screen(CustomScreen* current_screen);
+
     // Helper functions.
     void initialize();
     void exit();
@@ -194,6 +199,9 @@ class Script {
 
     // script data
     MainLoop& main_loop;            /**< the Solarus main loop */
+    Game* current_game;             /**< the game currently running if any */
+    CustomScreen* current_screen;   /**< the current menu when no game is running */
+
     std::map<Timer*, LuaTimerData>
         timers;                     /**< the timers currently running, with
                                      * their context and callback ref */

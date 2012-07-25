@@ -116,7 +116,7 @@ void Script::exit() {
  * relative to the data directory.
  * @return true if the file exists and was loaded.
  */
-bool Script::load_if_exists(lua_State* l, const std::string& script_name) {
+bool Script::load_file_if_exists(lua_State* l, const std::string& script_name) {
 
   // Determine the file name (.lua).
   std::ostringstream oss;
@@ -146,9 +146,9 @@ bool Script::load_if_exists(lua_State* l, const std::string& script_name) {
  * @param script_name File name of the script without extension,
  * relative to the data directory.
  */
-void Script::load(lua_State* l, const std::string& script_name) {
+void Script::load_file(lua_State* l, const std::string& script_name) {
 
-  if (!load_if_exists(l, script_name)) {
+  if (!load_file_if_exists(l, script_name)) {
     Debug::die(StringConcat() << "Cannot find script file '"
         << script_name << "'");
   }
@@ -157,7 +157,7 @@ void Script::load(lua_State* l, const std::string& script_name) {
 /**
  * @brief Opens a Lua file and executes it.
  *
- * This function just calls load() and call_function().
+ * This function just calls load_file() and call_function().
  * The file must exist.
  *
  * @param l A Lua state.
@@ -166,14 +166,14 @@ void Script::load(lua_State* l, const std::string& script_name) {
  */
 void Script::do_file(lua_State* l, const std::string& script_name) {
 
-  load(l, script_name);
+  load_file(l, script_name);
   call_function(l, 0, 0, script_name);
 }
 
 /**
  * @brief Opens a Lua file if it exists and executes it without arguments.
  *
- * This function just calls load_if_exists() and call_function().
+ * This function just calls load_file_if_exists() and call_function().
  * Nothing is done if the file does not exists.
  *
  * @param l A Lua state.
@@ -183,7 +183,7 @@ void Script::do_file(lua_State* l, const std::string& script_name) {
  */
 bool Script::do_file_if_exists(lua_State* l, const std::string& script_name) {
 
-  if (load_if_exists(l, script_name)) {
+  if (load_file_if_exists(l, script_name)) {
     call_function(l, 0, 0, script_name);
     return true;
   }

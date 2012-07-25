@@ -67,7 +67,7 @@ int Script::main_api_load_file(lua_State *l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 
-  if (!load_if_exists(l, file_name)) {
+  if (!load_file_if_exists(l, file_name)) {
     lua_pushnil(l);
   }
 

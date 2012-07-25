@@ -76,9 +76,8 @@ void LuaContext::initialize() {
   lua_pop(l, 1);
                                   // ...
 
-  // Load the main file.
-  load(l, "main");
-  call_function(0, 0, "main");
+  // Execute the main file.
+  do_file(l, "main");
   main_on_started();
 }
 
@@ -101,7 +100,7 @@ void LuaContext::exit() {
 int LuaContext::l_loader(lua_State* l) {
 
   const std::string& script_name = luaL_checkstring(l, 1);
-  bool exists = load_if_exists(l, script_name);
+  bool exists = load_file_if_exists(l, script_name);
 
   if (!exists) {
     std::ostringstream oss;

@@ -135,8 +135,8 @@ class Script {
     bool notify_script(const std::string& function_name, const char* format = "", ...);
     bool call_function(int nb_arguments, int nb_results, const std::string& function_name);
     static bool call_function(lua_State* l, int nb_arguments, int nb_results, const std::string& function_name);
-    static void load(lua_State* l, const std::string& script_name);
-    static bool load_if_exists(lua_State* l, const std::string& script_name);
+    static void load_file(lua_State* l, const std::string& script_name);
+    static bool load_file_if_exists(lua_State* l, const std::string& script_name);
     static void do_file(lua_State* l, const std::string& script_name);
     static bool do_file_if_exists(lua_State* l, const std::string& script_name);
     static int get_positive_index(lua_State* l, int index);

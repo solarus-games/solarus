@@ -11,6 +11,7 @@ Only one game can be running at a time.
 
 - \ref lua_api_game_functions
 - \ref lua_api_game_methods
+- \ref lua_api_game_events
 
 <hr>
 
@@ -443,6 +444,30 @@ The menu will persist accross map changes.
 Removes a menu previously attached to this game with
 \ref lua_api_game_start_menu.
 - \c menu (table): The menu to stop.
+
+<hr>
+
+\section lua_api_game_events Events of a game
+
+The following events are called on the game currently running, if any.
+
+<hr>
+
+\subsection lua_api_game_on_update game:on_update()
+
+Called at each cycle of the main loop while this game is running.
+
+<hr>
+
+\subsection lua_api_game_on_started game:on_started()
+
+Called when this game starts running.
+
+<hr>
+
+\subsection lua_api_game_on_finished game:on_finished()
+
+Called when this game stops running.
 
 */
 

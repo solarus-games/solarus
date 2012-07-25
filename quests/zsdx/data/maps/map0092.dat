@@ -180,8 +180,8 @@
 2	0	816	400	16	16	teletransporter_2	0	1	8	from_west_mountain_cave_2f_e
 1	0	824	381	from_outside_e	1	0
 1	0	240	381	from_outside_w	1	0
-2	0	496	320	48	16	teletransporter	0	1	91	_same
-2	0	496	336	64	32	teletransporter_4	0	1	91	_same
+2	0	496	320	48	16	teletransporter	0	1	91	from_2f_hole
+2	0	496	336	64	32	teletransporter_4	0	1	91	from_2f_hole
 1	0	176	61	from_1f	3	0
 2	0	168	48	16	16	teletransporter_5	0	1	91	from_2f
 19	0	168	48	stairs	1	1

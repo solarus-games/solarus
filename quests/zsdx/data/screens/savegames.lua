@@ -1,5 +1,7 @@
 -- Savegame selection screen, displayed after the title screen.
 
+require("game_manager")
+
 local savegame_menu = {}
 
 function savegame_menu:new()
@@ -898,10 +900,7 @@ end
 
 function savegame_menu:start_game(game)
 
-  function game:on_started()
-    print("it works!")
-  end
-  game:start()
+  start_game(game)
 end
 
 return savegame_menu

@@ -775,6 +775,8 @@ int Script::userdata_meta_newindex_as_table(lua_State* l) {
   luaL_checkany(l, 2);
   luaL_checkany(l, 3);
 
+  ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, 1);
+
   /* The user wants to make udata[key] = value but udata is a userdata.
    * So what we make instead is udata_tables[udata][key] = value.
    * This redirection is totally transparent from the Lua side.
@@ -783,7 +785,7 @@ int Script::userdata_meta_newindex_as_table(lua_State* l) {
   lua_pushstring(l, "sol.userdata_tables");
   lua_gettable(l, LUA_REGISTRYINDEX);
                                   // ... udata_tables
-  lua_pushvalue(l, 1);
+  lua_pushlightuserdata(l, *userdata);
                                   // ... udata_tables udata
   lua_gettable(l, -2);
                                   // ... udata_tables udata_table/nil
@@ -794,7 +796,7 @@ int Script::userdata_meta_newindex_as_table(lua_State* l) {
                                   // ... udata_tables
     lua_newtable(l);
                                   // ... udata_tables udata_table
-    lua_pushvalue(l, 1);
+    lua_pushlightuserdata(l, *userdata);
                                   // ... udata_tables udata_table udata
     lua_pushvalue(l, -2);
                                   // ... udata_tables udata_table udata udata_table
@@ -835,11 +837,13 @@ int Script::userdata_meta_index_as_table(lua_State* l) {
   luaL_checktype(l, 1, LUA_TUSERDATA);
   luaL_checkany(l, 2);
 
+  ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, 1);
+
   bool found = false;
   lua_pushstring(l, "sol.userdata_tables");
   lua_gettable(l, LUA_REGISTRYINDEX);
                                   // ... udata_tables
-  lua_pushvalue(l, 1);
+  lua_pushlightuserdata(l, *userdata);
                                   // ... udata_tables udata
   lua_gettable(l, -2);
                                   // ... udata_tables udata_table/nil

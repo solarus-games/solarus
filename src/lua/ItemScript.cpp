@@ -32,13 +32,14 @@
  */
 ItemScript::ItemScript(Game &game, ItemProperties &item_properties):
   Script(game.get_main_loop(), MAP_API | ITEM_API),
+  started(false),
   game(game),
   item_properties(item_properties),
   pickable_item(NULL),
   inventory_item(NULL) {
 
   std::string script_name = (std::string) "items/" + item_properties.get_name();
-  load_if_exists(script_name);
+  started = do_file_if_exists(script_name);
 }
 
 /**
@@ -95,7 +96,7 @@ void ItemScript::update() {
 
   Script::update();
 
-  if (is_loaded()) {
+  if (started) {
     event_update();
   }
 }
@@ -108,7 +109,7 @@ void ItemScript::set_suspended(bool suspended) {
 
   Script::set_suspended(suspended);
 
-  if (is_loaded()) {
+  if (started) {
     event_set_suspended(suspended);
   }
 }

@@ -106,27 +106,75 @@ void Script::exit() {
 }
 
 /**
+ * @brief Opens a script if it exists and lets it on top of the stack as a
+ * function.
+ * @param l A Lua state.
+ * @param script_name File name of the script without extension,
+ * relative to the data directory.
+ * @return true if the script exists and was loaded.
+ */
+bool Script::load_if_exists(lua_State* l,
+    const std::string& script_name) {
+
+  // Determine the file name (.lua).
+  std::ostringstream oss;
+  oss << script_name << ".lua";
+  std::string file_name = oss.str();
+
+  if (FileTools::data_file_exists(file_name)) {
+    // Load the file.
+    size_t size;
+    char* buffer;
+    FileTools::data_file_open_buffer(file_name, &buffer, &size);
+    int result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
+    FileTools::data_file_close_buffer(buffer);
+
+    if (result != 0)
+    {
+      Debug::die(StringConcat() << "Error: failed to load script '"
+          << script_name << "': " << lua_tostring(l, -1));
+    }
+    return true;
+  }
+  return false;
+}
+
+/**
+ * @brief Opens a script and lets it on top of the stack as a function.
+ * @param l A Lua state.
+ * @param script_name File name of the script without extension,
+ * relative to the data directory.
+ */
+void Script::load(lua_State* l, const std::string& script_name) {
+
+  if (!load_if_exists(l, script_name)) {
+    Debug::die(StringConcat() << "Cannot find script file '"
+        << script_name << "'");
+  }
+}
+
+/**
+ * TODO remove this function
  * @brief Initializes the Lua context and loads the script from a file.
  *
  * The script file must exist.
  *
  * @param script_name name of a Lua script file (without extension)
  */
-void Script::load(const std::string &script_name) {
+void Script::do_file(const std::string &script_name) {
 
-  load_if_exists(script_name);
-  Debug::check_assertion(is_loaded(),
-      StringConcat() << "Cannot load script '" << script_name << "'");
+  if (!do_file_if_exists(script_name)) {
+  Debug::die(StringConcat()
+      << "Cannot load script '" << script_name << "'");
+  }
 }
 
 /**
+ * TODO remove this function
  * @brief Initializes the Lua context and loads the script from a file.
- *
- * If the script file does not exist, the field context is NULL.
- *
  * @param script_name name of a Lua script file (without extension)
  */
-void Script::load_if_exists(const std::string& script_name) {
+bool Script::do_file_if_exists(const std::string& script_name) {
 
   if (l == NULL) {
     initialize();
@@ -152,10 +200,14 @@ void Script::load_if_exists(const std::string& script_name) {
   }
   else {
     exit();
+    return false;
   }
+
+  return true;
 }
 
 /**
+ * TODO remove this function
  * @brief Returns whether this script is loaded.
  * @return true if the script is loaded
  */

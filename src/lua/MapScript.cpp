@@ -30,6 +30,7 @@
  */
 MapScript::MapScript(Map& map):
   Script(map.get_game().get_main_loop(), MAP_API),
+  started(false),
   map(map) {
 
 }
@@ -72,7 +73,8 @@ void MapScript::start(const std::string& destination_point_name) {
   oss << "maps/map" << std::setfill('0') << std::setw(4) << id;
 
   // load the script
-  load(oss.str());
+  do_file(oss.str());
+  started = true;
 
   // notify the script
   event_map_started(destination_point_name);
@@ -85,7 +87,7 @@ void MapScript::update() {
 
   Script::update();
 
-  if (is_loaded() && !get_game().is_suspended()) {
+  if (started && !get_game().is_suspended()) {
     event_update();
   }
 }
@@ -98,7 +100,7 @@ void MapScript::set_suspended(bool suspended) {
 
   Script::set_suspended(suspended);
 
-  if (is_loaded()) {
+  if (started) {
     event_set_suspended(suspended);
   }
 }

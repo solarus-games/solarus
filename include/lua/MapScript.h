@@ -29,7 +29,8 @@ class MapScript: public Script {
 
   private:
 
-    Map& map;                              /**< the map controlled by this script */
+    bool started;       /**< true if the map Lua code is loaded and started */
+    Map& map;           /**< the map controlled by this script */
 
     static int camera_execute_function(lua_State* l);
     static int camera_restore(lua_State* l);

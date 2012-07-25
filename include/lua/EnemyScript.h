@@ -32,8 +32,9 @@ class EnemyScript: public Script {
 
   private:
 
-    Game& game;                                      /**< the game */
-    CustomEnemy& enemy;                              /**< the enemy controlled by this script */
+    bool started;        /**< true if the enemy's Lua code exists and is started */
+    Game& game;          /**< the game */
+    CustomEnemy& enemy;  /**< the enemy controlled by this script */
 
   protected:
 

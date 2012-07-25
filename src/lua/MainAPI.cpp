@@ -67,7 +67,7 @@ int Script::main_api_include(lua_State *l) {
   Script& script = get_script(l);
   const std::string& file_name = luaL_checkstring(l, 1);
 
-  script.load(file_name);
+  script.do_file(file_name);
 
   return 0;
 }

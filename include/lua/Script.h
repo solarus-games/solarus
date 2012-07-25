@@ -134,8 +134,10 @@ class Script {
     bool find_global_function(const std::string& function_name);
     bool notify_script(const std::string& function_name, const char* format = "", ...);
     bool call_function(int nb_arguments, int nb_results, const std::string& function_name);
-    void load(const std::string &script_name);
-    void load_if_exists(const std::string &script_name);
+    static void load(lua_State* l, const std::string& script_name);
+    static bool load_if_exists(lua_State* l, const std::string& script_name);
+    void do_file(const std::string& script_name);
+    bool do_file_if_exists(const std::string& script_name);
     bool is_loaded();
     static int get_positive_index(lua_State* l, int index);
     void print_stack();

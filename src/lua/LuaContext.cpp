@@ -112,54 +112,6 @@ int LuaContext::l_loader(lua_State* l) {
 }
 
 /**
- * @brief Opens a script and lets it on top of the stack as a function.
- * @param l A Lua state.
- * @param script_name File name of the script without extension,
- * relative to the data directory.
- */
-void LuaContext::load(lua_State* l, const std::string& script_name) {
-
-  if (!load_if_exists(l, script_name)) {
-    Debug::die(StringConcat() << "Cannot find script file '"
-        << script_name << "'");
-  }
-}
-
-/**
- * @brief Opens a script if it exists and lets it on top of the stack as a
- * function.
- * @param l A Lua state.
- * @param script_name File name of the script without extension,
- * relative to the data directory.
- * @return true if the script exists and was loaded.
- */
-bool LuaContext::load_if_exists(lua_State* l,
-    const std::string& script_name) {
-
-  // Determine the file name (.lua).
-  std::ostringstream oss;
-  oss << script_name << ".lua";
-  std::string file_name = oss.str();
-
-  if (FileTools::data_file_exists(file_name)) {
-    // Load the file.
-    size_t size;
-    char* buffer;
-    FileTools::data_file_open_buffer(file_name, &buffer, &size);
-    int result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
-    FileTools::data_file_close_buffer(buffer);
-
-    if (result != 0)
-    {
-      Debug::die(StringConcat() << "Error: failed to load script '"
-          << script_name << "': " << lua_tostring(l, -1));
-    }
-    return true;
-  }
-  return false;
-}
-
-/**
  * @brief Gets a local Lua function from the environment of another one
  * on top of the stack.
  *

@@ -33,6 +33,7 @@ class ItemScript: public Script {
 
   private:
 
+    bool started;                                       /**< true if the item's Lua code exists and is started */
     Game &game;						/**< the game */
     ItemProperties &item_properties;			/**< static properties of the item */
 

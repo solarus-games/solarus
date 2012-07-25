@@ -1,6 +1,6 @@
 -- Red Dogman
 
-sol.main.include("enemies/generic_towards_hero")
+sol.main.do_file("enemies/generic_towards_hero")
 set_properties({
   sprite = "enemies/red_dogman",
   life = 8,

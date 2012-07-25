@@ -1,2 +1,2 @@
-sol.main.include("items/bottle")
+sol.main.do_file("items/bottle")
 

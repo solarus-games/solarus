@@ -7,7 +7,7 @@
 
 -- Example of use from an enemy script:
 
--- sol.main.include("enemies/generic_waiting_for_hero")
+-- sol.main.do_file("enemies/generic_waiting_for_hero")
 -- set_properties({
 --   sprite = "enemies/globul",
 --   life = 4,

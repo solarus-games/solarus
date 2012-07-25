@@ -1,6 +1,6 @@
 -- Dungeon 5 B1
 
-sol.main.include("maps/prison_guard")
+sol.main.do_file("maps/prison_guard")
 
 local prison_2_nb_messages = 0
 local door_sets = { -- possible doors open when going to prison

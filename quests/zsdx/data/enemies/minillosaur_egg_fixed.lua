@@ -1,6 +1,6 @@
 -- Minillosaur waiting in eggs for the hero to drop by.
 
-sol.main.include("enemies/generic_waiting_for_hero")
+sol.main.do_file("enemies/generic_waiting_for_hero")
 set_properties({
   sprite = "enemies/minillosaur_egg_fixed",
   life = 4,

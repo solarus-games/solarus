@@ -4,7 +4,7 @@
 
 -- Example of use from an enemy script:
 
--- sol.main.include("enemies/generic_soldier")
+-- sol.main.do_file("enemies/generic_soldier")
 -- set_properties({
 --   main_sprite = "enemies/green_knight_soldier",
 --   sword_sprite = "enemies/green_knight_soldier_sword",

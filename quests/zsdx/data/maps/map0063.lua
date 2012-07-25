@@ -1,6 +1,6 @@
 -- Dungeon 5 2F
 
-sol.main.include("maps/prison_guard")
+sol.main.do_file("maps/prison_guard")
 
 puzzle_next_sensor = 1
 

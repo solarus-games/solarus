@@ -1,6 +1,6 @@
 -- Dungeon 5 1F
 
-sol.main.include("maps/prison_guard")
+sol.main.do_file("maps/prison_guard")
 
 function event_map_started(destination_point_name)
 

@@ -1,6 +1,6 @@
 -- Green duck soldier
 
-sol.main.include("enemies/generic_soldier")
+sol.main.do_file("enemies/generic_soldier")
 set_properties({
   main_sprite = "enemies/green_duck_soldier",
   sword_sprite = "enemies/green_duck_soldier_sword",

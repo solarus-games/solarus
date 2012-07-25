@@ -382,6 +382,8 @@
 13	0	808	877	16	16	forbidden_door_sensor	0
 8	0	336	325	tom	3	1	npc/tom	map
 1	0	288	701	from_ending	-1	0
+12	0	368	296	16	16	custom_obstacle_10	0	0	1	1
+12	0	272	864	112	16	custom_obstacle_11	0	0	1	1
 0	1	440	984	336	192	613
 0	1	952	40	160	208	613
 0	1	40	40	176	80	613
@@ -714,6 +716,7 @@
 19	1	1064	24	stairs_9	1	1
 8	1	400	61	npc_3	3	1	npc/castle_guard	dialog#castle.forbidden_stairs
 8	1	400	213	walking_npc_1	3	1	npc/villager1	dialog#castle.npc_2
+12	1	368	248	16	16	custom_obstacle	0	0	1	1
 0	2	1048	16	64	8	559
 0	2	952	16	64	8	559
 0	2	576	1192	128	8	560

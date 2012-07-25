@@ -150,6 +150,7 @@ int Script::game_api_load(lua_State *l) {
   const std::string& file_name = luaL_checkstring(l, 1);
 
   Savegame* savegame = new Savegame(file_name);
+  get_script(l).set_created(savegame);  // The savegame belongs to Lua.
 
   push_game(l, *savegame);
   return 1;

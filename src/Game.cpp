@@ -43,7 +43,8 @@ Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from quest.dat
 /**
  * @brief Creates a game.
  * @param main_loop The Solarus root object.
- * @param savegame The saved data of this game.
+ * @param savegame The saved data of this game. Will be deleted in the
+ * destructor unless someone is still using it (the refcount info is used).
  */
 Game::Game(MainLoop& main_loop, Savegame* savegame):
 
@@ -67,6 +68,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   dialog_box(NULL) {
 
   // notify objects
+  get_savegame().increment_refcount();
   get_savegame().set_game(this);
   get_main_loop().get_debug_keys().set_game(this);
 
@@ -87,8 +89,10 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
  */
 Game::~Game() {
 
-  if (savegame != NULL) {
-    get_lua_context().decrement_refcount(savegame);
+  savegame->decrement_refcount();
+  if (savegame->get_refcount() == 0) {
+    // No one is using the savegame anymore (especially not Lua).
+    delete savegame;
   }
   Music::play(Music::none);
 

@@ -898,10 +898,8 @@ end
 
 function savegame_menu:start_game(game)
 
-  game:start()
-  -- TODO
-  -- local play_game = sol.main.load("game_manager")
-  -- play_game(game)
+  local play_game = sol.main.load_file("game_manager")
+  play_game(game)
 end
 
 return savegame_menu

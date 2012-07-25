@@ -108,6 +108,9 @@ void Script::exit() {
 /**
  * @brief Opens a script if it exists and lets it on top of the stack as a
  * function.
+ *
+ * If the file does not exist, the stack is left intact and false is returned.
+ *
  * @param l A Lua state.
  * @param script_name File name of the script without extension,
  * relative to the data directory.

@@ -31,6 +31,7 @@ const std::string Script::main_module_name = "sol.main";
 void Script::register_main_module() {
 
   static const luaL_Reg functions[] = {
+      { "load_file", main_api_load_file },
       { "do_file", main_api_do_file },
       { "reset", main_api_reset },
       { "exit", main_api_exit },
@@ -55,6 +56,22 @@ void Script::push_main(lua_State* l) {
                                   // ... sol main
   lua_remove(l, -2);
                                   // ... main
+}
+
+/**
+ * @brief Implementation of \ref lua_api_main_load_file.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::main_api_load_file(lua_State *l) {
+
+  const std::string& file_name = luaL_checkstring(l, 1);
+
+  if (!load_if_exists(l, file_name)) {
+    lua_pushnil(l);
+  }
+
+  return 1;
 }
 
 /**

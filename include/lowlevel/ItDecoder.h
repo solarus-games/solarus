@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <modplug.h>
+#include <cstddef>
 
 /**
  * @brief Encapsulates the Impulse Tracker music decoding.

@@ -18,6 +18,7 @@
 #define SOLARUS_DUNGEON_H
 
 #include "Common.h"
+#include <string>
 #include <vector>
 
 /**

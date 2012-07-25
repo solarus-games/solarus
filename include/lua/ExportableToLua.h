@@ -18,6 +18,7 @@
 #define SOLARUS_EXPORTABLE_TO_LUA_H
 
 #include "Common.h"
+#include <string>
 
 /**
  * @brief Interface of a C++ type that can also exist as a Lua userdata.

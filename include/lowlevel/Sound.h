@@ -18,6 +18,7 @@
 #define SOLARUS_SOUND_H
 
 #include "Common.h"
+#include <string>
 #include <list>
 #include <map>
 #include <al.h>

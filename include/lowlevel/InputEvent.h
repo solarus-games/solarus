@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <SDL.h>
+#include <string>
 
 /**
  * @brief Represents a low-level event.

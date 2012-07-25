@@ -18,6 +18,7 @@
 #define SOLARUS_SPRITE_ANIMATION_H
 
 #include "Common.h"
+#include <string>
 
 /**
  * @brief Stores the animated sequences of a sprite in a specific animation.

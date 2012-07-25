@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <SDL.h>
+#include <ostream>
 
 /**
  * @brief Represents a rectangle.

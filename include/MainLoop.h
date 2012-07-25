@@ -18,6 +18,7 @@
 #define MAIN_LOOP_H
 
 #include "Common.h"
+#include <string>
 
 /**
  * @brief Main class of the game engine.

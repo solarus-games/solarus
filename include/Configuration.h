@@ -19,6 +19,7 @@
 #define SOLARUS_CONFIGURATION_H
 
 #include "Common.h"
+#include <string>
 
 /**
  * @brief Stores the global configuration of the program.

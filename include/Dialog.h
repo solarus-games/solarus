@@ -18,6 +18,7 @@
 #define SOLARUS_DIALOG_H
 
 #include "Common.h"
+#include <string>
 #include <list>
 
 /**

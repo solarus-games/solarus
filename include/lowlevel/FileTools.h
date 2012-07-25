@@ -18,6 +18,7 @@
 #define SOLARUS_FILE_TOOLS_H
 
 #include "Common.h"
+#include <string>
 #include <map>
 
 struct lua_State;

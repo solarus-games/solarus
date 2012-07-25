@@ -18,6 +18,7 @@
 #define SOLARUS_TREASURE_H
 
 #include "Common.h"
+#include <string>
 
 /**
  * @brief Represents an item that the hero brandishes when he receives it.

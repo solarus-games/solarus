@@ -18,6 +18,7 @@
 #define SOLARUS_INI_FILE_H
 
 #include "Common.h"
+#include <string>
 
 typedef struct SimpleIni SimpleIni;
 

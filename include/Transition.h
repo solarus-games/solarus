@@ -18,6 +18,7 @@
 #define SOLARUS_TRANSITION_H
 
 #include "Common.h"
+#include <cstdlib>
 
 /**
  * @brief Abstract class for a transition effect between two phases.

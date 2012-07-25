@@ -26,7 +26,6 @@
 #define SOLARUS_TYPES_H
 
 #include <stdint.h>
-#include <string>
 
 // types of the id of each resource.
 

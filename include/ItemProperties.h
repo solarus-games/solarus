@@ -18,6 +18,7 @@
 #define SOLARUS_ITEM_PROPERTIES_H
 
 #include "Common.h"
+#include <string>
 
 /**
  * @brief Describes the static properties of an item defined in the quest.

@@ -18,6 +18,7 @@
 #define SOLARUS_STRING_RESOURCE_H
 
 #include "Common.h"
+#include <string>
 #include <map>
 
 /**
@@ -28,7 +29,7 @@
  * This class is used only to load simple strings such as the ones displayed
  * in the menus.
  * The messages displayed in the dialog box during the game come from another
- * data file (see classe DialogResource).
+ * data file (see class DialogResource).
  */
 class StringResource {
 

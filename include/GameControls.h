@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/InputEvent.h"
+#include <string>
 #include <map>
 
 /**

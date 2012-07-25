@@ -69,7 +69,6 @@
  */
 #define SOLARUS_SCREEN_HEIGHT_MIDDLE (SOLARUS_SCREEN_HEIGHT / 2)
 
-
 #include "Types.h"
 
 #endif

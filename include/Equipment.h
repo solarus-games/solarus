@@ -18,6 +18,7 @@
 #define SOLARUS_EQUIPMENT_H
 
 #include "Common.h"
+#include <string>
 #include <map>
 
 /**

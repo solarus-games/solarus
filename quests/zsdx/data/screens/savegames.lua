@@ -1,7 +1,5 @@
 -- Savegame selection screen, displayed after the title screen.
 
-require("game_manager")
-
 local savegame_menu = {}
 
 function savegame_menu:new()
@@ -900,7 +898,10 @@ end
 
 function savegame_menu:start_game(game)
 
-  start_game(game)
+  game:start()
+  -- TODO
+  -- local play_game = sol.main.load("game_manager")
+  -- play_game(game)
 end
 
 return savegame_menu

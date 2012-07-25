@@ -257,7 +257,7 @@ Game* Script::get_current_game() {
 
 /**
  * @brief Sets the game currently running.
- * @return The game currently running if any, NULL otherwise.
+ * @param current_game The game currently running if any, NULL otherwise.
  */
 void Script::set_current_game(Game* current_game) {
   this->current_game = current_game;
@@ -273,7 +273,7 @@ CustomScreen* Script::get_current_screen() {
 
 /**
  * @brief Sets the current menu.
- * @return The current menu if any, NULL otherwise.
+ * @param current_screen The current menu if any, NULL otherwise.
  */
 void Script::set_current_screen(CustomScreen* current_screen) {
   this->current_screen = current_screen;

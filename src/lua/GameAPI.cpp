@@ -861,8 +861,7 @@ void LuaContext::game_on_started(Game& game) {
 
 /**
  * @brief Calls the on_finished() method of a Lua game.
- *
- * This function is called when the program is reset or stopped.
+ * @param game A game.
  */
 void LuaContext::game_on_finished(Game& game) {
 

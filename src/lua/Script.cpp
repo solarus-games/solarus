@@ -111,10 +111,9 @@ void Script::exit() {
  * @param l A Lua state.
  * @param script_name File name of the script without extension,
  * relative to the data directory.
- * @return true if the script exists and was loaded.
+ * @return true if the file exists and was loaded.
  */
-bool Script::load_if_exists(lua_State* l,
-    const std::string& script_name) {
+bool Script::load_if_exists(lua_State* l, const std::string& script_name) {
 
   // Determine the file name (.lua).
   std::ostringstream oss;
@@ -129,8 +128,7 @@ bool Script::load_if_exists(lua_State* l,
     int result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
     FileTools::data_file_close_buffer(buffer);
 
-    if (result != 0)
-    {
+    if (result != 0) {
       Debug::die(StringConcat() << "Error: failed to load script '"
           << script_name << "': " << lua_tostring(l, -1));
     }
@@ -154,65 +152,39 @@ void Script::load(lua_State* l, const std::string& script_name) {
 }
 
 /**
- * TODO remove this function
- * @brief Initializes the Lua context and loads the script from a file.
+ * @brief Opens a Lua file and executes it.
  *
- * The script file must exist.
+ * This function just calls load() and call_function().
+ * The file must exist.
  *
- * @param script_name name of a Lua script file (without extension)
+ * @param l A Lua state.
+ * @param script_name File name of the script without extension,
+ * relative to the data directory.
  */
-void Script::do_file(const std::string &script_name) {
+void Script::do_file(lua_State* l, const std::string& script_name) {
 
-  if (!do_file_if_exists(script_name)) {
-  Debug::die(StringConcat()
-      << "Cannot load script '" << script_name << "'");
-  }
+  load(l, script_name);
+  call_function(l, 0, 0, script_name);
 }
 
 /**
- * TODO remove this function
- * @brief Initializes the Lua context and loads the script from a file.
- * @param script_name name of a Lua script file (without extension)
+ * @brief Opens a Lua file if it exists and executes it without arguments.
+ *
+ * This function just calls load_if_exists() and call_function().
+ * Nothing is done if the file does not exists.
+ *
+ * @param l A Lua state.
+ * @param script_name File name of the script without extension,
+ * relative to the data directory.
+ * @return true if the file exists and was successfully executed.
  */
-bool Script::do_file_if_exists(const std::string& script_name) {
+bool Script::do_file_if_exists(lua_State* l, const std::string& script_name) {
 
-  if (l == NULL) {
-    initialize();
+  if (load_if_exists(l, script_name)) {
+    call_function(l, 0, 0, script_name);
+    return true;
   }
-
-  // determine the file name (.lua)
-  std::ostringstream oss;
-  oss << script_name << ".lua";
-  std::string file_name = oss.str();
-
-  if (FileTools::data_file_exists(file_name)) {
-    // load the file
-    size_t size;
-    char* buffer;
-    FileTools::data_file_open_buffer(file_name, &buffer, &size);
-    luaL_loadbuffer(l, buffer, size, file_name.c_str());
-    FileTools::data_file_close_buffer(buffer);
-    if (lua_pcall(l, 0, 0, 0) != 0) {
-      Debug::die(StringConcat() << "Error: failed to load script '" << script_name
-          << "': " << lua_tostring(l, -1));
-      lua_pop(l, 1);
-    }
-  }
-  else {
-    exit();
-    return false;
-  }
-
-  return true;
-}
-
-/**
- * TODO remove this function
- * @brief Returns whether this script is loaded.
- * @return true if the script is loaded
- */
-bool Script::is_loaded() {
-  return l != NULL;
+  return false;
 }
 
 /**
@@ -607,6 +579,36 @@ bool Script::notify_script(const std::string& function_name, const char* format,
  * This function leaves the results on the stack if there is no error,
  * and leaves nothing on the stack in case of error.
  *
+ * @param l A Lua state.
+ * @param nb_arguments Number of arguments placed on the Lua stack above the
+ * function to call.
+ * @param nb_results Number of results expected (you get them on the stack if
+ * there is no error).
+ * @param function_name A name describing the Lua function (only used to print
+ * the error message if any).
+ * @return true in case of success.
+ */
+bool Script::call_function(lua_State* l, int nb_arguments, int nb_results,
+    const std::string& function_name) {
+
+  if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
+    Debug::print(StringConcat() << "Error in " << function_name << "(): "
+        << lua_tostring(l, -1));
+    lua_pop(l, 1);
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * @brief Calls the Lua function with its arguments on top of the stack.
+ *
+ * This function is like lua_pcall, except that it additionaly handles the
+ * error message if an error occurs in the Lua code (the error is printed).
+ * This function leaves the results on the stack if there is no error,
+ * and leaves nothing on the stack in case of error.
+ *
  * @param nb_arguments number of arguments placed on the Lua stack above the
  * function to call
  * @param nb_results number of results expected (you get them on the stack if
@@ -618,14 +620,7 @@ bool Script::notify_script(const std::string& function_name, const char* format,
 bool Script::call_function(int nb_arguments, int nb_results,
     const std::string& function_name) {
 
-  if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
-    Debug::print(StringConcat() << "Error in " << function_name << "(): "
-        << lua_tostring(l, -1));
-    lua_pop(l, 1);
-    return false;
-  }
-
-  return true;
+  return call_function(l, nb_arguments, nb_results, function_name);
 }
 
 /**

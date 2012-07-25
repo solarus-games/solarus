@@ -31,7 +31,11 @@ EnemyScript::EnemyScript(CustomEnemy& enemy):
   enemy(enemy) {
 
   std::string script_name = std::string("enemies/" + enemy.get_breed());
-  started = do_file_if_exists(script_name);
+  initialize();
+  started = do_file_if_exists(l, script_name);
+  if (!started) {
+    exit();
+  }
 }
 
 /**

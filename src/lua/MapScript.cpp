@@ -73,7 +73,8 @@ void MapScript::start(const std::string& destination_point_name) {
   oss << "maps/map" << std::setfill('0') << std::setw(4) << id;
 
   // load the script
-  do_file(oss.str());
+  initialize();
+  do_file(l, oss.str());
   started = true;
 
   // notify the script

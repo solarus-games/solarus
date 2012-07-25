@@ -39,7 +39,11 @@ ItemScript::ItemScript(Game &game, ItemProperties &item_properties):
   inventory_item(NULL) {
 
   std::string script_name = (std::string) "items/" + item_properties.get_name();
-  started = do_file_if_exists(script_name);
+  initialize();
+  started = do_file_if_exists(l, script_name);
+  if (!started) {
+    exit();
+  }
 }
 
 /**

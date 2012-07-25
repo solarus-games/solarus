@@ -87,7 +87,7 @@ function hearts:check()
 
   -- Redraw the surface only if something has changed.
   if need_rebuild then
-    hearts:rebuild_surface()
+    self:rebuild_surface()
   end
 
   -- Schedule the next check.

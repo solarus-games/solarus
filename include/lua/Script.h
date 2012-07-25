@@ -239,7 +239,7 @@ class Script {
     static FunctionAvailableToScript 
 
       // main API
-      main_api_include,
+      main_api_do_file,
       main_api_reset,
       main_api_exit,
       main_api_start_screen,

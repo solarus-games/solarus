@@ -31,7 +31,7 @@ const std::string Script::main_module_name = "sol.main";
 void Script::register_main_module() {
 
   static const luaL_Reg functions[] = {
-      { "include", main_api_include },
+      { "do_file", main_api_do_file },
       { "reset", main_api_reset },
       { "exit", main_api_exit },
       { "start_screen", main_api_start_screen },
@@ -58,11 +58,11 @@ void Script::push_main(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_include.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * @brief Implementation of \ref lua_api_main_do_file.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::main_api_include(lua_State *l) {
+int Script::main_api_do_file(lua_State *l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 

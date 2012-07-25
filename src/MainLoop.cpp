@@ -221,6 +221,10 @@ void MainLoop::run() {
       }
     }
   }
+
+  if (current_screen != NULL) {
+    current_screen->stop();
+  }
 }
 
 /**

@@ -45,16 +45,8 @@ void LuaContext::menu_on_update(int menu_ref) {
  */
 void LuaContext::menu_on_display(int menu_ref, Surface& dst_surface) {
 
-  // Get the Lua menu.
   push_ref(l, menu_ref);
-
-  // Find its on_display() method and call it.
-  if (find_method(on_display_name)) {
-    push_surface(l, dst_surface);
-    call_function(2, 0, on_display_name);
-  }
-
-  // Remove the menu from the stack.
+  on_display(dst_surface);
   lua_pop(l, 1);
 }
 

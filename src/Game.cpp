@@ -259,6 +259,9 @@ void Game::update() {
   // update the map
   current_map->update();
 
+  // call game:on_update() in Lua
+  get_lua_context().game_on_update(*this);
+
   // update the equipment and HUD
   get_equipment().update();
   update_keys_effect();
@@ -439,6 +442,8 @@ void Game::update_gameover_sequence() {
  */
 void Game::display(Surface& dst_surface) {
 
+  get_lua_context().game_on_pre_display(*this, dst_surface);
+
   // display the map
   if (current_map->is_loaded()) {
     current_map->display();
@@ -467,6 +472,8 @@ void Game::display(Surface& dst_surface) {
       dialog_box->display(dst_surface);
     }
   }
+
+  get_lua_context().game_on_post_display(*this, dst_surface);
 }
 
 /**

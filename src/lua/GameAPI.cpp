@@ -849,6 +849,18 @@ int Script::game_api_set_dungeon_finished(lua_State *l) {
 }
 
 /**
+ * @brief Calls the on_update() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_update(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_update();
+  lua_pop(l, 1);
+}
+
+
+/**
  * @brief Calls the on_started() method of a Lua game.
  * @param game A game.
  */
@@ -856,6 +868,30 @@ void LuaContext::game_on_started(Game& game) {
 
   push_game(l, game.get_savegame());
   on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_post_display() method of a Lua game.
+ * @param game A game.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::game_on_pre_display(Game& game, Surface& dst_surface) {
+
+  push_game(l, game.get_savegame());
+  on_pre_display(dst_surface);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_post_display() method of a Lua game.
+ * @param game A game.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::game_on_post_display(Game& game, Surface& dst_surface) {
+
+  push_game(l, game.get_savegame());
+  on_post_display(dst_surface);
   lua_pop(l, 1);
 }
 

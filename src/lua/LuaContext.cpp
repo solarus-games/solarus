@@ -22,6 +22,9 @@
 #include <lua.hpp>
 
 static const std::string& on_update_name = "on_update";
+static const std::string& on_display_name = "on_display";
+static const std::string& on_pre_display_name = "on_pre_display";
+static const std::string& on_post_display_name = "on_post_display";
 static const std::string& on_key_pressed_name = "on_key_pressed";
 static const std::string& on_key_released_name = "on_key_released";
 static const std::string& on_joyad_button_pressed_name = "on_joyad_button_pressed";
@@ -243,6 +246,42 @@ void LuaContext::on_update() {
 
   if (find_method(on_update_name)) {
     call_function(1, 0, on_update_name);
+  }
+}
+
+/**
+ * @brief Calls the on_display() method of the object on top of the stack.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::on_display(Surface& dst_surface) {
+
+  if (find_method(on_display_name)) {
+    push_surface(l, dst_surface);
+    call_function(2, 0, on_display_name);
+  }
+}
+
+/**
+ * @brief Calls the on_pre_display() method of the object on top of the stack.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::on_pre_display(Surface& dst_surface) {
+
+  if (find_method(on_pre_display_name)) {
+    push_surface(l, dst_surface);
+    call_function(2, 0, on_pre_display_name);
+  }
+}
+
+/**
+ * @brief Calls the on_post_display() method of the object on top of the stack.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::on_post_display(Surface& dst_surface) {
+
+  if (find_method(on_post_display_name)) {
+    push_surface(l, dst_surface);
+    call_function(2, 0, on_post_display_name);
   }
 }
 

@@ -63,6 +63,9 @@ class LuaContext: public Script {
     void menu_on_finished(int menu_ref);
 
     // Game events.
+    void game_on_update(Game& game);
+    void game_on_pre_display(Game& game, Surface& dst_surface);
+    void game_on_post_display(Game& game, Surface& dst_surface);
     void game_on_started(Game& game);
     void game_on_finished(Game& game);
 
@@ -82,6 +85,9 @@ class LuaContext: public Script {
   public:  // TODO make private once Script is removed
 
     void on_update();
+    void on_display(Surface& dst_surface);
+    void on_pre_display(Surface& dst_surface);
+    void on_post_display(Surface& dst_surface);
     void on_input(InputEvent& event);
     void on_key_pressed(InputEvent& event);
     void on_key_released(InputEvent& event);

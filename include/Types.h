@@ -113,7 +113,6 @@ class SwordIcon;
 class PauseIcon;
 class ItemIcon;
 class Counter;
-class HeartsView;
 class RupeesCounter;
 class MagicBar;
 class SmallKeysCounter;

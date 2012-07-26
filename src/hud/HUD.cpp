@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hud/HUD.h"
-#include "hud/HeartsView.h"
 #include "hud/RupeesCounter.h"
 #include "hud/MagicBar.h"
 #include "hud/ActionIcon.h"
@@ -36,7 +35,7 @@ HUD::HUD(Game &game):
   nb_elements(0),
   showing_dialog(false) {
 
-  elements[nb_elements++] = new HeartsView(game, SOLARUS_SCREEN_WIDTH - 104, 6);
+  elements[nb_elements++] = NULL;
   elements[nb_elements++] = new RupeesCounter(game, 8, SOLARUS_SCREEN_HEIGHT - 20);
   elements[nb_elements++] = new MagicBar(game, SOLARUS_SCREEN_WIDTH - 104, 27);
   elements[nb_elements++] = new ItemIcon(game, 0, 8, 29);
@@ -95,13 +94,13 @@ void HUD::update_blinking() {
     }
   }
 
-  if (index != -1) {
+  if (index != -1 && elements[index] != NULL) {
     if (!elements[index]->is_blinking()) {
       elements[index]->set_blinking(true);    
     }
   }
   for (int i = 3; i <= 7; i++) {
-    if (i != index && elements[i]->is_blinking()) {
+    if (i != index && elements[i] != NULL && elements[i]->is_blinking()) {
       elements[i]->set_blinking(false);
     }
   }
@@ -162,7 +161,9 @@ void HUD::update() {
 
   // update each element
   for (int i = 0; i < nb_elements; i++) {
-    elements[i]->update();
+    if (elements[i] != NULL) {
+      elements[i]->update();
+    }
   }
 }
 
@@ -173,7 +174,9 @@ void HUD::update() {
 void HUD::display(Surface& dst_surface) {
 
   for (int i = 0; i < nb_elements; i++) {
-    elements[i]->display(dst_surface);
+    if (elements[i] != NULL) {
+      elements[i]->display(dst_surface);
+    }
   }
 }
 

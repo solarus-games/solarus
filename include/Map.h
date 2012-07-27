@@ -23,19 +23,20 @@
 #include "entities/Ground.h"
 #include "entities/Obstacle.h"
 #include "lowlevel/Rectangle.h"
+#include "lua/ExportableToLua.h"
 
 /**
  * @brief Represents a map where the game can take place.
  *
- * A map is where a game sequence takes place. It contains various information, including:
- * - the map dimensions
- * - the tileset
- * - the tiles and the other entities initially placed on the map
- * - the obstacles
- * - the background music
- * - the position of the camera
+ * A map is a game scene. It contains various information, including:
+ * - its dimensions,
+ * - the tileset,
+ * - the tiles and the other entities placed on the map,
+ * - the obstacles,
+ * - the background music,
+ * - the position of the camera.
  */
-class Map {
+class Map: public ExportableToLua {
 
   private:
 
@@ -149,6 +150,8 @@ class Map {
     Game& get_game();
     MapScript& get_script();
     MapScript* get_script_if_exists();
+    virtual const std::string& get_lua_type_name() const;
+
     void notify_opening_transition_finished();
 
     // entities

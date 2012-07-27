@@ -47,7 +47,7 @@ const std::string Script::map_module_name = "sol.map";
  */
 void Script::register_map_module() {
 
-  static const luaL_Reg functions[] = {
+  static const luaL_Reg methods[] = {
       { "get_game", map_api_get_game },
       { "dialog_start", map_api_dialog_start },
       { "dialog_set_variable", map_api_dialog_set_variable },
@@ -162,7 +162,14 @@ void Script::register_map_module() {
       { "enemy_get_sprite", map_api_enemy_get_sprite },
       { NULL, NULL }
   };
-  register_functions(map_module_name, functions);
+  static const luaL_Reg metamethods[] = {
+      { "__eq", userdata_meta_eq },
+      { "__gc", userdata_meta_gc },
+      { "__newindex", userdata_meta_newindex_as_table },
+      { "__index", userdata_meta_index_as_table },
+      { NULL, NULL }
+  };
+  register_type(map_module_name, methods, metamethods);
 }
 
 /**

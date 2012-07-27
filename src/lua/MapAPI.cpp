@@ -2344,3 +2344,291 @@ int Script::map_api_enemy_get_sprite(lua_State* l) {
   return 1;
 }
 
+/**
+ * @brief Calls the on_update() method of a Lua map.
+ * @param map A map.
+ */
+void Script::map_on_update(Map& map) {
+
+  push_map(l, map);
+  on_update();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_suspended() method of a Lua map.
+ * @param map A map.
+ * @param suspended true if the map is suspended.
+ */
+void Script::map_on_suspended(Map& map, bool suspended) {
+
+  push_map(l, map);
+  on_suspended(suspended);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_started() method of a Lua map.
+ * @param map A map.
+ * @param destination_point The destination point used.
+ */
+void Script::map_on_started(Map& map, DestinationPoint& destination_point) {
+
+  push_map(l, map);
+  on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_treasure_obtaining() method of a Lua map.
+ * @param map A map.
+ * @param treasure A treasure the hero is about to obtain.
+ */
+void Script::map_on_treasure_obtaining(Map& map, const Treasure& treasure) {
+
+  push_map(l, map);
+  on_treasure_obtaining(treasure);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_treasure_obtaining() method of a Lua map.
+ * @param map A map.
+ * @param treasure The treasure just obtained.
+ */
+void Script::map_on_treasure_obtained(Map& map, const Treasure& treasure) {
+
+  push_map(l, map);
+  on_treasure_obtained(treasure);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_opening_transition_finished() method of a Lua map.
+ * @param map A map.
+ * @param destination_point the destination point used.
+ */
+void Script::map_on_opening_transition_finished(Map& map,
+    DestinationPoint& destination_point) {
+
+  push_map(l, map);
+  on_opening_transition_finished(destination_point);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_switch_activated() method of a Lua map.
+ * @param map A map.
+ * @param sw A switch.
+ */
+void Script::map_on_switch_activated(Map& map, Switch& sw) {
+
+  push_map(l, map);
+  on_switch_activated(sw);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_switch_inactivated() method of a Lua map.
+ * @param map A map.
+ * @param sw A switch.
+ */
+void Script::map_on_switch_inactivated(Map& map, Switch& sw) {
+
+  push_map(l, map);
+  on_switch_inactivated(sw);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_switch_left() method of a Lua map.
+ * @param map A map.
+ * @param sw A switch.
+ */
+void Script::map_on_switch_left(Map& map, Switch& sw) {
+
+  push_map(l, map);
+  on_switch_left(sw);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_hero_victory_sequence_finished() method of a Lua map.
+ * @param map A map.
+ */
+void Script::map_on_hero_victory_sequence_finished(Map& map) {
+
+  push_map(l, map);
+  on_hero_victory_sequence_finished();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_hero_on_sensor() method of a Lua map.
+ * @param map A map.
+ * @param sensor A sensor.
+ */
+void Script::map_on_hero_on_sensor(Map& map, Sensor& sensor) {
+
+  push_map(l, map);
+  on_hero_on_sensor(sensor);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_hero_still_on_sensor() method of a Lua map.
+ * @param map A map.
+ * @param sensor A sensor.
+ */
+void Script::map_on_hero_still_on_sensor(Map& map, Sensor& sensor) {
+
+  push_map(l, map);
+  on_hero_still_on_sensor(sensor);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_npc_movement_finished() method of a Lua map.
+ * @param map A map.
+ * @param npc An NPC.
+ */
+void Script::map_on_npc_movement_finished(Map& map, NPC& npc) {
+
+  push_map(l, map);
+  on_npc_movement_finished(npc);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_npc_interaction_finished() method of a Lua map.
+ * @param map A map.
+ * @param npc An NPC.
+ */
+void Script::map_on_npc_interaction_finished(Map& map, NPC& npc) {
+
+  push_map(l, map);
+  on_npc_interaction_finished(npc);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_npc_interaction_item_finished() method of a Lua map.
+ * @param map A map.
+ * @param npc An NPC.
+ */
+void Script::map_on_npc_interaction_item_finished(Map& map, NPC& npc,
+    const std::string& item_name, int variant) {
+
+  push_map(l, map);
+  on_npc_interaction_item_finished(npc, item_name, variant);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_sensor_collision_explosion() method of a Lua map.
+ * @param map A map.
+ * @param sensor A sensor.
+ */
+void Script::map_on_sensor_collision_explosion(Map& map, Sensor& sensor) {
+
+  push_map(l, map);
+  on_sensor_collision_explosion(sensor);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_chest_empty() method of a Lua map.
+ * @param map A map.
+ * @param chest A chest.
+ */
+bool Script::map_on_chest_empty(Map& map, Chest& chest) {
+
+  push_map(l, map);
+  on_chest_empty(chest);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_shop_item_buying() method of a Lua map.
+ * @param map A map.
+ * @param shop_item A shop item.
+ */
+bool Script::map_on_shop_item_buying(Map& map, ShopItem& shop_item) {
+
+  push_map(l, map);
+  on_shop_item_buying(shop_item);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_shop_item_bought() method of a Lua map.
+ * @param map A map.
+ * @param shop_item A shop item.
+ */
+void Script::map_on_shop_item_bought(Map& map, ShopItem& shop_item) {
+
+  push_map(l, map);
+  on_shop_item_bought(shop_item);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_door_open() method of a Lua map.
+ * @param map A map.
+ * @param door A door.
+ */
+void Script::map_on_door_open(Map& map, Door& door) {
+
+  push_map(l, map);
+  on_door_open(door);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_door_closed() method of a Lua map.
+ * @param map A map.
+ * @param door A door.
+ */
+void Script::map_on_door_closed(Map& map, Door& door) {
+
+  push_map(l, map);
+  on_door_closed(door);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_block_moved() method of a Lua map.
+ * @param map A map.
+ * @param block A block.
+ */
+void Script::map_on_block_moved(Map& map, Block& block) {
+
+  push_map(l, map);
+  on_block_moved(block);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_enemy_dying() method of a Lua map.
+ * @param map A map.
+ * @param enemy An enemy.
+ */
+void Script::map_on_enemy_dying(Map& map, Enemy& enemy) {
+
+  push_map(l, map);
+  on_enemy_dying(enemy);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_enemy_dead() method of a Lua map.
+ * @param map A map.
+ * @param enemy An enemy.
+ */
+void Script::map_on_enemy_dead(Map& map, Enemy& enemy) {
+
+  push_map(l, map);
+  on_enemy_dead(enemy);
+  lua_pop(l, 1);
+}
+

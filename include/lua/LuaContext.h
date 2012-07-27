@@ -27,7 +27,7 @@
  * Such scripts includes map scripts, enemy scripts, menu scripts, etc.
  * Data files are not managed by this class even if they are written in Lua.
  *
- * TODO: map scripts, enemy scripts and item scripts currently
+ * TODO: enemy scripts and item scripts currently
  * have still their own Lua world (they inherit Script).
  * Once they are all converted to this shared Lua context,
  * the Script class will be removed.

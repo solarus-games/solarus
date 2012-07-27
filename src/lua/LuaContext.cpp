@@ -21,20 +21,6 @@
 #include <sstream>
 #include <lua.hpp>
 
-static const std::string& on_update_name = "on_update";
-static const std::string& on_display_name = "on_display";
-static const std::string& on_pre_display_name = "on_pre_display";
-static const std::string& on_post_display_name = "on_post_display";
-static const std::string& on_key_pressed_name = "on_key_pressed";
-static const std::string& on_key_released_name = "on_key_released";
-static const std::string& on_joyad_button_pressed_name = "on_joyad_button_pressed";
-static const std::string& on_joyad_button_released_name = "on_joyad_button_released";
-static const std::string& on_joyad_axis_moved_name = "on_joyad_axis_moved";
-static const std::string& on_joyad_hat_moved_name = "on_joyad_hat_moved";
-static const std::string& on_direction_pressed_name = "on_direction_pressed";
-static const std::string& on_started_name = "on_started";
-static const std::string& on_finished_name = "on_finished";
-
 /**
  * @brief Creates a Lua context.
  * @param main_loop The Solarus main loop manager.
@@ -244,8 +230,8 @@ void LuaContext::notify_input(InputEvent& event) {
  */
 void LuaContext::on_update() {
 
-  if (find_method(on_update_name)) {
-    call_function(1, 0, on_update_name);
+  if (find_method("on_update")) {
+    call_function(1, 0, "on_update");
   }
 }
 
@@ -255,9 +241,9 @@ void LuaContext::on_update() {
  */
 void LuaContext::on_display(Surface& dst_surface) {
 
-  if (find_method(on_display_name)) {
+  if (find_method("on_display")) {
     push_surface(l, dst_surface);
-    call_function(2, 0, on_display_name);
+    call_function(2, 0, "on_display");
   }
 }
 
@@ -267,9 +253,9 @@ void LuaContext::on_display(Surface& dst_surface) {
  */
 void LuaContext::on_pre_display(Surface& dst_surface) {
 
-  if (find_method(on_pre_display_name)) {
+  if (find_method("on_pre_display")) {
     push_surface(l, dst_surface);
-    call_function(2, 0, on_pre_display_name);
+    call_function(2, 0, "on_pre_display");
   }
 }
 
@@ -279,9 +265,9 @@ void LuaContext::on_pre_display(Surface& dst_surface) {
  */
 void LuaContext::on_post_display(Surface& dst_surface) {
 
-  if (find_method(on_post_display_name)) {
+  if (find_method("on_post_display")) {
     push_surface(l, dst_surface);
-    call_function(2, 0, on_post_display_name);
+    call_function(2, 0, "on_post_display");
   }
 }
 
@@ -331,7 +317,7 @@ void LuaContext::on_input(InputEvent& event) {
  */
 void LuaContext::on_key_pressed(InputEvent& event) {
 
-  if (find_method(on_key_pressed_name)) {
+  if (find_method("on_key_pressed")) {
 
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Lua API.
@@ -353,7 +339,7 @@ void LuaContext::on_key_pressed(InputEvent& event) {
         lua_pushboolean(l, 1);
         lua_setfield(l, -2, "alt");
       }
-      call_function(3, 0, on_key_pressed_name);
+      call_function(3, 0, "on_key_pressed");
     }
     else {
       // The method exists but the key is unknown.
@@ -370,12 +356,12 @@ void LuaContext::on_key_pressed(InputEvent& event) {
  */
 void LuaContext::on_key_released(InputEvent& event) {
 
-  if (find_method(on_key_released_name)) {
+  if (find_method("on_key_released")) {
 
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Lua API.
       lua_pushstring(l, key_name.c_str());
-      call_function(2, 0, on_key_released_name);
+      call_function(2, 0, "on_key_released");
     }
     else {
       // The method exists but the key is unknown.
@@ -391,11 +377,11 @@ void LuaContext::on_key_released(InputEvent& event) {
  */
 void LuaContext::on_joypad_button_pressed(InputEvent& event) {
 
-  if (find_method(on_joyad_button_pressed_name)) {
+  if (find_method("on_joyad_button_pressed")) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_function(2, 0, on_joyad_button_pressed_name);
+    call_function(2, 0, "on_joyad_button_pressed");
   }
 }
 
@@ -406,11 +392,11 @@ void LuaContext::on_joypad_button_pressed(InputEvent& event) {
  */
 void LuaContext::on_joypad_button_released(InputEvent& event) {
 
-  if (find_method(on_joyad_button_released_name)) {
+  if (find_method("on_joyad_button_released")) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_function(2, 0, on_joyad_button_released_name);
+    call_function(2, 0, "on_joyad_button_released");
   }
 }
 
@@ -421,13 +407,13 @@ void LuaContext::on_joypad_button_released(InputEvent& event) {
  */
 void LuaContext::on_joypad_axis_moved(InputEvent& event) {
 
-  if (find_method(on_joyad_axis_moved_name)) {
+  if (find_method("on_joyad_axis_moved")) {
     int axis = event.get_joypad_axis();
     int state = event.get_joypad_axis_state();
 
     lua_pushinteger(l, axis);
     lua_pushinteger(l, state);
-    call_function(3, 0, on_joyad_axis_moved_name);
+    call_function(3, 0, "on_joyad_axis_moved");
   }
 }
 
@@ -438,13 +424,13 @@ void LuaContext::on_joypad_axis_moved(InputEvent& event) {
  */
 void LuaContext::on_joypad_hat_moved(InputEvent& event) {
 
-  if (find_method(on_joyad_hat_moved_name)) {
+  if (find_method("on_joyad_hat_moved")) {
     int hat = event.get_joypad_hat();
     int direction8 = event.get_joypad_hat_direction();
 
     lua_pushinteger(l, hat);
     lua_pushinteger(l, direction8);
-    call_function(3, 0, on_joyad_hat_moved_name);
+    call_function(3, 0, "on_joyad_hat_moved");
   }
 }
 
@@ -456,11 +442,11 @@ void LuaContext::on_joypad_hat_moved(InputEvent& event) {
  */
 void LuaContext::on_direction_pressed(InputEvent& event) {
 
-  if (find_method(on_direction_pressed_name)) {
+  if (find_method("on_direction_pressed")) {
     int direction8 = event.get_direction();
 
     lua_pushinteger(l, direction8);
-    call_function(2, 0, on_direction_pressed_name);
+    call_function(2, 0, "on_direction_pressed");
   }
 }
 
@@ -469,8 +455,8 @@ void LuaContext::on_direction_pressed(InputEvent& event) {
  */
 void LuaContext::on_started() {
 
-  if (find_method(on_started_name)) {
-    call_function(1, 0, on_started_name);
+  if (find_method("on_started")) {
+    call_function(1, 0, "on_started");
   }
 }
 
@@ -479,8 +465,8 @@ void LuaContext::on_started() {
  */
 void LuaContext::on_finished() {
 
-  if (find_method(on_finished_name)) {
-    call_function(1, 0, on_finished_name);
+  if (find_method("on_finished")) {
+    call_function(1, 0, "on_finished");
   }
 }
 

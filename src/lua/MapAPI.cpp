@@ -173,6 +173,26 @@ void Script::register_map_module() {
 }
 
 /**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * map and returns it.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return The map.
+ */
+Map& Script::check_map(lua_State* l, int index) {
+  return static_cast<Map&>(check_userdata(l, index, map_module_name));
+}
+
+/**
+ * @brief Pushes a map userdata onto the stack.
+ * @param l A Lua context.
+ * @param game A game.
+ */
+void Script::push_map(lua_State* l, Map& map) {
+  push_userdata(l, map);
+}
+
+/**
  * @brief Implementation of \ref lua_api_map_get_game.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.

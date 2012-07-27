@@ -18,7 +18,6 @@
 #include "entities/Hero.h"
 #include "entities/CarriedItem.h"
 #include "movements/Movement.h"
-#include "lua/MapScript.h"
 #include "lua/ItemScript.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
@@ -252,8 +251,12 @@ void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
   }
   else if (collision_mode == COLLISION_RECTANGLE && entity_overlapping.get_type() == FIRE) {
 
-    Script* script = behavior == BEHAVIOR_ITEM_SCRIPT ? script_to_call : &get_map_script();
-    script->event_npc_collision_fire(get_name());
+    if (behavior == BEHAVIOR_ITEM_SCRIPT) {
+      script_to_call->event_npc_collision_fire(get_name());
+    }
+    else {
+      // TODO map:on_npc_collision_fire(get_name())
+    }
   }
 }
 
@@ -304,12 +307,13 @@ void NPC::action_key_pressed() {
  */
 void NPC::call_script_hero_interaction() {
 
-  if (behavior == BEHAVIOR_MAP_SCRIPT && script_to_call == NULL) { // first time
-    script_to_call = &get_map_script();
+  if (behavior == BEHAVIOR_MAP_SCRIPT) {
+    // TODO map:on_npc_interaction(get_name())
   }
-
-  script_to_call->event_npc_interaction(get_name());
-  get_map_script().event_npc_interaction_finished(get_name()); // always notify the map script when finished
+  else {
+    script_to_call->event_npc_interaction(get_name());
+  }
+  // TODO map:on_npc_interaction_finished(get_name())  // always notify the map script when finished
 }
 
 /**
@@ -323,12 +327,17 @@ void NPC::call_script_hero_interaction() {
  */
 bool NPC::interaction_with_inventory_item(InventoryItem& item) {
 
-  Script* script = behavior == BEHAVIOR_ITEM_SCRIPT ? script_to_call : &get_map_script();
-  bool interaction_occured = script->event_npc_interaction_item(get_name(), item.get_name(), item.get_variant());
+  bool interaction_occured;
+  if (behavior == BEHAVIOR_ITEM_SCRIPT) {
+    interaction_occured = script_to_call->event_npc_interaction_item(get_name(), item.get_name(), item.get_variant());
+  }
+  else {
+    // interaction_occured = TODO map:on_npc_interaction_item(get_name(), item.get_name(), item.get_variant())
+  }
 
   if (interaction_occured) {
     // always notify the map script when finished
-    get_map_script().event_npc_interaction_item_finished(get_name(), item.get_name(), item.get_variant());
+    // TODO map:on_npc_interaction_item_finished(get_name(), item.get_name(), item.get_variant())
   }
   return interaction_occured;
 }
@@ -345,7 +354,7 @@ void NPC::update() {
     if (get_movement()->is_finished()) {
       get_sprite().set_current_animation("stopped");
       clear_movement();
-      get_map_script().event_npc_movement_finished(get_name());
+      // TODO map:on_npc_movement_finished(get_name())
     }
   }
 }

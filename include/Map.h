@@ -102,8 +102,6 @@ class Map: public ExportableToLua {
     int light;                    /**< light level (0: dark, 1: full light) */
     Surface* dark_surfaces[4];    /**< dark foreground shown when there is no light */
 
-    MapScript* script;            /**< Lua script of this map */
-
     void set_suspended(bool suspended);
     void display_background();
     void display_foreground();
@@ -148,8 +146,6 @@ class Map: public ExportableToLua {
     void load(Game &game);
     void unload();
     Game& get_game();
-    MapScript& get_script();
-    MapScript* get_script_if_exists();
     virtual const std::string& get_lua_type_name() const;
 
     void notify_opening_transition_finished();

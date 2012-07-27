@@ -18,7 +18,6 @@
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "lowlevel/Sound.h"
-#include "lua/MapScript.h"
 #include "lua/ItemScript.h"
 #include "ItemProperties.h"
 #include "Game.h"
@@ -99,7 +98,7 @@ void Hero::TreasureState::update() {
     }
 
     get_equipment().get_item_script(item_name).event_obtained(treasure);
-    get_map_script().event_treasure_obtained(treasure);
+    // TODO map:on_treasure_obtained(treasure)
 
     if (is_current_state()) { // because the script may have changed the state
       hero.set_state(new FreeState(hero));

@@ -86,11 +86,11 @@ MapEntities& Hero::State::get_entities() {
 }
 
 /**
- * @brief Returns the script of the current map.
- * @return the current script
+ * @brief Returns the shared Lua context.
+ * @return The Lua context where all scripts are run.
  */
-MapScript& Hero::State::get_map_script() {
-  return map->get_script();
+LuaContext& Hero::State::get_lua_context() {
+  return map->get_game().get_lua_context();
 }
 
 /**

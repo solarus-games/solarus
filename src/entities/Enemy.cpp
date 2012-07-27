@@ -29,7 +29,6 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
-#include "lua/MapScript.h"
 #include "movements/StraightMovement.h"
 #include "movements/FallingHeight.h"
 #include "lowlevel/Geometry.h"
@@ -635,7 +634,7 @@ void Enemy::update() {
     remove_from_map();
 
     // notify the scripts
-    get_map_script().event_enemy_dead(get_name());
+    // TODO map:on_enemy_dead(get_name())
   }
 }
 
@@ -994,7 +993,7 @@ void Enemy::hurt(MapEntity &source) {
 void Enemy::notify_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
 
   if (get_life() <= 0) {
-    get_map_script().event_enemy_dying(get_name());
+    // TODO map:on_enemy_dying(get_name())
   }
 }
 

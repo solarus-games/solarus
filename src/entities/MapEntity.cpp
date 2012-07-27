@@ -352,19 +352,11 @@ MapEntities& MapEntity::get_entities() {
 }
 
 /**
- * @brief Returns the script of the current map.
- * @return the map script
+ * @brief Returns the shared Lua context.
+ * @return The Lua context where all scripts are run.
  */
-MapScript& MapEntity::get_map_script() {
-  return map->get_script();
-}
-
-/**
- * @brief Returns the script of the current map, or NULL.
- * @return The map script if it is running, NULL otherwise.
- */
-MapScript* MapEntity::get_map_script_if_exists() {
-  return map->get_script_if_exists();
+LuaContext& MapEntity::get_lua_context() {
+  return get_game().get_lua_context();
 }
 
 /**

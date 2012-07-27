@@ -20,7 +20,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
-#include "lua/MapScript.h"
+#include "lua/Script.h"
 #include "entities/Hero.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
@@ -259,7 +259,7 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
     set_vertical_position(vertical_position);
 
     // notify the scripts
-    game.get_map_script().event_dialog_started(dialog_id);
+    // TODO map:on_dialog_started(dialog_id)
     this->issuer_script = issuer_script;
     if (issuer_script != NULL) {
       issuer_script->event_dialog_started(dialog_id);
@@ -359,11 +359,9 @@ void DialogBox::close() {
   // notify the script if necessary
   if (!skipped && previous_dialog_id[0] != '_') { // FIXME: remove the '_' restriction
     // a dialog of the quest was just finished: notify the scripts
-    Script& map_script = game.get_map_script();
-    map_script.event_dialog_finished(previous_dialog_id, last_answer);
+    // TODO map:on_dialog_finished(previous_dialog_id, last_answer)
 
-    if (previous_issuer_script != NULL
-        && previous_issuer_script != &map_script) {
+    if (previous_issuer_script != NULL) {
       // also notify the issuer script if different
       previous_issuer_script->event_dialog_finished(previous_dialog_id, last_answer);
     }

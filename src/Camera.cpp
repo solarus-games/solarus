@@ -16,7 +16,6 @@
  */
 #include "Camera.h"
 #include "Map.h"
-#include "lua/MapScript.h"
 #include "entities/MapEntity.h"
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
@@ -88,10 +87,10 @@ void Camera::update() {
       if (restoring) {
         restoring = false;
         fixed_on_hero = true;
-        map.get_script().notify_camera_back();
+        // TODO map:on_camera_back()
       }
       else {
-        map.get_script().notify_camera_reached_target();
+        // TODO map:on_camera_reached_target()
       }
     }
   }

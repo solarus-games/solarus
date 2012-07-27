@@ -20,7 +20,7 @@
 #include "entities/PickableItem.h"
 #include "entities/CarriedItem.h"
 #include "movements/FallingHeight.h"
-#include "lua/MapScript.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
@@ -93,10 +93,7 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y,
  */
 DestructibleItem::~DestructibleItem() {
 
-  MapScript* script = get_map_script_if_exists();
-  if (script != NULL) {  // Maybe the script was already destroyed.
-    script->cancel_callback(this->destruction_callback_ref);
-  }
+  get_lua_context().cancel_callback(this->destruction_callback_ref);
 }
 
 /**
@@ -382,7 +379,7 @@ void DestructibleItem::play_destroy_animation() {
  */
 void DestructibleItem::set_destruction_callback(int destruction_callback_ref) {
 
-  get_map_script().cancel_callback(this->destruction_callback_ref);
+  get_lua_context().cancel_callback(this->destruction_callback_ref);
   this->destruction_callback_ref = destruction_callback_ref;
 }
 
@@ -391,7 +388,7 @@ void DestructibleItem::set_destruction_callback(int destruction_callback_ref) {
  */
 void DestructibleItem::destruction_callback() {
 
-  get_map_script().do_callback(destruction_callback_ref);
+  get_lua_context().do_callback(destruction_callback_ref);
   destruction_callback_ref = LUA_REFNIL;
 }
 

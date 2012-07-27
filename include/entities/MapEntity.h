@@ -159,6 +159,7 @@ class MapEntity {
     void clear_old_movements();
 
     // easy access to various game objects
+    LuaContext& get_lua_context();
     MapEntities& get_entities();
     Equipment& get_equipment();
     KeysEffect& get_keys_effect();
@@ -166,8 +167,6 @@ class MapEntity {
     DialogBox& get_dialog_box();
     Savegame& get_savegame();
     Hero& get_hero();
-    MapScript& get_map_script();
-    MapScript* get_map_script_if_exists();
 
   public:
 

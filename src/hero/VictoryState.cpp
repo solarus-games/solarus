@@ -18,7 +18,6 @@
 #include "hero/HeroSprites.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
-#include "lua/MapScript.h"
 #include "Game.h"
 #include "Map.h"
 
@@ -77,7 +76,7 @@ void Hero::VictoryState::update() {
 
   if (!finished && System::now() >= end_victory_date) {
     finished = true;
-    get_map_script().event_hero_victory_sequence_finished();
+    // TODO map:on_hero_victory_sequence_finished()
   }
 }
 

@@ -20,7 +20,6 @@
 #include "Camera.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
-#include "lua/MapScript.h"
 #include "entities/Obstacle.h"
 #include "entities/Layer.h"
 #include "entities/Tileset.h"
@@ -129,8 +128,6 @@ void MapLoader::load_map(Game &game, Map &map) {
 
   FileTools::data_file_close(map_file);
 
-  // load the script
-  map.script = new MapScript(map);
   map.camera = new Camera(map);
 }
 

@@ -24,7 +24,6 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
-#include "lua/MapScript.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "DialogBox.h"
@@ -174,10 +173,10 @@ void Door::set_open(bool door_open) {
     }
 
     if (door_open) {
-      get_map_script().event_door_open(get_name());
+      // TODO map:on_door_open(get_name())
     }
     else {
-      get_map_script().event_door_closed(get_name());
+      // TODO map:on_door_closed(get_name())
     }
   }
 }

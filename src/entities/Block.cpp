@@ -18,7 +18,6 @@
 #include "entities/Hero.h"
 #include "entities/Switch.h"
 #include "movements/FollowMovement.h"
-#include "lua/MapScript.h"
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
@@ -282,7 +281,7 @@ void Block::stop_movement_by_hero() {
   }
 
   // notify the script
-  get_map_script().event_block_moved(get_name());
+  // TODO map:on_block_moved(get_name())
 }
 
 /**

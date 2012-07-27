@@ -20,7 +20,7 @@
 #include "DialogBox.h"
 #include "Sprite.h"
 #include "Camera.h"
-#include "lua/MapScript.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Music.h"
@@ -102,22 +102,6 @@ void Map::set_tileset(TilesetId tileset_id) {
   Tileset new_tileset(tileset_id);
   new_tileset.load();
   tileset->set_images(new_tileset);
-}
-
-/**
- * @brief Returns the script of this map.
- * @return the map script
- */
-MapScript& Map::get_script() {
-  return *script;
-}
-
-/**
- * @brief Returns the script of the this map, or NULL.
- * @return The map script if it is running, NULL otherwise.
- */
-MapScript* Map::get_script_if_exists() {
-  return script;
 }
 
 /**
@@ -267,8 +251,6 @@ void Map::unload() {
   tileset = NULL;
   delete visible_surface;
   visible_surface = NULL;
-  delete script;
-  script = NULL;
   delete entities;
   entities = NULL;
   delete camera;
@@ -451,7 +433,7 @@ void Map::set_suspended(bool suspended) {
   this->suspended = suspended;
 
   entities->set_suspended(suspended);
-  script->set_suspended(suspended);
+  // TODO map:on_suspended()
 }
 
 /**
@@ -465,7 +447,7 @@ void Map::update() {
   // update the elements
   TilePattern::update();
   entities->update();
-  script->update();
+  // TODO map:on_update()
   camera->update();  // update the camera after the entities since this might
                      // be the last update() call for this map */
   set_clipping_rectangle(clipping_rectangle);
@@ -588,14 +570,16 @@ void Map::start() {
 
   this->started = true;
   this->visible_surface->set_opacity(255);
-  this->script->start(destination_point_name);
+  // TODO load script and map:on_started(destination_point_name)
   this->entities->notify_map_started();
   get_game().get_equipment().set_map(*this);
 
+  /* TODO
   if (!script->has_played_music()) {
     // play the default music of the map, unless the script decided to play another music
     Music::play(music_id);
   }
+  */
 }
 
 /**
@@ -627,7 +611,7 @@ void Map::notify_opening_transition_finished() {
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
   check_suspended();
   entities->notify_map_opening_transition_finished();
-  get_script().event_map_opening_transition_finished(destination_point_name);
+  // TODO map:on_opening_transition_finished(destination_point_name)
 }
 
 /**

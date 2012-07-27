@@ -23,7 +23,6 @@
 #include "Counter.h"
 #include "Map.h"
 #include "Sprite.h"
-#include "lua/MapScript.h"
 #include "lua/ItemScript.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
@@ -198,7 +197,7 @@ void Treasure::give_to_player() const {
 
   // notify the scripts
   equipment.get_item_script(get_item_name()).event_obtaining(*this);
-  game->get_map_script().event_treasure_obtaining(*this);
+  // TODO map:on_treasure_obtaining()
 }
 
 /**

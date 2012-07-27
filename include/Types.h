@@ -101,7 +101,6 @@ class DialogBox;
 class ExportableToLua;
 class LuaContext;
 class Script;
-class MapScript;
 class ItemScript;
 class EnemyScript;
 

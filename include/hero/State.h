@@ -46,15 +46,15 @@ class Hero::State {
     bool is_current_state();
 
     // access to various game objects
-    HeroSprites& get_sprites();
-    Map& get_map();
+    LuaContext& get_lua_context();
     MapEntities& get_entities();
     Game& get_game();
+    Map& get_map();
     Equipment& get_equipment();
     KeysEffect& get_keys_effect();
     GameControls& get_controls();
     DialogBox& get_dialog_box();
-    MapScript& get_map_script();
+    HeroSprites& get_sprites();
 
   public:
 

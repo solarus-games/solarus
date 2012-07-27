@@ -16,7 +16,6 @@
  */
 #include "entities/ShopItem.h"
 #include "entities/Hero.h"
-#include "lua/MapScript.h"
 #include "lua/ItemScript.h"
 #include "Game.h"
 #include "Map.h"
@@ -222,7 +221,8 @@ void ShopItem::update() {
       }
       else {
 
-        bool can_buy = get_map_script().event_shop_item_buying(get_name());
+        bool can_buy = false;
+        // can_buy = TODO map:on_shop_item_buying(get_name())
         if (can_buy) {
 
           // give the treasure
@@ -234,7 +234,7 @@ void ShopItem::update() {
             remove_from_map();
             get_savegame().set_boolean(savegame_variable, true);
           }
-          get_map_script().event_shop_item_bought(get_name());
+          // TODO map:on_shop_item_bought(get_name())
         }
       }
     }

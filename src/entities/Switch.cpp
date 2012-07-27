@@ -21,7 +21,6 @@
 #include "Sprite.h"
 #include "Game.h"
 #include "Map.h"
-#include "lua/MapScript.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -165,7 +164,7 @@ void Switch::activate() {
       Sound::play("switch");
     }
 
-    get_map_script().event_switch_activated(get_name());
+    // TODO map:on_switch_activated(get_name())
   }
 }
 
@@ -224,9 +223,9 @@ void Switch::update() {
       entity_overlapping = NULL;
       if (is_activated() && inactivate_when_leaving && !locked) {
         set_activated(false);
-        get_map_script().event_switch_inactivated(get_name());
+        // TODO map:on_switch_inactivated(get_name())
       }
-      get_map_script().event_switch_left(get_name());
+      // TODO map:on_switch_left(get_name())
     }
   }
 }

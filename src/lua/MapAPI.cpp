@@ -207,14 +207,9 @@ int Script::map_api_get_game(lua_State* l) {
 }
 
 /**
- * @brief Shows the dialog box and starts displaying a dialog.
- *
- * If the dialog contains a variable,
- * then you have to call sol.map.dialog_set_variable() to specify its value.
- *
- * - Argument 1 (string): id of the dialog to display
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_dialog_start(lua_State* l) {
 
@@ -227,12 +222,9 @@ int Script::map_api_dialog_start(lua_State* l) {
 }
 
 /**
- * @brief Sets the value of the variable in a dialog.
- *
- * - Argument 1 (string): id of the dialog containing the variable
- * - Argument 2 (string): value of the variable
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_dialog_set_variable(lua_State* l) {
 
@@ -246,13 +238,9 @@ int Script::map_api_dialog_set_variable(lua_State* l) {
 }
 
 /**
- * @brief Changes the style of the future dialog boxes.
- *
- * TODO: use a string instead
- *
- * - Argument 1 (integer): the style to set (see the DialogBox::Style enum)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_dialog_set_style(lua_State* l) {
 
@@ -265,11 +253,9 @@ int Script::map_api_dialog_set_style(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables the head up display.
- *
- * - Argument 1 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hud_set_enabled(lua_State* l) {
 
@@ -281,11 +267,9 @@ int Script::map_api_hud_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Sets whether the player can pause the game.
- *
- * - Argument 1 (boolean): true to enable the pause key
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hud_set_pause_enabled(lua_State* l) {
 
@@ -298,11 +282,9 @@ int Script::map_api_hud_set_pause_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns the current level of light of the map.
- *
- * - Return value (integer): 0 for no light, a positive value if there is some light
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_light_get(lua_State* l) {
 
@@ -315,12 +297,9 @@ int Script::map_api_light_get(lua_State* l) {
 }
 
 /**
- * @brief Sets the level of light of the map.
- *
- * - Argument 1 (integer): the level of light
- * (0: no light, a positive value: full light)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_light_set(lua_State* l) {
 
@@ -333,18 +312,9 @@ int Script::map_api_light_set(lua_State* l) {
 }
 
 /**
- * @brief Moves the camera towards a target point, calls a function and restores the camera.
- *
- * This function returns immediately but the game is suspended during the whole sequence.
- *
- * - Argument 1 (integer): x coordinate of the target point
- * - Argument 2 (integer): y coordinate of the target point
- * - Argument 3 (integer): speed of the camera movement in pixels per second (250 is a usual speed)
- * - Argument 4 (function): a Lua function to call when the camera reaches its target
- * - Optional argument 5 (integer): delay in milliseconds before calling the function (default 1000)
- * - Optional argument 6 (integer): delay in milliseconds after calling the function (default 1000)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_camera_move(lua_State* l) {
 
@@ -378,19 +348,9 @@ int Script::map_api_camera_move(lua_State* l) {
 }
 
 /**
- * @brief Gives a treasure to the hero.
- *
- * If the treasure comes from a chest, you don't have to call this function:
- * the treasure will be given to the player automatically when he opens the chest.
- * You can use this function to make a non-playing character
- * give a treasure to the player.
- *
- * - Argument 1 (integer): name of the item to give (according to the item list of items.dat)
- * - Argument 2 (integer): variant of this item (1 if the item has only one variant)
- * - Argument 3 (integer): index of the savegame boolean variable that stores
- * the possession state of the treasure (or -1 if you don't want to save this treasure)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_treasure_give(lua_State* l) {
 
@@ -406,13 +366,9 @@ int Script::map_api_treasure_give(lua_State* l) {
 }
 
 /**
- * @brief Displays a sprite on the map surface.
- *
- * - Argument 1 (sprite): the sprite to display
- * - Argument 2 (integer): x coordinate on the map
- * - Argument 3 (integer): y coordinate on the map
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_sprite_display(lua_State* l) {
 
@@ -427,11 +383,9 @@ int Script::map_api_sprite_display(lua_State* l) {
 }
 
 /**
- * @brief Returns the id of the tileset used to draw the map.
- *
- * - Return value (integer): id of the tileset
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_tileset_get(lua_State* l) {
 
@@ -444,13 +398,9 @@ int Script::map_api_tileset_get(lua_State* l) {
 }
 
 /**
- * @brief Changes the tileset used to draw this map.
- *
- * Every tile of this old tileset must exist in the new one.
- *
- * - Argument 1 (integer): id of the new tileset
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_tileset_set(lua_State* l) {
 
@@ -463,8 +413,9 @@ int Script::map_api_tileset_set(lua_State* l) {
 }
 
 /**
- * @brief Prevents the player from moving until hero_unfreeze() is called.
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_freeze(lua_State* l) {
 
@@ -476,8 +427,9 @@ int Script::map_api_hero_freeze(lua_State* l) {
 }
 
 /**
- * @brief Allows the player to move again after a call to hero_freeze().
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_unfreeze(lua_State* l) {
 
@@ -489,13 +441,9 @@ int Script::map_api_hero_unfreeze(lua_State* l) {
 }
 
 /**
- * @brief Sends the hero to a map.
- *
- * - Argument 1 (int): id of the destination map (can be the same one)
- * - Argument 2 (string): name of the destination point on that map
- * - Argument 3 (int): type of transition to play (must match Transition::Style)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_set_map(lua_State* l) {
 
@@ -510,13 +458,9 @@ int Script::map_api_hero_set_map(lua_State* l) {
 }
 
 /**
- * @brief Hides or shows the hero.
- *
- * Hiding the hero does not disable its movements, so when using this function
- * you will usually also need to freeze the hero.
- * - Argument 1 (boolean): true to make the hero visible
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_set_visible(lua_State* l) {
 
@@ -529,11 +473,9 @@ int Script::map_api_hero_set_visible(lua_State* l) {
 }
 
 /**
- * @brief Returns the current direction of the hero's sprite.
- *
- * - Return value (integer): the direction between 0 and 3
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_get_direction(lua_State* l) {
 
@@ -546,11 +488,9 @@ int Script::map_api_hero_get_direction(lua_State* l) {
 }
 
 /**
- * @brief Sets the direction of the hero's sprite.
- *
- * - Argument 1 (integer): the direction between 0 and 3
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_set_direction(lua_State* l) {
 
@@ -563,13 +503,9 @@ int Script::map_api_hero_set_direction(lua_State* l) {
 }
 
 /**
- * @brief Returns the position of the hero.
- *
- * - Return value 1 (integer): x coordinate
- * - Return value 2 (integer): y coordinate
- * - Return value 3 (integer): layer (0 to 2)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_get_position(lua_State* l) {
 
@@ -584,14 +520,9 @@ int Script::map_api_hero_get_position(lua_State* l) {
 }
 
 /**
- * @brief Sets the position of the hero.
- *
- * - Argument 1 (integer): x coordinate
- * - Argument 2 (integer): y coordinate
- * - Optional argument 3 (integer): layer (if unspecified,
- * the layer will be unchanged)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_set_position(lua_State* l) {
 
@@ -614,11 +545,9 @@ int Script::map_api_hero_set_position(lua_State* l) {
 }
 
 /**
- * @brief Places the hero on the exact position of a sensor's name.
- *
- * - Argument 1 (string): name of the sensor
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_align_on_sensor(lua_State* l) {
 
@@ -633,17 +562,9 @@ int Script::map_api_hero_align_on_sensor(lua_State* l) {
 }
 
 /**
- * @brief Memorizes a position to go back to if the hero falls into a hole or
- * other bad ground.
- *
- * The parameters are optional: by default, they correspond to the current
- * position of the hero.
- *
- * - Optional argument 1 (integer): x coordinate
- * - Optional argument 2 (integer): y coordinate
- * - Optional argument 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_save_solid_ground(lua_State* l) {
 
@@ -668,9 +589,9 @@ int Script::map_api_hero_save_solid_ground(lua_State* l) {
 }
 
 /**
- * @brief Forgets the memorized position to go back to if the hero falls into
- * a hole or other bad ground.
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_reset_solid_ground(lua_State* l) {
 
@@ -683,13 +604,9 @@ int Script::map_api_hero_reset_solid_ground(lua_State* l) {
 }
 
 /**
- * @brief Makes the hero walk with respect to a path.
- *
- * - Argument 1 (string): the path (each character is a direction between '0' and '7')
- * - Argument 2 (boolean): true to make the movement loop
- * - Argument 3 (boolean): true to make the movement sensible to obstacles
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_walk(lua_State* l) {
 
@@ -704,13 +621,9 @@ int Script::map_api_hero_walk(lua_State* l) {
 }
 
 /**
- * @brief Makes the hero jump into a direction.
- *
- * - Argument 1 (integer): the jump direction, between 0 and 7
- * - Argument 2 (integer): the jump length in pixels
- * - Argument 3 (boolean): true to enable the collisions
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_start_jumping(lua_State* l) {
 
@@ -726,9 +639,9 @@ int Script::map_api_hero_start_jumping(lua_State* l) {
 }
 
 /**
- * @brief Makes the hero brandish his sword meaning a victory
- * and plays the corresponding sound.
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_start_victory_sequence(lua_State* l) {
 
@@ -740,15 +653,9 @@ int Script::map_api_hero_start_victory_sequence(lua_State* l) {
 }
 
 /**
- * @brief Makes the hero shoot a boomerang.
- *
- * - Argument 1 (integer): maximum distance of the movement in pixels
- * - Argument 2 (integer): speed of the movement in pixels per second
- * - Argument 3 (string): animation name of the hero's tunic sprite
- * when preparing the boomerang
- * - Argument 3 (string): animation set id that represents the boomerang
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_start_boomerang(lua_State* l) {
 
@@ -765,8 +672,9 @@ int Script::map_api_hero_start_boomerang(lua_State* l) {
 }
 
 /**
- * @brief Makes the hero shoot an arrow with a bow.
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_start_bow(lua_State* l) {
 
@@ -778,8 +686,9 @@ int Script::map_api_hero_start_bow(lua_State* l) {
 }
 
 /**
- * @brief Makes the hero thow his hookshot.
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_start_hookshot(lua_State* l) {
 
@@ -791,8 +700,9 @@ int Script::map_api_hero_start_hookshot(lua_State* l) {
 }
 
 /**
- * @brief Makes the hero run.
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_start_running(lua_State* l) {
 
@@ -804,15 +714,9 @@ int Script::map_api_hero_start_running(lua_State* l) {
 }
 
 /**
- * @brief Makes the hero be hurt.
- *
- * - Argument 1 (integer): x coordinate of whatever is hurting the hero
- * - Argument 2 (integer): y coordinate of whatever is hurting the hero
- * - Argument 3 (integer): number of life points to remove (possibly zero,
- * and may be reduced by the tunic)
- * - Argument 4 (integer): number of magic points to remove (possibly zero)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_hero_start_hurt(lua_State* l) {
 
@@ -829,12 +733,9 @@ int Script::map_api_hero_start_hurt(lua_State* l) {
 }
 
 /**
- * @brief Returns whether an NPC is enabled.
- *
- * - Argument 1 (string): name of the NPC
- * - Return value (boolean): true if this NPC is enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_npc_is_enabled(lua_State* l) {
 
@@ -849,12 +750,9 @@ int Script::map_api_npc_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables an NPC.
- *
- * - Argument 1 (string): name of the NPC
- * - Argument 2 (boolean): true to enable the NPC, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_npc_set_enabled(lua_State* l) {
 
@@ -870,12 +768,9 @@ int Script::map_api_npc_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of NPCs.
- *
- * - Argument 1 (string): prefix of the name of the NPCs
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_npc_set_group_enabled(lua_State* l) {
 
@@ -895,14 +790,9 @@ int Script::map_api_npc_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns the position of an NPC.
- *
- * - Argument 1 (string): name of the NPC
- * - Return value 1 (integer): x position
- * - Return value 2 (integer): y position
- * - Return value 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_npc_get_position(lua_State* l) {
 
@@ -919,15 +809,9 @@ int Script::map_api_npc_get_position(lua_State* l) {
 }
 
 /**
- * @brief Sets the position of an NPC.
- *
- * - Argument 1 (string): name of the NPC
- * - Argument 2 (integer): x position to set
- * - Argument 3 (integer): y position to set
- * - Optional argument 4 (integer): layer to set (if unspecified,
- * it will be unchanged)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_npc_set_position(lua_State* l) {
 
@@ -952,12 +836,9 @@ int Script::map_api_npc_set_position(lua_State* l) {
 }
 
 /**
- * @brief Makes an NPC move.
- *
- * - Argument 1 (string): name of the NPC to make move
- * - Argument 2 (movement): the movement to set
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_npc_start_movement(lua_State* l) {
 
@@ -977,11 +858,9 @@ int Script::map_api_npc_start_movement(lua_State* l) {
 }
 
 /**
- * @brief Stops the movement of an NPC.
- *
- * - Argument 1 (string): name of the NPC to stop
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_npc_stop_movement(lua_State* l) {
 
@@ -996,12 +875,9 @@ int Script::map_api_npc_stop_movement(lua_State* l) {
 }
 
 /**
- * @brief Makes the sprite of an NPC accessible from the script.
- *
- * - Argument 1 (string): name of the NPC
- * - Return value (sprite): the sprite of this NPC
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_npc_get_sprite(lua_State* l) {
 
@@ -1016,11 +892,9 @@ int Script::map_api_npc_get_sprite(lua_State* l) {
 }
 
 /**
- * @brief Removes an NPC from the map.
- *
- * - Argument 1 (string): name of the NPC
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_npc_remove(lua_State* l) {
 
@@ -1034,12 +908,9 @@ int Script::map_api_npc_remove(lua_State* l) {
 }
 
 /**
- * @brief Returns whether an NPC exists on the map.
- *
- * - Argument 1 (string): name of the NPC to check
- * - Return value (boolean): true if an NPC with this name exists on the map
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_npc_exists(lua_State* l) {
 
@@ -1054,15 +925,9 @@ int Script::map_api_npc_exists(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a chest is open.
- *
- * This function returns true as soon as the hero starts opening the chest,
- * even if the treasure has not yet been brandished (there is a small delay).
- *
- * - Argument 1 (string): name of the chest
- * - Return value (boolean): true if this chest is open
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_chest_is_open(lua_State* l) {
 
@@ -1077,14 +942,9 @@ int Script::map_api_chest_is_open(lua_State* l) {
 }
 
 /**
- * @brief Sets a chest open or closed.
- *
- * Only the chest sprite is affected (use give_treasure to give a treasure to the player).
- * This function is useful for chests whose content is managed by the script.
- * - Argument 1 (string): name of the chest
- * - Argument 2 (boolean): true to make the chest open, false to make it closed
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_chest_set_open(lua_State* l) {
 
@@ -1100,12 +960,9 @@ int Script::map_api_chest_set_open(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a chest is enabled.
- *
- * - Argument 1 (string): name of the chest
- * - Return value (boolean): true if this chest is enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_chest_is_enabled(lua_State* l) {
 
@@ -1120,13 +977,9 @@ int Script::map_api_chest_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a chest.
- *
- * If the chest is already open, disabling it has not effect.
- * - Argument 1 (string): name of the chest
- * - Argument 2 (boolean): true to make the chest appear, false to make it disappear
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_chest_set_enabled(lua_State* l) {
 
@@ -1142,12 +995,9 @@ int Script::map_api_chest_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of chests.
- *
- * - Argument 1 (string): prefix of the name of the chests
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_chest_set_group_enabled(lua_State* l) {
 
@@ -1167,12 +1017,9 @@ int Script::map_api_chest_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a dynamic tile is enabled.
- *
- * - Argument 1 (string): name of the dynamic tile
- * - Return value (boolean): true if this tile is enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_tile_is_enabled(lua_State* l) {
 
@@ -1187,12 +1034,9 @@ int Script::map_api_tile_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a dynamic tile.
- *
- * - Argument 1 (string): name of the dynamic tile
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_tile_set_enabled(lua_State* l) {
 
@@ -1208,12 +1052,9 @@ int Script::map_api_tile_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of dynamic tiles.
- *
- * - Argument 1 (string): prefix of the name of the dynamic tiles
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_tile_set_group_enabled(lua_State* l) {
 
@@ -1233,12 +1074,9 @@ int Script::map_api_tile_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns whether some stairs are enabled.
- *
- * - Argument 1 (string): name of the stairs
- * - Return value (boolean): true if these stairs are enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_stairs_is_enabled(lua_State* l) {
 
@@ -1253,15 +1091,9 @@ int Script::map_api_stairs_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables some stairs.
- *
- * All dynamic tiles whose prefix is "<stairsname>_enabled"
- * and "<stairsame>_disabled" will be updated depending on the stairs state
- * (where "<stairsname>" is the name of the stairs).
- * - Argument 1 (string): name of the stairs
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_stairs_set_enabled(lua_State* l) {
 
@@ -1277,12 +1109,9 @@ int Script::map_api_stairs_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of stairs.
- *
- * - Argument 1 (string): prefix of the name of the stairs
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_stairs_set_group_enabled(lua_State* l) {
 
@@ -1302,12 +1131,9 @@ int Script::map_api_stairs_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a custom obstacle is enabled.
- *
- * - Argument 1 (string): name of the custom obstacle
- * - Return value (boolean): true if this custom obstacle is enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_obstacle_is_enabled(lua_State* l) {
 
@@ -1322,12 +1148,9 @@ int Script::map_api_obstacle_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a custom obstacle.
- *
- * - Argument 1 (string): name of the custom obstacle
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_obstacle_set_enabled(lua_State* l) {
 
@@ -1343,12 +1166,9 @@ int Script::map_api_obstacle_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of custom obstacles.
- *
- * - Argument 1 (string): prefix of the name of the custom obstacles
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_obstacle_set_group_enabled(lua_State* l) {
 
@@ -1368,12 +1188,9 @@ int Script::map_api_obstacle_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a sensor is enabled.
- *
- * - Argument 1 (string): name of the sensor
- * - Return value (boolean): true if this sensor is enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_sensor_is_enabled(lua_State* l) {
 
@@ -1388,12 +1205,9 @@ int Script::map_api_sensor_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a sensor.
- *
- * - Argument 1 (string): name of the sensor
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_sensor_set_enabled(lua_State* l) {
 
@@ -1409,12 +1223,9 @@ int Script::map_api_sensor_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of sensors.
- *
- * - Argument 1 (string): prefix of the name of the sensors
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_sensor_set_group_enabled(lua_State* l) {
 
@@ -1434,12 +1245,9 @@ int Script::map_api_sensor_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a jumper is enabled.
- *
- * - Argument 1 (string): name of the jumper
- * - Return value (boolean): true if this jumper is enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_jumper_is_enabled(lua_State* l) {
 
@@ -1454,12 +1262,9 @@ int Script::map_api_jumper_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a jumper.
- *
- * - Argument 1 (string): name of the jumper
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_jumper_set_enabled(lua_State* l) {
 
@@ -1475,12 +1280,9 @@ int Script::map_api_jumper_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of jumpers.
- *
- * - Argument 1 (string): prefix of the name of the jumpers
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_jumper_set_group_enabled(lua_State* l) {
 
@@ -1500,12 +1302,9 @@ int Script::map_api_jumper_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a crystal is enabled.
- *
- * - Argument 1 (string): name of the crystal
- * - Return value (boolean): true if this crystal are enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_crystal_is_enabled(lua_State* l) {
 
@@ -1520,8 +1319,9 @@ int Script::map_api_crystal_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a crystal.
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_crystal_set_enabled(lua_State* l) {
 
@@ -1537,12 +1337,9 @@ int Script::map_api_crystal_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of crystals.
- *
- * - Argument 1 (string): prefix of the name of the crystals
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_crystal_set_group_enabled(lua_State* l) {
 
@@ -1562,12 +1359,9 @@ int Script::map_api_crystal_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns the current state of crystals in the map.
- *
- * - Return value (boolean): true if the state of crystals is modified,
- * false if it is the normal (initial) state
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_crystal_get_state(lua_State* l) {
 
@@ -1578,12 +1372,9 @@ int Script::map_api_crystal_get_state(lua_State* l) {
 }
 
 /**
- * @brief Sets the current state of crystals in the map.
- *
- * - Parameter 1 (boolean): true to make the state modified,
- * false to make it normal (initial)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_crystal_set_state(lua_State* l) {
 
@@ -1599,8 +1390,9 @@ int Script::map_api_crystal_set_state(lua_State* l) {
 }
 
 /**
- * @brief Inverts the current state of crystals in the map.
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_crystal_change_state(lua_State* l) {
 
@@ -1612,12 +1404,9 @@ int Script::map_api_crystal_change_state(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a teletransporter is enabled.
- *
- * - Argument 1 (string): name of the teletransporter
- * - Return value (boolean): true if this teletransporter is enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_teletransporter_is_enabled(lua_State* l) {
 
@@ -1632,12 +1421,9 @@ int Script::map_api_teletransporter_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a teletransporter.
- *
- * - Argument 1 (string): name of the teletransporter
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_teletransporter_set_enabled(lua_State* l) {
 
@@ -1653,12 +1439,9 @@ int Script::map_api_teletransporter_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of teletransporters.
- *
- * - Argument 1 (string): prefix of the name of the teletransporters
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_teletransporter_set_group_enabled(lua_State* l) {
 
@@ -1678,12 +1461,9 @@ int Script::map_api_teletransporter_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a block is enabled.
- *
- * - Argument 1 (string): name of the block
- * - Return value (boolean): true if this block is enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_block_is_enabled(lua_State* l) {
 
@@ -1698,12 +1478,9 @@ int Script::map_api_block_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a block.
- *
- * - Argument 1 (string): name of the block
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_block_set_enabled(lua_State* l) {
 
@@ -1719,12 +1496,9 @@ int Script::map_api_block_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of blocks.
- *
- * - Argument 1 (string): prefix of the name of the blocks
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_block_set_group_enabled(lua_State* l) {
 
@@ -1744,11 +1518,9 @@ int Script::map_api_block_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Replaces a block at its initial position.
- *
- * - Argument 1 (string): name of the block to reset
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_block_reset(lua_State* l) {
 
@@ -1763,8 +1535,9 @@ int Script::map_api_block_reset(lua_State* l) {
 }
 
 /**
- * @brief Replaces all blocks of the map at their initial position.
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_block_reset_all(lua_State* l) {
 
@@ -1781,14 +1554,9 @@ int Script::map_api_block_reset_all(lua_State* l) {
 }
 
 /**
- * @brief Returns the position of a block.
- *
- * - Argument 1 (string): name of the block
- * - Return value 1 (integer): x position
- * - Return value 2 (integer): y position
- * - Return value 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_block_get_position(lua_State* l) {
 
@@ -1806,15 +1574,9 @@ int Script::map_api_block_get_position(lua_State* l) {
 }
 
 /**
- * @brief Sets the position of a block.
- *
- * - Argument 1 (string): name of the block
- * - Argument 2 (integer): x position
- * - Argument 3 (integer): y position
- * - Optional argument 4 (integer): layer to set (if unspecified,
- * it will be unchanged)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_block_set_position(lua_State* l) {
 
@@ -1841,15 +1603,9 @@ int Script::map_api_block_set_position(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a shop item exists.
- *
- * A shop item does not exist anymore if it was bought or if the script called
- * sol.map.shop_item_remove() on it.
- *
- * - Argument 1 (string): name of the shop item
- * - Return value (boolean): true if a shop item with this name exists
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_shop_item_exists(lua_State* l) {
 
@@ -1863,11 +1619,9 @@ int Script::map_api_shop_item_exists(lua_State* l) {
 }
 
 /**
- * @brief Removes a shop item from the map if it exists.
- *
- * - Argument 1 (string): name of the shop item
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_shop_item_remove(lua_State* l) {
 
@@ -1884,12 +1638,9 @@ int Script::map_api_shop_item_remove(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a switch is currently activated.
- *
- * - Argument 1 (string): name of the switch
- * - Return value (boolean): true if the switch is activated
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_switch_is_activated(lua_State* l) {
 
@@ -1904,12 +1655,9 @@ int Script::map_api_switch_is_activated(lua_State* l) {
 }
 
 /**
- * @brief Activates or inactivates a switch.
- *
- * - Argument 1 (string): name of the switch
- * - Argument 2 (boolean): true to activate the switch, false to inactivate it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_switch_set_activated(lua_State* l) {
 
@@ -1925,12 +1673,9 @@ int Script::map_api_switch_set_activated(lua_State* l) {
 }
 
 /**
- * @brief Locks a switch in its current state or unlocks it.
- *
- * - Argument 1 (string): name of the switch
- * - Argument 2 (boolean): true to lock the switch, false to unlock it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_switch_set_locked(lua_State* l) {
 
@@ -1946,12 +1691,9 @@ int Script::map_api_switch_set_locked(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a switch is enabled (i.e. visible).
- *
- * - Argument 1 (string): name of the switch
- * - Return value (boolean): true if this switch is enabled (i.e. visible)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_switch_is_enabled(lua_State* l) {
 
@@ -1966,12 +1708,9 @@ int Script::map_api_switch_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a switch.
- *
- * - Argument 1 (string): name of the switch
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_switch_set_enabled(lua_State* l) {
 
@@ -1987,12 +1726,9 @@ int Script::map_api_switch_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of switches.
- *
- * - Argument 1 (string): prefix of the name of the switches
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_switch_set_group_enabled(lua_State* l) {
 
@@ -2012,14 +1748,9 @@ int Script::map_api_switch_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Opens one or several doors having a common prefix.
- *
- * The doors must be controlled by the script (not doors for keys or
- * explosions).
- * If some doors with this prefix are already open, nothing happens for them.
- * - Argument 1 (string): prefix of the name of the doors to open
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_door_open(lua_State* l) {
 
@@ -2048,14 +1779,9 @@ int Script::map_api_door_open(lua_State* l) {
 }
 
 /**
- * @brief Closes one or several doors having a common prefix.
- *
- * The doors must be controlled by the script (not doors for keys or
- * explosions).
- * If some doors with this prefix are already closed, nothing happens for them.
- * - Argument 1 (string): prefix of the name of the doors to close
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_door_close(lua_State* l) {
 
@@ -2084,12 +1810,9 @@ int Script::map_api_door_close(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a door is open.
- *
- * - Argument 1 (string): name of the door
- * - Return value (boolean): true if this door is open
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_door_is_open(lua_State* l) {
 
@@ -2104,12 +1827,9 @@ int Script::map_api_door_is_open(lua_State* l) {
 }
 
 /**
- * @brief Makes one or several doors open or closed.
- *
- * - Argument 1 (string): prefix of the name of the doors to close
- * - Argument 2 (boolean): true to make them open, false to make them closed
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_door_set_open(lua_State* l) {
 
@@ -2129,16 +1849,9 @@ int Script::map_api_door_set_open(lua_State* l) {
 }
 
 /**
- * @brief Places a new pickable item on the map.
- *
- * - Argument 1 (string): name of the item to create (according to items.dat)
- * - Argument 2 (integer): variant of the item
- * - Argument 3 (integer): savegame variable (-1: not saved)
- * - Argument 4 (integer): x
- * - Argument 5 (integer): y
- * - Argument 6 (integer): layer
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_pickable_item_create(lua_State* l) {
 
@@ -2162,18 +1875,9 @@ int Script::map_api_pickable_item_create(lua_State* l) {
 }
 
 /**
- * @brief Places a new destructible item on the map.
- *
- * - Argument 1 (integer): subtype of destructible item ("pot", "bush",
- * "white_stone", "black_stone", "grass" or "bomb_flower")
- * - Argument 2 (integer): x
- * - Argument 3 (integer): y
- * - Argument 4 (integer): layer
- * - Optional argument 5 (table): properties (possible keys are
- * treasure_item, treasure_variant, treasure_savegame_variable,
- * destruction_callback)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_destructible_item_create(lua_State* l) {
 
@@ -2230,16 +1934,9 @@ int Script::map_api_destructible_item_create(lua_State* l) {
 }
 
 /**
- * @brief Places a new block on the map.
- *
- * - Argument 1 (integer): x
- * - Argument 2 (integer): y
- * - Argument 3 (integer): layer
- * - Argument 4 (integer): name
- * - Optional argument 5 (table): properties (possible keys are direction,
- * sprite_name, can_be_pushed, can_be_pulled, maximum_moves)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_block_create(lua_State* l) {
 
@@ -2293,13 +1990,9 @@ int Script::map_api_block_create(lua_State* l) {
 }
 
 /**
- * @brief Places a bomb on the map.
- *
- * - Argument 1 (integer): x
- * - Argument 2 (integer): y
- * - Argument 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_bomb_create(lua_State* l) {
 
@@ -2315,13 +2008,9 @@ int Script::map_api_bomb_create(lua_State* l) {
 }
 
 /**
- * @brief Creates an explosion on the map.
- *
- * - Argument 1 (integer): x
- * - Argument 2 (integer): y
- * - Argument 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_explosion_create(lua_State* l) {
 
@@ -2337,13 +2026,9 @@ int Script::map_api_explosion_create(lua_State* l) {
 }
 
 /**
- * @brief Creates some fire on the map.
- *
- * - Argument 1 (integer): x
- * - Argument 2 (integer): y
- * - Argument 3 (integer): layer
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_fire_create(lua_State* l) {
 
@@ -2359,11 +2044,9 @@ int Script::map_api_fire_create(lua_State* l) {
 }
 
 /**
- * @brief Removes any arrow currently thrown from the map.
- *
- * This function can be used if you want to destroy an arrow sooner than usual.
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_arrow_remove(lua_State* l) {
 
@@ -2376,15 +2059,9 @@ int Script::map_api_arrow_remove(lua_State* l) {
 }
 
 /**
- * @brief Creates an enemy on the map.
- *
- * - Argument 1 (string): name of the enemy to create
- * - Argument 2 (string): breed of the enemy to create
- * - Argument 3 (integer): layer on the map
- * - Argument 4 (int): x x coordinate on the map
- * - Argument 5 (int): y y coordinate on the map
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_create(lua_State* l) {
 
@@ -2406,11 +2083,9 @@ int Script::map_api_enemy_create(lua_State* l) {
 }
 
 /**
- * @brief Removes an enemy from the map.
- *
- * - Argument 1 (string): name of the enemy to remove
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_remove(lua_State* l) {
 
@@ -2424,11 +2099,9 @@ int Script::map_api_enemy_remove(lua_State* l) {
 }
 
 /**
- * @brief Removes a set of enemies from the map.
- *
- * - Argument 1 (string): prefix of the name of the enemies to remove
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_remove_group(lua_State* l) {
 
@@ -2442,12 +2115,9 @@ int Script::map_api_enemy_remove_group(lua_State* l) {
 }
 
 /**
- * @brief Returns whether an enemy is enabled.
- *
- * - Argument 1 (string): name of the enemy
- * - Return value (boolean): true if this enemy is enabled
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_is_enabled(lua_State* l) {
 
@@ -2462,13 +2132,9 @@ int Script::map_api_enemy_is_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables an enemy.
- *
- * A normal enemy is enabled by default. A boss or a miniboss is disabled by default.
- * - Argument 1 (string): name of the enemy
- * - Argument 2 (boolean): true to enable it, false to disable it
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_set_enabled(lua_State* l) {
 
@@ -2484,12 +2150,9 @@ int Script::map_api_enemy_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Enables or disables a set of enemies.
- *
- * - Argument 1 (string): prefix of the name of the enemies
- * - Argument 2 (boolean): true to enable them, false to disable them
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_set_group_enabled(lua_State* l) {
 
@@ -2509,13 +2172,9 @@ int Script::map_api_enemy_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns whether an enemy is dead.
- *
- * An enemy is considered as dead if it is not present on the map.
- * - Argument 1 (string): name of the enemy
- * - Return value (boolean): true if the enemy is not on the map, false if it is alive
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_is_dead(lua_State* l) {
 
@@ -2530,14 +2189,9 @@ int Script::map_api_enemy_is_dead(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a set of enemies are dead.
- *
- * An enemy is considered as dead if it is not present on the map.
- * - Argument 1 (string): prefix of the name of the enemies to check
- * - Return value (boolean): true if there is no enemy left with this prefix on the map,
- * false if at least one of them is alive
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_is_group_dead(lua_State* l) {
 
@@ -2552,11 +2206,9 @@ int Script::map_api_enemy_is_group_dead(lua_State* l) {
 }
 
 /**
- * @brief Returns the number of living enemies whose name starts with the specified prefix.
- *
- * - Argument 1 (string): prefix of the name of the enemies to count
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_get_group_count(lua_State* l) {
 
@@ -2571,14 +2223,9 @@ int Script::map_api_enemy_get_group_count(lua_State* l) {
 }
 
 /**
- * @brief Returns the position of an enemy.
- *
- * - Argument 1 (string): name of the enemy
- * - Return value 1 (integer): x position
- * - Return value 2 (integer): y position
- * - Return value 3 (integer): layer (0 to 2)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_get_position(lua_State* l) {
 
@@ -2596,15 +2243,9 @@ int Script::map_api_enemy_get_position(lua_State* l) {
 }
 
 /**
- * @brief Sets the position of an enemy.
- *
- * - Argument 1 (string): name of the enemy
- * - Argument 2 (integer): x position to set
- * - Argument 3 (integer): y position to set
- * - Optional argument 4 (integer): layer to set (if unspecified,
- * it will be unchanged)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_set_position(lua_State* l) {
 
@@ -2630,14 +2271,9 @@ int Script::map_api_enemy_set_position(lua_State* l) {
 }
 
 /**
- * @brief Sets the treasure dropped by an enemy.
- *
- * - Argument 1 (string): name of the enemy
- * - Argument 2 (string): name of the item (possibly "_random" or "_none")
- * - Argument 3 (integer): variant of the item
- * - Argument 4 (integer): savegame variable of the treasure
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_set_treasure(lua_State* l) {
 
@@ -2656,11 +2292,9 @@ int Script::map_api_enemy_set_treasure(lua_State* l) {
 }
 
 /**
- * @brief Sets the treasure dropped by an enemy as empty.
- *
- * - Argument 1 (string): name of the enemy
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_set_no_treasure(lua_State* l) {
 
@@ -2676,11 +2310,9 @@ int Script::map_api_enemy_set_no_treasure(lua_State* l) {
 }
 
 /**
- * @brief Sets the treasure dropped by an enemy as random.
- *
- * - Argument 1 (string): name of the enemy
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_set_random_treasure(lua_State* l) {
 
@@ -2696,14 +2328,9 @@ int Script::map_api_enemy_set_random_treasure(lua_State* l) {
 }
 
 /**
- * @brief Returns the first sprite of an enemy.
- *
- * If the enemy has several sprites, the first one created is returned.
- *
- * - Argument 1 (string): name of the enemy
- * - Return value (sprite): the sprite of this enemy
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::map_api_enemy_get_sprite(lua_State* l) {
 

@@ -69,6 +69,34 @@ class LuaContext: public Script {
     void game_on_started(Game& game);
     void game_on_finished(Game& game);
 
+    // Map events.
+    void map_on_update(Map& map);
+    void map_on_suspended(Map& map, bool suspended);
+    void map_on_started(Map& map, DestinationPoint& destination_point);
+    void map_on_treasure_obtaining(Map& map, const Treasure& treasure);
+    void map_on_treasure_obtained(Map& map, const Treasure& treasure);
+    void map_on_opening_transition_finished(Map& map,
+        DestinationPoint& destination_point);
+    void map_on_switch_activated(Map& map, Switch& sw);
+    void map_on_switch_inactivated(Map& map, Switch& sw);
+    void map_on_switch_left(Map& map, Switch& sw);
+    void map_on_hero_victory_sequence_finished(Map& map);
+    void map_on_hero_on_sensor(Map& map, Sensor& sensor);
+    void map_on_hero_still_on_sensor(Map& map, Sensor& sensor);
+    void map_on_npc_movement_finished(Map& map, NPC& npc);
+    void map_on_npc_interaction_finished(Map& map, NPC& npc);
+    void map_on_npc_interaction_item_finished(Map& map, NPC& npc,
+        const std::string& item_name, int variant);
+    void map_on_sensor_collision_explosion(Map& map, Sensor& sensor);
+    bool map_on_chest_empty(Map& map, Chest& chest);
+    bool map_on_shop_item_buying(Map& map, ShopItem& shop_item);
+    void map_on_shop_item_bought(Map& map, ShopItem& shop_item);
+    void map_on_door_open(Map& map, Door& door);
+    void map_on_door_closed(Map& map, Door& door);
+    void map_on_block_moved(Map& map, Block& block);
+    void map_on_enemy_dying(Map& map, Enemy& enemy);
+    void map_on_enemy_dead(Map& map, Enemy& enemy);
+
   private:
 
     bool find_local_function(int index, const std::string& function_name);
@@ -84,6 +112,8 @@ class LuaContext: public Script {
 
   public:  // TODO make private once Script is removed
 
+    void on_started();
+    void on_finished();
     void on_update();
     void on_display(Surface& dst_surface);
     void on_pre_display(Surface& dst_surface);
@@ -96,8 +126,30 @@ class LuaContext: public Script {
     void on_joypad_axis_moved(InputEvent& event);
     void on_joypad_hat_moved(InputEvent& event);
     void on_direction_pressed(InputEvent& event);
-    void on_started();
-    void on_finished();
+    void on_suspended(bool suspended);
+    void on_started(DestinationPoint& destination_point);
+    void on_treasure_obtaining(const Treasure& treasure);
+    void on_treasure_obtained(const Treasure& treasure);
+    void on_opening_transition_finished(const std::string& destination_point_name);
+    void on_switch_activated(Switch& sw);
+    void on_switch_inactivated(Switch& sw);
+    void on_switch_left(Switch& sw);
+    void on_hero_victory_sequence_finished();
+    void on_hero_on_sensor(Sensor& sensor);
+    void on_hero_still_on_sensor(Sensor& sensor);
+    void on_npc_movement_finished(NPC& npc);
+    void on_npc_interaction_finished(NPC& npc);
+    void on_npc_interaction_item_finished(NPC& npc,
+        const std::string &item_name, int variant);
+    void on_sensor_collision_explosion(Sensor& sensor);
+    bool on_chest_empty(Chest& chest);
+    bool on_shop_item_buying(ShopItem& shop_item);
+    void on_shop_item_bought(ShopItem& shop_item);
+    void on_door_open(Door& door);
+    void on_door_closed(Door& door);
+    void on_block_moved(Block& block);
+    void on_enemy_dying(Enemy& enemy);
+    void on_enemy_dead(Enemy& enemy);
 };
 
 #endif

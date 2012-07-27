@@ -226,6 +226,26 @@ void LuaContext::notify_input(InputEvent& event) {
 }
 
 /**
+ * @brief Calls the on_started() method of the object on top of the stack.
+ */
+void LuaContext::on_started() {
+
+  if (find_method("on_started")) {
+    call_function(1, 0, "on_started");
+  }
+}
+
+/**
+ * @brief Calls the on_finished() method of the object on top of the stack.
+ */
+void LuaContext::on_finished() {
+
+  if (find_method("on_finished")) {
+    call_function(1, 0, "on_finished");
+  }
+}
+
+/**
  * @brief Calls the on_update() method of the object on top of the stack.
  */
 void LuaContext::on_update() {
@@ -447,26 +467,6 @@ void LuaContext::on_direction_pressed(InputEvent& event) {
 
     lua_pushinteger(l, direction8);
     call_function(2, 0, "on_direction_pressed");
-  }
-}
-
-/**
- * @brief Calls the on_started() method of the object on top of the stack.
- */
-void LuaContext::on_started() {
-
-  if (find_method("on_started")) {
-    call_function(1, 0, "on_started");
-  }
-}
-
-/**
- * @brief Calls the on_finished() method of the object on top of the stack.
- */
-void LuaContext::on_finished() {
-
-  if (find_method("on_finished")) {
-    call_function(1, 0, "on_finished");
   }
 }
 

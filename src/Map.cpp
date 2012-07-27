@@ -285,6 +285,17 @@ void Map::load(Game &game) {
 }
 
 /**
+ * @brief Returns the shared Lua context.
+ *
+ * This function should not be called before the map is loaded into a game.
+ *
+ * @return The Lua context where all scripts are run.
+ */
+LuaContext& Screen::get_lua_context() {
+  return game->get_lua_context();
+}
+
+/**
  * @brief Returns the game that loaded this map.
  *
  * This function should not be called before the map is loaded into a game.
@@ -433,7 +444,7 @@ void Map::set_suspended(bool suspended) {
   this->suspended = suspended;
 
   entities->set_suspended(suspended);
-  // TODO map:on_suspended()
+  get_lua_context().map_on_suspended(*this, suspended);
 }
 
 /**
@@ -447,7 +458,7 @@ void Map::update() {
   // update the elements
   TilePattern::update();
   entities->update();
-  // TODO map:on_update()
+  get_lua_context().map_on_update(*this);
   camera->update();  // update the camera after the entities since this might
                      // be the last update() call for this map */
   set_clipping_rectangle(clipping_rectangle);
@@ -611,7 +622,8 @@ void Map::notify_opening_transition_finished() {
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
   check_suspended();
   entities->notify_map_opening_transition_finished();
-  // TODO map:on_opening_transition_finished(destination_point_name)
+  MapEntity& destination_point = entities->get_entity(DESTINATION_POINT, destination_point_name);
+  get_lua_context().map_on_opening_transition_finished(destination_point);
 }
 
 /**

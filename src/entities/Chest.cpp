@@ -27,6 +27,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
+#include "lua/LuaContext.h"
 
 /**
  * @brief Creates a new chest with the specified treasure.
@@ -239,8 +240,7 @@ void Chest::update() {
 
         treasure_given = true;
 
-        bool done = false;
-        // done = TODO map:on_chest_empty(get_name())
+        bool done = get_lua_context().map_on_chest_empty(get_map(), *this);
         if (!done) {
 
           // the script does not define any behavior:

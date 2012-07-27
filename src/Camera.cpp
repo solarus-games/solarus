@@ -20,6 +20,7 @@
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
 #include "movements/TargetMovement.h"
+#include "lua/LuaContext.h"
 
 /**
  * @brief Creates a camera.
@@ -87,10 +88,10 @@ void Camera::update() {
       if (restoring) {
         restoring = false;
         fixed_on_hero = true;
-        // TODO map:on_camera_back()
+	map.get_lua_context().map_on_camera_back(map);
       }
       else {
-        // TODO map:on_camera_reached_target()
+	map.get_lua_context().map_on_camera_reached_target(map);
       }
     }
   }

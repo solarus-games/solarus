@@ -17,6 +17,7 @@
 #include "entities/Sensor.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
+#include "lua/LuaContext.h"
 #include "Game.h"
 #include "Map.h"
 #include "lowlevel/FileTools.h"
@@ -136,7 +137,7 @@ void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
 void Sensor::notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode) {
 
   if (subtype == CUSTOM && collision_mode == COLLISION_RECTANGLE) {
-    // TODO map:on_sensor_collision_explosion(get_name())
+    get_lua_context().map_on_sensor_collision_explosion(get_map(), *this);
   }
 }
 
@@ -158,7 +159,7 @@ void Sensor::activate(Hero& hero) {
       case CUSTOM:
         // we notify the scripts
         notifying_script = true;
-        // TODO map:on_hero_on_sensor(get_name())
+        get_lua_context().map_on_hero_on_sensor(get_map(), *this);
         notifying_script = false;
         get_hero().reset_movement();
         break;
@@ -178,7 +179,7 @@ void Sensor::activate(Hero& hero) {
   else {
     if (subtype == CUSTOM && !notifying_script && !get_game().is_suspended()) {
       notifying_script = true;
-      // TODO map:on_hero_still_on_sensor(get_name())
+      get_lua_context().map_on_hero_still_on_sensor(get_map(), *this);
       notifying_script = false;
     }
   }

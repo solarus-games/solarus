@@ -26,6 +26,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Sound.h"
+#include "lua/LuaContext.h"
 
 /**
  * @brief Creates a block.
@@ -281,7 +282,7 @@ void Block::stop_movement_by_hero() {
   }
 
   // notify the script
-  // TODO map:on_block_moved(get_name())
+  get_lua_context().map_on_block_moved(get_map(), *this);
 }
 
 /**

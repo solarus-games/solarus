@@ -146,6 +146,7 @@ class Map: public ExportableToLua {
     void load(Game &game);
     void unload();
     Game& get_game();
+    LuaContext& get_lua_context();
     virtual const std::string& get_lua_type_name() const;
 
     void notify_opening_transition_finished();

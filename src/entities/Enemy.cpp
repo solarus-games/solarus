@@ -22,6 +22,7 @@
 #include "entities/PickableItem.h"
 #include "entities/DestructibleItem.h"
 #include "entities/Fire.h"
+#include "lua/LuaContext.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
@@ -634,7 +635,7 @@ void Enemy::update() {
     remove_from_map();
 
     // notify the scripts
-    // TODO map:on_enemy_dead(get_name())
+    get_lua_context().map_on_enemy_dead(get_map(), *this);
   }
 }
 
@@ -993,7 +994,7 @@ void Enemy::hurt(MapEntity &source) {
 void Enemy::notify_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
 
   if (get_life() <= 0) {
-    // TODO map:on_enemy_dying(get_name())
+    get_lua_context().map_on_enemy_dying(get_map(), *this);
   }
 }
 

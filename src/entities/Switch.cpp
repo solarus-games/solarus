@@ -18,6 +18,7 @@
 #include "entities/Arrow.h"
 #include "entities/Block.h"
 #include "entities/Hero.h"
+#include "lua/LuaContext.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "Map.h"
@@ -164,7 +165,7 @@ void Switch::activate() {
       Sound::play("switch");
     }
 
-    // TODO map:on_switch_activated(get_name())
+    get_lua_context().map_on_switch_activated(get_map(), *this);
   }
 }
 
@@ -223,9 +224,9 @@ void Switch::update() {
       entity_overlapping = NULL;
       if (is_activated() && inactivate_when_leaving && !locked) {
         set_activated(false);
-        // TODO map:on_switch_inactivated(get_name())
+        get_lua_context().map_on_switch_inactivated(get_map(), *this);
       }
-      // TODO map:on_switch_left(get_name())
+      get_lua_context().map_on_switch_left(get_map(), *this);
     }
   }
 }

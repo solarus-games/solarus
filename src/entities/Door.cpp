@@ -18,6 +18,7 @@
 #include "entities/Door.h"
 #include "entities/Hero.h"
 #include "entities/DynamicTile.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -173,10 +174,10 @@ void Door::set_open(bool door_open) {
     }
 
     if (door_open) {
-      // TODO map:on_door_open(get_name())
+      get_lua_context().map_on_door_open(get_map(), *this);
     }
     else {
-      // TODO map:on_door_closed(get_name())
+      get_lua_context().map_on_door_closed(get_map(), *this);
     }
   }
 }

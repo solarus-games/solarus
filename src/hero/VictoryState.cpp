@@ -16,6 +16,7 @@
  */
 #include "hero/VictoryState.h"
 #include "hero/HeroSprites.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "Game.h"
@@ -76,7 +77,7 @@ void Hero::VictoryState::update() {
 
   if (!finished && System::now() >= end_victory_date) {
     finished = true;
-    // TODO map:on_hero_victory_sequence_finished()
+    get_lua_context().map_on_hero_victory_sequence_finished(get_map());
   }
 }
 

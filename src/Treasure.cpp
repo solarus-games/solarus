@@ -24,6 +24,7 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "lua/ItemScript.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -197,7 +198,8 @@ void Treasure::give_to_player() const {
 
   // notify the scripts
   equipment.get_item_script(get_item_name()).event_obtaining(*this);
-  // TODO map:on_treasure_obtaining()
+  game.get_lua_context().map_on_treasure_obtaining(
+    game.get_current_map(), *this);
 }
 
 /**

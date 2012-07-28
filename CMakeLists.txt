@@ -109,14 +109,25 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
     set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk" CACHE STRING "OS version whose headers you'll use" FORCE)
     set(CMAKE_OSX_ARCHITECTURES "ppc;i386;x86_64;" CACHE STRING "Compile for these processor architecture" FORCE)
   endif()
-  if(NOT $ENV{MACOSX_DEPLOYMENT_TARGET} EQUAL "")
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "$ENV{MACOSX_DEPLOYMENT_TARGET}" CACHE STRING "The oldest OS version supported" FORCE)
-    if($ENV{MACOSX_DEPLOYMENT_TARGET} STRGREATER "10.4")
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
-    endif()
-    if($ENV{MACOSX_DEPLOYMENT_TARGET} STRLESS "10.6")
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
-    endif()
+
+  set(MACOS_VERSION_BY_ENV "$ENV{MACOSX_DEPLOYMENT_TARGET}")
+  if(MACOS_VERSION_BY_ENV)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "${MACOS_VERSION_BY_ENV}" CACHE STRING "Chosen oldest OS version supported" FORCE)
+  else()
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.5" CACHE STRING "Default oldest OS version supported" FORCE)
+
+#TODO Check if overload deployment by environment var is really needed
+#   add_custom_command(TARGET solarus PRE_BUILD COMMAND export MACOSX_DEPLOYMENT_TARGET=10.5 VERBATIM)
+  endif()
+
+#TODO Check if -macosx-version-min GCC's flag (CMAKE_OSX_DEPLOYMENT_TARGET var) do the same than the following line
+#  set(CMAKE_EXE_LINKER_FLAGS "-Xlinker -macosx_version_min -Xlinker ${CMAKE_OSX_DEPLOYMENT_TARGET}" CACHE STRING "CMAKE_OSX_DEPLOYMENT_TARGET does't use this needed flag on linker" FORCE)
+  
+  if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER "10.4")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
+  endif()
+  if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
 endif()
 

@@ -184,11 +184,12 @@ solarus just by doing the default setting with cmake.
 If you got some error on the cmake part, you can edit the CMakeCache.txt to
 manually write the include and library directories that cmake did not find.
 
-You can compile for YOUR Mac with the default command, but you probably wish
-to distribute the application on other systems. To do so, use this command 
-to prepare the deployment (change 10.5 by the min version)
+By default, you will compile with the 10.5 SDK if available, and configure 
+10.5 as minimum system version required. 
+Set MACOSX_DEPLOYMENT_TARGET environment variable before build to change
+this behavior.
 
-$ export MACOSX_DEPLOYMENT_TARGET=10.5 && cmake -DCMAKE_BUILD_TYPE=Release .
+$ export MACOSX_DEPLOYMENT_TARGET=10.4
 
 
 * Deploy on OSX

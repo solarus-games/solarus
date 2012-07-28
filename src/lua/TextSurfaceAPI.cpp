@@ -355,8 +355,8 @@ int Script::text_surface_api_get_size(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
 
-  lua_pushnumber(l, text_surface.get_width());
-  lua_pushnumber(l, text_surface.get_height());
+  lua_pushinteger(l, text_surface.get_width());
+  lua_pushinteger(l, text_surface.get_height());
 
   return 2;
 }

@@ -287,6 +287,7 @@ void Script::register_modules() {
   // modules available to all scripts
   register_main_module();
   register_game_module();
+  register_map_module();
   register_audio_module();
   register_timer_module();
   register_surface_module();
@@ -295,9 +296,6 @@ void Script::register_modules() {
   register_movement_module();
   register_input_module();
 
-  if (apis_enabled && MAP_API) {
-    register_map_module();
-  }
   if (apis_enabled && ITEM_API) {
     register_item_module();
   }

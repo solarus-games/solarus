@@ -31,7 +31,7 @@
  * @param item_properties the static properties of the item
  */
 ItemScript::ItemScript(Game &game, ItemProperties &item_properties):
-  Script(game.get_main_loop(), MAP_API | ITEM_API),
+  Script(game.get_main_loop(), ITEM_API),
   started(false),
   game(game),
   item_properties(item_properties),
@@ -40,7 +40,8 @@ ItemScript::ItemScript(Game &game, ItemProperties &item_properties):
 
   std::string script_name = (std::string) "items/" + item_properties.get_name();
   initialize();
-  started = do_file_if_exists(l, script_name);
+//  started = do_file_if_exists(l, script_name);
+  started = false;
   if (!started) {
     exit();
   }

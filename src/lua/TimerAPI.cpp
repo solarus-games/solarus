@@ -56,10 +56,10 @@ void Script::register_timer_module() {
  */
 bool Script::is_new_timer_suspended(void) {
 
-  if (apis_enabled & MAP_API) {
+  if (get_current_game() != NULL) {
     // start the timer even if the game is suspended (e.g. a timer started during a camera movement)
     // except when it is suspended because of a dialog box
-    return get_game().is_showing_dialog();
+    return get_current_game()->is_showing_dialog();
   }
 
   return false;

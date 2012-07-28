@@ -25,14 +25,15 @@
  * @param enemy the enemy to control with this script
  */
 EnemyScript::EnemyScript(CustomEnemy& enemy):
-  Script(enemy.get_game().get_main_loop(), MAP_API | ENEMY_API),
+  Script(enemy.get_game().get_main_loop(), ENEMY_API),
   started(false),
   game(enemy.get_game()),
   enemy(enemy) {
 
   std::string script_name = std::string("enemies/" + enemy.get_breed());
   initialize();
-  started = do_file_if_exists(l, script_name);
+  //  started = do_file_if_exists(l, script_name);
+  started = false;
   if (!started) {
     exit();
   }

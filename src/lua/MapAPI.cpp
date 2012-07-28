@@ -189,6 +189,7 @@ Map& Script::check_map(lua_State* l, int index) {
  * @param game A game.
  */
 void Script::push_map(lua_State* l, Map& map) {
+
   push_userdata(l, map);
 }
 

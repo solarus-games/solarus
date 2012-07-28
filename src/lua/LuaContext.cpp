@@ -236,6 +236,18 @@ void LuaContext::notify_input(InputEvent& event) {
 }
 
 /**
+ * @brief Notifies the Lua world that a map has just been started.
+ * @param map The map started.
+ * @param destination_point The destination point used if it's a normal one,
+ * NULL otherwise.
+ */
+void LuaContext::notify_map_started(Map& map, DestinationPoint* destination_point) {
+
+  // TODO load the map's code
+  map_on_started(map, destination_point);
+}
+
+/**
  * @brief Calls the on_started() method of the object on top of the stack.
  */
 void LuaContext::on_started() {
@@ -494,24 +506,34 @@ void LuaContext::on_direction_pressed(InputEvent& event) {
 
 /**
  * @brief Calls the on_started() method of the object on top of the stack.
- * @param destination_point The destination point used.
+ * @param destination_point The destination point used (NULL if it's a special one).
  */
-void LuaContext::on_started(DestinationPoint& destination_point) {
+void LuaContext::on_started(DestinationPoint* destination_point) {
 
   if (find_method("on_started")) {
-    lua_pushstring(l, destination_point.get_name().c_str());
+    if (destination_point == NULL) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, destination_point->get_name().c_str());
+    }
     call_function(2, 0, "on_started");
   }
 }
 
 /**
  * @brief Calls the on_opening_transition_finished() method of the object on top of the stack.
- * @param destination_point The destination point used.
+ * @param destination_point The destination point used (NULL if it's a special one).
  */
-void LuaContext::on_opening_transition_finished(DestinationPoint& destination_point) {
+void LuaContext::on_opening_transition_finished(DestinationPoint* destination_point) {
 
   if (find_method("on_opening_transition_finished")) {
-    lua_pushstring(l, destination_point.get_name().c_str());
+    if (destination_point == NULL) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, destination_point->get_name().c_str());
+    }
     call_function(2, 0, "on_opening_transition_finished");
   }
 }

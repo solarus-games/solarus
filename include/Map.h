@@ -162,6 +162,7 @@ class Map: public ExportableToLua {
     // current destination point
     void set_destination_point(const std::string &destination_point_name);
     const std::string& get_destination_point_name();
+    DestinationPoint* get_destination_point();
     int get_destination_side();
 
     // collisions with obstacles (checked before a move)

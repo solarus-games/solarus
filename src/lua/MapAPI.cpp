@@ -2420,12 +2420,25 @@ void LuaContext::map_on_suspended(Map& map, bool suspended) {
 /**
  * @brief Calls the on_started() method of a Lua map.
  * @param map A map.
- * @param destination_point The destination point used.
+ * @param destination_point The destination point used (NULL if it's a special one).
  */
-void LuaContext::map_on_started(Map& map, DestinationPoint& destination_point) {
+void LuaContext::map_on_started(Map& map, DestinationPoint* destination_point) {
 
   push_map(l, map);
   on_started(destination_point);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_opening_transition_finished() method of a Lua map.
+ * @param map A map.
+ * @param destination_point The destination point used (NULL if it's a special one).
+ */
+void LuaContext::map_on_opening_transition_finished(Map& map,
+    DestinationPoint* destination_point) {
+
+  push_map(l, map);
+  on_opening_transition_finished(destination_point);
   lua_pop(l, 1);
 }
 
@@ -2452,19 +2465,6 @@ void LuaContext::map_on_dialog_finished(Map& map, const std::string& dialog_id, 
 
   push_map(l, map);
   on_dialog_finished(dialog_id, answer);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_opening_transition_finished() method of a Lua map.
- * @param map A map.
- * @param destination_point the destination point used.
- */
-void LuaContext::map_on_opening_transition_finished(Map& map,
-    DestinationPoint& destination_point) {
-
-  push_map(l, map);
-  on_opening_transition_finished(destination_point);
   lua_pop(l, 1);
 }
 

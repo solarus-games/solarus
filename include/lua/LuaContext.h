@@ -48,6 +48,7 @@ class LuaContext: public Script {
     void exit();
     void update();
     void notify_input(InputEvent& event);
+    void notify_map_started(Map& map, DestinationPoint* destination_point);
     void notify_camera_reached_target(Map& map);
 
     // Main Lua script (sol.main).
@@ -73,9 +74,9 @@ class LuaContext: public Script {
     // Map events.
     void map_on_update(Map& map);
     void map_on_suspended(Map& map, bool suspended);
-    void map_on_started(Map& map, DestinationPoint& destination_point);
+    void map_on_started(Map& map, DestinationPoint* destination_point);
     void map_on_opening_transition_finished(Map& map,
-        DestinationPoint& destination_point);
+        DestinationPoint* destination_point);
     void map_on_dialog_started(Map& map, const std::string& dialog_id);
     void map_on_dialog_finished(Map& map, const std::string& dialog_id, int answer);
     void map_on_camera_back(Map& map);
@@ -138,8 +139,8 @@ class LuaContext: public Script {
     void on_joypad_axis_moved(InputEvent& event);
     void on_joypad_hat_moved(InputEvent& event);
     void on_direction_pressed(InputEvent& event);
-    void on_started(DestinationPoint& destination_point);
-    void on_opening_transition_finished(DestinationPoint& destination_point);
+    void on_started(DestinationPoint* destination_point);
+    void on_opening_transition_finished(DestinationPoint* destination_point);
     void on_dialog_started(const std::string& dialog_id);
     void on_dialog_finished(const std::string& dialog_id, int answer);
     void on_camera_back();

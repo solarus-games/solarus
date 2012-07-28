@@ -336,6 +336,25 @@ const std::string& Map::get_destination_point_name() {
 }
 
 /**
+ * @brief Returns the destination point specified by the last call to
+ * set_destination_point().
+ *
+ * Returns NULL if the destination point was set to a special value ("_same",
+ * "_side0", "_side1", "_side2" or "_side3")
+ *
+ * @return The destination point previously set, or NULL.
+ */
+DestinationPoint* Map::get_destination_point() {
+
+  if (destination_point_name == "_same"
+      || destination_point_name.substr(0,5) == "_side") {
+    return NULL;
+  }
+  return static_cast<DestinationPoint*>(
+      get_entities().get_entity(DESTINATION_POINT, destination_point_name));
+}
+
+/**
  * @brief When the destination point is a side of the map,
  * returns this side.
  * @return the destination side (0 to 3), or -1 if the destination point is not a side
@@ -581,7 +600,7 @@ void Map::start() {
 
   this->started = true;
   this->visible_surface->set_opacity(255);
-  // TODO load script and map:on_started(destination_point_name)
+  get_lua_context().notify_map_started(*this, get_destination_point());
   this->entities->notify_map_started();
   get_game().get_equipment().set_map(*this);
 
@@ -622,9 +641,7 @@ void Map::notify_opening_transition_finished() {
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
   check_suspended();
   entities->notify_map_opening_transition_finished();
-  DestinationPoint* destination_point = (DestinationPoint*)
-      entities->get_entity(DESTINATION_POINT, destination_point_name);
-  get_lua_context().map_on_opening_transition_finished(*this, *destination_point);
+  get_lua_context().map_on_opening_transition_finished(*this, get_destination_point());
 }
 
 /**

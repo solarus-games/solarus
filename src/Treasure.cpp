@@ -198,8 +198,8 @@ void Treasure::give_to_player() const {
 
   // notify the scripts
   equipment.get_item_script(get_item_name()).event_obtaining(*this);
-  game.get_lua_context().map_on_treasure_obtaining(
-    game.get_current_map(), *this);
+  game->get_lua_context().map_on_treasure_obtaining(
+    game->get_current_map(), *this);
 }
 
 /**

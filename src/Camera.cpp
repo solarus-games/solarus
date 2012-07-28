@@ -88,10 +88,10 @@ void Camera::update() {
       if (restoring) {
         restoring = false;
         fixed_on_hero = true;
-	map.get_lua_context().map_on_camera_back(map);
+        map.get_lua_context().map_on_camera_back(map);
       }
       else {
-	map.get_lua_context().map_on_camera_reached_target(map);
+        map.get_lua_context().notify_camera_reached_target(map);
       }
     }
   }

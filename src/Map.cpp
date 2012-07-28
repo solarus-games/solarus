@@ -291,7 +291,7 @@ void Map::load(Game &game) {
  *
  * @return The Lua context where all scripts are run.
  */
-LuaContext& Screen::get_lua_context() {
+LuaContext& Map::get_lua_context() {
   return game->get_lua_context();
 }
 
@@ -622,8 +622,9 @@ void Map::notify_opening_transition_finished() {
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
   check_suspended();
   entities->notify_map_opening_transition_finished();
-  MapEntity& destination_point = entities->get_entity(DESTINATION_POINT, destination_point_name);
-  get_lua_context().map_on_opening_transition_finished(destination_point);
+  DestinationPoint* destination_point = (DestinationPoint*)
+      entities->get_entity(DESTINATION_POINT, destination_point_name);
+  get_lua_context().map_on_opening_transition_finished(*this, *destination_point);
 }
 
 /**

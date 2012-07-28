@@ -68,14 +68,15 @@ class Script {
 
     virtual ~Script();
 
-    // possible scripted objects (each type of script may control some of them)
+    MainLoop& get_main_loop();
+    Game* get_current_game();
+    CustomScreen* get_current_screen();
 
+    // TODO remove
     virtual Game& get_game();
     virtual Map& get_map();
     virtual ItemProperties& get_item_properties();
     virtual Enemy& get_enemy();
-
-    MainLoop& get_main_loop();
 
     // main loop
     virtual void update();
@@ -127,9 +128,7 @@ class Script {
 
     Script(MainLoop& main_loop, uint32_t apis_enabled = 0);
 
-    Game* get_current_game();
     void set_current_game(Game* current_game);
-    CustomScreen* get_current_screen();
     void set_current_screen(CustomScreen* current_screen);
 
     // Helper functions.

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "Game.h"
 #include "Map.h"
 #include "DialogBox.h"
@@ -193,6 +193,54 @@ void Script::push_map(lua_State* l, Map& map) {
 }
 
 /**
+ * @brief Notifies the Lua context that the sequence started by a call to
+ * map:camera_move() has reached the target.
+ */
+void LuaContext::notify_camera_reached_target(Map& map) {
+
+  // Set a timer to execute the function.
+  lua_settop(l, 0);
+  push_map(l, map);
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
+  lua_pushcfunction(l, l_camera_do_callback);
+  timer_api_start(l);
+}
+
+/**
+ * @brief Executes the callback function of a camera movement.
+ * @param l The Lua context that is calling this function.
+ */
+int LuaContext::l_camera_do_callback(lua_State* l) {
+
+  // Execute the function.
+  lua_settop(l, 0);
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
+  call_function(l, 0, 0, "camera callback");
+
+  // Set a second timer to restore the camera.
+  Map& map = get_script(l).get_current_game()->get_current_map();
+  push_map(l, map);
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
+  lua_pushcfunction(l, l_camera_restore);
+  timer_api_start(l);
+
+  return 0;
+}
+
+/**
+ * @brief Moves the camera back to the hero.
+ * @param l The Lua context that is calling this function.
+ */
+int LuaContext::l_camera_restore(lua_State* l) {
+
+  Script& script = get_script(l);
+
+  script.get_current_game()->get_current_map().restore_camera();
+
+  return 0;
+}
+
+/**
  * @brief Implementation of \ref lua_api_map_get_game.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -335,6 +383,7 @@ int Script::map_api_camera_move(lua_State* l) {
   lua_settop(l, 5); // let the function on top of the stack
 
   // store the function and the delays
+  // TODO store this in the map's table instead of globally
   lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
   lua_pushinteger(l, delay_before);
   lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
@@ -2348,7 +2397,7 @@ int Script::map_api_enemy_get_sprite(lua_State* l) {
  * @brief Calls the on_update() method of a Lua map.
  * @param map A map.
  */
-void Script::map_on_update(Map& map) {
+void LuaContext::map_on_update(Map& map) {
 
   push_map(l, map);
   on_update();
@@ -2360,7 +2409,7 @@ void Script::map_on_update(Map& map) {
  * @param map A map.
  * @param suspended true if the map is suspended.
  */
-void Script::map_on_suspended(Map& map, bool suspended) {
+void LuaContext::map_on_suspended(Map& map, bool suspended) {
 
   push_map(l, map);
   on_suspended(suspended);
@@ -2372,10 +2421,60 @@ void Script::map_on_suspended(Map& map, bool suspended) {
  * @param map A map.
  * @param destination_point The destination point used.
  */
-void Script::map_on_started(Map& map, DestinationPoint& destination_point) {
+void LuaContext::map_on_started(Map& map, DestinationPoint& destination_point) {
 
   push_map(l, map);
-  on_started();
+  on_started(destination_point);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_dialog_started() method of a Lua map.
+ * @param map A map.
+ * @param dialog_id Id a the dialog just started.
+ */
+void LuaContext::map_on_dialog_started(Map& map, const std::string& dialog_id) {
+
+  push_map(l, map);
+  on_dialog_started(dialog_id);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_dialog_finished() method of a Lua map.
+ * @param map A map.
+ * @param dialog_id Id a the dialog just finished.
+ * @param answer The answer selected by the player: 0 for the first one,
+ * 1 for the second one, -1 if there was no question.
+ */
+void LuaContext::map_on_dialog_finished(Map& map, const std::string& dialog_id, int answer) {
+
+  push_map(l, map);
+  on_dialog_finished(dialog_id, answer);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_opening_transition_finished() method of a Lua map.
+ * @param map A map.
+ * @param destination_point the destination point used.
+ */
+void LuaContext::map_on_opening_transition_finished(Map& map,
+    DestinationPoint& destination_point) {
+
+  push_map(l, map);
+  on_opening_transition_finished(destination_point);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_camera_back() method of a Lua map.
+ * @param map A map.
+ */
+void LuaContext::map_on_camera_back(Map& map) {
+
+  push_map(l, map);
+  on_camera_back();
   lua_pop(l, 1);
 }
 
@@ -2384,7 +2483,7 @@ void Script::map_on_started(Map& map, DestinationPoint& destination_point) {
  * @param map A map.
  * @param treasure A treasure the hero is about to obtain.
  */
-void Script::map_on_treasure_obtaining(Map& map, const Treasure& treasure) {
+void LuaContext::map_on_treasure_obtaining(Map& map, const Treasure& treasure) {
 
   push_map(l, map);
   on_treasure_obtaining(treasure);
@@ -2396,23 +2495,10 @@ void Script::map_on_treasure_obtaining(Map& map, const Treasure& treasure) {
  * @param map A map.
  * @param treasure The treasure just obtained.
  */
-void Script::map_on_treasure_obtained(Map& map, const Treasure& treasure) {
+void LuaContext::map_on_treasure_obtained(Map& map, const Treasure& treasure) {
 
   push_map(l, map);
   on_treasure_obtained(treasure);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_opening_transition_finished() method of a Lua map.
- * @param map A map.
- * @param destination_point the destination point used.
- */
-void Script::map_on_opening_transition_finished(Map& map,
-    DestinationPoint& destination_point) {
-
-  push_map(l, map);
-  on_opening_transition_finished(destination_point);
   lua_pop(l, 1);
 }
 
@@ -2421,7 +2507,7 @@ void Script::map_on_opening_transition_finished(Map& map,
  * @param map A map.
  * @param sw A switch.
  */
-void Script::map_on_switch_activated(Map& map, Switch& sw) {
+void LuaContext::map_on_switch_activated(Map& map, Switch& sw) {
 
   push_map(l, map);
   on_switch_activated(sw);
@@ -2433,7 +2519,7 @@ void Script::map_on_switch_activated(Map& map, Switch& sw) {
  * @param map A map.
  * @param sw A switch.
  */
-void Script::map_on_switch_inactivated(Map& map, Switch& sw) {
+void LuaContext::map_on_switch_inactivated(Map& map, Switch& sw) {
 
   push_map(l, map);
   on_switch_inactivated(sw);
@@ -2445,7 +2531,7 @@ void Script::map_on_switch_inactivated(Map& map, Switch& sw) {
  * @param map A map.
  * @param sw A switch.
  */
-void Script::map_on_switch_left(Map& map, Switch& sw) {
+void LuaContext::map_on_switch_left(Map& map, Switch& sw) {
 
   push_map(l, map);
   on_switch_left(sw);
@@ -2456,7 +2542,7 @@ void Script::map_on_switch_left(Map& map, Switch& sw) {
  * @brief Calls the on_hero_victory_sequence_finished() method of a Lua map.
  * @param map A map.
  */
-void Script::map_on_hero_victory_sequence_finished(Map& map) {
+void LuaContext::map_on_hero_victory_sequence_finished(Map& map) {
 
   push_map(l, map);
   on_hero_victory_sequence_finished();
@@ -2468,7 +2554,7 @@ void Script::map_on_hero_victory_sequence_finished(Map& map) {
  * @param map A map.
  * @param sensor A sensor.
  */
-void Script::map_on_hero_on_sensor(Map& map, Sensor& sensor) {
+void LuaContext::map_on_hero_on_sensor(Map& map, Sensor& sensor) {
 
   push_map(l, map);
   on_hero_on_sensor(sensor);
@@ -2480,7 +2566,7 @@ void Script::map_on_hero_on_sensor(Map& map, Sensor& sensor) {
  * @param map A map.
  * @param sensor A sensor.
  */
-void Script::map_on_hero_still_on_sensor(Map& map, Sensor& sensor) {
+void LuaContext::map_on_hero_still_on_sensor(Map& map, Sensor& sensor) {
 
   push_map(l, map);
   on_hero_still_on_sensor(sensor);
@@ -2492,10 +2578,22 @@ void Script::map_on_hero_still_on_sensor(Map& map, Sensor& sensor) {
  * @param map A map.
  * @param npc An NPC.
  */
-void Script::map_on_npc_movement_finished(Map& map, NPC& npc) {
+void LuaContext::map_on_npc_movement_finished(Map& map, NPC& npc) {
 
   push_map(l, map);
   on_npc_movement_finished(npc);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_npc_interaction() method of a Lua map.
+ * @param map A map.
+ * @param npc An NPC.
+ */
+void LuaContext::map_on_npc_interaction(Map& map, NPC& npc) {
+
+  push_map(l, map);
+  on_npc_interaction(npc);
   lua_pop(l, 1);
 }
 
@@ -2504,7 +2602,7 @@ void Script::map_on_npc_movement_finished(Map& map, NPC& npc) {
  * @param map A map.
  * @param npc An NPC.
  */
-void Script::map_on_npc_interaction_finished(Map& map, NPC& npc) {
+void LuaContext::map_on_npc_interaction_finished(Map& map, NPC& npc) {
 
   push_map(l, map);
   on_npc_interaction_finished(npc);
@@ -2512,11 +2610,30 @@ void Script::map_on_npc_interaction_finished(Map& map, NPC& npc) {
 }
 
 /**
+ * @brief Calls the on_npc_interaction_item() method of a Lua map.
+ * @param map A map.
+ * @param npc An NPC.
+ * @param item_name Name of an equipment item.
+ * @param variant Variant of this equipment item.
+ * @return true if an interaction occurred.
+ */
+bool LuaContext::map_on_npc_interaction_item(Map& map, NPC& npc,
+    const std::string& item_name, int variant) {
+
+  push_map(l, map);
+  bool result = on_npc_interaction_item(npc, item_name, variant);
+  lua_pop(l, 1);
+  return result;
+}
+
+/**
  * @brief Calls the on_npc_interaction_item_finished() method of a Lua map.
  * @param map A map.
  * @param npc An NPC.
+ * @param item_name Name of an equipment item.
+ * @param variant Variant of this equipment item.
  */
-void Script::map_on_npc_interaction_item_finished(Map& map, NPC& npc,
+void LuaContext::map_on_npc_interaction_item_finished(Map& map, NPC& npc,
     const std::string& item_name, int variant) {
 
   push_map(l, map);
@@ -2525,11 +2642,23 @@ void Script::map_on_npc_interaction_item_finished(Map& map, NPC& npc,
 }
 
 /**
+ * @brief Calls the on_npc_collision_fire() method of a Lua map.
+ * @param map A map.
+ * @param npc An NPC.
+ */
+void LuaContext::map_on_npc_collision_fire(Map& map, NPC& npc) {
+
+  push_map(l, map);
+  on_npc_collision_fire(npc);
+  lua_pop(l, 1);
+}
+
+/**
  * @brief Calls the on_sensor_collision_explosion() method of a Lua map.
  * @param map A map.
  * @param sensor A sensor.
  */
-void Script::map_on_sensor_collision_explosion(Map& map, Sensor& sensor) {
+void LuaContext::map_on_sensor_collision_explosion(Map& map, Sensor& sensor) {
 
   push_map(l, map);
   on_sensor_collision_explosion(sensor);
@@ -2541,11 +2670,12 @@ void Script::map_on_sensor_collision_explosion(Map& map, Sensor& sensor) {
  * @param map A map.
  * @param chest A chest.
  */
-bool Script::map_on_chest_empty(Map& map, Chest& chest) {
+bool LuaContext::map_on_chest_empty(Map& map, Chest& chest) {
 
   push_map(l, map);
-  on_chest_empty(chest);
+  bool result = on_chest_empty(chest);
   lua_pop(l, 1);
+  return result;
 }
 
 /**
@@ -2553,11 +2683,12 @@ bool Script::map_on_chest_empty(Map& map, Chest& chest) {
  * @param map A map.
  * @param shop_item A shop item.
  */
-bool Script::map_on_shop_item_buying(Map& map, ShopItem& shop_item) {
+bool LuaContext::map_on_shop_item_buying(Map& map, ShopItem& shop_item) {
 
   push_map(l, map);
-  on_shop_item_buying(shop_item);
+  bool result = on_shop_item_buying(shop_item);
   lua_pop(l, 1);
+  return result;
 }
 
 /**
@@ -2565,7 +2696,7 @@ bool Script::map_on_shop_item_buying(Map& map, ShopItem& shop_item) {
  * @param map A map.
  * @param shop_item A shop item.
  */
-void Script::map_on_shop_item_bought(Map& map, ShopItem& shop_item) {
+void LuaContext::map_on_shop_item_bought(Map& map, ShopItem& shop_item) {
 
   push_map(l, map);
   on_shop_item_bought(shop_item);
@@ -2577,7 +2708,7 @@ void Script::map_on_shop_item_bought(Map& map, ShopItem& shop_item) {
  * @param map A map.
  * @param door A door.
  */
-void Script::map_on_door_open(Map& map, Door& door) {
+void LuaContext::map_on_door_open(Map& map, Door& door) {
 
   push_map(l, map);
   on_door_open(door);
@@ -2589,7 +2720,7 @@ void Script::map_on_door_open(Map& map, Door& door) {
  * @param map A map.
  * @param door A door.
  */
-void Script::map_on_door_closed(Map& map, Door& door) {
+void LuaContext::map_on_door_closed(Map& map, Door& door) {
 
   push_map(l, map);
   on_door_closed(door);
@@ -2601,7 +2732,7 @@ void Script::map_on_door_closed(Map& map, Door& door) {
  * @param map A map.
  * @param block A block.
  */
-void Script::map_on_block_moved(Map& map, Block& block) {
+void LuaContext::map_on_block_moved(Map& map, Block& block) {
 
   push_map(l, map);
   on_block_moved(block);
@@ -2613,7 +2744,7 @@ void Script::map_on_block_moved(Map& map, Block& block) {
  * @param map A map.
  * @param enemy An enemy.
  */
-void Script::map_on_enemy_dying(Map& map, Enemy& enemy) {
+void LuaContext::map_on_enemy_dying(Map& map, Enemy& enemy) {
 
   push_map(l, map);
   on_enemy_dying(enemy);
@@ -2625,7 +2756,7 @@ void Script::map_on_enemy_dying(Map& map, Enemy& enemy) {
  * @param map A map.
  * @param enemy An enemy.
  */
-void Script::map_on_enemy_dead(Map& map, Enemy& enemy) {
+void LuaContext::map_on_enemy_dead(Map& map, Enemy& enemy) {
 
   push_map(l, map);
   on_enemy_dead(enemy);

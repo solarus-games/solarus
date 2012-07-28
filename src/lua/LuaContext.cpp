@@ -15,9 +15,19 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "entities/DestinationPoint.h"
+#include "entities/Switch.h"
+#include "entities/Sensor.h"
+#include "entities/NPC.h"
+#include "entities/Chest.h"
+#include "entities/ShopItem.h"
+#include "entities/Door.h"
+#include "entities/Block.h"
+#include "entities/Enemy.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "Treasure.h"
 #include <sstream>
 #include <lua.hpp>
 
@@ -292,6 +302,18 @@ void LuaContext::on_post_display(Surface& dst_surface) {
 }
 
 /**
+ * @brief Calls the on_suspended() method of the object on top of the stack.
+ * @param suspended true to suspend the object, false to unsuspend it.
+ */
+void LuaContext::on_suspended(bool suspended) {
+
+  if (find_method("on_suspended")) {
+    lua_pushboolean(l, suspended);
+    call_function(2, 0, "on_suspended");
+  }
+}
+
+/**
  * @brief Calls an input callback method of the object on top of the stack.
  * @param event The input event to forward.
  */
@@ -467,6 +489,360 @@ void LuaContext::on_direction_pressed(InputEvent& event) {
 
     lua_pushinteger(l, direction8);
     call_function(2, 0, "on_direction_pressed");
+  }
+}
+
+/**
+ * @brief Calls the on_started() method of the object on top of the stack.
+ * @param destination_point The destination point used.
+ */
+void LuaContext::on_started(DestinationPoint& destination_point) {
+
+  if (find_method("on_started")) {
+    lua_pushstring(l, destination_point.get_name().c_str());
+    call_function(2, 0, "on_started");
+  }
+}
+
+/**
+ * @brief Calls the on_opening_transition_finished() method of the object on top of the stack.
+ * @param destination_point The destination point used.
+ */
+void LuaContext::on_opening_transition_finished(DestinationPoint& destination_point) {
+
+  if (find_method("on_opening_transition_finished")) {
+    lua_pushstring(l, destination_point.get_name().c_str());
+    call_function(2, 0, "on_opening_transition_finished");
+  }
+}
+
+/**
+ * @brief Calls the on_dialog_started() method of the object on top of the stack.
+ * @param dialog_id Id of the dialog just started.
+ */
+void LuaContext::on_dialog_started(const std::string& dialog_id) {
+
+  if (find_method("on_dialog_started")) {
+    lua_pushstring(l, dialog_id.c_str());
+    call_function(2, 0, "on_dialog_started");
+  }
+}
+
+/**
+ * @brief Calls the on_dialog_finished() method of the object on top of the stack.
+ * @param dialog_id Id of the dialog just started.
+ * @param answer The answer selected by the player: 0 for the first one,
+ * 1 for the second one, -1 if there was no question.
+ */
+void LuaContext::on_dialog_finished(const std::string& dialog_id, int answer) {
+
+  if (find_method("on_dialog_finished")) {
+    lua_pushstring(l, dialog_id.c_str());
+    lua_pushinteger(l, answer);
+    call_function(3, 0, "on_dialog_finished");
+  }
+}
+
+/**
+ * @brief Calls the on_camera_back() method of the object on top of the stack.
+ */
+void LuaContext::on_camera_back() {
+
+  if (find_method("on_camera_back")) {
+    call_function(1, 0, "on_camera_back");
+  }
+}
+
+/**
+ * @brief Calls the on_treasure_obtaining() method of the object on top of the stack.
+ * @param treasure The treasure being obtained.
+ */
+void LuaContext::on_treasure_obtaining(const Treasure& treasure) {
+
+  if (find_method("on_treasure_obtaining")) {
+    lua_pushstring(l, treasure.get_item_name().c_str());
+    lua_pushinteger(l, treasure.get_variant());
+    lua_pushinteger(l, treasure.get_savegame_variable());
+    call_function(4, 0, "on_treasure_obtaining");
+  }
+}
+
+/**
+ * @brief Calls the on_treasure_obtained() method of the object on top of the stack.
+ * @param treasure The treasure just obtained.
+ */
+void LuaContext::on_treasure_obtained(const Treasure& treasure) {
+
+  if (find_method("on_treasure_obtained")) {
+    lua_pushstring(l, treasure.get_item_name().c_str());
+    lua_pushinteger(l, treasure.get_variant());
+    lua_pushinteger(l, treasure.get_savegame_variable());
+    call_function(4, 0, "on_treasure_obtained");
+  }
+}
+
+/**
+ * @brief Calls the on_switch_activated() method of the object on top of the stack.
+ * @param sw A switch.
+ */
+void LuaContext::on_switch_activated(Switch& sw) {
+
+  if (find_method("on_switch_activated")) {
+    lua_pushstring(l, sw.get_name().c_str());
+    call_function(2, 0, "on_switch_activated");
+  }
+}
+
+/**
+ * @brief Calls the on_switch_inactivated() method of the object on top of the stack.
+ * @param sw A switch.
+ */
+void LuaContext::on_switch_inactivated(Switch& sw) {
+
+  if (find_method("on_switch_inactivated")) {
+    lua_pushstring(l, sw.get_name().c_str());
+    call_function(2, 0, "on_switch_inactivated");
+  }
+}
+
+/**
+ * @brief Calls the on_switch_left() method of the object on top of the stack.
+ * @param sw A switch.
+ */
+void LuaContext::on_switch_left(Switch& sw) {
+
+  if (find_method("on_switch_left")) {
+    lua_pushstring(l, sw.get_name().c_str());
+    call_function(2, 0, "on_switch_left");
+  }
+}
+
+/**
+ * @brief Calls the on_hero_victory_sequence_finished() method of the object on top of the stack.
+ */
+void LuaContext::on_hero_victory_sequence_finished() {
+
+  if (find_method("on_hero_victory_sequence_finished")) {
+    call_function(1, 0, "on_hero_victory_sequence_finished");
+  }
+}
+
+/**
+ * @brief Calls the on_hero_on_sensor() method of the object on top of the stack.
+ * @param sensor A sensor that just detected the hero.
+ */
+void LuaContext::on_hero_on_sensor(Sensor& sensor) {
+
+  if (find_method("on_hero_on_sensor")) {
+    lua_pushstring(l, sensor.get_name().c_str());
+    call_function(2, 0, "on_hero_on_sensor");
+  }
+}
+
+/**
+ * @brief Calls the on_hero_still_on_sensor() method of the object on top of the stack.
+ * @param sensor A sensor that just detected the hero.
+ */
+void LuaContext::on_hero_still_on_sensor(Sensor& sensor) {
+
+  if (find_method("on_hero_still_on_sensor")) {
+    lua_pushstring(l, sensor.get_name().c_str());
+    call_function(2, 0, "on_hero_still_on_sensor");
+  }
+}
+
+/**
+ * @brief Calls the on_npc_movement_finished() method of the object on top of the stack.
+ * @param npc An NPC.
+ */
+void LuaContext::on_npc_movement_finished(NPC& npc) {
+
+  if (find_method("on_npc_movement_finished")) {
+    lua_pushstring(l, npc.get_name().c_str());
+    call_function(2, 0, "on_npc_movement_finished");
+  }
+}
+
+/**
+ * @brief Calls the on_npc_interaction() method of the object on top of the stack.
+ * @param npc An NPC.
+ */
+void LuaContext::on_npc_interaction(NPC& npc) {
+
+  if (find_method("on_npc_interaction")) {
+    lua_pushstring(l, npc.get_name().c_str());
+    call_function(2, 0, "on_npc_interaction");
+  }
+}
+
+/**
+ * @brief Calls the on_npc_interaction_finished() method of the object on top of the stack.
+ * @param npc An NPC.
+ */
+void LuaContext::on_npc_interaction_finished(NPC& npc) {
+
+  if (find_method("on_npc_interaction_finished")) {
+    lua_pushstring(l, npc.get_name().c_str());
+    call_function(2, 0, "on_npc_interaction_finished");
+  }
+}
+
+/**
+ * @brief Calls the on_npc_interaction_item() method of the object on top of the stack.
+ * @param npc An NPC.
+ * @return true if an interaction occurred.
+ */
+bool LuaContext::on_npc_interaction_item(NPC& npc,
+    const std::string &item_name, int variant) {
+
+  if (find_method("on_npc_interaction_item")) {
+    lua_pushstring(l, npc.get_name().c_str());
+    lua_pushstring(l, item_name.c_str());
+    lua_pushinteger(l, variant);
+    call_function(4, 1, "on_npc_interaction_item");
+    return lua_toboolean(l, -1);
+  }
+  return false;
+}
+
+/**
+ * @brief Calls the on_npc_interaction_item_finished() method of the object on top of the stack.
+ * @param npc An NPC.
+ */
+void LuaContext::on_npc_interaction_item_finished(NPC& npc,
+    const std::string &item_name, int variant) {
+
+  if (find_method("on_npc_interaction_item_finished")) {
+    lua_pushstring(l, npc.get_name().c_str());
+    lua_pushstring(l, item_name.c_str());
+    lua_pushinteger(l, variant);
+    call_function(4, 0, "on_npc_interaction_item_finished");
+  }
+}
+
+/**
+ * @brief Calls the on_npc_collision_fire() method of the object on top of the stack.
+ * @param npc An NPC.
+ */
+void LuaContext::on_npc_collision_fire(NPC& npc) {
+
+  if (find_method("on_npc_collision_fire")) {
+    lua_pushstring(l, npc.get_name().c_str());
+    call_function(2, 0, "on_npc_collision_fire");
+  }
+}
+
+/**
+ * @brief Calls the on_sensor_collision_explosion() method of the object on top of the stack.
+ * @param sensor A sensor.
+ */
+void LuaContext::on_sensor_collision_explosion(Sensor& sensor) {
+
+  if (find_method("on_sensor_collision_explosion")) {
+    lua_pushstring(l, sensor.get_name().c_str());
+    call_function(2, 0, "on_sensor_collision_explosion");
+  }
+}
+
+/**
+ * @brief Calls the on_chest_empty() method of the object on top of the stack.
+ * @param chest An empty chest.
+ * @return true if the on_chest_empty() is defined.
+ */
+bool LuaContext::on_chest_empty(Chest& chest) {
+
+  if (find_method("on_chest_empty")) {
+    lua_pushstring(l, chest.get_name().c_str());
+    call_function(2, 0, "on_chest_empty");
+    return true;
+  }
+  return false;
+}
+
+/**
+ * @brief Calls the on_shop_item_buying() method of the object on top of the stack.
+ * @param shop_item Name of a shop item to buy.
+ * @return true if the player is allowed to buy the item.
+ */
+bool LuaContext::on_shop_item_buying(ShopItem& shop_item) {
+
+  if (find_method("on_shop_item_buying")) {
+    lua_pushstring(l, shop_item.get_name().c_str());
+    call_function(2, 1, "on_shop_item_buying");
+    return lua_toboolean(l, -1);
+  }
+  return false;
+}
+
+/**
+ * @brief Calls the on_shop_item_bought() method of the object on top of the stack.
+ * @param shop_item Name of a shop item just bought.
+ */
+void LuaContext::on_shop_item_bought(ShopItem& shop_item) {
+
+  if (find_method("on_shop_item_bought")) {
+    lua_pushstring(l, shop_item.get_name().c_str());
+    call_function(2, 0, "on_shop_item_bought");
+  }
+}
+
+/**
+ * @brief Calls the on_door_open() method of the object on top of the stack.
+ * @param A door just opened.
+ */
+void LuaContext::on_door_open(Door& door) {
+
+  if (find_method("on_door_open")) {
+    lua_pushstring(l, door.get_name().c_str());
+    call_function(2, 0, "on_door_open");
+  }
+}
+
+/**
+ * @brief Calls the on_() method of the object on top of the stack.
+ * @param A door just closed.
+ */
+void LuaContext::on_door_closed(Door& door) {
+
+  if (find_method("on_door_closed")) {
+    lua_pushstring(l, door.get_name().c_str());
+    call_function(2, 0, "on_door_closed");
+  }
+}
+
+/**
+ * @brief Calls the on_block_moved() method of the object on top of the stack.
+ * @param block A block just moved.
+ */
+void LuaContext::on_block_moved(Block& block) {
+
+  if (find_method("on_block_moved")) {
+    lua_pushstring(l, block.get_name().c_str());
+    call_function(2, 0, "on_block_moved");
+  }
+}
+
+/**
+ * @brief Calls the on_enemy_dying() method of the object on top of the stack.
+ * @param enemy An enemy.
+ */
+void LuaContext::on_enemy_dying(Enemy& enemy) {
+
+  if (find_method("on_enemy_dying")) {
+    lua_pushstring(l, enemy.get_name().c_str());
+    call_function(2, 0, "on_enemy_dying");
+  }
+}
+
+/**
+ * @brief Calls the on_enemy_dead() method of the object on top of the stack.
+ * @param enemy An enemy.
+ */
+void LuaContext::on_enemy_dead(Enemy& enemy) {
+
+  if (find_method("on_enemy_dead")) {
+    lua_pushstring(l, enemy.get_name().c_str());
+    call_function(2, 0, "on_enemy_dead");
   }
 }
 

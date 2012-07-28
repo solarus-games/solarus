@@ -48,6 +48,7 @@ class LuaContext: public Script {
     void exit();
     void update();
     void notify_input(InputEvent& event);
+    void notify_camera_reached_target(Map& map);
 
     // Main Lua script (sol.main).
     void main_on_update();
@@ -73,10 +74,13 @@ class LuaContext: public Script {
     void map_on_update(Map& map);
     void map_on_suspended(Map& map, bool suspended);
     void map_on_started(Map& map, DestinationPoint& destination_point);
-    void map_on_treasure_obtaining(Map& map, const Treasure& treasure);
-    void map_on_treasure_obtained(Map& map, const Treasure& treasure);
     void map_on_opening_transition_finished(Map& map,
         DestinationPoint& destination_point);
+    void map_on_dialog_started(Map& map, const std::string& dialog_id);
+    void map_on_dialog_finished(Map& map, const std::string& dialog_id, int answer);
+    void map_on_camera_back(Map& map);
+    void map_on_treasure_obtaining(Map& map, const Treasure& treasure);
+    void map_on_treasure_obtained(Map& map, const Treasure& treasure);
     void map_on_switch_activated(Map& map, Switch& sw);
     void map_on_switch_inactivated(Map& map, Switch& sw);
     void map_on_switch_left(Map& map, Switch& sw);
@@ -84,9 +88,13 @@ class LuaContext: public Script {
     void map_on_hero_on_sensor(Map& map, Sensor& sensor);
     void map_on_hero_still_on_sensor(Map& map, Sensor& sensor);
     void map_on_npc_movement_finished(Map& map, NPC& npc);
+    void map_on_npc_interaction(Map& map, NPC& npc);
     void map_on_npc_interaction_finished(Map& map, NPC& npc);
+    bool map_on_npc_interaction_item(Map& map, NPC& npc,
+        const std::string& item_name, int variant);
     void map_on_npc_interaction_item_finished(Map& map, NPC& npc,
         const std::string& item_name, int variant);
+    void map_on_npc_collision_fire(Map& map, NPC& npc);
     void map_on_sensor_collision_explosion(Map& map, Sensor& sensor);
     bool map_on_chest_empty(Map& map, Chest& chest);
     bool map_on_shop_item_buying(Map& map, ShopItem& shop_item);
@@ -104,11 +112,14 @@ class LuaContext: public Script {
     bool find_method(int index, const std::string& function_name);
     bool find_method(const std::string& function_name);
 
-    static int l_loader(lua_State* l);
-
     void register_video_module();
     void register_menu_module();
     void register_language_module();
+
+    static FunctionAvailableToScript
+      l_loader,
+      l_camera_do_callback,
+      l_camera_restore;
 
   public:  // TODO make private once Script is removed
 
@@ -118,6 +129,7 @@ class LuaContext: public Script {
     void on_display(Surface& dst_surface);
     void on_pre_display(Surface& dst_surface);
     void on_post_display(Surface& dst_surface);
+    void on_suspended(bool suspended);
     void on_input(InputEvent& event);
     void on_key_pressed(InputEvent& event);
     void on_key_released(InputEvent& event);
@@ -126,11 +138,13 @@ class LuaContext: public Script {
     void on_joypad_axis_moved(InputEvent& event);
     void on_joypad_hat_moved(InputEvent& event);
     void on_direction_pressed(InputEvent& event);
-    void on_suspended(bool suspended);
     void on_started(DestinationPoint& destination_point);
+    void on_opening_transition_finished(DestinationPoint& destination_point);
+    void on_dialog_started(const std::string& dialog_id);
+    void on_dialog_finished(const std::string& dialog_id, int answer);
+    void on_camera_back();
     void on_treasure_obtaining(const Treasure& treasure);
     void on_treasure_obtained(const Treasure& treasure);
-    void on_opening_transition_finished(const std::string& destination_point_name);
     void on_switch_activated(Switch& sw);
     void on_switch_inactivated(Switch& sw);
     void on_switch_left(Switch& sw);
@@ -138,9 +152,13 @@ class LuaContext: public Script {
     void on_hero_on_sensor(Sensor& sensor);
     void on_hero_still_on_sensor(Sensor& sensor);
     void on_npc_movement_finished(NPC& npc);
+    void on_npc_interaction(NPC& npc);
     void on_npc_interaction_finished(NPC& npc);
+    bool on_npc_interaction_item(NPC& npc,
+        const std::string &item_name, int variant);
     void on_npc_interaction_item_finished(NPC& npc,
         const std::string &item_name, int variant);
+    void on_npc_collision_fire(NPC& npc);
     void on_sensor_collision_explosion(Sensor& sensor);
     bool on_chest_empty(Chest& chest);
     bool on_shop_item_buying(ShopItem& shop_item);

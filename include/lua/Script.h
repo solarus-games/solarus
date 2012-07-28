@@ -95,7 +95,6 @@ class Script {
         const std::string& item_name, int variant);
     void event_npc_collision_fire(const std::string& npc_name);
 
-    bool has_played_music();
     void do_callback(int callback_ref);
     void cancel_callback(int callback_ref);
 
@@ -209,8 +208,6 @@ class Script {
     std::set<DynamicDisplayable*>
       displayables;                 /**< all displayable objects created by
                                      * this script */
-
-    bool music_played;
 
     // APIs
     uint32_t apis_enabled;          /**< OR combination of optional APIs */

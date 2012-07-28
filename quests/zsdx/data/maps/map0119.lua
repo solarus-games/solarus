@@ -19,6 +19,8 @@ function event_map_started(destination_point_name)
     if sol.map.get_game():get_boolean(905) then
       new_music = "dark_mountain"
       sol.map.tileset_set(13)
+    else
+      new_music = "light_world"
     end
 
     -- boss fight
@@ -42,9 +44,7 @@ function event_map_started(destination_point_name)
     end
   end
 
-  if new_music ~= nil then
-    sol.audio.play_music(new_music)
-  end
+  sol.audio.play_music(new_music)
 end
 
 function event_map_opening_transition_finished(destination_point_name)

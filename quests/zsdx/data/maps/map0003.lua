@@ -12,6 +12,8 @@ function event_map_started(destination_point_name)
   if sol.map.get_game():get_boolean(905) then
     sol.audio.play_music("dark_world")
     sol.map.tileset_set(13)
+  else
+    sol.audio.play_music("light_world")
   end
 
   if sol.map.get_game():get_boolean(24) then

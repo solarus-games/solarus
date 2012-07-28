@@ -32,13 +32,12 @@ function event_map_started(destination_point_name)
     end
 
   else
+    new_music = "light_world"
     sol.map.tile_set_group_enabled("castle_east_bridge_off", false)
     sol.map.teletransporter_set_group_enabled("teletransporter_dw", false)
   end
 
-  if new_music ~= nil then
-    sol.audio.play_music(new_music)
-  end
+  sol.audio.play_music(new_music)
 end
 
 function event_switch_activated(switch_name)

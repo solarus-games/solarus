@@ -39,7 +39,6 @@ Script::Script(MainLoop& main_loop, uint32_t apis_enabled):
   main_loop(main_loop),
   current_game(NULL),
   current_screen(NULL),
-  music_played(false),
   apis_enabled(apis_enabled) {
 
 }
@@ -94,7 +93,6 @@ void Script::exit() {
 
     lua_close(l);
     l = NULL;
-    music_played = false;
   }
 }
 
@@ -669,15 +667,6 @@ void Script::set_suspended(bool suspended) {
   if (l != NULL) {
     set_suspended_timers(suspended);
   }
-}
-
-/**
- * @brief Returns whether this script has played a music,
- * i.e. called \ref lua_api_audio_play_music.
- * @return true if this script has played a music
- */
-bool Script::has_played_music() {
-  return music_played;
 }
 
 /**

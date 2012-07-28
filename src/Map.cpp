@@ -603,13 +603,7 @@ void Map::start() {
   get_lua_context().notify_map_started(*this, get_destination_point());
   this->entities->notify_map_started();
   get_game().get_equipment().set_map(*this);
-
-  /* TODO
-  if (!script->has_played_music()) {
-    // play the default music of the map, unless the script decided to play another music
-    Music::play(music_id);
-  }
-  */
+  Music::play(music_id);
 }
 
 /**

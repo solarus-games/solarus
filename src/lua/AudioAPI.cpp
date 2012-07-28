@@ -71,11 +71,9 @@ int Script::audio_api_preload_sounds(lua_State *l) {
  */
 int Script::audio_api_play_music(lua_State *l) {
 
-  Script& script = get_script(l);
   const std::string& music_id = luaL_checkstring(l, 1);
 
   Music::play(music_id);
-  script.music_played = true;
 
   return 0;
 }
@@ -87,10 +85,7 @@ int Script::audio_api_play_music(lua_State *l) {
  */
 int Script::audio_api_stop_music(lua_State* l) {
 
-  Script& script = get_script(l);
-
   Music::play(Music::none);
-  script.music_played = true;
 
   return 0;
 }

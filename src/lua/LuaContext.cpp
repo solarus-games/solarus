@@ -28,7 +28,9 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "Treasure.h"
+#include "Map.h"
 #include <sstream>
+#include <iomanip>
 #include <lua.hpp>
 
 /**
@@ -230,9 +232,7 @@ void LuaContext::update() {
 void LuaContext::notify_input(InputEvent& event) {
 
   // Call the appropriate callback in sol.main (if it exists).
-  push_main(l);
-  on_input(event);
-  lua_pop(l, 1);
+  main_on_input(event);
 }
 
 /**
@@ -243,7 +243,20 @@ void LuaContext::notify_input(InputEvent& event) {
  */
 void LuaContext::notify_map_started(Map& map, DestinationPoint* destination_point) {
 
-  // TODO load the map's code
+  // Compute the file name, depending on the id of the map.
+  int id = (int) map.get_id();
+  std::ostringstream oss;
+  oss << "maps/map" << std::setfill('0') << std::setw(4) << id;
+  std::string file_name(oss.str());
+
+  // Load the map's code.
+  load_file(l, file_name);
+
+  // Run it with the map userdata as parameter.
+  push_map(l, map);
+  call_function(1, 0, file_name);
+
+  // Call the map:on_started callback.
   map_on_started(map, destination_point);
 }
 

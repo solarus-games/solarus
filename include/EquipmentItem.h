@@ -14,18 +14,18 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_ITEM_PROPERTIES_H
-#define SOLARUS_ITEM_PROPERTIES_H
+#ifndef SOLARUS_EQUIPMENT_ITEM_H
+#define SOLARUS_EQUIPMENT_ITEM_H
 
 #include "Common.h"
 #include <string>
 
 /**
- * @brief Describes the static properties of an item defined in the quest.
+ * @brief An item possibly possessed by the player.
  *
- * These properties are loaded from the file items.dat.
+ * Its properties are loaded from the data file items.dat.
  */
-class ItemProperties {
+class EquipmentItem {
 
   public:
 
@@ -66,8 +66,8 @@ class ItemProperties {
 
   public:
 
-    ItemProperties(Equipment &equipment, IniFile &ini);
-    ~ItemProperties();
+    EquipmentItem(Equipment &equipment, IniFile &ini);
+    ~EquipmentItem();
 
     const std::string& get_name();
     bool is_saved();

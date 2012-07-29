@@ -23,7 +23,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "Sprite.h"
-#include "ItemProperties.h"
+#include "EquipmentItem.h"
 #include "lua/ItemScript.h"
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
@@ -124,7 +124,7 @@ PickableItem* PickableItem::create(Game &game, Layer layer, int x, int y, Treasu
 
   // set the item properties
   item->falling_height = falling_height;
-  item->will_disappear = !force_persistent && treasure.get_item_properties().can_disappear();
+  item->will_disappear = !force_persistent && treasure.get_equipment_item().can_disappear();
 
   // initialize the item
   item->initialize_sprites();
@@ -143,23 +143,23 @@ PickableItem* PickableItem::create(Game &game, Layer layer, int x, int y, Treasu
  */
 void PickableItem::initialize_sprites() {
 
-  ItemProperties &properties = treasure.get_item_properties();
+  EquipmentItem& item = treasure.get_equipment_item();
 
   // create the shadow
   delete shadow_sprite;
-  switch (properties.get_shadow_size()) {
+  switch (item.get_shadow_size()) {
 
-    case ItemProperties::SHADOW_SMALL:
+    case EquipmentItem::SHADOW_SMALL:
       shadow_sprite = new Sprite("entities/shadow");
       shadow_sprite->set_current_animation("small");
       break;
 
-    case ItemProperties::SHADOW_BIG:
+    case EquipmentItem::SHADOW_BIG:
       shadow_sprite = new Sprite("entities/shadow");
       shadow_sprite->set_current_animation("big");
       break;
     
-    case ItemProperties::SHADOW_NONE:
+    case EquipmentItem::SHADOW_NONE:
       shadow_sprite = NULL;
       break;
   }
@@ -341,16 +341,16 @@ void PickableItem::notify_collision(MapEntity &other_entity, Sprite &other_sprit
  */
 void PickableItem::give_item_to_player() {
 
-  ItemProperties& properties = treasure.get_item_properties();
+  EquipmentItem& item = treasure.get_equipment_item();
 
   // play the sound
-  const std::string& sound_id = properties.get_sound_when_picked();
+  const std::string& sound_id = item.get_sound_when_picked();
   if (!sound_id.empty()) {
     Sound::play(sound_id);
   }
 
   // give the item
-  if (properties.is_brandished_when_picked()) {
+  if (item.is_brandished_when_picked()) {
     get_hero().start_treasure(treasure);
   }
   else {

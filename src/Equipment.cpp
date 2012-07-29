@@ -19,7 +19,7 @@
 #include "Savegame.h"
 #include "DialogBox.h"
 #include "InventoryItem.h"
-#include "ItemProperties.h"
+#include "EquipmentItem.h"
 #include "Map.h"
 #include "lua/ItemScript.h"
 #include "lowlevel/System.h"
@@ -42,7 +42,7 @@ Equipment::Equipment(Savegame &savegame):
   ini.start_group_iteration();
   while (ini.has_more_groups()) {
 
-    item_properties[ini.get_group()] = new ItemProperties(*this, ini);
+    items[ini.get_group()] = new EquipmentItem(*this, ini);
     ini.next_group();
   }
 }
@@ -53,8 +53,8 @@ Equipment::Equipment(Savegame &savegame):
 Equipment::~Equipment() {
 
   {
-    std::map<std::string, ItemProperties*>::const_iterator it;
-    for (it = item_properties.begin(); it != item_properties.end(); it++) {
+    std::map<std::string, EquipmentItem*>::const_iterator it;
+    for (it = items.begin(); it != items.end(); it++) {
       delete it->second;
     }
   }
@@ -87,10 +87,10 @@ ItemScript& Equipment::get_item_script(const std::string &item_name) {
 void Equipment::set_game(Game &game) {
 
   // create the scripts
-  std::map<std::string, ItemProperties*>::const_iterator it;
-  for (it = item_properties.begin(); it != item_properties.end(); it++) {
-    ItemProperties *properties = it->second;
-    item_scripts[properties->get_name()] = new ItemScript(game, *properties);
+  std::map<std::string, EquipmentItem*>::const_iterator it;
+  for (it = items.begin(); it != items.end(); it++) {
+    EquipmentItem *item = it->second;
+    item_scripts[item->get_name()] = new ItemScript(game, *item);
   }
 
   // if this is a new game, give the initial items
@@ -436,15 +436,16 @@ void Equipment::stop_removing_magic() {
 // saved items
 
 /**
- * @brief Returns the static properties of the specified item.
+ * @brief Returns an equipment item.
  * @param item_name name of the item to get
- * @return the static properties of this item
+ * @return the corresponding item
  */
-ItemProperties& Equipment::get_item_properties(const std::string &item_name) {
+EquipmentItem& Equipment::get_item(const std::string &item_name) {
 
-  ItemProperties *properties = item_properties[item_name];
-  Debug::check_assertion(properties != NULL, StringConcat() << "Cannot find item with name '" << item_name << "'");
-  return *properties;
+  EquipmentItem *item = items[item_name];
+  Debug::check_assertion(item != NULL,
+      StringConcat() << "Cannot find item with name '" << item_name << "'");
+  return *item;
 }
 
 /**
@@ -471,7 +472,7 @@ bool Equipment::has_item(const std::string &item_name) {
  */
 int Equipment::get_item_variant(const std::string &item_name) {
 
-  int index = get_item_properties(item_name).get_savegame_variable();
+  int index = get_item(item_name).get_savegame_variable();
   if (index == -1) {
     return 0;
   }
@@ -487,10 +488,10 @@ int Equipment::get_item_variant(const std::string &item_name) {
  */
 void Equipment::set_item_variant(const std::string &item_name, int variant) {
 
-  ItemProperties &properties = get_item_properties(item_name);
-  int index = properties.get_savegame_variable();
+  EquipmentItem& item = get_item(item_name);
+  int index = item.get_savegame_variable();
   Debug::check_assertion(index != -1, StringConcat() << "The item '" << item_name << "' is not saved");
-  Debug::check_assertion(variant >= 0 && variant <= properties.get_nb_variants(),
+  Debug::check_assertion(variant >= 0 && variant <= item.get_nb_variants(),
       StringConcat() << "Invalid variant '" << variant << "' for item '" << item_name);
 
   // set the possession state in the savegame
@@ -528,7 +529,7 @@ void Equipment::remove_item(const std::string &item_name) {
  */
 int Equipment::get_item_amount(const std::string &item_name) {
 
-  int counter_index = get_item_properties(item_name).get_counter_savegame_variable();
+  int counter_index = get_item(item_name).get_counter_savegame_variable();
   Debug::check_assertion(counter_index != -1, StringConcat() << "No amount for item '" << item_name << "'");
 
   return savegame.get_integer(counter_index);
@@ -545,7 +546,7 @@ int Equipment::get_item_amount(const std::string &item_name) {
  */
 void Equipment::set_item_amount(const std::string &item_name, int amount) {
 
-  int counter_index = get_item_properties(item_name).get_counter_savegame_variable();
+  int counter_index = get_item(item_name).get_counter_savegame_variable();
 
   Debug::check_assertion(counter_index != -1, StringConcat()
       << "No amount for item '" << item_name << "'");
@@ -592,18 +593,18 @@ int Equipment::get_item_maximum(const std::string &item_name) {
   // find the maximum as a fixed value or a value that depends on another item
   int maximum = 0;
 
-  ItemProperties &properties = get_item_properties(item_name);
-  int fixed_limit = properties.get_fixed_limit();
+  EquipmentItem& item = get_item(item_name);
+  int fixed_limit = item.get_fixed_limit();
   if (fixed_limit != 0) {
     maximum = fixed_limit;
     Debug::check_assertion(maximum > 0, StringConcat() << "No maximum amount for item '" << item_name << "'");
   }
   else {
-    const std::string &item_limiting = properties.get_item_limiting();
+    const std::string& item_limiting = item.get_item_limiting();
     Debug::check_assertion(item_limiting.size() != 0,
 	StringConcat() << "No maximum amount for item '" << item_name << "'");
     int item_limiting_variant = get_item_variant(item_limiting);
-    maximum = get_item_properties(item_limiting).get_amount(item_limiting_variant);
+    maximum = get_item(item_limiting).get_amount(item_limiting_variant);
   }
 
   return maximum;
@@ -617,7 +618,7 @@ int Equipment::get_item_maximum(const std::string &item_name) {
 bool Equipment::has_item_maximum(const std::string &item_name) {
 
   bool result;
-  const std::string &item_counter_changed = get_item_properties(item_name).get_item_counter_changed();
+  const std::string& item_counter_changed = get_item(item_name).get_item_counter_changed();
   if (item_counter_changed.size() == 0) {
     result = false;
   }
@@ -661,19 +662,19 @@ void Equipment::get_random_item(std::string &item_name, int &variant) {
 
   // this can be optimized to avoid always traversing all item properties,
   // unless we decide to make dynamic probabilities (i.e. call the item scripts to know them)
-  std::map<std::string, ItemProperties*>::iterator it;
-  for (it = item_properties.begin(); it != item_properties.end(); it++) {
+  std::map<std::string, EquipmentItem*>::iterator it;
+  for (it = items.begin(); it != items.end(); it++) {
 
-    ItemProperties *properties = it->second;
-    int nb_variants = properties->get_nb_variants();
+    EquipmentItem* item = it->second;
+    int nb_variants = item->get_nb_variants();
     for (int i = 1; i <= nb_variants; i++) {
 
-      int prob = properties->get_probability(i);
+      int prob = item->get_probability(i);
       sum += prob;
       if (sum > r) {
-	item_name = it->first;
-	variant = i;
-	return;
+        item_name = it->first;
+        variant = i;
+        return;
       }
     }
   }
@@ -707,7 +708,7 @@ void Equipment::set_item_assigned(int slot, const std::string &item_name) {
 
   if (item_name.size() != 0) {
     Debug::check_assertion(has_item(item_name), StringConcat() << "Cannot assign item '" << item_name << "' because the player does not have it");
-    Debug::check_assertion(get_item_properties(item_name).can_be_assigned(), StringConcat() << "The item '" << item_name << "' cannot be assigned");
+    Debug::check_assertion(get_item(item_name).can_be_assigned(), StringConcat() << "The item '" << item_name << "' cannot be assigned");
   }
 
   int index = Savegame::ITEM_SLOT_0 + slot;
@@ -965,12 +966,12 @@ void Equipment::set_dungeon_finished(int dungeon) {
  */
 void Equipment::set_initial_items() {
 
-  std::map<std::string, ItemProperties*>::const_iterator it;
+  std::map<std::string, EquipmentItem*>::const_iterator it;
 
-  for (it = item_properties.begin(); it != item_properties.end(); it++) {
+  for (it = items.begin(); it != items.end(); it++) {
 
-    ItemProperties *properties = it->second;
-    int initial_variant = properties->get_initial_variant();
+    EquipmentItem* item = it->second;
+    int initial_variant = item->get_initial_variant();
     if (initial_variant != 0) {
       add_item(it->first, initial_variant);
     }
@@ -992,10 +993,10 @@ bool Equipment::can_receive_item(const std::string &item_name, int variant) {
 
   bool authorized = true;
 
-  ItemProperties &properties = get_item_properties(item_name);
+  EquipmentItem& item = get_item(item_name);
 
   // see if obtaining this item increases the counter of another item
-  const std::string &item_counter_changed = properties.get_item_counter_changed();
+  const std::string& item_counter_changed = item.get_item_counter_changed();
   if (item_counter_changed.size() > 0) {
 
     // consider built-in counters
@@ -1006,7 +1007,7 @@ bool Equipment::can_receive_item(const std::string &item_name, int variant) {
 	    && item_counter_changed != "money"
 	    && item_counter_changed != "small_keys") { // general case
       // check that the player has unlocked the counter of the item to increase
-      const std::string &item_limiting = get_item_properties(item_counter_changed).get_item_limiting();
+      const std::string &item_limiting = get_item(item_counter_changed).get_item_limiting();
       authorized = (item_limiting.size() == 0) || has_item(item_limiting);
     }
   }
@@ -1025,18 +1026,18 @@ bool Equipment::can_receive_item(const std::string &item_name, int variant) {
  */
 void Equipment::add_item(const std::string &item_name, int variant) {
 
-  ItemProperties &properties = get_item_properties(item_name);
+  EquipmentItem& item = get_item(item_name);
 
-  if (properties.is_saved()) {
+  if (item.is_saved()) {
 
     // the item is saved
     set_item_variant(item_name, variant);
 
-    if (properties.has_counter()) {
+    if (item.has_counter()) {
       // the item has a counter
 
       // if another item acts as a limit for the counter of this item
-      const std::string &item_limiting = properties.get_item_limiting();
+      const std::string& item_limiting = item.get_item_limiting();
       if (item_limiting.size() > 0) {
 
         // make sure we have at least the first variant of that item
@@ -1052,10 +1053,10 @@ void Equipment::add_item(const std::string &item_name, int variant) {
     }
 
     // see if this item acts as a limit for another item
-    const std::string &item_limited = properties.get_item_limited();
+    const std::string& item_limited = item.get_item_limited();
     if (item_limited.size() > 0) {
 
-      int maximum = properties.get_amount(variant);
+      int maximum = item.get_amount(variant);
 
       // consider built-in counters
       if (item_limited == "life") {
@@ -1086,10 +1087,10 @@ void Equipment::add_item(const std::string &item_name, int variant) {
 
   else {
     // now, see if obtaining this item changes the counter of another item
-    const std::string &item_counter_changed = properties.get_item_counter_changed();
+    const std::string &item_counter_changed = item.get_item_counter_changed();
     if (item_counter_changed.size() > 0) {
 
-      int amount = properties.get_amount(variant);
+      int amount = item.get_amount(variant);
 
       // consider built-in counters
       if (item_counter_changed == "life") {

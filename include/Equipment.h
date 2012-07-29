@@ -37,7 +37,7 @@ class Equipment {
     bool suspended;							/**< indicates that the game is suspended */
 
     // items
-    std::map<std::string, ItemProperties*> item_properties;		/**< static properties of each item (loaded from the file items.dat) */
+    std::map<std::string, EquipmentItem*> items;		/**< each item (properties loaded from the file items.dat) */
     std::map<std::string, ItemScript*> item_scripts;			/**< the script of each item (only when there is a game) */
 
     // magic bar decrease handling
@@ -93,7 +93,7 @@ class Equipment {
     void stop_removing_magic();
 
     // equipment items saved
-    ItemProperties& get_item_properties(const std::string &item_name);
+    EquipmentItem& get_item(const std::string &item_name);
     bool has_item(const std::string &item_name);
     int get_item_variant(const std::string &item_name);
     void set_item_variant(const std::string &item_name, int variant);

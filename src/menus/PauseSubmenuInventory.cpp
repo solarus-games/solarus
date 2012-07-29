@@ -28,7 +28,7 @@
 #include "Counter.h"
 #include "KeysEffect.h"
 #include "InventoryItem.h"
-#include "ItemProperties.h"
+#include "EquipmentItem.h"
 #include "StringResource.h"
 #include <sstream>
 
@@ -54,9 +54,9 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu &pause_menu, Game &game):
     oss << "item_" << k;
     item_names[k] = ini.get_string_value(oss.str());
     int variant = equipment.get_item_variant(item_names[k]);
-    ItemProperties &item_properties = equipment.get_item_properties(item_names[k]);
+    EquipmentItem& item = equipment.get_item(item_names[k]);
 
-    if (variant != 0 && item_properties.has_counter()) {
+    if (variant != 0 && item.has_counter()) {
 
       // if the player has the item and this item has an amount, we show a counter
 
@@ -148,7 +148,7 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
   set_caption_text(caption_strings[index]);
   if (variant != 0) {
     keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
-    keys_effect.set_item_keys_enabled(equipment.get_item_properties(item_name).can_be_assigned());
+    keys_effect.set_item_keys_enabled(equipment.get_item(item_name).can_be_assigned());
   }
   else {
     keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
@@ -349,7 +349,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
   const std::string &item_name = item_names[index];
 
   // if this item is not assignable, do nothing
-  if (!equipment.get_item_properties(item_name).can_be_assigned()) {
+  if (!equipment.get_item(item_name).can_be_assigned()) {
     return;
   }
 

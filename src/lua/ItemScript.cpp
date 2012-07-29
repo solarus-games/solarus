@@ -17,7 +17,7 @@
 #include "lua/ItemScript.h"
 #include "entities/PickableItem.h"
 #include "movements/FallingHeight.h"
-#include "ItemProperties.h"
+#include "EquipmentItem.h"
 #include "InventoryItem.h"
 #include "Game.h"
 #include "Treasure.h"
@@ -30,15 +30,15 @@
  * @param game the game
  * @param item_properties the static properties of the item
  */
-ItemScript::ItemScript(Game &game, ItemProperties &item_properties):
+ItemScript::ItemScript(Game &game, EquipmentItem& equipment_item):
   Script(game.get_main_loop(), ITEM_API),
   started(false),
   game(game),
-  item_properties(item_properties),
+  equipment_item(equipment_item),
   pickable_item(NULL),
   inventory_item(NULL) {
 
-  std::string script_name = (std::string) "items/" + item_properties.get_name();
+  std::string script_name = (std::string) "items/" + equipment_item.get_name();
   initialize();
 //  started = do_file_if_exists(l, script_name);
   started = false;
@@ -71,11 +71,11 @@ Map& ItemScript::get_map() {
 }
 
 /**
- * @brief Returns the properties of the equipment item controlled by this script.
- * @return the item properties
+ * @brief Returns the equipment item controlled by this script.
+ * @return the item
  */
-ItemProperties& ItemScript::get_item_properties() {
-  return item_properties;
+EquipmentItem& ItemScript::get_equipment_item() {
+  return equipment_item;
 }
 
 /**
@@ -212,7 +212,7 @@ void ItemScript::event_use(InventoryItem &inventory_item) {
   this->inventory_item = &inventory_item;
   if (!notify_script("event_use")) {
     Debug::die(StringConcat() << "No function event_use() for inventory item '"
-        << item_properties.get_name() << "'");
+        << equipment_item.get_name() << "'");
   }
   this->inventory_item = old;
 }

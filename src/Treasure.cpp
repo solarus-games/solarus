@@ -119,8 +119,8 @@ void Treasure::decide_content() {
  * @brief Returns the properties of the item given with this treasure.
  * @return the item properties
  */
-ItemProperties& Treasure::get_item_properties() const {
-  return game->get_equipment().get_item_properties(get_item_name());
+EquipmentItem& Treasure::get_equipment_item() const {
+  return game->get_equipment().get_item(get_item_name());
 }
 
 /**

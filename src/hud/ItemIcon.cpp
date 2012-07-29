@@ -17,7 +17,7 @@
 #include "hud/ItemIcon.h"
 #include "Counter.h"
 #include "Equipment.h"
-#include "ItemProperties.h"
+#include "EquipmentItem.h"
 #include "Game.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
@@ -99,7 +99,7 @@ void ItemIcon::update() {
     }
 
     // counter index
-    int counter_index = equipment->get_item_properties(current_item).get_counter_savegame_variable();
+    int counter_index = equipment->get_item(current_item).get_counter_savegame_variable();
     if (counter_index != -1) {
 
       int current_counter_value = equipment->get_item_amount(current_item);

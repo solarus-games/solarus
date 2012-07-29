@@ -217,7 +217,7 @@ Map& Script::get_map() {
  *
  * @return the item properties
  */
-ItemProperties& Script::get_item_properties() {
+EquipmentItem& Script::get_equipment_item() {
 
   Debug::die("This script does not provide the item API");
   throw;

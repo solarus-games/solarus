@@ -35,7 +35,7 @@ class ItemScript: public Script {
 
     bool started;                                       /**< true if the item's Lua code exists and is started */
     Game &game;						/**< the game */
-    ItemProperties &item_properties;			/**< static properties of the item */
+    EquipmentItem& equipment_item;			/**< the item */
 
     PickableItem *pickable_item;			/**< the pickable item that just appeared in event_appear(), or NULL */
     InventoryItem *inventory_item;			/**< the inventory item that is being used when event_used() is called,
@@ -45,11 +45,11 @@ class ItemScript: public Script {
 
     Game &get_game();
     Map &get_map();
-    ItemProperties& get_item_properties();
+    EquipmentItem& get_equipment_item();
 
   public:
 
-    ItemScript(Game &game, ItemProperties &item_properties);
+    ItemScript(Game &game, EquipmentItem& equipment_item);
     ~ItemScript();
 
     void update();

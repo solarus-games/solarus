@@ -20,7 +20,7 @@
 #include "lowlevel/Sound.h"
 #include "lua/ItemScript.h"
 #include "lua/LuaContext.h"
-#include "ItemProperties.h"
+#include "EquipmentItem.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Map.h"
@@ -56,7 +56,7 @@ void Hero::TreasureState::start(State *previous_state) {
   get_sprites().set_animation_brandish();
 
   // play the sound
-  const std::string &sound_id = treasure.get_item_properties().get_sound_when_brandished();
+  const std::string &sound_id = treasure.get_equipment_item().get_sound_when_brandished();
   if (!sound_id.empty()) {
     Sound::play(sound_id);
   }

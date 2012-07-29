@@ -50,7 +50,7 @@ class Treasure {
     ~Treasure();
     Treasure& operator=(const Treasure& other);
 
-    ItemProperties& get_item_properties() const;
+    EquipmentItem& get_equipment_item() const;
     const std::string& get_item_name() const;
     int get_variant() const;
     int get_savegame_variable() const;

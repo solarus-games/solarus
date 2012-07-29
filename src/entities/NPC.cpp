@@ -30,7 +30,6 @@
 #include "Sprite.h"
 #include "Equipment.h"
 #include "InventoryItem.h"
-#include "ItemProperties.h"
 
 /**
  * @brief Creates an NPC.

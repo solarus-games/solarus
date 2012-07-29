@@ -26,7 +26,6 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
-#include "ItemProperties.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"

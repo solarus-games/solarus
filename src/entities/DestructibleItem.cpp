@@ -30,7 +30,6 @@
 #include "DialogBox.h"
 #include "KeysEffect.h"
 #include "Equipment.h"
-#include "ItemProperties.h"
 #include "Treasure.h"
 #include "Map.h"
 #include "Sprite.h"

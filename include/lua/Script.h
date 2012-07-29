@@ -75,7 +75,7 @@ class Script {
     // TODO remove
     virtual Game& get_game();
     virtual Map& get_map();
-    virtual ItemProperties& get_item_properties();
+    virtual EquipmentItem& get_equipment_item();
     virtual Enemy& get_enemy();
 
     // main loop

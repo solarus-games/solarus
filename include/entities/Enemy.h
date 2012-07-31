@@ -23,6 +23,7 @@
 #include "entities/EnemyAttack.h"
 #include "entities/EnemyReaction.h"
 #include "entities/Explosion.h"
+#include "lua/ExportableToLua.h"
 
 /**
  * @brief Abstract class representing an enemy.
@@ -42,7 +43,7 @@
  * depending on its current movement and the attacks it is subject to.
  * Additional animations may be defined by the subclasses.
  */
-class Enemy: public Detector {
+class Enemy: public Detector, ExportableToLua {
 
   public:
 
@@ -257,7 +258,10 @@ class Enemy: public Detector {
     static ObstacleBehavior get_obstacle_behavior_by_name(const std::string& name);
 
     // communication with others
+    // TODO remove in the future Lua API (useless with the shared context)
     virtual void notify_message_received(Enemy& sender, const std::string& message);
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

@@ -38,8 +38,7 @@ Script::Script(MainLoop& main_loop, uint32_t apis_enabled):
   l(NULL),
   main_loop(main_loop),
   current_game(NULL),
-  current_screen(NULL),
-  apis_enabled(apis_enabled) {
+  current_screen(NULL) {
 
 }
 
@@ -182,62 +181,6 @@ bool Script::do_file_if_exists(lua_State* l, const std::string& script_name) {
 }
 
 /**
- * @brief Returns the game associated to this script (if any).
- *
- * Scripts that enable the game API must redefine this function.
- * This function is called by the implementation of the game API.
- *
- * @return the game
- */
-Game& Script::get_game() {
-
-  Debug::die("This script does not provide the game API");
-  throw; // to make the compiler happy
-}
-
-/**
- * @brief Returns the map associated to this script (if any).
- *
- * Scripts that enable the map API must redefine this function.
- * This function is called by the implementation of the map API.
- *
- * @return the map
- */
-Map& Script::get_map() {
-
-  Debug::die("This script does not provide the map API");
-  throw;
-}
-
-/**
- * @brief Returns the properties of the item associated to this script (if any).
- *
- * Scripts that enable the item API must redefine this function.
- * This function is called by the implementation of the item API.
- *
- * @return the item properties
- */
-EquipmentItem& Script::get_equipment_item() {
-
-  Debug::die("This script does not provide the item API");
-  throw;
-}
-
-/**
- * @brief Returns the enemy associated to this script (if any).
- *
- * Scripts that enable the enemy API must redefine this function.
- * This function is called by the implementation of the enemy API.
- *
- * @return the enemy
- */
-Enemy& Script::get_enemy() {
-
-  Debug::die("This script does not provide the enemy API");
-  throw;
-}
-
-/**
  * @brief Returns the Solarus main loop object.
  * @return The main loop manager.
  */
@@ -286,6 +229,7 @@ void Script::register_modules() {
   register_main_module();
   register_game_module();
   register_map_module();
+  register_enemy_module();
   register_audio_module();
   register_timer_module();
   register_surface_module();
@@ -294,10 +238,6 @@ void Script::register_modules() {
   register_movement_module();
   register_item_module();
   register_input_module();
-
-  if (apis_enabled && ENEMY_API) {
-    register_enemy_module();
-  }
 }
 
 /**

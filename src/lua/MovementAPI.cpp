@@ -261,10 +261,11 @@ int Script::movement_api_create(lua_State* l) {
     movement = new RandomMovement(32);
   }
   else if (type == "target") {
-    if (script.get_current_game() != NULL) {
+    Game* game = script.get_current_game();
+    if (game != NULL) {
       // If we are on a map, the default target is the hero.
       movement = new TargetMovement(
-          &script.get_map().get_entities().get_hero(), 96, false);
+          &game->get_hero(), 96, false);
     }
     else {
       movement = new TargetMovement(0, 0, 32, false);
@@ -603,7 +604,7 @@ int Script::target_movement_api_set_target(lua_State* l) {
     // two parameters to make it work: the entity type and its name.
     int entity_type = luaL_checkinteger(l, 2);
     const std::string& entity_name = luaL_checkstring(l, 3);
-    MapEntities& entities = get_script(l).get_map().get_entities();
+    MapEntities& entities = get_script(l).get_current_game()->get_current_map().get_entities();
     MapEntity* target = entities.get_entity(EntityType(entity_type), entity_name);
 
     movement.set_target(target);
@@ -880,7 +881,7 @@ int Script::path_finding_movement_api_set_target(lua_State* l) {
   // two parameters to make it work: the entity type and its name.
   int entity_type = luaL_checkinteger(l, 2);
   const std::string& entity_name = luaL_checkstring(l, 3);
-  MapEntities& entities = get_script(l).get_map().get_entities();
+  MapEntities& entities = get_script(l).get_current_game()->get_current_map().get_entities();
   MapEntity& target = *entities.get_entity(EntityType(entity_type), entity_name);
 
   movement.set_target(target);
@@ -947,7 +948,7 @@ int Script::circle_movement_api_set_center(lua_State* l) {
     // two parameters to make it work: the entity type and its name.
     int entity_type = luaL_checkinteger(l, 2);
     const std::string& entity_name = luaL_checkstring(l, 3);
-    MapEntities& entities = get_script(l).get_map().get_entities();
+    MapEntities& entities = get_script(l).get_current_game()->get_current_map().get_entities();
     MapEntity& center = *entities.get_entity(EntityType(entity_type), entity_name);
 
     int dx = luaL_optinteger(l, 4, 0); // TODO 3

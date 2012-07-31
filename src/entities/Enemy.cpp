@@ -1252,3 +1252,12 @@ Enemy::ObstacleBehavior Enemy::get_obstacle_behavior_by_name(const std::string& 
   Debug::die(StringConcat() << "Invalid obstacle behavior name: " << name);
   throw;
 }
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Enemy::get_lua_type_name() const {
+  return Script::enemy_module_name;
+}
+

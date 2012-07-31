@@ -288,7 +288,7 @@ int Script::item_api_get_position(lua_State* l) {
 
   PickableItem* pickable_item = item.get_pickable_item();
   Debug::check_assertion(pickable_item != NULL,
-                "Cannot call item:get_position(): there is no current pickable item");
+      "Cannot call item:get_position(): there is no current pickable item");
   const Rectangle& xy = pickable_item->get_xy();
 
   lua_pushinteger(l, xy.get_x());

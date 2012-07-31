@@ -72,12 +72,6 @@ class Script {
     Game* get_current_game();
     CustomScreen* get_current_screen();
 
-    // TODO remove
-    virtual Game& get_game();
-    virtual Map& get_map();
-    virtual EquipmentItem& get_equipment_item();
-    virtual Enemy& get_enemy();
-
     // main loop
     virtual void update();
     virtual void set_suspended(bool suspended);
@@ -104,13 +98,6 @@ class Script {
     void decrement_refcount(ExportableToLua* userdata);
 
   protected:
-
-    /**
-     * @brief Optional APIs available for some type of scripts.
-     */
-    enum API {
-      ENEMY_API         = 0x0008
-    };
 
     /**
      * @brief Data associated to any Lua timer.
@@ -156,6 +143,7 @@ class Script {
     static void push_color(lua_State* l, const Color& color);
     static void push_game(lua_State* l, Savegame& game);
     static void push_map(lua_State* l, Map& map);
+    static void push_enemy(lua_State* l, Enemy& enemy);
     static void push_item(lua_State* l, EquipmentItem& item);
     static void push_movement(lua_State* l, Movement& movement);
     static void push_ref(lua_State* l, int ref);
@@ -173,6 +161,7 @@ class Script {
     static Color check_color(lua_State* l, int index);
     static Savegame& check_game(lua_State* l, int index);
     static Map& check_map(lua_State* l, int index);
+    static Enemy& check_enemy(lua_State* l, int index);
     static EquipmentItem& check_item(lua_State* l, int index);
     static Movement& check_movement(lua_State* l, int index);
     static StraightMovement& check_straight_movement(lua_State* l, int index);
@@ -208,9 +197,6 @@ class Script {
     std::set<DynamicDisplayable*>
       displayables;                 /**< all displayable objects created by
                                      * this script */
-
-    // APIs
-    uint32_t apis_enabled;          /**< OR combination of optional APIs */
 
     static std::map<InputEvent::KeyboardKey, std::string>
       input_key_names; /**< names of all existing keyboard keys in Lua */
@@ -467,6 +453,7 @@ class Script {
       item_api_set_finished,
 
       // enemy API
+      enemy_api_get_map,
       enemy_api_get_name,
       enemy_api_get_life,
       enemy_api_set_life,

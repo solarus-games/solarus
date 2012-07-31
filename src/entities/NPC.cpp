@@ -18,7 +18,6 @@
 #include "entities/Hero.h"
 #include "entities/CarriedItem.h"
 #include "movements/Movement.h"
-#include "lua/ItemScript.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
@@ -53,7 +52,7 @@ NPC::NPC(Game& game, const std::string& name, Layer layer, int x, int y,
   Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, name, layer, x, y, 0, 0),
   subtype(subtype),
   dialog_to_show(""),
-  script_to_call(NULL) {
+  item_name("") {
 
   initialize_sprite(sprite_name, direction);
   set_size(16, 16);
@@ -63,20 +62,18 @@ NPC::NPC(Game& game, const std::string& name, Layer layer, int x, int y,
   // behavior
   if (behavior_string == "map") {
     behavior = BEHAVIOR_MAP_SCRIPT;
-    script_to_call = NULL; // the map script may be not available yet
   }
   else if (behavior_string.substr(0, 5) == "item#") {
     behavior = BEHAVIOR_ITEM_SCRIPT;
-    const std::string &item_name = behavior_string.substr(5);
-    script_to_call = &game.get_equipment().get_item_script(item_name);
+    item_name = behavior_string.substr(5);
   }
   else if (behavior_string.substr(0, 7) == "dialog#") {
     behavior = BEHAVIOR_DIALOG;
     dialog_to_show = behavior_string.substr(7);
   }
   else {
-    Debug::die(StringConcat() << "Invalid behavior string for interactive entity '" << name
-	<< "': '" << behavior_string << "'");
+    Debug::die(StringConcat() << "Invalid behavior string for NPC '" << name
+        << "': '" << behavior_string << "'");
   }
 }
 
@@ -252,7 +249,8 @@ void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
   else if (collision_mode == COLLISION_RECTANGLE && entity_overlapping.get_type() == FIRE) {
 
     if (behavior == BEHAVIOR_ITEM_SCRIPT) {
-      script_to_call->event_npc_collision_fire(get_name());
+      EquipmentItem& item = get_equipment().get_item(item_name);
+      get_lua_context().item_on_npc_collision_fire(item, *this);
     }
     else {
       get_lua_context().map_on_npc_collision_fire(get_map(), *this);
@@ -311,7 +309,8 @@ void NPC::call_script_hero_interaction() {
     get_lua_context().map_on_npc_interaction(get_map(), *this);
   }
   else {
-    script_to_call->event_npc_interaction(get_name());
+    EquipmentItem& item = get_equipment().get_item(item_name);
+    get_lua_context().item_on_npc_interaction(item, *this);
   }
   get_lua_context().map_on_npc_interaction_finished(get_map(), *this);
 }
@@ -322,24 +321,26 @@ void NPC::call_script_hero_interaction() {
  * This function is called when the player uses an inventory item
  * while the hero is facing this NPC.
  *
- * @param item the inventory item used
+ * @param inventory_item the inventory item used
  * @return true if an interaction occured
  */
-bool NPC::interaction_with_inventory_item(InventoryItem& item) {
+bool NPC::interaction_with_inventory_item(InventoryItem& inventory_item) {
 
   bool interaction_occured;
   if (behavior == BEHAVIOR_ITEM_SCRIPT) {
-    interaction_occured = script_to_call->event_npc_interaction_item(
-      get_name(), item.get_name(), item.get_variant());
+    EquipmentItem& equipment_item = get_equipment().get_item(item_name);
+    interaction_occured = get_lua_context().item_on_npc_interaction_item(
+      equipment_item, *this, inventory_item.get_name(), inventory_item.get_variant());
   }
   else {
     interaction_occured = get_lua_context().map_on_npc_interaction_item(
-      get_map(), *this, item.get_name(), item.get_variant());
+      get_map(), *this, inventory_item.get_name(), inventory_item.get_variant());
   }
 
   if (interaction_occured) {
     // always notify the map script when finished
-    get_lua_context().map_on_npc_interaction_item_finished(get_map(), *this, item.get_name(), item.get_variant());
+    get_lua_context().map_on_npc_interaction_item_finished(
+        get_map(), *this, inventory_item.get_name(), inventory_item.get_variant());
   }
   return interaction_occured;
 }

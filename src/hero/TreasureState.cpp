@@ -18,7 +18,6 @@
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "lowlevel/Sound.h"
-#include "lua/ItemScript.h"
 #include "lua/LuaContext.h"
 #include "EquipmentItem.h"
 #include "Game.h"
@@ -98,8 +97,10 @@ void Hero::TreasureState::update() {
       hero.rebuild_equipment();
     }
 
-    get_equipment().get_item_script(item_name).event_obtained(treasure);
-    get_lua_context().map_on_treasure_obtained(get_map(), treasure);
+    // Notify the Lua item and the Lua map.
+    LuaContext& lua_context = get_lua_context();
+    lua_context.item_on_obtained(get_equipment().get_item(item_name), treasure);
+    lua_context.map_on_treasure_obtained(get_map(), treasure);
 
     if (is_current_state()) { // because the script may have changed the state
       hero.set_state(new FreeState(hero));

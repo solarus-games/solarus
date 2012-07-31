@@ -27,18 +27,17 @@
  * This class gives access to the equipment data saved and the properties of items
  * as defined in items.dat.
  * You should call this class to get information about the current equipment
- * (sword, money, inventory…) and to modify it.
+ * (sword, money, inventory...) and to modify it.
  */
 class Equipment {
 
   private:
 
-    Savegame &savegame;							/**< the savegame encapsulated by this equipment object */
+    Savegame& savegame;							/**< the savegame encapsulated by this equipment object */
     bool suspended;							/**< indicates that the game is suspended */
 
     // items
     std::map<std::string, EquipmentItem*> items;		/**< each item (properties loaded from the file items.dat) */
-    std::map<std::string, ItemScript*> item_scripts;			/**< the script of each item (only when there is a game) */
 
     // magic bar decrease handling
     uint32_t magic_decrease_delay;					/**< when the magic bar decreases with time,
@@ -53,6 +52,8 @@ class Equipment {
     Equipment(Savegame &savegame);
     ~Equipment();
 
+    Savegame& get_savegame();
+    Game* get_game();
     void set_game(Game &game);
     void set_map(Map &map);
 
@@ -139,9 +140,6 @@ class Equipment {
     void set_initial_items();
     bool can_receive_item(const std::string &item_name, int variant);
     void add_item(const std::string &item_name, int variant);
-
-    // scripts
-    ItemScript& get_item_script(const std::string &item_name);
 };
 
 #endif

@@ -292,11 +292,9 @@ void Script::register_modules() {
   register_text_surface_module();
   register_sprite_module();
   register_movement_module();
+  register_item_module();
   register_input_module();
 
-  if (apis_enabled && ITEM_API) {
-    register_item_module();
-  }
   if (apis_enabled && ENEMY_API) {
     register_enemy_module();
   }
@@ -921,15 +919,6 @@ void Script::push_color(lua_State* l, const Color& color) {
   lua_rawseti(l, -2, 2);
   lua_pushinteger(l, b);
   lua_rawseti(l, -2, 3);
-}
-
-/**
- * @brief Notifies the script that another map has just been started.
- * @param map the new current map
- */
-void Script::event_map_changed(Map &map) {
-
-  notify_script("event_map_changed", "i", map.get_id());
 }
 
 /**

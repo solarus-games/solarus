@@ -49,6 +49,7 @@ class LuaContext: public Script {
     void update();
     void notify_input(InputEvent& event);
     void notify_map_started(Map& map, DestinationPoint* destination_point);
+    void notify_item_started(EquipmentItem& item);
     void notify_camera_reached_target(Map& map);
 
     // Main Lua script (sol.main).
@@ -106,6 +107,23 @@ class LuaContext: public Script {
     void map_on_enemy_dying(Map& map, Enemy& enemy);
     void map_on_enemy_dead(Map& map, Enemy& enemy);
 
+    // Equipment item events.
+    void item_on_update(EquipmentItem& item);
+    void item_on_set_suspended(EquipmentItem& item, bool suspended);
+    void item_on_map_changed(EquipmentItem& item, Map& map);
+    void item_on_appear(EquipmentItem& item, PickableItem& pickable_item);
+    void item_on_movement_changed(EquipmentItem& item, PickableItem& pickable_item);
+    void item_on_obtaining(EquipmentItem& item, const Treasure& treasure);
+    void item_on_obtained(EquipmentItem& item, const Treasure& treasure);
+    void item_on_variant_changed(EquipmentItem& item, int variant);
+    void item_on_amount_changed(EquipmentItem& item, int amount);
+    void item_on_use(EquipmentItem& item, InventoryItem& inventory_item);
+    void item_on_ability_used(EquipmentItem& item, const std::string& ability_name);
+    void item_on_npc_interaction(EquipmentItem& item, NPC& npc);
+    bool item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
+        const std::string& item_name, int variant);
+    void item_on_npc_collision_fire(EquipmentItem& item, NPC& npc);
+
   private:
 
     bool find_local_function(int index, const std::string& function_name);
@@ -131,6 +149,7 @@ class LuaContext: public Script {
     void on_pre_display(Surface& dst_surface);
     void on_post_display(Surface& dst_surface);
     void on_suspended(bool suspended);
+    void on_set_suspended(bool suspended);
     void on_input(InputEvent& event);
     void on_key_pressed(InputEvent& event);
     void on_key_released(InputEvent& event);
@@ -145,7 +164,9 @@ class LuaContext: public Script {
     void on_dialog_finished(const std::string& dialog_id, int answer);
     void on_camera_back();
     void on_treasure_obtaining(const Treasure& treasure);
-    void on_treasure_obtained(const Treasure& treasure);
+    void on_obtaining(const Treasure& treasure);
+        void on_treasure_obtained(const Treasure& treasure);
+    void on_obtained(const Treasure& treasure);
     void on_switch_activated(Switch& sw);
     void on_switch_inactivated(Switch& sw);
     void on_switch_left(Switch& sw);
@@ -169,6 +190,13 @@ class LuaContext: public Script {
     void on_block_moved(Block& block);
     void on_enemy_dying(Enemy& enemy);
     void on_enemy_dead(Enemy& enemy);
+    void on_map_changed(Map& map);
+    void on_appear(PickableItem& pickable);
+    void on_movement_changed(PickableItem& pickable);
+    void on_variant_changed(int variant);
+    void on_amount_changed(int amount);
+    void on_use(InventoryItem& inventory_item);
+    void on_ability_used(const std::string& ability_name);
 };
 
 #endif

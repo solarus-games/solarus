@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/ItemScript.h"
+#include "lua/LuaContext.h"
 #include "entities/PickableItem.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
@@ -36,7 +36,7 @@ const std::string Script::item_module_name = "sol.item";
  */
 void Script::register_item_module() {
 
-  static const luaL_Reg functions[] = {
+  static const luaL_Reg methods[] = {
       { "get_variant", item_api_get_variant },
       { "set_variant", item_api_set_variant },
       { "get_amount", item_api_get_amount },
@@ -53,217 +53,172 @@ void Script::register_item_module() {
       { "set_finished", item_api_set_finished },
       { NULL, NULL }
   };
-  register_functions(item_module_name, functions);
+  static const luaL_Reg metamethods[] = {
+      { "__eq", userdata_meta_eq },
+      { "__gc", userdata_meta_gc },
+      { "__newindex", userdata_meta_newindex_as_table },
+      { "__index", userdata_meta_index_as_table },
+      { NULL, NULL }
+  };
+  register_type(item_module_name, methods, metamethods);
 }
 
 /**
- * @brief Returns the possession state of the current item
- * (only for an item whose possession state is saved).
- *
- * - Return value: the possession state
- *
- * @param l the Lua context that is calling this function
+ * @brief Checks that the userdata at the specified index of the stack is an
+ * equipment item and returns it.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return The equipment item.
  */
-int Script::item_api_get_variant(lua_State *l) {
+EquipmentItem& Script::check_item(lua_State* l, int index) {
+  return static_cast<EquipmentItem&>(check_userdata(l, index, item_module_name));
+}
 
-  Script& script = get_script(l);
+/**
+ * @brief Pushes an equipment item userdata onto the stack.
+ * @param l A Lua context.
+ * @param item An item.
+ */
+void Script::push_item(lua_State* l, EquipmentItem& item) {
+  push_userdata(l, item);
+}
 
-  EquipmentItem& item = script.get_equipment_item();
-  Equipment &equipment = script.get_game().get_equipment();
-  int variant = equipment.get_item_variant(item.get_name());
-  lua_pushinteger(l, variant);
+/**
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::item_api_get_variant(lua_State* l) {
 
+  EquipmentItem& item = check_item(l, 1);
+
+  lua_pushinteger(l, item.get_current_variant());
   return 1;
 }
 
 /**
- * @brief Sets the possession state of the current item
- * (only for an item whose possession state is saved).
- *
- * - Argument 1 (integer): the new possession state of this item
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::item_api_set_variant(lua_State *l) {
+int Script::item_api_set_variant(lua_State* l) {
 
-  Script& script = get_script(l);
+  EquipmentItem& item = check_item(l, 1);
+  int variant = luaL_checkinteger(l, 2);
 
-  int variant = luaL_checkinteger(l, 1);
-  EquipmentItem& item = script.get_equipment_item();
-  Equipment &equipment = script.get_game().get_equipment();
-  equipment.set_item_variant(item.get_name(), variant);
+  item.set_current_variant(variant);
 
   return 0;
 }
 
 /**
- * @brief Returns the amount of the current item
- * (only for an item with amount).
- *
- * - Return value: the amount
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::item_api_get_amount(lua_State *l) {
+int Script::item_api_get_amount(lua_State* l) {
 
-  Script& script = get_script(l);
+  EquipmentItem& item = check_item(l, 1);
 
-  EquipmentItem& item = script.get_equipment_item();
-  Equipment &equipment = script.get_game().get_equipment();
-  int amount = equipment.get_item_amount(item.get_name());
-  lua_pushinteger(l, amount);
-
+  lua_pushinteger(l, item.get_current_amount());
   return 1;
 }
 
 /**
- * @brief Sets the amount of the current item
- * (only for an item with amount).
- *
- * - Argument 1 (integer): the new amount for this item
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::item_api_set_amount(lua_State *l) {
+int Script::item_api_set_amount(lua_State* l) {
 
-  Script& script = get_script(l);
-
-  int amount = luaL_checkinteger(l, 1);
-  EquipmentItem& item = script.get_equipment_item();
-  Equipment &equipment = script.get_game().get_equipment();
-  equipment.set_item_amount(item.get_name(), amount);
+  EquipmentItem& item = check_item(l, 1);
+  int amount = luaL_checkinteger(l, 2);
+  item.set_current_amount(amount);
 
   return 0;
 }
 
 /**
- * @brief Increases the amount of the current item
- * (only for an item with amount).
- *
- * - Argument 1 (integer): the amount to add
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::item_api_add_amount(lua_State *l) {
+int Script::item_api_add_amount(lua_State* l) {
 
-  Script& script = get_script(l);
+  EquipmentItem& item = check_item(l, 1);
+  int amount = luaL_checkinteger(l, 2);
 
-  int amount = luaL_checkinteger(l, 1);
-  EquipmentItem& item = script.get_equipment_item();
-  Equipment &equipment = script.get_game().get_equipment();
-  equipment.add_item_amount(item.get_name(), amount);
+  item.set_current_amount(item.get_current_amount() + amount);
 
   return 0;
 }
 
 /**
- * @brief Decreases the amount of the current item
- * (only for an item with amount).
- *
- * - Argument 1 (integer): the amount to remove
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::item_api_remove_amount(lua_State *l) {
+int Script::item_api_remove_amount(lua_State* l) {
 
-  Script& script = get_script(l);
+  EquipmentItem& item = check_item(l, 1);
+  int amount = luaL_checkinteger(l, 2);
 
-  int amount = luaL_checkinteger(l, 1);
-  EquipmentItem& item = script.get_equipment_item();
-  Equipment &equipment = script.get_game().get_equipment();
-  equipment.remove_item_amount(item.get_name(), amount);
+  item.set_current_amount(item.get_current_amount() - amount);
 
   return 0;
 }
 
 /**
- * @brief Makes the sprite of the current pickable item accessible from the script.
- *
- * This function should be called only when there is current pickable item,
- * e.g. from event_appear() or event_movement_changed().
- * - Return value (sprite): the sprite of the current pickable item
- * (your script can then pass it as a parameter
- * to all sol.main.sprite_* functions)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::item_api_get_sprite(lua_State *l) {
+int Script::item_api_get_sprite(lua_State* l) {
 
-  Script& script = get_script(l);
+  EquipmentItem& item = check_item(l, 1);
 
-  // retrieve the pickable item
-  const std::string &item_name = script.get_equipment_item().get_name();
-  Equipment &equipment = script.get_game().get_equipment();
-  ItemScript &item_script = equipment.get_item_script(item_name);
-  PickableItem *pickable_item = item_script.get_pickable_item();
-
+  PickableItem* pickable_item = item.get_pickable_item();
   Debug::check_assertion(pickable_item != NULL,
-                "Cannot call sol.item.get_sprite(): there is no current pickable item");
+                "Cannot call item:get_sprite(): there is no current pickable item");
 
-  push_userdata(l, pickable_item->get_sprite());
-
+  push_sprite(l, pickable_item->get_sprite());
   return 1;
 }
 
 /**
- * @brief Makes the movement of the current pickable item accessible from the script.
- *
- * This function should be called only when there is a current pickable item,
- * e.g. from event_appear() or event_movement_changed().
- * - Return value (movement): the movement of the current pickable item
- * (your script can then pass it as a parameter
- * to all sol.main.movement_* functions)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::item_api_get_movement(lua_State *l) {
+int Script::item_api_get_movement(lua_State* l) {
 
-  Script& script = get_script(l);
+  EquipmentItem& item = check_item(l, 1);
 
-  // retrieve the pickable item
-  const std::string &item_name = script.get_equipment_item().get_name();
-  Equipment &equipment = script.get_game().get_equipment();
-  ItemScript &item_script = equipment.get_item_script(item_name);
-  PickableItem *pickable_item = item_script.get_pickable_item();
-
+  PickableItem* pickable_item = item.get_pickable_item();
   Debug::check_assertion(pickable_item != NULL,
-                "Cannot call sol.item.get_movement(): there is no current pickable item");
+                "Cannot call item:get_movement(): there is no current pickable item");
+  Movement* movement = pickable_item->get_movement();
 
-  Movement *movement = pickable_item->get_movement();
-  push_userdata(l, *movement);
+  push_movement(l, *movement);
 
   return 1;
 }
 
 /**
- * @brief Sets a movement to the pickable item that just appeared.
- *
- * This function should be called only when there is a current pickable item,
- * e.g. from the event_appear() function.
- * The default movement of the pickable item (FallingOnFloorMovement)
- * will be replaced to the one you specify.
- *
- * - Argument 1 (movement): the movement to set
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::item_api_start_movement(lua_State *l) {
+int Script::item_api_start_movement(lua_State* l) {
 
-  Script& script = get_script(l);
+  EquipmentItem& item = check_item(l, 1);
+  Movement& movement = check_movement(l, 2);
 
-  Movement& movement = check_movement(l, 1);
   movement.set_suspended(false);
-
-  // retrieve the pickable item
-  const std::string &item_name = script.get_equipment_item().get_name();
-  Equipment &equipment = script.get_game().get_equipment();
-  ItemScript &item_script = equipment.get_item_script(item_name);
-  PickableItem *pickable_item = item_script.get_pickable_item();
-
+  PickableItem* pickable_item = item.get_pickable_item();
   Debug::check_assertion(pickable_item != NULL,
-                "Cannot call sol.item.start_movement(): there is no current pickable item");
-
-  script.increment_refcount(&movement);
+                "Cannot call item:start_movement(): there is no current pickable item");
+  get_script(l).increment_refcount(&movement);
   pickable_item->clear_movement();
   pickable_item->set_movement(&movement);
 
@@ -271,107 +226,64 @@ int Script::item_api_start_movement(lua_State *l) {
 }
 
 /**
- * @brief Returns whether the pickable item is following an entity
- * such as the boomerang or the hookshot.
- *
- * When this function returns true, the movement of the pickable item
- * is an instance of FollowMovement.
- *
- * This function should be called only when there is a current pickable item,
- * e.g. from the event_appear() function.
- *
- * - Return value (boolean): true if the pickable item is currently following an entity
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::item_api_is_following_entity(lua_State* l) {
 
-  Script& script = get_script(l);
+  EquipmentItem& item = check_item(l, 1);
 
-  // retrieve the pickable item
-  const std::string& item_name = script.get_equipment_item().get_name();
-  Equipment& equipment = script.get_game().get_equipment();
-  ItemScript& item_script = equipment.get_item_script(item_name);
-  PickableItem* pickable_item = item_script.get_pickable_item();
-
+  PickableItem* pickable_item = item.get_pickable_item();
   Debug::check_assertion(pickable_item != NULL,
-                "Cannot call sol.item.is_following_entity(): there is no current pickable item");
-
+                "Cannot call item:is_following_entity(): there is no current pickable item");
   bool result = pickable_item->get_entity_followed() != NULL;
-  lua_pushboolean(l, result);
 
+  lua_pushboolean(l, result);
   return 1;
 }
 
 /**
- * @brief Returns the position of the pickable item that just appeared.
- *
- * This function should be called only when there is a current pickable item,
- * e.g. from the event_appear() function.
- *
- * - Return value 1 (integer): x coordinate of the pickable item
- * - Return value 2 (integer): y coordinate of the pickable item
- * - Return value 3 (integer): layer of the pickable item (0 to 2)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::item_api_get_position(lua_State *l) {
+int Script::item_api_get_position(lua_State* l) {
 
-  Script& script = get_script(l);
+  EquipmentItem& item = check_item(l, 1);
 
-  // retrieve the pickable item
-  const std::string &item_name = script.get_equipment_item().get_name();
-  Equipment &equipment = script.get_game().get_equipment();
-  ItemScript &item_script = equipment.get_item_script(item_name);
-  PickableItem *pickable_item = item_script.get_pickable_item();
-
+  PickableItem* pickable_item = item.get_pickable_item();
   Debug::check_assertion(pickable_item != NULL,
-                "Cannot call sol.item.get_position(): there is no current pickable item");
-
+                "Cannot call item:get_position(): there is no current pickable item");
   const Rectangle& xy = pickable_item->get_xy();
+
   lua_pushinteger(l, xy.get_x());
   lua_pushinteger(l, xy.get_y());
   lua_pushinteger(l, pickable_item->get_layer());
-
   return 3;
 }
 
 /**
- * @brief Sets the position of the pickable item that just appeared.
- *
- * This function should be called only when there is a current pickable item,
- * e.g. from the event_appear() function.
- *
- * - Argument 1 (integer): x coordinate of the pickable item
- * - Argument 2 (integer): y coordinate of the pickable item
- * - Optional argument 3 (integer): layer of the pickable item (if unspecified, the
- * layer will not be changed)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int Script::item_api_set_position(lua_State* l) {
 
-  Script& script = get_script(l);
-
-  int x = luaL_checkinteger(l, 1);
-  int y = luaL_checkinteger(l, 2);
+  EquipmentItem& item = check_item(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
   int layer = -1;
-  if (lua_gettop(l) >= 3) {
-    layer = luaL_checkinteger(l, 3);
+  if (lua_gettop(l) >= 4) {
+    layer = luaL_checkinteger(l, 4);
   }
 
-  // retrieve the pickable item
-  const std::string& item_name = script.get_equipment_item().get_name();
-  Equipment& equipment = script.get_game().get_equipment();
-  ItemScript& item_script = equipment.get_item_script(item_name);
-  PickableItem* pickable_item = item_script.get_pickable_item();
-
+  PickableItem* pickable_item = item.get_pickable_item();
   Debug::check_assertion(pickable_item != NULL,
-                "Cannot call sol.item.set_position(): there is no current pickable item");
-
+                "Cannot call item:set_position(): there is no current pickable item");
   pickable_item->set_xy(x, y);
   if (layer != -1) {
-    MapEntities& entities = script.get_map().get_entities();
+    MapEntities& entities = pickable_item->get_map().get_entities();
     entities.set_entity_layer(*pickable_item, Layer(layer));
   }
 
@@ -379,60 +291,214 @@ int Script::item_api_set_position(lua_State* l) {
 }
 
 /**
- * @brief Sets whether the pickable item detects collisions on every layer.
- *
- * This function should be called only when there is a current pickable item,
- * e.g. from the event_appear() function.
- *
- * - Argument 1 (boolean): true to detect collisions from every layer (default: false)
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::item_api_set_layer_independent_collisions(lua_State *l) {
+int Script::item_api_set_layer_independent_collisions(lua_State* l) {
 
-  Script& script = get_script(l);
+  EquipmentItem& item = check_item(l, 1);
+  bool independent = lua_toboolean(l, 2) != 0;
 
-  bool independent = lua_toboolean(l, 1) != 0;
-
-  // retrieve the pickable item
-  const std::string &item_name = script.get_equipment_item().get_name();
-  Equipment &equipment = script.get_game().get_equipment();
-  ItemScript &item_script = equipment.get_item_script(item_name);
-  PickableItem *pickable_item = item_script.get_pickable_item();
-
+  PickableItem* pickable_item = item.get_pickable_item();
   Debug::check_assertion(pickable_item != NULL,
-                "Cannot call sol.item.set_layer_independent_collisions(): there is no current pickable item");
-
+                "Cannot call item:set_layer_independent_collisions(): there is no current pickable item");
   pickable_item->set_layer_independent_collisions(independent);
 
   return 0;
 }
 
 /**
- * @brief Indicates that the player has finished using the current inventory item.
- *
- * This function should be called only when there is a current inventory item that is being used,
- * i.e. after the event_use() function.
- *
- * @param l the Lua context that is calling this function
+ * @brief Implementation of \ref lua_api_item_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int Script::item_api_set_finished(lua_State *l) {
+int Script::item_api_set_finished(lua_State* l) {
 
-  Script& script = get_script(l);
+  EquipmentItem& item = check_item(l, 1);
 
   // retrieve the inventory item from the hero
-  Hero &hero = script.get_game().get_hero();
-  const std::string &item_name = script.get_equipment_item().get_name();
+  Hero& hero = item.get_game()->get_hero();
+  if (hero.is_using_inventory_item()) {  // Do nothing if the script has already changed the hero's state.
 
-  if (hero.is_using_inventory_item()) { // we do nothing if the script has already changed the hero's state
-
-    InventoryItem &inventory_item = hero.get_current_inventory_item();
-    Debug::check_assertion(inventory_item.get_name() == item_name,
-                  StringConcat() << "This script controls the item '" << item_name
-                  << "' but the current inventory item is '" << inventory_item.get_name() << "'");
-
+    InventoryItem& inventory_item = hero.get_current_inventory_item();
+    Debug::check_assertion(inventory_item.get_name() == item.get_name(),
+        StringConcat() << "Trying to finish inventory item '" << item.get_name()
+        << "' but the current inventory item is '" << inventory_item.get_name() << "'");
     inventory_item.set_finished();
   }
 
   return 0;
+}
+
+/**
+ * @brief Calls the on_update() method of a Lua equipment item.
+ * @param item An equipment item.
+ */
+void LuaContext::item_on_update(EquipmentItem& item) {
+
+  push_item(l, item);
+  on_update();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_update() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param suspended true if the game is suspended.
+ */
+void LuaContext::item_on_set_suspended(EquipmentItem& item, bool suspended) {
+
+  push_item(l, item);
+  on_set_suspended(suspended);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_update() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param map A map.
+ */
+void LuaContext::item_on_map_changed(EquipmentItem& item, Map& map) {
+
+  push_item(l, item);
+  on_map_changed(map);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_appear() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param pickable The instance of pickable item that has just appeared.
+ */
+void LuaContext::item_on_appear(EquipmentItem& item, PickableItem& pickable) {
+
+  push_item(l, item);
+  on_appear(pickable);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_movement_changed() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param pickable The instance of pickable item whose movement has changed.
+ */
+void LuaContext::item_on_movement_changed(EquipmentItem& item, PickableItem& pickable) {
+
+  push_item(l, item);
+  on_movement_changed(pickable);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_obtaining() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param treasure The treasure being obtained.
+ */
+void LuaContext::item_on_obtaining(EquipmentItem& item, const Treasure& treasure) {
+
+  push_item(l, item);
+  on_obtaining(treasure);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_obtained() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param treasure The treasure just obtained.
+ */
+void LuaContext::item_on_obtained(EquipmentItem& item, const Treasure& treasure) {
+
+  push_item(l, item);
+  on_obtained(treasure);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_variant_changed() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param variant The possession state.
+ */
+void LuaContext::item_on_variant_changed(EquipmentItem& item, int variant) {
+
+  push_item(l, item);
+  on_variant_changed(variant);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_amount_changed() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param amount The amount of this item.
+ */
+void LuaContext::item_on_amount_changed(EquipmentItem& item, int amount) {
+
+  push_item(l, item);
+  on_amount_changed(amount);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_use() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param amount The amount of this item.
+ */
+void LuaContext::item_on_use(EquipmentItem& item, InventoryItem& inventory_item) {
+
+  push_item(l, item);
+  on_use(inventory_item);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_ability_used() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param ability_name The ability just used.
+ */
+void LuaContext::item_on_ability_used(EquipmentItem& item, const std::string& ability_name) {
+
+  push_item(l, item);
+  on_ability_used(ability_name);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_npc_interaction() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param npc An NPC.
+ */
+void LuaContext::item_on_npc_interaction(EquipmentItem& item, NPC& npc) {
+
+  push_item(l, item);
+  on_npc_interaction(npc);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_npc_interaction_item() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param npc An NPC.
+ * @param item_name Name of an equipment item.
+ * @param variant Variant of this equipment item.
+ * @return true if an interaction occurred.
+ */
+bool LuaContext::item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
+    const std::string& item_name, int variant) {
+
+  push_item(l, item);
+  bool result = on_npc_interaction_item(npc, item_name, variant);
+  lua_pop(l, 1);
+  return result;
+}
+
+/**
+ * @brief Calls the on_npc_collision_fire() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param npc An NPC.
+ */
+void LuaContext::item_on_npc_collision_fire(EquipmentItem& item, NPC& npc) {
+
+  push_item(l, item);
+  on_npc_collision_fire(npc);
+  lua_pop(l, 1);
 }

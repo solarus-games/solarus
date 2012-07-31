@@ -18,6 +18,7 @@
 #define SOLARUS_EQUIPMENT_ITEM_H
 
 #include "Common.h"
+#include "lua/ExportableToLua.h"
 #include <string>
 
 /**
@@ -25,7 +26,7 @@
  *
  * Its properties are loaded from the data file items.dat.
  */
-class EquipmentItem {
+class EquipmentItem: public ExportableToLua {
 
   public:
 
@@ -39,6 +40,11 @@ class EquipmentItem {
     };
 
   private:
+
+    Equipment& equipment;                /**< the equipment object that manages all items */
+    PickableItem* pickable_item;         /**< the pickable item that just appeared in on_appear(), or NULL */
+    InventoryItem* inventory_item;       /**< the inventory item that is being used when on_used() is called,
+                                          * or NULL if no inventory item is being used */
 
     std::string name;                    /**< name that identifies this item */
     int savegame_variable;               /**< savegame variable that stores the possession state */
@@ -66,8 +72,29 @@ class EquipmentItem {
 
   public:
 
-    EquipmentItem(Equipment &equipment, IniFile &ini);
+    EquipmentItem(Equipment& equipment, IniFile &ini);
     ~EquipmentItem();
+
+    Equipment& get_equipment();
+    Game* get_game();
+    LuaContext& get_lua_context();
+    PickableItem* get_pickable_item();
+    InventoryItem* get_inventory_item();
+    void update();
+    void set_suspended(bool suspended);
+    void notify_game_started(Game& game);
+    void notify_map_started(Map& map);
+    void notify_amount_changed(int amount);
+    void notify_variant_changed(int variant);
+    void notify_inventory_item_used(InventoryItem& inventory_item);
+    void notify_ability_used(const std::string& ability_name);
+    void notify_pickable_appeared(PickableItem& pickable);
+    void notify_movement_changed(PickableItem& pickable);
+
+    int get_current_variant();
+    void set_current_variant(int variant);
+    int get_current_amount();
+    void set_current_amount(int amount);
 
     const std::string& get_name();
     bool is_saved();
@@ -81,7 +108,7 @@ class EquipmentItem {
     const std::string& get_item_limiting();
     const std::string& get_item_limited();
     const std::string& get_item_counter_changed();
-    int get_amount(int variant = 1);
+    int get_other_amount(int variant = 1);
     int get_probability(int variant = 1);
     bool can_be_assigned();
     bool can_disappear();
@@ -89,6 +116,8 @@ class EquipmentItem {
     const std::string& get_sound_when_picked();
     const std::string& get_sound_when_brandished();
     ShadowSize get_shadow_size();
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

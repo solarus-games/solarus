@@ -87,7 +87,6 @@ class Script {
     void destroy_ref(int ref);
 
     // calling specific Lua functions
-    void event_map_changed(Map &map);
     void event_dialog_started(const std::string& dialog_id);
     void event_dialog_finished(const std::string& dialog_id, int answer);
     void event_npc_interaction(const std::string& npc_name);
@@ -110,7 +109,6 @@ class Script {
      * @brief Optional APIs available for some type of scripts.
      */
     enum API {
-      ITEM_API          = 0x0004,
       ENEMY_API         = 0x0008
     };
 
@@ -158,6 +156,7 @@ class Script {
     static void push_color(lua_State* l, const Color& color);
     static void push_game(lua_State* l, Savegame& game);
     static void push_map(lua_State* l, Map& map);
+    static void push_item(lua_State* l, EquipmentItem& item);
     static void push_movement(lua_State* l, Movement& movement);
     static void push_ref(lua_State* l, int ref);
     const std::string& input_get_key_name(InputEvent::KeyboardKey key);
@@ -174,6 +173,7 @@ class Script {
     static Color check_color(lua_State* l, int index);
     static Savegame& check_game(lua_State* l, int index);
     static Map& check_map(lua_State* l, int index);
+    static EquipmentItem& check_item(lua_State* l, int index);
     static Movement& check_movement(lua_State* l, int index);
     static StraightMovement& check_straight_movement(lua_State* l, int index);
     static RandomMovement& check_random_movement(lua_State* l, int index);

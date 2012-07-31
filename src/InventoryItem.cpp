@@ -17,7 +17,7 @@
 #include "InventoryItem.h"
 #include "Game.h"
 #include "Equipment.h"
-#include "lua/ItemScript.h"
+#include "EquipmentItem.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
@@ -63,10 +63,11 @@ int InventoryItem::get_variant() {
  */
 void InventoryItem::start() {
 
-  Debug::check_assertion(variant > 0, StringConcat() << "Trying to use inventory item '" << item_name << "' without having it");
+  Debug::check_assertion(variant > 0, StringConcat()
+      << "Trying to use inventory item '" << item_name << "' without having it");
 
   this->finished = false;
-  game.get_equipment().get_item_script(item_name).event_use(*this);
+  game.get_equipment().get_item(item_name).notify_inventory_item_used(*this);
 }
 
 /**

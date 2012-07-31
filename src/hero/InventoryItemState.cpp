@@ -17,7 +17,6 @@
 #include "hero/InventoryItemState.h"
 #include "hero/FreeState.h"
 #include "lowlevel/System.h"
-#include "lua/ItemScript.h"
 #include "entities/Detector.h"
 #include "InventoryItem.h"
 

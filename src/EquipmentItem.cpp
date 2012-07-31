@@ -16,7 +16,9 @@
  */
 #include "EquipmentItem.h"
 #include "Equipment.h"
+#include "Game.h"
 #include "lowlevel/IniFile.h"
+#include "lua/LuaContext.h"
 #include <map>
 #include <sstream>
 
@@ -28,7 +30,10 @@
  * @param equipment the equipment object that stores all item properties
  * @param ini the ini file to parse
  */
-EquipmentItem::EquipmentItem(Equipment &equipment, IniFile &ini) {
+EquipmentItem::EquipmentItem(Equipment& equipment, IniFile& ini):
+  equipment(equipment),
+  pickable_item(NULL),
+  inventory_item(NULL) {
 
   name = ini.get_group();
   savegame_variable = ini.get_integer_value("savegame_variable", -1);
@@ -84,6 +89,182 @@ EquipmentItem::~EquipmentItem() {
 
   delete[] amounts;
   delete[] probabilities;
+}
+
+/**
+ * @brief Returns the equipment object this item belongs to.
+ * @return The equipment.
+ */
+Equipment& EquipmentItem::get_equipment() {
+  return equipment;
+}
+
+/**
+ * @brief If this equipment item is currently running in a game, return that game.
+ * @return A game or NULL.
+ */
+Game* EquipmentItem::get_game() {
+  return equipment.get_game();
+}
+
+/**
+ * @brief Returns the shared Lua context.
+ * @return The Lua context where all scripts are run.
+ */
+LuaContext& EquipmentItem::get_lua_context() {
+  return get_game()->get_lua_context();
+}
+
+/**
+ * @brief This function is be called repeatedly by the game.
+ */
+void EquipmentItem::update() {
+
+  if (get_game() != NULL) {  // Nothing dynamic when there is no game.
+    get_lua_context().item_on_update(*this);
+  }
+}
+
+/**
+ * @brief This function is called when the game is suspended or resumed.
+ * @param suspended true if the game is suspended, false if it is resumed
+ */
+void EquipmentItem::set_suspended(bool suspended) {
+
+  get_lua_context().item_on_set_suspended(*this, suspended);
+}
+
+/**
+ * @brief This function is called when a game starts with this equipment item.
+ * @param game The game.
+ */
+void EquipmentItem::notify_game_started(Game& game) {
+
+  game.get_lua_context().notify_item_started(*this);
+}
+
+/**
+ * @brief This function is called when a map becomes active.
+ * @param map The map.
+ */
+void EquipmentItem::notify_map_started(Map& map) {
+
+  get_lua_context().item_on_map_changed(*this, map);
+}
+
+/**
+ * @brief Notifies this item that its possession state has just changed.
+ * @param Variant The new possession state.
+ */
+void EquipmentItem::notify_variant_changed(int variant) {
+
+  get_lua_context().item_on_variant_changed(*this, variant);
+}
+
+/**
+ * @brief Notifies the script that the amount of this item has just changed.
+ * @param amount The new amount.
+ */
+void EquipmentItem::notify_amount_changed(int amount) {
+
+  get_lua_context().item_on_amount_changed(*this, amount);
+}
+
+/**
+ * @brief Notifies the script that the hero is using this item from his inventory.
+ * @param inventory_item The inventory item.
+ */
+void EquipmentItem::notify_inventory_item_used(InventoryItem& inventory_item) {
+
+  this->inventory_item = &inventory_item;
+  get_lua_context().item_on_use(*this, inventory_item);
+  this->inventory_item = NULL;
+}
+
+/**
+ * @brief Notifies this item that a built-in ability was used.
+ * @param ability_name Name of an ability.
+ */
+void EquipmentItem::notify_ability_used(const std::string& ability_name) {
+
+  get_lua_context().item_on_ability_used(*this, ability_name);
+}
+
+/**
+ * @brief Notifies the script that a pickable instance of this item has
+ * appeared on the map.
+ * @param pickable The pickable item.
+ */
+void EquipmentItem::notify_pickable_appeared(PickableItem& pickable) {
+
+  this->pickable_item = &pickable;
+  get_lua_context().item_on_appear(*this, pickable);
+  this->pickable_item = NULL;
+}
+
+/**
+ * @brief Notifies the script that a pickable instance of this item has moved.
+ * @param pickable The pickable item.
+ */
+void EquipmentItem::notify_movement_changed(PickableItem& pickable) {
+
+  this->pickable_item = &pickable;
+  get_lua_context().item_on_movement_changed(*this, pickable);
+  this->pickable_item = NULL;
+}
+
+/**
+ * @brief Returns the possession state of this item.
+ *
+ * This function only makes sense if the item is saved.
+ *
+ * @return The possessed variant of this item.
+ */
+int EquipmentItem::get_current_variant() {
+  return equipment.get_item_variant(get_name());
+}
+
+/**
+ * @brief Sets the possession state of this item.
+ *
+ * This function only makes sense if the item is saved.
+ *
+ * @param variant The possessed variant of this item.
+ */
+void EquipmentItem::set_current_variant(int variant) {
+  equipment.set_item_variant(get_name(), variant);
+}
+
+/**
+ * @brief Returns the current value of the counter associated to this item.
+ * @return The player's current amount of this item.
+ */
+int EquipmentItem::get_current_amount() {
+  return equipment.get_item_amount(get_name());
+}
+
+/**
+ * @brief Sets the current value of the counter associated to this item.
+ * @param amount The player's new amount of this item.
+ */
+void EquipmentItem::set_current_amount(int amount) {
+  equipment.set_item_amount(get_name(), amount);
+}
+
+/**
+ * @brief Returns the pickable item related to the current call to item:on_appear().
+ * @return The current pickable item or NULL.
+ */
+PickableItem* EquipmentItem::get_pickable_item() {
+  return pickable_item;
+}
+
+/**
+ * @brief Returns the inventory item related to the current call item:on_use().
+ * @return The current inventory item or NULL.
+ */
+InventoryItem* EquipmentItem::get_inventory_item() {
+  return inventory_item;
 }
 
 /**
@@ -202,7 +383,7 @@ const std::string& EquipmentItem::get_item_counter_changed() {
  * @param variant a variant of this item
  * @return the amount of this variant
  */
-int EquipmentItem::get_amount(int variant) {
+int EquipmentItem::get_other_amount(int variant) {
   return amounts[variant];
 }
 
@@ -268,3 +449,10 @@ EquipmentItem::ShadowSize EquipmentItem::get_shadow_size() {
   return shadow_size;
 }
 
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& EquipmentItem::get_lua_type_name() const {
+  return Script::item_module_name;
+}

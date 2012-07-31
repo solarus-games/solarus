@@ -68,7 +68,7 @@ class NPC: public Detector {
     Subtype subtype;                    /**< subtpype of NPC */
     Behavior behavior;                  /**< type of action done when the player interacts with this entity */
     std::string dialog_to_show;         /**< dialog to show when an interaction occurs, or an empty string */
-    Script* script_to_call;             /**< map script or item script to call when an interaction occurs, or NULL */
+    std::string item_name;              /**< name of an equipment item to notify when an interaction occurs */
 
     void initialize_sprite(std::string& sprite_name, int initial_direction);
     void call_script_hero_interaction();

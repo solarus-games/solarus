@@ -23,7 +23,6 @@
 #include "Counter.h"
 #include "Map.h"
 #include "Sprite.h"
-#include "lua/ItemScript.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
@@ -196,10 +195,10 @@ void Treasure::give_to_player() const {
   Equipment &equipment = game->get_equipment();
   equipment.add_item(get_item_name(), get_variant());
 
-  // notify the scripts
-  equipment.get_item_script(get_item_name()).event_obtaining(*this);
-  game->get_lua_context().map_on_treasure_obtaining(
-    game->get_current_map(), *this);
+  // notify the Lua item and the Lua map
+  LuaContext& lua_context = game->get_lua_context();
+  lua_context.item_on_obtaining(equipment.get_item(get_item_name()), *this);
+  lua_context.map_on_treasure_obtaining(game->get_current_map(), *this);
 }
 
 /**

@@ -24,9 +24,11 @@
 #include "entities/Door.h"
 #include "entities/Block.h"
 #include "entities/Enemy.h"
+#include "entities/PickableItem.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "EquipmentItem.h"
 #include "Treasure.h"
 #include "Map.h"
 #include <sstream>
@@ -261,6 +263,24 @@ void LuaContext::notify_map_started(Map& map, DestinationPoint* destination_poin
 }
 
 /**
+ * @brief Starts an equipment item in the Lua world.
+ * @param item The item.
+ */
+void LuaContext::notify_item_started(EquipmentItem& item) {
+
+  // Compute the file name, depending on the id of the equipment item.
+  std::string file_name = (std::string) "items/" + item.get_name();
+
+  // Load the item's code.
+  if (load_file_if_exists(l, file_name)) {
+
+    // Run it with the item userdata as parameter.
+    push_item(l, item);
+    call_function(1, 0, file_name);
+  }
+}
+
+/**
  * @brief Calls the on_started() method of the object on top of the stack.
  */
 void LuaContext::on_started() {
@@ -335,6 +355,18 @@ void LuaContext::on_suspended(bool suspended) {
   if (find_method("on_suspended")) {
     lua_pushboolean(l, suspended);
     call_function(2, 0, "on_suspended");
+  }
+}
+
+/**
+ * @brief Calls the on_set_suspended() method of the object on top of the stack.
+ * @param suspended true to suspend the object, false to unsuspend it.
+ */
+void LuaContext::on_set_suspended(bool suspended) {
+
+  if (find_method("on_set_suspended")) {
+    lua_pushboolean(l, suspended);
+    call_function(2, 0, "on_set_suspended");
   }
 }
 
@@ -603,6 +635,20 @@ void LuaContext::on_treasure_obtaining(const Treasure& treasure) {
 }
 
 /**
+ * @brief Calls the on_obtaining() method of the object on top of the stack.
+ * @param treasure The treasure being obtained.
+ */
+void LuaContext::on_obtaining(const Treasure& treasure) {
+
+  if (find_method("on_obtaining")) {
+    lua_pushstring(l, treasure.get_item_name().c_str());
+    lua_pushinteger(l, treasure.get_variant());
+    lua_pushinteger(l, treasure.get_savegame_variable());
+    call_function(4, 0, "on_obtaining");
+  }
+}
+
+/**
  * @brief Calls the on_treasure_obtained() method of the object on top of the stack.
  * @param treasure The treasure just obtained.
  */
@@ -613,6 +659,20 @@ void LuaContext::on_treasure_obtained(const Treasure& treasure) {
     lua_pushinteger(l, treasure.get_variant());
     lua_pushinteger(l, treasure.get_savegame_variable());
     call_function(4, 0, "on_treasure_obtained");
+  }
+}
+
+/**
+ * @brief Calls the on_obtained() method of the object on top of the stack.
+ * @param treasure The treasure just obtained.
+ */
+void LuaContext::on_obtained(const Treasure& treasure) {
+
+  if (find_method("on_obtained")) {
+    lua_pushstring(l, treasure.get_item_name().c_str());
+    lua_pushinteger(l, treasure.get_variant());
+    lua_pushinteger(l, treasure.get_savegame_variable());
+    call_function(4, 0, "on_obtained");
   }
 }
 
@@ -880,4 +940,90 @@ void LuaContext::on_enemy_dead(Enemy& enemy) {
     call_function(2, 0, "on_enemy_dead");
   }
 }
+
+/**
+ * @brief Calls the on_map_changed() method of the object on top of the stack.
+ * @param map The new active map.
+ */
+void LuaContext::on_map_changed(Map& map) {
+
+  if (find_method("on_map_changed")) {
+    lua_pushinteger(l, map.get_id());
+    call_function(2, 0, "on_map_changed");
+  }
+}
+
+/**
+ * @brief Calls the on_() method of the object on top of the stack.
+ * @param pickable A pickable item.
+ */
+void LuaContext::on_appear(PickableItem& pickable) {
+
+  if (find_method("on_appear")) {
+    const Treasure& treasure = pickable.get_treasure();
+    lua_pushinteger(l, treasure.get_variant());
+    lua_pushinteger(l, treasure.get_savegame_variable());
+    lua_pushinteger(l, pickable.get_falling_height());
+    call_function(4, 0, "on_appear");
+  }
+}
+
+/**
+ * @brief Calls the on_movement_changed() method of the object on top of the stack.
+ * @param pickable A pickable item.
+ */
+void LuaContext::on_movement_changed(PickableItem& pickable) {
+
+  if (find_method("on_movement_changed")) {
+    call_function(1, 0, "on_movement_changed");
+  }
+}
+
+/**
+ * @brief Calls the on_variant_changed() method of the object on top of the stack.
+ * @param enemy Variant of an inventory item.
+ */
+void LuaContext::on_variant_changed(int variant) {
+
+  if (find_method("on_variant_changed")) {
+    lua_pushinteger(l, variant);
+    call_function(2, 0, "on_variant_changed");
+  }
+}
+
+/**
+ * @brief Calls the on_amount_changed() method of the object on top of the stack.
+ * @param amount Amount of an equipment item.
+ */
+void LuaContext::on_amount_changed(int amount) {
+
+  if (find_method("on_amount_changed")) {
+    lua_pushinteger(l, 1);
+    call_function(2, 0, "on_amount_changed");
+  }
+}
+
+/**
+ * @brief Calls the on_use() method of the object on top of the stack.
+ * @param enemy An enemy.
+ */
+void LuaContext::on_use(InventoryItem& inventory_item) {
+
+  if (find_method("on_use")) {
+    call_function(1, 0, "on_use");
+  }
+}
+
+/**
+ * @brief Calls the on_ability_used() method of the object on top of the stack.
+ * @param ability_name Id of a built-in ability.
+ */
+void LuaContext::on_ability_used(const std::string& ability_name) {
+
+  if (find_method("on_ability_used")) {
+    lua_pushstring(l, ability_name.c_str());
+    call_function(2, 0, "on_ability_used");
+  }
+}
+
 

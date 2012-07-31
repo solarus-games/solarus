@@ -16,7 +16,6 @@
  */
 #include "entities/ShopItem.h"
 #include "entities/Hero.h"
-#include "lua/ItemScript.h"
 #include "lua/LuaContext.h"
 #include "Game.h"
 #include "Map.h"

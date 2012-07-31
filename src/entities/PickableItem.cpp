@@ -24,7 +24,6 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "EquipmentItem.h"
-#include "lua/ItemScript.h"
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
@@ -201,8 +200,8 @@ void PickableItem::set_map(Map& map) {
   MapEntity::set_map(map);
 
   if (map.is_started()) {
-    // notify the item script
-    get_equipment().get_item_script(treasure.get_item_name()).event_appear(*this);
+    // notify the Lua item
+    get_equipment().get_item(treasure.get_item_name()).notify_pickable_appeared(*this);
   }
   // otherwise, notify_map_started() will do the job
 }
@@ -214,8 +213,8 @@ void PickableItem::notify_map_started() {
 
   MapEntity::notify_map_started();
 
-  // notify the item script
-  get_equipment().get_item_script(treasure.get_item_name()).event_appear(*this);
+  // notify the Lua item.
+  get_equipment().get_item(treasure.get_item_name()).notify_pickable_appeared(*this);
 }
 
 /**
@@ -267,8 +266,8 @@ MapEntity* PickableItem::get_entity_followed() {
 void PickableItem::notify_movement_changed() {
 
   if (is_on_map()) {
-    // notify the item script
-    get_equipment().get_item_script(treasure.get_item_name()).event_movement_changed(*this);
+    // Notify the Lua equipment item.
+    get_equipment().get_item(treasure.get_item_name()).notify_movement_changed(*this);
   }
 }
 

@@ -21,7 +21,6 @@
 #include "InventoryItem.h"
 #include "EquipmentItem.h"
 #include "Map.h"
-#include "lua/ItemScript.h"
 #include "lowlevel/System.h"
 #include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
@@ -52,32 +51,26 @@ Equipment::Equipment(Savegame &savegame):
  */
 Equipment::~Equipment() {
 
-  {
-    std::map<std::string, EquipmentItem*>::const_iterator it;
-    for (it = items.begin(); it != items.end(); it++) {
-      delete it->second;
-    }
-  }
-
-  {
-    std::map<std::string, ItemScript*>::const_iterator it;
-    for (it = item_scripts.begin(); it != item_scripts.end(); it++) {
-      delete it->second;
-    }
+  std::map<std::string, EquipmentItem*>::const_iterator it;
+  for (it = items.begin(); it != items.end(); it++) {
+    delete it->second;
   }
 }
 
 /**
- * @brief Returns the script of an item.
- * @param item_name name of the item
- * @return the corresponding script
+ * @brief Returns the savegame represented by this equipment object.
+ * @return The savegame.
  */
-ItemScript& Equipment::get_item_script(const std::string &item_name) {
+Savegame& Equipment::get_savegame() {
+  return savegame;
+}
 
-  Debug::check_assertion(item_scripts.count(item_name) != 0,
-                StringConcat() << "Cannot find item script '" << item_name << "'");
-
-  return *item_scripts[item_name];
+/**
+ * @brief If this equipment object is currently running in a game, return that game.
+ * @return A game or NULL.
+ */
+Game* Equipment::get_game() {
+  return savegame.get_game();
 }
 
 /**
@@ -86,11 +79,10 @@ ItemScript& Equipment::get_item_script(const std::string &item_name) {
  */
 void Equipment::set_game(Game &game) {
 
-  // create the scripts
+  // Start the item scripts
   std::map<std::string, EquipmentItem*>::const_iterator it;
   for (it = items.begin(); it != items.end(); it++) {
-    EquipmentItem *item = it->second;
-    item_scripts[item->get_name()] = new ItemScript(game, *item);
+    it->second->notify_game_started(game);
   }
 
   // if this is a new game, give the initial items
@@ -108,9 +100,9 @@ void Equipment::set_game(Game &game) {
 void Equipment::set_map(Map &map) {
 
   // notify the scripts
-  std::map<std::string, ItemScript*>::iterator it;
-  for (it = item_scripts.begin(); it != item_scripts.end(); it++) {
-    it->second->event_map_changed(map);
+  std::map<std::string, EquipmentItem*>::const_iterator it;
+  for (it = items.begin(); it != items.end(); it++) {
+    it->second->notify_map_started(map);
   }
 }
 
@@ -153,8 +145,8 @@ void Equipment::update() {
   }
 
   // update the item scripts
-  std::map<std::string, ItemScript*>::iterator it;
-  for (it = item_scripts.begin(); it != item_scripts.end(); it++) {
+  std::map<std::string, EquipmentItem*>::const_iterator it;
+  for (it = items.begin(); it != items.end(); it++) {
     it->second->update();
   }
 }
@@ -168,8 +160,8 @@ void Equipment::set_suspended(bool suspended) {
   this->suspended = suspended;
 
   // notify the item scripts
-  std::map<std::string, ItemScript*>::iterator it;
-  for (it = item_scripts.begin(); it != item_scripts.end(); it++) {
+  std::map<std::string, EquipmentItem*>::const_iterator it;
+  for (it = items.begin(); it != items.end(); it++) {
     it->second->set_suspended(suspended);
   }
 }
@@ -508,7 +500,7 @@ void Equipment::set_item_variant(const std::string &item_name, int variant) {
   }
 
   // notify the script
-  get_item_script(item_name).event_variant_changed(variant);
+  get_item(item_name).notify_variant_changed(variant);
 }
 
 /**
@@ -554,7 +546,7 @@ void Equipment::set_item_amount(const std::string &item_name, int amount) {
   amount = std::max(0, std::min(get_item_maximum(item_name), amount));
   savegame.set_integer(counter_index, amount);
 
-  get_item_script(item_name).event_amount_changed(amount);
+  get_item(item_name).notify_amount_changed(amount);
 }
 
 /**
@@ -604,7 +596,7 @@ int Equipment::get_item_maximum(const std::string &item_name) {
     Debug::check_assertion(item_limiting.size() != 0,
 	StringConcat() << "No maximum amount for item '" << item_name << "'");
     int item_limiting_variant = get_item_variant(item_limiting);
-    maximum = get_item(item_limiting).get_amount(item_limiting_variant);
+    maximum = get_item(item_limiting).get_other_amount(item_limiting_variant);
   }
 
   return maximum;
@@ -901,9 +893,9 @@ void Equipment::set_ability(const std::string &ability_name, int level) {
  */
 void Equipment::notify_ability_used(const std::string &ability_name) {
 
-  std::map<std::string, ItemScript*>::iterator it;
-  for (it = item_scripts.begin(); it != item_scripts.end(); it++) {
-    it->second->event_ability_used(ability_name);
+  std::map<std::string, EquipmentItem*>::iterator it;
+  for (it = items.begin(); it != items.end(); it++) {
+    it->second->notify_ability_used(ability_name);
   }
 }
 
@@ -1056,7 +1048,7 @@ void Equipment::add_item(const std::string &item_name, int variant) {
     const std::string& item_limited = item.get_item_limited();
     if (item_limited.size() > 0) {
 
-      int maximum = item.get_amount(variant);
+      int maximum = item.get_other_amount(variant);
 
       // consider built-in counters
       if (item_limited == "life") {
@@ -1090,7 +1082,7 @@ void Equipment::add_item(const std::string &item_name, int variant) {
     const std::string &item_counter_changed = item.get_item_counter_changed();
     if (item_counter_changed.size() > 0) {
 
-      int amount = item.get_amount(variant);
+      int amount = item.get_other_amount(variant);
 
       // consider built-in counters
       if (item_counter_changed == "life") {

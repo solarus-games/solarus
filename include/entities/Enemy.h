@@ -47,7 +47,6 @@ class Enemy: public Detector, ExportableToLua {
 
   public:
 
-    friend class EnemyScript;     // allow enemy scripts to access private data
     friend class Script;          // allow scripts with the enemy API to access private data
 
     /**

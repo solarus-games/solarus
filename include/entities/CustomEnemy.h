@@ -28,8 +28,7 @@ class CustomEnemy: public Enemy {
 
   private:
 
-    std::string breed;             /**< breed of the enemy (determines its script file) */
-    EnemyScript* script;           /**< the script that controls this enemy */
+    std::string breed;  /**< breed of the enemy (determines its script file) */
 
   protected:
 

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/EnemyScript.h"
+#include "lua/LuaContext.h"
 #include "entities/Enemy.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
@@ -1040,4 +1040,262 @@ int Script::enemy_api_send_message(lua_State* l) {
   dst_enemy->notify_message_received(enemy, message);
 
   return 1;
+}
+
+/**
+ * @brief Calls the on_() method of a Lua enemy.
+ * @param enemy An enemy.
+ */
+void LuaContext::enemy_on_update(Enemy& enemy) {
+
+  push_enemy(l, enemy);
+  on_update();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_suspended() method of a Lua enemy.
+ * @param enemy An enemy.
+ * @param suspended true if the enemy is suspended.
+ */
+void LuaContext::enemy_on_suspended(Enemy& enemy, bool suspended) {
+
+  push_enemy(l, enemy);
+  on_suspended(suspended);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_appeared() method of a Lua enemy.
+ * @param enemy An enemy.
+ */
+void LuaContext::enemy_on_appear(Enemy& enemy) {
+
+  push_enemy(l, enemy);
+  on_appear();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_enabled() method of a Lua enemy.
+ * @param enemy An enemy.
+ */
+void LuaContext::enemy_on_enabled(Enemy& enemy) {
+
+  push_enemy(l, enemy);
+  on_enabled();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_disabled() method of a Lua enemy.
+ * @param enemy An enemy.
+ */
+void LuaContext::enemy_on_disabled(Enemy& enemy) {
+
+  push_enemy(l, enemy);
+  on_disabled();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_restart() method of a Lua enemy.
+ * @param enemy An enemy.
+ */
+void LuaContext::enemy_on_restart(Enemy& enemy) {
+
+  push_enemy(l, enemy);
+  on_restart();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_pre_display() method of a Lua enemy.
+ * @param enemy An enemy.
+ */
+void LuaContext::enemy_on_pre_display(Enemy& enemy) {
+
+  push_enemy(l, enemy);
+  on_pre_display();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_post_display() method of a Lua enemy.
+ * @param enemy An enemy.
+ */
+void LuaContext::enemy_on_post_display(Enemy& enemy) {
+
+  push_enemy(l, enemy);
+  on_post_display();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_position_changed() method of a Lua enemy.
+ * @param enemy An enemy.
+ * @param xy The new position.
+ */
+void LuaContext::enemy_on_position_changed(Enemy& enemy, const Rectangle& xy) {
+
+  push_enemy(l, enemy);
+  on_position_changed(xy);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_layer_changed() method of a Lua enemy.
+ * @param enemy An enemy.
+ * @param layer The new layer.
+ */
+void LuaContext::enemy_on_layer_changed(Enemy& enemy, Layer layer) {
+
+  push_enemy(l, enemy);
+  on_layer_changed(layer);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_obstacle_reached() method of a Lua enemy.
+ * @param enemy An enemy.
+ */
+void LuaContext::enemy_on_obstacle_reached(Enemy& enemy) {
+
+  push_enemy(l, enemy);
+  on_obstacle_reached();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_movement_changed() method of a Lua enemy.
+ * @param enemy An enemy.
+ * @param movement Its movement.
+ */
+void LuaContext::enemy_on_movement_changed(Enemy& enemy,
+    Movement& movement) {
+
+  push_enemy(l, enemy);
+  on_movement_changed(movement);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_movement_finished() method of a Lua enemy.
+ * @param enemy An enemy.
+ * @param movement Its movement.
+ */
+void LuaContext::enemy_on_movement_finished(Enemy& enemy,
+    Movement& movement) {
+
+  push_enemy(l, enemy);
+  on_movement_finished(movement);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_sprite_animation_finished() method of a Lua enemy.
+ * @param enemy An enemy.
+ * @param sprite A sprite whose animation has just finished.
+ * @param animation Name of the animation finished.
+ */
+void LuaContext::enemy_on_sprite_animation_finished(Enemy& enemy,
+    Sprite& sprite, const std::string& animation) {
+
+  push_enemy(l, enemy);
+  on_sprite_animation_finished(sprite, animation);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_sprite_frame_changed() method of a Lua enemy.
+ * @param enemy An enemy.
+ * @param sprite A sprite whose animation frame has just changed.
+ * @param animation Name of the sprite animation.
+ * @param frame The new frame.
+ */
+void LuaContext::enemy_on_sprite_frame_changed(Enemy& enemy,
+    Sprite& sprite, const std::string& animation, int frame) {
+
+  push_enemy(l, enemy);
+  on_sprite_frame_changed(sprite, animation, frame);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_collision_enemy() method of a Lua enemy.
+ * @param enemy An enemy.
+ * @param other_enemy Another enemy colliding with the first one.
+ * @param other_sprite Colliding sprite of the other enemy.
+ * @param this_sprite Colliding sprite of the first enemy.
+ */
+void LuaContext::enemy_on_collision_enemy(Enemy& enemy,
+    Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite) {
+
+  push_enemy(l, enemy);
+  on_collision_enemy(other_enemy, other_sprite, this_sprite);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_custom_attack_received() method of a Lua enemy.
+ * @param enemy An enemy.
+ * @param attack The attack received.
+ * @param sprite The sprite that receives the attack.
+ */
+void LuaContext::enemy_on_custom_attack_received(Enemy& enemy,
+    EnemyAttack attack, Sprite* sprite) {
+
+  push_enemy(l, enemy);
+  on_custom_attack_received(attack, sprite);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_hurt() method of a Lua enemy.
+ * @param enemy An enemy.
+ * @param attack The attack received.
+ * @param life_lost Number of life points just lost.
+ */
+void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) {
+
+  push_enemy(l, enemy);
+  on_hurt(attack, life_lost);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_dead() method of a Lua enemy.
+ * @param enemy An enemy.
+ */
+void LuaContext::enemy_on_dead(Enemy& enemy) {
+
+  push_enemy(l, enemy);
+  on_dead();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_immobilized() method of a Lua enemy.
+ * @param enemy An enemy.
+ */
+void LuaContext::enemy_on_immobilized(Enemy& enemy) {
+
+  push_enemy(l, enemy);
+  on_immobilized();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_message_received() method of a Lua enemy.
+ * @param enemy An enemy.
+ * @param src_enemy The sender.
+ * @param message The message received.
+ */
+void LuaContext::enemy_on_message_received(Enemy& enemy,
+    Enemy& src_enemy, const std::string& message) {
+
+  // TODO remove this (useless with the shared Lua context)
+  push_enemy(l, enemy);
+  on_message_received(src_enemy, message);
+  lua_pop(l, 1);
 }

@@ -377,19 +377,19 @@ void LuaContext::item_on_update(EquipmentItem& item) {
 }
 
 /**
- * @brief Calls the on_update() method of a Lua equipment item.
+ * @brief Calls the on_suspended() method of a Lua equipment item.
  * @param item An equipment item.
  * @param suspended true if the game is suspended.
  */
-void LuaContext::item_on_set_suspended(EquipmentItem& item, bool suspended) {
+void LuaContext::item_on_suspended(EquipmentItem& item, bool suspended) {
 
   push_item(l, item);
-  on_set_suspended(suspended);
+  on_suspended(suspended);
   lua_pop(l, 1);
 }
 
 /**
- * @brief Calls the on_update() method of a Lua equipment item.
+ * @brief Calls the on_map_changed() method of a Lua equipment item.
  * @param item An equipment item.
  * @param map A map.
  */

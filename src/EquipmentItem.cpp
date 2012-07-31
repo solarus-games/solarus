@@ -131,7 +131,7 @@ void EquipmentItem::update() {
  */
 void EquipmentItem::set_suspended(bool suspended) {
 
-  get_lua_context().item_on_set_suspended(*this, suspended);
+  get_lua_context().item_on_suspended(*this, suspended);
 }
 
 /**
@@ -140,7 +140,7 @@ void EquipmentItem::set_suspended(bool suspended) {
  */
 void EquipmentItem::notify_game_started(Game& game) {
 
-  game.get_lua_context().notify_item_started(*this);
+  game.get_lua_context().notify_item_created(*this);
 }
 
 /**

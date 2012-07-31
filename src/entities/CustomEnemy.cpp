@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/CustomEnemy.h"
-#include "lua/EnemyScript.h"
+#include "lua/LuaContext.h"
 #include "Map.h"
 
 /**
@@ -25,8 +25,7 @@
  */
 CustomEnemy::CustomEnemy(const ConstructionParameters &params, const std::string& breed):
   Enemy(params),
-  breed(breed),
-  script(NULL) {
+  breed(breed) {
 
 }
 
@@ -34,11 +33,6 @@ CustomEnemy::CustomEnemy(const ConstructionParameters &params, const std::string
  * @brief Destructor.
  */
 CustomEnemy::~CustomEnemy() {
-
-  // movements have to be destroyed before the script
-  clear_movement();
-  clear_old_movements();
-  delete script;
 }
 
 /**
@@ -46,11 +40,7 @@ CustomEnemy::~CustomEnemy() {
  */
 void CustomEnemy::initialize() {
 
-  if (script == NULL) {   // TODO when CustomEnemy is merged with Enemy, make this test in notify_enabled() instead
-    script = new EnemyScript(*this);
-    script->set_suspended(is_suspended());
-    script->event_appear();
-  }
+  get_lua_context().notify_enemy_created(*this);
 }
 
 /**
@@ -58,7 +48,6 @@ void CustomEnemy::initialize() {
  * @return the breed
  */
 const std::string& CustomEnemy::get_breed() {
-
   return breed;
 }
 
@@ -77,10 +66,7 @@ void CustomEnemy::set_map(Map& map) {
 void CustomEnemy::update() {
 
   Enemy::update();
-
-  if (script != NULL) {
-    script->update();
-  }
+  get_lua_context().enemy_on_update(*this);
 }
 
 /**
@@ -90,10 +76,7 @@ void CustomEnemy::update() {
 void CustomEnemy::set_suspended(bool suspended) {
 
   Enemy::set_suspended(suspended);
-
-  if (script != NULL) {
-    script->set_suspended(suspended);
-  }
+  get_lua_context().enemy_on_suspended(*this, suspended);
 }
 
 /**
@@ -102,13 +85,13 @@ void CustomEnemy::set_suspended(bool suspended) {
 void CustomEnemy::display_on_map() {
 
   if (is_visible()) {
-    script->event_pre_display();
+    get_lua_context().enemy_on_pre_display(*this);
   }
 
   Enemy::display_on_map();
 
   if (is_visible()) {
-    script->event_post_display();
+    get_lua_context().enemy_on_post_display(*this);
   }
 }
 /**
@@ -118,14 +101,11 @@ void CustomEnemy::display_on_map() {
 void CustomEnemy::notify_enabled(bool enabled) {
 
   Enemy::notify_enabled(enabled);
-
-  if (script != NULL) {
-    if (enabled) {
-      script->event_enabled();
-    }
-    else {
-      script->event_disabled();
-    }
+  if (enabled) {
+    get_lua_context().enemy_on_enabled(*this);
+  }
+  else {
+    get_lua_context().enemy_on_disabled(*this);
   }
 }
 
@@ -139,7 +119,7 @@ void CustomEnemy::notify_enabled(bool enabled) {
 void CustomEnemy::restart() {
 
   Enemy::restart();
-  script->event_restart();
+  get_lua_context().enemy_on_restart(*this);
 }
 
 /**
@@ -151,7 +131,7 @@ void CustomEnemy::notify_obstacle_reached() {
   Enemy::notify_obstacle_reached();
 
   if (!is_being_hurt()) {
-    script->event_obstacle_reached();
+    get_lua_context().enemy_on_obstacle_reached(*this);
   }
 }
 
@@ -163,7 +143,7 @@ void CustomEnemy::notify_position_changed() {
   Enemy::notify_position_changed();
 
   if (!is_being_hurt()) {
-    script->event_position_changed(get_xy());
+    get_lua_context().enemy_on_position_changed(*this, get_xy());
   }
 }
 
@@ -177,7 +157,7 @@ void CustomEnemy::notify_layer_changed() {
   Enemy::notify_layer_changed();
 
   if (!is_being_hurt()) {
-    script->event_layer_changed(get_layer());
+    get_lua_context().enemy_on_layer_changed(*this, get_layer());
   }
 }
 
@@ -191,7 +171,7 @@ void CustomEnemy::notify_movement_changed() {
   Enemy::notify_movement_changed();
 
   if (!is_being_hurt()) {
-    script->event_movement_changed(*get_movement());
+    get_lua_context().enemy_on_movement_changed(*this, *get_movement());
   }
 }
 
@@ -203,7 +183,7 @@ void CustomEnemy::notify_movement_finished() {
   Enemy::notify_movement_finished();
 
   if (!is_being_hurt()) {
-    script->event_movement_finished(*get_movement());
+    get_lua_context().enemy_on_movement_finished(*this, *get_movement());
   }
 }
 
@@ -213,10 +193,12 @@ void CustomEnemy::notify_movement_finished() {
  * @param animation the current animation
  * @param frame the new frame
  */
-void CustomEnemy::notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
+void CustomEnemy::notify_sprite_frame_changed(
+    Sprite& sprite, const std::string& animation, int frame) {
 
   Enemy::notify_sprite_frame_changed(sprite, animation, frame);
-  script->event_sprite_frame_changed(sprite, animation, frame);
+  get_lua_context().enemy_on_sprite_frame_changed(
+      *this, sprite, animation, frame);
 }
 
 /**
@@ -225,10 +207,11 @@ void CustomEnemy::notify_sprite_frame_changed(Sprite& sprite, const std::string&
  * @param sprite the sprite
  * @param animation the animation just finished
  */
-void CustomEnemy::notify_sprite_animation_finished(Sprite& sprite, const std::string& animation) {
+void CustomEnemy::notify_sprite_animation_finished(
+    Sprite& sprite, const std::string& animation) {
 
   Enemy::notify_sprite_animation_finished(sprite, animation);
-  script->event_sprite_animation_finished(sprite, animation);
+  get_lua_context().enemy_on_sprite_animation_finished(*this, sprite, animation);
 }
 
 /**
@@ -237,10 +220,12 @@ void CustomEnemy::notify_sprite_animation_finished(Sprite& sprite, const std::st
  * @param other_sprite the other enemy's sprite that overlaps a sprite of this enemy
  * @param this_sprite this enemy's sprite that overlaps the other
  */
-void CustomEnemy::notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite) {
+void CustomEnemy::notify_collision_with_enemy(Enemy& other,
+    Sprite& other_sprite, Sprite& this_sprite) {
 
   if (is_in_normal_state()) {
-    script->event_collision_enemy(other.get_name(), other_sprite, this_sprite);
+    get_lua_context().enemy_on_collision_enemy(
+        *this, other, other_sprite, this_sprite);
   }
 }
 
@@ -252,7 +237,7 @@ void CustomEnemy::notify_collision_with_enemy(Enemy& other, Sprite& other_sprite
  */
 void CustomEnemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 
-  script->event_custom_attack_received(attack, this_sprite);
+  get_lua_context().enemy_on_custom_attack_received(*this, attack, this_sprite);
 }
 
 /**
@@ -264,7 +249,7 @@ void CustomEnemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 void CustomEnemy::notify_hurt(MapEntity& source, EnemyAttack attack, int life_points) {
 
   Enemy::notify_hurt(source, attack, life_points);
-  script->event_hurt(attack, life_points);
+  get_lua_context().enemy_on_hurt(*this, attack, life_points);
 }
 
 /**
@@ -273,7 +258,7 @@ void CustomEnemy::notify_hurt(MapEntity& source, EnemyAttack attack, int life_po
 void CustomEnemy::notify_dead() {
 
   Enemy::notify_dead();
-  script->event_dead();
+  get_lua_context().enemy_on_dead(*this);
 }
 
 /**
@@ -283,7 +268,7 @@ void CustomEnemy::notify_dead() {
 void CustomEnemy::notify_immobilized() {
 
   Enemy::notify_dead();
-  script->event_immobilized();
+  get_lua_context().enemy_on_immobilized(*this);
 }
 
 /**
@@ -294,5 +279,5 @@ void CustomEnemy::notify_immobilized() {
 void CustomEnemy::notify_message_received(Enemy& sender, const std::string& message) {
 
   Enemy::notify_message_received(sender, message);
-  script->event_message_received(sender.get_name(), message);
+  get_lua_context().enemy_on_message_received(*this, sender, message);
 }

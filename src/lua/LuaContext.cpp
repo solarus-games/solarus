@@ -23,7 +23,7 @@
 #include "entities/ShopItem.h"
 #include "entities/Door.h"
 #include "entities/Block.h"
-#include "entities/Enemy.h"
+#include "entities/CustomEnemy.h"
 #include "entities/PickableItem.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
@@ -263,10 +263,10 @@ void LuaContext::notify_map_started(Map& map, DestinationPoint* destination_poin
 }
 
 /**
- * @brief Starts an equipment item in the Lua world.
+ * @brief Notifies the Lua world that an equipment item has just been created.
  * @param item The item.
  */
-void LuaContext::notify_item_started(EquipmentItem& item) {
+void LuaContext::notify_item_created(EquipmentItem& item) {
 
   // Compute the file name, depending on the id of the equipment item.
   std::string file_name = (std::string) "items/" + item.get_name();
@@ -277,6 +277,27 @@ void LuaContext::notify_item_started(EquipmentItem& item) {
     // Run it with the item userdata as parameter.
     push_item(l, item);
     call_function(1, 0, file_name);
+  }
+}
+
+/**
+ * @brief Notifies the Lua world that an enemy has just been added to the map.
+ * @param item The item.
+ */
+void LuaContext::notify_enemy_created(CustomEnemy& enemy) {
+
+  // Compute the file name, depending on enemy's breed.
+  std::string file_name = (std::string) "enemy/" + enemy.get_breed();
+
+  // Load the enemy's code.
+  if (load_file_if_exists(l, file_name)) {
+
+    // Run it with the enemy userdata as parameter.
+    push_enemy(l, enemy);
+    call_function(1, 0, file_name);
+
+    enemy_on_suspended(enemy, enemy.is_suspended());
+    enemy_on_appear(enemy);
   }
 }
 
@@ -355,18 +376,6 @@ void LuaContext::on_suspended(bool suspended) {
   if (find_method("on_suspended")) {
     lua_pushboolean(l, suspended);
     call_function(2, 0, "on_suspended");
-  }
-}
-
-/**
- * @brief Calls the on_set_suspended() method of the object on top of the stack.
- * @param suspended true to suspend the object, false to unsuspend it.
- */
-void LuaContext::on_set_suspended(bool suspended) {
-
-  if (find_method("on_set_suspended")) {
-    lua_pushboolean(l, suspended);
-    call_function(2, 0, "on_set_suspended");
   }
 }
 

@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "lua/Script.h"  // TODO remove
+#include "entities/Layer.h"
+#include "entities/EnemyAttack.h"
 
 /**
  * @brief This class represents the only Lua context that runs
@@ -49,7 +51,8 @@ class LuaContext: public Script {
     void update();
     void notify_input(InputEvent& event);
     void notify_map_started(Map& map, DestinationPoint* destination_point);
-    void notify_item_started(EquipmentItem& item);
+    void notify_item_created(EquipmentItem& item);
+    void notify_enemy_created(CustomEnemy& enemy);
     void notify_camera_reached_target(Map& map);
 
     // Main Lua script (sol.main).
@@ -110,7 +113,7 @@ class LuaContext: public Script {
 
     // Equipment item events.
     void item_on_update(EquipmentItem& item);
-    void item_on_set_suspended(EquipmentItem& item, bool suspended);
+    void item_on_suspended(EquipmentItem& item, bool suspended);
     void item_on_map_changed(EquipmentItem& item, Map& map);
     void item_on_appear(EquipmentItem& item, PickableItem& pickable_item);
     void item_on_movement_changed(EquipmentItem& item, PickableItem& pickable_item);
@@ -126,6 +129,34 @@ class LuaContext: public Script {
     void item_on_npc_collision_fire(EquipmentItem& item, NPC& npc);
     void item_on_dialog_started(EquipmentItem& item, const std::string& dialog_id);
     void item_on_dialog_finished(EquipmentItem& item, const std::string& dialog_id, int answer);
+
+    // Enemy events.
+    void enemy_on_update(Enemy& enemy);
+    void enemy_on_suspended(Enemy& enemy, bool suspended);
+    void enemy_on_appear(Enemy& enemy);
+    void enemy_on_enabled(Enemy& enemy);
+    void enemy_on_disabled(Enemy& enemy);
+    void enemy_on_restart(Enemy& enemy);
+    void enemy_on_pre_display(Enemy& enemy);
+    void enemy_on_post_display(Enemy& enemy);
+    void enemy_on_position_changed(Enemy& enemy, const Rectangle& xy);
+    void enemy_on_layer_changed(Enemy& enemy, Layer layer);
+    void enemy_on_obstacle_reached(Enemy& enemy);
+    void enemy_on_movement_changed(Enemy& enemy, Movement& movement);
+    void enemy_on_movement_finished(Enemy& enemy, Movement& movement);
+    void enemy_on_sprite_frame_changed(Enemy& enemy,
+        Sprite& sprite, const std::string& animation, int frame);
+    void enemy_on_sprite_animation_finished(Enemy& enemy,
+        Sprite& sprite, const std::string& animation);
+    void enemy_on_collision_enemy(Enemy& enemy,
+        Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
+    void enemy_on_custom_attack_received(Enemy& enemy,
+        EnemyAttack attack, Sprite* sprite);
+    void enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost);
+    void enemy_on_dead(Enemy& enemy);
+    void enemy_on_immobilized(Enemy& enemy);
+    void enemy_on_message_received(Enemy& enemy,
+        Enemy& src_enemy, const std::string& message);
 
   private:
 
@@ -152,7 +183,6 @@ class LuaContext: public Script {
     void on_pre_display(Surface& dst_surface);
     void on_post_display(Surface& dst_surface);
     void on_suspended(bool suspended);
-    void on_set_suspended(bool suspended);
     void on_input(InputEvent& event);
     void on_key_pressed(InputEvent& event);
     void on_key_released(InputEvent& event);
@@ -200,6 +230,25 @@ class LuaContext: public Script {
     void on_obtained(const Treasure& treasure);
     void on_use(InventoryItem& inventory_item);
     void on_ability_used(const std::string& ability_name);
+    void on_appear();
+    void on_enabled();
+    void on_disabled();
+    void on_restart();
+    void on_pre_display();
+    void on_post_display();
+    void on_position_changed(const Rectangle& xy);
+    void on_layer_changed(Layer layer);
+    void on_obstacle_reached();
+    void on_movement_changed(Movement& movement);
+    void on_movement_finished(Movement& movement);
+    void on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
+    void on_sprite_animation_finished(Sprite& sprite, const std::string& animation);
+    void on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
+    void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
+    void on_hurt(EnemyAttack attack, int life_lost);
+    void on_dead();
+    void on_immobilized();
+    void on_message_received(Enemy& src_enemy, const std::string& message);
 };
 
 #endif

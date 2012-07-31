@@ -124,6 +124,8 @@ class LuaContext: public Script {
     bool item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
         const std::string& item_name, int variant);
     void item_on_npc_collision_fire(EquipmentItem& item, NPC& npc);
+    void item_on_dialog_started(EquipmentItem& item, const std::string& dialog_id);
+    void item_on_dialog_finished(EquipmentItem& item, const std::string& dialog_id, int answer);
 
   private:
 

@@ -41,9 +41,9 @@ const uint32_t DialogBox::char_delays[] = {
  * @brief Creates a new dialog box.
  * @param game the game this dialog box belongs to
  */
-DialogBox::DialogBox(Game &game):
+DialogBox::DialogBox(Game& game):
   game(game),
-  issuer_script(NULL),
+  issuer_item(NULL),
   dialog_surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT),
   box_img("hud/dialog_box.png"),
   icons_img("hud/dialog_icons.png"),
@@ -76,7 +76,6 @@ DialogBox::~DialogBox() {
  * @return the current game
  */
 Game& DialogBox::get_game() {
-
   return game;
 }
 
@@ -210,11 +209,11 @@ int DialogBox::get_last_answer() {
  * If there was already a dialog, it must be finished.
  *
  * @param dialog_id of the dialog
- * @param issuer_script the script that issued the request to start a dialog
- * (will be notified when the dialog finishes), or NULL
+ * @param issuer_item The equipment item that requests to start a dialog, if any
+ * (will be notified when the dialog finishes).
  * @param vertical_position vertical position where to display the dialog box (default: auto)
  */
-void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script,
+void DialogBox::start_dialog(const std::string& dialog_id, EquipmentItem* issuer_item,
     VerticalPosition vertical_position) {
 
   Debug::check_assertion(!is_enabled() || is_full(), StringConcat()
@@ -260,9 +259,9 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
 
     // notify the scripts
     game.get_lua_context().map_on_dialog_started(game.get_current_map(), dialog_id);
-    this->issuer_script = issuer_script;
-    if (issuer_script != NULL) {
-      issuer_script->event_dialog_started(dialog_id);
+    this->issuer_item = issuer_item;
+    if (issuer_item != NULL) {
+      game.get_lua_context().item_on_dialog_started(*issuer_item, dialog_id);
     }
   }
 
@@ -348,7 +347,7 @@ void DialogBox::show_next_dialog() {
 void DialogBox::close() {
 
   const std::string previous_dialog_id = dialog_id;
-  Script* previous_issuer_script = issuer_script;
+  EquipmentItem* previous_issuer_item = issuer_item;
   dialog_id = "";
 
   // restore the action and sword keys
@@ -362,9 +361,10 @@ void DialogBox::close() {
     game.get_lua_context().map_on_dialog_finished(
         game.get_current_map(), previous_dialog_id, last_answer);
 
-    if (previous_issuer_script != NULL) {
+    if (previous_issuer_item != NULL) {
       // also notify the issuer script if different
-      previous_issuer_script->event_dialog_finished(previous_dialog_id, last_answer);
+      game.get_lua_context().item_on_dialog_finished(
+          *previous_issuer_item, previous_dialog_id, last_answer);
     }
   }
 }

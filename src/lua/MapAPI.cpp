@@ -265,7 +265,12 @@ int Script::map_api_dialog_start(lua_State* l) {
   Map& map = check_map(l, 1);
   const std::string& dialog_id = luaL_checkstring(l, 2);
 
-  map.get_game().get_dialog_box().start_dialog(dialog_id, NULL);
+  EquipmentItem* issuer_item = NULL;
+  if (lua_gettop(l) >= 3) {
+    issuer_item = &check_item(l, 3);
+  }
+
+  map.get_game().get_dialog_box().start_dialog(dialog_id, issuer_item);
 
   return 0;
 }

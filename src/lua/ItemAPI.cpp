@@ -536,3 +536,30 @@ void LuaContext::item_on_npc_collision_fire(EquipmentItem& item, NPC& npc) {
   on_npc_collision_fire(npc);
   lua_pop(l, 1);
 }
+
+/**
+ * @brief Calls the on_dialog_started() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param dialog_id Id a the dialog just started.
+ */
+void LuaContext::item_on_dialog_started(EquipmentItem& item, const std::string& dialog_id) {
+
+  push_item(l, item);
+  on_dialog_started(dialog_id);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_dialog_finished() method of a Lua equipment item.
+ * @param item An equipment item.
+ * @param dialog_id Id a the dialog just finished.
+ * @param answer The answer selected by the player: 0 for the first one,
+ * 1 for the second one, -1 if there was no question.
+ */
+void LuaContext::item_on_dialog_finished(EquipmentItem& item,
+    const std::string& dialog_id, int answer) {
+
+  push_item(l, item);
+  on_dialog_finished(dialog_id, answer);
+  lua_pop(l, 1);
+}

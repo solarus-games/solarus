@@ -1,11 +1,13 @@
-function event_use()
+local item = ...
 
-  if sol.item.get_amount() == 0 then
+function item:on_use()
+
+  if self:get_amount() == 0 then
     sol.audio.play_sound("wrong")
   else
-    sol.item.remove_amount(1)
-    sol.map.get_game():add_life(4 * 3)
+    self:remove_amount(1)
+    self:get_game():add_life(4 * 3)
   end
-  sol.item.set_finished()
+  self:set_finished()
 end
 

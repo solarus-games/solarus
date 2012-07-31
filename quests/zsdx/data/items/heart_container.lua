@@ -1,6 +1,8 @@
-function event_obtained(variant, savegame_variable)
+local item = ...
 
-  sol.map.get_game():add_max_life(4)
-  sol.map.get_game():add_life(sol.map.get_game():get_max_life())
+function item:on_obtained(variant, savegame_variable)
+
+  self:get_game():add_max_life(4)
+  self:get_game():add_life(self:get_game():get_max_life())
 end
 

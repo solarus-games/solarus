@@ -1,5 +1,7 @@
-function event_variant_changed(variant)
+local item = ...
+
+function item:on_variant_changed(variant)
   -- the possession state of the glove determines the built-in ability "lift"
-  sol.map.get_game():set_ability("lift", variant)
+  self:get_game():set_ability("lift", variant)
 end
 

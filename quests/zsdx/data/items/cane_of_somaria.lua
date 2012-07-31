@@ -1,65 +1,65 @@
-created = false -- indicates a Somaria block has been created on the current map
+local item = ...
+item.created = false -- indicates a Somaria block has been created on the current map
 
-function event_use()
+function item:on_use()
 
   local magic_needed = 7
-  if sol.map.get_game():get_magic() >= magic_needed then
+  if self:get_game():get_magic() >= magic_needed then
 
-    local x, y, layer = get_block_position_from_hero()
+    local x, y, layer = self:get_block_position_from_hero()
 
-    if not created then
+    if not self.created then
 
       sol.audio.play_sound("cane")
       sol.audio.play_sound("magic_bar")
-      sol.map.get_game():remove_magic(magic_needed)
+      self:get_game():remove_magic(magic_needed)
 
       -- create the Somaria block
-      sol.map.block_create(x, y, layer, "somaria_block",
+      self:get_map():block_create(x, y, layer, "somaria_block",
       {
 	sprite_name = "entities/somaria_block",
 	can_be_pushed = true,
 	can_be_pulled = true,
 	maximum_moves = 2 -- infinite moves
       })
-      created = true
+      self.created = true
     else
       -- reuse the old one
-      local old_x, old_y, old_layer = sol.map.block_get_position("somaria_block")
+      local old_x, old_y, old_layer = self:get_map():block_get_position("somaria_block")
       if x ~= old_x or y ~= old_y or layer ~= old_layer then
 
 	sol.audio.play_sound("cane")
 	sol.audio.play_sound("magic_bar")
-	sol.map.get_game():remove_magic(magic_needed)
+	self:get_game():remove_magic(magic_needed)
 
-	sol.map.block_set_position("somaria_block", x, y, layer)
+	self:get_map():block_set_position("somaria_block", x, y, layer)
       end
     end
   else
 
-    if created and sol.map.block_get_position("somaria_block") ~= -100 then
+    if self.created and self:get_map():block_get_position("somaria_block") ~= -100 then
       -- remove the previous block
       sol.audio.play_sound("cane")
-      sol.map.block_set_position("somaria_block", -100, 0)
+      self:get_map():block_set_position("somaria_block", -100, 0)
     else
       sol.audio.play_sound("wrong")
     end
   end
-  sol.item.set_finished()
+  self:set_finished()
 end
 
 -- Called when the current map changes
-function event_map_changed()
+function item:on_map_changed()
 
   -- no more Somaria block on the new map
-  created = false
+  self.created = false
 end
 
-
-function get_block_position_from_hero()
+function item:get_block_position_from_hero()
 
   -- compute a position
-  local x, y, layer = sol.map.hero_get_position()
-  local direction = sol.map.hero_get_direction()
+  local x, y, layer = self:get_map():hero_get_position()
+  local direction = self:get_map():hero_get_direction()
   if direction == 0 then
     x = x + 21
   elseif direction == 1 then
@@ -77,11 +77,11 @@ function get_block_position_from_hero()
   return x, y, layer
 end
 
-function event_obtained(variant, savegame_variable)
+function item:on_obtained(variant, savegame_variable)
   
   -- give the magic bar if necessary
-  if sol.map.get_game():get_max_magic() == 0 then
-    sol.map.get_game():set_max_magic(42)
+  if self:get_game():get_max_magic() == 0 then
+    self:get_game():set_max_magic(42)
   end
 end
 

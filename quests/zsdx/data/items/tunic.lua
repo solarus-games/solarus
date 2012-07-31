@@ -1,5 +1,7 @@
-function event_variant_changed(variant)
+local item = ...
+
+function item:on_variant_changed(variant)
   -- the possession state of the tunic determines the built-in ability "tunic"
-  sol.map.get_game():set_ability("tunic", variant)
+  self:get_game():set_ability("tunic", variant)
 end
 

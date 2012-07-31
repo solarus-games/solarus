@@ -1,5 +1,7 @@
-function event_variant_changed(variant)
+local item = ...
+
+function item:on_variant_changed(variant)
   -- the possession state of the world map determines the built-in ability "see_outside_world_minimap"
-  sol.map.get_game():set_ability("see_outside_world_minimap", variant)
+  self:get_game():set_ability("see_outside_world_minimap", variant)
 end
 

@@ -1,21 +1,24 @@
--- Called when the player uses the bombs of his inventory by pressing the corresponding item key
-function event_use()
+local item = ...
 
-  if sol.item.get_amount() == 0 then
+-- Called when the player uses the bombs of his inventory by pressing the corresponding item key
+function item:on_use()
+
+  if self:get_amount() == 0 then
     sol.audio.play_sound("wrong")
   else
-    sol.item.remove_amount(1)
-    local x, y, layer = get_bomb_position_from_hero()
-    sol.map.bomb_create(x, y, layer)
+    self:remove_amount(1)
+    local x, y, layer = self:get_bomb_position_from_hero()
+    self:get_map():bomb_create(x, y, layer)
     sol.audio.play_sound("bomb")
   end
-  sol.item.set_finished()
+  self:set_finished()
 end
 
-function get_bomb_position_from_hero()
+function item:get_bomb_position_from_hero()
 
-  local x, y, layer = sol.map.hero_get_position()
-  local direction = sol.map.hero_get_direction()
+  local map = self:get_map()
+  local x, y, layer = map:hero_get_position()
+  local direction = map:hero_get_direction()
   if direction == 0 then
     x = x + 16
   elseif direction == 1 then
@@ -28,3 +31,4 @@ function get_bomb_position_from_hero()
 
   return x, y, layer
 end
+

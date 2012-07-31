@@ -1,2 +1,3 @@
-sol.main.do_file("items/bottle")
+local item = ...
+sol.main.load_file("items/bottle")(item)
 

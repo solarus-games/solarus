@@ -1,5 +1,7 @@
-function event_obtained(variant, savegame_variable)
+local item = ...
+
+function item:on_obtained(variant, savegame_variable)
   -- obtaining the map gives the built-in ability "see_dungeon_minimap_rooms"
-  sol.map.get_game():set_ability("see_dungeon_minimap_elements", 1)
+  self:get_game():set_ability("see_dungeon_minimap_elements", 1)
 end
 

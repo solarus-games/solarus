@@ -1,3 +1,5 @@
+local item = ...
+
 local message_id = {
   "found_piece_of_heart.first",
   "found_piece_of_heart.second",
@@ -5,28 +7,28 @@ local message_id = {
   "found_piece_of_heart.fourth"
 }
 
-function event_obtained(variant)
+function item:on_obtained(variant)
 
-  local nb_pieces_of_heart = sol.map.get_game():get_integer(1030)
-  sol.map.dialog_start(message_id[nb_pieces_of_heart + 1])
+  local nb_pieces_of_heart = self:get_game():get_integer(1030)
+  self:get_map():dialog_start(message_id[nb_pieces_of_heart + 1], self)
 end
 
-function event_dialog_finished(dialog_id, answer)
+function item:on_dialog_finished(dialog_id, answer)
 
-  local nb_pieces_of_heart = sol.map.get_game():get_integer(1030)
+  local nb_pieces_of_heart = self:get_game():get_integer(1030)
 
   if dialog_id == message_id[nb_pieces_of_heart + 1] then
 
-    sol.map.get_game():set_integer(1030, (nb_pieces_of_heart + 1) % 4)
-    if (nb_pieces_of_heart == 3) then
-      sol.map.get_game():add_max_life(4)
+    self:get_game():set_integer(1030, (nb_pieces_of_heart + 1) % 4)
+    if nb_pieces_of_heart == 3 then
+      self:get_game():add_max_life(4)
     end
-    sol.map.get_game():add_life(sol.map.get_game():get_max_life())
+    self:get_game():add_life(self:get_game():get_max_life())
   end
 end
 
 -- this function is not used in releases :)
-function print_pieces_of_heart()
+function item:print_pieces_of_heart()
 
   local pieces = {
     {savegame_variable =  12, description = "Link's house secret room"},
@@ -65,7 +67,7 @@ function print_pieces_of_heart()
 
   local nb_found = 0
   for i, v in ipairs(pieces) do
-    if sol.map.get_game():get_boolean(v.savegame_variable) then
+    if self:get_game():get_boolean(v.savegame_variable) then
       nb_found = nb_found + 1
     else
       print("You don't have piece of heart #" .. i .. ": " .. v.description)

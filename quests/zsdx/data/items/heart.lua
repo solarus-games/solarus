@@ -1,5 +1,6 @@
+local item = ...
 
-function event_appear(variant, savegame_variable, falling_height)
+function item:on_appear(variant, savegame_variable, falling_height)
 
   if falling_height ~= 0 then
     local trajectory = {
@@ -33,7 +34,7 @@ function event_appear(variant, savegame_variable, falling_height)
     m:set_delay(100)
     m:set_loop(false)
     m:set_ignore_obstacles(true)
-    sol.item.start_movement(m)
+    self:start_movement(m)
   end
 end
 

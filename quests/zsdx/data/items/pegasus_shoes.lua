@@ -1,14 +1,16 @@
+local item = ...
+
 -- Let the hero run with the action key or an inventory item key
-sol.map.get_game():set_ability("run", sol.item.get_variant())
+item:get_game():set_ability("run", item:get_variant())
 
-function event_variant_changed(variant)
+function item:on_variant_changed(variant)
 
-  sol.map.get_game():set_ability("run", variant)
+  self:get_game():set_ability("run", variant)
 end
 
-function event_use()
+function item:on_use()
 
-  sol.map.hero_start_running()
-  sol.item.set_finished()
+  self:get_map():hero_start_running()
+  self:set_finished()
 end
 

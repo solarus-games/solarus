@@ -450,6 +450,7 @@ class Script {
 
       // item API
       item_api_get_game,
+      item_api_get_map,
       item_api_get_variant,
       item_api_set_variant,
       item_api_get_amount,

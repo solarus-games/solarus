@@ -635,20 +635,6 @@ void LuaContext::on_treasure_obtaining(const Treasure& treasure) {
 }
 
 /**
- * @brief Calls the on_obtaining() method of the object on top of the stack.
- * @param treasure The treasure being obtained.
- */
-void LuaContext::on_obtaining(const Treasure& treasure) {
-
-  if (find_method("on_obtaining")) {
-    lua_pushstring(l, treasure.get_item_name().c_str());
-    lua_pushinteger(l, treasure.get_variant());
-    lua_pushinteger(l, treasure.get_savegame_variable());
-    call_function(4, 0, "on_obtaining");
-  }
-}
-
-/**
  * @brief Calls the on_treasure_obtained() method of the object on top of the stack.
  * @param treasure The treasure just obtained.
  */
@@ -659,20 +645,6 @@ void LuaContext::on_treasure_obtained(const Treasure& treasure) {
     lua_pushinteger(l, treasure.get_variant());
     lua_pushinteger(l, treasure.get_savegame_variable());
     call_function(4, 0, "on_treasure_obtained");
-  }
-}
-
-/**
- * @brief Calls the on_obtained() method of the object on top of the stack.
- * @param treasure The treasure just obtained.
- */
-void LuaContext::on_obtained(const Treasure& treasure) {
-
-  if (find_method("on_obtained")) {
-    lua_pushstring(l, treasure.get_item_name().c_str());
-    lua_pushinteger(l, treasure.get_variant());
-    lua_pushinteger(l, treasure.get_savegame_variable());
-    call_function(4, 0, "on_obtained");
   }
 }
 
@@ -1000,6 +972,32 @@ void LuaContext::on_amount_changed(int amount) {
   if (find_method("on_amount_changed")) {
     lua_pushinteger(l, 1);
     call_function(2, 0, "on_amount_changed");
+  }
+}
+
+/**
+ * @brief Calls the on_obtaining() method of the object on top of the stack.
+ * @param treasure The treasure being obtained.
+ */
+void LuaContext::on_obtaining(const Treasure& treasure) {
+
+  if (find_method("on_obtaining")) {
+    lua_pushinteger(l, treasure.get_variant());
+    lua_pushinteger(l, treasure.get_savegame_variable());
+    call_function(3, 0, "on_obtaining");
+  }
+}
+
+/**
+ * @brief Calls the on_obtained() method of the object on top of the stack.
+ * @param treasure The treasure just obtained.
+ */
+void LuaContext::on_obtained(const Treasure& treasure) {
+
+  if (find_method("on_obtained")) {
+    lua_pushinteger(l, treasure.get_variant());
+    lua_pushinteger(l, treasure.get_savegame_variable());
+    call_function(3, 0, "on_obtained");
   }
 }
 

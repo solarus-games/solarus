@@ -165,9 +165,7 @@ class LuaContext: public Script {
     void on_dialog_finished(const std::string& dialog_id, int answer);
     void on_camera_back();
     void on_treasure_obtaining(const Treasure& treasure);
-    void on_obtaining(const Treasure& treasure);
-        void on_treasure_obtained(const Treasure& treasure);
-    void on_obtained(const Treasure& treasure);
+    void on_treasure_obtained(const Treasure& treasure);
     void on_switch_activated(Switch& sw);
     void on_switch_inactivated(Switch& sw);
     void on_switch_left(Switch& sw);
@@ -196,6 +194,8 @@ class LuaContext: public Script {
     void on_movement_changed(PickableItem& pickable);
     void on_variant_changed(int variant);
     void on_amount_changed(int amount);
+    void on_obtaining(const Treasure& treasure);
+    void on_obtained(const Treasure& treasure);
     void on_use(InventoryItem& inventory_item);
     void on_ability_used(const std::string& ability_name);
 };

@@ -37,6 +37,7 @@ const std::string Script::item_module_name = "sol.item";
 void Script::register_item_module() {
 
   static const luaL_Reg methods[] = {
+      { "get_game", item_api_get_game },
       { "get_variant", item_api_get_variant },
       { "set_variant", item_api_set_variant },
       { "get_amount", item_api_get_amount },
@@ -93,6 +94,19 @@ int Script::item_api_get_variant(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
 
   lua_pushinteger(l, item.get_current_variant());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_item_get_game.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Script::item_api_get_game(lua_State* l) {
+
+  EquipmentItem& item = check_item(l, 1);
+
+  push_game(l, item.get_equipment().get_savegame());
   return 1;
 }
 

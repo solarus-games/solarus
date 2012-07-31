@@ -449,6 +449,7 @@ class Script {
       map_api_enemy_get_sprite,
 
       // item API
+      item_api_get_game,
       item_api_get_variant,
       item_api_set_variant,
       item_api_get_amount,

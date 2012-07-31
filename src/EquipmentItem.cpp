@@ -32,7 +32,7 @@
  */
 EquipmentItem::EquipmentItem(Equipment& equipment, IniFile& ini):
   equipment(equipment),
-  pickable_item(NULL),
+  pickable(NULL),
   inventory_item(NULL) {
 
   name = ini.get_group();
@@ -176,9 +176,10 @@ void EquipmentItem::notify_amount_changed(int amount) {
  */
 void EquipmentItem::notify_inventory_item_used(InventoryItem& inventory_item) {
 
+  InventoryItem* old_inventory_item = this->inventory_item;
   this->inventory_item = &inventory_item;
   get_lua_context().item_on_use(*this, inventory_item);
-  this->inventory_item = NULL;
+  this->inventory_item = old_inventory_item;
 }
 
 /**
@@ -197,9 +198,10 @@ void EquipmentItem::notify_ability_used(const std::string& ability_name) {
  */
 void EquipmentItem::notify_pickable_appeared(PickableItem& pickable) {
 
-  this->pickable_item = &pickable;
+  PickableItem* old_pickable = this->pickable;
+  this->pickable = &pickable;
   get_lua_context().item_on_appear(*this, pickable);
-  this->pickable_item = NULL;
+  this->pickable = old_pickable;
 }
 
 /**
@@ -208,9 +210,10 @@ void EquipmentItem::notify_pickable_appeared(PickableItem& pickable) {
  */
 void EquipmentItem::notify_movement_changed(PickableItem& pickable) {
 
-  this->pickable_item = &pickable;
+  PickableItem* old_pickable = this->pickable;
+  this->pickable = &pickable;
   get_lua_context().item_on_movement_changed(*this, pickable);
-  this->pickable_item = NULL;
+  this->pickable = old_pickable;
 }
 
 /**
@@ -256,7 +259,7 @@ void EquipmentItem::set_current_amount(int amount) {
  * @return The current pickable item or NULL.
  */
 PickableItem* EquipmentItem::get_pickable_item() {
-  return pickable_item;
+  return pickable;
 }
 
 /**

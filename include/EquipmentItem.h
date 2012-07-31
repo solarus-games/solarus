@@ -42,7 +42,7 @@ class EquipmentItem: public ExportableToLua {
   private:
 
     Equipment& equipment;                /**< the equipment object that manages all items */
-    PickableItem* pickable_item;         /**< the pickable item that just appeared in on_appear(), or NULL */
+    PickableItem* pickable;              /**< the pickable item that just appeared in on_appear(), or NULL */
     InventoryItem* inventory_item;       /**< the inventory item that is being used when on_used() is called,
                                           * or NULL if no inventory item is being used */
 

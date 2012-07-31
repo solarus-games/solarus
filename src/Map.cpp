@@ -613,6 +613,7 @@ void Map::start() {
  */
 void Map::leave() {
   started = false;
+  get_lua_context().map_on_finished(*this);
 }
 
 /**

@@ -232,8 +232,7 @@ int Script::timer_api_start(lua_State *l) {
 
     Game* current_game = script.get_current_game();
     if (current_game != NULL) {
-      // TODO once the new map API is implemented, push the current map instead of the current game
-      push_game(l, current_game->get_savegame());
+      push_map(l, current_game->get_current_map());
     }
     else {
       CustomScreen* current_screen = script.get_current_screen();

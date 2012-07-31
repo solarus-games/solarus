@@ -902,7 +902,7 @@ void LuaContext::game_on_finished(Game& game) {
 
   push_game(l, game.get_savegame());
   on_finished();
-  remove_timers(-1);  // Stop timers associated to this game
+  remove_timers(-1);  // Stop timers associated to this game.
   lua_pop(l, 1);
 }
 

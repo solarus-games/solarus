@@ -2430,6 +2430,18 @@ void LuaContext::map_on_started(Map& map, DestinationPoint* destination_point) {
 }
 
 /**
+ * @brief Calls the on_finished() method of a Lua map.
+ * @param map A map.
+ */
+void LuaContext::map_on_finished(Map& map) {
+
+  push_map(l, map);
+  on_finished();
+  remove_timers(-1);  // Stop timers associated to this map.
+  lua_pop(l, 1);
+}
+
+/**
  * @brief Calls the on_opening_transition_finished() method of a Lua map.
  * @param map A map.
  * @param destination_point The destination point used (NULL if it's a special one).

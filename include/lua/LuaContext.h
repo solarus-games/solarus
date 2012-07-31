@@ -76,6 +76,7 @@ class LuaContext: public Script {
     void map_on_update(Map& map);
     void map_on_suspended(Map& map, bool suspended);
     void map_on_started(Map& map, DestinationPoint* destination_point);
+    void map_on_finished(Map& map);
     void map_on_opening_transition_finished(Map& map,
         DestinationPoint* destination_point);
     void map_on_dialog_started(Map& map, const std::string& dialog_id);

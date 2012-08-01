@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Agahnim (Boss of dungeon 5)
 
 -- possible positions where he appears
@@ -13,83 +15,83 @@ local finished = false
 local blue_fireball_proba = 33 -- percent
 local timers = {}
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(initial_life)
-  sol.enemy.set_damage(12)
-  sol.enemy.create_sprite("enemies/agahnim")
-  sol.enemy.set_optimization_distance(0)
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 13)
-  sol.enemy.set_invincible()
-  sol.enemy.set_attack_consequence("sword", "protected")
-  sol.enemy.set_attack_consequence("arrow", "protected")
-  sol.enemy.set_attack_consequence("hookshot", "protected")
-  sol.enemy.set_attack_consequence("boomerang", "protected")
-  sol.enemy.set_pushed_back_when_hurt(false)
-  sol.enemy.set_push_hero_on_sword(true)
+  self:set_life(initial_life)
+  self:set_damage(12)
+  self:create_sprite("enemies/agahnim")
+  self:set_optimization_distance(0)
+  self:set_size(16, 16)
+  self:set_origin(8, 13)
+  self:set_invincible()
+  self:set_attack_consequence("sword", "protected")
+  self:set_attack_consequence("arrow", "protected")
+  self:set_attack_consequence("hookshot", "protected")
+  self:set_attack_consequence("boomerang", "protected")
+  self:set_pushed_back_when_hurt(false)
+  self:set_push_hero_on_sword(true)
 
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:set_animation("stopped")
 end
 
-function event_restart()
+function enemy:on_restart()
 
   vulnerable = false
   for _, t in ipairs(timers) do t:stop() end
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
 
   if not finished then
     sprite:fade_out()
-    timers[#timers + 1] = sol.timer.start(700, hide)
+    timers[#timers + 1] = sol.timer.start(700, function() self:hide() end)
   else
     sprite:set_animation("hurt")
-    sol.map.hero_freeze()
-    timers[#timers + 1] = sol.timer.start(500, end_dialog)
-    timers[#timers + 1] = sol.timer.start(1000, fade_out)
-    timers[#timers + 1] = sol.timer.start(1500, escape)
+    self:get_map():hero_freeze()
+    timers[#timers + 1] = sol.timer.start(500, function() self:end_dialog() end)
+    timers[#timers + 1] = sol.timer.start(1000, function() self:fade_out() end)
+    timers[#timers + 1] = sol.timer.start(1500, function() self:escape() end)
   end
 end
 
-function hide()
+function enemy:hide()
 
   vulnerable = false
-  sol.enemy.set_position(-100, -100)
-  timers[#timers + 1] = sol.timer.start(500, unhide)
+  self:set_position(-100, -100)
+  timers[#timers + 1] = sol.timer.start(500, function() self:unhide() end)
 end
 
-function unhide()
+function enemy:unhide()
 
   local position = (positions[math.random(#positions)])
-  sol.enemy.set_position(position.x, position.y)
-  local sprite = sol.enemy.get_sprite()
+  self:set_position(position.x, position.y)
+  local sprite = self:get_sprite()
   sprite:set_direction(position.direction4)
   sprite:fade_in()
-  timers[#timers + 1] = sol.timer.start(1000, fire_step_1)
+  timers[#timers + 1] = sol.timer.start(1000, function() self:fire_step_1() end)
 end
 
-function fire_step_1()
+function enemy:fire_step_1()
 
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:set_animation("arms_up")
-  timers[#timers + 1] = sol.timer.start(1000, fire_step_2)
+  timers[#timers + 1] = sol.timer.start(1000, function() self:fire_step_2() end)
 end
 
-function fire_step_2()
+function enemy:fire_step_2()
 
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   if math.random(100) <= blue_fireball_proba then
     sprite:set_animation("preparing_blue_fireball")
   else
     sprite:set_animation("preparing_red_fireball")
   end
   sol.audio.play_sound("boss_charge")
-  timers[#timers + 1] = sol.timer.start(1500, fire_step_3)
+  timers[#timers + 1] = sol.timer.start(1500, function() self:fire_step_3() end)
 end
 
-function fire_step_3()
+function enemy:fire_step_3()
 
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
 
   local sound, breed
   if sprite:get_animation() == "preparing_blue_fireball" then
@@ -103,71 +105,70 @@ function fire_step_3()
   sol.audio.play_sound(sound)
 
   vulnerable = true
-  timers[#timers + 1] = sol.timer.start(700, sol.enemy.restart)
+  timers[#timers + 1] = sol.timer.start(700, function() self:restart() end)
 
   function throw_fire()
 
     nb_sons_created = nb_sons_created + 1
-    sol.enemy.create_son("agahnim_fireball_" .. nb_sons_created,
-    breed, 0, -21)
+    self:create_son("agahnim_fireball_" .. nb_sons_created, breed, 0, -21)
   end
 
   throw_fire()
-  if sol.enemy.get_life() <= initial_life / 2 then
-    timers[#timers + 1] = sol.timer.start(200, throw_fire)
-    timers[#timers + 1] = sol.timer.start(400, throw_fire)
+  if self:get_life() <= initial_life / 2 then
+    timers[#timers + 1] = sol.timer.start(200, function() self:throw_fire() end)
+    timers[#timers + 1] = sol.timer.start(400, function() self:throw_fire() end)
   end
 end
 
-function event_message_received(src_enemy, message)
+function enemy:on_message_received(src_enemy, message)
 
   if string.find(src_enemy, "^agahnim_fireball")
       and vulnerable then
 
     for _, t in ipairs(timers) do t:stop() end
-    sol.map.enemy_remove(src_enemy)
-    sol.enemy.hurt(1)
+    self:get_map():enemy_remove(src_enemy)
+    self:hurt(1)
   end
 end
 
-function event_hurt(attack, life_lost)
+function enemy:on_hurt(attack, life_lost)
 
-  local life = sol.enemy.get_life()
+  local life = self:get_life()
   if life <= 0 then
-    sol.map.enemy_remove_group("agahnim_fireball")
-    sol.enemy.set_life(1)
+    self:get_map():enemy_remove_group("agahnim_fireball")
+    self:set_life(1)
     finished = true
   elseif life <= initial_life / 3 then
     blue_fireball_proba = 50
   end
 end
 
-function end_dialog()
+function enemy:end_dialog()
 
   for i = 1, nb_sons_created do
     son = "agahnim_fire_ball_"..i
-    if not sol.map.enemy_is_dead(son) then
-      sol.map.enemy_remove(son)
+    if not self:get_map():enemy_is_dead(son) then
+      self:get_map():enemy_remove(son)
     end
   end
 
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:set_ignore_suspend(true)
-  sol.map.dialog_start("dungeon_5.agahnim_end")
+  self:get_map():dialog_start("dungeon_5.agahnim_end")
 end
 
-function fade_out()
+function enemy:fade_out()
 
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:fade_out()
 end
 
-function escape()
+function enemy:escape()
 
-  local x, y = sol.enemy.get_position()
-  sol.map.pickable_item_create("heart_container", 1, 521, x, y, 0)
-  sol.map.hero_unfreeze()
-  sol.map.enemy_remove(sol.enemy.get_name())
-  sol.map.get_game():set_boolean(520, true)
+  local x, y = self:get_position()
+  self:get_map():pickable_item_create("heart_container", 1, 521, x, y, 0)
+  self:get_map():hero_unfreeze()
+  self:get_map():enemy_remove(self:get_name())
+  self:get_game():set_boolean(520, true)
 end
 

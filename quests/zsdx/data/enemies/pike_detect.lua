@@ -1,33 +1,35 @@
+local enemy = ...
+
 -- Pike that moves when the hero is close
 
-state = "stopped" -- "stopped", "moving", "going_back", "paused"
-initial_xy = {}
-activation_distance = 24
+local state = "stopped" -- "stopped", "moving", "going_back", "paused"
+local initial_xy = {}
+local activation_distance = 24
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(1)
-  sol.enemy.set_damage(4)
-  sol.enemy.create_sprite("enemies/pike_detect")
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 13)
-  sol.enemy.set_can_hurt_hero_running(true)
-  sol.enemy.set_invincible()
-  sol.enemy.set_attack_consequence("sword", "protected")
-  sol.enemy.set_attack_consequence("thrown_item", "protected")
-  sol.enemy.set_attack_consequence("arrow", "protected")
-  sol.enemy.set_attack_consequence("hookshot", "protected")
-  sol.enemy.set_attack_consequence("boomerang", "protected")
+  self:set_life(1)
+  self:set_damage(4)
+  self:create_sprite("enemies/pike_detect")
+  self:set_size(16, 16)
+  self:set_origin(8, 13)
+  self:set_can_hurt_hero_running(true)
+  self:set_invincible()
+  self:set_attack_consequence("sword", "protected")
+  self:set_attack_consequence("thrown_item", "protected")
+  self:set_attack_consequence("arrow", "protected")
+  self:set_attack_consequence("hookshot", "protected")
+  self:set_attack_consequence("boomerang", "protected")
 
-  initial_xy.x, initial_xy.y = sol.enemy.get_position()
+  initial_xy.x, initial_xy.y = self:get_position()
 end
 
-function event_update()
+function enemy:on_update()
 
-  if state == "stopped" and sol.enemy.get_distance_to_hero() <= 192 then
+  if state == "stopped" and self:get_distance_to_hero() <= 192 then
     -- check whether the hero is close
-    local x, y = sol.enemy.get_position()
-    local hero_x, hero_y = sol.map.hero_get_position()
+    local x, y = self:get_position()
+    local hero_x, hero_y = self:get_map():hero_get_position()
     local dx, dy = hero_x - x, hero_y - y
 
     if math.abs(dy) < activation_distance then
@@ -58,32 +60,32 @@ function go(direction4)
   
   -- check that we can make the move
   local index = direction4 + 1
-  if not sol.enemy.test_obstacles(dxy[index].x * 2, dxy[index].y * 2) then
+  if not self:test_obstacles(dxy[index].x * 2, dxy[index].y * 2) then
 
     state = "moving"
 
-    local x, y = sol.enemy.get_position()
+    local x, y = self:get_position()
     local angle = direction4 * math.pi / 2
     local m = sol.movement.create("straight")
     m:set_speed(192)
     m:set_angle(angle)
     m:set_max_distance(104)
     m:set_smooth(false)
-    sol.enemy.start_movement(m)
+    self:start_movement(m)
   end
 end
 
-function event_obstacle_reached()
+function enemy:on_obstacle_reached()
 
   go_back()
 end
 
-function event_movement_finished()
+function enemy:on_movement_finished()
 
   go_back()
 end
 
-function event_collision_enemy(other_name, other_sprite, my_sprite)
+function enemy:on_collision_enemy(other_name, other_sprite, my_sprite)
 
   -- TODO: it would be better to have a way of getting the other's race
   if string.find(other_name, "^pike_") and state == "moving" then
@@ -101,7 +103,7 @@ function go_back()
     m:set_speed(64)
     m:set_target(initial_xy.x, initial_xy.y)
     m:set_smooth(false)
-    sol.enemy.start_movement(m)
+    self:start_movement(m)
     sol.audio.play_sound("sword_tapping")
 
   elseif state == "going_back" then

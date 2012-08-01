@@ -1,7 +1,9 @@
+local enemy = ...
+
 -- Bee Guard
 
-sol.main.do_file("enemies/generic_soldier")
-set_properties({
+sol.main.load_file("enemies/generic_soldier")(enemy)
+enemy:set_properties({
   main_sprite = "enemies/bee_guard",
   sword_sprite = "enemies/bee_guard_sword",
   life = 3,

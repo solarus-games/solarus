@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Generic script for an enemy that goes towards the
 -- the hero if he sees him, and walks randomly otherwise.
 -- The enemy has only one sprite. See generic_soldier.lua
@@ -5,8 +7,8 @@
 
 -- Example of use from an enemy script:
 
--- sol.main.do_file("enemies/generic_towards_hero")
--- set_properties({
+-- sol.main.load_file("enemies/generic_towards_hero")(enemy)
+-- enemy:set_properties({
 --   sprite = "enemies/globul",
 --   life = 4,
 --   damage = 2,
@@ -28,7 +30,7 @@ local properties = {}
 local going_hero = false
 local timer
 
-function set_properties(prop)
+function enemy:set_properties(prop)
 
   properties = prop
   -- set default values
@@ -61,72 +63,72 @@ function set_properties(prop)
   end
 end
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(properties.life)
-  sol.enemy.set_damage(properties.damage)
-  sol.enemy.create_sprite(properties.sprite)
-  sol.enemy.set_hurt_style(properties.hurt_style)
-  sol.enemy.set_pushed_back_when_hurt(properties.pushed_when_hurt)
-  sol.enemy.set_push_hero_on_sword(properties.push_hero_on_sword)
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 13)
+  self:set_life(properties.life)
+  self:set_damage(properties.damage)
+  self:create_sprite(properties.sprite)
+  self:set_hurt_style(properties.hurt_style)
+  self:set_pushed_back_when_hurt(properties.pushed_when_hurt)
+  self:set_push_hero_on_sword(properties.push_hero_on_sword)
+  self:set_size(16, 16)
+  self:set_origin(8, 13)
 end
 
-function event_movement_changed()
+function enemy:on_movement_changed()
 
-  local m = sol.enemy.get_movement()
+  local m = self:get_movement()
   local direction4 = m:get_direction4()
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:set_direction(direction4)
 end
 
-function event_obstacle_reached(movement)
+function enemy:on_obstacle_reached(movement)
 
   if not going_hero then
-    go_random()
-    check_hero()
+    self:go_random()
+    self:check_hero()
   end
 end
 
-function event_restart()
-  go_random()
-  check_hero()
+function enemy:on_restart()
+  self:go_random()
+  self:check_hero()
 end
 
-function event_hurt()
+function enemy:on_hurt()
   if timer ~= nil then
     timer:stop()
     timer = nil
   end
 end
 
-function check_hero()
+function enemy:check_hero()
 
-  local _, _, layer = sol.enemy.get_position()
-  local _, _, hero_layer = sol.map.hero_get_position()
+  local _, _, layer = self:get_position()
+  local _, _, hero_layer = self:get_map():hero_get_position()
   local near_hero = layer == hero_layer
-    and sol.enemy.get_distance_to_hero() < 100
+    and self:get_distance_to_hero() < 100
 
   if near_hero and not going_hero then
-    go_hero()
+    self:go_hero()
   elseif not near_hero and going_hero then
-    go_random()
+    self:go_random()
   end
-  timer = sol.timer.start(1000, check_hero)
+  timer = sol.timer.start(1000, function() self:check_hero() end)
 end
 
-function go_random()
+function enemy:go_random()
   local m = properties.movement_create()
   m:set_speed(properties.normal_speed)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
   going_hero = false
 end
 
-function go_hero()
+function enemy:go_hero()
   local m = sol.movement.create("target")
   m:set_speed(properties.faster_speed)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
   going_hero = true
 end
 

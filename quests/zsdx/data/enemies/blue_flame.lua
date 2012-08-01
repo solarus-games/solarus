@@ -1,24 +1,26 @@
+local enemy = ...
+
 -- A blue flame thrown by another enemy
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(1)
-  sol.enemy.set_damage(8)
-  sol.enemy.create_sprite("enemies/blue_flame")
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 13)
-  sol.enemy.set_invincible()
-  sol.enemy.set_obstacle_behavior("flying")
-  sol.enemy.set_layer_independent_collisions(true)
-  sol.enemy.set_optimization_distance(0)
+  self:set_life(1)
+  self:set_damage(8)
+  self:create_sprite("enemies/blue_flame")
+  self:set_size(16, 16)
+  self:set_origin(8, 13)
+  self:set_invincible()
+  self:set_obstacle_behavior("flying")
+  self:set_layer_independent_collisions(true)
+  self:set_optimization_distance(0)
 end
 
-function event_movement_finished(movement)
+function enemy:on_movement_finished(movement)
 
-  sol.map.enemy_remove(sol.enemy.get_name())
+  self:get_map():enemy_remove(self:get_name())
 end
 
-function event_message_received(src_enemy, message)
+function enemy:on_message_received(src_enemy, message)
 
   -- the message is the angle to take
   local angle = tonumber(message)
@@ -27,6 +29,6 @@ function event_message_received(src_enemy, message)
   m:set_angle(angle)
   m:set_ignore_obstacles(true)
   m:set_max_distance(320)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
 end
 

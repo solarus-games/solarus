@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Red knight soldier
 
 sol.main.do_file("enemies/generic_soldier")

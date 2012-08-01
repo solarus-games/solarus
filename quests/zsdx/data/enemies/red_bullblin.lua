@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Red Bullblin
 
 sol.main.do_file("enemies/generic_soldier")

@@ -1,72 +1,74 @@
+local enemy = ...
+
 -- Billy
 
 local going_hero = false
 local timer
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(30)
-  sol.enemy.set_damage(16)
-  sol.enemy.create_sprite("enemies/billy")
-  sol.enemy.set_hurt_style("boss")
-  sol.enemy.set_pushed_back_when_hurt(true)
-  sol.enemy.set_push_hero_on_sword(true)
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 13)
-  sol.enemy.set_invincible()
-  sol.enemy.set_attack_consequence("sword", 1)
+  self:set_life(30)
+  self:set_damage(16)
+  self:create_sprite("enemies/billy")
+  self:set_hurt_style("boss")
+  self:set_pushed_back_when_hurt(true)
+  self:set_push_hero_on_sword(true)
+  self:set_size(16, 16)
+  self:set_origin(8, 13)
+  self:set_invincible()
+  self:set_attack_consequence("sword", 1)
 end
 
-function event_movement_changed()
+function enemy:on_movement_changed()
 
-  local m = sol.enemy.get_movement()
+  local m = self:get_movement()
   local direction4 = m:get_direction4()
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:set_direction(direction4)
 end
 
-function event_obstacle_reached(movement)
+function enemy:on_obstacle_reached(movement)
 
   if not going_hero then
-    go_random()
-    check_hero()
+    self:go_random()
+    self:check_hero()
   end
 end
 
-function event_restart()
-  go_random()
-  check_hero()
+function enemy:on_restart()
+  self:go_random()
+  self:check_hero()
 end
 
-function event_hurt()
+function enemy:on_hurt()
   if timer ~= nil then
     timer:stop()
     timer = nil
   end
 end
 
-function check_hero()
+function enemy:check_hero()
 
-  local near_hero = sol.enemy.get_distance_to_hero() < 100
+  local near_hero = self:get_distance_to_hero() < 100
   if near_hero and not going_hero then
-    go_hero()
+    self:go_hero()
   elseif not near_hero and going_hero then
-    go_random()
+    self:go_random()
   end
-  timer = sol.timer.start(1000, check_hero)
+  timer = sol.timer.start(1000, function() self:check_hero() end)
 end
 
-function go_random()
+function enemy:go_random()
   local m = sol.movement.create("random_path")
   m:set_speed(48)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
   going_hero = false
 end
 
-function go_hero()
+function enemy:go_hero()
   local m = sol.movement.create("target")
   m:set_speed(72)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
   going_hero = true
 end
 

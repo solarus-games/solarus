@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- A triple bouncing fireball that the hero cannot fight
 
 local speed = 192
@@ -6,16 +8,16 @@ local max_bounces = 8
 local sprite2 = nil
 local sprite3 = nil
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(1)
-  sol.enemy.set_damage(8)
-  sol.enemy.create_sprite("enemies/blue_fireball_triple")
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 8)
-  sol.enemy.set_obstacle_behavior("flying")
-  sol.enemy.set_invincible()
-  sol.enemy.set_attack_consequence("sword", "custom")
+  self:set_life(1)
+  self:set_damage(8)
+  self:create_sprite("enemies/blue_fireball_triple")
+  self:set_size(16, 16)
+  self:set_origin(8, 8)
+  self:set_obstacle_behavior("flying")
+  self:set_invincible()
+  self:set_attack_consequence("sword", "custom")
 
   -- two smaller fireballs just for the displaying
   sprite2 = sol.sprite.create("enemies/blue_fireball_triple")
@@ -24,27 +26,27 @@ function event_appear()
   sprite3:set_animation("tiny")
 end
 
-function event_restart()
+function enemy:on_restart()
 
-  local x, y = sol.enemy.get_position()
-  local hero_x, hero_y = sol.map.hero_get_position()
+  local x, y = self:get_position()
+  local hero_x, hero_y = self:get_map():hero_get_position()
   local angle = sol.main.get_angle(x, y, hero_x, hero_y - 5)
   local m = sol.movement.create("straight")
   m:set_speed(speed)
   m:set_angle(angle)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
 end
 
-function event_obstacle_reached()
+function enemy:on_obstacle_reached()
 
   if bounces < max_bounces then
 
     -- compute the bouncing angle
     -- (works good with horizontal and vertical walls)
-    local m = sol.enemy.get_movement()
+    local m = self:get_movement()
     local angle = m:get_angle()
-    if not sol.enemy.test_obstacles(1, 0)
-      and not sol.enemy.test_obstacles(-1, 0) then
+    if not self:test_obstacles(1, 0)
+      and not self:test_obstacles(-1, 0) then
       angle = -angle
     else
       angle = math.pi - angle
@@ -56,27 +58,27 @@ function event_obstacle_reached()
     bounces = bounces + 1
     speed = speed + 48
   else
-    sol.map.enemy_remove(sol.enemy.get_name())
+    self:get_map():enemy_remove(self:get_name())
   end
 end
 
-function event_custom_attack_received(attack, sprite)
+function enemy:on_custom_attack_received(attack, sprite)
 
   if attack == "sword" then
     -- explode
-    local x, y, layer = sol.enemy.get_position()
-    sol.map.hero_start_hurt(x, y, 8, 0)
+    local x, y, layer = self:get_position()
+    self:get_map():hero_start_hurt(x, y, 8, 0)
     sol.audio.play_sound("explosion")
-    sol.map.explosion_create(x, y, layer)
-    sol.map.enemy_remove(sol.enemy.get_name())
+    self:get_map():explosion_create(x, y, layer)
+    self:get_map():enemy_remove(self:get_name())
   end
 end
 
-function event_pre_display()
+function enemy:on_pre_display()
 
-  local m = sol.enemy.get_movement()
+  local m = self:get_movement()
   local angle = m:get_angle()
-  local x, y = sol.enemy.get_position()
+  local x, y = self:get_position()
 
   local x2 = x - math.cos(angle) * 12
   local y2 = y + math.sin(angle) * 12
@@ -84,7 +86,7 @@ function event_pre_display()
   local x3 = x - math.cos(angle) * 24
   local y3 = y + math.sin(angle) * 24
 
-  sol.map.sprite_display(sprite2, x2, y2)
-  sol.map.sprite_display(sprite3, x3, y3)
+  self:get_map():sprite_display(sprite2, x2, y2)
+  self:get_map():sprite_display(sprite3, x3, y3)
 end
 

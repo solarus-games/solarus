@@ -1,24 +1,26 @@
-function event_appear()
+local enemy = ...
 
-  sol.enemy.set_life(4)
-  sol.enemy.set_damage(12)
-  sol.enemy.create_sprite("enemies/red_helmasaur")
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 13)
+function enemy:on_appear()
+
+  self:set_life(4)
+  self:set_damage(12)
+  self:create_sprite("enemies/red_helmasaur")
+  self:set_size(16, 16)
+  self:set_origin(8, 13)
 end
 
-function event_restart()
+function enemy:on_restart()
 
   local m = sol.movement.create("path_finding")
   m:set_speed(32)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
 end
 
-function event_movement_changed()
+function enemy:on_movement_changed()
 
-  local m = sol.enemy.get_movement()
+  local m = self:get_movement()
   local direction4 = m:get_direction4()
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:set_direction(direction4)
 end
 

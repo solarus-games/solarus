@@ -1,7 +1,9 @@
+local enemy = ...
+
 -- Minillosaur waiting in eggs for the hero to drop by.
 
-sol.main.do_file("enemies/generic_waiting_for_hero")
-set_properties({
+sol.main.load_file("enemies/generic_waiting_for_hero")(enemy)
+enemy:set_properties({
   sprite = "enemies/minillosaur_egg_fixed",
   life = 4,
   damage = 2,

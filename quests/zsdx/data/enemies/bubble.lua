@@ -1,30 +1,32 @@
+local enemy = ...
+
 -- Bubble: an invincible enemy that moves in diagonal directions and bounces against walls.
 -- It removes life and magic points from the hero.
 
-last_direction8 = 0
+local last_direction8 = 0
 
 -- The enemy appears: set its properties
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(1)
-  sol.enemy.set_damage(2)
-  sol.enemy.set_magic_damage(4)
-  sol.enemy.create_sprite("enemies/bubble")
-  sol.enemy.set_size(12, 12)
-  sol.enemy.set_origin(6, 6)
-  sol.enemy.set_can_hurt_hero_running(true)
-  sol.enemy.set_invincible()
+  self:set_life(1)
+  self:set_damage(2)
+  self:set_magic_damage(4)
+  self:create_sprite("enemies/bubble")
+  self:set_size(12, 12)
+  self:set_origin(6, 6)
+  self:set_can_hurt_hero_running(true)
+  self:set_invincible()
 end
 
 -- The enemy was stopped for some reason and should restart
-function event_restart()
+function enemy:on_restart()
 
   local direction8 = math.random(4) * 2 - 1
-  go(direction8)
+  self:go(direction8)
 end
 
 -- An obstacle is reached: make the Bubble bounce
-function event_obstacle_reached()
+function enemy:on_obstacle_reached()
 
   local dxy = {
     { x =  1, y =  0},
@@ -42,16 +44,16 @@ function event_obstacle_reached()
   local try2 = (last_direction8 + 6) % 8;
   local try3 = (last_direction8 + 4) % 8;
 
-  if not sol.enemy.test_obstacles(dxy[try1 + 1].x, dxy[try1 + 1].y) then
+  if not self:test_obstacles(dxy[try1 + 1].x, dxy[try1 + 1].y) then
 
-    local x, y = sol.enemy.get_position()
-    go(try1)
-  elseif not sol.enemy.test_obstacles(dxy[try2 + 1].x, dxy[try2 + 1].y) then
+    local x, y = self:get_position()
+    self:go(try1)
+  elseif not self:test_obstacles(dxy[try2 + 1].x, dxy[try2 + 1].y) then
 
-    local x, y = sol.enemy.get_position()
-    go(try2)
+    local x, y = self:get_position()
+    self:go(try2)
   else
-    go(try3)
+    self:go(try3)
   end
 
 end
@@ -62,7 +64,7 @@ function go(direction8)
   local m = sol.movement.create("straight")
   m:set_speed(80)
   m:set_angle(direction8 * math.pi / 4)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
   last_direction8 = direction8
 end
 

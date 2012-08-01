@@ -1,13 +1,15 @@
+local enemy = ...
+
 -- Pike that does not move
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(1)
-  sol.enemy.set_damage(4)
-  sol.enemy.create_sprite("enemies/pike_fixed")
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 13)
-  sol.enemy.set_can_hurt_hero_running(true)
-  sol.enemy.set_invincible()
+  self:set_life(1)
+  self:set_damage(4)
+  self:create_sprite("enemies/pike_fixed")
+  self:set_size(16, 16)
+  self:set_origin(8, 13)
+  self:set_can_hurt_hero_running(true)
+  self:set_invincible()
 end
 

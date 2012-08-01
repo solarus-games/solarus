@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Poutroxor: an evil giant bird from Newlink
 -- Phase 1: a skeleton is on the bird and has to be killed with arrows.
 -- Phase 2: once the skeleton is dead, the bird moves faster, throws blue flames and can be killed by shooting arrows in his head.
@@ -8,39 +10,39 @@ local nb_flames_created = 0
 local max_flames_created = 10
 local timers = {}
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(14)
-  sol.enemy.set_damage(1)
-  bird = sol.enemy.create_sprite("enemies/poutroxor")
-  head = sol.enemy.create_sprite("enemies/poutroxor_head")
-  skeleton = sol.enemy.create_sprite("enemies/poutroxor_skeleton")
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 8)
-  sol.enemy.set_obstacle_behavior("flying")
-  sol.enemy.set_pushed_back_when_hurt(false)
-  sol.enemy.set_push_hero_on_sword(true)
+  self:set_life(14)
+  self:set_damage(1)
+  bird = self:create_sprite("enemies/poutroxor")
+  head = self:create_sprite("enemies/poutroxor_head")
+  skeleton = self:create_sprite("enemies/poutroxor_skeleton")
+  self:set_size(16, 16)
+  self:set_origin(8, 8)
+  self:set_obstacle_behavior("flying")
+  self:set_pushed_back_when_hurt(false)
+  self:set_push_hero_on_sword(true)
 
-  sol.enemy.set_invincible()
-  sol.enemy.set_attack_consequence("sword", "protected")
-  sol.enemy.set_attack_consequence("hookshot", "protected")
-  sol.enemy.set_attack_consequence("boomerang", "protected")
-  sol.enemy.set_attack_consequence("arrow", "ignored")
-  sol.enemy.set_attack_consequence_sprite(skeleton, "arrow", 1)
+  self:set_invincible()
+  self:set_attack_consequence("sword", "protected")
+  self:set_attack_consequence("hookshot", "protected")
+  self:set_attack_consequence("boomerang", "protected")
+  self:set_attack_consequence("arrow", "ignored")
+  self:set_attack_consequence_sprite(skeleton, "arrow", 1)
 end
 
-function event_restart()
+function enemy:on_restart()
 
   if phase == 1 then
     local m = sol.movement.create("random")
     m:set_speed(32)
-    sol.enemy.start_movement(m)
+    self:start_movement(m)
     for _, t in ipairs(timers) do t:stop() end
     timers[#timers + 1] = sol.timer.start(math.random(2000, 3000), skeleton_attack)
   else
     local m = sol.movement.create("random")
     m:set_speed(80)
-    sol.enemy.start_movement(m)
+    self:start_movement(m)
     for _, t in ipairs(timers) do t:stop() end
     timers[#timers + 1] = sol.timer.start(math.random(3000, 5000), big_attack)
   end
@@ -54,30 +56,30 @@ function skeleton_attack()
   timers[#timers + 1] = sol.timer.start(500, function()
     skeleton:set_animation("walking")
     nb_flames_created = nb_flames_created + 1
-    local son_name = sol.enemy.get_name() .. "_son_" .. nb_flames_created
-    sol.enemy.create_son(son_name, "blue_flame", 0, -48, 2)
-    local x, y = sol.map.enemy_get_position(son_name)
-    local hero_x, hero_y = sol.map.hero_get_position()
+    local son_name = self:get_name() .. "_son_" .. nb_flames_created
+    self:create_son(son_name, "blue_flame", 0, -48, 2)
+    local x, y = self:get_map():enemy_get_position(son_name)
+    local hero_x, hero_y = self:get_map():hero_get_position()
     local angle = sol.main.get_angle(x, y, hero_x, hero_y)
-    sol.enemy.send_message(son_name, angle)
+    self:send_message(son_name, angle)
     timers[#timers + 1] = sol.timer.start(math.random(1000, 3000), skeleton_attack)
   end)
 end
 
-function event_hurt(attack, life_lost)
+function enemy:on_hurt(attack, life_lost)
 
   for _, t in ipairs(timers) do t:stop() end
-  if phase == 1 and sol.enemy.get_life() <= 7 then
-    sol.enemy.stop_movement()
+  if phase == 1 and self:get_life() <= 7 then
+    self:stop_movement()
     sol.audio.play_sound("enemy_killed")
     skeleton:set_animation("hurt")
     phase = 2
-    sol.enemy.remove_sprite(skeleton)
-    sol.map.enemy_remove_group(sol.enemy.get_name() .. "_son")
+    self:remove_sprite(skeleton)
+    self:get_map():enemy_remove_group(self:get_name() .. "_son")
     skeleton = nil
-    sol.enemy.set_attack_consequence_sprite(head, "arrow", 1)
-  elseif sol.enemy.get_life() <= 0 then
-    sol.map.enemy_remove_group(sol.enemy.get_name() .. "_son")
+    self:set_attack_consequence_sprite(head, "arrow", 1)
+  elseif self:get_life() <= 0 then
+    self:get_map():enemy_remove_group(self:get_name() .. "_son")
   end
 end
 
@@ -85,7 +87,7 @@ end
 function big_attack()
 
   nb_flames_created = 0
-  sol.enemy.stop_movement()
+  self:stop_movement()
   head:set_animation("attack")
   sol.audio.play_sound("lamp")
   timers[#timers + 1] = sol.timer.start(500, repeat_flame)
@@ -94,15 +96,15 @@ end
 function repeat_flame()
 
   if nb_flames_created <= max_flames_created then
-    local son_name = sol.enemy.get_name() .. "_son_" .. nb_flames_created
+    local son_name = self:get_name() .. "_son_" .. nb_flames_created
     local angle = math.random(30, 90) * math.pi / 40
     nb_flames_created = nb_flames_created + 1
-    sol.enemy.create_son(son_name, "blue_flame", 0, 16)
-    sol.enemy.send_message(son_name, tostring(angle))
+    self:create_son(son_name, "blue_flame", 0, 16)
+    self:send_message(son_name, tostring(angle))
     sol.audio.play_sound("lamp")
     timers[#timers + 1] = sol.timer.start(150, repeat_flame)
   else
-    timers[#timers + 1] = sol.timer.start(500, sol.enemy.restart)
+    timers[#timers + 1] = sol.timer.start(500, self:restart)
   end
 end
 

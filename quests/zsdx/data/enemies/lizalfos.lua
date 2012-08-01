@@ -1,7 +1,9 @@
+local enemy = ...
+
 -- Lizalfos
 
-sol.main.do_file("enemies/generic_soldier")
-set_properties({
+sol.main.load_file("enemies/generic_soldier")(enemy)
+enemy:set_properties({
   main_sprite = "enemies/lizalfos",
   sword_sprite = "enemies/lizalfos_sword",
   life = 5,

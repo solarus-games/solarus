@@ -1,77 +1,79 @@
+local enemy = ...
+
 -- A spider boss from Newlink
 
 local nb_sons_to_create = 0
 local nb_sons_created = 0
 local timers = {}
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(8)
-  sol.enemy.set_damage(2)
-  sol.enemy.create_sprite("enemies/mowatulla")
-  sol.enemy.set_size(96, 112)
-  sol.enemy.set_origin(48, 64)
-  sol.enemy.set_push_hero_on_sword(true)
-  sol.enemy.set_invincible()
-  sol.enemy.set_attack_consequence("explosion", 1)
+  self:set_life(8)
+  self:set_damage(2)
+  self:create_sprite("enemies/mowatulla")
+  self:set_size(96, 112)
+  self:set_origin(48, 64)
+  self:set_push_hero_on_sword(true)
+  self:set_invincible()
+  self:set_attack_consequence("explosion", 1)
 end
 
-function event_restart()
+function enemy:on_restart()
 
   timers[#timers + 1] = sol.timer.start(500, jump_or_son_phase)
   go()
 end
 
-function event_movement_finished(movement)
+function enemy:on_movement_finished(movement)
 
   event_restart()
 end
 
-function event_update()
+function enemy:on_update()
 
-  local x, y = sol.enemy.get_position()
-  local hero_x, hero_y = sol.map.hero_get_position()
+  local x, y = self:get_position()
+  local hero_x, hero_y = self:get_map():hero_get_position()
   if hero_y > y + 8 then
-    sol.enemy.set_attack_consequence("sword", 1)
-    sol.enemy.set_attack_consequence("arrow", 2)
+    self:set_attack_consequence("sword", 1)
+    self:set_attack_consequence("arrow", 2)
   else
-    sol.enemy.set_attack_consequence("sword", "protected")
-    sol.enemy.set_attack_consequence("arrow", "protected")
+    self:set_attack_consequence("sword", "protected")
+    self:set_attack_consequence("arrow", "protected")
   end
 end
 
-function event_hurt(attack, life_lost)
+function enemy:on_hurt(attack, life_lost)
 
   for _, t in ipairs(timers) do t:stop() end
-  if sol.enemy.get_life() <= 0 then
+  if self:get_life() <= 0 then
     -- I am dying: remove the sons
-    local sons_prefix = sol.enemy.get_name().."_son"
-    sol.map.enemy_remove_group(sons_prefix)
+    local sons_prefix = self:get_name().."_son"
+    self:get_map():enemy_remove_group(sons_prefix)
   end
 end
 
 function go()
   local m = sol.movement.create("random_path")
   m:set_speed(64)
-  sol.enemy.start_movement(m)
-  local sprite = sol.enemy.get_sprite()
+  self:start_movement(m)
+  local sprite = self:get_sprite()
   sprite:set_animation("walking")
 end
 
 function son_phase_soon()
 
-  sol.enemy.stop_movement()
+  self:stop_movement()
   timers[#timers + 1] = sol.timer.start(500, son_phase)
 end
 
 function son_phase()
 
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:set_animation("preparing_son")
   sol.audio.play_sound("stone")
   timers[#timers + 1] = sol.timer.start(1500, throw_son)
 
-  if sol.enemy.get_life() < 3 then
+  if self:get_life() < 3 then
     nb_sons_to_create = 3
   else
     nb_sons_to_create = 1
@@ -83,8 +85,8 @@ function throw_son()
 
   -- create the son
   nb_sons_created = nb_sons_created + 1
-  local son_name = sol.enemy.get_name().."_minillosaur_"..nb_sons_created
-  sol.enemy.create_son(son_name, "mini_mowatulla", 0, 40)
+  local son_name = self:get_name().."_minillosaur_"..nb_sons_created
+  self:create_son(son_name, "mini_mowatulla", 0, 40)
   sol.audio.play_sound("ice")
 
   -- see what to do next
@@ -94,7 +96,7 @@ function throw_son()
     timers[#timers + 1] = sol.timer.start(500, throw_son)
   else
     -- finish the son phase
-    local sprite = sol.enemy.get_sprite()
+    local sprite = self:get_sprite()
     sprite:set_animation("walking")
     local delay = 3500 + (math.random(3) * 1000)
     timers[#timers + 1] = sol.timer.start(delay, jump_or_son_phase)
@@ -106,8 +108,8 @@ function jump_or_son_phase()
 
   if math.random(2) == 1 then
  
-    local sons_prefix = sol.enemy.get_name().."_son" 
-    local nb_sons = sol.map.enemy_get_group_count(sons_prefix)
+    local sons_prefix = self:get_name().."_son" 
+    local nb_sons = self:get_map():enemy_get_group_count(sons_prefix)
     if nb_sons < 5 then
       son_phase_soon()
     else
@@ -121,9 +123,10 @@ end
 
 function jump_phase()
 
-  local x, y = sol.enemy.get_position()
+  local direction8
+  local x, y = self:get_position()
   y = y - 16
-  local hero_x, hero_y = sol.map.hero_get_position()
+  local hero_x, hero_y = self:get_map():hero_get_position()
   if hero_x > x then
     if y > 856 then 
       direction8 = 1
@@ -142,8 +145,8 @@ function jump_phase()
   m:set_direction8(direction8)
   m:set_distance(112)
   m:set_speed(96)
-  sol.enemy.start_movement(m)
-  local sprite = sol.enemy.get_sprite()
+  self:start_movement(m)
+  local sprite = self:get_sprite()
   sprite:set_animation("jumping")
   sol.audio.play_sound("jump")
 end

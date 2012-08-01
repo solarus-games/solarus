@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Ganon - final boss
 
 -- Phase 1: Ganon periodically throws flames toward the hero.
@@ -29,48 +31,48 @@ local nb_bats_created = 0
 local cancel_next_attack = false
 local timers = {}
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(1000000)
-  sol.enemy.set_damage(16)
-  sol.enemy.create_sprite("enemies/ganon")
-  sol.enemy.set_optimization_distance(0)
-  sol.enemy.set_size(32, 32)
-  sol.enemy.set_origin(16, 29)
-  sol.enemy.set_invincible()
-  sol.enemy.set_attack_consequence("sword", "protected")
-  sol.enemy.set_attack_consequence("arrow", "protected")
-  sol.enemy.set_attack_consequence("hookshot", "protected")
-  sol.enemy.set_attack_consequence("boomerang", "protected")
-  sol.enemy.set_attack_consequence("thrown_item", "immobilized")
-  sol.enemy.set_pushed_back_when_hurt(false)
-  sol.enemy.set_push_hero_on_sword(true)
-  --sol.enemy.set_can_hurt_hero_running(true)
+  self:set_life(1000000)
+  self:set_damage(16)
+  self:create_sprite("enemies/ganon")
+  self:set_optimization_distance(0)
+  self:set_size(32, 32)
+  self:set_origin(16, 29)
+  self:set_invincible()
+  self:set_attack_consequence("sword", "protected")
+  self:set_attack_consequence("arrow", "protected")
+  self:set_attack_consequence("hookshot", "protected")
+  self:set_attack_consequence("boomerang", "protected")
+  self:set_attack_consequence("thrown_item", "immobilized")
+  self:set_pushed_back_when_hurt(false)
+  self:set_push_hero_on_sword(true)
+  --self:set_can_hurt_hero_running(true)
 end
 
-function event_restart()
+function enemy:on_restart()
 
   if not jumping and not attacking then
     if not vulnerable then
       m = sol.movement.create("path_finding")
       m:set_speed(64)
-      sol.enemy.start_movement(m)
-      sol.enemy.set_hurt_style("normal")
+      self:start_movement(m)
+      self:set_hurt_style("normal")
       if not attack_scheduled then
-	schedule_attack()
+	self:schedule_attack()
       end
     else
-      jump()
+      self:jump()
     end
   end
 end
 
-function event_movement_changed()
+function enemy:on_movement_changed()
 
   -- take the appropriate sprite direction
-  m = sol.enemy.get_movement()
-  direction4 = m:get_direction4()
-  sprite = sol.enemy.get_sprite()
+  local m = self:get_movement()
+  local direction4 = m:get_direction4()
+  local sprite = self:get_sprite()
   if direction4 == 1 then
     sprite:set_direction(1)
   else
@@ -78,19 +80,19 @@ function event_movement_changed()
   end
 end
 
-function event_immobilized()
+function enemy:on_immobilized()
 
   if not vulnerable then
     vulnerable = true
-    sol.enemy.set_attack_consequence("sword", 1)
-    sol.enemy.set_attack_consequence("thrown_item", "protected")
-    sol.enemy.set_hurt_style("boss")
+    self:set_attack_consequence("sword", 1)
+    self:set_attack_consequence("thrown_item", "protected")
+    self:set_hurt_style("boss")
 
     -- make a protection
-    if sol.map.enemy_get_group_count(sol.enemy.get_name() .. "_bats_") < 9 then
+    if self:get_map():enemy_get_group_count(self:get_name() .. "_bats_") < 9 then
       --print("go bats!")
       attacking = false
-      throw_bats()
+      self:throw_bats()
       cancel_next_attack = true -- otherwise two attacks would be scheduled
     else
       --print("no new bats, already enough")
@@ -98,67 +100,67 @@ function event_immobilized()
   end
 end
 
-function jump()
+function enemy:jump()
 
-  local x, y = sol.enemy.get_position()
-  local hero_x, hero_y = sol.map.hero_get_position()
+  local x, y = self:get_position()
+  local hero_x, hero_y = self:get_map():hero_get_position()
   local angle = sol.main.get_angle(hero_x, hero_y, x, y)
   local m = sol.movement.create("target")
   m:set_speed(128)
   m:set_target(240, 245)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
   sol.audio.play_sound("jump")
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:set_animation("jumping")
-  sol.enemy.set_attack_consequence("sword", "protected")
-  sol.enemy.set_attack_consequence("thrown_item", "ignored")
+  self:set_attack_consequence("sword", "protected")
+  self:set_attack_consequence("thrown_item", "ignored")
   vulnerable = false
   jumping = true
-  sol.enemy.set_can_attack(false)
+  self:set_can_attack(false)
 end
 
-function event_obstacle_reached()
+function enemy:on_obstacle_reached()
 
-  event_movement_finished(sol.enemy.get_movement())
+  self:on_movement_finished(self:get_movement())
 end
 
-function event_movement_finished(m)
+function enemy:on_movement_finished(m)
 
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   if sprite:get_animation() == "jumping" then
-    finish_jump()
+    self:finish_jump()
   end
 end
 
-function finish_jump()
+function enemy:finish_jump()
 
   if phase == 1 then
     -- destroy floors
     local floors = { "floor_left_", "floor_right_", "floor_up_", "floor_down_" }
     nb_floors_destroyed = nb_floors_destroyed + 1
     if nb_floors_destroyed <= #floors then
-      destroy_floor(floors[nb_floors_destroyed], 1, 50)
+      self:destroy_floor(floors[nb_floors_destroyed], 1, 50)
     else
       -- go to phase 2
-      sol.enemy.set_life(24)
+      self:set_life(24)
       phase = 2
     end
   end
 
   jumping = false
-  sol.enemy.set_attack_consequence("thrown_item", "immobilized")
-  sol.enemy.set_can_attack(true)
-  sol.enemy.restart()
+  self:set_attack_consequence("thrown_item", "immobilized")
+  self:set_can_attack(true)
+  self:restart()
 end
 
-function event_sprite_animation_finished(sprite, animation)
+function enemy:on_sprite_animation_finished(sprite, animation)
 
   if animation == "jumping" then
-    finish_jump()
+    self:finish_jump()
   end
 end
 
-function destroy_floor(prefix, first, last)
+function enemy:destroy_floor(prefix, first, last)
 
   local index = first
   local delay = 30
@@ -168,7 +170,7 @@ function destroy_floor(prefix, first, last)
       sol.audio.play_sound("stone")
     end
     
-    sol.map.tile_set_enabled(prefix .. index, false)
+    self:get_map():tile_set_enabled(prefix .. index, false)
 
     if index ~= last then
       sol.timer.start(delay, repeat_change)
@@ -178,17 +180,17 @@ function destroy_floor(prefix, first, last)
   repeat_change()
 end
 
-function attack()
+function enemy:attack()
 
   --print("attack!")
   if phase == 1 or math.random(2) == 1 then
-    throw_flames()
+    self:throw_flames()
   else
-    throw_bats()
+    self:throw_bats()
   end
 end
 
-function throw_flames()
+function enemy:throw_flames()
 
   if vulnerable or jumping or attacking then
     --print("no flames: jumping =", jumping, "attacking =", attacking,
@@ -204,7 +206,7 @@ function throw_flames()
 
   attacking = true
 
-  local prefix = sol.enemy.get_name() .. "_flame_"
+  local prefix = self:get_name() .. "_flame_"
   local nb_to_create = (1 + nb_floors_destroyed) * 5
 
   function repeat_throw_flame()
@@ -218,21 +220,21 @@ function throw_flames()
     sol.audio.play_sound("lamp")
     nb_flames_created = nb_flames_created + 1
     local son_name = prefix .. nb_flames_created
-    sol.enemy.create_son(son_name, "red_flame", 0, -24, 0)
+    self:create_son(son_name, "red_flame", 0, -24, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
       timers[#timers + 1] = sol.timer.start(150, repeat_throw_flame)
     else
       attacking = false
       attack_scheduled = false
-      sol.enemy.restart()
+      self:restart()
     end
   end
-  sol.enemy.stop_movement()
+  self:stop_movement()
   repeat_throw_flame()
 end
 
-function throw_bats()
+function enemy:throw_bats()
 
   if jumping or attacking then
     --print("no bats: jumping =", jumping, "attacking =", attacking)
@@ -247,7 +249,7 @@ function throw_bats()
 
   attacking = true
 
-  local prefix = sol.enemy.get_name() .. "_bat_"
+  local prefix = self:get_name() .. "_bat_"
   local nb_to_create = 9
 
   function repeat_throw_bat()
@@ -255,13 +257,13 @@ function throw_bats()
     sol.audio.play_sound("lamp")
     nb_bats_created = nb_bats_created + 1
     local son_name = prefix .. nb_bats_created
-    sol.enemy.create_son(son_name, "fire_bat", 0, -21, 0)
+    self:create_son(son_name, "fire_bat", 0, -21, 0)
     if math.random(6) == 1 then
-      sol.map.enemy_set_treasure(son_name, "magic_flask", 1, -1)
+      self:get_map():enemy_set_treasure(son_name, "magic_flask", 1, -1)
     end
-    sol.enemy.send_message(son_name, "circle")
+    self:send_message(son_name, "circle")
     local go_hero_delay = 2000 + (nb_to_create * 150)
-    sol.enemy.send_message(son_name, "go_hero " .. go_hero_delay)
+    self:send_message(son_name, "go_hero " .. go_hero_delay)
 
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
@@ -270,25 +272,27 @@ function throw_bats()
       attacking = false
       attack_scheduled = false
       if not vulnerable then
-	sol.enemy.restart()
+	self:restart()
       else
 	cancel_next_attack = false
       end
     end
   end
-  sol.enemy.stop_movement()
+  self:stop_movement()
   repeat_throw_bat()
 end
 
-function schedule_attack()
+function enemy:schedule_attack()
 
-  timers[#timers + 1] = sol.timer.start(math.random(3000, 6000), attack)
+  timers[#timers + 1] = sol.timer.start(math.random(3000, 6000), function()
+    self:attack()
+  end)
   attack_scheduled = true
 end
 
-function event_hurt(attack, life_lost)
+function enemy:on_hurt(attack, life_lost)
 
-  if sol.enemy.get_life() <= 0 then
+  if self:get_life() <= 0 then
     for _, t in ipairs(timers) do t:stop() end
   end
 end

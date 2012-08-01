@@ -1,33 +1,35 @@
+local enemy = ...
+
 -- Snap Dragon
 
 local timer
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(3)
-  sol.enemy.set_damage(4)
-  sol.enemy.create_sprite("enemies/snap_dragon")
-  sol.enemy.set_hurt_style("normal")
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 13)
+  self:set_life(3)
+  self:set_damage(4)
+  self:create_sprite("enemies/snap_dragon")
+  self:set_hurt_style("normal")
+  self:set_size(16, 16)
+  self:set_origin(8, 13)
 end
 
-function event_restart()
+function enemy:on_restart()
 
   go_random()
 end
 
-function event_movement_finished(movement)
+function enemy:on_movement_finished(movement)
 
   go_random()
 end
 
-function event_obstacle_reached()
+function enemy:on_obstacle_reached()
 
   go_random()
 end
 
-function event_hurt(attack, life_lost)
+function enemy:on_hurt(attack, life_lost)
 
   if timer ~= nil then
     timer:stop()
@@ -45,9 +47,9 @@ function go_random()
   m:set_speed(48)
   m:set_angle(angle)
   m:set_max_distance(24 + math.random(96))
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
 
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:set_direction(rand4 - 1)
 
   if timer ~= nil then
@@ -58,7 +60,7 @@ function go_random()
   end)
 end
 
-function event_sprite_animation_finished(sprite, animation)
+function enemy:on_sprite_animation_finished(sprite, animation)
 
   if animation == "bite" then
     sprite:set_animation("walking")

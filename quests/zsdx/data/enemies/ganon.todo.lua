@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Ganon - final boss
 
 -- Phase 1: Ganon periodically throws flames toward the hero.
@@ -30,7 +32,7 @@ local cancel_next_attack = false
 local sprite
 local timers = {}
 
-function self:on_appeared()
+function enemy:on_appeared()
 
   self:set_life(1000000)
   self:set_damage(16)
@@ -48,7 +50,7 @@ function self:on_appeared()
   self:set_push_hero_on_sword(true)
 end
 
-function self:on_restarted()
+function enemy:on_restarted()
 
   if not jumping and not attacking then
     if not vulnerable then
@@ -65,7 +67,7 @@ function self:on_restarted()
   end
 end
 
-function self:on_movement_changed(movement)
+function enemy:on_movement_changed(movement)
 
   -- take the appropriate sprite direction
   local direction4 = movement:get_displayed_direction()
@@ -76,7 +78,7 @@ function self:on_movement_changed(movement)
   end
 end
 
-function self:on_immobilized()
+function enemy:on_immobilized()
 
   if not vulnerable then
     vulnerable = true
@@ -111,12 +113,12 @@ function jump()
   self:set_can_attack(false)
 end
 
-function self:on_obstacle_reached()
+function enemy:on_obstacle_reached()
 
   self:on_movement_finished(self:get_movement())
 end
 
-function self:on_movement_finished(movement)
+function enemy:on_movement_finished(movement)
 
   if sprite:get_animation() == "jumping" then
     finish_jump()
@@ -144,7 +146,7 @@ function finish_jump()
   self:restart()
 end
 
-function self:on_sprite_animation_finished(sprite, animation)
+function enemy:on_sprite_animation_finished(sprite, animation)
 
   if animation == "jumping" then
     finish_jump()
@@ -275,7 +277,7 @@ function schedule_attack()
   attack_scheduled = true
 end
 
-function self:on_hurt(attack, life_lost)
+function enemy:on_hurt(attack, life_lost)
 
   if self:get_life() <= 0 then
     for _, t in ipairs(timers) do t:stop() end

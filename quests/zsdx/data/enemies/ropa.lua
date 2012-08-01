@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Ropa
 
 sol.main.do_file("enemies/generic_towards_hero")

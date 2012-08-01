@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Skeletor
 
 sol.main.do_file("enemies/generic_towards_hero")

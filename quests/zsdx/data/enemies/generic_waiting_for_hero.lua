@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Generic script for an enemy that is in a sleep state,
 -- and goes towards the the hero when he sees him,
 -- and then goes randomly if it loses sight.
@@ -7,8 +9,8 @@
 
 -- Example of use from an enemy script:
 
--- sol.main.do_file("enemies/generic_waiting_for_hero")
--- set_properties({
+-- sol.main.load_file("enemies/generic_waiting_for_hero")(enemy)
+-- enemy:set_properties({
 --   sprite = "enemies/globul",
 --   life = 4,
 --   damage = 2,
@@ -32,7 +34,7 @@ local going_hero = false
 local awaken = false
 local timer
 
-function set_properties(prop)
+function enemy:set_properties(prop)
 
   properties = prop
   -- set default values
@@ -68,51 +70,51 @@ function set_properties(prop)
   end
 end
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(properties.life)
-  sol.enemy.set_damage(properties.damage)
-  sol.enemy.create_sprite(properties.sprite)
-  sol.enemy.set_hurt_style(properties.hurt_style)
-  sol.enemy.set_pushed_back_when_hurt(properties.pushed_when_hurt)
-  sol.enemy.set_push_hero_on_sword(properties.push_hero_on_sword)
-  sol.enemy.set_invincible()
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 12)
+  self:set_life(properties.life)
+  self:set_damage(properties.damage)
+  self:create_sprite(properties.sprite)
+  self:set_hurt_style(properties.hurt_style)
+  self:set_pushed_back_when_hurt(properties.pushed_when_hurt)
+  self:set_push_hero_on_sword(properties.push_hero_on_sword)
+  self:set_invincible()
+  self:set_size(16, 16)
+  self:set_origin(8, 12)
   if not properties.obstacle_behavior == nil then
-    sol.enemy.set_obstacle_behavior(properties.obstacle_behavior)
+    self:set_obstacle_behavior(properties.obstacle_behavior)
   end
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:set_animation(properties.asleep_animation)
 end
 
-function event_movement_changed()
+function enemy:on_movement_changed()
 
-  local m = sol.enemy.get_movement()
+  local m = self:get_movement()
   local direction4 = m:get_direction4()
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   sprite:set_direction(direction4)
 end
 
-function event_obstacle_reached(movement)
+function enemy:on_obstacle_reached(movement)
 
   if awaken and not going_hero then
-    check_hero()
+    self:check_hero()
   end
 end
 
-function event_restart()
+function enemy:on_restart()
 
   if not awaken then
-    local sprite = sol.enemy.get_sprite()
+    local sprite = self:get_sprite()
     sprite:set_animation(properties.asleep_animation)
   else
-    go_hero()
+    self:go_hero()
   end
-  check_hero()
+  self:check_hero()
 end
 
-function event_hurt()
+function enemy:on_hurt()
 
   if timer ~= nil then
     timer:stop()
@@ -120,63 +122,63 @@ function event_hurt()
   end
 end
 
-function check_hero()
+function enemy:check_hero()
 
-  local _, _, layer = sol.enemy.get_position()
-  local _, _, hero_layer = sol.map.hero_get_position()
+  local _, _, layer = self:get_position()
+  local _, _, hero_layer = self:get_map():hero_get_position()
   local near_hero = layer == hero_layer
-    and sol.enemy.get_distance_to_hero() < 100
+    and self:get_distance_to_hero() < 100
 
   if awaken then
     if near_hero and not going_hero then
-        go_hero()
+      self:go_hero()
     elseif not near_hero and going_hero then
-        go_random()
+      self:go_random()
     end
   elseif not awaken and near_hero then
-    wake_up()
+    self:wake_up()
   end
-  timer = sol.timer.start(1000, check_hero)
+  timer = sol.timer.start(1000, function() self:check_hero() end)
 end
 
 --  The animation of a sprite is finished
-function event_sprite_animation_finished(sprite, animation)
+function enemy:on_sprite_animation_finished(sprite, animation)
 
   -- if the awakening transition is finished, make the enemy go toward the hero.
   if animation == properties.awaking_animation then
     sprite:set_animation(properties.normal_animation)
-    sol.enemy.set_size(16, 16)
-    sol.enemy.set_origin(8, 13)
-    sol.enemy.snap_to_grid()
-    sol.enemy.set_default_attack_consequences()
+    self:set_size(16, 16)
+    self:set_origin(8, 13)
+    self:snap_to_grid()
+    self:set_default_attack_consequences()
     awaken = true
-    go_hero()
+    self:go_hero()
   end
 end
 
-function wake_up()
+function enemy:wake_up()
 
-  sol.enemy.stop_movement()
-  local sprite = sol.enemy.get_sprite()
+  self:stop_movement()
+  local sprite = self:get_sprite()
   sprite:set_animation(properties.awaking_animation)
   if properties.awakening_sound ~= nil then
-      sol.audio.play_sound(properties.awakening_sound)
+    sol.audio.play_sound(properties.awakening_sound)
   end
 end
 
-function go_random()
+function enemy:go_random()
 
   local m = sol.movement.create("random")
   m:set_speed(properties.normal_speed)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
   going_hero = false
 end
 
-function go_hero()
+function enemy:go_hero()
 
   local m = sol.movement.create("target")
   m:set_speed(properties.faster_speed)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
   going_hero = true
 end
 

@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Red Hardhat Beetle
 
 sol.main.do_file("enemies/generic_towards_hero")

@@ -1,3 +1,5 @@
+local enemy = ...
+
 -- Blue Bullblin
 
 sol.main.do_file("enemies/generic_soldier")

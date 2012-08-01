@@ -1,11 +1,13 @@
+local enemy = ...
+
 -- A ball and its chain, usually controlled by another enemy.
 -- The ball is controlled by a circular movement and
 -- the chain is a sprite that automatically fits the space between the other enemy and the ball.
 -- They usually disappear when the enemy is killed.
 
-nb_links = 10
-link_sprite = nil
-link_xy = {
+local nb_links = 10
+local link_sprite = nil
+local link_xy = {
   {x = 0, y = 0},
   {x = 0, y = 0},
   {x = 0, y = 0},
@@ -17,18 +19,18 @@ link_xy = {
   {x = 0, y = 0},
   {x = 0, y = 0}
 }
-father_name = ""                  -- name of the enemy the chain and ball is attached to if any
-center_xy = {x = 0, y = 0}        -- center point of the circles, relative to the father enemy if any, absolute otherwise
+local father_name = ""                  -- name of the enemy the chain and ball is attached to if any
+local center_xy = {x = 0, y = 0}        -- center point of the circles, relative to the father enemy if any, absolute otherwise
 
-function event_appear()
+function enemy:on_appear()
 
   -- set the properties
-  sol.enemy.set_life(1)
-  sol.enemy.set_damage(3)
-  sol.enemy.create_sprite("enemies/chain_and_ball")
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 8)
-  sol.enemy.set_invincible()
+  self:set_life(1)
+  self:set_damage(3)
+  self:create_sprite("enemies/chain_and_ball")
+  self:set_size(16, 16)
+  self:set_origin(8, 8)
+  self:set_invincible()
 
   -- create a second sprite that stays in the script
   link_sprite = sol.sprite.create("enemies/chain_and_ball")
@@ -41,34 +43,34 @@ function event_appear()
   end
 
   -- get the difference of coordinates between me and my father
-  father_name = sol.enemy.get_father()
+  father_name = self:get_father()
   if father_name ~= "" then
-    local x, y = sol.enemy.get_position()
-    local father_x, father_y = sol.map.enemy_get_position(father_name)
+    local x, y = self:get_position()
+    local father_x, father_y = self:get_map():enemy_get_position(father_name)
     center_xy.x, center_xy.y = x - father_x, y - father_y
   end
 end
 
-function event_pre_display()
+function enemy:on_pre_display()
 
   for i = 1, nb_links do
-    sol.map.sprite_display(link_sprite, link_xy[i].x, link_xy[i].y)
+    self:get_map():sprite_display(link_sprite, link_xy[i].x, link_xy[i].y)
   end
 end
 
-function event_position_changed(x, y)
+function enemy:on_position_changed(x, y)
 
   -- recalculate the chain position
   local x1, y1
   if father_name ~= "" then
     -- the center is relative to the father
-    local x, y = sol.map.enemy_get_position(father_name)
+    local x, y = self:get_map():enemy_get_position(father_name)
     x1, y1 = x + center_xy.x, y + center_xy.y;
   else
     -- the center is absolute
     x1, y1 = center_xy
   end
-  local x2, y2 = sol.enemy.get_position();
+  local x2, y2 = self:get_position()
 
   for i = 1, nb_links do
     link_xy[i].x = x1 + (x2 - x1) * (i - 1) / nb_links;
@@ -76,7 +78,7 @@ function event_position_changed(x, y)
   end
 end
 
-function event_restart()
+function enemy:on_restart()
 
   local m = sol.movement.create("circle")
   m:set_center(7, father_name, center_xy.x, center_xy.y)
@@ -85,7 +87,6 @@ function event_restart()
   m:set_max_rotations(4)
   m:set_loop(2000)
   m:set_angle_speed(360)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
 end
-
 

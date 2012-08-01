@@ -1,36 +1,38 @@
+local enemy = ...
+
 -- Laser ray
 
 local initial_position = {}
 
-function event_appear()
+function enemy:on_appear()
 
-  sol.enemy.set_life(1)
-  sol.enemy.set_damage(4)
-  sol.enemy.create_sprite("enemies/laser")
-  sol.enemy.set_optimization_distance(0)
-  sol.enemy.set_size(8, 8)
-  sol.enemy.set_origin(4, 4)
-  sol.enemy.set_can_hurt_hero_running(true)
-  sol.enemy.set_invincible()
-  sol.enemy.set_minimum_shield_needed(3)
-  sol.enemy.set_obstacle_behavior("flying")
+  self:set_life(1)
+  self:set_damage(4)
+  self:create_sprite("enemies/laser")
+  self:set_optimization_distance(0)
+  self:set_size(8, 8)
+  self:set_origin(4, 4)
+  self:set_can_hurt_hero_running(true)
+  self:set_invincible()
+  self:set_minimum_shield_needed(3)
+  self:set_obstacle_behavior("flying")
 
-  initial_position.x, initial_position.y, initial_position.layer = sol.enemy.get_position()
+  initial_position.x, initial_position.y, initial_position.layer = self:get_position()
 end
 
-function event_restart()
+function enemy:on_restart()
 
-  local sprite = sol.enemy.get_sprite()
+  local sprite = self:get_sprite()
   local direction4 = sprite:get_direction()
   local m = sol.movement.create("path")
   m:set_path{direction4 * 2}
   m:set_speed(300)
   m:set_loop(true)
-  sol.enemy.start_movement(m)
+  self:start_movement(m)
 end
 
-function event_obstacle_reached()
+function enemy:on_obstacle_reached()
 
-  sol.enemy.set_position(initial_position.x, initial_position.y, initial_position.layer)
+  self:set_position(initial_position.x, initial_position.y, initial_position.layer)
 end
 

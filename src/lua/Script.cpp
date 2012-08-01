@@ -31,10 +31,8 @@
 /**
  * @brief Creates a script.
  * @param main_loop The Solarus main loop manager.
- * @param apis_enabled an OR-combination of optional APIs to enable
- * (0 for none)
  */
-Script::Script(MainLoop& main_loop, uint32_t apis_enabled):
+Script::Script(MainLoop& main_loop):
   l(NULL),
   main_loop(main_loop),
   current_game(NULL),

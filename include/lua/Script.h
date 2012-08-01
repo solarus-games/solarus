@@ -100,7 +100,7 @@ class Script {
 
     lua_State* l;                        /**< the execution context of the Lua script */
 
-    Script(MainLoop& main_loop, uint32_t apis_enabled = 0);
+    Script(MainLoop& main_loop);
 
     void set_current_game(Game* current_game);
     void set_current_screen(CustomScreen* current_screen);

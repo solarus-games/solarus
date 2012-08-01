@@ -1033,4 +1033,236 @@ void LuaContext::on_ability_used(const std::string& ability_name) {
   }
 }
 
+/**
+ * @brief Calls the on_appear() method of the object on top of the stack.
+ */
+void LuaContext::on_appear() {
+
+  if (find_method("on_appear")) {
+    call_function(1, 0, "on_appear");
+  }
+}
+
+/**
+ * @brief Calls the on_enabled() method of the object on top of the stack.
+ */
+void LuaContext::on_enabled() {
+
+  if (find_method("on_enabled")) {
+    call_function(1, 0, "on_enabled");
+  }
+}
+
+/**
+ * @brief Calls the on_disabled() method of the object on top of the stack.
+ */
+void LuaContext::on_disabled() {
+
+  if (find_method("on_disabled")) {
+    call_function(1, 0, "on_disabled");
+  }
+}
+
+/**
+ * @brief Calls the on_restart() method of the object on top of the stack.
+ */
+void LuaContext::on_restart() {
+
+  if (find_method("on_restart")) {
+    call_function(1, 0, "on_restart");
+  }
+}
+
+/**
+ * @brief Calls the on_pre_display() method of the object on top of the stack.
+ */
+void LuaContext::on_pre_display() {
+
+  if (find_method("on_pre_display")) {
+    call_function(1, 0, "on_pre_display");
+  }
+}
+
+/**
+ * @brief Calls the on_post_display() method of the object on top of the stack.
+ */
+void LuaContext::on_post_display() {
+
+  if (find_method("on_post_display")) {
+    call_function(1, 0, "on_post_display");
+  }
+}
+
+/**
+ * @brief Calls the on_position_changed() method of the object on top of the stack.
+ * @param xy The new position.
+ */
+void LuaContext::on_position_changed(const Rectangle& xy) {
+
+  if (find_method("on_position_changed")) {
+    lua_pushinteger(l, xy.get_x());
+    lua_pushinteger(l, xy.get_y());
+    call_function(3, 0, "on_position_changed");
+  }
+}
+
+/**
+ * @brief Calls the on_layer_changed() method of the object on top of the stack.
+ * @param layer The new layer.
+ */
+void LuaContext::on_layer_changed(Layer layer) {
+
+  if (find_method("on_layer_changed")) {
+    lua_pushinteger(l, layer);
+    call_function(2, 0, "on_layer_changed");
+  }
+}
+
+/**
+ * @brief Calls the on_obstacle_reached() method of the object on top of the stack.
+ */
+void LuaContext::on_obstacle_reached() {
+
+  if (find_method("on_obstacle_reached")) {
+    call_function(1, 0, "on_obstacle_reached");
+  }
+}
+
+/**
+ * @brief Calls the on_movement_changed() method of the object on top of the stack.
+ * @param movement A movement.
+ */
+void LuaContext::on_movement_changed(Movement& movement) {
+
+  if (find_method("on_movement_changed")) {
+    push_movement(l, movement);
+    call_function(2, 0, "on_movement_changed");
+  }
+}
+
+/**
+ * @brief Calls the on_movement_finished() method of the object on top of the stack.
+ * @param movement A movement.
+ */
+void LuaContext::on_movement_finished(Movement& movement) {
+
+  if (find_method("on_movement_finished")) {
+    push_movement(l, movement);
+    call_function(2, 0, "on_movement_finished");
+  }
+}
+
+/**
+ * @brief Calls the on_sprite_animation_finished() method of the object on top of the stack.
+ * @param sprite A sprite whose animation has just finished.
+ * @param animation Name of the animation finished.
+ */
+void LuaContext::on_sprite_animation_finished(Sprite& sprite, const std::string& animation) {
+
+  if (find_method("on_sprite_animation_finished")) {
+    push_sprite(l, sprite);
+    lua_pushstring(l, animation.c_str());
+    call_function(3, 0, "on_sprite_animation_finished");
+  }
+}
+
+/**
+ * @brief Calls the on_sprite_frame_changed() method of the object on top of the stack.
+ * @param sprite A sprite whose animation frame has just changed.
+ * @param animation Name of the sprite animation.
+ * @param frame The new frame.
+ */
+void LuaContext::on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
+
+  if (find_method("on_sprite_frame_changed")) {
+    push_sprite(l, sprite);
+    lua_pushstring(l, animation.c_str());
+    lua_pushinteger(l, frame);
+    call_function(4, 0, "on_sprite_frame_changed");
+  }
+}
+
+/**
+ * @brief Calls the on_collision_enemy() method of the object on top of the stack.
+ * @param other_enemy Another enemy colliding with the object on top of the stack.
+ * @param other_sprite Colliding sprite of the other enemy.
+ * @param this_sprite Colliding sprite of the first enemy.
+ */
+void LuaContext::on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite) {
+
+  if (find_method("on_collision_enemy")) {
+    lua_pushstring(l, other_enemy.get_name().c_str());
+    push_sprite(l, other_sprite);
+    push_sprite(l, this_sprite);
+    call_function(4, 0, "on_collision_enemy");
+  }
+}
+
+/**
+ * @brief Calls the on_custom_attack_received() method of the object on top of the stack.
+ * @param attack The attack received.
+ * @param sprite The sprite that receives the attack if any.
+ */
+void LuaContext::on_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
+
+  if (find_method("on_custom_attack_received")) {
+    lua_pushstring(l, Enemy::get_attack_name(attack).c_str());
+    if (sprite != NULL) {
+      // Pixel-precise collision.
+      push_sprite(l, *sprite);
+      call_function(3, 0, "on_custom_attack_received");
+    }
+    else {
+      call_function(2, 0, "on_custom_attack_received");
+    }
+  }
+}
+
+/**
+ * @brief Calls the on_hurt() method of the object on top of the stack.
+ * @param attack The attack received.
+ * @param life_lost Number of life points just lost.
+ */
+void LuaContext::on_hurt(EnemyAttack attack, int life_lost) {
+
+  if (find_method("on_hurt")) {
+    lua_pushstring(l, Enemy::get_attack_name(attack).c_str());
+    lua_pushinteger(l, life_lost);
+    call_function(3, 0, "on_hurt");
+  }
+}
+
+/**
+ * @brief Calls the on_dead() method of the object on top of the stack.
+ */
+void LuaContext::on_dead() {
+
+  if (find_method("on_dead")) {
+    call_function(1, 0, "on_dead");
+  }
+}
+
+/**
+ * @brief Calls the on_immobilized() method of the object on top of the stack.
+ */
+void LuaContext::on_immobilized() {
+
+  if (find_method("on_immobilized")) {
+    call_function(1, 0, "on_immobilized");
+  }
+}
+
+/**
+ * @brief Calls the on_message_received() method of the object on top of the stack.
+ * @param src_enemy The sender.
+ * @param message The message received.
+ */
+void LuaContext::on_message_received(Enemy& src_enemy, const std::string& message) {
+
+  if (find_method("on_message_received")) {
+    lua_pushstring(l, src_enemy.get_name().c_str());
+    lua_pushstring(l, message.c_str());
+    call_function(3, 0, "on_message_received");
+  }
+}
 

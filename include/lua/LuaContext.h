@@ -144,10 +144,10 @@ class LuaContext: public Script {
     void enemy_on_obstacle_reached(Enemy& enemy);
     void enemy_on_movement_changed(Enemy& enemy, Movement& movement);
     void enemy_on_movement_finished(Enemy& enemy, Movement& movement);
-    void enemy_on_sprite_frame_changed(Enemy& enemy,
-        Sprite& sprite, const std::string& animation, int frame);
     void enemy_on_sprite_animation_finished(Enemy& enemy,
         Sprite& sprite, const std::string& animation);
+    void enemy_on_sprite_frame_changed(Enemy& enemy,
+        Sprite& sprite, const std::string& animation, int frame);
     void enemy_on_collision_enemy(Enemy& enemy,
         Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
     void enemy_on_custom_attack_received(Enemy& enemy,
@@ -241,8 +241,8 @@ class LuaContext: public Script {
     void on_obstacle_reached();
     void on_movement_changed(Movement& movement);
     void on_movement_finished(Movement& movement);
-    void on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     void on_sprite_animation_finished(Sprite& sprite, const std::string& animation);
+    void on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     void on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
     void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
     void on_hurt(EnemyAttack attack, int life_lost);

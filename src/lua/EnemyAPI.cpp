@@ -1240,7 +1240,7 @@ void LuaContext::enemy_on_collision_enemy(Enemy& enemy,
  * @brief Calls the on_custom_attack_received() method of a Lua enemy.
  * @param enemy An enemy.
  * @param attack The attack received.
- * @param sprite The sprite that receives the attack.
+ * @param sprite The sprite that receives the attack if any.
  */
 void LuaContext::enemy_on_custom_attack_received(Enemy& enemy,
     EnemyAttack attack, Sprite* sprite) {

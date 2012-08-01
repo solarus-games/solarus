@@ -79,15 +79,6 @@ class Script {
     // Lua refs.
     int create_ref();
     void destroy_ref(int ref);
-
-    // calling specific Lua functions
-    void event_dialog_started(const std::string& dialog_id);
-    void event_dialog_finished(const std::string& dialog_id, int answer);
-    void event_npc_interaction(const std::string& npc_name);
-    bool event_npc_interaction_item(const std::string& npc_name,
-        const std::string& item_name, int variant);
-    void event_npc_collision_fire(const std::string& npc_name);
-
     void do_callback(int callback_ref);
     void cancel_callback(int callback_ref);
 
@@ -119,7 +110,6 @@ class Script {
     void exit();
     static Script& get_script(lua_State* l);
     bool find_global_function(const std::string& function_name);
-    bool notify_script(const std::string& function_name, const char* format = "", ...);
     bool call_function(int nb_arguments, int nb_results, const std::string& function_name);
     static bool call_function(lua_State* l, int nb_arguments, int nb_results, const std::string& function_name);
     static void load_file(lua_State* l, const std::string& script_name);

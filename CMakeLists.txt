@@ -103,22 +103,45 @@ endif()
 set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
+#OSX TODO LIST :
+# Check why 8bpp PNG are stored as 32bpp SDL_Surface on 10.6+
+# Check why on 10.5 , there are considered as invalid image ('u' bpp)
+# Use SDL_HWSURFACE (or at least, use the same flag everywhere)
+# Remove intermediate surface on the two "special" blits
+
 # compilation flags for Mac OS X deployment
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Release")
-  if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
-    set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk" CACHE STRING "OS version whose headers you'll use" FORCE)
-    set(CMAKE_OSX_ARCHITECTURES "ppc;i386;x86_64;" CACHE STRING "Compile for these processor architecture" FORCE)
+  if(SOLARUS_ARCH)
+    set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Chosen build architecture" FORCE)
+  else()
+    set(CMAKE_OSX_ARCHITECTURES "i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
   endif()
-  if(NOT $ENV{MACOSX_DEPLOYMENT_TARGET} EQUAL "")
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "$ENV{MACOSX_DEPLOYMENT_TARGET}" CACHE STRING "The oldest OS version supported" FORCE)
-    if($ENV{MACOSX_DEPLOYMENT_TARGET} STRGREATER "10.4")
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
+
+  if(SOLARUS_SYSROOT)
+    set(CMAKE_OSX_SYSROOT "${SOLARUS_SYSROOT}" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
+  else()
+    if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
+      set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk" CACHE STRING "Default OS version whose headers you'll use" FORCE)
+      if(NOT SOLARUS_ARCH)
+        set(CMAKE_OSX_ARCHITECTURES "ppc;${CMAKE_OSX_ARCHITECTURES}" CACHE STRING "Add PPC build architecture" FORCE)
+      endif()	
     endif()
-    if($ENV{MACOSX_DEPLOYMENT_TARGET} STRLESS "10.6")
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
-    endif()
+  endif()
+
+  if(SOLARUS_DEPLOYMENT)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Chosen oldest OS version supported" FORCE)
+  else()
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.5" CACHE STRING "Default oldest OS version supported" FORCE)
+  endif()
+  
+  if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_EQUAL "10.5" OR CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER "10.5")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
+  endif()
+  if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
 endif()
+
 
 # solarus options
 option(DEBUG_KEYS "Enable the debugging keys." OFF)

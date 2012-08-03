@@ -103,33 +103,45 @@ endif()
 set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
+#OSX TODO LIST :
+# Check why 8bpp PNG are stored as 32bpp SDL_Surface on 10.6+
+# Check why on 10.5 , there are considered as invalid image ('u' bpp)
+# Use SDL_HWSURFACE (or at least, use the same flag everywhere)
+# Remove intermediate surface on the two "special" blits
+
 # compilation flags for Mac OS X deployment
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Release")
-  if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
-    set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk" CACHE STRING "OS version whose headers you'll use" FORCE)
-    set(CMAKE_OSX_ARCHITECTURES "ppc;i386;x86_64;" CACHE STRING "Compile for these processor architecture" FORCE)
+  if(SOLARUS_ARCH)
+    set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Chosen build architecture" FORCE)
+  else()
+    set(CMAKE_OSX_ARCHITECTURES "i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
   endif()
 
-  set(MACOS_VERSION_BY_ENV "$ENV{MACOSX_DEPLOYMENT_TARGET}")
-  if(MACOS_VERSION_BY_ENV)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "${MACOS_VERSION_BY_ENV}" CACHE STRING "Chosen oldest OS version supported" FORCE)
+  if(SOLARUS_SYSROOT)
+    set(CMAKE_OSX_SYSROOT "${SOLARUS_SYSROOT}" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
+  else()
+    if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
+      set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk" CACHE STRING "Default OS version whose headers you'll use" FORCE)
+      if(NOT SOLARUS_ARCH)
+        set(CMAKE_OSX_ARCHITECTURES "ppc;${CMAKE_OSX_ARCHITECTURES}" CACHE STRING "Add PPC build architecture" FORCE)
+      endif()	
+    endif()
+  endif()
+
+  if(SOLARUS_DEPLOYMENT)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Chosen oldest OS version supported" FORCE)
   else()
     set(CMAKE_OSX_DEPLOYMENT_TARGET "10.5" CACHE STRING "Default oldest OS version supported" FORCE)
-
-#TODO Check if overload deployment by environment var is really needed
-#   add_custom_command(TARGET solarus PRE_BUILD COMMAND export MACOSX_DEPLOYMENT_TARGET=10.5 VERBATIM)
   endif()
-
-#TODO Check if -macosx-version-min GCC's flag (CMAKE_OSX_DEPLOYMENT_TARGET var) do the same than the following line
-#  set(CMAKE_EXE_LINKER_FLAGS "-Xlinker -macosx_version_min -Xlinker ${CMAKE_OSX_DEPLOYMENT_TARGET}" CACHE STRING "CMAKE_OSX_DEPLOYMENT_TARGET does't use this needed flag on linker" FORCE)
   
-  if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER "10.4")
+  if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_EQUAL "10.5" OR CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER "10.5")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
   endif()
   if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
 endif()
+
 
 # solarus options
 option(DEBUG_KEYS "Enable the debugging keys." OFF)

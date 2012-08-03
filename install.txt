@@ -184,12 +184,17 @@ solarus just by doing the default setting with cmake.
 If you got some error on the cmake part, you can edit the CMakeCache.txt to
 manually write the include and library directories that cmake did not find.
 
-By default, you will compile with the 10.5 SDK if available, and configure 
-10.5 as minimum system version required. 
-Set MACOSX_DEPLOYMENT_TARGET environment variable before build to change
-this behavior.
+By default, you will build against the 10.5 SDK if available, configure 
+10.5 as minimum system version required and produce a multiple
+architectures (Intel 32+64bit, and PPC 32bit) application. 
+Pass SOLARUS_SYSROOT, SOLARUS_DEPLOYMENT or/and SOLARUS_ARCH constants to
+cmake to overload default settings, just like the following example :
 
-$ export MACOSX_DEPLOYMENT_TARGET=10.4
+$ cmake -DSOLARUS_ARCH="ppc;i386" -DSOLARUS_DEPLOYMENT=10.1 .
+
+You also can check what is your binary arch compatibility with
+
+$ file /dylib/or/binary/I/want/to/check
 
 
 * Deploy on OSX
@@ -218,13 +223,3 @@ $ install_name_tool -change old_path new_path /dylib/or/binary/I/want/to/modify
 The new_path string usually looks like @rpath/The_dylib.dylib or 
 @rpath/The_framework.framework/Version/A/The_binary on Mac 10.5+.
 Replace @rpath/ by @executable_path/../Frameworks/ on earlier OSX versions.
-
-
-The last thing you have to do to deploy Solarus is to compile it for every 
-processor architecture.
-But if you set the MACOSX_DEPLOYMENT_TARGET environment variable and have the
-10.5 SDK installed on your system, you already have a "universal" application
-(Intel 32+64bit, and PPC 32bit).
-Check what is your binary compatibility with
-
-$ file /dylib/or/binary/I/want/to/check

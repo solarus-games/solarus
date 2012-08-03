@@ -23,7 +23,8 @@
  * @param params name and position of the enemy to create
  * @param breed breed of the enemy (this determines its Lua script)
  */
-CustomEnemy::CustomEnemy(const ConstructionParameters &params, const std::string& breed):
+CustomEnemy::CustomEnemy(const ConstructionParameters &params,
+    const std::string& breed):
   Enemy(params),
   breed(breed) {
 

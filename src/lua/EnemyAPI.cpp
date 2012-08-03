@@ -112,7 +112,7 @@ void Script::register_enemy_module() {
  * @return The enemy.
  */
 Enemy& Script::check_enemy(lua_State* l, int index) {
-  return static_cast<Enemy&>(check_userdata(l, index, item_module_name));
+  return static_cast<Enemy&>(check_userdata(l, index, enemy_module_name));
 }
 
 /**

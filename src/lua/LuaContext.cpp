@@ -287,7 +287,7 @@ void LuaContext::notify_item_created(EquipmentItem& item) {
 void LuaContext::notify_enemy_created(CustomEnemy& enemy) {
 
   // Compute the file name, depending on enemy's breed.
-  std::string file_name = (std::string) "enemy/" + enemy.get_breed();
+  std::string file_name = (std::string) "enemies/" + enemy.get_breed();
 
   // Load the enemy's code.
   if (load_file_if_exists(l, file_name)) {

@@ -9,6 +9,7 @@
 .settings
 .csettings
 tags
+valgrind.out
 callgrind.out.*
 doc/html/
 doc/0.*

@@ -38,18 +38,22 @@ function enemy:on_restart()
     m:set_speed(32)
     self:start_movement(m)
     for _, t in ipairs(timers) do t:stop() end
-    timers[#timers + 1] = sol.timer.start(math.random(2000, 3000), skeleton_attack)
+    timers[#timers + 1] = sol.timer.start(math.random(2000, 3000), function()
+      self:skeleton_attack()
+    end)
   else
     local m = sol.movement.create("random")
     m:set_speed(80)
     self:start_movement(m)
     for _, t in ipairs(timers) do t:stop() end
-    timers[#timers + 1] = sol.timer.start(math.random(3000, 5000), big_attack)
+    timers[#timers + 1] = sol.timer.start(math.random(3000, 5000), function()
+      self:big_attack()
+    end)
   end
 end
 
 -- Make the skeleton throw a blue flame
-function skeleton_attack()
+function enemy:skeleton_attack()
 
   skeleton:set_animation("attack")
   sol.audio.play_sound("ice")
@@ -62,7 +66,9 @@ function skeleton_attack()
     local hero_x, hero_y = self:get_map():hero_get_position()
     local angle = sol.main.get_angle(x, y, hero_x, hero_y)
     self:send_message(son_name, angle)
-    timers[#timers + 1] = sol.timer.start(math.random(1000, 3000), skeleton_attack)
+    timers[#timers + 1] = sol.timer.start(math.random(1000, 3000), function()
+      self:skeleton_attack()
+    end)
   end)
 end
 
@@ -84,16 +90,16 @@ function enemy:on_hurt(attack, life_lost)
 end
 
 -- Makes the bird throw several blue flames
-function big_attack()
+function enemy:big_attack()
 
   nb_flames_created = 0
   self:stop_movement()
   head:set_animation("attack")
   sol.audio.play_sound("lamp")
-  timers[#timers + 1] = sol.timer.start(500, repeat_flame)
+  timers[#timers + 1] = sol.timer.start(500, function() self:repeat_flame() end)
 end
 
-function repeat_flame()
+function enemy:repeat_flame()
 
   if nb_flames_created <= max_flames_created then
     local son_name = self:get_name() .. "_son_" .. nb_flames_created
@@ -102,9 +108,9 @@ function repeat_flame()
     self:create_son(son_name, "blue_flame", 0, 16)
     self:send_message(son_name, tostring(angle))
     sol.audio.play_sound("lamp")
-    timers[#timers + 1] = sol.timer.start(150, repeat_flame)
+    timers[#timers + 1] = sol.timer.start(150, function() self:repeat_flame() end)
   else
-    timers[#timers + 1] = sol.timer.start(500, self:restart)
+    timers[#timers + 1] = sol.timer.start(500, function() self:restart() end)
   end
 end
 

@@ -34,22 +34,22 @@ function enemy:on_update()
 
     if math.abs(dy) < activation_distance then
       if dx > 0 then
-	go(0)
+	self:go(0)
       else
-	go(2)
+	self:go(2)
       end
     end
     if state == "stopped" and math.abs(dx) < activation_distance then
       if dy > 0 then
-	go(3)
+	self:go(3)
       else
-	go(1)
+	self:go(1)
       end
     end
   end
 end
 
-function go(direction4)
+function enemy:go(direction4)
 
   local dxy = {
     { x =  8, y =  0},
@@ -77,23 +77,23 @@ end
 
 function enemy:on_obstacle_reached()
 
-  go_back()
+  self:go_back()
 end
 
 function enemy:on_movement_finished()
 
-  go_back()
+  self:go_back()
 end
 
 function enemy:on_collision_enemy(other_name, other_sprite, my_sprite)
 
   -- TODO: it would be better to have a way of getting the other's race
   if string.find(other_name, "^pike_") and state == "moving" then
-    go_back()
+    self:go_back()
   end
 end
 
-function go_back()
+function enemy:go_back()
 
   if state == "moving" then
 
@@ -109,11 +109,11 @@ function go_back()
   elseif state == "going_back" then
 
     state = "paused"
-    sol.timer.start(500, unpause)
+    sol.timer.start(500, function() self:unpause() end)
   end
 end
 
-function unpause()
+function enemy:unpause()
   state = "stopped"
 end
 

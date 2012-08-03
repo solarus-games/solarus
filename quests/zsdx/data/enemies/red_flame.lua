@@ -26,7 +26,7 @@ function enemy:on_restart()
   m:set_target(x, y)
   m:set_ignore_obstacles(true)
   self:start_movement(m)
-  sol.timer.start(2000, event_movement_finished)
+  sol.timer.start(2000, function() self:on_movement_finished() end)
 end
 
 function enemy:on_movement_finished(movement)

@@ -20,13 +20,15 @@ end
 
 function enemy:on_restart()
 
-  timers[#timers + 1] = sol.timer.start(500, jump_or_son_phase)
-  go()
+  timers[#timers + 1] = sol.timer.start(500, function()
+    self:jump_or_son_phase()
+  end)
+  self:go()
 end
 
 function enemy:on_movement_finished(movement)
 
-  event_restart()
+  self:on_restart()
 end
 
 function enemy:on_update()
@@ -52,7 +54,7 @@ function enemy:on_hurt(attack, life_lost)
   end
 end
 
-function go()
+function enemy:go()
   local m = sol.movement.create("random_path")
   m:set_speed(64)
   self:start_movement(m)
@@ -60,18 +62,20 @@ function go()
   sprite:set_animation("walking")
 end
 
-function son_phase_soon()
+function enemy:son_phase_soon()
 
   self:stop_movement()
-  timers[#timers + 1] = sol.timer.start(500, son_phase)
+  timers[#timers + 1] = sol.timer.start(500, function()
+    self:son_phase()
+  end)
 end
 
-function son_phase()
+function enemy:son_phase()
 
   local sprite = self:get_sprite()
   sprite:set_animation("preparing_son")
   sol.audio.play_sound("stone")
-  timers[#timers + 1] = sol.timer.start(1500, throw_son)
+  timers[#timers + 1] = sol.timer.start(1500, function() self:throw_son() end)
 
   if self:get_life() < 3 then
     nb_sons_to_create = 3
@@ -81,7 +85,7 @@ function son_phase()
 
 end
 
-function throw_son()
+function enemy:throw_son()
 
   -- create the son
   nb_sons_created = nb_sons_created + 1
@@ -93,35 +97,35 @@ function throw_son()
   nb_sons_to_create = nb_sons_to_create - 1
   if nb_sons_to_create > 0 then
     -- throw another son in 0.5 second
-    timers[#timers + 1] = sol.timer.start(500, throw_son)
+    timers[#timers + 1] = sol.timer.start(500, function() self:throw_son() end)
   else
     -- finish the son phase
     local sprite = self:get_sprite()
     sprite:set_animation("walking")
     local delay = 3500 + (math.random(3) * 1000)
-    timers[#timers + 1] = sol.timer.start(delay, jump_or_son_phase)
-    timers[#timers + 1] = sol.timer.start(500, go)
+    timers[#timers + 1] = sol.timer.start(delay, function() self:jump_or_son_phase() end)
+    timers[#timers + 1] = sol.timer.start(500, function() self:go() end)
   end
 end
 
-function jump_or_son_phase()
+function enemy:jump_or_son_phase()
 
   if math.random(2) == 1 then
  
     local sons_prefix = self:get_name().."_son" 
     local nb_sons = self:get_map():enemy_get_group_count(sons_prefix)
     if nb_sons < 5 then
-      son_phase_soon()
+      self:son_phase_soon()
     else
       -- no son phase if there are already too much sons: jump instead
-      jump_phase()
+      self:jump_phase()
     end
   else
-    jump_phase()
+    self:ump_phase()
   end
 end
 
-function jump_phase()
+function enemy:jump_phase()
 
   local direction8
   local x, y = self:get_position()

@@ -16,17 +16,17 @@ end
 
 function enemy:on_restart()
 
-  go_random()
+  self:go_random()
 end
 
 function enemy:on_movement_finished(movement)
 
-  go_random()
+  self:go_random()
 end
 
 function enemy:on_obstacle_reached()
 
-  go_random()
+  self:go_random()
 end
 
 function enemy:on_hurt(attack, life_lost)
@@ -37,7 +37,7 @@ function enemy:on_hurt(attack, life_lost)
   end
 end
 
-function go_random()
+function enemy:go_random()
 
   -- random diagonal direction
   local rand4 = math.random(4)

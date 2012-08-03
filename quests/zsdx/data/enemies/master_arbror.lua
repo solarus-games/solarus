@@ -31,20 +31,22 @@ function enemy:on_restart()
 
   local sprite = self:get_sprite()
   if not vulnerable then
-    go()
+    self:go()
   else
     sprite:set_animation("vulnerable")
   end
 end
 
-function go()
+function enemy:go()
 
   local m = sol.movement.create("random")
   m:set_speed(16)
   m:set_max_distance(16)
   self:start_movement(m)
   for _, t in ipairs(timers) do t:stop() end
-  timers[#timers + 1] = sol.timer.start(math.random(2000, 3000), prepare_son)
+  timers[#timers + 1] = sol.timer.start(math.random(2000, 3000), function()
+    self:prepare_son()
+  end)
 end
 
 function enemy:on_hurt(attack, life_lost)
@@ -69,7 +71,7 @@ function enemy:on_hurt(attack, life_lost)
   end
 end
 
-function prepare_son()
+function enemy:prepare_son()
 
   local sprite = self:get_sprite()
   if not vulnerable and sprite:get_animation() == "walking" then
@@ -78,15 +80,15 @@ function prepare_son()
       local sprite = self:get_sprite()
       sprite:set_animation("preparing_son")
       sol.audio.play_sound("hero_pushes")
-      timers[#timers + 1] = sol.timer.start(1000, create_son)
+      timers[#timers + 1] = sol.timer.start(1000, function() self:create_son() end)
       self:stop_movement()
     end
   end
 
-  timers[#timers + 1] = sol.timer.start(math.random(2000, 5000), prepare_son)
+  timers[#timers + 1] = sol.timer.start(math.random(2000, 5000), function() self:prepare_son() end)
 end
 
-function create_son()
+function enemy:create_son()
 
   x = math.random(-7, 7) * 16
 
@@ -115,8 +117,8 @@ function enemy:on_sprite_animation_finished(sprite, animation)
       sprite:set_animation("vulnerable")
       sol.audio.play_sound("boss_hurt")
       for _, t in ipairs(timers) do t:stop() end
-      timers[#timers + 1] = sol.timer.start(4000, stop_vulnerable)
-      remove_sons()
+      timers[#timers + 1] = sol.timer.start(4000, function() self:stop_vulnerable() end)
+      self:remove_sons()
     else
       sprite:set_animation("walking")
     end
@@ -145,10 +147,10 @@ function enemy:on_message_received(src_enemy, message)
   end
 end
 
-function stop_vulnerable()
+function enemy:stop_vulnerable()
 
   vulnerable = false
-  remove_sons()
+  self:remove_sons()
   self:set_invincible()
   self:set_attack_consequence("sword", "protected")
   self:set_attack_consequence("arrow", "protected")
@@ -156,7 +158,7 @@ function stop_vulnerable()
   self:restart()
 end
 
-function remove_sons()
+function enemy:remove_sons()
  
   local son_prefix = self:get_name().."_son"
   --self:get_map():enemy_remove_group(son_prefix) 

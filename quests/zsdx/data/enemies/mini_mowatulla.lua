@@ -18,7 +18,9 @@ function enemy:on_appear()
   local sprite = self:get_sprite()
   sprite:set_animation("shell")
   in_shell = true
-  sol.timer.start(1000, break_shell)
+  sol.timer.start(1000, function()
+    self:break_shell()
+  end)
 end
 
 -- The enemy was stopped for some reason and should restart
@@ -38,7 +40,7 @@ function enemy:on_restart()
 end
 
 -- Starts breaking the shell
-function break_shell()
+function enemy:break_shell()
 
   local sprite = self:get_sprite()
   self:stop_movement()

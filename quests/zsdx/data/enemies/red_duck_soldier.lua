@@ -2,8 +2,8 @@ local enemy = ...
 
 -- Red duck soldier
 
-sol.main.do_file("enemies/generic_soldier")
-set_properties({
+sol.main.load_file("enemies/generic_soldier")(enemy)
+enemy:set_properties({
   main_sprite = "enemies/red_duck_soldier",
   sword_sprite = "enemies/red_duck_soldier_sword",
   life = 8,

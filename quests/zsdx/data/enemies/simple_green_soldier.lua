@@ -21,7 +21,7 @@ function enemy:on_restart()
   m:set_speed(0)
   self:start_movement(m)
   local direction4 = math.random(4) - 1
-  go(direction4)
+  self:go(direction4)
 end
 
 -- An obstacle is reached: stop for a while, looking to a next direction
@@ -31,14 +31,14 @@ function enemy:on_obstacle_reached()
   local sprite = self:get_sprite()
   local animation = sprite:get_animation()
   if animation == "walking" then
-    look_left_or_right()
+    self:look_left_or_right()
   end
 end
 
 -- The movement is finished: stop for a while, looking to a next direction
 function enemy:on_movement_finished(movement)
   -- same thing as when an obstacle is reached
-  event_obstacle_reached()
+  self:on_obstacle_reached()
 end
 
 --  The animation of a sprite is finished
@@ -47,14 +47,14 @@ function enemy:on_sprite_animation_finished(sprite, animation)
   -- if the enemy was stopped and looking to a direction, go to that direction
   local direction = sprite:get_direction()
   if animation == "stopped_watching_left" then
-    go((direction + 1) % 4)
+    self:go((direction + 1) % 4)
   elseif animation == "stopped_watching_right" then
-    go((direction + 3) % 4)
+    self:go((direction + 3) % 4)
   end
 end
 
 -- Makes the soldier walk towards a direction
-function go(direction4)
+function enemy:go(direction4)
 
   -- set the sprite
   local sprite = self:get_sprite()
@@ -71,7 +71,7 @@ function go(direction4)
 end
 
 -- Makes the soldier look to its left or to its right (random choice)
-function look_left_or_right()
+function enemy:look_left_or_right()
 
   local sprite = self:get_sprite()
   if math.random(2) == 1 then

@@ -38,7 +38,7 @@ function enemy:on_restart()
     m:set_smooth(false)
     self:start_movement(m)
   else
-    go_hero()
+    self:go_hero()
   end
 end
 
@@ -47,7 +47,7 @@ function enemy:on_obstacle_reached()
 
   local sprite = self:get_sprite()
   if sprite:get_animation() == "egg" then
-    break_egg()
+    self:break_egg()
   end
 end
 
@@ -62,13 +62,13 @@ function enemy:on_custom_attack_received(attack, sprite)
 
   if attack == "sword" and sprite:get_animation() == "egg" then
     -- the egg is hit by the sword
-    break_egg()
+    self:break_egg()
     sol.audio.play_sound("monster_hurt")
   end
 end
 
 -- Starts breaking the egg
-function break_egg()
+function enemy:break_egg()
 
   local sprite = self:get_sprite()
   self:stop_movement()
@@ -83,11 +83,11 @@ function enemy:on_sprite_animation_finished(sprite, animation)
     sprite:set_animation("walking")
     self:set_size(16, 16)
     self:set_origin(8, 12)
-    go_hero()
+    self:go_hero()
   end
 end
 
-function go_hero()
+function enemy:go_hero()
 
   self:snap_to_grid()
   local m = sol.movement.create("path_finding")

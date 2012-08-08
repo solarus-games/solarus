@@ -23,7 +23,6 @@
 #include "entities/EnemyAttack.h"
 #include "entities/EnemyReaction.h"
 #include "entities/Explosion.h"
-#include "lua/ExportableToLua.h"
 
 /**
  * @brief Abstract class representing an enemy.
@@ -43,7 +42,7 @@
  * depending on its current movement and the attacks it is subject to.
  * Additional animations may be defined by the subclasses.
  */
-class Enemy: public Detector, ExportableToLua {
+class Enemy: public Detector {
 
   public:
 

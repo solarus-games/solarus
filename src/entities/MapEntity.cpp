@@ -1974,3 +1974,12 @@ void MapEntity::display_on_map() {
   }
 }
 
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ * TODO remove this definition from MapEntity, implement it in subclasses
+ */
+const std::string& MapEntity::get_lua_type_name() const {
+  return Script::enemy_module_name;
+}
+

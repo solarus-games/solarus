@@ -18,6 +18,7 @@
 #define SOLARUS_MAP_ENTITY_H
 
 #include "Common.h"
+#include "lua/ExportableToLua.h"
 #include "entities/EntityType.h"
 #include "entities/Layer.h"
 #include "entities/CollisionMode.h"
@@ -37,7 +38,7 @@
  * - an origin point, relative to the rectangle's top-left corner
  * Some entities can also have a name, a movement and some sprites.
  */
-class MapEntity {
+class MapEntity: public ExportableToLua {
 
   public:
 
@@ -337,6 +338,8 @@ class MapEntity {
     virtual void update();
     bool is_displayed();
     virtual void display_on_map();
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

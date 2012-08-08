@@ -73,7 +73,7 @@ void MapEntities::destroy_all_entities() {
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      delete tiles[layer][i];
+      destroy_entity(tiles[layer][i]);
     }
 
     tiles[layer].clear();
@@ -91,12 +91,27 @@ void MapEntities::destroy_all_entities() {
 
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
-    delete *i;
+    destroy_entity(*i);
   }
   all_entities.clear();
 
   detectors.clear();
   entities_to_remove.clear();
+}
+
+/**
+ * @brief Destroys an entity.
+ *
+ * The object is freed if it is not used anywhere else.
+ *
+ * @param entity The entity to destroy.
+ */
+void MapEntities::destroy_entity(MapEntity* entity) {
+
+  entity->decrement_refcount();
+  if (entity->get_refcount() == 0) {
+    delete entity;
+  }
 }
 
 /**
@@ -453,6 +468,8 @@ void MapEntities::add_entity(MapEntity *entity) {
     return;
   }
 
+  entity->increment_refcount();
+
   if (entity->get_type() == TILE) {
     add_tile((Tile*) entity);
   }
@@ -576,9 +593,9 @@ void MapEntities::remove_marked_entities() {
     if (entity->can_be_obstacle()) {
 
       if (entity->has_layer_independent_collisions()) {
-	for (int i = 0; i < LAYER_NB; i++) {
-	  obstacle_entities[i].remove(entity);
-	}
+        for (int i = 0; i < LAYER_NB; i++) {
+          obstacle_entities[i].remove(entity);
+        }
       }
       else {
         obstacle_entities[layer].remove(entity);
@@ -602,7 +619,7 @@ void MapEntities::remove_marked_entities() {
     all_entities.remove(entity);
 
     // destroy it
-    delete entity;
+    destroy_entity(entity);
   }
   entities_to_remove.clear();
 }

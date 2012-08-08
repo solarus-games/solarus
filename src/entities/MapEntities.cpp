@@ -23,6 +23,7 @@
 #include "entities/Obstacle.h"
 #include "entities/CrystalBlock.h"
 #include "entities/Boomerang.h"
+#include "lua/LuaContext.h"
 #include "Map.h"
 #include "Game.h"
 #include "lowlevel/Surface.h"
@@ -468,8 +469,6 @@ void MapEntities::add_entity(MapEntity *entity) {
     return;
   }
 
-  entity->increment_refcount();
-
   if (entity->get_type() == TILE) {
     add_tile((Tile*) entity);
   }
@@ -526,6 +525,11 @@ void MapEntities::add_entity(MapEntity *entity) {
     // update the list of all entities
     all_entities.push_back(entity);
   }
+
+  // make Lua aware of this entity
+  LuaContext& lua_context = map.get_lua_context();
+  lua_context.set_created(entity);
+  lua_context.increment_refcount(entity);
 
   // notify the entity
   entity->set_map(map);

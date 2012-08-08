@@ -247,18 +247,20 @@ bool Map::is_loaded() {
  */
 void Map::unload() {
 
-  delete tileset;
-  tileset = NULL;
-  delete visible_surface;
-  visible_surface = NULL;
-  delete entities;
-  entities = NULL;
-  delete camera;
-  camera = NULL;
+  if (is_loaded()) {
+    delete tileset;
+    tileset = NULL;
+    delete visible_surface;
+    visible_surface = NULL;
+    delete entities;
+    entities = NULL;
+    delete camera;
+    camera = NULL;
 
-  for (int i = 0; i < 4; i++) {
-    delete dark_surfaces[i];
-    dark_surfaces[i] = NULL;
+    for (int i = 0; i < 4; i++) {
+      delete dark_surfaces[i];
+      dark_surfaces[i] = NULL;
+    }
   }
 }
 

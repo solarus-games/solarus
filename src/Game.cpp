@@ -95,9 +95,15 @@ Game::~Game() {
     // No one is using the savegame anymore (especially not Lua).
     delete savegame;
   }
+
+  current_map->unload();
+  current_map->decrement_refcount();
+  if (current_map->get_refcount() == 0) {
+    delete current_map;
+  }
+
   Music::play(Music::none);
 
-  delete current_map;
   delete transition;
   delete dialog_box;
   delete pause_menu;
@@ -368,7 +374,11 @@ void Game::update_transitions() {
         // set the next map
         load_dungeon();
         current_map->unload();
-        delete current_map;
+        current_map->decrement_refcount();
+        if (current_map->get_refcount() == 0) {
+          delete current_map;
+        }
+
         current_map = next_map;
         next_map = NULL;
       }
@@ -517,6 +527,8 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
   if (current_map == NULL || map_id != current_map->get_id()) {
     // another map
     next_map = new Map(map_id);
+    get_lua_context().set_created(next_map);
+    get_lua_context().increment_refcount(next_map);
     next_map->load(*this);
     next_map->check_suspended();
   }

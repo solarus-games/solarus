@@ -87,6 +87,7 @@ class MapEntities {
     Boomerang *boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
     std::string music_before_miniboss;              /**< the music that was played before starting a miniboss fight */
 
+    void add_tile(Tile *tile);
     void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
     void build_non_animated_tiles();
     bool overlaps_animated_tile(Tile& tile);
@@ -113,7 +114,6 @@ class MapEntities {
     std::list<MapEntity*> get_entities_with_prefix(EntityType type, const std::string &prefix);
 
     // handle entities
-    void add_tile(Tile *tile);
     void add_entity(MapEntity *entity);
     void remove_entity(MapEntity *entity);
     void remove_entity(EntityType type, const std::string &name);

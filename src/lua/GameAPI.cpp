@@ -863,9 +863,6 @@ void LuaContext::game_on_update(Game& game) {
  */
 void LuaContext::game_on_started(Game& game) {
 
-  set_current_screen(NULL);
-  set_current_game(&game);
-
   push_game(l, game.get_savegame());
   on_started();
   lua_pop(l, 1);

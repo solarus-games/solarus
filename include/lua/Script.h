@@ -70,7 +70,9 @@ class Script {
 
     MainLoop& get_main_loop();
     Game* get_current_game();
+    void set_current_game(Game* current_game);
     CustomScreen* get_current_screen();
+    void set_current_screen(CustomScreen* current_screen);
 
     // main loop
     virtual void update();
@@ -101,9 +103,6 @@ class Script {
     lua_State* l;                        /**< the execution context of the Lua script */
 
     Script(MainLoop& main_loop);
-
-    void set_current_game(Game* current_game);
-    void set_current_screen(CustomScreen* current_screen);
 
     // Helper functions.
     void initialize();

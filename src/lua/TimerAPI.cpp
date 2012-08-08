@@ -93,7 +93,15 @@ void Script::push_timer(lua_State* l, Timer& timer) {
  */
 void Script::add_timer(Timer* timer, int context_index, int callback_index) {
 
-  const void* context = lua_topointer(l, context_index);
+  const void* context;
+  if (lua_type(l, context_index) == LUA_TUSERDATA) {
+    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    context = *userdata;
+  }
+  else {
+    context = lua_topointer(l, context_index);
+  }
+
   lua_pushvalue(l, callback_index);
   int callback_ref = create_ref();
   lua_pop(l, 1);
@@ -132,7 +140,15 @@ void Script::remove_timers(int context_index) {
 
   std::list<Timer*> timers_to_remove;
 
-  const void* context = lua_topointer(l, context_index);
+  const void* context;
+  if (lua_type(l, context_index) == LUA_TUSERDATA) {
+    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    context = *userdata;
+  }
+  else {
+    context = lua_topointer(l, context_index);
+  }
+
   std::map<Timer*, LuaTimerData>::iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
     Timer* timer = it->first;

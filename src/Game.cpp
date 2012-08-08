@@ -71,6 +71,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   get_savegame().increment_refcount();
   get_savegame().set_game(this);
   get_main_loop().get_debug_keys().set_game(this);
+  get_lua_context().set_current_game(this);
 
   // initialize members
   controls = new GameControls(*this);

@@ -21,6 +21,7 @@
 #include "InventoryItem.h"
 #include "EquipmentItem.h"
 #include "Map.h"
+#include "lua/Script.h"
 #include "lowlevel/System.h"
 #include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
@@ -31,17 +32,22 @@
  * @brief Constructor.
  * @param savegame the savegame to encapsulate
  */
-Equipment::Equipment(Savegame &savegame):
+Equipment::Equipment(Savegame& savegame):
   savegame(savegame),
   suspended(true),
   magic_decrease_delay(0) {
+
+  Script* lua_context = savegame.get_creator_script();
 
   // load the equipment specification from items.dat
   IniFile ini("items.dat", IniFile::READ);
   ini.start_group_iteration();
   while (ini.has_more_groups()) {
 
-    items[ini.get_group()] = new EquipmentItem(*this, ini);
+    EquipmentItem* item = new EquipmentItem(*this, ini);
+    lua_context->set_created(item);
+    lua_context->increment_refcount(item);
+    items[ini.get_group()] = item;
     ini.next_group();
   }
 }
@@ -53,7 +59,11 @@ Equipment::~Equipment() {
 
   std::map<std::string, EquipmentItem*>::const_iterator it;
   for (it = items.begin(); it != items.end(); it++) {
-    delete it->second;
+    EquipmentItem* item = it->second;
+    item->decrement_refcount();
+    if (item->get_refcount() == 0) {
+      delete item;
+    }
   }
 }
 

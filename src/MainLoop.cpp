@@ -137,6 +137,7 @@ void MainLoop::start_game(const std::string& savegame_file) {
 
   if (FileTools::data_file_exists(savegame_file)) {
     Savegame* savegame = new Savegame(savegame_file);
+    get_lua_context().set_created(savegame);  // The savegame belongs to Lua.
     Game* game = new Game(*this, savegame);
     set_next_screen(game);
   }

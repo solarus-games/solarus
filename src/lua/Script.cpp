@@ -525,9 +525,9 @@ void Script::push_userdata(lua_State* l, ExportableToLua& userdata) {
 
   script.increment_refcount(&userdata);
                                   // ...
-  ExportableToLua** block_adress =
+  ExportableToLua** block_address =
     (ExportableToLua**) lua_newuserdata(l, sizeof(ExportableToLua*));
-  *block_adress = &userdata;
+  *block_address = &userdata;
                                   // ... userdata
   luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
                                   // ... userdata mt

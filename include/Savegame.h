@@ -31,8 +31,7 @@ class Savegame: public ExportableToLua {
   public:
 
     // creation and destruction
-    Savegame(const std::string& file_name);
-    Savegame(const Savegame& other);
+    Savegame(LuaContext& lua_context, const std::string& file_name);
     ~Savegame();
 
     // file state

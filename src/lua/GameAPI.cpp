@@ -146,10 +146,10 @@ int Script::game_api_delete(lua_State* l) {
  */
 int Script::game_api_load(lua_State* l) {
 
+  LuaContext& lua_context = (LuaContext&) get_script(l);
   const std::string& file_name = luaL_checkstring(l, 1);
 
-  Savegame* savegame = new Savegame(file_name);
-  get_script(l).set_created(savegame);  // The savegame belongs to Lua.
+  Savegame* savegame = new Savegame(lua_context, file_name);
 
   push_game(l, *savegame);
   return 1;

@@ -82,6 +82,7 @@ EquipmentItem& Script::check_item(lua_State* l, int index) {
  * @param item An item.
  */
 void Script::push_item(lua_State* l, EquipmentItem& item) {
+
   push_userdata(l, item);
 }
 

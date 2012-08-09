@@ -49,7 +49,7 @@ class Equipment {
   public:
 
     // creation and destruction
-    Equipment(Savegame &savegame);
+    Equipment(LuaContext& lua_context, Savegame &savegame);
     ~Equipment();
 
     Savegame& get_savegame();

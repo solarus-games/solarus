@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Savegame.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/IniFile.h"
@@ -24,13 +24,17 @@
 
 /**
  * @brief Creates a savegame with a specified file name, existing or not.
- * @param file_name name of the savegame file (can be a new file), relative to the savegames directory
+ * @param lua_context The Lua state.
+ * @param file_name Name of the savegame file (can be a new file),
+ * relative to the savegames directory.
  */
-Savegame::Savegame(const std::string &file_name):
+Savegame::Savegame(LuaContext& lua_context, const std::string &file_name):
   ExportableToLua(),
   file_name(file_name),
-  equipment(*this),
+  equipment(lua_context, *this),
   game(NULL) {
+
+  lua_context.set_created(this);  // The savegame belongs to Lua.
 
   if (!FileTools::data_file_exists(file_name)) {
     // this save does not exist yet
@@ -62,20 +66,6 @@ Savegame::Savegame(const std::string &file_name):
       check_game_controls();
     }
   }
-}
-
-/**
- * @brief Creates a savegame by copying an existing one, even if
- * it is not saved in its current state.
- * @param other the savegame to copy
- */
-Savegame::Savegame(const Savegame &other):
-  ExportableToLua(),
-  empty(other.empty),
-  file_name(other.file_name),
-  saved_data(other.saved_data),
-  equipment(*this) {
-
 }
 
 /**

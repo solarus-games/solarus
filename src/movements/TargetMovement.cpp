@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/TargetMovement.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
@@ -192,6 +192,6 @@ bool TargetMovement::is_finished() {
  * @return the name identifying this type in Lua
  */
 const std::string& TargetMovement::get_lua_type_name() const {
-  return Script::target_movement_module_name;
+  return LuaContext::target_movement_module_name;
 }
 

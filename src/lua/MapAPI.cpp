@@ -40,12 +40,12 @@
 #include "lowlevel/Sound.h"
 #include <lua.hpp>
 
-const std::string Script::map_module_name = "sol.map";
+const std::string LuaContext::map_module_name = "sol.map";
 
 /**
  * @brief Initializes the map features provided to Lua.
  */
-void Script::register_map_module() {
+void LuaContext::register_map_module() {
 
   static const luaL_Reg methods[] = {
       { "get_game", map_api_get_game },
@@ -179,7 +179,7 @@ void Script::register_map_module() {
  * @param index An index in the stack.
  * @return The map.
  */
-Map& Script::check_map(lua_State* l, int index) {
+Map& LuaContext::check_map(lua_State* l, int index) {
   return static_cast<Map&>(check_userdata(l, index, map_module_name));
 }
 
@@ -188,23 +188,9 @@ Map& Script::check_map(lua_State* l, int index) {
  * @param l A Lua context.
  * @param game A game.
  */
-void Script::push_map(lua_State* l, Map& map) {
+void LuaContext::push_map(lua_State* l, Map& map) {
 
   push_userdata(l, map);
-}
-
-/**
- * @brief Notifies the Lua context that the sequence started by a call to
- * map:camera_move() has reached the target.
- */
-void LuaContext::notify_camera_reached_target(Map& map) {
-
-  // Set a timer to execute the function.
-  lua_settop(l, 0);
-  push_map(l, map);
-  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
-  lua_pushcfunction(l, l_camera_do_callback);
-  timer_api_start(l);
 }
 
 /**
@@ -219,7 +205,7 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
   call_function(l, 0, 0, "camera callback");
 
   // Set a second timer to restore the camera.
-  Map& map = get_script(l).get_current_game()->get_current_map();
+  Map& map = get_lua_context(l).get_current_game()->get_current_map();
   push_map(l, map);
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
   lua_pushcfunction(l, l_camera_restore);
@@ -234,9 +220,9 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
  */
 int LuaContext::l_camera_restore(lua_State* l) {
 
-  Script& script = get_script(l);
+  LuaContext& lua_context = get_lua_context(l);
 
-  script.get_current_game()->get_current_map().restore_camera();
+  lua_context.get_current_game()->get_current_map().restore_camera();
 
   return 0;
 }
@@ -246,7 +232,7 @@ int LuaContext::l_camera_restore(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_get_game(lua_State* l) {
+int LuaContext::map_api_get_game(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -260,7 +246,7 @@ int Script::map_api_get_game(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_dialog_start(lua_State* l) {
+int LuaContext::map_api_dialog_start(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& dialog_id = luaL_checkstring(l, 2);
@@ -280,7 +266,7 @@ int Script::map_api_dialog_start(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_dialog_set_variable(lua_State* l) {
+int LuaContext::map_api_dialog_set_variable(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& dialog_id = luaL_checkstring(l, 2);
@@ -296,7 +282,7 @@ int Script::map_api_dialog_set_variable(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_dialog_set_style(lua_State* l) {
+int LuaContext::map_api_dialog_set_style(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int style = luaL_checkinteger(l, 2);
@@ -311,7 +297,7 @@ int Script::map_api_dialog_set_style(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hud_set_enabled(lua_State* l) {
+int LuaContext::map_api_hud_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   bool enabled = lua_toboolean(l, 2) != 0;
@@ -325,7 +311,7 @@ int Script::map_api_hud_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hud_set_pause_enabled(lua_State* l) {
+int LuaContext::map_api_hud_set_pause_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   bool pause_key_available = lua_toboolean(l, 2) != 0;
@@ -340,7 +326,7 @@ int Script::map_api_hud_set_pause_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_light_get(lua_State* l) {
+int LuaContext::map_api_light_get(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -355,7 +341,7 @@ int Script::map_api_light_get(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_light_set(lua_State* l) {
+int LuaContext::map_api_light_set(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int light = luaL_checkinteger(l, 2);
@@ -370,7 +356,7 @@ int Script::map_api_light_set(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_camera_move(lua_State* l) {
+int LuaContext::map_api_camera_move(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -407,7 +393,7 @@ int Script::map_api_camera_move(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_treasure_give(lua_State* l) {
+int LuaContext::map_api_treasure_give(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string &item_name = luaL_checkstring(l, 2);
@@ -425,7 +411,7 @@ int Script::map_api_treasure_give(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_sprite_display(lua_State* l) {
+int LuaContext::map_api_sprite_display(lua_State* l) {
 
   Map& map = check_map(l, 1);
   Sprite& sprite = check_sprite(l, 2);
@@ -442,7 +428,7 @@ int Script::map_api_sprite_display(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_tileset_get(lua_State* l) {
+int LuaContext::map_api_tileset_get(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -457,7 +443,7 @@ int Script::map_api_tileset_get(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_tileset_set(lua_State* l) {
+int LuaContext::map_api_tileset_set(lua_State* l) {
 
   Map& map = check_map(l, 1);
   TilesetId id = luaL_checkinteger(l, 1);
@@ -472,7 +458,7 @@ int Script::map_api_tileset_set(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_freeze(lua_State* l) {
+int LuaContext::map_api_hero_freeze(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -486,7 +472,7 @@ int Script::map_api_hero_freeze(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_unfreeze(lua_State* l) {
+int LuaContext::map_api_hero_unfreeze(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -500,7 +486,7 @@ int Script::map_api_hero_unfreeze(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_set_map(lua_State* l) {
+int LuaContext::map_api_hero_set_map(lua_State* l) {
 
   Map& map = check_map(l, 1);
   MapId map_id = luaL_checkinteger(l, 2);
@@ -517,7 +503,7 @@ int Script::map_api_hero_set_map(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_set_visible(lua_State* l) {
+int LuaContext::map_api_hero_set_visible(lua_State* l) {
 
   Map& map = check_map(l, 1);
   bool visible = lua_toboolean(l, 2) != 0;
@@ -532,7 +518,7 @@ int Script::map_api_hero_set_visible(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_get_direction(lua_State* l) {
+int LuaContext::map_api_hero_get_direction(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -547,7 +533,7 @@ int Script::map_api_hero_get_direction(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_set_direction(lua_State* l) {
+int LuaContext::map_api_hero_set_direction(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int direction = luaL_checkinteger(l, 2);
@@ -562,7 +548,7 @@ int Script::map_api_hero_set_direction(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_get_position(lua_State* l) {
+int LuaContext::map_api_hero_get_position(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -579,7 +565,7 @@ int Script::map_api_hero_get_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_set_position(lua_State* l) {
+int LuaContext::map_api_hero_set_position(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -604,7 +590,7 @@ int Script::map_api_hero_set_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_align_on_sensor(lua_State* l) {
+int LuaContext::map_api_hero_align_on_sensor(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -621,7 +607,7 @@ int Script::map_api_hero_align_on_sensor(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_save_solid_ground(lua_State* l) {
+int LuaContext::map_api_hero_save_solid_ground(lua_State* l) {
 
   Map& map = check_map(l, 1);
   Hero& hero = map.get_entities().get_hero();
@@ -648,7 +634,7 @@ int Script::map_api_hero_save_solid_ground(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_reset_solid_ground(lua_State* l) {
+int LuaContext::map_api_hero_reset_solid_ground(lua_State* l) {
 
   Map& map = check_map(l, 1);
   Hero& hero = map.get_entities().get_hero();
@@ -663,7 +649,7 @@ int Script::map_api_hero_reset_solid_ground(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_walk(lua_State* l) {
+int LuaContext::map_api_hero_walk(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& path = luaL_checkstring(l, 2);
@@ -680,7 +666,7 @@ int Script::map_api_hero_walk(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_start_jumping(lua_State* l) {
+int LuaContext::map_api_hero_start_jumping(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int direction = luaL_checkinteger(l, 2);
@@ -698,7 +684,7 @@ int Script::map_api_hero_start_jumping(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_start_victory_sequence(lua_State* l) {
+int LuaContext::map_api_hero_start_victory_sequence(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -712,7 +698,7 @@ int Script::map_api_hero_start_victory_sequence(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_start_boomerang(lua_State* l) {
+int LuaContext::map_api_hero_start_boomerang(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int max_distance = luaL_checkinteger(l, 2);
@@ -731,7 +717,7 @@ int Script::map_api_hero_start_boomerang(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_start_bow(lua_State* l) {
+int LuaContext::map_api_hero_start_bow(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -745,7 +731,7 @@ int Script::map_api_hero_start_bow(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_start_hookshot(lua_State* l) {
+int LuaContext::map_api_hero_start_hookshot(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -759,7 +745,7 @@ int Script::map_api_hero_start_hookshot(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_start_running(lua_State* l) {
+int LuaContext::map_api_hero_start_running(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -773,7 +759,7 @@ int Script::map_api_hero_start_running(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_hero_start_hurt(lua_State* l) {
+int LuaContext::map_api_hero_start_hurt(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int source_x = luaL_checkinteger(l, 2);
@@ -792,7 +778,7 @@ int Script::map_api_hero_start_hurt(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_npc_is_enabled(lua_State* l) {
+int LuaContext::map_api_npc_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -809,7 +795,7 @@ int Script::map_api_npc_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_npc_set_enabled(lua_State* l) {
+int LuaContext::map_api_npc_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -827,7 +813,7 @@ int Script::map_api_npc_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_npc_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_npc_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -849,7 +835,7 @@ int Script::map_api_npc_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_npc_get_position(lua_State* l) {
+int LuaContext::map_api_npc_get_position(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -868,7 +854,7 @@ int Script::map_api_npc_get_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_npc_set_position(lua_State* l) {
+int LuaContext::map_api_npc_set_position(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -895,7 +881,7 @@ int Script::map_api_npc_set_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_npc_start_movement(lua_State* l) {
+int LuaContext::map_api_npc_start_movement(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -904,7 +890,7 @@ int Script::map_api_npc_start_movement(lua_State* l) {
   MapEntities& entities = map.get_entities();
   NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
 
-  get_script(l).increment_refcount(&movement);
+  get_lua_context(l).increment_refcount(&movement);
   movement.set_suspended(false);
   npc->clear_movement();
   npc->set_movement(&movement);
@@ -917,7 +903,7 @@ int Script::map_api_npc_start_movement(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_npc_stop_movement(lua_State* l) {
+int LuaContext::map_api_npc_stop_movement(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -934,7 +920,7 @@ int Script::map_api_npc_stop_movement(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_npc_get_sprite(lua_State* l) {
+int LuaContext::map_api_npc_get_sprite(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& entity_name = luaL_checkstring(l, 2);
@@ -951,7 +937,7 @@ int Script::map_api_npc_get_sprite(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_npc_remove(lua_State* l) {
+int LuaContext::map_api_npc_remove(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -967,7 +953,7 @@ int Script::map_api_npc_remove(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_npc_exists(lua_State* l) {
+int LuaContext::map_api_npc_exists(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -984,7 +970,7 @@ int Script::map_api_npc_exists(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_chest_is_open(lua_State* l) {
+int LuaContext::map_api_chest_is_open(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1001,7 +987,7 @@ int Script::map_api_chest_is_open(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_chest_set_open(lua_State* l) {
+int LuaContext::map_api_chest_set_open(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string &name = luaL_checkstring(l, 2);
@@ -1019,7 +1005,7 @@ int Script::map_api_chest_set_open(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_chest_is_enabled(lua_State* l) {
+int LuaContext::map_api_chest_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1036,7 +1022,7 @@ int Script::map_api_chest_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_chest_set_enabled(lua_State* l) {
+int LuaContext::map_api_chest_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1054,7 +1040,7 @@ int Script::map_api_chest_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_chest_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_chest_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1076,7 +1062,7 @@ int Script::map_api_chest_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_tile_is_enabled(lua_State* l) {
+int LuaContext::map_api_tile_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1093,7 +1079,7 @@ int Script::map_api_tile_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_tile_set_enabled(lua_State* l) {
+int LuaContext::map_api_tile_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1111,7 +1097,7 @@ int Script::map_api_tile_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_tile_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_tile_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1133,7 +1119,7 @@ int Script::map_api_tile_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_stairs_is_enabled(lua_State* l) {
+int LuaContext::map_api_stairs_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1150,7 +1136,7 @@ int Script::map_api_stairs_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_stairs_set_enabled(lua_State* l) {
+int LuaContext::map_api_stairs_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1168,7 +1154,7 @@ int Script::map_api_stairs_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_stairs_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_stairs_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1190,7 +1176,7 @@ int Script::map_api_stairs_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_obstacle_is_enabled(lua_State* l) {
+int LuaContext::map_api_obstacle_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1207,7 +1193,7 @@ int Script::map_api_obstacle_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_obstacle_set_enabled(lua_State* l) {
+int LuaContext::map_api_obstacle_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1225,7 +1211,7 @@ int Script::map_api_obstacle_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_obstacle_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_obstacle_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1247,7 +1233,7 @@ int Script::map_api_obstacle_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_sensor_is_enabled(lua_State* l) {
+int LuaContext::map_api_sensor_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1264,7 +1250,7 @@ int Script::map_api_sensor_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_sensor_set_enabled(lua_State* l) {
+int LuaContext::map_api_sensor_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string &name = luaL_checkstring(l, 2);
@@ -1282,7 +1268,7 @@ int Script::map_api_sensor_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_sensor_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_sensor_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1304,7 +1290,7 @@ int Script::map_api_sensor_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_jumper_is_enabled(lua_State* l) {
+int LuaContext::map_api_jumper_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1321,7 +1307,7 @@ int Script::map_api_jumper_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_jumper_set_enabled(lua_State* l) {
+int LuaContext::map_api_jumper_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1339,7 +1325,7 @@ int Script::map_api_jumper_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_jumper_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_jumper_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1361,7 +1347,7 @@ int Script::map_api_jumper_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_crystal_is_enabled(lua_State* l) {
+int LuaContext::map_api_crystal_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1378,7 +1364,7 @@ int Script::map_api_crystal_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_crystal_set_enabled(lua_State* l) {
+int LuaContext::map_api_crystal_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1396,7 +1382,7 @@ int Script::map_api_crystal_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_crystal_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_crystal_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1418,7 +1404,7 @@ int Script::map_api_crystal_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_crystal_get_state(lua_State* l) {
+int LuaContext::map_api_crystal_get_state(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -1431,7 +1417,7 @@ int Script::map_api_crystal_get_state(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_crystal_set_state(lua_State* l) {
+int LuaContext::map_api_crystal_set_state(lua_State* l) {
 
   Map& map = check_map(l, 1);
   bool state = lua_toboolean(l, 2);
@@ -1449,7 +1435,7 @@ int Script::map_api_crystal_set_state(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_crystal_change_state(lua_State* l) {
+int LuaContext::map_api_crystal_change_state(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -1463,7 +1449,7 @@ int Script::map_api_crystal_change_state(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_teletransporter_is_enabled(lua_State* l) {
+int LuaContext::map_api_teletransporter_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1480,7 +1466,7 @@ int Script::map_api_teletransporter_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_teletransporter_set_enabled(lua_State* l) {
+int LuaContext::map_api_teletransporter_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1498,7 +1484,7 @@ int Script::map_api_teletransporter_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_teletransporter_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_teletransporter_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1520,7 +1506,7 @@ int Script::map_api_teletransporter_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_block_is_enabled(lua_State* l) {
+int LuaContext::map_api_block_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1537,7 +1523,7 @@ int Script::map_api_block_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_block_set_enabled(lua_State* l) {
+int LuaContext::map_api_block_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1555,7 +1541,7 @@ int Script::map_api_block_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_block_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_block_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1577,7 +1563,7 @@ int Script::map_api_block_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_block_reset(lua_State* l) {
+int LuaContext::map_api_block_reset(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1594,7 +1580,7 @@ int Script::map_api_block_reset(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_block_reset_all(lua_State* l) {
+int LuaContext::map_api_block_reset_all(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -1613,7 +1599,7 @@ int Script::map_api_block_reset_all(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_block_get_position(lua_State* l) {
+int LuaContext::map_api_block_get_position(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1633,7 +1619,7 @@ int Script::map_api_block_get_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_block_set_position(lua_State* l) {
+int LuaContext::map_api_block_set_position(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1662,7 +1648,7 @@ int Script::map_api_block_set_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_shop_item_exists(lua_State* l) {
+int LuaContext::map_api_shop_item_exists(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1678,7 +1664,7 @@ int Script::map_api_shop_item_exists(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_shop_item_remove(lua_State* l) {
+int LuaContext::map_api_shop_item_remove(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1697,7 +1683,7 @@ int Script::map_api_shop_item_remove(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_switch_is_activated(lua_State* l) {
+int LuaContext::map_api_switch_is_activated(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string &name = luaL_checkstring(l, 2);
@@ -1714,7 +1700,7 @@ int Script::map_api_switch_is_activated(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_switch_set_activated(lua_State* l) {
+int LuaContext::map_api_switch_set_activated(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1732,7 +1718,7 @@ int Script::map_api_switch_set_activated(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_switch_set_locked(lua_State* l) {
+int LuaContext::map_api_switch_set_locked(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1750,7 +1736,7 @@ int Script::map_api_switch_set_locked(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_switch_is_enabled(lua_State* l) {
+int LuaContext::map_api_switch_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1767,7 +1753,7 @@ int Script::map_api_switch_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_switch_set_enabled(lua_State* l) {
+int LuaContext::map_api_switch_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1785,7 +1771,7 @@ int Script::map_api_switch_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_switch_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_switch_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1807,7 +1793,7 @@ int Script::map_api_switch_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_door_open(lua_State* l) {
+int LuaContext::map_api_door_open(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1838,7 +1824,7 @@ int Script::map_api_door_open(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_door_close(lua_State* l) {
+int LuaContext::map_api_door_close(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1869,7 +1855,7 @@ int Script::map_api_door_close(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_door_is_open(lua_State* l) {
+int LuaContext::map_api_door_is_open(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1886,7 +1872,7 @@ int Script::map_api_door_is_open(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_door_set_open(lua_State* l) {
+int LuaContext::map_api_door_set_open(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1908,7 +1894,7 @@ int Script::map_api_door_set_open(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_pickable_item_create(lua_State* l) {
+int LuaContext::map_api_pickable_item_create(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string &item_name = luaL_checkstring(l, 2);
@@ -1934,7 +1920,7 @@ int Script::map_api_pickable_item_create(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_destructible_item_create(lua_State* l) {
+int LuaContext::map_api_destructible_item_create(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& subtype_name = luaL_checkstring(l, 2);
@@ -1993,7 +1979,7 @@ int Script::map_api_destructible_item_create(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_block_create(lua_State* l) {
+int LuaContext::map_api_block_create(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -2049,7 +2035,7 @@ int Script::map_api_block_create(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_bomb_create(lua_State* l) {
+int LuaContext::map_api_bomb_create(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -2067,7 +2053,7 @@ int Script::map_api_bomb_create(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_explosion_create(lua_State* l) {
+int LuaContext::map_api_explosion_create(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -2085,7 +2071,7 @@ int Script::map_api_explosion_create(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_fire_create(lua_State* l) {
+int LuaContext::map_api_fire_create(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -2103,7 +2089,7 @@ int Script::map_api_fire_create(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_arrow_remove(lua_State* l) {
+int LuaContext::map_api_arrow_remove(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -2118,7 +2104,7 @@ int Script::map_api_arrow_remove(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_create(lua_State* l) {
+int LuaContext::map_api_enemy_create(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -2142,7 +2128,7 @@ int Script::map_api_enemy_create(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_remove(lua_State* l) {
+int LuaContext::map_api_enemy_remove(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -2158,7 +2144,7 @@ int Script::map_api_enemy_remove(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_remove_group(lua_State* l) {
+int LuaContext::map_api_enemy_remove_group(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -2174,7 +2160,7 @@ int Script::map_api_enemy_remove_group(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_is_enabled(lua_State* l) {
+int LuaContext::map_api_enemy_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -2191,7 +2177,7 @@ int Script::map_api_enemy_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_set_enabled(lua_State* l) {
+int LuaContext::map_api_enemy_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -2209,7 +2195,7 @@ int Script::map_api_enemy_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_enemy_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -2231,7 +2217,7 @@ int Script::map_api_enemy_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_is_dead(lua_State* l) {
+int LuaContext::map_api_enemy_is_dead(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -2248,7 +2234,7 @@ int Script::map_api_enemy_is_dead(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_is_group_dead(lua_State* l) {
+int LuaContext::map_api_enemy_is_group_dead(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -2265,7 +2251,7 @@ int Script::map_api_enemy_is_group_dead(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_get_group_count(lua_State* l) {
+int LuaContext::map_api_enemy_get_group_count(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -2282,7 +2268,7 @@ int Script::map_api_enemy_get_group_count(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_get_position(lua_State* l) {
+int LuaContext::map_api_enemy_get_position(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -2302,7 +2288,7 @@ int Script::map_api_enemy_get_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_set_position(lua_State* l) {
+int LuaContext::map_api_enemy_set_position(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -2330,7 +2316,7 @@ int Script::map_api_enemy_set_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_set_treasure(lua_State* l) {
+int LuaContext::map_api_enemy_set_treasure(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& enemy_name = luaL_checkstring(l, 2);
@@ -2351,7 +2337,7 @@ int Script::map_api_enemy_set_treasure(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_set_no_treasure(lua_State* l) {
+int LuaContext::map_api_enemy_set_no_treasure(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& enemy_name = luaL_checkstring(l, 2);
@@ -2369,7 +2355,7 @@ int Script::map_api_enemy_set_no_treasure(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_set_random_treasure(lua_State* l) {
+int LuaContext::map_api_enemy_set_random_treasure(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& enemy_name = luaL_checkstring(l, 2);
@@ -2387,7 +2373,7 @@ int Script::map_api_enemy_set_random_treasure(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::map_api_enemy_get_sprite(lua_State* l) {
+int LuaContext::map_api_enemy_get_sprite(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& enemy_name = luaL_checkstring(l, 2);

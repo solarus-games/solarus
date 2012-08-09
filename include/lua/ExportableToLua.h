@@ -46,8 +46,8 @@ class ExportableToLua {
     virtual ~ExportableToLua();
 
     // creator script
-    Script* get_creator_script() const;
-    void set_creator_script(Script* script);
+    LuaContext* get_creator_script() const;
+    void set_creator_script(LuaContext* lua_context);
     int get_refcount() const;
     void increment_refcount();
     void decrement_refcount();
@@ -60,10 +60,10 @@ class ExportableToLua {
 
   private:
 
-    Script* creator_script;  /**< the script that owns this object, or NULL */
-    int refcount;            /**< number of pointers to the object
-                              * including the Lua ones
-                              * (0 means that it can be deleted) */
+    LuaContext* creator_script;  /**< the script that owns this object, or NULL */
+    int refcount;                /**< number of pointers to the object
+                                  * including the Lua ones
+                                  * (0 means that it can be deleted) */
 };
 
 #endif

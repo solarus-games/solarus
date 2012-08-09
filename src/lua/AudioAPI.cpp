@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include <lua.hpp>
 
-const std::string Script::audio_module_name = "sol.audio";
+const std::string LuaContext::audio_module_name = "sol.audio";
 
 /**
  * @brief Initializes the audio features provided to Lua.
  */
-void Script::register_audio_module() {
+void LuaContext::register_audio_module() {
 
   static const luaL_Reg functions[] = {
       { "play_sound", audio_api_play_sound },
@@ -45,7 +45,7 @@ void Script::register_audio_module() {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::audio_api_play_sound(lua_State *l) {
+int LuaContext::audio_api_play_sound(lua_State *l) {
 
   const std::string& sound_id = luaL_checkstring(l, 1);
   Sound::play(sound_id);
@@ -57,7 +57,7 @@ int Script::audio_api_play_sound(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::audio_api_preload_sounds(lua_State *l) {
+int LuaContext::audio_api_preload_sounds(lua_State *l) {
 
   Sound::load_all();
   return 0;
@@ -69,7 +69,7 @@ int Script::audio_api_preload_sounds(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::audio_api_play_music(lua_State *l) {
+int LuaContext::audio_api_play_music(lua_State *l) {
 
   const std::string& music_id = luaL_checkstring(l, 1);
 
@@ -83,7 +83,7 @@ int Script::audio_api_play_music(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::audio_api_stop_music(lua_State* l) {
+int LuaContext::audio_api_stop_music(lua_State* l) {
 
   Music::play(Music::none);
 
@@ -95,7 +95,7 @@ int Script::audio_api_stop_music(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::audio_api_get_sound_volume(lua_State* l) {
+int LuaContext::audio_api_get_sound_volume(lua_State* l) {
 
   lua_pushinteger(l, Sound::get_volume());
   return 1;
@@ -106,7 +106,7 @@ int Script::audio_api_get_sound_volume(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::audio_api_set_sound_volume(lua_State* l) {
+int LuaContext::audio_api_set_sound_volume(lua_State* l) {
 
   int volume = luaL_checkinteger(l, 1);
 
@@ -120,7 +120,7 @@ int Script::audio_api_set_sound_volume(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::audio_api_get_music_volume(lua_State* l) {
+int LuaContext::audio_api_get_music_volume(lua_State* l) {
 
   lua_pushinteger(l, Music::get_volume());
   return 1;
@@ -131,7 +131,7 @@ int Script::audio_api_get_music_volume(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::audio_api_set_music_volume(lua_State* l) {
+int LuaContext::audio_api_set_music_volume(lua_State* l) {
 
   int volume = luaL_checkinteger(l, 1);
 

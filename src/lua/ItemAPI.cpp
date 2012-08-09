@@ -29,12 +29,12 @@
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
-const std::string Script::item_module_name = "sol.item";
+const std::string LuaContext::item_module_name = "sol.item";
 
 /**
  * @brief Initializes the item features provided to Lua.
  */
-void Script::register_item_module() {
+void LuaContext::register_item_module() {
 
   static const luaL_Reg methods[] = {
       { "get_game", item_api_get_game },
@@ -72,7 +72,7 @@ void Script::register_item_module() {
  * @param index An index in the stack.
  * @return The equipment item.
  */
-EquipmentItem& Script::check_item(lua_State* l, int index) {
+EquipmentItem& LuaContext::check_item(lua_State* l, int index) {
   return static_cast<EquipmentItem&>(check_userdata(l, index, item_module_name));
 }
 
@@ -81,7 +81,7 @@ EquipmentItem& Script::check_item(lua_State* l, int index) {
  * @param l A Lua context.
  * @param item An item.
  */
-void Script::push_item(lua_State* l, EquipmentItem& item) {
+void LuaContext::push_item(lua_State* l, EquipmentItem& item) {
 
   push_userdata(l, item);
 }
@@ -91,7 +91,7 @@ void Script::push_item(lua_State* l, EquipmentItem& item) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_get_game(lua_State* l) {
+int LuaContext::item_api_get_game(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
@@ -104,7 +104,7 @@ int Script::item_api_get_game(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_get_map(lua_State* l) {
+int LuaContext::item_api_get_map(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
@@ -123,7 +123,7 @@ int Script::item_api_get_map(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_get_variant(lua_State* l) {
+int LuaContext::item_api_get_variant(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
@@ -136,7 +136,7 @@ int Script::item_api_get_variant(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_set_variant(lua_State* l) {
+int LuaContext::item_api_set_variant(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
   int variant = luaL_checkinteger(l, 2);
@@ -151,7 +151,7 @@ int Script::item_api_set_variant(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_get_amount(lua_State* l) {
+int LuaContext::item_api_get_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
@@ -164,7 +164,7 @@ int Script::item_api_get_amount(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_set_amount(lua_State* l) {
+int LuaContext::item_api_set_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
   int amount = luaL_checkinteger(l, 2);
@@ -178,7 +178,7 @@ int Script::item_api_set_amount(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_add_amount(lua_State* l) {
+int LuaContext::item_api_add_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
   int amount = luaL_checkinteger(l, 2);
@@ -193,7 +193,7 @@ int Script::item_api_add_amount(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_remove_amount(lua_State* l) {
+int LuaContext::item_api_remove_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
   int amount = luaL_checkinteger(l, 2);
@@ -208,7 +208,7 @@ int Script::item_api_remove_amount(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_get_sprite(lua_State* l) {
+int LuaContext::item_api_get_sprite(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
@@ -225,7 +225,7 @@ int Script::item_api_get_sprite(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_get_movement(lua_State* l) {
+int LuaContext::item_api_get_movement(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
@@ -244,7 +244,7 @@ int Script::item_api_get_movement(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_start_movement(lua_State* l) {
+int LuaContext::item_api_start_movement(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
   Movement& movement = check_movement(l, 2);
@@ -253,7 +253,7 @@ int Script::item_api_start_movement(lua_State* l) {
   PickableItem* pickable_item = item.get_pickable_item();
   Debug::check_assertion(pickable_item != NULL,
                 "Cannot call item:start_movement(): there is no current pickable item");
-  get_script(l).increment_refcount(&movement);
+  get_lua_context(l).increment_refcount(&movement);
   pickable_item->clear_movement();
   pickable_item->set_movement(&movement);
 
@@ -265,7 +265,7 @@ int Script::item_api_start_movement(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_is_following_entity(lua_State* l) {
+int LuaContext::item_api_is_following_entity(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
@@ -283,7 +283,7 @@ int Script::item_api_is_following_entity(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_get_position(lua_State* l) {
+int LuaContext::item_api_get_position(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
@@ -303,7 +303,7 @@ int Script::item_api_get_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_set_position(lua_State* l) {
+int LuaContext::item_api_set_position(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -330,7 +330,7 @@ int Script::item_api_set_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_set_layer_independent_collisions(lua_State* l) {
+int LuaContext::item_api_set_layer_independent_collisions(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
   bool independent = lua_toboolean(l, 2) != 0;
@@ -348,7 +348,7 @@ int Script::item_api_set_layer_independent_collisions(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::item_api_set_finished(lua_State* l) {
+int LuaContext::item_api_set_finished(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 

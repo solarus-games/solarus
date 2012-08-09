@@ -100,7 +100,6 @@ class DialogBox;
 // Lua
 class ExportableToLua;
 class LuaContext;
-class Script;
 
 // HUD
 class HUD;

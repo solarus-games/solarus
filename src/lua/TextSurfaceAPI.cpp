@@ -15,12 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include <lua.hpp>
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/StringConcat.h"
 #include "StringResource.h"
 
-const std::string Script::text_surface_module_name = "sol.text_surface";
+const std::string LuaContext::text_surface_module_name = "sol.text_surface";
 
 static const char* rendering_mode_names[] = {
     "solid", "antialiasing", NULL
@@ -37,7 +37,7 @@ static const char* vertical_alignment_names[] = {
 /**
  * @brief Initializes the text surface features provided to Lua.
  */
-void Script::register_text_surface_module() {
+void LuaContext::register_text_surface_module() {
 
   static const luaL_Reg methods[] = {
       { "create", text_surface_api_create },
@@ -77,7 +77,7 @@ void Script::register_text_surface_module() {
  * @param index an index in the stack
  * @return the text surface
  */
-TextSurface& Script::check_text_surface(lua_State* l, int index) {
+TextSurface& LuaContext::check_text_surface(lua_State* l, int index) {
   return static_cast<TextSurface&>(
       check_userdata(l, index, text_surface_module_name));
 }
@@ -87,7 +87,7 @@ TextSurface& Script::check_text_surface(lua_State* l, int index) {
  * @param l a Lua context
  * @param text_surface a text surface
  */
-void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {
+void LuaContext::push_text_surface(lua_State* l, TextSurface& text_surface) {
   push_userdata(l, text_surface);
 }
 
@@ -96,7 +96,7 @@ void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::text_surface_api_create(lua_State* l) {
+int LuaContext::text_surface_api_create(lua_State* l) {
 
   TextSurface* text_surface = new TextSurface(0, 0);
 
@@ -145,7 +145,7 @@ int Script::text_surface_api_create(lua_State* l) {
       lua_pop(l, 1); // Pop the value, let the key for the iteration.
     }
   }
-  get_script(l).add_displayable(text_surface);
+  get_lua_context(l).add_displayable(text_surface);
 
   push_text_surface(l, *text_surface);
   return 1;
@@ -156,7 +156,7 @@ int Script::text_surface_api_create(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_get_horizontal_alignment(lua_State* l) {
+int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
 
@@ -171,7 +171,7 @@ int Script::text_surface_api_get_horizontal_alignment(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_set_horizontal_alignment(lua_State* l) {
+int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
   int align = luaL_checkoption(l, 1, NULL, horizontal_alignment_names);
@@ -186,7 +186,7 @@ int Script::text_surface_api_set_horizontal_alignment(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_get_vertical_alignment(lua_State* l) {
+int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
 
@@ -201,7 +201,7 @@ int Script::text_surface_api_get_vertical_alignment(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_set_vertical_alignment(lua_State* l) {
+int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
   int align = luaL_checkoption(l, 1, NULL, vertical_alignment_names);
@@ -216,7 +216,7 @@ int Script::text_surface_api_set_vertical_alignment(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_get_font(lua_State* l) {
+int LuaContext::text_surface_api_get_font(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
 
@@ -231,7 +231,7 @@ int Script::text_surface_api_get_font(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_set_font(lua_State* l) {
+int LuaContext::text_surface_api_set_font(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
   const std::string& font_id= luaL_checkstring(l, 2);
@@ -246,7 +246,7 @@ int Script::text_surface_api_set_font(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_get_rendering_mode(lua_State* l) {
+int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
 
@@ -261,7 +261,7 @@ int Script::text_surface_api_get_rendering_mode(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_set_rendering_mode(lua_State* l) {
+int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
   int mode = luaL_checkoption(l, 1, NULL, rendering_mode_names);
@@ -276,7 +276,7 @@ int Script::text_surface_api_set_rendering_mode(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_get_text_color(lua_State* l) {
+int LuaContext::text_surface_api_get_text_color(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
 
@@ -291,7 +291,7 @@ int Script::text_surface_api_get_text_color(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_set_text_color(lua_State* l) {
+int LuaContext::text_surface_api_set_text_color(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
   const Color& text_color = check_color(l, 2);
@@ -306,7 +306,7 @@ int Script::text_surface_api_set_text_color(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_get_text(lua_State* l) {
+int LuaContext::text_surface_api_get_text(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
 
@@ -321,7 +321,7 @@ int Script::text_surface_api_get_text(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_set_text(lua_State* l) {
+int LuaContext::text_surface_api_set_text(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
   const std::string& text = luaL_checkstring(l, 2);
@@ -336,7 +336,7 @@ int Script::text_surface_api_set_text(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_set_text_key(lua_State* l) {
+int LuaContext::text_surface_api_set_text_key(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
   const std::string& key = luaL_checkstring(l, 2);
@@ -351,7 +351,7 @@ int Script::text_surface_api_set_text_key(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::text_surface_api_get_size(lua_State* l) {
+int LuaContext::text_surface_api_get_size(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
 

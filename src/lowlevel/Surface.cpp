@@ -20,7 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "Transition.h"
 #include <SDL_image.h>
 
@@ -277,6 +277,6 @@ SDL_Surface* Surface::get_internal_surface() {
  * @return the name identifying this type in Lua
  */
 const std::string& Surface::get_lua_type_name() const {
-  return Script::surface_module_name;
+  return LuaContext::surface_module_name;
 }
 

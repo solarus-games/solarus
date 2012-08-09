@@ -40,7 +40,7 @@ ExportableToLua::~ExportableToLua() {
  * @brief Returns the script that created this object if any.
  * @return the creator script or NULL
  */
-Script* ExportableToLua::get_creator_script() const {
+LuaContext* ExportableToLua::get_creator_script() const {
   return creator_script;
 }
 
@@ -48,7 +48,7 @@ Script* ExportableToLua::get_creator_script() const {
  * @brief Sets the creator script of this object.
  * @param creator_script the owner script or NULL
  */
-void ExportableToLua::set_creator_script(Script* creator_script) {
+void ExportableToLua::set_creator_script(LuaContext* creator_script) {
 
   Debug::check_assertion(this->creator_script == NULL || creator_script == NULL,
       "This object is already marked as created by another a Lua script");

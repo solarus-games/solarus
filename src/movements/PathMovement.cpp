@@ -16,7 +16,7 @@
  */
 #include "movements/PathMovement.h"
 #include "entities/MapEntity.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
@@ -454,6 +454,6 @@ const std::string PathMovement::create_random_path() {
  * @return the name identifying this type in Lua
  */
 const std::string& PathMovement::get_lua_type_name() const {
-  return Script::path_movement_module_name;
+  return LuaContext::path_movement_module_name;
 }
 

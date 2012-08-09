@@ -54,8 +54,6 @@ class Movement: public ExportableToLua {
     bool default_ignore_obstacles;			/**< indicates that this movement normally ignores obstacles */
     bool current_ignore_obstacles;			/**< indicates that this movement currently ignores obstacles */
 
-    Script* creator_script;                             /**< the script that created this movement (if any) */
-
   protected:
 
     Movement(bool ignore_obstacles = false);

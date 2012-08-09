@@ -16,7 +16,7 @@
  */
 #include "movements/StraightMovement.h"
 #include "entities/MapEntity.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
@@ -667,6 +667,6 @@ void StraightMovement::update() {
  * @return the name identifying this type in Lua
  */
 const std::string& StraightMovement::get_lua_type_name() const {
-  return Script::straight_movement_module_name;
+  return LuaContext::straight_movement_module_name;
 }
 

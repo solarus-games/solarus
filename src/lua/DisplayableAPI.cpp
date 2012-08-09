@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "DynamicDisplayable.h"
 #include "TransitionFade.h"
 #include <lua.hpp>
@@ -30,7 +30,7 @@
  * @param index an index in the stack
  * @return the surface
  */
-DynamicDisplayable& Script::check_displayable(lua_State* l, int index) {
+DynamicDisplayable& LuaContext::check_displayable(lua_State* l, int index) {
 
   DynamicDisplayable** displayable = NULL;
 
@@ -50,7 +50,7 @@ DynamicDisplayable& Script::check_displayable(lua_State* l, int index) {
  * @brief Registers a displayable object created by this script.
  * @param displayable a displayable object
  */
-void Script::add_displayable(DynamicDisplayable* displayable) {
+void LuaContext::add_displayable(DynamicDisplayable* displayable) {
 
   set_created(displayable);
   displayables.insert(displayable);
@@ -60,7 +60,7 @@ void Script::add_displayable(DynamicDisplayable* displayable) {
  * @brief Unregisters a displayable object created by this script.
  * @param displayable a displayable object
  */
-void Script::remove_displayable(DynamicDisplayable* displayable) {
+void LuaContext::remove_displayable(DynamicDisplayable* displayable) {
 
   displayables.erase(displayable);
 }
@@ -68,7 +68,7 @@ void Script::remove_displayable(DynamicDisplayable* displayable) {
 /**
  * @brief Updates all displayable objects created by this script.
  */
-void Script::update_displayables() {
+void LuaContext::update_displayables() {
 
   std::set<DynamicDisplayable*>::iterator it;
   for (it = displayables.begin(); it != displayables.end(); it++) {
@@ -81,7 +81,7 @@ void Script::update_displayables() {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::displayable_api_draw(lua_State* l) {
+int LuaContext::displayable_api_draw(lua_State* l) {
 
   DynamicDisplayable& displayable = check_displayable(l, 1);
   Surface& dst_surface = check_surface(l, 2);
@@ -97,7 +97,7 @@ int Script::displayable_api_draw(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::displayable_api_fade_in(lua_State* l) {
+int LuaContext::displayable_api_fade_in(lua_State* l) {
 
   uint32_t delay = 20;
   int callback_ref = LUA_REFNIL;
@@ -131,7 +131,7 @@ int Script::displayable_api_fade_in(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::displayable_api_fade_out(lua_State* l) {
+int LuaContext::displayable_api_fade_out(lua_State* l) {
 
   uint32_t delay = 20;
   int callback_ref = LUA_REFNIL;
@@ -165,7 +165,7 @@ int Script::displayable_api_fade_out(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::displayable_api_start_movement(lua_State* l) {
+int LuaContext::displayable_api_start_movement(lua_State* l) {
 
   DynamicDisplayable& displayable = check_displayable(l, 1);
   Movement& movement = check_movement(l, 2);
@@ -190,7 +190,7 @@ int Script::displayable_api_start_movement(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::displayable_api_stop_movement(lua_State* l) {
+int LuaContext::displayable_api_stop_movement(lua_State* l) {
 
   DynamicDisplayable& displayable = check_displayable(l, 1);
 
@@ -204,14 +204,14 @@ int Script::displayable_api_stop_movement(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::displayable_meta_gc(lua_State* l) {
+int LuaContext::displayable_meta_gc(lua_State* l) {
 
-  Script& script = get_script(l);
+  LuaContext& lua_context = get_lua_context(l);
   DynamicDisplayable& displayable = check_displayable(l, 1);
 
-  if (script.has_created(&displayable)) {
+  if (lua_context.has_created(&displayable)) {
     // the object was created by the script
-    script.remove_displayable(&displayable);
+    lua_context.remove_displayable(&displayable);
   }
 
   userdata_meta_gc(l);

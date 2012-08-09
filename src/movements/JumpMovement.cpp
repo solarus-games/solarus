@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/JumpMovement.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <sstream>
@@ -191,6 +191,6 @@ void JumpMovement::notify_step_done(int step_index, bool success) {
  * @return the name identifying this type in Lua
  */
 const std::string& JumpMovement::get_lua_type_name() const {
-  return Script::jump_movement_module_name;
+  return LuaContext::jump_movement_module_name;
 }
 

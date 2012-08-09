@@ -15,19 +15,19 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include <lua.hpp>
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "movements/Movement.h"
 #include "Sprite.h"
 #include "TransitionFade.h"
 
-const std::string Script::surface_module_name = "sol.surface";
+const std::string LuaContext::surface_module_name = "sol.surface";
 
 /**
  * @brief Initializes the surface features provided to Lua.
  */
-void Script::register_surface_module() {
+void LuaContext::register_surface_module() {
 
   static const luaL_Reg methods[] = {
       { "create", surface_api_create },
@@ -57,7 +57,7 @@ void Script::register_surface_module() {
  * @param index an index in the stack
  * @return the surface
  */
-Surface& Script::check_surface(lua_State* l, int index) {
+Surface& LuaContext::check_surface(lua_State* l, int index) {
   return static_cast<Surface&>(check_userdata(l, index, surface_module_name));
 }
 
@@ -66,7 +66,7 @@ Surface& Script::check_surface(lua_State* l, int index) {
  * @param l a Lua context
  * @param surface a surface
  */
-void Script::push_surface(lua_State* l, Surface& surface) {
+void LuaContext::push_surface(lua_State* l, Surface& surface) {
   push_userdata(l, surface);
 }
 
@@ -77,7 +77,7 @@ void Script::push_surface(lua_State* l, Surface& surface) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::surface_api_create(lua_State* l) {
+int LuaContext::surface_api_create(lua_State* l) {
 
   Surface* surface;
   if (lua_gettop(l) == 0) {
@@ -108,7 +108,7 @@ int Script::surface_api_create(lua_State* l) {
     other_surface.display_region(Rectangle(x, y, width, height), *surface);
   }
 
-  get_script(l).add_displayable(surface);
+  get_lua_context(l).add_displayable(surface);
   push_surface(l, *surface);
 
   return 1;
@@ -119,7 +119,7 @@ int Script::surface_api_create(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::surface_api_get_size(lua_State* l) {
+int LuaContext::surface_api_get_size(lua_State* l) {
 
   Surface& surface = check_surface(l, 1);
 
@@ -134,7 +134,7 @@ int Script::surface_api_get_size(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::surface_api_fill_color(lua_State* l) {
+int LuaContext::surface_api_fill_color(lua_State* l) {
 
   Surface& surface = check_surface(l, 1);
   Color color = check_color(l, 2);
@@ -148,7 +148,7 @@ int Script::surface_api_fill_color(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::surface_api_set_transparency_color(lua_State* l) {
+int LuaContext::surface_api_set_transparency_color(lua_State* l) {
 
   Surface& surface = check_surface(l, 1);
   Color color = check_color(l, 2);
@@ -162,7 +162,7 @@ int Script::surface_api_set_transparency_color(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::surface_api_set_opacity(lua_State* l) {
+int LuaContext::surface_api_set_opacity(lua_State* l) {
 
   Surface& surface = check_surface(l, 1);
   int opacity = luaL_checkinteger(l, 2);

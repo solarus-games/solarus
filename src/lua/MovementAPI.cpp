@@ -17,7 +17,7 @@
 #include <lua.hpp>
 #include <cmath>
 #include <sstream>
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "movements/PixelMovement.h"
 #include "movements/PathMovement.h"
 #include "movements/RandomMovement.h"
@@ -32,21 +32,21 @@
 #include "Game.h"
 #include "Map.h"
 
-const std::string Script::movement_module_name = "sol.movement";
-const std::string Script::straight_movement_module_name = "sol.movement.straight";
-const std::string Script::target_movement_module_name = "sol.movement.target";
-const std::string Script::random_movement_module_name = "sol.movement.random";
-const std::string Script::path_movement_module_name = "sol.movement.path";
-const std::string Script::random_path_movement_module_name = "sol.movement.random_path";
-const std::string Script::path_finding_movement_module_name = "sol.movement.path_finding";
-const std::string Script::circle_movement_module_name = "sol.movement.circle";
-const std::string Script::jump_movement_module_name = "sol.movement.jump";
-const std::string Script::pixel_movement_module_name = "sol.movement.pixel";
+const std::string LuaContext::movement_module_name = "sol.movement";
+const std::string LuaContext::straight_movement_module_name = "sol.movement.straight";
+const std::string LuaContext::target_movement_module_name = "sol.movement.target";
+const std::string LuaContext::random_movement_module_name = "sol.movement.random";
+const std::string LuaContext::path_movement_module_name = "sol.movement.path";
+const std::string LuaContext::random_path_movement_module_name = "sol.movement.random_path";
+const std::string LuaContext::path_finding_movement_module_name = "sol.movement.path_finding";
+const std::string LuaContext::circle_movement_module_name = "sol.movement.circle";
+const std::string LuaContext::jump_movement_module_name = "sol.movement.jump";
+const std::string LuaContext::pixel_movement_module_name = "sol.movement.pixel";
 
 /**
  * @brief Initializes the movement features provided to Lua.
  */
-void Script::register_movement_module() {
+void LuaContext::register_movement_module() {
 
   // sol.movement
   static const luaL_Reg movement_functions[] = {
@@ -212,7 +212,7 @@ void Script::register_movement_module() {
  * @param index an index in the stack
  * @return the sprite
  */
-Movement& Script::check_movement(lua_State* l, int index) {
+Movement& LuaContext::check_movement(lua_State* l, int index) {
 
   Movement** movement = NULL;
 
@@ -239,7 +239,7 @@ Movement& Script::check_movement(lua_State* l, int index) {
  * @param l a Lua context
  * @param movement a movement
  */
-void Script::push_movement(lua_State* l, Movement& movement) {
+void LuaContext::push_movement(lua_State* l, Movement& movement) {
   push_userdata(l, movement);
 }
 
@@ -248,9 +248,9 @@ void Script::push_movement(lua_State* l, Movement& movement) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::movement_api_create(lua_State* l) {
+int LuaContext::movement_api_create(lua_State* l) {
 
-  Script& script = get_script(l);
+  LuaContext& lua_context = get_lua_context(l);
   const std::string& type = luaL_checkstring(l, 1);
 
   Movement* movement = NULL;
@@ -261,7 +261,7 @@ int Script::movement_api_create(lua_State* l) {
     movement = new RandomMovement(32);
   }
   else if (type == "target") {
-    Game* game = script.get_current_game();
+    Game* game = lua_context.get_current_game();
     if (game != NULL) {
       // If we are on a map, the default target is the hero.
       movement = new TargetMovement(
@@ -302,7 +302,7 @@ int Script::movement_api_create(lua_State* l) {
         "\"pixel\"");
   }
 
-  script.set_created(movement);
+  lua_context.set_created(movement);
   push_movement(l, *movement);
 
   return 1;
@@ -313,7 +313,7 @@ int Script::movement_api_create(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::movement_api_get_ignore_obstacles(lua_State* l) {
+int LuaContext::movement_api_get_ignore_obstacles(lua_State* l) {
 
   Movement& movement = check_movement(l, 1);
   lua_pushboolean(l, movement.are_obstacles_ignored());
@@ -325,7 +325,7 @@ int Script::movement_api_get_ignore_obstacles(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::movement_api_set_ignore_obstacles(lua_State* l) {
+int LuaContext::movement_api_set_ignore_obstacles(lua_State* l) {
 
   Movement& movement = check_movement(l, 1);
   bool ignore_obstacles = true; // true if unspecified
@@ -343,7 +343,7 @@ int Script::movement_api_set_ignore_obstacles(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::movement_api_get_direction4(lua_State* l) {
+int LuaContext::movement_api_get_direction4(lua_State* l) {
 
   Movement& movement = check_movement(l, 1);
   lua_pushinteger(l, movement.get_displayed_direction4());
@@ -357,7 +357,7 @@ int Script::movement_api_get_direction4(lua_State* l) {
  * @param index an index in the stack
  * @return the movement
  */
-StraightMovement& Script::check_straight_movement(lua_State* l, int index) {
+StraightMovement& LuaContext::check_straight_movement(lua_State* l, int index) {
 
   return static_cast<StraightMovement&>(
       check_userdata(l, index, straight_movement_module_name));
@@ -368,7 +368,7 @@ StraightMovement& Script::check_straight_movement(lua_State* l, int index) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::straight_movement_api_get_speed(lua_State* l) {
+int LuaContext::straight_movement_api_get_speed(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
   lua_pushinteger(l, movement.get_speed());
@@ -380,7 +380,7 @@ int Script::straight_movement_api_get_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::straight_movement_api_set_speed(lua_State* l) {
+int LuaContext::straight_movement_api_set_speed(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
   int speed = luaL_checkinteger(l, 2);
@@ -393,7 +393,7 @@ int Script::straight_movement_api_set_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::straight_movement_api_get_angle(lua_State* l) {
+int LuaContext::straight_movement_api_get_angle(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
   lua_pushnumber(l, movement.get_angle());
@@ -405,7 +405,7 @@ int Script::straight_movement_api_get_angle(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::straight_movement_api_set_angle(lua_State* l) {
+int LuaContext::straight_movement_api_set_angle(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
   double angle = luaL_checknumber(l, 2);
@@ -418,7 +418,7 @@ int Script::straight_movement_api_set_angle(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::straight_movement_api_get_max_distance(lua_State* l) {
+int LuaContext::straight_movement_api_get_max_distance(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
   lua_pushinteger(l, movement.get_max_distance());
@@ -430,7 +430,7 @@ int Script::straight_movement_api_get_max_distance(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::straight_movement_api_set_max_distance(lua_State* l) {
+int LuaContext::straight_movement_api_set_max_distance(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
   int max_distance = luaL_checkinteger(l, 2);
@@ -443,7 +443,7 @@ int Script::straight_movement_api_set_max_distance(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::straight_movement_api_is_smooth(lua_State* l) {
+int LuaContext::straight_movement_api_is_smooth(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
   lua_pushboolean(l, movement.is_smooth());
@@ -455,7 +455,7 @@ int Script::straight_movement_api_is_smooth(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::straight_movement_api_set_smooth(lua_State* l) {
+int LuaContext::straight_movement_api_set_smooth(lua_State* l) {
 
   StraightMovement& movement = check_straight_movement(l, 1);
   bool smooth = true; // true if unspecified
@@ -474,7 +474,7 @@ int Script::straight_movement_api_set_smooth(lua_State* l) {
  * @param index an index in the stack
  * @return the movement
  */
-RandomMovement& Script::check_random_movement(lua_State* l, int index) {
+RandomMovement& LuaContext::check_random_movement(lua_State* l, int index) {
   return static_cast<RandomMovement&>(
       check_userdata(l, index, random_movement_module_name));
 }
@@ -484,7 +484,7 @@ RandomMovement& Script::check_random_movement(lua_State* l, int index) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::random_movement_api_get_speed(lua_State* l) {
+int LuaContext::random_movement_api_get_speed(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
   lua_pushinteger(l, movement.get_speed());
@@ -496,7 +496,7 @@ int Script::random_movement_api_get_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::random_movement_api_set_speed(lua_State* l) {
+int LuaContext::random_movement_api_set_speed(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
   int speed = luaL_checkinteger(l, 2);
@@ -509,7 +509,7 @@ int Script::random_movement_api_set_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::random_movement_api_get_angle(lua_State* l) {
+int LuaContext::random_movement_api_get_angle(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
   lua_pushnumber(l, movement.get_angle());
@@ -521,7 +521,7 @@ int Script::random_movement_api_get_angle(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::random_movement_api_get_max_distance(lua_State* l) {
+int LuaContext::random_movement_api_get_max_distance(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
   lua_pushinteger(l, movement.get_max_distance());
@@ -533,7 +533,7 @@ int Script::random_movement_api_get_max_distance(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::random_movement_api_set_max_distance(lua_State* l) {
+int LuaContext::random_movement_api_set_max_distance(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
   int max_distance = luaL_checkinteger(l, 2);
@@ -546,7 +546,7 @@ int Script::random_movement_api_set_max_distance(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::random_movement_api_is_smooth(lua_State* l) {
+int LuaContext::random_movement_api_is_smooth(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
   lua_pushboolean(l, movement.is_smooth());
@@ -558,7 +558,7 @@ int Script::random_movement_api_is_smooth(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::random_movement_api_set_smooth(lua_State* l) {
+int LuaContext::random_movement_api_set_smooth(lua_State* l) {
 
   RandomMovement& movement = check_random_movement(l, 1);
   bool smooth = true; // true if unspecified
@@ -577,7 +577,7 @@ int Script::random_movement_api_set_smooth(lua_State* l) {
  * @param index an index in the stack
  * @return the movement
  */
-TargetMovement& Script::check_target_movement(lua_State* l, int index) {
+TargetMovement& LuaContext::check_target_movement(lua_State* l, int index) {
   return static_cast<TargetMovement&>(
       check_userdata(l, index, target_movement_module_name));
 }
@@ -587,7 +587,7 @@ TargetMovement& Script::check_target_movement(lua_State* l, int index) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::target_movement_api_set_target(lua_State* l) {
+int LuaContext::target_movement_api_set_target(lua_State* l) {
 
   TargetMovement& movement = check_target_movement(l, 1);
   if (lua_isnumber(l, 3)) {
@@ -604,7 +604,7 @@ int Script::target_movement_api_set_target(lua_State* l) {
     // two parameters to make it work: the entity type and its name.
     int entity_type = luaL_checkinteger(l, 2);
     const std::string& entity_name = luaL_checkstring(l, 3);
-    MapEntities& entities = get_script(l).get_current_game()->get_current_map().get_entities();
+    MapEntities& entities = get_lua_context(l).get_current_game()->get_current_map().get_entities();
     MapEntity* target = entities.get_entity(EntityType(entity_type), entity_name);
 
     movement.set_target(target);
@@ -618,7 +618,7 @@ int Script::target_movement_api_set_target(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::target_movement_api_get_speed(lua_State* l) {
+int LuaContext::target_movement_api_get_speed(lua_State* l) {
 
   TargetMovement& movement = check_target_movement(l, 1);
   lua_pushinteger(l, movement.get_speed());
@@ -630,7 +630,7 @@ int Script::target_movement_api_get_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::target_movement_api_set_speed(lua_State* l) {
+int LuaContext::target_movement_api_set_speed(lua_State* l) {
 
   TargetMovement& movement = check_target_movement(l, 1);
   int speed = luaL_checkinteger(l, 2);
@@ -643,7 +643,7 @@ int Script::target_movement_api_set_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::target_movement_api_get_angle(lua_State* l) {
+int LuaContext::target_movement_api_get_angle(lua_State* l) {
 
   TargetMovement& movement = check_target_movement(l, 1);
   lua_pushnumber(l, movement.get_angle());
@@ -655,7 +655,7 @@ int Script::target_movement_api_get_angle(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::target_movement_api_is_smooth(lua_State* l) {
+int LuaContext::target_movement_api_is_smooth(lua_State* l) {
 
   TargetMovement& movement = check_target_movement(l, 1);
   lua_pushboolean(l, movement.is_smooth());
@@ -667,7 +667,7 @@ int Script::target_movement_api_is_smooth(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::target_movement_api_set_smooth(lua_State* l) {
+int LuaContext::target_movement_api_set_smooth(lua_State* l) {
 
   TargetMovement& movement = check_target_movement(l, 1);
   bool smooth = true; // true if unspecified
@@ -686,7 +686,7 @@ int Script::target_movement_api_set_smooth(lua_State* l) {
  * @param index an index in the stack
  * @return the movement
  */
-PathMovement& Script::check_path_movement(lua_State* l, int index) {
+PathMovement& LuaContext::check_path_movement(lua_State* l, int index) {
   return static_cast<PathMovement&>(
       check_userdata(l, index, path_movement_module_name));
 }
@@ -696,7 +696,7 @@ PathMovement& Script::check_path_movement(lua_State* l, int index) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::path_movement_api_get_path(lua_State* l) {
+int LuaContext::path_movement_api_get_path(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
 
@@ -718,7 +718,7 @@ int Script::path_movement_api_get_path(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::path_movement_api_set_path(lua_State* l) {
+int LuaContext::path_movement_api_set_path(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
   luaL_checktype(l, 2, LUA_TTABLE);
@@ -741,7 +741,7 @@ int Script::path_movement_api_set_path(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::path_movement_api_get_speed(lua_State* l) {
+int LuaContext::path_movement_api_get_speed(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
   lua_pushinteger(l, movement.get_speed());
@@ -753,7 +753,7 @@ int Script::path_movement_api_get_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::path_movement_api_set_speed(lua_State* l) {
+int LuaContext::path_movement_api_set_speed(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
   int speed = luaL_checkinteger(l, 2);
@@ -766,7 +766,7 @@ int Script::path_movement_api_set_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::path_movement_api_get_loop(lua_State* l) {
+int LuaContext::path_movement_api_get_loop(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
   lua_pushboolean(l, movement.get_loop());
@@ -778,7 +778,7 @@ int Script::path_movement_api_get_loop(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::path_movement_api_set_loop(lua_State* l) {
+int LuaContext::path_movement_api_set_loop(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
   bool loop = true; // true if unspecified
@@ -795,7 +795,7 @@ int Script::path_movement_api_set_loop(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::path_movement_api_get_snap_to_grid(lua_State* l) {
+int LuaContext::path_movement_api_get_snap_to_grid(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
   lua_pushboolean(l, movement.get_snap_to_grid());
@@ -807,7 +807,7 @@ int Script::path_movement_api_get_snap_to_grid(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::path_movement_api_set_snap_to_grid(lua_State* l) {
+int LuaContext::path_movement_api_set_snap_to_grid(lua_State* l) {
 
   PathMovement& movement = check_path_movement(l, 1);
   bool snap_to_grid = true; // true if unspecified
@@ -826,7 +826,7 @@ int Script::path_movement_api_set_snap_to_grid(lua_State* l) {
  * @param index an index in the stack
  * @return the movement
  */
-RandomPathMovement& Script::check_random_path_movement(lua_State* l, int index) {
+RandomPathMovement& LuaContext::check_random_path_movement(lua_State* l, int index) {
   return static_cast<RandomPathMovement&>(
       check_userdata(l, index, random_path_movement_module_name));
 }
@@ -836,7 +836,7 @@ RandomPathMovement& Script::check_random_path_movement(lua_State* l, int index) 
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::random_path_movement_api_get_speed(lua_State* l) {
+int LuaContext::random_path_movement_api_get_speed(lua_State* l) {
 
   RandomPathMovement& movement = check_random_path_movement(l, 1);
   lua_pushinteger(l, movement.get_speed());
@@ -848,7 +848,7 @@ int Script::random_path_movement_api_get_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::random_path_movement_api_set_speed(lua_State* l) {
+int LuaContext::random_path_movement_api_set_speed(lua_State* l) {
 
   RandomPathMovement& movement = check_random_path_movement(l, 1);
   int speed = luaL_checkinteger(l, 2);
@@ -863,7 +863,7 @@ int Script::random_path_movement_api_set_speed(lua_State* l) {
  * @param index an index in the stack
  * @return the movement
  */
-PathFindingMovement& Script::check_path_finding_movement(lua_State* l, int index) {
+PathFindingMovement& LuaContext::check_path_finding_movement(lua_State* l, int index) {
   return static_cast<PathFindingMovement&>(
       check_userdata(l, index, path_finding_movement_module_name));
 }
@@ -873,7 +873,7 @@ PathFindingMovement& Script::check_path_finding_movement(lua_State* l, int index
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::path_finding_movement_api_set_target(lua_State* l) {
+int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
 
   PathFindingMovement& movement = check_path_finding_movement(l, 1);
   // TODO: MapEntity& target = check_entity(l, 2);
@@ -881,7 +881,7 @@ int Script::path_finding_movement_api_set_target(lua_State* l) {
   // two parameters to make it work: the entity type and its name.
   int entity_type = luaL_checkinteger(l, 2);
   const std::string& entity_name = luaL_checkstring(l, 3);
-  MapEntities& entities = get_script(l).get_current_game()->get_current_map().get_entities();
+  MapEntities& entities = get_lua_context(l).get_current_game()->get_current_map().get_entities();
   MapEntity& target = *entities.get_entity(EntityType(entity_type), entity_name);
 
   movement.set_target(target);
@@ -894,7 +894,7 @@ int Script::path_finding_movement_api_set_target(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::path_finding_movement_api_get_speed(lua_State* l) {
+int LuaContext::path_finding_movement_api_get_speed(lua_State* l) {
 
   PathFindingMovement& movement = check_path_finding_movement(l, 1);
   lua_pushinteger(l, movement.get_speed());
@@ -906,7 +906,7 @@ int Script::path_finding_movement_api_get_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::path_finding_movement_api_set_speed(lua_State* l) {
+int LuaContext::path_finding_movement_api_set_speed(lua_State* l) {
 
   PathFindingMovement& movement = check_path_finding_movement(l, 1);
   int speed = luaL_checkinteger(l, 2);
@@ -921,7 +921,7 @@ int Script::path_finding_movement_api_set_speed(lua_State* l) {
  * @param index an index in the stack
  * @return the movement
  */
-CircleMovement& Script::check_circle_movement(lua_State* l, int index) {
+CircleMovement& LuaContext::check_circle_movement(lua_State* l, int index) {
   return static_cast<CircleMovement&>(
       check_userdata(l, index, circle_movement_module_name));
 }
@@ -931,7 +931,7 @@ CircleMovement& Script::check_circle_movement(lua_State* l, int index) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_set_center(lua_State* l) {
+int LuaContext::circle_movement_api_set_center(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   if (lua_isnumber(l, 3)) {
@@ -948,7 +948,7 @@ int Script::circle_movement_api_set_center(lua_State* l) {
     // two parameters to make it work: the entity type and its name.
     int entity_type = luaL_checkinteger(l, 2);
     const std::string& entity_name = luaL_checkstring(l, 3);
-    MapEntities& entities = get_script(l).get_current_game()->get_current_map().get_entities();
+    MapEntities& entities = get_lua_context(l).get_current_game()->get_current_map().get_entities();
     MapEntity& center = *entities.get_entity(EntityType(entity_type), entity_name);
 
     int dx = luaL_optinteger(l, 4, 0); // TODO 3
@@ -964,7 +964,7 @@ int Script::circle_movement_api_set_center(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_get_radius(lua_State* l) {
+int LuaContext::circle_movement_api_get_radius(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   lua_pushinteger(l, movement.get_radius());
@@ -976,7 +976,7 @@ int Script::circle_movement_api_get_radius(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_set_radius(lua_State* l) {
+int LuaContext::circle_movement_api_set_radius(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   int radius = luaL_checkinteger(l, 2);
@@ -989,7 +989,7 @@ int Script::circle_movement_api_set_radius(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_get_radius_speed(lua_State* l) {
+int LuaContext::circle_movement_api_get_radius_speed(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   lua_pushinteger(l, movement.get_radius_speed());
@@ -1001,7 +1001,7 @@ int Script::circle_movement_api_get_radius_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_set_radius_speed(lua_State* l) {
+int LuaContext::circle_movement_api_set_radius_speed(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   int radius_speed = luaL_checkinteger(l, 2);
@@ -1014,7 +1014,7 @@ int Script::circle_movement_api_set_radius_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_is_clockwise(lua_State* l) {
+int LuaContext::circle_movement_api_is_clockwise(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   lua_pushboolean(l, movement.is_clockwise());
@@ -1026,7 +1026,7 @@ int Script::circle_movement_api_is_clockwise(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_set_clockwise(lua_State* l) {
+int LuaContext::circle_movement_api_set_clockwise(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   bool clockwise = true; // true if unspecified
@@ -1043,7 +1043,7 @@ int Script::circle_movement_api_set_clockwise(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_get_initial_angle(lua_State* l) {
+int LuaContext::circle_movement_api_get_initial_angle(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   lua_pushnumber(l, movement.get_initial_angle());
@@ -1055,7 +1055,7 @@ int Script::circle_movement_api_get_initial_angle(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_set_initial_angle(lua_State* l) {
+int LuaContext::circle_movement_api_set_initial_angle(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   double initial_angle = luaL_checknumber(l, 2);
@@ -1068,7 +1068,7 @@ int Script::circle_movement_api_set_initial_angle(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_get_angle_speed(lua_State* l) {
+int LuaContext::circle_movement_api_get_angle_speed(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   lua_pushinteger(l, movement.get_angle_speed());
@@ -1080,7 +1080,7 @@ int Script::circle_movement_api_get_angle_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_set_angle_speed(lua_State* l) {
+int LuaContext::circle_movement_api_set_angle_speed(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   int angle_speed = luaL_checkinteger(l, 2);
@@ -1093,7 +1093,7 @@ int Script::circle_movement_api_set_angle_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_get_max_rotations(lua_State* l) {
+int LuaContext::circle_movement_api_get_max_rotations(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   lua_pushinteger(l, movement.get_max_rotations());
@@ -1105,7 +1105,7 @@ int Script::circle_movement_api_get_max_rotations(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_set_max_rotations(lua_State* l) {
+int LuaContext::circle_movement_api_set_max_rotations(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   int max_rotations = luaL_checkinteger(l, 2);
@@ -1118,7 +1118,7 @@ int Script::circle_movement_api_set_max_rotations(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_get_duration(lua_State* l) {
+int LuaContext::circle_movement_api_get_duration(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   lua_pushinteger(l, movement.get_duration());
@@ -1130,7 +1130,7 @@ int Script::circle_movement_api_get_duration(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_set_duration(lua_State* l) {
+int LuaContext::circle_movement_api_set_duration(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   int duration = luaL_checkinteger(l, 2);
@@ -1143,7 +1143,7 @@ int Script::circle_movement_api_set_duration(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_get_loop_delay(lua_State* l) {
+int LuaContext::circle_movement_api_get_loop_delay(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   lua_pushinteger(l, movement.get_loop());
@@ -1155,7 +1155,7 @@ int Script::circle_movement_api_get_loop_delay(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::circle_movement_api_set_loop_delay(lua_State* l) {
+int LuaContext::circle_movement_api_set_loop_delay(lua_State* l) {
 
   CircleMovement& movement = check_circle_movement(l, 1);
   int loop_delay = luaL_checkinteger(l, 2);
@@ -1170,7 +1170,7 @@ int Script::circle_movement_api_set_loop_delay(lua_State* l) {
  * @param index an index in the stack
  * @return the movement
  */
-JumpMovement& Script::check_jump_movement(lua_State* l, int index) {
+JumpMovement& LuaContext::check_jump_movement(lua_State* l, int index) {
   return static_cast<JumpMovement&>(
       check_userdata(l, index, jump_movement_module_name));
 }
@@ -1180,7 +1180,7 @@ JumpMovement& Script::check_jump_movement(lua_State* l, int index) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::jump_movement_api_get_direction8(lua_State* l) {
+int LuaContext::jump_movement_api_get_direction8(lua_State* l) {
 
   JumpMovement& movement = check_jump_movement(l, 1);
   lua_pushinteger(l, movement.get_direction8());
@@ -1192,7 +1192,7 @@ int Script::jump_movement_api_get_direction8(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::jump_movement_api_set_direction8(lua_State* l) {
+int LuaContext::jump_movement_api_set_direction8(lua_State* l) {
 
   JumpMovement& movement = check_jump_movement(l, 1);
   int direction8 = luaL_checkinteger(l, 2);
@@ -1205,7 +1205,7 @@ int Script::jump_movement_api_set_direction8(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::jump_movement_api_get_distance(lua_State* l) {
+int LuaContext::jump_movement_api_get_distance(lua_State* l) {
 
   JumpMovement& movement = check_jump_movement(l, 1);
   lua_pushinteger(l, movement.get_distance());
@@ -1217,7 +1217,7 @@ int Script::jump_movement_api_get_distance(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::jump_movement_api_set_distance(lua_State* l) {
+int LuaContext::jump_movement_api_set_distance(lua_State* l) {
 
   JumpMovement& movement = check_jump_movement(l, 1);
   int distance = luaL_checkinteger(l, 2);
@@ -1230,7 +1230,7 @@ int Script::jump_movement_api_set_distance(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::jump_movement_api_get_speed(lua_State* l) {
+int LuaContext::jump_movement_api_get_speed(lua_State* l) {
 
   JumpMovement& movement = check_jump_movement(l, 1);
   lua_pushinteger(l, movement.get_speed());
@@ -1242,7 +1242,7 @@ int Script::jump_movement_api_get_speed(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::jump_movement_api_set_speed(lua_State* l) {
+int LuaContext::jump_movement_api_set_speed(lua_State* l) {
 
   JumpMovement& movement = check_jump_movement(l, 1);
   int speed = luaL_checkinteger(l, 2);
@@ -1257,7 +1257,7 @@ int Script::jump_movement_api_set_speed(lua_State* l) {
  * @param index an index in the stack
  * @return the movement
  */
-PixelMovement& Script::check_pixel_movement(lua_State* l, int index) {
+PixelMovement& LuaContext::check_pixel_movement(lua_State* l, int index) {
   return static_cast<PixelMovement&>(
       check_userdata(l, index, pixel_movement_module_name));
 }
@@ -1267,7 +1267,7 @@ PixelMovement& Script::check_pixel_movement(lua_State* l, int index) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::pixel_movement_api_get_trajectory(lua_State* l) {
+int LuaContext::pixel_movement_api_get_trajectory(lua_State* l) {
 
   PixelMovement& movement = check_pixel_movement(l, 1);
 
@@ -1296,7 +1296,7 @@ int Script::pixel_movement_api_get_trajectory(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::pixel_movement_api_set_trajectory(lua_State* l) {
+int LuaContext::pixel_movement_api_set_trajectory(lua_State* l) {
 
   PixelMovement& movement = check_pixel_movement(l, 1);
   luaL_checktype(l, 2, LUA_TTABLE);
@@ -1323,7 +1323,7 @@ int Script::pixel_movement_api_set_trajectory(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::pixel_movement_api_get_loop(lua_State* l) {
+int LuaContext::pixel_movement_api_get_loop(lua_State* l) {
 
   PixelMovement& movement = check_pixel_movement(l, 1);
   lua_pushboolean(l, movement.get_loop());
@@ -1335,7 +1335,7 @@ int Script::pixel_movement_api_get_loop(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::pixel_movement_api_set_loop(lua_State* l) {
+int LuaContext::pixel_movement_api_set_loop(lua_State* l) {
 
   PixelMovement& movement = check_pixel_movement(l, 1);
   bool loop = true; // true if unspecified
@@ -1352,7 +1352,7 @@ int Script::pixel_movement_api_set_loop(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::pixel_movement_api_get_delay(lua_State* l) {
+int LuaContext::pixel_movement_api_get_delay(lua_State* l) {
 
   PixelMovement& movement = check_pixel_movement(l, 1);
   lua_pushinteger(l, movement.get_delay());
@@ -1364,7 +1364,7 @@ int Script::pixel_movement_api_get_delay(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::pixel_movement_api_set_delay(lua_State* l) {
+int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
 
   PixelMovement& movement = check_pixel_movement(l, 1);
   int delay = luaL_checkinteger(l, 2);

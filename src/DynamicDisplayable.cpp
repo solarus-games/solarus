@@ -17,7 +17,7 @@
 #include "DynamicDisplayable.h"
 #include "Transition.h"
 #include "movements/Movement.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Debug.h"
 #include <lua.hpp>
 

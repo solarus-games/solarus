@@ -46,7 +46,7 @@ class Enemy: public Detector {
 
   public:
 
-    friend class Script;          // allow scripts with the enemy API to access private data
+    friend class LuaContext;  // TODO change this
 
     /**
      * @brief Enemy ranks.

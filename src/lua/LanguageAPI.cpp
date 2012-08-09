@@ -44,7 +44,7 @@ void LuaContext::register_language_module() {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::language_api_get_language(lua_State* l) {
+int LuaContext::language_api_get_language(lua_State* l) {
 
   const std::string& language = FileTools::get_language();
 
@@ -62,7 +62,7 @@ int Script::language_api_get_language(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::language_api_set_language(lua_State* l) {
+int LuaContext::language_api_set_language(lua_State* l) {
 
   const std::string& language_code = luaL_checkstring(l, 1);
 
@@ -76,7 +76,7 @@ int Script::language_api_set_language(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::language_api_get_language_name(lua_State* l) {
+int LuaContext::language_api_get_language_name(lua_State* l) {
 
   std::string language_code;
   if (lua_gettop(l) >= 1) {
@@ -104,7 +104,7 @@ int Script::language_api_get_language_name(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::language_api_get_languages(lua_State* l) {
+int LuaContext::language_api_get_languages(lua_State* l) {
 
   const std::map<std::string, std::string>& languages =
     FileTools::get_languages();
@@ -128,7 +128,7 @@ int Script::language_api_get_languages(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::language_api_get_default_language(lua_State* l) {
+int LuaContext::language_api_get_default_language(lua_State* l) {
 
   const std::string& language = FileTools::get_default_language();
 
@@ -141,7 +141,7 @@ int Script::language_api_get_default_language(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::language_api_get_string(lua_State* l) {
+int LuaContext::language_api_get_string(lua_State* l) {
 
   const std::string& key = luaL_checkstring(l, 1);
 
@@ -155,7 +155,7 @@ int Script::language_api_get_string(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::language_api_get_dialog(lua_State* l) {
+int LuaContext::language_api_get_dialog(lua_State* l) {
 
   // TODO
   lua_pushnil(l);

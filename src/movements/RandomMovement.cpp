@@ -16,7 +16,7 @@
  */
 #include "movements/RandomMovement.h"
 #include "entities/MapEntity.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Geometry.h"
@@ -146,6 +146,6 @@ void RandomMovement::notify_obstacle_reached() {
  * @return the name identifying this type in Lua
  */
 const std::string& RandomMovement::get_lua_type_name() const {
-  return Script::random_movement_module_name;
+  return LuaContext::random_movement_module_name;
 }
 

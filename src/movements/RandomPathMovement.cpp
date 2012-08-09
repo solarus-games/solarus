@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/RandomPathMovement.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <sstream>
@@ -65,6 +65,6 @@ bool RandomPathMovement::is_finished() {
  * @return the name identifying this type in Lua
  */
 const std::string& RandomPathMovement::get_lua_type_name() const {
-  return Script::random_path_movement_module_name;
+  return LuaContext::random_path_movement_module_name;
 }
 

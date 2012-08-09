@@ -27,12 +27,12 @@
 #include "Sprite.h"
 #include <lua.hpp>
 
-const std::string Script::enemy_module_name = "sol.enemy";
+const std::string LuaContext::enemy_module_name = "sol.enemy";
 
 /**
  * @brief Initializes the enemy features provided to Lua.
  */
-void Script::register_enemy_module() {
+void LuaContext::register_enemy_module() {
 
   static const luaL_Reg methods[] = {
       { "get_map", enemy_api_get_map },
@@ -111,7 +111,7 @@ void Script::register_enemy_module() {
  * @param index An index in the stack.
  * @return The enemy.
  */
-Enemy& Script::check_enemy(lua_State* l, int index) {
+Enemy& LuaContext::check_enemy(lua_State* l, int index) {
   return static_cast<Enemy&>(check_userdata(l, index, enemy_module_name));
 }
 
@@ -120,7 +120,7 @@ Enemy& Script::check_enemy(lua_State* l, int index) {
  * @param l A Lua context.
  * @param enemy An enemy.
  */
-void Script::push_enemy(lua_State* l, Enemy& enemy) {
+void LuaContext::push_enemy(lua_State* l, Enemy& enemy) {
   push_userdata(l, enemy);
 }
 
@@ -129,7 +129,7 @@ void Script::push_enemy(lua_State* l, Enemy& enemy) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_map(lua_State* l) {
+int LuaContext::enemy_api_get_map(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -142,7 +142,7 @@ int Script::enemy_api_get_map(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_name(lua_State* l) {
+int LuaContext::enemy_api_get_name(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -155,7 +155,7 @@ int Script::enemy_api_get_name(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_life(lua_State* l) {
+int LuaContext::enemy_api_get_life(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -168,7 +168,7 @@ int Script::enemy_api_get_life(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_life(lua_State* l) {
+int LuaContext::enemy_api_set_life(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int life = luaL_checkinteger(l, 2);
@@ -183,7 +183,7 @@ int Script::enemy_api_set_life(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_add_life(lua_State* l) {
+int LuaContext::enemy_api_add_life(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int points = luaL_checkinteger(l, 2);
@@ -198,7 +198,7 @@ int Script::enemy_api_add_life(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_remove_life(lua_State* l) {
+int LuaContext::enemy_api_remove_life(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int points = luaL_checkinteger(l, 2);
@@ -213,7 +213,7 @@ int Script::enemy_api_remove_life(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_damage(lua_State* l) {
+int LuaContext::enemy_api_get_damage(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -226,7 +226,7 @@ int Script::enemy_api_get_damage(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_damage(lua_State* l) {
+int LuaContext::enemy_api_set_damage(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int damage = luaL_checkinteger(l, 2);
@@ -241,7 +241,7 @@ int Script::enemy_api_set_damage(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_magic_damage(lua_State* l) {
+int LuaContext::enemy_api_get_magic_damage(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -254,7 +254,7 @@ int Script::enemy_api_get_magic_damage(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_magic_damage(lua_State* l) {
+int LuaContext::enemy_api_set_magic_damage(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int magic_damage = luaL_checkinteger(l, 2);
@@ -269,7 +269,7 @@ int Script::enemy_api_set_magic_damage(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_is_pushed_back_when_hurt(lua_State* l) {
+int LuaContext::enemy_api_is_pushed_back_when_hurt(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -282,7 +282,7 @@ int Script::enemy_api_is_pushed_back_when_hurt(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_pushed_back_when_hurt(lua_State* l) {
+int LuaContext::enemy_api_set_pushed_back_when_hurt(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   bool push_back = lua_toboolean(l, 2);
@@ -297,7 +297,7 @@ int Script::enemy_api_set_pushed_back_when_hurt(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_push_hero_on_sword(lua_State* l) {
+int LuaContext::enemy_api_get_push_hero_on_sword(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -310,7 +310,7 @@ int Script::enemy_api_get_push_hero_on_sword(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_push_hero_on_sword(lua_State* l) {
+int LuaContext::enemy_api_set_push_hero_on_sword(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   bool push = lua_toboolean(l, 2);
@@ -325,7 +325,7 @@ int Script::enemy_api_set_push_hero_on_sword(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_can_hurt_hero_running(lua_State* l) {
+int LuaContext::enemy_api_get_can_hurt_hero_running(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -338,7 +338,7 @@ int Script::enemy_api_get_can_hurt_hero_running(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_can_hurt_hero_running(lua_State* l) {
+int LuaContext::enemy_api_set_can_hurt_hero_running(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   bool can_hurt_hero_running = lua_toboolean(l, 2);
@@ -353,7 +353,7 @@ int Script::enemy_api_set_can_hurt_hero_running(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_hurt_style(lua_State* l) {
+int LuaContext::enemy_api_get_hurt_style(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -368,7 +368,7 @@ int Script::enemy_api_get_hurt_style(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_hurt_style(lua_State* l) {
+int LuaContext::enemy_api_set_hurt_style(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   const std::string& style_name = luaL_checkstring(l, 2);
@@ -383,7 +383,7 @@ int Script::enemy_api_set_hurt_style(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_can_attack(lua_State* l) {
+int LuaContext::enemy_api_get_can_attack(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -396,7 +396,7 @@ int Script::enemy_api_get_can_attack(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_can_attack(lua_State* l) {
+int LuaContext::enemy_api_set_can_attack(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   bool can_attack = lua_toboolean(l, 2);
@@ -411,7 +411,7 @@ int Script::enemy_api_set_can_attack(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_minimum_shield_needed(lua_State* l) {
+int LuaContext::enemy_api_get_minimum_shield_needed(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -426,7 +426,7 @@ int Script::enemy_api_get_minimum_shield_needed(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_minimum_shield_needed(lua_State* l) {
+int LuaContext::enemy_api_set_minimum_shield_needed(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int shield_level = luaL_checkinteger(l, 2);
@@ -441,7 +441,7 @@ int Script::enemy_api_set_minimum_shield_needed(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_attack_consequence(lua_State* l) {
+int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   const std::string& attack_name = luaL_checkstring(l, 2);
@@ -470,7 +470,7 @@ int Script::enemy_api_set_attack_consequence(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_attack_consequence_sprite(lua_State* l) {
+int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   Sprite& sprite = check_sprite(l, 2);
@@ -498,7 +498,7 @@ int Script::enemy_api_set_attack_consequence_sprite(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_default_attack_consequences(lua_State* l) {
+int LuaContext::enemy_api_set_default_attack_consequences(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -512,7 +512,7 @@ int Script::enemy_api_set_default_attack_consequences(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_default_attack_consequences_sprite(lua_State* l) {
+int LuaContext::enemy_api_set_default_attack_consequences_sprite(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   Sprite& sprite = check_sprite(l, 2);
@@ -527,7 +527,7 @@ int Script::enemy_api_set_default_attack_consequences_sprite(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_invincible(lua_State* l) {
+int LuaContext::enemy_api_set_invincible(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -541,7 +541,7 @@ int Script::enemy_api_set_invincible(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_invincible_sprite(lua_State* l) {
+int LuaContext::enemy_api_set_invincible_sprite(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   Sprite& sprite = check_sprite(l, 2);
@@ -556,7 +556,7 @@ int Script::enemy_api_set_invincible_sprite(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_layer_independent_collisions(lua_State* l) {
+int LuaContext::enemy_api_set_layer_independent_collisions(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   bool independent = lua_toboolean(l, 2) != 0;
@@ -571,7 +571,7 @@ int Script::enemy_api_set_layer_independent_collisions(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_treasure(lua_State* l) {
+int LuaContext::enemy_api_set_treasure(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
@@ -589,7 +589,7 @@ int Script::enemy_api_set_treasure(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_no_treasure(lua_State* l) {
+int LuaContext::enemy_api_set_no_treasure(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -604,7 +604,7 @@ int Script::enemy_api_set_no_treasure(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_random_treasure(lua_State* l) {
+int LuaContext::enemy_api_set_random_treasure(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -619,7 +619,7 @@ int Script::enemy_api_set_random_treasure(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_obstacle_behavior(lua_State* l) {
+int LuaContext::enemy_api_get_obstacle_behavior(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -634,7 +634,7 @@ int Script::enemy_api_get_obstacle_behavior(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_obstacle_behavior(lua_State* l) {
+int LuaContext::enemy_api_set_obstacle_behavior(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   const std::string& behavior_name = luaL_checkstring(l, 2);
@@ -649,7 +649,7 @@ int Script::enemy_api_set_obstacle_behavior(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_optimization_distance(lua_State* l) {
+int LuaContext::enemy_api_get_optimization_distance(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -662,7 +662,7 @@ int Script::enemy_api_get_optimization_distance(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_optimization_distance(lua_State* l) {
+int LuaContext::enemy_api_set_optimization_distance(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int distance = luaL_checkinteger(l, 2);
@@ -677,7 +677,7 @@ int Script::enemy_api_set_optimization_distance(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_size(lua_State* l) {
+int LuaContext::enemy_api_get_size(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -691,7 +691,7 @@ int Script::enemy_api_get_size(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_size(lua_State* l) {
+int LuaContext::enemy_api_set_size(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int width = luaL_checkinteger(l, 2);
@@ -707,7 +707,7 @@ int Script::enemy_api_set_size(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_origin(lua_State* l) {
+int LuaContext::enemy_api_get_origin(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -723,7 +723,7 @@ int Script::enemy_api_get_origin(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_origin(lua_State* l) {
+int LuaContext::enemy_api_set_origin(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -739,7 +739,7 @@ int Script::enemy_api_set_origin(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_position(lua_State* l) {
+int LuaContext::enemy_api_get_position(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -754,7 +754,7 @@ int Script::enemy_api_get_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_set_position(lua_State* l) {
+int LuaContext::enemy_api_set_position(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -778,7 +778,7 @@ int Script::enemy_api_set_position(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_distance_to_hero(lua_State* l) {
+int LuaContext::enemy_api_get_distance_to_hero(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -793,7 +793,7 @@ int Script::enemy_api_get_distance_to_hero(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_angle_to_hero(lua_State* l) {
+int LuaContext::enemy_api_get_angle_to_hero(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -810,7 +810,7 @@ int Script::enemy_api_get_angle_to_hero(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_test_obstacles(lua_State* l) {
+int LuaContext::enemy_api_test_obstacles(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int dx = luaL_checkinteger(l, 2);
@@ -829,7 +829,7 @@ int Script::enemy_api_test_obstacles(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_snap_to_grid(lua_State* l) {
+int LuaContext::enemy_api_snap_to_grid(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -843,7 +843,7 @@ int Script::enemy_api_snap_to_grid(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_movement(lua_State* l) {
+int LuaContext::enemy_api_get_movement(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -863,12 +863,12 @@ int Script::enemy_api_get_movement(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_start_movement(lua_State* l) {
+int LuaContext::enemy_api_start_movement(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   Movement& movement = check_movement(l, 2);
 
-  get_script(l).increment_refcount(&movement);
+  get_lua_context(l).increment_refcount(&movement);
   movement.set_suspended(false);
   enemy.clear_movement();
   enemy.set_movement(&movement);
@@ -881,7 +881,7 @@ int Script::enemy_api_start_movement(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_stop_movement(lua_State* l) {
+int LuaContext::enemy_api_stop_movement(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -895,7 +895,7 @@ int Script::enemy_api_stop_movement(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_restart(lua_State* l) {
+int LuaContext::enemy_api_restart(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -909,7 +909,7 @@ int Script::enemy_api_restart(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_hurt(lua_State* l) {
+int LuaContext::enemy_api_hurt(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   int life_points = luaL_checkinteger(l, 2);
@@ -929,13 +929,13 @@ int Script::enemy_api_hurt(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_create_sprite(lua_State* l) {
+int LuaContext::enemy_api_create_sprite(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   const std::string& animation_set_id = luaL_checkstring(l, 2);
 
   Sprite& sprite = enemy.create_sprite(animation_set_id, true);
-  sprite.set_creator_script(&get_script(l));
+  sprite.set_creator_script(&get_lua_context(l));
   sprite.increment_refcount();
 
   push_userdata(l, sprite);
@@ -947,7 +947,7 @@ int Script::enemy_api_create_sprite(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_remove_sprite(lua_State* l) {
+int LuaContext::enemy_api_remove_sprite(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -969,7 +969,7 @@ int Script::enemy_api_remove_sprite(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_sprite(lua_State* l) {
+int LuaContext::enemy_api_get_sprite(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -982,7 +982,7 @@ int Script::enemy_api_get_sprite(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_create_son(lua_State* l) {
+int LuaContext::enemy_api_create_son(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -1018,7 +1018,7 @@ int Script::enemy_api_create_son(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_get_father(lua_State* l) {
+int LuaContext::enemy_api_get_father(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
@@ -1031,7 +1031,7 @@ int Script::enemy_api_get_father(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::enemy_api_send_message(lua_State* l) {
+int LuaContext::enemy_api_send_message(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   const std::string& dst_enemy_name = luaL_checkstring(l, 2);

@@ -14,20 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
-const std::string Script::input_module_name = "sol.input";
+const std::string LuaContext::input_module_name = "sol.input";
 
 std::map<InputEvent::KeyboardKey, std::string>
-  Script::input_key_names;
+  LuaContext::input_key_names;
 
 /**
  * @brief Initializes the input features provided to Lua.
  */
-void Script::register_input_module() {
+void LuaContext::register_input_module() {
 
   static const luaL_Reg functions[] = {
       // no function from Lua to C++ for inputs (yet?)
@@ -170,7 +170,7 @@ void Script::register_input_module() {
  * @return a string with the name of this key for the Lua API,
  * or an empty string if this key is unknown
  */
-const std::string& Script::input_get_key_name(InputEvent::KeyboardKey key) {
+const std::string& LuaContext::input_get_key_name(InputEvent::KeyboardKey key) {
 
   return input_key_names[key];
 }

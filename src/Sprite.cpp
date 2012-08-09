@@ -20,7 +20,7 @@
 #include "SpriteAnimationDirection.h"
 #include "Game.h"
 #include "Map.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/PixelBits.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/System.h"
@@ -629,6 +629,6 @@ Surface& Sprite::get_intermediate_surface() {
  * @return the name identifying this type in Lua
  */
 const std::string& Sprite::get_lua_type_name() const {
-  return Script::sprite_module_name;
+  return LuaContext::sprite_module_name;
 }
 

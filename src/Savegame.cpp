@@ -301,6 +301,6 @@ void Savegame::set_boolean(int index, bool value) {
  * @return The name identifying this type in Lua.
  */
 const std::string& Savegame::get_lua_type_name() const {
-  return Script::game_module_name;
+  return LuaContext::game_module_name;
 }
 

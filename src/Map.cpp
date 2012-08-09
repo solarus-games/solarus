@@ -1033,6 +1033,6 @@ void Map::check_collision_with_detectors(MapEntity &entity, Sprite &sprite) {
  * @return The name identifying this type in Lua.
  */
 const std::string& Map::get_lua_type_name() const {
-  return Script::map_module_name;
+  return LuaContext::map_module_name;
 }
 

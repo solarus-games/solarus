@@ -21,7 +21,7 @@
 #include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "Transition.h"
 
 std::map<std::string, TextSurface::FontData> TextSurface::fonts;
@@ -482,6 +482,6 @@ void TextSurface::display_transition(Transition& transition) {
  * @return the name identifying this type in Lua
  */
 const std::string& TextSurface::get_lua_type_name() const {
-  return Script::text_surface_module_name;
+  return LuaContext::text_surface_module_name;
 }
 

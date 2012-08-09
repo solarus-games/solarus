@@ -57,7 +57,7 @@ void LuaContext::register_video_module() {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::video_api_get_mode(lua_State *l) {
+int LuaContext::video_api_get_mode(lua_State *l) {
 
   VideoManager::VideoMode mode =
     VideoManager::get_instance()->get_video_mode();
@@ -71,7 +71,7 @@ int Script::video_api_get_mode(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::video_api_set_mode(lua_State *l) {
+int LuaContext::video_api_set_mode(lua_State *l) {
 
   int mode = luaL_checkoption(l, 1, NULL, video_mode_names);
 
@@ -88,7 +88,7 @@ int Script::video_api_set_mode(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::video_api_switch_mode(lua_State *l) {
+int LuaContext::video_api_switch_mode(lua_State *l) {
 
   VideoManager::get_instance()->switch_video_mode();
 
@@ -100,7 +100,7 @@ int Script::video_api_switch_mode(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::video_api_get_modes(lua_State* l) {
+int LuaContext::video_api_get_modes(lua_State* l) {
 
   const std::list<VideoManager::VideoMode> modes =
     VideoManager::get_instance()->get_video_modes();
@@ -124,7 +124,7 @@ int Script::video_api_get_modes(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::video_api_is_mode_supported(lua_State *l) {
+int LuaContext::video_api_is_mode_supported(lua_State *l) {
 
   int mode = luaL_checkoption(l, 1, NULL, video_mode_names);
 
@@ -140,7 +140,7 @@ int Script::video_api_is_mode_supported(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::video_api_is_fullscreen(lua_State *l) {
+int LuaContext::video_api_is_fullscreen(lua_State *l) {
 
   bool fullscreen = VideoManager::get_instance()->is_fullscreen();
 
@@ -153,7 +153,7 @@ int Script::video_api_is_fullscreen(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::video_api_set_fullscreen(lua_State *l) {
+int LuaContext::video_api_set_fullscreen(lua_State *l) {
 
   bool fullscreen = true;  // true if unspecified.
   if (lua_isboolean(l, 1)) {

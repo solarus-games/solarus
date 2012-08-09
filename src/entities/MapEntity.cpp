@@ -40,7 +40,7 @@
 #include "entities/Arrow.h"
 #include "entities/Hero.h"
 #include "movements/Movement.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
@@ -1980,6 +1980,6 @@ void MapEntity::display_on_map() {
  * TODO remove this definition from MapEntity, implement it in subclasses
  */
 const std::string& MapEntity::get_lua_type_name() const {
-  return Script::enemy_module_name;
+  return LuaContext::enemy_module_name;
 }
 

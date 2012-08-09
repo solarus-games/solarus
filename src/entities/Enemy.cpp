@@ -1258,6 +1258,6 @@ Enemy::ObstacleBehavior Enemy::get_obstacle_behavior_by_name(const std::string& 
  * @return The name identifying this type in Lua.
  */
 const std::string& Enemy::get_lua_type_name() const {
-  return Script::enemy_module_name;
+  return LuaContext::enemy_module_name;
 }
 

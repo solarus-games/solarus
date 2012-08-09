@@ -457,5 +457,5 @@ EquipmentItem::ShadowSize EquipmentItem::get_shadow_size() {
  * @return The name identifying this type in Lua.
  */
 const std::string& EquipmentItem::get_lua_type_name() const {
-  return Script::item_module_name;
+  return LuaContext::item_module_name;
 }

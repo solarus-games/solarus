@@ -19,14 +19,15 @@
 #include "Timer.h"
 #include "Game.h"
 #include "CustomScreen.h"
+#include <list>
 #include <lua.hpp>
 
-const std::string Script::timer_module_name = "sol.timer";
+const std::string LuaContext::timer_module_name = "sol.timer";
 
 /**
  * @brief Initializes the timer features provided to Lua.
  */
-void Script::register_timer_module() {
+void LuaContext::register_timer_module() {
 
   // Functions of sol.timer.
   static const luaL_Reg functions[] = {
@@ -54,7 +55,7 @@ void Script::register_timer_module() {
  * @brief Returns whether a timer just created should be initially suspended.
  * @return true to initially suspend a new timer
  */
-bool Script::is_new_timer_suspended(void) {
+bool LuaContext::is_new_timer_suspended(void) {
 
   if (get_current_game() != NULL) {
     // start the timer even if the game is suspended (e.g. a timer started during a camera movement)
@@ -72,7 +73,7 @@ bool Script::is_new_timer_suspended(void) {
  * @param index an index in the stack
  * @return the timer
  */
-Timer& Script::check_timer(lua_State* l, int index) {
+Timer& LuaContext::check_timer(lua_State* l, int index) {
   return static_cast<Timer&>(check_userdata(l, index, timer_module_name));
 }
 
@@ -81,7 +82,7 @@ Timer& Script::check_timer(lua_State* l, int index) {
  * @param l a Lua context
  * @param timer a timer
  */
-void Script::push_timer(lua_State* l, Timer& timer) {
+void LuaContext::push_timer(lua_State* l, Timer& timer) {
   push_userdata(l, timer);
 }
 
@@ -91,11 +92,12 @@ void Script::push_timer(lua_State* l, Timer& timer) {
  * @param context_index Index of the table or userdata in the stack.
  * @param callback_index Index of the function to call when the timer finishes.
  */
-void Script::add_timer(Timer* timer, int context_index, int callback_index) {
+void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
-    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    ExportableToLua** userdata = static_cast<ExportableToLua**>(
+        lua_touserdata(l, context_index));
     context = *userdata;
   }
   else {
@@ -110,7 +112,7 @@ void Script::add_timer(Timer* timer, int context_index, int callback_index) {
   timers[timer].callback_ref = callback_ref;
   timers[timer].context = context;
 
-  if (get_script(l).is_new_timer_suspended()) {
+  if (get_lua_context(l).is_new_timer_suspended()) {
     timer->set_suspended(true);
   }
   increment_refcount(timer);
@@ -120,7 +122,7 @@ void Script::add_timer(Timer* timer, int context_index, int callback_index) {
  * @brief Unregisters a timer associated to a context.
  * @param timer A timer.
  */
-void Script::remove_timer(Timer* timer) {
+void LuaContext::remove_timer(Timer* timer) {
 
   Debug::check_assertion(timers.count(timer) > 0,
       "Cannot remove this timer: timer not found");
@@ -136,7 +138,7 @@ void Script::remove_timer(Timer* timer) {
  * @brief Unregisters all timers associated to a context.
  * @param context_index Index of a table or userdata containing timers.
  */
-void Script::remove_timers(int context_index) {
+void LuaContext::remove_timers(int context_index) {
 
   std::list<Timer*> timers_to_remove;
 
@@ -170,7 +172,7 @@ void Script::remove_timers(int context_index) {
 /**
  * @brief Unregisters all existing timers.
  */
-void Script::remove_timers() {
+void LuaContext::remove_timers() {
 
   std::map<Timer*, LuaTimerData>::iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
@@ -187,7 +189,7 @@ void Script::remove_timers() {
 /**
  * @brief Updates all timers currently running for this script.
  */
-void Script::update_timers() {
+void LuaContext::update_timers() {
 
   std::list<Timer*> timers_to_remove;
 
@@ -216,7 +218,7 @@ void Script::update_timers() {
  * or resumed.
  * @param suspended true if the game is suspended, false if it is resumed.
  */
-void Script::set_suspended_timers(bool suspended) {
+void LuaContext::set_suspended_timers(bool suspended) {
 
   std::map<Timer*, LuaTimerData>::iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
@@ -229,10 +231,10 @@ void Script::set_suspended_timers(bool suspended) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::timer_api_start(lua_State *l) {
+int LuaContext::timer_api_start(lua_State *l) {
 
   // Parameters: [context] delay callback.
-  Script& script = get_script(l);
+  LuaContext& lua_context = get_lua_context(l);
 
   if (lua_type(l, 1) != LUA_TNUMBER) {
     // The first parameter is the context.
@@ -246,12 +248,12 @@ int Script::timer_api_start(lua_State *l) {
     // - during a game: the current map,
     // - outside a game: the current menu.
 
-    Game* current_game = script.get_current_game();
+    Game* current_game = lua_context.get_current_game();
     if (current_game != NULL) {
       push_map(l, current_game->get_current_map());
     }
     else {
-      CustomScreen* current_screen = script.get_current_screen();
+      CustomScreen* current_screen = lua_context.get_current_screen();
       if (current_screen != NULL) {
         push_ref(l, current_screen->get_menu_ref());
       }
@@ -270,13 +272,13 @@ int Script::timer_api_start(lua_State *l) {
   if (delay == 0) {
     // The delay is zero: call the function right now.
     lua_settop(l, 3);
-    script.call_function(0, 0, "callback");
+    lua_context.call_function(0, 0, "callback");
     lua_pushnil(l);
   }
   else {
     // Create the timer.
     Timer* timer = new Timer(delay);
-    script.add_timer(timer, 1, 3);
+    lua_context.add_timer(timer, 1, 3);
     push_timer(l, *timer);
   }
 
@@ -288,11 +290,11 @@ int Script::timer_api_start(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::timer_api_stop(lua_State* l) {
+int LuaContext::timer_api_stop(lua_State* l) {
 
-  Script& script = get_script(l);
+  LuaContext& lua_context = get_lua_context(l);
   Timer& timer = check_timer(l, 1);
-  script.remove_timer(&timer);
+  lua_context.remove_timer(&timer);
 
   return 0;
 }
@@ -302,7 +304,7 @@ int Script::timer_api_stop(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::timer_api_is_with_sound(lua_State* l) {
+int LuaContext::timer_api_is_with_sound(lua_State* l) {
 
   Timer& timer = check_timer(l, 1);
 
@@ -315,7 +317,7 @@ int Script::timer_api_is_with_sound(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::timer_api_set_with_sound(lua_State* l) {
+int LuaContext::timer_api_set_with_sound(lua_State* l) {
 
   Timer& timer = check_timer(l, 1);
   bool with_sound = true;

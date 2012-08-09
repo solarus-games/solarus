@@ -23,12 +23,12 @@
 #include <sstream>
 #include <cmath>
 
-const std::string Script::main_module_name = "sol.main";
+const std::string LuaContext::main_module_name = "sol.main";
 
 /**
  * @brief Initializes the main features provided to Lua.
  */
-void Script::register_main_module() {
+void LuaContext::register_main_module() {
 
   static const luaL_Reg functions[] = {
       { "load_file", main_api_load_file },
@@ -47,7 +47,7 @@ void Script::register_main_module() {
  * @brief Pushes the sol.main table onto the stack.
  * @param l A Lua state.
  */
-void Script::push_main(lua_State* l) {
+void LuaContext::push_main(lua_State* l) {
 
                                   // ...
   lua_getglobal(l, "sol");
@@ -63,7 +63,7 @@ void Script::push_main(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::main_api_load_file(lua_State *l) {
+int LuaContext::main_api_load_file(lua_State *l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 
@@ -79,7 +79,7 @@ int Script::main_api_load_file(lua_State *l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::main_api_do_file(lua_State *l) {
+int LuaContext::main_api_do_file(lua_State *l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 
@@ -93,11 +93,9 @@ int Script::main_api_do_file(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::main_api_reset(lua_State* l) {
+int LuaContext::main_api_reset(lua_State* l) {
 
-  Script& script = get_script(l);
-
-  script.get_main_loop().set_resetting();
+  get_lua_context(l).get_main_loop().set_resetting();
 
   return 0;
 }
@@ -107,11 +105,9 @@ int Script::main_api_reset(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::main_api_exit(lua_State* l) {
+int LuaContext::main_api_exit(lua_State* l) {
 
-  Script& script = get_script(l);
-
-  script.get_main_loop().set_exiting();
+  get_lua_context(l).get_main_loop().set_exiting();
 
   return 0;
 }
@@ -121,17 +117,17 @@ int Script::main_api_exit(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::main_api_start_screen(lua_State* l) {
+int LuaContext::main_api_start_screen(lua_State* l) {
 
-  Script& script = get_script(l);
+  LuaContext& lua_context = get_lua_context(l);
   luaL_checktype(l, 1, LUA_TTABLE);
 
   // Store the menu object.
-  int menu_ref = script.create_ref();
+  int menu_ref = lua_context.create_ref();
 
-  MainLoop& main_loop = script.get_main_loop();
+  MainLoop& main_loop = lua_context.get_main_loop();
   CustomScreen* screen = new CustomScreen(main_loop, menu_ref);
-  script.set_current_screen(screen);
+  lua_context.set_current_screen(screen);
   main_loop.set_next_screen(screen);
 
   return 0;
@@ -142,7 +138,7 @@ int Script::main_api_start_screen(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::main_api_get_distance(lua_State *l) {
+int LuaContext::main_api_get_distance(lua_State *l) {
 
   int x1 = luaL_checkinteger(l, 1);
   int y1 = luaL_checkinteger(l, 2);
@@ -160,7 +156,7 @@ int Script::main_api_get_distance(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int Script::main_api_get_angle(lua_State *l) {
+int LuaContext::main_api_get_angle(lua_State *l) {
 
   int x1 = luaL_checkinteger(l, 1);
   int y1 = luaL_checkinteger(l, 2);

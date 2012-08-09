@@ -24,12 +24,12 @@
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
-const std::string Script::game_module_name = "sol.game";
+const std::string LuaContext::game_module_name = "sol.game";
 
 /**
  * @brief Initializes the game features provided to Lua.
  */
-void Script::register_game_module() {
+void LuaContext::register_game_module() {
 
   static const luaL_Reg methods[] = {
       { "exists", game_api_exists },
@@ -97,7 +97,7 @@ void Script::register_game_module() {
  * @param index an index in the stack
  * @return the game
  */
-Savegame& Script::check_game(lua_State* l, int index) {
+Savegame& LuaContext::check_game(lua_State* l, int index) {
   return static_cast<Savegame&>(check_userdata(l, index, game_module_name));
 }
 
@@ -106,7 +106,7 @@ Savegame& Script::check_game(lua_State* l, int index) {
  * @param l A Lua context.
  * @param game A game.
  */
-void Script::push_game(lua_State* l, Savegame& game) {
+void LuaContext::push_game(lua_State* l, Savegame& game) {
   push_userdata(l, game);
 }
 
@@ -115,7 +115,7 @@ void Script::push_game(lua_State* l, Savegame& game) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_exists(lua_State* l) {
+int LuaContext::game_api_exists(lua_State* l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 
@@ -130,7 +130,7 @@ int Script::game_api_exists(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_delete(lua_State* l) {
+int LuaContext::game_api_delete(lua_State* l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 
@@ -144,12 +144,11 @@ int Script::game_api_delete(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_load(lua_State* l) {
+int LuaContext::game_api_load(lua_State* l) {
 
-  LuaContext& lua_context = (LuaContext&) get_script(l);
   const std::string& file_name = luaL_checkstring(l, 1);
 
-  Savegame* savegame = new Savegame(lua_context, file_name);
+  Savegame* savegame = new Savegame(get_lua_context(l), file_name);
 
   push_game(l, *savegame);
   return 1;
@@ -160,7 +159,7 @@ int Script::game_api_load(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_save(lua_State* l) {
+int LuaContext::game_api_save(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   savegame.save();
@@ -173,9 +172,8 @@ int Script::game_api_save(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_start(lua_State* l) {
+int LuaContext::game_api_start(lua_State* l) {
 
-  LuaContext& lua_context = (LuaContext&) get_script(l);
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
@@ -185,7 +183,7 @@ int Script::game_api_start(lua_State* l) {
   }
   else {
     // Create a new game to run.
-    MainLoop& main_loop = lua_context.get_main_loop();
+    MainLoop& main_loop = get_lua_context(l).get_main_loop();
     Game* game = new Game(main_loop, &savegame);
     main_loop.set_next_screen(game);
   }
@@ -198,7 +196,7 @@ int Script::game_api_start(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_is_started(lua_State* l) {
+int LuaContext::game_api_is_started(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
@@ -214,7 +212,7 @@ int Script::game_api_is_started(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_is_suspended(lua_State* l) {
+int LuaContext::game_api_is_suspended(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
@@ -230,7 +228,7 @@ int Script::game_api_is_suspended(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_string(lua_State* l) {
+int LuaContext::game_api_get_string(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int index = luaL_checkinteger(l, 2);
@@ -247,7 +245,7 @@ int Script::game_api_get_string(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_integer(lua_State* l) {
+int LuaContext::game_api_get_integer(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int index = luaL_checkinteger(l, 2);
@@ -264,7 +262,7 @@ int Script::game_api_get_integer(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_boolean(lua_State* l) {
+int LuaContext::game_api_get_boolean(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int index = luaL_checkinteger(l, 2);
@@ -281,7 +279,7 @@ int Script::game_api_get_boolean(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_string(lua_State* l) {
+int LuaContext::game_api_set_string(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int index = luaL_checkinteger(l, 2);
@@ -303,7 +301,7 @@ int Script::game_api_set_string(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_integer(lua_State* l) {
+int LuaContext::game_api_set_integer(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int index = luaL_checkinteger(l, 2);
@@ -325,7 +323,7 @@ int Script::game_api_set_integer(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_boolean(lua_State* l) {
+int LuaContext::game_api_set_boolean(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int index = luaL_checkinteger(l, 2);
@@ -344,7 +342,7 @@ int Script::game_api_set_boolean(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_player_name(lua_State* l) {
+int LuaContext::game_api_get_player_name(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
@@ -359,7 +357,7 @@ int Script::game_api_get_player_name(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_player_name(lua_State* l) {
+int LuaContext::game_api_set_player_name(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -374,7 +372,7 @@ int Script::game_api_set_player_name(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_life(lua_State* l) {
+int LuaContext::game_api_get_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
@@ -388,7 +386,7 @@ int Script::game_api_get_life(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_life(lua_State* l) {
+int LuaContext::game_api_set_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int life = luaL_checkinteger(l, 2);
@@ -403,7 +401,7 @@ int Script::game_api_set_life(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_add_life(lua_State* l) {
+int LuaContext::game_api_add_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int life = luaL_checkinteger(l, 2);
@@ -418,7 +416,7 @@ int Script::game_api_add_life(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_remove_life(lua_State* l) {
+int LuaContext::game_api_remove_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int life = luaL_checkinteger(l, 2);
@@ -433,7 +431,7 @@ int Script::game_api_remove_life(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_max_life(lua_State* l) {
+int LuaContext::game_api_get_max_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
@@ -448,7 +446,7 @@ int Script::game_api_get_max_life(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_max_life(lua_State* l) {
+int LuaContext::game_api_set_max_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int life = luaL_checkinteger(l, 2);
@@ -463,7 +461,7 @@ int Script::game_api_set_max_life(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_add_max_life(lua_State* l) {
+int LuaContext::game_api_add_max_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int life = luaL_checkinteger(l, 2);
@@ -479,7 +477,7 @@ int Script::game_api_add_max_life(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_money(lua_State* l) {
+int LuaContext::game_api_get_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
@@ -494,7 +492,7 @@ int Script::game_api_get_money(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_money(lua_State* l) {
+int LuaContext::game_api_set_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int money = luaL_checkinteger(l, 2);
@@ -509,7 +507,7 @@ int Script::game_api_set_money(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_add_money(lua_State* l) {
+int LuaContext::game_api_add_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int money = luaL_checkinteger(l, 2);
@@ -524,7 +522,7 @@ int Script::game_api_add_money(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_remove_money(lua_State* l) {
+int LuaContext::game_api_remove_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int money = luaL_checkinteger(l, 2);
@@ -539,7 +537,7 @@ int Script::game_api_remove_money(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_magic(lua_State* l) {
+int LuaContext::game_api_get_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
@@ -554,7 +552,7 @@ int Script::game_api_get_magic(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_magic(lua_State* l) {
+int LuaContext::game_api_set_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int magic = luaL_checkinteger(l, 2);
@@ -569,7 +567,7 @@ int Script::game_api_set_magic(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_add_magic(lua_State* l) {
+int LuaContext::game_api_add_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int magic = luaL_checkinteger(l, 2);
@@ -584,7 +582,7 @@ int Script::game_api_add_magic(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_remove_magic(lua_State* l) {
+int LuaContext::game_api_remove_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int magic = luaL_checkinteger(l, 2);
@@ -599,7 +597,7 @@ int Script::game_api_remove_magic(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_start_decreasing_magic(lua_State* l) {
+int LuaContext::game_api_start_decreasing_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   uint32_t delay = luaL_checkinteger(l, 2);
@@ -614,7 +612,7 @@ int Script::game_api_start_decreasing_magic(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_stop_decreasing_magic(lua_State* l) {
+int LuaContext::game_api_stop_decreasing_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
@@ -628,7 +626,7 @@ int Script::game_api_stop_decreasing_magic(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_max_magic(lua_State* l) {
+int LuaContext::game_api_get_max_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
 
@@ -643,7 +641,7 @@ int Script::game_api_get_max_magic(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_max_magic(lua_State* l) {
+int LuaContext::game_api_set_max_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int magic = luaL_checkinteger(l, 2);
@@ -658,7 +656,7 @@ int Script::game_api_set_max_magic(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_has_ability(lua_State* l) {
+int LuaContext::game_api_has_ability(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& ability_name = luaL_checkstring(l, 2);
@@ -674,7 +672,7 @@ int Script::game_api_has_ability(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_ability(lua_State* l) {
+int LuaContext::game_api_get_ability(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& ability_name = luaL_checkstring(l, 2);
@@ -690,7 +688,7 @@ int Script::game_api_get_ability(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_ability(lua_State* l) {
+int LuaContext::game_api_set_ability(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& ability_name = luaL_checkstring(l, 2);
@@ -706,7 +704,7 @@ int Script::game_api_set_ability(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_has_item(lua_State* l) {
+int LuaContext::game_api_has_item(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
@@ -722,7 +720,7 @@ int Script::game_api_has_item(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_item(lua_State* l) {
+int LuaContext::game_api_get_item(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
@@ -738,7 +736,7 @@ int Script::game_api_get_item(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_item(lua_State* l) {
+int LuaContext::game_api_set_item(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
@@ -754,7 +752,7 @@ int Script::game_api_set_item(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_has_item_amount(lua_State* l) {
+int LuaContext::game_api_has_item_amount(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
@@ -771,7 +769,7 @@ int Script::game_api_has_item_amount(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_get_item_amount(lua_State* l) {
+int LuaContext::game_api_get_item_amount(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
@@ -787,7 +785,7 @@ int Script::game_api_get_item_amount(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_add_item_amount(lua_State* l) {
+int LuaContext::game_api_add_item_amount(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
@@ -803,7 +801,7 @@ int Script::game_api_add_item_amount(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_remove_item_amount(lua_State* l) {
+int LuaContext::game_api_remove_item_amount(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
@@ -819,7 +817,7 @@ int Script::game_api_remove_item_amount(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_is_dungeon_finished(lua_State* l) {
+int LuaContext::game_api_is_dungeon_finished(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int dungeon = luaL_checkinteger(l, 2);
@@ -835,7 +833,7 @@ int Script::game_api_is_dungeon_finished(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int Script::game_api_set_dungeon_finished(lua_State* l) {
+int LuaContext::game_api_set_dungeon_finished(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   int dungeon = luaL_checkinteger(l, 2);

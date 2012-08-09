@@ -16,7 +16,7 @@
  */
 #include "movements/PathFindingMovement.h"
 #include "movements/PathFinding.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/System.h"
@@ -118,6 +118,6 @@ bool PathFindingMovement::is_finished() {
  * @return the name identifying this type in Lua
  */
 const std::string& PathFindingMovement::get_lua_type_name() const {
-  return Script::path_finding_movement_module_name;
+  return LuaContext::path_finding_movement_module_name;
 }
 

@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/CircleMovement.h"
-#include "lua/Script.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/Debug.h"
@@ -452,6 +452,6 @@ void CircleMovement::stop() {
  * @return the name identifying this type in Lua
  */
 const std::string& CircleMovement::get_lua_type_name() const {
-  return Script::circle_movement_module_name;
+  return LuaContext::circle_movement_module_name;
 }
 

@@ -935,6 +935,8 @@ int Script::enemy_api_create_sprite(lua_State* l) {
   const std::string& animation_set_id = luaL_checkstring(l, 2);
 
   Sprite& sprite = enemy.create_sprite(animation_set_id, true);
+  sprite.set_creator_script(&get_script(l));
+  sprite.increment_refcount();
 
   push_userdata(l, sprite);
   return 1;

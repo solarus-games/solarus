@@ -940,6 +940,7 @@ Sprite& MapEntity::create_sprite(const std::string& animation_set_id,
     bool enable_pixel_collisions) {
 
   Sprite* sprite = new Sprite(animation_set_id);
+  sprite->increment_refcount();
 
   if (enable_pixel_collisions) {
     sprite->enable_pixel_collisions();
@@ -987,14 +988,8 @@ void MapEntity::clear_old_sprites() {
     Sprite* sprite = *it;
     sprites.remove(sprite);
 
-    if (sprite->get_creator_script() != NULL) {
-      // the sprite was created by a script: this script is responsible
-      sprite->decrement_refcount();
-      if (sprite->get_refcount() == 0) {
-        delete sprite;
-      }
-    }
-    else {
+    sprite->decrement_refcount();
+    if (sprite->get_refcount() == 0) {
       delete sprite;
     }
   }
@@ -1064,6 +1059,7 @@ Movement* MapEntity::get_movement() {
 void MapEntity::set_movement(Movement *movement) {
 
   this->movement = movement;
+  movement->increment_refcount();
 
   if (movement != NULL) {
     movement->set_entity(this);
@@ -1098,14 +1094,8 @@ void MapEntity::clear_old_movements() {
   std::list<Movement*>::iterator it;
   for (it = old_movements.begin(); it != old_movements.end(); it++) {
     Movement* movement = *it;
-    if (movement->get_creator_script() != NULL) {
-      // the movement was created by a script: this script is responsible
-      movement->decrement_refcount();
-      if (movement->get_refcount() == 0) {
-        delete movement;
-      }
-    }
-    else {
+    movement->decrement_refcount();
+    if (movement->get_refcount() == 0) {
       delete movement;
     }
   }

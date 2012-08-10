@@ -302,7 +302,6 @@ int LuaContext::movement_api_create(lua_State* l) {
         "\"pixel\"");
   }
 
-  lua_context.set_created(movement);
   push_movement(l, *movement);
 
   return 1;

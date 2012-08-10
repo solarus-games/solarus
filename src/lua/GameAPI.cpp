@@ -148,7 +148,7 @@ int LuaContext::game_api_load(lua_State* l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 
-  Savegame* savegame = new Savegame(get_lua_context(l), file_name);
+  Savegame* savegame = new Savegame(file_name);
 
   push_game(l, *savegame);
   return 1;

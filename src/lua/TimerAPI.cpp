@@ -108,14 +108,13 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
   int callback_ref = create_ref();
   lua_pop(l, 1);
 
-  set_created(timer);
   timers[timer].callback_ref = callback_ref;
   timers[timer].context = context;
 
   if (get_lua_context(l).is_new_timer_suspended()) {
     timer->set_suspended(true);
   }
-  increment_refcount(timer);
+  timer->increment_refcount();
 }
 
 /**
@@ -131,7 +130,10 @@ void LuaContext::remove_timer(Timer* timer) {
     destroy_ref(timers[timer].callback_ref);
   }
   timers.erase(timer);
-  decrement_refcount(timer);  // Deleted if Lua has already collected it.
+  timer->decrement_refcount();
+  if (timer->get_refcount() == 0) {
+    delete timer;
+  }
 }
 
 /**
@@ -158,8 +160,11 @@ void LuaContext::remove_timers(int context_index) {
       if (!timer->is_finished()) {
         destroy_ref(it->second.callback_ref);
       }
-      decrement_refcount(timer);
       timers_to_remove.push_back(timer);
+      timer->decrement_refcount();
+      if (timer->get_refcount() == 0) {
+        delete timer;
+      }
     }
   }
 
@@ -181,7 +186,10 @@ void LuaContext::remove_timers() {
     if (!timer->is_finished()) {
       destroy_ref(it->second.callback_ref);
     }
-    decrement_refcount(timer);
+    timer->decrement_refcount();
+    if (timer->get_refcount() == 0) {
+      delete timer;
+    }
   }
   timers.clear();
 }

@@ -45,6 +45,7 @@ MainLoop::MainLoop(int argc, char** argv):
   // Initialize low-level features (audio, video, files...).
   System::initialize(argc, argv);
   root_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
+  root_surface->increment_refcount();
   debug_keys = new DebugKeys(*this);
   lua_context = new LuaContext(*this);
   lua_context->initialize();
@@ -58,6 +59,7 @@ MainLoop::~MainLoop() {
   delete current_screen;
   delete next_screen;
   delete lua_context;
+  root_surface->decrement_refcount();
   delete root_surface;
   delete debug_keys;
   System::quit();
@@ -65,7 +67,7 @@ MainLoop::~MainLoop() {
 
 /**
  * @brief Returns the debugging keys object.
- * @return the debbuging keys object
+ * @return the debugging keys object
  */
 DebugKeys& MainLoop::get_debug_keys() {
   return *debug_keys;
@@ -136,7 +138,7 @@ void MainLoop::set_next_screen(Screen* next_screen) {
 void MainLoop::start_game(const std::string& savegame_file) {
 
   if (FileTools::data_file_exists(savegame_file)) {
-    Savegame* savegame = new Savegame(*lua_context, savegame_file);
+    Savegame* savegame = new Savegame(savegame_file);
     Game* game = new Game(*this, savegame);
     set_next_screen(game);
   }

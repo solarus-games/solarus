@@ -29,7 +29,8 @@ DynamicDisplayable::DynamicDisplayable():
   movement(NULL),
   movement_callback_ref(LUA_REFNIL),
   transition(NULL),
-  transition_callback_ref(LUA_REFNIL) {
+  transition_callback_ref(LUA_REFNIL),
+  lua_context(NULL) {
 
 }
 
@@ -47,16 +48,18 @@ DynamicDisplayable::~DynamicDisplayable() {
  *
  * Any previous movement is stopped.
  *
- * @param movement the movement to apply
- * @param callback_ref a Lua registry ref to the function to call when
- * the movement finishes, or LUA_REFNIL
+ * @param movement The movement to apply.
+ * @param callback_ref A Lua registry ref to the function to call when
+ * the movement finishes, or LUA_REFNIL.
+ * @param lua_context The Lua world for the callback (or NULL).
  */
 void DynamicDisplayable::start_movement(Movement& movement,
-    int callback_ref) {
+    int callback_ref, LuaContext* lua_context) {
 
   stop_movement();
   this->movement = &movement;
   this->movement_callback_ref = callback_ref;
+  this->lua_context = lua_context;
   movement.increment_refcount();
 }
 
@@ -79,24 +82,10 @@ void DynamicDisplayable::stop_movement() {
   }
   movement = NULL;
 
-  if (get_creator_script() != NULL) {
-    get_creator_script()->cancel_callback(this->movement_callback_ref);
+  if (lua_context != NULL) {
+    lua_context->cancel_callback(this->movement_callback_ref);
     movement_callback_ref = LUA_REFNIL;
   }
-}
-
-/**
- * @brief Sets a Lua function to be called when the movement is finished.
- * @param movement_callback_ref a Lua ref to the callback in the registry
- * (if you pass LUA_REFNIL, this function removes the previous callback that
- * was set, if any)
- */
-void DynamicDisplayable::set_movement_callback(int movement_callback_ref) {
-
-  Debug::check_assertion(get_creator_script() != NULL,
-      "Cannot set a movement callback without script");
-
-  this->movement_callback_ref = movement_callback_ref;
 }
 
 /**
@@ -105,16 +94,18 @@ void DynamicDisplayable::set_movement_callback(int movement_callback_ref) {
  * The transition will be automatically deleted when finished or stopped.
  * Any previous transition is stopped.
  *
- * @param transition the transition to start
- * @param callback_ref a Lua registry ref to the function to call when
- * the transition finishes, or LUA_REFNIL
+ * @param transition The transition to start.
+ * @param callback_ref A Lua registry ref to the function to call when
+ * the transition finishes, or LUA_REFNIL.
+ * @param lua_context The Lua world for the callback (or NULL).
  */
 void DynamicDisplayable::start_transition(Transition& transition,
-    int callback_ref) {
+    int callback_ref, LuaContext* lua_context) {
 
   stop_transition();
   this->transition = &transition;
   this->transition_callback_ref = callback_ref;
+  this->lua_context = lua_context;
   transition.start();
 }
 
@@ -128,25 +119,10 @@ void DynamicDisplayable::stop_transition() {
   delete transition;
   transition = NULL;
 
-  if (get_creator_script() != NULL) {
-    get_creator_script()->cancel_callback(this->transition_callback_ref);
+  if (lua_context != NULL) {
+    lua_context->cancel_callback(this->transition_callback_ref);
     transition_callback_ref = LUA_REFNIL;
   }
-}
-
-/**
- * @brief Sets a Lua function to be called when the transition is finished.
- * @param transition_callback_ref a Lua ref to the callback in the registry
- * (if you pass LUA_REFNIL, this function removes the previous callback that
- * was set, if any)
- */
-void DynamicDisplayable::set_transition_callback(int transition_callback_ref) {
-
-  Debug::check_assertion(get_creator_script() != NULL,
-      "Cannot set a transition callback without script");
-
-  get_creator_script()->cancel_callback(this->transition_callback_ref);
-  this->transition_callback_ref = transition_callback_ref;
 }
 
 /**
@@ -161,8 +137,8 @@ void DynamicDisplayable::update() {
     transition->update();
     if (transition->is_finished()) {
 
-      if (get_creator_script() != NULL) {
-        get_creator_script()->do_callback(transition_callback_ref);
+      if (lua_context != NULL) {
+        lua_context->do_callback(transition_callback_ref);
         transition_callback_ref = LUA_REFNIL;
       }
       stop_transition();
@@ -173,8 +149,8 @@ void DynamicDisplayable::update() {
     movement->update();
     if (movement->is_finished()) {
 
-      if (get_creator_script() != NULL) {
-        get_creator_script()->do_callback(movement_callback_ref);
+      if (lua_context != NULL) {
+        lua_context->do_callback(movement_callback_ref);
         movement_callback_ref = LUA_REFNIL;
       }
       stop_movement();

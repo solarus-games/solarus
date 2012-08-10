@@ -355,56 +355,6 @@ void LuaContext::cancel_callback(int callback_ref) {
 }
 
 /**
- * @brief Returns whether a userdata belongs to this script.
- * @param userdata A userdata.
- * @return true if this script owns the userdata.
- */
-bool LuaContext::has_created(ExportableToLua* userdata) {
-  return userdata->get_creator_script() == this;
-}
-
-/**
- * @brief Makes a userdata belong to this script.
- * @param userdata A userdata.
- */
-void LuaContext::set_created(ExportableToLua* userdata) {
-  userdata->set_creator_script(this);
-}
-
-/**
- * @brief Adds 1 to the reference counter of a userdata.
- *
- * If the object was not created by this script, nothing is done.
- *
- * @param userdata A userdata.
- */
-void LuaContext::increment_refcount(ExportableToLua* userdata) {
-
-  if (has_created(userdata)) {
-    userdata->increment_refcount();
-  }
-}
-
-/**
- * @brief Removes 1 to the reference counter of a userdata and possibly
- * destroys the object.
- *
- * If the counter gets to zero, the object is deleted immediately.
- * If the object was not created by this script, nothing is done.
- *
- * @param userdata A userdata.
- */
-void LuaContext::decrement_refcount(ExportableToLua* userdata) {
-
-  if (has_created(userdata)) {
-    userdata->decrement_refcount();
-    if (userdata->get_refcount() == 0) {
-      delete userdata;
-    }
-  }
-}
-
-/**
  * @brief Looks up the specified global Lua function and places it onto the stack if it exists.
  *
  * If the function is not found, the stack is left unchanged.
@@ -805,9 +755,7 @@ void LuaContext::push_ref(lua_State* l, int ref) {
  */
 void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
 
-  LuaContext& lua_context = get_lua_context(l);
-
-  lua_context.increment_refcount(&userdata);
+  userdata.increment_refcount();
                                   // ...
   ExportableToLua** block_address = static_cast<ExportableToLua**>(
       lua_newuserdata(l, sizeof(ExportableToLua*)));
@@ -932,11 +880,13 @@ int LuaContext::userdata_meta_eq(lua_State* l) {
  */
 int LuaContext::userdata_meta_gc(lua_State* l) {
 
-  LuaContext& lua_context = get_lua_context(l);
-  ExportableToLua** userdata =
-      static_cast<ExportableToLua**>(lua_touserdata(l, 1));
+  ExportableToLua* userdata =
+      *(static_cast<ExportableToLua**>(lua_touserdata(l, 1)));
 
-  lua_context.decrement_refcount(*userdata);
+  userdata->decrement_refcount();
+  if (userdata->get_refcount() == 0) {
+    delete userdata;
+  }
 
   return 0;
 }

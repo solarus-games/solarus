@@ -24,17 +24,14 @@
 
 /**
  * @brief Creates a savegame with a specified file name, existing or not.
- * @param lua_context The Lua state.
  * @param file_name Name of the savegame file (can be a new file),
  * relative to the savegames directory.
  */
-Savegame::Savegame(LuaContext& lua_context, const std::string &file_name):
+Savegame::Savegame(const std::string &file_name):
   ExportableToLua(),
   file_name(file_name),
-  equipment(lua_context, *this),
+  equipment(*this),
   game(NULL) {
-
-  lua_context.set_created(this);  // The savegame belongs to Lua.
 
   if (!FileTools::data_file_exists(file_name)) {
     // this save does not exist yet

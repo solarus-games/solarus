@@ -92,12 +92,6 @@ class LuaContext {
     void do_callback(int callback_ref);
     void cancel_callback(int callback_ref);
 
-    // Userdata garbage collection.
-    bool has_created(ExportableToLua* userdata);
-    void set_created(ExportableToLua* userdata);
-    void increment_refcount(ExportableToLua* userdata);
-    void decrement_refcount(ExportableToLua* userdata);
-
     // Timers.
     bool is_new_timer_suspended(void);
     void add_timer(Timer* timer, int context_index, int callback_index);

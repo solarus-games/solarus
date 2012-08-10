@@ -527,8 +527,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
   if (current_map == NULL || map_id != current_map->get_id()) {
     // another map
     next_map = new Map(map_id);
-    get_lua_context().set_created(next_map);
-    get_lua_context().increment_refcount(next_map);
+    next_map->increment_refcount();
     next_map->load(*this);
     next_map->check_suspended();
   }

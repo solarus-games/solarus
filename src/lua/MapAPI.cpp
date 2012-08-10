@@ -890,7 +890,6 @@ int LuaContext::map_api_npc_start_movement(lua_State* l) {
   MapEntities& entities = map.get_entities();
   NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
 
-  get_lua_context(l).increment_refcount(&movement);
   movement.set_suspended(false);
   npc->clear_movement();
   npc->set_movement(&movement);

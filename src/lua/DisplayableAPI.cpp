@@ -52,7 +52,6 @@ DynamicDisplayable& LuaContext::check_displayable(lua_State* l, int index) {
  */
 void LuaContext::add_displayable(DynamicDisplayable* displayable) {
 
-  set_created(displayable);
   displayables.insert(displayable);
 }
 
@@ -209,11 +208,7 @@ int LuaContext::displayable_meta_gc(lua_State* l) {
   LuaContext& lua_context = get_lua_context(l);
   DynamicDisplayable& displayable = check_displayable(l, 1);
 
-  if (lua_context.has_created(&displayable)) {
-    // the object was created by the script
-    lua_context.remove_displayable(&displayable);
-  }
-
+  lua_context.remove_displayable(&displayable);
   userdata_meta_gc(l);
 
   return 0;

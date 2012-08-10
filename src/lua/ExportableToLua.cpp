@@ -22,7 +22,6 @@
  * @brief Creates an object exportable to Lua.
  */
 ExportableToLua::ExportableToLua():
-  creator_script(NULL),
   refcount(0) {
 
 }
@@ -34,27 +33,6 @@ ExportableToLua::~ExportableToLua() {
 
   Debug::check_assertion(refcount == 0, StringConcat()
       << "This object is still used somewhere else: refcount is " << refcount);
-}
-
-/**
- * @brief Returns the script that created this object if any.
- * @return the creator script or NULL
- */
-LuaContext* ExportableToLua::get_creator_script() const {
-  return creator_script;
-}
-
-/**
- * @brief Sets the creator script of this object.
- * @param creator_script the owner script or NULL
- */
-void ExportableToLua::set_creator_script(LuaContext* creator_script) {
-
-  Debug::check_assertion(this->creator_script == NULL || creator_script == NULL,
-      "This object is already marked as created by another a Lua script");
-  // we can remove this restriction one day by using a list of scripts
-
-  this->creator_script = creator_script;
 }
 
 /**

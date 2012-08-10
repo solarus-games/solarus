@@ -35,13 +35,13 @@ class DynamicDisplayable: public ExportableToLua {
     virtual ~DynamicDisplayable();
 
     // dynamic effects
-    void start_movement(Movement& movement, int callback_ref = LUA_REFNIL);
+    void start_movement(Movement& movement, int callback_ref = LUA_REFNIL,
+        LuaContext* lua_context = NULL);
     void stop_movement();
-    void set_movement_callback(int movement_callback_ref);
 
-    void start_transition(Transition& transition, int callback_ref = LUA_REFNIL);
+    void start_transition(Transition& transition, int callback_ref = LUA_REFNIL,
+        LuaContext* lua_context = NULL);
     void stop_transition();
-    void set_transition_callback(int transition_callback_ref);
 
     // displaying with effects
     void display(Surface& dst_surface);
@@ -87,6 +87,7 @@ class DynamicDisplayable: public ExportableToLua {
                                    * (will be deleted then) */
     int transition_callback_ref;  /**< Lua registry ref of a function to call
                                    * when the transition finishes */
+    LuaContext* lua_context;      /**< The Lua world used for callbacks. */
 };
 
 #endif

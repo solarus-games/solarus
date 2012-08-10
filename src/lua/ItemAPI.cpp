@@ -253,7 +253,6 @@ int LuaContext::item_api_start_movement(lua_State* l) {
   PickableItem* pickable_item = item.get_pickable_item();
   Debug::check_assertion(pickable_item != NULL,
                 "Cannot call item:start_movement(): there is no current pickable item");
-  get_lua_context(l).increment_refcount(&movement);
   pickable_item->clear_movement();
   pickable_item->set_movement(&movement);
 

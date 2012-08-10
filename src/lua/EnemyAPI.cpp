@@ -868,7 +868,6 @@ int LuaContext::enemy_api_start_movement(lua_State* l) {
   Enemy& enemy = check_enemy(l, 1);
   Movement& movement = check_movement(l, 2);
 
-  get_lua_context(l).increment_refcount(&movement);
   movement.set_suspended(false);
   enemy.clear_movement();
   enemy.set_movement(&movement);
@@ -935,8 +934,6 @@ int LuaContext::enemy_api_create_sprite(lua_State* l) {
   const std::string& animation_set_id = luaL_checkstring(l, 2);
 
   Sprite& sprite = enemy.create_sprite(animation_set_id, true);
-  sprite.set_creator_script(&get_lua_context(l));
-  sprite.increment_refcount();
 
   push_userdata(l, sprite);
   return 1;

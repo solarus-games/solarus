@@ -22,29 +22,9 @@
 
 /**
  * @brief An enemy controlled by a Lua script.
- * TODO: merge with Enemy since all enemies are custom enemies now
  */
 class CustomEnemy: public Enemy {
 
-  private:
-
-    std::string breed;  /**< breed of the enemy (determines its script file) */
-
-  protected:
-
-    void initialize();
-
-  public:
-
-    CustomEnemy(const ConstructionParameters& params, const std::string& breed);
-    ~CustomEnemy();
-
-    const std::string& get_breed();
-
-    void set_map(Map& map);
-    void update();
-    void set_suspended(bool suspended);
-    void display_on_map();
 
     void restart();
     void notify_enabled(bool enabled);

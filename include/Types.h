@@ -143,7 +143,6 @@ class DestructibleItem;
 class Chest;
 class Jumper;
 class Enemy;
-class CustomEnemy;
 class EnemyReaction;
 class NPC;
 class Block;

@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Enemy.h"
-#include "entities/CustomEnemy.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/CarriedItem.h"
@@ -64,14 +63,21 @@ const std::string Enemy::obstacle_behavior_names[] = {
 
 /**
  * @brief Creates an enemy.
- *
- * This constructor can only be called by the subclasses. Use the static method create() to create enemies.
- *
- * @param params the name and position of the enemy
+ * @param game The game.
+ * @param name Id of the enemy.
+ * @param layer The layer on the map.
+ * @param x X position on the map.
+ * @param y Y position on the map.
+ * @param breed Breed of the enemy.
+ * @param treasure Treasure dropped when the enemy is killed.
  */
-Enemy::Enemy(const ConstructionParameters &params):
+Enemy::Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
+    const std::string& breed, const Treasure& treasure):
 
-  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
+  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE,
+      name, layer, x, y, 0, 0),
+
+  breed(breed),
   damage_on_hero(1),
   magic_damage_on_hero(0),
   life(1),
@@ -94,7 +100,7 @@ Enemy::Enemy(const ConstructionParameters &params):
   immobilized(false),
   start_shaking_date(0),
   end_shaking_date(0),
-  treasure(params.treasure),
+  treasure(treasure),
   exploding(false),
   nb_explosions(0),
   next_explosion_date(0) {
@@ -120,7 +126,7 @@ Enemy::~Enemy() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Enemy::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
 
   int direction, rank, savegame_variable, treasure_variant, treasure_savegame_variable;
   std::string name, breed, treasure_name;
@@ -157,11 +163,12 @@ MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y)
  * @param y y position of the enemy on the map
  * @param direction initial direction of the enemy on the map (0 to 3)
  * this enemy is killed, or -1 if this enemy is not saved
- * @param treasure the pickable item that the enemy drops (possibly NULL)
+ * @param treasure the pickable item that the enemy drops
  * @return the enemy created (may be NULL)
  */
-MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank, int savegame_variable,
-    const std::string &name, Layer layer, int x, int y, int direction, const Treasure &treasure) {
+MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank,
+    int savegame_variable, const std::string &name, Layer layer, int x, int y,
+    int direction, const Treasure& treasure) {
 
   // see if the enemy is dead
   if (savegame_variable != -1
@@ -175,8 +182,7 @@ MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank, int sa
   }
 
   // create the enemy
-  const ConstructionParameters params = {game, treasure, name, layer, x, y};
-  Enemy *enemy = new CustomEnemy(params, breed);
+  Enemy *enemy = new Enemy(game, name, layer, x, y, breed, treasure);
 
   // initialize the fields
   enemy->set_direction(direction);
@@ -199,6 +205,14 @@ MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank, int sa
  */
 EntityType Enemy::get_type() {
   return ENEMY;
+}
+
+/**
+ * @brief Initializes the enemy.
+ */
+void Enemy::initialize() {
+
+  get_lua_context().notify_enemy_created(*this);
 }
 
 /**
@@ -244,6 +258,30 @@ void Enemy::notify_map_opening_transition_finished() {
   if (is_enabled() && is_in_normal_state()) {
     restart();
   }
+}
+
+/**
+ * @brief Returns the breed of this enemy.
+ * @return The breed.
+ */
+const std::string& Enemy::get_breed() {
+  return breed;
+}
+
+/**
+ * @brief Returns the father of this enemy.
+ * @return Id of the father, or an empty string.
+ */
+const std::string& Enemy::get_father_name() {
+  return father_name;
+}
+
+/**
+ * @brief Sets the father of this enemy.
+ * @param father_name Id of the father, or an empty string.
+ */
+void Enemy::set_father_name(const std::string& father_name) {
+  this->father_name = father_name;
 }
 
 /**
@@ -330,32 +368,35 @@ bool Enemy::is_lava_obstacle() {
 }
 
 /**
+ * @brief Returns the amount of damage this kind of enemy can make to the hero.
+ * @return Number of life points the player loses.
+ */
+int Enemy::get_damage() {
+  return damage_on_hero;
+}
+
+/**
  * @brief Sets the amount of damage this kind of enemy can make to the hero.
- * @param damage_on_hero number of heart quarters the player loses
+ * @param damage_on_hero Number of life points the player loses.
  */
 void Enemy::set_damage(int damage_on_hero) {
   this->damage_on_hero = damage_on_hero;
 }
 
 /**
- * @brief Sets the amount of damage this kind of enemy can make to the hero.
- * @param damage_on_hero number of heart quarters the player loses
- * @param magic_damage_on_hero number of magic points the player loses
+ * @brief Returns the amount of magic damage this kind of enemy can make to the hero.
+ * @return Number of magic points the player loses.
  */
-void Enemy::set_damage(int damage_on_hero, int magic_damage_on_hero) {
-  set_damage(damage_on_hero);
-  this->magic_damage_on_hero = magic_damage_on_hero;
+int Enemy::get_magic_damage() {
+  return magic_damage_on_hero;
 }
 
 /**
- * @brief Sets the number of health points of the enemy.
- * @param life number of health points of the enemy
+ * @brief Sets the amount of magic damage this kind of enemy can make to the hero.
+ * @param magic_damage_on_hero Number of magic points the player loses.
  */
-void Enemy::set_life(int life) {
-  this->life = life;
-  if (!being_hurt && this->life <= 0) {
-    kill();
-  }
+void Enemy::set_magic_damage(int magic_damage_on_hero) {
+  this->magic_damage_on_hero = magic_damage_on_hero;
 }
 
 /**
@@ -364,6 +405,54 @@ void Enemy::set_life(int life) {
  */
 int Enemy::get_life() {
   return life;
+}
+
+/**
+ * @brief Sets the number of health points of the enemy.
+ * @param life number of health points of the enemy
+ */
+void Enemy::set_life(int life) {
+
+  this->life = life;
+  if (!being_hurt && this->life <= 0) {
+    kill();
+  }
+}
+
+/**
+ * @brief Returns the style of sounds and animations when this enemy is hurt.
+ * @return The style when hurt.
+ */
+Enemy::HurtStyle Enemy::get_hurt_style() {
+  return hurt_style;
+}
+
+/**
+ * @brief Sets the style of sounds and animations when this enemy is hurt.
+ * @param hurt_style The style when hurt.
+ */
+void Enemy::set_hurt_style(HurtStyle hurt_style) {
+  this->hurt_style = hurt_style;
+}
+
+/**
+ * @brief Returns whether this enemy can currently attack the hero.
+ * @return true if this enemy can currently attack the hero
+ */
+bool Enemy::get_can_attack() {
+  return can_attack;
+}
+
+/**
+ * @brief Sets whether this enemy can attack the hero.
+ * @param can_attack true to allow this enemy to attack the hero
+ */
+void Enemy::set_can_attack(bool can_attack) {
+
+  this->can_attack = can_attack;
+  if (!can_attack) {
+    can_attack_again_date = 0;
+  }
 }
 
 /**
@@ -383,8 +472,17 @@ void Enemy::set_obstacle_behavior(ObstacleBehavior obstacle_behavior) {
 }
 
 /**
+ * @brief Returns whether the enemy is pushed back when it gets hurt by the hero.
+ * @return \c true if the enemy is pushed back when it gets hurt.
+ */
+bool Enemy::get_pushed_back_when_hurt() {
+  return pushed_back_when_hurt;
+}
+
+
+/**
  * @brief Sets whether the enemy is pushed back when it gets hurt by the hero.
- * @param pushed_back_when_hurt true to make the enemy pushed back when it gets hury
+ * @param pushed_back_when_hurt true to make the enemy pushed back when it gets hurt.
  */
 void Enemy::set_pushed_back_when_hurt(bool pushed_back_when_hurt) {
   this->pushed_back_when_hurt = pushed_back_when_hurt;
@@ -420,6 +518,34 @@ bool Enemy::get_can_hurt_hero_running() {
  */
 void Enemy::set_can_hurt_hero_running(bool can_hurt_hero_running) {
   this->can_hurt_hero_running = can_hurt_hero_running;
+}
+
+/**
+ * @brief Returns the shield level required to avoid attacks of this enemy.
+ * @return The minimum shield needed (\c 0 means unavoidable attacks).
+ */
+int Enemy::get_minimum_shield_needed() {
+  return minimum_shield_needed;
+}
+
+/**
+ * @brief Sets the shield level required to avoid attacks of this enemy.
+ * @param minimum_shield_needed The minimum shield needed (\c 0 means unavoidable attacks).
+ */
+void Enemy::set_minimum_shield_needed(int minimum_shield_needed) {
+  this->minimum_shield_needed = minimum_shield_needed;
+}
+
+/**
+ * @brief Returns the reaction corresponding to an attack on a sprite of this enemy.
+ * @param attack an attack this enemy receives
+ * @param this_sprite the sprite attacked, or NULL if the attack does not come from
+ * a pixel-precise collision test
+ * @return the corresponding reaction
+ */
+const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
+
+  return attack_reactions[attack].get_reaction(this_sprite);
 }
 
 /**
@@ -633,9 +759,11 @@ void Enemy::update() {
     // remove the enemy
     remove_from_map();
 
-    // notify the scripts
+    // notify Lua
     get_lua_context().map_on_enemy_dead(get_map(), *this);
   }
+
+  get_lua_context().enemy_on_update(*this);
 }
 
 /**
@@ -655,6 +783,23 @@ void Enemy::set_suspended(bool suspended) {
     end_shaking_date += diff;
     next_explosion_date += diff;
   }
+  get_lua_context().enemy_on_suspended(*this, suspended);
+}
+
+/**
+ * @brief Displays the entity on the map.
+ */
+void Enemy::display_on_map() {
+
+  if (is_visible()) {
+    get_lua_context().enemy_on_pre_display(*this);
+  }
+
+  Detector::display_on_map();
+
+  if (is_visible()) {
+    get_lua_context().enemy_on_post_display(*this);
+  }
 }
 
 /**
@@ -663,42 +808,118 @@ void Enemy::set_suspended(bool suspended) {
  */
 void Enemy::notify_enabled(bool enabled) {
 
-  MapEntity::notify_enabled(enabled);
+  Detector::notify_enabled(enabled);
 
   if (enabled) {
     initialize();
     restart();
+    get_lua_context().enemy_on_enabled(*this);
+  }
+  else {
+    get_lua_context().enemy_on_disabled(*this);
   }
 }
 
 /**
- * @brief Returns whether this enemy is in a normal state.
- *
- * The enemy is considered to be in its normal state if
- * it is not disabled, dying, being hurt or immobilized.
- * When this method returns false, the subclasses of Enemy
- * should not change the enemy properties.
- *
- * @return true if this enemy is in a normal state
+ * @brief Notifies this entity that it has just failed to change its position
+ * because of obstacles.
  */
-bool Enemy::is_in_normal_state() {
-  return is_enabled() && !is_being_hurt() && get_life() > 0 && !is_immobilized() && !is_being_removed();
+void Enemy::notify_obstacle_reached() {
+
+  Detector::notify_obstacle_reached();
+
+  if (!is_being_hurt()) {
+    get_lua_context().enemy_on_obstacle_reached(*this);
+  }
 }
 
 /**
- * @brief Notifies this enemy that it should restart his movement.
- *
- * This function is called when the enemy needs to restart its movement
- * because something happened (for example the enemy has just been created,
- * or it was just hurt).
- * By default, the "walking" animation is set on the enemy's sprites.
+ * @brief This function is called when the entity has just moved.
  */
-void Enemy::restart() {
+void Enemy::notify_position_changed() {
 
-  if (is_immobilized()) {
-    stop_immobilized();
+  Detector::notify_position_changed();
+
+  if (!is_being_hurt()) {
+    get_lua_context().enemy_on_position_changed(*this, get_xy());
   }
-  set_animation("walking");
+}
+
+/**
+ * @brief This function is called when the layer of this entity has just changed.
+ *
+ * Redefine it if you need to be notified.
+ */
+void Enemy::notify_layer_changed() {
+
+  Detector::notify_layer_changed();
+
+  if (!is_being_hurt()) {
+    get_lua_context().enemy_on_layer_changed(*this, get_layer());
+  }
+}
+
+/**
+ * @brief This function can be called by the movement object
+ * to notify the entity when the movement has just changed
+ * (e.g. the speed, the angle or the trajectory).
+ */
+void Enemy::notify_movement_changed() {
+
+  Detector::notify_movement_changed();
+
+  if (!is_being_hurt()) {
+    get_lua_context().enemy_on_movement_changed(*this, *get_movement());
+  }
+}
+
+/**
+ * @brief This function is called when the movement of the entity is finished.
+ */
+void Enemy::notify_movement_finished() {
+
+  Detector::notify_movement_finished();
+
+  if (!is_being_hurt()) {
+    get_lua_context().enemy_on_movement_finished(*this, *get_movement());
+  }
+}
+
+/**
+ * @brief Notifies this entity that the frame of one of its sprites has just changed.
+ * @param sprite the sprite
+ * @param animation the current animation
+ * @param frame the new frame
+ */
+void Enemy::notify_sprite_frame_changed(
+    Sprite& sprite, const std::string& animation, int frame) {
+
+  Detector::notify_sprite_frame_changed(sprite, animation, frame);
+  get_lua_context().enemy_on_sprite_frame_changed(
+      *this, sprite, animation, frame);
+}
+
+/**
+ * @brief Notifies this entity that the animation of one of its sprites
+ * has just finished.
+ * @param sprite the sprite
+ * @param animation the animation just finished
+ */
+void Enemy::notify_sprite_animation_finished(
+    Sprite& sprite, const std::string& animation) {
+
+  Detector::notify_sprite_animation_finished(sprite, animation);
+  get_lua_context().enemy_on_sprite_animation_finished(*this, sprite, animation);
+}
+
+/**
+ * @brief Sends a message from another enemy to this enemy.
+ * @param sender the sender
+ * @param message the message
+ */
+void Enemy::notify_message_received(Enemy& sender, const std::string& message) {
+
+  get_lua_context().enemy_on_message_received(*this, sender, message);
 }
 
 /**
@@ -746,6 +967,21 @@ void Enemy::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite
 void Enemy::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
 
   try_hurt(ATTACK_FIRE, fire, &sprite_overlapping);
+}
+
+/**
+ * @brief This function is called when this enemy detects a collision with another enemy.
+ * @param other the other enemy
+ * @param other_sprite the other enemy's sprite that overlaps a sprite of this enemy
+ * @param this_sprite this enemy's sprite that overlaps the other
+ */
+void Enemy::notify_collision_with_enemy(Enemy& other,
+    Sprite& other_sprite, Sprite& this_sprite) {
+
+  if (is_in_normal_state()) {
+    get_lua_context().enemy_on_collision_enemy(
+        *this, other, other_sprite, this_sprite);
+  }
 }
 
 /**
@@ -807,39 +1043,6 @@ void Enemy::attack_stopped_by_hero_shield() {
 }
 
 /**
- * @brief Returns whether this enemy can currently attack the hero.
- * @return true if this enemy can currently attack the hero
- */
-bool Enemy::get_can_attack() {
-
-  return can_attack;
-}
-
-/**
- * @brief Sets whether this enemy can attack the hero.
- * @param can_attack true to allow this enemy to attack the hero
- */
-void Enemy::set_can_attack(bool can_attack) {
-
-  this->can_attack = can_attack;
-  if (!can_attack) {
-    can_attack_again_date = 0;
-  }
-}
-
-/**
- * @brief Returns the reaction corresponding to an attack on a sprite of this enemy.
- * @param attack an attack this enemy receives
- * @param this_sprite the sprite attacked, or NULL if the attack does not come from
- * a pixel-precise collision test
- * @return the corresponding reaction
- */
-const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
-
-  return attack_reactions[attack].get_reaction(this_sprite);
-}
-
-/**
  * @brief Plays the appropriate sound when the enemy is hurt.
  */
 void Enemy::play_hurt_sound() {
@@ -868,7 +1071,50 @@ void Enemy::play_hurt_sound() {
 }
 
 /**
- * @brief Makes the enemy subject to an attack.
+ * @brief Notifies this enemy that it should restart his movement.
+ *
+ * This function is called when the enemy needs to restart its movement
+ * because something happened (for example the enemy has just been created,
+ * or it was just hurt).
+ * By default, the "walking" animation is set on the enemy's sprites.
+ */
+void Enemy::restart() {
+
+  if (is_immobilized()) {
+    stop_immobilized();
+  }
+  set_animation("walking");
+  get_lua_context().enemy_on_restart(*this);
+}
+
+/**
+ * @brief Returns whether this enemy is in a normal state.
+ *
+ * The enemy is considered to be in its normal state if
+ * it is not disabled, dying, being hurt or immobilized.
+ * When this method returns false, the subclasses of Enemy
+ * should not change the enemy properties.
+ *
+ * @return true if this enemy is in a normal state
+ */
+bool Enemy::is_in_normal_state() {
+  return is_enabled()
+    && !is_being_hurt()
+    && get_life() > 0
+    && !is_immobilized()
+    && !is_being_removed();
+}
+
+/**
+ * @brief Returns whether this enemy is currently invulnerable.
+ * @return \c true if this enemy cannot be hurt for now.
+ */
+bool Enemy::is_invulnerable() {
+  return invulnerable;
+}
+
+/**
+ * @brief Makes the enemy receive an attack.
  *
  * He might resist to the attack or get hurt.
  *
@@ -877,7 +1123,7 @@ void Enemy::play_hurt_sound() {
  * @param this_sprite the sprite of this enemy that received the attack, or NULL
  * if the attack comes from a non pixel-precise collision test
  */
-void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite) {
+void Enemy::try_hurt(EnemyAttack attack, MapEntity& source, Sprite* this_sprite) {
 
   EnemyReaction::Reaction reaction = get_attack_consequence(attack, this_sprite);
   if (invulnerable || reaction.type == EnemyReaction::IGNORED) {
@@ -995,6 +1241,7 @@ void Enemy::notify_hurt(MapEntity &source, EnemyAttack attack, int life_points) 
   if (get_life() <= 0) {
     get_lua_context().map_on_enemy_dying(get_map(), *this);
   }
+  get_lua_context().enemy_on_hurt(*this, attack, life_points);
 }
 
 /**
@@ -1002,6 +1249,7 @@ void Enemy::notify_hurt(MapEntity &source, EnemyAttack attack, int life_points) 
  */
 void Enemy::notify_dead() {
 
+  get_lua_context().enemy_on_dead(*this);
 }
 
 /**
@@ -1010,6 +1258,7 @@ void Enemy::notify_dead() {
  */
 void Enemy::notify_immobilized() {
 
+  get_lua_context().enemy_on_immobilized(*this);
 }
 
 /**
@@ -1149,18 +1398,7 @@ bool Enemy::is_immobilized() {
  */
 void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 
-  // TODO merge Enemy and CustomEnemy since all enemies are scripted now, and
-  // remove this error that cannot happen anyway
-  Debug::die(StringConcat() << "The custom attack for enemy '" << get_name() << "' is not defined");
-}
-
-/**
- * @brief Sends a message from another enemy to this enemy.
- * @param sender the sender
- * @param message the message
- */
-void Enemy::notify_message_received(Enemy& sender, const std::string& message) {
-
+  get_lua_context().enemy_on_custom_attack_received(*this, attack, this_sprite);
 }
 
 /**

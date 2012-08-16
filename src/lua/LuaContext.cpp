@@ -23,7 +23,7 @@
 #include "entities/ShopItem.h"
 #include "entities/Door.h"
 #include "entities/Block.h"
-#include "entities/CustomEnemy.h"
+#include "entities/Enemy.h"
 #include "entities/PickableItem.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
@@ -275,7 +275,7 @@ void LuaContext::notify_item_created(EquipmentItem& item) {
  * The Lua file of this enemy is automatically loaded.
  * @param enemy The enemy.
  */
-void LuaContext::notify_enemy_created(CustomEnemy& enemy) {
+void LuaContext::notify_enemy_created(Enemy& enemy) {
 
   // Compute the file name, depending on enemy's breed.
   std::string file_name = (std::string) "enemies/" + enemy.get_breed();

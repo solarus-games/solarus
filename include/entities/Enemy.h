@@ -133,39 +133,10 @@ class Enemy: public Detector {
     Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
         const std::string& breed, const Treasure& treasure);
 
-    /**
-     * @brief Initializes the features, the sprites and the movement.
-     */
-    void initialize() = 0;
-    void restart();
-
-    const std::string& get_breed();
-
-    void set_damage(int damage_on_hero);
-    void set_damage(int damage_on_hero, int magic_damage_on_hero);
-    void set_life(int life);
-    int get_life();
-    ObstacleBehavior get_obstacle_behavior();
-    void set_obstacle_behavior(ObstacleBehavior obstacle_behavior);
-    void set_pushed_back_when_hurt(bool pushed_back_when_hurt);
-    void set_push_hero_on_sword(bool push_hero_on_sword);
-    void set_can_hurt_hero_running(bool can_hurt_hero_running);
-    void set_attack_consequence(EnemyAttack attack, EnemyReaction::ReactionType reaction, int life_lost = 0);
-    void set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
-        EnemyReaction::ReactionType reaction, int life_lost = 0);
-    void set_no_attack_consequences();
-    void set_no_attack_consequences_sprite(Sprite& sprite);
-    void set_default_attack_consequences();
-    void set_default_attack_consequences_sprite(Sprite& sprite);
+    void initialize();
 
     // hurt the enemy
     void play_hurt_sound();
-    bool is_in_normal_state();
-    bool is_being_hurt();
-    bool is_immobilized();
-    bool is_killed();
-    bool is_dying_animation_finished();
-    void hurt(MapEntity& source);
     bool is_sprite_finished_or_looping();
     void immobilize();
     void stop_immobilized();
@@ -173,10 +144,6 @@ class Enemy: public Detector {
     void notify_hurt(MapEntity& source, EnemyAttack attack, int life_points);
     void notify_dead();
     void notify_immobilized();
-
-    // animation
-    const std::string& get_animation();
-    void set_animation(const std::string &animation);
 
   public:
 
@@ -195,6 +162,43 @@ class Enemy: public Detector {
     void notify_map_opening_transition_finished();
     Rank get_rank();
 
+    // Enemy properties.
+    const std::string& get_breed();
+    const std::string& get_father_name();
+    void set_father_name(const std::string& father_name);
+    int get_damage();
+    void set_damage(int damage_on_hero);
+    int get_magic_damage();
+    void set_magic_damage(int magic_damage_on_hero);
+    int get_life();
+    void set_life(int life);
+    HurtStyle get_hurt_style();
+    void set_hurt_style(HurtStyle hurt_style);
+    bool get_can_attack();
+    void set_can_attack(bool can_attack);
+    ObstacleBehavior get_obstacle_behavior();
+    void set_obstacle_behavior(ObstacleBehavior obstacle_behavior);
+    bool get_pushed_back_when_hurt();
+    void set_pushed_back_when_hurt(bool pushed_back_when_hurt);
+    bool get_push_hero_on_sword();
+    void set_push_hero_on_sword(bool push_hero_on_sword);
+    bool get_can_hurt_hero_running();
+    void set_can_hurt_hero_running(bool can_hurt_hero_running);
+    int get_minimum_shield_needed();
+    void set_minimum_shield_needed(int minimum_shield_needed);
+    const EnemyReaction::Reaction& get_attack_consequence(EnemyAttack attack, Sprite* this_sprite);
+    void set_attack_consequence(EnemyAttack attack, EnemyReaction::ReactionType reaction, int life_lost = 0);
+    void set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
+        EnemyReaction::ReactionType reaction, int life_lost = 0);
+    void set_no_attack_consequences();
+    void set_no_attack_consequences_sprite(Sprite& sprite);
+    void set_default_attack_consequences();
+    void set_default_attack_consequences_sprite(Sprite& sprite);
+
+    // sprites
+    const std::string& get_animation();
+    void set_animation(const std::string &animation);
+
     // obstacles
     bool is_obstacle_for(MapEntity& other);
     bool is_destructible_item_obstacle(DestructibleItem& destructible_item);
@@ -207,7 +211,6 @@ class Enemy: public Detector {
 
     // enemy state
     bool is_displayed_in_y_order();
-    void set_map(Map& map);
     void update();
     void set_suspended(bool suspended);
     void display_on_map();
@@ -231,14 +234,17 @@ class Enemy: public Detector {
     // attack the hero
     void attack_hero(Hero &hero, Sprite *this_sprite);
     void attack_stopped_by_hero_shield();
-    bool get_can_attack();
-    void set_can_attack(bool can_attack);
 
     // receive an attack
-    bool get_push_hero_on_sword();
-    bool get_can_hurt_hero_running();
-    const EnemyReaction::Reaction& get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
+    void restart();
+    bool is_in_normal_state();
+    bool is_invulnerable();
+    bool is_being_hurt();
+    bool is_immobilized();
+    bool is_killed();
+    bool is_dying_animation_finished();
     void try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite);
+    void hurt(MapEntity& source);
     void kill();
     bool is_dying();
     void set_treasure(const Treasure& treasure);

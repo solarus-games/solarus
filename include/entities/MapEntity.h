@@ -138,26 +138,10 @@ class MapEntity: public ExportableToLua {
     MapEntity(Layer layer, int x, int y, int width, int height);
     MapEntity(const std::string &name, int direction, Layer layer, int x, int y, int width, int height);
 
-    // methods called by the subclasses to set their properties
-    void set_direction(int direction);
-    void set_size(int width, int height);
-    void set_size(const Rectangle &size);
-    void set_origin(int x, int y);
-    void set_origin(const Rectangle &origin);
-    void set_bounding_box_from_sprite();
-    void set_bounding_box(const Rectangle &bounding_box);
-    int get_optimization_distance();
-    void set_optimization_distance(int distance);
-
-    // sprites
-    Sprite& create_sprite(const std::string& animation_set_id,
-        bool enable_pixel_collisions = false);
-    void remove_sprite(Sprite* sprite);
-    void clear_sprites();
+    void clear_old_movements();
     void clear_old_sprites();
 
-    // movement
-    void clear_old_movements();
+    void set_direction(int direction);
 
     // easy access to various game objects
     LuaContext& get_lua_context();
@@ -214,8 +198,14 @@ class MapEntity: public ExportableToLua {
     int get_width();
     int get_height();
     const Rectangle& get_size();
+    void set_size(int width, int height);
+    void set_size(const Rectangle &size);
     const Rectangle& get_bounding_box();
+    void set_bounding_box_from_sprite();
+    void set_bounding_box(const Rectangle &bounding_box);
     const Rectangle& get_origin();
+    void set_origin(int x, int y);
+    void set_origin(const Rectangle &origin);
     int get_top_left_x();
     int get_top_left_y();
     void set_top_left_x(int x);
@@ -233,6 +223,9 @@ class MapEntity: public ExportableToLua {
     void set_aligned_to_grid_x();
     void set_aligned_to_grid_y();
 
+    int get_optimization_distance();
+    void set_optimization_distance(int distance);
+
     bool is_enabled();
     void set_enabled(bool enable);
     virtual void notify_enabled(bool enabled);
@@ -246,6 +239,10 @@ class MapEntity: public ExportableToLua {
     bool has_sprite();
     Sprite& get_sprite();
     std::list<Sprite*>& get_sprites();
+    Sprite& create_sprite(const std::string& animation_set_id,
+        bool enable_pixel_collisions = false);
+    void remove_sprite(Sprite* sprite);
+    void clear_sprites();
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     virtual void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
     virtual bool is_visible();

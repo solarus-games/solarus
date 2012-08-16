@@ -217,7 +217,7 @@ int LuaContext::enemy_api_get_damage(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
-  lua_pushinteger(l, enemy.damage_on_hero);  // TODO getters/setters
+  lua_pushinteger(l, enemy.get_damage());
   return 1;
 }
 
@@ -231,7 +231,7 @@ int LuaContext::enemy_api_set_damage(lua_State* l) {
   Enemy& enemy = check_enemy(l, 1);
   int damage = luaL_checkinteger(l, 2);
 
-  enemy.damage_on_hero = damage;
+  enemy.set_damage(damage);
 
   return 0;
 }
@@ -245,7 +245,7 @@ int LuaContext::enemy_api_get_magic_damage(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
-  lua_pushinteger(l, enemy.magic_damage_on_hero);
+  lua_pushinteger(l, enemy.get_magic_damage());
   return 1;
 }
 
@@ -259,7 +259,7 @@ int LuaContext::enemy_api_set_magic_damage(lua_State* l) {
   Enemy& enemy = check_enemy(l, 1);
   int magic_damage = luaL_checkinteger(l, 2);
 
-  enemy.magic_damage_on_hero = magic_damage;
+  enemy.set_magic_damage(magic_damage);
 
   return 0;
 }
@@ -273,7 +273,7 @@ int LuaContext::enemy_api_is_pushed_back_when_hurt(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
-  lua_pushboolean(l, enemy.pushed_back_when_hurt);
+  lua_pushboolean(l, enemy.get_pushed_back_when_hurt());
   return 1;
 }
 
@@ -287,7 +287,7 @@ int LuaContext::enemy_api_set_pushed_back_when_hurt(lua_State* l) {
   Enemy& enemy = check_enemy(l, 1);
   bool push_back = lua_toboolean(l, 2);
 
-  enemy.pushed_back_when_hurt = push_back;
+  enemy.set_pushed_back_when_hurt(push_back);
 
   return 0;
 }
@@ -357,7 +357,8 @@ int LuaContext::enemy_api_get_hurt_style(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
-  const std::string& style_name = Enemy::get_hurt_style_name(enemy.hurt_style);
+  const std::string& style_name = Enemy::get_hurt_style_name(enemy.get_hurt_style());
+  // TODO give styles name in the Lua API only, not in Enemy
 
   lua_pushstring(l, style_name.c_str());
   return 1;
@@ -373,7 +374,7 @@ int LuaContext::enemy_api_set_hurt_style(lua_State* l) {
   Enemy& enemy = check_enemy(l, 1);
   const std::string& style_name = luaL_checkstring(l, 2);
 
-  enemy.hurt_style = Enemy::get_hurt_style_by_name(style_name);
+  enemy.set_hurt_style(Enemy::get_hurt_style_by_name(style_name));
 
   return 0;
 }
@@ -415,7 +416,7 @@ int LuaContext::enemy_api_get_minimum_shield_needed(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
-  int shield_level = enemy.minimum_shield_needed;
+  int shield_level = enemy.get_minimum_shield_needed();
 
   lua_pushinteger(l, shield_level);
   return 1;
@@ -431,7 +432,7 @@ int LuaContext::enemy_api_set_minimum_shield_needed(lua_State* l) {
   Enemy& enemy = check_enemy(l, 1);
   int shield_level = luaL_checkinteger(l, 2);
 
-  enemy.minimum_shield_needed = shield_level;
+  enemy.set_minimum_shield_needed(shield_level);
 
   return 0;
 }
@@ -766,7 +767,7 @@ int LuaContext::enemy_api_set_position(lua_State* l) {
 
   enemy.set_xy(x, y);
   if (layer != -1) {
-    MapEntities& entities = enemy.get_entities();
+    MapEntities& entities = enemy.get_map().get_entities();
     entities.set_entity_layer(enemy, Layer(layer));
   }
 
@@ -782,7 +783,7 @@ int LuaContext::enemy_api_get_distance_to_hero(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
-  Hero& hero = enemy.get_entities().get_hero();
+  Hero& hero = enemy.get_map().get_entities().get_hero();
 
   lua_pushinteger(l, enemy.get_distance(hero));
   return 1;
@@ -797,7 +798,7 @@ int LuaContext::enemy_api_get_angle_to_hero(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
-  Hero& hero = enemy.get_entities().get_hero();
+  Hero& hero = enemy.get_map().get_entities().get_hero();
   double angle = Geometry::get_angle(enemy.get_x(), enemy.get_y(),
       hero.get_x(), hero.get_y());
 
@@ -913,11 +914,10 @@ int LuaContext::enemy_api_hurt(lua_State* l) {
   Enemy& enemy = check_enemy(l, 1);
   int life_points = luaL_checkinteger(l, 2);
 
-  if (enemy.is_in_normal_state() && !enemy.invulnerable) {
-    Hero& hero = enemy.get_entities().get_hero();
-    enemy.life -= life_points;
-    enemy.hurt(hero);
-    enemy.notify_hurt(hero, ATTACK_SCRIPT, life_points);
+  if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
+    Hero& hero = enemy.get_map().get_entities().get_hero();
+    enemy.set_attack_consequence(ATTACK_SCRIPT, EnemyReaction::HURT, life_points);
+    enemy.try_hurt(ATTACK_SCRIPT, hero, NULL);
   }
 
   return 0;
@@ -998,11 +998,11 @@ int LuaContext::enemy_api_create_son(lua_State* l) {
   y += enemy.get_y();
 
   Game& game = enemy.get_game();
-  MapEntities& entities = enemy.get_entities();
+  MapEntities& entities = enemy.get_map().get_entities();
   Treasure treasure = Treasure(game, "_random", 1, -1);
   Enemy* son = (Enemy*) Enemy::create(game, breed, Enemy::RANK_NORMAL, -1,
       name, Layer(layer), x, y, 0, treasure);
-  son->father_name = enemy.get_name();
+  son->set_father_name(enemy.get_name());
   son->set_optimization_distance(enemy.get_optimization_distance());
   entities.add_entity(son);
   son->restart();
@@ -1019,7 +1019,7 @@ int LuaContext::enemy_api_get_father(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
-  lua_pushstring(l, enemy.father_name.c_str());
+  lua_pushstring(l, enemy.get_father_name().c_str());
   return 1;
 }
 
@@ -1034,7 +1034,7 @@ int LuaContext::enemy_api_send_message(lua_State* l) {
   const std::string& dst_enemy_name = luaL_checkstring(l, 2);
   const std::string& message = luaL_checkstring(l, 3);
 
-  MapEntities& entities = enemy.get_entities();
+  MapEntities& entities = enemy.get_map().get_entities();
   Enemy* dst_enemy = (Enemy*) entities.find_entity(ENEMY, dst_enemy_name);
   dst_enemy->notify_message_received(enemy, message);
 

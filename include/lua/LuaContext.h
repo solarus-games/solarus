@@ -83,7 +83,7 @@ class LuaContext {
     void notify_input(InputEvent& event);
     void notify_map_started(Map& map, DestinationPoint* destination_point);
     void notify_item_created(EquipmentItem& item);
-    void notify_enemy_created(CustomEnemy& enemy);
+    void notify_enemy_created(Enemy& enemy);
     void notify_camera_reached_target(Map& map);
 
     // Lua refs.

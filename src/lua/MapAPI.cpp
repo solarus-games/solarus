@@ -446,7 +446,7 @@ int LuaContext::map_api_tileset_get(lua_State* l) {
 int LuaContext::map_api_tileset_set(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  TilesetId id = luaL_checkinteger(l, 1);
+  TilesetId id = luaL_checkinteger(l, 2);
 
   map.set_tileset(id);
 

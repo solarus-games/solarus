@@ -98,7 +98,7 @@ function savegame_menu:on_direction_pressed(direction8)
   end
 end
 
-function savegame_menu:on_display(dst_surface)
+function savegame_menu:on_draw(dst_surface)
 
   -- Background color.
   self.surface:fill_color(self.background_color)
@@ -132,8 +132,8 @@ function savegame_menu:on_display(dst_surface)
   self.background_img:draw(self.surface, 37, 38)
   self.title_text:draw(self.surface, 160, 54)
 
-  -- Phase-specific display method.
-  local method_name = "display_phase_" .. self.phase
+  -- Phase-specific draw method.
+  local method_name = "draw_phase_" .. self.phase
   self[method_name](self)
 
   -- The menu makes 320*240 pixels, but dst_surface may be larger.
@@ -141,18 +141,18 @@ function savegame_menu:on_display(dst_surface)
   self.surface:draw(dst_surface, width / 2 - 160, height / 2 - 120)
 end
 
-function savegame_menu:display_savegame(slot_index)
+function savegame_menu:draw_savegame(slot_index)
 
   local slot = self.slots[slot_index]
   self.save_container_img:draw(self.surface, 57, 48 + slot_index * 27)
   slot.player_name_text:draw(self.surface, 87, 61 + slot_index * 27)
   
   if slot.hearts_view ~= nil then
-    slot.hearts_view:display(self.surface, 168, 51 + slot_index * 27)
+    slot.hearts_view:draw(self.surface, 168, 51 + slot_index * 27)
   end
 end
 
-function savegame_menu:display_savegame_cursor()
+function savegame_menu:draw_savegame_cursor()
 
   local x, y
   if self.cursor_position == 5 then
@@ -168,13 +168,13 @@ function savegame_menu:display_savegame_cursor()
   self.cursor_sprite:draw(self.surface, x, y)
 end
 
-function savegame_menu:display_savegame_number(slot_index)
+function savegame_menu:draw_savegame_number(slot_index)
 
   local slot = self.slots[slot_index]
   slot.number_img:draw(self.surface, 62, 53 + slot_index * 27)
 end
 
-function savegame_menu:display_bottom_buttons()
+function savegame_menu:draw_bottom_buttons()
 
   local x
   local y = 158
@@ -346,22 +346,22 @@ function savegame_menu:direction_pressed_phase_select_file(direction8)
   end
 end
 
-function savegame_menu:display_phase_select_file()
+function savegame_menu:draw_phase_select_file()
 
   -- Savegame slots.
   for i = 1, 3 do
-    self:display_savegame(i)
+    self:draw_savegame(i)
   end
 
   -- Bottom buttons.
-  self:display_bottom_buttons()
+  self:draw_bottom_buttons()
 
   -- Cursor.
-  self:display_savegame_cursor()
+  self:draw_savegame_cursor()
 
   -- Save numbers.
   for i = 1, 3 do
-    self:display_savegame_number(i)
+    self:draw_savegame_number(i)
   end
 end
 
@@ -412,22 +412,22 @@ function savegame_menu:direction_pressed_phase_erase_file(direction8)
   end
 end
 
-function savegame_menu:display_phase_erase_file()
+function savegame_menu:draw_phase_erase_file()
 
   -- Savegame slots.
   for i = 1, 3 do
-    self:display_savegame(i)
+    self:draw_savegame(i)
   end
 
   -- Bottom buttons.
-  self:display_bottom_buttons()
+  self:draw_bottom_buttons()
 
   -- Cursor.
-  self:display_savegame_cursor()
+  self:draw_savegame_cursor()
 
   -- Save numbers.
   for i = 1, 3 do
-    self:display_savegame_number(i)
+    self:draw_savegame_number(i)
   end
 end
 
@@ -474,17 +474,17 @@ function savegame_menu:direction_pressed_phase_confirm_erase(direction8)
   end
 end
 
-function savegame_menu:display_phase_confirm_erase()
+function savegame_menu:draw_phase_confirm_erase()
 
   -- Current savegame slot.
-  self:display_savegame(self.save_number_to_erase)
-  self:display_savegame_number(self.save_number_to_erase)
+  self:draw_savegame(self.save_number_to_erase)
+  self:draw_savegame_number(self.save_number_to_erase)
 
   -- Bottom buttons.
-  self:display_bottom_buttons()
+  self:draw_bottom_buttons()
 
   -- Cursor.
-  self:display_savegame_cursor()
+  self:draw_savegame_cursor()
 end
 
 ----------------------
@@ -642,7 +642,7 @@ function savegame_menu:direction_pressed_phase_options(direction8)
   end
 end
 
-function savegame_menu:display_phase_options()
+function savegame_menu:draw_phase_options()
 
   -- All options.
   for i, option in ipairs(self.options) do
@@ -652,12 +652,12 @@ function savegame_menu:display_phase_options()
   end
 
   -- Bottom buttons.
-  self:display_bottom_buttons()
+  self:draw_bottom_buttons()
 
   -- Cursor.
   if self.options_cursor_position > #self.options then
     -- The cursor is on the bottom button.
-    self:display_savegame_cursor()
+    self:draw_savegame_cursor()
   else
     -- The cursor is on an option line.
     local y = 64 + self.options_cursor_position * 16
@@ -810,7 +810,7 @@ function savegame_menu:direction_pressed_phase_choose_name(direction8)
   end
 end
 
-function savegame_menu:display_phase_choose_name()
+function savegame_menu:draw_phase_choose_name()
 
   -- Letter cursor.
   self.cursor_sprite:draw(self.surface,

@@ -7,7 +7,7 @@ a HUD (head-up display) or a pause screen, you can use a menu.
 A menu is an arbitrary Lua table.
 The engine will call events that you define in this table,
 i.e. methods like \ref lua_api_menu_on_started,
-\ref lua_api_menu_on_display, etc.
+\ref lua_api_menu_on_draw, etc.
 
 To make the engine aware of your menu (and call your events
 automatically), you have to attach it to a context
@@ -53,12 +53,12 @@ Called when your menu is destroyed.
 
 <hr>
 
-\subsection lua_api_menu_on_display menu:on_display(dst_surface)
+\subsection lua_api_menu_on_draw menu:on_draw(dst_surface)
 
 Called when your menu has to be redrawn.
 
 Use this event to draw your menu.
-- \c dst_surface (surface): The surface where your should display your menu.
+- \c dst_surface (surface): The surface where your should draw your menu.
 
 <hr>
 

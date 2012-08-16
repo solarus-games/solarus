@@ -867,26 +867,26 @@ void LuaContext::game_on_started(Game& game) {
 }
 
 /**
- * @brief Calls the on_post_display() method of a Lua game.
+ * @brief Calls the on_post_draw() method of a Lua game.
  * @param game A game.
  * @param dst_surface The destination surface.
  */
-void LuaContext::game_on_pre_display(Game& game, Surface& dst_surface) {
+void LuaContext::game_on_pre_draw(Game& game, Surface& dst_surface) {
 
   push_game(l, game.get_savegame());
-  on_pre_display(dst_surface);
+  on_pre_draw(dst_surface);
   lua_pop(l, 1);
 }
 
 /**
- * @brief Calls the on_post_display() method of a Lua game.
+ * @brief Calls the on_post_draw() method of a Lua game.
  * @param game A game.
  * @param dst_surface The destination surface.
  */
-void LuaContext::game_on_post_display(Game& game, Surface& dst_surface) {
+void LuaContext::game_on_post_draw(Game& game, Surface& dst_surface) {
 
   push_game(l, game.get_savegame());
-  on_post_display(dst_surface);
+  on_post_draw(dst_surface);
   lua_pop(l, 1);
 }
 

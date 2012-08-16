@@ -129,10 +129,10 @@ function title_screen:phase_title()
   self.surface:fade_in(30)
 end
 
-function title_screen:on_display(dst_surface)
+function title_screen:on_draw(dst_surface)
 
   if self.phase == "title" then
-    self:display_phase_title(dst_surface)
+    self:draw_phase_title(dst_surface)
   end
 
   -- final blit (dst_surface may be larger)
@@ -140,7 +140,7 @@ function title_screen:on_display(dst_surface)
   self.surface:draw(dst_surface, width / 2 - 160, height / 2 - 120)
 end
 
-function title_screen:display_phase_title()
+function title_screen:draw_phase_title()
 
   -- background
   self.surface:fill_color({0, 0, 0})

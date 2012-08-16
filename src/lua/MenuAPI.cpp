@@ -18,8 +18,6 @@
 #include "lowlevel/Surface.h"
 #include <lua.hpp>
 
-static const std::string& on_display_name = "on_display";
-
 /**
  * @brief Initializes the menu features provided to Lua.
  */
@@ -39,14 +37,14 @@ void LuaContext::menu_on_update(int menu_ref) {
 }
 
 /**
- * @brief Calls the on_display() method of a Lua menu.
+ * @brief Calls the on_draw() method of a Lua menu.
  * @param menu_ref A reference to the menu object.
  * @param dst_surface The destination surface.
  */
-void LuaContext::menu_on_display(int menu_ref, Surface& dst_surface) {
+void LuaContext::menu_on_draw(int menu_ref, Surface& dst_surface) {
 
   push_ref(l, menu_ref);
-  on_display(dst_surface);
+  on_draw(dst_surface);
   lua_pop(l, 1);
 }
 

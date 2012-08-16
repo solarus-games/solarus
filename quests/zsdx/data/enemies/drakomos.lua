@@ -39,7 +39,7 @@ function enemy:on_update()
   end
 end
 
-function enemy:on_post_display()
+function enemy:on_post_draw()
 
   local x, y = self:get_position()
 

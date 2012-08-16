@@ -55,7 +55,7 @@ function language_menu:on_started()
   end
 end
 
-function language_menu:on_display(dst_surface)
+function language_menu:on_draw(dst_surface)
 
   self.surface:fill_color{0, 0, 0}
 

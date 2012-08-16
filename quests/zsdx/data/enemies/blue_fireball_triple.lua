@@ -74,7 +74,7 @@ function enemy:on_custom_attack_received(attack, sprite)
   end
 end
 
-function enemy:on_pre_display()
+function enemy:on_pre_draw()
 
   local m = self:get_movement()
   local angle = m:get_angle()

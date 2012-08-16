@@ -1109,24 +1109,24 @@ void LuaContext::enemy_on_restart(Enemy& enemy) {
 }
 
 /**
- * @brief Calls the on_pre_display() method of a Lua enemy.
+ * @brief Calls the on_pre_draw() method of a Lua enemy.
  * @param enemy An enemy.
  */
-void LuaContext::enemy_on_pre_display(Enemy& enemy) {
+void LuaContext::enemy_on_pre_draw(Enemy& enemy) {
 
   push_enemy(l, enemy);
-  on_pre_display();
+  on_pre_draw();
   lua_pop(l, 1);
 }
 
 /**
- * @brief Calls the on_post_display() method of a Lua enemy.
+ * @brief Calls the on_post_draw() method of a Lua enemy.
  * @param enemy An enemy.
  */
-void LuaContext::enemy_on_post_display(Enemy& enemy) {
+void LuaContext::enemy_on_post_draw(Enemy& enemy) {
 
   push_enemy(l, enemy);
-  on_post_display();
+  on_post_draw();
   lua_pop(l, 1);
 }
 

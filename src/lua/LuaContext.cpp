@@ -1038,38 +1038,38 @@ void LuaContext::on_update() {
 }
 
 /**
- * @brief Calls the on_display() method of the object on top of the stack.
+ * @brief Calls the on_draw() method of the object on top of the stack.
  * @param dst_surface The destination surface.
  */
-void LuaContext::on_display(Surface& dst_surface) {
+void LuaContext::on_draw(Surface& dst_surface) {
 
-  if (find_method("on_display")) {
+  if (find_method("on_draw")) {
     push_surface(l, dst_surface);
-    call_function(2, 0, "on_display");
+    call_function(2, 0, "on_draw");
   }
 }
 
 /**
- * @brief Calls the on_pre_display() method of the object on top of the stack.
+ * @brief Calls the on_pre_draw() method of the object on top of the stack.
  * @param dst_surface The destination surface.
  */
-void LuaContext::on_pre_display(Surface& dst_surface) {
+void LuaContext::on_pre_draw(Surface& dst_surface) {
 
-  if (find_method("on_pre_display")) {
+  if (find_method("on_pre_draw")) {
     push_surface(l, dst_surface);
-    call_function(2, 0, "on_pre_display");
+    call_function(2, 0, "on_pre_draw");
   }
 }
 
 /**
- * @brief Calls the on_post_display() method of the object on top of the stack.
+ * @brief Calls the on_post_draw() method of the object on top of the stack.
  * @param dst_surface The destination surface.
  */
-void LuaContext::on_post_display(Surface& dst_surface) {
+void LuaContext::on_post_draw(Surface& dst_surface) {
 
-  if (find_method("on_post_display")) {
+  if (find_method("on_post_draw")) {
     push_surface(l, dst_surface);
-    call_function(2, 0, "on_post_display");
+    call_function(2, 0, "on_post_draw");
   }
 }
 
@@ -1780,22 +1780,22 @@ void LuaContext::on_restart() {
 }
 
 /**
- * @brief Calls the on_pre_display() method of the object on top of the stack.
+ * @brief Calls the on_pre_draw() method of the object on top of the stack.
  */
-void LuaContext::on_pre_display() {
+void LuaContext::on_pre_draw() {
 
-  if (find_method("on_pre_display")) {
-    call_function(1, 0, "on_pre_display");
+  if (find_method("on_pre_draw")) {
+    call_function(1, 0, "on_pre_draw");
   }
 }
 
 /**
- * @brief Calls the on_post_display() method of the object on top of the stack.
+ * @brief Calls the on_post_draw() method of the object on top of the stack.
  */
-void LuaContext::on_post_display() {
+void LuaContext::on_post_draw() {
 
-  if (find_method("on_post_display")) {
-    call_function(1, 0, "on_post_display");
+  if (find_method("on_post_draw")) {
+    call_function(1, 0, "on_post_draw");
   }
 }
 

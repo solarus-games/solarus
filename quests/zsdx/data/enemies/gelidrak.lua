@@ -61,7 +61,7 @@ function enemy:on_restart()
   current_xy.x, current_xy.y = self:get_position()
 end
 
-function enemy:on_pre_display()
+function enemy:on_pre_draw()
 
   if not self:get_map():enemy_is_dead(tail) then
     local x, y = self:get_position()
@@ -70,7 +70,7 @@ function enemy:on_pre_display()
   end
 end
 
-function enemy:on_post_display()
+function enemy:on_post_draw()
 
   if not self:get_map():enemy_is_dead(head) then
     local x, y = self:get_position()

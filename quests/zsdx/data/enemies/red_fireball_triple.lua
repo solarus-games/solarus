@@ -84,7 +84,7 @@ function enemy:on_collision_enemy(other_name, other_sprite, my_sprite)
   end
 end
 
-function enemy:on_pre_display()
+function enemy:on_pre_draw()
 
   local m = self:get_movement()
   local angle = m:get_angle()

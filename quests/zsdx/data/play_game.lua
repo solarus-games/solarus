@@ -12,10 +12,10 @@ end
 function game:on_finished()
 end
 
-function game:on_post_display(surface)
+function game:on_post_draw(surface)
   -- TODO only if the hud is enabled
   local width, height = surface:get_size()
-  self.hud.hearts:display(surface, width - 104, 6)
+  self.hud.hearts:draw(surface, width - 104, 6)
 end
 
 -- Run the game.

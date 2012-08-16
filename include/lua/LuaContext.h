@@ -118,15 +118,15 @@ class LuaContext {
 
     // Menu events.
     void menu_on_update(int menu_ref);
-    void menu_on_display(int menu_ref, Surface& dst_surface);
+    void menu_on_draw(int menu_ref, Surface& dst_surface);
     void menu_on_input(int menu_ref, InputEvent& event);
     void menu_on_started(int menu_ref);
     void menu_on_finished(int menu_ref);
 
     // Game events.
     void game_on_update(Game& game);
-    void game_on_pre_display(Game& game, Surface& dst_surface);
-    void game_on_post_display(Game& game, Surface& dst_surface);
+    void game_on_pre_draw(Game& game, Surface& dst_surface);
+    void game_on_post_draw(Game& game, Surface& dst_surface);
     void game_on_started(Game& game);
     void game_on_finished(Game& game);
 
@@ -192,8 +192,8 @@ class LuaContext {
     void enemy_on_enabled(Enemy& enemy);
     void enemy_on_disabled(Enemy& enemy);
     void enemy_on_restart(Enemy& enemy);
-    void enemy_on_pre_display(Enemy& enemy);
-    void enemy_on_post_display(Enemy& enemy);
+    void enemy_on_pre_draw(Enemy& enemy);
+    void enemy_on_post_draw(Enemy& enemy);
     void enemy_on_position_changed(Enemy& enemy, const Rectangle& xy);
     void enemy_on_layer_changed(Enemy& enemy, Layer layer);
     void enemy_on_obstacle_reached(Enemy& enemy);
@@ -308,9 +308,9 @@ class LuaContext {
     void on_started();
     void on_finished();
     void on_update();
-    void on_display(Surface& dst_surface);
-    void on_pre_display(Surface& dst_surface);
-    void on_post_display(Surface& dst_surface);
+    void on_draw(Surface& dst_surface);
+    void on_pre_draw(Surface& dst_surface);
+    void on_post_draw(Surface& dst_surface);
     void on_suspended(bool suspended);
     void on_input(InputEvent& event);
     void on_key_pressed(InputEvent& event);
@@ -363,8 +363,8 @@ class LuaContext {
     void on_enabled();
     void on_disabled();
     void on_restart();
-    void on_pre_display();
-    void on_post_display();
+    void on_pre_draw();
+    void on_post_draw();
     void on_position_changed(const Rectangle& xy);
     void on_layer_changed(Layer layer);
     void on_obstacle_reached();

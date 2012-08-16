@@ -453,7 +453,7 @@ void Game::update_gameover_sequence() {
  */
 void Game::display(Surface& dst_surface) {
 
-  get_lua_context().game_on_pre_display(*this, dst_surface);
+  get_lua_context().game_on_pre_draw(*this, dst_surface);
 
   // display the map
   if (current_map->is_loaded()) {
@@ -484,7 +484,7 @@ void Game::display(Surface& dst_surface) {
     }
   }
 
-  get_lua_context().game_on_post_display(*this, dst_surface);
+  get_lua_context().game_on_post_draw(*this, dst_surface);
 }
 
 /**

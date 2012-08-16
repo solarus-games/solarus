@@ -792,13 +792,13 @@ void Enemy::set_suspended(bool suspended) {
 void Enemy::display_on_map() {
 
   if (is_visible()) {
-    get_lua_context().enemy_on_pre_display(*this);
+    get_lua_context().enemy_on_pre_draw(*this);
   }
 
   Detector::display_on_map();
 
   if (is_visible()) {
-    get_lua_context().enemy_on_post_display(*this);
+    get_lua_context().enemy_on_post_draw(*this);
   }
 }
 

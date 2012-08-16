@@ -81,7 +81,7 @@ void CustomScreen::update() {
  */
 void CustomScreen::display(Surface& dst_surface) {
 
-  get_lua_context().menu_on_display(menu_ref, dst_surface);
+  get_lua_context().menu_on_draw(menu_ref, dst_surface);
 }
 
 /**

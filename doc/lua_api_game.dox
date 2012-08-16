@@ -459,21 +459,21 @@ Called at each cycle of the main loop while this game is running.
 
 <hr>
 
-\subsection lua_api_game_on_pre_display game:on_pre_display(surface)
+\subsection lua_api_game_on_pre_draw game:on_pre_draw(surface)
 
 Called just before the game is drawn.
 
 Use this event if you want to do something special initially.
-- \c dst_surface (surface): The surface where the game will be displayed.
+- \c dst_surface (surface): The surface where the game will be drawn.
 
 <hr>
 
-\subsection lua_api_game_on_post_display game:on_post_display(surface)
+\subsection lua_api_game_on_post_draw game:on_post_draw(surface)
 
 Called when the game was just drawn.
 
 Use this event if you want to draw some additional content.
-- \c dst_surface (surface): The surface where the game will be displayed.
+- \c dst_surface (surface): The surface where the game will be drawn.
 
 <hr>
 

@@ -132,7 +132,7 @@ function hearts:rebuild_surface()
   end
 end
 
-function hearts:display(dst_surface, x, y)
+function hearts:draw(dst_surface, x, y)
 
   -- Everything was already drawn on self.surface.
   self.surface:draw(dst_surface, x, y)

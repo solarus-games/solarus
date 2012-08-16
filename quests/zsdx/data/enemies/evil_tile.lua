@@ -77,7 +77,7 @@ function enemy:on_sprite_animation_finished(sprite, animation)
   end
 end
 
-function enemy:on_pre_display()
+function enemy:on_pre_draw()
 
   -- show the shadow
   if state ~= "destroying" then

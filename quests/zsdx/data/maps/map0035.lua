@@ -1,40 +1,41 @@
+local map = ...
 -- Bomb cave 2F
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
-  sol.map.door_set_open("door", true)
-  if sol.map.get_game():get_boolean(130) then
-    sol.map.tile_set_enabled("weak_floor", false)
-    sol.map.sensor_set_enabled("weak_floor_sensor", false)
+  map:door_set_open("door", true)
+  if map:get_game():get_boolean(130) then
+    map:tile_set_enabled("weak_floor", false)
+    map:sensor_set_enabled("weak_floor_sensor", false)
   else
-    sol.map.teletransporter_set_enabled("weak_floor_teletransporter", false)
+    map:teletransporter_set_enabled("weak_floor_teletransporter", false)
   end
 end
 
-function event_map_opening_transition_finished(destination_point_name)
+function map:on_map_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "from_3F" then
-    sol.map.door_close("door")
+    map:door_close("door")
   end
 end
 
-function event_hero_on_sensor(sensor_name)
+function map:on_hero_on_sensor(sensor_name)
 
-  if sol.map.door_is_open("door") and sensor_name == "close_door_sensor" then
-    sol.map.door_close("door")
+  if map:door_is_open("door") and sensor_name == "close_door_sensor" then
+    map:door_close("door")
   end
 end
 
-function event_sensor_collision_explosion(sensor_name)
+function map:on_sensor_collision_explosion(sensor_name)
 
   if sensor_name == "weak_floor_sensor"
-      and sol.map.tile_is_enabled("weak_floor") then
+      and map:tile_is_enabled("weak_floor") then
 
-    sol.map.tile_set_enabled("weak_floor", false)
-    sol.map.sensor_set_enabled("weak_floor_sensor", false)
-    sol.map.teletransporter_set_enabled("weak_floor_teletransporter", true)
+    map:tile_set_enabled("weak_floor", false)
+    map:sensor_set_enabled("weak_floor_sensor", false)
+    map:teletransporter_set_enabled("weak_floor_teletransporter", true)
     sol.audio.play_sound("secret")
-    sol.map.get_game():set_boolean(130, true)
+    map:get_game():set_boolean(130, true)
   end
 end
 

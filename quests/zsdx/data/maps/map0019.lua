@@ -1,52 +1,53 @@
+local map = ...
 -- Cake shop
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
-  if not has_obtained_bottle() or not sol.map.get_game():is_dungeon_finished(1) then
-    sol.map.shop_item_remove("apple_pie")
+  if not has_obtained_bottle() or not map:get_game():is_dungeon_finished(1) then
+    map:shop_item_remove("apple_pie")
   end
 end
 
 function has_talked_about_apples()
-  return sol.map.get_game():get_boolean(46)
+  return map:get_game():get_boolean(46)
 end
 
 function has_obtained_bottle()
-  return sol.map.get_game():get_boolean(32)
+  return map:get_game():get_boolean(32)
 end
 
-function event_hero_on_sensor(sensor_name)
+function map:on_hero_on_sensor(sensor_name)
 
   if not has_obtained_bottle() and not has_talked_about_apples() then
-    sol.map.dialog_start("cake_shop.dont_leave")
+    map:dialog_start("cake_shop.dont_leave")
   end
 end
 
-function event_dialog_finished(dialog_id, answer)
+function map:on_dialog_finished(dialog_id, answer)
 
   if dialog_id == "cake_shop.dont_leave" 
     or dialog_id == "cake_shop.seller.ask_apples_again" then
 
-    sol.map.get_game():set_boolean(46, true)
+    map:get_game():set_boolean(46, true)
 
     if answer == 0 then
-      if sol.map.get_game():has_item("apples_counter") then
-	if sol.map.get_game():get_item_amount("apples_counter") >= 6 then
-	  sol.map.dialog_start("cake_shop.thank_you")
-	  sol.map.get_game():remove_item_amount("apples_counter", 6)
+      if map:get_game():has_item("apples_counter") then
+	if map:get_game():get_item_amount("apples_counter") >= 6 then
+	  map:dialog_start("cake_shop.thank_you")
+	  map:get_game():remove_item_amount("apples_counter", 6)
 	else
-	  sol.map.dialog_start("cake_shop.not_enough_apples")
+	  map:dialog_start("cake_shop.not_enough_apples")
 	end
       else
-	sol.map.dialog_start("cake_shop.no_apples")
+	map:dialog_start("cake_shop.no_apples")
       end
     end
   elseif dialog_id == "cake_shop.thank_you" then
-    sol.map.treasure_give("bottle_1", 1, 32)
+    map:treasure_give("bottle_1", 1, 32)
   end
 end
 
-function event_npc_interaction(npc_name)
+function map:on_npc_interaction(npc_name)
   if npc_name == "seller_talking_place"
       or npc_name == "seller" then
     talk_to_seller()
@@ -55,9 +56,9 @@ end
 
 function talk_to_seller()
   if not has_talked_about_apples() or has_obtained_bottle() then
-    sol.map.dialog_start("cake_shop.seller.choose_item")
+    map:dialog_start("cake_shop.seller.choose_item")
   else 
-    sol.map.dialog_start("cake_shop.seller.ask_apples_again")
+    map:dialog_start("cake_shop.seller.ask_apples_again")
   end
 end
 

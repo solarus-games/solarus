@@ -1,82 +1,83 @@
+local map = ...
 -- Dungeon 9 3F
 
 fighting_miniboss = false
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
   -- miniboss
-  sol.map.enemy_set_group_enabled("miniboss", false)
-  sol.map.door_set_open("miniboss_e_door", true)
-  if sol.map.get_game():get_boolean(866) then
-    sol.map.door_set_open("miniboss_door", true)
+  map:enemy_set_group_enabled("miniboss", false)
+  map:door_set_open("miniboss_e_door", true)
+  if map:get_game():get_boolean(866) then
+    map:door_set_open("miniboss_door", true)
   end
 end
 
-function event_enemy_dead(enemy_name)
+function map:on_enemy_dead(enemy_name)
 
   -- door A
   if enemy_name:match("^door_a_enemy") then
-    if not sol.map.door_is_open("door_a")
-        and sol.map.enemy_is_group_dead("door_a_enemy") then
-      sol.map.camera_move(2248, 648, 250, function()
+    if not map:door_is_open("door_a")
+        and map:enemy_is_group_dead("door_a_enemy") then
+      map:camera_move(2248, 648, 250, function()
 	sol.audio.play_sound("secret")
-	sol.map.door_open("door_a")
+	map:door_open("door_a")
       end)
     end
 
   -- miniboss
   elseif string.find(enemy_name, "^miniboss")
-      and sol.map.enemy_is_group_dead("miniboss") then
+      and map:enemy_is_group_dead("miniboss") then
 
     sol.audio.play_music("southern_shrine")
     sol.audio.play_sound("secret")
-    sol.map.door_open("miniboss_door")
-    sol.map.get_game():set_boolean(866, true)
+    map:door_open("miniboss_door")
+    map:get_game():set_boolean(866, true)
   end
 end
 
-function event_npc_interaction(npc_name)
+function map:on_npc_interaction(npc_name)
 
   -- door B hint stones
   if npc_name:find("^door_b_hint") then
-    if not sol.map.door_is_open("door_b") then
-      local door_b_next = sol.map.get_game():get_integer(1202) + 1
+    if not map:door_is_open("door_b") then
+      local door_b_next = map:get_game():get_integer(1202) + 1
       local index = tonumber(npc_name:match("^door_b_hint_([1-8])$"))
       if index == door_b_next then
 	-- correct
 	if index < 8 then
 	  local directions = { 0, 0, 0, 3, 2, 2, 2 }
-	  sol.map.dialog_start("dungeon_9.3f_door_b_hint_" .. directions[index])
-	  sol.map.get_game():set_integer(1202, index)
+	  map:dialog_start("dungeon_9.3f_door_b_hint_" .. directions[index])
+	  map:get_game():set_integer(1202, index)
 	else
-	  sol.map.camera_move(1928, 1928, 500, function()
+	  map:camera_move(1928, 1928, 500, function()
 	    sol.audio.play_sound("secret")
-	    sol.map.door_open("door_b")
+	    map:door_open("door_b")
 	  end)
 	end
       else
 	-- wrong
 	sol.audio.play_sound("wrong")
-	sol.map.get_game():set_integer(1202, 0)
+	map:get_game():set_integer(1202, 0)
       end
     end
   end
 end
 
-function event_hero_on_sensor(sensor_name)
+function map:on_hero_on_sensor(sensor_name)
 
   -- miniboss
   if sensor_name == "start_miniboss_sensor"
-      and not sol.map.get_game():get_boolean(866)
+      and not map:get_game():get_boolean(866)
       and not fighting_miniboss then
 
-    sol.map.hero_freeze()
-    sol.map.door_close("miniboss_e_door")
+    map:hero_freeze()
+    map:door_close("miniboss_e_door")
     fighting_miniboss = true
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
-      sol.map.enemy_set_group_enabled("miniboss", true)
-      sol.map.hero_unfreeze()
+      map:enemy_set_group_enabled("miniboss", true)
+      map:hero_unfreeze()
     end)
   end
 end

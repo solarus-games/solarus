@@ -1,2 +1,3 @@
+local map = ...
 -- Test map
 

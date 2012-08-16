@@ -1,48 +1,49 @@
+local map = ...
 -- Dungeon 3 3F
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
-  sol.map.light_set(0)
+  map:light_set(0)
 
   -- weak floor
-  if sol.map.get_game():get_boolean(133) then
-    sol.map.tile_set_enabled("weak_floor", false)
-    sol.map.sensor_set_enabled("weak_floor_sensor", false)
+  if map:get_game():get_boolean(133) then
+    map:tile_set_enabled("weak_floor", false)
+    map:sensor_set_enabled("weak_floor_sensor", false)
   else
-    sol.map.teletransporter_set_enabled("weak_floor_teletransporter", false)
+    map:teletransporter_set_enabled("weak_floor_teletransporter", false)
   end
 
   -- piece of heart
-  if sol.map.get_game():get_boolean(132) then
-    sol.map.tile_set_enabled("barrier", false)
-    sol.map.switch_set_activated("barrier_switch", true)
+  if map:get_game():get_boolean(132) then
+    map:tile_set_enabled("barrier", false)
+    map:switch_set_activated("barrier_switch", true)
   end
 end
 
-function event_switch_activated(switch_name)
+function map:on_switch_activated(switch_name)
 
-  if switch_name == "se_door_switch" and not sol.map.door_is_open("se_door") then
+  if switch_name == "se_door_switch" and not map:door_is_open("se_door") then
     sol.audio.play_sound("secret")
-    sol.map.door_open("se_door")
-  elseif switch_name == "nc_door_switch" and not sol.map.door_is_open("nc_door") then
+    map:door_open("se_door")
+  elseif switch_name == "nc_door_switch" and not map:door_is_open("nc_door") then
     sol.audio.play_sound("secret")
-    sol.map.door_open("nc_door")
-  elseif switch_name == "barrier_switch" and sol.map.tile_is_enabled("barrier") then
-    sol.map.tile_set_enabled("barrier", false)
+    map:door_open("nc_door")
+  elseif switch_name == "barrier_switch" and map:tile_is_enabled("barrier") then
+    map:tile_set_enabled("barrier", false)
     sol.audio.play_sound("door_open")
   end
 end
 
-function event_sensor_collision_explosion(sensor_name)
+function map:on_sensor_collision_explosion(sensor_name)
 
   if sensor_name == "weak_floor_sensor"
-      and sol.map.tile_is_enabled("weak_floor") then
+      and map:tile_is_enabled("weak_floor") then
 
-    sol.map.tile_set_enabled("weak_floor", false)
-    sol.map.sensor_set_enabled("weak_floor_sensor", false)
-    sol.map.teletransporter_set_enabled("weak_floor_teletransporter", true)
+    map:tile_set_enabled("weak_floor", false)
+    map:sensor_set_enabled("weak_floor_sensor", false)
+    map:teletransporter_set_enabled("weak_floor_teletransporter", true)
     sol.audio.play_sound("secret")
-    sol.map.get_game():set_boolean(133, true)
+    map:get_game():set_boolean(133, true)
   end
 end
 

@@ -1,3 +1,4 @@
+local map = ...
 -- Dungeon 7 3F
 
 local fighting_boss = false
@@ -15,91 +16,91 @@ local current_door_name = nil -- current door during a camera movement
 local door_timers = {} -- doors that currently have a timer running
 local arrows_timer
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
   -- block fallen into the hole
-  if sol.map.get_game():get_boolean(623) then
-    sol.map.block_set_enabled("nw_block", false)
+  if map:get_game():get_boolean(623) then
+    map:block_set_enabled("nw_block", false)
   end
 
   -- NW door
-  if sol.map.get_game():get_boolean(624) then
-    sol.map.door_set_open("ne_door", true)
+  if map:get_game():get_boolean(624) then
+    map:door_set_open("ne_door", true)
   end
 
   -- door A (timed doors)
-  if sol.map.get_game():get_boolean(627) then
-    sol.map.switch_set_activated("door_a_switch", true)
+  if map:get_game():get_boolean(627) then
+    map:switch_set_activated("door_a_switch", true)
   end
 
   -- boss
-  sol.map.door_set_open("boss_door", true)
-  if sol.map.get_game():get_boolean(625)
-    and not sol.map.get_game():get_boolean(626) then
+  map:door_set_open("boss_door", true)
+  if map:get_game():get_boolean(625)
+    and not map:get_game():get_boolean(626) then
     -- boss killed, heart container not picked
-    sol.map.pickable_item_create("heart_container", 1, 626, 544, 789, 0)
+    map:pickable_item_create("heart_container", 1, 626, 544, 789, 0)
   end
 
   -- special torch door
-  if sol.map.get_game():get_boolean(624) then
-    sol.map.switch_set_activated("ne_switch", true)
+  if map:get_game():get_boolean(624) then
+    map:switch_set_activated("ne_switch", true)
   end
 end
 
-function event_block_moved(block_name)
+function map:on_block_moved(block_name)
 
   if block_name == "nw_block" then
-    local x, y = sol.map.block_get_position(block_name)
+    local x, y = map:block_get_position(block_name)
     if x == 544 and y == 69 then
       -- make the block fall
-      sol.map.block_set_enabled(block_name, false)
-      sol.map.tile_set_enabled("hole_a", true)
-      sol.map.teletransporter_set_enabled("hole_a_teletransporter", true)
-      sol.map.get_game():set_boolean(623, true)
+      map:block_set_enabled(block_name, false)
+      map:tile_set_enabled("hole_a", true)
+      map:teletransporter_set_enabled("hole_a_teletransporter", true)
+      map:get_game():set_boolean(623, true)
       sol.audio.play_sound("jump")
       sol.timer.start(500, function() sol.audio.play_sound("bomb") end)
     end
   end
 end
 
-function event_update()
+function map:on_update()
 
-  if not sol.map.get_game():get_boolean(623) then
+  if not map:get_game():get_boolean(623) then
     -- blocks cannot overlap holes or teletransporters with the current engine,
     -- so we disable the hole A and its teletransporter when necessary
 
     local disable_hole = false
-    local block_x, block_y = sol.map.block_get_position("nw_block")
+    local block_x, block_y = map:block_get_position("nw_block")
     if block_y == 69 and block_x >= 520 and block_x < 544 then
       -- the block is just before the hole
-      local hero_x = sol.map.hero_get_position()
+      local hero_x = map:hero_get_position()
       disable_hole = hero_x < block_x
     end
 
-    if disable_hole and sol.map.tile_is_enabled("hole_a") then
-      sol.map.tile_set_enabled("hole_a", false)
-      sol.map.teletransporter_set_enabled("hole_a_teletransporter", false)
-    elseif not disable_hole and not sol.map.tile_is_enabled("hole_a") then
-      sol.map.tile_set_enabled("hole_a", true)
-      sol.map.teletransporter_set_enabled("hole_a_teletransporter", true)
+    if disable_hole and map:tile_is_enabled("hole_a") then
+      map:tile_set_enabled("hole_a", false)
+      map:teletransporter_set_enabled("hole_a_teletransporter", false)
+    elseif not disable_hole and not map:tile_is_enabled("hole_a") then
+      map:tile_set_enabled("hole_a", true)
+      map:teletransporter_set_enabled("hole_a_teletransporter", true)
     end
   end
 end
 
-function event_switch_activated(switch_name)
+function map:on_switch_activated(switch_name)
 
   -- north-east room
   if switch_name == "ne_switch" then
-    sol.map.camera_move(960, 312, 250, function()
+    map:camera_move(960, 312, 250, function()
       sol.audio.play_sound("secret")
-      sol.map.door_open("ne_door")
+      map:door_open("ne_door")
     end)
 
   -- switch that removes the special torch
   elseif switch_name == "special_torch_switch" then
-    sol.map.camera_move(960, 120, 250, function()
+    map:camera_move(960, 120, 250, function()
       sol.audio.play_sound("secret")
-      sol.map.tile_set_enabled("special_torch", false)
+      map:tile_set_enabled("special_torch", false)
       just_removed_special_torch = true
     end)
 
@@ -108,22 +109,22 @@ function event_switch_activated(switch_name)
     current_door_name = switch_name:match("^(door_[a-e])_switch$")
     if current_door_name ~= nil then
       door = doors[current_door_name]
-      sol.map.camera_move(door.x, door.y, 250, function()
-	sol.map.door_open(current_door_name)
+      map:camera_move(door.x, door.y, 250, function()
+	map:door_open(current_door_name)
       end)
     end
   end
 end
 
-function event_camera_back()
+function map:on_camera_back()
 
   -- set up a timer when the camera movement is finished
   if just_removed_special_torch then
     just_removed_special_torch = false
     special_torch_timer = sol.timer.start(8000, true, function()
       sol.audio.play_sound("door_closed")
-      sol.map.tile_set_enabled("special_torch", true)
-      sol.map.switch_set_activated("special_torch_switch", false)
+      map:tile_set_enabled("special_torch", true)
+      map:switch_set_activated("special_torch_switch", false)
       special_torch_timer = nil
     end)
 
@@ -131,8 +132,8 @@ function event_camera_back()
     local door_name = current_door_name
     sol.timer.start(doors[door_name].delay, true, function()
       if door_timers[door_name] ~= nil then
-	sol.map.door_close(door_name)
-	sol.map.switch_set_activated(door_name .. "_switch", false)
+	map:door_close(door_name)
+	map:switch_set_activated(door_name .. "_switch", false)
 	door_timers[door_name] = nil
       end
     end)
@@ -142,7 +143,7 @@ function event_camera_back()
   end
 end
 
-function event_hero_on_sensor(sensor_name)
+function map:on_hero_on_sensor(sensor_name)
 
   -- special torch
   if sensor_name == "special_torch_dont_close_sensor" then
@@ -153,13 +154,13 @@ function event_hero_on_sensor(sensor_name)
 
   -- boss door
   elseif sensor_name == "close_boss_door_sensor"
-      and sol.map.door_is_open("boss_door") then
-    sol.map.door_close("boss_door")
+      and map:door_is_open("boss_door") then
+    map:door_close("boss_door")
     sol.audio.stop_music()
 
   -- boss
   elseif sensor_name == "start_boss_sensor"
-      and not sol.map.get_game():get_boolean(625)
+      and not map:get_game():get_boolean(625)
       and not fighting_boss then
     
     start_boss()
@@ -167,9 +168,9 @@ function event_hero_on_sensor(sensor_name)
   -- west room
   elseif sensor_name:find("w_room_sensor") then
     sol.audio.play_sound("secret")
-    local state = sol.map.tile_is_enabled("w_room_tile_1")
-    sol.map.tile_set_enabled("w_room_tile_1", not state)
-    sol.map.tile_set_enabled("w_room_tile_2", state)
+    local state = map:tile_is_enabled("w_room_tile_1")
+    map:tile_set_enabled("w_room_tile_1", not state)
+    map:tile_set_enabled("w_room_tile_2", state)
 
   else
     -- pass a timed door
@@ -181,9 +182,9 @@ function event_hero_on_sensor(sensor_name)
       -- close a timed door previously passed (i.e. it has no current timer)
       door_name = sensor_name:match("^(door_[a-e])_close_sensor$")
       if door_name ~= nil then
-        if door_timers[door_name] == nil and sol.map.door_is_open(door_name) then
-	  sol.map.door_close(door_name)
-	  sol.map.switch_set_activated(door_name .. "_switch", false)
+        if door_timers[door_name] == nil and map:door_is_open(door_name) then
+	  map:door_close(door_name)
+	  map:switch_set_activated(door_name .. "_switch", false)
 	end
       end
     end
@@ -193,7 +194,7 @@ end
 function start_boss()
 
   sol.audio.play_music("boss")
-  sol.map.enemy_set_enabled("boss", true)
+  map:enemy_set_enabled("boss", true)
   fighting_boss = true
 
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
@@ -202,7 +203,7 @@ end
 function repeat_give_arrows()
 
   -- give arrows if necessary during the boss fight
-  if sol.map.get_game():get_item_amount("bow") == 0 then
+  if map:get_game():get_item_amount("bow") == 0 then
     local positions = {
       { x = 416, y = 685 },
       { x = 672, y = 685 },
@@ -210,17 +211,17 @@ function repeat_give_arrows()
       { x = 672, y = 885 },
     }
     arrow_xy = positions[math.random(#positions)]
-    sol.map.pickable_item_create("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 0)
+    map:pickable_item_create("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 0)
   end
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
 
-function event_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.audio.play_music("victory")
-    sol.map.hero_freeze()
-    sol.map.hero_set_direction(3)
+    map:hero_freeze()
+    map:hero_set_direction(3)
     sol.timer.start(9000, start_final_sequence)
   end
 end
@@ -228,31 +229,31 @@ end
 function start_final_sequence()
 
   sol.audio.play_music("dungeon_finished")
-  sol.map.hero_set_direction(1)
-  sol.map.npc_set_position("sahasrahla", 544, 717)
-  sol.map.camera_move(544, 712, 100, function()
-    sol.map.dialog_start("dungeon_7.sahasrahla")
-    sol.map.dialog_set_variable("dungeon_7.sahasrahla", sol.map.get_game():get_player_name());
+  map:hero_set_direction(1)
+  map:npc_set_position("sahasrahla", 544, 717)
+  map:camera_move(544, 712, 100, function()
+    map:dialog_start("dungeon_7.sahasrahla")
+    map:dialog_set_variable("dungeon_7.sahasrahla", map:get_game():get_player_name());
   end)
 end
 
-function event_dialog_finished(dialog_id)
+function map:on_dialog_finished(dialog_id)
 
   if dialog_id == "dungeon_7.sahasrahla" then
-    sol.map.hero_start_victory_sequence()
+    map:hero_start_victory_sequence()
   end
 end
 
-function event_hero_victory_sequence_finished()
-  sol.map.get_game():set_dungeon_finished(7)
-  sol.map.hero_set_map(8, "from_dungeon_7", 1)
+function map:on_hero_victory_sequence_finished()
+  map:get_game():set_dungeon_finished(7)
+  map:hero_set_map(8, "from_dungeon_7", 1)
 end
 
-function event_enemy_dead(enemy_name)
+function map:on_enemy_dead(enemy_name)
 
   if enemy_name == "boss" then
     -- create the heart container manually to be sure it won't be in a hole
-    sol.map.pickable_item_create("heart_container", 1, 626, 544, 789, 0)
+    map:pickable_item_create("heart_container", 1, 626, 544, 789, 0)
     if arrows_timer ~= nil then
       arrows_timer:stop()
       arrows_timer = nil

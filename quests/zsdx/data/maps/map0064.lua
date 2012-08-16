@@ -1,109 +1,110 @@
+local map = ...
 -- Dungeon 5 1F
 
 sol.main.do_file("maps/prison_guard")
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
   -- torches door
-  if sol.map.get_game():get_boolean(514) then
+  if map:get_game():get_boolean(514) then
     lock_torches()
   end
 
   -- middle door
-  if sol.map.get_game():get_boolean(522) then
-    sol.map.switch_set_activated("c_door_switch", true)
+  if map:get_game():get_boolean(522) then
+    map:switch_set_activated("c_door_switch", true)
   end
 
   -- block falled from 2F
-  if not sol.map.get_game():get_boolean(515) then
-    sol.map.block_set_enabled("block_from_2f", false)
+  if not map:get_game():get_boolean(515) then
+    map:block_set_enabled("block_from_2f", false)
   end
 end
 
 -- Returns whether all torches are on
 function are_all_torches_on()
 
-  return sol.map.npc_exists("torch_1")
-      and sol.map.npc_get_sprite("torch_1"):get_animation() == "lit"
-      and sol.map.npc_get_sprite("torch_2"):get_animation() == "lit"
-      and sol.map.npc_get_sprite("torch_3"):get_animation() == "lit"
-      and sol.map.npc_get_sprite("torch_4"):get_animation() == "lit" 
+  return map:npc_exists("torch_1")
+      and map:npc_get_sprite("torch_1"):get_animation() == "lit"
+      and map:npc_get_sprite("torch_2"):get_animation() == "lit"
+      and map:npc_get_sprite("torch_3"):get_animation() == "lit"
+      and map:npc_get_sprite("torch_4"):get_animation() == "lit" 
 end
 
 -- Makes all torches on forever
 function lock_torches()
-  sol.map.npc_remove("torch_1")
-  sol.map.npc_remove("torch_2")
-  sol.map.npc_remove("torch_3")
-  sol.map.npc_remove("torch_4")
+  map:npc_remove("torch_1")
+  map:npc_remove("torch_2")
+  map:npc_remove("torch_3")
+  map:npc_remove("torch_4")
 end
 
-function event_map_opening_transition_finished(destination_point_name)
+function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside" then
-    sol.map.dialog_start("dungeon_5.welcome")
+    map:dialog_start("dungeon_5.welcome")
   end
 end
 
-function event_enemy_dead(enemy_name)
+function map:on_enemy_dead(enemy_name)
 
   if enemy_name == "se_room_enemy"
-      and not sol.map.door_is_open("se_door") then
+      and not map:door_is_open("se_door") then
     sol.audio.play_sound("secret")
-    sol.map.door_open("se_door")
+    map:door_open("se_door")
   elseif string.find(enemy_name, "^s_room_enemy")
-      and sol.map.enemy_is_group_dead("s_room_enemy")
-      and not sol.map.door_is_open("se_door") then
+      and map:enemy_is_group_dead("s_room_enemy")
+      and not map:door_is_open("se_door") then
     sol.audio.play_sound("secret")
-    sol.map.door_open("se_door")
+    map:door_open("se_door")
   end
 end
 
-function event_update()
+function map:on_update()
 
-  if not sol.map.get_game():get_boolean(514)
+  if not map:get_game():get_boolean(514)
       and are_all_torches_on() then
     sol.audio.play_sound("secret")
-    sol.map.door_open("w_door")
+    map:door_open("w_door")
     lock_torches()
   end
 end
 
-function event_switch_activated(switch_name)
+function map:on_switch_activated(switch_name)
 
   if switch_name == "c_door_switch"
-      and not sol.map.door_is_open("c_door") then
-    sol.map.camera_move(504, 504, 250, open_c_door)
+      and not map:door_is_open("c_door") then
+    map:camera_move(504, 504, 250, open_c_door)
   elseif switch_name == "e_door_switch"
-      and not sol.map.door_is_open("e_door") then
-    sol.map.camera_move(1048, 488, 250, open_e_door)
+      and not map:door_is_open("e_door") then
+    map:camera_move(1048, 488, 250, open_e_door)
   end
 end
 
 function open_c_door()
   
   sol.audio.play_sound("secret")
-  sol.map.door_open("c_door")
+  map:door_open("c_door")
 end
 
 function open_e_door()
   
   sol.audio.play_sound("secret")
-  sol.map.door_open("e_door")
+  map:door_open("e_door")
 end
 
-function event_hero_on_sensor(sensor_name)
+function map:on_hero_on_sensor(sensor_name)
 
   sensor_check_guard(sensor_name)
 end
 
-function event_hero_still_on_sensor(sensor_name)
+function map:on_hero_still_on_sensor(sensor_name)
 
   sensor_check_guard(sensor_name)
 end
 
-function event_dialog_finished(dialog_id, answer)
+function map:on_dialog_finished(dialog_id, answer)
 
   dialog_check_guard(dialog_id)
 end

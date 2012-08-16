@@ -1,39 +1,40 @@
+local map = ...
 -- Hidden palace end
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
-  sol.map.light_set(0)
+  map:light_set(0)
 end
 
-function event_chest_empty(chest_name)
+function map:on_chest_empty(chest_name)
 
   if chest_name == "sword_chest" then
     local variant = 2
-    if sol.map.get_game():get_ability("sword") >= 2 then
+    if map:get_game():get_ability("sword") >= 2 then
       -- already got sword 2
       variant = 3
     end
-    sol.map.treasure_give("sword", variant, -1)
+    map:treasure_give("sword", variant, -1)
   end
 end
 
-function event_treasure_obtaining(item_name, variant, savegame_variable)
+function map:on_treasure_obtaining(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
     sol.audio.play_music("excalibur")
   end
 end
 
-function event_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
-    sol.map.hero_start_victory_sequence()
+    map:hero_start_victory_sequence()
   end
 end
 
-function event_hero_victory_sequence_finished()
+function map:on_hero_victory_sequence_finished()
 
-  sol.map.hero_unfreeze()
+  map:hero_unfreeze()
   sol.audio.play_music("light_world_dungeon")
 end
 

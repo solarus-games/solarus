@@ -1,93 +1,94 @@
+local map = ...
 -- Dungeon 10 1F
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
-  sol.map.light_set(1)
+  map:light_set(1)
 
-  if sol.map.get_game():get_boolean(201) then
+  if map:get_game():get_boolean(201) then
     lock_torches()
   end
 
-  if sol.map.get_game():get_boolean(228) then
-    sol.map.block_set_enabled("block_13", false)
+  if map:get_game():get_boolean(228) then
+    map:block_set_enabled("block_13", false)
   else
-    sol.map.block_set_enabled("block_saved", false)
+    map:block_set_enabled("block_saved", false)
   end
 
   if destination_point_name ~= "main_entrance" then
-    sol.map.door_set_open("eye_door", true)
+    map:door_set_open("eye_door", true)
   end
 end
 
-function event_door_open(door_name)
+function map:on_door_open(door_name)
 
   if door_name == "weak_door" then
     sol.audio.play_sound("secret")		
   end
 end
 
-function event_map_opening_transition_finished(destination_point_name)
+function map:on_map_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "main_entrance" then
-    sol.map.dialog_start("dungeon_10.welcome")
+    map:dialog_start("dungeon_10.welcome")
   end
 end
 
-function event_enemy_dead(enemy_name)
+function map:on_enemy_dead(enemy_name)
 
   if enemy_name:find("enemy_group1")
-      and sol.map.enemy_is_group_dead("enemy_group1")
-      and not sol.map.get_game():get_boolean(200) then
-    sol.map.camera_move(616, 552, 250, function()
-      sol.map.pickable_item_create("small_key", 1, 200, 616, 557, 1)
+      and map:enemy_is_group_dead("enemy_group1")
+      and not map:get_game():get_boolean(200) then
+    map:camera_move(616, 552, 250, function()
+      map:pickable_item_create("small_key", 1, 200, 616, 557, 1)
       sol.audio.play_sound("secret")
     end)
   end
 end
 
-function event_switch_activated(switch_name)
+function map:on_switch_activated(switch_name)
 
   -- center
   if switch_name == "eye_switch"
-      and not sol.map.door_is_open("eye_door")  then
+      and not map:door_is_open("eye_door")  then
     sol.audio.play_sound("secret")
-    sol.map.door_open("eye_door")
+    map:door_open("eye_door")
   end
 end
 
 function are_all_torches_on()
 
-  return sol.map.npc_exists("torch1")
-    and sol.map.npc_get_sprite("torch1"):get_animation() == "lit"
-    and sol.map.npc_get_sprite("torch2"):get_animation() == "lit"
-    and sol.map.npc_get_sprite("torch3"):get_animation() == "lit"
-    and sol.map.npc_get_sprite("torch4"):get_animation() == "lit"
+  return map:npc_exists("torch1")
+    and map:npc_get_sprite("torch1"):get_animation() == "lit"
+    and map:npc_get_sprite("torch2"):get_animation() == "lit"
+    and map:npc_get_sprite("torch3"):get_animation() == "lit"
+    and map:npc_get_sprite("torch4"):get_animation() == "lit"
 end
 
 function lock_torches()
 
-  sol.map.npc_remove("torch1")
-  sol.map.npc_remove("torch2")
-  sol.map.npc_remove("torch3")
-  sol.map.npc_remove("torch4")
+  map:npc_remove("torch1")
+  map:npc_remove("torch2")
+  map:npc_remove("torch3")
+  map:npc_remove("torch4")
 end
 
-function event_update()
+function map:on_update()
 
-  if not sol.map.get_game():get_boolean(201) and are_all_torches_on() then
-    sol.map.get_game():set_boolean(201, true)
+  if not map:get_game():get_boolean(201) and are_all_torches_on() then
+    map:get_game():set_boolean(201, true)
     lock_torches()
-    sol.map.camera_move(232, 488, 250, function()
+    map:camera_move(232, 488, 250, function()
       sol.audio.play_sound("secret")
-      sol.map.pickable_item_create("small_key", 1, 202, 232, 493, 0)
+      map:pickable_item_create("small_key", 1, 202, 232, 493, 0)
     end)
   end
 end
 
-function event_block_moved(block_name)
+function map:on_block_moved(block_name)
 
   if block_name == "block_13" then
-    sol.map.get_game():set_boolean(228, true)
+    map:get_game():set_boolean(228, true)
   end
 end
 

@@ -1,3 +1,4 @@
+local map = ...
 -- Dungeon 9 boss
 
 local torches_error = false
@@ -43,11 +44,11 @@ local nb_bats_created = 0
 local bonuses_done = {}
 
 -- groups of entities
-local switches = sol.map:find_all("switch")
-local switch_tiles = sol.map:find_all("floor_switch_tile")
-local torches = sol.map:find_all("torch")
+local switches = map:find_all("switch")
+local switch_tiles = map:find_all("floor_switch_tile")
+local torches = map:find_all("torch")
 
-function sol.map:on_started(destination)
+function map:on_started(destination)
 
   if not sol.game:get_boolean(881) then
     sol.audio.play_music("ganon_appears")
@@ -61,11 +62,11 @@ function sol.map:on_started(destination)
   switch_floors:set_enabled(false)
 end
 
-function sol.map:on_opening_transition_finished(destination)
+function map:on_opening_transition_finished(destination)
 
   if destination == from_6f then
     if not sol.game:get_boolean(881) then
-      sol.map:start_dialog("dungeon_9.boss")
+      map:start_dialog("dungeon_9.boss")
     else
       start_zelda_sequence()
     end
@@ -78,7 +79,7 @@ end
 
 function sol.languages.get_dialog("dungeon_9.zelda"):on_finished(answer)
   sol.timer.start(1000, function()
-    sol.map:start_dialog("dungeon_9.zelda_children")
+    map:start_dialog("dungeon_9.zelda_children")
   end)
 end
 
@@ -88,11 +89,11 @@ function sol.languages.get_dialog("dungeon_9.zelda_children"):on_finished(answer
   sol.audio.play_sound("world_warp")
   sol.timer.start(1000, function()
     for i = 1, 8 do
-      sol.map:get_entity("child_" .. i):get_sprite():fade_out()
+      map:get_entity("child_" .. i):get_sprite():fade_out()
     end
   end)
   sol.timer.start(5000, function()
-    sol.map:start_dialog("dungeon_9.zelda_end")
+    map:start_dialog("dungeon_9.zelda_end")
   end)
 end
 
@@ -125,7 +126,7 @@ function start_zelda_sequence()
   hero:set_direction(1)
   zelda:set_enabled(true)
   for i = 1, 8 do
-    local npc = sol.map:get_entity("child_" .. i)
+    local npc = map:get_entity("child_" .. i)
     npc_set_enabled()
     local sprite = npc:get_sprite()
     sprite:set_ignore_suspend(true)
@@ -133,7 +134,7 @@ function start_zelda_sequence()
   end
 
   sol.timer.start(3000, function()
-    sol.map:start_dialog("dungeon_9.zelda", sol.game:get_player_name())
+    map:start_dialog("dungeon_9.zelda", sol.game:get_player_name())
   end)
 end
 
@@ -141,7 +142,7 @@ end
 -- because we don't want usual behavior from items/lamp.lua:
 -- we want a longer delay and special Ganon interaction 
 function torches:on_interaction()
-  sol.map:start_dialog("torch.need_lamp")
+  map:start_dialog("torch.need_lamp")
 end
 
 -- Called when fire touches an NPC linked to this map
@@ -167,7 +168,7 @@ end
 function unlight_torches()
 
   for i = 1, 4 do
-    local torch = sol.map:get_entity("torch_" .. i)
+    local torch = map:get_entity("torch_" .. i)
     torch:get_sprite():set_animation("unlit")
     torch.timer:stop()
     torch.timer = nil
@@ -251,7 +252,7 @@ function create_stone()
     y = 205
   end
 
-  sol.map.create_destructible{
+  map:create_destructible{
     id = "black_stone", x = x, y = y, layer = 0,
     treasure_item = "_none",
     destruction_callback = on_stone_destroyed}
@@ -278,7 +279,7 @@ function torches_solved()
     floor_switch_tiles:set_enabled()
     switches:set_enabled()
     for i = 1, 4 do
-      sol.map:get_entity("switch_" .. i):set_activated(false)
+      map:get_entity("switch_" .. i):set_activated(false)
       bonuses_done[i] = nil
     end
   end
@@ -296,7 +297,7 @@ function switches:on_activated()
 
   if index == 1 then
     -- kill small enemies
-    local enemies = sol.map:find_all("boss_")
+    local enemies = map:find_all("boss_")
     if #enemies > 0 then
       sol.audio.play_sound("enemy_killed")
       enemies:destroy()
@@ -341,7 +342,7 @@ function create_pickables()
       item_name = "fairy"
       variant = 1
     end
-    sol.map:create_pickable{
+    map:create_pickable{
       item = item_name, variant = variant, x = v.x, y = v.y, layer = 0}
   end
 end
@@ -350,7 +351,7 @@ function create_bats()
 
   for i, v in ipairs(bats) do
     nb_bats_created = nb_bats_created + 1
-    sol.map:create_enemy{
+    map:create_enemy{
       id = "bat_" .. nb_bats_created,
       breed = "fire_bat", x = v.x, y = v.y, layer = 0}
   end

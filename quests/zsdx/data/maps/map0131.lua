@@ -1,14 +1,15 @@
+local map = ...
 -- The end
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
   if destination_point_name == "from_ending" then
-    sol.map.hero_freeze()
-    sol.map.hero_set_visible(false)
-    sol.map.hud_set_enabled(false)
-    sol.map.hud_set_pause_enabled(false)
+    map:hero_freeze()
+    map:hero_set_visible(false)
+    map:hud_set_enabled(false)
+    map:hud_set_pause_enabled(false)
     sol.timer.start(25000, function()
-      sol.map.get_game().reset()
+      map:get_game().reset()
     end)
   end
 end

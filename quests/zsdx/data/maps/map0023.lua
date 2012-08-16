@@ -1,32 +1,33 @@
+local map = ...
 -- Dungeon 1 1F
 
 sw_sensor_enabled = false
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
-  sol.map.chest_set_enabled("map_chest", false)
-  sol.map.chest_set_enabled("compass_chest", false)
-  if sol.map.get_game():get_boolean(54) then
-    sol.map.switch_set_activated("map_room_switch", true)
+  map:chest_set_enabled("map_chest", false)
+  map:chest_set_enabled("compass_chest", false)
+  if map:get_game():get_boolean(54) then
+    map:switch_set_activated("map_room_switch", true)
   end
 end
 
-function event_map_opening_transition_finished(destination_point_name)
+function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside" then
-    sol.map.dialog_start("dungeon_1")
+    map:dialog_start("dungeon_1")
   end
 end
 
-function event_switch_activated(switch_name)
+function map:on_switch_activated(switch_name)
 
   if switch_name == "sw_switch" or switch_name == "nw_switch" then
-    sol.map.camera_move(176, 392, 250, sw_camera_timer)
+    map:camera_move(176, 392, 250, sw_camera_timer)
     current_room = "sw"
   elseif switch_name == "map_room_switch" then
     sol.audio.play_sound("chest_appears")
-    sol.map.chest_set_enabled("map_chest", true)
+    map:chest_set_enabled("map_chest", true)
   end
 end
 
@@ -36,18 +37,18 @@ end
 
 function compass_room_timer()
   sol.audio.play_sound("chest_appears")
-  sol.map.chest_set_enabled("compass_chest", true)
+  map:chest_set_enabled("compass_chest", true)
 end
 
-function event_hero_on_sensor(sensor_name)
+function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "close_sw_door_sensor"
-      and sol.map.door_is_open("sw_door")
+      and map:door_is_open("sw_door")
       and sw_sensor_enabled then
 
     close_sw_door()
     sw_sensor_enabled = false
-    sol.map.hero_align_on_sensor(sensor_name)
+    map:hero_align_on_sensor(sensor_name)
 
   elseif sensor_name == "enable_sensor" then
     sw_sensor_enabled = true
@@ -56,26 +57,26 @@ end
 
 function open_sw_door()
   sol.audio.play_sound("secret")
-  sol.map.door_open("sw_door")
-  sol.map.switch_set_activated("sw_switch", true)
-  sol.map.switch_set_activated("nw_switch", true)
+  map:door_open("sw_door")
+  map:switch_set_activated("sw_switch", true)
+  map:switch_set_activated("nw_switch", true)
 end
 
 function close_sw_door()
-  sol.map.door_close("sw_door")
-  sol.map.switch_set_activated("sw_switch", false)
-  sol.map.switch_set_activated("nw_switch", false)
+  map:door_close("sw_door")
+  map:switch_set_activated("sw_switch", false)
+  map:switch_set_activated("nw_switch", false)
 end
 
-function event_enemy_dead(enemy_name)
+function map:on_enemy_dead(enemy_name)
 
-  if sol.map.enemy_is_group_dead("compass_room_battle")
-      and not sol.map.chest_is_enabled("compass_chest") then
-    sol.map.camera_move(408, 456, 250, compass_room_timer)
+  if map:enemy_is_group_dead("compass_room_battle")
+      and not map:chest_is_enabled("compass_chest") then
+    map:camera_move(408, 456, 250, compass_room_timer)
   end
 end
 
-function event_door_open(door_name)
+function map:on_door_open(door_name)
 
   if door_name == "weak_wall" then
     sol.audio.play_sound("secret")

@@ -1,48 +1,49 @@
+local map = ...
 -- Lyriann Shop
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
-  if sol.map.get_game():is_dungeon_finished(4)
-      and (not sol.map.get_game():get_boolean(938)
-           or not sol.map.get_game():get_boolean(939)
-           or not sol.map.get_game():get_boolean(940)) then
+  if map:get_game():is_dungeon_finished(4)
+      and (not map:get_game():get_boolean(938)
+           or not map:get_game():get_boolean(939)
+           or not map:get_game():get_boolean(940)) then
     -- after dungeon 4, replace the usual item by advanced equipment
     -- unless all advanced equipment was bought
-    sol.map.shop_item_remove("apples")
-    sol.map.shop_item_remove("heart")
-    sol.map.shop_item_remove("lamp")
+    map:shop_item_remove("apples")
+    map:shop_item_remove("heart")
+    map:shop_item_remove("lamp")
 
-    if not sol.map.get_game():get_boolean(938) then
+    if not map:get_game():get_boolean(938) then
       -- a bomb bag still available in this shop
-      if sol.map.get_game():get_boolean(510) then
+      if map:get_game():get_boolean(510) then
 	-- already found the other one
-	sol.map.shop_item_remove("bomb_bag_2")
+	map:shop_item_remove("bomb_bag_2")
       else
-	sol.map.shop_item_remove("bomb_bag_3")
+	map:shop_item_remove("bomb_bag_3")
       end
     end
 
-    if not sol.map.get_game():get_boolean(939) then
+    if not map:get_game():get_boolean(939) then
       -- a quiver still available in this shop
-      if sol.map.get_game():get_boolean(941) then
+      if map:get_game():get_boolean(941) then
 	-- already found the other one
-	sol.map.shop_item_remove("quiver_2")
+	map:shop_item_remove("quiver_2")
       else
-	sol.map.shop_item_remove("quiver_3")
+	map:shop_item_remove("quiver_3")
       end
     end
 
   else
     -- disable the advanced equipment and let usual items
-    sol.map.shop_item_remove("bomb_bag_2")
-    sol.map.shop_item_remove("bomb_bag_3")
-    sol.map.shop_item_remove("quiver_2")
-    sol.map.shop_item_remove("quiver_3")
-    sol.map.shop_item_remove("rupee_bag")
+    map:shop_item_remove("bomb_bag_2")
+    map:shop_item_remove("bomb_bag_3")
+    map:shop_item_remove("quiver_2")
+    map:shop_item_remove("quiver_3")
+    map:shop_item_remove("rupee_bag")
 
-    if sol.map.get_game():get_item("rupee_bag") >= 2
-        and not sol.map.get_game():is_dungeon_finished(2) then
-      sol.map.shop_item_remove("lamp")
+    if map:get_game():get_item("rupee_bag") >= 2
+        and not map:get_game():is_dungeon_finished(2) then
+      map:shop_item_remove("lamp")
     end
   end
 end

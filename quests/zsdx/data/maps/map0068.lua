@@ -1,3 +1,4 @@
+local map = ...
 -- Inferno river maze 1F
 
 water_delay = 500 -- delay between each water step
@@ -16,11 +17,11 @@ pools = {
 }
 savegame_variable = 160
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
   -- initialize all pools
   for i, pool in ipairs(pools) do
-    if pool.initially_filled ~= sol.map.get_game():get_boolean(savegame_variable + i) then
+    if pool.initially_filled ~= map:get_game():get_boolean(savegame_variable + i) then
       -- this pool is filled
       set_water_filled(i)
     else
@@ -30,7 +31,7 @@ function event_map_started(destination_point_name)
   end
 end
 
-function event_switch_activated(switch_name)
+function map:on_switch_activated(switch_name)
 
   local matched = string.match(switch_name, "^water_([1-9])_on_switch$")
   if matched then
@@ -39,7 +40,7 @@ function event_switch_activated(switch_name)
   end
 end
 
-function event_block_moved(block_name)
+function map:on_block_moved(block_name)
 
   local matched = string.match(block_name, "^water_([1-9])_on_block$")
   if matched then
@@ -56,77 +57,77 @@ end
 
 function fill_water(index)
   current_pool_index = index
-  sol.map.camera_move(pools[index].x, pools[index].y, 250, fill_water_step_1, 1000, 2500)
+  map:camera_move(pools[index].x, pools[index].y, 250, fill_water_step_1, 1000, 2500)
 end
 
 function drain_water(index)
   current_pool_index = index
-  sol.map.camera_move(pools[index].x, pools[index].y, 250, drain_water_step_1, 1000, 2500)
+  map:camera_move(pools[index].x, pools[index].y, 250, drain_water_step_1, 1000, 2500)
 end
 
 function set_water_filled(i)
 
   -- show the water tile
-  sol.map.tile_set_enabled("water_"..i.."_full", true)
+  map:tile_set_enabled("water_"..i.."_full", true)
 
   -- disable the custom obstacles near stairs (stairs are useless)
-  sol.map.obstacle_set_group_enabled("water_"..i.."_off_obstacle", false)
+  map:obstacle_set_group_enabled("water_"..i.."_off_obstacle", false)
 
   -- enable the jumpers placed over stairs (they are used to jump into water)
-  sol.map.jumper_set_group_enabled("water_"..i.."_on_jumper", true)
+  map:jumper_set_group_enabled("water_"..i.."_on_jumper", true)
 
   if pools[i].trigger == "switch" then
     -- make activated the switch that fills this pool
-    sol.map.switch_set_activated("water_"..i.."_on_switch", true)
+    map:switch_set_activated("water_"..i.."_on_switch", true)
   else
     -- hide the block that fills this pool
-    sol.map.block_set_enabled("water_"..i.."_on_block", false)
+    map:block_set_enabled("water_"..i.."_on_block", false)
     -- reset and show the block that drains this pool
-    sol.map.block_reset("water_"..i.."_off_block")
-    sol.map.block_set_enabled("water_"..i.."_off_block", true)
+    map:block_reset("water_"..i.."_off_block")
+    map:block_set_enabled("water_"..i.."_off_block", true)
   end
 end
 
 function set_water_drained(i)
 
   -- enable the custom obstacles near stairs (stairs can be used)
-  sol.map.obstacle_set_group_enabled("water_"..i.."_off_obstacle", true)
+  map:obstacle_set_group_enabled("water_"..i.."_off_obstacle", true)
 
   -- disable the jumpers placed over stairs (there is no water to jump into)
-  sol.map.jumper_set_group_enabled("water_"..i.."_on_jumper", false)
+  map:jumper_set_group_enabled("water_"..i.."_on_jumper", false)
 
   if pools[i].trigger == "block" then
     -- hide the block that drains this pool
-    sol.map.block_set_enabled("water_"..i.."_off_block", false)
+    map:block_set_enabled("water_"..i.."_off_block", false)
     -- reset and show the block that fills this pool
-    sol.map.block_reset("water_"..i.."_on_block")
-    sol.map.block_set_enabled("water_"..i.."_on_block", true)
+    map:block_reset("water_"..i.."_on_block")
+    map:block_set_enabled("water_"..i.."_on_block", true)
   end
 end
 
 function fill_water_step_1()
   sol.audio.play_sound("water_fill_begin")
   sol.audio.play_sound("water_fill")
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", true)
+  map:tile_set_enabled("water_"..current_pool_index.."_less_3", true)
   sol.timer.start(water_delay, fill_water_step_2)
 end
 
 function fill_water_step_2()
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", false)
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", true)
+  map:tile_set_enabled("water_"..current_pool_index.."_less_3", false)
+  map:tile_set_enabled("water_"..current_pool_index.."_less_2", true)
   sol.timer.start(water_delay, fill_water_step_3)
 end
 
 function fill_water_step_3()
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", false)
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", true)
+  map:tile_set_enabled("water_"..current_pool_index.."_less_2", false)
+  map:tile_set_enabled("water_"..current_pool_index.."_less_1", true)
   sol.timer.start(water_delay, fill_water_step_4)
 end
 
 function fill_water_step_4()
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", false)
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_full", true)
-  sol.map.get_game():set_boolean(savegame_variable + current_pool_index,
+  map:tile_set_enabled("water_"..current_pool_index.."_less_1", false)
+  map:tile_set_enabled("water_"..current_pool_index.."_full", true)
+  map:get_game():set_boolean(savegame_variable + current_pool_index,
     not pools[current_pool_index].initially_filled)
   set_water_filled(current_pool_index)
 end
@@ -134,26 +135,26 @@ end
 function drain_water_step_1()
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_full", false)
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", true)
+  map:tile_set_enabled("water_"..current_pool_index.."_full", false)
+  map:tile_set_enabled("water_"..current_pool_index.."_less_1", true)
   sol.timer.start(water_delay, drain_water_step_2)
 end
 
 function drain_water_step_2()
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", false)
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", true)
+  map:tile_set_enabled("water_"..current_pool_index.."_less_1", false)
+  map:tile_set_enabled("water_"..current_pool_index.."_less_2", true)
   sol.timer.start(water_delay, drain_water_step_3)
 end
 
 function drain_water_step_3()
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", false)
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", true)
+  map:tile_set_enabled("water_"..current_pool_index.."_less_2", false)
+  map:tile_set_enabled("water_"..current_pool_index.."_less_3", true)
   sol.timer.start(water_delay, drain_water_step_4)
 end
 
 function drain_water_step_4()
-  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", false)
-  sol.map.get_game():set_boolean(savegame_variable + current_pool_index,
+  map:tile_set_enabled("water_"..current_pool_index.."_less_3", false)
+  map:get_game():set_boolean(savegame_variable + current_pool_index,
     pools[current_pool_index].initially_filled)
   set_water_drained(current_pool_index)
 end

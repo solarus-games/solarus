@@ -1,3 +1,4 @@
+local map = ...
 -- Link's house
 
 -- This is an intermediate version:

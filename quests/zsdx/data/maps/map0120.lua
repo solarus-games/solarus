@@ -1,13 +1,14 @@
+local map = ...
 -- Bone key cave
 
-function event_hero_on_sensor(sensor_name)
+function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "close_eye_sensor" then
 
-    if sol.map.tile_is_enabled("laser_eye_open") then
-      sol.map.tile_set_enabled("laser_eye_open", false)
-      sol.map.tile_set_enabled("laser_eye_closed", true)
-      sol.map.enemy_set_enabled("laser", false)
+    if map:tile_is_enabled("laser_eye_open") then
+      map:tile_set_enabled("laser_eye_open", false)
+      map:tile_set_enabled("laser_eye_closed", true)
+      map:enemy_set_enabled("laser", false)
       sol.audio.play_sound("secret")
     end
   end

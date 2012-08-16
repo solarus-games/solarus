@@ -1,44 +1,45 @@
+local map = ...
 -- Dungeon 10 3F
 
 door3 = false
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
-  sol.map.door_set_open("door1", true)
-  sol.map.door_set_open("door2", true)
+  map:door_set_open("door1", true)
+  map:door_set_open("door2", true)
   init_evil_tiles()
 
   if destination_point_name == "entrance_F_1" then
-    sol.map.sensor_set_enabled("sensor1", false)
-    sol.map.door_set_open("door3", true)
-    sol.map.switch_set_activated("switch1_1", true)
+    map:sensor_set_enabled("sensor1", false)
+    map:door_set_open("door3", true)
+    map:switch_set_activated("switch1_1", true)
   end
 end
 
 -- Initializes evil tiles (this function should be called
--- from event_map_started)
+-- from on_map_started)
 function init_evil_tiles()
 
-  sol.map.enemy_set_group_enabled("evil", false)
-  sol.map.tile_set_group_enabled("evil_after", false)
+  map:enemy_set_group_enabled("evil", false)
+  map:tile_set_group_enabled("evil_after", false)
 end
 
 -- Starts the attack of evil tiles
 -- (this function can be called when the hero enters the room of evil tiles)
 function start_evil_tiles()
 
-  local total = sol.map.enemy_get_group_count("evil")
+  local total = map:enemy_get_group_count("evil")
   local next = 1 -- number of the next evil tile to spawn
   local spawn_delay = 1500 -- delay between two tiles
 
-  sol.map.enemy_set_group_enabled("evil", false)
-  sol.map.tile_set_group_enabled("evil_after", false)
+  map:enemy_set_group_enabled("evil", false)
+  map:tile_set_group_enabled("evil_after", false)
 
   -- spawns a tile and schedules the next one
   function repeat_spawn()
 
-    sol.map.enemy_set_enabled("evil_" .. next, true)
-    sol.map.tile_set_enabled("evil_after_" .. next, true)
+    map:enemy_set_enabled("evil_" .. next, true)
+    map:tile_set_enabled("evil_after_" .. next, true)
     next = next + 1
     if next <= total then
       sol.timer.start(spawn_delay, repeat_spawn)
@@ -52,11 +53,11 @@ function start_evil_tiles()
 
     -- repeat the sound until the last tile starts animation "destroy"
     local again = false
-    local remaining = sol.map.enemy_get_group_count("evil")
+    local remaining = map:enemy_get_group_count("evil")
     if remaining > 1 then
       again = true
     elseif remaining == 1 then
-      local sprite = sol.map.enemy_get_sprite("evil_" .. total)
+      local sprite = map:enemy_get_sprite("evil_" .. total)
       again = sprite:get_animation() ~= "destroy"
     end
 
@@ -71,13 +72,13 @@ function start_evil_tiles()
   repeat_sound()
 end
 
-function event_hero_on_sensor(sensor_name)
+function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "sensor1"
-      and sol.map.door_is_open("door1_1") then
-    sol.map.door_close("door1")
-    sol.map.door_close("door2")
-    sol.map.sensor_set_enabled("sensor1", false)
+      and map:door_is_open("door1_1") then
+    map:door_close("door1")
+    map:door_close("door2")
+    map:sensor_set_enabled("sensor1", false)
     sol.timer.start(2000, start_evil_tiles)
   end
 
@@ -88,20 +89,20 @@ end
 
 function finish_evil_tiles()
 
-  sol.map.door_open("door1")
-  sol.map.door_open("door2")
+  map:door_open("door1")
+  map:door_open("door2")
 end
 
-function event_switch_activated(switch_name)
+function map:on_switch_activated(switch_name)
 
   if switch_name == "switch1_1" then
     if not door3 then
-      sol.map.door_open("door3")
+      map:door_open("door3")
       sol.audio.play_sound("door_open")
       sol.timer.start(5000, true, function()
         if not door3 then
-          sol.map.switch_set_activated("switch1_1", false)
-          sol.map.door_close("door3")
+          map:switch_set_activated("switch1_1", false)
+          map:door_close("door3")
           sol.audio.play_sound("door_closed")
         end
       end)

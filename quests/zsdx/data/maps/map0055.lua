@@ -1,86 +1,87 @@
+local map = ...
 -- Dungeon 6 2F
 
 remove_water_delay = 500
 
-function event_map_started(destination_point_name)
+function map:on_started(destination_point_name)
 
   -- weak floor
-  if sol.map.get_game():get_boolean(314) then
-    sol.map.tile_set_enabled("weak_floor", false)
-    sol.map.sensor_set_enabled("weak_floor_sensor", false)
+  if map:get_game():get_boolean(314) then
+    map:tile_set_enabled("weak_floor", false)
+    map:sensor_set_enabled("weak_floor_sensor", false)
   else
-    sol.map.teletransporter_set_enabled("weak_floor_teletransporter", false)
+    map:teletransporter_set_enabled("weak_floor_teletransporter", false)
   end
 
   -- water
-  if sol.map.get_game():get_boolean(319) then
-    sol.map.tile_set_group_enabled("water", false)
-    sol.map.jumper_set_group_enabled("water_on_jumper", false)
-    sol.map.switch_set_activated("water_switch", true)
+  if map:get_game():get_boolean(319) then
+    map:tile_set_group_enabled("water", false)
+    map:jumper_set_group_enabled("water_on_jumper", false)
+    map:switch_set_activated("water_switch", true)
   else
-    sol.map.obstacle_set_group_enabled("water_off_obstacle", false)
+    map:obstacle_set_group_enabled("water_off_obstacle", false)
   end
 end
 
-function event_hero_on_sensor(sensor_name)
+function map:on_hero_on_sensor(sensor_name)
 
   -- fix the position of the hero when he lands on barriers after the feather jump
   if sensor_name == "above_barrier_sensor" then
-    local x, y = sol.map.hero_get_position()
+    local x, y = map:hero_get_position()
     if y > 629 and y < 641 then
-      sol.map.hero_set_position(x, 629, 0)
+      map:hero_set_position(x, 629, 0)
     elseif y >= 641 and y < 653 then
-      sol.map.hero_set_position(x, 653, 0)
+      map:hero_set_position(x, 653, 0)
     end
   end
 end
 
-function event_sensor_collision_explosion(sensor_name)
+function map:on_sensor_collision_explosion(sensor_name)
 
   if sensor_name == "weak_floor_sensor"
-      and sol.map.tile_is_enabled("weak_floor") then
+      and map:tile_is_enabled("weak_floor") then
 
-    sol.map.tile_set_enabled("weak_floor", false)
-    sol.map.sensor_set_enabled("weak_floor_sensor", false)
-    sol.map.teletransporter_set_enabled("weak_floor_teletransporter", true)
+    map:tile_set_enabled("weak_floor", false)
+    map:sensor_set_enabled("weak_floor_sensor", false)
+    map:teletransporter_set_enabled("weak_floor_teletransporter", true)
     sol.audio.play_sound("secret")
-    sol.map.get_game():set_boolean(314, true)
+    map:get_game():set_boolean(314, true)
   end
 end
 
-function event_switch_activated(switch_name)
+function map:on_switch_activated(switch_name)
 
   if switch_name == "water_switch"
-      and not sol.map.get_game():get_boolean(319) then
-    sol.map.camera_move(616, 192, 250, remove_water, 1000, 2500)
+      and not map:get_game():get_boolean(319) then
+    map:camera_move(616, 192, 250, remove_water, 1000, 2500)
   end
 end
 
 function remove_water()
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
-  sol.map.tile_set_enabled("water_less_1", true)
-  sol.map.tile_set_enabled("water_full", false)
+  map:tile_set_enabled("water_less_1", true)
+  map:tile_set_enabled("water_full", false)
   sol.timer.start(remove_water_delay, remove_water_2)
 end
 
 function remove_water_2()
-  sol.map.tile_set_enabled("water_less_2", true)
-  sol.map.tile_set_enabled("water_less_1", false)
+  map:tile_set_enabled("water_less_2", true)
+  map:tile_set_enabled("water_less_1", false)
   sol.timer.start(remove_water_delay, remove_water_3)
 end
 
 function remove_water_3()
-  sol.map.tile_set_enabled("water_less_3", true)
-  sol.map.tile_set_enabled("water_less_2", false)
+  map:tile_set_enabled("water_less_3", true)
+  map:tile_set_enabled("water_less_2", false)
   sol.timer.start(remove_water_delay, remove_water_4)
 end
 
 function remove_water_4()
-  sol.map.tile_set_enabled("water_less_3", false)
-  sol.map.jumper_set_group_enabled("water_on_jumper", false)
-  sol.map.obstacle_set_group_enabled("water_off_obstacle", true)
-  sol.map.get_game():set_boolean(319, true)
+  map:tile_set_enabled("water_less_3", false)
+  map:jumper_set_group_enabled("water_on_jumper", false)
+  map:obstacle_set_group_enabled("water_off_obstacle", true)
+  map:get_game():set_boolean(319, true)
   sol.audio.play_sound("secret")
 end
 

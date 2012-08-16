@@ -1,3 +1,4 @@
+local map = ...
 -- Dungeon 8 B3
 
 -- Legend
@@ -11,62 +12,62 @@
 -- BB: Barrier Button
 -- DS: Door Sensor
 
-function event_map_started(destination_point_name)
-  sol.map.door_set_open("LD12", true)
-  if sol.map.get_game():get_boolean(725) then
-    sol.map.block_set_enabled("STT5", false)
+function map:on_started(destination_point_name)
+  map:door_set_open("LD12", true)
+  if map:get_game():get_boolean(725) then
+    map:block_set_enabled("STT5", false)
   end
-  if sol.map.get_game():get_boolean(720) then
-    sol.map.switch_set_activated("DB1", true)
+  if map:get_game():get_boolean(720) then
+    map:switch_set_activated("DB1", true)
   end
-  if sol.map.get_game():get_boolean(721) then
-    sol.map.switch_set_activated("DB2", true)
+  if map:get_game():get_boolean(721) then
+    map:switch_set_activated("DB2", true)
   end
-  if sol.map.get_game():get_boolean(720) and sol.map.get_game():get_boolean(721) then
-    sol.map.door_set_open("LD14", true)
+  if map:get_game():get_boolean(720) and map:get_game():get_boolean(721) then
+    map:door_set_open("LD14", true)
   end
 end
 
-function event_hero_on_sensor(sensor_name)
+function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "DS12" then
-    sol.map.door_close("LD12")
-    sol.map.sensor_set_enabled("DS12", false)
+    map:door_close("LD12")
+    map:sensor_set_enabled("DS12", false)
   end
 end
 
-function event_block_moved(block_name)
-  x, y = sol.map.block_get_position("STT5")
+function map:on_block_moved(block_name)
+  x, y = map:block_get_position("STT5")
   if x >= 1096 and x <= 1160
       and y >= 893 and y <= 925 then
-    sol.map.block_set_enabled("STT5", false)
+    map:block_set_enabled("STT5", false)
     sol.audio.play_sound("jump")
-    sol.map.get_game():set_boolean(725, true)
+    map:get_game():set_boolean(725, true)
     sol.timer.start(500, function()
       sol.audio.play_sound("bomb")
     end)
   end
 end
 
-function event_switch_activated(switch_name)
+function map:on_switch_activated(switch_name)
   if switch_name == "DB1" then
-    sol.map.get_game():set_boolean(720, true)
-    if sol.map.get_game():get_boolean(721) then
-      sol.map.door_open("LD14")
+    map:get_game():set_boolean(720, true)
+    if map:get_game():get_boolean(721) then
+      map:door_open("LD14")
       sol.audio.play_sound("secret")
     end
   elseif switch_name == "DB2" then
-    sol.map.get_game():set_boolean(721, true)
-    if sol.map.get_game():get_boolean(720) then
-      sol.map.door_open("LD14")
+    map:get_game():set_boolean(721, true)
+    if map:get_game():get_boolean(720) then
+      map:door_open("LD14")
       sol.audio.play_sound("secret")
     end
   elseif switch_name == "DB3" then
-    sol.map.door_open("LD12")
-    sol.map.door_open("LD13")
+    map:door_open("LD12")
+    map:door_open("LD13")
     sol.audio.play_sound("secret")
   end
   if DB1_status == true and DB2_status == true then
-    sol.map.door_open("LD14")
+    map:door_open("LD14")
     sol.audio.play_sound("secret")
   end
 end

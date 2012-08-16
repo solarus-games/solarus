@@ -1,26 +1,27 @@
+local map = ...
 -- Dungeon 9 6F
 
-function event_hero_on_sensor(sensor_name)
+function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "puzzle_end_sensor" then
 
-    if not sol.map.get_game():get_boolean(816) then
+    if not map:get_game():get_boolean(816) then
       -- the end: make a shortcut from 1F
       sol.audio.play_sound("secret")
-      sol.map.get_game():set_boolean(816, true)
+      map:get_game():set_boolean(816, true)
     end
 
   else
     -- wrong room: go back to the beginning
     local direction = tonumber(sensor_name:match("^wrong_sensor_([0-3])"))
     if direction == 0 then
-      sol.map.hero_set_position(1328, 1677)
+      map:hero_set_position(1328, 1677)
     elseif direction == 1 then
-      sol.map.hero_set_position(1448, 1765)
+      map:hero_set_position(1448, 1765)
     elseif direction == 2 then
-      sol.map.hero_set_position(1568, 1677)
+      map:hero_set_position(1568, 1677)
     elseif direction == 3 then
-      sol.map.hero_set_position(1448, 1589)
+      map:hero_set_position(1448, 1589)
     end
   end
 end

@@ -32,8 +32,8 @@
 #include "entities/Crystal.h"
 #include "entities/Teletransporter.h"
 #include "entities/Hero.h"
-#include "entities/PickableItem.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Pickable.h"
+#include "entities/Destructible.h"
 #include "entities/Bomb.h"
 #include "entities/Fire.h"
 #include "movements/Movement.h"
@@ -138,8 +138,8 @@ void LuaContext::register_map_module() {
       { "door_close", map_api_door_close },
       { "door_is_open", map_api_door_is_open },
       { "door_set_open", map_api_door_set_open },
-      { "pickable_item_create", map_api_pickable_item_create },
-      { "destructible_item_create", map_api_destructible_item_create },
+      { "pickable_create", map_api_pickable_create },
+      { "destructible_create", map_api_destructible_create },
       { "block_create", map_api_block_create },
       { "bomb_create", map_api_bomb_create },
       { "explosion_create", map_api_explosion_create },
@@ -490,10 +490,10 @@ int LuaContext::map_api_hero_set_map(lua_State* l) {
 
   Map& map = check_map(l, 1);
   MapId map_id = luaL_checkinteger(l, 2);
-  const std::string &destination_point_name = luaL_checkstring(l, 3);
+  const std::string &destination_name = luaL_checkstring(l, 3);
   Transition::Style transition_style = Transition::Style(luaL_checkinteger(l, 4));
 
-  map.get_game().set_current_map(map_id, destination_point_name, transition_style);
+  map.get_game().set_current_map(map_id, destination_name, transition_style);
 
   return 0;
 }
@@ -1893,7 +1893,7 @@ int LuaContext::map_api_door_set_open(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_pickable_item_create(lua_State* l) {
+int LuaContext::map_api_pickable_create(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string &item_name = luaL_checkstring(l, 2);
@@ -1905,7 +1905,7 @@ int LuaContext::map_api_pickable_item_create(lua_State* l) {
 
   Game& game = map.get_game();
   MapEntities& entities = map.get_entities();
-  entities.add_entity(PickableItem::create(
+  entities.add_entity(Pickable::create(
       game, layer, x, y,
       Treasure(game, item_name, variant, savegame_variable),
       FALLING_MEDIUM, false
@@ -1919,7 +1919,7 @@ int LuaContext::map_api_pickable_item_create(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_destructible_item_create(lua_State* l) {
+int LuaContext::map_api_destructible_create(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& subtype_name = luaL_checkstring(l, 2);
@@ -1961,14 +1961,14 @@ int LuaContext::map_api_destructible_item_create(lua_State* l) {
     }
   }
 
-  DestructibleItem::Subtype subtype =
-      DestructibleItem::get_subtype_by_name(subtype_name);
+  Destructible::Subtype subtype =
+      Destructible::get_subtype_by_name(subtype_name);
   MapEntities& entities = map.get_entities();
-  DestructibleItem* destructible_item =
-      new DestructibleItem(layer, x, y, subtype, Treasure(map.get_game(),
+  Destructible* destructible =
+      new Destructible(layer, x, y, subtype, Treasure(map.get_game(),
           treasure_item, treasure_variant, treasure_savegame_variable));
-  destructible_item->set_destruction_callback(destruction_callback_ref);
-  entities.add_entity(destructible_item);
+  destructible->set_destruction_callback(destruction_callback_ref);
+  entities.add_entity(destructible);
 
   return 0;
 }
@@ -2410,12 +2410,12 @@ void LuaContext::map_on_suspended(Map& map, bool suspended) {
 /**
  * @brief Calls the on_started() method of a Lua map.
  * @param map A map.
- * @param destination_point The destination point used (NULL if it's a special one).
+ * @param destination The destination point used (NULL if it's a special one).
  */
-void LuaContext::map_on_started(Map& map, DestinationPoint* destination_point) {
+void LuaContext::map_on_started(Map& map, Destination* destination) {
 
   push_map(l, map);
-  on_started(destination_point);
+  on_started(destination);
   lua_pop(l, 1);
 }
 
@@ -2434,13 +2434,13 @@ void LuaContext::map_on_finished(Map& map) {
 /**
  * @brief Calls the on_opening_transition_finished() method of a Lua map.
  * @param map A map.
- * @param destination_point The destination point used (NULL if it's a special one).
+ * @param destination The destination point used (NULL if it's a special one).
  */
 void LuaContext::map_on_opening_transition_finished(Map& map,
-    DestinationPoint* destination_point) {
+    Destination* destination) {
 
   push_map(l, map);
-  on_opening_transition_finished(destination_point);
+  on_opening_transition_finished(destination);
   lua_pop(l, 1);
 }
 

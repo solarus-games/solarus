@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/DestructibleItem.h"
+#include "entities/Destructible.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
-#include "entities/PickableItem.h"
+#include "entities/Pickable.h"
 #include "entities/CarriedItem.h"
 #include "movements/FallingHeight.h"
 #include "lua/LuaContext.h"
@@ -38,7 +38,7 @@
 /**
  * @brief Features of each type of destructible item.
  */
-const DestructibleItem::Features DestructibleItem::features[] = {
+const Destructible::Features Destructible::features[] = {
   // animation set, sound, can be lifted, can be cut, can_explode, can_regenerate, weight, damage, special ground
   {"pot",         "entities/pot",               "stone", true,  false, false, false, 0, 2, GROUND_NORMAL},
   {"",            "",                           "",      false, false, false, false, 0, 1, GROUND_NORMAL},
@@ -58,7 +58,7 @@ const DestructibleItem::Features DestructibleItem::features[] = {
  * @param treasure the pickable item that appears when the destructible
  * item is lifted or cut
  */
-DestructibleItem::DestructibleItem(Layer layer, int x, int y,
+Destructible::Destructible(Layer layer, int x, int y,
     Subtype subtype, const Treasure &treasure):
 
   Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
@@ -90,7 +90,7 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y,
 /**
  * @brief Destructor.
  */
-DestructibleItem::~DestructibleItem() {
+Destructible::~Destructible() {
 
   get_lua_context().cancel_callback(this->destruction_callback_ref);
 }
@@ -107,7 +107,7 @@ DestructibleItem::~DestructibleItem() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* DestructibleItem::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Destructible::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   std::string treasure_name;
   int subtype, treasure_variant, treasure_savegame_variable;
@@ -117,7 +117,7 @@ MapEntity* DestructibleItem::parse(Game &game, std::istream &is, Layer layer, in
   FileTools::read(is, treasure_variant);
   FileTools::read(is, treasure_savegame_variable);
 
-  return new DestructibleItem(Layer(layer), x, y, Subtype(subtype),
+  return new Destructible(Layer(layer), x, y, Subtype(subtype),
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
@@ -125,7 +125,7 @@ MapEntity* DestructibleItem::parse(Game &game, std::istream &is, Layer layer, in
  * @brief Returns the type of entity.
  * @return the type of entity
  */
-EntityType DestructibleItem::get_type() {
+EntityType Destructible::get_type() {
   return DESTRUCTIBLE_ITEM;
 }
 
@@ -137,7 +137,7 @@ EntityType DestructibleItem::get_type() {
  *
  * @return true if this entity is displayed at the same level as the hero
  */
-bool DestructibleItem::is_displayed_in_y_order() {
+bool Destructible::is_displayed_in_y_order() {
   return false;
 }
 
@@ -146,7 +146,7 @@ bool DestructibleItem::is_displayed_in_y_order() {
  * @brief Returns the damage this destructible item can cause to enemies
  * @return the damage on enemies
  */
-int DestructibleItem::get_damage_on_enemies() {
+int Destructible::get_damage_on_enemies() {
   return features[subtype].damage_on_enemies;
 }
 
@@ -154,7 +154,7 @@ int DestructibleItem::get_damage_on_enemies() {
  * @brief Returns the animation set of this destructible item.
  * @return the animations of the sprite
  */
-const std::string& DestructibleItem::get_animation_set_id() {
+const std::string& Destructible::get_animation_set_id() {
   return features[subtype].animation_set_id;
 }
 
@@ -162,7 +162,7 @@ const std::string& DestructibleItem::get_animation_set_id() {
  * @brief Returns the id of the sound to play when this item is destroyed.
  * @return the destruction sound id
  */
-const std::string& DestructibleItem::get_destruction_sound_id() {
+const std::string& Destructible::get_destruction_sound_id() {
   return features[subtype].destruction_sound_id;
 }
 
@@ -170,7 +170,7 @@ const std::string& DestructibleItem::get_destruction_sound_id() {
  * @brief Returns the special ground to display when walking on this destructible item.
  * @return the ground, or GROUND_NORMAL if there is no special ground to display
  */
-Ground DestructibleItem::get_special_ground() {
+Ground Destructible::get_special_ground() {
   return features[subtype].special_ground;
 }
 
@@ -178,7 +178,7 @@ Ground DestructibleItem::get_special_ground() {
  * @brief Returns whether there is a special ground to display when walking on this destructible item.
  * @return true if there is a special ground
  */
-bool DestructibleItem::has_special_ground() {
+bool Destructible::has_special_ground() {
   return get_special_ground() != GROUND_NORMAL;
 }
 
@@ -191,8 +191,8 @@ bool DestructibleItem::has_special_ground() {
  * @param other another entity
  * @return true if this entity is an obstacle for others
  */
-bool DestructibleItem::is_obstacle_for(MapEntity &other) {
-  return features[subtype].can_be_lifted && !is_being_cut && other.is_destructible_item_obstacle(*this);
+bool Destructible::is_obstacle_for(MapEntity &other) {
+  return features[subtype].can_be_lifted && !is_being_cut && other.is_destructible_obstacle(*this);
 }
 
 /**
@@ -203,17 +203,17 @@ bool DestructibleItem::is_obstacle_for(MapEntity &other) {
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
-bool DestructibleItem::test_collision_custom(MapEntity &entity) {
+bool Destructible::test_collision_custom(MapEntity &entity) {
   return overlaps(entity.get_x(), entity.get_y() - 2);
 }
 
 /**
  * @brief Adds to the map the pickable treasure (if any) hidden under this destructible item.
  */
-void DestructibleItem::create_pickable_item() {
+void Destructible::create_pickable() {
 
   treasure.decide_content();
-  get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(),
+  get_entities().add_entity(Pickable::create(get_game(), get_layer(), get_x(), get_y(),
       treasure, FALLING_MEDIUM, false));
 }
 
@@ -225,9 +225,9 @@ void DestructibleItem::create_pickable_item() {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void DestructibleItem::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Destructible::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  entity_overlapping.notify_collision_with_destructible_item(*this, collision_mode);
+  entity_overlapping.notify_collision_with_destructible(*this, collision_mode);
 }
 
 /**
@@ -235,7 +235,7 @@ void DestructibleItem::notify_collision(MapEntity &entity_overlapping, Collision
  * @param hero the hero
  * @param collision_mode the collision mode that detected the collision
  */
-void DestructibleItem::notify_collision_with_hero(Hero &hero, CollisionMode collision_mode) {
+void Destructible::notify_collision_with_hero(Hero &hero, CollisionMode collision_mode) {
 
   if (features[subtype].can_be_lifted
       && !is_being_cut
@@ -267,7 +267,7 @@ void DestructibleItem::notify_collision_with_hero(Hero &hero, CollisionMode coll
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
+void Destructible::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
 
   if (features[subtype].can_be_cut
       && !is_being_cut
@@ -280,7 +280,7 @@ void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_s
 
       play_destroy_animation();
       hero.check_position(); // to update the ground under the hero
-      create_pickable_item();
+      create_pickable();
 
       if (can_explode()) {
         explode();
@@ -295,7 +295,7 @@ void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_s
       && !is_disabled()) {
 
     play_destroy_animation();
-    create_pickable_item();
+    create_pickable();
     explode();
   }
 }
@@ -307,7 +307,7 @@ void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_s
  * when the hero is facing this detector, and the action icon lets him do this.
  * The hero lifts the item if possible.
  */
-void DestructibleItem::action_key_pressed() {
+void Destructible::action_key_pressed() {
 
   KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
 
@@ -328,7 +328,7 @@ void DestructibleItem::action_key_pressed() {
       Sound::play("lift");
 
       // create the pickable item
-      create_pickable_item();
+      create_pickable();
 
       // remove the item from the map
       if (!features[subtype].can_regenerate) {
@@ -359,7 +359,7 @@ void DestructibleItem::action_key_pressed() {
 /**
  * @brief Plays the animation destroy of this item.
  */
-void DestructibleItem::play_destroy_animation() {
+void Destructible::play_destroy_animation() {
 
   is_being_cut = true;
   Sound::play(get_destruction_sound_id());
@@ -376,7 +376,7 @@ void DestructibleItem::play_destroy_animation() {
  * (if you pass LUA_REFNIL, this function removes the previous callback that
  * was set, if any)
  */
-void DestructibleItem::set_destruction_callback(int destruction_callback_ref) {
+void Destructible::set_destruction_callback(int destruction_callback_ref) {
 
   get_lua_context().cancel_callback(this->destruction_callback_ref);
   this->destruction_callback_ref = destruction_callback_ref;
@@ -385,7 +385,7 @@ void DestructibleItem::set_destruction_callback(int destruction_callback_ref) {
 /**
  * @brief Calls the Lua destruction callback of this item (if any).
  */
-void DestructibleItem::destruction_callback() {
+void Destructible::destruction_callback() {
 
   get_lua_context().do_callback(destruction_callback_ref);
   destruction_callback_ref = LUA_REFNIL;
@@ -398,7 +398,7 @@ void DestructibleItem::destruction_callback() {
  *
  * @return true if the item is disabled
  */
-bool DestructibleItem::is_disabled() {
+bool Destructible::is_disabled() {
   return regeneration_date != 0 && !is_regenerating;
 }
 
@@ -406,14 +406,14 @@ bool DestructibleItem::is_disabled() {
  * @brief Returns whether the item can explode.
  * @return true if the item will explode
  */
-bool DestructibleItem::can_explode() {
+bool Destructible::can_explode() {
   return features[subtype].can_explode;
 }
 
 /**
  * @brief Creates an explosion on the item.
  */
-void DestructibleItem::explode() {
+void Destructible::explode() {
   get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
   Sound::play("explosion");
 }
@@ -422,7 +422,7 @@ void DestructibleItem::explode() {
  * @brief This function is called by the map when the game is suspended or resumed.
  * @param suspended true to suspend the entity, false to resume it
  */
-void DestructibleItem::set_suspended(bool suspended) {
+void Destructible::set_suspended(bool suspended) {
 
   MapEntity::set_suspended(suspended); // suspend the animation and the movement
 
@@ -435,7 +435,7 @@ void DestructibleItem::set_suspended(bool suspended) {
 /**
  * @brief Updates the item.
  */
-void DestructibleItem::update() {
+void Destructible::update() {
 
   MapEntity::update();
 
@@ -472,7 +472,7 @@ void DestructibleItem::update() {
  * @param subtype a subtype of destructible item
  * @return the name of this subtype
  */
-const std::string& DestructibleItem::get_subtype_name(Subtype subtype) {
+const std::string& Destructible::get_subtype_name(Subtype subtype) {
 
   Debug::check_assertion(subtype >= 0 && subtype != DEPRECATED_1
       && subtype < SUBTYPE_NUMBER, StringConcat()
@@ -486,7 +486,7 @@ const std::string& DestructibleItem::get_subtype_name(Subtype subtype) {
  * @param subtype_name the name of a destructible item subtype
  * @return the corresponding subtype
  */
-DestructibleItem::Subtype DestructibleItem::get_subtype_by_name(
+Destructible::Subtype Destructible::get_subtype_by_name(
     const std::string& subtype_name) {
 
   for (int i = 0; i < SUBTYPE_NUMBER; i++) {

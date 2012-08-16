@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/CarriedItem.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Destructible.h"
 #include "entities/Hero.h"
 #include "entities/Enemy.h"
 #include "entities/Explosion.h"

@@ -260,7 +260,7 @@ function create_stone()
     y = 205
   end
 
-  map:destructible_item_create("black_stone", x, y, 0, {
+  map:destructible_create("black_stone", x, y, 0, {
     treasure_item = "_none",
     destruction_callback = on_stone_destroyed})
   allow_stone_creation = false
@@ -348,7 +348,7 @@ function create_pickables()
       item_name = "fairy"
       variant = 1
     end
-    map:pickable_item_create(item_name, variant, -1, v.x, v.y, 0)
+    map:pickable_create(item_name, variant, -1, v.x, v.y, 0)
   end
 end
 

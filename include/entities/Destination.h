@@ -23,7 +23,7 @@
 /**
  * @brief A location of the map where the hero can arrive when using a teletransporter.
  */
-class DestinationPoint: public MapEntity {
+class Destination: public MapEntity {
 
   private:
 
@@ -32,8 +32,8 @@ class DestinationPoint: public MapEntity {
 
   public:
 
-    DestinationPoint(const std::string &name, Layer layer, int x, int y, int hero_direction, bool is_visible);
-    ~DestinationPoint();
+    Destination(const std::string &name, Layer layer, int x, int y, int hero_direction, bool is_visible);
+    ~Destination();
     static CreationFunction parse;
 
     EntityType get_type();

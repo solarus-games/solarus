@@ -32,7 +32,7 @@
  * When the hero lifts an item, it is removed from the map and replaced by an instance of CarriedItem
  * that is attached to the hero.
  */
-class DestructibleItem: public Detector {
+class Destructible: public Detector {
 
   public:
 
@@ -82,14 +82,14 @@ class DestructibleItem: public Detector {
     static const std::string subtype_names[];
 
     void play_destroy_animation();
-    void create_pickable_item();
+    void create_pickable();
     void destruction_callback();
 
   public:
 
     // creation and destruction
-    DestructibleItem(Layer layer, int x, int y, Subtype subtype, const Treasure &treasure);
-    ~DestructibleItem();
+    Destructible(Layer layer, int x, int y, Subtype subtype, const Treasure &treasure);
+    ~Destructible();
     static CreationFunction parse;
 
     EntityType get_type();

@@ -196,9 +196,9 @@ void EquipmentItem::notify_ability_used(const std::string& ability_name) {
  * appeared on the map.
  * @param pickable The pickable item.
  */
-void EquipmentItem::notify_pickable_appeared(PickableItem& pickable) {
+void EquipmentItem::notify_pickable_appeared(Pickable& pickable) {
 
-  PickableItem* old_pickable = this->pickable;
+  Pickable* old_pickable = this->pickable;
   this->pickable = &pickable;
   get_lua_context().item_on_appear(*this, pickable);
   this->pickable = old_pickable;
@@ -208,9 +208,9 @@ void EquipmentItem::notify_pickable_appeared(PickableItem& pickable) {
  * @brief Notifies the script that a pickable instance of this item has moved.
  * @param pickable The pickable item.
  */
-void EquipmentItem::notify_movement_changed(PickableItem& pickable) {
+void EquipmentItem::notify_movement_changed(Pickable& pickable) {
 
-  PickableItem* old_pickable = this->pickable;
+  Pickable* old_pickable = this->pickable;
   this->pickable = &pickable;
   get_lua_context().item_on_movement_changed(*this, pickable);
   this->pickable = old_pickable;
@@ -258,7 +258,7 @@ void EquipmentItem::set_current_amount(int amount) {
  * @brief Returns the pickable item related to the current call to item:on_appear().
  * @return The current pickable item or NULL.
  */
-PickableItem* EquipmentItem::get_pickable_item() {
+Pickable* EquipmentItem::get_pickable() {
   return pickable;
 }
 

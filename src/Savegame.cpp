@@ -98,17 +98,17 @@ void Savegame::set_initial_values() {
   IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("initial");
   int starting_map_id = ini.get_integer_value("starting_map", -1);
-  const std::string &starting_destination_point_name = ini.get_string_value("starting_point", "");
+  const std::string &starting_destination_name = ini.get_string_value("starting_point", "");
   int max_life = ini.get_integer_value("max_life", 1);
 
   Debug::check_assertion(starting_map_id != -1,
       "No starting map defined in quest.dat. Please set the value starting_map to the id of the initial map of your quest.");
-  Debug::check_assertion(starting_destination_point_name.size() != 0,
+  Debug::check_assertion(starting_destination_name.size() != 0,
       "No starting point defined in quest.dat. Please set the value starting_point to the name of the "
       "destination point where the hero should be placed on the initial map.");
 
   set_integer(STARTING_MAP, starting_map_id);
-  set_string(STARTING_POINT, starting_destination_point_name);
+  set_string(STARTING_POINT, starting_destination_name);
   set_integer(MAX_LIFE, max_life);
   set_integer(CURRENT_LIFE, max_life);
 }

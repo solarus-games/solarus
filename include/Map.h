@@ -90,7 +90,7 @@ class Map: public ExportableToLua {
 
     // map state
     bool started;                         /**< true if this map is the current map */
-    std::string destination_point_name;   /**< current destination point on the map,
+    std::string destination_name;   /**< current destination point on the map,
                                            * or "_same" to keep the hero's coordinates,
                                            * or "_side0", "_side1", "_side2" or "_side3"
                                            * to place the hero on a side of the map */
@@ -160,9 +160,9 @@ class Map: public ExportableToLua {
     void leave();
 
     // current destination point
-    void set_destination_point(const std::string &destination_point_name);
-    const std::string& get_destination_point_name();
-    DestinationPoint* get_destination_point();
+    void set_destination(const std::string &destination_name);
+    const std::string& get_destination_name();
+    Destination* get_destination();
     int get_destination_side();
 
     // collisions with obstacles (checked before a move)

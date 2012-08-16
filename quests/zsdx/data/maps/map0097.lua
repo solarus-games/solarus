@@ -91,7 +91,7 @@ function map:on_switch_activated(switch_name)
     and map:switch_is_activated("switch1_3")
     and map:switch_is_activated("switch1_4") then
     sol.audio.play_sound("secret")
-    map:pickable_item_create("small_key", 1, 227, 144, 504, 0)
+    map:pickable_create("small_key", 1, 227, 144, 504, 0)
   end
 end
 
@@ -111,7 +111,7 @@ function map:on_enemy_dead(enemy_name)
       and not map:get_game():get_boolean(221) then
 
     map:camera_move(232, 728, 250, function()
-      map:pickable_item_create("small_key", 1, 221, 232, 733, 1)
+      map:pickable_create("small_key", 1, 221, 232, 733, 1)
       sol.audio.play_sound("secret")
     end)
   end

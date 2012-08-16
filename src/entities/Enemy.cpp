@@ -18,8 +18,8 @@
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/CarriedItem.h"
-#include "entities/PickableItem.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Pickable.h"
+#include "entities/Destructible.h"
 #include "entities/Fire.h"
 #include "lua/LuaContext.h"
 #include "Game.h"
@@ -176,7 +176,7 @@ MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank,
 
     // the enemy is dead: create its pickable treasure (if any) instead
     if (treasure.is_saved() && !game.get_savegame().get_boolean(treasure.get_savegame_variable())) {
-      return PickableItem::create(game, layer, x, y, treasure, FALLING_NONE, true);
+      return Pickable::create(game, layer, x, y, treasure, FALLING_NONE, true);
     }
     return NULL;
   }
@@ -304,14 +304,14 @@ bool Enemy::is_obstacle_for(MapEntity& other) {
 
 /**
  * @brief Returns whether a destructible item is currently considered as an obstacle for this entity.
- * @param destructible_item a destructible item
+ * @param destructible a destructible item
  * @return true if the destructible item is currently an obstacle this entity
  */
-bool Enemy::is_destructible_item_obstacle(DestructibleItem& destructible_item) {
+bool Enemy::is_destructible_obstacle(Destructible& destructible) {
 
   // the destructible item is an obstacle unless the enemy is already overlapping it,
   // which is possible with bomb flowers
-  if (this->overlaps(destructible_item)) {
+  if (this->overlaps(destructible)) {
     return false;
   }
   return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
@@ -750,7 +750,7 @@ void Enemy::update() {
   if (is_killed() && is_dying_animation_finished()) {
 
     // create the pickable treasure if any
-    get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(),
+    get_entities().add_entity(Pickable::create(get_game(), get_layer(), get_x(), get_y(),
         treasure, FALLING_HIGH, false));
 
     // notify the enemy

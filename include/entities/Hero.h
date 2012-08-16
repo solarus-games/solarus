@@ -166,7 +166,7 @@ class Hero: public MapEntity {
     void set_map(Map &map);
     void set_map(Map &map, int initial_direction);
     void notify_map_started();
-    void place_on_destination_point(Map& map, const Rectangle& previous_map_location);
+    void place_on_destination(Map& map, const Rectangle& previous_map_location);
     void notify_map_opening_transition_finished();
 
     /**
@@ -251,7 +251,7 @@ class Hero: public MapEntity {
      * Handle collisions between the hero and other entities.
      */
     void check_position();
-    void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
+    void notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy);
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
     void notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode);

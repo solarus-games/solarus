@@ -28,7 +28,7 @@
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
 #include "entities/MapEntities.h"
-#include "entities/DestinationPoint.h"
+#include "entities/Destination.h"
 #include "entities/Detector.h"
 #include "entities/Hero.h"
 
@@ -44,7 +44,7 @@ Map::Map(MapId id):
   id(id),
   tileset(NULL),
   started(false),
-  destination_point_name(""),
+  destination_name(""),
   entities(NULL),
   suspended(false),
   light(1) {
@@ -321,39 +321,39 @@ MapEntities& Map::get_entities() {
 
 /**
  * @brief Sets the current destination point of the map.
- * @param destination_point_name name of the destination point you want to use,
+ * @param destination_name name of the destination point you want to use,
  * or "_same" to keep the hero's coordinates, or "_side0", "_side1", "_side2"
  * or "_side3" to place the hero on a side of the map
  */
-void Map::set_destination_point(const std::string &destination_point_name) {
-  this->destination_point_name = destination_point_name;
+void Map::set_destination(const std::string &destination_name) {
+  this->destination_name = destination_name;
 }
 
 /**
- * @brief Returns the destination point index specified by the last call to set_destination_point().
+ * @brief Returns the destination point index specified by the last call to set_destination().
  * @return the name of the destination point previously set
  */
-const std::string& Map::get_destination_point_name() {
-  return destination_point_name;
+const std::string& Map::get_destination_name() {
+  return destination_name;
 }
 
 /**
  * @brief Returns the destination point specified by the last call to
- * set_destination_point().
+ * set_destination().
  *
  * Returns NULL if the destination point was set to a special value ("_same",
  * "_side0", "_side1", "_side2" or "_side3")
  *
  * @return The destination point previously set, or NULL.
  */
-DestinationPoint* Map::get_destination_point() {
+Destination* Map::get_destination() {
 
-  if (destination_point_name == "_same"
-      || destination_point_name.substr(0,5) == "_side") {
+  if (destination_name == "_same"
+      || destination_name.substr(0,5) == "_side") {
     return NULL;
   }
-  return static_cast<DestinationPoint*>(
-      get_entities().get_entity(DESTINATION_POINT, destination_point_name));
+  return static_cast<Destination*>(
+      get_entities().get_entity(DESTINATION_POINT, destination_name));
 }
 
 /**
@@ -363,8 +363,8 @@ DestinationPoint* Map::get_destination_point() {
  */
 int Map::get_destination_side() {
 
-  if (destination_point_name.substr(0,5) == "_side") {
-    int destination_side = destination_point_name[5] - '0';
+  if (destination_name.substr(0,5) == "_side") {
+    int destination_side = destination_name[5] - '0';
     return destination_side;
   }
   return -1;
@@ -602,7 +602,7 @@ void Map::start() {
 
   this->started = true;
   this->visible_surface->set_opacity(255);
-  get_lua_context().notify_map_started(*this, get_destination_point());
+  get_lua_context().notify_map_started(*this, get_destination());
   this->entities->notify_map_started();
   get_game().get_equipment().set_map(*this);
   Music::play(music_id);
@@ -638,7 +638,7 @@ void Map::notify_opening_transition_finished() {
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
   check_suspended();
   entities->notify_map_opening_transition_finished();
-  get_lua_context().map_on_opening_transition_finished(*this, get_destination_point());
+  get_lua_context().map_on_opening_transition_finished(*this, get_destination());
 }
 
 /**

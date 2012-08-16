@@ -22,7 +22,7 @@ function map:on_enemy_dead(enemy_name)
   if enemy_name:find("enemy2")
       and map:enemy_is_group_dead("enemy2")
       and not map:get_game():get_boolean(234) then
-    map:pickable_item_create("big_key", 1, 234, 672, 80, 1)
+    map:pickable_create("big_key", 1, 234, 672, 80, 1)
     sol.audio.play_sound("secret")
     if not map:door_is_open("door_a") then
       map:door_open("door_a")

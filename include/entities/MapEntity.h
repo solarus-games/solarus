@@ -287,7 +287,7 @@ class MapEntity: public ExportableToLua {
     void check_collision_with_detectors(Sprite& sprite);
 
     virtual void notify_collision_with_enemy(Enemy &enemy);
-    virtual void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
+    virtual void notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode);
     virtual void notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode);
     virtual void notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy);
     virtual void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
@@ -326,7 +326,7 @@ class MapEntity: public ExportableToLua {
     virtual bool is_npc_obstacle(NPC& npc);
     virtual bool is_enemy_obstacle(Enemy& enemy);
     virtual bool is_jumper_obstacle(Jumper& jumper);
-    virtual bool is_destructible_item_obstacle(DestructibleItem& destructible_item);
+    virtual bool is_destructible_obstacle(Destructible& destructible);
     virtual bool is_sword_ignored();
 
     // game loop

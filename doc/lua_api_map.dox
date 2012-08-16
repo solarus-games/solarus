@@ -306,10 +306,10 @@ returns whether a door is open
 - \c sol.map.door_set_open(door_name, open):
 changes immediately the state of a door (without playing animation and sound)
 
-- \c sol.map.pickable_item_create(item_name, variant, savegame_variable, x, y, layer):
-creates a pickable item and places it on the map
+- \c sol.map.pickable_create(item_name, variant, savegame_variable, x, y, layer):
+creates a pickable treasure and places it on the map
 
-- \c sol.map.destructible_item_create(subtype, x, y, layer, properties):
+- \c sol.map.destructible_create(subtype, x, y, layer, properties):
 Creates a destructible item and places it on the map.
 \c subtype can be "pot", "bush", "white_stone", "black_stone", "grass"
 or "bomb_flower".

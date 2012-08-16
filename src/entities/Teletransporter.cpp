@@ -35,18 +35,18 @@
  * @param subtype the subtype of teletransporter
  * @param transition_style style of transition between the two maps
  * @param destination_map_id id of the destination map
- * @param destination_point_name location on the destination map, or "_same" to keep the hero's coordinates,
+ * @param destination_name location on the destination map, or "_same" to keep the hero's coordinates,
  * or "_side" to place the hero on the appropriate side of the map
  */
 Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, int y, int width, int height,
 				 Subtype subtype, Transition::Style transition_style,
-				 MapId destination_map_id, std::string destination_point_name):
+				 MapId destination_map_id, std::string destination_name):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
   subtype(subtype),
   transition_style(transition_style),
   sound_id(""),
   destination_map_id(destination_map_id),
-  destination_point_name(destination_point_name),
+  destination_name(destination_name),
   destination_side(-1),
   transporting_hero(false) {
   
@@ -83,7 +83,7 @@ MapEntity* Teletransporter::parse(Game &game, std::istream &is, Layer layer, int
 	
   int width, height, subtype, transition_style;
   MapId destination_map_id;
-  std::string name, destination_point_name;
+  std::string name, destination_name;
 
   FileTools::read(is, width);
   FileTools::read(is, height);
@@ -91,11 +91,11 @@ MapEntity* Teletransporter::parse(Game &game, std::istream &is, Layer layer, int
   FileTools::read(is, subtype);
   FileTools::read(is, transition_style);
   FileTools::read(is, destination_map_id);
-  FileTools::read(is, destination_point_name);
+  FileTools::read(is, destination_name);
 
   return new Teletransporter(name, Layer(layer), x, y, width, height,
       Subtype(subtype), Transition::Style(transition_style),
-      destination_map_id, destination_point_name);
+      destination_map_id, destination_name);
 }
 
 /**
@@ -110,7 +110,7 @@ void Teletransporter::set_map(Map &map) {
 
   MapEntity::set_map(map);
 
-  if (destination_point_name == "_side") {
+  if (destination_name == "_side") {
 
     int x = get_x();
     int y = get_y();
@@ -228,7 +228,7 @@ void Teletransporter::transport_hero(Hero &hero) {
     Sound::play(sound_id);
   }
 
-  std::string name = destination_point_name;
+  std::string name = destination_name;
   int hero_x = hero.get_x();
   int hero_y = hero.get_y();
 

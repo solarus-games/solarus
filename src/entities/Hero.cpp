@@ -16,10 +16,10 @@
  */
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
-#include "entities/DestinationPoint.h"
+#include "entities/Destination.h"
 #include "entities/Teletransporter.h"
 #include "entities/Stairs.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Destructible.h"
 #include "entities/ConveyorBelt.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
@@ -504,11 +504,11 @@ void Hero::set_map(Map &map, int initial_direction) {
  * @param previous_map_location position of the previous map in its world
  * (may be needed for scrolling transitions, but the previous map is already destroyed)
  */
-void Hero::place_on_destination_point(Map& map, const Rectangle& previous_map_location) {
+void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location) {
 
-  const std::string &destination_point_name = map.get_destination_point_name();
+  const std::string &destination_name = map.get_destination_name();
 
-  if (destination_point_name == "_same") {
+  if (destination_name == "_same") {
 
     // the hero's coordinates are the same as on the previous map
     // but we may have to change the layer
@@ -563,13 +563,13 @@ void Hero::place_on_destination_point(Map& map, const Rectangle& previous_map_lo
 
       // normal case: the location is specified by a destination point object
 
-      DestinationPoint *destination_point = (DestinationPoint*)
-	    map.get_entities().get_entity(DESTINATION_POINT, destination_point_name);
+      Destination *destination = (Destination*)
+	    map.get_entities().get_entity(DESTINATION_POINT, destination_name);
 
-      set_map(map, destination_point->get_direction());
-      set_xy(destination_point->get_x(), destination_point->get_y());
+      set_map(map, destination->get_direction());
+      set_xy(destination->get_x(), destination->get_y());
       last_solid_ground_coords = get_xy();
-      map.get_entities().set_entity_layer(*this, destination_point->get_layer());
+      map.get_entities().set_entity_layer(*this, destination->get_layer());
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
 
@@ -1392,11 +1392,11 @@ bool Hero::is_jumper_obstacle(Jumper& jumper) {
 
 /**
  * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
- * @param destructible_item the destructible item
+ * @param destructible the destructible item
  * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode) {
-  destructible_item.notify_collision_with_hero(*this, collision_mode);
+void Hero::notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode) {
+  destructible.notify_collision_with_hero(*this, collision_mode);
 }
 
 /**

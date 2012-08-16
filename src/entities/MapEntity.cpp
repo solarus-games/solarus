@@ -19,9 +19,9 @@
 #include "entities/Tileset.h"
 #include "entities/Tile.h"
 #include "entities/Teletransporter.h"
-#include "entities/DestinationPoint.h"
-#include "entities/PickableItem.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Destination.h"
+#include "entities/Pickable.h"
+#include "entities/Destructible.h"
 #include "entities/Chest.h"
 #include "entities/Jumper.h"
 #include "entities/Enemy.h"
@@ -52,10 +52,10 @@
 
 MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   Tile::parse,
-  DestinationPoint::parse,
+  Destination::parse,
   Teletransporter::parse,
-  PickableItem::parse,
-  DestructibleItem::parse,
+  Pickable::parse,
+  Destructible::parse,
   Chest::parse,
   Jumper::parse,
   Enemy::parse,
@@ -1477,12 +1477,12 @@ bool MapEntity::is_jumper_obstacle(Jumper& jumper) {
  * By default, this function returns true unless the destructible item is disabled
  * (e.g. a bomb flower that will regenerate).
  *
- * @param destructible_item a destructible item
+ * @param destructible a destructible item
  * @return true if the destructible item is currently an obstacle for this entity
  */
-bool MapEntity::is_destructible_item_obstacle(DestructibleItem& destructible_item) {
+bool MapEntity::is_destructible_obstacle(Destructible& destructible) {
 
-  return !destructible_item.is_disabled();
+  return !destructible.is_disabled();
 }
 
 /**
@@ -1649,10 +1649,10 @@ int MapEntity::get_distance_to_camera() {
 
 /**
  * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
- * @param destructible_item the destructible item
+ * @param destructible the destructible item
  * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode) {
 }
 
 /**

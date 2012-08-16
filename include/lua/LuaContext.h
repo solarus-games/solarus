@@ -81,7 +81,7 @@ class LuaContext {
     void update();
     void set_suspended(bool suspended);
     void notify_input(InputEvent& event);
-    void notify_map_started(Map& map, DestinationPoint* destination_point);
+    void notify_map_started(Map& map, Destination* destination);
     void notify_item_created(EquipmentItem& item);
     void notify_enemy_created(Enemy& enemy);
     void notify_camera_reached_target(Map& map);
@@ -133,10 +133,10 @@ class LuaContext {
     // Map events.
     void map_on_update(Map& map);
     void map_on_suspended(Map& map, bool suspended);
-    void map_on_started(Map& map, DestinationPoint* destination_point);
+    void map_on_started(Map& map, Destination* destination);
     void map_on_finished(Map& map);
     void map_on_opening_transition_finished(Map& map,
-        DestinationPoint* destination_point);
+        Destination* destination);
     void map_on_dialog_started(Map& map, const std::string& dialog_id);
     void map_on_dialog_finished(Map& map, const std::string& dialog_id, int answer);
     void map_on_camera_back(Map& map);
@@ -170,8 +170,8 @@ class LuaContext {
     void item_on_update(EquipmentItem& item);
     void item_on_suspended(EquipmentItem& item, bool suspended);
     void item_on_map_changed(EquipmentItem& item, Map& map);
-    void item_on_appear(EquipmentItem& item, PickableItem& pickable_item);
-    void item_on_movement_changed(EquipmentItem& item, PickableItem& pickable_item);
+    void item_on_appear(EquipmentItem& item, Pickable& pickable);
+    void item_on_movement_changed(EquipmentItem& item, Pickable& pickable);
     void item_on_obtaining(EquipmentItem& item, const Treasure& treasure);
     void item_on_obtained(EquipmentItem& item, const Treasure& treasure);
     void item_on_variant_changed(EquipmentItem& item, int variant);
@@ -320,8 +320,8 @@ class LuaContext {
     void on_joypad_axis_moved(InputEvent& event);
     void on_joypad_hat_moved(InputEvent& event);
     void on_direction_pressed(InputEvent& event);
-    void on_started(DestinationPoint* destination_point);
-    void on_opening_transition_finished(DestinationPoint* destination_point);
+    void on_started(Destination* destination);
+    void on_opening_transition_finished(Destination* destination);
     void on_dialog_started(const std::string& dialog_id);
     void on_dialog_finished(const std::string& dialog_id, int answer);
     void on_camera_back();
@@ -351,8 +351,8 @@ class LuaContext {
     void on_enemy_dying(Enemy& enemy);
     void on_enemy_dead(Enemy& enemy);
     void on_map_changed(Map& map);
-    void on_appear(PickableItem& pickable);
-    void on_movement_changed(PickableItem& pickable);
+    void on_appear(Pickable& pickable);
+    void on_movement_changed(Pickable& pickable);
     void on_variant_changed(int variant);
     void on_amount_changed(int amount);
     void on_obtaining(const Treasure& treasure);
@@ -569,8 +569,8 @@ class LuaContext {
       map_api_door_close,
       map_api_door_is_open,
       map_api_door_set_open,
-      map_api_pickable_item_create,
-      map_api_destructible_item_create,
+      map_api_pickable_create,
+      map_api_destructible_create,
       map_api_block_create,
       map_api_bomb_create,
       map_api_explosion_create,

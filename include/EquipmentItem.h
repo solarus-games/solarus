@@ -42,7 +42,7 @@ class EquipmentItem: public ExportableToLua {
   private:
 
     Equipment& equipment;                /**< the equipment object that manages all items */
-    PickableItem* pickable;              /**< the pickable item that just appeared in on_appear(), or NULL */
+    Pickable* pickable;              /**< the pickable item that just appeared in on_appear(), or NULL */
     InventoryItem* inventory_item;       /**< the inventory item that is being used when on_used() is called,
                                           * or NULL if no inventory item is being used */
 
@@ -78,7 +78,7 @@ class EquipmentItem: public ExportableToLua {
     Equipment& get_equipment();
     Game* get_game();
     LuaContext& get_lua_context();
-    PickableItem* get_pickable_item();
+    Pickable* get_pickable();
     InventoryItem* get_inventory_item();
     void update();
     void set_suspended(bool suspended);
@@ -88,8 +88,8 @@ class EquipmentItem: public ExportableToLua {
     void notify_variant_changed(int variant);
     void notify_inventory_item_used(InventoryItem& inventory_item);
     void notify_ability_used(const std::string& ability_name);
-    void notify_pickable_appeared(PickableItem& pickable);
-    void notify_movement_changed(PickableItem& pickable);
+    void notify_pickable_appeared(Pickable& pickable);
+    void notify_movement_changed(Pickable& pickable);
 
     int get_current_variant();
     void set_current_variant(int variant);

@@ -26,7 +26,7 @@
 /**
  * @brief An treasure placed on the ground and that the hero can take.
  */
-class PickableItem: public Detector {
+class Pickable: public Detector {
 
   private:
 
@@ -48,7 +48,7 @@ class PickableItem: public Detector {
     MapEntity* entity_followed;                 /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
 
     // creation and initialization
-    PickableItem(Layer layer, int x, int y, const Treasure &treasure);
+    Pickable(Layer layer, int x, int y, const Treasure &treasure);
 
     void initialize_sprites();
     void initialize_movement();
@@ -60,10 +60,10 @@ class PickableItem: public Detector {
   public:
 
     // creation and destruction
-    static PickableItem* create(Game &game, Layer layer, int x, int y, Treasure treasure,
+    static Pickable* create(Game &game, Layer layer, int x, int y, Treasure treasure,
 	FallingHeight falling_height, bool force_persistent);
 
-    ~PickableItem();
+    ~Pickable();
     static CreationFunction parse;
     void set_map(Map& map);
     void notify_map_started();

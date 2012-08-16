@@ -341,7 +341,7 @@ void Game::update_transitions() {
 
       if (next_map == current_map) {
         // same map
-        hero->place_on_destination_point(*current_map, previous_map_location);
+        hero->place_on_destination(*current_map, previous_map_location);
         transition = Transition::create(transition_style, Transition::IN, this);
         transition->start();
         next_map = NULL;
@@ -360,7 +360,7 @@ void Game::update_transitions() {
 
           // save the location
           get_savegame().set_integer(Savegame::STARTING_MAP, next_map->get_id());
-          get_savegame().set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
+          get_savegame().set_string(Savegame::STARTING_POINT, next_map->get_destination_name());
         }
 
         // before closing the map, draw it on a backup surface for transition effects
@@ -402,7 +402,7 @@ void Game::update_transitions() {
       transition->set_previous_surface(previous_map_surface);
     }
 
-    hero->place_on_destination_point(*current_map, previous_map_location);
+    hero->place_on_destination(*current_map, previous_map_location);
     transition->start();
     current_map->start();
   }
@@ -513,11 +513,11 @@ Map& Game::get_current_map() {
  * Call this function when you want the hero to go to another map.
  *
  * @param map_id id of the map to launch
- * @param destination_point_name name of the destination point of the map you want to use,
+ * @param destination_name name of the destination point of the map you want to use,
  * or en ampty string to pick the destination point saved
  * @param transition_style type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id, const std::string &destination_point_name,
+void Game::set_current_map(MapId map_id, const std::string &destination_name,
     Transition::Style transition_style) {
 
   // stop the hero's movement
@@ -541,11 +541,11 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
   }
 
   // initialize the destination point, from the specified name or from the savegame
-  if (destination_point_name == "") {
-    next_map->set_destination_point(get_savegame().get_string(Savegame::STARTING_POINT));
+  if (destination_name == "") {
+    next_map->set_destination(get_savegame().get_string(Savegame::STARTING_POINT));
   }
   else {
-    next_map->set_destination_point(destination_point_name);
+    next_map->set_destination(destination_name);
   }
   this->transition_style = transition_style;
 }

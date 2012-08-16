@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
-#include "entities/DestinationPoint.h"
+#include "entities/Destination.h"
 #include "entities/Switch.h"
 #include "entities/Sensor.h"
 #include "entities/NPC.h"
@@ -24,7 +24,7 @@
 #include "entities/Door.h"
 #include "entities/Block.h"
 #include "entities/Enemy.h"
-#include "entities/PickableItem.h"
+#include "entities/Pickable.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -226,10 +226,10 @@ void LuaContext::notify_input(InputEvent& event) {
  * The Lua file of this map is automatically loaded.
  *
  * @param map The map started.
- * @param destination_point The destination point used if it's a normal one,
+ * @param destination The destination point used if it's a normal one,
  * NULL otherwise.
  */
-void LuaContext::notify_map_started(Map& map, DestinationPoint* destination_point) {
+void LuaContext::notify_map_started(Map& map, Destination* destination) {
 
   // Compute the file name, depending on the id of the map.
   int id = (int) map.get_id();
@@ -245,7 +245,7 @@ void LuaContext::notify_map_started(Map& map, DestinationPoint* destination_poin
   call_function(1, 0, file_name);
 
   // Call the map:on_started() callback.
-  map_on_started(map, destination_point);
+  map_on_started(map, destination);
 }
 
 /**
@@ -1266,16 +1266,16 @@ void LuaContext::on_direction_pressed(InputEvent& event) {
 
 /**
  * @brief Calls the on_started() method of the object on top of the stack.
- * @param destination_point The destination point used (NULL if it's a special one).
+ * @param destination The destination point used (NULL if it's a special one).
  */
-void LuaContext::on_started(DestinationPoint* destination_point) {
+void LuaContext::on_started(Destination* destination) {
 
   if (find_method("on_started")) {
-    if (destination_point == NULL) {
+    if (destination == NULL) {
       lua_pushnil(l);
     }
     else {
-      lua_pushstring(l, destination_point->get_name().c_str());
+      lua_pushstring(l, destination->get_name().c_str());
     }
     call_function(2, 0, "on_started");
   }
@@ -1283,16 +1283,16 @@ void LuaContext::on_started(DestinationPoint* destination_point) {
 
 /**
  * @brief Calls the on_opening_transition_finished() method of the object on top of the stack.
- * @param destination_point The destination point used (NULL if it's a special one).
+ * @param destination The destination point used (NULL if it's a special one).
  */
-void LuaContext::on_opening_transition_finished(DestinationPoint* destination_point) {
+void LuaContext::on_opening_transition_finished(Destination* destination) {
 
   if (find_method("on_opening_transition_finished")) {
-    if (destination_point == NULL) {
+    if (destination == NULL) {
       lua_pushnil(l);
     }
     else {
-      lua_pushstring(l, destination_point->get_name().c_str());
+      lua_pushstring(l, destination->get_name().c_str());
     }
     call_function(2, 0, "on_opening_transition_finished");
   }
@@ -1644,7 +1644,7 @@ void LuaContext::on_map_changed(Map& map) {
  * @brief Calls the on_() method of the object on top of the stack.
  * @param pickable A pickable item.
  */
-void LuaContext::on_appear(PickableItem& pickable) {
+void LuaContext::on_appear(Pickable& pickable) {
 
   if (find_method("on_appear")) {
     const Treasure& treasure = pickable.get_treasure();
@@ -1659,7 +1659,7 @@ void LuaContext::on_appear(PickableItem& pickable) {
  * @brief Calls the on_movement_changed() method of the object on top of the stack.
  * @param pickable A pickable item.
  */
-void LuaContext::on_movement_changed(PickableItem& pickable) {
+void LuaContext::on_movement_changed(Pickable& pickable) {
 
   if (find_method("on_movement_changed")) {
     call_function(1, 0, "on_movement_changed");

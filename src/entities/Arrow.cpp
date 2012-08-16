@@ -20,7 +20,7 @@
 #include "entities/Stairs.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
-#include "entities/DestructibleItem.h"
+#include "entities/Destructible.h"
 #include "entities/NPC.h"
 #include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
@@ -439,19 +439,19 @@ void Arrow::notify_collision_with_crystal(Crystal &crystal, CollisionMode collis
 
 /**
  * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
- * @param destructible_item the destructible item
+ * @param destructible the destructible item
  * @param collision_mode the collision mode that detected the event
  */
-void Arrow::notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode) {
+void Arrow::notify_collision_with_destructible(Destructible &destructible, CollisionMode collision_mode) {
 
-  if (destructible_item.is_obstacle_for(*this) && is_flying()) {
+  if (destructible.is_obstacle_for(*this) && is_flying()) {
 
-    if (destructible_item.can_explode()) {
-      destructible_item.explode();
+    if (destructible.can_explode()) {
+      destructible.explode();
       remove_from_map();
     }
     else {
-      attach_to(destructible_item);
+      attach_to(destructible);
     }
   }
 }

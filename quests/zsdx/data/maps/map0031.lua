@@ -46,7 +46,7 @@ function map:on_started(destination_point)
     map:tile_set_enabled("boss_killed_floor", true)
   elseif map:get_game():get_boolean(93) then
     -- boss killed, heart container not picked
-    map:pickable_item_create("heart_container", 1, 103, 960, 437, 0)
+    map:pickable_create("heart_container", 1, 103, 960, 437, 0)
   end
 end
 
@@ -183,7 +183,7 @@ function boss_change_floor(first, last, inc, enable)
 
     -- create an arrow with some tiles
     if enable and boss_arrows[index] ~= nil then
-      map:pickable_item_create("arrow", 1, -1,
+      map:pickable_create("arrow", 1, -1,
           boss_arrows[index].x, boss_arrows[index].y, 0)
       boss_arrows[index].created = true
     end
@@ -205,7 +205,7 @@ function boss_restore_floor(with_arrows)
   if with_arrows then
     for k, v in pairs(boss_arrows) do
       if not v.created then
-        map:pickable_item_create("arrow", 1, -1, v.x, v.y, 0)
+        map:pickable_create("arrow", 1, -1, v.x, v.y, 0)
         v.created = true
       end
     end
@@ -224,7 +224,7 @@ function map:on_enemy_dead(enemy_name)
 
   if enemy_name == "boss" then
     -- create the heart container manually to be sure it won't be in lava
-    map:pickable_item_create("heart_container", 1, 103, 960, 437, 0)
+    map:pickable_create("heart_container", 1, 103, 960, 437, 0)
     for _, t in ipairs(timers) do t:stop() end
   end
 end

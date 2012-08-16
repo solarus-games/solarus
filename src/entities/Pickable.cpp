@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/PickableItem.h"
+#include "entities/Pickable.h"
 #include "entities/Hero.h"
 #include "entities/Boomerang.h"
 #include "entities/Hookshot.h"
@@ -35,7 +35,7 @@
  * @param y y coordinate of the pickable item to create
  * @param treasure the treasure to give when the item is picked
  */
-PickableItem::PickableItem(Layer layer, int x, int y, const Treasure &treasure):
+Pickable::Pickable(Layer layer, int x, int y, const Treasure &treasure):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, "", layer, x, y, 0, 0),
   treasure(treasure),
   shadow_sprite(NULL),
@@ -48,7 +48,7 @@ PickableItem::PickableItem(Layer layer, int x, int y, const Treasure &treasure):
 /**
  * @brief Destructor.
  */
-PickableItem::~PickableItem() {
+Pickable::~Pickable() {
 
   delete shadow_sprite;
 }
@@ -57,7 +57,7 @@ PickableItem::~PickableItem() {
  * @brief Returns the type of entity.
  * @return the type of entity
  */
-EntityType PickableItem::get_type() {
+EntityType Pickable::get_type() {
   return PICKABLE_ITEM;
 }
 
@@ -73,7 +73,7 @@ EntityType PickableItem::get_type() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* PickableItem::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Pickable::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   std::string treasure_name;
   int treasure_variant, treasure_savegame_variable;
@@ -109,7 +109,7 @@ MapEntity* PickableItem::parse(Game &game, std::istream &is, Layer layer, int x,
  * decide if it disappears after some time)
  * @return the pickable item created, or NULL
  */
-PickableItem* PickableItem::create(Game &game, Layer layer, int x, int y, Treasure treasure,
+Pickable* Pickable::create(Game &game, Layer layer, int x, int y, Treasure treasure,
     FallingHeight falling_height, bool force_persistent) {
 
   treasure.decide_content();
@@ -119,7 +119,7 @@ PickableItem* PickableItem::create(Game &game, Layer layer, int x, int y, Treasu
     return NULL;
   }
 
-  PickableItem *item = new PickableItem(layer, x, y, treasure);
+  Pickable *item = new Pickable(layer, x, y, treasure);
 
   // set the item properties
   item->falling_height = falling_height;
@@ -140,7 +140,7 @@ PickableItem* PickableItem::create(Game &game, Layer layer, int x, int y, Treasu
  * the item itself and its shadow, except the fairy whose
  * shadow is part of its sprite.
  */
-void PickableItem::initialize_sprites() {
+void Pickable::initialize_sprites() {
 
   EquipmentItem& item = treasure.get_equipment_item();
 
@@ -195,7 +195,7 @@ void PickableItem::initialize_sprites() {
  * @brief Notifies this entity that it has just been added to a map.
  * @param map the map
  */
-void PickableItem::set_map(Map& map) {
+void Pickable::set_map(Map& map) {
 
   MapEntity::set_map(map);
 
@@ -209,7 +209,7 @@ void PickableItem::set_map(Map& map) {
 /**
  * @brief Notifies this entity that its map has just become active.
  */
-void PickableItem::notify_map_started() {
+void Pickable::notify_map_started() {
 
   MapEntity::notify_map_started();
 
@@ -221,7 +221,7 @@ void PickableItem::notify_map_started() {
  * @brief Initializes the movement of the item (if it is falling),
  * depending on its subtype.
  */
-void PickableItem::initialize_movement() {
+void Pickable::initialize_movement() {
 
   if (is_falling()) {
     set_movement(new FallingOnFloorMovement(falling_height));
@@ -232,7 +232,7 @@ void PickableItem::initialize_movement() {
  * @brief Returns whether the entity is currently falling.
  * @return true if the entity is currently falling
  */
-bool PickableItem::is_falling() {
+bool Pickable::is_falling() {
   return get_falling_height() != FALLING_NONE;
 }
 
@@ -240,7 +240,7 @@ bool PickableItem::is_falling() {
  * @brief Returns the height this pickable item falls from when it appears.
  * @return the falling height
  */
-FallingHeight PickableItem::get_falling_height() {
+FallingHeight Pickable::get_falling_height() {
   return falling_height;
 }
 
@@ -248,7 +248,7 @@ FallingHeight PickableItem::get_falling_height() {
  * @brief Returns the treasure the player receives if he picks this item.
  * @return the treasure
  */
-const Treasure& PickableItem::get_treasure() {
+const Treasure& Pickable::get_treasure() {
   return treasure;
 }
 
@@ -256,14 +256,14 @@ const Treasure& PickableItem::get_treasure() {
  * @brief Returns the entity (if any) followed by this pickable item.
  * @return the entity followed or NULL
  */
-MapEntity* PickableItem::get_entity_followed() {
+MapEntity* Pickable::get_entity_followed() {
   return entity_followed;
 }
 
 /**
  * @brief Notifies this pickable item that its movement has just changed.
  */
-void PickableItem::notify_movement_changed() {
+void Pickable::notify_movement_changed() {
 
   if (is_on_map()) {
     // Notify the Lua equipment item.
@@ -279,7 +279,7 @@ void PickableItem::notify_movement_changed() {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void PickableItem::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Pickable::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping.is_hero()
       && can_be_picked
@@ -323,7 +323,7 @@ void PickableItem::notify_collision(MapEntity &entity_overlapping, CollisionMode
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void PickableItem::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
+void Pickable::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
 
   // taking the item with the sword
   if (other_entity.is_hero()
@@ -338,7 +338,7 @@ void PickableItem::notify_collision(MapEntity &other_entity, Sprite &other_sprit
 /**
  * @brief Gives the item to the player.
  */
-void PickableItem::give_item_to_player() {
+void Pickable::give_item_to_player() {
 
   EquipmentItem& item = treasure.get_equipment_item();
 
@@ -361,7 +361,7 @@ void PickableItem::give_item_to_player() {
  * @brief Sets whether the pickable item is blinking.
  * @param blinking true to make it blink, false to make it stop blinking
  */
-void PickableItem::set_blinking(bool blinking) {
+void Pickable::set_blinking(bool blinking) {
 
   uint32_t blink_delay = blinking ? 75 : 0;
 
@@ -380,7 +380,7 @@ void PickableItem::set_blinking(bool blinking) {
  *
  * @param suspended true to suspend the entity, false to resume it
  */
-void PickableItem::set_suspended(bool suspended) {
+void Pickable::set_suspended(bool suspended) {
 
   MapEntity::set_suspended(suspended); // suspend the animation and the movement
 
@@ -416,7 +416,7 @@ void PickableItem::set_suspended(bool suspended) {
  * This is a redefinition of MapEntity::update() to make
  * the item blink and then disappear after an amount of time.
  */
-void PickableItem::update() {
+void Pickable::update() {
 
   // update the animations and the movement
   MapEntity::update();
@@ -463,7 +463,7 @@ void PickableItem::update() {
  * This is a redefinition of MapEntity::display_on_map
  * to display the shadow independently of the item movement.
  */
-void PickableItem::display_on_map() {
+void Pickable::display_on_map() {
 
   // display the shadow
   if (shadow_sprite != NULL) {

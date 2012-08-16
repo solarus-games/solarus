@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
-#include "entities/PickableItem.h"
+#include "entities/Pickable.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "movements/Movement.h"
@@ -212,11 +212,11 @@ int LuaContext::item_api_get_sprite(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
-  PickableItem* pickable_item = item.get_pickable_item();
-  Debug::check_assertion(pickable_item != NULL,
+  Pickable* pickable = item.get_pickable();
+  Debug::check_assertion(pickable != NULL,
                 "Cannot call item:get_sprite(): there is no current pickable item");
 
-  push_sprite(l, pickable_item->get_sprite());
+  push_sprite(l, pickable->get_sprite());
   return 1;
 }
 
@@ -229,10 +229,10 @@ int LuaContext::item_api_get_movement(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
-  PickableItem* pickable_item = item.get_pickable_item();
-  Debug::check_assertion(pickable_item != NULL,
+  Pickable* pickable = item.get_pickable();
+  Debug::check_assertion(pickable != NULL,
                 "Cannot call item:get_movement(): there is no current pickable item");
-  Movement* movement = pickable_item->get_movement();
+  Movement* movement = pickable->get_movement();
 
   push_movement(l, *movement);
 
@@ -250,11 +250,11 @@ int LuaContext::item_api_start_movement(lua_State* l) {
   Movement& movement = check_movement(l, 2);
 
   movement.set_suspended(false);
-  PickableItem* pickable_item = item.get_pickable_item();
-  Debug::check_assertion(pickable_item != NULL,
+  Pickable* pickable = item.get_pickable();
+  Debug::check_assertion(pickable != NULL,
                 "Cannot call item:start_movement(): there is no current pickable item");
-  pickable_item->clear_movement();
-  pickable_item->set_movement(&movement);
+  pickable->clear_movement();
+  pickable->set_movement(&movement);
 
   return 0;
 }
@@ -268,10 +268,10 @@ int LuaContext::item_api_is_following_entity(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
-  PickableItem* pickable_item = item.get_pickable_item();
-  Debug::check_assertion(pickable_item != NULL,
+  Pickable* pickable = item.get_pickable();
+  Debug::check_assertion(pickable != NULL,
                 "Cannot call item:is_following_entity(): there is no current pickable item");
-  bool result = pickable_item->get_entity_followed() != NULL;
+  bool result = pickable->get_entity_followed() != NULL;
 
   lua_pushboolean(l, result);
   return 1;
@@ -286,14 +286,14 @@ int LuaContext::item_api_get_position(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
-  PickableItem* pickable_item = item.get_pickable_item();
-  Debug::check_assertion(pickable_item != NULL,
+  Pickable* pickable = item.get_pickable();
+  Debug::check_assertion(pickable != NULL,
       "Cannot call item:get_position(): there is no current pickable item");
-  const Rectangle& xy = pickable_item->get_xy();
+  const Rectangle& xy = pickable->get_xy();
 
   lua_pushinteger(l, xy.get_x());
   lua_pushinteger(l, xy.get_y());
-  lua_pushinteger(l, pickable_item->get_layer());
+  lua_pushinteger(l, pickable->get_layer());
   return 3;
 }
 
@@ -312,13 +312,13 @@ int LuaContext::item_api_set_position(lua_State* l) {
     layer = luaL_checkinteger(l, 4);
   }
 
-  PickableItem* pickable_item = item.get_pickable_item();
-  Debug::check_assertion(pickable_item != NULL,
+  Pickable* pickable = item.get_pickable();
+  Debug::check_assertion(pickable != NULL,
                 "Cannot call item:set_position(): there is no current pickable item");
-  pickable_item->set_xy(x, y);
+  pickable->set_xy(x, y);
   if (layer != -1) {
-    MapEntities& entities = pickable_item->get_map().get_entities();
-    entities.set_entity_layer(*pickable_item, Layer(layer));
+    MapEntities& entities = pickable->get_map().get_entities();
+    entities.set_entity_layer(*pickable, Layer(layer));
   }
 
   return 0;
@@ -334,10 +334,10 @@ int LuaContext::item_api_set_layer_independent_collisions(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   bool independent = lua_toboolean(l, 2) != 0;
 
-  PickableItem* pickable_item = item.get_pickable_item();
-  Debug::check_assertion(pickable_item != NULL,
+  Pickable* pickable = item.get_pickable();
+  Debug::check_assertion(pickable != NULL,
                 "Cannot call item:set_layer_independent_collisions(): there is no current pickable item");
-  pickable_item->set_layer_independent_collisions(independent);
+  pickable->set_layer_independent_collisions(independent);
 
   return 0;
 }
@@ -405,7 +405,7 @@ void LuaContext::item_on_map_changed(EquipmentItem& item, Map& map) {
  * @param item An equipment item.
  * @param pickable The instance of pickable item that has just appeared.
  */
-void LuaContext::item_on_appear(EquipmentItem& item, PickableItem& pickable) {
+void LuaContext::item_on_appear(EquipmentItem& item, Pickable& pickable) {
 
   push_item(l, item);
   on_appear(pickable);
@@ -417,7 +417,7 @@ void LuaContext::item_on_appear(EquipmentItem& item, PickableItem& pickable) {
  * @param item An equipment item.
  * @param pickable The instance of pickable item whose movement has changed.
  */
-void LuaContext::item_on_movement_changed(EquipmentItem& item, PickableItem& pickable) {
+void LuaContext::item_on_movement_changed(EquipmentItem& item, Pickable& pickable) {
 
   push_item(l, item);
   on_movement_changed(pickable);

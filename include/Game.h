@@ -108,7 +108,7 @@ class Game: public Screen {
     // map
     bool has_current_map();
     Map& get_current_map();
-    void set_current_map(MapId map_id, const std::string &destination_point_name,
+    void set_current_map(MapId map_id, const std::string &destination_name,
         Transition::Style transition_style);
 
     // world

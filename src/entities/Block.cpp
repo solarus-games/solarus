@@ -163,10 +163,10 @@ bool Block::is_enemy_obstacle(Enemy& enemy) {
 
 /**
  * @brief Returns whether a destructible item is currently considered as an obstacle by this entity.
- * @param destructible_item a destructible item
+ * @param destructible a destructible item
  * @return true if the destructible item is currently an obstacle by this entity
  */
-bool Block::is_destructible_item_obstacle(DestructibleItem& destructible_item) {
+bool Block::is_destructible_obstacle(Destructible& destructible) {
   return true;
 }
 

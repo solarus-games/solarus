@@ -42,7 +42,7 @@ function item:on_use()
 
     -- release the fairy
     local x, y, layer = self:get_map():hero_get_position();
-    self:get_map():pickable_item_create("fairy", 1, -1, x, y, layer);
+    self:get_map():pickable_create("fairy", 1, -1, x, y, layer);
     self:set_variant(1) -- make the bottle empty
     self:set_finished()
   end

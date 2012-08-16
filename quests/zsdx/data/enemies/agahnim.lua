@@ -166,7 +166,7 @@ end
 function enemy:escape()
 
   local x, y = self:get_position()
-  self:get_map():pickable_item_create("heart_container", 1, 521, x, y, 0)
+  self:get_map():pickable_create("heart_container", 1, 521, x, y, 0)
   self:get_map():hero_unfreeze()
   self:get_map():enemy_remove(self:get_name())
   self:get_game():set_boolean(520, true)

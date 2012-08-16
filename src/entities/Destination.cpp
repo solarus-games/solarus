@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/DestinationPoint.h"
+#include "entities/Destination.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "lowlevel/FileTools.h"
@@ -29,7 +29,7 @@
  * (0 to 3, or -1 to indicate that the hero's direction is not changed)
  * @param is_visible true to make the destination point visible
  */
-DestinationPoint::DestinationPoint(const std::string &name, Layer layer, int x, int y,
+Destination::Destination(const std::string &name, Layer layer, int x, int y,
 				   int hero_direction, bool is_visible):
   MapEntity(name, 0, layer, x, y, 16, 16) {
 
@@ -49,7 +49,7 @@ DestinationPoint::DestinationPoint(const std::string &name, Layer layer, int x, 
 /**
  * @brief Destructor.
  */
-DestinationPoint::~DestinationPoint() {
+Destination::~Destination() {
 
 }
 
@@ -65,7 +65,7 @@ DestinationPoint::~DestinationPoint() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* DestinationPoint::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Destination::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 	
   std::string name;
   int direction, is_visible;
@@ -74,14 +74,14 @@ MapEntity* DestinationPoint::parse(Game &game, std::istream &is, Layer layer, in
   FileTools::read(is, direction);
   FileTools::read(is, is_visible);
  
-  return new DestinationPoint(name, layer, x, y, direction, (is_visible != 0));
+  return new Destination(name, layer, x, y, direction, (is_visible != 0));
 }
 
 /**
  * @brief Returns the type of entity.
  * @return the type of entity
  */
-EntityType DestinationPoint::get_type() {
+EntityType Destination::get_type() {
   return DESTINATION_POINT;
 }
 

@@ -107,10 +107,10 @@ depending on the type of entity.
 For now, the following types of entities are available when creating a map:
 
 - tile (0): a tile of the map, with a pattern picked from the tileset
-- destination point (1): a possible destination for teletransporters
+- destination (1): a possible destination place for teletransporters
 - teletransporter (2): when walking there, the hero is transported to a destination point (possibly on another map)
-- pickable item (3): an treasure placed on the ground and that the hero can pick up: a rupee, a heart, etc.
-- destructible item (4): an item the hero may cut or lift: a pot, a bush, a stone, some grass, etc, and that may hide a treasure
+- pickable (3): a treasure placed on the ground and that the hero can pick up: a rupee, a heart, etc.
+- destructible (4): an item the hero may cut or lift: a pot, a bush, a stone, some grass, etc, and that may hide a treasure
 - chest (5): a chest (small or big) with a treasure inside
 - jump sensor (6): a sensor that makes the hero jump into a direction
 - enemy (7): an enemy (that may carry a treasure)
@@ -148,32 +148,32 @@ Note that tiles in the same layer can overlap. They are placed on the map in the
 in the map file. In other words, if two tiles overlap, the one that appears last in the file
 is placed above.
 
-\section destination_point Destination point (1)
+\section destination Destination (1)
 
-A destination point is a point of the map which is used as the destination of a teletransporter.
-A destination point has a direction between 0 and 3: this is the direction that the hero takes
+A destination is a point of the map which is used as the destination of a teletransporter.
+A destination has a direction between 0 and 3: this is the direction that the hero takes
 when he comes on the destination point.
 A value of -1 means that his direction should not change.
 A destination point also has a name (used by the teletransporters).
 Its size is fixed (16*16 which is the size of the hero).
 
-Syntax of a destination point:
+Syntax of a destination:
 \verbatim
 1	layer	x	y	entity_name	direction	subtype
 \endverbatim
 
-Subtypes of destination points:
+Subtypes of destination:
 - 0: usual, non-visible destination point
 - 1: visible destination point, displayed with an image of teletransporter destination
 
 \section teletransporter Teletransporter (2)
 
-A teletransporter is a sensor that sends the hero to a destination point on the same map or on another map.
+A teletransporter is a sensor that sends the hero to a destination on the same map or on another map.
 You can specify its size and a name.
 
 Syntax of a teletransporter:
 \verbatim
-2	layer	x	y	width	height	entity_name	subtype	transition	destination_map	destination_point
+2	layer	x	y	width	height	entity_name	subtype	transition	destination_map	destination
 \endverbatim
 
 Subtypes of teletransporters:
@@ -185,21 +185,21 @@ when taking the teletransporter, according to the enumeration Transition.
 
 \c destination_map is the id of the map where the player is sent (possibly the same one).
 
-\c destination_point is the name of the destination point where the player is placed on the
+\c destination is the name of the destination point where the player is placed on the
 destination map. Two special values are also supported: \c _side and \c _same.
 \c _side can be used for a teletransporter placed on the side of the original map,
 and that sends the hero on the corresponding side of the destination map. The new coordinates
 are automatically calculated.
 \c _same means that the coordinates of the hero remain the same as in the previous map.
 This can be used when falling into a hole.
-No destination point entity is needed when the value is \c _side or \c _same.
+No destination entity is needed when the value is \c _side or \c _same.
 
-\section pickable_item Pickable item (3)
+\section pickable Pickable (3)
 
-A pickable item is a treasure directly placed on the floor.
+A pickable is a treasure directly placed on the floor.
 The hero can pick it.
 
-Syntax of a pickable item:
+Syntax of a pickable:
 \verbatim
 3	layer	x	y	treasure_name	treasure_variant	treasure_savegame_variable
 \endverbatim
@@ -214,16 +214,16 @@ and \c treasure_variant is an integer that must be a valid variant for this item
 It is the index of the variable that stores the pickable item's state in the savegame.
 A value of -1 indicates that the item is not saved.
 
-\section destructible_item Destructible item (4)
+\section destructible Destructible (4)
 
-Destructible items are the ones that can hide pickable items and that the hero
+Destructible entities are the ones that can hide pickable treasures and that the hero
 can lift or cut (or both).
 
 \verbatim
 4	layer	x	y	subtype	treasure_name	treasure_variant	treasure_savegame_variable
 \endverbatim
 
-Subtypes of destructible items:
+Subtypes of destructible:
 - 0: a pot
 - 1: a skull
 - 2: a bush
@@ -233,7 +233,7 @@ Subtypes of destructible items:
 - 6: bomb flower
 
 \c treasure_name, \c treasure_variant and \c treasure_savegame_variable
-define the pickable item hidden under the destructible item.
+define the pickable treasure hidden under the destructible item.
 See the previous section for their meaning.
 \c treasure_name can be "_random" or "_none".
 

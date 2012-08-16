@@ -60,7 +60,7 @@ class Block: public Detector {
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_hero_obstacle(Hero& hero);
     bool is_enemy_obstacle(Enemy& enemy);
-    bool is_destructible_item_obstacle(DestructibleItem& destructible_item);
+    bool is_destructible_obstacle(Destructible& destructible);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void action_key_pressed();

@@ -197,13 +197,12 @@
 3	npc/black_knight_soldier	Black Knight Soldier
 3	entities/block	Block
 3	entities/gray_block	Block (gray)
-3	entities/teletransporter        Teletransporter (yellow)
-3	entities/destination        Destination of teletransporter
 3	entities/bone_key_door	Bone key door
 3	entities/cannon	Cannon
 3	entities/slot_machine	Casino slot machine
 3	npc/castle_guard	Castle guard
 3	entities/castle_lock	Castle prison lock
+3	entities/destination	Destination of teletransporter
 3	entities/frozen_door	Frozen door
 3	npc/ganon	Ganon
 3	npc/great_fairy	Great Fairy
@@ -218,6 +217,7 @@
 3	entities/snores	Snoring (zzz)
 3	entities/somaria_block	Somaria block
 3	entities/statue	Statue
+3	entities/teletransporter	Teletransporter (yellow)
 3	entities/the_end	The end
 3	npc/thief	Thief
 3	npc/tom	Tom

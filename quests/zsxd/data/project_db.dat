@@ -126,6 +126,9 @@
 3	npc/static_villager14	ALTTP static villager 14
 3	npc/solarus_child1	Solarus Child 1
 3	npc/yoda	Yoda
+3	entities/block	Block
+3	entities/teletransporter	Teletransporter (yellow)
+3	entities/destination	Destination of teletransporter
 3	entities/slot_machine	Casino slot machine
 3	entities/frozen_door	Frozen door
 3	entities/outside_door	Outside closed door

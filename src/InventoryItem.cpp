@@ -74,8 +74,6 @@ void InventoryItem::start() {
  * @brief Updates this item when it is being used.
  */
 void InventoryItem::update() {
-
-  // TODO?  game.get_equipment().get_item_script(item_name).event_use_update();
 }
 
 /**

@@ -115,6 +115,8 @@ void Sound::initialize(int argc, char** argv) {
     return;
   }
 
+  alGenBuffers(0, NULL);  // Necessary on some systems to avoid errors with the first sound loaded.
+
   initialized = true;
 
   // get the sound effects volume from the configuration file

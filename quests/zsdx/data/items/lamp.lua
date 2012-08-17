@@ -3,7 +3,6 @@ local item = ...
 
 item.temporary_lit_torches = {} -- list of torches that will be unlit by timers soon (FIFO)
 item.was_dark_room = false
-item.timers = {}
 
 -- Called when the hero uses the Lamp
 function item:on_use()
@@ -64,12 +63,8 @@ end
 -- Called when the current map changes
 function item:on_map_changed()
 
-  -- cancel all torch timers so that the previous map does not interfer with
-  -- the new one
-  for _, t in ipairs(self.timers) do t:stop() end
   self.temporary_lit_torches = {}
   self.was_dark_room = false
-  -- TODO this should now be useless (timers are associated to maps)
 end
 
 -- Called when the hero presses the action key in front of any NPC
@@ -90,7 +85,7 @@ function item:on_npc_collision_fire(npc_name)
     if torch_sprite:get_animation() == "unlit" then
       -- temporarily light the torch up
       torch_sprite:set_animation("lit")
-      self.timers[#self.timers + 1] = sol.timer.start(10000, function()
+      sol.timer.start(10000, function()
         self:unlight_oldest_torch()
       end)
       table.insert(self.temporary_lit_torches, npc_name)

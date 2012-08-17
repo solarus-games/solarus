@@ -72,7 +72,7 @@ If the delay is set to zero, the function is called immediately.
 
 Cancels this timer.
 
-If the timer was already finished, nothing happens.
+If the timer was already finished or canceled, nothing happens.
 
 <hr>
 

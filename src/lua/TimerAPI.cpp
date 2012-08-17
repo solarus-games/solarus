@@ -123,16 +123,16 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
  */
 void LuaContext::remove_timer(Timer* timer) {
 
-  Debug::check_assertion(timers.count(timer) > 0,
-      "Cannot remove this timer: timer not found");
+  if (timers.count(timer) > 0) {
 
-  if (!timer->is_finished()) {
-    destroy_ref(timers[timer].callback_ref);
-  }
-  timers.erase(timer);
-  timer->decrement_refcount();
-  if (timer->get_refcount() == 0) {
-    delete timer;
+    if (!timer->is_finished()) {
+      cancel_callback(timers[timer].callback_ref);
+    }
+    timers.erase(timer);
+    timer->decrement_refcount();
+    if (timer->get_refcount() == 0) {
+      delete timer;
+    }
   }
 }
 

@@ -12,7 +12,8 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses	*/
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "DebugKeys.h"
 #include "MainLoop.h"
 #include "Game.h"
@@ -161,18 +162,6 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
       default:
         break;
-    }
-  }
-  else {
-    // no game yet
-    if (key == InputEvent::KEY_F1) {
-      main_loop.start_game("save1.dat");
-    }
-    else if (key == InputEvent::KEY_F2) {
-      main_loop.start_game("save2.dat");
-    }
-    else if (key == InputEvent::KEY_F3) {
-      main_loop.start_game("save3.dat");
     }
   }
 #endif

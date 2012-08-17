@@ -83,6 +83,17 @@ cycle.
 
 <hr>
 
+\subsection lua_api_main_is_debug_enabled sol.main.is_debug_enabled()
+
+Returns whether Solarus is running in debugging mode.
+
+The debugging mode provides some debugging features such as traversing walls.
+You may want to implement additional debugging features in this mode.
+
+- Return value (boolean): \c true if the engine is running in debugging mode.
+
+<hr>
+
 \subsection lua_api_main_get_distance sol.main.get_distance(x1, y1, x2, y2)
 
 Returns the distance in pixels between two points.

@@ -393,6 +393,7 @@ class LuaContext {
       main_api_reset,
       main_api_exit,
       main_api_start_screen,
+      main_api_is_debug_enabled,
       main_api_get_distance,  // TODO remove
       main_api_get_angle,     // TODO remove
 

@@ -36,6 +36,7 @@ void LuaContext::register_main_module() {
       { "reset", main_api_reset },
       { "exit", main_api_exit },
       { "start_screen", main_api_start_screen },
+      { "is_debug_enabled", main_api_is_debug_enabled },
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
       { NULL, NULL }
@@ -131,6 +132,24 @@ int LuaContext::main_api_start_screen(lua_State* l) {
   main_loop.set_next_screen(screen);
 
   return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_main_is_debug_enabled.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::main_api_is_debug_enabled(lua_State* l) {
+
+  bool debug;
+#ifdef SOLARUS_DEBUG_KEYS
+  debug = true;
+#else
+  debug = false;
+#endif
+
+  lua_pushboolean(l, debug);
+  return 1;
 }
 
 /**

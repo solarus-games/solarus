@@ -197,6 +197,8 @@
 3	npc/black_knight_soldier	Black Knight Soldier
 3	entities/block	Block
 3	entities/gray_block	Block (gray)
+3	entities/teletransporter        Teletransporter (yellow)
+3	entities/destination        Destination of teletransporter
 3	entities/bone_key_door	Bone key door
 3	entities/cannon	Cannon
 3	entities/slot_machine	Casino slot machine

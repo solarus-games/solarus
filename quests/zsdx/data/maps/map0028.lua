@@ -11,8 +11,8 @@ function map:on_started(destination_point_name)
 
   if destination_point_name == "from_intro" then
     -- the intro scene is playing
-    self:hud_set_enabled(true)
-    self:hud_set_pause_enabled(false)
+    self:get_game():set_hud_enabled(true)
+    self:set_pause_enabled(false)
     self:dialog_set_style(0)
     local snores_sprite = self:npc_get_sprite("snores")
     local bed_sprite = self:npc_get_sprite("bed")
@@ -54,7 +54,7 @@ end
 function map:jump_from_bed()
   self:hero_set_visible(true)
   self:hero_start_jumping(4, 24, true)
-  self:hud_set_pause_enabled(true)
+  self:set_pause_enabled(true)
   local bed_sprite = self:npc_get_sprite("bed")
   bed_sprite:set_animation("empty_open")
   sol.audio.play_sound("hero_lands")

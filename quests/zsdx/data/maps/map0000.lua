@@ -8,8 +8,8 @@ fresco_sprite = nil
 
 function map:on_started(destination_point_name)
   map:hero_freeze()
-  map:hud_set_enabled(false)
-  map:hud_set_pause_enabled(false)
+  map:get_game():set_hud_enabled(false)
+  map:set_pause_enabled(false)
   map:dialog_set_style(1)
   fresco_sprite = map:npc_get_sprite("fresco")
   fresco_sprite:set_ignore_suspend(true)

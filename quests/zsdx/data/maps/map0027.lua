@@ -37,6 +37,6 @@ end
 function map:on_hero_victory_sequence_finished()
   map:get_game():set_dungeon_finished(1)
   map:hero_set_map(6, "from_dungeon_1_1F", 1)
-  map:hud_set_pause_enabled(true);
+  map:set_pause_enabled(true)
 end
 

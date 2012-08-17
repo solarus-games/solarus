@@ -52,8 +52,7 @@ void LuaContext::register_map_module() {
       { "dialog_start", map_api_dialog_start },
       { "dialog_set_variable", map_api_dialog_set_variable },
       { "dialog_set_style", map_api_dialog_set_style },
-      { "hud_set_enabled", map_api_hud_set_enabled },
-      { "hud_set_pause_enabled", map_api_hud_set_pause_enabled },
+      { "set_pause_enabled", map_api_set_pause_enabled },
       { "light_get", map_api_light_get },
       { "light_set", map_api_light_set },
       { "treasure_give", map_api_treasure_give },
@@ -297,21 +296,7 @@ int LuaContext::map_api_dialog_set_style(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_hud_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  bool enabled = lua_toboolean(l, 2) != 0;
-
-  map.get_game().set_hud_enabled(enabled);
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hud_set_pause_enabled(lua_State* l) {
+int LuaContext::map_api_set_pause_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   bool pause_key_available = lua_toboolean(l, 2) != 0;

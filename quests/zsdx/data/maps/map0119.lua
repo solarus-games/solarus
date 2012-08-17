@@ -11,7 +11,7 @@ function map:on_started(destination_point_name)
     -- game ending sequence
     map:hero_freeze()
     map:hero_set_visible(false)
-    map:hud_set_enabled(false)
+    map:get_game():set_hud_enabled(false)
     map:enemy_set_group_enabled("", false)
     new_music = "fanfare"
     map:tile_set_group_enabled("roof_entrance", false)

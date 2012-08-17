@@ -15,93 +15,93 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
-#include "DynamicDisplayable.h"
+#include "Drawable.h"
 #include "TransitionFade.h"
 #include <lua.hpp>
 
-/* This file contains common code for all displayable types known by Lua,
+/* This file contains common code for all drawable types known by Lua,
  * i.e. surfaces, text surfaces and sprites.
  */
 
 /**
- * @brief Check that the userdata at the specified index is a displayable
+ * @brief Check that the userdata at the specified index is a drawable
  * object (surface, text surface of sprite) and returns it.
  * @param l a Lua context
  * @param index an index in the stack
  * @return the surface
  */
-DynamicDisplayable& LuaContext::check_displayable(lua_State* l, int index) {
+Drawable& LuaContext::check_drawable(lua_State* l, int index) {
 
-  DynamicDisplayable** displayable = NULL;
+  Drawable** drawable = NULL;
 
   if (is_userdata(l, index, surface_module_name)
       || is_userdata(l, index, text_surface_module_name)
       || is_userdata(l, index, sprite_module_name)) {
-    displayable = static_cast<DynamicDisplayable**>(lua_touserdata(l, index));
+    drawable = static_cast<Drawable**>(lua_touserdata(l, index));
   }
   else {
-    luaL_typerror(l, index, "displayable");
+    luaL_typerror(l, index, "drawable");
   }
 
-  return **displayable;
+  return **drawable;
 }
 
 /**
- * @brief Registers a displayable object created by this script.
- * @param displayable a displayable object
+ * @brief Registers a drawable object created by this script.
+ * @param drawable a drawable object
  */
-void LuaContext::add_displayable(DynamicDisplayable* displayable) {
+void LuaContext::add_drawable(Drawable* drawable) {
 
-  displayables.insert(displayable);
+  drawables.insert(drawable);
 }
 
 /**
- * @brief Unregisters a displayable object created by this script.
- * @param displayable a displayable object
+ * @brief Unregisters a drawable object created by this script.
+ * @param drawable a drawable object
  */
-void LuaContext::remove_displayable(DynamicDisplayable* displayable) {
+void LuaContext::remove_drawable(Drawable* drawable) {
 
-  displayables.erase(displayable);
+  drawables.erase(drawable);
 }
 
 /**
- * @brief Updates all displayable objects created by this script.
+ * @brief Updates all drawable objects created by this script.
  */
-void LuaContext::update_displayables() {
+void LuaContext::update_drawables() {
 
-  std::set<DynamicDisplayable*>::iterator it;
-  for (it = displayables.begin(); it != displayables.end(); it++) {
+  std::set<Drawable*>::iterator it;
+  for (it = drawables.begin(); it != drawables.end(); it++) {
     (*it)->update();
   }
 }
 
 /**
- * @brief Implementation of \ref lua_api_displayable_draw.
+ * @brief Implementation of \ref lua_api_drawable_draw.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::displayable_api_draw(lua_State* l) {
+int LuaContext::drawable_api_draw(lua_State* l) {
 
-  DynamicDisplayable& displayable = check_displayable(l, 1);
+  Drawable& drawable = check_drawable(l, 1);
   Surface& dst_surface = check_surface(l, 2);
   int x = luaL_optinteger(l, 3, 0);
   int y = luaL_optinteger(l, 4, 0);
-  displayable.display(dst_surface, x, y);
+  drawable.display(dst_surface, x, y);
 
   return 0;
 }
 
 /**
- * @brief Implementation of \ref lua_api_displayable_fade_in.
+ * @brief Implementation of \ref lua_api_drawable_fade_in.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::displayable_api_fade_in(lua_State* l) {
+int LuaContext::drawable_api_fade_in(lua_State* l) {
 
   uint32_t delay = 20;
   int callback_ref = LUA_REFNIL;
 
-  DynamicDisplayable& displayable = check_displayable(l, 1);
+  Drawable& drawable = check_drawable(l, 1);
 
   if (lua_gettop(l) >= 2) {
     // the second argument can be the delay or the callback
@@ -120,22 +120,22 @@ int LuaContext::displayable_api_fade_in(lua_State* l) {
 
   TransitionFade* transition = new TransitionFade(Transition::IN);
   transition->set_delay(delay);
-  displayable.start_transition(*transition, callback_ref);
+  drawable.start_transition(*transition, callback_ref);
 
   return 0;
 }
 
 /**
- * @brief Implementation of \ref lua_api_displayable_fade_out.
+ * @brief Implementation of \ref lua_api_drawable_fade_out.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::displayable_api_fade_out(lua_State* l) {
+int LuaContext::drawable_api_fade_out(lua_State* l) {
 
   uint32_t delay = 20;
   int callback_ref = LUA_REFNIL;
 
-  DynamicDisplayable& displayable = check_displayable(l, 1);
+  Drawable& drawable = check_drawable(l, 1);
 
   if (lua_gettop(l) >= 2) {
     // the second argument can be the delay or the callback
@@ -154,19 +154,19 @@ int LuaContext::displayable_api_fade_out(lua_State* l) {
 
   TransitionFade* transition = new TransitionFade(Transition::OUT);
   transition->set_delay(delay);
-  displayable.start_transition(*transition, callback_ref);
+  drawable.start_transition(*transition, callback_ref);
 
   return 0;
 }
 
 /**
- * @brief Implementation of \ref lua_api_displayable_start_movement.
+ * @brief Implementation of \ref lua_api_drawable_start_movement.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::displayable_api_start_movement(lua_State* l) {
+int LuaContext::drawable_api_start_movement(lua_State* l) {
 
-  DynamicDisplayable& displayable = check_displayable(l, 1);
+  Drawable& drawable = check_drawable(l, 1);
   Movement& movement = check_movement(l, 2);
 
   // the next argument (if any) is the callback
@@ -179,21 +179,21 @@ int LuaContext::displayable_api_start_movement(lua_State* l) {
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
 
-  displayable.start_movement(movement, callback_ref);
+  drawable.start_movement(movement, callback_ref);
 
   return 0;
 }
 
 /**
- * @brief Implementation of \ref lua_api_displayable_stop_movement.
+ * @brief Implementation of \ref lua_api_drawable_stop_movement.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::displayable_api_stop_movement(lua_State* l) {
+int LuaContext::drawable_api_stop_movement(lua_State* l) {
 
-  DynamicDisplayable& displayable = check_displayable(l, 1);
+  Drawable& drawable = check_drawable(l, 1);
 
-  displayable.stop_movement();
+  drawable.stop_movement();
 
   return 0;
 }
@@ -203,12 +203,12 @@ int LuaContext::displayable_api_stop_movement(lua_State* l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::displayable_meta_gc(lua_State* l) {
+int LuaContext::drawable_meta_gc(lua_State* l) {
 
   LuaContext& lua_context = get_lua_context(l);
-  DynamicDisplayable& displayable = check_displayable(l, 1);
+  Drawable& drawable = check_drawable(l, 1);
 
-  lua_context.remove_displayable(&displayable);
+  lua_context.remove_drawable(&drawable);
   userdata_meta_gc(l);
 
   return 0;

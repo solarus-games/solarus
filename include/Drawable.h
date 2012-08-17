@@ -28,11 +28,11 @@
  * Possible additional effects are movements and transitions.
  * Lua callbacks may be associated to the end of these effects.
  */
-class DynamicDisplayable: public ExportableToLua {
+class Drawable: public ExportableToLua {
 
   public:
 
-    virtual ~DynamicDisplayable();
+    virtual ~Drawable();
 
     // dynamic effects
     void start_movement(Movement& movement, int callback_ref = LUA_REFNIL,
@@ -61,7 +61,7 @@ class DynamicDisplayable: public ExportableToLua {
         const Rectangle& dst_position) = 0;
 
     /**
-     * @brief Draws a transition effect on this displayable object.
+     * @brief Draws a transition effect on this drawable object.
      *
      * Redefine this function to apply the transition effect on the surface
      * of your object.
@@ -73,7 +73,7 @@ class DynamicDisplayable: public ExportableToLua {
 
   protected:
 
-    DynamicDisplayable();
+    Drawable();
 
   private:
 

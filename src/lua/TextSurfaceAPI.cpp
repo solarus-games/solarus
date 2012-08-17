@@ -55,16 +55,16 @@ void LuaContext::register_text_surface_module() {
       { "set_text", text_surface_api_set_text },
       { "set_text_key", text_surface_api_set_text_key },
       { "get_size", text_surface_api_get_size },
-      { "draw", displayable_api_draw },
-      { "fade_in", displayable_api_fade_in },
-      { "fade_out", displayable_api_fade_out },
-      { "start_movement", displayable_api_start_movement },
-      { "stop_movement", displayable_api_stop_movement },
+      { "draw", drawable_api_draw },
+      { "fade_in", drawable_api_fade_in },
+      { "fade_out", drawable_api_fade_out },
+      { "start_movement", drawable_api_start_movement },
+      { "stop_movement", drawable_api_stop_movement },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
       { "__eq", userdata_meta_eq },
-      { "__gc", displayable_meta_gc },
+      { "__gc", drawable_meta_gc },
       { NULL, NULL }
   };
   register_type(text_surface_module_name, methods, metamethods);
@@ -145,7 +145,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
       lua_pop(l, 1); // Pop the value, let the key for the iteration.
     }
   }
-  get_lua_context(l).add_displayable(text_surface);
+  get_lua_context(l).add_drawable(text_surface);
 
   push_text_surface(l, *text_surface);
   return 1;

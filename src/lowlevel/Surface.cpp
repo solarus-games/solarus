@@ -30,7 +30,7 @@
  * @param height the height in pixels
  */
 Surface::Surface(int width, int height):
-  DynamicDisplayable(),
+  Drawable(),
   internal_surface_created(true) {
 
   this->internal_surface = SDL_CreateRGBSurface(
@@ -42,7 +42,7 @@ Surface::Surface(int width, int height):
  * @param size The size in pixels.
  */
 Surface::Surface(const Rectangle& size):
-  DynamicDisplayable(),
+  Drawable(),
   internal_surface_created(true) {
 
   this->internal_surface = SDL_CreateRGBSurface(
@@ -55,7 +55,7 @@ Surface::Surface(const Rectangle& size):
  * @param base_directory the base directory to use
  */
 Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
-  DynamicDisplayable(),
+  Drawable(),
   internal_surface_created(true) {
 
   std::string prefix = "";
@@ -90,7 +90,7 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
  * @param internal_surface the internal surface data (the destructor will not free it)
  */
 Surface::Surface(SDL_Surface* internal_surface):
-  DynamicDisplayable(),
+  Drawable(),
   internal_surface(internal_surface),
   internal_surface_created(false) {
 
@@ -101,7 +101,7 @@ Surface::Surface(SDL_Surface* internal_surface):
  * @param other a surface to copy
  */
 Surface::Surface(const Surface& other):
-  DynamicDisplayable(),
+  Drawable(),
   internal_surface(SDL_ConvertSurface(other.internal_surface,
       other.internal_surface->format, other.internal_surface->flags)),
   internal_surface_created(true) {
@@ -224,7 +224,7 @@ void Surface::raw_display(Surface& dst_surface,
 }
 
 /**
- * @brief Draws a transition effect on this displayable object.
+ * @brief Draws a transition effect on this drawable object.
  * @param transition The transition effect to apply.
  */
 void Surface::display_transition(Transition& transition) {

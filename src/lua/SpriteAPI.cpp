@@ -39,16 +39,16 @@ void LuaContext::register_sprite_module() {
       { "set_paused", sprite_api_set_paused },
       { "set_ignore_suspend", sprite_api_set_ignore_suspend },
       { "synchronize", sprite_api_synchronize },
-      { "draw", displayable_api_draw },
-      { "fade_in", displayable_api_fade_in },
-      { "fade_out", displayable_api_fade_out },
-      { "start_movement", displayable_api_start_movement },
-      { "stop_movement", displayable_api_stop_movement },
+      { "draw", drawable_api_draw },
+      { "fade_in", drawable_api_fade_in },
+      { "fade_out", drawable_api_fade_out },
+      { "start_movement", drawable_api_start_movement },
+      { "stop_movement", drawable_api_stop_movement },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
       { "__eq", userdata_meta_eq },
-      { "__gc", displayable_meta_gc },
+      { "__gc", drawable_meta_gc },
       { NULL, NULL }
   };
   register_type(sprite_module_name, methods, metamethods);
@@ -84,7 +84,7 @@ int LuaContext::sprite_api_create(lua_State* l) {
   const std::string& animation_set_id = luaL_checkstring(l, 1);
 
   Sprite* sprite = new Sprite(animation_set_id);
-  get_lua_context(l).add_displayable(sprite);
+  get_lua_context(l).add_drawable(sprite);
 
   push_sprite(l, *sprite);
   return 1;

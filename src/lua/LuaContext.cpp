@@ -187,7 +187,7 @@ void LuaContext::exit() {
  */
 void LuaContext::update() {
 
-  update_displayables();
+  update_drawables();
   update_timers();
 
   // Call sol.main.on_update().

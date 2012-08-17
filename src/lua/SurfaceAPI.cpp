@@ -35,16 +35,16 @@ void LuaContext::register_surface_module() {
       { "fill_color", surface_api_fill_color },
       { "set_transparency_color", surface_api_set_transparency_color },
       { "set_opacity", surface_api_set_opacity },
-      { "draw", displayable_api_draw },
-      { "fade_in", displayable_api_fade_in },
-      { "fade_out", displayable_api_fade_out },
-      { "start_movement", displayable_api_start_movement },
-      { "stop_movement", displayable_api_stop_movement },
+      { "draw", drawable_api_draw },
+      { "fade_in", drawable_api_fade_in },
+      { "fade_out", drawable_api_fade_out },
+      { "start_movement", drawable_api_start_movement },
+      { "stop_movement", drawable_api_stop_movement },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
       { "__eq", userdata_meta_eq },
-      { "__gc", displayable_meta_gc },
+      { "__gc", drawable_meta_gc },
       { NULL, NULL }
   };
   register_type(surface_module_name, methods, metamethods);
@@ -108,7 +108,7 @@ int LuaContext::surface_api_create(lua_State* l) {
     other_surface.display_region(Rectangle(x, y, width, height), *surface);
   }
 
-  get_lua_context(l).add_displayable(surface);
+  get_lua_context(l).add_drawable(surface);
   push_surface(l, *surface);
 
   return 1;

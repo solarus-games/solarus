@@ -18,7 +18,7 @@
 #define SOLARUS_TEXT_SURFACE_H
 
 #include "Common.h"
-#include "DynamicDisplayable.h"
+#include "Drawable.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Rectangle.h"
 #include <SDL_ttf.h>
@@ -31,7 +31,7 @@
  * horizontal and vertical text alignment, color and other properties.
  * This is the only class related to the font library (SDL_ttf).
  */
-class TextSurface: public DynamicDisplayable {
+class TextSurface: public Drawable {
 
   public:
 

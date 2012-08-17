@@ -101,11 +101,11 @@ class LuaContext {
     void update_timers();
     void set_suspended_timers(bool suspended);
 
-    // Displayable objects.
-    bool has_displayable(DynamicDisplayable* displayable);
-    void add_displayable(DynamicDisplayable* displayable);
-    void remove_displayable(DynamicDisplayable* displayable);
-    void update_displayables();
+    // Drawable objects.
+    bool has_drawable(Drawable* drawable);
+    void add_drawable(Drawable* drawable);
+    void remove_drawable(Drawable* drawable);
+    void update_drawables();
 
     // Input.
     static const std::string& input_get_key_name(InputEvent::KeyboardKey key);
@@ -285,7 +285,7 @@ class LuaContext {
         const std::string& module_name);
     static Color check_color(lua_State* l, int index);
     static Timer& check_timer(lua_State* l, int index);
-    static DynamicDisplayable& check_displayable(lua_State* l, int index);
+    static Drawable& check_drawable(lua_State* l, int index);
     static Surface& check_surface(lua_State* l, int index);
     static TextSurface& check_text_surface(lua_State* l, int index);
     static Sprite& check_sprite(lua_State* l, int index);
@@ -708,13 +708,13 @@ class LuaContext {
       sprite_api_set_ignore_suspend,
       sprite_api_synchronize,
 
-      // displayable API (i.e. common to surfaces, text surfaces and sprites)
-      displayable_api_draw,
-      displayable_api_fade_in,
-      displayable_api_fade_out,
-      displayable_api_start_movement,
-      displayable_api_stop_movement,
-      displayable_meta_gc,
+      // drawable API (i.e. common to surfaces, text surfaces and sprites)
+      drawable_api_draw,
+      drawable_api_fade_in,
+      drawable_api_fade_out,
+      drawable_api_start_movement,
+      drawable_api_stop_movement,
+      drawable_meta_gc,
 
       // movement API
       movement_api_create,
@@ -806,8 +806,8 @@ class LuaContext {
         timers;                     /**< The timers currently running, with
                                      * their context and callback. */
 
-    std::set<DynamicDisplayable*>
-      displayables;                 /**< All displayable objects created by
+    std::set<Drawable*>
+      drawables;                 /**< All drawable objects created by
                                      * this script. */
 
     static std::map<InputEvent::KeyboardKey, std::string>

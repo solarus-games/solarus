@@ -1,7 +1,7 @@
 /**
-\page lua_api_displayable Displayable objects
+\page lua_api_drawable Drawable objects
 
-Displayable objects are things that can be drawn on a destination surface.
+Drawable objects are things that can be drawn on a destination surface.
 They include the following types:
 \subpage lua_api_surface,
 \subpage lua_api_text_surface and
@@ -10,11 +10,11 @@ This page describes the methods common to those types.
 
 <hr>
 
-\section lua_api_displayable_methods Methods of all displayable types
+\section lua_api_drawable_methods Methods of all drawable types
 
 <hr>
 
-\subsection lua_api_displayable_draw displayable:draw(dst_surface, [x, y])
+\subsection lua_api_drawable_draw drawable:draw(dst_surface, [x, y])
 
 Draws this object on a destination surface.
 - \c dst_surface (surface): The destination surface.
@@ -25,7 +25,7 @@ Draws this object on a destination surface.
 
 <hr>
 
-\subsection lua_api_displayable_fade_in displayable:fade_in([delay], [callback])
+\subsection lua_api_drawable_fade_in drawable:fade_in([delay], [callback])
 
 Starts a fade-in effect on this object.
 - \c delay (number, optional): Delay in milliseconds between two
@@ -35,7 +35,7 @@ Starts a fade-in effect on this object.
 
 <hr>
 
-\subsection lua_api_displayable_fade_out displayable:fade_out([delay], [callback])
+\subsection lua_api_drawable_fade_out drawable:fade_out([delay], [callback])
 
 Starts a fade-out effect on this object.
 - \c delay (number, optional): Delay in milliseconds between two
@@ -45,11 +45,11 @@ Starts a fade-out effect on this object.
 
 <hr>
 
-\subsection lua_api_displayable_start_movement displayable:start_movement(movement, [callback])
+\subsection lua_api_drawable_start_movement drawable:start_movement(movement, [callback])
 
 Makes this object move.
 
-Moving a displayable object means that when the objects gets displayed
+Moving a drawable object means that when the objects gets displayed
 somewhere, it is displayed with an offset corresponding to the result of the
 movement.
 - \c movement (movement): The movement to apply.
@@ -57,15 +57,15 @@ movement.
 - \c callback (function, optional): A function to call when the movement
   finishes.
 
-\remark Only one movement can be applied at a time on a displayable object.
+\remark Only one movement can be applied at a time on a drawable object.
 If you call this function, any previous movement running on this object is
 stopped.
 
 <hr>
 
-\subsection lua_api_displayable_stop_movement displayable:stop_movement()
+\subsection lua_api_drawable_stop_movement drawable:stop_movement()
 
-Stops the movement of this displayable object, if any.
+Stops the movement of this drawable object, if any.
 
 */
 

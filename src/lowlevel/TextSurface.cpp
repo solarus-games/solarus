@@ -93,7 +93,7 @@ void TextSurface::quit() {
  * @param y y position of the text on the destination surface
  */
 TextSurface::TextSurface(int x, int y):
-  DynamicDisplayable(),
+  Drawable(),
   font_id(default_font_id),
   horizontal_alignment(ALIGN_LEFT),
   vertical_alignment(ALIGN_MIDDLE),
@@ -117,7 +117,7 @@ TextSurface::TextSurface(int x, int y):
 TextSurface::TextSurface(int x, int y,
 			 TextSurface::HorizontalAlignment horizontal_alignment,
 			 TextSurface::VerticalAlignment vertical_alignment):
-  DynamicDisplayable(),
+  Drawable(),
   font_id(default_font_id),
   horizontal_alignment(horizontal_alignment),
   vertical_alignment(vertical_alignment),
@@ -470,7 +470,7 @@ void TextSurface::raw_display(Surface& dst_surface,
 }
 
 /**
- * @brief Draws a transition effect on this displayable object.
+ * @brief Draws a transition effect on this drawable object.
  * @param transition The transition effect to apply.
  */
 void TextSurface::display_transition(Transition& transition) {

@@ -2,13 +2,13 @@
 \page lua_api_surface Surfaces
 
 A surface is a 2D image. Its main feature is that you can draw objects
-on it. Such objects are called displayable objects and they include
+on it. Such objects are called drawable objects and they include
 other surfaces, text surfaces and sprites.
 
 \section Contents
 
 - \ref lua_api_surface_functions
-- \ref lua_api_surface_displayable_methods
+- \ref lua_api_surface_drawable_methods
 - \ref lua_api_surface_methods
 
 <hr>
@@ -54,12 +54,12 @@ They are optional: by default, the whole surface is copied.
 
 <hr>
 
-\section lua_api_surface_displayable_methods Methods inherited from the type displayable
+\section lua_api_surface_drawable_methods Methods inherited from the type drawable
 
-Surfaces are particular displayable objects.
-Thus, they inherit all methods from the type displayable.
+Surfaces are particular drawable objects.
+Thus, they inherit all methods from the type drawable.
 
-See the \ref lua_api_displayable_methods to know these methods.
+See the \ref lua_api_drawable_methods to know these methods.
 
 <hr>
 

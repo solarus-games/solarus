@@ -9,7 +9,7 @@ A text surface can be seen as a special
 \section Contents
 
 - \ref lua_api_text_surface_functions
-- \ref lua_api_text_surface_displayable_methods
+- \ref lua_api_text_surface_drawable_methods
 - \ref lua_api_text_surface_methods
 
 <hr>
@@ -45,12 +45,12 @@ Creates a text surface with the specified properties.
 
 <hr>
 
-\section lua_api_text_surface_displayable_methods Methods inherited from the type displayable
+\section lua_api_text_surface_drawable_methods Methods inherited from the type drawable
 
-Text surfaces are particular displayable objects.
-Thus, they inherit all methods from the type displayable.
+Text surfaces are particular drawable objects.
+Thus, they inherit all methods from the type drawable.
 
-See the \ref lua_api_displayable_methods to know these methods.
+See the \ref lua_api_drawable_methods to know these methods.
 
 <hr>
 

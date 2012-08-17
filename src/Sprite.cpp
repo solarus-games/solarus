@@ -73,7 +73,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string &id) {
  * @param id name of an animation set
  */
 Sprite::Sprite(const std::string &id):
-  DynamicDisplayable(),
+  Drawable(),
   animation_set_id(id),
   animation_set(get_animation_set(id)),
   current_direction(0),
@@ -522,7 +522,7 @@ bool Sprite::test_collision(Sprite& other, int x1, int y1, int x2, int y2) const
  */
 void Sprite::update() {
 
-  DynamicDisplayable::update();
+  Drawable::update();
 
   if (suspended || paused) {
     return;
@@ -600,7 +600,7 @@ void Sprite::raw_display(Surface& dst_surface,
 }
 
 /**
- * @brief Draws a transition effect on this displayable object.
+ * @brief Draws a transition effect on this drawable object.
  * @param transition The transition effect to apply.
  */
 void Sprite::display_transition(Transition& transition) {

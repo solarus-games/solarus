@@ -114,12 +114,12 @@ class MagicBar;
 class SmallKeysCounter;
 class FloorView;
 
-// displayable objects
+// drawable objects
 class Sprite;
 class SpriteAnimationSet;
 class SpriteAnimation;
 class SpriteAnimationDirection;
-class DynamicDisplayable;
+class Drawable;
 
 // transition effects
 class Transition;

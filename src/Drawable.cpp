@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "DynamicDisplayable.h"
+#include "Drawable.h"
 #include "Transition.h"
 #include "movements/Movement.h"
 #include "lua/LuaContext.h"
@@ -24,7 +24,7 @@
 /**
  * @brief Constructor.
  */
-DynamicDisplayable::DynamicDisplayable():
+Drawable::Drawable():
   last_position(),
   movement(NULL),
   movement_callback_ref(LUA_REFNIL),
@@ -37,7 +37,7 @@ DynamicDisplayable::DynamicDisplayable():
 /**
  * @brief Destructor.
  */
-DynamicDisplayable::~DynamicDisplayable() {
+Drawable::~Drawable() {
 
   stop_transition();
   stop_movement();
@@ -53,7 +53,7 @@ DynamicDisplayable::~DynamicDisplayable() {
  * the movement finishes, or LUA_REFNIL.
  * @param lua_context The Lua world for the callback (or NULL).
  */
-void DynamicDisplayable::start_movement(Movement& movement,
+void Drawable::start_movement(Movement& movement,
     int callback_ref, LuaContext* lua_context) {
 
   stop_movement();
@@ -68,7 +68,7 @@ void DynamicDisplayable::start_movement(Movement& movement,
  *
  * The movement is deleted unless the owner script uses it elsewhere.
  */
-void DynamicDisplayable::stop_movement() {
+void Drawable::stop_movement() {
 
   if (movement != NULL) {
 
@@ -99,7 +99,7 @@ void DynamicDisplayable::stop_movement() {
  * the transition finishes, or LUA_REFNIL.
  * @param lua_context The Lua world for the callback (or NULL).
  */
-void DynamicDisplayable::start_transition(Transition& transition,
+void Drawable::start_transition(Transition& transition,
     int callback_ref, LuaContext* lua_context) {
 
   stop_transition();
@@ -114,7 +114,7 @@ void DynamicDisplayable::start_transition(Transition& transition,
  *
  * The transition is deleted.
  */
-void DynamicDisplayable::stop_transition() {
+void Drawable::stop_transition() {
 
   delete transition;
   transition = NULL;
@@ -131,7 +131,7 @@ void DynamicDisplayable::stop_transition() {
  * This function is called repeatedly.
  * You can redefine it for your needs.
  */
-void DynamicDisplayable::update() {
+void Drawable::update() {
 
   if (transition != NULL) {
     transition->update();
@@ -162,7 +162,7 @@ void DynamicDisplayable::update() {
  * @brief Displays this object, applying dynamic effects.
  * @param dst_surface the destination surface
  */
-void DynamicDisplayable::display(Surface& dst_surface) {
+void Drawable::display(Surface& dst_surface) {
 
   display(dst_surface, Rectangle(0, 0));
 }
@@ -173,7 +173,7 @@ void DynamicDisplayable::display(Surface& dst_surface) {
  * @param x x coordinate of where to display
  * @param y y coordinate of where to display
  */
-void DynamicDisplayable::display(Surface& dst_surface, int x, int y) {
+void Drawable::display(Surface& dst_surface, int x, int y) {
 
   display(dst_surface, Rectangle(x, y));
 }
@@ -184,7 +184,7 @@ void DynamicDisplayable::display(Surface& dst_surface, int x, int y) {
  * @param dst_position position on this surface
  * (will be added to the position obtained by previous movements)
  */
-void DynamicDisplayable::display(Surface& dst_surface,
+void Drawable::display(Surface& dst_surface,
     Rectangle dst_position) {
 
   dst_position.add_xy(last_position);

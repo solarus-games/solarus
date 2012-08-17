@@ -93,6 +93,7 @@ MapEntity* Teletransporter::parse(Game& game, std::istream& is, Layer layer, int
   FileTools::read(is, width);
   FileTools::read(is, height);
   FileTools::read(is, name);
+  FileTools::read(is, sprite_name);
   FileTools::read(is, sound_id);
   FileTools::read(is, transition_style);
   FileTools::read(is, destination_map_id);

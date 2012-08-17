@@ -1048,20 +1048,20 @@
 15	1	1552	336	16	16	1
 15	1	1536	352	16	16	1
 15	1	1552	368	16	16	1
-1	1	1672	293	from_3f_nw	3	0
-1	1	1864	293	from_3f_ne	3	0
-1	1	1576	1317	from_3f_cw	3	0
-1	1	1784	1317	from_3f_ce	3	0
-1	1	1384	1829	from_3f_sw	3	0
-1	1	1832	1829	from_3f_se	3	0
-2	1	1664	280	16	16	teletransporter	0	1	107	from_4f_nw
-2	1	1856	280	16	16	teletransporter_2	0	1	107	from_4f_ne
+1	1	1672	293	from_3f_nw	3	_none
+1	1	1864	293	from_3f_ne	3	_none
+1	1	1576	1317	from_3f_cw	3	_none
+1	1	1784	1317	from_3f_ce	3	_none
+1	1	1384	1829	from_3f_sw	3	_none
+1	1	1832	1829	from_3f_se	3	_none
+2	1	1664	280	16	16	teletransporter	_none	_none	1	107	from_4f_nw
+2	1	1856	280	16	16	teletransporter_2	_none	_none	1	107	from_4f_ne
 19	1	1664	280	stairs	1	1
 19	1	1856	280	stairs_2	1	1
-2	1	1568	1304	16	16	teletransporter_3	0	1	107	from_4f_cw
-2	1	1776	1304	16	16	teletransporter_4	0	1	107	from_4f_ce
-2	1	1376	1816	16	16	teletransporter_5	0	1	107	from_4f_sw
-2	1	1824	1816	16	16	teletransporter_6	0	1	107	from_4f_se
+2	1	1568	1304	16	16	teletransporter_3	_none	_none	1	107	from_4f_cw
+2	1	1776	1304	16	16	teletransporter_4	_none	_none	1	107	from_4f_ce
+2	1	1376	1816	16	16	teletransporter_5	_none	_none	1	107	from_4f_sw
+2	1	1824	1816	16	16	teletransporter_6	_none	_none	1	107	from_4f_se
 19	1	1568	1304	stairs_3	1	1
 19	1	1776	1304	stairs_4	1	1
 19	1	1376	1816	stairs_5	1	1
@@ -1078,7 +1078,7 @@
 5	1	1600	1648	chest_b	0	small_key	1	873
 6	1	1552	1512	112	8	jumper_8	6	40
 14	1	1088	453	crystal_2
-2	1	1752	592	32	32	teletransporter_7	0	1	107	from_4f_hole
+2	1	1752	592	32	32	teletransporter_7	_none	_none	1	107	from_4f_hole
 18	1	1304	440	weak_wall_a	2	5	867
 18	1	1256	440	weak_wall_a_2	0	5	867
 10	1	1256	424	24	48	weak_wall_a_closed	50	1

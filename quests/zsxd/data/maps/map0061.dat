@@ -262,8 +262,8 @@
 0	0	776	832	24	8	293
 0	0	776	808	24	8	292
 0	0	776	816	24	16	294
-2	0	-16	0	16	1136	teletransporter	0	2	60	_side
-2	0	0	1136	1536	16	teletransporter_2	0	2	63	_side
+2	0	-16	0	16	1136	teletransporter	_none	_none	2	60	_side
+2	0	0	1136	1536	16	teletransporter_2	_none	_none	2	63	_side
 19	0	200	728	stairs	1	4
 19	0	344	728	stairs_2	1	4
 19	0	80	912	stairs_3	3	4
@@ -1116,8 +1116,8 @@
 10	1	840	1096	32	24	weak_wall_red_tunic_closed	52	1
 10	1	576	872	48	24	weak_wall_compass_closed	52	1
 10	1	576	912	48	24	weak_wall_compass_closed_2	49	1
-2	1	0	1136	1536	16	teletransporter_4	0	2	63	_side
-2	1	-16	0	16	1136	teletransporter_3	0	2	60	_side
+2	1	0	1136	1536	16	teletransporter_4	_none	_none	2	63	_side
+2	1	-16	0	16	1136	teletransporter_3	_none	_none	2	60	_side
 4	1	376	925	0	heart	1	-1
 4	1	440	925	0	heart	1	-1
 4	1	392	925	0	rupee	2	-1
@@ -1186,8 +1186,8 @@
 18	1	848	1096	weak_wall_red_tunic	3	5	234
 14	1	64	517	crystal_switch
 5	1	152	336	small_key_danger_chest	0	small_key	1	248
-1	1	560	741	from_2F_c	3	0
-2	1	552	728	16	16	teletransporter_5	0	1	65	from_1F_c
+1	1	560	741	from_2F_c	3	_none
+2	1	552	728	16	16	teletransporter_5	_none	_none	1	65	from_1F_c
 19	1	552	728	stairs_10	1	0
 4	1	64	597	0	bomb	2	-1
 11	1	648	840	remove_water_switch	1	0	0
@@ -1228,11 +1228,11 @@
 9	1	152	517	block_3	3	entities/block	1	0	1
 9	1	168	517	block_4	-1	entities/block	1	0	0
 9	1	184	501	block_6	-1	entities/block	1	0	0
-1	1	1072	981	from_2f_boss	3	0
-2	1	1064	968	16	16	teletransporter_6	0	1	65	from_1f_boss
+1	1	1072	981	from_2f_boss	3	_none
+2	1	1064	968	16	16	teletransporter_6	_none	_none	1	65	from_1f_boss
 19	1	1064	968	stairs_11	1	2
 18	1	1056	968	boss_door	1	4	239
-1	1	256	629	tmp	3	0
+1	1	256	629	tmp	3	_none
 0	2	16	72	8	96	441
 0	2	880	72	8	96	441
 0	2	856	72	8	96	442

@@ -150,13 +150,13 @@
 0	0	544	400	8	16	218
 0	0	544	408	8	8	214
 0	0	544	392	8	8	221
-1	0	560	61	from_4f	3	0
-1	0	416	61	from_2f_e	3	0
-1	0	264	61	from_2f_w	3	0
-1	0	224	429	from_outside	1	0
-2	0	216	448	16	16	teletransporter_4	0	1	7	from_east_mountains_cave_3f
-2	0	256	48	16	16	teletransporter	0	1	112	from_3f_w
-2	0	408	48	16	16	teletransporter_2	0	1	112	from_3f_e
+1	0	560	61	from_4f	3	_none
+1	0	416	61	from_2f_e	3	_none
+1	0	264	61	from_2f_w	3	_none
+1	0	224	429	from_outside	1	_none
+2	0	216	448	16	16	teletransporter_4	_none	_none	1	7	from_east_mountains_cave_3f
+2	0	256	48	16	16	teletransporter	_none	_none	1	112	from_3f_w
+2	0	408	48	16	16	teletransporter_2	_none	_none	1	112	from_3f_e
 19	0	256	48	stairs	1	1
 19	0	408	48	stairs_2	1	1
 4	0	80	117	0	_random	1	-1
@@ -179,7 +179,7 @@
 7	0	568	253	enemy_12	3	tentacle	0	-1	_random	1	-1
 7	0	416	197	enemy_13	3	tentacle	0	-1	_random	1	-1
 7	0	568	413	enemy_14	3	tentacle	0	-1	_random	1	-1
-2	0	552	48	16	16	teletransporter_3	0	1	114	from_3f
+2	0	552	48	16	16	teletransporter_3	_none	_none	1	114	from_3f
 19	0	552	48	stairs_3	1	0
 0	1	528	40	64	8	413
 0	1	384	40	64	8	413

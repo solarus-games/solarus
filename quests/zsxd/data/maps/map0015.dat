@@ -73,8 +73,8 @@
 0	1	232	168	8	8	211
 0	1	264	80	8	16	124
 0	1	232	176	8	8	213
-1	1	160	213	from_outside	1	0
-2	1	152	224	16	16	teletransporter	0	1	2	from_desert_west_house
+1	1	160	213	from_outside	1	_none
+2	1	152	224	16	16	teletransporter	_none	_none	1	2	from_desert_west_house
 8	1	136	125	desert.west_house	3	1	npc/static_villager4	dialog#desert.west_house
 0	2	112	216	96	8	263
 0	2	0	0	320	16	170

@@ -84,8 +84,8 @@
 0	1	168	280	8	16	75
 0	1	144	280	8	16	74
 8	1	168	-3	solarus_child	3	1	npc/solarus_child4	map
-1	1	160	293	from_boss_room	3	0
-2	1	152	280	16	16	teletransporter	0	1	60	from_final_room
+1	1	160	293	from_boss_room	3	_none
+2	1	152	280	16	16	teletransporter	_none	_none	1	60	from_final_room
 19	1	152	280	stairs	3	3
 8	1	88	-11	agahnim	3	1	npc/agahnim	map
 0	2	112	16	96	8	559

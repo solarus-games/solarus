@@ -75,41 +75,41 @@
 0	1	120	232	32	16	451
 0	1	136	248	16	16	451
 0	1	152	248	48	16	451
-1	1	184	197	from_2f	3	0
-1	1	232	197	from_b1	3	0
-1	1	208	293	from_outside	1	0
-2	1	176	184	16	16	teletransporter	0	1	117	from_1f
-2	1	224	184	16	16	teletransporter_2	0	1	118	from_1f
+1	1	184	197	from_2f	3	_none
+1	1	232	197	from_b1	3	_none
+1	1	208	293	from_outside	1	_none
+2	1	176	184	16	16	teletransporter	_none	_none	1	117	from_1f
+2	1	224	184	16	16	teletransporter_2	_none	_none	1	118	from_1f
 19	1	176	184	stairs	1	0
 19	1	224	184	stairs_2	1	1
-2	1	200	304	16	16	teletransporter_3	0	1	10	from_dungeon_8_cave_1f
-2	1	56	56	64	32	teletransporter_4	0	1	118	_same
-2	1	104	88	16	16	teletransporter_5	0	1	118	_same
-2	1	72	104	16	16	teletransporter_6	0	1	118	_same
-2	1	72	168	16	16	teletransporter_7	0	1	118	_same
-2	1	56	200	16	64	teletransporter_8	0	1	118	_same
-2	1	88	168	16	80	teletransporter_9	0	1	118	_same
-2	1	88	248	48	16	teletransporter_10	0	1	118	_same
-2	1	56	264	128	16	teletransporter_11	0	1	118	_same
-2	1	72	120	48	32	teletransporter_12	0	1	118	_same
-2	1	120	120	32	80	teletransporter_13	0	1	118	_same
-2	1	120	200	48	32	teletransporter_14	0	1	118	_same
-2	1	152	216	80	32	teletransporter_15	0	1	118	_same
-2	1	200	232	80	32	teletransporter_16	0	1	118	_same
-2	1	232	264	128	16	teletransporter_17	0	1	118	_same
-2	1	120	56	240	16	teletransporter_18	0	1	118	_same
-2	1	136	88	48	16	teletransporter_19	0	1	118	_same
-2	1	200	72	64	16	teletransporter_20	0	1	118	_same
-2	1	136	104	144	32	teletransporter_21	0	1	118	_same
-2	1	296	88	16	16	teletransporter_22	0	1	118	_same
-2	1	312	120	16	32	teletransporter_23	0	1	118	_same
-2	1	328	72	16	80	teletransporter_24	0	1	118	_same
-2	1	344	72	16	192	teletransporter_25	0	1	118	_same
-2	1	312	168	16	32	teletransporter_26	0	1	118	_same
-2	1	328	216	16	48	teletransporter_28	0	1	118	_same
-2	1	248	200	48	16	teletransporter_29	0	1	118	_same
-2	1	280	88	16	112	teletransporter_30	0	1	118	_same
-2	1	296	168	16	80	teletransporter_31	0	1	118	_same
+2	1	200	304	16	16	teletransporter_3	_none	_none	1	10	from_dungeon_8_cave_1f
+2	1	56	56	64	32	teletransporter_4	_none	_none	1	118	_same
+2	1	104	88	16	16	teletransporter_5	_none	_none	1	118	_same
+2	1	72	104	16	16	teletransporter_6	_none	_none	1	118	_same
+2	1	72	168	16	16	teletransporter_7	_none	_none	1	118	_same
+2	1	56	200	16	64	teletransporter_8	_none	_none	1	118	_same
+2	1	88	168	16	80	teletransporter_9	_none	_none	1	118	_same
+2	1	88	248	48	16	teletransporter_10	_none	_none	1	118	_same
+2	1	56	264	128	16	teletransporter_11	_none	_none	1	118	_same
+2	1	72	120	48	32	teletransporter_12	_none	_none	1	118	_same
+2	1	120	120	32	80	teletransporter_13	_none	_none	1	118	_same
+2	1	120	200	48	32	teletransporter_14	_none	_none	1	118	_same
+2	1	152	216	80	32	teletransporter_15	_none	_none	1	118	_same
+2	1	200	232	80	32	teletransporter_16	_none	_none	1	118	_same
+2	1	232	264	128	16	teletransporter_17	_none	_none	1	118	_same
+2	1	120	56	240	16	teletransporter_18	_none	_none	1	118	_same
+2	1	136	88	48	16	teletransporter_19	_none	_none	1	118	_same
+2	1	200	72	64	16	teletransporter_20	_none	_none	1	118	_same
+2	1	136	104	144	32	teletransporter_21	_none	_none	1	118	_same
+2	1	296	88	16	16	teletransporter_22	_none	_none	1	118	_same
+2	1	312	120	16	32	teletransporter_23	_none	_none	1	118	_same
+2	1	328	72	16	80	teletransporter_24	_none	_none	1	118	_same
+2	1	344	72	16	192	teletransporter_25	_none	_none	1	118	_same
+2	1	312	168	16	32	teletransporter_26	_none	_none	1	118	_same
+2	1	328	216	16	48	teletransporter_28	_none	_none	1	118	_same
+2	1	248	200	48	16	teletransporter_29	_none	_none	1	118	_same
+2	1	280	88	16	112	teletransporter_30	_none	_none	1	118	_same
+2	1	296	168	16	80	teletransporter_31	_none	_none	1	118	_same
 0	2	0	0	416	32	170
 0	2	168	160	80	16	170
 0	2	384	32	32	272	170

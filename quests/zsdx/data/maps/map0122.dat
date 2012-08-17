@@ -134,12 +134,12 @@
 19	0	88	536	stairs	1	4
 19	0	248	464	stairs_2	1	4
 19	0	408	536	stairs_3	1	4
-2	0	-16	624	16	16	teletransporter	0	2	121	_side
+2	0	-16	624	16	16	teletransporter	_none	_none	2	121	_side
 12	0	48	624	16	16	custom_obstacle_7	0	1	0	0
 12	0	248	816	16	16	custom_obstacle_9	0	1	0	0
 12	0	448	624	16	16	custom_obstacle_10	0	1	0	0
 18	0	240	816	door_3	3	0	-1
-2	0	512	624	16	16	teletransporter_2	0	2	124	_side
+2	0	512	624	16	16	teletransporter_2	_none	_none	2	124	_side
 13	0	504	637	16	16	sensor	1
 0	1	464	576	8	96	566
 0	1	208	832	96	8	564

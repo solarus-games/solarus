@@ -327,7 +327,7 @@
 18	0	432	480	bloc_weak3_1	1	8	212
 18	0	416	480	bloc_weak2_1	1	8	211
 18	0	400	480	bloc_weak1_1	1	8	210
-1	0	152	501	destination_hole1	3	0
+1	0	152	501	destination_hole1	3	_none
 19	0	128	672	so_stair_2	3	4
 17	0	152	565	0
 12	0	712	880	16	16	custom_obstacle_20	0	1	0	0
@@ -719,8 +719,8 @@
 0	1	376	568	8	8	69
 0	1	136	392	32	24	342
 0	1	200	392	32	24	342
-1	1	512	1005	main_entrance	1	0
-2	1	504	1016	16	16	to_outside_world	0	1	119	from_dungeon_10
+1	1	512	1005	main_entrance	1	_none
+2	1	504	1016	16	16	to_outside_world	_none	_none	1	119	from_dungeon_10
 12	1	552	840	8	8	custom_obstacle_7	1	1	1	1
 12	1	552	864	8	8	custom_obstacle_8	1	1	1	1
 6	1	696	640	8	64	jumper	0	40
@@ -851,24 +851,24 @@
 9	1	88	109	block_52	0	entities/block	1	0	1
 9	1	72	109	block_53	1	entities/block	1	0	1
 9	1	56	109	block_54	2	entities/block	1	0	0
-1	1	176	797	Entrance_A_1	3	0
-1	1	736	37	entrance_B_1	3	0
-1	1	944	101	entrance_C_1	3	0
-1	1	872	101	entrance_E_1	3	0
-2	1	728	24	16	16	entrance_B_1	0	1	97	entrance_B_1
+1	1	176	797	Entrance_A_1	3	_none
+1	1	736	37	entrance_B_1	3	_none
+1	1	944	101	entrance_C_1	3	_none
+1	1	872	101	entrance_E_1	3	_none
+2	1	728	24	16	16	entrance_B_1	_none	_none	1	97	entrance_B_1
 19	1	728	24	stairs_6	1	0
-2	1	864	88	16	16	entrance_E_1	0	1	98	entrance_E_1
+2	1	864	88	16	16	entrance_E_1	_none	_none	1	98	entrance_E_1
 19	1	864	88	stairs_4	1	1
-2	1	936	88	16	16	entrance_D_1	0	1	97	entrance_C_1
+2	1	936	88	16	16	entrance_D_1	_none	_none	1	97	entrance_C_1
 19	1	936	88	stairs_5	1	0
 12	1	736	616	8	8	custom_obstacle_2	1	1	1	1
 12	1	760	616	8	8	custom_obstacle_3	1	1	1	1
-2	1	168	784	16	16	teletransporter	0	1	97	Entrance_A_1
+2	1	168	784	16	16	teletransporter	_none	_none	1	97	Entrance_A_1
 19	1	168	784	stairs	1	0
 12	1	640	400	16	16	custom_obstacle_10	0	1	0	0
 9	1	656	525	block_saved	3	entities/block	1	0	0
 12	1	808	144	16	16	custom_obstacle_12	0	1	0	0
-2	1	488	992	16	16	teletransporter_2	0	0	119	from_dungeon_10_5f
+2	1	488	992	16	16	teletransporter_2	_none	_none	0	119	from_dungeon_10_5f
 0	2	824	80	160	8	323
 0	2	704	16	64	8	323
 0	2	600	368	96	8	324

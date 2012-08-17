@@ -322,10 +322,10 @@
 6	1	216	176	64	8	jumper_15	2	40
 18	1	472	360	door_2	0	0	-1
 18	1	24	104	door	2	0	-1
-1	1	32	381	from_l2	0	0
-2	1	0	368	16	16	teletransporter_3	0	1	124	from_d2
-1	1	256	37	from_d3	3	0
-2	1	248	0	16	16	teletransporter_2	0	1	136	from_d2
+1	1	32	381	from_l2	0	_none
+2	1	0	368	16	16	teletransporter_3	_none	_none	1	124	from_d2
+1	1	256	37	from_d3	3	_none
+2	1	248	0	16	16	teletransporter_2	_none	_none	1	136	from_d2
 0	2	16	328	8	96	441
 0	2	488	344	8	64	442
 0	2	488	72	8	96	442

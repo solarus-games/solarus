@@ -790,72 +790,72 @@
 0	0	856	328	8	8	185
 0	0	544	160	8	8	183
 10	0	240	736	880	8	tile	180	1
-1	0	80	757	from_outside	1	0
-1	0	128	709	from_2F_A	3	0
-1	0	152	733	from_2F_hole	-1	0
-2	0	72	768	16	16	to_outside	0	1	9	from_mountain_cave_1F
-2	0	120	696	16	16	to_2F_A	0	1	39	from_1F_A
+1	0	80	757	from_outside	1	_none
+1	0	128	709	from_2F_A	3	_none
+1	0	152	733	from_2F_hole	-1	_none
+2	0	72	768	16	16	to_outside	_none	_none	1	9	from_mountain_cave_1F
+2	0	120	696	16	16	to_2F_A	_none	_none	1	39	from_1F_A
 19	0	120	696	stairs_0	1	0
 8	0	104	709	hint	3	0	entities/hint_stone	dialog#mountain_cave.mountain_sign
 8	0	384	421	hint_2	3	0	entities/hint_stone	dialog#mountain_cave.not_much_done
 8	0	976	421	hint_3	3	0	entities/hint_stone	dialog#mountain_cave.patience
 3	0	776	253	piece_of_heart	1	105
-1	0	576	37	destination_point_1	3	0
-1	0	704	37	destination_point_2	3	0
-1	0	832	37	destination_point_3	3	0
-1	0	960	37	destination_point_4	3	0
-1	0	1088	37	destination_point_5	3	0
-1	0	320	133	destination_point_6	3	0
-1	0	528	133	destination_point_7	3	0
-1	0	720	133	destination_point_8	3	0
-1	0	912	133	destination_point_9	3	0
-1	0	1088	133	destination_point_10	3	0
-1	0	64	229	destination_point_11	3	0
-1	0	608	229	destination_point_12	3	0
-1	0	752	229	destination_point_13	3	0
-1	0	1048	229	destination_point_14	3	0
-1	0	176	325	destination_point_15	3	0
-1	0	320	325	destination_point_16	3	0
-1	0	560	325	destination_point_17	3	0
-1	0	752	325	destination_point_18	3	0
-1	0	176	421	destination_point_19	3	0
-1	0	320	421	destination_point_20	3	0
-1	0	944	421	destination_point_21	3	0
-1	0	320	517	destination_point_22	3	0
-1	0	512	517	destination_point_23	3	0
-1	0	752	517	destination_point_24	3	0
-1	0	1040	517	destination_point_25	3	0
-1	0	1088	613	destination_point_26	3	0
-1	0	704	709	destination_point_27	3	0
-1	0	976	709	destination_point_28	3	0
-2	0	568	24	16	16	teletransporter_1	0	1	39	destination_point_1
-2	0	696	24	16	16	teletransporter_2	0	1	39	destination_point_2
-2	0	824	24	16	16	teletransporter_3	0	1	39	destination_point_3
-2	0	952	24	16	16	teletransporter_4	0	1	39	destination_point_4
-2	0	1080	24	16	16	teletransporter_5	0	1	39	destination_point_5
-2	0	312	120	16	16	teletransporter_6	0	1	39	destination_point_6
-2	0	520	120	16	16	teletransporter_7	0	1	39	destination_point_7
-2	0	712	120	16	16	teletransporter_8	0	1	39	destination_point_8
-2	0	904	120	16	16	teletransporter_9	0	1	39	destination_point_9
-2	0	1080	120	16	16	teletransporter_10	0	1	39	destination_point_10
-2	0	56	216	16	16	teletransporter_11	0	1	39	destination_point_11
-2	0	600	216	16	16	teletransporter_12	0	1	39	destination_point_12
-2	0	744	216	16	16	teletransporter_13	0	1	39	destination_point_13
-2	0	1040	216	16	16	teletransporter_14	0	1	39	destination_point_14
-2	0	168	312	16	16	teletransporter_15	0	1	39	destination_point_15
-2	0	312	312	16	16	teletransporter_16	0	1	39	destination_point_16
-2	0	552	312	16	16	teletransporter_17	0	1	39	destination_point_17
-2	0	744	312	16	16	teletransporter_18	0	1	39	destination_point_18
-2	0	168	408	16	16	teletransporter_19	0	1	39	destination_point_19
-2	0	312	408	16	16	teletransporter_20	0	1	39	destination_point_20
-2	0	936	408	16	16	teletransporter_21	0	1	39	destination_point_21
-2	0	312	504	16	16	teletransporter_22	0	1	39	destination_point_22
-2	0	504	504	16	16	teletransporter_23	0	1	39	destination_point_23
-2	0	744	504	16	16	teletransporter_24	0	1	39	destination_point_24
-2	0	1032	504	16	16	teletransporter_25	0	1	39	destination_point_25
-2	0	1080	600	16	16	teletransporter_26	0	1	39	destination_point_26
-2	0	696	696	16	16	teletransporter_27	0	1	39	destination_point_27
-2	0	968	696	16	16	teletransporter_28	0	1	39	destination_point_28
+1	0	576	37	destination_point_1	3	_none
+1	0	704	37	destination_point_2	3	_none
+1	0	832	37	destination_point_3	3	_none
+1	0	960	37	destination_point_4	3	_none
+1	0	1088	37	destination_point_5	3	_none
+1	0	320	133	destination_point_6	3	_none
+1	0	528	133	destination_point_7	3	_none
+1	0	720	133	destination_point_8	3	_none
+1	0	912	133	destination_point_9	3	_none
+1	0	1088	133	destination_point_10	3	_none
+1	0	64	229	destination_point_11	3	_none
+1	0	608	229	destination_point_12	3	_none
+1	0	752	229	destination_point_13	3	_none
+1	0	1048	229	destination_point_14	3	_none
+1	0	176	325	destination_point_15	3	_none
+1	0	320	325	destination_point_16	3	_none
+1	0	560	325	destination_point_17	3	_none
+1	0	752	325	destination_point_18	3	_none
+1	0	176	421	destination_point_19	3	_none
+1	0	320	421	destination_point_20	3	_none
+1	0	944	421	destination_point_21	3	_none
+1	0	320	517	destination_point_22	3	_none
+1	0	512	517	destination_point_23	3	_none
+1	0	752	517	destination_point_24	3	_none
+1	0	1040	517	destination_point_25	3	_none
+1	0	1088	613	destination_point_26	3	_none
+1	0	704	709	destination_point_27	3	_none
+1	0	976	709	destination_point_28	3	_none
+2	0	568	24	16	16	teletransporter_1	_none	_none	1	39	destination_point_1
+2	0	696	24	16	16	teletransporter_2	_none	_none	1	39	destination_point_2
+2	0	824	24	16	16	teletransporter_3	_none	_none	1	39	destination_point_3
+2	0	952	24	16	16	teletransporter_4	_none	_none	1	39	destination_point_4
+2	0	1080	24	16	16	teletransporter_5	_none	_none	1	39	destination_point_5
+2	0	312	120	16	16	teletransporter_6	_none	_none	1	39	destination_point_6
+2	0	520	120	16	16	teletransporter_7	_none	_none	1	39	destination_point_7
+2	0	712	120	16	16	teletransporter_8	_none	_none	1	39	destination_point_8
+2	0	904	120	16	16	teletransporter_9	_none	_none	1	39	destination_point_9
+2	0	1080	120	16	16	teletransporter_10	_none	_none	1	39	destination_point_10
+2	0	56	216	16	16	teletransporter_11	_none	_none	1	39	destination_point_11
+2	0	600	216	16	16	teletransporter_12	_none	_none	1	39	destination_point_12
+2	0	744	216	16	16	teletransporter_13	_none	_none	1	39	destination_point_13
+2	0	1040	216	16	16	teletransporter_14	_none	_none	1	39	destination_point_14
+2	0	168	312	16	16	teletransporter_15	_none	_none	1	39	destination_point_15
+2	0	312	312	16	16	teletransporter_16	_none	_none	1	39	destination_point_16
+2	0	552	312	16	16	teletransporter_17	_none	_none	1	39	destination_point_17
+2	0	744	312	16	16	teletransporter_18	_none	_none	1	39	destination_point_18
+2	0	168	408	16	16	teletransporter_19	_none	_none	1	39	destination_point_19
+2	0	312	408	16	16	teletransporter_20	_none	_none	1	39	destination_point_20
+2	0	936	408	16	16	teletransporter_21	_none	_none	1	39	destination_point_21
+2	0	312	504	16	16	teletransporter_22	_none	_none	1	39	destination_point_22
+2	0	504	504	16	16	teletransporter_23	_none	_none	1	39	destination_point_23
+2	0	744	504	16	16	teletransporter_24	_none	_none	1	39	destination_point_24
+2	0	1032	504	16	16	teletransporter_25	_none	_none	1	39	destination_point_25
+2	0	1080	600	16	16	teletransporter_26	_none	_none	1	39	destination_point_26
+2	0	696	696	16	16	teletransporter_27	_none	_none	1	39	destination_point_27
+2	0	968	696	16	16	teletransporter_28	_none	_none	1	39	destination_point_28
 19	0	568	24	stairs_1	1	0
 19	0	696	24	stairs_2	1	0
 19	0	824	24	stairs_3	1	0

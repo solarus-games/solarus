@@ -19,7 +19,7 @@
 0	1	24	368	16	16	82
 0	1	24	360	16	8	78
 5	1	64	368	sword_chest	0	_none	1	931
-2	1	-16	368	16	16	teletransporter	0	2	126	_side
+2	1	-16	368	16	16	teletransporter	_none	_none	2	126	_side
 0	2	16	336	8	96	441
 0	2	0	144	16	360	170
 0	2	16	360	8	32	352

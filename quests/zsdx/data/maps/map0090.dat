@@ -126,10 +126,10 @@
 0	1	1080	56	8	40	567
 0	1	1000	56	80	8	567
 0	1	1000	48	8	8	567
-1	1	992	37	from_1f_e	3	0
-1	1	1072	117	from_roof	1	0
-2	1	1064	104	16	16	teletransporter_17	0	1	9	from_dungeon_5_2F_ne
-2	1	984	24	16	16	teletransporter_2	0	1	89	from_2f_e
+1	1	992	37	from_1f_e	3	_none
+1	1	1072	117	from_roof	1	_none
+2	1	1064	104	16	16	teletransporter_17	_none	_none	1	9	from_dungeon_5_2F_ne
+2	1	984	24	16	16	teletransporter_2	_none	_none	1	89	from_2f_e
 19	1	984	24	stairs_13	1	1
 19	1	1064	104	stairs_2	3	2
 0	2	760	168	8	64	561

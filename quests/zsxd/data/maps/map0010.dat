@@ -68,8 +68,8 @@
 0	1	168	40	16	8	157
 0	1	152	224	16	32	2
 0	1	152	216	16	16	77
-1	1	160	229	arrival_point	1	0
-2	1	152	240	16	16	teletransporter	0	1	1	humid_house_out
+1	1	160	229	arrival_point	1	_none
+2	1	152	240	16	16	teletransporter	_none	_none	1	1	humid_house_out
 8	1	160	157	interactive_entity	3	1	npc/static_villager14	map
 12	1	72	88	8	32	custom_obstacle	1	1	1	1
 12	1	96	88	8	32	custom_obstacle_2	1	1	1	1

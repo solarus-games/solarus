@@ -94,8 +94,8 @@
 0	1	168	352	8	16	71
 0	1	152	368	16	8	70
 5	1	152	64	chest	0	bottle_4	1	913
-1	1	160	341	from_outside	1	0
-2	1	152	352	16	16	teletransporter	0	1	9	from_castle_waterfall
+1	1	160	341	from_outside	1	_none
+2	1	152	352	16	16	teletransporter	_none	_none	1	9	from_castle_waterfall
 0	2	0	0	320	16	170
 0	2	304	144	16	208	170
 0	2	0	352	320	16	170

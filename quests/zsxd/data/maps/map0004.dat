@@ -1313,12 +1313,12 @@
 0	0	784	600	64	16	525
 0	0	768	568	16	32	525
 0	0	848	568	16	32	525
-2	0	808	264	16	16	teletransporter_2	0	1	63	from_outside
-2	0	0	-16	1136	16	teletransporter	0	2	2	_side
-1	0	816	293	from_temple_of_stupidities	3	0
-2	0	-16	0	16	1024	teletransporter_3	0	2	3	_side
-2	0	96	152	16	16	teletransporter_4	0	1	9	start_position
-1	0	104	181	from_geek_house	3	0
+2	0	808	264	16	16	teletransporter_2	_none	_none	1	63	from_outside
+2	0	0	-16	1136	16	teletransporter	_none	_none	2	2	_side
+1	0	816	293	from_temple_of_stupidities	3	_none
+2	0	-16	0	16	1024	teletransporter_3	_none	_none	2	3	_side
+2	0	96	152	16	16	teletransporter_4	_none	_none	1	9	start_position
+1	0	104	181	from_geek_house	3	_none
 10	0	800	264	32	16	temple_door_tile	909	1
 8	0	816	277	temple_door	3	0	_none	map
 6	0	536	32	40	8	jump_sensor	6	88

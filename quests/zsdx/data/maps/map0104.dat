@@ -146,64 +146,64 @@
 0	1	496	168	8	16	73
 0	1	472	168	8	16	72
 0	1	480	168	16	16	189
-1	1	120	61	destination_point_1	-1	1
-1	1	200	61	destination_point_2	-1	1
-1	1	56	77	destination_point_3	-1	1
-1	1	136	77	destination_point_4	-1	1
-1	1	264	77	destination_point_5	-1	1
-1	1	232	93	destination_point_6	-1	1
-1	1	120	109	destination_point_7	-1	1
-1	1	168	109	destination_point_8	-1	1
-1	1	200	109	destination_point_9	-1	1
-1	1	280	109	destination_point_10	-1	1
-1	1	88	125	destination_point_11	-1	1
-1	1	264	141	destination_point_12	-1	1
-1	1	104	157	destination_point_13	-1	1
-1	1	136	157	destination_point_14	-1	1
-1	1	168	157	destination_point_15	-1	1
-1	1	232	157	destination_point_16	-1	1
-1	1	56	173	destination_point_17	-1	1
-1	1	232	173	destination_point_18	-1	1
-1	1	120	189	destination_point_19	-1	1
-1	1	280	189	destination_point_20	-1	1
-1	1	136	205	destination_point_21	-1	1
-1	1	88	221	destination_point_22	-1	1
-1	1	200	221	destination_point_23	-1	1
-1	1	232	221	destination_point_24	-1	1
+1	1	120	61	destination_point_1	-1	entities/destination
+1	1	200	61	destination_point_2	-1	entities/destination
+1	1	56	77	destination_point_3	-1	entities/destination
+1	1	136	77	destination_point_4	-1	entities/destination
+1	1	264	77	destination_point_5	-1	entities/destination
+1	1	232	93	destination_point_6	-1	entities/destination
+1	1	120	109	destination_point_7	-1	entities/destination
+1	1	168	109	destination_point_8	-1	entities/destination
+1	1	200	109	destination_point_9	-1	entities/destination
+1	1	280	109	destination_point_10	-1	entities/destination
+1	1	88	125	destination_point_11	-1	entities/destination
+1	1	264	141	destination_point_12	-1	entities/destination
+1	1	104	157	destination_point_13	-1	entities/destination
+1	1	136	157	destination_point_14	-1	entities/destination
+1	1	168	157	destination_point_15	-1	entities/destination
+1	1	232	157	destination_point_16	-1	entities/destination
+1	1	56	173	destination_point_17	-1	entities/destination
+1	1	232	173	destination_point_18	-1	entities/destination
+1	1	120	189	destination_point_19	-1	entities/destination
+1	1	280	189	destination_point_20	-1	entities/destination
+1	1	136	205	destination_point_21	-1	entities/destination
+1	1	88	221	destination_point_22	-1	entities/destination
+1	1	200	221	destination_point_23	-1	entities/destination
+1	1	232	221	destination_point_24	-1	entities/destination
 11	1	368	160	door_switch	1	0	0
 18	1	296	120	door	0	0	-1
 18	1	344	120	door_2	2	0	-1
-1	1	72	37	from_1f_w	3	0
-1	1	488	181	from_1f_e	3	0
-2	1	480	168	16	16	teletransporter_2	0	1	105	from_b1_e
+1	1	72	37	from_1f_w	3	_none
+1	1	488	181	from_1f_e	3	_none
+2	1	480	168	16	16	teletransporter_2	_none	_none	1	105	from_b1_e
 19	1	480	168	stairs	1	0
-2	1	64	24	16	16	teletransporter	0	1	105	from_b1_w
+2	1	64	24	16	16	teletransporter	_none	_none	1	105	from_b1_w
 19	1	64	24	stairs_2	1	0
 13	1	360	141	16	16	door_dont_close_sensor	0
-2	1	128	48	16	16	teletransporter_3	0	0	104	destination_point_9
-2	1	160	48	16	16	teletransporter_4	0	0	104	destination_point_5
-2	1	224	48	16	16	teletransporter_5	0	0	104	destination_point_3
-2	1	272	48	16	16	teletransporter_6	0	0	104	destination_point_10
-2	1	112	64	16	16	teletransporter_7	0	0	104	destination_point_7
-2	1	192	64	16	16	teletransporter_8	0	0	104	destination_point_6
-2	1	64	80	16	16	teletransporter_9	0	0	104	destination_point_15
-2	1	160	80	16	16	teletransporter_10	0	0	104	destination_point_14
-2	1	48	96	16	16	teletransporter_11	0	0	104	destination_point_4
-2	1	144	112	16	16	teletransporter_12	0	0	104	destination_point_13
-2	1	224	112	16	16	teletransporter_14	0	0	104	destination_point_12
-2	1	160	128	16	16	teletransporter_13	0	0	104	destination_point_1
-2	1	208	128	16	16	teletransporter_15	0	0	104	destination_point_24
-2	1	240	128	16	16	teletransporter_16	0	0	104	destination_point_16
-2	1	112	144	16	16	teletransporter_17	0	0	104	destination_point_21
-2	1	64	160	16	16	teletransporter_18	0	0	104	destination_point_22
-2	1	176	160	16	16	teletransporter_19	0	0	104	destination_point_23
-2	1	48	176	16	16	teletransporter_20	0	0	104	destination_point_11
-2	1	80	176	16	16	teletransporter_21	0	0	104	destination_point_19
-2	1	224	192	16	16	teletransporter_22	0	0	104	destination_point_2
-2	1	48	208	16	16	teletransporter_23	0	0	104	destination_point_17
-2	1	128	208	16	16	teletransporter_24	0	0	104	destination_point_18
-2	1	240	208	16	16	teletransporter_25	0	0	104	destination_point_20
-2	1	272	208	16	16	teletransporter_26	0	0	104	destination_point_8
+2	1	128	48	16	16	teletransporter_3	_none	_none	0	104	destination_point_9
+2	1	160	48	16	16	teletransporter_4	_none	_none	0	104	destination_point_5
+2	1	224	48	16	16	teletransporter_5	_none	_none	0	104	destination_point_3
+2	1	272	48	16	16	teletransporter_6	_none	_none	0	104	destination_point_10
+2	1	112	64	16	16	teletransporter_7	_none	_none	0	104	destination_point_7
+2	1	192	64	16	16	teletransporter_8	_none	_none	0	104	destination_point_6
+2	1	64	80	16	16	teletransporter_9	_none	_none	0	104	destination_point_15
+2	1	160	80	16	16	teletransporter_10	_none	_none	0	104	destination_point_14
+2	1	48	96	16	16	teletransporter_11	_none	_none	0	104	destination_point_4
+2	1	144	112	16	16	teletransporter_12	_none	_none	0	104	destination_point_13
+2	1	224	112	16	16	teletransporter_14	_none	_none	0	104	destination_point_12
+2	1	160	128	16	16	teletransporter_13	_none	_none	0	104	destination_point_1
+2	1	208	128	16	16	teletransporter_15	_none	_none	0	104	destination_point_24
+2	1	240	128	16	16	teletransporter_16	_none	_none	0	104	destination_point_16
+2	1	112	144	16	16	teletransporter_17	_none	_none	0	104	destination_point_21
+2	1	64	160	16	16	teletransporter_18	_none	_none	0	104	destination_point_22
+2	1	176	160	16	16	teletransporter_19	_none	_none	0	104	destination_point_23
+2	1	48	176	16	16	teletransporter_20	_none	_none	0	104	destination_point_11
+2	1	80	176	16	16	teletransporter_21	_none	_none	0	104	destination_point_19
+2	1	224	192	16	16	teletransporter_22	_none	_none	0	104	destination_point_2
+2	1	48	208	16	16	teletransporter_23	_none	_none	0	104	destination_point_17
+2	1	128	208	16	16	teletransporter_24	_none	_none	0	104	destination_point_18
+2	1	240	208	16	16	teletransporter_25	_none	_none	0	104	destination_point_20
+2	1	272	208	16	16	teletransporter_26	_none	_none	0	104	destination_point_8
 0	2	24	16	96	8	625
 0	2	440	160	96	8	625
 0	2	56	16	32	8	429

@@ -99,11 +99,11 @@
 19	0	256	104	stairs	1	4
 19	0	176	360	stairs_2	3	4
 19	0	336	360	stairs_3	3	4
-1	0	392	61	from_d5	3	0
-2	0	384	48	16	16	teletransporter	0	1	138	from_d8
+1	0	392	61	from_d5	3	_none
+2	0	384	48	16	16	teletransporter	_none	_none	1	138	from_d8
 19	0	384	48	stairs_4	1	1
-1	0	136	61	from_l3	3	0
-2	0	128	48	16	16	teletransporter_2	0	1	125	from_d8
+1	0	136	61	from_l3	3	_none
+2	0	128	48	16	16	teletransporter_2	_none	_none	1	125	from_d8
 19	0	128	48	stairs_5	1	1
 0	1	344	40	80	8	629
 0	1	104	40	80	8	629

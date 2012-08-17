@@ -245,8 +245,8 @@
 18	1	472	232	door_5	0	0	-1
 18	1	472	104	door_6	0	0	-1
 18	1	112	24	door	1	0	-1
-2	1	544	368	16	16	teletransporter	0	2	136	_side
-2	1	376	-16	16	16	teletransporter_2	0	2	137	_side
+2	1	544	368	16	16	teletransporter	_none	_none	2	136	_side
+2	1	376	-16	16	16	teletransporter_2	_none	_none	2	137	_side
 13	1	384	13	16	16	sensor	1
 0	2	328	472	96	8	438
 0	2	16	80	8	96	441

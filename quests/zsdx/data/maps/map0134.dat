@@ -119,7 +119,7 @@
 0	1	88	216	16	16	351
 0	1	80	216	8	16	303
 0	1	104	216	8	16	302
-1	1	96	229	from_outside_n	1	0
+1	1	96	229	from_outside_n	1	_none
 18	1	368	440	door	3	0	-1
 9	1	168	93	block	-1	entities/block	1	0	0
 9	1	384	357	block_4	-1	entities/block	1	0	1
@@ -141,12 +141,12 @@
 6	1	352	184	64	8	jumper_3	6	40
 6	1	352	256	64	8	jumper_4	2	40
 11	1	376	392	door_switch	1	0	1
-1	1	384	453	from_outside_s	1	0
+1	1	384	453	from_outside_s	1	_none
 4	1	368	405	0	magic_flask	1	-1
 4	1	400	405	0	_random	1	-1
 4	1	384	405	0	_none	1	-1
-2	1	376	464	16	16	teletransporter_2	0	1	6	from_lake_west_cave_s
-2	1	88	216	16	16	teletransporter	0	1	6	from_lake_west_cave_n
+2	1	376	464	16	16	teletransporter_2	_none	_none	1	6	from_lake_west_cave_s
+2	1	88	216	16	16	teletransporter	_none	_none	1	6	from_lake_west_cave_n
 19	1	88	216	stairs	3	2
 5	1	304	80	chest	0	rupee	5	942
 0	2	48	232	96	8	412

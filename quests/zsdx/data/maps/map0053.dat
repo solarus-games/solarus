@@ -66,11 +66,11 @@
 7	0	92	101	enemy_13	3	snap_dragon	0	-1	_random	1	-1
 7	0	168	445	enemy_14	3	tentacle	0	-1	_random	1	-1
 7	0	152	501	enemy_15	3	tentacle	0	-1	_random	1	-1
-1	0	160	61	from_1f	3	0
-2	0	152	48	16	16	teletransporter_2	0	1	47	from_hidden_room
+1	0	160	61	from_1f	3	_none
+2	0	152	48	16	16	teletransporter_2	_none	_none	1	47	from_hidden_room
 19	0	152	48	stairs_2	1	0
-1	0	160	637	from_billy_cave	1	0
-2	0	152	624	16	16	teletransporter	0	1	121	from_dungeon_8
+1	0	160	637	from_billy_cave	1	_none
+2	0	152	624	16	16	teletransporter	_none	_none	1	121	from_dungeon_8
 19	0	152	624	stairs	3	3
 0	1	112	40	96	8	439
 0	1	144	40	32	8	429

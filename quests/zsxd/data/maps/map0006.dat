@@ -16,7 +16,7 @@
 0	0	136	240	16	8	70
 0	0	136	208	16	32	2
 0	0	136	200	16	16	77
-1	0	144	213	start_position	1	0
+1	0	144	213	start_position	1	_none
 8	0	144	157	sign	3	0	entities/sign	dialog#maison_pots.sign
 4	0	48	53	0	_random	1	-1
 4	0	48	69	0	_random	1	-1
@@ -164,7 +164,7 @@
 4	0	96	197	0	_random	1	-1
 4	0	112	197	0	_random	1	-1
 4	0	128	197	0	_random	1	-1
-2	0	136	224	16	16	teletransporter	0	1	1	pot_house_out
+2	0	136	224	16	16	teletransporter	_none	_none	1	1	pot_house_out
 0	2	112	216	64	8	263
 0	2	128	216	32	8	153
 0	2	0	0	16	240	170

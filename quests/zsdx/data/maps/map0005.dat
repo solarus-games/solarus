@@ -1165,8 +1165,8 @@
 5	0	840	616	Chest	0	piece_of_heart	1	20
 5	0	512	424	chest_2	0	rupee	3	19
 5	0	392	848	Chest_3	0	piece_of_heart	1	935
-2	0	0	-16	960	16	to_C2	0	2	4	_side
-2	0	-16	0	16	976	to_D1	0	2	6	_side
+2	0	0	-16	960	16	to_C2	_none	_none	2	4	_side
+2	0	-16	0	16	976	to_D1	_none	_none	2	6	_side
 6	0	424	632	8	32	Jump_sensor_2	0	56
 4	0	848	645	3	_random	1	-1
 4	0	904	285	3	_random	1	-1
@@ -1179,25 +1179,25 @@
 3	0	392	61	piece_of_heart	1	21
 8	0	880	109	billy_cavern_sign	3	0	entities/sign	dialog#outside_world.billy_cavern_sign
 12	0	840	72	16	8	custom_obstacle	1	1	1	1
-2	0	840	80	16	16	to_billy_cave	0	1	37	from_outside
-1	0	848	109	from_billy_cave	3	0
+2	0	840	80	16	16	to_billy_cave	_none	_none	1	37	from_outside
+1	0	848	109	from_billy_cave	3	_none
 12	0	360	24	16	8	custom_obstacle_2	1	1	1	1
 12	0	320	632	16	8	custom_obstacle_3	1	1	1	1
 8	0	792	413	surprise_wall_guy	3	1	npc/static_villager9	map
 10	0	760	376	32	16	surprise_wall_door_tile	909	1
 8	0	776	389	surprise_wall_door	3	0	_none	map
-1	0	776	405	from_surprise_wall	3	0
-2	0	768	376	16	16	teletransporter	0	1	45	from_outside
-1	0	872	685	from_lake_shop_n	1	0
-1	0	872	749	from_lake_shop_s	3	0
-2	0	864	712	16	16	teletransporter_2	0	1	73	from_outside_s
-2	0	864	688	16	16	teletransporter_3	0	1	73	from_outside_n
-1	0	368	61	from_cave_under_waterfall_c	3	0
-2	0	360	32	16	16	teletransporter_4	0	1	82	from_outside_c
+1	0	776	405	from_surprise_wall	3	_none
+2	0	768	376	16	16	teletransporter	_none	_none	1	45	from_outside
+1	0	872	685	from_lake_shop_n	1	_none
+1	0	872	749	from_lake_shop_s	3	_none
+2	0	864	712	16	16	teletransporter_2	_none	_none	1	73	from_outside_s
+2	0	864	688	16	16	teletransporter_3	_none	_none	1	73	from_outside_n
+1	0	368	61	from_cave_under_waterfall_c	3	_none
+2	0	360	32	16	16	teletransporter_4	_none	_none	1	82	from_outside_c
 12	0	48	344	16	8	custom_obstacle_4	1	1	1	1
-1	0	56	365	from_cave_under_waterfall_s	3	0
-1	0	328	669	from_lake_cave	3	0
-2	0	320	640	16	16	teletransporter_5	0	1	83	from_outside
+1	0	56	365	from_cave_under_waterfall_s	3	_none
+1	0	328	669	from_lake_cave	3	_none
+2	0	320	640	16	16	teletransporter_5	_none	_none	1	83	from_outside
 7	0	184	277	enemy	3	blue_knight_soldier	0	-1	_random	1	-1
 7	0	632	189	enemy_2	3	green_knight_soldier	0	-1	_random	1	-1
 7	0	664	685	enemy_3	3	red_knight_soldier	0	-1	_random	1	-1

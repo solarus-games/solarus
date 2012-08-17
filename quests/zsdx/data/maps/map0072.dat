@@ -179,7 +179,7 @@
 0	0	624	40	16	24	373
 0	0	552	88	32	24	375
 12	0	120	336	16	16	custom_obstacle_18	0	1	0	0
-2	0	120	368	16	16	to_outside	0	1	3	out_smith_cave
+2	0	120	368	16	16	to_outside	_none	_none	1	3	out_smith_cave
 12	0	632	312	32	8	custom_obstacle_6	1	1	1	1
 14	0	128	85	crystal
 15	0	336	112	64	16	1
@@ -188,7 +188,7 @@
 5	0	88	280	chest	0	_none	1	29
 15	0	336	128	16	16	1
 15	0	384	128	16	16	1
-1	0	128	349	main_entrance	1	0
+1	0	128	349	main_entrance	1	_none
 19	0	640	296	stairs_1	3	4
 7	0	88	269	enemy	3	blue_bullblin	0	-1	_random	1	-1
 7	0	72	269	enemy_2	3	blue_bullblin	0	-1	_random	1	-1

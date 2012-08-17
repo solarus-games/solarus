@@ -36,9 +36,9 @@
 0	1	168	64	16	32	43
 0	1	152	64	16	32	44
 0	1	136	64	16	32	42
-1	1	160	165	from_outside	1	0
+1	1	160	165	from_outside	1	_none
 8	1	160	125	wizard_2	3	1	npc/wizard	dialog#desert.small_house
-2	1	152	176	16	16	teletransporter	0	1	2	from_desert_small_house
+2	1	152	176	16	16	teletransporter	_none	_none	1	2	from_desert_small_house
 0	2	112	168	96	8	263
 0	2	144	168	32	8	153
 0	2	0	0	320	64	170

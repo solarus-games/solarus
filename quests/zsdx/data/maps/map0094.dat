@@ -108,14 +108,14 @@
 0	0	768	312	24	24	58
 0	0	768	336	24	32	225
 0	0	504	336	8	8	223
-1	0	568	61	from_2f	3	0
-2	0	560	48	16	16	teletransporter	0	1	92	from_3f
+1	0	568	61	from_2f	3	_none
+2	0	560	48	16	16	teletransporter	_none	_none	1	92	from_3f
 19	0	560	48	stairs	1	1
 19	0	224	104	stairs_2	2	4
 19	0	224	312	stairs_3	2	4
 7	0	324	117	enemy	3	gibdo	0	-1	_random	1	-1
 7	0	552	365	enemy_4	3	globul	0	-1	_random	1	-1
-2	0	704	336	64	32	teletransporter_4	0	1	92	from_3f_hole_e
+2	0	704	336	64	32	teletransporter_4	_none	_none	1	92	from_3f_hole_e
 12	0	352	312	16	16	custom_obstacle_5	0	1	0	0
 12	0	448	312	16	16	custom_obstacle_6	0	1	0	0
 12	0	384	104	16	16	custom_obstacle_8	0	1	0	0
@@ -296,11 +296,11 @@
 0	1	640	264	8	32	452
 12	1	880	392	16	16	custom_obstacle_10	0	1	0	0
 12	1	152	392	16	16	custom_obstacle_7	0	1	0	0
-1	1	160	405	from_outside_w	1	0
-2	1	152	416	16	16	teletransporter_6	0	1	8	from_west_mountain_cave_3f_w
-1	1	888	405	from_outside_e	1	0
-2	1	880	416	16	16	teletransporter_2	0	1	8	from_west_mountain_cave_3f_e
-2	1	568	264	32	32	teletransporter_3	0	1	92	from_3f_hole_w
+1	1	160	405	from_outside_w	1	_none
+2	1	152	416	16	16	teletransporter_6	_none	_none	1	8	from_west_mountain_cave_3f_w
+1	1	888	405	from_outside_e	1	_none
+2	1	880	416	16	16	teletransporter_2	_none	_none	1	8	from_west_mountain_cave_3f_e
+2	1	568	264	32	32	teletransporter_3	_none	_none	1	92	from_3f_hole_w
 6	1	528	272	8	40	jumper	4	40
 12	1	216	96	8	8	custom_obstacle	1	1	1	1
 12	1	216	120	8	8	custom_obstacle_2	1	1	1	1

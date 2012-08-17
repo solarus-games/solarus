@@ -27,8 +27,8 @@
 0	0	144	200	8	24	71
 0	0	168	200	8	24	71
 19	0	152	112	stairs	1	4
-1	0	160	189	from_outside	1	0
-2	0	152	208	16	16	teletransporter	0	1	5	from_lake_cave
+1	0	160	189	from_outside	1	_none
+2	0	152	208	16	16	teletransporter	_none	_none	1	5	from_lake_cave
 0	1	40	40	32	160	397
 0	1	40	40	8	160	237
 0	1	248	40	32	160	397

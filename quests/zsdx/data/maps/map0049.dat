@@ -673,12 +673,12 @@
 9	1	1432	925	block_10	-1	entities/block	1	0	0
 4	1	104	197	0	_random	1	-1
 4	1	232	197	0	_random	1	-1
-1	1	88	37	from_B3_A	3	0
-1	1	248	37	from_B1_C	3	0
+1	1	88	37	from_B3_A	3	_none
+1	1	248	37	from_B1_C	3	_none
 19	1	80	24	stairs	1	1
 19	1	240	24	stairs_2	1	0
-2	1	80	24	16	16	teletransporter	0	1	50	from_B2_A
-2	1	240	24	16	16	teletransporter_2	0	1	48	from_B2_C
+2	1	80	24	16	16	teletransporter	_none	_none	1	50	from_B2_A
+2	1	240	24	16	16	teletransporter_2	_none	_none	1	48	from_B2_C
 11	1	1088	608	BRoom1	3	0	0
 18	1	984	632	LD15	2	0	-1
 5	1	1344	624	RC50	0	rupee	4	712
@@ -689,8 +689,8 @@
 8	1	1432	293	TD01	3	0	entities/hint_stone	map
 8	1	1112	293	TD02	3	0	entities/hint_stone	map
 5	1	1440	1152	RC100	0	rupee	5	711
-2	1	736	416	144	48	hole_to_B3_C	0	1	50	_same
-2	1	456	592	64	112	hole_to_B3_B	0	1	50	_same
+2	1	736	416	144	48	hole_to_B3_C	_none	_none	1	50	_same
+2	1	456	592	64	112	hole_to_B3_B	_none	_none	1	50	_same
 5	1	1120	896	XK01	0	boss_key	1	726
 15	1	1072	864	112	16	0
 15	1	1072	928	112	16	0
@@ -754,14 +754,14 @@
 18	1	1304	888	KD04	2	1	714
 18	1	1352	888	BD01_2	0	3	713
 18	1	1256	888	KD04_2	0	1	714
-1	1	1128	1061	from_B3_C	3	0
+1	1	1128	1061	from_B3_C	3	_none
 19	1	1120	1048	stairs_3	1	1
-2	1	1120	1048	16	16	to_B3_C	0	1	50	from_B2_C
+2	1	1120	1048	16	16	to_B3_C	_none	_none	1	50	from_B2_C
 12	1	1256	896	64	16	custom_obstacle_6	0	1	0	0
 13	1	808	1069	16	16	dont_close_LD16_sensor	0
 18	1	1304	632	LD15_3	2	0	-1
 18	1	1256	632	LD15_4	0	0	-1
-1	1	1432	349	tmp	3	0
+1	1	1432	349	tmp	3	_none
 0	2	656	600	8	96	441
 0	2	632	600	8	96	442
 0	2	976	600	8	96	441

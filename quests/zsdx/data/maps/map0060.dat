@@ -245,22 +245,22 @@
 0	0	240	704	8	8	69
 0	0	280	688	8	8	69
 0	0	200	752	8	8	69
-1	0	632	845	destination_point_1	-1	1
-1	0	152	789	from_B1_1	3	0
-1	0	280	741	from_B1_2	3	0
-1	0	280	917	from_B1_3	3	0
-1	0	408	661	from_B1_4	3	0
-1	0	376	725	from_B1_5	3	0
-1	0	376	789	from_B1_6	3	0
-1	0	392	901	from_B1_7	3	0
+1	0	632	845	destination_point_1	-1	entities/destination
+1	0	152	789	from_B1_1	3	_none
+1	0	280	741	from_B1_2	3	_none
+1	0	280	917	from_B1_3	3	_none
+1	0	408	661	from_B1_4	3	_none
+1	0	376	725	from_B1_5	3	_none
+1	0	376	789	from_B1_6	3	_none
+1	0	392	901	from_B1_7	3	_none
 19	0	272	992	stairs	3	4
-2	0	144	776	16	16	teletransporter_2	0	1	59	from_1F_1
-2	0	272	728	16	16	teletransporter_3	0	1	59	from_1F_2
-2	0	272	904	16	16	teletransporter_4	0	1	59	from_1F_3
-2	0	400	648	16	16	teletransporter_5	0	1	59	from_1F_4
-2	0	368	712	16	16	teletransporter_6	0	1	59	from_1F_5
-2	0	368	776	16	16	teletransporter_7	0	1	59	from_1F_6
-2	0	384	888	16	16	teletransporter_8	0	1	59	from_1F_7
+2	0	144	776	16	16	teletransporter_2	_none	_none	1	59	from_1F_1
+2	0	272	728	16	16	teletransporter_3	_none	_none	1	59	from_1F_2
+2	0	272	904	16	16	teletransporter_4	_none	_none	1	59	from_1F_3
+2	0	400	648	16	16	teletransporter_5	_none	_none	1	59	from_1F_4
+2	0	368	712	16	16	teletransporter_6	_none	_none	1	59	from_1F_5
+2	0	368	776	16	16	teletransporter_7	_none	_none	1	59	from_1F_6
+2	0	384	888	16	16	teletransporter_8	_none	_none	1	59	from_1F_7
 19	0	144	776	stairs_2	3	3
 19	0	272	728	stairs_3	3	3
 19	0	272	904	stairs_4	3	3
@@ -268,24 +268,24 @@
 19	0	368	712	stairs_6	3	3
 19	0	368	776	stairs_7	3	3
 19	0	384	888	stairs_8	3	3
-2	0	200	792	32	32	teletransporter_9	0	1	59	_same
-2	0	152	888	32	32	teletransporter_10	0	1	59	_same
-2	0	328	648	32	32	teletransporter_12	0	1	59	_same
-2	0	328	840	16	16	teletransporter_13	0	1	59	from_1F_c_hole_up
-2	0	344	952	32	32	teletransporter_14	0	1	59	from_1F_hole_left
-2	0	360	952	32	32	teletransporter_15	0	1	59	from_1F_hole_right
-2	0	424	840	32	32	teletransporter_17	0	1	59	from_1F_hole_down
-2	0	424	824	32	32	teletransporter_16	0	1	59	from_1F_hole_up
+2	0	200	792	32	32	teletransporter_9	_none	_none	1	59	_same
+2	0	152	888	32	32	teletransporter_10	_none	_none	1	59	_same
+2	0	328	648	32	32	teletransporter_12	_none	_none	1	59	_same
+2	0	328	840	16	16	teletransporter_13	_none	_none	1	59	from_1F_c_hole_up
+2	0	344	952	32	32	teletransporter_14	_none	_none	1	59	from_1F_hole_left
+2	0	360	952	32	32	teletransporter_15	_none	_none	1	59	from_1F_hole_right
+2	0	424	840	32	32	teletransporter_17	_none	_none	1	59	from_1F_hole_down
+2	0	424	824	32	32	teletransporter_16	_none	_none	1	59	from_1F_hole_up
 14	0	488	589	crystal
 8	0	632	813	npc	3	0	entities/hint_stone	dialog#dungeon_4.hint_use_map
 19	0	96	112	stairs_9	3	4
-2	0	88	1016	16	16	teletransporter_29	1	1	60	destination_point_2
-1	0	104	61	from_B1_n_1	3	0
-2	0	96	48	16	16	teletransporter_31	0	1	59	from_1F_n_1
+2	0	88	1016	16	16	teletransporter_29	entities/teletransporter	warp	1	60	destination_point_2
+1	0	104	61	from_B1_n_1	3	_none
+2	0	96	48	16	16	teletransporter_31	_none	_none	1	59	from_1F_n_1
 19	0	96	48	stairs_10	1	1
 3	0	304	1045	piece_of_heart	1	413
-2	0	248	808	32	32	teletransporter_11	0	1	59	_same
-2	0	328	856	16	16	teletransporter_35	0	1	59	from_1F_c_hole_down
+2	0	248	808	32	32	teletransporter_11	_none	_none	1	59	_same
+2	0	328	856	16	16	teletransporter_35	_none	_none	1	59	from_1F_c_hole_down
 5	0	200	760	chest_6	0	rupee	4	414
 5	0	208	656	chest_7	0	rupee	5	418
 7	0	464	1037	enemy	3	skeletor	0	-1	_random	1	-1
@@ -854,37 +854,37 @@
 18	1	632	200	hidden_weak_wall_2	1	6	403
 12	1	264	1008	8	8	custom_obstacle	1	1	1	1
 12	1	288	1008	8	8	custom_obstacle_2	1	1	1	1
-1	1	280	1093	from_outside	1	0
-2	1	272	1104	16	16	teletransporter	0	1	66	from_dungeon_4
-2	1	256	1080	16	16	teletransporter_18	0	0	60	tmp
+1	1	280	1093	from_outside	1	_none
+2	1	272	1104	16	16	teletransporter	_none	_none	1	66	from_dungeon_4
+2	1	256	1080	16	16	teletransporter_18	_none	_none	0	60	tmp
 18	1	88	232	door	1	4	401
 18	1	88	184	door_2	3	4	401
 12	1	88	128	8	8	custom_obstacle_3	1	1	1	1
 12	1	112	128	8	8	custom_obstacle_4	1	1	1	1
 18	1	680	56	door_3	0	1	402
 18	1	728	56	door_4	2	1	402
-1	1	600	61	destination_point_2	-1	1
-1	1	768	109	destination_point_3	-1	1
-1	1	832	69	destination_point_4	-1	1
-1	1	832	109	destination_point_5	-1	1
-1	1	832	165	destination_point_6	-1	1
-1	1	912	197	destination_point_7	-1	1
-1	1	888	69	destination_point_8	-1	1
-1	1	888	117	destination_point_9	-1	1
-1	1	696	141	destination_point_10	-1	1
+1	1	600	61	destination_point_2	-1	entities/destination
+1	1	768	109	destination_point_3	-1	entities/destination
+1	1	832	69	destination_point_4	-1	entities/destination
+1	1	832	109	destination_point_5	-1	entities/destination
+1	1	832	165	destination_point_6	-1	entities/destination
+1	1	912	197	destination_point_7	-1	entities/destination
+1	1	888	69	destination_point_8	-1	entities/destination
+1	1	888	117	destination_point_9	-1	entities/destination
+1	1	696	141	destination_point_10	-1	entities/destination
 18	1	632	152	hidden_weak_wall	3	6	403
-1	1	720	141	destination_point_11	-1	1
-2	1	872	184	16	16	teletransporter_19	1	1	60	destination_point_1
+1	1	720	141	destination_point_11	-1	entities/destination
+2	1	872	184	16	16	teletransporter_19	entities/teletransporter	warp	1	60	destination_point_1
 10	1	632	152	32	24	hidden_weak_wall_closed	52	1
-2	1	776	56	16	16	teletransporter_20	0	0	60	destination_point_6
-2	1	840	152	16	16	teletransporter_21	0	0	60	destination_point_3
-2	1	776	96	16	16	teletransporter_22	0	0	60	destination_point_10
-2	1	592	128	16	16	teletransporter_23	0	0	60	destination_point_4
-2	1	840	56	16	16	teletransporter_24	0	0	60	destination_point_9
-2	1	896	104	16	16	teletransporter_25	0	0	60	destination_point_5
-2	1	840	96	16	16	teletransporter_26	0	0	60	destination_point_8
-2	1	896	56	16	16	teletransporter_27	0	0	60	destination_point_11
-2	1	776	184	16	16	teletransporter_28	0	0	60	destination_point_7
+2	1	776	56	16	16	teletransporter_20	_none	_none	0	60	destination_point_6
+2	1	840	152	16	16	teletransporter_21	_none	_none	0	60	destination_point_3
+2	1	776	96	16	16	teletransporter_22	_none	_none	0	60	destination_point_10
+2	1	592	128	16	16	teletransporter_23	_none	_none	0	60	destination_point_4
+2	1	840	56	16	16	teletransporter_24	_none	_none	0	60	destination_point_9
+2	1	896	104	16	16	teletransporter_25	_none	_none	0	60	destination_point_5
+2	1	840	96	16	16	teletransporter_26	_none	_none	0	60	destination_point_8
+2	1	896	56	16	16	teletransporter_27	_none	_none	0	60	destination_point_11
+2	1	776	184	16	16	teletransporter_28	_none	_none	0	60	destination_point_7
 5	1	832	296	chest	1	tunic	2	404
 5	1	640	600	chest_2	0	compass	1	405
 18	1	832	488	door_7	3	3	406
@@ -894,7 +894,7 @@
 5	1	640	280	chest_4	0	big_key	1	409
 18	1	640	240	weak_block	1	8	410
 5	1	792	376	chest_5	0	bomb	2	408
-2	1	632	368	32	32	weak_floor_teletransporter	0	1	59	from_hole
+2	1	632	368	32	32	weak_floor_teletransporter	_none	_none	1	59	from_hole
 17	1	432	53	0
 17	1	416	53	0
 17	1	400	53	0
@@ -960,12 +960,12 @@
 17	1	512	277	2
 15	1	520	248	16	16	1
 8	1	320	141	npc_2	3	0	entities/hint_stone	dialog#dungeon_4.hint_chests
-1	1	288	37	from_B1_n_2	3	0
-1	1	448	37	from_B1_n_3	3	0
-1	1	632	37	from_B1_n_4	3	0
-2	1	280	24	16	16	teletransporter_32	0	1	59	from_1F_n_2
-2	1	440	24	16	16	teletransporter_33	0	1	59	from_1F_n_3
-2	1	624	24	16	16	teletransporter_34	0	1	59	from_1F_n_4
+1	1	288	37	from_B1_n_2	3	_none
+1	1	448	37	from_B1_n_3	3	_none
+1	1	632	37	from_B1_n_4	3	_none
+2	1	280	24	16	16	teletransporter_32	_none	_none	1	59	from_1F_n_2
+2	1	440	24	16	16	teletransporter_33	_none	_none	1	59	from_1F_n_3
+2	1	624	24	16	16	teletransporter_34	_none	_none	1	59	from_1F_n_4
 19	1	280	24	stairs_11	1	1
 19	1	440	24	stairs_12	1	1
 19	1	624	24	stairs_13	1	1
@@ -993,10 +993,10 @@
 7	1	200	464	boss	3	flora_gohma	2	415	heart_container	1	416
 12	1	712	632	16	16	custom_obstacle_7	0	1	1	1
 18	1	184	232	final_room_door	1	0	-1
-1	1	200	245	from_final_room	3	0
-2	1	192	232	16	16	teletransporter_30	0	1	87	from_boss_room
+1	1	200	245	from_final_room	3	_none
+2	1	192	232	16	16	teletransporter_30	_none	_none	1	87	from_boss_room
 19	1	192	232	stairs_14	1	2
-1	1	104	261	tmp	3	0
+1	1	104	261	tmp	3	_none
 7	1	792	621	enemy_7	0	pike_fixed	0	-1	_random	1	-1
 12	1	760	632	16	16	custom_obstacle_8	0	1	1	1
 12	1	840	536	16	16	custom_obstacle_9	0	1	1	1

@@ -283,11 +283,11 @@
 0	0	352	560	16	64	424
 0	0	208	912	16	48	424
 5	0	256	64	chest	0	rupee	6	196
-1	0	216	925	from_outside_s	1	0
-1	0	568	861	from_outside_c	1	0
-1	0	544	149	from_outside_n	3	0
-2	0	208	944	16	16	teletransporter	0	1	5	from_cave_under_waterfall_s
-2	0	560	880	16	16	teletransporter_2	0	1	5	from_cave_under_waterfall_c
+1	0	216	925	from_outside_s	1	_none
+1	0	568	861	from_outside_c	1	_none
+1	0	544	149	from_outside_n	3	_none
+2	0	208	944	16	16	teletransporter	_none	_none	1	5	from_cave_under_waterfall_s
+2	0	560	880	16	16	teletransporter_2	_none	_none	1	5	from_cave_under_waterfall_c
 0	1	456	544	8	96	417
 0	1	384	544	8	96	418
 0	1	512	672	96	8	414

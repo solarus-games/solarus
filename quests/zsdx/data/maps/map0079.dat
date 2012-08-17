@@ -379,66 +379,66 @@
 0	0	64	64	8	8	212
 0	0	472	64	8	8	213
 19	0	400	592	stairs	3	4
-2	0	80	80	64	48	teletransporter_2	0	1	80	from_1f_holes
-2	0	64	112	64	32	teletransporter_3	0	1	80	from_1f_holes
-2	0	64	144	48	80	teletransporter_4	0	1	80	from_1f_holes
-2	0	64	224	64	112	teletransporter_5	0	1	80	from_1f_holes
-2	0	128	240	64	48	teletransporter_6	0	1	80	from_1f_holes
-2	0	144	224	16	16	teletransporter_7	0	1	80	from_1f_holes
-2	0	160	112	32	128	teletransporter_8	0	1	80	from_1f_holes
-2	0	192	112	64	112	teletransporter_9	0	1	80	from_1f_holes
-2	0	240	96	64	16	teletransporter_10	0	1	80	from_1f_holes
-2	0	256	112	32	16	teletransporter_11	0	1	80	from_1f_holes
-2	0	256	128	16	32	teletransporter_12	0	1	80	from_1f_holes
-2	0	336	96	48	32	teletransporter_13	0	1	80	from_1f_holes
-2	0	352	112	96	32	teletransporter_14	0	1	80	from_1f_holes
-2	0	368	144	96	48	teletransporter_15	0	1	80	from_1f_holes
-2	0	336	192	144	48	teletransporter_16	0	1	80	from_1f_holes
-2	0	240	192	32	16	teletransporter_17	0	1	80	from_1f_holes
-2	0	240	208	192	64	teletransporter_18	0	1	80	from_1f_holes
-2	0	432	240	32	16	teletransporter_19	0	1	80	from_1f_holes
-2	0	224	256	16	16	teletransporter_20	0	1	80	from_1f_holes
-2	0	160	272	80	96	teletransporter_21	0	1	80	from_1f_holes
-2	0	240	288	16	16	teletransporter_22	0	1	80	from_1f_holes
-2	0	240	272	48	16	teletransporter_23	0	1	80	from_1f_holes
-2	0	288	272	64	32	teletransporter_24	0	1	80	from_1f_holes
-2	0	384	272	48	32	teletransporter_25	0	1	80	from_1f_holes
-2	0	288	304	192	48	teletransporter_26	0	1	80	from_1f_holes
-2	0	64	368	192	48	teletransporter_27	0	1	80	from_1f_holes
-2	0	80	352	32	16	teletransporter_28	0	1	80	from_1f_holes
-2	0	160	416	16	16	teletransporter_29	0	1	80	from_1f_holes
-2	0	256	384	16	16	teletransporter_30	0	1	80	from_1f_holes
-2	0	272	336	16	16	teletransporter_31	0	1	80	from_1f_holes
-2	0	256	352	128	32	teletransporter_32	0	1	80	from_1f_holes
-2	0	288	384	112	64	teletransporter_33	0	1	80	from_1f_holes
-2	0	416	352	64	80	teletransporter_34	0	1	80	from_1f_holes
-2	0	400	432	80	16	teletransporter_35	0	1	80	from_1f_holes
-2	0	240	432	32	16	teletransporter_36	0	1	80	from_1f_holes
-2	0	400	496	16	16	teletransporter_37	0	1	80	from_1f_holes
-2	0	432	448	48	16	teletransporter_38	0	1	80	from_1f_holes
-2	0	416	464	64	96	teletransporter_39	0	1	80	from_1f_holes
-2	0	448	560	32	32	teletransporter_40	0	1	80	from_1f_holes
-2	0	304	448	64	32	teletransporter_41	0	1	80	from_1f_holes
-2	0	368	480	32	80	teletransporter_42	0	1	80	from_1f_holes
-2	0	96	448	48	32	teletransporter_43	0	1	80	from_1f_holes
-2	0	64	464	64	32	teletransporter_44	0	1	80	from_1f_holes
-2	0	64	496	48	32	teletransporter_45	0	1	80	from_1f_holes
-2	0	64	528	64	112	teletransporter_46	0	1	80	from_1f_holes
-2	0	176	416	64	64	teletransporter_47	0	1	80	from_1f_holes
-2	0	128	528	16	16	teletransporter_48	0	1	80	from_1f_holes
-2	0	144	528	16	32	teletransporter_49	0	1	80	from_1f_holes
-2	0	128	576	32	16	teletransporter_50	0	1	80	from_1f_holes
-2	0	176	480	192	48	teletransporter_51	0	1	80	from_1f_holes
-2	0	160	496	16	32	teletransporter_52	0	1	80	from_1f_holes
-2	0	224	528	16	16	teletransporter_53	0	1	80	from_1f_holes
-2	0	160	528	64	80	teletransporter_54	0	1	80	from_1f_holes
-2	0	176	592	64	48	teletransporter_55	0	1	80	from_1f_holes
-2	0	256	544	16	48	teletransporter_56	0	1	80	from_1f_holes
-2	0	272	528	96	64	teletransporter_57	0	1	80	from_1f_holes
-2	0	240	608	48	32	teletransporter_58	0	1	80	from_1f_holes
-2	0	288	592	48	48	teletransporter_59	0	1	80	from_1f_holes
-1	0	456	301	destination_point	-1	1
-2	0	144	608	16	16	teletransporter_60	1	1	79	destination_point
+2	0	80	80	64	48	teletransporter_2	_none	_none	1	80	from_1f_holes
+2	0	64	112	64	32	teletransporter_3	_none	_none	1	80	from_1f_holes
+2	0	64	144	48	80	teletransporter_4	_none	_none	1	80	from_1f_holes
+2	0	64	224	64	112	teletransporter_5	_none	_none	1	80	from_1f_holes
+2	0	128	240	64	48	teletransporter_6	_none	_none	1	80	from_1f_holes
+2	0	144	224	16	16	teletransporter_7	_none	_none	1	80	from_1f_holes
+2	0	160	112	32	128	teletransporter_8	_none	_none	1	80	from_1f_holes
+2	0	192	112	64	112	teletransporter_9	_none	_none	1	80	from_1f_holes
+2	0	240	96	64	16	teletransporter_10	_none	_none	1	80	from_1f_holes
+2	0	256	112	32	16	teletransporter_11	_none	_none	1	80	from_1f_holes
+2	0	256	128	16	32	teletransporter_12	_none	_none	1	80	from_1f_holes
+2	0	336	96	48	32	teletransporter_13	_none	_none	1	80	from_1f_holes
+2	0	352	112	96	32	teletransporter_14	_none	_none	1	80	from_1f_holes
+2	0	368	144	96	48	teletransporter_15	_none	_none	1	80	from_1f_holes
+2	0	336	192	144	48	teletransporter_16	_none	_none	1	80	from_1f_holes
+2	0	240	192	32	16	teletransporter_17	_none	_none	1	80	from_1f_holes
+2	0	240	208	192	64	teletransporter_18	_none	_none	1	80	from_1f_holes
+2	0	432	240	32	16	teletransporter_19	_none	_none	1	80	from_1f_holes
+2	0	224	256	16	16	teletransporter_20	_none	_none	1	80	from_1f_holes
+2	0	160	272	80	96	teletransporter_21	_none	_none	1	80	from_1f_holes
+2	0	240	288	16	16	teletransporter_22	_none	_none	1	80	from_1f_holes
+2	0	240	272	48	16	teletransporter_23	_none	_none	1	80	from_1f_holes
+2	0	288	272	64	32	teletransporter_24	_none	_none	1	80	from_1f_holes
+2	0	384	272	48	32	teletransporter_25	_none	_none	1	80	from_1f_holes
+2	0	288	304	192	48	teletransporter_26	_none	_none	1	80	from_1f_holes
+2	0	64	368	192	48	teletransporter_27	_none	_none	1	80	from_1f_holes
+2	0	80	352	32	16	teletransporter_28	_none	_none	1	80	from_1f_holes
+2	0	160	416	16	16	teletransporter_29	_none	_none	1	80	from_1f_holes
+2	0	256	384	16	16	teletransporter_30	_none	_none	1	80	from_1f_holes
+2	0	272	336	16	16	teletransporter_31	_none	_none	1	80	from_1f_holes
+2	0	256	352	128	32	teletransporter_32	_none	_none	1	80	from_1f_holes
+2	0	288	384	112	64	teletransporter_33	_none	_none	1	80	from_1f_holes
+2	0	416	352	64	80	teletransporter_34	_none	_none	1	80	from_1f_holes
+2	0	400	432	80	16	teletransporter_35	_none	_none	1	80	from_1f_holes
+2	0	240	432	32	16	teletransporter_36	_none	_none	1	80	from_1f_holes
+2	0	400	496	16	16	teletransporter_37	_none	_none	1	80	from_1f_holes
+2	0	432	448	48	16	teletransporter_38	_none	_none	1	80	from_1f_holes
+2	0	416	464	64	96	teletransporter_39	_none	_none	1	80	from_1f_holes
+2	0	448	560	32	32	teletransporter_40	_none	_none	1	80	from_1f_holes
+2	0	304	448	64	32	teletransporter_41	_none	_none	1	80	from_1f_holes
+2	0	368	480	32	80	teletransporter_42	_none	_none	1	80	from_1f_holes
+2	0	96	448	48	32	teletransporter_43	_none	_none	1	80	from_1f_holes
+2	0	64	464	64	32	teletransporter_44	_none	_none	1	80	from_1f_holes
+2	0	64	496	48	32	teletransporter_45	_none	_none	1	80	from_1f_holes
+2	0	64	528	64	112	teletransporter_46	_none	_none	1	80	from_1f_holes
+2	0	176	416	64	64	teletransporter_47	_none	_none	1	80	from_1f_holes
+2	0	128	528	16	16	teletransporter_48	_none	_none	1	80	from_1f_holes
+2	0	144	528	16	32	teletransporter_49	_none	_none	1	80	from_1f_holes
+2	0	128	576	32	16	teletransporter_50	_none	_none	1	80	from_1f_holes
+2	0	176	480	192	48	teletransporter_51	_none	_none	1	80	from_1f_holes
+2	0	160	496	16	32	teletransporter_52	_none	_none	1	80	from_1f_holes
+2	0	224	528	16	16	teletransporter_53	_none	_none	1	80	from_1f_holes
+2	0	160	528	64	80	teletransporter_54	_none	_none	1	80	from_1f_holes
+2	0	176	592	64	48	teletransporter_55	_none	_none	1	80	from_1f_holes
+2	0	256	544	16	48	teletransporter_56	_none	_none	1	80	from_1f_holes
+2	0	272	528	96	64	teletransporter_57	_none	_none	1	80	from_1f_holes
+2	0	240	608	48	32	teletransporter_58	_none	_none	1	80	from_1f_holes
+2	0	288	592	48	48	teletransporter_59	_none	_none	1	80	from_1f_holes
+1	0	456	301	destination_point	-1	entities/destination
+2	0	144	608	16	16	teletransporter_60	entities/teletransporter	warp	1	79	destination_point
 4	0	136	301	3	_random	1	-1
 4	0	152	301	3	_random	1	-1
 4	0	136	317	3	_random	1	-1
@@ -483,8 +483,8 @@
 0	1	496	656	8	8	17
 0	1	432	656	8	8	183
 0	1	408	656	8	8	184
-1	1	424	677	from_outside	1	0
-2	1	416	688	16	16	teletransporter	0	1	7	from_waterfall_cave
+1	1	424	677	from_outside	1	_none
+2	1	416	688	16	16	teletransporter	_none	_none	1	7	from_waterfall_cave
 12	1	392	608	8	8	custom_obstacle	1	1	1	1
 12	1	416	608	8	8	custom_obstacle_2	1	1	1	1
 0	2	384	680	96	8	412

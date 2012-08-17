@@ -93,22 +93,22 @@
 7	0	224	229	enemy_3	3	tentacle	0	-1	_random	1	-1
 7	0	288	229	enemy_4	3	tentacle	0	-1	_random	1	-1
 7	0	280	165	enemy_5	3	tentacle	0	-1	_random	1	-1
-1	0	520	301	from_outside_e	1	0
-2	0	512	320	16	16	teletransporter_2	0	1	7	from_east_mountains_cave_2f_e
+1	0	520	301	from_outside_e	1	_none
+2	0	512	320	16	16	teletransporter_2	_none	_none	1	7	from_east_mountains_cave_2f_e
 7	0	496	197	enemy_6	3	tentacle	0	-1	_random	1	-1
 7	0	544	205	enemy_7	3	tentacle	0	-1	_random	1	-1
 7	0	528	173	enemy_8	3	tentacle	0	-1	_random	1	-1
 7	0	504	165	enemy_9	3	tentacle	0	-1	_random	1	-1
 7	0	552	173	enemy_10	3	tentacle	0	-1	_random	1	-1
 7	0	472	181	enemy_11	3	tentacle	0	-1	_random	1	-1
-1	0	104	61	from_1f_w	3	0
-1	0	536	61	from_1f_e	3	0
-1	0	264	61	from_3f_w	3	0
-2	0	96	48	16	16	teletransporter_3	0	1	111	from_2f_w
-2	0	528	48	16	16	teletransporter_4	0	1	111	from_2f_e
+1	0	104	61	from_1f_w	3	_none
+1	0	536	61	from_1f_e	3	_none
+1	0	264	61	from_3f_w	3	_none
+2	0	96	48	16	16	teletransporter_3	_none	_none	1	111	from_2f_w
+2	0	528	48	16	16	teletransporter_4	_none	_none	1	111	from_2f_e
 19	0	96	48	stairs	1	1
 19	0	528	48	stairs_2	1	1
-2	0	256	48	16	16	teletransporter_5	0	1	113	from_2f_w
+2	0	256	48	16	16	teletransporter_5	_none	_none	1	113	from_2f_w
 19	0	256	48	stairs_3	1	0
 0	1	40	16	560	24	49
 0	1	496	40	96	8	413
@@ -214,16 +214,16 @@
 0	1	432	56	8	8	69
 0	1	432	48	8	8	71
 6	1	320	144	8	16	jumper	4	40
-1	1	160	453	from_outside_w	1	0
-2	1	152	464	16	16	teletransporter	0	1	7	from_east_mountains_cave_2f_w
-1	1	408	37	from_3f_e	3	0
+1	1	160	453	from_outside_w	1	_none
+2	1	152	464	16	16	teletransporter	_none	_none	1	7	from_east_mountains_cave_2f_w
+1	1	408	37	from_3f_e	3	_none
 7	1	280	333	enemy_12	3	tentacle	0	-1	_random	1	-1
 7	1	408	229	enemy_13	3	tentacle	0	-1	_random	1	-1
 7	1	360	269	enemy_14	3	tentacle	0	-1	_random	1	-1
 7	1	328	405	enemy_15	3	tentacle	0	-1	_random	1	-1
 7	1	80	397	enemy_16	3	tentacle	0	-1	_random	1	-1
 7	1	128	333	enemy_17	3	tentacle	0	-1	_random	1	-1
-2	1	400	24	16	16	teletransporter_6	0	1	113	from_2f_e
+2	1	400	24	16	16	teletransporter_6	_none	_none	1	113	from_2f_e
 19	1	400	24	stairs_4	1	0
 6	1	440	64	8	16	jumper_2	0	40
 0	2	112	456	96	8	412

@@ -69,7 +69,7 @@
 0	0	480	552	16	8	70
 0	0	448	560	48	16	2
 19	0	384	504	stairs	2	4
-2	0	480	512	16	16	teletransporter_13	0	1	55	from_3f_s_hole
+2	0	480	512	16	16	teletransporter_13	_none	_none	1	55	from_3f_s_hole
 4	0	456	573	0	_random	1	-1
 4	0	472	573	0	_random	1	-1
 4	0	488	573	0	bomb	3	-1
@@ -1121,22 +1121,22 @@
 18	1	872	248	miniboss_door_3	0	0	-1
 18	1	920	248	miniboss_door_4	2	0	-1
 18	1	1048	24	miniboss_door_5	1	0	-1
-1	1	232	589	from_2f_sw	3	0
-1	1	960	629	from_2f_se_1	3	0
-1	1	1016	629	from_2f_se_2	3	0
-1	1	1072	629	from_2f_se_3	3	0
-1	1	688	37	from_4f_nc_1	3	0
-1	1	832	37	from_4f_nc_2	3	0
-1	1	760	165	from_4f_c	3	0
-2	1	224	576	16	16	teletransporter	0	1	55	from_3f_sw
-2	1	952	616	16	16	teletransporter_2	0	1	55	from_3f_se_1
-2	1	1008	616	16	16	teletransporter_3	0	1	55	from_3f_se_2
-2	1	1064	616	16	16	teletransporter_4	0	1	55	from_3f_se_3
-2	1	752	152	16	16	teletransporter_5	0	1	57	from_3f_c
-1	1	1064	37	from_4f_ne	3	0
-2	1	680	24	16	16	teletransporter_6	0	1	57	from_3f_nc_1
-2	1	824	24	16	16	teletransporter_7	0	1	57	from_3f_nc_2
-2	1	1056	24	16	16	teletransporter_8	0	1	57	from_3f_ne
+1	1	232	589	from_2f_sw	3	_none
+1	1	960	629	from_2f_se_1	3	_none
+1	1	1016	629	from_2f_se_2	3	_none
+1	1	1072	629	from_2f_se_3	3	_none
+1	1	688	37	from_4f_nc_1	3	_none
+1	1	832	37	from_4f_nc_2	3	_none
+1	1	760	165	from_4f_c	3	_none
+2	1	224	576	16	16	teletransporter	_none	_none	1	55	from_3f_sw
+2	1	952	616	16	16	teletransporter_2	_none	_none	1	55	from_3f_se_1
+2	1	1008	616	16	16	teletransporter_3	_none	_none	1	55	from_3f_se_2
+2	1	1064	616	16	16	teletransporter_4	_none	_none	1	55	from_3f_se_3
+2	1	752	152	16	16	teletransporter_5	_none	_none	1	57	from_3f_c
+1	1	1064	37	from_4f_ne	3	_none
+2	1	680	24	16	16	teletransporter_6	_none	_none	1	57	from_3f_nc_1
+2	1	824	24	16	16	teletransporter_7	_none	_none	1	57	from_3f_nc_2
+2	1	1056	24	16	16	teletransporter_8	_none	_none	1	57	from_3f_ne
 19	1	1056	24	stairs_2	1	0
 19	1	824	24	stairs_3	1	0
 19	1	680	24	stairs_4	1	0
@@ -1145,14 +1145,14 @@
 19	1	952	616	stairs_7	3	3
 19	1	1008	616	stairs_8	3	3
 19	1	1064	616	stairs_9	3	3
-2	1	48	416	48	16	teletransporter_9	0	1	55	from_3f_sw_hole
-2	1	488	224	16	16	teletransporter_10	0	1	55	from_3f_w_hole
-2	1	752	232	16	16	teletransporter_11	0	1	55	from_3f_c_hole
-2	1	824	280	16	16	teletransporter_12	0	1	55	_same
-2	1	896	632	16	16	teletransporter_14	0	1	55	from_3f_hole_se_1
-2	1	896	648	16	16	teletransporter_15	0	1	55	from_3f_hole_se_2
-2	1	600	200	16	16	teletransporter_16	0	1	55	_same
-1	1	688	309	from_4f_hole	-1	0
+2	1	48	416	48	16	teletransporter_9	_none	_none	1	55	from_3f_sw_hole
+2	1	488	224	16	16	teletransporter_10	_none	_none	1	55	from_3f_w_hole
+2	1	752	232	16	16	teletransporter_11	_none	_none	1	55	from_3f_c_hole
+2	1	824	280	16	16	teletransporter_12	_none	_none	1	55	_same
+2	1	896	632	16	16	teletransporter_14	_none	_none	1	55	from_3f_hole_se_1
+2	1	896	648	16	16	teletransporter_15	_none	_none	1	55	from_3f_hole_se_2
+2	1	600	200	16	16	teletransporter_16	_none	_none	1	55	_same
+1	1	688	309	from_4f_hole	-1	_none
 5	1	520	400	chest_2	0	big_key	1	315
 5	1	240	304	chest_3	0	small_key	1	316
 18	1	416	48	door_6	1	2	318
@@ -1193,8 +1193,8 @@
 15	1	368	144	16	32	0
 15	1	112	144	16	16	0
 15	1	96	176	16	16	1
-1	1	728	413	from_ending	-1	0
-1	1	352	509	tmp	3	0
+1	1	728	413	from_ending	-1	_none
+1	1	352	509	tmp	3	_none
 4	1	336	541	4	_random	1	-1
 4	1	336	557	4	_random	1	-1
 14	1	408	453	crystal_4

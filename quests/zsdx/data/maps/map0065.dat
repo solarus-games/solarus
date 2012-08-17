@@ -537,8 +537,8 @@
 13	1	1072	509	48	240	guard_5_sensor_3	0
 13	1	648	253	16	16	prison_sensor	0
 13	1	208	549	144	64	guard_1_sensor_2	0
-1	1	1072	37	from_1f_ne	3	0
-1	1	1048	797	from_1f_se	3	0
+1	1	1072	37	from_1f_ne	3	_none
+1	1	1048	797	from_1f_se	3	_none
 18	1	776	376	door_a	0	0	-1
 18	1	824	376	door_a_2	2	0	-1
 12	1	624	608	8	8	custom_obstacle	1	1	1	1
@@ -550,18 +550,18 @@
 4	1	304	245	0	_none	1	-1
 4	1	336	245	0	_none	1	-1
 4	1	352	245	0	_none	1	-1
-2	1	1064	24	16	16	teletransporter	0	1	64	from_b1_ne
-2	1	1040	784	16	16	teletransporter_2	0	1	64	from_b1_se
+2	1	1064	24	16	16	teletransporter	_none	_none	1	64	from_b1_ne
+2	1	1040	784	16	16	teletransporter_2	_none	_none	1	64	from_b1_se
 19	1	1064	24	stairs_3	1	0
 19	1	1040	784	stairs_4	1	0
-1	1	1016	269	from_outside_hole	2	0
-2	1	1032	256	16	16	teletransporter_3	0	1	9	from_dungeon_5_hole
+1	1	1016	269	from_outside_hole	2	_none
+2	1	1032	256	16	16	teletransporter_3	_none	_none	1	9	from_dungeon_5_hole
 18	1	952	208	n_door	1	0	-1
 18	1	952	160	n_door_2	3	0	-1
 8	1	296	573	guard_1	2	1	npc/black_knight_soldier	map
 13	1	208	661	144	64	guard_2_sensor_2	0
 8	1	296	685	guard_2	2	1	npc/black_knight_soldier	map
-1	1	648	253	prison	3	0
+1	1	648	253	prison	3	_none
 8	1	328	325	prison_1_lock	3	0	entities/castle_lock	map
 8	1	648	325	prison_2_lock	1	0	entities/castle_lock	map
 8	1	288	821	guard_3	2	1	npc/black_knight_soldier	map

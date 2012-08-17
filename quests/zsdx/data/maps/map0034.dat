@@ -53,10 +53,10 @@
 8	0	88	165	torch_2	-1	0	entities/torch	item#lamp
 8	0	232	165	torch_3	-1	0	entities/torch	item#lamp
 8	0	232	85	torch_4	-1	0	entities/torch	item#lamp
-1	0	160	213	from_outside	1	0
-2	0	152	224	16	16	to_outside	0	1	3	out_bomb_cave
-1	0	160	149	from_2F	3	0
-2	0	152	136	16	16	to_2F	0	1	35	from_1F
+1	0	160	213	from_outside	1	_none
+2	0	152	224	16	16	to_outside	_none	_none	1	3	out_bomb_cave
+1	0	160	149	from_2F	3	_none
+2	0	152	136	16	16	to_2F	_none	_none	1	35	from_1F
 19	0	152	136	stairs_1	1	0
 18	0	144	136	door	1	0	-1
 13	0	160	165	16	16	close_door_sensor	0

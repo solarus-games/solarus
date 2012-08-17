@@ -88,10 +88,10 @@
 0	1	112	208	128	8	208
 0	1	240	176	8	32	211
 0	1	112	216	128	24	212
-2	1	152	0	16	16	teletransporter	0	1	5	from_lake_shop_n
-2	1	152	304	16	16	teletransporter_2	0	1	5	from_lake_shop_s
-1	1	160	293	from_outside_s	1	0
-1	1	160	37	from_outside_n	3	0
+2	1	152	0	16	16	teletransporter	_none	_none	1	5	from_lake_shop_n
+2	1	152	304	16	16	teletransporter_2	_none	_none	1	5	from_lake_shop_s
+1	1	160	293	from_outside_s	1	_none
+1	1	160	37	from_outside_n	3	_none
 10	1	136	16	48	24	door_closed	49	1
 18	1	152	24	door	1	5	158
 8	1	160	205	npc	3	1	npc/static_villager6	dialog#lake_shop.seller

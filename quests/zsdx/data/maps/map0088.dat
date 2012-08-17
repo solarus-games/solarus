@@ -489,8 +489,8 @@
 10	1	816	672	24	32	weak_wall_b_closed	51	1
 10	1	776	672	24	32	weak_wall_b_closed_2	50	1
 10	1	1032	448	32	24	weak_wall_a_closed_2	52	1
-1	1	1072	37	from_1f_ne	3	0
-1	1	1048	797	from_1f_se	3	0
+1	1	1072	37	from_1f_ne	3	_none
+1	1	1048	797	from_1f_se	3	_none
 12	1	600	608	32	8	custom_obstacle_5	1	1	1	1
 12	1	600	632	32	8	custom_obstacle_2	1	1	1	1
 12	1	344	608	32	8	custom_obstacle_3	1	1	1	1
@@ -500,12 +500,12 @@
 4	1	320	245	0	_random	1	-1
 4	1	336	245	0	_random	1	-1
 4	1	352	245	0	_random	1	-1
-2	1	1064	24	16	16	teletransporter_4	0	1	89	from_b1_ne
-2	1	1040	784	16	16	teletransporter_2	0	1	89	from_b1_se
+2	1	1064	24	16	16	teletransporter_4	_none	_none	1	89	from_b1_ne
+2	1	1040	784	16	16	teletransporter_2	_none	_none	1	89	from_b1_se
 19	1	1064	24	stairs_3	1	0
 19	1	1040	784	stairs_4	1	0
-1	1	1016	269	from_outside_hole	2	0
-2	1	1032	256	16	16	teletransporter_3	0	1	9	from_dungeon_5_hole
+1	1	1016	269	from_outside_hole	2	_none
+2	1	1032	256	16	16	teletransporter_3	_none	_none	1	9	from_dungeon_5_hole
 5	1	960	688	chest	0	rupee	5	910
 4	1	944	245	0	_random	1	-1
 4	1	992	245	0	_random	1	-1

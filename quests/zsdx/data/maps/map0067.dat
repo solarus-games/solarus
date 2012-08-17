@@ -476,7 +476,7 @@
 17	0	392	381	4
 18	0	416	248	door_5	1	2	151
 18	0	464	312	door_6	1	2	152
-2	0	576	264	16	16	teletransporter	0	2	66	_side
+2	0	576	264	16	16	teletransporter	_none	_none	2	66	_side
 8	0	472	93	torch	3	0	entities/torch	item#lamp
 17	0	472	157	4
 8	0	232	317	torch_2	3	0	entities/torch	item#lamp

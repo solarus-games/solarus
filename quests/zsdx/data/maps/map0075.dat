@@ -36,8 +36,8 @@
 5	0	168	144	chest_11	0	_none	1	-1
 5	0	200	144	chest_12	0	_none	1	-1
 8	0	160	109	mini_game_npc	3	1	npc/static_villager7	map
-1	0	160	189	from_outside	1	0
-2	0	152	208	16	16	teletransporter	0	1	4	from_chest_game_cave
+1	0	160	189	from_outside	1	_none
+2	0	152	208	16	16	teletransporter	_none	_none	1	4	from_chest_game_cave
 0	1	120	192	96	8	414
 0	1	56	16	24	24	45
 0	1	80	16	160	24	49

@@ -1145,32 +1145,32 @@
 0	1	272	592	8	8	69
 12	1	704	112	32	32	custom_obstacle_6	0	1	1	1
 13	1	712	125	32	32	weak_floor_sensor	0
-2	1	704	112	32	32	weak_floor_teletransporter	0	1	41	_same
-1	1	96	37	from_2F_nw	3	0
-1	1	160	37	from_4F_nw	3	0
-1	1	384	37	from_2F_n	3	0
-1	1	448	37	from_4F_n	3	0
-1	1	928	61	from_2F_ne	3	0
-1	1	848	501	from_4F_e	3	0
-2	1	88	24	16	16	teletransporter	0	1	41	from_3F_nw
-2	1	376	24	16	16	teletransporter_2	0	1	41	from_3F_n
-2	1	920	48	16	16	teletransporter_3	0	1	41	from_3F_ne
+2	1	704	112	32	32	weak_floor_teletransporter	_none	_none	1	41	_same
+1	1	96	37	from_2F_nw	3	_none
+1	1	160	37	from_4F_nw	3	_none
+1	1	384	37	from_2F_n	3	_none
+1	1	448	37	from_4F_n	3	_none
+1	1	928	61	from_2F_ne	3	_none
+1	1	848	501	from_4F_e	3	_none
+2	1	88	24	16	16	teletransporter	_none	_none	1	41	from_3F_nw
+2	1	376	24	16	16	teletransporter_2	_none	_none	1	41	from_3F_n
+2	1	920	48	16	16	teletransporter_3	_none	_none	1	41	from_3F_ne
 19	1	88	24	stairs	1	1
 19	1	376	24	stairs_2	1	1
 19	1	920	48	stairs_4	1	1
 5	1	824	808	chest	1	hookshot	1	123
-1	1	96	853	from_2F_sw	3	0
-2	1	88	840	16	16	teletransporter_4	0	1	41	from_3F_sw
+1	1	96	853	from_2F_sw	3	_none
+2	1	88	840	16	16	teletransporter_4	_none	_none	1	41	from_3F_sw
 19	1	88	840	stairs_5	1	1
 12	1	112	184	8	32	custom_obstacle	1	1	1	1
 12	1	136	184	8	32	custom_obstacle_2	1	1	1	1
 6	1	88	104	80	8	jumper	6	40
 6	1	88	208	24	8	jumper_2	2	40
 6	1	144	208	24	8	jumper_3	2	40
-2	1	544	120	16	16	teletransporter_5	0	1	41	from_3F_c
-1	1	552	133	from_2F_c	3	0
+2	1	544	120	16	16	teletransporter_5	_none	_none	1	41	from_3F_c
+1	1	552	133	from_2F_c	3	_none
 19	1	544	120	stairs_3	1	1
-1	1	968	973	from_4F_hole_se	-1	0
+1	1	968	973	from_4F_hole_se	-1	_none
 11	1	768	960	se_door_switch	1	0	0
 4	1	776	973	0	_none	1	-1
 18	1	696	840	se_door_2	0	0	-1
@@ -1183,9 +1183,9 @@
 4	1	296	189	0	_random	1	-1
 4	1	296	205	0	_random	1	-1
 4	1	296	221	0	_random	1	-1
-2	1	440	24	16	16	teletransporter_6	0	1	43	from_3F_nc
-2	1	152	24	16	16	teletransporter_7	0	1	43	from_3F_nw
-2	1	840	488	16	16	teletransporter_8	0	1	43	from_3F_e
+2	1	440	24	16	16	teletransporter_6	_none	_none	1	43	from_3F_nc
+2	1	152	24	16	16	teletransporter_7	_none	_none	1	43	from_3F_nw
+2	1	840	488	16	16	teletransporter_8	_none	_none	1	43	from_3F_e
 19	1	152	24	stairs_7	1	0
 19	1	440	24	stairs_8	1	0
 19	1	840	488	stairs_9	1	0

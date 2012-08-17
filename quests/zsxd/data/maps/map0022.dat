@@ -941,13 +941,13 @@
 0	1	2696	632	16	16	1
 0	1	2696	488	16	16	1
 12	1	2496	472	16	16	custom_obstacle_13	0	1	1	1
-1	1	1376	485	from3F_center	3	0
+1	1	1376	485	from3F_center	3	_none
 12	1	2200	800	176	8	custom_obstacle_11	1	1	1	1
-1	1	768	485	from1Fa	3	0
+1	1	768	485	from1Fa	3	_none
 19	1	64	24	stairs	1	1
-1	1	72	37	from1Fb_left	3	0
+1	1	72	37	from1Fb_left	3	_none
 19	1	760	472	stairs_2	1	1
-2	1	760	472	16	16	to1Fa	0	1	20	from2Fa_left
+2	1	760	472	16	16	to1Fa	_none	_none	1	20	from2Fa_left
 13	1	632	517	16	16	prankster_sensor_top	0
 13	1	632	573	16	16	prankster_sensor_middle	0
 13	1	632	629	16	16	prankster_sensor_bottom	0
@@ -973,7 +973,7 @@
 17	1	1144	525	0
 17	1	1160	525	0
 17	1	1176	525	6
-2	1	64	24	16	16	to1Fb_2	0	1	21	from2Fa_left
+2	1	64	24	16	16	to1Fb_2	_none	_none	1	21	from2Fa_left
 17	1	968	589	2
 17	1	1176	541	4
 17	1	1160	541	4
@@ -1051,10 +1051,10 @@
 15	1	1344	512	64	16	1
 15	1	1392	496	16	16	1
 19	1	1368	472	stairs_3	1	0
-2	1	1368	472	16	16	to3Fb	0	1	24	from2Fa_center
+2	1	1368	472	16	16	to3Fb	_none	_none	1	24	from2Fa_center
 19	1	2280	576	stairs_4	1	1
-1	1	2288	589	from1Fb	3	0
-2	1	2280	576	16	16	to1Fb	0	1	20	from2Fa_right
+1	1	2288	589	from1Fb	3	_none
+2	1	2280	576	16	16	to1Fb	_none	_none	1	20	from2Fa_right
 18	1	2496	472	WW2	1	5	130
 18	1	2496	424	WW2_2	3	5	130
 10	1	2472	424	48	24	WW2_closed_2	52	1
@@ -1071,9 +1071,9 @@
 9	1	2640	605	block_7	-1	entities/block	1	0	0
 9	1	2640	541	block_8	-1	entities/block	1	0	0
 19	1	2960	24	stairs_5	1	1
-1	1	2968	37	from1Fb_right	3	0
-2	1	2960	24	16	16	to1Fb_right	0	1	21	from2Fa_right
-1	1	1568	669	arrival_D	-1	1
+1	1	2968	37	from1Fb_right	3	_none
+2	1	2960	24	16	16	to1Fb_right	_none	_none	1	21	from2Fa_right
+1	1	1568	669	arrival_D	-1	entities/destination
 6	1	1584	640	32	8	jump_sensor_4	2	40
 5	1	1840	688	chest	0	bomb	3	116
 15	1	1776	744	144	16	1
@@ -1091,8 +1091,8 @@
 12	1	2080	656	24	8	custom_obstacle_6	1	1	1	1
 12	1	1760	808	8	8	custom_obstacle_7	1	1	1	1
 12	1	1760	832	8	8	custom_obstacle_8	1	1	1	1
-1	1	1104	797	arrival_C	-1	1
-2	1	2904	112	16	16	departure_C	1	1	22	arrival_C
+1	1	1104	797	arrival_C	-1	entities/destination
+2	1	2904	112	16	16	departure_C		entities/teletransporter	warp	1	22	arrival_C
 6	1	2016	784	64	8	jump_sensor_3	2	24
 8	1	1376	781	GC21front	3	0	_none	map
 8	1	1376	781	GC21front_2	3	0	_none	map

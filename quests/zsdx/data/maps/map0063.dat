@@ -146,7 +146,7 @@
 12	0	520	1104	16	16	custom_obstacle_32	0	1	0	0
 14	0	224	341	crystal
 7	0	512	1085	pike_10	2	pike_detect	0	-1	_random	1	-1
-1	0	512	1117	tmp	2	0
+1	0	512	1117	tmp	2	_none
 7	0	512	1053	pike_9	2	pike_detect	0	-1	_random	1	-1
 12	0	512	1088	8	8	custom_obstacle_33	0	1	0	0
 12	0	512	1056	8	16	custom_obstacle_34	0	1	0	0
@@ -1143,9 +1143,9 @@
 13	1	240	133	80	48	guard_2_sensor_0	0
 13	1	200	197	144	48	guard_3_sensor_2	0
 8	1	448	101	guard_1	2	1	npc/black_knight_soldier	map
-1	1	1032	941	destination_point	-1	1
-1	1	1048	941	destination_point_2	-1	1
-1	1	1064	941	destination_point_3	-1	1
+1	1	1032	941	destination_point	-1	entities/destination
+1	1	1048	941	destination_point_2	-1	entities/destination
+1	1	1064	941	destination_point_3	-1	entities/destination
 5	1	816	296	chest	1	feather	1	504
 9	1	1048	349	weak_floor_block	-1	entities/block	1	0	0
 17	1	1072	237	2
@@ -1235,18 +1235,18 @@
 12	1	208	256	8	32	custom_obstacle_6	1	1	1	1
 12	1	232	256	8	32	custom_obstacle_8	1	1	1	1
 12	1	208	384	8	32	custom_obstacle_9	1	1	1	1
-1	1	128	37	from_1f_w	3	0
-1	1	400	37	from_1f_c	3	0
-1	1	992	37	from_1f_e	3	0
-1	1	1072	117	from_roof	1	0
-1	1	104	957	from_outside_w	1	0
-1	1	1048	957	from_outside_e	1	0
-2	1	1040	968	16	16	teletransporter	0	1	9	from_dungeon_5_2F_e
-2	1	96	968	16	16	teletransporter_2	0	1	9	from_dungeon_5_2F_w
-2	1	1064	104	16	16	teletransporter_3	0	1	9	from_dungeon_5_2F_ne
-2	1	984	24	16	16	teletransporter_4	0	1	64	from_2f_e
-2	1	392	24	16	16	teletransporter_5	0	1	64	from_2f_c
-2	1	120	24	16	16	teletransporter_6	0	1	64	from_2f_w
+1	1	128	37	from_1f_w	3	_none
+1	1	400	37	from_1f_c	3	_none
+1	1	992	37	from_1f_e	3	_none
+1	1	1072	117	from_roof	1	_none
+1	1	104	957	from_outside_w	1	_none
+1	1	1048	957	from_outside_e	1	_none
+2	1	1040	968	16	16	teletransporter	_none	_none	1	9	from_dungeon_5_2F_e
+2	1	96	968	16	16	teletransporter_2	_none	_none	1	9	from_dungeon_5_2F_w
+2	1	1064	104	16	16	teletransporter_3	_none	_none	1	9	from_dungeon_5_2F_ne
+2	1	984	24	16	16	teletransporter_4	_none	_none	1	64	from_2f_e
+2	1	392	24	16	16	teletransporter_5	_none	_none	1	64	from_2f_c
+2	1	120	24	16	16	teletransporter_6	_none	_none	1	64	from_2f_w
 19	1	984	24	stairs_6	1	1
 19	1	392	24	stairs_7	1	1
 19	1	120	24	stairs_8	1	1
@@ -1255,25 +1255,25 @@
 6	1	240	256	24	8	jumper_3	6	40
 6	1	192	408	16	8	jumper_4	2	40
 6	1	240	408	24	8	jumper_5	2	40
-1	1	912	437	destination_point_4	-1	1
-1	1	888	461	destination_point_5	-1	1
-1	1	1032	485	destination_point_6	-1	1
-1	1	1080	461	destination_point_7	-1	1
-1	1	888	581	destination_point_8	-1	1
-1	1	1104	581	destination_point_9	-1	1
-1	1	888	797	destination_point_10	-1	1
+1	1	912	437	destination_point_4	-1	entities/destination
+1	1	888	461	destination_point_5	-1	entities/destination
+1	1	1032	485	destination_point_6	-1	entities/destination
+1	1	1080	461	destination_point_7	-1	entities/destination
+1	1	888	581	destination_point_8	-1	entities/destination
+1	1	1104	581	destination_point_9	-1	entities/destination
+1	1	888	797	destination_point_10	-1	entities/destination
 8	1	648	733	npc	3	0	entities/hint_stone	dialog#dungeon_5.pots_hint
-2	1	928	784	16	16	teletransporter_7	1	1	63	destination_point_4
-2	1	928	736	16	16	teletransporter_8	1	1	63	destination_point_10
+2	1	928	784	16	16	teletransporter_7	entities/teletransporter	warp	1	63	destination_point_4
+2	1	928	736	16	16	teletransporter_8	entities/teletransporter	warp	1	63	destination_point_10
 3	1	1104	749	piece_of_heart	1	506
-2	1	1096	616	16	16	teletransporter_9	1	1	63	destination_point
-2	1	1000	616	16	16	teletransporter_10	1	1	63	destination_point_5
-2	1	928	616	16	16	teletransporter_11	1	1	63	destination_point_6
-2	1	880	496	16	16	teletransporter_12	1	1	63	destination_point_7
-2	1	1096	424	16	16	teletransporter_13	1	1	63	destination_point_8
-2	1	880	424	16	16	teletransporter_14	1	1	63	destination_point_2
-2	1	888	296	16	16	teletransporter_15	1	1	63	destination_point_3
-2	1	904	296	16	16	teletransporter_16	1	1	63	destination_point_9
+2	1	1096	616	16	16	teletransporter_9	entities/teletransporter	warp	1	63	destination_point
+2	1	1000	616	16	16	teletransporter_10	entities/teletransporter	warp	1	63	destination_point_5
+2	1	928	616	16	16	teletransporter_11	entities/teletransporter	warp	1	63	destination_point_6
+2	1	880	496	16	16	teletransporter_12	entities/teletransporter	warp	1	63	destination_point_7
+2	1	1096	424	16	16	teletransporter_13	entities/teletransporter	warp	1	63	destination_point_8
+2	1	880	424	16	16	teletransporter_14	entities/teletransporter	warp	1	63	destination_point_2
+2	1	888	296	16	16	teletransporter_15	entities/teletransporter	warp	1	63	destination_point_3
+2	1	904	296	16	16	teletransporter_16	entities/teletransporter	warp	1	63	destination_point_9
 18	1	416	552	statue_door	1	0	-1
 18	1	416	504	statue_door_2	3	0	-1
 8	1	368	477	torch_1	3	0	entities/torch	item#lamp

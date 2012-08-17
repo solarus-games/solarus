@@ -1587,17 +1587,17 @@
 4	0	56	813	2	_random	1	-1
 4	0	72	813	2	_random	1	-1
 8	0	1000	581	panel1_4	3	0	entities/sign	dialog#outside_fields_NO_goa
-2	0	1024	0	16	1024	teletransporter	0	2	2	_side
-1	0	520	957	humid_house_out	3	0
-1	0	640	773	stupid_guy_house_out	3	0
+2	0	1024	0	16	1024	teletransporter	_none	_none	2	2	_side
+1	0	520	957	humid_house_out	3	_none
+1	0	640	773	stupid_guy_house_out	3	_none
 8	0	944	829	lawn_master	3	1	npc/static_villager13	dialog#outside_fields_NO.lawn_master
-1	0	856	589	pot_house_out	3	0
-1	0	952	117	stupid_cave_out	3	0
-2	0	0	1024	1024	16	teletransporter_2	0	2	3	_side
-2	0	512	928	16	16	teletransporter_3	0	1	10	arrival_point
-2	0	848	560	16	16	teletransporter_4	0	1	6	start_position
-2	0	632	744	16	16	teletransporter_6	0	1	5	start_position
-2	0	944	88	16	16	teletransporter_7	0	1	8	start_position
+1	0	856	589	pot_house_out	3	_none
+1	0	952	117	stupid_cave_out	3	_none
+2	0	0	1024	1024	16	teletransporter_2	_none	_none	2	3	_side
+2	0	512	928	16	16	teletransporter_3	_none	_none	1	10	arrival_point
+2	0	848	560	16	16	teletransporter_4	_none	_none	1	6	start_position
+2	0	632	744	16	16	teletransporter_6	_none	_none	1	5	start_position
+2	0	944	88	16	16	teletransporter_7	_none	_none	1	8	start_position
 3	0	792	861	shield	1	43
 12	0	296	1008	96	16	custom_obstacle	0	0	1	0
 12	0	888	912	16	88	custom_obstacle_2	0	0	1	0
@@ -1664,8 +1664,8 @@
 4	0	528	317	5	_random	1	-1
 4	0	192	317	5	_random	1	-1
 4	0	528	253	5	_random	1	-1
-1	0	968	829	from_shop	3	0
-2	0	960	800	16	16	teletransporter_5	0	1	11	from_outside_NO
+1	0	968	829	from_shop	3	_none
+2	0	960	800	16	16	teletransporter_5	_none	_none	1	11	from_outside_NO
 12	0	488	1008	88	16	custom_obstacle_5	0	0	1	0
 18	0	104	992	door	1	8	51
 18	0	120	976	door_2	1	8	52

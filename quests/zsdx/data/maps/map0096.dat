@@ -88,13 +88,13 @@
 7	0	328	485	evil_19	3	evil_tile	0	-1	_random	1	-1
 10	0	320	392	16	16	evil_after_20	472	1
 7	0	328	405	evil_20	3	evil_tile	0	-1	_random	1	-1
-1	0	216	357	entrance_D_1	3	0
+1	0	216	357	entrance_D_1	3	_none
 18	0	200	344	door1_1	1	0	-1
 13	0	216	373	16	16	sensor1	0
 19	0	512	392	stairs	0	4
 18	0	464	424	door2_2	2	0	-1
 18	0	368	424	door2_1	0	0	-1
-2	0	208	344	16	16	teletransporter_4	0	1	97	entrance_D_1
+2	0	208	344	16	16	teletransporter_4	_none	_none	1	97	entrance_D_1
 19	0	208	344	stairs_2	1	1
 0	1	456	392	8	96	321
 0	1	536	448	416	112	407
@@ -316,13 +316,13 @@
 9	1	872	69	block_47	-1	entities/block	1	0	0
 9	1	904	69	block_48	-1	entities/block	1	0	0
 9	1	888	69	block_49	-1	entities/block	1	0	0
-1	1	176	37	entrance_F_1	3	0
+1	1	176	37	entrance_F_1	3	_none
 10	1	200	336	32	8	door1_1_closed	187	1
 10	1	200	336	32	8	door1_1_open	152	1
 10	1	208	336	16	8	door1_1_open_2	273	1
 6	1	528	368	8	16	jumper	4	40
 6	1	528	416	8	112	jumper_2	4	40
-2	1	168	24	16	16	teletransporter	0	1	99	entrance_F_1
+2	1	168	24	16	16	teletransporter	_none	_none	1	99	entrance_F_1
 19	1	168	24	stairs_4	1	0
 0	2	816	352	8	96	319
 0	2	792	352	8	96	320

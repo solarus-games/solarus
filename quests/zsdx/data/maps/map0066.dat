@@ -89,7 +89,7 @@
 19	0	208	408	stairs_3	2	4
 19	0	160	576	stairs_6	0	4
 19	0	104	512	stairs_5	1	4
-2	0	-16	264	16	16	teletransporter_3	0	2	67	_side
+2	0	-16	264	16	16	teletransporter_3	_none	_none	2	67	_side
 0	1	184	488	192	144	2
 0	1	184	624	192	8	180
 0	1	216	248	160	96	2
@@ -265,8 +265,8 @@
 0	1	280	632	16	16	351
 0	1	272	632	8	16	303
 0	1	296	632	8	16	302
-1	1	288	621	from_outside	1	0
-2	1	280	632	16	16	teletransporter_2	0	1	6	from_beaumont_cave
+1	1	288	621	from_outside	1	_none
+2	1	280	632	16	16	teletransporter_2	_none	_none	1	6	from_beaumont_cave
 12	1	112	200	8	32	custom_obstacle	1	1	1	1
 12	1	136	200	8	32	custom_obstacle_2	1	1	1	1
 12	1	184	280	32	8	custom_obstacle_3	1	1	1	1
@@ -285,9 +285,9 @@
 6	1	144	200	40	8	jumper_4	6	40
 6	1	176	552	8	16	jumper_5	4	40
 19	1	280	632	stairs_7	3	2
-1	1	208	37	from_dungeon_4	3	0
-2	1	200	0	16	16	teletransporter	0	1	60	from_outside
-2	1	248	632	32	16	teletransporter_4	0	0	87	from_boss_room
+1	1	208	37	from_dungeon_4	3	_none
+2	1	200	0	16	16	teletransporter	_none	_none	1	60	from_outside
+2	1	248	632	32	16	teletransporter_4	_none	_none	0	87	from_boss_room
 0	2	240	648	96	8	412
 0	2	160	16	96	8	411
 0	2	16	80	16	16	170

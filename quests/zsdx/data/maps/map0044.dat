@@ -5329,7 +5329,7 @@
 10	1	128	1864	16	16	evil_tile_after_13	3	1
 10	1	112	1864	16	16	evil_tile_after_9	3	1
 12	1	152	2216	16	16	custom_obstacle_74	0	1	0	0
-1	1	160	2229	from_outside	1	0
+1	1	160	2229	from_outside	1	_none
 12	1	328	2128	16	16	custom_obstacle	0	1	0	0
 12	1	584	2128	16	16	custom_obstacle_3	0	1	0	0
 12	1	456	2040	16	16	custom_obstacle_4	0	1	0	0
@@ -5690,7 +5690,7 @@
 12	1	2888	248	16	16	custom_obstacle_377	0	1	0	0
 12	1	2760	112	16	16	custom_obstacle_378	0	1	0	0
 12	1	2888	200	16	16	custom_obstacle_379	0	1	0	0
-2	1	152	2240	16	16	teletransporter	0	1	8	from_west_mountain_cave_1f_w
+2	1	152	2240	16	16	teletransporter	_none	_none	1	8	from_west_mountain_cave_1f_w
 7	1	1680	2128	enemy_2	3	bubble	0	-1	_random	1	-1
 7	1	1376	1917	enemy_4	3	globul	0	-1	_random	1	-1
 7	1	1984	2141	enemy_3	3	tentacle	0	-1	_random	1	-1

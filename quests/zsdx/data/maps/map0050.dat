@@ -152,18 +152,18 @@
 0	0	840	608	16	48	2
 0	0	712	368	192	8	311
 19	0	1088	304	stairs	1	4
-1	0	1200	317	from_B4_B	3	0
+1	0	1200	317	from_B4_B	3	_none
 19	0	1192	304	stairs_3	1	1
-2	0	1192	304	16	16	to_B4_B	0	1	51	from_B4_B
+2	0	1192	304	16	16	to_B4_B	_none	_none	1	51	from_B4_B
 19	0	80	48	stairs_4	1	0
 19	0	800	688	stairs_6	3	4
-1	0	88	61	from_B2_A	3	0
+1	0	88	61	from_B2_A	3	_none
 18	0	552	560	LD14	1	0	-1
 5	0	424	408	KC05	0	small_key	1	715
 5	0	864	384	CMP	0	compass	1	716
 7	0	1112	437	enemy	3	red_bullblin	0	-1	_random	1	-1
 7	0	1080	389	enemy_2	3	red_bullblin	0	-1	_random	1	-1
-2	0	80	48	16	16	to_B2_A	0	1	49	from_B3_A
+2	0	80	48	16	16	to_B2_A	_none	_none	1	49	from_B3_A
 15	0	656	624	32	48	0
 15	0	480	368	16	96	1
 4	0	768	621	0	rupee	1	-1
@@ -639,24 +639,24 @@
 0	1	552	552	32	8	154
 0	1	552	480	32	8	155
 0	1	1192	296	16	8	435
-1	1	1240	1165	AL17	-1	1
-1	1	1240	1117	AL15	-1	1
-1	1	1224	1245	AL6	-1	1
-1	1	1192	1245	AL1	-1	1
-1	1	1144	1229	AL3	-1	1
-1	1	1064	1229	AL18	-1	1
-1	1	1032	1245	AL11	-1	1
-1	1	1016	1181	AL8	-1	1
-1	1	1016	1117	AL13	-1	1
-1	1	1064	1101	AL9	-1	1
-1	1	1080	1149	AL10	-1	1
-1	1	1080	1181	AL4	-1	1
-1	1	1128	1101	AL16	-1	1
-1	1	1176	1117	AL5	-1	1
-1	1	1112	1149	AL2	-1	1
-1	1	1144	1181	AL7	-1	1
-1	1	1192	1149	AL12	-1	1
-1	1	1192	1181	AL14	-1	1
+1	1	1240	1165	AL17	-1	entities/destination
+1	1	1240	1117	AL15	-1	entities/destination
+1	1	1224	1245	AL6	-1	entities/destination
+1	1	1192	1245	AL1	-1	entities/destination
+1	1	1144	1229	AL3	-1	entities/destination
+1	1	1064	1229	AL18	-1	entities/destination
+1	1	1032	1245	AL11	-1	entities/destination
+1	1	1016	1181	AL8	-1	entities/destination
+1	1	1016	1117	AL13	-1	entities/destination
+1	1	1064	1101	AL9	-1	entities/destination
+1	1	1080	1149	AL10	-1	entities/destination
+1	1	1080	1181	AL4	-1	entities/destination
+1	1	1128	1101	AL16	-1	entities/destination
+1	1	1176	1117	AL5	-1	entities/destination
+1	1	1112	1149	AL2	-1	entities/destination
+1	1	1144	1181	AL7	-1	entities/destination
+1	1	1192	1149	AL12	-1	entities/destination
+1	1	1192	1181	AL14	-1	entities/destination
 15	1	1056	880	16	48	1
 15	1	1184	880	16	48	1
 15	1	1088	816	16	48	0
@@ -664,12 +664,12 @@
 6	1	240	296	8	48	jumper	4	16
 12	1	1080	296	8	8	custom_obstacle	1	1	1	1
 12	1	1104	296	8	8	custom_obstacle_2	1	1	1	1
-1	1	1200	805	from_B4_A	3	0
-2	1	1192	792	16	16	to_B4_A	0	1	51	from_B3_A
-2	1	1088	880	32	48	hole_to_B4	0	1	51	from_hole_a
-1	1	1128	1061	from_B2_C	3	0
+1	1	1200	805	from_B4_A	3	_none
+2	1	1192	792	16	16	to_B4_A	_none	_none	1	51	from_B3_A
+2	1	1088	880	32	48	hole_to_B4	_none	_none	1	51	from_hole_a
+1	1	1128	1061	from_B2_C	3	_none
 19	1	1120	1048	stairs_5	1	0
-2	1	1120	1048	16	16	to_B2_C	0	1	49	from_B3_C
+2	1	1120	1048	16	16	to_B2_C	_none	_none	1	49	from_B3_C
 6	1	248	288	24	8	jumper_2	2	16
 6	1	248	344	24	8	jumper_3	6	16
 6	1	520	584	8	128	jumper_4	0	40
@@ -680,24 +680,24 @@
 9	1	712	973	block_60	-1	entities/statue	1	1	0
 9	1	904	973	block_61	-1	entities/statue	1	1	0
 9	1	904	845	STT5	-1	entities/statue	1	1	2
-2	1	1040	1120	16	16	teletransporter	0	0	50	AL1
-2	1	1024	1136	16	16	teletransporter_2	0	0	50	AL2
-2	1	1072	1104	16	16	teletransporter_3	0	0	50	AL3
-2	1	1104	1104	16	16	teletransporter_4	0	0	50	AL4
-2	1	1136	1104	16	16	teletransporter_5	0	0	50	AL5
-2	1	1152	1120	16	16	teletransporter_6	0	0	50	AL6
-2	1	1184	1072	16	16	teletransporter_7	0	0	50	AL7
-2	1	1200	1120	16	16	teletransporter_8	0	0	50	AL8
-2	1	1216	1152	16	16	teletransporter_9	0	0	50	AL9
-2	1	1168	1152	16	16	teletransporter_10	0	0	50	AL10
-2	1	1200	1184	16	16	teletransporter_11	0	0	50	AL11
-2	1	1168	1216	16	16	teletransporter_12	0	0	50	AL12
-2	1	1120	1200	16	16	teletransporter_13	0	0	50	AL13
-2	1	1088	1232	16	16	teletransporter_14	0	0	50	AL14
-2	1	1088	1184	16	16	teletransporter_15	0	0	50	AL15
-2	1	1040	1184	16	16	teletransporter_16	0	0	50	AL16
-2	1	1056	1152	16	16	teletransporter_17	0	0	50	AL17
-2	1	1120	1152	16	16	teletransporter_18	0	0	50	AL18
+2	1	1040	1120	16	16	teletransporter	_none	_none	0	50	AL1
+2	1	1024	1136	16	16	teletransporter_2	_none	_none	0	50	AL2
+2	1	1072	1104	16	16	teletransporter_3	_none	_none	0	50	AL3
+2	1	1104	1104	16	16	teletransporter_4	_none	_none	0	50	AL4
+2	1	1136	1104	16	16	teletransporter_5	_none	_none	0	50	AL5
+2	1	1152	1120	16	16	teletransporter_6	_none	_none	0	50	AL6
+2	1	1184	1072	16	16	teletransporter_7	_none	_none	0	50	AL7
+2	1	1200	1120	16	16	teletransporter_8	_none	_none	0	50	AL8
+2	1	1216	1152	16	16	teletransporter_9	_none	_none	0	50	AL9
+2	1	1168	1152	16	16	teletransporter_10	_none	_none	0	50	AL10
+2	1	1200	1184	16	16	teletransporter_11	_none	_none	0	50	AL11
+2	1	1168	1216	16	16	teletransporter_12	_none	_none	0	50	AL12
+2	1	1120	1200	16	16	teletransporter_13	_none	_none	0	50	AL13
+2	1	1088	1232	16	16	teletransporter_14	_none	_none	0	50	AL14
+2	1	1088	1184	16	16	teletransporter_15	_none	_none	0	50	AL15
+2	1	1040	1184	16	16	teletransporter_16	_none	_none	0	50	AL16
+2	1	1056	1152	16	16	teletransporter_17	_none	_none	0	50	AL17
+2	1	1120	1152	16	16	teletransporter_18	_none	_none	0	50	AL18
 11	1	1456	912	DB3	1	0	0
 4	1	1336	829	0	_random	1	-1
 4	1	1336	845	0	_random	1	-1
@@ -742,11 +742,11 @@
 7	1	1344	1157	enemy_14	3	red_bullblin	0	-1	_random	1	-1
 7	1	1504	1197	enemy_15	3	red_bullblin	0	-1	_random	1	-1
 12	1	1256	1152	64	16	custom_obstacle_10	0	1	0	0
-2	1	1120	880	48	48	hole_to_B4_2	0	1	51	from_hole_b
+2	1	1120	880	48	48	hole_to_B4_2	_none	_none	1	51	from_hole_b
 19	1	1192	792	stairs_2	1	1
 12	1	784	704	16	8	custom_obstacle_22	1	1	1	1
 12	1	816	704	16	8	custom_obstacle_23	1	1	1	1
-1	1	456	685	tmp	3	0
+1	1	456	685	tmp	3	_none
 0	2	1080	1040	96	8	437
 0	2	1296	1112	8	96	441
 0	2	1272	1112	8	96	442

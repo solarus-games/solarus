@@ -503,7 +503,7 @@
 7	1	88	77	enemy_29	3	tentacle	0	-1	_random	1	-1
 12	1	504	712	16	16	custom_obstacle	0	1	0	0
 12	1	24	624	16	16	custom_obstacle_2	0	1	0	0
-2	1	-16	624	16	16	teletransporter_2	0	2	122	_side
+2	1	-16	624	16	16	teletransporter_2	_none	_none	2	122	_side
 12	1	984	624	16	16	custom_obstacle_3	0	1	0	0
 12	1	984	368	16	16	custom_obstacle_4	0	1	0	0
 12	1	888	24	16	16	custom_obstacle_5	0	1	0	0
@@ -512,8 +512,8 @@
 12	1	120	24	16	16	custom_obstacle_8	0	1	0	0
 12	1	24	112	16	16	custom_obstacle_9	0	1	0	0
 13	1	8	637	16	16	sensor	1
-2	1	1008	624	16	16	teletransporter	0	1	128	from_l2
-1	1	992	637	from_d2	2	0
+2	1	1008	624	16	16	teletransporter	_none	_none	1	128	from_l2
+1	1	992	637	from_d2	2	_none
 0	2	1000	328	8	352	353
 0	2	80	16	864	8	356
 0	2	16	72	8	96	352

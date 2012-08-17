@@ -256,27 +256,27 @@
 0	0	120	600	8	24	71
 0	0	64	560	8	16	218
 0	0	64	568	8	8	214
-2	0	72	368	16	16	to_B1_stairs_2	0	1	21	from_1F_stairs_2
-2	0	104	608	16	16	to_outside	0	1	4	out_lyriann_cave
-1	0	72	509	destination_point	-1	1
-1	0	88	509	destination_point_2	-1	1
-1	0	104	509	destination_point_3	-1	1
-1	0	80	477	from_B1_first_stairs	3	0
-2	0	72	464	16	16	to_B1_first_stairs	0	1	21	from_1F_first_stairs
-2	0	96	512	16	16	teletransporter_2	0	1	21	_same
-2	0	96	544	16	16	teletransporter_3	0	1	21	_same
-2	0	64	512	32	48	teletransporter_4	0	1	21	_same
+2	0	72	368	16	16	to_B1_stairs_2	_none	_none	1	21	from_1F_stairs_2
+2	0	104	608	16	16	to_outside	_none	_none	1	4	out_lyriann_cave
+1	0	72	509	destination_point	-1	entities/destination
+1	0	88	509	destination_point_2	-1	entities/destination
+1	0	104	509	destination_point_3	-1	entities/destination
+1	0	80	477	from_B1_first_stairs	3	_none
+2	0	72	464	16	16	to_B1_first_stairs	_none	_none	1	21	from_1F_first_stairs
+2	0	96	512	16	16	teletransporter_2	_none	_none	1	21	_same
+2	0	96	544	16	16	teletransporter_3	_none	_none	1	21	_same
+2	0	64	512	32	48	teletransporter_4	_none	_none	1	21	_same
 14	0	192	509	crystal
-1	0	80	381	from_B1_stairs_2	1	0
+1	0	80	381	from_B1_stairs_2	1	_none
 10	0	136	296	8	16	barrier	71	1
-1	0	248	421	destination_point_4	-1	1
-2	0	128	448	16	16	teletransporter_5	1	1	20	destination_point_3
-2	0	240	488	16	16	teletransporter_6	1	1	20	destination_point
-2	0	264	320	16	16	teletransporter_7	1	1	20	destination_point_4
-2	0	200	432	16	16	teletransporter_8	1	1	20	destination_point_2
+1	0	248	421	destination_point_4	-1	entities/destination
+2	0	128	448	16	16	teletransporter_5	entities/teletransporter	warp	1	20	destination_point_3
+2	0	240	488	16	16	teletransporter_6	entities/teletransporter	warp	1	20	destination_point
+2	0	264	320	16	16	teletransporter_7	entities/teletransporter	warp	1	20	destination_point_4
+2	0	200	432	16	16	teletransporter_8	entities/teletransporter	warp	1	20	destination_point_2
 11	0	88	328	open_barrier_switch	1	0	0
 4	0	96	341	0	_none	1	-1
-1	0	112	269	destination_point_5	-1	1
+1	0	112	269	destination_point_5	-1	entities/destination
 15	0	184	512	16	16	0
 12	0	120	80	32	8	custom_obstacle	1	1	1	1
 15	0	248	208	32	16	1
@@ -287,19 +287,19 @@
 5	0	208	160	chest	0	_none	1	955
 15	0	136	160	16	32	0
 15	0	120	128	32	16	1
-1	0	200	213	destination_point_6	-1	1
-2	0	208	200	16	16	teletransporter_9	1	1	20	destination_point_5
-2	0	88	256	16	16	teletransporter_10	1	1	20	destination_point_6
+1	0	200	213	destination_point_6	-1	entities/destination
+2	0	208	200	16	16	teletransporter_9	entities/teletransporter	warp	1	20	destination_point_5
+2	0	88	256	16	16	teletransporter_10	entities/teletransporter	warp	1	20	destination_point_6
 15	0	208	144	32	16	0
-1	0	168	173	from_B1_middle_stairs	1	0
-2	0	160	160	16	16	to_B1_middle_stairs	0	1	21	from_1F_middle_stairs
+1	0	168	173	from_B1_middle_stairs	1	_none
+2	0	160	160	16	16	to_B1_middle_stairs	_none	_none	1	21	from_1F_middle_stairs
 15	0	208	104	16	32	0
 15	0	248	144	32	16	1
 15	0	64	160	64	16	0
 15	0	64	176	64	16	1
 15	0	192	224	32	16	0
-2	0	288	560	16	16	teletransporter_11	0	1	21	from_1F_hole_2_west
-2	0	304	560	16	16	teletransporter_12	0	1	21	from_1F_hole_2_east
+2	0	288	560	16	16	teletransporter_11	_none	_none	1	21	from_1F_hole_2_west
+2	0	304	560	16	16	teletransporter_12	_none	_none	1	21	from_1F_hole_2_east
 15	0	248	192	32	16	0
 8	0	208	381	tom	3	1	npc/tom	map
 13	0	112	597	16	16	leave_cavern_sensor	0
@@ -331,7 +331,7 @@
 19	0	128	88	stairs_1	1	4
 19	0	72	464	stairs_2	1	1
 19	0	72	368	stairs_3	3	1
-1	0	112	589	from_outside	1	0
+1	0	112	589	from_outside	1	_none
 19	0	160	160	stairs_4	3	3
 0	1	48	384	32	8	414
 0	1	200	592	64	8	180
@@ -386,11 +386,11 @@
 0	1	48	456	32	8	413
 12	1	144	80	8	32	custom_obstacle_3	1	1	1	1
 12	1	120	80	8	32	custom_obstacle_2	1	1	1	1
-1	1	144	37	from_B1_north_stairs	3	0
-2	1	136	24	16	16	to_B1_north_stairs	0	1	21	from_1F_north_stairs
-1	1	240	613	from_B1_final_stairs	1	0
+1	1	144	37	from_B1_north_stairs	3	_none
+2	1	136	24	16	16	to_B1_north_stairs	_none	_none	1	21	from_1F_north_stairs
+1	1	240	613	from_B1_final_stairs	1	_none
 6	1	192	560	8	16	jumper	4	40
-2	1	232	600	16	16	teletransporter	0	1	21	from_1F_final_stairs
+2	1	232	600	16	16	teletransporter	_none	_none	1	21	from_1F_final_stairs
 3	1	232	573	heart_container	1	37
 19	1	232	600	stairs_5	3	1
 19	1	136	24	stairs_6	1	1

@@ -25,9 +25,9 @@
 0	0	112	104	96	32	2
 0	0	112	104	16	32	1
 0	0	192	104	16	32	1
-1	0	160	157	from_outside	1	0
+1	0	160	157	from_outside	1	_none
 8	0	160	93	hint_stone	3	0	entities/hint_stone	map
-2	0	152	168	16	16	to_outside	0	1	3	out_telepathic_house
+2	0	152	168	16	16	to_outside	_none	_none	1	3	out_telepathic_house
 4	0	120	117	0	_random	1	-1
 4	0	120	133	0	_random	1	-1
 4	0	200	133	0	_random	1	-1

@@ -98,7 +98,7 @@
 10	0	240	112	16	16	floor_up_39	537	1
 10	0	288	112	16	16	floor_up_49	537	1
 10	0	64	160	16	16	floor_left_1	537	1
-1	0	240	269	from_6f	1	0
+1	0	240	269	from_6f	1	_none
 8	0	216	157	child_1	3	1	npc/solarus_child1	map
 8	0	320	173	child_2	3	1	npc/solarus_child2	map
 8	0	272	157	child_3	3	1	npc/solarus_child3	map
@@ -107,7 +107,7 @@
 8	0	160	277	child_7	3	1	npc/solarus_child3	map
 8	0	240	221	zelda	3	1	npc/zelda	map
 7	0	240	189	boss	3	ganon	2	881	_none	1	-1
-1	0	240	261	from_boss	1	0
+1	0	240	261	from_boss	1	_none
 8	0	120	125	torch_1	3	0	entities/torch	map
 8	0	360	125	torch_2	3	0	entities/torch	map
 8	0	360	365	torch_3	3	0	entities/torch	map
@@ -338,7 +338,7 @@
 10	0	224	384	32	8	switch_floor_down_5	249	1
 10	0	256	384	8	8	switch_floor_down_6	252	1
 10	0	256	392	8	24	switch_floor_down_7	248	1
-2	0	232	416	16	16	teletransporter	0	1	6	from_dungeon_9
+2	0	232	416	16	16	teletransporter	_none	_none	1	6	from_dungeon_9
 0	1	128	16	224	24	49
 0	1	16	128	24	224	51
 0	1	32	112	16	16	645

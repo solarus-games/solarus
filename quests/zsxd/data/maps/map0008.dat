@@ -49,7 +49,7 @@
 0	0	184	104	16	8	298
 0	0	288	200	8	16	303
 0	0	312	200	8	16	302
-1	0	304	213	start_position	1	0
+1	0	304	213	start_position	1	_none
 5	0	96	176	uselesschest	0	_none	1	-1
 17	0	168	101	2
 17	0	168	85	2
@@ -139,7 +139,7 @@
 15	0	336	80	16	16	0
 15	0	288	160	16	16	1
 15	0	288	96	16	16	0
-2	0	296	224	16	16	teletransporter	0	1	1	stupid_cave_out
+2	0	296	224	16	16	teletransporter	_none	_none	1	1	stupid_cave_out
 0	2	256	216	96	8	412
 0	2	224	64	8	96	415
 0	2	200	64	8	96	416

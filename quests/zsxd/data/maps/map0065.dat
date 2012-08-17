@@ -66,8 +66,8 @@
 10	0	568	760	24	16	stairs_7_enabled_2	294	1
 10	0	568	776	24	8	stairs_7_enabled	293	1
 10	0	568	752	24	8	stairs_7_enabled_3	292	1
-2	0	-16	0	16	1136	teletransporter	0	2	64	_side
-2	0	0	1136	1536	16	teletransporter_2	0	2	67	_side
+2	0	-16	0	16	1136	teletransporter	_none	_none	2	64	_side
+2	0	0	1136	1536	16	teletransporter_2	_none	_none	2	67	_side
 19	0	424	728	stairs_1	1	4
 19	0	496	728	stairs_100	1	4
 19	0	384	760	stairs_2	2	4
@@ -76,8 +76,8 @@
 19	0	496	832	stairs_5	3	4
 19	0	576	800	stairs_6	0	4
 19	0	576	760	stairs_7	0	4
-1	0	560	741	from_1F_c	3	0
-2	0	552	728	16	16	teletransporter_22	0	1	61	from_2F_c
+1	0	560	741	from_1F_c	3	_none
+2	0	552	728	16	16	teletransporter_22	_none	_none	1	61	from_2F_c
 19	0	552	728	stairs_101	1	1
 19	0	704	520	stairs_102	2	4
 0	1	1000	712	208	160	421
@@ -757,8 +757,8 @@
 9	1	88	1077	block_36	-1	entities/statue	1	1	2
 9	1	88	1093	block_37	-1	entities/statue	1	1	2
 18	1	280	712	fight_room_door	0	0	301
-2	1	-16	0	16	1136	teletransporter_3	0	2	64	_side
-2	1	0	1136	1536	16	teletransporter_4	0	2	67	_side
+2	1	-16	0	16	1136	teletransporter_3	_none	_none	2	64	_side
+2	1	0	1136	1536	16	teletransporter_4	_none	_none	2	67	_side
 18	1	456	504	door	0	1	251
 18	1	504	504	door_2	2	1	251
 18	1	456	1048	door_3	0	1	255
@@ -833,40 +833,40 @@
 4	1	360	877	0	_none	3	-1
 4	1	384	709	0	_none	3	-1
 4	1	360	709	0	_none	3	-1
-1	1	280	557	destination_point_a	-1	1
-1	1	160	533	destination_point_c	-1	1
-1	1	88	509	destination_point_b	-1	1
-1	1	304	509	destination_point_d	-1	1
-1	1	400	621	destination_point_e	-1	1
-1	1	400	597	destination_point_b_2	-1	1
-1	1	400	573	destination_point_b_3	-1	1
-1	1	424	525	destination_point_a_2	-1	1
-2	1	416	584	16	16	teletransporter_5	1	1	65	destination_point_a
-2	1	368	584	16	16	teletransporter_6	1	1	65	destination_point_a_2
-2	1	272	496	16	16	teletransporter_7	1	1	65	destination_point_b
-2	1	200	496	16	16	teletransporter_8	1	1	65	destination_point_b_2
-2	1	200	544	16	16	teletransporter_9	1	1	65	destination_point_b_3
-1	1	424	573	destination_point_c_2	-1	1
-2	1	104	496	16	16	teletransporter_10	1	1	65	destination_point_c
-2	1	56	496	16	16	teletransporter_11	1	1	65	destination_point_c_2
-1	1	376	573	destination_point_d_2	-1	1
-1	1	424	549	destination_point_d_3	-1	1
-2	1	152	544	16	16	teletransporter_12	1	1	65	destination_point_d
-2	1	200	520	16	16	teletransporter_13	1	1	65	destination_point_d_2
-2	1	176	496	16	16	teletransporter_14	1	1	65	destination_point_d_3
-1	1	376	549	destination_point_e_2	-1	1
-1	1	400	549	destination_point_e_3	-1	1
-1	1	400	525	destination_point_e_4	-1	1
-1	1	400	501	destination_point_e_5	-1	1
-2	1	296	544	16	16	teletransporter_15	1	1	65	destination_point_e
-2	1	344	584	16	16	teletransporter_16	1	1	65	destination_point_e_2
-2	1	272	520	16	16	teletransporter_17	1	1	65	destination_point_e_3
-2	1	368	512	16	16	teletransporter_18	1	1	65	destination_point_e_4
-2	1	368	488	16	16	teletransporter_19	1	1	65	destination_point_e_5
-1	1	112	533	destination_point_f	-1	1
-2	1	344	608	16	16	teletransporter_20	1	1	65	destination_point_f
-1	1	376	621	destination_point_g	-1	1
-2	1	128	544	16	16	teletransporter_21	1	1	65	destination_point_g
+1	1	280	557	destination_point_a	-1	entities/destination
+1	1	160	533	destination_point_c	-1	entities/destination
+1	1	88	509	destination_point_b	-1	entities/destination
+1	1	304	509	destination_point_d	-1	entities/destination
+1	1	400	621	destination_point_e	-1	entities/destination
+1	1	400	597	destination_point_b_2	-1	entities/destination
+1	1	400	573	destination_point_b_3	-1	entities/destination
+1	1	424	525	destination_point_a_2	-1	entities/destination
+2	1	416	584	16	16	teletransporter_5		entities/teletransporter	warp	1	65	destination_point_a
+2	1	368	584	16	16	teletransporter_6		entities/teletransporter	warp	1	65	destination_point_a_2
+2	1	272	496	16	16	teletransporter_7		entities/teletransporter	warp	1	65	destination_point_b
+2	1	200	496	16	16	teletransporter_8		entities/teletransporter	warp	1	65	destination_point_b_2
+2	1	200	544	16	16	teletransporter_9		entities/teletransporter	warp	1	65	destination_point_b_3
+1	1	424	573	destination_point_c_2	-1	entities/destination
+2	1	104	496	16	16	teletransporter_10		entities/teletransporter	warp	1	65	destination_point_c
+2	1	56	496	16	16	teletransporter_11		entities/teletransporter	warp	1	65	destination_point_c_2
+1	1	376	573	destination_point_d_2	-1	entities/destination
+1	1	424	549	destination_point_d_3	-1	entities/destination
+2	1	152	544	16	16	teletransporter_12		entities/teletransporter	warp	1	65	destination_point_d
+2	1	200	520	16	16	teletransporter_13		entities/teletransporter	warp	1	65	destination_point_d_2
+2	1	176	496	16	16	teletransporter_14		entities/teletransporter	warp	1	65	destination_point_d_3
+1	1	376	549	destination_point_e_2	-1	entities/destination
+1	1	400	549	destination_point_e_3	-1	entities/destination
+1	1	400	525	destination_point_e_4	-1	entities/destination
+1	1	400	501	destination_point_e_5	-1	entities/destination
+2	1	296	544	16	16	teletransporter_15		entities/teletransporter	warp	1	65	destination_point_e
+2	1	344	584	16	16	teletransporter_16		entities/teletransporter	warp	1	65	destination_point_e_2
+2	1	272	520	16	16	teletransporter_17		entities/teletransporter	warp	1	65	destination_point_e_3
+2	1	368	512	16	16	teletransporter_18		entities/teletransporter	warp	1	65	destination_point_e_4
+2	1	368	488	16	16	teletransporter_19		entities/teletransporter	warp	1	65	destination_point_e_5
+1	1	112	533	destination_point_f	-1	entities/destination
+2	1	344	608	16	16	teletransporter_20		entities/teletransporter	warp	1	65	destination_point_f
+1	1	376	621	destination_point_g	-1	entities/destination
+2	1	128	544	16	16	teletransporter_21		entities/teletransporter	warp	1	65	destination_point_g
 7	1	184	744	enemy	3	bubble	0	-1	_random	1	-1
 7	1	184	744	enemy_2	3	bubble	0	-1	_random	1	-1
 7	1	248	656	enemy_3	3	bubble	0	-1	_random	1	-1
@@ -1278,8 +1278,8 @@
 4	1	1008	917	0	arrow	3	-1
 7	1	1088	845	boss	3	ganon	2	306	_none	1	-1
 13	1	1080	917	32	16	start_boss_sensor	0
-1	1	1088	933	from_1f_boss	1	0
-2	1	1080	920	16	16	teletransporter_23	0	1	61	from_2f_boss
+1	1	1088	933	from_1f_boss	1	_none
+2	1	1080	920	16	16	teletransporter_23	_none	_none	1	61	from_2f_boss
 19	1	1080	920	stairs	3	3
 18	1	1072	920	boss_door	3	0	-1
 12	1	1216	848	160	8	custom_obstacle_23	1	1	1	1

@@ -23,8 +23,8 @@
 0	0	168	408	8	16	287
 0	0	152	328	16	24	359
 0	0	152	408	16	16	351
-2	0	152	408	16	16	teletransporter	0	1	2	from_piece_of_heart_cave
-1	0	160	421	from_outside	1	0
+2	0	152	408	16	16	teletransporter	_none	_none	1	2	from_piece_of_heart_cave
+1	0	160	421	from_outside	1	_none
 19	0	152	328	stairs	1	4
 19	0	152	408	stairs_2	3	2
 0	1	48	176	240	144	2

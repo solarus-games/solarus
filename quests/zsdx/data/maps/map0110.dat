@@ -1672,9 +1672,9 @@
 0	1	904	152	8	8	70
 0	1	920	200	8	8	70
 0	1	928	200	8	8	69
-1	1	1448	1765	from_5f	1	0
-1	1	808	141	from_1f	1	0
-2	1	800	144	16	16	teletransporter	1	1	105	from_6f
+1	1	1448	1765	from_5f	1	_none
+1	1	808	141	from_1f	1	_none
+2	1	800	144	16	16	teletransporter	entities/teletransporter	warp	1	105	from_6f
 10	1	800	144	16	16	tile	633	1
 13	1	808	229	16	16	puzzle_end_sensor	0
 13	1	1448	1845	16	16	wrong_sensor_3_1	0
@@ -1698,9 +1698,9 @@
 13	1	1128	741	16	16	wrong_sensor_1_3	0
 13	1	688	653	16	16	wrong_sensor_0_6	0
 13	1	1448	997	16	16	wrong_sensor_1_4	0
-2	1	704	96	32	32	teletransporter_2	0	1	130	from_6f
-2	1	880	96	32	32	teletransporter_3	0	1	130	from_6f
-2	1	704	64	208	32	teletransporter_4	0	1	130	from_6f
+2	1	704	96	32	32	teletransporter_2	_none	_none	1	130	from_6f
+2	1	880	96	32	32	teletransporter_3	_none	_none	1	130	from_6f
+2	1	704	64	208	32	teletransporter_4	_none	_none	1	130	from_6f
 0	2	1936	1624	8	96	627
 0	2	2232	1624	8	96	628
 0	2	2040	1784	96	8	626

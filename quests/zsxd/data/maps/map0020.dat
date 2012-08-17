@@ -778,19 +778,19 @@
 12	1	568	56	8	32	custom_obstacle_9	1	1	1	1
 12	1	608	96	8	32	custom_obstacle_6	1	1	1	1
 12	1	616	128	32	8	custom_obstacle_5	1	1	1	1
-1	1	864	469	start_position	1	0
-2	1	856	480	16	16	exit	0	1	3	from_crazy_house
+1	1	864	469	start_position	1	_none
+2	1	856	480	16	16	exit	_none	_none	1	3	from_crazy_house
 3	1	696	149	heart_container	1	100
 8	1	624	325	mario_message_1	3	0	_none	map
 5	1	408	272	CK3	0	_none	1	122
 5	1	1272	216	CR3	0	rupee	1	109
-1	1	1280	261	TB_destination	-1	1
+1	1	1280	261	TB_destination	-1	entities/destination
 8	1	1200	189	npc_1	3	1	npc/static_villager8	map
 8	1	1200	189	npc_2	3	1	npc/static_villager8	map
 18	1	848	264	DK1	1	1	140
 12	1	1128	352	8	8	custom_obstacle_17	1	1	1	1
 12	1	1128	376	8	8	custom_obstacle_18	1	1	1	1
-1	1	168	37	from2Fa_left	3	0
+1	1	168	37	from2Fa_left	3	_none
 6	1	1488	64	8	64	jump_sensor	4	40
 12	1	1424	144	8	8	custom_obstacle_19	1	1	1	1
 12	1	1448	144	8	8	custom_obstacle_20	1	1	1	1
@@ -798,12 +798,12 @@
 8	1	1688	349	interactive_entity_2	3	1	npc/static_villager4	map
 8	1	1432	341	interactive_entity_4	3	1	npc/static_villager9	dialog#crazy_house.alcoholic_man
 19	1	1832	136	stairs_6	1	0
-1	1	1840	149	from2Fa_right	3	0
-2	1	1832	136	16	16	to2Fa_right	0	1	22	from1Fb
+1	1	1840	149	from2Fa_right	3	_none
+2	1	1832	136	16	16	to2Fa_right	_none	_none	1	22	from1Fb
 18	1	1608	184	weak_wall_A	0	5	105
 18	1	1656	184	weak_wall_A_2	2	5	105
 14	1	1216	189	crystal_switch
-2	1	160	24	16	16	to2Fa_left	0	1	22	from1Fa
+2	1	160	24	16	16	to2Fa_left	_none	_none	1	22	from1Fa
 6	1	1232	224	8	56	jump_sensor_3	4	40
 6	1	1240	280	56	8	jump_sensor_2	6	40
 18	1	848	216	DK1_2	3	1	140

@@ -1540,8 +1540,8 @@
 4	0	328	237	5	_random	1	-1
 4	0	328	253	5	_random	1	-1
 4	0	328	269	5	_random	1	-1
-2	0	0	-16	1120	16	to_C1	0	2	3	_side
-2	0	1120	0	16	976	to_D2	0	2	5	_side
+2	0	0	-16	1120	16	to_C1	_none	_none	2	3	_side
+2	0	1120	0	16	976	to_D2	_none	_none	2	5	_side
 6	0	968	368	8	24	Jump_sensor	0	40
 6	0	944	336	32	32	Jump_sensor_2	1	32
 6	0	448	136	24	24	Jump_sensor_5	7	32
@@ -1595,8 +1595,8 @@
 8	0	-24	109	tom	3	1	npc/tom	map
 13	0	328	221	32	48	tom_appears_sensor	0
 12	0	400	192	8	96	custom_obstacle	0	1	0	0
-2	0	328	136	16	16	to_dungeon_1_1F	0	1	23	from_outside
-1	0	336	165	from_dungeon_1_1F	3	0
+2	0	328	136	16	16	to_dungeon_1_1F	_none	_none	1	23	from_outside
+1	0	336	165	from_dungeon_1_1F	3	_none
 10	0	328	192	16	16	no_ladder_3	177	1
 10	0	328	168	16	16	no_ladder_step1_5	893	1
 10	0	312	168	16	8	no_ladder_step1_2	194	1
@@ -1624,41 +1624,41 @@
 10	0	328	192	16	8	ladder_step3_2	886	1
 10	0	320	184	8	8	ladder_step3_7	894	1
 10	0	344	184	8	8	ladder_step3_8	895	1
-1	0	400	85	from_dungeon_1_2F	3	0
-2	0	392	56	16	16	to_dungeon_1_2F	0	1	25	from_outside
+1	0	400	85	from_dungeon_1_2F	3	_none
+2	0	392	56	16	16	to_dungeon_1_2F	_none	_none	1	25	from_outside
 6	0	368	152	24	8	jumper_5	6	64
 12	0	272	312	16	8	custom_obstacle_2	1	1	1	1
 12	0	368	312	16	8	custom_obstacle_3	1	1	1	1
-2	0	368	320	16	16	to_twin_caves_east	0	1	29	from_outside_east
+2	0	368	320	16	16	to_twin_caves_east	_none	_none	1	29	from_outside_east
 4	0	280	373	3	_random	1	-1
 4	0	264	373	3	_random	1	-1
 4	0	296	373	3	_random	1	-1
-1	0	280	349	from_twin_caves_west	3	0
-1	0	376	349	from_twin_caves_east	3	0
-2	0	272	320	16	16	to_twin_caves_west	0	1	29	from_outside_west
-2	0	152	64	16	16	to_beaumont_cave	0	1	66	from_outside
-1	0	160	93	from_beaumont_cave	3	0
+1	0	280	349	from_twin_caves_west	3	_none
+1	0	376	349	from_twin_caves_east	3	_none
+2	0	272	320	16	16	to_twin_caves_west	_none	_none	1	29	from_outside_west
+2	0	152	64	16	16	to_beaumont_cave	_none	_none	1	66	from_outside
+1	0	160	93	from_beaumont_cave	3	_none
 13	0	160	93	16	16	edelweiss_sensor	0
 7	0	128	221	enemy_5	3	green_knight_soldier	0	-1	_random	0	-1
 7	0	1056	501	enemy_6	3	blue_knight_soldier	0	-1	_random	0	-1
 4	0	1016	317	3	_random	1	-1
-2	0	128	176	16	16	to_beaumont_cave_2	0	0	60	from_outside
-1	0	752	741	from_dungeon_9	3	0
-2	0	744	712	16	16	dungeon_9_teletransporter	1	1	105	from_outside
+2	0	128	176	16	16	to_beaumont_cave_2	_none	_none	0	60	from_outside
+1	0	752	741	from_dungeon_9	3	_none
+2	0	744	712	16	16	dungeon_9_teletransporter	entities/teletransporter	warp	1	105	from_outside
 10	0	744	712	16	16	tile	275	1
 10	0	744	712	16	16	dungeon_9_entrance	1227	1
-1	0	192	717	to_dungeon_9_2f_w	3	0
-1	0	456	693	to_dungeon_9_2f_e	3	0
-2	0	184	704	16	16	teletransporter	0	1	106	from_outside_w
-2	0	448	680	16	16	teletransporter_2	0	1	106	from_outside_e
+1	0	192	717	to_dungeon_9_2f_w	3	_none
+1	0	456	693	to_dungeon_9_2f_e	3	_none
+2	0	184	704	16	16	teletransporter	_none	_none	1	106	from_outside_w
+2	0	448	680	16	16	teletransporter_2	_none	_none	1	106	from_outside_e
 19	0	184	704	stairs	1	3
 19	0	448	680	stairs_2	1	3
-2	0	744	760	16	16	teletransporter_3	0	0	105	from_outside
+2	0	744	760	16	16	teletransporter_3	_none	_none	0	105	from_outside
 5	0	280	608	chest_2	0	rupee	4	22
-1	0	176	949	from_lake_west_cave_s	3	0
-1	0	104	421	from_lake_west_cave_n	3	0
-2	0	168	920	16	16	teletransporter_4	0	1	134	from_outside_s
-2	0	96	408	16	16	teletransporter_5	0	1	134	from_outside_n
+1	0	176	949	from_lake_west_cave_s	3	_none
+1	0	104	421	from_lake_west_cave_n	3	_none
+2	0	168	920	16	16	teletransporter_4	_none	_none	1	134	from_outside_s
+2	0	96	408	16	16	teletransporter_5	_none	_none	1	134	from_outside_n
 19	0	96	408	stairs_3	1	3
 4	0	176	253	5	_random	1	-1
 4	0	160	253	5	_random	1	-1
@@ -1674,8 +1674,8 @@
 4	0	112	285	5	_random	1	-1
 4	0	128	285	5	_random	1	-1
 4	0	144	285	5	_random	1	-1
-2	0	712	744	16	16	teletransporter_6	0	0	130	from_6f
-2	0	776	744	16	16	teletransporter_7	0	0	8	from_ending
+2	0	712	744	16	16	teletransporter_6	_none	_none	0	130	from_6f
+2	0	776	744	16	16	teletransporter_7	_none	_none	0	8	from_ending
 0	2	0	400	48	16	512
 0	2	0	416	48	40	511
 0	2	48	408	8	40	514

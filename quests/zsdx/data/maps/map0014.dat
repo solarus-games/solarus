@@ -122,10 +122,10 @@
 0	0	88	136	8	8	34
 0	0	400	472	8	24	71
 0	0	424	472	8	24	71
-2	0	248	448	16	16	to_B1	0	1	13	from_B2
-1	0	256	461	from_B1	1	0
-1	0	416	461	from_icy_room	1	0
-2	0	408	480	16	16	to_icy_room	0	1	15	from_B2
+2	0	248	448	16	16	to_B1	_none	_none	1	13	from_B2
+1	0	256	461	from_B1	1	_none
+1	0	416	461	from_icy_room	1	_none
+2	0	408	480	16	16	to_icy_room	_none	_none	1	15	from_B2
 19	0	248	448	stairs_1	3	0
 0	1	224	464	64	8	265
 0	1	240	464	32	8	153

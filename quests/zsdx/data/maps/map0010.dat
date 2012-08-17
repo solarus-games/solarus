@@ -662,10 +662,10 @@
 10	0	624	384	32	8	vine_off_6	265	1
 10	0	624	392	32	8	vine_off_7	194	1
 10	0	624	320	32	16	vine_off_2	387	1
-2	0	-16	0	16	624	teletransporter	0	2	8	_side
-2	0	0	624	960	16	to_B2	0	2	7	_side
-2	0	848	360	16	16	to_dungeon_8	0	1	47	from_outside
-1	0	856	389	from_dungeon_8	3	0
+2	0	-16	0	16	624	teletransporter	_none	_none	2	8	_side
+2	0	0	624	960	16	to_B2	_none	_none	2	7	_side
+2	0	848	360	16	16	to_dungeon_8	_none	_none	1	47	from_outside
+1	0	856	389	from_dungeon_8	3	_none
 8	0	264	557	water_for_bottle	-1	0	_none	item#bottle_1
 12	0	848	352	16	8	custom_obstacle	1	1	1	1
 12	0	776	376	16	8	custom_obstacle_2	1	1	1	1
@@ -685,17 +685,17 @@
 12	0	464	32	48	48	custom_obstacle_9	1	1	1	1
 8	0	504	69	riverfall_detector_e	-1	0	_none	item#mystic_mirror
 8	0	472	69	riverfall_detector_w	-1	0	_none	item#mystic_mirror
-1	0	400	557	from_east_mountains_cave_4f	3	0
-2	0	392	528	16	16	teletransporter_2	0	1	114	from_outside
-1	0	496	365	from_east_mountains_cave_5f	3	0
-2	0	488	336	16	16	teletransporter_3	0	1	115	from_outside
-1	0	784	285	from_dungeon_8_cave_2f	3	0
-1	0	784	413	from_dungeon_8_cave_1f	3	0
-2	0	776	256	16	16	teletransporter_4	0	1	117	from_outside
-2	0	776	384	16	16	teletransporter_5	0	1	116	from_outside
-1	0	192	381	from_fairy_fountain	3	0
-2	0	184	352	16	16	teletransporter_11	0	1	93	from_outside
-2	0	832	376	16	16	teletransporter_6	0	0	52	from_1F
+1	0	400	557	from_east_mountains_cave_4f	3	_none
+2	0	392	528	16	16	teletransporter_2	_none	_none	1	114	from_outside
+1	0	496	365	from_east_mountains_cave_5f	3	_none
+2	0	488	336	16	16	teletransporter_3	_none	_none	1	115	from_outside
+1	0	784	285	from_dungeon_8_cave_2f	3	_none
+1	0	784	413	from_dungeon_8_cave_1f	3	_none
+2	0	776	256	16	16	teletransporter_4	_none	_none	1	117	from_outside
+2	0	776	384	16	16	teletransporter_5	_none	_none	1	116	from_outside
+1	0	192	381	from_fairy_fountain	3	_none
+2	0	184	352	16	16	teletransporter_11	_none	_none	1	93	from_outside
+2	0	832	376	16	16	teletransporter_6	_none	_none	0	52	from_1F
 10	1	464	16	48	16	riverfall_7	1081	0
 10	1	464	32	48	16	riverfall_6	1081	0
 10	1	464	48	48	16	riverfall_5	1081	0

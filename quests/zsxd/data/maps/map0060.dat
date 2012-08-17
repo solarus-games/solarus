@@ -322,8 +322,8 @@
 0	0	1112	1032	16	16	83
 0	0	1112	1048	16	8	81
 0	0	1128	1032	16	16	320
-2	0	1536	0	16	1136	teletransporter	0	2	61	_side
-2	0	0	1136	1536	16	teletransporter_2	0	2	62	_side
+2	0	1536	0	16	1136	teletransporter	_none	_none	2	61	_side
+2	0	0	1136	1536	16	teletransporter_2	_none	_none	2	62	_side
 19	0	784	1008	stairs	2	4
 5	0	1368	1008	chest	0	small_key	1	246
 18	0	1056	496	code_door_2	1	0	236
@@ -698,8 +698,8 @@
 0	1	520	744	32	16	337
 0	1	416	504	16	16	276
 0	1	496	504	16	16	276
-2	1	1536	0	16	1136	teletransporter_3	0	2	61	_side
-2	1	0	1136	1536	16	teletransporter_4	0	2	62	_side
+2	1	1536	0	16	1136	teletransporter_3	_none	_none	2	61	_side
+2	1	0	1136	1536	16	teletransporter_4	_none	_none	2	62	_side
 12	1	776	1000	32	8	custom_obstacle	1	1	1	1
 12	1	776	1024	32	8	custom_obstacle_2	1	1	1	1
 6	1	776	968	8	32	jump_sensor	0	40
@@ -730,12 +730,12 @@
 12	1	1368	472	16	16	custom_obstacle_12	0	1	1	1
 12	1	1496	560	16	16	custom_obstacle_13	0	1	1	1
 12	1	1192	784	16	16	custom_obstacle_14	0	1	1	1
-1	1	464	485	from_2F_a	3	0
-1	1	704	933	from_2F_c	3	0
-1	1	1376	485	from_2F_b	3	0
-2	1	456	472	16	16	teletransporter_5	0	1	64	from_1F_a
-2	1	1368	472	16	16	teletransporter_6	0	1	64	from_1F_b
-2	1	696	920	16	16	teletransporter_7	0	1	64	from_1F_c
+1	1	464	485	from_2F_a	3	_none
+1	1	704	933	from_2F_c	3	_none
+1	1	1376	485	from_2F_b	3	_none
+2	1	456	472	16	16	teletransporter_5	_none	_none	1	64	from_1F_a
+2	1	1368	472	16	16	teletransporter_6	_none	_none	1	64	from_1F_b
+2	1	696	920	16	16	teletransporter_7	_none	_none	1	64	from_1F_c
 19	1	456	472	stairs_5	1	0
 19	1	1368	472	stairs_6	1	0
 19	1	696	920	stairs_7	1	0

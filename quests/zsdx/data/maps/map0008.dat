@@ -867,8 +867,8 @@
 0	0	928	152	16	8	614
 0	0	880	160	8	8	613
 0	0	920	160	8	8	443
-2	0	0	624	1120	16	to_B1	0	2	9	_side
-2	0	1120	0	16	624	to_A2	0	2	10	_side
+2	0	0	624	1120	16	to_B1	_none	_none	2	9	_side
+2	0	1120	0	16	624	to_A2	_none	_none	2	10	_side
 6	0	856	360	32	8	jumper	6	56
 6	0	856	232	32	8	jumper_2	6	56
 6	0	872	296	48	8	jumper_3	6	56
@@ -883,35 +883,35 @@
 12	0	872	184	16	8	custom_obstacle_5	1	1	1	1
 12	0	776	232	16	8	custom_obstacle_6	1	1	1	1
 12	0	888	312	16	8	custom_obstacle_7	1	1	1	1
-2	0	392	304	16	16	teletransporter	0	1	44	from_outside
-1	0	416	333	from_west_mountain_cave_1f_w	3	0
-2	0	408	304	16	16	teletransporter_2	0	1	91	from_outside_w
-1	0	584	285	from_west_mountain_cave_1f_e	3	0
-2	0	576	256	16	16	teletransporter_3	0	1	91	from_outside_e
-1	0	512	173	from_west_mountain_cave_2f_w	3	0
-1	0	784	269	from_west_mountain_cave_2f_e	3	0
-2	0	504	144	16	16	teletransporter_4	0	1	92	from_outside_w
-2	0	776	240	16	16	teletransporter_5	0	1	92	from_outside_e
-1	0	592	93	from_west_mountain_cave_3f_w	3	0
-2	0	584	64	16	16	teletransporter_7	0	1	94	from_outside_w
-1	0	880	221	from_west_mountain_cave_3f_e	3	0
-2	0	872	192	16	16	teletransporter_8	0	1	94	from_outside_e
+2	0	392	304	16	16	teletransporter	_none	_none	1	44	from_outside
+1	0	416	333	from_west_mountain_cave_1f_w	3	_none
+2	0	408	304	16	16	teletransporter_2	_none	_none	1	91	from_outside_w
+1	0	584	285	from_west_mountain_cave_1f_e	3	_none
+2	0	576	256	16	16	teletransporter_3	_none	_none	1	91	from_outside_e
+1	0	512	173	from_west_mountain_cave_2f_w	3	_none
+1	0	784	269	from_west_mountain_cave_2f_e	3	_none
+2	0	504	144	16	16	teletransporter_4	_none	_none	1	92	from_outside_w
+2	0	776	240	16	16	teletransporter_5	_none	_none	1	92	from_outside_e
+1	0	592	93	from_west_mountain_cave_3f_w	3	_none
+2	0	584	64	16	16	teletransporter_7	_none	_none	1	94	from_outside_w
+1	0	880	221	from_west_mountain_cave_3f_e	3	_none
+2	0	872	192	16	16	teletransporter_8	_none	_none	1	94	from_outside_e
 7	0	632	549	enemy	3	blue_dogman	0	-1	_random	1	-1
 7	0	672	389	enemy_2	3	red_dogman	0	-1	_random	1	-1
 7	0	1008	253	enemy_3	3	red_dogman	0	-1	_random	1	-1
 7	0	400	165	enemy_4	3	blue_dogman	0	-1	_random	1	-1
 7	0	888	125	enemy_6	3	blue_dogman	0	-1	_random	1	-1
-2	0	424	304	16	16	teletransporter_9	0	1	46	destination_point
+2	0	424	304	16	16	teletransporter_9	_none	_none	1	46	destination_point
 10	0	288	112	32	16	dungeon_7_lock_tile	1079	1
 8	0	304	125	dungeon_7_lock	3	0	_none	map
-1	0	304	141	from_dungeon_7	3	0
-2	0	296	112	16	16	teletransporter_10	0	1	101	from_outside
-1	0	512	245	from_ending	-1	0
-1	0	896	349	from_laser_cave	3	0
-2	0	888	320	16	16	teletransporter_6	0	1	132	from_outside
+1	0	304	141	from_dungeon_7	3	_none
+2	0	296	112	16	16	teletransporter_10	_none	_none	1	101	from_outside
+1	0	512	245	from_ending	-1	_none
+1	0	896	349	from_laser_cave	3	_none
+2	0	888	320	16	16	teletransporter_6	_none	_none	1	132	from_outside
 6	0	888	168	32	8	jumper_8	6	56
-2	0	280	112	16	16	teletransporter_11	0	0	103	tmp
-2	0	312	112	16	16	teletransporter_12	0	0	101	tmp
+2	0	280	112	16	16	teletransporter_11	_none	_none	0	103	tmp
+2	0	312	112	16	16	teletransporter_12	_none	_none	0	101	tmp
 0	2	224	424	8	40	514
 0	2	8	384	48	40	511
 0	2	56	376	8	40	514

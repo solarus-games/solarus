@@ -149,8 +149,8 @@
 12	1	168	392	8	8	custom_obstacle_2	1	1	1	1
 12	1	248	368	16	16	custom_obstacle_3	0	1	0	0
 12	1	56	240	16	16	custom_obstacle_4	0	1	0	0
-2	1	320	112	16	16	teletransporter	0	2	135	_side
-2	1	-16	240	16	16	teletransporter_2	0	2	126	_side
+2	1	320	112	16	16	teletransporter	_none	_none	2	135	_side
+2	1	-16	240	16	16	teletransporter_2	_none	_none	2	126	_side
 12	1	248	112	16	16	custom_obstacle_5	0	1	0	0
 0	2	264	72	8	96	353
 0	2	48	200	8	96	352

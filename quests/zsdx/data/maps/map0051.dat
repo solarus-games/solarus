@@ -126,12 +126,12 @@
 0	1	1032	304	96	16	399
 12	1	1128	744	16	64	custom_obstacle	0	1	0	0
 9	1	1184	349	block	-1	entities/block	1	0	0
-1	1	1200	805	from_B3_A	3	0
+1	1	1200	805	from_B3_A	3	_none
 19	1	1192	792	stairs	1	0
-2	1	1192	792	16	16	to_B3_A	0	1	50	from_B4_A
-1	1	1200	293	from_B4_B	3	0
+2	1	1192	792	16	16	to_B3_A	_none	_none	1	50	from_B4_A
+1	1	1200	293	from_B4_B	3	_none
 19	1	1192	280	stairs_2	1	0
-2	1	1192	280	16	16	to_B3_B	0	1	50	from_B4_B
+2	1	1192	280	16	16	to_B3_B	_none	_none	1	50	from_B4_B
 18	1	1120	536	KD05	1	1	717
 18	1	1120	792	LD06	1	0	-1
 11	1	1080	872	DB04	1	0	1
@@ -159,7 +159,7 @@
 12	1	1128	368	8	16	custom_obstacle_6	0	1	0	0
 12	1	1128	304	8	16	custom_obstacle_7	0	1	0	0
 12	1	1208	416	16	16	custom_obstacle_8	0	1	0	0
-1	1	1168	917	from_hole_b	3	0
+1	1	1168	917	from_hole_b	3	_none
 13	1	1136	805	16	16	dont_close_LD06_sensor	0
 0	2	1088	760	96	8	438
 0	2	1088	784	160	8	437
@@ -181,7 +181,7 @@
 0	2	1184	784	32	8	429
 0	2	1192	784	16	8	433
 10	2	1096	904	16	16	from_hole_tile	524	1
-1	2	1104	917	from_hole_a	-1	0
+1	2	1104	917	from_hole_a	-1	_none
 6	2	1096	920	16	8	jumper	6	16
 6	2	1112	904	8	16	jumper_2	0	16
 6	2	1096	896	16	8	jumper_3	2	16

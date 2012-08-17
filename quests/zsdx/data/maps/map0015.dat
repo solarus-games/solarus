@@ -50,8 +50,8 @@
 0	0	144	16	8	24	71
 0	0	168	16	8	24	71
 5	0	152	232	chest	0	clay_key	1	28
-1	0	160	61	from_B2	3	0
-2	0	152	16	16	16	to_B2	0	1	14	from_icy_room
+1	0	160	61	from_B2	3	_none
+2	0	152	16	16	16	to_B2	_none	_none	1	14	from_icy_room
 8	0	160	109	frozen_door	1	0	entities/frozen_door	map
 8	0	160	205	frozen_door_opposite	3	0	entities/frozen_door	map
 9	0	248	221	block	-1	entities/statue	1	1	2

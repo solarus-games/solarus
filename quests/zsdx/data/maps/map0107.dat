@@ -591,33 +591,33 @@
 17	1	2168	1437	0
 17	1	2152	1421	2
 17	1	2152	1437	0
-1	1	2408	293	from_2f_e	3	0
-1	1	1672	293	from_4f_nw	3	0
-1	1	1864	293	from_4f_ne	3	0
-1	1	1576	1317	from_4f_cw	3	0
-1	1	1784	1317	from_4f_ce	3	0
-1	1	1384	1829	from_4f_sw	3	0
-1	1	1832	1829	from_4f_se	3	0
-2	1	2400	280	16	16	teletransporter	0	1	106	from_3f_e
+1	1	2408	293	from_2f_e	3	_none
+1	1	1672	293	from_4f_nw	3	_none
+1	1	1864	293	from_4f_ne	3	_none
+1	1	1576	1317	from_4f_cw	3	_none
+1	1	1784	1317	from_4f_ce	3	_none
+1	1	1384	1829	from_4f_sw	3	_none
+1	1	1832	1829	from_4f_se	3	_none
+2	1	2400	280	16	16	teletransporter	_none	_none	1	106	from_3f_e
 19	1	2400	280	stairs	1	1
-2	1	1664	280	16	16	teletransporter_2	0	1	108	from_3f_nw
-2	1	1856	280	16	16	teletransporter_3	0	1	108	from_3f_ne
+2	1	1664	280	16	16	teletransporter_2	_none	_none	1	108	from_3f_nw
+2	1	1856	280	16	16	teletransporter_3	_none	_none	1	108	from_3f_ne
 19	1	1664	280	stairs_2	1	0
 19	1	1856	280	stairs_3	1	0
-2	1	1568	1304	16	16	teletransporter_4	0	1	108	from_3f_cw
-2	1	1776	1304	16	16	teletransporter_5	0	1	108	from_3f_ce
+2	1	1568	1304	16	16	teletransporter_4	_none	_none	1	108	from_3f_cw
+2	1	1776	1304	16	16	teletransporter_5	_none	_none	1	108	from_3f_ce
 19	1	1776	1304	stairs_4	1	0
 19	1	1568	1304	stairs_5	1	0
-2	1	1376	1816	16	16	teletransporter_6	0	1	108	from_3f_sw
-2	1	1824	1816	16	16	teletransporter_7	0	1	108	from_3f_se
+2	1	1376	1816	16	16	teletransporter_6	_none	_none	1	108	from_3f_sw
+2	1	1824	1816	16	16	teletransporter_7	_none	_none	1	108	from_3f_se
 19	1	1376	1816	stairs_6	1	0
 19	1	1824	1816	stairs_7	1	0
-1	1	1768	613	from_4f_hole	-1	0
-1	1	1768	157	from_5f	3	0
-2	1	1760	128	16	16	teletransporter_8	1	1	109	from_3f
+1	1	1768	613	from_4f_hole	-1	_none
+1	1	1768	157	from_5f	3	_none
+2	1	1760	128	16	16	teletransporter_8	entities/teletransporter	warp	1	109	from_3f
 10	1	1760	128	16	16	tile	633	1
-1	1	1672	341	from_2f_w	1	0
-2	1	1664	328	16	16	teletransporter_9	0	1	106	from_3f_w
+1	1	1672	341	from_2f_w	1	_none
+2	1	1664	328	16	16	teletransporter_9	_none	_none	1	106	from_3f_w
 19	1	1664	328	stairs_8	3	3
 3	1	1704	421	rupee	2	818
 3	1	1672	421	rupee	2	819
@@ -672,8 +672,8 @@
 7	1	2140	637	door_a_enemy_3	3	gibdo	0	-1	_random	1	-1
 7	1	2028	685	door_a_enemy_4	3	gibdo	0	-1	_random	1	-1
 9	1	2376	637	block_3	3	entities/block	1	0	1
-1	1	2440	1869	se_destination_point	-1	1
-2	1	2400	640	16	16	teletransporter_10	1	1	107	se_destination_point
+1	1	2440	1869	se_destination_point	-1	entities/destination
+2	1	2400	640	16	16	teletransporter_10	entities/teletransporter	warp	1	107	se_destination_point
 4	1	1376	1885	0	_random	1	-1
 4	1	1360	1965	0	_random	1	-1
 4	1	1376	1981	0	_random	1	-1
@@ -715,13 +715,13 @@
 17	1	2152	1709	2
 17	1	2184	1725	2
 17	1	2184	1709	2
-1	1	2200	1757	s_destination_point	-1	1
-2	1	1984	1376	16	16	teletransporter_11	1	1	107	s_destination_point
-2	1	2016	1376	16	16	teletransporter_12	1	1	107	s_destination_point
-2	1	2048	1376	16	16	teletransporter_13	1	1	107	s_destination_point
-2	1	2080	1376	16	16	teletransporter_14	1	1	107	s_destination_point
-2	1	2144	1376	16	16	teletransporter_15	1	1	107	s_destination_point
-2	1	2176	1376	16	16	teletransporter_16	1	1	107	s_destination_point
+1	1	2200	1757	s_destination_point	-1	entities/destination
+2	1	1984	1376	16	16	teletransporter_11	entities/teletransporter	warp	1	107	s_destination_point
+2	1	2016	1376	16	16	teletransporter_12	entities/teletransporter	warp	1	107	s_destination_point
+2	1	2048	1376	16	16	teletransporter_13	entities/teletransporter	warp	1	107	s_destination_point
+2	1	2080	1376	16	16	teletransporter_14	entities/teletransporter	warp	1	107	s_destination_point
+2	1	2144	1376	16	16	teletransporter_15	entities/teletransporter	warp	1	107	s_destination_point
+2	1	2176	1376	16	16	teletransporter_16	entities/teletransporter	warp	1	107	s_destination_point
 9	1	1672	1421	block_4	-1	entities/block	1	0	0
 13	1	1600	1333	16	192	start_miniboss_sensor	0
 7	1	1472	1413	miniboss_1	3	blue_hardhat_beetle	0	-1	_random	1	-1

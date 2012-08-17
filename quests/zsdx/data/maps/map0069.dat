@@ -419,8 +419,8 @@
 6	1	608	320	8	32	water_3_on_jumper	4	40
 6	1	464	80	8	32	water_7_on_jumper	4	40
 6	1	144	80	8	32	water_4_on_jumper	4	40
-1	1	544	37	from_1f	3	0
-2	1	536	24	16	16	teletransporter	0	1	68	from_b1
+1	1	544	37	from_1f	3	_none
+2	1	536	24	16	16	teletransporter	_none	_none	1	68	from_b1
 19	1	536	24	stairs	1	0
 12	1	144	80	8	8	water_4_off_obstacle_1	1	1	1	1
 12	1	144	104	8	8	water_4_off_obstacle_2	1	1	1	1

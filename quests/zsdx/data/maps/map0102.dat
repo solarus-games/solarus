@@ -860,7 +860,7 @@
 0	1	416	336	16	16	101
 0	1	912	728	32	16	526
 11	1	976	1000	door_f_switch	1	0	0
-1	1	344	533	from_3f_2	3	0
+1	1	344	533	from_3f_2	3	_none
 12	1	968	496	8	8	custom_obstacle	1	1	1	1
 12	1	992	496	8	8	custom_obstacle_2	1	1	1	1
 11	1	48	824	code_switch_4	3	0	0
@@ -892,11 +892,11 @@
 6	1	912	416	128	8	jumper_8	2	16
 6	1	904	424	8	24	jumper_9	0	16
 5	1	768	192	chest	1	cane_of_somaria	1	608
-1	1	952	53	from_1f_ne	3	0
-1	1	496	181	from_1f_nc_1	3	0
-1	1	560	181	from_1f_nc_2	3	0
-1	1	608	533	from_1f_c	3	0
-1	1	176	581	from_3f_1	3	0
+1	1	952	53	from_1f_ne	3	_none
+1	1	496	181	from_1f_nc_1	3	_none
+1	1	560	181	from_1f_nc_2	3	_none
+1	1	608	533	from_1f_c	3	_none
+1	1	176	581	from_3f_1	3	_none
 18	1	808	80	miniboss_door	0	0	-1
 18	1	856	80	miniboss_door_2	2	0	-1
 18	1	1024	776	door_f_2	1	0	-1
@@ -909,14 +909,14 @@
 18	1	248	472	door_c	3	0	617
 18	1	136	312	door_b_2	0	1	616
 18	1	184	312	door_b	2	1	616
-1	1	256	885	from_3f_12	3	0
+1	1	256	885	from_3f_12	3	_none
 5	1	448	880	chest_2	0	big_key	1	609
 18	1	464	912	door	1	2	610
 5	1	48	920	chest_3	0	compass	1	611
-2	1	488	168	16	16	teletransporter	0	1	101	from_2f_nc_1
-2	1	552	168	16	16	teletransporter_2	0	1	101	from_2f_nc_2
-2	1	600	520	16	16	teletransporter_3	0	1	101	from_2f_c
-2	1	944	40	16	16	teletransporter_4	0	1	101	from_2f_ne
+2	1	488	168	16	16	teletransporter	_none	_none	1	101	from_2f_nc_1
+2	1	552	168	16	16	teletransporter_2	_none	_none	1	101	from_2f_nc_2
+2	1	600	520	16	16	teletransporter_3	_none	_none	1	101	from_2f_c
+2	1	944	40	16	16	teletransporter_4	_none	_none	1	101	from_2f_ne
 19	1	944	40	stairs_3	1	1
 19	1	552	168	stairs_4	1	1
 19	1	488	168	stairs_5	1	1
@@ -1055,14 +1055,14 @@
 12	1	64	568	16	16	custom_obstacle_26	0	1	1	1
 12	1	64	520	16	16	custom_obstacle_27	0	1	1	1
 5	1	416	288	chest_4	0	rupee	5	613
-1	1	400	277	from_3f_3	3	0
-1	1	520	341	from_3f_4	1	0
-1	1	584	341	from_3f_5	1	0
-1	1	552	389	from_3f_6	3	0
-1	1	816	533	from_3f_8	3	0
-1	1	816	629	from_3f_10	3	0
-1	1	1040	613	from_3f_11	3	0
-2	1	136	680	32	32	teletransporter_5	0	1	101	from_2f_sw_hole
+1	1	400	277	from_3f_3	3	_none
+1	1	520	341	from_3f_4	1	_none
+1	1	584	341	from_3f_5	1	_none
+1	1	552	389	from_3f_6	3	_none
+1	1	816	533	from_3f_8	3	_none
+1	1	816	629	from_3f_10	3	_none
+1	1	1040	613	from_3f_11	3	_none
+2	1	136	680	32	32	teletransporter_5	_none	_none	1	101	from_2f_sw_hole
 8	1	-16	125	nw_hint_stone	0	0	entities/hint_stone	dialog#dungeon_7.2f_weak_floor_hint
 8	1	88	173	torch_1	3	0	entities/torch	item#lamp
 8	1	152	109	torch_2	3	0	entities/torch	item#lamp
@@ -1122,7 +1122,7 @@
 7	1	976	157	miniboss_6	3	lizalfos	0	-1	heart	1	-1
 18	1	936	40	miniboss_door_3	1	0	-1
 13	1	952	69	16	16	start_miniboss_sensor	0
-1	1	56	733	from_3f_hole_f	-1	0
+1	1	56	733	from_3f_hole_f	-1	_none
 7	1	312	141	enemy_5	3	blue_duck_soldier	0	-1	_random	1	-1
 7	1	136	141	enemy_7	3	lizalfos	0	-1	_random	1	-1
 7	1	80	789	enemy_8	3	lizalfos	0	-1	_random	1	-1
@@ -1132,7 +1132,7 @@
 12	1	720	728	16	16	custom_obstacle_4	0	1	1	1
 10	1	40	104	32	32	weak_floor	323	1
 10	1	40	104	8	32	weak_floor_2	237	1
-2	1	40	104	32	32	weak_floor_teletransporter	0	1	101	from_2f_nw_hole
+2	1	40	104	32	32	weak_floor_teletransporter	_none	_none	1	101	from_2f_nw_hole
 13	1	48	117	32	32	weak_floor_sensor	0
 4	1	424	405	0	heart	1	-1
 4	1	376	461	0	heart	1	-1
@@ -1142,16 +1142,16 @@
 9	1	544	69	from_hole_a_block	-1	entities/block	1	0	0
 4	1	424	349	0	arrow	2	-1
 4	1	376	349	0	_random	1	-1
-2	1	168	568	16	16	teletransporter_6	0	1	103	from_2f_1
-2	1	336	520	16	16	teletransporter_7	0	1	103	from_2f_2
-2	1	392	264	16	16	teletransporter_8	0	1	103	from_2f_3
-2	1	544	376	16	16	teletransporter_9	0	1	103	from_2f_6
-2	1	512	328	16	16	teletransporter_10	0	1	103	from_2f_4
-2	1	576	328	16	16	teletransporter_11	0	1	103	from_2f_5
-2	1	808	520	16	16	teletransporter_12	0	1	103	from_2f_8
-2	1	808	616	16	16	teletransporter_13	0	1	103	from_2f_10
-2	1	1032	600	16	16	teletransporter_14	0	1	103	from_2f_11
-2	1	248	872	16	16	teletransporter_15	0	1	103	from_2f_12
+2	1	168	568	16	16	teletransporter_6	_none	_none	1	103	from_2f_1
+2	1	336	520	16	16	teletransporter_7	_none	_none	1	103	from_2f_2
+2	1	392	264	16	16	teletransporter_8	_none	_none	1	103	from_2f_3
+2	1	544	376	16	16	teletransporter_9	_none	_none	1	103	from_2f_6
+2	1	512	328	16	16	teletransporter_10	_none	_none	1	103	from_2f_4
+2	1	576	328	16	16	teletransporter_11	_none	_none	1	103	from_2f_5
+2	1	808	520	16	16	teletransporter_12	_none	_none	1	103	from_2f_8
+2	1	808	616	16	16	teletransporter_13	_none	_none	1	103	from_2f_10
+2	1	1032	600	16	16	teletransporter_14	_none	_none	1	103	from_2f_11
+2	1	248	872	16	16	teletransporter_15	_none	_none	1	103	from_2f_12
 19	1	168	568	stairs_2	1	0
 19	1	336	520	stairs_7	1	0
 19	1	392	264	stairs_8	1	0
@@ -1162,17 +1162,17 @@
 19	1	808	616	stairs_13	1	0
 19	1	1032	600	stairs_14	1	0
 19	1	248	872	stairs_15	1	0
-1	1	136	653	from_3f_hole_e	-1	0
-1	1	152	781	from_3f_hole_g	-1	0
-1	1	80	861	from_3f_hole_i	-1	0
-1	1	232	805	from_3f_hole_h	-1	0
-1	1	152	917	from_3f_hole_j	-1	0
-1	1	72	949	from_3f_hole_k	-1	0
-1	1	104	1005	from_3f_hole_l	-1	0
-1	1	160	989	from_3f_hole_m	-1	0
-1	1	560	69	from_3f_hole_b	-1	0
-1	1	552	93	from_3f_hole_d	-1	0
-1	1	520	93	from_3f_hole_c	-1	0
+1	1	136	653	from_3f_hole_e	-1	_none
+1	1	152	781	from_3f_hole_g	-1	_none
+1	1	80	861	from_3f_hole_i	-1	_none
+1	1	232	805	from_3f_hole_h	-1	_none
+1	1	152	917	from_3f_hole_j	-1	_none
+1	1	72	949	from_3f_hole_k	-1	_none
+1	1	104	1005	from_3f_hole_l	-1	_none
+1	1	160	989	from_3f_hole_m	-1	_none
+1	1	560	69	from_3f_hole_b	-1	_none
+1	1	552	93	from_3f_hole_d	-1	_none
+1	1	520	93	from_3f_hole_c	-1	_none
 13	1	72	517	16	16	close_door_c_sensor	0
 13	1	264	469	16	16	close_door_c_sensor_2	0
 11	1	320	544	shortcut_switch	3	0	0
@@ -1386,7 +1386,7 @@
 10	2	328	512	32	8	boss_door_open	152	1
 10	2	336	512	16	8	boss_door_open_2	271	1
 10	2	328	512	32	8	boss_door_closed	187	1
-1	2	544	69	from_3f_hole_a	-1	0
+1	2	544	69	from_3f_hole_a	-1	_none
 10	2	936	32	32	8	miniboss_door_open	152	1
 10	2	944	32	16	8	miniboss_door_open_2	273	1
 10	2	536	56	16	16	from_hole_a_tile	584	1

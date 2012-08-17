@@ -701,8 +701,8 @@
 0	0	616	496	16	16	42
 0	0	192	520	16	16	43
 0	0	168	472	16	16	42
-2	0	-16	0	16	752	to_B3	0	2	4	_side
-2	0	432	408	16	16	to_binbin_dungeon_2	0	1	17	main_entrance
+2	0	-16	0	16	752	to_B3	_none	_none	2	4	_side
+2	0	432	408	16	16	to_binbin_dungeon_2	_none	_none	1	17	main_entrance
 4	0	408	637	2	_random	1	-1
 4	0	424	637	2	_random	1	-1
 4	0	440	637	2	_random	1	-1
@@ -745,7 +745,7 @@
 4	0	432	589	4	_random	1	-1
 4	0	448	589	4	_random	1	-1
 4	0	464	573	4	_random	1	-1
-1	0	440	605	from_ending	-1	0
+1	0	440	605	from_ending	-1	_none
 12	0	312	336	256	56	custom_obstacle_11	1	1	1	1
 0	1	312	344	8	88	1129
 0	1	560	344	8	88	1125
@@ -1088,15 +1088,15 @@
 0	1	80	200	8	8	1179
 0	1	88	192	8	8	1179
 0	1	552	344	8	88	1130
-1	1	440	437	from_dungeon_10	3	0
+1	1	440	437	from_dungeon_10	3	_none
 13	1	440	221	16	16	start_boss_sensor	0
 10	1	424	168	32	8	roof_entrance_1	1012	1
 10	1	424	176	32	8	roof_entrance_2	1014	1
 10	1	424	184	8	24	roof_entrance_3	1016	1
 10	1	448	184	8	24	roof_entrance_5	1016	1
 10	1	432	184	16	24	roof_entrance_4	1015	1
-1	1	440	205	from_dungeon_10_5f	3	0
-2	1	432	192	16	16	roof_teletransporter	0	1	100	Entrance_H_1
+1	1	440	205	from_dungeon_10_5f	3	_none
+2	1	432	192	16	16	roof_teletransporter	_none	_none	1	100	Entrance_H_1
 19	1	432	192	roof_stairs	1	3
 12	1	360	136	160	8	custom_obstacle	1	0	1	1
 12	1	360	232	160	8	custom_obstacle_2	1	0	1	1

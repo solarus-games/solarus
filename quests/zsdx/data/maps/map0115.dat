@@ -25,8 +25,8 @@
 0	0	168	280	8	24	71
 0	0	176	200	16	16	283
 0	0	128	200	16	16	283
-1	0	160	269	from_outside	1	0
-2	0	152	288	16	16	teletransporter	0	1	10	from_east_mountains_cave_5f
+1	0	160	269	from_outside	1	_none
+2	0	152	288	16	16	teletransporter	_none	_none	1	10	from_east_mountains_cave_5f
 0	1	112	272	96	8	414
 0	1	96	16	24	24	45
 0	1	120	16	80	24	49
@@ -61,8 +61,8 @@
 0	1	128	184	16	16	284
 0	1	176	184	16	16	284
 6	1	120	136	80	8	jumper	6	40
-1	1	160	37	from_4f	3	0
-2	1	152	24	16	16	teletransporter_2	0	1	114	from_5f
+1	1	160	37	from_4f	3	_none
+2	1	152	24	16	16	teletransporter_2	_none	_none	1	114	from_5f
 19	1	152	24	stairs	1	1
 0	2	112	16	96	8	411
 0	2	144	16	32	8	309

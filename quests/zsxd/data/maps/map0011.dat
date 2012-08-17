@@ -136,8 +136,8 @@
 0	1	264	64	16	16	12
 0	1	264	96	16	16	12
 12	1	120	280	16	16	custom_obstacle_2	0	1	1	1
-2	1	120	304	16	16	teletransporter	0	1	1	from_shop
-2	1	504	304	16	16	teletransporter_2	0	1	2	from_shop
+2	1	120	304	16	16	teletransporter	_none	_none	1	1	from_shop
+2	1	504	304	16	16	teletransporter_2	_none	_none	1	2	from_shop
 8	1	272	101	npc	1	1	npc/thief	dialog#shop.near_wizard
 8	1	96	-11	interactive_entity_3	3	1	npc/newlink2	map
 8	1	128	-11	interactive_entity_4	3	1	npc/newlink3	map
@@ -152,8 +152,8 @@
 8	1	384	-11	interactive_entity_16	3	1	npc/static_villager8	map
 8	1	416	-11	interactive_entity_17	3	1	npc/static_villager10	map
 8	1	528	77	interactive_entity_18	3	1	npc/static_villager11	dialog#shop.salesman
-1	1	128	293	from_outside_NO	1	0
-1	1	512	293	from_outside_NE	1	0
+1	1	128	293	from_outside_NO	1	_none
+1	1	512	293	from_outside_NE	1	_none
 16	1	552	120	shop_item	apple_pie	1	-1	42	shop.apple_pie
 16	1	480	120	shop_item_2	rupee_bag	3	49	999	shop.huge_rupee_bag
 16	1	408	120	shop_item_3	heart_container	1	50	10	shop.heart_container

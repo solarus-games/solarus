@@ -356,19 +356,19 @@
 0	0	368	88	8	8	69
 0	0	352	88	16	8	70
 0	0	344	80	8	8	71
-1	0	240	613	from_1F_final_stairs	1	0
-2	0	56	456	16	16	to_1F_first_stairs	0	1	20	from_B1_first_stairs
-2	0	232	600	16	16	to_B1_final_stairs	0	1	20	from_B1_final_stairs
+1	0	240	613	from_1F_final_stairs	1	_none
+2	0	56	456	16	16	to_1F_first_stairs	_none	_none	1	20	from_B1_first_stairs
+2	0	232	600	16	16	to_B1_final_stairs	_none	_none	1	20	from_B1_final_stairs
 15	0	80	544	48	16	1
 4	0	48	597	0	_random	1	-1
 4	0	64	597	0	_random	1	-1
 15	0	80	528	48	16	0
 15	0	80	512	48	16	1
 15	0	128	528	16	16	1
-1	0	64	389	from_1F_stairs_2	1	0
-2	0	56	376	16	16	to_B1_final_stairs_2	0	1	20	from_B1_stairs_2
+1	0	64	389	from_1F_stairs_2	1	_none
+2	0	56	376	16	16	to_B1_final_stairs_2	_none	_none	1	20	from_B1_stairs_2
 15	0	136	552	48	16	1
-1	0	424	589	destination_point	-1	1
+1	0	424	589	destination_point	-1	entities/destination
 15	0	136	568	16	16	1
 4	0	256	469	0	heart	1	-1
 4	0	416	325	0	_none	1	-1
@@ -376,31 +376,31 @@
 5	0	368	168	chest_2	0	rupee	3	40
 4	0	120	597	0	_random	1	-1
 4	0	104	597	0	_random	1	-1
-2	0	416	176	16	16	teletransporter	1	1	21	destination_point
+2	0	416	176	16	16	teletransporter	entities/teletransporter	warp	1	21	destination_point
 11	0	168	240	open_barrier_1_switch	0	0	0
 11	0	168	216	close_barrier_1_switch	0	0	0
 11	0	120	216	close_barrier_2_switch	0	0	0
 10	0	104	216	8	16	barrier_2	71	0
 10	0	104	288	8	16	barrier_1	71	1
 12	0	152	160	32	8	custom_obstacle	1	1	1	1
-1	0	144	37	from_1F_north_stairs	3	0
-2	0	136	24	16	16	to_1F_north_stairs	0	1	20	from_B1_north_stairs
+1	0	144	37	from_1F_north_stairs	3	_none
+2	0	136	24	16	16	to_1F_north_stairs	_none	_none	1	20	from_B1_north_stairs
 14	0	272	149	crystal
 15	0	112	96	32	16	0
 15	0	112	112	32	16	1
-1	0	168	189	from_1F_middle_stairs	3	0
+1	0	168	189	from_1F_middle_stairs	3	_none
 4	0	248	253	0	rupee	2	-1
 4	0	296	253	0	_random	1	-1
 4	0	296	229	0	heart	1	-1
 4	0	248	229	0	_random	1	-1
 4	0	168	445	0	rupee	1	-1
-2	0	160	176	16	16	to_1F_middle_stairs	0	1	20	from_B1_middle_stairs
+2	0	160	176	16	16	to_1F_middle_stairs	_none	_none	1	20	from_B1_middle_stairs
 11	0	144	216	open_barrier_2_switch	0	0	0
-1	0	288	589	from_1F_hole_2_west	-1	0
-1	0	304	589	from_1F_hole_2_east	-1	0
+1	0	288	589	from_1F_hole_2_west	-1	_none
+1	0	304	589	from_1F_hole_2_east	-1	_none
 4	0	88	117	0	heart	1	-1
 9	0	376	197	block	-1	entities/statue	1	1	2
-1	0	64	469	from_1F_first_stairs	3	0
+1	0	64	469	from_1F_first_stairs	3	_none
 15	0	296	64	16	16	1
 15	0	376	80	32	16	1
 15	0	408	96	16	48	1

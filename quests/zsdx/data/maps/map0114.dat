@@ -148,14 +148,14 @@
 0	0	376	360	24	16	273
 0	0	376	352	24	8	271
 0	0	376	376	24	8	272
-1	0	560	61	from_3f	3	0
-1	0	288	429	from_outside	1	0
-2	0	280	448	16	16	teletransporter	0	1	10	from_east_mountains_cave_4f
+1	0	560	61	from_3f	3	_none
+1	0	288	429	from_outside	1	_none
+2	0	280	448	16	16	teletransporter	_none	_none	1	10	from_east_mountains_cave_4f
 19	0	384	360	stairs	0	4
 7	0	292	165	enemy	3	ropa	0	-1	_random	1	-1
 7	0	76	149	enemy_2	3	ropa	0	-1	_random	1	-1
 7	0	148	341	enemy_3	3	ropa	0	-1	_random	1	-1
-2	0	552	48	16	16	teletransporter_2	0	1	113	from_4f
+2	0	552	48	16	16	teletransporter_2	_none	_none	1	113	from_4f
 19	0	552	48	stairs_2	1	1
 0	1	528	40	64	8	413
 0	1	408	328	128	80	2
@@ -264,8 +264,8 @@
 12	1	400	352	8	8	custom_obstacle	1	1	1	1
 12	1	400	376	8	8	custom_obstacle_2	1	1	1	1
 7	1	580	397	enemy_4	3	ropa	0	-1	_random	1	-1
-1	1	568	197	from_5f	3	0
-2	1	560	184	16	16	teletransporter_3	0	1	115	from_4f
+1	1	568	197	from_5f	3	_none
+2	1	560	184	16	16	teletransporter_3	_none	_none	1	115	from_4f
 19	1	560	184	stairs_3	1	0
 0	2	528	176	64	8	411
 0	2	552	176	32	8	309

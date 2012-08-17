@@ -87,7 +87,7 @@
 0	1	208	120	8	8	403
 0	1	216	128	8	8	403
 8	1	160	-11	solarus_child	3	1	npc/solarus_child1	map
-2	1	152	320	16	16	teletransporter	0	2	24	_side
+2	1	152	320	16	16	teletransporter	_none	_none	2	24	_side
 0	2	112	296	96	8	357
 0	2	16	0	288	16	170
 0	2	304	0	16	320	170

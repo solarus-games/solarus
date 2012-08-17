@@ -221,12 +221,12 @@
 4	1	424	269	0	heart	1	-1
 4	1	408	285	0	heart	1	-1
 4	1	424	285	0	heart	1	-1
-1	1	168	189	destination_point	-1	1
-1	1	64	117	from_d7	3	0
-1	1	432	117	from_d8	3	0
-2	1	424	104	16	16	teletransporter	0	1	139	from_l3
+1	1	168	189	destination_point	-1	entities/destination
+1	1	64	117	from_d7	3	_none
+1	1	432	117	from_d8	3	_none
+2	1	424	104	16	16	teletransporter	_none	_none	1	139	from_l3
 19	1	424	104	stairs	1	0
-2	1	56	104	16	16	teletransporter_2	0	1	135	from_l3
+2	1	56	104	16	16	teletransporter_2	_none	_none	1	135	from_l3
 19	1	56	104	stairs_2	1	1
 0	2	32	96	64	8	559
 0	2	416	96	32	8	559

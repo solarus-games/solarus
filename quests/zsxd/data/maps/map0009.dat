@@ -142,8 +142,8 @@
 4	1	136	237	0	_random	1	-1
 4	1	216	221	0	_random	1	-1
 4	1	216	237	0	_random	1	-1
-2	1	168	320	16	16	teletransporter	0	1	4	from_geek_house
-1	1	176	309	start_position	1	0
+2	1	168	320	16	16	teletransporter	_none	_none	1	4	from_geek_house
+1	1	176	309	start_position	1	_none
 0	2	144	312	64	8	263
 0	2	0	112	16	128	170
 0	2	0	0	32	112	170

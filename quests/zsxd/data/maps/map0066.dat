@@ -400,8 +400,8 @@
 0	0	208	0	8	40	71
 0	0	232	0	8	40	71
 0	0	1464	736	8	8	308
-2	0	1536	0	16	912	teletransporter	0	2	67	_side
-2	0	0	-16	1536	16	teletransporter_2	0	2	64	_side
+2	0	1536	0	16	912	teletransporter	_none	_none	2	67	_side
+2	0	0	-16	1536	16	teletransporter_2	_none	_none	2	64	_side
 19	0	1368	528	stairs	1	4
 19	0	1368	720	stairs_3	1	4
 19	0	1440	808	stairs_4	3	4
@@ -1037,8 +1037,8 @@
 10	1	816	160	128	16	water_3	446	1
 10	1	1392	304	96	80	water_2	446	1
 10	1	1264	304	96	80	water	446	1
-2	1	0	-16	1536	16	teletransporter_4	0	2	64	_side
-2	1	1536	0	16	912	teletransporter_3	0	2	67	_side
+2	1	0	-16	1536	16	teletransporter_4	_none	_none	2	64	_side
+2	1	1536	0	16	912	teletransporter_3	_none	_none	2	67	_side
 5	1	864	328	chest	1	bow	2	206
 12	1	1360	520	8	32	custom_obstacle	1	1	1	1
 12	1	1384	520	8	32	custom_obstacle_2	1	1	1	1

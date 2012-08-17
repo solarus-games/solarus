@@ -71,8 +71,8 @@
 0	1	256	56	16	8	179
 0	1	56	56	8	8	185
 0	1	256	56	8	8	186
-1	1	160	213	from_outside	1	0
-2	1	152	224	16	16	to_outside	0	1	10	from_fairy_fountain
+1	1	160	213	from_outside	1	_none
+2	1	152	224	16	16	to_outside	_none	_none	1	10	from_fairy_fountain
 8	1	72	61	torch_1	-1	0	entities/torch	item#lamp
 8	1	72	189	torch_3	-1	0	entities/torch	item#lamp
 8	1	248	61	torch_4	-1	0	entities/torch	item#lamp

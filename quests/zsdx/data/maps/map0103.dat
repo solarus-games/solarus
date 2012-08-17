@@ -124,14 +124,14 @@
 0	0	592	904	8	24	300
 0	0	616	904	8	24	301
 19	0	656	72	stairs_9	2	4
-1	0	552	413	from_2f_6	3	0
-2	0	544	400	16	16	teletransporter_6	0	1	102	from_3f_6
+1	0	552	413	from_2f_6	3	_none
+2	0	544	400	16	16	teletransporter_6	_none	_none	1	102	from_3f_6
 19	0	544	400	stairs_4	1	1
 13	0	392	885	320	16	start_boss_sensor	0
 8	0	544	1077	sahasrahla	3	1	npc/sahasrahla	map
 19	0	472	912	stairs_7	3	4
 19	0	600	912	stairs_13	3	4
-1	0	544	869	tmp	3	0
+1	0	544	869	tmp	3	_none
 0	1	680	304	96	8	307
 0	1	680	376	96	8	306
 0	1	456	40	192	288	323
@@ -958,24 +958,24 @@
 18	1	944	280	ne_door_2	3	0	624
 18	1	944	328	ne_door	1	0	624
 9	1	608	69	block_3	-1	entities/block	1	0	0
-1	1	176	581	from_2f_1	3	0
-1	1	256	885	from_2f_12	3	0
-1	1	400	277	from_2f_3	3	0
-1	1	520	341	from_2f_4	1	0
-1	1	584	341	from_2f_5	1	0
-1	1	816	533	from_2f_8	3	0
-1	1	816	629	from_2f_10	3	0
-1	1	1040	613	from_2f_11	3	0
-1	1	344	533	from_2f_2	3	0
-2	1	168	568	16	16	teletransporter	0	1	102	from_3f_1
-2	1	336	520	16	16	teletransporter_2	0	1	102	from_3f_2
-2	1	392	264	16	16	teletransporter_3	0	1	102	from_3f_3
-2	1	512	328	16	16	teletransporter_4	0	1	102	from_3f_4
-2	1	576	328	16	16	teletransporter_5	0	1	102	from_3f_5
-2	1	808	520	16	16	teletransporter_8	0	1	102	from_3f_8
-2	1	808	616	16	16	teletransporter_10	0	1	102	from_3f_10
-2	1	1032	600	16	16	teletransporter_11	0	1	102	from_3f_11
-2	1	248	872	16	16	teletransporter_12	0	1	102	from_3f_12
+1	1	176	581	from_2f_1	3	_none
+1	1	256	885	from_2f_12	3	_none
+1	1	400	277	from_2f_3	3	_none
+1	1	520	341	from_2f_4	1	_none
+1	1	584	341	from_2f_5	1	_none
+1	1	816	533	from_2f_8	3	_none
+1	1	816	629	from_2f_10	3	_none
+1	1	1040	613	from_2f_11	3	_none
+1	1	344	533	from_2f_2	3	_none
+2	1	168	568	16	16	teletransporter	_none	_none	1	102	from_3f_1
+2	1	336	520	16	16	teletransporter_2	_none	_none	1	102	from_3f_2
+2	1	392	264	16	16	teletransporter_3	_none	_none	1	102	from_3f_3
+2	1	512	328	16	16	teletransporter_4	_none	_none	1	102	from_3f_4
+2	1	576	328	16	16	teletransporter_5	_none	_none	1	102	from_3f_5
+2	1	808	520	16	16	teletransporter_8	_none	_none	1	102	from_3f_8
+2	1	808	616	16	16	teletransporter_10	_none	_none	1	102	from_3f_10
+2	1	1032	600	16	16	teletransporter_11	_none	_none	1	102	from_3f_11
+2	1	248	872	16	16	teletransporter_12	_none	_none	1	102	from_3f_12
 19	1	168	568	stairs	1	1
 19	1	336	520	stairs_2	1	1
 19	1	392	264	stairs_3	1	1
@@ -1018,18 +1018,18 @@
 7	1	96	149	enemy_2	0	pike_auto	0	-1	_random	1	-1
 5	1	456	72	chest_2	0	boss_key	1	622
 9	1	408	117	block_2	-1	entities/block	1	0	0
-2	1	440	104	96	16	teletransporter_9	0	1	102	_same
-2	1	552	40	32	32	teletransporter_13	0	1	102	from_3f_hole_b
-2	1	504	72	32	32	teletransporter_14	0	1	102	from_3f_hole_c
-2	1	536	72	48	32	teletransporter_15	0	1	102	from_3f_hole_d
+2	1	440	104	96	16	teletransporter_9	_none	_none	1	102	_same
+2	1	552	40	32	32	teletransporter_13	_none	_none	1	102	from_3f_hole_b
+2	1	504	72	32	32	teletransporter_14	_none	_none	1	102	from_3f_hole_c
+2	1	536	72	48	32	teletransporter_15	_none	_none	1	102	from_3f_hole_d
 4	1	752	197	0	_random	1	-1
 4	1	704	197	0	_random	1	-1
 4	1	720	197	0	_random	1	-1
 4	1	736	197	0	magic_flask	1	-1
 10	1	536	56	16	16	hole_a	357	1
 10	1	536	56	8	16	tile	248	1
-2	1	536	56	16	16	hole_a_teletransporter	0	1	102	from_3f_hole_a
-2	1	536	40	16	16	hole_a_teletransporter_2	0	1	102	from_3f_hole_a
+2	1	536	56	16	16	hole_a_teletransporter	_none	_none	1	102	from_3f_hole_a
+2	1	536	40	16	16	hole_a_teletransporter_2	_none	_none	1	102	from_3f_hole_a
 9	1	96	229	nw_block	-1	entities/block	1	0	2
 14	1	96	245	crystal_2
 11	1	952	112	ne_switch	1	0	0
@@ -1093,15 +1093,15 @@
 9	1	248	917	block_4	-1	entities/statue	1	1	2
 7	1	72	781	enemy_6	3	lizalfos	0	-1	_random	1	-1
 7	1	280	749	enemy_13	3	lizalfos	0	-1	_random	1	-1
-2	1	128	640	16	16	teletransporter_7	0	1	102	from_3f_hole_e
-2	1	48	720	16	16	teletransporter_16	0	1	102	from_3f_hole_f
-2	1	144	768	16	16	teletransporter_17	0	1	102	from_3f_hole_g
-2	1	224	792	16	16	teletransporter_18	0	1	102	from_3f_hole_h
-2	1	72	848	16	16	teletransporter_19	0	1	102	from_3f_hole_i
-2	1	144	904	16	16	teletransporter_20	0	1	102	from_3f_hole_j
-2	1	64	936	16	16	teletransporter_21	0	1	102	from_3f_hole_k
-2	1	96	992	16	16	teletransporter_22	0	1	102	from_3f_hole_l
-2	1	152	976	16	16	teletransporter_23	0	1	102	from_3f_hole_m
+2	1	128	640	16	16	teletransporter_7	_none	_none	1	102	from_3f_hole_e
+2	1	48	720	16	16	teletransporter_16	_none	_none	1	102	from_3f_hole_f
+2	1	144	768	16	16	teletransporter_17	_none	_none	1	102	from_3f_hole_g
+2	1	224	792	16	16	teletransporter_18	_none	_none	1	102	from_3f_hole_h
+2	1	72	848	16	16	teletransporter_19	_none	_none	1	102	from_3f_hole_i
+2	1	144	904	16	16	teletransporter_20	_none	_none	1	102	from_3f_hole_j
+2	1	64	936	16	16	teletransporter_21	_none	_none	1	102	from_3f_hole_k
+2	1	96	992	16	16	teletransporter_22	_none	_none	1	102	from_3f_hole_l
+2	1	152	976	16	16	teletransporter_23	_none	_none	1	102	from_3f_hole_m
 7	1	928	877	enemy_14	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	1032	749	enemy_15	3	red_hardhat_beetle	0	-1	_random	1	-1
 7	1	1040	1005	enemy_16	3	blue_hardhat_beetle	0	-1	_random	1	-1

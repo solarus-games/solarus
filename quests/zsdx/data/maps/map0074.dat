@@ -111,10 +111,10 @@
 0	0	656	208	8	16	287
 0	0	128	208	16	16	351
 0	0	640	208	16	16	351
-1	0	136	221	from_oustide_w	1	0
-1	0	648	221	from_oustide_e	1	0
-2	0	640	208	16	16	teletransporter	0	1	7	from_cave_under_river_e
-2	0	128	208	16	16	teletransporter_2	0	1	7	from_cave_under_river_w
+1	0	136	221	from_oustide_w	1	_none
+1	0	648	221	from_oustide_e	1	_none
+2	0	640	208	16	16	teletransporter	_none	_none	1	7	from_cave_under_river_e
+2	0	128	208	16	16	teletransporter_2	_none	_none	1	7	from_cave_under_river_w
 19	0	128	208	stairs	3	2
 19	0	640	208	stairs_2	3	2
 0	1	16	16	24	24	45

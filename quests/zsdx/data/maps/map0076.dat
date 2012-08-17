@@ -516,8 +516,8 @@
 0	1	120	184	16	8	70
 0	1	112	184	8	8	69
 14	1	56	61	crystal
-1	1	368	493	from_outside	1	0
-2	1	360	504	16	16	teletransporter	0	1	4	from_lost_woods_cave
+1	1	368	493	from_outside	1	_none
+2	1	360	504	16	16	teletransporter	_none	_none	1	4	from_lost_woods_cave
 15	1	336	96	64	16	1
 5	1	360	48	chest	0	iron_key	1	182
 18	1	120	72	door	1	2	183
@@ -548,36 +548,36 @@
 11	1	648	48	torch_a_switch	1	0	0
 4	1	656	61	0	_none	1	-1
 4	1	560	61	0	_random	1	-1
-1	1	464	229	destination_point	-1	1
-1	1	488	229	destination_point_2	-1	1
-1	1	320	253	destination_point_3	-1	1
-1	1	392	253	destination_point_4	-1	1
-1	1	320	277	destination_point_5	-1	1
-1	1	392	277	destination_point_6	-1	1
-1	1	368	301	destination_point_7	-1	1
-1	1	320	325	destination_point_8	-1	1
-1	1	344	325	destination_point_9	-1	1
-1	1	536	349	destination_point_10	-1	1
-1	1	248	373	destination_point_11	-1	1
-2	1	336	240	16	16	teletransporter_2	1	1	76	destination_point_8
-2	1	456	240	16	16	teletransporter_3	1	1	76	destination_point_9
-2	1	480	240	16	16	teletransporter_4	1	1	76	destination_point_7
-2	1	288	264	16	16	teletransporter_5	1	1	76	destination_point_6
-2	1	336	264	16	16	teletransporter_6	1	1	76	destination_point_11
-2	1	360	264	16	16	teletransporter_7	1	1	76	destination_point_3
-2	1	312	288	16	16	teletransporter_8	1	1	76	destination_point_4
-2	1	336	288	16	16	teletransporter_9	1	1	76	destination_point
-2	1	360	312	16	16	teletransporter_10	1	1	76	destination_point_2
-2	1	504	336	16	16	teletransporter_11	1	1	76	destination_point_5
-2	1	648	456	16	16	teletransporter_12	1	1	76	destination_point_10
+1	1	464	229	destination_point	-1	entities/destination
+1	1	488	229	destination_point_2	-1	entities/destination
+1	1	320	253	destination_point_3	-1	entities/destination
+1	1	392	253	destination_point_4	-1	entities/destination
+1	1	320	277	destination_point_5	-1	entities/destination
+1	1	392	277	destination_point_6	-1	entities/destination
+1	1	368	301	destination_point_7	-1	entities/destination
+1	1	320	325	destination_point_8	-1	entities/destination
+1	1	344	325	destination_point_9	-1	entities/destination
+1	1	536	349	destination_point_10	-1	entities/destination
+1	1	248	373	destination_point_11	-1	entities/destination
+2	1	336	240	16	16	teletransporter_2	entities/teletransporter	warp	1	76	destination_point_8
+2	1	456	240	16	16	teletransporter_3	entities/teletransporter	warp	1	76	destination_point_9
+2	1	480	240	16	16	teletransporter_4	entities/teletransporter	warp	1	76	destination_point_7
+2	1	288	264	16	16	teletransporter_5	entities/teletransporter	warp	1	76	destination_point_6
+2	1	336	264	16	16	teletransporter_6	entities/teletransporter	warp	1	76	destination_point_11
+2	1	360	264	16	16	teletransporter_7	entities/teletransporter	warp	1	76	destination_point_3
+2	1	312	288	16	16	teletransporter_8	entities/teletransporter	warp	1	76	destination_point_4
+2	1	336	288	16	16	teletransporter_9	entities/teletransporter	warp	1	76	destination_point
+2	1	360	312	16	16	teletransporter_10	entities/teletransporter	warp	1	76	destination_point_2
+2	1	504	336	16	16	teletransporter_11	entities/teletransporter	warp	1	76	destination_point_5
+2	1	648	456	16	16	teletransporter_12	entities/teletransporter	warp	1	76	destination_point_10
 13	1	208	277	16	16	close_torch_b_sensor	0
 13	1	160	277	16	16	close_torch_a_sensor	0
 11	1	48	360	torch_b_switch_2	1	0	0
 4	1	56	373	0	_none	1	-1
 11	1	168	120	torch_a_switch_2	1	0	0
 4	1	176	133	0	_none	1	-1
-1	1	368	469	destination_point_12	-1	1
-2	1	192	288	16	16	teletransporter_13	1	1	76	destination_point_12
+1	1	368	469	destination_point_12	-1	entities/destination
+2	1	192	288	16	16	teletransporter_13	entities/teletransporter	warp	1	76	destination_point_12
 0	2	320	496	96	8	412
 0	2	0	0	760	16	170
 0	2	0	16	16	504	170

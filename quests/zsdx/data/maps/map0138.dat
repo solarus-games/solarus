@@ -67,12 +67,12 @@
 0	1	536	112	32	8	543
 0	1	536	96	8	16	544
 0	1	560	96	8	16	545
-1	1	504	157	destination_point	-1	1
+1	1	504	157	destination_point	-1	entities/destination
 7	1	504	120	enemy	3	bubble	0	-1	_random	1	-1
 12	1	504	200	16	16	custom_obstacle	0	1	0	0
-2	1	504	240	16	16	teletransporter	0	2	137	_side
-1	1	512	37	from_d8	3	0
-2	1	504	24	16	16	teletransporter_2	0	1	139	from_d5
+2	1	504	240	16	16	teletransporter	_none	_none	2	137	_side
+1	1	512	37	from_d8	3	_none
+2	1	504	24	16	16	teletransporter_2	_none	_none	1	139	from_d5
 19	1	504	24	stairs	1	0
 0	2	464	0	96	16	170
 0	2	560	0	32	48	170

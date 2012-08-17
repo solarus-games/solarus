@@ -282,10 +282,10 @@
 12	1	408	400	8	8	custom_obstacle_5	1	1	1	1
 12	1	432	400	8	8	custom_obstacle_6	1	1	1	1
 6	1	312	184	8	24	jumper	0	40
-1	1	128	37	from_l3	3	0
-2	1	120	24	16	16	teletransporter	0	1	125	from_d7
+1	1	128	37	from_l3	3	_none
+2	1	120	24	16	16	teletransporter	_none	_none	1	125	from_d7
 19	1	120	24	stairs	1	0
-2	1	-16	112	16	16	teletransporter_2	0	2	123	_side
+2	1	-16	112	16	16	teletransporter_2	_none	_none	2	123	_side
 13	1	80	133	16	16	pipe_out_sensor	0
 13	1	80	149	16	16	pipe_in_sensor	0
 13	1	416	437	16	16	pipe_out_sensor_2	0

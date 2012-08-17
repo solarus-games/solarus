@@ -977,12 +977,12 @@
 18	1	1112	280	boss_key_door	1	4	730
 18	1	344	1656	LD3	2	0	-1
 18	1	296	1656	LD3_2	0	0	-1
-1	1	1128	37	from_boss	3	0
+1	1	1128	37	from_boss	3	_none
 19	1	1120	24	stairs_3	1	1
-2	1	1120	24	16	16	to_boss	0	1	52	from_1F
+2	1	1120	24	16	16	to_boss	_none	_none	1	52	from_1F
 12	1	1256	384	64	16	custom_obstacle_20	0	1	0	1
 18	1	664	384	WW01	2	5	731
-1	1	1128	1781	from_outside	1	0
+1	1	1128	1781	from_outside	1	_none
 18	1	984	1656	KD01	2	1	701
 9	1	1096	1757	block_6	-1	entities/block	1	0	0
 18	1	1752	1560	LD2	1	0	-1
@@ -1032,10 +1032,10 @@
 7	1	136	1701	map_enemy_3	3	bee_guard	0	-1	_random	1	-1
 7	1	200	1701	map_enemy_4	3	bee_guard	0	-1	_random	1	-1
 7	1	200	1661	map_enemy_2	3	bee_guard	0	-1	_random	1	-1
-1	1	1672	805	from_B1_A	3	0
+1	1	1672	805	from_B1_A	3	_none
 19	1	1664	792	stairs_2	1	1
-2	1	1664	792	16	16	to_B1_A	0	1	48	from_1F_A
-2	1	1696	880	144	64	hole_to_B1_A	0	1	48	_same
+2	1	1664	792	16	16	to_B1_A	_none	_none	1	48	from_1F_A
+2	1	1696	880	144	64	hole_to_B1_A	_none	_none	1	48	_same
 7	1	1832	1717	enemy_5	3	tentacle	0	-1	_random	1	-1
 12	1	1760	1560	16	16	custom_obstacle_10	0	1	1	1
 12	1	1576	1416	64	16	custom_obstacle_11	0	1	1	1
@@ -1070,7 +1070,7 @@
 18	1	1576	1656	LD1	0	0	-1
 13	1	288	1661	16	48	DS3	0
 18	1	1752	536	LD5	1	0	-1
-2	1	1120	1792	16	16	to_outside	0	1	10	from_dungeon_8
+2	1	1120	1792	16	16	to_outside	_none	_none	1	10	from_dungeon_8
 4	1	56	1733	0	_random	1	-1
 4	1	56	1621	0	small_key	1	704
 4	1	80	1757	0	_random	1	-1
@@ -1150,11 +1150,11 @@
 18	1	1112	24	agahnim_door	1	0	-1
 7	1	1128	125	boss	3	billy	2	727	heart_container	1	729
 13	1	1080	205	112	16	start_boss_sensor	0
-2	1	1104	1768	16	16	teletransporter	0	0	52	from_1F
+2	1	1104	1768	16	16	teletransporter	_none	_none	0	52	from_1F
 8	1	1128	125	billy_npc	3	1	npc/billy	map
 10	1	1616	688	24	16	LD5_closed	523	1
-1	1	112	637	from_hidden_room	3	0
-2	1	104	624	16	16	teletransporter_2	0	1	53	from_1f
+1	1	112	637	from_hidden_room	3	_none
+2	1	104	624	16	16	teletransporter_2	_none	_none	1	53	from_1f
 19	1	104	624	stairs_4	1	1
 17	1	1400	349	6
 17	1	1400	381	6
@@ -1170,8 +1170,8 @@
 12	1	1856	1040	16	16	LO2_4	1	0	0	0
 12	1	1856	1120	16	16	LO2_5	1	0	0	0
 18	1	1112	232	boss_door	3	0	-1
-1	1	1152	445	tmp	-1	0
-2	1	1136	1768	16	16	teletransporter_3	0	0	50	tmp
+1	1	1152	445	tmp	-1	_none
+2	1	1136	1768	16	16	teletransporter_3	_none	_none	0	50	tmp
 12	1	776	1688	16	8	custom_obstacle_23	1	1	1	1
 6	1	792	1688	72	8	jumper_6	2	16
 0	2	1720	504	96	8	438

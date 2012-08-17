@@ -113,8 +113,8 @@
 8	1	208	173	witch	3	1	npc/witch	map
 16	1	144	104	green_potion	green_potion	1	-1	60	potion_shop.green_potion
 16	1	200	104	blue_potion	blue_potion	1	-1	160	potion_shop.blue_potion
-1	1	160	213	from_outside	1	0
-2	1	152	224	16	16	teletransporter	0	1	7	from_potion_shop
+1	1	160	213	from_outside	1	_none
+2	1	152	224	16	16	teletransporter	_none	_none	1	7	from_potion_shop
 0	2	16	16	32	32	170
 0	2	48	16	16	16	170
 0	2	16	48	16	16	170

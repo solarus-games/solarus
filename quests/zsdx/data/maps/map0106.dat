@@ -923,18 +923,18 @@
 18	1	1744	536	door_g	1	0	-1
 18	1	1744	488	door_g_2	3	0	-1
 12	1	800	1256	16	16	custom_obstacle_17	0	1	0	0
-1	1	1608	293	from_1f	3	0
-1	1	808	1269	from_outside_w	1	0
-1	1	2408	1269	from_outside_e	1	0
-2	1	800	1280	16	16	teletransporter	0	1	6	to_dungeon_9_2f_w
-2	1	2400	1280	16	16	teletransporter_2	0	1	6	to_dungeon_9_2f_e
+1	1	1608	293	from_1f	3	_none
+1	1	808	1269	from_outside_w	1	_none
+1	1	2408	1269	from_outside_e	1	_none
+2	1	800	1280	16	16	teletransporter	_none	_none	1	6	to_dungeon_9_2f_w
+2	1	2400	1280	16	16	teletransporter_2	_none	_none	1	6	to_dungeon_9_2f_e
 10	1	2392	272	32	24	secret_way_closed	49	1
-2	1	1600	280	16	16	teletransporter_3	0	1	105	from_2f
+2	1	1600	280	16	16	teletransporter_3	_none	_none	1	105	from_2f
 19	1	1600	280	stairs	1	1
 10	1	1712	328	8	32	n_barrier	71	1
 12	1	1656	320	32	8	custom_obstacle	1	1	1	1
-1	1	1672	349	from_3f_w	3	0
-2	1	1664	336	16	16	teletransporter_5	0	1	107	from_2f_w
+1	1	1672	349	from_3f_w	3	_none
+2	1	1664	336	16	16	teletransporter_5	_none	_none	1	107	from_2f_w
 19	1	1664	336	stairs_3	1	2
 5	1	1800	320	chest	0	small_key	1	811
 11	1	1696	368	n_barrier_switch	1	0	0
@@ -980,8 +980,8 @@
 11	1	2512	816	door_a_switch	1	0	0
 18	1	2392	792	door_a	1	0	-1
 18	1	2392	744	door_a_2	3	0	-1
-1	1	2408	293	from_3f_e	3	0
-2	1	2400	280	16	16	teletransporter_4	0	1	107	from_2f_e
+1	1	2408	293	from_3f_e	3	_none
+2	1	2400	280	16	16	teletransporter_4	_none	_none	1	107	from_2f_e
 19	1	2400	280	stairs_2	1	0
 4	1	2296	989	0	_none	1	-1
 4	1	2312	989	0	_none	1	-1
@@ -1014,8 +1014,8 @@
 10	1	2384	504	16	16	ne_puzzle_step_4_3	537	1
 10	1	2368	520	16	16	ne_puzzle_step_4_4	537	1
 10	1	2368	536	80	16	ne_puzzle_step_4_5	537	1
-1	1	2408	397	ne_puzzle_destination_point_1	3	0
-1	1	2408	653	ne_puzzle_destination_point_2	1	0
+1	1	2408	397	ne_puzzle_destination_point_1	3	_none
+1	1	2408	653	ne_puzzle_destination_point_2	1	_none
 5	1	2104	384	compass_chest_1	0	_none	1	-1
 5	1	2032	384	compass_chest_2	0	_none	1	-1
 5	1	1984	384	compass_chest_3	0	_none	1	-1
@@ -1112,7 +1112,7 @@
 10	1	1168	1040	16	32	bridge_17	3	1
 10	1	1184	1040	48	16	bridge_18	3	1
 10	1	1216	1056	16	64	bridge_19	3	1
-2	1	784	1256	16	16	teletransporter_6	0	0	110	from_5f
+2	1	784	1256	16	16	teletransporter_6	_none	_none	0	110	from_5f
 13	1	1128	805	16	16	sensor	2
 13	1	992	1173	16	16	sensor_2	2
 13	1	1264	1173	16	16	sensor_3	2

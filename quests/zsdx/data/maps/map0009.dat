@@ -1305,21 +1305,21 @@
 0	0	608	480	8	224	130
 0	0	520	392	16	16	270
 0	0	256	0	80	80	778
-2	0	480	200	16	16	teletransporter_lw	0	1	88	from_outside_hole
+2	0	480	200	16	16	teletransporter_lw	_none	_none	1	88	from_outside_hole
 10	0	280	536	32	24	castle_door	1031	0
-2	0	0	976	1120	16	to_C1	0	2	3	_side
-2	0	1120	0	16	976	to_B2	0	2	7	_side
+2	0	0	976	1120	16	to_C1	_none	_none	2	3	_side
+2	0	1120	0	16	976	to_B2	_none	_none	2	7	_side
 6	0	744	248	48	8	Jump_sensor	6	120
 6	0	584	816	32	8	jumper	2	32
-2	0	0	-16	1120	16	to_A1	0	2	8	_side
+2	0	0	-16	1120	16	to_A1	_none	_none	2	8	_side
 6	0	440	600	8	32	jumper_2	0	48
 6	0	144	600	8	32	jumper_3	4	48
 6	0	192	824	8	32	jumper_4	4	40
 4	0	1000	877	4	_random	1	-1
-1	0	768	365	from_mountain_cave_1F	3	0
-1	0	768	237	from_mountain_cave_2F	3	0
-2	0	760	208	16	16	to_mountain_cave_2F	0	1	39	from_outside
-2	0	760	336	16	16	to_mountain_cave_2F_2	0	1	38	from_outside
+1	0	768	365	from_mountain_cave_1F	3	_none
+1	0	768	237	from_mountain_cave_2F	3	_none
+2	0	760	208	16	16	to_mountain_cave_2F	_none	_none	1	39	from_outside
+2	0	760	336	16	16	to_mountain_cave_2F_2	_none	_none	1	38	from_outside
 12	0	760	328	16	8	custom_obstacle	1	1	1	1
 8	0	648	389	npc	3	0	entities/sign	dialog#outside_world.old_castle_sign
 12	0	192	336	16	8	custom_obstacle_2	1	1	1	1
@@ -1329,14 +1329,14 @@
 4	0	488	245	2	_random	1	-1
 4	0	488	229	2	_random	1	-1
 3	0	216	845	piece_of_heart	1	107
-1	0	296	573	from_dungeon_5_1F	3	0
-2	0	288	544	16	16	teletransporter_dw_2	0	1	64	from_outside
-1	0	200	373	from_dungeon_5_2F_w	3	0
-1	0	392	373	from_dungeon_5_2F_e	3	0
-2	0	192	344	16	16	teletransporter_dw_3	0	1	63	from_outside_w
-2	0	384	344	16	16	teletransporter_dw_4	0	1	63	from_outside_e
-1	0	488	277	from_dungeon_5_hole	3	0
-2	0	480	200	16	16	teletransporter_dw	0	1	65	from_outside_hole
+1	0	296	573	from_dungeon_5_1F	3	_none
+2	0	288	544	16	16	teletransporter_dw_2	_none	_none	1	64	from_outside
+1	0	200	373	from_dungeon_5_2F_w	3	_none
+1	0	392	373	from_dungeon_5_2F_e	3	_none
+2	0	192	344	16	16	teletransporter_dw_3	_none	_none	1	63	from_outside_w
+2	0	384	344	16	16	teletransporter_dw_4	_none	_none	1	63	from_outside_e
+1	0	488	277	from_dungeon_5_hole	3	_none
+2	0	480	200	16	16	teletransporter_dw	_none	_none	1	65	from_outside_hole
 4	0	488	213	2	_none	1	-1
 12	0	256	64	32	16	custom_obstacle_5	1	1	1	1
 12	0	256	680	8	8	custom_obstacle_6	1	1	1	1
@@ -1375,7 +1375,7 @@
 10	0	624	472	8	16	castle_east_bridge_9	969	1
 10	0	552	488	48	8	castle_east_bridge_10	1030	1
 11	0	360	824	castle_door_switch	3	0	0
-2	0	288	544	16	16	teletransporter_lw_2	0	1	89	from_outside
+2	0	288	544	16	16	teletransporter_lw_2	_none	_none	1	89	from_outside
 8	0	296	389	cannon	-1	0	entities/cannon	map
 13	0	392	301	16	16	start_boss_sensor	0
 10	0	376	248	32	8	castle_roof_entrance	1012	1
@@ -1383,9 +1383,9 @@
 10	0	376	264	8	24	castle_roof_entrance_3	1016	1
 10	0	400	264	8	24	castle_roof_entrance_4	1016	1
 10	0	384	264	16	24	castle_roof_entrance_5	1015	1
-1	0	392	285	from_dungeon_5_2F_ne	3	0
-2	0	384	272	16	16	teletransporter_lw_3	0	1	90	from_roof
-2	0	384	272	16	16	teletransporter_dw_roof	0	1	63	from_roof
+1	0	392	285	from_dungeon_5_2F_ne	3	_none
+2	0	384	272	16	16	teletransporter_lw_3	_none	_none	1	90	from_roof
+2	0	384	272	16	16	teletransporter_dw_roof	_none	_none	1	63	from_roof
 19	0	384	272	castle_roof_stairs	1	3
 7	0	296	277	boss	3	agahnim	2	520	heart_container	1	521
 7	0	136	517	enemy	3	blue_knight_soldier	0	-1	_random	1	-1
@@ -1393,10 +1393,10 @@
 7	0	912	453	enemy_3	3	red_knight_soldier	0	-1	_random	1	-1
 12	0	304	64	32	16	custom_obstacle_22	1	1	1	1
 12	0	288	56	16	8	custom_obstacle_23	1	1	1	1
-2	0	288	64	16	16	teletransporter	0	1	133	from_outside
-1	0	296	93	from_castle_waterfall	3	0
-2	0	176	344	16	16	tmp	0	0	63	from_outside_w
-2	0	368	344	16	16	tmp_2	0	0	63	from_outside_e
+2	0	288	64	16	16	teletransporter	_none	_none	1	133	from_outside
+1	0	296	93	from_castle_waterfall	3	_none
+2	0	176	344	16	16	tmp	_none	_none	0	63	from_outside_w
+2	0	368	344	16	16	tmp_2	_none	_none	0	63	from_outside_e
 0	2	1000	328	8	40	514
 0	2	800	328	8	40	513
 0	2	808	320	192	16	512

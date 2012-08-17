@@ -372,9 +372,9 @@
 17	0	224	117	2
 17	0	208	117	7
 17	0	192	133	0
-1	0	176	149	no_top_destination_point	-1	1
-1	0	160	165	no_left_destination_point	-1	1
-1	0	192	165	no_right_destination_point	-1	1
+1	0	176	149	no_top_destination_point	-1	entities/destination
+1	0	160	165	no_left_destination_point	-1	entities/destination
+1	0	192	165	no_right_destination_point	-1	entities/destination
 17	0	192	149	0
 17	0	208	165	0
 17	0	224	165	0
@@ -411,12 +411,12 @@
 17	0	160	149	4
 17	0	128	149	6
 17	0	112	149	3
-1	0	456	205	ne_destination_point	-1	1
-1	0	616	733	from_outside_east	1	0
-2	0	72	152	16	16	teletransporter	1	1	29	ne_destination_point
-2	0	200	168	16	16	teletransporter_2	1	1	29	no_left_destination_point
-2	0	264	200	16	16	teletransporter_3	1	1	29	no_right_destination_point
-2	0	184	752	16	16	to_outside_west	0	1	6	from_twin_caves_west
+1	0	456	205	ne_destination_point	-1	entities/destination
+1	0	616	733	from_outside_east	1	_none
+2	0	72	152	16	16	teletransporter	entities/teletransporter	warp	1	29	ne_destination_point
+2	0	200	168	16	16	teletransporter_2	entities/teletransporter	warp	1	29	no_left_destination_point
+2	0	264	200	16	16	teletransporter_3	entities/teletransporter	warp	1	29	no_right_destination_point
+2	0	184	752	16	16	to_outside_west	_none	_none	1	6	from_twin_caves_west
 9	0	312	389	block	-1	entities/block	1	0	2
 11	0	304	704	door_switch	3	0	0
 4	0	88	717	0	_random	1	-1
@@ -424,31 +424,31 @@
 4	0	72	717	0	_random	1	-1
 12	0	168	656	32	8	custom_obstacle	1	1	1	1
 12	0	248	608	32	8	custom_obstacle_2	1	1	1	1
-1	0	192	733	from_outside_west	1	0
-2	0	608	752	16	16	to_outside_east	0	1	6	from_twin_caves_east
+1	0	192	733	from_outside_west	1	_none
+2	0	608	752	16	16	to_outside_east	_none	_none	1	6	from_twin_caves_east
 9	0	312	373	block_2	-1	entities/block	1	0	0
 5	0	464	336	chest	0	rupee	4	70
-1	0	440	557	destination_point_F	-1	1
-1	0	440	589	destination_point_G	-1	1
-1	0	440	717	destination_point_L	-1	1
-1	0	512	717	destination_point_C	-1	1
-1	0	536	693	destination_point_A	-1	1
-1	0	536	661	destination_point_M	-1	1
-1	0	536	637	destination_point_I	-1	1
+1	0	440	557	destination_point_F	-1	entities/destination
+1	0	440	589	destination_point_G	-1	entities/destination
+1	0	440	717	destination_point_L	-1	entities/destination
+1	0	512	717	destination_point_C	-1	entities/destination
+1	0	536	693	destination_point_A	-1	entities/destination
+1	0	536	661	destination_point_M	-1	entities/destination
+1	0	536	637	destination_point_I	-1	entities/destination
 10	0	688	704	8	16	final_barrier	71	1
-1	0	704	693	destination_point_E	-1	1
-1	0	704	661	destination_point_J	-1	1
-1	0	624	637	destination_point_H	-1	1
+1	0	704	693	destination_point_E	-1	entities/destination
+1	0	704	661	destination_point_J	-1	entities/destination
+1	0	624	637	destination_point_H	-1	entities/destination
 11	0	696	704	final_barrier_switch	1	0	0
-1	0	704	549	destination_point_P	-1	1
-1	0	600	565	destination_point_R	-1	1
-1	0	584	581	destination_point_N	-1	1
-1	0	616	581	destination_point_O	-1	1
-1	0	648	581	destination_point_Q	-1	1
+1	0	704	549	destination_point_P	-1	entities/destination
+1	0	600	565	destination_point_R	-1	entities/destination
+1	0	584	581	destination_point_N	-1	entities/destination
+1	0	616	581	destination_point_O	-1	entities/destination
+1	0	648	581	destination_point_Q	-1	entities/destination
 4	0	656	453	0	arrow	2	-1
-1	0	656	421	destination_point_U	-1	1
-1	0	624	469	destination_point_T	-1	1
-1	0	688	469	destination_point_S	-1	1
+1	0	656	421	destination_point_U	-1	entities/destination
+1	0	624	469	destination_point_T	-1	entities/destination
+1	0	688	469	destination_point_S	-1	entities/destination
 14	0	440	77	crystal
 17	0	472	77	0
 17	0	488	77	0
@@ -467,31 +467,31 @@
 17	0	440	157	6
 17	0	440	173	6
 5	0	688	64	chest_2	0	rock_key	1	68
-2	0	432	672	16	16	teletransporter_A	1	1	29	destination_point_A
-1	0	480	541	destination_point_B	-1	1
-1	0	512	541	destination_point_D	-1	1
-2	0	488	528	16	16	teletransporter_B	1	1	29	destination_point_B
-2	0	488	576	16	16	teletransporter_A_4	1	1	29	destination_point_E
-2	0	472	624	16	16	teletransporter_A_6	1	1	29	destination_point_F
-2	0	504	624	16	16	teletransporter_G	1	1	29	destination_point_G
-2	0	472	704	16	16	teletransporter_A_8	1	1	29	destination_point_H
-2	0	528	664	16	16	teletransporter_J	1	1	29	destination_point_J
-2	0	504	688	16	16	teletransporter_A_10	1	1	29	destination_point_I
-2	0	664	624	16	16	teletransporter_A_11	1	1	29	destination_point_L
-2	0	568	624	16	16	teletransporter_A_12	1	1	29	destination_point_K
-2	0	696	664	16	16	teletransporter_A_13	1	1	29	destination_point_M
-2	0	472	560	16	16	teletransporter_C	1	1	29	destination_point_C
-2	0	504	560	16	16	teletransporter_A_5	1	1	29	destination_point_D
-2	0	560	568	16	16	teletransporter_A_14	1	1	29	destination_point_N
-2	0	592	568	16	16	teletransporter_A_15	1	1	29	destination_point_O
-2	0	624	568	16	16	teletransporter_P	1	1	29	destination_point_P
-2	0	656	568	16	16	teletransporter_Q	1	1	29	destination_point_Q
-2	0	592	536	16	16	teletransporter_R	1	1	29	destination_point_R
-2	0	600	488	16	16	teletransporter_U	1	1	29	destination_point_U
-2	0	696	488	16	16	to_conveyor_belt_room	1	1	29	no_top_destination_point
-2	0	696	392	16	16	teletransporter_T	1	1	29	destination_point_T
-2	0	600	392	16	16	teletransporter_A_22	1	1	29	destination_point_S
-1	0	480	701	destination_point_K	-1	1
+2	0	432	672	16	16	teletransporter_A	entities/teletransporter	warp	1	29	destination_point_A
+1	0	480	541	destination_point_B	-1	entities/destination
+1	0	512	541	destination_point_D	-1	entities/destination
+2	0	488	528	16	16	teletransporter_B	entities/teletransporter	warp	1	29	destination_point_B
+2	0	488	576	16	16	teletransporter_A_4	entities/teletransporter	warp	1	29	destination_point_E
+2	0	472	624	16	16	teletransporter_A_6	entities/teletransporter	warp	1	29	destination_point_F
+2	0	504	624	16	16	teletransporter_G	entities/teletransporter	warp	1	29	destination_point_G
+2	0	472	704	16	16	teletransporter_A_8	entities/teletransporter	warp	1	29	destination_point_H
+2	0	528	664	16	16	teletransporter_J	entities/teletransporter	warp	1	29	destination_point_J
+2	0	504	688	16	16	teletransporter_A_10	entities/teletransporter	warp	1	29	destination_point_I
+2	0	664	624	16	16	teletransporter_A_11	entities/teletransporter	warp	1	29	destination_point_L
+2	0	568	624	16	16	teletransporter_A_12	entities/teletransporter	warp	1	29	destination_point_K
+2	0	696	664	16	16	teletransporter_A_13	entities/teletransporter	warp	1	29	destination_point_M
+2	0	472	560	16	16	teletransporter_C	entities/teletransporter	warp	1	29	destination_point_C
+2	0	504	560	16	16	teletransporter_A_5	entities/teletransporter	warp	1	29	destination_point_D
+2	0	560	568	16	16	teletransporter_A_14	entities/teletransporter	warp	1	29	destination_point_N
+2	0	592	568	16	16	teletransporter_A_15	entities/teletransporter	warp	1	29	destination_point_O
+2	0	624	568	16	16	teletransporter_P	entities/teletransporter	warp	1	29	destination_point_P
+2	0	656	568	16	16	teletransporter_Q	entities/teletransporter	warp	1	29	destination_point_Q
+2	0	592	536	16	16	teletransporter_R	entities/teletransporter	warp	1	29	destination_point_R
+2	0	600	488	16	16	teletransporter_U	entities/teletransporter	warp	1	29	destination_point_U
+2	0	696	488	16	16	to_conveyor_belt_room	entities/teletransporter	warp	1	29	no_top_destination_point
+2	0	696	392	16	16	teletransporter_T	entities/teletransporter	warp	1	29	destination_point_T
+2	0	600	392	16	16	teletransporter_A_22	entities/teletransporter	warp	1	29	destination_point_S
+1	0	480	701	destination_point_K	-1	entities/destination
 4	0	496	573	0	rupee	2	-1
 11	0	464	400	barrier_switch	3	0	0
 10	0	600	656	32	32	barrier	399	1

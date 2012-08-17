@@ -235,20 +235,20 @@
 12	0	376	888	32	8	custom_obstacle_6	1	1	1	1
 12	0	264	904	32	8	custom_obstacle_7	1	1	1	1
 19	0	640	936	stairs	0	4
-1	0	152	805	from_1F_1	3	0
-1	0	280	757	from_1F_2	3	0
-1	0	280	933	from_1F_3	3	0
-1	0	408	677	from_1F_4	3	0
-1	0	376	741	from_1F_5	3	0
-1	0	376	805	from_1F_6	3	0
-1	0	392	917	from_1F_7	3	0
-2	0	144	792	16	16	teletransporter	0	1	60	from_B1_1
-2	0	272	744	16	16	teletransporter_2	0	1	60	from_B1_2
-2	0	272	920	16	16	teletransporter_3	0	1	60	from_B1_3
-2	0	400	664	16	16	teletransporter_4	0	1	60	from_B1_4
-2	0	368	728	16	16	teletransporter_5	0	1	60	from_B1_5
-2	0	368	792	16	16	teletransporter_6	0	1	60	from_B1_6
-2	0	384	904	16	16	teletransporter_7	0	1	60	from_B1_7
+1	0	152	805	from_1F_1	3	_none
+1	0	280	757	from_1F_2	3	_none
+1	0	280	933	from_1F_3	3	_none
+1	0	408	677	from_1F_4	3	_none
+1	0	376	741	from_1F_5	3	_none
+1	0	376	805	from_1F_6	3	_none
+1	0	392	917	from_1F_7	3	_none
+2	0	144	792	16	16	teletransporter	_none	_none	1	60	from_B1_1
+2	0	272	744	16	16	teletransporter_2	_none	_none	1	60	from_B1_2
+2	0	272	920	16	16	teletransporter_3	_none	_none	1	60	from_B1_3
+2	0	400	664	16	16	teletransporter_4	_none	_none	1	60	from_B1_4
+2	0	368	728	16	16	teletransporter_5	_none	_none	1	60	from_B1_5
+2	0	368	792	16	16	teletransporter_6	_none	_none	1	60	from_B1_6
+2	0	384	904	16	16	teletransporter_7	_none	_none	1	60	from_B1_7
 19	0	144	792	stairs_2	1	2
 19	0	272	744	stairs_3	1	2
 19	0	272	920	stairs_4	1	2
@@ -256,19 +256,19 @@
 19	0	368	728	stairs_6	1	2
 19	0	400	664	stairs_7	1	2
 19	0	384	904	stairs_8	1	2
-1	0	360	973	from_1F_hole_left	-1	0
-1	0	384	973	from_1F_hole_right	-1	0
-1	0	440	861	from_1F_hole_down	-1	0
-1	0	440	837	from_1F_hole_up	-1	0
+1	0	360	973	from_1F_hole_left	-1	_none
+1	0	384	973	from_1F_hole_right	-1	_none
+1	0	440	861	from_1F_hole_down	-1	_none
+1	0	440	837	from_1F_hole_up	-1	_none
 19	0	184	96	stairs_9	0	4
-1	0	104	61	from_1F_n_1	3	0
-2	0	96	48	16	16	teletransporter_11	0	1	60	from_B1_n_1
+1	0	104	61	from_1F_n_1	3	_none
+2	0	96	48	16	16	teletransporter_11	_none	_none	1	60	from_B1_n_1
 19	0	96	48	stairs_10	1	0
 4	0	80	101	0	_random	1	-1
 4	0	80	117	0	heart	1	-1
 7	0	544	949	enemy_6	3	skeletor	0	-1	_random	1	-1
-1	0	336	853	from_1F_c_hole_up	-1	0
-1	0	336	869	from_1F_c_hole_down	-1	0
+1	0	336	853	from_1F_c_hole_up	-1	_none
+1	0	336	869	from_1F_c_hole_down	-1	_none
 0	1	720	520	192	304	423
 0	1	792	888	128	192	421
 0	1	328	40	560	464	421
@@ -978,8 +978,8 @@
 12	1	656	952	8	8	custom_obstacle_9	1	1	1	1
 12	1	176	88	32	8	custom_obstacle_10	1	1	1	1
 12	1	176	112	32	8	custom_obstacle_11	1	1	1	1
-1	1	152	293	destination_point	-1	1
-2	1	144	264	16	16	teletransporter_8	1	1	59	destination_point_3
+1	1	152	293	destination_point	-1	entities/destination
+2	1	144	264	16	16	teletransporter_8	entities/teletransporter	warp	1	59	destination_point_3
 13	1	144	317	32	16	sensor_1	0
 10	1	144	352	16	8	sensor_1_on	70	0
 10	1	136	336	8	16	sensor_1_off_2	71	1
@@ -999,20 +999,20 @@
 10	1	160	432	8	16	sensor_4_on_2	71	0
 10	1	160	448	8	8	sensor_4_on_3	69	0
 13	1	200	437	32	32	sensor_4	0
-1	1	656	397	from_hole	-1	0
-2	1	624	408	16	16	teletransporter_9	1	1	62	destination_point
-1	1	656	445	destination_point_2	-1	1
-2	1	456	96	16	16	teletransporter_10	1	1	59	destination_point
-1	1	288	37	from_1F_n_2	3	0
-1	1	448	37	from_1F_n_3	3	0
-1	1	632	37	from_1F_n_4	3	0
-2	1	280	24	16	16	teletransporter_12	0	1	60	from_B1_n_2
-2	1	440	24	16	16	teletransporter_13	0	1	60	from_B1_n_3
-2	1	624	24	16	16	teletransporter_14	0	1	60	from_B1_n_4
+1	1	656	397	from_hole	-1	_none
+2	1	624	408	16	16	teletransporter_9	entities/teletransporter	warp	1	62	destination_point
+1	1	656	445	destination_point_2	-1	entities/destination
+2	1	456	96	16	16	teletransporter_10	entities/teletransporter	warp	1	59	destination_point
+1	1	288	37	from_1F_n_2	3	_none
+1	1	448	37	from_1F_n_3	3	_none
+1	1	632	37	from_1F_n_4	3	_none
+2	1	280	24	16	16	teletransporter_12	_none	_none	1	60	from_B1_n_2
+2	1	440	24	16	16	teletransporter_13	_none	_none	1	60	from_B1_n_3
+2	1	624	24	16	16	teletransporter_14	_none	_none	1	60	from_B1_n_4
 19	1	280	24	stairs_11	1	0
 19	1	440	24	stairs_12	1	0
 19	1	624	24	stairs_13	1	0
-1	1	488	157	destination_point_3	-1	1
+1	1	488	157	destination_point_3	-1	entities/destination
 7	1	440	301	enemy	3	tentacle	0	-1	_random	1	-1
 7	1	464	397	enemy_2	3	tentacle	0	-1	_random	1	-1
 7	1	656	301	enemy_3	3	tentacle	0	-1	_random	1	-1

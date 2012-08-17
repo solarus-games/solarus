@@ -499,6 +499,6 @@
 4	0	184	181	5	_random	1	-1
 4	0	200	181	5	_random	1	-1
 5	0	336	16	chest	0	level_4_way	2	138
-1	0	168	261	from_outside	1	0
-2	0	160	264	16	16	teletransporter	0	1	5	from_surprise_wall
+1	0	168	261	from_outside	1	_none
+2	0	160	264	16	16	teletransporter	_none	_none	1	5	from_surprise_wall
 10	0	192	88	32	32	secret_way	630	1

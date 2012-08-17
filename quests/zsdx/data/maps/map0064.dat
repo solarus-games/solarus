@@ -398,7 +398,7 @@
 0	0	608	416	16	16	522
 0	0	592	416	16	112	522
 0	0	608	512	16	16	522
-1	0	1048	797	from_b1_se	3	0
+1	0	1048	797	from_b1_se	3	_none
 19	0	120	128	stairs	1	4
 19	0	368	272	stairs_2	1	4
 19	0	600	960	stairs_3	3	4
@@ -436,7 +436,7 @@
 18	0	800	320	door_2	3	4	507
 18	0	112	288	door_3	1	3	508
 18	0	112	192	door_4	3	3	508
-2	0	1040	784	16	16	teletransporter_7	0	1	65	from_1f_se
+2	0	1040	784	16	16	teletransporter_7	_none	_none	1	65	from_1f_se
 19	0	1040	784	stairs_9	1	1
 5	0	1040	896	chest_2	0	compass	1	501
 7	0	488	869	s_room_enemy_1	3	green_knight_soldier	0	-1	_random	1	-1
@@ -819,23 +819,23 @@
 6	1	624	976	104	8	jumper_7	2	40
 12	1	920	128	32	8	custom_obstacle_7	1	1	1	1
 12	1	920	152	32	8	custom_obstacle_8	1	1	1	1
-1	1	608	1189	from_outside	1	0
-2	1	600	1200	16	16	teletransporter	0	1	9	from_dungeon_5_1F
-1	1	128	37	from_2f_w	3	0
-1	1	400	37	from_2f_c	3	0
-1	1	992	37	from_2f_e	3	0
-1	1	1072	37	from_b1_ne	3	0
-2	1	120	24	16	16	teletransporter_3	0	1	63	from_1f_w
-2	1	392	24	16	16	teletransporter_4	0	1	63	from_1f_c
-2	1	984	24	16	16	teletransporter_5	0	1	63	from_1f_e
+1	1	608	1189	from_outside	1	_none
+2	1	600	1200	16	16	teletransporter	_none	_none	1	9	from_dungeon_5_1F
+1	1	128	37	from_2f_w	3	_none
+1	1	400	37	from_2f_c	3	_none
+1	1	992	37	from_2f_e	3	_none
+1	1	1072	37	from_b1_ne	3	_none
+2	1	120	24	16	16	teletransporter_3	_none	_none	1	63	from_1f_w
+2	1	392	24	16	16	teletransporter_4	_none	_none	1	63	from_1f_c
+2	1	984	24	16	16	teletransporter_5	_none	_none	1	63	from_1f_e
 19	1	984	24	stairs_5	1	0
 19	1	392	24	stairs_6	1	0
 19	1	120	24	stairs_7	1	0
 6	1	944	72	8	56	jumper_6	4	40
 6	1	944	160	8	56	jumper_8	4	40
-2	1	1064	24	16	16	teletransporter_6	0	1	65	from_1f_ne
+2	1	1064	24	16	16	teletransporter_6	_none	_none	1	65	from_1f_ne
 19	1	1064	24	stairs_8	1	1
-2	1	584	1176	16	16	teletransporter_2	0	0	63	tmp
+2	1	584	1176	16	16	teletransporter_2	_none	_none	0	63	tmp
 0	2	1048	16	64	8	559
 0	2	952	16	64	8	559
 0	2	576	1192	128	8	560

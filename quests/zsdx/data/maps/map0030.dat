@@ -498,15 +498,15 @@
 18	0	608	464	small_key_door_B_2	2	1	79
 18	0	440	448	small_key_door_C	1	1	80
 18	0	440	352	small_key_door_C_2	3	1	80
-1	0	176	653	from_B1_south	3	0
-1	0	80	317	from_B1_west	3	0
-1	0	176	61	from_B1_north	3	0
-2	0	168	48	16	16	to_B1_north	0	1	31	from_1F_north
-2	0	72	304	16	16	to_B1_west	0	1	31	from_1F_west
-2	0	168	640	16	16	to_B1_south	0	1	31	from_1F_south
-2	0	1056	64	32	32	hole_to_B1_east	0	1	31	_same
+1	0	176	653	from_B1_south	3	_none
+1	0	80	317	from_B1_west	3	_none
+1	0	176	61	from_B1_north	3	_none
+2	0	168	48	16	16	to_B1_north	_none	_none	1	31	from_1F_north
+2	0	72	304	16	16	to_B1_west	_none	_none	1	31	from_1F_west
+2	0	168	640	16	16	to_B1_south	_none	_none	1	31	from_1F_south
+2	0	1056	64	32	32	hole_to_B1_east	_none	_none	1	31	_same
 5	0	440	56	chest_3	1	pegasus_shoes	1	86
-2	0	480	64	32	32	hole_to_B1_west	0	1	31	_same
+2	0	480	64	32	32	hole_to_B1_west	_none	_none	1	31	_same
 11	0	832	352	pegasus_run_switch	1	0	0
 10	0	896	72	8	24	pegasus_run_barrier	71	1
 19	0	656	272	stairs_1	1	4
@@ -519,8 +519,8 @@
 19	0	168	48	stairs_8	1	1
 19	0	168	640	stairs_9	1	1
 19	0	80	592	stairs_10	1	4
-1	0	456	237	from_B1_east	3	0
-2	0	448	224	16	16	to_B1_east	0	1	31	from_1F_east
+1	0	456	237	from_B1_east	3	_none
+2	0	448	224	16	16	to_B1_east	_none	_none	1	31	from_1F_east
 19	0	448	224	stairs_11	1	1
 10	0	432	216	48	24	hidden_stairs_closed	232	1
 10	0	512	296	24	48	hidden_door_closed	233	1
@@ -820,7 +820,7 @@
 12	1	96	584	8	32	custom_obstacle_8	1	1	1	1
 12	1	648	264	8	32	custom_obstacle_9	1	1	1	1
 12	1	672	264	8	32	custom_obstacle_10	1	1	1	1
-2	1	848	752	16	16	teletransporter	0	1	3	from_dungeon_2
+2	1	848	752	16	16	teletransporter	_none	_none	1	3	from_dungeon_2
 12	1	744	640	32	8	custom_obstacle_11	1	1	1	1
 12	1	744	664	32	8	custom_obstacle_12	1	1	1	1
 12	1	936	640	32	8	custom_obstacle_13	1	1	1	1
@@ -839,9 +839,9 @@
 5	1	56	536	chest_4	0	rupee	2	87
 10	1	448	216	16	8	hidden_stairs_open	273	0
 10	1	528	304	8	32	hidden_door_open	163	0
-2	1	832	728	16	16	teletransporter_2	0	0	31	tmp
+2	1	832	728	16	16	teletransporter_2	_none	_none	0	31	tmp
 10	1	168	40	16	8	miniboss_door_open	273	1
-1	1	856	741	from_outside	1	0
+1	1	856	741	from_outside	1	_none
 12	1	224	440	8	16	custom_obstacle_18	0	1	1	1
 12	1	224	384	8	32	custom_obstacle_17	0	1	1	1
 0	2	808	744	96	8	357

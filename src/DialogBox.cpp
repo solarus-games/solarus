@@ -356,8 +356,8 @@ void DialogBox::close() {
   keys_effect.set_sword_key_effect(sword_key_effect_saved);
 
   // notify the script if necessary
-  if (!skipped && previous_dialog_id[0] != '_') { // FIXME: remove the '_' restriction
-    // a dialog of the quest was just finished: notify the scripts
+  if (!skipped) {
+    // a dialog was just finished: notify the scripts
     game.get_lua_context().map_on_dialog_finished(
         game.get_current_map(), previous_dialog_id, last_answer);
 

@@ -120,7 +120,7 @@ int LuaContext::drawable_api_fade_in(lua_State* l) {
 
   TransitionFade* transition = new TransitionFade(Transition::IN);
   transition->set_delay(delay);
-  drawable.start_transition(*transition, callback_ref);
+  drawable.start_transition(*transition, callback_ref, &get_lua_context(l));
 
   return 0;
 }
@@ -154,7 +154,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
 
   TransitionFade* transition = new TransitionFade(Transition::OUT);
   transition->set_delay(delay);
-  drawable.start_transition(*transition, callback_ref);
+  drawable.start_transition(*transition, callback_ref, &get_lua_context(l));
 
   return 0;
 }
@@ -179,7 +179,7 @@ int LuaContext::drawable_api_start_movement(lua_State* l) {
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
 
-  drawable.start_movement(movement, callback_ref);
+  drawable.start_movement(movement, callback_ref, &get_lua_context(l));
 
   return 0;
 }

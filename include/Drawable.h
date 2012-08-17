@@ -35,12 +35,10 @@ class Drawable: public ExportableToLua {
     virtual ~Drawable();
 
     // dynamic effects
-    void start_movement(Movement& movement, int callback_ref = LUA_REFNIL,
-        LuaContext* lua_context = NULL);
+    void start_movement(Movement& movement, int callback_ref, LuaContext* lua_context);
     void stop_movement();
 
-    void start_transition(Transition& transition, int callback_ref = LUA_REFNIL,
-        LuaContext* lua_context = NULL);
+    void start_transition(Transition& transition, int callback_ref, LuaContext* lua_context);
     void stop_transition();
 
     // displaying with effects

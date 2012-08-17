@@ -103,6 +103,7 @@ void Drawable::start_transition(Transition& transition,
     int callback_ref, LuaContext* lua_context) {
 
   stop_transition();
+
   this->transition = &transition;
   this->transition_callback_ref = callback_ref;
   this->lua_context = lua_context;

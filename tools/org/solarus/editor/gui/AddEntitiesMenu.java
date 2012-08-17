@@ -29,14 +29,8 @@ public class AddEntitiesMenu extends JMenu {
      * All menu items.
      */
     private static final ItemDefinition[] itemDefinitions = {
-	new ItemDefinition(EntityType.DESTINATION_POINT, KeyEvent.VK_D,
-		DestinationPoint.Subtype.INVISIBLE,
-		DestinationPoint.Subtype.GRAY
-		),
-	new ItemDefinition(EntityType.TELETRANSPORTER, KeyEvent.VK_T,
-		Teletransporter.Subtype.INVISIBLE,
-		Teletransporter.Subtype.YELLOW
-		),
+	new ItemDefinition(EntityType.DESTINATION_POINT, KeyEvent.VK_D),
+	new ItemDefinition(EntityType.TELETRANSPORTER, KeyEvent.VK_T),
 	new ItemDefinition(EntityType.PICKABLE_ITEM, KeyEvent.VK_P),
 	new ItemDefinition(EntityType.DESTRUCTIBLE_ITEM, KeyEvent.VK_M,
 		DestructibleItem.Subtype.GRASS,

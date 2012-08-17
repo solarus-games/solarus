@@ -32,10 +32,8 @@ public class AddEntitiesToolbar extends JComponent {
      * Each element is a type of entity and a possible subtype.
      */
     private static Cell[] cells = {
-	new Cell(EntityType.DESTINATION_POINT, DestinationPoint.Subtype.INVISIBLE),
-	new Cell(EntityType.DESTINATION_POINT, DestinationPoint.Subtype.GRAY),
-	new Cell(EntityType.TELETRANSPORTER, Teletransporter.Subtype.INVISIBLE),
-	new Cell(EntityType.TELETRANSPORTER, Teletransporter.Subtype.YELLOW),
+	new Cell(EntityType.DESTINATION_POINT),
+	new Cell(EntityType.TELETRANSPORTER),
 	new Cell(EntityType.PICKABLE_ITEM),
 	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.GRASS),
 	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.BUSH),

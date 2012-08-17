@@ -78,7 +78,6 @@ public class Block extends MapEntity {
    * @return the coordinates of the origin point of the entity
    */
   protected Point getOrigin() {
-
     return origin;
   }
 
@@ -195,3 +194,4 @@ public class Block extends MapEntity {
     }
   }
 }
+

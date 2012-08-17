@@ -26,27 +26,6 @@ import org.solarus.editor.*;
 public class Teletransporter extends MapEntity {
 
     /**
-     * Subtypes of teletransporters.
-     */
-    public enum Subtype implements EntitySubtype {
-	INVISIBLE,
-	YELLOW,
-	BLUE;
-
-	public static final String[] humanNames = {
-	  "Invisible", "Yellow", "Blue"  
-	};
-
-	public int getId() {
-	    return ordinal();
-	}
-
-	public static Subtype get(int id) {
-	    return values()[id];
-	}
-    }
-
-    /**
      * Unitary size of a teletransporter.
      */
     private static final Dimension unitarySize = new Dimension(16, 16);
@@ -55,14 +34,18 @@ public class Teletransporter extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("teletransporter.png", 0, 0, 32, 32), // invisible
-	new EntityImageDescription("teletransporter.png", 32, 0, 16, 16), // yellow
+	new EntityImageDescription("teletransporter.png", 0, 0, 32, 32)
     };
 
     /**
      * Resizable image of a teletransporter.
      */
     private static Image resizableTeletransporterImage;
+
+    /**
+     * The sprite representing this teletransporter.
+     */
+    private Sprite sprite;
 
     /**
      * Creates a new teletransporter.
@@ -85,7 +68,7 @@ public class Teletransporter extends MapEntity {
      * @return true if the entity is resizable
      */
     public boolean isResizable() {
-	return !initialized || subtype == Subtype.INVISIBLE;
+	return true;
     }
 
     /**
@@ -107,27 +90,34 @@ public class Teletransporter extends MapEntity {
     }
 
     /**
-     * Sets the subtype of this entity.
-     * @param subtype the subtype of entity
-     * @throws MapException if the subtype is not valid
-     */
-    public void setSubtype(EntitySubtype subtype) throws MapException {
-
-	if (subtype != this.subtype) {
-	    if (isResizable() && subtype != Subtype.INVISIBLE) {
-		setSize(16, 16);
-	    }
-	    super.setSubtype(subtype);
-	}
-    }
-
-    /**
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
+        setProperty("sprite", "");
+        setProperty("sound", "");
 	setProperty("transition", Transition.FADE.getId());
 	setProperty("destinationMapId", map.getId());
 	setProperty("destinationPointName", "");
+    }
+
+    /**
+     * Sets a property specific to this kind of entity.
+     * @param name name of the property
+     * @param value value of the property
+     */
+    public void setProperty(String name, String value) throws MapException {
+
+        super.setProperty(name, value);
+
+        if (name.equals("sprite")) {
+
+            if (value.length() > 0 && !value.equals("_none")) {
+                sprite = new Sprite(value, map);
+            }
+            else {
+                sprite = null;
+            }
+        }
     }
 
     /**
@@ -136,8 +126,18 @@ public class Teletransporter extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
+        String spriteName = getProperty("sprite");
+        String soundId = getProperty("sound");
 	String destinationMapId = getProperty("destinationMapId");
 	String destinationPointName = getProperty("destinationPointName");
+
+        if (!isSpriteOrSoundNameValid(spriteName)) {
+            throw new MapException("Invalid sprite name: '" + spriteName + "'");
+        }
+
+        if (!isSpriteOrSoundNameValid(soundId)) {
+            throw new MapException("Invalid sound id: '" + soundId + "'");
+        }
 
 	if (destinationMapId.length() == 0) {
 	    throw new MapException("You must choose a destination map");
@@ -154,15 +154,14 @@ public class Teletransporter extends MapEntity {
     }
 
     /**
-     * Updates the description of the image currently representing the entity.
+     * Returns whether the specified teletransporter sprite or sound name is valid.
+     * @param name a sprite or sound name
+     * @return true if it is valid
      */
-    public void updateImageDescription() {
-	if (subtype == Subtype.YELLOW) {
-	    currentImageDescription.setRectangle(32, 0, 16, 16);
-	}
-	else if (subtype == Subtype.BLUE) {
-	    currentImageDescription.setRectangle(32, 16, 16, 16);
-	}
+    private boolean isSpriteOrSoundNameValid(String name) {
+	return name != null
+	  && name.length() != 0
+	  && (name.charAt(0) != '_' || name.equals("_none"));
     }
 
     /**
@@ -174,7 +173,13 @@ public class Teletransporter extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
-	if (subtype == Subtype.INVISIBLE) {
+	if (sprite != null) {
+            // display the appropriate sprite
+            sprite.paint(g, zoom, showTransparency,
+                getX(), getY(), null, 0, 0);
+        }
+        else {
+            // no sprite: display a teletransporter icon
 	    if (resizableTeletransporterImage == null) {
 		resizableTeletransporterImage = Project.getEditorImage("resizable_teletransporter.png");
 	    }
@@ -196,8 +201,6 @@ public class Teletransporter extends MapEntity {
 
 	    drawEntityOutline(g, zoom, new Color(240, 215, 142));
 	}
-	else {
-	    super.paint(g, zoom, showTransparency);
-	}
     }
 }
+

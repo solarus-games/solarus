@@ -153,3 +153,4 @@ public class EditNPCComponent extends EditEntityComponent {
 	return new ActionEditEntitySpecific(entity, sprite, behavior);
     }
 }
+

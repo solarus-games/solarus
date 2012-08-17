@@ -16,11 +16,13 @@
  */
 package org.solarus.editor.gui.edit_entities;
 
-import java.awt.event.*;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
 import org.solarus.editor.map_editor_actions.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 /**
  * A component to edit a teletransporter.
@@ -28,6 +30,10 @@ import org.solarus.editor.map_editor_actions.*;
 public class EditTeletransporterComponent extends EditEntityComponent {
 
     // specific fields of a teletransporter
+    private JCheckBox withSpriteField;
+    private ResourceChooser spriteField;
+    private JCheckBox withSoundField;
+    private ResourceChooser soundField;
     private EnumerationChooser<Transition> transitionField;
     private ResourceChooser mapField;
     private EntityChooser destinationPointField;
@@ -62,8 +68,37 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 		new String[] {"", samePointText, sidePointText});
 	addField("Destination point", destinationPointField);
 
-	// load the entrance list for the selected map
+	// has a sprite?
+	withSpriteField = new JCheckBox("Display a sprite");
+	addField("Visibility", withSpriteField);
+
+	// sprite name
+	spriteField = new ResourceChooser(ResourceType.SPRITE, true);
+	addField("Sprite name", spriteField);
+
+	// has a sound?
+	withSoundField = new JCheckBox("Play a sound");
+	addField("Sound", withSoundField);
+
+	// sound name
+	soundField = new ResourceChooser(ResourceType.SOUND, true);
+	addField("Sound id", soundField);
+
+	// listeners
 	mapField.addActionListener(new ActionListenerChangeDestinationMap());
+
+	withSpriteField.addChangeListener(new ChangeListener() {
+	    public void stateChanged(ChangeEvent ev) {
+		spriteField.setEnabled(withSpriteField.isSelected());
+	    }
+	});
+
+        withSoundField.addChangeListener(new ChangeListener() {
+	    public void stateChanged(ChangeEvent ev) {
+		soundField.setEnabled(withSoundField.isSelected());
+	    }
+	});
+
     }
 
     /**
@@ -73,6 +108,18 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	super.update(); // update the common fields
 
 	Teletransporter teletransporter = (Teletransporter) entity;
+
+	String sprite = teletransporter.getProperty("sprite");
+	boolean hasSprite = (!sprite.equals("_none"));
+	withSpriteField.setSelected(hasSprite);
+	spriteField.setSelectedId(hasSprite ? sprite : "");
+	spriteField.setEnabled(hasSprite);
+
+	String sound = teletransporter.getProperty("sound");
+	boolean hasSound = (!sound.equals("_none"));
+	withSoundField.setSelected(hasSound);
+	soundField.setSelectedId(hasSound ? sound : "");
+	soundField.setEnabled(hasSound);
 
 	transitionField.setValue(Transition.get(teletransporter.getIntegerProperty("transition")));
 	mapField.setSelectedId(teletransporter.getProperty("destinationMapId"));
@@ -93,6 +140,16 @@ public class EditTeletransporterComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
+	String sprite = spriteField.getSelectedId();
+	if (!withSpriteField.isSelected()) {
+	    sprite = "_none";
+	}
+
+	String sound = soundField.getSelectedId();
+	if (!withSoundField.isSelected()) {
+	    sound = "_none";
+	}
+
 	String destinationMapId = mapField.getSelectedId();
 	String destinationPointName = destinationPointField.getSelectedName();
 
@@ -104,6 +161,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	}
 
 	return new ActionEditEntitySpecific(entity, 
+                sprite, sound,
 		Integer.toString(transitionField.getValue().getId()), 
 		destinationMapId, destinationPointName);
     }
@@ -132,3 +190,4 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	}
     }
 }
+

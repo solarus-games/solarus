@@ -19,11 +19,19 @@ package org.solarus.editor.gui.edit_entities;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
+import org.solarus.editor.map_editor_actions.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 /**
  * A component to edit a destination point.
  */
 public class EditDestinationPointComponent extends EditEntityComponent {
+
+    // specific fields of this entity
+    private JCheckBox withSpriteField;
+    private ResourceChooser spriteField;
 
     /**
      * Constructor.
@@ -33,4 +41,58 @@ public class EditDestinationPointComponent extends EditEntityComponent {
     public EditDestinationPointComponent(Map map, MapEntity entity) {
 	super(map, entity);
     }
+
+    /**
+     * Creates the specific fields for this kind of entity.
+     */
+    protected void createSpecificFields() {
+
+	// has a sprite?
+	withSpriteField = new JCheckBox("Display a sprite");
+	addField("Visibility", withSpriteField);
+
+	// sprite name
+	spriteField = new ResourceChooser(ResourceType.SPRITE, true);
+	addField("Sprite name", spriteField);
+
+	// listener
+	withSpriteField.addChangeListener(new ChangeListener() {
+	    public void stateChanged(ChangeEvent ev) {
+		spriteField.setEnabled(withSpriteField.isSelected());
+	    }
+	});
+    }
+
+    /**
+     * Updates the information displayed in the fields.
+     */
+    public void update() {
+
+	super.update(); // update the common fields
+
+	DestinationPoint destination = (DestinationPoint) entity;
+	String sprite = destination.getProperty("sprite");
+
+	boolean hasSprite = (!sprite.equals("_none"));
+
+	withSpriteField.setSelected(hasSprite);
+	spriteField.setSelectedId(hasSprite ? sprite : "");
+
+	spriteField.setEnabled(hasSprite);
+    }
+
+    /**
+     * Returns the specific part of the action made on the entity.
+     * @return the specific part of the action made on the entity
+     */
+    protected ActionEditEntitySpecific getSpecificAction() {
+
+	String sprite = spriteField.getSelectedId();
+	if (!withSpriteField.isSelected()) {
+	    sprite = "_none";
+	}
+
+	return new ActionEditEntitySpecific(entity, sprite);
+    }
 }
+

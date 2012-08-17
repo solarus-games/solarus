@@ -19,7 +19,6 @@ package org.solarus.editor.entities;
 import java.awt.*;
 
 import org.solarus.editor.*;
-import org.solarus.editor.entities.Teletransporter.Subtype;
 
 /**
  * Represents an entity that triggers a message or an event when the player

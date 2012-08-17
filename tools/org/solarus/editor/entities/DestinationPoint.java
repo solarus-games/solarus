@@ -20,36 +20,20 @@ import java.awt.*;
 import org.solarus.editor.*;
 
 /**
- * Represents the destination point of a teletransporter in a map.
+ * Represents the destination of a teletransporter in a map.
  */
 public class DestinationPoint extends MapEntity {
 
     /**
-     * Subtypes of destination points.
+     * The sprite representing this destination.
      */
-    public enum Subtype implements EntitySubtype {
-	INVISIBLE,
-	GRAY;
-
-	public static final String[] humanNames = {
-	  "Invisible", "Gray"  
-	};
-
-	public int getId() {
-	    return ordinal();
-	}
-
-	public static Subtype get(int id) {
-	    return values()[id];
-	}
-    }
+    private Sprite sprite;
 
     /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("destination_point.png", 64, 0, 32, 32),    // invisible (up)
-	new EntityImageDescription("destination_point.png", 160, 0, 16, 16)    // gray
+	new EntityImageDescription("destination_point.png", 64, 0, 32, 32)
     };
 
     /**
@@ -63,7 +47,6 @@ public class DestinationPoint extends MapEntity {
      */
     public DestinationPoint(Map map) throws MapException {
 	super(map, 16, 16);
-	subtype = Subtype.INVISIBLE;
 	setDirection(3);
     }
 
@@ -109,34 +92,73 @@ public class DestinationPoint extends MapEntity {
     }
 
     /**
-     * Sets the subtype of this entity.
-     * @param subtype the subtype of entity
-     * @throws MapException if the subtype is not valid
+     * Sets the default values of all properties specific to the current entity type.
      */
-    public void setSubtype(EntitySubtype subtype) throws MapException {
-
-	if (subtype != this.subtype) {
-	    if (subtype == Subtype.INVISIBLE) {
-		if (this.subtype != null) {
-		    setDirection(3);
-		}
-	    }
-	    else {
-		    setDirection(-1);
-	    }
-	    super.setSubtype(subtype);
-	}
+    public void setPropertiesDefaultValues() throws MapException {
+        setProperty("sprite", "");
     }
 
     /**
-     * Updates the description of the image currently representing the entity.
+     * Sets a property specific to this kind of entity.
+     * @param name name of the property
+     * @param value value of the property
      */
-    public void updateImageDescription() {
-	if (subtype == Subtype.INVISIBLE) {
-	    currentImageDescription.setRectangle((getDirection() + 1) * 32, 0, 32, 32);
-	}
-	else {
-	    currentImageDescription.setRectangle(160, 0, 16, 16);
-	}
+    public void setProperty(String name, String value) throws MapException {
+
+        super.setProperty(name, value);
+
+        if (name.equals("sprite")) {
+
+            if (value.length() > 0 && !value.equals("_none")) {
+                sprite = new Sprite(value, map);
+            }
+            else {
+                sprite = null;
+            }
+        }
+    }
+
+    /**
+     * Checks the specific properties.
+     * @throws MapException if a property is not valid
+     */
+    public void checkProperties() throws MapException {
+
+        String spriteName = getProperty("sprite");
+        if (!isSpriteNameValid(spriteName)) {
+            throw new MapException("Invalid sprite name: '" + spriteName + "'");
+        }
+    }
+
+    /**
+     * Returns whether the specified sprite name is valid.
+     * @param sprite_name a sprite name
+     * @return true if it is valid
+     */
+    private boolean isSpriteNameValid(String sprite_name) {
+	return sprite_name != null
+	  && sprite_name.length() != 0
+	  && (sprite_name.charAt(0) != '_' || sprite_name.equals("_none"));
+    }
+
+    /**
+     * Draws this entity on the map editor.
+     * @param g graphic context
+     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
+     * @param showTransparency true to make transparent pixels,
+     * false to replace them by a background color
+     */
+    public void paint(Graphics g, double zoom, boolean showTransparency) {
+
+        if (sprite == null) {
+            // no sprite: display a destination icon
+            super.paint(g, zoom, showTransparency);
+        }
+        else {
+          // display the appropriate sprite
+          sprite.paint(g, zoom, showTransparency,
+              getX(), getY(), null, 0, 0);
+        }
     }
 }
+

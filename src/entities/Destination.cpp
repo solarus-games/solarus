@@ -21,28 +21,23 @@
 
 /**
  * @brief Constructor.
- * @param name name of the destination point to create
- * @param layer the layer
- * @param x x position of the destination point to create
- * @param y y position of the destination point to create
- * @param hero_direction initial direction of the hero in this state
- * (0 to 3, or -1 to indicate that the hero's direction is not changed)
- * @param is_visible true to make the destination point visible
+ * @param name Name of the destination to create.
+ * @param layer The layer.
+ * @param x X position of the destination point to create.
+ * @param y Y position of the destination point to create.
+ * @param hero_direction Initial direction of the hero in this state
+ * (0 to 3, or -1 to indicate that the hero's direction is not changed).
+ * @param sprite_name Animation set id of a sprite to represent this
+ * destination, or an empty string.
  */
-Destination::Destination(const std::string &name, Layer layer, int x, int y,
-				   int hero_direction, bool is_visible):
-  MapEntity(name, 0, layer, x, y, 16, 16) {
+Destination::Destination(const std::string& name, Layer layer, int x, int y,
+    int hero_direction, const std::string& sprite_name):
+  MapEntity(name, hero_direction, layer, x, y, 16, 16) {
 
   set_origin(8, 13);
 
-  this->change_direction = (get_direction() != -1);
-  if (change_direction) {
-    set_direction(hero_direction);
-  }
-
-  if (is_visible) {
-    create_sprite("entities/teletransporter");
-    get_sprite().set_current_animation("destination");
+  if (!sprite_name.empty()) {
+    create_sprite(sprite_name);
   }
 }
 
@@ -50,7 +45,6 @@ Destination::Destination(const std::string &name, Layer layer, int x, int y,
  * @brief Destructor.
  */
 Destination::~Destination() {
-
 }
 
 /**
@@ -65,16 +59,20 @@ Destination::~Destination() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* Destination::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Destination::parse(Game& game, std::istream &is,
+    Layer layer, int x, int y) {
 	
-  std::string name;
-  int direction, is_visible;
+  std::string name, sprite_name;
+  int direction;
 
   FileTools::read(is, name);
   FileTools::read(is, direction);
-  FileTools::read(is, is_visible);
+  FileTools::read(is, sprite_name);
  
-  return new Destination(name, layer, x, y, direction, (is_visible != 0));
+  if (sprite_name == "_none") {
+    sprite_name = "";
+  }
+  return new Destination(name, layer, x, y, direction, sprite_name);
 }
 
 /**

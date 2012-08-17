@@ -25,14 +25,10 @@
  */
 class Destination: public MapEntity {
 
-  private:
-
-    bool is_visible;
-    bool change_direction;
-
   public:
 
-    Destination(const std::string &name, Layer layer, int x, int y, int hero_direction, bool is_visible);
+    Destination(const std::string &name, Layer layer, int x, int y,
+        int hero_direction, const std::string& sprite_name);
     ~Destination();
     static CreationFunction parse;
 

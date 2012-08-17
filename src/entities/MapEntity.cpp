@@ -80,8 +80,8 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   {false, false, false, false}, // tile (not used)
   {false, false,  true, false}, // destination point
   { true,  true,  true, false}, // teletransporter
-  {false,  true,  true, false}, // pickable item
-  { true,  true,  true, false}, // destructible item
+  {false,  true,  true, false}, // pickable
+  { true,  true,  true, false}, // destructible
   { true,  true,  true,  true}, // chest
   { true,  true, false, false}, // jumper
   { true,  true,  true,  true}, // enemy

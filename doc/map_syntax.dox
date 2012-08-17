@@ -67,7 +67,7 @@ Here is the general syntax of the line of en entity
 (elements in square brackets are present only for some types of entities):
 
 \verbatim
-entity_type	layer	x	y	[width]	[height]	[entity_name]	[direction]	[subtype]	[specific_info…]
+entity_type	layer	x	y	[width]	[height]	[entity_name]	[direction]	[subtype]	[specific_info...]
 \endverbatim
 
 \c entity_type indicates what type of entity it is (according to the enumeration EntityType):
@@ -150,35 +150,37 @@ is placed above.
 
 \section destination Destination (1)
 
-A destination is a point of the map which is used as the destination of a teletransporter.
+A destination is a point of the map used as the destination of a teletransporter.
 A destination has a direction between 0 and 3: this is the direction that the hero takes
 when he comes on the destination point.
 A value of -1 means that his direction should not change.
-A destination point also has a name (used by the teletransporters).
-Its size is fixed (16*16 which is the size of the hero).
+A destination point also has a name to identify it (teletransporters refer to that name).
+Its size is fixed (16*16, which is the size of the hero).
 
 Syntax of a destination:
 \verbatim
-1	layer	x	y	entity_name	direction	subtype
+1	layer	x	y	entity_name	direction       sprite_name
 \endverbatim
 
-Subtypes of destination:
-- 0: usual, non-visible destination point
-- 1: visible destination point, displayed with an image of teletransporter destination
+\c sprite_name is an optional sprite that represents the destination on the map.
+The special value \c _none means no sprite (the destination will then be invisible).
 
 \section teletransporter Teletransporter (2)
 
-A teletransporter is a sensor that sends the hero to a destination on the same map or on another map.
+A teletransporter is a special detector that sends the hero to a destination
+on the same map or on another map.
 You can specify its size and a name.
 
 Syntax of a teletransporter:
 \verbatim
-2	layer	x	y	width	height	entity_name	subtype	transition	destination_map	destination
+2	layer	x	y	width	height	entity_name	sprite_name     sound_id   transition      destination_map	destination
 \endverbatim
 
-Subtypes of teletransporters:
-- 0: invisible teletransporter (for usual changes of maps)
-- 1: visible teletransporter (that displays a sprite of teletransporter)
+\c sprite_name is an optional sprite that represents the teletransporter on the map.
+The special value \c _none means no sprite (the teletransporter will then be invisible).
+
+\c sound_id is a sound to play when using the teletransporter.
+The special value \c _none means no sound.
 
 \c transition is a number that indicates the type of transition played
 when taking the teletransporter, according to the enumeration Transition.
@@ -197,7 +199,7 @@ No destination entity is needed when the value is \c _side or \c _same.
 \section pickable Pickable (3)
 
 A pickable is a treasure directly placed on the floor.
-The hero can pick it.
+The hero can pick it up.
 
 Syntax of a pickable:
 \verbatim

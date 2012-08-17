@@ -36,10 +36,10 @@ class CustomScreen: public Screen {
     void start();
     void stop();
 
-    // update and display
+    // update and drawing
     void notify_input(InputEvent& event);
     void update();
-    void display(Surface& dst_surface);
+    void draw(Surface& dst_surface);
 
   private:
 

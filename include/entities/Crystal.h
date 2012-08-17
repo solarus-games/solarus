@@ -54,7 +54,7 @@ class Crystal: public Detector {
     void activate(MapEntity& entity_activating);
 
     void update();
-    void display_on_map();
+    void draw_on_map();
     void set_suspended(bool suspended);
 };
 

@@ -63,7 +63,7 @@ class PauseSubmenuOptions: public PauseSubmenu {
     void set_cursor_position(int position);
     void action_key_pressed();
 
-    void display_cursor(Surface& dst_surface);
+    void draw_cursor(Surface& dst_surface);
 
   public:
 
@@ -72,7 +72,7 @@ class PauseSubmenuOptions: public PauseSubmenu {
 
     void key_pressed(GameControls::GameKey key);
     void update();
-    void display(Surface& dst_surface);
+    void draw(Surface& dst_surface);
 };
 
 #endif

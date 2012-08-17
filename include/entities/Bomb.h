@@ -38,8 +38,8 @@ class Bomb: public Detector {
 
     bool can_be_obstacle();
     bool can_detect_entities();
-    bool can_be_displayed();
-    bool is_displayed_in_y_order();
+    bool can_be_drawn();
+    bool is_drawn_in_y_order();
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_deep_water_obstacle();

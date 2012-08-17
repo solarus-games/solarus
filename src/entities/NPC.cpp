@@ -120,14 +120,14 @@ EntityType NPC::get_type() {
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
+ * @brief Returns whether this entity has to be drawn in y order.
  *
- * This function returns whether an entity of this type should be displayed above
+ * This function returns whether an entity of this type should be drawn above
  * the hero and other entities when it is in front of them.
  *
- * @return true if this entity is displayed at the same level as the hero
+ * @return true if this entity is drawn at the same level as the hero
  */
-bool NPC::is_displayed_in_y_order() {
+bool NPC::is_drawn_in_y_order() {
   // usual NPCs are displayed like the hero whereas generalized NPCs are
   // not necessarily people
   return subtype == USUAL_NPC;

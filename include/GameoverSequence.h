@@ -28,7 +28,7 @@
 /**
  * @brief The game over sequence displayed when the hero dies.
  * 
- * This class displayed the game over sequence.
+ * This class shows the game over sequence.
  * If the player has a fairy, a special animation occurs, the hero gets some life back and the game is resumed.
  * If he does not, the game over menu is displayed.
  */
@@ -85,9 +85,9 @@ class GameoverSequence {
     // state
     bool is_finished();
 
-    // update and display
+    // main loop
     void update();
-    void display(Surface& dst_surface);
+    void draw(Surface& dst_surface);
     void key_pressed(GameControls::GameKey key);
 };
 

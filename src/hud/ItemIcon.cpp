@@ -141,16 +141,16 @@ void ItemIcon::rebuild() {
   HudElement::rebuild();
 
   // background image
-  background_img->display(surface_drawn);
+  background_img->draw(surface_drawn);
 
   // item
   if (item_displayed.size() > 0) {
 
-    item_sprite->display(surface_drawn, 12, 17);
+    item_sprite->draw(surface_drawn, 12, 17);
 
     // counter
     if (counter_value_displayed != -1) {
-      counter->display(surface_drawn);
+      counter->draw(surface_drawn);
     }
   }
 }

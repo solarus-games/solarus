@@ -133,11 +133,11 @@ void SwordIcon::rebuild() {
       icon_position.set_y(24 * (sword_key_effect_displayed + sword_number_displayed - 1));
     }
 
-    img_sword_icon->display_region(icon_position, surface_drawn);
+    img_sword_icon->draw_region(icon_position, surface_drawn);
   }
   else {
     // draw the flipping sprite
-    sprite_sword_icon->display(surface_drawn, 24, 0);
+    sprite_sword_icon->draw(surface_drawn, 24, 0);
   }
 }
 

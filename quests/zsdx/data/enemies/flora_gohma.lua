@@ -68,7 +68,7 @@ function enemy:display_balls(x1, y1, x2, y2)
   local x_inc = (x2 - x1) / (nb_balls - 1)
   local y_inc = (y2 - y1) / (nb_balls - 1)
   for i = 1, nb_balls do
-    self:get_map():sprite_display(ball_sprite, x, y)
+    self:get_map():draw_sprite(ball_sprite, x, y)
     x = x + x_inc
     y = y + y_inc
   end

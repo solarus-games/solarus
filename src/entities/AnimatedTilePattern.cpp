@@ -103,14 +103,14 @@ void AnimatedTilePattern::update() {
 }
 
 /**
- * @brief Displays the tile image on a surface.
+ * @brief Draws the tile image on a surface.
  * @param dst_surface the surface to draw
- * @param dst_position position where tile pattern should be displayed on dst_surface
+ * @param dst_position position where tile pattern should be drawn on dst_surface
  * @param tileset the tileset of this tile
  * @param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
-void AnimatedTilePattern::display(Surface& dst_surface,
+void AnimatedTilePattern::draw(Surface& dst_surface,
     const Rectangle& dst_position, Tileset& tileset,
     const Rectangle& viewport) {
 
@@ -123,23 +123,23 @@ void AnimatedTilePattern::display(Surface& dst_surface,
         viewport.get_y() / ParallaxScrollingTilePattern::ratio);
   }
 
-  tileset_image.display_region(src, dst_surface, dst);
+  tileset_image.draw_region(src, dst_surface, dst);
 }
 
 /**
- * @brief Returns whether tiles having this tile pattern are displayed at their
+ * @brief Returns whether tiles having this tile pattern are drawn at their
  * position.
  *
- * Usually, this function returns true, and when it is the case, display() is
+ * Usually, this function returns true, and when it is the case, drawn() is
  * called only for tiles that are located in the current viewport.
  *
- * However, some tile patterns may want to be displayed even when they are not
+ * However, some tile patterns may want to be drawn even when they are not
  * in the viewport, typically to make an illusion of movement like parallax
  * scrolling.
  *
- * @return true to if this tile pattern is always displayed at its coordinates
+ * @return true to if this tile pattern is always drawn at its coordinates
  */
-bool AnimatedTilePattern::is_displayed_at_its_position() {
+bool AnimatedTilePattern::is_drawn_at_its_position() {
   return !parallax;
 }
 

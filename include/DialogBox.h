@@ -86,9 +86,9 @@ class DialogBox {
     const std::string& get_dialog_id();
     void show_all_now();
 
-    // update and display
+    // update and drawing
     void update();
-    void display(Surface& dst_surface);
+    void draw(Surface& dst_surface);
 
   private:
 

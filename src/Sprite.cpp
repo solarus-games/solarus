@@ -128,7 +128,7 @@ SpriteAnimationSet& Sprite::get_animation_set() {
 }
 
 /**
- * @brief When the sprite is displayed on a map, sets the map.
+ * @brief When the sprite is drawn on a map, sets the map.
  *
  * This function must be called if this sprite image depends on the map's tileset.
  *
@@ -188,7 +188,7 @@ const Rectangle& Sprite::get_origin() const {
  * @brief Returns the frame delay of the current animation.
  *
  * A value of 0 (only for 1-frame animations) means that the
- * animation must continue to be displayed: in this case,
+ * animation must continue to be drawn: in this case,
  * is_animation_finished() returns always false.
  *
  * @return the delay between two frames for the current animation (in miliseconds)
@@ -201,7 +201,7 @@ uint32_t Sprite::get_frame_delay() const {
  * @brief Sets the frame delay of the current animation.
  *
  * A value of 0 (only for 1-frame animations) means that the
- * animation will continue to be displayed.
+ * animation will continue to be drawn.
  *
  * @param frame_delay the delay between two frames for the current animation (in miliseconds)
  */
@@ -297,7 +297,7 @@ int Sprite::get_current_frame() const {
  *
  * If the animation was finished, it is restarted.
  * If the animation is suspended, it remains suspended
- * but the specified frame is displayed.
+ * but the specified frame is drawn.
  *
  * @param current_frame the current frame
  */
@@ -575,26 +575,26 @@ void Sprite::update() {
 }
 
 /**
- * @brief Displays the sprite on a surface, with its current animation,
+ * @brief Draws the sprite on a surface, with its current animation,
  * direction and frame.
  * @param dst_surface the destination surface
  * @param dst_position coordinates on the destination surface
  * (the origin will be placed at this position)
  */
-void Sprite::raw_display(Surface& dst_surface,
+void Sprite::raw_draw(Surface& dst_surface,
     const Rectangle& dst_position) {
 
   if (!is_animation_finished()
       && (blink_delay == 0 || blink_is_sprite_visible)) {
 
     if (intermediate_surface == NULL) {
-      current_animation->display(dst_surface, dst_position,
+      current_animation->draw(dst_surface, dst_position,
           current_direction, current_frame);
     }
     else {
-      current_animation->display(*intermediate_surface, dst_position,
+      current_animation->draw(*intermediate_surface, dst_position,
         current_direction, current_frame);
-      intermediate_surface->display(dst_surface);
+      intermediate_surface->draw(dst_surface);
     }
   }
 }
@@ -603,9 +603,9 @@ void Sprite::raw_display(Surface& dst_surface,
  * @brief Draws a transition effect on this drawable object.
  * @param transition The transition effect to apply.
  */
-void Sprite::display_transition(Transition& transition) {
+void Sprite::draw_transition(Transition& transition) {
 
-  transition.display(get_intermediate_surface());
+  transition.draw(get_intermediate_surface());
 }
 
 /**

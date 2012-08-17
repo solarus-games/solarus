@@ -31,7 +31,7 @@
  * Several sprites can have the same animation set (i.e. they share
  * the same SpriteAnimationSet object).
  *
- * A sprite can be displayed directly on a surface, or it can
+ * A sprite can be drawn directly on a surface, or it can
  * be attached to a map entity.
  */
 class Sprite: public Drawable {
@@ -94,10 +94,10 @@ class Sprite: public Drawable {
     // collisions
     bool test_collision(Sprite& other, int x1, int y1, int x2, int y2) const;
 
-    // udpate and display
+    // udpate and draw
     void update();
-    void raw_display(Surface& dst_surface, const Rectangle& dst_position);
-    void display_transition(Transition& transition);
+    void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
+    void draw_transition(Transition& transition);
 
     const std::string& get_lua_type_name() const;
 

@@ -93,7 +93,7 @@ class Destructible: public Detector {
     static CreationFunction parse;
 
     EntityType get_type();
-    bool is_displayed_in_y_order();
+    bool is_drawn_in_y_order();
 
     const std::string& get_animation_set_id();
     const std::string& get_destruction_sound_id();

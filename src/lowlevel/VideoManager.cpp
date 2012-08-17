@@ -348,9 +348,9 @@ const std::list<VideoManager::VideoMode> VideoManager::get_video_modes() {
 
 /**
  * @brief Blits a surface on the screen with the current video mode.
- * @param src_surface the source surface to display on the screen
+ * @param src_surface The source surface to draw on the screen.
  */
-void VideoManager::display(Surface& src_surface) {
+void VideoManager::draw(Surface& src_surface) {
 
   if (disable_window) {
     return;
@@ -389,7 +389,7 @@ void VideoManager::display(Surface& src_surface) {
  * @param dst_surface the destination surface
  */
 void VideoManager::blit(Surface& src_surface, Surface& dst_surface) {
-  src_surface.display(dst_surface);
+  src_surface.draw(dst_surface);
 }
 
 /**

@@ -265,15 +265,15 @@ void PauseSubmenuInventory::update() {
 }
 
 /**
- * @brief Displays this submenu.
+ * @brief Draws this submenu.
  * @param dst_surface the destination surface
  */
-void PauseSubmenuInventory::display(Surface& dst_surface) {
+void PauseSubmenuInventory::draw(Surface& dst_surface) {
 
-  // display the common part
-  PauseSubmenu::display(dst_surface);
+  // draw the common part
+  PauseSubmenu::draw(dst_surface);
 
-  // display each inventory item
+  // draw each inventory item
   Rectangle dst_xy(0, SOLARUS_SCREEN_HEIGHT_MIDDLE - 38);
 
   int k = 0;
@@ -288,12 +288,12 @@ void PauseSubmenuInventory::display(Surface& dst_surface) {
 
       if (equipment.has_item(item_name)) {
 
-	// the player has this item, display the variant he has
-	sprites[k]->display(dst_surface, dst_xy.get_x(), dst_xy.get_y());
+	// the player has this item, draw the variant he has
+	sprites[k]->draw(dst_surface, dst_xy.get_x(), dst_xy.get_y());
 
-	// display the counter (if any)
+	// draw the counter (if any)
 	if (counters[k] != NULL) {
-	  counters[k]->display(dst_surface);
+	  counters[k]->draw(dst_surface);
 	}
       }
 
@@ -302,15 +302,15 @@ void PauseSubmenuInventory::display(Surface& dst_surface) {
     dst_xy.add_y(32);
   }
 
-  // display the cursor
+  // draw the cursor
   int x = SOLARUS_SCREEN_WIDTH_MIDDLE - 96 + 32 * cursor_column;
   int y = SOLARUS_SCREEN_HEIGHT_MIDDLE - 43 + 32 * cursor_row;
 
-  cursor_sprite->display(dst_surface, x, y);
+  cursor_sprite->draw(dst_surface, x, y);
 
-  // display the item being assigned
+  // draw the item being assigned
   if (item_assigned_movement != NULL) {
-    item_assigned_sprite->display(dst_surface,
+    item_assigned_sprite->draw(dst_surface,
         item_assigned_movement->get_xy());
   }
 }

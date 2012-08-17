@@ -60,7 +60,7 @@ class PauseSubmenu {
      */
     virtual void update() = 0;
 
-    virtual void display(Surface& dst_surface);
+    virtual void draw(Surface& dst_surface);
 };
 
 #endif

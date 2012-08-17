@@ -22,7 +22,7 @@
 #include "KeysEffect.h"
 
 /**
- * @brief Displays the pause icon.
+ * @brief Draws the pause icon.
  *
  * This icon displays what happens when the player presses the pause key.
  * Usually, the icon indicates that the player can pause the pause

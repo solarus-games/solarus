@@ -138,29 +138,29 @@ bool Hero::can_detect_entities() {
 }
 
 /**
- * @brief Returns whether entities of this type can be displayed.
+ * @brief Returns whether entities of this type can be drawn.
  *
  * If yes, the sprites added by the add_sprite() calls will be 
- * displayed (if any).
+ * drawn (if any).
  *
- * @return true if this type of entity can be displayed
+ * @return true if this type of entity can be drawn
  */
-bool Hero::can_be_displayed() {
+bool Hero::can_be_drawn() {
   return true; 
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
+ * @brief Returns whether this entity has to be drawn in y order.
  *
- * This function returns whether an entity of this type should be displayed above
+ * This function returns whether an entity of this type should be drawn above
  * the hero and other entities having this property when it is in front of them.
  * This means that the displaying order of entities having this
  * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file), 
+ * are drawn in the normal order (i.e. as specified by the map file), 
  * and before the entities with the feature.
- * @return true if this type of entity is displayed at the same level as the hero
+ * @return true if this type of entity is drawn at the same level as the hero
  */
-bool Hero::is_displayed_in_y_order() {
+bool Hero::is_drawn_in_y_order() {
   return true;
 }
 
@@ -349,16 +349,16 @@ void Hero::check_gameover() {
 }
 
 /**
- * @brief Displays this entity on the map.
+ * @brief Draws this entity on the map.
  *
  * This function should draw the entity only if is_visible() returns true.
- * The hero is displayed with its current animation and at its current position.
+ * The hero is drawn with its current animation and at its current position.
  */
-void Hero::display_on_map() {
+void Hero::draw_on_map() {
 
   if (is_visible()) {
-    // the state may call get_sprites()->display_on_map() or make its own display
-    state->display_on_map();
+    // the state may call get_sprites()->draw_on_map() or make its own drawings
+    state->draw_on_map();
   }
 }
 
@@ -1886,7 +1886,7 @@ void Hero::hurt(const Rectangle& source_xy, int life_points, int magic_points) {
 }
 
 /**
- * @brief Displays a grass sprite below the hero and makes him walk slower.
+ * @brief Draws a grass sprite below the hero and makes him walk slower.
  */
 void Hero::start_grass() {
 
@@ -1900,7 +1900,7 @@ void Hero::start_grass() {
 }
 
 /**
- * @brief Displays a shallow water sprite below the hero and makes him walk
+ * @brief Draws a shallow water sprite below the hero and makes him walk
  * slower.
  */
 void Hero::start_shallow_water() {

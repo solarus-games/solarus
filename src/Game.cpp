@@ -367,8 +367,8 @@ void Game::update_transitions() {
         // that want to display both maps at the same time
         if (needs_previous_surface) {
           previous_map_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
-          current_map->display();
-          current_map->get_visible_surface().display(*previous_map_surface);
+          current_map->draw();
+          current_map->get_visible_surface().draw(*previous_map_surface);
         }
 
         // set the next map
@@ -448,39 +448,39 @@ void Game::update_gameover_sequence() {
 }
 
 /**
- * @brief Displays the game.
- * @param dst_surface the surface where the game will be displayed
+ * @brief Draws the game.
+ * @param dst_surface The surface where the game will be drawn.
  */
-void Game::display(Surface& dst_surface) {
+void Game::draw(Surface& dst_surface) {
 
   get_lua_context().game_on_pre_draw(*this, dst_surface);
 
-  // display the map
+  // draw the map
   if (current_map->is_loaded()) {
-    current_map->display();
+    current_map->draw();
     if (transition != NULL) {
-      transition->display(current_map->get_visible_surface());
+      transition->draw(current_map->get_visible_surface());
     }
-    current_map->get_visible_surface().display(dst_surface);
+    current_map->get_visible_surface().draw(dst_surface);
 
-    // display the pause screen if any
+    // draw the pause screen if any
     if (is_paused()) {
-      pause_menu->display(dst_surface);
+      pause_menu->draw(dst_surface);
     }
 
-    // display the game over sequence if any
+    // draw the game over sequence if any
     else if (is_showing_gameover()) {
-      gameover_sequence->display(dst_surface);
+      gameover_sequence->draw(dst_surface);
     }
 
-    // display the hud
+    // draw the hud
     if (hud_enabled) {
-      hud->display(dst_surface);
+      hud->draw(dst_surface);
     }
 
-    // display the dialog box if any
+    // draw the dialog box if any
     if (is_showing_dialog()) {
-      dialog_box->display(dst_surface);
+      dialog_box->draw(dst_surface);
     }
   }
 

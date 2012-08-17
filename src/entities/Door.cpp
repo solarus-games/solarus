@@ -353,12 +353,12 @@ void Door::update() {
 }
 
 /**
- * @brief Displays the entity on the map.
+ * @brief Draws the entity on the map.
  */
-void Door::display_on_map() {
+void Door::draw_on_map() {
 
   if (has_sprite() && (!is_open() || changing)) {
-    Detector::display_on_map();
+    Detector::draw_on_map();
   }
 }
 

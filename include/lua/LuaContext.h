@@ -488,7 +488,7 @@ class LuaContext {
       map_api_light_get,
       map_api_light_set,
       map_api_camera_move,
-      map_api_sprite_display,
+      map_api_draw_sprite,
       map_api_tileset_get,
       map_api_tileset_set,
       map_api_treasure_give,

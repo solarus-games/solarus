@@ -127,7 +127,7 @@ void HudElement::set_visible(bool visible) {
 /**
  * @brief Returns whether this hud element is visible.
  *
- * The display() function does nothing if this function
+ * The draw() function does nothing if this function
  * returns false.
  *
  * @return true if this hud element is visible, false otherwise
@@ -194,13 +194,13 @@ void HudElement::update() {
 }
 
 /**
- * @brief Displays the hud element on a surface.
+ * @brief Draws the hud element on a surface.
  * @param dst_surface the destination surface
  */
-void HudElement::display(Surface& dst_surface) {
+void HudElement::draw(Surface& dst_surface) {
 
   if (is_visible() && (!blinking || blinking_is_visible)) {
-    surface_drawn.display(dst_surface, dst_position);
+    surface_drawn.draw(dst_surface, dst_position);
   }
 }
 

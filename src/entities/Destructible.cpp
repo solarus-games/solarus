@@ -130,14 +130,14 @@ EntityType Destructible::get_type() {
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
+ * @brief Returns whether this entity has to be drawn in y order.
  *
- * Rhis function returns whether an entity of this type should be displayed above
+ * Rhis function returns whether an entity of this type should be drawn above
  * the hero and other entities when it is in front of them.
  *
- * @return true if this entity is displayed at the same level as the hero
+ * @return true if this entity is drawn at the same level as the hero
  */
-bool Destructible::is_displayed_in_y_order() {
+bool Destructible::is_drawn_in_y_order() {
   return false;
 }
 
@@ -198,7 +198,7 @@ bool Destructible::is_obstacle_for(MapEntity &other) {
 /**
  * @brief Tests whether an entity's collides with this entity.
  *
- * This custom collision test is used for destructible items that change the ground displayed under the hero.
+ * This custom collision test is used for destructible items that change the ground drawn under the hero.
  *
  * @param entity an entity
  * @return true if the entity's collides with this entity
@@ -364,7 +364,7 @@ void Destructible::play_destroy_animation() {
   is_being_cut = true;
   Sound::play(get_destruction_sound_id());
   get_sprite().set_current_animation("destroy");
-  if (!is_displayed_in_y_order()) {
+  if (!is_drawn_in_y_order()) {
     get_entities().bring_to_front(this); // show animation destroy to front
   }
 }

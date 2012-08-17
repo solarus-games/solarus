@@ -184,28 +184,28 @@ void PauseMenu::update() {
 }
 
 /**
- * @brief Displays the pause menu.
+ * @brief Draws the pause menu.
  * @param dst_surface the surface to draw
  */
-void PauseMenu::display(Surface& dst_surface) {
+void PauseMenu::draw(Surface& dst_surface) {
 
-  // display the background for the current submenu
+  // draw the background for the current submenu
   int submenu_index = savegame.get_integer(Savegame::PAUSE_LAST_SUBMENU);
   Rectangle src_position(320 * submenu_index, 0, 320, 240);
   Rectangle dst_position((SOLARUS_SCREEN_WIDTH - 320) / 2, (SOLARUS_SCREEN_HEIGHT - 240) / 2);
-  backgrounds_surface->display_region(src_position, dst_surface, dst_position);
+  backgrounds_surface->draw_region(src_position, dst_surface, dst_position);
 
-  // display the current submenu content
-  current_submenu->display(dst_surface);
+  // draw the current submenu content
+  current_submenu->draw(dst_surface);
 
-  // display the save dialog
+  // draw the save dialog
   if (save_dialog_state > 0) {
-    save_dialog_sprite->display(dst_surface,
+    save_dialog_sprite->draw(dst_surface,
         SOLARUS_SCREEN_WIDTH_MIDDLE - 110, SOLARUS_SCREEN_HEIGHT_MIDDLE - 33);
-    question_text[0]->display(dst_surface);
-    question_text[1]->display(dst_surface);
-    answer_text[0]->display(dst_surface);
-    answer_text[1]->display(dst_surface);
+    question_text[0]->draw(dst_surface);
+    question_text[1]->draw(dst_surface);
+    answer_text[0]->draw(dst_surface);
+    answer_text[1]->draw(dst_surface);
   }
 }
 

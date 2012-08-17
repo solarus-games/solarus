@@ -82,7 +82,7 @@ class Door: public Detector {
     bool is_obstacle_for(MapEntity &other);
     void set_suspended(bool suspended);
     void update();
-    void display_on_map();
+    void draw_on_map();
     std::string get_sword_tapping_sound();
     void action_key_pressed();
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);

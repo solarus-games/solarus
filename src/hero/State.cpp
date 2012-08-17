@@ -167,14 +167,14 @@ void Hero::State::update() {
 }
 
 /**
- * @brief Displays this state.
+ * @brief Draws this state.
  *
- * This function displays the hero's sprites in its current state.
- * If your state needs to display additional elements, you can redefine this function.
+ * This function draws the hero's sprites in its current state.
+ * If your state needs to draw additional elements, you can redefine this function.
  */
-void Hero::State::display_on_map() {
+void Hero::State::draw_on_map() {
 
-  get_sprites().display_on_map();
+  get_sprites().draw_on_map();
 }
 
 /**

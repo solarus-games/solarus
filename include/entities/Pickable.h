@@ -82,7 +82,7 @@ class Pickable: public Detector {
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
     void update();
-    void display_on_map();
+    void draw_on_map();
 };
 
 #endif

@@ -458,19 +458,19 @@ void Pickable::update() {
 }
 
 /**
- * @brief Displays the pickable item on the map.
+ * @brief Draws the pickable item on the map.
  *
- * This is a redefinition of MapEntity::display_on_map
- * to display the shadow independently of the item movement.
+ * This is a redefinition of MapEntity::draw_on_map
+ * to draw the shadow independently of the item movement.
  */
-void Pickable::display_on_map() {
+void Pickable::draw_on_map() {
 
-  // display the shadow
+  // draw the shadow
   if (shadow_sprite != NULL) {
-    get_map().display_sprite(*shadow_sprite, shadow_xy.get_x(), shadow_xy.get_y());
+    get_map().draw_sprite(*shadow_sprite, shadow_xy.get_x(), shadow_xy.get_y());
   }
 
-  // display the sprite
-  MapEntity::display_on_map();
+  // draw the sprite
+  MapEntity::draw_on_map();
 }
 

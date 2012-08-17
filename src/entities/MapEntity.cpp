@@ -75,7 +75,7 @@ MapEntity::CreationFunction* MapEntity::creation_functions[] = {
 
 
 const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
-  // can_be_obstacle, can_detect_entities, can_be_displayed, is_displayed_in_y_order
+  // can_be_obstacle, can_detect_entities, can_be_drawn, is_drawn_in_y_order
   // TODO isn't can_detect_entities stupid? just redefine the function in Detector should work
   {false, false, false, false}, // tile (not used)
   {false, false,  true, false}, // destination point
@@ -245,31 +245,31 @@ bool MapEntity::can_detect_entities() {
 }
 
 /**
- * @brief Returns whether entities of this type can be displayed.
+ * @brief Returns whether entities of this type can be drawn.
  *
  * If yes, the sprites added by the add_sprite() calls will be
- * displayed (if any).
+ * drawn (if any).
  *
- * @return true if this type of entity can be displayed
+ * @return true if this type of entity can be drawn
  */
-bool MapEntity::can_be_displayed() {
-  return entity_types_features[get_type()].can_be_displayed;
+bool MapEntity::can_be_drawn() {
+  return entity_types_features[get_type()].can_be_drawn;
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
+ * @brief Returns whether this entity has to be drawn in y order.
  *
- * This function returns whether an entity of this type should be displayed above
+ * This function returns whether an entity of this type should be drawn above
  * the hero and other entities having this property when it is in front of them.
  * This means that the displaying order of entities having this
  * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file),
+ * are drawn in the normal order (i.e. as specified by the map file),
  * and before the entities with the feature.
  *
- * @return true if this type of entity is displayed at the same level as the hero
+ * @return true if this type of entity is drawn at the same level as the hero
  */
-bool MapEntity::is_displayed_in_y_order() {
-  return entity_types_features[get_type()].is_displayed_in_y_order;
+bool MapEntity::is_drawn_in_y_order() {
+  return entity_types_features[get_type()].is_drawn_in_y_order;
 }
 
 /**
@@ -617,7 +617,7 @@ void MapEntity::set_top_left_xy(int x, int y) {
 }
 
 /**
- * @brief Returns the coordinates where this entity should be displayed.
+ * @brief Returns the coordinates where this entity should be drawn.
  *
  * Most of the time, this function just returns get_xy().
  * But when the entity is moving, the movement may decide to display the
@@ -1940,26 +1940,26 @@ void MapEntity::update() {
  * @return true if the entity is visible and has a sprite in the visible part
  * of the map
  */
-bool MapEntity::is_displayed() {
+bool MapEntity::is_drawn() {
 
   return is_visible() && overlaps_camera();
 }
 
 /**
- * @brief Displays the entity on the map.
+ * @brief Draws the entity on the map.
  *
- * By default, this function displays the entity's sprites (if any) and if
+ * By default, this function draws the entity's sprites (if any) and if
  * at least one of them is in the visible part of the map.
  */
-void MapEntity::display_on_map() {
+void MapEntity::draw_on_map() {
 
-  if (is_displayed()) {
-    // display the sprites
+  if (is_drawn()) {
+    // draw the sprites
     std::list<Sprite*>::iterator it;
     for (it = sprites.begin(); it != sprites.end(); it++) {
 
       Sprite& sprite = *(*it);
-      get_map().display_sprite(sprite, get_displayed_xy());
+      get_map().draw_sprite(sprite, get_displayed_xy());
     }
   }
 }

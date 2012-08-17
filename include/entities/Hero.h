@@ -130,8 +130,8 @@ class Hero: public MapEntity {
     EntityType get_type();
     bool can_be_obstacle();
     bool can_detect_entities();
-    bool can_be_displayed();
-    bool is_displayed_in_y_order();
+    bool can_be_drawn();
+    bool is_drawn_in_y_order();
 
     /**
      * @name Game loop.
@@ -139,7 +139,7 @@ class Hero: public MapEntity {
      * Functions called by the game loop.
      */
     void update();
-    void display_on_map();
+    void draw_on_map();
     void set_suspended(bool suspended);
     void key_pressed(GameControls::GameKey key);
     void key_released(GameControls::GameKey key);
@@ -148,7 +148,7 @@ class Hero: public MapEntity {
      * @name Sprites.
      *
      * Functions relative to the sprites.
-     * The sprites are managed and displayed by the class HeroSprites.
+     * The sprites are managed and drawn by the class HeroSprites.
      */
     HeroSprites& get_sprites();
     int get_animation_direction();

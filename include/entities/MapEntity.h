@@ -61,14 +61,14 @@ class MapEntity: public ExportableToLua {
                                                  * of the hero or other entities (this is possible only for
                                                  * suclasses of Detector). If enabled, the function
                                                  * collision() will be called when a collision is detected. */
-      bool can_be_displayed;                    /**< Allows entities of this type to be displayed.
+      bool can_be_drawn;                        /**< Allows entities of this type to be drawn.
                                                  * If enabled, the sprites added by the add_sprite() calls will be
-                                                 * displayed (if any). */
-      bool is_displayed_in_y_order;             /**< Allows an entity of this type to be displayed above
+                                                 * drawn (if any). */
+      bool is_drawn_in_y_order;                 /**< Allows an entity of this type to be drawn above
                                                  * the hero and other entities having this property when it is in front of them.
                                                  * This means that the displaying order of entities having this
                                                  * feature depends on their y position. The entities without this feature
-                                                 * are displayed in the normal order (i.e. as specified by the map file),
+                                                 * are drawn in the normal order (i.e. as specified by the map file),
                                                  * and before the entities with the feature. */
     };
 
@@ -171,8 +171,8 @@ class MapEntity: public ExportableToLua {
     bool is_hero();
     virtual bool can_be_obstacle();
     virtual bool can_detect_entities();
-    virtual bool can_be_displayed();
-    virtual bool is_displayed_in_y_order();
+    virtual bool can_be_drawn();
+    virtual bool is_drawn_in_y_order();
 
     // adding to a map
     bool is_on_map();
@@ -333,8 +333,8 @@ class MapEntity: public ExportableToLua {
     bool is_suspended();
     virtual void set_suspended(bool suspended);
     virtual void update();
-    bool is_displayed();
-    virtual void display_on_map();
+    bool is_drawn();
+    virtual void draw_on_map();
 
     virtual const std::string& get_lua_type_name() const;
 };

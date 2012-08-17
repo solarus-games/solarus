@@ -146,7 +146,7 @@ const Rectangle Surface::get_size() const {
 /**
  * @brief Sets the transparency color of this surface.
  *
- * Pixels in that color will not be displayed.
+ * Pixels in that color will not be drawn.
  *
  * @param color the transparency color to set
  */
@@ -179,7 +179,7 @@ void Surface::set_opacity(int opacity) {
  * The rectangle specified may be partially outside this rectangle
  * (then it will be resized to fit inside).
  *
- * @param clipping_rectangle a subarea of the rectangle to restrict the display to
+ * @param clipping_rectangle a subarea of the rectangle to restrict the drawing to
  */
 void Surface::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
 
@@ -215,7 +215,7 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
  * @param dst_surface the destination surface
  * @param dst_position coordinates on the destination surface
  */
-void Surface::raw_display(Surface& dst_surface,
+void Surface::raw_draw(Surface& dst_surface,
     const Rectangle& dst_position) {
 
   Rectangle dst_position2(dst_position);
@@ -227,8 +227,8 @@ void Surface::raw_display(Surface& dst_surface,
  * @brief Draws a transition effect on this drawable object.
  * @param transition The transition effect to apply.
  */
-void Surface::display_transition(Transition& transition) {
-  transition.display(*this);
+void Surface::draw_transition(Transition& transition) {
+  transition.draw(*this);
 }
 
 /**
@@ -239,7 +239,7 @@ void Surface::display_transition(Transition& transition) {
  * @param src_position the subrectangle of this surface to pick
  * @param dst_surface the destination surface
  */
-void Surface::display_region(const Rectangle& src_position, Surface& dst_surface) {
+void Surface::draw_region(const Rectangle& src_position, Surface& dst_surface) {
 
   Rectangle src_position2(src_position);
   SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(),
@@ -252,7 +252,7 @@ void Surface::display_region(const Rectangle& src_position, Surface& dst_surface
  * @param dst_surface the destination surface
  * @param dst_position the destination position where the current surface will be blitted on dst
  */
-void Surface::display_region(const Rectangle &src_position, Surface& dst_surface,
+void Surface::draw_region(const Rectangle &src_position, Surface& dst_surface,
     const Rectangle &dst_position) {
 
   Rectangle src_position2(src_position);

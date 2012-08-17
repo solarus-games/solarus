@@ -26,7 +26,7 @@
 /**
  * @brief An item the hero can buy in a shop.
  *
- * The item is automatically displayed with its icon,
+ * The item is automatically drawn with its icon,
  * the amount and the price. When the hero presses the action
  * key in front of it, a dialog is automatically showed and
  * the hero can buy the item.
@@ -66,7 +66,7 @@ class ShopItem: public Detector {
     void action_key_pressed();
 
     void update();
-    void display_on_map();
+    void draw_on_map();
 };
 
 #endif

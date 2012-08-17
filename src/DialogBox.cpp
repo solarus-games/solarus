@@ -546,10 +546,10 @@ void DialogBox::update() {
 }
 
 /**
- * @brief Displays the dialog box on a surface.
+ * @brief Draws the dialog box on a surface.
  * @param dst_surface the surface
  */
-void DialogBox::display(Surface& dst_surface) {
+void DialogBox::draw(Surface& dst_surface) {
 
   int x = box_dst_position.get_x();
   int y = box_dst_position.get_y();
@@ -557,24 +557,24 @@ void DialogBox::display(Surface& dst_surface) {
   dialog_surface.fill_with_color(Color::get_black());
 
   if (style == STYLE_WITHOUT_FRAME) {
-    // display a dark rectangle
+    // draw a dark rectangle
     dst_surface.fill_with_color(Color::get_black(), box_dst_position);
   }
   else {
-    // display the dialog box
-    box_img.display_region(box_src_position, dialog_surface, box_dst_position);
+    // draw the dialog box
+    box_img.draw_region(box_src_position, dialog_surface, box_dst_position);
   }
 
-  // display the text
+  // draw the text
   for (int i = 0; i < nb_visible_lines; i++) {
-    line_surfaces[i]->display(dialog_surface);
+    line_surfaces[i]->draw(dialog_surface);
   }
 
-  // display the icon
+  // draw the icon
   if (icon_number != -1) {
     Rectangle src_position(0, 0, 16, 16);
     src_position.set_xy(16 * (icon_number % 10), 16 * (icon_number / 10));
-    icons_img.display_region(src_position, dialog_surface, icon_dst_position);
+    icons_img.draw_region(src_position, dialog_surface, icon_dst_position);
 
     question_dst_position.set_x(x + 50);
   }
@@ -582,21 +582,21 @@ void DialogBox::display(Surface& dst_surface) {
     question_dst_position.set_x(x + 18);
   }
 
-  // display the question arrow
+  // draw the question arrow
   if (dialog.is_question()
       && is_full()
       && !has_more_lines()) {
-    box_img.display_region(question_src_position, dialog_surface,
+    box_img.draw_region(question_src_position, dialog_surface,
         question_dst_position);
   }
 
-  // display the end message arrow
+  // draw the end message arrow
   if (is_full()) {
-    end_lines_sprite.display(dialog_surface, x + 103, y + 56);
+    end_lines_sprite.draw(dialog_surface, x + 103, y + 56);
   }
 
   // final blit
-  dialog_surface.display(dst_surface);
+  dialog_surface.draw(dst_surface);
 }
 
 /**

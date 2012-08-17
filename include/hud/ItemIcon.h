@@ -21,7 +21,7 @@
 #include "hud/HudElement.h"
 
 /**
- * @brief Displays the item currently assigned to one of both inventory item keys.
+ * @brief Draws the item currently assigned to one of both inventory item keys.
  *
  * Two keys (by default X and V) control the inventory items and
  * the player can choose what inventory items are assigned to those keys.

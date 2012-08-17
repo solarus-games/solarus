@@ -64,16 +64,16 @@ class Surface: public Drawable {
     void fill_with_color(Color& color);
     void fill_with_color(Color& color, const Rectangle& where);
 
-    void display_region(const Rectangle& src_position, Surface& dst_surface);
-    void display_region(const Rectangle& src_position, Surface& dst_surface, const Rectangle& dst_position);
+    void draw_region(const Rectangle& src_position, Surface& dst_surface);
+    void draw_region(const Rectangle& src_position, Surface& dst_surface, const Rectangle& dst_position);
 
     const std::string& get_lua_type_name() const;
 
   protected:
 
     // implementation from Drawable
-    void raw_display(Surface& dst_surface, const Rectangle& dst_position);
-    void display_transition(Transition& transition);
+    void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
+    void draw_transition(Transition& transition);
 
   private:
 

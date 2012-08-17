@@ -29,7 +29,7 @@
  *
  * To create a screen, you have to implement a subclass of Screen.
  * The main loop will call three methods that you must implement:
- * - display(): to draw your screen on the main surface. This function
+ * - draw(): to draw your screen on the main surface. This function
  * is called a certain number of times per second (which is the FPS number).
  * - update(): to update your screen's internal data (this function is
  * called repeatedly). This is useful to update the
@@ -38,7 +38,7 @@
  * (such as a keyboard key or a joypad button that was just pressed).
  *
  * Basically, the program main loop calls these three functions. If it has enough
- * time (depending on how long are the update() and display() calls), it can choose
+ * time (depending on how long are the update() and draw() calls), it can choose
  * to sleep between two loops.
  *
  * When your screen is finished and you want to go to another screen,
@@ -67,14 +67,14 @@ class Screen {
     virtual void update() = 0;
 
     /**
-     * @brief Displays this screen on a surface.
+     * @brief Draws this screen on a surface.
      *
      * This function is called by the main loop depending of the number of
      * frames per second.
      *
      * @param dst_surface the surface to draw
      */
-    virtual void display(Surface& dst_surface) = 0;
+    virtual void draw(Surface& dst_surface) = 0;
 
     /**
      * @brief Notifies this screen that an event just occurred.

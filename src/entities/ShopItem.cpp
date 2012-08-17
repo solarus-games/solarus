@@ -241,25 +241,25 @@ void ShopItem::update() {
 }
 
 /**
- * @brief Displays the entity on the map.
+ * @brief Draws the entity on the map.
  */
-void ShopItem::display_on_map() {
+void ShopItem::draw_on_map() {
 
   Surface& map_surface = get_map().get_visible_surface();
   int x = get_x();
   int y = get_y();
 
-  // display the treasure
+  // draw the treasure
   const Rectangle& camera_position = get_map().get_camera_position();
-  treasure.display(map_surface,
+  treasure.draw(map_surface,
       x + 16 - camera_position.get_x(),
       y + 13 - camera_position.get_y());
 
-  // also display the price
-  price_digits.display(map_surface,
+  // also draw the price
+  price_digits.draw(map_surface,
       x + 12 - camera_position.get_x(),
       y + 21 - camera_position.get_y());
-  rupee_icon_sprite.display(map_surface,
+  rupee_icon_sprite.draw(map_surface,
       x - camera_position.get_x(),
       y + 22 - camera_position.get_y());
 }

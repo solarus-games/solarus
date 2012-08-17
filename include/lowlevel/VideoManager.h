@@ -22,7 +22,7 @@
 #include <list>
 
 /**
- * @brief Displays the window and handles the video mode.
+ * @brief Draws the window and handles the video mode.
  */
 class VideoManager {
 
@@ -35,14 +35,14 @@ class VideoManager {
     NO_MODE = -1,             /**< special value to mean no information */
     WINDOWED_STRETCHED,       /**< the game surface is stretched into a double-size window (default) */
     WINDOWED_SCALE2X,         /**< the game surface is scaled into a double-size window with the Scale2x algorithm */
-    WINDOWED_NORMAL,          /**< the game surface is displayed on a window of the same size */
-    FULLSCREEN_NORMAL,        /**< the game surface is displayed in fullscreen */
+    WINDOWED_NORMAL,          /**< the game surface is drawn on a window of the same size */
+    FULLSCREEN_NORMAL,        /**< the game surface is drawn in fullscreen */
     FULLSCREEN_WIDE,          /**< the game surface is stretched into a double-size surface
-                               * and then displayed on a widescreen resolution if possible
+                               * and then drawn on a widescreen resolution if possible
                                * with two black side bars */
     FULLSCREEN_SCALE2X,       /**< the game surface is scaled into a double-size screen with the Scale2x algorithm */
     FULLSCREEN_SCALE2X_WIDE,  /**< the game surface is scaled into a double-size surface with the Scale2x algorithm
-                               * and then displayed on a widescreen resolution if possible
+                               * and then drawn on a widescreen resolution if possible
                                * with two black side bars */
     NB_MODES                  /**< number of existing video modes */
   };
@@ -93,7 +93,7 @@ class VideoManager {
   void set_fullscreen(bool fullscreen);
   void switch_fullscreen();
 
-  void display(Surface& src_surface);
+  void draw(Surface& src_surface);
 };
 
 #endif

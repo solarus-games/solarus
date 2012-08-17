@@ -99,7 +99,7 @@ class Game: public Screen {
     // functions called by the main loop
     void notify_input(InputEvent &event);
     void update();
-    void display(Surface& dst_surface);
+    void draw(Surface& dst_surface);
 
     // game controls
     void key_pressed(GameControls::GameKey key);

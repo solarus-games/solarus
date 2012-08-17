@@ -68,10 +68,10 @@ class MapEntities {
     std::list<MapEntity*> entities_to_remove;       /**< list of entities that need to be removed right now */
 
     std::list<MapEntity*>
-      entities_displayed_first[LAYER_NB];           /**< all map entities that are displayed in the normal order */
+      entities_drawn_first[LAYER_NB];               /**< all map entities that are drawn in the normal order */
 
     std::list<MapEntity*>
-      entities_displayed_y_order[LAYER_NB];         /**< all map entities that are displayed in the order
+      entities_drawn_y_order[LAYER_NB];             /**< all map entities that are drawn in the order
                                                      * defined by their y position, including the hero */
 
     std::list<Detector*> detectors;                 /**< all entities able to detect other entities
@@ -135,7 +135,7 @@ class MapEntities {
     void notify_map_opening_transition_finished();
     void set_suspended(bool suspended);
     void update();
-    void display();
+    void draw();
 };
 
 /**

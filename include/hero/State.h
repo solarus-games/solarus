@@ -65,7 +65,7 @@ class Hero::State {
 
     // game loop
     virtual void update();
-    virtual void display_on_map();
+    virtual void draw_on_map();
     virtual void set_suspended(bool suspended);
     void key_pressed(GameControls::GameKey key);
     void key_released(GameControls::GameKey key);

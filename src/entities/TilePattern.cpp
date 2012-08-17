@@ -89,12 +89,12 @@ void TilePattern::update() {
 }
 
 /**
- * @brief Returns whether this tile pattern is animated, i.e. not always displayed
+ * @brief Returns whether this tile pattern is animated, i.e. not always drawn
  * the same way.
  *
  * Non-animated tiles may be rendered faster by using intermediate surfaces
  * that are drawn only once.
- * This function should return false if the tile pattern is always displayed the same way.
+ * This function should return false if the tile pattern is always drawn the same way.
  * Returns true by default.
  *
  * @return true if this tile pattern is animated
@@ -104,19 +104,19 @@ bool TilePattern::is_animated() {
 }
 
 /**
- * @brief Returns whether tiles having this tile pattern are displayed at their
+ * @brief Returns whether tiles having this tile pattern are drawn at their
  * position.
  *
- * Usually, this function returns true, and when it is the case, display() is
+ * Usually, this function returns true, and when it is the case, draw() is
  * called only for tiles that are located in the current viewport.
  *
- * However, some tile patterns may want to be displayed even when they are not
+ * However, some tile patterns may want to be drawn even when they are not
  * in the viewport, typically to make an illusion of movement like parallax
  * scrolling.
  *
- * @return true if tiles having this pattern are displayed where they are placed
+ * @return true if tiles having this pattern are drawn where they are placed
  */
-bool TilePattern::is_displayed_at_its_position() {
+bool TilePattern::is_drawn_at_its_position() {
   return true;
 }
 

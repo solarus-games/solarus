@@ -53,7 +53,7 @@ class Block: public Detector {
     static CreationFunction parse;
 
     EntityType get_type();
-    bool is_displayed_in_y_order();
+    bool is_drawn_in_y_order();
 
     bool is_obstacle_for(MapEntity& other);
     bool is_hole_obstacle();

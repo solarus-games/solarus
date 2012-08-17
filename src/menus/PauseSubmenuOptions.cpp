@@ -148,9 +148,9 @@ void PauseSubmenuOptions::load_control_texts() {
     const std::string &joypad_text = controls.get_joypad_string(key);
     joypad_control_texts[i]->set_text(joypad_text.substr(0, 9));
 
-    game_key_texts[i]->display(*controls_surface);
-    keyboard_control_texts[i]->display(*controls_surface);
-    joypad_control_texts[i]->display(*controls_surface);
+    game_key_texts[i]->draw(*controls_surface);
+    keyboard_control_texts[i]->draw(*controls_surface);
+    joypad_control_texts[i]->draw(*controls_surface);
   }
 }
 
@@ -276,53 +276,53 @@ void PauseSubmenuOptions::update() {
 }
 
 /**
- * @brief Displays this submenu.
+ * @brief Draws this submenu.
  * @param dst_surface the destination surface
  */
-void PauseSubmenuOptions::display(Surface& dst_surface) {
+void PauseSubmenuOptions::draw(Surface& dst_surface) {
 
-  PauseSubmenu::display(dst_surface);
+  PauseSubmenu::draw(dst_surface);
 
-  // display the cursor
-  display_cursor(dst_surface);
+  // draw the cursor
+  draw_cursor(dst_surface);
 
-  // display the text
-  video_mode_text->display(dst_surface);
+  // draw the text
+  video_mode_text->draw(dst_surface);
 
-  controls_text->display(dst_surface);
-  keyboard_text->display(dst_surface);
-  joypad_text->display(dst_surface);
+  controls_text->draw(dst_surface);
+  keyboard_text->draw(dst_surface);
+  joypad_text->draw(dst_surface);
 
   Rectangle src_position(0, controls_visible_y, 215, 84);
     static Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 107,
         SOLARUS_SCREEN_HEIGHT_MIDDLE - 18);
-  controls_surface->display_region(src_position, dst_surface, dst_position);
+  controls_surface->draw_region(src_position, dst_surface, dst_position);
 
-  // display the arrows
+  // draw the arrows
   if (controls_visible_y > 0) {
-    up_arrow_sprite->display(dst_surface,
+    up_arrow_sprite->draw(dst_surface,
         SOLARUS_SCREEN_WIDTH_MIDDLE - 64,
         SOLARUS_SCREEN_HEIGHT_MIDDLE - 24);
-    up_arrow_sprite->display(dst_surface,
+    up_arrow_sprite->draw(dst_surface,
         SOLARUS_SCREEN_WIDTH_MIDDLE + 91,
         SOLARUS_SCREEN_HEIGHT_MIDDLE - 24);
   }
 
   if (controls_visible_y < 60) {
-    down_arrow_sprite->display(dst_surface,
+    down_arrow_sprite->draw(dst_surface,
         SOLARUS_SCREEN_WIDTH_MIDDLE - 64,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 62);
-    down_arrow_sprite->display(dst_surface,
+    down_arrow_sprite->draw(dst_surface,
         SOLARUS_SCREEN_WIDTH_MIDDLE + 91,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 62);
   }
 }
 
 /**
- * @brief Displays the cursor.
+ * @brief Draws the cursor.
  * @param dst_surfacethe destination surface
  */
-void PauseSubmenuOptions::display_cursor(Surface& dst_surface) {
-  cursor_sprite->display(dst_surface, cursor_sprite_position);
+void PauseSubmenuOptions::draw_cursor(Surface& dst_surface) {
+  cursor_sprite->draw(dst_surface, cursor_sprite_position);
 }
 

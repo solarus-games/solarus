@@ -95,7 +95,7 @@ Treasure& Treasure::operator=(const Treasure& other) {
  *
  * If the item is "_random", this function must be called before any function
  * that needs to know the treasure content:
- * get_item_name(), get_item_properties(), is_empty(), give_to_player() and display().
+ * get_item_name(), get_item_properties(), is_empty(), give_to_player() and draw().
  * If the item is not "_random", this function has no effect.
  */
 void Treasure::decide_content() {
@@ -202,21 +202,21 @@ void Treasure::give_to_player() const {
 }
 
 /**
- * @brief Displays the treasure.
+ * @brief Draws the treasure.
  * @param dst_surface the surface where to draw
  * @param x the treasure x position on this surface
  * @param y the treasure y position on this surface
  */
-void Treasure::display(Surface& dst_surface, int x, int y) {
+void Treasure::draw(Surface& dst_surface, int x, int y) {
 
   if (sprite == NULL) {
-    // create the sprite only if needed (many treasures are actually never displayed)
+    // create the sprite only if needed (many treasures are actually never drawn)
     sprite = new Sprite("entities/items");
     sprite->set_current_animation(get_item_name());
     sprite->set_current_direction(get_variant() - 1);
   }
 
-  // display the item
-  sprite->display(dst_surface, x, y);
+  // draw the item
+  sprite->draw(dst_surface, x, y);
 }
 

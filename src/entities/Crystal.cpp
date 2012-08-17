@@ -203,19 +203,19 @@ void Crystal::update() {
 }
 
 /**
- * @brief Displays the entity on the map.
+ * @brief Draws the entity on the map.
  *
- * This is a redefinition of MapEntity::display_on_map() to also display the twinkling star
+ * This is a redefinition of MapEntity::draw_on_map() to also draw the twinkling star
  * which has a special position.
  */
-void Crystal::display_on_map() {
+void Crystal::draw_on_map() {
 
-  // display the crystal
-  MapEntity::display_on_map();
+  // draw the crystal
+  MapEntity::draw_on_map();
 
-  // display the star
-  if (is_displayed()) {
-    get_map().display_sprite(*star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
+  // draw the star
+  if (is_drawn()) {
+    get_map().draw_sprite(*star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
   }
 }
 

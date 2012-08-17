@@ -59,21 +59,21 @@ void TimeScrollingTilePattern::update() {
 }
 
 /**
- * @brief Displays the tile image on a surface.
+ * @brief Draws the tile image on a surface.
  * @param dst_surface the surface to draw
- * @param dst_position position where tile pattern should be displayed on dst_surface
+ * @param dst_position position where tile pattern should be drawn on dst_surface
  * @param tileset the tileset of this tile
  * @param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
-void TimeScrollingTilePattern::display(Surface& dst_surface,
+void TimeScrollingTilePattern::draw(Surface& dst_surface,
     const Rectangle& dst_position, Tileset& tileset,
     const Rectangle& viewport) {
 
   Rectangle src = position_in_tileset;
   Rectangle dst = dst_position;
 
-  int offset_x, offset_y; // display the tile with an offset that depends on the time
+  int offset_x, offset_y; // draw the tile with an offset that depends on the time
 
   offset_x = src.get_width() - (shift % src.get_width());
   offset_y = shift % src.get_height();
@@ -82,7 +82,7 @@ void TimeScrollingTilePattern::display(Surface& dst_surface,
   src.add_width(-offset_x);
   src.add_y(offset_y);
   src.add_height(-offset_y);
-  tileset.get_tiles_image().display_region(src, dst_surface, dst);
+  tileset.get_tiles_image().draw_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -90,7 +90,7 @@ void TimeScrollingTilePattern::display(Surface& dst_surface,
   src.add_height(-offset_y);
   dst.add_x(src.get_width() - offset_x);
   src.set_width(offset_x);
-  tileset.get_tiles_image().display_region(src, dst_surface, dst);
+  tileset.get_tiles_image().draw_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -98,7 +98,7 @@ void TimeScrollingTilePattern::display(Surface& dst_surface,
   src.add_width(-offset_x);
   dst.add_y(src.get_height() - offset_y);
   src.set_height(offset_y);
-  tileset.get_tiles_image().display_region(src, dst_surface, dst);
+  tileset.get_tiles_image().draw_region(src, dst_surface, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -106,7 +106,7 @@ void TimeScrollingTilePattern::display(Surface& dst_surface,
   src.set_width(offset_x);
   dst.add_y(src.get_height() - offset_y);
   src.set_height(offset_y);
-  tileset.get_tiles_image().display_region(src, dst_surface, dst);
+  tileset.get_tiles_image().draw_region(src, dst_surface, dst);
 }
 
 /**

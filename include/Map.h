@@ -85,7 +85,7 @@ class Map: public ExportableToLua {
     Surface* visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map */
-    Rectangle clipping_rectangle; /**< when displaying the map, indicates an area of the surface to be restricted to
+    Rectangle clipping_rectangle; /**< when drawing the map, indicates an area of the surface to be restricted to
                                    * (usually, the whole map is considered and this rectangle's values are all 0) */
 
     // map state
@@ -103,8 +103,8 @@ class Map: public ExportableToLua {
     Surface* dark_surfaces[4];    /**< dark foreground shown when there is no light */
 
     void set_suspended(bool suspended);
-    void display_background();
-    void display_foreground();
+    void draw_background();
+    void draw_foreground();
 
   public:
 
@@ -181,12 +181,12 @@ class Map: public ExportableToLua {
     void check_collision_with_detectors(MapEntity &entity, Sprite &sprite);
     static Ground obstacle_to_ground(Obstacle obstacle);
 
-    // update and display
+    // update and drawing
     void update();
     void check_suspended();
-    void display();
-    void display_sprite(Sprite &sprite, const Rectangle &xy);
-    void display_sprite(Sprite &sprite, int x, int y);
+    void draw();
+    void draw_sprite(Sprite &sprite, const Rectangle &xy);
+    void draw_sprite(Sprite &sprite, int x, int y);
 };
 
 /**

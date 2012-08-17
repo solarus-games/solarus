@@ -59,7 +59,7 @@ class CrystalBlock: public Detector {
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
 
     void update();
-    void display_on_map();
+    void draw_on_map();
 
     bool is_raised();
 };

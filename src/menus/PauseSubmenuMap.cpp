@@ -206,7 +206,7 @@ void PauseSubmenuMap::load_dungeon_map_image() {
     std::ostringstream oss;
     oss << "maps/dungeons/map" << dungeon.get_number() << "_" << selected_floor << ".png";
     Surface *floor_map_img = new Surface(oss.str(), Surface::DIR_DATA);
-    floor_map_img->display(*dungeon_map_img);
+    floor_map_img->draw(*dungeon_map_img);
     delete floor_map_img;
   }
 
@@ -246,11 +246,11 @@ void PauseSubmenuMap::load_dungeon_map_image() {
         dst_position.add_y(-1);
 
         if (!chests[i].big) {
-          dungeon_map_icons->display_region(small_chest_src_position,
+          dungeon_map_icons->draw_region(small_chest_src_position,
               *dungeon_map_img, dst_position);
         }
         else {
-          dungeon_map_icons->display_region(big_chest_src_position,
+          dungeon_map_icons->draw_region(big_chest_src_position,
               *dungeon_map_img, dst_position);
         }
       }
@@ -262,7 +262,7 @@ void PauseSubmenuMap::load_dungeon_map_image() {
     const std::vector<Dungeon::DungeonElement> &bosses = dungeon.get_bosses(selected_floor);
     for (unsigned int i = 0; i < bosses.size(); i++) {
 
-      // TODO also display minibosses?
+      // TODO also draw minibosses?
       if (bosses[i].big
           && bosses[i].savegame_variable != -1
           && !savegame.get_boolean(bosses[i].savegame_variable)) {
@@ -271,7 +271,7 @@ void PauseSubmenuMap::load_dungeon_map_image() {
         to_dungeon_minimap_coordinates(dst_position, dst_position, floor_size);
         dst_position.add_xy(-2, -2);
 
-        dungeon_map_icons->display_region(src_position, *dungeon_map_img,
+        dungeon_map_icons->draw_region(src_position, *dungeon_map_img,
             dst_position);
       }
     }
@@ -379,99 +379,99 @@ void PauseSubmenuMap::update() {
 }
 
 /**
- * @brief Displays this submenu.
+ * @brief Draws this submenu.
  * @param dst_surface the destination surface
  */
-void PauseSubmenuMap::display(Surface& dst_surface) {
+void PauseSubmenuMap::draw(Surface& dst_surface) {
 
-  PauseSubmenu::display(dst_surface);
+  PauseSubmenu::draw(dst_surface);
 
   if (!game.is_in_dungeon()) {
-    display_world_map(dst_surface);
+    draw_world_map(dst_surface);
   }
   else {
-    display_dungeon_map(dst_surface);
+    draw_dungeon_map(dst_surface);
   }
 }
 
 /**
- * @brief Displays the world map.
+ * @brief Draws the world map.
  * @param dst_surface the destination surface
  */
-void PauseSubmenuMap::display_world_map(Surface& dst_surface) {
+void PauseSubmenuMap::draw_world_map(Surface& dst_surface) {
 
-  // display the surface
+  // draw the surface
   Rectangle src_position(0, world_minimap_visible_y, 225, 133);
   static Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 112,
       SOLARUS_SCREEN_HEIGHT_MIDDLE - 61, 0, 0);
 
-  world_map_img->display_region(src_position, dst_surface, dst_position);
+  world_map_img->draw_region(src_position, dst_surface, dst_position);
 
   // if the player can see the minimap
   if (equipment.has_ability("see_outside_world_minimap")) {
 
-    // display the hero's position
+    // draw the hero's position
     int hero_visible_y = hero_position.get_y() - world_minimap_visible_y;
     if (hero_visible_y >= 51 && hero_visible_y <= 133 + 51) {
-      hero_head_sprite->display(dst_surface, hero_position.get_x(), hero_visible_y);
+      hero_head_sprite->draw(dst_surface, hero_position.get_x(), hero_visible_y);
     }
 
-    // display the arrows
+    // draw the arrows
     if (world_minimap_visible_y > 0) {
-      up_arrow_sprite->display(dst_surface,
+      up_arrow_sprite->draw(dst_surface,
           SOLARUS_SCREEN_WIDTH_MIDDLE - 64, SOLARUS_SCREEN_HEIGHT_MIDDLE - 65);
-      up_arrow_sprite->display(dst_surface,
+      up_arrow_sprite->draw(dst_surface,
           SOLARUS_SCREEN_WIDTH_MIDDLE + 51, SOLARUS_SCREEN_HEIGHT_MIDDLE - 65);
     }
 
     if (world_minimap_visible_y < 388 - 133) {
-      down_arrow_sprite->display(dst_surface,
+      down_arrow_sprite->draw(dst_surface,
           SOLARUS_SCREEN_WIDTH_MIDDLE - 64, SOLARUS_SCREEN_HEIGHT_MIDDLE + 68);
-      down_arrow_sprite->display(dst_surface,
+      down_arrow_sprite->draw(dst_surface,
           SOLARUS_SCREEN_WIDTH_MIDDLE + 51, SOLARUS_SCREEN_HEIGHT_MIDDLE + 68);
     }
   }
 }
 
 /**
- * @brief Displays the dungeon map submenu.
+ * @brief Draws the dungeon map submenu.
  * @param dst_surface the destination surface
  */
-void PauseSubmenuMap::display_dungeon_map(Surface& dst_surface) {
+void PauseSubmenuMap::draw_dungeon_map(Surface& dst_surface) {
 
   // show the special background
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 112,
         SOLARUS_SCREEN_HEIGHT_MIDDLE - 61);
-  dungeon_map_background->display(dst_surface, dst_position);
+  dungeon_map_background->draw(dst_surface, dst_position);
 
   // show the dungeon items
-  display_dungeon_items(dst_surface);
+  draw_dungeon_items(dst_surface);
 
   // show the floors
-  display_dungeon_floors(dst_surface);
+  draw_dungeon_floors(dst_surface);
 
   // show the map itself
     dst_position.set_xy(SOLARUS_SCREEN_WIDTH_MIDDLE - 17,
         SOLARUS_SCREEN_HEIGHT_MIDDLE - 54);
-  dungeon_map_img->display(dst_surface, dst_position);
+  dungeon_map_img->draw(dst_surface, dst_position);
 
   if (hero_point_sprite != NULL && selected_floor == hero_floor) {
-    hero_point_sprite->display(*dungeon_map_img, hero_position);
+    hero_point_sprite->draw(*dungeon_map_img, hero_position);
   }
 }
 
 /**
- * @brief Displays the dungeon items.
+ * @brief Draws the dungeon items.
  * @param dst_surface the destination surface
  */
-void PauseSubmenuMap::display_dungeon_items(Surface& dst_surface) {
+void PauseSubmenuMap::draw_dungeon_items(Surface& dst_surface) {
 
   // rooms
   if (equipment.has_ability("see_dungeon_minimap_rooms")) {
     Rectangle src_position(0, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 110,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
-    dungeon_map_icons->display_region(src_position, dst_surface, dst_position);
+    dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
   }
 
   // elements
@@ -479,7 +479,7 @@ void PauseSubmenuMap::display_dungeon_items(Surface& dst_surface) {
     Rectangle src_position(17, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 91,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
-    dungeon_map_icons->display_region(src_position, dst_surface, dst_position);
+    dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
   }
 
   // big key
@@ -487,7 +487,7 @@ void PauseSubmenuMap::display_dungeon_items(Surface& dst_surface) {
     Rectangle src_position(34, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 72,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
-    dungeon_map_icons->display_region(src_position, dst_surface, dst_position);
+    dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
   }
 
   // boss key
@@ -495,24 +495,24 @@ void PauseSubmenuMap::display_dungeon_items(Surface& dst_surface) {
     Rectangle src_position(51, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 53,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
-    dungeon_map_icons->display_region(src_position, dst_surface, dst_position);
+    dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
   }
 
   // small keys
   Rectangle src_position(68, 0, 9, 17);
   Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 34,
       SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
-  dungeon_map_icons->display_region(src_position, dst_surface, dst_position);
-  small_keys_counter->display(dst_surface);
+  dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
+  small_keys_counter->draw(dst_surface);
 }
 
 /**
- * @brief Displays the dungeon floors.
+ * @brief Draws the dungeon floors.
  * @param dst_surface the destination surface
  */
-void PauseSubmenuMap::display_dungeon_floors(Surface& dst_surface) {
+void PauseSubmenuMap::draw_dungeon_floors(Surface& dst_surface) {
 
-  // display some floors
+  // draw some floors
   int src_y = (15 - highest_floor_displayed) * 12;
   int src_height = nb_floors_displayed * 12 + 1;
 
@@ -520,24 +520,24 @@ void PauseSubmenuMap::display_dungeon_floors(Surface& dst_surface) {
 
   Rectangle src_position(96, src_y, 32, src_height);
   Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 81, dst_y);
-  dungeon_floors_img->display_region(src_position, dst_surface, dst_position);
+  dungeon_floors_img->draw_region(src_position, dst_surface, dst_position);
 
-  // display the current floor with other colors
+  // draw the current floor with other colors
   src_position.set_xy(64, (15 - selected_floor) * 12);
   src_position.set_height(13);
 
   dst_position.set_y(dst_y + (highest_floor_displayed - selected_floor) * 12);
-  dungeon_floors_img->display_region(src_position, dst_surface, dst_position);
+  dungeon_floors_img->draw_region(src_position, dst_surface, dst_position);
 
-  // display the hero's icon
+  // draw the hero's icon
   int lowest_floor_displayed = highest_floor_displayed - nb_floors_displayed + 1;
   if (hero_floor >= lowest_floor_displayed && hero_floor <= highest_floor_displayed) {
 
     int y = dst_y + (highest_floor_displayed - hero_floor) * 12;
-    hero_head_sprite->display(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 99, y);
+    hero_head_sprite->draw(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 99, y);
   }
 
-  // display the boss icon
+  // draw the boss icon
   if (equipment.has_ability("see_dungeon_minimap_elements")
       && boss_floor >= lowest_floor_displayed
       && boss_floor <= highest_floor_displayed) {
@@ -547,17 +547,17 @@ void PauseSubmenuMap::display_dungeon_floors(Surface& dst_surface) {
     Rectangle src_position(78, 0, 8, 8);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 47, boss_y);
 
-    dungeon_map_icons->display_region(src_position, dst_surface, dst_position);
+    dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
   }
 
-  // display the arrows
+  // draw the arrows
   if (lowest_floor_displayed > lowest_floor) {
-    down_arrow_sprite->display(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 71,
+    down_arrow_sprite->draw(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 71,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 31);
   }
 
   if (highest_floor_displayed < highest_floor) {
-    up_arrow_sprite->display(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 71,
+    up_arrow_sprite->draw(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 71,
         SOLARUS_SCREEN_HEIGHT_MIDDLE - 64);
   }
 }

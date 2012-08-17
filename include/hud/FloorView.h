@@ -21,7 +21,7 @@
 #include "hud/HudElement.h"
 
 /**
- * @brief Displays the floor of the current map.
+ * @brief Draws the floor of the current map.
  *
  * When the map starts, this class displays the floor (if any)
  * during a few seconds.

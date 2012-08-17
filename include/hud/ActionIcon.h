@@ -22,7 +22,7 @@
 #include "KeysEffect.h"
 
 /**
- * @brief Displays the action icon.
+ * @brief Draws the action icon.
  *
  * The action icon displays what can be done by pressing the action key.
  * In other words, this class displays some information from the KeysEffect class.

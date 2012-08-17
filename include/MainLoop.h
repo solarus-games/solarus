@@ -54,7 +54,7 @@ class MainLoop {
     bool exiting;               /**< indicates that the program is about to stop */
 
     void notify_input(InputEvent& event);
-    void display();
+    void draw();
     void update();
 };
 

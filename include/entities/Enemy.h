@@ -106,7 +106,7 @@ class Enemy: public Detector {
 							 * or -1 if it is not saved */
     ObstacleBehavior obstacle_behavior;                 /**< behavior with obstacles */
     static const std::string obstacle_behavior_names[]; /**< name of each existing behavior with obstacles */
-    bool displayed_in_y_order;                          /**< indicates that the enemy is displayed as the same level as the hero */
+    bool drawn_in_y_order;                              /**< indicates that the enemy is displayed as the same level as the hero */
     std::string father_name;                            /**< name of the enemy who created this enemy (or an empty string) */
 
     // enemy state
@@ -210,10 +210,10 @@ class Enemy: public Detector {
     bool is_lava_obstacle();
 
     // enemy state
-    bool is_displayed_in_y_order();
+    bool is_drawn_in_y_order();
     void update();
     void set_suspended(bool suspended);
-    void display_on_map();
+    void draw_on_map();
 
     void notify_enabled(bool enabled);
     void notify_obstacle_reached();

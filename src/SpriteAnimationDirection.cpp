@@ -83,14 +83,14 @@ const Rectangle & SpriteAnimationDirection::get_frame(int frame) const {
 }
 
 /**
- * @brief Displays a specific frame on the map.
- * @param dst_surface the surface on which the frame will be displayed
+ * @brief Draws a specific frame on the map.
+ * @param dst_surface the surface on which the frame will be drawn
  * @param dst_position coordinates on the destination surface
- * (the origin point will be displayed at this position)
+ * (the origin point will be drawn at this position)
  * @param current_frame the frame to show
  * @param src_image the image from which the frame is extracted
  */
-void SpriteAnimationDirection::display(Surface& dst_surface,
+void SpriteAnimationDirection::draw(Surface& dst_surface,
     const Rectangle& dst_position, int current_frame, Surface& src_image) {
 
   const Rectangle& current_frame_rect = frames[current_frame];
@@ -100,7 +100,7 @@ void SpriteAnimationDirection::display(Surface& dst_surface,
   position_top_left.add_xy(-origin.get_x(), -origin.get_y());
   position_top_left.set_size(current_frame_rect);
 
-  src_image.display_region(current_frame_rect, dst_surface, position_top_left);
+  src_image.draw_region(current_frame_rect, dst_surface, position_top_left);
 }
 
 /**

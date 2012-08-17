@@ -142,7 +142,7 @@ void Counter::rebuild_with_value(unsigned int value) {
       digit_position_in_src.set_x(digit * 8);
       digit_position_in_counter.set_x(i * width);
 
-      img_digits.display_region(digit_position_in_src, surface_drawn,
+      img_digits.draw_region(digit_position_in_src, surface_drawn,
           digit_position_in_counter);
 
       right_digit = false;
@@ -171,26 +171,26 @@ void Counter::decrease() {
 }
 
 /**
- * @brief Displays the counter on a surface.
+ * @brief Draws the counter on a surface.
  *
- * The counter is displayed at the position specified when the constructor was called.
+ * The counter is drawn at the position specified when the constructor was called.
  *
  * @param dst_surface the destination surface
  */
-void Counter::display(Surface& dst_surface) {
+void Counter::draw(Surface& dst_surface) {
 
-  surface_drawn.display(dst_surface, dst_position);
+  surface_drawn.draw(dst_surface, dst_position);
 }
 
 /**
- * @brief Displays the counter on a surface, specifying the position.
+ * @brief Draws the counter on a surface, specifying the position.
  * @param dst_surface the destination surface
  * @param x x coordinate of the top-left corner of the counter on the destination surface
  * @param y y coordinate of the top-left corner of the counter on the destination surface
  */
-void Counter::display(Surface& dst_surface, int x, int y) {
+void Counter::draw(Surface& dst_surface, int x, int y) {
 
   dst_position.set_xy(x, y);
-  surface_drawn.display(dst_surface, dst_position);
+  surface_drawn.draw(dst_surface, dst_position);
 }
 

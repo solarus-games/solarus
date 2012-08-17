@@ -20,7 +20,7 @@
 #include "Common.h"
 
 /**
- * @brief Displays on-screen information such as the rupees, the icons, etc.
+ * @brief Draws on-screen information such as the rupees, the icons, etc.
  */
 class HUD {
 
@@ -41,7 +41,7 @@ class HUD {
     ~HUD();
 
     void update();
-    void display(Surface& dst_surface);
+    void draw(Surface& dst_surface);
 
 };
 

@@ -105,7 +105,7 @@ int LuaContext::surface_api_create(lua_State* l) {
     int width = luaL_optinteger(l, 4, other_surface.get_width());
     int height = luaL_optinteger(l, 5, other_surface.get_height());
     surface = new Surface(width, height);
-    other_surface.display_region(Rectangle(x, y, width, height), *surface);
+    other_surface.draw_region(Rectangle(x, y, width, height), *surface);
   }
 
   get_lua_context(l).add_drawable(surface);

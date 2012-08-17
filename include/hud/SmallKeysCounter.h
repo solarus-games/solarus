@@ -21,7 +21,7 @@
 #include "hud/HudElement.h"
 
 /**
- * @brief Displays the small key counter and its icon.
+ * @brief Draws the small key counter and its icon.
  *
  * This HUD element is displayed only
  * when small keys are enabled in the current map.

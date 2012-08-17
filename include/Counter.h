@@ -22,9 +22,9 @@
 #include "lowlevel/Surface.h"
 
 /**
- * @brief Displays a counter on a surface.
+ * @brief Draws a counter on a surface.
  *
- * The counter can only display positive integer numbers.
+ * The counter can only draw positive integer numbers.
  */
 class Counter {
 
@@ -65,8 +65,8 @@ class Counter {
     void increase();
     void decrease();
 
-    void display(Surface& dst_surface);
-    void display(Surface& dst_surface, int x, int y);
+    void draw(Surface& dst_surface);
+    void draw(Surface& dst_surface, int x, int y);
 };
 
 #endif

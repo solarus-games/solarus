@@ -73,11 +73,11 @@ class PauseSubmenuMap: public PauseSubmenu {
 
     void key_pressed(GameControls::GameKey key);
     void update();
-    void display(Surface& dst_surface);
-    void display_world_map(Surface& dst_surface);
-    void display_dungeon_map(Surface& dst_surface);
-    void display_dungeon_items(Surface& dst_surface);
-    void display_dungeon_floors(Surface& dst_surface);
+    void draw(Surface& dst_surface);
+    void draw_world_map(Surface& dst_surface);
+    void draw_dungeon_map(Surface& dst_surface);
+    void draw_dungeon_items(Surface& dst_surface);
+    void draw_dungeon_floors(Surface& dst_surface);
 };
 
 #endif

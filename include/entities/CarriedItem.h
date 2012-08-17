@@ -47,7 +47,7 @@ class CarriedItem: public MapEntity {
     Sprite* shadow_sprite;		/**< sprite of the shadow when the item is being thrown */
     int throwing_direction;		/**< direction where the item is thrown (0 to 3) */
     uint32_t next_down_date;		/**< when the item is thrown, date when it move one pixel downwards next time */
-    int item_height;			/**< current height where the item is displayed above its shadow */
+    int item_height;			/**< current height where the item is drawn above its shadow */
     int y_increment;			/**< next y change for item_height */
 
     // explosion of the item
@@ -85,8 +85,8 @@ class CarriedItem: public MapEntity {
 
     bool can_be_obstacle();
     bool can_detect_entities();
-    bool can_be_displayed();
-    bool is_displayed_in_y_order();
+    bool can_be_drawn();
+    bool is_drawn_in_y_order();
 
     int get_damage_on_enemies();
 
@@ -101,7 +101,7 @@ class CarriedItem: public MapEntity {
 
     void set_suspended(bool suspended);
     void update();
-    void display_on_map();
+    void draw_on_map();
 
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);

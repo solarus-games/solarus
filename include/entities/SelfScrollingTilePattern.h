@@ -39,7 +39,7 @@ class SelfScrollingTilePattern: public SimpleTilePattern {
     SelfScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height);
     ~SelfScrollingTilePattern();
 
-    void display(Surface& dst_surface, const Rectangle& dst_position,
+    void draw(Surface& dst_surface, const Rectangle& dst_position,
             Tileset& tileset, const Rectangle& viewport);
 
     virtual bool is_animated();

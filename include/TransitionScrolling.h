@@ -25,11 +25,11 @@
  * @brief Scrolling transition between two maps.
  *
  * This kind of transition can only be used for the transition between two maps.
- * The new map is displayed gradually, with a scrolling effect, and the hero
- * is displayed between both maps.
+ * The new map is drawn gradually, with a scrolling effect, and the hero
+ * is drawn between both maps.
  * Nothing happens during the out transition. During the in transition,
  * the previous map does not exist anymore but its surface was saved
- * and we can still display it.
+ * and we can still draw it.
  */
 class TransitionScrolling: public Transition {
 
@@ -61,7 +61,7 @@ class TransitionScrolling: public Transition {
     bool is_started();
     bool is_finished();
     void update();
-    void display(Surface& dst_surface);
+    void draw(Surface& dst_surface);
 };
 
 #endif

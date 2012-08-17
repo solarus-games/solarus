@@ -46,8 +46,8 @@ class Hookshot: public MapEntity {
     // features
     bool can_be_obstacle();
     bool can_detect_entities();
-    bool can_be_displayed();
-    bool is_displayed_in_y_order();
+    bool can_be_drawn();
+    bool is_drawn_in_y_order();
 
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
@@ -63,7 +63,7 @@ class Hookshot: public MapEntity {
 
     // state
     void update();
-    virtual void display_on_map();
+    virtual void draw_on_map();
     const Rectangle get_facing_point();
     bool is_flying();
     bool is_going_back();

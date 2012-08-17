@@ -163,10 +163,10 @@ void GameoverSequence::update() {
 }
 
 /**
- * @brief Displays the gameover sequence.
+ * @brief Draws the gameover sequence.
  * @param dst_surface the surface to draw
  */
-void GameoverSequence::display(Surface& dst_surface) {
+void GameoverSequence::draw(Surface& dst_surface) {
 
   if (state > CLOSING_GAME) {
     dst_surface.fill_with_color(Color::get_black());
@@ -178,20 +178,20 @@ void GameoverSequence::display(Surface& dst_surface) {
       dst_surface.fill_with_color(red_screen_color);
     }
     else {
-      fade_sprite.display(dst_surface, hero_dead_x, hero_dead_y);
+      fade_sprite.draw(dst_surface, hero_dead_x, hero_dead_y);
     }
   }
 
   if (state <= WAITING_END) {
-    hero_dead_sprite.display(dst_surface, hero_dead_x, hero_dead_y);
+    hero_dead_sprite.draw(dst_surface, hero_dead_x, hero_dead_y);
 
     if (state == SAVED_BY_FAIRY) {
-      fairy_sprite.display(dst_surface, fairy_x, fairy_y);
+      fairy_sprite.draw(dst_surface, fairy_x, fairy_y);
     }
   }
   else if (state == MENU) {
-    gameover_menu_img.display(dst_surface);
-    fairy_sprite.display(dst_surface, fairy_x, fairy_y);
+    gameover_menu_img.draw(dst_surface);
+    fairy_sprite.draw(dst_surface, fairy_x, fairy_y);
   }
 }
 

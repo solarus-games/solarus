@@ -58,7 +58,7 @@ void LuaContext::register_map_module() {
       { "light_set", map_api_light_set },
       { "treasure_give", map_api_treasure_give },
       { "camera_move", map_api_camera_move },
-      { "sprite_display", map_api_sprite_display },
+      { "draw_sprite", map_api_draw_sprite },
       { "tileset_get", map_api_tileset_get },
       { "tileset_set", map_api_tileset_set },
       { "hero_freeze", map_api_hero_freeze },
@@ -411,14 +411,14 @@ int LuaContext::map_api_treasure_give(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_sprite_display(lua_State* l) {
+int LuaContext::map_api_draw_sprite(lua_State* l) {
 
   Map& map = check_map(l, 1);
   Sprite& sprite = check_sprite(l, 2);
   int x = luaL_checkinteger(l, 3);
   int y = luaL_checkinteger(l, 4);
 
-  map.display_sprite(sprite, x, y);
+  map.draw_sprite(sprite, x, y);
 
   return 0;
 }

@@ -160,32 +160,32 @@ void Drawable::update() {
 }
 
 /**
- * @brief Displays this object, applying dynamic effects.
+ * @brief Draws this object, applying dynamic effects.
  * @param dst_surface the destination surface
  */
-void Drawable::display(Surface& dst_surface) {
+void Drawable::draw(Surface& dst_surface) {
 
-  display(dst_surface, Rectangle(0, 0));
+  draw(dst_surface, Rectangle(0, 0));
 }
 
 /**
- * @brief Displays this object, applying dynamic effects.
+ * @brief Draws this object, applying dynamic effects.
  * @param dst_surface the destination surface
- * @param x x coordinate of where to display
- * @param y y coordinate of where to display
+ * @param x x coordinate of where to draw
+ * @param y y coordinate of where to draw
  */
-void Drawable::display(Surface& dst_surface, int x, int y) {
+void Drawable::draw(Surface& dst_surface, int x, int y) {
 
-  display(dst_surface, Rectangle(x, y));
+  draw(dst_surface, Rectangle(x, y));
 }
 
 /**
- * @brief Displays this object, applying dynamic effects.
+ * @brief Draws this object, applying dynamic effects.
  * @param dst_surface the destination surface
  * @param dst_position position on this surface
  * (will be added to the position obtained by previous movements)
  */
-void Drawable::display(Surface& dst_surface,
+void Drawable::draw(Surface& dst_surface,
     Rectangle dst_position) {
 
   dst_position.add_xy(last_position);
@@ -194,9 +194,9 @@ void Drawable::display(Surface& dst_surface,
   }
 
   if (transition != NULL) {
-    display_transition(*transition);
+    draw_transition(*transition);
   }
 
-  raw_display(dst_surface, dst_position);
+  raw_draw(dst_surface, dst_position);
 }
 

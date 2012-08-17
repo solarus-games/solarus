@@ -72,14 +72,14 @@ void CustomScreen::update() {
 }
 
 /**
- * @brief Displays the screen.
+ * @brief Draws the screen.
  *
  * This is what's special about CustomScreen, it doesn't draw anything itself
  * but instead delegates that call to Lua entirely.
  *
  * @param dst_surface the surface to draw
  */
-void CustomScreen::display(Surface& dst_surface) {
+void CustomScreen::draw(Surface& dst_surface) {
 
   get_lua_context().menu_on_draw(menu_ref, dst_surface);
 }

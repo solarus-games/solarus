@@ -52,7 +52,7 @@ MagicBar::~MagicBar() {
 /**
  * @brief Returns whether this hud element is visible.
  *
- * The display() function does nothing if this function
+ * The draw() function does nothing if this function
  * returns false.
  *
  * @return true if this hud element is visible, i.e. if
@@ -149,11 +149,11 @@ void MagicBar::rebuild() {
   }
 
   // max magic
-  sprite_magic_bar_container->display(surface_drawn, 0, 0);
+  sprite_magic_bar_container->draw(surface_drawn, 0, 0);
 
   // current magic
   Rectangle current_magic_position(46, 24, 0, 8);
   current_magic_position.set_width(2 + current_magic_displayed);
-  img_magic_bar->display_region(current_magic_position, surface_drawn);
+  img_magic_bar->draw_region(current_magic_position, surface_drawn);
 }
 

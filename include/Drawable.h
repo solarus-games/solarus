@@ -41,13 +41,13 @@ class Drawable: public ExportableToLua {
     void start_transition(Transition& transition, int callback_ref, LuaContext* lua_context);
     void stop_transition();
 
-    // displaying with effects
-    void display(Surface& dst_surface);
-    void display(Surface& dst_surface, int x, int y);
-    void display(Surface& dst_surface, Rectangle dst_position);
+    // drawing with effects
+    void draw(Surface& dst_surface);
+    void draw(Surface& dst_surface, int x, int y);
+    void draw(Surface& dst_surface, Rectangle dst_position);
 
     /**
-     * @brief Displays this object without applying dynamic effects.
+     * @brief Draws this object without applying dynamic effects.
      *
      * Redefine this function to draw your object onto the destination
      * surface.
@@ -55,7 +55,7 @@ class Drawable: public ExportableToLua {
      * @param dst_surface the destination surface
      * @param dst_position coordinates on the destination surface
      */
-    virtual void raw_display(Surface& dst_surface,
+    virtual void raw_draw(Surface& dst_surface,
         const Rectangle& dst_position) = 0;
 
     /**
@@ -66,7 +66,7 @@ class Drawable: public ExportableToLua {
      *
      * @param transition The transition effect to apply.
      */
-    virtual void display_transition(Transition& transition) = 0;
+    virtual void draw_transition(Transition& transition) = 0;
     virtual void update();
 
   protected:

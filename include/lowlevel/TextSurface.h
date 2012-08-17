@@ -25,7 +25,7 @@
 #include <map>
 
 /**
- * @brief Displays a line of text on a surface.
+ * @brief Draws a line of text on a surface.
  *
  * This class encapsulates a graphic surface and handles text rendering,
  * horizontal and vertical text alignment, color and other properties.
@@ -58,8 +58,8 @@ class TextSurface: public Drawable {
      * Rendering mode of the text.
      */
     enum RenderingMode {
-      TEXT_SOLID,                                     /**< letter are displayed without effect (faster, visible pixels) */
-      TEXT_ANTIALIASING                               /**< letters are displayed with a smooth effect (slower) */
+      TEXT_SOLID,                                     /**< letter are drawn without effect (faster, visible pixels) */
+      TEXT_ANTIALIASING                               /**< letters are drawn with a smooth effect (slower) */
     };
 
   private:
@@ -90,7 +90,7 @@ class TextSurface: public Drawable {
     Surface *surface;                                 /**< the surface to draw */
     Rectangle text_position;                          /**< position of the top-left corner of the surface on the screen */
 
-    std::string text;                                 /**< the string to display (only one line) */
+    std::string text;                                 /**< the string to draw (only one line) */
 
     void rebuild();
 
@@ -133,8 +133,8 @@ class TextSurface: public Drawable {
     int get_height();
     const Rectangle get_size();
 
-    void raw_display(Surface& dst_surface, const Rectangle& dst_position);
-    void display_transition(Transition& transition);
+    void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
+    void draw_transition(Transition& transition);
 
     const std::string& get_lua_type_name() const;
 };

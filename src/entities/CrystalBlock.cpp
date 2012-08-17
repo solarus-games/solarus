@@ -224,11 +224,11 @@ void CrystalBlock::update() {
 }
 
 /**
- * @brief Displays the entity on the map.
+ * @brief Draws the entity on the map.
  *
- * This is a redefinition of MapEntity::display_on_map to repeat the block pattern.
+ * This is a redefinition of MapEntity::draw_on_map to repeat the block pattern.
  */
-void CrystalBlock::display_on_map() {
+void CrystalBlock::draw_on_map() {
 
   Sprite &sprite = get_sprite();
 
@@ -239,7 +239,7 @@ void CrystalBlock::display_on_map() {
 
   for (int y = y1; y < y2; y += 16) {
     for (int x = x1; x < x2; x += 16) {
-      get_map().display_sprite(sprite, x, y);
+      get_map().draw_sprite(sprite, x, y);
     }
   }
 }

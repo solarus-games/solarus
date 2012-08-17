@@ -501,34 +501,34 @@ void Map::check_suspended() {
 }
 
 /**
- * @brief Displays the map with all its entities on the screen.
+ * @brief Draws the map with all its entities on the screen.
  */
-void Map::display() {
+void Map::draw() {
 
   if (is_loaded()) {
     // background
-    display_background();
+    draw_background();
 
-    // display all entities (including the hero)
-    entities->display();
+    // draw all entities (including the hero)
+    entities->draw();
 
     // foreground
-    display_foreground();
+    draw_foreground();
   }
 }
 
 /**
- * @brief Displays the background of the map.
+ * @brief Draws the background of the map.
  */
-void Map::display_background() {
+void Map::draw_background() {
 
   visible_surface->fill_with_color(tileset->get_background_color());
 }
 
 /**
- * @brief Displays the foreground of the map.
+ * @brief Draws the foreground of the map.
  */
-void Map::display_foreground() {
+void Map::draw_foreground() {
 
   if (light == 0) {
     // no light
@@ -539,7 +539,7 @@ void Map::display_foreground() {
     int x = SOLARUS_SCREEN_WIDTH - hero_position.get_x() + camera_position.get_x();
     int y = SOLARUS_SCREEN_HEIGHT - hero_position.get_y() + camera_position.get_y();
     Rectangle src_position(x, y, SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
-    dark_surfaces[hero_direction]->display_region(src_position,
+    dark_surfaces[hero_direction]->draw_region(src_position,
         *visible_surface);
   }
   // TODO intermediate light levels
@@ -565,28 +565,28 @@ void Map::display_foreground() {
 }
 
 /**
- * @brief Displays a sprite on the map surface.
- * @param sprite the sprite to display
+ * @brief Draws a sprite on the map surface.
+ * @param sprite the sprite to draw
  * @param xy coordinates of the sprite's origin point in the map
  * (the size of the rectangle is ignored)
  */
-void Map::display_sprite(Sprite &sprite, const Rectangle &xy) {
+void Map::draw_sprite(Sprite &sprite, const Rectangle &xy) {
 
-  display_sprite(sprite, xy.get_x(), xy.get_y());
+  draw_sprite(sprite, xy.get_x(), xy.get_y());
 }
 
 /**
- * @brief Displays a sprite on the map surface.
- * @param sprite the sprite to display
+ * @brief Draws a sprite on the map surface.
+ * @param sprite the sprite to draw
  * @param x x coordinate of the sprite's origin point in the map
  * @param y y coordinate of the sprite's origin point in the map
  */
-void Map::display_sprite(Sprite &sprite, int x, int y) {
+void Map::draw_sprite(Sprite &sprite, int x, int y) {
 
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
   const Rectangle &camera_position = get_camera_position();
-  sprite.display(*visible_surface,
+  sprite.draw(*visible_surface,
       x - camera_position.get_x(),
       y - camera_position.get_y()
   );

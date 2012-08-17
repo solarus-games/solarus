@@ -140,11 +140,11 @@ void ActionIcon::rebuild() {
     
       // draw the action icon with some text (Action, Throw...)
       icon_position.set_y(24 * action_key_effect_displayed);
-      img_action_icon->display_region(icon_position, surface_drawn);
+      img_action_icon->draw_region(icon_position, surface_drawn);
     }
     else {
       // draw the flipping sprite
-      sprite_action_icon->display(surface_drawn, 24, 0);
+      sprite_action_icon->draw(surface_drawn, 24, 0);
     }
   }
 }

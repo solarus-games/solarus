@@ -37,7 +37,7 @@ class TransitionImmediate: public Transition {
     bool is_started();
     bool is_finished();
     void update();
-    void display(Surface& dst_surface);
+    void draw(Surface& dst_surface);
 
 };
 

@@ -51,7 +51,7 @@ class DynamicTile: public Detector {
     EntityType get_type();
     void set_map(Map &map);
     bool is_obstacle_for(MapEntity &other);
-    void display_on_map();
+    void draw_on_map();
     void notify_enabled(bool enabled);
 };
 

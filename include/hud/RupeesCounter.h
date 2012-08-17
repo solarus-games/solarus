@@ -21,7 +21,7 @@
 #include "hud/HudElement.h"
 
 /**
- * @brief Displays the rupee counter and its icon.
+ * @brief Draws the rupee counter and its icon.
  *
  * When the player gets or loses some rupees,
  * the counter is updated gradually with a repetitive rupee sound.

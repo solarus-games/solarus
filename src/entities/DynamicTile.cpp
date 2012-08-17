@@ -135,9 +135,9 @@ bool DynamicTile::is_obstacle_for(MapEntity &other) {
 }
 
 /**
- * @brief Displays the tile on the map.
+ * @brief Draws the tile on the map.
  */
-void DynamicTile::display_on_map() {
+void DynamicTile::draw_on_map() {
 
   // FIXME this code is duplicated from Tile
   Surface& map_surface = get_map().get_visible_surface();
@@ -161,7 +161,7 @@ void DynamicTile::display_on_map() {
 
         if (x <= SOLARUS_SCREEN_WIDTH && x + tile_pattern->get_width() > 0) {
           dst.set_x(x);
-          tile_pattern->display(map_surface, dst, get_map().get_tileset(),
+          tile_pattern->draw(map_surface, dst, get_map().get_tileset(),
               get_map().get_camera_position());
         }
       }

@@ -147,10 +147,10 @@ void TransitionScrolling::update() {
 }
 
 /**
- * @brief Displays the transition effect on a surface.
+ * @brief Draws the transition effect on a surface.
  * @param dst_surface the surface to draw
  */
-void TransitionScrolling::display(Surface& dst_surface) {
+void TransitionScrolling::draw(Surface& dst_surface) {
 
   if (direction == OUT) {
     return;
@@ -160,13 +160,13 @@ void TransitionScrolling::display(Surface& dst_surface) {
       "No previous surface defined for scrolling");
 
   // draw the old map
-  previous_surface->display(*both_maps_surface, previous_map_dst_position);
+  previous_surface->draw(*both_maps_surface, previous_map_dst_position);
 
   // draw the new map
-  dst_surface.display(*both_maps_surface, current_map_dst_position);
+  dst_surface.draw(*both_maps_surface, current_map_dst_position);
 
   // blit both surfaces
   dst_surface.fill_with_color(Color::get_black());
-  both_maps_surface->display_region(current_scrolling_position, dst_surface);
+  both_maps_surface->draw_region(current_scrolling_position, dst_surface);
 }
 

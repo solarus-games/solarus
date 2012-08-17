@@ -48,15 +48,15 @@ PauseSubmenu::~PauseSubmenu() {
 }
 
 /**
- * @brief Displays the common part of a submenu.
+ * @brief Draws the common part of a submenu.
  *
  * The subclasses should call this function.
  *
  * @param dst_surface the surface to draw
  */
-void PauseSubmenu::display(Surface& dst_surface) {
-  caption_text_1->display(dst_surface);
-  caption_text_2->display(dst_surface);
+void PauseSubmenu::draw(Surface& dst_surface) {
+  caption_text_1->draw(dst_surface);
+  caption_text_2->draw(dst_surface);
 }
 
 /**

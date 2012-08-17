@@ -21,7 +21,7 @@
 #include "hud/HudElement.h"
 
 /**
- * @brief Displays the magic bar on the screen.
+ * @brief Draws the magic bar on the screen.
  */
 class MagicBar: public HudElement {
 

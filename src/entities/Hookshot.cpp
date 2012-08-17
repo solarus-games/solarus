@@ -102,30 +102,30 @@ bool Hookshot::can_detect_entities() {
 }
 
 /**
- * @brief Returns whether entities of this type can be displayed.
+ * @brief Returns whether entities of this type can be drawn.
  *
  * If yes, the sprites added by the add_sprite() calls will be 
- * displayed (if any).
+ * drawn (if any).
  *
- * @return true if this type of entity can be displayed
+ * @return true if this type of entity can be drawn
  */
-bool Hookshot::can_be_displayed() {
+bool Hookshot::can_be_drawn() {
   return true;
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
+ * @brief Returns whether this entity has to be drawn in y order.
  *
- * This function returns whether an entity of this type should be displayed above
+ * This function returns whether an entity of this type should be drawn above
  * the hero and other entities having this property when it is in front of them.
  * This means that the displaying order of entities having this
  * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file), 
+ * are drawn in the normal order (i.e. as specified by the map file), 
  * and before the entities with the feature.
  *
- * @return true if this type of entity is displayed at the same level as the hero
+ * @return true if this type of entity is drawn at the same level as the hero
  */
-bool Hookshot::is_displayed_in_y_order() {
+bool Hookshot::is_drawn_in_y_order() {
   return true;
 }
 
@@ -300,9 +300,9 @@ void Hookshot::update() {
 }
 
 /**
- * @brief Displays the entity on the map.
+ * @brief Draws the entity on the map.
  */
-void Hookshot::display_on_map() {
+void Hookshot::draw_on_map() {
 
   static const int nb_links = 7;
   static const Rectangle dxy[] = {
@@ -312,11 +312,11 @@ void Hookshot::display_on_map() {
     Rectangle(0, 7)
   };
 
-  MapEntity::display_on_map();
+  MapEntity::draw_on_map();
 
   if (is_visible()) {
 
-    // also display the links
+    // also draw the links
     int direction = get_sprite().get_current_direction();
     int x1 = get_hero().get_x() + dxy[direction].get_x();
     int y1 = get_hero().get_y() + dxy[direction].get_y();
@@ -327,7 +327,7 @@ void Hookshot::display_on_map() {
     for (int i = 0; i < nb_links; i++) {
       link_xy.set_x(x1 + (x2 - x1) * i / nb_links);
       link_xy.set_y(y1 + (y2 - y1) * i / nb_links);
-      get_map().display_sprite(link_sprite, link_xy);
+      get_map().draw_sprite(link_sprite, link_xy);
     }
   }
 }

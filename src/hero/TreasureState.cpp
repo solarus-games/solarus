@@ -109,17 +109,17 @@ void Hero::TreasureState::update() {
 }
 
 /**
- * @brief Displays this state.
+ * @brief Draws this state.
  */
-void Hero::TreasureState::display_on_map() {
+void Hero::TreasureState::draw_on_map() {
 
-  State::display_on_map();
+  State::draw_on_map();
 
   int x = hero.get_x();
   int y = hero.get_y();
 
   const Rectangle &camera_position = get_map().get_camera_position();
-  treasure.display(get_map().get_visible_surface(),
+  treasure.draw(get_map().get_visible_surface(),
       x - camera_position.get_x(),
       y - 24 - camera_position.get_y());
 }

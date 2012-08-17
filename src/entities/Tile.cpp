@@ -89,20 +89,20 @@ void Tile::set_map(Map& map) {
 }
 
 /**
- * @brief Displays the tile on the map.
+ * @brief Draws the tile on the map.
  */
-void Tile::display_on_map() {
+void Tile::draw_on_map() {
 
-  display(get_map().get_visible_surface(), get_map().get_camera_position());
+  draw(get_map().get_visible_surface(), get_map().get_camera_position());
 }
 
 /**
- * @brief Displays the tile on the specified surface.
+ * @brief Draws the tile on the specified surface.
  * @param dst_surface the destination surface
  * @param viewport coordinates of the top-left corner of dst_surface
  * relative to the map
  */
-void Tile::display(Surface& dst_surface, const Rectangle& viewport) {
+void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
 
   Rectangle dst(0, 0);
 
@@ -114,7 +114,7 @@ void Tile::display(Surface& dst_surface, const Rectangle& viewport) {
       y += tile_pattern->get_height()) {
 
     if ((y <= dst_surface.get_height() && y + tile_pattern->get_height() > 0)
-        || !tile_pattern->is_displayed_at_its_position()) {
+        || !tile_pattern->is_drawn_at_its_position()) {
       dst.set_y(y);
 
       for (int x = get_top_left_x() - viewport.get_x();
@@ -122,9 +122,9 @@ void Tile::display(Surface& dst_surface, const Rectangle& viewport) {
           x += tile_pattern->get_width()) {
 
         if ((x <= dst_surface.get_width() && x + tile_pattern->get_width() > 0)
-            || !tile_pattern->is_displayed_at_its_position()) {
+            || !tile_pattern->is_drawn_at_its_position()) {
           dst.set_x(x);
-          tile_pattern->display(dst_surface, dst, get_map().get_tileset(), viewport);
+          tile_pattern->draw(dst_surface, dst, get_map().get_tileset(), viewport);
         }
       }
     }
@@ -144,7 +144,7 @@ TilePattern& Tile::get_tile_pattern() {
  *
  * Non-animated tiles may be rendered faster by using intermediate surfaces
  * that are drawn only once.
- * This function should return false if the tile pattern is always displayed the same way.
+ * This function should return false if the tile pattern is always drawn the same way.
  *
  * @return true if the pattern of this tile is animated
  */

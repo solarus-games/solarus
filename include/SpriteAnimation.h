@@ -55,7 +55,7 @@ class SpriteAnimation {
     void set_map(Map &map);
 
     int get_next_frame(int current_direction, int current_frame) const;
-    void display(Surface& dst_surface, const Rectangle& dst_position,
+    void draw(Surface& dst_surface, const Rectangle& dst_position,
         int current_direction, int current_frame);
 
     int get_nb_directions() const;

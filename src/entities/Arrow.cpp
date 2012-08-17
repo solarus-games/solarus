@@ -99,30 +99,30 @@ bool Arrow::can_detect_entities() {
 }
 
 /**
- * @brief Returns whether entities of this type can be displayed.
+ * @brief Returns whether entities of this type can be drawn.
  *
  * If yes, the sprites added by the add_sprite() calls will be 
- * displayed (if any).
+ * drawn (if any).
  *
- * @return true if this type of entity can be displayed
+ * @return true if this type of entity can be drawn
  */
-bool Arrow::can_be_displayed() {
+bool Arrow::can_be_drawn() {
   return true; 
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
+ * @brief Returns whether this entity has to be drawn in y order.
  *
- * This function returns whether an entity of this type should be displayed above
+ * This function returns whether an entity of this type should be drawn above
  * the hero and other entities having this property when it is in front of them.
  * This means that the displaying order of entities having this
  * feature depends on their y position. The entities without this feature
- * are displayed in the normal order (i.e. as specified by the map file), 
+ * are drawn in the normal order (i.e. as specified by the map file), 
  * and before the entities with the feature.
  *
- * @return true if this type of entity is displayed at the same level as the hero
+ * @return true if this type of entity is drawn at the same level as the hero
  */
-bool Arrow::is_displayed_in_y_order() {
+bool Arrow::is_drawn_in_y_order() {
   return true;
 }
 

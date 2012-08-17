@@ -45,7 +45,7 @@ MapEntities::MapEntities(Game &game, Map &map):
 
   Layer layer = hero.get_layer();
   this->obstacle_entities[layer].push_back(&hero);
-  this->entities_displayed_y_order[layer].push_back(&hero);
+  this->entities_drawn_y_order[layer].push_back(&hero);
   // TODO update that when the layer changes, same thing for enemies
 
   // surfaces to pre-render static tiles
@@ -81,8 +81,8 @@ void MapEntities::destroy_all_entities() {
     delete[] animated_tiles[layer];
     delete non_animated_tiles_surfaces[layer];
 
-    entities_displayed_first[layer].clear();
-    entities_displayed_y_order[layer].clear();
+    entities_drawn_first[layer].clear();
+    entities_drawn_y_order[layer].clear();
     obstacle_entities[layer].clear();
     stairs[layer].clear();
   }
@@ -259,15 +259,15 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(EntityType type, const st
  */
 void MapEntities::bring_to_front(MapEntity *entity) {
 
-  Debug::check_assertion(entity->can_be_displayed(),
-      StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is not displayed");
+  Debug::check_assertion(entity->can_be_drawn(),
+      StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is not drawn");
 
-  Debug::check_assertion(!entity->is_displayed_in_y_order(),
-    StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is displayed in the y order");
+  Debug::check_assertion(!entity->is_drawn_in_y_order(),
+    StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is drawn in the y order");
 
   Layer layer = entity->get_layer();
-  entities_displayed_first[layer].remove(entity);
-  entities_displayed_first[layer].push_back(entity);
+  entities_drawn_first[layer].remove(entity);
+  entities_drawn_first[layer].push_back(entity);
 }
 
 /**
@@ -495,11 +495,11 @@ void MapEntities::add_entity(MapEntity *entity) {
     }
 
     // update the sprites list
-    if (entity->is_displayed_in_y_order()) {
-      entities_displayed_y_order[layer].push_back(entity);
+    if (entity->is_drawn_in_y_order()) {
+      entities_drawn_y_order[layer].push_back(entity);
     }
-    else if (entity->can_be_displayed()) {
-      entities_displayed_first[layer].push_back(entity);
+    else if (entity->can_be_drawn()) {
+      entities_drawn_first[layer].push_back(entity);
     }
 
     // update the specific entities lists
@@ -608,11 +608,11 @@ void MapEntities::remove_marked_entities() {
     }
 
     // remove it from the sprite entities list if present
-    if (entity->is_displayed_in_y_order()) {
-      entities_displayed_y_order[layer].remove(entity);
+    if (entity->is_drawn_in_y_order()) {
+      entities_drawn_y_order[layer].remove(entity);
     }
-    else if (entity->can_be_displayed()) {
-      entities_displayed_first[layer].remove(entity);
+    else if (entity->can_be_drawn()) {
+      entities_drawn_first[layer].remove(entity);
     }
 
     // remove it from the whole list
@@ -666,8 +666,8 @@ void MapEntities::update() {
       tiles[layer][i]->update();
     }
 
-    // sort the entities displayed in y order
-    entities_displayed_y_order[layer].sort(compare_y);
+    // sort the entities drawn in y order
+    entities_drawn_y_order[layer].sort(compare_y);
   }
 
   for (it = all_entities.begin();
@@ -686,7 +686,7 @@ void MapEntities::update() {
 /**
  * @brief Draws all non-animated tiles on intermediate surfaces.
  *
- * They are drawn only once and then these surfaces are displayed on the screen.
+ * They are drawn only once and then these surfaces are drawn on the screen.
  */
 void MapEntities::build_non_animated_tiles() {
 
@@ -702,7 +702,7 @@ void MapEntities::build_non_animated_tiles() {
       Tile& tile = *tiles[layer][i];
       if (!tile.is_animated()) {
         // non-animated tile: optimize its displaying
-        tile.display(*non_animated_tiles_surfaces[layer], map_size);
+        tile.draw(*non_animated_tiles_surfaces[layer], map_size);
       }
       else {
         // animated tile: mark its region as non-optimizable
@@ -782,46 +782,46 @@ bool MapEntities::overlaps_animated_tile(Tile& tile) {
 }
 
 /**
- * @brief Displays the entities on the map surface.
+ * @brief Draws the entities on the map surface.
  */
-void MapEntities::display() {
+void MapEntities::draw() {
 
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     // draw the animated tiles and the tiles that overlap them:
     // in other words, draw all regions containing animated tiles
     // (and maybe more, but we don't care because non-animated tiles
-    // will be displayed later)
+    // will be drawn later)
     for (unsigned int i = 0; i < tiles_in_animated_regions[layer].size(); i++) {
-      tiles_in_animated_regions[layer][i]->display_on_map();
+      tiles_in_animated_regions[layer][i]->draw_on_map();
     }
 
     // draw the non-animated tiles (with transparent rectangles on the regions of animated tiles
     // since they are already drawn)
-    non_animated_tiles_surfaces[layer]->display_region(
+    non_animated_tiles_surfaces[layer]->draw_region(
         map.get_camera_position(), map.get_visible_surface());
 
     // draw the first sprites
     list<MapEntity*>::iterator i;
-    for (i = entities_displayed_first[layer].begin();
-	 i != entities_displayed_first[layer].end();
+    for (i = entities_drawn_first[layer].begin();
+	 i != entities_drawn_first[layer].end();
 	 i++) {
 
       MapEntity *entity = *i;
       if (entity->is_enabled()) {
-        entity->display_on_map();
+        entity->draw_on_map();
       }
     }
 
-    // draw the sprites displayed at the hero's level, in the order
+    // draw the sprites at the hero's level, in the order
     // defined by their y position (including the hero)
-    for (i = entities_displayed_y_order[layer].begin();
-	  i != entities_displayed_y_order[layer].end();
+    for (i = entities_drawn_y_order[layer].begin();
+	  i != entities_drawn_y_order[layer].end();
 	  i++) {
 
       MapEntity *entity = *i;
       if (entity->is_enabled()) {
-        entity->display_on_map();
+        entity->draw_on_map();
       }
     }
   }
@@ -861,13 +861,13 @@ void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
     }
 
     // update the sprites list
-    if (entity.is_displayed_in_y_order()) {
-      entities_displayed_y_order[old_layer].remove(&entity);
-      entities_displayed_y_order[layer].push_back(&entity);
+    if (entity.is_drawn_in_y_order()) {
+      entities_drawn_y_order[old_layer].remove(&entity);
+      entities_drawn_y_order[layer].push_back(&entity);
     }
-    else if (entity.can_be_displayed()) {
-      entities_displayed_first[old_layer].remove(&entity);
-      entities_displayed_first[layer].push_back(&entity);
+    else if (entity.can_be_drawn()) {
+      entities_drawn_first[old_layer].remove(&entity);
+      entities_drawn_first[layer].push_back(&entity);
     }
 
     // update the entity after the lists because this function might be called again

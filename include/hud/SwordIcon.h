@@ -22,7 +22,7 @@
 #include "KeysEffect.h"
 
 /**
- * @brief Displays the sword icon.
+ * @brief Draws the sword icon.
  *
  * The sword icon displays what happens when the sword key is pressed.
  * In other words, it displays some information from the KeysEffect class.

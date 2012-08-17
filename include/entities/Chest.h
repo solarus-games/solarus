@@ -46,7 +46,7 @@ class Chest: public Detector {
     static CreationFunction parse;
 
     EntityType get_type();
-    bool is_displayed_in_y_order();
+    bool is_drawn_in_y_order();
 
     bool is_open();
     void set_open(bool open);

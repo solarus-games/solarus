@@ -80,7 +80,7 @@ void TextSurface::quit() {
 }
 
 /**
- * @brief Creates a text to display with the default properties.
+ * @brief Creates a text to draw with the default properties.
  *
  * The default properties are:
  * - font: the default font defined in file text/fonts.dat
@@ -106,7 +106,7 @@ TextSurface::TextSurface(int x, int y):
 }
 
 /**
- * @brief Creates a text to display with the specified alignment properties.
+ * @brief Creates a text to draw with the specified alignment properties.
  * @param x x position of the text on the destination surface
  * @param y y position of the text on the destination surface
  * @param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
@@ -141,7 +141,7 @@ TextSurface::~TextSurface() {
 }
 
 /**
- * @brief Returns the font used to display this text.
+ * @brief Returns the font used to draw this text.
  * @return Id of a font.
  */
 const std::string& TextSurface::get_font() {
@@ -449,7 +449,7 @@ void TextSurface::rebuild() {
 }
 
 /**
- * @brief Displays the text on a surface.
+ * @brief Draws the text on a surface.
  *
  * This method blits the text at the position previously set
  * (by set_x(), set_y() or set_position())
@@ -458,14 +458,14 @@ void TextSurface::rebuild() {
  * @param dst_surface the destination surface
  * @param dst_position coordinates on the destination surface
  */
-void TextSurface::raw_display(Surface& dst_surface,
+void TextSurface::raw_draw(Surface& dst_surface,
     const Rectangle& dst_position) {
 
   if (surface != NULL) {
 
     Rectangle dst_position2(text_position);
     dst_position2.add_xy(dst_position);
-    surface->raw_display(dst_surface, dst_position2);
+    surface->raw_draw(dst_surface, dst_position2);
   }
 }
 
@@ -473,8 +473,8 @@ void TextSurface::raw_display(Surface& dst_surface,
  * @brief Draws a transition effect on this drawable object.
  * @param transition The transition effect to apply.
  */
-void TextSurface::display_transition(Transition& transition) {
-  transition.display(*surface);
+void TextSurface::draw_transition(Transition& transition) {
+  transition.draw(*surface);
 }
 
 /**

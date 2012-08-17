@@ -76,10 +76,10 @@ class Transition {
     virtual void update() = 0;
 
     /**
-     * @brief Displays the transition effect on a surface.
+     * @brief Draws the transition effect on a surface.
      * @param dst_surface the surface to draw
      */
-    virtual void display(Surface& dst_surface) = 0;
+    virtual void draw(Surface& dst_surface) = 0;
 
   protected:
 

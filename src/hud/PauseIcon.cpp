@@ -112,11 +112,11 @@ void PauseIcon::rebuild() {
     // draw the pause icon with some text (Save, Return...)
     icon_position.set_y(24 * pause_key_effect_displayed);
 
-    img_pause_icon->display_region(icon_position, surface_drawn);
+    img_pause_icon->draw_region(icon_position, surface_drawn);
   }
   else {
     // draw the flipping sprite
-    sprite_pause_icon->display(surface_drawn, 24, 0);
+    sprite_pause_icon->draw(surface_drawn, 24, 0);
   }
 }
 

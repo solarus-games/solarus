@@ -89,7 +89,7 @@ Enemy::Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
   rank(RANK_NORMAL),
   savegame_variable(-1),
   obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
-  displayed_in_y_order(true),
+  drawn_in_y_order(true),
   father_name(""),
   being_hurt(false),
   stop_hurt_date(0),
@@ -660,15 +660,15 @@ void Enemy::set_animation(const std::string &animation) {
 }
 
 /**
- * @brief Returns whether this entity has to be displayed in y order.
+ * @brief Returns whether this entity has to be drawn in y order.
  *
- * This function returns whether the entity should be displayed above
+ * This function returns whether the entity should be drawn above
  * the hero and other entities having this property when it is in front of them.
  *
- * @return true if this type of entity is displayed at the same level as the hero
+ * @return true if this type of entity is drawn at the same level as the hero
  */
-bool Enemy::is_displayed_in_y_order() {
-  return displayed_in_y_order;
+bool Enemy::is_drawn_in_y_order() {
+  return drawn_in_y_order;
 }
 
 /**
@@ -787,15 +787,15 @@ void Enemy::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Displays the entity on the map.
+ * @brief Draws the entity on the map.
  */
-void Enemy::display_on_map() {
+void Enemy::draw_on_map() {
 
   if (is_visible()) {
     get_lua_context().enemy_on_pre_draw(*this);
   }
 
-  Detector::display_on_map();
+  Detector::draw_on_map();
 
   if (is_visible()) {
     get_lua_context().enemy_on_post_draw(*this);

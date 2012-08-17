@@ -42,9 +42,9 @@ class HudElement {
     KeysEffect* keys_effect;        /**< The keys effect object represented by this HUD element
 				     * (used by several HUD elements, NULL otherwise). */
 
-    // displaying 
+    // drawing 
     Surface surface_drawn;          /**< The surface on which the hud element is drawn when rebuild() is called.
-				     * When display() is called, this surface is blitted
+				     * When draw() is called, this surface is blitted
 				     * on the destination surface (usually the screen). */
 
     Rectangle dst_position;         /**< Position of this hud element on the destination surface. */
@@ -73,7 +73,7 @@ class HudElement {
 
     virtual void update();
     virtual void rebuild();
-    void display(Surface& dst_surface);
+    void draw(Surface& dst_surface);
 };
 
 #endif

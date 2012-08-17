@@ -168,14 +168,14 @@ void HUD::update() {
 }
 
 /**
- * @brief Displays the HUD.
+ * @brief Draws the HUD.
  * @param dst_surface the destination surface
  */
-void HUD::display(Surface& dst_surface) {
+void HUD::draw(Surface& dst_surface) {
 
   for (int i = 0; i < nb_elements; i++) {
     if (elements[i] != NULL) {
-      elements[i]->display(dst_surface);
+      elements[i]->draw(dst_surface);
     }
   }
 }

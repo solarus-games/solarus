@@ -52,7 +52,7 @@ class SpriteAnimationDirection {
     // frames
     int get_nb_frames() const;
     const Rectangle& get_frame(int frame) const;
-    void display(Surface& dst_surface, const Rectangle& dst_position,
+    void draw(Surface& dst_surface, const Rectangle& dst_position,
         int current_frame, Surface& src_image);
 
     // pixel collisions

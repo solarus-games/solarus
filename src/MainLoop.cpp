@@ -157,9 +157,9 @@ void MainLoop::run() {
   InputEvent *event;
   uint32_t now;
   uint32_t next_frame_date = System::now();
-  uint32_t frame_interval = 25; // time interval between to displays
+  uint32_t frame_interval = 25; // time interval between two drawings
   int delay;
-  bool just_displayed = false; // to detect when the FPS number needs to be decreased
+  bool just_redrawn = false; // to detect when the FPS number needs to be decreased
 
   while (!is_exiting()) {
 
@@ -196,22 +196,22 @@ void MainLoop::run() {
 
       now = System::now();
       delay = next_frame_date - now;
-      // delay is the time remaining before the next display
+      // delay is the time remaining before the next drawing
 
-      if (delay <= 0) { // it's time to display
+      if (delay <= 0) { // it's time to redraw
 
         // see if the FPS number is too high
-        if (just_displayed && frame_interval <= 30) {
-          frame_interval += 5; // display the screen less often
+        if (just_redrawn && frame_interval <= 30) {
+          frame_interval += 5; // redraw the screen less often
           //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
         }
 
         next_frame_date = now + frame_interval;
-        just_displayed = true;
-        display();
+        just_redrawn = true;
+        draw();
       }
       else {
-        just_displayed = false;
+        just_redrawn = false;
 
         // if we have time, let's sleep to avoid using all the processor
         System::sleep(1);
@@ -302,12 +302,12 @@ void MainLoop::update() {
  *
  * This function is called repeatedly by the main loop.
  */
-void MainLoop::display() {
+void MainLoop::draw() {
 
   root_surface->fill_with_color(Color::get_black());
   if (current_screen != NULL) {
-    current_screen->display(*root_surface);
+    current_screen->draw(*root_surface);
   }
-  VideoManager::get_instance()->display(*root_surface);
+  VideoManager::get_instance()->draw(*root_surface);
 }
 

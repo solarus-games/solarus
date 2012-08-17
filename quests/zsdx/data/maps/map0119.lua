@@ -21,7 +21,7 @@ function map:on_started(destination_point_name)
       new_music = "dark_mountain"
       map:tileset_set(13)
     else
-      new_music = "light_world"
+      new_music = "overworld"
     end
 
     -- boss fight

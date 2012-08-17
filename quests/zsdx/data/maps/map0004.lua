@@ -18,7 +18,7 @@ function map:on_started(destination_point_name)
       sol.audio.play_music("dark_world")
       map:tileset_set(13)
     else
-      sol.audio.play_music("light_world")
+      sol.audio.play_music("overworld")
     end
 
     -- broken rupee house

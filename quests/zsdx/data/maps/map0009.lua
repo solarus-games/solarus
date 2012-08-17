@@ -33,7 +33,7 @@ function map:on_started(destination_point_name)
     end
 
   else
-    new_music = "light_world"
+    new_music = "overworld"
     map:tile_set_group_enabled("castle_east_bridge_off", false)
     map:teletransporter_set_group_enabled("teletransporter_dw", false)
   end

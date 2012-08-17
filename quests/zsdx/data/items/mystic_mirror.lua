@@ -72,13 +72,3 @@ function item:on_use()
   self:get_map():hero_unfreeze()
 end
 
-function item:on_map_changed()
-
-  -- stop disabling tiles, they don't exist anymore
-  -- TODO this should now be useless, timers are attached to the map
-  if timer ~= nil then
-    timer:stop()
-    timer = nil
-  end
-end
-

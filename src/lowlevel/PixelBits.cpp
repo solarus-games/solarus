@@ -29,7 +29,7 @@
 PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
     SDL_PixelFormat* format = surface.get_internal_surface()->format;
 
-#ifdef __APPLE__
+#ifdef SOLARUS_WORKAROUND_ACCEPT_RGB_PIXELPERFECT
   Debug::check_assertion(format->BitsPerPixel % 8 == 0
       && format->BitsPerPixel != 24, "This surface should have an 8/16/32-bit pixel format");
 
@@ -37,11 +37,13 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
   uint32_t pxMask = 0xffffffff << (32 - format->BitsPerPixel);
 
   uint32_t colorkey = format->colorkey;
+  uint32_t* pixels = (uint32_t*) surface.get_internal_surface()->pixels;
 #else
   Debug::check_assertion(format->BitsPerPixel == 8,
       "This surface should have an 8-bit pixel format");
 
   uint8_t colorkey = (uint8_t) format->colorkey;
+  uint8_t* pixels = (uint8_t*) surface.get_internal_surface()->pixels;
 #endif
 
   width = image_position.get_width();
@@ -51,12 +53,7 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
   if ((width & 31) != 0) { // width % 32 != 0
     nb_integers_per_row++;
   }
-    
-#ifdef __APPLE__
-  uint32_t* pixels = (uint32_t*) surface.get_internal_surface()->pixels;
-#else
-  uint8_t* pixels = (uint8_t*) surface.get_internal_surface()->pixels;
-#endif
+
   int pixel_index = image_position.get_y() * surface.get_width() + image_position.get_x();
 
   bits = new uint32_t*[height];
@@ -67,24 +64,23 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
     int k = -1;
     uint32_t mask = 0x00000000;
     for (int j = 0; j < width; j++) {
-
       if (mask == 0x00000000) {
         k++;
         mask = 0x80000000;
         bits[i][k] = 0x00000000;
       }
-#ifdef __APPLE__
+#ifdef SOLARUS_WORKAROUND_ACCEPT_RGB_PIXELPERFECT
       if ((pixels[pixel_index / pxIn32Bit] << pixel_index % pxIn32Bit * format->BitsPerPixel & pxMask) != colorkey) {
 #else
-        if (pixels[pixel_index] != colorkey) {
+      if (pixels[pixel_index] != colorkey) {
 #endif
-          bits[i][k] |= mask;
-        }
-        mask >>= 1;
-        pixel_index++;
+        bits[i][k] |= mask;
       }
-      pixel_index += surface.get_width() - width;
+      mask >>= 1;
+      pixel_index++;
     }
+    pixel_index += surface.get_width() - width;
+  }
 }
 
 /**

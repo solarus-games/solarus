@@ -34,7 +34,7 @@ Surface::Surface(int width, int height):
   internal_surface_created(true) {
 
   this->internal_surface = SDL_CreateRGBSurface(
-      SDL_HWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+      SDL_SWSURFACE, width, height, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
 }
 
 /**

@@ -110,7 +110,7 @@ VideoManager::VideoManager(bool disable_window):
   for (int i = 0; i < NB_MODES; i++) {
     mode_sizes[i] = default_mode_sizes[i];
   }
-  int flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN;
+  int flags = surface_flags | SDL_FULLSCREEN;
   if (SDL_VideoModeOK(768, 480, 32, flags)) {
     mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
     mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);

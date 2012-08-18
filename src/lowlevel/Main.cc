@@ -16,12 +16,9 @@
  */
 #ifndef SOLARUS_NOMAIN
 
-#ifdef __APPLE__
-  #include "SDL.h" // SDLmain
-#endif
-
 #include "Solarus.h"
 #include <iostream>
+#include <SDL.h>  // Necessary on some systems for SDLMain.
 
 static void print_help(int argc, char** argv);
 

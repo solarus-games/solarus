@@ -103,18 +103,15 @@ endif()
 set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
-#OSX TODO LIST :
-# Check why 8bpp PNG are stored as 32bpp SDL_Surface on 10.6+
-# Check why on 10.5 , there are considered as invalid image ('u' bpp)
-# Use SDL_HWSURFACE (or at least, use the same flag everywhere)
-# Remove intermediate surface on the two "special" blits
-
-# compilation flags for Mac OS X deployment
+# Compilation flags for Mac OS X deployment
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Release")
   if(SOLARUS_ARCH)
     set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Chosen build architecture" FORCE)
   else()
-    set(CMAKE_OSX_ARCHITECTURES "i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
+    if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)  
+      set(CMAKE_OSX_ARCHITECTURES "ppc;" CACHE STRING "PPC build architecture" FORCE)	
+    endif()
+    set(CMAKE_OSX_ARCHITECTURES "${CMAKE_OSX_ARCHITECTURES}i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
   endif()
 
   if(SOLARUS_SYSROOT)
@@ -122,9 +119,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
   else()
     if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
       set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk" CACHE STRING "Default OS version whose headers you'll use" FORCE)
-      if(NOT SOLARUS_ARCH)
-        set(CMAKE_OSX_ARCHITECTURES "ppc;${CMAKE_OSX_ARCHITECTURES}" CACHE STRING "Add PPC build architecture" FORCE)
-      endif()	
     endif()
   endif()
 
@@ -134,7 +128,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
     set(CMAKE_OSX_DEPLOYMENT_TARGET "10.5" CACHE STRING "Default oldest OS version supported" FORCE)
   endif()
   
-  if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_EQUAL "10.5" OR CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER "10.5")
+  if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
   endif()
   if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
@@ -142,6 +136,11 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
   endif()
 endif()
 
+# Workarounds
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  add_definitions(-DSOLARUS_WORKAROUND_ACCEPT_RGB_PIXELPERFECT)
+  add_definitions(-DSOLARUS_WORKAROUND_SKIP_FIRST_ALGENBUFFER)
+endif()
 
 # solarus options
 option(DEBUG_KEYS "Enable the debugging keys." OFF)

@@ -59,15 +59,34 @@
 #  endif
 #endif
 
-/**
- * @brief Half of the logical screen width.
- */
 #define SOLARUS_SCREEN_WIDTH_MIDDLE (SOLARUS_SCREEN_WIDTH / 2)
-
-/**
- * @brief Half of the logical screen height.
- */
 #define SOLARUS_SCREEN_HEIGHT_MIDDLE (SOLARUS_SCREEN_HEIGHT / 2)
+
+// Bits per pixel.
+#ifndef SOLARUS_COLOR_DEPTH
+#  if defined(CAANOO) || defined(PANDORA)
+#    define SOLARUS_COLOR_DEPTH 16
+#  else
+#    define SOLARUS_COLOR_DEPTH 32
+#  endif
+#endif
+
+// Force a unique video mode.
+#ifndef SOLARUS_SCREEN_FORCE_MODE
+#  ifdef(CAANOO)
+#    define SOLARUS_SCREEN_FORCE_MODE 2
+#  elif defined(PANDORA)
+#    define SOLARUS_SCREEN_FORCE_MODE 5
+#  endif
+#endif
+
+// Force a software surface for the screen.
+#ifndef SOLARUS_SCREEN_SOFTWARE_SURFACE
+#  ifdef __APPLE__
+// On Mac OS X the SDL hardware surfaces are buggy.
+#    define SOLARUS_SCREEN_SOFTWARE_SURFACE
+#  endif
+#endif
 
 #include "Types.h"
 

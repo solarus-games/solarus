@@ -26,18 +26,13 @@
 VideoManager *VideoManager::instance = NULL;
 
 // Resolutions.
-#ifdef CAANOO
-const VideoManager::VideoMode* VideoManager::proposed_modes = {
-  VideoManager::WINDOWED_NORMAL,
-  VideoManager::NO_MODE
-};
-#elif defined(PANDORA)
-const VideoManager::VideoMode* VideoManager::proposed_modes = {
-  VideoManager::FULLSCREEN_SCALE2X,
-  VideoManager::NO_MODE
-};
+#if defined(SOLARUS_SCREEN_FORCE_MODE) && SOLARUS_SCREEN_FORCE_MODE != -1
+// Force a unique video mode at compilation time.
+const VideoManager::VideoMode VideoManager::forced_mode =
+  VideoManager::VideoMode(SOLARUS_SCREEN_FORCE_MODE);
 #else
-const VideoManager::VideoMode* VideoManager::proposed_modes = NULL;
+// Make all modes available.
+const VideoManager::VideoMode VideoManager::forced_mode = NO_MODE;
 #endif
 
 // Size of the screen in each video mode.
@@ -46,14 +41,13 @@ Rectangle VideoManager::default_mode_sizes[] = {
   Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // WINDOWED_SCALE2X
   Rectangle(0, 0, SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT),          // WINDOWED_NORMAL
   Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // FULLSCREEN_NORMAL
-  Rectangle(0, 0, 0, 0),                                             // FULLSCREEN_WIDE
+  Rectangle(0, 0, 0, 0),                                                 // FULLSCREEN_WIDE
   Rectangle(0, 0, SOLARUS_SCREEN_WIDTH * 2, SOLARUS_SCREEN_HEIGHT * 2),  // FULLSCREEN_SCALE2X
-  Rectangle(0, 0, 0, 0),                                             // FULLSCREEN_SCALE2X_WIDE
+  Rectangle(0, 0, 0, 0),                                                 // FULLSCREEN_SCALE2X_WIDE
 };
 
 // Properties of SDL surfaces.
-#ifdef __APPLE__
-// on Mac OS X the SDL hardware surfaces are buggy
+#ifdef SOLARUS_SCREEN_SOFTWARE_SURFACE
 const int VideoManager::surface_flags = SDL_SWSURFACE;
 #else
 const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
@@ -175,15 +169,8 @@ VideoManager::~VideoManager() {
  */
 bool VideoManager::is_mode_supported(VideoMode mode) {
 
-  if (proposed_modes != NULL) {
-    bool found = false;
-    int i = 0;
-    while (proposed_modes[i] != NO_MODE && !found) {
-      found = (mode == proposed_modes[i]);
-    }
-    if (!found) {
-      return false;
-    }
+  if (forced_mode != NO_MODE && mode != forced_mode) {
+    return false;
   }
 
   const Rectangle* size = &mode_sizes[mode];
@@ -235,7 +222,13 @@ void VideoManager::set_initial_video_mode() {
     set_default_video_mode();
   }
   else {
-    set_video_mode((VideoMode) value);
+    VideoMode mode = VideoMode(value);
+    if (!is_mode_supported(mode)) {
+      set_default_video_mode();
+    }
+    else {
+      set_video_mode(mode);
+    }
   }
 }
 
@@ -245,8 +238,8 @@ void VideoManager::set_initial_video_mode() {
 void VideoManager::set_default_video_mode() {
 
   VideoMode mode;
-  if (proposed_modes != NULL) {
-    mode = proposed_modes[0];
+  if (forced_mode != NO_MODE) {
+    mode = forced_mode;
   }
   else {
     mode = WINDOWED_STRETCHED;

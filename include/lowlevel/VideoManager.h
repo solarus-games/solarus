@@ -45,10 +45,10 @@ class VideoManager {
     NB_MODES                  /**< number of existing video modes */
   };
 
-  static const VideoMode* proposed_modes;           /**< video modes proposed on the platform at compile time (NULL means all). The first one will be the default one. */
-  static const int surface_flags;                   /**< SDL flags for surfaces */
-
  private:
+
+  static const VideoMode forced_mode;               /**< only video mode available (NO_MODE means no restriction) */
+  static const int surface_flags;                   /**< SDL flags for surfaces */
 
   static VideoManager* instance;                    /**< the only instance */
   static Rectangle default_mode_sizes[NB_MODES];    /**< default size of the surface for each video mode */

@@ -35,18 +35,6 @@ Surface::Surface(int width, int height):
 }
 
 /**
- * @brief Creates a empty surface with the specified size.
- * @param size The size in pixels.
- */
-Surface::Surface(const Rectangle& size):
-  DynamicDisplayable(),
-  internal_surface_created(true) {
-
-  this->internal_surface = SDL_CreateRGBSurface(
-      SDL_HWSURFACE, size.get_width(), size.get_height(), SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
-}
-
-/**
  * @brief Creates a surface from the specified image file name.
  * @param file_name name of the image file to load, relative to the base directory specified
  * @param base_directory the base directory to use

@@ -123,9 +123,7 @@ void Sound::initialize(int argc, char** argv) {
     return;
   }
 
-#ifdef SOLARUS_WORKAROUND_SKIP_FIRST_ALGENBUFFER
-  alGenBuffers(0, AL_NONE);  // Necessary on some systems to avoid errors with the first sound loaded.
-#endif
+  alGenBuffers(0, NULL);  // Necessary on some systems to avoid errors with the first sound loaded.
 
   initialized = true;
 

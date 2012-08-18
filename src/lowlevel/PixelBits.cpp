@@ -29,22 +29,17 @@
 PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
     SDL_PixelFormat* format = surface.get_internal_surface()->format;
 
-#ifdef SOLARUS_WORKAROUND_ACCEPT_RGB_PIXELPERFECT
   Debug::check_assertion(format->BitsPerPixel % 8 == 0
       && format->BitsPerPixel != 24, "This surface should have an 8/16/32-bit pixel format");
+
+  // Create a list of boolean values representing the transparency of each pixel.
+  // This list is implemented as bit fields.
 
   int pxIn32Bit = 32 / format->BitsPerPixel;
   uint32_t pxMask = 0xffffffff << (32 - format->BitsPerPixel);
 
   uint32_t colorkey = format->colorkey;
   uint32_t* pixels = (uint32_t*) surface.get_internal_surface()->pixels;
-#else
-  Debug::check_assertion(format->BitsPerPixel == 8,
-      "This surface should have an 8-bit pixel format");
-
-  uint8_t colorkey = (uint8_t) format->colorkey;
-  uint8_t* pixels = (uint8_t*) surface.get_internal_surface()->pixels;
-#endif
 
   width = image_position.get_width();
   height = image_position.get_height();
@@ -69,11 +64,8 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
         mask = 0x80000000;
         bits[i][k] = 0x00000000;
       }
-#ifdef SOLARUS_WORKAROUND_ACCEPT_RGB_PIXELPERFECT
+
       if ((pixels[pixel_index / pxIn32Bit] << pixel_index % pxIn32Bit * format->BitsPerPixel & pxMask) != colorkey) {
-#else
-      if (pixels[pixel_index] != colorkey) {
-#endif
         bits[i][k] |= mask;
       }
       mask >>= 1;

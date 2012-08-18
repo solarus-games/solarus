@@ -108,8 +108,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
   if(SOLARUS_ARCH)
     set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Chosen build architecture" FORCE)
   else()
-    if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)  
-      set(CMAKE_OSX_ARCHITECTURES "ppc;" CACHE STRING "PPC build architecture" FORCE)	
+    if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
+      set(CMAKE_OSX_ARCHITECTURES "ppc;" CACHE STRING "PPC build architecture" FORCE)
     endif()
     set(CMAKE_OSX_ARCHITECTURES "${CMAKE_OSX_ARCHITECTURES}i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
   endif()
@@ -134,12 +134,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
   if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
-endif()
-
-# Workarounds
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  add_definitions(-DSOLARUS_WORKAROUND_ACCEPT_RGB_PIXELPERFECT)
-  add_definitions(-DSOLARUS_WORKAROUND_SKIP_FIRST_ALGENBUFFER)
 endif()
 
 # solarus options

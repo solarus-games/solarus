@@ -37,7 +37,7 @@ Color Color::cyan;
 void Color::initialize() {
 
   format_surface = SDL_CreateRGBSurface(
-      SDL_HWSURFACE, 1, 1, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
+      SDL_SWSURFACE, 1, 1, SOLARUS_COLOR_DEPTH, 0, 0, 0, 0);
 
   black =    Color(  0,   0,   0); 
   white =    Color(255, 255, 255);

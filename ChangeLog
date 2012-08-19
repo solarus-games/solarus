@@ -2,6 +2,7 @@ solarus-0.9.3 (under development)
 
 * The game screen size can now be set at compilation time.
 * Change the savegames directory on Mac OS X.
+* Improve the support of Mac OS X, Pandora, Caanoo and other platforms.
 
 solarus-0.9.2 (2012-04-03)
 

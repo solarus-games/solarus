@@ -24,6 +24,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Music.h"
+#include "lowlevel/Debug.h"
 #include "entities/Ground.h"
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
@@ -352,8 +353,10 @@ Destination* Map::get_destination() {
       || destination_name.substr(0,5) == "_side") {
     return NULL;
   }
-  return static_cast<Destination*>(
-      get_entities().get_entity(DESTINATION_POINT, destination_name));
+  MapEntity* entity = get_entities().get_entity(destination_name);
+  Debug::check_assertion(entity->get_type() == DESTINATION_POINT,
+      "This entity is not a destination");
+  return static_cast<Destination*>(entity);
 }
 
 /**

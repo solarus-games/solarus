@@ -1056,7 +1056,10 @@ int LuaContext::enemy_api_send_message(lua_State* l) {
   const std::string& message = luaL_checkstring(l, 3);
 
   MapEntities& entities = enemy.get_map().get_entities();
-  Enemy* dst_enemy = (Enemy*) entities.find_entity(ENEMY, dst_enemy_name);
+  MapEntity* entity = entities.get_entity(dst_enemy_name);
+  Debug::check_assertion(entity->get_type() == ENEMY,
+      "The destination entity is not an enemy");
+  Enemy* dst_enemy = (Enemy*) entity;
   dst_enemy->notify_message_received(enemy, message);
 
   return 1;

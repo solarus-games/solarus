@@ -563,8 +563,7 @@ void Hero::place_on_destination(Map& map, const Rectangle& previous_map_location
 
       // normal case: the location is specified by a destination point object
 
-      Destination *destination = (Destination*)
-	    map.get_entities().get_entity(DESTINATION_POINT, destination_name);
+      MapEntity* destination = map.get_entities().get_entity(destination_name);
 
       set_map(map, destination->get_direction());
       set_xy(destination->get_x(), destination->get_y());

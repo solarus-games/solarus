@@ -189,7 +189,7 @@ void Door::set_open(bool door_open) {
  * followed by "_closed" or "_open", depending on the door state.
  */
 void Door::update_dynamic_tiles() {
-  
+
   std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_closed");
   std::list<MapEntity*>::iterator it;
   for (it = tiles.begin(); it != tiles.end(); it++) {

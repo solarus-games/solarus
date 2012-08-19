@@ -601,10 +601,10 @@ int LuaContext::target_movement_api_set_target(lua_State* l) {
     // TODO: MapEntity& target = check_entity(l, 2);
     // The entity type is not implemented yet. In the meantime, we use
     // two parameters to make it work: the entity type and its name.
-    int entity_type = luaL_checkinteger(l, 2);
+    luaL_checkinteger(l, 2);
     const std::string& entity_name = luaL_checkstring(l, 3);
     MapEntities& entities = get_lua_context(l).get_current_game()->get_current_map().get_entities();
-    MapEntity* target = entities.get_entity(EntityType(entity_type), entity_name);
+    MapEntity* target = entities.get_entity(entity_name);
 
     movement.set_target(target);
   }
@@ -878,10 +878,10 @@ int LuaContext::path_finding_movement_api_set_target(lua_State* l) {
   // TODO: MapEntity& target = check_entity(l, 2);
   // The entity type is not implemented yet. In the meantime, we use
   // two parameters to make it work: the entity type and its name.
-  int entity_type = luaL_checkinteger(l, 2);
+  luaL_checkinteger(l, 2);
   const std::string& entity_name = luaL_checkstring(l, 3);
   MapEntities& entities = get_lua_context(l).get_current_game()->get_current_map().get_entities();
-  MapEntity& target = *entities.get_entity(EntityType(entity_type), entity_name);
+  MapEntity& target = *entities.get_entity(entity_name);
 
   movement.set_target(target);
 
@@ -945,10 +945,10 @@ int LuaContext::circle_movement_api_set_center(lua_State* l) {
     // TODO: MapEntity& center = check_entity(l, 2);
     // The entity type is not implemented yet. In the meantime, we use
     // two parameters to make it work: the entity type and its name.
-    int entity_type = luaL_checkinteger(l, 2);
+    luaL_checkinteger(l, 2);
     const std::string& entity_name = luaL_checkstring(l, 3);
     MapEntities& entities = get_lua_context(l).get_current_game()->get_current_map().get_entities();
-    MapEntity& center = *entities.get_entity(EntityType(entity_type), entity_name);
+    MapEntity& center = *entities.get_entity(entity_name);
 
     int dx = luaL_optinteger(l, 4, 0); // TODO 3
     int dy = luaL_optinteger(l, 5, 0); // TODO 4

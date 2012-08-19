@@ -38,6 +38,7 @@
 #include "entities/Fire.h"
 #include "movements/Movement.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Debug.h"
 #include <lua.hpp>
 
 const std::string LuaContext::map_module_name = "sol.map";
@@ -581,7 +582,7 @@ int LuaContext::map_api_hero_align_on_sensor(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  Sensor* sensor = (Sensor*) entities.get_entity(SENSOR, name);
+  MapEntity* sensor = entities.get_entity(name);
   map.get_entities().get_hero().set_xy(sensor->get_xy());
 
   return 0;
@@ -769,7 +770,7 @@ int LuaContext::map_api_npc_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* npc = entities.get_entity(NON_PLAYING_CHARACTER, name);
+  MapEntity* npc = entities.get_entity(name);
 
   lua_pushboolean(l, npc->is_enabled());
   return 1;
@@ -787,7 +788,7 @@ int LuaContext::map_api_npc_set_enabled(lua_State* l) {
   bool enabled = lua_toboolean(l, 3);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* npc = entities.get_entity(NON_PLAYING_CHARACTER, name);
+  MapEntity* npc = entities.get_entity(name);
   npc->set_enabled(enabled);
 
   return 0;
@@ -826,7 +827,7 @@ int LuaContext::map_api_npc_get_position(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
+  MapEntity* npc = entities.get_entity(name);
 
   lua_pushinteger(l, npc->get_x());
   lua_pushinteger(l, npc->get_y());
@@ -851,7 +852,7 @@ int LuaContext::map_api_npc_set_position(lua_State* l) {
   }
 
   MapEntities& entities = map.get_entities();
-  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
+  MapEntity* npc = entities.get_entity(name);
   npc->set_xy(x, y);
   if (layer != -1) {
     MapEntities& entities = map.get_entities();
@@ -873,7 +874,7 @@ int LuaContext::map_api_npc_start_movement(lua_State* l) {
   Movement& movement = check_movement(l, 3);
 
   MapEntities& entities = map.get_entities();
-  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
+  MapEntity* npc = entities.get_entity(name);
 
   movement.set_suspended(false);
   npc->clear_movement();
@@ -893,7 +894,7 @@ int LuaContext::map_api_npc_stop_movement(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
+  MapEntity* npc = entities.get_entity(name);
   npc->clear_movement();
 
   return 0;
@@ -910,7 +911,7 @@ int LuaContext::map_api_npc_get_sprite(lua_State* l) {
   const std::string& entity_name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, entity_name);
+  MapEntity* npc = entities.get_entity(entity_name);
 
   push_sprite(l, npc->get_sprite());
   return 1;
@@ -927,7 +928,7 @@ int LuaContext::map_api_npc_remove(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  entities.remove_entity(NON_PLAYING_CHARACTER, name);
+  entities.remove_entity(name);
 
   return 0;
 }
@@ -943,7 +944,7 @@ int LuaContext::map_api_npc_exists(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  NPC* npc = (NPC*) entities.find_entity(NON_PLAYING_CHARACTER, name);
+  MapEntity* npc = entities.find_entity(name);
 
   lua_pushboolean(l, npc != NULL);
   return 1;
@@ -960,7 +961,10 @@ int LuaContext::map_api_chest_is_open(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  Chest* chest = (Chest*) entities.get_entity(CHEST, name);
+  MapEntity* entity = entities.get_entity(name);
+  Debug::check_assertion(entity->get_type() == CHEST,
+      "This entity is not a chest");
+  Chest* chest = (Chest*) entity;
 
   lua_pushboolean(l, chest->is_open());
   return 1;
@@ -978,7 +982,10 @@ int LuaContext::map_api_chest_set_open(lua_State* l) {
   bool open = lua_toboolean(l, 3) != 0;
 
   MapEntities& entities = map.get_entities();
-  Chest* chest = (Chest*) entities.get_entity(CHEST, name);
+  MapEntity* entity = entities.get_entity(name);
+  Debug::check_assertion(entity->get_type() == CHEST,
+      "This entity is not a chest");
+  Chest* chest = (Chest*) entity;
   chest->set_open(open);
 
   return 0;
@@ -995,7 +1002,7 @@ int LuaContext::map_api_chest_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* chest = entities.get_entity(CHEST, name);
+  MapEntity* chest = entities.get_entity(name);
 
   lua_pushboolean(l, chest->is_visible());
   return 1;
@@ -1013,7 +1020,7 @@ int LuaContext::map_api_chest_set_enabled(lua_State* l) {
   bool enabled = lua_toboolean(l, 3) != 0;
 
   MapEntities& entities = map.get_entities();
-  MapEntity* chest = entities.get_entity(CHEST, name);
+  MapEntity* chest = entities.get_entity(name);
   chest->set_visible(enabled);
 
   return 0;
@@ -1031,7 +1038,7 @@ int LuaContext::map_api_chest_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(CHEST, prefix);
+      map.get_entities().get_entities_with_prefix(prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -1052,7 +1059,7 @@ int LuaContext::map_api_tile_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* dynamic_tile = entities.get_entity(DYNAMIC_TILE, name);
+  MapEntity* dynamic_tile = entities.get_entity(name);
 
   lua_pushboolean(l, dynamic_tile->is_enabled());
   return 1;
@@ -1070,7 +1077,7 @@ int LuaContext::map_api_tile_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   MapEntities& entities = map.get_entities();
-  MapEntity* dynamic_tile = entities.get_entity(DYNAMIC_TILE, name);
+  MapEntity* dynamic_tile = entities.get_entity(name);
   dynamic_tile->set_enabled(enable);
 
   return 0;
@@ -1088,7 +1095,7 @@ int LuaContext::map_api_tile_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(DYNAMIC_TILE, prefix);
+      map.get_entities().get_entities_with_prefix(prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -1109,7 +1116,7 @@ int LuaContext::map_api_stairs_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities &entities = map.get_entities();
-  MapEntity* stairs = entities.get_entity(STAIRS, name);
+  MapEntity* stairs = entities.get_entity(name);
 
   lua_pushboolean(l, stairs->is_enabled());
   return 1;
@@ -1127,7 +1134,7 @@ int LuaContext::map_api_stairs_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   MapEntities& entities = map.get_entities();
-  MapEntity* stairs = entities.get_entity(STAIRS, name);
+  MapEntity* stairs = entities.get_entity(name);
   stairs->set_enabled(enable);
 
   return 0;
@@ -1145,7 +1152,7 @@ int LuaContext::map_api_stairs_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(STAIRS, prefix);
+      map.get_entities().get_entities_with_prefix(prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -1166,7 +1173,7 @@ int LuaContext::map_api_obstacle_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* obstacle = entities.get_entity(CUSTOM_OBSTACLE, name);
+  MapEntity* obstacle = entities.get_entity(name);
 
   lua_pushboolean(l, obstacle->is_enabled());
   return 1;
@@ -1184,7 +1191,7 @@ int LuaContext::map_api_obstacle_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   MapEntities& entities = map.get_entities();
-  MapEntity* obstacle = entities.get_entity(CUSTOM_OBSTACLE, name);
+  MapEntity* obstacle = entities.get_entity(name);
   obstacle->set_enabled(enable);
 
   return 0;
@@ -1202,7 +1209,7 @@ int LuaContext::map_api_obstacle_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(CUSTOM_OBSTACLE, prefix);
+      map.get_entities().get_entities_with_prefix(prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -1223,7 +1230,7 @@ int LuaContext::map_api_sensor_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* sensor = entities.get_entity(SENSOR, name);
+  MapEntity* sensor = entities.get_entity(name);
 
   lua_pushboolean(l, sensor->is_enabled());
   return 1;
@@ -1241,7 +1248,7 @@ int LuaContext::map_api_sensor_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   MapEntities& entities = map.get_entities();
-  MapEntity* sensor = entities.get_entity(SENSOR, name);
+  MapEntity* sensor = entities.get_entity(name);
   sensor->set_enabled(enable);
 
   return 0;
@@ -1259,7 +1266,7 @@ int LuaContext::map_api_sensor_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(SENSOR, prefix);
+      map.get_entities().get_entities_with_prefix(prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -1280,7 +1287,7 @@ int LuaContext::map_api_jumper_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* jumper = entities.get_entity(JUMPER, name);
+  MapEntity* jumper = entities.get_entity(name);
 
   lua_pushboolean(l, jumper->is_enabled());
   return 1;
@@ -1298,7 +1305,7 @@ int LuaContext::map_api_jumper_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   MapEntities& entities = map.get_entities();
-  MapEntity* jumper = entities.get_entity(JUMPER, name);
+  MapEntity* jumper = entities.get_entity(name);
   jumper->set_enabled(enable);
 
   return 0;
@@ -1316,7 +1323,7 @@ int LuaContext::map_api_jumper_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(JUMPER, prefix);
+      map.get_entities().get_entities_with_prefix(prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -1337,7 +1344,7 @@ int LuaContext::map_api_crystal_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* crystal = entities.get_entity(CRYSTAL, name);
+  MapEntity* crystal = entities.get_entity(name);
 
   lua_pushboolean(l, crystal->is_enabled());
   return 1;
@@ -1355,7 +1362,7 @@ int LuaContext::map_api_crystal_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   MapEntities& entities = map.get_entities();
-  MapEntity* crystal = entities.get_entity(CRYSTAL, name);
+  MapEntity* crystal = entities.get_entity(name);
   crystal->set_enabled(enable);
 
   return 0;
@@ -1373,7 +1380,7 @@ int LuaContext::map_api_crystal_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3) != 0;
 
   std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(CRYSTAL, prefix);
+      map.get_entities().get_entities_with_prefix(prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -1439,7 +1446,7 @@ int LuaContext::map_api_teletransporter_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* teletransporter = entities.get_entity(TELETRANSPORTER, name);
+  MapEntity* teletransporter = entities.get_entity(name);
 
   lua_pushboolean(l, teletransporter->is_enabled());
   return 1;
@@ -1457,7 +1464,7 @@ int LuaContext::map_api_teletransporter_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* teletransporter = entities.get_entity(TELETRANSPORTER, name);
+  MapEntity* teletransporter = entities.get_entity(name);
   teletransporter->set_enabled(enable);
 
   return 0;
@@ -1475,7 +1482,7 @@ int LuaContext::map_api_teletransporter_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3);
 
   std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(TELETRANSPORTER, prefix);
+      map.get_entities().get_entities_with_prefix(prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -1496,7 +1503,7 @@ int LuaContext::map_api_block_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* block = entities.get_entity(BLOCK, name);
+  MapEntity* block = entities.get_entity(name);
 
   lua_pushboolean(l, block->is_enabled());
   return 1;
@@ -1514,7 +1521,7 @@ int LuaContext::map_api_block_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* block = entities.get_entity(BLOCK, name);
+  MapEntity* block = entities.get_entity(name);
   block->set_enabled(enable);
 
   return 0;
@@ -1532,7 +1539,7 @@ int LuaContext::map_api_block_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3);
 
   std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(BLOCK, prefix);
+      map.get_entities().get_entities_with_prefix(prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -1553,7 +1560,10 @@ int LuaContext::map_api_block_reset(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  Block* block = (Block*) entities.get_entity(BLOCK, name);
+  MapEntity* entity = entities.get_entity(name);
+  Debug::check_assertion(entity->get_type() == BLOCK,
+      "This entity is not a block");
+  Block* block = (Block*) entity;
   block->reset();
 
   return 0;
@@ -1568,7 +1578,7 @@ int LuaContext::map_api_block_reset_all(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
-  MapEntities &entities = map.get_entities();
+  MapEntities& entities = map.get_entities();
   std::list<MapEntity*> blocks = entities.get_entities(BLOCK);
   std::list<MapEntity*>::iterator i;
   for (i = blocks.begin(); i != blocks.end(); i++) {
@@ -1589,7 +1599,7 @@ int LuaContext::map_api_block_get_position(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* block = entities.get_entity(BLOCK, name);
+  MapEntity* block = entities.get_entity(name);
 
   lua_pushinteger(l, block->get_x());
   lua_pushinteger(l, block->get_y());
@@ -1615,7 +1625,7 @@ int LuaContext::map_api_block_set_position(lua_State* l) {
   }
 
   MapEntities& entities = map.get_entities();
-  MapEntity* block = entities.get_entity(BLOCK, name);
+  MapEntity* block = entities.get_entity(name);
   block->set_xy(x, y);
 
   if (layer != -1) {
@@ -1637,7 +1647,7 @@ int LuaContext::map_api_shop_item_exists(lua_State* l) {
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
 
-  bool exists = map.get_entities().find_entity(SHOP_ITEM, name) != NULL;
+  bool exists = map.get_entities().find_entity(name) != NULL;
 
   lua_pushboolean(l, exists);
   return 1;
@@ -1654,7 +1664,7 @@ int LuaContext::map_api_shop_item_remove(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* shop_item = entities.find_entity(SHOP_ITEM, name);
+  MapEntity* shop_item = entities.find_entity(name);
   if (shop_item != NULL) {
     entities.remove_entity(shop_item);
   }
@@ -1673,7 +1683,10 @@ int LuaContext::map_api_switch_is_activated(lua_State* l) {
   const std::string &name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  Switch* sw = (Switch*) entities.get_entity(SWITCH, name);
+  MapEntity* entity = entities.get_entity(name);
+  Debug::check_assertion(entity->get_type() == SWITCH,
+      "This entity is not a switch");
+  Switch* sw = (Switch*) entity;
 
   lua_pushboolean(l, sw->is_activated());
   return 1;
@@ -1691,7 +1704,10 @@ int LuaContext::map_api_switch_set_activated(lua_State* l) {
   bool activate = lua_toboolean(l, 3);
 
   MapEntities& entities = map.get_entities();
-  Switch* sw = (Switch*) entities.get_entity(SWITCH, name);
+  MapEntity* entity = entities.get_entity(name);
+  Debug::check_assertion(entity->get_type() == SWITCH,
+      "This entity is not a switch");
+  Switch* sw = (Switch*) entity;
   sw->set_activated(activate);
 
   return 0;
@@ -1709,7 +1725,10 @@ int LuaContext::map_api_switch_set_locked(lua_State* l) {
   bool lock = lua_toboolean(l, 3);
 
   MapEntities& entities = map.get_entities();
-  Switch* sw = (Switch*) entities.get_entity(SWITCH, name);
+  MapEntity* entity = entities.get_entity(name);
+  Debug::check_assertion(entity->get_type() == SWITCH,
+      "This entity is not a switch");
+  Switch* sw = (Switch*) entity;
   sw->set_locked(lock);
 
   return 0;
@@ -1726,7 +1745,7 @@ int LuaContext::map_api_switch_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* sw = entities.get_entity(SWITCH, name);
+  MapEntity* sw = entities.get_entity(name);
 
   lua_pushboolean(l, sw->is_enabled());
   return 1;
@@ -1744,7 +1763,7 @@ int LuaContext::map_api_switch_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* sw = entities.get_entity(SWITCH, name);
+  MapEntity* sw = entities.get_entity(name);
   sw->set_enabled(enable);
 
   return 0;
@@ -1762,7 +1781,7 @@ int LuaContext::map_api_switch_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3);
 
   std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(SWITCH, prefix);
+      map.get_entities().get_entities_with_prefix(prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -1845,7 +1864,10 @@ int LuaContext::map_api_door_is_open(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  Door* door = (Door*) entities.get_entity(DOOR, name);
+  MapEntity* entity = entities.get_entity(name);
+  Debug::check_assertion(entity->get_type() == DOOR,
+      "This entity is not a door");
+  Door* door = (Door*) entity;
 
   lua_pushboolean(l, door->is_open());
   return 1;
@@ -2118,7 +2140,7 @@ int LuaContext::map_api_enemy_remove(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  entities.remove_entity(ENEMY, name);
+  entities.remove_entity(name);
 
   return 0;
 }
@@ -2134,7 +2156,7 @@ int LuaContext::map_api_enemy_remove_group(lua_State* l) {
   const std::string& prefix = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  entities.remove_entities_with_prefix(ENEMY, prefix);
+  entities.remove_entities_with_prefix(prefix);
 
   return 0;
 }
@@ -2150,7 +2172,7 @@ int LuaContext::map_api_enemy_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* enemy = entities.get_entity(ENEMY, name);
+  MapEntity* enemy = entities.get_entity(name);
 
   lua_pushboolean(l, enemy->is_enabled());
   return 1;
@@ -2168,7 +2190,7 @@ int LuaContext::map_api_enemy_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* enemy = entities.get_entity(ENEMY, name);
+  MapEntity* enemy = entities.get_entity(name);
   enemy->set_enabled(enable);
 
   return 0;
@@ -2186,7 +2208,7 @@ int LuaContext::map_api_enemy_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 3);
 
   std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(ENEMY, prefix);
+      map.get_entities().get_entities_with_prefix(prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -2207,7 +2229,7 @@ int LuaContext::map_api_enemy_is_dead(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* enemy = entities.find_entity(ENEMY, name);
+  MapEntity* enemy = entities.find_entity(name);
 
   lua_pushboolean(l, (enemy == NULL));
   return 1;
@@ -2224,7 +2246,7 @@ int LuaContext::map_api_enemy_is_group_dead(lua_State* l) {
   const std::string& prefix = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(ENEMY, prefix);
+  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(prefix);
 
   lua_pushboolean(l, enemies.empty());
   return 1;
@@ -2241,7 +2263,7 @@ int LuaContext::map_api_enemy_get_group_count(lua_State* l) {
   const std::string& prefix = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(ENEMY, prefix);
+  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(prefix);
 
   lua_pushinteger(l, enemies.size());
   return 1;
@@ -2258,7 +2280,7 @@ int LuaContext::map_api_enemy_get_position(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, name);
+  MapEntity* enemy = entities.get_entity(name);
   const Rectangle& coordinates = enemy->get_xy();
 
   lua_pushinteger(l, coordinates.get_x());
@@ -2284,7 +2306,7 @@ int LuaContext::map_api_enemy_set_position(lua_State* l) {
   }
 
   MapEntities& entities = map.get_entities();
-  MapEntity* enemy = entities.get_entity(ENEMY, name);
+  MapEntity* enemy = entities.get_entity(name);
   enemy->set_xy(x, y);
 
   if (layer != -1) {
@@ -2309,7 +2331,10 @@ int LuaContext::map_api_enemy_set_treasure(lua_State* l) {
   int savegame_variable = luaL_checkinteger(l, 5);
 
   MapEntities& entities = map.get_entities();
-  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
+  MapEntity* entity = entities.get_entity(enemy_name);
+  Debug::check_assertion(entity->get_type() == ENEMY,
+      "This entity is not an enemy");
+  Enemy* enemy = (Enemy*) entity;
   Treasure treasure(enemy->get_game(), item_name, variant, savegame_variable);
   enemy->set_treasure(treasure);
 
@@ -2327,7 +2352,10 @@ int LuaContext::map_api_enemy_set_no_treasure(lua_State* l) {
   const std::string& enemy_name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
+  MapEntity* entity = entities.get_entity(enemy_name);
+  Debug::check_assertion(entity->get_type() == ENEMY,
+      "This entity is not an enemy");
+  Enemy* enemy = (Enemy*) entity;
   Treasure treasure(enemy->get_game(), "_none", 1, -1);
   enemy->set_treasure(treasure);
 
@@ -2345,7 +2373,10 @@ int LuaContext::map_api_enemy_set_random_treasure(lua_State* l) {
   const std::string& enemy_name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
+  MapEntity* entity = entities.get_entity(enemy_name);
+  Debug::check_assertion(entity->get_type() == ENEMY,
+      "This entity is not an enemy");
+  Enemy* enemy = (Enemy*) entity;
   Treasure treasure(enemy->get_game(), "_random", 1, -1);
   enemy->set_treasure(treasure);
 
@@ -2363,7 +2394,7 @@ int LuaContext::map_api_enemy_get_sprite(lua_State* l) {
   const std::string& enemy_name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
+  MapEntity* enemy = entities.get_entity(enemy_name);
 
   push_sprite(l, enemy->get_sprite());
   return 1;

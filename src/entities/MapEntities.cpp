@@ -93,6 +93,7 @@ void MapEntities::destroy_all_entities() {
     destroy_entity(*i);
   }
   all_entities.clear();
+  named_entities.clear();
 
   detectors.clear();
   entities_to_remove.clear();
@@ -172,47 +173,91 @@ void MapEntities::set_obstacle(int layer, int x8, int y8, Obstacle obstacle) {
 }
 
 /**
- * @brief Returns the entity with the specified type and name.
+ * @brief Returns the entity with the specified name.
  *
  * The program stops if there is no such entity.
  *
- * @param type type of entity
- * @param name name of the entity to get
- * @return the entity requested
+ * @param name Name of the entity to get.
+ * @return The entity requested.
  */
-MapEntity* MapEntities::get_entity(EntityType type, const std::string &name) {
+MapEntity* MapEntities::get_entity(const std::string& name) {
 
-  MapEntity *entity = find_entity(type, name);
+  MapEntity* entity = find_entity(name);
 
-  Debug::check_assertion(entity != NULL, StringConcat() << "Cannot find entity with type '" << type << "' and name '" << name << "'");
+  Debug::check_assertion(entity != NULL, StringConcat()
+      << "Cannot find entity with name '" << name << "'");
+
+  return entity;
+}
+
+/**
+ * @brief Returns the entity with the specified name and type.
+ *
+ * The program stops if there is no such entity.
+ *
+ * @param type Type of entity.
+ * @param name Name of the entity to get.
+ * @return The entity requested.
+ */
+/* TODO remove
+MapEntity* MapEntities::get_entity(EntityType type, const std::string& name) {
+
+  MapEntity* entity = find_entity(type, name);
+
+  Debug::check_assertion(entity != NULL, StringConcat()
+      << "Cannot find entity with name '" << name << "'");
+
+  return entity;
+}
+*/
+
+/**
+ * @brief Returns the entity with the specified name, or NULL if it doesn't exist.
+ * @param name Name of the entity to find.
+ * @return The entity requested, or NULL if there is no entity with the specified name.
+ */
+MapEntity* MapEntities::find_entity(const std::string& name) {
+
+  if (named_entities.count(name) == 0) {
+    return NULL;
+  }
+
+  MapEntity* entity = named_entities[name];
+
+  if (entity->is_being_removed()) {
+    return NULL;
+  }
 
   return entity;
 }
 
 /**
  * @brief Returns the entity with the specified type and name, or NULL if it doesn't exist.
- * @param type type of entity
- * @param name name of the entity to get
- * @return the entity requested, or NULL if there is no entity with the specified type and name
+ * @param type Type of entity.
+ * @param name Name of the entity to find.
+ * @return The entity requested, or NULL if there is no entity with the
+ * specified name and type
  */
-MapEntity* MapEntities::find_entity(EntityType type, const std::string &name) {
+/* TODO remove
+MapEntity* MapEntities::find_entity(EntityType type, const std::string& name) {
 
-  list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
-
-    MapEntity *entity = *i;
-    if (entity->get_type() == type && entity->get_name() == name && !entity->is_being_removed()) {
-      return entity;
-    }
+  if (named_entities.count(name) == 0) {
+    return NULL;
   }
 
-  return NULL;
-}
+  MapEntity* entity = named_entities[name];
+
+  if (entity->get_type() != type && entity->is_being_removed()) {
+    return NULL;
+  }
+
+  return entity;
+}*/
 
 /**
  * @brief Returns all entities of the map with the specified type.
- * @param type type of entity
- * @return the entities of this type
+ * @param type Type of entity.
+ * @return The entities of this type.
  */
 list<MapEntity*> MapEntities::get_entities(EntityType type) {
 
@@ -231,19 +276,43 @@ list<MapEntity*> MapEntities::get_entities(EntityType type) {
 }
 
 /**
- * @brief Returns the entities of the map with the specified type and having the specified name prefix.
- * @param type type of entity
- * @param prefix prefix of the name
- * @return the entities of this type and having this prefix in their name
+ * @brief Returns the entities of the map having the specified name prefix.
+ * @param prefix Prefix of the name.
+ * @return The entities of this type and having this prefix in their name.
  */
-list<MapEntity*> MapEntities::get_entities_with_prefix(EntityType type, const std::string &prefix) {
+list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix) {
 
   list<MapEntity*> entities;
 
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
-    MapEntity *entity = *i;
+    MapEntity* entity = *i;
+    if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
+      entities.push_back(entity);
+    }
+  }
+
+  return entities;
+}
+
+
+/**
+ * @brief Returns the entities of the map with the specified type and having
+ * the specified name prefix.
+ * @param type Type of entity.
+ * @param prefix Prefix of the name.
+ * @return The entities of this type and having this prefix in their name.
+ */
+list<MapEntity*> MapEntities::get_entities_with_prefix(
+    EntityType type, const std::string& prefix) {
+
+  list<MapEntity*> entities;
+
+  list<MapEntity*>::iterator i;
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+
+    MapEntity* entity = *i;
     if (entity->get_type() == type && entity->has_prefix(prefix) && !entity->is_being_removed()) {
       entities.push_back(entity);
     }
@@ -524,6 +593,12 @@ void MapEntities::add_entity(MapEntity *entity) {
     all_entities.push_back(entity);
   }
 
+  const std::string& name = entity->get_name();
+  if (!name.empty()) {
+    Debug::check_assertion(named_entities.count(name) == 0, StringConcat()
+        << "Error: an entity with name '" << name << "' already exists.");
+    named_entities[name] = entity;
+  }
   entity->increment_refcount();
 
   // notify the entity
@@ -534,26 +609,25 @@ void MapEntities::add_entity(MapEntity *entity) {
  * @brief Removes an entity from the map and schedules it to be destroyed.
  * @param entity the entity to remove
  */
-void MapEntities::remove_entity(MapEntity *entity) {
+void MapEntities::remove_entity(MapEntity* entity) {
 
   if (!entity->is_being_removed()) {
     entities_to_remove.push_back(entity);
     entity->notify_being_removed();
 
-    if (entity == (MapEntity*) this->boomerang) {
+    if (entity == this->boomerang) {
       this->boomerang = NULL;
     }
   }
 }
 
 /**
- * @brief Removes an entity from the map and schedules it to be destroyed.
- * @param type type of the entity to remove
- * @param name name of the entity
+ * @brief Removes an entity from the map.
+ * @param name Name of the entity.
  */
-void MapEntities::remove_entity(EntityType type, const std::string &name) {
+void MapEntities::remove_entity(const std::string& name) {
 
-  MapEntity* entity = find_entity(type, name);
+  MapEntity* entity = find_entity(name);
   if (entity != NULL) {
     remove_entity(entity);
   }
@@ -561,12 +635,11 @@ void MapEntities::remove_entity(EntityType type, const std::string &name) {
 
 /**
  * @brief Removes all entities of a type whose name starts with the specified prefix.
- * @param type a type of entities
- * @param prefix prefix of the name of the entities to remove
+ * @param prefix Prefix of the name of the entities to remove.
  */
-void MapEntities::remove_entities_with_prefix(EntityType type, const std::string& prefix) {
+void MapEntities::remove_entities_with_prefix(const std::string& prefix) {
 
-  std::list<MapEntity*> entities = get_entities_with_prefix(type, prefix);
+  std::list<MapEntity*> entities = get_entities_with_prefix(prefix);
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
     remove_entity(*it);
@@ -616,6 +689,10 @@ void MapEntities::remove_marked_entities() {
 
     // remove it from the whole list
     all_entities.remove(entity);
+    const std::string& name = entity->get_name();
+    if (!name.empty()) {
+      named_entities.erase(name);
+    }
 
     // destroy it
     destroy_entity(entity);
@@ -646,7 +723,7 @@ void MapEntities::set_suspended(bool suspended) {
     (*i)->set_suspended(suspended);
   }
 
-  // note that we don't suspend the animated tiles
+  // note that we don't suspend the tiles
 }
 
 /**

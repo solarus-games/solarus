@@ -28,32 +28,6 @@ import java.awt.*;
 public class Sensor extends MapEntity {
 
     /**
-     * Subtypes of sensors.
-     * The subtype indicate what happens when the sensor is activated.
-     */
-    public enum Subtype implements EntitySubtype {
-	CUSTOM,                 /**< the script is called when the hero comes on this sensor */
-	CHANGE_LAYER,           /**< the hero's layer is changed when he comes on this sensor
-	                         * (this layer becomes the sensor's layer) */
-	RETURN_FROM_BAD_GROUND; /**< when falling in a hole or in other bad grounds, the hero will
-	                         * come back at the location of this sensor */
-
-	public static final String[] humanNames = {
-	  "Custom (call the script)",
-	  "Change the layer",
-	  "Place to return from holes and other bad grounds"
-	};
-
-	public int getId() {
-	    return ordinal();
-	}
-
-	public static Subtype get(int id) {
-	    return values()[id];
-	}
-    }
-
-    /**
      * Origin point of this entity type.
      */
     private static final Point origin = new Point(8, 13);
@@ -72,9 +46,7 @@ public class Sensor extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("sensors.png", 0, 0, 32, 32),  // custom
-	new EntityImageDescription("sensors.png", 32, 0, 32, 32), // change layer
-	new EntityImageDescription("sensors.png", 64, 0, 32, 32), // return place for holes
+	new EntityImageDescription("sensors.png", 0, 0, 32, 32)
     };
 
     /**
@@ -98,7 +70,7 @@ public class Sensor extends MapEntity {
      * @return true
      */
     public boolean isResizable() {
-	return subtype != Subtype.RETURN_FROM_BAD_GROUND;
+	return true;
     }
 
     /**
@@ -125,28 +97,6 @@ public class Sensor extends MapEntity {
      */
     protected Point getOrigin() {
 	return origin;
-    }
-
-    /**
-     * Sets the default values of all properties specific to the current entity type.
-     */
-    public void setPropertiesDefaultValues() throws MapException {
-	setSubtype(Subtype.CUSTOM);
-    }
-
-    /**
-     * Sets the subtype of this entity.
-     * @param subtype the subtype of entity
-     * @throws MapException if the subtype is not valid
-     */
-    public void setSubtype(EntitySubtype subtype) throws MapException {
-
-	if (subtype != this.subtype) {
-	    if (isResizable() && subtype == Subtype.RETURN_FROM_BAD_GROUND) {
-		setSize(16, 16);
-	    }
-	    super.setSubtype(subtype);
-	}
     }
 
     /**

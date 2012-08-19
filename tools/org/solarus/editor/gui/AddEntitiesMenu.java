@@ -53,11 +53,7 @@ public class AddEntitiesMenu extends JMenu {
 		Switch.Subtype.ARROW_TARGET
 	),
 	new ItemDefinition(EntityType.CUSTOM_OBSTACLE, KeyEvent.VK_O),
-	new ItemDefinition(EntityType.SENSOR, KeyEvent.VK_N,
-		Sensor.Subtype.CUSTOM,
-		Sensor.Subtype.CHANGE_LAYER,
-		Sensor.Subtype.RETURN_FROM_BAD_GROUND
-	),
+	new ItemDefinition(EntityType.SENSOR, KeyEvent.VK_N),
 	new ItemDefinition(EntityType.CRYSTAL, KeyEvent.VK_Y),
 	new ItemDefinition(EntityType.CRYSTAL_BLOCK, KeyEvent.VK_N,
 		CrystalBlock.Subtype.ORANGE,

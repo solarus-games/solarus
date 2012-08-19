@@ -82,6 +82,7 @@ class LuaContext {
     void set_suspended(bool suspended);
     void notify_input(InputEvent& event);
     void notify_map_started(Map& map, Destination* destination);
+    void notify_map_suspended(Map& map, bool suspended);
     void notify_item_created(EquipmentItem& item);
     void notify_enemy_created(Enemy& enemy);
     void notify_camera_reached_target(Map& map);

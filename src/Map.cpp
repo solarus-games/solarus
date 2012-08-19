@@ -468,7 +468,7 @@ void Map::set_suspended(bool suspended) {
   this->suspended = suspended;
 
   entities->set_suspended(suspended);
-  get_lua_context().map_on_suspended(*this, suspended);
+  get_lua_context().notify_map_suspended(*this, suspended);
 }
 
 /**

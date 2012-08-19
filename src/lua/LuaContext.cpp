@@ -249,6 +249,17 @@ void LuaContext::notify_map_started(Map& map, Destination* destination) {
 }
 
 /**
+ * @brief Notifies Lua that a map has just been suspended or resumed.
+ * @param map A map.
+ * @param suspended \c true if it is suspended, false if it is resumed.
+ */
+void LuaContext::notify_map_suspended(Map& map, bool suspended) {
+
+  set_suspended_timers(suspended);   // Notify timers.
+  map_on_suspended(map, suspended);  // Call map:on_suspended()
+}
+
+/**
  * @brief Notifies the Lua world that an equipment item has just been created.
  *
  * The Lua file of this item is automatically loaded.

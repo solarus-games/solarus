@@ -1,4 +1,5 @@
 1024	752	-1	-100	1968	2696	-1	7	light_world_dungeon
+13	0	8	637	16	16	to_layer_1_sensor	0
 0	1	296	376	96	24	52
 0	1	336	376	64	24	625
 0	1	384	392	24	48	51
@@ -511,7 +512,6 @@
 12	1	376	24	16	16	custom_obstacle_7	0	1	0	0
 12	1	120	24	16	16	custom_obstacle_8	0	1	0	0
 12	1	24	112	16	16	custom_obstacle_9	0	1	0	0
-13	1	8	637	16	16	sensor	1
 2	1	1008	624	16	16	teletransporter	_none	_none	1	128	from_l2
 1	1	992	637	from_d2	2	_none
 0	2	1000	328	8	352	353

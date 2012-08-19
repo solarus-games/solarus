@@ -79,7 +79,6 @@
 7	0	288	381	enemy_7	3	red_dogman	0	-1	_random	1	-1
 19	0	368	280	stairs	1	4
 19	0	504	392	stairs_2	3	4
-13	0	384	493	16	16	sensor	1
 2	0	376	496	16	16	teletransporter	_none	_none	2	129	_side
 0	1	344	416	88	8	70
 0	1	176	40	368	48	541
@@ -229,6 +228,7 @@
 12	1	248	24	16	16	custom_obstacle_6	0	1	0	0
 12	1	504	24	16	16	custom_obstacle_8	0	1	0	0
 2	1	504	-16	16	16	teletransporter_2	_none	_none	2	138	_side
+13	1	384	493	16	16	to_layer_0_sensor	0
 0	2	144	184	8	128	441
 0	2	0	0	144	496	170
 0	2	456	16	128	8	437

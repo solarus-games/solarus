@@ -368,10 +368,10 @@ void PauseSubmenuInventory::assign_item(int slot) {
   Sound::play("throw");
 
   // compute the movement
-  int x1 = SOLARUS_SCREEN_WIDTH_MIDDLE - 100 + 32 * cursor_column;
-  int y1 = SOLARUS_SCREEN_HEIGHT_MIDDLE - 45 + 32 * cursor_row;
-  int x2 = SOLARUS_SCREEN_WIDTH_MIDDLE - ((slot == 0) ? 140 : 88);
-  int y2 = SOLARUS_SCREEN_HEIGHT_MIDDLE - 74;
+  int x1 = 60 + 32 * cursor_column;
+  int y1 = 75 + 32 * cursor_row;
+  int x2 = (slot == 0) ? 20 : 72;
+  int y2 = 46;
 
   item_assigned_movement = new TargetMovement(x2, y2, 500);
   item_assigned_movement->set_xy(x1, y1);

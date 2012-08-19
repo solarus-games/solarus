@@ -339,8 +339,8 @@ the interaction will be started only if the hero touches the south face of the e
 \c behavior describes what happens when the player presses the action key near this entity.
 There are three possible options:
 - dialog#XXX: starts the dialog with id XXX
-- map: calls the map script (event_hero_interaction)
-- item#XXX calls the script of the item XXX (event_hero_interaction)
+- map: calls the map script (on_hero_interaction)
+- item#XXX calls the script of the item XXX (on_hero_interaction)
 
 \section block Block (9)
 
@@ -425,13 +425,10 @@ If you want the hero to be detected for sure when he enters somewhere, use a sen
 
 Syntax of a sensor:
 \verbatim
-13	layer	x	y	width	height	entity_name	subtype
+13	layer	x	y	width	height	entity_name
 \endverbatim
 
-Subtypes of sensors:
-- 0: custom (the script is called)
-- 1: change the layer (the hero takes the layer of the sensor) 
-- 2: place to get back when the hero falls into a hole or some other bad ground 
+When the hero overlaps entirely the sensor, the map script is notified.
 
 \section crystal Crystal (14)
 

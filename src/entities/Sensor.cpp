@@ -30,22 +30,14 @@
  * @param layer layer of the entity
  * @param x x position of the entity's rectangle
  * @param y y position of the entity's rectangle
- * @param width width of the entity's rectangle 
- * @param height height of the entity's rectangle 
- * @param subtype the subtype of sensor
+ * @param width width of the entity's rectangle
+ * @param height height of the entity's rectangle
  */
 Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
-	       int width, int height, Subtype subtype):
+	       int width, int height):
   Detector(COLLISION_INSIDE | COLLISION_RECTANGLE, name, layer, x, y, width, height),
-  subtype(subtype),
   activated_by_hero(false),
   notifying_script(false) {
-
-  if (subtype == RETURN_FROM_BAD_GROUND) {
-    
-    Debug::check_assertion(width == 16 && height == 16,
-	StringConcat() << "This place to return from bad grounds has an incorrect size: " << width << "x" << height);
-  }
 
   set_origin(8, 13);
 }
@@ -69,17 +61,16 @@ Sensor::~Sensor() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* Sensor::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Sensor::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
 
   std::string name;
-  int width, height, subtype;
+  int width, height;
 
   FileTools::read(is, width);
   FileTools::read(is, height);
   FileTools::read(is, name);
-  FileTools::read(is, subtype);
  
-  return new Sensor(name, Layer(layer), x, y, width, height, Subtype(subtype));
+  return new Sensor(name, Layer(layer), x, y, width, height);
 }
 
 /**
@@ -88,25 +79,6 @@ MapEntity* Sensor::parse(Game &game, std::istream &is, Layer layer, int x, int y
  */
 EntityType Sensor::get_type() {
   return SENSOR;
-}
-    
-/**
- * @brief Returns the subtype of this sensor.
- * @return the subtype
- */
-Sensor::Subtype Sensor::get_subtype() {
-  return subtype;
-}
-
-/**
- * @brief Returns whether this entity can have collisions with entities even if
- * they are not on the same layer.
- * @return true if this entity can collide with entities that are on another layer
- */
-bool Sensor::has_layer_independent_collisions() {
-
-  // check the collisions with the hero even if he is not on the same layer yet
-  return subtype == CHANGE_LAYER;
 }
 
 /**
@@ -136,7 +108,7 @@ void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
  */
 void Sensor::notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode) {
 
-  if (subtype == CUSTOM && collision_mode == COLLISION_RECTANGLE) {
+  if (collision_mode == COLLISION_RECTANGLE) {
     get_lua_context().map_on_sensor_collision_explosion(get_map(), *this);
   }
 }
@@ -154,30 +126,14 @@ void Sensor::activate(Hero& hero) {
 
     activated_by_hero = true;
 
-    switch (subtype) {
-
-      case CUSTOM:
-        // we notify the scripts
-        notifying_script = true;
-        get_lua_context().map_on_hero_on_sensor(get_map(), *this);
-        notifying_script = false;
-        get_hero().reset_movement();
-        break;
-
-      case CHANGE_LAYER:
-        // we change the hero's layer
-        get_entities().set_entity_layer(hero, get_layer());
-        break;
-
-      case RETURN_FROM_BAD_GROUND:
-        // we indicate to the hero a location to return
-        // after falling into a hole or some other ground
-        get_hero().set_target_solid_ground_coords(get_xy(), get_layer());
-        break;
-    }
+    // Notify Lua.
+    notifying_script = true;
+    get_lua_context().map_on_hero_on_sensor(get_map(), *this);
+    notifying_script = false;
+    get_hero().reset_movement();
   }
   else {
-    if (subtype == CUSTOM && !notifying_script && !get_game().is_suspended()) {
+    if (!notifying_script && !get_game().is_suspended()) {
       notifying_script = true;
       get_lua_context().map_on_hero_still_on_sensor(get_map(), *this);
       notifying_script = false;

@@ -114,7 +114,7 @@
 19	0	1392	560	stairs	2	4
 5	0	1304	736	chest	0	boss_key	1	201
 19	0	1064	96	stairs_2	3	4
-13	0	1480	797	16	16	save_solid_ground_sensor	0
+13	0	1480	797	16	16	save_solid_ground_sensor
 0	1	1024	40	96	8	439
 0	1	960	120	8	80	237
 0	1	968	120	208	80	319
@@ -559,14 +559,14 @@
 12	1	1064	200	16	16	custom_obstacle_6	0	1	1	1
 12	1	1056	88	8	32	custom_obstacle_7	1	1	1	1
 12	1	1080	88	8	32	custom_obstacle_8	1	1	1	1
-13	1	1272	181	16	16	stop_timer_a_sensor	0
-13	1	1272	133	16	16	stop_timer_a_sensor_2	0
-13	1	1288	277	16	16	stop_timer_b_sensor	0
-13	1	1288	325	16	16	stop_timer_b_sensor_2	0
-13	1	1456	301	16	16	stop_timer_c_sensor	0
-13	1	1456	349	16	16	stop_timer_c_sensor_2	0
-13	1	1288	341	16	16	close_door_b_sensor	0
-13	1	1456	285	16	16	close_door_c_sensor	0
+13	1	1272	181	16	16	stop_timer_a_sensor
+13	1	1272	133	16	16	stop_timer_a_sensor_2
+13	1	1288	277	16	16	stop_timer_b_sensor
+13	1	1288	325	16	16	stop_timer_b_sensor_2
+13	1	1456	301	16	16	stop_timer_c_sensor
+13	1	1456	349	16	16	stop_timer_c_sensor_2
+13	1	1288	341	16	16	close_door_b_sensor
+13	1	1456	285	16	16	close_door_c_sensor
 3	1	1288	61	piece_of_heart	1	291
 8	1	1112	333	sign	3	0	entities/sign	dialog#dungeon_1.stupid_run_sign
 4	1	1264	549	0	_random	1	-1

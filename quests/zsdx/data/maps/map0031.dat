@@ -199,15 +199,15 @@
 18	0	944	560	final_room_door	3	0	-1
 2	0	952	560	16	16	teletransporter	_none	_none	1	86	from_b1
 19	0	952	560	stairs	3	1
-13	0	936	437	64	16	start_boss_sensor	0
-13	0	936	509	64	64	save_solid_ground_sensor	0
+13	0	936	437	64	16	start_boss_sensor
+13	0	936	509	64	64	save_solid_ground_sensor
 1	0	976	533	tmp	3	_none
-13	0	1032	501	64	16	boss_floor_sensor_2	0
+13	0	1032	501	64	16	boss_floor_sensor_2
 10	0	848	544	16	16	boss_floor_1	629	1
 10	0	832	528	16	16	boss_floor_2	629	1
 10	0	848	528	16	16	boss_floor_3	629	1
 10	0	832	512	16	16	boss_floor_4	629	1
-13	0	840	501	64	16	boss_floor_sensor_1	0
+13	0	840	501	64	16	boss_floor_sensor_1
 10	0	864	544	16	16	boss_floor_5	629	1
 10	0	848	512	16	16	boss_floor_6	629	1
 10	0	864	528	16	16	boss_floor_7	629	1
@@ -525,7 +525,7 @@
 0	1	1080	272	8	8	69
 0	1	1104	272	8	8	69
 0	1	1088	272	16	8	70
-13	1	960	229	16	16	close_boss_door_sensor	0
+13	1	960	229	16	16	close_boss_door_sensor
 10	1	944	576	32	8	final_room_door_open	153	1
 10	1	952	576	16	8	final_room_door_open_2	274	1
 12	1	160	392	8	32	custom_obstacle	1	1	1	1

@@ -530,7 +530,7 @@
 18	0	288	80	miniboss_door	0	0	-1
 18	0	384	80	miniboss_door_2	2	0	-1
 18	0	160	48	miniboss_door_3	1	0	-1
-13	0	176	77	16	16	start_miniboss_sensor	0
+13	0	176	77	16	16	start_miniboss_sensor
 7	0	176	181	miniboss	3	khotor	1	92	fairy	1	-1
 4	0	80	85	0	arrow	1	-1
 4	0	272	197	0	arrow	2	-1

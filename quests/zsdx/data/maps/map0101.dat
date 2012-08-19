@@ -789,10 +789,10 @@
 5	1	192	64	chest	0	small_key	1	600
 3	1	168	173	piece_of_heart	1	601
 1	1	536	1029	from_outside	1	_none
-13	1	128	253	16	16	pipe_out_a_sensor_1	0
-13	1	136	261	16	16	pipe_out_a_sensor_2	0
-13	1	128	237	16	16	pipe_in_a_sensor_1	0
-13	1	152	261	16	16	pipe_in_a_sensor_2	0
+13	1	128	253	16	16	pipe_out_a_sensor_1
+13	1	136	261	16	16	pipe_out_a_sensor_2
+13	1	128	237	16	16	pipe_in_a_sensor_1
+13	1	152	261	16	16	pipe_in_a_sensor_2
 10	1	112	192	32	32	pipe_under_a_1	569	1
 10	1	120	128	16	64	pipe_under_a_2	553	1
 10	1	120	120	16	16	pipe_under_a_3	548	1
@@ -817,10 +817,10 @@
 12	1	144	136	8	8	pipe_border_a_10	1	1	1	1
 12	1	160	240	24	8	pipe_border_a_11	1	1	1	1
 12	1	160	264	48	8	pipe_border_a_12	1	1	1	1
-13	1	128	221	16	16	unhide_hero_sensor	0
-13	1	128	213	16	16	hide_hero_sensor_2	0
-13	1	176	261	16	16	hide_hero_sensor_3	0
-13	1	168	261	16	16	unhide_hero_sensor_2	0
+13	1	128	221	16	16	unhide_hero_sensor
+13	1	128	213	16	16	hide_hero_sensor_2
+13	1	176	261	16	16	hide_hero_sensor_3
+13	1	168	261	16	16	unhide_hero_sensor_2
 10	1	64	240	32	32	pipe_under_b_1	568	1
 10	1	48	248	16	16	pipe_under_b_2	551	1
 10	1	48	152	16	96	pipe_under_b_3	553	1
@@ -841,14 +841,14 @@
 12	1	64	168	8	72	pipe_border_b_11	1	1	1	1
 12	1	96	104	8	56	pipe_border_b_8	1	1	1	1
 12	1	72	80	8	56	pipe_border_b_7	1	1	1	1
-13	1	120	261	16	16	pipe_out_b_sensor_1	0
-13	1	104	261	16	16	pipe_in_b_sensor_1	0
-13	1	168	93	16	16	pipe_in_b_sensor_2	0
-13	1	184	93	16	16	pipe_out_b_sensor_2	0
-13	1	88	261	16	16	unhide_hero_sensor_3	0
-13	1	80	261	16	16	hide_hero_sensor_4	0
-13	1	152	93	16	16	unhide_hero_sensor_4	0
-13	1	144	93	16	16	hide_hero_sensor_5	0
+13	1	120	261	16	16	pipe_out_b_sensor_1
+13	1	104	261	16	16	pipe_in_b_sensor_1
+13	1	168	93	16	16	pipe_in_b_sensor_2
+13	1	184	93	16	16	pipe_out_b_sensor_2
+13	1	88	261	16	16	unhide_hero_sensor_3
+13	1	80	261	16	16	hide_hero_sensor_4
+13	1	152	93	16	16	unhide_hero_sensor_4
+13	1	144	93	16	16	hide_hero_sensor_5
 2	1	528	1040	16	16	teletransporter	_none	_none	1	8	from_dungeon_7
 5	1	688	56	chest_2	0	map	1	602
 8	1	568	53	npc	3	0	entities/hint_stone	dialog#dungeon_7.code
@@ -948,14 +948,14 @@
 11	1	736	912	door_b_switch	3	0	0
 10	1	40	32	32	32	pipe_under_c_1	569	1
 10	1	1040	648	32	32	pipe_under_c_2	564	1
-13	1	56	93	16	16	pipe_out_c_sensor_1	0
-13	1	56	77	16	16	pipe_in_c_sensor_1	0
-13	1	1016	669	16	16	pipe_out_c_sensor_2	0
-13	1	1032	669	16	16	pipe_in_c_sensor_2	0
-13	1	56	61	16	16	unhide_hero_sensor_5	0
-13	1	56	53	16	16	hide_hero_sensor_6	0
-13	1	1056	669	16	16	hide_hero_sensor_7	0
-13	1	1048	669	16	16	unhide_hero_sensor_6	0
+13	1	56	93	16	16	pipe_out_c_sensor_1
+13	1	56	77	16	16	pipe_in_c_sensor_1
+13	1	1016	669	16	16	pipe_out_c_sensor_2
+13	1	1032	669	16	16	pipe_in_c_sensor_2
+13	1	56	61	16	16	unhide_hero_sensor_5
+13	1	56	53	16	16	hide_hero_sensor_6
+13	1	1056	669	16	16	hide_hero_sensor_7
+13	1	1048	669	16	16	unhide_hero_sensor_6
 18	1	520	744	door_3	3	3	606
 9	1	816	349	block	-1	entities/statue	1	1	2
 11	1	792	56	ne_door_switch	1	0	1
@@ -1024,14 +1024,14 @@
 7	1	176	365	enemy_16	3	blue_duck_soldier	0	-1	_random	1	-1
 6	1	784	592	8	72	jumper_23	4	40
 6	1	664	688	96	8	jumper_24	2	40
-13	1	288	813	16	16	door_a_dont_close_sensor	0
-13	1	288	821	16	16	door_a_close_sensor	0
-13	1	728	989	16	16	door_b_dont_close_sensor	0
-13	1	736	989	16	16	door_b_close_sensor_2	0
-13	1	288	749	16	16	door_a_dont_close_sensor_2	0
-13	1	288	741	16	16	door_a_close_sensor_2	0
-13	1	664	989	16	16	door_b_dont_close_sensor_2	0
-13	1	656	989	16	16	door_b_close_sensor	0
+13	1	288	813	16	16	door_a_dont_close_sensor
+13	1	288	821	16	16	door_a_close_sensor
+13	1	728	989	16	16	door_b_dont_close_sensor
+13	1	736	989	16	16	door_b_close_sensor_2
+13	1	288	749	16	16	door_a_dont_close_sensor_2
+13	1	288	741	16	16	door_a_close_sensor_2
+13	1	664	989	16	16	door_b_dont_close_sensor_2
+13	1	656	989	16	16	door_b_close_sensor
 6	1	192	456	24	8	jumper_25	6	40
 6	1	248	456	24	8	jumper_26	6	40
 12	1	264	456	8	24	custom_obstacle_4	1	1	1	1

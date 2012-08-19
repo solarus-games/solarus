@@ -966,9 +966,9 @@
 0	0	464	936	8	8	12
 0	0	344	936	8	8	12
 0	0	280	920	16	8	11
-13	0	200	725	32	16	lyly_door_sensor	0
+13	0	200	725	32	16	lyly_door_sensor
 1	0	208	725	out_grandma_house	3	_none
-13	0	112	629	32	16	rupee_house_door_sensor	0
+13	0	112	629	32	16	rupee_house_door_sensor
 1	0	120	629	out_rupee_house	3	_none
 10	0	200	696	16	16	lyly_door	915	1
 10	0	112	600	16	16	rupee_house_door	915	1
@@ -1108,7 +1108,7 @@
 2	0	112	600	16	16	to_rupee_house	_none	_none	1	2	main_entrance
 10	0	656	32	32	16	stone_lock_tile	909	1
 8	0	672	45	stone_lock	3	0	_none	map
-13	0	184	173	48	16	waterfall_sensor	0
+13	0	184	173	48	16	waterfall_sensor
 12	0	176	104	48	8	custom_obstacle_5	1	1	1	1
 1	0	616	429	from_lost_woods_cave	3	_none
 2	0	608	392	16	16	teletransporter	_none	_none	1	76	from_outside

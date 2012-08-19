@@ -723,7 +723,7 @@
 10	1	488	848	32	8	stairs_5_enabled_4	299	1
 10	1	592	752	8	32	stairs_7_enabled_4	291	1
 10	1	592	792	8	32	stairs_6_enabled_5	291	1
-13	1	1120	589	16	16	remove_water_sensor	0
+13	1	1120	589	16	16	remove_water_sensor
 9	1	424	997	block_97	-1	entities/statue	1	1	2
 9	1	424	1045	block_93	-1	entities/statue	1	1	2
 9	1	392	1013	block_84	-1	entities/statue	1	1	2
@@ -1277,7 +1277,7 @@
 4	1	1008	725	0	heart	1	-1
 4	1	1008	917	0	arrow	3	-1
 7	1	1088	845	boss	3	ganon	2	306	_none	1	-1
-13	1	1080	917	32	16	start_boss_sensor	0
+13	1	1080	917	32	16	start_boss_sensor
 1	1	1088	933	from_1f_boss	1	_none
 2	1	1080	920	16	16	teletransporter_23	_none	_none	1	61	from_2f_boss
 19	1	1080	920	stairs	3	3

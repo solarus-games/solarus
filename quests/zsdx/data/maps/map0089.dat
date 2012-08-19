@@ -379,7 +379,7 @@
 8	0	184	797	walking_npc_2	3	1	npc/newlink3	dialog#castle.npc_3
 18	0	800	416	door_5	1	0	-1
 18	0	800	320	door_6	3	0	-1
-13	0	808	877	16	16	forbidden_door_sensor	0
+13	0	808	877	16	16	forbidden_door_sensor
 8	0	336	325	tom	3	1	npc/tom	map
 1	0	288	701	from_ending	-1	_none
 12	0	368	296	16	16	custom_obstacle_10	0	0	1	1

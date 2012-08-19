@@ -948,9 +948,9 @@
 1	1	72	37	from1Fb_left	3	_none
 19	1	760	472	stairs_2	1	1
 2	1	760	472	16	16	to1Fa	_none	_none	1	20	from2Fa_left
-13	1	632	517	16	16	prankster_sensor_top	0
-13	1	632	573	16	16	prankster_sensor_middle	0
-13	1	632	629	16	16	prankster_sensor_bottom	0
+13	1	632	517	16	16	prankster_sensor_top
+13	1	632	573	16	16	prankster_sensor_middle
+13	1	632	629	16	16	prankster_sensor_bottom
 18	1	328	328	LD1	2	0	127
 11	1	384	384	locked_door_switch_A	1	0	0
 11	1	456	384	locked_door_switch_B	1	0	0

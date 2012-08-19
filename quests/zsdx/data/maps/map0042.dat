@@ -1144,7 +1144,7 @@
 0	1	712	248	16	32	541
 0	1	272	592	8	8	69
 12	1	704	112	32	32	custom_obstacle_6	0	1	1	1
-13	1	712	125	32	32	weak_floor_sensor	0
+13	1	712	125	32	32	weak_floor_sensor
 2	1	704	112	32	32	weak_floor_teletransporter	_none	_none	1	41	_same
 1	1	96	37	from_2F_nw	3	_none
 1	1	160	37	from_4F_nw	3	_none

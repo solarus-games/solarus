@@ -572,8 +572,8 @@
 2	1	376	24	16	16	teletransporter_6	_none	_none	1	54	from_4F
 19	1	376	24	stairs_6	1	0
 7	1	480	872	miniboss	3	mowatulla	1	901	fairy	1	-1
-13	1	624	757	16	16	start_miniboss_sensor	0
-13	1	616	797	32	32	start_miniboss_sensor_2	0
+13	1	624	757	16	16	start_miniboss_sensor
+13	1	616	797	32	32	start_miniboss_sensor_2
 4	1	696	653	0	_random	1	-1
 4	1	552	669	0	_random	1	-1
 4	1	696	669	0	heart	1	-1
@@ -584,7 +584,7 @@
 18	1	240	680	final_room_door	3	0	-1
 18	1	112	248	boss_door_2	1	0	-1
 18	1	112	200	boss_door_3	3	0	-1
-13	1	120	277	32	16	start_boss_sensor	0
+13	1	120	277	32	16	start_boss_sensor
 4	1	824	653	0	_random	1	-1
 4	1	824	669	0	_random	1	-1
 4	1	968	653	0	_random	1	-1

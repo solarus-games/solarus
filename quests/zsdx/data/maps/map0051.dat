@@ -160,7 +160,7 @@
 12	1	1128	304	8	16	custom_obstacle_7	0	1	0	0
 12	1	1208	416	16	16	custom_obstacle_8	0	1	0	0
 1	1	1168	917	from_hole_b	3	_none
-13	1	1136	805	16	16	dont_close_LD06_sensor	0
+13	1	1136	805	16	16	dont_close_LD06_sensor
 0	2	1088	760	96	8	438
 0	2	1088	784	160	8	437
 0	2	1088	504	96	8	438

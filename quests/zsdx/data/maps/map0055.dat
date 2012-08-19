@@ -274,7 +274,7 @@
 0	0	152	320	64	160	399
 0	0	144	320	8	160	400
 0	0	216	320	8	160	400
-13	0	248	445	32	32	weak_floor_sensor	0
+13	0	248	445	32	32	weak_floor_sensor
 12	0	1056	608	32	8	custom_obstacle_13	1	1	1	1
 2	0	920	672	16	16	teletransporter_26	_none	_none	1	58	from_2f_se_hole_2
 2	0	920	656	16	16	teletransporter_25	_none	_none	1	58	from_2f_se_hole_1
@@ -421,7 +421,7 @@
 19	0	576	184	stairs_21	2	4
 19	0	880	440	stairs_22	2	4
 19	0	592	640	stairs_23	0	4
-13	0	488	629	32	48	above_barrier_sensor	0
+13	0	488	629	32	48	above_barrier_sensor
 2	0	920	688	16	16	teletransporter_27	_none	_none	1	58	from_2f_se_hole_3
 1	0	904	645	from_3f_hole_se_1	-1	_none
 1	0	904	669	from_3f_hole_se_2	-1	_none

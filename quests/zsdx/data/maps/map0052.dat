@@ -43,7 +43,7 @@
 2	1	624	64	16	16	to_1F	_none	_none	1	47	from_boss
 19	1	624	64	stairs	1	0
 8	1	632	221	agahnim_npc	1	1	npc/agahnim	map
-13	1	600	133	80	16	start_boss_sensor	0
+13	1	600	133	80	16	start_boss_sensor
 1	1	632	485	boss_destination_point	1	_none
 7	1	632	373	boss	3	agahnim_2	2	728	_none	1	-1
 1	1	632	453	ganon_dialog_destination_point	1	_none

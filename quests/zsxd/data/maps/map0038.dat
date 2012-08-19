@@ -29,7 +29,7 @@
 0	0	152	136	16	8	170
 0	0	136	120	16	16	170
 0	0	144	160	8	8	170
-13	0	128	205	80	32	sensor_light_off	0
+13	0	128	205	80	32	sensor_light_off
 2	0	152	-16	16	16	teletransporter_2	_none	_none	2	39	_side
 9	0	152	77	block	-1	entities/statue	1	1	2
 9	0	168	77	block_2	-1	entities/statue	1	1	2

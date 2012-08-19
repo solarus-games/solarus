@@ -970,7 +970,7 @@
 19	1	440	24	stairs_12	1	1
 19	1	624	24	stairs_13	1	1
 10	1	632	360	32	48	weak_floor	421	1
-13	1	640	381	32	32	weak_floor_sensor	0
+13	1	640	381	32	32	weak_floor_sensor
 7	1	648	693	enemy_3	3	red_bullblin	0	-1	_random	1	-1
 7	1	664	485	enemy_4	3	skeletor	0	-1	bomb	2	-1
 12	1	576	320	40	8	custom_obstacle_5	0	1	1	1
@@ -989,7 +989,7 @@
 4	1	56	173	0	fairy	1	-1
 4	1	152	157	0	_random	1	-1
 4	1	152	173	0	heart	1	-1
-13	1	104	261	16	16	start_boss_sensor	0
+13	1	104	261	16	16	start_boss_sensor
 7	1	200	464	boss	3	flora_gohma	2	415	heart_container	1	416
 12	1	712	632	16	16	custom_obstacle_7	0	1	1	1
 18	1	184	232	final_room_door	1	0	-1

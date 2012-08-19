@@ -1877,17 +1877,17 @@
 0	0	64	960	16	16	43
 0	0	240	984	16	8	36
 1	0	368	405	from_dungeon_3_2F	1	_none
-13	0	1000	613	32	16	hero_door_sensor	0
+13	0	1000	613	32	16	hero_door_sensor
 1	0	1008	613	out_link_house	3	_none
-13	0	816	613	32	16	shop_door_sensor	0
+13	0	816	613	32	16	shop_door_sensor
 1	0	824	613	out_shop	3	_none
 10	0	992	920	16	16	cake_shop_door	915	1
-13	0	992	949	32	16	cake_shop_door_sensor	0
+13	0	992	949	32	16	cake_shop_door_sensor
 10	0	1000	584	16	16	hero_door	915	1
 10	0	816	584	16	16	shop_door	915	1
 10	0	704	744	16	16	sahasrahla_door	915	1
-13	0	704	773	32	16	sahasrahla_door_sensor	0
-13	0	216	925	32	16	telepathic_booth_door_sensor	0
+13	0	704	773	32	16	sahasrahla_door_sensor
+13	0	216	925	32	16	telepathic_booth_door_sensor
 10	0	216	896	16	16	telepathic_booth_door	915	1
 12	0	992	624	32	24	custom_obstacle_3	0	1	1	0
 12	0	760	440	32	16	custom_obstacle_2	0	0	1	1

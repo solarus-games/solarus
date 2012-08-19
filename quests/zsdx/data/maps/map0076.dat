@@ -570,8 +570,8 @@
 2	1	360	312	16	16	teletransporter_10	entities/teletransporter	warp	1	76	destination_point_2
 2	1	504	336	16	16	teletransporter_11	entities/teletransporter	warp	1	76	destination_point_5
 2	1	648	456	16	16	teletransporter_12	entities/teletransporter	warp	1	76	destination_point_10
-13	1	208	277	16	16	close_torch_b_sensor	0
-13	1	160	277	16	16	close_torch_a_sensor	0
+13	1	208	277	16	16	close_torch_b_sensor
+13	1	160	277	16	16	close_torch_a_sensor
 11	1	48	360	torch_b_switch_2	1	0	0
 4	1	56	373	0	_none	1	-1
 11	1	168	120	torch_a_switch_2	1	0	0

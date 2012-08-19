@@ -228,7 +228,7 @@
 12	1	248	24	16	16	custom_obstacle_6	0	1	0	0
 12	1	504	24	16	16	custom_obstacle_8	0	1	0	0
 2	1	504	-16	16	16	teletransporter_2	_none	_none	2	138	_side
-13	1	384	493	16	16	to_layer_0_sensor	0
+13	1	384	493	16	16	to_layer_0_sensor
 0	2	144	184	8	128	441
 0	2	0	0	144	496	170
 0	2	456	16	128	8	437

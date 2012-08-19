@@ -90,7 +90,7 @@
 7	0	328	405	evil_20	3	evil_tile	0	-1	_random	1	-1
 1	0	216	357	entrance_D_1	3	_none
 18	0	200	344	door1_1	1	0	-1
-13	0	216	373	16	16	sensor1	0
+13	0	216	373	16	16	sensor1
 19	0	512	392	stairs	0	4
 18	0	464	424	door2_2	2	0	-1
 18	0	368	424	door2_1	0	0	-1
@@ -256,7 +256,7 @@
 18	1	824	384	door3_2	2	0	-1
 18	1	776	384	door3_1	0	0	-1
 9	1	904	397	block_2	-1	entities/statue	1	1	2
-13	1	784	405	16	16	sensor2	0
+13	1	784	405	16	16	sensor2
 9	1	824	53	block	-1	entities/block	1	0	0
 7	1	808	53	enemy	3	pike_detect	0	-1	_random	1	-1
 7	1	776	53	enemy_3	3	pike_detect	0	-1	_random	1	-1

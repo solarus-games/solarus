@@ -1066,9 +1066,9 @@
 4	1	1208	957	0	_random	1	-1
 7	1	1024	832	enemy_7	3	bubble	0	-1	_random	1	-1
 7	1	1232	832	enemy_9	3	bubble	0	-1	_random	1	-1
-13	1	1648	1661	16	48	DS1	0
+13	1	1648	1661	16	48	DS1
 18	1	1576	1656	LD1	0	0	-1
-13	1	288	1661	16	48	DS3	0
+13	1	288	1661	16	48	DS3
 18	1	1752	536	LD5	1	0	-1
 2	1	1120	1792	16	16	to_outside	_none	_none	1	10	from_dungeon_8
 4	1	56	1733	0	_random	1	-1
@@ -1093,7 +1093,7 @@
 4	1	1080	861	0	_random	1	-1
 18	1	1112	1000	LD4	3	0	-1
 18	1	1112	1048	LD4_2	1	0	-1
-13	1	1112	997	48	16	DS4	0
+13	1	1112	997	48	16	DS4
 7	1	1460	1565	enemy_4	3	red_helmasaur	0	-1	_random	1	-1
 7	1	1540	1629	enemy_8	3	red_helmasaur	0	-1	_random	1	-1
 7	1	1356	1413	enemy_11	3	red_helmasaur	0	-1	_random	1	-1
@@ -1149,7 +1149,7 @@
 10	1	656	360	24	64	WW01_closed	51	1
 18	1	1112	24	agahnim_door	1	0	-1
 7	1	1128	125	boss	3	billy	2	727	heart_container	1	729
-13	1	1080	205	112	16	start_boss_sensor	0
+13	1	1080	205	112	16	start_boss_sensor
 2	1	1104	1768	16	16	teletransporter	_none	_none	0	52	from_1F
 8	1	1128	125	billy_npc	3	1	npc/billy	map
 10	1	1616	688	24	16	LD5_closed	523	1

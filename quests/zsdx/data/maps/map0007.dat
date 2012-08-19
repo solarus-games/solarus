@@ -1206,9 +1206,9 @@
 0	0	24	552	16	8	36
 0	0	80	464	16	16	37
 0	0	72	376	16	16	37
-13	0	768	509	16	16	potion_shop_door_sensor	0
+13	0	768	509	16	16	potion_shop_door_sensor
 2	0	592	624	16	16	tmp	_none	_none	1	58	from_outside
-13	0	584	677	48	32	inferno_sensor	0
+13	0	584	677	48	32	inferno_sensor
 10	0	544	880	32	16	iron_lock_tile	387	1
 2	0	0	976	960	16	to_C2	_none	_none	2	4	_side
 2	0	-16	0	16	976	to_B1	_none	_none	2	9	_side

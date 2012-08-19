@@ -1326,9 +1326,9 @@
 6	0	280	96	32	8	jump_sensor_3	2	32
 12	0	1096	24	16	16	custom_obstacle	1	1	1	1
 8	0	224	917	yoda	3	1	npc/yoda	map
-13	0	56	869	48	32	yoda_sensor	0
-13	0	344	821	32	32	yoda_sensor_3	0
-13	0	232	797	32	32	yoda_sensor_5	0
+13	0	56	869	48	32	yoda_sensor
+13	0	344	821	32	32	yoda_sensor_3
+13	0	232	797	32	32	yoda_sensor_5
 18	0	32	424	door_2	1	8	67
 18	0	48	424	door_3	1	8	68
 18	0	112	376	door_4	1	8	72

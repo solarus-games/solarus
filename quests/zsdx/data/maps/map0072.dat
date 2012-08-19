@@ -227,7 +227,7 @@
 7	0	568	277	enemy_27	3	blue_bullblin	0	-1	_random	1	-1
 7	0	600	301	enemy_28	3	blue_bullblin	0	-1	_random	1	-1
 18	0	112	336	door	3	0	-1
-13	0	128	333	16	16	close_door_sensor	0
+13	0	128	333	16	16	close_door_sensor
 7	0	656	277	enemy_31	3	blue_bullblin	0	-1	_random	1	-1
 0	1	208	56	8	96	418
 0	1	280	56	8	96	417

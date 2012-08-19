@@ -193,7 +193,7 @@
 8	0	240	93	slot_machine_left	3	0	entities/slot_machine	map
 8	0	264	93	slot_machine_middle	3	0	entities/slot_machine	map
 8	0	288	93	slot_machine_right	3	0	entities/slot_machine	map
-13	0	272	173	16	16	game_3_sensor	0
+13	0	272	173	16	16	game_3_sensor
 0	2	64	312	96	8	263
 0	2	104	312	32	8	153
 0	2	0	32	16	304	170

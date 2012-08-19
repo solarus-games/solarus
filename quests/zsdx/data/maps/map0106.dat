@@ -945,8 +945,8 @@
 18	1	2072	792	door_b_4	1	0	-1
 7	1	2008	653	door_b_enemy_1	3	red_pig_soldier	0	-1	_random	1	-1
 7	1	2168	653	door_b_enemy_2	3	red_pig_soldier	0	-1	_random	1	-1
-13	1	2088	565	16	16	close_door_b_sensor_1	0
-13	1	2088	741	16	16	close_door_b_sensor_2	0
+13	1	2088	565	16	16	close_door_b_sensor_1
+13	1	2088	741	16	16	close_door_b_sensor_2
 17	1	2200	861	2
 17	1	2200	877	2
 17	1	1976	941	6
@@ -991,8 +991,8 @@
 4	1	2312	829	0	_none	1	-1
 4	1	2504	829	0	_none	1	-1
 4	1	2520	829	0	_none	1	-1
-13	1	2408	389	16	16	ne_puzzle_sensor_1	0
-13	1	2408	661	16	16	ne_puzzle_sensor_2	0
+13	1	2408	389	16	16	ne_puzzle_sensor_1
+13	1	2408	661	16	16	ne_puzzle_sensor_2
 10	1	2384	488	16	16	ne_puzzle_step_1_1	537	1
 10	1	2400	472	16	80	ne_puzzle_step_1_2	537	1
 10	1	2384	552	48	16	ne_puzzle_step_1_3	537	1
@@ -1039,8 +1039,8 @@
 18	1	1256	376	door_3	0	1	815
 18	1	1304	376	door_4	2	1	815
 18	1	984	376	door_c_4	2	0	-1
-13	1	1008	397	16	16	close_door_c_sensor_1	0
-13	1	1248	397	16	16	close_door_c_sensor_2	0
+13	1	1008	397	16	16	close_door_c_sensor_1
+13	1	1248	397	16	16	close_door_c_sensor_2
 4	1	696	317	0	heart	1	-1
 4	1	696	477	0	heart	1	-1
 4	1	920	317	0	heart	1	-1
@@ -1081,13 +1081,13 @@
 18	1	1112	792	door_e	1	0	-1
 18	1	1112	744	door_e_2	3	0	-1
 11	1	1024	704	door_e_switch	1	0	0
-13	1	1096	717	16	16	close_door_e_sensor_1	0
-13	1	1064	669	16	16	close_door_e_sensor_2	0
-13	1	1080	605	16	16	close_door_e_sensor_3	0
-13	1	1160	653	16	16	close_door_e_sensor_4	0
-13	1	1208	669	16	16	close_door_e_sensor_5	0
-13	1	1192	685	16	16	close_door_e_sensor_6	0
-13	1	1208	717	16	16	close_door_e_sensor_7	0
+13	1	1096	717	16	16	close_door_e_sensor_1
+13	1	1064	669	16	16	close_door_e_sensor_2
+13	1	1080	605	16	16	close_door_e_sensor_3
+13	1	1160	653	16	16	close_door_e_sensor_4
+13	1	1208	669	16	16	close_door_e_sensor_5
+13	1	1192	685	16	16	close_door_e_sensor_6
+13	1	1208	717	16	16	close_door_e_sensor_7
 4	1	1032	717	0	_none	1	-1
 8	1	1128	845	torch_1	3	0	entities/torch	map
 8	1	1240	909	torch_2	3	0	entities/torch	map
@@ -1113,11 +1113,11 @@
 10	1	1184	1040	48	16	bridge_18	3	1
 10	1	1216	1056	16	64	bridge_19	3	1
 2	1	784	1256	16	16	teletransporter_6	_none	_none	0	110	from_5f
-13	1	1128	805	16	16	save_solid_ground_sensor	0
-13	1	992	1173	16	16	save_solid_ground_sensor_2	0
-13	1	1264	1173	16	16	save_solid_ground_sensor_3	0
-13	1	1312	1173	16	16	reset_solid_ground_sensor	0
-13	1	1760	549	16	16	reset_solid_ground_sensor_2	0
+13	1	1128	805	16	16	save_solid_ground_sensor
+13	1	992	1173	16	16	save_solid_ground_sensor_2
+13	1	1264	1173	16	16	save_solid_ground_sensor_3
+13	1	1312	1173	16	16	reset_solid_ground_sensor
+13	1	1760	549	16	16	reset_solid_ground_sensor_2
 9	1	696	1133	block	-1	entities/block	1	0	0
 9	1	712	1133	block_2	-1	entities/block	1	0	0
 9	1	728	1133	block_3	-1	entities/block	1	0	0
@@ -1143,33 +1143,33 @@
 4	1	1336	573	0	_random	1	-1
 4	1	1880	573	0	_random	1	-1
 4	1	1336	1245	0	_none	1	-1
-13	1	1320	1133	32	16	close_door_g_sensor_1	0
-13	1	1760	549	16	16	door_g_success_sensor	0
-13	1	1384	1133	32	16	close_door_g_sensor_2	0
-13	1	1512	1133	32	16	close_door_g_sensor_3	0
-13	1	1576	1133	32	16	close_door_g_sensor_4	0
-13	1	1640	1133	32	16	close_door_g_sensor_5	0
-13	1	1704	1133	32	16	close_door_g_sensor_6	0
-13	1	1832	1117	16	32	close_door_g_sensor_7	0
-13	1	1832	1061	16	32	close_door_g_sensor_8	0
-13	1	1832	1005	16	32	close_door_g_sensor_9	0
-13	1	1832	941	16	32	close_door_g_sensor_10	0
-13	1	1880	813	32	16	close_door_g_sensor_11	0
-13	1	1784	813	48	16	close_door_g_sensor_12	0
-13	1	1688	813	48	16	close_door_g_sensor_13	0
-13	1	1592	813	48	16	close_door_g_sensor_14	0
-13	1	1608	1021	48	16	close_door_g_sensor_15	0
-13	1	1448	1021	112	16	close_door_g_sensor_16	0
-13	1	1528	821	16	16	close_door_g_sensor_17	0
-13	1	1512	861	16	32	close_door_g_sensor_18	0
-13	1	1512	941	16	32	close_door_g_sensor_19	0
-13	1	1400	813	16	80	close_door_g_sensor_20	0
-13	1	1400	685	16	80	close_door_g_sensor_21	0
-13	1	1640	557	16	48	close_door_g_sensor_22	0
-13	1	1640	637	16	80	close_door_g_sensor_23	0
-13	1	1528	765	64	16	close_door_g_sensor_24	0
-13	1	1632	749	16	16	close_door_g_sensor_25	0
-13	1	1688	685	48	16	close_door_g_sensor_26	0
+13	1	1320	1133	32	16	close_door_g_sensor_1
+13	1	1760	549	16	16	door_g_success_sensor
+13	1	1384	1133	32	16	close_door_g_sensor_2
+13	1	1512	1133	32	16	close_door_g_sensor_3
+13	1	1576	1133	32	16	close_door_g_sensor_4
+13	1	1640	1133	32	16	close_door_g_sensor_5
+13	1	1704	1133	32	16	close_door_g_sensor_6
+13	1	1832	1117	16	32	close_door_g_sensor_7
+13	1	1832	1061	16	32	close_door_g_sensor_8
+13	1	1832	1005	16	32	close_door_g_sensor_9
+13	1	1832	941	16	32	close_door_g_sensor_10
+13	1	1880	813	32	16	close_door_g_sensor_11
+13	1	1784	813	48	16	close_door_g_sensor_12
+13	1	1688	813	48	16	close_door_g_sensor_13
+13	1	1592	813	48	16	close_door_g_sensor_14
+13	1	1608	1021	48	16	close_door_g_sensor_15
+13	1	1448	1021	112	16	close_door_g_sensor_16
+13	1	1528	821	16	16	close_door_g_sensor_17
+13	1	1512	861	16	32	close_door_g_sensor_18
+13	1	1512	941	16	32	close_door_g_sensor_19
+13	1	1400	813	16	80	close_door_g_sensor_20
+13	1	1400	685	16	80	close_door_g_sensor_21
+13	1	1640	557	16	48	close_door_g_sensor_22
+13	1	1640	637	16	80	close_door_g_sensor_23
+13	1	1528	765	64	16	close_door_g_sensor_24
+13	1	1632	749	16	16	close_door_g_sensor_25
+13	1	1688	685	48	16	close_door_g_sensor_26
 10	1	2400	448	16	16	ne_puzzle_step_5_1	537	1
 10	1	2392	464	32	16	ne_puzzle_step_5_2	537	1
 10	1	2384	480	16	16	ne_puzzle_step_5_3	537	1

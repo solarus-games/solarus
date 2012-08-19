@@ -180,7 +180,7 @@
 19	0	752	160	stairs_3	1	1
 19	0	1056	48	stairs_4	1	1
 2	0	680	296	16	16	teletransporter_5	_none	_none	1	56	from_4f_hole
-13	0	1064	141	16	16	ne_door_sensor	0
+13	0	1064	141	16	16	ne_door_sensor
 4	0	1048	397	4	_random	1	-1
 4	0	1064	397	4	_random	1	-1
 4	0	1064	413	4	_random	1	-1
@@ -454,7 +454,7 @@
 7	1	664	565	enemy_3	3	red_hardhat_beetle	0	-1	_random	1	-1
 7	1	568	421	enemy_4	3	red_hardhat_beetle	0	-1	_random	1	-1
 12	1	984	336	32	48	custom_obstacle_5	0	1	0	0
-13	1	136	333	288	16	start_boss_sensor	0
+13	1	136	333	288	16	start_boss_sensor
 18	1	256	424	boss_door	1	0	-1
 18	1	256	376	boss_door_2	3	0	-1
 1	1	272	373	tmp	1	_none

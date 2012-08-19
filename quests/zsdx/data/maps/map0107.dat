@@ -723,7 +723,7 @@
 2	1	2144	1376	16	16	teletransporter_15	entities/teletransporter	warp	1	107	s_destination_point
 2	1	2176	1376	16	16	teletransporter_16	entities/teletransporter	warp	1	107	s_destination_point
 9	1	1672	1421	block_4	-1	entities/block	1	0	0
-13	1	1600	1333	16	192	start_miniboss_sensor	0
+13	1	1600	1333	16	192	start_miniboss_sensor
 7	1	1472	1413	miniboss_1	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	1392	1365	miniboss_2	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	1432	1349	miniboss_3	3	blue_hardhat_beetle	0	-1	_random	1	-1

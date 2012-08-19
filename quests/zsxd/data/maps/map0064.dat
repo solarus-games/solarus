@@ -858,7 +858,7 @@
 15	1	712	600	32	48	0
 11	1	1256	536	creeper_door_switch	1	0	0
 18	1	1192	552	creeper_door_2	0	0	-1
-13	1	1184	573	16	16	close_creeper_room_door_sensor	0
+13	1	1184	573	16	16	close_creeper_room_door_sensor
 18	1	1240	552	creeper_door	2	0	-1
 7	1	672	709	enemy_3	3	creeper	0	-1	_random	1	-1
 15	1	856	824	32	48	0

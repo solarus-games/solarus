@@ -940,8 +940,8 @@
 0	1	552	1040	8	24	71
 0	1	552	968	8	24	71
 0	1	2672	712	80	160	303
-13	1	1656	789	32	32	giga_bouton_sensor	0
-13	1	528	717	16	112	bowser_message	0
+13	1	1656	789	32	32	giga_bouton_sensor
+13	1	528	717	16	112	bowser_message
 18	1	136	472	DK2	1	1	141
 14	1	240	461	crystal_switch
 18	1	1512	696	DK9	1	3	149
@@ -1026,13 +1026,13 @@
 4	1	848	541	2	_random	1	-1
 4	1	736	541	2	_random	1	-1
 8	1	832	525	Apothicaire	3	1	npc/static_villager1	map
-13	1	1248	797	16	16	infinite_corridor	0
+13	1	1248	797	16	16	infinite_corridor
 18	1	584	776	bowser_door	0	0	-1
 11	1	1656	784	giga_bouton	1	1	0
 4	1	1664	797	0	_none	1	-1
 18	1	632	776	bowser_door_2	2	0	-1
-13	1	680	725	16	160	bowser_close	0
-13	1	656	789	16	32	bowser_exit	0
+13	1	680	725	16	160	bowser_close
+13	1	656	789	16	32	bowser_exit
 12	1	400	488	8	24	custom_obstacle_9	1	1	1	1
 12	1	360	488	8	24	custom_obstacle_10	1	1	1	1
 12	1	360	400	8	24	custom_obstacle_11	1	1	1	1
@@ -1051,7 +1051,7 @@
 12	1	2632	624	8	24	custom_obstacle_24	1	1	1	1
 12	1	2912	40	8	24	custom_obstacle_25	1	1	1	1
 12	1	2992	104	24	8	custom_obstacle_26	1	1	1	1
-13	1	504	717	16	112	bowser_leave	0
+13	1	504	717	16	112	bowser_leave
 8	1	2304	797	directions_3F	3	0	entities/sign	dialog#crazy_house.directions_3F
 8	1	744	501	directions_3FB	3	0	entities/sign	dialog#crazy_house.directions_3FC
 8	1	56	501	directions_3FB_2	3	0	entities/sign	dialog#crazy_house.directions_3FB

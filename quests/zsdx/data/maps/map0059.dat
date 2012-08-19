@@ -980,11 +980,11 @@
 12	1	176	112	32	8	custom_obstacle_11	1	1	1	1
 1	1	152	293	destination_point	-1	entities/destination
 2	1	144	264	16	16	teletransporter_8	entities/teletransporter	warp	1	59	destination_point_3
-13	1	144	317	32	16	sensor_1	0
+13	1	144	317	32	16	sensor_1
 10	1	144	352	16	8	sensor_1_on	70	0
 10	1	136	336	8	16	sensor_1_off_2	71	1
 10	1	136	328	8	8	sensor_1_off	69	1
-13	1	96	341	16	32	sensor_2	0
+13	1	96	341	16	32	sensor_2
 10	1	40	328	8	8	sensor_2_off	69	1
 10	1	48	328	16	8	sensor_2_off_2	70	1
 10	1	64	328	8	8	sensor_2_off_3	69	1
@@ -992,13 +992,13 @@
 10	1	48	352	16	8	sensor_2_on_2	70	0
 10	1	64	352	8	8	sensor_2_on_3	69	0
 4	1	56	373	0	small_key	1	400
-13	1	104	245	16	32	sensor_3	0
+13	1	104	245	16	32	sensor_3
 10	1	136	240	8	16	sensor_3_off_2	71	1
 10	1	136	232	8	8	sensor_3_off	69	1
 10	1	160	424	8	8	sensor_4_on	69	0
 10	1	160	432	8	16	sensor_4_on_2	71	0
 10	1	160	448	8	8	sensor_4_on_3	69	0
-13	1	200	437	32	32	sensor_4	0
+13	1	200	437	32	32	sensor_4
 1	1	656	397	from_hole	-1	_none
 2	1	624	408	16	16	teletransporter_9	entities/teletransporter	warp	1	62	destination_point
 1	1	656	445	destination_point_2	-1	entities/destination
@@ -1034,8 +1034,8 @@
 7	1	840	661	evil_tile_2	3	evil_tile	0	-1	_none	1	-1
 7	1	776	677	evil_tile_3	3	evil_tile	0	-1	_none	1	-1
 7	1	840	725	evil_tile_4	3	evil_tile	0	-1	_none	1	-1
-13	1	816	821	16	16	evil_tiles_sensor_1	0
-13	1	816	581	16	16	evil_tiles_sensor_2	0
+13	1	816	821	16	16	evil_tiles_sensor_1
+13	1	816	581	16	16	evil_tiles_sensor_2
 10	1	768	648	16	16	evil_tile_after_1	644	1
 7	1	776	661	evil_tile_1	3	evil_tile	0	-1	_none	1	-1
 10	1	784	648	16	16	evil_tile_after_5	644	1
@@ -1079,7 +1079,7 @@
 12	1	808	552	16	16	custom_obstacle_13	0	1	0	0
 12	1	808	824	16	16	custom_obstacle_14	0	1	0	0
 12	1	808	872	16	16	custom_obstacle_15	0	1	0	0
-13	1	48	405	32	16	sensor_5	0
+13	1	48	405	32	16	sensor_5
 0	2	584	16	96	8	559
 0	2	400	16	96	8	559
 0	2	240	16	96	8	559

@@ -1176,7 +1176,7 @@
 7	1	948	149	miniboss_5	3	gibdo	0	-1	heart	1	-1
 7	1	956	61	miniboss_6	3	gibdo	0	-1	heart	1	-1
 7	1	1100	157	miniboss_7	3	gibdo	0	-1	heart	1	-1
-13	1	1064	53	16	16	start_miniboss_sensor	0
+13	1	1064	53	16	16	start_miniboss_sensor
 10	1	912	168	24	48	miniboss_lava_6	51	1
 10	1	1112	152	24	48	miniboss_lava_7	50	1
 10	1	936	176	8	32	miniboss_fake_floor	237	1

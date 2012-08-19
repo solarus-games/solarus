@@ -1089,7 +1089,7 @@
 0	1	88	192	8	8	1179
 0	1	552	344	8	88	1130
 1	1	440	437	from_dungeon_10	3	_none
-13	1	440	221	16	16	start_boss_sensor	0
+13	1	440	221	16	16	start_boss_sensor
 10	1	424	168	32	8	roof_entrance_1	1012	1
 10	1	424	176	32	8	roof_entrance_2	1014	1
 10	1	424	184	8	24	roof_entrance_3	1016	1

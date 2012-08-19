@@ -77,7 +77,7 @@
 8	1	72	189	torch_3	-1	0	entities/torch	item#lamp
 8	1	248	61	torch_4	-1	0	entities/torch	item#lamp
 8	1	248	189	torch_2	-1	0	entities/torch	item#lamp
-13	1	152	125	32	16	fairy_sensor	0
+13	1	152	125	32	16	fairy_sensor
 8	1	104	-11	great_fairy	3	1	npc/great_fairy	map
 4	1	56	93	4	_random	1	-1
 4	1	72	93	4	_random	1	-1

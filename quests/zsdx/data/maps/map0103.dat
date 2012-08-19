@@ -127,7 +127,7 @@
 1	0	552	413	from_2f_6	3	_none
 2	0	544	400	16	16	teletransporter_6	_none	_none	1	102	from_3f_6
 19	0	544	400	stairs_4	1	1
-13	0	392	885	320	16	start_boss_sensor	0
+13	0	392	885	320	16	start_boss_sensor
 8	0	544	1077	sahasrahla	3	1	npc/sahasrahla	map
 19	0	472	912	stairs_7	3	4
 19	0	600	912	stairs_13	3	4
@@ -944,7 +944,7 @@
 0	1	368	944	16	64	101
 0	1	592	928	32	8	299
 0	1	160	760	16	16	534
-13	1	944	69	48	48	special_torch_dont_close_sensor	0
+13	1	944	69	48	48	special_torch_dont_close_sensor
 18	1	848	824	door_b	1	0	-1
 18	1	848	776	door_b_2	3	0	-1
 18	1	1008	856	door_c_2	1	0	-1
@@ -1048,10 +1048,10 @@
 4	1	1008	525	0	_random	1	-1
 7	1	136	429	enemy_3	3	red_duck_soldier	0	-1	_random	1	-1
 7	1	224	469	enemy_4	3	red_duck_soldier	0	-1	_random	1	-1
-13	1	168	509	32	32	w_room_sensor_2	0
+13	1	168	509	32	32	w_room_sensor_2
 10	1	48	416	16	32	w_room_tile_1	577	0
 10	1	112	496	32	16	w_room_tile_2	577	1
-13	1	40	381	32	32	w_room_sensor_4	0
+13	1	40	381	32	32	w_room_sensor_4
 12	1	856	776	16	16	custom_obstacle_17	0	1	1	1
 12	1	856	824	16	16	custom_obstacle_18	0	1	1	1
 12	1	1016	808	16	16	custom_obstacle_19	0	1	1	1
@@ -1076,15 +1076,15 @@
 4	1	928	1005	0	_none	1	-1
 4	1	952	1005	0	_none	1	-1
 4	1	984	797	0	_none	1	-1
-13	1	944	645	16	16	door_a_done_sensor	0
-13	1	864	789	16	16	door_b_done_sensor	0
-13	1	1024	821	16	16	door_c_done_sensor	0
-13	1	832	917	16	16	door_d_done_sensor	0
-13	1	976	933	16	16	door_e_done_sensor	0
-13	1	864	773	16	16	door_b_close_sensor	0
-13	1	1024	805	16	16	door_c_close_sensor	0
-13	1	832	901	16	16	door_d_close_sensor	0
-13	1	976	917	16	16	door_e_close_sensor	0
+13	1	944	645	16	16	door_a_done_sensor
+13	1	864	789	16	16	door_b_done_sensor
+13	1	1024	821	16	16	door_c_done_sensor
+13	1	832	917	16	16	door_d_done_sensor
+13	1	976	933	16	16	door_e_done_sensor
+13	1	864	773	16	16	door_b_close_sensor
+13	1	1024	805	16	16	door_c_close_sensor
+13	1	832	901	16	16	door_d_close_sensor
+13	1	976	917	16	16	door_e_close_sensor
 7	1	96	741	enemy_5	3	red_hardhat_beetle	0	-1	_random	1	-1
 7	1	80	909	enemy_9	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	208	989	enemy_10	3	red_hardhat_beetle	0	-1	_random	1	-1
@@ -1108,7 +1108,7 @@
 7	1	840	429	enemy_17	3	lizalfos	0	-1	_random	1	-1
 7	1	984	493	enemy_18	3	lizalfos	0	-1	_random	1	-1
 7	1	1048	445	enemy_19	3	lizalfos	0	-1	_random	1	-1
-13	1	344	549	16	16	close_boss_door_sensor	0
+13	1	344	549	16	16	close_boss_door_sensor
 18	1	328	520	boss_door	1	0	-1
 7	1	544	784	boss	3	gelidrak	2	625	_none	1	-1
 12	1	384	664	320	8	custom_obstacle_27	0	1	0	0

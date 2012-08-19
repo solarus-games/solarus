@@ -1135,13 +1135,13 @@
 0	1	576	248	16	16	276
 0	1	1088	800	8	8	69
 0	1	1064	704	8	8	69
-13	1	704	853	32	96	puzzle_wrong_sensor_1	0
-13	1	1040	333	32	32	weak_floor_sensor	0
+13	1	704	853	32	96	puzzle_wrong_sensor_1
+13	1	1040	333	32	32	weak_floor_sensor
 10	1	1032	320	32	32	weak_floor	628	1
-13	1	280	69	192	48	guard_1_sensor_2	0
-13	1	296	53	48	192	guard_3_sensor_3	0
-13	1	240	133	80	48	guard_2_sensor_0	0
-13	1	200	197	144	48	guard_3_sensor_2	0
+13	1	280	69	192	48	guard_1_sensor_2
+13	1	296	53	48	192	guard_3_sensor_3
+13	1	240	133	80	48	guard_2_sensor_0
+13	1	200	197	144	48	guard_3_sensor_2
 8	1	448	101	guard_1	2	1	npc/black_knight_soldier	map
 1	1	1032	941	destination_point	-1	entities/destination
 1	1	1048	941	destination_point_2	-1	entities/destination
@@ -1300,8 +1300,8 @@
 12	1	728	584	8	32	custom_obstacle_15	1	1	1	1
 12	1	752	584	8	32	custom_obstacle_16	1	1	1	1
 8	1	248	149	guard_2	0	1	npc/black_knight_soldier	map
-13	1	264	53	208	48	guard_3_sensor_0	0
-13	1	264	53	48	192	guard_3_sensor_1	0
+13	1	264	53	208	48	guard_3_sensor_0
+13	1	264	53	48	192	guard_3_sensor_1
 4	1	184	437	0	heart	1	-1
 4	1	184	453	0	_random	1	-1
 4	1	184	469	0	bomb	2	-1
@@ -1327,12 +1327,12 @@
 7	1	320	653	enemy_5	3	blue_knight_soldier	0	-1	_random	1	-1
 7	1	952	205	enemy_6	3	red_knight_soldier	0	-1	_random	1	-1
 12	1	568	760	8	16	custom_obstacle_31	0	1	0	0
-13	1	616	957	64	16	puzzle_sensor_2	0
-13	1	760	957	64	16	puzzle_sensor_3	0
-13	1	616	829	64	16	puzzle_sensor_1	0
-13	1	760	829	64	16	puzzle_sensor_4	0
+13	1	616	957	64	16	puzzle_sensor_2
+13	1	760	957	64	16	puzzle_sensor_3
+13	1	616	829	64	16	puzzle_sensor_1
+13	1	760	829	64	16	puzzle_sensor_4
 9	1	240	509	block_6	-1	entities/block	1	0	2
-13	1	368	749	16	64	save_s_blocks_sensor	0
+13	1	368	749	16	64	save_s_blocks_sensor
 0	2	88	960	32	8	560
 0	2	664	688	96	8	560
 0	2	664	712	96	8	559

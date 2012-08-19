@@ -1593,7 +1593,7 @@
 4	0	312	245	3	_random	1	-1
 6	0	376	152	80	8	jumper_4	6	56
 8	0	-24	109	tom	3	1	npc/tom	map
-13	0	328	221	32	48	tom_appears_sensor	0
+13	0	328	221	32	48	tom_appears_sensor
 12	0	400	192	8	96	custom_obstacle	0	1	0	0
 2	0	328	136	16	16	to_dungeon_1_1F	_none	_none	1	23	from_outside
 1	0	336	165	from_dungeon_1_1F	3	_none
@@ -1638,7 +1638,7 @@
 2	0	272	320	16	16	to_twin_caves_west	_none	_none	1	29	from_outside_west
 2	0	152	64	16	16	to_beaumont_cave	_none	_none	1	66	from_outside
 1	0	160	93	from_beaumont_cave	3	_none
-13	0	160	93	16	16	edelweiss_sensor	0
+13	0	160	93	16	16	edelweiss_sensor
 7	0	128	221	enemy_5	3	green_knight_soldier	0	-1	_random	0	-1
 7	0	1056	501	enemy_6	3	blue_knight_soldier	0	-1	_random	0	-1
 4	0	1016	317	3	_random	1	-1

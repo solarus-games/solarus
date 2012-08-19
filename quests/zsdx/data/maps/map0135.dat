@@ -286,14 +286,14 @@
 2	1	120	24	16	16	teletransporter	_none	_none	1	125	from_d7
 19	1	120	24	stairs	1	0
 2	1	-16	112	16	16	teletransporter_2	_none	_none	2	123	_side
-13	1	80	133	16	16	pipe_out_sensor	0
-13	1	80	149	16	16	pipe_in_sensor	0
-13	1	416	437	16	16	pipe_out_sensor_2	0
-13	1	400	437	16	16	pipe_in_sensor_2	0
-13	1	376	437	16	16	hide_hero_sensor	0
-13	1	80	173	16	16	hide_hero_sensor_2	0
-13	1	80	165	16	16	unhide_hero_sensor_2	0
-13	1	384	437	16	16	unhide_hero_sensor	0
+13	1	80	133	16	16	pipe_out_sensor
+13	1	80	149	16	16	pipe_in_sensor
+13	1	416	437	16	16	pipe_out_sensor_2
+13	1	400	437	16	16	pipe_in_sensor_2
+13	1	376	437	16	16	hide_hero_sensor
+13	1	80	173	16	16	hide_hero_sensor_2
+13	1	80	165	16	16	unhide_hero_sensor_2
+13	1	384	437	16	16	unhide_hero_sensor
 12	1	64	152	8	32	custom_obstacle_7	1	1	1	1
 12	1	64	360	32	32	custom_obstacle_8	1	1	1	1
 12	1	272	224	32	32	custom_obstacle_9	1	1	1	1
@@ -322,10 +322,10 @@
 12	1	232	296	8	16	pipe_border_a_2	1	1	1	1
 12	1	216	288	16	8	pipe_border_b_1	1	1	1	1
 12	1	216	312	16	8	pipe_border_b_2	1	1	1	1
-13	1	224	341	16	16	pipe_border_a_sensor	0
-13	1	192	309	16	16	pipe_border_b_sensor	0
-13	1	256	309	16	16	pipe_border_b_sensor_2	0
-13	1	224	277	16	16	pipe_border_a_sensor_2	0
+13	1	224	341	16	16	pipe_border_a_sensor
+13	1	192	309	16	16	pipe_border_b_sensor
+13	1	256	309	16	16	pipe_border_b_sensor_2
+13	1	224	277	16	16	pipe_border_a_sensor_2
 0	2	16	320	8	96	415
 0	2	96	16	96	8	411
 0	2	0	0	16	480	170

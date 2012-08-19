@@ -52,6 +52,9 @@ function map:on_hero_on_sensor(sensor_name)
 
   elseif sensor_name == "enable_sensor" then
     sw_sensor_enabled = true
+
+  elseif sensor_name:find("^save_solid_ground_sensor") then
+    map:hero_save_solid_ground()
   end
 end
 

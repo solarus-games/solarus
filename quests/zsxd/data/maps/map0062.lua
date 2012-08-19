@@ -45,6 +45,10 @@ function event_hero_on_sensor(sensor_name)
     door_b_passed = true
   elseif string.find(sensor_name, "^stop_timer_c_sensor") then
     door_c_passed = true
+
+  -- save the solid ground location
+  elseif sensor_name:find("^save_solid_ground_sensor") then
+    sol.map.hero_save_solid_ground()
   end
 end
 

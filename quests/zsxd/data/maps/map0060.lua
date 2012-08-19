@@ -39,3 +39,10 @@ function event_dialog_finished(dialog_id, answer)
   end
 end
 
+function event_hero_on_sensor(sensor_name)
+
+  if sensor_name:find("^save_solid_ground_sensor") then
+    sol.map.hero_save_solid_ground()
+  end
+end
+

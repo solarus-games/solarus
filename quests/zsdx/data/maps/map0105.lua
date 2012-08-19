@@ -285,6 +285,10 @@ function map:on_hero_on_sensor(sensor_name)
       map:switch_set_activated("puzzle_b_door_switch", false)
     end
 
+  -- save solid ground location
+  elseif sensor_name:find("^save_solid_ground_sensor") then
+    map:hero_save_solid_ground()
+
   -- reset solid ground location
   elseif sensor_name:find("^reset_solid_ground_sensor") then
     map:hero_reset_solid_ground()

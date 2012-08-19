@@ -267,7 +267,7 @@
 4	0	1672	925	0	_random	1	-1
 4	0	1672	941	0	_random	1	-1
 4	0	1080	1717	0	magic_flask	1	-1
-13	0	1608	333	16	16	sensor_8	2
+13	0	1608	333	16	16	save_solid_ground_sensor_5	0
 15	0	1024	1664	32	32	1
 4	0	1096	1717	0	arrow	2	-1
 0	1	1008	352	240	384	540
@@ -2168,15 +2168,15 @@
 10	1	1648	1648	64	16	bridge_56	3	1
 10	1	1696	1664	48	16	bridge_57	3	1
 10	1	1744	1664	16	64	bridge_1	3	1
-13	1	1312	1421	16	16	sensor	2
-13	1	1448	1317	16	16	sensor_2	2
-13	1	1904	1421	16	16	sensor_3	2
-13	1	1904	1677	16	16	sensor_4	2
+13	1	1312	1421	16	16	save_solid_ground_sensor_6	0
+13	1	1448	1317	16	16	save_solid_ground_sensor_7	0
+13	1	1904	1421	16	16	save_solid_ground_sensor_8	0
+13	1	1904	1677	16	16	save_solid_ground_sensor_9	0
 13	1	992	1933	16	16	reset_solid_ground_sensor	0
-13	1	2272	1405	16	16	sensor_5	2
-13	1	1608	757	16	16	sensor_9	2
-13	1	1768	757	16	16	sensor_10	2
-13	1	1768	1781	16	16	sensor_11	2
+13	1	2272	1405	16	16	save_solid_ground_sensor_12	0
+13	1	1608	757	16	16	save_solid_ground_sensor_3	0
+13	1	1768	757	16	16	save_solid_ground_sensor_4	0
+13	1	1768	1781	16	16	save_solid_ground_sensor_10	0
 4	1	2072	1757	0	_random	1	-1
 4	1	2136	1757	0	_random	1	-1
 4	1	2040	1757	0	magic_flask	1	-1
@@ -2257,15 +2257,15 @@
 2	1	1776	2280	16	16	teletransporter_23	_none	_none	0	8	from_ending
 2	1	1744	2280	16	16	teletransporter_5	_none	_none	0	109	from_3f
 12	1	2264	1664	16	16	custom_obstacle_23	0	1	0	0
-13	1	2272	1677	16	16	sensor_6	2
+13	1	2272	1677	16	16	save_solid_ground_sensor_11	0
 4	1	1336	717	0	_random	1	-1
 4	1	1336	733	0	_random	1	-1
 4	1	1880	717	0	_random	1	-1
 4	1	1880	733	0	small_key	1	882
 18	1	1304	504	door_3	2	1	883
 13	1	176	229	16	16	open_w_room_sensor	0
-13	1	624	405	16	16	sensor_7	2
-13	1	176	293	16	16	sensor_12	2
+13	1	624	405	16	16	save_solid_ground_sensor_2	0
+13	1	176	293	16	16	save_solid_ground_sensor	0
 13	1	672	405	16	16	reset_solid_ground_sensor_3	0
 6	1	1120	1640	8	16	jumper	4	40
 6	1	1120	1688	8	16	jumper_2	4	40

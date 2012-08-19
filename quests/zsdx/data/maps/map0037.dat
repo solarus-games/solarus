@@ -67,8 +67,8 @@
 4	0	72	173	0	rupee	1	-1
 1	0	112	189	from_outside	1	_none
 2	0	104	208	16	16	to_outside	_none	_none	1	5	from_billy_cave
-13	0	112	189	16	16	sensor	2
-13	0	96	61	16	16	sensor_2	2
+13	0	112	189	16	16	save_solid_ground_sensor	0
+13	0	96	61	16	16	save_solid_ground_sensor_2	0
 2	0	88	-16	16	16	teletransporter	_none	_none	2	121	_side
 2	0	120	176	16	16	teletransporter_2	_none	_none	0	136	from_d2
 2	0	88	176	16	16	teletransporter_3	_none	_none	0	126	tmp

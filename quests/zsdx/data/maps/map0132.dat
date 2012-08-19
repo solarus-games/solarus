@@ -87,7 +87,7 @@
 0	1	208	272	32	8	456
 0	1	320	272	32	8	456
 0	1	432	272	32	8	456
-13	1	112	293	16	16	sensor	2
+13	1	112	293	16	16	save_solid_ground_sensor	0
 1	1	112	293	from_outside	1	_none
 2	1	104	304	16	16	teletransporter	_none	_none	1	8	from_laser_cave
 12	1	96	240	8	8	custom_obstacle	1	1	1	1

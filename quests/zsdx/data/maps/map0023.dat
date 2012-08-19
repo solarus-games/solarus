@@ -196,8 +196,8 @@
 0	0	168	352	16	80	3
 12	0	384	496	16	16	custom_obstacle_11	0	1	1	1
 12	0	400	448	16	16	custom_obstacle_9	0	1	1	1
-13	0	176	333	16	16	sensor_7	2
-13	0	104	77	16	16	sensor_8	2
+13	0	176	333	16	16	save_solid_ground_sensor_2	0
+13	0	104	77	16	16	save_solid_ground_sensor	0
 11	0	64	544	sw_switch	1	0	0
 4	0	72	557	0	_none	1	-1
 4	0	72	461	0	heart	1	-1
@@ -481,6 +481,7 @@
 0	1	600	80	8	32	71
 0	1	624	80	8	32	71
 0	1	608	72	16	8	70
+13	1	432	173	16	16	save_solid_ground_sensor_3	0
 2	1	168	608	16	16	to_outside	_none	_none	1	6	from_dungeon_1_1F
 5	1	160	488	chest_6	1	glove	1	5
 6	1	240	528	8	24	jumper	0	16
@@ -504,7 +505,6 @@
 2	1	600	232	32	32	to_B1_hole	_none	_none	1	24	from_1F_hole
 1	1	616	253	from_2F_hole	-1	_none
 7	1	400	165	enemy_9	3	simple_green_soldier	0	-1	_random	0	-1
-13	1	432	173	16	16	sensor_9	2
 2	1	848	256	16	16	teletransporter	_none	_none	1	25	from_1F
 15	1	824	272	16	48	0
 19	1	800	256	stairs_6	1	1

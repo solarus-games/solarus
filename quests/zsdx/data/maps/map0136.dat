@@ -126,11 +126,11 @@
 4	1	168	397	0	_none	1	-1
 4	1	152	381	0	_none	1	-1
 4	1	152	349	0	_none	1	-1
-13	1	152	725	16	16	sensor	2
-13	1	64	381	16	16	sensor_2	2
+13	1	152	725	16	16	save_solid_ground_sensor_3	0
+13	1	64	381	16	16	save_solid_ground_sensor	0
 2	1	-16	368	16	16	teletransporter_2	_none	_none	2	129	_side
 12	1	56	624	16	16	custom_obstacle_3	0	1	0	0
-13	1	64	637	16	16	sensor_3	2
+13	1	64	637	16	16	save_solid_ground_sensor_2	0
 2	1	144	736	16	16	teletransporter	_none	_none	1	128	from_d3
 11	1	144	416	holes_a_switch_4	0	0	0
 11	1	152	416	holes_a_switch_5	0	0	0

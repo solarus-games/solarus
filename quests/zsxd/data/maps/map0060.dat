@@ -331,8 +331,8 @@
 19	0	1064	576	stairs_2	3	4
 5	0	1360	64	chest_2	1	feather	1	238
 19	0	1120	88	stairs_3	0	4
-13	0	1072	397	16	16	sensor	2
-13	0	1376	301	16	16	sensor_2	2
+13	0	1072	397	16	16	save_solid_ground_sensor_3	0
+13	0	1376	301	16	16	save_solid_ground_sensor_2	0
 19	0	456	544	stairs_4	1	4
 7	0	528	584	enemy	3	bubble	0	-1	_random	1	-1
 7	0	1320	976	enemy_8	3	bubble	0	-1	_random	1	-1
@@ -719,7 +719,7 @@
 12	1	1080	568	8	32	custom_obstacle_6	1	1	1	1
 12	1	1112	80	32	8	custom_obstacle_7	1	1	1	1
 12	1	1112	104	32	8	custom_obstacle_8	1	1	1	1
-13	1	1184	125	16	16	sensor_3	2
+13	1	1184	125	16	16	save_solid_ground_sensor	0
 12	1	448	536	8	32	custom_obstacle_9	1	1	1	1
 12	1	472	536	8	32	custom_obstacle_10	1	1	1	1
 7	1	1296	541	enemy_2	3	skeletor	0	-1	_random	1	-1

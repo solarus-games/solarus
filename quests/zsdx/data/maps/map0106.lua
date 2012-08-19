@@ -200,6 +200,10 @@ function map:on_hero_on_sensor(sensor_name)
     map:door_close("door_c")
     map:sensor_set_group_enabled("close_door_c_sensor", false)
 
+  -- save solid ground location
+  elseif sensor_name:find("^save_solid_ground_sensor") then
+    map:hero_save_solid_ground()
+
   -- reset solid ground location
   elseif sensor_name:find("^reset_solid_ground_sensor") then
     map:hero_reset_solid_ground()

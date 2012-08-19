@@ -249,15 +249,6 @@ class Enemy: public Detector {
     bool is_dying();
     void set_treasure(const Treasure& treasure);
 
-    static const std::string& get_attack_name(EnemyAttack attack);
-    static EnemyAttack get_attack_by_name(const std::string& attack_name);
-
-    static const std::string& get_hurt_style_name(HurtStyle style);
-    static HurtStyle get_hurt_style_by_name(const std::string& name);
-
-    static const std::string& get_obstacle_behavior_name(ObstacleBehavior behavior);
-    static ObstacleBehavior get_obstacle_behavior_by_name(const std::string& name);
-
     virtual const std::string& get_lua_type_name() const;
 };
 

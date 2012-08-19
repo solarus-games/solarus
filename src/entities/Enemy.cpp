@@ -38,29 +38,6 @@
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 
-const std::string Enemy::attack_names[] = {
-  "sword",
-  "thrown_item",
-  "explosion",
-  "arrow",
-  "hookshot",
-  "boomerang",
-  "fire",
-  "script"
-};
-
-const std::string Enemy::hurt_style_names[] = {
-  "normal",
-  "monster",
-  "boss",
-};
-
-const std::string Enemy::obstacle_behavior_names[] = {
-  "normal",
-  "flying",
-  "swimming",
-};
-
 /**
  * @brief Creates an enemy.
  * @param game The game.
@@ -1399,96 +1376,6 @@ bool Enemy::is_immobilized() {
 void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 
   get_lua_context().enemy_on_custom_attack_received(*this, attack, this_sprite);
-}
-
-/**
- * @brief Converts an attack enumerated value into a string.
- * @param attack an attack
- * @return the corresponding string
- */
-const std::string& Enemy::get_attack_name(EnemyAttack attack) {
-
-  Debug::check_assertion(attack >= 0 && attack < ATTACK_NUMBER,
-      StringConcat() << "Invalid attack number: " << attack);
-
-  return attack_names[attack];
-}
-
-/**
- * @brief Converts a string into an attack enumerated value.
- * @param attack_name name of an attack
- * @return the corresponding attack
- */
-EnemyAttack Enemy::get_attack_by_name(const std::string& attack_name) {
-
-  for (int i = 0; i < ATTACK_NUMBER; i++) {
-    if (attack_names[i] == attack_name) {
-      return EnemyAttack(i);
-    }
-  }
-
-  Debug::die(StringConcat() << "Invalid attack name: " << attack_name);
-  throw;
-}
-
-/**
- * @brief Converts a value of the HurtStyle enumeration into a string.
- * @param style a hurt style
- * @return the corresponding string
- */
-const std::string& Enemy::get_hurt_style_name(HurtStyle style) {
-
-  Debug::check_assertion(style >= 0 && style < HURT_NUMBER,
-      StringConcat() << "Invalid hurt style number: " << style);
-
-  return hurt_style_names[style];
-}
-
-/**
- * @brief Converts a string into a value of the HurtStyle enumeration.
- * @param name name of a hurt style
- * @return the corresponding hurt style
- */
-Enemy::HurtStyle Enemy::get_hurt_style_by_name(const std::string& name) {
-
-  for (int i = 0; i < HURT_NUMBER; i++) {
-    if (hurt_style_names[i] == name) {
-      return HurtStyle(i);
-    }
-  }
-
-  Debug::die(StringConcat() << "Invalid hurt style name: " << name);
-  throw;
-}
-
-/**
- * @brief Converts a value of the ObstacleBehavior enumeration into a string.
- * @param behavior a behavior with obstacles
- * @return the corresponding string
- */
-const std::string& Enemy::get_obstacle_behavior_name(ObstacleBehavior behavior) {
-
-  Debug::check_assertion(behavior >= 0 && behavior < OBSTACLE_BEHAVIOR_NUMBER,
-      StringConcat() << "Invalid obstacle behavior number: " << behavior);
-
-  return obstacle_behavior_names[behavior];
-}
-
-/**
- * @brief Converts a string into a value of the ObstacleBehavior enumeration.
- * @param name name of a behavior with obstacles
- * @return the corresponding behavior
- */
-Enemy::ObstacleBehavior Enemy::get_obstacle_behavior_by_name(const std::string& name) {
-
-  for (int i = 0; i < OBSTACLE_BEHAVIOR_NUMBER; i++) {
-    if (obstacle_behavior_names[i] == name) {
-      return ObstacleBehavior(i);
-    }
-  }
-
-  Debug::die(StringConcat() << "Invalid obstacle behavior name: " << name);
-  throw;
 }
 
 /**

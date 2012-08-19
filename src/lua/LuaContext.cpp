@@ -1912,7 +1912,7 @@ void LuaContext::on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sp
 void LuaContext::on_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 
   if (find_method("on_custom_attack_received")) {
-    lua_pushstring(l, Enemy::get_attack_name(attack).c_str());
+    lua_pushstring(l, enemy_attack_names[attack]);
     if (sprite != NULL) {
       // Pixel-precise collision.
       push_sprite(l, *sprite);
@@ -1932,7 +1932,7 @@ void LuaContext::on_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 void LuaContext::on_hurt(EnemyAttack attack, int life_lost) {
 
   if (find_method("on_hurt")) {
-    lua_pushstring(l, Enemy::get_attack_name(attack).c_str());
+    lua_pushstring(l, enemy_attack_names[attack]);
     lua_pushinteger(l, life_lost);
     call_function(3, 0, "on_hurt");
   }

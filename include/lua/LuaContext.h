@@ -812,7 +812,9 @@ class LuaContext {
 
     static std::map<InputEvent::KeyboardKey, std::string>
       input_key_names;              /**< Names of all existing keyboard keys in Lua. */
-
+    static const char* enemy_attack_names[];
+    static const char* enemy_hurt_style_names[];
+    static const char* enemy_obstacle_behavior_names[];
 };
 
 #endif

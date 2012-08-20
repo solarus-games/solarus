@@ -48,7 +48,7 @@ public class EditEntityComponent extends JPanel {
 	EditBlockComponent.class,
 	EditDynamicTileComponent.class,
 	EditSwitchComponent.class,
-	EditCustomObstacleComponent.class,
+	EditWallComponent.class,
 	EditEntityComponent.class,
 	EditEntityComponent.class,
 	EditEntityComponent.class,

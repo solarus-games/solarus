@@ -19,7 +19,7 @@ function map:on_started(destination_point_name)
 
   -- Link has mirror shield: no laser obstacles
   if map:get_game():get_ability("shield") >= 3 then
-    map:obstacle_set_enabled("LO4", false)
+    map:wall_set_enabled("LO4", false)
   end
 
   if map:get_game():get_boolean(706) then

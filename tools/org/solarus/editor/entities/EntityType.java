@@ -36,7 +36,7 @@ public enum EntityType {
     BLOCK                (9, "Block", Block.class, null),
     DYNAMIC_TILE         (10, "Dynamic tile", DynamicTile.class, null),
     SWITCH               (11, "Switch", Switch.class, Switch.Subtype.class),
-    CUSTOM_OBSTACLE      (12, "Custom obstacle", CustomObstacle.class, null),
+    WALL                 (12, "Wall", Wall.class, null),
     SENSOR               (13, "Sensor", Sensor.class, null),
     CRYSTAL              (14, "Crystal", Crystal.class, null),
     CRYSTAL_BLOCK        (15, "Crystal block", CrystalBlock.class, CrystalBlock.Subtype.class),

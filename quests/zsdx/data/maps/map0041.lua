@@ -17,7 +17,7 @@ function map:on_started(destination_point_name)
     map:tile_set_group_enabled("se_water_out", true)
     map:jumper_set_group_enabled("se_water_on_jumper", false)
   else
-    map:obstacle_set_group_enabled("se_water_off_obstacle", false)
+    map:wall_set_group_enabled("se_water_off_obstacle", false)
   end
 
   if map:get_game():get_boolean(908) then
@@ -137,7 +137,7 @@ end
 function remove_se_water_6()
   map:tile_set_enabled("se_water_less_c", false)
   map:jumper_set_group_enabled("se_water_on_jumper", false)
-  map:obstacle_set_group_enabled("se_water_off_obstacle", true)
+  map:wall_set_group_enabled("se_water_off_obstacle", true)
   map:get_game():set_boolean(128, true)
   sol.audio.play_sound("secret")
 end

@@ -14,24 +14,24 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/CustomObstacle.h"
+#include "entities/Wall.h"
 #include "entities/Hero.h"
 #include "lowlevel/FileTools.h"
 
 /**
  * @brief Constructor.
- * @param name name of the custom obstacle to create
- * @param layer layer of the  to create
- * @param x x position of the  to create
- * @param y y position of the  to create
- * @param width width of the custom obstacle to create
- * @param height height of the custom obstacle to create
+ * @param name name of the wall to create
+ * @param layer layer of the Wall to create
+ * @param x x position of the Wall to create
+ * @param y y position of the Wall to create
+ * @param width width of the Wall to create
+ * @param height height of the Wall to create
  * @param stops_hero true to make this entity an obstacle for the hero
  * @param stops_enemies true to make this entity an obstacle for the enemies
  * @param stops_npcs true to make this entity an obstacle for the NPCs
  * @param stops_blocks true to make this entity an obstacle for the blocks and statues
  */
-CustomObstacle::CustomObstacle(const std::string &name, Layer layer, int x, int y, int width, int height,
+Wall::Wall(const std::string &name, Layer layer, int x, int y, int width, int height,
 			       bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks):
   MapEntity(name, 0, layer, x, y, width, height),
   enabled(true),
@@ -46,7 +46,7 @@ CustomObstacle::CustomObstacle(const std::string &name, Layer layer, int x, int 
 /**
  * @brief Destructor.
  */
-CustomObstacle::~CustomObstacle() {
+Wall::~Wall() {
 
 }
 
@@ -62,7 +62,7 @@ CustomObstacle::~CustomObstacle() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* CustomObstacle::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Wall::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
 
   std::string name;
   int width, height, stops_hero, stops_enemies, stops_npcs, stops_blocks;
@@ -75,7 +75,7 @@ MapEntity* CustomObstacle::parse(Game &game, std::istream &is, Layer layer, int 
   FileTools::read(is, stops_npcs);
   FileTools::read(is, stops_blocks);
 
-  return new CustomObstacle(name, Layer(layer), x, y, width, height,
+  return new Wall(name, Layer(layer), x, y, width, height,
       stops_hero != 0, stops_enemies != 0, stops_npcs != 0, stops_blocks != 0);
 }
 
@@ -83,8 +83,8 @@ MapEntity* CustomObstacle::parse(Game &game, std::istream &is, Layer layer, int 
  * @brief Returns the type of entity.
  * @return the type of entity
  */
-EntityType CustomObstacle::get_type() {
-  return CUSTOM_OBSTACLE;
+EntityType Wall::get_type() {
+  return WALL;
 }
 
 /**
@@ -93,7 +93,7 @@ EntityType CustomObstacle::get_type() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool CustomObstacle::is_obstacle_for(MapEntity &other) {
+bool Wall::is_obstacle_for(MapEntity &other) {
   return entity_types_stopped[other.get_type()];
 }
 

@@ -8,7 +8,7 @@ code_next_index = 1
 function map:on_started(destination_point_name)
 
   -- pipe maze
-  map:obstacle_set_group_enabled("pipe_border", false)
+  map:wall_set_group_enabled("pipe_border", false)
 
   -- door of the pots and pikes
   map:door_set_open("door_f", true)
@@ -102,13 +102,13 @@ function map:on_hero_on_sensor(sensor_name)
     pipe = string.match(sensor_name, "^pipe_in_([a-z])_sensor")
     if pipe ~= nil then
       -- entering a pipe
-      map:obstacle_set_group_enabled("pipe_border_"..pipe, true)
+      map:wall_set_group_enabled("pipe_border_"..pipe, true)
       map:hero_set_visible(true)
     else
       pipe = string.match(sensor_name, "^pipe_out_([a-z])_sensor")
       if pipe ~= nil then
 	-- leaving a pipe
-	map:obstacle_set_group_enabled("pipe_border_"..pipe, false)
+	map:wall_set_group_enabled("pipe_border_"..pipe, false)
       elseif string.find(sensor_name, "^hide_hero_sensor") then
 	-- hide the hero
 	map:hero_set_visible(false)

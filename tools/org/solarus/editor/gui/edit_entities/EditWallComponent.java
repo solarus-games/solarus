@@ -23,11 +23,11 @@ import org.solarus.editor.gui.*;
 import org.solarus.editor.map_editor_actions.*;
 
 /**
- * A component to edit a custom obstacle.
+ * A component to edit a wall.
  */
-public class EditCustomObstacleComponent extends EditEntityComponent {
+public class EditWallComponent extends EditEntityComponent {
 
-    // specific fields of a custom obstacle
+    // specific fields of a wall
     private JCheckBox stopsHeroField;
     private JCheckBox stopsEnemiesField;
     private JCheckBox stopsNPCsField;
@@ -38,7 +38,7 @@ public class EditCustomObstacleComponent extends EditEntityComponent {
      * @param map the map
      * @param entity the entity to edit
      */
-    public EditCustomObstacleComponent(Map map, MapEntity entity) {
+    public EditWallComponent(Map map, MapEntity entity) {
 	super(map, entity);
     }
 
@@ -70,11 +70,11 @@ public class EditCustomObstacleComponent extends EditEntityComponent {
     public void update() {
 	super.update(); // update the common fields
 
-	CustomObstacle customObstacle = (CustomObstacle) entity;
-	stopsHeroField.setSelected(customObstacle.getBooleanProperty("stopsHero"));
-	stopsEnemiesField.setSelected(customObstacle.getBooleanProperty("stopsEnemies"));
-	stopsNPCsField.setSelected(customObstacle.getBooleanProperty("stopsNPCs"));
-	stopsBlocksField.setSelected(customObstacle.getBooleanProperty("stopsBlocks"));
+	Wall wall = (Wall) entity;
+	stopsHeroField.setSelected(wall.getBooleanProperty("stopsHero"));
+	stopsEnemiesField.setSelected(wall.getBooleanProperty("stopsEnemies"));
+	stopsNPCsField.setSelected(wall.getBooleanProperty("stopsNPCs"));
+	stopsBlocksField.setSelected(wall.getBooleanProperty("stopsBlocks"));
     }
 
     /**

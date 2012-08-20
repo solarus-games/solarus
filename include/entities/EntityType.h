@@ -46,7 +46,7 @@ enum EntityType {
   BLOCK                     = 9,    /**< a block or a statue that the hero can push */
   DYNAMIC_TILE              = 10,   /**< a dynamic tile (that can be enabled or disabled) */
   SWITCH                    = 11,   /**< a switch */
-  CUSTOM_OBSTACLE           = 12,   /**< an obstacle for some other type of entities */
+  WALL                      = 12,   /**< an invisible obstacle for some type of entities */
   SENSOR                    = 13,   /**< a sensor that triggers something when the hero overlaps it */
   CRYSTAL                   = 14,   /**< a switch that lowers or raises the blue and orange blocks */
   CRYSTAL_BLOCK             = 15,   /**< the blue or orange blocks that are changed by the crystals */

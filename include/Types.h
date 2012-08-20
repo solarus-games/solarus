@@ -147,7 +147,7 @@ class EnemyReaction;
 class NPC;
 class Block;
 class Switch;
-class CustomObstacle;
+class Wall;
 class Sensor;
 class Crystal;
 class CrystalBlock;

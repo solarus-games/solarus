@@ -26,7 +26,7 @@
 #include "entities/Chest.h"
 #include "entities/DynamicTile.h"
 #include "entities/Stairs.h"
-#include "entities/CustomObstacle.h"
+#include "entities/Wall.h"
 #include "entities/Block.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
@@ -101,9 +101,9 @@ void LuaContext::register_map_module() {
       { "stairs_is_enabled", map_api_stairs_is_enabled },
       { "stairs_set_enabled", map_api_stairs_set_enabled },
       { "stairs_set_group_enabled", map_api_stairs_set_group_enabled },
-      { "obstacle_is_enabled", map_api_obstacle_is_enabled },
-      { "obstacle_set_enabled", map_api_obstacle_set_enabled },
-      { "obstacle_set_group_enabled", map_api_obstacle_set_group_enabled },
+      { "obstacle_is_enabled", map_api_wall_is_enabled },
+      { "wall_set_enabled", map_api_wall_set_enabled },
+      { "wall_set_group_enabled", map_api_wall_set_group_enabled },
       { "sensor_is_enabled", map_api_sensor_is_enabled },
       { "sensor_set_enabled", map_api_sensor_set_enabled },
       { "sensor_set_group_enabled", map_api_sensor_set_group_enabled },
@@ -1198,15 +1198,15 @@ int LuaContext::map_api_stairs_set_group_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_obstacle_is_enabled(lua_State* l) {
+int LuaContext::map_api_wall_is_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* obstacle = entities.get_entity(name);
+  MapEntity* wall = entities.get_entity(name);
 
-  lua_pushboolean(l, obstacle->is_enabled());
+  lua_pushboolean(l, wall->is_enabled());
   return 1;
 }
 
@@ -1215,15 +1215,15 @@ int LuaContext::map_api_obstacle_is_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_obstacle_set_enabled(lua_State* l) {
+int LuaContext::map_api_wall_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
   bool enable = lua_toboolean(l, 3) != 0;
 
   MapEntities& entities = map.get_entities();
-  MapEntity* obstacle = entities.get_entity(name);
-  obstacle->set_enabled(enable);
+  MapEntity* wall = entities.get_entity(name);
+  wall->set_enabled(enable);
 
   return 0;
 }
@@ -1233,7 +1233,7 @@ int LuaContext::map_api_obstacle_set_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_obstacle_set_group_enabled(lua_State* l) {
+int LuaContext::map_api_wall_set_group_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);

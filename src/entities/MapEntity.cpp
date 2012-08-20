@@ -29,7 +29,7 @@
 #include "entities/Block.h"
 #include "entities/DynamicTile.h"
 #include "entities/Switch.h"
-#include "entities/CustomObstacle.h"
+#include "entities/Wall.h"
 #include "entities/Sensor.h"
 #include "entities/Crystal.h"
 #include "entities/CrystalBlock.h"
@@ -63,7 +63,7 @@ MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   Block::parse,
   DynamicTile::parse,
   Switch::parse,
-  CustomObstacle::parse,
+  Wall::parse,
   Sensor::parse,
   Crystal::parse,
   CrystalBlock::parse,
@@ -89,7 +89,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true,  true}, // block
   { true,  true,  true, false}, // dynamic tile
   { true,  true,  true, false}, // switch
-  { true, false, false, false}, // custom obstacle
+  { true, false, false, false}, // wall
   { true,  true, false, false}, // sensor
   { true,  true,  true, false}, // crystal
   { true,  true,  true, false}, // crystal block

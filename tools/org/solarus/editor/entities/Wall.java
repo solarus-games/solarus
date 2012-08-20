@@ -20,9 +20,9 @@ import java.awt.*;
 import org.solarus.editor.*;
 
 /**
- * A custom obstacle is an invisible entity that is an obstacle for some other types of entities.
+ * A wall is an invisible entity that is an obstacle for some other types of entities.
  */
-public class CustomObstacle extends MapEntity {
+public class Wall extends MapEntity {
 
     /**
      * Description of the default image representing this kind of entity.
@@ -32,7 +32,7 @@ public class CustomObstacle extends MapEntity {
     };
 
     /**
-     * Resizable image of a custom obstacle.
+     * Resizable image of a wall.
      */
     private static Image resizableObstacleImage;
 
@@ -40,7 +40,7 @@ public class CustomObstacle extends MapEntity {
      * Constructor.
      * @param map the map
      */
-    public CustomObstacle(Map map) throws MapException {
+    public Wall(Map map) throws MapException {
 	super(map, 16, 16);
     }
 

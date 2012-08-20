@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_DESTINATION_POINT_H
-#define SOLARUS_DESTINATION_POINT_H
+#ifndef SOLARUS_DESTINATION_H
+#define SOLARUS_DESTINATION_H
 
 #include "Common.h"
 #include "entities/MapEntity.h"

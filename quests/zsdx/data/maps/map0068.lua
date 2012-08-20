@@ -71,7 +71,7 @@ function set_water_filled(i)
   map:tile_set_enabled("water_"..i.."_full", true)
 
   -- disable the custom obstacles near stairs (stairs are useless)
-  map:obstacle_set_group_enabled("water_"..i.."_off_obstacle", false)
+  map:wall_set_group_enabled("water_"..i.."_off_obstacle", false)
 
   -- enable the jumpers placed over stairs (they are used to jump into water)
   map:jumper_set_group_enabled("water_"..i.."_on_jumper", true)
@@ -91,7 +91,7 @@ end
 function set_water_drained(i)
 
   -- enable the custom obstacles near stairs (stairs can be used)
-  map:obstacle_set_group_enabled("water_"..i.."_off_obstacle", true)
+  map:wall_set_group_enabled("water_"..i.."_off_obstacle", true)
 
   -- disable the jumpers placed over stairs (there is no water to jump into)
   map:jumper_set_group_enabled("water_"..i.."_on_jumper", false)

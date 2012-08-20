@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_CUSTOM_OBSTACLE_H
-#define SOLARUS_CUSTOM_OBSTACLE_H
+#ifndef SOLARUS_WALL_H
+#define SOLARUS_WALL_H
 
 #include "Common.h"
 #include "entities/MapEntity.h"
@@ -28,7 +28,7 @@
  * This entity is typically used to prevent enemies from going to
  * a specific place.
  */
-class CustomObstacle: public MapEntity {
+class Wall: public MapEntity {
 
   private:
 
@@ -39,9 +39,9 @@ class CustomObstacle: public MapEntity {
 
   public:
 
-    CustomObstacle(const std::string &name, Layer layer, int x, int y, int width, int height,
-	bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks);
-    ~CustomObstacle();
+    Wall(const std::string &name, Layer layer, int x, int y, int width, int height,
+        bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks);
+    ~Wall();
     static CreationFunction parse;
 
     EntityType get_type();

@@ -43,7 +43,7 @@ function map:on_started(destination_point_name)
     map:tile_set_group_enabled("c_water_out", true)
     map:jumper_set_group_enabled("c_water_on_jumper", false)
   else
-    map:obstacle_set_group_enabled("c_water_off_obstacle", false)
+    map:wall_set_group_enabled("c_water_off_obstacle", false)
   end
 
   if map:get_game():get_boolean(122) then
@@ -52,7 +52,7 @@ function map:on_started(destination_point_name)
     map:tile_set_group_enabled("e_water_out", true)
     map:jumper_set_group_enabled("e_water_on_jumper", false)
   else
-    map:obstacle_set_group_enabled("e_water_off_obstacle", false)
+    map:wall_set_group_enabled("e_water_off_obstacle", false)
   end
 
   if map:get_game():get_boolean(131) then
@@ -61,7 +61,7 @@ function map:on_started(destination_point_name)
     map:tile_set_group_enabled("n_water_out", true)
     map:jumper_set_group_enabled("n_water_on_jumper", false)
   else
-    map:obstacle_set_group_enabled("n_water_off_obstacle", false)
+    map:wall_set_group_enabled("n_water_off_obstacle", false)
   end
 
 end
@@ -143,7 +143,7 @@ end
 function remove_c_water_6()
   map:tile_set_enabled("c_water_less_3", false)
   map:jumper_set_group_enabled("c_water_on_jumper", false)
-  map:obstacle_set_group_enabled("c_water_off_obstacle", true)
+  map:wall_set_group_enabled("c_water_off_obstacle", true)
   map:get_game():set_boolean(121, true)
   sol.audio.play_sound("secret")
 end

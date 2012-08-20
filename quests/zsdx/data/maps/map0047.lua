@@ -33,8 +33,8 @@ function map:on_started(destination_point_name)
 
   -- Link has mirror shield: no laser obstacles
   if map:get_game():get_ability("shield") >= 3 then
-    map:obstacle_set_enabled("LO1", false)
-    map:obstacle_set_group_enabled("LO2", false)
+    map:wall_set_enabled("LO1", false)
+    map:wall_set_group_enabled("LO2", false)
   end
 
   if destination_point_name == "from_boss" or destination_point_name == "from_hidden_room" then

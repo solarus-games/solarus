@@ -405,16 +405,16 @@ be activated (nothing happens when the hero walks on it).
 \c inactivate_when_leaving is a boolean value indicating that when the hero (or the block)
 leaves the switch, the switch is inactivated.
 
-\section custom_obstacle Custom obstacle (12)
+\section wall Wall (12)
 
-A custom obstacle is an invisible entity of variable size where some types of moving entities cannot pass.
+A wall is an invisible entity of variable size where some types of moving entities cannot pass.
 
-Syntax of a custom obstacle:
+Syntax of a wall:
 \verbatim
 12	layer	x	y	width	height	entity_name	stops_hero    stops_enemies	stops_npcs	stops_blocks
 \endverbatim
 
-The last four values are boolean values that indicate whether this custom obstacle is an obstacle
+The last four values are boolean values that indicate whether this wall is an obstacle
 for the hero, the enemies, the non-playing characters and the blocks, respectively.
 
 \section sensor Sensor (13)

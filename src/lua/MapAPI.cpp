@@ -1492,7 +1492,7 @@ int LuaContext::map_api_teletransporter_set_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 2);
+  bool enable = lua_toboolean(l, 3);
 
   MapEntities& entities = map.get_entities();
   MapEntity* teletransporter = entities.get_entity(name);

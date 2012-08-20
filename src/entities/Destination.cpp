@@ -80,6 +80,6 @@ MapEntity* Destination::parse(Game& game, std::istream &is,
  * @return the type of entity
  */
 EntityType Destination::get_type() {
-  return DESTINATION_POINT;
+  return DESTINATION;
 }
 

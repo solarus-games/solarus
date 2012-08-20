@@ -58,7 +58,7 @@ Pickable::~Pickable() {
  * @return the type of entity
  */
 EntityType Pickable::get_type() {
-  return PICKABLE_ITEM;
+  return PICKABLE;
 }
 
 /**

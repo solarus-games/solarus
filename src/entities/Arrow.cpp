@@ -309,7 +309,7 @@ void Arrow::update() {
       // the arrow is stopped because the entity that was reached just disappeared
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == DESTRUCTIBLE_ITEM && !entity_reached->is_obstacle_for(*this)) {
+    else if (entity_reached->get_type() == DESTRUCTIBLE && !entity_reached->is_obstacle_for(*this)) {
       disappear_date = now;
     }
     else if (entity_reached->get_type() == ENEMY && ((Enemy*) entity_reached)->is_dying()) {

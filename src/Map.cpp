@@ -354,7 +354,7 @@ Destination* Map::get_destination() {
     return NULL;
   }
   MapEntity* entity = get_entities().get_entity(destination_name);
-  Debug::check_assertion(entity->get_type() == DESTINATION_POINT,
+  Debug::check_assertion(entity->get_type() == DESTINATION,
       "This entity is not a destination");
   return static_cast<Destination*>(entity);
 }

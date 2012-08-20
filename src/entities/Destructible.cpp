@@ -126,7 +126,7 @@ MapEntity* Destructible::parse(Game &game, std::istream &is, Layer layer, int x,
  * @return the type of entity
  */
 EntityType Destructible::get_type() {
-  return DESTRUCTIBLE_ITEM;
+  return DESTRUCTIBLE;
 }
 
 /**

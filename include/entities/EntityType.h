@@ -33,16 +33,16 @@ enum EntityType {
   // entities specified in the map file
 
   TILE                      = 0,    /**< a tile on the map, obstacle or not */
-  DESTINATION_POINT         = 1,    /**< a destination point on the map */
+  DESTINATION               = 1,    /**< a destination point on the map */
   TELETRANSPORTER           = 2,    /**< a teletransporter: the hero is transported
-				     * to a destination point when walking on it */
-  PICKABLE_ITEM             = 3,    /**< an item that the hero can pick: a rupee, a heart, a fairy... */
-  DESTRUCTIBLE_ITEM         = 4,    /**< an item that the hero can cut or lift: a pot, a bush, a stone... */
+                                     * to a destination point when walking on it */
+  PICKABLE                  = 3,    /**< a treasure that the hero can pick up: a rupee, a heart, a fairy... */
+  DESTRUCTIBLE              = 4,    /**< something that the hero can cut or lift: a pot, a bush, a stone... */
   CHEST                     = 5,    /**< a chest (small or big) with a treasure */
   JUMPER                    = 6,    /**< a sensor that makes the hero jump in a direction */
   ENEMY                     = 7,    /**< an enemy */
   NON_PLAYING_CHARACTER     = 8,    /**< an entity the hero can interact with by pressing the action key
-				     * in front of it (not necessarily a person) */
+                                     * in front of it (not necessarily a person) */
   BLOCK                     = 9,    /**< a block or a statue that the hero can push */
   DYNAMIC_TILE              = 10,   /**< a dynamic tile (that can be enabled or disabled) */
   SWITCH                    = 11,   /**< a switch */

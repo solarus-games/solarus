@@ -191,27 +191,6 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
 }
 
 /**
- * @brief Returns the entity with the specified name and type.
- *
- * The program stops if there is no such entity.
- *
- * @param type Type of entity.
- * @param name Name of the entity to get.
- * @return The entity requested.
- */
-/* TODO remove
-MapEntity* MapEntities::get_entity(EntityType type, const std::string& name) {
-
-  MapEntity* entity = find_entity(type, name);
-
-  Debug::check_assertion(entity != NULL, StringConcat()
-      << "Cannot find entity with name '" << name << "'");
-
-  return entity;
-}
-*/
-
-/**
  * @brief Returns the entity with the specified name, or NULL if it doesn't exist.
  * @param name Name of the entity to find.
  * @return The entity requested, or NULL if there is no entity with the specified name.
@@ -229,50 +208,6 @@ MapEntity* MapEntities::find_entity(const std::string& name) {
   }
 
   return entity;
-}
-
-/**
- * @brief Returns the entity with the specified type and name, or NULL if it doesn't exist.
- * @param type Type of entity.
- * @param name Name of the entity to find.
- * @return The entity requested, or NULL if there is no entity with the
- * specified name and type
- */
-/* TODO remove
-MapEntity* MapEntities::find_entity(EntityType type, const std::string& name) {
-
-  if (named_entities.count(name) == 0) {
-    return NULL;
-  }
-
-  MapEntity* entity = named_entities[name];
-
-  if (entity->get_type() != type && entity->is_being_removed()) {
-    return NULL;
-  }
-
-  return entity;
-}*/
-
-/**
- * @brief Returns all entities of the map with the specified type.
- * @param type Type of entity.
- * @return The entities of this type.
- */
-list<MapEntity*> MapEntities::get_entities(EntityType type) {
-
-  list<MapEntity*> entities;
-
-  list<MapEntity*>::iterator i;
-  for (i = all_entities.begin(); i != all_entities.end(); i++) {
-
-    MapEntity *entity = *i;
-    if (entity->get_type() == type && !entity->is_being_removed()) {
-      entities.push_back(entity);
-    }
-  }
-
-  return entities;
 }
 
 /**

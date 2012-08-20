@@ -214,7 +214,7 @@ function map:on_dialog_finished(dialog_id, answer)
       else
 	-- enough money: reset the game, pay and start the game
 
-	map:block_reset_all()
+	reset_blocks()
 	map:tile_set_enabled("game_3_barrier_1", false)
 	map:tile_set_enabled("game_3_barrier_2", false)
 	map:tile_set_enabled("game_3_barrier_3", false)
@@ -231,7 +231,8 @@ function map:on_dialog_finished(dialog_id, answer)
     end
 
   elseif dialog_id == "rupee_house.game_3.go" then 
-    game_3_timer = sol.timer.start(8000, true, game_3_timeout)
+    game_3_timer = sol.timer.start(8000, game_3_timeout)
+    game_3_timer:set_with_sound(true)
     map:sensor_set_enabled("game_3_sensor", true);
 
   -- stop game 3 when the player founds the piece of heart
@@ -392,5 +393,12 @@ function game_2_timeout()
   end
 
   map:hero_unfreeze()
+end
+
+function reset_blocks()
+
+  for i = 3, 16 do
+    map:block_reset("block_" .. i)
+  end
 end
 

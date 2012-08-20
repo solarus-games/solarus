@@ -51,10 +51,7 @@ class MapEntities {
     std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
 
     MapEntity* get_entity(const std::string& name);
-//    MapEntity* get_entity(EntityType type, const std::string& name);
     MapEntity* find_entity(const std::string& name);
-//    MapEntity* find_entity(EntityType type, const std::string& name);
-    std::list<MapEntity*> get_entities(EntityType type);
     std::list<MapEntity*> get_entities_with_prefix(const std::string& prefix);
     std::list<MapEntity*> get_entities_with_prefix(EntityType type, const std::string& prefix);
 

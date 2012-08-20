@@ -556,7 +556,6 @@ class LuaContext {
       map_api_block_set_enabled,
       map_api_block_set_group_enabled,
       map_api_block_reset,
-      map_api_block_reset_all,
       map_api_block_get_position,
       map_api_block_set_position,
       map_api_shop_item_exists,

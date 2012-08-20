@@ -123,7 +123,6 @@ void LuaContext::register_map_module() {
       { "block_set_enabled", map_api_block_set_enabled },
       { "block_set_group_enabled", map_api_block_set_group_enabled },
       { "block_reset", map_api_block_reset },
-      { "block_reset_all", map_api_block_reset_all },
       { "block_get_position", map_api_block_get_position },
       { "block_set_position", map_api_block_set_position },
       { "shop_item_exists", map_api_shop_item_exists },
@@ -1596,25 +1595,6 @@ int LuaContext::map_api_block_reset(lua_State* l) {
       "This entity is not a block");
   Block* block = (Block*) entity;
   block->reset();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_block_reset_all(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> blocks = entities.get_entities(BLOCK);
-  std::list<MapEntity*>::iterator i;
-  for (i = blocks.begin(); i != blocks.end(); i++) {
-    ((Block*) (*i))->reset();
-  }
 
   return 0;
 }

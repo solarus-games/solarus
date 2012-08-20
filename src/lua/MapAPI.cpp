@@ -194,8 +194,38 @@ void LuaContext::push_map(lua_State* l, Map& map) {
 }
 
 /**
+ * @brief __index function of the environment of the map's code.
+ *
+ * This special __index function allows the map's Lua code to get a map
+ * entity like a global value.
+ * If an entity exists with the specified name, this entity is returned.
+ * Otherwise, we fall back to the usual behavior of global values:
+ * a global value with this name (or \c nil) is returned.
+ *
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::l_get_map_entity_or_global(lua_State* l) {
+
+  lua_pushvalue(l, lua_upvalueindex(1));  // Because check_map does not like pseudo-indexes.
+  Map& map = check_map(l, -1);
+  const std::string& name = luaL_checkstring(l, 2);
+
+  MapEntity* entity = map.get_entities().find_entity(name);
+  if (entity != NULL) {
+    // TODO push_entity(l, entity);
+    push_sprite(l, entity->get_sprite());
+  }
+  else {
+    lua_getglobal(l, name.c_str());
+  }
+  return 1;
+}
+
+/**
  * @brief Executes the callback function of a camera movement.
  * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int LuaContext::l_camera_do_callback(lua_State* l) {
 
@@ -217,6 +247,7 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
 /**
  * @brief Moves the camera back to the hero.
  * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int LuaContext::l_camera_restore(lua_State* l) {
 

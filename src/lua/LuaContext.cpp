@@ -239,8 +239,25 @@ void LuaContext::notify_map_started(Map& map, Destination* destination) {
 
   // Load the map's code.
   load_file(l, file_name);
+                                  // map_fun
 
-  // Run it with the map userdata as parameter.
+  // Set a special environment to access map entities like global variables.
+  lua_newtable(l);
+                                  // map_fun env
+  lua_newtable(l);
+                                  // map_fun env env_mt
+  push_map(l, map);
+                                  // map_fun env env_mt map
+  lua_pushcclosure(l, l_get_map_entity_or_global, 1);
+                                  // map_fun env env_mt __index
+  lua_setfield(l, -2, "__index");
+                                  // map_fun env env_mt
+  lua_setmetatable(l, -2);
+                                  // map_fun env
+  lua_setfenv(l, -2);
+                                  // map_fun
+
+  // Run the map's code with the map userdata as parameter.
   push_map(l, map);
   call_function(1, 0, file_name);
 

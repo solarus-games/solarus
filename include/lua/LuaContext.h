@@ -794,6 +794,7 @@ class LuaContext {
 
       // internal functions
       l_loader,
+      l_get_map_entity_or_global,
       l_camera_do_callback,
       l_camera_restore;
 

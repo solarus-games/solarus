@@ -63,7 +63,7 @@ function prison_dialog()
     prison_go_timer:stop()
     prison_go_timer = nil
   end
-  map:dialog_start("dungeon_5.hero_seen_by_guard")
+  map:start_dialog("dungeon_5.hero_seen_by_guard")
 end
 
 function send_hero_to_prison()

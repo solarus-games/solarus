@@ -15,7 +15,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside" then
-    map:dialog_start("dungeon_6.welcome")
+    map:start_dialog("dungeon_6.welcome")
   end
 end
 

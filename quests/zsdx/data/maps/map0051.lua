@@ -17,7 +17,7 @@ dont_close_LD06 = false
 
 function map:on_started()
 
-  map:light_set(0)
+  map:set_light(0)
   if not map:get_game():get_boolean(725) then
     map:block_set_enabled("STT5", false)
     map:tile_set_enabled("from_hole_tile", false)

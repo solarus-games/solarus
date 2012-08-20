@@ -107,7 +107,7 @@ function map:on_switch_activated(switch_name)
     map:switch_set_activated("BRoom8", false)
     map:switch_set_activated("BRoom9", false)
   elseif switch_name == "DB16" then
-    map:camera_move(808, 1056, 250, DB16_open_door)
+    map:move_camera(808, 1056, 250, DB16_open_door)
   end
 end
 

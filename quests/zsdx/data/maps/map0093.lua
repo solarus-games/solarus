@@ -55,9 +55,9 @@ function map:on_hero_on_sensor(sensor_name)
     map:hero_freeze()
     map:hero_set_direction(1)
     if not has_tiger_scrolls() then
-      map:dialog_start("north_fairy_fountain.first_time")
+      map:start_dialog("north_fairy_fountain.first_time")
     else
-      map:dialog_start("north_fairy_fountain.restore_health")
+      map:start_dialog("north_fairy_fountain.restore_health")
     end
   end
 end
@@ -66,7 +66,7 @@ function map:on_dialog_finished(dialog_id, answer)
 
   if dialog_id == "north_fairy_fountain.first_time" then
     map:hero_unfreeze()
-    map:treasure_give("level_4_way", 4, 930)
+    map:hero_start_treasure("level_4_way", 4, 930)
   elseif dialog_id == "north_fairy_fountain.restore_health" then
     map:hero_unfreeze()
     map:get_game():add_life(map:get_game():get_max_life())

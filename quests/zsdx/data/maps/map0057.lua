@@ -85,9 +85,9 @@ function start_final_sequence()
   sol.audio.play_music("dungeon_finished")
   map:hero_set_direction(1)
   map:npc_set_position("tom", 272, 237)
-  map:camera_move(272, 232, 100, function()
-    map:dialog_start("dungeon_6.tom")
-    map:dialog_set_variable("dungeon_6.tom", map:get_game():get_player_name());
+  map:move_camera(272, 232, 100, function()
+    map:start_dialog("dungeon_6.tom")
+    map:set_dialog_variable("dungeon_6.tom", map:get_game():get_player_name());
   end)
 end
 
@@ -98,15 +98,15 @@ function map:on_dialog_finished(dialog_id)
     sol.audio.stop_music()
     sol.timer.start(1000, function()
       sol.audio.play_music("legend")
-      map:dialog_start("dungeon_6.tom_revelation")
-      map:dialog_set_variable("dungeon_6.tom_revelation", map:get_game():get_player_name());
+      map:start_dialog("dungeon_6.tom_revelation")
+      map:set_dialog_variable("dungeon_6.tom_revelation", map:get_game():get_player_name());
     end)
   elseif dialog_id == "dungeon_6.tom_revelation" then
     local variant = 2
     if map:get_game():get_boolean(939) then
       variant = 3
     end
-    map:treasure_give("quiver", variant, 941)
+    map:hero_start_treasure("quiver", variant, 941)
   end
 end
 

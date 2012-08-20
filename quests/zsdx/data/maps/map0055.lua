@@ -53,7 +53,7 @@ function map:on_switch_activated(switch_name)
 
   if switch_name == "water_switch"
       and not map:get_game():get_boolean(319) then
-    map:camera_move(616, 192, 250, remove_water, 1000, 2500)
+    map:move_camera(616, 192, 250, remove_water, 1000, 2500)
   end
 end
 

@@ -32,13 +32,13 @@ end
 function map:on_npc_interaction(npc_name)
 
   if playing then
-    map:dialog_start("chests_game_cave.already_playing")
+    map:start_dialog("chests_game_cave.already_playing")
   elseif not map:get_game():get_boolean(160) then
     -- first time
-    map:dialog_start("chests_game_cave.first_time")
+    map:start_dialog("chests_game_cave.first_time")
     map:get_game():set_boolean(160, true)
   else
-    map:dialog_start("chests_game_cave.not_first_time")
+    map:start_dialog("chests_game_cave.not_first_time")
   end
 end
 
@@ -57,15 +57,15 @@ function map:on_dialog_finished(dialog_id, answer)
         end
 
         if not map:get_game():get_boolean(180) then
-          map:dialog_start("chests_game_cave.start_game_wooden_key")
+          map:start_dialog("chests_game_cave.start_game_wooden_key")
         elseif not map:get_game():get_boolean(181) then
-          map:dialog_start("chests_game_cave.start_game_piece_of_heart")
+          map:start_dialog("chests_game_cave.start_game_piece_of_heart")
         else
-          map:dialog_start("chests_game_cave.start_game")
+          map:start_dialog("chests_game_cave.start_game")
         end
       else
         sol.audio.play_sound("wrong")
-        map:dialog_start("chests_game_cave.not_enough_money")
+        map:start_dialog("chests_game_cave.not_enough_money")
       end
     end
   end
@@ -88,7 +88,7 @@ function map:on_chest_empty(chest_name)
       index = math.random(#rewards)
     end
 
-    map:treasure_give(rewards[index].item_name, rewards[index].variant, rewards[index].savegame_variable)
+    map:hero_start_treasure(rewards[index].item_name, rewards[index].variant, rewards[index].savegame_variable)
     playing = false
   else
     sol.audio.play_sound("wrong")

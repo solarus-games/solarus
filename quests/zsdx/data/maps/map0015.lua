@@ -24,7 +24,7 @@ end
 function map:on_npc_interaction(npc_name)
 
   if npc_name == "frozen_door" then
-    map:dialog_start("sahasrahla_house.frozen_door")
+    map:start_dialog("sahasrahla_house.frozen_door")
     map:get_game():set_boolean(34, true)
   end
 end

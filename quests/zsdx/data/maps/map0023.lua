@@ -16,14 +16,14 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside" then
-    map:dialog_start("dungeon_1")
+    map:start_dialog("dungeon_1")
   end
 end
 
 function map:on_switch_activated(switch_name)
 
   if switch_name == "sw_switch" or switch_name == "nw_switch" then
-    map:camera_move(176, 392, 250, sw_camera_timer)
+    map:move_camera(176, 392, 250, sw_camera_timer)
     current_room = "sw"
   elseif switch_name == "map_room_switch" then
     sol.audio.play_sound("chest_appears")
@@ -75,7 +75,7 @@ function map:on_enemy_dead(enemy_name)
 
   if map:enemy_is_group_dead("compass_room_battle")
       and not map:chest_is_enabled("compass_chest") then
-    map:camera_move(408, 456, 250, compass_room_timer)
+    map:move_camera(408, 456, 250, compass_room_timer)
   end
 end
 

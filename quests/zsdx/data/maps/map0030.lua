@@ -31,7 +31,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside" then
-    map:dialog_start("dungeon_2")
+    map:start_dialog("dungeon_2")
   end
 end
 
@@ -65,10 +65,10 @@ function map:on_switch_activated(switch_name)
   current_switch = switch_name
 
   if switch_name == "barrier_switch" then
-    map:camera_move(120, 536, 250, barrier_camera_timer)
+    map:move_camera(120, 536, 250, barrier_camera_timer)
   elseif switch_name == "pegasus_run_switch" then
     map:switch_set_activated("pegasus_run_switch_2", true)
-    map:camera_move(904, 88, 250, pegasus_run_camera_timer)
+    map:move_camera(904, 88, 250, pegasus_run_camera_timer)
   elseif switch_name == "pegasus_run_switch_2" then
     sol.audio.play_sound("door_open")
     map:tile_set_enabled("pegasus_run_barrier", false)
@@ -96,10 +96,10 @@ function check_eye_statues()
 
     if not map:get_game():get_boolean(90) then
       sol.audio.play_sound("switch")
-      map:camera_move(456, 232, 250, hidden_stairs_timer)
+      map:move_camera(456, 232, 250, hidden_stairs_timer)
     elseif not map:get_game():get_boolean(91) then
       sol.audio.play_sound("switch")
-      map:camera_move(520, 320, 250, hidden_door_timer)
+      map:move_camera(520, 320, 250, hidden_door_timer)
     end
   end
 end

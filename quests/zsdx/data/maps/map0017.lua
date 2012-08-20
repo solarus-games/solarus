@@ -3,7 +3,7 @@ local map = ...
 
 function map:on_started(destination_point_name)
 
-  map:light_set(1)
+  map:set_light(1)
 
   if map:get_game():get_boolean(201) then
     lock_torches()
@@ -30,7 +30,7 @@ end
 function map:on_map_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "main_entrance" then
-    map:dialog_start("dungeon_10.welcome")
+    map:start_dialog("dungeon_10.welcome")
   end
 end
 
@@ -39,7 +39,7 @@ function map:on_enemy_dead(enemy_name)
   if enemy_name:find("enemy_group1")
       and map:enemy_is_group_dead("enemy_group1")
       and not map:get_game():get_boolean(200) then
-    map:camera_move(616, 552, 250, function()
+    map:move_camera(616, 552, 250, function()
       map:pickable_create("small_key", 1, 200, 616, 557, 1)
       sol.audio.play_sound("secret")
     end)
@@ -78,7 +78,7 @@ function map:on_update()
   if not map:get_game():get_boolean(201) and are_all_torches_on() then
     map:get_game():set_boolean(201, true)
     lock_torches()
-    map:camera_move(232, 488, 250, function()
+    map:move_camera(232, 488, 250, function()
       sol.audio.play_sound("secret")
       map:pickable_create("small_key", 1, 202, 232, 493, 0)
     end)

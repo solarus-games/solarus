@@ -19,7 +19,7 @@ function map:on_enemy_dead(enemy_name)
   if enemy_name:match("^door_a_enemy") then
     if not map:door_is_open("door_a")
         and map:enemy_is_group_dead("door_a_enemy") then
-      map:camera_move(2248, 648, 250, function()
+      map:move_camera(2248, 648, 250, function()
 	sol.audio.play_sound("secret")
 	map:door_open("door_a")
       end)
@@ -47,10 +47,10 @@ function map:on_npc_interaction(npc_name)
 	-- correct
 	if index < 8 then
 	  local directions = { 0, 0, 0, 3, 2, 2, 2 }
-	  map:dialog_start("dungeon_9.3f_door_b_hint_" .. directions[index])
+	  map:start_dialog("dungeon_9.3f_door_b_hint_" .. directions[index])
 	  map:get_game():set_integer(1202, index)
 	else
-	  map:camera_move(1928, 1928, 500, function()
+	  map:move_camera(1928, 1928, 500, function()
 	    sol.audio.play_sound("secret")
 	    map:door_open("door_b")
 	  end)

@@ -19,7 +19,7 @@ end
 function map:on_hero_on_sensor(sensor_name)
 
   if not has_obtained_bottle() and not has_talked_about_apples() then
-    map:dialog_start("cake_shop.dont_leave")
+    map:start_dialog("cake_shop.dont_leave")
   end
 end
 
@@ -33,17 +33,17 @@ function map:on_dialog_finished(dialog_id, answer)
     if answer == 0 then
       if map:get_game():has_item("apples_counter") then
 	if map:get_game():get_item_amount("apples_counter") >= 6 then
-	  map:dialog_start("cake_shop.thank_you")
+	  map:start_dialog("cake_shop.thank_you")
 	  map:get_game():remove_item_amount("apples_counter", 6)
 	else
-	  map:dialog_start("cake_shop.not_enough_apples")
+	  map:start_dialog("cake_shop.not_enough_apples")
 	end
       else
-	map:dialog_start("cake_shop.no_apples")
+	map:start_dialog("cake_shop.no_apples")
       end
     end
   elseif dialog_id == "cake_shop.thank_you" then
-    map:treasure_give("bottle_1", 1, 32)
+    map:hero_start_treasure("bottle_1", 1, 32)
   end
 end
 
@@ -56,9 +56,9 @@ end
 
 function talk_to_seller()
   if not has_talked_about_apples() or has_obtained_bottle() then
-    map:dialog_start("cake_shop.seller.choose_item")
+    map:start_dialog("cake_shop.seller.choose_item")
   else 
-    map:dialog_start("cake_shop.seller.ask_apples_again")
+    map:start_dialog("cake_shop.seller.ask_apples_again")
   end
 end
 

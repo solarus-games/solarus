@@ -121,7 +121,7 @@ function hidden_enemies:on_killed()
 
   if #map:find("hidden_enemy") == 0
       and not hidden_enemy_chest:is_enabled() then
-    map:camera_move(1128, 2040, 250, function()
+    map:move_camera(1128, 2040, 250, function()
       sol.audio.play_sound("chest_appears")
       hidden_enemy_chest:set_enabled()
     end)
@@ -133,7 +133,7 @@ function s_door_enemies:on_killed()
 
   if #map:find("s_door_enemy") == 0
       and not s_door:is_open() then
-    map:camera_move(1768, 1800, 250, function()
+    map:move_camera(1768, 1800, 250, function()
       sol.audio.play_sound("secret")
       s_door:open()
     end)
@@ -145,7 +145,7 @@ function e_room_enemies:on_killed()
 
   if #map:find("e_room_enemy") == 0
       and not e_room_chest:is_enabled() then
-    map:camera_move(2136, 1120, 250, function()
+    map:move_camera(2136, 1120, 250, function()
       sol.audio.play_sound("chest_appears")
       e_room_chest:set_enabled()
     end)
@@ -268,7 +268,7 @@ end
 function puzzle_b_door_switch:on_activated()
 
   if not puzzle_b_door:is_open() then
-    map:camera_move(808, 1544, 250, function()
+    map:move_camera(808, 1544, 250, function()
       sol.audio.play_sound("secret")
       puzzle_b_door:open()
       puzzle_b_door_switch:set_activated()
@@ -304,7 +304,7 @@ function puzzle_a_switches:on_activated()
     end
     if success then
       puzzle_a_switches:set_enabled(false)
-      map:camera_move(896, 1896, 250, function()
+      map:move_camera(896, 1896, 250, function()
         sol.audio.play_sound("chest_appears")
         puzzle_a_chest:set_enabled()
         sol.game:set_boolean(802, true)

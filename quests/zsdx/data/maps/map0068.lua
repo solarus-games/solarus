@@ -57,12 +57,12 @@ end
 
 function fill_water(index)
   current_pool_index = index
-  map:camera_move(pools[index].x, pools[index].y, 250, fill_water_step_1, 1000, 2500)
+  map:move_camera(pools[index].x, pools[index].y, 250, fill_water_step_1, 1000, 2500)
 end
 
 function drain_water(index)
   current_pool_index = index
-  map:camera_move(pools[index].x, pools[index].y, 250, drain_water_step_1, 1000, 2500)
+  map:move_camera(pools[index].x, pools[index].y, 250, drain_water_step_1, 1000, 2500)
 end
 
 function set_water_filled(i)

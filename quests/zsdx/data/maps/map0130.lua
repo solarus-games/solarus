@@ -62,7 +62,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "from_6f" then
     if not map:get_game():get_boolean(881) then
-      map:dialog_start("dungeon_9.boss")
+      map:start_dialog("dungeon_9.boss")
     else
       start_zelda_sequence()
     end
@@ -75,7 +75,7 @@ function map:on_dialog_finished(dialog_id)
     sol.audio.play_music("ganon_battle")
   elseif dialog_id == "dungeon_9.zelda" then
     sol.timer.start(1000, function()
-      map:dialog_start("dungeon_9.zelda_children")
+      map:start_dialog("dungeon_9.zelda_children")
     end)
   elseif dialog_id == "dungeon_9.zelda_children" then
     sol.audio.stop_music()
@@ -86,7 +86,7 @@ function map:on_dialog_finished(dialog_id)
       end
     end)
     sol.timer.start(5000, function()
-      map:dialog_start("dungeon_9.zelda_end")
+      map:start_dialog("dungeon_9.zelda_end")
     end)
   elseif dialog_id == "dungeon_9.zelda_end" then
     sol.timer.start(2000, function()
@@ -128,8 +128,8 @@ function start_zelda_sequence()
   end
 
   sol.timer.start(3000, function()
-    map:dialog_start("dungeon_9.zelda")
-    map:dialog_set_variable("dungeon_9.zelda", map:get_game():get_player_name())
+    map:start_dialog("dungeon_9.zelda")
+    map:set_dialog_variable("dungeon_9.zelda", map:get_game():get_player_name())
   end)
 end
 
@@ -139,7 +139,7 @@ end
 function map:on_npc_interaction(npc_name)
 
   if string.find(npc_name, "^torch") then
-    map:dialog_start("torch.need_lamp")
+    map:start_dialog("torch.need_lamp")
   end
 end
 

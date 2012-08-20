@@ -28,8 +28,8 @@ end
 function map:on_map_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "from_ending" then
-    map:dialog_start("credits_3")
-    map:camera_move(120, 408, 25, function() end, 1e6)
+    map:start_dialog("credits_3")
+    map:move_camera(120, 408, 25, function() end, 1e6)
   end
 end
 
@@ -51,7 +51,7 @@ function map:on_update()
   if not map:door_is_open("torches_door")
       and are_all_torches_on() then
 
-    map:camera_move(360, 104, 250, open_torches_door)
+    map:move_camera(360, 104, 250, open_torches_door)
   end
 end
 

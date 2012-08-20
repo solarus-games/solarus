@@ -77,7 +77,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside" then
-    map:dialog_start("dungeon_9.welcome")
+    map:start_dialog("dungeon_9.welcome")
   end
 end
 
@@ -104,7 +104,7 @@ function map:on_enemy_dead(enemy_name)
   if enemy_name:find("^hidden_enemy")
       and map:enemy_is_group_dead("hidden_enemy")
       and not map:chest_is_enabled("hidden_enemy_chest") then
-    map:camera_move(1128, 2040, 250, function()
+    map:move_camera(1128, 2040, 250, function()
       sol.audio.play_sound("chest_appears")
       map:chest_set_enabled("hidden_enemy_chest", true)
     end)
@@ -113,7 +113,7 @@ function map:on_enemy_dead(enemy_name)
   elseif enemy_name:find("^s_door_enemy")
       and map:enemy_is_group_dead("s_door_enemy")
       and not map:door_is_open("s_door") then
-    map:camera_move(1768, 1800, 250, function()
+    map:move_camera(1768, 1800, 250, function()
       sol.audio.play_sound("secret")
       map:door_open("s_door")
     end)
@@ -131,7 +131,7 @@ function map:on_enemy_dead(enemy_name)
   elseif enemy_name:find("^e_room_enemy")
       and map:enemy_is_group_dead("e_room_enemy")
       and not map:chest_is_enabled("e_room_chest") then
-    map:camera_move(2136, 1120, 250, function()
+    map:move_camera(2136, 1120, 250, function()
       sol.audio.play_sound("chest_appears")
       map:chest_set_enabled("e_room_chest", true)
     end)
@@ -143,7 +143,7 @@ function map:on_switch_activated(switch_name)
   -- door to puzzle B
   if switch_name == "puzzle_b_door_switch" then
     if not map:door_is_open("puzzle_b_door") then
-      map:camera_move(808, 1544, 250, function()
+      map:move_camera(808, 1544, 250, function()
 	sol.audio.play_sound("secret")
 	map:door_open("puzzle_b_door")
 	map:switch_set_activated("puzzle_b_door_switch", true)
@@ -231,7 +231,7 @@ function map:on_switch_activated(switch_name)
       if success then
 	map:tile_set_group_enabled("puzzle_a_switch", false)
 	map:switch_set_group_enabled("puzzle_a_switch", false)
-	map:camera_move(896, 1896, 250, function()
+	map:move_camera(896, 1896, 250, function()
 	  sol.audio.play_sound("chest_appears")
 	  map:chest_set_enabled("puzzle_a_chest", true)
 	  map:get_game():set_boolean(802, true)
@@ -301,7 +301,7 @@ end
 function map:on_npc_interaction(npc_name)
 
   if string.find(npc_name, "^torch") then
-    map:dialog_start("torch.need_lamp")
+    map:start_dialog("torch.need_lamp")
   end
 end
 

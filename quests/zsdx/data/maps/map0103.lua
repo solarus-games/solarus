@@ -91,14 +91,14 @@ function map:on_switch_activated(switch_name)
 
   -- north-east room
   if switch_name == "ne_switch" then
-    map:camera_move(960, 312, 250, function()
+    map:move_camera(960, 312, 250, function()
       sol.audio.play_sound("secret")
       map:door_open("ne_door")
     end)
 
   -- switch that removes the special torch
   elseif switch_name == "special_torch_switch" then
-    map:camera_move(960, 120, 250, function()
+    map:move_camera(960, 120, 250, function()
       sol.audio.play_sound("secret")
       map:tile_set_enabled("special_torch", false)
       just_removed_special_torch = true
@@ -109,7 +109,7 @@ function map:on_switch_activated(switch_name)
     current_door_name = switch_name:match("^(door_[a-e])_switch$")
     if current_door_name ~= nil then
       door = doors[current_door_name]
-      map:camera_move(door.x, door.y, 250, function()
+      map:move_camera(door.x, door.y, 250, function()
 	map:door_open(current_door_name)
       end)
     end
@@ -231,9 +231,9 @@ function start_final_sequence()
   sol.audio.play_music("dungeon_finished")
   map:hero_set_direction(1)
   map:npc_set_position("sahasrahla", 544, 717)
-  map:camera_move(544, 712, 100, function()
-    map:dialog_start("dungeon_7.sahasrahla")
-    map:dialog_set_variable("dungeon_7.sahasrahla", map:get_game():get_player_name());
+  map:move_camera(544, 712, 100, function()
+    map:start_dialog("dungeon_7.sahasrahla")
+    map:set_dialog_variable("dungeon_7.sahasrahla", map:get_game():get_player_name());
   end)
 end
 

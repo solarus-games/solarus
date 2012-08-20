@@ -13,7 +13,7 @@ function map:on_started(destination_point_name)
   else
     -- enable dark world
     if map:get_game():get_boolean(905) then
-      map:tileset_set(13)
+      map:set_tileset(13)
     end
   end
 
@@ -26,8 +26,8 @@ end
 function map:on_map_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "from_ending" then
-    map:dialog_start("credits_1")
-    map:camera_move(1000, 240, 25, function() end, 1e6)
+    map:start_dialog("credits_1")
+    map:move_camera(1000, 240, 25, function() end, 1e6)
   end
 end
 
@@ -47,7 +47,7 @@ function map:on_npc_interaction(npc_name)
       map:get_game():set_boolean(919, true)
       remove_dungeon_7_lock()
     else
-      map:dialog_start("outside_world.ice_key_required")
+      map:start_dialog("outside_world.ice_key_required")
     end
   end
 end

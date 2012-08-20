@@ -9,10 +9,10 @@ function map:on_npc_interaction(npc_name)
   -- smith dialog
   if not map:get_game():get_boolean(30) then
     -- the player has no sword yet
-    map:dialog_start("smith_cave.without_sword")
+    map:start_dialog("smith_cave.without_sword")
   else
     -- the player already has the sword
-    map:dialog_start("smith_cave.with_sword")
+    map:start_dialog("smith_cave.with_sword")
   end
 end
 
@@ -24,17 +24,17 @@ function map:on_dialog_finished(dialog_id, answer)
 
     if answer == 1 then
       -- the player does not want to buy the sword
-      map:dialog_start("smith_cave.not_buying")
+      map:start_dialog("smith_cave.not_buying")
     else
       -- wants to buy the sword
       if map:get_game():get_money() < sword_price then
         -- not enough money
         sol.audio.play_sound("wrong")
-        map:dialog_start("smith_cave.not_enough_money")
+        map:start_dialog("smith_cave.not_enough_money")
       else
         -- enough money: buy the sword
         map:get_game():remove_money(sword_price)
-        map:treasure_give("sword", 1, 30)
+        map:hero_start_treasure("sword", 1, 30)
       end
     end
   end
@@ -51,7 +51,7 @@ end
 -- Function called when the player has just obtained the sword.
 function map:on_treasure_obtained(item_name, variant, savegame_variable)
    if (savegame_variable == 30) then
-      map:dialog_start("smith_cave.thank_you")
+      map:start_dialog("smith_cave.thank_you")
    end
 end
 

@@ -12,34 +12,34 @@ function map:on_npc_interaction(npc_name)
 
   if not has_smith_sword then
     -- beginning: go get a sword
-    map:dialog_start("grandma_house.sword")
+    map:start_dialog("grandma_house.sword")
   elseif not has_clay_key then
     -- with the sword: find Sahasrahla
-    map:dialog_start("grandma_house.find_sahasrahla")
+    map:start_dialog("grandma_house.find_sahasrahla")
   elseif not has_finished_lyriann_cave then
     -- with the clay key: go to the cave
-    map:dialog_start("grandma_house.go_lyriann_cave")
+    map:start_dialog("grandma_house.go_lyriann_cave")
   elseif not map:get_game():is_dungeon_finished(1) then
     -- lyriann cave finished: go to the first dungeon
-    map:dialog_start("grandma_house.go_dungeon_1")
+    map:start_dialog("grandma_house.go_dungeon_1")
   elseif not has_bow then
     -- dungeon 1 finished: go to Sahasrahla's house
-    map:dialog_start("grandma_house.go_back_sahasrahla")
+    map:start_dialog("grandma_house.go_back_sahasrahla")
   elseif not has_rock_key then
     -- with the bow: go to the twin caves
-    map:dialog_start("grandma_house.go_twin_caves")
+    map:start_dialog("grandma_house.go_twin_caves")
   elseif not map:get_game():is_dungeon_finished(2) then
     -- with the rock key: go to the second dungeon
-    map:dialog_start("grandma_house.go_dungeon_2")
+    map:start_dialog("grandma_house.go_dungeon_2")
   elseif not map:get_game():is_dungeon_finished(4) then
     -- use the telepathic booth
-    map:dialog_start("grandma_house.go_telepathic_booth")
+    map:start_dialog("grandma_house.go_telepathic_booth")
   elseif not map:get_game():is_dungeon_finished(5) then
     -- rupee house broken
-    map:dialog_start("grandma_house.dark_world_enabled")
+    map:start_dialog("grandma_house.dark_world_enabled")
   else
     -- use the telepathic booth again
-    map:dialog_start("grandma_house.go_telepathic_booth")
+    map:start_dialog("grandma_house.go_telepathic_booth")
   end
 
 end

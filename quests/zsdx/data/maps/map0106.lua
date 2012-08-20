@@ -58,7 +58,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name:find("^from_outside") then
-    map:dialog_start("dungeon_9.welcome")
+    map:start_dialog("dungeon_9.welcome")
   end
 end
 
@@ -84,7 +84,7 @@ function map:on_switch_activated(switch_name)
   -- door G
   elseif switch_name == "door_g_switch"
       and not map:door_is_open("door_g") then
-    map:camera_move(1760, 520, 1000, function()
+    map:move_camera(1760, 520, 1000, function()
       sol.audio.play_sound("secret")
       map:door_open("door_g")
       door_g_finished = false
@@ -175,7 +175,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not door_g_finished
       and map:door_is_open("door_g") then
     sol.audio.play_sound("wrong")
-    map:camera_move(1760, 520, 1000, function()
+    map:move_camera(1760, 520, 1000, function()
       map:door_close("door_g")
       map:switch_set_activated("door_g_switch", false)
     end) 
@@ -251,7 +251,7 @@ function map:on_chest_empty(chest_name)
   if index ~= nil then
     if index == chests_puzzle_step then
       if index == 7 then
-	map:treasure_give("compass", 1, 814)
+	map:hero_start_treasure("compass", 1, 814)
       else
         map:hero_unfreeze()
 	chests_puzzle_step = chests_puzzle_step + 1
@@ -273,7 +273,7 @@ end
 function map:on_npc_interaction(npc_name)
 
   if string.find(npc_name, "^torch") then
-    map:dialog_start("torch.need_lamp")
+    map:start_dialog("torch.need_lamp")
   end
 end
 

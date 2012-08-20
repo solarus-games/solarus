@@ -10,7 +10,7 @@ function map:on_started(destination_point_name)
   if map:get_game():get_boolean(905) then
     -- enable dark world
     new_music = "dark_world"
-    map:tileset_set(13)
+    map:set_tileset(13)
     map:tile_set_group_enabled("castle_east_bridge", false)
     map:tile_set_group_enabled("castle_east_bridge_off", true)
 
@@ -44,7 +44,7 @@ end
 function map:on_switch_activated(switch_name)
 
   if switch_name == "castle_door_switch" then
-    map:camera_move(296, 552, 250, open_castle_door)
+    map:move_camera(296, 552, 250, open_castle_door)
   end
 end
 
@@ -61,7 +61,7 @@ function map:on_npc_interaction(npc_name)
   if npc_name == "cannon" then
 
     if not map:get_game():get_boolean(905) then
-      map:dialog_start("castle.cannon")
+      map:start_dialog("castle.cannon")
     else
       map:hero_freeze()
       local x, y = map:npc_get_position(npc_name)
@@ -102,7 +102,7 @@ function start_boss()
 
   sol.audio.play_music("ganon_appears")
   map:enemy_set_enabled("boss", true)
-  map:dialog_start("dungeon_5.agahnim_beginning")
+  map:start_dialog("dungeon_5.agahnim_beginning")
   map:hero_unfreeze()
   fighting_boss = true
 end

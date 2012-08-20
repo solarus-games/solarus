@@ -8,7 +8,7 @@ function map:on_started(destination_point_name)
   -- enable dark world
   if map:get_game():get_boolean(905) then
     sol.audio.play_music("dark_world")
-    map:tileset_set(13)
+    map:set_tileset(13)
   else
     sol.audio.play_music("overworld")
   end
@@ -54,7 +54,7 @@ function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "tom_appears_sensor"
       and has_finished_tom_cave
       and not is_ladder_activated() then
-    map:dialog_start("outside_world.tom_dungeon_1_entrance.hey")
+    map:start_dialog("outside_world.tom_dungeon_1_entrance.hey")
   elseif sensor_name == "edelweiss_sensor"
       and map:get_game():get_item("level_4_way") == 3 -- the player has the edelweiss
       and not is_beaumont_cave_open() then
@@ -99,7 +99,7 @@ function map:on_npc_movement_finished(npc_name)
   local x, y = map:npc_get_position("tom")
   if x ~= 352 then
     tom_sprite:set_direction(2)
-    map:dialog_start("outside_world.tom_dungeon_1_entrance.need_help")
+    map:start_dialog("outside_world.tom_dungeon_1_entrance.need_help")
   else
     tom_sprite:set_direction(1)
     sol.timer.start(1000, tom_timer_2)
@@ -107,12 +107,12 @@ function map:on_npc_movement_finished(npc_name)
 end
 
 function tom_timer_1()
-  map:dialog_start("outside_world.tom_dungeon_1_entrance.let_me_see")
+  map:start_dialog("outside_world.tom_dungeon_1_entrance.let_me_see")
   tom_sprite:set_direction(2)
 end
 
 function tom_timer_2()
-  map:dialog_start("outside_world.tom_dungeon_1_entrance.open")
+  map:start_dialog("outside_world.tom_dungeon_1_entrance.open")
 end
 
 function tom_timer_3()
@@ -148,11 +148,11 @@ function ladder_step4()
 end
 
 function map:on_npc_interaction(npc_name)
-  map:dialog_start("outside_world.tom_dungeon_1_entrance.finished")
+  map:start_dialog("outside_world.tom_dungeon_1_entrance.finished")
 end
 
 function put_edelweiss()
-  map:dialog_start("outside_world.beaumont_hill_put_edelweiss")
+  map:start_dialog("outside_world.beaumont_hill_put_edelweiss")
 end
 
 function edelweiss_explode()

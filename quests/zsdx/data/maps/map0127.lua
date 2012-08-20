@@ -3,7 +3,7 @@ local map = ...
 
 function map:on_started(destination_point_name)
 
-  map:light_set(0)
+  map:set_light(0)
 end
 
 function map:on_chest_empty(chest_name)
@@ -14,7 +14,7 @@ function map:on_chest_empty(chest_name)
       -- already got sword 2
       variant = 3
     end
-    map:treasure_give("sword", variant, -1)
+    map:hero_start_treasure("sword", variant, -1)
   end
 end
 

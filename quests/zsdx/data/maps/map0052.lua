@@ -22,7 +22,7 @@ function map:on_hero_on_sensor(sensor_name)
       map:hero_freeze()
       sol.audio.play_music("agahnim")
       sol.timer.start(1000, function()
-	map:dialog_start("dungeon_8.agahnim")
+	map:start_dialog("dungeon_8.agahnim")
       end)
 
     elseif not map:get_game():is_dungeon_finished(8) then
@@ -80,7 +80,7 @@ function start_ganon_sequence()
 
   sol.timer.start(1000, function()
     sol.audio.play_music("ganon_theme")
-    map:dialog_start("dungeon_8.ganon")
+    map:start_dialog("dungeon_8.ganon")
   end)
 end
 

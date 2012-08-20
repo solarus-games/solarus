@@ -22,7 +22,7 @@ function map:on_started(destination_point_name)
 end
 
 function map:on_switch_activated(switch_name)
-  map:camera_move(136, 304, 250, camera_1_timer)
+  map:move_camera(136, 304, 250, camera_1_timer)
 end
 
 function camera_1_timer()
@@ -46,17 +46,17 @@ function map:on_npc_interaction(npc)
 
   if npc == "tom" then
     if not has_seen_tom() then
-      map:dialog_start("lyriann_cave.tom.first_time")
+      map:start_dialog("lyriann_cave.tom.first_time")
     elseif has_finished_cavern() then
       if has_boomerang_of_tom() then
-        map:dialog_start("lyriann_cave.tom.cavern_finished")
+        map:start_dialog("lyriann_cave.tom.cavern_finished")
       else
-	map:dialog_start("lyriann_cave.tom.see_you_later")
+	map:start_dialog("lyriann_cave.tom.see_you_later")
       end
     elseif has_boomerang_of_tom() then
-      map:dialog_start("lyriann_cave.tom.not_finished")
+      map:start_dialog("lyriann_cave.tom.not_finished")
     else
-      map:dialog_start("lyriann_cave.tom.not_first_time")
+      map:start_dialog("lyriann_cave.tom.not_first_time")
     end
   end
 end
@@ -66,17 +66,17 @@ function map:on_dialog_finished(message_id, answer)
   if message_id == "lyriann_cave.tom.first_time" or message_id == "lyriann_cave.tom.not_first_time" then
     map:get_game():set_boolean(47, true)
     if answer == 0 then
-      map:dialog_start("lyriann_cave.tom.accept_help")
+      map:start_dialog("lyriann_cave.tom.accept_help")
     end
   elseif message_id == "lyriann_cave.tom.accept_help" then
-    map:treasure_give("boomerang", 1, 41)
+    map:hero_start_treasure("boomerang", 1, 41)
   elseif message_id == "lyriann_cave.tom.leaving" then
     sol.audio.play_sound("warp")
     map:hero_set_direction(1)
     sol.timer.start(1700, start_moving_tom)
   elseif message_id == "lyriann_cave.tom.not_finished" and answer == 1 then
     give_boomerang_back()
-    map:dialog_start("lyriann_cave.tom.gave_boomerang_back")
+    map:start_dialog("lyriann_cave.tom.gave_boomerang_back")
   elseif message_id == "lyriann_cave.tom.cavern_finished"
     or message_id == "lyriann_cave.tom.leaving.cavern_not_finished"
     or message_id == "lyriann_cave.tom.leaving.cavern_finished" then
@@ -112,9 +112,9 @@ function map:on_npc_movement_finished(npc)
 
   if has_boomerang_of_tom() then
     if has_finished_cavern() then
-      map:dialog_start("lyriann_cave.tom.cavern_finished")
+      map:start_dialog("lyriann_cave.tom.cavern_finished")
     else
-      map:dialog_start("lyriann_cave.tom.leaving.cavern_not_finished")
+      map:start_dialog("lyriann_cave.tom.leaving.cavern_not_finished")
     end
   else
     map:npc_set_position("tom", tom_initial_x, tom_initial_y)
@@ -127,7 +127,7 @@ function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "leave_cavern_sensor" and has_boomerang_of_tom() then
     map:hero_freeze()
-    map:dialog_start("lyriann_cave.tom.leaving")
+    map:start_dialog("lyriann_cave.tom.leaving")
   end
 end
 
@@ -146,10 +146,10 @@ end
 
 function map:on_enemy_dead(enemy_name)
   if map:enemy_is_group_dead("battle_1") and map:tile_is_enabled("battle_1_barrier") then
-    map:camera_move(352, 288, 250, battle_1_camera_timer)
+    map:move_camera(352, 288, 250, battle_1_camera_timer)
   end
   if map:enemy_is_group_dead("battle_2") and map:tile_is_enabled("battle_2_barrier") then
-    map:camera_move(344, 488, 250, battle_2_camera_timer)
+    map:move_camera(344, 488, 250, battle_2_camera_timer)
   end
 end
 

@@ -50,17 +50,16 @@ void LuaContext::register_map_module() {
 
   static const luaL_Reg methods[] = {
       { "get_game", map_api_get_game },
-      { "dialog_start", map_api_dialog_start },
-      { "dialog_set_variable", map_api_dialog_set_variable },
-      { "dialog_set_style", map_api_dialog_set_style },
+      { "start_dialog", map_api_start_dialog },
+      { "set_dialog_variable", map_api_set_dialog_variable },
+      { "set_dialog_style", map_api_set_dialog_style },
       { "set_pause_enabled", map_api_set_pause_enabled },
-      { "light_get", map_api_light_get },
-      { "light_set", map_api_light_set },
-      { "treasure_give", map_api_treasure_give },
-      { "camera_move", map_api_camera_move },
+      { "get_light", map_api_get_light },
+      { "set_light", map_api_get_light },
+      { "move_camera", map_api_move_camera },
       { "draw_sprite", map_api_draw_sprite },
-      { "tileset_get", map_api_tileset_get },
-      { "tileset_set", map_api_tileset_set },
+      { "get_tileset", map_api_get_tileset },
+      { "set_tileset", map_api_set_tileset },
       { "hero_freeze", map_api_hero_freeze },
       { "hero_unfreeze", map_api_hero_unfreeze },
       { "hero_set_map", map_api_hero_set_map },
@@ -74,6 +73,7 @@ void LuaContext::register_map_module() {
       { "hero_reset_solid_ground", map_api_hero_reset_solid_ground },
       { "hero_walk", map_api_hero_walk },
       { "hero_start_jumping", map_api_hero_start_jumping },
+      { "hero_start_treasure", map_api_hero_start_treasure },
       { "hero_start_victory_sequence", map_api_hero_start_victory_sequence },
       { "hero_start_boomerang", map_api_hero_start_boomerang },
       { "hero_start_bow", map_api_hero_start_bow },
@@ -276,7 +276,7 @@ int LuaContext::map_api_get_game(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_dialog_start(lua_State* l) {
+int LuaContext::map_api_start_dialog(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& dialog_id = luaL_checkstring(l, 2);
@@ -296,7 +296,7 @@ int LuaContext::map_api_dialog_start(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_dialog_set_variable(lua_State* l) {
+int LuaContext::map_api_set_dialog_variable(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& dialog_id = luaL_checkstring(l, 2);
@@ -312,7 +312,7 @@ int LuaContext::map_api_dialog_set_variable(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_dialog_set_style(lua_State* l) {
+int LuaContext::map_api_set_dialog_style(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int style = luaL_checkinteger(l, 2);
@@ -342,7 +342,7 @@ int LuaContext::map_api_set_pause_enabled(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_light_get(lua_State* l) {
+int LuaContext::map_api_get_light(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -357,7 +357,7 @@ int LuaContext::map_api_light_get(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_light_set(lua_State* l) {
+int LuaContext::map_api_set_light(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int light = luaL_checkinteger(l, 2);
@@ -372,7 +372,7 @@ int LuaContext::map_api_light_set(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_camera_move(lua_State* l) {
+int LuaContext::map_api_move_camera(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -409,24 +409,6 @@ int LuaContext::map_api_camera_move(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_treasure_give(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string &item_name = luaL_checkstring(l, 2);
-  int variant = luaL_checkinteger(l, 3);
-  int savegame_variable = luaL_checkinteger(l, 4);
-
-  map.get_entities().get_hero().start_treasure(
-      Treasure(map.get_game(), item_name, variant, savegame_variable));
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
 int LuaContext::map_api_draw_sprite(lua_State* l) {
 
   Map& map = check_map(l, 1);
@@ -444,7 +426,7 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_tileset_get(lua_State* l) {
+int LuaContext::map_api_get_tileset(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -459,12 +441,30 @@ int LuaContext::map_api_tileset_get(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_tileset_set(lua_State* l) {
+int LuaContext::map_api_set_tileset(lua_State* l) {
 
   Map& map = check_map(l, 1);
   TilesetId id = luaL_checkinteger(l, 2);
 
   map.set_tileset(id);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_hero_start_treasure(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string &item_name = luaL_checkstring(l, 2);
+  int variant = luaL_checkinteger(l, 3);
+  int savegame_variable = luaL_checkinteger(l, 4);
+
+  map.get_entities().get_hero().start_treasure(
+      Treasure(map.get_game(), item_name, variant, savegame_variable));
 
   return 0;
 }

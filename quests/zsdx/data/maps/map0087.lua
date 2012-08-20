@@ -18,14 +18,14 @@ function map:on_npc_interaction(npc_name)
       map:hero_set_map(66, "from_dungeon_4", 1)
     else
       -- start the final sequence
-      map:camera_move(160, 120, 100, start_final_sequence, 0)
+      map:move_camera(160, 120, 100, start_final_sequence, 0)
     end
   end
 end
 
 function start_final_sequence()
-  map:dialog_start("dungeon_4.solarus_child")
-  map:dialog_set_variable("dungeon_4.solarus_child", map:get_game():get_player_name());
+  map:start_dialog("dungeon_4.solarus_child")
+  map:set_dialog_variable("dungeon_4.solarus_child", map:get_game():get_player_name());
 end
 
 function map:on_dialog_finished(dialog_id, answer)
@@ -67,7 +67,7 @@ end
 
 function agahnim_sequence_4()
 
-  map:dialog_start("dungeon_4.agahnim")
+  map:start_dialog("dungeon_4.agahnim")
 end
 
 function agahnim_sequence_5()

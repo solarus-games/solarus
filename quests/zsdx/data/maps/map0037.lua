@@ -19,10 +19,10 @@ function map:on_npc_interaction(npc_name)
 
   if npc_name == "billy" then
     if not map:get_game():get_boolean(135) then
-      map:dialog_start("billy_cave.hello")
+      map:start_dialog("billy_cave.hello")
       map:get_game():set_boolean(135, true)
     else
-      map:dialog_start("billy_cave.what_do_you_have")
+      map:start_dialog("billy_cave.what_do_you_have")
     end
   end
 end
@@ -32,9 +32,9 @@ function map:on_dialog_finished(dialog_id, answer)
   if dialog_id == "billy_cave.what_do_you_have" then
     if map:get_game():get_item("level_4_way") == 2 then
       -- the player has the golden bars
-      map:dialog_start("billy_cave.with_golden_bars")
+      map:start_dialog("billy_cave.with_golden_bars")
     else 
-      map:dialog_start("billy_cave.without_golden_bars")
+      map:start_dialog("billy_cave.without_golden_bars")
     end
 
   elseif dialog_id == "billy_cave.without_golden_bars" then
@@ -52,29 +52,29 @@ function map:on_dialog_finished(dialog_id, answer)
     end
 
   elseif dialog_id == "billy_cave.give_golden_bars" then
-    map:treasure_give("level_4_way", 3, 134)
+    map:hero_start_treasure("level_4_way", 3, 134)
   end
 end
 
 function give_croissant()
 
   if map:get_game():has_item_amount("croissants_counter", 1) then
-    map:dialog_start("billy_cave.give_croissant")
+    map:start_dialog("billy_cave.give_croissant")
   else
-    map:dialog_start("billy_cave.give_croissant_without")
+    map:start_dialog("billy_cave.give_croissant_without")
   end
 end
 
 function give_apple_pie()
   if map:get_game():get_item("level_4_way") == 1 then
-    map:dialog_start("billy_cave.give_apple_pie")
+    map:start_dialog("billy_cave.give_apple_pie")
   else
-    map:dialog_start("billy_cave.give_apple_pie_without")
+    map:start_dialog("billy_cave.give_apple_pie_without")
   end
 end
 
 function give_golden_bars()
-  map:dialog_start("billy_cave.give_golden_bars")
+  map:start_dialog("billy_cave.give_golden_bars")
 end
 
 function map:on_treasure_obtained(item_name, variant, savegame_variable)

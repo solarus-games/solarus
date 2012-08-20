@@ -16,7 +16,7 @@ function map:on_started(destination_point_name)
     -- enable dark world
     if map:get_game():get_boolean(905) then
       sol.audio.play_music("dark_world")
-      map:tileset_set(13)
+      map:set_tileset(13)
     else
       sol.audio.play_music("overworld")
     end
@@ -55,8 +55,8 @@ end
 function map:on_map_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "from_ending" then
-    map:dialog_start("credits_2")
-    map:camera_move(184, 80, 25, function() end, 1e6)
+    map:start_dialog("credits_2")
+    map:move_camera(184, 80, 25, function() end, 1e6)
   end
 end
 
@@ -73,7 +73,7 @@ function map:on_npc_interaction(npc_name)
       map:get_game():set_boolean(36, true)
       remove_village_cave_door()
     else
-      map:dialog_start("outside_world.village.clay_key_required")
+      map:start_dialog("outside_world.village.clay_key_required")
     end
 
   elseif npc_name == "stone_lock" then
@@ -85,15 +85,15 @@ function map:on_npc_interaction(npc_name)
       map:get_game():set_boolean(159, true)
       remove_stone_lock()
     else
-      map:dialog_start("outside_world.stone_key_required")
+      map:start_dialog("outside_world.stone_key_required")
     end
 
   elseif npc_name == "chignon_woman" then
 
     if map:get_game():is_dungeon_finished(2) then
-      map:dialog_start("outside_world.village.chignon_woman_dungeons")
+      map:start_dialog("outside_world.village.chignon_woman_dungeons")
     else
-      map:dialog_start("outside_world.village.chignon_woman")
+      map:start_dialog("outside_world.village.chignon_woman")
     end
   end
 end

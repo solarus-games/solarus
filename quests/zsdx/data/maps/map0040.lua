@@ -71,7 +71,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside" then
-    map:dialog_start("dungeon_3")
+    map:start_dialog("dungeon_3")
   end
 end
 
@@ -81,7 +81,7 @@ function map:on_update()
     and are_all_torches_on() then
 
     lock_torches()
-    map:camera_move(584, 360, 250, function()
+    map:move_camera(584, 360, 250, function()
       sol.audio.play_sound("secret")
       map:door_open("torches_door")
     end)
@@ -91,11 +91,11 @@ end
 function map:on_switch_activated(switch_name)
 
   if switch_name == "se_door_switch" and not map:door_is_open("se_door") then
-    map:camera_move(800, 728, 250, open_se_door)
+    map:move_camera(800, 728, 250, open_se_door)
   elseif switch_name == "ce_door_switch" and not map:door_is_open("ce_door") then
-    map:camera_move(736, 552, 250, open_ce_door)
+    map:move_camera(736, 552, 250, open_ce_door)
   elseif switch_name == "c_water_switch" and not map:get_game():get_boolean(121) then
-    map:camera_move(344, 736, 250, remove_c_water, 1000, 3500)
+    map:move_camera(344, 736, 250, remove_c_water, 1000, 3500)
   end
 end
 

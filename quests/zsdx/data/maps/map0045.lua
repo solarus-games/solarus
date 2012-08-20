@@ -20,7 +20,7 @@ function map:on_npc_interaction(npc_name)
     if npc_name == "sign_"..next_sign then
 
       if next_sign < 32 then
-        map:dialog_start("surprise_wall.direction_"..directions[next_sign])
+        map:start_dialog("surprise_wall.direction_"..directions[next_sign])
       elseif next_sign == 32 then
         sol.audio.play_sound("secret")
 	map:tile_set_enabled("secret_way", false)

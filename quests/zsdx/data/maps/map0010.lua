@@ -5,7 +5,7 @@ function map:on_started(destination_point_name)
 
   -- enable dark world
   if map:get_game():get_boolean(905) then
-    map:tileset_set(13)
+    map:set_tileset(13)
   end
 
   if map:get_game():get_boolean(921) then
@@ -23,7 +23,7 @@ end
 function map:on_npc_interaction(npc_name)
 
   if npc_name == "vine_start" then
-    map:dialog_start("outside_world.vine_start")
+    map:start_dialog("outside_world.vine_start")
   end
 end
 
@@ -48,7 +48,7 @@ end
 
 function show_vine()
 
-  map:camera_move(608, 136, 136, function()
+  map:move_camera(608, 136, 136, function()
     sol.audio.play_sound("secret")
     map:hero_unfreeze()
     map:get_game():set_boolean(921, true)

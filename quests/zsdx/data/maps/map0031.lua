@@ -63,7 +63,7 @@ function map:on_switch_activated(switch_name)
     if switches_puzzle_nb_enabled == 6 then
 
       if switches_puzzle_correct then
-	map:camera_move(240, 328, 250, function()
+	map:move_camera(240, 328, 250, function()
 	  map:chest_set_enabled("boss_key_chest", true)
 	  sol.audio.play_sound("chest_appears")
 	end)

@@ -10,10 +10,10 @@ function map:on_started(destination_point_name)
   map:hero_freeze()
   map:get_game():set_hud_enabled(false)
   map:set_pause_enabled(false)
-  map:dialog_set_style(1)
+  map:set_dialog_style(1)
   fresco_sprite = map:npc_get_sprite("fresco")
   fresco_sprite:set_ignore_suspend(true)
-  map:dialog_start("intro0")
+  map:start_dialog("intro0")
 end
 
 function map:on_dialog_finished(dialog_id)
@@ -32,11 +32,11 @@ function next_fresco()
 
   if fresco < 6 then
     fresco = fresco + 1
-    map:dialog_start("intro"..fresco)
+    map:start_dialog("intro"..fresco)
     fresco_sprite:set_animation(fresco)
     fresco_sprite:fade_in()
   else
-    map:dialog_set_style(0)
+    map:set_dialog_style(0)
     next_map()
   end
 end

@@ -28,7 +28,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
   if destination_point_name == "from_roof"
       or destination_point_name == "from_outside_w"
       or destination_point_name == "from_outside_e" then
-    map:dialog_start("dungeon_5.welcome")
+    map:start_dialog("dungeon_5.welcome")
   end
 end
 
@@ -90,7 +90,7 @@ function map:on_switch_activated(switch_name)
 
   if switch_name == "statue_switch"
       and not map:door_is_open("statue_door") then
-    map:camera_move(432, 536, 250, open_statue_door)
+    map:move_camera(432, 536, 250, open_statue_door)
   end
 end
 
@@ -169,6 +169,6 @@ function puzzle_solved_3()
 
   sol.audio.play_sound("secret")
   map:get_game():set_boolean(519, true)
-  map:dialog_start("dungeon_5.puzzle_solved")
+  map:start_dialog("dungeon_5.puzzle_solved")
 end
 

@@ -61,7 +61,7 @@ end
 function map:on_block_moved(block_name)
 
   if block_name == "water_block" then
-    map:camera_move(904, 288, 250, drain_water_step_1, 1000, 3500)
+    map:move_camera(904, 288, 250, drain_water_step_1, 1000, 3500)
   end
 end
 

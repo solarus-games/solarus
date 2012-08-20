@@ -43,7 +43,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside" then
-    map:dialog_start("dungeon_5.welcome")
+    map:start_dialog("dungeon_5.welcome")
   end
 end
 
@@ -75,10 +75,10 @@ function map:on_switch_activated(switch_name)
 
   if switch_name == "c_door_switch"
       and not map:door_is_open("c_door") then
-    map:camera_move(504, 504, 250, open_c_door)
+    map:move_camera(504, 504, 250, open_c_door)
   elseif switch_name == "e_door_switch"
       and not map:door_is_open("e_door") then
-    map:camera_move(1048, 488, 250, open_e_door)
+    map:move_camera(1048, 488, 250, open_e_door)
   end
 end
 

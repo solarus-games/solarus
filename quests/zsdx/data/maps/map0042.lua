@@ -3,7 +3,7 @@ local map = ...
 
 function map:on_started(destination_point_name)
 
-  map:light_set(0)
+  map:set_light(0)
 
   -- weak floor
   if map:get_game():get_boolean(133) then

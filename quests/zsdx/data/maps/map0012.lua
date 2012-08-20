@@ -21,27 +21,27 @@ function map:on_npc_interaction(npc_name)
 
     if not has_obtained_world_map() then
       -- first visit
-      map:dialog_start("sahasrahla_house.beginning")
-      map:dialog_set_variable("sahasrahla_house.beginning", map:get_game():get_player_name())
+      map:start_dialog("sahasrahla_house.beginning")
+      map:set_dialog_variable("sahasrahla_house.beginning", map:get_game():get_player_name())
 
     elseif has_seen_frozen_door() and not has_open_frozen_door() then
       -- the player has seen the frozen door but was not able to unfreeze it
-      map:dialog_start("sahasrahla_house.frozen_door_advice")
+      map:start_dialog("sahasrahla_house.frozen_door_advice")
 	 
     else 
       -- the player has not found the clay key yet
-      map:dialog_start("sahasrahla_house.quest_accepted")
+      map:start_dialog("sahasrahla_house.quest_accepted")
     end
 
   elseif not has_obtained_world_map() then
     -- the player has obtained the clay key: give him the world map now if he didn't talk the first time
-    map:dialog_start("sahasrahla_house.give_world_map")
+    map:start_dialog("sahasrahla_house.give_world_map")
   elseif map:get_game():is_dungeon_finished(1) and not has_obtained_bow() then -- glove
     -- the player should now go downstairs to obtain the bow
-    map:dialog_start("sahasrahla_house.dungeon_1_finished")
+    map:start_dialog("sahasrahla_house.dungeon_1_finished")
   else
     -- Sahsrahla has nothing special to say
-    map:dialog_start("sahasrahla_house.default")
+    map:start_dialog("sahasrahla_house.default")
   end
 end
 
@@ -73,7 +73,7 @@ function map:on_dialog_finished(dialog_id, answer)
   if dialog_id == "sahasrahla_house.beginning" or
     dialog_id == "sahasrahla_house.give_world_map" then
     -- give the world map to the player
-    map:treasure_give("world_map", 1, 33)
+    map:hero_start_treasure("world_map", 1, 33)
   elseif dialog_id == "sahasrahla_house.quest_accepted" and not map:door_is_open("door") then
     map:door_open("door")
   end
@@ -81,6 +81,6 @@ end
 
 -- Function called when the player has just obtained a treasure
 function map:on_treasure_obtained(item_name, variant, savegame_variable)
-   map:dialog_start("sahasrahla_house.quest_accepted")
+   map:start_dialog("sahasrahla_house.quest_accepted")
 end
 

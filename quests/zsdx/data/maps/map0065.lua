@@ -113,7 +113,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside_hole" then
-    map:dialog_start("dungeon_5.welcome")
+    map:start_dialog("dungeon_5.welcome")
   end
 end
 
@@ -155,15 +155,15 @@ function map:on_npc_interaction(npc_name)
   if npc_name == "prison_1_lock" then
 
     if not map:get_game():has_item("iron_key") then
-      map:dialog_start("dungeon_5.prison_1_locked")
+      map:start_dialog("dungeon_5.prison_1_locked")
     else
-      map:dialog_start("dungeon_5.prison_1_use_iron_key")
+      map:start_dialog("dungeon_5.prison_1_use_iron_key")
     end
   elseif npc_name == "prison_2_lock" then
     
     prison_2_nb_messages = prison_2_nb_messages + 1
     if prison_2_nb_messages <= 3 then
-      map:dialog_start("dungeon_5.prison_2_locked_"..prison_2_nb_messages)
+      map:start_dialog("dungeon_5.prison_2_locked_"..prison_2_nb_messages)
     else
       sol.audio.play_sound("secret")
       sol.audio.play_sound("door_open")

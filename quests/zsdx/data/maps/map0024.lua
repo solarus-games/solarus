@@ -42,7 +42,7 @@ end
 function map:on_switch_activated(switch_name)
 
   if switch_name == "se_switch" then
-    map:camera_move(960, 496, 250, open_se_door)
+    map:move_camera(960, 496, 250, open_se_door)
   end
 end
 

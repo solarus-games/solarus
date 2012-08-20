@@ -45,7 +45,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside" then
-    map:dialog_start("dungeon_3")
+    map:start_dialog("dungeon_3")
   end
 end
 
@@ -55,16 +55,16 @@ function map:on_enemy_dead(enemy_name)
     and map:enemy_is_group_dead("e_room_enemy")
     and not map:door_is_open("e_door") then
 
-    map:camera_move(856, 472, 250, open_e_door)
+    map:move_camera(856, 472, 250, open_e_door)
   end
 end
 
 function map:on_switch_activated(switch_name)
 
   if switch_name == "barrier_switch" and map:tile_is_enabled("barrier") then
-    map:camera_move(120, 240, 250, open_barrier)
+    map:move_camera(120, 240, 250, open_barrier)
   elseif switch_name == "se_water_switch" and not map:get_game():get_boolean(128) then
-    map:camera_move(912, 896, 250, remove_se_water, 1000, 3500)
+    map:move_camera(912, 896, 250, remove_se_water, 1000, 3500)
   elseif switch_name == "1f_n_water_switch" and not map:get_game():get_boolean(131) then
     remove_1f_n_water()
   elseif switch_name == "1f_e_water_switch_1"
@@ -84,7 +84,7 @@ function map:on_switch_activated(switch_name)
     map:get_game():set_boolean(909, true)
     sol.audio.play_sound("secret")
   elseif switch_name == "n_switch" then
-    map:camera_move(280, 56, 250, function()
+    map:move_camera(280, 56, 250, function()
       sol.audio.play_sound("chest_appears")
       map:chest_set_enabled("n_chest", true)
       map:get_game():set_boolean(950, true)
@@ -146,7 +146,7 @@ function remove_1f_n_water()
 
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
-  map:dialog_start("dungeon_3.water_drained_somewhere")
+  map:start_dialog("dungeon_3.water_drained_somewhere")
   map:get_game():set_boolean(131, true)
 end
 
@@ -154,7 +154,7 @@ function remove_1f_e_water()
 
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
-  map:dialog_start("dungeon_3.water_drained_somewhere")
+  map:start_dialog("dungeon_3.water_drained_somewhere")
   map:get_game():set_boolean(122, true)
 end
 

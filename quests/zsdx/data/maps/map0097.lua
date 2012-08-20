@@ -110,7 +110,7 @@ function map:on_enemy_dead(enemy_name)
       and map:enemy_is_group_dead("enemy_group2")
       and not map:get_game():get_boolean(221) then
 
-    map:camera_move(232, 728, 250, function()
+    map:move_camera(232, 728, 250, function()
       map:pickable_create("small_key", 1, 221, 232, 733, 1)
       sol.audio.play_sound("secret")
     end)
@@ -139,14 +139,14 @@ function map:on_update()
       and are_group1_torches_on() then
     map:get_game():set_boolean(205, true)
     lock_torches_group1()
-    map:camera_move(536, 256, 250, explode_block1)
+    map:move_camera(536, 256, 250, explode_block1)
   end
 
   if not map:get_game():get_boolean(206)
       and are_group2_torches_on() then
     map:get_game():set_boolean(206, true)
     lock_torches_group2()
-    map:camera_move(552, 256, 250, explode_block2)
+    map:move_camera(552, 256, 250, explode_block2)
   end
 end
 

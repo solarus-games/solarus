@@ -63,14 +63,14 @@ end
 
 function map:on_map_opening_transition_finished(destination_point_name)
   if destination_point_name == "from_outside" then
-    map:dialog_start("dungeon_8.welcome")
+    map:start_dialog("dungeon_8.welcome")
   end
 end
 
 function map:on_switch_activated(switch_name)
   if switch_name == "BB1" then
     -- LB1 room
-    map:camera_move(896, 1712, 250, BB1_remove_barrier)
+    map:move_camera(896, 1712, 250, BB1_remove_barrier)
   elseif switch_name == "BB2" then
     -- LB2 room
     map:tile_set_enabled("LB2", false)
@@ -119,7 +119,7 @@ function map:on_hero_on_sensor(sensor_name)
       map:hero_freeze()
       fighting_boss = true
       sol.timer.start(1000, function()
-	map:dialog_start("dungeon_8.billy")
+	map:start_dialog("dungeon_8.billy")
       end)
     end
   end

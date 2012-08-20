@@ -10,7 +10,7 @@ function map:on_shop_item_buying(item_name)
   end
 
   if get_first_empty_bottle() == "" then
-    map:dialog_start("potion_shop.no_empty_bottle")
+    map:start_dialog("potion_shop.no_empty_bottle")
     return false
   end
 
@@ -23,7 +23,7 @@ function map:on_treasure_obtained(item_name, variant, savegame_variable)
       and not map:get_game():get_boolean(911) then
     -- tell the player we juste gave him the bottle 2
     map:get_game():set_boolean(911, true)
-    map:dialog_start("potion_shop.give_bottle")
+    map:start_dialog("potion_shop.give_bottle")
   end
 end
 
@@ -32,9 +32,9 @@ function map:on_npc_interaction(npc_name)
   if npc_name == "witch" then
 
     if not map:get_game():get_boolean(911) then
-      map:dialog_start("potion_shop.witch_bottle_offered")
+      map:start_dialog("potion_shop.witch_bottle_offered")
     else
-      map:dialog_start("potion_shop.witch")
+      map:start_dialog("potion_shop.witch")
     end
   end
 end

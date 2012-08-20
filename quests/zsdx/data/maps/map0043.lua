@@ -59,7 +59,7 @@ end
 function start_boss()
 
   map:enemy_set_enabled("boss", true)
-  map:dialog_start("dungeon_3.arbror_hello")
+  map:start_dialog("dungeon_3.arbror_hello")
 end
 
 function map:on_dialog_finished(dialog_id)

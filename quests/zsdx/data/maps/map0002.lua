@@ -36,7 +36,7 @@ function map:on_npc_interaction(npc_name)
 
     if playing_game_1 then
       -- the player is already playing: tell him to choose a chest
-      map:dialog_start("rupee_house.game_1.choose_chest")
+      map:start_dialog("rupee_house.game_1.choose_chest")
     else
 
       -- see if the player can still play
@@ -44,14 +44,14 @@ function map:on_npc_interaction(npc_name)
 
       if unauthorized then
 	-- the player already won much money
-	map:dialog_start("rupee_house.game_1.not_allowed_to_play")
+	map:start_dialog("rupee_house.game_1.not_allowed_to_play")
       else 
 	if not already_played_game_1 then
 	  -- first time: long dialog with the game rules
-	  map:dialog_start("rupee_house.game_1.intro")
+	  map:start_dialog("rupee_house.game_1.intro")
 	else
 	  -- quick dialog to play again
-	  map:dialog_start("rupee_house.game_1.play_again_question")
+	  map:start_dialog("rupee_house.game_1.play_again_question")
 	end
       end
     end
@@ -61,10 +61,10 @@ function map:on_npc_interaction(npc_name)
 
     if playing_game_2 then
       -- the player is already playing: tell him to stop the reels
-      map:dialog_start("rupee_house.game_2.playing")
+      map:start_dialog("rupee_house.game_2.playing")
     else
       -- dialog with the game rules
-      map:dialog_start("rupee_house.game_2.intro")
+      map:start_dialog("rupee_house.game_2.intro")
     end
 
   elseif npc_name == "game_3_man" then
@@ -72,17 +72,17 @@ function map:on_npc_interaction(npc_name)
 
     if playing_game_3 then
       -- the player is already playing: let him restart the game
-      map:dialog_start("rupee_house.game_3.restart_question")
+      map:start_dialog("rupee_house.game_3.restart_question")
     else
       -- see if the player can still play
       unauthorized = map:get_game():get_boolean(17)
 
       if unauthorized then
 	-- the player already won this game
-	map:dialog_start("rupee_house.game_3.not_allowed_to_play")
+	map:start_dialog("rupee_house.game_3.not_allowed_to_play")
       else
 	-- game rules
-	map:dialog_start("rupee_house.game_3.intro")
+	map:start_dialog("rupee_house.game_3.intro")
       end
     end
 
@@ -114,7 +114,7 @@ function map:on_npc_interaction(npc_name)
       end
     else
       sol.audio.play_sound("wrong")
-      map:dialog_start("rupee_house.pay_first")
+      map:start_dialog("rupee_house.pay_first")
     end
   end
 end
@@ -130,14 +130,14 @@ function map:on_dialog_finished(dialog_id, answer)
 
     if answer == 1 then
       -- the player does not want to play the game
-      map:dialog_start("rupee_house.game_1.not_playing")
+      map:start_dialog("rupee_house.game_1.not_playing")
     else
       -- wants to play game 1
 
       if map:get_game():get_money() < 20 then
 	-- not enough money
 	sol.audio.play_sound("wrong")
-	map:dialog_start("rupee_house.not_enough_money")
+	map:start_dialog("rupee_house.not_enough_money")
 
       else
 	-- enough money: reset the 3 chests, pay and start the game
@@ -146,7 +146,7 @@ function map:on_dialog_finished(dialog_id, answer)
 	map:chest_set_open("chest_3", false)
 
 	map:get_game():remove_money(20)
-	map:dialog_start("rupee_house.game_1.good_luck")
+	map:start_dialog("rupee_house.game_1.good_luck")
 	playing_game_1 = true
       end
     end
@@ -156,10 +156,10 @@ function map:on_dialog_finished(dialog_id, answer)
 
     if answer == 1 then
       -- don't want to play the game
-      map:dialog_start("rupee_house.game_2.not_playing")
+      map:start_dialog("rupee_house.game_2.not_playing")
     else
       -- wants to play game 2
-      map:dialog_start("rupee_house.game_2.choose_bet")
+      map:start_dialog("rupee_house.game_2.choose_bet")
     end
 
   elseif dialog_id == "rupee_house.game_2.choose_bet" then
@@ -175,11 +175,11 @@ function map:on_dialog_finished(dialog_id, answer)
     if map:get_game():get_money() < game_2_bet then
       -- not enough money
       sol.audio.play_sound("wrong")
-      map:dialog_start("rupee_house.not_enough_money")
+      map:start_dialog("rupee_house.not_enough_money")
     else
       -- enough money: pay and start the game
       map:get_game():remove_money(game_2_bet)
-      map:dialog_start("rupee_house.game_2.just_paid")
+      map:start_dialog("rupee_house.game_2.just_paid")
       playing_game_2 = true
 
       -- start the slot machine animations
@@ -202,14 +202,14 @@ function map:on_dialog_finished(dialog_id, answer)
 
     if answer == 1 then
       -- don't want to play the game
-      map:dialog_start("rupee_house.game_3.not_playing")
+      map:start_dialog("rupee_house.game_3.not_playing")
     else
       -- wants to play game 3
 
       if map:get_game():get_money() < 10 then
 	-- not enough money
 	sol.audio.play_sound("wrong")
-	map:dialog_start("rupee_house.not_enough_money")
+	map:start_dialog("rupee_house.not_enough_money")
 
       else
 	-- enough money: reset the game, pay and start the game
@@ -225,7 +225,7 @@ function map:on_dialog_finished(dialog_id, answer)
 	end
 
 	map:get_game():remove_money(10)
-	map:dialog_start("rupee_house.game_3.go")
+	map:start_dialog("rupee_house.game_3.go")
 	playing_game_3 = true
       end
     end
@@ -250,7 +250,7 @@ function map:on_chest_empty(chest_name)
 
   if not playing_game_1 then
     -- trying to open a chest but not playing yet
-    map:dialog_start("rupee_house.pay_first") -- the game man is angry
+    map:start_dialog("rupee_house.pay_first") -- the game man is angry
     map:chest_set_open(chest_name, false) -- close the chest again
     sol.audio.play_sound("wrong")
     map:hero_unfreeze() -- restore the control
@@ -265,11 +265,11 @@ function map:on_chest_empty(chest_name)
 
     -- give the rupees
     if (amount == 5) then
-      map:treasure_give("rupee", 2, -1)
+      map:hero_start_treasure("rupee", 2, -1)
     elseif (amount == 20) then
-      map:treasure_give("rupee", 3, -1)
+      map:hero_start_treasure("rupee", 3, -1)
     elseif (amount == 50) then
-      map:treasure_give("rupee", 4, -1)
+      map:hero_start_treasure("rupee", 4, -1)
     end
 
     if amount == 50 then
@@ -361,28 +361,28 @@ function game_2_timeout()
     -- three identical symbols
 
     if symbols[1] == 0 then -- 3 green rupees
-      map:dialog_start("rupee_house.game_2.reward.green_rupees")
+      map:start_dialog("rupee_house.game_2.reward.green_rupees")
       game_2_reward = 5 * game_2_bet
     elseif symbols[1] == 2 then -- 3 blue rupees
-      map:dialog_start("rupee_house.game_2.reward.blue_rupees")
+      map:start_dialog("rupee_house.game_2.reward.blue_rupees")
       game_2_reward = 7 * game_2_bet
     elseif symbols[1] == 4 then -- 3 red rupees
-      map:dialog_start("rupee_house.game_2.reward.red_rupees")
+      map:start_dialog("rupee_house.game_2.reward.red_rupees")
       game_2_reward = 10 * game_2_bet
     elseif symbols[1] == 5 then -- 3 Yoshi
-      map:dialog_start("rupee_house.game_2.reward.yoshi")
+      map:start_dialog("rupee_house.game_2.reward.yoshi")
       game_2_reward = 20 * game_2_bet
     else -- other symbol
-      map:dialog_start("rupee_house.game_2.reward.same_any")
+      map:start_dialog("rupee_house.game_2.reward.same_any")
       game_2_reward = 4 * game_2_bet
     end
 
   elseif green_found and blue_found and red_found then
     -- three rupees with different colors
-    map:dialog_start("rupee_house.game_2.reward.different_rupees")
+    map:start_dialog("rupee_house.game_2.reward.different_rupees")
     game_2_reward = 15 * game_2_bet
   else
-    map:dialog_start("rupee_house.game_2.reward.none")
+    map:start_dialog("rupee_house.game_2.reward.none")
     game_2_reward = 0
   end
 

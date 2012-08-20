@@ -12,7 +12,7 @@ function map:on_started(destination_point_name)
   -- enable dark world
   if map:get_game():get_boolean(905) then
     sol.audio.play_music("dark_world")
-    map:tileset_set(13)
+    map:set_tileset(13)
   else
     sol.audio.play_music("overworld")
   end
@@ -64,10 +64,10 @@ function map:on_npc_interaction(npc_name)
     if not map:get_game():get_boolean(24) then
       -- monkey first dialog
       sol.audio.play_sound("monkey")
-      map:dialog_start("outside_world.village.monkey")
+      map:start_dialog("outside_world.village.monkey")
     else
       sol.audio.play_sound("monkey")
-      map:dialog_start("outside_world.dungeon_2_entrance.monkey")
+      map:start_dialog("outside_world.dungeon_2_entrance.monkey")
     end
   
   elseif npc_name == "dungeon_2_door" then
@@ -79,15 +79,15 @@ function map:on_npc_interaction(npc_name)
       map:get_game():set_boolean(89, true)
       remove_dungeon_2_door()
     else
-      map:dialog_start("outside_world.rock_key_required")
+      map:start_dialog("outside_world.rock_key_required")
     end
 
   elseif npc_name == "hat_man" then
 
     if map:get_game():is_dungeon_finished(1) then
-      map:dialog_start("outside_world.village.hat_man_npc_waterfall")
+      map:start_dialog("outside_world.village.hat_man_npc_waterfall")
     else
-      map:dialog_start("outside_world.village.hat_man_npc")
+      map:start_dialog("outside_world.village.hat_man_npc")
     end
   end
 end
@@ -100,9 +100,9 @@ function map:on_dialog_finished(dialog_id, answer)
 
     -- show another message depending on the shield
     if map:get_game():has_ability("shield") then
-      map:dialog_start("outside_world.village.monkey.with_shield")
+      map:start_dialog("outside_world.village.monkey.with_shield")
     else
-      map:dialog_start("outside_world.village.monkey.without_shield")
+      map:start_dialog("outside_world.village.monkey.without_shield")
      end
 
   elseif dialog_id == "outside_world.village.monkey.with_shield" then
@@ -120,7 +120,7 @@ function map:on_dialog_finished(dialog_id, answer)
     map:get_game():set_boolean(24, true)
 
   elseif dialog_id == "outside_world.village.tree_woman" then
-    map:treasure_give("rupee", 1, -1)
+    map:hero_start_treasure("rupee", 1, -1)
   end
 end
 

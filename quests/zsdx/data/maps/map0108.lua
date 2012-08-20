@@ -22,12 +22,12 @@ function map:on_switch_activated(switch_name)
 
   -- open doors A and B (I love you, anonymous functions)
   if switch_name == "door_ab_switch" then
-    map:camera_move(1288, 680, 250, function()
+    map:move_camera(1288, 680, 250, function()
       -- open door A, wait 1 second and go to door B
       sol.audio.play_sound("secret")
       map:door_open("door_a")
       sol.timer.start(1000, function()
-	map:camera_move(1608, 360, 250, function()
+	map:move_camera(1608, 360, 250, function()
 	  -- open door B
 	  sol.audio.play_sound("secret")
 	  map:door_open("door_b")
@@ -38,7 +38,7 @@ function map:on_switch_activated(switch_name)
   -- chest A
   elseif switch_name == "chest_a_switch" 
       and not map:chest_is_enabled("chest_a") then
-    map:camera_move(1336, 520, 250, function()
+    map:move_camera(1336, 520, 250, function()
       sol.audio.play_sound("chest_appears")
       map:chest_set_enabled("chest_a", true)
     end)

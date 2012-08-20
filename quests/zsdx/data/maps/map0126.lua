@@ -3,7 +3,7 @@ local map = ...
 
 function map:on_started(destination_point_name)
 
-  map:light_set(0)
+  map:set_light(0)
 
   if map:get_game():get_boolean(934) then
     map:npc_remove("bone_key_door")
@@ -15,9 +15,9 @@ function map:on_npc_interaction(npc_name)
 
   if npc_name == "bone_key_door" then
     if not map:get_game():has_item("bone_key") then
-      map:dialog_start("hidden_palace.door_closed")
+      map:start_dialog("hidden_palace.door_closed")
     else
-      map:dialog_start("hidden_palace.using_bone_key")
+      map:start_dialog("hidden_palace.using_bone_key")
     end
   end
 end

@@ -6,7 +6,7 @@ function map:on_started(destination_point_name)
   -- enable dark world
   if map:get_game():get_boolean(905) then
     sol.audio.play_music("dark_world")
-    map:tileset_set(13)
+    map:set_tileset(13)
   else
     sol.audio.play_music("overworld")
   end
@@ -58,7 +58,7 @@ function map:on_npc_interaction(npc_name)
       map:get_game():set_boolean(193, true)
       remove_iron_lock()
     else
-      map:dialog_start("outside_world.iron_key_required")
+      map:start_dialog("outside_world.iron_key_required")
     end
 
   elseif npc_name == "wooden_lock" then
@@ -70,21 +70,21 @@ function map:on_npc_interaction(npc_name)
       map:get_game():set_boolean(194, true)
       remove_wooden_lock()
     else
-      map:dialog_start("outside_world.wooden_key_required")
+      map:start_dialog("outside_world.wooden_key_required")
     end
 
   elseif npc_name == "inferno" then
 
     if not map:get_game():get_boolean(915) then
       -- first time
-      map:dialog_start("inferno.first_time")
+      map:start_dialog("inferno.first_time")
       map:get_game():set_boolean(915, true)
     elseif not map:get_game():get_boolean(914) then
       -- not open yet
       if map:get_game():get_item_amount("fire_stones_counter") < 3 then
-        map:dialog_start("inferno.find_fire_stones")
+        map:start_dialog("inferno.find_fire_stones")
       else
-        map:dialog_start("inferno.found_fire_stones")
+        map:start_dialog("inferno.found_fire_stones")
       end
     end
   end
@@ -142,17 +142,17 @@ function map:on_dialog_finished(dialog_id, answer)
 
     if answer == 0 then
       -- black stones
-      map:dialog_start("inferno.want_black_stones")
+      map:start_dialog("inferno.want_black_stones")
     else
       -- 100 rupees
       if not map:get_game():get_boolean(916) then
-        map:dialog_start("inferno.want_rupees")
+        map:start_dialog("inferno.want_rupees")
       else
-        map:dialog_start("inferno.want_rupees_again")
+        map:start_dialog("inferno.want_rupees_again")
       end
     end 
   elseif dialog_id == "inferno.want_rupees" then
-    map:treasure_give("rupee", 5, 916)
+    map:hero_start_treasure("rupee", 5, 916)
   elseif dialog_id == "inferno.want_black_stones" then
     inferno_open()
   end

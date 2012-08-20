@@ -124,7 +124,7 @@ function map:on_switch_activated(switch_name)
 
   -- door F
   if switch_name == "door_f_switch" then
-    map:camera_move(1040, 760, 250, function()
+    map:move_camera(1040, 760, 250, function()
       sol.audio.play_sound("secret")
       map:door_open("door_f")
     end)
@@ -155,7 +155,7 @@ function map:on_switch_activated(switch_name)
 	-- the 8 switches are activated
         if code_next_index == 9 then
 	  if not map:door_is_open("door_a") then
-	    map:camera_move(72, 552, 250, function()
+	    map:move_camera(72, 552, 250, function()
 	      sol.audio.play_sound("secret")
 	      map:door_open("door_a")
 	    end)
@@ -240,7 +240,7 @@ function map:on_update()
     and are_all_torches_on() then
 
     lock_torches()
-    map:camera_move(32, 120, 250, function()
+    map:move_camera(32, 120, 250, function()
       sol.audio.play_sound("secret")
       map:npc_set_position("nw_hint_stone", 32, 125)
     end)

@@ -56,9 +56,9 @@ function map:on_hero_on_sensor(sensor_name)
     map:hero_freeze()
     map:hero_set_direction(1)
     if not has_boomerang_from_fairy() then
-      map:dialog_start("fairy_cave.first_time")
+      map:start_dialog("fairy_cave.first_time")
     else
-      map:dialog_start("fairy_cave.restore_health")
+      map:start_dialog("fairy_cave.restore_health")
     end
   end
 end
@@ -67,7 +67,7 @@ function map:on_dialog_finished(dialog_id, answer)
 
   if dialog_id == "fairy_cave.first_time" then
     map:hero_unfreeze()
-    map:treasure_give("boomerang", 2, 100)
+    map:hero_start_treasure("boomerang", 2, 100)
   elseif dialog_id == "fairy_cave.restore_health" then
     map:hero_unfreeze()
     map:get_game():add_life(map:get_game():get_max_life())

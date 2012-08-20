@@ -5,7 +5,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   if map:get_game():get_item("tunic") < 2 then
 
-    map:dialog_start("dungeon_4.too_cold")
+    map:start_dialog("dungeon_4.too_cold")
   end
 end
 

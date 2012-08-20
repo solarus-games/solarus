@@ -69,7 +69,7 @@ function map:on_hero_on_sensor(sensor_name)
     sol.timer.start(3000, function()
       map:hero_unfreeze()
       map:sensor_set_enabled(sensor_name, false)
-      map:dialog_start("dungeon_9.5f_childs_hint")
+      map:start_dialog("dungeon_9.5f_childs_hint")
     end)
   end
 end

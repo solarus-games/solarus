@@ -22,8 +22,8 @@ end
 function map:on_map_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "from_ending" then
-    map:dialog_start("credits_4")
-    map:camera_move(288, 96, 25, function() end, 1e6)
+    map:start_dialog("credits_4")
+    map:move_camera(288, 96, 25, function() end, 1e6)
   end
 end
 
@@ -41,9 +41,9 @@ function map:on_npc_interaction(npc_name)
 
     local hero_x = map:hero_get_position()
     if hero_x < 832 then
-      map:dialog_start("castle.forbidden_door")
+      map:start_dialog("castle.forbidden_door")
     else
-      map:dialog_start("castle.forbidden_door_wtf")
+      map:start_dialog("castle.forbidden_door_wtf")
     end
   end
 end

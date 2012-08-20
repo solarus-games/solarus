@@ -68,7 +68,7 @@ end
 function map:on_switch_activated(switch_name)
   if switch_name == "CB03" then
     if not map:get_game():get_boolean(706) then
-      map:camera_move(1488, 1152, 250, CB03_chest_appears)
+      map:move_camera(1488, 1152, 250, CB03_chest_appears)
     end
   elseif switch_name == "CB04" then
     map:chest_set_enabled("KC04", true)

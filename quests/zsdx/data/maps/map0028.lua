@@ -13,7 +13,7 @@ function map:on_started(destination_point_name)
     -- the intro scene is playing
     self:get_game():set_hud_enabled(true)
     self:set_pause_enabled(false)
-    self:dialog_set_style(0)
+    self:set_dialog_style(0)
     local snores_sprite = self:npc_get_sprite("snores")
     local bed_sprite = self:npc_get_sprite("bed")
     snores_sprite:set_ignore_suspend(true)
@@ -29,8 +29,8 @@ function map:on_started(destination_point_name)
 end
 
 function map:sahasrahla_dream()
-  self:dialog_start("link_house.dream")
-  self:dialog_set_variable("link_house.dream", self:get_game():get_player_name())
+  self:start_dialog("link_house.dream")
+  self:set_dialog_variable("link_house.dream", self:get_game():get_player_name())
 end
 
 function map:on_dialog_finished(dialog_id)

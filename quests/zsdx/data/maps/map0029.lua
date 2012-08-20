@@ -13,9 +13,9 @@ function map:on_switch_activated(switch_name)
   
   current_switch_name = switch_name
   if switch_name == "barrier_switch" then
-    map:camera_move(616, 672, 250, barrier_timer)
+    map:move_camera(616, 672, 250, barrier_timer)
   elseif switch_name == "door_switch" then
-    map:camera_move(376, 384, 250, door_timer)
+    map:move_camera(376, 384, 250, door_timer)
   elseif switch_name == "final_barrier_switch" then
     map:tile_set_group_enabled("final_barrier", false)
     sol.audio.play_sound("secret")

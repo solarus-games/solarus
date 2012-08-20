@@ -25,7 +25,7 @@ function map:on_map_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside" then
-    map:dialog_start("dungeon_7.welcome")
+    map:start_dialog("dungeon_7.welcome")
   end
 end
 
@@ -89,9 +89,9 @@ function map:on_npc_interaction(npc_name)
     if npc_name == "sign_"..next_sign then
 
       if next_sign <= #directions then
-        map:dialog_start("surprise_wall.direction_" .. directions[next_sign])
+        map:start_dialog("surprise_wall.direction_" .. directions[next_sign])
       elseif next_sign == #directions + 1 then
-	map:camera_move(376, 984, 250, function()
+	map:move_camera(376, 984, 250, function()
 	  sol.audio.play_sound("secret")
 	  map:door_open("sw_door")
 	end)

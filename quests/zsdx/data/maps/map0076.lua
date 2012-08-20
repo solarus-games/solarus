@@ -4,15 +4,15 @@ local map = ...
 function map:on_switch_activated(switch_name)
 
   if string.find(switch_name, "^torch_a_switch") then
-    map:camera_move(176, 264, 250, remove_torch_a)
+    map:move_camera(176, 264, 250, remove_torch_a)
   elseif string.find(switch_name, "^torch_b_switch") then
-    map:camera_move(224, 264, 250, remove_torch_b)
+    map:move_camera(224, 264, 250, remove_torch_b)
   elseif switch_name == "torch_c_switch" then
-    map:camera_move(608, 192, 250, remove_torch_c)
+    map:move_camera(608, 192, 250, remove_torch_c)
   elseif switch_name == "torch_d_switch" then
-    map:camera_move(584, 48, 250, remove_torch_d)
+    map:move_camera(584, 48, 250, remove_torch_d)
   elseif switch_name == "torch_e_switch" then
-    map:camera_move(512, 456, 250, remove_torch_e)
+    map:move_camera(512, 456, 250, remove_torch_e)
   end
 end
 

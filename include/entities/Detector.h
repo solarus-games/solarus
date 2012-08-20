@@ -39,8 +39,9 @@ class Detector: public MapEntity {
   protected:
 
     // construction
-    Detector(int collision_mode, const std::string &name, Layer layer,
-	int x, int y, int width, int height);
+    Detector(int collision_mode, const std::string& name, Layer layer,
+        int x, int y, int width, int height);
+    bool is_detector();
 
     // properties of the detector
     void set_collision_modes(int collision_modes);

@@ -40,6 +40,7 @@ class Jumper: public Detector {
     static CreationFunction parse;
 
     EntityType get_type();
+    bool can_be_drawn();
 
     bool is_obstacle_for(MapEntity &other);
     bool is_point_in_diagonal(const Rectangle &point);

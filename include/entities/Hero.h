@@ -128,9 +128,6 @@ class Hero: public MapEntity {
      * the main properties of this type of entity.
      */
     EntityType get_type();
-    bool can_be_obstacle();
-    bool can_detect_entities();
-    bool can_be_drawn();
     bool is_drawn_in_y_order();
 
     /**

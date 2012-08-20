@@ -33,6 +33,7 @@ class Destination: public MapEntity {
     static CreationFunction parse;
 
     EntityType get_type();
+    bool can_be_obstacle();
 };
 
 #endif

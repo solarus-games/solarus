@@ -89,6 +89,14 @@ EntityType Stairs::get_type() {
 }
 
 /**
+ * @brief Returns whether entities of this type can be drawn.
+ * @return true if this type of entity can be drawn
+ */
+bool Stairs::can_be_drawn() {
+  return false;
+}
+
+/**
  * @brief Notifies this entity that its map has just become active.
  */
 void Stairs::notify_map_started() {

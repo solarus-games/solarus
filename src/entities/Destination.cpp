@@ -83,3 +83,11 @@ EntityType Destination::get_type() {
   return DESTINATION;
 }
 
+/**
+ * @brief Returns whether entities of this type can be obstacles for other entities.
+ * @return \c true if this type of entity can be obstacle for other entities.
+ */
+bool Destination::can_be_obstacle() {
+  return false;
+}
+

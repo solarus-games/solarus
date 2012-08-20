@@ -95,6 +95,14 @@ EntityType Jumper::get_type() {
 }
 
 /**
+ * @brief Returns whether entities of this type can be drawn.
+ * @return true if this type of entity can be drawn
+ */
+bool Jumper::can_be_drawn() {
+  return false;
+}
+
+/**
  * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one

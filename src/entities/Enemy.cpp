@@ -638,11 +638,8 @@ void Enemy::set_animation(const std::string &animation) {
 
 /**
  * @brief Returns whether this entity has to be drawn in y order.
- *
- * This function returns whether the entity should be drawn above
- * the hero and other entities having this property when it is in front of them.
- *
- * @return true if this type of entity is drawn at the same level as the hero
+ * @return \c true if this type of entity should be drawn at the same level
+ * as the hero.
  */
 bool Enemy::is_drawn_in_y_order() {
   return drawn_in_y_order;

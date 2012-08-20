@@ -45,6 +45,7 @@ class Wall: public MapEntity {
     static CreationFunction parse;
 
     EntityType get_type();
+    bool can_be_drawn();
     bool is_obstacle_for(MapEntity &other);
 };
 

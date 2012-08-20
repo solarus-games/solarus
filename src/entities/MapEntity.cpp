@@ -73,34 +73,6 @@ MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   Stairs::parse,
 };
 
-
-const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
-  // can_be_obstacle, can_detect_entities, can_be_drawn, is_drawn_in_y_order
-  // TODO isn't can_detect_entities stupid? just redefine the function in Detector should work
-  {false, false, false, false}, // tile (not used)
-  {false, false,  true, false}, // destination point
-  { true,  true,  true, false}, // teletransporter
-  {false,  true,  true, false}, // pickable
-  { true,  true,  true, false}, // destructible
-  { true,  true,  true,  true}, // chest
-  { true,  true, false, false}, // jumper
-  { true,  true,  true,  true}, // enemy
-  { true,  true,  true,  true}, // NPC
-  { true,  true,  true,  true}, // block
-  { true,  true,  true, false}, // dynamic tile
-  { true,  true,  true, false}, // switch
-  { true, false, false, false}, // wall
-  { true,  true, false, false}, // sensor
-  { true,  true,  true, false}, // crystal
-  { true,  true,  true, false}, // crystal block
-  { true,  true,  true, false}, // shop item
-  { true,  true,  true, false}, // conveyor belt
-  { true,  true,  true, false}, // door
-  { true,  true, false, false}, // stairs
-  // other entity types (the ones not stored in map files) does not use this array and must redefine the 4 functions
-  // TODO remove this array and just let all entities redefine the function
-};
-
 const Rectangle MapEntity::directions_to_xy_moves[] = {
   Rectangle( 1, 0),
   Rectangle( 1,-1),
@@ -219,41 +191,43 @@ bool MapEntity::is_hero() {
 }
 
 /**
- * @brief Returns whether entities of this type can be obstacles for other entities.
- *
- * If yes, the function is_obstacle_for() will be called
- * to determine whether this particular entity is an obstacle or not.
- *
- * @return true if this type of entity can be obstacle for other entities
- */
-bool MapEntity::can_be_obstacle() {
-  return entity_types_features[get_type()].can_be_obstacle;
-}
-
-/**
  * @brief Returns whether entities of this type have detection capabilities.
  *
  * This function returns whether entities of this type can detect the presence 
- * of the hero or other entities (this is possible only for
- * suclasses of Detector). If yes, the function 
+ * of the hero or other entities. If yes, the function
  * notify_collision() will be called when a collision is detected.
  *
- * @return true if this type of entity can detect other entities
+ * @return \c true if this type of entity can detect other entities.
  */
-bool MapEntity::can_detect_entities() {
-  return entity_types_features[get_type()].can_detect_entities;
+bool MapEntity::is_detector() {
+  return false;
+}
+
+/**
+ * @brief Returns whether entities of this type can be obstacles for other entities.
+ *
+ * This function returns \c true by default.
+ * If this function returns \c true, the entity is added to the list of
+ * potential obstacles when it is added to a map.
+ * If your type of entity can never be an obstacle, you should redefine this
+ * function and return \c false to avoid useless collision checks.
+ *
+ * @return \c true if this type of entity can be obstacle for other entities.
+ */
+bool MapEntity::can_be_obstacle() {
+  return true;
 }
 
 /**
  * @brief Returns whether entities of this type can be drawn.
  *
- * If yes, the sprites added by the add_sprite() calls will be
- * drawn (if any).
+ * This function returns \c true by default. Redefine it to return
+ * \c false if your type of entity has nothing to display.
  *
  * @return true if this type of entity can be drawn
  */
 bool MapEntity::can_be_drawn() {
-  return entity_types_features[get_type()].can_be_drawn;
+  return true;
 }
 
 /**
@@ -263,13 +237,16 @@ bool MapEntity::can_be_drawn() {
  * the hero and other entities having this property when it is in front of them.
  * This means that the displaying order of entities having this
  * feature depends on their y position. The entities without this feature
- * are drawn in the normal order (i.e. as specified by the map file),
- * and before the entities with the feature.
+ * are drawn in the normal order (i.e. in the order of their creation),
+ * and before the entities with this feature.
  *
- * @return true if this type of entity is drawn at the same level as the hero
+ * Returns \c false by default.
+ *
+ * @return \c true if this type of entity should be drawn at the same level
+ * as the hero.
  */
 bool MapEntity::is_drawn_in_y_order() {
-  return entity_types_features[get_type()].is_drawn_in_y_order;
+  return false;
 }
 
 /**

@@ -83,6 +83,7 @@ class Stairs: public Detector {
     static CreationFunction parse;
 
     EntityType get_type();
+    bool can_be_drawn();
 
     void notify_map_started();
     bool is_inside_floor();

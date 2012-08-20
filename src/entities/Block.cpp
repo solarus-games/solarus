@@ -105,11 +105,8 @@ EntityType Block::get_type() {
 
 /**
  * @brief Returns whether this entity has to be drawn in y order.
- *
- * This function returns whether an entity of this type should be drawn above
- * the hero and other entities when it is in front of them.
- *
- * @return true if this entity is drawn at the same level as the hero
+ * @return \c true if this type of entity should be drawn at the same level
+ * as the hero.
  */
 bool Block::is_drawn_in_y_order() {
   return get_sprite().get_size().get_height() > 16;

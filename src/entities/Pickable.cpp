@@ -133,6 +133,14 @@ Pickable* Pickable::create(Game &game, Layer layer, int x, int y, Treasure treas
 }
 
 /**
+ * @brief Returns whether entities of this type can be obstacles for other entities.
+ * @return \c true if this type of entity can be obstacle for other entities.
+ */
+bool Pickable::can_be_obstacle() {
+  return false;
+}
+
+/**
  * @brief Creates the sprite of this pickable item,
  * depending on its subtype.
  *

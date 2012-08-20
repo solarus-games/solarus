@@ -537,13 +537,14 @@ void MapEntities::add_entity(MapEntity *entity) {
   }
 
   if (entity->get_type() == TILE) {
+    // Tiles are optimized specifically for obstacle checks and rendering.
     add_tile((Tile*) entity);
   }
   else {
     Layer layer = entity->get_layer();
 
     // update the detectors list
-    if (entity->can_detect_entities()) {
+    if (entity->is_detector()) {
       detectors.push_back((Detector*) entity);
     }
 
@@ -675,7 +676,7 @@ void MapEntities::remove_marked_entities() {
     }
 
     // remove it from the detectors list if present
-    if (entity->can_detect_entities()) {
+    if (entity->is_detector()) {
       detectors.remove((Detector*) entity);
     }
 

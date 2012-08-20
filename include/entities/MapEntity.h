@@ -47,34 +47,7 @@ class MapEntity: public ExportableToLua {
     static CreationFunction* creation_functions[];     /**< the creation functions of all types of entities */
     static const Rectangle directions_to_xy_moves[8];  /**< converts a direction (0 to 7) into a one-pixel xy move */
 
-    /**
-     * @brief Describes the features of each type of entity.
-     *
-     * Describes the features of each dynamic entity type:
-     * is it an obstacle, can it detect collisions, etc.
-     */
-    struct EntityTypeFeatures {
-      bool can_be_obstacle;                     /**< Allows entities of this type to be obstacles for other entities.
-                                                 * If enabled, the function is_obstacle_for() will be called
-                                                 * to determine whether this is an obstacle or not. */
-      bool can_detect_entities;                 /**< Allows entities of this type to detect the presence
-                                                 * of the hero or other entities (this is possible only for
-                                                 * suclasses of Detector). If enabled, the function
-                                                 * collision() will be called when a collision is detected. */
-      bool can_be_drawn;                        /**< Allows entities of this type to be drawn.
-                                                 * If enabled, the sprites added by the add_sprite() calls will be
-                                                 * drawn (if any). */
-      bool is_drawn_in_y_order;                 /**< Allows an entity of this type to be drawn above
-                                                 * the hero and other entities having this property when it is in front of them.
-                                                 * This means that the displaying order of entities having this
-                                                 * feature depends on their y position. The entities without this feature
-                                                 * are drawn in the normal order (i.e. as specified by the map file),
-                                                 * and before the entities with the feature. */
-    };
-
   private:
-
-    static const EntityTypeFeatures entity_types_features[];   /**< The features of each entity type stored in map files. */
 
     Map* map;                                   /**< The map where this entity is, or NULL
                                                  * (automatically set by class MapEntities after adding the entity to the map) */
@@ -161,16 +134,14 @@ class MapEntity: public ExportableToLua {
     virtual void notify_being_removed();
     bool is_being_removed();
 
-    // entity type features
- 
     /**
      * @brief Returns the type of entity.
      * @return the type of entity
      */
     virtual EntityType get_type() = 0;
     bool is_hero();
+    virtual bool is_detector();
     virtual bool can_be_obstacle();
-    virtual bool can_detect_entities();
     virtual bool can_be_drawn();
     virtual bool is_drawn_in_y_order();
 

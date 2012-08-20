@@ -21,20 +21,26 @@
 #include "entities/MapEntity.h"
 
 /**
- * @brief A small fixed piece of the map.
+ * @brief A small fixed piece of the map, optimized for collisions and drawing.
  *
- * It is composed of a tile pattern that can be repeated.
- * It can be an obstacle or not.
- * A tile cannot be removed from the map. Its pattern may be animated.
+ * A tile is composed of a tile pattern that can be repeated.
+ * Its pattern may be animated. It can be an obstacle or not.
+ *
  * Tiles are optimized to allow fast detection of obstacles and
  * fast rendering of the non-animated ones.
+ * The cost of these optimizations is that their presence on the map, their
+ * position, their size and their obstacle property are fixed.
+ * Tiles are added when the map is loaded and they are removed when the map
+ * is destroyed.
+ *
+ * If you need to dynamically enable or disable a tile, see DynamicTile.
  */
 class Tile: public MapEntity {
 
   private:
 
-    int tile_pattern_id;            /**< id of the tile pattern */
-    TilePattern* tile_pattern;      /**< pattern of the tile */
+    int tile_pattern_id;          /**< id of the tile pattern */
+    TilePattern* tile_pattern;    /**< pattern of the tile */
 
   public:
 

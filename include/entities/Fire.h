@@ -34,12 +34,7 @@ class Fire: public Detector {
     ~Fire();
 
     EntityType get_type();
-
-    // features
     bool can_be_obstacle();
-    bool can_detect_entities();
-    bool can_be_drawn();
-    bool is_drawn_in_y_order();
 
     // state
     void update();

@@ -49,6 +49,19 @@ Detector::~Detector() {
 }
 
 /**
+ * @brief Returns whether entities of this type have detection capabilities.
+ *
+ * This function returns whether entities of this type can detect the presence
+ * of the hero or other entities. If yes, the function
+ * notify_collision() will be called when a collision is detected.
+ *
+ * @return \c true if this type of entity can detect other entities.
+ */
+bool Detector::is_detector() {
+  return true;
+}
+
+/**
  * @brief Sets the collision modes of this detector.
  * @param collision_modes the detector's collision modes
  * (can be an OR combination of collision modes)

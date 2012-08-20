@@ -82,10 +82,7 @@ class CarriedItem: public MapEntity {
     ~CarriedItem();
 
     EntityType get_type();
-
     bool can_be_obstacle();
-    bool can_detect_entities();
-    bool can_be_drawn();
     bool is_drawn_in_y_order();
 
     int get_damage_on_enemies();

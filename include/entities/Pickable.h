@@ -65,10 +65,12 @@ class Pickable: public Detector {
 
     ~Pickable();
     static CreationFunction parse;
-    void set_map(Map& map);
-    void notify_map_started();
 
     EntityType get_type();
+    bool can_be_obstacle();
+
+    void set_map(Map& map);
+    void notify_map_started();
 
     // properties
     bool is_falling();

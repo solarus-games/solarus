@@ -36,6 +36,7 @@ class Sensor: public Detector {
     static CreationFunction parse;
 
     EntityType get_type();
+    bool can_be_drawn();
 
     bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);

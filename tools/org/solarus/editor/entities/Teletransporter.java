@@ -97,7 +97,7 @@ public class Teletransporter extends MapEntity {
         setProperty("sound", "");
 	setProperty("transition", Transition.FADE.getId());
 	setProperty("destinationMapId", map.getId());
-	setProperty("destinationPointName", "");
+	setProperty("destinationName", "");
     }
 
     /**
@@ -129,7 +129,7 @@ public class Teletransporter extends MapEntity {
         String spriteName = getProperty("sprite");
         String soundId = getProperty("sound");
 	String destinationMapId = getProperty("destinationMapId");
-	String destinationPointName = getProperty("destinationPointName");
+	String destinationName = getProperty("destinationName");
 
         if (!isSpriteOrSoundNameValid(spriteName)) {
             throw new MapException("Invalid sprite name: '" + spriteName + "'");
@@ -143,12 +143,12 @@ public class Teletransporter extends MapEntity {
 	    throw new MapException("You must choose a destination map");
 	}
 
-	if (destinationPointName.length() == 0) {
+	if (destinationName.length() == 0) {
 	    throw new MapException("You must choose a destination point on the destination map");
 	}
 
 	if (destinationMapId.equals(map.getId()) &&
-	    destinationPointName.equals("_same")) {
+	    destinationName.equals("_same")) {
 	    throw new MapException("Cannot teleport to the same point on the same map");
 	}
     }

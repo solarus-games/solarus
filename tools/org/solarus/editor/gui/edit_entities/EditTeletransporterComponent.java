@@ -36,7 +36,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
     private ResourceChooser soundField;
     private EnumerationChooser<Transition> transitionField;
     private ResourceChooser mapField;
-    private EntityChooser destinationPointField;
+    private EntityChooser destinationField;
 
     private static final String samePointText = "<Same point>";
     private static final String sidePointText = "<Side of the map>";
@@ -64,9 +64,9 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	addField("Destination map", mapField);
 
 	// destination point
-	destinationPointField = new EntityChooser(null, EntityType.DESTINATION_POINT,
+	destinationField = new EntityChooser(null, EntityType.DESTINATION,
 		new String[] {"", samePointText, sidePointText});
-	addField("Destination point", destinationPointField);
+	addField("Destination point", destinationField);
 
 	// has a sprite?
 	withSpriteField = new JCheckBox("Display a sprite");
@@ -124,14 +124,14 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	transitionField.setValue(Transition.get(teletransporter.getIntegerProperty("transition")));
 	mapField.setSelectedId(teletransporter.getProperty("destinationMapId"));
 	
-	String destinationPointName = teletransporter.getProperty("destinationPointName");
-	if (destinationPointName.equals("_same")) {
-	    destinationPointName = samePointText;
+	String destinationName = teletransporter.getProperty("destinationName");
+	if (destinationName.equals("_same")) {
+	    destinationName = samePointText;
 	}
-	else if (destinationPointName.equals("_side")) {
-	    destinationPointName = sidePointText;
+	else if (destinationName.equals("_side")) {
+	    destinationName = sidePointText;
 	}
-	destinationPointField.setSelectedName(destinationPointName);
+	destinationField.setSelectedName(destinationName);
     }
 
     /**
@@ -151,19 +151,19 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 	}
 
 	String destinationMapId = mapField.getSelectedId();
-	String destinationPointName = destinationPointField.getSelectedName();
+	String destinationName = destinationField.getSelectedName();
 
-	if (destinationPointName.equals(samePointText)) {
-	    destinationPointName = "_same";
+	if (destinationName.equals(samePointText)) {
+	    destinationName = "_same";
 	}
-	else if (destinationPointName.equals(sidePointText)) {
-	    destinationPointName = "_side";
+	else if (destinationName.equals(sidePointText)) {
+	    destinationName = "_side";
 	}
 
 	return new ActionEditEntitySpecific(entity, 
                 sprite, sound,
 		Integer.toString(transitionField.getValue().getId()), 
-		destinationMapId, destinationPointName);
+		destinationMapId, destinationName);
     }
 
     /**
@@ -178,10 +178,10 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 		String mapId = mapField.getSelectedId();
 		
 		if (mapId.length() != 0) { // a map has just been selected
-		    destinationPointField.setMap(new Map(mapId));
+		    destinationField.setMap(new Map(mapId));
 		}
 		else {
-		    destinationPointField.setMap(null);
+		    destinationField.setMap(null);
 		}
 	    }
 	    catch (ZSDXException ex) {

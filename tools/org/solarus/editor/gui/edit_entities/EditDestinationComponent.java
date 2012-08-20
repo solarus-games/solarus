@@ -20,21 +20,25 @@ import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
 import org.solarus.editor.map_editor_actions.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 /**
- * A component to edit a pickable item.
+ * A component to edit a destination.
  */
-public class EditPickableItemComponent extends EditEntityComponent {
+public class EditDestinationComponent extends EditEntityComponent {
 
-    // specific fields of a pickable item
-    private TreasureChooser treasureField;
+    // specific fields of this entity
+    private JCheckBox withSpriteField;
+    private ResourceChooser spriteField;
 
     /**
      * Constructor.
      * @param map the map
      * @param entity the entity to edit
      */
-    public EditPickableItemComponent(Map map, MapEntity entity) {
+    public EditDestinationComponent(Map map, MapEntity entity) {
 	super(map, entity);
     }
 
@@ -43,23 +47,38 @@ public class EditPickableItemComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// treasure
-	treasureField = new TreasureChooser(false, false);
-	addField("Treasure", treasureField);
+	// has a sprite?
+	withSpriteField = new JCheckBox("Display a sprite");
+	addField("Visibility", withSpriteField);
+
+	// sprite name
+	spriteField = new ResourceChooser(ResourceType.SPRITE, true);
+	addField("Sprite name", spriteField);
+
+	// listener
+	withSpriteField.addChangeListener(new ChangeListener() {
+	    public void stateChanged(ChangeEvent ev) {
+		spriteField.setEnabled(withSpriteField.isSelected());
+	    }
+	});
     }
 
     /**
      * Updates the information displayed in the fields.
      */
     public void update() {
+
 	super.update(); // update the common fields
 
-	PickableItem pickableItem = (PickableItem) entity;
+	Destination destination = (Destination) entity;
+	String sprite = destination.getProperty("sprite");
 
-	treasureField.setTreasure(
-		pickableItem.getProperty("treasureName"),
-		pickableItem.getIntegerProperty("treasureVariant"),
-		pickableItem.getIntegerProperty("treasureSavegameVariable"));
+	boolean hasSprite = (!sprite.equals("_none"));
+
+	withSpriteField.setSelected(hasSprite);
+	spriteField.setSelectedId(hasSprite ? sprite : "");
+
+	spriteField.setEnabled(hasSprite);
     }
 
     /**
@@ -68,9 +87,12 @@ public class EditPickableItemComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	return new ActionEditEntitySpecific(entity, 
-		treasureField.getTreasure().getItemName(),
-		Integer.toString(treasureField.getTreasure().getVariant()),
-		Integer.toString(treasureField.getTreasure().getSavegameVariable()));
+	String sprite = spriteField.getSelectedId();
+	if (!withSpriteField.isSelected()) {
+	    sprite = "_none";
+	}
+
+	return new ActionEditEntitySpecific(entity, sprite);
     }
 }
+

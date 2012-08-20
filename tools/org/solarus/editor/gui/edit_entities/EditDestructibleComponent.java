@@ -24,7 +24,7 @@ import org.solarus.editor.map_editor_actions.*;
 /**
  * A component to edit a destructible item.
  */
-public class EditDestructibleItemComponent extends EditEntityComponent {
+public class EditDestructibleComponent extends EditEntityComponent {
 
     // specific fields of a destructible item
     private TreasureChooser treasureField;
@@ -34,7 +34,7 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
      * @param map the map
      * @param entity the entity to edit
      */
-    public EditDestructibleItemComponent(Map map, MapEntity entity) {
+    public EditDestructibleComponent(Map map, MapEntity entity) {
 	super(map, entity);
     }
 
@@ -55,12 +55,12 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 
 	super.update(); // update the common fields
 
-	DestructibleItem destructibleItem = (DestructibleItem) entity;
+	Destructible destructible = (Destructible) entity;
 
 	treasureField.setTreasure(
-		destructibleItem.getProperty("treasureName"),
-		destructibleItem.getIntegerProperty("treasureVariant"),
-		destructibleItem.getIntegerProperty("treasureSavegameVariable"));
+		destructible.getProperty("treasureName"),
+		destructible.getIntegerProperty("treasureVariant"),
+		destructible.getIntegerProperty("treasureSavegameVariable"));
     }
 
     /**

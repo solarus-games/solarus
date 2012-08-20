@@ -29,16 +29,16 @@ public class AddEntitiesMenu extends JMenu {
      * All menu items.
      */
     private static final ItemDefinition[] itemDefinitions = {
-	new ItemDefinition(EntityType.DESTINATION_POINT, KeyEvent.VK_D),
+	new ItemDefinition(EntityType.DESTINATION, KeyEvent.VK_D),
 	new ItemDefinition(EntityType.TELETRANSPORTER, KeyEvent.VK_T),
-	new ItemDefinition(EntityType.PICKABLE_ITEM, KeyEvent.VK_P),
-	new ItemDefinition(EntityType.DESTRUCTIBLE_ITEM, KeyEvent.VK_M,
-		DestructibleItem.Subtype.GRASS,
-		DestructibleItem.Subtype.BUSH,
-		DestructibleItem.Subtype.POT,
-		DestructibleItem.Subtype.STONE_SMALL_WHITE,
-		DestructibleItem.Subtype.STONE_SMALL_BLACK,
-		DestructibleItem.Subtype.BOMB_FLOWER
+	new ItemDefinition(EntityType.PICKABLE, KeyEvent.VK_P),
+	new ItemDefinition(EntityType.DESTRUCTIBLE, KeyEvent.VK_M,
+		Destructible.Subtype.GRASS,
+		Destructible.Subtype.BUSH,
+		Destructible.Subtype.POT,
+		Destructible.Subtype.STONE_SMALL_WHITE,
+		Destructible.Subtype.STONE_SMALL_BLACK,
+		Destructible.Subtype.BOMB_FLOWER
 	),
 	new ItemDefinition(EntityType.CHEST, KeyEvent.VK_C),
 	new ItemDefinition(EntityType.ENEMY, KeyEvent.VK_E),

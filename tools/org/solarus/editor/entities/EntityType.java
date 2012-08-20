@@ -25,10 +25,10 @@ import java.lang.reflect.*;
 public enum EntityType {
 
     TILE                 (0, "Tile", Tile.class, null),
-    DESTINATION_POINT    (1, "Destination point", DestinationPoint.class, null),
+    DESTINATION          (1, "Destination", Destination.class, null),
     TELETRANSPORTER      (2, "Teletransporter", Teletransporter.class, null),
-    PICKABLE_ITEM        (3, "Pickable item", PickableItem.class, null),
-    DESTRUCTIBLE_ITEM    (4, "Destructible item", DestructibleItem.class, DestructibleItem.Subtype.class),
+    PICKABLE             (3, "Pickable item", Pickable.class, null),
+    DESTRUCTIBLE         (4, "Destructible item", Destructible.class, Destructible.Subtype.class),
     CHEST                (5, "Chest", Chest.class, null),
     JUMPER               (6, "Jumper", Jumper.class, null),
     ENEMY                (7, "Enemy", Enemy.class, null),

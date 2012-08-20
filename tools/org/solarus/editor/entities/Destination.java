@@ -22,7 +22,7 @@ import org.solarus.editor.*;
 /**
  * Represents the destination of a teletransporter in a map.
  */
-public class DestinationPoint extends MapEntity {
+public class Destination extends MapEntity {
 
     /**
      * The sprite representing this destination.
@@ -45,7 +45,7 @@ public class DestinationPoint extends MapEntity {
      * Creates a new destination point.
      * @param map the map
      */
-    public DestinationPoint(Map map) throws MapException {
+    public Destination(Map map) throws MapException {
 	super(map, 16, 16);
 	setDirection(3);
     }

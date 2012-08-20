@@ -23,7 +23,7 @@ import org.solarus.editor.*;
  * Represents an entity that Link can destroy (lift and throw or cut)
  * and that can hide a treasure.
  */
-public class DestructibleItem extends MapEntity {
+public class Destructible extends MapEntity {
 
     /**
      * Description of the default image representing this kind of entity.
@@ -99,7 +99,7 @@ public class DestructibleItem extends MapEntity {
      * Creates a new destructible. 
      * @param map the map
      */
-    public DestructibleItem(Map map) throws MapException {
+    public Destructible(Map map) throws MapException {
 	super(map, 16, 16);
     }
 

@@ -22,7 +22,7 @@ import org.solarus.editor.*;
 /**
  * Represents a treasure that the hero can pick on the ground.
  */
-public class PickableItem extends MapEntity {
+public class Pickable extends MapEntity {
 
 
     /**
@@ -42,7 +42,7 @@ public class PickableItem extends MapEntity {
      * Creates a new pickable item.
      * @param map the map
      */
-    public PickableItem(Map map) throws MapException {
+    public Pickable(Map map) throws MapException {
 	super(map, 16, 16);
     }
 

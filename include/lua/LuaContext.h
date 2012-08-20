@@ -45,7 +45,6 @@ class LuaContext {
     static const std::string game_module_name;                   /**< sol.game */
     static const std::string map_module_name;                    /**< sol.map */
     static const std::string item_module_name;                   /**< sol.item */
-    static const std::string enemy_module_name;                  /**< sol.enemy */
     static const std::string surface_module_name;                /**< sol.surface */
     static const std::string text_surface_module_name;           /**< sol.text_surface */
     static const std::string sprite_module_name;                 /**< sol.sprite */
@@ -63,6 +62,8 @@ class LuaContext {
     static const std::string circle_movement_module_name;        /**< sol.movement.circle */
     static const std::string jump_movement_module_name;          /**< sol.movement.jump */
     static const std::string pixel_movement_module_name;         /**< sol.movement.pixel */
+    static const std::string entity_module_name;                 /**< sol.entity */
+    static const std::string entity_enemy_module_name;           /**< sol.enemy */
 
     LuaContext(MainLoop& main_loop);
     ~LuaContext();

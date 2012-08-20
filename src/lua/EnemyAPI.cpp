@@ -27,7 +27,7 @@
 #include "Sprite.h"
 #include <lua.hpp>
 
-const std::string LuaContext::enemy_module_name = "sol.enemy";
+const std::string LuaContext::entity_enemy_module_name = "sol.entity.enemy";
 
 const char* LuaContext::enemy_attack_names[] = {
   "sword",
@@ -127,7 +127,7 @@ void LuaContext::register_enemy_module() {
       { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
-  register_type(enemy_module_name, methods, metamethods);
+  register_type(entity_enemy_module_name, methods, metamethods);
 }
 
 /**
@@ -138,7 +138,7 @@ void LuaContext::register_enemy_module() {
  * @return The enemy.
  */
 Enemy& LuaContext::check_enemy(lua_State* l, int index) {
-  return static_cast<Enemy&>(check_userdata(l, index, enemy_module_name));
+  return static_cast<Enemy&>(check_userdata(l, index, entity_enemy_module_name));
 }
 
 /**

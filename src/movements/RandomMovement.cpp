@@ -146,6 +146,6 @@ void RandomMovement::notify_obstacle_reached() {
  * @return the name identifying this type in Lua
  */
 const std::string& RandomMovement::get_lua_type_name() const {
-  return LuaContext::random_movement_module_name;
+  return LuaContext::movement_random_module_name;
 }
 

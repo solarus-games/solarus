@@ -65,6 +65,6 @@ bool RandomPathMovement::is_finished() {
  * @return the name identifying this type in Lua
  */
 const std::string& RandomPathMovement::get_lua_type_name() const {
-  return LuaContext::random_path_movement_module_name;
+  return LuaContext::movement_random_path_module_name;
 }
 

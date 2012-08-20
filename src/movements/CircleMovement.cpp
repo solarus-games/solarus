@@ -452,6 +452,6 @@ void CircleMovement::stop() {
  * @return the name identifying this type in Lua
  */
 const std::string& CircleMovement::get_lua_type_name() const {
-  return LuaContext::circle_movement_module_name;
+  return LuaContext::movement_circle_module_name;
 }
 

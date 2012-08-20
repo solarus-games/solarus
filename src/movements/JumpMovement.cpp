@@ -191,6 +191,6 @@ void JumpMovement::notify_step_done(int step_index, bool success) {
  * @return the name identifying this type in Lua
  */
 const std::string& JumpMovement::get_lua_type_name() const {
-  return LuaContext::jump_movement_module_name;
+  return LuaContext::movement_jump_module_name;
 }
 

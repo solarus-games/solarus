@@ -667,6 +667,6 @@ void StraightMovement::update() {
  * @return the name identifying this type in Lua
  */
 const std::string& StraightMovement::get_lua_type_name() const {
-  return LuaContext::straight_movement_module_name;
+  return LuaContext::movement_straight_module_name;
 }
 

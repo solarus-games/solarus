@@ -118,6 +118,6 @@ bool PathFindingMovement::is_finished() {
  * @return the name identifying this type in Lua
  */
 const std::string& PathFindingMovement::get_lua_type_name() const {
-  return LuaContext::path_finding_movement_module_name;
+  return LuaContext::movement_path_finding_module_name;
 }
 

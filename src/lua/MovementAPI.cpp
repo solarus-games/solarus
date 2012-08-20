@@ -33,15 +33,15 @@
 #include "Map.h"
 
 const std::string LuaContext::movement_module_name = "sol.movement";
-const std::string LuaContext::straight_movement_module_name = "sol.movement.straight";
-const std::string LuaContext::target_movement_module_name = "sol.movement.target";
-const std::string LuaContext::random_movement_module_name = "sol.movement.random";
-const std::string LuaContext::path_movement_module_name = "sol.movement.path";
-const std::string LuaContext::random_path_movement_module_name = "sol.movement.random_path";
-const std::string LuaContext::path_finding_movement_module_name = "sol.movement.path_finding";
-const std::string LuaContext::circle_movement_module_name = "sol.movement.circle";
-const std::string LuaContext::jump_movement_module_name = "sol.movement.jump";
-const std::string LuaContext::pixel_movement_module_name = "sol.movement.pixel";
+const std::string LuaContext::movement_straight_module_name = "sol.movement.straight";
+const std::string LuaContext::movement_target_module_name = "sol.movement.target";
+const std::string LuaContext::movement_random_module_name = "sol.movement.random";
+const std::string LuaContext::movement_path_module_name = "sol.movement.path";
+const std::string LuaContext::movement_random_path_module_name = "sol.movement.random_path";
+const std::string LuaContext::movement_path_finding_module_name = "sol.movement.path_finding";
+const std::string LuaContext::movement_circle_module_name = "sol.movement.circle";
+const std::string LuaContext::movement_jump_module_name = "sol.movement.jump";
+const std::string LuaContext::movement_pixel_module_name = "sol.movement.pixel";
 
 /**
  * @brief Initializes the movement features provided to Lua.
@@ -81,8 +81,8 @@ void LuaContext::register_movement_module() {
       { "set_smooth", straight_movement_api_set_smooth },
       { NULL, NULL }
   };
-  register_functions(straight_movement_module_name, common_methods);
-  register_type(straight_movement_module_name, straight_movement_methods,
+  register_functions(movement_straight_module_name, common_methods);
+  register_type(movement_straight_module_name, straight_movement_methods,
       common_metamethods);
 
   // random movement
@@ -96,8 +96,8 @@ void LuaContext::register_movement_module() {
       { "set_smooth", random_movement_api_set_smooth },
       { NULL, NULL }
   };
-  register_functions(random_movement_module_name, common_methods);
-  register_type(random_movement_module_name, random_movement_methods,
+  register_functions(movement_random_module_name, common_methods);
+  register_type(movement_random_module_name, random_movement_methods,
       common_metamethods);
 
   // target movement
@@ -110,8 +110,8 @@ void LuaContext::register_movement_module() {
       { "set_smooth", target_movement_api_set_smooth },
       { NULL, NULL }
   };
-  register_functions(target_movement_module_name, common_methods);
-  register_type(target_movement_module_name, target_movement_methods,
+  register_functions(movement_target_module_name, common_methods);
+  register_type(movement_target_module_name, target_movement_methods,
       common_metamethods);
 
   // path movement
@@ -126,8 +126,8 @@ void LuaContext::register_movement_module() {
       { "set_snap_to_grid", path_movement_api_set_snap_to_grid },
       { NULL, NULL }
   };
-  register_functions(path_movement_module_name, common_methods);
-  register_type(path_movement_module_name, path_movement_methods,
+  register_functions(movement_path_module_name, common_methods);
+  register_type(movement_path_module_name, path_movement_methods,
       common_metamethods);
 
   // random path movement
@@ -136,8 +136,8 @@ void LuaContext::register_movement_module() {
       { "set_speed", random_path_movement_api_set_speed },
       { NULL, NULL }
   };
-  register_functions(random_path_movement_module_name, common_methods);
-  register_type(random_path_movement_module_name, random_path_movement_methods,
+  register_functions(movement_random_path_module_name, common_methods);
+  register_type(movement_random_path_module_name, random_path_movement_methods,
       common_metamethods);
 
   // path finding movement
@@ -147,8 +147,8 @@ void LuaContext::register_movement_module() {
       { "set_speed", path_finding_movement_api_set_speed },
       { NULL, NULL }
   };
-  register_functions(path_finding_movement_module_name, common_methods);
-  register_type(path_finding_movement_module_name, path_finding_movement_methods,
+  register_functions(movement_path_finding_module_name, common_methods);
+  register_type(movement_path_finding_module_name, path_finding_movement_methods,
       common_metamethods);
 
   // circle movement
@@ -172,8 +172,8 @@ void LuaContext::register_movement_module() {
       { "set_loop_delay", circle_movement_api_set_loop_delay },
       { NULL, NULL }
   };
-  register_functions(circle_movement_module_name, common_methods);
-  register_type(circle_movement_module_name, circle_movement_methods,
+  register_functions(movement_circle_module_name, common_methods);
+  register_type(movement_circle_module_name, circle_movement_methods,
       common_metamethods);
 
   // jump movement
@@ -186,8 +186,8 @@ void LuaContext::register_movement_module() {
       { "set_speed", jump_movement_api_set_speed },
       { NULL, NULL }
   };
-  register_functions(jump_movement_module_name, common_methods);
-  register_type(jump_movement_module_name, jump_movement_methods,
+  register_functions(movement_jump_module_name, common_methods);
+  register_type(movement_jump_module_name, jump_movement_methods,
       common_metamethods);
 
   // pixel movement
@@ -200,8 +200,8 @@ void LuaContext::register_movement_module() {
       { "set_delay", pixel_movement_api_set_delay },
       { NULL, NULL }
   };
-  register_functions(pixel_movement_module_name, common_methods);
-  register_type(pixel_movement_module_name, pixel_movement_methods,
+  register_functions(movement_pixel_module_name, common_methods);
+  register_type(movement_pixel_module_name, pixel_movement_methods,
       common_metamethods);
 }
 
@@ -216,15 +216,15 @@ Movement& LuaContext::check_movement(lua_State* l, int index) {
 
   Movement** movement = NULL;
 
-  if (is_userdata(l, index, straight_movement_module_name)
-      || is_userdata(l, index, random_movement_module_name)
-      || is_userdata(l, index, target_movement_module_name)
-      || is_userdata(l, index, path_movement_module_name)
-      || is_userdata(l, index, random_path_movement_module_name)
-      || is_userdata(l, index, path_finding_movement_module_name)
-      || is_userdata(l, index, circle_movement_module_name)
-      || is_userdata(l, index, jump_movement_module_name)
-      || is_userdata(l, index, pixel_movement_module_name)) {
+  if (is_userdata(l, index, movement_straight_module_name)
+      || is_userdata(l, index, movement_random_module_name)
+      || is_userdata(l, index, movement_target_module_name)
+      || is_userdata(l, index, movement_path_module_name)
+      || is_userdata(l, index, movement_random_path_module_name)
+      || is_userdata(l, index, movement_path_finding_module_name)
+      || is_userdata(l, index, movement_circle_module_name)
+      || is_userdata(l, index, movement_jump_module_name)
+      || is_userdata(l, index, movement_pixel_module_name)) {
     movement = static_cast<Movement**>(lua_touserdata(l, index));
   }
   else {
@@ -359,7 +359,7 @@ int LuaContext::movement_api_get_direction4(lua_State* l) {
 StraightMovement& LuaContext::check_straight_movement(lua_State* l, int index) {
 
   return static_cast<StraightMovement&>(
-      check_userdata(l, index, straight_movement_module_name));
+      check_userdata(l, index, movement_straight_module_name));
 }
 
 /**
@@ -475,7 +475,7 @@ int LuaContext::straight_movement_api_set_smooth(lua_State* l) {
  */
 RandomMovement& LuaContext::check_random_movement(lua_State* l, int index) {
   return static_cast<RandomMovement&>(
-      check_userdata(l, index, random_movement_module_name));
+      check_userdata(l, index, movement_random_module_name));
 }
 
 /**
@@ -578,7 +578,7 @@ int LuaContext::random_movement_api_set_smooth(lua_State* l) {
  */
 TargetMovement& LuaContext::check_target_movement(lua_State* l, int index) {
   return static_cast<TargetMovement&>(
-      check_userdata(l, index, target_movement_module_name));
+      check_userdata(l, index, movement_target_module_name));
 }
 
 /**
@@ -687,7 +687,7 @@ int LuaContext::target_movement_api_set_smooth(lua_State* l) {
  */
 PathMovement& LuaContext::check_path_movement(lua_State* l, int index) {
   return static_cast<PathMovement&>(
-      check_userdata(l, index, path_movement_module_name));
+      check_userdata(l, index, movement_path_module_name));
 }
 
 /**
@@ -827,7 +827,7 @@ int LuaContext::path_movement_api_set_snap_to_grid(lua_State* l) {
  */
 RandomPathMovement& LuaContext::check_random_path_movement(lua_State* l, int index) {
   return static_cast<RandomPathMovement&>(
-      check_userdata(l, index, random_path_movement_module_name));
+      check_userdata(l, index, movement_random_path_module_name));
 }
 
 /**
@@ -864,7 +864,7 @@ int LuaContext::random_path_movement_api_set_speed(lua_State* l) {
  */
 PathFindingMovement& LuaContext::check_path_finding_movement(lua_State* l, int index) {
   return static_cast<PathFindingMovement&>(
-      check_userdata(l, index, path_finding_movement_module_name));
+      check_userdata(l, index, movement_path_finding_module_name));
 }
 
 /**
@@ -922,7 +922,7 @@ int LuaContext::path_finding_movement_api_set_speed(lua_State* l) {
  */
 CircleMovement& LuaContext::check_circle_movement(lua_State* l, int index) {
   return static_cast<CircleMovement&>(
-      check_userdata(l, index, circle_movement_module_name));
+      check_userdata(l, index, movement_circle_module_name));
 }
 
 /**
@@ -1171,7 +1171,7 @@ int LuaContext::circle_movement_api_set_loop_delay(lua_State* l) {
  */
 JumpMovement& LuaContext::check_jump_movement(lua_State* l, int index) {
   return static_cast<JumpMovement&>(
-      check_userdata(l, index, jump_movement_module_name));
+      check_userdata(l, index, movement_jump_module_name));
 }
 
 /**
@@ -1258,7 +1258,7 @@ int LuaContext::jump_movement_api_set_speed(lua_State* l) {
  */
 PixelMovement& LuaContext::check_pixel_movement(lua_State* l, int index) {
   return static_cast<PixelMovement&>(
-      check_userdata(l, index, pixel_movement_module_name));
+      check_userdata(l, index, movement_pixel_module_name));
 }
 
 /**

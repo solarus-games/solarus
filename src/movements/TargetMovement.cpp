@@ -192,6 +192,6 @@ bool TargetMovement::is_finished() {
  * @return the name identifying this type in Lua
  */
 const std::string& TargetMovement::get_lua_type_name() const {
-  return LuaContext::target_movement_module_name;
+  return LuaContext::movement_target_module_name;
 }
 

@@ -53,15 +53,15 @@ class LuaContext {
     static const std::string menu_module_name;                   /**< sol.menu */
     static const std::string language_module_name;               /**< sol.language */
     static const std::string movement_module_name;               /**< sol.movement */
-    static const std::string straight_movement_module_name;      /**< sol.movement.straight */
-    static const std::string random_movement_module_name;        /**< sol.movement.random */
-    static const std::string target_movement_module_name;        /**< sol.movement.target */
-    static const std::string path_movement_module_name;          /**< sol.movement.path */
-    static const std::string random_path_movement_module_name;   /**< sol.movement.random_path */
-    static const std::string path_finding_movement_module_name;  /**< sol.movement.path_finding */
-    static const std::string circle_movement_module_name;        /**< sol.movement.circle */
-    static const std::string jump_movement_module_name;          /**< sol.movement.jump */
-    static const std::string pixel_movement_module_name;         /**< sol.movement.pixel */
+    static const std::string movement_straight_module_name;      /**< sol.movement.straight */
+    static const std::string movement_random_module_name;        /**< sol.movement.random */
+    static const std::string movement_target_module_name;        /**< sol.movement.target */
+    static const std::string movement_path_module_name;          /**< sol.movement.path */
+    static const std::string movement_random_path_module_name;   /**< sol.movement.random_path */
+    static const std::string movement_path_finding_module_name;  /**< sol.movement.path_finding */
+    static const std::string movement_circle_module_name;        /**< sol.movement.circle */
+    static const std::string movement_jump_module_name;          /**< sol.movement.jump */
+    static const std::string movement_pixel_module_name;         /**< sol.movement.pixel */
     static const std::string entity_module_name;                 /**< sol.entity */
     static const std::string entity_hero_module_name;            /**< sol.entity.hero */
     static const std::string entity_npc_module_name;             /**< sol.entity.npc */

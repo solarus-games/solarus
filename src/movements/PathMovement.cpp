@@ -454,6 +454,6 @@ const std::string PathMovement::create_random_path() {
  * @return the name identifying this type in Lua
  */
 const std::string& PathMovement::get_lua_type_name() const {
-  return LuaContext::path_movement_module_name;
+  return LuaContext::movement_path_module_name;
 }
 

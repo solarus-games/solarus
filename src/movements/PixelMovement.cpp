@@ -271,6 +271,6 @@ bool PixelMovement::is_finished() {
  * @return the name identifying this type in Lua
  */
 const std::string& PixelMovement::get_lua_type_name() const {
-  return LuaContext::pixel_movement_module_name;
+  return LuaContext::movement_pixel_module_name;
 }
 

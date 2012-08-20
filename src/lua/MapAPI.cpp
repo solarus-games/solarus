@@ -101,7 +101,7 @@ void LuaContext::register_map_module() {
       { "stairs_is_enabled", map_api_stairs_is_enabled },
       { "stairs_set_enabled", map_api_stairs_set_enabled },
       { "stairs_set_group_enabled", map_api_stairs_set_group_enabled },
-      { "obstacle_is_enabled", map_api_wall_is_enabled },
+      { "wall_is_enabled", map_api_wall_is_enabled },
       { "wall_set_enabled", map_api_wall_set_enabled },
       { "wall_set_group_enabled", map_api_wall_set_group_enabled },
       { "sensor_is_enabled", map_api_sensor_is_enabled },

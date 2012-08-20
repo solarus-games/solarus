@@ -57,7 +57,6 @@ void LuaContext::register_movement_module() {
 
   // methods common to all movement types
   static const luaL_Reg common_methods[] = {
-      { "create", movement_api_create },
       { "get_ignore_obstacles", movement_api_get_ignore_obstacles },
       { "set_ignore_obstacles", movement_api_set_ignore_obstacles },
       { "get_direction4", movement_api_get_direction4 },

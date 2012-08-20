@@ -753,6 +753,7 @@ void LuaContext::register_modules() {
   register_main_module();
   register_game_module();
   register_map_module();
+  register_entity_module();
   register_enemy_module();
   register_audio_module();
   register_timer_module();

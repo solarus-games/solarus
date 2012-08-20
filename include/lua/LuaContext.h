@@ -63,7 +63,13 @@ class LuaContext {
     static const std::string jump_movement_module_name;          /**< sol.movement.jump */
     static const std::string pixel_movement_module_name;         /**< sol.movement.pixel */
     static const std::string entity_module_name;                 /**< sol.entity */
-    static const std::string entity_enemy_module_name;           /**< sol.enemy */
+    static const std::string entity_hero_module_name;            /**< sol.entity.hero */
+    static const std::string entity_npc_module_name;             /**< sol.entity.npc */
+    static const std::string entity_chest_module_name;           /**< sol.entity.chest */
+    static const std::string entity_block_module_name;           /**< sol.entity.block */
+    static const std::string entity_switch_module_name;          /**< sol.entity.switch */
+    static const std::string entity_door_module_name;            /**< sol.entity.door */
+    static const std::string entity_enemy_module_name;           /**< sol.entity.enemy */
 
     LuaContext(MainLoop& main_loop);
     ~LuaContext();
@@ -252,10 +258,7 @@ class LuaContext {
     void register_main_module();
     void register_audio_module();
     void register_timer_module();
-    void register_game_module();
-    void register_map_module();
     void register_item_module();
-    void register_enemy_module();
     void register_surface_module();
     void register_text_surface_module();
     void register_sprite_module();
@@ -264,6 +267,10 @@ class LuaContext {
     void register_video_module();
     void register_menu_module();
     void register_language_module();
+    void register_game_module();
+    void register_map_module();
+    void register_entity_module();
+    void register_enemy_module();
 
     // Pushing objects to Lua.
     static void push_ref(lua_State* l, int ref);
@@ -274,11 +281,12 @@ class LuaContext {
     static void push_surface(lua_State* l, Surface& surface);
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
     static void push_sprite(lua_State* l, Sprite& sprite);
-    static void push_game(lua_State* l, Savegame& game);
-    static void push_map(lua_State* l, Map& map);
-    static void push_enemy(lua_State* l, Enemy& enemy);
     static void push_item(lua_State* l, EquipmentItem& item);
     static void push_movement(lua_State* l, Movement& movement);
+    static void push_game(lua_State* l, Savegame& game);
+    static void push_map(lua_State* l, Map& map);
+    static void push_entity(lua_State* l, MapEntity& entity);
+    static void push_enemy(lua_State* l, Enemy& enemy);
 
     // Getting objects from Lua.
     static bool is_userdata(lua_State* l, int index,
@@ -291,9 +299,6 @@ class LuaContext {
     static Surface& check_surface(lua_State* l, int index);
     static TextSurface& check_text_surface(lua_State* l, int index);
     static Sprite& check_sprite(lua_State* l, int index);
-    static Savegame& check_game(lua_State* l, int index);
-    static Map& check_map(lua_State* l, int index);
-    static Enemy& check_enemy(lua_State* l, int index);
     static EquipmentItem& check_item(lua_State* l, int index);
     static Movement& check_movement(lua_State* l, int index);
     static StraightMovement& check_straight_movement(lua_State* l, int index);
@@ -305,6 +310,10 @@ class LuaContext {
     static CircleMovement& check_circle_movement(lua_State* l, int index);
     static JumpMovement& check_jump_movement(lua_State* l, int index);
     static PixelMovement& check_pixel_movement(lua_State* l, int index);
+    static Savegame& check_game(lua_State* l, int index);
+    static Map& check_map(lua_State* l, int index);
+    static MapEntity& check_entity(lua_State* l, int index);
+    static Enemy& check_enemy(lua_State* l, int index);
 
     // Events.
     void on_started();

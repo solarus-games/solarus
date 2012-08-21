@@ -114,7 +114,7 @@ function map:on_dialog_finished(dialog_id, answer)
   end
 end
 
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     map:get_game():set_dungeon_finished(5)

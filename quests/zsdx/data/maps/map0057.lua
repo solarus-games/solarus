@@ -22,8 +22,8 @@ spawner_xy = {
 
 function map:on_started(destination_point_name)
 
-  map:door_set_open("ne_door", true)
-  map:door_set_open("boss_door", true)
+  map:set_doors_open("ne_door", true)
+  map:set_doors_open("boss_door", true)
 end
 
 function map:on_hero_on_sensor(sensor_name)
@@ -31,9 +31,9 @@ function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "ne_door_sensor" then
 
     if map:door_is_open("ne_door") then
-      map:door_close("ne_door")
+      map:close_doors("ne_door")
     else
-      map:door_open("ne_door")
+      map:open_doors("ne_door")
     end
   elseif sensor_name == "start_boss_sensor"
       and not map:get_game():get_boolean(321)
@@ -47,7 +47,7 @@ end
 function start_boss()
 
   map:hero_freeze()
-  map:door_close("boss_door")
+  map:close_doors("boss_door")
   sol.timer.start(1000, function()
     sol.audio.play_music("boss")
     map:enemy_set_enabled("boss", true)
@@ -68,7 +68,7 @@ function repeat_lava_spawner()
   end
 end
 
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.audio.play_music("victory")

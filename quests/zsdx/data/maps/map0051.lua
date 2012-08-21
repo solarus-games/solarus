@@ -29,7 +29,7 @@ function map:on_switch_activated(switch_name)
   if map:switch_is_activated("DB03")
       and map:switch_is_activated("DB04")
       and not map:door_is_open("LD06") then
-    map:door_open("LD06")
+    map:open_doors("LD06")
   end
 end
 
@@ -38,7 +38,7 @@ function map:on_switch_inactivated(switch_name)
   if not map:switch_is_activated("DB03")
       or not map:switch_is_activated("DB04") then
     if map:door_is_open("LD06") and not dont_close_LD06 then
-      map:door_close("LD06")
+      map:close_doors("LD06")
     end
   end
 end

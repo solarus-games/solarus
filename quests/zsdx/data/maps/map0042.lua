@@ -24,10 +24,10 @@ function map:on_switch_activated(switch_name)
 
   if switch_name == "se_door_switch" and not map:door_is_open("se_door") then
     sol.audio.play_sound("secret")
-    map:door_open("se_door")
+    map:open_doors("se_door")
   elseif switch_name == "nc_door_switch" and not map:door_is_open("nc_door") then
     sol.audio.play_sound("secret")
-    map:door_open("nc_door")
+    map:open_doors("nc_door")
   elseif switch_name == "barrier_switch" and map:tile_is_enabled("barrier") then
     map:tile_set_enabled("barrier", false)
     sol.audio.play_sound("door_open")

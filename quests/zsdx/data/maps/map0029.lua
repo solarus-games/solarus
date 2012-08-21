@@ -29,7 +29,7 @@ function barrier_timer()
 end
 
 function door_timer()
-  map:door_open("door")
+  map:open_doors("door")
   sol.audio.play_sound("secret")
 end
 

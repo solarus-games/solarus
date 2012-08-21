@@ -11,14 +11,14 @@ function map:on_started(destination_point_name)
 
       if map:get_game():get_boolean(64) then
         -- the heart container was also picked: open the final room door
-        map:door_set_open("final_room_door", true)
+        map:set_doors_open("final_room_door", true)
       end
     else
       -- normal case
       start_boss()
     end
   elseif destination_point_name == "from_1F_east" then
-    map:door_set_open("se_door", true)
+    map:set_doors_open("se_door", true)
     map:switch_set_activated("se_switch", true)
   end
 end
@@ -29,7 +29,7 @@ function start_boss()
   sol.audio.play_music("boss")
 end
 
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.timer.start(9000, open_final_room)
@@ -49,13 +49,13 @@ end
 function open_se_door()
 
   sol.audio.play_sound("secret")
-  map:door_open("se_door")
+  map:open_doors("se_door")
   map:switch_set_activated("se_switch", true)
 end
 
 function open_final_room()
 
-  map:door_open("final_room_door")
+  map:open_doors("final_room_door")
   sol.audio.play_sound("secret")
   map:hero_unfreeze()
 end

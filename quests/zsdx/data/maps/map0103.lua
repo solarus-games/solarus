@@ -25,7 +25,7 @@ function map:on_started(destination_point_name)
 
   -- NW door
   if map:get_game():get_boolean(624) then
-    map:door_set_open("ne_door", true)
+    map:set_doors_open("ne_door", true)
   end
 
   -- door A (timed doors)
@@ -34,7 +34,7 @@ function map:on_started(destination_point_name)
   end
 
   -- boss
-  map:door_set_open("boss_door", true)
+  map:set_doors_open("boss_door", true)
   if map:get_game():get_boolean(625)
     and not map:get_game():get_boolean(626) then
     -- boss killed, heart container not picked
@@ -93,7 +93,7 @@ function map:on_switch_activated(switch_name)
   if switch_name == "ne_switch" then
     map:move_camera(960, 312, 250, function()
       sol.audio.play_sound("secret")
-      map:door_open("ne_door")
+      map:open_doors("ne_door")
     end)
 
   -- switch that removes the special torch
@@ -110,7 +110,7 @@ function map:on_switch_activated(switch_name)
     if current_door_name ~= nil then
       door = doors[current_door_name]
       map:move_camera(door.x, door.y, 250, function()
-	map:door_open(current_door_name)
+	map:open_doors(current_door_name)
       end)
     end
   end
@@ -132,7 +132,7 @@ function map:on_camera_back()
     local door_name = current_door_name
     sol.timer.start(doors[door_name].delay, true, function()
       if door_timers[door_name] ~= nil then
-	map:door_close(door_name)
+	map:close_doors(door_name)
 	map:switch_set_activated(door_name .. "_switch", false)
 	door_timers[door_name] = nil
       end
@@ -155,7 +155,7 @@ function map:on_hero_on_sensor(sensor_name)
   -- boss door
   elseif sensor_name == "close_boss_door_sensor"
       and map:door_is_open("boss_door") then
-    map:door_close("boss_door")
+    map:close_doors("boss_door")
     sol.audio.stop_music()
 
   -- boss
@@ -183,7 +183,7 @@ function map:on_hero_on_sensor(sensor_name)
       door_name = sensor_name:match("^(door_[a-e])_close_sensor$")
       if door_name ~= nil then
         if door_timers[door_name] == nil and map:door_is_open(door_name) then
-	  map:door_close(door_name)
+	  map:close_doors(door_name)
 	  map:switch_set_activated(door_name .. "_switch", false)
 	end
       end
@@ -216,7 +216,7 @@ function repeat_give_arrows()
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
 
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.audio.play_music("victory")

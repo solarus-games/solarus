@@ -174,10 +174,10 @@ void Door::set_open(bool door_open) {
     }
 
     if (door_open) {
-      get_lua_context().map_on_door_open(get_map(), *this);
+      get_lua_context().door_on_open(*this);
     }
     else {
-      get_lua_context().map_on_door_closed(get_map(), *this);
+      get_lua_context().door_on_closed(*this);
     }
   }
 }

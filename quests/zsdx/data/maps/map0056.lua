@@ -14,7 +14,7 @@ function map:on_started(destination_point_name)
     sol.audio.play_music("fanfare")
   end
 
-  map:door_set_open("miniboss_door", true)
+  map:set_doors_open("miniboss_door", true)
   map:enemy_set_group_enabled("miniboss", false)
   if map:get_game():get_boolean(320) then
     map:tile_set_group_enabled("miniboss_fake_floor", false)
@@ -58,7 +58,7 @@ end
 function open_torches_door()
 
   sol.audio.play_sound("secret")
-  map:door_open("torches_door")
+  map:open_doors("torches_door")
   lock_torches()
 end
 
@@ -69,7 +69,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not fighting_miniboss then
 
     map:hero_freeze()
-    map:door_close("miniboss_door")
+    map:close_doors("miniboss_door")
     fighting_miniboss = true
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
@@ -86,7 +86,7 @@ function map:on_enemy_dead(enemy_name)
       and map:enemy_is_group_dead("miniboss") then
 
     sol.audio.play_music("dark_world_dungeon")
-    map:door_open("miniboss_door")
+    map:open_doors("miniboss_door")
     map:get_game():set_boolean(320, true)
   end
 end

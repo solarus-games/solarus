@@ -5,13 +5,13 @@ door3 = false
 
 function map:on_started(destination_point_name)
 
-  map:door_set_open("door1", true)
-  map:door_set_open("door2", true)
+  map:set_doors_open("door1", true)
+  map:set_doors_open("door2", true)
   init_evil_tiles()
 
   if destination_point_name == "entrance_F_1" then
     map:sensor_set_enabled("sensor1", false)
-    map:door_set_open("door3", true)
+    map:set_doors_open("door3", true)
     map:switch_set_activated("switch1_1", true)
   end
 end
@@ -76,8 +76,8 @@ function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "sensor1"
       and map:door_is_open("door1_1") then
-    map:door_close("door1")
-    map:door_close("door2")
+    map:close_doors("door1")
+    map:close_doors("door2")
     map:sensor_set_enabled("sensor1", false)
     sol.timer.start(2000, start_evil_tiles)
   end
@@ -89,20 +89,20 @@ end
 
 function finish_evil_tiles()
 
-  map:door_open("door1")
-  map:door_open("door2")
+  map:open_doors("door1")
+  map:open_doors("door2")
 end
 
 function map:on_switch_activated(switch_name)
 
   if switch_name == "switch1_1" then
     if not door3 then
-      map:door_open("door3")
+      map:open_doors("door3")
       sol.audio.play_sound("door_open")
       sol.timer.start(5000, true, function()
         if not door3 then
           map:switch_set_activated("switch1_1", false)
-          map:door_close("door3")
+          map:close_doors("door3")
           sol.audio.play_sound("door_closed")
         end
       end)

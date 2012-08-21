@@ -25,12 +25,12 @@ function map:on_switch_activated(switch_name)
     map:move_camera(1288, 680, 250, function()
       -- open door A, wait 1 second and go to door B
       sol.audio.play_sound("secret")
-      map:door_open("door_a")
+      map:open_doors("door_a")
       sol.timer.start(1000, function()
 	map:move_camera(1608, 360, 250, function()
 	  -- open door B
 	  sol.audio.play_sound("secret")
-	  map:door_open("door_b")
+	  map:open_doors("door_b")
 	end) -- camera to door B
       end) -- timer before going from door A to door B
     end, 1000, 5000) -- camera to door A (don't go back too soon)
@@ -60,7 +60,7 @@ function map:on_camera_back()
   end
 end
 
-function map:on_treasure_obtaining(item_name, variant, savegame_variable)
+function map:on_obtaining_treasure(item_name, variant, savegame_variable)
 
   -- chest A
   if savegame_variable == 872 then

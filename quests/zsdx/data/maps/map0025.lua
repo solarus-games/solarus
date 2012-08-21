@@ -6,8 +6,8 @@ fighting_miniboss = false
 function map:on_started(destination_point_name)
 
   map:chest_set_enabled("boss_key_chest", false)
-  map:door_set_open("stairs_door", true)
-  map:door_set_open("miniboss_door", true)
+  map:set_doors_open("stairs_door", true)
+  map:set_doors_open("miniboss_door", true)
 end
 
 function map:on_map_opening_transition_finished(destination_point_name)
@@ -22,7 +22,7 @@ function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_miniboss_sensor" and not map:get_game():get_boolean(62) and not fighting_miniboss then
     -- the miniboss is alive
-    map:door_close("miniboss_door")
+    map:close_doors("miniboss_door")
     map:hero_freeze()
     sol.timer.start(1000, miniboss_timer)
     fighting_miniboss = true
@@ -39,7 +39,7 @@ function map:on_enemy_dead(enemy_name)
 
   if enemy_name == "khorneth" then
     sol.audio.play_music("light_world_dungeon")
-    map:door_open("miniboss_door")
+    map:open_doors("miniboss_door")
   end
 
   if map:enemy_is_group_dead("boss_key_battle")

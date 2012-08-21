@@ -94,7 +94,7 @@ end
 
 function open_e_door()
   sol.audio.play_sound("secret")
-  map:door_open("e_door")
+  map:open_doors("e_door")
 end
 
 function open_barrier()

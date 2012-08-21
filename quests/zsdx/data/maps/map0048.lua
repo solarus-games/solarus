@@ -15,7 +15,7 @@ local map = ...
 local timer
 
 function map:on_started(destination_point_name)
-  map:door_set_open("LD9", true)
+  map:set_doors_open("LD9", true)
 
   -- Link has mirror shield: no laser obstacles
   if map:get_game():get_ability("shield") >= 3 then
@@ -32,12 +32,12 @@ function map:on_started(destination_point_name)
   end
 
   if destination_point_name == "from_1F_A" then
-    map:door_set_open("LD8", true)
+    map:set_doors_open("LD8", true)
     map:switch_set_activated("DB08", true)
   end
 
   if destination_point_name ~= "from_B2_C" then
-    map:door_set_open("LD12", true)
+    map:set_doors_open("LD12", true)
   end
 end
 
@@ -46,20 +46,20 @@ function map:on_hero_on_sensor(sensor_name)
     -- Push block room		
     if not map:door_is_open("LD12") then
       sol.audio.play_sound("secret")
-      map:door_open("LD12")
+      map:open_doors("LD12")
       map:sensor_set_enabled("DS12", false)
     end
   elseif sensor_name == "DS7" then
     -- Globules monsters room		
     if map:door_is_open("LD7")
         and not map:enemy_is_group_dead("LD7_enemy") then		
-      map:door_close("LD7")
+      map:close_doors("LD7")
     end
   elseif sensor_name == "DS9" then
     -- Hard hat beetles room		
     if map:door_is_open("LD9")
         and not map:enemy_is_group_dead("LD9_enemy") then		
-      map:door_close("LD9")
+      map:close_doors("LD9")
       map:sensor_set_enabled("DS9", false)
     end
   end
@@ -75,8 +75,8 @@ function map:on_switch_activated(switch_name)
     sol.audio.play_sound("chest_appears")
   elseif string.match(switch_name, "^DB08") then
     sol.audio.play_sound("secret")
-    map:door_open("LD8")
-    map:door_open("LD7")
+    map:open_doors("LD8")
+    map:open_doors("LD7")
   end
 end
 
@@ -97,7 +97,7 @@ function map:on_camera_back()
   timer = sol.timer.start(8000, true, CB03_time_out)
 end
 
-function map:on_treasure_obtaining(item_name, variant, savegame_variable)
+function map:on_obtaining_treasure(item_name, variant, savegame_variable)
 
   if savegame_variable == 706 then
     if timer ~= nil then
@@ -112,13 +112,13 @@ function map:on_enemy_dead(enemy_name)
   if string.match(enemy_name, "^LD7_enemy") and map:enemy_is_group_dead("LD7_enemy") then	
     -- LD7 room: kill all enemies will open the door LD7
     if not map:door_is_open("LD7") then
-      map:door_open("LD7")
+      map:open_doors("LD7")
       sol.audio.play_sound("secret")
     end
   elseif string.match(enemy_name, "^LD9_enemy") and map:enemy_is_group_dead("LD9_enemy") then	
     -- LD9 room: kill all enemies will open the door LD9
     if not map:door_is_open("LD9") then
-      map:door_open("LD9")
+      map:open_doors("LD9")
       sol.audio.play_sound("secret")
     end
   end

@@ -12,8 +12,8 @@ function map:on_started(destination_point_name)
     map:teletransporter_set_enabled("weak_floor_teletransporter", false)
   end
 
-  map:door_set_open("boss_door", true)
-  map:door_set_open("final_room_door", true)
+  map:set_doors_open("boss_door", true)
+  map:set_doors_open("final_room_door", true)
 end
 
 function map:on_map_opening_transition_finished(destination_point_name)
@@ -49,8 +49,8 @@ function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "start_boss_sensor"
       and not map:get_game():get_boolean(415)
       and not fighting_boss then
-    map:door_close("boss_door")
-    map:door_close("final_room_door")
+    map:close_doors("boss_door")
+    map:close_doors("final_room_door")
     map:hero_freeze()
     sol.timer.start(1000, start_boss)
     fighting_boss = true
@@ -64,7 +64,7 @@ function start_boss()
   map:hero_unfreeze()
 end
 
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.timer.start(9000, open_final_room)
@@ -76,7 +76,7 @@ end
 
 function open_final_room()
 
-  map:door_open("final_room_door")
+  map:open_doors("final_room_door")
   sol.audio.play_sound("secret")
   map:hero_unfreeze()
 end

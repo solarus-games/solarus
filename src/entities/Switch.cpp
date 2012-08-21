@@ -165,7 +165,7 @@ void Switch::activate() {
       Sound::play("switch");
     }
 
-    get_lua_context().map_on_switch_activated(get_map(), *this);
+    get_lua_context().switch_on_activated(*this);
   }
 }
 
@@ -224,9 +224,9 @@ void Switch::update() {
       entity_overlapping = NULL;
       if (is_activated() && inactivate_when_leaving && !locked) {
         set_activated(false);
-        get_lua_context().map_on_switch_inactivated(get_map(), *this);
+        get_lua_context().switch_on_inactivated(*this);
       }
-      get_lua_context().map_on_switch_left(get_map(), *this);
+      get_lua_context().switch_on_left(*this);
     }
   }
 }

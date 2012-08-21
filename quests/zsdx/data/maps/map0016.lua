@@ -41,7 +41,7 @@ function map:on_dialog_finished(dialog_id, answer)
 end
 
 -- Function called when the player is obtaining the sword.
-function map:on_treasure_obtaining(item_name, variant, savegame_variable)
+function map:on_obtaining_treasure(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
     sol.audio.play_sound("treasure")
@@ -49,7 +49,7 @@ function map:on_treasure_obtaining(item_name, variant, savegame_variable)
 end
 
 -- Function called when the player has just obtained the sword.
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
    if (savegame_variable == 30) then
       map:start_dialog("smith_cave.thank_you")
    end

@@ -25,7 +25,7 @@ function map:on_enemy_dead(enemy_name)
     map:pickable_create("big_key", 1, 234, 672, 80, 1)
     sol.audio.play_sound("secret")
     if not map:door_is_open("door_a") then
-      map:door_open("door_a")
+      map:open_doors("door_a")
       sol.audio.play_music("eagle_tower")
     end
   end
@@ -38,7 +38,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not map:enemy_is_group_dead("enemy2")
       and not map:get_game():get_boolean(234) then
     sol.audio.play_music("boss")
-    map:door_close("door_a")
+    map:close_doors("door_a")
     map:enemy_set_group_enabled("enemy2", true)
     map:sensor_set_enabled("sensor1_1", false)
   end
@@ -47,14 +47,14 @@ end
 function map:on_switch_activated(switch_name)
 
   if switch_name == "switch1_1" then
-    map:door_open("door_a")
+    map:open_doors("door_a")
   end
 end
 
 function map:on_switch_inactivated(switch_name)
 
   if switch_name == "switch1_1" then
-    map:door_close("door_a")
+    map:close_doors("door_a")
   end
 end
 

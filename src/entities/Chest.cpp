@@ -238,7 +238,7 @@ void Chest::update() {
 
         treasure_given = true;
 
-        bool done = get_lua_context().map_on_chest_empty(get_map(), *this);
+        bool done = get_lua_context().chest_on_empty(*this);
         if (!done) {
 
           // the script does not define any behavior:

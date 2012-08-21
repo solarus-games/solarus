@@ -3,7 +3,7 @@ local map = ...
 
 function map:on_started(destination_point_name)
 
-  map:door_set_open("door", true)
+  map:set_doors_open("door", true)
   map:enemy_set_group_enabled("enemy", false)
 end
 
@@ -12,7 +12,7 @@ function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "close_door_sensor"
       and map:door_is_open("door")
       and not map:get_game():get_boolean(156) then
-    map:door_close("door")
+    map:close_doors("door")
     map:hero_freeze()
     sol.timer.start(1000, start_music)
   end

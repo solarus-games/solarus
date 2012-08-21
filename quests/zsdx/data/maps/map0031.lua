@@ -35,10 +35,10 @@ function map:on_started(destination_point)
     end
   end
 
-  map:door_set_open("boss_door", true)
+  map:set_doors_open("boss_door", true)
   if destination_point_name == "from_final_room"
       or map:get_game():get_boolean(103) then
-    map:door_set_open("final_room_door", true)
+    map:set_doors_open("final_room_door", true)
   end
 
   if map:get_game():get_boolean(103) then
@@ -101,7 +101,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not map:get_game():get_boolean(93)
       and not fighting_boss then
     sol.audio.stop_music()
-    map:door_close("boss_door")
+    map:close_doors("boss_door")
 
   elseif sensor_name == "save_solid_ground_sensor" then
     map:hero_save_solid_ground(960, 525, 0)
@@ -141,7 +141,7 @@ function start_boss()
   sol.audio.play_music("boss")
 end
 
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.timer.start(9000, open_final_room)
@@ -154,7 +154,7 @@ end
 function open_final_room()
 
   sol.audio.play_sound("secret")
-  map:door_open("final_room_door")
+  map:open_doors("final_room_door")
   map:tile_set_enabled("boss_killed_floor", true)
   map:hero_unfreeze()
 end

@@ -11,7 +11,7 @@ function map:on_started(destination_point_name)
   end
 
   if destination_point_name ~= "from_outside" then
-    map:door_set_open("door", true)
+    map:set_doors_open("door", true)
   end
 end
 
@@ -77,7 +77,7 @@ function give_golden_bars()
   map:start_dialog("billy_cave.give_golden_bars")
 end
 
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "level_4_way" and variant == 3 then
     -- got the edelweiss: make Billy leave
@@ -109,7 +109,7 @@ function billy_leave()
     sprite:set_direction(1)
     sol.timer.start(500, billy_leave)
   elseif billy_leave_step == 3 then
-    map:door_open("door")
+    map:open_doors("door")
     sol.timer.start(500, billy_leave)
   elseif billy_leave_step == 4 then
     local m = sol.movement.create("path")
@@ -118,7 +118,7 @@ function billy_leave()
     map:npc_start_movement("billy", m)
     sprite:set_animation("walking")
   else
-    map:door_close("door")
+    map:close_doors("door")
     map:npc_remove("billy")
     map:hero_unfreeze()
   end

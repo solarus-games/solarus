@@ -21,7 +21,7 @@ function map:on_started(destination_point_name)
   if not map:get_game():get_boolean(907) then
     -- this door is open until the main entrance door of
     -- the castle is open
-    map:door_set_open("n_door", true)
+    map:set_doors_open("n_door", true)
   end
 
   if map:get_game():get_boolean(511) then
@@ -54,7 +54,7 @@ function map:on_started(destination_point_name)
     i = math.random(#door_sets)
   end
   for _, door in ipairs(door_sets[i]) do
-    map:door_set_open(door, true)
+    map:set_doors_open(door, true)
   end
 
   init_guards()
@@ -126,9 +126,9 @@ function map:on_hero_on_sensor(sensor_name)
 
     -- change the configuration of the doors
     local i = math.random(#door_sets)
-    map:door_set_open("door", false)
+    map:set_doors_open("door", false)
     for _, door in ipairs(door_sets[i]) do
-      map:door_set_open(door, true)
+      map:set_doors_open(door, true)
     end
   end
 end
@@ -180,7 +180,7 @@ function map:on_door_open(door_name)
   end
 end
 
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "boss_key" then
     -- the hero was unfreezed by the chest, so cancel a possible previous guard

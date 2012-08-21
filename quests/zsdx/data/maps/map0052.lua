@@ -18,7 +18,7 @@ function map:on_hero_on_sensor(sensor_name)
 
     if not map:get_game():get_boolean(728) then
 
-      map:door_close("boss_door")
+      map:close_doors("boss_door")
       map:hero_freeze()
       sol.audio.play_music("agahnim")
       sol.timer.start(1000, function()

@@ -4,7 +4,7 @@ local map = ...
 function map:on_started(destination_point)
 
   if map:get_game():get_boolean(37) then -- if the Lyriann cave is finished
-    map:door_set_open("door", map:get_game():is_dungeon_finished(1)) -- don't allow the player to obtain the bow until the first dungeon is finished
+    map:set_doors_open("door", map:get_game():is_dungeon_finished(1)) -- don't allow the player to obtain the bow until the first dungeon is finished
   end
 
   if map:get_game():is_dungeon_finished(4)
@@ -75,12 +75,12 @@ function map:on_dialog_finished(dialog_id, answer)
     -- give the world map to the player
     map:hero_start_treasure("world_map", 1, 33)
   elseif dialog_id == "sahasrahla_house.quest_accepted" and not map:door_is_open("door") then
-    map:door_open("door")
+    map:open_doors("door")
   end
 end
 
 -- Function called when the player has just obtained a treasure
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
    map:start_dialog("sahasrahla_house.quest_accepted")
 end
 

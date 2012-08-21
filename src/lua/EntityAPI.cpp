@@ -23,6 +23,8 @@
 #include "entities/Switch.h"
 #include "entities/Door.h"
 #include "entities/Enemy.h"
+#include "entities/Sensor.h"
+#include "entities/ShopItem.h"
 #include "entities/MapEntities.h"
 #include "movements/Movement.h"
 #include "lowlevel/Debug.h"
@@ -1846,6 +1848,7 @@ int LuaContext::enemy_api_get_father(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
+  // TODO push the enemy (if existing) instead of its name
   lua_pushstring(l, enemy.get_father_name().c_str());
   return 1;
 }
@@ -1872,7 +1875,252 @@ int LuaContext::enemy_api_send_message(lua_State* l) {
 }
 
 /**
- * @brief Calls the on_() method of a Lua enemy.
+ * @brief Calls the on_obtaining_treasure() method of a Lua hero.
+ * @param hero The hero.
+ * @param treasure A treasure the hero is about to obtain.
+ */
+void LuaContext::hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure) {
+
+  push_hero(l, hero);
+  on_obtaining_treasure(treasure);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_obtained_treasure() method of a Lua hero.
+ * @param hero The hero.
+ * @param treasure The treasure just obtained.
+ */
+void LuaContext::hero_on_obtained_treasure(Hero& hero, const Treasure& treasure) {
+
+  push_hero(l, hero);
+  on_obtained_treasure(treasure);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_victory_finished() method of a Lua hero.
+ * @param hero The hero.
+ */
+void LuaContext::hero_on_victory_finished(Hero& hero) {
+
+  push_hero(l, hero);
+  on_victory_finished();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_activated() method of a Lua switch.
+ * @param sw A switch.
+ */
+void LuaContext::switch_on_activated(Switch& sw) {
+
+  push_switch(l, sw);
+  on_activated();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_inactivated() method of a Lua switch.
+ * @param sw A switch.
+ */
+void LuaContext::switch_on_inactivated(Switch& sw) {
+
+  push_switch(l, sw);
+  on_inactivated();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_left() method of a Lua switch.
+ * @param sw A switch.
+ */
+void LuaContext::switch_on_left(Switch& sw) {
+
+  push_switch(l, sw);
+  on_left();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_activated() method of a Lua sensor.
+ * @param sensor A sensor.
+ */
+void LuaContext::sensor_on_activated(Sensor& sensor) {
+
+  push_entity(l, sensor);
+  on_activated();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_activated_repeat() method of a Lua sensor.
+ * @param sensor A sensor.
+ */
+void LuaContext::sensor_on_activated_repeat(Sensor& sensor) {
+
+  push_entity(l, sensor);
+  on_activated_repeat();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_collision_explosion() method of a Lua sensor.
+ * @param sensor A sensor.
+ */
+void LuaContext::sensor_on_collision_explosion(Sensor& sensor) {
+
+  push_entity(l, sensor);
+  on_collision_explosion();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_movement_finished() method of a Lua NPC.
+ * @param npc An NPC.
+ */
+void LuaContext::npc_on_movement_finished(NPC& npc) {
+
+  push_npc(l, npc);
+  on_movement_finished();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_interaction() method of a Lua NPC.
+ * @param npc An NPC.
+ */
+void LuaContext::npc_on_interaction(NPC& npc) {
+
+  push_npc(l, npc);
+  on_interaction();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_interaction_finished() method of a Lua NPC.
+ * @param npc An NPC.
+ */
+void LuaContext::npc_on_interaction_finished(NPC& npc) {
+
+  push_npc(l, npc);
+  on_interaction_finished();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_interaction_item() method of a Lua NPC.
+ * @param npc An NPC.
+ * @param item_name Name of an equipment item.
+ * @param variant Variant of this equipment item.
+ * @return \c true if an interaction occurred.
+ */
+bool LuaContext::npc_on_interaction_item(NPC& npc,
+    const std::string& item_name, int variant) {
+
+  push_npc(l, npc);
+  bool result = on_interaction_item(item_name, variant);
+  lua_pop(l, 1);
+  return result;
+}
+
+/**
+ * @brief Calls the on_interaction_item_finished() method of a Lua NPC.
+ * @param npc An NPC.
+ * @param item_name Name of an equipment item.
+ * @param variant Variant of this equipment item.
+ */
+void LuaContext::npc_on_interaction_item_finished(NPC& npc,
+    const std::string& item_name, int variant) {
+
+  push_npc(l, npc);
+  on_interaction_item_finished(item_name, variant);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_collision_fire() method of a Lua NPC.
+ * @param npc An NPC.
+ */
+void LuaContext::npc_on_collision_fire(NPC& npc) {
+
+  push_npc(l, npc);
+  on_collision_fire();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_empty() method of a Lua chest.
+ * @param chest A chest.
+ * @return \c true if the on_empty() method is defined.
+ */
+bool LuaContext::chest_on_empty(Chest& chest) {
+
+  push_chest(l, chest);
+  bool result = on_empty();
+  lua_pop(l, 1);
+  return result;
+}
+
+/**
+ * @brief Calls the on_buying() method of a Lua shop item.
+ * @param shop_item A shop item.
+ * @return \c true if the player is allowed to buy the item.
+ */
+bool LuaContext::shop_item_on_buying(ShopItem& shop_item) {
+
+  push_entity(l, shop_item);
+  bool result = on_buying();
+  lua_pop(l, 1);
+  return result;
+}
+
+/**
+ * @brief Calls the on_bought() method of a Lua shop item.
+ * @param shop_item A shop item.
+ */
+void LuaContext::shop_item_on_bought(ShopItem& shop_item) {
+
+  push_entity(l, shop_item);
+  on_bought();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_open() method of a Lua door.
+ * @param door A door.
+ */
+void LuaContext::door_on_open(Door& door) {
+
+  push_door(l, door);
+  on_open();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_closed() method of a Lua door.
+ * @param door A door.
+ */
+void LuaContext::door_on_closed(Door& door) {
+
+  push_door(l, door);
+  on_closed();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_moved() method of a Lua block.
+ * @param block a block.
+ */
+void LuaContext::block_on_moved(Block& block) {
+
+  push_block(l, block);
+  on_moved();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_update() method of a Lua enemy.
  * @param enemy An enemy.
  */
 void LuaContext::enemy_on_update(Enemy& enemy) {
@@ -1963,24 +2211,14 @@ void LuaContext::enemy_on_post_draw(Enemy& enemy) {
 /**
  * @brief Calls the on_position_changed() method of a Lua enemy.
  * @param enemy An enemy.
- * @param xy The new position.
- */
-void LuaContext::enemy_on_position_changed(Enemy& enemy, const Rectangle& xy) {
-
-  push_enemy(l, enemy);
-  on_position_changed(xy);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_layer_changed() method of a Lua enemy.
- * @param enemy An enemy.
+ * @param xy The new coordinates.
  * @param layer The new layer.
  */
-void LuaContext::enemy_on_layer_changed(Enemy& enemy, Layer layer) {
+void LuaContext::enemy_on_position_changed(
+    Enemy& enemy, const Rectangle& xy, Layer layer) {
 
   push_enemy(l, enemy);
-  on_layer_changed(layer);
+  on_position_changed(xy, layer);
   lua_pop(l, 1);
 }
 
@@ -2011,13 +2249,11 @@ void LuaContext::enemy_on_movement_changed(Enemy& enemy,
 /**
  * @brief Calls the on_movement_finished() method of a Lua enemy.
  * @param enemy An enemy.
- * @param movement Its movement.
  */
-void LuaContext::enemy_on_movement_finished(Enemy& enemy,
-    Movement& movement) {
+void LuaContext::enemy_on_movement_finished(Enemy& enemy) {
 
   push_enemy(l, enemy);
-  on_movement_finished(movement);
+  on_movement_finished();
   lua_pop(l, 1);
 }
 
@@ -2089,6 +2325,17 @@ void LuaContext::enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost) 
 
   push_enemy(l, enemy);
   on_hurt(attack, life_lost);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_dying() method of a Lua enemy.
+ * @param enemy An enemy.
+ */
+void LuaContext::enemy_on_dying(Enemy& enemy) {
+
+  push_enemy(l, enemy);
+  on_dying();
   lua_pop(l, 1);
 }
 

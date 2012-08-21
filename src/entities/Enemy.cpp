@@ -727,14 +727,11 @@ void Enemy::update() {
     get_entities().add_entity(Pickable::create(get_game(), get_layer(), get_x(), get_y(),
         treasure, FALLING_HIGH, false));
 
-    // notify the enemy
+    // notify Lua
     notify_dead();
 
     // remove the enemy
     remove_from_map();
-
-    // notify Lua
-    get_lua_context().map_on_enemy_dead(get_map(), *this);
   }
 
   get_lua_context().enemy_on_update(*this);
@@ -815,7 +812,7 @@ void Enemy::notify_position_changed() {
   Detector::notify_position_changed();
 
   if (!is_being_hurt()) {
-    get_lua_context().enemy_on_position_changed(*this, get_xy());
+    get_lua_context().enemy_on_position_changed(*this, get_xy(), get_layer());
   }
 }
 
@@ -829,7 +826,7 @@ void Enemy::notify_layer_changed() {
   Detector::notify_layer_changed();
 
   if (!is_being_hurt()) {
-    get_lua_context().enemy_on_layer_changed(*this, get_layer());
+    get_lua_context().enemy_on_position_changed(*this, get_xy(), get_layer());
   }
 }
 
@@ -855,7 +852,7 @@ void Enemy::notify_movement_finished() {
   Detector::notify_movement_finished();
 
   if (!is_being_hurt()) {
-    get_lua_context().enemy_on_movement_finished(*this, *get_movement());
+    get_lua_context().enemy_on_movement_finished(*this);
   }
 }
 
@@ -1213,7 +1210,7 @@ void Enemy::hurt(MapEntity &source) {
 void Enemy::notify_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
 
   if (get_life() <= 0) {
-    get_lua_context().map_on_enemy_dying(get_map(), *this);
+    get_lua_context().enemy_on_dying(*this);
   }
   get_lua_context().enemy_on_hurt(*this, attack, life_points);
 }

@@ -198,7 +198,7 @@ void Treasure::give_to_player() const {
   // notify the Lua item and the Lua map
   LuaContext& lua_context = game->get_lua_context();
   lua_context.item_on_obtaining(equipment.get_item(get_item_name()), *this);
-  lua_context.map_on_treasure_obtaining(game->get_current_map(), *this);
+  lua_context.hero_on_obtaining_treasure(game->get_hero(), *this);
 }
 
 /**

@@ -250,7 +250,7 @@ void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
       get_lua_context().item_on_npc_collision_fire(item, *this);
     }
     else {
-      get_lua_context().map_on_npc_collision_fire(get_map(), *this);
+      get_lua_context().npc_on_collision_fire(*this);
     }
   }
 }
@@ -303,13 +303,13 @@ void NPC::action_key_pressed() {
 void NPC::call_script_hero_interaction() {
 
   if (behavior == BEHAVIOR_MAP_SCRIPT) {
-    get_lua_context().map_on_npc_interaction(get_map(), *this);
+    get_lua_context().npc_on_interaction(*this);
   }
   else {
     EquipmentItem& item = get_equipment().get_item(item_name);
     get_lua_context().item_on_npc_interaction(item, *this);
   }
-  get_lua_context().map_on_npc_interaction_finished(get_map(), *this);
+  get_lua_context().npc_on_interaction_finished(*this);
 }
 
 /**
@@ -330,14 +330,14 @@ bool NPC::interaction_with_inventory_item(InventoryItem& inventory_item) {
       equipment_item, *this, inventory_item.get_name(), inventory_item.get_variant());
   }
   else {
-    interaction_occured = get_lua_context().map_on_npc_interaction_item(
-      get_map(), *this, inventory_item.get_name(), inventory_item.get_variant());
+    interaction_occured = get_lua_context().npc_on_interaction_item(
+      *this, inventory_item.get_name(), inventory_item.get_variant());
   }
 
   if (interaction_occured) {
-    // always notify the map script when finished
-    get_lua_context().map_on_npc_interaction_item_finished(
-        get_map(), *this, inventory_item.get_name(), inventory_item.get_variant());
+    // always notify the NPC when finished
+    get_lua_context().npc_on_interaction_item_finished(
+        *this, inventory_item.get_name(), inventory_item.get_variant());
   }
   return interaction_occured;
 }
@@ -354,7 +354,7 @@ void NPC::update() {
     if (get_movement()->is_finished()) {
       get_sprite().set_current_animation("stopped");
       clear_movement();
-      get_lua_context().map_on_npc_movement_finished(get_map(), *this);
+      get_lua_context().npc_on_movement_finished(*this);
     }
   }
 }

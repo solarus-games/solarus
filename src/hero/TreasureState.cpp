@@ -100,7 +100,7 @@ void Hero::TreasureState::update() {
     // Notify the Lua item and the Lua map.
     LuaContext& lua_context = get_lua_context();
     lua_context.item_on_obtained(get_equipment().get_item(item_name), treasure);
-    lua_context.map_on_treasure_obtained(get_map(), treasure);
+    lua_context.hero_on_obtained_treasure(hero, treasure);
 
     if (is_current_state()) { // because the script may have changed the state
       hero.set_state(new FreeState(hero));

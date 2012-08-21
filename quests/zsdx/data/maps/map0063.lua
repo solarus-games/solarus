@@ -98,7 +98,7 @@ function open_statue_door()
 
   sol.audio.play_sound("secret")
   sol.audio.play_sound("door_open")
-  map:door_open("statue_door")
+  map:open_doors("statue_door")
 end
 
 -- Returns whether all torches are on
@@ -123,7 +123,7 @@ function map:on_update()
       and are_all_torches_on() then
 
     sol.audio.play_sound("secret")
-    map:door_open("torches_door")
+    map:open_doors("torches_door")
     lock_torches()
   end
 end

@@ -16,7 +16,7 @@ function map:on_started(destination_point_name)
   end
 
   if destination_point_name ~= "main_entrance" then
-    map:door_set_open("eye_door", true)
+    map:set_doors_open("eye_door", true)
   end
 end
 
@@ -52,7 +52,7 @@ function map:on_switch_activated(switch_name)
   if switch_name == "eye_switch"
       and not map:door_is_open("eye_door")  then
     sol.audio.play_sound("secret")
-    map:door_open("eye_door")
+    map:open_doors("eye_door")
   end
 end
 

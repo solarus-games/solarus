@@ -279,7 +279,7 @@ void Block::stop_movement_by_hero() {
   }
 
   // notify the script
-  get_lua_context().map_on_block_moved(get_map(), *this);
+  get_lua_context().block_on_moved(*this);
 }
 
 /**

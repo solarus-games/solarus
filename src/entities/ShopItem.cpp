@@ -221,7 +221,7 @@ void ShopItem::update() {
       }
       else {
 
-        bool can_buy = get_lua_context().map_on_shop_item_buying(get_map(), *this);
+        bool can_buy = get_lua_context().shop_item_on_buying(*this);
         if (can_buy) {
 
           // give the treasure
@@ -233,7 +233,7 @@ void ShopItem::update() {
             remove_from_map();
             get_savegame().set_boolean(savegame_variable, true);
           }
-	  get_lua_context().map_on_shop_item_bought(get_map(), *this);
+          get_lua_context().shop_item_on_bought(*this);
         }
       }
     }

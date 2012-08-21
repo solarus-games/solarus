@@ -19,7 +19,7 @@ function map:on_started(destination_point_name)
     map:chest_set_enabled("RC100", false)
   end
   if destination_point_name == "from_B3_C" then
-    map:door_set_open("LD15", true)
+    map:set_doors_open("LD15", true)
     for i = 1, 9 do
       map:switch_set_activated("BRoom" .. i, true)
     end
@@ -38,7 +38,7 @@ function button_room_test_combination()
     and map:switch_is_activated("BRoom9") then
     if not map:door_is_open("LD15") then
       sol.audio.play_sound("secret")
-      map:door_open("LD15")
+      map:open_doors("LD15")
       map:switch_set_activated("BRoomReset", true)
     end
   end
@@ -112,11 +112,11 @@ function map:on_switch_activated(switch_name)
 end
 
 function DB16_open_door()
-  map:door_open("LD16")
+  map:open_doors("LD16")
 end
 
 function DB16_time_out()
-  map:door_close("LD16")
+  map:close_doors("LD16")
   map:switch_set_activated("DB16", false)
 end
 

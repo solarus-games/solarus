@@ -40,7 +40,7 @@ function map:on_hero_on_sensor(sensor_name)
     door_a_allow_close = true
     if not map:switch_is_activated("door_a_switch") then
       -- the timer has expired in the meantime
-      map:door_close("door_a")
+      map:close_doors("door_a")
     end
 
   -- door B (south-east timed door)
@@ -52,7 +52,7 @@ function map:on_hero_on_sensor(sensor_name)
     door_a_allow_close = true
     if not map:switch_is_activated("door_b_switch") then
       -- the timer has expired in the meantime
-      map:door_close("door_b")
+      map:close_doors("door_b")
     end
 
   -- pipes
@@ -93,7 +93,7 @@ function map:on_npc_interaction(npc_name)
       elseif next_sign == #directions + 1 then
 	map:move_camera(376, 984, 250, function()
 	  sol.audio.play_sound("secret")
-	  map:door_open("sw_door")
+	  map:open_doors("sw_door")
 	end)
       end
       next_sign = next_sign + 1
@@ -111,12 +111,12 @@ function map:on_switch_activated(switch_name)
       and not map:door_is_open("door_a") then
     -- open the door and close it in a few seconds
     sol.audio.play_sound("secret")
-    map:door_open("door_a")
+    map:open_doors("door_a")
     door_a_allow_close = true
     sol.timer.start(10000, true, function()
       map:switch_set_activated("door_a_switch", false)
       if door_a_allow_close then
-	map:door_close("door_a")
+	map:close_doors("door_a")
       end
     end)
 
@@ -125,25 +125,25 @@ function map:on_switch_activated(switch_name)
       and not map:door_is_open("door_b") then
     -- open the door and close it in a few seconds
     sol.audio.play_sound("secret")
-    map:door_open("door_b")
+    map:open_doors("door_b")
     door_b_allow_close = true
     sol.timer.start(15000, true, function()
       map:switch_set_activated("door_b_switch", false)
       if door_b_allow_close then
-	map:door_close("door_b")
+	map:close_doors("door_b")
       end
     end)
 
   -- north-west door
   elseif switch_name == "ne_door_switch" then
-    map:door_open("ne_door")
+    map:open_doors("ne_door")
   end
 end
 
 function map:on_switch_inactivated(switch_name)
 
   if switch_name == "ne_door_switch" then
-    map:door_close("ne_door")
+    map:close_doors("ne_door")
   end
 end
 

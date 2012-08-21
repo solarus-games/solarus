@@ -59,13 +59,13 @@ end
 
 function open_sw_door()
   sol.audio.play_sound("secret")
-  map:door_open("sw_door")
+  map:open_doors("sw_door")
   map:switch_set_activated("sw_switch", true)
   map:switch_set_activated("nw_switch", true)
 end
 
 function close_sw_door()
-  map:door_close("sw_door")
+  map:close_doors("sw_door")
   map:switch_set_activated("sw_switch", false)
   map:switch_set_activated("nw_switch", false)
 end

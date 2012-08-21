@@ -117,7 +117,7 @@ void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
 void Sensor::notify_collision_with_explosion(Explosion& explosion, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_RECTANGLE) {
-    get_lua_context().map_on_sensor_collision_explosion(get_map(), *this);
+    get_lua_context().sensor_on_collision_explosion(*this);
   }
 }
 
@@ -136,14 +136,14 @@ void Sensor::activate(Hero& hero) {
 
     // Notify Lua.
     notifying_script = true;
-    get_lua_context().map_on_hero_on_sensor(get_map(), *this);
+    get_lua_context().sensor_on_activated(*this);
     notifying_script = false;
     get_hero().reset_movement();
   }
   else {
     if (!notifying_script && !get_game().is_suspended()) {
       notifying_script = true;
-      get_lua_context().map_on_hero_still_on_sensor(get_map(), *this);
+      get_lua_context().sensor_on_activated_repeat(*this);
       notifying_script = false;
     }
   }

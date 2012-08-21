@@ -4,7 +4,7 @@ local map = ...
 function map:on_started(destination_point_name)
 
   -- evil tiles
-  map:door_set_open("evil_tiles_door", true)
+  map:set_doors_open("evil_tiles_door", true)
   init_evil_tiles()
 end
 
@@ -12,11 +12,11 @@ function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "close_door_a_sensor"
       and map:door_is_open("door_a") then
-    map:door_close("door_a")
+    map:close_doors("door_a")
   elseif sensor_name:find("^evil_tiles_sensor") then
     if map:door_is_open("evil_tiles_door")
         and not map:enemy_is_dead("evil_tile_1") then
-      map:door_close("evil_tiles_door")
+      map:close_doors("evil_tiles_door")
       sol.timer.start(2000, start_evil_tiles)
     end
   elseif sensor_name == "sensor_1" and map:tile_is_enabled("sensor_1_off") then
@@ -96,6 +96,6 @@ end
 
 function finish_evil_tiles()
 
-  map:door_open("evil_tiles_door")
+  map:open_doors("evil_tiles_door")
 end
 

@@ -18,14 +18,14 @@ function map:on_chest_empty(chest_name)
   end
 end
 
-function map:on_treasure_obtaining(item_name, variant, savegame_variable)
+function map:on_obtaining_treasure(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
     sol.audio.play_music("excalibur")
   end
 end
 
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
     map:hero_start_victory()

@@ -17,15 +17,15 @@ function map:on_started(destination_point_name)
   end
 
   -- enemies rooms
-  map:door_set_open("door_c", true)
+  map:set_doors_open("door_c", true)
   if destination_point_name ~= "from_3f_e"
       and destination_point_name ~= "from_outside_e" then
-    map:door_set_open("door_b", true)
+    map:set_doors_open("door_b", true)
   end
 
   -- north-east room
   if destination_point_name == "from_3f_e" then
-    map:door_set_open("door_a", true)
+    map:set_doors_open("door_a", true)
     ne_puzzle_set_step(5)
   else
     ne_puzzle_set_step(1)
@@ -42,8 +42,8 @@ function map:on_started(destination_point_name)
 
   -- clockwise switches and next doors
   if destination_point_name ~= "from_1f" then
-    map:door_set_open("door_d", true)
-    map:door_set_open("door_e", true)
+    map:set_doors_open("door_d", true)
+    map:set_doors_open("door_e", true)
     map:switch_set_activated("door_e_switch", true)
     for i = 1, 8 do
       map:switch_set_activated("nw_switch_" .. i, true)
@@ -74,19 +74,19 @@ function map:on_switch_activated(switch_name)
   -- door A
   elseif switch_name == "door_a_switch" then
     sol.audio.play_sound("secret")
-    map:door_open("door_a")
+    map:open_doors("door_a")
 
   -- door E
   elseif switch_name == "door_e_switch" then
     sol.audio.play_sound("secret")
-    map:door_open("door_e")
+    map:open_doors("door_e")
 
   -- door G
   elseif switch_name == "door_g_switch"
       and not map:door_is_open("door_g") then
     map:move_camera(1760, 520, 1000, function()
       sol.audio.play_sound("secret")
-      map:door_open("door_g")
+      map:open_doors("door_g")
       door_g_finished = false
     end)
 
@@ -122,7 +122,7 @@ function map:on_switch_activated(switch_name)
       else
 	-- correct
 	sol.audio.play_sound("secret")
-	map:door_open("door_d")
+	map:open_doors("door_d")
       end
     end
   end
@@ -176,28 +176,28 @@ function map:on_hero_on_sensor(sensor_name)
       and map:door_is_open("door_g") then
     sol.audio.play_sound("wrong")
     map:move_camera(1760, 520, 1000, function()
-      map:door_close("door_g")
+      map:close_doors("door_g")
       map:switch_set_activated("door_g_switch", false)
     end) 
 
   -- door E
   elseif sensor_name:find("^close_door_e_sensor")
       and map:door_is_open("door_e") then
-    map:door_close("door_e")
+    map:close_doors("door_e")
     map:switch_set_activated("door_e_switch", false)
 
   -- west enemies room
   elseif sensor_name:find("^close_door_b_sensor")
       and not map:enemy_is_group_dead("door_b_enemy")
       and map:door_is_open("door_b") then
-    map:door_close("door_b")
+    map:close_doors("door_b")
     map:sensor_set_group_enabled("close_door_b_sensor", false)
 
   -- north enemies room
   elseif sensor_name:find("^close_door_c_sensor")
       and not map:enemy_is_group_dead("door_c_enemy")
       and map:door_is_open("door_c") then
-    map:door_close("door_c")
+    map:close_doors("door_c")
     map:sensor_set_group_enabled("close_door_c_sensor", false)
 
   -- save solid ground location
@@ -217,7 +217,7 @@ function map:on_enemy_dead(enemy_name)
     if map:enemy_is_group_dead("door_b_enemy")
         and not map:door_is_open("door_b") then
       sol.audio.play_sound("secret")
-      map:door_open("door_b")
+      map:open_doors("door_b")
     end
 
   -- north enemies room
@@ -225,7 +225,7 @@ function map:on_enemy_dead(enemy_name)
     if map:enemy_is_group_dead("door_c_enemy")
         and not map:door_is_open("door_c") then
       sol.audio.play_sound("secret")
-      map:door_open("door_c")
+      map:open_doors("door_c")
     end
 
   end
@@ -306,7 +306,7 @@ function map:on_block_moved(block_name)
   if block_name == "door_f_block"
       and not map:door_is_open("door_f") then
     sol.audio.play_sound("secret")
-    map:door_open("door_f")
+    map:open_doors("door_f")
   end
 end
 

@@ -11,11 +11,11 @@ function map:on_started(destination_point_name)
   map:wall_set_group_enabled("pipe_border", false)
 
   -- door of the pots and pikes
-  map:door_set_open("door_f", true)
+  map:set_doors_open("door_f", true)
   map:switch_set_activated("door_f_switch", true)
 
   -- west enemies room
-  map:door_set_open("door_c", true)
+  map:set_doors_open("door_c", true)
   if map:get_game():get_boolean(616) then
     local enemy_name = "w_room_enemy_4"
     local x, y = map:enemy_get_position(enemy_name)
@@ -48,7 +48,7 @@ function map:on_started(destination_point_name)
   end
 
   -- miniboss
-  map:door_set_open("miniboss_door", true)
+  map:set_doors_open("miniboss_door", true)
   map:enemy_set_group_enabled("miniboss", false)
 
   -- save the north-west door from 1F
@@ -73,14 +73,14 @@ function map:on_hero_on_sensor(sensor_name)
 
   -- close door F
   if sensor_name == "close_door_f_sensor" then
-    map:door_set_open("door_f", false)
+    map:set_doors_open("door_f", false)
     map:switch_set_activated("door_f_switch", false)
  
   -- door C (west room)
   elseif sensor_name:find("^close_door_c_sensor") then
     if not map:enemy_is_group_dead("w_room_enemy")
         and map:door_is_open("door_c") then
-      map:door_close("door_c")
+      map:close_doors("door_c")
     end
 
   -- miniboss
@@ -89,7 +89,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not fighting_miniboss then
 
     map:hero_freeze()
-    map:door_close("miniboss_door")
+    map:close_doors("miniboss_door")
     fighting_miniboss = true
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
@@ -126,13 +126,13 @@ function map:on_switch_activated(switch_name)
   if switch_name == "door_f_switch" then
     map:move_camera(1040, 760, 250, function()
       sol.audio.play_sound("secret")
-      map:door_open("door_f")
+      map:open_doors("door_f")
     end)
 
   -- door D
   elseif switch_name == "door_d_switch" then
     sol.audio.play_sound("secret")
-    map:door_open("door_d")
+    map:open_doors("door_d")
 
   -- shortcut to the boss
   elseif switch_name == "shortcut_switch" then
@@ -157,7 +157,7 @@ function map:on_switch_activated(switch_name)
 	  if not map:door_is_open("door_a") then
 	    map:move_camera(72, 552, 250, function()
 	      sol.audio.play_sound("secret")
-	      map:door_open("door_a")
+	      map:open_doors("door_a")
 	    end)
 	  else
 	    sol.audio.play_sound("secret")
@@ -199,10 +199,10 @@ function map:on_enemy_dead(enemy_name)
       and map:enemy_is_group_dead("w_room_enemy") then
     sol.audio.play_sound("secret")
     if not map:door_is_open("door_c") then
-      map:door_open("door_c")
+      map:open_doors("door_c")
     end
     if not map:door_is_open("door_a") then
-      map:door_open("door_a")
+      map:open_doors("door_a")
     end
 
   -- miniboss
@@ -211,7 +211,7 @@ function map:on_enemy_dead(enemy_name)
 
     sol.audio.play_music("dark_world_dungeon")
     sol.audio.play_sound("secret")
-    map:door_open("miniboss_door")
+    map:open_doors("miniboss_door")
     map:get_game():set_boolean(620, true)
   end
 end

@@ -6,7 +6,7 @@ local door_timer
 function map:on_started(destination_point_name)
 
   if destination_point_name == "from_1f_w" then
-    map:door_set_open("door", true)
+    map:set_doors_open("door", true)
     map:switch_set_activated("door_switch", true)
   end
 end
@@ -16,9 +16,9 @@ function map:on_switch_activated(switch_name)
   if switch_name == "door_switch"
       and not map:door_is_open("door") then
     sol.audio.play_sound("secret")
-    map:door_open("door")
+    map:open_doors("door")
     door_timer = sol.timer.start(12000, true, function()
-      map:door_close("door")
+      map:close_doors("door")
       map:switch_set_activated(switch_name, false)
     end)
   end

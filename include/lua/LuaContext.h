@@ -131,49 +131,6 @@ class LuaContext {
     void menu_on_started(int menu_ref);
     void menu_on_finished(int menu_ref);
 
-    // Game events.
-    void game_on_update(Game& game);
-    void game_on_pre_draw(Game& game, Surface& dst_surface);
-    void game_on_post_draw(Game& game, Surface& dst_surface);
-    void game_on_started(Game& game);
-    void game_on_finished(Game& game);
-
-    // Map events.
-    void map_on_update(Map& map);
-    void map_on_suspended(Map& map, bool suspended);
-    void map_on_started(Map& map, Destination* destination);
-    void map_on_finished(Map& map);
-    void map_on_opening_transition_finished(Map& map,
-        Destination* destination);
-    void map_on_dialog_started(Map& map, const std::string& dialog_id);
-    void map_on_dialog_finished(Map& map, const std::string& dialog_id, int answer);
-    void map_on_camera_back(Map& map);
-    void map_on_treasure_obtaining(Map& map, const Treasure& treasure);
-    void map_on_treasure_obtained(Map& map, const Treasure& treasure);
-    void map_on_switch_activated(Map& map, Switch& sw);
-    void map_on_switch_inactivated(Map& map, Switch& sw);
-    void map_on_switch_left(Map& map, Switch& sw);
-    void map_on_hero_victory_sequence_finished(Map& map);
-    void map_on_hero_on_sensor(Map& map, Sensor& sensor);
-    void map_on_hero_still_on_sensor(Map& map, Sensor& sensor);
-    void map_on_npc_movement_finished(Map& map, NPC& npc);
-    void map_on_npc_interaction(Map& map, NPC& npc);
-    void map_on_npc_interaction_finished(Map& map, NPC& npc);
-    bool map_on_npc_interaction_item(Map& map, NPC& npc,
-        const std::string& item_name, int variant);
-    void map_on_npc_interaction_item_finished(Map& map, NPC& npc,
-        const std::string& item_name, int variant);
-    void map_on_npc_collision_fire(Map& map, NPC& npc);
-    void map_on_sensor_collision_explosion(Map& map, Sensor& sensor);
-    bool map_on_chest_empty(Map& map, Chest& chest);
-    bool map_on_shop_item_buying(Map& map, ShopItem& shop_item);
-    void map_on_shop_item_bought(Map& map, ShopItem& shop_item);
-    void map_on_door_open(Map& map, Door& door);
-    void map_on_door_closed(Map& map, Door& door);
-    void map_on_block_moved(Map& map, Block& block);
-    void map_on_enemy_dying(Map& map, Enemy& enemy);
-    void map_on_enemy_dead(Map& map, Enemy& enemy);
-
     // Equipment item events.
     void item_on_update(EquipmentItem& item);
     void item_on_suspended(EquipmentItem& item, bool suspended);
@@ -193,7 +150,48 @@ class LuaContext {
     void item_on_dialog_started(EquipmentItem& item, const std::string& dialog_id);
     void item_on_dialog_finished(EquipmentItem& item, const std::string& dialog_id, int answer);
 
-    // Enemy events.
+    // Game events.
+    void game_on_update(Game& game);
+    void game_on_pre_draw(Game& game, Surface& dst_surface);
+    void game_on_post_draw(Game& game, Surface& dst_surface);
+    void game_on_started(Game& game);
+    void game_on_finished(Game& game);
+
+    // Map events.
+    void map_on_update(Map& map);
+    void map_on_suspended(Map& map, bool suspended);
+    void map_on_started(Map& map, Destination* destination);
+    void map_on_finished(Map& map);
+    void map_on_opening_transition_finished(Map& map,
+        Destination* destination);
+    void map_on_dialog_started(Map& map, const std::string& dialog_id);
+    void map_on_dialog_finished(Map& map, const std::string& dialog_id, int answer);
+    void map_on_camera_back(Map& map);
+
+    // Map entity events.
+    void switch_on_activated(Switch& sw);
+    void switch_on_inactivated(Switch& sw);
+    void switch_on_left(Switch& sw);
+    void hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure);
+    void hero_on_obtained_treasure(Hero& hero, const Treasure& treasure);
+    void hero_on_victory_finished(Hero& hero);  // TODO clear the hero events when changing map?
+    void sensor_on_activated(Sensor& sensor);
+    void sensor_on_activated_repeat(Sensor& sensor);
+    void sensor_on_collision_explosion(Sensor& sensor);
+    void npc_on_movement_finished(NPC& npc);
+    void npc_on_interaction(NPC& npc);
+    void npc_on_interaction_finished(NPC& npc);
+    bool npc_on_interaction_item(NPC& npc,
+        const std::string& item_name, int variant);
+    void npc_on_interaction_item_finished(NPC& npc,
+        const std::string& item_name, int variant);
+    void npc_on_collision_fire(NPC& npc);
+    bool chest_on_empty(Chest& chest);
+    bool shop_item_on_buying(ShopItem& shop_item);
+    void shop_item_on_bought(ShopItem& shop_item);
+    void door_on_open(Door& door);
+    void door_on_closed(Door& door);
+    void block_on_moved(Block& block);
     void enemy_on_update(Enemy& enemy);
     void enemy_on_suspended(Enemy& enemy, bool suspended);
     void enemy_on_appear(Enemy& enemy);
@@ -202,11 +200,11 @@ class LuaContext {
     void enemy_on_restart(Enemy& enemy);
     void enemy_on_pre_draw(Enemy& enemy);
     void enemy_on_post_draw(Enemy& enemy);
-    void enemy_on_position_changed(Enemy& enemy, const Rectangle& xy);
+    void enemy_on_position_changed(Enemy& enemy, const Rectangle& xy, Layer layer);
     void enemy_on_layer_changed(Enemy& enemy, Layer layer);
     void enemy_on_obstacle_reached(Enemy& enemy);
     void enemy_on_movement_changed(Enemy& enemy, Movement& movement);
-    void enemy_on_movement_finished(Enemy& enemy, Movement& movement);
+    void enemy_on_movement_finished(Enemy& enemy);
     void enemy_on_sprite_animation_finished(Enemy& enemy,
         Sprite& sprite, const std::string& animation);
     void enemy_on_sprite_frame_changed(Enemy& enemy,
@@ -216,6 +214,7 @@ class LuaContext {
     void enemy_on_custom_attack_received(Enemy& enemy,
         EnemyAttack attack, Sprite* sprite);
     void enemy_on_hurt(Enemy& enemy, EnemyAttack attack, int life_lost);
+    void enemy_on_dying(Enemy& enemy);
     void enemy_on_dead(Enemy& enemy);
     void enemy_on_immobilized(Enemy& enemy);
     void enemy_on_message_received(Enemy& enemy,
@@ -347,34 +346,36 @@ class LuaContext {
     void on_dialog_started(const std::string& dialog_id);
     void on_dialog_finished(const std::string& dialog_id, int answer);
     void on_camera_back();
-    void on_treasure_obtaining(const Treasure& treasure);
-    void on_treasure_obtained(const Treasure& treasure);
-    void on_switch_activated(Switch& sw);
-    void on_switch_inactivated(Switch& sw);
-    void on_switch_left(Switch& sw);
-    void on_hero_victory_sequence_finished();
-    void on_hero_on_sensor(Sensor& sensor);
-    void on_hero_still_on_sensor(Sensor& sensor);
-    void on_npc_movement_finished(NPC& npc);
-    void on_npc_interaction(NPC& npc);
+    void on_obtaining_treasure(const Treasure& treasure);
+    void on_obtained_treasure(const Treasure& treasure);
+    void on_victory_finished();
+    void on_activated();
+    void on_activated_repeat();
+    void on_inactivated();
+    void on_left();
+    void on_interaction();
+    void on_interaction_finished();
+    bool on_interaction_item(const std::string &item_name, int variant);
+    void on_interaction_item_finished(const std::string &item_name, int variant);
+    void on_npc_interaction(NPC& npc);  // TODO simplify
     void on_npc_interaction_finished(NPC& npc);
     bool on_npc_interaction_item(NPC& npc,
         const std::string &item_name, int variant);
     void on_npc_interaction_item_finished(NPC& npc,
         const std::string &item_name, int variant);
     void on_npc_collision_fire(NPC& npc);
-    void on_sensor_collision_explosion(Sensor& sensor);
-    bool on_chest_empty(Chest& chest);
-    bool on_shop_item_buying(ShopItem& shop_item);
-    void on_shop_item_bought(ShopItem& shop_item);
-    void on_door_open(Door& door);
-    void on_door_closed(Door& door);
-    void on_block_moved(Block& block);
-    void on_enemy_dying(Enemy& enemy);
-    void on_enemy_dead(Enemy& enemy);
+    void on_collision_fire();
+    void on_collision_explosion();
+    void on_collision_enemy(Enemy& enemy, Sprite& other_sprite, Sprite& this_sprite);
+    bool on_empty();
+    bool on_buying();
+    void on_bought();
+    void on_open();
+    void on_closed();
+    void on_moved();
     void on_map_changed(Map& map);
     void on_appear(Pickable& pickable);
-    void on_movement_changed(Pickable& pickable);
+    void on_movement_changed(Pickable& pickable);  // TODO remove
     void on_variant_changed(int variant);
     void on_amount_changed(int amount);
     void on_obtaining(const Treasure& treasure);
@@ -387,27 +388,27 @@ class LuaContext {
     void on_restart();
     void on_pre_draw();
     void on_post_draw();
-    void on_position_changed(const Rectangle& xy);
-    void on_layer_changed(Layer layer);
+    void on_position_changed(const Rectangle& xy, Layer layer);
     void on_obstacle_reached();
     void on_movement_changed(Movement& movement);
-    void on_movement_finished(Movement& movement);
+    void on_movement_finished();
     void on_sprite_animation_finished(Sprite& sprite, const std::string& animation);
     void on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
-    void on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
     void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
     void on_hurt(EnemyAttack attack, int life_lost);
+    void on_dying();
     void on_dead();
     void on_immobilized();
     void on_message_received(Enemy& src_enemy, const std::string& message);
 
     /**
-     * @brief Type of the functions that can be called by a Lua script
+     * @brief Type of the functions that can be called by Lua.
      * */
-    typedef int (FunctionAvailableToScript) (lua_State *l);
+    typedef int (FunctionExportedToLua) (lua_State* l);
 
     // Implementation of the API.
-    static FunctionAvailableToScript
+    // All functions named <type>_api_<name> can be called by Lua.
+    static FunctionExportedToLua
 
       // Main API.
       main_api_load_file,

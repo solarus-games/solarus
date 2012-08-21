@@ -30,13 +30,13 @@ function map:on_started(destination_point_name)
   -- puzzle B
   if destination_point_name == "from_b1_w"
       or destination_point_name == "from_b1_e" then
-    map:door_set_open("puzzle_b_door", true)
+    map:set_doors_open("puzzle_b_door", true)
     map:switch_set_activated("puzzle_b_door_switch", true)
   end
 
   -- south door
   if destination_point_name ~= "from_outside" then
-    map:door_set_open("s_door", true)
+    map:set_doors_open("s_door", true)
   end
 
   -- bridges that appear when a torch is lit
@@ -46,12 +46,12 @@ function map:on_started(destination_point_name)
   if not map:get_game():get_boolean(806) then
     map:chest_set_enabled("w_room_chest", false)
   else
-    map:door_set_open("w_room_door", true)
+    map:set_doors_open("w_room_door", true)
   end
 
   -- central room
-  map:door_set_open("c_door_e", true)
-  map:door_set_open("c_door_s", true)
+  map:set_doors_open("c_door_e", true)
+  map:set_doors_open("c_door_s", true)
 
   -- east enemies room
   if not map:get_game():get_boolean(808) then
@@ -115,7 +115,7 @@ function map:on_enemy_dead(enemy_name)
       and not map:door_is_open("s_door") then
     map:move_camera(1768, 1800, 250, function()
       sol.audio.play_sound("secret")
-      map:door_open("s_door")
+      map:open_doors("s_door")
     end)
     
   -- west enemies room
@@ -124,7 +124,7 @@ function map:on_enemy_dead(enemy_name)
     sol.audio.play_sound("chest_appears")
     map:chest_set_enabled("w_room_chest", true)
     if not map:door_is_open("w_room_door") then
-      map:door_open("w_room_door")
+      map:open_doors("w_room_door")
     end
 
   -- east enemies room
@@ -145,7 +145,7 @@ function map:on_switch_activated(switch_name)
     if not map:door_is_open("puzzle_b_door") then
       map:move_camera(808, 1544, 250, function()
 	sol.audio.play_sound("secret")
-	map:door_open("puzzle_b_door")
+	map:open_doors("puzzle_b_door")
 	map:switch_set_activated("puzzle_b_door_switch", true)
       end)
     end
@@ -166,7 +166,7 @@ function map:on_switch_activated(switch_name)
         and map:switch_is_activated("c_room_switch_3")
         and map:switch_is_activated("c_room_switch_4") then
       sol.audio.play_sound("secret")
-      map:door_open("c_door")
+      map:open_doors("c_door")
     end
 
   -- puzzle B: the switches have to be activated clockwise
@@ -201,7 +201,7 @@ function map:on_switch_activated(switch_name)
       else
 	-- correct
 	sol.audio.play_sound("secret")
-	map:door_open("puzzle_b_door")
+	map:open_doors("puzzle_b_door")
         map:switch_set_activated("puzzle_b_door_switch", true)
       end
     end
@@ -255,22 +255,22 @@ function map:on_hero_on_sensor(sensor_name)
 
     if map:door_is_open("w_room_door")
 	 and not map:chest_is_enabled("w_room_chest") then
-      map:door_close("w_room_door")
+      map:close_doors("w_room_door")
       map:enemy_create("w_room_enemy_1", "blue_pig_soldier", 1, 752, 877)
       map:enemy_create("w_room_enemy_2", "red_pig_soldier", 1, 808, 885)
       map:enemy_create("w_room_enemy_3", "blue_pig_soldier", 1, 864, 877)
     end
   elseif sensor_name == "open_w_room_sensor" then
-    map:door_set_open("w_room_door", true)
+    map:set_doors_open("w_room_door", true)
 
   -- central room
   elseif sensor_name:find("^close_c_doors_sensor")
       and map:door_is_open("c_door_e")
       and not map:switch_is_activated("c_room_switch_1") then
     if map:door_is_open("c_big_key_door") then
-      map:door_close("c_door_s")
+      map:close_doors("c_door_s")
     end
-    map:door_close("c_door_e")
+    map:close_doors("c_door_e")
     map:switch_set_activated("c_room_switch_1", false)
     map:switch_set_activated("c_room_switch_2", false)
     map:switch_set_activated("c_room_switch_3", false)
@@ -281,7 +281,7 @@ function map:on_hero_on_sensor(sensor_name)
 
     if not map:switch_is_activated("puzzle_b_switch_1")
         and map:door_is_open("puzzle_b_door") then
-      map:door_close("puzzle_b_door")
+      map:close_doors("puzzle_b_door")
       map:switch_set_activated("puzzle_b_door_switch", false)
     end
 

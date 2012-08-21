@@ -3,11 +3,11 @@ local map = ...
 
 function map:on_started(destination_point_name)
 
-  map:door_set_open("miniboss_door", true)
-  map:door_set_open("boss_door", true)
+  map:set_doors_open("miniboss_door", true)
+  map:set_doors_open("boss_door", true)
   if destination_point_name == "from_5f_c"
       or map:get_game():get_boolean(903) then
-    map:door_set_open("final_room_door", true)
+    map:set_doors_open("final_room_door", true)
   end
 end
 
@@ -20,7 +20,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not map:get_game():get_boolean(901)
       and not fighting_miniboss then
     -- the miniboss is alive
-    map:door_close("miniboss_door")
+    map:close_doors("miniboss_door")
     map:hero_walk(666666, false, false)
   elseif sensor_name == "start_miniboss_sensor_2"
       and not map:get_game():get_boolean(901)
@@ -33,7 +33,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not map:get_game():get_boolean(902)
       and not fighting_boss then
     map:hero_freeze()
-    map:door_close("boss_door")
+    map:close_doors("boss_door")
     sol.audio.stop_music()
     sol.timer.start(1000, start_boss)
   end
@@ -51,7 +51,7 @@ function map:on_enemy_dead(enemy_name)
 
   if enemy_name == "miniboss" then
     sol.audio.play_music("dark_world_dungeon")
-    map:door_open("miniboss_door")
+    map:open_doors("miniboss_door")
     map:tile_set_group_enabled("miniboss_prickles", false)
   end
 end
@@ -71,7 +71,7 @@ function map:on_dialog_finished(dialog_id)
   end
 end
 
-function map:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.timer.start(9000, open_final_room)
@@ -83,7 +83,7 @@ end
 
 function open_final_room()
 
-  map:door_open("final_room_door")
+  map:open_doors("final_room_door")
   sol.audio.play_sound("secret")
   map:hero_unfreeze()
 end

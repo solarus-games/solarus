@@ -7,9 +7,9 @@ function map:on_started(destination_point_name)
 
   -- miniboss
   map:enemy_set_group_enabled("miniboss", false)
-  map:door_set_open("miniboss_e_door", true)
+  map:set_doors_open("miniboss_e_door", true)
   if map:get_game():get_boolean(866) then
-    map:door_set_open("miniboss_door", true)
+    map:set_doors_open("miniboss_door", true)
   end
 end
 
@@ -21,7 +21,7 @@ function map:on_enemy_dead(enemy_name)
         and map:enemy_is_group_dead("door_a_enemy") then
       map:move_camera(2248, 648, 250, function()
 	sol.audio.play_sound("secret")
-	map:door_open("door_a")
+	map:open_doors("door_a")
       end)
     end
 
@@ -31,7 +31,7 @@ function map:on_enemy_dead(enemy_name)
 
     sol.audio.play_music("southern_shrine")
     sol.audio.play_sound("secret")
-    map:door_open("miniboss_door")
+    map:open_doors("miniboss_door")
     map:get_game():set_boolean(866, true)
   end
 end
@@ -52,7 +52,7 @@ function map:on_npc_interaction(npc_name)
 	else
 	  map:move_camera(1928, 1928, 500, function()
 	    sol.audio.play_sound("secret")
-	    map:door_open("door_b")
+	    map:open_doors("door_b")
 	  end)
 	end
       else
@@ -72,7 +72,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not fighting_miniboss then
 
     map:hero_freeze()
-    map:door_close("miniboss_e_door")
+    map:close_doors("miniboss_e_door")
     fighting_miniboss = true
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")

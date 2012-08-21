@@ -83,7 +83,7 @@ function map:on_update()
     lock_torches()
     map:move_camera(584, 360, 250, function()
       sol.audio.play_sound("secret")
-      map:door_open("torches_door")
+      map:open_doors("torches_door")
     end)
   end
 end
@@ -101,12 +101,12 @@ end
 
 function open_se_door()
   sol.audio.play_sound("secret")
-  map:door_open("se_door")
+  map:open_doors("se_door")
 end
 
 function open_ce_door()
   sol.audio.play_sound("secret")
-  map:door_open("ce_door")
+  map:open_doors("ce_door")
 end
 
 function remove_c_water()

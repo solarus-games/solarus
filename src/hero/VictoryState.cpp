@@ -77,7 +77,7 @@ void Hero::VictoryState::update() {
 
   if (!finished && System::now() >= end_victory_date) {
     finished = true;
-    get_lua_context().map_on_hero_victory_sequence_finished(get_map());
+    get_lua_context().hero_on_victory_finished(hero);
   }
 }
 

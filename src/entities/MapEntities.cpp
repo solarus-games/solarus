@@ -231,7 +231,6 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(const std::string& prefix
   return entities;
 }
 
-
 /**
  * @brief Returns the entities of the map with the specified type and having
  * the specified name prefix.
@@ -254,6 +253,26 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(
   }
 
   return entities;
+}
+
+/**
+ * @brief Returns whether there exists at least one entity with the specified
+ * name prefix on the map.
+ * @param prefix Prefix of the name.
+ * @return \c true if there exists an entity with this prefix.
+ */
+bool MapEntities::has_entity_with_prefix(const std::string& prefix) {
+
+  list<MapEntity*>::iterator i;
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+
+    MapEntity* entity = *i;
+    if (entity->has_prefix(prefix) && !entity->is_being_removed()) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /**

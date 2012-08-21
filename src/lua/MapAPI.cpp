@@ -60,14 +60,22 @@ void LuaContext::register_map_module() {
       { "draw_sprite", map_api_draw_sprite },
       { "get_tileset", map_api_get_tileset },
       { "set_tileset", map_api_set_tileset },
-      { "crystal_get_state", map_api_crystal_get_state },  // TODO rename (no prefix)
+      { "get_hero", map_api_get_hero },
+      { "crystal_get_state", map_api_crystal_get_state },
       { "crystal_set_state", map_api_crystal_set_state },
       { "crystal_change_state", map_api_crystal_change_state },
-      { "arrow_remove", map_api_arrow_remove },  // TODO remove (nothing to do here, used only once)
+      { "arrow_remove", map_api_arrow_remove },
+      { "open_doors", map_api_open_doors },
+      { "close_doors", map_api_close_doors },
+      { "set_doors_open", map_api_set_doors_open },
       { "create_entity", map_api_create_entity },
       { "get_entity", map_api_get_entity },
+      { "has_entity", map_api_has_entity },
       { "get_entities", map_api_get_entities },
-      { "get_hero", map_api_get_hero },
+      { "get_entities_count", map_api_get_entities_count },
+      { "has_entities", map_api_has_entities },
+      { "set_entities_enabled", map_api_set_entities_enabled },
+      { "remove_entities", map_api_remove_entities },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -121,8 +129,7 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
 
   MapEntity* entity = map.get_entities().find_entity(name);
   if (entity != NULL) {
-    // TODO push_entity(l, entity);
-    push_sprite(l, entity->get_sprite());
+    push_entity(l, *entity);
   }
   else {
     lua_getglobal(l, name.c_str());
@@ -181,7 +188,7 @@ int LuaContext::map_api_get_game(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_start_dialog.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -201,7 +208,7 @@ int LuaContext::map_api_start_dialog(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_set_dialog_variable.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -217,7 +224,7 @@ int LuaContext::map_api_set_dialog_variable(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_set_dialog_style.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -232,7 +239,7 @@ int LuaContext::map_api_set_dialog_style(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_set_pause_enabled.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -247,7 +254,7 @@ int LuaContext::map_api_set_pause_enabled(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_get_light.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -262,7 +269,7 @@ int LuaContext::map_api_get_light(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_set_light.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -277,7 +284,7 @@ int LuaContext::map_api_set_light(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_move_camera.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -314,7 +321,7 @@ int LuaContext::map_api_move_camera(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_draw_sprite.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -331,7 +338,7 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_get_tileset.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -346,7 +353,7 @@ int LuaContext::map_api_get_tileset(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_set_tileset.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -361,976 +368,20 @@ int LuaContext::map_api_set_tileset(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_get_hero.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_hero_start_treasure(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string &item_name = luaL_checkstring(l, 2);
-  int variant = luaL_checkinteger(l, 3);
-  int savegame_variable = luaL_checkinteger(l, 4);
-
-  map.get_entities().get_hero().start_treasure(
-      Treasure(map.get_game(), item_name, variant, savegame_variable));
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_freeze(lua_State* l) {
+int LuaContext::map_api_get_hero(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
-  map.get_entities().get_hero().start_freezed();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_unfreeze(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  map.get_entities().get_hero().start_free();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_set_map(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  MapId map_id = luaL_checkinteger(l, 2);
-  const std::string &destination_name = luaL_checkstring(l, 3);
-  Transition::Style transition_style = Transition::Style(luaL_checkinteger(l, 4));
-
-  map.get_game().set_current_map(map_id, destination_name, transition_style);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_set_visible(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  bool visible = lua_toboolean(l, 2) != 0;
-
-  map.get_entities().get_hero().set_visible(visible);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_get_direction(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  int direction = map.get_entities().get_hero().get_animation_direction();
-
-  lua_pushinteger(l, direction);
+  push_hero(map.get_hero());
   return 1;
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_set_direction(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  int direction = luaL_checkinteger(l, 2);
-
-  map.get_entities().get_hero().set_animation_direction(direction);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_get_position(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  Hero& hero = map.get_entities().get_hero();
-
-  lua_pushinteger(l, hero.get_x());
-  lua_pushinteger(l, hero.get_y());
-  lua_pushinteger(l, hero.get_layer());
-  return 3;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_set_position(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  int layer = -1;
-  if (lua_gettop(l) >= 4) {
-    layer = luaL_checkinteger(l, 4);
-  }
-
-  Hero& hero = map.get_entities().get_hero();
-  hero.set_xy(x, y);
-  if (layer != -1) {
-    map.get_entities().set_entity_layer(hero, Layer(layer));
-  }
-  hero.check_position();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_align_on_sensor(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* sensor = entities.get_entity(name);
-  map.get_entities().get_hero().set_xy(sensor->get_xy());
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_save_solid_ground(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  Hero& hero = map.get_entities().get_hero();
-
-  int x, y, layer;
-  if (lua_gettop(l) >= 2) {
-    x = luaL_checkinteger(l, 2);
-    y = luaL_checkinteger(l, 3);
-    layer = luaL_checkinteger(l, 4);
-  }
-  else {
-    x = hero.get_x();
-    y = hero.get_y();
-    layer = hero.get_layer();
-  }
-
-  hero.set_target_solid_ground_coords(Rectangle(x, y), Layer(layer));
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_reset_solid_ground(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  Hero& hero = map.get_entities().get_hero();
-
-  hero.reset_target_solid_ground_coords();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_walk(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& path = luaL_checkstring(l, 2);
-  bool loop = lua_toboolean(l, 3) != 0;
-  bool ignore_obstacles = lua_toboolean(l, 4) != 0;
-
-  map.get_entities().get_hero().start_forced_walking(path, loop, ignore_obstacles);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_start_jumping(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  int direction = luaL_checkinteger(l, 2);
-  int length = luaL_checkinteger(l, 3);
-  bool ignore_obstacles = lua_toboolean(l, 4) != 0;
-
-  map.get_entities().get_hero().start_jumping(
-      direction, length, ignore_obstacles, false);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_start_victory_sequence(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  map.get_entities().get_hero().start_victory();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_start_boomerang(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  int max_distance = luaL_checkinteger(l, 2);
-  int speed = luaL_checkinteger(l, 3);
-  const std::string& tunic_preparing_animation = luaL_checkstring(l, 4);
-  const std::string& sprite_name = luaL_checkstring(l, 5);
-
-  map.get_entities().get_hero().start_boomerang(max_distance, speed,
-      tunic_preparing_animation, sprite_name);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_start_bow(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  map.get_entities().get_hero().start_bow();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_start_hookshot(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  map.get_entities().get_hero().start_hookshot();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_start_running(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  map.get_entities().get_hero().start_running();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_hero_start_hurt(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  int source_x = luaL_checkinteger(l, 2);
-  int source_y = luaL_checkinteger(l, 3);
-  int life_points = luaL_checkinteger(l, 4);
-  int magic_points = luaL_checkinteger(l, 5);
-
-  map.get_entities().get_hero().hurt(Rectangle(source_x, source_y),
-      life_points, magic_points);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_npc_is_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* npc = entities.get_entity(name);
-
-  lua_pushboolean(l, npc->is_enabled());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_npc_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enabled = lua_toboolean(l, 3);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* npc = entities.get_entity(name);
-  npc->set_enabled(enabled);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_npc_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3);
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(NON_PLAYING_CHARACTER, prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_npc_get_position(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* npc = entities.get_entity(name);
-
-  lua_pushinteger(l, npc->get_x());
-  lua_pushinteger(l, npc->get_y());
-  lua_pushinteger(l, npc->get_layer());
-  return 3;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_npc_set_position(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  int x = luaL_checkinteger(l, 3);
-  int y = luaL_checkinteger(l, 4);
-  int layer = -1;
-  if (lua_gettop(l) >= 5) {
-    layer = luaL_checkinteger(l, 5);
-  }
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* npc = entities.get_entity(name);
-  npc->set_xy(x, y);
-  if (layer != -1) {
-    MapEntities& entities = map.get_entities();
-    entities.set_entity_layer(*npc, Layer(layer));
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_npc_start_movement(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  Movement& movement = check_movement(l, 3);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* npc = entities.get_entity(name);
-
-  movement.set_suspended(false);
-  npc->clear_movement();
-  npc->set_movement(&movement);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_npc_stop_movement(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* npc = entities.get_entity(name);
-  npc->clear_movement();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_npc_get_sprite(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& entity_name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* npc = entities.get_entity(entity_name);
-
-  push_sprite(l, npc->get_sprite());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_npc_remove(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  entities.remove_entity(name);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_npc_exists(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* npc = entities.find_entity(name);
-
-  lua_pushboolean(l, npc != NULL);
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_chest_is_open(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* entity = entities.get_entity(name);
-  Debug::check_assertion(entity->get_type() == CHEST,
-      "This entity is not a chest");
-  Chest* chest = (Chest*) entity;
-
-  lua_pushboolean(l, chest->is_open());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_chest_set_open(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string &name = luaL_checkstring(l, 2);
-  bool open = lua_toboolean(l, 3) != 0;
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* entity = entities.get_entity(name);
-  Debug::check_assertion(entity->get_type() == CHEST,
-      "This entity is not a chest");
-  Chest* chest = (Chest*) entity;
-  chest->set_open(open);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_chest_is_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* chest = entities.get_entity(name);
-
-  lua_pushboolean(l, chest->is_visible());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_chest_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enabled = lua_toboolean(l, 3) != 0;
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* chest = entities.get_entity(name);
-  chest->set_visible(enabled);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_chest_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_tile_is_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* dynamic_tile = entities.get_entity(name);
-
-  lua_pushboolean(l, dynamic_tile->is_enabled());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_tile_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* dynamic_tile = entities.get_entity(name);
-  dynamic_tile->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_tile_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_stairs_is_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities &entities = map.get_entities();
-  MapEntity* stairs = entities.get_entity(name);
-
-  lua_pushboolean(l, stairs->is_enabled());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_stairs_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* stairs = entities.get_entity(name);
-  stairs->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_stairs_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_wall_is_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* wall = entities.get_entity(name);
-
-  lua_pushboolean(l, wall->is_enabled());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_wall_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* wall = entities.get_entity(name);
-  wall->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_wall_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_sensor_is_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* sensor = entities.get_entity(name);
-
-  lua_pushboolean(l, sensor->is_enabled());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_sensor_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string &name = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* sensor = entities.get_entity(name);
-  sensor->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_sensor_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_jumper_is_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* jumper = entities.get_entity(name);
-
-  lua_pushboolean(l, jumper->is_enabled());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_jumper_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* jumper = entities.get_entity(name);
-  jumper->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_jumper_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_crystal_is_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* crystal = entities.get_entity(name);
-
-  lua_pushboolean(l, crystal->is_enabled());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_crystal_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* crystal = entities.get_entity(name);
-  crystal->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_crystal_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3) != 0;
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_crystal_get_state.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1343,7 +394,7 @@ int LuaContext::map_api_crystal_get_state(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_crystal_set_state.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1361,7 +412,7 @@ int LuaContext::map_api_crystal_set_state(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_crystal_change_state.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1375,348 +426,26 @@ int LuaContext::map_api_crystal_change_state(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_arrow_remove.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_teletransporter_is_enabled(lua_State* l) {
+int LuaContext::map_api_arrow_remove(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
 
   MapEntities& entities = map.get_entities();
-  MapEntity* teletransporter = entities.get_entity(name);
-
-  lua_pushboolean(l, teletransporter->is_enabled());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_teletransporter_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* teletransporter = entities.get_entity(name);
-  teletransporter->set_enabled(enable);
+  entities.remove_arrows();
 
   return 0;
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_open_doors.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_teletransporter_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3);
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_block_is_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* block = entities.get_entity(name);
-
-  lua_pushboolean(l, block->is_enabled());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_block_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* block = entities.get_entity(name);
-  block->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_block_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3);
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_block_reset(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* entity = entities.get_entity(name);
-  Debug::check_assertion(entity->get_type() == BLOCK,
-      "This entity is not a block");
-  Block* block = (Block*) entity;
-  block->reset();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_block_get_position(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* block = entities.get_entity(name);
-
-  lua_pushinteger(l, block->get_x());
-  lua_pushinteger(l, block->get_y());
-  lua_pushinteger(l, block->get_layer());
-
-  return 3;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_block_set_position(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  int x = luaL_checkinteger(l, 3);
-  int y = luaL_checkinteger(l, 4);
-  int layer = -1;
-  if (lua_gettop(l) >= 5) {
-    layer = luaL_checkinteger(l, 5);
-  }
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* block = entities.get_entity(name);
-  block->set_xy(x, y);
-
-  if (layer != -1) {
-    MapEntities& entities = map.get_entities();
-    entities.set_entity_layer(*block, Layer(layer));
-  }
-  block->check_collision_with_detectors(false);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_shop_item_exists(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  bool exists = map.get_entities().find_entity(name) != NULL;
-
-  lua_pushboolean(l, exists);
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_shop_item_remove(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* shop_item = entities.find_entity(name);
-  if (shop_item != NULL) {
-    entities.remove_entity(shop_item);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_switch_is_activated(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string &name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* entity = entities.get_entity(name);
-  Debug::check_assertion(entity->get_type() == SWITCH,
-      "This entity is not a switch");
-  Switch* sw = (Switch*) entity;
-
-  lua_pushboolean(l, sw->is_activated());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_switch_set_activated(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool activate = lua_toboolean(l, 3);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* entity = entities.get_entity(name);
-  Debug::check_assertion(entity->get_type() == SWITCH,
-      "This entity is not a switch");
-  Switch* sw = (Switch*) entity;
-  sw->set_activated(activate);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_switch_set_locked(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool lock = lua_toboolean(l, 3);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* entity = entities.get_entity(name);
-  Debug::check_assertion(entity->get_type() == SWITCH,
-      "This entity is not a switch");
-  Switch* sw = (Switch*) entity;
-  sw->set_locked(lock);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_switch_is_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* sw = entities.get_entity(name);
-
-  lua_pushboolean(l, sw->is_enabled());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_switch_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* sw = entities.get_entity(name);
-  sw->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_switch_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3);
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_door_open(lua_State* l) {
+int LuaContext::map_api_open_doors(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1726,7 +455,7 @@ int LuaContext::map_api_door_open(lua_State* l) {
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
-    Door* door = (Door*) (*it);
+    Door* door = static_cast<Door*>(*it);
     if (!door->is_open() || door->is_changing()) {
       door->open();
       done = true;
@@ -1743,11 +472,11 @@ int LuaContext::map_api_door_open(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_close_doors.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_door_close(lua_State* l) {
+int LuaContext::map_api_close_doors(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
@@ -1757,7 +486,7 @@ int LuaContext::map_api_door_close(lua_State* l) {
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
-    Door* door = (Door*) (*it);
+    Door* door = static_cast<Door*>(*it);
     if (door->is_open() || door->is_changing()) {
       door->close();
       done = true;
@@ -1774,44 +503,167 @@ int LuaContext::map_api_door_close(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_set_doors_open.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_door_is_open(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* entity = entities.get_entity(name);
-  Debug::check_assertion(entity->get_type() == DOOR,
-      "This entity is not a door");
-  Door* door = (Door*) entity;
-
-  lua_pushboolean(l, door->is_open());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_door_set_open(lua_State* l) {
+int LuaContext::map_api_set_doors_open(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
-  bool open = lua_toboolean(l, 3) != 0;
+  bool open = true;
+  if (lua_isboolean(l, 3)) {
+    open = lua_toboolean(l, 3);
+  }
 
   MapEntities& entities = map.get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
-    Door* door = (Door*) (*it);
+    Door* door = static_cast<Door*>(*it);
     door->set_open(open);
   }
 
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_entity.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_entity(lua_State* l) {
+
+  // TODO
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_get_entity.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_entity(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& name = luaL_checkstring(l, 2);
+
+  MapEntity* entity = map.get_entities().find_entity(name);
+
+  if (entity != NULL) {
+    push_entity(l, *entity);
+  }
+  else {
+    lua_pushnil(l);
+  }
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_has_entity.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_has_entity(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& name = luaL_checkstring(l, 2);
+
+  MapEntity* entity = map.get_entities().find_entity(name);
+
+  lua_pushboolean(l, entity != NULL);
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_get_entities.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_entities(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
+
+  const std::list<MapEntity*> entities =
+    map.get_entities().get_entities_with_prefix(prefix);
+
+  lua_newtable(l);
+  int i = 0;
+  std::list<MapEntity*>::const_iterator it;
+  for (it = entities.begin(); it != entities.end(); it++) {
+    MapEntity* entity = *it;
+    push_entity(l, *entity);
+    lua_rawseti(l, -2, ++i);
+  }
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_get_entities_count.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_entities_count(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
+
+  const std::list<MapEntity*> entities =
+    map.get_entities().get_entities_with_prefix(prefix);
+
+  lua_pushinteger(l, entities.size());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_has_entities.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_has_entities(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
+
+  lua_pushboolean(l, entities.has_entity_with_prefix(prefix));
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_set_entities_enabled.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_entities_enabled(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& name = luaL_checkstring(l, 2);
+  bool enabled = true;  // true if unspecified.
+  if (lua_isboolean(l, 3)) {
+    enabled = lua_toboolean(l, 3);
+  }
+
+  std::list<MapEntity*> entities =
+      map.get_entities().get_entities_with_prefix(prefix);
+  std::list<MapEntity*>::iterator it;
+  for (it = entities.begin(); it != entities.end(); it++) {
+    (*it)->set_enabled(enable);
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_remove_entities.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_remove_entities(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 2);
+
+  map.get_entities().remove_entities_with_prefix(prefix);
   return 0;
 }
 
@@ -2015,21 +867,6 @@ int LuaContext::map_api_fire_create(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_arrow_remove(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  MapEntities& entities = map.get_entities();
-  entities.remove_arrows();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
 int LuaContext::map_api_enemy_create(lua_State* l) {
 
   Map& map = check_map(l, 1);
@@ -2047,277 +884,6 @@ int LuaContext::map_api_enemy_create(lua_State* l) {
   enemy->restart();
 
   return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_remove(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  entities.remove_entity(name);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_remove_group(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  entities.remove_entities_with_prefix(prefix);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_is_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* enemy = entities.get_entity(name);
-
-  lua_pushboolean(l, enemy->is_enabled());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_set_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* enemy = entities.get_entity(name);
-  enemy->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_set_group_enabled(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-  bool enable = lua_toboolean(l, 3);
-
-  std::list<MapEntity*> entities =
-      map.get_entities().get_entities_with_prefix(prefix);
-
-  std::list<MapEntity*>::iterator it;
-  for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_is_dead(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* enemy = entities.find_entity(name);
-
-  lua_pushboolean(l, (enemy == NULL));
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_is_group_dead(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(prefix);
-
-  lua_pushboolean(l, enemies.empty());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_get_group_count(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& prefix = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(prefix);
-
-  lua_pushinteger(l, enemies.size());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_get_position(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* enemy = entities.get_entity(name);
-  const Rectangle& coordinates = enemy->get_xy();
-
-  lua_pushinteger(l, coordinates.get_x());
-  lua_pushinteger(l, coordinates.get_y());
-  lua_pushinteger(l, enemy->get_layer());
-  return 3;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_set_position(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  int x = luaL_checkinteger(l, 3);
-  int y = luaL_checkinteger(l, 4);
-  int layer = -1;
-  if (lua_gettop(l) >= 5) {
-    layer = luaL_checkinteger(l, 5);
-  }
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* enemy = entities.get_entity(name);
-  enemy->set_xy(x, y);
-
-  if (layer != -1) {
-    MapEntities& entities = map.get_entities();
-    entities.set_entity_layer(*enemy, Layer(layer));
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_set_treasure(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& enemy_name = luaL_checkstring(l, 2);
-  const std::string& item_name = luaL_checkstring(l, 3);
-  int variant = luaL_checkinteger(l, 4);
-  int savegame_variable = luaL_checkinteger(l, 5);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* entity = entities.get_entity(enemy_name);
-  Debug::check_assertion(entity->get_type() == ENEMY,
-      "This entity is not an enemy");
-  Enemy* enemy = (Enemy*) entity;
-  Treasure treasure(enemy->get_game(), item_name, variant, savegame_variable);
-  enemy->set_treasure(treasure);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_set_no_treasure(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& enemy_name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* entity = entities.get_entity(enemy_name);
-  Debug::check_assertion(entity->get_type() == ENEMY,
-      "This entity is not an enemy");
-  Enemy* enemy = (Enemy*) entity;
-  Treasure treasure(enemy->get_game(), "_none", 1, -1);
-  enemy->set_treasure(treasure);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_set_random_treasure(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& enemy_name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* entity = entities.get_entity(enemy_name);
-  Debug::check_assertion(entity->get_type() == ENEMY,
-      "This entity is not an enemy");
-  Enemy* enemy = (Enemy*) entity;
-  Treasure treasure(enemy->get_game(), "_random", 1, -1);
-  enemy->set_treasure(treasure);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_enemy_get_sprite(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& enemy_name = luaL_checkstring(l, 2);
-
-  MapEntities& entities = map.get_entities();
-  MapEntity* enemy = entities.get_entity(enemy_name);
-
-  push_sprite(l, enemy->get_sprite());
-  return 1;
 }
 
 /**

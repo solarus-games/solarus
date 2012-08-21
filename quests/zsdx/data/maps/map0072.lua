@@ -33,11 +33,11 @@ end
 function map:on_enemy_dead(enemy_name)
 
   if map:enemy_is_group_dead("enemy") then
-    map:hero_start_victory_sequence()
+    map:hero_start_victory()
   end
 end
 
-function map:on_hero_victory_sequence_finished()
+function map:on_hero_victory_finished()
 
   map:get_game():set_boolean(156, true)
   map:hero_set_map(3, "out_smith_cave", 1)

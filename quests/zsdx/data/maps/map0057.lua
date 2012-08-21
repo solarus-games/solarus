@@ -76,7 +76,7 @@ function map:on_treasure_obtained(item_name, variant, savegame_variable)
     map:hero_set_direction(3)
     sol.timer.start(9000, start_final_sequence)
   elseif item_name == "quiver" then
-    map:hero_start_victory_sequence()
+    map:hero_start_victory()
   end
 end
 
@@ -110,7 +110,7 @@ function map:on_dialog_finished(dialog_id)
   end
 end
 
-function map:on_hero_victory_sequence_finished()
+function map:on_hero_victory_finished()
   map:get_game():set_dungeon_finished(6)
   map:get_game():set_boolean(155, false) -- reopen the rupee house
   map:hero_set_map(7, "from_dungeon_6", 1)

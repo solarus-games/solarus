@@ -137,6 +137,7 @@ void Chest::initialize_sprite() {
 /**
  * @brief Sets whether this entity is visible.
  * @param visible true to make it visible
+ * FIXME replace by notify_enabled (set_visible is no longer used).
  */
 void Chest::set_visible(bool visible) {
 

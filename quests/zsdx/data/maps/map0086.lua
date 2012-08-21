@@ -30,11 +30,11 @@ end
 function map:on_dialog_finished(dialog_id, answer)
 
   if dialog_id == "dungeon_2.solarus_child" then
-    map:hero_start_victory_sequence()
+    map:hero_start_victory()
   end
 end
 
-function map:on_hero_victory_sequence_finished()
+function map:on_hero_victory_finished()
   map:get_game():set_dungeon_finished(2)
   map:hero_set_map(3, "from_dungeon_2", 1)
 end

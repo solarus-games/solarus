@@ -28,11 +28,11 @@ end
 function map:on_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
-    map:hero_start_victory_sequence()
+    map:hero_start_victory()
   end
 end
 
-function map:on_hero_victory_sequence_finished()
+function map:on_hero_victory_finished()
 
   map:hero_unfreeze()
   sol.audio.play_music("light_world_dungeon")

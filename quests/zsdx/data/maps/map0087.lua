@@ -31,13 +31,13 @@ end
 function map:on_dialog_finished(dialog_id, answer)
 
   if dialog_id == "dungeon_4.solarus_child" then
-    map:hero_start_victory_sequence()
+    map:hero_start_victory()
   elseif dialog_id == "dungeon_4.agahnim" then
     agahnim_sequence_5()
   end
 end
 
-function map:on_hero_victory_sequence_finished()
+function map:on_hero_victory_finished()
 
   sol.timer.start(2000, agahnim_sequence_1)
 end

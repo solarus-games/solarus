@@ -122,11 +122,11 @@ end
 function map:on_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
-    map:hero_start_victory_sequence()
+    map:hero_start_victory()
   end
 end
 
-function map:on_hero_victory_sequence_finished()
+function map:on_hero_victory_finished()
 
   map:get_game():set_dungeon_finished(10)
   map:hero_set_map(119, "from_dungeon_10", 1)

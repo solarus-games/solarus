@@ -26,6 +26,7 @@ const std::string LuaContext::entity_chest_module_name = "sol.entity.chest";
 const std::string LuaContext::entity_block_module_name = "sol.entity.block";
 const std::string LuaContext::entity_switch_module_name = "sol.entity.switch";
 const std::string LuaContext::entity_door_module_name = "sol.entity.door";
+const std::string LuaContext::entity_enemy_module_name = "sol.entity.enemy";
 
 /**
  * @brief Initializes the map entity features provided to Lua.
@@ -57,25 +58,25 @@ void LuaContext::register_entity_module() {
 
   // Hero.
   static const luaL_Reg hero_methods[] = {
-      { "freeze", entity_hero_api_freeze },
-      { "unfreeze", entity_hero_api_unfreeze },
-      { "set_map", entity_hero_api_set_map },
-      { "set_visible", entity_hero_api_set_visible },
-      { "get_direction", entity_hero_api_get_direction },
-      { "set_direction", entity_hero_api_set_direction },
-      { "set_position", entity_hero_api_set_position },
-      { "align_on_sensor", entity_hero_api_align_on_sensor },
-      { "save_solid_ground", entity_hero_api_save_solid_ground },
-      { "reset_solid_ground", entity_hero_api_reset_solid_ground },
-      { "walk", entity_hero_api_walk },
-      { "start_jumping", entity_hero_api_start_jumping },
-      { "start_treasure", entity_hero_api_start_treasure },
-      { "start_victory_sequence", entity_hero_api_start_victory_sequence },
-      { "start_boomerang", entity_hero_api_start_boomerang },
-      { "start_bow", entity_hero_api_start_bow },
-      { "start_hookshot", entity_hero_api_start_hookshot },
-      { "start_running", entity_hero_api_start_running },
-      { "start_hurt", entity_hero_api_start_hurt },
+      { "freeze", hero_api_freeze },
+      { "unfreeze", hero_api_unfreeze },
+      { "set_map", hero_api_set_map },
+      { "set_visible", hero_api_set_visible },
+      { "get_direction", hero_api_get_direction },
+      { "set_direction", hero_api_set_direction },
+      { "set_position", hero_api_set_position },
+      { "align_on_sensor", hero_api_align_on_sensor },
+      { "save_solid_ground", hero_api_save_solid_ground },
+      { "reset_solid_ground", hero_api_reset_solid_ground },
+      { "walk", hero_api_walk },
+      { "start_jumping", hero_api_start_jumping },
+      { "start_treasure", hero_api_start_treasure },
+      { "start_victory", hero_api_start_victory},
+      { "start_boomerang", hero_api_start_boomerang },
+      { "start_bow", hero_api_start_bow },
+      { "start_hookshot", hero_api_start_hookshot },
+      { "start_running", hero_api_start_running },
+      { "start_hurt", hero_api_start_hurt },
       { NULL, NULL }
   };
   register_functions(entity_hero_module_name, common_methods);
@@ -84,10 +85,10 @@ void LuaContext::register_entity_module() {
 
   // Non-playing character.
   static const luaL_Reg npc_methods[] = {
-      { "start_movement", entity_npc_api_start_movement },
-      { "stop_movement", entity_npc_api_stop_movement },
-      { "get_sprite", entity_npc_api_get_sprite },
-      { "set_position", entity_npc_api_set_position }
+      { "start_movement", npc_api_start_movement },
+      { "stop_movement", npc_api_stop_movement },
+      { "get_sprite", npc_api_get_sprite },
+      { "set_position", npc_api_set_position }
   };
   register_functions(entity_npc_module_name, common_methods);
   register_type(entity_npc_module_name, npc_methods,
@@ -95,8 +96,8 @@ void LuaContext::register_entity_module() {
 
   // Chest.
   static const luaL_Reg chest_methods[] = {
-      { "is_open", entity_chest_api_is_open },
-      { "set_open", entity_chest_api_set_open },
+      { "is_open", chest_api_is_open },
+      { "set_open", chest_api_set_open },
   };
   register_functions(entity_chest_module_name, common_methods);
   register_type(entity_chest_module_name, chest_methods,
@@ -104,8 +105,8 @@ void LuaContext::register_entity_module() {
 
   // Block.
   static const luaL_Reg block_methods[] = {
-      { "block_reset", entity_block_api_reset },
-      { "block_set_position", entity_block_api_set_position },
+      { "block_reset", block_api_reset },
+      { "block_set_position", block_api_set_position },
   };
   register_functions(entity_block_module_name, common_methods);
   register_type(entity_block_module_name, block_methods,
@@ -113,9 +114,9 @@ void LuaContext::register_entity_module() {
 
   // Switch.
   static const luaL_Reg switch_methods[] = {
-      { "is_activated", entity_switch_api_is_activated },
-      { "set_activated", entity_switch_api_set_activated },
-      { "set_locked", entity_switch_api_set_locked },
+      { "is_activated", switch_api_is_activated },
+      { "set_activated", switch_api_set_activated },
+      { "set_locked", switch_api_set_locked },
   };
   register_functions(entity_switch_module_name, common_methods);
   register_type(entity_switch_module_name, switch_methods,
@@ -123,10 +124,10 @@ void LuaContext::register_entity_module() {
 
   // Door.
   static const luaL_Reg door_methods[] = {
-      { "open", entity_door_api_open },
-      { "close", entity_door_api_close },
-      { "is_open", entity_door_api_is_open },
-      { "set_open", entity_door_api_set_open },
+      { "open", door_api_open },
+      { "close", door_api_close },
+      { "is_open", door_api_is_open },
+      { "set_open", door_api_set_open },
 
   };
   register_functions(entity_door_module_name, common_methods);
@@ -135,58 +136,58 @@ void LuaContext::register_entity_module() {
 
   // Enemy.
   static const luaL_Reg enemy_methods[] = {
-      { "get_life", entity_enemy_api_get_life },
-      { "set_life", entity_enemy_api_set_life },
-      { "add_life", entity_enemy_api_add_life },
-      { "remove_life", entity_enemy_api_remove_life },
-      { "get_damage", entity_enemy_api_get_damage },
-      { "set_damage", entity_enemy_api_set_damage },
-      { "get_magic_damage", entity_enemy_api_get_magic_damage },
-      { "set_magic_damage", entity_enemy_api_set_magic_damage },
-      { "is_pushed_back_when_hurt", entity_enemy_api_is_pushed_back_when_hurt },
-      { "set_pushed_back_when_hurt", entity_enemy_api_set_pushed_back_when_hurt },
-      { "get_push_hero_on_sword", entity_enemy_api_get_push_hero_on_sword },
-      { "set_push_hero_on_sword", entity_enemy_api_set_push_hero_on_sword },
-      { "get_can_hurt_hero_running", entity_enemy_api_get_can_hurt_hero_running },
-      { "set_can_hurt_hero_running", entity_enemy_api_set_can_hurt_hero_running },
-      { "get_hurt_style", entity_enemy_api_get_hurt_style },
-      { "set_hurt_style", entity_enemy_api_set_hurt_style },
-      { "get_can_attack", entity_enemy_api_get_can_attack },
-      { "set_can_attack", entity_enemy_api_set_can_attack },
-      { "get_minimum_shield_needed", entity_enemy_api_get_minimum_shield_needed },
-      { "set_minimum_shield_needed", entity_enemy_api_set_minimum_shield_needed },
-      { "set_attack_consequence", entity_enemy_api_set_attack_consequence },
-      { "set_attack_consequence_sprite", entity_enemy_api_set_attack_consequence_sprite },
-      { "set_default_attack_consequences", entity_enemy_api_set_default_attack_consequences },
-      { "set_default_attack_consequences_sprite", entity_enemy_api_set_default_attack_consequences_sprite },
-      { "set_invincible", entity_enemy_api_set_invincible },
-      { "set_invincible_sprite", entity_enemy_api_set_invincible_sprite },
-      { "set_layer_independent_collisions", entity_enemy_api_set_layer_independent_collisions },
-      { "set_treasure", entity_enemy_api_set_treasure },
-      { "set_no_treasure", entity_enemy_api_set_no_treasure },
-      { "set_random_treasure", entity_enemy_api_set_random_treasure },
-      { "get_obstacle_behavior", entity_enemy_api_get_obstacle_behavior },
-      { "set_obstacle_behavior", entity_enemy_api_set_obstacle_behavior },
-      { "get_optimization_distance", entity_enemy_api_get_optimization_distance },
-      { "set_optimization_distance", entity_enemy_api_set_optimization_distance },
-      { "set_size", entity_enemy_api_set_size },
-      { "set_origin", entity_enemy_api_set_origin },
-      { "set_position", entity_enemy_api_set_position },
-      { "get_distance_to_hero", entity_enemy_api_get_distance_to_hero },
-      { "get_angle_to_hero", entity_enemy_api_get_angle_to_hero },
-      { "test_obstacles", entity_enemy_api_test_obstacles },
-      { "snap_to_grid", entity_enemy_api_snap_to_grid },
-      { "get_movement", entity_enemy_api_get_movement },
-      { "start_movement", entity_enemy_api_start_movement },
-      { "stop_movement", entity_enemy_api_stop_movement },
-      { "restart", entity_enemy_api_restart },
-      { "hurt", entity_enemy_api_hurt },
-      { "create_sprite", entity_enemy_api_create_sprite },
-      { "remove_sprite", entity_enemy_api_remove_sprite },
-      { "get_sprite", entity_enemy_api_get_sprite },
-      { "create_son", entity_enemy_api_create_son },
-      { "get_father", entity_enemy_api_get_father },
-      { "send_message", entity_enemy_api_send_message },
+      { "get_life", enemy_api_get_life },
+      { "set_life", enemy_api_set_life },
+      { "add_life", enemy_api_add_life },
+      { "remove_life", enemy_api_remove_life },
+      { "get_damage", enemy_api_get_damage },
+      { "set_damage", enemy_api_set_damage },
+      { "get_magic_damage", enemy_api_get_magic_damage },
+      { "set_magic_damage", enemy_api_set_magic_damage },
+      { "is_pushed_back_when_hurt", enemy_api_is_pushed_back_when_hurt },
+      { "set_pushed_back_when_hurt", enemy_api_set_pushed_back_when_hurt },
+      { "get_push_hero_on_sword", enemy_api_get_push_hero_on_sword },
+      { "set_push_hero_on_sword", enemy_api_set_push_hero_on_sword },
+      { "get_can_hurt_hero_running", enemy_api_get_can_hurt_hero_running },
+      { "set_can_hurt_hero_running", enemy_api_set_can_hurt_hero_running },
+      { "get_hurt_style", enemy_api_get_hurt_style },
+      { "set_hurt_style", enemy_api_set_hurt_style },
+      { "get_can_attack", enemy_api_get_can_attack },
+      { "set_can_attack", enemy_api_set_can_attack },
+      { "get_minimum_shield_needed", enemy_api_get_minimum_shield_needed },
+      { "set_minimum_shield_needed", enemy_api_set_minimum_shield_needed },
+      { "set_attack_consequence", enemy_api_set_attack_consequence },
+      { "set_attack_consequence_sprite", enemy_api_set_attack_consequence_sprite },
+      { "set_default_attack_consequences", enemy_api_set_default_attack_consequences },
+      { "set_default_attack_consequences_sprite", enemy_api_set_default_attack_consequences_sprite },
+      { "set_invincible", enemy_api_set_invincible },
+      { "set_invincible_sprite", enemy_api_set_invincible_sprite },
+      { "set_layer_independent_collisions", enemy_api_set_layer_independent_collisions },
+      { "set_treasure", enemy_api_set_treasure },
+      { "set_no_treasure", enemy_api_set_no_treasure },
+      { "set_random_treasure", enemy_api_set_random_treasure },
+      { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
+      { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
+      { "get_optimization_distance", enemy_api_get_optimization_distance },
+      { "set_optimization_distance", enemy_api_set_optimization_distance },
+      { "set_size", enemy_api_set_size },
+      { "set_origin", enemy_api_set_origin },
+      { "set_position", enemy_api_set_position },
+      { "get_distance_to_hero", enemy_api_get_distance_to_hero },
+      { "get_angle_to_hero", enemy_api_get_angle_to_hero },
+      { "test_obstacles", enemy_api_test_obstacles },
+      { "snap_to_grid", enemy_api_snap_to_grid },
+      { "get_movement", enemy_api_get_movement },
+      { "start_movement", enemy_api_start_movement },
+      { "stop_movement", enemy_api_stop_movement },
+      { "restart", enemy_api_restart },
+      { "hurt", enemy_api_hurt },
+      { "create_sprite", enemy_api_create_sprite },
+      { "remove_sprite", enemy_api_remove_sprite },
+      { "get_sprite", enemy_api_get_sprite },
+      { "create_son", enemy_api_create_son },
+      { "get_father", enemy_api_get_father },
+      { "send_message", enemy_api_send_message },
       { NULL, NULL }
   };
   register_functions(entity_enemy_module_name, common_methods);
@@ -325,7 +326,7 @@ int LuaContext::entity_api_is_enabled(lua_State* l) {
 int LuaContext::entity_api_set_enabled(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
-  bool enabled = true;  // true if unspecified.
+  bool enabled = true;
   if (lua_isboolean(l, 2)) {
     enabled = lua_toboolean(l, 2);
   }
@@ -347,6 +348,627 @@ int LuaContext::entity_api_remove(lua_State* l) {
   entity.remove_from_map();
 
   return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * hero and returns it.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return The hero.
+ */
+Hero& LuaContext::check_hero(lua_State* l, int index) {
+  return static_cast<Hero&>(check_userdata(l, index, entity_hero_module_name));
+}
+
+/**
+ * @brief Pushes a hero userdata onto the stack.
+ * @param l A Lua context.
+ * @param hero A hero.
+ */
+void LuaContext::push_hero(lua_State* l, Hero& hero) {
+  push_userdata(l, hero);
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_set_map.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_map(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  MapId map_id = luaL_checkinteger(l, 2);
+  const std::string& destination_name = luaL_checkstring(l, 3);
+  Transition::Style transition_style = Transition::Style(luaL_checkinteger(l, 4));
+  // TODO give names to transitions for Lua
+
+  hero.get_game().set_current_map(map_id, destination_name, transition_style);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_set_visible.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_visible(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  bool visible = true;
+  if (lua_isboolean(l, 2)) {
+    visible = lua_toboolean(l, 2);
+  }
+
+  hero.set_visible(visible);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_get_direction.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_get_direction(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  lua_pushinteger(l, hero.get_animation_direction());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_set_direction.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_direction(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  int direction = luaL_checkinteger(l, 2);
+
+  hero.set_animation_direction(direction);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_set_position.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_set_position(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
+  int layer = -1;
+  if (lua_gettop(l) >= 4) {
+    layer = luaL_checkinteger(l, 4);
+  }
+
+  Hero& hero = map.get_entities().get_hero();
+  hero.set_xy(x, y);
+  if (layer != -1) {
+    map.get_entities().set_entity_layer(hero, Layer(layer));
+  }
+  hero.check_position();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_save_solid_ground.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_save_solid_ground(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  int x, y, layer;
+  if (lua_gettop(l) >= 2) {
+    x = luaL_checkinteger(l, 2);
+    y = luaL_checkinteger(l, 3);
+    layer = luaL_checkinteger(l, 4);
+  }
+  else {
+    x = hero.get_x();
+    y = hero.get_y();
+    layer = hero.get_layer();
+  }
+
+  hero.set_target_solid_ground_coords(Rectangle(x, y), Layer(layer));
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_reset_solid_ground.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_reset_solid_ground(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  hero.reset_target_solid_ground_coords();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_freeze.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_freeze(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  hero.start_freezed();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_unfreeze.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_unfreeze(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  hero.start_free();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_walk.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_walk(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  const std::string& path = luaL_checkstring(l, 2);
+  bool loop = lua_toboolean(l, 3) != 0;
+  bool ignore_obstacles = lua_toboolean(l, 4) != 0;
+
+  hero.start_forced_walking(path, loop, ignore_obstacles);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_start_jumping.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_jumping(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  int direction = luaL_checkinteger(l, 2);
+  int length = luaL_checkinteger(l, 3);
+  bool ignore_obstacles = lua_toboolean(l, 4) != 0;
+
+  hero.start_jumping(direction, length, ignore_obstacles, false);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_start_treasure.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_treasure(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  const std::string &item_name = luaL_checkstring(l, 2);
+  int variant = luaL_checkinteger(l, 3);
+  int savegame_variable = luaL_checkinteger(l, 4);
+
+  hero.start_treasure(
+      Treasure(hero.get_game(), item_name, variant, savegame_variable));
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_start_victory.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_victory(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  hero.start_victory();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_start_boomerang.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_boomerang(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  int max_distance = luaL_checkinteger(l, 2);
+  int speed = luaL_checkinteger(l, 3);
+  const std::string& tunic_preparing_animation = luaL_checkstring(l, 4);
+  const std::string& sprite_name = luaL_checkstring(l, 5);
+
+  hero.start_boomerang(max_distance, speed,
+      tunic_preparing_animation, sprite_name);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_start_bow.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_bow(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  hero.start_bow();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_start_hookshot.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_hookshot(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  hero.start_hookshot();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_start_running.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_running(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+
+  hero.start_running();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_hero_start_hurt.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::hero_api_start_hurt(lua_State* l) {
+
+  Hero& hero = check_hero(l, 1);
+  int source_x = luaL_checkinteger(l, 2);
+  int source_y = luaL_checkinteger(l, 3);
+  int life_points = luaL_checkinteger(l, 4);
+  int magic_points = luaL_checkinteger(l, 5);
+
+  hero.hurt(Rectangle(source_x, source_y),
+      life_points, magic_points);
+
+  return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is an
+ * NPC and returns it.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return The NPC.
+ */
+NPC& LuaContext::check_npc(lua_State* l, int index) {
+  return static_cast<NPC&>(check_userdata(l, index, entity_npc_module_name));
+}
+
+/**
+ * @brief Pushes an NPC userdata onto the stack.
+ * @param l A Lua context.
+ * @param npc An NPC.
+ */
+void LuaContext::push_npc(lua_State* l, NPC& npc) {
+  push_userdata(l, npc);
+}
+
+/**
+ * @brief Implementation of \ref lua_api_npc_start_movement.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::npc_api_start_movement(lua_State* l) {
+
+  NPC& npc = check_npc(l, 1);
+  Movement& movement = check_movement(l, 2);
+
+  movement.set_suspended(false);
+  npc.clear_movement();
+  npc.set_movement(&movement);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_npc_stop_movement.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::npc_api_stop_movement(lua_State* l) {
+
+  NPC& npc = check_npc(l, 1);
+
+  npc.clear_movement();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_npc_set_position.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::npc_api_set_position(lua_State* l) {
+
+  NPC& npc = check_npc(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
+  int layer = -1;
+  if (lua_gettop(l) >= 4) {
+    layer = luaL_checkinteger(l, 4);
+  }
+
+  npc.set_xy(x, y);
+  if (layer != -1) {
+    npc.get_entities().set_entity_layer(*npc, Layer(layer));
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_npc_get_sprite.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::npc_api_get_sprite(lua_State* l) {
+
+  NPC& npc = check_npc(l, 1);
+
+  push_sprite(l, npc.get_sprite());
+  return 1;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * chest and returns it.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return The chest.
+ */
+Chest& LuaContext::check_chest(lua_State* l, int index) {
+  return static_cast<Chest&>(check_userdata(l, index, entity_chest_module_name));
+}
+
+/**
+ * @brief Pushes a chest userdata onto the stack.
+ * @param l A Lua context.
+ * @param chest A chest.
+ */
+void LuaContext::push_chest(lua_State* l, Chest& chest) {
+  push_userdata(l, chest);
+}
+
+/**
+ * @brief Implementation of \ref lua_api_chest_is_open.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::chest_api_is_open(lua_State* l) {
+
+  Chest& chest = check_chest(l, 1);
+
+  lua_pushboolean(l, chest.is_open());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_chest_set_open.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::chest_api_set_open(lua_State* l) {
+
+  Chest& chest = check_chest(l, 1);
+  bool open = true;
+  if (lua_isboolean(l, 2)) {
+    open = lua_toboolean(l, 2);
+  }
+
+  chest.set_open(open);
+
+  return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * block and returns it.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return The block.
+ */
+Block& LuaContext::check_block(lua_State* l, int index) {
+  return static_cast<Block&>(check_userdata(l, index, entity_block_module_name));
+}
+
+/**
+ * @brief Pushes a block userdata onto the stack.
+ * @param l A Lua context.
+ * @param block A block.
+ */
+void LuaContext::push_block(lua_State* l, Block& block) {
+  push_userdata(l, block);
+}
+
+/**
+ * @brief Implementation of \ref lua_api_block_reset.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::block_api_reset(lua_State* l) {
+
+  Block& block = check_block(l, 1);
+
+  block.reset();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_block_set_position.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::block_api_set_position(lua_State* l) {
+
+  Block& block = check_block(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
+  int layer = -1;
+  if (lua_gettop(l) >= 4) {
+    layer = luaL_checkinteger(l, 4);
+  }
+
+  block.set_xy(x, y);
+
+  if (layer != -1) {
+    block.get_entities().set_entity_layer(*block, Layer(layer));
+  }
+  block.check_collision_with_detectors(false);
+
+  return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * switch and returns it.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return The switch.
+ */
+Switch& LuaContext::check_switch(lua_State* l, int index) {
+  return static_cast<Switch&>(check_userdata(l, index, entity_switch_module_name));
+}
+
+/**
+ * @brief Pushes a switch userdata onto the stack.
+ * @param l A Lua context.
+ * @param sw A switch.
+ */
+void LuaContext::push_switch(lua_State* l, Switch& sw) {
+  push_userdata(l, sw);
+}
+
+/**
+ * @brief Implementation of \ref lua_api_switch_is_activated.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::switch_api_is_activated(lua_State* l) {
+
+  Switch& sw = check_switch(l, 1);
+
+  lua_pushboolean(l, sw.is_activated());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_switch_set_activated.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::switch_api_set_activated(lua_State* l) {
+
+  Switch& sw = check_switch(l, 1);
+  bool activated = true;
+  if (lua_isboolean(l, 2)) {
+    activated = lua_toboolean(l, 2);
+  }
+
+  sw.set_activated(activated);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_switch_set_locked.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::switch_api_set_locked(lua_State* l) {
+
+  Switch& sw = check_switch(l, 1);
+  bool locked = true;
+  if (lua_isboolean(l, 2)) {
+    locked = lua_toboolean(l, 2);
+  }
+
+  sw.set_locked(lock);
+
+  return 0;
+}
+
+/**
+ * @brief Checks that the userdata at the specified index of the stack is a
+ * door and returns it.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return The door.
+ */
+Door& LuaContext::check_door(lua_State* l, int index) {
+  return static_cast<Door&>(check_userdata(l, index, entity_door_module_name));
+}
+
+/**
+ * @brief Pushes a door userdata onto the stack.
+ * @param l A Lua context.
+ * @param door A door.
+ */
+void LuaContext::push_door(lua_State* l, Door& door) {
+  push_userdata(l, door);
+}
+
+/**
+ * @brief Implementation of \ref lua_api_door_is_open.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::door_api_is_open(lua_State* l) {
+
+  Door& door = check_door(l, 1);
+
+  lua_pushboolean(l, door.is_open());
+  return 1;
 }
 
 /**

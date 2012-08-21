@@ -48,7 +48,6 @@ function map:on_hero_on_sensor(sensor_name)
 
     close_sw_door()
     sw_sensor_enabled = false
-    map:hero_align_on_sensor(sensor_name)
 
   elseif sensor_name == "enable_sensor" then
     sw_sensor_enabled = true

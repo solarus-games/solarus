@@ -75,7 +75,8 @@ class DialogBox {
     bool is_enabled();
 
     // current message
-    void start_dialog(const std::string& dialog_id, EquipmentItem* issuer_item = NULL,
+    void start_dialog(const std::string& dialog_id);
+    void start_dialog(const std::string& dialog_id, int callback_ref,
         VerticalPosition vertical_position = POSITION_AUTO);
     bool is_letter_sound_enabled();
     void set_variable(const std::string& dialog_id, const std::string &value);
@@ -102,7 +103,7 @@ class DialogBox {
     std::string dialog_id;                          /**< id of the current dialog or an empty string */
     Dialog dialog;                                  /**< current dialog */
     std::map<std::string, std::string> variables;   /**< variables to display in dialogs */
-    EquipmentItem* issuer_item;                     /**< the equipment item (if any) that started the current dialog */
+    int callback_ref;                               /**< Lua ref of a function to call when the dialog finishes. */
     Style style;                                    /**< style of the dialog box */
     Dialog::SkipMode skip_mode;                     /**< indicates what happens when the user tries to skip the dialog */
     int icon_number;                                /* index of the 16*16 icon displayed, or -1 if there is no icon */

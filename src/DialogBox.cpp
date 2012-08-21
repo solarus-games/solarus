@@ -30,6 +30,7 @@
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
+#include <lauxlib.h>
 
 const uint32_t DialogBox::char_delays[] = {
   60, // slow
@@ -43,7 +44,7 @@ const uint32_t DialogBox::char_delays[] = {
  */
 DialogBox::DialogBox(Game& game):
   game(game),
-  issuer_item(NULL),
+  callback_ref(LUA_REFNIL),
   dialog_surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT),
   box_img("hud/dialog_box.png"),
   icons_img("hud/dialog_icons.png"),
@@ -69,6 +70,7 @@ DialogBox::~DialogBox() {
   for (int i = 0; i < nb_visible_lines; i++) {
     delete line_surfaces[i];
   }
+  game.get_lua_context().cancel_callback(callback_ref);
 }
 
 /**
@@ -209,11 +211,21 @@ int DialogBox::get_last_answer() {
  * If there was already a dialog, it must be finished.
  *
  * @param dialog_id of the dialog
- * @param issuer_item The equipment item that requests to start a dialog, if any
- * (will be notified when the dialog finishes).
+ */
+void DialogBox::start_dialog(const std::string& dialog_id) {
+  start_dialog(dialog_id, LUA_REFNIL);
+}
+
+/**
+ * @brief Starts a dialog.
+ *
+ * If there was already a dialog, it must be finished.
+ *
+ * @param dialog_id of the dialog
+ * @param callback_ref Lua ref of a function to call when the dialog finishes.
  * @param vertical_position vertical position where to display the dialog box (default: auto)
  */
-void DialogBox::start_dialog(const std::string& dialog_id, EquipmentItem* issuer_item,
+void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref,
     VerticalPosition vertical_position) {
 
   Debug::check_assertion(!is_enabled() || is_full(), StringConcat()
@@ -237,6 +249,8 @@ void DialogBox::start_dialog(const std::string& dialog_id, EquipmentItem* issuer
   this->line_it = dialog.get_lines().begin();
   this->line_index = 0;
   this->char_index = 0;
+  game.get_lua_context().cancel_callback(this->callback_ref);
+  this->callback_ref = callback_ref;
   this->skipped = false;
 
   if (dialog.get_skip_mode() != Dialog::SKIP_UNCHANGED) {
@@ -256,13 +270,6 @@ void DialogBox::start_dialog(const std::string& dialog_id, EquipmentItem* issuer
 
   if (first) {
     set_vertical_position(vertical_position);
-
-    // notify the scripts
-    game.get_lua_context().map_on_dialog_started(game.get_current_map(), dialog_id);
-    this->issuer_item = issuer_item;
-    if (issuer_item != NULL) {
-      game.get_lua_context().item_on_dialog_started(*issuer_item, dialog_id);
-    }
   }
 
   // start displaying text
@@ -334,7 +341,7 @@ void DialogBox::show_next_dialog() {
       dialog.get_next2() : dialog.get_next();
 
   if (next_dialog_id.size() > 0 && next_dialog_id != "_unknown") {
-    start_dialog(next_dialog_id);
+    start_dialog(next_dialog_id, callback_ref);
   }
   else {
     close();
@@ -346,8 +353,8 @@ void DialogBox::show_next_dialog() {
  */
 void DialogBox::close() {
 
-  const std::string previous_dialog_id = dialog_id;
-  EquipmentItem* previous_issuer_item = issuer_item;
+  int previous_callback_ref = callback_ref;
+  callback_ref = LUA_REFNIL;
   dialog_id = "";
 
   // restore the action and sword keys
@@ -355,17 +362,12 @@ void DialogBox::close() {
   keys_effect.set_action_key_effect(action_key_effect_saved);
   keys_effect.set_sword_key_effect(sword_key_effect_saved);
 
-  // notify the script if necessary
   if (!skipped) {
-    // a dialog was just finished: notify the scripts
-    game.get_lua_context().map_on_dialog_finished(
-        game.get_current_map(), previous_dialog_id, last_answer);
-
-    if (previous_issuer_item != NULL) {
-      // also notify the issuer script if different
-      game.get_lua_context().item_on_dialog_finished(
-          *previous_issuer_item, previous_dialog_id, last_answer);
-    }
+    // A dialog was just finished: notify Lua.
+    game.get_lua_context().notify_dialog_finished(previous_callback_ref, last_answer);
+  }
+  else {
+    game.get_lua_context().cancel_callback(previous_callback_ref);
   }
 }
 

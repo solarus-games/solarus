@@ -93,10 +93,12 @@ class LuaContext {
     void notify_item_created(EquipmentItem& item);
     void notify_enemy_created(Enemy& enemy);
     void notify_camera_reached_target(Map& map);
+    void notify_dialog_finished(int callback_ref, int answer);
 
     // Lua refs.
     int create_ref();
     void destroy_ref(int ref);
+    void push_callback(int callback_ref);
     void do_callback(int callback_ref);
     void cancel_callback(int callback_ref);
 
@@ -147,8 +149,6 @@ class LuaContext {
     bool item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
         const std::string& item_name, int variant);
     void item_on_npc_collision_fire(EquipmentItem& item, NPC& npc);
-    void item_on_dialog_started(EquipmentItem& item, const std::string& dialog_id);
-    void item_on_dialog_finished(EquipmentItem& item, const std::string& dialog_id, int answer);
 
     // Game events.
     void game_on_update(Game& game);
@@ -164,8 +164,6 @@ class LuaContext {
     void map_on_finished(Map& map);
     void map_on_opening_transition_finished(Map& map,
         Destination* destination);
-    void map_on_dialog_started(Map& map, const std::string& dialog_id);
-    void map_on_dialog_finished(Map& map, const std::string& dialog_id, int answer);
     void map_on_camera_back(Map& map);
 
     // Map entity events.
@@ -343,8 +341,6 @@ class LuaContext {
     void on_direction_pressed(InputEvent& event);
     void on_started(Destination* destination);
     void on_opening_transition_finished(Destination* destination);
-    void on_dialog_started(const std::string& dialog_id);
-    void on_dialog_finished(const std::string& dialog_id, int answer);
     void on_camera_back();
     void on_obtaining_treasure(const Treasure& treasure);
     void on_obtained_treasure(const Treasure& treasure);

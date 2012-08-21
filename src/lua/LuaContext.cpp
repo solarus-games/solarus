@@ -322,7 +322,8 @@ void LuaContext::notify_enemy_created(Enemy& enemy) {
 
 /**
  * @brief Notifies Lua that the sequence started by a call to
- * map:camera_move() has reached its target.
+ * map:move_camera() has reached its target.
+ * @param map The current map.
  */
 void LuaContext::notify_camera_reached_target(Map& map) {
 
@@ -332,6 +333,21 @@ void LuaContext::notify_camera_reached_target(Map& map) {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
   lua_pushcfunction(l, l_camera_do_callback);
   timer_api_start(l);
+}
+
+/**
+ * @brief Notifies Lua that a dialog is finished.
+ * @param callback_ref Lua ref of the function to call, if any.
+ * @param answer Answer of the dialog if there was a question.
+ */
+void LuaContext::notify_dialog_finished(int callback_ref, int answer) {
+
+  if (callback_ref != LUA_REFNIL) {
+    push_callback(callback_ref);
+    lua_pushinteger(l, answer);
+    call_function(1, 0, "dialog callback");
+    destroy_ref(callback_ref);
+  }
 }
 
 /**
@@ -359,14 +375,23 @@ void LuaContext::destroy_ref(int ref) {
 void LuaContext::do_callback(int callback_ref) {
 
   if (callback_ref != LUA_REFNIL) {
-    lua_rawgeti(l, LUA_REGISTRYINDEX, callback_ref);
-    if (!lua_isfunction(l, -1)) {
-      Debug::die(StringConcat() << "No such Lua callback (function expected, got "
-          << luaL_typename(l, -1) << ")");
-    }
-
+    push_callback(callback_ref);
     call_function(0, 0, "callback");
-    luaL_unref(l, LUA_REGISTRYINDEX, callback_ref);
+    destroy_ref(callback_ref);
+  }
+}
+
+/**
+ * @brief Pushes onto the stack a function stored as a Lua ref.
+ * @param callback_ref Reference of the function to call (must be
+ * a valid ref).
+ */
+void LuaContext::push_callback(int callback_ref) {
+
+  push_ref(l, callback_ref);
+  if (!lua_isfunction(l, -1)) {
+    Debug::die(StringConcat() << "No such Lua callback (function expected, got "
+        << luaL_typename(l, -1) << ")");
   }
 }
 
@@ -1323,33 +1348,6 @@ void LuaContext::on_opening_transition_finished(Destination* destination) {
       push_entity(l, *destination);
     }
     call_function(2, 0, "on_opening_transition_finished");
-  }
-}
-
-/**
- * @brief Calls the on_dialog_started() method of the object on top of the stack.
- * @param dialog_id Id of the dialog just started.
- */
-void LuaContext::on_dialog_started(const std::string& dialog_id) {
-
-  if (find_method("on_dialog_started")) {
-    lua_pushstring(l, dialog_id.c_str());
-    call_function(2, 0, "on_dialog_started");
-  }
-}
-
-/**
- * @brief Calls the on_dialog_finished() method of the object on top of the stack.
- * @param dialog_id Id of the dialog just started.
- * @param answer The answer selected by the player: 0 for the first one,
- * 1 for the second one, -1 if there was no question.
- */
-void LuaContext::on_dialog_finished(const std::string& dialog_id, int answer) {
-
-  if (find_method("on_dialog_finished")) {
-    lua_pushstring(l, dialog_id.c_str());
-    lua_pushinteger(l, answer);
-    call_function(3, 0, "on_dialog_finished");
   }
 }
 

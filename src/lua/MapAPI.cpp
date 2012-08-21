@@ -202,13 +202,14 @@ int LuaContext::map_api_start_dialog(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& dialog_id = luaL_checkstring(l, 2);
-
-  EquipmentItem* issuer_item = NULL;
+  int callback_ref = LUA_REFNIL;
   if (lua_gettop(l) >= 3) {
-    issuer_item = &check_item(l, 3);
+    luaL_checktype(l, 3, LUA_TFUNCTION);
+    lua_settop(l, 3);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
 
-  map.get_game().get_dialog_box().start_dialog(dialog_id, issuer_item);
+  map.get_game().get_dialog_box().start_dialog(dialog_id, callback_ref);
 
   return 0;
 }
@@ -944,32 +945,6 @@ void LuaContext::map_on_opening_transition_finished(Map& map,
 
   push_map(l, map);
   on_opening_transition_finished(destination);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_dialog_started() method of a Lua map.
- * @param map A map.
- * @param dialog_id Id a the dialog just started.
- */
-void LuaContext::map_on_dialog_started(Map& map, const std::string& dialog_id) {
-
-  push_map(l, map);
-  on_dialog_started(dialog_id);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_dialog_finished() method of a Lua map.
- * @param map A map.
- * @param dialog_id Id a the dialog just finished.
- * @param answer The answer selected by the player: 0 for the first one,
- * 1 for the second one, -1 if there was no question.
- */
-void LuaContext::map_on_dialog_finished(Map& map, const std::string& dialog_id, int answer) {
-
-  push_map(l, map);
-  on_dialog_finished(dialog_id, answer);
   lua_pop(l, 1);
 }
 

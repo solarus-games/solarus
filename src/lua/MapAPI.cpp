@@ -68,7 +68,13 @@ void LuaContext::register_map_module() {
       { "open_doors", map_api_open_doors },
       { "close_doors", map_api_close_doors },
       { "set_doors_open", map_api_set_doors_open },
-      { "create_entity", map_api_create_entity },
+      { "create_pickable", map_api_create_pickable },
+      { "create_destructible", map_api_create_destructible },
+      { "create_block", map_api_create_block },
+      { "create_bomb", map_api_create_bomb },
+      { "create_explosion", map_api_create_explosion },
+      { "create_fire", map_api_create_fire },
+      { "create_enemy", map_api_create_enemy },
       { "get_entity", map_api_get_entity },
       { "has_entity", map_api_has_entity },
       { "get_entities", map_api_get_entities },
@@ -376,7 +382,7 @@ int LuaContext::map_api_get_hero(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
-  push_hero(map.get_hero());
+  push_hero(l, map.get_entities().get_hero());
   return 1;
 }
 
@@ -528,16 +534,6 @@ int LuaContext::map_api_set_doors_open(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_entity.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_entity(lua_State* l) {
-
-  // TODO
-}
-
-/**
  * @brief Implementation of \ref lua_api_map_get_entity.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -625,7 +621,7 @@ int LuaContext::map_api_has_entities(lua_State* l) {
   Map& map = check_map(l, 1);
   const std::string& prefix = luaL_checkstring(l, 2);
 
-  lua_pushboolean(l, entities.has_entity_with_prefix(prefix));
+  lua_pushboolean(l, map.get_entities().has_entity_with_prefix(prefix));
   return 1;
 }
 
@@ -637,8 +633,8 @@ int LuaContext::map_api_has_entities(lua_State* l) {
 int LuaContext::map_api_set_entities_enabled(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  bool enabled = true;  // true if unspecified.
+  const std::string& prefix = luaL_checkstring(l, 2);
+  bool enabled = true;
   if (lua_isboolean(l, 3)) {
     enabled = lua_toboolean(l, 3);
   }
@@ -647,7 +643,7 @@ int LuaContext::map_api_set_entities_enabled(lua_State* l) {
       map.get_entities().get_entities_with_prefix(prefix);
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
-    (*it)->set_enabled(enable);
+    (*it)->set_enabled(enabled);
   }
 
   return 0;
@@ -668,14 +664,14 @@ int LuaContext::map_api_remove_entities(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_create_pickable.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_pickable_create(lua_State* l) {
+int LuaContext::map_api_create_pickable(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  const std::string &item_name = luaL_checkstring(l, 2);
+  const std::string& item_name = luaL_checkstring(l, 2);
   int variant = luaL_checkinteger(l, 3);
   int savegame_variable = luaL_checkinteger(l, 4);
   int x = luaL_checkinteger(l, 5);
@@ -683,22 +679,23 @@ int LuaContext::map_api_pickable_create(lua_State* l) {
   Layer layer = Layer(luaL_checkinteger(l, 7));
 
   Game& game = map.get_game();
-  MapEntities& entities = map.get_entities();
-  entities.add_entity(Pickable::create(
+  Pickable* pickable = Pickable::create(
       game, layer, x, y,
       Treasure(game, item_name, variant, savegame_variable),
       FALLING_MEDIUM, false
-      ));
+      );
+  map.get_entities().add_entity(pickable);
 
-  return 0;
+  push_entity(l, *pickable);
+  return 1;
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_create_destructible.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_destructible_create(lua_State* l) {
+int LuaContext::map_api_create_destructible(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& subtype_name = luaL_checkstring(l, 2);
@@ -742,22 +739,22 @@ int LuaContext::map_api_destructible_create(lua_State* l) {
 
   Destructible::Subtype subtype =
       Destructible::get_subtype_by_name(subtype_name);
-  MapEntities& entities = map.get_entities();
   Destructible* destructible =
       new Destructible(layer, x, y, subtype, Treasure(map.get_game(),
           treasure_item, treasure_variant, treasure_savegame_variable));
   destructible->set_destruction_callback(destruction_callback_ref);
-  entities.add_entity(destructible);
+  map.get_entities().add_entity(destructible);
 
-  return 0;
+  push_entity(l, *destructible);
+  return 1;
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_create_block.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_block_create(lua_State* l) {
+int LuaContext::map_api_create_block(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -799,49 +796,51 @@ int LuaContext::map_api_block_create(lua_State* l) {
     }
   }
 
-  MapEntities& entities = map.get_entities();
   Block* block = new Block(name, layer, x, y, direction, sprite_name,
       can_be_pushed, can_be_pulled, maximum_moves);
-  entities.add_entity(block);
+  map.get_entities().add_entity(block);
   block->check_collision_with_detectors(false);
 
-  return 0;
+  push_entity(l, *block);
+  return 1;
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_create_bomb.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_bomb_create(lua_State* l) {
+int LuaContext::map_api_create_bomb(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
   Layer layer = Layer(luaL_checkinteger(l, 4));
 
-  MapEntities& entities = map.get_entities();
-  entities.add_entity(new Bomb(layer, x, y));
+  Bomb* bomb = new Bomb(layer, x, y);
+  map.get_entities().add_entity(bomb);
 
-  return 0;
+  push_entity(l, *bomb);
+  return 1;
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_create_explosion.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_explosion_create(lua_State* l) {
+int LuaContext::map_api_create_explosion(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
   Layer layer = Layer(luaL_checkinteger(l, 4));
 
-  MapEntities& entities = map.get_entities();
-  entities.add_entity(new Explosion(layer, Rectangle(x, y), true));
+  Explosion* explosion = new Explosion(layer, Rectangle(x, y), true);
+  map.get_entities().add_entity(explosion);
 
-  return 0;
+  push_entity(l, *explosion);
+  return 1;
 }
 
 /**
@@ -849,25 +848,26 @@ int LuaContext::map_api_explosion_create(lua_State* l) {
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_fire_create(lua_State* l) {
+int LuaContext::map_api_create_fire(lua_State* l) {
 
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
   Layer layer = Layer(luaL_checkinteger(l, 4));
 
-  MapEntities& entities = map.get_entities();
-  entities.add_entity(new Fire(layer, Rectangle(x, y)));
+  Fire* fire = new Fire(layer, Rectangle(x, y));
+  map.get_entities().add_entity(fire);
 
-  return 0;
+  push_entity(l, *fire);
+  return 1;
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_create_enemy.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_enemy_create(lua_State* l) {
+int LuaContext::map_api_create_enemy(lua_State* l) {
 
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
@@ -883,7 +883,8 @@ int LuaContext::map_api_enemy_create(lua_State* l) {
   entities.add_entity(enemy);
   enemy->restart();
 
-  return 0;
+  push_enemy(l, *enemy);
+  return 1;
 }
 
 /**

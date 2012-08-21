@@ -270,7 +270,6 @@ class LuaContext {
     void register_game_module();
     void register_map_module();
     void register_entity_module();
-    void register_enemy_module();
 
     // Pushing objects to Lua.
     static void push_ref(lua_State* l, int ref);
@@ -656,7 +655,13 @@ class LuaContext {
       map_api_open_doors,
       map_api_close_doors,
       map_api_set_doors_open,
-      map_api_create_entity,
+      map_api_create_pickable,  // TODO make creation function uniform, all with a table as parameter
+      map_api_create_destructible,
+      map_api_create_block,
+      map_api_create_bomb,
+      map_api_create_explosion,
+      map_api_create_fire,
+      map_api_create_enemy,
       map_api_get_entity,
       map_api_has_entity,
       map_api_get_entities,

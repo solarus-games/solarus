@@ -1849,7 +1849,7 @@ void LuaContext::on_sprite_frame_changed(Sprite& sprite, const std::string& anim
 void LuaContext::on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite) {
 
   if (find_method("on_collision_enemy")) {
-    lua_pushstring(l, other_enemy.get_name().c_str());
+    push_enemy(l, other_enemy);
     push_sprite(l, other_sprite);
     push_sprite(l, this_sprite);
     call_function(4, 0, "on_collision_enemy");

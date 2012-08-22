@@ -1,10 +1,5 @@
 -- Main script of the quest.
 
--- Event called every tick by the engine!
-function sol.main:on_update()
-
-end
-
 -- Event called when Lua should show its initial screen.
 function sol.main:on_started()
 
@@ -15,6 +10,7 @@ function sol.main:on_started()
   sol.main.start_screen(language_menu:new())
 end
 
+-- Event called when the player pressed a keyboard key.
 function sol.main:on_key_pressed(key)
 
   function start_savegame(file_name)

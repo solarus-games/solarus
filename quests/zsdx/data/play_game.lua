@@ -1,24 +1,24 @@
 local game = ...
 
-local hearts_class = require("hud/hearts")
-
 function game:on_started()
 
-  -- Initialize everything
+  local hearts_class = require("hud/hearts")
+
+  -- Set up the HUD.
   self.hud = {}
   self.hud.hearts = hearts_class:new(self)
   self:set_hud_enabled(true)
 end
 
-function game:on_finished()
-end
-
 function game:on_post_draw(surface)
+  -- Draw the hud after the game is drawn.
   if game:is_hud_enabled() then
     local width, height = surface:get_size()
     self.hud.hearts:draw(surface, width - 104, 6)
   end
 end
+
+-- Useful functions for this quest.
 
 function game:is_hud_enabled()
   return self.hud_enabled
@@ -28,8 +28,7 @@ function game:set_hud_enabled(hud_enabled)
   game.hud_enabled = hud_enabled
 end
 
--- Returns the item name of a bottle with the specified content,
--- or nil if there is none.
+-- Returns the item name of a bottle with the specified content, or nil.
 function game:get_first_bottle_with(variant)
 
   for i = 1, 4 do

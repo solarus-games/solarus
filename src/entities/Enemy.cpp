@@ -67,7 +67,6 @@ Enemy::Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
   savegame_variable(-1),
   obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
   drawn_in_y_order(true),
-  father_name(""),
   being_hurt(false),
   stop_hurt_date(0),
   invulnerable(false),
@@ -243,22 +242,6 @@ void Enemy::notify_map_opening_transition_finished() {
  */
 const std::string& Enemy::get_breed() {
   return breed;
-}
-
-/**
- * @brief Returns the father of this enemy.
- * @return Id of the father, or an empty string.
- */
-const std::string& Enemy::get_father_name() {
-  return father_name;
-}
-
-/**
- * @brief Sets the father of this enemy.
- * @param father_name Id of the father, or an empty string.
- */
-void Enemy::set_father_name(const std::string& father_name) {
-  this->father_name = father_name;
 }
 
 /**

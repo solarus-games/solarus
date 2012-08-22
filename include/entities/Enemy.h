@@ -107,7 +107,6 @@ class Enemy: public Detector {
     ObstacleBehavior obstacle_behavior;                 /**< behavior with obstacles */
     static const std::string obstacle_behavior_names[]; /**< name of each existing behavior with obstacles */
     bool drawn_in_y_order;                              /**< indicates that the enemy is displayed as the same level as the hero */
-    std::string father_name;                            /**< name of the enemy who created this enemy (or an empty string) */
 
     // enemy state
     bool enabled;					/**< indicates that the enemy is enabled */
@@ -164,8 +163,6 @@ class Enemy: public Detector {
 
     // Enemy properties.
     const std::string& get_breed();
-    const std::string& get_father_name();
-    void set_father_name(const std::string& father_name);
     int get_damage();
     void set_damage(int damage_on_hero);
     int get_magic_damage();

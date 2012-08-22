@@ -223,8 +223,6 @@ class Enemy: public Detector {
     void notify_movement_finished();
     void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
-    // TODO remove in the future Lua API (useless with the shared context)
-    void notify_message_received(Enemy& sender, const std::string& message);
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
     void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);

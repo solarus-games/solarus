@@ -884,16 +884,6 @@ void Enemy::notify_sprite_animation_finished(
 }
 
 /**
- * @brief Sends a message from another enemy to this enemy.
- * @param sender the sender
- * @param message the message
- */
-void Enemy::notify_message_received(Enemy& sender, const std::string& message) {
-
-  get_lua_context().enemy_on_message_received(*this, sender, message);
-}
-
-/**
  * @brief Notifies the enemy that a collision was just detected with another entity
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision

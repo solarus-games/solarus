@@ -1921,20 +1921,6 @@ void LuaContext::on_immobilized() {
 }
 
 /**
- * @brief Calls the on_message_received() method of the object on top of the stack.
- * @param src_enemy The sender.
- * @param message The message received.
- */
-void LuaContext::on_message_received(Enemy& src_enemy, const std::string& message) {
-
-  if (find_method("on_message_received")) {
-    lua_pushstring(l, src_enemy.get_name().c_str());
-    lua_pushstring(l, message.c_str());
-    call_function(3, 0, "on_message_received");
-  }
-}
-
-/**
  * @brief A loader that makes require() able to load Lua files
  * from the quest data directory or archive.
  * @param l The Lua context.

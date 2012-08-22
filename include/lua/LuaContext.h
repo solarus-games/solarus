@@ -216,8 +216,6 @@ class LuaContext {
     void enemy_on_dying(Enemy& enemy);
     void enemy_on_dead(Enemy& enemy);
     void enemy_on_immobilized(Enemy& enemy);
-    void enemy_on_message_received(Enemy& enemy,
-        Enemy& src_enemy, const std::string& message);
 
   private:
 
@@ -392,7 +390,6 @@ class LuaContext {
     void on_dying();
     void on_dead();
     void on_immobilized();
-    void on_message_received(Enemy& src_enemy, const std::string& message);
 
     /**
      * @brief Type of the functions that can be called by Lua.

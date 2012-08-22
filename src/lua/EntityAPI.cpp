@@ -2331,18 +2331,3 @@ void LuaContext::enemy_on_immobilized(Enemy& enemy) {
   lua_pop(l, 1);
 }
 
-/**
- * @brief Calls the on_message_received() method of a Lua enemy.
- * @param enemy An enemy.
- * @param src_enemy The sender.
- * @param message The message received.
- */
-void LuaContext::enemy_on_message_received(Enemy& enemy,
-    Enemy& src_enemy, const std::string& message) {
-
-  // TODO remove this (useless with the shared Lua context)
-  push_enemy(l, enemy);
-  on_message_received(src_enemy, message);
-  lua_pop(l, 1);
-}
-

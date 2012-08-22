@@ -9,25 +9,19 @@ local message_id = {
 
 function item:on_obtained(variant)
 
-  local nb_pieces_of_heart = self:get_game():get_integer(1030)
-  self:get_map():start_dialog(message_id[nb_pieces_of_heart + 1], self)
-end
+  local game = self:get_game()
+  local nb_pieces_of_heart = game:get_integer(1030)
+  self:get_map():start_dialog(message_id[nb_pieces_of_heart + 1], function()
 
-function item:on_dialog_finished(dialog_id, answer)
-
-  local nb_pieces_of_heart = self:get_game():get_integer(1030)
-
-  if dialog_id == message_id[nb_pieces_of_heart + 1] then
-
-    self:get_game():set_integer(1030, (nb_pieces_of_heart + 1) % 4)
+    game:set_integer(1030, (nb_pieces_of_heart + 1) % 4)
     if nb_pieces_of_heart == 3 then
-      self:get_game():add_max_life(4)
+      game:add_max_life(4)
     end
-    self:get_game():add_life(self:get_game():get_max_life())
-  end
+    game:add_life(game:get_max_life())
+  end)
 end
 
--- this function is not used in releases :)
+-- This function is not used in releases :)
 function item:print_pieces_of_heart()
 
   local pieces = {
@@ -77,5 +71,5 @@ function item:print_pieces_of_heart()
 end
 
 -- If you want to know your missing pieces of heart, uncomment the line below
--- print_pieces_of_heart()
+-- item:print_pieces_of_heart()
 

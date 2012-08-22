@@ -1,13 +1,13 @@
 local item = ...
 -- Script of the Lamp
 
-item.temporary_lit_torches = {} -- list of torches that will be unlit by timers soon (FIFO)
+item.temporary_lit_torches = {} -- List of torches that will be unlit by timers soon (FIFO).
 item.was_dark_room = false
 
--- Called when the hero uses the Lamp
+-- Called when the hero uses the Lamp.
 function item:on_using()
 
-  local magic_needed = 2 -- number of magic points required
+  local magic_needed = 2  -- Number of magic points required
   if self:get_game():get_magic() >= magic_needed then
     sol.audio.play_sound("lamp")
     self:get_game():remove_magic(magic_needed)
@@ -23,6 +23,7 @@ function item:create_fire()
 
   local hero = self:get_map():get_hero()
   local direction = hero:get_direction()
+  local dx, dy
   if direction == 0 then
     dx, dy = 18, -4
   elseif direction == 1 then
@@ -39,10 +40,12 @@ end
 
 -- Unlights the oldest torch still lit.
 function item:unlight_oldest_torch()
-
-  local npc = table.remove(self.temporary_lit_torches, 1)  -- remove the torch from the FIFO
-  if npc:exists() then                                     -- see if it still exists on the map
-    npc:get_sprite():set_animation("unlit")                -- change the animation
+  
+  -- Remove the torch from the FIFO.
+  local npc = table.remove(self.temporary_lit_torches, 1)  
+  if npc:exists() then
+    -- Change its animation if it still exists on the map.
+    npc:get_sprite():set_animation("unlit")
   end
 
   if #self.temporary_lit_torches == 0 and self.was_dark_room then
@@ -67,8 +70,8 @@ function item:on_map_changed()
   self.was_dark_room = false
 end
 
--- Called when the hero presses the action key in front of any NPC
--- that wants to notify the lamp.
+-- Called when the hero presses the action key in front of an NPC
+-- linked to the Lamp.
 function item:on_npc_interaction(npc)
 
   if npc:get_name():find("^torch") then
@@ -83,7 +86,7 @@ function item:on_npc_collision_fire(npc)
     
     local torch_sprite = npc:get_sprite()
     if torch_sprite:get_animation() == "unlit" then
-      -- temporarily light the torch up
+      -- Temporarily light the torch up.
       torch_sprite:set_animation("lit")
       sol.timer.start(10000, function()
         self:unlight_oldest_torch()
@@ -91,7 +94,7 @@ function item:on_npc_collision_fire(npc)
       table.insert(self.temporary_lit_torches, npc)
 
       if self:get_map():get_light() == 0 then
-        -- light the room
+        -- Light the room.
         self.was_dark_room = true
         self:get_map():set_light(1)
       end

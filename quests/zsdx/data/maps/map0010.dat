@@ -696,14 +696,14 @@
 1	0	192	381	from_fairy_fountain	3	_none
 2	0	184	352	16	16	teletransporter_11	_none	_none	1	93	from_outside
 2	0	832	376	16	16	teletransporter_6	_none	_none	0	52	from_1F
-10	1	464	16	48	16	riverfall_7	1081	0
-10	1	464	32	48	16	riverfall_6	1081	0
-10	1	464	48	48	16	riverfall_5	1081	0
-10	1	464	64	48	16	riverfall_4	1081	0
-10	1	464	80	48	16	riverfall_3	1081	0
-10	1	464	96	48	16	riverfall_2	1081	0
-10	1	464	112	48	16	riverfall_1	1081	0
-10	1	464	0	48	16	riverfall_8	1081	0
+10	1	464	16	48	16	riverfall_tile_7	1081	0
+10	1	464	32	48	16	riverfall_tile_6	1081	0
+10	1	464	48	48	16	riverfall_tile_5	1081	0
+10	1	464	64	48	16	riverfall_tile_4	1081	0
+10	1	464	80	48	16	riverfall_tile_3	1081	0
+10	1	464	96	48	16	riverfall_tile_2	1081	0
+10	1	464	112	48	16	riverfall_tile_1	1081	0
+10	1	464	0	48	16	riverfall_tile_8	1081	0
 0	2	408	232	144	40	511
 0	2	408	216	144	16	512
 0	2	400	224	8	40	513

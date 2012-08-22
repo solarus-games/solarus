@@ -1,31 +1,31 @@
 local item = ...
 
 -- The mystic mirror allows the hero to traverse a specific waterfall
--- in the mountains
+-- in the mountains.
 
-local i = 1 -- index of the waterfall tiles
+local i = 1  -- Index of the waterfall tiles.
 local timer
 
-function item:on_npc_interaction(npc_name)
+function item:on_npc_interaction(npc)
 
-  -- give a hint when looking at the waterfall
-  if npc_name:find("^riverfall_detector_[we]$") then
-    self:get_map():start_dialog("outside_world.mountain_riverfall")
+  -- Give a hint when looking at the waterfall.
+  if npc:get_name():find("^riverfall_detector_[we]$") then
+    npc:get_map():start_dialog("outside_world.mountain_riverfall")
   end
 end
 
-function item:on_npc_interaction_item(npc_name, item_name, variant)
+function item:on_npc_interaction_item(npc, item_used)
 
-  local side = npc_name:match("^riverfall_detector_([we])$")
-  if side ~= nil and item_name == "mystic_mirror" then
-    -- using the mirror with the waterfall: reverse the waterfall
-    -- and traverse it
+  local side = npc:get_name():match("^riverfall_detector_([we])$")
+  if side ~= nil and item:get_name() == "mystic_mirror" then
+    -- Using the mirror with the waterfall: reverse the waterfall
+    -- and traverse it.
     self:get_map():hero_freeze()
     sol.audio.play_sound("water_drain")
     if timer ~= nil then
       timer:stop()
     end
-    self:get_map():tile_set_group_enabled("riverfall_", false)
+    self:get_map():set_entities_enabled("riverfall_tile", false)
 
     local path
     if side == "w" then
@@ -42,14 +42,15 @@ function item:on_npc_interaction_item(npc_name, item_name, variant)
         timer = sol.timer.start(350, repeat_change_riverfall)
       else
         sol.audio.play_sound("secret")
-        self:get_map():hero_walk(path, false, true)
+        self:get_map():get_hero():walk(path, false, true)
         timer = sol.timer.start(2000, repeat_restore_riverfall)
       end
     end
 
     function repeat_restore_riverfall()
       i = i - 1
-      self:get_map():tile_set_enabled("riverfall_" .. i, false)
+      local tile = self:get_map():get_entity("riverfall_" .. i)
+      tile:set_enabled(false)
       if i > 1 then
         timer = sol.timer.start(350, repeat_restore_riverfall)
       end
@@ -57,8 +58,8 @@ function item:on_npc_interaction_item(npc_name, item_name, variant)
 
     timer = sol.timer.start(350, repeat_change_riverfall)
 
-    -- tell the engine that an interaction occured:
-    -- event_use() won't be called
+    -- Tell the engine that an interaction occured:
+    -- on_using() won't be called.
     return true
   end
 
@@ -67,8 +68,8 @@ end
 
 function item:on_using()
 
-  -- using the mirror at a wrong place
+  -- Using the mirror at a wrong place.
   sol.audio.play_sound("wrong")
-  self:get_map():hero_unfreeze()
+  self:set_finished()
 end
 

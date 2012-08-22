@@ -1,7 +1,7 @@
 -- This script handles all bottles (each bottle script runs it).
 
 local item = ...
-item.bottle_to_make_empty = ""  -- Name of a bottle to make empty at the next cycle.
+item.bottle_to_make_empty = nil  -- Name of a bottle to make empty at the next cycle.
 
 function item:on_using()
 

@@ -10,7 +10,7 @@ end
 
 function item:on_using()
 
-  self:get_map():hero_start_running()
+  self:get_map():get_hero():start_running()
   self:set_finished()
 end
 

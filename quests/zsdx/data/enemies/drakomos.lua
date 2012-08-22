@@ -5,7 +5,7 @@ local head_2 = nil
 local ball_sprite = nil
 local killing = false
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(1)
   self:set_damage(8)

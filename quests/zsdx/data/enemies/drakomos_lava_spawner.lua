@@ -1,6 +1,6 @@
 local enemy = ...
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_size(32, 24)
   self:set_origin(16, 21)

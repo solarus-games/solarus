@@ -47,7 +47,7 @@ local bonuses_done = {}
 function map:on_started(destination_point_name)
 
   if not map:get_game():get_boolean(881) then
-    sol.audio.play_music("ganon_appears")
+    sol.audio.play_music("ganon_createds")
     map:enemy_set_enabled("boss", true)
     map:npc_set_enabled("zelda", false)
     map:npc_set_group_enabled("child", false)

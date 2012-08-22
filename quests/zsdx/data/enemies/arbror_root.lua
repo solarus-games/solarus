@@ -8,7 +8,7 @@ local speed = 32
 local timer
 local father_name
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(1)
   self:set_damage(4)

@@ -31,7 +31,7 @@ local nb_bats_created = 0
 local cancel_next_attack = false
 local timers = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(1000000)
   self:set_damage(16)

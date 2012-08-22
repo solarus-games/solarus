@@ -5,7 +5,7 @@ local initial_y = nil
 local state = nil -- "raising", "attacking", "destroying"
 local timer
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(1)
   self:set_damage(4)

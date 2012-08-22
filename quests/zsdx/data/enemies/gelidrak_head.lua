@@ -7,7 +7,7 @@ local vulnerable_delay = 5000 -- delay while the head remains vulnerable
 local nb_flames_created = 0
 local timers = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(24)
   self:set_damage(12)

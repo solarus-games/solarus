@@ -9,7 +9,7 @@ local used_sword = false
 local sprite2 = nil
 local sprite3 = nil
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(1)
   self:set_damage(8)

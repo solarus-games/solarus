@@ -5,7 +5,7 @@ local enemy = ...
 -- Unlike the normal green soldier, he cannot see or follow the hero.
 
 -- The enemy appears: set its properties
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(2)
   self:set_damage(2)

@@ -193,7 +193,7 @@ class LuaContext {
     void block_on_moved(Block& block);
     void enemy_on_update(Enemy& enemy);
     void enemy_on_suspended(Enemy& enemy, bool suspended);
-    void enemy_on_appear(Enemy& enemy);
+    void enemy_on_created(Enemy& enemy);
     void enemy_on_enabled(Enemy& enemy);
     void enemy_on_disabled(Enemy& enemy);
     void enemy_on_restart(Enemy& enemy);
@@ -375,7 +375,7 @@ class LuaContext {
     void on_obtained(const Treasure& treasure);
     void on_using();
     void on_ability_used(const std::string& ability_name);
-    void on_appear();  // TODO rename to on_created
+    void on_created();
     void on_enabled();
     void on_disabled();
     void on_restart();

@@ -29,7 +29,7 @@ local middle_dialog = false
 local nb_fakes_created = 0
 local timers = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(initial_life)
   self:set_damage(16)

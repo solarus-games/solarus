@@ -1,6 +1,6 @@
 local enemy = ...
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(4)
   self:set_damage(12)

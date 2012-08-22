@@ -6,7 +6,7 @@ local nb_sons_to_create = 0
 local nb_sons_created = 0
 local timers = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(8)
   self:set_damage(2)

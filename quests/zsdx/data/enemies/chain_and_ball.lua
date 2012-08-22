@@ -22,7 +22,7 @@ local link_xy = {
 local father_name = ""                  -- name of the enemy the chain and ball is attached to if any
 local center_xy = {x = 0, y = 0}        -- center point of the circles, relative to the father enemy if any, absolute otherwise
 
-function enemy:on_appear()
+function enemy:on_created()
 
   -- set the properties
   self:set_life(1)

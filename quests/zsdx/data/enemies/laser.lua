@@ -4,7 +4,7 @@ local enemy = ...
 
 local initial_position = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(1)
   self:set_damage(4)

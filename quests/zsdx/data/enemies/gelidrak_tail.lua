@@ -5,7 +5,7 @@ local enemy = ...
 local retracted = false      -- becomes retracted when touched by an arrow
 local retracted_delay = 3000 -- delay while the tail remains retracted
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(1000000)
   self:set_damage(12)

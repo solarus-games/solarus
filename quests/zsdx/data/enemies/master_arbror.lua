@@ -9,7 +9,7 @@ local vulnerable = false
 local initial_life = 8
 local timers = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(initial_life)
   self:set_damage(4)

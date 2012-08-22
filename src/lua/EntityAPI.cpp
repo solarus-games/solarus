@@ -2345,13 +2345,13 @@ void LuaContext::enemy_on_suspended(Enemy& enemy, bool suspended) {
 }
 
 /**
- * @brief Calls the on_appeared() method of a Lua enemy.
+ * @brief Calls the on_created() method of a Lua enemy.
  * @param enemy An enemy.
  */
-void LuaContext::enemy_on_appear(Enemy& enemy) {
+void LuaContext::enemy_on_created(Enemy& enemy) {
 
   push_enemy(l, enemy);
-  on_appear();
+  on_created();
   lua_pop(l, 1);
 }
 

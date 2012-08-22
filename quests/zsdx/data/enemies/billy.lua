@@ -5,7 +5,7 @@ local enemy = ...
 local going_hero = false
 local timer
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(30)
   self:set_damage(16)

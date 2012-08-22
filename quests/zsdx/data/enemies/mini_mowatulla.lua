@@ -6,7 +6,7 @@ local enemy = ...
 local in_shell = nil
 
 -- The enemy appears: create its movement
-function enemy:on_appear()
+function enemy:on_created()
   
   self:set_life(2)
   self:set_damage(2)

@@ -316,7 +316,7 @@ void LuaContext::notify_enemy_created(Enemy& enemy) {
     call_function(1, 0, file_name);
 
     enemy_on_suspended(enemy, enemy.is_suspended());
-    enemy_on_appear(enemy);
+    enemy_on_created(enemy);
   }
 }
 
@@ -1704,12 +1704,12 @@ void LuaContext::on_ability_used(const std::string& ability_name) {
 }
 
 /**
- * @brief Calls the on_appear() method of the object on top of the stack.
+ * @brief Calls the on_created() method of the object on top of the stack.
  */
-void LuaContext::on_appear() {
+void LuaContext::on_created() {
 
-  if (find_method("on_appear")) {
-    call_function(1, 0, "on_appear");
+  if (find_method("on_created")) {
+    call_function(1, 0, "on_created");
   }
 }
 

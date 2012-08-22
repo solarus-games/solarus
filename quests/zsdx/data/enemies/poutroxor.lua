@@ -10,7 +10,7 @@ local nb_flames_created = 0
 local max_flames_created = 10
 local timers = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(14)
   self:set_damage(1)

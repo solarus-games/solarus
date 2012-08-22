@@ -4,7 +4,7 @@ local eye = nil
 local current_xy = {}
 local ball_sprite = nil
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(1)
   self:set_damage(6)

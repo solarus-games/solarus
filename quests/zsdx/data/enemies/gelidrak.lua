@@ -11,7 +11,7 @@ local tail_retracted = false
 local initial_xy = {}
 local current_xy = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(1000000)
   self:set_damage(12)

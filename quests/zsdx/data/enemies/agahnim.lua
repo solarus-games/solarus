@@ -15,7 +15,7 @@ local finished = false
 local blue_fireball_proba = 33 -- percent
 local timers = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(initial_life)
   self:set_damage(12)

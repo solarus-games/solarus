@@ -100,7 +100,7 @@ end
 
 function start_boss()
 
-  sol.audio.play_music("ganon_appears")
+  sol.audio.play_music("ganon_createds")
   map:enemy_set_enabled("boss", true)
   map:start_dialog("dungeon_5.agahnim_beginning")
   map:hero_unfreeze()

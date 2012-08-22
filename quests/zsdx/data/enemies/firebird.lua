@@ -8,7 +8,7 @@ local nb_sons_created = 0
 local initial_life = 7
 local timers = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(initial_life)
   self:set_damage(2)

@@ -7,7 +7,7 @@ local max_fire_created = 10
 local initial_xy = {}
 local timers = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(16)
   self:set_damage(16)

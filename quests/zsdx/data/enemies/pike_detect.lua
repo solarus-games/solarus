@@ -6,7 +6,7 @@ local state = "stopped" -- "stopped", "moving", "going_back", "paused"
 local initial_xy = {}
 local activation_distance = 24
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(1)
   self:set_damage(4)

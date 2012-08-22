@@ -12,7 +12,7 @@ local left_blade_life = 4
 local right_blade_life = 4
 local blade_attack = false
 
-function enemy:on_appear()
+function enemy:on_created()
 
   -- set the properties
   self:set_life(5)

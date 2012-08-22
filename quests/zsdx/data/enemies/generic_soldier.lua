@@ -54,7 +54,7 @@ function enemy:set_properties(prop)
   end
 end
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(properties.life)
   self:set_damage(properties.damage)

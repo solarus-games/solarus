@@ -32,7 +32,7 @@ local cancel_next_attack = false
 local sprite
 local timers = {}
 
-function enemy:on_appeared()
+function enemy:on_createded()
 
   self:set_life(1000000)
   self:set_damage(16)

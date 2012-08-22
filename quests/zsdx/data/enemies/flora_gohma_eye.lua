@@ -11,7 +11,7 @@ local nb_sons_created = 0
 local speed = 24
 local timers = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(12)
   self:set_damage(4)

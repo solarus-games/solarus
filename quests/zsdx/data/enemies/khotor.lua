@@ -4,7 +4,7 @@ local enemy = ...
 
 local chain_name = ""
 
-function enemy:on_appear(creator_name)
+function enemy:on_created()
 
   -- set the properties
   self:set_life(12)

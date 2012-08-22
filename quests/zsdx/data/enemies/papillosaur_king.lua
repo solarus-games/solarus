@@ -9,7 +9,7 @@ local boss_movement_starting_speed = 50 -- Starting speed in pixels per second, 
 local boss_movement_speed = boss_movement_starting_speed
 local timers = {}
 
-function enemy:on_appear()
+function enemy:on_created()
 
   self:set_life(boss_starting_hp)
   self:set_damage(2)

@@ -47,7 +47,7 @@ function item:unlight_oldest_torch()
 
   if #self.temporary_lit_torches == 0 and self.was_dark_room then
     -- make the room dark again
-    self:get_map():light_set(0)
+    self:get_map():set_light(0)
   end
 end
 
@@ -90,10 +90,10 @@ function item:on_npc_collision_fire(npc_name)
       end)
       table.insert(self.temporary_lit_torches, npc_name)
 
-      if self:get_map():light_get() == 0 then
+      if self:get_map():get_light() == 0 then
         -- light the room
         self.was_dark_room = true
-        self:get_map():light_set(1)
+        self:get_map():set_light(1)
       end
     end
   end

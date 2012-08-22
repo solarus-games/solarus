@@ -90,7 +90,7 @@ function map:on_dialog_finished(dialog_id)
     end)
   elseif dialog_id == "dungeon_9.zelda_end" then
     sol.timer.start(2000, function()
-      map:hero_set_map(8, "from_ending", 1)
+      map:get_hero():teleport(8, "from_ending")
     end)
   end
 end
@@ -108,7 +108,7 @@ function start_final_sequence()
   map:hero_set_direction(3)
   sol.audio.play_music("victory")
   sol.timer.start(9000, function()
-    map:hero_set_map(130, "from_boss", 1)
+    map:get_hero():teleport(130, "from_boss")
   end)
   sol.timer.start(9100, start_zelda_sequence)
 end

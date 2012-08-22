@@ -96,6 +96,6 @@ function map:on_hero_on_sensor(sensor_name)
 end
 
 function ending_next()
-  map:hero_set_map(119, "from_ending", 1)
+  map:get_hero():teleport(119, "from_ending")
 end
 

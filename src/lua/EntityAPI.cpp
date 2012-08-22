@@ -69,6 +69,13 @@ const char* LuaContext::enemy_obstacle_behavior_names[] = {
   NULL
 };
 
+const char* LuaContext::transition_style_names[] = {
+  "immediate",
+  "fade",
+  "scrolling",
+  NULL
+};
+
 /**
  * @brief Initializes the map entity features provided to Lua.
  */
@@ -101,7 +108,7 @@ void LuaContext::register_entity_module() {
   static const luaL_Reg hero_methods[] = {
       { "freeze", hero_api_freeze },
       { "unfreeze", hero_api_unfreeze },
-      { "set_map", hero_api_set_map },
+      { "teleport", hero_api_teleport },
       { "set_visible", hero_api_set_visible },
       { "get_direction", hero_api_get_direction },
       { "set_direction", hero_api_set_direction },
@@ -407,19 +414,22 @@ void LuaContext::push_hero(lua_State* l, Hero& hero) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_hero_set_map.
+ * @brief Implementation of \ref lua_api_hero_teleport.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::hero_api_set_map(lua_State* l) {
+int LuaContext::hero_api_teleport(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
   MapId map_id = luaL_checkinteger(l, 2);
   const std::string& destination_name = luaL_checkstring(l, 3);
-  Transition::Style transition_style = Transition::Style(luaL_checkinteger(l, 4));
-  // TODO give names to transitions for Lua
+  int transition_style = Transition::FADE;
+  if (lua_gettop(l) >= 4) {
+    transition_style = luaL_checkoption(l, 4, NULL, transition_style_names);
+  }
 
-  hero.get_game().set_current_map(map_id, destination_name, transition_style);
+  hero.get_game().set_current_map(map_id, destination_name,
+      Transition::Style(transition_style));
 
   return 0;
 }

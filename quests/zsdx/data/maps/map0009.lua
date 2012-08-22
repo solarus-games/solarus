@@ -127,7 +127,7 @@ end
 
 function leave_boss()
 
-  map:hero_set_map(9, "from_dungeon_5_1F", 1)
+  map:get_hero():teleport(9, "from_dungeon_5_1F")
   sol.timer.start(700, restore_music)
 end
 

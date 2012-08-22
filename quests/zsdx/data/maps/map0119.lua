@@ -129,7 +129,7 @@ end
 function map:on_hero_victory_finished()
 
   map:get_game():set_dungeon_finished(10)
-  map:hero_set_map(119, "from_dungeon_10", 1)
+  map:get_hero():teleport(119, "from_dungeon_10")
   map:enemy_set_group_enabled("", true) -- enable simple enemies back
 
   sol.timer.start(1000, function()
@@ -149,6 +149,6 @@ function map:on_dialog_finished(dialog_id)
 end
 
 function ending_next()
-  map:hero_set_map(131, "from_ending", 1)
+  map:get_hero():teleport(131, "from_ending")
 end
 

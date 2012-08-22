@@ -43,6 +43,6 @@ end
 
 
 function next_map()
-  map:hero_set_map(28, "from_intro", 1)
+  map:get_hero():teleport(28, "from_intro")
 end
 

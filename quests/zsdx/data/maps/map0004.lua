@@ -142,6 +142,6 @@ function map:on_dialog_finished(dialog_id)
 end
 
 function ending_next()
-  map:hero_set_map(56, "from_ending", 1)
+  map:get_hero():teleport(56, "from_ending")
 end
 

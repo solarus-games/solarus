@@ -675,7 +675,7 @@ class LuaContext {
       entity_api_is_enabled,
       entity_api_set_enabled,
       entity_api_remove,
-      hero_api_set_map,
+      hero_api_teleport,
       hero_api_set_visible,
       hero_api_get_direction,
       hero_api_set_direction,
@@ -789,6 +789,7 @@ class LuaContext {
     static const char* enemy_attack_names[];
     static const char* enemy_hurt_style_names[];
     static const char* enemy_obstacle_behavior_names[];
+    static const char* transition_style_names[];
 };
 
 #endif

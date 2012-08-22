@@ -73,7 +73,7 @@ function send_hero_to_prison()
     prison_dialog_timer = nil
   end
   prison_go_timer = nil
-  map:hero_set_map(65, "prison", 1)
+  map:get_hero():teleport(65, "prison")
   if init_prison ~= nil then
     -- special case: we are already on the map of the prison
     init_prison()

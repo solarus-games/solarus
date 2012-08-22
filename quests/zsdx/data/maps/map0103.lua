@@ -246,7 +246,7 @@ end
 
 function map:on_hero_victory_finished()
   map:get_game():set_dungeon_finished(7)
-  map:hero_set_map(8, "from_dungeon_7", 1)
+  map:get_hero():teleport(8, "from_dungeon_7")
 end
 
 function map:on_enemy_dead(enemy_name)

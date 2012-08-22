@@ -113,6 +113,6 @@ end
 function map:on_hero_victory_finished()
   map:get_game():set_dungeon_finished(6)
   map:get_game():set_boolean(155, false) -- reopen the rupee house
-  map:hero_set_map(7, "from_dungeon_6", 1)
+  map:get_hero():teleport(7, "from_dungeon_6")
 end
 

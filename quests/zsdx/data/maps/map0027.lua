@@ -14,7 +14,7 @@ function map:on_npc_interaction(npc_name)
     if map:get_game():is_dungeon_finished(1) then
       -- dialog already done
       sol.audio.play_sound("warp")
-      map:hero_set_map(6, "from_dungeon_1_1F", 1)
+      map:get_hero():teleport(6, "from_dungeon_1_1F")
     else
       -- start the final sequence
       map:move_camera(160, 120, 100, start_final_sequence)
@@ -36,7 +36,7 @@ end
 
 function map:on_hero_victory_finished()
   map:get_game():set_dungeon_finished(1)
-  map:hero_set_map(6, "from_dungeon_1_1F", 1)
+  map:get_hero():teleport(6, "from_dungeon_1_1F")
   map:set_pause_enabled(true)
 end
 

@@ -15,7 +15,7 @@ function map:on_npc_interaction(npc_name)
     if map:get_game():is_dungeon_finished(4) then
       -- dialog already done
       sol.audio.play_sound("warp")
-      map:hero_set_map(66, "from_dungeon_4", 1)
+      map:get_hero():teleport(66, "from_dungeon_4")
     else
       -- start the final sequence
       map:move_camera(160, 120, 100, start_final_sequence, 0)
@@ -80,6 +80,6 @@ function agahnim_sequence_6()
   map:get_game():set_dungeon_finished(4)
   map:get_game():set_boolean(905, true) -- enable the dark world
   map:get_game():set_boolean(155, true) -- break the rupee house
-  map:hero_set_map(66, "from_dungeon_4", 1)
+  map:get_hero():teleport(66, "from_dungeon_4")
 end
 

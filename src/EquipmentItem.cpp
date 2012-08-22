@@ -175,7 +175,7 @@ void EquipmentItem::notify_amount_changed(int amount) {
  */
 void EquipmentItem::notify_inventory_item_used(InventoryItem& inventory_item) {
 
-  get_lua_context().item_on_use(*this);
+  get_lua_context().item_on_using(*this);
 }
 
 /**

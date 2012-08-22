@@ -65,7 +65,7 @@ function item:on_npc_interaction_item(npc_name, item_name, variant)
   return false
 end
 
-function item:on_use()
+function item:on_using()
 
   -- using the mirror at a wrong place
   sol.audio.play_sound("wrong")

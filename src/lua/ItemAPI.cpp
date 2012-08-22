@@ -363,13 +363,13 @@ void LuaContext::item_on_amount_changed(EquipmentItem& item, int amount) {
 }
 
 /**
- * @brief Calls the on_use() method of a Lua equipment item.
+ * @brief Calls the on_using() method of a Lua equipment item.
  * @param item An equipment item.
  */
-void LuaContext::item_on_use(EquipmentItem& item) {
+void LuaContext::item_on_using(EquipmentItem& item) {
 
   push_item(l, item);
-  on_use();
+  on_using();
   lua_pop(l, 1);
 }
 

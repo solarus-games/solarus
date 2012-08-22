@@ -144,7 +144,7 @@ class LuaContext {
     void item_on_obtained(EquipmentItem& item, const Treasure& treasure);
     void item_on_variant_changed(EquipmentItem& item, int variant);
     void item_on_amount_changed(EquipmentItem& item, int amount);
-    void item_on_use(EquipmentItem& item);
+    void item_on_using(EquipmentItem& item);
     void item_on_ability_used(EquipmentItem& item, const std::string& ability_name);
     void item_on_npc_interaction(EquipmentItem& item, NPC& npc);
     bool item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
@@ -373,7 +373,7 @@ class LuaContext {
     void on_amount_changed(int amount);
     void on_obtaining(const Treasure& treasure);
     void on_obtained(const Treasure& treasure);
-    void on_use();  // TODO rename to on_using
+    void on_using();
     void on_ability_used(const std::string& ability_name);
     void on_appear();  // TODO rename to on_created
     void on_enabled();

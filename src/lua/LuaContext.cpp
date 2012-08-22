@@ -1682,12 +1682,12 @@ void LuaContext::on_obtained(const Treasure& treasure) {
 }
 
 /**
- * @brief Calls the on_use() method of the object on top of the stack.
+ * @brief Calls the on_using() method of the object on top of the stack.
  */
-void LuaContext::on_use() {
+void LuaContext::on_using() {
 
-  if (find_method("on_use")) {
-    call_function(1, 0, "on_use");
+  if (find_method("on_using")) {
+    call_function(1, 0, "on_using");
   }
 }
 

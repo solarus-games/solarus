@@ -1,6 +1,6 @@
 local item = ...
 
-function item:on_use()
+function item:on_using()
 
   if self:get_amount() == 0 then
     sol.audio.play_sound("wrong")

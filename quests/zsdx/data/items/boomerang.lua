@@ -1,6 +1,6 @@
 local item = ...
 
-function item:on_use()
+function item:on_using()
 
   local hero = self:get_map():get_hero()
   if self:get_variant() == 1 then

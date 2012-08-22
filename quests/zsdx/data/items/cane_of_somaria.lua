@@ -1,7 +1,7 @@
 local item = ...
 item.somaria_block = nil  -- The block created if any.
 
-function item:on_use()
+function item:on_using()
 
   local magic_needed = 7
   local game = self:get_game()

@@ -5,7 +5,7 @@ item.temporary_lit_torches = {} -- list of torches that will be unlit by timers 
 item.was_dark_room = false
 
 -- Called when the hero uses the Lamp
-function item:on_use()
+function item:on_using()
 
   local magic_needed = 2 -- number of magic points required
   if self:get_game():get_magic() >= magic_needed then

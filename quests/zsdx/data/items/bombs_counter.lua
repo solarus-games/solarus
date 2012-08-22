@@ -1,7 +1,7 @@
 local item = ...
 
 -- Called when the player uses the bombs of his inventory by pressing the corresponding item key.
-function item:on_use()
+function item:on_using()
 
   if self:get_amount() == 0 then
     sol.audio.play_sound("wrong")

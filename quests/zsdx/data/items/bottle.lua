@@ -3,7 +3,7 @@
 local item = ...
 item.bottle_to_make_empty = ""  -- Name of a bottle to make empty at the next cycle.
 
-function item:on_use()
+function item:on_using()
 
   local variant = self:get_variant()
   local game = self:get_game()

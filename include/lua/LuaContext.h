@@ -266,6 +266,7 @@ class LuaContext {
     // Pushing objects to Lua.
     static void push_ref(lua_State* l, int ref);
     static void push_main(lua_State* l);
+    static void push_string(lua_State* l, const std::string& text);
     static void push_userdata(lua_State* l, ExportableToLua& userdata);
     static void push_color(lua_State* l, const Color& color);
     static void push_timer(lua_State* l, Timer& timer);

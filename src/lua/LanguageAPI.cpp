@@ -52,7 +52,7 @@ int LuaContext::language_api_get_language(lua_State* l) {
     lua_pushnil(l);
   }
   else  {  // Return the language code.
-    lua_pushstring(l, language.c_str());
+    push_string(l, language);
   }
   return 1;
 }
@@ -93,7 +93,7 @@ int LuaContext::language_api_get_language_name(lua_State* l) {
   }
   else {
     const std::string& name = languages.find(language_code)->second;
-    lua_pushstring(l, name.c_str());
+    push_string(l, name);
   }
 
   return 1;
@@ -115,7 +115,7 @@ int LuaContext::language_api_get_languages(lua_State* l) {
   int i = 1;
   for (it = languages.begin(); it != languages.end(); it++) {
     const std::string& language_code = it->first;
-    lua_pushstring(l, language_code.c_str());
+    push_string(l, language_code);
     lua_rawseti(l, -2, i);
     ++i;
   }
@@ -132,7 +132,7 @@ int LuaContext::language_api_get_default_language(lua_State* l) {
 
   const std::string& language = FileTools::get_default_language();
 
-  lua_pushstring(l, language.c_str());
+  push_string(l, language);
   return 1;
 }
 
@@ -145,7 +145,7 @@ int LuaContext::language_api_get_string(lua_State* l) {
 
   const std::string& key = luaL_checkstring(l, 1);
 
-  lua_pushstring(l, StringResource::get_string(key).c_str());
+  push_string(l, StringResource::get_string(key));
 
   return 1;
 }

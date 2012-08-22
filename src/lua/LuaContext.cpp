@@ -802,6 +802,15 @@ void LuaContext::push_ref(lua_State* l, int ref) {
 }
 
 /**
+ * @brief Pushes a string.
+ * @param l A Lua state.
+ * @param text A string value.
+ */
+void LuaContext::push_string(lua_State* l, const std::string& text) {
+  push_string(l, text);
+}
+
+/**
  * @brief Pushes a userdata onto the stack.
  * @param l a Lua context
  * @param userdata a userdata
@@ -1189,7 +1198,7 @@ void LuaContext::on_key_pressed(InputEvent& event) {
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Lua API.
 
-      lua_pushstring(l, key_name.c_str());
+      push_string(l, key_name);
       lua_newtable(l);
 
       if (event.is_with_shift()) {
@@ -1227,7 +1236,7 @@ void LuaContext::on_key_released(InputEvent& event) {
 
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Lua API.
-      lua_pushstring(l, key_name.c_str());
+      push_string(l, key_name);
       call_function(2, 0, "on_key_released");
     }
     else {
@@ -1368,7 +1377,7 @@ void LuaContext::on_camera_back() {
 void LuaContext::on_obtaining_treasure(const Treasure& treasure) {
 
   if (find_method("on_obtaining_treasure")) {
-    lua_pushstring(l, treasure.get_item_name().c_str());
+    push_string(l, treasure.get_item_name());
     lua_pushinteger(l, treasure.get_variant());
     lua_pushinteger(l, treasure.get_savegame_variable());
     call_function(4, 0, "on_obtaining_treasure");
@@ -1382,7 +1391,7 @@ void LuaContext::on_obtaining_treasure(const Treasure& treasure) {
 void LuaContext::on_obtained_treasure(const Treasure& treasure) {
 
   if (find_method("on_obtained_treasure")) {
-    lua_pushstring(l, treasure.get_item_name().c_str());
+    push_string(l, treasure.get_item_name());
     lua_pushinteger(l, treasure.get_variant());
     lua_pushinteger(l, treasure.get_savegame_variable());
     call_function(4, 0, "on_obtained_treasure");
@@ -1696,7 +1705,7 @@ void LuaContext::on_using() {
 void LuaContext::on_ability_used(const std::string& ability_name) {
 
   if (find_method("on_ability_used")) {
-    lua_pushstring(l, ability_name.c_str());
+    push_string(l, ability_name);
     call_function(2, 0, "on_ability_used");
   }
 }
@@ -1817,7 +1826,7 @@ void LuaContext::on_sprite_animation_finished(Sprite& sprite, const std::string&
 
   if (find_method("on_sprite_animation_finished")) {
     push_sprite(l, sprite);
-    lua_pushstring(l, animation.c_str());
+    push_string(l, animation);
     call_function(3, 0, "on_sprite_animation_finished");
   }
 }
@@ -1832,7 +1841,7 @@ void LuaContext::on_sprite_frame_changed(Sprite& sprite, const std::string& anim
 
   if (find_method("on_sprite_frame_changed")) {
     push_sprite(l, sprite);
-    lua_pushstring(l, animation.c_str());
+    push_string(l, animation);
     lua_pushinteger(l, frame);
     call_function(4, 0, "on_sprite_frame_changed");
   }
@@ -1933,7 +1942,7 @@ int LuaContext::l_loader(lua_State* l) {
     std::ostringstream oss;
     oss << std::endl << "\tno quest file '" << script_name
       << ".lua' in 'data' or 'data.solarus'";
-    lua_pushstring(l, oss.str().c_str());
+    push_string(l, oss.str());
   }
   return 1;
 }

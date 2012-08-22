@@ -100,7 +100,7 @@ int LuaContext::sprite_api_get_animation(lua_State* l) {
   const Sprite& sprite = check_sprite(l, 1);
 
   const std::string& animation_name = sprite.get_current_animation();
-  lua_pushstring(l, animation_name.c_str());
+  push_string(l, animation_name);
 
   return 1;
 }

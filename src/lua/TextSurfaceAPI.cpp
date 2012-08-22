@@ -221,7 +221,7 @@ int LuaContext::text_surface_api_get_font(lua_State* l) {
   TextSurface& text_surface = check_text_surface(l, 1);
 
   const std::string& font_id = text_surface.get_font();
-  lua_pushstring(l, font_id.c_str());
+  push_string(l, font_id);
 
   return 1;
 }
@@ -312,7 +312,7 @@ int LuaContext::text_surface_api_get_text(lua_State* l) {
 
   const std::string& text = text_surface.get_text();
 
-  lua_pushstring(l, text.c_str());
+  push_string(l, text);
   return 1;
 }
 

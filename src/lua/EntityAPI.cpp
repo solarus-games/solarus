@@ -324,7 +324,7 @@ int LuaContext::entity_api_get_name(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
 
-  lua_pushstring(l, entity.get_name().c_str());
+  push_string(l, entity.get_name());
   return 1;
 }
 
@@ -1337,7 +1337,7 @@ int LuaContext::pickable_api_get_treasure(lua_State* l) {
   Pickable& pickable = check_pickable(l, 1);
   const Treasure& treasure = pickable.get_treasure();
 
-  lua_pushstring(l, treasure.get_item_name().c_str());
+  push_string(l, treasure.get_item_name());
   lua_pushinteger(l, treasure.get_variant());
   lua_pushinteger(l, treasure.get_savegame_variable());
   return 1;
@@ -1372,7 +1372,7 @@ int LuaContext::enemy_api_get_breed(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
-  lua_pushstring(l, enemy.get_breed().c_str());
+  push_string(l, enemy.get_breed());
   return 1;
 }
 

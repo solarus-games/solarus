@@ -230,7 +230,7 @@ int LuaContext::game_api_get_string(lua_State* l) {
   luaL_argcheck(l, index >= 0 && index < 64, 1,
       "The index of a savegame string should be between 0 and 63");
 
-  lua_pushstring(l, savegame.get_string(index).c_str());
+  push_string(l, savegame.get_string(index));
   return 1;
 }
 
@@ -342,7 +342,7 @@ int LuaContext::game_api_get_player_name(lua_State* l) {
 
   const std::string &name = savegame.get_string(Savegame::PLAYER_NAME);
 
-  lua_pushstring(l, name.c_str());
+  push_string(l, name);
   return 1;
 }
 

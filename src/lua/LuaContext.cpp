@@ -1452,48 +1452,20 @@ void LuaContext::on_npc_interaction(NPC& npc) {
 }
 
 /**
- * @brief Calls the on_npc_interaction_finished() method of the object on top of the stack.
- * @param npc An NPC.
- */
-void LuaContext::on_npc_interaction_finished(NPC& npc) {
-
-  if (find_method("on_npc_interaction_finished")) {
-    push_npc(l, npc);
-    call_function(2, 0, "on_npc_interaction_finished");
-  }
-}
-
-/**
  * @brief Calls the on_npc_interaction_item() method of the object on top of the stack.
  * @param npc An NPC.
+ * @param item_used The equipment item used.
  * @return true if an interaction occurred.
  */
-bool LuaContext::on_npc_interaction_item(NPC& npc,
-    const std::string &item_name, int variant) {
+bool LuaContext::on_npc_interaction_item(NPC& npc, EquipmentItem& item_used) {
 
   if (find_method("on_npc_interaction_item")) {
     push_npc(l, npc);
-    lua_pushstring(l, item_name.c_str());
-    lua_pushinteger(l, variant);
-    call_function(4, 1, "on_npc_interaction_item");
+    push_item(l, item_used);
+    call_function(3, 1, "on_npc_interaction_item");
     return lua_toboolean(l, -1);
   }
   return false;
-}
-
-/**
- * @brief Calls the on_npc_interaction_item_finished() method of the object on top of the stack.
- * @param npc An NPC.
- */
-void LuaContext::on_npc_interaction_item_finished(NPC& npc,
-    const std::string &item_name, int variant) {
-
-  if (find_method("on_npc_interaction_item_finished")) {
-    push_npc(l, npc);
-    lua_pushstring(l, item_name.c_str());
-    lua_pushinteger(l, variant);
-    call_function(4, 0, "on_npc_interaction_item_finished");
-  }
 }
 
 /**
@@ -1503,16 +1475,6 @@ void LuaContext::on_interaction() {
 
   if (find_method("on_interaction")) {
     call_function(1, 0, "on_interaction");
-  }
-}
-
-/**
- * @brief Calls the on_interaction_finished() method of the object on top of the stack.
- */
-void LuaContext::on_interaction_finished() {
-
-  if (find_method("on_interaction_finished")) {
-    call_function(1, 0, "on_interaction_finished");
   }
 }
 
@@ -1531,19 +1493,6 @@ bool LuaContext::on_interaction_item(
     return lua_toboolean(l, -1);
   }
   return false;
-}
-
-/**
- * @brief Calls the on_interaction_item_finished() method of the object on top of the stack.
- */
-void LuaContext::on_interaction_item_finished(
-    const std::string &item_name, int variant) {
-
-  if (find_method("on_interaction_item_finished")) {
-    lua_pushstring(l, item_name.c_str());
-    lua_pushinteger(l, variant);
-    call_function(3, 0, "on_interaction_item_finished");
-  }
 }
 
 /**

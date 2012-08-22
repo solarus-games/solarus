@@ -59,8 +59,8 @@ class NPC: public Detector {
      */
     enum Behavior {
        BEHAVIOR_DIALOG,                 /**< start a dialog */
-       BEHAVIOR_MAP_SCRIPT,             /**< call the map script */
-       BEHAVIOR_ITEM_SCRIPT             /**< call an item script */
+       BEHAVIOR_MAP_SCRIPT,             /**< notify the NPC in Lua */
+       BEHAVIOR_ITEM_SCRIPT             /**< notify an equipment item in Lua */
     };
 
   private:

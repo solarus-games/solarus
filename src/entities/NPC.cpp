@@ -309,7 +309,6 @@ void NPC::call_script_hero_interaction() {
     EquipmentItem& item = get_equipment().get_item(item_name);
     get_lua_context().item_on_npc_interaction(item, *this);
   }
-  get_lua_context().npc_on_interaction_finished(*this);
 }
 
 /**
@@ -325,20 +324,16 @@ bool NPC::interaction_with_inventory_item(InventoryItem& inventory_item) {
 
   bool interaction_occured;
   if (behavior == BEHAVIOR_ITEM_SCRIPT) {
-    EquipmentItem& equipment_item = get_equipment().get_item(item_name);
+    EquipmentItem& equipment_item_to_notify = get_equipment().get_item(item_name);
+    EquipmentItem& equipment_item_used = get_equipment().get_item(inventory_item.get_name());
     interaction_occured = get_lua_context().item_on_npc_interaction_item(
-      equipment_item, *this, inventory_item.get_name(), inventory_item.get_variant());
+        equipment_item_to_notify, *this, equipment_item_used);
   }
   else {
     interaction_occured = get_lua_context().npc_on_interaction_item(
       *this, inventory_item.get_name(), inventory_item.get_variant());
   }
 
-  if (interaction_occured) {
-    // always notify the NPC when finished
-    get_lua_context().npc_on_interaction_item_finished(
-        *this, inventory_item.get_name(), inventory_item.get_variant());
-  }
   return interaction_occured;
 }
 

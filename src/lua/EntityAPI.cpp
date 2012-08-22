@@ -2021,17 +2021,6 @@ void LuaContext::npc_on_interaction(NPC& npc) {
 }
 
 /**
- * @brief Calls the on_interaction_finished() method of a Lua NPC.
- * @param npc An NPC.
- */
-void LuaContext::npc_on_interaction_finished(NPC& npc) {
-
-  push_npc(l, npc);
-  on_interaction_finished();
-  lua_pop(l, 1);
-}
-
-/**
  * @brief Calls the on_interaction_item() method of a Lua NPC.
  * @param npc An NPC.
  * @param item_name Name of an equipment item.
@@ -2045,20 +2034,6 @@ bool LuaContext::npc_on_interaction_item(NPC& npc,
   bool result = on_interaction_item(item_name, variant);
   lua_pop(l, 1);
   return result;
-}
-
-/**
- * @brief Calls the on_interaction_item_finished() method of a Lua NPC.
- * @param npc An NPC.
- * @param item_name Name of an equipment item.
- * @param variant Variant of this equipment item.
- */
-void LuaContext::npc_on_interaction_item_finished(NPC& npc,
-    const std::string& item_name, int variant) {
-
-  push_npc(l, npc);
-  on_interaction_item_finished(item_name, variant);
-  lua_pop(l, 1);
 }
 
 /**

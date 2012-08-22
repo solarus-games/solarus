@@ -147,7 +147,7 @@ class LuaContext {
     void item_on_ability_used(EquipmentItem& item, const std::string& ability_name);
     void item_on_npc_interaction(EquipmentItem& item, NPC& npc);
     bool item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
-        const std::string& item_name, int variant);
+        EquipmentItem& item_used);
     void item_on_npc_collision_fire(EquipmentItem& item, NPC& npc);
 
     // Game events.
@@ -350,15 +350,9 @@ class LuaContext {
     void on_inactivated();
     void on_left();
     void on_interaction();
-    void on_interaction_finished();
     bool on_interaction_item(const std::string &item_name, int variant);
-    void on_interaction_item_finished(const std::string &item_name, int variant);
-    void on_npc_interaction(NPC& npc);  // TODO simplify
-    void on_npc_interaction_finished(NPC& npc);
-    bool on_npc_interaction_item(NPC& npc,
-        const std::string &item_name, int variant);
-    void on_npc_interaction_item_finished(NPC& npc,
-        const std::string &item_name, int variant);
+    void on_npc_interaction(NPC& npc);
+    bool on_npc_interaction_item(NPC& npc, EquipmentItem& item_used);
     void on_npc_collision_fire(NPC& npc);
     void on_collision_fire();
     void on_collision_explosion();

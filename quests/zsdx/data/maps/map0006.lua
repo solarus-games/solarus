@@ -158,7 +158,7 @@ end
 function edelweiss_explode()
 
   sol.audio.play_sound("explosion")
-  map:explosion_create(160, 72, 0)
+  map:create_explosion(160, 72, 0)
   map:tile_set_enabled("beaumont_cave_hole", true)
   map:teletransporter_set_enabled("to_beaumont_cave", true)
   map:get_game():set_boolean(153, true)

@@ -62,7 +62,7 @@ function repeat_lava_spawner()
   if not map:get_game():get_boolean(321) then
     nb_spawners_created = nb_spawners_created + 1
     local index = math.random(#spawner_xy)
-    map:enemy_create("spawner_"..nb_spawners_created,
+    map:create_enemy("spawner_"..nb_spawners_created,
     "drakomos_lava_spawner", 1, spawner_xy[index].x, spawner_xy[index].y)
     sol.timer.start(5000 + math.random(10000), repeat_lava_spawner)
   end
@@ -87,7 +87,7 @@ function start_final_sequence()
   map:npc_set_position("tom", 272, 237)
   map:move_camera(272, 232, 100, function()
     map:start_dialog("dungeon_6.tom")
-    map:set_dialog_variable("dungeon_6.tom", map:get_game():get_player_name());
+    map:set_dialog_variable("dungeon_6.tom", map:get_game():get_player_name())
   end)
 end
 
@@ -99,7 +99,7 @@ function map:on_dialog_finished(dialog_id)
     sol.timer.start(1000, function()
       sol.audio.play_music("legend")
       map:start_dialog("dungeon_6.tom_revelation")
-      map:set_dialog_variable("dungeon_6.tom_revelation", map:get_game():get_player_name());
+      map:set_dialog_variable("dungeon_6.tom_revelation", map:get_game():get_player_name())
     end)
   elseif dialog_id == "dungeon_6.tom_revelation" then
     local variant = 2

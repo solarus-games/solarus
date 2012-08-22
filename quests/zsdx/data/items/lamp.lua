@@ -18,10 +18,11 @@ function item:on_use()
   self:set_finished()
 end
 
--- Creates some fire on the map
+-- Creates some fire on the map.
 function item:create_fire()
 
-  local direction = self:get_map():hero_get_direction()
+  local hero = self:get_map():get_hero()
+  local direction = hero:get_direction()
   if direction == 0 then
     dx, dy = 18, -4
   elseif direction == 1 then
@@ -32,17 +33,16 @@ function item:create_fire()
     dx, dy = 0, 16
   end
 
-  local x, y, layer = self:get_map():hero_get_position()
-  self:get_map():fire_create(x + dx, y + dy, layer)
+  local x, y, layer = hero:get_position()
+  self:get_map():create_fire(x + dx, y + dy, layer)
 end
 
--- Unlights the oldest torch still lit
+-- Unlights the oldest torch still lit.
 function item:unlight_oldest_torch()
 
-  local entity = table.remove(self.temporary_lit_torches, 1)  -- remove the torch from the FIFO
-  if self:get_map():npc_exists(entity) then                     -- see if it still exists
-    local torch_sprite = self:get_map():npc_get_sprite(entity)  -- get its sprite
-    torch_sprite:set_animation("unlit")                  -- change the animation
+  local npc = table.remove(self.temporary_lit_torches, 1)  -- remove the torch from the FIFO
+  if npc:exists() then                                     -- see if it still exists on the map
+    npc:get_sprite():set_animation("unlit")                -- change the animation
   end
 
   if #self.temporary_lit_torches == 0 and self.was_dark_room then
@@ -51,16 +51,16 @@ function item:unlight_oldest_torch()
   end
 end
 
--- Called when the player obtains the Lamp
+-- Called when the player obtains the Lamp.
 function item:on_obtained(variant, savegame_variable)
   
-  -- give the magic bar if necessary
+  -- Give the magic bar if necessary.
   if self:get_game():get_max_magic() == 0 then
     self:get_game():set_max_magic(42)
   end
 end
 
--- Called when the current map changes
+-- Called when the current map changes.
 function item:on_map_changed()
 
   self.temporary_lit_torches = {}
@@ -68,27 +68,27 @@ function item:on_map_changed()
 end
 
 -- Called when the hero presses the action key in front of any NPC
--- that wants to notify the lamp
-function item:on_npc_interaction(npc_name)
+-- that wants to notify the lamp.
+function item:on_npc_interaction(npc)
 
-  if string.find(npc_name, "^torch") then
-    self:get_map():dialog_start("torch.need_lamp")
+  if npc:get_name():find("^torch") then
+    npc:get_map():start_dialog("torch.need_lamp")
   end
 end
 
--- Called when fire touches an NPC linked to the Lamp
-function item:on_npc_collision_fire(npc_name)
+-- Called when fire touches an NPC linked to the Lamp.
+function item:on_npc_collision_fire(npc)
 
-  if string.find(npc_name, "^torch") then
+  if npc:get_name():find("^torch") then
     
-    local torch_sprite = self:get_map():npc_get_sprite(npc_name)
+    local torch_sprite = npc:get_sprite()
     if torch_sprite:get_animation() == "unlit" then
       -- temporarily light the torch up
       torch_sprite:set_animation("lit")
       sol.timer.start(10000, function()
         self:unlight_oldest_torch()
       end)
-      table.insert(self.temporary_lit_torches, npc_name)
+      table.insert(self.temporary_lit_torches, npc)
 
       if self:get_map():get_light() == 0 then
         -- light the room

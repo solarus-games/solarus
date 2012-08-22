@@ -10,7 +10,7 @@ function item:on_npc_interaction(npc_name)
 
   -- give a hint when looking at the waterfall
   if npc_name:find("^riverfall_detector_[we]$") then
-    self:get_map():dialog_start("outside_world.mountain_riverfall")
+    self:get_map():start_dialog("outside_world.mountain_riverfall")
   end
 end
 

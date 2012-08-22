@@ -38,7 +38,7 @@ function map:on_started(destination_point_name)
 	  -- the player already has the second one: give the third one instead
 	  variant = 3
 	end
-	map:pickable_create("sword", variant, 298, 440, 157, 1)
+	map:create_pickable("sword", variant, 298, 440, 157, 1)
       end
     else
       map:tile_set_group_enabled("roof_entrance", false)
@@ -90,7 +90,7 @@ function repeat_give_arrows()
       { x = 472, y = 189 },
     }
     arrow_xy = positions[math.random(#positions)]
-    map:pickable_create("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 1)
+    map:create_pickable("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 1)
   end
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
@@ -104,7 +104,7 @@ function map:on_enemy_dead(enemy_name)
       -- the player already has the second one: give the third one instead
       variant = 3
     end
-    map:pickable_create("sword", variant, 298, 440, 189, 1)
+    map:create_pickable("sword", variant, 298, 440, 189, 1)
     if arrows_timer ~= nil then
       arrows_timer:stop()
       arrows_timer = nil

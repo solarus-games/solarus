@@ -10,7 +10,7 @@ local message_id = {
 function item:on_obtained(variant)
 
   local nb_pieces_of_heart = self:get_game():get_integer(1030)
-  self:get_map():dialog_start(message_id[nb_pieces_of_heart + 1], self)
+  self:get_map():start_dialog(message_id[nb_pieces_of_heart + 1], self)
 end
 
 function item:on_dialog_finished(dialog_id, answer)

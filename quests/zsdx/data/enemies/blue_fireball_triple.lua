@@ -69,7 +69,7 @@ function enemy:on_custom_attack_received(attack, sprite)
     local x, y, layer = self:get_position()
     self:get_map():hero_start_hurt(x, y, 8, 0)
     sol.audio.play_sound("explosion")
-    self:get_map():explosion_create(x, y, layer)
+    self:get_map():create_explosion(x, y, layer)
     self:get_map():enemy_remove(self:get_name())
   end
 end

@@ -233,7 +233,7 @@ function map:on_dialog_finished(dialog_id, answer)
   elseif dialog_id == "rupee_house.game_3.go" then 
     game_3_timer = sol.timer.start(8000, game_3_timeout)
     game_3_timer:set_with_sound(true)
-    map:sensor_set_enabled("game_3_sensor", true);
+    map:sensor_set_enabled("game_3_sensor", true)
 
   -- stop game 3 when the player founds the piece of heart
   elseif string.find(dialog_id, "^found_piece_of_heart") then
@@ -342,7 +342,7 @@ function game_2_timeout()
   local green_found = false
   local blue_found = false
   local red_found = false
-  local symbols = {-1, -1, -1};
+  local symbols = {-1, -1, -1}
   for k, v in pairs(game_2_slots) do
     symbols[i] = v.symbol
 

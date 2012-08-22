@@ -260,7 +260,7 @@ function create_stone()
     y = 205
   end
 
-  map:destructible_create("black_stone", x, y, 0, {
+  map:create_destructible("black_stone", x, y, 0, {
     treasure_item = "_none",
     destruction_callback = on_stone_destroyed})
   allow_stone_creation = false
@@ -348,7 +348,7 @@ function create_pickables()
       item_name = "fairy"
       variant = 1
     end
-    map:pickable_create(item_name, variant, -1, v.x, v.y, 0)
+    map:create_pickable(item_name, variant, -1, v.x, v.y, 0)
   end
 end
 
@@ -356,7 +356,7 @@ function create_bats()
 
   for i, v in ipairs(bats) do
     nb_bats_created = nb_bats_created + 1
-    map:enemy_create("bat_" .. nb_bats_created, "fire_bat", 0, v.x, v.y)
+    map:create_enemy("bat_" .. nb_bats_created, "fire_bat", 0, v.x, v.y)
   end
 end
 

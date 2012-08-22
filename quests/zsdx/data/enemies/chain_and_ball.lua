@@ -65,7 +65,7 @@ function enemy:on_position_changed(x, y)
   if father_name ~= "" then
     -- the center is relative to the father
     local x, y = self:get_map():enemy_get_position(father_name)
-    x1, y1 = x + center_xy.x, y + center_xy.y;
+    x1, y1 = x + center_xy.x, y + center_xy.y
   else
     -- the center is absolute
     x1, y1 = center_xy
@@ -73,8 +73,8 @@ function enemy:on_position_changed(x, y)
   local x2, y2 = self:get_position()
 
   for i = 1, nb_links do
-    link_xy[i].x = x1 + (x2 - x1) * (i - 1) / nb_links;
-    link_xy[i].y = y1 + (y2 - y1) * (i - 1) / nb_links;
+    link_xy[i].x = x1 + (x2 - x1) * (i - 1) / nb_links
+    link_xy[i].y = y1 + (y2 - y1) * (i - 1) / nb_links
   end
 end
 

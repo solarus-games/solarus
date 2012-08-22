@@ -154,7 +154,7 @@ function enemy:end_dialog()
 
   local sprite = self:get_sprite()
   sprite:set_ignore_suspend(true)
-  self:get_map():dialog_start("dungeon_5.agahnim_end")
+  self:get_map():start_dialog("dungeon_5.agahnim_end")
 end
 
 function enemy:fade_out()
@@ -166,7 +166,7 @@ end
 function enemy:escape()
 
   local x, y = self:get_position()
-  self:get_map():pickable_create("heart_container", 1, 521, x, y, 0)
+  self:get_map():create_pickable("heart_container", 1, 521, x, y, 0)
   self:get_map():hero_unfreeze()
   self:get_map():enemy_remove(self:get_name())
   self:get_game():set_boolean(520, true)

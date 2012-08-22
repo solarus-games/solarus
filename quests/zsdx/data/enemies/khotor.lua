@@ -43,7 +43,7 @@ function enemy:on_hurt(attack, life_lost)
   elseif (life_lost > 0) then
 
     -- Khotor is hurt: restart the chain and ball
-    self:get_map():enemy_set_enabled(chain_name, false);
+    self:get_map():enemy_set_enabled(chain_name, false)
   end
 end
 

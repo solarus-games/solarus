@@ -256,9 +256,9 @@ function map:on_hero_on_sensor(sensor_name)
     if map:door_is_open("w_room_door")
 	 and not map:chest_is_enabled("w_room_chest") then
       map:close_doors("w_room_door")
-      map:enemy_create("w_room_enemy_1", "blue_pig_soldier", 1, 752, 877)
-      map:enemy_create("w_room_enemy_2", "red_pig_soldier", 1, 808, 885)
-      map:enemy_create("w_room_enemy_3", "blue_pig_soldier", 1, 864, 877)
+      map:create_enemy("w_room_enemy_1", "blue_pig_soldier", 1, 752, 877)
+      map:create_enemy("w_room_enemy_2", "red_pig_soldier", 1, 808, 885)
+      map:create_enemy("w_room_enemy_3", "blue_pig_soldier", 1, 864, 877)
     end
   elseif sensor_name == "open_w_room_sensor" then
     map:set_doors_open("w_room_door", true)

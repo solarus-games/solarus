@@ -38,7 +38,7 @@ function map:on_started(destination_point_name)
   if map:get_game():get_boolean(625)
     and not map:get_game():get_boolean(626) then
     -- boss killed, heart container not picked
-    map:pickable_create("heart_container", 1, 626, 544, 789, 0)
+    map:create_pickable("heart_container", 1, 626, 544, 789, 0)
   end
 
   -- special torch door
@@ -211,7 +211,7 @@ function repeat_give_arrows()
       { x = 672, y = 885 },
     }
     arrow_xy = positions[math.random(#positions)]
-    map:pickable_create("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 0)
+    map:create_pickable("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 0)
   end
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
@@ -233,7 +233,7 @@ function start_final_sequence()
   map:npc_set_position("sahasrahla", 544, 717)
   map:move_camera(544, 712, 100, function()
     map:start_dialog("dungeon_7.sahasrahla")
-    map:set_dialog_variable("dungeon_7.sahasrahla", map:get_game():get_player_name());
+    map:set_dialog_variable("dungeon_7.sahasrahla", map:get_game():get_player_name())
   end)
 end
 
@@ -253,7 +253,7 @@ function map:on_enemy_dead(enemy_name)
 
   if enemy_name == "boss" then
     -- create the heart container manually to be sure it won't be in a hole
-    map:pickable_create("heart_container", 1, 626, 544, 789, 0)
+    map:create_pickable("heart_container", 1, 626, 544, 789, 0)
     if arrows_timer ~= nil then
       arrows_timer:stop()
       arrows_timer = nil

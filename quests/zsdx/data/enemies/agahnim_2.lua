@@ -216,13 +216,13 @@ function enemy:on_hurt(attack, life_lost)
     self:get_map():enemy_remove_group("agahnim_fireball")
     self:get_map():enemy_remove_group(self:get_name() .. "_")
     sprite:set_ignore_suspend(true)
-    self:get_map():dialog_start("dungeon_8.agahnim_end")
+    self:get_map():start_dialog("dungeon_8.agahnim_end")
     for _, t in ipairs(timers) do t:stop() end
   elseif life <= initial_life * 2 / 3 then
     -- not dying yet: start creating fakes after a few hits
     sprite:set_ignore_suspend(true)
     if not middle_dialog then
-      self:get_map():dialog_start("dungeon_8.agahnim_middle")
+      self:get_map():start_dialog("dungeon_8.agahnim_middle")
       middle_dialog = true
     end
     self:create_fakes()

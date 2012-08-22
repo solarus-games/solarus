@@ -40,7 +40,7 @@ function map:on_enemy_dead(enemy_name)
       and map:enemy_is_group_dead("enemy_group1")
       and not map:get_game():get_boolean(200) then
     map:move_camera(616, 552, 250, function()
-      map:pickable_create("small_key", 1, 200, 616, 557, 1)
+      map:create_pickable("small_key", 1, 200, 616, 557, 1)
       sol.audio.play_sound("secret")
     end)
   end
@@ -80,7 +80,7 @@ function map:on_update()
     lock_torches()
     map:move_camera(232, 488, 250, function()
       sol.audio.play_sound("secret")
-      map:pickable_create("small_key", 1, 202, 232, 493, 0)
+      map:create_pickable("small_key", 1, 202, 232, 493, 0)
     end)
   end
 end

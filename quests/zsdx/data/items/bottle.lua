@@ -1,12 +1,13 @@
--- This script handles all bottles (each bottle script includes it)
+-- This script handles all bottles (each bottle script runs it).
 
 local item = ...
-item.bottle_to_make_empty = "" -- name of a bottle to make empty at the next cycle
+item.bottle_to_make_empty = ""  -- Name of a bottle to make empty at the next cycle.
 
 function item:on_use()
 
   local variant = self:get_variant()
   local game = self:get_game()
+  local map = self:get_map()
 
   -- empty bottle
   if variant == 1 then
@@ -16,7 +17,14 @@ function item:on_use()
     -- water
   elseif variant == 2 then
     -- ask the hero to pour away the water
-    self:get_map():dialog_start("use_bottle_with_water", self)
+    map:start_dialog("use_bottle_with_water", function(answer)
+      if answer == 0 then
+	-- empty the water
+	self:set_variant(1) -- make the bottle empty
+	sol.audio.play_sound("item_in_water")
+      end
+      self:set_finished()
+    end)
 
     -- red potion
   elseif variant == 3 then
@@ -41,57 +49,43 @@ function item:on_use()
   elseif variant == 6 then
 
     -- release the fairy
-    local x, y, layer = self:get_map():hero_get_position();
-    self:get_map():pickable_create("fairy", 1, -1, x, y, layer);
+    local x, y, layer = map:get_hero():get_position()
+    map:create_pickable("fairy", 1, -1, x, y, layer)
     self:set_variant(1) -- make the bottle empty
     self:set_finished()
   end
 end
 
-function item:on_dialog_finished(dialog_id, answer)
+function item:on_npc_interaction(npc)
 
-  if dialog_id == "use_bottle_with_water" then
-
-    if answer == 0 then
-
-      -- empty the water
-      self:set_variant(1) -- make the bottle empty
-      sol.audio.play_sound("item_in_water")
-
-    end
-    self:set_finished()
-
-  elseif dialog_id == "found_water" then
-
-    if answer == 0 then
-      self:get_map():treasure_give(self:get_first_empty_bottle(), 2, -1)
-    end
-  
-  end
-end
-
-function item:on_npc_interaction(npc_name)
-
-  if string.find(npc_name, "^water_for_bottle") then
-    -- the hero interacts with a place where he can get some water
-    if self:has_bottle() then
-      if self:has_empty_bottle() then
-        self:get_map():dialog_start("found_water", self)
+  if npc:get_name():find("^water_for_bottle") then
+    local game = self:get_game()
+    local map = self:get_map()
+    -- The hero interacts with a place where he can get some water.
+    if game:has_bottle() then
+      local first_empty_bottle = game:get_first_empty_bottle()
+      if first_empty_bottle ~= nil then
+        map:start_dialog("found_water", function(answer)
+	  if answer == 0 then
+	    map:treasure_give(first_empty_bottle:get_name(), 2, -1)
+	  end
+	end)
       else
-        self:get_map():dialog_start("found_water.no_empty_bottle", self)
+        map:start_dialog("found_water.no_empty_bottle")
       end
     else  
-      self:get_map():dialog_start("found_water.no_bottle", self)
+      map:start_dialog("found_water.no_bottle")
     end
   end
 end
 
-function item:on_npc_interaction_item(npc_name, item_name, variant)
+function item:on_npc_interaction_item(npc, item_used)
 
-  if string.find(item_name, "^bottle") and string.find(npc_name, "^water_for_bottle") then
+  if item_used:get_name():find("^bottle")
+      and name:get_name():find("^water_for_bottle") then
     -- the hero interacts with a place where he can get some water:
     -- no matter whether he pressed the action key or the item key of a bottle, we do the same thing
-    self:on_npc_interaction(npc_name)
+    self:on_npc_interaction(npc)
     return true
   end
 
@@ -100,7 +94,9 @@ end
 
 function item:on_variant_changed(variant)
 
-  -- the possession state of a bottle has changed: see if the player has at least a fairy
+  -- The possession state of a bottle has changed:
+  -- see if the player has at least a fairy.
+  -- TODO remove this when the gameover screen is scripted.
   if self:has_bottle_with(6) then
     self:get_game():set_ability("get_back_from_death", 1)
   else
@@ -110,11 +106,12 @@ end
 
 function item:on_ability_used(ability_name)
 
-  -- if the hero was just saved by a fairy,
-  -- let's find a bottle with a fairy and make it empty
+  -- TODO remove this when the gameover screen is scripted.
+  -- If the hero was just saved by a fairy,
+  -- let's find a bottle with a fairy and make it empty.
 
-  -- remember that all bottles are notified, but only
-  -- one should remove its fairy
+  -- Remember that all bottles are notified, but only
+  -- one should remove its fairy.
 
   if ability_name == "get_back_from_death"
     and self:get_game():has_ability("get_back_from_death") then
@@ -125,49 +122,10 @@ end
 
 function item:on_update()
 
-  if self.bottle_to_make_empty ~= "" then
-    self:get_game():set_item(self.bottle_to_make_empty, 1)
-    self.bottle_to_make_empty = ""
+  -- TODO remove this when the gameover screen is scripted.
+  if self.bottle_to_make_empty ~= nil then
+    self.bottle_to_make_empty:set_variant(1)
+    self.bottle_to_make_empty = nil
   end
-end
-
-function item:has_bottle()
-
-  return self:get_game():has_item("bottle_1")
-    or self:get_game():has_item("bottle_2")
-    or self:get_game():has_item("bottle_3")
-    or self:get_game():has_item("bottle_4")
-end
-
-function item:has_empty_bottle()
-
-  return self:get_first_empty_bottle() ~= ""
-end
-
-function item:has_bottle_with(variant)
-
-  return self:get_first_bottle_with(variant) ~= ""
-end
-
-function item:get_first_empty_bottle()
-
-  return self:get_first_bottle_with(1)
-end
-
-function item:get_first_bottle_with(variant)
-
-  local result = ""
-
-  if self:get_game():get_item("bottle_1") == variant then
-    result = "bottle_1"
-  elseif self:get_game():get_item("bottle_2") == variant then
-    result = "bottle_2"
-  elseif self:get_game():get_item("bottle_3") == variant then
-    result = "bottle_3"
-  elseif self:get_game():get_item("bottle_4") == variant then
-    result = "bottle_4"
-  end
-
-  return result
 end
 

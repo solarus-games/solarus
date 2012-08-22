@@ -25,7 +25,7 @@ end
 
 function start_final_sequence()
   map:start_dialog("dungeon_4.solarus_child")
-  map:set_dialog_variable("dungeon_4.solarus_child", map:get_game():get_player_name());
+  map:set_dialog_variable("dungeon_4.solarus_child", map:get_game():get_player_name())
 end
 
 function map:on_dialog_finished(dialog_id, answer)

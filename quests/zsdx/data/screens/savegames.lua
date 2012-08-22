@@ -519,7 +519,7 @@ function savegame_menu:init_phase_options()
       values = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100},
       initial_value = math.floor((sol.audio.get_sound_volume() + 5) / 10) * 10
     }
-  };
+  }
 
   for _, option in ipairs(self.options) do
 

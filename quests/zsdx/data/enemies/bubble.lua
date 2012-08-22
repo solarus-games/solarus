@@ -40,9 +40,9 @@ function enemy:on_obstacle_reached()
   }
 
   -- last_direction8 was the current direction, try the three other diagonal directions
-  local try1 = (last_direction8 + 2) % 8;
-  local try2 = (last_direction8 + 6) % 8;
-  local try3 = (last_direction8 + 4) % 8;
+  local try1 = (last_direction8 + 2) % 8
+  local try2 = (last_direction8 + 6) % 8
+  local try3 = (last_direction8 + 4) % 8
 
   if not self:test_obstacles(dxy[try1 + 1].x, dxy[try1 + 1].y) then
 

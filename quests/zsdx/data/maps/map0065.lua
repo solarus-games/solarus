@@ -42,7 +42,7 @@ function map:on_started(destination_point_name)
     -- already has the other one
     variant = 3
   end
-  map:destructible_create("pot", 320, 245, 1, {
+  map:create_destructible("pot", 320, 245, 1, {
     treasure_item = "bomb_bag",
     treasure_variant = variant,
     treasure_savegame_variable = 510

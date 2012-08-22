@@ -160,6 +160,6 @@ end
 
 function enemy:start_final_phase()
 
-  self:set_attack_consequence("sword", 1);
+  self:set_attack_consequence("sword", 1)
 end
 

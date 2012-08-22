@@ -197,7 +197,7 @@ class LuaContext {
     void enemy_on_post_draw(Enemy& enemy);
     void enemy_on_position_changed(Enemy& enemy, const Rectangle& xy, Layer layer);
     void enemy_on_layer_changed(Enemy& enemy, Layer layer);
-    void enemy_on_obstacle_reached(Enemy& enemy);
+    void enemy_on_obstacle_reached(Enemy& enemy, Movement& movement);
     void enemy_on_movement_changed(Enemy& enemy, Movement& movement);
     void enemy_on_movement_finished(Enemy& enemy);
     void enemy_on_sprite_animation_finished(Enemy& enemy,
@@ -377,7 +377,7 @@ class LuaContext {
     void on_pre_draw();
     void on_post_draw();
     void on_position_changed(const Rectangle& xy, Layer layer);
-    void on_obstacle_reached();
+    void on_obstacle_reached(Movement& movement);
     void on_movement_changed(Movement& movement);
     void on_movement_finished();
     void on_sprite_animation_finished(Sprite& sprite, const std::string& animation);

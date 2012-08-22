@@ -2243,11 +2243,12 @@ void LuaContext::enemy_on_position_changed(
 /**
  * @brief Calls the on_obstacle_reached() method of a Lua enemy.
  * @param enemy An enemy.
+ * @param movement The movement that reached an obstacle.
  */
-void LuaContext::enemy_on_obstacle_reached(Enemy& enemy) {
+void LuaContext::enemy_on_obstacle_reached(Enemy& enemy, Movement& movement) {
 
   push_enemy(l, enemy);
-  on_obstacle_reached();
+  on_obstacle_reached(movement);
   lua_pop(l, 1);
 }
 

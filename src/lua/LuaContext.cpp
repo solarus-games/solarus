@@ -1787,11 +1787,13 @@ void LuaContext::on_position_changed(const Rectangle& xy, Layer layer) {
 
 /**
  * @brief Calls the on_obstacle_reached() method of the object on top of the stack.
+ * @param movement The movement that reached an obstacle.
  */
-void LuaContext::on_obstacle_reached() {
+void LuaContext::on_obstacle_reached(Movement& movement) {
 
   if (find_method("on_obstacle_reached")) {
-    call_function(1, 0, "on_obstacle_reached");
+    push_movement(l, movement);
+    call_function(2, 0, "on_obstacle_reached");
   }
 }
 

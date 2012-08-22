@@ -800,7 +800,7 @@ void Enemy::notify_obstacle_reached() {
   Detector::notify_obstacle_reached();
 
   if (!is_being_hurt()) {
-    get_lua_context().enemy_on_obstacle_reached(*this);
+    get_lua_context().enemy_on_obstacle_reached(*this, *get_movement());
   }
 }
 

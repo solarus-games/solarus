@@ -7,14 +7,13 @@ local main_sprite = nil
 local left_blade_sprite = nil
 local right_blade_sprite = nil
 
--- State
+-- State.
 local left_blade_life = 4
 local right_blade_life = 4
 local blade_attack = false
 
 function enemy:on_created()
 
-  -- set the properties
   self:set_life(5)
   self:set_damage(2)
   self:set_pushed_back_when_hurt(false)
@@ -27,20 +26,20 @@ function enemy:on_created()
   self:set_attack_consequence_sprite(left_blade_sprite, "sword", "custom")
   self:set_attack_consequence_sprite(right_blade_sprite, "sword", "custom")
 
-  -- when a blade sprite has the same animation than the main sprite, synchronize their frames
+  -- When a blade sprite has the same animation than the
+  -- main sprite, synchronize their frames
   left_blade_sprite:synchronize(main_sprite)
   right_blade_sprite:synchronize(main_sprite)
 end
 
 function enemy:on_restarted()
 
-  -- set the movement
   local m = sol.movement.create("random_path")
   m:set_speed(48)
   self:start_movement(m)
 
-  -- schedule a blade attack
-  if has_blade() then
+  -- Schedule a blade attack
+  if self:has_blade() then
     local delay = 1000 * (1 + math.random(4))
     sol.timer.start(delay, function() self:start_blade_attack() end)
     blade_attack = false
@@ -59,7 +58,7 @@ function enemy:has_blade()
   return self:has_left_blade() or self:has_right_blade()
 end
 
--- The enemy receives an attack whose consequence is "custom"
+-- The enemy receives an attack whose consequence is "custom".
 function enemy:on_custom_attack_received(attack, sprite)
 
   if self:has_left_blade()

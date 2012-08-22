@@ -42,7 +42,7 @@ function map:on_enemy_dead(enemy_name)
     map:open_doors("miniboss_door")
   end
 
-  if map:enemy_is_group_dead("boss_key_battle")
+  if not map:has_entities("boss_key_battle")
       and not map:chest_is_enabled("boss_key_chest") then
     map:move_camera(104, 72, 250, boss_key_timer)
   end

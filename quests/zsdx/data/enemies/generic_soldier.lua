@@ -25,7 +25,6 @@ local enemy = ...
 local properties = {}
 local going_hero = false
 local being_pushed = false
-local movement = nil
 local main_sprite = nil
 local sword_sprite = nil
 local timer
@@ -33,7 +32,7 @@ local timer
 function enemy:set_properties(prop)
 
   properties = prop
-  -- set default values
+  -- Set default values.
   if properties.life == nil then
     properties.life = 2
   end
@@ -89,10 +88,11 @@ end
 
 function enemy:check_hero()
 
+  local hero = self:get_map():get_hero()
   local _, _, layer = self:get_position()
-  local _, _, hero_layer = self:get_map():hero_get_position()
+  local _, _, hero_layer = hero:get_position()
   local near_hero = layer == hero_layer
-    and self:get_distance_to_hero() < 100
+    and self:get_distance(hero) < 100
 
   if near_hero and not going_hero then
     if properties.play_hero_seen_sound then
@@ -105,10 +105,9 @@ function enemy:check_hero()
   timer = sol.timer.start(1000, function() self:check_hero() end)
 end
 
-function enemy:on_movement_changed()
+function enemy:on_movement_changed(movement)
 
   if not being_pushed then
-    movement = self:get_movement()
     local direction4 = movement:get_direction4()
     main_sprite:set_direction(direction4)
     sword_sprite:set_direction(direction4)
@@ -135,9 +134,8 @@ function enemy:on_custom_attack_received(attack, sprite)
     sol.audio.play_sound("sword_tapping")
     being_pushed = true
     local x, y = self:get_position()
-    local hero_x, hero_y = self:get_map():hero_get_position()
-    local angle = sol.main.get_angle(hero_x, hero_y, x, y)
-    movement = sol.movement.create("straight")
+    local angle = self:get_angle(self:get_map():get_hero() + math.pi)
+    local movement = sol.movement.create("straight")
     movement:set_speed(128)
     movement:set_angle(angle)
     movement:set_max_distance(26)
@@ -147,7 +145,7 @@ function enemy:on_custom_attack_received(attack, sprite)
 end
 
 function enemy:go_random()
-  movement = sol.movement.create("random_path")
+  local movement = sol.movement.create("random_path")
   movement:set_speed(properties.normal_speed)
   self:start_movement(movement)
   being_pushed = false
@@ -155,7 +153,7 @@ function enemy:go_random()
 end
 
 function enemy:go_hero()
-  movement = sol.movement.create("target")
+  local movement = sol.movement.create("target")
   movement:set_speed(properties.faster_speed)
   self:start_movement(movement)
   being_pushed = false

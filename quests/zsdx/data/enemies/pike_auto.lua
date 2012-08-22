@@ -1,7 +1,7 @@
 local enemy = ...
 
 -- Pike that always moves, horizontally or vertically
--- depending on its direction
+-- depending on its direction.
 
 local recent_obstacle = 0
 
@@ -39,7 +39,7 @@ function enemy:on_obstacle_reached()
   sprite:set_direction((direction4 + 2) % 4)
 
   local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():hero_get_position()
+  local hero_x, hero_y = self:get_map():get_hero():get_position()
   if recent_obstacle == 0
       and math.abs(x - hero_x) < 184
       and math.abs(y - hero_y) < 144 then

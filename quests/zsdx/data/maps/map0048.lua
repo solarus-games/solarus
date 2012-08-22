@@ -52,13 +52,13 @@ function map:on_hero_on_sensor(sensor_name)
   elseif sensor_name == "DS7" then
     -- Globules monsters room		
     if map:door_is_open("LD7")
-        and not map:enemy_is_group_dead("LD7_enemy") then		
+        and map:has_entities("LD7_enemy") then		
       map:close_doors("LD7")
     end
   elseif sensor_name == "DS9" then
     -- Hard hat beetles room		
     if map:door_is_open("LD9")
-        and not map:enemy_is_group_dead("LD9_enemy") then		
+        and map:has_entities("LD9_enemy") then		
       map:close_doors("LD9")
       map:sensor_set_enabled("DS9", false)
     end
@@ -109,13 +109,13 @@ end
 
 
 function map:on_enemy_dead(enemy_name)
-  if string.match(enemy_name, "^LD7_enemy") and map:enemy_is_group_dead("LD7_enemy") then	
+  if string.match(enemy_name, "^LD7_enemy") and not map:has_entities("LD7_enemy") then	
     -- LD7 room: kill all enemies will open the door LD7
     if not map:door_is_open("LD7") then
       map:open_doors("LD7")
       sol.audio.play_sound("secret")
     end
-  elseif string.match(enemy_name, "^LD9_enemy") and map:enemy_is_group_dead("LD9_enemy") then	
+  elseif string.match(enemy_name, "^LD9_enemy") and not map:has_entities("LD9_enemy") then	
     -- LD9 room: kill all enemies will open the door LD9
     if not map:door_is_open("LD9") then
       map:open_doors("LD9")

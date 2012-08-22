@@ -1,6 +1,6 @@
 local enemy = ...
 
--- Red Bullblin
+-- Red Bullblin.
 
 sol.main.load_file("enemies/generic_soldier")(enemy)
 enemy:set_properties({

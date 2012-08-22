@@ -1,8 +1,7 @@
 local enemy = ...
 
--- Tentacle: a basic enemy that follows the hero
+-- Tentacle: a basic enemy that follows the hero.
 
--- The enemy appears: set its properties
 function enemy:on_created()
 
   self:set_life(1)

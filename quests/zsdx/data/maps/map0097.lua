@@ -107,7 +107,7 @@ end
 function map:on_enemy_dead(enemy_name)
 
   if enemy_name:find("enemy_group2") 
-      and map:enemy_is_group_dead("enemy_group2")
+      and not map:has_entities("enemy_group2")
       and not map:get_game():get_boolean(221) then
 
     map:move_camera(232, 728, 250, function()

@@ -16,10 +16,9 @@ function enemy:on_restarted()
   self:start_movement(m)
 end
 
-function enemy:on_movement_changed()
+function enemy:on_movement_changed(movement)
 
-  local m = self:get_movement()
-  local direction4 = m:get_direction4()
+  local direction4 = movement:get_direction4()
   local sprite = self:get_sprite()
   sprite:set_direction(direction4)
 end

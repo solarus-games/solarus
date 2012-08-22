@@ -2,7 +2,7 @@ local enemy = ...
 
 local shadow_sprite = nil
 local initial_y = nil
-local state = nil -- "raising", "attacking", "destroying"
+local state = nil  -- "raising", "attacking" or "destroying".
 local timer
 
 function enemy:on_created()
@@ -34,9 +34,7 @@ end
 
 function enemy:go_hero()
 
-  local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():hero_get_position()
-  local angle = sol.main.get_angle(x, y, hero_x, hero_y)
+  local angle = self:get_angle(self:get_map():get_hero())
   local m = sol.movement.create("straight")
   m:set_speed(192)
   m:set_angle(angle)
@@ -45,17 +43,17 @@ function enemy:go_hero()
 end
 
 function enemy:on_obstacle_reached()
-  self:destroy()
+  self:disappear()
 end
 
 function enemy:on_custom_attack_received(attack, sprite)
 
   if state == "attacking" then
-    self:destroy()
+    self:disappear()
   end
 end
 
-function enemy:destroy()
+function enemy:disappear()
 
   if state ~= "destroying" then
     state = "destroying"
@@ -73,13 +71,13 @@ end
 function enemy:on_sprite_animation_finished(sprite, animation)
 
   if state == "destroying" then
-    self:get_map():enemy_remove(self:get_name())
+    self:remove()
   end
 end
 
 function enemy:on_pre_draw()
 
-  -- show the shadow
+  -- Show the shadow.
   if state ~= "destroying" then
     local x, y = self:get_position()
     if state == "attacking" then

@@ -44,7 +44,6 @@ end
 
 function enemy:prepare_flames()
 
-  local hero_x, hero_y = self:get_map():hero_get_position()
   local prefix = self:get_name() .. "_son_"
   nb_sons_created = nb_sons_created + 1
   local life_lost = initial_life - self:get_life()
@@ -53,7 +52,7 @@ function enemy:prepare_flames()
   function repeat_throw_flame()
     sol.audio.play_sound("lamp")
     local son_name = prefix .. nb_sons_created
-    self:create_son(son_name, "red_flame", 0, -16, 0)
+    self:create_enemy(son_name, "red_flame", 0, -16, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
       timers[#timers + 1] = sol.timer.start(200, repeat_throw_flame)
@@ -70,7 +69,7 @@ function enemy:on_hurt(attack, life_lost)
 
   for _, t in ipairs(timers) do t:stop() end
   if self:get_life() <= 0 then
-    self:get_map():enemy_remove_group(self:get_name() .. "_")
+    self:get_map():remove_entities(self:get_name() .. "_")
   end
 end
 

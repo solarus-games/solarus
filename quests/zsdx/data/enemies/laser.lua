@@ -1,6 +1,6 @@
 local enemy = ...
 
--- Laser ray
+-- Laser ray.
 
 local initial_position = {}
 

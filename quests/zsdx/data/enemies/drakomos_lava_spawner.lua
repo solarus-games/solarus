@@ -1,13 +1,15 @@
 local enemy = ...
 
+local nb_sons_created = 0
+
 function enemy:on_created()
 
   self:set_size(32, 24)
   self:set_origin(16, 21)
 
   if self:test_obstacles(0, 0) then
-    -- don't appear on stones previously created
-    self:get_map():enemy_remove(self:get_name())
+    -- Don't appear on stones previously created.
+    self:remove()
   end
 
   self:set_life(1)
@@ -24,11 +26,13 @@ function enemy:on_restarted()
     sprite:set_animation("disappearing")
     sol.audio.play_sound("ice")
 
-    if math.random(2) == 1 or self:get_distance_to_hero() < 24 then
-      local son_name = self:get_name() .. "_son"
-      self:create_son(son_name, "red_helmasaur", 0, 0)
+    local hero = self:get_map():get_hero()
+    if math.random(2) == 1 or self:get_distance(hero) < 24 then
+      nb_sons_created = nb_sons_created + 1
+      local son_name = self:get_name() .. "_son_" .. nb_sons_created
+      local son = self:create_enemy(son_name, "red_helmasaur", 0, 0)
       if self:get_game():get_life() <= self:get_game():get_max_life() / 3 then
-        self:get_map():enemy_set_treasure(son_name, "heart", 1, -1)
+	son:set_treasure("heart", 1, -1)
       end
     else
       local x, y, layer = self:get_position()
@@ -40,7 +44,7 @@ end
 function enemy:on_sprite_animation_finished(sprite, animation)
 
   if animation == "disappearing" then
-    self:get_map():enemy_set_enabled(self:get_name(), false)
+    self:set_enabled(false)
   end
 end
 

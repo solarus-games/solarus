@@ -33,8 +33,8 @@ end
 
 function enemy:on_update()
 
-  local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():hero_get_position()
+  local _, y = self:get_position()
+  local _, hero_y = self:get_map():get_hero():get_position()
   if hero_y > y + 8 then
     self:set_attack_consequence("sword", 1)
     self:set_attack_consequence("arrow", 2)
@@ -48,9 +48,9 @@ function enemy:on_hurt(attack, life_lost)
 
   for _, t in ipairs(timers) do t:stop() end
   if self:get_life() <= 0 then
-    -- I am dying: remove the sons
-    local sons_prefix = self:get_name().."_son"
-    self:get_map():enemy_remove_group(sons_prefix)
+    -- I am dying: remove the sons.
+    local sons_prefix = self:get_name() .. "_son"
+    self:get_map():remove_entities(sons_prefix)
   end
 end
 
@@ -87,19 +87,19 @@ end
 
 function enemy:throw_son()
 
-  -- create the son
+  -- Create the son.
   nb_sons_created = nb_sons_created + 1
-  local son_name = self:get_name().."_minillosaur_"..nb_sons_created
-  self:create_son(son_name, "mini_mowatulla", 0, 40)
+  local son_name = self:get_name() .. "_mini_" .. nb_sons_created
+  self:create_enemy(son_name, "mini_mowatulla", 0, 40)
   sol.audio.play_sound("ice")
 
-  -- see what to do next
+  -- See what to do next.
   nb_sons_to_create = nb_sons_to_create - 1
   if nb_sons_to_create > 0 then
-    -- throw another son in 0.5 second
+    -- Throw another son in 0.5 second.
     timers[#timers + 1] = sol.timer.start(500, function() self:throw_son() end)
   else
-    -- finish the son phase
+    -- Finish the son phase.
     local sprite = self:get_sprite()
     sprite:set_animation("walking")
     local delay = 3500 + (math.random(3) * 1000)
@@ -112,16 +112,16 @@ function enemy:jump_or_son_phase()
 
   if math.random(2) == 1 then
  
-    local sons_prefix = self:get_name().."_son" 
-    local nb_sons = self:get_map():enemy_get_group_count(sons_prefix)
+    local sons_prefix = self:get_name() .. "_son" 
+    local nb_sons = self:get_map():get_entities_count(sons_prefix)
     if nb_sons < 5 then
       self:son_phase_soon()
     else
-      -- no son phase if there are already too much sons: jump instead
+      -- No son phase if there are already too much sons: jump instead.
       self:jump_phase()
     end
   else
-    self:ump_phase()
+    self:jump_phase()
   end
 end
 
@@ -130,7 +130,7 @@ function enemy:jump_phase()
   local direction8
   local x, y = self:get_position()
   y = y - 16
-  local hero_x, hero_y = self:get_map():hero_get_position()
+  local hero_x, hero_y = self:get_map():get_hero():get_position()
   if hero_x > x then
     if y > 856 then 
       direction8 = 1

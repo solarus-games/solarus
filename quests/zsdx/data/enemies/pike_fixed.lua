@@ -1,6 +1,6 @@
 local enemy = ...
 
--- Pike that does not move
+-- Pike that does not move.
 
 function enemy:on_created()
 

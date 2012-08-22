@@ -32,7 +32,7 @@ end
 
 function map:on_enemy_dead(enemy_name)
 
-  if map:enemy_is_group_dead("enemy") then
+  if not map:has_entities("enemy") then
     map:hero_start_victory()
   end
 end

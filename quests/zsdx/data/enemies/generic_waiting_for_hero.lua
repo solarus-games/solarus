@@ -37,7 +37,7 @@ local timer
 function enemy:set_properties(prop)
 
   properties = prop
-  -- set default values
+  -- Set default values.
   if properties.life == nil then
     properties.life = 2
   end
@@ -88,10 +88,9 @@ function enemy:on_created()
   sprite:set_animation(properties.asleep_animation)
 end
 
-function enemy:on_movement_changed()
+function enemy:on_movement_changed(movement)
 
-  local m = self:get_movement()
-  local direction4 = m:get_direction4()
+  local direction4 = movement:get_direction4()
   local sprite = self:get_sprite()
   sprite:set_direction(direction4)
 end
@@ -124,10 +123,11 @@ end
 
 function enemy:check_hero()
 
+  local hero = self:get_map():get_hero()
   local _, _, layer = self:get_position()
-  local _, _, hero_layer = self:get_map():hero_get_position()
+  local _, _, hero_layer = hero:get_position()
   local near_hero = layer == hero_layer
-    and self:get_distance_to_hero() < 100
+    and self:get_distance(hero) < 100
 
   if awaken then
     if near_hero and not going_hero then
@@ -141,10 +141,10 @@ function enemy:check_hero()
   timer = sol.timer.start(1000, function() self:check_hero() end)
 end
 
---  The animation of a sprite is finished
+--  The animation of a sprite is finished.
 function enemy:on_sprite_animation_finished(sprite, animation)
 
-  -- if the awakening transition is finished, make the enemy go toward the hero.
+  -- If the awakening transition is finished, make the enemy go toward the hero.
   if animation == properties.awaking_animation then
     sprite:set_animation(properties.normal_animation)
     self:set_size(16, 16)

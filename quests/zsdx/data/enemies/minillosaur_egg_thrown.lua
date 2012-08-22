@@ -5,7 +5,7 @@ local enemy = ...
 
 local in_egg = nil
 
--- The enemy appears: create its movement
+-- The enemy appears: create its movement.
 function enemy:on_created()
 
   self:set_life(2)
@@ -22,15 +22,13 @@ function enemy:on_created()
   in_egg = true
 end
 
--- The enemy was stopped for some reason and should restart
+-- The enemy was stopped for some reason and should restart.
 function enemy:on_restarted()
 
   if in_egg then
     local sprite = self:get_sprite()
     sprite:set_animation("egg")
-    local x, y = self:get_position()
-    local hero_x, hero_y = self:get_map():hero_get_position()
-    local angle = sol.main.get_angle(x, y, hero_x, hero_y)
+    local angle = self:get_angle(self:get_map():get_hero())
     local m = sol.movement.create("straight")
     m:set_speed(120)
     m:set_angle(angle)
@@ -42,8 +40,8 @@ function enemy:on_restarted()
   end
 end
 
--- An obstacle is reached: in the egg state, break the egg
-function enemy:on_obstacle_reached()
+-- An obstacle is reached: in the egg state, break the egg.
+function enemy:on_obstacle_reached(movement)
 
   local sprite = self:get_sprite()
   if sprite:get_animation() == "egg" then
@@ -51,23 +49,23 @@ function enemy:on_obstacle_reached()
   end
 end
 
--- The movement is finished: in the egg state, break the egg
+-- The movement is finished: in the egg state, break the egg.
 function enemy:on_movement_finished(movement)
-  -- same thing as when an obstacle is reached
-  self:on_obstacle_reached()
+  -- Same thing as when an obstacle is reached.
+  self:on_obstacle_reached(movement)
 end
 
--- The enemy receives an attack whose consequence is "custom"
+-- The enemy receives an attack whose consequence is "custom".
 function enemy:on_custom_attack_received(attack, sprite)
 
   if attack == "sword" and sprite:get_animation() == "egg" then
-    -- the egg is hit by the sword
+    -- The egg is hit by the sword.
     self:break_egg()
     sol.audio.play_sound("monster_hurt")
   end
 end
 
--- Starts breaking the egg
+-- Starts breaking the egg.
 function enemy:break_egg()
 
   local sprite = self:get_sprite()
@@ -75,10 +73,10 @@ function enemy:break_egg()
   sprite:set_animation("egg_breaking")
 end
 
---  The animation of a sprite is finished
+--  The animation of a sprite is finished.
 function enemy:on_sprite_animation_finished(sprite, animation)
 
-  -- if the egg was breaking, make the minillosaur go
+  -- If the egg was breaking, make the minillosaur go.
   if animation == "egg_breaking" then
     sprite:set_animation("walking")
     self:set_size(16, 16)

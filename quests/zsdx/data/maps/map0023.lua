@@ -72,7 +72,7 @@ end
 
 function map:on_enemy_dead(enemy_name)
 
-  if map:enemy_is_group_dead("compass_room_battle")
+  if not map:has_entities("compass_room_battle")
       and not map:chest_is_enabled("compass_chest") then
     map:move_camera(408, 456, 250, compass_room_timer)
   end

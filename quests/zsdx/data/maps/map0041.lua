@@ -52,7 +52,7 @@ end
 function map:on_enemy_dead(enemy_name)
 
   if string.find(enemy_name, "^e_room_enemy_")
-    and map:enemy_is_group_dead("e_room_enemy")
+    and not map:has_entities("e_room_enemy")
     and not map:door_is_open("e_door") then
 
     map:move_camera(856, 472, 250, open_e_door)

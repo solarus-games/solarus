@@ -29,17 +29,17 @@ function enemy:on_created()
   self:set_attack_consequence("arrow", "protected")
   self:set_pushed_back_when_hurt(false)
 
-  -- create the head
+  -- Create the head.
   local my_name = self:get_name()
-  head = my_name .. "_head"
-  self:create_son(head, "gelidrak_head", 0, 48)
+  head = self:create_enemy(my_name .. "_head", "gelidrak_head", 0, 48)
+  head.body = self
   head_ball_sprite = sol.sprite.create("enemies/gelidrak")
   head_ball_sprite:set_animation("head_ball")
 
-  -- create the tail
+  -- Create the tail.
   local my_name = self:get_name()
-  tail = my_name .. "_tail"
-  self:create_son(tail, "gelidrak_tail", 0, -112)
+  tail = self:create_enemy(my_name .. "_tail", "gelidrak_tail", 0, -112)
+  tail.body = self
   tail_ball_sprite = sol.sprite.create("enemies/gelidrak")
   tail_ball_sprite:set_animation("tail_ball")
 
@@ -63,18 +63,18 @@ end
 
 function enemy:on_pre_draw()
 
-  if not self:get_map():enemy_is_dead(tail) then
+  if tail:exists() then
     local x, y = self:get_position()
-    local tail_x, tail_y = self:get_map():enemy_get_position(tail)
+    local tail_x, tail_y = tail:get_position()
     self:display_balls(tail_ball_sprite, 6, x, y - 48, tail_x, tail_y)
   end
 end
 
 function enemy:on_post_draw()
 
-  if not self:get_map():enemy_is_dead(head) then
+  if head:exists() then
     local x, y = self:get_position()
-    local head_x, head_y = self:get_map():enemy_get_position(head)
+    local head_x, head_y = head:get_position()
     self:display_balls(head_ball_sprite, 7, x, y + 8, head_x, head_y - 16)
   end
 end
@@ -94,57 +94,60 @@ end
 
 function enemy:on_position_changed(x, y)
 
-  -- the body has just moved: do the same movement to the head and the tail
+  -- The body has just moved: do the same movement to the head and the tail.
   local dx = x - current_xy.x
   local dy = y - current_xy.y
-  local tail_x, tail_y = self:get_map():enemy_get_position(tail)
-  self:get_map():enemy_set_position(tail, tail_x + dx, tail_y + dy)
-  local head_x, head_y = self:get_map():enemy_get_position(head)
-  self:get_map():enemy_set_position(head, head_x + dx, head_y + dy)
+  local tail_x, tail_y = tail:get_position()
+  tail:set_position(tail_x + dx, tail_y + dy)
+  local head_x, head_y = head:get_position()
+  head:set_position(head_x + dx, head_y + dy)
   current_xy.x, current_xy.y = x, y
 end
 
-function enemy:on_message_received(src_enemy, message)
+function enemy:head_dying()
 
-  if self:get_life() <= 0 then
-    -- ignore messages once I'm dying
-    return
+  if self:get_life() > 0 then
+    -- I'm dying: remove the tail.
+    tail:remove()
   end
+end
 
-  if src_enemy == tail then
-    
-    if message == "hurt" then
-      -- the hero just hurt my tail
-      head_vulnerable = true
-      self:set_can_attack(false)
-      local sprite = self:get_sprite()
-      sprite:set_animation("fast")
-      self:stop_movement()
-      self:send_message(head, "vulnerable")
-    elseif message == "recovering" then
-      -- the tail starts recovering its normal position
-      self:send_message(head, "recover")
-    elseif message == "recovered" then
-      -- the tail has recovered its normal position
-      self:on_restarted()
-    end
+function enemy:head_dead()
 
-  elseif src_enemy == head then
+  if self:get_life() > 0 then
+    -- The head is dead: kill the body too.
+    self:hurt(self:get_life())
+  end
+end
 
-    if message == "hurt" then
-      -- the hero just hurt my head
-    elseif message == "dying" then
-      -- I'm dying: remove the tail
-      self:get_map():enemy_remove(tail)
-    elseif message == "dead" then
-      -- the head is dead: make the body die too
-      self:hurt(self:get_life())
-    elseif message == "recovered" then
-      -- my head has just stopped being vulnerable
-      head_vulnerable = false
-      self:set_can_attack(true)
-      self:on_restarted()
-    end
+function enemy:head_recovered()
+
+  if self:get_life() > 0 then
+    -- My head has just stopped being vulnerable.
+    head_vulnerable = false
+    self:set_can_attack(true)
+    self:on_restarted()
+  end
+end
+
+function enemy:tail_hurt()
+
+  if self:get_life() > 0 then
+    -- The hero just hurt my tail.
+    head_vulnerable = true
+    self:set_can_attack(false)
+    local sprite = self:get_sprite()
+    sprite:set_animation("fast")
+    self:stop_movement()
+    head:set_vulnerable()
+  end
+end
+
+function enemy:tail_recovered()
+
+  if self:get_life() > 0 then
+    -- The tail has recovered its normal position
+    self:on_restarted()
   end
 end
 

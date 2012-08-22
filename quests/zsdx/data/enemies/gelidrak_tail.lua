@@ -1,9 +1,10 @@
 local enemy = ...
 
--- Gelidrak's tail
+-- Gelidrak's tail.
 
-local retracted = false      -- becomes retracted when touched by an arrow
-local retracted_delay = 3000 -- delay while the tail remains retracted
+local body = nil              -- Gelidrak's body.
+local retracted = false       -- becomes retracted when touched by an arrow
+local retracted_delay = 3000  -- delay while the tail remains retracted
 
 function enemy:on_created()
 
@@ -25,7 +26,7 @@ function enemy:on_created()
   self:set_attack_consequence("boomerang", "protected")
   self:set_pushed_back_when_hurt(false)
 
-  -- go to the high layer
+  -- Go to the high layer.
   local x, y = self:get_position()
   self:set_position(x, y, 2)
 end
@@ -42,37 +43,36 @@ function enemy:on_restarted()
   else
     self:stop_movement()
     sol.timer.start(retracted_delay, function()
-      local x, y = self:get_map():enemy_get_position(self:get_father())
+      local x, y = body:get_position()
       local m = sol.movement.create("target")
       m:set_speed(48)
       m:set_target(x, y - 112)
       self:start_movement(m)
-      self:send_message(self:get_father(), "recovering")
     end)
   end
 end
 
 function enemy:on_movement_finished()
 
-  -- the tail was retracted and has just recovered its normal position
+  -- The tail was retracted and has just recovered its normal position.
   retracted = false
   self:set_attack_consequence("arrow", 1)
   self:set_can_attack(true)
   self:on_restarted()
 
-  if not self:get_map():enemy_is_dead(self:get_father()) then
-    self:send_message(self:get_father(), "recovered")
+  if body:exists() then
+    body:tail_recovered()
   end
 end
 
 function enemy:on_hurt(attack, life_lost)
 
-  -- notify the body (so that it stops moving and becomes vulnerable)
-  self:send_message(self:get_father(), "hurt")
+  -- Notify the body so that it stops moving and becomes vulnerable.
+  body:tail_hurt()
 
-  -- retract the tail for a while
+  -- Retract the tail for a while.
   retracted = true
-  local x, y = self:get_map():enemy_get_position(self:get_father())
+  local x, y = body:get_position()
   self:set_position(x, y - 48)
   self:set_attack_consequence("arrow", "protected")
   self:set_can_attack(false)

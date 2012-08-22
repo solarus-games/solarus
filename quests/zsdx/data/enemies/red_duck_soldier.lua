@@ -1,6 +1,6 @@
 local enemy = ...
 
--- Red duck soldier
+-- Red duck soldier.
 
 sol.main.load_file("enemies/generic_soldier")(enemy)
 enemy:set_properties({

@@ -188,14 +188,14 @@ function map:on_hero_on_sensor(sensor_name)
 
   -- west enemies room
   elseif sensor_name:find("^close_door_b_sensor")
-      and not map:enemy_is_group_dead("door_b_enemy")
+      and map:has_entities("door_b_enemy")
       and map:door_is_open("door_b") then
     map:close_doors("door_b")
     map:sensor_set_group_enabled("close_door_b_sensor", false)
 
   -- north enemies room
   elseif sensor_name:find("^close_door_c_sensor")
-      and not map:enemy_is_group_dead("door_c_enemy")
+      and map:has_entities("door_c_enemy")
       and map:door_is_open("door_c") then
     map:close_doors("door_c")
     map:sensor_set_group_enabled("close_door_c_sensor", false)
@@ -214,7 +214,7 @@ function map:on_enemy_dead(enemy_name)
 
   -- west enemies room
   if enemy_name:find("^door_b_enemy") then
-    if map:enemy_is_group_dead("door_b_enemy")
+    if not map:has_entities("door_b_enemy")
         and not map:door_is_open("door_b") then
       sol.audio.play_sound("secret")
       map:open_doors("door_b")
@@ -222,7 +222,7 @@ function map:on_enemy_dead(enemy_name)
 
   -- north enemies room
   elseif enemy_name:find("^door_c_enemy") then
-    if map:enemy_is_group_dead("door_c_enemy")
+    if not map:has_entities("door_c_enemy")
         and not map:door_is_open("door_c") then
       sol.audio.play_sound("secret")
       map:open_doors("door_c")

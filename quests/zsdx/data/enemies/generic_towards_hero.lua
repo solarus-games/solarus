@@ -75,10 +75,9 @@ function enemy:on_created()
   self:set_origin(8, 13)
 end
 
-function enemy:on_movement_changed()
+function enemy:on_movement_changed(movement)
 
-  local m = self:get_movement()
-  local direction4 = m:get_direction4()
+  local direction4 = movement:get_direction4()
   local sprite = self:get_sprite()
   sprite:set_direction(direction4)
 end
@@ -105,10 +104,11 @@ end
 
 function enemy:check_hero()
 
+  local hero = self:get_map():get_hero()
   local _, _, layer = self:get_position()
-  local _, _, hero_layer = self:get_map():hero_get_position()
+  local _, _, hero_layer = hero:get_position()
   local near_hero = layer == hero_layer
-    and self:get_distance_to_hero() < 100
+    and self:get_distance(hero) < 100
 
   if near_hero and not going_hero then
     self:go_hero()

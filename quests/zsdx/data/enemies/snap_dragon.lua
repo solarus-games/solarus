@@ -1,6 +1,6 @@
 local enemy = ...
 
--- Snap Dragon
+-- Snap Dragon.
 
 local timer
 
@@ -24,7 +24,7 @@ function enemy:on_movement_finished(movement)
   self:go_random()
 end
 
-function enemy:on_obstacle_reached()
+function enemy:on_obstacle_reached(movement)
 
   self:go_random()
 end
@@ -39,7 +39,7 @@ end
 
 function enemy:go_random()
 
-  -- random diagonal direction
+  -- Random diagonal direction.
   local rand4 = math.random(4)
   local direction8 = rand4 * 2 - 1
   local angle = direction8 * math.pi / 4

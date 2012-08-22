@@ -18,7 +18,7 @@ function map:on_enemy_dead(enemy_name)
   -- door A
   if enemy_name:match("^door_a_enemy") then
     if not map:door_is_open("door_a")
-        and map:enemy_is_group_dead("door_a_enemy") then
+        and not map:has_entities("door_a_enemy") then
       map:move_camera(2248, 648, 250, function()
 	sol.audio.play_sound("secret")
 	map:open_doors("door_a")
@@ -27,7 +27,7 @@ function map:on_enemy_dead(enemy_name)
 
   -- miniboss
   elseif string.find(enemy_name, "^miniboss")
-      and map:enemy_is_group_dead("miniboss") then
+      and not map:has_entities("miniboss") then
 
     sol.audio.play_music("southern_shrine")
     sol.audio.play_sound("secret")

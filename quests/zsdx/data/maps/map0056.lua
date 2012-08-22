@@ -83,7 +83,7 @@ end
 function map:on_enemy_dead(enemy_name)
 
   if string.find(enemy_name, "^miniboss")
-      and map:enemy_is_group_dead("miniboss") then
+      and not map:has_entities("miniboss") then
 
     sol.audio.play_music("dark_world_dungeon")
     map:open_doors("miniboss_door")

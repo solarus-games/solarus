@@ -4,7 +4,7 @@ local enemy = ...
 -- who goes in a random direction.
 -- Unlike the normal green soldier, he cannot see or follow the hero.
 
--- The enemy appears: set its properties
+-- The enemy appears: set its properties.
 function enemy:on_created()
 
   self:set_life(2)
@@ -14,7 +14,7 @@ function enemy:on_created()
   self:set_origin(8, 13)
 end
 
--- The enemy was stopped for some reason and should restart
+-- The enemy was stopped for some reason and should restart.
 function enemy:on_restarted()
 
   local m = sol.movement.create("straight")
@@ -24,10 +24,10 @@ function enemy:on_restarted()
   self:go(direction4)
 end
 
--- An obstacle is reached: stop for a while, looking to a next direction
-function enemy:on_obstacle_reached()
+-- An obstacle is reached: stop for a while, looking to a next direction.
+function enemy:on_obstacle_reached(movement)
 
-  -- look to the left or to the right
+  -- Look to the left or to the right.
   local sprite = self:get_sprite()
   local animation = sprite:get_animation()
   if animation == "walking" then
@@ -35,16 +35,16 @@ function enemy:on_obstacle_reached()
   end
 end
 
--- The movement is finished: stop for a while, looking to a next direction
+-- The movement is finished: stop for a while, looking to a next direction.
 function enemy:on_movement_finished(movement)
-  -- same thing as when an obstacle is reached
-  self:on_obstacle_reached()
+  -- Same thing as when an obstacle is reached.
+  self:on_obstacle_reached(movement)
 end
 
 --  The animation of a sprite is finished
 function enemy:on_sprite_animation_finished(sprite, animation)
 
-  -- if the enemy was stopped and looking to a direction, go to that direction
+  -- If the enemy was stopped and looking to a direction, go to that direction.
   local direction = sprite:get_direction()
   if animation == "stopped_watching_left" then
     self:go((direction + 1) % 4)
@@ -53,15 +53,15 @@ function enemy:on_sprite_animation_finished(sprite, animation)
   end
 end
 
--- Makes the soldier walk towards a direction
+-- Makes the soldier walk towards a direction.
 function enemy:go(direction4)
 
-  -- set the sprite
+  -- Set the sprite.
   local sprite = self:get_sprite()
   sprite:set_animation("walking")
   sprite:set_direction(direction4)
 
-  -- set the movement
+  -- Set the movement.
   local m = self:get_movement()
   local max_distance = 40 + math.random(120)
   m:set_max_distance(max_distance)
@@ -70,7 +70,7 @@ function enemy:go(direction4)
   m:set_angle(direction4 * math.pi / 2)
 end
 
--- Makes the soldier look to its left or to its right (random choice)
+-- Makes the soldier look to its left or to its right (random choice).
 function enemy:look_left_or_right()
 
   local sprite = self:get_sprite()

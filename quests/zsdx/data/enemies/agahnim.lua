@@ -2,7 +2,7 @@ local enemy = ...
 
 -- Agahnim (Boss of dungeon 5)
 
--- possible positions where he appears
+-- Possible positions where he appears.
 local positions = {
   {x = 192, y = 277, direction4 = 3},
   {x = 400, y = 277, direction4 = 3},
@@ -12,7 +12,8 @@ local positions = {
 local nb_sons_created = 0
 local initial_life = 10
 local finished = false
-local blue_fireball_proba = 33 -- percent
+local blue_fireball_proba = 33  -- Percent.
+local vulnerable = false
 local timers = {}
 
 function enemy:on_created()
@@ -110,7 +111,7 @@ function enemy:fire_step_3()
   function throw_fire()
 
     nb_sons_created = nb_sons_created + 1
-    self:create_son("agahnim_fireball_" .. nb_sons_created, breed, 0, -21)
+    self:create_enemy("agahnim_fireball_" .. nb_sons_created, breed, 0, -21)
   end
 
   throw_fire()
@@ -120,13 +121,13 @@ function enemy:fire_step_3()
   end
 end
 
-function enemy:on_message_received(src_enemy, message)
+function enemy:receive_bounced_fireball(fireball)
 
-  if string.find(src_enemy, "^agahnim_fireball")
+  if fireball:get_name():find("^agahnim_fireball")
       and vulnerable then
-
+    -- Receive a fireball shot back by the hero: get hurt.
     for _, t in ipairs(timers) do t:stop() end
-    self:get_map():enemy_remove(src_enemy)
+    fireball:remove()
     self:hurt(1)
   end
 end
@@ -135,7 +136,7 @@ function enemy:on_hurt(attack, life_lost)
 
   local life = self:get_life()
   if life <= 0 then
-    self:get_map():enemy_remove_group("agahnim_fireball")
+    self:get_map():remove_entities("agahnim_fireball")
     self:set_life(1)
     finished = true
   elseif life <= initial_life / 3 then
@@ -145,13 +146,7 @@ end
 
 function enemy:end_dialog()
 
-  for i = 1, nb_sons_created do
-    son = "agahnim_fire_ball_"..i
-    if not self:get_map():enemy_is_dead(son) then
-      self:get_map():enemy_remove(son)
-    end
-  end
-
+  self:get_map():remove_entities("agahnim_fire_ball_" .. i)
   local sprite = self:get_sprite()
   sprite:set_ignore_suspend(true)
   self:get_map():start_dialog("dungeon_5.agahnim_end")
@@ -167,8 +162,8 @@ function enemy:escape()
 
   local x, y = self:get_position()
   self:get_map():create_pickable("heart_container", 1, 521, x, y, 0)
-  self:get_map():hero_unfreeze()
-  self:get_map():enemy_remove(self:get_name())
+  self:get_map():get_hero():unfreeze()
   self:get_game():set_boolean(520, true)
+  self:remove()
 end
 

@@ -20,12 +20,12 @@ function enemy:on_created()
   self:set_attack_consequence("arrow", "protected")
   self:set_attack_consequence("hookshot", "protected")
 
-  -- create the eye
+  -- Create the eye.
   local my_name = self:get_name()
-  eye = my_name.."_eye"
-  self:create_son(eye, "flora_gohma_eye", 0, -112)
+  eye = self:create_enemy(my_name .. "_eye", "flora_gohma_eye", 0, -112)
+  eye.body = self
 
-  -- create the balls of the neck
+  -- Create the balls of the neck.
   ball_sprite = sol.sprite.create("enemies/flora_gohma_eye")
   ball_sprite:set_animation("ball")
 end
@@ -41,21 +41,21 @@ end
 
 function enemy:on_position_changed(x, y)
 
-  if not self:get_map():enemy_is_dead(eye) then
-    -- the body has just moved: do the same movement to the eye
+  if eye:exists() then
+    -- The body has just moved: do the same movement to the eye.
     local dx = x - current_xy.x
     local dy = y - current_xy.y
-    local eye_x, eye_y = self:get_map():enemy_get_position(eye)
-    self:get_map():enemy_set_position(eye, eye_x + dx, eye_y + dy)
+    local eye_x, eye_y = eye:get_position()
+    eye:set_position(eye_x + dx, eye_y + dy)
   end
   current_xy.x, current_xy.y = x, y
 end
 
 function enemy:on_pre_draw()
 
-  if not self:get_map():enemy_is_dead(eye) then
+  if eye:exists() then
     local x, y = self:get_position()
-    local eye_x, eye_y = self:get_map():enemy_get_position(eye)
+    local eye_x, eye_y = eye:get_position()
     self:display_balls(x, y - 32, eye_x, eye_y - 16)
   end
 end
@@ -71,20 +71,6 @@ function enemy:display_balls(x1, y1, x2, y2)
     self:get_map():draw_sprite(ball_sprite, x, y)
     x = x + x_inc
     y = y + y_inc
-  end
-end
-
-function enemy:on_message_received(src_enemy, message)
-
-  if src_enemy == eye then
-    
-    if message == "dying" then
-      -- the eye is dying: stop moving
-      self:stop_movement()
-    elseif message == "dead" then
-      -- the eye is dead: I'm gonna have to die too
-      self:hurt(1)
-    end
   end
 end
 

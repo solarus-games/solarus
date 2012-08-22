@@ -1,6 +1,6 @@
 local enemy = ...
 
--- A triple bouncing fireball that the hero cannot fight
+-- A triple bouncing fireball that the hero cannot fight.
 
 local speed = 192
 local bounces = 0
@@ -19,7 +19,7 @@ function enemy:on_created()
   self:set_invincible()
   self:set_attack_consequence("sword", "custom")
 
-  -- two smaller fireballs just for the displaying
+  -- Two smaller fireballs just for the displaying.
   sprite2 = sol.sprite.create("enemies/blue_fireball_triple")
   sprite2:set_animation("small")
   sprite3 = sol.sprite.create("enemies/blue_fireball_triple")
@@ -29,20 +29,20 @@ end
 function enemy:on_restarted()
 
   local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():hero_get_position()
-  local angle = sol.main.get_angle(x, y, hero_x, hero_y - 5)
+  local hero_x, hero_y = self:get_map():get_hero():get_position()
+  local angle = self:get_angle(hero_x, hero_y - 5)
   local m = sol.movement.create("straight")
   m:set_speed(speed)
   m:set_angle(angle)
   self:start_movement(m)
 end
 
-function enemy:on_obstacle_reached()
+function enemy:on_obstacle_reached(movement)
 
   if bounces < max_bounces then
 
-    -- compute the bouncing angle
-    -- (works good with horizontal and vertical walls)
+    -- Compute the bouncing angle
+    -- (works good with horizontal and vertical walls).
     local m = self:get_movement()
     local angle = m:get_angle()
     if not self:test_obstacles(1, 0)
@@ -58,19 +58,19 @@ function enemy:on_obstacle_reached()
     bounces = bounces + 1
     speed = speed + 48
   else
-    self:get_map():enemy_remove(self:get_name())
+    self:remove()
   end
 end
 
 function enemy:on_custom_attack_received(attack, sprite)
 
   if attack == "sword" then
-    -- explode
+    -- Explode.
     local x, y, layer = self:get_position()
-    self:get_map():hero_start_hurt(x, y, 8, 0)
     sol.audio.play_sound("explosion")
+    self:get_map():get_hero():start_hurt(x, y, 8, 0)
     self:get_map():create_explosion(x, y, layer)
-    self:get_map():enemy_remove(self:get_name())
+    self:remove()
   end
 end
 

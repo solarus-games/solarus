@@ -1,10 +1,9 @@
 local enemy = ...
 
--- A giant tree boss from Newlink
+-- A giant tree boss from Newlink.
 
-local nb_sons_created = 0
-local nb_sons_immobilized = 0
-local nb_sons_immobilized_needed = 3 -- number of sons immobilized needed to get him vulnerable
+local sons = {}
+local nb_sons_immobilized_needed = 3  -- Number of sons immobilized needed to get him vulnerable.
 local vulnerable = false
 local initial_life = 8
 local timers = {}
@@ -57,7 +56,7 @@ function enemy:on_hurt(attack, life_lost)
     sprite:set_ignore_suspend(true)
     self:get_map():start_dialog("dungeon_3.arbror_killed")
     for _, t in ipairs(timers) do t:stop() end
-    remove_sons()
+    self:remove_sons()
   else
     if life > 9 then 
       nb_sons_immobilized_needed = 3
@@ -75,8 +74,7 @@ function enemy:prepare_son()
 
   local sprite = self:get_sprite()
   if not vulnerable and sprite:get_animation() == "walking" then
-    son_prefix = self:get_name() .. "_son"
-    if self:get_map():enemy_get_group_count(son_prefix) < nb_sons_immobilized_needed then
+    if #sons < nb_sons_immobilized_needed then
       local sprite = self:get_sprite()
       sprite:set_animation("preparing_son")
       sol.audio.play_sound("hero_pushes")
@@ -90,14 +88,26 @@ end
 
 function enemy:create_son()
 
-  x = math.random(-7, 7) * 16
+  local x = math.random(-7, 7) * 16
 
-  nb_sons_created = nb_sons_created + 1
-  son_name = self:get_name().."_son_"..nb_sons_created
-  self:create_son(son_name, "arbror_root", x, 80)
-  local speed = 48 + (initial_life - self:get_life()) * 5
-  self:send_message(son_name, speed)
+  local son_name = self:get_name() .. "_son_" .. (#sons + 1)
+  local son = self:create_enemy(son_name, "arbror_root", x, 80)
+  son.master_arbor = self
+  son.speed = 48 + (initial_life - self:get_life()) * 5
+  sons[#sons + 1] = son
   sol.audio.play_sound("stone")
+end
+
+function enemy:get_nb_sons_immobilized()
+
+  local count = 0
+  for _, son in ipairs(sons) do
+    if son.immobilized then
+      count = count + 1
+    end
+  end
+
+  return count
 end
 
 function enemy:on_sprite_animation_finished(sprite, animation)
@@ -107,7 +117,7 @@ function enemy:on_sprite_animation_finished(sprite, animation)
     self:restart()
   elseif animation == "son_immobilized" then
 
-    if nb_sons_immobilized >= nb_sons_immobilized_needed
+    if self:get_nb_sons_immobilized() >= nb_sons_immobilized_needed
         and not vulnerable then
 
       vulnerable = true
@@ -125,25 +135,17 @@ function enemy:on_sprite_animation_finished(sprite, animation)
   end
 end
 
-function enemy:on_message_received(src_enemy, message)
+function enemy:son_started_immobilized()
 
-  if message == "begin immobilized" then
-    if nb_sons_immobilized < nb_sons_immobilized_needed then
-      nb_sons_immobilized = nb_sons_immobilized + 1
-      local sprite = self:get_sprite()
-      local animation = sprite:get_animation()
+  if get_nb_sons_immobilized() < nb_sons_immobilized_needed then
+    local sprite = self:get_sprite()
+    local animation = sprite:get_animation()
 
-      if animation == "preparing_son" then
-        self:restart()
-      end
-
-      sprite:set_animation("son_immobilized")
+    if animation == "preparing_son" then
+      self:restart()
     end
 
-  elseif message == "end immobilized" then
-    if nb_sons_immobilized > 0 then
-      nb_sons_immobilized = nb_sons_immobilized - 1
-    end
+    sprite:set_animation("son_immobilized")
   end
 end
 
@@ -160,15 +162,13 @@ end
 
 function enemy:remove_sons()
  
-  local son_prefix = self:get_name().."_son"
-  --self:get_map():enemy_remove_group(son_prefix) 
-  nb_sons_immobilized = 0
+  local son_prefix = self:get_name() .. "_son"
 
-  for i = 1, nb_sons_created do
-    son = son_prefix.."_"..i
-    if not self:get_map():enemy_is_dead(son) then
-      self:send_message(son, "disappear")
+  for i, son in ipairs(sons) do
+    if son:exists() then
+      son:disappear()
     end
   end
+  sons = {}
 end
 

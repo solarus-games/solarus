@@ -1,6 +1,8 @@
 local enemy = ...
 
--- A red flame thrown by another enemy
+-- A red flame shot by another enemy.
+-- When its flame finishes its movement,
+-- a circle of fire remains on the ground.
 
 function enemy:on_created()
 
@@ -17,8 +19,8 @@ end
 
 function enemy:on_restarted()
 
-  -- by default, go to where the hero is now
-  local x, y = self:get_map():hero_get_position()
+  -- By default, go to where the hero is now.
+  local x, y = self:get_map():get_hero():get_position()
   x = x + math.random(-32, 32)
   y = y + math.random(-32, 32)
   local m = sol.movement.create("target")
@@ -31,16 +33,14 @@ end
 
 function enemy:on_movement_finished(movement)
 
-  -- create a circle of fire
+  -- Let a circle of fire on the ground.
   local son_name = self:get_name() .. "_circle"
-  self:create_son(son_name, "fire_circle", 0, 0)
-  self:get_map():enemy_remove(self:get_name())
+  self:create_enemy(son_name, "fire_circle", 0, 0)
+  self:remove()
 end
 
-function enemy:on_message_received(src_enemy, message)
+function enemy:go(angle)
 
-  -- the message is the angle to take
-  local angle = tonumber(message)
   local m = sol.movement.create("straight")
   m:set_speed(144)
   m:set_angle(angle)

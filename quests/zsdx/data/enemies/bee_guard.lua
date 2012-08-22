@@ -8,7 +8,7 @@ enemy:set_properties({
   sword_sprite = "enemies/bee_guard_sword",
   life = 3,
   damage = 2,
-  play_hero_seend_sound = true,
+  play_hero_seen_sound = true,
   normal_speed = 32,
   faster_speed = 64,
   hurt_style = "monster"

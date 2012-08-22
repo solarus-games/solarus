@@ -1,9 +1,10 @@
 local enemy = ...
 
--- Drakomos head
+-- Drakomos head.
 
-local nb_fire_created = 0
-local max_fire_created = 10
+local max_fire_created = 10   -- Maximum for a step.
+local nb_fire_created = 0     -- In the current step.
+local total_fire_created = 0  -- Total on all steps.
 local initial_xy = {}
 local timers = {}
 
@@ -65,12 +66,13 @@ function enemy:repeat_fire()
 
   if nb_fire_created < max_fire_created then
     nb_fire_created = nb_fire_created + 1
-    local son_name = self:get_name().."_son_"..nb_fire_created
+    total_fire_created = total_fire_created + 1
+    local son_name = self:get_name() .. "_son_" .. total_fire_created
     local angle_start = 2 * math.pi / 4
     local angle_end = 9 * math.pi / 4
     local angle = angle_start + nb_fire_created * (angle_end - angle_start) / max_fire_created
-    self:create_son(son_name, "fireball_simple", 0, 16)
-    self:send_message(son_name, tostring(angle))
+    local son = self:create_enemy(son_name, "fireball_simple", 0, 16)
+    son:go(angle)
     sol.audio.play_sound("lamp")
     timers[#timers + 1] = sol.timer.start(150, function() self:repeat_fire() end)
   else

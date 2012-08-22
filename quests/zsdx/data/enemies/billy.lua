@@ -27,7 +27,7 @@ function enemy:on_movement_changed()
   sprite:set_direction(direction4)
 end
 
-function enemy:on_obstacle_reached(movement)
+function enemy:on_obstacle_reached()
 
   if not going_hero then
     self:go_random()
@@ -49,7 +49,7 @@ end
 
 function enemy:check_hero()
 
-  local near_hero = self:get_distance_to_hero() < 100
+  local near_hero = self:get_distance(self:get_map():get_hero()) < 100
   if near_hero and not going_hero then
     self:go_hero()
   elseif not near_hero and going_hero then

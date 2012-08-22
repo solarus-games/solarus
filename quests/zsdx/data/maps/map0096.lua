@@ -28,7 +28,7 @@ end
 -- (this function can be called when the hero enters the room of evil tiles)
 function start_evil_tiles()
 
-  local total = map:enemy_get_group_count("evil")
+  local total = map:get_entities_count("evil")
   local next = 1 -- number of the next evil tile to spawn
   local spawn_delay = 1500 -- delay between two tiles
 
@@ -53,7 +53,7 @@ function start_evil_tiles()
 
     -- repeat the sound until the last tile starts animation "destroy"
     local again = false
-    local remaining = map:enemy_get_group_count("evil")
+    local remaining = map:get_entities_count("evil")
     if remaining > 1 then
       again = true
     elseif remaining == 1 then

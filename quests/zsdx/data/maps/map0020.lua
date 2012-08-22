@@ -145,10 +145,10 @@ function has_finished_cavern()
 end
 
 function map:on_enemy_dead(enemy_name)
-  if map:enemy_is_group_dead("battle_1") and map:tile_is_enabled("battle_1_barrier") then
+  if not map:has_entities("battle_1") and map:tile_is_enabled("battle_1_barrier") then
     map:move_camera(352, 288, 250, battle_1_camera_timer)
   end
-  if map:enemy_is_group_dead("battle_2") and map:tile_is_enabled("battle_2_barrier") then
+  if not map:has_entities("battle_2") and map:tile_is_enabled("battle_2_barrier") then
     map:move_camera(344, 488, 250, battle_2_camera_timer)
   end
 end

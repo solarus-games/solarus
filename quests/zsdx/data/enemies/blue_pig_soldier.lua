@@ -1,6 +1,6 @@
 local enemy = ...
 
--- Blue pig soldier
+-- Blue pig soldier.
 
 sol.main.load_file("enemies/generic_soldier")(enemy)
 self:set_properties({

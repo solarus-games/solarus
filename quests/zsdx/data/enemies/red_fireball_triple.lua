@@ -1,6 +1,6 @@
 local enemy = ...
 
--- A triple bouncing fireball, usually thrown by another enemy
+-- A bouncing triple fireball, usually shot by another enemy.
 
 local speed = 192
 local bounces = 0
@@ -20,7 +20,7 @@ function enemy:on_created()
   self:set_invincible()
   self:set_attack_consequence("sword", "custom")
 
-  -- two smaller fireballs just for the displaying
+  -- Two smaller fireballs just for the displaying.
   sprite2 = sol.sprite.create("enemies/red_fireball_triple")
   sprite2:set_animation("small")
   sprite3 = sol.sprite.create("enemies/red_fireball_triple")
@@ -29,9 +29,8 @@ end
 
 function enemy:on_restarted()
 
-  local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():hero_get_position()
-  local angle = sol.main.get_angle(x, y, hero_x, hero_y - 5)
+  local hero_x, hero_y = self:get_map():get_hero():get_position()
+  local angle = self:get_angle(hero_x, hero_y - 5)
   local m = sol.movement.create("straight")
   m:set_speed(speed)
   m:set_angle(angle)
@@ -42,8 +41,8 @@ function enemy:on_obstacle_reached()
 
   if bounces < max_bounces then
 
-    -- compute the bouncing angle
-    -- (works good with horizontal and vertical walls)
+    -- Compute the bouncing angle
+    -- (works good with horizontal and vertical walls).
     local m = self:get_movement()
     local angle = m:get_angle()
     if not self:test_obstacles(1, 0)
@@ -59,7 +58,7 @@ function enemy:on_obstacle_reached()
     bounces = bounces + 1
     speed = speed + 48
   else
-    self:get_map():enemy_remove(self:get_name())
+    self:remove()
   end
 end
 
@@ -67,9 +66,8 @@ function enemy:on_custom_attack_received(attack, sprite)
 
   if attack == "sword" then
 
-    local x, y = self:get_position()
-    local hero_x, hero_y = self:get_map():hero_get_position()
-    local angle = sol.main.get_angle(hero_x, hero_y - 5, x, y)
+    local hero_x, hero_y = self:get_map():get_hero():get_position()
+    local angle = self:get_angle(hero_x, hero_y - 5) + math.pi
     local m = sol.movement.straight_movement_create(speed, angle)
     self:start_movement(m)
     sol.audio.play_sound("boss_fireball")
@@ -77,10 +75,12 @@ function enemy:on_custom_attack_received(attack, sprite)
   end
 end
 
-function enemy:on_collision_enemy(other_name, other_sprite, my_sprite)
+function enemy:on_collision_enemy(other_enemy, other_sprite, my_sprite)
 
   if used_sword then
-    self:send_message(other_name, "collision")
+    if other_enemy:receive_bounced_fireball ~= nil then
+      other_enemy:receive_bounced_fireball(self)
+    end
   end
 end
 
@@ -100,17 +100,15 @@ function enemy:on_pre_draw()
   self:get_map():draw_sprite(sprite3, x3, y3)
 end
 
-function enemy:on_message_received(src_enemy, message)
+-- Method called by other enemies.
+function enemy:bounce()
 
-  if message == "bounce" then
+  local m = self:get_movement()
+  local angle = m:get_angle()
+  angle = angle + math.pi
 
-    local m = self:get_movement()
-    local angle = m:get_angle()
-    angle = angle + math.pi
-
-    m:set_angle(angle)
-    m:set_speed(speed)
-    used_sword = false
-  end
+  m:set_angle(angle)
+  m:set_speed(speed)
+  used_sword = false
 end
 

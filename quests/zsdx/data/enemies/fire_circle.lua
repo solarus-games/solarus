@@ -1,6 +1,6 @@
 local enemy = ...
 
--- A circle of fire
+-- A fixed trace of fire in circle on the ground.
 
 function enemy:on_created()
 
@@ -14,8 +14,9 @@ end
 
 function enemy:on_restarted()
 
-  -- disappear after a few seconds
+  -- Disappear after a few seconds.
   sol.timer.start(2000, function()
-    self:get_map():enemy_remove(self:get_name())
+    self:remove()
   end)
 end
+

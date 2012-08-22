@@ -54,7 +54,7 @@ function map:on_enemy_dead(enemy_name)
     sol.audio.play_sound("secret")
     map:open_doors("se_door")
   elseif string.find(enemy_name, "^s_room_enemy")
-      and map:enemy_is_group_dead("s_room_enemy")
+      and not map:has_entities("s_room_enemy")
       and not map:door_is_open("se_door") then
     sol.audio.play_sound("secret")
     map:open_doors("se_door")

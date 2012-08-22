@@ -1,10 +1,10 @@
 local enemy = ...
 
--- Poutroxor: an evil giant bird from Newlink
+-- Poutroxor: an evil giant bird from Newlink.
 -- Phase 1: a skeleton is on the bird and has to be killed with arrows.
 -- Phase 2: once the skeleton is dead, the bird moves faster, throws blue flames and can be killed by shooting arrows in his head.
 
-local bird, head, skeleton -- sprites
+local bird, head, skeleton  -- Sprites.
 local phase = 1
 local nb_flames_created = 0
 local max_flames_created = 10
@@ -52,7 +52,7 @@ function enemy:on_restarted()
   end
 end
 
--- Make the skeleton throw a blue flame
+-- Make the skeleton shoot a blue flame.
 function enemy:skeleton_attack()
 
   skeleton:set_animation("attack")
@@ -61,11 +61,9 @@ function enemy:skeleton_attack()
     skeleton:set_animation("walking")
     nb_flames_created = nb_flames_created + 1
     local son_name = self:get_name() .. "_son_" .. nb_flames_created
-    self:create_son(son_name, "blue_flame", 0, -48, 2)
-    local x, y = self:get_map():enemy_get_position(son_name)
-    local hero_x, hero_y = self:get_map():hero_get_position()
-    local angle = sol.main.get_angle(x, y, hero_x, hero_y)
-    self:send_message(son_name, angle)
+    local son = self:create_enemy(son_name, "blue_flame", 0, -48, 2)
+    local angle = son:get_angle(self:get_map():get_hero())
+    son:go(angle)
     timers[#timers + 1] = sol.timer.start(math.random(1000, 3000), function()
       self:skeleton_attack()
     end)
@@ -81,15 +79,15 @@ function enemy:on_hurt(attack, life_lost)
     skeleton:set_animation("hurt")
     phase = 2
     self:remove_sprite(skeleton)
-    self:get_map():enemy_remove_group(self:get_name() .. "_son")
+    self:get_map():remove_entities(self:get_name() .. "_son")
     skeleton = nil
     self:set_attack_consequence_sprite(head, "arrow", 1)
   elseif self:get_life() <= 0 then
-    self:get_map():enemy_remove_group(self:get_name() .. "_son")
+    self:get_map():remove_entities(self:get_name() .. "_son")
   end
 end
 
--- Makes the bird throw several blue flames
+-- Makes the bird throw several blue flames.
 function enemy:big_attack()
 
   nb_flames_created = 0
@@ -105,8 +103,8 @@ function enemy:repeat_flame()
     local son_name = self:get_name() .. "_son_" .. nb_flames_created
     local angle = math.random(30, 90) * math.pi / 40
     nb_flames_created = nb_flames_created + 1
-    self:create_son(son_name, "blue_flame", 0, 16)
-    self:send_message(son_name, tostring(angle))
+    local son = self:create_enemy(son_name, "blue_flame", 0, 16)
+    son:go(angle)
     sol.audio.play_sound("lamp")
     timers[#timers + 1] = sol.timer.start(150, function() self:repeat_flame() end)
   else

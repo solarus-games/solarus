@@ -2,11 +2,11 @@ local enemy = ...
 
 -- A root of Master Arbror
 
-local immobilized = false
-local disappearing = false
-local speed = 32
-local timer
-local father_name
+enemy.disappearing = false
+enemy.timer = nil
+enemy.immobilized = false
+enemy.speed = 32
+enemy.master_arbror = nil
 
 function enemy:on_created()
 
@@ -27,88 +27,73 @@ end
 function enemy:on_restarted()
 
   local sprite = self:get_sprite()
-  if disappearing then
+  if self.disappearing then
     sprite:set_animation("disappearing")
     self:set_invincible()
     self:stop_movement()
     self:set_can_attack(false)
-  elseif immobilized then
+  elseif self.immobilized then
     sprite:set_animation("hurt_long")
-    if timer ~= nil then
-      timer:stop()
+    if self.timer ~= nil then
+      self.timer:stop()
     end
-    timer = sol.timer.start(10000, function() self:disappear() end)
+    self.timer = sol.timer.start(10000, function() self:disappear() end)
     self:stop_movement()
     self:set_can_attack(false)
   else
-    timer = sol.timer.start(1000, function() self:go() end)
+    self.timer = sol.timer.start(1000, function() self:go() end)
     self:set_can_attack(true)
   end
 end
 
 function enemy:go()
 
-  if not immobilized then
+  if not self.immobilized then
     local m = sol.movement.movement_create("path_finding")
-    m:set_speed(speed)
+    m:set_speed(self.speed)
     self:start_movement(m)
   end
 end
 
 function enemy:on_hurt(attack, life_points)
 
-  if not immobilized then
-    -- tell my father that I will be immobilized
-    father_name = self:get_father()
-    if father_name ~= "" then
-      self:send_message(father_name, "begin immobilized")
+  if not self.immobilized then
+    -- Tell Master Arbror that I am immobilized.
+    if self.master_arbror ~= nil then
+      self.master_arbror:son_started_immobilized()
     end
-    if timer ~= nil then
-      timer:stop()
+    if self.timer ~= nil then
+      self.timer:stop()
     end
   end
 end
 
 function enemy:on_immobilized()
 
-  -- just immobilized
-  immobilized = true
-  self:restart() -- to stop the buit-in behavior of being immobilized
+  -- Just immobilized.
+  self.immobilized = true
+  self:restart()  -- To stop the buit-in behavior of being immobilized.
 end
 
-function disappear()
+function enemy:disappear()
 
-  if not disappearing then
+  if not self.disappearing then
     local sprite = self:get_sprite()
     sprite:set_animation("disappearing")
     self:set_invincible()
     self:set_can_attack(false)
 
-    father_name = self:get_father()
-    if father_name ~= "" then
-      self:send_message(father_name, "end immobilized")
+    if self.timer ~= nil then
+      self.timer:stop()
     end
-    if timer ~= nil then
-      timer:stop()
-    end
-    disappearing = true
+    self.disappearing = true
   end
 end
 
 function enemy:on_sprite_animation_finished(sprite, animation)
 
   if animation == "disappearing" then
-    self:get_map():enemy_remove(self:get_name())
-  end
-end
-
-function enemy:on_message_received(src_enemy, message)
-
-  if message == "disappear" then
-    self:disappear()
-  else
-    -- the message is the speed
-    speed = tonumber(message)
+    self:remove()
   end
 end
 

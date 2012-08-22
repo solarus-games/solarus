@@ -5,7 +5,6 @@ local enemy = ...
 
 local in_shell = nil
 
--- The enemy appears: create its movement
 function enemy:on_created()
   
   self:set_life(2)
@@ -23,7 +22,7 @@ function enemy:on_created()
   end)
 end
 
--- The enemy was stopped for some reason and should restart
+-- The enemy was stopped for some reason and should restart.
 function enemy:on_restarted()
 
   if in_shell then
@@ -39,7 +38,7 @@ function enemy:on_restarted()
   end
 end
 
--- Starts breaking the shell
+-- Starts breaking the shell.
 function enemy:break_shell()
 
   local sprite = self:get_sprite()
@@ -47,7 +46,7 @@ function enemy:break_shell()
   sprite:set_animation("shell_breaking")
 end
 
---  The animation of a sprite is finished
+--  The animation of a sprite is finished.
 function enemy:on_sprite_animation_finished(sprite, animation)
 
   -- if the shell was breaking, let the mini mowatulla go

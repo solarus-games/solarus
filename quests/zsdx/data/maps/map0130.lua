@@ -304,9 +304,9 @@ function map:on_switch_activated(switch_name)
 
   if index == 1 then
     -- kill small enemies
-    if map:enemy_get_group_count("boss_") > 0 then
+    if map:get_entities_count("boss_") > 0 then
       sol.audio.play_sound("enemy_killed")
-      map:enemy_remove_group("boss_")
+      map:remove_entities("boss_")
     end
 
   elseif index == 2 then

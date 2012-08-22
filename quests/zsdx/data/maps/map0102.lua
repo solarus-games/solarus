@@ -78,7 +78,7 @@ function map:on_hero_on_sensor(sensor_name)
  
   -- door C (west room)
   elseif sensor_name:find("^close_door_c_sensor") then
-    if not map:enemy_is_group_dead("w_room_enemy")
+    if map:has_entities("w_room_enemy")
         and map:door_is_open("door_c") then
       map:close_doors("door_c")
     end
@@ -196,7 +196,7 @@ function map:on_enemy_dead(enemy_name)
 
   -- west enemies room
   if string.find(enemy_name, "^w_room_enemy")
-      and map:enemy_is_group_dead("w_room_enemy") then
+      and not map:has_entities("w_room_enemy") then
     sol.audio.play_sound("secret")
     if not map:door_is_open("door_c") then
       map:open_doors("door_c")
@@ -207,7 +207,7 @@ function map:on_enemy_dead(enemy_name)
 
   -- miniboss
   elseif string.find(enemy_name, "^miniboss")
-      and map:enemy_is_group_dead("miniboss") then
+      and not map:has_entities("miniboss") then
 
     sol.audio.play_music("dark_world_dungeon")
     sol.audio.play_sound("secret")

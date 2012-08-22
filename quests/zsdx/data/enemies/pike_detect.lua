@@ -1,8 +1,8 @@
 local enemy = ...
 
--- Pike that moves when the hero is close
+-- Pike that moves when the hero is close.
 
-local state = "stopped" -- "stopped", "moving", "going_back", "paused"
+local state = "stopped"  -- "stopped", "moving", "going_back" or "paused".
 local initial_xy = {}
 local activation_distance = 24
 
@@ -27,9 +27,9 @@ end
 function enemy:on_update()
 
   if state == "stopped" and self:get_distance_to_hero() <= 192 then
-    -- check whether the hero is close
+    -- Check whether the hero is close.
     local x, y = self:get_position()
-    local hero_x, hero_y = self:get_map():hero_get_position()
+    local hero_x, hero_y = self:get_map():get_hero():get_position()
     local dx, dy = hero_x - x, hero_y - y
 
     if math.abs(dy) < activation_distance then
@@ -58,7 +58,7 @@ function enemy:go(direction4)
     { x =  0, y =  8}
   }
   
-  -- check that we can make the move
+  -- Check that we can make the move.
   local index = direction4 + 1
   if not self:test_obstacles(dxy[index].x * 2, dxy[index].y * 2) then
 
@@ -85,10 +85,9 @@ function enemy:on_movement_finished()
   self:go_back()
 end
 
-function enemy:on_collision_enemy(other_name, other_sprite, my_sprite)
+function enemy:on_collision_enemy(other_enemy, other_sprite, my_sprite)
 
-  -- TODO: it would be better to have a way of getting the other's race
-  if string.find(other_name, "^pike_") and state == "moving" then
+  if other_enemy:get_breed() == self:get_breed() and state == "moving" then
     self:go_back()
   end
 end

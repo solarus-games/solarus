@@ -102,7 +102,7 @@ function map:on_enemy_dead(enemy_name)
 
   -- hidden enemies
   if enemy_name:find("^hidden_enemy")
-      and map:enemy_is_group_dead("hidden_enemy")
+      and not map:has_entities("hidden_enemy")
       and not map:chest_is_enabled("hidden_enemy_chest") then
     map:move_camera(1128, 2040, 250, function()
       sol.audio.play_sound("chest_appears")
@@ -111,7 +111,7 @@ function map:on_enemy_dead(enemy_name)
 
   -- south door
   elseif enemy_name:find("^s_door_enemy")
-      and map:enemy_is_group_dead("s_door_enemy")
+      and not map:has_entities("s_door_enemy")
       and not map:door_is_open("s_door") then
     map:move_camera(1768, 1800, 250, function()
       sol.audio.play_sound("secret")
@@ -120,7 +120,7 @@ function map:on_enemy_dead(enemy_name)
     
   -- west enemies room
   elseif enemy_name:find("^w_room_enemy")
-      and map:enemy_is_group_dead("w_room_enemy") then
+      and not map:has_entities("w_room_enemy") then
     sol.audio.play_sound("chest_appears")
     map:chest_set_enabled("w_room_chest", true)
     if not map:door_is_open("w_room_door") then
@@ -129,7 +129,7 @@ function map:on_enemy_dead(enemy_name)
 
   -- east enemies room
   elseif enemy_name:find("^e_room_enemy")
-      and map:enemy_is_group_dead("e_room_enemy")
+      and not map:has_entities("e_room_enemy")
       and not map:chest_is_enabled("e_room_chest") then
     map:move_camera(2136, 1120, 250, function()
       sol.audio.play_sound("chest_appears")

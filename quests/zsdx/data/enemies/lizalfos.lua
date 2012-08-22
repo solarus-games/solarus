@@ -1,6 +1,6 @@
 local enemy = ...
 
--- Lizalfos
+-- Lizalfos.
 
 sol.main.load_file("enemies/generic_soldier")(enemy)
 enemy:set_properties({

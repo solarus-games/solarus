@@ -14,28 +14,26 @@ function enemy:on_created()
   self:set_origin(64, 64)
   self:set_invincible()
 
-  -- create the heads
+  -- Create the heads.
   local my_name = self:get_name()
-  head_1 = my_name.."_head_1"
-  head_2 = my_name.."_head_2"
-  self:create_son(head_1, "drakomos_head", -76, 40)
-  self:create_son(head_2, "drakomos_head", 76, 40)
+  head_1 = self:create_enemy(my_name .. "head_1", "drakomos_head", -76, 40)
+  head_2 = self:create_enemy(my_name .. "head_2", "drakomos_head", 76, 40)
   ball_sprite = sol.sprite.create("enemies/drakomos")
   ball_sprite:set_animation("ball")
 end
 
 function enemy:on_update()
 
-  if self:get_map():enemy_is_dead(head_1)
-    and self:get_map():enemy_is_dead(head_2)
+  if not head_1:exists()
+    and not head_2:exists()
     and self:get_life() > 0
     and not killing then
 
     killing = true
     self:hurt(1)
-    self:get_map():enemy_remove_group(head_1)
-    self:get_map():enemy_remove_group(head_2)
-    self:get_map():enemy_remove_group("spawner")
+    self:get_map():remove_entities(head_1:get_name())
+    self:get_map():remove_entities(head_2:get_name())
+    self:get_map():remove_entities("spawner")
   end
 end
 
@@ -43,13 +41,13 @@ function enemy:on_post_draw()
 
   local x, y = self:get_position()
 
-  if not self:get_map():enemy_is_dead(head_1) then
-    local x2, y2 = self:get_map():enemy_get_position(head_1)
+  if head_1:exists() then
+    local x2, y2 = head_1:get_position()
     self:display_balls(x - 22, y - 15, x2, y2 - 12)
   end
 
-  if not self:get_map():enemy_is_dead(head_2) then
-    local x2, y2 = self:get_map():enemy_get_position(head_2)
+  if head_2:exists() then
+    local x2, y2 = head_2:get_position()
     self:display_balls(x + 22, y - 15, x2, y2 - 12)
   end
 end

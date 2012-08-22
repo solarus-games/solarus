@@ -1,6 +1,6 @@
 local enemy = ...
 
--- Blue knight soldier
+-- Blue knight soldier.
 
 sol.main.load_file("enemies/generic_soldier")(enemy)
 enemy:set_properties({

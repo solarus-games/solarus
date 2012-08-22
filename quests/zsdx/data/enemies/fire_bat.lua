@@ -1,6 +1,6 @@
 local enemy = ...
 
--- A fire bat thrown by Ganon
+-- A fire bat shot by Ganon.
 
 function enemy:on_created()
 
@@ -27,14 +27,13 @@ end
 
 function enemy:on_movement_finished(movement)
 
-  self:get_map():enemy_remove(self:get_name())
+  self:remove()
 end
 
+-- Goes towards the hero.
 function enemy:go_hero()
 
-  local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():hero_get_position()
-  local angle = sol.main.get_angle(x, y, hero_x, hero_y)
+  local angle = self:get_angle(self:get_map():get_hero())
   local m = sol.movement.create("straight")
   m:set_speed(192)
   m:set_angle(angle)
@@ -43,31 +42,15 @@ function enemy:go_hero()
   self:start_movement(m)
 end
 
-function enemy:go_circle()
+-- Makes circles around the boss.
+function enemy:go_circle(center_entity)
 
-  -- make a circle around the father
   local m = sol.movement.create("circle")
-  m:set_center(7, self:get_father())
+  m:set_center(center_entity)
   m:set_radius(48)
   m:set_center_dy(-21)
   m:set_initial_angle(90)
   m:set_angle_speed(150)
   self:start_movement(m)
-end
-
-function enemy:on_message_received(src_enemy, message)
-
-  if message == "circle" then
-    self:go_circle()
-  elseif message == "go_hero" then
-    self:go_hero()
-  else
-    local delay = tonumber(message:match("^go_hero ([0-9]*)$"))
-    if delay then
-      sol.timer.start(delay, function()
-	self:go_hero()
-      end)
-    end
-  end
 end
 

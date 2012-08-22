@@ -20,7 +20,7 @@ end
 function map:on_enemy_dead(enemy_name)
 
   if enemy_name:find("enemy2")
-      and map:enemy_is_group_dead("enemy2")
+      and not map:has_entities("enemy2")
       and not map:get_game():get_boolean(234) then
     map:create_pickable("big_key", 1, 234, 672, 80, 1)
     sol.audio.play_sound("secret")
@@ -35,7 +35,7 @@ function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "sensor1_1"
       and map:door_is_open("door_a")
-      and not map:enemy_is_group_dead("enemy2")
+      and map:has_entities("enemy2")
       and not map:get_game():get_boolean(234) then
     sol.audio.play_music("boss")
     map:close_doors("door_a")

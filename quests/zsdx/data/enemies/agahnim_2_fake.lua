@@ -1,8 +1,8 @@
 local enemy = ...
 
--- Fake Agahnim (with the boss of dungeon 8)
+-- Fake Agahnim (with the boss of dungeon 8).
 
--- possible positions where he appears
+-- Possible positions where he appears.
 local positions = {
   {x = 488, y = 317},
   {x = 560, y = 317},
@@ -19,7 +19,7 @@ local positions = {
 }
 
 local nb_sons_created = 0
-local blue_fireball_proba = 33 -- percent
+local blue_fireball_proba = 33  -- Percent.
 local next_fireball_sound
 local next_fireball_breed
 local disappearing = false
@@ -45,7 +45,6 @@ function enemy:on_created()
 
   local sprite = self:get_sprite()
   sprite:set_animation("stopped")
-
 end
 
 function enemy:on_restarted()
@@ -68,9 +67,8 @@ end
 
 function enemy:get_direction4_to_hero()
 
-  local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():hero_get_position()
-  local angle = sol.main.get_angle(x, y, hero_x, hero_y)
+  local hero = self:get_map():get_hero()
+  local angle = self:get_angle(hero)
   local direction4 = (angle + (math.pi / 4)) * 2 / math.pi
   return (math.floor(direction4) + 4) % 4
 end
@@ -143,8 +141,8 @@ function enemy:fire_step_3()
   function throw_fire()
 
     nb_sons_created = nb_sons_created + 1
-    self:create_son(self:get_name() .. "_fireball_" .. nb_sons_created,
-        next_fireball_breed, 0, -21)
+    self:create_enemy(self:get_name() .. "_fireball_" .. nb_sons_created,
+      next_fireball_breed, 0, -21)
   end
 
   throw_fire()
@@ -165,27 +163,27 @@ function enemy:disappear()
   sprite:fade_out()
   for _, t in ipairs(timers) do t:stop() end
   timers[#timers + 1] = sol.timer.start(500, function()
-    self:get_map():enemy_remove(self:get_name())
+    self:remove()
   end)
 end
 
-function enemy:on_collision_enemy(other_name, other_sprite, my_sprite)
+function enemy:on_collision_enemy(other_enemy, other_sprite, my_sprite)
 
-  if not other_name:find("fireball") then
+  if not other_enemy:get_name():find("fireball") then
 
     local x = self:get_position()
     if x > 0 then
-      -- collision with another Agahnim
+      -- Collision with another Agahnim.
       for _, t in ipairs(timers) do t:stop() end
-      self:hide() -- go somewhere else
+      self:hide()  -- Go somewhere else.
     end
   end
 end
 
-function enemy:on_message_received(src_enemy, message)
+function enemy:receive_bounced_fireball(fireball)
 
-  if string.find(src_enemy, "^agahnim_fireball") then
-    -- receive a fireball: disappear
+  if fireball:get_name():find("^agahnim_fireball") then
+    -- Receive a fireball shot back by the hero: disappear.
     self:disappear()
   end
 end

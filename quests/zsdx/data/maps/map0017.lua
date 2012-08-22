@@ -37,7 +37,7 @@ end
 function map:on_enemy_dead(enemy_name)
 
   if enemy_name:find("enemy_group1")
-      and map:enemy_is_group_dead("enemy_group1")
+      and not map:has_entities("enemy_group1")
       and not map:get_game():get_boolean(200) then
     map:move_camera(616, 552, 250, function()
       map:create_pickable("small_key", 1, 200, 616, 557, 1)

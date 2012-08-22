@@ -137,7 +137,7 @@ function map:on_npc_interaction(npc_name)
 end
 
 function map:on_enemy_dead(enemy_name)
-  if string.find(enemy_name, "^rupee_enemy") and map:enemy_is_group_dead("rupee_enemy") then	
+  if string.find(enemy_name, "^rupee_enemy") and not map:has_entities("rupee_enemy") then	
     -- 100 rupee room: kill all enemies
     if not map:chest_is_enabled("RC100") then
       sol.audio.play_sound("chest_appears")

@@ -1,8 +1,8 @@
 local enemy = ...
 
--- Agahnim (Boss of dungeon 8)
+-- Agahnim (Boss of dungeon 8).
 
--- possible positions where he appears
+-- Possible positions where he appears.
 local positions = {
   {x = 488, y = 317},
   {x = 560, y = 317},
@@ -20,7 +20,7 @@ local positions = {
 
 local nb_sons_created = 0
 local initial_life = 16
-local blue_fireball_proba = 33 -- percent
+local blue_fireball_proba = 33  -- Percent.
 local next_fireball_sound
 local next_fireball_breed
 local vulnerable = false
@@ -65,23 +65,22 @@ end
 
 function enemy:on_update()
 
-  -- look in the direction of the hero
+  -- Look in the direction of the hero.
   local sprite = self:get_sprite()
   sprite:set_direction(self:get_direction4_to_hero())
 end
 
 function enemy:get_direction4_to_hero()
 
-  local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():hero_get_position()
-  local angle = sol.main.get_angle(x, y, hero_x, hero_y)
+  local hero = self:get_map():get_hero()
+  local angle = self:get_angle(hero)
   local direction4 = (angle + (math.pi / 4)) * 2 / math.pi
   return (math.floor(direction4) + 4) % 4
 end
 
 function enemy:hide()
 
-  -- disappear for a while
+  -- Disappear for a while.
   vulnerable = false
   self:set_position(-100, -100)
   timers[#timers + 1] = sol.timer.start(500, function()
@@ -91,7 +90,7 @@ end
 
 function enemy:unhide()
 
-  -- come back somewhere
+  -- Come back somewhere.
   local position = (positions[math.random(#positions)])
   self:set_position(position.x, position.y)
   local sprite = self:get_sprite()
@@ -104,7 +103,7 @@ end
 
 function enemy:fire_step_1()
 
-  -- before preparing a fireball
+  -- Before preparing a fireball.
   local sprite = self:get_sprite()
   sprite:set_animation("arms_up")
   timers[#timers + 1] = sol.timer.start(1000, function()
@@ -115,18 +114,18 @@ end
 
 function enemy:fire_step_2()
 
-  -- prepare a fireball (red or blue)
+  -- Prepare a fireball (red or blue).
   local sprite = self:get_sprite()
   local blue = math.random(100) <= blue_fireball_proba
 
   if math.random(5) == 1 then
-    -- don't tell the player if it will be red or blue
+    -- Don't tell the player if it will be red or blue.
     sprite:set_animation("preparing_unknown_fireball")
   elseif blue then
-    -- blue fireball: for the hero can do nothing but run away
+    -- Blue fireball: the hero can do nothing but run away.
     sprite:set_animation("preparing_blue_fireball")
   else
-    -- red fireball: possible to throw it back to Agahnim
+    -- Red fireball: possible to shoot it back to Agahnim.
     sprite:set_animation("preparing_red_fireball")
   end
 
@@ -145,17 +144,17 @@ end
 
 function fire_step_3()
 
-  -- throw the fireball(s)
+  -- Shoot the fireball(s).
   local sprite = self:get_sprite()
   sprite:set_animation("stopped")
   sol.audio.play_sound(next_fireball_sound)
   vulnerable = true
 
-  local delay -- delay before fading out and going somewhere else
+  local delay  -- Delay before fading out and going somewhere else.
   if next_fireball_breed == "blue_fireball_triple" then
     delay = 700
   else
-    delay = 3000 -- red fireball: stay longer to play ping-pong
+    delay = 3000  -- Red fireball: stay longer to play ping-pong.
   end
   timers[#timers + 1] = sol.timer.start(delay, function()
     self:restart()
@@ -163,13 +162,13 @@ function fire_step_3()
 
   function throw_fire()
     nb_sons_created = nb_sons_created + 1
-    self:create_son("agahnim_fireball_" .. nb_sons_created,
+    self:create_enemy("agahnim_fireball_" .. nb_sons_created,
         next_fireball_breed, 0, -21)
   end
 
   self:throw_fire()
 
-  -- shoot more fireballs if the life becomes short
+  -- Shoot more fireballs if the life becomes short.
   local life = self:get_life()
   if life <= initial_life / 2 then
     timers[#timers + 1] = sol.timer.start(200, function() self:throw_fire() end)
@@ -180,7 +179,7 @@ function fire_step_3()
     end
   end
 
-  -- play ping pong
+  -- Play ping-pong.
   if life <= initial_life * 3 / 4 then
     hurt_proba = 20
   else
@@ -188,20 +187,19 @@ function fire_step_3()
   end
 end
 
-function enemy:on_message_received(src_enemy, message)
+function enemy:receive_bounced_fireball(fireball)
 
-  if string.find(src_enemy, "^agahnim_fireball")
+  if fireball:get_name():find("^agahnim_fireball")
       and vulnerable then
-
-    -- receive a fireball: get hurt or throw it back
+    -- Receive a fireball shot back by the hero: get hurt or throw it back.
     if math.random(100) <= hurt_proba then
       for _, t in ipairs(timers) do t:stop() end
-      self:get_map():enemy_remove(src_enemy)
+      fireball:remove()
       self:hurt(1)
     else
-      -- play ping-pong
+      -- Play ping-pong.
       sol.audio.play_sound("boss_fireball")
-      self:send_message(src_enemy, "bounce")
+      fireball:bounce()
       hurt_proba = hurt_proba + 20
     end
   end
@@ -212,14 +210,14 @@ function enemy:on_hurt(attack, life_lost)
   local sprite = self:get_sprite()
   local life = self:get_life()
   if life <= 0 then
-    -- dying
-    self:get_map():enemy_remove_group("agahnim_fireball")
-    self:get_map():enemy_remove_group(self:get_name() .. "_")
+    -- Dying.
+    self:get_map():remove_entities("agahnim_fireball")
+    self:get_map():remove_entities(self:get_name() .. "_")
     sprite:set_ignore_suspend(true)
     self:get_map():start_dialog("dungeon_8.agahnim_end")
     for _, t in ipairs(timers) do t:stop() end
   elseif life <= initial_life * 2 / 3 then
-    -- not dying yet: start creating fakes after a few hits
+    -- Not dying yet: start creating fakes after a few hits.
     sprite:set_ignore_suspend(true)
     if not middle_dialog then
       self:get_map():start_dialog("dungeon_8.agahnim_middle")
@@ -229,19 +227,19 @@ function enemy:on_hurt(attack, life_lost)
   end
 end
 
--- create fake Agahnims
+-- Create fake Agahnims.
 function enemy:create_fakes()
 
   local prefix = self:get_name() .. "_fake_"
-  if self:get_map():enemy_get_group_count(prefix) < 3 then
+  if self:get_map():get_entities_count(prefix) < 3 then
     nb_fakes_created = nb_fakes_created + 1
     local fake_name = prefix .. nb_fakes_created
-    self:create_son(fake_name, "agahnim_2_fake", 0, 0)
+    self:create_enemy(fake_name, "agahnim_2_fake", 0, 0)
   end
 
   if self:get_life() < initial_life / 3
-      and self:get_map():enemy_get_group_count(prefix) < 2 then
-    -- create a second one
+      and self:get_map():get_entities_count(prefix) < 2 then
+    -- Create a second one.
     self:create_fakes()
   end
 end

@@ -74,7 +74,7 @@ end
 function map:on_enemy_dead(enemy_name)
 
   if enemy_name:find("^chest_c_enemy_") then
-    if map:enemy_is_group_dead("chest_c_enemy")
+    if not map:has_entities("chest_c_enemy")
         and not map:chest_is_enabled("chest_c") then
       sol.audio.play_sound("chest_appears")
       map:chest_set_enabled("chest_c", true)

@@ -28,6 +28,7 @@ local attacking = false
 local nb_floors_destroyed = 0
 local nb_flames_created = 0
 local nb_bats_created = 0
+local attack_scheduled = false
 local cancel_next_attack = false
 local timers = {}
 
@@ -47,7 +48,6 @@ function enemy:on_created()
   self:set_attack_consequence("thrown_item", "immobilized")
   self:set_pushed_back_when_hurt(false)
   self:set_push_hero_on_sword(true)
-  --self:set_can_hurt_hero_running(true)
 end
 
 function enemy:on_restarted()
@@ -67,11 +67,10 @@ function enemy:on_restarted()
   end
 end
 
-function enemy:on_movement_changed()
+function enemy:on_movement_changed(movement)
 
-  -- take the appropriate sprite direction
-  local m = self:get_movement()
-  local direction4 = m:get_direction4()
+  -- Take the appropriate sprite direction.
+  local direction4 = movement:get_direction4()
   local sprite = self:get_sprite()
   if direction4 == 1 then
     sprite:set_direction(1)
@@ -88,23 +87,18 @@ function enemy:on_immobilized()
     self:set_attack_consequence("thrown_item", "protected")
     self:set_hurt_style("boss")
 
-    -- make a protection
-    if self:get_map():enemy_get_group_count(self:get_name() .. "_bats_") < 9 then
-      --print("go bats!")
+    -- Make a protection.
+    if self:get_map():get_entities_count(self:get_name() .. "_bats_") < 9 then
       attacking = false
       self:throw_bats()
-      cancel_next_attack = true -- otherwise two attacks would be scheduled
-    else
-      --print("no new bats, already enough")
+      cancel_next_attack = true  -- Otherwise two attacks would be scheduled.
     end
   end
 end
 
 function enemy:jump()
 
-  local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():hero_get_position()
-  local angle = sol.main.get_angle(hero_x, hero_y, x, y)
+  local angle = math.pi + self:get_angle(self:get_map():get_hero())
   local m = sol.movement.create("target")
   m:set_speed(128)
   m:set_target(240, 245)
@@ -119,12 +113,12 @@ function enemy:jump()
   self:set_can_attack(false)
 end
 
-function enemy:on_obstacle_reached()
+function enemy:on_obstacle_reached(movement)
 
-  self:on_movement_finished(self:get_movement())
+  self:on_movement_finished(movement)
 end
 
-function enemy:on_movement_finished(m)
+function enemy:on_movement_finished(movement)
 
   local sprite = self:get_sprite()
   if sprite:get_animation() == "jumping" then
@@ -135,13 +129,13 @@ end
 function enemy:finish_jump()
 
   if phase == 1 then
-    -- destroy floors
+    -- Destroy floors.
     local floors = { "floor_left_", "floor_right_", "floor_up_", "floor_down_" }
     nb_floors_destroyed = nb_floors_destroyed + 1
     if nb_floors_destroyed <= #floors then
       self:destroy_floor(floors[nb_floors_destroyed], 1, 50)
     else
-      -- go to phase 2
+      -- Go to phase 2.
       self:set_life(24)
       phase = 2
     end
@@ -170,7 +164,7 @@ function enemy:destroy_floor(prefix, first, last)
       sol.audio.play_sound("stone")
     end
     
-    self:get_map():tile_set_enabled(prefix .. index, false)
+    self:get_map():entities_set_enabled(prefix .. index, false)
 
     if index ~= last then
       sol.timer.start(delay, repeat_change)
@@ -182,7 +176,6 @@ end
 
 function enemy:attack()
 
-  --print("attack!")
   if phase == 1 or math.random(2) == 1 then
     self:throw_flames()
   else
@@ -193,13 +186,10 @@ end
 function enemy:throw_flames()
 
   if vulnerable or jumping or attacking then
-    --print("no flames: jumping =", jumping, "attacking =", attacking,
-    --    "attacking =", attacking)
     return
   end
 
   if cancel_next_attack then
-    --print("no flames: this attack is canceled")
     cancel_next_attack = false
     return
   end
@@ -212,7 +202,7 @@ function enemy:throw_flames()
   function repeat_throw_flame()
 
     if vulnerable then
-      -- immobilized while shooting flames
+      -- Got immobilized while shooting flames.
       attacking = false
       return
     end
@@ -220,7 +210,7 @@ function enemy:throw_flames()
     sol.audio.play_sound("lamp")
     nb_flames_created = nb_flames_created + 1
     local son_name = prefix .. nb_flames_created
-    self:create_son(son_name, "red_flame", 0, -24, 0)
+    self:create_enemy(son_name, "red_flame", 0, -24, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
       timers[#timers + 1] = sol.timer.start(150, repeat_throw_flame)
@@ -237,12 +227,10 @@ end
 function enemy:throw_bats()
 
   if jumping or attacking then
-    --print("no bats: jumping =", jumping, "attacking =", attacking)
     return
   end
 
   if cancel_next_attack then
-    --print("no bats: this attack is canceled")
     cancel_next_attack = false
     return
   end
@@ -257,13 +245,13 @@ function enemy:throw_bats()
     sol.audio.play_sound("lamp")
     nb_bats_created = nb_bats_created + 1
     local son_name = prefix .. nb_bats_created
-    self:create_son(son_name, "fire_bat", 0, -21, 0)
+    local son = self:create_enemy(son_name, "fire_bat", 0, -21, 0)
     if math.random(6) == 1 then
-      self:get_map():enemy_set_treasure(son_name, "magic_flask", 1, -1)
+      son:set_treasure("magic_flask", 1, -1)
     end
-    self:send_message(son_name, "circle")
+    son:go_circle(self)
     local go_hero_delay = 2000 + (nb_to_create * 150)
-    self:send_message(son_name, "go_hero " .. go_hero_delay)
+    timers[#timers + 1] = sol.timer.start(go_hero_delay, function() son:go_hero() end)
 
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then

@@ -1,5 +1,6 @@
 local enemy = ...
 
+local body = nil
 local petals = {
   {}, {}, {}, {}, {}
 }
@@ -63,13 +64,13 @@ end
 function enemy:on_update()
 
   local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():hero_get_position()
+  local hero_x, hero_y = self:get_map():get_hero():get_position()
   if hero_y < y - 60 and
       (petals[2].sprite ~= nil and hero_x <= x and hero_x > x - 32
       or petals[5].sprite ~= nil and hero_x >= x and hero_x < x + 32
       or petals[1].sprite ~= nil) then
-    -- the top petals are too hard to reach: let the hookshot traverse
-    -- the main sprite
+    -- The top petals are too hard to reach: let the hookshot traverse
+    -- the main sprite.
     self:set_attack_consequence_sprite(eye_sprite, "hookshot", "ignored")
   else
     self:set_attack_consequence_sprite(eye_sprite, "hookshot", "protected")
@@ -78,28 +79,28 @@ end
 
 function enemy:on_custom_attack_received(attack, sprite)
 
-  -- a petal was touched by the hookshot
+  -- A petal was touched by the hookshot.
   for i = 1, 5 do
     if petals[i].sprite == sprite
         and not string.find(petals[i].sprite:get_animation(), "hurt") then
       petals[i].life = petals[i].life - 1
       self:hurt(0)
       sol.audio.play_sound("enemy_hurt")
-      petals[i].sprite:set_animation("petal_hurt_"..i)
+      petals[i].sprite:set_animation("petal_hurt_" .. i)
       timers[#timers + 1] = sol.timer.start(300, function()
 
 	if petals[i].life > 0 then
-	  -- restore the petal animation
-	  petals[i].sprite:set_animation("petal_"..i)
+	  -- Restore the petal animation.
+	  petals[i].sprite:set_animation("petal_" .. i)
 	else
-	  -- destroy the petal
+	  -- Destroy the petal.
 	  sol.audio.play_sound("stone")
 	  self:remove_sprite(petals[i].sprite)
 	  petals[i].sprite = nil
 
 	  remaining_petals = remaining_petals - 1
 	  if remaining_petals <= 0 then
-	    -- no more petals: make the eye vulnerable
+	    -- No more petals: make the eye vulnerable.
 	    speed = 48
 	    self:set_attack_consequence_sprite(eye_sprite, "sword", 1)
 	    self:restart()
@@ -122,37 +123,32 @@ end
 function enemy:on_hurt(attack, life_lost)
 
   if self:get_life() <= 0 then
-    -- notify the body to make it stop moving
-    self:send_message(self:get_father(), "dying")
+    -- Stop the movement of the body.
+    body:stop_movement()
     for _, t in ipairs(timers) do t:stop() end
 
-    -- remove the sons
-    for i = 1, nb_sons_created do
-      local son_prefix = self:get_name().."_son_"
-      local son_name = son_prefix..i
-      if not self:get_map():enemy_is_dead(son_name) then
-	self:get_map():enemy_remove(son_name)
-      end
-    end
+    -- Remove the sons.
+    local son_prefix = self:get_name() .. "_son_"
+    self:get_map():remove_entities(son_prefix)
   end
 end
 
 function enemy:on_dead()
 
-  -- notify the body
-  self:send_message(self:get_father(), "dead")
+  -- Kill the body.
+  body:hurt(1)
 end
 
 function enemy:repeat_create_son()
 
-  local son_prefix = self:get_name().."_son_"
-  if self:get_map():enemy_get_group_count(son_prefix) < 10 then
+  local son_prefix = self:get_name() .. "_son_"
+  if self:get_map():get_entities_count(son_prefix) < 10 then
     nb_sons_created = nb_sons_created + 1
-    local son_name = son_prefix..nb_sons_created
-    local _, _, layer = self:get_map():enemy_get_position(self:get_father())
-    self:create_son(son_name, "snap_dragon", 0, 0, layer)
+    local son_name = son_prefix .. nb_sons_created
+    local _, _, layer = body:get_position()
+    local son = self:create_enemy(son_name, "snap_dragon", 0, 0, layer)
     if math.random(2) == 1 then
-      self:get_map():enemy_set_treasure(son_name, "heart", 1, -1)
+      son:set_treasure("heart", 1, -1)
     end
   end
 

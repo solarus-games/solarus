@@ -32,14 +32,14 @@ function map:on_hero_on_sensor(sensor_name)
   -- door B
   if sensor_name:find("^close_door_b_sensor") then
     if map:door_is_open("door_b")
-        and not map:enemy_is_group_dead("door_b_enemy") then
+        and map:has_entities("door_b_enemy") then
       map:close_doors("door_b")
     end
 
   -- door C
   elseif sensor_name:find("^close_door_c_sensor") then
     if map:door_is_open("door_c")
-        and not map:enemy_is_group_dead("door_c_enemy") then
+        and map:has_entities("door_c_enemy") then
       map:close_doors("door_c")
     end
 
@@ -85,7 +85,7 @@ function map:on_enemy_dead(enemy_name)
 
   -- door B
   elseif enemy_name:find("^door_b_enemy") then
-    if map:enemy_is_group_dead("door_b_enemy")
+    if not map:has_entities("door_b_enemy")
         and not map:door_is_open("door_b") then
       sol.audio.play_sound("secret")
       map:open_doors("door_b")
@@ -93,7 +93,7 @@ function map:on_enemy_dead(enemy_name)
  
   -- door C
   elseif enemy_name:find("^door_c_enemy") then
-    if map:enemy_is_group_dead("door_c_enemy")
+    if not map:has_entities("door_c_enemy")
         and not map:door_is_open("door_c") then
       sol.audio.play_sound("secret")
       map:open_doors("door_c")

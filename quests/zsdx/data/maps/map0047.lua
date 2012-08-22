@@ -42,7 +42,7 @@ function map:on_started(destination_point_name)
   end
 
   if destination_point_name == "from_hidden_room" then
-    map:enemy_remove_group("room_LD5_enemy")
+    map:remove_entities("room_LD5_enemy")
   end
 
   -- door to Agahnim open if Billy's heart container was picked
@@ -99,12 +99,12 @@ end
 function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "DS1" then
     -- LD1 room: when Link enters this room, door LD1 closes and enemies appear, sensor DS1 is disabled
-    if not map:enemy_is_group_dead("room_LD1_enemy") then
+    if map:has_entities("room_LD1_enemy") then
       map:close_doors("LD1")
       map:sensor_set_enabled("DS1", false)
     end
   elseif sensor_name == "DS3" then
-    if not map:enemy_is_group_dead("map_enemy") then
+    if map:has_entities("map_enemy") then
       map:close_doors("LD3")
       map:sensor_set_enabled("DS3", false)
     end
@@ -126,18 +126,18 @@ function map:on_hero_on_sensor(sensor_name)
 end
 
 function map:on_enemy_dead(enemy_name)
-  if string.match(enemy_name, "^room_LD1_enemy") and map:enemy_is_group_dead("room_LD1_enemy") then
+  if string.match(enemy_name, "^room_LD1_enemy") and not map:has_entities("room_LD1_enemy") then
     -- LD1 room: kill all enemies will open the doors LD1 and LD2
     if not map:door_is_open("LD1") then
       map:open_doors("LD1")
       map:open_doors("LD2")
       sol.audio.play_sound("secret")
     end
-  elseif string.match(enemy_name, "^room_LD5_enemy") and map:enemy_is_group_dead("room_LD5_enemy") and not map:door_is_open("LD5") then
+  elseif string.match(enemy_name, "^room_LD5_enemy") and not map:has_entities("room_LD5_enemy") and not map:door_is_open("LD5") then
     -- LD5 room: kill all enemies will open the door LD5
     map:open_doors("LD5")
     sol.audio.play_sound("secret")
-  elseif string.match(enemy_name, "^map_enemy") and map:enemy_is_group_dead("map_enemy") then
+  elseif string.match(enemy_name, "^map_enemy") and not map:has_entities("map_enemy") then
     -- Map chest room: kill all enemies and the chest will appear
     if not map:get_game():get_boolean(700) then
       map:chest_set_enabled("MAP", true)
@@ -146,7 +146,7 @@ function map:on_enemy_dead(enemy_name)
       sol.audio.play_sound("secret")
     end
     map:open_doors("LD3")
-  elseif string.match(enemy_name, "^room_big_enemy") and map:enemy_is_group_dead("room_big_enemy") then
+  elseif string.match(enemy_name, "^room_big_enemy") and not map:has_entities("room_big_enemy") then
     -- Big key chest room: kill all enemies and the chest will appear
     if not map:get_game():get_boolean(705) then
       map:chest_set_enabled("BK01", true)

@@ -2,8 +2,9 @@ local enemy = ...
 
 -- Gelidrak's head
 
-local vulnerable = false      -- becomes vulnerable when the tail is hurt
-local vulnerable_delay = 5000 -- delay while the head remains vulnerable
+local body = nil               -- Gelidrak's body.
+local vulnerable = false       -- Becomes vulnerable when the tail is hurt.
+local vulnerable_delay = 5000  -- Delay while the head remains vulnerable.
 local nb_flames_created = 0
 local timers = {}
 
@@ -41,7 +42,7 @@ function enemy:on_restarted()
   end
 end
 
-function enemy:on_collision_enemy(other_name, other_sprite, my_sprite)
+function enemy:on_collision_enemy(other_enemy, other_sprite, my_sprite)
 
   if not vulnerable then
     self:go_back()
@@ -50,7 +51,7 @@ end
 
 function enemy:go_back()
 
-  local x, y = self:get_map():enemy_get_position(self:get_father())
+  local x, y = body:get_position()
   local m = sol.movement.create("target")
   m:set_speed(16)
   m:set_target(x, y + 48)
@@ -68,49 +69,45 @@ function enemy:on_movement_finished(movement)
   timers[#timers + 1] = sol.timer.start(5000, function() self:go_back() end)
 end
 
-function enemy:on_message_received(src_enemy, message)
+-- This function is called by the body.
+function enemy:set_vulnerable()
 
-  if src_enemy == self:get_father() then
-    if message == "vulnerable" and not vulnerable then
-      -- the head now becomes vulnerable
-      vulnerable = true
-      self:stop_movement()
-      self:set_can_attack(false)
-      self:set_attack_consequence("sword", 1)
-      local sprite = self:get_sprite()
-      sprite:set_animation("walking")
-      for _, t in ipairs(timers) do t:stop() end
-      timers[#timers + 1] = sol.timer.start(vulnerable_delay, function()
-	vulnerable = false
-	self:on_restarted()
-	self:set_can_attack(true)
-        self:set_attack_consequence("sword", "protected")
-	self:send_message(self:get_father(), "recovered")
-      end)
-    end
+  if not vulnerable then
+    -- The head now becomes vulnerable.
+    vulnerable = true
+    self:stop_movement()
+    self:set_can_attack(false)
+    self:set_attack_consequence("sword", 1)
+    local sprite = self:get_sprite()
+    sprite:set_animation("walking")
+    for _, t in ipairs(timers) do t:stop() end
+    timers[#timers + 1] = sol.timer.start(vulnerable_delay, function()
+      vulnerable = false
+      self:on_restarted()
+      self:set_can_attack(true)
+      self:set_attack_consequence("sword", "protected")
+      body:head_recovered()
+    end)
   end
 end
 
 function enemy:on_hurt(attack, life_lost)
 
-  if self:get_life() > 0 then
-    -- notify the body (so that it is hurt too)
-    self:send_message(self:get_father(), "hurt")
-  else
+  if self:get_life() <= 0 then
     for _, t in ipairs(timers) do t:stop() end
-    self:send_message(self:get_father(), "dying")
+    body:head_dying()
   end
 end
 
 function enemy:on_dead()
 
-  -- notify the body
-  self:send_message(self:get_father(), "dead")
+  -- Notify the body.
+  body:head_dead()
 end
 
 function enemy:throw_flames()
 
-  if self:get_map():enemy_get_group_count(self:get_name() .. "_son_") < 5 then
+  if self:get_map():get_entities_count(self:get_name() .. "_son_") < 5 then
     nb_flames_created = 0
     self:stop_movement()
     local sprite = self:get_sprite()
@@ -127,8 +124,8 @@ function enemy:repeat_flame()
     nb_flames_created = nb_flames_created + 1
     local son_name = self:get_name() .. "_son_" .. nb_flames_created
     local angle = math.random(360) * math.pi / 180
-    self:create_son(son_name, "blue_flame", 0, 16)
-    self:send_message(son_name, tostring(angle))
+    local son = self:create_enemy(son_name, "blue_flame", 0, 16)
+    son:go(angle)
     sol.audio.play_sound("lamp")
     timers[#timers + 1] = sol.timer.start(150, function() self:repeat_flame() end)
   else

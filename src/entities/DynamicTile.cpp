@@ -139,34 +139,15 @@ bool DynamicTile::is_obstacle_for(MapEntity &other) {
  */
 void DynamicTile::draw_on_map() {
 
-  // FIXME this code is duplicated from Tile
-  Surface& map_surface = get_map().get_visible_surface();
-
   const Rectangle& camera_position = get_map().get_camera_position();
   Rectangle dst(0, 0);
 
-  int limit_x = get_top_left_x() - camera_position.get_x() + get_width();
-  int limit_y = get_top_left_y() - camera_position.get_y() + get_height();
+  Rectangle dst_position(get_top_left_x() - camera_position.get_x(),
+      get_top_left_y() - camera_position.get_y(),
+      get_width(), get_height());
 
-  for (int y = get_top_left_y() - camera_position.get_y();
-      y < limit_y;
-      y += tile_pattern->get_height()) {
-
-    if (y <= SOLARUS_SCREEN_HEIGHT && y + tile_pattern->get_height() > 0) {
-      dst.set_y(y);
-
-      for (int x = get_top_left_x() - camera_position.get_x();
-          x < limit_x;
-          x += tile_pattern->get_width()) {
-
-        if (x <= SOLARUS_SCREEN_WIDTH && x + tile_pattern->get_width() > 0) {
-          dst.set_x(x);
-          tile_pattern->draw(map_surface, dst, get_map().get_tileset(),
-              get_map().get_camera_position());
-        }
-      }
-    }
-  }
+  tile_pattern->fill_surface(get_map().get_visible_surface(), dst_position,
+      get_map().get_tileset(), camera_position);
 }
 
 /**

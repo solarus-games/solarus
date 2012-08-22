@@ -19,6 +19,7 @@
 #include "entities/TimeScrollingTilePattern.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Surface.h"
 
 /**
  * @brief Constructor.
@@ -118,5 +119,42 @@ bool TilePattern::is_animated() {
  */
 bool TilePattern::is_drawn_at_its_position() {
   return true;
+}
+
+/**
+ * @brief Fills a rectangle by repeating this tile pattern.
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates of the rectangle to fill in \c dst_surface.
+ * @param viewport Coordinates of the top-left corner of \c dst_surface
+ * relative to the map (may be used for scrolling tiles).
+ */
+void TilePattern::fill_surface(Surface& dst_surface, const Rectangle& dst_position,
+    Tileset& tileset, const Rectangle& viewport) {
+
+  Rectangle dst(0, 0);
+
+  int limit_x = dst_position.get_x() + dst_position.get_width();
+  int limit_y = dst_position.get_y() + dst_position.get_height();
+
+  for (int y = dst_position.get_y();
+      y < limit_y;
+      y += get_height()) {
+
+    if ((y <= dst_surface.get_height() && y + get_height() > 0)
+        || !is_drawn_at_its_position()) {
+      dst.set_y(y);
+
+      for (int x = dst_position.get_x();
+          x < limit_x;
+          x += get_width()) {
+
+        if ((x <= dst_surface.get_width() && x + get_width() > 0)
+            || !is_drawn_at_its_position()) {
+          dst.set_x(x);
+          draw(dst_surface, dst, tileset, viewport);
+        }
+      }
+    }
+  }
 }
 

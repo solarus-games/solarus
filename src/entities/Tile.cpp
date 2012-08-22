@@ -106,31 +106,12 @@ void Tile::draw_on_map() {
  */
 void Tile::draw(Surface& dst_surface, const Rectangle& viewport) {
 
-  Rectangle dst(0, 0);
+  Rectangle dst_position(get_top_left_x() - viewport.get_x(),
+      get_top_left_y() - viewport.get_y(),
+      get_width(), get_height());
 
-  int limit_x = get_top_left_x() - viewport.get_x() + get_width();
-  int limit_y = get_top_left_y() - viewport.get_y() + get_height();
-
-  for (int y = get_top_left_y() - viewport.get_y();
-      y < limit_y;
-      y += tile_pattern->get_height()) {
-
-    if ((y <= dst_surface.get_height() && y + tile_pattern->get_height() > 0)
-        || !tile_pattern->is_drawn_at_its_position()) {
-      dst.set_y(y);
-
-      for (int x = get_top_left_x() - viewport.get_x();
-          x < limit_x;
-          x += tile_pattern->get_width()) {
-
-        if ((x <= dst_surface.get_width() && x + tile_pattern->get_width() > 0)
-            || !tile_pattern->is_drawn_at_its_position()) {
-          dst.set_x(x);
-          tile_pattern->draw(dst_surface, dst, get_map().get_tileset(), viewport);
-        }
-      }
-    }
-  }
+  tile_pattern->fill_surface(dst_surface, dst_position,
+      get_map().get_tileset(), viewport);
 }
 
 /**

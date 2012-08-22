@@ -47,6 +47,8 @@ class TilePattern {
     Obstacle get_obstacle() const;
 
     static void update();
+    void fill_surface(Surface& dst_surface, const Rectangle& dst_position,
+        Tileset& tileset, const Rectangle& viewport);
 
     /**
      * @brief Draws the tile image on a surface.
@@ -58,7 +60,6 @@ class TilePattern {
      */
     virtual void draw(Surface& dst_surface, const Rectangle& dst_position,
         Tileset& tileset, const Rectangle& viewport) = 0;
-
     virtual bool is_animated();
     virtual bool is_drawn_at_its_position();
 };

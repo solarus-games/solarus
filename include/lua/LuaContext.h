@@ -675,6 +675,7 @@ class LuaContext {
       entity_api_is_enabled,
       entity_api_set_enabled,
       entity_api_remove,
+      entity_api_exists,
       hero_api_teleport,
       hero_api_set_visible,
       hero_api_get_direction,

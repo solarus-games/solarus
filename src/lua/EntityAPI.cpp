@@ -394,6 +394,19 @@ int LuaContext::entity_api_remove(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_entity_exists.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_exists(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  lua_pushboolean(l, !entity.is_being_removed());
+  return 1;
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * hero and returns it.
  * @param l A Lua context.

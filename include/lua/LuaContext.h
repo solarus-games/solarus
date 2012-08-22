@@ -365,7 +365,7 @@ class LuaContext {
     void on_moved();
     void on_map_changed(Map& map);
     void on_appear(Pickable& pickable);
-    void on_movement_changed(Pickable& pickable);  // TODO remove
+    void on_movement_changed(Pickable& pickable);
     void on_variant_changed(int variant);
     void on_amount_changed(int amount);
     void on_obtaining(const Treasure& treasure);
@@ -443,26 +443,6 @@ class LuaContext {
       language_api_get_default_language,
       language_api_get_string,
       language_api_get_dialog,
-
-      // Equipment item API.
-      item_api_get_game,
-      item_api_get_map,
-      item_api_has_variant,
-      item_api_get_variant,
-      item_api_set_variant,
-      item_api_has_amount,
-      item_api_get_amount,
-      item_api_set_amount,
-      item_api_add_amount,
-      item_api_remove_amount,
-      item_api_get_sprite,
-      item_api_get_movement,
-      item_api_start_movement,
-      item_api_is_following_entity,
-      item_api_get_position,
-      item_api_set_position,
-      item_api_set_layer_independent_collisions,
-      item_api_set_finished,
 
       // Drawable API (i.e. common to surfaces, text surfaces and sprites).
       drawable_api_draw,
@@ -580,6 +560,26 @@ class LuaContext {
       pixel_movement_api_get_delay,
       pixel_movement_api_set_delay,
 
+      // Equipment item API.
+      item_api_get_game,
+      item_api_get_map,
+      item_api_has_variant,
+      item_api_get_variant,
+      item_api_set_variant,
+      item_api_has_amount,
+      item_api_get_amount,
+      item_api_set_amount,
+      item_api_add_amount,
+      item_api_remove_amount,
+      item_api_get_sprite,
+      item_api_get_movement,
+      item_api_start_movement,
+      item_api_is_following_entity,
+      item_api_get_position,
+      item_api_set_position,
+      item_api_set_layer_independent_collisions,
+      item_api_set_finished,
+
       // Game API.
       game_api_exists,
       game_api_delete,
@@ -696,6 +696,9 @@ class LuaContext {
       switch_api_set_activated,
       switch_api_set_locked,
       door_api_is_open,
+      // TODO add a pickable API with set_position, set_layer_independent_collisions,
+      // get_movement, start_movement, stop_movement, is_following_entity
+      // and remove the corresponding functions from the item API.
       enemy_api_get_life,
       enemy_api_set_life,
       enemy_api_add_life,

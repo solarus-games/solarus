@@ -1627,7 +1627,8 @@ void LuaContext::on_appear(Pickable& pickable) {
 void LuaContext::on_movement_changed(Pickable& pickable) {
 
   if (find_method("on_movement_changed")) {
-    call_function(1, 0, "on_movement_changed");
+    push_entity(l, pickable);
+    call_function(2, 0, "on_movement_changed");
   }
 }
 

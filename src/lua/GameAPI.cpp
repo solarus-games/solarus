@@ -69,13 +69,7 @@ void LuaContext::register_game_module() {
       { "has_ability", game_api_has_ability },
       { "get_ability", game_api_get_ability },
       { "set_ability", game_api_set_ability },
-      { "has_item", game_api_has_item },
       { "get_item", game_api_get_item },
-      { "set_item", game_api_set_item },
-      { "has_item_amount", game_api_has_item_amount },
-      { "get_item_amount", game_api_get_item_amount },
-      { "add_item_amount", game_api_add_item_amount },
-      { "remove_item_amount", game_api_remove_item_amount },
       { "is_dungeon_finished", game_api_is_dungeon_finished },
       { "set_dungeon_finished", game_api_set_dungeon_finished },
       { NULL, NULL }
@@ -700,22 +694,6 @@ int LuaContext::game_api_set_ability(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_game_has_item.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_has_item(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  const std::string& item_name = luaL_checkstring(l, 2);
-
-  bool has_item = savegame.get_equipment().has_item(item_name);
-
-  lua_pushboolean(l, has_item);
-  return 1;
-}
-
-/**
  * @brief Implementation of \ref lua_api_game_get_item.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -725,91 +703,8 @@ int LuaContext::game_api_get_item(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
 
-  int variant = savegame.get_equipment().get_item_variant(item_name);
-
-  lua_pushinteger(l, variant);
+  push_item(l, savegame.get_equipment().get_item(item_name));
   return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_set_item.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_set_item(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  const std::string& item_name = luaL_checkstring(l, 2);
-  int variant = luaL_checkinteger(l, 3);
-
-  savegame.get_equipment().set_item_variant(item_name, variant);
-
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_has_item_amount.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_has_item_amount(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  const std::string& item_name = luaL_checkstring(l, 2);
-  int amount = luaL_checkinteger(l, 3);
-
-  bool has_amount = savegame.get_equipment().get_item_amount(item_name) >= amount;
-
-  lua_pushboolean(l, has_amount);
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_get_item_amount.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_get_item_amount(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  const std::string& item_name = luaL_checkstring(l, 2);
-
-  int amount = savegame.get_equipment().get_item_amount(item_name);
-
-  lua_pushinteger(l, amount);
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_add_item_amount.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_add_item_amount(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  const std::string& item_name = luaL_checkstring(l, 2);
-  int amount = luaL_checkinteger(l, 3);
-
-  savegame.get_equipment().add_item_amount(item_name, amount);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_remove_item_amount.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_remove_item_amount(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  const std::string& item_name = luaL_checkstring(l, 2);
-  int amount = luaL_checkinteger(l, 3);
-
-  savegame.get_equipment().remove_item_amount(item_name, amount);
-
-  return 0;
 }
 
 /**

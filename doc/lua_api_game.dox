@@ -321,93 +321,12 @@ Sets the level of an ability.
 
 <hr>
 
-\subsection lua_api_game_has_item game:has_item(item_name)
-
-Returns whether the player has an item.
-- \c item_name (string): Name of the item to get (must be an item
-  defined in \c items.dat).
-- Return value (boolean): \c true if the player has this item.
-
-\remark Equivalent to <tt>game:get_item(item_name) > 0</tt>.
-
-<hr>
-
 \subsection lua_api_game_get_item game:get_item(item_name)
 
-Returns the possession state (variant) of an item.
+Returns an equipment item.
 - \c item_name (string): Name of the item to get (must be an item
   defined in \c items.dat).
-- Return value (number): The variant of this item possessed by the player.
-  \c 0 means not having this item yet, \c 1 means the first variant, etc.
-
-<hr>
-
-\subsection lua_api_game_set_item game:set_item(item_name, variant)
-
-Sets the possession state (variant) of an item.
-- \c item_name (string): Name of the item to set (must be an item
-  defined in \c items.dat).
-- \c variant (number): The variant of this item possessed by the player.
-  \c 0 remove the item, 1 sets the first variant, etc.
-
-<hr>
-
-\subsection lua_api_game_has_item_amount game:has_item_amount(item_name, amount)
-
-Returns whether the player has at least the specified amount of an item.
-
-The item must have a counter (i.e. a notion of amount).
-- \c item_name (string): Name of the item to get (the item must have a
-  counter).
-- \c amount (number): The amount to check.
-- Return value (boolean): \c true if the player has at least this amount of the
-  item.
-
-\remark Equivalent to <tt>\c game:get_item_amount(item_name) > 0</tt>.
-
-<hr>
-
-\subsection lua_api_game_get_item_amount game:get_item_amount(item_name)
-
-Returns the amount the player has for an item.
-
-The item must have a counter (i.e. a notion of amount).
-- \c item_name (string): Name of the item to get (the item must
-  have a counter).
-- Return value (number): The amount of this item.
-
-<hr>
-
-\subsection lua_api_game_set_item_amount game:set_item_amount(item_name, amount)
-
-Sets the amount the player has for an item.
-
-The item must have a counter (i.e. a notion of amount).
-- \c item_name (string): Name of the item to change (the item must
-  have a counter).
-- \c amount (number): The new amount to set.
-
-<hr>
-
-\subsection lua_api_game_add_item_amount game:add_item_amount(item_name, amount)
-
-Adds an amount of the specified item.
-
-The item must have a counter (i.e. a notion of amount).
-- \c item_name (string): Name of the item to change (the item must
-  have a counter).
-- \c amount (number): The amount to add.
-
-<hr>
-
-\subsection lua_api_game_remove_item_amount game:remove_item_amount(item_name, amount)
-
-Removes an amount of the specified item.
-
-The item must have a counter (i.e. a notion of amount).
-- \c item_name (string): Name of the item to change (the item must
-  have a counter).
-- \c amount (number): The amount to remove.
+- Return value (item): The corresponding equipment item.
 
 <hr>
 

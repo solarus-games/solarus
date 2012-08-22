@@ -622,13 +622,7 @@ class LuaContext {
       game_api_has_ability,
       game_api_get_ability,
       game_api_set_ability,
-      game_api_has_item,
       game_api_get_item,
-      game_api_set_item,
-      game_api_has_item_amount,
-      game_api_get_item_amount,
-      game_api_add_item_amount,
-      game_api_remove_item_amount,
       game_api_is_dungeon_finished,
       game_api_set_dungeon_finished,
 

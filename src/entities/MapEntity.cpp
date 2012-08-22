@@ -930,13 +930,13 @@ Sprite& MapEntity::create_sprite(const std::string& animation_set_id,
 /**
  * @brief Marks a sprite of this entity to be removed as soon as possible.
  */
-void MapEntity::remove_sprite(Sprite* sprite) {
+void MapEntity::remove_sprite(Sprite& sprite) {
 
   bool found = false;
   std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end() && !found; it++) {
-    if (*it == sprite) {
-      old_sprites.push_back(sprite);
+    if (*it == &sprite) {
+      old_sprites.push_back(&sprite);
       found = true;
     }
   }

@@ -87,12 +87,13 @@ void LuaContext::register_entity_module() {
   static const luaL_Reg common_methods[] = {
       { "get_map", entity_api_get_map },
       { "get_name", entity_api_get_name },
+      { "exists", entity_api_exists },
+      { "remove", entity_api_remove },
+      { "is_enabled", entity_api_is_enabled },
+      { "set_enabled", entity_api_set_enabled },
       { "get_size", entity_api_get_size },
       { "get_origin", entity_api_get_origin },
       { "get_position", entity_api_get_position },
-      { "is_enabled", entity_api_is_enabled },
-      { "set_enabled", entity_api_set_enabled },
-      { "remove", entity_api_remove },
       { NULL, NULL }
   };
   static const luaL_Reg common_metamethods[] = {
@@ -134,10 +135,10 @@ void LuaContext::register_entity_module() {
 
   // Non-playing character.
   static const luaL_Reg npc_methods[] = {
-      { "start_movement", npc_api_start_movement },
-      { "stop_movement", npc_api_stop_movement },
-      { "get_sprite", npc_api_get_sprite },
-      { "set_position", npc_api_set_position },
+      { "start_movement", entity_api_start_movement },
+      { "stop_movement", entity_api_stop_movement },
+      { "get_sprite", entity_api_get_sprite },
+      { "set_position", entity_api_set_position },
       { NULL, NULL }
   };
   register_functions(entity_npc_module_name, common_methods);
@@ -157,7 +158,7 @@ void LuaContext::register_entity_module() {
   // Block.
   static const luaL_Reg block_methods[] = {
       { "block_reset", block_api_reset },
-      { "block_set_position", block_api_set_position },
+      { "block_set_position", entity_api_set_position },
       { NULL, NULL }
   };
   register_functions(entity_block_module_name, common_methods);
@@ -186,12 +187,12 @@ void LuaContext::register_entity_module() {
 
   // Pickable.
   static const luaL_Reg pickable_methods[] = {
-      { "get_sprite", pickable_api_get_sprite },
-      { "set_position", pickable_api_set_position },
-      { "get_movement", pickable_api_get_movement },
-      { "start_movement", pickable_api_start_movement },
-      { "stop_movement", pickable_api_stop_movement },
-      { "set_layer_independent_collisions", pickable_api_set_layer_independent_collisions },
+      { "get_sprite", entity_api_get_sprite },
+      { "set_position", entity_api_set_position },
+      { "get_movement", entity_api_get_movement },
+      { "start_movement", entity_api_start_movement },
+      { "stop_movement", entity_api_stop_movement },
+      { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "get_followed_entity", pickable_api_get_followed_entity },
       { "get_falling_height", pickable_api_get_falling_height },
       { "get_treasure", pickable_api_get_treasure },
@@ -230,29 +231,29 @@ void LuaContext::register_entity_module() {
       { "set_default_attack_consequences_sprite", enemy_api_set_default_attack_consequences_sprite },
       { "set_invincible", enemy_api_set_invincible },
       { "set_invincible_sprite", enemy_api_set_invincible_sprite },
-      { "set_layer_independent_collisions", enemy_api_set_layer_independent_collisions },
+      { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "set_treasure", enemy_api_set_treasure },
       { "set_no_treasure", enemy_api_set_no_treasure },
       { "set_random_treasure", enemy_api_set_random_treasure },
       { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
       { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
-      { "get_optimization_distance", enemy_api_get_optimization_distance },
-      { "set_optimization_distance", enemy_api_set_optimization_distance },
-      { "set_size", enemy_api_set_size },
-      { "set_origin", enemy_api_set_origin },
-      { "set_position", enemy_api_set_position },
-      { "get_distance_to_hero", enemy_api_get_distance_to_hero },
-      { "get_angle_to_hero", enemy_api_get_angle_to_hero },
-      { "test_obstacles", enemy_api_test_obstacles },
-      { "snap_to_grid", enemy_api_snap_to_grid },
-      { "get_movement", enemy_api_get_movement },
-      { "start_movement", enemy_api_start_movement },
-      { "stop_movement", enemy_api_stop_movement },
+      { "get_optimization_distance", entity_api_get_optimization_distance },
+      { "set_optimization_distance", entity_api_set_optimization_distance },
+      { "set_size", entity_api_set_size },
+      { "set_origin", entity_api_set_origin },
+      { "set_position", entity_api_set_position },
+      { "get_distance_to_hero", entity_api_get_distance_to_hero },
+      { "get_angle_to_hero", entity_api_get_angle_to_hero },
+      { "test_obstacles", entity_api_test_obstacles },
+      { "snap_to_grid", entity_api_snap_to_grid },
+      { "get_movement", entity_api_get_movement },
+      { "start_movement", entity_api_start_movement },
+      { "stop_movement", entity_api_stop_movement },
       { "restart", enemy_api_restart },
       { "hurt", enemy_api_hurt },
-      { "create_sprite", enemy_api_create_sprite },
-      { "remove_sprite", enemy_api_remove_sprite },
-      { "get_sprite", enemy_api_get_sprite },
+      { "get_sprite", entity_api_get_sprite },
+      { "create_sprite", entity_api_create_sprite },
+      { "remove_sprite", entity_api_remove_sprite },
       { "create_son", enemy_api_create_son },
       { "get_father", enemy_api_get_father },
       { "send_message", enemy_api_send_message },
@@ -328,50 +329,31 @@ int LuaContext::entity_api_get_name(lua_State* l) {
   return 1;
 }
 
-
 /**
- * @brief Implementation of \ref lua_api_entity_get_size.
+ * @brief Implementation of \ref lua_api_entity_exists.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::entity_api_get_size(lua_State* l) {
+int LuaContext::entity_api_exists(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
 
-  lua_pushinteger(l, entity.get_width());
-  lua_pushinteger(l, entity.get_height());
-  return 2;
+  lua_pushboolean(l, !entity.is_being_removed());
+  return 1;
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_get_origin.
+ * @brief Implementation of \ref lua_api_entity_remove.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::entity_api_get_origin(lua_State* l) {
+int LuaContext::entity_api_remove(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
 
-  const Rectangle& origin = entity.get_origin();
+  entity.remove_from_map();
 
-  lua_pushinteger(l, origin.get_x());
-  lua_pushinteger(l, origin.get_y());
-  return 2;
-}
-
-/**
- * @brief Implementation of \ref lua_api_entity_get_position
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::entity_api_get_position(lua_State* l) {
-
-  MapEntity& entity = check_entity(l, 1);
-
-  lua_pushinteger(l, entity.get_x());
-  lua_pushinteger(l, entity.get_y());
-  lua_pushinteger(l, entity.get_layer());
-  return 3;
+  return 0;
 }
 
 /**
@@ -406,30 +388,345 @@ int LuaContext::entity_api_set_enabled(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_remove.
+ * @brief Implementation of \ref lua_api_entity_get_size.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::entity_api_remove(lua_State* l) {
+int LuaContext::entity_api_get_size(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
 
-  entity.remove_from_map();
+  lua_pushinteger(l, entity.get_width());
+  lua_pushinteger(l, entity.get_height());
+  return 2;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_set_size.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_set_size(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  int width = luaL_checkinteger(l, 2);
+  int height = luaL_checkinteger(l, 3);
+
+  entity.set_size(width, height);
 
   return 0;
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_exists.
+ * @brief Implementation of \ref lua_api_entity_get_origin.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::entity_api_exists(lua_State* l) {
+int LuaContext::entity_api_get_origin(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
 
-  lua_pushboolean(l, !entity.is_being_removed());
+  const Rectangle& origin = entity.get_origin();
+
+  lua_pushinteger(l, origin.get_x());
+  lua_pushinteger(l, origin.get_y());
+  return 2;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_set_origin.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_set_origin(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
+
+  entity.set_origin(x, y);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_get_position
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_position(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  lua_pushinteger(l, entity.get_x());
+  lua_pushinteger(l, entity.get_y());
+  lua_pushinteger(l, entity.get_layer());
+  return 3;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_set_position.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_set_position(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
+  int layer = -1;
+  if (lua_gettop(l) >= 4) {
+    layer = luaL_checkinteger(l, 4);
+  }
+
+  entity.set_xy(x, y);
+
+  if (layer != -1) {
+    MapEntities& entities = entity.get_map().get_entities();
+    entities.set_entity_layer(entity, Layer(layer));
+  }
+  entity.check_collision_with_detectors(false);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_snap_to_grid.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_snap_to_grid(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  entity.set_aligned_to_grid();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_get_distance_to_hero.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_distance_to_hero(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  Hero& hero = entity.get_map().get_entities().get_hero();
+
+  lua_pushinteger(l, entity.get_distance(hero));
   return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_get_angle_to_hero.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_angle_to_hero(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  Hero& hero = entity.get_map().get_entities().get_hero();
+  double angle = Geometry::get_angle(entity.get_x(), entity.get_y(),
+      hero.get_x(), hero.get_y());
+
+  lua_pushnumber(l, angle);
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_get_sprite.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_sprite(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  if (entity.has_sprite()) {
+    push_sprite(l, entity.get_sprite());
+  }
+  else {
+    lua_pushnil(l);
+  }
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_create_sprite.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_create_sprite(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  const std::string& animation_set_id = luaL_checkstring(l, 2);
+
+  Sprite& sprite = entity.create_sprite(animation_set_id, true);
+
+  push_userdata(l, sprite);
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_remove_sprite.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_remove_sprite(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  if (lua_gettop(l) >= 2) {
+    Sprite& sprite = check_sprite(l, 2);
+    entity.remove_sprite(sprite);
+  }
+  else if (entity.has_sprite()) {
+    Sprite& sprite = entity.get_sprite();
+    entity.remove_sprite(sprite);
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_get_movement.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_movement(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  Movement* movement = entity.get_movement();
+  if (movement == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+    push_userdata(l, *movement);
+  }
+
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_start_movement.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_start_movement(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  Movement& movement = check_movement(l, 2);
+
+  movement.set_suspended(false);
+  entity.clear_movement();
+  entity.set_movement(&movement);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_stop_movement.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_stop_movement(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  entity.clear_movement();
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_has_layer_independent_collisions.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_has_layer_independent_collisions(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  bool independent = false;
+  if (entity.is_detector()) {
+    Detector& detector = static_cast<Detector&>(entity);
+    independent = detector.has_layer_independent_collisions();
+  }
+
+  lua_pushboolean(l, independent);
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_set_layer_independent_collisions.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_set_layer_independent_collisions(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  bool independent = true;
+  if (lua_gettop(l) >= 2) {
+    independent = lua_toboolean(l, 2);
+  }
+
+  if (entity.is_detector()) {
+    Detector& detector = static_cast<Detector&>(entity);
+    detector.set_layer_independent_collisions(independent);
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_test_obstacles.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_test_obstacles(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  int dx = luaL_checkinteger(l, 2);
+  int dy = luaL_checkinteger(l, 3);
+
+  Rectangle bounding_box = entity.get_bounding_box();
+  bounding_box.add_xy(dx, dy);
+
+  lua_pushboolean(l, entity.get_map().test_collision_with_obstacles(
+      entity.get_layer(), bounding_box, entity));
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_get_optimization_distance.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_get_optimization_distance(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  lua_pushinteger(l, entity.get_optimization_distance());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_set_optimization_distance.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_set_optimization_distance(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+  int distance = luaL_checkinteger(l, 2);
+
+  entity.set_optimization_distance(distance);
+
+  return 0;
 }
 
 /**
@@ -778,74 +1075,6 @@ void LuaContext::push_npc(lua_State* l, NPC& npc) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_npc_start_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::npc_api_start_movement(lua_State* l) {
-
-  NPC& npc = check_npc(l, 1);
-  Movement& movement = check_movement(l, 2);
-
-  movement.set_suspended(false);
-  npc.clear_movement();
-  npc.set_movement(&movement);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_npc_stop_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::npc_api_stop_movement(lua_State* l) {
-
-  NPC& npc = check_npc(l, 1);
-
-  npc.clear_movement();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_npc_set_position.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::npc_api_set_position(lua_State* l) {
-
-  NPC& npc = check_npc(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  int layer = -1;
-  if (lua_gettop(l) >= 4) {
-    layer = luaL_checkinteger(l, 4);
-  }
-
-  npc.set_xy(x, y);
-  if (layer != -1) {
-    MapEntities& entities = npc.get_map().get_entities();
-    entities.set_entity_layer(npc, Layer(layer));
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_npc_get_sprite.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::npc_api_get_sprite(lua_State* l) {
-
-  NPC& npc = check_npc(l, 1);
-
-  push_sprite(l, npc.get_sprite());
-  return 1;
-}
-
-/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * chest and returns it.
  * @param l A Lua context.
@@ -926,32 +1155,6 @@ int LuaContext::block_api_reset(lua_State* l) {
   Block& block = check_block(l, 1);
 
   block.reset();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_block_set_position.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::block_api_set_position(lua_State* l) {
-
-  Block& block = check_block(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  int layer = -1;
-  if (lua_gettop(l) >= 4) {
-    layer = luaL_checkinteger(l, 4);
-  }
-
-  block.set_xy(x, y);
-
-  if (layer != -1) {
-    MapEntities& entities = block.get_map().get_entities();
-    entities.set_entity_layer(block, Layer(layer));
-  }
-  block.check_collision_with_detectors(false);
 
   return 0;
 }
@@ -1076,112 +1279,6 @@ Pickable& LuaContext::check_pickable(lua_State* l, int index) {
  */
 void LuaContext::push_pickable(lua_State* l, Pickable& pickable) {
   push_userdata(l, pickable);
-}
-
-/**
- * @brief Implementation of \ref lua_api_pickable_get_sprite.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::pickable_api_get_sprite(lua_State* l) {
-
-  Pickable& pickable = check_pickable(l, 1);
-
-  push_sprite(l, pickable.get_sprite());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_pickable_set_position.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::pickable_api_set_position(lua_State* l) {
-
-  Pickable& pickable = check_pickable(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  int layer = -1;
-  if (lua_gettop(l) >= 4) {
-    layer = luaL_checkinteger(l, 4);
-  }
-
-  pickable.set_xy(x, y);
-  if (layer != -1) {
-    MapEntities& entities = pickable.get_map().get_entities();
-    entities.set_entity_layer(pickable, Layer(layer));
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_pickable_get_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::pickable_api_get_movement(lua_State* l) {
-
-  Pickable& pickable = check_pickable(l, 1);
-
-  Movement* movement = pickable.get_movement();
-  if (movement == NULL) {
-    lua_pushnil(l);
-  }
-  else {
-    push_userdata(l, *movement);
-  }
-
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_pickable_start_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::pickable_api_start_movement(lua_State* l) {
-
-  Pickable& pickable = check_pickable(l, 1);
-  Movement& movement = check_movement(l, 2);
-
-  movement.set_suspended(false);
-  pickable.clear_movement();
-  pickable.set_movement(&movement);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_pickable_stop_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::pickable_api_stop_movement(lua_State* l) {
-
-  Pickable& pickable = check_pickable(l, 1);
-
-  pickable.clear_movement();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_pickable_set_layer_independent_collisions.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::pickable_api_set_layer_independent_collisions(lua_State* l) {
-
-  Pickable& pickable = check_pickable(l, 1);
-  bool independent = true;
-  if (lua_gettop(l) >= 2) {
-    independent = lua_toboolean(l, 2);
-  }
-
-  pickable.set_layer_independent_collisions(independent);
-
-  return 0;
 }
 
 /**
@@ -1651,24 +1748,6 @@ int LuaContext::enemy_api_set_invincible_sprite(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_enemy_set_layer_independent_collisions.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_set_layer_independent_collisions(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  bool independent = true;
-  if (lua_gettop(l) >= 2) {
-    independent = lua_toboolean(l, 2);
-  }
-
-  enemy.set_layer_independent_collisions(independent);
-
-  return 0;
-}
-
-/**
  * @brief Implementation of \ref lua_api_enemy_set_treasure.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -1747,206 +1826,6 @@ int LuaContext::enemy_api_set_obstacle_behavior(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_enemy_get_optimization_distance.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_get_optimization_distance(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  lua_pushinteger(l, enemy.get_optimization_distance());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_set_optimization_distance.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_set_optimization_distance(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  int distance = luaL_checkinteger(l, 2);
-
-  enemy.set_optimization_distance(distance);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_set_size.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_set_size(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  int width = luaL_checkinteger(l, 2);
-  int height = luaL_checkinteger(l, 3);
-
-  enemy.set_size(width, height);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_set_origin.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_set_origin(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-
-  enemy.set_origin(x, y);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_set_position.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_set_position(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  int layer = -1;
-  if (lua_gettop(l) >= 4) {
-    layer = luaL_checkinteger(l, 4);
-  }
-
-  enemy.set_xy(x, y);
-  if (layer != -1) {
-    MapEntities& entities = enemy.get_map().get_entities();
-    entities.set_entity_layer(enemy, Layer(layer));
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_get_distance_to_hero.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_get_distance_to_hero(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  Hero& hero = enemy.get_map().get_entities().get_hero();
-
-  lua_pushinteger(l, enemy.get_distance(hero));
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_get_angle_to_hero.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_get_angle_to_hero(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  Hero& hero = enemy.get_map().get_entities().get_hero();
-  double angle = Geometry::get_angle(enemy.get_x(), enemy.get_y(),
-      hero.get_x(), hero.get_y());
-
-  lua_pushnumber(l, angle);
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_test_obstacles.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_test_obstacles(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  int dx = luaL_checkinteger(l, 2);
-  int dy = luaL_checkinteger(l, 3);
-
-  Rectangle bounding_box = enemy.get_bounding_box();
-  bounding_box.add_xy(dx, dy);
-
-  lua_pushboolean(l, enemy.get_map().test_collision_with_obstacles(
-      enemy.get_layer(), bounding_box, enemy));
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_snap_to_grid.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_snap_to_grid(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  enemy.set_aligned_to_grid();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_get_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_get_movement(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  Movement* movement = enemy.get_movement();
-  if (movement == NULL) {
-    lua_pushnil(l);
-  }
-  else {
-    push_userdata(l, *movement);
-  }
-
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_start_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_start_movement(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  Movement& movement = check_movement(l, 2);
-
-  movement.set_suspended(false);
-  enemy.clear_movement();
-  enemy.set_movement(&movement);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_stop_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_stop_movement(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  enemy.clear_movement();
-
-  return 0;
-}
-
-/**
  * @brief Implementation of \ref lua_api_enemy_restart.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -1977,57 +1856,6 @@ int LuaContext::enemy_api_hurt(lua_State* l) {
   }
 
   return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_create_sprite.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_create_sprite(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  const std::string& animation_set_id = luaL_checkstring(l, 2);
-
-  Sprite& sprite = enemy.create_sprite(animation_set_id, true);
-
-  push_userdata(l, sprite);
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_remove_sprite.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_remove_sprite(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  Sprite* sprite;
-  if (lua_gettop(l) >= 2) {
-    sprite = &check_sprite(l, 2);
-  }
-  else {
-    sprite = &enemy.get_sprite();
-  }
-
-  enemy.remove_sprite(sprite);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_get_sprite.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_get_sprite(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  push_sprite(l, enemy.get_sprite());
-  return 1;
 }
 
 /**

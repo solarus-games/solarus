@@ -39,8 +39,10 @@ void LuaContext::register_item_module() {
   static const luaL_Reg methods[] = {
       { "get_game", item_api_get_game },
       { "get_map", item_api_get_map },
+      { "has_variant", item_api_has_variant },
       { "get_variant", item_api_get_variant },
       { "set_variant", item_api_set_variant },
+      { "has_amoun", item_api_has_amount },
       { "get_amount", item_api_get_amount },
       { "set_amount", item_api_set_amount },
       { "add_amount", item_api_add_amount },
@@ -119,7 +121,24 @@ int LuaContext::item_api_get_map(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_has_variant.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::item_api_has_variant(lua_State* l) {
+
+  EquipmentItem& item = check_item(l, 1);
+  int variant = 1;
+  if (lua_gettop(l) >= 2) {
+    variant = luaL_checkinteger(l, 2);
+  }
+
+  lua_pushboolean(l, item.get_current_variant() >= variant);
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_item_get_variant.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -132,7 +151,7 @@ int LuaContext::item_api_get_variant(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_set_variant.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -147,7 +166,21 @@ int LuaContext::item_api_set_variant(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_has_amount.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::item_api_has_amount(lua_State* l) {
+
+  EquipmentItem& item = check_item(l, 1);
+  int amount = luaL_checkinteger(l, 2);
+
+  lua_pushboolean(l, item.get_current_amount() >= amount);
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_item_get_amount.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -160,7 +193,7 @@ int LuaContext::item_api_get_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_set_amount.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -174,7 +207,7 @@ int LuaContext::item_api_set_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_add_amount.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -189,7 +222,7 @@ int LuaContext::item_api_add_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_remove_amount.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -204,7 +237,7 @@ int LuaContext::item_api_remove_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_get_sprite.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -221,7 +254,7 @@ int LuaContext::item_api_get_sprite(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_get_movement.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -240,7 +273,7 @@ int LuaContext::item_api_get_movement(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_start_movement.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -260,7 +293,7 @@ int LuaContext::item_api_start_movement(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_is_following_entity.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -278,7 +311,7 @@ int LuaContext::item_api_is_following_entity(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_get_position.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -298,7 +331,7 @@ int LuaContext::item_api_get_position(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_set_position.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -325,7 +358,7 @@ int LuaContext::item_api_set_position(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_set_layer_independent_collisions.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -343,7 +376,7 @@ int LuaContext::item_api_set_layer_independent_collisions(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_.
+ * @brief Implementation of \ref lua_api_item_set_finished.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */

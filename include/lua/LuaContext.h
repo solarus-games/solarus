@@ -453,8 +453,10 @@ class LuaContext {
       // Equipment item API.
       item_api_get_game,
       item_api_get_map,
+      item_api_has_variant,
       item_api_get_variant,
       item_api_set_variant,
+      item_api_has_amount,
       item_api_get_amount,
       item_api_set_amount,
       item_api_add_amount,

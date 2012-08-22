@@ -47,13 +47,6 @@ void LuaContext::register_item_module() {
       { "set_amount", item_api_set_amount },
       { "add_amount", item_api_add_amount },
       { "remove_amount", item_api_remove_amount },
-      { "get_sprite", item_api_get_sprite },
-      { "get_movement", item_api_get_movement },
-      { "is_following_entity", item_api_is_following_entity },
-      { "start_movement", item_api_start_movement },
-      { "get_position", item_api_get_position },
-      { "set_position", item_api_set_position },
-      { "set_layer_independent_collisions", item_api_set_layer_independent_collisions },
       { "set_finished", item_api_set_finished },
       { NULL, NULL }
   };
@@ -237,145 +230,6 @@ int LuaContext::item_api_remove_amount(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_item_get_sprite.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::item_api_get_sprite(lua_State* l) {
-
-  EquipmentItem& item = check_item(l, 1);
-
-  Pickable* pickable = item.get_pickable();
-  Debug::check_assertion(pickable != NULL,
-                "Cannot call item:get_sprite(): there is no current pickable item");
-
-  push_sprite(l, pickable->get_sprite());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_item_get_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::item_api_get_movement(lua_State* l) {
-
-  EquipmentItem& item = check_item(l, 1);
-
-  Pickable* pickable = item.get_pickable();
-  Debug::check_assertion(pickable != NULL,
-                "Cannot call item:get_movement(): there is no current pickable item");
-  Movement* movement = pickable->get_movement();
-
-  push_movement(l, *movement);
-
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_item_start_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::item_api_start_movement(lua_State* l) {
-
-  EquipmentItem& item = check_item(l, 1);
-  Movement& movement = check_movement(l, 2);
-
-  movement.set_suspended(false);
-  Pickable* pickable = item.get_pickable();
-  Debug::check_assertion(pickable != NULL,
-                "Cannot call item:start_movement(): there is no current pickable item");
-  pickable->clear_movement();
-  pickable->set_movement(&movement);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_item_is_following_entity.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::item_api_is_following_entity(lua_State* l) {
-
-  EquipmentItem& item = check_item(l, 1);
-
-  Pickable* pickable = item.get_pickable();
-  Debug::check_assertion(pickable != NULL,
-                "Cannot call item:is_following_entity(): there is no current pickable item");
-  bool result = pickable->get_entity_followed() != NULL;
-
-  lua_pushboolean(l, result);
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_item_get_position.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::item_api_get_position(lua_State* l) {
-
-  EquipmentItem& item = check_item(l, 1);
-
-  Pickable* pickable = item.get_pickable();
-  Debug::check_assertion(pickable != NULL,
-      "Cannot call item:get_position(): there is no current pickable item");
-  const Rectangle& xy = pickable->get_xy();
-
-  lua_pushinteger(l, xy.get_x());
-  lua_pushinteger(l, xy.get_y());
-  lua_pushinteger(l, pickable->get_layer());
-  return 3;
-}
-
-/**
- * @brief Implementation of \ref lua_api_item_set_position.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::item_api_set_position(lua_State* l) {
-
-  EquipmentItem& item = check_item(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  int layer = -1;
-  if (lua_gettop(l) >= 4) {
-    layer = luaL_checkinteger(l, 4);
-  }
-
-  Pickable* pickable = item.get_pickable();
-  Debug::check_assertion(pickable != NULL,
-                "Cannot call item:set_position(): there is no current pickable item");
-  pickable->set_xy(x, y);
-  if (layer != -1) {
-    MapEntities& entities = pickable->get_map().get_entities();
-    entities.set_entity_layer(*pickable, Layer(layer));
-  }
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_item_set_layer_independent_collisions.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::item_api_set_layer_independent_collisions(lua_State* l) {
-
-  EquipmentItem& item = check_item(l, 1);
-  bool independent = lua_toboolean(l, 2) != 0;
-
-  Pickable* pickable = item.get_pickable();
-  Debug::check_assertion(pickable != NULL,
-                "Cannot call item:set_layer_independent_collisions(): there is no current pickable item");
-  pickable->set_layer_independent_collisions(independent);
-
-  return 0;
-}
-
-/**
  * @brief Implementation of \ref lua_api_item_set_finished.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -434,26 +288,29 @@ void LuaContext::item_on_map_changed(EquipmentItem& item, Map& map) {
 }
 
 /**
- * @brief Calls the on_appear() method of a Lua equipment item.
+ * @brief Calls the on_pickable_created() method of a Lua equipment item.
  * @param item An equipment item.
  * @param pickable The instance of pickable item that has just appeared.
  */
-void LuaContext::item_on_appear(EquipmentItem& item, Pickable& pickable) {
+void LuaContext::item_on_pickable_created(EquipmentItem& item,
+    Pickable& pickable) {
 
   push_item(l, item);
-  on_appear(pickable);
+  on_pickable_created(pickable);
   lua_pop(l, 1);
 }
 
 /**
- * @brief Calls the on_movement_changed() method of a Lua equipment item.
+ * @brief Calls the on_pickable_movement_changed() method of a Lua equipment item.
  * @param item An equipment item.
  * @param pickable The instance of pickable item whose movement has changed.
+ * @param movement The movement.
  */
-void LuaContext::item_on_movement_changed(EquipmentItem& item, Pickable& pickable) {
+void LuaContext::item_on_pickable_movement_changed(EquipmentItem& item,
+    Pickable& pickable, Movement& movement) {
 
   push_item(l, item);
-  on_movement_changed(pickable);
+  on_pickable_movement_changed(pickable, movement);
   lua_pop(l, 1);
 }
 
@@ -508,12 +365,11 @@ void LuaContext::item_on_amount_changed(EquipmentItem& item, int amount) {
 /**
  * @brief Calls the on_use() method of a Lua equipment item.
  * @param item An equipment item.
- * @param amount The amount of this item.
  */
-void LuaContext::item_on_use(EquipmentItem& item, InventoryItem& inventory_item) {
+void LuaContext::item_on_use(EquipmentItem& item) {
 
   push_item(l, item);
-  on_use(inventory_item);
+  on_use();
   lua_pop(l, 1);
 }
 

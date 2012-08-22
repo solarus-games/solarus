@@ -1606,29 +1606,28 @@ void LuaContext::on_map_changed(Map& map) {
 }
 
 /**
- * @brief Calls the on_appear() method of the object on top of the stack.
- * @param pickable A pickable item.
+ * @brief Calls the on_pickable_created() method of the object on top of the stack.
+ * @param pickable A pickable treasure.
  */
-void LuaContext::on_appear(Pickable& pickable) {
+void LuaContext::on_pickable_created(Pickable& pickable) {
 
-  if (find_method("on_appear")) {
-    const Treasure& treasure = pickable.get_treasure();
-    lua_pushinteger(l, treasure.get_variant());
-    lua_pushinteger(l, treasure.get_savegame_variable());
-    lua_pushinteger(l, pickable.get_falling_height());
-    call_function(4, 0, "on_appear");
+  if (find_method("on_pickable_created")) {
+    push_entity(l, pickable);
+    call_function(2, 0, "on_pickable_created");
   }
 }
 
 /**
- * @brief Calls the on_movement_changed() method of the object on top of the stack.
- * @param pickable A pickable item.
+ * @brief Calls the on_pickable_movement_changed() method of the object on top of the stack.
+ * @param pickable A pickable treasure.
+ * @param movement The movement of this pickable treasure.
  */
-void LuaContext::on_movement_changed(Pickable& pickable) {
+void LuaContext::on_pickable_movement_changed(Pickable& pickable, Movement& movement) {
 
-  if (find_method("on_movement_changed")) {
+  if (find_method("on_pickable_movement_changed")) {
     push_entity(l, pickable);
-    call_function(2, 0, "on_movement_changed");
+    push_movement(l, movement);
+    call_function(3, 0, "on_pickable_movement_changed");
   }
 }
 
@@ -1684,9 +1683,8 @@ void LuaContext::on_obtained(const Treasure& treasure) {
 
 /**
  * @brief Calls the on_use() method of the object on top of the stack.
- * @param enemy An enemy.
  */
-void LuaContext::on_use(InventoryItem& inventory_item) {
+void LuaContext::on_use() {
 
   if (find_method("on_use")) {
     call_function(1, 0, "on_use");

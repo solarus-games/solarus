@@ -1,6 +1,6 @@
 local item = ...
 
-function item:on_appear(variant, savegame_variable, falling_height)
+function item:on_pickable_created(variant, savegame_variable, falling_height)
 
   if falling_height ~= 0 then
     local trajectory = {

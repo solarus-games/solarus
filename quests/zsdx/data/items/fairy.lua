@@ -3,7 +3,7 @@ local item = ...
 -- This script defines the behavior of pickable fairies present on the map.
 
 -- A fairy appears on the map: create its movement.
-function item:on_appear(pickable)
+function item:on_pickable_created(pickable)
 
    -- Create a movement that goes into random directions,
    -- with a speed of 28 pixels per second.

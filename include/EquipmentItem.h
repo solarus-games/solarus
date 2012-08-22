@@ -42,10 +42,6 @@ class EquipmentItem: public ExportableToLua {
   private:
 
     Equipment& equipment;                /**< the equipment object that manages all items */
-    Pickable* pickable;              /**< the pickable item that just appeared in on_appear(), or NULL */
-    InventoryItem* inventory_item;       /**< the inventory item that is being used when on_used() is called,
-                                          * or NULL if no inventory item is being used */
-
     std::string name;                    /**< name that identifies this item */
     int savegame_variable;               /**< savegame variable that stores the possession state */
     int nb_variants;                     /**< number of variants of this item */
@@ -78,8 +74,6 @@ class EquipmentItem: public ExportableToLua {
     Equipment& get_equipment();
     Game* get_game();
     LuaContext& get_lua_context();
-    Pickable* get_pickable();
-    InventoryItem* get_inventory_item();
     void update();
     void set_suspended(bool suspended);
     void notify_game_started(Game& game);

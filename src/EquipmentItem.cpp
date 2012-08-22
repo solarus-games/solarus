@@ -19,6 +19,7 @@
 #include "Game.h"
 #include "lowlevel/IniFile.h"
 #include "lua/LuaContext.h"
+#include "entities/Pickable.h"
 #include <map>
 #include <sstream>
 
@@ -31,9 +32,7 @@
  * @param ini the ini file to parse
  */
 EquipmentItem::EquipmentItem(Equipment& equipment, IniFile& ini):
-  equipment(equipment),
-  pickable(NULL),
-  inventory_item(NULL) {
+  equipment(equipment) {
 
   name = ini.get_group();
   savegame_variable = ini.get_integer_value("savegame_variable", -1);
@@ -176,10 +175,7 @@ void EquipmentItem::notify_amount_changed(int amount) {
  */
 void EquipmentItem::notify_inventory_item_used(InventoryItem& inventory_item) {
 
-  InventoryItem* old_inventory_item = this->inventory_item;
-  this->inventory_item = &inventory_item;
-  get_lua_context().item_on_use(*this, inventory_item);
-  this->inventory_item = old_inventory_item;
+  get_lua_context().item_on_use(*this);
 }
 
 /**
@@ -194,26 +190,20 @@ void EquipmentItem::notify_ability_used(const std::string& ability_name) {
 /**
  * @brief Notifies the script that a pickable instance of this item has
  * appeared on the map.
- * @param pickable The pickable item.
+ * @param pickable The pickable treasure.
  */
 void EquipmentItem::notify_pickable_appeared(Pickable& pickable) {
 
-  Pickable* old_pickable = this->pickable;
-  this->pickable = &pickable;
-  get_lua_context().item_on_appear(*this, pickable);
-  this->pickable = old_pickable;
+  get_lua_context().item_on_pickable_created(*this, pickable);
 }
 
 /**
  * @brief Notifies the script that a pickable instance of this item has moved.
- * @param pickable The pickable item.
+ * @param pickable The pickable treasure.
  */
 void EquipmentItem::notify_movement_changed(Pickable& pickable) {
 
-  Pickable* old_pickable = this->pickable;
-  this->pickable = &pickable;
-  get_lua_context().item_on_movement_changed(*this, pickable);
-  this->pickable = old_pickable;
+  get_lua_context().item_on_pickable_movement_changed(*this, pickable, *pickable.get_movement());
 }
 
 /**
@@ -252,22 +242,6 @@ int EquipmentItem::get_current_amount() {
  */
 void EquipmentItem::set_current_amount(int amount) {
   equipment.set_item_amount(get_name(), amount);
-}
-
-/**
- * @brief Returns the pickable item related to the current call to item:on_appear().
- * @return The current pickable item or NULL.
- */
-Pickable* EquipmentItem::get_pickable() {
-  return pickable;
-}
-
-/**
- * @brief Returns the inventory item related to the current call item:on_use().
- * @return The current inventory item or NULL.
- */
-InventoryItem* EquipmentItem::get_inventory_item() {
-  return inventory_item;
 }
 
 /**

@@ -69,6 +69,7 @@ class LuaContext {
     static const std::string entity_block_module_name;           /**< sol.entity.block */
     static const std::string entity_switch_module_name;          /**< sol.entity.switch */
     static const std::string entity_door_module_name;            /**< sol.entity.door */
+    static const std::string entity_pickable_module_name;        /**< sol.entity.pickable */
     static const std::string entity_enemy_module_name;           /**< sol.entity.enemy */
 
     LuaContext(MainLoop& main_loop);
@@ -137,13 +138,13 @@ class LuaContext {
     void item_on_update(EquipmentItem& item);
     void item_on_suspended(EquipmentItem& item, bool suspended);
     void item_on_map_changed(EquipmentItem& item, Map& map);
-    void item_on_appear(EquipmentItem& item, Pickable& pickable);
-    void item_on_movement_changed(EquipmentItem& item, Pickable& pickable);
+    void item_on_pickable_created(EquipmentItem& item, Pickable& pickable);
+    void item_on_pickable_movement_changed(EquipmentItem& item, Pickable& pickable, Movement& movement);
     void item_on_obtaining(EquipmentItem& item, const Treasure& treasure);
     void item_on_obtained(EquipmentItem& item, const Treasure& treasure);
     void item_on_variant_changed(EquipmentItem& item, int variant);
     void item_on_amount_changed(EquipmentItem& item, int amount);
-    void item_on_use(EquipmentItem& item, InventoryItem& inventory_item);
+    void item_on_use(EquipmentItem& item);
     void item_on_ability_used(EquipmentItem& item, const std::string& ability_name);
     void item_on_npc_interaction(EquipmentItem& item, NPC& npc);
     bool item_on_npc_interaction_item(EquipmentItem& item, NPC& npc,
@@ -288,6 +289,7 @@ class LuaContext {
     static void push_block(lua_State* l, Block& block);
     static void push_switch(lua_State* l, Switch& sw);
     static void push_door(lua_State* l, Door& door);
+    static void push_pickable(lua_State* l, Pickable& pickable);
     static void push_enemy(lua_State* l, Enemy& enemy);
 
     // Getting objects from Lua.
@@ -321,6 +323,7 @@ class LuaContext {
     static Block& check_block(lua_State* l, int index);
     static Switch& check_switch(lua_State* l, int index);
     static Door& check_door(lua_State* l, int index);
+    static Pickable& check_pickable(lua_State* l, int index);
     static Enemy& check_enemy(lua_State* l, int index);
 
     // Events.
@@ -364,15 +367,15 @@ class LuaContext {
     void on_closed();
     void on_moved();
     void on_map_changed(Map& map);
-    void on_appear(Pickable& pickable);
-    void on_movement_changed(Pickable& pickable);
+    void on_pickable_created(Pickable& pickable);
+    void on_pickable_movement_changed(Pickable& pickable, Movement& movement);
     void on_variant_changed(int variant);
     void on_amount_changed(int amount);
     void on_obtaining(const Treasure& treasure);
     void on_obtained(const Treasure& treasure);
-    void on_use(InventoryItem& inventory_item);
+    void on_use();  // TODO rename to on_using
     void on_ability_used(const std::string& ability_name);
-    void on_appear();
+    void on_appear();  // TODO rename to on_created
     void on_enabled();
     void on_disabled();
     void on_restart();
@@ -571,13 +574,6 @@ class LuaContext {
       item_api_set_amount,
       item_api_add_amount,
       item_api_remove_amount,
-      item_api_get_sprite,
-      item_api_get_movement,
-      item_api_start_movement,
-      item_api_is_following_entity,
-      item_api_get_position,
-      item_api_set_position,
-      item_api_set_layer_independent_collisions,
       item_api_set_finished,
 
       // Game API.
@@ -696,9 +692,15 @@ class LuaContext {
       switch_api_set_activated,
       switch_api_set_locked,
       door_api_is_open,
-      // TODO add a pickable API with set_position, set_layer_independent_collisions,
-      // get_movement, start_movement, stop_movement, is_following_entity
-      // and remove the corresponding functions from the item API.
+      pickable_api_get_sprite,  // TODO merge functions common to several types
+      pickable_api_set_position,
+      pickable_api_get_movement,
+      pickable_api_start_movement,
+      pickable_api_stop_movement,
+      pickable_api_set_layer_independent_collisions,
+      pickable_api_get_followed_entity,
+      pickable_api_get_falling_height,
+      pickable_api_get_treasure,
       enemy_api_get_life,
       enemy_api_set_life,
       enemy_api_add_life,

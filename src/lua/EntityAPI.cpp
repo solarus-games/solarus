@@ -207,6 +207,7 @@ void LuaContext::register_entity_module() {
 
   // Enemy.
   static const luaL_Reg enemy_methods[] = {
+      { "get_breed", enemy_api_get_breed },
       { "get_life", enemy_api_get_life },
       { "set_life", enemy_api_set_life },
       { "add_life", enemy_api_add_life },
@@ -1360,6 +1361,19 @@ Enemy& LuaContext::check_enemy(lua_State* l, int index) {
  */
 void LuaContext::push_enemy(lua_State* l, Enemy& enemy) {
   push_userdata(l, enemy);
+}
+
+/**
+ * @brief Implementation of \ref lua_api_enemy_get_breed.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::enemy_api_get_breed(lua_State* l) {
+
+  Enemy& enemy = check_enemy(l, 1);
+
+  lua_pushstring(l, enemy.get_breed().c_str());
+  return 1;
 }
 
 /**

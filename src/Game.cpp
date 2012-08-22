@@ -77,6 +77,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   controls = new GameControls(*this);
   dialog_box = new DialogBox(*this);
   hero = new Hero(get_equipment());
+  hero->increment_refcount();
   keys_effect = new KeysEffect();
   hud = new HUD(*this);
 
@@ -111,7 +112,10 @@ Game::~Game() {
   delete gameover_sequence;
   delete keys_effect;
   delete hud;
-  delete hero;
+  hero->decrement_refcount();
+  if (hero->get_refcount() == 0) {
+    delete hero;
+  }
   delete controls;
 
   if (previous_map_surface != NULL) {

@@ -1207,7 +1207,7 @@ void MapEntity::set_enabled(bool enabled) {
 
 /**
  * @brief Notifies this entity that it was just enabled or disabled.
- * @param enabled true if the entity is now enabled
+ * @param enabled \c true if the entity is now enabled.
  */
 void MapEntity::notify_enabled(bool enabled) {
 }

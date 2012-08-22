@@ -102,15 +102,6 @@ bool Chest::is_drawn_in_y_order() {
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
- * @param other another entity
- * @return true if this entity is an obstacle for the other one
- */
-bool Chest::is_obstacle_for(MapEntity &other) {
-  return is_visible();
-}
-
-/**
  * @brief Creates the chest sprite depending on its size and the savegame.
  */
 void Chest::initialize_sprite() {
@@ -135,20 +126,14 @@ void Chest::initialize_sprite() {
 }
 
 /**
- * @brief Sets whether this entity is visible.
- * @param visible true to make it visible
- * FIXME replace by notify_enabled (set_visible is no longer used).
+ * @brief Notifies this entity that it was just enabled or disabled.
+ * @param enabled \c true if the entity is now enabled.
  */
-void Chest::set_visible(bool visible) {
+void Chest::notify_enabled(bool enabled) {
 
-  if (!is_open()) { // an open chest is always visible
-
-    MapEntity::set_visible(visible);
-
-    // make sure the chest does not appear on the hero
-    if (visible && overlaps(get_hero())) {
-      get_hero().avoid_collision(*this, 3);
-    }
+  // Make sure the chest does not appear on the hero.
+  if (enabled && overlaps(get_hero())) {
+    get_hero().avoid_collision(*this, 3);
   }
 }
 
@@ -190,21 +175,14 @@ void Chest::set_open(bool open) {
 
 /**
  * @brief This function is called by the engine when an entity overlaps the chest.
- *
- * This is a redefinition of Detector::notify_collision().
- * If the entity is the hero, and if he is facing north, we allow him to
- * open (or try to open) the chest.
- *
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
 void Chest::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (is_suspended() || !is_visible()) {
-    return;
+  if (!is_suspended()) {
+    entity_overlapping.notify_collision_with_chest(*this);
   }
-
-  entity_overlapping.notify_collision_with_chest(*this);
 }
 
 /**
@@ -263,7 +241,7 @@ void Chest::update() {
  */
 void Chest::action_key_pressed() {
 
-  if (is_visible() && get_hero().is_free()) {
+  if (is_enabled() && get_hero().is_free()) {
 
     if (!big_chest || get_equipment().has_ability("open_dungeon_big_locks")) {
       Sound::play("chest_open");

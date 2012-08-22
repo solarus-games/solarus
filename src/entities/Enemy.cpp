@@ -973,7 +973,7 @@ void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
         && get_equipment().has_ability("shield", minimum_shield_needed)) {
 
       // compute the direction corresponding to the angle between the enemy and the hero
-      double angle = hero.get_vector_angle(*this);
+      double angle = hero.get_angle(*this);
       int protected_direction4 = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
       protected_direction4 = (protected_direction4 + 4) % 4;
 
@@ -1190,7 +1190,7 @@ void Enemy::hurt(MapEntity &source) {
 
   // push the enemy back
   if (pushed_back_when_hurt) {
-    double angle = source.get_vector_angle(*this);
+    double angle = source.get_angle(*this);
     StraightMovement* movement = new StraightMovement(false, true);
     movement->set_max_distance(24);
     movement->set_speed(120);

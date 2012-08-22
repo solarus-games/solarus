@@ -1575,11 +1575,22 @@ bool MapEntity::is_center_in(const Rectangle &rectangle) {
 
 /**
  * @brief Returns the angle of the vector between the origin of this entity
- * and the origin of another entity.
- * @param other the other entity
- * @return the angle of the vector in radians
+ * and a point.
+ * @param x X coordinate of the point.
+ * @param y Y coordinate of the point.
+ * @return The angle of the vector in radians.
  */
-double MapEntity::get_vector_angle(MapEntity &other) {
+double MapEntity::get_angle(int x, int y) {
+  return Geometry::get_angle(get_x(), get_y(), x, y);
+}
+
+/**
+ * @brief Returns the angle of the vector between the origin of this entity
+ * and the origin of another entity.
+ * @param other The other entity.
+ * @return The angle of the vector in radians.
+ */
+double MapEntity::get_angle(MapEntity& other) {
   return Geometry::get_angle(get_x(), get_y(), other.get_x(), other.get_y());
 }
 
@@ -1594,21 +1605,12 @@ int MapEntity::get_distance(int x, int y) {
 }
 
 /**
- * @brief Returns the distance between the origin of this entity and a point.
- * @param xy x and y coordinates of a point
- * @return the distance between this entity and the point in pixels
- */
-int MapEntity::get_distance(const Rectangle& xy) {
-  return (int) Geometry::get_distance(get_x(), get_y(), xy.get_x(), xy.get_y());
-}
-
-/**
  * @brief Returns the distance between the origin of this entity
  * and the origin of another entity.
  * @param other the other entity
  * @return the distance between the two entities in pixels
  */
-int MapEntity::get_distance(MapEntity &other) {
+int MapEntity::get_distance(MapEntity& other) {
   return (int) Geometry::get_distance(get_x(), get_y(), other.get_x(), other.get_y());
 }
 

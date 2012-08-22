@@ -103,10 +103,6 @@ Returns the distance in pixels between two points.
 - \c y2 (number): Y coordinate of the second point.
 - Return value (number): the distance in pixels
 
-\todo Replace \c sol.main.get_distance() by
-\c entity:get_distance(other_entity), \c entity:get_distance(x, y) and
-\c sol.util.get_distance(x1, y1, x2, y2)
-
 <hr>
 
 \subsection lua_api_main_get_angle sol.main.get_angle(x1, y1, x2, y2)
@@ -118,9 +114,6 @@ Returns the angle in radians between the x axis and the specified vector.
 - \c y2 (number): Y coordinate of the second point.
 - Return value (number): the angle in radians between the x axis and this
   vector.
-
-\todo Replace \c sol.main.get_angle() by \c entity:get_angle(other_entity),
-\c entity:get_angle(x, y) and \c sol.util.get_angle(x1, x2, y1, y2)
 
 <hr>
 

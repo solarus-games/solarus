@@ -410,8 +410,8 @@ class LuaContext {
       main_api_exit,
       main_api_start_screen,
       main_api_is_debug_enabled,
-      main_api_get_distance,  // TODO remove
-      main_api_get_angle,     // TODO remove
+      main_api_get_distance,  // TODO remove?
+      main_api_get_angle,     // TODO remove?
 
       // Audio API.
       audio_api_play_sound,
@@ -665,9 +665,9 @@ class LuaContext {
       entity_api_set_origin,
       entity_api_get_position,
       entity_api_set_position,
+      entity_api_get_distance,
+      entity_api_get_angle,
       entity_api_snap_to_grid,
-      entity_api_get_distance_to_hero,
-      entity_api_get_angle_to_hero,  // TODO distance and angle from any entity
       entity_api_get_sprite,
       entity_api_create_sprite,
       entity_api_remove_sprite,
@@ -704,7 +704,6 @@ class LuaContext {
       switch_api_set_activated,
       switch_api_set_locked,
       door_api_is_open,
-      // TODO merge functions common to several types
       pickable_api_get_followed_entity,
       pickable_api_get_falling_height,
       pickable_api_get_treasure,

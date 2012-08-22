@@ -245,10 +245,10 @@ class MapEntity: public ExportableToLua {
     bool is_facing_point_in(const Rectangle &rectangle, int direction);
     bool is_center_in(const Rectangle &rectangle);
 
-    double get_vector_angle(MapEntity &other);
+    double get_angle(int x, int y);
+    double get_angle(MapEntity &other);
     int get_distance(int x, int y);
-    int get_distance(const Rectangle& xy);
-    int get_distance(MapEntity &other);
+    int get_distance(MapEntity& other);
     int get_distance_to_camera();
 
     // collisions

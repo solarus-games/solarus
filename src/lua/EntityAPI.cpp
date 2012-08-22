@@ -94,6 +94,8 @@ void LuaContext::register_entity_module() {
       { "get_size", entity_api_get_size },
       { "get_origin", entity_api_get_origin },
       { "get_position", entity_api_get_position },
+      { "get_distance", entity_api_get_distance },
+      { "get_angle", entity_api_get_angle},
       { NULL, NULL }
   };
   static const luaL_Reg common_metamethods[] = {
@@ -242,8 +244,6 @@ void LuaContext::register_entity_module() {
       { "set_size", entity_api_set_size },
       { "set_origin", entity_api_set_origin },
       { "set_position", entity_api_set_position },
-      { "get_distance_to_hero", entity_api_get_distance_to_hero },
-      { "get_angle_to_hero", entity_api_get_angle_to_hero },
       { "test_obstacles", entity_api_test_obstacles },
       { "snap_to_grid", entity_api_snap_to_grid },
       { "get_movement", entity_api_get_movement },
@@ -505,32 +505,46 @@ int LuaContext::entity_api_snap_to_grid(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_get_distance_to_hero.
+ * @brief Implementation of \ref lua_api_entity_get_distance.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::entity_api_get_distance_to_hero(lua_State* l) {
+int LuaContext::entity_api_get_distance(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
+  int distance;
+  if (lua_gettop(l) >= 3) {
+    int x = luaL_checknumber(l, 2);
+    int y = luaL_checknumber(l, 3);
+    distance = entity.get_distance(x, y);
+  }
+  else {
+    MapEntity& other_entity = check_entity(l, 2);
+    distance = entity.get_distance(other_entity);
+  }
 
-  Hero& hero = entity.get_map().get_entities().get_hero();
-
-  lua_pushinteger(l, entity.get_distance(hero));
+  lua_pushinteger(l, distance);
   return 1;
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_get_angle_to_hero.
+ * @brief Implementation of \ref lua_api_entity_get_angle.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::entity_api_get_angle_to_hero(lua_State* l) {
+int LuaContext::entity_api_get_angle(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
-
-  Hero& hero = entity.get_map().get_entities().get_hero();
-  double angle = Geometry::get_angle(entity.get_x(), entity.get_y(),
-      hero.get_x(), hero.get_y());
+  double angle;
+  if (lua_gettop(l) >= 3) {
+    int x = luaL_checknumber(l, 2);
+    int y = luaL_checknumber(l, 3);
+    angle = entity.get_angle(x, y);
+  }
+  else {
+    MapEntity& other_entity = check_entity(l, 2);
+    angle = entity.get_angle(other_entity);
+  }
 
   lua_pushnumber(l, angle);
   return 1;

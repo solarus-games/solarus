@@ -61,10 +61,9 @@ void LuaContext::register_map_module() {
       { "get_tileset", map_api_get_tileset },
       { "set_tileset", map_api_set_tileset },
       { "get_hero", map_api_get_hero },
-      { "crystal_get_state", map_api_crystal_get_state },
-      { "crystal_set_state", map_api_crystal_set_state },
-      { "crystal_change_state", map_api_crystal_change_state },
-      { "arrow_remove", map_api_arrow_remove },
+      { "get_crystal_state", map_api_get_crystal_state },
+      { "set_crystal_state", map_api_set_crystal_state },
+      { "change_crystal_state", map_api_change_crystal_state },
       { "open_doors", map_api_open_doors },
       { "close_doors", map_api_close_doors },
       { "set_doors_open", map_api_set_doors_open },
@@ -388,11 +387,11 @@ int LuaContext::map_api_get_hero(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_crystal_get_state.
+ * @brief Implementation of \ref lua_api_map_get_crystal_state.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_crystal_get_state(lua_State* l) {
+int LuaContext::map_api_get_crystal_state(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
@@ -401,11 +400,11 @@ int LuaContext::map_api_crystal_get_state(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_crystal_set_state.
+ * @brief Implementation of \ref lua_api_map_set_crystal_state.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_crystal_set_state(lua_State* l) {
+int LuaContext::map_api_set_crystal_state(lua_State* l) {
 
   Map& map = check_map(l, 1);
   bool state = lua_toboolean(l, 2);
@@ -419,30 +418,15 @@ int LuaContext::map_api_crystal_set_state(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_crystal_change_state.
+ * @brief Implementation of \ref lua_api_map_change_crystal_state.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_crystal_change_state(lua_State* l) {
+int LuaContext::map_api_change_crystal_state(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
   map.get_game().change_crystal_state();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_arrow_remove.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_arrow_remove(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  MapEntities& entities = map.get_entities();
-  entities.remove_arrows();
 
   return 0;
 }

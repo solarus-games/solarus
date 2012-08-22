@@ -634,7 +634,7 @@ class LuaContext {
 
       // Map API.
       map_api_get_game,
-      map_api_start_dialog,  // TODO add a callback parameter
+      map_api_start_dialog,
       map_api_set_dialog_variable,
       map_api_set_dialog_style,
       map_api_set_pause_enabled,  // TODO remove (do this in Lua only)
@@ -645,14 +645,13 @@ class LuaContext {
       map_api_get_tileset,
       map_api_set_tileset,
       map_api_get_hero,
-      map_api_crystal_get_state,  // TODO rename (no prefix)
-      map_api_crystal_set_state,
-      map_api_crystal_change_state,
-      map_api_arrow_remove,  // TODO remove (nothing to do here, used only once)
+      map_api_get_crystal_state,
+      map_api_set_crystal_state,
+      map_api_change_crystal_state,
       map_api_open_doors,
       map_api_close_doors,
       map_api_set_doors_open,
-      map_api_create_pickable,  // TODO make creation function uniform, all with a table as parameter
+      map_api_create_pickable,  // TODO make creation functions uniform, all with a table as parameter
       map_api_create_destructible,
       map_api_create_block,
       map_api_create_bomb,

@@ -52,7 +52,7 @@ function enemy:on_restart()
   end
 end
 
-function enemy:on_movement_finished(m)
+function enemy:on_movement_finished()
 
   -- the tail was retracted and has just recovered its normal position
   retracted = false
@@ -76,6 +76,6 @@ function enemy:on_hurt(attack, life_lost)
   self:set_position(x, y - 48)
   self:set_attack_consequence("arrow", "protected")
   self:set_can_attack(false)
-  self:get_map():arrow_remove()
+  -- TODO remove the arrow?
 end
 

@@ -763,8 +763,7 @@ class LuaContext {
         timers;                     /**< The timers currently running, with
                                      * their context and callback. */
 
-    std::set<Drawable*>
-      drawables;                 /**< All drawable objects created by
+    std::set<Drawable*> drawables;  /**< All drawable objects created by
                                      * this script. */
 
     static std::map<InputEvent::KeyboardKey, std::string>

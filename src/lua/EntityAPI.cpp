@@ -2031,16 +2031,13 @@ void LuaContext::npc_on_interaction(NPC& npc) {
 
 /**
  * @brief Calls the on_interaction_item() method of a Lua NPC.
- * @param npc An NPC.
- * @param item_name Name of an equipment item.
- * @param variant Variant of this equipment item.
+ * @param item_used The equipment item used.
  * @return \c true if an interaction occurred.
  */
-bool LuaContext::npc_on_interaction_item(NPC& npc,
-    const std::string& item_name, int variant) {
+bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
 
   push_npc(l, npc);
-  bool result = on_interaction_item(item_name, variant);
+  bool result = on_interaction_item(item_used);
   lua_pop(l, 1);
   return result;
 }

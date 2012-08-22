@@ -179,11 +179,7 @@ class LuaContext {
     void sensor_on_collision_explosion(Sensor& sensor);
     void npc_on_movement_finished(NPC& npc);
     void npc_on_interaction(NPC& npc);
-    void npc_on_interaction_finished(NPC& npc);
-    bool npc_on_interaction_item(NPC& npc,
-        const std::string& item_name, int variant);
-    void npc_on_interaction_item_finished(NPC& npc,
-        const std::string& item_name, int variant);
+    bool npc_on_interaction_item(NPC& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(NPC& npc);
     bool chest_on_empty(Chest& chest);
     bool shop_item_on_buying(ShopItem& shop_item);
@@ -351,7 +347,7 @@ class LuaContext {
     void on_inactivated();
     void on_left();
     void on_interaction();
-    bool on_interaction_item(const std::string &item_name, int variant);
+    bool on_interaction_item(EquipmentItem& item_used);
     void on_npc_interaction(NPC& npc);
     bool on_npc_interaction_item(NPC& npc, EquipmentItem& item_used);
     void on_npc_collision_fire(NPC& npc);

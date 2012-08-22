@@ -1480,16 +1480,14 @@ void LuaContext::on_interaction() {
 
 /**
  * @brief Calls the on_interaction_item() method of the object on top of the stack.
- * @param npc An NPC.
+ * @param item_used The equipment item used.
  * @return true if an interaction occurred.
  */
-bool LuaContext::on_interaction_item(
-    const std::string &item_name, int variant) {
+bool LuaContext::on_interaction_item(EquipmentItem& item) {
 
   if (find_method("on_interaction_item")) {
-    lua_pushstring(l, item_name.c_str());
-    lua_pushinteger(l, variant);
-    call_function(3, 1, "on_interaction_item");
+    push_item(l, item);
+    call_function(2, 1, "on_interaction_item");
     return lua_toboolean(l, -1);
   }
   return false;

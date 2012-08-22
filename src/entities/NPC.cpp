@@ -323,15 +323,15 @@ void NPC::call_script_hero_interaction() {
 bool NPC::interaction_with_inventory_item(InventoryItem& inventory_item) {
 
   bool interaction_occured;
+  EquipmentItem& equipment_item_used = get_equipment().get_item(inventory_item.get_name());
   if (behavior == BEHAVIOR_ITEM_SCRIPT) {
     EquipmentItem& equipment_item_to_notify = get_equipment().get_item(item_name);
-    EquipmentItem& equipment_item_used = get_equipment().get_item(inventory_item.get_name());
     interaction_occured = get_lua_context().item_on_npc_interaction_item(
         equipment_item_to_notify, *this, equipment_item_used);
   }
   else {
     interaction_occured = get_lua_context().npc_on_interaction_item(
-      *this, inventory_item.get_name(), inventory_item.get_variant());
+        *this, equipment_item_used);
   }
 
   return interaction_occured;

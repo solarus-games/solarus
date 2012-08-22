@@ -22,7 +22,7 @@ function enemy:on_created()
   self:set_obstacle_behavior("flying")
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   for _, t in ipairs(timers) do t:stop() end
   timers[#timers + 1] = sol.timer.start(2000, function() self:egg_phase_soon() end)

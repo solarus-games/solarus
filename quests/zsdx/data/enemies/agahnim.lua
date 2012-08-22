@@ -35,7 +35,7 @@ function enemy:on_created()
   sprite:set_animation("stopped")
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   vulnerable = false
   for _, t in ipairs(timers) do t:stop() end

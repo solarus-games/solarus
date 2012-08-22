@@ -18,7 +18,7 @@ function enemy:on_created()
   self:set_attack_consequence("explosion", 1)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   timers[#timers + 1] = sol.timer.start(500, function()
     self:jump_or_son_phase()
@@ -28,7 +28,7 @@ end
 
 function enemy:on_movement_finished(movement)
 
-  self:on_restart()
+  self:on_restarted()
 end
 
 function enemy:on_update()

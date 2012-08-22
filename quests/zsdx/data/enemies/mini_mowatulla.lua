@@ -24,7 +24,7 @@ function enemy:on_created()
 end
 
 -- The enemy was stopped for some reason and should restart
-function enemy:on_restart()
+function enemy:on_restarted()
 
   if in_shell then
     local sprite = self:get_sprite()

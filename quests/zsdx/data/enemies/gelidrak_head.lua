@@ -28,7 +28,7 @@ function enemy:on_created()
   self:set_pushed_back_when_hurt(false)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   if not vulnerable then
     for _, t in ipairs(timers) do t:stop() end
@@ -82,7 +82,7 @@ function enemy:on_message_received(src_enemy, message)
       for _, t in ipairs(timers) do t:stop() end
       timers[#timers + 1] = sol.timer.start(vulnerable_delay, function()
 	vulnerable = false
-	self:on_restart()
+	self:on_restarted()
 	self:set_can_attack(true)
         self:set_attack_consequence("sword", "protected")
 	self:send_message(self:get_father(), "recovered")

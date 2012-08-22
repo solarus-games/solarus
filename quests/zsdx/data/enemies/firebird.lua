@@ -30,7 +30,7 @@ function enemy:on_created()
   self:set_push_hero_on_sword(true)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   claw_sprite:set_animation("claw")
   local m = sol.movement.create("random")

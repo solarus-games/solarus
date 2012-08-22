@@ -1734,12 +1734,12 @@ void LuaContext::on_disabled() {
 }
 
 /**
- * @brief Calls the on_restart() method of the object on top of the stack.
+ * @brief Calls the on_restarted() method of the object on top of the stack.
  */
-void LuaContext::on_restart() {
+void LuaContext::on_restarted() {
 
-  if (find_method("on_restart")) {
-    call_function(1, 0, "on_restart");
+  if (find_method("on_restarted")) {
+    call_function(1, 0, "on_restarted");
   }
 }
 

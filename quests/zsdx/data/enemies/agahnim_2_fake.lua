@@ -48,7 +48,7 @@ function enemy:on_created()
 
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   if not disappearing then
     for _, t in ipairs(timers) do t:stop() end

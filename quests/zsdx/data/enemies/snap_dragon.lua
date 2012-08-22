@@ -14,7 +14,7 @@ function enemy:on_created()
   self:set_origin(8, 13)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   self:go_random()
 end

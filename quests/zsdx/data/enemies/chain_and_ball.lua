@@ -78,7 +78,7 @@ function enemy:on_position_changed(x, y)
   end
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local m = sol.movement.create("circle")
   m:set_center(7, father_name, center_xy.x, center_xy.y)

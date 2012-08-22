@@ -15,7 +15,7 @@ function enemy:on_created()
 end
 
 -- The enemy was stopped for some reason and should restart
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local m = sol.movement.create("straight")
   m:set_speed(0)

@@ -2146,13 +2146,13 @@ void LuaContext::enemy_on_disabled(Enemy& enemy) {
 }
 
 /**
- * @brief Calls the on_restart() method of a Lua enemy.
+ * @brief Calls the on_restarted() method of a Lua enemy.
  * @param enemy An enemy.
  */
-void LuaContext::enemy_on_restart(Enemy& enemy) {
+void LuaContext::enemy_on_restarted(Enemy& enemy) {
 
   push_enemy(l, enemy);
-  on_restart();
+  on_restarted();
   lua_pop(l, 1);
 }
 

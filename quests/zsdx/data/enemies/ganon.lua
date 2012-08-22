@@ -50,7 +50,7 @@ function enemy:on_created()
   --self:set_can_hurt_hero_running(true)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   if not jumping and not attacking then
     if not vulnerable then

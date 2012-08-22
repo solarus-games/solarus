@@ -68,7 +68,7 @@ function enemy:on_created()
   self:set_attack_consequence_sprite(sword_sprite, "sword", "custom")
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   if not being_pushed then
     if going_hero then

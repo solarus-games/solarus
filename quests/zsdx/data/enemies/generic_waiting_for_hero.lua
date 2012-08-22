@@ -103,7 +103,7 @@ function enemy:on_obstacle_reached(movement)
   end
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   if not awaken then
     local sprite = self:get_sprite()

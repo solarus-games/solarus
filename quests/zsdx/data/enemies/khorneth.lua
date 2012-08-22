@@ -32,7 +32,7 @@ function enemy:on_created()
   right_blade_sprite:synchronize(main_sprite)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   -- set the movement
   local m = sol.movement.create("random_path")

@@ -15,7 +15,7 @@ function enemy:on_created()
   self:set_optimization_distance(0)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   -- by default, go to where the hero is now
   local x, y = self:get_map():hero_get_position()

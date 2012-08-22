@@ -1055,7 +1055,7 @@ void Enemy::restart() {
     stop_immobilized();
   }
   set_animation("walking");
-  get_lua_context().enemy_on_restart(*this);
+  get_lua_context().enemy_on_restarted(*this);
 }
 
 /**

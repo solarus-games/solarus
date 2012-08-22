@@ -27,7 +27,7 @@ function enemy:on_created()
   self:set_can_hurt_hero_running(true)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local sprite = self:get_sprite()
   if not vulnerable then

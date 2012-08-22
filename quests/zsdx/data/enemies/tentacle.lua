@@ -12,7 +12,7 @@ function enemy:on_created()
   self:set_origin(8, 13)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local m = sol.movement.create("path_finding")
   m:set_speed(32)

@@ -42,7 +42,7 @@ function enemy:on_created()
   self:set_position(initial_xy.x, initial_xy.y, 2)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   eye_sprite:set_animation("eye")
   for i = 1, 5 do

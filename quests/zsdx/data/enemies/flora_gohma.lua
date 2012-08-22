@@ -30,7 +30,7 @@ function enemy:on_created()
   ball_sprite:set_animation("ball")
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local m = sol.movement.create("random")
   m:set_speed(16)

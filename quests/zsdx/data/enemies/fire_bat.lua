@@ -18,7 +18,7 @@ function enemy:on_created()
   self:set_layer_independent_collisions(true)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   if self:get_movement() == nil then
     self:go_hero()

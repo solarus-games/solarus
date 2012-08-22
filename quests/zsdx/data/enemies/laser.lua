@@ -20,7 +20,7 @@ function enemy:on_created()
   initial_position.x, initial_position.y, initial_position.layer = self:get_position()
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local sprite = self:get_sprite()
   local direction4 = sprite:get_direction()

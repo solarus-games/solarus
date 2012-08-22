@@ -31,7 +31,7 @@ function enemy:on_created()
   self:set_attack_consequence_sprite(skeleton, "arrow", 1)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   if phase == 1 then
     local m = sol.movement.create("random")

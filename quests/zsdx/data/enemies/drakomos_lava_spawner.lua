@@ -16,7 +16,7 @@ function enemy:on_created()
   self:set_invincible()
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   self:set_can_attack(false)
   sol.timer.start(1000, function()

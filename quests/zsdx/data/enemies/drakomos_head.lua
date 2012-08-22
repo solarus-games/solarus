@@ -28,7 +28,7 @@ function enemy:on_created()
   initial_xy.x, initial_xy.y = self:get_position()
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local m = sol.movement.create("target")
   m:set_speed(48)

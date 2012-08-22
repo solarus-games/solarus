@@ -21,7 +21,7 @@ function enemy:on_created()
   self:set_attack_consequence("boomerang", "protected")
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local sprite = self:get_sprite()
   local direction4 = sprite:get_direction()

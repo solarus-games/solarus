@@ -19,7 +19,7 @@ function enemy:on_created()
   shadow_sprite:set_animation("big")
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local x, y = self:get_position()
   initial_y = y

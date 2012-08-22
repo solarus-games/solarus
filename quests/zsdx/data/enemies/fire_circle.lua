@@ -12,7 +12,7 @@ function enemy:on_created()
   self:set_invincible()
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   -- disappear after a few seconds
   sol.timer.start(2000, function()

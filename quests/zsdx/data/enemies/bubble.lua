@@ -19,7 +19,7 @@ function enemy:on_created()
 end
 
 -- The enemy was stopped for some reason and should restart
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local direction8 = math.random(4) * 2 - 1
   self:go(direction8)

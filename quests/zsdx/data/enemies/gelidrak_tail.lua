@@ -30,7 +30,7 @@ function enemy:on_created()
   self:set_position(x, y, 2)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   if not retracted then
     local m = sol.movement.create("path")
@@ -58,7 +58,7 @@ function enemy:on_movement_finished()
   retracted = false
   self:set_attack_consequence("arrow", 1)
   self:set_can_attack(true)
-  self:on_restart()
+  self:on_restarted()
 
   if not self:get_map():enemy_is_dead(self:get_father()) then
     self:send_message(self:get_father(), "recovered")

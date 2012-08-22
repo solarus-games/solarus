@@ -27,7 +27,7 @@ function enemy:on_created()
   sprite3:set_animation("tiny")
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local x, y = self:get_position()
   local hero_x, hero_y = self:get_map():hero_get_position()

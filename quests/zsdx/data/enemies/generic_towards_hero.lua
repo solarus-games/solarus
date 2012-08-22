@@ -91,7 +91,7 @@ function enemy:on_obstacle_reached(movement)
   end
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
   self:go_random()
   self:check_hero()
 end

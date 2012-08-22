@@ -46,7 +46,7 @@ function enemy:on_created()
   initial_xy.x, initial_xy.y = self:get_position()
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   local sprite = self:get_sprite()
   if head_vulnerable then
@@ -126,7 +126,7 @@ function enemy:on_message_received(src_enemy, message)
       self:send_message(head, "recover")
     elseif message == "recovered" then
       -- the tail has recovered its normal position
-      self:on_restart()
+      self:on_restarted()
     end
 
   elseif src_enemy == head then
@@ -143,7 +143,7 @@ function enemy:on_message_received(src_enemy, message)
       -- my head has just stopped being vulnerable
       head_vulnerable = false
       self:set_can_attack(true)
-      self:on_restart()
+      self:on_restarted()
     end
   end
 end

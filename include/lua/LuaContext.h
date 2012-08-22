@@ -196,7 +196,7 @@ class LuaContext {
     void enemy_on_created(Enemy& enemy);
     void enemy_on_enabled(Enemy& enemy);
     void enemy_on_disabled(Enemy& enemy);
-    void enemy_on_restart(Enemy& enemy);
+    void enemy_on_restarted(Enemy& enemy);
     void enemy_on_pre_draw(Enemy& enemy);
     void enemy_on_post_draw(Enemy& enemy);
     void enemy_on_position_changed(Enemy& enemy, const Rectangle& xy, Layer layer);
@@ -378,7 +378,7 @@ class LuaContext {
     void on_created();
     void on_enabled();
     void on_disabled();
-    void on_restart();
+    void on_restarted();
     void on_pre_draw();
     void on_post_draw();
     void on_position_changed(const Rectangle& xy, Layer layer);

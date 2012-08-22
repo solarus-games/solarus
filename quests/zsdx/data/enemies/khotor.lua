@@ -24,7 +24,7 @@ function enemy:on_created()
   self:create_son(chain_name, "chain_and_ball", -16, -33)
 end
 
-function enemy:on_restart()
+function enemy:on_restarted()
 
   -- set the movement
   local m = sol.movement.create("random_path")

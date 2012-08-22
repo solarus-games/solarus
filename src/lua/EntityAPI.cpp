@@ -254,9 +254,6 @@ void LuaContext::register_entity_module() {
       { "get_sprite", entity_api_get_sprite },
       { "create_sprite", entity_api_create_sprite },
       { "remove_sprite", entity_api_remove_sprite },
-      { "create_son", enemy_api_create_son },
-      { "get_father", enemy_api_get_father },
-      { "send_message", enemy_api_send_message },
       { NULL, NULL }
   };
   register_functions(entity_enemy_module_name, common_methods);
@@ -1870,77 +1867,6 @@ int LuaContext::enemy_api_hurt(lua_State* l) {
   }
 
   return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_create_son.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_create_son(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  const std::string& breed = luaL_checkstring(l, 3);
-  int x = luaL_checkinteger(l, 4);
-  int y = luaL_checkinteger(l, 5);
-  int layer;
-  if (lua_gettop(l) >= 6) {
-    layer = luaL_checkinteger(l, 6);
-  }
-  else {
-    layer = enemy.get_layer();
-  }
-
-  x += enemy.get_x();
-  y += enemy.get_y();
-
-  Game& game = enemy.get_game();
-  MapEntities& entities = enemy.get_map().get_entities();
-  Treasure treasure = Treasure(game, "_random", 1, -1);
-  Enemy* son = (Enemy*) Enemy::create(game, breed, Enemy::RANK_NORMAL, -1,
-      name, Layer(layer), x, y, 0, treasure);
-  son->set_father_name(enemy.get_name());
-  son->set_optimization_distance(enemy.get_optimization_distance());
-  entities.add_entity(son);
-  son->restart();
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_get_father.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_get_father(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  // TODO push the enemy (if existing) instead of its name
-  lua_pushstring(l, enemy.get_father_name().c_str());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_send_message.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_send_message(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-  const std::string& dst_enemy_name = luaL_checkstring(l, 2);
-  const std::string& message = luaL_checkstring(l, 3);
-
-  MapEntities& entities = enemy.get_map().get_entities();
-  MapEntity* entity = entities.get_entity(dst_enemy_name);
-  Debug::check_assertion(entity->get_type() == ENEMY,
-      "The destination entity is not an enemy");
-  Enemy* dst_enemy = (Enemy*) entity;
-  dst_enemy->notify_message_received(enemy, message);
-
-  return 1;
 }
 
 /**

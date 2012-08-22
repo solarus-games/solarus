@@ -72,10 +72,6 @@ end
 
 function agahnim_sequence_5()
 
--- FIXME not working
---  s = map:npc_get_sprite("agahnim")
---  s:fade_in()
---  sol.audio.play_sound("warp")
   sol.timer.start(2000, agahnim_sequence_6)
 end
 

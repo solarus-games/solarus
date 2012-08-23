@@ -616,7 +616,7 @@ class LuaContext {
       map_api_get_game,
       map_api_start_dialog,
       map_api_set_dialog_variable,
-      map_api_set_dialog_style,
+      map_api_set_dialog_style,   // TODO use a string parameter
       map_api_set_pause_enabled,  // TODO remove (do this in Lua only)
       map_api_get_light,
       map_api_set_light,

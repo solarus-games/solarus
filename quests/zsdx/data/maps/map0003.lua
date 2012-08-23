@@ -107,7 +107,7 @@ function map:on_dialog_finished(dialog_id, answer)
 
   elseif dialog_id == "outside_world.village.monkey.with_shield" then
     -- make the monkey leave
-    map:hero_freeze()
+    map:get_hero():freeze()
     sol.audio.play_sound("monkey")
     local m = sol.movement.create("jump")
     m:set_direction8(1)
@@ -120,7 +120,7 @@ function map:on_dialog_finished(dialog_id, answer)
     map:get_game():set_boolean(24, true)
 
   elseif dialog_id == "outside_world.village.tree_woman" then
-    map:hero_start_treasure("rupee", 1, -1)
+    map:get_hero():start_treasure("rupee", 1, -1)
   end
 end
 
@@ -144,7 +144,7 @@ function map:on_npc_movement_finished(npc_name)
   else
     -- last jump finished: remove the monkey from the map and unfreeze the hero
     map:npc_remove("monkey")
-    map:hero_unfreeze()
+    map:get_hero():unfreeze()
   end
 end
 
@@ -182,7 +182,7 @@ function map:on_hero_still_on_sensor(sensor_name)
   }
   for i = 1, #entrances do
     if sensor_name == entrances[i] .. "_door_sensor" then
-      if map:hero_get_direction() == 1
+      if map:get_hero():get_direction() == 1
           and map:tile_is_enabled(entrances[i] .. "_door") then
         map:tile_set_enabled(entrances[i] .. "_door", false)
         sol.audio.play_sound("door_open")

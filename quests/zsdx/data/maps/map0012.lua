@@ -73,7 +73,7 @@ function map:on_dialog_finished(dialog_id, answer)
   if dialog_id == "sahasrahla_house.beginning" or
     dialog_id == "sahasrahla_house.give_world_map" then
     -- give the world map to the player
-    map:hero_start_treasure("world_map", 1, 33)
+    map:get_hero():start_treasure("world_map", 1, 33)
   elseif dialog_id == "sahasrahla_house.quest_accepted" and not map:door_is_open("door") then
     map:open_doors("door")
   end

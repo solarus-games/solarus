@@ -36,7 +36,7 @@ function map:on_npc_interaction_item(npc_name, item_name, variant)
       string.find(item_name, "^bottle") and variant == 2 then
 
     -- using water on the frozen door
-    map:hero_freeze()
+    map:get_hero():freeze()
     sol.audio.play_sound("item_in_water")
     frozen_door_sprite:set_animation("disappearing")
     frozen_door_opposite_sprite:set_animation("disappearing")
@@ -54,6 +54,6 @@ function timer_frozen_door()
   map:get_game():set_boolean(35, true)
   map:npc_remove("frozen_door")
   map:npc_remove("frozen_door_opposite")
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
 end
 

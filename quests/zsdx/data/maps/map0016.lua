@@ -34,7 +34,7 @@ function map:on_dialog_finished(dialog_id, answer)
       else
         -- enough money: buy the sword
         map:get_game():remove_money(sword_price)
-        map:hero_start_treasure("sword", 1, 30)
+        map:get_hero():start_treasure("sword", 1, 30)
       end
     end
   end

@@ -34,8 +34,8 @@ function map:on_obtained_treasure(item_name, variant, savegame_variable)
   if item_name == "heart_container" then
     sol.timer.start(9000, open_final_room)
     sol.audio.play_music("victory")
-    map:hero_freeze()
-    map:hero_set_direction(3)
+    map:get_hero():freeze()
+    map:get_hero():set_direction(3)
   end
 end
 
@@ -57,6 +57,6 @@ function open_final_room()
 
   map:open_doors("final_room_door")
   sol.audio.play_sound("secret")
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
 end
 

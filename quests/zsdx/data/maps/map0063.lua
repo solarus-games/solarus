@@ -82,7 +82,7 @@ function map:on_dialog_finished(dialog_id, answer)
   dialog_check_guard(dialog_id)
 
   if dialog_id == "dungeon_5.puzzle_solved" then
-    map:hero_unfreeze()
+    map:get_hero():unfreeze()
   end
 end
 
@@ -155,7 +155,7 @@ end
 
 function puzzle_solved()
 
-  map:hero_freeze()
+  map:get_hero():freeze()
   sol.audio.play_sound("enemy_awake")
   sol.timer.start(1000, puzzle_solved_2)
 end

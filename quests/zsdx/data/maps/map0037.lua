@@ -52,7 +52,7 @@ function map:on_dialog_finished(dialog_id, answer)
     end
 
   elseif dialog_id == "billy_cave.give_golden_bars" then
-    map:hero_start_treasure("level_4_way", 3, 134)
+    map:get_hero():start_treasure("level_4_way", 3, 134)
   end
 end
 
@@ -98,7 +98,7 @@ function billy_leave()
   local sprite = map:npc_get_sprite("billy")
 
   if billy_leave_step == 1 then
-    map:hero_freeze()
+    map:get_hero():freeze()
     local m = sol.movement.create("path")
     m:set_path{4,4,4,4,4,4,4}
     m:set_speed(48)
@@ -120,14 +120,14 @@ function billy_leave()
   else
     map:close_doors("door")
     map:npc_remove("billy")
-    map:hero_unfreeze()
+    map:get_hero():unfreeze()
   end
 end
 
 function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name:find("^save_solid_ground_sensor") then
-    map:hero_save_solid_ground()
+    map:get_hero():save_solid_ground()
   end
 end
 

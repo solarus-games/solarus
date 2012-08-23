@@ -69,10 +69,10 @@ function map:on_dialog_finished(message_id, answer)
       map:start_dialog("lyriann_cave.tom.accept_help")
     end
   elseif message_id == "lyriann_cave.tom.accept_help" then
-    map:hero_start_treasure("boomerang", 1, 41)
+    map:get_hero():start_treasure("boomerang", 1, 41)
   elseif message_id == "lyriann_cave.tom.leaving" then
     sol.audio.play_sound("warp")
-    map:hero_set_direction(1)
+    map:get_hero():set_direction(1)
     sol.timer.start(1700, start_moving_tom)
   elseif message_id == "lyriann_cave.tom.not_finished" and answer == 1 then
     give_boomerang_back()
@@ -119,14 +119,14 @@ function map:on_npc_movement_finished(npc)
   else
     map:npc_set_position("tom", tom_initial_x, tom_initial_y)
     tom_sprite:set_direction(3)
-    map:hero_unfreeze()
+    map:get_hero():unfreeze()
   end
 end
 
 function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "leave_cavern_sensor" and has_boomerang_of_tom() then
-    map:hero_freeze()
+    map:get_hero():freeze()
     map:start_dialog("lyriann_cave.tom.leaving")
   end
 end

@@ -65,8 +65,8 @@ end
 function map:on_dialog_finished(dialog_id, answer)
 
   if dialog_id == "outside_world.tom_dungeon_1_entrance.hey" then
-    map:hero_freeze()
-    map:hero_set_direction(0)
+    map:get_hero():freeze()
+    map:get_hero():set_direction(0)
     map:npc_set_position("tom", 528, 245)
     local m = sol.movement.create("path")
     m:set_path{4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,2,2,2}
@@ -88,7 +88,7 @@ function map:on_dialog_finished(dialog_id, answer)
     tom_sprite:set_animation("walking")
     sol.timer.start(300, tom_timer_3)
   elseif dialog_id == "outside_world.beaumont_hill_put_edelweiss" then
-    map:hero_freeze()
+    map:get_hero():freeze()
     sol.timer.start(1000, edelweiss_explode)
   end
 
@@ -144,7 +144,7 @@ function ladder_step4()
   map:sensor_set_enabled("tom_appears_sensor", false)
   sol.audio.play_sound("secret")
   map:get_game():set_boolean(52, true)
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
 end
 
 function map:on_npc_interaction(npc_name)
@@ -168,6 +168,6 @@ end
 
 function edelweiss_end()
   sol.audio.play_sound("secret")
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
 end
 

@@ -4,7 +4,7 @@ local map = ...
 function map:on_started(destination_point_name)
 
   if destination_point_name == "from_outside_hole" then
-    map:hero_set_direction(2)
+    map:get_hero():set_direction(2)
   end
 end
 

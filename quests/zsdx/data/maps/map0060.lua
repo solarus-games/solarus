@@ -51,7 +51,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not fighting_boss then
     map:close_doors("boss_door")
     map:close_doors("final_room_door")
-    map:hero_freeze()
+    map:get_hero():freeze()
     sol.timer.start(1000, start_boss)
     fighting_boss = true
   end
@@ -61,7 +61,7 @@ function start_boss()
 
   sol.audio.play_music("boss")
   map:enemy_set_enabled("boss", true)
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
 end
 
 function map:on_obtained_treasure(item_name, variant, savegame_variable)
@@ -69,8 +69,8 @@ function map:on_obtained_treasure(item_name, variant, savegame_variable)
   if item_name == "heart_container" then
     sol.timer.start(9000, open_final_room)
     sol.audio.play_music("victory")
-    map:hero_freeze()
-    map:hero_set_direction(3)
+    map:get_hero():freeze()
+    map:get_hero():set_direction(3)
   end
 end
 
@@ -78,6 +78,6 @@ function open_final_room()
 
   map:open_doors("final_room_door")
   sol.audio.play_sound("secret")
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
 end
 

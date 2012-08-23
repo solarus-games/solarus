@@ -6,8 +6,8 @@ function map:on_started(destination_point_name)
 
   -- game ending sequence
   if destination_point_name == "from_ending" then
-    map:hero_freeze()
-    map:hero_set_visible(false)
+    map:get_hero():freeze()
+    map:get_hero():set_visible(false)
     map:get_game():set_hud_enabled(false)
     map:enemy_set_group_enabled("", false)
     sol.audio.play_music("fanfare")
@@ -111,7 +111,7 @@ end
 function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "waterfall_sensor" then
-    map:hero_start_jumping(6, 288, true)
+    map:get_hero():start_jumping(6, 288, true)
     sol.audio.play_sound("jump")
   end
 end
@@ -124,7 +124,7 @@ function map:on_hero_still_on_sensor(sensor_name)
   }
   for i = 1, #entrances do
     if sensor_name == entrances[i] .. "_door_sensor" then
-      if map:hero_get_direction() == 1
+      if map:get_hero():get_direction() == 1
           and map:tile_is_enabled(entrances[i] .. "_door") then
         map:tile_set_enabled(entrances[i] .. "_door", false)
         sol.audio.play_sound("door_open")

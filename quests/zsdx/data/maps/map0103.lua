@@ -73,7 +73,7 @@ function map:on_update()
     local block_x, block_y = map:block_get_position("nw_block")
     if block_y == 69 and block_x >= 520 and block_x < 544 then
       -- the block is just before the hole
-      local hero_x = map:hero_get_position()
+      local hero_x = map:get_hero():get_position()
       disable_hole = hero_x < block_x
     end
 
@@ -220,8 +220,8 @@ function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.audio.play_music("victory")
-    map:hero_freeze()
-    map:hero_set_direction(3)
+    map:get_hero():freeze()
+    map:get_hero():set_direction(3)
     sol.timer.start(9000, start_final_sequence)
   end
 end
@@ -229,7 +229,7 @@ end
 function start_final_sequence()
 
   sol.audio.play_music("dungeon_finished")
-  map:hero_set_direction(1)
+  map:get_hero():set_direction(1)
   map:npc_set_position("sahasrahla", 544, 717)
   map:move_camera(544, 712, 100, function()
     map:start_dialog("dungeon_7.sahasrahla")
@@ -240,7 +240,7 @@ end
 function map:on_dialog_finished(dialog_id)
 
   if dialog_id == "dungeon_7.sahasrahla" then
-    map:hero_start_victory()
+    map:get_hero():start_victory()
   end
 end
 

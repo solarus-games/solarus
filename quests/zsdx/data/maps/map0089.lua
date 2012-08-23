@@ -9,8 +9,8 @@ function map:on_started(destination_point_name)
 
   if destination_point_name == "from_ending" then
     -- game ending sequence
-    map:hero_freeze()
-    map:hero_set_visible(false)
+    map:get_hero():freeze()
+    map:get_hero():set_visible(false)
     map:get_game():set_hud_enabled(false)
     map:enemy_set_group_enabled("", false)
     sol.audio.play_music("fanfare")
@@ -39,7 +39,7 @@ function map:on_npc_interaction(npc_name)
   
   if npc_name == "forbidden_door_npc" then
 
-    local hero_x = map:hero_get_position()
+    local hero_x = map:get_hero():get_position()
     if hero_x < 832 then
       map:start_dialog("castle.forbidden_door")
     else
@@ -58,7 +58,7 @@ function map:on_dialog_finished(dialog_id)
     local sprite = map:npc_get_sprite(npc_name)
     map:npc_start_movement(npc_name, m)
     sprite:set_animation("walking")
-    map:hero_freeze()
+    map:get_hero():freeze()
   elseif dialog_id == "credits_4" then
    sol.timer.start(2000, ending_next)
   end
@@ -68,11 +68,11 @@ function map:on_npc_movement_finished(npc_name)
 
   if npc_name == "forbidden_door_npc" then
 
-    map:hero_unfreeze()
+    map:get_hero():unfreeze()
     local sprite = map:npc_get_sprite(npc_name)
     if sprite:get_direction() == 1 then
       sprite:set_direction(3)
-      map:hero_walk("4444", false, false)
+      map:get_hero():walk("4444", false, false)
     end
   end
 end
@@ -90,7 +90,7 @@ function map:on_hero_on_sensor(sensor_name)
       m:set_speed(32)
       map:npc_start_movement(npc_name, m)
       sprite:set_animation("walking")
-      map:hero_freeze()
+      map:get_hero():freeze()
     end
   end
 end

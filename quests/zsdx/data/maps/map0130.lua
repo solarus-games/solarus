@@ -51,7 +51,7 @@ function map:on_started(destination_point_name)
     map:enemy_set_enabled("boss", true)
     map:npc_set_enabled("zelda", false)
     map:npc_set_group_enabled("child", false)
-    map:hero_save_solid_ground()
+    map:get_hero():save_solid_ground()
   end
 
   map:switch_set_group_enabled("switch", false)
@@ -104,8 +104,8 @@ end
 
 function start_final_sequence()
 
-  map:hero_freeze()
-  map:hero_set_direction(3)
+  map:get_hero():freeze()
+  map:get_hero():set_direction(3)
   sol.audio.play_music("victory")
   sol.timer.start(9000, function()
     map:get_hero():teleport(130, "from_boss")
@@ -116,8 +116,8 @@ end
 function start_zelda_sequence()
 
   sol.audio.play_music("triforce")
-  map:hero_freeze()
-  map:hero_set_direction(1)
+  map:get_hero():freeze()
+  map:get_hero():set_direction(1)
   map:npc_set_enabled("zelda", true)
   for i = 1, 8 do
     local npc_name = "child_" .. i
@@ -253,7 +253,7 @@ function create_stone()
   else
     x = 200
   end
-  local hero_x, hero_y = map:hero_get_position()
+  local hero_x, hero_y = map:get_hero():get_position()
   if hero_y < 240 then
     y = 285
   else

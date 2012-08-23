@@ -140,7 +140,7 @@ function map:on_hero_on_sensor(sensor_name)
   -- north-east puzzle
   if sensor_name == "ne_puzzle_sensor_1" then
 
-    map:hero_set_position(2408, 653)
+    map:get_hero():set_position(2408, 653)
     if ne_puzzle_step == 2 then
       -- correct
       ne_puzzle_set_step(ne_puzzle_step + 1)
@@ -151,7 +151,7 @@ function map:on_hero_on_sensor(sensor_name)
 
   elseif sensor_name == "ne_puzzle_sensor_2" then
 
-    map:hero_set_position(2408, 397)
+    map:get_hero():set_position(2408, 397)
     if ne_puzzle_step == 1
       	or ne_puzzle_step == 3
 	or ne_puzzle_step == 4 then
@@ -202,11 +202,11 @@ function map:on_hero_on_sensor(sensor_name)
 
   -- save solid ground location
   elseif sensor_name:find("^save_solid_ground_sensor") then
-    map:hero_save_solid_ground()
+    map:get_hero():save_solid_ground()
 
   -- reset solid ground location
   elseif sensor_name:find("^reset_solid_ground_sensor") then
-    map:hero_reset_solid_ground()
+    map:get_hero():reset_solid_ground()
   end
 end
 
@@ -251,14 +251,14 @@ function map:on_chest_empty(chest_name)
   if index ~= nil then
     if index == chests_puzzle_step then
       if index == 7 then
-	map:hero_start_treasure("compass", 1, 814)
+	map:get_hero():start_treasure("compass", 1, 814)
       else
-        map:hero_unfreeze()
+        map:get_hero():unfreeze()
 	chests_puzzle_step = chests_puzzle_step + 1
       end
     else
       sol.audio.play_sound("wrong")
-      map:hero_unfreeze()
+      map:get_hero():unfreeze()
       chests_puzzle_step = 1
       for i = 1, 7 do
 	map:chest_set_open("compass_chest_" .. i, false)

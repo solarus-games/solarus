@@ -34,7 +34,7 @@ function map:on_npc_interaction_item(npc_name, item_name, variant)
       string.find(item_name, "^bottle") and variant == 2 then
 
     -- using water on the vine bottom
-    map:hero_freeze()
+    map:get_hero():freeze()
     map:npc_remove("vine_start")
     map:get_game():set_item(item_name, 1) -- make the bottle empty
     map:get_game():set_boolean(921, true)
@@ -50,7 +50,7 @@ function show_vine()
 
   map:move_camera(608, 136, 136, function()
     sol.audio.play_sound("secret")
-    map:hero_unfreeze()
+    map:get_hero():unfreeze()
     map:get_game():set_boolean(921, true)
   end)
 

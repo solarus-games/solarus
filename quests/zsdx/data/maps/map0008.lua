@@ -5,8 +5,8 @@ function map:on_started(destination_point_name)
 
   -- game ending sequence
   if destination_point_name == "from_ending" then
-    map:hero_freeze()
-    map:hero_set_visible(false)
+    map:get_hero():freeze()
+    map:get_hero():set_visible(false)
     map:get_game():set_hud_enabled(false)
     map:enemy_set_group_enabled("", false)
     sol.audio.play_music("fanfare")

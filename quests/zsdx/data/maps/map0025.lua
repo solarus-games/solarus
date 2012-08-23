@@ -23,7 +23,7 @@ function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "start_miniboss_sensor" and not map:get_game():get_boolean(62) and not fighting_miniboss then
     -- the miniboss is alive
     map:close_doors("miniboss_door")
-    map:hero_freeze()
+    map:get_hero():freeze()
     sol.timer.start(1000, miniboss_timer)
     fighting_miniboss = true
   end
@@ -32,7 +32,7 @@ end
 function miniboss_timer()
   sol.audio.play_music("boss")
   map:enemy_set_enabled("khorneth", true)
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
 end
 
 function map:on_enemy_dead(enemy_name)

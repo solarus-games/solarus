@@ -127,12 +127,12 @@ end
 function map:on_npc_interaction(npc_name)
   if npc_name == "TD01" then
     sol.audio.play_sound("warp")
-    hero_x, hero_y = map:hero_get_position()
-    map:hero_set_position(hero_x - 320, hero_y)
+    hero_x, hero_y = map:get_hero():get_position()
+    map:get_hero():set_position(hero_x - 320, hero_y)
   elseif npc_name == "TD02" then
     sol.audio.play_sound("warp")
-    hero_x, hero_y = map:hero_get_position()
-    map:hero_set_position(hero_x + 320, hero_y)
+    hero_x, hero_y = map:get_hero():get_position()
+    map:get_hero():set_position(hero_x + 320, hero_y)
   end
 end
 

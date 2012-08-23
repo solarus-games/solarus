@@ -104,7 +104,7 @@ function map:on_hero_on_sensor(sensor_name)
     map:close_doors("boss_door")
 
   elseif sensor_name == "save_solid_ground_sensor" then
-    map:hero_save_solid_ground(960, 525, 0)
+    map:get_hero():save_solid_ground(960, 525, 0)
 
   elseif sensor_name == "boss_floor_sensor_1" then
     if fighting_boss
@@ -146,8 +146,8 @@ function map:on_obtained_treasure(item_name, variant, savegame_variable)
   if item_name == "heart_container" then
     sol.timer.start(9000, open_final_room)
     sol.audio.play_music("victory")
-    map:hero_freeze()
-    map:hero_set_direction(3)
+    map:get_hero():freeze()
+    map:get_hero():set_direction(3)
   end
 end
 
@@ -156,7 +156,7 @@ function open_final_room()
   sol.audio.play_sound("secret")
   map:open_doors("final_room_door")
   map:tile_set_enabled("boss_killed_floor", true)
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
 end
 
 function boss_change_floor(first, last, inc, enable)

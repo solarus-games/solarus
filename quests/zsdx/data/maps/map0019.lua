@@ -43,7 +43,7 @@ function map:on_dialog_finished(dialog_id, answer)
       end
     end
   elseif dialog_id == "cake_shop.thank_you" then
-    map:hero_start_treasure("bottle_1", 1, 32)
+    map:get_hero():start_treasure("bottle_1", 1, 32)
   end
 end
 

@@ -47,7 +47,7 @@ end
 
 function map:on_camera_back()
 
-  local x, y = map:hero_get_position()
+  local x, y = map:get_hero():get_position()
   if y < 360 then
     -- chest A
     chest_a_timer = sol.timer.start(5000, true, function()

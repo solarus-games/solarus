@@ -93,7 +93,7 @@ end
 function inferno_open()
 
   map:sensor_set_enabled("inferno_sensor", true)
-  map:hero_walk("66", false, false)
+  map:get_hero():walk("66", false, false)
 end
 
 function map:on_hero_on_sensor(sensor_name)
@@ -103,8 +103,8 @@ function map:on_hero_on_sensor(sensor_name)
     local sprite = map:npc_get_sprite("inferno")
     sprite:set_animation("opening")
     sol.timer.start(1050, inferno_open_finish)
-    map:hero_freeze()
-    map:hero_set_direction(1)
+    map:get_hero():freeze()
+    map:get_hero():set_direction(1)
     map:sensor_set_enabled("inferno_sensor", false)
   end
 end
@@ -113,7 +113,7 @@ function map:on_hero_still_on_sensor(sensor_name)
 
   -- Witch hut entrance
   if sensor_name == "potion_shop_door_sensor" then
-    if map:hero_get_direction() == 1
+    if map:get_hero():get_direction() == 1
         and map:tile_is_enabled("potion_shop_door") then
       map:tile_set_enabled("potion_shop_door", false)
       sol.audio.play_sound("door_open")
@@ -124,7 +124,7 @@ end
 function inferno_open_finish()
 
   sol.audio.play_sound("secret")
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
   map:get_game():set_boolean(914, true)
   inferno_set_open()
 end
@@ -152,7 +152,7 @@ function map:on_dialog_finished(dialog_id, answer)
       end
     end 
   elseif dialog_id == "inferno.want_rupees" then
-    map:hero_start_treasure("rupee", 5, 916)
+    map:get_hero():start_treasure("rupee", 5, 916)
   elseif dialog_id == "inferno.want_black_stones" then
     inferno_open()
   end

@@ -63,10 +63,10 @@ function map:on_npc_interaction(npc_name)
     if not map:get_game():get_boolean(905) then
       map:start_dialog("castle.cannon")
     else
-      map:hero_freeze()
+      map:get_hero():freeze()
       local x, y = map:npc_get_position(npc_name)
-      map:hero_set_position(x, y, 0)
-      map:hero_set_visible(false)
+      map:get_hero():set_position(x, y, 0)
+      map:get_hero():set_visible(false)
       sol.audio.play_sound("bomb")
       sol.timer.start(2000, cannon_jump)
     end
@@ -77,8 +77,8 @@ function cannon_jump()
 
   sol.audio.play_sound("explosion")
   map:create_explosion(296, 384, 0)
-  map:hero_start_jumping(6, 424, true)
-  map:hero_set_visible(true)
+  map:get_hero():start_jumping(6, 424, true)
+  map:get_hero():set_visible(true)
 end
 
 function map:on_hero_on_sensor(sensor_name)
@@ -89,7 +89,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not fighting_boss then
 
     -- Agahnim fight
-    map:hero_freeze()
+    map:get_hero():freeze()
     map:tile_set_group_enabled("castle_roof_entrance", false)
     map:stairs_set_enabled("castle_roof_stairs", false)
     map:teletransporter_set_enabled("teletransporter_dw_roof", false)
@@ -103,7 +103,7 @@ function start_boss()
   sol.audio.play_music("ganon_createds")
   map:enemy_set_enabled("boss", true)
   map:start_dialog("dungeon_5.agahnim_beginning")
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
   fighting_boss = true
 end
 
@@ -120,8 +120,8 @@ function map:on_obtained_treasure(item_name, variant, savegame_variable)
     map:get_game():set_dungeon_finished(5)
     sol.timer.start(9000, leave_boss)
     sol.audio.play_music("victory")
-    map:hero_freeze()
-    map:hero_set_direction(3)
+    map:get_hero():freeze()
+    map:get_hero():set_direction(3)
   end
 end
 

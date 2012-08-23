@@ -27,7 +27,7 @@ function sensor_check_guard(sensor_name)
     if sprite:get_direction() == direction then
 
       local x, y = map:npc_get_position(guard_name)
-      local hero_x, hero_y = map:hero_get_position()
+      local hero_x, hero_y = map:get_hero():get_position()
       if direction == 0 and hero_x > x - 32 and hero_x < x + 216 then
         seen_by_guard(guard_name)
       elseif direction == 1 and hero_y < y + 32 and hero_y > y - 216 then
@@ -44,7 +44,7 @@ end
 function seen_by_guard(guard_name)
 
   hero_seen = true
-  map:hero_freeze()
+  map:get_hero():freeze()
   local sprite = map:npc_get_sprite(guard_name)
   sprite:set_animation("walking")
   local m = sol.movement.create("target")

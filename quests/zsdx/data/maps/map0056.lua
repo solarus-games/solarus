@@ -7,8 +7,8 @@ function map:on_started(destination_point_name)
 
   -- game ending sequence
   if destination_point_name == "from_ending" then
-    map:hero_freeze()
-    map:hero_set_visible(false)
+    map:get_hero():freeze()
+    map:get_hero():set_visible(false)
     map:get_game():set_hud_enabled(false)
     map:enemy_set_group_enabled("", false)
     sol.audio.play_music("fanfare")
@@ -68,14 +68,14 @@ function map:on_hero_on_sensor(sensor_name)
       and not map:get_game():get_boolean(320)
       and not fighting_miniboss then
 
-    map:hero_freeze()
+    map:get_hero():freeze()
     map:close_doors("miniboss_door")
     fighting_miniboss = true
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
       map:enemy_set_group_enabled("miniboss", true)
       map:tile_set_group_enabled("miniboss_fake_floor", false)
-      map:hero_unfreeze()
+      map:get_hero():unfreeze()
     end)
   end
 end

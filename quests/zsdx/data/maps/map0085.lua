@@ -30,7 +30,7 @@ end
 function map:on_dialog_finished(dialog_id, answer)
 
   if dialog_id == "dungeon_3.solarus_child" then
-    map:hero_start_victory()
+    map:get_hero():start_victory()
   end
 
 end

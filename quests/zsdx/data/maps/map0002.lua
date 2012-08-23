@@ -110,7 +110,7 @@ function map:on_npc_interaction(npc_name)
 	-----------
 
 	sol.audio.play_sound("switch")
-	map:hero_freeze()
+	map:get_hero():freeze()
       end
     else
       sol.audio.play_sound("wrong")
@@ -253,7 +253,7 @@ function map:on_chest_empty(chest_name)
     map:start_dialog("rupee_house.pay_first") -- the game man is angry
     map:chest_set_open(chest_name, false) -- close the chest again
     sol.audio.play_sound("wrong")
-    map:hero_unfreeze() -- restore the control
+    map:get_hero():unfreeze() -- restore the control
   else
     -- give a random reward
     local index = math.random(#game_1_rewards)
@@ -265,11 +265,11 @@ function map:on_chest_empty(chest_name)
 
     -- give the rupees
     if (amount == 5) then
-      map:hero_start_treasure("rupee", 2, -1)
+      map:get_hero():start_treasure("rupee", 2, -1)
     elseif (amount == 20) then
-      map:hero_start_treasure("rupee", 3, -1)
+      map:get_hero():start_treasure("rupee", 3, -1)
     elseif (amount == 50) then
-      map:hero_start_treasure("rupee", 4, -1)
+      map:get_hero():start_treasure("rupee", 4, -1)
     end
 
     if amount == 50 then
@@ -324,7 +324,7 @@ function map:on_update()
 	nb_finished = nb_finished + 1
 
 	if nb_finished < 3 then
-	  map:hero_unfreeze()
+	  map:get_hero():unfreeze()
 	else
 	  playing_game_2 = false
 	  game_2_timer = sol.timer.start(500, game_2_timeout)
@@ -392,7 +392,7 @@ function game_2_timeout()
     sol.audio.play_sound("wrong")
   end
 
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
 end
 
 function reset_blocks()

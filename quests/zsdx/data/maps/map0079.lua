@@ -21,9 +21,9 @@ function map:on_chest_empty(chest_name)
   nb_chests_open = nb_chests_open + 1
 
   if nb_chests_open == 7 then
-    map:hero_start_treasure("piece_of_heart", 1, 197)
+    map:get_hero():start_treasure("piece_of_heart", 1, 197)
   else
-    map:hero_start_treasure("rupee", rupee_reward_variants[nb_chests_open], -1)
+    map:get_hero():start_treasure("rupee", rupee_reward_variants[nb_chests_open], -1)
   end
 end
 

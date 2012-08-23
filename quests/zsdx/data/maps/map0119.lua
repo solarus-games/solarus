@@ -9,8 +9,8 @@ function map:on_started(destination_point_name)
   local new_music = nil
   if destination_point_name == "from_ending" then
     -- game ending sequence
-    map:hero_freeze()
-    map:hero_set_visible(false)
+    map:get_hero():freeze()
+    map:get_hero():set_visible(false)
     map:get_game():set_hud_enabled(false)
     map:enemy_set_group_enabled("", false)
     new_music = "fanfare"
@@ -63,7 +63,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not fighting_boss then
 
     -- boss fight
-    map:hero_freeze()
+    map:get_hero():freeze()
     map:tile_set_group_enabled("roof_entrance", false)
     map:stairs_set_enabled("roof_stairs", false)
     map:teletransporter_set_enabled("roof_teletransporter", false)
@@ -76,7 +76,7 @@ function start_boss()
 
   sol.audio.play_music("boss")
   map:enemy_set_enabled("boss", true)
-  map:hero_unfreeze()
+  map:get_hero():unfreeze()
   fighting_boss = true
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
@@ -122,7 +122,7 @@ end
 function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
-    map:hero_start_victory()
+    map:get_hero():start_victory()
   end
 end
 

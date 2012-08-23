@@ -59,15 +59,15 @@ function map:on_hero_on_sensor(sensor_name)
 
   -- childs
   elseif sensor_name == "childs_hint_sensor" then
-    map:hero_freeze()
-    map:hero_set_direction(1)
+    map:get_hero():freeze()
+    map:get_hero():set_direction(1)
     map:npc_set_group_enabled("child", true)
     for i = 1, 8 do
       local sprite = map:npc_get_sprite("child_" .. i)
       sprite:set_ignore_suspend(true)
     end
     sol.timer.start(3000, function()
-      map:hero_unfreeze()
+      map:get_hero():unfreeze()
       map:sensor_set_enabled(sensor_name, false)
       map:start_dialog("dungeon_9.5f_childs_hint")
     end)

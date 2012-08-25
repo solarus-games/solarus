@@ -524,7 +524,7 @@ class LuaContext {
       path_movement_api_set_snap_to_grid,
       random_path_movement_api_get_speed,
       random_path_movement_api_set_speed,
-      path_finding_movement_api_set_target,  // FIXME the default target is no longer the hero
+      path_finding_movement_api_set_target,
       path_finding_movement_api_get_speed,
       path_finding_movement_api_set_speed,
       circle_movement_api_set_center,

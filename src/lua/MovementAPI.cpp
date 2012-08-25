@@ -277,7 +277,13 @@ int LuaContext::movement_api_create(lua_State* l) {
     movement = new RandomPathMovement(32);
   }
   else if (type == "path_finding") {
-    movement = new PathFindingMovement(32);
+    PathFindingMovement* path_finding_movement = new PathFindingMovement(32);
+    Game* game = lua_context.get_current_game();
+    if (game != NULL) {
+      // If we are on a map, the default target is the hero.
+      path_finding_movement->set_target(game->get_hero());
+    }
+    movement = path_finding_movement;
   }
   else if (type == "circle") {
     movement = new CircleMovement(false);

@@ -807,7 +807,7 @@ void LuaContext::push_ref(lua_State* l, int ref) {
  * @param text A string value.
  */
 void LuaContext::push_string(lua_State* l, const std::string& text) {
-  push_string(l, text);
+  lua_pushstring(l, text.c_str());
 }
 
 /**

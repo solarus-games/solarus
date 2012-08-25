@@ -174,6 +174,16 @@ void Chest::set_open(bool open) {
 }
 
 /**
+ * @brief Returns whether this entity is an obstacle for another one when
+ * it is enabled.
+ * @param other Another entity.
+ * @return \c true if this entity is an obstacle for the other one.
+ */
+bool Chest::is_obstacle_for(MapEntity& other) {
+  return true;
+}
+
+/**
  * @brief This function is called by the engine when an entity overlaps the chest.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision

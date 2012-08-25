@@ -35,7 +35,7 @@ function map:start_evil_tiles()
     if remaining > 1 then
       again = true
     elseif remaining == 1 then
-      local sprite = map:get_entity("evil_tile_" .. total):get_sprite()
+      local sprite = map:get_entity("evil_tile_enemy_" .. total):get_sprite()
       again = sprite:get_animation() ~= "destroy"
     end
 

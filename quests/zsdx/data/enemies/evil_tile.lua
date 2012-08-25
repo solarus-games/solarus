@@ -38,6 +38,7 @@ function enemy:go_hero()
   local m = sol.movement.create("straight")
   m:set_speed(192)
   m:set_angle(angle)
+  m:set_smooth(false)
   self:start_movement(m)
   state = "attacking"
 end

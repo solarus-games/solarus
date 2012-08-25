@@ -3,7 +3,7 @@ local enemy = ...
 -- Blue pig soldier.
 
 sol.main.load_file("enemies/generic_soldier")(enemy)
-self:set_properties({
+enemy:set_properties({
   main_sprite = "enemies/blue_pig_soldier",
   sword_sprite = "enemies/blue_pig_soldier_sword",
   life = 8,

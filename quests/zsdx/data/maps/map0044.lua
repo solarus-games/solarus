@@ -7,6 +7,7 @@ init_evil_tiles(map)
 
 function map:on_started(destination_point_name)
 
+  map:set_entities_enabled("evil_tile", false)
   sol.timer.start(2000, function()
     map:start_evil_tiles()
   end)

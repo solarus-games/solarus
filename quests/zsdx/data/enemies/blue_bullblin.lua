@@ -3,7 +3,7 @@ local enemy = ...
 -- Blue Bullblin
 
 sol.main.load_file("enemies/generic_soldier")(enemy)
-set_properties({
+enemy:set_properties({
   main_sprite = "enemies/blue_bullblin",
   sword_sprite = "enemies/blue_bullblin_sword",
   life = 3,

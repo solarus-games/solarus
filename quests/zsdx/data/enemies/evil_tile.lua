@@ -83,7 +83,7 @@ function enemy:on_pre_draw()
     if state == "attacking" then
       y = y + 16
     else
-      y = initial_y
+      y = initial_y or y
     end
     self:get_map():draw_sprite(shadow_sprite, x, y)
   end

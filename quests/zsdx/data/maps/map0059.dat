@@ -1031,45 +1031,45 @@
 18	1	800	824	evil_tiles_door_2	3	0	-1
 18	1	800	552	evil_tiles_door_3	1	0	-1
 18	1	800	504	evil_tiles_door_4	3	0	-1
-7	1	840	661	evil_tile_2	3	evil_tile	0	-1	_none	1	-1
-7	1	776	677	evil_tile_3	3	evil_tile	0	-1	_none	1	-1
-7	1	840	725	evil_tile_4	3	evil_tile	0	-1	_none	1	-1
+7	1	840	661	evil_tile_enemy_2	3	evil_tile	0	-1	_none	1	-1
+7	1	776	677	evil_tile_enemy_3	3	evil_tile	0	-1	_none	1	-1
+7	1	840	725	evil_tile_enemy_4	3	evil_tile	0	-1	_none	1	-1
 13	1	816	821	16	16	evil_tiles_sensor_1
 13	1	816	581	16	16	evil_tiles_sensor_2
 10	1	768	648	16	16	evil_tile_after_1	644	1
-7	1	776	661	evil_tile_1	3	evil_tile	0	-1	_none	1	-1
+7	1	776	661	evil_tile_enemy_1	3	evil_tile	0	-1	_none	1	-1
 10	1	784	648	16	16	evil_tile_after_5	644	1
-7	1	792	661	evil_tile_5	3	evil_tile	0	-1	_none	1	-1
+7	1	792	661	evil_tile_enemy_5	3	evil_tile	0	-1	_none	1	-1
 10	1	848	664	16	16	evil_tile_after_6	644	1
-7	1	856	677	evil_tile_6	3	evil_tile	0	-1	_none	1	-1
+7	1	856	677	evil_tile_enemy_6	3	evil_tile	0	-1	_none	1	-1
 10	1	800	696	16	16	evil_tile_after_7	644	1
-7	1	808	709	evil_tile_7	3	evil_tile	0	-1	_none	1	-1
+7	1	808	709	evil_tile_enemy_7	3	evil_tile	0	-1	_none	1	-1
 10	1	816	712	16	16	evil_tile_after_8	644	1
-7	1	824	725	evil_tile_8	3	evil_tile	0	-1	_none	1	-1
+7	1	824	725	evil_tile_enemy_8	3	evil_tile	0	-1	_none	1	-1
 10	1	784	664	16	16	evil_tile_after_9	644	1
-7	1	792	677	evil_tile_9	3	evil_tile	0	-1	_none	1	-1
+7	1	792	677	evil_tile_enemy_9	3	evil_tile	0	-1	_none	1	-1
 10	1	816	680	16	16	evil_tile_after_10	644	1
-7	1	824	693	evil_tile_10	3	evil_tile	0	-1	_none	1	-1
+7	1	824	693	evil_tile_enemy_10	3	evil_tile	0	-1	_none	1	-1
 10	1	832	728	16	16	evil_tile_after_11	644	1
-7	1	840	741	evil_tile_11	3	evil_tile	0	-1	_none	1	-1
+7	1	840	741	evil_tile_enemy_11	3	evil_tile	0	-1	_none	1	-1
 10	1	784	696	16	16	evil_tile_after_12	644	1
-7	1	792	709	evil_tile_12	3	evil_tile	0	-1	_none	1	-1
+7	1	792	709	evil_tile_enemy_12	3	evil_tile	0	-1	_none	1	-1
 10	1	832	664	16	16	evil_tile_after_13	644	1
-7	1	840	677	evil_tile_13	3	evil_tile	0	-1	_none	1	-1
+7	1	840	677	evil_tile_enemy_13	3	evil_tile	0	-1	_none	1	-1
 10	1	816	696	16	16	evil_tile_after_14	644	1
-7	1	824	709	evil_tile_14	3	evil_tile	0	-1	_none	1	-1
+7	1	824	709	evil_tile_enemy_14	3	evil_tile	0	-1	_none	1	-1
 10	1	784	712	16	16	evil_tile_after_15	644	1
-7	1	792	725	evil_tile_15	3	evil_tile	0	-1	_none	1	-1
+7	1	792	725	evil_tile_enemy_15	3	evil_tile	0	-1	_none	1	-1
 10	1	800	680	16	16	evil_tile_after_16	644	1
-7	1	808	693	evil_tile_16	3	evil_tile	0	-1	_none	1	-1
+7	1	808	693	evil_tile_enemy_16	3	evil_tile	0	-1	_none	1	-1
 10	1	800	712	16	16	evil_tile_after_17	644	1
-7	1	808	725	evil_tile_17	3	evil_tile	0	-1	_none	1	-1
+7	1	808	725	evil_tile_enemy_17	3	evil_tile	0	-1	_none	1	-1
 10	1	848	648	16	16	evil_tile_after_18	644	1
-7	1	856	661	evil_tile_18	3	evil_tile	0	-1	_none	1	-1
+7	1	856	661	evil_tile_enemy_18	3	evil_tile	0	-1	_none	1	-1
 10	1	832	696	16	16	evil_tile_after_19	644	1
-7	1	840	709	evil_tile_19	3	evil_tile	0	-1	_none	1	-1
+7	1	840	709	evil_tile_enemy_19	3	evil_tile	0	-1	_none	1	-1
 10	1	784	728	16	16	evil_tile_after_20	644	1
-7	1	792	741	evil_tile_20	3	evil_tile	0	-1	_none	1	-1
+7	1	792	741	evil_tile_enemy_20	3	evil_tile	0	-1	_none	1	-1
 7	1	856	1053	enemy_7	3	skeletor	0	-1	_random	1	-1
 7	1	888	973	enemy_8	3	skeletor	0	-1	_random	1	-1
 7	1	728	477	enemy_9	3	tentacle	0	-1	_random	1	-1

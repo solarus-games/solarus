@@ -25,7 +25,7 @@ function map:on_started(destination_point_name)
   end
 end
 
-function map:on_map_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "from_ending" then
     map:start_dialog("credits_3")

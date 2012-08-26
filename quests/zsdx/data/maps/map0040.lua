@@ -67,7 +67,7 @@ function map:on_started(destination_point_name)
 end
 
 -- Called when the opening transition of the map finished
-function map:on_map_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name == "from_outside" then

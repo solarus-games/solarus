@@ -27,7 +27,7 @@ function map:on_door_open(door_name)
   end
 end
 
-function map:on_map_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "main_entrance" then
     map:start_dialog("dungeon_10.welcome")

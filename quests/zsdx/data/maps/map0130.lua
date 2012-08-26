@@ -58,7 +58,7 @@ function map:on_started(destination_point_name)
   map:tile_set_group_enabled("switch_floor", false)
 end
 
-function map:on_map_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "from_6f" then
     if not map:get_game():get_boolean(881) then

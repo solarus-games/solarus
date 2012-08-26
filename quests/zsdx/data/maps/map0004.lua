@@ -2,16 +2,16 @@ local map = ...
 -- Outside world B3
 
 -- Function called when the map starts
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- game ending sequence
-  if destination_point_name == "from_ending" then
+  if destination_point:get_name() == "from_ending" then
     map:get_hero():freeze()
     map:get_hero():set_visible(false)
     map:get_game():set_hud_enabled(false)
-    map:enemy_set_group_enabled("", false)
+    map:set_entities_enabled("enemy", false)
     sol.audio.play_music("fanfare")
-    map:tile_set_group_enabled("broken_rupee_house", false)
+    map:set_entities_eneabled("broken_rupee_house", false)
   else
     -- enable dark world
     if map:get_game():get_boolean(905) then
@@ -23,18 +23,18 @@ function map:on_started(destination_point_name)
 
     -- broken rupee house
     if map:get_game():get_boolean(155) then
-      map:teletransporter_set_enabled("to_rupee_house", false)
-      map:tile_set_enabled("rupee_house_door", false)
+      to_rupee_house:set_enabled(false)
+      rupee_house_door:set_enabled(false)
     else
-      map:teletransporter_set_enabled("to_broken_rupee_house", false)
-      map:tile_set_group_enabled("broken_rupee_house", false)
+      to_broken_rupee_house:set_enabled(false)
+      broken_rupee_house:set_enabled(false)
     end
   end
 
   local m = sol.movement.create("random_path")
   m:set_speed(32)
-  map:npc_start_movement("chignon_woman", m)
-  map:npc_get_sprite("chignon_woman"):set_animation("walking")
+  chignon_woman:start_movement(m)
+  chignon_woman:get_sprite():set_animation("walking")
 
   -- remove Tom's cave door if open
   if map:get_game():get_boolean(36) then
@@ -48,13 +48,13 @@ function map:on_started(destination_point_name)
 
   -- NPC
   if map:get_game():is_dungeon_finished(1) then
-    map:npc_remove("cliff_man")
+    cliff_man:remove()
   end
 end
 
-function map:on_map_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
-  if destination_point_name == "from_ending" then
+  if destination_point:get_name() == "from_ending" then
     map:start_dialog("credits_2")
     map:move_camera(184, 80, 25, function() end, 1e6)
   end
@@ -62,58 +62,55 @@ end
 
 -- Function called when the player presses the action key
 -- while facing an interactive entity
-function map:on_npc_interaction(npc_name)
+function tom_cave_door:on_interaction()
 
-  if npc_name == "tom_cave_door" then
+  -- open the door if the player has the clay key
+  if map:get_game():has_item("clay_key") then
+    sol.audio.play_sound("door_open")
+    sol.audio.play_sound("secret")
+    map:get_game():set_boolean(36, true)
+    remove_village_cave_door()
+  else
+    map:start_dialog("outside_world.village.clay_key_required")
+  end
+end
 
-    -- open the door if the player has the clay key
-    if map:get_game():has_item("clay_key") then
-      sol.audio.play_sound("door_open")
-      sol.audio.play_sound("secret")
-      map:get_game():set_boolean(36, true)
-      remove_village_cave_door()
-    else
-      map:start_dialog("outside_world.village.clay_key_required")
-    end
+function stone_lock:on_interaction()
 
-  elseif npc_name == "stone_lock" then
+  -- open the door if the player has the stone key
+  if map:get_game():has_item("stone_key") then
+    sol.audio.play_sound("door_open")
+    sol.audio.play_sound("secret")
+    map:get_game():set_boolean(159, true)
+    remove_stone_lock()
+  else
+    map:start_dialog("outside_world.stone_key_required")
+  end
+end
 
-    -- open the door if the player has the stone key
-    if map:get_game():has_item("stone_key") then
-      sol.audio.play_sound("door_open")
-      sol.audio.play_sound("secret")
-      map:get_game():set_boolean(159, true)
-      remove_stone_lock()
-    else
-      map:start_dialog("outside_world.stone_key_required")
-    end
+function chignon_woman:on_interaction()
 
-  elseif npc_name == "chignon_woman" then
-
-    if map:get_game():is_dungeon_finished(2) then
-      map:start_dialog("outside_world.village.chignon_woman_dungeons")
-    else
-      map:start_dialog("outside_world.village.chignon_woman")
-    end
+  if map:get_game():is_dungeon_finished(2) then
+    map:start_dialog("outside_world.village.chignon_woman_dungeons")
+  else
+    map:start_dialog("outside_world.village.chignon_woman")
   end
 end
 
 function remove_village_cave_door()
-  map:npc_remove("tom_cave_door")
-  map:tile_set_enabled("tom_cave_door_tile", false)
+  tom_cave_door:remove()
+  tom_cave_door_tile:set_enabled(false)
 end
 
 function remove_stone_lock()
-  map:npc_remove("stone_lock")
-  map:tile_set_group_enabled("stone_lock_tile", false)
+  stone_lock:remove()
+  map:set_entities_enabled("stone_lock_tile", false)
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function waterfall_sensor:on_activated()
 
-  if sensor_name == "waterfall_sensor" then
-    map:get_hero():start_jumping(6, 288, true)
-    sol.audio.play_sound("jump")
-  end
+  map:get_hero():start_jumping(6, 288, true)
+  sol.audio.play_sound("jump")
 end
 
 function map:on_hero_still_on_sensor(sensor_name)

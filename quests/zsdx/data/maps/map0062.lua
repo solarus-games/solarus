@@ -1,7 +1,7 @@
 local map = ...
 -- Dungeon 4 icy room
 
-function map:on_map_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point_name)
 
   if map:get_game():get_item("tunic") < 2 then
 

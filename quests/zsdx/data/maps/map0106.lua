@@ -54,7 +54,7 @@ function map:on_started(destination_point_name)
   map:tile_set_group_enabled("bridge", false)
 end
 
-function map:on_map_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point_name)
 
   -- show the welcome message
   if destination_point_name:find("^from_outside") then

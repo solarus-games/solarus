@@ -21,9 +21,9 @@ end
 
 -- The direction of the movement may have changed:
 -- update the direction of the fairy's sprite
-function item:on_movement_changed(pickable)
+function item:on_pickable_movement_changed(pickable)
 
-  if not pickable:is_following_entity() then
+  if pickable:get_followed_entity() == nil then
 
     local movement = pickable:get_movement()
     local sprite = pickable:get_sprite()

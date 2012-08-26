@@ -35,7 +35,7 @@ function item:on_pickable_created(pickable)
     m:set_delay(100)
     m:set_loop(false)
     m:set_ignore_obstacles(true)
-    self:start_movement(m)
+    pickable:start_movement(m)
   end
 end
 

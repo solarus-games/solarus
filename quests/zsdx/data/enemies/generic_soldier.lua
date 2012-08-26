@@ -134,7 +134,7 @@ function enemy:on_custom_attack_received(attack, sprite)
     sol.audio.play_sound("sword_tapping")
     being_pushed = true
     local x, y = self:get_position()
-    local angle = self:get_angle(self:get_map():get_hero() + math.pi)
+    local angle = self:get_angle(self:get_map():get_hero()) + math.pi
     local movement = sol.movement.create("straight")
     movement:set_speed(128)
     movement:set_angle(angle)

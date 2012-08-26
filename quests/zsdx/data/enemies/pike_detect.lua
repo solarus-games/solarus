@@ -26,10 +26,11 @@ end
 
 function enemy:on_update()
 
-  if state == "stopped" and self:get_distance_to_hero() <= 192 then
+  local hero = self:get_map():get_hero()
+  if state == "stopped" and self:get_distance(hero) <= 192 then
     -- Check whether the hero is close.
     local x, y = self:get_position()
-    local hero_x, hero_y = self:get_map():get_hero():get_position()
+    local hero_x, hero_y = hero:get_position()
     local dx, dy = hero_x - x, hero_y - y
 
     if math.abs(dy) < activation_distance then

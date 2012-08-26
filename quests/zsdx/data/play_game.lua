@@ -57,6 +57,12 @@ function game:has_bottle()
   return nil
 end
 
+function game:has_bottle_with(variant)
+
+  return self:get_first_bottle_with(variant) ~= nil
+end
+
+
 -- Run the game.
 game:start()
 

@@ -97,7 +97,7 @@ function item:on_variant_changed(variant)
   -- The possession state of a bottle has changed:
   -- see if the player has at least a fairy.
   -- TODO remove this when the gameover screen is scripted.
-  if self:has_bottle_with(6) then
+  if self:get_game():has_bottle_with(6) then
     self:get_game():set_ability("get_back_from_death", 1)
   else
     self:get_game():set_ability("get_back_from_death", 0)

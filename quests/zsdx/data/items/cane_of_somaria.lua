@@ -60,9 +60,9 @@ end
 function item:get_block_position_from_hero()
 
   -- Compute a position
-  local hero = self:get_map()
-  local x, y, layer = hero.get_position()
-  local direction = hero.get_direction()
+  local hero = self:get_map():get_hero()
+  local x, y, layer = hero:get_position()
+  local direction = hero:get_direction()
   if direction == 0 then
     x = x + 21
   elseif direction == 1 then

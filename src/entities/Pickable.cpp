@@ -20,13 +20,14 @@
 #include "entities/Hookshot.h"
 #include "movements/FallingOnFloorMovement.h"
 #include "movements/FollowMovement.h"
+#include "lua/LuaContext.h"
+#include "lowlevel/System.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "EquipmentItem.h"
-#include "lowlevel/System.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Sound.h"
 
 /**
  * @brief Creates a pickable item with the specified subtype.
@@ -480,5 +481,13 @@ void Pickable::draw_on_map() {
 
   // draw the sprite
   MapEntity::draw_on_map();
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Pickable::get_lua_type_name() const {
+  return LuaContext::entity_pickable_module_name;
 }
 

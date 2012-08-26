@@ -84,6 +84,8 @@ class Switch: public Detector {
     bool test_collision_custom(MapEntity& entity);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

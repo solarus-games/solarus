@@ -384,7 +384,15 @@ bool NPC::can_be_lifted() {
 
   // there is currently no way to specify from the data file of the map
   // that an interactive entity can be lifted (nor its weight, damage, sound, etc) so this is hardcoded
-  // TODO: specify the possibility to lift and the weight from the map script?
+  // TODO: specify the possibility to lift and the weight from Lua
   return has_sprite() && get_sprite().get_animation_set_id() == "entities/sign";
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& NPC::get_lua_type_name() const {
+  return LuaContext::entity_npc_module_name;
 }
 

@@ -298,3 +298,11 @@ void Block::reset() {
   this->maximum_moves = initial_maximum_moves;
 }
 
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Block::get_lua_type_name() const {
+  return LuaContext::entity_block_module_name;
+}
+

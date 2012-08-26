@@ -347,3 +347,11 @@ void Switch::try_activate() {
   }
 }
 
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Switch::get_lua_type_name() const {
+  return LuaContext::entity_switch_module_name;
+}
+

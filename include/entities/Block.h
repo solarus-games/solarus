@@ -70,6 +70,8 @@ class Block: public Detector {
     void notify_obstacle_reached();
 
     void reset();
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

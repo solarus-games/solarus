@@ -50,6 +50,7 @@
 #include "hero/HookshotState.h"
 #include "hero/BowState.h"
 #include "movements/StraightMovement.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -2257,5 +2258,13 @@ void Hero::start_state_from_ground() {
     start_free_or_carrying();
     break;
   }
+}
+
+/**
+ * @brief Returns the name identifying this type in Lua.
+ * @return The name identifying this type in Lua.
+ */
+const std::string& Hero::get_lua_type_name() const {
+  return LuaContext::entity_hero_module_name;
 }
 

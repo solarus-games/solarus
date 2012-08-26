@@ -94,6 +94,8 @@ class Door: public Detector {
     void close();
     void set_open(bool open);
     bool is_changing();
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

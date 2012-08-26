@@ -99,6 +99,8 @@ class NPC: public Detector {
     bool can_be_lifted();
 
     void update();
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

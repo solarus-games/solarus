@@ -85,6 +85,8 @@ class Pickable: public Detector {
     void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
     void update();
     void draw_on_map();
+
+    virtual const std::string& get_lua_type_name() const;
 };
 
 #endif

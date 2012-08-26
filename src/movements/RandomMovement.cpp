@@ -32,7 +32,8 @@
 RandomMovement::RandomMovement(int speed, int max_distance):
   StraightMovement(false, false),
   normal_speed(speed),
-  max_distance(max_distance) {
+  max_distance(max_distance),
+  next_direction_change_date(0) {
 
   set_next_direction();
 }
@@ -92,7 +93,7 @@ void RandomMovement::set_next_direction() {
   }
   set_angle(angle);
 
-  next_direction_change_date = System::now() + 500 + Random::get_number(3) * 500; // change again in 0.5 to 2 seconds
+  next_direction_change_date = System::now() + 500 + Random::get_number(1500); // change again in 0.5 to 2 seconds
 
   if (get_entity() != NULL) {
     get_entity()->notify_movement_changed();
@@ -113,6 +114,7 @@ void RandomMovement::update() {
   if (!is_suspended()) {
 
     uint32_t now = System::now();
+
     if (now >= next_direction_change_date) {
       set_next_direction();
     }

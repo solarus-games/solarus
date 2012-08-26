@@ -159,8 +159,8 @@ void LuaContext::register_entity_module() {
 
   // Block.
   static const luaL_Reg block_methods[] = {
-      { "block_reset", block_api_reset },
-      { "block_set_position", entity_api_set_position },
+      { "reset", block_api_reset },
+      { "set_position", entity_api_set_position },
       { NULL, NULL }
   };
   register_functions(entity_block_module_name, common_methods);

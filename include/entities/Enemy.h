@@ -76,62 +76,54 @@ class Enemy: public Detector {
 
   private:
 
-    std::string breed;  /**< breed of the enemy (determines its sprites and behavior) */
-
-    // attack/defense features of this type of enemy
-    int damage_on_hero;					/**< number of heart quarters the player loses when he gets hurt by this enemy;
-							 * this number is divided depending on the hero's tunic number (default: 1) */
-    int magic_damage_on_hero;				/**< number of magic points the player loses when he gets hurt
-							 * by this enemy (default: 0) */
-    int life;						/**< number of health points of the enemy (default: 1) */
-    HurtStyle hurt_style;			/**< style of sounds and animations when this enemy gets hurt
-							 * (default: HURT_NORMAL) */
-    static const std::string hurt_style_names[];  /**< name of each hurt style */
-    bool pushed_back_when_hurt;				/**< indicates whether the enemy is pushed back when it gets hurt by the hero
-							 * (default: true) */
-    bool push_hero_on_sword;		          	/**< indicates whether the hero is pushed back when he hurts the enemy with his
-							 * sword (default: false) */
-    bool can_hurt_hero_running;             /**< indicates that the enemy can attack the hero even when the hero is running */
-    int minimum_shield_needed;				/**< shield number needed by the hero to avoid the attack of this enemy,
-							 * or 0 to make the attack unavoidable (default: 0) */
-
-    EnemyReaction attack_reactions[ATTACK_NUMBER];      /**< indicates how the enemy reacts to each attack
-							 * (by default, it depends on the attacks) */
-    static const std::string attack_names[];            /**< name of each type of attack an enemy can receive */
-
-
     // enemy characteristics
-    Rank rank;						/**< is this enemy a normal enemy, a miniboss or a boss? */
-    int savegame_variable;				/**< index of the boolean variable indicating whether this enemy is killed,
-							 * or -1 if it is not saved */
-    ObstacleBehavior obstacle_behavior;                 /**< behavior with obstacles */
-    static const std::string obstacle_behavior_names[]; /**< name of each existing behavior with obstacles */
-    bool drawn_in_y_order;                              /**< indicates that the enemy is displayed as the same level as the hero */
+    std::string breed;                  /**< breed of the enemy (determines its sprites and behavior) */
+
+    int damage_on_hero;                /**< number of heart quarters the player loses when he gets hurt by this enemy;
+                                        * this number is divided depending on the hero's tunic number (default: 1) */
+    int magic_damage_on_hero;          /**< number of magic points the player loses when he gets hurt
+                                        * by this enemy (default: 0) */
+    int life;                          /**< number of health points of the enemy (default: 1) */
+    HurtStyle hurt_style;              /**< style of sounds and animations when this enemy gets hurt
+                                        * (default: HURT_NORMAL) */
+    bool pushed_back_when_hurt;        /**< indicates whether the enemy is pushed back when it gets hurt by the hero
+                                        * (default: true) */
+    bool push_hero_on_sword;           /**< indicates whether the hero is pushed back when he hurts the enemy with his
+                                        * sword (default: false) */
+    bool can_hurt_hero_running;        /**< indicates that the enemy can attack the hero even when the hero is running */
+    int minimum_shield_needed;         /**< shield number needed by the hero to avoid the attack of this enemy,
+                                        * or 0 to make the attack unavoidable (default: 0) */
+    EnemyReaction
+        attack_reactions[ATTACK_NUMBER];  /**< indicates how the enemy reacts to each attack
+                                           * (by default, it depends on the attacks) */
+    Rank rank;                         /**< is this enemy a normal enemy, a miniboss or a boss? */
+    int savegame_variable;             /**< index of the boolean variable indicating whether this enemy is killed,
+                                        * or -1 if it is not saved */
+    ObstacleBehavior obstacle_behavior; /**< behavior with obstacles */
+    bool drawn_in_y_order;             /**< indicates that the enemy is displayed as the same level as the hero */
 
     // enemy state
-    bool enabled;					/**< indicates that the enemy is enabled */
-    bool being_hurt;					/**< indicates that the enemy is being hurt */
-    uint32_t stop_hurt_date;				/**< date when the enemy stops being hurt */
-    bool invulnerable;					/**< indicates that the enemy cannot be hurt for now */
-    uint32_t vulnerable_again_date;			/**< date when the enemy can be hurt again */
-    bool can_attack;					/**< indicates that the enemy can currently attack the hero */
-    uint32_t can_attack_again_date;			/**< date when the enemy can attack again (0 means never) */
-    bool immobilized;					/**< indicates that the enemy is currently immobilized */
-    uint32_t start_shaking_date;			/**< date when the enemy shakes */ 
-    uint32_t end_shaking_date;				/**< date when the enemy stops shaking and walks again */ 
+    bool initialized;                  /**< indicates that the enemy's script is loaded */
+    bool being_hurt;                   /**< indicates that the enemy is being hurt */
+    uint32_t stop_hurt_date;           /**< date when the enemy stops being hurt */
+    bool invulnerable;                 /**< indicates that the enemy cannot be hurt for now */
+    uint32_t vulnerable_again_date;    /**< date when the enemy can be hurt again */
+    bool can_attack;                   /**< indicates that the enemy can currently attack the hero */
+    uint32_t can_attack_again_date;    /**< date when the enemy can attack again (0 means never) */
+    bool immobilized;                  /**< indicates that the enemy is currently immobilized */
+    uint32_t start_shaking_date;       /**< date when the enemy shakes */
+    uint32_t end_shaking_date;         /**< date when the enemy stops shaking and walks again */
 
-    // treasure
-    Treasure treasure;					/**< pickable item that appears when this enemy gets killed */
+    Treasure treasure;                 /**< pickable item that appears when this enemy gets killed */
 
     // boss or mini-boss
-    bool exploding;					/**< indicates that the boss is dying and some explosions are triggered on him */
-    int nb_explosions;					/**< number of explosions already played */
-    uint32_t next_explosion_date;			/**< date of the next explosion */
+    bool exploding;                    /**< indicates that the boss is dying and some explosions are triggered on him */
+    int nb_explosions;                 /**< number of explosions already played */
+    uint32_t next_explosion_date;      /**< date of the next explosion */
 
     // creation
     Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
         const std::string& breed, const Treasure& treasure);
-
     void initialize();
 
     // hurt the enemy

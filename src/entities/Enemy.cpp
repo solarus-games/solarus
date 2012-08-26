@@ -67,6 +67,7 @@ Enemy::Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
   savegame_variable(-1),
   obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
   drawn_in_y_order(true),
+  initialized(false),
   being_hurt(false),
   stop_hurt_date(0),
   invulnerable(false),
@@ -188,7 +189,10 @@ EntityType Enemy::get_type() {
  */
 void Enemy::initialize() {
 
-  get_lua_context().notify_enemy_created(*this);
+  if (!initialized) {
+    initialized = true;
+    get_lua_context().notify_enemy_created(*this);
+  }
 }
 
 /**
@@ -611,7 +615,7 @@ const std::string& Enemy::get_animation() {
  *
  * @param animation name of the animation to set
  */
-void Enemy::set_animation(const std::string &animation) {
+void Enemy::set_animation(const std::string& animation) {
 
   std::list<Sprite*>::iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
@@ -765,7 +769,9 @@ void Enemy::notify_enabled(bool enabled) {
   Detector::notify_enabled(enabled);
 
   if (enabled) {
-    initialize();
+    if (!initialized) {
+      initialize();
+    }
     restart();
     get_lua_context().enemy_on_enabled(*this);
   }

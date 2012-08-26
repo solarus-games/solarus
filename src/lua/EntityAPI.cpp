@@ -634,7 +634,6 @@ int LuaContext::entity_api_start_movement(lua_State* l) {
   MapEntity& entity = check_entity(l, 1);
   Movement& movement = check_movement(l, 2);
 
-  movement.set_suspended(false);
   entity.clear_movement();
   entity.set_movement(&movement);
 

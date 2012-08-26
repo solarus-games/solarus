@@ -249,7 +249,6 @@ void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref,
   this->line_it = dialog.get_lines().begin();
   this->line_index = 0;
   this->char_index = 0;
-  game.get_lua_context().cancel_callback(this->callback_ref);
   this->callback_ref = callback_ref;
   this->skipped = false;
 

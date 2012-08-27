@@ -1,59 +1,52 @@
 local map = ...
 -- Sahasrahla's cave icy room
 
-frozen_door_sprite = nil
-frozen_door_opposite_sprite = nil
+local frozen_door_sprite = nil
+local frozen_door_opposite_sprite = nil
 
 -- Function called when the map starts
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   if map:get_game():get_boolean(35) then
     -- remove the frozen door
-    map:npc_remove("frozen_door")
-    map:npc_remove("frozen_door_opposite")
+    frozen_door:remove()
+    frozen_door_opposite:remove()
   else
     -- initialize the direction of the frozen door sprites
-    frozen_door_sprite = map:npc_get_sprite("frozen_door")
-    frozen_door_opposite_sprite = map:npc_get_sprite("frozen_door_opposite")
+    frozen_door_sprite = frozen_door:get_sprite()
+    frozen_door_opposite_sprite = frozen_door_opposite:get_sprite()
     frozen_door_sprite:set_direction(3)
     frozen_door_opposite_sprite:set_direction(1)
   end
 end
 
 -- Function called when the player presses the action key on the frozen door
-function map:on_npc_interaction(npc_name)
-
-  if npc_name == "frozen_door" then
-    map:start_dialog("sahasrahla_house.frozen_door")
-    map:get_game():set_boolean(34, true)
-  end
+function frozen_door:on_interaction()
+  map:start_dialog("sahasrahla_house.frozen_door")
+  map:get_game():set_boolean(34, true)
 end
 
 -- Function called when the player uses an item on the frozen door
-function map:on_npc_interaction_item(npc_name, item_name, variant)
+function frozen_door:on_interaction_item(item)
 
-  if npc_name == "frozen_door" and
-      string.find(item_name, "^bottle") and variant == 2 then
+  if item:get_name():find("^bottle") and item:get_variant() == 2 then
 
     -- using water on the frozen door
     map:get_hero():freeze()
     sol.audio.play_sound("item_in_water")
     frozen_door_sprite:set_animation("disappearing")
     frozen_door_opposite_sprite:set_animation("disappearing")
-    sol.timer.start(800, timer_frozen_door)
-    map:get_game():set_item(item_name, 1) -- make the bottle empty
+    sol.timer.start(800, function()
+      sol.audio.play_sound("secret")
+      map:get_game():set_boolean(35, true)
+      frozen_door:remove()
+      frozen_door_opposite:remove()
+      map:get_hero():unfreeze()
+    end)
+    item:set_variant(1) -- make the bottle empty
     return true
   end
 
   return false
-end
-
--- Function called when the door is unfreezed
-function timer_frozen_door()
-  sol.audio.play_sound("secret")
-  map:get_game():set_boolean(35, true)
-  map:npc_remove("frozen_door")
-  map:npc_remove("frozen_door_opposite")
-  map:get_hero():unfreeze()
 end
 

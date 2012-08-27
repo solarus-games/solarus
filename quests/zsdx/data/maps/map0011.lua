@@ -2,7 +2,7 @@ local map = ...
 -- Grandma house
 
 -- The player talks to grandma
-function map:on_npc_interaction(npc_name)
+function grandma:on_interaction()
 
   local has_smith_sword = map:get_game():get_boolean(30)
   local has_clay_key = map:get_game():get_boolean(28)

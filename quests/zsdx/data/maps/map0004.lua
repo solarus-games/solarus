@@ -50,12 +50,30 @@ function map:on_started(destination_point)
   if map:get_game():is_dungeon_finished(1) then
     cliff_man:remove()
   end
+
+  -- Entrances of houses.
+  local entrances = {
+    "rupee_house", "lyly"
+  }
+  for _, entrance_name in ipairs(entrance_names) do
+    local sensor = map:get_entity(entrance_name .. "_door_sensor")
+    local tile = map:get_entity(entrance_name .. "_door")
+
+    sensor:on_activated_repeat = function()
+    if map:get_hero():get_direction() == 1
+        and tile:is_enabled() then
+      tile:set_enabled(false)
+      sol.audio.play_sound("door_open")
+    end
+  end
 end
 
 function map:on_opening_transition_finished(destination_point)
 
   if destination_point:get_name() == "from_ending" then
-    map:start_dialog("credits_2")
+    map:start_dialog("credits_2", function()
+      sol.timer.start(2000, ending_next)
+    end)
     map:move_camera(184, 80, 25, function() end, 1e6)
   end
 end
@@ -111,31 +129,6 @@ function waterfall_sensor:on_activated()
 
   map:get_hero():start_jumping(6, 288, true)
   sol.audio.play_sound("jump")
-end
-
-function map:on_hero_still_on_sensor(sensor_name)
-
-  -- entrances of houses
-  local entrances = {
-    "rupee_house", "lyly"
-  }
-  for i = 1, #entrances do
-    if sensor_name == entrances[i] .. "_door_sensor" then
-      if map:get_hero():get_direction() == 1
-          and map:tile_is_enabled(entrances[i] .. "_door") then
-        map:tile_set_enabled(entrances[i] .. "_door", false)
-        sol.audio.play_sound("door_open")
-      end
-      break
-    end
-  end
-end
-
-function map:on_dialog_finished(dialog_id)
-
-  if dialog_id == "credits_2" then
-   sol.timer.start(2000, ending_next)
-  end
 end
 
 function ending_next()

@@ -1,14 +1,14 @@
 local map = ...
 -- Outside world A1
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- game ending sequence
-  if destination_point_name == "from_ending" then
+  if destination_point:get_name() == "from_ending" then
     map:get_hero():freeze()
     map:get_hero():set_visible(false)
     map:get_game():set_hud_enabled(false)
-    map:enemy_set_group_enabled("", false)
+    map:set_entities_enabled("enemy", false)
     sol.audio.play_music("fanfare")
   else
     -- enable dark world
@@ -23,39 +23,31 @@ function map:on_started(destination_point_name)
   end
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
-  if destination_point_name == "from_ending" then
-    map:start_dialog("credits_1")
+  if destination_point:get_name() == "from_ending" then
+    map:start_dialog("credits_1", function()
+      sol.timer.start(2000, ending_next)
+    end)
     map:move_camera(1000, 240, 25, function() end, 1e6)
   end
 end
 
 function remove_dungeon_7_lock()
-  map:npc_remove("dungeon_7_lock")
-  map:tile_set_group_enabled("dungeon_7_lock_tile", false)
+  dungeon_7_lock:remove()
+  map:set_entities_enabled("dungeon_7_lock_tile", false)
 end
 
-function map:on_npc_interaction(npc_name)
+function dungeon_7_lock:on_interaction()
 
-  if npc_name == "dungeon_7_lock" then
-
-    -- open the door if the player has the ice key
-    if map:get_game():has_item("ice_key") then
-      sol.audio.play_sound("door_open")
-      sol.audio.play_sound("secret")
-      map:get_game():set_boolean(919, true)
-      remove_dungeon_7_lock()
-    else
-      map:start_dialog("outside_world.ice_key_required")
-    end
-  end
-end
-
-function map:on_dialog_finished(dialog_id)
-
-  if dialog_id == "credits_1" then
-   sol.timer.start(2000, ending_next)
+  -- open the door if the player has the ice key
+  if map:get_game():has_item("ice_key") then
+    sol.audio.play_sound("door_open")
+    sol.audio.play_sound("secret")
+    map:get_game():set_boolean(919, true)
+    remove_dungeon_7_lock()
+  else
+    map:start_dialog("outside_world.ice_key_required")
   end
 end
 

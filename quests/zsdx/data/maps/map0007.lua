@@ -1,7 +1,7 @@
 local map = ...
 -- Outside world B2
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- enable dark world
   if map:get_game():get_boolean(905) then
@@ -23,101 +23,108 @@ function map:on_started(destination_point_name)
 
   -- Inferno
   if not map:get_game():is_dungeon_finished(5) then
-    map:npc_remove("inferno")
+    inferno:remove()
   else
-    local sprite = map:npc_get_sprite("inferno")
-    sprite:set_ignore_suspend(true)
+    inferno:get_sprite():set_ignore_suspend(true)
     if map:get_game():get_boolean(914) then
       inferno_set_open()
     end
   end
   if not map:get_game():get_boolean(914) then
-    map:teletransporter_set_enabled("to_dungeon_6", false)
+    to_dungeon_6:set_enabled(false)
   end
-  map:sensor_set_enabled("inferno_sensor", false)
+  inferno_sensor:set_enabled(false)
 end
 
 function remove_iron_lock()
-  map:npc_remove("iron_lock")
-  map:tile_set_group_enabled("iron_lock_tile", false)
+  iron_lock:remove()
+  map:set_entities_enabled("iron_lock_tile", false)
 end
 
 function remove_wooden_lock()
-  map:npc_remove("wooden_lock")
-  map:tile_set_group_enabled("wooden_lock_tile", false)
+  wooden_lock:remove()
+  map:set_entities_enabled("wooden_lock_tile", false)
 end
 
-function map:on_npc_interaction(npc_name)
+function iron_lock:on_interaction()
 
-  if npc_name == "iron_lock" then
+  -- open the door if the player has the iron key
+  if map:get_game():has_item("iron_key") then
+    sol.audio.play_sound("door_open")
+    sol.audio.play_sound("secret")
+    map:get_game():set_boolean(193, true)
+    remove_iron_lock()
+  else
+    map:start_dialog("outside_world.iron_key_required")
+  end
+end
 
-    -- open the door if the player has the iron key
-    if map:get_game():has_item("iron_key") then
-      sol.audio.play_sound("door_open")
-      sol.audio.play_sound("secret")
-      map:get_game():set_boolean(193, true)
-      remove_iron_lock()
+function wooden_lock:on_interaction()
+
+  -- open the door if the player has the wooden key
+  if map:get_game():has_item("wooden_key") then
+    sol.audio.play_sound("door_open")
+    sol.audio.play_sound("secret")
+    map:get_game():set_boolean(194, true)
+    remove_wooden_lock()
+  else
+    map:start_dialog("outside_world.wooden_key_required")
+  end
+end
+
+function inferno:on_interaction()
+
+  if not map:get_game():get_boolean(915) then
+    -- first time
+    map:start_dialog("inferno.first_time")
+    map:get_game():set_boolean(915, true)
+  elseif not map:get_game():get_boolean(914) then
+    -- not open yet
+    if not map:get_game():get_item("fire_stones_counter"):has_amount(3) then
+      map:start_dialog("inferno.find_fire_stones")
     else
-      map:start_dialog("outside_world.iron_key_required")
-    end
-
-  elseif npc_name == "wooden_lock" then
-
-    -- open the door if the player has the wooden key
-    if map:get_game():has_item("wooden_key") then
-      sol.audio.play_sound("door_open")
-      sol.audio.play_sound("secret")
-      map:get_game():set_boolean(194, true)
-      remove_wooden_lock()
-    else
-      map:start_dialog("outside_world.wooden_key_required")
-    end
-
-  elseif npc_name == "inferno" then
-
-    if not map:get_game():get_boolean(915) then
-      -- first time
-      map:start_dialog("inferno.first_time")
-      map:get_game():set_boolean(915, true)
-    elseif not map:get_game():get_boolean(914) then
-      -- not open yet
-      if map:get_game():get_item_amount("fire_stones_counter") < 3 then
-        map:start_dialog("inferno.find_fire_stones")
-      else
-        map:start_dialog("inferno.found_fire_stones")
-      end
+      map:start_dialog("inferno.found_fire_stones", function(answer)
+        if answer == 0 then
+          -- black stones
+          map:start_dialog("inferno.want_black_stones", function()
+            inferno_open()
+          end)
+        else
+          -- 100 rupees
+          if not map:get_game():get_boolean(916) then
+            map:start_dialog("inferno.want_rupees", function()
+              map:get_hero():start_treasure("rupee", 5, 916)
+            end)
+          else
+            map:start_dialog("inferno.want_rupees_again")
+          end
+        end 
+      end)
     end
   end
 end
 
 function inferno_open()
 
-  map:sensor_set_enabled("inferno_sensor", true)
+  inferno_sensor:set_enabled(true)
   map:get_hero():walk("66", false, false)
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function inferno_sensor:on_activated()
 
-  -- Inferno
-  if sensor_name == "inferno_sensor" then
-    local sprite = map:npc_get_sprite("inferno")
-    sprite:set_animation("opening")
-    sol.timer.start(1050, inferno_open_finish)
-    map:get_hero():freeze()
-    map:get_hero():set_direction(1)
-    map:sensor_set_enabled("inferno_sensor", false)
-  end
+  inferno:get_sprite():set_animation("opening")
+  sol.timer.start(1050, inferno_open_finish)
+  map:get_hero():freeze()
+  map:get_hero():set_direction(1)
+  inferno_sensor:set_enabled(false)
 end
 
-function map:on_hero_still_on_sensor(sensor_name)
+function potion_shop_door_sensor:on_activated_repeat()
 
-  -- Witch hut entrance
-  if sensor_name == "potion_shop_door_sensor" then
-    if map:get_hero():get_direction() == 1
-        and map:tile_is_enabled("potion_shop_door") then
-      map:tile_set_enabled("potion_shop_door", false)
-      sol.audio.play_sound("door_open")
-    end
+  if map:get_hero():get_direction() == 1
+    and potion_shop_door:is_enabled() then
+    potion_shop_door:set_enabled(false)
+    sol.audio.play_sound("door_open")
   end
 end
 
@@ -131,30 +138,7 @@ end
 
 function inferno_set_open()
 
-  local sprite = map:npc_get_sprite("inferno")
-  sprite:set_animation("open")
-  map:teletransporter_set_enabled("to_dungeon_6", true)
-end
-
-function map:on_dialog_finished(dialog_id, answer)
-
-  if dialog_id == "inferno.found_fire_stones" then
-
-    if answer == 0 then
-      -- black stones
-      map:start_dialog("inferno.want_black_stones")
-    else
-      -- 100 rupees
-      if not map:get_game():get_boolean(916) then
-        map:start_dialog("inferno.want_rupees")
-      else
-        map:start_dialog("inferno.want_rupees_again")
-      end
-    end 
-  elseif dialog_id == "inferno.want_rupees" then
-    map:get_hero():start_treasure("rupee", 5, 916)
-  elseif dialog_id == "inferno.want_black_stones" then
-    inferno_open()
-  end
+  inferno:get_sprite():set_animation("open")
+  to_dungeon_6:set_enabled(true)
 end
 

@@ -44,23 +44,23 @@ local bats = {
 local nb_bats_created = 0
 local bonuses_done = {}
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   if not map:get_game():get_boolean(881) then
     sol.audio.play_music("ganon_createds")
-    map:enemy_set_enabled("boss", true)
-    map:npc_set_enabled("zelda", false)
-    map:npc_set_group_enabled("child", false)
+    boss:set_enabled(true)
+    zelda:set_enabled(false)
+    map:set_entities_enabled("child", false)
     map:get_hero():save_solid_ground()
   end
 
-  map:switch_set_group_enabled("switch", false)
-  map:tile_set_group_enabled("switch_floor", false)
+  map:set_entities_enabled("switch", false)
+  map:set_entities_enabled("switch_floor", false)
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
-  if destination_point_name == "from_6f" then
+  if destination_point:get_name() == "from_6f" then
     if not map:get_game():get_boolean(881) then
       map:start_dialog("dungeon_9.boss")
     else
@@ -118,10 +118,10 @@ function start_zelda_sequence()
   sol.audio.play_music("triforce")
   map:get_hero():freeze()
   map:get_hero():set_direction(1)
-  map:npc_set_enabled("zelda", true)
+  zelda:set_enabled(true)
   for i = 1, 8 do
     local npc_name = "child_" .. i
-    map:npc_set_enabled(npc_name, true)
+    map:get_entity(npc_name):set_enabled(true)
     local sprite = map:npc_get_sprite(npc_name)
     sprite:set_ignore_suspend(true)
     sprite:fade_in()
@@ -155,9 +155,9 @@ function map:on_npc_collision_fire(npc_name)
       check_torches()
       torches_timers[npc_name] = sol.timer.start(torches_delay, function()
         torch_sprite:set_animation("unlit")
-	if map:switch_is_enabled("switch_1") then
-	  map:tile_set_group_enabled("switch_floor", false)
-	  map:switch_set_group_enabled("switch", false)
+	if switch_1:is_enabled() then
+	  map:set_entities_enabled("switch_floor", false)
+	  map:set_entities_enabled("switch", false)
 	  sol.audio.play_sound("door_closed")
 	end
         check_torches()
@@ -177,10 +177,10 @@ end
 function check_torches()
   
   local states = {
-    map:npc_get_sprite("torch_1"):get_animation() == "lit",
-    map:npc_get_sprite("torch_2"):get_animation() == "lit",
-    map:npc_get_sprite("torch_3"):get_animation() == "lit",
-    map:npc_get_sprite("torch_4"):get_animation() == "lit"
+    torch_1:get_sprite():get_animation() == "lit",
+    torch_2:get_sprite():get_animation() == "lit",
+    torch_3:get_sprite():get_animation() == "lit",
+    torch_4:get_sprite():get_animation() == "lit"
   }
   local on = {}
 
@@ -273,7 +273,7 @@ end
 
 function torches_solved()
 
-  if map:tile_is_enabled("floor_down_1") then
+  if floor_down_1:is_enabled() then
     -- phase 1
     if allow_stone_creation then
       sol.audio.play_sound("secret")
@@ -283,10 +283,10 @@ function torches_solved()
     -- phase 2
     sol.audio.play_sound("secret")
     sol.audio.play_sound("door_open")
-    map:tile_set_group_enabled("switch_floor", true)
-    map:switch_set_group_enabled("switch", true)
+    map:set_entities_enabled("switch_floor", true)
+    map:set_entities_enabled("switch", true)
     for i = 1, 4 do
-      map:switch_set_activated("switch_" .. i, false)
+      map:get_entity("switch_" .. i):set_activated(false)
       bonuses_done[i] = nil
     end
   end

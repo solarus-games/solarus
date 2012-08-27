@@ -14,98 +14,98 @@ local map = ...
 
 local timer
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
   if not map:get_game():get_boolean(711) then
-    map:chest_set_enabled("RC100", false)
+    RC100:set_enabled(false)
   end
-  if destination_point_name == "from_B3_C" then
+  if destination_point:get_name() == "from_B3_C" then
     map:set_doors_open("LD15", true)
     for i = 1, 9 do
-      map:switch_set_activated("BRoom" .. i, true)
+      map:get_entity("BRoom" .. i):set_activated(true)
     end
   end
 end
 
 function button_room_test_combination()
-  if map:switch_is_activated("BRoom1")
-    and map:switch_is_activated("BRoom2")
-    and map:switch_is_activated("BRoom3")
-    and map:switch_is_activated("BRoom4")
-    and map:switch_is_activated("BRoom5")
-    and map:switch_is_activated("BRoom6")
-    and map:switch_is_activated("BRoom7")
-    and map:switch_is_activated("BRoom8")
-    and map:switch_is_activated("BRoom9") then
-    if not map:door_is_open("LD15") then
+  if BRoom1:is_activated()
+    and BRoom2:is_activated()
+    and BRoom3:is_activated()
+    and BRoom4:is_activated()
+    and BRoom5:is_activated()
+    and BRoom6:is_activated()
+    and BRoom7:is_activated()
+    and BRoom8:is_activated()
+    and BRoom9:is_activated() then
+    if not LD15:is_open() then
       sol.audio.play_sound("secret")
       map:open_doors("LD15")
-      map:switch_set_activated("BRoomReset", true)
+      BRoomReset:set_activated(true)
     end
   end
 end
 
 function map:on_switch_activated(switch_name)
   if switch_name == "BRoom1" then
-    map:switch_set_activated("BRoom2", not map:switch_is_activated("BRoom2"))
-    map:switch_set_activated("BRoom4", not map:switch_is_activated("BRoom4"))
-    map:switch_set_activated("BRoomReset", false)
+    BRoom2:set_activated(not BRoom2:is_activated())
+    BRoom4:set_activated(not BRoom4:is_activated())
+    BRoomReset:set_activated(false)
     button_room_test_combination()
   elseif switch_name == "BRoom2" then
-    map:switch_set_activated("BRoom1", not map:switch_is_activated("BRoom1"))
-    map:switch_set_activated("BRoom3", not map:switch_is_activated("BRoom3"))
-    map:switch_set_activated("BRoom5", not map:switch_is_activated("BRoom5"))
-    map:switch_set_activated("BRoomReset", false)
+    BRoom1:set_activated(not BRoom1:is_activated())
+    BRoom3:set_activated(not BRoom3:is_activated())
+    BRoom5:set_activated(not BRoom5:is_activated())
+    BRoomReset:set_activated(false)
     button_room_test_combination()
   elseif switch_name == "BRoom3" then
-    map:switch_set_activated("BRoom2", not map:switch_is_activated("BRoom2"))
-    map:switch_set_activated("BRoom6", not map:switch_is_activated("BRoom6"))
-    map:switch_set_activated("BRoomReset", false)
+    BRoom2:set_activated(not BRoom2:is_activated())
+    BRoom6:set_activated(not BRoom6:is_activated())
+    BRoomReset:set_activated(false)
     button_room_test_combination()
   elseif switch_name == "BRoom4" then
-    map:switch_set_activated("BRoom1", not map:switch_is_activated("BRoom1"))
-    map:switch_set_activated("BRoom5", not map:switch_is_activated("BRoom5"))
-    map:switch_set_activated("BRoom7", not map:switch_is_activated("BRoom7"))
-    map:switch_set_activated("BRoomReset", false)
+    BRoom1:set_activated(not BRoom1:is_activated())
+    BRoom5:set_activated(not BRoom5:is_activated())
+    BRoom7:set_activated(not BRoom7:is_activated())
+    BRoomReset:set_activated(false)
     button_room_test_combination()
   elseif switch_name == "BRoom5" then
-    map:switch_set_activated("BRoom2", not map:switch_is_activated("BRoom2"))
-    map:switch_set_activated("BRoom4", not map:switch_is_activated("BRoom4"))
-    map:switch_set_activated("BRoom6", not map:switch_is_activated("BRoom6"))
-    map:switch_set_activated("BRoom8", not map:switch_is_activated("BRoom8"))
-    map:switch_set_activated("BRoomReset", false)
+    BRoom2:set_activated(not BRoom2:is_activated())
+    BRoom4:set_activated(not BRoom4:is_activated())
+    BRoom6:set_activated(not BRoom6:is_activated())
+    BRoom8:set_activated(not BRoom8:is_activated())
+    BRoomReset:set_activated(false)
     button_room_test_combination()
   elseif switch_name == "BRoom6" then
-    map:switch_set_activated("BRoom3", not map:switch_is_activated("BRoom3"))
-    map:switch_set_activated("BRoom5", not map:switch_is_activated("BRoom5"))
-    map:switch_set_activated("BRoom9", not map:switch_is_activated("BRoom9"))
-    map:switch_set_activated("BRoomReset", false)
+    BRoom3:set_activated(not BRoom3:is_activated())
+    BRoom5:set_activated(not BRoom5:is_activated())
+    BRoom9:set_activated(not BRoom9:is_activated())
+    BRoomReset:set_activated(false)
     button_room_test_combination()
   elseif switch_name == "BRoom7" then
-    map:switch_set_activated("BRoom4", not map:switch_is_activated("BRoom4"))
-    map:switch_set_activated("BRoom8", not map:switch_is_activated("BRoom8"))
-    map:switch_set_activated("BRoomReset", false)
+    BRoom4:set_activated(not BRoom4:is_activated())
+    BRoom8:set_activated(not BRoom8:is_activated())
+    BRoomReset:set_activated(false)
     button_room_test_combination()
   elseif switch_name == "BRoom8" then
-    map:switch_set_activated("BRoom5", not map:switch_is_activated("BRoom5"))
-    map:switch_set_activated("BRoom7", not map:switch_is_activated("BRoom7"))
-    map:switch_set_activated("BRoom9", not map:switch_is_activated("BRoom9"))
-    map:switch_set_activated("BRoomReset", false)
+    BRoom5:set_activated(not BRoom5:is_activated())
+    BRoom7:set_activated(not BRoom7:is_activated())
+    BRoom9:set_activated(not BRoom9:is_activated())
+    BRoomReset:set_activated(false)
     button_room_test_combination()
   elseif switch_name == "BRoom9" then
-    map:switch_set_activated("BRoom6", not map:switch_is_activated("BRoom6"))
-    map:switch_set_activated("BRoom8", not map:switch_is_activated("BRoom8"))
-    map:switch_set_activated("BRoomReset", false)
+    BRoom6:set_activated(not BRoom6:is_activated())
+    BRoom8:set_activated(not BRoom8:is_activated())
+    BRoomReset:set_activated(false)
     button_room_test_combination()
   elseif switch_name == "BRoomReset" then
-    map:switch_set_activated("BRoom1", false)
-    map:switch_set_activated("BRoom2", false)
-    map:switch_set_activated("BRoom3", false)
-    map:switch_set_activated("BRoom4", false)
-    map:switch_set_activated("BRoom5", false)
-    map:switch_set_activated("BRoom6", false)
-    map:switch_set_activated("BRoom7", false)
-    map:switch_set_activated("BRoom8", false)
-    map:switch_set_activated("BRoom9", false)
+    BRoom1:set_activated(false)
+    BRoom2:set_activated(false)
+    BRoom3:set_activated(false)
+    BRoom4:set_activated(false)
+    BRoom5:set_activated(false)
+    BRoom6:set_activated(false)
+    BRoom7:set_activated(false)
+    BRoom8:set_activated(false)
+    BRoom9:set_activated(false)
   elseif switch_name == "DB16" then
     map:move_camera(808, 1056, 250, DB16_open_door)
   end
@@ -117,7 +117,7 @@ end
 
 function DB16_time_out()
   map:close_doors("LD16")
-  map:switch_set_activated("DB16", false)
+  DB16:set_activated(false)
 end
 
 function map:on_camera_back()
@@ -139,9 +139,9 @@ end
 function map:on_enemy_dead(enemy_name)
   if string.find(enemy_name, "^rupee_enemy") and not map:has_entities("rupee_enemy") then	
     -- 100 rupee room: kill all enemies
-    if not map:chest_is_enabled("RC100") then
+    if not RC100:is_enabled() then
       sol.audio.play_sound("chest_appears")
-      map:chest_set_enabled("RC100", true)
+      RC100:set_enabled(true)
     end
   end
 end
@@ -153,7 +153,7 @@ function map:on_hero_on_sensor(sensor_name)
       timer:stop()
       timer = nil
     end
-    map:sensor_set_enabled(sensor_name, false)
+    map:get_entity(sensor_name):set_enabled(false)
   end
 end
 

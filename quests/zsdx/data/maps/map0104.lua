@@ -3,23 +3,23 @@ local map = ...
 
 local door_timer
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
-  if destination_point_name == "from_1f_w" then
+  if destination_point:get_name() == "from_1f_w" then
     map:set_doors_open("door", true)
-    map:switch_set_activated("door_switch", true)
+    door_switch:set_activated(true)
   end
 end
 
 function map:on_switch_activated(switch_name)
 
   if switch_name == "door_switch"
-      and not map:door_is_open("door") then
+      and not door:is_open() then
     sol.audio.play_sound("secret")
     map:open_doors("door")
     door_timer = sol.timer.start(12000, true, function()
       map:close_doors("door")
-      map:switch_set_activated(switch_name, false)
+      map:get_entity(switch_name):set_activated(false)
     end)
   end
 end
@@ -32,7 +32,7 @@ function map:on_hero_on_sensor(sensor_name)
       door_timer:stop()
       door_timer = nil
     end
-    map:sensor_set_enabled(sensor_name, false)
+    map:get_entity(sensor_name):set_enabled(false)
   end
 end
 

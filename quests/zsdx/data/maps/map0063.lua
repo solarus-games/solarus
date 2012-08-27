@@ -5,14 +5,14 @@ sol.main.do_file("maps/prison_guard")
 
 puzzle_next_sensor = 1
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   init_guard("guard_3", {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,4,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0})
 
   if map:get_game():get_boolean(515) then
-    map:tile_set_enabled("weak_floor", false)
-    map:sensor_set_enabled("weak_floor_sensor", false)
-    map:block_set_enabled("weak_floor_block", false)
+    weak_floor:set_enabled(false)
+    weak_floor_sensor:set_enabled(false)
+    weak_floor_block:set_enabled(false)
   end
 
   -- blocks necessary to go back when found the feather
@@ -22,12 +22,12 @@ function map:on_started(destination_point_name)
   end
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
   -- show the welcome message
-  if destination_point_name == "from_roof"
-      or destination_point_name == "from_outside_w"
-      or destination_point_name == "from_outside_e" then
+  if destination_point:get_name() == "from_roof"
+      or destination_point == "from_outside_w"
+      or destination_point == "from_outside_e" then
     map:start_dialog("dungeon_5.welcome")
   end
 end
@@ -89,7 +89,7 @@ end
 function map:on_switch_activated(switch_name)
 
   if switch_name == "statue_switch"
-      and not map:door_is_open("statue_door") then
+      and not statue_door:is_open() then
     map:move_camera(432, 536, 250, open_statue_door)
   end
 end
@@ -105,21 +105,21 @@ end
 function are_all_torches_on()
 
   return map:npc_exists("torch_1")
-      and map:npc_get_sprite("torch_1"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_2"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_3"):get_animation() == "lit"
+      and torch_1:get_sprite():get_animation() == "lit"
+      and torch_2:get_sprite():get_animation() == "lit"
+      and torch_3:get_sprite():get_animation() == "lit"
 end
 
 -- Makes all torches on forever
 function lock_torches()
-  map:npc_remove("torch_1")
-  map:npc_remove("torch_2")
-  map:npc_remove("torch_3")
+  torch_1:remove()
+  torch_2:remove()
+  torch_3:remove()
 end
 
 function map:on_update()
 
-  if not map:door_is_open("torches_door")
+  if not torches_door:is_open()
       and are_all_torches_on() then
 
     sol.audio.play_sound("secret")
@@ -131,10 +131,10 @@ end
 function map:on_sensor_collision_explosion(sensor_name)
 
   if sensor_name == "weak_floor_sensor"
-      and map:tile_is_enabled("weak_floor") then
+      and weak_floor:is_enabled() then
 
-    map:tile_set_enabled("weak_floor", false)
-    map:sensor_set_enabled("weak_floor_sensor", false)
+    weak_floor:set_enabled(false)
+    weak_floor_sensor:set_enabled(false)
     sol.audio.play_sound("secret")
     map:get_game():set_boolean(515, true)
     sol.timer.start(1500, weak_floor_block_fall)
@@ -143,7 +143,7 @@ end
 
 function weak_floor_block_fall()
 
-  map:block_set_enabled("weak_floor_block", false)
+  weak_floor_block:set_enabled(false)
   sol.audio.play_sound("jump")
   sol.timer.start(200, weak_floor_block_fall_end)
 end

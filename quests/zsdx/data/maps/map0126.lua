@@ -1,12 +1,12 @@
 local map = ...
 -- Hidden palace D1
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   map:set_light(0)
 
   if map:get_game():get_boolean(934) then
-    map:npc_remove("bone_key_door")
+    bone_key_door:remove()
   end
 end
 
@@ -28,7 +28,7 @@ function map:on_dialog_finished(dialog_id)
     sol.audio.play_sound("door_open")
     sol.audio.play_sound("door_unlocked")
     sol.audio.play_sound("secret")
-    map:npc_remove("bone_key_door")
+    bone_key_door:remove()
     map:get_game():set_boolean(934, true)
   end
 end

@@ -1,16 +1,16 @@
 local map = ...
 -- Smith cave (battle against the thiefs)
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   map:set_doors_open("door", true)
-  map:enemy_set_group_enabled("enemy", false)
+  map:set_entities_enabled("enemy", false)
 end
 
 function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "close_door_sensor"
-      and map:door_is_open("door")
+      and door:is_open()
       and not map:get_game():get_boolean(156) then
     map:close_doors("door")
     map:get_hero():freeze()
@@ -26,7 +26,7 @@ end
 
 function start_fight()
 
-  map:enemy_set_group_enabled("enemy", true)
+  map:set_entities_enabled("enemy", true)
   map:get_hero():unfreeze()
 end
 

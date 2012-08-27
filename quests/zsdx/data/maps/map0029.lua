@@ -1,11 +1,11 @@
 local map = ...
 -- Twin caves
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
   
   if map:get_game():get_boolean(69) then
-    map:tile_set_enabled("barrier", false)
-    map:switch_set_activated("barrier_switch", true)
+    barrier:set_enabled(false)
+    barrier_switch:set_activated(true)
   end
 end
 
@@ -17,13 +17,13 @@ function map:on_switch_activated(switch_name)
   elseif switch_name == "door_switch" then
     map:move_camera(376, 384, 250, door_timer)
   elseif switch_name == "final_barrier_switch" then
-    map:tile_set_group_enabled("final_barrier", false)
+    map:set_entities_enabled("final_barrier", false)
     sol.audio.play_sound("secret")
   end
 end
 
 function barrier_timer()
-  map:tile_set_enabled("barrier", false)
+  barrier:set_enabled(false)
   sol.audio.play_sound("secret")
   map:get_game():set_boolean(69, true)
 end

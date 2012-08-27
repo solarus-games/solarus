@@ -14,29 +14,29 @@ local map = ...
 
 local timer
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
   map:set_doors_open("LD9", true)
 
   -- Link has mirror shield: no laser obstacles
   if map:get_game():get_ability("shield") >= 3 then
-    map:wall_set_enabled("LO4", false)
+    LO4:set_enabled(false)
   end
 
   if map:get_game():get_boolean(706) then
-    map:switch_set_activated("CB03", true)
+    CB03:set_activated(true)
   else
-    map:chest_set_enabled("KC03", false)
+    KC03:set_enabled(false)
   end
   if not map:get_game():get_boolean(707) then
-    map:chest_set_enabled("KC04", false)
+    KC04:set_enabled(false)
   end
 
-  if destination_point_name == "from_1F_A" then
+  if destination_point:get_name() == "from_1F_A" then
     map:set_doors_open("LD8", true)
-    map:switch_set_activated("DB08", true)
+    DB08:set_activated(true)
   end
 
-  if destination_point_name ~= "from_B2_C" then
+  if destination_point:get_name() ~= "from_B2_C" then
     map:set_doors_open("LD12", true)
   end
 end
@@ -44,23 +44,23 @@ end
 function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "DS12" then
     -- Push block room		
-    if not map:door_is_open("LD12") then
+    if not LD12:is_open() then
       sol.audio.play_sound("secret")
       map:open_doors("LD12")
-      map:sensor_set_enabled("DS12", false)
+      DS12:set_enabled(false)
     end
   elseif sensor_name == "DS7" then
     -- Globules monsters room		
-    if map:door_is_open("LD7")
+    if LD7:is_open()
         and map:has_entities("LD7_enemy") then		
       map:close_doors("LD7")
     end
   elseif sensor_name == "DS9" then
     -- Hard hat beetles room		
-    if map:door_is_open("LD9")
+    if LD9:is_open()
         and map:has_entities("LD9_enemy") then		
       map:close_doors("LD9")
-      map:sensor_set_enabled("DS9", false)
+      DS9:set_enabled(false)
     end
   end
 end
@@ -71,7 +71,7 @@ function map:on_switch_activated(switch_name)
       map:move_camera(1488, 1152, 250, CB03_chest_appears)
     end
   elseif switch_name == "CB04" then
-    map:chest_set_enabled("KC04", true)
+    KC04:set_enabled(true)
     sol.audio.play_sound("chest_appears")
   elseif string.match(switch_name, "^DB08") then
     sol.audio.play_sound("secret")
@@ -81,15 +81,15 @@ function map:on_switch_activated(switch_name)
 end
 
 function CB03_chest_appears()
-  map:chest_set_enabled("KC03", true)
+  KC03:set_enabled(true)
   sol.audio.play_sound("chest_appears")
 end
 
 function CB03_time_out()
-  if not map:chest_is_open("KC03") then
+  if not KC03:is_open() then
     sol.audio.play_sound("door_closed")
-    map:chest_set_enabled("KC03", false)
-    map:switch_set_activated("CB03", false)
+    KC03:set_enabled(false)
+    CB03:set_activated(false)
   end
 end
 
@@ -111,13 +111,13 @@ end
 function map:on_enemy_dead(enemy_name)
   if string.match(enemy_name, "^LD7_enemy") and not map:has_entities("LD7_enemy") then	
     -- LD7 room: kill all enemies will open the door LD7
-    if not map:door_is_open("LD7") then
+    if not LD7:is_open() then
       map:open_doors("LD7")
       sol.audio.play_sound("secret")
     end
   elseif string.match(enemy_name, "^LD9_enemy") and not map:has_entities("LD9_enemy") then	
     -- LD9 room: kill all enemies will open the door LD9
-    if not map:door_is_open("LD9") then
+    if not LD9:is_open() then
       map:open_doors("LD9")
       sol.audio.play_sound("secret")
     end

@@ -32,7 +32,7 @@ function map:on_started(destination)
       activate_slot_machine(npc)
     end
   end
-  game_2_man_sprite = map:npc_get_sprite("game_2_man")
+  game_2_man_sprite = game_2_man:get_sprite()
 end
 
 -- Function called when the player wants to talk to this non-playing character.

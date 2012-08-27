@@ -4,17 +4,17 @@ local map = ...
 local fighting_boss = false
 local arrows_timer
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   local new_music = nil
-  if destination_point_name == "from_ending" then
+  if destination_point:get_name() == "from_ending" then
     -- game ending sequence
     map:get_hero():freeze()
     map:get_hero():set_visible(false)
     map:get_game():set_hud_enabled(false)
-    map:enemy_set_group_enabled("", false)
+    map:set_entities_enabled("", false)
     new_music = "fanfare"
-    map:tile_set_group_enabled("roof_entrance", false)
+    map:set_entities_enabled("roof_entrance", false)
   else
     -- enable dark world
     if map:get_game():get_boolean(905) then
@@ -25,12 +25,12 @@ function map:on_started(destination_point_name)
     end
 
     -- boss fight
-    if destination_point_name == "from_dungeon_10_5f" then
+    if destination_point:get_name() == "from_dungeon_10_5f" then
 
       if not map:get_game():get_boolean(299) then
 	-- boss not killed yet
         new_music = "none"
-        map:enemy_set_group_enabled("", false) -- disable all simple enemies
+        map:set_entities_enabled("", false) -- disable all simple enemies
       elseif not map:get_game():get_boolean(298) then
 	-- boss killed but sword not got yet
 	local variant = 2
@@ -41,16 +41,16 @@ function map:on_started(destination_point_name)
 	map:create_pickable("sword", variant, 298, 440, 157, 1)
       end
     else
-      map:tile_set_group_enabled("roof_entrance", false)
+      map:set_entities_enabled("roof_entrance", false)
     end
   end
 
   sol.audio.play_music(new_music)
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
-  if destination_point_name == "from_ending" then
+  if destination_point:get_name() == "from_ending" then
     map:start_dialog("credits_6")
     map:move_camera(440, 96, 20, function() end, 1e6)
   end
@@ -64,9 +64,9 @@ function map:on_hero_on_sensor(sensor_name)
 
     -- boss fight
     map:get_hero():freeze()
-    map:tile_set_group_enabled("roof_entrance", false)
-    map:stairs_set_enabled("roof_stairs", false)
-    map:teletransporter_set_enabled("roof_teletransporter", false)
+    map:set_entities_enabled("roof_entrance", false)
+    roof_stairs:set_enabled(false)
+    roof_teletransporter:set_enabled(false)
     sol.audio.play_sound("door_closed")
     sol.timer.start(1000, start_boss)
   end
@@ -75,7 +75,7 @@ end
 function start_boss()
 
   sol.audio.play_music("boss")
-  map:enemy_set_enabled("boss", true)
+  boss:set_enabled(true)
   map:get_hero():unfreeze()
   fighting_boss = true
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
@@ -130,7 +130,7 @@ function map:on_hero_victory_finished()
 
   map:get_game():set_dungeon_finished(10)
   map:get_hero():teleport(119, "from_dungeon_10")
-  map:enemy_set_group_enabled("", true) -- enable simple enemies back
+  map:set_entities_enabled("", true) -- enable simple enemies back
 
   sol.timer.start(1000, function()
     if map:get_game():get_boolean(905) then

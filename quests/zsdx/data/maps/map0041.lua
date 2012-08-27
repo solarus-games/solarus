@@ -3,48 +3,48 @@ local map = ...
 
 remove_water_delay = 500 -- delay between each step when some water is disappearing
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   if map:get_game():get_boolean(127) then
     -- the barrier of the compass chest is removed
-    map:tile_set_enabled("barrier", false)
-    map:switch_set_activated("barrier_switch", true)
+    barrier:set_enabled(false)
+    barrier_switch:set_activated(true)
   end
 
   if map:get_game():get_boolean(128) then
     -- the south-east water is drained
-    map:tile_set_group_enabled("se_water", false)
-    map:tile_set_group_enabled("se_water_out", true)
-    map:jumper_set_group_enabled("se_water_on_jumper", false)
+    map:set_entities_enabled("se_water", false)
+    map:set_entities_enabled("se_water_out", true)
+    map:set_entities_enabled("se_water_on_jumper", false)
   else
-    map:wall_set_group_enabled("se_water_off_obstacle", false)
+    map:set_entities_enabled("se_water_off_obstacle", false)
   end
 
   if map:get_game():get_boolean(908) then
     -- shortcut A
-    map:tile_set_group_enabled("shortcut_a", false)
-    map:switch_set_activated("shortcut_a_switch", true)
+    map:set_entities_enabled("shortcut_a", false)
+    shortcut_a_switch:set_activated(true)
   end
 
   if map:get_game():get_boolean(909) then
     -- shortcut B
-    map:tile_set_group_enabled("shortcut_b", false)
-    map:switch_set_activated("shortcut_b_switch", true)
+    map:set_entities_enabled("shortcut_b", false)
+    shortcut_b_switch:set_activated(true)
   end
 
   -- north chest
   if map:get_game():get_boolean(950) then
-    map:switch_set_activated("n_switch", true)
+    n_switch:set_activated(true)
   else
-    map:chest_set_enabled("n_chest", false)
+    n_chest:set_enabled(false)
   end
 end
 
 -- Called when the opening transition of the map finished
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
   -- show the welcome message
-  if destination_point_name == "from_outside" then
+  if destination_point:get_name() == "from_outside" then
     map:start_dialog("dungeon_3")
   end
 end
@@ -53,7 +53,7 @@ function map:on_enemy_dead(enemy_name)
 
   if string.find(enemy_name, "^e_room_enemy_")
     and not map:has_entities("e_room_enemy")
-    and not map:door_is_open("e_door") then
+    and not e_door:is_open() then
 
     map:move_camera(856, 472, 250, open_e_door)
   end
@@ -61,32 +61,32 @@ end
 
 function map:on_switch_activated(switch_name)
 
-  if switch_name == "barrier_switch" and map:tile_is_enabled("barrier") then
+  if switch_name == "barrier_switch" and barrier:is_enabled() then
     map:move_camera(120, 240, 250, open_barrier)
   elseif switch_name == "se_water_switch" and not map:get_game():get_boolean(128) then
     map:move_camera(912, 896, 250, remove_se_water, 1000, 3500)
   elseif switch_name == "1f_n_water_switch" and not map:get_game():get_boolean(131) then
     remove_1f_n_water()
   elseif switch_name == "1f_e_water_switch_1"
-      and map:switch_is_activated("1f_e_water_switch_2")
+      and 1f_e_water_switch_2:is_activated()
       and not map:get_game():get_boolean(122) then
     remove_1f_e_water()
   elseif switch_name == "1f_e_water_switch_2"
-      and map:switch_is_activated("1f_e_water_switch_1")
+      and 1f_e_water_switch_1:is_activated()
       and not map:get_game():get_boolean(122) then
     remove_1f_e_water()
   elseif switch_name == "shortcut_a_switch" then
-    map:tile_set_group_enabled("shortcut_a", false)
+    map:set_entities_enabled("shortcut_a", false)
     map:get_game():set_boolean(908, true)
     sol.audio.play_sound("secret")
   elseif switch_name == "shortcut_b_switch" then
-    map:tile_set_group_enabled("shortcut_b", false)
+    map:set_entities_enabled("shortcut_b", false)
     map:get_game():set_boolean(909, true)
     sol.audio.play_sound("secret")
   elseif switch_name == "n_switch" then
     map:move_camera(280, 56, 250, function()
       sol.audio.play_sound("chest_appears")
-      map:chest_set_enabled("n_chest", true)
+      n_chest:set_enabled(true)
       map:get_game():set_boolean(950, true)
     end)
   end
@@ -99,45 +99,45 @@ end
 
 function open_barrier()
   sol.audio.play_sound("secret")
-  map:tile_set_enabled("barrier", false)
+  barrier:set_enabled(false)
   map:get_game():set_boolean(127, true)
 end
 
 function remove_se_water()
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
-  map:tile_set_enabled("se_water_out", true)
-  map:tile_set_enabled("se_water_source", false)
+  se_water_out:set_enabled(true)
+  se_water_source:set_enabled(false)
   sol.timer.start(remove_water_delay, remove_se_water_2)
 end
 
 function remove_se_water_2()
-  map:tile_set_enabled("se_water_middle", false)
+  se_water_middle:set_enabled(false)
   sol.timer.start(remove_water_delay, remove_se_water_3)
 end
 
 function remove_se_water_3()
-  map:tile_set_enabled("se_water_initial", false)
-  map:tile_set_enabled("se_water_less_a", true)
+  se_water_initial:set_enabled(false)
+  se_water_less_a:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_se_water_4)
 end
 
 function remove_se_water_4()
-  map:tile_set_enabled("se_water_less_a", false)
-  map:tile_set_enabled("se_water_less_b", true)
+  se_water_less_a:set_enabled(false)
+  se_water_less_b:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_se_water_5)
 end
 
 function remove_se_water_5()
-  map:tile_set_enabled("se_water_less_b", false)
-  map:tile_set_enabled("se_water_less_c", true)
+  se_water_less_b:set_enabled(false)
+  se_water_less_c:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_se_water_6)
 end
 
 function remove_se_water_6()
-  map:tile_set_enabled("se_water_less_c", false)
-  map:jumper_set_group_enabled("se_water_on_jumper", false)
-  map:wall_set_group_enabled("se_water_off_obstacle", true)
+  se_water_less_c:set_enabled(false)
+  map:set_entities_enabled("se_water_on_jumper", false)
+  map:set_entities_enabled("se_water_off_obstacle", true)
   map:get_game():set_boolean(128, true)
   sol.audio.play_sound("secret")
 end

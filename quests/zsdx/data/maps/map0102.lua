@@ -5,14 +5,14 @@ fighting_miniboss = false
 code_nb_activated = 0
 code_next_index = 1
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- pipe maze
-  map:wall_set_group_enabled("pipe_border", false)
+  map:set_entities_enabled("pipe_border", false)
 
   -- door of the pots and pikes
   map:set_doors_open("door_f", true)
-  map:switch_set_activated("door_f_switch", true)
+  door_f_switch:set_activated(true)
 
   -- west enemies room
   map:set_doors_open("door_c", true)
@@ -25,13 +25,13 @@ function map:on_started(destination_point_name)
   -- saved door A (code)
   if map:get_game():get_boolean(630) then
     for i = 1, 8 do
-      map:switch_set_activated("code_switch_" .. i, true)
+      map:get_entity("code_switch_" .. i):set_activated(true)
     end
   end
 
   -- saved door D
   if map:get_game():get_boolean(615) then
-    map:switch_set_activated("door_d_switch", true)
+    door_d_switch:set_activated(true)
   end
 
   -- torches
@@ -41,32 +41,32 @@ function map:on_started(destination_point_name)
 
   -- weak floor
   if map:get_game():get_boolean(619) then
-    map:tile_set_group_enabled("weak_floor", false)
-    map:sensor_set_enabled("weak_floor_sensor", false)
+    map:set_entities_enabled("weak_floor", false)
+    weak_floor_sensor:set_enabled(false)
   else
-    map:teletransporter_set_enabled("weak_floor_teletransporter", false)
+    weak_floor_teletransporter:set_enabled(false)
   end
 
   -- miniboss
   map:set_doors_open("miniboss_door", true)
-  map:enemy_set_group_enabled("miniboss", false)
+  map:set_entities_enabled("miniboss", false)
 
   -- save the north-west door from 1F
-  if destination_point_name == "from_1f_ne" then 
+  if destination_point:get_name() == "from_1f_ne" then 
     map:get_game():set_boolean(621, true)
   end
 
   -- block fallen from 3F
   if not map:get_game():get_boolean(623) then
-    map:tile_set_enabled("from_hole_a_tile", false)
-    map:block_set_enabled("from_hole_a_block", false)
+    from_hole_a_tile:set_enabled(false)
+    from_hole_a_block:set_enabled(false)
   end
 
   -- shortcut to the boss
   local shortcut = map:get_game():get_boolean(628)
-  map:switch_set_activated("shortcut_switch", shortcut)
-  map:tile_set_group_enabled("shortcut_on", shortcut)
-  map:tile_set_group_enabled("shortcut_off", not shortcut)
+  shortcut_switch:set_activated(shortcut)
+  map:set_entities_enabled("shortcut_on", shortcut)
+  map:set_entities_enabled("shortcut_off", not shortcut)
 end
 
 function map:on_hero_on_sensor(sensor_name)
@@ -74,12 +74,12 @@ function map:on_hero_on_sensor(sensor_name)
   -- close door F
   if sensor_name == "close_door_f_sensor" then
     map:set_doors_open("door_f", false)
-    map:switch_set_activated("door_f_switch", false)
+    door_f_switch:set_activated(false)
  
   -- door C (west room)
   elseif sensor_name:find("^close_door_c_sensor") then
     if map:has_entities("w_room_enemy")
-        and map:door_is_open("door_c") then
+        and door_c:is_open() then
       map:close_doors("door_c")
     end
 
@@ -93,7 +93,7 @@ function map:on_hero_on_sensor(sensor_name)
     fighting_miniboss = true
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
-      map:enemy_set_group_enabled("miniboss", true)
+      map:set_entities_enabled("miniboss", true)
       map:get_hero():unfreeze()
     end)
 
@@ -102,13 +102,13 @@ function map:on_hero_on_sensor(sensor_name)
     pipe = string.match(sensor_name, "^pipe_in_([a-z])_sensor")
     if pipe ~= nil then
       -- entering a pipe
-      map:wall_set_group_enabled("pipe_border_"..pipe, true)
+      map:set_entities_enabled("pipe_border_"..pipe, true)
       map:get_hero():set_visible(true)
     else
       pipe = string.match(sensor_name, "^pipe_out_([a-z])_sensor")
       if pipe ~= nil then
 	-- leaving a pipe
-	map:wall_set_group_enabled("pipe_border_"..pipe, false)
+	map:set_entities_enabled("pipe_border_"..pipe, false)
       elseif string.find(sensor_name, "^hide_hero_sensor") then
 	-- hide the hero
 	map:get_hero():set_visible(false)
@@ -136,8 +136,8 @@ function map:on_switch_activated(switch_name)
 
   -- shortcut to the boss
   elseif switch_name == "shortcut_switch" then
-    map:tile_set_group_enabled("shortcut_on", true)
-    map:tile_set_group_enabled("shortcut_off", false)
+    map:set_entities_enabled("shortcut_on", true)
+    map:set_entities_enabled("shortcut_off", false)
     map:get_game():set_boolean(628, true)
     sol.audio.play_sound("secret")
  
@@ -154,7 +154,7 @@ function map:on_switch_activated(switch_name)
       if code_nb_activated == 8 then
 	-- the 8 switches are activated
         if code_next_index == 9 then
-	  if not map:door_is_open("door_a") then
+	  if not door_a:is_open() then
 	    map:move_camera(72, 552, 250, function()
 	      sol.audio.play_sound("secret")
 	      map:open_doors("door_a")
@@ -165,7 +165,7 @@ function map:on_switch_activated(switch_name)
 	else
 	  sol.audio.play_sound("wrong")
 	  for i = 1, 8 do
-	    map:switch_set_activated("code_switch_" .. i, false)
+	    map:get_entity("code_switch_" .. i):set_activated(false)
 	  end
 	  code_nb_activated = 0
 
@@ -198,10 +198,10 @@ function map:on_enemy_dead(enemy_name)
   if string.find(enemy_name, "^w_room_enemy")
       and not map:has_entities("w_room_enemy") then
     sol.audio.play_sound("secret")
-    if not map:door_is_open("door_c") then
+    if not door_c:is_open() then
       map:open_doors("door_c")
     end
-    if not map:door_is_open("door_a") then
+    if not door_a:is_open() then
       map:open_doors("door_a")
     end
 
@@ -220,18 +220,18 @@ end
 function are_all_torches_on()
 
   return map:npc_exists("torch_1")
-      and map:npc_get_sprite("torch_1"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_2"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_3"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_4"):get_animation() == "lit" 
+      and torch_1:get_sprite():get_animation() == "lit"
+      and torch_2:get_sprite():get_animation() == "lit"
+      and torch_3:get_sprite():get_animation() == "lit"
+      and torch_4:get_sprite():get_animation() == "lit" 
 end
 
 -- Makes all torches on forever
 function lock_torches()
-  map:npc_remove("torch_1")
-  map:npc_remove("torch_2")
-  map:npc_remove("torch_3")
-  map:npc_remove("torch_4")
+  torch_1:remove()
+  torch_2:remove()
+  torch_3:remove()
+  torch_4:remove()
 end
 
 function map:on_update()
@@ -250,11 +250,11 @@ end
 function map:on_sensor_collision_explosion(sensor_name)
 
   if sensor_name == "weak_floor_sensor"
-      and map:tile_is_enabled("weak_floor") then
+      and weak_floor:is_enabled() then
 
-    map:tile_set_group_enabled("weak_floor", false)
-    map:sensor_set_enabled("weak_floor_sensor", false)
-    map:teletransporter_set_enabled("weak_floor_teletransporter", true)
+    map:set_entities_enabled("weak_floor", false)
+    weak_floor_sensor:set_enabled(false)
+    weak_floor_teletransporter:set_enabled(true)
     sol.audio.play_sound("secret")
     map:get_game():set_boolean(619, true)
   end

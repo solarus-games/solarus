@@ -33,7 +33,7 @@ function sahasrahla:on_interaction()
     else 
       -- the player has not found the clay key yet
       map:start_dialog("sahasrahla_house.quest_accepted", function()
-        if not map:door_is_open("door") then
+        if not door:is_open() then
           map:open_doors("door")
         end
       end)

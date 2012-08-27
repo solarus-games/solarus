@@ -19,13 +19,13 @@ end
 function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "close_torch_a_sensor" then
-    if not map:tile_is_enabled("torch_a")
-        and not map:switch_is_activated("torch_a_switch_2") then
+    if not torch_a:is_enabled()
+        and not torch_a_switch_2:is_activated() then
       put_torch_a()
     end
   elseif sensor_name == "close_torch_b_sensor" then
-    if not map:tile_is_enabled("torch_b")
-        and not map:switch_is_activated("torch_b_switch_2") then
+    if not torch_b:is_enabled()
+        and not torch_b_switch_2:is_activated() then
       put_torch_b()
     end
   end
@@ -34,46 +34,46 @@ end
 function remove_torch_a()
   sol.audio.play_sound("door_open")
   sol.audio.play_sound("secret")
-  map:tile_set_group_enabled("torch_a", false)
-  map:switch_set_activated("torch_a_switch", true)
+  map:set_entities_enabled("torch_a", false)
+  torch_a_switch:set_activated(true)
 end
 
 function remove_torch_b()
   sol.audio.play_sound("door_open")
   sol.audio.play_sound("secret")
-  map:tile_set_group_enabled("torch_b", false)
-  map:switch_set_activated("torch_b_switch", true)
+  map:set_entities_enabled("torch_b", false)
+  torch_b_switch:set_activated(true)
 end
 
 function remove_torch_c()
   sol.audio.play_sound("door_open")
   sol.audio.play_sound("secret")
-  map:tile_set_group_enabled("torch_c", false)
+  map:set_entities_enabled("torch_c", false)
 end
 
 function remove_torch_d()
   sol.audio.play_sound("door_open")
   sol.audio.play_sound("secret")
-  map:tile_set_group_enabled("torch_d", false)
+  map:set_entities_enabled("torch_d", false)
 end
 
 function remove_torch_e()
   sol.audio.play_sound("door_open")
   sol.audio.play_sound("secret")
-  map:tile_set_group_enabled("torch_e", false)
+  map:set_entities_enabled("torch_e", false)
 end
 
 function put_torch_a()
   sol.audio.play_sound("door_closed")
-  map:tile_set_group_enabled("torch_a", true)
-  map:switch_set_activated("torch_a_switch", false)
-  map:switch_set_activated("torch_a_switch_2", false)
+  map:set_entities_enabled("torch_a", true)
+  torch_a_switch:set_activated(false)
+  torch_a_switch_2:set_activated(false)
 end
 
 function put_torch_b()
   sol.audio.play_sound("door_closed")
-  map:tile_set_group_enabled("torch_b", true)
-  map:switch_set_activated("torch_b_switch", false)
-  map:switch_set_activated("torch_b_switch_2", false)
+  map:set_entities_enabled("torch_b", true)
+  torch_b_switch:set_activated(false)
+  torch_b_switch_2:set_activated(false)
 end
 

@@ -3,7 +3,7 @@ local map = ...
 
 sol.main.do_file("maps/prison_guard")
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- torches door
   if map:get_game():get_boolean(514) then
@@ -12,12 +12,12 @@ function map:on_started(destination_point_name)
 
   -- middle door
   if map:get_game():get_boolean(522) then
-    map:switch_set_activated("c_door_switch", true)
+    c_door_switch:set_activated(true)
   end
 
   -- block falled from 2F
   if not map:get_game():get_boolean(515) then
-    map:block_set_enabled("block_from_2f", false)
+    block_from_2f:set_enabled(false)
   end
 end
 
@@ -25,24 +25,24 @@ end
 function are_all_torches_on()
 
   return map:npc_exists("torch_1")
-      and map:npc_get_sprite("torch_1"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_2"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_3"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_4"):get_animation() == "lit" 
+      and torch_1:get_sprite():get_animation() == "lit"
+      and torch_2:get_sprite():get_animation() == "lit"
+      and torch_3:get_sprite():get_animation() == "lit"
+      and torch_4:get_sprite():get_animation() == "lit" 
 end
 
 -- Makes all torches on forever
 function lock_torches()
-  map:npc_remove("torch_1")
-  map:npc_remove("torch_2")
-  map:npc_remove("torch_3")
-  map:npc_remove("torch_4")
+  torch_1:remove()
+  torch_2:remove()
+  torch_3:remove()
+  torch_4:remove()
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
   -- show the welcome message
-  if destination_point_name == "from_outside" then
+  if destination_point:get_name() == "from_outside" then
     map:start_dialog("dungeon_5.welcome")
   end
 end
@@ -50,12 +50,12 @@ end
 function map:on_enemy_dead(enemy_name)
 
   if enemy_name == "se_room_enemy"
-      and not map:door_is_open("se_door") then
+      and not se_door:is_open() then
     sol.audio.play_sound("secret")
     map:open_doors("se_door")
   elseif string.find(enemy_name, "^s_room_enemy")
       and not map:has_entities("s_room_enemy")
-      and not map:door_is_open("se_door") then
+      and not se_door:is_open() then
     sol.audio.play_sound("secret")
     map:open_doors("se_door")
   end
@@ -74,10 +74,10 @@ end
 function map:on_switch_activated(switch_name)
 
   if switch_name == "c_door_switch"
-      and not map:door_is_open("c_door") then
+      and not c_door:is_open() then
     map:move_camera(504, 504, 250, open_c_door)
   elseif switch_name == "e_door_switch"
-      and not map:door_is_open("e_door") then
+      and not e_door:is_open() then
     map:move_camera(1048, 488, 250, open_e_door)
   end
 end

@@ -3,18 +3,18 @@ local map = ...
 
 local chest_a_timer
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- chest A
   if map:get_game():get_boolean(872) then
-    map:switch_set_activated("chest_a_switch", true)
+    chest_a_switch:set_activated(true)
   else
-    map:chest_set_enabled("chest_a", false)
+    chest_a:set_enabled(false)
   end
 
   -- chest C
   if not map:get_game():get_boolean(876) then
-    map:chest_set_enabled("chest_c", false)
+    chest_c:set_enabled(false)
   end
 end
 
@@ -37,10 +37,10 @@ function map:on_switch_activated(switch_name)
 
   -- chest A
   elseif switch_name == "chest_a_switch" 
-      and not map:chest_is_enabled("chest_a") then
+      and not chest_a:is_enabled() then
     map:move_camera(1336, 520, 250, function()
       sol.audio.play_sound("chest_appears")
-      map:chest_set_enabled("chest_a", true)
+      chest_a:set_enabled(true)
     end)
   end
 end
@@ -51,10 +51,10 @@ function map:on_camera_back()
   if y < 360 then
     -- chest A
     chest_a_timer = sol.timer.start(5000, true, function()
-      if not map:chest_is_open("chest_a") then
+      if not chest_a:is_open() then
 	sol.audio.play_sound("door_closed")
-	map:chest_set_enabled("chest_a", false)
-	map:switch_set_activated("chest_a_switch", false)
+	chest_a:set_enabled(false)
+	chest_a_switch:set_activated(false)
       end
     end)
   end
@@ -75,9 +75,9 @@ function map:on_enemy_dead(enemy_name)
 
   if enemy_name:find("^chest_c_enemy_") then
     if not map:has_entities("chest_c_enemy")
-        and not map:chest_is_enabled("chest_c") then
+        and not chest_c:is_enabled() then
       sol.audio.play_sound("chest_appears")
-      map:chest_set_enabled("chest_c", true)
+      chest_c:set_enabled(true)
     end
   end
 end

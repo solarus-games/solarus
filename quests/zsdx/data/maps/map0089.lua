@@ -1,27 +1,27 @@
 local map = ...
 -- Castle 1F
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- make the NPCs walk
   random_walk("walking_npc_1")
   random_walk("walking_npc_2")
 
-  if destination_point_name == "from_ending" then
+  if destination_point:get_name() == "from_ending" then
     -- game ending sequence
     map:get_hero():freeze()
     map:get_hero():set_visible(false)
     map:get_game():set_hud_enabled(false)
-    map:enemy_set_group_enabled("", false)
+    map:set_entities_enabled("", false)
     sol.audio.play_music("fanfare")
   else
-    map:npc_set_enabled("tom", false)
+    tom:set_enabled(false)
   end
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
-  if destination_point_name == "from_ending" then
+  if destination_point:get_name() == "from_ending" then
     map:start_dialog("credits_4")
     map:move_camera(288, 96, 25, function() end, 1e6)
   end

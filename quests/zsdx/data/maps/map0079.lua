@@ -6,12 +6,12 @@ rupee_reward_variants = {
   1, 1, 2, 2, 3, 4
 }
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   if map:get_game():get_boolean(197) then
     -- piece of heart found
     for i = 1, 7 do
-      map:chest_set_open("chest_"..i, true)
+      map:get_entity("chest_"..i):set_open(true)
     end
   end
 end

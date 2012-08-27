@@ -1,9 +1,9 @@
 local map = ...
 -- The end
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
-  if destination_point_name == "from_ending" then
+  if destination_point:get_name() == "from_ending" then
     map:get_hero():freeze()
     map:get_hero():set_visible(false)
     map:get_game():set_hud_enabled(false)

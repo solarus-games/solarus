@@ -12,16 +12,16 @@ local map = ...
 -- BB: Barrier Button
 -- DS: Door Sensor
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
   map:set_doors_open("LD12", true)
   if map:get_game():get_boolean(725) then
-    map:block_set_enabled("STT5", false)
+    STT5:set_enabled(false)
   end
   if map:get_game():get_boolean(720) then
-    map:switch_set_activated("DB1", true)
+    DB1:set_activated(true)
   end
   if map:get_game():get_boolean(721) then
-    map:switch_set_activated("DB2", true)
+    DB2:set_activated(true)
   end
   if map:get_game():get_boolean(720) and map:get_game():get_boolean(721) then
     map:set_doors_open("LD14", true)
@@ -31,7 +31,7 @@ end
 function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "DS12" then
     map:close_doors("LD12")
-    map:sensor_set_enabled("DS12", false)
+    DS12:set_enabled(false)
   end
 end
 
@@ -39,7 +39,7 @@ function map:on_block_moved(block_name)
   x, y = map:block_get_position("STT5")
   if x >= 1096 and x <= 1160
       and y >= 893 and y <= 925 then
-    map:block_set_enabled("STT5", false)
+    STT5:set_enabled(false)
     sol.audio.play_sound("jump")
     map:get_game():set_boolean(725, true)
     sol.timer.start(500, function()

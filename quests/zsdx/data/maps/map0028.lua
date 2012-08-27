@@ -7,9 +7,9 @@ local map = ...
 
 local map = ...
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
-  if destination_point_name == "from_intro" then
+  if destination_point:get_name() == "from_intro" then
     -- the intro scene is playing
     self:get_game():set_hud_enabled(true)
     self:set_pause_enabled(false)

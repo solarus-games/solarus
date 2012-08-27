@@ -3,14 +3,14 @@ local map = ...
 
 billy_leave_step = 0
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   if map:get_game():get_boolean(134) then
     -- the player already gave the golden bars and obtained the edelweiss
-    map:npc_remove("billy")
+    billy:remove()
   end
 
-  if destination_point_name ~= "from_outside" then
+  if destination_point:get_name() ~= "from_outside" then
     map:set_doors_open("door", true)
   end
 end
@@ -95,7 +95,7 @@ end
 function billy_leave()
 
   billy_leave_step = billy_leave_step + 1
-  local sprite = map:npc_get_sprite("billy")
+  local sprite = billy:get_sprite()
 
   if billy_leave_step == 1 then
     map:get_hero():freeze()
@@ -103,7 +103,7 @@ function billy_leave()
     m:set_path{4,4,4,4,4,4,4}
     m:set_speed(48)
     m:set_ignore_obstacles(true)
-    map:npc_start_movement("billy", m)
+    billy:start_movement(m)
     sprite:set_animation("walking")
   elseif billy_leave_step == 2 then
     sprite:set_direction(1)
@@ -115,11 +115,11 @@ function billy_leave()
     local m = sol.movement.create("path")
     m:set_path{2,2,2,2,2,2,2,2}
     m:set_speed(48)
-    map:npc_start_movement("billy", m)
+    billy:start_movement(m)
     sprite:set_animation("walking")
   else
     map:close_doors("door")
-    map:npc_remove("billy")
+    billy:remove()
     map:get_hero():unfreeze()
   end
 end

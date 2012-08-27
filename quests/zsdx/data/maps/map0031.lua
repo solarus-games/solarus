@@ -26,24 +26,24 @@ local timers = {}
 
 function map:on_started(destination_point)
 
-  map:chest_set_enabled("boss_key_chest", false)
+  boss_key_chest:set_enabled(false)
 
   if map:get_game():get_boolean(81) then
     -- boss key chest already found
     for k,v in pairs(switches_puzzle_order) do
-      map:switch_set_activated(k, true)
+      map:get_entity(k):set_activated(true)
     end
   end
 
   map:set_doors_open("boss_door", true)
-  if destination_point_name == "from_final_room"
+  if destination_point:get_name() == "from_final_room"
       or map:get_game():get_boolean(103) then
     map:set_doors_open("final_room_door", true)
   end
 
   if map:get_game():get_boolean(103) then
     -- boss heart container already picked
-    map:tile_set_enabled("boss_killed_floor", true)
+    boss_killed_floor:set_enabled(true)
   elseif map:get_game():get_boolean(93) then
     -- boss killed, heart container not picked
     map:create_pickable("heart_container", 1, 103, 960, 437, 0)
@@ -64,7 +64,7 @@ function map:on_switch_activated(switch_name)
 
       if switches_puzzle_correct then
 	map:move_camera(240, 328, 250, function()
-	  map:chest_set_enabled("boss_key_chest", true)
+	  boss_key_chest:set_enabled(true)
 	  sol.audio.play_sound("chest_appears")
 	end)
       else
@@ -73,7 +73,7 @@ function map:on_switch_activated(switch_name)
 	switches_puzzle_correct = true
 	map:switch_set_locked(switch_name, true)
 	for k,v in pairs(switches_puzzle_order) do
-	  map:switch_set_activated(k, false)
+	  map:get_entity(k):set_activated(false)
 	end
       end
     end
@@ -97,7 +97,7 @@ function map:on_hero_on_sensor(sensor_name)
     start_boss()
 
   elseif sensor_name == "close_boss_door_sensor"
-      and map:door_is_open("boss_door")
+      and boss_door:is_open()
       and not map:get_game():get_boolean(93)
       and not fighting_boss then
     sol.audio.stop_music()
@@ -108,26 +108,26 @@ function map:on_hero_on_sensor(sensor_name)
 
   elseif sensor_name == "boss_floor_sensor_1" then
     if fighting_boss
-      and map:tile_is_enabled("boss_floor_1") then
+      and boss_floor_1:is_enabled() then
 
-      map:sensor_set_group_enabled("boss_floor_sensor", false)
+      map:set_entities_enabled("boss_floor_sensor", false)
       boss_restore_floor(true)
       boss_change_floor(1, 92, 1, false)
       timers[#timers + 1] = sol.timer.start(10000, function()
-        map:sensor_set_group_enabled("boss_floor_sensor", true)
+        map:set_entities_enabled("boss_floor_sensor", true)
 	boss_change_floor(92, 1, -1, true)
       end)
     end
 
   elseif sensor_name == "boss_floor_sensor_2" then
     if fighting_boss
-      and map:tile_is_enabled("boss_floor_92") then
+      and boss_floor_92:is_enabled() then
 
-      map:sensor_set_group_enabled("boss_floor_sensor", false)
+      map:set_entities_enabled("boss_floor_sensor", false)
       boss_restore_floor(true)
       boss_change_floor(92, 1, -1, false)
       timers[#timers + 1] = sol.timer.start(10000, function()
-        map:sensor_set_group_enabled("boss_floor_sensor", true)
+        map:set_entities_enabled("boss_floor_sensor", true)
 	boss_change_floor(1, 92, 1, true)
       end)
     end
@@ -137,7 +137,7 @@ end
 function start_boss()
 
   fighting_boss = true
-  map:enemy_set_enabled("boss", true)
+  boss:set_enabled(true)
   sol.audio.play_music("boss")
 end
 
@@ -155,7 +155,7 @@ function open_final_room()
 
   sol.audio.play_sound("secret")
   map:open_doors("final_room_door")
-  map:tile_set_enabled("boss_killed_floor", true)
+  boss_killed_floor:set_enabled(true)
   map:get_hero():unfreeze()
 end
 
@@ -179,7 +179,7 @@ function boss_change_floor(first, last, inc, enable)
     end
     
     -- enable/disable the tile
-    map:tile_set_enabled("boss_floor_" .. index, enable)
+    map:get_entity("boss_floor_" .. index):set_enabled(enable)
 
     -- create an arrow with some tiles
     if enable and boss_arrows[index] ~= nil then
@@ -199,7 +199,7 @@ end
 function boss_restore_floor(with_arrows)
 
   -- restore the whole floor immediately
-  map:tile_set_group_enabled("boss_floor", true)
+  map:set_entities_enabled("boss_floor", true)
   for _, t in ipairs(timers) do t:stop() end
 
   if with_arrows then
@@ -216,7 +216,7 @@ function map:on_enemy_dying(enemy_name)
 
   if enemy_name == "boss" then
     boss_restore_floor(false)
-    map:sensor_set_group_enabled("boss_floor_sensor", false)
+    map:set_entities_enabled("boss_floor_sensor", false)
   end
 end
 

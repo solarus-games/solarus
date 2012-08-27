@@ -3,16 +3,16 @@ local map = ...
 
 door3 = false
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   map:set_doors_open("door1", true)
   map:set_doors_open("door2", true)
   init_evil_tiles()
 
-  if destination_point_name == "entrance_F_1" then
-    map:sensor_set_enabled("sensor1", false)
+  if destination_point:get_name() == "entrance_F_1" then
+    sensor1:set_enabled(false)
     map:set_doors_open("door3", true)
-    map:switch_set_activated("switch1_1", true)
+    switch1_1:set_activated(true)
   end
 end
 
@@ -20,8 +20,8 @@ end
 -- from on_map_started)
 function init_evil_tiles()
 
-  map:enemy_set_group_enabled("evil", false)
-  map:tile_set_group_enabled("evil_after", false)
+  map:set_entities_enabled("evil", false)
+  map:set_entities_enabled("evil_after", false)
 end
 
 -- Starts the attack of evil tiles
@@ -32,14 +32,14 @@ function start_evil_tiles()
   local next = 1 -- number of the next evil tile to spawn
   local spawn_delay = 1500 -- delay between two tiles
 
-  map:enemy_set_group_enabled("evil", false)
-  map:tile_set_group_enabled("evil_after", false)
+  map:set_entities_enabled("evil", false)
+  map:set_entities_enabled("evil_after", false)
 
   -- spawns a tile and schedules the next one
   function repeat_spawn()
 
-    map:enemy_set_enabled("evil_" .. next, true)
-    map:tile_set_enabled("evil_after_" .. next, true)
+    map:get_entity("evil_" .. next):set_enabled(true)
+    map:get_entity("evil_after_" .. next):set_enabled(true)
     next = next + 1
     if next <= total then
       sol.timer.start(spawn_delay, repeat_spawn)
@@ -75,10 +75,10 @@ end
 function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "sensor1"
-      and map:door_is_open("door1_1") then
+      and door1_1:is_open() then
     map:close_doors("door1")
     map:close_doors("door2")
-    map:sensor_set_enabled("sensor1", false)
+    sensor1:set_enabled(false)
     sol.timer.start(2000, start_evil_tiles)
   end
 
@@ -101,7 +101,7 @@ function map:on_switch_activated(switch_name)
       sol.audio.play_sound("door_open")
       sol.timer.start(5000, true, function()
         if not door3 then
-          map:switch_set_activated("switch1_1", false)
+          switch1_1:set_activated(false)
           map:close_doors("door3")
           sol.audio.play_sound("door_closed")
         end

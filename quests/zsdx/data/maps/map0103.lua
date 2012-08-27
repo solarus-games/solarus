@@ -16,11 +16,11 @@ local current_door_name = nil -- current door during a camera movement
 local door_timers = {} -- doors that currently have a timer running
 local arrows_timer
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- block fallen into the hole
   if map:get_game():get_boolean(623) then
-    map:block_set_enabled("nw_block", false)
+    nw_block:set_enabled(false)
   end
 
   -- NW door
@@ -30,7 +30,7 @@ function map:on_started(destination_point_name)
 
   -- door A (timed doors)
   if map:get_game():get_boolean(627) then
-    map:switch_set_activated("door_a_switch", true)
+    door_a_switch:set_activated(true)
   end
 
   -- boss
@@ -43,7 +43,7 @@ function map:on_started(destination_point_name)
 
   -- special torch door
   if map:get_game():get_boolean(624) then
-    map:switch_set_activated("ne_switch", true)
+    ne_switch:set_activated(true)
   end
 end
 
@@ -53,9 +53,9 @@ function map:on_block_moved(block_name)
     local x, y = map:block_get_position(block_name)
     if x == 544 and y == 69 then
       -- make the block fall
-      map:block_set_enabled(block_name, false)
-      map:tile_set_enabled("hole_a", true)
-      map:teletransporter_set_enabled("hole_a_teletransporter", true)
+      map:get_entity(block_name):set_enabled(false)
+      hole_a:set_enabled(true)
+      hole_a_teletransporter:set_enabled(true)
       map:get_game():set_boolean(623, true)
       sol.audio.play_sound("jump")
       sol.timer.start(500, function() sol.audio.play_sound("bomb") end)
@@ -77,12 +77,12 @@ function map:on_update()
       disable_hole = hero_x < block_x
     end
 
-    if disable_hole and map:tile_is_enabled("hole_a") then
-      map:tile_set_enabled("hole_a", false)
-      map:teletransporter_set_enabled("hole_a_teletransporter", false)
-    elseif not disable_hole and not map:tile_is_enabled("hole_a") then
-      map:tile_set_enabled("hole_a", true)
-      map:teletransporter_set_enabled("hole_a_teletransporter", true)
+    if disable_hole and hole_a:is_enabled() then
+      hole_a:set_enabled(false)
+      hole_a_teletransporter:set_enabled(false)
+    elseif not disable_hole and not hole_a:is_enabled() then
+      hole_a:set_enabled(true)
+      hole_a_teletransporter:set_enabled(true)
     end
   end
 end
@@ -100,7 +100,7 @@ function map:on_switch_activated(switch_name)
   elseif switch_name == "special_torch_switch" then
     map:move_camera(960, 120, 250, function()
       sol.audio.play_sound("secret")
-      map:tile_set_enabled("special_torch", false)
+      special_torch:set_enabled(false)
       just_removed_special_torch = true
     end)
 
@@ -123,8 +123,8 @@ function map:on_camera_back()
     just_removed_special_torch = false
     special_torch_timer = sol.timer.start(8000, true, function()
       sol.audio.play_sound("door_closed")
-      map:tile_set_enabled("special_torch", true)
-      map:switch_set_activated("special_torch_switch", false)
+      special_torch:set_enabled(true)
+      special_torch_switch:set_activated(false)
       special_torch_timer = nil
     end)
 
@@ -133,7 +133,7 @@ function map:on_camera_back()
     sol.timer.start(doors[door_name].delay, true, function()
       if door_timers[door_name] ~= nil then
 	map:close_doors(door_name)
-	map:switch_set_activated(door_name .. "_switch", false)
+	map:get_entity(door_name .. "_switch"):set_activated(false)
 	door_timers[door_name] = nil
       end
     end)
@@ -154,7 +154,7 @@ function map:on_hero_on_sensor(sensor_name)
 
   -- boss door
   elseif sensor_name == "close_boss_door_sensor"
-      and map:door_is_open("boss_door") then
+      and boss_door:is_open() then
     map:close_doors("boss_door")
     sol.audio.stop_music()
 
@@ -168,9 +168,9 @@ function map:on_hero_on_sensor(sensor_name)
   -- west room
   elseif sensor_name:find("w_room_sensor") then
     sol.audio.play_sound("secret")
-    local state = map:tile_is_enabled("w_room_tile_1")
-    map:tile_set_enabled("w_room_tile_1", not state)
-    map:tile_set_enabled("w_room_tile_2", state)
+    local state = w_room_tile_1:is_enabled()
+    w_room_tile_1:set_enabled(not state)
+    w_room_tile_2:set_enabled(state)
 
   else
     -- pass a timed door
@@ -182,9 +182,9 @@ function map:on_hero_on_sensor(sensor_name)
       -- close a timed door previously passed (i.e. it has no current timer)
       door_name = sensor_name:match("^(door_[a-e])_close_sensor$")
       if door_name ~= nil then
-        if door_timers[door_name] == nil and map:door_is_open(door_name) then
+        if door_timers[door_name] == nil and map:get_entity(door_name):is_open() then
 	  map:close_doors(door_name)
-	  map:switch_set_activated(door_name .. "_switch", false)
+	  map:get_entity(door_name .. "_switch"):set_activated(false)
 	end
       end
     end
@@ -194,7 +194,7 @@ end
 function start_boss()
 
   sol.audio.play_music("boss")
-  map:enemy_set_enabled("boss", true)
+  boss:set_enabled(true)
   fighting_boss = true
 
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)

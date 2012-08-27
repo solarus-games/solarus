@@ -91,7 +91,7 @@ function map:on_dialog_finished(message_id, answer)
       local m = sol.movement.create("path")
       m:set_path{2,2,2,2,2,2,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}
       m:set_speed(48)
-      map:npc_start_movement("tom", m)
+      tom:start_movement(m)
       tom_sprite:set_animation("walking")
     end
   end

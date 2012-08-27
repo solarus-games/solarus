@@ -1,13 +1,13 @@
 local map = ...
 -- Dungeon 8 boss
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
-  map:npc_set_enabled("ganon_npc", false)
-  if destination_point_name == "from_1F" then
+  ganon_npc:set_enabled(false)
+  if destination_point:get_name() == "from_1F" then
     if map:get_game():get_boolean(728) then
       -- Agahnim already killed
-      map:npc_set_enabled("agahnim_npc", false)
+      agahnim_npc:set_enabled(false)
     end
   end
 end
@@ -43,8 +43,8 @@ function map:on_dialog_finished(dialog_id)
     map:get_hero():teleport(52, "boss_destination_point")
     sol.timer.start(100, function()
       sol.audio.play_music("ganon_battle")
-      map:enemy_set_enabled("boss", true)
-      map:npc_set_enabled("agahnim_npc", false)
+      boss:set_enabled(true)
+      agahnim_npc:set_enabled(false)
     end)
   elseif dialog_id == "dungeon_8.ganon" then
     sol.audio.play_sound("world_warp")
@@ -76,7 +76,7 @@ function start_ganon_sequence()
 
   map:get_hero():set_direction(1)
   map:get_hero():freeze()
-  map:npc_set_enabled("ganon_npc", true)
+  ganon_npc:set_enabled(true)
 
   sol.timer.start(1000, function()
     sol.audio.play_music("ganon_theme")

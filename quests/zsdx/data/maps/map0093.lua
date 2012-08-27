@@ -12,15 +12,15 @@ end
 function show_fairy()
 
   map:npc_set_position("great_fairy", 160, 77)
-  local sprite = map:npc_get_sprite("great_fairy")
+  local sprite = great_fairy:get_sprite()
   sprite:set_ignore_suspend(true)
-  map:npc_remove("torch_1")
-  map:npc_remove("torch_2")
-  map:npc_remove("torch_3")
-  map:npc_remove("torch_4")
+  torch_1:remove()
+  torch_2:remove()
+  torch_3:remove()
+  torch_4:remove()
 end
  
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   if has_fairy_appeared() then
     show_fairy()
@@ -30,10 +30,10 @@ end
 function are_all_torches_on()
 
   return map:npc_exists("torch_1")
-      and map:npc_get_sprite("torch_1"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_2"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_3"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_4"):get_animation() == "lit"
+      and torch_1:get_sprite():get_animation() == "lit"
+      and torch_2:get_sprite():get_animation() == "lit"
+      and torch_3:get_sprite():get_animation() == "lit"
+      and torch_4:get_sprite():get_animation() == "lit"
 end
 
 function map:on_update()
@@ -51,7 +51,7 @@ function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "fairy_sensor" and has_fairy_appeared() then
 
-    map:sensor_set_enabled(sensor_name, false)
+    map:get_entity(sensor_name):set_enabled(false)
     map:get_hero():freeze()
     map:get_hero():set_direction(1)
     if not has_tiger_scrolls() then

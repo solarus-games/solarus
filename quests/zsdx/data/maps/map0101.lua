@@ -9,22 +9,22 @@ directions = {
 door_a_allow_close = true
 door_b_allow_close = true
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
-  map:tile_set_group_enabled("pipe_over", false)
-  map:tile_set_group_enabled("pipe_under", true)
-  map:wall_set_group_enabled("pipe_border", false)
+  map:set_entities_enabled("pipe_over", false)
+  map:set_entities_enabled("pipe_under", true)
+  map:set_entities_enabled("pipe_border", false)
 
   if map:get_game():get_boolean(621) then
-    map:switch_set_activated("ne_door_switch", true)
+    ne_door_switch:set_activated(true)
     map:switch_set_locked("ne_door_switch", true)
   end
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
   -- show the welcome message
-  if destination_point_name == "from_outside" then
+  if destination_point:get_name() == "from_outside" then
     map:start_dialog("dungeon_7.welcome")
   end
 end
@@ -36,9 +36,9 @@ function map:on_hero_on_sensor(sensor_name)
     -- disable the timer that would close the timed door
     door_a_allow_close = false
   elseif sensor_name:find("^door_a_close_sensor")
-      and map:door_is_open("door_a") then
+      and door_a:is_open() then
     door_a_allow_close = true
-    if not map:switch_is_activated("door_a_switch") then
+    if not door_a_switch:is_activated() then
       -- the timer has expired in the meantime
       map:close_doors("door_a")
     end
@@ -48,9 +48,9 @@ function map:on_hero_on_sensor(sensor_name)
     -- disable the timer that would close the timed door
     door_b_allow_close = false
   elseif sensor_name:find("^door_b_close_sensor")
-      and map:door_is_open("door_b") then
+      and door_b:is_open() then
     door_a_allow_close = true
-    if not map:switch_is_activated("door_b_switch") then
+    if not door_b_switch:is_activated() then
       -- the timer has expired in the meantime
       map:close_doors("door_b")
     end
@@ -60,17 +60,17 @@ function map:on_hero_on_sensor(sensor_name)
     pipe = string.match(sensor_name, "^pipe_in_([a-z])_sensor")
     if pipe ~= nil then
       -- entering a pipe
-      map:tile_set_group_enabled("pipe_under_"..pipe, false)
-      map:tile_set_group_enabled("pipe_over_"..pipe, true)
-      map:wall_set_group_enabled("pipe_border_"..pipe, true)
+      map:set_entities_enabled("pipe_under_"..pipe, false)
+      map:set_entities_enabled("pipe_over_"..pipe, true)
+      map:set_entities_enabled("pipe_border_"..pipe, true)
       map:get_hero():set_visible(true)
     else
       pipe = string.match(sensor_name, "^pipe_out_([a-z])_sensor")
       if pipe ~= nil then
 	-- leaving a pipe
-	map:tile_set_group_enabled("pipe_under_"..pipe, true)
-	map:tile_set_group_enabled("pipe_over_"..pipe, false)
-	map:wall_set_group_enabled("pipe_border_"..pipe, false)
+	map:set_entities_enabled("pipe_under_"..pipe, true)
+	map:set_entities_enabled("pipe_over_"..pipe, false)
+	map:set_entities_enabled("pipe_border_"..pipe, false)
       elseif string.find(sensor_name, "^hide_hero_sensor") then
 	-- hide the hero
 	map:get_hero():set_visible(false)
@@ -85,7 +85,7 @@ end
 function map:on_npc_interaction(npc_name)
 
   -- sign maze
-  if string.find(npc_name, "^sign_") and not map:door_is_open("sw_door") then
+  if string.find(npc_name, "^sign_") and not sw_door:is_open() then
     if npc_name == "sign_"..next_sign then
 
       if next_sign <= #directions then
@@ -108,13 +108,13 @@ function map:on_switch_activated(switch_name)
 
   -- door A
   if switch_name == "door_a_switch" 
-      and not map:door_is_open("door_a") then
+      and not door_a:is_open() then
     -- open the door and close it in a few seconds
     sol.audio.play_sound("secret")
     map:open_doors("door_a")
     door_a_allow_close = true
     sol.timer.start(10000, true, function()
-      map:switch_set_activated("door_a_switch", false)
+      door_a_switch:set_activated(false)
       if door_a_allow_close then
 	map:close_doors("door_a")
       end
@@ -122,13 +122,13 @@ function map:on_switch_activated(switch_name)
 
   -- door B
   elseif switch_name == "door_b_switch" 
-      and not map:door_is_open("door_b") then
+      and not door_b:is_open() then
     -- open the door and close it in a few seconds
     sol.audio.play_sound("secret")
     map:open_doors("door_b")
     door_b_allow_close = true
     sol.timer.start(15000, true, function()
-      map:switch_set_activated("door_b_switch", false)
+      door_b_switch:set_activated(false)
       if door_b_allow_close then
 	map:close_doors("door_b")
       end

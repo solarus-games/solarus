@@ -1,8 +1,8 @@
 local map = ...
 -- Dungeon 2 final room
 
-function map:on_opening_transition_finished(destination_point_name)
-  local solarus_child_sprite = map:npc_get_sprite("solarus_child")
+function map:on_opening_transition_finished(destination_point)
+  local solarus_child_sprite = solarus_child:get_sprite()
   map:npc_set_position("solarus_child", 160, 165)
   solarus_child_sprite:set_animation("stopped")
   solarus_child_sprite:set_ignore_suspend(true)

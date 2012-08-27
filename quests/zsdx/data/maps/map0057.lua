@@ -20,7 +20,7 @@ spawner_xy = {
   { x = 368, y = 301}
 }
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   map:set_doors_open("ne_door", true)
   map:set_doors_open("boss_door", true)
@@ -30,7 +30,7 @@ function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name == "ne_door_sensor" then
 
-    if map:door_is_open("ne_door") then
+    if ne_door:is_open() then
       map:close_doors("ne_door")
     else
       map:open_doors("ne_door")
@@ -39,7 +39,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not map:get_game():get_boolean(321)
       and not fighting_boss then
 
-    map:sensor_set_enabled("start_boss_sensor", false)
+    start_boss_sensor:set_enabled(false)
     start_boss()
   end
 end
@@ -50,7 +50,7 @@ function start_boss()
   map:close_doors("boss_door")
   sol.timer.start(1000, function()
     sol.audio.play_music("boss")
-    map:enemy_set_enabled("boss", true)
+    boss:set_enabled(true)
     map:get_hero():unfreeze()
     sol.timer.start(3000, repeat_lava_spawner)
     fighting_boss = true

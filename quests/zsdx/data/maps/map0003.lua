@@ -93,7 +93,7 @@ function monkey:on_interaction()
 	  m:set_distance(24)
 	  m:set_ignore_obstacles(true)
 	  m:set_speed(monkey_jump_speed)
-	  map:npc_start_movement("monkey", m)
+	  monkey:start_movement(m)
 	  monkey_sprite:set_animation("jumping")
 	  monkey_jumps = 1
 	  map:get_game():set_boolean(24, true)

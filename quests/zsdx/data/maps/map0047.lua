@@ -14,34 +14,34 @@ local map = ...
 
 fighting_boss = false
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
   map:set_doors_open("LD1", true)
   map:set_doors_open("LD3", true)
   map:set_doors_open("LD4", true)
-  map:npc_set_enabled("billy_npc", false)
+  billy_npc:set_enabled(false)
   map:set_doors_open("boss_door", true)
 
   -- Map chest hide if not already opened
   if not map:get_game():get_boolean(700) then
-    map:chest_set_enabled("MAP", false)
+    MAP:set_enabled(false)
   end
 
   -- Big key chest hide if not already opened
   if not map:get_game():get_boolean(705) then
-    map:chest_set_enabled("BK01", false)
+    BK01:set_enabled(false)
   end
 
   -- Link has mirror shield: no laser obstacles
   if map:get_game():get_ability("shield") >= 3 then
-    map:wall_set_enabled("LO1", false)
-    map:wall_set_group_enabled("LO2", false)
+    LO1:set_enabled(false)
+    map:set_entities_enabled("LO2", false)
   end
 
-  if destination_point_name == "from_boss" or destination_point_name == "from_hidden_room" then
+  if destination_point:get_name() == "from_boss" or destination_point == "from_hidden_room" then
     map:set_doors_open("LD5", true)
   end
 
-  if destination_point_name == "from_hidden_room" then
+  if destination_point:get_name() == "from_hidden_room" then
     map:remove_entities("room_LD5_enemy")
   end
 
@@ -52,17 +52,17 @@ function map:on_started(destination_point_name)
 
   -- statues puzzle
   if map:get_game():get_boolean(723) then
-    map:switch_set_activated("DB06", true)
+    DB06:set_activated(true)
   end
 
   -- boss key door and laser
   if map:get_game():get_boolean(730) then
-    map:enemy_remove("boss_key_door_laser")
+    boss_key_door_laser:remove()
   end
 end
 
-function map:on_opening_transition_finished(destination_point_name)
-  if destination_point_name == "from_outside" then
+function map:on_opening_transition_finished(destination_point)
+  if destination_point:get_name() == "from_outside" then
     map:start_dialog("dungeon_8.welcome")
   end
 end
@@ -73,7 +73,7 @@ function map:on_switch_activated(switch_name)
     map:move_camera(896, 1712, 250, BB1_remove_barrier)
   elseif switch_name == "BB2" then
     -- LB2 room
-    map:tile_set_enabled("LB2", false)
+    LB2:set_enabled(false)
     sol.audio.play_sound("secret")
   elseif switch_name == "DB4" then
     map:open_doors("LD4")
@@ -92,7 +92,7 @@ function map:on_switch_activated(switch_name)
 end
 
 function BB1_remove_barrier()
-  map:tile_set_enabled("LB1", false)
+  LB1:set_enabled(false)
   sol.audio.play_sound("secret")
 end
 
@@ -101,21 +101,21 @@ function map:on_hero_on_sensor(sensor_name)
     -- LD1 room: when Link enters this room, door LD1 closes and enemies appear, sensor DS1 is disabled
     if map:has_entities("room_LD1_enemy") then
       map:close_doors("LD1")
-      map:sensor_set_enabled("DS1", false)
+      DS1:set_enabled(false)
     end
   elseif sensor_name == "DS3" then
     if map:has_entities("map_enemy") then
       map:close_doors("LD3")
-      map:sensor_set_enabled("DS3", false)
+      DS3:set_enabled(false)
     end
   elseif sensor_name == "DS4" then
     map:close_doors("LD4")
-    map:sensor_set_enabled("DS4", false)
+    DS4:set_enabled(false)
   elseif sensor_name == "start_boss_sensor" then
     if not fighting_boss and not map:get_game():get_boolean(727) then
       sol.audio.stop_music()
       map:close_doors("boss_door")
-      map:npc_set_enabled("billy_npc", true)
+      billy_npc:set_enabled(true)
       map:get_hero():freeze()
       fighting_boss = true
       sol.timer.start(1000, function()
@@ -128,28 +128,28 @@ end
 function map:on_enemy_dead(enemy_name)
   if string.match(enemy_name, "^room_LD1_enemy") and not map:has_entities("room_LD1_enemy") then
     -- LD1 room: kill all enemies will open the doors LD1 and LD2
-    if not map:door_is_open("LD1") then
+    if not LD1:is_open() then
       map:open_doors("LD1")
       map:open_doors("LD2")
       sol.audio.play_sound("secret")
     end
-  elseif string.match(enemy_name, "^room_LD5_enemy") and not map:has_entities("room_LD5_enemy") and not map:door_is_open("LD5") then
+  elseif string.match(enemy_name, "^room_LD5_enemy") and not map:has_entities("room_LD5_enemy") and not LD5:is_open() then
     -- LD5 room: kill all enemies will open the door LD5
     map:open_doors("LD5")
     sol.audio.play_sound("secret")
   elseif string.match(enemy_name, "^map_enemy") and not map:has_entities("map_enemy") then
     -- Map chest room: kill all enemies and the chest will appear
     if not map:get_game():get_boolean(700) then
-      map:chest_set_enabled("MAP", true)
+      MAP:set_enabled(true)
       sol.audio.play_sound("chest_appears")
-    elseif not map:door_is_open("LD3") then
+    elseif not LD3:is_open() then
       sol.audio.play_sound("secret")
     end
     map:open_doors("LD3")
   elseif string.match(enemy_name, "^room_big_enemy") and not map:has_entities("room_big_enemy") then
     -- Big key chest room: kill all enemies and the chest will appear
     if not map:get_game():get_boolean(705) then
-      map:chest_set_enabled("BK01", true)
+      BK01:set_enabled(true)
       sol.audio.play_sound("chest_appears")
     end
   end
@@ -175,15 +175,15 @@ function map:on_dialog_finished(dialog_id)
   if dialog_id == "dungeon_8.billy" then
     sol.audio.play_music("boss")
     map:get_hero():unfreeze()
-    map:enemy_set_enabled("boss", true)
-    map:npc_set_enabled("billy_npc", false)
+    boss:set_enabled(true)
+    billy_npc:set_enabled(false)
   end
 end
 
 function map:on_door_open(door_name)
 
   if door_name == "boss_key_door" then
-    map:enemy_remove("boss_key_door_laser")
+    boss_key_door_laser:remove()
   elseif door_name == "WW01" then
     sol.audio.play_sound("secret")
   end

@@ -7,10 +7,10 @@ directions = {
   0, 1, 2, 1, 0, 1, 2, 3, 2, 1, 0, 3, 0, 1, 0
 }
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
   
   if map:get_game():get_boolean(139) then
-    map:tile_set_enabled("secret_way", false)
+    secret_way:set_enabled(false)
   end
 end
 
@@ -23,7 +23,7 @@ function map:on_npc_interaction(npc_name)
         map:start_dialog("surprise_wall.direction_"..directions[next_sign])
       elseif next_sign == 32 then
         sol.audio.play_sound("secret")
-	map:tile_set_enabled("secret_way", false)
+	secret_way:set_enabled(false)
 	map:get_game():set_boolean(139, true)
       end
       next_sign = next_sign + 1

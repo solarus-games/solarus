@@ -22,10 +22,10 @@ rewards = {
   {item_name = "croissant", variant = 1, savegame_variable = -1}
 }
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   if not map:get_game():is_dungeon_finished(6) then
-    map:npc_remove("mini_game_npc")
+    mini_game_npc:remove()
   end
 end
 
@@ -53,7 +53,7 @@ function map:on_dialog_finished(dialog_id, answer)
         playing = true
 
         if chest_open ~= "" then
-          map:chest_set_open(chest_open, false)
+          map:get_entity(chest_open):set_open(false)
         end
 
         if not map:get_game():get_boolean(180) then
@@ -92,7 +92,7 @@ function map:on_chest_empty(chest_name)
     playing = false
   else
     sol.audio.play_sound("wrong")
-    map:chest_set_open(chest_name, false)
+    map:get_entity(chest_name):set_open(false)
   end
 end
 

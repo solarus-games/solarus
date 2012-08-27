@@ -8,23 +8,23 @@ nw_switches_nb_activated = 0
 nb_torches_lit = 0
 door_g_finished = false
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- north barrier
   if map:get_game():get_boolean(812) then
-    map:switch_set_activated("n_barrier_switch", true)
-    map:tile_set_enabled("n_barrier", false)
+    n_barrier_switch:set_activated(true)
+    n_barrier:set_enabled(false)
   end
 
   -- enemies rooms
   map:set_doors_open("door_c", true)
-  if destination_point_name ~= "from_3f_e"
-      and destination_point_name ~= "from_outside_e" then
+  if destination_point:get_name() ~= "from_3f_e"
+      and destination_point ~= "from_outside_e" then
     map:set_doors_open("door_b", true)
   end
 
   -- north-east room
-  if destination_point_name == "from_3f_e" then
+  if destination_point:get_name() == "from_3f_e" then
     map:set_doors_open("door_a", true)
     ne_puzzle_set_step(5)
   else
@@ -34,30 +34,30 @@ function map:on_started(destination_point_name)
   -- compass
   if map:get_game():get_boolean(814) then
     for i = 1, 7 do
-      map:chest_set_open("compass_chest_" .. i, true)
+      map:get_entity("compass_chest_" .. i):set_open(true)
     end
   else
     chests_puzzle_step = 1
   end
 
   -- clockwise switches and next doors
-  if destination_point_name ~= "from_1f" then
+  if destination_point:get_name() ~= "from_1f" then
     map:set_doors_open("door_d", true)
     map:set_doors_open("door_e", true)
-    map:switch_set_activated("door_e_switch", true)
+    door_e_switch:set_activated(true)
     for i = 1, 8 do
-      map:switch_set_activated("nw_switch_" .. i, true)
+      map:get_entity("nw_switch_" .. i):set_activated(true)
     end
   end
 
   -- bridges that appear when a torch is lit
-  map:tile_set_group_enabled("bridge", false)
+  map:set_entities_enabled("bridge", false)
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
   -- show the welcome message
-  if destination_point_name:find("^from_outside") then
+  if destination_point:find("^from_outside") then
     map:start_dialog("dungeon_9.welcome")
   end
 end
@@ -68,7 +68,7 @@ function map:on_switch_activated(switch_name)
   if switch_name == "n_barrier_switch" then
     sol.audio.play_sound("secret")
     sol.audio.play_sound("door_open")
-    map:tile_set_enabled("n_barrier", false)
+    n_barrier:set_enabled(false)
     map:get_game():set_boolean(812, true)
 
   -- door A
@@ -83,7 +83,7 @@ function map:on_switch_activated(switch_name)
 
   -- door G
   elseif switch_name == "door_g_switch"
-      and not map:door_is_open("door_g") then
+      and not door_g:is_open() then
     map:move_camera(1760, 520, 1000, function()
       sol.audio.play_sound("secret")
       map:open_doors("door_g")
@@ -114,7 +114,7 @@ function map:on_switch_activated(switch_name)
 	-- error
 	sol.audio.play_sound("wrong")
 	for i = 1, 8 do
-	  map:switch_set_activated("nw_switch_" .. i, false)
+	  map:get_entity("nw_switch_" .. i):set_activated(false)
 	end
 	nw_switches_nb_activated = 0
 	map:switch_set_locked(switch_name, true)
@@ -173,32 +173,32 @@ function map:on_hero_on_sensor(sensor_name)
 
   elseif sensor_name:find("^close_door_g_sensor")
       and not door_g_finished
-      and map:door_is_open("door_g") then
+      and door_g:is_open() then
     sol.audio.play_sound("wrong")
     map:move_camera(1760, 520, 1000, function()
       map:close_doors("door_g")
-      map:switch_set_activated("door_g_switch", false)
+      door_g_switch:set_activated(false)
     end) 
 
   -- door E
   elseif sensor_name:find("^close_door_e_sensor")
-      and map:door_is_open("door_e") then
+      and door_e:is_open() then
     map:close_doors("door_e")
-    map:switch_set_activated("door_e_switch", false)
+    door_e_switch:set_activated(false)
 
   -- west enemies room
   elseif sensor_name:find("^close_door_b_sensor")
       and map:has_entities("door_b_enemy")
-      and map:door_is_open("door_b") then
+      and door_b:is_open() then
     map:close_doors("door_b")
-    map:sensor_set_group_enabled("close_door_b_sensor", false)
+    map:set_entities_enabled("close_door_b_sensor", false)
 
   -- north enemies room
   elseif sensor_name:find("^close_door_c_sensor")
       and map:has_entities("door_c_enemy")
-      and map:door_is_open("door_c") then
+      and door_c:is_open() then
     map:close_doors("door_c")
-    map:sensor_set_group_enabled("close_door_c_sensor", false)
+    map:set_entities_enabled("close_door_c_sensor", false)
 
   -- save solid ground location
   elseif sensor_name:find("^save_solid_ground_sensor") then
@@ -215,7 +215,7 @@ function map:on_enemy_dead(enemy_name)
   -- west enemies room
   if enemy_name:find("^door_b_enemy") then
     if not map:has_entities("door_b_enemy")
-        and not map:door_is_open("door_b") then
+        and not door_b:is_open() then
       sol.audio.play_sound("secret")
       map:open_doors("door_b")
     end
@@ -223,7 +223,7 @@ function map:on_enemy_dead(enemy_name)
   -- north enemies room
   elseif enemy_name:find("^door_c_enemy") then
     if not map:has_entities("door_c_enemy")
-        and not map:door_is_open("door_c") then
+        and not door_c:is_open() then
       sol.audio.play_sound("secret")
       map:open_doors("door_c")
     end
@@ -234,14 +234,14 @@ end
 function ne_puzzle_set_step(step)
 
   ne_puzzle_step = step
-  map:tile_set_group_enabled("ne_puzzle_step", false)
-  map:tile_set_group_enabled("ne_puzzle_step_" .. step, true)
+  map:set_entities_enabled("ne_puzzle_step", false)
+  map:set_entities_enabled("ne_puzzle_step_" .. step, true)
   if step < 5 then
-    map:tile_set_group_enabled("secret_way_open", false)
-    map:tile_set_group_enabled("secret_way_closed", true)
+    map:set_entities_enabled("secret_way_open", false)
+    map:set_entities_enabled("secret_way_closed", true)
   else
-    map:tile_set_group_enabled("secret_way_open", true)
-    map:tile_set_group_enabled("secret_way_closed", false)
+    map:set_entities_enabled("secret_way_open", true)
+    map:set_entities_enabled("secret_way_closed", false)
   end
 end
 
@@ -261,7 +261,7 @@ function map:on_chest_empty(chest_name)
       map:get_hero():unfreeze()
       chests_puzzle_step = 1
       for i = 1, 7 do
-	map:chest_set_open("compass_chest_" .. i, false)
+	map:get_entity("compass_chest_" .. i):set_open(false)
       end
     end
   end
@@ -287,14 +287,14 @@ function map:on_npc_collision_fire(npc_name)
       -- temporarily light the torch up
       torch_sprite:set_animation("lit")
       if nb_torches_lit == 0 then
-        map:tile_set_group_enabled("bridge", true)
+        map:set_entities_enabled("bridge", true)
       end
       nb_torches_lit = nb_torches_lit + 1
       sol.timer.start(8000, function()
         torch_sprite:set_animation("unlit")
         nb_torches_lit = nb_torches_lit - 1
         if nb_torches_lit == 0 then
-	  map:tile_set_group_enabled("bridge", false)
+	  map:set_entities_enabled("bridge", false)
 	end
       end)
     end
@@ -304,7 +304,7 @@ end
 function map:on_block_moved(block_name)
 
   if block_name == "door_f_block"
-      and not map:door_is_open("door_f") then
+      and not door_f:is_open() then
     sol.audio.play_sound("secret")
     map:open_doors("door_f")
   end

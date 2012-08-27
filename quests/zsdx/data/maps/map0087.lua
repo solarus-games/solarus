@@ -1,9 +1,9 @@
 local map = ...
 -- Dungeon 4 final room
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
-  local solarus_child_sprite = map:npc_get_sprite("solarus_child")
+  local solarus_child_sprite = solarus_child:get_sprite()
   map:npc_set_position("solarus_child", 160, 165)
   solarus_child_sprite:set_animation("stopped")
   solarus_child_sprite:set_ignore_suspend(true)
@@ -51,7 +51,7 @@ end
 
 function agahnim_sequence_2()
 
-  local sprite = map:npc_get_sprite("solarus_child")
+  local sprite = solarus_child:get_sprite()
   sprite:fade_out()
   sol.audio.stop_music()
   sol.audio.play_sound("warp")

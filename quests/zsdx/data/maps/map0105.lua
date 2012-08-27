@@ -8,43 +8,43 @@ puzzle_b_nb_activated = 0
 -- torches and bridges
 nb_torches_lit = 0
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- hidden Gibdo and chest
-  map:enemy_set_group_enabled("hidden_enemy", false)
+  map:set_entities_enabled("hidden_enemy", false)
   if not map:get_game():get_boolean(800) then
-    map:chest_set_enabled("hidden_enemy_chest", false)
+    hidden_enemy_chest:set_enabled(false)
   end
 
   -- puzzle A
   if map:get_game():get_boolean(802) then
     -- already solved
-    map:tile_set_group_enabled("puzzle_a_switch_red", false)
-    map:switch_set_group_enabled("puzzle_a_switch", false)
+    map:set_entities_enabled("puzzle_a_switch_red", false)
+    map:set_entities_enabled("puzzle_a_switch", false)
   else
     -- not solved yet
-    map:chest_set_enabled("puzzle_a_chest", false)
+    puzzle_a_chest:set_enabled(false)
   end
-  map:tile_set_group_enabled("puzzle_a_switch_green", false)
+  map:set_entities_enabled("puzzle_a_switch_green", false)
 
   -- puzzle B
-  if destination_point_name == "from_b1_w"
-      or destination_point_name == "from_b1_e" then
+  if destination_point:get_name() == "from_b1_w"
+      or destination_point == "from_b1_e" then
     map:set_doors_open("puzzle_b_door", true)
-    map:switch_set_activated("puzzle_b_door_switch", true)
+    puzzle_b_door_switch:set_activated(true)
   end
 
   -- south door
-  if destination_point_name ~= "from_outside" then
+  if destination_point:get_name() ~= "from_outside" then
     map:set_doors_open("s_door", true)
   end
 
   -- bridges that appear when a torch is lit
-  map:tile_set_group_enabled("bridge", false)
+  map:set_entities_enabled("bridge", false)
 
   -- west enemies room
   if not map:get_game():get_boolean(806) then
-    map:chest_set_enabled("w_room_chest", false)
+    w_room_chest:set_enabled(false)
   else
     map:set_doors_open("w_room_door", true)
   end
@@ -55,28 +55,28 @@ function map:on_started(destination_point_name)
 
   -- east enemies room
   if not map:get_game():get_boolean(808) then
-    map:chest_set_enabled("e_room_chest", false)
+    e_room_chest:set_enabled(false)
   end
 
   -- north-west chest
   if not map:get_game():get_boolean(810) then
-    map:chest_set_enabled("nw_chest", false)
+    nw_chest:set_enabled(false)
   else
-    map:switch_set_activated("nw_switch_1", true)
-    map:switch_set_activated("nw_switch_2", true)
+    nw_switch_1:set_activated(true)
+    nw_switch_2:set_activated(true)
   end
 
   -- shortcut to the boss
   if not map:get_game():get_boolean(816) then
-    map:tile_set_enabled("shortcut", false)
-    map:teletransporter_set_enabled("shortcut_teletransporter", false)
+    shortcut:set_enabled(false)
+    shortcut_teletransporter:set_enabled(false)
   end
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
   -- show the welcome message
-  if destination_point_name == "from_outside" then
+  if destination_point:get_name() == "from_outside" then
     map:start_dialog("dungeon_9.welcome")
   end
 end
@@ -86,15 +86,15 @@ function map:on_update()
   -- hidden enemies
   local x, y = map:get_hero():get_position()
   if x > 1056 and x < 1200 and y > 1888 and y < 1968
-      and not map:chest_is_enabled("hidden_enemy_chest")
+      and not hidden_enemy_chest:is_enabled()
       and not map:enemy_is_dead("hidden_enemy_1") 
       and not map:enemy_is_dead("hidden_enemy_2")
-      and not map:enemy_is_enabled("hidden_enemy_1")
-      and not map:enemy_is_enabled("hidden_enemy_2") then
+      and not hidden_enemy_1:is_enabled()
+      and not hidden_enemy_2:is_enabled() then
 
     sol.audio.play_sound("cane")
-    map:enemy_set_enabled("hidden_enemy_1", true)
-    map:enemy_set_enabled("hidden_enemy_2", true)
+    hidden_enemy_1:set_enabled(true)
+    hidden_enemy_2:set_enabled(true)
   end
 end
 
@@ -103,16 +103,16 @@ function map:on_enemy_dead(enemy_name)
   -- hidden enemies
   if enemy_name:find("^hidden_enemy")
       and not map:has_entities("hidden_enemy")
-      and not map:chest_is_enabled("hidden_enemy_chest") then
+      and not hidden_enemy_chest:is_enabled() then
     map:move_camera(1128, 2040, 250, function()
       sol.audio.play_sound("chest_appears")
-      map:chest_set_enabled("hidden_enemy_chest", true)
+      hidden_enemy_chest:set_enabled(true)
     end)
 
   -- south door
   elseif enemy_name:find("^s_door_enemy")
       and not map:has_entities("s_door_enemy")
-      and not map:door_is_open("s_door") then
+      and not s_door:is_open() then
     map:move_camera(1768, 1800, 250, function()
       sol.audio.play_sound("secret")
       map:open_doors("s_door")
@@ -122,18 +122,18 @@ function map:on_enemy_dead(enemy_name)
   elseif enemy_name:find("^w_room_enemy")
       and not map:has_entities("w_room_enemy") then
     sol.audio.play_sound("chest_appears")
-    map:chest_set_enabled("w_room_chest", true)
-    if not map:door_is_open("w_room_door") then
+    w_room_chest:set_enabled(true)
+    if not w_room_door:is_open() then
       map:open_doors("w_room_door")
     end
 
   -- east enemies room
   elseif enemy_name:find("^e_room_enemy")
       and not map:has_entities("e_room_enemy")
-      and not map:chest_is_enabled("e_room_chest") then
+      and not e_room_chest:is_enabled() then
     map:move_camera(2136, 1120, 250, function()
       sol.audio.play_sound("chest_appears")
-      map:chest_set_enabled("e_room_chest", true)
+      e_room_chest:set_enabled(true)
     end)
   end
 end
@@ -142,29 +142,29 @@ function map:on_switch_activated(switch_name)
 
   -- door to puzzle B
   if switch_name == "puzzle_b_door_switch" then
-    if not map:door_is_open("puzzle_b_door") then
+    if not puzzle_b_door:is_open() then
       map:move_camera(808, 1544, 250, function()
 	sol.audio.play_sound("secret")
 	map:open_doors("puzzle_b_door")
-	map:switch_set_activated("puzzle_b_door_switch", true)
+	puzzle_b_door_switch:set_activated(true)
       end)
     end
  
   -- north-west chest
   elseif switch_name:find("^nw_switch") then
-    if not map:chest_is_enabled("nw_chest")
-        and map:switch_is_activated("nw_switch_1")
-        and map:switch_is_activated("nw_switch_2") then
+    if not nw_chest:is_enabled()
+        and nw_switch_1:is_activated()
+        and nw_switch_2:is_activated() then
       sol.audio.play_sound("chest_appears")
-      map:chest_set_enabled("nw_chest", true)
+      nw_chest:set_enabled(true)
     end
 
   -- central room
   elseif switch_name:find("^c_room_switch") then
-    if map:switch_is_activated("c_room_switch_1")
-        and map:switch_is_activated("c_room_switch_2")
-        and map:switch_is_activated("c_room_switch_3")
-        and map:switch_is_activated("c_room_switch_4") then
+    if c_room_switch_1:is_activated()
+        and c_room_switch_2:is_activated()
+        and c_room_switch_3:is_activated()
+        and c_room_switch_4:is_activated() then
       sol.audio.play_sound("secret")
       map:open_doors("c_door")
     end
@@ -193,7 +193,7 @@ function map:on_switch_activated(switch_name)
 	-- error
 	sol.audio.play_sound("wrong")
 	for i = 1, 4 do
-	  map:switch_set_activated("puzzle_b_switch_" .. i, false)
+	  map:get_entity("puzzle_b_switch_" .. i):set_activated(false)
 	end
 	puzzle_b_nb_activated = 0
 	map:switch_set_locked(switch_name, true)
@@ -202,7 +202,7 @@ function map:on_switch_activated(switch_name)
 	-- correct
 	sol.audio.play_sound("secret")
 	map:open_doors("puzzle_b_door")
-        map:switch_set_activated("puzzle_b_door_switch", true)
+        puzzle_b_door_switch:set_activated(true)
       end
     end
 
@@ -215,25 +215,25 @@ function map:on_switch_activated(switch_name)
 
       -- invert the neighboors
       for i, v in ipairs(to_change[index]) do
-	local on = map:tile_is_enabled("puzzle_a_switch_red_" .. v)
-	map:tile_set_enabled("puzzle_a_switch_green_" .. v, on)
-	map:tile_set_enabled("puzzle_a_switch_red_" .. v, not on)
+	local on = map:get_entity("puzzle_a_switch_red_" .. v):is_enabled()
+	map:get_entity("puzzle_a_switch_green_" .. v):set_enabled(on)
+	map:get_entity("puzzle_a_switch_red_" .. v):set_enabled(not on)
       end
  
       -- check the success
       local success = true
       for i = 1, 6 do
-	if map:tile_is_enabled("puzzle_a_switch_red_" .. i) then
+	if map:get_entity("puzzle_a_switch_red_" .. i):is_enabled() then
 	  success = false
 	  break
 	end
       end
       if success then
-	map:tile_set_group_enabled("puzzle_a_switch", false)
-	map:switch_set_group_enabled("puzzle_a_switch", false)
+	map:set_entities_enabled("puzzle_a_switch", false)
+	map:set_entities_enabled("puzzle_a_switch", false)
 	map:move_camera(896, 1896, 250, function()
 	  sol.audio.play_sound("chest_appears")
-	  map:chest_set_enabled("puzzle_a_chest", true)
+	  puzzle_a_chest:set_enabled(true)
 	  map:get_game():set_boolean(802, true)
 	end)
       end
@@ -253,8 +253,8 @@ function map:on_hero_on_sensor(sensor_name)
   -- west room
   if sensor_name == "close_w_room_sensor" then
 
-    if map:door_is_open("w_room_door")
-	 and not map:chest_is_enabled("w_room_chest") then
+    if w_room_door:is_open()
+	 and not w_room_chest:is_enabled() then
       map:close_doors("w_room_door")
       map:create_enemy("w_room_enemy_1", "blue_pig_soldier", 1, 752, 877)
       map:create_enemy("w_room_enemy_2", "red_pig_soldier", 1, 808, 885)
@@ -265,24 +265,24 @@ function map:on_hero_on_sensor(sensor_name)
 
   -- central room
   elseif sensor_name:find("^close_c_doors_sensor")
-      and map:door_is_open("c_door_e")
-      and not map:switch_is_activated("c_room_switch_1") then
-    if map:door_is_open("c_big_key_door") then
+      and c_door_e:is_open()
+      and not c_room_switch_1:is_activated() then
+    if c_big_key_door:is_open() then
       map:close_doors("c_door_s")
     end
     map:close_doors("c_door_e")
-    map:switch_set_activated("c_room_switch_1", false)
-    map:switch_set_activated("c_room_switch_2", false)
-    map:switch_set_activated("c_room_switch_3", false)
-    map:switch_set_activated("c_room_switch_4", false)
+    c_room_switch_1:set_activated(false)
+    c_room_switch_2:set_activated(false)
+    c_room_switch_3:set_activated(false)
+    c_room_switch_4:set_activated(false)
   
   -- puzzle B
   elseif sensor_name:find("^close_puzzle_b_door_sensor") then
 
-    if not map:switch_is_activated("puzzle_b_switch_1")
-        and map:door_is_open("puzzle_b_door") then
+    if not puzzle_b_switch_1:is_activated()
+        and puzzle_b_door:is_open() then
       map:close_doors("puzzle_b_door")
-      map:switch_set_activated("puzzle_b_door_switch", false)
+      puzzle_b_door_switch:set_activated(false)
     end
 
   -- save solid ground location
@@ -315,14 +315,14 @@ function map:on_npc_collision_fire(npc_name)
       -- temporarily light the torch up
       torch_sprite:set_animation("lit")
       if nb_torches_lit == 0 then
-        map:tile_set_group_enabled("bridge", true)
+        map:set_entities_enabled("bridge", true)
       end
       nb_torches_lit = nb_torches_lit + 1
       sol.timer.start(4000, function()
         torch_sprite:set_animation("unlit")
         nb_torches_lit = nb_torches_lit - 1
         if nb_torches_lit == 0 then
-	  map:tile_set_group_enabled("bridge", false)
+	  map:set_entities_enabled("bridge", false)
 	end
       end)
     end

@@ -3,21 +3,21 @@ local map = ...
 
 fighting_miniboss = false
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- game ending sequence
-  if destination_point_name == "from_ending" then
+  if destination_point:get_name() == "from_ending" then
     map:get_hero():freeze()
     map:get_hero():set_visible(false)
     map:get_game():set_hud_enabled(false)
-    map:enemy_set_group_enabled("", false)
+    map:set_entities_enabled("", false)
     sol.audio.play_music("fanfare")
   end
 
   map:set_doors_open("miniboss_door", true)
-  map:enemy_set_group_enabled("miniboss", false)
+  map:set_entities_enabled("miniboss", false)
   if map:get_game():get_boolean(320) then
-    map:tile_set_group_enabled("miniboss_fake_floor", false)
+    map:set_entities_enabled("miniboss_fake_floor", false)
   end
 
   if map:get_game():get_boolean(323) then
@@ -25,9 +25,9 @@ function map:on_started(destination_point_name)
   end
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
-  if destination_point_name == "from_ending" then
+  if destination_point:get_name() == "from_ending" then
     map:start_dialog("credits_3")
     map:move_camera(120, 408, 25, function() end, 1e6)
   end
@@ -36,19 +36,19 @@ end
 function are_all_torches_on()
 
   return map:npc_exists("torch_1")
-      and map:npc_get_sprite("torch_1"):get_animation() == "lit"
-      and map:npc_get_sprite("torch_2"):get_animation() == "lit"
+      and torch_1:get_sprite():get_animation() == "lit"
+      and torch_2:get_sprite():get_animation() == "lit"
 end
 
 -- Makes all torches on forever
 function lock_torches()
-  map:npc_remove("torch_1")
-  map:npc_remove("torch_2")
+  torch_1:remove()
+  torch_2:remove()
 end
 
 function map:on_update()
 
-  if not map:door_is_open("torches_door")
+  if not torches_door:is_open()
       and are_all_torches_on() then
 
     map:move_camera(360, 104, 250, open_torches_door)
@@ -73,8 +73,8 @@ function map:on_hero_on_sensor(sensor_name)
     fighting_miniboss = true
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
-      map:enemy_set_group_enabled("miniboss", true)
-      map:tile_set_group_enabled("miniboss_fake_floor", false)
+      map:set_entities_enabled("miniboss", true)
+      map:set_entities_enabled("miniboss_fake_floor", false)
       map:get_hero():unfreeze()
     end)
   end

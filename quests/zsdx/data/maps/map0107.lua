@@ -3,10 +3,10 @@ local map = ...
 
 fighting_miniboss = false
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   -- miniboss
-  map:enemy_set_group_enabled("miniboss", false)
+  map:set_entities_enabled("miniboss", false)
   map:set_doors_open("miniboss_e_door", true)
   if map:get_game():get_boolean(866) then
     map:set_doors_open("miniboss_door", true)
@@ -17,7 +17,7 @@ function map:on_enemy_dead(enemy_name)
 
   -- door A
   if enemy_name:match("^door_a_enemy") then
-    if not map:door_is_open("door_a")
+    if not door_a:is_open()
         and not map:has_entities("door_a_enemy") then
       map:move_camera(2248, 648, 250, function()
 	sol.audio.play_sound("secret")
@@ -40,7 +40,7 @@ function map:on_npc_interaction(npc_name)
 
   -- door B hint stones
   if npc_name:find("^door_b_hint") then
-    if not map:door_is_open("door_b") then
+    if not door_b:is_open() then
       local door_b_next = map:get_game():get_integer(1202) + 1
       local index = tonumber(npc_name:match("^door_b_hint_([1-8])$"))
       if index == door_b_next then
@@ -76,7 +76,7 @@ function map:on_hero_on_sensor(sensor_name)
     fighting_miniboss = true
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
-      map:enemy_set_group_enabled("miniboss", true)
+      map:set_entities_enabled("miniboss", true)
       map:get_hero():unfreeze()
     end)
   end

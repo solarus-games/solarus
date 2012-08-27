@@ -12,9 +12,9 @@ local door_sets = { -- possible doors open when going to prison
   { "door_a", "door_c", "door_e", "door_d", "door_f", "door_h" },
 }
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
-  if destination_point_name == "from_outside_hole" then
+  if destination_point:get_name() == "from_outside_hole" then
     map:get_hero():set_direction(2)
   end
 
@@ -25,7 +25,7 @@ function map:on_started(destination_point_name)
   end
 
   if map:get_game():get_boolean(511) then
-    map:npc_remove("prison_1_lock")
+    prison_1_lock:remove()
   end
 
   if map:get_game():get_boolean(512) then
@@ -33,7 +33,7 @@ function map:on_started(destination_point_name)
   end
 
   if not map:get_game():get_boolean(519) then
-    map:chest_set_enabled("boss_key_chest", false)
+    boss_key_chest:set_enabled(false)
   end
 
   -- bomb bag 2 or 3
@@ -50,7 +50,7 @@ function map:on_started(destination_point_name)
 
   -- initialize doors
   local i = 1
-  if destination_point_name == "prison" then
+  if destination_point:get_name() == "prison" then
     i = math.random(#door_sets)
   end
   for _, door in ipairs(door_sets[i]) do
@@ -109,10 +109,10 @@ function init_guard(guard_name, x, y, direction, path)
   end
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
   -- show the welcome message
-  if destination_point_name == "from_outside_hole" then
+  if destination_point:get_name() == "from_outside_hole" then
     map:start_dialog("dungeon_5.welcome")
   end
 end
@@ -145,7 +145,7 @@ function map:on_dialog_finished(dialog_id, answer)
   if dialog_id == "dungeon_5.prison_1_use_iron_key" then
     sol.audio.play_sound("secret")
     sol.audio.play_sound("door_open")
-    map:npc_remove("prison_1_lock")
+    prison_1_lock:remove()
     map:get_game():set_boolean(511, true)
   end
 end

@@ -3,17 +3,17 @@ local map = ...
 
 fighting_miniboss = false
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
-  map:chest_set_enabled("boss_key_chest", false)
+  boss_key_chest:set_enabled(false)
   map:set_doors_open("stairs_door", true)
   map:set_doors_open("miniboss_door", true)
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
   -- show the welcome message
-  if destination_point_name == "from_outside" then
+  if destination_point:get_name() == "from_outside" then
     map:start_dialog("dungeon_1")
   end
 end
@@ -31,7 +31,7 @@ end
 
 function miniboss_timer()
   sol.audio.play_music("boss")
-  map:enemy_set_enabled("khorneth", true)
+  khorneth:set_enabled(true)
   map:get_hero():unfreeze()
 end
 
@@ -43,13 +43,13 @@ function map:on_enemy_dead(enemy_name)
   end
 
   if not map:has_entities("boss_key_battle")
-      and not map:chest_is_enabled("boss_key_chest") then
+      and not boss_key_chest:is_enabled() then
     map:move_camera(104, 72, 250, boss_key_timer)
   end
 end
 
 function boss_key_timer()
   sol.audio.play_sound("chest_appears")
-  map:chest_set_enabled("boss_key_chest", true)
+  boss_key_chest:set_enabled(true)
 end
 

@@ -1,9 +1,9 @@
 local map = ...
 -- Dungeon 1 B1
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
-  if destination_point_name == "from_1F_hole" then
+  if destination_point:get_name() == "from_1F_hole" then
     -- we are in the boss room
 
     if map:get_game():get_boolean(63) then
@@ -17,15 +17,15 @@ function map:on_started(destination_point_name)
       -- normal case
       start_boss()
     end
-  elseif destination_point_name == "from_1F_east" then
+  elseif destination_point:get_name() == "from_1F_east" then
     map:set_doors_open("se_door", true)
-    map:switch_set_activated("se_switch", true)
+    se_switch:set_activated(true)
   end
 end
 
 function start_boss()
 
-  map:enemy_set_enabled("boss", true)
+  boss:set_enabled(true)
   sol.audio.play_music("boss")
 end
 
@@ -50,7 +50,7 @@ function open_se_door()
 
   sol.audio.play_sound("secret")
   map:open_doors("se_door")
-  map:switch_set_activated("se_switch", true)
+  se_switch:set_activated(true)
 end
 
 function open_final_room()

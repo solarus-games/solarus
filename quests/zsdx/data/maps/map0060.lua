@@ -3,23 +3,23 @@ local map = ...
 
 fighting_boss = false
 
-function map:on_started(destination_point_name)
+function map:on_started(destination_point)
 
   if map:get_game():get_boolean(412) then
-    map:tile_set_enabled("weak_floor", false)
-    map:sensor_set_enabled("weak_floor_sensor", false)
+    weak_floor:set_enabled(false)
+    weak_floor_sensor:set_enabled(false)
   else
-    map:teletransporter_set_enabled("weak_floor_teletransporter", false)
+    weak_floor_teletransporter:set_enabled(false)
   end
 
   map:set_doors_open("boss_door", true)
   map:set_doors_open("final_room_door", true)
 end
 
-function map:on_opening_transition_finished(destination_point_name)
+function map:on_opening_transition_finished(destination_point)
 
   -- show the welcome message
-  if destination_point_name == "from_outside" then
+  if destination_point:get_name() == "from_outside" then
     map:start_dialog("dungeon_4.welcome")
   end
 end
@@ -34,11 +34,11 @@ end
 function map:on_sensor_collision_explosion(sensor_name)
 
   if sensor_name == "weak_floor_sensor"
-      and map:tile_is_enabled("weak_floor") then
+      and weak_floor:is_enabled() then
 
-    map:tile_set_enabled("weak_floor", false)
-    map:sensor_set_enabled("weak_floor_sensor", false)
-    map:teletransporter_set_enabled("weak_floor_teletransporter", true)
+    weak_floor:set_enabled(false)
+    weak_floor_sensor:set_enabled(false)
+    weak_floor_teletransporter:set_enabled(true)
     sol.audio.play_sound("secret")
     map:get_game():set_boolean(412, true)
   end
@@ -60,7 +60,7 @@ end
 function start_boss()
 
   sol.audio.play_music("boss")
-  map:enemy_set_enabled("boss", true)
+  boss:set_enabled(true)
   map:get_hero():unfreeze()
 end
 

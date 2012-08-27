@@ -9,34 +9,30 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_switch_activated(switch_name)
+function barrier_switch:on_activated()
 
-  current_switch_name = switch_name
-  if switch_name == "barrier_switch" then
-    map:move_camera(616, 672, 250, barrier_timer)
-  elseif switch_name == "door_switch" then
-    map:move_camera(376, 384, 250, door_timer)
-  elseif switch_name == "final_barrier_switch" then
-    map:set_entities_enabled("final_barrier", false)
+  map:move_camera(616, 672, 250, function()
+    barrier:set_enabled(false)
     sol.audio.play_sound("secret")
-  end
+    map:get_game():set_boolean(69, true)
+  end)
 end
 
-function barrier_timer()
-  barrier:set_enabled(false)
-  sol.audio.play_sound("secret")
-  map:get_game():set_boolean(69, true)
+function door_switch:on_activated()
+
+  map:move_camera(376, 384, 250, function()
+    map:open_doors("door")
+    sol.audio.play_sound("secret")
+  end)
 end
 
-function door_timer()
-  map:open_doors("door")
+function final_barrier_switch:on_activated()
+  map:set_entities_enabled("final_barrier", false)
   sol.audio.play_sound("secret")
 end
 
-function map:on_door_open(door_name)
+function weak_block:on_open()
 
-  if door_name == "weak_block" then
-    sol.audio.play_sound("secret")
-  end
+  sol.audio.play_sound("secret")
 end
 

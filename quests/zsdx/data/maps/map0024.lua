@@ -1,6 +1,8 @@
 local map = ...
 -- Dungeon 1 B1
 
+local hero = map.get_hero()
+
 function map:on_started(destination_point)
 
   if destination_point:get_name() == "from_1F_hole" then
@@ -29,28 +31,23 @@ function start_boss()
   sol.audio.play_music("boss")
 end
 
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+function hero:on_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.timer.start(9000, open_final_room)
     sol.audio.play_music("victory")
-    map:get_hero():freeze()
-    map:get_hero():set_direction(3)
+    self:freeze()
+    self:set_direction(3)
   end
 end
 
-function map:on_switch_activated(switch_name)
+function se_switch:on_activated()
 
-  if switch_name == "se_switch" then
-    map:move_camera(960, 496, 250, open_se_door)
-  end
-end
-
-function open_se_door()
-
-  sol.audio.play_sound("secret")
-  map:open_doors("se_door")
-  se_switch:set_activated(true)
+  map:move_camera(960, 496, 250, function()
+    sol.audio.play_sound("secret")
+    map:open_doors("se_door")
+    se_switch:set_activated(true)
+  end)
 end
 
 function open_final_room()

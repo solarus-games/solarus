@@ -6,7 +6,7 @@ remove_water_delay = 500 -- delay between each step when some water is disappear
 -- Returns whether all five torches are on
 function are_all_torches_on()
 
-  return map:npc_exists("torch_1")
+  return torch_1:exists()
       and torch_1:get_sprite():get_animation() == "lit"
       and torch_2:get_sprite():get_animation() == "lit"
       and torch_3:get_sprite():get_animation() == "lit"

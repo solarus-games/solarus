@@ -6,7 +6,7 @@ local water_delay = 500 -- delay between each water step
 function map:on_started(destination_point)
 
   if map:get_game():get_boolean(234) then
-    map:sensor_set_enabled("sensor1_1",false)
+    sensor1_1:set_enabled(false)
   end
 
   if map:get_game():get_boolean(297) then

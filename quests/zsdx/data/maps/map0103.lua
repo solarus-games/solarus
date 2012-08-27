@@ -162,7 +162,7 @@ function map:on_hero_on_sensor(sensor_name)
   elseif sensor_name == "start_boss_sensor"
       and not map:get_game():get_boolean(625)
       and not fighting_boss then
-    
+
     start_boss()
 
   -- west room

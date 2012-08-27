@@ -36,7 +36,7 @@ function map:on_switch_activated(switch_name)
     end, 1000, 5000) -- camera to door A (don't go back too soon)
 
   -- chest A
-  elseif switch_name == "chest_a_switch" 
+  elseif switch_name == "chest_a_switch"
       and not chest_a:is_enabled() then
     map:move_camera(1336, 520, 250, function()
       sol.audio.play_sound("chest_appears")

@@ -43,22 +43,22 @@ end
 
 function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "DS12" then
-    -- Push block room		
+    -- Push block room
     if not LD12:is_open() then
       sol.audio.play_sound("secret")
       map:open_doors("LD12")
       DS12:set_enabled(false)
     end
   elseif sensor_name == "DS7" then
-    -- Globules monsters room		
+    -- Globules monsters room
     if LD7:is_open()
-        and map:has_entities("LD7_enemy") then		
+        and map:has_entities("LD7_enemy") then
       map:close_doors("LD7")
     end
   elseif sensor_name == "DS9" then
-    -- Hard hat beetles room		
+    -- Hard hat beetles room
     if LD9:is_open()
-        and map:has_entities("LD9_enemy") then		
+        and map:has_entities("LD9_enemy") then
       map:close_doors("LD9")
       DS9:set_enabled(false)
     end
@@ -109,13 +109,13 @@ end
 
 
 function map:on_enemy_dead(enemy_name)
-  if string.match(enemy_name, "^LD7_enemy") and not map:has_entities("LD7_enemy") then	
+  if string.match(enemy_name, "^LD7_enemy") and not map:has_entities("LD7_enemy") then
     -- LD7 room: kill all enemies will open the door LD7
     if not LD7:is_open() then
       map:open_doors("LD7")
       sol.audio.play_sound("secret")
     end
-  elseif string.match(enemy_name, "^LD9_enemy") and not map:has_entities("LD9_enemy") then	
+  elseif string.match(enemy_name, "^LD9_enemy") and not map:has_entities("LD9_enemy") then
     -- LD9 room: kill all enemies will open the door LD9
     if not LD9:is_open() then
       map:open_doors("LD9")

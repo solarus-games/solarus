@@ -12,7 +12,7 @@ local puzzle_b_next = nil -- index of the next correct switch (nil = error or no
 local puzzle_b_nb_activated = 0
 local close_puzzle_b_door_sensors = map:find_all("close_puzzle_b_door_sensor")
 
--- bridges that appear when a torch is lit 
+-- bridges that appear when a torch is lit
 local nb_torches_lit = 0
 local bridge_tiles = map:find_all("bridge_tile")
 
@@ -312,7 +312,7 @@ function puzzle_a_switches:on_activated()
     end
   end
 end
-  
+
 -- reset solid ground location
 function reset_solid_ground_sensors:on_collision_hero()
   hero:reset_solid_ground()

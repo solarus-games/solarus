@@ -28,7 +28,7 @@ function are_all_torches_on()
       and torch_1:get_sprite():get_animation() == "lit"
       and torch_2:get_sprite():get_animation() == "lit"
       and torch_3:get_sprite():get_animation() == "lit"
-      and torch_4:get_sprite():get_animation() == "lit" 
+      and torch_4:get_sprite():get_animation() == "lit"
 end
 
 -- Makes all torches on forever
@@ -83,13 +83,13 @@ function map:on_switch_activated(switch_name)
 end
 
 function open_c_door()
-  
+
   sol.audio.play_sound("secret")
   map:open_doors("c_door")
 end
 
 function open_e_door()
-  
+
   sol.audio.play_sound("secret")
   map:open_doors("e_door")
 end

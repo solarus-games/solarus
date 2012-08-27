@@ -63,7 +63,7 @@ function enemy:on_custom_attack_received(attack, sprite)
 
   if self:has_left_blade()
     and sprite == left_blade_sprite
-    and sprite:get_animation() ~= "stopped" then  
+    and sprite:get_animation() ~= "stopped" then
 
     sprite:set_animation("hurt")
     main_sprite:set_animation("stopped")
@@ -77,7 +77,7 @@ function enemy:on_custom_attack_received(attack, sprite)
 
   elseif self:has_right_blade()
     and sprite == right_blade_sprite
-    and sprite:get_animation() ~= "stopped" then  
+    and sprite:get_animation() ~= "stopped" then
 
     sprite:set_animation("hurt")
     main_sprite:set_animation("stopped")

@@ -8,7 +8,7 @@ function map:on_started(destination_point)
   if map:get_game():get_boolean(54) then
     map_room_switch:set_activated(true)
   end
-  
+
   close_sw_door_sensor:set_enabled(false)
 end
 

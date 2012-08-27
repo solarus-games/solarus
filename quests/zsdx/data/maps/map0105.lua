@@ -87,7 +87,7 @@ function map:on_update()
   local x, y = map:get_hero():get_position()
   if x > 1056 and x < 1200 and y > 1888 and y < 1968
       and not hidden_enemy_chest:is_enabled()
-      and not map:enemy_is_dead("hidden_enemy_1") 
+      and not map:enemy_is_dead("hidden_enemy_1")
       and not map:enemy_is_dead("hidden_enemy_2")
       and not hidden_enemy_1:is_enabled()
       and not hidden_enemy_2:is_enabled() then
@@ -117,7 +117,7 @@ function map:on_enemy_dead(enemy_name)
       sol.audio.play_sound("secret")
       map:open_doors("s_door")
     end)
-    
+
   -- west enemies room
   elseif enemy_name:find("^w_room_enemy")
       and not map:has_entities("w_room_enemy") then
@@ -149,7 +149,7 @@ function map:on_switch_activated(switch_name)
 	puzzle_b_door_switch:set_activated(true)
       end)
     end
- 
+
   -- north-west chest
   elseif switch_name:find("^nw_switch") then
     if not nw_chest:is_enabled()
@@ -177,7 +177,7 @@ function map:on_switch_activated(switch_name)
       -- first one
       puzzle_b_next = index
     end
-  
+
     if index == puzzle_b_next then
       -- okay so far
       puzzle_b_next = puzzle_b_next % 4 + 1
@@ -219,7 +219,7 @@ function map:on_switch_activated(switch_name)
 	map:get_entity("puzzle_a_switch_green_" .. v):set_enabled(on)
 	map:get_entity("puzzle_a_switch_red_" .. v):set_enabled(not on)
       end
- 
+
       -- check the success
       local success = true
       for i = 1, 6 do
@@ -275,7 +275,7 @@ function map:on_hero_on_sensor(sensor_name)
     c_room_switch_2:set_activated(false)
     c_room_switch_3:set_activated(false)
     c_room_switch_4:set_activated(false)
-  
+
   -- puzzle B
   elseif sensor_name:find("^close_puzzle_b_door_sensor") then
 
@@ -309,7 +309,7 @@ end
 function map:on_npc_collision_fire(npc_name)
 
   if string.find(npc_name, "^torch") then
-    
+
     local torch_sprite = map:npc_get_sprite(npc_name)
     if torch_sprite:get_animation() == "unlit" then
       -- temporarily light the torch up

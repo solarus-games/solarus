@@ -135,7 +135,7 @@ end
 
 -- Torches on this map interact with the map script
 -- because we don't want usual behavior from items/lamp.lua:
--- we want a longer delay and special Ganon interaction 
+-- we want a longer delay and special Ganon interaction
 function map:on_npc_interaction(npc_name)
 
   if string.find(npc_name, "^torch") then
@@ -147,7 +147,7 @@ end
 function map:on_npc_collision_fire(npc_name)
 
   if string.find(npc_name, "^torch") then
-    
+
     local torch_sprite = map:npc_get_sprite(npc_name)
     if torch_sprite:get_animation() == "unlit" then
       -- temporarily light the torch up
@@ -175,7 +175,7 @@ function unlight_torches()
 end
 
 function check_torches()
-  
+
   local states = {
     torch_1:get_sprite():get_animation() == "lit",
     torch_2:get_sprite():get_animation() == "lit",
@@ -222,7 +222,7 @@ function check_torches()
     torches_error = false
     torches_next = on[1] % #states + 1
     --print("next should be ", torches_next)
-      
+
   elseif not torches_error then
 
     if #on == torches_nb_on + 1 then

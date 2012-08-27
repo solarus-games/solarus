@@ -73,7 +73,7 @@ function item:on_npc_interaction(npc)
       else
         map:start_dialog("found_water.no_empty_bottle")
       end
-    else  
+    else
       map:start_dialog("found_water.no_bottle")
     end
   end

@@ -163,7 +163,7 @@ function enemy:destroy_floor(prefix, first, last)
     if index % 10 == 1 then
       sol.audio.play_sound("stone")
     end
-    
+
     self:get_map():entities_set_enabled(prefix .. index, false)
 
     if index ~= last then

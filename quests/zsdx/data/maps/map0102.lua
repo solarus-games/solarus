@@ -52,7 +52,7 @@ function map:on_started(destination_point)
   map:set_entities_enabled("miniboss", false)
 
   -- save the north-west door from 1F
-  if destination_point:get_name() == "from_1f_ne" then 
+  if destination_point:get_name() == "from_1f_ne" then
     map:get_game():set_boolean(621, true)
   end
 
@@ -75,7 +75,7 @@ function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "close_door_f_sensor" then
     map:set_doors_open("door_f", false)
     door_f_switch:set_activated(false)
- 
+
   -- door C (west room)
   elseif sensor_name:find("^close_door_c_sensor") then
     if map:has_entities("w_room_enemy")
@@ -140,7 +140,7 @@ function map:on_switch_activated(switch_name)
     map:set_entities_enabled("shortcut_off", false)
     map:get_game():set_boolean(628, true)
     sol.audio.play_sound("secret")
- 
+
   -- code
   else
     local index = tonumber(string.match(switch_name, "^code_switch_([1-8])$"))
@@ -223,7 +223,7 @@ function are_all_torches_on()
       and torch_1:get_sprite():get_animation() == "lit"
       and torch_2:get_sprite():get_animation() == "lit"
       and torch_3:get_sprite():get_animation() == "lit"
-      and torch_4:get_sprite():get_animation() == "lit" 
+      and torch_4:get_sprite():get_animation() == "lit"
 end
 
 -- Makes all torches on forever

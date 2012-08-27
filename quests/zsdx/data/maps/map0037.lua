@@ -33,7 +33,7 @@ function map:on_dialog_finished(dialog_id, answer)
     if map:get_game():get_item("level_4_way") == 2 then
       -- the player has the golden bars
       map:start_dialog("billy_cave.with_golden_bars")
-    else 
+    else
       map:start_dialog("billy_cave.without_golden_bars")
     end
 

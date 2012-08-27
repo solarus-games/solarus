@@ -81,7 +81,7 @@ function item:get_block_position_from_hero()
 end
 
 function item:on_obtained(variant, savegame_variable)
-  
+
   -- Give the magic bar if necessary.
   if self:get_game():get_max_magic() == 0 then
     self:get_game():set_max_magic(42)

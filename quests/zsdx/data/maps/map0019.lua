@@ -55,7 +55,7 @@ function talk_to_seller()
 
   if not has_talked_about_apples() or has_obtained_bottle() then
     map:start_dialog("cake_shop.seller.choose_item")
-  else 
+  else
     map:start_dialog("cake_shop.seller.ask_apples_again", apples_question_finished)
   end
 end

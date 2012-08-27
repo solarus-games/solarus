@@ -6,7 +6,7 @@ local enemy = ...
 local in_shell = nil
 
 function enemy:on_created()
-  
+
   self:set_life(2)
   self:set_damage(2)
   self:create_sprite("enemies/mini_mowatulla")

@@ -71,13 +71,13 @@ function map:on_switch_activated(switch_name)
 
   if switch_name == "switch1_3" then
     if  switch1_2:is_activated() == false then
-      error = true			
+      error = true
     end
   end
 
   if switch_name == "switch1_4" then
     if  switch1_3:is_activated() == false then
-      error = true			
+      error = true
     end
   end
 

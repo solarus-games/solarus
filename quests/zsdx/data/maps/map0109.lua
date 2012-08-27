@@ -90,7 +90,7 @@ function map:on_enemy_dead(enemy_name)
       sol.audio.play_sound("secret")
       map:open_doors("door_b")
     end
- 
+
   -- door C
   elseif enemy_name:find("^door_c_enemy") then
     if not map:has_entities("door_c_enemy")

@@ -140,7 +140,7 @@ end
 
 -- Torches on this map interact with the map script
 -- because we don't want usual behavior from items/lamp.lua:
--- we want a longer delay and special Ganon interaction 
+-- we want a longer delay and special Ganon interaction
 function torches:on_interaction()
   map:start_dialog("torch.need_lamp")
 end
@@ -176,7 +176,7 @@ function unlight_torches()
 end
 
 function check_torches()
-  
+
   local states = {
     torch_1:get_sprite().get_animation() == "lit",
     torch_2:get_sprite().get_animation() == "lit",
@@ -217,7 +217,7 @@ function check_torches()
   elseif #on == 1 then
     torches_error = false
     torches_next = on[1] % #states + 1
-      
+
   elseif not torches_error then
 
     if #on == torches_nb_on + 1 then

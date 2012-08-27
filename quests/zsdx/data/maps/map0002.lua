@@ -50,7 +50,7 @@ function game_1_man:on_interaction()
     if unauthorized then
       -- the player already won much money
       map:start_dialog("rupee_house.game_1.not_allowed_to_play")
-    else 
+    else
       if not already_played_game_1 then
         -- first time: long dialog with the game rules
         map:start_dialog("rupee_house.game_1.intro", game_1_question_dialog_finished)
@@ -128,7 +128,7 @@ end
 
 local function game_1_question_dialog_finished(answer)
 
-  if dialog_id == "rupee_house.game_1.intro" or 
+  if dialog_id == "rupee_house.game_1.intro" or
     dialog_id == "rupee_house.game_1.play_again_question" then
 
     if answer == 1 then

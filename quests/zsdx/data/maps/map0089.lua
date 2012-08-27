@@ -36,7 +36,7 @@ function random_walk(npc_name)
 end
 
 function map:on_npc_interaction(npc_name)
-  
+
   if npc_name == "forbidden_door_npc" then
 
     local hero_x = map:get_hero():get_position()

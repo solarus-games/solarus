@@ -160,10 +160,10 @@ function map:on_npc_interaction(npc_name)
       map:start_dialog("dungeon_5.prison_1_use_iron_key")
     end
   elseif npc_name == "prison_2_lock" then
- 
+
     prison_2_nb_messages = prison_2_nb_messages + 1
     if prison_2_nb_messages <= 3 then
-      map:start_dialog("dungeon_5.prison_2_locked_"..prison_2_nb_messages)
+      map:start_dialog("dungeon_5.prison_2_locked_" .. prison_2_nb_messages)
     else
       sol.audio.play_sound("secret")
       sol.audio.play_sound("door_open")

@@ -10,8 +10,8 @@ function are_all_torches_on()
       and torch_1:get_sprite():get_animation() == "lit"
       and torch_2:get_sprite():get_animation() == "lit"
       and torch_3:get_sprite():get_animation() == "lit"
-      and torch_4:get_sprite():get_animation() == "lit" 
-      and torch_5:get_sprite():get_animation() == "lit" 
+      and torch_4:get_sprite():get_animation() == "lit"
+      and torch_5:get_sprite():get_animation() == "lit"
 end
 
 -- Makes all five torches on forever
@@ -24,7 +24,7 @@ function lock_torches()
   torch_5:remove()
 end
 
--- Called when the map starts 
+-- Called when the map starts
 function map:on_started(destination_point)
 
   if map:get_game():get_boolean(904) then

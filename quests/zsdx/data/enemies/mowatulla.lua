@@ -111,8 +111,8 @@ end
 function enemy:jump_or_son_phase()
 
   if math.random(2) == 1 then
- 
-    local sons_prefix = self:get_name() .. "_son" 
+
+    local sons_prefix = self:get_name() .. "_son"
     local nb_sons = self:get_map():get_entities_count(sons_prefix)
     if nb_sons < 5 then
       self:son_phase_soon()
@@ -132,13 +132,13 @@ function enemy:jump_phase()
   y = y - 16
   local hero_x, hero_y = self:get_map():get_hero():get_position()
   if hero_x > x then
-    if y > 856 then 
+    if y > 856 then
       direction8 = 1
     else
       direction8 = 0
     end
   else
-    if y > 856 then 
+    if y > 856 then
       direction8 = 3
     else
       direction8 = 4

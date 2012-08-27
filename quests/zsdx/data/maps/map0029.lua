@@ -2,7 +2,7 @@ local map = ...
 -- Twin caves
 
 function map:on_started(destination_point)
-  
+
   if map:get_game():get_boolean(69) then
     barrier:set_enabled(false)
     barrier_switch:set_activated(true)
@@ -10,7 +10,7 @@ function map:on_started(destination_point)
 end
 
 function map:on_switch_activated(switch_name)
-  
+
   current_switch_name = switch_name
   if switch_name == "barrier_switch" then
     map:move_camera(616, 672, 250, barrier_timer)

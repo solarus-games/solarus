@@ -8,7 +8,7 @@ directions = {
 }
 
 function map:on_started(destination_point)
-  
+
   if map:get_game():get_boolean(139) then
     secret_way:set_enabled(false)
   end

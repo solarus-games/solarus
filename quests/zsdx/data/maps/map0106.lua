@@ -98,7 +98,7 @@ function map:on_switch_activated(switch_name)
       -- first one
       nw_switches_next = index
     end
-  
+
     if index == nw_switches_next then
       -- okay so far
       nw_switches_next = nw_switches_next % 8 + 1
@@ -178,7 +178,7 @@ function map:on_hero_on_sensor(sensor_name)
     map:move_camera(1760, 520, 1000, function()
       map:close_doors("door_g")
       door_g_switch:set_activated(false)
-    end) 
+    end)
 
   -- door E
   elseif sensor_name:find("^close_door_e_sensor")
@@ -281,7 +281,7 @@ end
 function map:on_npc_collision_fire(npc_name)
 
   if string.find(npc_name, "^torch") then
-    
+
     local torch_sprite = map:npc_get_sprite(npc_name)
     if torch_sprite:get_animation() == "unlit" then
       -- temporarily light the torch up

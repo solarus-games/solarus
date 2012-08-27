@@ -58,7 +58,7 @@ function enemy:on_hurt(attack, life_lost)
     for _, t in ipairs(timers) do t:stop() end
     self:remove_sons()
   else
-    if life > 9 then 
+    if life > 9 then
       nb_sons_immobilized_needed = 3
     elseif life > 7 then
       nb_sons_immobilized_needed = 4
@@ -161,7 +161,7 @@ function enemy:stop_vulnerable()
 end
 
 function enemy:remove_sons()
- 
+
   local son_prefix = self:get_name() .. "_son"
 
   for i, son in ipairs(sons) do

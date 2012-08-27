@@ -146,7 +146,7 @@ function savegame_menu:draw_savegame(slot_index)
   local slot = self.slots[slot_index]
   self.save_container_img:draw(self.surface, 57, 48 + slot_index * 27)
   slot.player_name_text:draw(self.surface, 87, 61 + slot_index * 27)
-  
+
   if slot.hearts_view ~= nil then
     slot.hearts_view:draw(self.surface, 168, 51 + slot_index * 27)
   end
@@ -618,7 +618,7 @@ function savegame_menu:direction_pressed_phase_options(direction8)
       end
       self:set_options_cursor_position(position)
     end
-      
+
   else
     -- An option is currently being modified.
 

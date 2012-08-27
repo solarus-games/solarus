@@ -4,7 +4,7 @@ local map = ...
 next_sign = 1
 directions = {
   2, 1, 0, 3, 0, 3, 2, 1, 0, 3, 2, 3, 0, 1,
-  2, 1, 0, 3, 0, 3, 0, 1, 2, 3, 2, 1, 2  
+  2, 1, 0, 3, 0, 3, 0, 1, 2, 3, 2, 1, 2
 }
 door_a_allow_close = true
 door_b_allow_close = true
@@ -107,7 +107,7 @@ end
 function map:on_switch_activated(switch_name)
 
   -- door A
-  if switch_name == "door_a_switch" 
+  if switch_name == "door_a_switch"
       and not door_a:is_open() then
     -- open the door and close it in a few seconds
     sol.audio.play_sound("secret")
@@ -121,7 +121,7 @@ function map:on_switch_activated(switch_name)
     end)
 
   -- door B
-  elseif switch_name == "door_b_switch" 
+  elseif switch_name == "door_b_switch"
       and not door_b:is_open() then
     -- open the door and close it in a few seconds
     sol.audio.play_sound("secret")

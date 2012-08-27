@@ -34,7 +34,7 @@ function map:sahasrahla_dream()
 end
 
 function map:on_dialog_finished(dialog_id)
-  
+
   if dialog_id == "link_house.dream" then
     sol.timer.start(1000, function()
       self:wake_up()

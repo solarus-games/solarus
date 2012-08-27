@@ -40,9 +40,9 @@ end
 
 -- Unlights the oldest torch still lit.
 function item:unlight_oldest_torch()
-  
+
   -- Remove the torch from the FIFO.
-  local npc = table.remove(self.temporary_lit_torches, 1)  
+  local npc = table.remove(self.temporary_lit_torches, 1)
   if npc:exists() then
     -- Change its animation if it still exists on the map.
     npc:get_sprite():set_animation("unlit")
@@ -56,7 +56,7 @@ end
 
 -- Called when the player obtains the Lamp.
 function item:on_obtained(variant, savegame_variable)
-  
+
   -- Give the magic bar if necessary.
   if self:get_game():get_max_magic() == 0 then
     self:get_game():set_max_magic(42)
@@ -83,7 +83,7 @@ end
 function item:on_npc_collision_fire(npc)
 
   if npc:get_name():find("^torch") then
-    
+
     local torch_sprite = npc:get_sprite()
     if torch_sprite:get_animation() == "unlit" then
       -- Temporarily light the torch up.

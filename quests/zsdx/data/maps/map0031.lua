@@ -53,7 +53,7 @@ end
 function map:on_switch_activated(switch_name)
 
   local order = switches_puzzle_order[switch_name]
-  if order ~= nil then 
+  if order ~= nil then
 
     switches_puzzle_nb_enabled = switches_puzzle_nb_enabled + 1
     if switches_puzzle_nb_enabled ~= order then
@@ -177,7 +177,7 @@ function boss_change_floor(first, last, inc, enable)
       or (not enable and index % 5 == 0) then
       sol.audio.play_sound("stone")
     end
-    
+
     -- enable/disable the tile
     map:get_entity("boss_floor_" .. index):set_enabled(enable)
 

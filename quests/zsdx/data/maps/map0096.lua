@@ -63,7 +63,7 @@ function start_evil_tiles()
 
     if again then
       sol.timer.start(150, repeat_sound)
-    else 
+    else
       finish_evil_tiles()
     end
   end

@@ -55,7 +55,7 @@ function enemy:set_properties(prop)
   if properties.push_hero_on_sword == nil then
     properties.push_hero_on_sword = false
   end
-  if properties.movement_create == nil then 
+  if properties.movement_create == nil then
     properties.movement_create = function()
       local m = sol.movement.create("random_path")
       return m

@@ -19,7 +19,7 @@ function show_fairy()
   torch_3:remove()
   torch_4:remove()
 end
- 
+
 function map:on_started(destination_point)
 
   if has_fairy_appeared() then

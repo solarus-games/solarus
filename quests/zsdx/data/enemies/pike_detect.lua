@@ -58,7 +58,7 @@ function enemy:go(direction4)
     { x = -8, y =  0},
     { x =  0, y =  8}
   }
-  
+
   -- Check that we can make the move.
   local index = direction4 + 1
   if not self:test_obstacles(dxy[index].x * 2, dxy[index].y * 2) then

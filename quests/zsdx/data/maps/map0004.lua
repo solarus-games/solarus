@@ -11,7 +11,7 @@ function map:on_started(destination_point)
     map:get_game():set_hud_enabled(false)
     map:set_entities_enabled("enemy", false)
     sol.audio.play_music("fanfare")
-    map:set_entities_eneabled("broken_rupee_house", false)
+    map:set_entities_enabled("broken_rupee_house", false)
   else
     -- enable dark world
     if map:get_game():get_boolean(905) then

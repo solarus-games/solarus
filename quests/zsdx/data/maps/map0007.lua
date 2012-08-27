@@ -98,7 +98,7 @@ function inferno:on_interaction()
           else
             map:start_dialog("inferno.want_rupees_again")
           end
-        end 
+        end
       end)
     end
   end

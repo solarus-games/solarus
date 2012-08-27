@@ -5,14 +5,9 @@ function map:on_opening_transition_finished(destination_point)
 
   if not map:get_game():get_item("tunic"):has_variant(2) then
 
-    map:start_dialog("dungeon_4.too_cold")
-  end
-end
-
-function map:on_dialog_finished(dialog_id, answer)
-
-  if dialog_id == "dungeon_4.too_cold" then
-    hero:walk("2222", false, true)
+    map:start_dialog("dungeon_4.too_cold", function()
+      hero:walk("2222", false, true)
+    end)
   end
 end
 

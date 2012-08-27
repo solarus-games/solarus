@@ -29,7 +29,7 @@ function map:on_started(destination_point)
 
   -- puzzle B
   if destination_point:get_name() == "from_b1_w"
-      or destination_point == "from_b1_e" then
+      or destination_point:get_name() == "from_b1_e" then
     map:set_doors_open("puzzle_b_door", true)
     puzzle_b_door_switch:set_activated(true)
   end

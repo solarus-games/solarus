@@ -37,7 +37,7 @@ function map:on_started(destination_point)
     map:set_entities_enabled("LO2", false)
   end
 
-  if destination_point:get_name() == "from_boss" or destination_point == "from_hidden_room" then
+  if destination_point:get_name() == "from_boss" or destination_point:get_name() == "from_hidden_room" then
     map:set_doors_open("LD5", true)
   end
 

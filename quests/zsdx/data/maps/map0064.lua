@@ -1,7 +1,7 @@
 local map = ...
 -- Dungeon 5 1F
 
-sol.main.do_file("maps/prison_guard")
+sol.main.load_file("maps/prison_guard")(map)
 
 function map:on_started(destination_point)
 
@@ -47,15 +47,19 @@ function map:on_opening_transition_finished(destination_point)
   end
 end
 
-function map:on_enemy_dead(enemy_name)
+function se_room_enemy:on_dead()
 
-  if enemy_name == "se_room_enemy"
-      and not se_door:is_open() then
+  if not se_door:is_open() then
     sol.audio.play_sound("secret")
     map:open_doors("se_door")
-  elseif string.find(enemy_name, "^s_room_enemy")
-      and not map:has_entities("s_room_enemy")
-      and not se_door:is_open() then
+  end
+end
+
+for _, enemy in ipairs(map:get_entities("s_room_enemy")) do
+
+  function enemy:on_dead()
+    if not map:has_entities("s_room_enemy")
+        and not se_door:is_open() then
     sol.audio.play_sound("secret")
     map:open_doors("se_door")
   end
@@ -71,41 +75,23 @@ function map:on_update()
   end
 end
 
-function map:on_switch_activated(switch_name)
+function c_door_switch:on_activated()
 
-  if switch_name == "c_door_switch"
-      and not c_door:is_open() then
-    map:move_camera(504, 504, 250, open_c_door)
-  elseif switch_name == "e_door_switch"
-      and not e_door:is_open() then
-    map:move_camera(1048, 488, 250, open_e_door)
+  if not c_door:is_open() then
+    map:move_camera(504, 504, 250, function()
+      sol.audio.play_sound("secret")
+      map:open_doors("c_door")
+    end)
   end
 end
 
-function open_c_door()
+function e_door_switch:on_activated()
 
-  sol.audio.play_sound("secret")
-  map:open_doors("c_door")
-end
-
-function open_e_door()
-
-  sol.audio.play_sound("secret")
-  map:open_doors("e_door")
-end
-
-function map:on_hero_on_sensor(sensor_name)
-
-  sensor_check_guard(sensor_name)
-end
-
-function map:on_hero_still_on_sensor(sensor_name)
-
-  sensor_check_guard(sensor_name)
-end
-
-function map:on_dialog_finished(dialog_id, answer)
-
-  dialog_check_guard(dialog_id)
+  if not e_door:is_open() then
+    map:move_camera(1048, 488, 250, function()
+      sol.audio.play_sound("secret")
+      map:open_doors("e_door")
+    end)
+  end
 end
 

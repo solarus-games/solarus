@@ -67,8 +67,8 @@ const int Hero::normal_walking_speed = 88; // pixels per second
  * @brief Creates a hero.
  * @param equipment the equipment (needed to build the sprites even outside a game)
  */
-Hero::Hero(Equipment &equipment):
-
+Hero::Hero(Equipment& equipment):
+  MapEntity("hero", 0, LAYER_LOW, 0, 0, 16, 16),
   state(NULL),
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
@@ -77,7 +77,6 @@ Hero::Hero(Equipment &equipment):
   next_ground_date(0) {
 
   // position
-  set_size(16, 16);
   set_origin(8, 13);
   last_solid_ground_coords.set_xy(-1, -1);
   last_solid_ground_layer = LAYER_LOW;

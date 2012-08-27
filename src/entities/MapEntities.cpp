@@ -46,6 +46,7 @@ MapEntities::MapEntities(Game &game, Map &map):
   this->obstacle_entities[layer].push_back(&hero);
   this->entities_drawn_y_order[layer].push_back(&hero);
   // TODO update that when the layer changes, same thing for enemies
+  this->named_entities[hero.get_name()] = &hero;
 
   // surfaces to pre-render static tiles
   for (int layer = 0; layer < LAYER_NB; layer++) {

@@ -14,7 +14,7 @@ end
 function map:on_npc_interaction(npc_name)
 
   if npc_name == "bone_key_door" then
-    if not map:get_game():has_item("bone_key") then
+    if not map:get_game():get_item("bone_key"):has_variant() then
       map:start_dialog("hidden_palace.door_closed")
     else
       map:start_dialog("hidden_palace.using_bone_key")

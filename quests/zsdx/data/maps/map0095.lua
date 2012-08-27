@@ -4,12 +4,12 @@ local map = ...
 function map:on_shop_item_buying(item_name)
 
   if not map:get_game():get_boolean(911)
-      and not map:get_game():has_item("bottle_2") then
+      and not map:get_game():get_item("bottle_2"):has_variant() then
     -- give bottle 2
-    map:get_game():set_item("bottle_2", 1)
+    map:get_game():get_item("bottle_2"):set_variant(1)
   end
 
-  if get_first_empty_bottle() == "" then
+  if map:get_first_empty_bottle() == nil then
     map:start_dialog("potion_shop.no_empty_bottle")
     return false
   end
@@ -37,24 +37,5 @@ function map:on_npc_interaction(npc_name)
       map:start_dialog("potion_shop.witch")
     end
   end
-end
-
--- Returns the item name of an empty bottle, or an empty
--- string if there is no empty bottle
-function get_first_empty_bottle()
-
-  local result = ""
-
-  if map:get_game():get_item("bottle_1") == 1 then
-    result = "bottle_1"
-  elseif map:get_game():get_item("bottle_2") == 1 then
-    result = "bottle_2"
-  elseif map:get_game():get_item("bottle_3") == 1 then
-    result = "bottle_3"
-  elseif map:get_game():get_item("bottle_4") == 1 then
-    result = "bottle_4"
-  end
-
-  return result
 end
 

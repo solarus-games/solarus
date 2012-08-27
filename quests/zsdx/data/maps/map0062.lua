@@ -3,7 +3,7 @@ local map = ...
 
 function map:on_opening_transition_finished(destination_point)
 
-  if map:get_game():get_item("tunic") < 2 then
+  if not map:get_game():get_item("tunic"):has_variant(2) then
 
     map:start_dialog("dungeon_4.too_cold")
   end

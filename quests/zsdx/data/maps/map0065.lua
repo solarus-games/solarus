@@ -154,7 +154,7 @@ function map:on_npc_interaction(npc_name)
 
   if npc_name == "prison_1_lock" then
 
-    if not map:get_game():has_item("iron_key") then
+    if not map:get_game():get_item("iron_key"):has_variant() then
       map:start_dialog("dungeon_5.prison_1_locked")
     else
       map:start_dialog("dungeon_5.prison_1_use_iron_key")

@@ -109,7 +109,7 @@ end
 function dungeon_2_door:on_interaction()
 
   -- open the door if the player has the Rock Key
-  if map:get_game():has_item("rock_key") then
+  if map:get_game():get_item("rock_key"):has_variant() then
     sol.audio.play_sound("door_open")
     sol.audio.play_sound("secret")
     map:get_game():set_boolean(89, true)

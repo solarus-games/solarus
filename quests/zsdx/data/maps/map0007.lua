@@ -49,7 +49,7 @@ end
 function iron_lock:on_interaction()
 
   -- open the door if the player has the iron key
-  if map:get_game():has_item("iron_key") then
+  if map:get_game():get_item("iron_key"):has_variant() then
     sol.audio.play_sound("door_open")
     sol.audio.play_sound("secret")
     map:get_game():set_boolean(193, true)
@@ -62,7 +62,7 @@ end
 function wooden_lock:on_interaction()
 
   -- open the door if the player has the wooden key
-  if map:get_game():has_item("wooden_key") then
+  if map:get_game():get_item("wooden_key"):has_variant() then
     sol.audio.play_sound("door_open")
     sol.audio.play_sound("secret")
     map:get_game():set_boolean(194, true)

@@ -51,7 +51,7 @@ function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "puzzle_wrong_sensor" then
     puzzle_next_sensor = 1
   elseif sensor_name == "save_s_blocks_sensor" then
-    if map:get_game():has_item("feather")
+    if map:get_game():get_item("feather"):has_variant()
         and not map:get_game():get_boolean(517) then
       -- solved the blocks puzzle necessary to exit this floor
       map:get_game():set_boolean(517, true)

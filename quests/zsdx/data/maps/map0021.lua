@@ -1,24 +1,39 @@
 local map = ...
 -- Lyriann's cave B1
 
-function map:on_switch_activated(switch_name)
+function open_barrier_1_switch:on_activated()
+  
+  if barrier_1:is_enabled() then
+    barrier_1:set_enabled(false)
+    sol.audio.play_sound("door_open")
+    close_barrier_1_switch:set_activated(false)
+  end
+end
 
-  if switch_name == "open_barrier_1_switch" and map:tile_is_enabled("barrier_1") then
-    map:tile_set_enabled("barrier_1", false)
-    sol.audio.play_sound("door_open")
-    map:switch_set_activated("close_barrier_1_switch", false)
-  elseif switch_name == "close_barrier_1_switch" and not map:tile_is_enabled("barrier_1") then
-    map:tile_set_enabled("barrier_1", true)
+function close_barrier_1_switch:on_activated()
+  
+  if not barrier_1:is_enabled() then
+    barrier_1:set_enabled(true)
     sol.audio.play_sound("door_closed")
-    map:switch_set_activated("open_barrier_1_switch", false)
-  elseif switch_name == "open_barrier_2_switch" and map:tile_is_enabled("barrier_2") then
-    map:tile_set_enabled("barrier_2", false)
+    open_barrier_1_switch:set_activated(false)
+  end
+end
+
+function open_barrier_2_switch:on_activated()
+  
+  if barrier_2:is_enabled() then
+    barrier_2:set_enabled(false)
     sol.audio.play_sound("door_open")
-    map:switch_set_activated("close_barrier_2_switch", false)
-  elseif switch_name == "close_barrier_2_switch" and not map:tile_is_enabled("barrier_2") then
-    map:tile_set_enabled("barrier_2", true)
+    close_barrier_2_switch:set_activated(false)
+  end
+end
+
+function close_barrier_2_switch:on_activated()
+  
+  if not barrier_2:is_enabled() then
+    barrier_2:set_enabled(true)
     sol.audio.play_sound("door_closed")
-    map:switch_set_activated("open_barrier_2_switch", false)
+    open_barrier_2_switch:set_activated(false)
   end
 end
 

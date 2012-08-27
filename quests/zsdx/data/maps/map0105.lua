@@ -87,8 +87,8 @@ function map:on_update()
   local x, y = hero:get_position()
   if x > 1056 and x < 1200 and y > 1888 and y < 1968
       and not hidden_enemy_chest:is_enabled()
-      and not map:enemy_is_dead("hidden_enemy_1")
-      and not map:enemy_is_dead("hidden_enemy_2")
+      and hidden_enemy_1 ~= nil
+      and hidden_enemy_2 ~= nil
       and not hidden_enemy_1:is_enabled()
       and not hidden_enemy_2:is_enabled() then
 

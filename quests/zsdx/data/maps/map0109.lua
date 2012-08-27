@@ -52,7 +52,7 @@ function map:on_hero_on_sensor(sensor_name)
   -- door D
   elseif sensor_name:find("^close_door_d_sensor") then
     if door_d:is_open()
-        and not map:enemy_is_dead("door_d_enemy") then
+        and door_d_enemy ~= nil then
       map:close_doors("door_d")
       door_d_enemy:set_enabled(true)
     end

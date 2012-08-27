@@ -184,10 +184,9 @@ function map:on_door_open(door_name)
 
   if door_name == "door_b" then
     -- put the last enemy of the room on the hero's layer
-    local enemy_name = "w_room_enemy_4"
-    if not map:enemy_is_dead(enemy_name) then
-      local x, y = map:get_entity(enemy_name):get_position()
-      map:get_entity(enemy_name):set_position(x, y, 1)
+    if w_room_enemy_4 ~= nil then
+      local x, y = w_room_enemy_4:get_position()
+      w_room_enemy_4:set_position(x, y, 1)
     end
   end
 end

@@ -23,7 +23,7 @@ end
 function evil_tiles_sensor_1:on_activated()
 
   if evil_tiles_door:is_open()
-      and not map:enemy_is_dead("evil_tile_1") then
+      and evil_tile_1 ~= nil then
     map:close_doors("evil_tiles_door")
     sol.timer.start(2000, start_evil_tiles)
   end

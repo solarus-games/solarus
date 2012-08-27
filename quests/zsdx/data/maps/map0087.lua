@@ -4,7 +4,7 @@ local map = ...
 function map:on_opening_transition_finished(destination_point)
 
   local solarus_child_sprite = solarus_child:get_sprite()
-  map:npc_set_position("solarus_child", 160, 165)
+  solarus_child:set_position(160, 165)
   solarus_child_sprite:set_animation("stopped")
   solarus_child_sprite:set_ignore_suspend(true)
 end
@@ -60,7 +60,7 @@ end
 
 function agahnim_sequence_3()
 
-  map:npc_set_position("agahnim", 160, 141)
+  agahnim:set_position(160, 141)
   sol.audio.play_music("agahnim")
   sol.timer.start(1000, agahnim_sequence_4)
 end

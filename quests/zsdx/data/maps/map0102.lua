@@ -18,8 +18,8 @@ function map:on_started(destination_point)
   map:set_doors_open("door_c", true)
   if map:get_game():get_boolean(616) then
     local enemy_name = "w_room_enemy_4"
-    local x, y = map:enemy_get_position(enemy_name)
-    map:enemy_set_position(enemy_name, x, y, 1)
+    local x, y = map:get_entity(enemy_name):get_position()
+    map:get_entity(enemy_name):set_position(x, y, 1)
   end
 
   -- saved door A (code)
@@ -186,8 +186,8 @@ function map:on_door_open(door_name)
     -- put the last enemy of the room on the hero's layer
     local enemy_name = "w_room_enemy_4"
     if not map:enemy_is_dead(enemy_name) then
-      local x, y = map:enemy_get_position(enemy_name)
-      map:enemy_set_position(enemy_name, x, y, 1)
+      local x, y = map:get_entity(enemy_name):get_position()
+      map:get_entity(enemy_name):set_position(x, y, 1)
     end
   end
 end
@@ -242,7 +242,7 @@ function map:on_update()
     lock_torches()
     map:move_camera(32, 120, 250, function()
       sol.audio.play_sound("secret")
-      map:npc_set_position("nw_hint_stone", 32, 125)
+      nw_hint_stone:set_position(32, 125)
     end)
   end
 end

@@ -11,7 +11,7 @@ function map:on_started(destination_point)
 
   if map:get_game():get_boolean(297) then
     set_water_drained()
-    map:block_set_position("water_block", 656, 333)
+    water_block:set_position(656, 333)
   end
 
   map:set_entities_enabled("enemy2",false)

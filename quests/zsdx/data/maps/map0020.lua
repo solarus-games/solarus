@@ -6,7 +6,7 @@ local tom_initial_y = 0
 
 function map:on_started(destination_point)
 
-  tom_initial_x, tom_initial_y = map:npc_get_position("tom")
+  tom_initial_x, tom_initial_y = tom:get_position()
 
   if has_finished_cavern() and not has_boomerang_of_tom() then
     tom:remove()

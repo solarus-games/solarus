@@ -17,8 +17,8 @@ function map:on_started(destination_point)
 
   -- blocks necessary to go back when found the feather
   if map:get_game():get_boolean(517) then
-    map:block_set_position("s_block_1", 464, 773)
-    map:block_set_position("s_block_2", 496, 773)
+    s_block_1:set_position(464, 773)
+    s_block_2:set_position(496, 773)
   end
 end
 

@@ -15,6 +15,10 @@ s/map:[a-z]*_remove("\([a-zA-Z0-9_]*\)")/\1:remove()/g
 s/map:[a-z]*_start_movement("\([a-zA-Z0-9_]*\)", */\1:start_movement(/g
 s/map:[a-z]*_set_group_enabled/map:set_entities_enabled/g
 s/map:[a-z]*_exists("\([a-zA-Z0-9_]*\)")/\1:exists()/g
+s/map:[a-z]*_set_position("\([a-zA-Z0-9_]*\)", */\1:set_position(/g
+s/map:[a-z]*_set_position(\([a-zA-Z0-9_\." ]*\), */map:get_entity(\1):set_position(/g
+s/map:[a-z]*_get_position("\([a-zA-Z0-9_]*\)")/\1:get_position()/g
+s/map:[a-z]*_get_position(\([a-zA-Z0-9_\." ]*\))/map:get_entity(\1):get_position()/g
 s/if destination_point_name /if destination_point:get_name() /g
 s/destination_point_name/destination_point/g
 

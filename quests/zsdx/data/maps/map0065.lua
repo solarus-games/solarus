@@ -87,13 +87,13 @@ end
 
 function init_prison()
 
-  map:npc_set_position("prison_2_lock", 648, 325) 
+  prison_2_lock:set_position(648, 325)
 end
 
 function init_guard(guard_name, x, y, direction, path)
 
   map:npc_stop_movement(guard_name)
-  map:npc_set_position(guard_name, x, y)
+  map:get_entity(guard_name):set_position(x, y)
   local sprite = map:npc_get_sprite(guard_name)
   if path ~= nil then
     local m = sol.movement.create("path")
@@ -160,14 +160,14 @@ function map:on_npc_interaction(npc_name)
       map:start_dialog("dungeon_5.prison_1_use_iron_key")
     end
   elseif npc_name == "prison_2_lock" then
-    
+ 
     prison_2_nb_messages = prison_2_nb_messages + 1
     if prison_2_nb_messages <= 3 then
       map:start_dialog("dungeon_5.prison_2_locked_"..prison_2_nb_messages)
     else
       sol.audio.play_sound("secret")
       sol.audio.play_sound("door_open")
-      map:npc_set_position("prison_2_lock", 648, -32)
+      prison_2_lock:set_position(648, -32)
       map:get_game():set_boolean(512, true)
     end
   end

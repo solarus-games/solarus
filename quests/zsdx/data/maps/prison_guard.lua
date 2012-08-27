@@ -26,7 +26,7 @@ function sensor_check_guard(sensor_name)
     direction = tonumber(direction)
     if sprite:get_direction() == direction then
 
-      local x, y = map:npc_get_position(guard_name)
+      local x, y = map:get_entity(guard_name):get_position()
       local hero_x, hero_y = map:get_hero():get_position()
       if direction == 0 and hero_x > x - 32 and hero_x < x + 216 then
         seen_by_guard(guard_name)

@@ -247,7 +247,7 @@ function create_stone()
 
   -- we have to check the position of Ganon and the hero
   local x, y
-  local boss_x, boss_y = map:enemy_get_position("boss")
+  local boss_x, boss_y = boss:get_position()
   if boss_x < 240 then
     x = 280
   else

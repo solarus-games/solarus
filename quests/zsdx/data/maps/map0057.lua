@@ -84,7 +84,7 @@ function start_final_sequence()
 
   sol.audio.play_music("dungeon_finished")
   map:get_hero():set_direction(1)
-  map:npc_set_position("tom", 272, 237)
+  tom:set_position(272, 237)
   map:move_camera(272, 232, 100, function()
     map:start_dialog("dungeon_6.tom")
     map:set_dialog_variable("dungeon_6.tom", map:get_game():get_player_name())

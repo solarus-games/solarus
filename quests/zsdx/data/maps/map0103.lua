@@ -50,7 +50,7 @@ end
 function map:on_block_moved(block_name)
 
   if block_name == "nw_block" then
-    local x, y = map:block_get_position(block_name)
+    local x, y = map:get_entity(block_name):get_position()
     if x == 544 and y == 69 then
       -- make the block fall
       map:get_entity(block_name):set_enabled(false)
@@ -70,7 +70,7 @@ function map:on_update()
     -- so we disable the hole A and its teletransporter when necessary
 
     local disable_hole = false
-    local block_x, block_y = map:block_get_position("nw_block")
+    local block_x, block_y = nw_block:get_position()
     if block_y == 69 and block_x >= 520 and block_x < 544 then
       -- the block is just before the hole
       local hero_x = map:get_hero():get_position()
@@ -230,7 +230,7 @@ function start_final_sequence()
 
   sol.audio.play_music("dungeon_finished")
   map:get_hero():set_direction(1)
-  map:npc_set_position("sahasrahla", 544, 717)
+  sahasrahla:set_position(544, 717)
   map:move_camera(544, 712, 100, function()
     map:start_dialog("dungeon_7.sahasrahla")
     map:set_dialog_variable("dungeon_7.sahasrahla", map:get_game():get_player_name())

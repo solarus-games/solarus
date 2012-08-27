@@ -82,7 +82,7 @@ function map:on_hero_on_sensor(sensor_name)
   if sensor_name == "forbidden_door_sensor" then
 
     local npc_name = "forbidden_door_npc"
-    x, y = map:npc_get_position(npc_name)
+    x, y = map:get_entity(npc_name):get_position()
     if y < 877 then
       local sprite = map:npc_get_sprite(npc_name)
       local m = sol.movement.create("path")

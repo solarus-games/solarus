@@ -11,7 +11,7 @@ end
 
 function show_fairy()
 
-  map:npc_set_position("great_fairy", 160, 77)
+  great_fairy:set_position(160, 77)
   local sprite = great_fairy:get_sprite()
   sprite:set_ignore_suspend(true)
   torch_1:remove()

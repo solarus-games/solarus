@@ -36,7 +36,7 @@ function map:on_hero_on_sensor(sensor_name)
 end
 
 function map:on_block_moved(block_name)
-  x, y = map:block_get_position("STT5")
+  x, y = STT5:get_position()
   if x >= 1096 and x <= 1160
       and y >= 893 and y <= 925 then
     STT5:set_enabled(false)

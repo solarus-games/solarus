@@ -916,10 +916,10 @@
 12	1	656	144	8	32	custom_obstacle_3	1	1	1	1
 12	1	568	208	8	32	custom_obstacle_4	1	1	1	1
 12	1	656	208	8	32	custom_obstacle_5	1	1	1	1
-10	1	576	144	80	96	water_full	446	1
-10	1	584	152	64	80	water_less_1	446	0
-10	1	592	160	48	64	water_less_2	446	0
-10	1	600	168	32	48	water_less_3	446	0
+10	1	576	144	80	96	water_tile_full	446	1
+10	1	584	152	64	80	water_tile_less_1	446	0
+10	1	592	160	48	64	water_tile_less_2	446	0
+10	1	600	168	32	48	water_tile_less_3	446	0
 1	1	848	613	tmp_2	1	_none
 7	1	596	301	enemy	3	ropa	0	-1	_random	1	-1
 7	1	736	293	enemy_2	3	blue_hardhat_beetle	0	-1	_random	1	-1

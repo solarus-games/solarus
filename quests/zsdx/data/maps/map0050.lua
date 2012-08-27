@@ -28,15 +28,13 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
-  if sensor_name == "DS12" then
-    map:close_doors("LD12")
-    DS12:set_enabled(false)
-  end
+function DS12:on_activated()
+  map:close_doors("LD12")
+  DS12:set_enabled(false)
 end
 
-function map:on_block_moved(block_name)
-  x, y = STT5:get_position()
+function STT5:on_moved()
+  local x, y = STT5:get_position()
   if x >= 1096 and x <= 1160
       and y >= 893 and y <= 925 then
     STT5:set_enabled(false)
@@ -48,26 +46,27 @@ function map:on_block_moved(block_name)
   end
 end
 
-function map:on_switch_activated(switch_name)
-  if switch_name == "DB1" then
-    map:get_game():set_boolean(720, true)
-    if map:get_game():get_boolean(721) then
-      map:open_doors("LD14")
-      sol.audio.play_sound("secret")
-    end
-  elseif switch_name == "DB2" then
-    map:get_game():set_boolean(721, true)
-    if map:get_game():get_boolean(720) then
-      map:open_doors("LD14")
-      sol.audio.play_sound("secret")
-    end
-  elseif switch_name == "DB3" then
-    map:open_doors("LD12")
-    map:open_doors("LD13")
-    sol.audio.play_sound("secret")
-  end
-  if DB1_status == true and DB2_status == true then
+function DB1:on_activated()
+
+  map:get_game():set_boolean(720, true)
+  if map:get_game():get_boolean(721) then
     map:open_doors("LD14")
     sol.audio.play_sound("secret")
   end
 end
+
+function DB2:on_activated()
+
+  map:get_game():set_boolean(721, true)
+  if map:get_game():get_boolean(720) then
+    map:open_doors("LD14")
+    sol.audio.play_sound("secret")
+  end
+end
+
+function DB3:on_activated()
+  map:open_doors("LD12")
+  map:open_doors("LD13")
+  sol.audio.play_sound("secret")
+end
+

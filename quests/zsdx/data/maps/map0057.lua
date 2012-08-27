@@ -1,11 +1,11 @@
 local map = ...
 -- Dungeon 6 4F
 
-fighting_boss = false
-nb_spawners_created = 0
+local fighting_boss = false
+local nb_spawners_created = 0
 
 -- possible positions of Drakomos lava spawners
-spawner_xy = {
+local spawner_xy = {
   { x = 176, y = 301 },
   { x = 272, y = 325},
   { x = 320, y = 301},
@@ -26,35 +26,31 @@ function map:on_started(destination_point)
   map:set_doors_open("boss_door", true)
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function ne_door_sensor:on_activated()
 
-  if sensor_name == "ne_door_sensor" then
-
-    if ne_door:is_open() then
-      map:close_doors("ne_door")
-    else
-      map:open_doors("ne_door")
-    end
-  elseif sensor_name == "start_boss_sensor"
-      and not map:get_game():get_boolean(321)
-      and not fighting_boss then
-
-    start_boss_sensor:set_enabled(false)
-    start_boss()
+  if ne_door:is_open() then
+    map:close_doors("ne_door")
+  else
+    map:open_doors("ne_door")
   end
 end
 
-function start_boss()
+function start_boss_sensor:on_activated()
 
-  hero:freeze()
-  map:close_doors("boss_door")
-  sol.timer.start(1000, function()
-    sol.audio.play_music("boss")
-    boss:set_enabled(true)
-    hero:unfreeze()
-    sol.timer.start(3000, repeat_lava_spawner)
-    fighting_boss = true
-  end)
+  if not map:get_game():get_boolean(321)
+      and not fighting_boss then
+
+    start_boss_sensor:set_enabled(false)
+    hero:freeze()
+    map:close_doors("boss_door")
+    sol.timer.start(1000, function()
+      sol.audio.play_music("boss")
+      boss:set_enabled(true)
+      hero:unfreeze()
+      sol.timer.start(3000, repeat_lava_spawner)
+      fighting_boss = true
+    end)
+  end
 end
 
 function repeat_lava_spawner()
@@ -62,8 +58,8 @@ function repeat_lava_spawner()
   if not map:get_game():get_boolean(321) then
     nb_spawners_created = nb_spawners_created + 1
     local index = math.random(#spawner_xy)
-    map:create_enemy("spawner_"..nb_spawners_created,
-    "drakomos_lava_spawner", 1, spawner_xy[index].x, spawner_xy[index].y)
+    map:create_enemy("spawner_" .. nb_spawners_created,
+        "drakomos_lava_spawner", 1, spawner_xy[index].x, spawner_xy[index].y)
     sol.timer.start(5000 + math.random(10000), repeat_lava_spawner)
   end
 end
@@ -86,28 +82,22 @@ function start_final_sequence()
   hero:set_direction(1)
   tom:set_position(272, 237)
   map:move_camera(272, 232, 100, function()
-    map:start_dialog("dungeon_6.tom")
     map:set_dialog_variable("dungeon_6.tom", map:get_game():get_player_name())
-  end)
-end
-
-function map:on_dialog_finished(dialog_id)
-
-  if dialog_id == "dungeon_6.tom" then
-
-    sol.audio.stop_music()
-    sol.timer.start(1000, function()
-      sol.audio.play_music("legend")
-      map:start_dialog("dungeon_6.tom_revelation")
-      map:set_dialog_variable("dungeon_6.tom_revelation", map:get_game():get_player_name())
+    map:start_dialog("dungeon_6.tom", function()
+      sol.audio.stop_music()
+      sol.timer.start(1000, function()
+        sol.audio.play_music("legend")
+        map:set_dialog_variable("dungeon_6.tom_revelation", map:get_game():get_player_name())
+        map:start_dialog("dungeon_6.tom_revelation", function()
+          local variant = 2
+          if map:get_game():get_boolean(939) then
+            variant = 3
+          end
+          hero:start_treasure("quiver", variant, 941)
+        end)
+      end)
     end)
-  elseif dialog_id == "dungeon_6.tom_revelation" then
-    local variant = 2
-    if map:get_game():get_boolean(939) then
-      variant = 3
-    end
-    hero:start_treasure("quiver", variant, 941)
-  end
+  end)
 end
 
 function map:on_hero_victory_finished()

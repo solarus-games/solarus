@@ -1169,13 +1169,13 @@
 4	1	784	221	0	heart	1	-1
 4	1	736	221	0	_random	1	-1
 4	1	784	189	0	_random	1	-1
-7	1	1028	205	miniboss_1	3	gibdo	0	-1	heart	1	-1
-7	1	972	245	miniboss_2	3	gibdo	0	-1	heart	1	-1
-7	1	1100	285	miniboss_3	3	gibdo	0	-1	heart	1	-1
-7	1	948	325	miniboss_4	3	gibdo	0	-1	heart	1	-1
-7	1	948	149	miniboss_5	3	gibdo	0	-1	heart	1	-1
-7	1	956	61	miniboss_6	3	gibdo	0	-1	heart	1	-1
-7	1	1100	157	miniboss_7	3	gibdo	0	-1	heart	1	-1
+7	1	1028	205	miniboss_enemy_1	3	gibdo	0	-1	heart	1	-1
+7	1	972	245	miniboss_enemy_2	3	gibdo	0	-1	heart	1	-1
+7	1	1100	285	miniboss_enemy_3	3	gibdo	0	-1	heart	1	-1
+7	1	948	325	miniboss_enemy_4	3	gibdo	0	-1	heart	1	-1
+7	1	948	149	miniboss_enemy_5	3	gibdo	0	-1	heart	1	-1
+7	1	956	61	miniboss_enemy_6	3	gibdo	0	-1	heart	1	-1
+7	1	1100	157	miniboss_enemy_7	3	gibdo	0	-1	heart	1	-1
 13	1	1064	53	16	16	start_miniboss_sensor
 10	1	912	168	24	48	miniboss_lava_6	51	1
 10	1	1112	152	24	48	miniboss_lava_7	50	1

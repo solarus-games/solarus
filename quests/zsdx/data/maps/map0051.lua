@@ -13,7 +13,7 @@ local map = ...
 -- BB: Barrier Button
 -- DS: Door Sensor
 
-dont_close_LD06 = false
+local dont_close_LD06 = false
 
 function map:on_started()
 
@@ -24,29 +24,41 @@ function map:on_started()
   end
 end
 
-function map:on_switch_activated(switch_name)
+function DB03:on_activated()
 
-  if DB03:is_activated()
-      and DB04:is_activated()
+  if DB04:is_activated()
       and not LD06:is_open() then
     map:open_doors("LD06")
   end
 end
 
-function map:on_switch_inactivated(switch_name)
+function DB04:on_activated()
 
-  if not DB03:is_activated()
-      or not DB04:is_activated() then
+  if DB03:is_activated()
+      and not LD06:is_open() then
+    map:open_doors("LD06")
+  end
+end
+
+function DB03:on_inactivated()
+
+  if not DB04:is_activated() then
     if LD06:is_open() and not dont_close_LD06 then
       map:close_doors("LD06")
     end
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function DB04:on_inactivated()
 
-  if sensor_name == "dont_close_LD06_sensor" then
-    dont_close_LD06 = true
+  if not DB03:is_activated() then
+    if LD06:is_open() and not dont_close_LD06 then
+      map:close_doors("LD06")
+    end
   end
+end
+
+function dont_close_LD06_sensor:on_activated()
+  dont_close_LD06 = true
 end
 

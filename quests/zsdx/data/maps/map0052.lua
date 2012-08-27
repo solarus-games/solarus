@@ -12,64 +12,48 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function start_boss_sensor:on_activated()
 
-  if sensor_name == "start_boss_sensor" then
+  if not map:get_game():get_boolean(728) then
 
-    if not map:get_game():get_boolean(728) then
-
-      map:close_doors("boss_door")
-      hero:freeze()
-      sol.audio.play_music("agahnim")
-      sol.timer.start(1000, function()
-	map:start_dialog("dungeon_8.agahnim")
+    map:close_doors("boss_door")
+    hero:freeze()
+    sol.audio.play_music("agahnim")
+    sol.timer.start(1000, function()
+      map:start_dialog("dungeon_8.agahnim", function()
+        hero:teleport(52, "boss_destination_point")
+        sol.timer.start(100, function()
+          sol.audio.play_music("ganon_battle")
+          boss:set_enabled(true)
+          agahnim_npc:set_enabled(false)
+        end)
       end)
+    end)
 
-    elseif not map:get_game():is_dungeon_finished(8) then
-      -- Agahnim already killed but Ganon's sequence not done yet
-      -- (possible if the player dies or exits while Agahnim is dying)
-      hero:freeze()
-      sol.timer.start(100, function()
-        hero:teleport(52, "ganon_dialog_destination_point")
-      end)
-      sol.timer.start(200, start_ganon_sequence)
-    end
-  end
-end
-
-function map:on_dialog_finished(dialog_id)
-
-  if dialog_id == "dungeon_8.agahnim" then
-    hero:teleport(52, "boss_destination_point")
+  elseif not map:get_game():is_dungeon_finished(8) then
+    -- Agahnim already killed but Ganon's sequence not done yet
+    -- (possible if the player dies or exits while Agahnim is dying)
+    hero:freeze()
     sol.timer.start(100, function()
-      sol.audio.play_music("ganon_battle")
-      boss:set_enabled(true)
-      agahnim_npc:set_enabled(false)
+      hero:teleport(52, "ganon_dialog_destination_point")
     end)
-  elseif dialog_id == "dungeon_8.ganon" then
-    sol.audio.play_sound("world_warp")
-    sol.timer.start(1000, function()
-      map:set_pause_enabled(true)
-      hero:teleport(105, "from_outside")
-    end)
+    sol.timer.start(200, start_ganon_sequence)
   end
 end
 
-function map:on_enemy_dead(enemy_name)
+function boss:on_dead()
 
-  if enemy_name == "boss" then
-    sol.timer.start(1000, function()
-      sol.audio.play_music("victory")
-      map:get_game():set_dungeon_finished(8)
-      map:set_pause_enabled(false)
-      hero:freeze()
-      hero:set_direction(3)
-      sol.timer.start(9000, function()
-	hero:teleport(52, "ganon_dialog_destination_point")
-      end)
-      sol.timer.start(9100, start_ganon_sequence)
+  sol.timer.start(1000, function()
+    sol.audio.play_music("victory")
+    map:get_game():set_dungeon_finished(8)
+    map:set_pause_enabled(false)
+    hero:freeze()
+    hero:set_direction(3)
+    sol.timer.start(9000, function()
+      hero:teleport(52, "ganon_dialog_destination_point")
     end)
-  end
+    sol.timer.start(9100, start_ganon_sequence)
+  end)
 end
 
 function start_ganon_sequence()
@@ -80,7 +64,13 @@ function start_ganon_sequence()
 
   sol.timer.start(1000, function()
     sol.audio.play_music("ganon_theme")
-    map:start_dialog("dungeon_8.ganon")
+    map:start_dialog("dungeon_8.ganon", function()
+      sol.audio.play_sound("world_warp")
+      sol.timer.start(1000, function()
+        map:set_pause_enabled(true)
+        hero:teleport(105, "from_outside")
+      end)
+    end)
   end)
 end
 

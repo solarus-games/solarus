@@ -32,7 +32,7 @@ function frozen_door:on_interaction_item(item)
   if item:get_name():find("^bottle") and item:get_variant() == 2 then
 
     -- using water on the frozen door
-    map:get_hero():freeze()
+    hero:freeze()
     sol.audio.play_sound("item_in_water")
     frozen_door_sprite:set_animation("disappearing")
     frozen_door_opposite_sprite:set_animation("disappearing")
@@ -41,7 +41,7 @@ function frozen_door:on_interaction_item(item)
       map:get_game():set_boolean(35, true)
       frozen_door:remove()
       frozen_door_opposite:remove()
-      map:get_hero():unfreeze()
+      hero:unfreeze()
     end)
     item:set_variant(1) -- make the bottle empty
     return true

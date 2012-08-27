@@ -60,7 +60,7 @@ end
 
 for _, sensor in ipairs(map:get_entities("save_solid_ground_sensor")) do
   function sensor:on_activated()
-    map:get_hero():save_solid_ground()
+    hero:save_solid_ground()
   end
 end
 

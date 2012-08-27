@@ -1,8 +1,6 @@
 local map = ...
 -- Dungeon 1 B1
 
-local hero = map.get_hero()
-
 function map:on_started(destination_point)
 
   if destination_point:get_name() == "from_1F_hole" then
@@ -54,6 +52,6 @@ function open_final_room()
 
   map:open_doors("final_room_door")
   sol.audio.play_sound("secret")
-  map:get_hero():unfreeze()
+  hero:unfreeze()
 end
 

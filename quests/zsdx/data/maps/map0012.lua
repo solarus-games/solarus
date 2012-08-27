@@ -1,8 +1,6 @@
 local map = ...
 -- Sahasrahla house
 
-local hero = map:get_hero()
-
 function map:on_started(destination_point)
 
   if map:get_game():get_boolean(37) then -- if the Lyriann cave is finished
@@ -72,7 +70,7 @@ function has_obtained_bow()
 end
 
 function give_world_map()
-  map:get_hero():start_treasure("world_map", 1, 33)
+  hero:start_treasure("world_map", 1, 33)
 end
 
 -- Function called when the player has just obtained a treasure

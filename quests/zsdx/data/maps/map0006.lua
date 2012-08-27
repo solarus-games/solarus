@@ -52,8 +52,8 @@ function tom_appears_sensor:on_activated()
   if has_finished_tom_cave
       and not is_ladder_activated() then
     map:start_dialog("outside_world.tom_dungeon_1_entrance.hey", function()
-      map:get_hero():freeze()
-      map:get_hero():set_direction(0)
+      hero:freeze()
+      hero:set_direction(0)
       tom:set_position(528, 245)
       local m = sol.movement.create("path")
       m:set_path{4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,2,2,2}
@@ -70,7 +70,7 @@ function edelweiss_sensor:on_activated()
   if map:get_game():get_item("level_4_way").get_variant() == 3  -- the player has the edelweiss
       and not is_beaumont_cave_open() then
     map:start_dialog("outside_world.beaumont_hill_put_edelweiss", function()
-      map:get_hero():freeze()
+      hero:freeze()
       sol.timer.start(1000, function()
         sol.audio.play_sound("explosion")
         map:create_explosion(160, 72, 0)
@@ -80,7 +80,7 @@ function edelweiss_sensor:on_activated()
         map:get_game():get_item("level_4_way"):set_variant(0)
         sol.timer.start(1000, function()
           sol.audio.play_sound("secret")
-          map:get_hero():unfreeze()
+          hero:unfreeze()
         end)
       end)
     end)
@@ -150,7 +150,7 @@ function ladder_step4()
   tom_appears_sensor:set_enabled(false)
   sol.audio.play_sound("secret")
   map:get_game():set_boolean(52, true)
-  map:get_hero():unfreeze()
+  hero:unfreeze()
 end
 
 function map:on_npc_interaction(npc_name)

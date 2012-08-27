@@ -88,13 +88,13 @@ function map:on_hero_on_sensor(sensor_name)
       and not map:get_game():get_boolean(620)
       and not fighting_miniboss then
 
-    map:get_hero():freeze()
+    hero:freeze()
     map:close_doors("miniboss_door")
     fighting_miniboss = true
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
       map:set_entities_enabled("miniboss", true)
-      map:get_hero():unfreeze()
+      hero:unfreeze()
     end)
 
   -- pipes
@@ -103,7 +103,7 @@ function map:on_hero_on_sensor(sensor_name)
     if pipe ~= nil then
       -- entering a pipe
       map:set_entities_enabled("pipe_border_"..pipe, true)
-      map:get_hero():set_visible(true)
+      hero:set_visible(true)
     else
       pipe = string.match(sensor_name, "^pipe_out_([a-z])_sensor")
       if pipe ~= nil then
@@ -111,10 +111,10 @@ function map:on_hero_on_sensor(sensor_name)
 	map:set_entities_enabled("pipe_border_"..pipe, false)
       elseif string.find(sensor_name, "^hide_hero_sensor") then
 	-- hide the hero
-	map:get_hero():set_visible(false)
+	hero:set_visible(false)
       elseif string.find(sensor_name, "^unhide_hero_sensor") then
 	-- unhide the hero
-	map:get_hero():set_visible(true)
+	hero:set_visible(true)
       end
     end
   end

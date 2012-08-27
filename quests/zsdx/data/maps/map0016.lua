@@ -2,7 +2,6 @@ local map = ...
 -- Smith cave
 
 local sword_price = 75
-local hero = map:get_hero()
 
 -- Function called when the player wants to talk to a non-playing character.
 function smith:on_interaction()
@@ -25,7 +24,7 @@ function smith:on_interaction()
         else
           -- enough money: buy the sword
           map:get_game():remove_money(sword_price)
-          map:get_hero():start_treasure("sword", 1, 30)
+          hero:start_treasure("sword", 1, 30)
         end
       end
     end)

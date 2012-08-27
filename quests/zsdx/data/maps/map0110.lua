@@ -15,13 +15,13 @@ function map:on_hero_on_sensor(sensor_name)
     -- wrong room: go back to the beginning
     local direction = tonumber(sensor_name:match("^wrong_sensor_([0-3])"))
     if direction == 0 then
-      map:get_hero():set_position(1328, 1677)
+      hero:set_position(1328, 1677)
     elseif direction == 1 then
-      map:get_hero():set_position(1448, 1765)
+      hero:set_position(1448, 1765)
     elseif direction == 2 then
-      map:get_hero():set_position(1568, 1677)
+      hero:set_position(1568, 1677)
     elseif direction == 3 then
-      map:get_hero():set_position(1448, 1589)
+      hero:set_position(1448, 1589)
     end
   end
 end

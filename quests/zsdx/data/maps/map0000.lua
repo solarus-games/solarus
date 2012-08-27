@@ -6,7 +6,7 @@ local fresco = 0  -- Index of the current fresco.
 local fresco_sprite = nil
 
 function map:on_started(destination_point)
-  map:get_hero():freeze()
+  hero:freeze()
   map:get_game():set_hud_enabled(false)
   map:set_pause_enabled(false)
   map:set_dialog_style(1)
@@ -36,6 +36,6 @@ function next_fresco()
 end
 
 function next_map()
-  map:get_hero():teleport(28, "from_intro")
+  hero:teleport(28, "from_intro")
 end
 

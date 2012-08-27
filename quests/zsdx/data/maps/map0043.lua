@@ -3,7 +3,6 @@ local map = ...
 
 local fighting_miniboss = false
 local fighting_boss = false
-local hero = map:get_hero()
 
 function map:on_started(destination_point)
 
@@ -21,7 +20,7 @@ function start_miniboss_sensor:on_activated()
       and not fighting_miniboss then
     -- the miniboss is alive
     map:close_doors("miniboss_door")
-    map:get_hero():walk(666666, false, false)
+    hero:walk(666666, false, false)
   end
 end
 
@@ -29,13 +28,13 @@ function start_miniboss_sensor_2:on_activated()
 
   if not map:get_game():get_boolean(901)
       and not fighting_miniboss then
-    map:get_hero():freeze()
+    hero:freeze()
     sol.audio.stop_music()
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
       miniboss:set_enabled(true)
       map:set_entities_enabled("miniboss_prickles", true)
-      map:get_hero():unfreeze()
+      hero:unfreeze()
     end)
     fighting_miniboss = true
   end
@@ -45,13 +44,13 @@ function start_boss_sensor:on_activated()
 
   if not map:get_game():get_boolean(902)
       and not fighting_boss then
-    map:get_hero():freeze()
+    hero:freeze()
     map:close_doors("boss_door")
     sol.audio.stop_music()
     sol.timer.start(1000, function()
       boss:set_enabled(true)
       map:start_dialog("dungeon_3.arbror_hello", function()
-        map:get_hero():unfreeze()
+        hero:unfreeze()
         sol.audio.play_music("boss")
         fighting_boss = true
       end)
@@ -70,12 +69,12 @@ function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.audio.play_music("victory")
-    map:get_hero():freeze()
-    map:get_hero():set_direction(3)
+    hero:freeze()
+    hero:set_direction(3)
     sol.timer.start(9000, function()
       map:open_doors("final_room_door")
       sol.audio.play_sound("secret")
-      map:get_hero():unfreeze()
+      hero:unfreeze()
     end)
   end
 end

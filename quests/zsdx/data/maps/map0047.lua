@@ -116,7 +116,7 @@ function map:on_hero_on_sensor(sensor_name)
       sol.audio.stop_music()
       map:close_doors("boss_door")
       billy_npc:set_enabled(true)
-      map:get_hero():freeze()
+      hero:freeze()
       fighting_boss = true
       sol.timer.start(1000, function()
 	map:start_dialog("dungeon_8.billy")
@@ -159,13 +159,13 @@ function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.audio.play_music("victory")
-    map:get_hero():freeze()
-    map:get_hero():set_direction(3)
+    hero:freeze()
+    hero:set_direction(3)
     sol.timer.start(9000, function()
       map:open_doors("boss_door")
       map:open_doors("agahnim_door")
       sol.audio.play_sound("secret")
-      map:get_hero():unfreeze()
+      hero:unfreeze()
     end)
   end
 end
@@ -174,7 +174,7 @@ function map:on_dialog_finished(dialog_id)
 
   if dialog_id == "dungeon_8.billy" then
     sol.audio.play_music("boss")
-    map:get_hero():unfreeze()
+    hero:unfreeze()
     boss:set_enabled(true)
     billy_npc:set_enabled(false)
   end

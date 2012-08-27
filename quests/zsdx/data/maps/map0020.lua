@@ -75,7 +75,7 @@ function tom_please_help_dialog_finished(answer)
   map:get_game():set_boolean(47, true)
   if answer == 0 then
     map:start_dialog("lyriann_cave.tom.accept_help", function()
-      map:get_hero():start_treasure("boomerang", 1, 41)
+      hero:start_treasure("boomerang", 1, 41)
     end)
   end
 end
@@ -118,17 +118,17 @@ function tom:on_movement_finished()
   else
     tom:set_position(tom_initial_x, tom_initial_y)
     tom:get_sprite():set_direction(3)
-    map:get_hero():unfreeze()
+    hero:unfreeze()
   end
 end
 
 function leave_cavern_sensor:on_activated()
 
   if has_boomerang_of_tom() then
-    map:get_hero():freeze()
+    hero:freeze()
     map:start_dialog("lyriann_cave.tom.leaving", function()
       sol.audio.play_sound("warp")
-      map:get_hero():set_direction(1)
+      hero:set_direction(1)
       sol.timer.start(1700, start_moving_tom)
     end)
   end

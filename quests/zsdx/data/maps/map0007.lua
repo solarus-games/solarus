@@ -93,7 +93,7 @@ function inferno:on_interaction()
           -- 100 rupees
           if not map:get_game():get_boolean(916) then
             map:start_dialog("inferno.want_rupees", function()
-              map:get_hero():start_treasure("rupee", 5, 916)
+              hero:start_treasure("rupee", 5, 916)
             end)
           else
             map:start_dialog("inferno.want_rupees_again")
@@ -107,21 +107,21 @@ end
 function inferno_open()
 
   inferno_sensor:set_enabled(true)
-  map:get_hero():walk("66", false, false)
+  hero:walk("66", false, false)
 end
 
 function inferno_sensor:on_activated()
 
   inferno:get_sprite():set_animation("opening")
   sol.timer.start(1050, inferno_open_finish)
-  map:get_hero():freeze()
-  map:get_hero():set_direction(1)
+  hero:freeze()
+  hero:set_direction(1)
   inferno_sensor:set_enabled(false)
 end
 
 function potion_shop_door_sensor:on_activated_repeat()
 
-  if map:get_hero():get_direction() == 1
+  if hero:get_direction() == 1
     and potion_shop_door:is_enabled() then
     potion_shop_door:set_enabled(false)
     sol.audio.play_sound("door_open")
@@ -131,7 +131,7 @@ end
 function inferno_open_finish()
 
   sol.audio.play_sound("secret")
-  map:get_hero():unfreeze()
+  hero:unfreeze()
   map:get_game():set_boolean(914, true)
   inferno_set_open()
 end

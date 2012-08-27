@@ -84,7 +84,7 @@ end
 function map:on_update()
 
   -- hidden enemies
-  local x, y = map:get_hero():get_position()
+  local x, y = hero:get_position()
   if x > 1056 and x < 1200 and y > 1888 and y < 1968
       and not hidden_enemy_chest:is_enabled()
       and not map:enemy_is_dead("hidden_enemy_1")
@@ -287,11 +287,11 @@ function map:on_hero_on_sensor(sensor_name)
 
   -- save solid ground location
   elseif sensor_name:find("^save_solid_ground_sensor") then
-    map:get_hero():save_solid_ground()
+    hero:save_solid_ground()
 
   -- reset solid ground location
   elseif sensor_name:find("^reset_solid_ground_sensor") then
-    map:get_hero():reset_solid_ground()
+    hero:reset_solid_ground()
   end
 end
 

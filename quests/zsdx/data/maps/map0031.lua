@@ -23,7 +23,6 @@ local boss_arrows = {
 }
 local fighting_boss = false
 local timers = {}
-local hero = map:get_hero()
 
 function map:on_started(destination_point)
 
@@ -113,7 +112,7 @@ function close_boss_door_sensor:on_activated()
 end
 
 function save_solid_ground_sensor:on_activated()
-  map:get_hero():save_solid_ground(960, 525, 0)
+  hero:save_solid_ground(960, 525, 0)
 end
 
 function boss_floor_sensor_1:on_activated()

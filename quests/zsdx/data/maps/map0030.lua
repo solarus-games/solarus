@@ -40,11 +40,11 @@ function start_miniboss_sensor:on_activated()
   if not map:get_game():get_boolean(92) and not fighting_miniboss then
     -- the miniboss is alive
     map:close_doors("miniboss_door")
-    map:get_hero():freeze()
+    hero:freeze()
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
       miniboss:set_enabled(true)
-      map:get_hero():unfreeze()
+      hero:unfreeze()
     end)
     fighting_miniboss = true
   end

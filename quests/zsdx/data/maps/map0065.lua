@@ -15,7 +15,7 @@ local door_sets = { -- possible doors open when going to prison
 function map:on_started(destination_point)
 
   if destination_point:get_name() == "from_outside_hole" then
-    map:get_hero():set_direction(2)
+    hero:set_direction(2)
   end
 
   if not map:get_game():get_boolean(907) then

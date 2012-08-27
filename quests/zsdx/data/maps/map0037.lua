@@ -2,7 +2,6 @@ local map = ...
 -- Billy's cave
 
 local billy_leave_step = 0
-local hero
 
 function map:on_started(destination_point)
 
@@ -64,7 +63,7 @@ end
 
 function give_golden_bars()
   map:start_dialog("billy_cave.give_golden_bars", function()
-    map:get_hero():start_treasure("level_4_way", 3, 134)
+    hero:start_treasure("level_4_way", 3, 134)
   end)
 end
 
@@ -87,7 +86,7 @@ function billy_leave()
   local sprite = billy:get_sprite()
 
   if billy_leave_step == 1 then
-    map:get_hero():freeze()
+    hero:freeze()
     local m = sol.movement.create("path")
     m:set_path{4,4,4,4,4,4,4}
     m:set_speed(48)
@@ -109,15 +108,15 @@ function billy_leave()
   else
     map:close_doors("door")
     billy:remove()
-    map:get_hero():unfreeze()
+    hero:unfreeze()
   end
 end
 
 function save_solid_ground_sensor:on_activated()
-  map:get_hero():save_solid_ground()
+  hero:save_solid_ground()
 end
 
 function save_solid_ground_sensor_2:on_activated()
-  map:get_hero():save_solid_ground()
+  hero:save_solid_ground()
 end
 

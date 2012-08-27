@@ -5,8 +5,8 @@ function map:on_started(destination_point)
 
   -- game ending sequence
   if destination_point:get_name() == "from_ending" then
-    map:get_hero():freeze()
-    map:get_hero():set_visible(false)
+    hero:freeze()
+    hero:set_visible(false)
     map:get_game():set_hud_enabled(false)
     map:set_entities_enabled("enemy", false)
     sol.audio.play_music("fanfare")
@@ -52,6 +52,6 @@ function dungeon_7_lock:on_interaction()
 end
 
 function ending_next()
-  map:get_hero():teleport(4, "from_ending")
+  hero:teleport(4, "from_ending")
 end
 

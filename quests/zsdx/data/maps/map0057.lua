@@ -46,12 +46,12 @@ end
 
 function start_boss()
 
-  map:get_hero():freeze()
+  hero:freeze()
   map:close_doors("boss_door")
   sol.timer.start(1000, function()
     sol.audio.play_music("boss")
     boss:set_enabled(true)
-    map:get_hero():unfreeze()
+    hero:unfreeze()
     sol.timer.start(3000, repeat_lava_spawner)
     fighting_boss = true
   end)
@@ -72,18 +72,18 @@ function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.audio.play_music("victory")
-    map:get_hero():freeze()
-    map:get_hero():set_direction(3)
+    hero:freeze()
+    hero:set_direction(3)
     sol.timer.start(9000, start_final_sequence)
   elseif item_name == "quiver" then
-    map:get_hero():start_victory()
+    hero:start_victory()
   end
 end
 
 function start_final_sequence()
 
   sol.audio.play_music("dungeon_finished")
-  map:get_hero():set_direction(1)
+  hero:set_direction(1)
   tom:set_position(272, 237)
   map:move_camera(272, 232, 100, function()
     map:start_dialog("dungeon_6.tom")
@@ -106,13 +106,13 @@ function map:on_dialog_finished(dialog_id)
     if map:get_game():get_boolean(939) then
       variant = 3
     end
-    map:get_hero():start_treasure("quiver", variant, 941)
+    hero:start_treasure("quiver", variant, 941)
   end
 end
 
 function map:on_hero_victory_finished()
   map:get_game():set_dungeon_finished(6)
   map:get_game():set_boolean(155, false) -- reopen the rupee house
-  map:get_hero():teleport(7, "from_dungeon_6")
+  hero:teleport(7, "from_dungeon_6")
 end
 

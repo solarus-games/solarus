@@ -74,7 +74,7 @@ end
 
 function map:on_chest_empty(chest_name)
 
-  map:get_hero():unfreeze()
+  hero:unfreeze()
   if playing then
 
     chest_open = chest_name
@@ -88,7 +88,7 @@ function map:on_chest_empty(chest_name)
       index = math.random(#rewards)
     end
 
-    map:get_hero():start_treasure(rewards[index].item_name, rewards[index].variant, rewards[index].savegame_variable)
+    hero:start_treasure(rewards[index].item_name, rewards[index].variant, rewards[index].savegame_variable)
     playing = false
   else
     sol.audio.play_sound("wrong")

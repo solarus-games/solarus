@@ -22,7 +22,7 @@ end
 function map:on_dialog_finished(dialog_id, answer)
 
   if dialog_id == "rupee_house_broken.thanks" then
-    map:get_hero():start_treasure("flippers", 1, 157)
+    hero:start_treasure("flippers", 1, 157)
   end
 end
 

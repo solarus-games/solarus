@@ -9,8 +9,8 @@ function map:on_started(destination_point)
   local new_music = nil
   if destination_point:get_name() == "from_ending" then
     -- game ending sequence
-    map:get_hero():freeze()
-    map:get_hero():set_visible(false)
+    hero:freeze()
+    hero:set_visible(false)
     map:get_game():set_hud_enabled(false)
     map:set_entities_enabled("", false)
     new_music = "fanfare"
@@ -63,7 +63,7 @@ function map:on_hero_on_sensor(sensor_name)
       and not fighting_boss then
 
     -- boss fight
-    map:get_hero():freeze()
+    hero:freeze()
     map:set_entities_enabled("roof_entrance", false)
     roof_stairs:set_enabled(false)
     roof_teletransporter:set_enabled(false)
@@ -76,7 +76,7 @@ function start_boss()
 
   sol.audio.play_music("boss")
   boss:set_enabled(true)
-  map:get_hero():unfreeze()
+  hero:unfreeze()
   fighting_boss = true
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
@@ -122,14 +122,14 @@ end
 function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
-    map:get_hero():start_victory()
+    hero:start_victory()
   end
 end
 
 function map:on_hero_victory_finished()
 
   map:get_game():set_dungeon_finished(10)
-  map:get_hero():teleport(119, "from_dungeon_10")
+  hero:teleport(119, "from_dungeon_10")
   map:set_entities_enabled("", true) -- enable simple enemies back
 
   sol.timer.start(1000, function()
@@ -149,6 +149,6 @@ function map:on_dialog_finished(dialog_id)
 end
 
 function ending_next()
-  map:get_hero():teleport(131, "from_ending")
+  hero:teleport(131, "from_ending")
 end
 

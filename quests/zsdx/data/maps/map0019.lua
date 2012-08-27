@@ -31,7 +31,7 @@ function apples_question_finished(answer)
     if map:get_game():gas_item("apples_counter"):has_variant() then
       if map:get_game():get_item("apples_counter"):has_amount(6) then
         map:start_dialog("cake_shop.thank_you" function()
-          map:get_hero():start_treasure("bottle_1", 1, 32)
+          hero:start_treasure("bottle_1", 1, 32)
         end)
         map:get_game():get_item("apples_counter"):remove_amount(6)
       else

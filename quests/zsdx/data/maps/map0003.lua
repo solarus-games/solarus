@@ -56,7 +56,7 @@ function map:on_started(destination_point)
     local tile = map:get_entity(entrance_name .. "_door")
 
     sensor:on_activated_repeat = function()
-    if map:get_hero():get_direction() == 1
+    if hero:get_direction() == 1
         and tile:is_enabled() then
       tile:set_enabled(false)
       sol.audio.play_sound("door_open")
@@ -86,7 +86,7 @@ function monkey:on_interaction()
       else
 	map:start_dialog("outside_world.village.monkey.with_shield", function()
 	  -- make the monkey leave
-	  map:get_hero():freeze()
+	  hero:freeze()
 	  sol.audio.play_sound("monkey")
 	  local m = sol.movement.create("jump")
 	  m:set_direction8(1)
@@ -131,7 +131,7 @@ end
 function tree_woman:on_interaction()
 
   map:start_dialog("outside_world.village.tree_woman", function()
-    map:get_hero():start_treasure("rupee", 1, -1)
+    hero:start_treasure("rupee", 1, -1)
   end)
 end
 
@@ -166,7 +166,7 @@ function monkey:on_movement_finished()
   else
     -- last jump finished: remove the monkey from the map and unfreeze the hero
     monkey:remove()
-    map:get_hero():unfreeze()
+    hero:unfreeze()
   end
 end
 

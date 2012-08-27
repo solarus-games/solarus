@@ -13,7 +13,7 @@ function map:on_hero_on_sensor(sensor_name)
       and door:is_open()
       and not map:get_game():get_boolean(156) then
     map:close_doors("door")
-    map:get_hero():freeze()
+    hero:freeze()
     sol.timer.start(1000, start_music)
   end
 end
@@ -27,19 +27,19 @@ end
 function start_fight()
 
   map:set_entities_enabled("enemy", true)
-  map:get_hero():unfreeze()
+  hero:unfreeze()
 end
 
 function map:on_enemy_dead(enemy_name)
 
   if not map:has_entities("enemy") then
-    map:get_hero():start_victory()
+    hero:start_victory()
   end
 end
 
 function map:on_hero_victory_finished()
 
   map:get_game():set_boolean(156, true)
-  map:get_hero():teleport(3, "out_smith_cave")
+  hero:teleport(3, "out_smith_cave")
 end
 

@@ -2,7 +2,6 @@ local map = ...
 -- Outside world A2
 
 local fighting_boss = false -- Agahnim
-local hero = map:get_hero()
 
 function map:on_started(destination_point)
 
@@ -57,16 +56,16 @@ function cannon:on_interaction()
   if not map:get_game():get_boolean(905) then
     map:start_dialog("castle.cannon")
   else
-    map:get_hero():freeze()
+    hero:freeze()
     local x, y = self:get_position()
-    map:get_hero():set_position(x, y, 0)
-    map:get_hero():set_visible(false)
+    hero:set_position(x, y, 0)
+    hero:set_visible(false)
     sol.audio.play_sound("bomb")
     sol.timer.start(2000, function()
       sol.audio.play_sound("explosion")
       map:create_explosion(296, 384, 0)
-      map:get_hero():start_jumping(6, 424, true)
-      map:get_hero():set_visible(true)
+      hero:start_jumping(6, 424, true)
+      hero:set_visible(true)
     end)
   end
 end
@@ -78,7 +77,7 @@ function start_boss_sensor:on_activated()
       and not fighting_boss then
 
     -- Agahnim fight
-    map:get_hero():freeze()
+    hero:freeze()
     map:set_entities_enabled("castle_roof_entrance", false)
     map:set_entities_enabled("castle_roof_stairs", false)
     map:set_entities_enabled("teletransporter_dw_roof", false)
@@ -94,7 +93,7 @@ function start_boss()
   map:start_dialog("dungeon_5.agahnim_beginning", function()
     sol.audio.play_music("ganon_battle")
   end)
-  map:get_hero():unfreeze()
+  hero:unfreeze()
   fighting_boss = true
 end
 
@@ -111,7 +110,7 @@ end
 
 function leave_boss()
 
-  map:get_hero():teleport(9, "from_dungeon_5_1F")
+  hero:teleport(9, "from_dungeon_5_1F")
   sol.timer.start(700, restore_music)
 end
 

@@ -51,16 +51,16 @@ function fairy_sensor:on_activated()
 
   if has_fairy_appeared() then
     self:set_enabled(false)
-    map:get_hero():freeze()
-    map:get_hero():set_direction(1)
+    hero:freeze()
+    hero:set_direction(1)
     if not has_boomerang_from_fairy() then
       map:start_dialog("fairy_cave.first_time", function()
-        map:get_hero():unfreeze()
-        map:get_hero():start_treasure("boomerang", 2, 100)
+        hero:unfreeze()
+        hero:start_treasure("boomerang", 2, 100)
       end)
     else
       map:start_dialog("fairy_cave.restore_health", function()
-        map:get_hero():unfreeze()
+        hero:unfreeze()
         map:get_game():add_life(map:get_game():get_max_life())
       end)
     end

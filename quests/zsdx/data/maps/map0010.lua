@@ -29,7 +29,7 @@ function vine_start:on_interaction_item(item)
   if item:get_name():find("^bottle") and item:get_variant() == 2 then
 
     -- using water on the vine bottom
-    map:get_hero():freeze()
+    hero:freeze()
     self:remove()
     item:set_variant(1)  -- make the bottle empty
     map:get_game():set_boolean(921, true)
@@ -45,7 +45,7 @@ function show_vine()
 
   map:move_camera(608, 136, 136, function()
     sol.audio.play_sound("secret")
-    map:get_hero():unfreeze()
+    hero:unfreeze()
     map:get_game():set_boolean(921, true)
   end)
 

@@ -6,8 +6,8 @@ function map:on_started(destination_point)
 
   -- game ending sequence
   if destination_point:get_name() == "from_ending" then
-    map:get_hero():freeze()
-    map:get_hero():set_visible(false)
+    hero:freeze()
+    hero:set_visible(false)
     map:get_game():set_hud_enabled(false)
     map:set_entities_enabled("enemy", false)
     sol.audio.play_music("fanfare")
@@ -60,7 +60,7 @@ function map:on_started(destination_point)
     local tile = map:get_entity(entrance_name .. "_door")
 
     sensor:on_activated_repeat = function()
-    if map:get_hero():get_direction() == 1
+    if hero:get_direction() == 1
         and tile:is_enabled() then
       tile:set_enabled(false)
       sol.audio.play_sound("door_open")
@@ -127,11 +127,11 @@ end
 
 function waterfall_sensor:on_activated()
 
-  map:get_hero():start_jumping(6, 288, true)
+  hero:start_jumping(6, 288, true)
   sol.audio.play_sound("jump")
 end
 
 function ending_next()
-  map:get_hero():teleport(56, "from_ending")
+  hero:teleport(56, "from_ending")
 end
 

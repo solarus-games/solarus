@@ -15,7 +15,7 @@ function map:on_npc_interaction(npc_name)
     if map:get_game():is_dungeon_finished(4) then
       -- dialog already done
       sol.audio.play_sound("warp")
-      map:get_hero():teleport(66, "from_dungeon_4")
+      hero:teleport(66, "from_dungeon_4")
     else
       -- start the final sequence
       map:move_camera(160, 120, 100, start_final_sequence, 0)
@@ -31,7 +31,7 @@ end
 function map:on_dialog_finished(dialog_id, answer)
 
   if dialog_id == "dungeon_4.solarus_child" then
-    map:get_hero():start_victory()
+    hero:start_victory()
   elseif dialog_id == "dungeon_4.agahnim" then
     agahnim_sequence_5()
   end
@@ -44,8 +44,8 @@ end
 
 function agahnim_sequence_1()
 
-  map:get_hero():unfreeze()
-  map:get_hero():set_direction(1)
+  hero:unfreeze()
+  hero:set_direction(1)
   sol.timer.start(1000, agahnim_sequence_2)
 end
 
@@ -80,6 +80,6 @@ function agahnim_sequence_6()
   map:get_game():set_dungeon_finished(4)
   map:get_game():set_boolean(905, true) -- enable the dark world
   map:get_game():set_boolean(155, true) -- break the rupee house
-  map:get_hero():teleport(66, "from_dungeon_4")
+  hero:teleport(66, "from_dungeon_4")
 end
 

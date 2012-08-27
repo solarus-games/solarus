@@ -27,7 +27,7 @@ function sensor_check_guard(sensor_name)
     if sprite:get_direction() == direction then
 
       local x, y = map:get_entity(guard_name):get_position()
-      local hero_x, hero_y = map:get_hero():get_position()
+      local hero_x, hero_y = hero:get_position()
       if direction == 0 and hero_x > x - 32 and hero_x < x + 216 then
         seen_by_guard(guard_name)
       elseif direction == 1 and hero_y < y + 32 and hero_y > y - 216 then
@@ -44,7 +44,7 @@ end
 function seen_by_guard(guard_name)
 
   hero_seen = true
-  map:get_hero():freeze()
+  hero:freeze()
   local sprite = map:npc_get_sprite(guard_name)
   sprite:set_animation("walking")
   local m = sol.movement.create("target")
@@ -73,7 +73,7 @@ function send_hero_to_prison()
     prison_dialog_timer = nil
   end
   prison_go_timer = nil
-  map:get_hero():teleport(65, "prison")
+  hero:teleport(65, "prison")
   if init_prison ~= nil then
     -- special case: we are already on the map of the prison
     init_prison()

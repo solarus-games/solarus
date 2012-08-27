@@ -5,15 +5,15 @@ function map:on_hero_on_sensor(sensor_name)
 
   if sensor_name:find("^pipe_in_sensor") then
     -- entering a pipe
-    map:get_hero():set_visible(true)
+    hero:set_visible(true)
   elseif sensor_name:find("^pipe_out_sensor") then
     -- leaving a pipe
   elseif sensor_name:find("^hide_hero_sensor") then
     -- hide the hero
-    map:get_hero():set_visible(false)
+    hero:set_visible(false)
   elseif sensor_name:find("^unhide_hero_sensor") then
     -- unhide the hero
-    map:get_hero():set_visible(true)
+    hero:set_visible(true)
   elseif sensor_name:find("^pipe_border_a_sensor") then
     -- enable border A
     map:set_entities_enabled("pipe_border_a", true)

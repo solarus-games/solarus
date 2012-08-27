@@ -71,13 +71,13 @@ function map:on_hero_on_sensor(sensor_name)
       and not map:get_game():get_boolean(866)
       and not fighting_miniboss then
 
-    map:get_hero():freeze()
+    hero:freeze()
     map:close_doors("miniboss_e_door")
     fighting_miniboss = true
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
       map:set_entities_enabled("miniboss", true)
-      map:get_hero():unfreeze()
+      hero:unfreeze()
     end)
   end
 end

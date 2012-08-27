@@ -1,7 +1,7 @@
 local map = ...
 -- Dungeon 3 2F
 
-remove_water_delay = 500 -- delay between each step when some water is disappearing
+local remove_water_delay = 500 -- delay between each step when some water is disappearing
 
 function map:on_started(destination_point)
 
@@ -13,8 +13,8 @@ function map:on_started(destination_point)
 
   if map:get_game():get_boolean(128) then
     -- the south-east water is drained
-    map:set_entities_enabled("se_water", false)
-    map:set_entities_enabled("se_water_out", true)
+    map:set_entities_enabled("se_water_tile", false)
+    map:set_entities_enabled("se_water_tile_out", true)
     map:set_entities_enabled("se_water_on_jumper", false)
   else
     map:set_entities_enabled("se_water_off_obstacle", false)
@@ -49,93 +49,116 @@ function map:on_opening_transition_finished(destination_point)
   end
 end
 
-function map:on_enemy_dead(enemy_name)
+for _, enemy in ipairs(map:get_entities("e_room_enemy")) do
+  function enemy:on_dead()
 
-  if string.find(enemy_name, "^e_room_enemy_")
-    and not map:has_entities("e_room_enemy")
-    and not e_door:is_open() then
-
-    map:move_camera(856, 472, 250, open_e_door)
+    if not map:has_entities("e_room_enemy")
+        and not e_door:is_open() then
+      map:move_camera(856, 472, 250, function()
+        sol.audio.play_sound("secret")
+        map:open_doors("e_door")
+      end)
+    end
   end
 end
 
-function map:on_switch_activated(switch_name)
+function barrier_switch:on_activated()
 
-  if switch_name == "barrier_switch" and barrier:is_enabled() then
-    map:move_camera(120, 240, 250, open_barrier)
-  elseif switch_name == "se_water_switch" and not map:get_game():get_boolean(128) then
-    map:move_camera(912, 896, 250, remove_se_water, 1000, 3500)
-  elseif switch_name == "1f_n_water_switch" and not map:get_game():get_boolean(131) then
-    remove_1f_n_water()
-  elseif switch_name == "1f_e_water_switch_1"
-      and 1f_e_water_switch_2:is_activated()
-      and not map:get_game():get_boolean(122) then
-    remove_1f_e_water()
-  elseif switch_name == "1f_e_water_switch_2"
-      and 1f_e_water_switch_1:is_activated()
-      and not map:get_game():get_boolean(122) then
-    remove_1f_e_water()
-  elseif switch_name == "shortcut_a_switch" then
-    map:set_entities_enabled("shortcut_a", false)
-    map:get_game():set_boolean(908, true)
-    sol.audio.play_sound("secret")
-  elseif switch_name == "shortcut_b_switch" then
-    map:set_entities_enabled("shortcut_b", false)
-    map:get_game():set_boolean(909, true)
-    sol.audio.play_sound("secret")
-  elseif switch_name == "n_switch" then
-    map:move_camera(280, 56, 250, function()
-      sol.audio.play_sound("chest_appears")
-      n_chest:set_enabled(true)
-      map:get_game():set_boolean(950, true)
+  if barrier:is_enabled() then
+    map:move_camera(120, 240, 250, function()
+      sol.audio.play_sound("secret")
+      barrier:set_enabled(false)
+      map:get_game():set_boolean(127, true)
     end)
   end
 end
 
-function open_e_door()
-  sol.audio.play_sound("secret")
-  map:open_doors("e_door")
+function se_water_switch:on_activated()
+
+  if not map:get_game():get_boolean(128) then
+    map:move_camera(912, 896, 250, remove_se_water, 1000, 3500)
+  end
 end
 
-function open_barrier()
+function n_1f_water_switch:on_activated()
+
+  if not map:get_game():get_boolean(131) then
+    remove_1f_n_water()
+  end
+end
+
+function e_1f_water_switch_1:on_activated()
+
+  if e_1f_water_switch_2:is_activated()
+      and not map:get_game():get_boolean(122) then
+    remove_1f_e_water()
+  end
+end
+
+function e_1f_water_switch_2:on_activated()
+
+  if e_1f_water_switch_1:is_activated()
+      and not map:get_game():get_boolean(122) then
+    remove_1f_e_water()
+  end
+end
+
+function shortcut_a_switch:on_activated()
+
+  map:set_entities_enabled("shortcut_a", false)
+  map:get_game():set_boolean(908, true)
   sol.audio.play_sound("secret")
-  barrier:set_enabled(false)
-  map:get_game():set_boolean(127, true)
+end
+
+function shortcut_b_switch:on_activated()
+
+  map:set_entities_enabled("shortcut_b", false)
+  map:get_game():set_boolean(909, true)
+  sol.audio.play_sound("secret")
+end
+
+function n_switch:on_activated()
+
+  map:move_camera(280, 56, 250, function()
+    sol.audio.play_sound("chest_appears")
+    n_chest:set_enabled(true)
+    map:get_game():set_boolean(950, true)
+  end)
 end
 
 function remove_se_water()
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
-  se_water_out:set_enabled(true)
-  se_water_source:set_enabled(false)
+  se_water_tile_out:set_enabled(true)
+  se_water_tile_source:set_enabled(false)
   sol.timer.start(remove_water_delay, remove_se_water_2)
 end
 
 function remove_se_water_2()
-  se_water_middle:set_enabled(false)
+  se_water_tile_middle:set_enabled(false)
   sol.timer.start(remove_water_delay, remove_se_water_3)
 end
 
 function remove_se_water_3()
-  se_water_initial:set_enabled(false)
-  se_water_less_a:set_enabled(true)
+  se_water_tile_initial:set_enabled(false)
+  se_water_tile_less_a:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_se_water_4)
 end
 
 function remove_se_water_4()
-  se_water_less_a:set_enabled(false)
-  se_water_less_b:set_enabled(true)
+  se_water_tile_less_a:set_enabled(false)
+  se_water_tile_less_b:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_se_water_5)
 end
 
 function remove_se_water_5()
-  se_water_less_b:set_enabled(false)
-  se_water_less_c:set_enabled(true)
+  se_water_tile_less_b:set_enabled(false)
+  se_water_tile_less_c:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_se_water_6)
 end
 
 function remove_se_water_6()
-  se_water_less_c:set_enabled(false)
+  se_water_tile_less_c:set_enabled(false)
   map:set_entities_enabled("se_water_on_jumper", false)
   map:set_entities_enabled("se_water_off_obstacle", true)
   map:get_game():set_boolean(128, true)

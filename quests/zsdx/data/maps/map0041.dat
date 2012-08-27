@@ -53,7 +53,7 @@
 19	0	920	48	stairs_4	1	0
 5	0	944	880	chest_2	0	small_key	1	119
 19	0	848	888	stairs_11	2	4
-10	0	904	888	16	16	se_water_out	402	0
+10	0	904	888	16	16	se_water_tile_tile_out	402	0
 0	1	40	40	544	96	539
 0	1	576	40	8	32	238
 0	1	976	224	8	208	238
@@ -889,11 +889,11 @@
 12	1	840	904	8	8	se_water_off_obstacle_2	1	1	1	1
 6	1	792	72	8	48	jumper	0	40
 2	1	40	40	32	32	teletransporter_11	_none	_none	1	40	_same
-11	1	432	504	1f_n_water_switch	2	0	0
+11	1	432	504	n_1f_water_switch	2	0	0
 18	1	840	488	e_door	1	0	-1
 18	1	840	440	e_door_2	3	0	-1
-11	1	792	520	1f_e_water_switch_1	2	0	0
-11	1	904	520	1f_e_water_switch_2	2	0	0
+11	1	792	520	e_1f_water_switch_1	2	0	0
+11	1	904	520	e_1f_water_switch_2	2	0	0
 18	1	320	512	door_2	1	8	120
 9	1	344	509	block	-1	entities/block	1	0	1
 9	1	312	525	block_2	3	entities/block	1	0	1
@@ -925,12 +925,12 @@
 12	1	40	976	688	8	custom_obstacle_4	1	1	1	1
 6	1	48	920	672	8	jumper_3	6	40
 12	1	40	920	8	56	custom_obstacle_5	1	1	1	1
-10	1	984	888	8	16	se_water_source	478	1
-10	1	976	880	8	32	se_water_middle	477	1
-10	1	848	864	128	64	se_water_initial	446	1
-10	1	856	872	112	48	se_water_less_a	446	0
-10	1	864	880	96	32	se_water_less_b	446	0
-10	1	880	888	64	16	se_water_less_c	446	0
+10	1	984	888	8	16	se_water_tile_source	478	1
+10	1	976	880	8	32	se_water_tile_middle	477	1
+10	1	848	864	128	64	se_water_tile_initial	446	1
+10	1	856	872	112	48	se_water_tile_less_a	446	0
+10	1	864	880	96	32	se_water_tile_less_b	446	0
+10	1	880	888	64	16	se_water_tile_less_c	446	0
 11	1	936	688	se_water_switch	2	0	0
 12	1	840	856	144	8	custom_obstacle_6	1	1	1	1
 12	1	840	928	144	8	custom_obstacle_7	1	1	1	1

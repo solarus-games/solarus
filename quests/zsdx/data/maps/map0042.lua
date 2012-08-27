@@ -20,24 +20,33 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_switch_activated(switch_name)
+function se_door_switch:on_activated()
 
-  if switch_name == "se_door_switch" and not se_door:is_open() then
+  if not se_door:is_open() then
     sol.audio.play_sound("secret")
     map:open_doors("se_door")
-  elseif switch_name == "nc_door_switch" and not nc_door:is_open() then
+  end
+end
+
+function nc_door_switch:is_activated()
+
+  if not nc_door:is_open() then
     sol.audio.play_sound("secret")
     map:open_doors("nc_door")
-  elseif switch_name == "barrier_switch" and barrier:is_enabled() then
+  end
+end
+
+function barrier_switch:on_activated()
+
+  if barrier:is_enabled() then
     barrier:set_enabled(false)
     sol.audio.play_sound("door_open")
   end
 end
 
-function map:on_sensor_collision_explosion(sensor_name)
+function weak_floor_sensor:on_collision_explosion()
 
-  if sensor_name == "weak_floor_sensor"
-      and weak_floor:is_enabled() then
+  if weak_floor:is_enabled() then
 
     weak_floor:set_enabled(false)
     weak_floor_sensor:set_enabled(false)

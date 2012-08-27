@@ -180,7 +180,7 @@ function map:on_door_open(door_name)
   end
 end
 
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "boss_key" then
     -- the hero was unfreezed by the chest, so cancel a possible previous guard

@@ -17,7 +17,7 @@ function map:on_shop_item_buying(item_name)
   return true
 end
 
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if string.find(item_name, "_potion$")
       and not map:get_game():get_boolean(911) then

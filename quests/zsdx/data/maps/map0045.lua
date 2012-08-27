@@ -1,8 +1,8 @@
 local map = ...
 -- Surprise wall
 
-next_sign = 1
-directions = {
+local next_sign = 1
+local directions = {
   0, 1, 2, 1, 2, 1, 0, 3, 0, 1, 0, 3, 0, 1, 2, 3,
   0, 1, 2, 1, 0, 1, 2, 3, 2, 1, 0, 3, 0, 1, 0
 }
@@ -14,13 +14,13 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_npc_interaction(npc_name)
+for _, sign in ipairs(map:get_entities("sign_")) do
+  function sign:on_interaction()
 
-  if string.find(npc_name, "^sign_") then
-    if npc_name == "sign_"..next_sign then
+    if self:get_name() == "sign_" .. next_sign then
 
       if next_sign < 32 then
-        map:start_dialog("surprise_wall.direction_"..directions[next_sign])
+        map:start_dialog("surprise_wall.direction_" .. directions[next_sign])
       elseif next_sign == 32 then
         sol.audio.play_sound("secret")
 	secret_way:set_enabled(false)

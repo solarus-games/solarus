@@ -60,7 +60,7 @@ function map:on_camera_back()
   end
 end
 
-function map:on_obtaining_treasure(item_name, variant, savegame_variable)
+function hero:on_obtaining_treasure(item_name, variant, savegame_variable)
 
   -- chest A
   if savegame_variable == 872 then

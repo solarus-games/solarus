@@ -83,7 +83,7 @@ function set_water_filled(i)
     -- hide the block that fills this pool
     map:get_entity("water_"..i.."_on_block"):set_enabled(false)
     -- reset and show the block that drains this pool
-    map:block_reset("water_"..i.."_off_block")
+    map:get_entity("water_"..i.."_off_block"):reset()
     map:get_entity("water_"..i.."_off_block"):set_enabled(true)
   end
 end
@@ -100,7 +100,7 @@ function set_water_drained(i)
     -- hide the block that drains this pool
     map:get_entity("water_"..i.."_off_block"):set_enabled(false)
     -- reset and show the block that fills this pool
-    map:block_reset("water_"..i.."_on_block")
+    map:get_entity("water_"..i.."_on_block"):reset()
     map:get_entity("water_"..i.."_on_block"):set_enabled(true)
   end
 end

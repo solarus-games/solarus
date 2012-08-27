@@ -12,7 +12,7 @@ local map = ...
 -- BB: Barrier Button
 -- DS: Door Sensor
 
-fighting_boss = false
+local fighting_boss = false
 
 function map:on_started(destination_point)
   map:set_doors_open("LD1", true)
@@ -21,17 +21,17 @@ function map:on_started(destination_point)
   billy_npc:set_enabled(false)
   map:set_doors_open("boss_door", true)
 
-  -- Map chest hide if not already opened
+  -- Hide the map chest if not already opened
   if not map:get_game():get_boolean(700) then
     MAP:set_enabled(false)
   end
 
-  -- Big key chest hide if not already opened
+  -- Hide the big key chest if not already opened
   if not map:get_game():get_boolean(705) then
     BK01:set_enabled(false)
   end
 
-  -- Link has mirror shield: no laser obstacles
+  -- Link has the mirror shield: no laser obstacles
   if map:get_game():get_ability("shield") >= 3 then
     LO1:set_enabled(false)
     map:set_entities_enabled("LO2", false)
@@ -67,95 +67,145 @@ function map:on_opening_transition_finished(destination_point)
   end
 end
 
-function map:on_switch_activated(switch_name)
-  if switch_name == "BB1" then
-    -- LB1 room
-    map:move_camera(896, 1712, 250, BB1_remove_barrier)
-  elseif switch_name == "BB2" then
-    -- LB2 room
-    LB2:set_enabled(false)
+function BB1:on_activated()
+
+  -- LB1 room
+  map:move_camera(896, 1712, 250, function()
+    LB1:set_enabled(false)
     sol.audio.play_sound("secret")
-  elseif switch_name == "DB4" then
-    map:open_doors("LD4")
-    sol.audio.play_sound("secret")
-  elseif switch_name == "DB06" then
-    -- 4 statues room door opening
-    map:open_doors("LD6")
-    sol.audio.play_sound("secret")
-  elseif string.match(switch_name, "^RPS") then
+  end)
+end
+
+function BB2:on_activated()
+
+  -- LB2 room
+  LB2:set_enabled(false)
+  sol.audio.play_sound("secret")
+end
+
+function DB4:on_activated()
+
+  map:open_doors("LD4")
+  sol.audio.play_sound("secret")
+end
+
+function DB06:on_activated()
+
+  -- 4 statues room door opening
+  map:open_doors("LD6")
+  sol.audio.play_sound("secret")
+end
+
+for _, switch in ipairs(map:get_entities("RPS")) do
+
+  function switch:on_activated()
     -- Resets position of statues
-    map:block_reset("STT1")
-    map:block_reset("STT2")
-    map:block_reset("STT3")
+    STT1:reset()
+    STT2:reset()
+    STT3:reset()
     sol.audio.play_sound("warp")
   end
 end
 
-function BB1_remove_barrier()
-  LB1:set_enabled(false)
-  sol.audio.play_sound("secret")
+function DS1:on_activated()
+
+  -- LD1 room: when Link enters this room, door LD1 closes and enemies appear, sensor DS1 is disabled
+  if map:has_entities("room_LD1_enemy") then
+    map:close_doors("LD1")
+    DS1:set_enabled(false)
+  end
 end
 
-function map:on_hero_on_sensor(sensor_name)
-  if sensor_name == "DS1" then
-    -- LD1 room: when Link enters this room, door LD1 closes and enemies appear, sensor DS1 is disabled
-    if map:has_entities("room_LD1_enemy") then
-      map:close_doors("LD1")
-      DS1:set_enabled(false)
-    end
-  elseif sensor_name == "DS3" then
-    if map:has_entities("map_enemy") then
-      map:close_doors("LD3")
-      DS3:set_enabled(false)
-    end
-  elseif sensor_name == "DS4" then
-    map:close_doors("LD4")
-    DS4:set_enabled(false)
-  elseif sensor_name == "start_boss_sensor" then
-    if not fighting_boss and not map:get_game():get_boolean(727) then
-      sol.audio.stop_music()
-      map:close_doors("boss_door")
-      billy_npc:set_enabled(true)
-      hero:freeze()
-      fighting_boss = true
-      sol.timer.start(1000, function()
-	map:start_dialog("dungeon_8.billy")
+function DS3:on_activated()
+
+  if map:has_entities("map_enemy") then
+    map:close_doors("LD3")
+    DS3:set_enabled(false)
+  end
+end
+
+function DS4:on_activated()
+
+  map:close_doors("LD4")
+  DS4:set_enabled(false)
+end
+
+function start_boss_sensor:on_activated()
+
+  if not fighting_boss and not map:get_game():get_boolean(727) then
+    sol.audio.stop_music()
+    map:close_doors("boss_door")
+    billy_npc:set_enabled(true)
+    hero:freeze()
+    fighting_boss = true
+    sol.timer.start(1000, function()
+      map:start_dialog("dungeon_8.billy", function()
+        sol.audio.play_music("boss")
+        hero:unfreeze()
+        boss:set_enabled(true)
+        billy_npc:set_enabled(false)
       end)
+    end)
+  end
+end
+
+for _, enemy in ipairs(map:get_entities("room_LD1_enemy")) do
+  
+  function enemy:on_dead()
+    if not map:has_entities("room_LD1_enemy") then
+      -- LD1 room: kill all enemies will open the doors LD1 and LD2
+      if not LD1:is_open() then
+        map:open_doors("LD1")
+        map:open_doors("LD2")
+        sol.audio.play_sound("secret")
+      end
     end
   end
 end
 
-function map:on_enemy_dead(enemy_name)
-  if string.match(enemy_name, "^room_LD1_enemy") and not map:has_entities("room_LD1_enemy") then
-    -- LD1 room: kill all enemies will open the doors LD1 and LD2
-    if not LD1:is_open() then
-      map:open_doors("LD1")
-      map:open_doors("LD2")
-      sol.audio.play_sound("secret")
-    end
-  elseif string.match(enemy_name, "^room_LD5_enemy") and not map:has_entities("room_LD5_enemy") and not LD5:is_open() then
+for _, enemy in ipairs(map:get_entities("room_LD5_enemy")) do
+  
+  function enemy:on_dead()
+
+    if not map:has_entities("room_LD5_enemy") and not LD5:is_open() then
     -- LD5 room: kill all enemies will open the door LD5
     map:open_doors("LD5")
     sol.audio.play_sound("secret")
-  elseif string.match(enemy_name, "^map_enemy") and not map:has_entities("map_enemy") then
-    -- Map chest room: kill all enemies and the chest will appear
-    if not map:get_game():get_boolean(700) then
-      MAP:set_enabled(true)
-      sol.audio.play_sound("chest_appears")
-    elseif not LD3:is_open() then
-      sol.audio.play_sound("secret")
-    end
-    map:open_doors("LD3")
-  elseif string.match(enemy_name, "^room_big_enemy") and not map:has_entities("room_big_enemy") then
-    -- Big key chest room: kill all enemies and the chest will appear
-    if not map:get_game():get_boolean(705) then
-      BK01:set_enabled(true)
-      sol.audio.play_sound("chest_appears")
+  end
+end
+
+for _, enemy in ipairs(map:get_entities("map_enemy")) do
+  
+  function enemy:on_dead()
+
+    if not map:has_entities("map_enemy") then
+      -- Map chest room: kill all enemies and the chest will appear
+      if not map:get_game():get_boolean(700) then
+        MAP:set_enabled(true)
+        sol.audio.play_sound("chest_appears")
+      elseif not LD3:is_open() then
+        sol.audio.play_sound("secret")
+      end
+      map:open_doors("LD3")
     end
   end
 end
 
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+for _, enemy in ipairs(map:get_entities("room_big_enemy")) do
+  
+  function enemy:on_dead()
+
+    if not map:has_entities("room_big_enemy") then
+      -- Big key chest room: kill all enemies and the chest will appear
+      if not map:get_game():get_boolean(705) then
+        BK01:set_enabled(true)
+        sol.audio.play_sound("chest_appears")
+      end
+    end
+  end
+end
+
+function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.audio.play_music("victory")
@@ -170,22 +220,13 @@ function map:on_obtained_treasure(item_name, variant, savegame_variable)
   end
 end
 
-function map:on_dialog_finished(dialog_id)
+function boss_key_door:on_open()
 
-  if dialog_id == "dungeon_8.billy" then
-    sol.audio.play_music("boss")
-    hero:unfreeze()
-    boss:set_enabled(true)
-    billy_npc:set_enabled(false)
-  end
+  boss_key_door_laser:remove()
 end
 
-function map:on_door_open(door_name)
+function WW01:on_open()
 
-  if door_name == "boss_key_door" then
-    boss_key_door_laser:remove()
-  elseif door_name == "WW01" then
-    sol.audio.play_sound("secret")
-  end
+  sol.audio.play_sound("secret")
 end
 

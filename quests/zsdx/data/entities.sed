@@ -23,6 +23,8 @@ s/map:[a-z]*_set_locked("\([a-zA-Z0-9_]*\)", */\1:set_locked(/g
 s/map:[a-z]*_set_locked(\([a-zA-Z0-9_\." ]*\), */map:get_entity(\1):set_locked(/g
 s/map:[a-z]*_is_locked("\([a-zA-Z0-9_]*\)")/\1:is_locked()/g
 s/map:[a-z]*_is_locked(\([a-zA-Z0-9_\." ]*\))/map:get_entity(\1):is_locked()/g
+s/map:[a-z]*_reset("\([a-zA-Z0-9_]*\)")/\1:reset()/g
+s/map:[a-z]*_reset(\([a-zA-Z0-9_\." ]*\))/map:get_entity(\1):reset()/g
 s/if destination_point_name /if destination_point:get_name() /g
 s/destination_point_name/destination_point/g
 

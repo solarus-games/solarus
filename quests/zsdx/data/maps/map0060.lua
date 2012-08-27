@@ -64,7 +64,7 @@ function start_boss()
   hero:unfreeze()
 end
 
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.timer.start(9000, open_final_room)

@@ -170,9 +170,9 @@ function map:on_switch_activated(switch_name)
 	  code_nb_activated = 0
 
 	  -- make sure the switch index won't get reactivated right now
-	  map:switch_set_locked(switch_name, true)
+	  map:get_entity(switch_name):set_locked(true)
 	  sol.timer.start(500, function()
-	    map:switch_set_locked(switch_name, false)
+	    map:get_entity(switch_name):set_locked(false)
 	  end)
 	end
       end

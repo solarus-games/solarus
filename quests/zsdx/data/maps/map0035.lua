@@ -19,17 +19,16 @@ function map:on_opening_transition_finished(destination_point)
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function close_door_sensor:on_activated()
 
-  if door:is_open() and sensor_name == "close_door_sensor" then
+  if door:is_open() then
     map:close_doors("door")
   end
 end
 
-function map:on_sensor_collision_explosion(sensor_name)
+function weak_floor_sensor:on_collision_explosion()
 
-  if sensor_name == "weak_floor_sensor"
-      and weak_floor:is_enabled() then
+  if weak_floor:is_enabled() then
 
     weak_floor:set_enabled(false)
     weak_floor_sensor:set_enabled(false)

@@ -1,12 +1,13 @@
 local map = ...
 -- Billy's cave
 
-billy_leave_step = 0
+local billy_leave_step = 0
+local hero
 
 function map:on_started(destination_point)
 
   if map:get_game():get_boolean(134) then
-    -- the player already gave the golden bars and obtained the edelweiss
+    -- the player has already given the golden bars and obtained the edelweiss
     billy:remove()
   end
 
@@ -15,50 +16,38 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_npc_interaction(npc_name)
+function billy:on_interaction()
 
-  if npc_name == "billy" then
-    if not map:get_game():get_boolean(135) then
-      map:start_dialog("billy_cave.hello")
-      map:get_game():set_boolean(135, true)
-    else
-      map:start_dialog("billy_cave.what_do_you_have")
-    end
-  end
-end
-
-function map:on_dialog_finished(dialog_id, answer)
-
-  if dialog_id == "billy_cave.what_do_you_have" then
-    if map:get_game():get_item("level_4_way") == 2 then
-      -- the player has the golden bars
-      map:start_dialog("billy_cave.with_golden_bars")
-    else
-      map:start_dialog("billy_cave.without_golden_bars")
-    end
-
-  elseif dialog_id == "billy_cave.without_golden_bars" then
-    if answer == 0 then
-      give_croissant()
-     else
-      give_apple_pie()
-    end
-
-  elseif dialog_id == "billy_cave.with_golden_bars" then
-    if answer == 0 then
-      give_golden_bars()
-     else
-      give_apple_pie()
-    end
-
-  elseif dialog_id == "billy_cave.give_golden_bars" then
-    map:get_hero():start_treasure("level_4_way", 3, 134)
+  if not map:get_game():get_boolean(135) then
+    map:start_dialog("billy_cave.hello")
+    map:get_game():set_boolean(135, true)
+  else
+    map:start_dialog("billy_cave.what_do_you_have", function()
+      if map:get_game():get_item("level_4_way"):get_variant() == 2 then
+        -- the player has the golden bars
+        map:start_dialog("billy_cave.with_golden_bars", function(answer)
+          if answer == 0 then
+            give_golden_bars()
+          else
+            give_apple_pie()
+          end
+        end)
+      else
+        map:start_dialog("billy_cave.without_golden_bars", function(answer)
+          if answer == 0 then
+            give_croissant()
+          else
+            give_apple_pie()
+          end
+        end)
+      end
+    end)
   end
 end
 
 function give_croissant()
 
-  if map:get_game():has_item_amount("croissants_counter", 1) then
+  if map:get_game():get_item("croissants_counter"):has_amount(1) then
     map:start_dialog("billy_cave.give_croissant")
   else
     map:start_dialog("billy_cave.give_croissant_without")
@@ -66,7 +55,7 @@ function give_croissant()
 end
 
 function give_apple_pie()
-  if map:get_game():get_item("level_4_way") == 1 then
+  if map:get_game():get_item("level_4_way"):get_variant() == 1 then
     map:start_dialog("billy_cave.give_apple_pie")
   else
     map:start_dialog("billy_cave.give_apple_pie_without")
@@ -74,10 +63,12 @@ function give_apple_pie()
 end
 
 function give_golden_bars()
-  map:start_dialog("billy_cave.give_golden_bars")
+  map:start_dialog("billy_cave.give_golden_bars", function()
+    map:get_hero():start_treasure("level_4_way", 3, 134)
+  end)
 end
 
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "level_4_way" and variant == 3 then
     -- got the edelweiss: make Billy leave
@@ -85,11 +76,9 @@ function map:on_obtained_treasure(item_name, variant, savegame_variable)
   end
 end
 
-function map:on_npc_movement_finished(npc_name)
+function billy:on_movement_finished()
 
-  if npc_name == "billy" then
-    billy_leave()
-   end
+  billy_leave()
 end
 
 function billy_leave()
@@ -124,10 +113,11 @@ function billy_leave()
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function save_solid_ground_sensor:on_activated()
+  map:get_hero():save_solid_ground()
+end
 
-  if sensor_name:find("^save_solid_ground_sensor") then
-    map:get_hero():save_solid_ground()
-  end
+function save_solid_ground_sensor_2:on_activated()
+  map:get_hero():save_solid_ground()
 end
 

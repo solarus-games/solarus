@@ -19,6 +19,10 @@ s/map:[a-z]*_set_position("\([a-zA-Z0-9_]*\)", */\1:set_position(/g
 s/map:[a-z]*_set_position(\([a-zA-Z0-9_\." ]*\), */map:get_entity(\1):set_position(/g
 s/map:[a-z]*_get_position("\([a-zA-Z0-9_]*\)")/\1:get_position()/g
 s/map:[a-z]*_get_position(\([a-zA-Z0-9_\." ]*\))/map:get_entity(\1):get_position()/g
+s/map:[a-z]*_set_locked("\([a-zA-Z0-9_]*\)", */\1:set_locked(/g
+s/map:[a-z]*_set_locked(\([a-zA-Z0-9_\." ]*\), */map:get_entity(\1):set_locked(/g
+s/map:[a-z]*_is_locked("\([a-zA-Z0-9_]*\)")/\1:is_locked()/g
+s/map:[a-z]*_is_locked(\([a-zA-Z0-9_\." ]*\))/map:get_entity(\1):is_locked()/g
 s/if destination_point_name /if destination_point:get_name() /g
 s/destination_point_name/destination_point/g
 

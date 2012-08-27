@@ -17,7 +17,7 @@ function map:on_started(destination_point)
 
   if map:get_game():get_boolean(621) then
     ne_door_switch:set_activated(true)
-    map:switch_set_locked("ne_door_switch", true)
+    ne_door_switch:set_locked(true)
   end
 end
 

@@ -8,10 +8,9 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function close_door_sensor:on_activated()
 
-  if sensor_name == "close_door_sensor"
-      and door:is_open() then
+  if door:is_open() then
     map:close_doors("door")
   end
 end

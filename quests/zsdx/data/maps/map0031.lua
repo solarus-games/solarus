@@ -3,12 +3,12 @@ local map = ...
 
 -- correct order of the switches
 local switches_puzzle_order = {
-  switch_a = 1,
-  switch_b = 2,
-  switch_c = 3,
-  switch_d = 4,
-  switch_e = 5,
-  switch_f = 6
+  [switch_a] = 1,
+  [switch_b] = 2,
+  [switch_c] = 3,
+  [switch_d] = 4,
+  [switch_e] = 5,
+  [switch_f] = 6
 }
 
 local switches_puzzle_nb_enabled = 0
@@ -23,6 +23,7 @@ local boss_arrows = {
 }
 local fighting_boss = false
 local timers = {}
+local hero = map:get_hero()
 
 function map:on_started(destination_point)
 
@@ -30,8 +31,10 @@ function map:on_started(destination_point)
 
   if map:get_game():get_boolean(81) then
     -- boss key chest already found
-    for k,v in pairs(switches_puzzle_order) do
-      map:get_entity(k):set_activated(true)
+    for switch, _ in pairs(switches_puzzle_order) do
+      switch:set_activated(true)
+      switch.on_activated = puzzle_switch_activated
+      switch.on_left = puzzle_switch_left
     end
   end
 
@@ -50,9 +53,9 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_switch_activated(switch_name)
+function puzzle_switch_activated(switch)
 
-  local order = switches_puzzle_order[switch_name]
+  local order = switches_puzzle_order[switch]
   if order ~= nil then
 
     switches_puzzle_nb_enabled = switches_puzzle_nb_enabled + 1
@@ -71,92 +74,91 @@ function map:on_switch_activated(switch_name)
 	sol.audio.play_sound("wrong")
 	switches_puzzle_nb_enabled = 0
 	switches_puzzle_correct = true
-	map:switch_set_locked(switch_name, true)
-	for k,v in pairs(switches_puzzle_order) do
-	  map:get_entity(k):set_activated(false)
+	switch:set_locked(true)
+	for sw, _ in pairs(switches_puzzle_order) do
+	  sw:set_activated(false)
 	end
       end
     end
   end
 end
 
-function map:on_switch_left(switch_name)
+function puzzle_switch_left(switch)
 
   if switches_puzzle_nb_enabled == 0 then
-    for k,v in pairs(switches_puzzle_order) do
-      map:switch_set_locked(k, false)
+    for switch, _ in pairs(switches_puzzle_order) do
+      switch:set_locked(false)
     end
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function start_boss_sensor:on_activated()
 
-  if sensor_name == "start_boss_sensor"
-      and not map:get_game():get_boolean(93)
+  if not map:get_game():get_boolean(93)
       and not fighting_boss then
-    start_boss()
+    fighting_boss = true
+    boss:set_enabled(true)
+    sol.audio.play_music("boss")
+  end
+end
 
-  elseif sensor_name == "close_boss_door_sensor"
-      and boss_door:is_open()
+function close_boss_door_sensor:on_activated()
+
+  if boss_door:is_open()
       and not map:get_game():get_boolean(93)
       and not fighting_boss then
     sol.audio.stop_music()
     map:close_doors("boss_door")
+  end
+end
 
-  elseif sensor_name == "save_solid_ground_sensor" then
-    map:get_hero():save_solid_ground(960, 525, 0)
+function save_solid_ground_sensor:on_activated()
+  map:get_hero():save_solid_ground(960, 525, 0)
+end
 
-  elseif sensor_name == "boss_floor_sensor_1" then
-    if fighting_boss
+function boss_floor_sensor_1:on_activated()
+
+  if fighting_boss
       and boss_floor_1:is_enabled() then
 
-      map:set_entities_enabled("boss_floor_sensor", false)
-      boss_restore_floor(true)
-      boss_change_floor(1, 92, 1, false)
-      timers[#timers + 1] = sol.timer.start(10000, function()
-        map:set_entities_enabled("boss_floor_sensor", true)
-	boss_change_floor(92, 1, -1, true)
-      end)
-    end
+    map:set_entities_enabled("boss_floor_sensor", false)
+    boss_restore_floor(true)
+    boss_change_floor(1, 92, 1, false)
+    timers[#timers + 1] = sol.timer.start(10000, function()
+      map:set_entities_enabled("boss_floor_sensor", true)
+      boss_change_floor(92, 1, -1, true)
+    end)
+  end
+end
 
-  elseif sensor_name == "boss_floor_sensor_2" then
-    if fighting_boss
+function boss_floor_sensor_2:on_activated()
+
+  if fighting_boss
       and boss_floor_92:is_enabled() then
 
-      map:set_entities_enabled("boss_floor_sensor", false)
-      boss_restore_floor(true)
-      boss_change_floor(92, 1, -1, false)
-      timers[#timers + 1] = sol.timer.start(10000, function()
-        map:set_entities_enabled("boss_floor_sensor", true)
-	boss_change_floor(1, 92, 1, true)
-      end)
-    end
+    map:set_entities_enabled("boss_floor_sensor", false)
+    boss_restore_floor(true)
+    boss_change_floor(92, 1, -1, false)
+    timers[#timers + 1] = sol.timer.start(10000, function()
+      map:set_entities_enabled("boss_floor_sensor", true)
+      boss_change_floor(1, 92, 1, true)
+    end)
   end
 end
 
-function start_boss()
-
-  fighting_boss = true
-  boss:set_enabled(true)
-  sol.audio.play_music("boss")
-end
-
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+function hero:on_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.timer.start(9000, open_final_room)
+    sol.timer.start(9000, function()
+      sol.audio.play_sound("secret")
+      map:open_doors("final_room_door")
+      boss_killed_floor:set_enabled(true)
+      self:unfreeze()
+    end)
     sol.audio.play_music("victory")
-    map:get_hero():freeze()
-    map:get_hero():set_direction(3)
+    self:freeze()
+    self:set_direction(3)
   end
-end
-
-function open_final_room()
-
-  sol.audio.play_sound("secret")
-  map:open_doors("final_room_door")
-  boss_killed_floor:set_enabled(true)
-  map:get_hero():unfreeze()
 end
 
 function boss_change_floor(first, last, inc, enable)
@@ -212,20 +214,16 @@ function boss_restore_floor(with_arrows)
   end
 end
 
-function map:on_enemy_dying(enemy_name)
+function boss:on_dying()
 
-  if enemy_name == "boss" then
-    boss_restore_floor(false)
-    map:set_entities_enabled("boss_floor_sensor", false)
-  end
+  boss_restore_floor(false)
+  map:set_entities_enabled("boss_floor_sensor", false)
 end
 
-function map:on_enemy_dead(enemy_name)
+function boss:on_dead()
 
-  if enemy_name == "boss" then
-    -- create the heart container manually to be sure it won't be in lava
-    map:create_pickable("heart_container", 1, 103, 960, 437, 0)
-    for _, t in ipairs(timers) do t:stop() end
-  end
+  -- create the heart container manually to be sure it won't be in lava
+  map:create_pickable("heart_container", 1, 103, 960, 437, 0)
+  for _, t in ipairs(timers) do t:stop() end
 end
 

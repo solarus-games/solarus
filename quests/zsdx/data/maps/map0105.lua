@@ -196,7 +196,7 @@ function map:on_switch_activated(switch_name)
 	  map:get_entity("puzzle_b_switch_" .. i):set_activated(false)
 	end
 	puzzle_b_nb_activated = 0
-	map:switch_set_locked(switch_name, true)
+	map:get_entity(switch_name):set_locked(true)
 	-- to avoid the switch to be activated again immediately
       else
 	-- correct
@@ -244,7 +244,7 @@ end
 function map:on_switch_left(switch_name)
 
   if switch_name:find("^puzzle_b_switch") then
-    map:switch_set_locked(switch_name, false)
+    map:get_entity(switch_name):set_locked(false)
   end
 end
 

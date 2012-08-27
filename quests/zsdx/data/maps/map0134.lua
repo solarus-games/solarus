@@ -6,7 +6,7 @@ function map:on_started(destination_point)
   if destination_point:get_name() == "from_outside_s" then
     map:set_doors_open("door", true)
     door_switch:set_activated(true)
-    map:switch_set_locked("door_switch", true)
+    door_switch:set_locked(true)
   end
 end
 

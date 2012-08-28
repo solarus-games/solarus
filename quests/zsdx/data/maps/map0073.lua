@@ -10,10 +10,8 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_door_open(door_name)
+function door:on_open()
 
-  if door_name == "door" then
-    sol.audio.play_sound("secret")
-  end
+  sol.audio.play_sound("secret")
 end
 

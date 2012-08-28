@@ -7,30 +7,27 @@ function map:on_started(destination_point)
   map:set_entities_enabled("enemy", false)
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function close_door_sensor:on_activated()
 
-  if sensor_name == "close_door_sensor"
-      and door:is_open()
+  if door:is_open()
       and not map:get_game():get_boolean(156) then
     map:close_doors("door")
     hero:freeze()
-    sol.timer.start(1000, start_music)
+    sol.timer.start(1000, function()
+      sol.audio.play_music("soldiers")
+      sol.timer.start(1500, function()
+        map:set_entities_enabled("enemy", true)
+        hero:unfreeze()
+      end)
+    end)
   end
 end
 
-function start_music()
-
-  sol.audio.play_music("soldiers")
-  sol.timer.start(1500, start_fight)
+for _, enemy in ipairs(map.get_entities("enemy")) do
+  enemy.on_dead = enemy_dead
 end
 
-function start_fight()
-
-  map:set_entities_enabled("enemy", true)
-  hero:unfreeze()
-end
-
-function map:on_enemy_dead(enemy_name)
+function enemy_dead(enemy)
 
   if not map:has_entities("enemy") then
     hero:start_victory()

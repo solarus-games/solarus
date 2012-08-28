@@ -1,9 +1,9 @@
 local map = ...
 -- Dungeon 7 2F
 
-fighting_miniboss = false
-code_nb_activated = 0
-code_next_index = 1
+local fighting_miniboss = false
+local code_nb_activated = 0
+local code_next_index = 1
 
 function map:on_started(destination_point)
 
@@ -17,9 +17,8 @@ function map:on_started(destination_point)
   -- west enemies room
   map:set_doors_open("door_c", true)
   if map:get_game():get_boolean(616) then
-    local enemy_name = "w_room_enemy_4"
-    local x, y = map:get_entity(enemy_name):get_position()
-    map:get_entity(enemy_name):set_position(x, y, 1)
+    local x, y = w_room_enemy_4:get_position()
+    w_room_enemy_4:set_position(x, y, 1)
   end
 
   -- saved door A (code)
@@ -41,7 +40,8 @@ function map:on_started(destination_point)
 
   -- weak floor
   if map:get_game():get_boolean(619) then
-    map:set_entities_enabled("weak_floor", false)
+    weak_floor:set_enabled(false)
+    weak_floor_2:set_enabled(false)
     weak_floor_sensor:set_enabled(false)
   else
     weak_floor_teletransporter:set_enabled(false)
@@ -49,7 +49,7 @@ function map:on_started(destination_point)
 
   -- miniboss
   map:set_doors_open("miniboss_door", true)
-  map:set_entities_enabled("miniboss", false)
+  map:set_entities_enabled("miniboss_enemy", false)
 
   -- save the north-west door from 1F
   if destination_point:get_name() == "from_1f_ne" then
@@ -69,23 +69,27 @@ function map:on_started(destination_point)
   map:set_entities_enabled("shortcut_off", not shortcut)
 end
 
-function map:on_hero_on_sensor(sensor_name)
+-- close door F
+function close_door_f_sensor:on_activated()
 
-  -- close door F
-  if sensor_name == "close_door_f_sensor" then
-    map:set_doors_open("door_f", false)
-    door_f_switch:set_activated(false)
+  map:set_doors_open("door_f", false)
+  door_f_switch:set_activated(false)
+end
 
-  -- door C (west room)
-  elseif sensor_name:find("^close_door_c_sensor") then
-    if map:has_entities("w_room_enemy")
-        and door_c:is_open() then
-      map:close_doors("door_c")
-    end
+-- door C (west room)
+function close_door_c_sensor:on_activated()
 
-  -- miniboss
-  elseif sensor_name == "start_miniboss_sensor"
-      and not map:get_game():get_boolean(620)
+  if map:has_entities("w_room_enemy")
+      and door_c:is_open() then
+    map:close_doors("door_c")
+  end
+end
+close_door_c_sensor_2.on_activated = close_door_c_sensor.on_activated 
+
+-- miniboss
+function start_miniboss_sensor:on_activated()
+
+  if not map:get_game():get_boolean(620)
       and not fighting_miniboss then
 
     hero:freeze()
@@ -93,109 +97,148 @@ function map:on_hero_on_sensor(sensor_name)
     fighting_miniboss = true
     sol.timer.start(1000, function()
       sol.audio.play_music("boss")
-      map:set_entities_enabled("miniboss", true)
+      map:set_entities_enabled("miniboss_enemy", true)
       hero:unfreeze()
     end)
+  end
+end
 
-  -- pipes
-  else
-    pipe = string.match(sensor_name, "^pipe_in_([a-z])_sensor")
-    if pipe ~= nil then
-      -- entering a pipe
-      map:set_entities_enabled("pipe_border_"..pipe, true)
-      hero:set_visible(true)
+-- pipes
+for _, sensor in ipairs(map:get_entities("pipe_in_")) do
+  sensor:on_activated = pipe_sensor_in_activated
+end
+
+local function pipe_sensor_in_activated(sensor)
+
+  local pipe = sensor:get_name():match("^pipe_in_([a-z])_sensor")
+  if pipe ~= nil then
+    -- entering a pipe
+    map:set_entities_enabled("pipe_under_" .. pipe, false)
+    map:set_entities_enabled("pipe_over_" .. pipe, true)
+    map:set_entities_enabled("pipe_border_" .. pipe, true)
+    hero:set_visible(true)
+  end
+end
+
+for _, sensor in ipairs(map:get_entities("pipe_out_")) do
+  sensor:on_activated = pipe_sensor_out_activated
+end
+
+local function pipe_sensor_out_activated(sensor)
+
+  local pipe = string.match(sensor_name, "^pipe_out_([a-z])_sensor")
+  if pipe ~= nil then
+    -- leaving a pipe
+    map:set_entities_enabled("pipe_under_" .. pipe, true)
+    map:set_entities_enabled("pipe_over_" .. pipe, false)
+    map:set_entities_enabled("pipe_border_" .. pipe, false)
+  end
+end
+
+for _, sensor in ipairs(map:get_entities("hide_hero_sensor")) do
+  sensor:on_activated = hide_hero_sensor_activated
+end
+
+local function hide_hero_sensor_activated(sensor)
+
+  -- hide the hero
+  hero:set_visible(false)
+end
+
+for _, sensor in ipairs(map:get_entities("unhide_hero_sensor")) do
+  sensor:on_activated = unhide_hero_sensor_activated
+end
+
+local function unhide_hero_sensor_activated(sensor)
+
+  -- unhide the hero
+  hero:set_visible(true)
+end
+
+-- door F
+function door_f_switch:on_activated()
+
+  map:move_camera(1040, 760, 250, function()
+    sol.audio.play_sound("secret")
+    map:open_doors("door_f")
+  end)
+end
+
+-- door D
+function door_d_switch:on_activated()
+
+  sol.audio.play_sound("secret")
+  map:open_doors("door_d")
+end
+
+-- shortcut to the boss
+function shortcut_switch:on_activated()
+
+  map:set_entities_enabled("shortcut_on", true)
+  map:set_entities_enabled("shortcut_off", false)
+  map:get_game():set_boolean(628, true)
+  sol.audio.play_sound("secret")
+end
+
+-- code
+for _, switch in ipairs(map:get_entities("code_switch_")) do
+  switch.on_activated = code_switch_activated
+end
+
+local function code_switch_activated(switch)
+
+  local index = tonumber(string.match(switch:get_name(), "^code_switch_([1-8])$"))
+  if index ~= nil then
+    if index == code_next_index then
+      code_next_index = code_next_index + 1
     else
-      pipe = string.match(sensor_name, "^pipe_out_([a-z])_sensor")
-      if pipe ~= nil then
-	-- leaving a pipe
-	map:set_entities_enabled("pipe_border_"..pipe, false)
-      elseif string.find(sensor_name, "^hide_hero_sensor") then
-	-- hide the hero
-	hero:set_visible(false)
-      elseif string.find(sensor_name, "^unhide_hero_sensor") then
-	-- unhide the hero
-	hero:set_visible(true)
-      end
+      code_next_index = 1
     end
-  end
-end
-
-function map:on_switch_activated(switch_name)
-
-  -- door F
-  if switch_name == "door_f_switch" then
-    map:move_camera(1040, 760, 250, function()
-      sol.audio.play_sound("secret")
-      map:open_doors("door_f")
-    end)
-
-  -- door D
-  elseif switch_name == "door_d_switch" then
-    sol.audio.play_sound("secret")
-    map:open_doors("door_d")
-
-  -- shortcut to the boss
-  elseif switch_name == "shortcut_switch" then
-    map:set_entities_enabled("shortcut_on", true)
-    map:set_entities_enabled("shortcut_off", false)
-    map:get_game():set_boolean(628, true)
-    sol.audio.play_sound("secret")
-
-  -- code
-  else
-    local index = tonumber(string.match(switch_name, "^code_switch_([1-8])$"))
-    if index ~= nil then
-      if index == code_next_index then
-	code_next_index = code_next_index + 1
-      else
-	code_next_index = 1
-      end
-      code_nb_activated = code_nb_activated + 1
-      if code_nb_activated == 8 then
-	-- the 8 switches are activated
-        if code_next_index == 9 then
-	  if not door_a:is_open() then
-	    map:move_camera(72, 552, 250, function()
-	      sol.audio.play_sound("secret")
-	      map:open_doors("door_a")
-	    end)
-	  else
+    code_nb_activated = code_nb_activated + 1
+    if code_nb_activated == 8 then
+      -- the 8 switches are activated
+      if code_next_index == 9 then
+	if not door_a:is_open() then
+	  map:move_camera(72, 552, 250, function()
 	    sol.audio.play_sound("secret")
-	  end
-	else
-	  sol.audio.play_sound("wrong")
-	  for i = 1, 8 do
-	    map:get_entity("code_switch_" .. i):set_activated(false)
-	  end
-	  code_nb_activated = 0
-
-	  -- make sure the switch index won't get reactivated right now
-	  map:get_entity(switch_name):set_locked(true)
-	  sol.timer.start(500, function()
-	    map:get_entity(switch_name):set_locked(false)
+	    map:open_doors("door_a")
 	  end)
+	else
+	  sol.audio.play_sound("secret")
 	end
+      else
+	sol.audio.play_sound("wrong")
+	for i = 1, 8 do
+	  map:get_entity("code_switch_" .. i):set_activated(false)
+	end
+	code_nb_activated = 0
+
+	-- make sure the switch index won't get reactivated right now
+	self:set_locked(true)
+	sol.timer.start(500, function()
+	  self:set_locked(false)
+	end)
       end
     end
   end
 end
 
-function map:on_door_open(door_name)
+function door_b:on_open()
 
-  if door_name == "door_b" then
-    -- put the last enemy of the room on the hero's layer
-    if w_room_enemy_4 ~= nil then
-      local x, y = w_room_enemy_4:get_position()
-      w_room_enemy_4:set_position(x, y, 1)
-    end
+  -- put the last enemy of the room on the hero's layer
+  if w_room_enemy_4 ~= nil then
+    local x, y = w_room_enemy_4:get_position()
+    w_room_enemy_4:set_position(x, y, 1)
   end
 end
 
-function map:on_enemy_dead(enemy_name)
+-- west enemies room
+for _, enemy in ipairs(map:get_entitites("w_room_enemy")) do
+  enemy.on_dead = w_room_enemy_dead
+end
+local function w_room_enemy_dead(enemy)
 
-  -- west enemies room
-  if string.find(enemy_name, "^w_room_enemy")
-      and not map:has_entities("w_room_enemy") then
+  if not map:has_entities("w_room_enemy") then
     sol.audio.play_sound("secret")
     if not door_c:is_open() then
       map:open_doors("door_c")
@@ -203,10 +246,16 @@ function map:on_enemy_dead(enemy_name)
     if not door_a:is_open() then
       map:open_doors("door_a")
     end
+  end
+end
 
   -- miniboss
-  elseif string.find(enemy_name, "^miniboss")
-      and not map:has_entities("miniboss") then
+for _, enemy in ipairs(map:get_entitites("miniboss_enemy")) do
+  enemy.on_dead = miniboss_enemy_dead
+end
+local function miniboss_enemy_dead(enemy)
+
+  if not map:has_entities("miniboss_enemy") then
 
     sol.audio.play_music("dark_world_dungeon")
     sol.audio.play_sound("secret")
@@ -246,12 +295,12 @@ function map:on_update()
   end
 end
 
-function map:on_sensor_collision_explosion(sensor_name)
+function weak_floor_sensor:on_collision_explosion()
 
-  if sensor_name == "weak_floor_sensor"
-      and weak_floor:is_enabled() then
+  if weak_floor:is_enabled() then
 
-    map:set_entities_enabled("weak_floor", false)
+    weak_floor:set_enabled(false)
+    weak_floor_2:set_enabled(false)
     weak_floor_sensor:set_enabled(false)
     weak_floor_teletransporter:set_enabled(true)
     sol.audio.play_sound("secret")

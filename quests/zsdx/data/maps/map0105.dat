@@ -2022,27 +2022,27 @@
 7	1	1068	1933	hidden_enemy_1	3	gibdo	0	-1	_random	1	-1
 7	1	1188	1933	hidden_enemy_2	3	gibdo	0	-1	_random	1	-1
 4	1	1128	1933	0	heart	1	-1
-5	1	1120	2032	hidden_enemy_chest	0	rupee	6	800
+5	1	1120	2032	hidden_chest	0	rupee	6	800
 12	1	1184	1768	16	16	custom_obstacle_13	0	1	0	0
 5	1	888	1888	puzzle_a_chest	0	map	1	801
 11	1	736	1904	puzzle_a_switch_1	0	0	1
-10	1	736	1904	16	16	puzzle_a_switch_green_1	635	1
-10	1	736	1904	16	16	puzzle_a_switch_red_1	636	1
+10	1	736	1904	16	16	puzzle_a_green_1	635	1
+10	1	736	1904	16	16	puzzle_a_red_1	636	1
 11	1	768	1904	puzzle_a_switch_2	0	0	1
-10	1	768	1904	16	16	puzzle_a_switch_green_2	635	1
-10	1	768	1904	16	16	puzzle_a_switch_red_2	636	1
+10	1	768	1904	16	16	puzzle_a_green_2	635	1
+10	1	768	1904	16	16	puzzle_a_red_2	636	1
 11	1	800	1904	puzzle_a_switch_3	0	0	1
-10	1	800	1904	16	16	puzzle_a_switch_green_3	635	1
-10	1	800	1904	16	16	puzzle_a_switch_red_3	636	1
+10	1	800	1904	16	16	puzzle_a_green_3	635	1
+10	1	800	1904	16	16	puzzle_a_red_3	636	1
 11	1	736	1936	puzzle_a_switch_4	0	0	1
-10	1	736	1936	16	16	puzzle_a_switch_green_4	635	1
-10	1	736	1936	16	16	puzzle_a_switch_red_4	636	1
+10	1	736	1936	16	16	puzzle_a_green_4	635	1
+10	1	736	1936	16	16	puzzle_a_red_4	636	1
 11	1	768	1936	puzzle_a_switch_5	0	0	1
-10	1	768	1936	16	16	puzzle_a_switch_green_5	635	1
-10	1	768	1936	16	16	puzzle_a_switch_red_5	636	1
+10	1	768	1936	16	16	puzzle_a_green_5	635	1
+10	1	768	1936	16	16	puzzle_a_red_5	636	1
 11	1	800	1936	puzzle_a_switch_6	0	0	1
-10	1	800	1936	16	16	puzzle_a_switch_green_6	635	1
-10	1	800	1936	16	16	puzzle_a_switch_red_6	636	1
+10	1	800	1936	16	16	puzzle_a_green_6	635	1
+10	1	800	1936	16	16	puzzle_a_red_6	636	1
 11	1	800	1616	puzzle_b_switch_1	1	0	0
 11	1	848	1664	puzzle_b_switch_2	1	0	0
 11	1	800	1712	puzzle_b_switch_3	1	0	0
@@ -2054,7 +2054,7 @@
 11	1	896	1344	puzzle_b_door_switch	1	0	0
 4	1	904	1357	0	_none	1	-1
 13	1	808	1589	16	16	close_puzzle_b_door_sensor
-13	1	888	1765	16	16	close_puzzle_b_door_sensor_3
+13	1	888	1765	16	16	close_puzzle_b_door_sensor_2
 1	1	1128	1349	destination_point_3	-1	entities/destination
 1	1	1248	1333	destination_point_4	-1	entities/destination
 1	1	1248	1365	destination_point_5	-1	entities/destination

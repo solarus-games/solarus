@@ -1051,7 +1051,7 @@
 13	1	168	509	32	32	w_room_sensor_2
 10	1	48	416	16	32	w_room_tile_1	577	0
 10	1	112	496	32	16	w_room_tile_2	577	1
-13	1	40	381	32	32	w_room_sensor_4
+13	1	40	381	32	32	w_room_sensor
 12	1	856	776	16	16	custom_obstacle_17	0	1	1	1
 12	1	856	824	16	16	custom_obstacle_18	0	1	1	1
 12	1	1016	808	16	16	custom_obstacle_19	0	1	1	1

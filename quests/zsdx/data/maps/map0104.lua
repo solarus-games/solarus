@@ -11,10 +11,9 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_switch_activated(switch_name)
+function door_switch:on_activated()
 
-  if switch_name == "door_switch"
-      and not door:is_open() then
+  if not door:is_open() then
     sol.audio.play_sound("secret")
     map:open_doors("door")
     door_timer = sol.timer.start(12000, function()
@@ -25,15 +24,12 @@ function map:on_switch_activated(switch_name)
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
-
-  if sensor_name == "door_dont_close_sensor" then
-    -- disable the timer that would close the door
-    if door_timer ~= nil then
-      door_timer:stop()
-      door_timer = nil
-    end
-    map:get_entity(sensor_name):set_enabled(false)
+function door_dont_close_sensor:on_activated()
+  -- disable the timer that would close the door
+  if door_timer ~= nil then
+    door_timer:stop()
+    door_timer = nil
   end
+  self:set_enabled(false)
 end
 

@@ -21,7 +21,7 @@ function map:on_started(destination_point)
   end
 end
 
-function are_group1_torches_on()
+local function are_group1_torches_on()
 
   return torch1_1:exists()
     and torch1_1:get_sprite():get_animation() == "lit"
@@ -29,7 +29,7 @@ function are_group1_torches_on()
     and torch1_3:get_sprite():get_animation() == "lit"
 end
 
-function are_group2_torches_on()
+local function are_group2_torches_on()
 
   return torch2_1:exists()
     and torch2_1:get_sprite():get_animation() == "lit"
@@ -37,14 +37,14 @@ function are_group2_torches_on()
     and torch2_3:get_sprite():get_animation() == "lit"
 end
 
-function lock_torches_group1()
+local function lock_torches_group1()
 
   torch1_1:remove()
   torch1_2:remove()
   torch1_3:remove()
 end
 
-function lock_torches_group2()
+local function lock_torches_group2()
 
   torch2_1:remove()
   torch2_2:remove()
@@ -84,7 +84,7 @@ function switch1_4:on_activated()
   end
 end
 
-function switch1_error()
+local function switch1_error()
 
   sol.audio.play_sound("wrong")
   switch1_1:set_activated(false)
@@ -97,7 +97,7 @@ for _, enemy in ipairs(map:get_entities("enemy_group2")) do
   enemy.on_dead = enemy_in_group2_dead
 end
 
-function enemy_in_group2_dead(enemy)
+local function enemy_in_group2_dead(enemy)
 
   if not map:has_entities("enemy_group2")
       and not map:get_game():get_boolean(221) then
@@ -109,7 +109,7 @@ function enemy_in_group2_dead(enemy)
   end
 end
 
-function explode_block1()
+local function explode_block1()
 
   map:create_explosion(536, 256, 1)
   sol.audio.play_sound("explosion")
@@ -117,7 +117,7 @@ function explode_block1()
   block1_1:set_enabled(false)
 end
 
-function explode_block2()
+local function explode_block2()
 
   map:create_explosion(552, 256, 1)
   sol.audio.play_sound("explosion")

@@ -26,7 +26,7 @@ function map:on_started(destination_point)
   end
 end
 
-function button_room_test_combination()
+local function button_room_test_combination()
   if BRoom1:is_activated()
     and BRoom2:is_activated()
     and BRoom3:is_activated()

@@ -126,7 +126,7 @@ function n_switch:on_activated()
   end)
 end
 
-function remove_se_water()
+local function remove_se_water()
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
   se_water_tile_out:set_enabled(true)
@@ -134,30 +134,30 @@ function remove_se_water()
   sol.timer.start(remove_water_delay, remove_se_water_2)
 end
 
-function remove_se_water_2()
+local function remove_se_water_2()
   se_water_tile_middle:set_enabled(false)
   sol.timer.start(remove_water_delay, remove_se_water_3)
 end
 
-function remove_se_water_3()
+local function remove_se_water_3()
   se_water_tile_initial:set_enabled(false)
   se_water_tile_less_a:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_se_water_4)
 end
 
-function remove_se_water_4()
+local function remove_se_water_4()
   se_water_tile_less_a:set_enabled(false)
   se_water_tile_less_b:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_se_water_5)
 end
 
-function remove_se_water_5()
+local function remove_se_water_5()
   se_water_tile_less_b:set_enabled(false)
   se_water_tile_less_c:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_se_water_6)
 end
 
-function remove_se_water_6()
+local function remove_se_water_6()
   se_water_tile_less_c:set_enabled(false)
   map:set_entities_enabled("se_water_on_jumper", false)
   map:set_entities_enabled("se_water_off_obstacle", true)
@@ -165,7 +165,7 @@ function remove_se_water_6()
   sol.audio.play_sound("secret")
 end
 
-function remove_1f_n_water()
+local function remove_1f_n_water()
 
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
@@ -173,7 +173,7 @@ function remove_1f_n_water()
   map:get_game():set_boolean(131, true)
 end
 
-function remove_1f_e_water()
+local function remove_1f_e_water()
 
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")

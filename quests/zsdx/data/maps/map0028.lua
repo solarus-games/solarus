@@ -25,7 +25,7 @@ function map:on_started(destination_point)
   end
 end
 
-function wake_up()
+local function wake_up()
   snores:remove()
   bed:get_sprite():set_animation("hero_waking")
   sol.timer.start(500, function()
@@ -33,7 +33,7 @@ function wake_up()
   end)
 end
 
-function jump_from_bed()
+local function jump_from_bed()
   hero:set_visible(true)
   hero:start_jumping(4, 24, true)
   map:set_pause_enabled(true)

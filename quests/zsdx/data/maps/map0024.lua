@@ -23,7 +23,7 @@ function map:on_started(destination_point)
   end
 end
 
-function start_boss()
+local function start_boss()
 
   boss:set_enabled(true)
   sol.audio.play_music("boss")
@@ -48,7 +48,7 @@ function se_switch:on_activated()
   end)
 end
 
-function open_final_room()
+local function open_final_room()
 
   map:open_doors("final_room_door")
   sol.audio.play_sound("secret")

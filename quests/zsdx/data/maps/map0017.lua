@@ -53,7 +53,7 @@ function eye_switch:on_activated()
   end
 end
 
-function are_all_torches_on()
+local function are_all_torches_on()
 
   return torch1:exists()
     and torch1:get_sprite():get_animation() == "lit"
@@ -62,7 +62,7 @@ function are_all_torches_on()
     and torch4:get_sprite():get_animation() == "lit"
 end
 
-function lock_torches()
+local function lock_torches()
 
   torch1:remove()
   torch2:remove()

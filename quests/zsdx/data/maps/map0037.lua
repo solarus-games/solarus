@@ -44,7 +44,7 @@ function billy:on_interaction()
   end
 end
 
-function give_croissant()
+local function give_croissant()
 
   if map:get_game():get_item("croissants_counter"):has_amount(1) then
     map:start_dialog("billy_cave.give_croissant")
@@ -53,7 +53,7 @@ function give_croissant()
   end
 end
 
-function give_apple_pie()
+local function give_apple_pie()
   if map:get_game():get_item("level_4_way"):get_variant() == 1 then
     map:start_dialog("billy_cave.give_apple_pie")
   else
@@ -61,7 +61,7 @@ function give_apple_pie()
   end
 end
 
-function give_golden_bars()
+local function give_golden_bars()
   map:start_dialog("billy_cave.give_golden_bars", function()
     hero:start_treasure("level_4_way", 3, 134)
   end)
@@ -80,7 +80,7 @@ function billy:on_movement_finished()
   billy_leave()
 end
 
-function billy_leave()
+local function billy_leave()
 
   billy_leave_step = billy_leave_step + 1
   local sprite = billy:get_sprite()

@@ -56,7 +56,7 @@ function boss:on_dead()
   end)
 end
 
-function start_ganon_sequence()
+local function start_ganon_sequence()
 
   hero:set_direction(1)
   hero:freeze()

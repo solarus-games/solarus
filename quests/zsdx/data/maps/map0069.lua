@@ -36,7 +36,7 @@ for i in 1, 9 do
   end
 end
 
-function water_switch_ativated(switch)
+local function water_switch_ativated(switch)
 
   local matched = switch:get_name():match("^water_([1-9])_on_switch$")
   if matched then
@@ -56,7 +56,7 @@ for i in 1, 9 do
   end
 end
 
-function water_block_moved(block)
+local function water_block_moved(block)
 
   local matched = block:get_name():match("^water_([1-9])_on_block$")
   if matched then
@@ -71,17 +71,17 @@ function water_block_moved(block)
   end
 end
 
-function fill_water(index)
+local function fill_water(index)
   current_pool_index = index
   map:move_camera(pools[index].x, pools[index].y, 250, fill_water_step_1, 1000, 2500)
 end
 
-function drain_water(index)
+local function drain_water(index)
   current_pool_index = index
   map:move_camera(pools[index].x, pools[index].y, 250, drain_water_step_1, 1000, 2500)
 end
 
-function set_water_filled(i)
+local function set_water_filled(i)
 
   -- show the water tile
   map:get_entity("water_" .. i .. "_full"):set_enabled(true)
@@ -104,7 +104,7 @@ function set_water_filled(i)
   end
 end
 
-function set_water_drained(i)
+local function set_water_drained(i)
 
   -- enable the custom obstacles near stairs (stairs can be used)
   map:set_entities_enabled("water_" .. i .. "_off_obstacle", true)
@@ -121,26 +121,26 @@ function set_water_drained(i)
   end
 end
 
-function fill_water_step_1()
+local function fill_water_step_1()
   sol.audio.play_sound("water_fill_begin")
   sol.audio.play_sound("water_fill")
   map:get_entity("water_" .. current_pool_index .. "_less_3"):set_enabled(true)
   sol.timer.start(water_delay, fill_water_step_2)
 end
 
-function fill_water_step_2()
+local function fill_water_step_2()
   map:get_entity("water_" .. current_pool_index .. "_less_3"):set_enabled(false)
   map:get_entity("water_" .. current_pool_index .. "_less_2"):set_enabled(true)
   sol.timer.start(water_delay, fill_water_step_3)
 end
 
-function fill_water_step_3()
+local function fill_water_step_3()
   map:get_entity("water_" .. current_pool_index .. "_less_2"):set_enabled(false)
   map:get_entity("water_" .. current_pool_index .. "_less_1"):set_enabled(true)
   sol.timer.start(water_delay, fill_water_step_4)
 end
 
-function fill_water_step_4()
+local function fill_water_step_4()
   map:get_entity("water_" .. current_pool_index .. "_less_1"):set_enabled(false)
   map:get_entity("water_" .. current_pool_index .. "_full"):set_enabled(true)
   map:get_game():set_boolean(savegame_variable + current_pool_index,
@@ -148,7 +148,7 @@ function fill_water_step_4()
   set_water_filled(current_pool_index)
 end
 
-function drain_water_step_1()
+local function drain_water_step_1()
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
   map:get_entity("water_" .. current_pool_index .. "_full"):set_enabled(false)
@@ -156,19 +156,19 @@ function drain_water_step_1()
   sol.timer.start(water_delay, drain_water_step_2)
 end
 
-function drain_water_step_2()
+local function drain_water_step_2()
   map:get_entity("water_" .. current_pool_index .. "_less_1"):set_enabled(false)
   map:get_entity("water_" .. current_pool_index .. "_less_2"):set_enabled(true)
   sol.timer.start(water_delay, drain_water_step_3)
 end
 
-function drain_water_step_3()
+local function drain_water_step_3()
   map:get_entity("water_" .. current_pool_index .. "_less_2"):set_enabled(false)
   map:get_entity("water_" .. current_pool_index .. "_less_3"):set_enabled(true)
   sol.timer.start(water_delay, drain_water_step_4)
 end
 
-function drain_water_step_4()
+local function drain_water_step_4()
   map:get_entity("water_" .. current_pool_index .. "_less_3"):set_enabled(false)
   map:get_game():set_boolean(savegame_variable + current_pool_index,
     pools[current_pool_index].initially_filled)

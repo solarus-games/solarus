@@ -86,7 +86,7 @@ function start_boss_sensor:on_activated()
   end
 end
 
-function start_boss()
+local function start_boss()
 
   sol.audio.play_music("ganon_createds")
   boss:set_enabled(true)
@@ -108,13 +108,13 @@ function hero:on_treasure_obtained(item_name, variant, savegame_variable)
   end
 end
 
-function leave_boss()
+local function leave_boss()
 
   hero:teleport(9, "from_dungeon_5_1F")
   sol.timer.start(700, restore_music)
 end
 
-function restore_music()
+local function restore_music()
   sol.audio.play_music("dark_world")
 end
 

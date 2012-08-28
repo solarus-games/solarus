@@ -231,7 +231,7 @@ function map:on_enemy_dead(enemy_name)
   end
 end
 
-function ne_puzzle_set_step(step)
+local function ne_puzzle_set_step(step)
 
   ne_puzzle_step = step
   map:set_entities_enabled("ne_puzzle_step", false)

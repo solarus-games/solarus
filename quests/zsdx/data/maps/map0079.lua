@@ -18,7 +18,7 @@ function map:on_started(destination_point)
   end
 end
 
-function chest_empty(chest)
+local function chest_empty(chest)
 
   nb_chests_open = nb_chests_open + 1
 

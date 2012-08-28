@@ -22,7 +22,7 @@ function map:on_started(destination_point)
 end
 
 -- Returns whether all torches are on
-function are_all_torches_on()
+local function are_all_torches_on()
 
   return torch_1:exists()
       and torch_1:get_sprite():get_animation() == "lit"
@@ -32,7 +32,7 @@ function are_all_torches_on()
 end
 
 -- Makes all torches on forever
-function lock_torches()
+local function lock_torches()
   torch_1:remove()
   torch_2:remove()
   torch_3:remove()

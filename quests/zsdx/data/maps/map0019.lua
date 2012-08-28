@@ -8,11 +8,11 @@ function map:on_started(destination_point)
   end
 end
 
-function has_talked_about_apples()
+local function has_talked_about_apples()
   return map:get_game():get_boolean(46)
 end
 
-function has_obtained_bottle()
+local function has_obtained_bottle()
   return map:get_game():get_boolean(32)
 end
 
@@ -23,7 +23,7 @@ function leaving_shop_sensor:on_activated()
   end
 end
 
-function apples_question_finished(answer)
+local function apples_question_finished(answer)
 
   map:get_game():set_boolean(46, true)
 
@@ -51,7 +51,7 @@ function seller:on_interaction()
   talk_to_seller()
 end
 
-function talk_to_seller()
+local function talk_to_seller()
 
   if not has_talked_about_apples() or has_obtained_bottle() then
     map:start_dialog("cake_shop.seller.choose_item")

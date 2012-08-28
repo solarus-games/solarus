@@ -65,7 +65,7 @@ function map:on_started(destination_point)
 end
 end
 
-function random_walk(npc)
+local function random_walk(npc)
 
   local m = sol.movement.create("random_path")
   m:set_speed(32)
@@ -174,7 +174,7 @@ function dungeon_3_entrance_weak_block:on_open()
   sol.audio.play_sound("secret") -- play the sound only once
 end
 
-function remove_dungeon_2_door()
+local function remove_dungeon_2_door()
   dungeon_2_door:remove()
   dungeon_2_door_tile:set_enabled(false)
 end

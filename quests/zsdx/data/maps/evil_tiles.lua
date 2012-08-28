@@ -14,7 +14,7 @@ function map:start_evil_tiles()
   map:set_entities_enabled("evil_tile_after", false)
 
   -- Spawns a tile and schedules the next one.
-  function repeat_spawn()
+  local function repeat_spawn()
 
     map:get_entity("evil_tile_enemy_" .. next):set_enabled(true)
     map:get_entity("evil_tile_after_" .. next):set_enabled(true)
@@ -25,7 +25,7 @@ function map:start_evil_tiles()
   end
 
   -- Plays a sound repeatedly as long as at least one tile is moving.
-  function repeat_sound()
+  local function repeat_sound()
 
     sol.audio.play_sound("walk_on_grass")
 

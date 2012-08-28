@@ -34,7 +34,7 @@ function game_3_man:on_interaction()
   end
 end
 
-function give_flippers()
+local function give_flippers()
 
   hero:start_treasure("flippers", 1, 157)
 end

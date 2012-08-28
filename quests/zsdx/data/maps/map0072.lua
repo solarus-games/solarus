@@ -27,7 +27,7 @@ for _, enemy in ipairs(map.get_entities("enemy")) do
   enemy.on_dead = enemy_dead
 end
 
-function enemy_dead(enemy)
+local function enemy_dead(enemy)
 
   if not map:has_entities("enemy") then
     hero:start_victory()

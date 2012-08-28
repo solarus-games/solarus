@@ -1,15 +1,15 @@
 local map = ...
 -- North Fairy Fountain
 
-function has_fairy_appeared()
+local function has_fairy_appeared()
   return map:get_game():get_boolean(929)
 end
 
-function has_tiger_scrolls()
+local function has_tiger_scrolls()
   return map:get_game():get_boolean(930)
 end
 
-function show_fairy()
+local function show_fairy()
 
   great_fairy:set_position(160, 77)
   great_fairy:get_sprite():set_ignore_suspend(true)
@@ -26,7 +26,7 @@ function map:on_started(destination_point)
   end
 end
 
-function are_all_torches_on()
+local function are_all_torches_on()
 
   return torch_1:exists()
       and torch_1:get_sprite():get_animation() == "lit"

@@ -45,7 +45,7 @@ function close_torch_b_sensor:on_activated()
   end
 end
 
-function remove_torch_a()
+local function remove_torch_a()
   sol.audio.play_sound("door_open")
   sol.audio.play_sound("secret")
   torch_a:set_enabled(false)
@@ -53,7 +53,7 @@ function remove_torch_a()
   torch_a_switch:set_activated(true)
 end
 
-function remove_torch_b()
+local function remove_torch_b()
   sol.audio.play_sound("door_open")
   sol.audio.play_sound("secret")
   torch_b:set_enabled(false)
@@ -61,28 +61,28 @@ function remove_torch_b()
   torch_b_switch:set_activated(true)
 end
 
-function remove_torch_c()
+local function remove_torch_c()
   sol.audio.play_sound("door_open")
   sol.audio.play_sound("secret")
   torch_c:set_enabled(false)
   torch_c_2:set_enabled(false)
 end
 
-function remove_torch_d()
+local function remove_torch_d()
   sol.audio.play_sound("door_open")
   sol.audio.play_sound("secret")
   torch_d:set_enabled(false)
   torch_d_2:set_enabled(false)
 end
 
-function remove_torch_e()
+local function remove_torch_e()
   sol.audio.play_sound("door_open")
   sol.audio.play_sound("secret")
   torch_e:set_enabled(false)
   torch_e_2:set_enabled(false)
 end
 
-function put_torch_a()
+local function put_torch_a()
   sol.audio.play_sound("door_closed")
   torch_a:set_enabled(true)
   torch_a_2:set_enabled(true)
@@ -90,7 +90,7 @@ function put_torch_a()
   torch_a_switch_2:set_activated(false)
 end
 
-function put_torch_b()
+local function put_torch_b()
   sol.audio.play_sound("door_closed")
   torch_b:set_enabled(true)
   torch_b_2:set_enabled(true)

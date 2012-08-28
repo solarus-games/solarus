@@ -19,7 +19,7 @@ function map:on_started(destination_point)
   end)
 end
 
-function next_fresco()
+local function next_fresco()
 
   if fresco < 6 then
     fresco = fresco + 1
@@ -35,7 +35,7 @@ function next_fresco()
   end
 end
 
-function next_map()
+local function next_map()
   hero:teleport(28, "from_intro")
 end
 

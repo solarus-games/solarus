@@ -36,12 +36,12 @@ function map:on_started(destination_point)
   inferno_sensor:set_enabled(false)
 end
 
-function remove_iron_lock()
+local function remove_iron_lock()
   iron_lock:remove()
   map:set_entities_enabled("iron_lock_tile", false)
 end
 
-function remove_wooden_lock()
+local function remove_wooden_lock()
   wooden_lock:remove()
   map:set_entities_enabled("wooden_lock_tile", false)
 end
@@ -104,7 +104,7 @@ function inferno:on_interaction()
   end
 end
 
-function inferno_open()
+local function inferno_open()
 
   inferno_sensor:set_enabled(true)
   hero:walk("66", false, false)
@@ -128,7 +128,7 @@ function potion_shop_door_sensor:on_activated_repeat()
   end
 end
 
-function inferno_open_finish()
+local function inferno_open_finish()
 
   sol.audio.play_sound("secret")
   hero:unfreeze()
@@ -136,7 +136,7 @@ function inferno_open_finish()
   inferno_set_open()
 end
 
-function inferno_set_open()
+local function inferno_set_open()
 
   inferno:get_sprite():set_animation("open")
   to_dungeon_6:set_enabled(true)

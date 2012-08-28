@@ -1,15 +1,15 @@
 local map = ...
 -- Fairy cave
 
-function has_fairy_appeared()
+local function has_fairy_appeared()
   return map:get_game():get_boolean(99)
 end
 
-function has_boomerang_from_fairy()
+local function has_boomerang_from_fairy()
   return map:get_game():get_boolean(100)
 end
 
-function show_fairy()
+local function show_fairy()
 
   great_fairy:set_position(160, 77)
   great_fairy:get_sprite():set_ignore_suspend(true)
@@ -27,7 +27,7 @@ function map:on_started(destination_point)
 end
 
 -- Returns whether all four torches are on
-function are_all_torches_on()
+local function are_all_torches_on()
 
   return torch_1:exists()
       and torch_1:get_sprite():get_animation() == "lit"

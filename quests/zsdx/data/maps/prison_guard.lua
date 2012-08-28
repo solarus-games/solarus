@@ -15,7 +15,7 @@ for _, guard in ipairs(guards) do
   end
 end
 
-function guard_sensor_activated(sensor)
+local function guard_sensor_activated(sensor)
 
   local guard_num, direction = sensor:get_name():match("guard_([0-9])_sensor_([0-3])")
   if not hero_seen and guard_num ~= nil then
@@ -39,7 +39,7 @@ function guard_sensor_activated(sensor)
   end
 end
 
-function seen_by_guard(guard)
+local function seen_by_guard(guard)
 
   hero_seen = true
   hero:freeze()
@@ -75,7 +75,7 @@ function seen_by_guard(guard)
   end)
 end
 
-function cancel_prison()
+function map:cancel_prison()
   if prison_dialog_timer ~= nil then
     prison_dialog_timer:stop()
     prison_dialog_timer = nil

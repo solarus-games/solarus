@@ -5,7 +5,7 @@ local map = ...
 local remove_water_delay = 500  -- delay between each step when some water is disappearing
 
 -- Returns whether all five torches are on
-function are_all_torches_on()
+local function are_all_torches_on()
 
   return torch_1:exists()
       and torch_1:get_sprite():get_animation() == "lit"
@@ -16,7 +16,7 @@ function are_all_torches_on()
 end
 
 -- Makes all five torches on forever
-function lock_torches()
+local function lock_torches()
   -- the trick: just remove the interactive torches because there are static ones below
   torch_1:remove()
   torch_2:remove()
@@ -115,7 +115,7 @@ function c_water_switch:on_activated()
   end
 end
 
-function remove_c_water()
+local function remove_c_water()
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
   c_water_tile_out:set_enabled(true)
@@ -123,30 +123,30 @@ function remove_c_water()
   sol.timer.start(remove_water_delay, remove_c_water_2)
 end
 
-function remove_c_water_2()
+local function remove_c_water_2()
   c_water_tile_middle:set_enabled(false)
   sol.timer.start(remove_water_delay, remove_c_water_3)
 end
 
-function remove_c_water_3()
+local function remove_c_water_3()
   c_water_tile:set_enabled(false)
   c_water_tile_less_1:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_c_water_4)
 end
 
-function remove_c_water_4()
+local function remove_c_water_4()
   c_water_tile_less_1:set_enabled(false)
   c_water_tile_less_2:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_c_water_5)
 end
 
-function remove_c_water_5()
+local function remove_c_water_5()
   c_water_tile_less_2:set_enabled(false)
   c_water_tile_less_3:set_enabled(true)
   sol.timer.start(remove_water_delay, remove_c_water_6)
 end
 
-function remove_c_water_6()
+local function remove_c_water_6()
   c_water_tile_less_3:set_enabled(false)
   map:set_entities_enabled("c_water_on_jumper", false)
   map:set_entities_enabled("c_water_off_obstacle", true)

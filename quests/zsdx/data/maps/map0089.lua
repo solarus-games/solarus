@@ -30,7 +30,7 @@ function map:on_opening_transition_finished(destination_point)
   end
 end
 
-function random_walk(npc)
+local function random_walk(npc)
 
   local m = sol.movement.create("random_path")
   m:set_speed(32)

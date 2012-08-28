@@ -5,7 +5,7 @@ red_potion.on_buying = potion_buying
 green_potion.on_buying = potion_buying
 blue_potion.on_buying = potion_buying
 
-function potion_buying(shop_item)
+local function potion_buying(shop_item)
 
   local bottle_2 = map:get_game():get_item("bottle_2")
   if not map:get_game():get_boolean(911)

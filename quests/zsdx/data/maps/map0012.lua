@@ -49,27 +49,27 @@ function sahasrahla:on_interaction()
   end
 end
 
-function has_obtained_world_map()
+local function has_obtained_world_map()
   return map:get_game():get_boolean(33)
 end
 
-function has_seen_frozen_door()
+local function has_seen_frozen_door()
   return map:get_game():get_boolean(34)
 end
 
-function has_open_frozen_door()
+local function has_open_frozen_door()
   return map:get_game():get_boolean(35)
 end
 
-function has_obtained_clay_key()
+local function has_obtained_clay_key()
   return map:get_game():get_boolean(28)
 end
 
-function has_obtained_bow()
+local function has_obtained_bow()
   return map:get_game():get_boolean(26)
 end
 
-function give_world_map()
+local function give_world_map()
   hero:start_treasure("world_map", 1, 33)
 end
 

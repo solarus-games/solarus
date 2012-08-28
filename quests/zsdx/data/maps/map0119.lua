@@ -72,7 +72,7 @@ function map:on_hero_on_sensor(sensor_name)
   end
 end
 
-function start_boss()
+local function start_boss()
 
   sol.audio.play_music("boss")
   boss:set_enabled(true)
@@ -81,7 +81,7 @@ function start_boss()
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
 
-function repeat_give_arrows()
+local function repeat_give_arrows()
 
   -- give arrows if necessary during the boss fight
   if map:get_game():get_item("bow"):get_amount() == 0 then
@@ -148,7 +148,7 @@ function map:on_dialog_finished(dialog_id)
   end
 end
 
-function ending_next()
+local function ending_next()
   hero:teleport(131, "from_ending")
 end
 

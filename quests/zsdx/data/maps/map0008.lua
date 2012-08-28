@@ -33,7 +33,7 @@ function map:on_opening_transition_finished(destination_point)
   end
 end
 
-function remove_dungeon_7_lock()
+local function remove_dungeon_7_lock()
   dungeon_7_lock:remove()
   map:set_entities_enabled("dungeon_7_lock_tile", false)
 end
@@ -51,7 +51,7 @@ function dungeon_7_lock:on_interaction()
   end
 end
 
-function ending_next()
+local function ending_next()
   hero:teleport(4, "from_ending")
 end
 

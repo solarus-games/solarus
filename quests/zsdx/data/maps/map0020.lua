@@ -70,7 +70,7 @@ function tom:on_interaction()
   end
 end
 
-function tom_please_help_dialog_finished(answer)
+local function tom_please_help_dialog_finished(answer)
 
   map:get_game():set_boolean(47, true)
   if answer == 0 then
@@ -80,7 +80,7 @@ function tom_please_help_dialog_finished(answer)
   end
 end
 
-function tom_go_back()
+local function tom_go_back()
 
   give_boomerang_back()
   local x, y = tom:get_position()
@@ -93,12 +93,12 @@ function tom_go_back()
   end
 end
 
-function give_boomerang_back()
+local function give_boomerang_back()
   map:get_game():get_item("boomerang"):set_variant(0)
   map:get_game():set_boolean(41, false)
 end
 
-function start_moving_tom()
+local function start_moving_tom()
   local m = sol.movement.create("path")
   m:set_path{0,0,0,0,6,6,6,6,6,6}
   m:set_speed(48)
@@ -134,15 +134,15 @@ function leave_cavern_sensor:on_activated()
   end
 end
 
-function has_seen_tom()
+local function has_seen_tom()
   return map:get_game():get_boolean(47)
 end
 
-function has_boomerang_of_tom()
+local function has_boomerang_of_tom()
   return map:get_game():get_boolean(41)
 end
 
-function has_finished_cavern()
+local function has_finished_cavern()
   -- the cavern is considered has finished if the player has found the heart container
   return map:get_game():get_boolean(37)
 end

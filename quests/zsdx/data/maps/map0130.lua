@@ -102,7 +102,7 @@ function map:on_enemy_dead(enemy_name)
   end
 end
 
-function start_final_sequence()
+local function start_final_sequence()
 
   hero:freeze()
   hero:set_direction(3)
@@ -113,7 +113,7 @@ function start_final_sequence()
   sol.timer.start(9100, start_zelda_sequence)
 end
 
-function start_zelda_sequence()
+local function start_zelda_sequence()
 
   sol.audio.play_music("triforce")
   hero:freeze()
@@ -166,7 +166,7 @@ function map:on_npc_collision_fire(npc_name)
   end
 end
 
-function unlight_torches()
+local function unlight_torches()
 
   for i = 1, 4 do
     map:npc_get_sprite("torch_" .. i):set_animation("unlit")
@@ -174,7 +174,7 @@ function unlight_torches()
   for _, t in ipairs(torches_timers) do t:stop() end
 end
 
-function check_torches()
+local function check_torches()
 
   local states = {
     torch_1:get_sprite():get_animation() == "lit",
@@ -243,7 +243,7 @@ function check_torches()
 end
 
 -- Creates a stone that the hero can lift and throw to Ganon.
-function create_stone()
+local function create_stone()
 
   -- we have to check the position of Ganon and the hero
   local x, y
@@ -266,12 +266,12 @@ function create_stone()
   allow_stone_creation = false
 end
 
-function on_stone_destroyed()
+local function on_stone_destroyed()
 
   allow_stone_creation = true
 end
 
-function torches_solved()
+local function torches_solved()
 
   if floor_down_1:is_enabled() then
     -- phase 1
@@ -327,7 +327,7 @@ function map:on_switch_activated(switch_name)
   end
 end
 
-function create_pickables()
+local function create_pickables()
 
   for i, v in ipairs(pickables) do
 
@@ -352,7 +352,7 @@ function create_pickables()
   end
 end
 
-function create_bats()
+local function create_bats()
 
   for i, v in ipairs(bats) do
     nb_bats_created = nb_bats_created + 1

@@ -31,14 +31,14 @@ function hero:on_victory_finished()
   sol.timer.start(2000, agahnim_sequence_1)
 end
 
-function agahnim_sequence_1()
+local function agahnim_sequence_1()
 
   hero:unfreeze()
   hero:set_direction(1)
   sol.timer.start(1000, agahnim_sequence_2)
 end
 
-function agahnim_sequence_2()
+local function agahnim_sequence_2()
 
   solarus_child:get_sprite():fade_out()
   sol.audio.stop_music()
@@ -46,24 +46,24 @@ function agahnim_sequence_2()
   sol.timer.start(3000, agahnim_sequence_3)
 end
 
-function agahnim_sequence_3()
+local function agahnim_sequence_3()
 
   agahnim:set_position(160, 141)
   sol.audio.play_music("agahnim")
   sol.timer.start(1000, agahnim_sequence_4)
 end
 
-function agahnim_sequence_4()
+local function agahnim_sequence_4()
 
   map:start_dialog("dungeon_4.agahnim", agahnim_sequence_5)
 end
 
-function agahnim_sequence_5()
+local function agahnim_sequence_5()
 
   sol.timer.start(2000, agahnim_sequence_6)
 end
 
-function agahnim_sequence_6()
+local function agahnim_sequence_6()
 
   map:get_game():set_dungeon_finished(4)
   map:get_game():set_boolean(905, true) -- enable the dark world

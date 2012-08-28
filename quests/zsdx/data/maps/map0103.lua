@@ -193,7 +193,7 @@ function map:on_hero_on_sensor(sensor_name)
   end
 end
 
-function start_boss()
+local function start_boss()
 
   sol.audio.play_music("boss")
   boss:set_enabled(true)
@@ -202,7 +202,7 @@ function start_boss()
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
 
-function repeat_give_arrows()
+local function repeat_give_arrows()
 
   -- give arrows if necessary during the boss fight
   if map:get_game():get_item_amount("bow") == 0 then
@@ -228,7 +228,7 @@ function hero:on_obtained_treasure(item_name, variant, savegame_variable)
   end
 end
 
-function start_final_sequence()
+local function start_final_sequence()
 
   sol.audio.play_music("dungeon_finished")
   hero:set_direction(1)

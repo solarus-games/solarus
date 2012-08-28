@@ -330,7 +330,7 @@ function map:on_update()
 end
 
 -- This function gives the reward to the player in the slot machine game
-function game_2_timeout()
+local function game_2_timeout()
 
   -- see if the player has won
   local i = 1

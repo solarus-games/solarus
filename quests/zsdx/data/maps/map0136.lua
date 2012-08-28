@@ -20,7 +20,7 @@ function map:on_switch_activated(switch_name)
   end
 end
 
-function change_holes(enable_b)
+local function change_holes(enable_b)
 
   for i = 1, nb_switches_a do
     map:get_entity("holes_a_switch_" .. i):set_activated(enable_b)

@@ -60,7 +60,7 @@ function map:on_started(destination_point)
   init_guards()
 end
 
-function init_guards()
+local function init_guards()
 
   init_guard(guard_1, 296, 573, 2)
   init_guard(guard_2, 296, 685, 2)
@@ -85,12 +85,12 @@ function init_guards()
       2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2})
 end
 
-function init_prison()
+function map:init_prison()
 
   prison_2_lock:set_position(648, 325)
 end
 
-function init_guard(guard, x, y, direction, path)
+local function init_guard(guard, x, y, direction, path)
 
   guard:stop_movement()
   guard:set_position(x, y)
@@ -171,7 +171,7 @@ function hero:on_obtained_treasure(item_name, variant, savegame_variable)
   if item_name == "boss_key" then
     -- the hero was unfreezed by the chest, so cancel a possible previous guard
     -- (putting chests in the area of guards is probably not a good idea)
-    cancel_prison()
+    map:cancel_prison()
   end
 end
 

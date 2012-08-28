@@ -53,7 +53,7 @@ function start_boss_sensor:on_activated()
   end
 end
 
-function repeat_lava_spawner()
+local function repeat_lava_spawner()
 
   if not map:get_game():get_boolean(321) then
     nb_spawners_created = nb_spawners_created + 1
@@ -76,7 +76,7 @@ function hero:on_obtained_treasure(item_name, variant, savegame_variable)
   end
 end
 
-function start_final_sequence()
+local function start_final_sequence()
 
   sol.audio.play_music("dungeon_finished")
   hero:set_direction(1)

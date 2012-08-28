@@ -115,12 +115,12 @@ function chignon_woman:on_interaction()
   end
 end
 
-function remove_village_cave_door()
+local function remove_village_cave_door()
   tom_cave_door:remove()
   tom_cave_door_tile:set_enabled(false)
 end
 
-function remove_stone_lock()
+local function remove_stone_lock()
   stone_lock:remove()
   map:set_entities_enabled("stone_lock_tile", false)
 end
@@ -131,7 +131,7 @@ function waterfall_sensor:on_activated()
   sol.audio.play_sound("jump")
 end
 
-function ending_next()
+local function ending_next()
   hero:teleport(56, "from_ending")
 end
 

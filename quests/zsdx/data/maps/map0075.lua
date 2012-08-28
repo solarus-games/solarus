@@ -42,7 +42,7 @@ function mini_game_npc:on_interaction()
   end
 end
 
-function play_question_dialog_finished(answer)
+local function play_question_dialog_finished(answer)
 
   if answer == 0 then
     if map:get_game():get_money() >= 30 then
@@ -71,7 +71,7 @@ for _, chest in ipairs(map:get_entities("chest_")) do
   chest:on_empty = chest_empty
 end
 
-function chest_empty(chest)
+local function chest_empty(chest)
 
   hero:unfreeze()
   if playing then

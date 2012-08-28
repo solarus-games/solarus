@@ -41,7 +41,7 @@ function vine_start:on_interaction_item(item)
   return false
 end
 
-function show_vine()
+local function show_vine()
 
   map:move_camera(608, 136, 136, function()
     sol.audio.play_sound("secret")

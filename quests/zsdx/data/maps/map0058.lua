@@ -19,14 +19,14 @@ function map:on_opening_transition_finished(destination_point)
   end
 end
 
-function are_all_torches_on()
+local function are_all_torches_on()
 
   return torch_1:exists()
       and torch_1:get_sprite():get_animation() == "lit"
       and torch_2:get_sprite():get_animation() == "lit"
 end
 
-function lock_torches()
+local function lock_torches()
   torch_1:remove()
   torch_2:remove()
 end

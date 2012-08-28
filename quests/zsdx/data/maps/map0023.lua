@@ -45,14 +45,14 @@ function enable_sensor:on_activated()
   close_sw_door_sensor:set_enabled(true)
 end
 
-function open_sw_door()
+local function open_sw_door()
   sol.audio.play_sound("secret")
   map:open_doors("sw_door")
   sw_switch:set_activated(true)
   nw_switch:set_activated(true)
 end
 
-function close_sw_door()
+local function close_sw_door()
   map:close_doors("sw_door")
   sw_switch:set_activated(false)
   nw_switch:set_activated(false)

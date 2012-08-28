@@ -38,11 +38,11 @@ function map:on_started(destination_point)
   end
 end
 
-function is_ladder_activated()
+local function is_ladder_activated()
   return map:get_game():get_boolean(52)
 end
 
-function is_beaumont_cave_open()
+local function is_beaumont_cave_open()
   return map:get_game():get_boolean(153)
 end
 
@@ -102,7 +102,7 @@ function tom:on_movement_finished()
   end
 end
 
-function tom_timer_1()
+local function tom_timer_1()
   map:start_dialog("outside_world.tom_dungeon_1_entrance.let_me_see", function()
     sol.audio.play_sound("jump")
     local m = sol.movement.create("jump")
@@ -114,38 +114,38 @@ function tom_timer_1()
   tom_sprite:set_direction(2)
 end
 
-function tom_timer_2()
+local function tom_timer_2()
   map:start_dialog("outside_world.tom_dungeon_1_entrance.open", function()
     tom_sprite:set_animation("walking")
     sol.timer.start(300, tom_timer_3)
   end)
 end
 
-function tom_timer_3()
+local function tom_timer_3()
   tom_sprite:set_animation("stopped")
   ladder_step1()
 end
 
-function ladder_step1()
+local function ladder_step1()
   sol.audio.play_sound("door_open")
   map:set_entities_enabled("ladder_step1", true)
   map:set_entities_enabled("no_ladder_step1", false)
   sol.timer.start(1000, ladder_step2)
 end
 
-function ladder_step2()
+local function ladder_step2()
   sol.audio.play_sound("door_open")
   map:set_entities_enabled("ladder_step2", true)
   sol.timer.start(1000, ladder_step3)
 end
 
-function ladder_step3()
+local function ladder_step3()
   sol.audio.play_sound("door_open")
   map:set_entities_enabled("ladder_step3", true)
   sol.timer.start(1000, ladder_step4)
 end
 
-function ladder_step4()
+local function ladder_step4()
   map:set_entities_enabled("no_ladder", false)
   tom_appears_sensor:set_enabled(false)
   sol.audio.play_sound("secret")

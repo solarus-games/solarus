@@ -32,7 +32,7 @@ function map:on_opening_transition_finished(destination_point)
   end
 end
 
-function init_guard(guard, path)
+local function init_guard(guard, path)
 
   local m = sol.movement.create("path")
   m:set_path(path)
@@ -61,7 +61,7 @@ for _, sensor in ipairs(map:get_entities("puzzle_sensor_")) do
   sensor.on_activated = puzzle_sensor_activated
 end
 
-function puzzle_sensor_activated(sensor)
+local function puzzle_sensor_activated(sensor)
   local i = sensor:get_name():match("puzzle_sensor_([1-4])")
   if i ~= nil and not map:get_game():get_boolean(519) then
     i = tonumber(i)
@@ -87,7 +87,7 @@ function statue_switch:on_activated()
 end
 
 -- Returns whether all torches are on
-function are_all_torches_on()
+local function are_all_torches_on()
 
   return torch_1:exists()
       and torch_1:get_sprite():get_animation() == "lit"
@@ -96,7 +96,7 @@ function are_all_torches_on()
 end
 
 -- Makes all torches on forever
-function lock_torches()
+local function lock_torches()
   torch_1:remove()
   torch_2:remove()
   torch_3:remove()
@@ -131,19 +131,19 @@ function weak_floor_sensor:on_collision_explosion()
   end
 end
 
-function puzzle_solved()
+local function puzzle_solved()
 
   hero:freeze()
   sol.audio.play_sound("enemy_awake")
   sol.timer.start(1000, puzzle_solved_2)
 end
 
-function puzzle_solved_2()
+local function puzzle_solved_2()
 
   sol.timer.start(1000, puzzle_solved_3)
 end
 
-function puzzle_solved_3()
+local function puzzle_solved_3()
 
   sol.audio.play_sound("secret")
   map:get_game():set_boolean(519, true)

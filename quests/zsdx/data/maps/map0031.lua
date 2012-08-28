@@ -52,7 +52,7 @@ function map:on_started(destination_point)
   end
 end
 
-function puzzle_switch_activated(switch)
+local function puzzle_switch_activated(switch)
 
   local order = switches_puzzle_order[switch]
   if order ~= nil then
@@ -82,7 +82,7 @@ function puzzle_switch_activated(switch)
   end
 end
 
-function puzzle_switch_left(switch)
+local function puzzle_switch_left(switch)
 
   if switches_puzzle_nb_enabled == 0 then
     for switch, _ in pairs(switches_puzzle_order) do
@@ -160,7 +160,7 @@ function hero:on_treasure_obtained(item_name, variant, savegame_variable)
   end
 end
 
-function boss_change_floor(first, last, inc, enable)
+local function boss_change_floor(first, last, inc, enable)
 
   local index = first
   local delay
@@ -173,7 +173,7 @@ function boss_change_floor(first, last, inc, enable)
     delay = 75
   end
 
-  function repeat_change()
+  local function repeat_change()
     if (enable and index % 10 == 0)
       or (not enable and index % 5 == 0) then
       sol.audio.play_sound("stone")
@@ -197,7 +197,7 @@ function boss_change_floor(first, last, inc, enable)
   repeat_change()
 end
 
-function boss_restore_floor(with_arrows)
+local function boss_restore_floor(with_arrows)
 
   -- restore the whole floor immediately
   map:set_entities_enabled("boss_floor", true)

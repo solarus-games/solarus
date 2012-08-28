@@ -52,7 +52,7 @@ function water_switch:on_activated()
   end
 end
 
-function remove_water()
+local function remove_water()
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
   water_tile_less_1:set_enabled(true)
@@ -60,19 +60,19 @@ function remove_water()
   sol.timer.start(remove_water_delay, remove_water_2)
 end
 
-function remove_water_2()
+local function remove_water_2()
   water_tile_less_2:set_enabled(true)
   water_tile_less_1:set_enabled(false)
   sol.timer.start(remove_water_delay, remove_water_3)
 end
 
-function remove_water_3()
+local function remove_water_3()
   water_tile_less_3:set_enabled(true)
   water_tile_less_2:set_enabled(false)
   sol.timer.start(remove_water_delay, remove_water_4)
 end
 
-function remove_water_4()
+local function remove_water_4()
   water_tile_less_3:set_enabled(false)
   map:set_entities_enabled("water_on_jumper", false)
   map:set_entities_enabled("water_off_obstacle", true)

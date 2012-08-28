@@ -105,7 +105,7 @@ function map:on_camera_back()
   end
 end
 
-function check_eye_statues()
+local function check_eye_statues()
 
   if left_eye_switch:is_activated() and right_eye_switch:is_activated() then
 
@@ -130,12 +130,12 @@ function check_eye_statues()
   end
 end
 
-function open_hidden_stairs()
+local function open_hidden_stairs()
   map:set_entities_enabled("hidden_stairs_closed", false)
   map:set_entities_enabled("hidden_stairs_open", true)
 end
 
-function open_hidden_door()
+local function open_hidden_door()
   map:set_entities_enabled("hidden_door_closed", false)
   map:set_entities_enabled("hidden_door_open", true)
 end

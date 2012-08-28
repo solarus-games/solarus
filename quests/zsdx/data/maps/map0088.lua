@@ -8,10 +8,11 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_door_open(door_name)
+function weak_wall_a:on_open()
+  sol.audio.play_sound("secret")
+end
 
-  if door_name:find("^weak_wall") then
-    sol.audio.play_sound("secret")
-  end
+function weak_wall_b:on_open()
+  sol.audio.play_sound("secret")
 end
 

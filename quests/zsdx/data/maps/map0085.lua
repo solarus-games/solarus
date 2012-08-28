@@ -8,34 +8,24 @@ function map:on_opening_transition_finished(destination_point)
   solarus_child_sprite:set_ignore_suspend(true)
 end
 
-function map:on_npc_interaction(npc_name)
+function solarus_child:on_interaction()
 
-  if npc_name == "solarus_child" then
-    if map:get_game():is_dungeon_finished(3) then
-      -- dialog already done
-      sol.audio.play_sound("warp")
-      hero:teleport(3, "from_dungeon_3")
-    else
-      -- start the final sequence
-      map:move_camera(160, 120, 100, start_final_sequence, 0)
-    end
+  if map:get_game():is_dungeon_finished(3) then
+    -- dialog already done
+    sol.audio.play_sound("warp")
+    hero:teleport(3, "from_dungeon_3")
+  else
+    -- start the final sequence
+    map:move_camera(160, 120, 100, function()
+      map:set_dialog_variable("dungeon_3.solarus_child", map:get_game():get_player_name())
+      map:start_dialog("dungeon_3.solarus_child", function()
+        hero:start_victory()
+      end)
+    end, 0)
   end
 end
 
-function start_final_sequence()
-  map:start_dialog("dungeon_3.solarus_child")
-  map:set_dialog_variable("dungeon_3.solarus_child", map:get_game():get_player_name())
-end
-
-function map:on_dialog_finished(dialog_id, answer)
-
-  if dialog_id == "dungeon_3.solarus_child" then
-    hero:start_victory()
-  end
-
-end
-
-function map:on_hero_victory_finished()
+function hero:on_victory_finished()
   map:get_game():set_dungeon_finished(3)
   hero:teleport(3, "from_dungeon_3")
 end

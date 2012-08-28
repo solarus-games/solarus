@@ -34,7 +34,7 @@ function enemy_dead(enemy)
   end
 end
 
-function map:on_hero_victory_finished()
+function hero:on_victory_finished()
 
   map:get_game():set_boolean(156, true)
   hero:teleport(3, "out_smith_cave")

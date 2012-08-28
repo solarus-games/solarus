@@ -244,7 +244,7 @@ function map:on_dialog_finished(dialog_id)
   end
 end
 
-function map:on_hero_victory_finished()
+function hero:on_victory_finished()
   map:get_game():set_dungeon_finished(7)
   hero:teleport(8, "from_dungeon_7")
 end

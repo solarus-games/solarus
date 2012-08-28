@@ -126,7 +126,7 @@ function hero:on_obtained_treasure(item_name, variant, savegame_variable)
   end
 end
 
-function map:on_hero_victory_finished()
+function hero:on_victory_finished()
 
   map:get_game():set_dungeon_finished(10)
   hero:teleport(119, "from_dungeon_10")

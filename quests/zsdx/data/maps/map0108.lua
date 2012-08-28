@@ -50,13 +50,14 @@ function map:on_camera_back()
   local x, y = hero:get_position()
   if y < 360 then
     -- chest A
-    chest_a_timer = sol.timer.start(5000, true, function()
+    chest_a_timer = sol.timer.start(5000, function()
       if not chest_a:is_open() then
 	sol.audio.play_sound("door_closed")
 	chest_a:set_enabled(false)
 	chest_a_switch:set_activated(false)
       end
     end)
+    chest_a_timer:set_with_sound(true)
   end
 end
 

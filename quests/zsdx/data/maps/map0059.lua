@@ -71,7 +71,7 @@ function sensor_5:on_activated()
   end
 end
 
-function finish_evil_tiles()
+function map:finish_evil_tiles()
 
   map:open_doors("evil_tiles_door")
 end

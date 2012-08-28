@@ -14,13 +14,16 @@ function map:on_started(destination_point)
     water_block:set_position(656, 333)
   end
 
-  map:set_entities_enabled("enemy2",false)
+  map:set_entities_enabled("enemy2", false)
 end
 
-function map:on_enemy_dead(enemy_name)
+for _, enemy in ipairs(map:get_entities("enemy2")) do
+  enemy.on_dead = enemy_in_group2_dead
+end
 
-  if enemy_name:find("enemy2")
-      and not map:has_entities("enemy2")
+function enemy_in_group2_dead(enemy)
+
+  if not map:has_entities("enemy2")
       and not map:get_game():get_boolean(234) then
     map:create_pickable("big_key", 1, 234, 672, 80, 1)
     sol.audio.play_sound("secret")
@@ -31,43 +34,33 @@ function map:on_enemy_dead(enemy_name)
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function sensor1_1:on_activated()
 
-  if sensor_name == "sensor1_1"
-      and door_a:is_open()
+  if door_a:is_open()
       and map:has_entities("enemy2")
       and not map:get_game():get_boolean(234) then
     sol.audio.play_music("boss")
     map:close_doors("door_a")
     map:set_entities_enabled("enemy2", true)
-    sensor1_1:set_enabled(false)
+    self:set_enabled(false)
   end
 end
 
-function map:on_switch_activated(switch_name)
-
-  if switch_name == "switch1_1" then
-    map:open_doors("door_a")
-  end
+function switch1_1:on_activated()
+  map:open_doors("door_a")
 end
 
-function map:on_switch_inactivated(switch_name)
-
-  if switch_name == "switch1_1" then
-    map:close_doors("door_a")
-  end
+function switch1_1:on_inactivated()
+  map:close_doors("door_a")
 end
 
-function map:on_block_moved(block_name)
-
-  if block_name == "water_block" then
-    map:move_camera(904, 288, 250, drain_water_step_1, 1000, 3500)
-  end
+function water_block:on_moved()
+  map:move_camera(904, 288, 250, drain_water_step_1, 1000, 3500)
 end
 
 function set_water_drained()
 
-  map:set_entities_enabled("water", false)
+  map:set_entities_enabled("water_tile", false)
 
   -- enable the custom obstacles near stairs (stairs can be used)
   map:set_entities_enabled("water_off_obstacle", true)
@@ -80,28 +73,28 @@ function drain_water_step_1()
 
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
-  water_full:set_enabled(false)
-  water_less_1:set_enabled(true)
+  water_tile_full:set_enabled(false)
+  water_tile_less_1:set_enabled(true)
   sol.timer.start(water_delay, drain_water_step_2)
 end
 
 function drain_water_step_2()
 
-  water_less_1:set_enabled(false)
-  water_less_2:set_enabled(true)
+  water_tile_less_1:set_enabled(false)
+  water_tile_less_2:set_enabled(true)
   sol.timer.start(water_delay, drain_water_step_3)
 end
 
 function drain_water_step_3()
 
-  water_less_2:set_enabled(false)
-  water_less_3:set_enabled(true)
+  water_tile_less_2:set_enabled(false)
+  water_tile_less_3:set_enabled(true)
   sol.timer.start(water_delay, drain_water_step_4)
 end
 
 function drain_water_step_4()
 
-  water_less_3:set_enabled(false)
+  water_tile_less_3:set_enabled(false)
   map:get_game():set_boolean(297, true)
   sol.audio.play_sound("secret")
   set_water_drained()

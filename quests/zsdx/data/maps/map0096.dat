@@ -48,46 +48,46 @@
 0	0	504	384	24	8	292
 0	0	504	408	24	8	293
 0	0	384	432	80	16	408
-10	0	336	472	16	16	evil_after_3	472	1
-10	0	208	456	16	16	evil_after_4	472	1
-10	0	192	392	16	16	evil_after_1	472	1
-10	0	256	424	16	16	evil_after_2	472	1
-7	0	200	405	evil_1	3	evil_tile	0	-1	_random	1	-1
-7	0	264	437	evil_2	3	evil_tile	0	-1	_random	1	-1
-7	0	216	469	evil_4	3	evil_tile	0	-1	_random	1	-1
-7	0	344	485	evil_3	3	evil_tile	0	-1	_random	1	-1
-10	0	256	440	16	16	evil_after_5	472	1
-7	0	264	453	evil_5	3	evil_tile	0	-1	_random	1	-1
-10	0	336	392	16	16	evil_after_6	472	1
-7	0	344	405	evil_6	3	evil_tile	0	-1	_random	1	-1
-10	0	192	472	16	16	evil_after_7	472	1
-7	0	200	485	evil_7	3	evil_tile	0	-1	_random	1	-1
-10	0	320	408	16	16	evil_after_8	472	1
-7	0	328	421	evil_8	3	evil_tile	0	-1	_random	1	-1
-10	0	192	456	16	16	evil_after_9	472	1
-7	0	200	469	evil_9	3	evil_tile	0	-1	_random	1	-1
-10	0	208	408	16	16	evil_after_10	472	1
-7	0	216	421	evil_10	3	evil_tile	0	-1	_random	1	-1
-10	0	320	456	16	16	evil_after_11	472	1
-7	0	328	469	evil_11	3	evil_tile	0	-1	_random	1	-1
-10	0	336	408	16	16	evil_after_12	472	1
-7	0	344	421	evil_12	3	evil_tile	0	-1	_random	1	-1
-10	0	208	472	16	16	evil_after_13	472	1
-7	0	216	485	evil_13	3	evil_tile	0	-1	_random	1	-1
-10	0	336	456	16	16	evil_after_14	472	1
-7	0	344	469	evil_14	3	evil_tile	0	-1	_random	1	-1
-10	0	192	408	16	16	evil_after_15	472	1
-7	0	200	421	evil_15	3	evil_tile	0	-1	_random	1	-1
-10	0	272	440	16	16	evil_after_16	472	1
-7	0	280	453	evil_16	3	evil_tile	0	-1	_random	1	-1
-10	0	208	392	16	16	evil_after_17	472	1
-7	0	216	405	evil_17	3	evil_tile	0	-1	_random	1	-1
-10	0	272	424	16	16	evil_after_18	472	1
-7	0	280	437	evil_18	3	evil_tile	0	-1	_random	1	-1
-10	0	320	472	16	16	evil_after_19	472	1
-7	0	328	485	evil_19	3	evil_tile	0	-1	_random	1	-1
-10	0	320	392	16	16	evil_after_20	472	1
-7	0	328	405	evil_20	3	evil_tile	0	-1	_random	1	-1
+10	0	336	472	16	16	evil_tile_after_3	472	1
+10	0	208	456	16	16	evil_tile_after_4	472	1
+10	0	192	392	16	16	evil_tile_after_1	472	1
+10	0	256	424	16	16	evil_tile_after_2	472	1
+7	0	200	405	evil_tile_enemy_1	3	evil_tile	0	-1	_random	1	-1
+7	0	264	437	evil_tile_enemy_2	3	evil_tile	0	-1	_random	1	-1
+7	0	216	469	evil_tile_enemy_4	3	evil_tile	0	-1	_random	1	-1
+7	0	344	485	evil_tile_enemy_3	3	evil_tile	0	-1	_random	1	-1
+10	0	256	440	16	16	evil_tile_after_5	472	1
+7	0	264	453	evil_tile_enemy_5	3	evil_tile	0	-1	_random	1	-1
+10	0	336	392	16	16	evil_tile_after_6	472	1
+7	0	344	405	evil_tile_enemy_6	3	evil_tile	0	-1	_random	1	-1
+10	0	192	472	16	16	evil_tile_after_7	472	1
+7	0	200	485	evil_tile_enemy_7	3	evil_tile	0	-1	_random	1	-1
+10	0	320	408	16	16	evil_tile_after_8	472	1
+7	0	328	421	evil_tile_enemy_8	3	evil_tile	0	-1	_random	1	-1
+10	0	192	456	16	16	evil_tile_after_9	472	1
+7	0	200	469	evil_tile_enemy_9	3	evil_tile	0	-1	_random	1	-1
+10	0	208	408	16	16	evil_tile_after_10	472	1
+7	0	216	421	evil_tile_enemy_10	3	evil_tile	0	-1	_random	1	-1
+10	0	320	456	16	16	evil_tile_after_11	472	1
+7	0	328	469	evil_tile_enemy_11	3	evil_tile	0	-1	_random	1	-1
+10	0	336	408	16	16	evil_tile_after_12	472	1
+7	0	344	421	evil_tile_enemy_12	3	evil_tile	0	-1	_random	1	-1
+10	0	208	472	16	16	evil_tile_after_13	472	1
+7	0	216	485	evil_tile_enemy_13	3	evil_tile	0	-1	_random	1	-1
+10	0	336	456	16	16	evil_tile_after_14	472	1
+7	0	344	469	evil_tile_enemy_14	3	evil_tile	0	-1	_random	1	-1
+10	0	192	408	16	16	evil_tile_after_15	472	1
+7	0	200	421	evil_tile_enemy_15	3	evil_tile	0	-1	_random	1	-1
+10	0	272	440	16	16	evil_tile_after_16	472	1
+7	0	280	453	evil_tile_enemy_16	3	evil_tile	0	-1	_random	1	-1
+10	0	208	392	16	16	evil_tile_after_17	472	1
+7	0	216	405	evil_tile_enemy_17	3	evil_tile	0	-1	_random	1	-1
+10	0	272	424	16	16	evil_tile_after_18	472	1
+7	0	280	437	evil_tile_enemy_18	3	evil_tile	0	-1	_random	1	-1
+10	0	320	472	16	16	evil_tile_after_19	472	1
+7	0	328	485	evil_tile_enemy_19	3	evil_tile	0	-1	_random	1	-1
+10	0	320	392	16	16	evil_tile_after_20	472	1
+7	0	328	405	evil_tile_enemy_20	3	evil_tile	0	-1	_random	1	-1
 1	0	216	357	entrance_D_1	3	_none
 18	0	200	344	door1_1	1	0	-1
 13	0	216	373	16	16	sensor1

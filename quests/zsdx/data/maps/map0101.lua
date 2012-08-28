@@ -113,12 +113,13 @@ function map:on_switch_activated(switch_name)
     sol.audio.play_sound("secret")
     map:open_doors("door_a")
     door_a_allow_close = true
-    sol.timer.start(10000, true, function()
+    local timer = sol.timer.start(10000, function()
       door_a_switch:set_activated(false)
       if door_a_allow_close then
 	map:close_doors("door_a")
       end
     end)
+    timer:set_with_sound(true)
 
   -- door B
   elseif switch_name == "door_b_switch"
@@ -127,12 +128,13 @@ function map:on_switch_activated(switch_name)
     sol.audio.play_sound("secret")
     map:open_doors("door_b")
     door_b_allow_close = true
-    sol.timer.start(15000, true, function()
+    local timer = sol.timer.start(15000, function()
       door_b_switch:set_activated(false)
       if door_b_allow_close then
 	map:close_doors("door_b")
       end
     end)
+    timer:set_with_sound(true)
 
   -- north-west door
   elseif switch_name == "ne_door_switch" then

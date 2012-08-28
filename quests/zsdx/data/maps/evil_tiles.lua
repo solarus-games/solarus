@@ -41,6 +41,10 @@ function map:start_evil_tiles()
 
     if again then
       sol.timer.start(150, repeat_sound)
+    else
+      if map.finish_evil_tiles ~= nil then
+        map:finish_evil_tiles()
+      end
     end
   end
 

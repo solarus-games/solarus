@@ -17,10 +17,11 @@ function map:on_switch_activated(switch_name)
       and not door:is_open() then
     sol.audio.play_sound("secret")
     map:open_doors("door")
-    door_timer = sol.timer.start(12000, true, function()
+    door_timer = sol.timer.start(12000, function()
       map:close_doors("door")
       map:get_entity(switch_name):set_activated(false)
     end)
+    door_timer:set_with_sound(true)
   end
 end
 

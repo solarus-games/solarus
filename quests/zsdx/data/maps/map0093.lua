@@ -12,8 +12,7 @@ end
 function show_fairy()
 
   great_fairy:set_position(160, 77)
-  local sprite = great_fairy:get_sprite()
-  sprite:set_ignore_suspend(true)
+  great_fairy:get_sprite():set_ignore_suspend(true)
   torch_1:remove()
   torch_2:remove()
   torch_3:remove()
@@ -47,29 +46,24 @@ function map:on_update()
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function fairy_sensor:on_activated()
 
-  if sensor_name == "fairy_sensor" and has_fairy_appeared() then
+  if has_fairy_appeared() then
 
-    map:get_entity(sensor_name):set_enabled(false)
+    self:set_enabled(false)
     hero:freeze()
     hero:set_direction(1)
     if not has_tiger_scrolls() then
-      map:start_dialog("north_fairy_fountain.first_time")
+      map:start_dialog("north_fairy_fountain.first_time", function()
+        hero:unfreeze()
+        hero:start_treasure("level_4_way", 4, 930)
+      end)
     else
-      map:start_dialog("north_fairy_fountain.restore_health")
+      map:start_dialog("north_fairy_fountain.restore_health", function()
+        hero:unfreeze()
+        map:get_game():add_life(map:get_game():get_max_life())
+      end)
     end
-  end
-end
-
-function map:on_dialog_finished(dialog_id, answer)
-
-  if dialog_id == "north_fairy_fountain.first_time" then
-    hero:unfreeze()
-    hero:start_treasure("level_4_way", 4, 930)
-  elseif dialog_id == "north_fairy_fountain.restore_health" then
-    hero:unfreeze()
-    map:get_game():add_life(map:get_game():get_max_life())
   end
 end
 

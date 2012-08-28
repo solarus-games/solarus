@@ -91,13 +91,14 @@ function DB08:on_activated()
 end
 
 function map:on_camera_back()
-  timer = sol.timer.start(8000, true, function()
+  timer = sol.timer.start(8000, function()
     if not KC03:is_open() then
       sol.audio.play_sound("door_closed")
       KC03:set_enabled(false)
       CB03:set_activated(false)
     end
   end)
+  timer:set_with_sound(true)
 end
 
 function hero:on_obtaining_treasure(item_name, variant, savegame_variable)

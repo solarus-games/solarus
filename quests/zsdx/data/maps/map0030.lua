@@ -95,12 +95,13 @@ function map:on_camera_back()
 
   if camera_back_start_timer then
     camera_back_start_timer = false
-    sol.timer.start(7000, true, function()
+    local timer = sol.timer.start(7000, function()
       sol.audio.play_sound("door_closed")
       pegasus_run_barrier:set_enabled(true)
       pegasus_run_switch:set_activated(false)
       pegasus_run_switch_2:set_activated(false)
     end)
+    timer:set_with_sound(true)
   end
 end
 

@@ -121,22 +121,24 @@ function map:on_camera_back()
   -- set up a timer when the camera movement is finished
   if just_removed_special_torch then
     just_removed_special_torch = false
-    special_torch_timer = sol.timer.start(8000, true, function()
+    special_torch_timer = sol.timer.start(8000, function()
       sol.audio.play_sound("door_closed")
       special_torch:set_enabled(true)
       special_torch_switch:set_activated(false)
       special_torch_timer = nil
     end)
+    special_torch_timer:set_with_sound(true)
 
   elseif current_door_name ~= nil then
     local door_name = current_door_name
-    sol.timer.start(doors[door_name].delay, true, function()
+    local timer = sol.timer.start(doors[door_name].delay, function()
       if door_timers[door_name] ~= nil then
 	map:close_doors(door_name)
 	map:get_entity(door_name .. "_switch"):set_activated(false)
 	door_timers[door_name] = nil
       end
     end)
+    timer:set_with_sound(true)
     door_timers[door_name] = true
     current_door_name = nil
 

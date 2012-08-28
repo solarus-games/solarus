@@ -194,9 +194,9 @@
 0	1	880	144	8	8	69
 0	1	920	144	8	8	69
 0	1	504	176	32	16	392
-10	1	864	160	80	640	water_full	441	1
-10	1	872	168	64	624	water_less_1	441	1
-10	1	880	176	48	608	water_less_2	441	1
+10	1	864	160	80	640	water_tile_full	441	1
+10	1	872	168	64	624	water_tile_less_1	441	1
+10	1	880	176	48	608	water_tile_less_2	441	1
 18	1	536	168	door_a	2	0	-1
 18	1	488	168	door_a_2	0	0	-1
 11	1	376	152	switch1_1	1	0	1
@@ -236,7 +236,7 @@
 12	1	488	344	8	8	custom_obstacle_6	1	1	1	1
 12	1	488	368	8	8	custom_obstacle_7	1	1	1	1
 12	1	856	152	32	8	custom_obstacle_8	1	1	1	1
-10	1	888	184	32	592	water_less_3	441	1
+10	1	888	184	32	592	water_tile_less_3	441	1
 5	1	368	96	chest1_1	1	magic_bar	2	226
 13	1	560	189	16	16	sensor1_1
 7	1	656	85	enemy2_2	3	lizalfos	0	-1	_random	1	-1

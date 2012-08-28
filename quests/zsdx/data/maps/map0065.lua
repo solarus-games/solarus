@@ -1,15 +1,15 @@
 local map = ...
 -- Dungeon 5 B1
 
-sol.main.do_file("maps/prison_guard")
+sol.main.load_file("maps/prison_guard")(map)
 
 local prison_2_nb_messages = 0
 local door_sets = { -- possible doors open when going to prison
-  { "door_b", "door_d", "door_f", "door_h", "door_g" },
-  { "door_b", "door_d", "door_f", "door_h", "door_g" },
-  { "door_b", "door_d", "door_e", "door_f", "door_g" },
-  { "door_b", "door_d", "door_e", "door_f", "door_g" },
-  { "door_a", "door_c", "door_e", "door_d", "door_f", "door_h" },
+  { door_b, door_d, door_f, door_h, door_g },
+  { door_b, door_d, door_f, door_h, door_g },
+  { door_b, door_d, door_e, door_f, door_g },
+  { door_b, door_d, door_e, door_f, door_g },
+  { door_a, door_c, door_e, door_d, door_f, door_h },
 }
 
 function map:on_started(destination_point)
@@ -62,22 +62,22 @@ end
 
 function init_guards()
 
-  init_guard("guard_1", 296, 573, 2)
-  init_guard("guard_2", 296, 685, 2)
-  init_guard("guard_3", 288, 821, 2,
+  init_guard(guard_1, 296, 573, 2)
+  init_guard(guard_2, 296, 685, 2)
+  init_guard(guard_3, 288, 821, 2,
       {4,4,4,4,4,4,4,4,4,
       6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
       2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
       4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4})
-  init_guard("guard_4", 776, 917, 2)
-  init_guard("guard_5", 920, 725, 2,
+  init_guard(guard_4, 776, 917, 2)
+  init_guard(guard_5, 920, 725, 2,
       {4,4,4,4,4,4,4,4,
       2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
       6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
       4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4})
-  init_guard("guard_6", 1080, 597, 2,
+  init_guard(guard_6, 1080, 597, 2,
       {2,2,2,2,2,2,2,2,
       4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
       6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
@@ -90,18 +90,18 @@ function init_prison()
   prison_2_lock:set_position(648, 325)
 end
 
-function init_guard(guard_name, x, y, direction, path)
+function init_guard(guard, x, y, direction, path)
 
-  map:npc_stop_movement(guard_name)
-  map:get_entity(guard_name):set_position(x, y)
-  local sprite = map:npc_get_sprite(guard_name)
+  guard:stop_movement()
+  guard:set_position(x, y)
+  local sprite = guard:get_sprite()
   if path ~= nil then
     local m = sol.movement.create("path")
     m:set_path(path)
     m:set_speed(72)
     m:set_loop(true)
     m:set_ignore_obstacles(true)
-    map:npc_start_movement(guard_name, m)
+    guard:start_movement(m)
     sprite:set_animation("walking")
   else
     sprite:set_animation("stopped")
@@ -117,67 +117,53 @@ function map:on_opening_transition_finished(destination_point)
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function prison_sensor:on_activated()
 
-  sensor_check_guard(sensor_name)
+  init_guards()
 
-  if sensor_name == "prison_sensor" then
-    init_guards()
-
-    -- change the configuration of the doors
-    local i = math.random(#door_sets)
-    map:set_doors_open("door", false)
-    for _, door in ipairs(door_sets[i]) do
-      map:set_doors_open(door, true)
-    end
+  -- change the configuration of the doors
+  local i = math.random(#door_sets)
+  map:set_doors_open("door", false)
+  for _, door in ipairs(door_sets[i]) do
+    map:set_doors_open(door, true)
   end
 end
 
-function map:on_hero_still_on_sensor(sensor_name)
+function prison_1_lock:on_interaction()
 
-  sensor_check_guard(sensor_name)
-end
-
-function map:on_dialog_finished(dialog_id, answer)
-
-  dialog_check_guard(dialog_id)
-
-  if dialog_id == "dungeon_5.prison_1_use_iron_key" then
-    sol.audio.play_sound("secret")
-    sol.audio.play_sound("door_open")
-    prison_1_lock:remove()
-    map:get_game():set_boolean(511, true)
-  end
-end
-
-function map:on_npc_interaction(npc_name)
-
-  if npc_name == "prison_1_lock" then
-
-    if not map:get_game():get_item("iron_key"):has_variant() then
-      map:start_dialog("dungeon_5.prison_1_locked")
-    else
-      map:start_dialog("dungeon_5.prison_1_use_iron_key")
-    end
-  elseif npc_name == "prison_2_lock" then
-
-    prison_2_nb_messages = prison_2_nb_messages + 1
-    if prison_2_nb_messages <= 3 then
-      map:start_dialog("dungeon_5.prison_2_locked_" .. prison_2_nb_messages)
-    else
+  if not map:get_game():get_item("iron_key"):has_variant() then
+    map:start_dialog("dungeon_5.prison_1_locked")
+  else
+    map:start_dialog("dungeon_5.prison_1_use_iron_key", function()
       sol.audio.play_sound("secret")
       sol.audio.play_sound("door_open")
-      prison_2_lock:set_position(648, -32)
-      map:get_game():set_boolean(512, true)
-    end
+      prison_1_lock:remove()
+      map:get_game():set_boolean(511, true)
+    end)
   end
 end
 
-function map:on_door_open(door_name)
+function prison_2_lock:on_interaction()
 
-  if door_name:find("^weak_wall") then
+  prison_2_nb_messages = prison_2_nb_messages + 1
+  if prison_2_nb_messages <= 3 then
+    map:start_dialog("dungeon_5.prison_2_locked_" .. prison_2_nb_messages)
+  else
     sol.audio.play_sound("secret")
+    sol.audio.play_sound("door_open")
+    prison_2_lock:set_position(648, -32)
+    map:get_game():set_boolean(512, true)
   end
+end
+
+function weak_wall_a:on_open()
+
+  sol.audio.play_sound("secret")
+end
+
+function weak_wall_b:on_open()
+
+  sol.audio.play_sound("secret")
 end
 
 function hero:on_obtained_treasure(item_name, variant, savegame_variable)

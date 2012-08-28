@@ -307,7 +307,7 @@
 10	0	288	352	16	16	floor_down_49	537	1
 10	0	304	352	16	16	floor_down_50	537	1
 10	0	72	224	16	32	switch_floor_left_2	537	1
-11	0	72	232	switch_3	3	0	0
+11	0	72	232	distant_switch_3	3	0	0
 10	0	64	224	8	32	switch_floor_left_1	313	1
 10	0	64	256	24	8	switch_floor_left_3	247	1
 10	0	88	256	8	8	switch_floor_left_7	253	1
@@ -315,7 +315,7 @@
 10	0	88	216	8	8	switch_floor_left_5	252	1
 10	0	64	216	24	8	switch_floor_left_4	249	1
 10	0	224	72	32	16	switch_floor_up_2	537	1
-11	0	232	72	switch_4	3	0	0
+11	0	232	72	distant_switch_4	3	0	0
 10	0	224	64	32	8	switch_floor_up_1	311	1
 10	0	216	64	8	24	switch_floor_up_7	250	1
 10	0	216	88	8	8	switch_floor_up_6	254	1
@@ -323,7 +323,7 @@
 10	0	256	88	8	8	switch_floor_up_4	253	1
 10	0	256	64	8	24	switch_floor_up_3	248	1
 10	0	392	224	16	32	switch_floor_right_2	537	1
-11	0	392	232	switch_1	3	0	0
+11	0	392	232	distant_switch_1	3	0	0
 10	0	408	224	8	32	switch_floor_right_1	314	1
 10	0	392	216	24	8	switch_floor_right_3	249	1
 10	0	384	216	8	8	switch_floor_right_4	251	1
@@ -331,7 +331,7 @@
 10	0	384	256	8	8	switch_floor_right_6	254	1
 10	0	392	256	24	8	switch_floor_right_7	247	1
 10	0	224	392	32	16	switch_floor_down_2	537	1
-11	0	232	392	switch_2	3	0	0
+11	0	232	392	distant_switch_2	3	0	0
 10	0	224	408	32	8	switch_floor_down_1	312	1
 10	0	216	392	8	24	switch_floor_down_3	250	1
 10	0	216	384	8	8	switch_floor_down_4	251	1

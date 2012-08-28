@@ -12,7 +12,7 @@ function map:on_started(destination_point)
     hero:freeze()
     hero:set_visible(false)
     map:get_game():set_hud_enabled(false)
-    map:set_entities_enabled("", false)
+    map:set_entities_enabled("enemy", false)
     new_music = "fanfare"
     map:set_entities_enabled("roof_entrance", false)
   else
@@ -30,7 +30,7 @@ function map:on_started(destination_point)
       if not map:get_game():get_boolean(299) then
 	-- boss not killed yet
         new_music = "none"
-        map:set_entities_enabled("", false) -- disable all simple enemies
+        map:set_entities_enabled("enemy", false) -- disable all simple enemies
       elseif not map:get_game():get_boolean(298) then
 	-- boss killed but sword not got yet
 	local variant = 2
@@ -51,15 +51,18 @@ end
 function map:on_opening_transition_finished(destination_point)
 
   if destination_point:get_name() == "from_ending" then
-    map:start_dialog("credits_6")
+    map:start_dialog("credits_6", function()
+      sol.timer.start(2000, function()
+        hero:teleport(131, "from_ending")
+      end)
+    end)
     map:move_camera(440, 96, 20, function() end, 1e6)
   end
 end
 
-function map:on_hero_on_sensor(sensor_name)
+function start_boss_sensor:on_activated()
 
-  if sensor_name == "start_boss_sensor"
-      and not map:get_game():get_boolean(299)
+  if not map:get_game():get_boolean(299)
       and not fighting_boss then
 
     -- boss fight
@@ -68,17 +71,14 @@ function map:on_hero_on_sensor(sensor_name)
     roof_stairs:set_enabled(false)
     roof_teletransporter:set_enabled(false)
     sol.audio.play_sound("door_closed")
-    sol.timer.start(1000, start_boss)
+    sol.timer.start(1000, function()
+      sol.audio.play_music("boss")
+      boss:set_enabled(true)
+      hero:unfreeze()
+      fighting_boss = true
+      arrows_timer = sol.timer.start(20000, repeat_give_arrows)
+    end)
   end
-end
-
-local function start_boss()
-
-  sol.audio.play_music("boss")
-  boss:set_enabled(true)
-  hero:unfreeze()
-  fighting_boss = true
-  arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
 
 local function repeat_give_arrows()
@@ -95,20 +95,17 @@ local function repeat_give_arrows()
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
 
-function map:on_enemy_dead(enemy_name)
-
-  if enemy_name == "boss" then
-    -- give the second sword
-    local variant = 2
-    if map:get_game():get_ability("sword") == 2 then
-      -- the player already has the second one: give the third one instead
-      variant = 3
-    end
-    map:create_pickable("sword", variant, 298, 440, 189, 1)
-    if arrows_timer ~= nil then
-      arrows_timer:stop()
-      arrows_timer = nil
-    end
+function boss:on_dead()
+  -- give the second sword
+  local variant = 2
+  if map:get_game():get_ability("sword") == 2 then
+    -- the player already has the second one: give the third one instead
+    variant = 3
+  end
+  map:create_pickable("sword", variant, 298, 440, 189, 1)
+  if arrows_timer ~= nil then
+    arrows_timer:stop()
+    arrows_timer = nil
   end
 end
 
@@ -130,7 +127,7 @@ function hero:on_victory_finished()
 
   map:get_game():set_dungeon_finished(10)
   hero:teleport(119, "from_dungeon_10")
-  map:set_entities_enabled("", true) -- enable simple enemies back
+  map:set_entities_enabled("enemy", true) -- enable simple enemies back
 
   sol.timer.start(1000, function()
     if map:get_game():get_boolean(905) then
@@ -139,16 +136,5 @@ function hero:on_victory_finished()
       sol.audio.play_music("overworld")
     end
   end)
-end
-
-function map:on_dialog_finished(dialog_id)
-
-  if dialog_id == "credits_6" then
-   sol.timer.start(2000, ending_next)
-  end
-end
-
-local function ending_next()
-  hero:teleport(131, "from_ending")
 end
 

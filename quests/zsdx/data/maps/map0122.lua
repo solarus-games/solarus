@@ -1,11 +1,10 @@
 local map = ...
 
-function map:on_hero_on_sensor(sensor_name)
+-- Hidden palace L0.
 
-  local layer = sensor_name:match("^to_layer_([0-1])_sensor")
-  if layer ~= nil then
-    local x, y = hero:get_position()
-    hero:set_position(x, y, layer)
-  end
+function to_layer_0_sensor:on_activated()
+
+  local x, y = hero:get_position()
+  hero:set_position(x, y, 0)
 end
 

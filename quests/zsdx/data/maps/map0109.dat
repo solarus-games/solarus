@@ -712,7 +712,7 @@
 7	0	680	933	door_c_enemy_1	3	blue_dogman	0	-1	_random	1	-1
 7	0	856	957	door_c_enemy_2	3	red_dogman	0	-1	_random	1	-1
 9	0	752	741	door_bc_block	0	entities/block	1	0	1
-13	0	768	805	16	16	close_door_bc_sensor
+13	0	768	805	16	16	close_door_bc_sensor_1
 13	0	656	741	16	16	close_door_bc_sensor_2
 13	0	880	741	16	16	close_door_bc_sensor_3
 12	0	584	728	16	16	custom_obstacle_4	0	1	0	0

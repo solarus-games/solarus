@@ -10,17 +10,11 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_switch_activated(switch_name)
-
-  if switch_name == "door_switch" then
-    map:open_doors("door")
-  end
+function door_switch:on_activated()
+  map:open_doors("door")
 end
 
-function map:on_switch_inactivated(switch_name)
-
-  if switch_name == "door_switch" then
-    map:close_doors("door")
-  end
+function door_switch:on_inactivated()
+  map:close_doors("door")
 end
 

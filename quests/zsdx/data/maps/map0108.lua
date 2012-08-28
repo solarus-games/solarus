@@ -18,26 +18,26 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_switch_activated(switch_name)
+-- open doors A and B (I love you, anonymous functions)
+function door_ab_switch:on_activated()
+  map:move_camera(1288, 680, 250, function()
+    -- open door A, wait 1 second and go to door B
+    sol.audio.play_sound("secret")
+    map:open_doors("door_a")
+    sol.timer.start(1000, function()
+      map:move_camera(1608, 360, 250, function()
+        -- open door B
+        sol.audio.play_sound("secret")
+        map:open_doors("door_b")
+      end) -- camera to door B
+    end) -- timer before going from door A to door B
+  end, 1000, 5000) -- camera to door A (don't go back too soon)
+end
 
-  -- open doors A and B (I love you, anonymous functions)
-  if switch_name == "door_ab_switch" then
-    map:move_camera(1288, 680, 250, function()
-      -- open door A, wait 1 second and go to door B
-      sol.audio.play_sound("secret")
-      map:open_doors("door_a")
-      sol.timer.start(1000, function()
-	map:move_camera(1608, 360, 250, function()
-	  -- open door B
-	  sol.audio.play_sound("secret")
-	  map:open_doors("door_b")
-	end) -- camera to door B
-      end) -- timer before going from door A to door B
-    end, 1000, 5000) -- camera to door A (don't go back too soon)
+-- chest A
+function chest_a_switch:on_activated()
 
-  -- chest A
-  elseif switch_name == "chest_a_switch"
-      and not chest_a:is_enabled() then
+  if not chest_a:is_enabled() then
     map:move_camera(1336, 520, 250, function()
       sol.audio.play_sound("chest_appears")
       chest_a:set_enabled(true)
@@ -72,21 +72,21 @@ function hero:on_obtaining_treasure(item_name, variant, savegame_variable)
   end
 end
 
-function map:on_enemy_dead(enemy_name)
+function chest_c_enemy_1:on_dead()
 
-  if enemy_name:find("^chest_c_enemy_") then
-    if not map:has_entities("chest_c_enemy")
-        and not chest_c:is_enabled() then
-      sol.audio.play_sound("chest_appears")
-      chest_c:set_enabled(true)
-    end
+  if not map:has_entities("chest_c_enemy")
+    and not chest_c:is_enabled() then
+    sol.audio.play_sound("chest_appears")
+    chest_c:set_enabled(true)
   end
 end
+chest_c_enemy_2.on_dead = chest_c_enemy_1.on_dead
 
-function map:on_door_open(door_name)
-
-  if door_name == "weak_wall_a" or door_name == "weak_wall_b" then
-    sol.audio.play_sound("secret")
-  end
+function weak_wall_a:on_open()
+  sol.audio.play_sound("secret")
 end
 
+function weak_wall_b:on_open()
+  sol.audio.play_sound("secret")
+end
+ 

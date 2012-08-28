@@ -47,14 +47,14 @@ local bonuses_done = {}
 function map:on_started(destination_point)
 
   if not map:get_game():get_boolean(881) then
-    sol.audio.play_music("ganon_createds")
+    sol.audio.play_music("ganon_appears")
     boss:set_enabled(true)
     zelda:set_enabled(false)
     map:set_entities_enabled("child", false)
     hero:save_solid_ground()
   end
 
-  map:set_entities_enabled("switch", false)
+  map:set_entities_enabled("distant_switch", false)
   map:set_entities_enabled("switch_floor", false)
 end
 
@@ -62,114 +62,100 @@ function map:on_opening_transition_finished(destination_point)
 
   if destination_point:get_name() == "from_6f" then
     if not map:get_game():get_boolean(881) then
-      map:start_dialog("dungeon_9.boss")
+      map:start_dialog("dungeon_9.boss", function()
+        sol.audio.play_music("ganon_battle")
+      end)
     else
       start_zelda_sequence()
     end
   end
 end
 
-function map:on_dialog_finished(dialog_id)
+function boss:on_dead()
 
-  if dialog_id == "dungeon_9.boss" then
-    sol.audio.play_music("ganon_battle")
-  elseif dialog_id == "dungeon_9.zelda" then
-    sol.timer.start(1000, function()
-      map:start_dialog("dungeon_9.zelda_children")
+  sol.timer.start(1000, function()
+    hero:freeze()
+    hero:set_direction(3)
+    sol.audio.play_music("victory")
+    sol.timer.start(9000, function()
+      hero:teleport(130, "from_boss")
     end)
-  elseif dialog_id == "dungeon_9.zelda_children" then
-    sol.audio.stop_music()
-    sol.audio.play_sound("world_warp")
-    sol.timer.start(1000, function()
+    sol.timer.start(9100, function()
+      sol.audio.play_music("triforce")
+      hero:freeze()
+      hero:set_direction(1)
+      zelda:set_enabled(true)
       for i = 1, 8 do
-	map:npc_get_sprite("child_" .. i):fade_out()
+        local npc = map:get_entity("child_" .. i)
+        npc:set_enabled(true)
+        npc:get_sprite():set_ignore_suspend(true)
+        npc:get_sprite():fade_in()
       end
+
+      sol.timer.start(3000, function()
+        map:set_dialog_variable("dungeon_9.zelda", map:get_game():get_player_name())
+        map:start_dialog("dungeon_9.zelda", function()
+          sol.timer.start(1000, function()
+            map:start_dialog("dungeon_9.zelda_children", function()
+              sol.audio.stop_music()
+              sol.audio.play_sound("world_warp")
+              sol.timer.start(1000, function()
+                for i = 1, 8 do
+                  map:get_entity("child_" .. i):get_sprite():fade_out()
+                end
+              end)
+              sol.timer.start(5000, function()
+                map:start_dialog("dungeon_9.zelda_end", function()
+                  sol.timer.start(2000, function()
+                    hero:teleport(8, "from_ending")
+                    -- Yeah! New nested anonymous functions record!
+                  end)
+                end)
+              end)
+            end)
+          end)
+        end)
+      end)
     end)
-    sol.timer.start(5000, function()
-      map:start_dialog("dungeon_9.zelda_end")
-    end)
-  elseif dialog_id == "dungeon_9.zelda_end" then
-    sol.timer.start(2000, function()
-      hero:teleport(8, "from_ending")
-    end)
-  end
-end
-
-function map:on_enemy_dead(enemy_name)
-
-  if enemy_name == "boss" then
-    sol.timer.start(1000, start_final_sequence)
-  end
-end
-
-local function start_final_sequence()
-
-  hero:freeze()
-  hero:set_direction(3)
-  sol.audio.play_music("victory")
-  sol.timer.start(9000, function()
-    hero:teleport(130, "from_boss")
-  end)
-  sol.timer.start(9100, start_zelda_sequence)
-end
-
-local function start_zelda_sequence()
-
-  sol.audio.play_music("triforce")
-  hero:freeze()
-  hero:set_direction(1)
-  zelda:set_enabled(true)
-  for i = 1, 8 do
-    local npc_name = "child_" .. i
-    map:get_entity(npc_name):set_enabled(true)
-    local sprite = map:npc_get_sprite(npc_name)
-    sprite:set_ignore_suspend(true)
-    sprite:fade_in()
-  end
-
-  sol.timer.start(3000, function()
-    map:start_dialog("dungeon_9.zelda")
-    map:set_dialog_variable("dungeon_9.zelda", map:get_game():get_player_name())
   end)
 end
 
 -- Torches on this map interact with the map script
 -- because we don't want usual behavior from items/lamp.lua:
 -- we want a longer delay and special Ganon interaction
-function map:on_npc_interaction(npc_name)
-
-  if string.find(npc_name, "^torch") then
-    map:start_dialog("torch.need_lamp")
-  end
+for _, torch in ipairs(map:get_entities("torch")) do
+  torch.on_interaction = torch_interaction
+  torch.on_collision_fire = torch_collision_fire
 end
 
--- Called when fire touches an NPC linked to this map
-function map:on_npc_collision_fire(npc_name)
+local function torch_interaction(torch)
+  map:start_dialog("torch.need_lamp")
+end
 
-  if string.find(npc_name, "^torch") then
+-- Called when fire touches a torch.
+local function torch_collision_fire(torch)
 
-    local torch_sprite = map:npc_get_sprite(npc_name)
-    if torch_sprite:get_animation() == "unlit" then
-      -- temporarily light the torch up
-      torch_sprite:set_animation("lit")
+  local torch_sprite = torch:get_sprite()
+  if torch_sprite:get_animation() == "unlit" then
+    -- temporarily light the torch up
+    torch_sprite:set_animation("lit")
+    check_torches()
+    torches_timers[npc_name] = sol.timer.start(torches_delay, function()
+      torch_sprite:set_animation("unlit")
+      if distant_switch_1:is_enabled() then
+        map:set_entities_enabled("switch_floor", false)
+        map:set_entities_enabled("distant_switch", false)
+        sol.audio.play_sound("door_closed")
+      end
       check_torches()
-      torches_timers[npc_name] = sol.timer.start(torches_delay, function()
-        torch_sprite:set_animation("unlit")
-	if switch_1:is_enabled() then
-	  map:set_entities_enabled("switch_floor", false)
-	  map:set_entities_enabled("switch", false)
-	  sol.audio.play_sound("door_closed")
-	end
-        check_torches()
-      end)
-    end
+    end)
   end
 end
 
 local function unlight_torches()
 
   for i = 1, 4 do
-    map:npc_get_sprite("torch_" .. i):set_animation("unlit")
+    map:get_entity("torch_" .. i):get_sprite():set_animation("unlit")
   end
   for _, t in ipairs(torches_timers) do t:stop() end
 end
@@ -195,8 +181,6 @@ local function check_torches()
     return
   end
 
-  --print("torches on:", #on)
-
   if #on == #states then
    -- all torches are on
     if torches_error then
@@ -205,7 +189,6 @@ local function check_torches()
       torches_next = nil
       torches_nb_on = 0
       unlight_torches()
-      --print("wrong")
     else
       torches_solved()
       torches_next = on[1] % #states + 1
@@ -215,13 +198,10 @@ local function check_torches()
     -- no torch is on
     torches_error = false
     torches_next = nil
-    --print("no torch is on")
 
   elseif #on == 1 then
-    --print("a first torch is on: ", on[1])
     torches_error = false
     torches_next = on[1] % #states + 1
-    --print("next should be ", torches_next)
 
   elseif not torches_error then
 
@@ -230,11 +210,8 @@ local function check_torches()
       if states[torches_next] then
         -- it's the correct one
         torches_next = torches_next % #states + 1
-        --print("another torch is on, it's the correct one")
-	--print("next should be ", torches_next)
       else
 	torches_error = true
-        --print("another torch is on, it's a wrong one")
       end
     end
   end
@@ -262,13 +239,11 @@ local function create_stone()
 
   map:create_destructible("black_stone", x, y, 0, {
     treasure_item = "_none",
-    destruction_callback = on_stone_destroyed})
+    destruction_callback = function()
+      allow_stone_creation = true
+    end
+  })
   allow_stone_creation = false
-end
-
-local function on_stone_destroyed()
-
-  allow_stone_creation = true
 end
 
 local function torches_solved()
@@ -284,17 +259,21 @@ local function torches_solved()
     sol.audio.play_sound("secret")
     sol.audio.play_sound("door_open")
     map:set_entities_enabled("switch_floor", true)
-    map:set_entities_enabled("switch", true)
+    map:set_entities_enabled("distant_switch", true)
     for i = 1, 4 do
-      map:get_entity("switch_" .. i):set_activated(false)
+      map:get_entity("distant_switch_" .. i):set_activated(false)
       bonuses_done[i] = nil
     end
   end
 end
 
-function map:on_switch_activated(switch_name)
+for _, switch in ipairs(map:get_entities("distance_switch")) do
+  switch.on_activated = distant_switch_activated
+end
 
-  -- deterministic verion: local index = tonumber(switch_name:match("^switch_([1-4])$"))
+local function distant_switch_activated(switch)
+
+  -- deterministic version: local index = tonumber(switch_name:match("^distant_switch_([1-4])$"))
 
   local index
   repeat

@@ -41,6 +41,11 @@ function sol.main:on_key_pressed(key, modifiers)
   end
 end
 
+function sol.main:on_character_pressed(character)
+
+  console:on_character_pressed(character)
+end
+
 function sol.main:on_post_draw(dst_surface)
 
   if console.enabled then

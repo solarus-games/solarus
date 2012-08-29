@@ -675,7 +675,7 @@ bool InputEvent::is_direction_pressed() {
 bool InputEvent::is_non_direction_pressed() {
 
   return is_pressed()
-    && !!is_direction_pressed();
+    && !is_direction_pressed();
 }
 
 /**

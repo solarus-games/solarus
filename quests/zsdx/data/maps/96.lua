@@ -6,13 +6,13 @@ local door3_flag = false
 local init_evil_tiles = sol.main.load_file("maps/evil_tiles")
 init_evil_tiles(map)
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   map:set_doors_open("door1", true)
   map:set_doors_open("door2", true)
   map:set_entities_enabled("evil_tile_", false)
 
-  if destination_point:get_name() == "entrance_F_1" then
+  if destination:get_name() == "entrance_F_1" then
     sensor1:set_enabled(false)
     map:set_doors_open("door3", true)
     switch1_1:set_activated(true)

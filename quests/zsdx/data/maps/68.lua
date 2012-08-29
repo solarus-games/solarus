@@ -121,7 +121,7 @@ local function drain_water_step_4()
   set_water_drained(current_pool_index)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- initialize all pools
   for i, pool in ipairs(pools) do

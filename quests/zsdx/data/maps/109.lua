@@ -1,7 +1,7 @@
 local map = ...
 -- Dungeon 9 5F
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   map:set_doors_open("door_b", true)
   map:set_doors_open("door_c", true)

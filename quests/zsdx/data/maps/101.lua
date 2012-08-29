@@ -9,7 +9,7 @@ local directions = {
 local door_a_allow_close = true
 local door_b_allow_close = true
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   map:set_entities_enabled("pipe_over", false)
   map:set_entities_enabled("pipe_under", true)
@@ -21,10 +21,10 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name() == "from_outside" then
+  if destination:get_name() == "from_outside" then
     map:start_dialog("dungeon_7.welcome")
   end
 end

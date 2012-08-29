@@ -12,10 +12,10 @@ local function remove_stone_lock()
 end
 
 -- Function called when the map starts
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- game ending sequence
-  if destination_point:get_name() == "from_ending" then
+  if destination ~= nil and destination:get_name() == "from_ending" then
     hero:freeze()
     hero:set_visible(false)
     map:get_game():set_hud_enabled(false)
@@ -62,25 +62,26 @@ function map:on_started(destination_point)
   end
 
   -- Entrances of houses.
-  local entrances = {
+  local entrance_names = {
     "rupee_house", "lyly"
   }
   for _, entrance_name in ipairs(entrance_names) do
     local sensor = map:get_entity(entrance_name .. "_door_sensor")
     local tile = map:get_entity(entrance_name .. "_door")
 
-    sensor:on_activated_repeat = function()
-    if hero:get_direction() == 1
-        and tile:is_enabled() then
-      tile:set_enabled(false)
-      sol.audio.play_sound("door_open")
+    sensor.on_activated_repeat = function()
+      if hero:get_direction() == 1
+	  and tile:is_enabled() then
+	tile:set_enabled(false)
+	sol.audio.play_sound("door_open")
+      end
     end
   end
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
-  if destination_point:get_name() == "from_ending" then
+  if destination ~= nil and destination:get_name() == "from_ending" then
     map:start_dialog("credits_2", function()
       sol.timer.start(2000, function()
 	hero:teleport(56, "from_ending")

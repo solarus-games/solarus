@@ -12,7 +12,7 @@ local map = ...
 -- BB: Barrier Button
 -- DS: Door Sensor
 
-function map:on_started(destination_point)
+function map:on_started(destination)
   map:set_doors_open("LD12", true)
   if map:get_game():get_boolean(725) then
     STT5:set_enabled(false)

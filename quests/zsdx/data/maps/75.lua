@@ -22,7 +22,7 @@ local rewards = {
   {item_name = "croissant", variant = 1, savegame_variable = -1}
 }
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if not map:get_game():is_dungeon_finished(6) then
     mini_game_npc:remove()

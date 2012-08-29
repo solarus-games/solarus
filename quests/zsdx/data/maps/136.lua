@@ -16,7 +16,7 @@ local function change_holes(enable_b)
   map:set_entities_enabled("hole_b", enable_b)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   change_holes(false)
 end

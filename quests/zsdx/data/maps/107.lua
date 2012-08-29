@@ -3,7 +3,7 @@ local map = ...
 
 local fighting_miniboss = false
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- miniboss
   map:set_entities_enabled("miniboss_enemy", false)

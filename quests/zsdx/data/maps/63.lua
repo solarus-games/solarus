@@ -46,7 +46,7 @@ local function puzzle_solved()
     end)
   end)
 end
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   init_guard(guard_3, {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,4,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0})
 
@@ -63,12 +63,12 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name() == "from_roof"
-      or destination_point:get_name() == "from_outside_w"
-      or destination_point:get_name() == "from_outside_e" then
+  if destination:get_name() == "from_roof"
+      or destination:get_name() == "from_outside_w"
+      or destination:get_name() == "from_outside_e" then
     map:start_dialog("dungeon_5.welcome")
   end
 end

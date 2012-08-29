@@ -39,7 +39,7 @@ local function open_hidden_door()
   map:set_entities_enabled("hidden_door_open", true)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- west barrier
   if map:get_game():get_boolean(78) then
@@ -62,10 +62,10 @@ function map:on_started(destination_point)
   map:set_doors_open("miniboss_door", true)
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name() == "from_outside" then
+  if destination:get_name() == "from_outside" then
     map:start_dialog("dungeon_2")
   end
 end

@@ -58,14 +58,14 @@ local function billy_leave()
   end
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if map:get_game():get_boolean(134) then
     -- the player has already given the golden bars and obtained the edelweiss
     billy:remove()
   end
 
-  if destination_point:get_name() ~= "from_outside" then
+  if destination:get_name() ~= "from_outside" then
     map:set_doors_open("door", true)
   end
 end

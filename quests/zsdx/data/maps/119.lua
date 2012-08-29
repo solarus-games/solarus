@@ -4,10 +4,10 @@ local map = ...
 local fighting_boss = false
 local arrows_timer
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   local new_music = nil
-  if destination_point:get_name() == "from_ending" then
+  if destination:get_name() == "from_ending" then
     -- game ending sequence
     hero:freeze()
     hero:set_visible(false)
@@ -25,7 +25,7 @@ function map:on_started(destination_point)
     end
 
     -- boss fight
-    if destination_point:get_name() == "from_dungeon_10_5f" then
+    if destination:get_name() == "from_dungeon_10_5f" then
 
       if not map:get_game():get_boolean(299) then
 	-- boss not killed yet
@@ -48,9 +48,9 @@ function map:on_started(destination_point)
   sol.audio.play_music(new_music)
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
-  if destination_point:get_name() == "from_ending" then
+  if destination:get_name() == "from_ending" then
     map:start_dialog("credits_6", function()
       sol.timer.start(2000, function()
         hero:teleport(131, "from_ending")

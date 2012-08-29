@@ -18,7 +18,7 @@ local function lock_torches()
   torch4:remove()
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   map:set_light(1)
 
@@ -32,7 +32,7 @@ function map:on_started(destination_point)
     block_saved:set_enabled(false)
   end
 
-  if destination_point:get_name() ~= "main_entrance" then
+  if destination:get_name() ~= "main_entrance" then
     map:set_doors_open("eye_door", true)
   end
 
@@ -54,9 +54,9 @@ function weak_door:on_open()
   sol.audio.play_sound("secret")
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
-  if destination_point:get_name() == "main_entrance" then
+  if destination:get_name() == "main_entrance" then
     map:start_dialog("dungeon_10.welcome")
   end
 end

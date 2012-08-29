@@ -54,7 +54,7 @@ local function start_moving_tom()
   tom:get_sprite():set_animation("walking")
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   tom_initial_x, tom_initial_y = tom:get_position()
 

@@ -17,9 +17,9 @@ local function wake_up()
   end)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
-  if destination_point:get_name() == "from_intro" then
+  if destination:get_name() == "from_intro" then
     -- the intro scene is playing
     map:get_game():set_hud_enabled(true)
     map:set_pause_enabled(false)

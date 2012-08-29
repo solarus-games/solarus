@@ -23,7 +23,7 @@ local function lock_torches()
   torch_4:remove()
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- pipe maze
   map:set_entities_enabled("pipe_border", false)
@@ -70,7 +70,7 @@ function map:on_started(destination_point)
   map:set_entities_enabled("miniboss_enemy", false)
 
   -- save the north-west door from 1F
-  if destination_point:get_name() == "from_1f_ne" then
+  if destination:get_name() == "from_1f_ne" then
     map:get_game():set_boolean(621, true)
   end
 

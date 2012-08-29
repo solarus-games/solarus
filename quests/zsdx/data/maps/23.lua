@@ -14,7 +14,7 @@ local function close_sw_door()
   nw_switch:set_activated(false)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   map_chest:set_enabled(false)
   compass_chest:set_enabled(false)
@@ -25,10 +25,10 @@ function map:on_started(destination_point)
   close_sw_door_sensor:set_enabled(false)
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name() == "from_outside" then
+  if destination:get_name() == "from_outside" then
     map:start_dialog("dungeon_1")
   end
 end

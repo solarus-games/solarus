@@ -47,7 +47,7 @@ local function explode_block2()
   block2_1:set_enabled(false)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if map:get_game():get_boolean(205) then
     block1_1:set_enabled(false)

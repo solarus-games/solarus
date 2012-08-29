@@ -58,7 +58,7 @@ local function remove_1f_e_water()
   map:get_game():set_boolean(122, true)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if map:get_game():get_boolean(127) then
     -- the barrier of the compass chest is removed
@@ -96,10 +96,10 @@ function map:on_started(destination_point)
 end
 
 -- Called when the opening transition of the map finished
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name() == "from_outside" then
+  if destination:get_name() == "from_outside" then
     map:start_dialog("dungeon_3")
   end
 end

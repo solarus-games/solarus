@@ -31,7 +31,7 @@ local function repeat_lava_spawner()
   end
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   map:set_doors_open("ne_door", true)
   map:set_doors_open("boss_door", true)

@@ -16,10 +16,10 @@ local function lock_torches()
   torch_2:remove()
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- game ending sequence
-  if destination_point:get_name() == "from_ending" then
+  if destination:get_name() == "from_ending" then
     hero:freeze()
     hero:set_visible(false)
     map:get_game():set_hud_enabled(false)
@@ -39,9 +39,9 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
-  if destination_point:get_name() == "from_ending" then
+  if destination:get_name() == "from_ending" then
     map:start_dialog("credits_3", function()
       sol.timer.start(2000, function()
         hero:teleport(89, "from_ending")

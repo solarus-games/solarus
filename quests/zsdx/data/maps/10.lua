@@ -14,7 +14,7 @@ local function show_vine()
   sprite:set_paused(false)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- enable dark world
   if map:get_game():get_boolean(905) then

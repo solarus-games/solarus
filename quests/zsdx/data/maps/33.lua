@@ -1,9 +1,9 @@
 local map = ...
 -- Cave of the hole near the flower
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
-  if destination_point:get_name() ~= "main_entrance" then
+  if destination:get_name() ~= "main_entrance" then
     map:set_doors_open("door", true)
   end
 end

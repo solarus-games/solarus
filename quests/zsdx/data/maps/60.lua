@@ -3,7 +3,7 @@ local map = ...
 
 local fighting_boss = false
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if map:get_game():get_boolean(412) then
     weak_floor:set_enabled(false)
@@ -16,10 +16,10 @@ function map:on_started(destination_point)
   map:set_doors_open("final_room_door", true)
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name() == "from_outside" then
+  if destination:get_name() == "from_outside" then
     map:start_dialog("dungeon_4.welcome")
   end
 end

@@ -38,7 +38,7 @@ local function apples_question_finished(answer)
   end
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if not has_obtained_bottle() or not map:get_game():is_dungeon_finished(1) then
     apple_pie:remove()

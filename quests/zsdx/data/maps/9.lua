@@ -3,7 +3,7 @@ local map = ...
 
 local fighting_boss = false -- Agahnim
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   local new_music = nil
 
@@ -23,7 +23,7 @@ function map:on_started(destination_point)
     map:set_entities_enabled("teletransporter_lw", false)
 
     -- Agahnim fight
-    if destination_point:get_name() == "from_dungeon_5_2F_ne"
+    if destination:get_name() == "from_dungeon_5_2F_ne"
         and map:get_game():get_boolean(507)
         and not map:get_game():get_boolean(520) then
 

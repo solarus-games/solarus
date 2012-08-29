@@ -21,7 +21,7 @@ local function next_fresco()
   end
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
   hero:freeze()
   map:get_game():set_hud_enabled(false)
   map:set_pause_enabled(false)

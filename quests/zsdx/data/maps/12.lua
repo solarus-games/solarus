@@ -25,7 +25,7 @@ local function give_world_map()
   hero:start_treasure("world_map", 1, 33)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if map:get_game():get_boolean(37) then -- if the Lyriann cave is finished
     map:set_doors_open("door", map:get_game():is_dungeon_finished(1)) -- don't allow the player to obtain the bow until the first dungeon is finished

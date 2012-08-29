@@ -6,10 +6,10 @@ local function remove_dungeon_7_lock()
   map:set_entities_enabled("dungeon_7_lock_tile", false)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- game ending sequence
-  if destination_point:get_name() == "from_ending" then
+  if destination:get_name() == "from_ending" then
     hero:freeze()
     hero:set_visible(false)
     map:get_game():set_hud_enabled(false)
@@ -28,9 +28,9 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
-  if destination_point:get_name() == "from_ending" then
+  if destination:get_name() == "from_ending" then
     map:start_dialog("credits_1", function()
       sol.timer.start(2000, function()
 	hero:teleport(4, "from_ending")

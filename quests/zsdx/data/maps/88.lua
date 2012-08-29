@@ -1,9 +1,9 @@
 local map = ...
 -- Castle B1
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
-  if destination_point:get_name() == "from_outside_hole" then
+  if destination:get_name() == "from_outside_hole" then
     hero:set_direction(2)
   end
 end

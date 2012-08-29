@@ -14,7 +14,7 @@ local map = ...
 
 local fighting_boss = false
 
-function map:on_started(destination_point)
+function map:on_started(destination)
   map:set_doors_open("LD1", true)
   map:set_doors_open("LD3", true)
   map:set_doors_open("LD4", true)
@@ -37,11 +37,11 @@ function map:on_started(destination_point)
     map:set_entities_enabled("LO2", false)
   end
 
-  if destination_point:get_name() == "from_boss" or destination_point:get_name() == "from_hidden_room" then
+  if destination:get_name() == "from_boss" or destination:get_name() == "from_hidden_room" then
     map:set_doors_open("LD5", true)
   end
 
-  if destination_point:get_name() == "from_hidden_room" then
+  if destination:get_name() == "from_hidden_room" then
     map:remove_entities("room_LD5_enemy")
   end
 
@@ -61,8 +61,8 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_opening_transition_finished(destination_point)
-  if destination_point:get_name() == "from_outside" then
+function map:on_opening_transition_finished(destination)
+  if destination:get_name() == "from_outside" then
     map:start_dialog("dungeon_8.welcome")
   end
 end

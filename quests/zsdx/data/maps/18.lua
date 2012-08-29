@@ -1,7 +1,7 @@
 local map = ...
 -- Lyriann Shop
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if map:get_game():is_dungeon_finished(4)
       and (not map:get_game():get_boolean(938)

@@ -21,7 +21,7 @@ end
 
 -- Function called when the map starts.
 -- The NPCs are initialized.
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- enable dark world
   if map:get_game():get_boolean(905) then

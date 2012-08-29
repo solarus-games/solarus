@@ -7,7 +7,7 @@ local directions = {
   0, 1, 2, 1, 0, 1, 2, 3, 2, 1, 0, 3, 0, 1, 0
 }
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if map:get_game():get_boolean(139) then
     secret_way:set_enabled(false)

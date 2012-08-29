@@ -8,7 +8,7 @@ local puzzle_b_nb_activated = 0
 -- torches and bridges
 local nb_torches_lit = 0
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- hidden Gibdo and chest
   map:set_entities_enabled("hidden_enemy", false)
@@ -28,14 +28,14 @@ function map:on_started(destination_point)
   map:set_entities_enabled("puzzle_a_green", false)
 
   -- puzzle B
-  if destination_point:get_name() == "from_b1_w"
-      or destination_point:get_name() == "from_b1_e" then
+  if destination:get_name() == "from_b1_w"
+      or destination:get_name() == "from_b1_e" then
     map:set_doors_open("puzzle_b_door", true)
     puzzle_b_door_switch:set_activated(true)
   end
 
   -- south door
-  if destination_point:get_name() ~= "from_outside" then
+  if destination:get_name() ~= "from_outside" then
     map:set_doors_open("s_door", true)
   end
 
@@ -73,10 +73,10 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name() == "from_outside" then
+  if destination:get_name() == "from_outside" then
     map:start_dialog("dungeon_9.welcome")
   end
 end

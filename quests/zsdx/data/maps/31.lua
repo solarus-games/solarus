@@ -116,7 +116,7 @@ local function boss_restore_floor(with_arrows)
   end
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   boss_key_chest:set_enabled(false)
 
@@ -130,7 +130,7 @@ function map:on_started(destination_point)
   end
 
   map:set_doors_open("boss_door", true)
-  if destination_point:get_name() == "from_final_room"
+  if destination:get_name() == "from_final_room"
       or map:get_game():get_boolean(103) then
     map:set_doors_open("final_room_door", true)
   end

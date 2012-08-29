@@ -1,7 +1,7 @@
 local map = ...
 -- Dungeon 3 final room
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
   local solarus_child_sprite = solarus_child:get_sprite()
   solarus_child:set_position(160, 165)
   solarus_child_sprite:set_animation("stopped")

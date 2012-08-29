@@ -1,7 +1,7 @@
 local map = ...
 -- Bomb cave 2F
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   map:set_doors_open("door", true)
   if map:get_game():get_boolean(130) then
@@ -12,9 +12,9 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
-  if destination_point:get_name() == "from_3F" then
+  if destination:get_name() == "from_3F" then
     map:close_doors("door")
   end
 end

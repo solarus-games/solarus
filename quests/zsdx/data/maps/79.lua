@@ -17,7 +17,7 @@ local function chest_empty(chest)
   end
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- piece of heart found
   for i = 1, 7 do

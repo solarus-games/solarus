@@ -13,7 +13,7 @@ local function lock_torches()
   torch_2:remove()
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if map:get_game():get_boolean(313) then
     -- the torches are lit
@@ -23,10 +23,10 @@ function map:on_started(destination_point)
   end
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name() == "from_outside" then
+  if destination:get_name() == "from_outside" then
     map:start_dialog("dungeon_6.welcome")
   end
 end

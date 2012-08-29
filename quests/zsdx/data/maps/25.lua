@@ -3,17 +3,17 @@ local map = ...
 
 local fighting_miniboss = false
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   boss_key_chest:set_enabled(false)
   map:set_doors_open("stairs_door", true)
   map:set_doors_open("miniboss_door", true)
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name() == "from_outside" then
+  if destination:get_name() == "from_outside" then
     map:start_dialog("dungeon_1")
   end
 end

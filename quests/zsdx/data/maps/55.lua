@@ -31,7 +31,7 @@ local function remove_water_4()
   sol.audio.play_sound("secret")
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- weak floor
   if map:get_game():get_boolean(314) then

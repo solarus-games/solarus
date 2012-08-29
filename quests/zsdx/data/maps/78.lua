@@ -1,7 +1,7 @@
 local map = ...
 -- Fairy cave 2F
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if map:get_game():get_boolean(953) then
     barrier:set_enabled(false)

@@ -65,7 +65,7 @@ local function remove_c_water_6()
 end
 
 -- Called when the map starts
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if map:get_game():get_boolean(904) then
     -- the door before the five torches is open
@@ -106,10 +106,10 @@ function map:on_started(destination_point)
 end
 
 -- Called when the opening transition of the map finished
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name() == "from_outside" then
+  if destination:get_name() == "from_outside" then
     map:start_dialog("dungeon_3")
   end
 end

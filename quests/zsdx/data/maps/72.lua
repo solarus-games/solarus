@@ -1,7 +1,7 @@
 local map = ...
 -- Smith cave (battle against the thiefs)
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   map:set_doors_open("door", true)
   map:set_entities_enabled("enemy", false)

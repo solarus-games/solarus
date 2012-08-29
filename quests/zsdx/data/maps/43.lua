@@ -4,11 +4,11 @@ local map = ...
 local fighting_miniboss = false
 local fighting_boss = false
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   map:set_doors_open("miniboss_door", true)
   map:set_doors_open("boss_door", true)
-  if destination_point:get_name() == "from_5f_c"
+  if destination:get_name() == "from_5f_c"
       or map:get_game():get_boolean(903) then
     map:set_doors_open("final_room_door", true)
   end

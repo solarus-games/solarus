@@ -3,9 +3,9 @@ local map = ...
 
 local door_timer
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
-  if destination_point:get_name() == "from_1f_w" then
+  if destination:get_name() == "from_1f_w" then
     map:set_doors_open("door", true)
     door_switch:set_activated(true)
   end

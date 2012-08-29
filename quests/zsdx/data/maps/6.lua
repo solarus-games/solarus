@@ -11,7 +11,7 @@ local function is_beaumont_cave_open()
   return map:get_game():get_boolean(153)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- enable dark world
   if map:get_game():get_boolean(905) then

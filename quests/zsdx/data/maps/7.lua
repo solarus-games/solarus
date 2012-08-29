@@ -31,7 +31,7 @@ local function inferno_set_open()
   to_dungeon_6:set_enabled(true)
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- enable dark world
   if map:get_game():get_boolean(905) then

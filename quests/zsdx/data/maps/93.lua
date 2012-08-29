@@ -28,7 +28,7 @@ local function are_all_torches_on()
       and torch_4:get_sprite():get_animation() == "lit"
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if has_fairy_appeared() then
     show_fairy()

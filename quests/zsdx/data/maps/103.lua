@@ -16,7 +16,7 @@ local current_door = nil -- current door during a camera movement
 local door_timers = {} -- doors that currently have a timer running
 local arrows_timer
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- block fallen into the hole
   if map:get_game():get_boolean(623) then

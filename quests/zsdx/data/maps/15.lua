@@ -5,7 +5,7 @@ local frozen_door_sprite = nil
 local frozen_door_opposite_sprite = nil
 
 -- Function called when the map starts
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   if map:get_game():get_boolean(35) then
     -- remove the frozen door

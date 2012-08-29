@@ -3,7 +3,7 @@ local map = ...
 
 local chest_a_timer
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- chest A
   if map:get_game():get_boolean(872) then

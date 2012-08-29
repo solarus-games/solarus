@@ -56,9 +56,9 @@ local function init_guards()
       2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2})
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
-  if destination_point:get_name() == "from_outside_hole" then
+  if destination:get_name() == "from_outside_hole" then
     hero:set_direction(2)
   end
 
@@ -94,7 +94,7 @@ function map:on_started(destination_point)
 
   -- initialize doors
   local i = 1
-  if destination_point:get_name() == "prison" then
+  if destination:get_name() == "prison" then
     i = math.random(#door_sets)
   end
   for _, door in ipairs(door_sets[i]) do
@@ -109,10 +109,10 @@ function map:init_prison()
   prison_2_lock:set_position(648, 325)
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name() == "from_outside_hole" then
+  if destination:get_name() == "from_outside_hole" then
     map:start_dialog("dungeon_5.welcome")
   end
 end

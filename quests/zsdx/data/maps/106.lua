@@ -22,7 +22,7 @@ local function ne_puzzle_set_step(step)
   end
 end
 
-function map:on_started(destination_point)
+function map:on_started(destination)
 
   -- north barrier
   if map:get_game():get_boolean(812) then
@@ -32,13 +32,13 @@ function map:on_started(destination_point)
 
   -- enemies rooms
   map:set_doors_open("door_c", true)
-  if destination_point:get_name() ~= "from_3f_e"
-      and destination_point ~= "from_outside_e" then
+  if destination:get_name() ~= "from_3f_e"
+      and destination ~= "from_outside_e" then
     map:set_doors_open("door_b", true)
   end
 
   -- north-east room
-  if destination_point:get_name() == "from_3f_e" then
+  if destination:get_name() == "from_3f_e" then
     map:set_doors_open("door_a", true)
     ne_puzzle_set_step(5)
   else
@@ -55,7 +55,7 @@ function map:on_started(destination_point)
   end
 
   -- clockwise switches and next doors
-  if destination_point:get_name() ~= "from_1f" then
+  if destination:get_name() ~= "from_1f" then
     map:set_doors_open("door_d", true)
     map:set_doors_open("door_e", true)
     door_e_switch:set_activated(true)
@@ -68,10 +68,10 @@ function map:on_started(destination_point)
   map:set_entities_enabled("bridge", false)
 end
 
-function map:on_opening_transition_finished(destination_point)
+function map:on_opening_transition_finished(destination)
 
   -- show the welcome message
-  if destination_point:get_name():find("^from_outside") then
+  if destination:get_name():find("^from_outside") then
     map:start_dialog("dungeon_9.welcome")
   end
 end

@@ -1,14 +1,13 @@
 -- A Lua console that can be enabled with F12 at any time during the program.
 
--- TODO: improve the console
--- - implement a history
--- - interrupt keys pressed
-
 local console = {
   enabled = false,         -- Indicates whether the console is shown.
   color = { 64, 64, 64 },  -- Background color of the console area.
-  input_characters = { },  -- Characters shown, stored as an array of UTF-8 strings
-                           -- (this is necessary to be able to erase the last one).
+  history = { {} },        -- An array of commands typed (the last one is the current one).
+                           -- Each command as an array of UTF-8 strings
+                           -- (this is necessary to be able to erase characters).
+  history_capacity = 50,   -- Maximum size of the history.
+  history_position = 1,    -- Current position when browsing the history.
   input_text_surface = sol.text_surface.create{
     font = "fixed"
   },
@@ -41,28 +40,32 @@ end
 
 function console:build_input_text()
 
-  local text = "> " .. table.concat(self.input_characters)
+  local text = "> " .. table.concat(self.history[self.history_position])
   self.input_text_surface:set_text(text)
 end
 
 function console:clear()
-  self.input_characters = {}
+
+  self.history[self.history_position] = {}
   self:build_input_text()
   self:set_output_text("")
 end
 
 function console:append_input_character(character)
-  self.input_characters[#self.input_characters + 1] = character
+
+  local characters = self.history[self.history_position]
+  characters[#characters + 1] = character
   self:build_input_text()
 end
 
 function console:remove_input_character(index)
 
+  local characters = self.history[self.history_position]
   if index == nil then
-    index = #self.input_characters
+    index = #characters
   end
 
-  table.remove(self.input_characters, index)
+  table.remove(characters, index)
   self:build_input_text()
 end
 
@@ -86,6 +89,12 @@ function console:on_key_pressed(key, modifiers)
     else
       self:execute_code()
     end
+    handled = true
+  elseif key == "up" then
+    self:history_up()
+    handled = true
+  elseif key == "down" then
+    self:history_down()
     handled = true
   end
 
@@ -116,6 +125,8 @@ function console:on_draw(dst_surface)
 end
 
 function console:execute_code()
+
+  self:history_add_command()
 
   -- Set up an environment that gives access to the game, the map and the entities.
   local environment = {}
@@ -177,6 +188,49 @@ function console.print(...)
     end
   end
   console:set_output_text(text)
+end
+
+function console:history_up()
+
+  if self:get_output_text() ~= "" then
+    self:clear()
+  end
+
+  if self.history_position > 1 then
+    self.history_position = self.history_position - 1
+    self:build_input_text()
+  end
+end
+
+function console:history_down()
+
+  if self:get_output_text() ~= "" then
+    self:clear()
+  end
+
+  if self.history_position < #self.history then
+    self.history_position = self.history_position + 1
+    self:build_input_text()
+  end
+end
+
+function console:history_add_command()
+
+  if #self.history >= self.history_capacity then
+    table.remove(self.history, 1)
+  end
+
+  if self.history_position < #self.history then
+    -- We are browsing the history: save the selected command as the current one.
+    local copy = {}
+    for _, character in ipairs(self.history[self.history_position]) do
+      copy[#copy + 1] = character
+    end
+    self.history[#self.history] = copy
+  end
+  -- Create a new empty command.
+  self.history_position = #self.history + 1
+  self.history[self.history_position] = {}
 end
 
 return console

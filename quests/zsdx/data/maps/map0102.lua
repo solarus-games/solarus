@@ -5,6 +5,24 @@ local fighting_miniboss = false
 local code_nb_activated = 0
 local code_next_index = 1
 
+-- Returns whether all torches are on
+local function are_all_torches_on()
+
+  return torch_1:exists()
+      and torch_1:get_sprite():get_animation() == "lit"
+      and torch_2:get_sprite():get_animation() == "lit"
+      and torch_3:get_sprite():get_animation() == "lit"
+      and torch_4:get_sprite():get_animation() == "lit"
+end
+
+-- Makes all torches on forever
+local function lock_torches()
+  torch_1:remove()
+  torch_2:remove()
+  torch_3:remove()
+  torch_4:remove()
+end
+
 function map:on_started(destination_point)
 
   -- pipe maze
@@ -104,10 +122,6 @@ function start_miniboss_sensor:on_activated()
 end
 
 -- pipes
-for _, sensor in ipairs(map:get_entities("pipe_in_")) do
-  sensor:on_activated = pipe_sensor_in_activated
-end
-
 local function pipe_sensor_in_activated(sensor)
 
   local pipe = sensor:get_name():match("^pipe_in_([a-z])_sensor")
@@ -119,9 +133,8 @@ local function pipe_sensor_in_activated(sensor)
     hero:set_visible(true)
   end
 end
-
-for _, sensor in ipairs(map:get_entities("pipe_out_")) do
-  sensor:on_activated = pipe_sensor_out_activated
+for _, sensor in ipairs(map:get_entities("pipe_in_")) do
+  sensor:on_activated = pipe_sensor_in_activated
 end
 
 local function pipe_sensor_out_activated(sensor)
@@ -134,9 +147,8 @@ local function pipe_sensor_out_activated(sensor)
     map:set_entities_enabled("pipe_border_" .. pipe, false)
   end
 end
-
-for _, sensor in ipairs(map:get_entities("hide_hero_sensor")) do
-  sensor:on_activated = hide_hero_sensor_activated
+for _, sensor in ipairs(map:get_entities("pipe_out_")) do
+  sensor:on_activated = pipe_sensor_out_activated
 end
 
 local function hide_hero_sensor_activated(sensor)
@@ -145,14 +157,17 @@ local function hide_hero_sensor_activated(sensor)
   hero:set_visible(false)
 end
 
-for _, sensor in ipairs(map:get_entities("unhide_hero_sensor")) do
-  sensor:on_activated = unhide_hero_sensor_activated
+for _, sensor in ipairs(map:get_entities("hide_hero_sensor")) do
+  sensor:on_activated = hide_hero_sensor_activated
 end
 
 local function unhide_hero_sensor_activated(sensor)
 
   -- unhide the hero
   hero:set_visible(true)
+end
+for _, sensor in ipairs(map:get_entities("unhide_hero_sensor")) do
+  sensor:on_activated = unhide_hero_sensor_activated
 end
 
 -- door F
@@ -181,10 +196,6 @@ function shortcut_switch:on_activated()
 end
 
 -- code
-for _, switch in ipairs(map:get_entities("code_switch_")) do
-  switch.on_activated = code_switch_activated
-end
-
 local function code_switch_activated(switch)
 
   local index = tonumber(string.match(switch:get_name(), "^code_switch_([1-8])$"))
@@ -222,6 +233,9 @@ local function code_switch_activated(switch)
     end
   end
 end
+for _, switch in ipairs(map:get_entities("code_switch_")) do
+  switch.on_activated = code_switch_activated
+end
 
 function door_b:on_open()
 
@@ -233,9 +247,6 @@ function door_b:on_open()
 end
 
 -- west enemies room
-for _, enemy in ipairs(map:get_entitites("w_room_enemy")) do
-  enemy.on_dead = w_room_enemy_dead
-end
 local function w_room_enemy_dead(enemy)
 
   if not map:has_entities("w_room_enemy") then
@@ -248,11 +259,11 @@ local function w_room_enemy_dead(enemy)
     end
   end
 end
-
-  -- miniboss
-for _, enemy in ipairs(map:get_entitites("miniboss_enemy")) do
-  enemy.on_dead = miniboss_enemy_dead
+for _, enemy in ipairs(map:get_entitites("w_room_enemy")) do
+  enemy.on_dead = w_room_enemy_dead
 end
+
+-- miniboss
 local function miniboss_enemy_dead(enemy)
 
   if not map:has_entities("miniboss_enemy") then
@@ -263,23 +274,8 @@ local function miniboss_enemy_dead(enemy)
     map:get_game():set_boolean(620, true)
   end
 end
-
--- Returns whether all torches are on
-local function are_all_torches_on()
-
-  return torch_1:exists()
-      and torch_1:get_sprite():get_animation() == "lit"
-      and torch_2:get_sprite():get_animation() == "lit"
-      and torch_3:get_sprite():get_animation() == "lit"
-      and torch_4:get_sprite():get_animation() == "lit"
-end
-
--- Makes all torches on forever
-local function lock_torches()
-  torch_1:remove()
-  torch_2:remove()
-  torch_3:remove()
-  torch_4:remove()
+for _, enemy in ipairs(map:get_entitites("miniboss_enemy")) do
+  enemy.on_dead = miniboss_enemy_dead
 end
 
 function map:on_update()

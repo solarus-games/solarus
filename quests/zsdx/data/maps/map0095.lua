@@ -1,10 +1,6 @@
 local map = ...
 -- Potion shop
 
-red_potion.on_buying = potion_buying
-green_potion.on_buying = potion_buying
-blue_potion.on_buying = potion_buying
-
 local function potion_buying(shop_item)
 
   local bottle_2 = map:get_game():get_item("bottle_2")
@@ -21,6 +17,9 @@ local function potion_buying(shop_item)
 
   return true
 end
+red_potion.on_buying = potion_buying
+green_potion.on_buying = potion_buying
+blue_potion.on_buying = potion_buying
 
 function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 

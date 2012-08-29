@@ -1,6 +1,22 @@
 local map = ...
 -- Link's house
 
+local function jump_from_bed()
+  hero:set_visible(true)
+  hero:start_jumping(4, 24, true)
+  map:set_pause_enabled(true)
+  bed:get_sprite():set_animation("empty_open")
+  sol.audio.play_sound("hero_lands")
+end
+
+local function wake_up()
+  snores:remove()
+  bed:get_sprite():set_animation("hero_waking")
+  sol.timer.start(500, function()
+    jump_from_bed()
+  end)
+end
+
 function map:on_started(destination_point)
 
   if destination_point:get_name() == "from_intro" then
@@ -11,7 +27,7 @@ function map:on_started(destination_point)
     snores:get_sprite():set_ignore_suspend(true)
     bed:get_sprite():set_animation("hero_sleeping")
     hero:freeze()
-    map:hero_set_visible(false)
+    hero:set_visible(false)
     sol.timer.start(2000, function()
       map:set_dialog_variable("link_house.dream", map:get_game():get_player_name())
       map:start_dialog("link_house.dream", function()
@@ -23,22 +39,6 @@ function map:on_started(destination_point)
   else
     snores:remove()
   end
-end
-
-local function wake_up()
-  snores:remove()
-  bed:get_sprite():set_animation("hero_waking")
-  sol.timer.start(500, function()
-    jump_from_bed()
-  end)
-end
-
-local function jump_from_bed()
-  hero:set_visible(true)
-  hero:start_jumping(4, 24, true)
-  map:set_pause_enabled(true)
-  bed:get_sprite():set_animation("empty_open")
-  sol.audio.play_sound("hero_lands")
 end
 
 function weak_wall:on_open()

@@ -4,6 +4,56 @@ local map = ...
 local tom_initial_x = 0
 local tom_initial_y = 0
 
+local function has_seen_tom()
+  return map:get_game():get_boolean(47)
+end
+
+local function has_boomerang_of_tom()
+  return map:get_game():get_boolean(41)
+end
+
+local function has_finished_cavern()
+  -- the cavern is considered has finished if the player has found the heart container
+  return map:get_game():get_boolean(37)
+end
+
+local function tom_please_help_dialog_finished(answer)
+
+  map:get_game():set_boolean(47, true)
+  if answer == 0 then
+    map:start_dialog("lyriann_cave.tom.accept_help", function()
+      hero:start_treasure("boomerang", 1, 41)
+    end)
+  end
+end
+
+local function tom_go_back()
+
+  give_boomerang_back()
+  local x, y = tom:get_position()
+  if y ~= tom_initial_y then
+    local m = sol.movement.create("path")
+    m:set_path{2,2,2,2,2,2,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}
+    m:set_speed(48)
+    tom:start_movement(m)
+    tom_sprite:set_animation("walking")
+  end
+end
+
+local function give_boomerang_back()
+  map:get_game():get_item("boomerang"):set_variant(0)
+  map:get_game():set_boolean(41, false)
+end
+
+local function start_moving_tom()
+  local m = sol.movement.create("path")
+  m:set_path{0,0,0,0,6,6,6,6,6,6}
+  m:set_speed(48)
+  tom:set_position(88, 509)
+  tom:start_movement(m)
+  tom:get_sprite():set_animation("walking")
+end
+
 function map:on_started(destination_point)
 
   tom_initial_x, tom_initial_y = tom:get_position()
@@ -70,43 +120,6 @@ function tom:on_interaction()
   end
 end
 
-local function tom_please_help_dialog_finished(answer)
-
-  map:get_game():set_boolean(47, true)
-  if answer == 0 then
-    map:start_dialog("lyriann_cave.tom.accept_help", function()
-      hero:start_treasure("boomerang", 1, 41)
-    end)
-  end
-end
-
-local function tom_go_back()
-
-  give_boomerang_back()
-  local x, y = tom:get_position()
-  if y ~= tom_initial_y then
-    local m = sol.movement.create("path")
-    m:set_path{2,2,2,2,2,2,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}
-    m:set_speed(48)
-    tom:start_movement(m)
-    tom_sprite:set_animation("walking")
-  end
-end
-
-local function give_boomerang_back()
-  map:get_game():get_item("boomerang"):set_variant(0)
-  map:get_game():set_boolean(41, false)
-end
-
-local function start_moving_tom()
-  local m = sol.movement.create("path")
-  m:set_path{0,0,0,0,6,6,6,6,6,6}
-  m:set_speed(48)
-  tom:set_position(88, 509)
-  tom:start_movement(m)
-  tom:get_sprite():set_animation("walking")
-end
-
 function tom:on_movement_finished()
 
   if has_boomerang_of_tom() then
@@ -132,18 +145,5 @@ function leave_cavern_sensor:on_activated()
       sol.timer.start(1700, start_moving_tom)
     end)
   end
-end
-
-local function has_seen_tom()
-  return map:get_game():get_boolean(47)
-end
-
-local function has_boomerang_of_tom()
-  return map:get_game():get_boolean(41)
-end
-
-local function has_finished_cavern()
-  -- the cavern is considered has finished if the player has found the heart container
-  return map:get_game():get_boolean(37)
 end
 

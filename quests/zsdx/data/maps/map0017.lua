@@ -1,6 +1,23 @@
 local map = ...
 -- Dungeon 10 1F
 
+local function are_all_torches_on()
+
+  return torch1:exists()
+    and torch1:get_sprite():get_animation() == "lit"
+    and torch2:get_sprite():get_animation() == "lit"
+    and torch3:get_sprite():get_animation() == "lit"
+    and torch4:get_sprite():get_animation() == "lit"
+end
+
+local function lock_torches()
+
+  torch1:remove()
+  torch2:remove()
+  torch3:remove()
+  torch4:remove()
+end
+
 function map:on_started(destination_point)
 
   map:set_light(1)
@@ -51,23 +68,6 @@ function eye_switch:on_activated()
     sol.audio.play_sound("secret")
     map:open_doors("eye_door")
   end
-end
-
-local function are_all_torches_on()
-
-  return torch1:exists()
-    and torch1:get_sprite():get_animation() == "lit"
-    and torch2:get_sprite():get_animation() == "lit"
-    and torch3:get_sprite():get_animation() == "lit"
-    and torch4:get_sprite():get_animation() == "lit"
-end
-
-local function lock_torches()
-
-  torch1:remove()
-  torch2:remove()
-  torch3:remove()
-  torch4:remove()
 end
 
 function map:on_update()

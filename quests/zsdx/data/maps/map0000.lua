@@ -2,8 +2,24 @@ local map = ...
 
 -- Intro script.
 
-local fresco = 0  -- Index of the current fresco.
+local fresco_index = 0  -- Index of the current fresco.
 local fresco_sprite = nil
+
+local function next_fresco()
+
+  if fresco_index < 6 then
+    fresco_index = fresco_index + 1
+    map:start_dialog("intro" .. fresco_index, function()
+      fresco_sprite:fade_out()
+      sol.timer.start(600, next_fresco)
+    end)
+    fresco_sprite:set_animation(fresco_index)
+    fresco_sprite:fade_in()
+  else
+    map:set_dialog_style(0)
+    hero:teleport(28, "from_intro")
+  end
+end
 
 function map:on_started(destination_point)
   hero:freeze()
@@ -17,25 +33,5 @@ function map:on_started(destination_point)
     sol.audio.play_music("legend")
     next_fresco()
   end)
-end
-
-local function next_fresco()
-
-  if fresco < 6 then
-    fresco = fresco + 1
-    map:start_dialog("intro" .. fresco, function()
-      fresco_sprite:fade_out()
-      sol.timer.start(600, next_fresco)
-    end)
-    fresco_sprite:set_animation(fresco)
-    fresco_sprite:fade_in()
-  else
-    map:set_dialog_style(0)
-    next_map()
-  end
-end
-
-local function next_map()
-  hero:teleport(28, "from_intro")
 end
 

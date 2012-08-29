@@ -99,9 +99,6 @@ function map:on_update()
 end
 
 -- hidden enemies
-for _, enemy in ipairs(map:get_entities("hidden_enemy")) do
-  enemy.on_dead = hidden_enemy_dead
-end
 local function hidden_enemy_dead(enemy)
 
   if not map:has_entities("hidden_enemy")
@@ -112,11 +109,11 @@ local function hidden_enemy_dead(enemy)
     end)
   end
 end
+for _, enemy in ipairs(map:get_entities("hidden_enemy")) do
+  enemy.on_dead = hidden_enemy_dead
+end
 
 -- south door
-for _, enemy in ipairs(map:get_entities("s_door_enemy")) do
-  enemy.on_dead = s_door_enemy_dead
-end
 local function s_door_enemy_dead(enemy)
 
   if not map:has_entities("s_door_enemy")
@@ -127,11 +124,11 @@ local function s_door_enemy_dead(enemy)
     end)
   end
 end
+for _, enemy in ipairs(map:get_entities("s_door_enemy")) do
+  enemy.on_dead = s_door_enemy_dead
+end
 
 -- west enemies room
-for _, enemy in ipairs(map:get_entities("w_room_enemy")) do
-  enemy.on_dead = w_room_enemy_dead
-end
 local function w_room_enemy_dead(enemy)
 
   if not map:has_entities("w_room_enemy") then
@@ -142,11 +139,11 @@ local function w_room_enemy_dead(enemy)
     end
   end
 end
+for _, enemy in ipairs(map:get_entities("w_room_enemy")) do
+  enemy.on_dead = w_room_enemy_dead
+end
 
 -- east enemies room
-for _, enemy in ipairs(map:get_entities("e_room_enemy")) do
-  enemy.on_dead = e_room_enemy_dead
-end
 local function e_room_enemy_dead(enemy)
 
   if not map:has_entities("e_room_enemy")
@@ -156,6 +153,9 @@ local function e_room_enemy_dead(enemy)
       e_room_chest:set_enabled(true)
     end)
   end
+end
+for _, enemy in ipairs(map:get_entities("e_room_enemy")) do
+  enemy.on_dead = e_room_enemy_dead
 end
 
 -- door to puzzle B
@@ -198,10 +198,6 @@ c_room_switch_3.on_activated = c_room_switch_1.on_activated
 c_room_switch_4.on_activated = c_room_switch_1.on_activated
 
 -- puzzle B: the switches have to be activated clockwise
-for _, switch in ipairs(map:get_entities("puzzle_b_switch")) do
-  switch.on_activated = puzzle_b_switch_activated
-  switch.on_left = puzzle_b_switch_left
-end
 local function puzzle_b_switch_activated(switch)
 
   local index = tonumber(switch:get_name():match("^puzzle_b_switch_([1-4])$"))
@@ -243,11 +239,12 @@ local function puzzle_b_switch_left(switch)
 
   switch:set_locked(false)
 end
+for _, switch in ipairs(map:get_entities("puzzle_b_switch")) do
+  switch.on_activated = puzzle_b_switch_activated
+  switch.on_left = puzzle_b_switch_left
+end
 
 -- puzzle A: each switch changes its neighboors in the 4 main directions
-for _, switch in ipairs(map:get_entities("puzzle_a_switch")) do
-  switch.on_activated = puzzle_a_switch_activated
-end
 local function puzzle_a_switch_activated(switch)
 
   sol.audio.play_sound("switch")
@@ -283,6 +280,9 @@ local function puzzle_a_switch_activated(switch)
       end)
     end
   end
+end
+for _, switch in ipairs(map:get_entities("puzzle_a_switch")) do
+  switch.on_activated = puzzle_a_switch_activated
 end
 
 -- west room
@@ -346,11 +346,6 @@ end
 -- Torches on this map interact with the map script
 -- because we don't want usual behavior from items/lamp.lua:
 -- we want a shorter delay and we want torches to enable the bridge
-for _, torch in ipairs(map:get_entities("torch_")) do
-  torch.on_interaction = torch_interaction
-  torch.on_collision_fire = torch_collision_fire
-end
-
 local function torch_interaction(torch)
   map:start_dialog("torch.need_lamp")
 end
@@ -374,5 +369,9 @@ local function torch_collsion_fire(torch)
       end
     end)
   end
+end
+for _, torch in ipairs(map:get_entities("torch_")) do
+  torch.on_interaction = torch_interaction
+  torch.on_collision_fire = torch_collision_fire
 end
 

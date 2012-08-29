@@ -8,6 +8,20 @@ local nw_switches_nb_activated = 0
 local nb_torches_lit = 0
 local door_g_finished = false
 
+local function ne_puzzle_set_step(step)
+
+  ne_puzzle_step = step
+  map:set_entities_enabled("ne_puzzle_step", false)
+  map:set_entities_enabled("ne_puzzle_step_" .. step, true)
+  if step < 5 then
+    map:set_entities_enabled("secret_way_open", false)
+    map:set_entities_enabled("secret_way_closed", true)
+  else
+    map:set_entities_enabled("secret_way_open", true)
+    map:set_entities_enabled("secret_way_closed", false)
+  end
+end
+
 function map:on_started(destination_point)
 
   -- north barrier
@@ -98,11 +112,6 @@ function door_g_switch:on_activated()
 end
 
 -- north-west puzzle: the switches have to be activated clockwise
-for _, switch in ipairs(map:get_entities("nw_switch")) do
-  switch.on_activated = nw_switch_activated
-  switch.on_left = nw_switch_left
-end
-
 local function nw_switch_activated(switch)
 
   local index = tonumber(switch:get_name():match("^nw_switch_([1-8])$"))
@@ -144,6 +153,11 @@ local function nw_switch_left(switch)
   self:set_locked(false)
 end
 
+for _, switch in ipairs(map:get_entities("nw_switch")) do
+  switch.on_activated = nw_switch_activated
+  switch.on_left = nw_switch_left
+end
+
 -- north-east puzzle
 function ne_puzzle_sensor_1:on_activated()
 
@@ -183,10 +197,6 @@ function door_g_success_sensor:on_activated()
   end
 end
 
-for _, sensor in ipairs(map:get_entities("close_door_g_sensor") do
-  sensor.on_activated = close_door_g
-end
-
 local function close_door_g()
 
   if not door_g_finished
@@ -199,16 +209,21 @@ local function close_door_g()
   end
 end
 
--- door E
-for _, sensor in ipairs(map:get_entities("close_door_e_sensor") do
-  sensor.on_activated = close_door_e
+for _, sensor in ipairs(map:get_entities("close_door_g_sensor") do
+  sensor.on_activated = close_door_g
 end
+
+-- door E
 local function close_door_e()
 
   if door_e:is_open() then
     map:close_doors("door_e")
     door_e_switch:set_activated(false)
   end
+end
+
+for _, sensor in ipairs(map:get_entities("close_door_e_sensor") do
+  sensor.on_activated = close_door_e
 end
 
 -- west enemies room
@@ -251,9 +266,6 @@ for _, sensor in ipairs(map:get_entities("reset_solid_ground_sensor")) do
 end
 
 -- west enemies room
-for _, enemy in ipairs(map:get_entities("door_b_enemy")) do
-  enemy.on_dead = door_b_enemy_dead
-end
 local function door_b_enemy_dead(enemy)
 
   if not map:has_entities("door_b_enemy")
@@ -263,10 +275,11 @@ local function door_b_enemy_dead(enemy)
   end
 end
 
--- north enemies room
-for _, enemy in ipairs(map:get_entities("door_c_enemy")) do
-  enemy.on_dead = door_c_enemy_dead
+for _, enemy in ipairs(map:get_entities("door_b_enemy")) do
+  enemy.on_dead = door_b_enemy_dead
 end
+
+-- north enemies room
 local function door_c_enemy_dead(enemy)
 
   if not map:has_entities("door_c_enemy")
@@ -276,24 +289,11 @@ local function door_c_enemy_dead(enemy)
   end
 end
 
-local function ne_puzzle_set_step(step)
-
-  ne_puzzle_step = step
-  map:set_entities_enabled("ne_puzzle_step", false)
-  map:set_entities_enabled("ne_puzzle_step_" .. step, true)
-  if step < 5 then
-    map:set_entities_enabled("secret_way_open", false)
-    map:set_entities_enabled("secret_way_closed", true)
-  else
-    map:set_entities_enabled("secret_way_open", true)
-    map:set_entities_enabled("secret_way_closed", false)
-  end
+for _, enemy in ipairs(map:get_entities("door_c_enemy")) do
+  enemy.on_dead = door_c_enemy_dead
 end
 
-for _, chest in ipairs(map:get_entities("compass_chest_")) do
-  chest.on_empty = compass_chest_empty
-end
-function compass_chest_empty(chest)
+local function compass_chest_empty(chest)
 
   local index = tonumber(chest:get_name():match("^compass_chest_([1-7])"))
   if index ~= nil then
@@ -315,14 +315,13 @@ function compass_chest_empty(chest)
   end
 end
 
+for _, chest in ipairs(map:get_entities("compass_chest_")) do
+  chest.on_empty = compass_chest_empty
+end
+
 -- Torches on this map interact with the map script
 -- because we don't want usual behavior from items/lamp.lua:
 -- we want a shorter delay and we want torches to enable the bridge
-for _, torch in ipairs(map:get_entities("torch_")) do
-  torch.on_interaction = torch_interaction
-  torch.on_collision_fire = torch_collision_fire
-end
-
 local function torch_interaction(torch)
   map:start_dialog("torch.need_lamp")
 end
@@ -346,6 +345,11 @@ local function torch_collsion_fire(torch)
       end
     end)
   end
+end
+
+for _, torch in ipairs(map:get_entities("torch_")) do
+  torch.on_interaction = torch_interaction
+  torch.on_collision_fire = torch_collision_fire
 end
 
 function door_f_block:on_moved()

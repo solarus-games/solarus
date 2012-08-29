@@ -1,6 +1,14 @@
 local map = ...
 -- Castle 1F
 
+local function random_walk(npc)
+
+  local m = sol.movement.create("random_path")
+  m:set_speed(32)
+  npc:start_movement(m)
+  npc:get_sprite():set_animation("walking")
+end
+
 function map:on_started(destination_point)
 
   -- make the NPCs walk
@@ -28,14 +36,6 @@ function map:on_opening_transition_finished(destination_point)
     end)
     map:move_camera(288, 96, 25, function() end, 1e6)
   end
-end
-
-local function random_walk(npc)
-
-  local m = sol.movement.create("random_path")
-  m:set_speed(32)
-  npc:start_movement(m)
-  npc:get_sprite():set_animation("walking")
 end
 
 function forbidden_door_npc:on_interaction()

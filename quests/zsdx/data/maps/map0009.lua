@@ -82,39 +82,31 @@ function start_boss_sensor:on_activated()
     map:set_entities_enabled("castle_roof_stairs", false)
     map:set_entities_enabled("teletransporter_dw_roof", false)
     sol.audio.play_sound("door_closed")
-    sol.timer.start(1000, start_boss)
+    sol.timer.start(1000, function()
+      sol.audio.play_music("ganon_createds")
+      boss:set_enabled(true)
+      map:start_dialog("dungeon_5.agahnim_beginning", function()
+	sol.audio.play_music("ganon_battle")
+      end)
+      hero:unfreeze()
+      fighting_boss = true
+    end)
   end
-end
-
-local function start_boss()
-
-  sol.audio.play_music("ganon_createds")
-  boss:set_enabled(true)
-  map:start_dialog("dungeon_5.agahnim_beginning", function()
-    sol.audio.play_music("ganon_battle")
-  end)
-  hero:unfreeze()
-  fighting_boss = true
 end
 
 function hero:on_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     map:get_game():set_dungeon_finished(5)
-    sol.timer.start(9000, leave_boss)
+    sol.timer.start(9000, function()
+      hero:teleport(9, "from_dungeon_5_1F")
+      sol.timer.start(700, function()
+	sol.audio.play_music("dark_world")
+      end)
+    end)
     sol.audio.play_music("victory")
     self:freeze()
     self:set_direction(3)
   end
-end
-
-local function leave_boss()
-
-  hero:teleport(9, "from_dungeon_5_1F")
-  sol.timer.start(700, restore_music)
-end
-
-local function restore_music()
-  sol.audio.play_music("dark_world")
 end
 

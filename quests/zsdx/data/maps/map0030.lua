@@ -4,6 +4,41 @@ local map = ...
 local fighting_miniboss = false
 local camera_back_start_timer = false
 
+local function check_eye_statues()
+
+  if left_eye_switch:is_activated() and right_eye_switch:is_activated() then
+
+    left_eye_switch:set_activated(false)
+    right_eye_switch:set_activated(false)
+
+    if not map:get_game():get_boolean(90) then
+      sol.audio.play_sound("switch")
+      map:move_camera(456, 232, 250, function()
+        sol.audio.play_sound("secret")
+        open_hidden_stairs()
+        map:get_game():set_boolean(90, true)
+      end)
+    elseif not map:get_game():get_boolean(91) then
+      sol.audio.play_sound("switch")
+      map:move_camera(520, 320, 250, function()
+        sol.audio.play_sound("secret")
+        open_hidden_door()
+        map:get_game():set_boolean(91, true)
+      end)
+    end
+  end
+end
+
+local function open_hidden_stairs()
+  map:set_entities_enabled("hidden_stairs_closed", false)
+  map:set_entities_enabled("hidden_stairs_open", true)
+end
+
+local function open_hidden_door()
+  map:set_entities_enabled("hidden_door_closed", false)
+  map:set_entities_enabled("hidden_door_open", true)
+end
+
 function map:on_started(destination_point)
 
   -- west barrier
@@ -103,40 +138,5 @@ function map:on_camera_back()
     end)
     timer:set_with_sound(true)
   end
-end
-
-local function check_eye_statues()
-
-  if left_eye_switch:is_activated() and right_eye_switch:is_activated() then
-
-    left_eye_switch:set_activated(false)
-    right_eye_switch:set_activated(false)
-
-    if not map:get_game():get_boolean(90) then
-      sol.audio.play_sound("switch")
-      map:move_camera(456, 232, 250, function()
-        sol.audio.play_sound("secret")
-        open_hidden_stairs()
-        map:get_game():set_boolean(90, true)
-      end)
-    elseif not map:get_game():get_boolean(91) then
-      sol.audio.play_sound("switch")
-      map:move_camera(520, 320, 250, function()
-        sol.audio.play_sound("secret")
-        open_hidden_door()
-        map:get_game():set_boolean(91, true)
-      end)
-    end
-  end
-end
-
-local function open_hidden_stairs()
-  map:set_entities_enabled("hidden_stairs_closed", false)
-  map:set_entities_enabled("hidden_stairs_open", true)
-end
-
-local function open_hidden_door()
-  map:set_entities_enabled("hidden_door_closed", false)
-  map:set_entities_enabled("hidden_door_open", true)
 end
 

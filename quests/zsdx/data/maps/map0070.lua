@@ -1,6 +1,10 @@
 local map = ...
 -- Broken rupee house
 
+local function give_flippers()
+  hero:start_treasure("flippers", 1, 157)
+end
+
 function game_1_man:on_interaction()
 
   if not map:get_game():get_boolean(156) then
@@ -32,10 +36,5 @@ function game_3_man:on_interaction()
   else
     map:start_dialog("rupee_house_broken.thanks_again")
   end
-end
-
-local function give_flippers()
-
-  hero:start_treasure("flippers", 1, 157)
 end
 

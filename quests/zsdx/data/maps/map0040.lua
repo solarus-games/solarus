@@ -25,6 +25,45 @@ local function lock_torches()
   torch_5:remove()
 end
 
+local function remove_c_water()
+  sol.audio.play_sound("water_drain_begin")
+  sol.audio.play_sound("water_drain")
+  c_water_tile_out:set_enabled(true)
+  c_water_tile_source:set_enabled(false)
+  sol.timer.start(remove_water_delay, remove_c_water_2)
+end
+
+local function remove_c_water_2()
+  c_water_tile_middle:set_enabled(false)
+  sol.timer.start(remove_water_delay, remove_c_water_3)
+end
+
+local function remove_c_water_3()
+  c_water_tile:set_enabled(false)
+  c_water_tile_less_1:set_enabled(true)
+  sol.timer.start(remove_water_delay, remove_c_water_4)
+end
+
+local function remove_c_water_4()
+  c_water_tile_less_1:set_enabled(false)
+  c_water_tile_less_2:set_enabled(true)
+  sol.timer.start(remove_water_delay, remove_c_water_5)
+end
+
+local function remove_c_water_5()
+  c_water_tile_less_2:set_enabled(false)
+  c_water_tile_less_3:set_enabled(true)
+  sol.timer.start(remove_water_delay, remove_c_water_6)
+end
+
+local function remove_c_water_6()
+  c_water_tile_less_3:set_enabled(false)
+  map:set_entities_enabled("c_water_on_jumper", false)
+  map:set_entities_enabled("c_water_off_obstacle", true)
+  map:get_game():set_boolean(121, true)
+  sol.audio.play_sound("secret")
+end
+
 -- Called when the map starts
 function map:on_started(destination_point)
 
@@ -113,44 +152,5 @@ function c_water_switch:on_activated()
   if not map:get_game():get_boolean(121) then
     map:move_camera(344, 736, 250, remove_c_water, 1000, 3500)
   end
-end
-
-local function remove_c_water()
-  sol.audio.play_sound("water_drain_begin")
-  sol.audio.play_sound("water_drain")
-  c_water_tile_out:set_enabled(true)
-  c_water_tile_source:set_enabled(false)
-  sol.timer.start(remove_water_delay, remove_c_water_2)
-end
-
-local function remove_c_water_2()
-  c_water_tile_middle:set_enabled(false)
-  sol.timer.start(remove_water_delay, remove_c_water_3)
-end
-
-local function remove_c_water_3()
-  c_water_tile:set_enabled(false)
-  c_water_tile_less_1:set_enabled(true)
-  sol.timer.start(remove_water_delay, remove_c_water_4)
-end
-
-local function remove_c_water_4()
-  c_water_tile_less_1:set_enabled(false)
-  c_water_tile_less_2:set_enabled(true)
-  sol.timer.start(remove_water_delay, remove_c_water_5)
-end
-
-local function remove_c_water_5()
-  c_water_tile_less_2:set_enabled(false)
-  c_water_tile_less_3:set_enabled(true)
-  sol.timer.start(remove_water_delay, remove_c_water_6)
-end
-
-local function remove_c_water_6()
-  c_water_tile_less_3:set_enabled(false)
-  map:set_entities_enabled("c_water_on_jumper", false)
-  map:set_entities_enabled("c_water_off_obstacle", true)
-  map:get_game():set_boolean(121, true)
-  sol.audio.play_sound("secret")
 end
 

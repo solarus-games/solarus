@@ -15,62 +15,6 @@ local pools = {
 }
 local savegame_variable = 170
 
-function map:on_started(destination_point)
-
-  -- initialize all pools
-  for i, pool in ipairs(pools) do
-    if pool.initially_filled ~= map:get_game():get_boolean(savegame_variable + i) then
-      -- this pool is filled
-      set_water_filled(i)
-    else
-      -- this pool is not filled
-      set_water_drained(i)
-    end
-  end
-end
-
-for i in 1, 9 do
-  local switch = map:get_entity("water_" .. i "_on_switch")
-  if switch ~= nil then
-    switch:on_activated = water_switch_activated
-  end
-end
-
-local function water_switch_ativated(switch)
-
-  local matched = switch:get_name():match("^water_([1-9])_on_switch$")
-  if matched then
-    local index = tonumber(matched)
-    fill_water(index)
-  end
-end
-
-for i in 1, 9 do
-  local block = map:get_entity("water_" .. i "_on_block")
-  if block ~= nil then
-    block:on_moved = water_block_moved
-  end
-  block = map:get_entity("water_" .. i "_off_block")
-  if block ~= nil then
-    block:on_moved = water_block_moved
-  end
-end
-
-local function water_block_moved(block)
-
-  local matched = block:get_name():match("^water_([1-9])_on_block$")
-  if matched then
-    local index = tonumber(matched)
-    fill_water(index)
-  else
-    matched = block:get_name():match("^water_([1-9])_off_block$")
-    if matched then
-      local index = tonumber(matched)
-      drain_water(index)
-    end
-  end
-end
-
 local function fill_water(index)
   current_pool_index = index
   map:move_camera(pools[index].x, pools[index].y, 250, fill_water_step_1, 1000, 2500)
@@ -173,5 +117,59 @@ local function drain_water_step_4()
   map:get_game():set_boolean(savegame_variable + current_pool_index,
     pools[current_pool_index].initially_filled)
   set_water_drained(current_pool_index)
+end
+
+function map:on_started(destination_point)
+
+  -- initialize all pools
+  for i, pool in ipairs(pools) do
+    if pool.initially_filled ~= map:get_game():get_boolean(savegame_variable + i) then
+      -- this pool is filled
+      set_water_filled(i)
+    else
+      -- this pool is not filled
+      set_water_drained(i)
+    end
+  end
+end
+
+local function water_switch_ativated(switch)
+
+  local matched = switch:get_name():match("^water_([1-9])_on_switch$")
+  if matched then
+    local index = tonumber(matched)
+    fill_water(index)
+  end
+end
+for i in 1, 9 do
+  local switch = map:get_entity("water_" .. i "_on_switch")
+  if switch ~= nil then
+    switch:on_activated = water_switch_activated
+  end
+end
+
+local function water_block_moved(block)
+
+  local matched = block:get_name():match("^water_([1-9])_on_block$")
+  if matched then
+    local index = tonumber(matched)
+    fill_water(index)
+  else
+    matched = block:get_name():match("^water_([1-9])_off_block$")
+    if matched then
+      local index = tonumber(matched)
+      drain_water(index)
+    end
+  end
+end
+for i in 1, 9 do
+  local block = map:get_entity("water_" .. i "_on_block")
+  if block ~= nil then
+    block:on_moved = water_block_moved
+  end
+  block = map:get_entity("water_" .. i "_off_block")
+  if block ~= nil then
+    block:on_moved = water_block_moved
+  end
 end
 

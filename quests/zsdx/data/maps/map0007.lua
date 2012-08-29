@@ -1,6 +1,36 @@
 local map = ...
 -- Outside world B2
 
+local function remove_iron_lock()
+  iron_lock:remove()
+  map:set_entities_enabled("iron_lock_tile", false)
+end
+
+local function remove_wooden_lock()
+  wooden_lock:remove()
+  map:set_entities_enabled("wooden_lock_tile", false)
+end
+
+local function inferno_open()
+
+  inferno_sensor:set_enabled(true)
+  hero:walk("66", false, false)
+end
+
+local function inferno_open_finish()
+
+  sol.audio.play_sound("secret")
+  hero:unfreeze()
+  map:get_game():set_boolean(914, true)
+  inferno_set_open()
+end
+
+local function inferno_set_open()
+
+  inferno:get_sprite():set_animation("open")
+  to_dungeon_6:set_enabled(true)
+end
+
 function map:on_started(destination_point)
 
   -- enable dark world
@@ -34,16 +64,6 @@ function map:on_started(destination_point)
     to_dungeon_6:set_enabled(false)
   end
   inferno_sensor:set_enabled(false)
-end
-
-local function remove_iron_lock()
-  iron_lock:remove()
-  map:set_entities_enabled("iron_lock_tile", false)
-end
-
-local function remove_wooden_lock()
-  wooden_lock:remove()
-  map:set_entities_enabled("wooden_lock_tile", false)
 end
 
 function iron_lock:on_interaction()
@@ -104,12 +124,6 @@ function inferno:on_interaction()
   end
 end
 
-local function inferno_open()
-
-  inferno_sensor:set_enabled(true)
-  hero:walk("66", false, false)
-end
-
 function inferno_sensor:on_activated()
 
   inferno:get_sprite():set_animation("opening")
@@ -126,19 +140,5 @@ function potion_shop_door_sensor:on_activated_repeat()
     potion_shop_door:set_enabled(false)
     sol.audio.play_sound("door_open")
   end
-end
-
-local function inferno_open_finish()
-
-  sol.audio.play_sound("secret")
-  hero:unfreeze()
-  map:get_game():set_boolean(914, true)
-  inferno_set_open()
-end
-
-local function inferno_set_open()
-
-  inferno:get_sprite():set_animation("open")
-  to_dungeon_6:set_enabled(true)
 end
 

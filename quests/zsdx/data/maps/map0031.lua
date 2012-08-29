@@ -24,34 +24,6 @@ local boss_arrows = {
 local fighting_boss = false
 local timers = {}
 
-function map:on_started(destination_point)
-
-  boss_key_chest:set_enabled(false)
-
-  if map:get_game():get_boolean(81) then
-    -- boss key chest already found
-    for switch, _ in pairs(switches_puzzle_order) do
-      switch:set_activated(true)
-      switch.on_activated = puzzle_switch_activated
-      switch.on_left = puzzle_switch_left
-    end
-  end
-
-  map:set_doors_open("boss_door", true)
-  if destination_point:get_name() == "from_final_room"
-      or map:get_game():get_boolean(103) then
-    map:set_doors_open("final_room_door", true)
-  end
-
-  if map:get_game():get_boolean(103) then
-    -- boss heart container already picked
-    boss_killed_floor:set_enabled(true)
-  elseif map:get_game():get_boolean(93) then
-    -- boss killed, heart container not picked
-    map:create_pickable("heart_container", 1, 103, 960, 437, 0)
-  end
-end
-
 local function puzzle_switch_activated(switch)
 
   local order = switches_puzzle_order[switch]
@@ -88,6 +60,87 @@ local function puzzle_switch_left(switch)
     for switch, _ in pairs(switches_puzzle_order) do
       switch:set_locked(false)
     end
+  end
+end
+
+local function boss_change_floor(first, last, inc, enable)
+
+  local index = first
+  local delay
+  if enable then
+    delay = 30
+    for k, v in pairs(boss_arrows) do
+      v.created = false
+    end
+  else
+    delay = 75
+  end
+
+  local function repeat_change()
+    if (enable and index % 10 == 0)
+      or (not enable and index % 5 == 0) then
+      sol.audio.play_sound("stone")
+    end
+
+    -- enable/disable the tile
+    map:get_entity("boss_floor_" .. index):set_enabled(enable)
+
+    -- create an arrow with some tiles
+    if enable and boss_arrows[index] ~= nil then
+      map:create_pickable("arrow", 1, -1,
+          boss_arrows[index].x, boss_arrows[index].y, 0)
+      boss_arrows[index].created = true
+    end
+
+    if index ~= last then
+      timers[#timers + 1] = sol.timer.start(delay, repeat_change)
+    end
+    index = index + inc
+  end
+  repeat_change()
+end
+
+local function boss_restore_floor(with_arrows)
+
+  -- restore the whole floor immediately
+  map:set_entities_enabled("boss_floor", true)
+  for _, t in ipairs(timers) do t:stop() end
+
+  if with_arrows then
+    for k, v in pairs(boss_arrows) do
+      if not v.created then
+        map:create_pickable("arrow", 1, -1, v.x, v.y, 0)
+        v.created = true
+      end
+    end
+  end
+end
+
+function map:on_started(destination_point)
+
+  boss_key_chest:set_enabled(false)
+
+  if map:get_game():get_boolean(81) then
+    -- boss key chest already found
+    for switch, _ in pairs(switches_puzzle_order) do
+      switch:set_activated(true)
+      switch.on_activated = puzzle_switch_activated
+      switch.on_left = puzzle_switch_left
+    end
+  end
+
+  map:set_doors_open("boss_door", true)
+  if destination_point:get_name() == "from_final_room"
+      or map:get_game():get_boolean(103) then
+    map:set_doors_open("final_room_door", true)
+  end
+
+  if map:get_game():get_boolean(103) then
+    -- boss heart container already picked
+    boss_killed_floor:set_enabled(true)
+  elseif map:get_game():get_boolean(93) then
+    -- boss killed, heart container not picked
+    map:create_pickable("heart_container", 1, 103, 960, 437, 0)
   end
 end
 
@@ -157,59 +210,6 @@ function hero:on_treasure_obtained(item_name, variant, savegame_variable)
     sol.audio.play_music("victory")
     self:freeze()
     self:set_direction(3)
-  end
-end
-
-local function boss_change_floor(first, last, inc, enable)
-
-  local index = first
-  local delay
-  if enable then
-    delay = 30
-    for k, v in pairs(boss_arrows) do
-      v.created = false
-    end
-  else
-    delay = 75
-  end
-
-  local function repeat_change()
-    if (enable and index % 10 == 0)
-      or (not enable and index % 5 == 0) then
-      sol.audio.play_sound("stone")
-    end
-
-    -- enable/disable the tile
-    map:get_entity("boss_floor_" .. index):set_enabled(enable)
-
-    -- create an arrow with some tiles
-    if enable and boss_arrows[index] ~= nil then
-      map:create_pickable("arrow", 1, -1,
-          boss_arrows[index].x, boss_arrows[index].y, 0)
-      boss_arrows[index].created = true
-    end
-
-    if index ~= last then
-      timers[#timers + 1] = sol.timer.start(delay, repeat_change)
-    end
-    index = index + inc
-  end
-  repeat_change()
-end
-
-local function boss_restore_floor(with_arrows)
-
-  -- restore the whole floor immediately
-  map:set_entities_enabled("boss_floor", true)
-  for _, t in ipairs(timers) do t:stop() end
-
-  if with_arrows then
-    for k, v in pairs(boss_arrows) do
-      if not v.created then
-        map:create_pickable("arrow", 1, -1, v.x, v.y, 0)
-        v.created = true
-      end
-    end
   end
 end
 

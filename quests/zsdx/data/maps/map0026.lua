@@ -19,13 +19,6 @@ local function show_fairy()
   torch_4:remove()
 end
 
-function map:on_started(destination_point)
-
-  if has_fairy_appeared() then
-    show_fairy()
-  end
-end
-
 -- Returns whether all four torches are on
 local function are_all_torches_on()
 
@@ -34,6 +27,13 @@ local function are_all_torches_on()
       and torch_2:get_sprite():get_animation() == "lit"
       and torch_3:get_sprite():get_animation() == "lit"
       and torch_4:get_sprite():get_animation() == "lit"
+end
+
+function map:on_started(destination_point)
+
+  if has_fairy_appeared() then
+    show_fairy()
+  end
 end
 
 function map:on_update()

@@ -1,6 +1,19 @@
 local map = ...
 -- Dungeon 1 1F
 
+local function open_sw_door()
+  sol.audio.play_sound("secret")
+  map:open_doors("sw_door")
+  sw_switch:set_activated(true)
+  nw_switch:set_activated(true)
+end
+
+local function close_sw_door()
+  map:close_doors("sw_door")
+  sw_switch:set_activated(false)
+  nw_switch:set_activated(false)
+end
+
 function map:on_started(destination_point)
 
   map_chest:set_enabled(false)
@@ -43,19 +56,6 @@ end
 
 function enable_sensor:on_activated()
   close_sw_door_sensor:set_enabled(true)
-end
-
-local function open_sw_door()
-  sol.audio.play_sound("secret")
-  map:open_doors("sw_door")
-  sw_switch:set_activated(true)
-  nw_switch:set_activated(true)
-end
-
-local function close_sw_door()
-  map:close_doors("sw_door")
-  sw_switch:set_activated(false)
-  nw_switch:set_activated(false)
 end
 
 for _, sensor in ipairs(map:get_entities("save_solid_ground_sensor")) do

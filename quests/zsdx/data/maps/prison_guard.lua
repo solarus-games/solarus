@@ -6,39 +6,6 @@ local hero_seen = false
 local prison_go_timer = nil
 local prison_dialog_timer = nil
 
-local guards = map:get_entities("guard_")
-for _, guard in ipairs(guards) do
-  local sensors = map:get_entities(guard:get_name() .. "_sensor_")
-  for _, sensor in sensors do
-    sensor.on_activated = guard_sensor_activated
-    sensor.on_activated_repeat = guard_sensor_activated
-  end
-end
-
-local function guard_sensor_activated(sensor)
-
-  local guard_num, direction = sensor:get_name():match("guard_([0-9])_sensor_([0-3])")
-  if not hero_seen and guard_num ~= nil then
-    local guard = map:get_entity("guard_" .. guard_num)
-    local sprite = guard:get_sprite()
-    direction = tonumber(direction)
-    if sprite:get_direction() == direction then
-
-      local x, y = guard:get_position()
-      local hero_x, hero_y = hero:get_position()
-      if direction == 0 and hero_x > x - 32 and hero_x < x + 216 then
-        seen_by_guard(guard)
-      elseif direction == 1 and hero_y < y + 32 and hero_y > y - 216 then
-        seen_by_guard(guard)
-      elseif direction == 2 and hero_x < x + 32 and hero_x > x - 216 then
-        seen_by_guard(guard)
-      elseif direction == 3 and hero_y > y - 32 and hero_y < y + 216 then
-        seen_by_guard(guard)
-      end
-    end
-  end
-end
-
 local function seen_by_guard(guard)
 
   hero_seen = true
@@ -73,6 +40,39 @@ local function seen_by_guard(guard)
       end)
     end)
   end)
+end
+
+local function guard_sensor_activated(sensor)
+
+  local guard_num, direction = sensor:get_name():match("guard_([0-9])_sensor_([0-3])")
+  if not hero_seen and guard_num ~= nil then
+    local guard = map:get_entity("guard_" .. guard_num)
+    local sprite = guard:get_sprite()
+    direction = tonumber(direction)
+    if sprite:get_direction() == direction then
+
+      local x, y = guard:get_position()
+      local hero_x, hero_y = hero:get_position()
+      if direction == 0 and hero_x > x - 32 and hero_x < x + 216 then
+        seen_by_guard(guard)
+      elseif direction == 1 and hero_y < y + 32 and hero_y > y - 216 then
+        seen_by_guard(guard)
+      elseif direction == 2 and hero_x < x + 32 and hero_x > x - 216 then
+        seen_by_guard(guard)
+      elseif direction == 3 and hero_y > y - 32 and hero_y < y + 216 then
+        seen_by_guard(guard)
+      end
+    end
+  end
+end
+
+local guards = map:get_entities("guard_")
+for _, guard in ipairs(guards) do
+  local sensors = map:get_entities(guard:get_name() .. "_sensor_")
+  for _, sensor in sensors do
+    sensor.on_activated = guard_sensor_activated
+    sensor.on_activated_repeat = guard_sensor_activated
+  end
 end
 
 function map:cancel_prison()

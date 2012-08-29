@@ -108,6 +108,42 @@ function special_torch_switch:on_activated()
 end
 
 -- timed doors
+local function timed_door_switch_activated(switch)
+
+  local door_name = switch:get_name():match("^(door_[a-e])_switch$")
+  current_door = map:get_entity(door_name)
+  if current_door ~= nil then
+    local properties = door_properties[current_door]
+    map:move_camera(properties.x, properties.y, 250, function()
+      map:open_doors(door_name)
+    end)
+  end
+end
+
+-- pass a timed door
+local function timed_door_done_sensor_activated(sensor)
+
+  local door_name = sensor:get_name():match("^(door_[a-e])_done_sensor$")
+  local door = map:get_entity(door_name)
+  if door ~= nil then
+    door_timers[door] = nil -- disable the timer
+  end
+end
+
+-- close a timed door previously passed (i.e. it has no current timer)
+local function timed_door_close_sensor_activated(sensor)
+
+  local door_name = sensor:get_name():match("^(door_[a-e])_close_sensor$")
+  local door = map:get_entity(door_name)
+
+  if door ~= nil then
+    if door_timers[door] == nil and door:is_open() then
+      map:close_doors(door_name)
+      map:get_entity(door_name .. "_switch"):set_activated(false)
+    end
+  end
+end
+
 for door, _ in pairs(door_properties) do
   local switch = map:get_entity(door:get_name() .. "_switch")
   local done_sensor = map:get_entity(door:get_name() .. "_done_sensor")
@@ -118,18 +154,6 @@ for door, _ in pairs(door_properties) do
   end
   if close_sensor ~= nil then
     close_sensor.on_activated = timer_door_close_sensor_activated
-  end
-end
-
-local function timed_door_switch_activated(switch)
-
-  local door_name = switch:get_name():match("^(door_[a-e])_switch$")
-  current_door = map:get_entity(door_name)
-  if current_door ~= nil then
-    local properties = door_properties[current_door]
-    map:move_camera(properties.x, properties.y, 250, function()
-      map:open_doors(door_name)
-    end)
   end
 end
 
@@ -181,57 +205,6 @@ function close_boss_door_sensor:on_activated()
 end
 
 -- boss
-function start_boss_sensor:on_activated()
-
-  if not map:get_game():get_boolean(625)
-      and not fighting_boss then
-    start_boss()
-  end
-end
-
--- west room
-function w_room_sensor:on_activated()
-
-  sol.audio.play_sound("secret")
-  local state = w_room_tile_1:is_enabled()
-  w_room_tile_1:set_enabled(not state)
-  w_room_tile_2:set_enabled(state)
-end
-w_room_sensor_2.on_activated = w_room_sensor.on_activated
-
--- pass a timed door
-local function timed_door_done_sensor_activated(sensor)
-
-  local door_name = sensor:get_name():match("^(door_[a-e])_done_sensor$")
-  local door = map:get_entity(door_name)
-  if door ~= nil then
-    door_timers[door] = nil -- disable the timer
-  end
-end
-
--- close a timed door previously passed (i.e. it has no current timer)
-local function timed_door_close_sensor_activated(sensor)
-
-  local door_name = sensor:get_name():match("^(door_[a-e])_close_sensor$")
-  local door = map:get_entity(door_name)
-
-  if door ~= nil then
-    if door_timers[door] == nil and door:is_open() then
-      map:close_doors(door_name)
-      map:get_entity(door_name .. "_switch"):set_activated(false)
-    end
-  end
-end
-
-local function start_boss()
-
-  sol.audio.play_music("boss")
-  boss:set_enabled(true)
-  fighting_boss = true
-
-  arrows_timer = sol.timer.start(20000, repeat_give_arrows)
-end
-
 local function repeat_give_arrows()
 
   -- give arrows if necessary during the boss fight
@@ -247,6 +220,27 @@ local function repeat_give_arrows()
   end
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
+
+function start_boss_sensor:on_activated()
+
+  if not map:get_game():get_boolean(625)
+      and not fighting_boss then
+    sol.audio.play_music("boss")
+    boss:set_enabled(true)
+    fighting_boss = true
+    arrows_timer = sol.timer.start(20000, repeat_give_arrows)
+  end
+end
+
+-- west room
+function w_room_sensor:on_activated()
+
+  sol.audio.play_sound("secret")
+  local state = w_room_tile_1:is_enabled()
+  w_room_tile_1:set_enabled(not state)
+  w_room_tile_2:set_enabled(state)
+end
+w_room_sensor_2.on_activated = w_room_sensor.on_activated
 
 function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 

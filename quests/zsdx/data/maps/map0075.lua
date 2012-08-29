@@ -29,19 +29,6 @@ function map:on_started(destination_point)
   end
 end
 
-function mini_game_npc:on_interaction()
-
-  if playing then
-    map:start_dialog("chests_game_cave.already_playing")
-  elseif not map:get_game():get_boolean(160) then
-    -- first time
-    map:start_dialog("chests_game_cave.first_time", play_question_dialog_finished)
-    map:get_game():set_boolean(160, true)
-  else
-    map:start_dialog("chests_game_cave.not_first_time", play_question_dialog_finished)
-  end
-end
-
 local function play_question_dialog_finished(answer)
 
   if answer == 0 then
@@ -67,8 +54,17 @@ local function play_question_dialog_finished(answer)
   end
 end
 
-for _, chest in ipairs(map:get_entities("chest_")) do
-  chest:on_empty = chest_empty
+function mini_game_npc:on_interaction()
+
+  if playing then
+    map:start_dialog("chests_game_cave.already_playing")
+  elseif not map:get_game():get_boolean(160) then
+    -- first time
+    map:start_dialog("chests_game_cave.first_time", play_question_dialog_finished)
+    map:get_game():set_boolean(160, true)
+  else
+    map:start_dialog("chests_game_cave.not_first_time", play_question_dialog_finished)
+  end
 end
 
 local function chest_empty(chest)
@@ -93,5 +89,8 @@ local function chest_empty(chest)
     sol.audio.play_sound("wrong")
     chest:set_open(false)
   end
+end
+for _, chest in ipairs(map:get_entities("chest_")) do
+  chest:on_empty = chest_empty
 end
 

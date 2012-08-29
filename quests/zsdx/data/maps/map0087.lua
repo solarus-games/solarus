@@ -28,46 +28,28 @@ end
 
 function hero:on_victory_finished()
 
-  sol.timer.start(2000, agahnim_sequence_1)
-end
-
-local function agahnim_sequence_1()
-
-  hero:unfreeze()
-  hero:set_direction(1)
-  sol.timer.start(1000, agahnim_sequence_2)
-end
-
-local function agahnim_sequence_2()
-
-  solarus_child:get_sprite():fade_out()
-  sol.audio.stop_music()
-  sol.audio.play_sound("warp")
-  sol.timer.start(3000, agahnim_sequence_3)
-end
-
-local function agahnim_sequence_3()
-
-  agahnim:set_position(160, 141)
-  sol.audio.play_music("agahnim")
-  sol.timer.start(1000, agahnim_sequence_4)
-end
-
-local function agahnim_sequence_4()
-
-  map:start_dialog("dungeon_4.agahnim", agahnim_sequence_5)
-end
-
-local function agahnim_sequence_5()
-
-  sol.timer.start(2000, agahnim_sequence_6)
-end
-
-local function agahnim_sequence_6()
-
-  map:get_game():set_dungeon_finished(4)
-  map:get_game():set_boolean(905, true) -- enable the dark world
-  map:get_game():set_boolean(155, true) -- break the rupee house
-  hero:teleport(66, "from_dungeon_4")
+  sol.timer.start(2000, function()
+    hero:unfreeze()
+    hero:set_direction(1)
+    sol.timer.start(1000, function()
+      solarus_child:get_sprite():fade_out()
+      sol.audio.stop_music()
+      sol.audio.play_sound("warp")
+      sol.timer.start(3000, function()
+	agahnim:set_position(160, 141)
+	sol.audio.play_music("agahnim")
+	sol.timer.start(1000, function()
+	  map:start_dialog("dungeon_4.agahnim", function()
+	    sol.timer.start(2000, function()
+	      map:get_game():set_dungeon_finished(4)
+	      map:get_game():set_boolean(905, true) -- enable the dark world
+	      map:get_game():set_boolean(155, true) -- break the rupee house
+	      hero:teleport(66, "from_dungeon_4")
+	    end)
+	  end)
+	end)
+      end)
+    end)
+  end)
 end
 

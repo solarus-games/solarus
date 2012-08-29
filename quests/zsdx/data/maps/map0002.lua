@@ -18,6 +18,12 @@ local game_2_slots = {
   [slot_machine_right] =  {initial_frame = 9, initial_delay = 60, current_delay = 0, symbol = -1}
 }  -- The key is also the entity.
 local game_3_timer
+local game_1_question_dialog_finished
+local game_2_question_dialog_finished
+local game_2_choose_bet_dialog_finished
+local game_3_question_dialog_finished
+local open_game_1_chest
+local game_2_timeout
 
 -- Function called when the map starts.
 function map:on_started(destination)
@@ -28,7 +34,7 @@ function map:on_started(destination)
   for npc, v in pairs(game_2_slots) do
     npc:get_sprite():set_frame(v.initial_frame)
     npc:on_interaction = function()
-      activate_slot_machine(npc)
+      map:activate_slot_machine(npc)
     end
   end
   game_2_man_sprite = game_2_man:get_sprite()
@@ -94,7 +100,7 @@ function game_3_man:on_interaction()
   end
 end
 
-local function activate_slot_machine(npc)
+function map:activate_slot_machine(npc)
 
   if playing_game_2 then
 
@@ -125,7 +131,7 @@ local function activate_slot_machine(npc)
   end
 end
 
-local function game_1_question_dialog_finished(answer)
+function game_1_question_dialog_finished(answer)
 
   if dialog_id == "rupee_house.game_1.intro" or
     dialog_id == "rupee_house.game_1.play_again_question" then
@@ -155,7 +161,7 @@ local function game_1_question_dialog_finished(answer)
   end
 end
 
-local function game_2_question_dialog_finished(answer)
+function game_2_question_dialog_finished(answer)
 
   if answer == 1 then
     -- don't want to play the game
@@ -166,7 +172,7 @@ local function game_2_question_dialog_finished(answer)
   end
 end
 
-local function game_2_choose_bet_dialog_finished(answer)
+function game_2_choose_bet_dialog_finished(answer)
 
   if answer == 0 then
     -- bet 5 rupees
@@ -199,7 +205,7 @@ local function game_2_choose_bet_dialog_finished(answer)
 end
 
 -- Called after the game 3 dialog "do you want to play?" or "do you want to try again?".
-local function game_3_question_dialog_finished(answer)
+function game_3_question_dialog_finished(answer)
 
   if answer == 1 then
     -- don't want to play the game
@@ -249,7 +255,7 @@ end
 
 -- Function called when the player opens an empty chest (i.e. a chest
 -- whose feature is to call the script) of game 1.
-local function open_game_1_chest(chest)
+function open_game_1_chest(chest)
 
   if not playing_game_1 then
     -- trying to open a chest but not playing yet
@@ -330,7 +336,7 @@ function map:on_update()
 end
 
 -- This function gives the reward to the player in the slot machine game
-local function game_2_timeout()
+function game_2_timeout()
 
   -- see if the player has won
   local i = 1
@@ -390,10 +396,10 @@ local function game_2_timeout()
   hero:unfreeze()
 end
 
-local function reset_blocks()
+function map:reset_blocks()
 
   for i = 3, 16 do
-    map:get_entity("block_" .. i):reset()
+    self:get_entity("block_" .. i):reset()
   end
 end
 

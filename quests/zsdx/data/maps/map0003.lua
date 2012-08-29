@@ -6,6 +6,19 @@ local monkey_sprite = nil
 local monkey_jumps = 0
 local monkey_jump_speed = 48
 
+local function random_walk(npc)
+
+  local m = sol.movement.create("random_path")
+  m:set_speed(32)
+  npc:start_movement(m)
+  npc:get_sprite():set_animation("walking")
+end
+
+local function remove_dungeon_2_door()
+  dungeon_2_door:remove()
+  dungeon_2_door_tile:set_enabled(false)
+end
+
 -- Function called when the map starts.
 -- The NPCs are initialized.
 function map:on_started(destination_point)
@@ -63,14 +76,6 @@ function map:on_started(destination_point)
     end
   end
 end
-end
-
-local function random_walk(npc)
-
-  local m = sol.movement.create("random_path")
-  m:set_speed(32)
-  npc:start_movement(m)
-  npc:get_sprite():set_animation("walking")
 end
 
 function monkey:on_interaction()
@@ -172,10 +177,5 @@ end
 
 function dungeon_3_entrance_weak_block:on_open()
   sol.audio.play_sound("secret") -- play the sound only once
-end
-
-local function remove_dungeon_2_door()
-  dungeon_2_door:remove()
-  dungeon_2_door_tile:set_enabled(false)
 end
 

@@ -3,61 +3,6 @@ local map = ...
 
 local water_delay = 500 -- delay between each water step
 
-function map:on_started(destination_point)
-
-  if map:get_game():get_boolean(234) then
-    sensor1_1:set_enabled(false)
-  end
-
-  if map:get_game():get_boolean(297) then
-    set_water_drained()
-    water_block:set_position(656, 333)
-  end
-
-  map:set_entities_enabled("enemy2", false)
-end
-
-for _, enemy in ipairs(map:get_entities("enemy2")) do
-  enemy.on_dead = enemy_in_group2_dead
-end
-
-local function enemy_in_group2_dead(enemy)
-
-  if not map:has_entities("enemy2")
-      and not map:get_game():get_boolean(234) then
-    map:create_pickable("big_key", 1, 234, 672, 80, 1)
-    sol.audio.play_sound("secret")
-    if not door_a:is_open() then
-      map:open_doors("door_a")
-      sol.audio.play_music("eagle_tower")
-    end
-  end
-end
-
-function sensor1_1:on_activated()
-
-  if door_a:is_open()
-      and map:has_entities("enemy2")
-      and not map:get_game():get_boolean(234) then
-    sol.audio.play_music("boss")
-    map:close_doors("door_a")
-    map:set_entities_enabled("enemy2", true)
-    self:set_enabled(false)
-  end
-end
-
-function switch1_1:on_activated()
-  map:open_doors("door_a")
-end
-
-function switch1_1:on_inactivated()
-  map:close_doors("door_a")
-end
-
-function water_block:on_moved()
-  map:move_camera(904, 288, 250, drain_water_step_1, 1000, 3500)
-end
-
 local function set_water_drained()
 
   map:set_entities_enabled("water_tile", false)
@@ -98,5 +43,59 @@ local function drain_water_step_4()
   map:get_game():set_boolean(297, true)
   sol.audio.play_sound("secret")
   set_water_drained()
+end
+
+function map:on_started(destination_point)
+
+  if map:get_game():get_boolean(234) then
+    sensor1_1:set_enabled(false)
+  end
+
+  if map:get_game():get_boolean(297) then
+    set_water_drained()
+    water_block:set_position(656, 333)
+  end
+
+  map:set_entities_enabled("enemy2", false)
+end
+
+local function enemy_in_group2_dead(enemy)
+
+  if not map:has_entities("enemy2")
+      and not map:get_game():get_boolean(234) then
+    map:create_pickable("big_key", 1, 234, 672, 80, 1)
+    sol.audio.play_sound("secret")
+    if not door_a:is_open() then
+      map:open_doors("door_a")
+      sol.audio.play_music("eagle_tower")
+    end
+  end
+end
+for _, enemy in ipairs(map:get_entities("enemy2")) do
+  enemy.on_dead = enemy_in_group2_dead
+end
+
+function sensor1_1:on_activated()
+
+  if door_a:is_open()
+      and map:has_entities("enemy2")
+      and not map:get_game():get_boolean(234) then
+    sol.audio.play_music("boss")
+    map:close_doors("door_a")
+    map:set_entities_enabled("enemy2", true)
+    self:set_enabled(false)
+  end
+end
+
+function switch1_1:on_activated()
+  map:open_doors("door_a")
+end
+
+function switch1_1:on_inactivated()
+  map:close_doors("door_a")
+end
+
+function water_block:on_moved()
+  map:move_camera(904, 288, 250, drain_water_step_1, 1000, 3500)
 end
 

@@ -1,6 +1,18 @@
 local map = ...
 -- Dungeon 6 1F
 
+local function are_all_torches_on()
+
+  return torch_1:exists()
+      and torch_1:get_sprite():get_animation() == "lit"
+      and torch_2:get_sprite():get_animation() == "lit"
+end
+
+local function lock_torches()
+  torch_1:remove()
+  torch_2:remove()
+end
+
 function map:on_started(destination_point)
 
   if map:get_game():get_boolean(313) then
@@ -17,18 +29,6 @@ function map:on_opening_transition_finished(destination_point)
   if destination_point:get_name() == "from_outside" then
     map:start_dialog("dungeon_6.welcome")
   end
-end
-
-local function are_all_torches_on()
-
-  return torch_1:exists()
-      and torch_1:get_sprite():get_animation() == "lit"
-      and torch_2:get_sprite():get_animation() == "lit"
-end
-
-local function lock_torches()
-  torch_1:remove()
-  torch_2:remove()
 end
 
 function map:on_update()

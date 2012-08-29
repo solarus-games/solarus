@@ -14,9 +14,6 @@ function map:on_started(destination_point)
 end
 
 -- door A
-for _, enemy in ipairs(map:get_entities("door_a_enemy")) do
-  enemy.on_dead = door_a_enemy_dead
-end
 local function door_a_enemy_dead(enemy)
 
   if not door_a:is_open()
@@ -28,10 +25,11 @@ local function door_a_enemy_dead(enemy)
   end
 end
 
--- miniboss
-for _, enemy in ipairs(map:get_entities("miniboss_enemy")) do
-  enemy.on_dead = miniboss_enemy_dead
+for _, enemy in ipairs(map:get_entities("door_a_enemy")) do
+  enemy.on_dead = door_a_enemy_dead
 end
+
+-- miniboss
 local function miniboss_enemy_dead(enemy)
 
   if not map:has_entities("miniboss_enemy") then
@@ -43,10 +41,11 @@ local function miniboss_enemy_dead(enemy)
   end
 end
 
--- door B hint stones
-for _, npc in ipairs(map:get_entities("door_b_hint")) do
-  npc.on_interaction = door_b_hint_interaction
+for _, enemy in ipairs(map:get_entities("miniboss_enemy")) do
+  enemy.on_dead = miniboss_enemy_dead
 end
+
+-- door B hint stones
 local function door_b_hint_interaction(npc)
 
   if not door_b:is_open() then
@@ -70,6 +69,10 @@ local function door_b_hint_interaction(npc)
       map:get_game():set_integer(1202, 0)
     end
   end
+end
+
+for _, npc in ipairs(map:get_entities("door_b_hint")) do
+  npc.on_interaction = door_b_hint_interaction
 end
 
 -- miniboss

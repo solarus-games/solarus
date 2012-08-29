@@ -60,6 +60,20 @@ function map:on_opening_transition_finished(destination_point)
   end
 end
 
+local function repeat_give_arrows()
+
+  -- give arrows if necessary during the boss fight
+  if map:get_game():get_item("bow"):get_amount() == 0 then
+    local positions = {
+      { x = 408, y = 189 },
+      { x = 472, y = 189 },
+    }
+    arrow_xy = positions[math.random(#positions)]
+    map:create_pickable("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 1)
+  end
+  arrows_timer = sol.timer.start(20000, repeat_give_arrows)
+end
+
 function start_boss_sensor:on_activated()
 
   if not map:get_game():get_boolean(299)
@@ -79,20 +93,6 @@ function start_boss_sensor:on_activated()
       arrows_timer = sol.timer.start(20000, repeat_give_arrows)
     end)
   end
-end
-
-local function repeat_give_arrows()
-
-  -- give arrows if necessary during the boss fight
-  if map:get_game():get_item("bow"):get_amount() == 0 then
-    local positions = {
-      { x = 408, y = 189 },
-      { x = 472, y = 189 },
-    }
-    arrow_xy = positions[math.random(#positions)]
-    map:create_pickable("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 1)
-  end
-  arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
 
 function boss:on_dead()

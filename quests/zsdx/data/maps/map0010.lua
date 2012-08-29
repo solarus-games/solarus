@@ -1,6 +1,19 @@
 local map = ...
 -- Outside world B1
 
+local function show_vine()
+
+  map:move_camera(608, 136, 136, function()
+    sol.audio.play_sound("secret")
+    hero:unfreeze()
+    map:get_game():set_boolean(921, true)
+  end)
+
+  local sprite = vine:get_sprite()
+  sprite:set_ignore_suspend(true)
+  sprite:set_paused(false)
+end
+
 function map:on_started(destination_point)
 
   -- enable dark world
@@ -39,18 +52,5 @@ function vine_start:on_interaction_item(item)
   end
 
   return false
-end
-
-local function show_vine()
-
-  map:move_camera(608, 136, 136, function()
-    sol.audio.play_sound("secret")
-    hero:unfreeze()
-    map:get_game():set_boolean(921, true)
-  end)
-
-  local sprite = vine:get_sprite()
-  sprite:set_ignore_suspend(true)
-  sprite:set_paused(false)
 end
 

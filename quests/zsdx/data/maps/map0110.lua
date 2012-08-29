@@ -10,10 +10,6 @@ function puzzle_end_sensor:on_activated()
   end
 end
 
-for _, sensor in ipairs(map:get_entities("wrong_sensor_")) do
-  sensor.on_activated = wrong_sensor_activated
-end
-
 local function wrong_sensor_activated(sensor)
 
   -- wrong room: go back to the beginning
@@ -27,5 +23,9 @@ local function wrong_sensor_activated(sensor)
   elseif direction == 3 then
     hero:set_position(1448, 1589)
   end
+end
+
+for _, sensor in ipairs(map:get_entities("wrong_sensor_")) do
+  sensor.on_activated = wrong_sensor_activated
 end
 

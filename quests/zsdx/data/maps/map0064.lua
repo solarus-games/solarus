@@ -3,24 +3,6 @@ local map = ...
 
 sol.main.load_file("maps/prison_guard")(map)
 
-function map:on_started(destination_point)
-
-  -- torches door
-  if map:get_game():get_boolean(514) then
-    lock_torches()
-  end
-
-  -- middle door
-  if map:get_game():get_boolean(522) then
-    c_door_switch:set_activated(true)
-  end
-
-  -- block falled from 2F
-  if not map:get_game():get_boolean(515) then
-    block_from_2f:set_enabled(false)
-  end
-end
-
 -- Returns whether all torches are on
 local function are_all_torches_on()
 
@@ -37,6 +19,24 @@ local function lock_torches()
   torch_2:remove()
   torch_3:remove()
   torch_4:remove()
+end
+
+function map:on_started(destination_point)
+
+  -- torches door
+  if map:get_game():get_boolean(514) then
+    lock_torches()
+  end
+
+  -- middle door
+  if map:get_game():get_boolean(522) then
+    c_door_switch:set_activated(true)
+  end
+
+  -- block falled from 2F
+  if not map:get_game():get_boolean(515) then
+    block_from_2f:set_enabled(false)
+  end
 end
 
 function map:on_opening_transition_finished(destination_point)

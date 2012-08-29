@@ -3,6 +3,34 @@ local map = ...
 
 local remove_water_delay = 500
 
+local function remove_water()
+  sol.audio.play_sound("water_drain_begin")
+  sol.audio.play_sound("water_drain")
+  water_tile_less_1:set_enabled(true)
+  water_tile_full:set_enabled(false)
+  sol.timer.start(remove_water_delay, remove_water_2)
+end
+
+local function remove_water_2()
+  water_tile_less_2:set_enabled(true)
+  water_tile_less_1:set_enabled(false)
+  sol.timer.start(remove_water_delay, remove_water_3)
+end
+
+local function remove_water_3()
+  water_tile_less_3:set_enabled(true)
+  water_tile_less_2:set_enabled(false)
+  sol.timer.start(remove_water_delay, remove_water_4)
+end
+
+local function remove_water_4()
+  water_tile_less_3:set_enabled(false)
+  map:set_entities_enabled("water_on_jumper", false)
+  map:set_entities_enabled("water_off_obstacle", true)
+  map:get_game():set_boolean(319, true)
+  sol.audio.play_sound("secret")
+end
+
 function map:on_started(destination_point)
 
   -- weak floor
@@ -50,33 +78,5 @@ function water_switch:on_activated()
   if not map:get_game():get_boolean(319) then
     map:move_camera(616, 192, 250, remove_water, 1000, 2500)
   end
-end
-
-local function remove_water()
-  sol.audio.play_sound("water_drain_begin")
-  sol.audio.play_sound("water_drain")
-  water_tile_less_1:set_enabled(true)
-  water_tile_full:set_enabled(false)
-  sol.timer.start(remove_water_delay, remove_water_2)
-end
-
-local function remove_water_2()
-  water_tile_less_2:set_enabled(true)
-  water_tile_less_1:set_enabled(false)
-  sol.timer.start(remove_water_delay, remove_water_3)
-end
-
-local function remove_water_3()
-  water_tile_less_3:set_enabled(true)
-  water_tile_less_2:set_enabled(false)
-  sol.timer.start(remove_water_delay, remove_water_4)
-end
-
-local function remove_water_4()
-  water_tile_less_3:set_enabled(false)
-  map:set_entities_enabled("water_on_jumper", false)
-  map:set_entities_enabled("water_off_obstacle", true)
-  map:get_game():set_boolean(319, true)
-  sol.audio.play_sound("secret")
 end
 

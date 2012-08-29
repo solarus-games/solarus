@@ -120,46 +120,6 @@ function boss:on_dead()
   end)
 end
 
--- Torches on this map interact with the map script
--- because we don't want usual behavior from items/lamp.lua:
--- we want a longer delay and special Ganon interaction
-for _, torch in ipairs(map:get_entities("torch")) do
-  torch.on_interaction = torch_interaction
-  torch.on_collision_fire = torch_collision_fire
-end
-
-local function torch_interaction(torch)
-  map:start_dialog("torch.need_lamp")
-end
-
--- Called when fire touches a torch.
-local function torch_collision_fire(torch)
-
-  local torch_sprite = torch:get_sprite()
-  if torch_sprite:get_animation() == "unlit" then
-    -- temporarily light the torch up
-    torch_sprite:set_animation("lit")
-    check_torches()
-    torches_timers[npc_name] = sol.timer.start(torches_delay, function()
-      torch_sprite:set_animation("unlit")
-      if distant_switch_1:is_enabled() then
-        map:set_entities_enabled("switch_floor", false)
-        map:set_entities_enabled("distant_switch", false)
-        sol.audio.play_sound("door_closed")
-      end
-      check_torches()
-    end)
-  end
-end
-
-local function unlight_torches()
-
-  for i = 1, 4 do
-    map:get_entity("torch_" .. i):get_sprite():set_animation("unlit")
-  end
-  for _, t in ipairs(torches_timers) do t:stop() end
-end
-
 local function check_torches()
 
   local states = {
@@ -214,9 +174,49 @@ local function check_torches()
 	torches_error = true
       end
     end
-  end
 
   torches_nb_on = #on
+end
+
+local function unlight_torches()
+
+  for i = 1, 4 do
+    map:get_entity("torch_" .. i):get_sprite():set_animation("unlit")
+  end
+  for _, t in ipairs(torches_timers) do t:stop() end
+end
+
+local function create_pickables()
+
+  for i, v in ipairs(pickables) do
+
+    local i = math.random(100)
+    if i <= 60 then
+      item_name = "magic_flask"
+      variant = 1
+    elseif i <= 90 then
+      item_name = "heart"
+      variant = 1
+    elseif i <= 95 then
+      item_name = "magic_flask"
+      variant = 2
+    elseif i <= 99 then
+      item_name = "arrow"
+      variant = 2
+    else
+      item_name = "fairy"
+      variant = 1
+    end
+    map:create_pickable(item_name, variant, -1, v.x, v.y, 0)
+  end
+end
+
+local function create_bats()
+
+  for i, v in ipairs(bats) do
+    nb_bats_created = nb_bats_created + 1
+    map:create_enemy("bat_" .. nb_bats_created, "fire_bat", 0, v.x, v.y)
+  end
 end
 
 -- Creates a stone that the hero can lift and throw to Ganon.
@@ -267,10 +267,6 @@ local function torches_solved()
   end
 end
 
-for _, switch in ipairs(map:get_entities("distance_switch")) do
-  switch.on_activated = distant_switch_activated
-end
-
 local function distant_switch_activated(switch)
 
   -- deterministic version: local index = tonumber(switch_name:match("^distant_switch_([1-4])$"))
@@ -306,36 +302,39 @@ local function distant_switch_activated(switch)
   end
 end
 
-local function create_pickables()
+for _, switch in ipairs(map:get_entities("distance_switch")) do
+  switch.on_activated = distant_switch_activated
+end
 
-  for i, v in ipairs(pickables) do
+-- Torches on this map interact with the map script
+-- because we don't want usual behavior from items/lamp.lua:
+-- we want a longer delay and special Ganon interaction
+local function torch_interaction(torch)
+  map:start_dialog("torch.need_lamp")
+end
 
-    local i = math.random(100)
-    if i <= 60 then
-      item_name = "magic_flask"
-      variant = 1
-    elseif i <= 90 then
-      item_name = "heart"
-      variant = 1
-    elseif i <= 95 then
-      item_name = "magic_flask"
-      variant = 2
-    elseif i <= 99 then
-      item_name = "arrow"
-      variant = 2
-    else
-      item_name = "fairy"
-      variant = 1
-    end
-    map:create_pickable(item_name, variant, -1, v.x, v.y, 0)
+-- Called when fire touches a torch.
+local function torch_collision_fire(torch)
+
+  local torch_sprite = torch:get_sprite()
+  if torch_sprite:get_animation() == "unlit" then
+    -- temporarily light the torch up
+    torch_sprite:set_animation("lit")
+    check_torches()
+    torches_timers[npc_name] = sol.timer.start(torches_delay, function()
+      torch_sprite:set_animation("unlit")
+      if distant_switch_1:is_enabled() then
+        map:set_entities_enabled("switch_floor", false)
+        map:set_entities_enabled("distant_switch", false)
+        sol.audio.play_sound("door_closed")
+      end
+      check_torches()
+    end)
   end
 end
 
-local function create_bats()
-
-  for i, v in ipairs(bats) do
-    nb_bats_created = nb_bats_created + 1
-    map:create_enemy("bat_" .. nb_bats_created, "fire_bat", 0, v.x, v.y)
-  end
+for _, torch in ipairs(map:get_entities("torch")) do
+  torch.on_interaction = torch_interaction
+  torch.on_collision_fire = torch_collision_fire
 end
 

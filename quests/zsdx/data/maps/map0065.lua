@@ -12,6 +12,50 @@ local door_sets = { -- possible doors open when going to prison
   { door_a, door_c, door_e, door_d, door_f, door_h },
 }
 
+local function init_guard(guard, x, y, direction, path)
+
+  guard:stop_movement()
+  guard:set_position(x, y)
+  local sprite = guard:get_sprite()
+  if path ~= nil then
+    local m = sol.movement.create("path")
+    m:set_path(path)
+    m:set_speed(72)
+    m:set_loop(true)
+    m:set_ignore_obstacles(true)
+    guard:start_movement(m)
+    sprite:set_animation("walking")
+  else
+    sprite:set_animation("stopped")
+    sprite:set_direction(direction)
+  end
+end
+
+local function init_guards()
+
+  init_guard(guard_1, 296, 573, 2)
+  init_guard(guard_2, 296, 685, 2)
+  init_guard(guard_3, 288, 821, 2,
+      {4,4,4,4,4,4,4,4,4,
+      6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+      4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4})
+  init_guard(guard_4, 776, 917, 2)
+  init_guard(guard_5, 920, 725, 2,
+      {4,4,4,4,4,4,4,4,
+      2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+      4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4})
+  init_guard(guard_6, 1080, 597, 2,
+      {2,2,2,2,2,2,2,2,
+      4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+      6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2})
+end
+
 function map:on_started(destination_point)
 
   if destination_point:get_name() == "from_outside_hole" then
@@ -60,53 +104,9 @@ function map:on_started(destination_point)
   init_guards()
 end
 
-local function init_guards()
-
-  init_guard(guard_1, 296, 573, 2)
-  init_guard(guard_2, 296, 685, 2)
-  init_guard(guard_3, 288, 821, 2,
-      {4,4,4,4,4,4,4,4,4,
-      6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-      2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
-      4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4})
-  init_guard(guard_4, 776, 917, 2)
-  init_guard(guard_5, 920, 725, 2,
-      {4,4,4,4,4,4,4,4,
-      2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
-      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-      6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-      4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4})
-  init_guard(guard_6, 1080, 597, 2,
-      {2,2,2,2,2,2,2,2,
-      4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
-      6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
-      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-      2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2})
-end
-
 function map:init_prison()
 
   prison_2_lock:set_position(648, 325)
-end
-
-local function init_guard(guard, x, y, direction, path)
-
-  guard:stop_movement()
-  guard:set_position(x, y)
-  local sprite = guard:get_sprite()
-  if path ~= nil then
-    local m = sol.movement.create("path")
-    m:set_path(path)
-    m:set_speed(72)
-    m:set_loop(true)
-    m:set_ignore_obstacles(true)
-    guard:start_movement(m)
-    sprite:set_animation("walking")
-  else
-    sprite:set_animation("stopped")
-    sprite:set_direction(direction)
-  end
 end
 
 function map:on_opening_transition_finished(destination_point)

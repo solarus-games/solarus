@@ -1,6 +1,30 @@
 local map = ...
 -- Sahasrahla house
 
+local function has_obtained_world_map()
+  return map:get_game():get_boolean(33)
+end
+
+local function has_seen_frozen_door()
+  return map:get_game():get_boolean(34)
+end
+
+local function has_open_frozen_door()
+  return map:get_game():get_boolean(35)
+end
+
+local function has_obtained_clay_key()
+  return map:get_game():get_boolean(28)
+end
+
+local function has_obtained_bow()
+  return map:get_game():get_boolean(26)
+end
+
+local function give_world_map()
+  hero:start_treasure("world_map", 1, 33)
+end
+
 function map:on_started(destination_point)
 
   if map:get_game():get_boolean(37) then -- if the Lyriann cave is finished
@@ -47,30 +71,6 @@ function sahasrahla:on_interaction()
     -- Sahsrahla has nothing special to say
     map:start_dialog("sahasrahla_house.default")
   end
-end
-
-local function has_obtained_world_map()
-  return map:get_game():get_boolean(33)
-end
-
-local function has_seen_frozen_door()
-  return map:get_game():get_boolean(34)
-end
-
-local function has_open_frozen_door()
-  return map:get_game():get_boolean(35)
-end
-
-local function has_obtained_clay_key()
-  return map:get_game():get_boolean(28)
-end
-
-local function has_obtained_bow()
-  return map:get_game():get_boolean(26)
-end
-
-local function give_world_map()
-  hero:start_treasure("world_map", 1, 33)
 end
 
 -- Function called when the player has just obtained a treasure

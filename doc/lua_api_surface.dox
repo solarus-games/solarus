@@ -77,10 +77,16 @@ Returns the size of this surface.
 
 <hr>
 
-\subsection lua_api_surface_fill_color surface:fill_color(color)
+\subsection lua_api_surface_fill_color surface:fill_color(color, [x, y, width, height])
 
-Fills this surface with a color.
+Fills a region of this surface with a color.
+
+If no region is specified, the entire surface is filled.
 - \c color (table): The color as an array of 3 RGB values (\c 0 to \c 255).
+- \c x (number, optional): X coordinate of the region to fill on this surface.
+- \c y (number, optional): Y coordinate of the region to fill on this surface.
+- \c width (number, optional): Width of the region to fill on this surface.
+- \c height (number, optional): Height of the region to fill on this surface.
 
 <hr>
 

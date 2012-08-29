@@ -87,6 +87,15 @@ Returns whether this game is started and is currently suspended.
 
 <hr>
 
+\subsection lua_api_game_get_string game:get_map()
+
+Returns the current map.
+- Return value (map): The current map of the game
+  (\c nil if the game is not running).
+
+<hr>
+
+
 \subsection lua_api_game_get_string game:get_string(index)
 
 Returns a string saved.

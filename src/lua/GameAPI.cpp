@@ -39,6 +39,7 @@ void LuaContext::register_game_module() {
       { "start", game_api_start },
       { "is_started", game_api_is_started },
       { "is_suspended", game_api_is_suspended },
+      { "get_map", game_api_get_map },
       { "get_string", game_api_get_string },
       { "get_integer", game_api_get_integer },
       { "get_boolean", game_api_get_boolean },
@@ -214,6 +215,25 @@ int LuaContext::game_api_is_suspended(lua_State* l) {
   bool is_suspended = game != NULL && game->is_suspended();
 
   lua_pushboolean(l, is_suspended);
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_get_map.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_map(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  Game* game = savegame.get_game();
+  if (game == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+    push_map(l, savegame.get_game()->get_current_map());
+  }
   return 1;
 }
 

@@ -207,7 +207,7 @@ void LuaContext::main_on_update() {
 void LuaContext::main_on_pre_draw(Surface& dst_surface) {
 
   push_main(l);
-  on_pre_draw();
+  on_pre_draw(dst_surface);
   lua_pop(l, 1);
 }
 
@@ -218,7 +218,7 @@ void LuaContext::main_on_pre_draw(Surface& dst_surface) {
 void LuaContext::main_on_post_draw(Surface& dst_surface) {
 
   push_main(l);
-  on_post_draw();
+  on_post_draw(dst_surface);
   lua_pop(l, 1);
 }
 

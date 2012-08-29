@@ -580,6 +580,7 @@ class LuaContext {
       game_api_start,
       game_api_is_started,
       game_api_is_suspended,
+      game_api_get_map,
       game_api_get_string,
       game_api_get_integer,
       game_api_get_boolean,

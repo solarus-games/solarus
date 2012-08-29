@@ -305,9 +305,11 @@ void MainLoop::update() {
 void MainLoop::draw() {
 
   root_surface->fill_with_color(Color::get_black());
+  lua_context->main_on_pre_draw(*root_surface);
   if (current_screen != NULL) {
     current_screen->draw(*root_surface);
   }
+  lua_context->main_on_post_draw(*root_surface);
   VideoManager::get_instance()->draw(*root_surface);
 }
 

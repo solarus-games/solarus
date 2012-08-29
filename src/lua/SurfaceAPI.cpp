@@ -138,7 +138,18 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
 
   Surface& surface = check_surface(l, 1);
   Color color = check_color(l, 2);
-  surface.fill_with_color(color);
+
+  if (lua_gettop(l) >= 3) {
+    int x = luaL_checkinteger(l, 3);
+    int y = luaL_checkinteger(l, 4);
+    int width = luaL_checkinteger(l, 5);
+    int height = luaL_checkinteger(l, 6);
+    Rectangle where(x, y, width, height);
+    surface.fill_with_color(color, where);
+  }
+  else {
+    surface.fill_with_color(color);
+  }
 
   return 0;
 }

@@ -62,7 +62,7 @@ function game:has_bottle_with(variant)
   return self:get_first_bottle_with(variant) ~= nil
 end
 
-
 -- Run the game.
+sol.main.console:set_game(game)
 game:start()
 

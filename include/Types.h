@@ -34,11 +34,6 @@
  */
 typedef uint32_t MapId;
 
-/**
- * @brief Type of the id of tilesets.
- */
-typedef uint32_t TilesetId;
-
 // declaration of all classes to avoid dependencies between the header files
 
 // main classes

@@ -4,11 +4,11 @@
 A tileset is the skin of a map.
 It is composed of a set of tile patterns that a map can use.
 The \c tilesets directory contains the tilesets and their images.
-For a tileset whose id is XXXX (an integer number on four digits, like the maps),
-the file \c tilesetXXXX.dat describes all its tile patterns.
+For a tileset whose id is XXXX,
+the file \c tilesets/XXXX.dat describes all its tile patterns.
 We give here the detailed specification of the format of this file.
 
-The images of the tile patterns are picked in the file \c tilesetXXXX_tiles.png.
+The images of the tile patterns are picked in the file \c tilesets/XXXX.tiles.png.
 A tile pattern is a rectangle image inside this PNG file, with any size multiple of 8*8 pixels,
 and some obstacle and animation properties.
 

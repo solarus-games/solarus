@@ -153,6 +153,10 @@ public class Resource extends Observable {
      */
     public String computeNewId() {
 
+        // FIXME also generate string IDs
+        if (!idAutoIncremented) {
+            throw new IllegalArgumentException("computeNewId() can only be called on auto-incremented ids");
+        }
 	maxId++;
 
 	setChanged();

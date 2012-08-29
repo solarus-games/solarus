@@ -288,8 +288,7 @@ public class Project {
 	nf.setMinimumIntegerDigits(4);
 	nf.setGroupingUsed(false);
 
-	return new File(getTilesetPath() + "/tileset"
-		+ nf.format(Integer.parseInt(tilesetId)) + ".dat");
+	return new File(getTilesetPath() + "/" + tilesetId + ".dat");
     }
 
     /**
@@ -299,12 +298,7 @@ public class Project {
      */
     public static File getTilesetImageFile(String tilesetId) {
 	
-	NumberFormat nf = NumberFormat.getInstance();
-	nf.setMinimumIntegerDigits(4);
-	nf.setGroupingUsed(false);
-
-	return new File(getTilesetPath() + "/tileset"
-		+ nf.format(Integer.parseInt(tilesetId)) + "_tiles.png");
+	return new File(getTilesetPath() + "/" + tilesetId + ".tiles.png");
     }
 
     /**
@@ -314,12 +308,7 @@ public class Project {
      */
     public static File getTilesetEntitiesImageFile(String tilesetId) {
 	
-	NumberFormat nf = NumberFormat.getInstance();
-	nf.setMinimumIntegerDigits(4);
-	nf.setGroupingUsed(false);
-
-	return new File(getTilesetPath() + "/tileset"
-		+ nf.format(Integer.parseInt(tilesetId)) + "_entities.png");
+	return new File(getTilesetPath() + "/" + tilesetId + ".entities.png");
     }
 
     /**

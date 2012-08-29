@@ -352,9 +352,7 @@ int LuaContext::map_api_get_tileset(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
-  TilesetId id = map.get_tileset_id();
-
-  lua_pushinteger(l, id);
+  push_string(l, map.get_tileset_id());
   return 1;
 }
 
@@ -366,9 +364,9 @@ int LuaContext::map_api_get_tileset(lua_State* l) {
 int LuaContext::map_api_set_tileset(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  TilesetId id = luaL_checkinteger(l, 2);
+  const std::string& tileset_id = luaL_checkstring(l, 2);
 
-  map.set_tileset(id);
+  map.set_tileset(tileset_id);
 
   return 0;
 }

@@ -30,9 +30,11 @@
  * @brief Constructor.
  * @param id id of the tileset to create
  */
-Tileset::Tileset(TilesetId id):
-  id(id), max_tile_id(0),
-  tiles_image(NULL), entities_image(NULL) {
+Tileset::Tileset(const std::string& id):
+  id(id),
+  max_tile_id(0),
+  tiles_image(NULL),
+  entities_image(NULL) {
 }
 
 /**
@@ -48,7 +50,7 @@ Tileset::~Tileset() {
  * @brief Returns the id of this tileset.
  * @return the tileset id
  */
-TilesetId Tileset::get_id() {
+const std::string& Tileset::get_id() {
   return id;
 }
 
@@ -74,11 +76,11 @@ void Tileset::load() {
 
   // compute the file name, depending on the id
   std::ostringstream oss;
-  oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << ".dat";
+  oss << "tilesets/" << id << ".dat";
 
   // open the tileset file
   std::string file_name = oss.str();
-  std::istream &tileset_file = FileTools::data_file_open(file_name);
+  std::istream& tileset_file = FileTools::data_file_open(file_name);
 
   // parse the tileset file
   std::string line;
@@ -159,11 +161,11 @@ void Tileset::load() {
 
   // load the tileset images
   oss.str("");
-  oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_tiles.png";
+  oss << "tilesets/" << id << ".tiles.png";
   tiles_image = new Surface(oss.str(), Surface::DIR_DATA);
 
   oss.str("");
-  oss << "tilesets/tileset" << std::setfill('0') << std::setw(4) << id << "_entities.png";
+  oss << "tilesets/" << id << ".entities.png";
   entities_image = new Surface(oss.str(), Surface::DIR_DATA);
 }
 

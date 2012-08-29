@@ -49,7 +49,7 @@ MapLoader::~MapLoader() {
  * @param game the game
  * @param map the map to load
  */
-void MapLoader::load_map(Game &game, Map &map) {
+void MapLoader::load_map(Game& game, Map& map) {
 
   map.game = &game;
 
@@ -66,7 +66,7 @@ void MapLoader::load_map(Game &game, Map &map) {
 
   // parse the map file
   std::string line;
-  TilesetId tileset_id;
+  std::string tileset_id;
   int x, y, width, height;
 
   // first line: map general info

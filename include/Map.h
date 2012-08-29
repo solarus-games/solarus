@@ -52,7 +52,7 @@ class Map: public ExportableToLua {
     int width8;                   /**< map width in 8*8 squares (width8 = get_width() / 8) */
     int height8;                  /**< map height in 8*8 squares (height8 = get_height() / 8) */
 
-    TilesetId tileset_id;         /**< id of the current tileset */
+    std::string tileset_id;       /**< id of the current tileset */
     Tileset* tileset;             /**< tileset of the map: every tile of this map
                                    * is extracted from this tileset */
 
@@ -115,8 +115,8 @@ class Map: public ExportableToLua {
     // map properties
     MapId get_id();
     Tileset& get_tileset();
-    TilesetId get_tileset_id();
-    void set_tileset(TilesetId tileset_id);
+    const std::string& get_tileset_id();
+    void set_tileset(const std::string& tileset_id);
     int get_world_number();
     bool is_in_dungeon();
     bool is_in_outside_world();

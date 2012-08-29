@@ -82,7 +82,7 @@ Tileset& Map::get_tileset() {
  * @brief Returns the id of the tileset associated to this map.
  * @return the id of the tileset
  */
-TilesetId Map::get_tileset_id() {
+const std::string& Map::get_tileset_id() {
   // note that if set_tileset() has been called, tileset_id != tileset->get_id()
   return tileset_id;
 }
@@ -98,7 +98,7 @@ TilesetId Map::get_tileset_id() {
  *
  * @param tileset_id of the new tileset
  */
-void Map::set_tileset(TilesetId tileset_id) {
+void Map::set_tileset(const std::string& tileset_id) {
 
   Tileset new_tileset(tileset_id);
   new_tileset.load();

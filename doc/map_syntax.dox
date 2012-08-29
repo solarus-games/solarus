@@ -57,7 +57,7 @@ the number of small keys of this map. This value is the same for all the map
 of the same dungeon. A value of -1 means that there is no small key counter in this map
 (this is the case most of the time for non-dungeon maps).
 
-\c tileset_id is the index of the tileset used to draw the map.
+\c tileset_id is the name of the tileset used to draw the map.
 
 \c music_id is the file name of the background music to play (relative to the \c musics directory)
 or \c none to play no music on the map, or \c same to let the previous music continue.

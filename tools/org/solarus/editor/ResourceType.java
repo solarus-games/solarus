@@ -6,7 +6,7 @@ package org.solarus.editor;
 public enum ResourceType {
 
     MAP(true, "Map"),
-    TILESET(true, "Tileset"),
+    TILESET(false, "Tileset"),
     MUSIC(false, "Music"),
     SPRITE(false, "Sprite"),
     SOUND(false, "Sound"),

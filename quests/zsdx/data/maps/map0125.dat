@@ -1,4 +1,4 @@
-512	496	-1	-100	1968	2696	-1	11	light_world_dungeon
+512	496	-1	-100	1968	2696	-1	tileset0011	light_world_dungeon
 9	0	104	269	block	-1	entities/block	1	0	1
 0	1	48	128	416	272	419
 0	1	96	400	320	48	419

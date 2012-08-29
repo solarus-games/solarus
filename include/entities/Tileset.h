@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "lowlevel/Color.h"
 #include <map>
+#include <string>
 
 /**
  * @brief An image containing all tile patterns.
@@ -32,7 +33,7 @@ class Tileset {
 
   private:
 
-    TilesetId id;                                     /**< id of the tileset */
+    const std::string id;                             /**< id of the tileset */
     std::map<int, TilePattern*> tile_patterns;        /**< tile patterns in this tileset */
     int max_tile_id;                                  /**< current maximum id of a tile pattern in this tileset */
     Color background_color;                           /**< background color of the tileset */
@@ -43,13 +44,13 @@ class Tileset {
 
   public:
 
-    Tileset(TilesetId id);
+    Tileset(const std::string& id);
     ~Tileset();
 
     void load();
     void unload();
 
-    TilesetId get_id();
+    const std::string& get_id();
     Color& get_background_color();
     bool is_loaded();
     Surface& get_tiles_image();

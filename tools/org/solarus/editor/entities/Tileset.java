@@ -106,6 +106,7 @@ public class Tileset extends Observable {
     public Tileset() throws ZSDXException {
 	super();
 
+        // FIXME tileset creation is broken because of ids an images
 	this.name = "New tileset";
 	this.backgroundColor = Color.BLACK;
 	this.isSaved = false;

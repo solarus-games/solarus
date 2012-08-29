@@ -346,8 +346,10 @@ bool InputEvent::is_with_alt() {
  * this keyboard event.
  *
  * If this is not a keyboard event, KEY_NONE is returned.
+ * The raw key is returned. If you want the corresponding character if any,
+ * see get_character().
  *
- * @return the key of this keyboard event
+ * @return The key of this keyboard event.
  */
 InputEvent::KeyboardKey InputEvent::get_keyboard_key() {
 
@@ -364,7 +366,42 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key() {
  * @return the corresponding name
  */
 const std::string InputEvent::get_keyboard_key_name(KeyboardKey key) {
+  // TODO use the names of the Lua API or remove this function
   return SDL_GetKeyName(SDLKey(key));
+}
+
+/**
+ * @brief Returns whether this event is a keyboard event
+ * corresponding to pressing a character key.
+ * @return true if this event corresponds to pressing a character key.
+ */
+bool InputEvent::is_character_pressed() {
+
+  return internal_event.key.keysym.unicode != 0;
+}
+
+/**
+ * @brief Returns a UTF-8 representation of the character that was pressed during this keyboard event.
+ * @return The UTF-8 string corresponding to the key pressed, or an empty string if the key was not a character.
+ */
+const std::string InputEvent::get_character() {
+
+  std::string result;
+  if (is_character_pressed()) {
+    uint16_t utf16_char = (uint16_t) internal_event.key.keysym.unicode;
+    char buffer[3] = { 0 };
+    // SDL gives us UCS-2: convert it to UTF-8.
+    if ((utf16_char & 0xFF80) != 0) {
+      // Two bytes.
+      buffer[0] = (uint8_t) (0xC0 | utf16_char >> 6);
+      buffer[1] = (uint8_t) (0x80 | (utf16_char & 0x3F));
+    }
+    else {
+      buffer[0] = (uint8_t) utf16_char;
+    }
+    result = buffer;
+  }
+  return result;
 }
 
 // joypad

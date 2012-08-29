@@ -334,6 +334,7 @@ class LuaContext {
     void on_input(InputEvent& event);
     void on_key_pressed(InputEvent& event);
     void on_key_released(InputEvent& event);
+    void on_character_pressed(InputEvent& event);
     void on_joypad_button_pressed(InputEvent& event);
     void on_joypad_button_released(InputEvent& event);
     void on_joypad_axis_moved(InputEvent& event);

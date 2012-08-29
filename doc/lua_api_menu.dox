@@ -65,20 +65,42 @@ Use this event to draw your menu.
 \subsection lua_api_menu_on_key_pressed menu:on_key_pressed(key, modifiers)
 
 Called when the user presses a keyboard key while your menu is active.
-- \c key (string): Name of the key that was pressed.
+- \c key (string): Name of the raw key that was pressed.
 - \c modifiers (table): A table whose keys indicate what modifiers were
   down during the event. Possible keys are \c "shift", \c "control" and
   \c "alt". Values don't matter.
+
+\remark This event indicates the raw key pressed. If you want the
+corresponding character instead (if any), see
+\ref lua_api_menu_on_character_pressed.
 
 <hr>
 
 \subsection lua_api_menu_on_key_released menu:on_key_released(key, modifiers)
 
 Called when the user releases a keyboard key while your menu is active.
-- \c key (string): Name of the key that was released.
+- \c key (string): Name of the raw key that was released.
 - \c modifiers (table): A table whose keys indicate what modifiers were
   down during the event. Possible keys are \c "shift", \c "control" and
   \c "alt". Values don't matter.
+
+<hr>
+
+\subsection lua_api_menu_on_character_pressed menu:on_character_pressed(character)
+
+Called when the user presses a keyboard key mapped to a character
+while your menu is active.
+
+- \c character (string): A utf-8 string representing the character that was
+pressed.
+
+\remark When a character key is pressed, two events are called:
+\ref lua_api_menu_on_key_pressed (indicating the raw key)
+and \ref lua_api_menu_on_character_pressed (indicating the utf-8 character).
+If your menu needs to input text from the user,
+\ref lua_api_menu_on_character_pressed is what you want because it
+considers the keyboard's layout and gives you international utf-8
+strings.
 
 <hr>
 

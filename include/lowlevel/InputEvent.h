@@ -232,6 +232,9 @@ class InputEvent {
     KeyboardKey get_keyboard_key();
     static const std::string get_keyboard_key_name(KeyboardKey key);
 
+    bool is_character_pressed();
+    const std::string get_character();
+
     // joypad
     bool is_joypad_button_pressed();
     bool is_joypad_button_released();

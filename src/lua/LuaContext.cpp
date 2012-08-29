@@ -1155,6 +1155,9 @@ void LuaContext::on_input(InputEvent& event) {
     // Keyboard.
     if (event.is_keyboard_key_pressed()) {
       on_key_pressed(event);
+      if (event.is_character_pressed()) {
+        on_character_pressed(event);
+      }
     }
     else if (event.is_keyboard_key_released()) {
       on_key_released(event);
@@ -1185,7 +1188,7 @@ void LuaContext::on_input(InputEvent& event) {
 /**
  * @brief Notifies the object on top of the stack
  * that a keyboard key was just pressed
- * (including if it is a directional key).
+ * (including if it is a directional key or a character).
  * @param event The corresponding input event.
  */
 void LuaContext::on_key_pressed(InputEvent& event) {
@@ -1216,8 +1219,23 @@ void LuaContext::on_key_pressed(InputEvent& event) {
     }
     else {
       // The method exists but the key is unknown.
-      lua_pop(l, 1);
+      lua_pop(l, 2);  // Pop the object and the method.
     }
+  }
+}
+
+/**
+ * @brief Notifies the object on top of the stack
+ * that a character was just pressed with the keyboard.
+ * @param event The corresponding input event.
+ */
+void LuaContext::on_character_pressed(InputEvent& event) {
+
+  if (find_method("on_character_pressed")) {
+
+    const std::string& character = event.get_character();
+    push_string(l, character);
+    call_function(2, 0, "on_character_pressed");
   }
 }
 
@@ -1238,7 +1256,7 @@ void LuaContext::on_key_released(InputEvent& event) {
     }
     else {
       // The method exists but the key is unknown.
-      lua_pop(l, 1);
+      lua_pop(l, 2);  // Pop the object and the method.
     }
   }
 }

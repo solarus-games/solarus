@@ -617,7 +617,7 @@ bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_nam
     FileTools::data_file_close_buffer(buffer);
 
     if (result != 0) {
-      Debug::die(StringConcat() << "Error: failed to load script '"
+      Debug::print(StringConcat() << "Error: failed to load script '"
           << script_name << "': " << lua_tostring(l, -1));
     }
     return true;

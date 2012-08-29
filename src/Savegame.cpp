@@ -61,6 +61,7 @@ Savegame::Savegame(const std::string &file_name):
 
       // the savegame file is okay
       check_game_controls();
+      check_starting_map();
     }
   }
 }
@@ -97,17 +98,17 @@ void Savegame::set_initial_values() {
   // set some other values from the quest file
   IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("initial");
-  int starting_map_id = ini.get_integer_value("starting_map", -1);
-  const std::string &starting_destination_name = ini.get_string_value("starting_point", "");
+  const std::string& starting_map_id = ini.get_string_value("starting_map", "");
+  const std::string& starting_destination_name = ini.get_string_value("starting_point", "");
   int max_life = ini.get_integer_value("max_life", 1);
 
-  Debug::check_assertion(starting_map_id != -1,
+  Debug::check_assertion(!starting_map_id.empty(),
       "No starting map defined in quest.dat. Please set the value starting_map to the id of the initial map of your quest.");
-  Debug::check_assertion(starting_destination_name.size() != 0,
+  Debug::check_assertion(!starting_destination_name.empty(),
       "No starting point defined in quest.dat. Please set the value starting_point to the name of the "
       "destination point where the hero should be placed on the initial map.");
 
-  set_integer(STARTING_MAP, starting_map_id);
+  set_string(STARTING_MAP, starting_map_id);
   set_string(STARTING_POINT, starting_destination_name);
   set_integer(MAX_LIFE, max_life);
   set_integer(CURRENT_LIFE, max_life);
@@ -172,6 +173,23 @@ void Savegame::check_game_controls() {
      * Thus, the keys saved are not valid anymore and we reset them to the default values.
      */
     set_default_keyboard_controls();
+  }
+}
+
+/**
+ * @brief Ensures that the starting map in saved in the correct format.
+ *
+ * Old savegames have a starting map saved as an integer. This function
+ * detects it and converts the starting map saved to a string.
+ */
+void Savegame::check_starting_map() {
+
+  if (get_string(STARTING_MAP).empty()) {
+    int starting_map_id_int = get_integer(STARTING_MAP_INT);
+    std::ostringstream oss;
+    oss << starting_map_id_int;
+    set_string(STARTING_MAP, oss.str());
+    set_integer(STARTING_MAP_INT, 0);
   }
 }
 

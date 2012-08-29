@@ -40,7 +40,7 @@ MapLoader Map::map_loader;
  * @param id id of the map, used to determine the description file
  * and the script file of the map
  */
-Map::Map(MapId id):
+Map::Map(const std::string& id):
   game(NULL),
   id(id),
   tileset(NULL),
@@ -66,7 +66,7 @@ Map::~Map() {
  * @brief Returns the id of the map.
  * @return the map id
  */
-MapId Map::get_id() {
+const std::string& Map::get_id() {
   return id;
 }
 

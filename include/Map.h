@@ -47,7 +47,7 @@ class Map: public ExportableToLua {
     // map properties
 
     Game* game;                   /**< the game this map was started in */
-    MapId id;                     /**< id of the map */
+    std::string id;               /**< id of the map */
 
     int width8;                   /**< map width in 8*8 squares (width8 = get_width() / 8) */
     int height8;                  /**< map height in 8*8 squares (height8 = get_height() / 8) */
@@ -109,11 +109,11 @@ class Map: public ExportableToLua {
   public:
 
     // creation and destruction
-    Map(MapId id);
+    Map(const std::string& id);
     ~Map();
 
     // map properties
-    MapId get_id();
+    const std::string& get_id();
     Tileset& get_tileset();
     const std::string& get_tileset_id();
     void set_tileset(const std::string& tileset_id);

@@ -82,7 +82,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   hud = new HUD(*this);
 
   // launch the starting map
-  set_current_map(get_savegame().get_integer(Savegame::STARTING_MAP),
+  set_current_map(get_savegame().get_string(Savegame::STARTING_MAP),
       "", Transition::FADE);
 }
 
@@ -363,7 +363,7 @@ void Game::update_transitions() {
           crystal_state = false;
 
           // save the location
-          get_savegame().set_integer(Savegame::STARTING_MAP, next_map->get_id());
+          get_savegame().set_string(Savegame::STARTING_MAP, next_map->get_id());
           get_savegame().set_string(Savegame::STARTING_POINT, next_map->get_destination_name());
         }
 
@@ -521,7 +521,7 @@ Map& Game::get_current_map() {
  * or en ampty string to pick the destination point saved
  * @param transition_style type of transition between the two maps
  */
-void Game::set_current_map(MapId map_id, const std::string &destination_name,
+void Game::set_current_map(const std::string& map_id, const std::string &destination_name,
     Transition::Style transition_style) {
 
   // stop the hero's movement

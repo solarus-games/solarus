@@ -326,11 +326,7 @@ public class Project {
      */
     public static File getMapScriptFile(String mapId) {
 
-	NumberFormat nf = NumberFormat.getInstance();
-	nf.setMinimumIntegerDigits(4);
-	nf.setGroupingUsed(false);
-
-	return new File(getMapPath() + "/map" + nf.format(Integer.parseInt(mapId)) + ".lua");
+	return new File(getMapPath() + "/" + mapId + ".lua");
     }
 
     /**
@@ -340,11 +336,7 @@ public class Project {
      */
     public static File getMapFile(String mapId) {
 
-	NumberFormat nf = NumberFormat.getInstance();
-	nf.setMinimumIntegerDigits(4);
-	nf.setGroupingUsed(false);
-
-	return new File(getMapPath() + "/map" + nf.format(Integer.parseInt(mapId)) + ".dat");
+	return new File(getMapPath() + "/" + mapId + ".dat");
     }
 
     /**

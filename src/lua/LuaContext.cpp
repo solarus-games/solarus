@@ -232,10 +232,7 @@ void LuaContext::notify_input(InputEvent& event) {
 void LuaContext::notify_map_started(Map& map, Destination* destination) {
 
   // Compute the file name, depending on the id of the map.
-  int id = (int) map.get_id();
-  std::ostringstream oss;
-  oss << "maps/map" << std::setfill('0') << std::setw(4) << id;
-  std::string file_name(oss.str());
+  std::string file_name = std::string("maps/") + map.get_id();
 
   // Load the map's code.
   load_file(l, file_name);
@@ -1607,7 +1604,7 @@ void LuaContext::on_moved() {
 void LuaContext::on_map_changed(Map& map) {
 
   if (find_method("on_map_changed")) {
-    lua_pushinteger(l, map.get_id());
+    push_string(l, map.get_id());
     call_function(2, 0, "on_map_changed");
   }
 }

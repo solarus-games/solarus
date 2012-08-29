@@ -35,7 +35,7 @@ class Teletransporter: public Detector {
     std::string sound_id;                 /**< Sound played when this teletransporter is used
                                            * (an empty string means no sound). */
     Transition::Style transition_style;   /**< Style of transition between the two maps. */
-    MapId destination_map_id;             /**< Id of the destination map. */
+    std::string destination_map_id;       /**< Id of the destination map. */
     std::string destination_name;         /**< Destination on that map, or "_same" to keep the hero's coordinates,
                                            * or "_side" to place the hero on the appropriate side of the map. */
     int destination_side;                 /**< When the destination is "_side", indicates which side
@@ -60,7 +60,7 @@ class Teletransporter: public Detector {
         const std::string& sprite_name,
         const std::string& sound_id,
 	Transition::Style transition_style,
-	MapId destination_map_id,
+	const std::string& destination_map_id,
         const std::string& destination_name);
     ~Teletransporter();
     static CreationFunction parse;

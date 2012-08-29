@@ -25,6 +25,9 @@
  * @brief Manages the game data saved.
  *
  * This class provides read and write access to the saved data.
+ *
+ * TODO save data as a Lua plain text file and index all data by strings.
+ * This binary format is not portable and not evolutive and hard to use.
  */
 class Savegame: public ExportableToLua {
 
@@ -74,6 +77,7 @@ class Savegame: public ExportableToLua {
                                                * (X button by default), an empty string means no item */
       ITEM_SLOT_1                       = 3,  /**< current item associated to the second slot
                                                * (V button by default), an empty string means no item */
+      STARTING_MAP                      = 4,  /**< id of the map where the player appears */
 
       /**
        * @name Joypad customizable controls.
@@ -115,7 +119,7 @@ class Savegame: public ExportableToLua {
        * @name Last game status
        * @{
        */
-      STARTING_MAP                      = 0,  /**< when starting the game, this map is loaded */
+      STARTING_MAP_INT                  = 0,  /**< deprecated (maps are identified by strings now) */
       PAUSE_LAST_SUBMENU                = 1,  /**< last submenu shown in the pause menu */
       INVENTORY_LAST_ITEM_INDEX         = 2,  /**< index of the last item selected in the inventory */
       EQUIPMENT_INITIALIZED             = 3,  /**< 1 if the initial items of the equipment have been set */
@@ -245,6 +249,7 @@ class Savegame: public ExportableToLua {
     void set_default_keyboard_controls();
     void set_default_joypad_controls();
     void check_game_controls();
+    void check_starting_map();
 };
 
 #endif

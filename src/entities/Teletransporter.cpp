@@ -50,7 +50,7 @@ Teletransporter::Teletransporter(
     const std::string& sprite_name,
     const std::string& sound_id,
     Transition::Style transition_style,
-    MapId destination_map_id,
+    const std::string& destination_map_id,
     const std::string& destination_name):
 
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
@@ -87,8 +87,7 @@ Teletransporter::~Teletransporter() {
 MapEntity* Teletransporter::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
 	
   int width, height, transition_style;
-  MapId destination_map_id;
-  std::string name, sprite_name, sound_id, destination_name;
+  std::string name, sprite_name, sound_id, destination_map_id, destination_name;
 
   FileTools::read(is, width);
   FileTools::read(is, height);

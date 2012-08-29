@@ -27,13 +27,6 @@
 
 #include <stdint.h>
 
-// types of the id of each resource.
-
-/**
- * @brief Type of the id of maps.
- */
-typedef uint32_t MapId;
-
 // declaration of all classes to avoid dependencies between the header files
 
 // main classes

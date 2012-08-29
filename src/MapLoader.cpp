@@ -28,7 +28,6 @@
 #include "entities/MapEntity.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include <iomanip>
 
 /**
  * @brief Creates a map loader.
@@ -53,16 +52,12 @@ void MapLoader::load_map(Game& game, Map& map) {
 
   map.game = &game;
 
-  // get the id of the map
-  int id = map.get_id();
-
   // compute the file name, depending on the id
-  std::ostringstream oss;
-  oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".dat";
-  const std::string &file_name = oss.str();
+  const std::string& file_name = std::string("maps/")
+    + map.get_id() + ".dat";
 
   // open the map file
-  std::istream &map_file = FileTools::data_file_open(file_name);
+  std::istream& map_file = FileTools::data_file_open(file_name);
 
   // parse the map file
   std::string line;
@@ -72,7 +67,7 @@ void MapLoader::load_map(Game& game, Map& map) {
   // first line: map general info
   // syntax: width height world floor x y small_keys_variable tileset_id music_id
   if (!std::getline(map_file, line)) {
-    Debug::die(StringConcat() << "Cannot load map '" << id << "': the file '" << file_name << "' is empty");
+    Debug::die(StringConcat() << "Cannot load map '" << map.get_id() << "': the file '" << file_name << "' is empty");
   }
 
   std::istringstream iss0(line);

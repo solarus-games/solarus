@@ -769,7 +769,7 @@ void LuaContext::push_hero(lua_State* l, Hero& hero) {
 int LuaContext::hero_api_teleport(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
-  MapId map_id = luaL_checkinteger(l, 2);
+  const std::string& map_id = luaL_checkstring(l, 2);
   const std::string& destination_name = luaL_checkstring(l, 3);
   int transition_style = Transition::FADE;
   if (lua_gettop(l) >= 4) {

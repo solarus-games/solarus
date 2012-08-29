@@ -24,7 +24,6 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include <iomanip>
 
 /**
  * @brief Constructor.
@@ -74,12 +73,8 @@ void Tileset::add_tile_pattern(int id, TilePattern *tile_pattern) {
  */
 void Tileset::load() {
 
-  // compute the file name, depending on the id
-  std::ostringstream oss;
-  oss << "tilesets/" << id << ".dat";
-
   // open the tileset file
-  std::string file_name = oss.str();
+  std::string file_name = std::string("tilesets/") + id + ".dat";
   std::istream& tileset_file = FileTools::data_file_open(file_name);
 
   // parse the tileset file
@@ -160,13 +155,11 @@ void Tileset::load() {
   FileTools::data_file_close(tileset_file);
 
   // load the tileset images
-  oss.str("");
-  oss << "tilesets/" << id << ".tiles.png";
-  tiles_image = new Surface(oss.str(), Surface::DIR_DATA);
+  file_name = std::string("tilesets/") + id + ".tiles.png";
+  tiles_image = new Surface(file_name, Surface::DIR_DATA);
 
-  oss.str("");
-  oss << "tilesets/" << id << ".entities.png";
-  entities_image = new Surface(oss.str(), Surface::DIR_DATA);
+  file_name = std::string("tilesets/") + id + ".entities.png";
+  entities_image = new Surface(file_name, Surface::DIR_DATA);
 }
 
 /**

@@ -63,6 +63,6 @@ function game:has_bottle_with(variant)
 end
 
 -- Run the game.
-sol.main.console:set_game(game)
+sol.main.game = game
 game:start()
 

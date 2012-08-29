@@ -72,7 +72,7 @@ EquipmentItem::EquipmentItem(Equipment& equipment, IniFile& ini):
   sound_when_picked = ini.get_string_value("sound_when_picked", "picked_item");
   sound_when_brandished = ini.get_string_value("sound_when_brandished", "treasure");
  
-  const std::string &shadow_name = ini.get_string_value("shadow", "big");
+  const std::string& shadow_name = ini.get_string_value("shadow", "big");
 
   std::map<std::string, ShadowSize> shadows;
   shadows["none"] = SHADOW_NONE;

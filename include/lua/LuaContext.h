@@ -123,6 +123,8 @@ class LuaContext {
 
     // Main loop events (sol.main).
     void main_on_update();
+    void main_on_pre_draw(Surface& dst_surface);
+    void main_on_post_draw(Surface& dst_surface);
     void main_on_input(InputEvent& event);
     void main_on_started();
     void main_on_finished();

@@ -127,6 +127,24 @@ Called at each cycle of the main loop.
 
 <hr>
 
+\subsection lua_api_main_on_pre_draw sol.main:on_pre_draw(surface)
+
+Called just before the screen is redrawn.
+
+Use this event if you want to do something special initially.
+- \c dst_surface (surface): The surface where the screen will be drawn.
+
+<hr>
+
+\subsection lua_api_main_on_post_draw main:on_post_draw(surface)
+
+Called when the screen was just redrawn.
+
+Use this event if you want to draw some additional content.
+- \c dst_surface (surface): The surface where the screen was just drawn.
+
+<hr>
+
 \subsection lua_api_main_on_started sol.main:on_started()
 
 Called at the beginning of the program.

@@ -201,6 +201,28 @@ void LuaContext::main_on_update() {
 }
 
 /**
+ * @brief Calls sol.main.on_pre_draw() if it exists.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::main_on_pre_draw(Surface& dst_surface) {
+
+  push_main(l);
+  on_pre_draw();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls sol.main.on_post_draw() if it exists.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::main_on_post_draw(Surface& dst_surface) {
+
+  push_main(l);
+  on_post_draw();
+  lua_pop(l, 1);
+}
+
+/**
  * @brief Notifies Lua that an input event has just occurred.
  *
  * The appropriate callback in sol.main is triggered if it exists.

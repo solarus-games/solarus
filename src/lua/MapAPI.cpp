@@ -55,7 +55,7 @@ void LuaContext::register_map_module() {
       { "set_dialog_style", map_api_set_dialog_style },
       { "set_pause_enabled", map_api_set_pause_enabled },
       { "get_light", map_api_get_light },
-      { "set_light", map_api_get_light },
+      { "set_light", map_api_set_light },
       { "move_camera", map_api_move_camera },
       { "draw_sprite", map_api_draw_sprite },
       { "get_tileset", map_api_get_tileset },

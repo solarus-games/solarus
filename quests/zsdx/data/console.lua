@@ -1,14 +1,14 @@
--- Lua console.
+-- A Lua console that can be enabled with F12 at any time during the program.
 
 -- TODO: improve the console
 -- - implement a history
 -- - interrupt keys pressed
--- - add a prompt
 
 local console = {
   enabled = false,         -- Indicates whether the console is shown.
   color = { 64, 64, 64 },  -- Background color of the console area.
-  input_characters = { },        -- Characters shown, stored as an array of UTF-8 strings (this is necessary to erase the last one).
+  input_characters = { },  -- Characters shown, stored as an array of UTF-8 strings
+                           -- (this is necessary to be able to erase the last one).
   input_text_surface = sol.text_surface.create{
     font = "fixed"
   },

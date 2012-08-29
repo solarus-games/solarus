@@ -26,7 +26,7 @@
  * This class provides some special keys that make it easier to debug the game,
  * including by allowing the hero to traverse walls.
  * This class exists for debugging purposes only and does nothing in official
- * releases (i.e. when DEBUG_KEYS is not defined)
+ * releases (i.e. when SOLARUS_DEBUG_KEYS is not defined)
  */
 class DebugKeys {
 

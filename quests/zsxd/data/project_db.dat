@@ -49,15 +49,15 @@
 0	65	Dungeon 2F NE
 0	66	Dungeon 2F SW
 0	67	Dungeon 2F SE
-1	tileset0000	House
-1	tileset0001	Light World
-1	tileset0002	Ice dungeon
-1	tileset0003	Cave
-1	tileset0004	Blue dungeon (LW)
-1	tileset0005	Green dungeon (LW)
-1	tileset0007	Brown dungeon (LW)
-1	tileset0008	Blue dungeon (DW)
-1	tileset0006	Intro
+1	0	House
+1	1	Light World
+1	2	Ice dungeon
+1	3	Cave
+1	4	Blue dungeon (LW)
+1	5	Green dungeon (LW)
+1	7	Brown dungeon (LW)
+1	8	Blue dungeon (DW)
+1	6	Intro
 2	agahnim.spc	Agahnim theme
 2	beginning.spc	Beginning
 2	boss.spc	Boss

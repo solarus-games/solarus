@@ -50,12 +50,12 @@ class Game: public Screen {
     // controls
     GameControls *controls;    /**< this object receives the keyboard and joypad events */
     KeysEffect *keys_effect;   /**< current effect associated to the main game keys
-				* (represented on the HUD by the action icon, the objects icons, etc.) */
+                                * (represented on the HUD by the action icon, the objects icons, etc.) */
 
     // map
     Map *current_map;          /**< the map currently displayed */
     Map *next_map;             /**< the map where the hero is going to; if not NULL, it means that the hero 
-				* is changing from current_map to next_map */
+                                * is changing from current_map to next_map */
     Surface *previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
 
     Transition::Style transition_style; /**< the transition style between the current map and the next one */
@@ -63,7 +63,7 @@ class Game: public Screen {
 
     // world (i.e. the current set of maps)
     Dungeon *dungeon;          /**< the dungeon of the current map, of NULL if we are not in a dungeon */
-    bool crystal_state; /**< indicates that a crystal has been enabled (i.e. the orange blocks are raised) */
+    bool crystal_state;        /**< indicates that a crystal has been enabled (i.e. the orange blocks are raised) */
     static Rectangle outside_world_size; /**< size of the outside world in pixels */
 
     // graphics
@@ -97,7 +97,7 @@ class Game: public Screen {
     Equipment& get_equipment();
 
     // functions called by the main loop
-    void notify_input(InputEvent &event);
+    bool notify_input(InputEvent &event);
     void update();
     void draw(Surface& dst_surface);
 

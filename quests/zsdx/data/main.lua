@@ -23,10 +23,11 @@ end
 function sol.main:on_key_pressed(key, modifiers)
 
   -- Debug only.
+  local handled = false
   if sol.main.is_debug_enabled() then
 
     if console.enabled then
-      console:on_key_pressed(key, modifiers)
+      handled = console:on_key_pressed(key, modifiers)
     else
       if key == "f1" then
 	start_savegame("save1.dat")
@@ -43,9 +44,11 @@ end
 
 function sol.main:on_character_pressed(character)
 
+  local handled = false
   if console.enabled then
-    console:on_character_pressed(character)
+    handled = console:on_character_pressed(character)
   end
+  return handled
 end
 
 function sol.main:on_post_draw(dst_surface)

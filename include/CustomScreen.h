@@ -37,7 +37,7 @@ class CustomScreen: public Screen {
     void stop();
 
     // update and drawing
-    void notify_input(InputEvent& event);
+    bool notify_input(InputEvent& event);
     void update();
     void draw(Surface& dst_surface);
 

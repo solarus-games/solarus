@@ -71,32 +71,42 @@ end
 
 function console:on_key_pressed(key, modifiers)
 
+  local handled = false
   if key == "f12" or key == "escape" then
     self:stop()
+    handled = true
   elseif key == "backspace" then
     if self.status_shown then
       self:clear()
     else
       self:remove_character()
     end
+    handled = true
   elseif key == "return" or key == "kp return" then
     if self.status_shown then
       self:clear()
     else
       self:execute_code()
     end
+    handled = true
   end
+
+  return handled
 end
 
 function console:on_character_pressed(character)
 
+  local handled = false
   if not character:find("%c") then  -- Don't append control characters.
 
     if self.status_shown then
       self:clear()
     end
     self:append_character(character)
+    handled = true
   end
+
+  return handled
 end
 
 function console:on_draw(dst_surface)

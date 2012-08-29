@@ -262,6 +262,7 @@ void MainLoop::notify_input(InputEvent& event) {
       exiting = true;
     }
 #if defined(PANDORA)
+    // TODO make a clean flag
     else if (key == InputEvent::KEY_ESCAPE) {
       exiting = true;
     }
@@ -276,10 +277,10 @@ void MainLoop::notify_input(InputEvent& event) {
   }
 
   // send the event to the current screen
-  if (current_screen != NULL) {
+  bool handled = lua_context->notify_input(event);
+  if (!handled && current_screen != NULL) {
     current_screen->notify_input(event);
   }
-  lua_context->notify_input(event);
 }
 
 /**

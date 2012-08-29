@@ -88,7 +88,7 @@ class LuaContext {
     void exit();
     void update();
     void set_suspended(bool suspended);
-    void notify_input(InputEvent& event);
+    bool notify_input(InputEvent& event);
     void notify_map_started(Map& map, Destination* destination);
     void notify_map_suspended(Map& map, bool suspended);
     void notify_item_created(EquipmentItem& item);
@@ -125,14 +125,14 @@ class LuaContext {
     void main_on_update();
     void main_on_pre_draw(Surface& dst_surface);
     void main_on_post_draw(Surface& dst_surface);
-    void main_on_input(InputEvent& event);
+    bool main_on_input(InputEvent& event);
     void main_on_started();
     void main_on_finished();
 
     // Menu events.
     void menu_on_update(int menu_ref);
     void menu_on_draw(int menu_ref, Surface& dst_surface);
-    void menu_on_input(int menu_ref, InputEvent& event);
+    bool menu_on_input(int menu_ref, InputEvent& event);
     void menu_on_started(int menu_ref);
     void menu_on_finished(int menu_ref);
 
@@ -331,15 +331,15 @@ class LuaContext {
     void on_pre_draw(Surface& dst_surface);
     void on_post_draw(Surface& dst_surface);
     void on_suspended(bool suspended);
-    void on_input(InputEvent& event);
-    void on_key_pressed(InputEvent& event);
-    void on_key_released(InputEvent& event);
-    void on_character_pressed(InputEvent& event);
-    void on_joypad_button_pressed(InputEvent& event);
-    void on_joypad_button_released(InputEvent& event);
-    void on_joypad_axis_moved(InputEvent& event);
-    void on_joypad_hat_moved(InputEvent& event);
-    void on_direction_pressed(InputEvent& event);
+    bool on_input(InputEvent& event);
+    bool on_key_pressed(InputEvent& event);
+    bool on_key_released(InputEvent& event);
+    bool on_character_pressed(InputEvent& event);
+    bool on_joypad_button_pressed(InputEvent& event);
+    bool on_joypad_button_released(InputEvent& event);
+    bool on_joypad_axis_moved(InputEvent& event);
+    bool on_joypad_hat_moved(InputEvent& event);
+    bool on_direction_pressed(InputEvent& event);
     void on_started(Destination* destination);
     void on_opening_transition_finished(Destination* destination);
     void on_camera_back();

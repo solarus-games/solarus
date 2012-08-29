@@ -213,11 +213,12 @@ void LuaContext::set_suspended(bool suspended) {
  * The appropriate callback in sol.main is notified.
  *
  * @param event The input event to handle.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::notify_input(InputEvent& event) {
+bool LuaContext::notify_input(InputEvent& event) {
 
   // Call the appropriate callback in sol.main (if it exists).
-  main_on_input(event);
+  return main_on_input(event);
 }
 
 /**
@@ -1147,42 +1148,46 @@ void LuaContext::on_suspended(bool suspended) {
 /**
  * @brief Calls an input callback method of the object on top of the stack.
  * @param event The input event to forward.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::on_input(InputEvent& event) {
+bool LuaContext::on_input(InputEvent& event) {
 
   // Call the Lua function(s) corresponding to this input event.
+  bool handled = false;
   if (event.is_keyboard_event()) {
     // Keyboard.
     if (event.is_keyboard_key_pressed()) {
-      on_key_pressed(event);
+      handled = on_key_pressed(event) || handled;
       if (event.is_character_pressed()) {
-        on_character_pressed(event);
+        handled = on_character_pressed(event) || handled;
       }
     }
     else if (event.is_keyboard_key_released()) {
-      on_key_released(event);
+      handled = on_key_released(event) || handled;
     }
   }
   else if (event.is_joypad_event()) {
     // Joypad.
     if (event.is_joypad_button_pressed()) {
-      on_joypad_button_pressed(event);
+      handled = on_joypad_button_pressed(event) || handled;
     }
     else if (event.is_joypad_button_released()) {
-      on_joypad_button_released(event);
+      handled = on_joypad_button_released(event) || handled;
     }
     else if (event.is_joypad_axis_moved()) {
-      on_joypad_axis_moved(event);
+      handled = on_joypad_axis_moved(event) || handled;
     }
     else if (event.is_joypad_hat_moved()) {
-      on_joypad_hat_moved(event);
+      handled = on_joypad_hat_moved(event) || handled;
     }
   }
 
   if (event.is_direction_pressed()) {
     // Keyboard or joypad direction.
-    on_direction_pressed(event);
+    handled = on_direction_pressed(event) || handled;
   }
+
+  return handled;
 }
 
 /**
@@ -1190,9 +1195,11 @@ void LuaContext::on_input(InputEvent& event) {
  * that a keyboard key was just pressed
  * (including if it is a directional key or a character).
  * @param event The corresponding input event.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::on_key_pressed(InputEvent& event) {
+bool LuaContext::on_key_pressed(InputEvent& event) {
 
+  bool handled = false;
   if (find_method("on_key_pressed")) {
 
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
@@ -1215,28 +1222,36 @@ void LuaContext::on_key_pressed(InputEvent& event) {
         lua_pushboolean(l, 1);
         lua_setfield(l, -2, "alt");
       }
-      call_function(3, 0, "on_key_pressed");
+      call_function(3, 1, "on_key_pressed");
+      handled = lua_toboolean(l, -1);
+      lua_pop(l, 1);
     }
     else {
       // The method exists but the key is unknown.
       lua_pop(l, 2);  // Pop the object and the method.
     }
   }
+  return handled;
 }
 
 /**
  * @brief Notifies the object on top of the stack
  * that a character was just pressed with the keyboard.
  * @param event The corresponding input event.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::on_character_pressed(InputEvent& event) {
+bool LuaContext::on_character_pressed(InputEvent& event) {
 
+  bool handled = false;
   if (find_method("on_character_pressed")) {
 
     const std::string& character = event.get_character();
     push_string(l, character);
-    call_function(2, 0, "on_character_pressed");
+    call_function(2, 1, "on_character_pressed");
+    handled = lua_toboolean(l, -1);
+    lua_pop(l, 1);
   }
+  return handled;
 }
 
 /**
@@ -1244,85 +1259,110 @@ void LuaContext::on_character_pressed(InputEvent& event) {
  * that a keyboard key was just released
  * (including if it is a directional key).
  * @param event The corresponding input event.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::on_key_released(InputEvent& event) {
+bool LuaContext::on_key_released(InputEvent& event) {
 
+  bool handled = false;
   if (find_method("on_key_released")) {
 
     const std::string& key_name = input_get_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Lua API.
       push_string(l, key_name);
-      call_function(2, 0, "on_key_released");
+      call_function(2, 1, "on_key_released");
+      handled = lua_toboolean(l, -1);
+      lua_pop(l, 1);
     }
     else {
       // The method exists but the key is unknown.
       lua_pop(l, 2);  // Pop the object and the method.
     }
   }
+  return handled;
 }
 
 /**
  * @brief Notifies the object on top of the stack
  * that a joypad button was just pressed.
  * @param event The corresponding input event.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::on_joypad_button_pressed(InputEvent& event) {
+bool LuaContext::on_joypad_button_pressed(InputEvent& event) {
 
+  bool handled = false;
   if (find_method("on_joyad_button_pressed")) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_function(2, 0, "on_joyad_button_pressed");
+    call_function(2, 1, "on_joyad_button_pressed");
+    handled = lua_toboolean(l, -1);
+    lua_pop(l, 1);
   }
+  return handled;
 }
 
 /**
  * @brief Notifies the object on top of the stack
  * that a joypad button was just released.
  * @param event The corresponding input event.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::on_joypad_button_released(InputEvent& event) {
+bool LuaContext::on_joypad_button_released(InputEvent& event) {
 
+  bool handled = false;
   if (find_method("on_joyad_button_released")) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_function(2, 0, "on_joyad_button_released");
+    call_function(2, 1, "on_joyad_button_released");
+    handled = lua_toboolean(l, -1);
+    lua_pop(l, 1);
   }
+  return handled;
 }
 
 /**
  * @brief Notifies the object on top of the stack
  * that a joypad axis was just moved.
  * @param event The corresponding input event.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::on_joypad_axis_moved(InputEvent& event) {
+bool LuaContext::on_joypad_axis_moved(InputEvent& event) {
 
+  bool handled = false;
   if (find_method("on_joyad_axis_moved")) {
     int axis = event.get_joypad_axis();
     int state = event.get_joypad_axis_state();
 
     lua_pushinteger(l, axis);
     lua_pushinteger(l, state);
-    call_function(3, 0, "on_joyad_axis_moved");
+    call_function(3, 1, "on_joyad_axis_moved");
+    handled = lua_toboolean(l, -1);
+    lua_pop(l, 1);
   }
+  return handled;
 }
 
 /**
  * @brief Notifies the object on top of the stack
  * that a joypad hat was just moved.
  * @param event The corresponding input event.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::on_joypad_hat_moved(InputEvent& event) {
+bool LuaContext::on_joypad_hat_moved(InputEvent& event) {
 
+  bool handled = false;
   if (find_method("on_joyad_hat_moved")) {
     int hat = event.get_joypad_hat();
     int direction8 = event.get_joypad_hat_direction();
 
     lua_pushinteger(l, hat);
     lua_pushinteger(l, direction8);
-    call_function(3, 0, "on_joyad_hat_moved");
+    call_function(3, 1, "on_joyad_hat_moved");
+    handled = lua_toboolean(l, -1);
+    lua_pop(l, 1);
   }
+  return handled;
 }
 
 /**
@@ -1330,15 +1370,20 @@ void LuaContext::on_joypad_hat_moved(InputEvent& event) {
  * that a directional keyboard key was just pressed
  * or that a joypad directional command has just changed.
  * @param event The corresponding input event.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::on_direction_pressed(InputEvent& event) {
+bool LuaContext::on_direction_pressed(InputEvent& event) {
 
+  bool handled = false;
   if (find_method("on_direction_pressed")) {
     int direction8 = event.get_direction();
 
     lua_pushinteger(l, direction8);
-    call_function(2, 0, "on_direction_pressed");
+    call_function(2, 1, "on_direction_pressed");
+    handled = lua_toboolean(l, -1);
+    lua_pop(l, 1);
   }
+  return handled;
 }
 
 /**
@@ -1483,13 +1528,15 @@ void LuaContext::on_npc_interaction(NPC& npc) {
  */
 bool LuaContext::on_npc_interaction_item(NPC& npc, EquipmentItem& item_used) {
 
+  bool interacted = false;
   if (find_method("on_npc_interaction_item")) {
     push_npc(l, npc);
     push_item(l, item_used);
     call_function(3, 1, "on_npc_interaction_item");
-    return lua_toboolean(l, -1);
+    interacted = lua_toboolean(l, -1);
+    lua_pop(l, 1);
   }
-  return false;
+  return interacted;
 }
 
 /**
@@ -1509,12 +1556,14 @@ void LuaContext::on_interaction() {
  */
 bool LuaContext::on_interaction_item(EquipmentItem& item) {
 
+  bool interacted = false;
   if (find_method("on_interaction_item")) {
     push_item(l, item);
     call_function(2, 1, "on_interaction_item");
-    return lua_toboolean(l, -1);
+    interacted = lua_toboolean(l, -1);
+    lua_pop(l, 1);
   }
-  return false;
+  return interacted;
 }
 
 /**
@@ -1568,11 +1617,13 @@ bool LuaContext::on_empty() {
  */
 bool LuaContext::on_buying() {
 
+  bool can_buy = true;
   if (find_method("on_buying")) {
     call_function(1, 1, "on_buying");
-    return lua_toboolean(l, -1);
+    can_buy = lua_toboolean(l, -1);
+    lua_pop(l, 1);
   }
-  return false;
+  return can_buy;
 }
 
 /**

@@ -82,8 +82,9 @@ class Screen {
      * This function is called by the main loop when there is an input event.
      *
      * @param event the event to handle
+     * @return \c true if the event was handled and should stop being propagated.
      */
-    virtual void notify_input(InputEvent& event) = 0;
+    virtual bool notify_input(InputEvent& event) = 0;
 
   protected:
 

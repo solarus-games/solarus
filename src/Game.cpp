@@ -198,12 +198,14 @@ Equipment& Game::get_equipment() {
 /**
  * @brief This function is called when a low-level input event occurs during the game.
  * @param event the event to handle
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void Game::notify_input(InputEvent &event) {
+bool Game::notify_input(InputEvent& event) {
 
   // the GameControl object will transform the low-level input event into
   // a high-level game control event (i.e. a call to key_pressed() or key_released()).
   controls->notify_input(event);
+  return true;
 }
 
 /**

@@ -228,12 +228,14 @@ void LuaContext::main_on_post_draw(Surface& dst_surface) {
  * The appropriate callback in sol.main is triggered if it exists.
  *
  * @param event The input event to handle.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::main_on_input(InputEvent& event) {
+bool LuaContext::main_on_input(InputEvent& event) {
 
   push_main(l);
-  on_input(event);
+  bool handled = on_input(event);
   lua_pop(l, 1);
+  return handled;
 }
 
 /**

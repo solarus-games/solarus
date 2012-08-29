@@ -52,17 +52,20 @@ void LuaContext::menu_on_draw(int menu_ref, Surface& dst_surface) {
  * @brief Calls an input callback method of a Lua menu.
  * @param menu_ref A reference to the menu object.
  * @param event The input event to forward.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::menu_on_input(int menu_ref, InputEvent& event) {
+bool LuaContext::menu_on_input(int menu_ref, InputEvent& event) {
 
   // Get the Lua menu.
   push_ref(l, menu_ref);
 
   // Trigger its appropriate callback if it exists.
-  on_input(event);
+  bool handled = on_input(event);
 
   // Remove the menu from the stack.
   lua_pop(l, 1);
+
+  return handled;
 }
 
 /**

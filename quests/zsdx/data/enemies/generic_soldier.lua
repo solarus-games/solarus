@@ -103,6 +103,7 @@ function enemy:check_hero()
     self:go_random()
   end
   timer = sol.timer.start(1000, function() self:check_hero() end)
+  -- FIXME: cancel the timer when the enemy is removed
 end
 
 function enemy:on_movement_changed(movement)

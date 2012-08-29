@@ -87,9 +87,10 @@ void CustomScreen::draw(Surface& dst_surface) {
 /**
  * @brief This function is called when there is an input event.
  * @param event the event to handle
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void CustomScreen::notify_input(InputEvent& event) {
+bool CustomScreen::notify_input(InputEvent& event) {
 
-  get_lua_context().menu_on_input(menu_ref, event);
+  return get_lua_context().menu_on_input(menu_ref, event);
 }
 

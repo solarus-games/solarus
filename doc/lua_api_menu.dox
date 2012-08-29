@@ -69,6 +69,9 @@ Called when the user presses a keyboard key while your menu is active.
 - \c modifiers (table): A table whose keys indicate what modifiers were
   down during the event. Possible keys are \c "shift", \c "control" and
   \c "alt". Values don't matter.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (like the game).
 
 \remark This event indicates the raw key pressed. If you want the
 corresponding character instead (if any), see
@@ -83,6 +86,9 @@ Called when the user releases a keyboard key while your menu is active.
 - \c modifiers (table): A table whose keys indicate what modifiers were
   down during the event. Possible keys are \c "shift", \c "control" and
   \c "alt". Values don't matter.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (like the game).
 
 <hr>
 
@@ -93,6 +99,9 @@ while your menu is active.
 
 - \c character (string): A utf-8 string representing the character that was
 pressed.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (like the game).
 
 \remark When a character key is pressed, two events are called:
 \ref lua_api_menu_on_key_pressed (indicating the raw key)
@@ -108,6 +117,9 @@ strings.
 
 Called when the user presses a joypad button while your menu is active.
 - \c button (number): Index of the button that was pressed.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (like the game).
 
 <hr>
 
@@ -115,6 +127,9 @@ Called when the user presses a joypad button while your menu is active.
 
 Called when the user releases a joypad button while your menu is active.
 - \c button (number): Index of the button that was released.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (like the game).
 
 <hr>
 
@@ -125,6 +140,9 @@ Called when the user moves a joypad axis while your menu is active.
   horizontal axis and \c 1 is a vertical axis.
 - \c state (number): The new state of the axis that was moved. \c -1 means
   left or up, \c 0 means centered and \c 1 means right or down.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (like the game).
 
 <hr>
 
@@ -135,6 +153,9 @@ Called when the user moves a joypad hat while your menu is active.
 - \c direction8 (number): The new direction of the hat. \c -1 means that the
   hat is centered. \c 0 to \c 7 indicates that the hat is in one of the eight
   menu directions.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (like the game).
 
 <hr>
 
@@ -143,6 +164,9 @@ Called when the user moves a joypad hat while your menu is active.
 Called when the user presses a directional key of the keyboard or a
 directional button of the joypad while your menu is active.
 - \c direction8 (number): The direction that was pressed (\c 0 to \c 7).
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (like the game).
 
 \remark This is only a convenient event: the information can already be
 determined with a combination of

@@ -79,7 +79,8 @@ function console:on_key_pressed(key, modifiers)
       self:remove_input_character()
     end
     handled = true
-  elseif key == "return" or key == "kp return" then
+  elseif (key == "return" or key == "kp return")
+      and not modifiers.alt and not modifiers.control then
     if self:get_output_text() ~= "" then
       self:clear()
     else

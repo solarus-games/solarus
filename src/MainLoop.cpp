@@ -240,43 +240,20 @@ void MainLoop::run() {
  */
 void MainLoop::notify_input(InputEvent& event) {
 
-  // handle the common events
-  InputEvent::KeyboardKey key = event.get_keyboard_key();
-
   if (event.is_window_closing()) {
     exiting = true;
   }
   else if (event.is_keyboard_key_pressed()) {
-    // a key is pressed
-    if (key == InputEvent::KEY_F5) {
-      // F5: change the video mode
-      VideoManager::get_instance()->switch_video_mode();
-    }
-    else if (key == InputEvent::KEY_RETURN
-        && (event.is_alt_down() || event.is_control_down())) {
-      // Alt + Return or Ctrl + Return: switch fullscreen
-      VideoManager::get_instance()->switch_fullscreen();
-    }
-    else if (key == InputEvent::KEY_F4 && event.is_alt_down()) {
-      // Alt + F4: quit the program
-      exiting = true;
-    }
+    // A key was pressed.
 #if defined(PANDORA)
     // TODO make a clean flag
-    else if (key == InputEvent::KEY_ESCAPE) {
+    if (event.get_keyboard_key() == InputEvent::KEY_ESCAPE) {
       exiting = true;
     }
 #endif
-    else {
-      debug_keys->key_pressed(key);
-    }
-  }
-  else if (event.is_keyboard_key_released()) {
-    // a key is released
-    debug_keys->key_released(key);
   }
 
-  // send the event to the current screen
+  // Send the event to Lua and to the current screen.
   bool handled = lua_context->notify_input(event);
   if (!handled && current_screen != NULL) {
     current_screen->notify_input(event);

@@ -42,8 +42,6 @@ class DebugKeys {
 
     void set_game(Game* game);
 
-    void key_pressed(InputEvent::KeyboardKey key);
-    void key_released(InputEvent::KeyboardKey key);
     void update();
 };
 

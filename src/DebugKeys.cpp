@@ -45,20 +45,6 @@ void DebugKeys::set_game(Game* game) {
 }
 
 /**
- * @brief This function is called when a keyboard key is pressed.
- * @param key the key pressed
- */
-void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
-}
-
-/**
- * @brief This function is called when a keyboard key is released.
- * @param key the key released
- */
-void DebugKeys::key_released(InputEvent::KeyboardKey key) {
-}
-
-/**
  * @brief This function is called repeatedly by the engine.
  */
 void DebugKeys::update() {

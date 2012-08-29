@@ -23,7 +23,7 @@ function map:on_started(destination)
     map:set_entities_enabled("teletransporter_lw", false)
 
     -- Agahnim fight
-    if destination:get_name() == "from_dungeon_5_2F_ne"
+    if destination ~= nil and destination:get_name() == "from_dungeon_5_2F_ne"
         and map:get_game():get_boolean(507)
         and not map:get_game():get_boolean(520) then
 

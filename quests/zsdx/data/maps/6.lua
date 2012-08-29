@@ -67,7 +67,7 @@ end
 
 function edelweiss_sensor:on_activated()
 
-  if map:get_game():get_item("level_4_way").get_variant() == 3  -- the player has the edelweiss
+  if map:get_game():get_item("level_4_way"):get_variant() == 3  -- the player has the edelweiss
       and not is_beaumont_cave_open() then
     map:start_dialog("outside_world.beaumont_hill_put_edelweiss", function()
       hero:freeze()

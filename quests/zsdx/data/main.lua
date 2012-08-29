@@ -43,7 +43,9 @@ end
 
 function sol.main:on_character_pressed(character)
 
-  console:on_character_pressed(character)
+  if console.enabled then
+    console:on_character_pressed(character)
+  end
 end
 
 function sol.main:on_post_draw(dst_surface)

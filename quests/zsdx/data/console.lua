@@ -3,7 +3,6 @@
 -- TODO: improve the console
 -- - implement a history
 -- - interrupt keys pressed
--- - allow to get map entities like globals
 -- - add a prompt
 
 local console = {
@@ -72,7 +71,7 @@ end
 
 function console:on_key_pressed(key, modifiers)
 
-  if key == "f12" then
+  if key == "f12" or key == "escape" then
     self:stop()
   elseif key == "backspace" then
     if self.status_shown then
@@ -84,21 +83,7 @@ function console:on_key_pressed(key, modifiers)
     if self.status_shown then
       self:clear()
     else
-      local code = self:get_text()
-      if self.game ~= nil then
-	_G.map = self.game:get_map()
-      else
-	_G.map = nil
-      end
-      local success, message = pcall(loadstring(code))
-      if success then
-	self:show_status("done")
-	self.status_shown = true
-      else
-	message = message:gsub(".*:1: ", "")
-	self:show_status(message)
-	self.status_shown = true
-      end
+      self:execute_code()
     end
   end
 end
@@ -109,9 +94,8 @@ function console:on_character_pressed(character)
 
     if self.status_shown then
       self:clear()
-    else
-      self:append_character(character)
     end
+    self:append_character(character)
   end
 end
 
@@ -120,6 +104,54 @@ function console:on_draw(dst_surface)
   local width, height = dst_surface:get_size()
   dst_surface:fill_color(self.color, 32, height - 64, width - 64, 32)
   self.text_surface:draw(dst_surface, 40, height - 56)
+end
+
+function console:execute_code()
+
+  -- Set up an environment that gives access to the game, the map and the entities.
+  local environment = {}
+  setmetatable(environment, { __index = environment_index })
+
+  local success = false
+  local code, message = loadstring(self:get_text())
+
+  if code ~= nil then
+    setfenv(code, environment)
+    success, message = pcall(code)
+  end
+
+  if success then
+    self:show_status("done")
+    self.status_shown = true
+  else
+    message = message:gsub(".*:1: ", "")
+    self:show_status(message)
+    self.status_shown = true
+  end
+end
+
+function environment_index(environment, key)
+
+  local result = nil
+
+  if console.game ~= nil then
+    if key == "game" then
+      result = console.game
+    elseif key == "map" then
+      result = console.game:get_map()
+    else
+      local entity = console.game:get_map():get_entity(key)
+      if entity ~= nil then
+	result = entity
+      end
+    end
+  end
+
+  if result == nil then
+    result = _G[key]
+  end
+
+  return result
 end
 
 return console

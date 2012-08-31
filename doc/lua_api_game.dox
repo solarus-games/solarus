@@ -364,6 +364,7 @@ The menu will persist accross map changes.
   \ref lua_api_menu).
 
 \see lua_api_map_start_menu, lua_api_main_start_screen
+\todo This function is not implemented yet.
 
 <hr>
 

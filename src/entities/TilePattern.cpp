@@ -125,6 +125,7 @@ bool TilePattern::is_drawn_at_its_position() {
  * @brief Fills a rectangle by repeating this tile pattern.
  * @param dst_surface The destination surface.
  * @param dst_position Coordinates of the rectangle to fill in \c dst_surface.
+ * @param tileset The tileset to use.
  * @param viewport Coordinates of the top-left corner of \c dst_surface
  * relative to the map (may be used for scrolling tiles).
  */

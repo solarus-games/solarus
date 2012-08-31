@@ -153,7 +153,7 @@ void EquipmentItem::notify_map_started(Map& map) {
 
 /**
  * @brief Notifies this item that its possession state has just changed.
- * @param Variant The new possession state.
+ * @param variant The new possession state.
  */
 void EquipmentItem::notify_variant_changed(int variant) {
 

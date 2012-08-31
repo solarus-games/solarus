@@ -2044,6 +2044,7 @@ void LuaContext::npc_on_interaction(NPC& npc) {
 
 /**
  * @brief Calls the on_interaction_item() method of a Lua NPC.
+ * @param npc An NPC.
  * @param item_used The equipment item used.
  * @return \c true if an interaction occurred.
  */

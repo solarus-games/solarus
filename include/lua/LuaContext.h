@@ -113,7 +113,6 @@ class LuaContext {
     void set_suspended_timers(bool suspended);
 
     // Drawable objects.
-    bool has_drawable(Drawable* drawable);
     void add_drawable(Drawable* drawable);
     void remove_drawable(Drawable* drawable);
     void update_drawables();
@@ -198,7 +197,6 @@ class LuaContext {
     void enemy_on_pre_draw(Enemy& enemy);
     void enemy_on_post_draw(Enemy& enemy);
     void enemy_on_position_changed(Enemy& enemy, const Rectangle& xy, Layer layer);
-    void enemy_on_layer_changed(Enemy& enemy, Layer layer);
     void enemy_on_obstacle_reached(Enemy& enemy, Movement& movement);
     void enemy_on_movement_changed(Enemy& enemy, Movement& movement);
     void enemy_on_movement_finished(Enemy& enemy);

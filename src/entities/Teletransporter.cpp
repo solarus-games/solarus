@@ -32,9 +32,10 @@
  * @param y Y position of the teletransporter's rectangle.
  * @param width Width of the teletransporter's rectangle.
  * @param height Height of the teletransporter's rectangle.
- * @param transition_style Style of transition between the two maps.
+ * @param sprite_name Sprite animation set id to use, or an empty string.
  * @param sound_id Sound to play when using the teletransporter,
  * or an empty string.
+ * @param transition_style Style of transition between the two maps.
  * @param destination_map_id Id of the destination map.
  * @param destination_name Location on the destination map,
  * or "_same" to keep the hero's coordinates,

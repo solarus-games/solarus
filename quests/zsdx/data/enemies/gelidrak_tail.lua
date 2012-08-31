@@ -42,7 +42,7 @@ function enemy:on_restarted()
     self:start_movement(m)
   else
     self:stop_movement()
-    sol.timer.start(retracted_delay, function()
+    sol.timer.start(self, retracted_delay, function()
       local x, y = body:get_position()
       local m = sol.movement.create("target")
       m:set_speed(48)

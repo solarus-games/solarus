@@ -55,7 +55,7 @@ function enemy:go_random()
   if timer ~= nil then
     timer:stop()
   end
-  timer = sol.timer.start(300 + math.random(1500), function()
+  timer = sol.timer.start(self, 300 + math.random(1500), function()
     sprite:set_animation("bite")
   end)
 end

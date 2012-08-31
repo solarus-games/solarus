@@ -17,7 +17,7 @@ function enemy:on_created()
   local sprite = self:get_sprite()
   sprite:set_animation("shell")
   in_shell = true
-  sol.timer.start(1000, function()
+  sol.timer.start(self, 1000, function()
     self:break_shell()
   end)
 end

@@ -43,7 +43,7 @@ function enemy:go()
   m:set_max_distance(16)
   self:start_movement(m)
   for _, t in ipairs(timers) do t:stop() end
-  timers[#timers + 1] = sol.timer.start(math.random(2000, 3000), function()
+  timers[#timers + 1] = sol.timer.start(self, math.random(2000, 3000), function()
     self:prepare_son()
   end)
 end
@@ -78,12 +78,12 @@ function enemy:prepare_son()
       local sprite = self:get_sprite()
       sprite:set_animation("preparing_son")
       sol.audio.play_sound("hero_pushes")
-      timers[#timers + 1] = sol.timer.start(1000, function() self:create_son() end)
+      timers[#timers + 1] = sol.timer.start(self, 1000, function() self:create_son() end)
       self:stop_movement()
     end
   end
 
-  timers[#timers + 1] = sol.timer.start(math.random(2000, 5000), function() self:prepare_son() end)
+  timers[#timers + 1] = sol.timer.start(self, math.random(2000, 5000), function() self:prepare_son() end)
 end
 
 function enemy:create_son()
@@ -127,7 +127,7 @@ function enemy:on_sprite_animation_finished(sprite, animation)
       sprite:set_animation("vulnerable")
       sol.audio.play_sound("boss_hurt")
       for _, t in ipairs(timers) do t:stop() end
-      timers[#timers + 1] = sol.timer.start(4000, function() self:stop_vulnerable() end)
+      timers[#timers + 1] = sol.timer.start(self, 4000, function() self:stop_vulnerable() end)
       self:remove_sons()
     else
       sprite:set_animation("walking")

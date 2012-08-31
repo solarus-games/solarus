@@ -28,7 +28,7 @@ function enemy:on_restarted()
   m:set_path{2,2}
   m:set_speed(16)
   self:start_movement(m)
-  timer = sol.timer.start(2000, function() self:go_hero() end)
+  timer = sol.timer.start(self, 2000, function() self:go_hero() end)
   state = "raising"
 end
 

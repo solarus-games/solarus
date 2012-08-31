@@ -37,11 +37,11 @@ function enemy:on_restarted()
     if self.timer ~= nil then
       self.timer:stop()
     end
-    self.timer = sol.timer.start(10000, function() self:disappear() end)
+    self.timer = sol.timer.start(self, 10000, function() self:disappear() end)
     self:stop_movement()
     self:set_can_attack(false)
   else
-    self.timer = sol.timer.start(1000, function() self:go() end)
+    self.timer = sol.timer.start(self, 1000, function() self:go() end)
     self:set_can_attack(true)
   end
 end

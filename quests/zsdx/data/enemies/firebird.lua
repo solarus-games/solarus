@@ -37,7 +37,7 @@ function enemy:on_restarted()
   m:set_speed(64)
   self:start_movement(m)
   for _, t in ipairs(timers) do t:stop() end
-  timers[#timers + 1] = sol.timer.start(math.random(2000, 6000), function()
+  timers[#timers + 1] = sol.timer.start(self, math.random(2000, 6000), function()
     self:prepare_flames()
   end)
 end
@@ -55,12 +55,12 @@ function enemy:prepare_flames()
     self:create_enemy(son_name, "red_flame", 0, -16, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      timers[#timers + 1] = sol.timer.start(200, repeat_throw_flame)
+      timers[#timers + 1] = sol.timer.start(self, 200, repeat_throw_flame)
     end
   end
   repeat_throw_flame()
 
-  timers[#timers + 1] = sol.timer.start(math.random(4000, 6000), function()
+  timers[#timers + 1] = sol.timer.start(self, math.random(4000, 6000), function()
     self:prepare_flames()
   end)
 end

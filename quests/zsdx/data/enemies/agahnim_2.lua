@@ -58,7 +58,7 @@ function enemy:on_restarted()
   local sprite = self:get_sprite()
   sprite:set_ignore_suspend(false)
   sprite:fade_out()
-  timers[#timers + 1] = sol.timer.start(700, function()
+  timers[#timers + 1] = sol.timer.start(self, 700, function()
     self:hide()
   end)
 end
@@ -83,7 +83,7 @@ function enemy:hide()
   -- Disappear for a while.
   vulnerable = false
   self:set_position(-100, -100)
-  timers[#timers + 1] = sol.timer.start(500, function()
+  timers[#timers + 1] = sol.timer.start(self, 500, function()
     self:unhide()
   end)
 end
@@ -96,7 +96,7 @@ function enemy:unhide()
   local sprite = self:get_sprite()
   sprite:set_direction(self:get_direction4_to_hero())
   sprite:fade_in()
-  timers[#timers + 1] = sol.timer.start(1000, function()
+  timers[#timers + 1] = sol.timer.start(self, 1000, function()
     self:fire_step_1()
   end)
 end
@@ -106,7 +106,7 @@ function enemy:fire_step_1()
   -- Before preparing a fireball.
   local sprite = self:get_sprite()
   sprite:set_animation("arms_up")
-  timers[#timers + 1] = sol.timer.start(1000, function()
+  timers[#timers + 1] = sol.timer.start(self, 1000, function()
     self:fire_step_2()
   end)
   self:set_can_attack(true)
@@ -137,7 +137,7 @@ function enemy:fire_step_2()
     next_fireball_breed = "red_fireball_triple"
   end
   sol.audio.play_sound("boss_charge")
-  timers[#timers + 1] = sol.timer.start(1500, function()
+  timers[#timers + 1] = sol.timer.start(self, 1500, function()
     self:fire_step_3()
   end)
 end
@@ -156,7 +156,7 @@ function fire_step_3()
   else
     delay = 3000  -- Red fireball: stay longer to play ping-pong.
   end
-  timers[#timers + 1] = sol.timer.start(delay, function()
+  timers[#timers + 1] = sol.timer.start(self, delay, function()
     self:restart()
   end)
 
@@ -171,11 +171,11 @@ function fire_step_3()
   -- Shoot more fireballs if the life becomes short.
   local life = self:get_life()
   if life <= initial_life / 2 then
-    timers[#timers + 1] = sol.timer.start(200, function() self:throw_fire() end)
-    timers[#timers + 1] = sol.timer.start(400, function() self:throw_fire() end)
+    timers[#timers + 1] = sol.timer.start(self, 200, function() self:throw_fire() end)
+    timers[#timers + 1] = sol.timer.start(self, 400, function() self:throw_fire() end)
     if life <= initial_life / 4 then
-      timers[#timers + 1] = sol.timer.start(600, function() self:throw_fire() end)
-      timers[#timers + 1] = sol.timer.start(800, function() self:throw_fire() end)
+      timers[#timers + 1] = sol.timer.start(self, 600, function() self:throw_fire() end)
+      timers[#timers + 1] = sol.timer.start(self, 800, function() self:throw_fire() end)
     end
   end
 

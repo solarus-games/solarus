@@ -38,12 +38,12 @@ function enemy:on_restarted()
   for _, t in ipairs(timers) do t:stop() end
 
   nb_fire_created = 0
-  timers[#timers + 1] = sol.timer.start(2000 + math.random(8000), function()
+  timers[#timers + 1] = sol.timer.start(self, 2000 + math.random(8000), function()
     self:stop_movement()
     local sprite = self:get_sprite()
     sprite:set_animation("preparing_fire")
     sol.audio.play_sound("lamp")
-    timers[#timers + 1] = sol.timer.start(500, function() self:repeat_fire() end)
+    timers[#timers + 1] = sol.timer.start(self, 500, function() self:repeat_fire() end)
   end)
 end
 
@@ -74,9 +74,9 @@ function enemy:repeat_fire()
     local son = self:create_enemy(son_name, "fireball_simple", 0, 16)
     son:go(angle)
     sol.audio.play_sound("lamp")
-    timers[#timers + 1] = sol.timer.start(150, function() self:repeat_fire() end)
+    timers[#timers + 1] = sol.timer.start(self, 150, function() self:repeat_fire() end)
   else
-    timers[#timers + 1] = sol.timer.start(500, function() self:restart() end)
+    timers[#timers + 1] = sol.timer.start(self, 500, function() self:restart() end)
   end
 end
 

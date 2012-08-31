@@ -109,7 +109,7 @@ function enemy:go_back()
   elseif state == "going_back" then
 
     state = "paused"
-    sol.timer.start(500, function() self:unpause() end)
+    sol.timer.start(self, 500, function() self:unpause() end)
   end
 end
 

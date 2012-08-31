@@ -138,7 +138,7 @@ function enemy:check_hero()
   elseif not awaken and near_hero then
     self:wake_up()
   end
-  timer = sol.timer.start(1000, function() self:check_hero() end)
+  timer = sol.timer.start(self, 1000, function() self:check_hero() end)
 end
 
 --  The animation of a sprite is finished.

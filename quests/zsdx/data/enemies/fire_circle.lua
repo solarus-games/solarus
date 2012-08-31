@@ -15,7 +15,7 @@ end
 function enemy:on_restarted()
 
   -- Disappear after a few seconds.
-  sol.timer.start(2000, function()
+  sol.timer.start(self, 2000, function()
     self:remove()
   end)
 end

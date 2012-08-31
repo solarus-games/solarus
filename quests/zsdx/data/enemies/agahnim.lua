@@ -44,13 +44,13 @@ function enemy:on_restarted()
 
   if not finished then
     sprite:fade_out()
-    timers[#timers + 1] = sol.timer.start(700, function() self:hide() end)
+    timers[#timers + 1] = sol.timer.start(self, 700, function() self:hide() end)
   else
     sprite:set_animation("hurt")
     self:get_map():hero_freeze()
-    timers[#timers + 1] = sol.timer.start(500, function() self:end_dialog() end)
-    timers[#timers + 1] = sol.timer.start(1000, function() self:fade_out() end)
-    timers[#timers + 1] = sol.timer.start(1500, function() self:escape() end)
+    timers[#timers + 1] = sol.timer.start(self, 500, function() self:end_dialog() end)
+    timers[#timers + 1] = sol.timer.start(self, 1000, function() self:fade_out() end)
+    timers[#timers + 1] = sol.timer.start(self, 1500, function() self:escape() end)
   end
 end
 
@@ -58,7 +58,7 @@ function enemy:hide()
 
   vulnerable = false
   self:set_position(-100, -100)
-  timers[#timers + 1] = sol.timer.start(500, function() self:unhide() end)
+  timers[#timers + 1] = sol.timer.start(self, 500, function() self:unhide() end)
 end
 
 function enemy:unhide()
@@ -68,14 +68,14 @@ function enemy:unhide()
   local sprite = self:get_sprite()
   sprite:set_direction(position.direction4)
   sprite:fade_in()
-  timers[#timers + 1] = sol.timer.start(1000, function() self:fire_step_1() end)
+  timers[#timers + 1] = sol.timer.start(self, 1000, function() self:fire_step_1() end)
 end
 
 function enemy:fire_step_1()
 
   local sprite = self:get_sprite()
   sprite:set_animation("arms_up")
-  timers[#timers + 1] = sol.timer.start(1000, function() self:fire_step_2() end)
+  timers[#timers + 1] = sol.timer.start(self, 1000, function() self:fire_step_2() end)
 end
 
 function enemy:fire_step_2()
@@ -87,7 +87,7 @@ function enemy:fire_step_2()
     sprite:set_animation("preparing_red_fireball")
   end
   sol.audio.play_sound("boss_charge")
-  timers[#timers + 1] = sol.timer.start(1500, function() self:fire_step_3() end)
+  timers[#timers + 1] = sol.timer.start(self, 1500, function() self:fire_step_3() end)
 end
 
 function enemy:fire_step_3()
@@ -106,7 +106,7 @@ function enemy:fire_step_3()
   sol.audio.play_sound(sound)
 
   vulnerable = true
-  timers[#timers + 1] = sol.timer.start(700, function() self:restart() end)
+  timers[#timers + 1] = sol.timer.start(self, 700, function() self:restart() end)
 
   function throw_fire()
 
@@ -116,8 +116,8 @@ function enemy:fire_step_3()
 
   throw_fire()
   if self:get_life() <= initial_life / 2 then
-    timers[#timers + 1] = sol.timer.start(200, function() self:throw_fire() end)
-    timers[#timers + 1] = sol.timer.start(400, function() self:throw_fire() end)
+    timers[#timers + 1] = sol.timer.start(self, 200, function() self:throw_fire() end)
+    timers[#timers + 1] = sol.timer.start(self, 400, function() self:throw_fire() end)
   end
 end
 

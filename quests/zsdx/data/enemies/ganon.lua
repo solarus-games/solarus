@@ -167,7 +167,7 @@ function enemy:destroy_floor(prefix, first, last)
     self:get_map():entities_set_enabled(prefix .. index, false)
 
     if index ~= last then
-      sol.timer.start(delay, repeat_change)
+      sol.timer.start(self, delay, repeat_change)
     end
     index = index + 1
   end
@@ -213,7 +213,7 @@ function enemy:throw_flames()
     self:create_enemy(son_name, "red_flame", 0, -24, 0)
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      timers[#timers + 1] = sol.timer.start(150, repeat_throw_flame)
+      timers[#timers + 1] = sol.timer.start(self, 150, repeat_throw_flame)
     else
       attacking = false
       attack_scheduled = false
@@ -251,11 +251,11 @@ function enemy:throw_bats()
     end
     son:go_circle(self)
     local go_hero_delay = 2000 + (nb_to_create * 150)
-    timers[#timers + 1] = sol.timer.start(go_hero_delay, function() son:go_hero() end)
+    timers[#timers + 1] = sol.timer.start(self, go_hero_delay, function() son:go_hero() end)
 
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
-      timers[#timers + 1] = sol.timer.start(233, repeat_throw_bat)
+      timers[#timers + 1] = sol.timer.start(self, 233, repeat_throw_bat)
     else
       attacking = false
       attack_scheduled = false
@@ -272,7 +272,7 @@ end
 
 function enemy:schedule_attack()
 
-  timers[#timers + 1] = sol.timer.start(math.random(3000, 6000), function()
+  timers[#timers + 1] = sol.timer.start(self, math.random(3000, 6000), function()
     self:attack()
   end)
   attack_scheduled = true

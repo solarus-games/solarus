@@ -1787,6 +1787,16 @@ void LuaContext::on_created() {
 }
 
 /**
+ * @brief Calls the on_removed() method of the object on top of the stack.
+ */
+void LuaContext::on_removed() {
+
+  if (find_method("on_removed")) {
+    call_function(1, 0, "on_removed");
+  }
+}
+
+/**
  * @brief Calls the on_enabled() method of the object on top of the stack.
  */
 void LuaContext::on_enabled() {

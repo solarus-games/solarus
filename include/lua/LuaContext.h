@@ -169,6 +169,8 @@ class LuaContext {
     void map_on_camera_back(Map& map);
 
     // Map entity events.
+    // TODO entity_on_created
+    void entity_on_removed(MapEntity& entity);
     void switch_on_activated(Switch& sw);
     void switch_on_inactivated(Switch& sw);
     void switch_on_left(Switch& sw);
@@ -372,6 +374,7 @@ class LuaContext {
     void on_using();
     void on_ability_used(const std::string& ability_name);
     void on_created();
+    void on_removed();
     void on_enabled();
     void on_disabled();
     void on_restarted();

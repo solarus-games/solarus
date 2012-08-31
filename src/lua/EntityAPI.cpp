@@ -1918,6 +1918,17 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
   return 0;
 }
 
+/**
+ * @brief Calls the on_removed() method of a Lua map entity.
+ * @param entity A map entity.
+ */
+void LuaContext::entity_on_removed(MapEntity& entity) {
+
+  push_entity(l, entity);
+  on_removed();
+  remove_timers(-1);  // Stop timers associated to this entity.
+  lua_pop(l, 1);
+}
 
 /**
  * @brief Calls the on_obtaining_treasure() method of a Lua hero.

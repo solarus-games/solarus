@@ -406,6 +406,7 @@ void MapEntity::remove_from_map() {
 void MapEntity::notify_being_removed() {
 
   this->being_removed = true;
+  get_lua_context().entity_on_removed(*this);
 }
 
 /**

@@ -1,9 +1,10 @@
 /**
 \page lua_api Lua scripting API specification
 
-This is the API specification of Lua functions and types defined by Solarus.
+This is the API specification of Lua functions, methods, callbacks
+and types defined by Solarus.
 This documentation page is intented to quest makers who want to need to write
-scripts for their maps, enemies and screens.
+scripts for their maps, items, enemies and menus.
 For the point of view of the engine, see the documentation of the C++ class
 LuaContext.
 
@@ -12,54 +13,53 @@ movements, savagames, etc.) are exported as Lua types in the scripting API of
 Solarus.
 We give here the full specification of these types and the functions available
 for each type.
-The API exports C++ functions that may be called by your scripts.
-Examples of such functions are creating a sprite, drawing an image or moving
-an NPC.
+The API exports C++ functions and C++ datatypes that may be used by your scripts.
+Examples of such features are creating a sprite, drawing an image or moving
+an enemy.
 In the opposite way, Solarus will also call your own Lua functions (if you
 define them), for example to notify your script that an enemy has reached an
-obstacle, that a timer has expired or that the player is talking to a
-particular NPC.
+obstacle, that a pressure plate has just been activated
+or that the hero is talking to a particular non-playing character.
 
-The following types of scripts exist:
+The following script files are loaded by the engine when they exist:
 - The main script (\c main.lua): global script that controls the menus before
   starting a game.
-- The script of a map (\c maps/mapXXXX.lua): controls the map \c XXXX.
+- The script of a map (\c maps/XXXX.lua): controls the map \c XXXX.
+  Called when the player enters the map.
 - The script of an enemy (\c enemies/XXXX.lua): controls an enemy whose
-  breed is \c XXXX. Each instance of enemy has its own Lua context (in particular
-  its own global values), even if several enemies of the same breed exist at the
-  same time on the current map.
+  breed is \c XXXX. Called when an enemy of this breed is added to the map.
 - The script of an item (\c items/XXXX.lua): controls the item named
-  \c XXXX in \c items.dat. For each item, only one Lua context is created for
-  the whole game and it persists across map changes.
+  \c XXXX in \c items.dat. Called when the game starts.
 
-\todo Merge all types of scripts into a single, shared Lua context.
+All these various scripts run in the same Lua state.
+In other words, they share global values.
 
-A Lua script can call the engine (and be called by it)
-through a global table called \c sol. This table is automatically created
-when your script is loaded by the engine.
+Interactions between your Lua world and the engine
+are managed through a predefined global table called \c sol.
 The whole Solarus Lua API is available in the \c sol table.
 It contains modules, functions, types and values that allow you to
 interact with the C++ engine.
 
 The following modules are defined in the \c sol table.
 
-- \subpage lua_api_main "sol.main": some general-purpose functions.
+- \subpage lua_api_main "sol.main": some general-purpose features.
 - \subpage lua_api_audio "sol.audio": playing musics and sounds.
-- \subpage lua_api_video "sol.video": changing the video mode.
+- \subpage lua_api_video "sol.video": setting the video mode.
 - \subpage lua_api_language "sol.language": handling translations.
-  (keyboard and joypad).
 - \subpage lua_api_menu "sol.menu": handling a scripted menu.
 - \subpage lua_api_timer "sol.timer": making an action later with a delay.
 - \subpage lua_api_drawable "sol.sprite, sol.surface, sol.text_surface":
   displaying animated images, fixed images or text, respectively.
 - \subpage lua_api_movement "sol.movement": creating and managing movements.
-- \subpage lua_api_game "sol.game": handling savegames
-  and data saved (life, equipment, etc.).
-- \subpage lua_api_map "sol.map": handling the map and entities
-  placed on the map (only during a game).
+- \subpage lua_api_game "sol.game": handling data saved
+  (life, equipment, etc.) and running a game.
 - \subpage lua_api_item "sol.item": controls a particular type of
   equipment item and its behavior.
-- \subpage lua_api_enemy "sol.enemy": controls an instance of an enemy.
+- \subpage lua_api_map "sol.map": handling the current map and $its
+  properties (only during a game).
+- \subpage lua_api_entity "sol.entity": controls entities placed on the map
+  (only during a game), like the hero, enemies, chests, non-playing
+  characters, etc.
 
 See the specification page of each module for more details.
 

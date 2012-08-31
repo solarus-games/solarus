@@ -47,7 +47,7 @@ Rectangle VideoManager::default_mode_sizes[] = {
 };
 
 // Properties of SDL surfaces.
-#ifdef SOLARUS_SCREEN_SOFTWARE_SURFACE
+#if defined(SOLARUS_SCREEN_SOFTWARE_SURFACE) && SOLARUS_SCREEN_SOFTWARE_SURFACE != 0
 const int VideoManager::surface_flags = SDL_SWSURFACE;
 #else
 const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;

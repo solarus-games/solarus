@@ -23,20 +23,30 @@
 #ifndef SOLARUS_COMMON_H
 #define SOLARUS_COMMON_H
 
+/**
+ * @def SOLARUS_DEFAULT_QUEST
+ * @brief Path of the quest to run is none is specified at runtime.
+ */
 #ifndef SOLARUS_DEFAULT_QUEST
 // if no default quest was specified at compilation time,
 // use the current directory
 #define SOLARUS_DEFAULT_QUEST "."
 #endif
 
-#ifndef SOLARUS_WRITE_DIR
 /**
+ * @def SOLARUS_WRITE_DIR
  * @brief Where savegames are stored, relative to the user's home directory.
  */
+#ifndef SOLARUS_WRITE_DIR
 #define SOLARUS_WRITE_DIR ".solarus"
 #endif
 
 // Game size.
+
+/**
+ * @def SOLARUS_SCREEN_WIDTH
+ * @brief Screen height in pixels.
+ */
 #ifndef SOLARUS_SCREEN_WIDTH
 #  ifdef PANDORA
 #    define SOLARUS_SCREEN_WIDTH 400
@@ -45,14 +55,30 @@
 #  endif
 #endif
 
+/**
+ * @def SOLARUS_SCREEN_HEIGHT
+ * @brief Screen width in pixels.
+ */
 #ifndef SOLARUS_SCREEN_HEIGHT
 #  define SOLARUS_SCREEN_HEIGHT 240
 #endif
 
+/**
+ * @def SOLARUS_SCREEN_WIDTH_MIDDLE
+ * @brief Half of the screen width in pixels.
+ */
 #define SOLARUS_SCREEN_WIDTH_MIDDLE (SOLARUS_SCREEN_WIDTH / 2)
+
+/**
+ * @def SOLARUS_SCREEN_HEIGHT_MIDDLE
+ * @brief Half of the screen height in pixels.
+ */
 #define SOLARUS_SCREEN_HEIGHT_MIDDLE (SOLARUS_SCREEN_HEIGHT / 2)
 
-// Bits per pixel.
+/**
+ * @def SOLARUS_COLOR_DEPTH
+ * @brief Half of the screen height in pixels.
+ */
 #ifndef SOLARUS_COLOR_DEPTH
 #  if defined(CAANOO) || defined(PANDORA)
 #    define SOLARUS_COLOR_DEPTH 16
@@ -61,20 +87,30 @@
 #  endif
 #endif
 
-// Force a unique video mode.
+/**
+ * @def SOLARUS_SCREEN_FORCE_MODE
+ * @brief Forces a unique video mode.
+ */
 #ifndef SOLARUS_SCREEN_FORCE_MODE
 #  ifdef(CAANOO)
 #    define SOLARUS_SCREEN_FORCE_MODE 2
 #  elif defined(PANDORA)
 #    define SOLARUS_SCREEN_FORCE_MODE 5
+#  else
+#    define SOLARUS_SCREEN_FORCE_MODE -1
 #  endif
 #endif
 
-// Force a software surface for the screen.
+/**
+ * @def SOLARUS_SCREEN_SOFTWARE_SURFACE
+ * @brief Forces using a software surface for the screen.
+ */
 #ifndef SOLARUS_SCREEN_SOFTWARE_SURFACE
+// On Mac OS X, SDL hardware surfaces are buggy.
 #  ifdef __APPLE__
-// On Mac OS X the SDL hardware surfaces are buggy.
-#    define SOLARUS_SCREEN_SOFTWARE_SURFACE
+#    define SOLARUS_SCREEN_SOFTWARE_SURFACE 1
+#  else
+#    define SOLARUS_SCREEN_SOFTWARE_SURFACE 0
 #  endif
 #endif
 

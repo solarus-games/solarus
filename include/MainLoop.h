@@ -36,22 +36,21 @@ class MainLoop {
     void set_exiting();
     bool is_exiting();
     void set_resetting();
-    void set_next_screen(Screen* next_screen);
-    void start_game(const std::string& savegame_file);
+    Game* get_game();
+    void set_game(Game* game);
 
     DebugKeys& get_debug_keys();
     LuaContext& get_lua_context();
 
   private:
 
-    Screen* current_screen;     /**< the screen currently displayed (may be the title screen,
-                                 * the selection menu, the game, etc.) */
-    Screen* next_screen;        /**< the new screen to show at the next cycle */
     Surface* root_surface;      /**< the surface where everything is drawn (always SOLARUS_GAME_WIDTH * SOLARUS_GAME_HEIGHT) */
     DebugKeys* debug_keys;      /**< special keys to debug the game, e.g. to traverse walls (disabled in release mode) */
     LuaContext* lua_context;    /**< the Lua world where scripts are run */
     bool resetting;             /**< indicates that the program is about to reset */
     bool exiting;               /**< indicates that the program is about to stop */
+    Game* game;                 /**< The current game if any, NULL otherwise. */
+    Game* next_game;            /**< The game to start at next cycle. */
 
     void notify_input(InputEvent& event);
     void draw();

@@ -25,7 +25,6 @@
 #include "Dungeon.h"
 #include "GameoverSequence.h"
 #include "DebugKeys.h"
-#include "CustomScreen.h"
 #include "lua/LuaContext.h"
 #include "hud/HUD.h"
 #include "menus/PauseMenu.h"
@@ -48,7 +47,7 @@ Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from quest.dat
  */
 Game::Game(MainLoop& main_loop, Savegame* savegame):
 
-  Screen(main_loop),
+  main_loop(main_loop),
   savegame(savegame),
   pause_key_available(true),
   pause_menu(NULL), 
@@ -70,8 +69,6 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   // notify objects
   get_savegame().increment_refcount();
   get_savegame().set_game(this);
-  get_main_loop().get_debug_keys().set_game(this);
-  get_lua_context().set_current_game(this);
 
   // initialize members
   controls = new GameControls(*this);
@@ -135,6 +132,22 @@ void Game::start() {
  */
 void Game::stop() {
   get_lua_context().game_on_finished(*this);
+}
+
+/**
+ * @brief Returns the Solarus main loop.
+ * @return The main loop object.
+ */
+MainLoop& Game::get_main_loop() {
+  return main_loop;
+}
+
+/**
+ * @brief Returns the Lua context of this game.
+ * @return The Lua context.
+ */
+LuaContext& Game::get_lua_context() {
+  return main_loop.get_lua_context();
 }
 
 /**
@@ -339,8 +352,7 @@ void Game::update_transitions() {
     }
     else if (restarting) {
       current_map->unload();
-      main_loop.get_debug_keys().set_game(NULL);
-      main_loop.set_next_screen(new Game(main_loop, savegame));
+      main_loop.set_game(new Game(main_loop, savegame));
       savegame = NULL;  // The new game is the owner.
     }
     else if (transition_direction == Transition::OUT) {

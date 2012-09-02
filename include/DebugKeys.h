@@ -33,14 +33,11 @@ class DebugKeys {
   private:
 
     MainLoop& main_loop;   /**< the Solarus main loop object */
-    Game* game;            /**< the current game, or NULL if no game is started */
 
   public:
 
     DebugKeys(MainLoop& main_loop);
     ~DebugKeys();
-
-    void set_game(Game* game);
 
     void update();
 };

@@ -180,7 +180,7 @@ int LuaContext::game_api_start(lua_State* l) {
     // Create a new game to run.
     MainLoop& main_loop = get_lua_context(l).get_main_loop();
     Game* game = new Game(main_loop, &savegame);
-    main_loop.set_next_screen(game);
+    main_loop.set_game(game);
   }
 
   return 0;
@@ -766,6 +766,7 @@ void LuaContext::game_on_update(Game& game) {
 
   push_game(l, game.get_savegame());
   on_update();
+  menus_on_update(-1);
   lua_pop(l, 1);
 }
 
@@ -801,9 +802,12 @@ void LuaContext::game_on_pre_draw(Game& game, Surface& dst_surface) {
 void LuaContext::game_on_post_draw(Game& game, Surface& dst_surface) {
 
   push_game(l, game.get_savegame());
+  menus_on_draw(-1, dst_surface);
   on_post_draw(dst_surface);
   lua_pop(l, 1);
 }
+
+// TODO game_on_input -> menus_on_input
 
 /**
  * @brief Calls the on_finished() method of a Lua game.
@@ -813,7 +817,8 @@ void LuaContext::game_on_finished(Game& game) {
 
   push_game(l, game.get_savegame());
   on_finished();
-  remove_timers(-1);  // Stop timers associated to this game.
+  remove_timers(-1);  // Stop timers and menus associated to this game.
+  remove_menus(-1);
   lua_pop(l, 1);
 }
 

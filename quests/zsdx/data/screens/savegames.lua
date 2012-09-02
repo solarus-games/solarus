@@ -898,6 +898,7 @@ end
 
 function savegame_menu:start_game(game)
 
+  sol.menu.stop(self)
   local play_game = sol.main.load_file("play_game")
   play_game(game)
 end

@@ -34,13 +34,13 @@
  * @param argv command-line arguments
  */
 MainLoop::MainLoop(int argc, char** argv):
-  current_screen(NULL),
-  next_screen(NULL),
   root_surface(NULL),
   debug_keys(NULL),
   lua_context(NULL),
   resetting(false),
-  exiting(false) {
+  exiting(false),
+  game(NULL),
+  next_game(NULL) {
 
   // Initialize low-level features (audio, video, files...).
   System::initialize(argc, argv);
@@ -56,8 +56,6 @@ MainLoop::MainLoop(int argc, char** argv):
  */
 MainLoop::~MainLoop() {
 
-  delete current_screen;
-  delete next_screen;
   delete lua_context;
   root_surface->decrement_refcount();
   delete root_surface;
@@ -110,38 +108,22 @@ void MainLoop::set_resetting() {
 
   // Reset the program.
   resetting = true;
-  get_debug_keys().set_game(NULL);
 }
 
 /**
- * @brief Marks the current screen as finished and sets another one to be
- * started at the next cycle.
- * @param next_screen The next screen to show
+ * @brief Returns the current game if any.
+ * @return The game currently running or NULL.
  */
-void MainLoop::set_next_screen(Screen* next_screen) {
-
-  Debug::check_assertion(this->next_screen == NULL,
-      "Another new screen is already set to be started");
-
-  this->next_screen = next_screen;
+Game* MainLoop::get_game() {
+  return game;
 }
 
 /**
- * @brief Marks the current screen as finished and starts a game.
- *
- * This function is equivalent to:
- * set_next_screen(new Game(*this, Savegame(savegame_file))),
- * except that if the savegame file does not exists, nothing happens.
- *
- * @param savegame_file name of the savegame file to load
+ * @brief Changes the game.
+ * @param game The new game to start, or NULL to start no game.
  */
-void MainLoop::start_game(const std::string& savegame_file) {
-
-  if (FileTools::data_file_exists(savegame_file)) {
-    Savegame* savegame = new Savegame(savegame_file);
-    Game* game = new Game(*this, savegame);
-    set_next_screen(game);
-  }
+void MainLoop::set_game(Game* game) {
+  this->next_game = game;
 }
 
 /**
@@ -173,17 +155,16 @@ void MainLoop::run() {
     // update the current screen
     update();
 
-    // go to another screen?
-    if (next_screen != NULL || resetting) {
-      if (current_screen != NULL) {
-        current_screen->stop();
-        delete current_screen;
+    // go to another game?
+    if (next_game != game || resetting) {
+      if (game != NULL) {
+        game->stop();
+        delete game;
       }
-      current_screen = next_screen;
-      next_screen = NULL;
+      game = next_game;
 
-      if (current_screen != NULL) {
-        current_screen->start();
+      if (game != NULL) {
+        game->start();
       }
       else if (resetting) {
         resetting = false;
@@ -225,8 +206,8 @@ void MainLoop::run() {
     }
   }
 
-  if (current_screen != NULL) {
-    current_screen->stop();
+  if (game != NULL) {
+    game->stop();
   }
 }
 
@@ -255,8 +236,8 @@ void MainLoop::notify_input(InputEvent& event) {
 
   // Send the event to Lua and to the current screen.
   bool handled = lua_context->notify_input(event);
-  if (!handled && current_screen != NULL) {
-    current_screen->notify_input(event);
+  if (!handled && game != NULL) {
+    game->notify_input(event);
   }
 }
 
@@ -268,8 +249,8 @@ void MainLoop::notify_input(InputEvent& event) {
 void MainLoop::update() {
 
   debug_keys->update();
-  if (current_screen != NULL) {
-    current_screen->update();
+  if (game != NULL) {
+    game->update();
   }
   lua_context->update();
   System::update();
@@ -284,8 +265,8 @@ void MainLoop::draw() {
 
   root_surface->fill_with_color(Color::get_black());
   lua_context->main_on_pre_draw(*root_surface);
-  if (current_screen != NULL) {
-    current_screen->draw(*root_surface);
+  if (game != NULL) {
+    game->draw(*root_surface);
   }
   lua_context->main_on_post_draw(*root_surface);
   VideoManager::get_instance()->draw(*root_surface);

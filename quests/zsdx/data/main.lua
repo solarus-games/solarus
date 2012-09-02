@@ -9,14 +9,14 @@ end
 local console = sol.main.load_file("console")()
 sol.main.console = console
 
--- Event called when Lua should show its initial screen.
+-- Event called when the program starts.
 function sol.main:on_started()
 
   -- Just need this here, no need to require globally.
   local language_menu = require("screens/language")
 
   -- Show the language menu initially.
-  sol.main.start_screen(language_menu:new())
+  sol.menu.start(sol.main, language_menu:new())
 end
 
 local function debug_on_key_pressed(key, modifiers)
@@ -140,5 +140,4 @@ function sol.main:on_post_draw(dst_surface)
     console:on_draw(dst_surface)
   end
 end
-
 

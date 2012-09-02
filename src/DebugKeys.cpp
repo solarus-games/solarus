@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "DebugKeys.h"
+#include "MainLoop.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "entities/Hero.h"
@@ -25,8 +26,7 @@
  * @param main_loop the Solarus main loop object
  */
 DebugKeys::DebugKeys(MainLoop& main_loop):
-  main_loop(main_loop),
-  game(NULL) {
+  main_loop(main_loop) {
 }
 
 /**
@@ -37,19 +37,12 @@ DebugKeys::~DebugKeys() {
 }
 
 /**
- * @brief Sets the current game.
- * @param game the current game, or NULL if there is no game
- */
-void DebugKeys::set_game(Game* game) {
-  this->game = game;
-}
-
-/**
  * @brief This function is called repeatedly by the engine.
  */
 void DebugKeys::update() {
 
 #ifdef SOLARUS_DEBUG_KEYS
+  Game* game = main_loop.get_game();
   if (InputEvent::is_shift_down()) {
     if (game != NULL && game->is_showing_dialog()) {
       game->get_dialog_box().show_all_now();

@@ -31,7 +31,7 @@ struct luaL_Reg;
  * @brief This class represents the only Lua context that runs
  * dynamic scripts at runtime.
  *
- * Such scripts includes map scripts, enemy scripts, menu scripts, etc.
+ * Such scripts includes map scripts, enemy scripts, etc.
  * Data files are not managed by this class even if they are written in Lua.
  */
 class LuaContext {
@@ -112,6 +112,12 @@ class LuaContext {
     void update_timers();
     void set_suspended_timers(bool suspended);
 
+    // Menus.
+    void add_menu(int menu_ref, int context_index);
+    void remove_menu(int menu_ref);
+    void remove_menus(int context_index);
+    void remove_menus();
+
     // Drawable objects.
     void add_drawable(Drawable* drawable);
     void remove_drawable(Drawable* drawable);
@@ -134,6 +140,9 @@ class LuaContext {
     bool menu_on_input(int menu_ref, InputEvent& event);
     void menu_on_started(int menu_ref);
     void menu_on_finished(int menu_ref);
+    void menus_on_update(int context_index);
+    void menus_on_draw(int context_index, Surface& dst_surface);
+    bool menus_on_input(int context_index, InputEvent& event);
 
     // Equipment item events.
     void item_on_update(EquipmentItem& item);
@@ -406,7 +415,6 @@ class LuaContext {
       main_api_do_file,
       main_api_reset,
       main_api_exit,
-      main_api_start_screen,
       main_api_is_debug_enabled,
       main_api_get_distance,  // TODO remove?
       main_api_get_angle,     // TODO remove?
@@ -430,11 +438,16 @@ class LuaContext {
       video_api_is_fullscreen,
       video_api_set_fullscreen,
 
+      // Menu API.
+      menu_api_start,
+      menu_api_stop,
+
       // Timer API.
       timer_api_start,
       timer_api_stop,
       timer_api_is_with_sound,
       timer_api_set_with_sound,
+      // TODO get_remaining_time, set_remaining_time
 
       // Language API.
       language_api_get_language,
@@ -757,9 +770,9 @@ class LuaContext {
     // Script data.
     lua_State* l;                   /**< The Lua state encapsulated. */
     MainLoop& main_loop;            /**< The Solarus main loop. */
-    Game* current_game;             /**< The game currently running if any. */
-    CustomScreen* current_screen;   /**< The current menu when no game is running. */
 
+    std::map<int, const void*>
+        menus;                      /**< The menus currently running in their context. */
     std::map<Timer*, LuaTimerData>
         timers;                     /**< The timers currently running, with
                                      * their context and callback. */

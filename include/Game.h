@@ -18,7 +18,6 @@
 #define SOLARUS_GAME_H
 
 #include "Common.h"
-#include "Screen.h"
 #include "Transition.h"
 #include "GameControls.h"
 #include "Savegame.h"
@@ -26,18 +25,16 @@
 /**
  * @brief Represents the game currently running.
  *
- * The game is the main screen of the program.
- * It shows the current map and displays all game elements:
+ * The game shows the current map and displays all game elements:
  * the map entities, the HUD, the pause menu, the dialog box, etc.
  */
-class Game: public Screen {
+class Game {
 
   private:
 
-    // savegame
+    // main objects
+    MainLoop& main_loop;       /**< the main loop object */
     Savegame* savegame;        /**< the game data saved */
-
-    // the hero
     Hero *hero;
 
     // current game state (elements currently shown)
@@ -89,6 +86,8 @@ class Game: public Screen {
     void stop();
 
     // global objects
+    MainLoop& get_main_loop();
+    LuaContext& get_lua_context();
     Hero& get_hero();
     const Rectangle& get_hero_xy();
     GameControls& get_controls();

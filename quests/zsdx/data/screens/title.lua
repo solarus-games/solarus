@@ -184,7 +184,7 @@ function title_screen:on_key_pressed(key)
 
 --  Debug.
   elseif key == "left shift" or key == "right shift" then
-    finish_title()
+    self:finish_title()
 
   end
 end
@@ -203,14 +203,17 @@ function title_screen:try_finish_title()
       and not self.finished then
     self.finished = true
 
-    self.surface:fade_out(30, finish_title)
+    self.surface:fade_out(30, function()
+      self:finish_title()
+    end)
   end
 end
 
-function finish_title()
+function title_screen:finish_title()
   local savegame_menu = require("screens/savegames")
   sol.audio.stop_music()
-  sol.main.start_screen(savegame_menu:new())
+  sol.menu.stop(self)
+  sol.menu.start(sol.main, savegame_menu:new())
 end
 
 return title_screen

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "MainLoop.h"
 #include "Game.h"
 #include "Map.h"
 #include "DialogBox.h"
@@ -155,7 +156,7 @@ int LuaContext::l_camera_do_callback(lua_State* l) {
   call_function(l, 0, 0, "camera callback");
 
   // Set a second timer to restore the camera.
-  Map& map = get_lua_context(l).get_current_game()->get_current_map();
+  Map& map = get_lua_context(l).get_main_loop().get_game()->get_current_map();
   push_map(l, map);
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
   lua_pushcfunction(l, l_camera_restore);
@@ -173,7 +174,7 @@ int LuaContext::l_camera_restore(lua_State* l) {
 
   LuaContext& lua_context = get_lua_context(l);
 
-  lua_context.get_current_game()->get_current_map().restore_camera();
+  lua_context.get_main_loop().get_game()->get_current_map().restore_camera();
 
   return 0;
 }
@@ -878,8 +879,12 @@ void LuaContext::map_on_update(Map& map) {
 
   push_map(l, map);
   on_update();
+  menus_on_update(-1);
   lua_pop(l, 1);
 }
+
+// TODO map_on_draw -> menus_on_draw
+// TODO map_on_input -> menus_on_input
 
 /**
  * @brief Calls the on_suspended() method of a Lua map.
@@ -913,7 +918,8 @@ void LuaContext::map_on_finished(Map& map) {
 
   push_map(l, map);
   on_finished();
-  remove_timers(-1);  // Stop timers associated to this map.
+  remove_timers(-1);  // Stop timers and menus associated to this map.
+  remove_menus(-1);
   lua_pop(l, 1);
 }
 

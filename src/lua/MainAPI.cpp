@@ -18,7 +18,6 @@
 #include "lowlevel/Geometry.h"
 #include "MainLoop.h"
 #include "Timer.h"
-#include "CustomScreen.h"
 #include <lua.hpp>
 #include <sstream>
 #include <cmath>
@@ -35,7 +34,6 @@ void LuaContext::register_main_module() {
       { "do_file", main_api_do_file },
       { "reset", main_api_reset },
       { "exit", main_api_exit },
-      { "start_screen", main_api_start_screen },
       { "is_debug_enabled", main_api_is_debug_enabled },
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
@@ -114,27 +112,6 @@ int LuaContext::main_api_exit(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_main_start_screen.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int LuaContext::main_api_start_screen(lua_State* l) {
-
-  LuaContext& lua_context = get_lua_context(l);
-  luaL_checktype(l, 1, LUA_TTABLE);
-
-  // Store the menu object.
-  int menu_ref = lua_context.create_ref();
-
-  MainLoop& main_loop = lua_context.get_main_loop();
-  CustomScreen* screen = new CustomScreen(main_loop, menu_ref);
-  lua_context.set_current_screen(screen);
-  main_loop.set_next_screen(screen);
-
-  return 0;
-}
-
-/**
  * @brief Implementation of \ref lua_api_main_is_debug_enabled.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
@@ -197,6 +174,7 @@ void LuaContext::main_on_update() {
 
   push_main(l);
   on_update();
+  menus_on_update(-1);
   lua_pop(l, 1);
 }
 
@@ -218,6 +196,7 @@ void LuaContext::main_on_pre_draw(Surface& dst_surface) {
 void LuaContext::main_on_post_draw(Surface& dst_surface) {
 
   push_main(l);
+  menus_on_draw(-1, dst_surface);
   on_post_draw(dst_surface);
   lua_pop(l, 1);
 }
@@ -232,8 +211,12 @@ void LuaContext::main_on_post_draw(Surface& dst_surface) {
  */
 bool LuaContext::main_on_input(InputEvent& event) {
 
+  bool handled = false;
   push_main(l);
-  bool handled = on_input(event);
+  handled = on_input(event);
+  if (!handled) {
+    handled = menus_on_input(-1, event);
+  }
   lua_pop(l, 1);
   return handled;
 }
@@ -262,6 +245,7 @@ void LuaContext::main_on_finished() {
   push_main(l);
   on_finished();
   remove_timers(-1);  // Stop timers associated to sol.main.
+  remove_menus(-1);  // Stop menus associated to sol.main.
   lua_pop(l, 1);
 }
 

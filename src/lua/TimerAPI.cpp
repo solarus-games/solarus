@@ -17,8 +17,8 @@
 #include "lua/LuaContext.h"
 #include "lowlevel/Debug.h"
 #include "Timer.h"
+#include "MainLoop.h"
 #include "Game.h"
-#include "CustomScreen.h"
 #include <list>
 #include <lua.hpp>
 
@@ -57,10 +57,11 @@ void LuaContext::register_timer_module() {
  */
 bool LuaContext::is_new_timer_suspended(void) {
 
-  if (get_current_game() != NULL) {
+  Game* game = main_loop.get_game();
+  if (game != NULL) {
     // start the timer even if the game is suspended (e.g. a timer started during a camera movement)
     // except when it is suspended because of a dialog box
-    return get_current_game()->is_showing_dialog();
+    return game->is_showing_dialog();
   }
 
   return false;
@@ -254,20 +255,14 @@ int LuaContext::timer_api_start(lua_State *l) {
   else {
     // No context specified: set a default context:
     // - during a game: the current map,
-    // - outside a game: the current menu.
+    // - outside a game: sol.main.
 
-    Game* current_game = lua_context.get_current_game();
-    if (current_game != NULL) {
-      push_map(l, current_game->get_current_map());
+    Game* game = lua_context.get_main_loop().get_game();
+    if (game != NULL) {
+      push_map(l, game->get_current_map());
     }
     else {
-      CustomScreen* current_screen = lua_context.get_current_screen();
-      if (current_screen != NULL) {
-        push_ref(l, current_screen->get_menu_ref());
-      }
-      else {
-        LuaContext::push_main(l);
-      }
+      LuaContext::push_main(l);
     }
 
     lua_insert(l, 1);

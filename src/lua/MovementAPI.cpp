@@ -29,6 +29,7 @@
 #include "lowlevel/Debug.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
+#include "MainLoop.h"
 #include "Game.h"
 #include "Map.h"
 
@@ -260,7 +261,7 @@ int LuaContext::movement_api_create(lua_State* l) {
     movement = new RandomMovement(32);
   }
   else if (type == "target") {
-    Game* game = lua_context.get_current_game();
+    Game* game = lua_context.get_main_loop().get_game();
     if (game != NULL) {
       // If we are on a map, the default target is the hero.
       movement = new TargetMovement(
@@ -278,7 +279,7 @@ int LuaContext::movement_api_create(lua_State* l) {
   }
   else if (type == "path_finding") {
     PathFindingMovement* path_finding_movement = new PathFindingMovement(32);
-    Game* game = lua_context.get_current_game();
+    Game* game = lua_context.get_main_loop().get_game();
     if (game != NULL) {
       // If we are on a map, the default target is the hero.
       path_finding_movement->set_target(game->get_hero());

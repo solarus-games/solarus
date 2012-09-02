@@ -88,7 +88,7 @@ function savegame_menu:on_direction_pressed(direction8)
 
     -- The cursor moves too much when using a joypad axis.
     self.allow_cursor_move = false
-    sol.timer.start(100, function()
+    sol.timer.start(self, 100, function()
       self.allow_cursor_move = true
     end)
 
@@ -287,7 +287,7 @@ function savegame_menu:repeat_move_clouds()
     end
   end
 
-  sol.timer.start(100, function()
+  sol.timer.start(self, 100, function()
     self:repeat_move_clouds()
   end)
 end
@@ -774,7 +774,7 @@ function savegame_menu:key_pressed_phase_choose_name(key)
       finished = self:add_letter_player_name()
       self.player_name_text:set_text(self.player_name)
       self.can_add_letter_player_name = false
-      sol.timer.start(300, function()
+      sol.timer.start(self, 300, function()
         self.can_add_letter_player_name = true
       end)
     end
@@ -898,7 +898,6 @@ end
 
 function savegame_menu:start_game(game)
 
-  sol.menu.stop(self)
   local play_game = sol.main.load_file("play_game")
   play_game(game)
 end

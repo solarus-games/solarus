@@ -1,11 +1,5 @@
 -- Main script of the quest.
 
-local function start_savegame(file_name)
-  local game = sol.game.load(file_name)
-  local play_game = sol.main.load_file("play_game")
-  play_game(game)
-end
-
 local console = sol.main.load_file("console")()
 sol.main.console = console
 
@@ -16,10 +10,10 @@ function sol.main:on_started()
   local language_menu = require("screens/language")
 
   -- Show the language menu initially.
-  sol.menu.start(sol.main, language_menu:new())
+  sol.main:start_menu(language_menu:new())
 end
 
-local function debug_on_key_pressed(key, modifiers)
+function sol.main:debug_on_key_pressed(key, modifiers)
 
   local handled = false
   if console.enabled then
@@ -29,11 +23,11 @@ local function debug_on_key_pressed(key, modifiers)
   if not handled then
     handled = true
     if key == "f1" then
-      start_savegame("save1.dat")
+      self:start_savegame("save1.dat")
     elseif key == "f2" then
-      start_savegame("save2.dat")
+      self:start_savegame("save2.dat")
     elseif key == "f3" then
-      start_savegame("save3.dat")
+      self:start_savegame("save3.dat")
     elseif key == "f12" then
       console:start()
     elseif sol.main.game ~= nil then
@@ -104,7 +98,7 @@ function sol.main:on_key_pressed(key, modifiers)
 
   -- Debugging features.
   if sol.main.is_debug_enabled() then
-    handled = debug_on_key_pressed(key, modifiers)
+    handled = sol.main:debug_on_key_pressed(key, modifiers)
   end
 
   -- Normal features.
@@ -139,5 +133,33 @@ function sol.main:on_post_draw(dst_surface)
   if console.enabled then
     console:on_draw(dst_surface)
   end
+end
+
+-- Stops the current menu and start another one.
+function sol.main:start_menu(menu)
+
+  if sol.main.menu ~= nil then
+    sol.menu.stop(sol.main.menu)
+  end
+
+  sol.main.menu = menu
+
+  if menu ~= nil then
+    sol.menu.start(sol.main, menu)
+  end
+end
+
+-- Stops the current menu if any and starts a game.
+function sol.main:start_savegame(file_name)
+
+  if sol.main.menu ~= nil then
+    sol.menu.stop(sol.main.menu)
+  end
+
+  sol.main.menu = nil
+
+  local game = sol.game.load(file_name)
+  local play_game = sol.main.load_file("play_game")
+  play_game(game)
 end
 

@@ -133,8 +133,7 @@ end
 function language_menu:start_title_screen()
 
   local title_screen = require("screens/title")
-  sol.menu.stop(self)
-  sol.menu.start(sol.main, title_screen:new())
+  sol.main:start_menu(title_screen:new())
 end
 
 return language_menu

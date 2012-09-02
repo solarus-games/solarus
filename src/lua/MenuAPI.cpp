@@ -159,7 +159,6 @@ int LuaContext::menu_api_stop(lua_State* l) {
     push_ref(l, ref);
     if (lua_equal(l, 1, -1)) {
       menu_ref = ref;
-      menus.erase(ref);
       break;
     }
   }

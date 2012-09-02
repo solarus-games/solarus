@@ -441,10 +441,12 @@ class LuaContext {
       // Menu API.
       menu_api_start,
       menu_api_stop,
+      menu_api_stop_all,
 
       // Timer API.
       timer_api_start,
       timer_api_stop,
+      timer_api_stop_all,
       timer_api_is_with_sound,
       timer_api_set_with_sound,
       // TODO get_remaining_time, set_remaining_time

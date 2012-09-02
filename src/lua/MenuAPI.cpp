@@ -30,6 +30,7 @@ void LuaContext::register_menu_module() {
   static const luaL_Reg functions[] = {
       { "start", menu_api_start },
       { "stop", menu_api_stop },
+      { "stop_all", menu_api_stop_all },
       { NULL, NULL }
   };
   register_functions(menu_module_name, functions);
@@ -142,7 +143,7 @@ int LuaContext::menu_api_start(lua_State *l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_timer_stop.
+ * @brief Implementation of \ref lua_api_menu_stop.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
@@ -168,6 +169,23 @@ int LuaContext::menu_api_stop(lua_State* l) {
     lua_error(l);
   }
   get_lua_context(l).remove_menu(menu_ref);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_menu_stop_all.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::menu_api_stop_all(lua_State* l) {
+
+  if (lua_type(l, 1) != LUA_TTABLE
+      && lua_type(l, 1) != LUA_TUSERDATA) {
+    luaL_typerror(l, 1, "table, game or map");
+  }
+
+  get_lua_context(l).remove_menus(1);
 
   return 0;
 }

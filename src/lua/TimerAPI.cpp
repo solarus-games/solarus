@@ -32,6 +32,7 @@ void LuaContext::register_timer_module() {
   // Functions of sol.timer.
   static const luaL_Reg functions[] = {
       { "start", timer_api_start },
+      { "stop", timer_api_stop_all },
       { NULL, NULL }
   };
   register_functions(timer_module_name, functions);
@@ -298,6 +299,23 @@ int LuaContext::timer_api_stop(lua_State* l) {
   LuaContext& lua_context = get_lua_context(l);
   Timer& timer = check_timer(l, 1);
   lua_context.remove_timer(&timer);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_timer_stop_all.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::timer_api_stop_all(lua_State* l) {
+
+  if (lua_type(l, 1) != LUA_TTABLE
+      && lua_type(l, 1) != LUA_TUSERDATA) {
+    luaL_typerror(l, 1, "table or userdata");
+  }
+
+  get_lua_context(l).remove_timers(1);
 
   return 0;
 }

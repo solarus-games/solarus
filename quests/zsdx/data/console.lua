@@ -1,7 +1,7 @@
 -- A Lua console that can be enabled with F12 at any time during the program.
 
 local console = {
-  enabled = false,         -- Indicates whether the console is shown.
+  enabled = false,
   color = { 64, 64, 64 },  -- Background color of the console area.
   history = { {} },        -- An array of commands typed (the last one is the current one).
                            -- Each command as an array of UTF-8 strings
@@ -15,15 +15,16 @@ local console = {
     font = "fixed"
   },
 }
-sol.main.console = console
 
 function console:start()
   self.enabled = true
   self:build_input_text()
+  sol.menu.start(sol.main, self)
 end
 
 function console:stop()
   self.enabled = false
+  sol.menu.stop(self)
 end
 
 function console:get_input_text()
@@ -71,17 +72,15 @@ end
 
 function console:on_key_pressed(key, modifiers)
 
-  local handled = false
+  local handled = true
   if key == "f12" or key == "escape" then
     self:stop()
-    handled = true
   elseif key == "backspace" then
     if self:get_output_text() ~= "" then
       self:clear()
     else
       self:remove_input_character()
     end
-    handled = true
   elseif (key == "return" or key == "kp return")
       and not modifiers.alt and not modifiers.control then
     if self:get_output_text() ~= "" then
@@ -89,13 +88,12 @@ function console:on_key_pressed(key, modifiers)
     else
       self:execute_code()
     end
-    handled = true
   elseif key == "up" then
     self:history_up()
-    handled = true
   elseif key == "down" then
     self:history_down()
-    handled = true
+  else
+    handled = false
   end
 
   return handled

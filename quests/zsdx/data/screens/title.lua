@@ -175,28 +175,35 @@ end
 
 function title_screen:on_key_pressed(key)
 
+  local handled = true
+
   if key == "escape" then
     -- stop the program
     sol.main.exit()
 
   elseif key == "space" or key == "return" then
-    self:try_finish_title()
+    handled = self:try_finish_title()
 
 --  Debug.
   elseif key == "left shift" or key == "right shift" then
     self:finish_title()
+
+  else
+    handled = false
 
   end
 end
 
 function title_screen:on_joypad_button_pressed(button)
 
-  self:try_finish_title()
+  return self:try_finish_title()
 end
 
 -- Ends the title screen (if possible)
 -- and starts the savegame selection screen
 function title_screen:try_finish_title()
+
+  local handled = false
 
   if self.phase == "title"
       and self.dx_img ~= nil
@@ -206,7 +213,11 @@ function title_screen:try_finish_title()
     self.surface:fade_out(30, function()
       self:finish_title()
     end)
+
+    handled = true
   end
+
+  return handled
 end
 
 function title_screen:finish_title()

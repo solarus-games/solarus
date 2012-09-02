@@ -62,6 +62,7 @@ end
 
 function savegame_menu:on_key_pressed(key)
 
+  local handled = true
   if key == "escape" then
     -- stop the program
     sol.main.exit()
@@ -69,21 +70,31 @@ function savegame_menu:on_key_pressed(key)
 
     -- Phase-specific direction_pressed method.
     local method_name = "key_pressed_phase_" .. self.phase
-    self[method_name](self, key)
+    handled = self[method_name](self, key)
+  else
+    handled = false
   end
+
+  return handled
 end
 
 function savegame_menu:on_joypad_button_pressed(button)
 
+  local handled = true
   if not self.finished then
     -- Phase-specific joypad_button_pressed method.
     local method_name = "joypad_button_pressed_phase_" .. self.phase
-    self[method_name](self, button)
+    handled = self[method_name](self, button)
+  else
+    handled = false
   end
+
+  return handled
 end
 
 function savegame_menu:on_direction_pressed(direction8)
 
+  local handled = true
   if self.allow_cursor_move and not self.finished then
 
     -- The cursor moves too much when using a joypad axis.
@@ -94,7 +105,9 @@ function savegame_menu:on_direction_pressed(direction8)
 
     -- Phase-specific direction_pressed method.
     local method_name = "direction_pressed_phase_" .. self.phase
-    self[method_name](self, direction8)
+    handled = self[method_name](self, direction8)
+  else
+    handled = false
   end
 end
 
@@ -305,6 +318,7 @@ end
 
 function savegame_menu:key_pressed_phase_select_file(key)
 
+  local handled = false
   if key == "space" or key == "return" then
     sol.audio.play_sound("ok")
     if self.cursor_position == 5 then
@@ -327,23 +341,30 @@ function savegame_menu:key_pressed_phase_select_file(key)
         self:init_phase_choose_name()
       end
     end
+    handled = true
   end
+
+  return handled
 end
 
 function savegame_menu:joypad_button_pressed_phase_select_file(button)
 
-  self:key_pressed_phase_select_file("space")
+  return self:key_pressed_phase_select_file("space")
 end
 
 function savegame_menu:direction_pressed_phase_select_file(direction8)
 
+  local handled = true
   if direction8 == 6 then  -- Down.
     self:move_cursor_down()
   elseif direction8 == 2 then  -- Up.
     self:move_cursor_up()
   elseif direction8 == 0 or direction8 == 4 then  -- Right or Left.
     self:move_cursor_left_or_right()
+  else
+    handled = false
   end
+  return handled
 end
 
 function savegame_menu:draw_phase_select_file()
@@ -378,6 +399,7 @@ end
 
 function savegame_menu:key_pressed_phase_erase_file(key)
 
+  local handled = true
   if key == "space" or key == "return" then
     if self.cursor_position == 4 then
       -- The user chooses "Cancel".
@@ -395,21 +417,28 @@ function savegame_menu:key_pressed_phase_erase_file(key)
         self:init_phase_confirm_erase()
       end
     end
+  else
+    handled = false
   end
+  return handled
 end
 
 function savegame_menu:joypad_button_pressed_phase_erase_file(button)
 
-  self:key_pressed_phase_erase_file("space")
+  return self:key_pressed_phase_erase_file("space")
 end
 
 function savegame_menu:direction_pressed_phase_erase_file(direction8)
 
+  local handled = true
   if direction8 == 6 then  -- Down.
     self:move_cursor_down()
   elseif direction8 == 2 then  -- Up.
     self:move_cursor_up()
+  else
+    handled = false
   end
+  return handled
 end
 
 function savegame_menu:draw_phase_erase_file()
@@ -445,6 +474,7 @@ end
 
 function savegame_menu:key_pressed_phase_confirm_erase(key)
 
+  local handled = true
   if key == "space" or key == "return" then
    if self.cursor_position == 5 then
       -- The user chooses "yes".
@@ -459,7 +489,10 @@ function savegame_menu:key_pressed_phase_confirm_erase(key)
       sol.audio.play_sound("ok")
       self:init_phase_select_file()
     end
+  else
+    handled = false
   end
+  return handled
 end
 
 function savegame_menu:joypad_button_pressed_phase_confirm_erase(button)
@@ -469,9 +502,12 @@ end
 
 function savegame_menu:direction_pressed_phase_confirm_erase(direction8)
 
+  local handled = false
   if direction8 == 0 or direction8 == 4 then  -- Right or Left.
     self:move_cursor_left_or_right()
+    handled = true
   end
+  return handled
 end
 
 function savegame_menu:draw_phase_confirm_erase()
@@ -562,6 +598,7 @@ end
 
 function savegame_menu:key_pressed_phase_options(key)
 
+  local handled = true
   if key == "space" or key == "return" then
     if self.options_cursor_position > #self.options then
       -- Back.
@@ -588,15 +625,19 @@ function savegame_menu:key_pressed_phase_options(key)
 	self.modifying_option = false
       end
     end
+  else
+    handled = false
   end
+  return handled
 end
 
 function savegame_menu:joypad_button_pressed_phase_options(button)
-  self:key_pressed_phase_options("space")
+  return self:key_pressed_phase_options("space")
 end
 
 function savegame_menu:direction_pressed_phase_options(direction8)
 
+  local handled = false
   if not self.modifying_option then
     -- Just moving the options cursor (not modifying any option).
 
@@ -608,6 +649,7 @@ function savegame_menu:direction_pressed_phase_options(direction8)
         position = #self.options + 1
       end
       self:set_options_cursor_position(position)
+      handled = true
 
     elseif direction8 == 6 then  -- Down.
       sol.audio.play_sound("cursor")
@@ -617,6 +659,7 @@ function savegame_menu:direction_pressed_phase_options(direction8)
         position = 1
       end
       self:set_options_cursor_position(position)
+      handled = true
     end
 
   else
@@ -629,6 +672,7 @@ function savegame_menu:direction_pressed_phase_options(direction8)
       sol.audio.play_sound("cursor")
       self.left_arrow_sprite:set_frame(0)
       self.right_arrow_sprite:set_frame(0)
+      handled = true
 
     elseif direction8 == 4 then  -- Left.
       local option = self.options[self.options_cursor_position]
@@ -637,9 +681,11 @@ function savegame_menu:direction_pressed_phase_options(direction8)
       sol.audio.play_sound("cursor")
       self.left_arrow_sprite:set_frame(0)
       self.right_arrow_sprite:set_frame(0)
+      handled = true
 
     end
   end
+  return handled
 end
 
 function savegame_menu:draw_phase_options()
@@ -762,10 +808,12 @@ end
 
 function savegame_menu:key_pressed_phase_choose_name(key)
 
+  local handled = false
   local finished = false
   if key == "return" then
     -- Directly validate the name.
     finished = self:validate_player_name()
+    handled = true
 
   elseif key == "space" or key == "c" then
 
@@ -777,21 +825,25 @@ function savegame_menu:key_pressed_phase_choose_name(key)
       sol.timer.start(self, 300, function()
         self.can_add_letter_player_name = true
       end)
+      handled = true
     end
   end
 
   if finished then
     self:init_phase_select_file()
   end
+
+  return handled
 end
 
 function savegame_menu:joypad_button_pressed_phase_choose_name(button)
 
-  self:key_pressed_phase_choose_name("space")
+  return self:key_pressed_phase_choose_name("space")
 end
 
 function savegame_menu:direction_pressed_phase_choose_name(direction8)
 
+  local handled = true
   if direction8 == 0 then  -- Right.
     sol.audio.play_sound("cursor")
     self.letter_cursor.x = (self.letter_cursor.x + 1) % 13
@@ -807,7 +859,11 @@ function savegame_menu:direction_pressed_phase_choose_name(direction8)
   elseif direction8 == 6 then  -- Down.
     sol.audio.play_sound("cursor")
     self.letter_cursor.y = (self.letter_cursor.y + 1) % 5
+
+  else
+    handled = false
   end
+  return handled
 end
 
 function savegame_menu:draw_phase_choose_name()

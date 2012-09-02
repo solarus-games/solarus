@@ -75,6 +75,8 @@ end
 
 function language_menu:on_key_pressed(key)
 
+  local handled = true
+
   if key == "escape" then
     -- Stop the program.
     sol.main.exit()
@@ -89,10 +91,17 @@ function language_menu:on_key_pressed(key)
         self:start_title_screen()
       end)
     end
+
+  else
+    handled = false
   end
+
+  return handled
 end
 
 function language_menu:on_direction_pressed(direction8)
+
+  local handled = false
 
   if not self.finished then
 
@@ -100,16 +109,20 @@ function language_menu:on_direction_pressed(direction8)
     if direction8 == 2 then  -- Up.
       sol.audio.play_sound("cursor")
       self:set_cursor_position((self.cursor_position + n - 2) % n + 1)
+      handled = true
     elseif direction8 == 6 then  -- Down.
       sol.audio.play_sound("cursor")
       self:set_cursor_position(self.cursor_position % n + 1)
+      handled = true
     end
   end
+
+  return handled
 end
 
 function language_menu:on_joypad_button_pressed(button)
 
-  self:on_key_pressed("space")
+  return self:on_key_pressed("space")
 end
 
 function language_menu:set_cursor_position(cursor_position)

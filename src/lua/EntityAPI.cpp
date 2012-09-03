@@ -294,11 +294,15 @@ MapEntity& LuaContext::check_entity(lua_State* l, int index) {
 }
 
 /**
- * @brief Pushes an enemy userdata onto the stack.
+ * @brief Pushes an entity userdata onto the stack.
+ *
+ * If the entity or its map does not exist anymore, pushes nil.
+ *
  * @param l A Lua context.
- * @param enemy An enemy.
+ * @param entity An entity.
  */
 void LuaContext::push_entity(lua_State* l, MapEntity& entity) {
+
   push_userdata(l, entity);
 }
 

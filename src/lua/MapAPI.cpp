@@ -133,7 +133,7 @@ int LuaContext::l_get_map_entity_or_global(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 2);
 
   MapEntity* entity = map.get_entities().find_entity(name);
-  if (entity != NULL) {
+  if (entity != NULL && !entity->is_being_removed()) {
     push_entity(l, *entity);
   }
   else {
@@ -515,7 +515,7 @@ int LuaContext::map_api_get_entity(lua_State* l) {
 
   MapEntity* entity = map.get_entities().find_entity(name);
 
-  if (entity != NULL) {
+  if (entity != NULL && !entity->is_being_removed()) {
     push_entity(l, *entity);
   }
   else {

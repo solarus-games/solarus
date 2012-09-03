@@ -31,6 +31,7 @@
 #include "EquipmentItem.h"
 #include "StringResource.h"
 #include <sstream>
+#include <lua.hpp>
 
 /**
  * @brief Constructor.
@@ -331,7 +332,7 @@ void PauseSubmenuInventory::show_info_message() {
   DialogBox::VerticalPosition vertical_position = (cursor_row >= 2) ?
     DialogBox::POSITION_TOP : DialogBox::POSITION_BOTTOM;
 
-  game.get_dialog_box().start_dialog(oss.str(), NULL, vertical_position);
+  game.get_dialog_box().start_dialog(oss.str(), LUA_REFNIL, vertical_position);
 }
 
 /**

@@ -5,7 +5,7 @@ local fighting_miniboss = false
 
 local function are_all_torches_on()
 
-  return torch_1:exists()
+  return torch_1 ~= nil
       and torch_1:get_sprite():get_animation() == "lit"
       and torch_2:get_sprite():get_animation() == "lit"
 end

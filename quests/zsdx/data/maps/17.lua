@@ -3,7 +3,7 @@ local map = ...
 
 local function are_all_torches_on()
 
-  return torch1:exists()
+  return torch1 ~= nil
     and torch1:get_sprite():get_animation() == "lit"
     and torch2:get_sprite():get_animation() == "lit"
     and torch3:get_sprite():get_animation() == "lit"

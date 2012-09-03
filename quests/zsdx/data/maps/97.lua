@@ -3,7 +3,7 @@ local map = ...
 
 local function are_group1_torches_on()
 
-  return torch1_1:exists()
+  return torch1_1 ~= nil
     and torch1_1:get_sprite():get_animation() == "lit"
     and torch1_2:get_sprite():get_animation() == "lit"
     and torch1_3:get_sprite():get_animation() == "lit"
@@ -11,7 +11,7 @@ end
 
 local function are_group2_torches_on()
 
-  return torch2_1:exists()
+  return torch2_1 ~= nil
     and torch2_1:get_sprite():get_animation() == "lit"
     and torch2_2:get_sprite():get_animation() == "lit"
     and torch2_3:get_sprite():get_animation() == "lit"

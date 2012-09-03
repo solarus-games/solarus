@@ -29,7 +29,7 @@ end
 function enemy:on_restarted()
 
   local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():get_hero():get_position()
+  local hero_x, hero_y = self:get_map():get_entity("hero"):get_position()
   local angle = self:get_angle(hero_x, hero_y - 5)
   local m = sol.movement.create("straight")
   m:set_speed(speed)
@@ -68,7 +68,7 @@ function enemy:on_custom_attack_received(attack, sprite)
     -- Explode.
     local x, y, layer = self:get_position()
     sol.audio.play_sound("explosion")
-    self:get_map():get_hero():start_hurt(x, y, 8, 0)
+    self:get_map():get_entity("hero"):start_hurt(x, y, 8, 0)
     self:get_map():create_explosion(x, y, layer)
     self:remove()
   end

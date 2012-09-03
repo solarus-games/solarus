@@ -62,7 +62,7 @@ function enemy:skeleton_attack()
     nb_flames_created = nb_flames_created + 1
     local son_name = self:get_name() .. "_son_" .. nb_flames_created
     local son = self:create_enemy(son_name, "blue_flame", 0, -48, 2)
-    local angle = son:get_angle(self:get_map():get_hero())
+    local angle = son:get_angle(self:get_map():get_entity("hero"))
     son:go(angle)
     timers[#timers + 1] = sol.timer.start(self, math.random(1000, 3000), function()
       self:skeleton_attack()

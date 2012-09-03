@@ -49,7 +49,7 @@ end
 
 function enemy:check_hero()
 
-  local near_hero = self:get_distance(self:get_map():get_hero()) < 100
+  local near_hero = self:get_distance(self:get_map():get_entity("hero")) < 100
   if near_hero and not going_hero then
     self:go_hero()
   elseif not near_hero and going_hero then

@@ -34,7 +34,7 @@ end
 function enemy:on_update()
 
   local _, y = self:get_position()
-  local _, hero_y = self:get_map():get_hero():get_position()
+  local _, hero_y = self:get_map():get_entity("hero"):get_position()
   if hero_y > y + 8 then
     self:set_attack_consequence("sword", 1)
     self:set_attack_consequence("arrow", 2)
@@ -130,7 +130,7 @@ function enemy:jump_phase()
   local direction8
   local x, y = self:get_position()
   y = y - 16
-  local hero_x, hero_y = self:get_map():get_hero():get_position()
+  local hero_x, hero_y = self:get_map():get_entity("hero"):get_position()
   if hero_x > x then
     if y > 856 then
       direction8 = 1

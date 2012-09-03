@@ -42,7 +42,7 @@ function item:on_npc_interaction_item(npc, item_used)
         timer = sol.timer.start(350, repeat_change_riverfall)
       else
         sol.audio.play_sound("secret")
-        self:get_map():get_hero():walk(path, false, true)
+        self:get_map():get_entity("hero"):walk(path, false, true)
         timer = sol.timer.start(2000, repeat_restore_riverfall)
       end
     end

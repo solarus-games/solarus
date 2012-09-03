@@ -21,7 +21,7 @@ end
 -- Creates some fire on the map.
 function item:create_fire()
 
-  local hero = self:get_map():get_hero()
+  local hero = self:get_map():get_entity("hero")
   local direction = hero:get_direction()
   local dx, dy
   if direction == 0 then

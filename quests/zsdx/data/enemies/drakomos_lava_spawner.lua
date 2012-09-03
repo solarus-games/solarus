@@ -26,7 +26,7 @@ function enemy:on_restarted()
     sprite:set_animation("disappearing")
     sol.audio.play_sound("ice")
 
-    local hero = self:get_map():get_hero()
+    local hero = self:get_map():get_entity("hero")
     if math.random(2) == 1 or self:get_distance(hero) < 24 then
       nb_sons_created = nb_sons_created + 1
       local son_name = self:get_name() .. "_son_" .. nb_sons_created

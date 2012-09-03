@@ -60,7 +60,7 @@ end
 function item:get_block_position_from_hero()
 
   -- Compute a position
-  local hero = self:get_map():get_hero()
+  local hero = self:get_map():get_entity("hero")
   local x, y, layer = hero:get_position()
   local direction = hero:get_direction()
   if direction == 0 then

@@ -64,7 +64,7 @@ end
 function enemy:on_update()
 
   local x, y = self:get_position()
-  local hero_x, hero_y = self:get_map():get_hero():get_position()
+  local hero_x, hero_y = self:get_map():get_entity("hero"):get_position()
   if hero_y < y - 60 and
       (petals[2].sprite ~= nil and hero_x <= x and hero_x > x - 32
       or petals[5].sprite ~= nil and hero_x >= x and hero_x < x + 32

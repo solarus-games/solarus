@@ -29,7 +29,7 @@ end
 
 function enemy:on_restarted()
 
-  local hero_x, hero_y = self:get_map():get_hero():get_position()
+  local hero_x, hero_y = self:get_map():get_entity("hero"):get_position()
   local angle = self:get_angle(hero_x, hero_y - 5)
   local m = sol.movement.create("straight")
   m:set_speed(speed)
@@ -66,7 +66,7 @@ function enemy:on_custom_attack_received(attack, sprite)
 
   if attack == "sword" then
 
-    local hero_x, hero_y = self:get_map():get_hero():get_position()
+    local hero_x, hero_y = self:get_map():get_entity("hero"):get_position()
     local angle = self:get_angle(hero_x, hero_y - 5) + math.pi
     local m = sol.movement.straight_movement_create(speed, angle)
     self:start_movement(m)

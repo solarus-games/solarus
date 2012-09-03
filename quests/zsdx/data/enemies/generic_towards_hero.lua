@@ -104,7 +104,7 @@ end
 
 function enemy:check_hero()
 
-  local hero = self:get_map():get_hero()
+  local hero = self:get_map():get_entity("hero")
   local _, _, layer = self:get_position()
   local _, _, hero_layer = hero:get_position()
   local near_hero = layer == hero_layer

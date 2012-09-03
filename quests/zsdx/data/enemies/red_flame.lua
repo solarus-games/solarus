@@ -20,7 +20,7 @@ end
 function enemy:on_restarted()
 
   -- By default, go to where the hero is now.
-  local x, y = self:get_map():get_hero():get_position()
+  local x, y = self:get_map():get_entity("hero"):get_position()
   x = x + math.random(-32, 32)
   y = y + math.random(-32, 32)
   local m = sol.movement.create("target")

@@ -26,7 +26,7 @@ end
 
 function enemy:on_update()
 
-  local hero = self:get_map():get_hero()
+  local hero = self:get_map():get_entity("hero")
   if state == "stopped" and self:get_distance(hero) <= 192 then
     -- Check whether the hero is close.
     local x, y = self:get_position()

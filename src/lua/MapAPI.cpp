@@ -61,7 +61,6 @@ void LuaContext::register_map_module() {
       { "draw_sprite", map_api_draw_sprite },
       { "get_tileset", map_api_get_tileset },
       { "set_tileset", map_api_set_tileset },
-      { "get_hero", map_api_get_hero },
       { "get_crystal_state", map_api_get_crystal_state },
       { "set_crystal_state", map_api_set_crystal_state },
       { "change_crystal_state", map_api_change_crystal_state },
@@ -370,19 +369,6 @@ int LuaContext::map_api_set_tileset(lua_State* l) {
   map.set_tileset(tileset_id);
 
   return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_get_hero.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_get_hero(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  push_hero(l, map.get_entities().get_hero());
-  return 1;
 }
 
 /**

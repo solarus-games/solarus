@@ -49,7 +49,7 @@ function item:on_using()
   elseif variant == 6 then
 
     -- release the fairy
-    local x, y, layer = map:get_hero():get_position()
+    local x, y, layer = map:get_entity("hero"):get_position()
     map:create_pickable("fairy", 1, -1, x, y, layer)
     self:set_variant(1) -- make the bottle empty
     self:set_finished()

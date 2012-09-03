@@ -72,7 +72,7 @@ end
 
 function enemy:get_direction4_to_hero()
 
-  local hero = self:get_map():get_hero()
+  local hero = self:get_map():get_entity("hero")
   local angle = self:get_angle(hero)
   local direction4 = (angle + (math.pi / 4)) * 2 / math.pi
   return (math.floor(direction4) + 4) % 4

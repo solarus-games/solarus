@@ -10,7 +10,7 @@ function item:on_using()
     sol.timer.start(300, function()
       self:remove_amount(1)
     end)
-    self:get_map():get_hero():start_bow()
+    self:get_map():get_entity("hero"):start_bow()
   end
   self:set_finished()
 end

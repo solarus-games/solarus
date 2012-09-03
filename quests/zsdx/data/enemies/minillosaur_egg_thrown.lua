@@ -28,7 +28,7 @@ function enemy:on_restarted()
   if in_egg then
     local sprite = self:get_sprite()
     sprite:set_animation("egg")
-    local angle = self:get_angle(self:get_map():get_hero())
+    local angle = self:get_angle(self:get_map():get_entity("hero"))
     local m = sol.movement.create("straight")
     m:set_speed(120)
     m:set_angle(angle)

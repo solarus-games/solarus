@@ -88,7 +88,7 @@ end
 
 function enemy:check_hero()
 
-  local hero = self:get_map():get_hero()
+  local hero = self:get_map():get_entity("hero")
   local _, _, layer = self:get_position()
   local _, _, hero_layer = hero:get_position()
   local near_hero = layer == hero_layer
@@ -135,7 +135,7 @@ function enemy:on_custom_attack_received(attack, sprite)
     sol.audio.play_sound("sword_tapping")
     being_pushed = true
     local x, y = self:get_position()
-    local angle = self:get_angle(self:get_map():get_hero()) + math.pi
+    local angle = self:get_angle(self:get_map():get_entity("hero")) + math.pi
     local movement = sol.movement.create("straight")
     movement:set_speed(128)
     movement:set_angle(angle)

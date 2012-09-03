@@ -2,7 +2,7 @@ local item = ...
 
 function item:on_using()
 
-  local hero = self:get_map():get_hero()
+  local hero = self:get_map():get_entity("hero")
   if self:get_variant() == 1 then
     hero:start_boomerang(128, 160, "boomerang1", "entities/boomerang1")
   else

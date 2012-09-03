@@ -98,7 +98,7 @@ end
 
 function enemy:jump()
 
-  local angle = math.pi + self:get_angle(self:get_map():get_hero())
+  local angle = math.pi + self:get_angle(self:get_map():get_entity("hero"))
   local m = sol.movement.create("target")
   m:set_speed(128)
   m:set_target(240, 245)

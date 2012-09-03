@@ -644,7 +644,6 @@ class LuaContext {
       map_api_draw_sprite,
       map_api_get_tileset,
       map_api_set_tileset,
-      map_api_get_hero,
       map_api_get_crystal_state,
       map_api_set_crystal_state,
       map_api_change_crystal_state,

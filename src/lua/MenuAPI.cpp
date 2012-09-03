@@ -319,8 +319,8 @@ void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
   }
 
   bool handled = false;
-  std::map<int, const void*>::iterator it;
-  for (it = menus.begin(); it != menus.end() && !handled; ++it) {
+  std::map<int, const void*>::reverse_iterator it;
+  for (it = menus.rbegin(); it != menus.rend() && !handled; ++it) {
     int menu_ref = it->first;
     if (it->second == context) {
       handled = menu_on_input(menu_ref, event);

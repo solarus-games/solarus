@@ -94,9 +94,9 @@ Game::~Game() {
     delete savegame;
   }
 
-  current_map->unload();
   current_map->decrement_refcount();
   if (current_map->get_refcount() == 0) {
+    current_map->unload();
     delete current_map;
   }
 

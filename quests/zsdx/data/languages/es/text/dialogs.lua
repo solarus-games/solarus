@@ -183,8 +183,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Roja
-para recuperar tu
-vida.
+para recuperar vida.
 ]]
 }
 --------------------
@@ -196,8 +195,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Verde
-para recuperar tu
-magia.
+para recuperar magia.
 ]]
 }
 --------------------
@@ -209,7 +207,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Azul
-para recuperar tu
+para recuperar
 vida y magia.
 ]]
 }
@@ -266,8 +264,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Roja
-para recuperar tu
-vida.
+para recuperar vida.
 ]]
 }
 --------------------
@@ -279,8 +276,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Verde
-para recuperar tu
-magia.
+para recuperar magia.
 ]]
 }
 --------------------
@@ -292,7 +288,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Azul
-para recuperar tu
+para recuperar
 vida y magia.
 ]]
 }
@@ -349,8 +345,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Roja
-para recuperar tu
-vida.
+para recuperar vida.
 ]]
 }
 --------------------
@@ -362,8 +357,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Verde
-para recuperar tu
-magia.
+para recuperar magia.
 ]]
 }
 --------------------
@@ -375,7 +369,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Azul
-para recuperar tu
+para recuperar
 vida y magia.
 ]]
 }
@@ -432,8 +426,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Roja
-para recuperar tu
-vida.
+para recuperar vida.
 ]]
 }
 --------------------
@@ -445,8 +438,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Verde
-para recuperar tu
-magia.
+para recuperar magia.
 ]]
 }
 --------------------
@@ -458,7 +450,7 @@ dialog{
   skip = "all",
   text = [[
 Bebe la Poción Azul
-para recuperar tu
+para recuperar
 vida y magia.
 ]]
 }
@@ -517,7 +509,7 @@ dialog{
   next = "_warning_magic",
   text = [[
 Crea un bloque y
-engánchate a el
+engánchate a él
 usando la Zarpa.
 ]]
 }
@@ -595,7 +587,7 @@ dialog{
   skip = "all",
   text = [[
 La Llave de la
-Tierra. Permite
+Tierra. Permite el
 acceso a la caverna
 de la aldea.
 ]]
@@ -933,7 +925,7 @@ dialog{
 de Poción Roja!$0
 
 Bébela para
-recuperar tu salud.
+recuperar vida.
 ]]
 }
 --------------------
@@ -947,7 +939,7 @@ dialog{
 de Poción Verde!$0
 
 Bébela para
-recuperar tu energía
+recuperar energía
 mágica.
 ]]
 }
@@ -1019,7 +1011,7 @@ dialog{
 de Poción Roja!$0
 
 Bébela para
-recuperar tu salud.
+recuperar vida.
 ]]
 }
 --------------------
@@ -1033,7 +1025,7 @@ dialog{
 de Poción Verde!$0
 
 Bébela para
-recuperar tu energía
+recuperar energía
 mágica.
 ]]
 }
@@ -1105,7 +1097,7 @@ dialog{
 de Poción Roja!$0
 
 Bébela para
-recuperar tu salud.
+recuperar vida.
 ]]
 }
 --------------------
@@ -1119,7 +1111,7 @@ dialog{
 de Poción Verde!$0
 
 Bébela para
-recuperar tu energía
+recuperar energía
 mágica.
 ]]
 }
@@ -1191,7 +1183,7 @@ dialog{
 de Poción Roja!$0
 
 Bébela para
-recuperar tu salud.
+recuperar vida.
 ]]
 }
 --------------------
@@ -1205,7 +1197,7 @@ dialog{
 de Poción Verde!$0
 
 Bébela para
-recuperar tu energía
+recuperar energía
 mágica.
 ]]
 }
@@ -1289,7 +1281,7 @@ de Somaria!$0
 
 Puedes crear un
 bloque y sujetarte a
-el con la Zarpa.
+él con la Zarpa.
 ]]
 }
 --------------------
@@ -1302,7 +1294,7 @@ dialog{
 ¡Encontraste 3
 Manzanas!$0
 
-¡Cómetelas mas tarde
+¡Cómetelas más tarde
 para recuperar
 corazones!
 ]]
@@ -1463,7 +1455,7 @@ dialog{
 Mágica!$0
 
 Te avisará cuando
-estés cerca a una
+estés cerca de una
 pared débil.
 ]]
 }
@@ -1506,7 +1498,7 @@ dialog{
 Llave de Madera!$0
 
 ¡Debes encontrar
-donde usarla!
+dónde usarla!
 ]]
 }
 --------------------
@@ -1767,7 +1759,7 @@ dialog{
 Espada del Coraje!$0
 
 ¡Puedes cruzar
-espadas y enfrentar
+espadas y enfrentarte
 a tus enemigos!
 ]]
 }
@@ -1862,7 +1854,7 @@ ver tu posición en
 el Mapa, la
 ubicación de los
 cofres y la guarida
-del Jefe! ¡Ahora si
+del Jefe! ¡Ahora sí
 estamos llegando a
 alguna parte!
 ]]
@@ -2057,8 +2049,8 @@ dialog{
 ¡Encontraste una
 Jarra Mágica
 Pequeña!
-Tu Medidor Mágico se
-ha llenado un poco.
+Tu Medidor de Magia
+se ha llenado un poco.
 ]]
 }
 --------------------
@@ -2070,8 +2062,8 @@ dialog{
   text = [[
 ¡Encontraste una
 Jarra Mágica Grande!
-Tu Medidor Mágico se
-ha llenado bastante.
+Tu Medidor de Magia
+se ha llenado bastante.
 ]]
 }
 --------------------
@@ -2209,7 +2201,7 @@ dialog{
   id = "_warning_magic",
   text = [[
 ¡Vigila tu Medidor
-Mágico!
+de Magia!
 ]]
 }
 --------------------
@@ -2271,7 +2263,7 @@ dialog{
   text = [[
 Necesitas algo afilado
 para abrirte paso a
-través de éstos
+través de estos
 arbustos.
 ]]
 }
@@ -2472,7 +2464,7 @@ dialog{
   icon = 8,
   question = true,
   text = [[
-¿Quieres poner algo
+¿Quieres meter algo
 de agua en tu
 
 Botella Mágica?
@@ -2487,7 +2479,7 @@ dialog{
   id = "found_water.no_bottle",
   skip = "all",
   text = [[
-Aquí hay algo de agua
+Aquí hay algo de agua,
 pero no tienes forma de
 almacenarla...
 ]]
@@ -2599,7 +2591,7 @@ dialog{
   text = [[
 $2Cuenta la leyenda que
 hace mucho tiempo
-existía un prospero
+existía un próspero
 reino llamado Hyrule
 surgido de la bendición
 de tres diosas.
@@ -2711,8 +2703,9 @@ $2Años después, el rey de
 Hyrule, que ayudó en el
 destierro de Ganondorf,
 cayó enfermo y ni los
-médicos de todo el
-reino lograron curarlo.
+mejores médicos de todo
+el reino lograron
+curarlo.
 Se perdió al rey y con
 él, parte del poder que
 tenía el sello, 
@@ -2789,7 +2782,7 @@ por ahí sin protección.
 dialog{
   id = "outside_world.village.monkey.with_shield",
   text = [[
-No deberia dejarte
+No debería dejarte
 pasar, pero bueno, 
 al menos tienes un 
 Escudo contigo...
@@ -2824,10 +2817,11 @@ dialog{
   skip = "all",
   text = [[
 Cuando el icono azul
-aparece, esto te indica qué
+aparece, te indica qué
 puedes hacer pulsando
-la tecla de acción (espacio).
-Dependiendo de lo que estés
+la tecla de acción
+(espacio). Dependiendo
+de lo que estés
 examinando, te indicará
 diferentes acciones tales
 como mirar,
@@ -2846,8 +2840,8 @@ dialog{
   skip = "all",
   text = [[
 Dicen que en cada
-mazmorra se escondé una Pieza
-de Corazón
+mazmorra se esconde una 
+Pieza de Corazón.
 Divertido, ¿no crees?
 ]]
 }
@@ -2903,8 +2897,8 @@ verdad?
 dialog{
   id = "outside_world.village.rupee_house_sign",
   text = [[
-   - Rupees' House -
-¡Gana unas cuantas rupias
+  - Casa de las Rupias -
+¡Gana unas cuantas Rupias
 mientras te diviertes!
 ]]
 }
@@ -2989,25 +2983,28 @@ Tan solo mantén la vista
 en el icono verde para
 saber qué hace la tecla C.
 Los otros iconos son
-las teclas que rodean a la
-tecla C: el icono naranja
-(tecla D) pausa el juego,
-el icono azul (barra
-espaciadora) es la tecla
-Acción, y los dos iconos
-grises son los objetos
-asignados a las teclas
-X y V. Así que vigila
-siempre lo que dicen los
-iconos. ¡No olvides que
-puedes redefinir los
-controles en la pantalla
-de opciones, y que puedes
+las teclas que rodean a
+la tecla C: el icono 
+naranja (tecla D) pausa
+el juego, el icono azul
+(barra espaciadora) es
+la tecla Acción, y los
+dos iconos grises son
+los objetos asignados a
+las teclas X y V. Así
+que vigila siempre lo
+que dicen los iconos.
+¡No olvides que puedes
+redefinir los controles
+en la pantalla de
+opciones, y que puedes
 incluso jugar con un
 gamepad!
 ¿Lo has entendido todo?
+
+
 Sí
-No, no lo hice
+No
 ]]
 }
 -----------------------
@@ -3017,7 +3014,7 @@ dialog{
   next = "outside_world.village.tree_woman.long_text",
   text = [[
 Bien, deja que te lo explique
-otra vez, pero escucha
+de nuevo, pero escucha
 con atención esta vez.
 Los iconos de arriba a la
 ]]
@@ -3112,7 +3109,7 @@ dialog{
   id = "outside_world.beaumont_hill_sign",
   text = [[
 Aquel que plante un
-edeweiss en la cima de
+Edelweiss en la cima de
 la Colina Beaumont Hill,
 tendrá un buen día.
 ]]
@@ -3124,7 +3121,7 @@ dialog{
   id = "outside_world.beaumont_hill_put_edelweiss",
   text = [[
 Estás plantando tu
-edelweiss...
+Edelweiss...
 ]]
 }
 -----------------------
@@ -3279,7 +3276,7 @@ dialog{
 ¡Bienvenido a la 
 nueva máquina
 tragaperras!
-Apuesta 5 ó 20 rupias
+Apuesta 5 o 20 Rupias
 y trata de alinear
 tres símbolos
 iguales para
@@ -3404,7 +3401,7 @@ dialog{
   id = "rupee_house.game_2.reward.yoshi",
   text = [[
 $1...$3¡¿Tres Yoshis?!
-¡I-n-c-r-e-i-b-l-e!
+¡I-n-c-r-e-í-b-l-e!
 Es la mejor
 combinación posible...
 Tu apuesta inicial se
@@ -3422,8 +3419,9 @@ Mala suerte, no
 conseguiste hacer
 ninguna combinación.
 ¿Quieres probar
-
 de nuevo?
+
+
 Sí
 No
 ]]
@@ -3438,14 +3436,14 @@ dialog{
 Navega por el
 laberinto antes de que
 el tiempo se agote.
-Puede ser que tengas
-que empujar bloques
-para abrir pasadizos.
+Puede que tengas que
+empujar bloques para
+abrir pasadizos.
 Puedes ganar una
-Pieza de Corazón, y
-oí que son muy
+Pieza de Corazón. He
+oído que son muy
 raras...
-Son sólo 10 Rupias.
+Son solo 10 Rupias.
 
 ¿Quieres jugar?
 Sí
@@ -3668,7 +3666,7 @@ dialog{
 Bienvenido, joven
 lleno de sabiduría. He
 estado esperando tu
-llegada.Soy el Hada
+llegada. Soy el Hada
 Encantada. Tú, que
 velas por la justicia,
 me permito darte
@@ -3688,7 +3686,7 @@ Bienvenido, joven
 lleno de sabiduría.
 
 Soy el Hada Encantada.
-Cierra tus ojos
+Cierra los ojos
 y relájate.
 ]]
 }
@@ -3704,7 +3702,7 @@ llegada. Soy el Hada
 Viajera. Tú, que
 recorres el mundo
 luchando contra el mal
-sin descanso me permito
+sin descanso, me permito
 transmitirte una
 antigua técnica...
 ]]
@@ -3718,7 +3716,7 @@ Bienvenido, joven
 lleno de coraje.
 
 Soy el Hada Viajera.
-Cierra tus ojos
+Cierra los ojos
 y relájate.
 ]]
 }
@@ -3812,7 +3810,7 @@ ileso.
 De esta forma tan
 heroica encontré
 esta flor de extremo
-valor: ¡Una edelweiss!
+valor: ¡Una Edelweiss!
 ]]
 }
 -----------------------
@@ -3823,7 +3821,7 @@ dialog{
   next = "_unknown",
   text = [[
 No esperes que te dé mi
-edelweiss gratis.
+Edelweiss gratis.
 Afronté los peligros
 del Monte Terror para
 encontrarla. Si no
@@ -3887,7 +3885,7 @@ Manzana!
 dialog{
   id = "billy_cave.give_apple_pie",
   text = [[
-No gracias, Eso está
+No gracias, eso está
 lejos de ser justo...
 ]]
 }
@@ -4004,7 +4002,7 @@ dialog{
 del Lago! Nuestros
 artículos son los más
 baratos de la zona.¿Qué
-puedo hacer por tí?
+puedo hacer por ti?
 ]]
 }
 -----------------------
@@ -4268,7 +4266,7 @@ dialog{
 Esta escalera lleva 
 hasta el nivel superior 
 y al balcón.
-Sin embargo el acceso
+Sin embargo, el acceso
 está prohibido para el
 público.
 ]]
@@ -4393,7 +4391,7 @@ Si quieres redimirte
 trata de encontrar las
 tres Piedras de Fuego
 escondidas en mi 
-sombrio laberinto
+sombrío laberinto
 ]]
 }
 -----------------------
@@ -4411,7 +4409,7 @@ $0Beaumont.
 ¡Supera los retos que
 te esperan, trae de
 vuelta las tres piedras
-de fuego y sólo
+de fuego y solo
 entonces calmarás
 la furia de Inferno.
 ]]
@@ -4567,7 +4565,7 @@ dialog{
   id = "cave_to_dungeon_8.hint",
   skip = "all",
   text = [[
-Sólo un observador
+Solo un observador
 atento podrá seguir
 el camino.
 ]]
@@ -4578,7 +4576,7 @@ dialog{
   id = "bone_key_cave.hint",
   skip = "all",
   text = [[
-Sólo al repeler la luz
+Solo al repeler la luz
 hará brillar la luz
 de nuevo.
 ]]
@@ -4614,7 +4612,7 @@ protectores llamados
 por la Princesa Zelda.
 Nos dedicamos a velar
 por la Trifuerza
-Usando el poder del
+Usar el poder del
 amuleto Solarus, una
 reliquia usada por la
 Princesa Zelda, es la
@@ -4748,7 +4746,7 @@ Hace mucho frío aquí...
 dialog{
   id = "dungeon_4.solarus_child",
   text = [[
-$2$v... Thank you.
+$2$v... Gracias.
 Me has salvado la vida.
 Soy uno de los ocho
 protectores nombrados
@@ -5036,7 +5034,7 @@ Primero debes liberar a
 Sahasrahla antes de que
 el hechicero se las
 arregle para conseguir
-la información que él
+la información que
 necesita...
 Por favor, toma esto,
 es una pequeña ayuda
@@ -5094,7 +5092,7 @@ $2$v... Gracias.
 Me has salvado la vida.
 
 Si pudiera haber
-resistido sólo un
+resistido solo un
 poco más...
 Aquellos delincuentes
 me persuadieron para
@@ -5117,7 +5115,7 @@ por el amuleto de
 Solarus, la reliquia
 que porta Zelda, y 
 que se necesita 
-para  conseguir 
+para conseguir 
 los fragmentos de
 la Trifuerza.
 El misterio de Solarus
@@ -5125,7 +5123,7 @@ se mantiene a salvo en
 el interior de la 
 reliquia.
 El portador de esta
-reliquia, tiene la 
+reliquia tiene la 
 habilidad de invocar
 el poder de Solarus
 para mantener encerrado
@@ -5140,12 +5138,12 @@ Zelda es la heredera
 de ese poder. Ella lo
 usa para encerrar los
 fragmentos de la
-trifuerza, a través de
+Trifuerza, a través de
 los ocho seres creados
 por Solarus.
-Así, mientras sólo ella
+Así, mientras solo ella
 sepa el secreto de la
-reliquia, sólo ella
+reliquia, solo ella
 será quien controle el
 sello de la Trifuerza.
 Esta es la razón por
@@ -5787,7 +5785,7 @@ Es como si la vida
 misma se hubiera
 detenido. ¡Excepto por
 la tienda de la aldea!
-¡Desde que sólo venden
+¡Desde que solo venden
 armas para sobrevivir
 están ganando Rupias de
 verdad!
@@ -5803,10 +5801,10 @@ dialog{
 Forjé esta gran Espada
 de bronce con mis
 propias manos. ¡Puedes
-tenerla por sólo 75
+tenerla por solo 75
 Rupias!
 
-Sólo con tu escudo no
+Solo con tu escudo no
 llegarás muy lejos.
 
 Entonces, ¿interesado?
@@ -6243,7 +6241,7 @@ dialog{
   next = "sahasrahla_house.go_grandma",
   text = [[
 Tengo fe en ti.
-Qué el valor y la
+Que el valor y la
 sabiduría te guíen.
 ]]
 }
@@ -6299,8 +6297,8 @@ para protegerla.
 resolver los misterios
 de esta caverna?
 Este lugar rebosa
-de enigmas, tesoros
-y peligros. ¡Pareces
+enigmas, tesoros y
+peligros. ¡Pareces
 muy valiente!
 Por favor, acepta mi
 ayuda... He fallado. No

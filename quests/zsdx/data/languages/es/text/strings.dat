@@ -41,7 +41,7 @@ quest_status.caption.tunic_2        Túnica Azul
 quest_status.caption.tunic_3        Túnica Roja
 quest_status.caption.sword_1        Espada del Coraje
 quest_status.caption.sword_2        Espada Hyliana
-quest_status.caption.sword_3        Espada del Heroe
+quest_status.caption.sword_3        Espada del Héroe
 quest_status.caption.sword_4        Espada Maestra
 quest_status.caption.shield_1       Escudo
 quest_status.caption.shield_2       Escudo de Fuego
@@ -82,7 +82,7 @@ inventory.caption.item.clay_key.1            Llave de la Tierra
 inventory.caption.item.level_4_way.1         Pastel de Manzana
 inventory.caption.item.level_4_way.2         Barras de Oro
 inventory.caption.item.level_4_way.3         Edelweiss
-inventory.caption.item.level_4_way.4         Tecnica del Tigre
+inventory.caption.item.level_4_way.4         Técnica del Tigre
 inventory.caption.item.flippers.1            Aletas
 inventory.caption.item.magic_cape.1          Capa Mágica
 inventory.caption.item.bottle_3.1            Botella Mágica$(Vacía)
@@ -166,7 +166,7 @@ selection_menu.big_no                    NO
 selection_menu.empty                     Vacío
 selection_menu.options                   Opciones
 selection_menu.back                      Volver
-selection_menu.options.language          Lenguaje
+selection_menu.options.language          Idioma
 selection_menu.options.video_mode        Modo de Vídeo
 selection_menu.options.music_volume      Volumen Música
 selection_menu.options.sound_volume      Volumen Sonidos

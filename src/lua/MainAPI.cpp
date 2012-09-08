@@ -179,25 +179,14 @@ void LuaContext::main_on_update() {
 }
 
 /**
- * @brief Calls sol.main.on_pre_draw() if it exists.
+ * @brief Calls sol.main.on_draw() if it exists.
  * @param dst_surface The destination surface.
  */
-void LuaContext::main_on_pre_draw(Surface& dst_surface) {
-
-  push_main(l);
-  on_pre_draw(dst_surface);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls sol.main.on_post_draw() if it exists.
- * @param dst_surface The destination surface.
- */
-void LuaContext::main_on_post_draw(Surface& dst_surface) {
+void LuaContext::main_on_draw(Surface& dst_surface) {
 
   push_main(l);
   menus_on_draw(-1, dst_surface);
-  on_post_draw(dst_surface);
+  on_draw(dst_surface);
   lua_pop(l, 1);
 }
 

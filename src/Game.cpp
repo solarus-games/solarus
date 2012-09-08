@@ -215,9 +215,20 @@ Equipment& Game::get_equipment() {
  */
 bool Game::notify_input(InputEvent& event) {
 
-  // the GameControl object will transform the low-level input event into
-  // a high-level game control event (i.e. a call to key_pressed() or key_released()).
-  controls->notify_input(event);
+  bool handled = false;
+
+  if (current_map != NULL && current_map->is_loaded()) {
+    handled = get_lua_context().game_on_input(*this, event);
+    if (!handled) {
+      handled = current_map->notify_input(event);
+      if (!handled) {
+        // Built-in behavior:
+        // the GameControl object will transform the low-level input event into
+        // a high-level game control event (i.e. a call to key_pressed() or key_released()).
+        controls->notify_input(event);
+      }
+    }
+  }
   return true;
 }
 
@@ -471,8 +482,6 @@ void Game::update_gameover_sequence() {
  */
 void Game::draw(Surface& dst_surface) {
 
-  get_lua_context().game_on_pre_draw(*this, dst_surface);
-
   // draw the map
   if (current_map->is_loaded()) {
     current_map->draw();
@@ -502,7 +511,7 @@ void Game::draw(Surface& dst_surface) {
     }
   }
 
-  get_lua_context().game_on_post_draw(*this, dst_surface);
+  get_lua_context().game_on_draw(*this, dst_surface);
 }
 
 /**

@@ -128,8 +128,7 @@ class LuaContext {
 
     // Main loop events (sol.main).
     void main_on_update();
-    void main_on_pre_draw(Surface& dst_surface);
-    void main_on_post_draw(Surface& dst_surface);
+    void main_on_draw(Surface& dst_surface);
     bool main_on_input(InputEvent& event);
     void main_on_started();
     void main_on_finished();
@@ -163,13 +162,15 @@ class LuaContext {
 
     // Game events.
     void game_on_update(Game& game);
-    void game_on_pre_draw(Game& game, Surface& dst_surface);
-    void game_on_post_draw(Game& game, Surface& dst_surface);
+    void game_on_draw(Game& game, Surface& dst_surface);
+    bool game_on_input(Game& game, InputEvent& event);
     void game_on_started(Game& game);
     void game_on_finished(Game& game);
 
     // Map events.
     void map_on_update(Map& map);
+    void map_on_draw(Map& map, Surface& dst_surface);
+    bool map_on_input(Map& map, InputEvent& event);
     void map_on_suspended(Map& map, bool suspended);
     void map_on_started(Map& map, Destination* destination);
     void map_on_finished(Map& map);

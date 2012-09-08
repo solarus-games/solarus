@@ -181,7 +181,8 @@ class Map: public ExportableToLua {
     void check_collision_with_detectors(MapEntity &entity, Sprite &sprite);
     static Ground obstacle_to_ground(Obstacle obstacle);
 
-    // update and drawing
+    // main loop
+    bool notify_input(InputEvent &event);
     void update();
     void check_suspended();
     void draw();

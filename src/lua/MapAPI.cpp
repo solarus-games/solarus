@@ -869,8 +869,39 @@ void LuaContext::map_on_update(Map& map) {
   lua_pop(l, 1);
 }
 
-// TODO map_on_draw -> menus_on_draw
-// TODO map_on_input -> menus_on_input
+/**
+ * @brief Calls the on_draw() method of a Lua map.
+ * @param map A map.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::map_on_draw(Map& map, Surface& dst_surface) {
+
+  push_map(l, map);
+  menus_on_draw(-1, dst_surface);
+  on_draw(dst_surface);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Notifies a Lua map that an input event has just occurred.
+ *
+ * The appropriate callback in the map is triggered if it exists.
+ *
+ * @param event The input event to handle.
+ * @param map A map.
+ * @return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::map_on_input(Map& map, InputEvent& event) {
+
+  bool handled = false;
+  push_map(l, map);
+  handled = on_input(event);
+  if (!handled) {
+    handled = menus_on_input(-1, event);
+  }
+  lua_pop(l, 1);
+  return handled;
+}
 
 /**
  * @brief Calls the on_suspended() method of a Lua map.

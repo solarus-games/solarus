@@ -472,6 +472,17 @@ void Map::set_suspended(bool suspended) {
 }
 
 /**
+ * @brief This function is called when a low-level input event occurs on this map.
+ * @param event the event to handle
+ * @return \c true if the event was handled and should stop being propagated.
+ */
+bool Map::notify_input(InputEvent& event) {
+
+  bool handled = get_lua_context().map_on_input(*this, event);
+  return handled;
+}
+
+/**
  * @brief Updates the animation and the position of each map elements, including the hero.
  */
 void Map::update() {
@@ -517,6 +528,9 @@ void Map::draw() {
 
     // foreground
     draw_foreground();
+
+    // Lua
+    get_lua_context().map_on_draw(*this, *visible_surface);
   }
 }
 

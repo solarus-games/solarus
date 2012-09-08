@@ -770,6 +770,39 @@ void LuaContext::game_on_update(Game& game) {
   lua_pop(l, 1);
 }
 
+/**
+ * @brief Calls the on_draw() method of a Lua game.
+ * @param game A game.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
+
+  push_game(l, game.get_savegame());
+  menus_on_draw(-1, dst_surface);
+  on_draw(dst_surface);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Notifies a Lua game that an input event has just occurred.
+ *
+ * The appropriate callback in the game is triggered if it exists.
+ *
+ * @param event The input event to handle.
+ * @param game A game.
+ * @return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::game_on_input(Game& game, InputEvent& event) {
+
+  bool handled = false;
+  push_game(l, game.get_savegame());
+  handled = on_input(event);
+  if (!handled) {
+    handled = menus_on_input(-1, event);
+  }
+  lua_pop(l, 1);
+  return handled;
+}
 
 /**
  * @brief Calls the on_started() method of a Lua game.
@@ -781,33 +814,6 @@ void LuaContext::game_on_started(Game& game) {
   on_started();
   lua_pop(l, 1);
 }
-
-/**
- * @brief Calls the on_post_draw() method of a Lua game.
- * @param game A game.
- * @param dst_surface The destination surface.
- */
-void LuaContext::game_on_pre_draw(Game& game, Surface& dst_surface) {
-
-  push_game(l, game.get_savegame());
-  on_pre_draw(dst_surface);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_post_draw() method of a Lua game.
- * @param game A game.
- * @param dst_surface The destination surface.
- */
-void LuaContext::game_on_post_draw(Game& game, Surface& dst_surface) {
-
-  push_game(l, game.get_savegame());
-  menus_on_draw(-1, dst_surface);
-  on_post_draw(dst_surface);
-  lua_pop(l, 1);
-}
-
-// TODO game_on_input -> menus_on_input
 
 /**
  * @brief Calls the on_finished() method of a Lua game.

@@ -72,10 +72,10 @@ function hearts:check()
   -- If we are in-game, play an animation and a sound if the life is low.
   if self.game:is_started() then
 
-    need_rebuild = true
     if self.game:get_life() <= self.game:get_max_life() / 4
         and not self.game:is_suspended() then
 
+      need_rebuild = true
       if self.empty_heart_sprite:get_animation() ~= "danger" then
 	self.empty_heart_sprite:set_animation("danger")
 	sol.timer.start(self.game, 250, function()
@@ -83,6 +83,7 @@ function hearts:check()
 	end)
       end
     elseif self.empty_heart_sprite:get_animation() ~= "normal" then
+      need_rebuild = true
       self.empty_heart_sprite:set_animation("normal")
     end
   end

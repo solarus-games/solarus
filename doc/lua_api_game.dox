@@ -269,23 +269,6 @@ Removes some magic points from the player.
 
 <hr>
 
-\subsection lua_api_game_start_decreasing_magic game:start_decreasing_magic(delay)
-
-Starts removing magic points continuously.
-
-Only possible when the game is running.
-- \c delay (number): Delay in milliseconds between each loss of 1 point.
-
-<hr>
-
-\subsection lua_api_game_stop_decreasing_magic game:stop_decreasing_magic()
-
-Stops removing magic points continuously.
-
-Only possible when the game is running.
-
-<hr>
-
 \subsection lua_api_game_get_max_magic game:get_max_magic()
 
 Returns the maximum number of magic points.

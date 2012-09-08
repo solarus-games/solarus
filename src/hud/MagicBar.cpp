@@ -38,7 +38,6 @@ MagicBar::MagicBar(Game &game, int x, int y):
 
   current_magic_displayed = equipment->get_magic();
   max_magic_displayed = 0;
-  is_magic_decreasing = equipment->is_magic_decreasing();
 }
 
 /**
@@ -80,35 +79,6 @@ void MagicBar::update() {
       sprite_magic_bar_container->set_current_direction(max_magic_displayed / 42 - 1);
       need_rebuild = true;
     }
-  }
-
-  // are the magic points decreasing continuously?
-  if (equipment->is_magic_decreasing()) {
-
-    // animate the magic bar 
-    if (!is_magic_decreasing) {
-      is_magic_decreasing = true;
-      sprite_magic_bar_container->set_current_animation("decreasing");
-    }
-
-    // suspend the magic bar animation if the game is suspended
-    if (game->is_suspended() && !sprite_magic_bar_container->is_suspended()) {
-      sprite_magic_bar_container->set_current_frame(1);
-      sprite_magic_bar_container->set_suspended(true);
-    }
-    else if (sprite_magic_bar_container->is_suspended() && !game->is_suspended()) {
-      sprite_magic_bar_container->set_suspended(false);
-    }
-
-    sprite_magic_bar_container->update();
-    need_rebuild = true;
-  }
-  else if (is_magic_decreasing) {
-
-    // stop the magic bar animation
-    is_magic_decreasing = false;
-    sprite_magic_bar_container->set_current_animation("normal");
-    need_rebuild = true;
   }
 
   // current magic

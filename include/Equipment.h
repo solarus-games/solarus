@@ -39,11 +39,6 @@ class Equipment {
     // items
     std::map<std::string, EquipmentItem*> items;		/**< each item (properties loaded from the file items.dat) */
 
-    // magic bar decrease handling
-    uint32_t magic_decrease_delay;					/**< when the magic bar decreases with time,
-									 * delay between two decreases of 1 magic point */
-    uint32_t next_magic_decrease_date;					/**< date of the next decrease of 1 magic point */
-
     int get_ability_savegame_variable(const std::string &ability_name);
 
   public:
@@ -88,10 +83,6 @@ class Equipment {
     void add_magic(int magic_to_add);
     void remove_magic(int magic_to_remove);
     void restore_all_magic();
-
-    bool is_magic_decreasing();
-    void start_removing_magic(uint32_t delay);
-    void stop_removing_magic();
 
     // equipment items saved
     EquipmentItem& get_item(const std::string &item_name);

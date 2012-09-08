@@ -63,8 +63,6 @@ void LuaContext::register_game_module() {
       { "set_magic", game_api_set_magic},
       { "add_magic", game_api_add_magic},
       { "remove_magic", game_api_remove_magic},
-      { "start_decreasing_magic", game_api_start_decreasing_magic},
-      { "stop_decreasing_magic", game_api_stop_decreasing_magic},
       { "get_max_magic", game_api_get_max_magic},
       { "set_max_magic", game_api_set_max_magic},
       { "has_ability", game_api_has_ability },
@@ -602,35 +600,6 @@ int LuaContext::game_api_remove_magic(lua_State* l) {
   int magic = luaL_checkinteger(l, 2);
 
   savegame.get_equipment().remove_magic(magic);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_start_decreasing_magic.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_start_decreasing_magic(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  uint32_t delay = luaL_checkinteger(l, 2);
-
-  savegame.get_equipment().start_removing_magic(delay);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_stop_decreasing_magic.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_stop_decreasing_magic(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-
-  savegame.get_equipment().stop_removing_magic();
 
   return 0;
 }

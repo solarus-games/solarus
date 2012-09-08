@@ -622,8 +622,6 @@ class LuaContext {
       game_api_set_magic,
       game_api_add_magic,
       game_api_remove_magic,
-      game_api_start_decreasing_magic,
-      game_api_stop_decreasing_magic,
       game_api_get_max_magic,
       game_api_set_max_magic,
       game_api_has_ability,

@@ -33,8 +33,7 @@
  */
 Equipment::Equipment(Savegame& savegame):
   savegame(savegame),
-  suspended(true),
-  magic_decrease_delay(0) {
+  suspended(true) {
 
   // load the equipment specification from items.dat
   IniFile ini("items.dat", IniFile::READ);
@@ -131,23 +130,6 @@ void Equipment::update() {
   bool game_suspended = game->is_suspended();
   if (suspended != game_suspended) {
     set_suspended(game_suspended);
-  }
-
-  if (!suspended) {
-
-    // update the decreasing magic bar
-    if (magic_decrease_delay != 0
-        && System::now() > next_magic_decrease_date) {
-
-      remove_magic(1);
-
-      if (get_magic() > 0) {
-        next_magic_decrease_date += magic_decrease_delay;
-      }
-      else {
-        stop_removing_magic();
-      }
-    }
   }
 
   // update the item scripts
@@ -396,39 +378,6 @@ void Equipment::remove_magic(int magic_to_remove) {
 void Equipment::restore_all_magic() {
 
   set_magic(get_max_magic());
-}
-
-/**
- * @brief Returns whether the magic bar is decreasing continuously.
- * @return true if the magic bar is decreasing, false otherwise
- */
-bool Equipment::is_magic_decreasing() {
-
-  return this->magic_decrease_delay != 0;
-}
-
-/**
- * @brief Starts removing magic continuously.
- * @param delay delay in milliseconds between two decreases
- */
-void Equipment::start_removing_magic(uint32_t delay) {
-
-  Debug::check_assertion(delay > 0, StringConcat() << "Illegal magic bar decrease delay: " << delay);
-
-  if (get_magic() > 0) {
-    this->magic_decrease_delay = delay;
-    this->next_magic_decrease_date = System::now();
-
-    // the magic points will be removed by the update() function
-  }
-}
-
-/**
- * @brief Stops removing magic continuously.
- */
-void Equipment::stop_removing_magic() {
-
-  this->magic_decrease_delay = 0;
 }
 
 // saved items

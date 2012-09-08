@@ -144,11 +144,23 @@ const Rectangle Surface::get_size() const {
 }
 
 /**
+ * @brief Returns the transparency color of this surface.
+ *
+ * Pixels in that color will not be drawn.
+ *
+ * @param color The transparency color.
+ */
+Color Surface::get_transparency_color() {
+
+  return Color(internal_surface->format->colorkey);
+}
+
+/**
  * @brief Sets the transparency color of this surface.
  *
  * Pixels in that color will not be drawn.
  *
- * @param color the transparency color to set
+ * @param color The transparency color to set.
  */
 void Surface::set_transparency_color(const Color& color) {
 

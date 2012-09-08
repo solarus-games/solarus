@@ -92,6 +92,27 @@ Color::Color(int r, int g, int b) {
 }
 
 /**
+ * @brief Creates a color from a 32-bit value.
+ *
+ * This constructor must be used only by low-level classes.
+ *
+ * @param internal_value The 32-bit value of the color to create.
+ */
+Color::Color(uint32_t internal_value):
+  internal_value(internal_value) {
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  internal_color.r = (internal_value & 0x00ff0000) / 0x10000;
+  internal_color.g = (internal_value & 0x0000ff00) / 0x100;
+  internal_color.b = (internal_value & 0x000000ff);
+#else
+  internal_color.r = (internal_value & 0x000000ff);
+  internal_color.g = (internal_value & 0x0000ff00) / 0x100;
+  internal_color.b = (internal_value & 0x00ff0000) / 0x10000;
+#endif
+}
+
+/**
  * @brief Returns the 32-bit value representing this color.
  *
  * This function must be used only by low-level classes.

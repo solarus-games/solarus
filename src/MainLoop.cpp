@@ -208,6 +208,7 @@ void MainLoop::run() {
 
   if (game != NULL) {
     game->stop();
+    delete game;
   }
 }
 

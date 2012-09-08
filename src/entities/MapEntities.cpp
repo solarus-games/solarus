@@ -69,7 +69,7 @@ MapEntities::~MapEntities() {
  */
 void MapEntities::destroy_all_entities() {
 
-  // delete the entities sorted by layer
+  // delete tiles and clear lists sorted by layer
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
@@ -108,6 +108,10 @@ void MapEntities::destroy_all_entities() {
  * @param entity The entity to destroy.
  */
 void MapEntities::destroy_entity(MapEntity* entity) {
+
+  if (!entity->is_being_removed()) {
+    entity->notify_being_removed();
+  }
 
   entity->decrement_refcount();
   if (entity->get_refcount() == 0) {

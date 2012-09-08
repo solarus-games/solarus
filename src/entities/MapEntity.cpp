@@ -45,10 +45,11 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "Sprite.h"
-#include "SpriteAnimationSet.h"
+#include "MainLoop.h"
 #include "Game.h"
 #include "Map.h"
+#include "Sprite.h"
+#include "SpriteAnimationSet.h"
 
 MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   Tile::parse,
@@ -88,6 +89,7 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
  * @brief Creates a map entity without specifying its properties now.
  */
 MapEntity::MapEntity():
+  main_loop(NULL),
   map(NULL),
   layer(LAYER_LOW),
   name(""),
@@ -119,6 +121,7 @@ MapEntity::MapEntity():
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
+  main_loop(NULL),
   map(NULL),
   layer(layer),
   bounding_box(x, y),
@@ -150,6 +153,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  */
 MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
 		     int x, int y, int width, int height):
+  main_loop(NULL),
   map(NULL),
   layer(layer),
   bounding_box(x, y),
@@ -266,8 +270,9 @@ bool MapEntity::is_on_map() {
  *
  * @param map the map
  */
-void MapEntity::set_map(Map &map) {
+void MapEntity::set_map(Map& map) {
 
+  this->main_loop = &map.get_game().get_main_loop();
   this->map = &map;
   if (&get_game().get_current_map() == &map) {
     set_sprites_map(map);
@@ -333,7 +338,7 @@ MapEntities& MapEntity::get_entities() {
  * @return The Lua context where all scripts are run.
  */
 LuaContext& MapEntity::get_lua_context() {
-  return get_game().get_lua_context();
+  return main_loop->get_lua_context();
 }
 
 /**

@@ -49,6 +49,7 @@ class MapEntity: public ExportableToLua {
 
   private:
 
+    MainLoop* main_loop;                        /**< The Solarus main loop. */
     Map* map;                                   /**< The map where this entity is, or NULL
                                                  * (automatically set by class MapEntities after adding the entity to the map) */
 

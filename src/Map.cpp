@@ -553,11 +553,32 @@ void Map::draw_foreground() {
     int hero_direction = get_entities().get_hero().get_animation_direction();
     const Rectangle& hero_position = get_entities().get_hero().get_center_point();
     const Rectangle& camera_position = camera->get_position();
-    int x = SOLARUS_SCREEN_WIDTH - hero_position.get_x() + camera_position.get_x();
-    int y = SOLARUS_SCREEN_HEIGHT - hero_position.get_y() + camera_position.get_y();
+    int x = 320 - hero_position.get_x() + camera_position.get_x();
+    int y = 240 - hero_position.get_y() + camera_position.get_y();
     Rectangle src_position(x, y, SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
-    dark_surfaces[hero_direction]->draw_region(src_position,
-        *visible_surface);
+    Surface& dark_surface = *dark_surfaces[hero_direction];
+    dark_surface.draw_region(src_position, *visible_surface);
+
+    // dark_surface may be too small if the screen size is greater
+    // than 320*240: add black bars.
+    if (x < 0) {
+      visible_surface->fill_with_color(Color::get_black(),
+          Rectangle(0, 0, -x, SOLARUS_SCREEN_HEIGHT));
+    }
+    if (y < 0) {
+      visible_surface->fill_with_color(Color::get_black(),
+          Rectangle(0, 0, SOLARUS_SCREEN_WIDTH, -y));
+    }
+    if (x > dark_surface.get_width() - SOLARUS_SCREEN_WIDTH) {
+      visible_surface->fill_with_color(Color::get_black(),
+          Rectangle(dark_surface.get_width() - x, 0,
+              x - dark_surface.get_width() + SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT));
+    }
+    if (y > dark_surface.get_height() - SOLARUS_SCREEN_HEIGHT) {
+      visible_surface->fill_with_color(Color::get_black(),
+          Rectangle(0, dark_surface.get_height() - y,
+              SOLARUS_SCREEN_WIDTH, y - dark_surface.get_height() + SOLARUS_SCREEN_HEIGHT));
+    }
   }
   // TODO intermediate light levels
 

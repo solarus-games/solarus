@@ -161,7 +161,8 @@ function savegame_menu:draw_savegame(slot_index)
   slot.player_name_text:draw(self.surface, 87, 61 + slot_index * 27)
 
   if slot.hearts_view ~= nil then
-    slot.hearts_view:draw(self.surface, 168, 51 + slot_index * 27)
+    slot.hearts_view:set_dst_position(168, 51 + slot_index * 27)
+    slot.hearts_view:on_draw(self.surface)
   end
 end
 

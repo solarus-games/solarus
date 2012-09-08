@@ -18,6 +18,8 @@ function hearts:initialize(game)
   self.game = game
   self.surface = sol.surface.create(90, 18)
   self.surface:set_transparency_color{0, 0, 0}
+  self.dst_x = 0
+  self.dst_y = 0
   self.empty_heart_sprite = sol.sprite.create("hud/empty_heart")
   self.nb_max_hearts_displayed = game:get_max_life() / 4
   self.nb_current_hearts_displayed = game:get_life()
@@ -132,7 +134,21 @@ function hearts:rebuild_surface()
   end
 end
 
-function hearts:draw(dst_surface, x, y)
+function hearts:set_dst_position(x, y)
+  self.dst_x = x
+  self.dst_y = y
+end
+
+function hearts:on_draw(dst_surface)
+
+  local x, y = self.dst_x, self.dst_y
+  local width, height = dst_surface:get_size()
+  if x < 0 then
+    x = width + x
+  end
+  if y < 0 then
+    y = height + y
+  end
 
   -- Everything was already drawn on self.surface.
   self.surface:draw(dst_surface, x, y)

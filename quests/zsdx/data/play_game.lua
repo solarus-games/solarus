@@ -7,15 +7,8 @@ function game:on_started()
   -- Set up the HUD.
   self.hud = {}
   self.hud.hearts = hearts_class:new(self)
+  self.hud.hearts:set_dst_position(-104, 6)
   self:set_hud_enabled(true)
-end
-
-function game:on_post_draw(surface)
-  -- Draw the hud after the game is drawn.
-  if game:is_hud_enabled() then
-    local width, height = surface:get_size()
-    self.hud.hearts:draw(surface, width - 104, 6)
-  end
 end
 
 -- Useful functions for this quest.
@@ -25,7 +18,16 @@ function game:is_hud_enabled()
 end
 
 function game:set_hud_enabled(hud_enabled)
-  game.hud_enabled = hud_enabled
+
+  if hud_enabled ~= game.hud_enabled then
+    game.hud_enabled = hud_enabled
+
+    if hud_enabled then
+      sol.menu.start(self, self.hud.hearts)
+    else
+      sol.menu.stop(self.hud.hearts)
+    end
+  end
 end
 
 -- Returns the item name of a bottle with the specified content, or nil.

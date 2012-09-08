@@ -3,11 +3,17 @@ local game = ...
 function game:on_started()
 
   local hearts_class = require("hud/hearts")
+  local magic_bar_class = require("hud/magic_bar")
 
   -- Set up the HUD.
   self.hud = {}
+
   self.hud.hearts = hearts_class:new(self)
   self.hud.hearts:set_dst_position(-104, 6)
+
+  self.hud.magic_bar = magic_bar_class:new(self)
+  self.hud.magic_bar:set_dst_position(-104, 27)
+
   self:set_hud_enabled(true)
 end
 
@@ -22,10 +28,12 @@ function game:set_hud_enabled(hud_enabled)
   if hud_enabled ~= game.hud_enabled then
     game.hud_enabled = hud_enabled
 
-    if hud_enabled then
-      sol.menu.start(self, self.hud.hearts)
-    else
-      sol.menu.stop(self.hud.hearts)
+    for _, menu in pairs(self.hud) do
+      if hud_enabled then
+	sol.menu.start(self, menu)
+      else
+	sol.menu.stop(menu)
+      end
     end
   end
 end

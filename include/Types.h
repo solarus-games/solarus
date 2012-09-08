@@ -98,7 +98,6 @@ class PauseIcon;
 class ItemIcon;
 class Counter;
 class RupeesCounter;
-class MagicBar;
 class SmallKeysCounter;
 class FloorView;
 

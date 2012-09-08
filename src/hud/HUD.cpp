@@ -16,7 +16,6 @@
  */
 #include "hud/HUD.h"
 #include "hud/RupeesCounter.h"
-#include "hud/MagicBar.h"
 #include "hud/ActionIcon.h"
 #include "hud/SwordIcon.h"
 #include "hud/PauseIcon.h"
@@ -37,7 +36,7 @@ HUD::HUD(Game &game):
 
   elements[nb_elements++] = NULL;
   elements[nb_elements++] = new RupeesCounter(game, 8, SOLARUS_SCREEN_HEIGHT - 20);
-  elements[nb_elements++] = new MagicBar(game, SOLARUS_SCREEN_WIDTH - 104, 27);
+  elements[nb_elements++] = NULL;
   elements[nb_elements++] = new ItemIcon(game, 0, 8, 29);
   elements[nb_elements++] = new ItemIcon(game, 1, 60, 29);
   elements[nb_elements++] = new SwordIcon(game, 10, 29);

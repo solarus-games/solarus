@@ -4,6 +4,7 @@ function game:on_started()
 
   local hearts_class = require("hud/hearts")
   local magic_bar_class = require("hud/magic_bar")
+  local rupees_class = require("hud/rupees")
 
   -- Set up the HUD.
   self.hud = {}
@@ -13,6 +14,9 @@ function game:on_started()
 
   self.hud.magic_bar = magic_bar_class:new(self)
   self.hud.magic_bar:set_dst_position(-104, 27)
+
+  self.hud.rupees = rupees_class:new(self)
+  self.hud.rupees:set_dst_position(8, -20)
 
   self:set_hud_enabled(true)
 end

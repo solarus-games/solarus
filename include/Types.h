@@ -97,7 +97,6 @@ class SwordIcon;
 class PauseIcon;
 class ItemIcon;
 class Counter;
-class RupeesCounter;
 class SmallKeysCounter;
 class FloorView;
 

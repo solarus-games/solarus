@@ -29,7 +29,11 @@
  *
  * This class encapsulates a graphic surface and handles text rendering,
  * horizontal and vertical text alignment, color and other properties.
- * This is the only class related to the font library (SDL_ttf).
+ * This is the only class related to a font library (SDL_ttf).
+ *
+ * Two types of fonts are supported:
+ * - usual fonts (TTF and other formats are supported),
+ * - an image containing characters drawn.
  */
 class TextSurface: public Drawable {
 
@@ -73,6 +77,7 @@ class TextSurface: public Drawable {
       char *buffer;                                   /**< the file loaded into memory */
       SDL_RWops *rw;                                  /**< read/write object used to open the font file from memory */
       TTF_Font *internal_font;                        /**< the library-dependent font object */
+      Surface* bitmap;                                /**< only used if it's a PNG font */
     };
 
     static std::map<std::string, FontData> fonts;     /**< the data of each font, loaded from the file text/fonts.dat
@@ -93,6 +98,8 @@ class TextSurface: public Drawable {
     std::string text;                                 /**< the string to draw (only one line) */
 
     void rebuild();
+    void rebuild_bitmap();
+    void rebuild_ttf();
 
   public:
 

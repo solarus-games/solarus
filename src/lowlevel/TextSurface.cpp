@@ -42,8 +42,7 @@ void TextSurface::initialize() {
     std::string font_id = ini.get_group();
     std::string file_name = ini.get_string_value("file", "");
     Debug::check_assertion(file_name.size() > 0, StringConcat() << "Missing font file name in file 'text/fonts.dat' for group '" << font_id << "'");
-    int font_size = ini.get_integer_value("size", 0);
-    Debug::check_assertion(font_size > 0, StringConcat() << "Missing font size in file 'text/fonts.dat' for group '" << font_id << "'");
+    int font_size = ini.get_integer_value("size", 11);
     fonts[font_id].file_name = file_name;
     fonts[font_id].font_size = font_size;
 
@@ -52,11 +51,25 @@ void TextSurface::initialize() {
     }
 
     // load the font
-    size_t size;
-    FileTools::data_file_open_buffer(file_name, &fonts[font_id].buffer, &size);
-    fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, size);
-    fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
-    Debug::check_assertion(fonts[font_id].internal_font != NULL, StringConcat() << "Cannot load font from file '" << file_name << "': " << TTF_GetError());
+    size_t index = file_name.rfind('.');
+    std::string extension;
+    if (index != std::string::npos) {
+      extension = file_name.substr(index);
+    }
+
+    if (extension == ".png" || extension == ".PNG") {
+      // It's a bitmap font.
+      fonts[font_id].bitmap = new Surface(file_name, Surface::DIR_DATA);
+    }
+    else {
+      // It's a normal font.
+      size_t size;
+      FileTools::data_file_open_buffer(file_name, &fonts[font_id].buffer, &size);
+      fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, size);
+      fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
+      Debug::check_assertion(fonts[font_id].internal_font != NULL,
+          StringConcat() << "Cannot load font from file '" << file_name << "': " << TTF_GetError());
+    }
   }
 
   Debug::check_assertion(default_font_id.size() > 0, "No default font set in file 'text/fonts.dat'");
@@ -71,9 +84,18 @@ void TextSurface::quit() {
   for (it = fonts.begin(); it != fonts.end(); it++) {
     std::string font_id = it->first;
     FontData *font = &it->second;
-    TTF_CloseFont(font->internal_font);
-    SDL_RWclose(font->rw);
-    FileTools::data_file_close_buffer(font->buffer);
+
+    if (font->bitmap != NULL) {
+      // It's a bitmap font.
+      delete font->bitmap;
+      font->bitmap = NULL;
+    }
+    else {
+      // It's a normal font.
+      TTF_CloseFont(font->internal_font);
+      SDL_RWclose(font->rw);
+      FileTools::data_file_close_buffer(font->buffer);
+    }
   }
 
   TTF_Quit();
@@ -134,7 +156,7 @@ TextSurface::TextSurface(int x, int y,
  */
 TextSurface::~TextSurface() {
 
-  if (surface != NULL) {
+  if (surface != NULL && !surface->internal_surface_created) {
     SDL_FreeSurface(surface->get_internal_surface());
   }
   delete surface;
@@ -376,7 +398,7 @@ const Rectangle TextSurface::get_size() {
 }
 
 /**
- * @brief Creates the text surface.
+ * @brief Redraws the text surface.
  *
  * This function is called when there is a change.
  */
@@ -384,7 +406,9 @@ void TextSurface::rebuild() {
 
   if (surface != NULL) {
     // another text was previously set: delete it
-    SDL_FreeSurface(surface->get_internal_surface());
+    if (!surface->internal_surface_created) {
+      SDL_FreeSurface(surface->get_internal_surface());
+    }
     delete surface;
     surface = NULL;
   }
@@ -394,23 +418,12 @@ void TextSurface::rebuild() {
     return;
   }
 
-  // create the text surface
-
-  SDL_Surface *internal_surface = NULL;
-  switch (rendering_mode) {
-
-  case TEXT_SOLID:
-    internal_surface = TTF_RenderUTF8_Solid(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color());
-    break;
-
-  case TEXT_ANTIALIASING:
-    internal_surface = TTF_RenderUTF8_Blended(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color());
-    break;
+  if (fonts[font_id].bitmap) {
+    rebuild_bitmap();
   }
-
-  Debug::check_assertion(internal_surface != NULL, StringConcat()
-      << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
-  surface = new Surface(internal_surface);
+  else {
+    rebuild_ttf();
+  }
 
   // calculate the coordinates of the top-left corner
   int x_left = 0, y_top = 0;
@@ -446,6 +459,80 @@ void TextSurface::rebuild() {
   }
 
   text_position.set_xy(x_left, y_top);
+}
+
+/**
+ * @brief Redraws the text surface in the case of a bitmap font.
+ *
+ * This function is called when there is a change.
+ */
+void TextSurface::rebuild_bitmap() {
+
+  // First count the number of characters in the UTF-8 string.
+  int num_chars = 0;
+  for (int i = 0; i < text.size(); i++) {
+    char current_char = text[i];
+    if ((current_char & 0xE0) == 0xC0) {
+      // This character uses two bytes.
+      ++i;
+    }
+    ++num_chars;
+  }
+
+  // Determine the letter size from the surface size.
+  Surface& bitmap = *fonts[font_id].bitmap;
+  const Rectangle& bitmap_size = bitmap.get_size();
+  int char_width = bitmap_size.get_width() / 128;
+  int char_height = bitmap_size.get_height() / 16;
+
+  surface = new Surface(char_width * num_chars, char_height);
+
+  // Traverse the string again to draw the characters.
+  Rectangle dst_position(0, 0);
+  for (int i = 0; i < text.size(); i++) {
+    char first_byte = text[i];
+    Rectangle src_position(0, 0, char_width, char_height);
+    if ((first_byte & 0xE0) != 0xC0) {
+      // This character uses one byte.
+      src_position.set_xy(first_byte * char_width, 0);
+    }
+    else {
+      // This character uses two bytes.
+      ++i;
+      char second_byte = text[i];
+      uint16_t code_point = ((first_byte & 0x1F) << 6) | (second_byte & 0x3F);
+      src_position.set_xy((code_point % 128) * char_width,
+          (code_point / 128) * char_height);
+    }
+    bitmap.draw_region(src_position, *surface, dst_position);
+    dst_position.add_x(char_width - 1);
+  }
+}
+
+/**
+ * @brief Redraws the text surface in the case of a normal font.
+ *
+ * This function is called when there is a change.
+ */
+void TextSurface::rebuild_ttf() {
+
+  // create the text surface
+
+  SDL_Surface *internal_surface = NULL;
+  switch (rendering_mode) {
+
+  case TEXT_SOLID:
+    internal_surface = TTF_RenderUTF8_Solid(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color());
+    break;
+
+  case TEXT_ANTIALIASING:
+    internal_surface = TTF_RenderUTF8_Blended(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color());
+    break;
+  }
+
+  Debug::check_assertion(internal_surface != NULL, StringConcat()
+      << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
+  surface = new Surface(internal_surface);
 }
 
 /**

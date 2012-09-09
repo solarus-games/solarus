@@ -618,6 +618,8 @@ class LuaContext {
       game_api_set_money,
       game_api_add_money,
       game_api_remove_money,
+      game_api_get_max_money,
+      game_api_set_max_money,
       game_api_get_magic,
       game_api_set_magic,
       game_api_add_magic,

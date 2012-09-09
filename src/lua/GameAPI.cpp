@@ -59,6 +59,8 @@ void LuaContext::register_game_module() {
       { "set_money", game_api_set_money },
       { "add_money", game_api_add_money },
       { "remove_money", game_api_remove_money },
+      { "get_max_money", game_api_get_max_money },
+      { "set_max_money", game_api_set_max_money },
       { "get_magic", game_api_get_magic},
       { "set_magic", game_api_set_magic},
       { "add_magic", game_api_add_magic},
@@ -540,6 +542,36 @@ int LuaContext::game_api_remove_money(lua_State* l) {
   int money = luaL_checkinteger(l, 2);
 
   savegame.get_equipment().remove_money(money);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_get_max_money.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_max_money(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  int money = savegame.get_equipment().get_max_money();
+
+  lua_pushinteger(l, money);
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_set_max_money.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_max_money(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  int money = luaL_checkinteger(l, 2);
+
+  savegame.get_equipment().set_max_money(money);
 
   return 0;
 }

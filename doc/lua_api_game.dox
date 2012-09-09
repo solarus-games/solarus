@@ -241,6 +241,20 @@ Removes some money from the player.
 
 <hr>
 
+\subsection lua_api_game_get_max_money game:get_max_money()
+
+Returns the maximum amount of money of the player.
+- Return value (number): The maximum money.
+
+<hr>
+
+\subsection lua_api_game_set_max_money game:set_max_money(money)
+
+Sets the maximum amount of money of the player.
+- \c money (number): Maximum money to set.
+
+<hr>
+
 \subsection lua_api_game_get_magic game:get_magic()
 
 Returns the current number of magic points.

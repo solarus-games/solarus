@@ -19,7 +19,7 @@ function rupees:initialize(game)
   self.surface = sol.surface.create(48, 12)
   self.surface:set_transparency_color{0, 0, 0}
   self.digits_text = sol.text_surface.create{
-    font = "fixed",
+    font = "white_digits",
     horizontal_alignment = "left",
   }
   self.digits_text:set_text(game:get_money())
@@ -90,9 +90,9 @@ function rupees:rebuild_surface()
   -- Current rupee (counter).
   local max_money = self.game:get_max_money()
   if self.money_displayed == max_money then
-    self.digits_text:set_text_color{0, 255, 0}
+    self.digits_text:set_font("green_digits")
   else
-    self.digits_text:set_text_color{255, 255, 255}
+    self.digits_text:set_font("white_digits")
   end
   self.digits_text:set_text(self.money_displayed)
   self.digits_text:draw(self.surface, 16, 5)

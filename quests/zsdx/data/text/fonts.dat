@@ -18,3 +18,15 @@ size = 18
 file = text/fixed8.fon
 size = 11
 
+[white_digits]
+file = text/white_digits.png
+
+[green_digits]
+file = text/green_digits.png
+
+[small_white_digits]
+file = text/small_white_digits.png
+
+[small_green_digits]
+file = text/small_green_digits.png
+

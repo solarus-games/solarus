@@ -22,6 +22,8 @@
 #include <map>
 #include <string>
 
+struct lua_State;
+
 /**
  * @brief An image containing all tile patterns.
  *
@@ -41,6 +43,9 @@ class Tileset {
     Surface* entities_image;                          /**< image from which the skin-dependent entities are extracted */
 
     void add_tile_pattern(int id, TilePattern* tile_pattern);
+
+    static int l_background_color(lua_State* l);
+    static int l_tile_pattern(lua_State* l);
 
   public:
 

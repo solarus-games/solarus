@@ -1,6 +1,8 @@
 /**
 \page tileset_syntax Tileset syntax specification
 
+TODO: update this specification to the new Lua syntax.
+
 A tileset is the skin of a map.
 It is composed of a set of tile patterns that a map can use.
 The \c tilesets directory contains the tilesets and their images.
@@ -35,6 +37,8 @@ are from the enumration Obstacle):
 - -2 (shallow water): the tile is shallow water (the hero may walk on it)
 - -3 (hole): the tile is a hole (the hero falls into it)
 - -4 (ladder): the tile is a ladder (the hero walks slowly on it)
+- -5 (prickles): the tile is prickles (hurts the hero)
+- -6 (lava): the tile is lava (hurts the hero)
 
 A tile pattern also has an animation property:
 - 0 (fixed pattern): the pattern has no animation (like most tiles).

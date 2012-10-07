@@ -227,7 +227,7 @@ can lift or cut (or both).
 
 Subtypes of destructible:
 - 0: a pot
-- 1: a skull
+- 1: obsolete, illegal subtype
 - 2: a bush
 - 3: white stone
 - 4: black stone
@@ -238,6 +238,11 @@ Subtypes of destructible:
 define the pickable treasure hidden under the destructible item.
 See the previous section for their meaning.
 \c treasure_name can be "_random" or "_none".
+
+TODO remove destructible subtype, replace it by a string.
+This string refers to a resource that contains sprite_name, destruction_sound,
+can_be_lifted, can_be_cut, can_explode, can_regenerate, weight,
+damage_on_enemies, special_ground.
 
 \section chest Chest (5)
 
@@ -261,6 +266,8 @@ state of the item. Most items have only one variant and for them, this value is 
 \c treasure_savegame_variable is the index of the savegame variable
 that stores the state of this chest.
 A value of -1 means that the chest is not saved.
+
+TODO: replace is_big_chest by sprite_name + item_needed
 
 \section jumper Jumper (6)
 
@@ -402,8 +409,13 @@ Subtypes of switches:
 of subtype pressure plate needs a block to
 be activated (nothing happens when the hero walks on it).
 
-\c inactivate_when_leaving is a boolean value indicating that when the hero (or the block)
-leaves the switch, the switch is inactivated.
+\c inactivate_when_leaving is a boolean value indicating that when the entity
+that activated the switch leaves it,
+the switch is inactivated.
+
+TODO merge pressure plate subtypes and add a sprite value.
+TODO implement inactivate_when_leaving for solid switches and use it to
+make crystal switches.
 
 \section wall Wall (12)
 
@@ -439,21 +451,29 @@ Syntax of a crystal:
 14	layer	x	y
 \endverbatim
 
+TODO deprecate this, merge with switch.
+
 \section crystal_block Crystal block (15)
 
-These are the blocks controlled by a crystal.
-Such blocks can have two colors.
+These are blocks that may be lowered or raised.
 When they are lowered in the ground, they can be traversed.
-When they are raised, they are obstacle.
-Activating a crystal inverts their configuration.
+When they are raised, these blocks are obstacles.
+However, if the hero overlaps them when they get raised, he can walk on them.
+
+Such blocks can have two colors.
+Their configuration can be inverted by a script.
+Their configuration persists accross map changes inside the same world.
 
 \verbatim
 15	layer	x	y	width	height	subtype
 \endverbatim
 
 Subtypes of crystal blocks:
-- 0: orange blocks (initially lowered)
-- 1: blue blocks (initially raised)
+- 0: initially lowered block
+- 1: initially raised block
+
+TODO replace subtype by a boolean initially_raised
+TODO add a value series to allow distinct, independent series of crystal blocks
 
 \section shop_item Shop item (16)
 
@@ -513,6 +533,9 @@ If the door is called \c doorname, hen the door is closed, all dynamic tiles wit
 \c doorname_closed are enabled and the ones with the prefix \c doorname_open
 are disabled.
 When the door is open, this is the opposite.
+
+TODO
+18	layer	x	y	entity_name	direction	sprite_name	item_needed	can_explode	savegame_variable
 
 \c savegame_variable indicates the index of the boolean value that stores this door's state
 in the savegame.

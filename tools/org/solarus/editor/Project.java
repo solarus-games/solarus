@@ -284,11 +284,7 @@ public class Project {
      */
     public static File getTilesetFile(String tilesetId) {
 
-	NumberFormat nf = NumberFormat.getInstance();
-	nf.setMinimumIntegerDigits(4);
-	nf.setGroupingUsed(false);
-
-	return new File(getTilesetPath() + "/" + tilesetId + ".dat");
+	return new File(getTilesetPath() + "/" + tilesetId + ".lua");
     }
 
     /**

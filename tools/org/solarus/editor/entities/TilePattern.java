@@ -36,7 +36,6 @@ public class TilePattern extends Observable {
 	SEQUENCE_012,
 	SEQUENCE_0121,
 	SELF_SCROLLING,
-	TIME_SCROLLING,
         PARALLAX_SCROLLING,
         SEQUENCE_012_PARALLAX,
         SEQUENCE_0121_PARALLAX;
@@ -46,7 +45,6 @@ public class TilePattern extends Observable {
 	    "3 frames (1-2-3-1)",
 	    "3 frames (1-2-3-2-1)",
 	    "Scrolling on itself",
-	    "Scrolling with time",
             "Parallax scrolling",
             "3 frames (1-2-3-1) + parallax",
             "3 frames (1-2-3-2-1) + parallax",
@@ -177,87 +175,6 @@ public class TilePattern extends Observable {
     }
 
     /**
-     * Creates a tile pattern from a string.
-     * @param description a string representing the tile pattern, as returned by toString()
-     * @throws ZSDXException if there is a syntax error in the string
-     */
-    public TilePattern(String description) throws ZSDXException {
-
-	try {
-	    StringTokenizer tokenizer = new StringTokenizer(description);
-
-	    int tilePatternType = Integer.parseInt(tokenizer.nextToken());
-	    this.obstacle = Obstacle.get(Integer.parseInt(tokenizer.nextToken()));
-	    this.defaultLayer = Layer.get(Integer.parseInt(tokenizer.nextToken()));
-	    this.images = new BufferedImage[4];
-
-	    if (tilePatternType != 1 && tilePatternType != 5) { // single frame
-
-		// simple tile pattern: "0 obstacle defaultLayer x y width height"
-		// or self scrolling tile pattern: "2 obstacle defaultLayer x y width height"
-		// or time scrolling tile pattern: "3 obstacle defaultLayer x y width height"
-		// or parallax scrolling tile pattern: "3 obstacle defaultLayer x y width height"
-		int x = Integer.parseInt(tokenizer.nextToken());
-		int y = Integer.parseInt(tokenizer.nextToken());
-		int width = Integer.parseInt(tokenizer.nextToken());
-		int height = Integer.parseInt(tokenizer.nextToken());
-
-		this.positionInTileset = new Rectangle(x, y, width, height);
-                switch (tilePatternType) {
-                  case 0:
-                    this.animation = Animation.NONE;
-                    break;
-                  case 2:
-                    this.animation = Animation.SELF_SCROLLING;
-                    break;
-                  case 3:
-                    this.animation = Animation.TIME_SCROLLING;
-                    break;
-                  case 4:
-                    this.animation = Animation.PARALLAX_SCROLLING;
-                    break;
-                  default:
-                    throw new ZSDXException("Unknown tile pattern type '" + tilePatternType + "'");
-                }
-	    }
-	    else {
-		// 3-frame tile pattern: "1 obstacle defaultLayer sequence width height x1 y1 x2 y2 x3 y3"
-		// 3-frame + parallax tile pattern: "5 obstacle defaultLayer sequence width height x1 y1 x2 y2 x3 y3"
-                int sequence = Integer.parseInt(tokenizer.nextToken());
-                if (tilePatternType == 1) {
-                  this.animation = (sequence == 1) ? Animation.SEQUENCE_012 : Animation.SEQUENCE_0121;
-                }
-                else {
-                  this.animation = (sequence == 1) ? Animation.SEQUENCE_012_PARALLAX : Animation.SEQUENCE_0121_PARALLAX;
-                }
-
-		int width = Integer.parseInt(tokenizer.nextToken());
-		int height = Integer.parseInt(tokenizer.nextToken());
-		int x1 = Integer.parseInt(tokenizer.nextToken());
-		int y1 = Integer.parseInt(tokenizer.nextToken());
-		int x2 = Integer.parseInt(tokenizer.nextToken());
-
-		this.positionInTileset = new Rectangle(x1, y1, width, height);
-
-		if (x1 == x2) {
-		    this.animationSeparation = AnimationSeparation.VERTICAL;
-		    positionInTileset.height *= 3;
-		}
-		else {
-		    this.animationSeparation = AnimationSeparation.HORIZONTAL;
-		    positionInTileset.width *= 3;
-		}
-	    }
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException("Integer expected");
-	}
-	catch (NoSuchElementException ex) {
-	    throw new ZSDXException("A value is missing");
-	}
-    }
-
-    /**
      * Returns a string describing this tile.
      * @return a string representation of the tile
      */
@@ -273,9 +190,6 @@ public class TilePattern extends Observable {
 
 	    if (animation == Animation.SELF_SCROLLING) {
 		description.append('2');
-	    }
-	    else if (animation == Animation.TIME_SCROLLING) {
-	        description.append('3');
 	    }
             else if (animation == Animation.PARALLAX_SCROLLING) {
                 description.append('4');

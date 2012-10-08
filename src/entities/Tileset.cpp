@@ -120,8 +120,6 @@ void Tileset::load() {
 
   lua_close(l);
 
-
-
   // load the tileset images
   file_name = std::string("tilesets/") + id + ".tiles.png";
   tiles_image = new Surface(file_name, Surface::DIR_DATA);
@@ -280,7 +278,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
         i = 1;
       }
       else {
-        // Multi frame.
+        // Multi-frame.
         lua_pushnil(l);
         while (lua_next(l, 3) != 0 && i < 4) {
           x[i] = luaL_checkinteger(l, 5);
@@ -296,7 +294,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
         j = 1;
       }
       else {
-        // Multi frame.
+        // Multi-frame.
         lua_pushnil(l);
         while (lua_next(l, 3) != 0 && j < 4) {
           y[j] = luaL_checkinteger(l, 5);

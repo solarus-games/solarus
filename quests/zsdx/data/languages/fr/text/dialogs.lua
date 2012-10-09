@@ -519,7 +519,7 @@ dialog{
   text = [[
 Mange un Pain au
 Chocolat pour
-récupéer 3 Coeurs.
+récupérer 3 Coeurs.
 ]]
 }
 --------------------
@@ -792,7 +792,7 @@ dialog{
   icon = 3,
   text = [[
 Tu as trouvé l'Arc !$0
-Tu peux combattre
+Tu peux vaincre les
 ennemis coriaces
 à distance !
 ]]

@@ -97,7 +97,7 @@ for line in file:lines() do
   io.write("  width = " .. width .. ",\n")
   io.write("  height = " .. height .. ",\n")
   if scrolling ~= nil then
-    io.write("  scrolling = " .. scrolling .. ",\n")
+    io.write("  scrolling = \"" .. scrolling .. "\",\n")
   end
   io.write("}\n\n")
 end

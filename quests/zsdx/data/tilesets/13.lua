@@ -7147,7 +7147,7 @@ tile_pattern{
   y = 448,
   width = 16,
   height = 24,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7158,7 +7158,7 @@ tile_pattern{
   y = 472,
   width = 16,
   height = 16,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7189,7 +7189,7 @@ tile_pattern{
   y = 472,
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7200,7 +7200,7 @@ tile_pattern{
   y = 480,
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7361,7 +7361,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 16,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7372,7 +7372,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 16,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7383,7 +7383,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7394,7 +7394,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7405,7 +7405,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7416,7 +7416,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7427,7 +7427,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7438,7 +7438,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7449,7 +7449,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 16,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7460,7 +7460,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7471,7 +7471,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7482,7 +7482,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7493,7 +7493,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7504,7 +7504,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7515,7 +7515,7 @@ tile_pattern{
   y = { 472, 480, 488 },
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{
@@ -7526,7 +7526,7 @@ tile_pattern{
   y = 488,
   width = 8,
   height = 8,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{

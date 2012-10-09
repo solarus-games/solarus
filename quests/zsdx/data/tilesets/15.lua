@@ -2957,7 +2957,7 @@ tile_pattern{
   y = 96,
   width = 16,
   height = 16,
-  scrolling = self,
+  scrolling = "self",
 }
 
 tile_pattern{
@@ -2968,7 +2968,7 @@ tile_pattern{
   y = 112,
   width = 16,
   height = 16,
-  scrolling = self,
+  scrolling = "self",
 }
 
 tile_pattern{
@@ -2979,7 +2979,7 @@ tile_pattern{
   y = 128,
   width = 16,
   height = 16,
-  scrolling = self,
+  scrolling = "self",
 }
 
 tile_pattern{
@@ -2990,7 +2990,7 @@ tile_pattern{
   y = 144,
   width = 16,
   height = 16,
-  scrolling = self,
+  scrolling = "self",
 }
 
 tile_pattern{
@@ -3001,7 +3001,7 @@ tile_pattern{
   y = 160,
   width = 16,
   height = 16,
-  scrolling = self,
+  scrolling = "self",
 }
 
 tile_pattern{
@@ -3012,7 +3012,7 @@ tile_pattern{
   y = 176,
   width = 16,
   height = 16,
-  scrolling = self,
+  scrolling = "self",
 }
 
 tile_pattern{
@@ -3553,6 +3553,6 @@ tile_pattern{
   y = { 464, 464, 464 },
   width = 16,
   height = 16,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 

@@ -1447,7 +1447,7 @@ tile_pattern{
   y = 96,
   width = 16,
   height = 16,
-  scrolling = self,
+  scrolling = "self",
 }
 
 tile_pattern{
@@ -2398,7 +2398,7 @@ tile_pattern{
   y = { 336, 336, 336 },
   width = 16,
   height = 16,
-  scrolling = parallax,
+  scrolling = "parallax",
 }
 
 tile_pattern{

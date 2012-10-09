@@ -1207,7 +1207,7 @@ tile_pattern{
   y = 224,
   width = 16,
   height = 16,
-  scrolling = self,
+  scrolling = "self",
 }
 
 tile_pattern{

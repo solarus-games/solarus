@@ -37,10 +37,10 @@ public class EditEntityComponent extends JPanel {
      */
     private static final Class<?>[] editEntityComponentClasses = {
 	EditEntityComponent.class,
-	EditDestinationPointComponent.class,
+	EditDestinationComponent.class,
 	EditTeletransporterComponent.class,
-	EditPickableItemComponent.class,
-	EditDestructibleItemComponent.class,
+	EditPickableComponent.class,
+	EditDestructibleComponent.class,
 	EditChestComponent.class,
 	EditJumperComponent.class,
 	EditEnemyComponent.class,

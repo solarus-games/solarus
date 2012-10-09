@@ -470,7 +470,7 @@ void TextSurface::rebuild_bitmap() {
 
   // First count the number of characters in the UTF-8 string.
   int num_chars = 0;
-  for (int i = 0; i < text.size(); i++) {
+  for (unsigned i = 0; i < text.size(); i++) {
     char current_char = text[i];
     if ((current_char & 0xE0) == 0xC0) {
       // This character uses two bytes.
@@ -489,7 +489,7 @@ void TextSurface::rebuild_bitmap() {
 
   // Traverse the string again to draw the characters.
   Rectangle dst_position(0, 0);
-  for (int i = 0; i < text.size(); i++) {
+  for (unsigned i = 0; i < text.size(); i++) {
     char first_byte = text[i];
     Rectangle src_position(0, 0, char_width, char_height);
     if ((first_byte & 0xE0) != 0xC0) {

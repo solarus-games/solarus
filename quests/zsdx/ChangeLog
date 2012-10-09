@@ -1,7 +1,10 @@
 zsdx-1.5.2 (under development)
 
+* Use solarus 0.9.3.
+* German dialogs available.
 * Castle 1F: fix NPCs possibly overlapping the hero (#44).
 * West mountains cave: fix a chest possibly overlapping the hero (#37).
+* Fix two typos in French dialogs (thanks Stella).
 
 zsdx-1.5.1 (2012-05-20)
 

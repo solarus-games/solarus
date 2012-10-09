@@ -105,6 +105,9 @@ public class TilePattern extends Observable {
 
     /**
      * Coordinates and dimensions of the tile pattern.
+     *
+     * For a multi-frame tile pattern, it is the size of the
+     * big rectangle containing the 3 frames.
      */
     private Rectangle positionInTileset;
 
@@ -167,9 +170,9 @@ public class TilePattern extends Observable {
 
 	this.positionInTileset = positionInTileset;
 	this.defaultLayer = defaultLayer;
-	setObstacle(obstacle);
 	setAnimation(animation);
 	setAnimationSeparation(animationSeparation);
+	setObstacle(obstacle);
 
 	this.images = new BufferedImage[4];
     }
@@ -260,7 +263,7 @@ public class TilePattern extends Observable {
 
 	// diagonal obstacle: check that the tile is square
 	if (obstacle.isDiagonal() && getWidth() != getHeight()) {
-	    throw new TilesetException("Cannot make a diagonal obstacle on a non-square tile pattern");
+	    throw new TilesetException("Cannot make a diagonal obstacle on a non-square tile pattern (size is " + getWidth() + "x" + getHeight() + ")");
 	}
 
 	this.obstacle = obstacle;

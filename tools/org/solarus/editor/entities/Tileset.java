@@ -624,7 +624,7 @@ public class Tileset extends Observable {
             throw new ZSDXException(ex.getMessage());
         }
         catch (LuaError ex) {
-            throw new ZSDXException("Error in the tileset file: " + ex.getMessage());
+            throw new ZSDXException("Error when loading the tileset file: " + ex.getMessage());
         }
 
         setChanged();
@@ -637,7 +637,8 @@ public class Tileset extends Observable {
      */
     public void save() throws ZSDXException {
 
-        try {
+        int lastId = -1;
+	try {
 
             // Open the tileset file.
             File tilesetFile = Project.getTilesetFile(tilesetId);
@@ -654,6 +655,7 @@ public class Tileset extends Observable {
 
             // Tile patterns.
             for (int id: getTilePatternIds()) {
+	        lastId = id;
 	        TilePattern tilePattern = getTilePattern(id);
 
 		TilePattern.Animation animation = tilePattern.getAnimation();
@@ -727,8 +729,13 @@ public class Tileset extends Observable {
             tilesetResource.setElementName(tilesetId, name);
             Project.getResourceDatabase().save();
         }
-        catch (IOException ex) {
-            throw new ZSDXException(ex.getMessage());
+        catch (Exception ex) {
+	    String message = "";
+	    if (lastId != -1) {
+	        message = "Failed to save tile '" + lastId + "': ";
+	    }
+	    message += ex.getMessage();
+            throw new ZSDXException(message);
         }
     }
 
@@ -924,8 +931,14 @@ public class Tileset extends Observable {
     		      separation
     		));
     	    }
-	    catch (ZSDXException ex) {
-	        throw new LuaError(ex.getMessage());
+	    catch (Exception ex) {
+		System.out.println("exception");
+	        String message = "";
+	        if (id != -1) {
+		    message += "Failed to load tile '" + id + "': ";
+		}
+		message += ex.getMessage();
+	        throw new LuaError(message);
 	    }
 
             if (id > maxId) {

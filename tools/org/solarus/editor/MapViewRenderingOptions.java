@@ -18,6 +18,7 @@ package org.solarus.editor;
 
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
+import java.util.*;
 
 /**
  * Options indicating how to display the map in the map view of the map editor.
@@ -46,10 +47,14 @@ public class MapViewRenderingOptions {
     private boolean[] showLayers;
 
     /**
-     * Tells whether or not the non obstacle entities are shown,
-     * and the same thing for the obstacle entities.
+     * Tells whether or not the obstacle entities are shown.
      */
-    private boolean[] showObstacles;
+    private boolean showObstacles;
+
+    /**
+     * Tells whether or not the non obstacle entities are shown.
+     */
+    private boolean showNonObstacles;
 
     /**
      * True to render the transparency, false to replace the transparent pixels
@@ -65,7 +70,8 @@ public class MapViewRenderingOptions {
 	this.mapView = mapView;
 	this.zoom = 2.0;
 	this.showLayers = new boolean[] {true, true, true};
-	this.showObstacles = new boolean[] {true, true};
+	this.showObstacles = true;
+	this.showNonObstacles = true;
 	this.showTransparency = true;
     }
 
@@ -135,41 +141,36 @@ public class MapViewRenderingOptions {
     }
 
     /**
-     * Returns whether or not the entities without and with obstacles are shown.
-     * @return an array of two elements, the first one is true if the entities without
-     * obstacle are shown, the second one represents the same thing for the obstacle entities.
+     * Returns whether or not the entities with obstacles are shown.
+     * @return true if entities with obstacles are shown.
      */
-    public boolean[] getShowObstacles() {
+    public boolean getShowObstacles() {
 	return showObstacles;
     }
 
     /**
-     * Returns whether or not the entities with or without obstacles are shown.
-     * @param obstacle the type of obstacle to consider (Obstacle.NONE or Obstacle.OBSTACLE)
-     * @return true if the corresponding entities are show, false otherwise
+     * Returns whether or not the entities without obstacles are shown.
+     * @return true if entities without obstacles are shown.
      */
-    public boolean getShowObstacle(Obstacle obstacle) {
-	return showObstacles[obstacle.getId()];
+    public boolean getShowNonObstacles() {
+	return showNonObstacles;
     }
 
     /**
-     * Sets whether or not the entities with or without obstacle are shown.
-     * @param showNonObstacleEntities true to show the entities without obstacles
-     * @param showObstacleEntities true to show the entities with obstacles
+     * Sets whether or not the entities with obstacles are shown.
+     * @param showObstacleEntities true to show the entities with obstacles.
      */
-    public void setShowObstacles(boolean showNonObstacleEntities, boolean showObstacleEntities) {
-	showObstacles[Obstacle.NONE.getId()] = showNonObstacleEntities;
-	showObstacles[Obstacle.OBSTACLE.getId()] = showObstacleEntities;
+    public void setShowObstacles(boolean showObstacles) {
+	this.showObstacles = showObstacles;
 	mapView.repaint();
     }
 
     /**
-     * Sets whether or not the entities with or without obstacles are shown.
-     * @param obstacle the obstacle property to consider
-     * @param show true to make these entities visible, false otherwise
+     * Sets whether or not the entities without obstacles are shown.
+     * @param showNonObstacleEntities true to show the entities without obstacles.
      */
-    public void setShowObstacle(Obstacle obstacle, boolean show) {
-	showObstacles[obstacle.getId()] = show;
+    public void setShowNonObstacles(boolean showNonObstacles) {
+	this.showNonObstacles = showNonObstacles;
 	mapView.repaint();
     }
 
@@ -204,6 +205,9 @@ public class MapViewRenderingOptions {
 	Layer layer = entity.getLayer();
 	boolean obstacle = entity.getObstacle().isWall();
 
-	return showLayers[layer.getId()] && showObstacles[obstacle ? 1 : 0];
+	return showLayers[layer.getId()] &&
+	  ((obstacle && showObstacles) ||
+	   (!obstacle && showNonObstacles));
     }
 }
+

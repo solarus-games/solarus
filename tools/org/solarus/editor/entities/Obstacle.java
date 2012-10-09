@@ -27,37 +27,30 @@ import java.util.*;
  */
 public enum Obstacle {
 
-    LAVA(-6, "obstacle_lava.png"),
-    PRICKLE(-5, "obstacle_prickle.png"),
-    LADDER(-4, "obstacle_ladder.png"),
-    HOLE(-3, "obstacle_hole.png"),
-    SHALLOW_WATER(-2, "obstacle_shallow_water.png"),
-    DEEP_WATER(-1, "obstacle_deep_water.png"),
-    NONE(0, "obstacle_none.png"),
-    OBSTACLE(1, "obstacle.png"),
-    TOP_RIGHT(2, "obstacle_top_right.png"),
-    TOP_LEFT(3, "obstacle_top_left.png"),
-    BOTTOM_LEFT(4, "obstacle_bottom_left.png"),
-    BOTTOM_RIGHT(5, "obstacle_bottom_right.png"),
-    EMPTY(6, "obstacle_empty.png"),
-    TOP_RIGHT_WATER(7, "obstacle_top_right_water.png"),
-    TOP_LEFT_WATER(8, "obstacle_top_left_water.png"),
-    BOTTOM_LEFT_WATER(9, "obstacle_bottom_left_water.png"),
-    BOTTOM_RIGHT_WATER(10, "obstacle_bottom_right_water.png"),
+    NONE("obstacle_none.png"),
+    OBSTACLE("obstacle.png"),
+    TOP_RIGHT("obstacle_top_right.png"),
+    TOP_LEFT("obstacle_top_left.png"),
+    BOTTOM_LEFT("obstacle_bottom_left.png"),
+    BOTTOM_RIGHT("obstacle_bottom_right.png"),
+    EMPTY("obstacle_empty.png"),
+    TOP_RIGHT_WATER("obstacle_top_right_water.png"),
+    TOP_LEFT_WATER("obstacle_top_left_water.png"),
+    BOTTOM_LEFT_WATER("obstacle_bottom_left_water.png"),
+    BOTTOM_RIGHT_WATER("obstacle_bottom_right_water.png"),
+    DEEP_WATER("obstacle_deep_water.png"),
+    SHALLOW_WATER("obstacle_shallow_water.png"),
+    HOLE("obstacle_hole.png"),
+    LADDER("obstacle_ladder.png"),
+    PRICKLE("obstacle_prickle.png"),
+    LAVA("obstacle_lava.png"),
     ;
 
-    private int id;
     private String iconFileName;
 
     private static ImageIcon[] icons = null;
 
     public static final String[] humanNames = {
-    	"Lava",
-    	"Prickles",
-    	"Ladder",
-    	"Hole",
-    	"Shallow water",
-    	"Deep water",
     	"No obstacle",
     	"Full obstacle",
     	"Top right",
@@ -69,6 +62,12 @@ public enum Obstacle {
     	"Top left (water)",
     	"Bottom left (water)",
     	"Bottom right (water)",
+    	"Deep water",
+    	"Shallow water",
+    	"Hole",
+    	"Ladder",
+    	"Prickles",
+    	"Lava",
     };
 
     /**
@@ -76,32 +75,8 @@ public enum Obstacle {
      * @param id id of this obstacle property
      * @param iconFileName name of the icon file representing this obstacle property
      */
-    private Obstacle(int id, String iconFileName) {
-	this.id = id;
+    private Obstacle(String iconFileName) {
 	this.iconFileName = iconFileName;
-    }
-
-    /**
-     * Returns the obstacle property with the specified id.
-     * @param id id of the obstacle to get
-     * @return the obstacle property with this id
-     */
-    public static Obstacle get(int id) throws NoSuchElementException {
-	for (Obstacle t: values()) {
-	    if (t.getId() == id) {
-		return t;
-	    }
-	}
-
-	throw new NoSuchElementException("Unknown obstacle property id: " + id);
-    }
-
-    /**
-     * Returns the id of this obstacle property.
-     * @return the id
-     */
-    public int getId() {
-	return id;
     }
 
     /**
@@ -117,7 +92,7 @@ public enum Obstacle {
      * @return true if this is a wall
      */
     public boolean isWall() {
-	return getId() >= OBSTACLE.getId();
+	return this == OBSTACLE || isDiagonal();
     }
 
     /**
@@ -125,7 +100,14 @@ public enum Obstacle {
      * @return true if this is a diagonal wall
      */
     public boolean isDiagonal() {
-	return getId() >= TOP_RIGHT.getId() && getId() <= BOTTOM_RIGHT.getId();
+	return this == TOP_RIGHT ||
+	  this == TOP_LEFT ||
+	  this == BOTTOM_LEFT ||
+	  this == BOTTOM_RIGHT ||
+	  this == TOP_RIGHT_WATER ||
+	  this == TOP_LEFT_WATER ||
+	  this == BOTTOM_LEFT_WATER ||
+	  this == BOTTOM_RIGHT_WATER;
     }
 
     /**

@@ -102,6 +102,7 @@ public class Tileset extends Observable {
      */
     private boolean isNewTilePatternAreaOverlapping;
 
+    // TODO store this directly in the Obstacle enum
     private static final HashMap<String, Obstacle> obstaclesByName =
         new HashMap<String, Obstacle>();
     static {
@@ -638,31 +639,90 @@ public class Tileset extends Observable {
 
         try {
 
-            // open the tileset file
+            // Open the tileset file.
             File tilesetFile = Project.getTilesetFile(tilesetId);
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(tilesetFile)));
 
-            // print the tileset general info: "r g b"
-            out.print(backgroundColor.getRed());
-            out.print('\t');
-            out.print(backgroundColor.getGreen());
-            out.print('\t');
-            out.print(backgroundColor.getBlue());
-            out.println();
+            // Background color.
+	    out.println("background_color{ "
+		+ backgroundColor.getRed()
+		+ ", "
+		+ backgroundColor.getGreen()
+		+ ", "
+		+ backgroundColor.getBlue()
+		+ " }");
 
-            // print the tile patterns
+            // Tile patterns.
             for (int id: getTilePatternIds()) {
-                out.print(id);
-                out.print('\t');
-                out.print(getTilePattern(id).toString());
-                out.println();
+	        TilePattern tilePattern = getTilePattern(id);
+
+		TilePattern.Animation animation = tilePattern.getAnimation();
+		int width = tilePattern.getWidth();
+		int height = tilePattern.getHeight();
+		String x;
+		String y;
+		if (tilePattern.isMultiFrame()) {
+		    int x1 = tilePattern.getX();
+		    int x2 = x1;
+		    int x3 = x1;
+		    int y1 = tilePattern.getY();
+		    int y2 = y1;
+		    int y3 = y1;
+		    TilePattern.AnimationSeparation separation = tilePattern.getAnimationSeparation();
+		    if (separation == TilePattern.AnimationSeparation.HORIZONTAL) {
+		        x2 = x1 + width;
+		        x3 = x2 + width;
+		    }
+		    else {
+		        y2 = y1 + height;
+		        y3 = y2 + height;
+		    }
+		    if (animation == TilePattern.Animation.SEQUENCE_012
+			|| animation == TilePattern.Animation.SEQUENCE_012_PARALLAX) {
+		        x = "{ " + x1 + ", " + x2 + ", " + x3 + " }";
+		        y = "{ " + y1 + ", " + y2 + ", " + y3 + " }";
+		    }
+		    else {
+		        x = "{ " + x1 + ", " + x2 + ", " + x3 + ", " + x2 + " }";
+		        y = "{ " + y1 + ", " + y2 + ", " + y3 + ", " + y2 + " }";
+		    }
+		}
+		else {
+		    x = Integer.toString(tilePattern.getX());
+		    y = Integer.toString(tilePattern.getY());
+		}
+
+		// TODO store the scrolling string in the enum
+		String scrolling = null;
+		if (animation == TilePattern.Animation.SELF_SCROLLING) {
+		    scrolling = "self";
+		}
+		else if (animation == TilePattern.Animation.PARALLAX_SCROLLING
+		    || animation == TilePattern.Animation.SEQUENCE_012_PARALLAX
+		    || animation == TilePattern.Animation.SEQUENCE_0121_PARALLAX) {
+		    scrolling = "parallax";
+		}
+
+		out.println("tile_pattern{");
+		out.println("  id = " + id + ",");
+		out.println("  ground = \"" + getObstacleName(tilePattern.getObstacle()) + "\",");
+		out.println("  default_layer = " + tilePattern.getDefaultLayer().getId() + ",");
+		out.println("  x = " + x + ",");
+		out.println("  y = " + y + ",");
+		out.println("  width = " + width + ",");
+		out.println("  height = " + height + ",");
+		if (scrolling != null) {
+		  out.println("  scrolling = \"" + scrolling + "\",");
+		}
+		out.println("}");
+		out.println();
             }
 
             out.close();
 
             setSaved(true);
 
-            // also update the tileset name in the global resource list
+            // Also update the tileset name in the global resource list.
             Resource tilesetResource = Project.getResource(ResourceType.TILESET);
             tilesetResource.setElementName(tilesetId, name);
             Project.getResourceDatabase().save();
@@ -681,9 +741,25 @@ public class Tileset extends Observable {
 
         Obstacle obstacle = obstaclesByName.get(name);
 	if (obstacle == null) {
-	    throw new ZSDXException("Invalid ground name: '" + name);
+	    throw new ZSDXException("Invalid obstacle name: '" + name);
 	}
 	return obstacle;
+    }
+
+    /**
+     * @brief Turns an obstacle enum value into a Lua obstacle nam.
+     * @param obstacle The obstacle value.
+     * @return The corresponding name.
+     */
+    private String getObstacleName(Obstacle obstacle) throws ZSDXException {
+
+        for (java.util.Map.Entry<String, Obstacle> keyValue: obstaclesByName.entrySet()) {
+
+	    if (keyValue.getValue() == obstacle) {
+	        return keyValue.getKey();
+	    }
+	}
+	throw new ZSDXException("No name for obstacle " + obstacle);
     }
 
     /**

@@ -175,98 +175,6 @@ public class TilePattern extends Observable {
     }
 
     /**
-     * Returns a string describing this tile.
-     * @return a string representation of the tile
-     */
-    public String toString() {
-
-	StringBuffer description = new StringBuffer();
-
-	if (!isMultiFrame()) {
-	    // simple tile pattern: "0 obstacle defaultLayer x y width height"
-	    // or self scrolling tile pattern: "2 obstacle defaultLayer x y width height"
-	    // or time scrolling tile pattern: "3 obstacle defaultLayer x y width height
-	    // or parallax scrolling tile pattern: "4 obstacle defaultLayer x y width height
-
-	    if (animation == Animation.SELF_SCROLLING) {
-		description.append('2');
-	    }
-            else if (animation == Animation.PARALLAX_SCROLLING) {
-                description.append('4');
-            }
-	    else {
-		description.append('0');
-	    }
-	    description.append('\t');
-	    description.append(obstacle.getId());
-	    description.append('\t');
-	    description.append(defaultLayer.getId());
-	    description.append('\t');
-	    description.append(positionInTileset.x);
-	    description.append('\t');
-	    description.append(positionInTileset.y);
-	    description.append('\t');
-	    description.append(positionInTileset.width);
-	    description.append('\t');
-	    description.append(positionInTileset.height);
-	}
-	else {
-	    // 3-frame tile pattern: "1 obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
-	    // 3-frame + parallax tile pattern: "5 obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
-
-            int sequence = (animation == Animation.SEQUENCE_012 || animation == Animation.SEQUENCE_012_PARALLAX) ? 1 : 2;
-            if (animation == Animation.SEQUENCE_012 || animation == Animation.SEQUENCE_0121) {
-	        description.append('1');
-            }
-            else {
-                description.append('5');
-            }
-	    description.append('\t');
-	    description.append(obstacle.getId());
-	    description.append('\t');
-	    description.append(defaultLayer.getId());
-	    description.append('\t');
-	    description.append(sequence);
-	    description.append('\t');
-
-	    int width, height, x, y, dx, dy;
-	    if (animationSeparation == AnimationSeparation.HORIZONTAL) {
-		width = positionInTileset.width / 3;
-		height = positionInTileset.height;
-		dx = width;
-		dy = 0;
-	    }
-	    else {
-		width = positionInTileset.width;
-		height = positionInTileset.height / 3;
-		dx = 0;
-		dy = height;
-	    }
-
-	    x = positionInTileset.x;
-	    y = positionInTileset.y;
-
-	    description.append(width);
-	    description.append('\t');
-	    description.append(height);
-	    description.append('\t');
-	    description.append(x);
-	    description.append('\t');
-	    description.append(y);
-	    description.append('\t');
-	    description.append(x + dx);
-	    description.append('\t');
-	    description.append(y + dy);
-	    description.append('\t');
-	    description.append(x + 2 * dx);
-	    description.append('\t');
-	    description.append(y + 2 * dy);
-	}
-
-	return description.toString();
-    }
-
-    /**
      * Returns the rectangle of the tile pattern.
      * If the tile pattern is animated, a rectangle containing the 3 frames
      * is returned.
@@ -352,7 +260,6 @@ public class TilePattern extends Observable {
 
 	// diagonal obstacle: check that the tile is square
 	if (obstacle.isDiagonal() && getWidth() != getHeight()) {
-	    System.out.println("width = " + getWidth() + ", height = " + getHeight());
 	    throw new TilesetException("Cannot make a diagonal obstacle on a non-square tile pattern");
 	}
 

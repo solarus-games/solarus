@@ -4,6 +4,7 @@ zsdx-1.5.2 (under development)
 * German dialogs available.
 * Castle 1F: fix NPCs possibly overlapping the hero (#44).
 * West mountains cave: fix a chest possibly overlapping the hero (#37).
+* Fix wrong displaying of a question in French dialogs (#54).
 * Fix two typos in French dialogs (thanks Stella).
 
 zsdx-1.5.1 (2012-05-20)

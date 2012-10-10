@@ -138,7 +138,7 @@ function enemy:stop_hurting_left_blade()
     sol.audio.play_sound("stone")
     self:remove_sprite(left_blade_sprite)
 
-    if not has_right_blade() then
+    if not self:has_right_blade() then
       self:start_final_phase()
     end
   end

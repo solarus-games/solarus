@@ -4366,7 +4366,6 @@ accepte mon aide. J'ai
 protéger notre Roi.
 Laisse-moi une occasion
 de me racheter !
-
 Acceptes-tu mon aide ?
 Oui
 Non

@@ -171,15 +171,10 @@ bool PixelBits::test_collision(const PixelBits& other, const Rectangle& location
   uint32_t* bits_b;            // for the current row: array of masks of the left bounding box
 
   int nb_masks_per_row_a;    // number of masks on row a that are in the intersection (row b may have one more mask)
+  int nb_masks_per_row_b;    // number of masks on row b that are in the intersection
   int nb_unused_masks_row_b; // number of unused masks on row b (i.e. before the intersection)
   int nb_unused_bits_row_b;  // number of unused bits on the first used mask of row b
   int nb_used_bits_row_b;    // number of bits used on the first used mask of row b
-
-  // compute the number of masks on row a
-  nb_masks_per_row_a = intersection.get_width() >> 5;
-  if ((intersection.get_width() & 31) != 0) {
-    nb_masks_per_row_a++;
-  }
 
   // make sure row a starts after row b
   if (bounding_box1.get_x() > bounding_box2.get_x()) {
@@ -195,6 +190,18 @@ bool PixelBits::test_collision(const PixelBits& other, const Rectangle& location
     nb_unused_bits_row_b = offset_x1 & 31;
   }
   nb_used_bits_row_b = 32 - nb_unused_bits_row_b;
+
+  // compute the number of masks in the intersection on row a
+  nb_masks_per_row_a = intersection.get_width() >> 5;
+  if ((intersection.get_width() & 31) != 0) {
+    nb_masks_per_row_a++;
+  }
+
+  // compute the number of masks in the intersection on row b
+  nb_masks_per_row_b = (intersection.get_width() + nb_unused_bits_row_b) >> 5;
+  if (((intersection.get_width() + nb_unused_bits_row_b) & 31) != 0) {
+    nb_masks_per_row_b++;
+  }
 
   // check the collisions each row of the intersection rectangle
   bool collision = false;
@@ -212,21 +219,20 @@ bool PixelBits::test_collision(const PixelBits& other, const Rectangle& location
     for (int j = 0; j < nb_masks_per_row_a && !collision; j++) {
 
       /*
-       * We compare a mask of row a with the right part of a mask of row b,
-       * and, unless both sprites are aligned, the left part of the next mask
-       * of row b.
+       * We compare the left of a with the right part of b,
+       * and the right part of a with the right part of the next b if any.
        */
 
       uint32_t mask_a = bits_a[j];
       uint32_t mask_b = bits_b[j + nb_unused_masks_row_b];
       uint32_t mask_a_left = mask_a >> nb_unused_bits_row_b;
       uint32_t next_mask_b_left = 0x00000000;
-      if (nb_unused_bits_row_b != 0 && j < nb_masks_per_row_a - 1) {
+      if (j + 1 < nb_masks_per_row_a ||            // Not the last a-mask.
+          nb_masks_per_row_b > nb_masks_per_row_a  // Last a-mask but there exists one more b-mask.
+          ) {
+        // We are still inside the intersection: next_mask_b_left exists.
         next_mask_b_left = bits_b[j + nb_unused_masks_row_b + 1] >> nb_used_bits_row_b;
       }
-      // Otherwise, we are in the special case where the next mask b does not
-      // exist because a and b are aligned.
-      // It means that both sprites have the same x coordinate modulo 32.
 
       if (debug_pixel_collisions) {
         std::cout << "mask_a = ";

@@ -3,7 +3,7 @@ properties{
   height = 240,
   x = 0,
   y = 0,
-  world = "inside_world",
+  world = "outside_world",
   floor = nil,
   small_keys_variable = nil,
   tileset = "6",
@@ -31,7 +31,7 @@ tile{
 tile{
   layer = 1,
   x = -48,
-  y = 270,
+  y = 272,
   width = 320,
   height = 176,
   pattern = 2,

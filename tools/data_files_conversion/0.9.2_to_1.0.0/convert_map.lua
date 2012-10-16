@@ -306,22 +306,55 @@ function print_metadata(metadata)
   if metadata.music ~= nil then
     io.write("  music = " .. metadata.music .. ",\n")
   end
-  io.write("}\n")
+  io.write("}\n\n")
 end
 
 function parse_entity(line, line_number)
 
   local entity = {}
-  local entity_type = nil
-  for token in line:gmatch("([0-9]+)%s*") do
-    if entity_type == nil then
+  local entity_type_id = nil
+  local i = 1
+  local syntax
+  for token in line:gmatch("([^%s]+)%s*") do
+    if entity_type_id == nil then
       -- First token: entity type.
-      local entity_type_id = tonumber(token)
+      entity_type_id = tonumber(token)
       if entity_type_id == nil then
-	error("Line " .. line_number .. ": Invalid entity type id")
+        error("Line " .. line_number .. ": Invalid entity type id")
       end
-      local syntax = entity_syntaxes[entity_type_id]
-      -- TODO
+      syntax = entity_syntaxes[entity_type_id]
+      entity.entity_type_name = syntax.entity_type_name
+    else
+      local token_type = syntax[i].token_type 
+      local value
+      if token_type == "string" then
+        value = token
+      elseif token_type == "boolean" then
+        if token ~= "0" then
+          value = true
+        else
+          value = false
+        end
+      elseif token_type == nil then  -- Integer.
+        value = tonumber(token)
+        if value == nil then
+          error("Line " .. line_number .. ": Number expected for token '" ..
+              syntax[i].token_name .. "'")
+        end
+      else
+        error("Line " .. line_number .. ": Unknown type '" .. token_type ..
+            " for token '" .. syntax[i].token_name .. "'")
+      end
+      if value == syntax[i].nil_value then
+        value = nil
+      end
+
+      entity[i] = {
+        key = syntax[i].token_name,
+        value = value
+      }
+
+      i = i + 1
     end
   end
 
@@ -330,7 +363,25 @@ end
 
 function print_entity(entity)
 
-  -- TODO
+  io.write("" .. entity.entity_type_name .. "{\n")
+  for i, v in ipairs(entity) do
+    local value
+    if type(v.value) == "string" then
+      value = "\"" .. v.value .. "\""
+    elseif type(v.value) == "boolean" then
+      if v.value then
+	value = "true"
+      else
+	value = "false"
+      end
+    else  -- Integer or nil.
+      value = v.value
+    end
+    if value ~= nil then
+      io.write("  " .. v.key .. " = " .. value .. ",\n")
+    end
+  end
+  io.write("}\n\n")
 end
 
 local file = io.stdin

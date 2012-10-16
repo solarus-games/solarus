@@ -7,7 +7,7 @@
 -- The new format (solarus 1.0.0) is a Lua data file.
 
 -- This table describes the old syntax.
-local entity_types = {
+local entity_syntaxes = {
 
   -- entity type id -> entity line syntax
   [0] = {
@@ -41,7 +41,7 @@ local entity_types = {
     { token_name = "name", token_type = "string" },
     { token_name = "sprite", token_type = "string", nil_value = "_none" },
     { token_name = "sound", token_type = "string", nil_value = "_none" },
-    { token_name = "transition", token_type = "int",
+    { token_name = "transition", token_type = "int" },
     { token_name = "destination_map", token_type = "string" },
     { token_name = "destination", token_type = "string" },
   },
@@ -309,6 +309,30 @@ function print_metadata(metadata)
   io.write("}\n")
 end
 
+function parse_entity(line, line_number)
+
+  local entity = {}
+  local entity_type = nil
+  for token in line:gmatch("([0-9]+)%s*") do
+    if entity_type == nil then
+      -- First token: entity type.
+      local entity_type_id = tonumber(token)
+      if entity_type_id == nil then
+	error("Line " .. line_number .. ": Invalid entity type id")
+      end
+      local syntax = entity_syntaxes[entity_type_id]
+      -- TODO
+    end
+  end
+
+  return entity
+end
+
+function print_entity(entity)
+
+  -- TODO
+end
+
 local file = io.stdin
 local lines = file:lines()
 
@@ -324,9 +348,8 @@ print_metadata(metadata)
 local line_number = 1
 for line in file:lines() do
 
-  -- Parse this entity.
   line_number = line_number + 1
-
-  -- Print the entity.
+  local entity = parse_entity(line, line_number)
+  print_entity(entity)
 end
 

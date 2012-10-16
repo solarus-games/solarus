@@ -118,7 +118,7 @@ For now, the following types of entities are available when creating a map:
 - block (9): a block or a statue that the hero can push or pull
 - dynamic tile (10): a special tile with the ability to be enabled or disabled (usual tiles cannot be disabled)
 - switch (11): a switch that the hero may enable
-- custom obstacle (12): an invisible obstacle to stop make sure some kinds or entities cannot pass
+- wall (12): an invisible obstacle to stop make sure some kinds or entities cannot pass
 - sensor (13): an invisible sensor that triggers something when the hero walks on it
 - crystal (14): a switch that lowers or raises some blocks in the ground
 - crystal block (15): the blocks controlled by crystals

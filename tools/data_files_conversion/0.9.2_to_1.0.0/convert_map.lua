@@ -6,27 +6,240 @@
 -- The old format (solarus 0.9.2) is a text file with a specific syntax.
 -- The new format (solarus 1.0.0) is a Lua data file.
 
-local entity_type_names = {
-  [0] = "tile",
-  [1] = "destination",
-  [2] = "teletransporter",
-  [3] = "pickable",
-  [4] = "destructible",
-  [5] = "chest",
-  [6] = "jump_sensor",
-  [7] = "enemy",
-  [8] = "npc",
-  [9] = "block",
-  [10] = "dynamic_tile",
-  [11] = "switch",
-  [12] = "wall",
-  [13] = "sensor",
-  [14] = "crystal",
-  [15] = "crystal_block",
-  [16] = "shop_item",
-  [17] = "conveyor_belt",
-  [18] = "door",
-  [19] = "stairs",
+-- This table describes the old syntax.
+local entity_types = {
+
+  -- entity type id -> entity line syntax
+  [0] = {
+    entity_type_name = "tile",
+    -- token index -> token name and token type (default int)
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "width" },
+    { token_name = "height" },
+    { token_name = "pattern" },
+  },
+
+  [1] = {
+    entity_type_name = "destination",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "direction" },
+    { token_name = "sprite", token_type = "string", nil_value = "_none" },
+  },
+
+  [2] = {
+    entity_type_name = "teletransporter",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "width" },
+    { token_name = "height" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "sprite", token_type = "string", nil_value = "_none" },
+    { token_name = "sound", token_type = "string", nil_value = "_none" },
+    { token_name = "transition", token_type = "int",
+    { token_name = "destination_map", token_type = "string" },
+    { token_name = "destination", token_type = "string" },
+  },
+
+  [3] = {
+    entity_type_name = "pickable",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "treasure_name", token_type = "string" },
+    { token_name = "treasure_variant" },
+    { token_name = "treasure_savegame_variable", nil_value = -1 },
+  },
+
+  [4] = {
+    entity_type_name = "destructible",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "subtype" },
+    { token_name = "treasure_name", token_type = "string" },
+    { token_name = "treasure_variant" },
+    { token_name = "treasure_savegame_variable", nil_value = -1 },
+  },
+
+  [5] = {
+    entity_type_name = "chest",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "is_big_chest", token_type = "boolean" },
+    { token_name = "treasure_name", token_type = "string" },
+    { token_name = "treasure_variant" },
+    { token_name = "treasure_savegame_variable", nil_value = -1 },
+  },
+
+  [6] = {
+    entity_type_name = "jumper",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "width" },
+    { token_name = "height" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "direction" },
+    { token_name = "jump_length" },
+  },
+
+  [7] = {
+    entity_type_name = "enemy",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "direction" },
+    { token_name = "breed", token_type = "string" },
+    { token_name = "rank", token_type = "int" },
+    { token_name = "savegame_variable", nil_value = -1 },
+    { token_name = "treasure_name", token_type = "string" },
+    { token_name = "treasure_variant" },
+    { token_name = "treasure_savegame_variable", nil_value = -1 },
+  },
+
+  [8] = {
+    entity_type_name = "npc",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "direction" },
+    { token_name = "subtype" },
+    { token_name = "sprite", token_type = "string", nil_value = "_none" },
+    { token_name = "behavior", token_type = "string" },
+  },
+
+  [9] = {
+    entity_type_name = "block",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "direction" },
+    { token_name = "sprite", token_type = "string", nil_value = "_none" },
+    { token_name = "pushable", token_type = "boolean" },
+    { token_name = "pullable", token_type = "boolean" },
+    { token_name = "maximum_moves" },
+  },
+
+  [10] = {
+    entity_type_name = "dynamic_tile",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "width" },
+    { token_name = "height" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "pattern" },
+    { token_name = "enabled_at_start", token_type = "boolean" },
+  },
+
+  [11] = {
+    entity_type_name = "switch",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "subtype" },
+    { token_name = "needs_block", token_type = "boolean" },
+    { token_name = "inactivate_when_leaving", token_type = "boolean" },
+  },
+
+  [12] = {
+    entity_type_name = "wall",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "width" },
+    { token_name = "height" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "stops_hero", token_type = "boolean" },
+    { token_name = "stops_enemies", token_type = "boolean" },
+    { token_name = "stops_npcs", token_type = "boolean" },
+    { token_name = "stops_blocks", token_type = "boolean" },
+  },
+
+  [13] = {
+    entity_type_name = "sensor",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "width" },
+    { token_name = "height" },
+    { token_name = "name", token_type = "string" },
+  },
+
+  [14] = {
+    entity_type_name = "crystal",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "name", token_type = "string" },
+  },
+
+  [15] = {
+    entity_type_name = "crystal_block",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "width" },
+    { token_name = "height" },
+    { token_name = "subtype" },
+  },
+
+  [16] = {
+    entity_type_name = "shop_item",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "treasure_name", token_type = "string" },
+    { token_name = "treasure_variant" },
+    { token_name = "treasure_savegame_variable", nil_value = -1 },
+    { token_name = "price" },
+    { token_name = "dialog", token_type = "string" },
+  },
+
+  [17] = {
+    entity_type_name = "conveyor_belt",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "width" },
+    { token_name = "height" },
+    { token_name = "direction" },
+  },
+
+  [18] = {
+    entity_type_name = "door",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "direction" },
+    { token_name = "subtype" },
+    { token_name = "savegame_variable" },
+  },
+
+  [19] = {
+    entity_type_name = "stairs",
+    { token_name = "layer" },
+    { token_name = "x" },
+    { token_name = "y" },
+    { token_name = "name", token_type = "string" },
+    { token_name = "direction" },
+    { token_name = "subtype" },
+  },
+
 }
 
 local world_names = {
@@ -45,18 +258,10 @@ for i = -16, 15 do
   floor_names[i] = tostring(i)
 end
 
-local entity_types = {
-
-  [0] = {
-    type_name = "destination"
-    tokens = { "layer", "x", "y", "width", "height", "pattern_id" }
-  }
-}
-
 function parse_metadata(line)
 
   local metadata = {}
-  local width, height, world, floor, x, y, small_keys_variable, tileset_id, music_id =
+  local width, height, world, floor, x, y, small_keys_variable, tileset, music =
     line:match("^([0-9]+)%s+([0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([a-zA-Z0-9_]+)%s+([a-zA-Z0-9_]+)")
 
   if width == nil then
@@ -74,10 +279,10 @@ function parse_metadata(line)
     metadata.small_keys_variable = tonumber(small_keys_variable)
   end
 
-  metadata.tileset_id = tileset_id
+  metadata.tileset = tileset
 
-  if music_id ~= "none" then
-    metadata.music_id = music_id
+  if music ~= "none" then
+    metadata.music = music
   end
 
   return metadata
@@ -97,9 +302,9 @@ function print_metadata(metadata)
   if metadata.small_keys_variable ~= -1 then
     io.write("  small_keys_variable = " .. metadata.small_keys_variable .. ",\n")
   end
-  io.write("  tileset_id = " .. metadata.tileset_id .. ",\n")
-  if metadata.music_id ~= nil then
-    io.write("  music_id = " .. metadata.music_id .. ",\n")
+  io.write("  tileset = " .. metadata.tileset .. ",\n")
+  if metadata.music ~= nil then
+    io.write("  music = " .. metadata.music .. ",\n")
   end
   io.write("}\n")
 end

@@ -448,7 +448,7 @@ When a crystal is activated, some colored blocks in the ground are lowered or ra
 
 Syntax of a crystal:
 \verbatim
-14	layer	x	y
+14	layer	x	y	entity_name
 \endverbatim
 
 TODO deprecate this, merge with switch.

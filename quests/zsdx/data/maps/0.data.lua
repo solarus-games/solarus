@@ -6,8 +6,8 @@ properties{
   world = "inside_world",
   floor = nil,
   small_keys_variable = nil,
-  tileset_id = "6",
-  music_id = nil,
+  tileset = "6",
+  music = nil,
 }
 
 destination{
@@ -16,7 +16,7 @@ destination{
   y = 13,
   name = "start_position",
   direction = 3,
-  sprite_name = nil,
+  sprite = nil,
 }
 
 tile{
@@ -25,7 +25,7 @@ tile{
   y = 13,
   width = 320,
   height = 240,
-  pattern_id = 3,
+  pattern = 3,
 }
 
 tile{
@@ -34,7 +34,7 @@ tile{
   y = 270,
   width = 320,
   height = 176,
-  pattern_id = 2,
+  pattern = 2,
 }
 
 npc{
@@ -44,7 +44,7 @@ npc{
   name = "fresco",
   direction = 3,
   subtype = 0,
-  sprite_name = "entities/fresco",
+  sprite = "entities/fresco",
   behavior = "map",
 }
 
@@ -55,7 +55,7 @@ dynamic_tile{
   width = 320,
   height = 240,
   name = "black_screen",
-  pattern_id = 3,
+  pattern = 3,
   enabled_at_start = true,
 }
 

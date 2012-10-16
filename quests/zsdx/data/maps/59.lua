@@ -9400,7 +9400,6 @@ door{
   name = "evil_tiles_door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -9410,7 +9409,6 @@ door{
   name = "evil_tiles_door_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -9420,7 +9418,6 @@ door{
   name = "evil_tiles_door_3",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -9430,7 +9427,6 @@ door{
   name = "evil_tiles_door_4",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 enemy{

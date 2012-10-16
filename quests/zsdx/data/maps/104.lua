@@ -1566,7 +1566,6 @@ door{
   name = "door",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -1576,7 +1575,6 @@ door{
   name = "door_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 destination{

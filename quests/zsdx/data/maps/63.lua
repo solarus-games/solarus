@@ -11562,7 +11562,6 @@ door{
   name = "statue_door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -11572,7 +11571,6 @@ door{
   name = "statue_door_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 npc{
@@ -11652,7 +11650,6 @@ door{
   name = "torches_door_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -11662,7 +11659,6 @@ door{
   name = "torches_door",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 conveyor_belt{

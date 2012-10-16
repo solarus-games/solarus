@@ -7778,7 +7778,6 @@ door{
   name = "creeper_door_2",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{
@@ -7797,7 +7796,6 @@ door{
   name = "creeper_door",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 enemy{

@@ -6038,7 +6038,6 @@ door{
   name = "door_d_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6058,7 +6057,6 @@ door{
   name = "door_b_3",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6068,7 +6066,6 @@ door{
   name = "door_b_5",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6078,7 +6075,6 @@ door{
   name = "door_b_6",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 destination{
@@ -6255,7 +6251,6 @@ door{
   name = "door_a",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6265,7 +6260,6 @@ door{
   name = "door_a_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 block{
@@ -6311,7 +6305,6 @@ door{
   name = "door_b",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6321,7 +6314,6 @@ door{
   name = "door_b_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6331,7 +6323,6 @@ door{
   name = "door_b_4",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{
@@ -6419,7 +6410,6 @@ door{
   name = "door_c",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6429,7 +6419,6 @@ door{
   name = "door_c_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6439,7 +6428,6 @@ door{
   name = "door_c_3",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6449,7 +6437,6 @@ door{
   name = "door_c_4",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{
@@ -6660,7 +6647,6 @@ door{
   name = "door_d",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6670,7 +6656,6 @@ door{
   name = "door_d_3",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6680,7 +6665,6 @@ door{
   name = "door_d_4",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 enemy{

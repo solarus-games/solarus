@@ -8534,7 +8534,6 @@ door{
   name = "door_b",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -8544,7 +8543,6 @@ door{
   name = "door_b_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -8554,7 +8552,6 @@ door{
   name = "door_c_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -8564,7 +8561,6 @@ door{
   name = "door_c",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -8574,7 +8570,6 @@ door{
   name = "door_d_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -8584,7 +8579,6 @@ door{
   name = "door_d",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -8594,7 +8588,6 @@ door{
   name = "door_e_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -8604,7 +8597,6 @@ door{
   name = "door_e",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -10294,7 +10286,6 @@ door{
   name = "boss_door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 enemy{

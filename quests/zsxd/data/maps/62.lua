@@ -4876,7 +4876,6 @@ door{
   name = "stupid_run_door_a",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4886,7 +4885,6 @@ door{
   name = "stupid_run_door_a_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4896,7 +4894,6 @@ door{
   name = "stupid_run_door_c_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4906,7 +4903,6 @@ door{
   name = "stupid_run_door_c",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4916,7 +4912,6 @@ door{
   name = "stupid_run_door_b_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4926,7 +4921,6 @@ door{
   name = "stupid_run_door_b",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 switch{

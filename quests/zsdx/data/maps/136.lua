@@ -1013,7 +1013,6 @@ door{
   name = "door",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 wall{

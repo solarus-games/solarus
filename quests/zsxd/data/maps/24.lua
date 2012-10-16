@@ -9394,7 +9394,6 @@ door{
   name = "bowser_door",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 switch{
@@ -9423,7 +9422,6 @@ door{
   name = "bowser_door_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{

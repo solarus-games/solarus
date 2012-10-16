@@ -8785,7 +8785,6 @@ door{
   name = "se_door_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -8795,7 +8794,6 @@ door{
   name = "se_door",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 jumper{

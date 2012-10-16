@@ -3994,7 +3994,6 @@ door{
   name = "miniboss_door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4004,7 +4003,6 @@ door{
   name = "miniboss_door_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 crystal{
@@ -6513,7 +6511,6 @@ door{
   name = "miniboss_e_door",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6523,7 +6520,6 @@ door{
   name = "miniboss_e_door_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6533,7 +6529,6 @@ door{
   name = "door_a",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6543,7 +6538,6 @@ door{
   name = "door_a_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 wall{

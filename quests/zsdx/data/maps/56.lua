@@ -9515,7 +9515,6 @@ door{
   name = "miniboss_door",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -9525,7 +9524,6 @@ door{
   name = "miniboss_door_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -10119,7 +10117,6 @@ door{
   name = "miniboss_door_3",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -10129,7 +10126,6 @@ door{
   name = "miniboss_door_4",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -10139,7 +10135,6 @@ door{
   name = "miniboss_door_5",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 destination{

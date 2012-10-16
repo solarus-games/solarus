@@ -5010,7 +5010,6 @@ door{
   name = "miniboss_door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -5020,7 +5019,6 @@ door{
   name = "miniboss_door_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -5030,7 +5028,6 @@ door{
   name = "miniboss_door_3",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -5040,7 +5037,6 @@ door{
   name = "miniboss_door_4",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -5329,7 +5325,6 @@ door{
   name = "final_room_door",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -5339,7 +5334,6 @@ door{
   name = "boss_door_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -5349,7 +5343,6 @@ door{
   name = "boss_door_3",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{

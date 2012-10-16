@@ -1449,7 +1449,6 @@ door{
   name = "LD14",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 chest{
@@ -2340,7 +2339,6 @@ door{
   name = "LD14_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 enemy{
@@ -6907,7 +6905,6 @@ door{
   name = "LD13",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6917,7 +6914,6 @@ door{
   name = "LD12",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6927,7 +6923,6 @@ door{
   name = "LD13_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -6937,7 +6932,6 @@ door{
   name = "LD12_2",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{

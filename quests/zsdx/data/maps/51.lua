@@ -1235,7 +1235,6 @@ door{
   name = "LD06",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 switch{
@@ -1344,7 +1343,6 @@ door{
   name = "LD06_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 pickable{

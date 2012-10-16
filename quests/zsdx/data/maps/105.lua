@@ -17217,7 +17217,6 @@ door{
   name = "c_door_s_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -17227,7 +17226,6 @@ door{
   name = "c_door_s",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -17289,7 +17287,6 @@ door{
   name = "w_room_door_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -17299,7 +17296,6 @@ door{
   name = "s_door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 crystal_block{
@@ -18636,7 +18632,6 @@ door{
   name = "puzzle_b_door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -18646,7 +18641,6 @@ door{
   name = "puzzle_b_door_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -18656,7 +18650,6 @@ door{
   name = "puzzle_b_door_3",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -18666,7 +18659,6 @@ door{
   name = "puzzle_b_door_4",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 switch{
@@ -19155,7 +19147,6 @@ door{
   name = "s_door_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 npc{
@@ -20146,7 +20137,6 @@ door{
   name = "w_room_door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 block{
@@ -20431,7 +20421,6 @@ door{
   name = "c_door_e",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -20441,7 +20430,6 @@ door{
   name = "c_door_e_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 destructible{

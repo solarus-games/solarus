@@ -503,7 +503,6 @@ door{
   name = "door_e",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -513,7 +512,6 @@ door{
   name = "door_e_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 chest{
@@ -4700,7 +4698,6 @@ door{
   name = "door_f",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4710,7 +4707,6 @@ door{
   name = "door_g_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4720,7 +4716,6 @@ door{
   name = "door_g",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4730,7 +4725,6 @@ door{
   name = "door_d_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4740,7 +4734,6 @@ door{
   name = "door_d",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4750,7 +4743,6 @@ door{
   name = "door_b",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4760,7 +4752,6 @@ door{
   name = "door_b_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 dynamic_tile{
@@ -4909,7 +4900,6 @@ door{
   name = "door_a",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4919,7 +4909,6 @@ door{
   name = "door_a_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 wall{
@@ -4981,7 +4970,6 @@ door{
   name = "door_c_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -4991,7 +4979,6 @@ door{
   name = "door_c",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 destructible{
@@ -5090,7 +5077,6 @@ door{
   name = "n_door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -5100,7 +5086,6 @@ door{
   name = "n_door_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 npc{
@@ -5659,7 +5644,6 @@ door{
   name = "door_f_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 wall{
@@ -5682,7 +5666,6 @@ door{
   name = "door_h_2",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -5692,7 +5675,6 @@ door{
   name = "door_h",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 wall{

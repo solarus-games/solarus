@@ -1710,7 +1710,6 @@ door{
   name = "door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -1720,7 +1719,6 @@ door{
   name = "door_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 tile{

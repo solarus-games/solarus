@@ -227,7 +227,7 @@ local entity_syntaxes = {
     { token_name = "name", token_type = "string" },
     { token_name = "direction" },
     { token_name = "subtype" },
-    { token_name = "savegame_variable" },
+    { token_name = "savegame_variable", nil_value = -1 },
   },
 
   [19] = {

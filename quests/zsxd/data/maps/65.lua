@@ -12090,7 +12090,6 @@ door{
   name = "boss_door",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 wall{

@@ -559,7 +559,6 @@ door{
   name = "door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{

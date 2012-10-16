@@ -926,7 +926,6 @@ door{
   name = "door1_1",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{
@@ -954,7 +953,6 @@ door{
   name = "door2_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -964,7 +962,6 @@ door{
   name = "door2_1",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 teletransporter{
@@ -2420,7 +2417,6 @@ door{
   name = "door3_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -2430,7 +2426,6 @@ door{
   name = "door3_1",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 block{

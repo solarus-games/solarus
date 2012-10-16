@@ -9909,7 +9909,6 @@ door{
   name = "LD12",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -9919,7 +9918,6 @@ door{
   name = "LD7_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -9929,7 +9927,6 @@ door{
   name = "LD7",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -9959,7 +9956,6 @@ door{
   name = "LD9_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -9969,7 +9965,6 @@ door{
   name = "LD9",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 wall{
@@ -10080,7 +10075,6 @@ door{
   name = "LD8",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 teletransporter{
@@ -10930,7 +10924,6 @@ door{
   name = "LD12_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{
@@ -12164,7 +12157,6 @@ door{
   name = "LD8_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{

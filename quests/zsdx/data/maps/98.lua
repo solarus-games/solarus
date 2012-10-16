@@ -1809,7 +1809,6 @@ door{
   name = "door_a",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -1819,7 +1818,6 @@ door{
   name = "door_a_2",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 switch{

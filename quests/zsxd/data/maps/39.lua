@@ -1513,7 +1513,6 @@ door{
   name = "trap_door",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 teletransporter{

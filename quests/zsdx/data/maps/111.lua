@@ -817,7 +817,6 @@ door{
   name = "nw_door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 block{

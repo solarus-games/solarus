@@ -8790,7 +8790,6 @@ door{
   name = "boss_door_3",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -8830,7 +8829,6 @@ door{
   name = "LD3",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -8840,7 +8838,6 @@ door{
   name = "LD3_2",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 destination{
@@ -8932,7 +8929,6 @@ door{
   name = "LD2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 block{
@@ -9804,7 +9800,6 @@ door{
   name = "LD1",
   direction = 0,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{
@@ -9823,7 +9818,6 @@ door{
   name = "LD5",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 teletransporter{
@@ -9913,7 +9907,6 @@ door{
   name = "LD1_2",
   direction = 2,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 wall{
@@ -9936,7 +9929,6 @@ door{
   name = "LD2_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 enemy{
@@ -10018,7 +10010,6 @@ door{
   name = "LD5_2",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 pickable{
@@ -10056,7 +10047,6 @@ door{
   name = "LD4",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 door{
@@ -10066,7 +10056,6 @@ door{
   name = "LD4_2",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 sensor{
@@ -10661,7 +10650,6 @@ door{
   name = "agahnim_door",
   direction = 1,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 enemy{
@@ -10897,7 +10885,6 @@ door{
   name = "boss_door",
   direction = 3,
   subtype = 0,
-  savegame_variable = -1,
 }
 
 destination{

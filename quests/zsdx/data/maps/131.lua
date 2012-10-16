@@ -1,16 +1,37 @@
-local map = ...
--- The end
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  world = "inside_world",
+  tileset = 6,
+  music = fanfare,
+}
 
-function map:on_started(destination)
+destination{
+  layer = 0,
+  x = 8,
+  y = 13,
+  name = "start_position",
+  direction = 3,
+}
 
-  if destination:get_name() == "from_ending" then
-    hero:freeze()
-    hero:set_visible(false)
-    map:get_game():set_hud_enabled(false)
-    map:set_pause_enabled(false)
-    sol.timer.start(25000, function()
-      map:get_game().reset()
-    end)
-  end
-end
+npc{
+  layer = 1,
+  x = 8,
+  y = 13,
+  name = "interactive_entity",
+  direction = 3,
+  subtype = 0,
+  sprite = "entities/the_end",
+  behavior = "map",
+}
+
+destination{
+  layer = 1,
+  x = 8,
+  y = 13,
+  name = "from_ending",
+  direction = -1,
+}
 

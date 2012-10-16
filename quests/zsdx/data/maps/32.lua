@@ -1,28 +1,365 @@
-local map = ...
--- Telepathic booth
+properties{
+  x = 224,
+  y = 2504,
+  width = 320,
+  height = 240,
+  world = "inside_world",
+  tileset = 0,
+  music = fortune_teller,
+}
 
-function hint_stone:on_interaction()
+tile{
+  layer = 0,
+  x = 80,
+  y = 72,
+  width = 24,
+  height = 24,
+  pattern = 45,
+}
 
-  if not map:get_game():is_dungeon_finished(1) then
-    map:start_dialog("telepathic_booth.not_working")
-  elseif not map:get_game():get_item("bow"):has_variant() then
-    map:start_dialog("telepathic_booth.go_sahasrahla")
-    map:set_dialog_variable("telepathic_booth.go_sahasrahla", map:get_game():get_player_name())
-  elseif not map:get_game():is_dungeon_finished(2) then
-    map:start_dialog("telepathic_booth.go_twin_caves")
-    map:set_dialog_variable("telepathic_booth.go_twin_caves", map:get_game():get_player_name())
-  elseif not map:get_game():get_item("rupee_bag"):has_variant(2) then
-    map:start_dialog("telepathic_booth.dungeon_2_not_really_finished")
-    map:set_dialog_variable("telepathic_booth.dungeon_2_not_really_finished", map:get_game():get_player_name())
-  elseif not map:get_game():is_dungeon_finished(3) then
-    map:start_dialog("telepathic_booth.go_master_arbror")
-    map:set_dialog_variable("telepathic_booth.go_master_arbror", map:get_game():get_player_name())
-  elseif not map:get_game():is_dungeon_finished(4) then
-    map:start_dialog("telepathic_booth.go_billy")
-    map:set_dialog_variable("telepathic_booth.go_billy", map:get_game():get_player_name())
-  else
-    map:start_dialog("telepathic_booth.shop")
-    map:set_dialog_variable("telepathic_booth.shop", map:get_game():get_player_name())
-  end
-end
+tile{
+  layer = 0,
+  x = 80,
+  y = 144,
+  width = 24,
+  height = 24,
+  pattern = 47,
+}
+
+tile{
+  layer = 0,
+  x = 216,
+  y = 72,
+  width = 24,
+  height = 24,
+  pattern = 46,
+}
+
+tile{
+  layer = 0,
+  x = 216,
+  y = 144,
+  width = 24,
+  height = 24,
+  pattern = 48,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 144,
+  width = 112,
+  height = 24,
+  pattern = 52,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 72,
+  width = 112,
+  height = 24,
+  pattern = 49,
+}
+
+tile{
+  layer = 0,
+  x = 216,
+  y = 96,
+  width = 24,
+  height = 48,
+  pattern = 50,
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 96,
+  width = 24,
+  height = 48,
+  pattern = 51,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 96,
+  width = 8,
+  height = 8,
+  pattern = 14,
+}
+
+tile{
+  layer = 0,
+  x = 208,
+  y = 96,
+  width = 8,
+  height = 8,
+  pattern = 15,
+}
+
+tile{
+  layer = 0,
+  x = 208,
+  y = 136,
+  width = 8,
+  height = 8,
+  pattern = 17,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 136,
+  width = 8,
+  height = 8,
+  pattern = 16,
+}
+
+tile{
+  layer = 0,
+  x = 112,
+  y = 96,
+  width = 96,
+  height = 8,
+  pattern = 18,
+}
+
+tile{
+  layer = 0,
+  x = 112,
+  y = 136,
+  width = 96,
+  height = 8,
+  pattern = 21,
+}
+
+tile{
+  layer = 0,
+  x = 208,
+  y = 104,
+  width = 8,
+  height = 32,
+  pattern = 19,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 104,
+  width = 8,
+  height = 32,
+  pattern = 20,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 144,
+  width = 16,
+  height = 16,
+  pattern = 77,
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 144,
+  width = 8,
+  height = 16,
+  pattern = 74,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 144,
+  width = 8,
+  height = 16,
+  pattern = 75,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 160,
+  width = 16,
+  height = 32,
+  pattern = 3,
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 168,
+  width = 8,
+  height = 16,
+  pattern = 71,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 168,
+  width = 8,
+  height = 16,
+  pattern = 71,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 184,
+  width = 16,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 0,
+  x = 112,
+  y = 104,
+  width = 96,
+  height = 32,
+  pattern = 2,
+}
+
+tile{
+  layer = 0,
+  x = 112,
+  y = 104,
+  width = 16,
+  height = 32,
+  pattern = 1,
+}
+
+tile{
+  layer = 0,
+  x = 192,
+  y = 104,
+  width = 16,
+  height = 32,
+  pattern = 1,
+}
+
+destination{
+  layer = 0,
+  x = 160,
+  y = 157,
+  name = "from_outside",
+  direction = 1,
+}
+
+npc{
+  layer = 0,
+  x = 160,
+  y = 93,
+  name = "hint_stone",
+  direction = 3,
+  subtype = 0,
+  sprite = "entities/hint_stone",
+  behavior = "map",
+}
+
+teletransporter{
+  layer = 0,
+  x = 152,
+  y = 168,
+  width = 16,
+  height = 16,
+  name = "to_outside",
+  transition = 1,
+  destination_map = "3",
+  destination = "out_telepathic_house",
+}
+
+destructible{
+  layer = 0,
+  x = 120,
+  y = 117,
+  subtype = 0,
+  treasure_name = "_random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 0,
+  x = 120,
+  y = 133,
+  subtype = 0,
+  treasure_name = "_random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 0,
+  x = 200,
+  y = 133,
+  subtype = 0,
+  treasure_name = "_random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 0,
+  x = 200,
+  y = 117,
+  subtype = 0,
+  treasure_name = "_random",
+  treasure_variant = 1,
+}
+
+tile{
+  layer = 2,
+  x = 112,
+  y = 160,
+  width = 96,
+  height = 8,
+  pattern = 263,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 72,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 168,
+  width = 320,
+  height = 72,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 72,
+  width = 80,
+  height = 96,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 240,
+  y = 72,
+  width = 80,
+  height = 96,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 144,
+  y = 160,
+  width = 32,
+  height = 8,
+  pattern = 153,
+}
 

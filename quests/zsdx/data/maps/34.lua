@@ -1,47 +1,658 @@
-local map = ...
--- Bomb cave 1F
+properties{
+  x = 528,
+  y = 2464,
+  width = 320,
+  height = 240,
+  world = "inside_world",
+  floor = 0,
+  tileset = 3,
+  music = cave,
+}
 
-local function are_all_torches_on()
+tile{
+  layer = 0,
+  x = 16,
+  y = 16,
+  width = 24,
+  height = 24,
+  pattern = 45,
+}
 
-  return torch_1 ~= nil
-      and torch_1:get_sprite():get_animation() == "lit"
-      and torch_2:get_sprite():get_animation() == "lit"
-      and torch_3:get_sprite():get_animation() == "lit"
-      and torch_4:get_sprite():get_animation() == "lit"
-end
+tile{
+  layer = 0,
+  x = 280,
+  y = 16,
+  width = 24,
+  height = 24,
+  pattern = 46,
+}
 
-local function lock_torches()
+tile{
+  layer = 0,
+  x = 280,
+  y = 200,
+  width = 24,
+  height = 24,
+  pattern = 48,
+}
 
-  torch_1:remove()
-  torch_2:remove()
-  torch_3:remove()
-  torch_4:remove()
-end
+tile{
+  layer = 0,
+  x = 16,
+  y = 200,
+  width = 24,
+  height = 24,
+  pattern = 47,
+}
 
-function map:on_started(destination)
+tile{
+  layer = 0,
+  x = 40,
+  y = 200,
+  width = 240,
+  height = 24,
+  pattern = 52,
+}
 
-  if destination:get_name() == "from_2F" then
-    map:set_doors_open("door", true)
-  else
-    close_door_sensor:set_enabled(false)
-  end
-end
+tile{
+  layer = 0,
+  x = 280,
+  y = 40,
+  width = 24,
+  height = 160,
+  pattern = 50,
+}
 
-function map:on_update()
+tile{
+  layer = 0,
+  x = 40,
+  y = 16,
+  width = 240,
+  height = 24,
+  pattern = 49,
+}
 
-  local door_open = door:is_open()
-  if not door_open and are_all_torches_on() then
+tile{
+  layer = 0,
+  x = 16,
+  y = 40,
+  width = 24,
+  height = 160,
+  pattern = 51,
+}
 
-    lock_torches()
-    sol.audio.play_sound("secret")
-    map:open_doors("door")
-  end
-end
+tile{
+  layer = 0,
+  x = 40,
+  y = 40,
+  width = 8,
+  height = 8,
+  pattern = 14,
+}
 
-function close_door_sensor:on_activated()
+tile{
+  layer = 0,
+  x = 272,
+  y = 40,
+  width = 8,
+  height = 8,
+  pattern = 15,
+}
 
-  if door:is_open() then
-    map:close_doors("door")
-  end
-end
+tile{
+  layer = 0,
+  x = 272,
+  y = 192,
+  width = 8,
+  height = 8,
+  pattern = 17,
+}
+
+tile{
+  layer = 0,
+  x = 40,
+  y = 192,
+  width = 8,
+  height = 8,
+  pattern = 16,
+}
+
+tile{
+  layer = 0,
+  x = 48,
+  y = 40,
+  width = 224,
+  height = 8,
+  pattern = 179,
+}
+
+tile{
+  layer = 0,
+  x = 48,
+  y = 192,
+  width = 96,
+  height = 8,
+  pattern = 180,
+}
+
+tile{
+  layer = 0,
+  x = 40,
+  y = 48,
+  width = 8,
+  height = 144,
+  pattern = 181,
+}
+
+tile{
+  layer = 0,
+  x = 272,
+  y = 48,
+  width = 8,
+  height = 144,
+  pattern = 182,
+}
+
+tile{
+  layer = 0,
+  x = 48,
+  y = 48,
+  width = 224,
+  height = 144,
+  pattern = 2,
+}
+
+tile{
+  layer = 0,
+  x = 120,
+  y = 104,
+  width = 24,
+  height = 32,
+  pattern = 50,
+}
+
+tile{
+  layer = 0,
+  x = 136,
+  y = 88,
+  width = 48,
+  height = 24,
+  pattern = 52,
+}
+
+tile{
+  layer = 0,
+  x = 136,
+  y = 128,
+  width = 48,
+  height = 24,
+  pattern = 49,
+}
+
+tile{
+  layer = 0,
+  x = 176,
+  y = 104,
+  width = 24,
+  height = 32,
+  pattern = 51,
+}
+
+tile{
+  layer = 0,
+  x = 120,
+  y = 88,
+  width = 24,
+  height = 24,
+  pattern = 53,
+}
+
+tile{
+  layer = 0,
+  x = 120,
+  y = 128,
+  width = 24,
+  height = 24,
+  pattern = 55,
+}
+
+tile{
+  layer = 0,
+  x = 176,
+  y = 128,
+  width = 24,
+  height = 24,
+  pattern = 56,
+}
+
+tile{
+  layer = 0,
+  x = 176,
+  y = 88,
+  width = 24,
+  height = 24,
+  pattern = 54,
+}
+
+tile{
+  layer = 0,
+  x = 120,
+  y = 152,
+  width = 80,
+  height = 8,
+  pattern = 179,
+}
+
+tile{
+  layer = 0,
+  x = 120,
+  y = 80,
+  width = 80,
+  height = 8,
+  pattern = 180,
+}
+
+tile{
+  layer = 0,
+  x = 200,
+  y = 88,
+  width = 8,
+  height = 64,
+  pattern = 181,
+}
+
+tile{
+  layer = 0,
+  x = 112,
+  y = 88,
+  width = 8,
+  height = 64,
+  pattern = 182,
+}
+
+tile{
+  layer = 0,
+  x = 200,
+  y = 80,
+  width = 8,
+  height = 8,
+  pattern = 184,
+}
+
+tile{
+  layer = 0,
+  x = 112,
+  y = 152,
+  width = 8,
+  height = 8,
+  pattern = 186,
+}
+
+tile{
+  layer = 0,
+  x = 200,
+  y = 152,
+  width = 8,
+  height = 8,
+  pattern = 185,
+}
+
+tile{
+  layer = 0,
+  x = 112,
+  y = 80,
+  width = 8,
+  height = 8,
+  pattern = 183,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 192,
+  width = 16,
+  height = 24,
+  pattern = 379,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 200,
+  width = 8,
+  height = 16,
+  pattern = 378,
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 200,
+  width = 8,
+  height = 16,
+  pattern = 377,
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 192,
+  width = 8,
+  height = 8,
+  pattern = 184,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 192,
+  width = 8,
+  height = 8,
+  pattern = 183,
+}
+
+tile{
+  layer = 0,
+  x = 176,
+  y = 192,
+  width = 96,
+  height = 8,
+  pattern = 180,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 136,
+  width = 16,
+  height = 16,
+  pattern = 250,
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 136,
+  width = 8,
+  height = 16,
+  pattern = 304,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 136,
+  width = 8,
+  height = 16,
+  pattern = 301,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 216,
+  width = 16,
+  height = 32,
+  pattern = 2,
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 224,
+  width = 8,
+  height = 16,
+  pattern = 71,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 224,
+  width = 8,
+  height = 16,
+  pattern = 71,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 240,
+  width = 16,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 0,
+  x = 224,
+  y = 152,
+  width = 16,
+  height = 16,
+  pattern = 369,
+}
+
+tile{
+  layer = 0,
+  x = 224,
+  y = 72,
+  width = 16,
+  height = 16,
+  pattern = 369,
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 152,
+  width = 16,
+  height = 16,
+  pattern = 369,
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 72,
+  width = 16,
+  height = 16,
+  pattern = 369,
+}
+
+npc{
+  layer = 0,
+  x = 88,
+  y = 85,
+  name = "torch_1",
+  direction = -1,
+  subtype = 0,
+  sprite = "entities/torch",
+  behavior = "item#lamp",
+}
+
+npc{
+  layer = 0,
+  x = 88,
+  y = 165,
+  name = "torch_2",
+  direction = -1,
+  subtype = 0,
+  sprite = "entities/torch",
+  behavior = "item#lamp",
+}
+
+npc{
+  layer = 0,
+  x = 232,
+  y = 165,
+  name = "torch_3",
+  direction = -1,
+  subtype = 0,
+  sprite = "entities/torch",
+  behavior = "item#lamp",
+}
+
+npc{
+  layer = 0,
+  x = 232,
+  y = 85,
+  name = "torch_4",
+  direction = -1,
+  subtype = 0,
+  sprite = "entities/torch",
+  behavior = "item#lamp",
+}
+
+destination{
+  layer = 0,
+  x = 160,
+  y = 213,
+  name = "from_outside",
+  direction = 1,
+}
+
+teletransporter{
+  layer = 0,
+  x = 152,
+  y = 224,
+  width = 16,
+  height = 16,
+  name = "to_outside",
+  transition = 1,
+  destination_map = "3",
+  destination = "out_bomb_cave",
+}
+
+destination{
+  layer = 0,
+  x = 160,
+  y = 149,
+  name = "from_2F",
+  direction = 3,
+}
+
+teletransporter{
+  layer = 0,
+  x = 152,
+  y = 136,
+  width = 16,
+  height = 16,
+  name = "to_2F",
+  transition = 1,
+  destination_map = "35",
+  destination = "from_1F",
+}
+
+stairs{
+  layer = 0,
+  x = 152,
+  y = 136,
+  name = "stairs_1",
+  direction = 1,
+  subtype = 0,
+}
+
+door{
+  layer = 0,
+  x = 144,
+  y = 136,
+  name = "door",
+  direction = 1,
+  subtype = 0,
+  savegame_variable = -1,
+}
+
+sensor{
+  layer = 0,
+  x = 160,
+  y = 165,
+  width = 16,
+  height = 16,
+  name = "close_door_sensor",
+}
+
+tile{
+  layer = 2,
+  x = 112,
+  y = 216,
+  width = 96,
+  height = 8,
+  pattern = 412,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 16,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 224,
+  width = 320,
+  height = 16,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 304,
+  y = 16,
+  width = 16,
+  height = 208,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 16,
+  width = 16,
+  height = 208,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 144,
+  y = 112,
+  width = 32,
+  height = 16,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 144,
+  y = 216,
+  width = 32,
+  height = 8,
+  pattern = 400,
+}
+
+dynamic_tile{
+  layer = 2,
+  x = 144,
+  y = 128,
+  width = 32,
+  height = 8,
+  name = "door_open_2",
+  pattern = 309,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 2,
+  x = 152,
+  y = 128,
+  width = 16,
+  height = 8,
+  name = "door_open",
+  pattern = 346,
+  enabled_at_start = true,
+}
 

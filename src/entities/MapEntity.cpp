@@ -51,6 +51,9 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 
+// TODO replace these functions and this list by functions
+// directly exportable to lua and that take
+// the map as optional first paramater or finds it in the registry.
 MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   Tile::parse,
   Destination::parse,

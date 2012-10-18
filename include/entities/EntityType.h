@@ -32,39 +32,39 @@ enum EntityType {
 
   // entities specified in the map file
 
-  TILE                      = 0,    /**< a tile on the map, obstacle or not */
-  DESTINATION               = 1,    /**< a destination point on the map */
-  TELETRANSPORTER           = 2,    /**< a teletransporter: the hero is transported
-                                     * to a destination point when walking on it */
-  PICKABLE                  = 3,    /**< a treasure that the hero can pick up: a rupee, a heart, a fairy... */
-  DESTRUCTIBLE              = 4,    /**< something that the hero can cut or lift: a pot, a bush, a stone... */
-  CHEST                     = 5,    /**< a chest (small or big) with a treasure */
-  JUMPER                    = 6,    /**< a sensor that makes the hero jump in a direction */
-  ENEMY                     = 7,    /**< an enemy */
-  NON_PLAYING_CHARACTER     = 8,    /**< an entity the hero can interact with by pressing the action key
-                                     * in front of it (not necessarily a person) */
-  BLOCK                     = 9,    /**< a block or a statue that the hero can push */
-  DYNAMIC_TILE              = 10,   /**< a dynamic tile (that can be enabled or disabled) */
-  SWITCH                    = 11,   /**< a switch */
-  WALL                      = 12,   /**< an invisible obstacle for some type of entities */
-  SENSOR                    = 13,   /**< a sensor that triggers something when the hero overlaps it */
-  CRYSTAL                   = 14,   /**< a switch that lowers or raises the blue and orange blocks */
-  CRYSTAL_BLOCK             = 15,   /**< the blue or orange blocks that are changed by the crystals */
-  SHOP_ITEM                 = 16,   /**< an item the hero can buy in a shop */
-  CONVEYOR_BELT             = 17,   /**< a special terrain that moves the hero */
-  DOOR                      = 18,   /**< a door to open with a key or another action */
-  STAIRS                    = 19,   /**< stairs between two maps or inside a single map */
+  TILE,                      /**< a tile on the map, obstacle or not */
+  DESTINATION,               /**< a destination point on the map */
+  TELETRANSPORTER,           /**< a teletransporter: the hero is transported
+                              * to a destination point when walking on it */
+  PICKABLE,                  /**< a treasure that the hero can pick up: a rupee, a heart, a fairy... */
+  DESTRUCTIBLE,              /**< something that the hero can cut or lift: a pot, a bush, a stone... */
+  CHEST,                     /**< a chest (small or big) with a treasure */
+  JUMPER,                    /**< a sensor that makes the hero jump in a direction */
+  ENEMY,                     /**< an enemy */
+  NON_PLAYING_CHARACTER,     /**< an entity the hero can interact with by pressing the action key
+                              * in front of it (not necessarily a person) */
+  BLOCK,                     /**< a block or a statue that the hero can push */
+  DYNAMIC_TILE,              /**< a dynamic tile (that can be enabled or disabled) */
+  SWITCH,                    /**< a switch */
+  WALL,                      /**< an invisible obstacle for some type of entities */
+  SENSOR,                    /**< a sensor that triggers something when the hero overlaps it */
+  CRYSTAL,                   /**< a switch that lowers or raises the blue and orange blocks */
+  CRYSTAL_BLOCK,             /**< the blue or orange blocks that are changed by the crystals */
+  SHOP_ITEM,                 /**< an item the hero can buy in a shop */
+  CONVEYOR_BELT,             /**< a special terrain that moves the hero */
+  DOOR,                      /**< a door to open with a key or another action */
+  STAIRS,                    /**< stairs between two maps or inside a single map */
 
   // entities created only during the game (not stored in maps)
 
-  HERO                      = 1000, /**< the hero */
-  CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */
-  BOOMERANG                 = 1002, /**< a boomerang thrown */
-  EXPLOSION                 = 1003, /**< an explosion, that may be caused by a bomb, a bomb flower, an enemy, etc. */
-  ARROW                     = 1004, /**< an arrow thrown by the bow */
-  BOMB                      = 1005, /**< a bomb that will explode soon */
-  FIRE                      = 1006, /**< some fire */
-  HOOKSHOT                  = 1007  /**< the hookshot thrown by the hero */
+  HERO,                      /**< the hero */
+  CARRIED_ITEM,              /**< item carried and thrown by the hero (comes from a destructible item) */
+  BOOMERANG,                 /**< a boomerang thrown */
+  EXPLOSION,                 /**< an explosion, that may be caused by a bomb, a bomb flower, an enemy, etc. */
+  ARROW,                     /**< an arrow thrown by the bow */
+  BOMB,                      /**< a bomb that will explode soon */
+  FIRE,                      /**< some fire */
+  HOOKSHOT,                  /**< the hookshot thrown by the hero */
 };
 
 #endif

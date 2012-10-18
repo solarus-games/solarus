@@ -20,7 +20,6 @@
 #include "Common.h"
 #include "movements/Movement.h"
 #include "lowlevel/Rectangle.h"
-#include "entities/EntityType.h"
 
 /**
  * @brief Movement that makes circles around a center.

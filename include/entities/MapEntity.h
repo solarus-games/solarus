@@ -27,6 +27,8 @@
 #include "lowlevel/Rectangle.h"
 #include <list>
 
+struct lua_State;
+
 /**
  * @brief Abstract class for all objects placed on a map.
  *
@@ -42,12 +44,12 @@ class MapEntity: public ExportableToLua {
 
   public:
 
-    typedef MapEntity* (CreationFunction)(Game &game, std::istream &is,
-        Layer layer, int x, int y); /**< a function to parse a certain type of entity */
-    static CreationFunction* creation_functions[];     /**< the creation functions of all types of entities */
     static const Rectangle directions_to_xy_moves[8];  /**< converts a direction (0 to 7) into a one-pixel xy move */
 
   private:
+
+    typedef MapEntity* (CreationFunction)(Map& map, lua_State* l); /**< a function to create a certain type of entity */
+    static CreationFunction* creation_functions[];      /**< the creation functions of all types of entities */
 
     MainLoop* main_loop;                        /**< The Solarus main loop. */
     Map* map;                                   /**< The map where this entity is, or NULL
@@ -128,6 +130,8 @@ class MapEntity: public ExportableToLua {
     Hero& get_hero();
 
   public:
+
+    static MapEntity* create_from_lua(Map& map, lua_State* l);
 
     // destruction
     virtual ~MapEntity();

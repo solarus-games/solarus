@@ -709,6 +709,39 @@ int LuaContext::map_api_remove_entities(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_map_create_tile.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_tile(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_destination.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_destination(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_teletransporter.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_teletransporter(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
  * @brief Implementation of \ref lua_api_map_create_pickable.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -795,6 +828,28 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_map_create_chest.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_chest(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_jumper.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_jumper(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
  * @brief Implementation of \ref lua_api_map_create_enemy.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -817,6 +872,17 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
 
   push_enemy(l, *enemy);
   return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_npc.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_npc(lua_State* l) {
+
+  // TODO
+  return 0;
 }
 
 /**
@@ -873,6 +939,116 @@ int LuaContext::map_api_create_block(lua_State* l) {
 
   push_entity(l, *block);
   return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_dynamic_tile.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_switch.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_switch(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_wall.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_wall(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_sensor.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_sensor(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_crystal.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_crystal(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_crystal_block.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_crystal_block(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_shop_item.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_shop_item(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_conveyor_belt.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_conveyor_belt(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_door.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_door(lua_State* l) {
+
+  // TODO
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_create_stairs.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_stairs(lua_State* l) {
+
+  // TODO
+  return 0;
 }
 
 /**

@@ -42,7 +42,6 @@ class Crystal: public Detector {
 
     Crystal(const std::string& name, Layer layer, int x, int y);
     ~Crystal();
-    static CreationFunction parse;
 
     EntityType get_type();
 

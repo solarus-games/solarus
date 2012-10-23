@@ -19,6 +19,8 @@
 
 #include "Common.h"
 
+struct lua_State;
+
 /**
  * @brief Parses a map file.
  *
@@ -31,8 +33,11 @@ class MapLoader {
     MapLoader();
     ~MapLoader();
 
-    void load_map(Game &game, Map &map);
+    void load_map(Game& game, Map& map);
 
+  private:
+
+    static int l_properties(lua_State* l);
 };
 
 #endif

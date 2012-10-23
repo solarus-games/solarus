@@ -55,26 +55,6 @@ Crystal::~Crystal() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Crystal::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
-
-  std::string name;
-  FileTools::read(is, name);
-
-  return new Crystal(name, layer, x, y);
-}
-
-/**
  * @brief Returns the type of entity.
  * @return the type of entity
  */

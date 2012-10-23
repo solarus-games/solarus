@@ -48,34 +48,6 @@ Destination::~Destination() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Destination::parse(Game& game, std::istream &is,
-    Layer layer, int x, int y) {
-	
-  std::string name, sprite_name;
-  int direction;
-
-  FileTools::read(is, name);
-  FileTools::read(is, direction);
-  FileTools::read(is, sprite_name);
- 
-  if (sprite_name == "_none") {
-    sprite_name = "";
-  }
-  return new Destination(name, layer, x, y, direction, sprite_name);
-}
-
-/**
  * @brief Returns the type of entity.
  * @return the type of entity
  */

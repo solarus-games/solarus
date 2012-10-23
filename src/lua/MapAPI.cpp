@@ -67,13 +67,6 @@ void LuaContext::register_map_module() {
       { "open_doors", map_api_open_doors },
       { "close_doors", map_api_close_doors },
       { "set_doors_open", map_api_set_doors_open },
-      { "create_pickable", map_api_create_pickable },
-      { "create_destructible", map_api_create_destructible },
-      { "create_block", map_api_create_block },
-      { "create_bomb", map_api_create_bomb },
-      { "create_explosion", map_api_create_explosion },
-      { "create_fire", map_api_create_fire },
-      { "create_enemy", map_api_create_enemy },
       { "get_entity", map_api_get_entity },
       { "has_entity", map_api_has_entity },
       { "get_entities", map_api_get_entities },
@@ -81,6 +74,28 @@ void LuaContext::register_map_module() {
       { "has_entities", map_api_has_entities },
       { "set_entities_enabled", map_api_set_entities_enabled },
       { "remove_entities", map_api_remove_entities },
+      { "create_destination", map_api_create_destination },
+      { "create_teletransporter", map_api_create_teletransporter },
+      { "create_pickable", map_api_create_pickable },
+      { "create_destructible", map_api_create_destructible },
+      { "create_chest", map_api_create_chest },
+      { "create_jumper", map_api_create_jumper },
+      { "create_enemy", map_api_create_enemy },
+      { "create_npc", map_api_create_npc },
+      { "create_block", map_api_create_block },
+      { "create_dynamic_tile", map_api_create_dynamic_tile },
+      { "create_switch", map_api_create_switch },
+      { "create_wall", map_api_create_wall },
+      { "create_sensor", map_api_create_sensor },
+      { "create_crystal", map_api_create_crystal },
+      { "create_crystal_block", map_api_create_crystal_block },
+      { "create_shop_item", map_api_create_shop_item },
+      { "create_conveyor_belt", map_api_create_conveyor_belt },
+      { "create_door", map_api_create_door },
+      { "create_stairs", map_api_create_stairs },
+      { "create_bomb", map_api_create_bomb },
+      { "create_explosion", map_api_create_explosion },
+      { "create_fire", map_api_create_fire },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -112,6 +127,66 @@ Map& LuaContext::check_map(lua_State* l, int index) {
 void LuaContext::push_map(lua_State* l, Map& map) {
 
   push_userdata(l, map);
+}
+
+/**
+ * @brief Returns the map previously stored by set_entity_creation_map().
+ * @param l A Lua context.
+ * @return The map stored in this Lua context or NULL.
+ */
+Map* LuaContext::get_entity_creation_map(lua_State* l) {
+
+  lua_getfield(l, LUA_REGISTRYINDEX, "map");
+  if (lua_isnil(l, -1)) {
+    return NULL;
+  }
+
+  Map& map = check_map(l, -1);
+  lua_pop(l, 1);
+
+  return &map;
+}
+
+/**
+ * @brief Stores into the Lua state the map that will be used to create entities.
+ *
+ * There are two ways to create a entity on the map:
+ * - Declare the entity in the map data file.
+ * - Create the entity dynamically from a Lua script.
+ *
+ * As the map data file is in Lua, both approaches actually call the same
+ * function: map_api_create_enemy or map_api_create_npc, map_api_create_block,
+ * etc. depending on your type of entity.
+ *
+ * In the second case, the map is always passed explicitely as the first
+ * parameter of the entity creation function. For instance:
+ * \verbatim
+ * map:create_enemy{ x = 160, y = 117, name = "my_enemy", breed = "soldier" }
+ * \endverbatim
+ *
+ * In the first case, the map is never passed:
+ * \verbatim
+ * enemy{ x = 160, y = 117, name = "my_enemy", breed = "soldier" }
+ * \endverbatim
+ * To make Lua know the map anyway, call this function before your create
+ * your first entity.
+ * Then, all entity creation functionss will accept to be called without the
+ * map as first parameter.
+ *
+ * @param l A Lua context.
+ * @param map The map where future entities should be created.
+ * NULL forces the map to be explicitely passed (this is the default
+ * behavior).
+ */
+void LuaContext::set_entity_creation_map(lua_State* l, Map* map) {
+
+  if (map == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+    push_map(l, *map);
+  }
+  lua_setfield(l, LUA_REGISTRYINDEX, "map");
 }
 
 /**
@@ -720,6 +795,31 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_map_create_enemy.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_create_enemy(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& name = luaL_checkstring(l, 2);
+  const std::string& breed = luaL_checkstring(l, 3);
+  int layer = luaL_checkinteger(l, 4);
+  int x = luaL_checkinteger(l, 5);
+  int y = luaL_checkinteger(l, 6);
+
+  MapEntities& entities = map.get_entities();
+  Treasure treasure(map.get_game(), "_random", 1, -1);
+  Enemy* enemy = (Enemy*) Enemy::create(map.get_game(), breed, Enemy::RANK_NORMAL, -1,
+      name, Layer(layer), x, y, 0, treasure);
+  entities.add_entity(enemy);
+  enemy->restart();
+
+  push_enemy(l, *enemy);
+  return 1;
+}
+
+/**
  * @brief Implementation of \ref lua_api_map_create_block.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -829,31 +929,6 @@ int LuaContext::map_api_create_fire(lua_State* l) {
   map.get_entities().add_entity(fire);
 
   push_entity(l, *fire);
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_create_enemy.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_create_enemy(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  const std::string& breed = luaL_checkstring(l, 3);
-  int layer = luaL_checkinteger(l, 4);
-  int x = luaL_checkinteger(l, 5);
-  int y = luaL_checkinteger(l, 6);
-
-  MapEntities& entities = map.get_entities();
-  Treasure treasure(map.get_game(), "_random", 1, -1);
-  Enemy* enemy = (Enemy*) Enemy::create(map.get_game(), breed, Enemy::RANK_NORMAL, -1,
-      name, Layer(layer), x, y, 0, treasure);
-  entities.add_entity(enemy);
-  enemy->restart();
-
-  push_enemy(l, *enemy);
   return 1;
 }
 

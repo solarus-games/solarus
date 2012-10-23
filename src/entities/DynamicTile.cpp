@@ -50,32 +50,6 @@ DynamicTile::~DynamicTile() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* DynamicTile::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-
-  int width, height, tile_pattern_id, enabled;
-  std::string name;
-
-  FileTools::read(is, width);
-  FileTools::read(is, height);
-  FileTools::read(is, name);
-  FileTools::read(is, tile_pattern_id);
-  FileTools::read(is, enabled);
-
-  return new DynamicTile(name, Layer(layer), x, y, width, height, tile_pattern_id, enabled != 0);
-}
-
-/**
  * @brief Returns the type of entity.
  * @return the type of entity
  */

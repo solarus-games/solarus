@@ -30,7 +30,6 @@ class Destination: public MapEntity {
     Destination(const std::string &name, Layer layer, int x, int y,
         int hero_direction, const std::string& sprite_name);
     ~Destination();
-    static CreationFunction parse;
 
     EntityType get_type();
     bool can_be_obstacle();

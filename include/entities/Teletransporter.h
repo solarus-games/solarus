@@ -63,7 +63,6 @@ class Teletransporter: public Detector {
 	const std::string& destination_map_id,
         const std::string& destination_name);
     ~Teletransporter();
-    static CreationFunction parse;
 
     EntityType get_type();
     void set_map(Map& map);

@@ -28,17 +28,24 @@ struct lua_State;
 struct luaL_Reg;
 
 /**
- * @brief This class represents the only Lua context that runs
- * dynamic scripts at runtime.
+ * @brief This class represents a living Lua context that can execute dynamic
+ * scripts at runtime.
  *
- * Such scripts includes map scripts, enemy scripts, etc.
- * Data files are not managed by this class even if they are written in Lua.
+ * Such scripts includes menus, map scripts, enemy behaviors, etc.
+ * All these scripts run in the same Lua context.
+ *
+ * On the contrary, data files written in Lua (like maps and dialogs) are
+ * always parsed in their own, independent Lua states because data files only
+ * have access to a few determined functions.
+ *
+ * TODO: this class also provides general Lua utilities that should be moved
+ * to a separate LuaTools class.
  */
 class LuaContext {
 
   public:
 
-    // functions and types
+    // Functions and types.
     static const std::string main_module_name;                   /**< sol.main */
     static const std::string audio_module_name;                  /**< sol.audio */
     static const std::string timer_module_name;                  /**< sol.timer */
@@ -78,10 +85,6 @@ class LuaContext {
     static LuaContext& get_lua_context(lua_State* l);
 
     MainLoop& get_main_loop();
-    Game* get_current_game();
-    void set_current_game(Game* current_game);
-    CustomScreen* get_current_screen();
-    void set_current_screen(CustomScreen* current_screen);
 
     // Main loop from C++.
     void initialize();
@@ -95,6 +98,32 @@ class LuaContext {
     void notify_enemy_created(Enemy& enemy);
     void notify_camera_reached_target(Map& map);
     void notify_dialog_finished(int callback_ref, int answer);
+
+    // Lua table exploring helpers.
+    static int check_int_field(
+        lua_State* l, int table_index, const std::string& key
+    );
+    static int opt_int_field(
+        lua_State* l, int table_index, const std::string& key, int default_value
+    );
+    static double check_number_field(
+        lua_State* l, int table_index, const std::string& key
+    );
+    static double opt_number_field(
+        lua_State* l, int table_index, const std::string& key, double default_value
+    );
+    static const std::string check_string_field(
+        lua_State* l, int table_index, const std::string& key
+    );
+    static const std::string opt_string_field(
+        lua_State* l, int table_index, const std::string& key, const std::string& default_value
+    );
+    static bool check_boolean_field(
+        lua_State* l, int table_index, const std::string& key
+    );
+    static bool opt_boolean_field(
+        lua_State* l, int table_index, const std::string& key, bool default_value
+    );
 
     // Lua refs.
     int create_ref();
@@ -125,6 +154,10 @@ class LuaContext {
 
     // Input.
     static const std::string& input_get_key_name(InputEvent::KeyboardKey key);
+
+    // Entities.
+    static Map* get_entity_creation_map(lua_State* l);
+    static void set_entity_creation_map(lua_State* l, Map* map);
 
     // Main loop events (sol.main).
     void main_on_update();
@@ -225,189 +258,13 @@ class LuaContext {
     void enemy_on_dead(Enemy& enemy);
     void enemy_on_immobilized(Enemy& enemy);
 
-  private:
-
-    /**
-     * @brief Data associated to any Lua timer.
-     */
-    struct LuaTimerData {
-      int callback_ref;     /**< Lua ref of the function to call after the timer. */
-      const void* context;  /**< Lua table or userdata the timer is attached to. */
-    };
-
-    // Executing Lua code.
-    bool find_global_function(const std::string& function_name);
-    bool find_local_function(int index, const std::string& function_name);
-    bool find_local_function(const std::string& function_name);
-    bool find_method(int index, const std::string& function_name);
-    bool find_method(const std::string& function_name);
-    bool call_function(int nb_arguments, int nb_results,
-        const std::string& function_name);
-    static bool call_function(lua_State* l, int nb_arguments, int nb_results,
-        const std::string& function_name);
-    static void load_file(lua_State* l, const std::string& script_name);
-    static bool load_file_if_exists(lua_State* l, const std::string& script_name);
-    static void do_file(lua_State* l, const std::string& script_name);
-    static bool do_file_if_exists(lua_State* l, const std::string& script_name);
-
-    // Lua helper functions.
-    static int get_positive_index(lua_State* l, int index);
-    void print_stack();
-
-    // Initialization of modules.
-    void register_functions(const std::string& module_name, const luaL_Reg* functions);
-    void register_type(const std::string& module_name, const luaL_Reg* methods,
-        const luaL_Reg* metamethods);
-    void register_modules();
-    void register_main_module();
-    void register_audio_module();
-    void register_timer_module();
-    void register_item_module();
-    void register_surface_module();
-    void register_text_surface_module();
-    void register_sprite_module();
-    void register_movement_module();
-    void register_input_module();
-    void register_video_module();
-    void register_menu_module();
-    void register_language_module();
-    void register_game_module();
-    void register_map_module();
-    void register_entity_module();
-
-    // Pushing objects to Lua.
-    static void push_ref(lua_State* l, int ref);
-    static void push_main(lua_State* l);
-    static void push_string(lua_State* l, const std::string& text);
-    static void push_userdata(lua_State* l, ExportableToLua& userdata);
-    static void push_color(lua_State* l, const Color& color);
-    static void push_timer(lua_State* l, Timer& timer);
-    static void push_surface(lua_State* l, Surface& surface);
-    static void push_text_surface(lua_State* l, TextSurface& text_surface);
-    static void push_sprite(lua_State* l, Sprite& sprite);
-    static void push_item(lua_State* l, EquipmentItem& item);
-    static void push_movement(lua_State* l, Movement& movement);
-    static void push_game(lua_State* l, Savegame& game);
-    static void push_map(lua_State* l, Map& map);
-    static void push_entity(lua_State* l, MapEntity& entity);
-    static void push_hero(lua_State* l, Hero& hero);
-    static void push_npc(lua_State* l, NPC& npc);
-    static void push_chest(lua_State* l, Chest& chest);
-    static void push_block(lua_State* l, Block& block);
-    static void push_switch(lua_State* l, Switch& sw);
-    static void push_door(lua_State* l, Door& door);
-    static void push_pickable(lua_State* l, Pickable& pickable);
-    static void push_enemy(lua_State* l, Enemy& enemy);
-
-    // Getting objects from Lua.
-    static bool is_userdata(lua_State* l, int index,
-        const std::string& module_name);
-    static ExportableToLua& check_userdata(lua_State* l, int index,
-        const std::string& module_name);
-    static Color check_color(lua_State* l, int index);
-    static Timer& check_timer(lua_State* l, int index);
-    static Drawable& check_drawable(lua_State* l, int index);
-    static Surface& check_surface(lua_State* l, int index);
-    static TextSurface& check_text_surface(lua_State* l, int index);
-    static Sprite& check_sprite(lua_State* l, int index);
-    static EquipmentItem& check_item(lua_State* l, int index);
-    static Movement& check_movement(lua_State* l, int index);
-    static StraightMovement& check_straight_movement(lua_State* l, int index);
-    static RandomMovement& check_random_movement(lua_State* l, int index);
-    static TargetMovement& check_target_movement(lua_State* l, int index);
-    static PathMovement& check_path_movement(lua_State* l, int index);
-    static RandomPathMovement& check_random_path_movement(lua_State* l, int index);
-    static PathFindingMovement& check_path_finding_movement(lua_State* l, int index);
-    static CircleMovement& check_circle_movement(lua_State* l, int index);
-    static JumpMovement& check_jump_movement(lua_State* l, int index);
-    static PixelMovement& check_pixel_movement(lua_State* l, int index);
-    static Savegame& check_game(lua_State* l, int index);
-    static Map& check_map(lua_State* l, int index);
-    static MapEntity& check_entity(lua_State* l, int index);
-    static Hero& check_hero(lua_State* l, int index);
-    static NPC& check_npc(lua_State* l, int index);
-    static Chest& check_chest(lua_State* l, int index);
-    static Block& check_block(lua_State* l, int index);
-    static Switch& check_switch(lua_State* l, int index);
-    static Door& check_door(lua_State* l, int index);
-    static Pickable& check_pickable(lua_State* l, int index);
-    static Enemy& check_enemy(lua_State* l, int index);
-
-    // Events.
-    void on_started();
-    void on_finished();
-    void on_update();
-    void on_draw(Surface& dst_surface);
-    void on_pre_draw(Surface& dst_surface);
-    void on_post_draw(Surface& dst_surface);
-    void on_suspended(bool suspended);
-    bool on_input(InputEvent& event);
-    bool on_key_pressed(InputEvent& event);
-    bool on_key_released(InputEvent& event);
-    bool on_character_pressed(InputEvent& event);
-    bool on_joypad_button_pressed(InputEvent& event);
-    bool on_joypad_button_released(InputEvent& event);
-    bool on_joypad_axis_moved(InputEvent& event);
-    bool on_joypad_hat_moved(InputEvent& event);
-    bool on_direction_pressed(InputEvent& event);
-    void on_started(Destination* destination);
-    void on_opening_transition_finished(Destination* destination);
-    void on_camera_back();
-    void on_obtaining_treasure(const Treasure& treasure);
-    void on_obtained_treasure(const Treasure& treasure);
-    void on_victory_finished();
-    void on_activated();
-    void on_activated_repeat();
-    void on_inactivated();
-    void on_left();
-    void on_interaction();
-    bool on_interaction_item(EquipmentItem& item_used);
-    void on_npc_interaction(NPC& npc);
-    bool on_npc_interaction_item(NPC& npc, EquipmentItem& item_used);
-    void on_npc_collision_fire(NPC& npc);
-    void on_collision_fire();
-    void on_collision_explosion();
-    void on_collision_enemy(Enemy& enemy, Sprite& other_sprite, Sprite& this_sprite);
-    bool on_empty();
-    bool on_buying();
-    void on_bought();
-    void on_open();
-    void on_closed();
-    void on_moved();
-    void on_map_changed(Map& map);
-    void on_pickable_created(Pickable& pickable);
-    void on_pickable_movement_changed(Pickable& pickable, Movement& movement);
-    void on_variant_changed(int variant);
-    void on_amount_changed(int amount);
-    void on_obtaining(const Treasure& treasure);
-    void on_obtained(const Treasure& treasure);
-    void on_using();
-    void on_ability_used(const std::string& ability_name);
-    void on_created();
-    void on_removed();
-    void on_enabled();
-    void on_disabled();
-    void on_restarted();
-    void on_pre_draw();
-    void on_post_draw();
-    void on_position_changed(const Rectangle& xy, Layer layer);
-    void on_obstacle_reached(Movement& movement);
-    void on_movement_changed(Movement& movement);
-    void on_movement_finished();
-    void on_sprite_animation_finished(Sprite& sprite, const std::string& animation);
-    void on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
-    void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
-    void on_hurt(EnemyAttack attack, int life_lost);
-    void on_dying();
-    void on_dead();
-    void on_immobilized();
+    // Implementation of the API.
 
     /**
      * @brief Type of the functions that can be called by Lua.
-     * */
+     */
     typedef int (FunctionExportedToLua) (lua_State* l);
 
-    // Implementation of the API.
     // All functions named <type>_api_<name> can be called by Lua.
     static FunctionExportedToLua
 
@@ -651,13 +508,6 @@ class LuaContext {
       map_api_open_doors,
       map_api_close_doors,
       map_api_set_doors_open,
-      map_api_create_pickable,  // TODO make creation functions uniform, all with a table as parameter
-      map_api_create_destructible,
-      map_api_create_block,
-      map_api_create_bomb,
-      map_api_create_explosion,
-      map_api_create_fire,
-      map_api_create_enemy,
       map_api_get_entity,
       map_api_has_entity,
       map_api_get_entities,
@@ -665,6 +515,29 @@ class LuaContext {
       map_api_has_entities,
       map_api_set_entities_enabled,
       map_api_remove_entities,
+      map_api_create_tile,
+      map_api_create_destination,
+      map_api_create_teletransporter,
+      map_api_create_pickable,      // TODO use a table as parameter
+      map_api_create_destructible,  // TODO use a table as parameter
+      map_api_create_chest,
+      map_api_create_jumper,
+      map_api_create_enemy,         // TODO use a table as parameter
+      map_api_create_npc,
+      map_api_create_block,         // TODO use a table as parameter
+      map_api_create_dynamic_tile,
+      map_api_create_switch,
+      map_api_create_wall,
+      map_api_create_sensor,
+      map_api_create_crystal,
+      map_api_create_crystal_block,
+      map_api_create_shop_item,
+      map_api_create_conveyor_belt,
+      map_api_create_door,
+      map_api_create_stairs,
+      map_api_create_bomb,          // TODO use a table as parameter
+      map_api_create_explosion,     // TODO use a table as parameter
+      map_api_create_fire,          // TODO use a table as parameter
 
       // Map entity API.
       entity_api_get_map,
@@ -761,9 +634,187 @@ class LuaContext {
       userdata_meta_eq,
       userdata_meta_gc,
       userdata_meta_newindex_as_table,
-      userdata_meta_index_as_table,
+      userdata_meta_index_as_table;
 
-      // internal functions
+  private:
+
+    /**
+     * @brief Data associated to any Lua timer.
+     */
+    struct LuaTimerData {
+      int callback_ref;     /**< Lua ref of the function to call after the timer. */
+      const void* context;  /**< Lua table or userdata the timer is attached to. */
+    };
+
+    // Executing Lua code.
+    bool find_global_function(const std::string& function_name);
+    bool find_local_function(int index, const std::string& function_name);
+    bool find_local_function(const std::string& function_name);
+    bool find_method(int index, const std::string& function_name);
+    bool find_method(const std::string& function_name);
+    bool call_function(int nb_arguments, int nb_results,
+        const std::string& function_name);
+    static bool call_function(lua_State* l, int nb_arguments, int nb_results,
+        const std::string& function_name);
+    static void load_file(lua_State* l, const std::string& script_name);
+    static bool load_file_if_exists(lua_State* l, const std::string& script_name);
+    static void do_file(lua_State* l, const std::string& script_name);
+    static bool do_file_if_exists(lua_State* l, const std::string& script_name);
+
+    // Lua helper functions.
+    static int get_positive_index(lua_State* l, int index);
+    void print_stack();
+
+    // Initialization of modules.
+    void register_functions(const std::string& module_name, const luaL_Reg* functions);
+    void register_type(const std::string& module_name, const luaL_Reg* methods,
+        const luaL_Reg* metamethods);
+    void register_modules();
+    void register_main_module();
+    void register_audio_module();
+    void register_timer_module();
+    void register_item_module();
+    void register_surface_module();
+    void register_text_surface_module();
+    void register_sprite_module();
+    void register_movement_module();
+    void register_input_module();
+    void register_video_module();
+    void register_menu_module();
+    void register_language_module();
+    void register_game_module();
+    void register_map_module();
+    void register_entity_module();
+
+    // Pushing objects to Lua.
+    static void push_ref(lua_State* l, int ref);
+    static void push_main(lua_State* l);
+    static void push_string(lua_State* l, const std::string& text);
+    static void push_userdata(lua_State* l, ExportableToLua& userdata);
+    static void push_color(lua_State* l, const Color& color);
+    static void push_timer(lua_State* l, Timer& timer);
+    static void push_surface(lua_State* l, Surface& surface);
+    static void push_text_surface(lua_State* l, TextSurface& text_surface);
+    static void push_sprite(lua_State* l, Sprite& sprite);
+    static void push_item(lua_State* l, EquipmentItem& item);
+    static void push_movement(lua_State* l, Movement& movement);
+    static void push_game(lua_State* l, Savegame& game);
+    static void push_map(lua_State* l, Map& map);
+    static void push_entity(lua_State* l, MapEntity& entity);
+    static void push_hero(lua_State* l, Hero& hero);
+    static void push_npc(lua_State* l, NPC& npc);
+    static void push_chest(lua_State* l, Chest& chest);
+    static void push_block(lua_State* l, Block& block);
+    static void push_switch(lua_State* l, Switch& sw);
+    static void push_door(lua_State* l, Door& door);
+    static void push_pickable(lua_State* l, Pickable& pickable);
+    static void push_enemy(lua_State* l, Enemy& enemy);
+
+    // Getting objects from Lua.
+    static bool is_userdata(lua_State* l, int index,
+        const std::string& module_name);
+    static ExportableToLua& check_userdata(lua_State* l, int index,
+        const std::string& module_name);
+    static Color check_color(lua_State* l, int index);
+    static Timer& check_timer(lua_State* l, int index);
+    static Drawable& check_drawable(lua_State* l, int index);
+    static Surface& check_surface(lua_State* l, int index);
+    static TextSurface& check_text_surface(lua_State* l, int index);
+    static Sprite& check_sprite(lua_State* l, int index);
+    static EquipmentItem& check_item(lua_State* l, int index);
+    static Movement& check_movement(lua_State* l, int index);
+    static StraightMovement& check_straight_movement(lua_State* l, int index);
+    static RandomMovement& check_random_movement(lua_State* l, int index);
+    static TargetMovement& check_target_movement(lua_State* l, int index);
+    static PathMovement& check_path_movement(lua_State* l, int index);
+    static RandomPathMovement& check_random_path_movement(lua_State* l, int index);
+    static PathFindingMovement& check_path_finding_movement(lua_State* l, int index);
+    static CircleMovement& check_circle_movement(lua_State* l, int index);
+    static JumpMovement& check_jump_movement(lua_State* l, int index);
+    static PixelMovement& check_pixel_movement(lua_State* l, int index);
+    static Savegame& check_game(lua_State* l, int index);
+    static Map& check_map(lua_State* l, int index);
+    static MapEntity& check_entity(lua_State* l, int index);
+    static Hero& check_hero(lua_State* l, int index);
+    static NPC& check_npc(lua_State* l, int index);
+    static Chest& check_chest(lua_State* l, int index);
+    static Block& check_block(lua_State* l, int index);
+    static Switch& check_switch(lua_State* l, int index);
+    static Door& check_door(lua_State* l, int index);
+    static Pickable& check_pickable(lua_State* l, int index);
+    static Enemy& check_enemy(lua_State* l, int index);
+
+    // Events.
+    void on_started();
+    void on_finished();
+    void on_update();
+    void on_draw(Surface& dst_surface);
+    void on_pre_draw(Surface& dst_surface);
+    void on_post_draw(Surface& dst_surface);
+    void on_suspended(bool suspended);
+    bool on_input(InputEvent& event);
+    bool on_key_pressed(InputEvent& event);
+    bool on_key_released(InputEvent& event);
+    bool on_character_pressed(InputEvent& event);
+    bool on_joypad_button_pressed(InputEvent& event);
+    bool on_joypad_button_released(InputEvent& event);
+    bool on_joypad_axis_moved(InputEvent& event);
+    bool on_joypad_hat_moved(InputEvent& event);
+    bool on_direction_pressed(InputEvent& event);
+    void on_started(Destination* destination);
+    void on_opening_transition_finished(Destination* destination);
+    void on_camera_back();
+    void on_obtaining_treasure(const Treasure& treasure);
+    void on_obtained_treasure(const Treasure& treasure);
+    void on_victory_finished();
+    void on_activated();
+    void on_activated_repeat();
+    void on_inactivated();
+    void on_left();
+    void on_interaction();
+    bool on_interaction_item(EquipmentItem& item_used);
+    void on_npc_interaction(NPC& npc);
+    bool on_npc_interaction_item(NPC& npc, EquipmentItem& item_used);
+    void on_npc_collision_fire(NPC& npc);
+    void on_collision_fire();
+    void on_collision_explosion();
+    void on_collision_enemy(Enemy& enemy, Sprite& other_sprite, Sprite& this_sprite);
+    bool on_empty();
+    bool on_buying();
+    void on_bought();
+    void on_open();
+    void on_closed();
+    void on_moved();
+    void on_map_changed(Map& map);
+    void on_pickable_created(Pickable& pickable);
+    void on_pickable_movement_changed(Pickable& pickable, Movement& movement);
+    void on_variant_changed(int variant);
+    void on_amount_changed(int amount);
+    void on_obtaining(const Treasure& treasure);
+    void on_obtained(const Treasure& treasure);
+    void on_using();
+    void on_ability_used(const std::string& ability_name);
+    void on_created();
+    void on_removed();
+    void on_enabled();
+    void on_disabled();
+    void on_restarted();
+    void on_pre_draw();
+    void on_post_draw();
+    void on_position_changed(const Rectangle& xy, Layer layer);
+    void on_obstacle_reached(Movement& movement);
+    void on_movement_changed(Movement& movement);
+    void on_movement_finished();
+    void on_sprite_animation_finished(Sprite& sprite, const std::string& animation);
+    void on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
+    void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
+    void on_hurt(EnemyAttack attack, int life_lost);
+    void on_dying();
+    void on_dead();
+    void on_immobilized();
+
+    // Functions exported to Lua for internal needs.
+    static FunctionExportedToLua
       l_loader,
       l_get_map_entity_or_global,
       l_camera_do_callback,

@@ -43,7 +43,6 @@ class Chest: public Detector {
 
     Chest(const std::string &name, Layer layer, int x, int y, bool big_chest, const Treasure &treasure);
     ~Chest();
-    static CreationFunction parse;
 
     EntityType get_type();
     bool is_drawn_in_y_order();

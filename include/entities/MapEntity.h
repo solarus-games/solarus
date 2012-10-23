@@ -48,9 +48,6 @@ class MapEntity: public ExportableToLua {
 
   private:
 
-    typedef MapEntity* (CreationFunction)(Map& map, lua_State* l); /**< a function to create a certain type of entity */
-    static CreationFunction* creation_functions[];      /**< the creation functions of all types of entities */
-
     MainLoop* main_loop;                        /**< The Solarus main loop. */
     Map* map;                                   /**< The map where this entity is, or NULL
                                                  * (automatically set by class MapEntities after adding the entity to the map) */
@@ -130,8 +127,6 @@ class MapEntity: public ExportableToLua {
     Hero& get_hero();
 
   public:
-
-    static MapEntity* create_from_lua(Map& map, lua_State* l);
 
     // destruction
     virtual ~MapEntity();

@@ -86,41 +86,6 @@ Door::~Door() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Door::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-
-  std::string name;
-  int direction, subtype, savegame_variable;
-
-  FileTools::read(is, name);
-  FileTools::read(is, direction);
-  FileTools::read(is, subtype);
-  FileTools::read(is, savegame_variable);
-
-  Door *door = new Door(name, Layer(layer), x, y, direction, Subtype(subtype), savegame_variable);
-
-  if (savegame_variable != -1) {
-    door->set_open(game.get_savegame().get_boolean(savegame_variable));
-  }
-  else {
-    door->set_open(false);
-  }
-  door->get_sprite().set_current_direction(direction);
-
-  return door;
-}
-
-/**
  * @brief Returns the type of entity.
  * @return the type of entity
  */

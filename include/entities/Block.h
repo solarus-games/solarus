@@ -50,7 +50,6 @@ class Block: public Detector {
         const std::string& sprite_name,
         bool can_be_pushed, bool can_be_pulled, int maximum_moves);
     ~Block();
-    static CreationFunction parse;
 
     EntityType get_type();
     bool is_drawn_in_y_order();

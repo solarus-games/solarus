@@ -74,45 +74,6 @@ Teletransporter::~Teletransporter() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Teletransporter::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
-	
-  int width, height, transition_style;
-  std::string name, sprite_name, sound_id, destination_map_id, destination_name;
-
-  FileTools::read(is, width);
-  FileTools::read(is, height);
-  FileTools::read(is, name);
-  FileTools::read(is, sprite_name);
-  FileTools::read(is, sound_id);
-  FileTools::read(is, transition_style);
-  FileTools::read(is, destination_map_id);
-  FileTools::read(is, destination_name);
-
-  if (sprite_name == "_none") {
-    sprite_name = "";
-  }
-
-  if (sound_id == "_none") {
-    sound_id = "";
-  }
-
-  return new Teletransporter(name, Layer(layer), x, y, width, height,
-      sprite_name, sound_id, Transition::Style(transition_style),
-      destination_map_id, destination_name);
-}
-
-/**
  * @brief Sets the map.
  *
  * Warning: as this function is called when initializing the map,

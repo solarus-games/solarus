@@ -75,7 +75,6 @@ class Door: public Detector {
     Door(const std::string &name, Layer layer, int x, int y,
 	int direction, Subtype subtype, int savegame_variable);
     ~Door();
-    static CreationFunction parse;
 
     EntityType get_type();
 

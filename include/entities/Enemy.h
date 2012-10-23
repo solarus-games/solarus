@@ -141,7 +141,6 @@ class Enemy: public Detector {
     // creation and destruction
     ~Enemy();
 
-    static CreationFunction parse;
     static MapEntity* create(Game& game,
         const std::string& breed, Rank rank, int savegame_variable,
         const std::string& name, Layer layer, int x, int y, int direction,

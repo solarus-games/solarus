@@ -37,7 +37,6 @@ class Jumper: public Detector {
     Jumper(const std::string &name, Layer layer, int x, int y, int width, int height,
 	int direction, int jump_length);
     ~Jumper();
-    static CreationFunction parse;
 
     EntityType get_type();
     bool can_be_drawn();

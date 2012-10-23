@@ -46,7 +46,6 @@ class DynamicTile: public Detector {
     DynamicTile(const std::string &name, Layer layer, int x, int y,
 	int width, int height, int tile_pattern_id, bool visible);
     ~DynamicTile();
-    static CreationFunction parse;
 
     EntityType get_type();
     void set_map(Map &map);

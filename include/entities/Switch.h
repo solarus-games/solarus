@@ -62,7 +62,6 @@ class Switch: public Detector {
     Switch(const std::string& name, Layer layer, int x, int y,
 	Subtype subtype, bool needs_block, bool inactivate_when_leaving);
     ~Switch();
-    static CreationFunction parse;
 
     EntityType get_type();
     bool is_obstacle_for(MapEntity& other);

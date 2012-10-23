@@ -42,7 +42,6 @@ class Wall: public MapEntity {
     Wall(const std::string &name, Layer layer, int x, int y, int width, int height,
         bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks);
     ~Wall();
-    static CreationFunction parse;
 
     EntityType get_type();
     bool can_be_drawn();

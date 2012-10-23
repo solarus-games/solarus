@@ -51,32 +51,6 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 
-// TODO replace these functions and this list by functions
-// directly exportable to lua and that take
-// the map as optional first paramater or finds it in the registry.
-MapEntity::CreationFunction* MapEntity::creation_functions[] = {
-  Tile::parse,
-  Destination::parse,
-  Teletransporter::parse,
-  Pickable::parse,
-  Destructible::parse,
-  Chest::parse,
-  Jumper::parse,
-  Enemy::parse,
-  NPC::parse,
-  Block::parse,
-  DynamicTile::parse,
-  Switch::parse,
-  Wall::parse,
-  Sensor::parse,
-  Crystal::parse,
-  CrystalBlock::parse,
-  ShopItem::parse,
-  ConveyorBelt::parse,
-  Door::parse,
-  Stairs::parse,
-};
-
 const Rectangle MapEntity::directions_to_xy_moves[] = {
   Rectangle( 1, 0),
   Rectangle( 1,-1),

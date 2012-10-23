@@ -64,36 +64,6 @@ ShopItem::~ShopItem() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* ShopItem::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
-
-  std::string name, treasure_name;
-  int treasure_variant, treasure_savegame_variable, price;
-  std::string dialog_id;
-
-  FileTools::read(is, name);
-  FileTools::read(is, treasure_name);
-  FileTools::read(is, treasure_variant);
-  FileTools::read(is, treasure_savegame_variable);
-  FileTools::read(is, price);
-  FileTools::read(is, dialog_id);
-
-  return create(game, name, Layer(layer), x, y,
-      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
-      price, dialog_id);
-}
-
-/**
  * @brief Creates a new shop item with the specified treasure and price.
  * @param game the current game
  * @param name the name identifying this entity

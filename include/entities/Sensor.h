@@ -33,7 +33,6 @@ class Sensor: public Detector {
 
     Sensor(const std::string& name, Layer layer, int x, int y, int width, int height);
     ~Sensor();
-    static CreationFunction parse;
 
     EntityType get_type();
     bool can_be_drawn();

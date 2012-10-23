@@ -92,36 +92,6 @@ Enemy::~Enemy() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Enemy::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
-
-  int direction, rank, savegame_variable, treasure_variant, treasure_savegame_variable;
-  std::string name, breed, treasure_name;
-
-  FileTools::read(is, name);
-  FileTools::read(is, direction);
-  FileTools::read(is, breed);
-  FileTools::read(is, rank);
-  FileTools::read(is, savegame_variable);
-  FileTools::read(is, treasure_name);
-  FileTools::read(is, treasure_variant);
-  FileTools::read(is, treasure_savegame_variable);
-
-  return create(game, breed, Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction,
-      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
-}
-
-/**
  * @brief Creates an enemy.
  *
  * This method acts like a constructor, and usually returns an enemy.

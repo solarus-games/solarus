@@ -79,7 +79,6 @@ class NPC: public Detector {
         Subtype subtype, std::string sprite_name,
         int initial_direction, const std::string& behavior_string);
     ~NPC();
-    static CreationFunction parse;
 
     EntityType get_type();
 

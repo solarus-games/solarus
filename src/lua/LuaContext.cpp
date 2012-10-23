@@ -64,6 +64,10 @@ LuaContext& LuaContext::get_lua_context(lua_State* l) {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
   LuaContext* lua_context = static_cast<LuaContext*>(lua_touserdata(l, -1));
   lua_pop(l, 1);
+
+  Debug::check_assertion(lua_context != NULL,
+      "This Lua state does not belong to a LuaContext object");
+
   return *lua_context;
 }
 
@@ -311,6 +315,237 @@ void LuaContext::notify_dialog_finished(int callback_ref, int answer) {
     call_function(1, 0, "dialog callback");
     destroy_ref(callback_ref);
   }
+}
+
+/**
+ * @brief Checks that a table field is a number and returns it as an integer.
+ *
+ * This function acts like lua_getfield() followed by luaL_checkint().
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @return The wanted field as an integer.
+ */
+int LuaContext::check_int_field(
+    lua_State* l, int table_index, const std::string& key) {
+
+  lua_getfield(l, table_index, key.c_str());
+  if (!lua_isnumber(l, -1)) {
+    luaL_argerror(l, table_index, (StringConcat() <<
+          "Bad field '" << key << "' (integer expected, got " <<
+          luaL_typename(l, -1)).c_str()
+        );
+  }
+
+  int value = lua_tointeger(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * @brief Like check_int_field() but with a default value.
+ *
+ * This function acts like lua_getfield() followed by luaL_optint().
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @param default_value The default value to return if the field is \c nil.
+ * @return The wanted field as an integer.
+ */
+int LuaContext::opt_int_field(
+    lua_State* l, int table_index, const std::string& key, int default_value) {
+
+  lua_getfield(l, table_index, key.c_str());
+  int value = default_value;
+  if (!lua_isnil(l, -1)) {
+
+    if (!lua_isnumber(l, -1)) {
+      luaL_argerror(l, table_index, (StringConcat() <<
+            "Bad field '" << key << "' (integer expected, got " <<
+            luaL_typename(l, -1)).c_str()
+          );
+    }
+    value = lua_tointeger(l, -1);
+  }
+
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * @brief Checks that a table field is a number and returns it as a double.
+ *
+ * This function acts like lua_getfield() followed by luaL_checknumber().
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @return The wanted field as a double.
+ */
+double LuaContext::check_number_field(
+    lua_State* l, int table_index, const std::string& key) {
+
+  lua_getfield(l, table_index, key.c_str());
+  if (!lua_isnumber(l, -1)) {
+    luaL_argerror(l, table_index, (StringConcat() <<
+          "Bad field '" << key << "' (number expected, got " <<
+          luaL_typename(l, -1)).c_str()
+        );
+  }
+
+  int value = lua_tonumber(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * @brief Like check_number_field() but with a default value.
+ *
+ * This function acts like lua_getfield() followed by luaL_optnumber().
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @param default_value The default value to return if the field is \c nil.
+ * @return The wanted field as a double.
+ */
+double LuaContext::opt_number_field(
+    lua_State* l, int table_index, const std::string& key, double default_value) {
+
+  lua_getfield(l, table_index, key.c_str());
+  double value = default_value;
+  if (!lua_isnil(l, -1)) {
+
+    if (!lua_isnumber(l, -1)) {
+      luaL_argerror(l, table_index, (StringConcat() <<
+            "Bad field '" << key << "' (number expected, got " <<
+            luaL_typename(l, -1)).c_str()
+          );
+    }
+    value = lua_tonumber(l, -1);
+  }
+
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * @brief Checks that a table field is a string and returns it.
+ *
+ * This function acts like lua_getfield() followed by luaL_checkstring().
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @return The wanted field as an string.
+ */
+const std::string LuaContext::check_string_field(
+    lua_State* l, int table_index, const std::string& key) {
+
+  lua_getfield(l, table_index, key.c_str());
+  if (!lua_isstring(l, -1)) {
+    luaL_argerror(l, table_index, (StringConcat() <<
+          "Bad field '" << key << "' (string expected, got " <<
+          luaL_typename(l, -1)).c_str()
+        );
+  }
+
+  const std::string& value = lua_tostring(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * @brief Like check_string_field() but with a default value.
+ *
+ * This function acts like lua_getfield() followed by luaL_optstring().
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @param default_value The default value to return if the field is \c nil.
+ * @return The wanted field as a string.
+ */
+const std::string LuaContext::opt_string_field(
+    lua_State* l, int table_index, const std::string& key, const std::string& default_value) {
+
+  lua_getfield(l, table_index, key.c_str());
+  std::string value;
+  if (lua_isnil(l, -1)) {
+    value = default_value;
+  }
+  else {
+     if (!lua_isstring(l, -1)) {
+      luaL_argerror(l, table_index, (StringConcat() <<
+            "Bad field '" << key << "' (string expected, got " <<
+            luaL_typename(l, -1)).c_str()
+          );
+    }
+    value = lua_tostring(l, -1);
+  }
+
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * @brief Checks that a table field is a boolean and returns it.
+ *
+ * This function acts like lua_getfield() followed by luaL_checktype()
+ * and lua_toboolean().
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @return The wanted field as a boolean.
+ */
+bool LuaContext::check_boolean_field(
+    lua_State* l, int table_index, const std::string& key) {
+
+  lua_getfield(l, table_index, key.c_str());
+  if (lua_type(l, -1) != LUA_TBOOLEAN) {
+    luaL_argerror(l, table_index, (StringConcat() <<
+          "Bad field '" << key << "' (boolean expected, got " <<
+          luaL_typename(l, -1)).c_str()
+        );
+  }
+
+  bool value = lua_toboolean(l, -1);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * @brief Like check_boolean_field() but with a default value.
+ *
+ * This function acts like lua_getfield() followed by lua_toboolean().
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @param default_value The default value to return if the field is \c nil.
+ * @return The wanted field as a string.
+ */
+bool LuaContext::opt_boolean_field(
+    lua_State* l, int table_index, const std::string& key, bool default_value) {
+
+  lua_getfield(l, table_index, key.c_str());
+  bool value = default_value;
+  if (!lua_isnil(l, -1)) {
+
+    if (lua_type(l, -1) != LUA_TBOOLEAN) {
+      luaL_argerror(l, table_index, (StringConcat() <<
+            "Bad field '" << key << "' (boolean expected, got " <<
+            luaL_typename(l, -1)).c_str()
+          );
+    }
+    value = lua_toboolean(l, -1);
+  }
+
+  lua_pop(l, 1);
+  return value;
 }
 
 /**
@@ -686,7 +921,7 @@ void LuaContext::print_stack() {
 void LuaContext::register_functions(const std::string& module_name,
     const luaL_Reg* functions) {
 
-  // create a table and fill it with the methods
+  // create a table and fill it with the functions
   luaL_register(l, module_name.c_str(), functions);
   lua_pop(l, 1);
 }
@@ -702,7 +937,7 @@ void LuaContext::register_functions(const std::string& module_name,
 void LuaContext::register_type(const std::string& module_name,
     const luaL_Reg* methods, const luaL_Reg* metamethods) {
 
-  // create a table and fill it with the functions
+  // create a table and fill it with the methods
   luaL_register(l, module_name.c_str(), methods);
                                   // module
   // create the metatable for the type, add it to the Lua registry

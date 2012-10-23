@@ -20,14 +20,15 @@
 #include "Camera.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "entities/Obstacle.h"
 #include "entities/Layer.h"
 #include "entities/Tileset.h"
 #include "entities/MapEntities.h"
 #include "entities/EntityType.h"
 #include "entities/MapEntity.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/StringConcat.h"
+#include "lua/LuaContext.h"
 
 /**
  * @brief Creates a map loader.
@@ -45,55 +46,107 @@ MapLoader::~MapLoader() {
 
 /**
  * @brief Loads a map into the game.
- * @param game the game
- * @param map the map to load
+ * @param game The game.
+ * @param map The map to load.
  */
 void MapLoader::load_map(Game& game, Map& map) {
 
   map.game = &game;
 
-  // compute the file name, depending on the id
-  const std::string& file_name = std::string("maps/")
-    + map.get_id() + ".dat";
+  // Open the map data file in an independent Lua world.
+  const std::string& file_name = std::string("maps/") + map.get_id() + ".lua";
+  lua_State* l = lua_open();
+  size_t size;
+  char* buffer;
+  FileTools::data_file_open_buffer(file_name, &buffer, &size);
+  luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  FileTools::data_file_close_buffer(buffer);
 
-  // open the map file
-  std::istream& map_file = FileTools::data_file_open(file_name);
+  // Register the properties() function to Lua.
+  lua_register(l, "properties", l_properties);
 
-  // parse the map file
-  std::string line;
-  std::string tileset_id;
-  int x, y, width, height;
+  // Make the Lua world aware of our map.
+  LuaContext::set_entity_creation_map(l, &map);
 
-  // first line: map general info
-  // syntax: width height world floor x y small_keys_variable tileset_id music_id
-  if (!std::getline(map_file, line)) {
-    Debug::die(StringConcat() << "Cannot load map '" << map.get_id() << "': the file '" << file_name << "' is empty");
+  // Execute the Lua code.
+  if (lua_pcall(l, 0, 0, 0) != 0) {
+    Debug::die(StringConcat() << "Failed to load map data file '"
+        << file_name << "': " << lua_tostring(l, -1));
+    lua_pop(l, 1);
   }
 
-  std::istringstream iss0(line);
-  FileTools::read(iss0, width);
-  FileTools::read(iss0, height);
-  FileTools::read(iss0, map.world);
-  FileTools::read(iss0, map.floor);
-  FileTools::read(iss0, x);
-  FileTools::read(iss0, y);
-  FileTools::read(iss0, map.small_keys_variable);
-  FileTools::read(iss0, tileset_id);
-  FileTools::read(iss0, map.music_id);
+  lua_close(l);
 
-  map.location.set_size(width, height);
-  map.width8 = width / 8;
-  map.height8 = height / 8;
-  map.location.set_xy(x, y);
+  // TODO if necessary, store the Lua compiled chunck to speed up next loadings of this map.
+}
 
-  map.tileset = new Tileset(tileset_id);
-  map.tileset->load();
+/**
+ * @brief Implementation of the properties functions of the Lua map data file.
+ *
+ * Sets the properties of the map: position, dimensions, tileset, music, etc.
+ * This function mush be called before any entity creation function.
+ *
+ * @param l The Lua state that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int MapLoader::l_properties(lua_State* l) {
 
-  // initialize data
-  MapEntities &entities = map.get_entities();
-  entities.map_width8 = map.width8;
-  entities.map_height8 = map.height8;
-  entities.tiles_grid_size = map.width8 * map.height8;
+  // Retrieve the map to build.
+  Map* map = LuaContext::get_entity_creation_map(l);
+  Debug::check_assertion(map != NULL, "No map has not been set in this Lua state");
+
+  // Retrieve the map properties from the table parameter.
+  luaL_checktype(l, 1, LUA_TTABLE);
+
+  int x = LuaContext::opt_int_field(l, 1, "x", 0);
+  int y = LuaContext::opt_int_field(l, 1, "y", 0);
+  int width = LuaContext::check_int_field(l, 1, "width");
+  int height = LuaContext::check_int_field(l, 1, "height");
+  std::string world_name = LuaContext::check_string_field(l, 1 , "world");
+  std::string floor_name = LuaContext::opt_string_field(l, 1, "floor", "");
+  int small_keys_variable = LuaContext::opt_int_field(l, 1, "small_keys_variable", -1);
+  std::string tileset_id = LuaContext::check_string_field(l, 1, "tileset");
+  std::string music_id = LuaContext::check_string_field(l, 1, "music");
+
+  // Initialize the map data.
+  // TODO implement methods in Map instead to check the values instead of changing directly the fields.
+  map->location.set_size(width, height);
+  map->width8 = width / 8;
+  map->height8 = height / 8;
+  map->location.set_xy(x, y);
+  map->small_keys_variable = small_keys_variable;
+  map->music_id = music_id;
+
+  // TODO store the world as a string in class Map
+  if (world_name == "inside_world") {
+    map->world = -1;
+  }
+  else if (world_name == "outside_world") {
+    map->world = 0;
+  }
+  else if (world_name.substr(0, 8) == "dungeon_") {
+    std::istringstream iss(world_name.substr(8));
+    iss >> map->world;
+  }
+
+  if (floor_name.empty()) {
+    map->floor = -100;
+  }
+  else if (floor_name == "unknown") {
+    map->floor = -99;
+  }
+  else {
+    std::istringstream iss(floor_name.substr(8));
+    iss >> map->floor;
+  }
+
+  map->tileset = new Tileset(tileset_id);
+  map->tileset->load();
+
+  MapEntities& entities = map->get_entities();
+  entities.map_width8 = map->width8;
+  entities.map_height8 = map->height8;
+  entities.tiles_grid_size = map->width8 * map->height8;
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     entities.animated_tiles[layer] = new bool[entities.tiles_grid_size];
@@ -105,24 +158,36 @@ void MapLoader::load_map(Game& game, Map& map) {
     }
   }
   entities.boomerang = NULL;
+  map->camera = new Camera(*map);
 
-  // read the entities
-  while (std::getline(map_file, line)) {
+  // Properties are set: we now allow the data file to declare entities.
+  static const luaL_Reg functions[] = {
+    { "tile",             LuaContext::map_api_create_tile },
+    { "destination",      LuaContext::map_api_create_destination },
+    { "teletransporter",  LuaContext::map_api_create_teletransporter },
+    { "pickable",         LuaContext::map_api_create_pickable },
+    { "destructible",     LuaContext::map_api_create_destructible },
+    { "chest",            LuaContext::map_api_create_chest },
+    { "jumper",           LuaContext::map_api_create_jumper },
+    { "enemy",            LuaContext::map_api_create_enemy },
+    { "npc",              LuaContext::map_api_create_npc },
+    { "block",            LuaContext::map_api_create_block },
+    { "dynamic_tile",     LuaContext::map_api_create_dynamic_tile },
+    { "switch",           LuaContext::map_api_create_switch },
+    { "wall",             LuaContext::map_api_create_wall },
+    { "sensor",           LuaContext::map_api_create_sensor },
+    { "crystal",          LuaContext::map_api_create_crystal },
+    { "crystal_block",    LuaContext::map_api_create_crystal_block },
+    { "shop_item",        LuaContext::map_api_create_shop_item },
+    { "conveyor_belt",    LuaContext::map_api_create_conveyor_belt },
+    { "door",             LuaContext::map_api_create_door },
+    { "stairs",           LuaContext::map_api_create_stairs },
+    { NULL, NULL }
+  };
+  lua_getglobal(l, "_G");
+  luaL_register(l, NULL, functions);
+  lua_pop(l, 1);
 
-    int entity_type, layer;
-
-    std::istringstream iss(line);
-    FileTools::read(iss, entity_type);
-    FileTools::read(iss, layer);
-    FileTools::read(iss, x);
-    FileTools::read(iss, y);
-
-    MapEntity *entity = MapEntity::creation_functions[entity_type](game, iss, Layer(layer), x, y);
-    entities.add_entity(entity);
-  }
-
-  FileTools::data_file_close(map_file);
-
-  map.camera = new Camera(map);
+  return 0;
 }
 

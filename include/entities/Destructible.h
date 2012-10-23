@@ -90,7 +90,6 @@ class Destructible: public Detector {
     // creation and destruction
     Destructible(Layer layer, int x, int y, Subtype subtype, const Treasure &treasure);
     ~Destructible();
-    static CreationFunction parse;
 
     EntityType get_type();
     bool is_drawn_in_y_order();

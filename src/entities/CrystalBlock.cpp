@@ -60,29 +60,6 @@ CrystalBlock::~CrystalBlock() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* CrystalBlock::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-
-  int width, height, subtype;
-
-  FileTools::read(is, width);
-  FileTools::read(is, height);
-  FileTools::read(is, subtype);
-
-  return new CrystalBlock(game, Layer(layer), x, y, width, height, Subtype(subtype));
-}
-
-/**
  * @brief Returns the type of entity.
  * @return the type of entity
  */

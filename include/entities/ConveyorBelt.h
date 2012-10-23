@@ -31,7 +31,6 @@ class ConveyorBelt: public Detector {
 
     ConveyorBelt(Layer layer, int x, int y, int direction);
     ~ConveyorBelt();
-    static CreationFunction parse;
 
     EntityType get_type();
 

@@ -51,7 +51,6 @@ class CrystalBlock: public Detector {
 
     CrystalBlock(Game &game, Layer layer, int x, int y, int width, int height, Subtype subtype);
     ~CrystalBlock();
-    static CreationFunction parse;
 
     EntityType get_type();
 

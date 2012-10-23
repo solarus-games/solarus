@@ -64,7 +64,6 @@ class Pickable: public Detector {
 	FallingHeight falling_height, bool force_persistent);
 
     ~Pickable();
-    static CreationFunction parse;
 
     EntityType get_type();
     bool can_be_obstacle();

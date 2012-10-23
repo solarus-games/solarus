@@ -46,7 +46,6 @@ class Tile: public MapEntity {
 
     Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id);
     ~Tile();
-    static CreationFunction parse;
 
     EntityType get_type();
     void set_map(Map& map);

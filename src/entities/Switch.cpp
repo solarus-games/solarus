@@ -75,31 +75,6 @@ Switch::~Switch() {
 }
 
 /**
- * @brief Creates an instance from an input stream.
- *
- * The input stream must respect the syntax of this entity type.
- *
- * @param game the game that will contain the entity created
- * @param is an input stream
- * @param layer the layer
- * @param x x coordinate of the entity
- * @param y y coordinate of the entity
- * @return the instance created
- */
-MapEntity* Switch::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
-
-  std::string name;
-  int subtype, needs_block, inactivate_when_leaving;
-
-  FileTools::read(is, name);
-  FileTools::read(is, subtype);
-  FileTools::read(is, needs_block);
-  FileTools::read(is, inactivate_when_leaving);
-
-  return new Switch(name, Layer(layer), x, y, Subtype(subtype), needs_block != 0, inactivate_when_leaving != 0);
-}
-
-/**
  * @brief Returns the type of entity.
  * @return the type of entity
  */

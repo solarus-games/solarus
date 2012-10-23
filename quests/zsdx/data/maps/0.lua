@@ -4,7 +4,7 @@ properties{
   width = 320,
   height = 240,
   world = "outside_world",
-  tileset = 6,
+  tileset = "6",
 }
 
 destination{

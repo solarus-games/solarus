@@ -4,10 +4,10 @@ properties{
   width = 1840,
   height = 1264,
   world = "dungeon_9",
-  floor = unknown,
+  floor = "unknown",
   small_keys_variable = 285,
-  tileset = 16,
-  music = tloz_dungeon,
+  tileset = "16",
+  music = "tloz_dungeon",
 }
 
 tile{

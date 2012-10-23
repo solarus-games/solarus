@@ -4,8 +4,8 @@ properties{
   width = 512,
   height = 496,
   world = "inside_world",
-  tileset = 11,
-  music = light_world_dungeon,
+  tileset = "11",
+  music = "light_world_dungeon",
 }
 
 block{

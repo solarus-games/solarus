@@ -4,8 +4,8 @@ properties{
   width = 320,
   height = 368,
   world = "inside_world",
-  tileset = 14,
-  music = cave,
+  tileset = "14",
+  music = "cave",
 }
 
 tile{

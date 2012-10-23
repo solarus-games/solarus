@@ -4,8 +4,8 @@ properties{
   width = 320,
   height = 240,
   world = "inside_world",
-  tileset = 6,
-  music = credits,
+  tileset = "6",
+  music = "credits",
 }
 
 destination{

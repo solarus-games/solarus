@@ -4,8 +4,8 @@ properties{
   width = 3056,
   height = 2256,
   world = "inside_world",
-  tileset = 3,
-  music = tloz_dungeon,
+  tileset = "3",
+  music = "tloz_dungeon",
 }
 
 tile{

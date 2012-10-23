@@ -4,9 +4,9 @@ properties{
   width = 480,
   height = 480,
   world = "dungeon_9",
-  floor = unknown,
+  floor = "unknown",
   small_keys_variable = 285,
-  tileset = 15,
+  tileset = "15",
 }
 
 tile{

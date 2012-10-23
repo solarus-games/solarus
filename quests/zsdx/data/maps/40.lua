@@ -4,10 +4,10 @@ properties{
   width = 1024,
   height = 1024,
   world = "dungeon_3",
-  floor = 0,
+  floor = "0",
   small_keys_variable = 225,
-  tileset = 14,
-  music = dark_world_dungeon,
+  tileset = "14",
+  music = "dark_world_dungeon",
 }
 
 tile{

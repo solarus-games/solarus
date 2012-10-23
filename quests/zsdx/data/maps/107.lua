@@ -4,10 +4,10 @@ properties{
   width = 2576,
   height = 2320,
   world = "dungeon_9",
-  floor = 2,
+  floor = "2",
   small_keys_variable = 285,
-  tileset = 15,
-  music = southern_shrine,
+  tileset = "15",
+  music = "southern_shrine",
 }
 
 conveyor_belt{

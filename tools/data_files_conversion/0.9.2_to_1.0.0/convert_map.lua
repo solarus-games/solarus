@@ -297,14 +297,14 @@ function print_metadata(metadata)
   io.write("  height = " .. metadata.height .. ",\n")
   io.write("  world = \"" .. metadata.world .. "\",\n")
   if metadata.floor then
-    io.write("  floor = " .. metadata.floor .. ",\n")
+    io.write("  floor = \"" .. metadata.floor .. "\",\n")
   end
   if metadata.small_keys_variable ~= -1 then
     io.write("  small_keys_variable = " .. metadata.small_keys_variable .. ",\n")
   end
-  io.write("  tileset = " .. metadata.tileset .. ",\n")
+  io.write("  tileset = \"" .. metadata.tileset .. "\",\n")
   if metadata.music ~= nil then
-    io.write("  music = " .. metadata.music .. ",\n")
+    io.write("  music = \"" .. metadata.music .. "\",\n")
   end
   io.write("}\n\n")
 end

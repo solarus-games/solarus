@@ -4,10 +4,10 @@ properties{
   width = 3056,
   height = 1744,
   world = "dungeon_2",
-  floor = 2,
+  floor = "2",
   small_keys_variable = 215,
-  tileset = 0,
-  music = found_items,
+  tileset = "0",
+  music = "found_items",
 }
 
 tile{

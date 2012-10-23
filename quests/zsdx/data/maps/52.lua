@@ -5,7 +5,7 @@ properties{
   height = 960,
   world = "inside_world",
   small_keys_variable = 275,
-  tileset = 9,
+  tileset = "9",
 }
 
 tile{

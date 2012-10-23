@@ -4,8 +4,8 @@ properties{
   width = 1024,
   height = 752,
   world = "inside_world",
-  tileset = 7,
-  music = light_world_dungeon,
+  tileset = "7",
+  music = "light_world_dungeon",
 }
 
 sensor{

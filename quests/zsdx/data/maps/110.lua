@@ -4,10 +4,10 @@ properties{
   width = 2256,
   height = 2064,
   world = "dungeon_9",
-  floor = unknown,
+  floor = "unknown",
   small_keys_variable = 285,
-  tileset = 15,
-  music = southern_shrine,
+  tileset = "15",
+  music = "southern_shrine",
 }
 
 tile{

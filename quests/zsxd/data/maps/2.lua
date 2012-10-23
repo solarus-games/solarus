@@ -4,8 +4,8 @@ properties{
   width = 1136,
   height = 1024,
   world = "outside_world",
-  tileset = 1,
-  music = overworld,
+  tileset = "1",
+  music = "overworld",
 }
 
 tile{

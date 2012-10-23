@@ -5,8 +5,8 @@ properties{
   height = 448,
   world = "inside_world",
   small_keys_variable = 1200,
-  tileset = 3,
-  music = same,
+  tileset = "3",
+  music = "same",
 }
 
 tile{

@@ -4,8 +4,8 @@ properties{
   width = 352,
   height = 336,
   world = "inside_world",
-  tileset = 0,
-  music = fortune_teller,
+  tileset = "0",
+  music = "fortune_teller",
 }
 
 tile{

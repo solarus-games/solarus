@@ -2833,7 +2833,7 @@ better than me!
 dialog{
   id = "outside_world.village.hat_man_npc_waterfall",
   skip = "all",
-  text = [[ 
+  text = [[
 There is supposed to be
 a treasure hidden by
 the waterfall behind

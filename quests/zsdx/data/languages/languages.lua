@@ -14,10 +14,8 @@ language{
   name = "Español"
 }
 
---[[
 language{
   code = "de",
   name = "Deutsch"
 }
---]]
 

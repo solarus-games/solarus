@@ -522,7 +522,7 @@ dialog{
   skip = "all",
   text = [[
 Iss ein Schoko-
-bröchen, um 3
+brötchen, um 3
 Herzen aufzufüllen.
 ]]
 }
@@ -759,7 +759,7 @@ bringe sie Inferno.
 -- Les messages ci-dessous sont affichés lorsque le joueur obtient
 -- un trésor, généralement en ouvrant un coffre ou en l'achetant
 -- dans un magasin.
---  Plume
+--  Plume
 dialog{
   id = "_treasure.feather.1",
   icon = 0,
@@ -774,7 +774,7 @@ und Hindernisse zu
 }
 --------------------
 
---  Arc seul
+--  Arc seul
 dialog{
   id = "_treasure.bow.1",
   icon = 2,
@@ -789,7 +789,7 @@ besiegen können.
 }
 --------------------
 
---  Arc & Flèches
+--  Arc & Flèches
 dialog{
   id = "_treasure.bow.2",
   icon = 3,
@@ -804,7 +804,7 @@ besiegen.
 }
 --------------------
 
---  Boomerang
+--  Boomerang
 dialog{
   id = "_treasure.boomerang.1",
   icon = 4,
@@ -824,7 +824,7 @@ sie zu entdecken.
 }
 --------------------
 
---  Super Boomerang
+--  Super Boomerang
 dialog{
   id = "_treasure.boomerang.2",
   icon = 35,
@@ -839,7 +839,7 @@ der alte.
 }
 --------------------
 
---  Lanterne
+--  Lanterne
 dialog{
   id = "_treasure.lamp.1",
   icon = 5,
@@ -855,7 +855,7 @@ anzünden.
 }
 --------------------
 
---  Grappin
+--  Grappin
 dialog{
   id = "_treasure.hookshot.1",
   icon = 6,
@@ -869,7 +869,7 @@ unerreichbare Orte!
 }
 --------------------
 
---  Flacon vide
+--  Flacon vide
 dialog{
   id = "_treasure.bottle_1.1",
   icon = 7,
@@ -884,7 +884,7 @@ füllen.
 }
 --------------------
 
---  Eau
+--  Eau
 dialog{
   id = "_treasure.bottle_1.2",
   icon = 8,
@@ -896,7 +896,7 @@ gefüllt.
 }
 --------------------
 
---  Potion rouge
+--  Potion rouge
 dialog{
   id = "_treasure.bottle_1.3",
   icon = 9,
@@ -911,7 +911,7 @@ aufzufüllen.
 }
 --------------------
 
---  Potion verte
+--  Potion verte
 dialog{
   id = "_treasure.bottle_1.4",
   icon = 10,
@@ -926,7 +926,7 @@ aufzufüllen.
 }
 --------------------
 
---  Potion bleue
+--  Potion bleue
 dialog{
   id = "_treasure.bottle_1.5",
   icon = 11,
@@ -941,7 +941,7 @@ Magie aufzufüllen!
 }
 --------------------
 
---  Fée dans Flacon
+--  Fée dans Flacon
 dialog{
   id = "_treasure.bottle_1.6",
   icon = 12,
@@ -959,7 +959,7 @@ aufzufüllen.
 }
 --------------------
 
---  Flacon vide
+--  Flacon vide
 dialog{
   id = "_treasure.bottle_2.1",
   icon = 7,
@@ -974,7 +974,7 @@ füllen.
 }
 --------------------
 
---  Eau
+--  Eau
 dialog{
   id = "_treasure.bottle_2.2",
   icon = 8,
@@ -986,7 +986,7 @@ gefüllt.
 }
 --------------------
 
---  Potion rouge
+--  Potion rouge
 dialog{
   id = "_treasure.bottle_2.3",
   icon = 9,
@@ -1001,7 +1001,7 @@ aufzufüllen.
 }
 --------------------
 
---  Potion verte
+--  Potion verte
 dialog{
   id = "_treasure.bottle_2.4",
   icon = 10,
@@ -1016,7 +1016,7 @@ aufzufüllen.
 }
 --------------------
 
---  Potion bleue
+--  Potion bleue
 dialog{
   id = "_treasure.bottle_2.5",
   icon = 11,
@@ -1031,7 +1031,7 @@ Magie aufzufüllen!
 }
 --------------------
 
---  Fée dans Flacon
+--  Fée dans Flacon
 dialog{
   id = "_treasure.bottle_2.6",
   icon = 12,
@@ -1049,7 +1049,7 @@ aufzufüllen.
 }
 --------------------
 
---  Flacon vide
+--  Flacon vide
 dialog{
   id = "_treasure.bottle_3.1",
   icon = 7,
@@ -1064,7 +1064,7 @@ füllen.
 }
 --------------------
 
---  Eau
+--  Eau
 dialog{
   id = "_treasure.bottle_3.2",
   icon = 8,
@@ -1076,7 +1076,7 @@ gefüllt.
 }
 --------------------
 
---  Potion rouge
+--  Potion rouge
 dialog{
   id = "_treasure.bottle_3.3",
   icon = 9,
@@ -1091,7 +1091,7 @@ aufzufüllen.
 }
 --------------------
 
---  Potion verte
+--  Potion verte
 dialog{
   id = "_treasure.bottle_3.4",
   icon = 10,
@@ -1106,7 +1106,7 @@ aufzufüllen.
 }
 --------------------
 
---  Potion bleue
+--  Potion bleue
 dialog{
   id = "_treasure.bottle_3.5",
   icon = 11,
@@ -1121,7 +1121,7 @@ Magie aufzufüllen!
 }
 --------------------
 
---  Fée dans Flacon
+--  Fée dans Flacon
 dialog{
   id = "_treasure.bottle_3.6",
   icon = 12,
@@ -1139,7 +1139,7 @@ aufzufüllen.
 }
 --------------------
 
---  Flacon vide
+--  Flacon vide
 dialog{
   id = "_treasure.bottle_4.1",
   icon = 7,
@@ -1154,7 +1154,7 @@ füllen.
 }
 --------------------
 
---  Eau
+--  Eau
 dialog{
   id = "_treasure.bottle_4.2",
   icon = 8,
@@ -1166,7 +1166,7 @@ gefüllt.
 }
 --------------------
 
---  Potion rouge
+--  Potion rouge
 dialog{
   id = "_treasure.bottle_4.3",
   icon = 9,
@@ -1181,7 +1181,7 @@ aufzufüllen.
 }
 --------------------
 
---  Potion verte
+--  Potion verte
 dialog{
   id = "_treasure.bottle_4.4",
   icon = 10,
@@ -1196,7 +1196,7 @@ aufzufüllen.
 }
 --------------------
 
---  Potion bleue
+--  Potion bleue
 dialog{
   id = "_treasure.bottle_4.5",
   icon = 11,
@@ -1211,7 +1211,7 @@ Magie aufzufüllen!
 }
 --------------------
 
---  Fée dans Flacon
+--  Fée dans Flacon
 dialog{
   id = "_treasure.bottle_4.6",
   icon = 12,
@@ -1229,7 +1229,7 @@ aufzufüllen.
 }
 --------------------
 
---  Bottes de Pégase
+--  Bottes de Pégase
 dialog{
   id = "_treasure.pegasus_shoes.1",
   icon = 13,
@@ -1244,7 +1244,7 @@ Hindernisse.
 }
 --------------------
 
---  Miroir Mystique
+--  Miroir Mystique
 dialog{
   id = "_treasure.mystic_mirror.1",
   icon = 14,
@@ -1259,7 +1259,7 @@ von Nutzen sein...
 }
 --------------------
 
---  Canne de Somaria
+--  Canne de Somaria
 dialog{
   id = "_treasure.cane_of_somaria.1",
   icon = 15,
@@ -1277,7 +1277,7 @@ benutzen.
 }
 --------------------
 
---  3 Pommes
+--  3 Pommes
 dialog{
   id = "_treasure.apple.1",
   icon = 16,
@@ -1291,7 +1291,7 @@ Herzen aufzufüllen.
 }
 --------------------
 
---  1 Pain au Chocolat
+--  1 Pain au Chocolat
 dialog{
   id = "_treasure.pain_au_chocolat.1",
   icon = 17,
@@ -1306,7 +1306,7 @@ wiederherzustellen.
 }
 --------------------
 
---  1 Croissant
+--  1 Croissant
 dialog{
   id = "_treasure.croissant.1",
   icon = 18,
@@ -1321,7 +1321,7 @@ wiederherzustellen.
 }
 --------------------
 
---  Clé de Roc
+--  Clé de Roc
 dialog{
   id = "_treasure.rock_key.1",
   icon = 19,
@@ -1333,7 +1333,7 @@ gefunden!$0
 }
 --------------------
 
---  Clé d'os
+--  Clé d'os
 dialog{
   id = "_treasure.bone_key.1",
   icon = 20,
@@ -1347,7 +1347,7 @@ gut sein mag?
 }
 --------------------
 
---  Clé de Terre
+--  Clé de Terre
 dialog{
   id = "_treasure.clay_key.1",
   icon = 21,
@@ -1362,7 +1362,7 @@ Dorf öffnen.
 }
 --------------------
 
---  Tarte aux Pommes
+--  Tarte aux Pommes
 dialog{
   id = "_treasure.level_4_way.1",
   icon = 22,
@@ -1377,7 +1377,7 @@ sieht seltsam aus...
 }
 --------------------
 
---  Lingots d'or
+--  Lingots d'or
 dialog{
   id = "_treasure.level_4_way.2",
   icon = 23,
@@ -1392,7 +1392,7 @@ unschätzbaren Wert!
 }
 --------------------
 
---  Edelweiss
+--  Edelweiss
 dialog{
   id = "_treasure.level_4_way.3",
   icon = 24,
@@ -1407,12 +1407,12 @@ Bergblume ist
 }
 --------------------
 
---  Précis d'escrime
+--  Précis d'escrime
 dialog{
   id = "_treasure.level_4_way.4",
   icon = 25,
   text = [[
-Du erhälst die
+Du erhältst die
 Schriftrolle der
 Schwertkunst!$0
 Du beherrschst nun
@@ -1424,7 +1424,7 @@ Wirbelangriffs.
 }
 --------------------
 
---  Palmes
+--  Palmes
 dialog{
   id = "_treasure.flippers.1",
   icon = 26,
@@ -1439,7 +1439,7 @@ schwimmen.
 }
 --------------------
 
---  Cape Magique
+--  Cape Magique
 dialog{
   id = "_treasure.magic_cape.1",
   icon = 27,
@@ -1454,12 +1454,13 @@ brüchig ist.
 }
 --------------------
 
---  Clé de Fer
+--  Clé de Fer
 dialog{
   id = "_treasure.iron_key.1",
   icon = 28,
   text = [[
 Du hast den
+Eisenschlüssel
 gefunden!$0
 
 Jetzt fehlt nur noch
@@ -1468,7 +1469,7 @@ die passende Tür.
 }
 --------------------
 
---  Clé de Pierre
+--  Clé de Pierre
 dialog{
   id = "_treasure.stone_key.1",
   icon = 29,
@@ -1483,7 +1484,7 @@ passt?
 }
 --------------------
 
---  Clé de Bois
+--  Clé de Bois
 dialog{
   id = "_treasure.wooden_key.1",
   icon = 30,
@@ -1498,7 +1499,7 @@ ihn benutzen kannst.
 }
 --------------------
 
---  Clé de Glace
+--  Clé de Glace
 dialog{
   id = "_treasure.ice_key.1",
   icon = 31,
@@ -1513,7 +1514,7 @@ eisigen Ort...
 }
 --------------------
 
---  Poigne de Fer
+--  Poigne de Fer
 dialog{
   id = "_treasure.glove.1",
   icon = 32,
@@ -1527,7 +1528,7 @@ Steine heben.
 }
 --------------------
 
---  Poigne d'Or
+--  Poigne d'Or
 dialog{
   id = "_treasure.glove.2",
   icon = 33,
@@ -1542,7 +1543,7 @@ heben.
 }
 --------------------
 
---  Pierre de Feu
+--  Pierre de Feu
 dialog{
   id = "_treasure.fire_stone.1",
   icon = 34,
@@ -1553,7 +1554,7 @@ Feuerstein gefunden!
 }
 --------------------
 
---  Carte du Monde
+--  Carte du Monde
 dialog{
   id = "_treasure.world_map.1",
   icon = 50,
@@ -1568,7 +1569,7 @@ anschauen.
 }
 --------------------
 
---  Grand sac de rubis
+--  Grand sac de rubis
 dialog{
   id = "_treasure.rupee_bag.2",
   icon = 52,
@@ -1582,7 +1583,7 @@ Darin ist Platz für
 }
 --------------------
 
---  Sac de rubis géant
+--  Sac de rubis géant
 dialog{
   id = "_treasure.rupee_bag.3",
   icon = 53,
@@ -1596,7 +1597,7 @@ Darin ist Platz für
 }
 --------------------
 
---  Petit sac de bombes
+--  Petit sac de bombes
 dialog{
   id = "_treasure.bomb_bag.1",
   icon = 54,
@@ -1611,7 +1612,7 @@ alles in die Luft!
 }
 --------------------
 
---  Grand sac de bombes
+--  Grand sac de bombes
 dialog{
   id = "_treasure.bomb_bag.2",
   icon = 55,
@@ -1626,7 +1627,7 @@ Bomben tragen.
 }
 --------------------
 
---  Sac de bombes géant
+--  Sac de bombes géant
 dialog{
   id = "_treasure.bomb_bag.3",
   icon = 56,
@@ -1641,7 +1642,7 @@ Bomben tragen.
 }
 --------------------
 
---  Grand carquois 
+--  Grand carquois 
 dialog{
   id = "_treasure.quiver.2",
   icon = 58,
@@ -1656,7 +1657,7 @@ Pfeile tragen.
 }
 --------------------
 
---  Carquois géant
+--  Carquois géant
 dialog{
   id = "_treasure.quiver.3",
   icon = 59,
@@ -1671,7 +1672,7 @@ Pfeile tragen.
 }
 --------------------
 
---  Cotte de mailles bleue
+--  Cotte de mailles bleue
 dialog{
   id = "_treasure.tunic.2",
   icon = 61,
@@ -1689,7 +1690,7 @@ trotzen.
 }
 --------------------
 
---  Cotte de mailles rouge
+--  Cotte de mailles rouge
 dialog{
   id = "_treasure.tunic.3",
   icon = 62,
@@ -1704,7 +1705,7 @@ Angriffe.
 }
 --------------------
 
---  Bouclier
+--  Bouclier
 dialog{
   id = "_treasure.shield.1",
   icon = 63,
@@ -1719,7 +1720,7 @@ Gegner abwehren.
 }
 --------------------
 
---  Bouclier de Feu
+--  Bouclier de Feu
 dialog{
   id = "_treasure.shield.2",
   icon = 64,
@@ -1734,7 +1735,7 @@ geschützt.
 }
 --------------------
 
---  Bouclier Miroir
+--  Bouclier Miroir
 dialog{
   id = "_treasure.shield.3",
   icon = 65,
@@ -1819,9 +1820,11 @@ dialog{
   id = "_treasure.magic_bar.2",
   icon = 99,
   text = [[
-Tu as trouvé le Demi
-de Magie ! Ta barre
-magique a doublé !
+Du hast die 
+Magiehälfte 
+gefunden! Deine
+magische Energie
+hat sich verdoppelt.
 ]]
 }
 --------------------
@@ -1831,12 +1834,12 @@ dialog{
   id = "_treasure.map.1",
   icon = 70,
   text = [[
-Tu as trouvé
-la Carte !
+Du hast die Karte
+gefunden!
 
-Utilise-la pour
-connaître le plan
-du donjon.
+Schau sie Dir an,
+um Dich im Dungeon
+zu orientieren.
 ]]
 }
 --------------------
@@ -1846,14 +1849,15 @@ dialog{
   id = "_treasure.compass.1",
   icon = 71,
   text = [[
-Tu as trouvé
-la Boussole ! Elle
-indique ta position
-sur la Carte, les
-emplacements des
-coffres et du Boss.
-C'est ça
-le progrès !
+Du hast den Kompass
+gefunden!
+Er markiert auf der
+Karte Deine
+Position, die des
+Bosses und die
+Standorte der
+Truhen. Es lebe der
+Fortschritt!
 ]]
 }
 --------------------
@@ -1863,12 +1867,12 @@ dialog{
   id = "_treasure.small_key.1",
   icon = 72,
   text = [[
-Tu as trouvé une
-Petite Clé !
-
-Tu peux ouvrir une
-porte verrouillée
-dans les environs.
+Du hast einen
+kleinen Schlüssel
+gefunden!
+Du kannst nun eine
+abgesperrte Tür in
+der Umgebung öffnen.
 ]]
 }
 --------------------
@@ -1878,12 +1882,12 @@ dialog{
   id = "_treasure.big_key.1",
   icon = 73,
   text = [[
-Tu as trouvé la
-Grande Clé ! Tu peux
-désormais ouvrir les
-portes spéciales et
-découvrir de
-nouveaux trésors !
+Du hast den großen
+Schlüssel gefunden!
+Du kannst nun die
+besonderen Türen
+öffnen und neue
+Schätze entdecken!
 ]]
 }
 --------------------
@@ -1893,12 +1897,12 @@ dialog{
   id = "_treasure.boss_key.1",
   icon = 74,
   text = [[
-Tu as trouvé la
-Clé du Maître ! Tu
-peux maintenant
-entrer dans le
-repaire du maître
-des lieux !
+Du hast den Master-
+schlüssel gefunden!
+Du kannst nun in das
+Versteck des Herrn"
+dieses Dungeons"
+vordringen."
 ]]
 }
 --------------------
@@ -1908,8 +1912,8 @@ dialog{
   id = "_treasure.piece_of_heart.1",
   icon = 79,
   text = [[
-Tu as trouvé un
-Fragment de Coeur !
+Du hast ein Herzteil
+gefunden!
 ]]
 }
 --------------------
@@ -1919,24 +1923,24 @@ dialog{
   id = "_treasure.heart_container.1",
   icon = 80,
   text = [[
-Tu as trouvé un
-Réceptacle de Coeur.
-
-Tu obtiens un Coeur
-supplémentaire !
+Du hast einen
+Herzcontainer
+gefunden!
+Du bekommst ein
+zusätzliches Herz!
 ]]
 }
 --------------------
 
---  1 Bombe
+--  1 Bombe
 dialog{
   id = "_treasure.bomb.1",
   icon = 82,
   next = "_treasure.bomb.1.1",
   text = [[
-Tu as trouvé une
-Bombe !$0
-Utilise une Bombe
+Du hast eine Bombe
+gefunden!$0
+Mit Bomben kannst
 ]]
 }
 --------------------
@@ -1944,48 +1948,48 @@ Utilise une Bombe
 dialog{
   id = "_treasure.bomb.1.1",
   text = [[
-pour faire exploser
-un ennemi ou un
-obstacle.
+Du Gegner oder
+Hindernisse
+sprengen.
 ]]
 }
 -----------------------
 
---  3 Bombes
+--  3 Bombes
 dialog{
   id = "_treasure.bomb.2",
   icon = 82,
   next = "_treasure.bomb.1.1",
   text = [[
-Tu as trouvé 3
-Bombes !$0
-Utilise une Bombe
+Du hast 3
+Bomben gefunden!$0
+Mit Bomben kannst
 ]]
 }
 --------------------
 
---  8 Bombes
+--  8 Bombes
 dialog{
   id = "_treasure.bomb.3",
   icon = 82,
   next = "_treasure.bomb.1.1",
   text = [[
-Tu as trouvé 8
-Bombes !$0
-Utilise une Bombe
+Du hast 8
+Bomben gefunden!$0
+Mit Bomben kannst
 ]]
 }
 --------------------
 
---  1 Flèche
+--  1 Flèche
 dialog{
   id = "_treasure.arrow.1",
   icon = 83,
   next = "_treasure.arrow.1.1",
   text = [[
-Tu as trouvé une
-Flèche !$0
-Utilise l'Arc et les
+Du hast einen Pfeil
+gefunden!$0
+Benutze Bogen und
 ]]
 }
 --------------------
@@ -1993,189 +1997,189 @@ Utilise l'Arc et les
 dialog{
   id = "_treasure.arrow.1.1",
   text = [[
-Flèches pour vaincre
-des ennemis coriaces
-à distance.
+Pfeile, um zähe
+Gegner aus der Ferne
+zu bekämpfen.
 ]]
 }
 -----------------------
 
---  5 Flèches
+--  5 Flèches
 dialog{
   id = "_treasure.arrow.2",
   icon = 83,
   next = "_treasure.arrow.1.1",
   text = [[
-Tu as trouvé 5
-Flèches !$0
-Utilise l'Arc et les
+Du hast 5 Pfeile
+gefunden!$0
+Benutze Bogen und
 ]]
 }
 --------------------
 
---  10 Flèches
+--  10 Flèches
 dialog{
   id = "_treasure.arrow.3",
   icon = 83,
   next = "_treasure.arrow.1.1",
   text = [[
-Tu as trouvé 10
-Flèches !$0
-Utilise l'Arc et les
+Du hast 10 Pfeile
+gefunden!$0
+Benutze Bogen und
 ]]
 }
 --------------------
 
---  1 Coeur
+--  1 Coeur
 dialog{
   id = "_treasure.heart.1",
   icon = 84,
   text = [[
-Tu as trouvé un
-Coeur !
+Du hast ein Herz
+gefunden!
 ]]
 }
 --------------------
 
---  Petite bouteille de magie
+--  Petite bouteille de magie
 dialog{
   id = "_treasure.magic_flask.1",
   icon = 85,
   text = [[
-Tu as trouvé une
-petite bouteille
-d'énergie magique !
+Das ist eine kleine
+Flasche, gefüllt mit
+magischer Energie!
 ]]
 }
 --------------------
 
---  Grande bouteille de magie
+--  Grande bouteille de magie
 dialog{
   id = "_treasure.magic_flask.2",
   icon = 86,
   text = [[
-Tu as trouvé une
-grande bouteille
-d'énergie magique !
+Das ist eine große
+Flasche, gefüllt mit
+magischer Energie!
 ]]
 }
 --------------------
 
---  1 rubis vert
+--  1 rubis vert
 dialog{
   id = "_treasure.rupee.1",
   icon = 90,
   text = [[
-Tu as trouvé un
-Rubis !
+Du hast einen Rubin
+gefunden!
 ]]
 }
 --------------------
 
---  1 rubis bleu
+--  1 rubis bleu
 dialog{
   id = "_treasure.rupee.2",
   icon = 91,
   text = [[
-Tu as trouvé un
-Rubis bleu.
-Il vaut 5 Rubis !
+Du hast einen blauen
+Rubin gefunden. Er
+ist 5 Rubine wert!
 ]]
 }
 --------------------
 
---  1 rubis rouge
+--  1 rubis rouge
 dialog{
   id = "_treasure.rupee.3",
   icon = 92,
   text = [[
-Tu as trouvé un
-Rubis rouge !
-Il vaut 20 Rubis !
+Du hast einen roten
+Rubin gefunden. Er
+ist 20 Rubine wert!
 ]]
 }
 --------------------
 
---  50 rubis
+--  50 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.4",
   icon = 90,
   text = [[
-Tu as trouvé 50
-Rubis !
-Merveilleux !
+Du hast 50 Rubine
+gefunden.
+Sehr schön!
 ]]
 }
 --------------------
 
---  100 rubis
+--  100 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.5",
   icon = 90,
   text = [[
-Tu as trouvé 100
-Rubis !
-Fantastique !
+Du hast 100 Rubine
+gefunden.
+Super!
 ]]
 }
 --------------------
 
---  300 rubis
+--  300 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.6",
   icon = 90,
   text = [[
-Tu as trouvé 300
-Rubis !
-C'est l'extase !
+Du hast 300 Rubine
+gefunden.
+Wahnsinn!
 ]]
 }
 --------------------
 
---  Potion rouge
+--  Potion rouge
 dialog{
   id = "_treasure.red_potion.1",
   icon = 96,
   text = [[
-Tu as trouvé de la
-Potion Rouge !$0
+Du hast den roten
+Trank gefunden!$0
 
-Bois-la pour
-retrouver toute ton
-énergie vitale.
+Trinke ihn, um Deine
+Herzleiste voll
+aufzufüllen.
 ]]
 }
 --------------------
 
---  Potion verte
+--  Potion verte
 dialog{
   id = "_treasure.green_potion.1",
   icon = 97,
   text = [[
-Tu as trouvé de la
-Potion Verte !$0
+Du hast den grünen
+Trank gefunden!$0
 
-Bois-la pour
-retrouver toute ton
-énergie magique.
+Trinke ihn, um Deine
+magische Energie
+aufzufüllen.
 ]]
 }
 --------------------
 
---  Potion bleue
+--  Potion bleue
 dialog{
   id = "_treasure.blue_potion.1",
   icon = 98,
   text = [[
-Tu as trouvé de la
-Potion Bleue !$0
+Du hast den blauen
+Trank gefunden!$0
 
-Bois-la pour
-retrouver toute ta
-vie et ta magie !
+Trinke ihn, um alle
+Herzen und Deine
+Magie aufzufüllen!
 ]]
 }
 --------------------
@@ -2191,8 +2195,8 @@ vie et ta magie !
 dialog{
   id = "_warning_magic",
   text = [[
-Mais surveille ton
-compteur magique !
+Aber achte auf Deine
+Magieleiste.
 ]]
 }
 -----------------------
@@ -2201,8 +2205,8 @@ compteur magique !
 dialog{
   id = "_empty_chest",
   text = [[
-Ce coffre est vide !
-Tant pis pour toi !
+Diese Truhe ist leer.
+Pech gehabt.
 ]]
 }
 -----------------------
@@ -2214,7 +2218,7 @@ dialog{
   icon = 72,
   skip = "all",
   text = [[
-C'est fermé à clé !
+Das ist abgesperrt.
 ]]
 }
 --------------------
@@ -2226,9 +2230,11 @@ dialog{
   icon = 73,
   skip = "all",
   text = [[
-Il te faut la Grande
-Clé pour ouvrir
-cette serrure !
+Du brauchst den
+großen Schlüssel,
+
+um dieses Schloss
+zu öffnen.
 ]]
 }
 --------------------
@@ -2239,12 +2245,12 @@ dialog{
   icon = 74,
   skip = "all",
   text = [[
-C'est la porte du
-repère du maître du
-donjon !
-Il te faut la
-Clé du Maître
-pour l'ouvrir.
+Das ist der Eingang
+zum Versteck des
+Bosses!
+Du brauchst den
+Masterschlüssel, um
+ihn zu öffnen.
 ]]
 }
 --------------------
@@ -2255,9 +2261,9 @@ dialog{
   id = "_cannot_lift_should_cut",
   skip = "all",
   text = [[
-Il te faudrait quelque
-chose de tranchant pour
-couper ces buissons...
+Du bräuchtest etwas
+Scharfes, um dieses
+Gras zu schneiden...
 ]]
 }
 -----------------------
@@ -2269,12 +2275,12 @@ dialog{
   id = "_cannot_lift_too_heavy",
   skip = "all",
   text = [[
-Oh là là, c'est
-bien trop lourd !
+Hui, das ist viel zu
+schwer!
 
-Tu n'y arriveras jamais
-rien que par la force
-de tes bras !
+Das wirst Du nie
+aus eigener Kraft
+heben können.
 ]]
 }
 -----------------------
@@ -2285,8 +2291,8 @@ dialog{
   id = "_cannot_lift_still_too_heavy",
   skip = "all",
   text = [[
-C'est beaucoup trop
-lourd pour toi !
+Das ist wirklich
+zu schwer!
 ]]
 }
 -----------------------
@@ -2297,9 +2303,9 @@ dialog{
   id = "_shop.question",
   question = true,
   text = [[
-Prix : $v rubis.
-Acheter
-Ne pas acheter
+Preis : $v Rubine.
+Kaufen
+Nicht kaufen
 ]]
 }
 -----------------------
@@ -2310,8 +2316,8 @@ dialog{
   id = "_shop.not_enough_money",
   skip = "all",
   text = [[
-Désolé, mais tu n'as
-pas assez d'argent !
+Tut mir Leid, aber Du
+hast nicht genug Geld.
 ]]
 }
 -----------------------
@@ -2322,7 +2328,9 @@ pas assez d'argent !
 dialog{
   id = "_shop.amount_full",
   text = [[
-Tu es déjà au maximum !
+Du hast schon die
+maximale Anzahl
+erreicht!
 ]]
 }
 -----------------------
@@ -2332,9 +2340,9 @@ dialog{
   id = "_crystal",
   skip = "all",
   text = [[
-C'est un interrupteur
-de cristal. Frappe-le
-avec quelque chose...
+Das ist ein Kristall-
+schalter. Treffe ihn
+mit etwas...
 ]]
 }
 -----------------------
@@ -2344,8 +2352,8 @@ dialog{
   id = "dungeon_1",
   skip = "current",
   text = [[
-        Niveau 1       
-   Donjon de la Forêt  
+       1. Dungeon       
+       Waldgrotte  
 ]]
 }
 -----------------------
@@ -2355,8 +2363,8 @@ dialog{
   id = "dungeon_2",
   skip = "current",
   text = [[
-        Niveau 2       
-     Caverne de Roc    
+        2. Dungeon       
+        Felshöhle    
 ]]
 }
 -----------------------
@@ -2366,8 +2374,9 @@ dialog{
   id = "dungeon_3",
   skip = "current",
   text = [[
-        Niveau 3       
- Antre de Maître Arbror
+        3. Dungeon       
+        Höhle von 
+      Meister Arbor
 ]]
 }
 -----------------------
@@ -2376,9 +2385,9 @@ dialog{
   id = "found_piece_of_heart.first",
   icon = 75,
   text = [[
-Collecte-en quatre
-pour former un
-nouveau Coeur.
+Sammle 4 Herzteile,
+um ein Herz dazu-
+zugewinnen.
 ]]
 }
 --------------------
@@ -2387,9 +2396,9 @@ dialog{
   id = "found_piece_of_heart.second",
   icon = 76,
   text = [[
-Encore deux et
-tu obtiendras
-un nouveau Coeur.
+Sammle noch zwei und
+Du bekommst ein
+zusätzliches Herz.
 ]]
 }
 --------------------
@@ -2398,9 +2407,9 @@ dialog{
   id = "found_piece_of_heart.third",
   icon = 77,
   text = [[
-Plus qu'un à trouver
-pour former un
-nouveau Coeur !
+Nur noch eins, um
+ein zusätzliches
+Herz zu bilden.
 ]]
 }
 --------------------
@@ -2409,11 +2418,11 @@ dialog{
   id = "found_piece_of_heart.fourth",
   icon = 78,
   text = [[
-Tu as trouvé quatre
-Fragments de Coeur.
+Du hast vier
+Herzteile gefunden.
 
-Tu obtiens un Coeur
-supplémentaire !
+Du bekommst ein
+zusätzliches Herz!
 ]]
 }
 --------------------
@@ -2425,9 +2434,9 @@ dialog{
   skip = "current",
   next = "found_fairy.1",
   text = [[
-Tu as trouvé une
-Fée, elle est
-merveilleuse !
+Du hast eine Fee
+gefunden, sie ist
+wundervoll!
 ]]
 }
 --------------------
@@ -2438,9 +2447,9 @@ dialog{
   icon = -1,
   question = true,
   text = [[
-Que vas-tu en faire ?
-Récupérer des Coeurs
-La conserver
+Was willst Du tun?
+Herzen zurückgewinnen
+Sie behalten
 ]]
 }
 --------------------
@@ -2450,8 +2459,8 @@ dialog{
   id = "found_fairy.no_empty_bottle",
   skip = "current",
   text = [[
-Tu n'as pas de Flacon
-vide !
+Du hast keine leere
+Flasche!
 ]]
 }
 -----------------------
@@ -2462,12 +2471,12 @@ dialog{
   icon = 8,
   question = true,
   text = [[
-Veux-tu mettre de
-l'eau dans ton
+Willst Du Wasser
+in Deine Flasche
 
-Flacon Magique ?
-Oui
-Non
+füllen?
+Ja
+Nein
 ]]
 }
 --------------------
@@ -2477,10 +2486,10 @@ dialog{
   id = "found_water.no_bottle",
   skip = "all",
   text = [[
-Il y a de l'eau ici,
-mais tu n'as pas
-de récipient
-pour la stocker...
+Hier ist Wasser,
+aber Du hast keinen
+Behälter, um es
+mitzunehmen...
 ]]
 }
 -----------------------
@@ -2491,10 +2500,10 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Il y a de l'eau ici,
-mais il te faut
-un Flacon vide
-pour la stocker...
+Hier ist Wasser,
+aber Du brauchst
+eine leere Flasche,
+um es zu schöpfen...
 ]]
 }
 --------------------
@@ -2505,12 +2514,12 @@ dialog{
   icon = 8,
   question = true,
   text = [[
-Ton Flacon Magique
-contient de l'eau.
+Deine Flasche ist
+mit Wasser gefüllt.
 
-Que veux-tu faire ?
-Vider l'eau
-La conserver
+Was willst Du tun?
+Flasche leeren
+Wasser behalten
 ]]
 }
 --------------------
@@ -2521,12 +2530,12 @@ dialog{
   icon = 16,
   question = true,
   text = [[
-Prendre une pomme te
-permet de récupérer
-un Coeur.
-Que veux-tu faire ?
-Manger une pomme
-Ne rien faire
+Jeder Apfel füllt
+ein Herz auf.
+
+Was willst Du tun?
+Einen Apfel essen
+Nichts
 ]]
 }
 --------------------
@@ -2537,12 +2546,12 @@ dialog{
   icon = 17,
   question = true,
   text = [[
-Un Pain au Chocolat
-te redonne 3 Coeurs.
-
-Que veux-tu faire ?
-En manger un
-Ne rien faire
+Ein Schokobrötchen
+stellt 3 Herzen
+wieder her.
+Was willst Du tun?
+Ein Brötchen essen
+Nichts
 ]]
 }
 --------------------
@@ -2553,12 +2562,12 @@ dialog{
   icon = 18,
   question = true,
   text = [[
-Un Croissant te
-permet de retrouver
-7 Coeurs.
-Que veux-tu faire ?
-En manger un
-Ne rien faire
+Mit einem Hörnchen
+kannst Du 7 Herzen
+auffüllen.
+Was willst Du tun?
+Ein Hörnchen essen
+Nichts
 ]]
 }
 --------------------
@@ -2567,9 +2576,9 @@ dialog{
   id = "torch.need_lamp",
   skip = "all",
   text = [[
-Il y a sûrement un
-moyen d'allumer
-cette torche...
+Diese Fackel läßt
+sich bestimmt
+irgendwie anzünden.
 ]]
 }
 -----------------------
@@ -2579,21 +2588,20 @@ dialog{
   id = "intro0",
   skip = "current",
   text = [[
-$2D'anciennes légendes
-racontent qu'il y a
-bien longtemps,
-existait un magnifique
-royaume du nom d'Hyrule.
-Ce royaume prospérait
-sous la bénédiction de
-trois déesses
-représentées sous la
-forme de la Triforce.
-Sept Sages scellèrent
-la Triforce dans la
-Terre d'Or, le reflet
-utopique du monde. Puis
-les siècles passèrent...
+$2Alte Legenden
+erzählen von einem
+wundersamen Königreich
+namens Hyrule.
+Das Land gedieh unter 
+dem Schutz der drei 
+Göttinnen und ihres 
+Symbols, des Triforces.
+Sieben Weise verbargen
+das Triforce im
+Goldenen Land, dem
+utopischen Spiegelbild
+der Welt. Und die Jahr-
+hunderte verstrichen...
 ]]
 }
 -----------------------
@@ -2603,21 +2611,23 @@ dialog{
   id = "intro1",
   skip = "current",
   text = [[
-$2Bien des générations
-plus tard, un maléfice
-sembla menacer Hyrule.
-Un mystérieux sorcier
-nommé Agahnim repoussa
-les ténèbres. Acclamé
-par le peuple, le Roi
-le nomma à un poste
-haut placé. En réalité,
-le sorcier complotait
-contre la famille
-royale. Il tentait de
-faire revenir Ganondorf,
-roi des bandits d'un
-temps oublié.
+$2Viele Generationen
+später wurde Hyrule von
+einem Unheil bedroht.
+Ein geheimnisvoller
+Hexer namens Agahnim
+befreite das Land von
+den Schatten. Das Volk
+bejubelte ihn und der
+König vertraute ihm ein
+hohes Amt an. In Wahr-
+heit jedoch schmiedete
+der Hexer böse Pläne
+gegen die königliche
+Familie und wollte den
+Räuberkönig Ganondorf
+aus einer dunklen
+Zeit heraufbeschwören.
 ]]
 }
 -----------------------
@@ -2627,12 +2637,13 @@ dialog{
   id = "intro2",
   skip = "current",
   text = [[
-$2On raconte qu'un jeune
-homme vêtu de vert se
-lança dans une quête,
-explorant des temples
-perdus, traversant les
-plaines et les vallées.
+$2Es heißt, ein junger
+Mann in grünen Kleidern
+begab sich auf ein
+Abenteuer, erforschte
+verlorene Tempel und
+durchquerte weite 
+Ebenen und tiefe Täler.
 ]]
 }
 -----------------------
@@ -2642,15 +2653,16 @@ dialog{
   id = "intro3",
   skip = "current",
   text = [[
-$2Finalement, celui que
-l'on nomma le Héros sut
-repousser le maléfice.
-Grâce à son courage, il
-triompha de Ganondorf,
-qui avait établi son
-siège dans une
-imposante pyramide au
-sein de la Terre d'Or.
+$2Der, den man den
+Helden nannte, konnte
+schließlich das Unheil
+zurückdrängen. Dank
+seines Mutes, besiegte
+er Ganondorf, der sich
+in einer gewaltigen
+Pyramide mitten im
+Goldenen Land
+niedergelassen hatte.
 ]]
 }
 -----------------------
@@ -2660,15 +2672,15 @@ dialog{
   id = "intro4",
   skip = "current",
   text = [[
-$2Le jeune Héros formula
-alors le voeu
-d'emprisonner Ganondorf
-éternellement dans la
-Terre d'Or.
-Le Roi d'Hyrule, de la
-lignée des Sept Sages,
-l'enferma en invoquant
-la magie du sceau.
+$2Der junge Held sprach
+den Wunsch aus,
+Ganondorf auf ewig ins
+Goldene Land zu
+sperren. Der König von
+Hyrule, ein Nachfahre
+der sieben Weisen,
+beschwor also die Macht
+des Siegels.
 ]]
 }
 -----------------------
@@ -2676,32 +2688,33 @@ la magie du sceau.
 -- next = intro4.4
 -- [intro4.4]
 -- #       |-----------------------|
--- line1 = "Il en était fini du vil"
--- line2 = "Ganondorf. Il devint"
--- line3 = "ainsi prisonnier de"
+-- Il en était fini du vil"
+-- Ganondorf. Il devint"
+-- ainsi prisonnier de"
 -- next = intro4.5
 -- [intro4.5]
 -- #       |-----------------------|
--- line1 = "la vision maléfique du"
--- line2 = "monde qu'il avait lui-"
--- line3 = "même créée."
+-- la vision maléfique du"
+-- monde qu'il avait lui-"
+-- même créée."
 -- Intro : fresque 5
 dialog{
   id = "intro5",
   skip = "current",
   text = [[
-$2Mais quelques années
-plus tard, le Roi
-d'Hyrule fut victime
-d'un étrange mal. Les
-médecins de tout le
-royaume tentèrent de
-trouver un remède, mais
-en vain... Le Roi
-disparut en emportant
-son pouvoir. Le sceau
-des Sept Sages était à
-nouveau fragilisé.
+$2Doch einige Jahre
+später befiel den
+König Hyrules ein
+seltsames Übel. Ärzte
+aus dem gesamten Land
+suchten nach einem
+Heilmittel, jedoch 
+vergeblich... Der Tod
+des Königs führte auch
+zum Verschwinden seiner
+Macht. Das Siegel der
+Sieben Weisen wurde
+wieder schwächer.
 ]]
 }
 -----------------------
@@ -2711,23 +2724,24 @@ dialog{
   id = "intro6",
   skip = "current",
   text = [[
-$2Le Héros, suivant les
-conseils de son maître
-Sahasrahla, confia la
-Triforce à la Princesse
-Zelda, héritière des
-pouvoirs royaux.
-Zelda s'associa à huit
-mystérieux enfants pour
-séparer la Triforce en
-huit fragments et les
-dissimuler aux quatre
-coins du royaume.
-Les habitants purent
-ainsi continuer à vivre
-paisiblement.
-C'est à ce moment que
-débute notre épopée...
+$2Der Held folgte den
+Ratschlägen seines
+Lehrers Sahasrahla und
+vertraute das Triforce
+Zelda an, der Erbin der
+königlichen Macht.
+Zelda verbündete sich
+mit acht geheimnis-
+vollen Kindern, um das
+Triforce in acht Teile
+zu spalten und diese
+an Orten im ganzen Land
+zu verstecken. So 
+kehrten die Bewohner 
+Hyrules zu einem 
+friedlichen Leben 
+zurück. Und so beginnt
+unsere Geschichte...
 ]]
 }
 -----------------------
@@ -2736,8 +2750,8 @@ débute notre épopée...
 dialog{
   id = "outside_world.village.welcome_sign",
   text = [[
-       Bienvenue
-       à Lyriann
+       Willkommen
+       in Lyriann
 ]]
 }
 -----------------------
@@ -2747,12 +2761,11 @@ dialog{
   id = "outside_world.village.monkey",
   next = "_unknown",
   text = [[
-Au secours ! Depuis
-cette nuit, tout le
-monde a peur !
-Le village a été
-encerclé par des
-monstres !
+Hilfe! Seit heute
+Nacht haben alle Angst!
+
+Das Dorf wurde von
+Monstern umzingelt!
 ]]
 }
 -----------------------
@@ -2763,11 +2776,11 @@ monstres !
 dialog{
   id = "outside_world.village.monkey.without_shield",
   text = [[
-Je ne sais pas ce qui
-se passe, mais si tu
-veux mon avis, tu ne
-devrais pas t'aventurer
-dehors sans protection.
+Ich weiß nicht, was da
+draußen vorgeht, aber
+ich denke, Du solltest
+Dich nicht ohne Schutz
+rauswagen.
 ]]
 }
 -----------------------
@@ -2776,11 +2789,11 @@ dehors sans protection.
 dialog{
   id = "outside_world.village.monkey.with_shield",
   text = [[
-Je ne sais pas ce qui
-se passe, mais si tu
-veux mon avis, ton
-Bouclier ne sera pas de
-trop... Sois prudent !
+Ich weiß nicht, was da
+draußen vorgeht, aber
+ich denke, Dein Schild
+könnte sehr nützlich
+sein... Sei vorsichtig!
 ]]
 }
 -----------------------
@@ -2790,18 +2803,18 @@ dialog{
   id = "outside_world.village.grand_son_npc",
   skip = "current",
   text = [[
-Si tu ne sais plus quoi
-faire à un moment de
-ton aventure, tu
-devrais aller voir
-Mamie Lyly, elle adore
-donner des conseils et
-guider les aventuriers.
-Elle habite à côté de
-la Maison des Rubis.
-Mais je n'en sais pas
-plus, je ne suis qu'un
-môme !
+Wenn Du irgendwann
+nicht mehr weiterweißt,
+dann solltest Du zu
+Omama Lyly gehen. Sie
+liebt es, Ratschläge zu
+geben und Abenteurern
+zu helfen. Sie wohnt
+gleich neben dem Haus
+der Rubine.
+Mehr weiß ich auch
+nicht, ich bin nur
+ein Kind!
 ]]
 }
 -----------------------
@@ -2811,22 +2824,23 @@ dialog{
   id = "outside_world.village.chignon_woman",
   skip = "all",
   text = [[
-Quand l'icône bleue
-apparaît, elle indique
-ce que tu peux faire en
-appuyant sur la touche
-Action (espace).
-Selon ce que tu es en
-train d'examiner, tu
-peux faire différentes
-actions comme regarder,
-parler avec quelqu'un,
-lire une pancarte,
-soulever un vase...
-Observe bien l'icône
-bleue pour savoir quand
-tu peux interagir avec
-ton environnement !
+Wenn das blaue Icon"
+erscheint, zeigt es
+Dir, was Du mit der
+Aktionstaste (Leer-
+taste) machen kannst.
+Je nach dem was Du Dir
+gerade anschaust, sind
+verschiedene Aktionen
+möglich wie Ansehen,
+mit jemandem sprechen,
+ein Schild lesen, einen
+Krug heben...
+Achte auf das blaue
+Icon, um zu wissen,
+wann Du mit Deiner
+Umgebung interagieren
+kannst.
 ]]
 }
 -----------------------
@@ -2835,10 +2849,12 @@ dialog{
   id = "outside_world.village.chignon_woman_dungeons",
   skip = "all",
   text = [[
-On dit que chaque
-donjon du monde cache
-un Fragment de Coeur...
-Amusant, non ?
+Ich habe gehört, in
+jedem Dungeon dieser
+Welt sei ein Herzteil
+versteckt. Das kann
+einen stutzig machen,
+nicht wahr?
 ]]
 }
 -----------------------
@@ -2848,12 +2864,12 @@ dialog{
   id = "outside_world.village.cliff_man_npc",
   skip = "all",
   text = [[
-Sais-tu que tu peux
-sauter de certaines
-falaises ? Ca pourrait
-te permettre d'attein-
-dre des endroits
-difficiles d'accès.
+Wusstest Du schon, dass
+Du von einigen Klippen
+springen kannst?
+So könntest Du einige
+schwer zugängliche
+Orte erreichen.
 ]]
 }
 -----------------------
@@ -2863,17 +2879,17 @@ dialog{
   id = "outside_world.village.hat_man_npc",
   skip = "all",
   text = [[
-Si tu manques d'argent,
-je ne te conseille pas
-d'aller à la Maison des
-Rubis, car tu risques
-de dilapider toutes tes
-économies !
-Quoique, tu as l'air
-plus doué que moi.
+Wenn Du knapp bei Kasse
+bist, rate ich Dir, das
+Haus der Rubine zu
+meiden. Du könntest
+dort noch Deine letzten
+Ersparnisse verlieren!
+Obwohl... Du siehst
+begabt aus.
 
-Peut-être que tu sauras
-mieux t'en sortir !
+Vielleicht hast Du mehr
+Glück als ich!
 ]]
 }
 -----------------------
@@ -2884,11 +2900,11 @@ dialog{
   id = "outside_world.village.hat_man_npc_waterfall",
   skip = "all",
   text = [[
-Il paraît qu'un trésor
-est caché sous la
-cascade derrière
-l'ancien château.
-Tu y crois, toi ?
+Man munkelt, ein Schatz
+sei unter dem
+Wasserfall hinter dem
+Schloss versteckt.
+Glaubst Du, das stimmt?
 ]]
 }
 -----------------------
@@ -2897,9 +2913,9 @@ Tu y crois, toi ?
 dialog{
   id = "outside_world.village.rupee_house_sign",
   text = [[
-  - Maison des Rubis -
-Gagnez de l'argent
-tout en vous amusant !
+    - Haus der Rubine -  
+  Spaß haben und dabei 
+    Geld verdienen!
 ]]
 }
 -----------------------
@@ -2911,11 +2927,11 @@ tout en vous amusant !
 dialog{
   id = "outside_world.village.waterfall_sign",
   text = [[
-Servez-vous de notre
-eau fraîche de la
-cascade !
-  Office de Tourisme
-      de Lyriann
+Genießen Sie das
+frische Quellwasser von
+unseres Wasserfalls!
+  Lydianns Touristen-
+      information
 ]]
 }
 -----------------------
@@ -2925,7 +2941,7 @@ dialog{
   id = "outside_world.village.cake_shop_sign",
   text = [[
 
-       Pâtisserie
+       Konditorei
 ]]
 }
 -----------------------
@@ -2935,7 +2951,7 @@ dialog{
   id = "outside_world.village.shop_sign",
   text = [[
 
-        Boutique
+        Geschäft
 ]]
 }
 -----------------------
@@ -2945,9 +2961,9 @@ dialog{
   id = "outside_world.village.letter_box",
   skip = "all",
   text = [[
-Ca ne se fait pas de
-fouiller dans la boîte
-aux lettres des gens !
+Das gehört sich nicht,
+die Briefkästen anderer
+Leute zu durchwühlen!
 ]]
 }
 -----------------------
@@ -2958,9 +2974,9 @@ dialog{
   skip = "all",
   next = "outside_world.village.tree_woman.long_text",
   text = [[
-Tu es perdu dans les
-commandes ? Laisse-moi
-t'expliquer. Les icônes
+Blickst Du nicht mit"
+der Steuerung durch?"
+Lass es mich erklären.
 ]]
 }
 -----------------------
@@ -2971,48 +2987,48 @@ dialog{
   next = "outside_world.village.tree_woman.thank_you",
   next2 = "outside_world.village.tree_woman.again",
   text = [[
-en haut à gauche sont
-disposées comme les
-touches du clavier.
-La touche C correspond
-à l'icône verte, elle
-te permet de donner un
-coup d'épée. Mais
-lorsque le jeu est en
-pause, l'icône change
-et t'indique que la
-touche C sert à
-sauvegarder !
-Et quand tu discutes
-avec quelqu'un, elle te
-permet d'interrompre la
-conversation. Bref,
-observe bien l'icône
-verte pour savoir ce
-que fait la touche C.
-Les autres icônes sont
-les touches autour
-de C : l'icône orange
-(touche D) sert à
-mettre le jeu en pause,
-l'icône bleue (espace)
-est la touche Action,
-et les deux icônes
-grises représentent les
-objets attribués aux
-touches X et V. Donc
-regarde toujours ce qui
-est indiqué sur les
-icônes. N'oublie pas
-que tu peux aussi
-personnaliser tes
-commandes dans l'écran
-des options, et que tu
-peux même jouer avec
-une manette !
-Tu as tout compris ?
-Oui
-Non, pas du tout !
+Die Icons oben links
+sind wie die Tasten der
+Tastatur angeordnet.
+Die Taste C entspricht
+dem grünen Icon. Mit
+ihr kannst Du einen
+Schwertschlag ausführen.
+Im Pausemodus ändert
+sich das Icon und Dir
+an, dass Du mit C das
+Spiel speichern kannst.
+Wenn Du mit jemandem
+sprichst, kannst Du mit
+dieser Taste das
+Gespräch unterbrechen.
+Also achte immer auf
+das Icon, um zu wissen,
+was Du mit C machen
+kannst. Die anderen
+Icons entsprechen den
+Tasten um C herum: mit
+dem orange Icon
+(Taste D) kannst Du das
+Spiel pausieren. Das
+blaue Icon (Leertaste)
+ist die Aktionstaste.
+Die beiden grauen Icons
+zeigen Gegenstände, die
+den Tasten X und V
+zugewiesen wurden.
+Schau also immer, was
+auf den Icons angezeigt
+wird. Vergiss nicht,
+dass Du die Steuerung
+auch im Optionsmenü
+ändern kannst. Du
+kannst dann sogar mit
+einem Joypad spielen!
+
+Alles verstanden?
+Ja, alles klar.
+Nee, überhaupt nicht!
 ]]
 }
 -----------------------
@@ -3021,9 +3037,9 @@ dialog{
   id = "outside_world.village.tree_woman.again",
   next = "outside_world.village.tree_woman.long_text",
   text = [[
-Bon, je te réexplique,
-mais écoute bien cette
-fois-ci. Les icônes
+Nun gut, dann erkläre
+ich es nochmal. Höre
+dieses Mal gut zu.
 ]]
 }
 -----------------------
@@ -3031,12 +3047,12 @@ fois-ci. Les icônes
 dialog{
   id = "outside_world.village.tree_woman.thank_you",
   text = [[
-Merci de m'avoir
-écoutée jusqu'au bout !
-Je t'en suis très
-reconnaissante ! Tiens,
-tu as bien mérité
-ce petit cadeau.
+Schön, dass Du mir bis
+zum Schluss zugehört
+hast. Ich bin Dir sehr
+dankbar! Hier, dieses
+kleine Geschenk hast Du
+Dir verdient.
 ]]
 }
 -----------------------
@@ -3045,7 +3061,7 @@ ce petit cadeau.
 dialog{
   id = "outside_world.village.clay_key_required",
   text = [[
-C'est fermé à clé !
+Abgesperrt.
 ]]
 }
 -----------------------
@@ -3054,7 +3070,7 @@ C'est fermé à clé !
 dialog{
   id = "outside_world.warning_holes_sign",
   text = [[
-Attention aux trous !
+Vorsicht, Löcher!
 ]]
 }
 -----------------------
@@ -3064,12 +3080,12 @@ dialog{
   id = "outside_world.how_to_save_npc",
   skip = "all",
   text = [[
-Pour sauvegarder ta
-partie, appuie sur D
-pour mettre le jeu en
-pause, puis sur C.
-N'oublie pas de regar-
-der l'icône verte !
+Um den Spielstand zu
+speichern, drücke erst
+auf D, um das Spiel zu
+pausieren und dann auf
+C. Achte immer auf das
+grüne Icon.
 ]]
 }
 -----------------------
@@ -3078,10 +3094,10 @@ der l'icône verte !
 dialog{
   id = "outside_world.flower_hole_sign",
   text = [[
-Le trou près de la
-fleur n'est pas aussi
-dangereux
-qu'il en a l'air...
+Das Loch neben der
+Blume ist nicht so
+gefährlich, wie es
+aussieht...
 ]]
 }
 -----------------------
@@ -3090,7 +3106,7 @@ qu'il en a l'air...
 dialog{
   id = "outside_world.telepathic_booth_sign",
   text = [[
-Cabine télépathique
+Telepathiezelle
 ]]
 }
 -----------------------
@@ -3099,10 +3115,10 @@ Cabine télépathique
 dialog{
   id = "outside_world.surprise_wall_sign",
   text = [[
- - Mur aux surprises -
-Venez tenter votre
-chance et remporter
-le trésor caché !
+ - Überraschungswand -
+Versuchen Sie ihr Glück
+und gewinnen Sie den
+versteckten Schatz!
 ]]
 }
 -----------------------
@@ -3111,9 +3127,9 @@ le trésor caché !
 dialog{
   id = "outside_world.billy_cavern_sign",
   text = [[
-Caverne de Billy le
-Téméraire.
-Entrée interdite !
+Billy der Tollkühne.
+Privathöhle.
+Betreten verboten!
 ]]
 }
 -----------------------
@@ -3122,11 +3138,10 @@ Entrée interdite !
 dialog{
   id = "outside_world.beaumont_hill_sign",
   text = [[
-Celui qui plantera un
-edelweiss au sommet de
-la Colline de Beaumont
-passera une bonne
-journée.
+Wer ein Edelweiß auf
+den Hügel von Schönberg
+pflanzt, wird einen
+schönen Tag erleben.
 ]]
 }
 -----------------------
@@ -3135,8 +3150,8 @@ journée.
 dialog{
   id = "outside_world.beaumont_hill_put_edelweiss",
   text = [[
-Tu plantes ton
-edelweiss...
+Du pflanzt Dein
+Edelweiß...
 ]]
 }
 -----------------------
@@ -3145,8 +3160,8 @@ edelweiss...
 dialog{
   id = "outside_world.stone_key_required",
   text = [[
-   - Serrure Pierre -
-C'est fermé à clé !
+   - Steinschloss -
+Es ist abgesperrt.
 ]]
 }
 -----------------------
@@ -3155,8 +3170,8 @@ C'est fermé à clé !
 dialog{
   id = "outside_world.iron_key_required",
   text = [[
-    - Serrure Fer -
-C'est fermé à clé !
+    - Eisenschloss -
+Es ist abgesperrt.
 ]]
 }
 -----------------------
@@ -3165,8 +3180,8 @@ C'est fermé à clé !
 dialog{
   id = "outside_world.wooden_key_required",
   text = [[
-    - Serrure Bois -
-C'est fermé à clé !
+    - Holzschloss -
+Es ist abgesperrt.
 ]]
 }
 -----------------------
@@ -3175,8 +3190,8 @@ C'est fermé à clé !
 dialog{
   id = "outside_world.ice_key_required",
   text = [[
-   - Serrure Glace -
-C'est fermé à clé !
+   - Eisschloss -
+Es ist abgesperrt.
 ]]
 }
 -----------------------
@@ -3186,9 +3201,10 @@ dialog{
   id = "outside_world.mountain_riverfall",
   skip = "all",
   text = [[
-Il y a sûrement un
-moyen de franchir cette
-cascade...
+Es gibt bestimmt 
+eine Möglichkeit, 
+diesen Wasserfall 
+zu überqueren.
 ]]
 }
 -----------------------
@@ -3198,10 +3214,11 @@ dialog{
   id = "link_house.dream",
   text = [[
 ... $v...
-C'est moi...
+Ich bin's...
 ... Sahasrahla...
-Je dois... te parler...
-Viens vite, $v...
+Ich muss...
+mit Dir sprechen...
+Komm schnell, $v...
 ]]
 }
 -----------------------
@@ -3211,15 +3228,15 @@ dialog{
   id = "rupee_house.game_1.intro",
   question = true,
   text = [[
-Bienvenue au jeu du
-coffre-mystère. Paie 20
-rubis pour ouvrir l'un
-des trois coffres et
-tenter de remporter
-plus de rubis !
-Alors, tu veux jouer ?
-Oui
-Non
+Willkommen beim Spiel
+der Tollen Truhe! Zahle
+20 Rubine, öffne eine
+der drei Truhen und
+gewinne mit etwas Glück
+einen Haufen Rubine!
+Willst Du spielen?
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -3228,11 +3245,11 @@ Non
 dialog{
   id = "rupee_house.game_1.choose_chest",
   text = [[
-Va choisir l'un des
-trois coffres !
+Suche Dir eine der drei
+Truhen aus.
 
-Mais ne compte pas sur
-moi pour t'aider !
+Aber ich werde Dir
+keinen Tipp geben.
 ]]
 }
 -----------------------
@@ -3241,8 +3258,8 @@ moi pour t'aider !
 dialog{
   id = "rupee_house.game_1.good_luck",
   text = [[
-Va choisir un coffre
-et bonne chance !
+Suche Dir eine Truhe
+aus. Viel Glück!
 ]]
 }
 -----------------------
@@ -3251,9 +3268,9 @@ et bonne chance !
 dialog{
   id = "rupee_house.game_1.not_allowed_to_play",
   text = [[
-Tu as déjà assez gagné
-non ? Nous sommes
-ruinés à cause de toi !
+Du hast jetzt genug
+gewonnen. Wir sind
+wegen Dir schon pleite!
 ]]
 }
 -----------------------
@@ -3263,12 +3280,12 @@ dialog{
   id = "rupee_house.game_1.play_again_question",
   question = true,
   text = [[
-Tu veux retenter ta
-chance ?
+Willst Du Dein Glück
+nochmal versuchen?
 
-C'est 20 rubis !
-Oui
-Non
+Das kostet 20 Rubine.
+Ja, einverstanden.
+Nein, lieber nicht.
 ]]
 }
 -----------------------
@@ -3279,8 +3296,9 @@ Non
 dialog{
   id = "rupee_house.game_1.not_playing",
   text = [[
-Vis ta vie ! Sois
-un peu plus motivé !
+Lebe Dein Leben!
+Sei ein bisschen
+unternehmungslustig!
 ]]
 }
 -----------------------
@@ -3290,18 +3308,20 @@ dialog{
   id = "rupee_house.game_2.intro",
   question = true,
   text = [[
-Bienvenue au tout
-nouveau jeu du
-bandit manchot !
-Mise 5 ou 20 rubis et
-tente d'aligner trois
-symboles identiques
-pour gagner plusieurs
-fois ta mise !
+Willkommen beim
+brandneuen Spiel des
+einarmigen Banditen!
+Setze 5 oder 20 Rubine
+und versuche, eine
+Reihe aus drei gleichen
+Symbolen aufzustellen,
+um ein Vielfaches
+Deines Einsatzes zu
+gewinnen.
 
-Alors, tu veux jouer ?
-Oui
-Non
+Und, willst Du spielen?
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -3310,8 +3330,8 @@ Non
 dialog{
   id = "rupee_house.game_2.not_playing",
   text = [[
-Une autre fois
-peut-être ?
+Dann vielleicht ein
+nächstes Mal?
 ]]
 }
 -----------------------
@@ -3321,9 +3341,9 @@ dialog{
   id = "rupee_house.game_2.choose_bet",
   question = true,
   text = [[
-Combien veux-tu miser ?
-5 rubis
-20 rubis
+Wie viel setzt Du?
+5 Rubine
+20 Rubine
 ]]
 }
 -----------------------
@@ -3334,7 +3354,7 @@ dialog{
   id = "rupee_house.game_2.just_paid",
   next = "rupee_house.game_2.playing",
   text = [[
-Merci !
+Danke schön!
 ]]
 }
 -----------------------
@@ -3343,11 +3363,10 @@ Merci !
 dialog{
   id = "rupee_house.game_2.playing",
   text = [[
-Approche-toi des
-roulettes et appuie sur
-la touche action
-pour les arrêter.
-Bonne chance !
+Stell Dich neben die 
+Rädchen und drücke die
+Aktionstaste, um sie
+anzuhalten. Viel Glück!
 ]]
 }
 -----------------------
@@ -3356,9 +3375,10 @@ Bonne chance !
 dialog{
   id = "rupee_house.game_2.reward.same_any",
   text = [[
-Trois symboles identi-
-ques, pas mal ! Tu
-gagnes 4 fois ta mise.
+Drei gleiche Symbole!
+Nicht schlecht! Du
+gewinnst Deinen
+vierfachen Einsatz.
 ]]
 }
 -----------------------
@@ -3367,9 +3387,10 @@ gagnes 4 fois ta mise.
 dialog{
   id = "rupee_house.game_2.reward.green_rupees",
   text = [[
-Trois rubis verts,
-joli ! Tu remportes
-5 fois ta mise !
+Drei grüne Rubine.
+Sauber! Du gewinnst
+Deinen fünffachen
+Einsatz.
 ]]
 }
 -----------------------
@@ -3378,10 +3399,11 @@ joli ! Tu remportes
 dialog{
   id = "rupee_house.game_2.reward.blue_rupees",
   text = [[
-Trois rubis bleus !
-Félicitations, tu
-repars avec pas moins
-de 7 fois ta mise !
+Drei blaue Rubine!
+Glückwunsch! Damit
+gewinnst Du doch
+tatsächlich Deinen
+siebenfachen Einsatz!
 ]]
 }
 -----------------------
@@ -3390,11 +3412,11 @@ de 7 fois ta mise !
 dialog{
   id = "rupee_house.game_2.reward.red_rupees",
   text = [[
-Trois rubis rouges !!!
-Je suis très
-impressionné !
-Tu repars avec 10 fois
-ta mise. Bravo !
+Drei rote Rubine! Ich
+bin sehr beeindruckt!
+Du bekommst Deinen
+zehnfachen Einsatz
+ausgezahlt. Toll, oder?
 ]]
 }
 -----------------------
@@ -3403,12 +3425,14 @@ ta mise. Bravo !
 dialog{
   id = "rupee_house.game_2.reward.different_rupees",
   text = [[
-Whaou !!! Tu as obtenu
-trois rubis de couleurs
-différentes, c'est pas
-tous les jours qu'on
-voit ça ! Tu remportes
-15 fois ta mise.
+Unglaublich! Du hast
+drei Rubine mit
+unterschiedlichen
+Farben aufgereiht. Das
+sieht man nicht alle
+Tage. Du gewinnst das
+Fünfzehnfache Deines
+Einsatzes!
 ]]
 }
 -----------------------
@@ -3417,12 +3441,13 @@ voit ça ! Tu remportes
 dialog{
   id = "rupee_house.game_2.reward.yoshi",
   text = [[
-$1...$3Trois Yoshi ?!
-C'est à peine
-croyable ! C'est la
-meilleure combinaison
-possible... Tu gagnes
-20 fois ta mise !
+$1...$3Drei Yoshis?!
+Das ist kaum zu
+glauben! Das ist die
+allerbeste Kombination!
+Du gewinnst das
+Zwanzigfache Deines
+Einsatzes! Glückwunsch!
 ]]
 }
 -----------------------
@@ -3432,12 +3457,12 @@ dialog{
   id = "rupee_house.game_2.reward.none",
   question = true,
   text = [[
-Pas de chance, tu n'as
-formé aucune
-combinaison.
-Tu veux réessayer ?
-Oui
-Non
+Pech gehabt, Du hast
+keine Kombination
+zusammengestellt.
+Nochmal versuchen?
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -3447,18 +3472,21 @@ dialog{
   id = "rupee_house.game_3.intro",
   question = true,
   text = [[
-Le but du jeu est de
-traverser le labyrinthe
-dans un temps limité
-puis de pousser les
-blocs pour te frayer un
-chemin. Cela ne te
-coûtera que 10 rubis
-et il y a un Fragment
-de Coeur à gagner !
-Alors, tu veux jouer ?
-Oui
-Non
+Bei diesem Spiel hast
+Du nur wenige Sekunden,
+um das Labyrinth zu
+durchqueren. Danach
+musst Du Dir einen Weg
+durch die Blöcke frei-
+schieben. Ein Versuch
+kostet nur 10 Rubine
+und Du kannst ein
+Herzteil gewinnen!
+
+
+Willst Du es versuchen?
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -3467,8 +3495,8 @@ Non
 dialog{
   id = "rupee_house.game_3.go",
   text = [[
-Et c'est parti !
-Bonne chance !
+Los geht's!
+Viel Glück!
 ]]
 }
 -----------------------
@@ -3477,7 +3505,7 @@ Bonne chance !
 dialog{
   id = "rupee_house.game_3.not_playing",
   text = [[
-C'est toi qui vois !
+Wie Du willst...
 ]]
 }
 -----------------------
@@ -3486,8 +3514,9 @@ C'est toi qui vois !
 dialog{
   id = "rupee_house.game_3.not_allowed_to_play",
   text = [[
-Désolé, tu as déjà
-gagné à ce jeu !
+Tut mir Leid, aber Du
+hast dieses Spiel
+schon gewonnen.
 ]]
 }
 -----------------------
@@ -3497,12 +3526,12 @@ dialog{
   id = "rupee_house.game_3.restart_question",
   question = true,
   text = [[
-Tu veux recommencer à
-zéro ?
-
-C'est 10 rubis !
-Oui
-Non
+Willst Du nochmal von
+vorne beginnen?
+Das kostet dann
+nochmal 10 Rubine.
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -3511,8 +3540,8 @@ Non
 dialog{
   id = "rupee_house.not_enough_money",
   text = [[
-Tu n'as pas assez
-d'argent !
+Du hast nicht genug
+Geld.
 ]]
 }
 -----------------------
@@ -3521,8 +3550,8 @@ d'argent !
 dialog{
   id = "rupee_house.pay_first",
   text = [[
-Hé ! Ici il faut payer
-avant de jouer !
+He Du! Erst zahlen,
+dann spielen!
 ]]
 }
 -----------------------
@@ -3531,11 +3560,11 @@ avant de jouer !
 dialog{
   id = "rupee_house_broken.help_us_left",
   text = [[
-Au secours !
-Au secours !
+Hilfe!
+Hilfe!
 
-La maison a été
-dévalisée !
+Das Haus ist ausgeraubt
+worden!
 ]]
 }
 -----------------------
@@ -3544,9 +3573,9 @@ dévalisée !
 dialog{
   id = "rupee_house_broken.help_us_middle",
   text = [[
-Les bandits ont emporté
-l'argent réservé aux
-gains !
+Die Räuber haben das
+gesamte Preisgeld 
+mitgenommen!
 ]]
 }
 -----------------------
@@ -3555,9 +3584,9 @@ gains !
 dialog{
   id = "rupee_house_broken.help_us_right",
   text = [[
-Les voleurs sont partis
-en direction de la
-caverne du forgeron !
+Die Räuber sind in die
+Richtung der Höhle des
+Schmieds gelaufen!
 ]]
 }
 -----------------------
@@ -3566,12 +3595,13 @@ caverne du forgeron !
 dialog{
   id = "rupee_house_broken.thanks",
   text = [[
-Tu as retrouvé notre
-argent ! Grâce à toi
-nous allons pouvoir
-reprendre le travail.
-Je ne sais comment te
-remercier...
+Du hast unser Geld
+wiedergefunden! Dank
+Dir können wir unsere
+Arbeit wieder 
+aufnehmen. Ich weiß
+nicht, wie ich Dir
+danken kann...
 ]]
 }
 -----------------------
@@ -3579,7 +3609,7 @@ remercier...
 dialog{
   id = "rupee_house_broken.thanks_again",
   text = [[
-Encore merci !
+Nochmals vielen Dank!
 ]]
 }
 -----------------------
@@ -3589,21 +3619,22 @@ dialog{
   id = "grandma_house.sword",
   skip = "all",
   text = [[
-Les monstres envahis-
-sent la plaine. C'est
-mauvais signe : je suis
-sûre que quelque chose
-de grave est arrivé.
-
-Tu cherches une épée ?
-Ces choses-là ne sont
-plus de mon âge !
-Tu devrais plutôt aller
-voir le forgeron dans
-la grotte au nord-ouest
-du village. Il n'est
-pas très commode mais
-il pourra t'aider.
+Die Monster fallen
+in die Ebene ein. Das
+ist ein schlechtes
+Zeichen. Ich befürchte,
+es ist etwas Schlimmes
+passiert.
+Du suchst ein Schwert?
+Für diese Dinge bin
+ich zu alt.
+Du solltest zum Schmied
+in die Höhle nord-
+westlich des Dorfes
+gehen. Er ist nicht
+sehr umgänglich, aber
+er kann Dir sicherlich
+helfen.
 ]]
 }
 -----------------------
@@ -3613,15 +3644,17 @@ dialog{
   id = "grandma_house.find_sahasrahla",
   skip = "all",
   text = [[
-Avec cette épée, tu
-peux franchir les
-buissons qui protègent
-le village. Tu cherches
-Sahasrahla, l'Ancien ?
-Sa maison est au
-sud-ouest, près de la
-pâtisserie. Tu ne t'en
-souvenais plus ?
+Mit diesem Schwert
+kannst Du die Hecken
+zerschneiden, die das
+Dorf schützen.
+Du suchst Sahasrahla,
+den Dorfältesten?
+Sein Haus ist im
+Südwesten, in der Nähe
+der Konditorei.
+Hattest Du das 
+vergessen?
 ]]
 }
 -----------------------
@@ -3631,9 +3664,10 @@ dialog{
   id = "grandma_house.go_lyriann_cave",
   skip = "all",
   text = [[
-Avec cette clé, tu peux
-entrer dans la grotte
-au nord du village.
+Mit diesem Schlüssel
+kannst Du die Grotte im
+Norden des Dorfes
+betreten.
 ]]
 }
 -----------------------
@@ -3643,13 +3677,14 @@ dialog{
   id = "grandma_house.go_dungeon_1",
   skip = "all",
   text = [[
-Il paraît que l'un des
-quatre enfants enlevés
-est retenu dans un
-donjon lugubre dans la
-forêt au sud du
-village. Qu'attends-tu
-pour y aller ?
+Ich habe gehört, eines
+der vier entführten
+Kinder befinde sich in
+einem finsteren Dungeon
+im Wald südlich des
+Dorfes...
+Worauf wartest Du noch?
+Geh hin!
 ]]
 }
 -----------------------
@@ -3659,11 +3694,10 @@ dialog{
   id = "grandma_house.go_back_sahasrahla",
   skip = "all",
   text = [[
-Quelque chose me dit
-que cette fois-ci,
-Sahasrahla est mieux
-placé que moi pour
-t'aider.
+Ich vermute, dass 
+Sahasrahla Dir nun
+eher weiterhelfen
+kann als ich.
 ]]
 }
 -----------------------
@@ -3673,12 +3707,13 @@ dialog{
   id = "grandma_house.go_twin_caves",
   skip = "all",
   text = [[
-Tu as trouvé un Arc ?
-A mon avis, les secrets
-que renferment les
-grottes jumelles au sud
-sont largement à ta
-portée désormais !
+Du hast den Bogen
+gefunden?
+Ich denke, nun kannst
+Du Dich den Rätseln 
+stellen, die in den 
+südlichen Zwillings-
+höhlen auf Dich warten.
 ]]
 }
 -----------------------
@@ -3688,11 +3723,11 @@ dialog{
   id = "grandma_house.go_dungeon_2",
   skip = "all",
   text = [[
-C'est une belle clé que
-tu as là ! N'est-il
-pas temps de partir
-à la recherche du
-deuxième enfant ?
+Da hast Du aber einen
+schönen Schlüssel!
+Ist es nicht Zeit, 
+nach dem zweiten Kind
+suchen zu gehen?
 ]]
 }
 -----------------------
@@ -3701,14 +3736,14 @@ dialog{
   id = "grandma_house.go_telepathic_booth",
   skip = "all",
   text = [[
-Que dis-tu ? Je ne
-t'entends pas bien !
-Je suis un peu dure
-d'oreille à mon âge !
-Pourquoi n'utilises-tu
-pas un moyen de
-communication moderne
-comme la télépathie ?
+Was sagst Du? Ich kann
+Dich nicht gut hören!
+Ich bin etwas schwer-
+hörig geworden. 
+Warum nutzt Du nicht 
+ein modernes
+Kommunikationsmittel
+wie die Telepathie? 
 ]]
 }
 -----------------------
@@ -3717,18 +3752,19 @@ dialog{
   id = "grandma_house.dark_world_enabled",
   skip = "all",
   text = [[
-Agahnim a pris le
-contrôle du royaume...
-Il sème la terreur
-partout sur son
-passage. Tom, un des
-soldats du château,
-est accusé d'avoir
-enlevé Sahasrahla mais
-je n'en crois rien !
-De plus, des bandits
-ont pillé la Maison des
-Rubis !
+Agahnim beherrscht nun
+das Königreich.
+Er verbreitet überall 
+Angst und Schrecken.
+Tom, eine der 
+Schlosswachen, wird 
+beschuldigt, Sahasrahla
+entführt zu haben,
+aber ich kann das nicht 
+glauben!
+Außerdem haben Räuber 
+das Haus der Rubine 
+geplündert! 
 ]]
 }
 -----------------------
@@ -3737,8 +3773,8 @@ dialog{
   id = "telepathic_booth.not_working",
   skip = "all",
   text = [[
-Allo ? ... Allo ? ...
-Y'a quelqu'un ? ...
+Hallo? ... Hallo? ...
+Ist da jemand? ...
 ]]
 }
 -----------------------
@@ -3747,12 +3783,13 @@ dialog{
   id = "telepathic_booth.go_sahasrahla",
   skip = "all",
   text = [[
-$v, tu m'entends ?
-C'est Mamie Lyly ! La
-télépathie, ça marche !
-Tu devrais aller rendre
-visite à Sahasrahla, il
-a des choses pour toi.
+$v, hörst Du mich?
+Hier ist Oma Lyly! 
+Telepathie klappt
+wirklich!
+Du solltest Sahasrahla
+besuchen gehen. Er will
+Dir etwas geben.
 ]]
 }
 -----------------------
@@ -3761,14 +3798,15 @@ dialog{
   id = "telepathic_booth.go_twin_caves",
   skip = "all",
   text = [[
-$v, tu m'entends ?
-C'est Mamie Lyly ! La
-télépathie, ça marche !
-Quelque chose me dit
-que les cavernes au sud
-du donjon de la forêt
-cachent un trésor
-important...
+$v, hörst Du mich?
+Hier ist Oma Lyly! 
+Telepathie klappt
+wirklich!
+Ich habe das Gefühl, 
+dass sich in den Höhlen
+südlich des Dungeons
+im Wald ein wichtiger
+Schatz befindet.
 ]]
 }
 -----------------------
@@ -3777,12 +3815,13 @@ dialog{
   id = "telepathic_booth.dungeon_2_not_really_finished",
   skip = "all",
   text = [[
-$v, tu m'entends ?
-C'est Mamie Lyly ! La
-télépathie, ça marche !
-Mais tu es sûr que tu
-as tout trouvé dans la
-Caverne de Roc ?
+$v, hörst Du mich?
+Hier ist Oma Lyly! 
+Telepathie klappt
+wirklich!
+Bist Du sicher, dass 
+Du in der Felshöhle
+alles gefunden hast?
 ]]
 }
 -----------------------
@@ -3791,15 +3830,18 @@ dialog{
   id = "telepathic_booth.go_master_arbror",
   skip = "all",
   text = [[
-$v, tu m'entends ?
-C'est Mamie Lyly ! La
-télépathie, ça marche !
-Il paraît qu'il y a un
-passage dans les arbres
-au nord.
-On dit que Maître
-Arbror hante ces lieux
-inondés par la rivière.
+$v, hörst Du mich?
+Hier ist Oma Lyly! 
+Telepathie klappt
+wirklich!
+Ich habe gehört, es
+soll einen Durchgang
+durch die Bäume im
+Norden geben.
+Es heißt, Meister Arbor
+geistert durch diesen
+vom Fluss überfluteten
+Ort.
 ]]
 }
 -----------------------
@@ -3808,15 +3850,16 @@ dialog{
   id = "telepathic_booth.go_billy",
   skip = "all",
   text = [[
-$v, tu m'entends ?
-C'est Mamie Lyly ! La
-télépathie, ça marche !
-Connais-tu Billy le
-Téméraire ? Il paraît
-qu'il est revenu sain
-et sauf de son
-expédition à la
-Montagne des Terreurs !
+$v, hörst Du mich?
+Hier ist Oma Lyly! 
+Telepathie klappt
+wirklich!
+Kennst Du Billy den
+Tollkühnen? Er soll
+wohlbehalten von seiner
+Reise zum Berg der 
+Schrecken zurückgekehrt
+sein.
 ]]
 }
 -----------------------
@@ -3825,21 +3868,22 @@ dialog{
   id = "telepathic_booth.shop",
   skip = "all",
   text = [[
-$v, tu m'entends ?
-C'est Mamie Lyly ! La
-télépathie, ça marche !
-Mais les temps sont
-durs. Le royaume n'est
-plus que désolation et
-dévastation... La vie
-ici semble s'être
-arrêtée.
-Sauf pour la boutique
-du village ! Depuis
-qu'ils ne vendent plus
-que des armes de
-survie, ils font
-fortune !
+$v, hörst Du mich?
+Hier ist Oma Lyly! 
+Telepathie klappt
+wirklich!
+Ach, es sind schwere
+Zeiten angebrochen.
+Das Land ist zerstört
+und trostlos... Das
+Leben hier scheint
+stillzustehen.
+Außer im Dorfladen!
+Seitdem sie nur noch
+Waffen zur Selbstver-
+teidigung im Angebot
+haben, machen sie das
+Geschäft ihres Lebens!
 ]]
 }
 -----------------------
@@ -3849,18 +3893,18 @@ dialog{
   id = "smith_cave.without_sword",
   question = true,
   text = [[
-J'ai forgé moi-même
-cette magnifique Epée
-en bronze.
-Je te la vends pour la
-modique somme de 80
-rubis !
-Avec seulement ton
-minable bouclier, tu
-n'iras pas bien loin.
-Alors, ça t'intéresse ?
-Oui
-Non
+Ich habe dieses groß-
+artige Bronzeschwert
+eigenhändig geschmiedet
+und überlasse es Dir
+für nur 80 Rubine. Das
+ist fast geschenkt!
+Mit diesem lächerlichen
+Schild alleine, wirst
+Du nicht weit kommen.
+Na, interessiert?
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -3869,9 +3913,10 @@ Non
 dialog{
   id = "smith_cave.with_sword",
   text = [[
-N'abîme pas mon Epée
-car je ne vais pas t'en
-fabriquer une autre !
+Mach mein Schwert bloß
+nicht kaputt, ich werde
+Dir nämlich kein neues
+schmieden.
 ]]
 }
 -----------------------
@@ -3880,9 +3925,9 @@ fabriquer une autre !
 dialog{
   id = "smith_cave.not_buying",
   text = [[
-Comme tu veux, mais tu
-risques d'avoir des
-problèmes sans arme.
+Wie Du willst, aber
+ohne Waffe wirst Du
+schnell Probleme haben.
 ]]
 }
 -----------------------
@@ -3891,9 +3936,9 @@ problèmes sans arme.
 dialog{
   id = "smith_cave.not_enough_money",
   text = [[
-Désolé mais je crains
-que tu n'aies pas les
-moyens...
+Tut mir Leid, aber ich
+fürchte, Du kannst es
+Dir nicht leisten...
 ]]
 }
 -----------------------
@@ -3902,12 +3947,12 @@ moyens...
 dialog{
   id = "smith_cave.thank_you",
   text = [[
-Merci beaucoup. Pour
-donner un coup d'épée,
-appuie sur C. Ou laisse
-le bouton enfoncé pour
-déclencher une attaque
-tournoyante !
+Danke schön. Um einen
+Schlag durchzuführen,
+drücke auf C. Halte die
+Taste C gedrückt, um
+einen Wirbelangriff
+auszulösen.
 ]]
 }
 -----------------------
@@ -3916,9 +3961,9 @@ tournoyante !
 dialog{
   id = "lyriann_shop.salesman",
   text = [[
-Bienvenue. Choisis
-l'article que tu
-souhaites acheter.
+Willkommen. Suche einen
+Artikel aus, den Du
+gerne kaufen würdest.
 ]]
 }
 -----------------------
@@ -3928,9 +3973,9 @@ dialog{
   id = "lyriann_shop.apples",
   next = "_unknown",
   text = [[
-3 Pommes fraîches de ce
-matin ! Chaque pomme
-rapporte un Coeur.
+3 frisch gepflückte
+Äpfel! Jeder Apfel
+füllt ein Herz auf.
 ]]
 }
 -----------------------
@@ -3942,9 +3987,9 @@ dialog{
   id = "lyriann_shop.lamp",
   next = "_unknown",
   text = [[
-Une Lanterne.
-Indispensable pour
-s'éclairer !
+Eine Lampe.
+Unverzichtbar, wenn
+man Licht braucht.
 ]]
 }
 -----------------------
@@ -3954,8 +3999,8 @@ dialog{
   id = "lyriann_shop.heart",
   next = "_unknown",
   text = [[
-Un coeur à consommer
-immédiatement.
+Ein Herz zum sofortigen
+Gebrauch.
 ]]
 }
 -----------------------
@@ -3965,9 +4010,9 @@ dialog{
   id = "lyriann_shop.bomb_bag",
   next = "_unknown",
   text = [[
-Un plus grand Sac de
-Bombes. Très à la mode
-en ce moment !
+Eine größere Bomben-
+tasche. Zur Zeit sehr
+angesagt!
 ]]
 }
 -----------------------
@@ -3977,9 +4022,9 @@ dialog{
   id = "lyriann_shop.quiver",
   next = "_unknown",
   text = [[
-Un plus grand Carquois.
-Bien utile par les
-temps qui courent.
+Ein größerer Köcher.
+Gerade heutzutage 
+sehr nützlich!
 ]]
 }
 -----------------------
@@ -3989,9 +4034,9 @@ dialog{
   id = "lyriann_shop.rupee_bag",
   next = "_unknown",
   text = [[
-Une nouvelle bourse
-pour transporter plus
-de rubis.
+Ein neuer Geldbeutel
+um mehr Rubine 
+zu verstauen.
 ]]
 }
 -----------------------
@@ -4000,9 +4045,9 @@ de rubis.
 dialog{
   id = "cake_shop.seller.choose_item",
   text = [[
-Bienvenue. Choisis la
-pâtisserie que tu
-souhaites acheter.
+Willkommen. Suche ein
+Gebäckstück aus, das Du
+gerne kaufen würdest.
 ]]
 }
 -----------------------
@@ -4012,9 +4057,9 @@ dialog{
   id = "cake_shop.pain_au_chocolat",
   next = "_unknown",
   text = [[
-Un pain au chocolat
-savoureux qui te
-redonnera trois Coeurs.
+Ein Schokobrötchen,
+mit dem Du drei
+Herzen zurückgewinnst.
 ]]
 }
 -----------------------
@@ -4024,9 +4069,9 @@ dialog{
   id = "cake_shop.croissant",
   next = "_unknown",
   text = [[
-Ce croissant
-croustillant te
-redonnera sept Coeurs.
+Iss dieses knusprige
+Hörnchen, um sieben
+Herzen aufzufüllen.
 ]]
 }
 -----------------------
@@ -4036,8 +4081,9 @@ dialog{
   id = "cake_shop.apple_pie",
   next = "_unknown",
   text = [[
-Une Tarte aux Pommes.
-Faite grâce à toi !
+Ein Apfelkuchen.
+Frisch gebacken
+dank Dir!
 ]]
 }
 -----------------------
@@ -4047,15 +4093,15 @@ dialog{
   id = "cake_shop.dont_leave",
   question = true,
   text = [[
-Hé, attends !
-Je cherche des pommes
-pour faire une bonne
-tarte. Je pense que
-6 pommes devraient
-suffire.
-Tu veux bien m'aider ?
-Oui
-Non
+Moment, warte mal!
+Ich suche Äpfel, um
+einen leckeren Kuchen
+zu backen. Ich denke,
+sechs Äpfel sollten
+reichen.
+Willst Du mir helfen?
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -4066,12 +4112,12 @@ dialog{
   skip = "all",
   question = true,
   text = [[
-Je cherche toujours six
-pommes pour faire une
-bonne tarte.
-Tu veux bien m'aider ?
-Oui
-Non
+Ich suche immer noch
+sechs Äpfel für meinen
+leckeren Kuchen.
+Willst Du mir helfen?
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -4080,9 +4126,9 @@ Non
 dialog{
   id = "cake_shop.not_enough_apples",
   text = [[
-Oh, tu n'as pas assez
-de pommes... Reviens
-plus tard dans ce cas.
+Oh, Du hast noch nicht
+genug Äpfel... Komm
+einfach später nochmal
 ]]
 }
 -----------------------
@@ -4091,8 +4137,9 @@ plus tard dans ce cas.
 dialog{
   id = "cake_shop.no_apples",
   text = [[
-Merci... Reviens me
-voir si tu en trouves !
+Danke... Komm nochmal
+her, wenn Du welche
+gefunden hast.
 ]]
 }
 -----------------------
@@ -4101,12 +4148,11 @@ voir si tu en trouves !
 dialog{
   id = "cake_shop.thank_you",
   text = [[
-Oh, merci, c'est très
-gentil ! Comment
-pourrais-je te
-remercier ? Je n'ai que
-cette bouteille vide à
-te donner...
+Oh, wie nett von Dir!
+Wie könnte ich Dir nur
+dafür danken? Ich kann
+Dir nur diese leere
+Flasche geben...
 ]]
 }
 -----------------------
@@ -4116,39 +4162,39 @@ dialog{
   id = "sahasrahla_house.beginning",
   next = "sahasrahla_house.beginning.12",
   text = [[
-Oh, $v, tu as
-entendu mon appel.
-J'ai des choses
-importantes à te
-révéler. La situation
-est grave.
-Quatre des huit enfants
-du Solarus ont été
-enlevés...
-Je crains que la
-Triforce soit en grand
-danger. Quelqu'un veut
-profiter de la mort du
-Roi pour convoiter la
-Triforce.
-Qui a pu faire cela ?
-Probablement Ganondorf
-et ses sbires...
-Le Sceau des Sept Sages
-a été fragilisé à la
-suite de la mort de
-notre pauvre Roi, et il
-est possible que Ganon
-soit parvenu à fuir de
-son Monde des Ténèbres.
-Il ne faut pas le
-laisser s'emparer d'un
-tel pouvoir !
-Je sens le courage en
-toi, $v.
-Te sens-tu capable de
-partir à la recherche
-des enfants et de
+Oh, $v, Du hast meinen 
+Ruf gehört. 
+
+Ich muss Dir wichtige
+Dinge offenbaren. Die 
+Situation ist sehr 
+ernst. Vier der acht 
+Kinder des Solarus sind
+entführt worden. Ich
+fürchte, das Triforce
+schwebt in großer
+Gefahr. Jemand will den
+Tod des Königs nutzen,
+um sich das Triforce
+anzueignen. Wer könnte
+dahinter stecken? Wahr-
+scheinlich Ganondorf
+und seine Schergen.
+Das Siegel der sieben
+Weisen ist geschwächt
+durch den Tod unseres
+armen Königs und es ist
+möglich, dass Ganon aus
+dem Reich der Schatten
+fliehen konnte. Er darf
+nicht von solch einer
+Macht Besitz ergreifen!
+Ich spüre den Mut in
+Dir, $v.
+Fühlst Du Dich fähig,
+Dich auf die Suche nach
+den Kindern zu machen 
+und das Triforce
 ]]
 }
 -----------------------
@@ -4160,9 +4206,9 @@ dialog{
   next = "sahasrahla_house.beginning.thanks",
   next2 = "sahasrahla_house.beginning.insisting",
   text = [[
-protéger la Triforce ?
-C'est d'accord
-Pas question
+zu schützen?
+Ja, einverstanden.
+Auf keinen Fall.
 ]]
 }
 -----------------------
@@ -4173,12 +4219,12 @@ dialog{
   next = "sahasrahla_house.beginning.thanks",
   next2 = "sahasrahla_house.beginning.insisting",
   text = [[
-$v, je t'en
-conjure, tu es le seul
-à pouvoir protéger
-notre royaume...
-C'est d'accord
-Pas question
+$v, ich bitte Dich, Du
+bist der Einzige, der
+unser Königreich
+beschützen kann...
+Na gut, einverstanden.
+Auf keinen Fall.
 ]]
 }
 -----------------------
@@ -4188,9 +4234,9 @@ dialog{
   id = "sahasrahla_house.beginning.thanks",
   next = "sahasrahla_house.give_world_map",
   text = [[
-Je savais que je
-pouvais compter sur ton
-courage.
+Ich wusste, dass ich
+mich auf Deinen Mut
+verlassen kann.
 ]]
 }
 -----------------------
@@ -4198,9 +4244,9 @@ courage.
 dialog{
   id = "sahasrahla_house.give_world_map",
   text = [[
-Voici un objet qui te
-sera fort utile lors de
-ton périple...
+Dieser Gegenstand wird
+Dir auf Deinen Reisen
+sehr nützlich sein...
 ]]
 }
 -----------------------
@@ -4209,15 +4255,15 @@ ton périple...
 dialog{
   id = "sahasrahla_house.quest_accepted",
   text = [[
-Tu devrais aller jeter
-un coup d'oeil à la
-cave, j'y garde
-quelques objets qui
-pourraient te servir.
-Mais je ne te promets
-rien car cela fait
-longtemps que je ne
-l'ai pas entretenue...
+Du solltest einen Blick
+in den Keller werfen.
+Ich bewahre dort einige
+Dinge auf, die Dir
+nützlich sein könnten.
+Aber ich will nichts
+versprechen, ich habe
+seit langem nicht mehr
+aufgeräumt...
 ]]
 }
 -----------------------
@@ -4227,15 +4273,15 @@ dialog{
   id = "sahasrahla_house.dungeon_1_finished",
   next = "sahasrahla_house.go_grandma",
   text = [[
-Bravo, tu es venu à
-bout des épreuves du
-donjon de la forêt.
-Avant de continuer ton
-périple, n'hésite pas à
-descendre dans ma cave
-pour y trouver des
-objets qui te seront
-utiles.
+Gratuliere, Du hast 
+alle Herausforderungen
+der Waldgrotte
+gemeistert. Geh ruhig 
+in meinen Keller um 
+nach nützlichen Dingen 
+zu suchen, bevor 
+Du Dein Abenteuer 
+fortsetzt.
 ]]
 }
 -----------------------
@@ -4246,12 +4292,12 @@ dialog{
   question = true,
   next = "sahasrahla_house.memories.read",
   text = [[
-Les mémoires de
+Die Memoiren von
 Sahasrahla.
 
-Veux-tu les lire ?
-Oui
-Non
+Willst Du sie lesen?
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -4259,8 +4305,8 @@ Non
 dialog{
   id = "sahasrahla_house.memories.read",
   text = [[
-Hum, c'est beaucoup
-trop long !
+Och nein. Die sind viel
+zu lang!
 ]]
 }
 -----------------------
@@ -4270,9 +4316,9 @@ dialog{
   id = "sahasrahla_house.frozen_door_advice",
   skip = "all",
   text = [[
-La porte est gelée ?
-Essaie de faire fondre
-la glace avec de l'eau.
+Die Tür ist zugefroren?
+Versuche das Eis mit
+Wasser aufzutauen.
 ]]
 }
 -----------------------
@@ -4283,9 +4329,9 @@ dialog{
   skip = "all",
   next = "sahasrahla_house.go_grandma",
   text = [[
-J'ai foi en toi.
-Le courage et la
-sagesse te guideront.
+Ich habe Vertrauen in
+Dich. Mut und Weisheit
+werden Dich leiten.
 ]]
 }
 -----------------------
@@ -4293,14 +4339,14 @@ sagesse te guideront.
 dialog{
   id = "sahasrahla_house.go_grandma",
   text = [[
-Si tu as un doute au
-cours de ton aventure,
-pense à rendre visite à
-Mamie Lyly, à l'est du
-village. C'est une
-vieille amie et
-elle connaît tout sur
-les environs.
+Wenn Du mal nicht mehr
+weiterweißt, vergiss
+nicht zu Oma Lyly zu
+gehen. Sie wohnt im 
+Osten des Dorfes. Sie 
+ist eine alte Freundin
+und weiß alles über
+die Umgebung.
 ]]
 }
 -----------------------
@@ -4310,9 +4356,9 @@ dialog{
   id = "sahasrahla_house.frozen_door",
   skip = "all",
   text = [[
-Cette porte est gelée.
-Il faudrait un moyen de
-faire fondre la glace !
+Diese Tür ist vereist.
+Man müsste das Eis erst
+mit etwas auftauen.
 ]]
 }
 -----------------------
@@ -4323,39 +4369,39 @@ dialog{
   question = true,
   next2 = "lyriann_cave.tom.refuse_help",
   text = [[
-Bonjour, jeune
-aventurier. Je suis
-Tom, un ancien garde
-de notre défunt Roi.
-Je ne pensais pas que
-quelqu'un viendrait me
-trouver ici. Que fais-
-tu dans cette caverne
-lugubre ?
-Comment ? La Triforce
-est en danger ? $0Tout
-cela ne serait pas
-arrivé si notre Roi
-était encore là pour la
-protéger...
-Tu cherches à percer
-les mystères de cette
-caverne ?
-Cet endroit regorge
-d'énigmes, de trésors
-et de dangers.
-Cela me semble très
-courageux de ta part !
+Guten Tag, junger Aben-
+teurer. Ich bin Tom,
+ehemalige Wache unseres
+verstorbenen Königs.
+Ich hätte nicht
+gedacht, dass jemand
+hierher kommen würde.
+Was machst Du in dieser
+finsteren Höhle?
+Wie bitte? Das Triforce
+ist in Gefahr?
+$0Das alles wäre nicht
+passiert, wenn unser
+König noch da wäre, um
+uns zu schützen...
+Du willst wohl die
+Geheimnisse dieser
+Höhle erforschen?
+Dieser Ort ist voll von
+Rätseln, Schätzen und
+Gefahren. Ich finde das
+sehr mutig von Dir!
 
-S'il te plaît, accepte
-mon aide... J'ai
-échoué, je n'ai pas su
-protéger notre Roi.
-Laisse-moi une occasion
-de me racheter !
-Acceptes-tu mon aide ?
-Oui
-Non
+
+Bitte, nimm meine Hilfe
+an... Ich habe versagt,
+ich habe unseren König
+nicht schützen können.
+Ich würde das gerne
+wiedergutmachen!
+Darf ich Dir helfen?
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -4367,15 +4413,18 @@ dialog{
   question = true,
   next2 = "lyriann_cave.tom.refuse_help",
   text = [[
-Jeune explorateur,
-accepte mon aide. J'ai
-échoué, je n'ai pas su
-protéger notre Roi.
-Laisse-moi une occasion
-de me racheter !
-Acceptes-tu mon aide ?
-Oui
-Non
+Junger Entdecker, lass
+mich Dir helfen.
+
+Ich habe versagt. Ich 
+konnte unseren König
+nicht schützen.
+Gib mir eine Chance,
+das wieder gut zu 
+machen.
+Darf ich Dir helfen?
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -4384,15 +4433,15 @@ Non
 dialog{
   id = "lyriann_cave.tom.accept_help",
   text = [[
-Merci. Je peux te
-prêter ceci, j'espère
-que cela te sera utile.
-N'oublie pas de me le
-rendre quand tu auras
-terminé.
-Si tu obtiens le
-Réceptacle de Coeur,
-je serai impressionné !
+Danke. Ich kann Dir
+das hier leihen, ich
+hoffe, es wird Dir
+nützen. Vergiss nicht,
+es mir zurückzugeben,
+wenn Du fertig bist.
+Wenn Du den Herz-
+container fändest, wäre
+ich sehr beeindruckt!
 ]]
 }
 -----------------------
@@ -4401,7 +4450,7 @@ je serai impressionné !
 dialog{
   id = "lyriann_cave.tom.refuse_help",
   text = [[
-Bien, comme tu voudras.
+Gut, wie Du willst.
 ]]
 }
 -----------------------
@@ -4411,24 +4460,24 @@ dialog{
   id = "lyriann_cave.tom.not_finished",
   question = true,
   text = [[
-Tu t'en sors ? Aide-toi
-de mon boomerang pour
-franchir les obstacles.
-Il te faudra sans doute
-acquérir une certaine
-maîtrise du lancer du
-Boomerang pour percer
-tous les secrets de
-cette caverne...
-N'oublie pas que le
-Boomerang revient
-toujours vers toi,
-même si tu te déplaces.
+Klappt es? Benutze
+meinen Bumerang, um die
+Hindernisse aus dem Weg
+zu räumen. Du musst den
+Bumerangwurf wirklich
+gut beherrschen, um
+dieser Höhle all ihre
+Geheimnisse zu
+entlocken...
+Vergiss nicht, dass der
+Bumerang immer zu Dir
+zurückkommt, auch wenn
+Du Dich fortbewegst.
 
 
-Que veux-tu faire ?
-Continuer
-Rendre le Boomerang
+Was willst Du tun?
+Weitermachen.
+Bumerang zurückgeben.
 ]]
 }
 -----------------------
@@ -4437,9 +4486,9 @@ Rendre le Boomerang
 dialog{
   id = "lyriann_cave.tom.gave_boomerang_back",
   text = [[
-Merci. Reviens me voir
-si tu souhaites que je
-t'aide à nouveau.
+Danke. Komm zurück,
+falls Du mal wieder
+meine Hilfe brauchst.
 ]]
 }
 -----------------------
@@ -4448,7 +4497,7 @@ t'aide à nouveau.
 dialog{
   id = "lyriann_cave.tom.leaving",
   text = [[
-Hé ! Attends !
+He! Warte mal!
 ]]
 }
 -----------------------
@@ -4458,18 +4507,18 @@ Hé ! Attends !
 dialog{
   id = "lyriann_cave.tom.leaving.cavern_not_finished",
   text = [[
-Tu as déjà fini ton
-exploration ? Il me
-semble que tu n'as pas
-tout trouvé... Si cela
-ne t'embête pas, je
-récupère mon Boomerang.
-Son maniement requiert
-une certaine maîtrise !
-Reviens me voir si tu
-souhaites que je
-t'apporte à nouveau
-mon aide.
+Hast Du schon alles
+erforscht? Ich habe den
+Eindruck, Du hast nicht
+alles gefunden. Wenn Du
+nichts dagegen hast,
+hätte ich gerne meinen
+Bumerang wieder. Seine
+Handhabung erfordert
+ein hohes Maß an
+Geschicklichkeit. Komm
+zurück, falls Du wieder
+meine Hilfe brauchst.
 ]]
 }
 -----------------------
@@ -4481,15 +4530,15 @@ dialog{
   id = "lyriann_cave.tom.cavern_finished",
   next = "lyriann_cave.tom.see_you_later",
   text = [[
-Tu as réussi à déjouer
-les énigmes de cette
-caverne ?
-C'est impressionnant !
-Tu me sembles aussi
-adroit que courageux.
-Si cela ne t'embête
-pas, je vais récupérer
-mon Boomerang.
+Du hast alle Rätsel
+dieser Höhle gelöst?
+Das ist beeindruckend!
+Du scheinst nicht nur
+mutig, sondern auch
+geschickt zu sein.
+Wenn Du nichts dagegen
+hast, hätte ich gerne
+meinen Bumerang zurück.
 ]]
 }
 -----------------------
@@ -4500,11 +4549,9 @@ mon Boomerang.
 dialog{
   id = "lyriann_cave.tom.see_you_later",
   text = [[
-Si tu le souhaites, en
-cas de besoin, je
-viendrai te donner un
-un coup de main au
-cours de ton aventure.
+Wenn Du willst, werde
+ich Dir während Deines
+Abenteuers helfen.
 ]]
 }
 -----------------------
@@ -4514,7 +4561,7 @@ cours de ton aventure.
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.hey",
   text = [[
-Hé !
+He!
 ]]
 }
 -----------------------
@@ -4522,7 +4569,7 @@ Hé !
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.need_help",
   text = [[
-Tu as besoin d'aide ?
+Brauchst Du Hilfe?
 ]]
 }
 -----------------------
@@ -4530,9 +4577,9 @@ Tu as besoin d'aide ?
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.let_me_see",
   text = [[
-Hmmm, je parie qu'une
-échelle est cachée là.
-Voyons cela...
+Hmm, ich wette, dass da
+eine Leiter versteckt
+ist. Mal schauen...
 ]]
 }
 -----------------------
@@ -4540,9 +4587,9 @@ Voyons cela...
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.open",
   text = [[
-Je crois que je vais
-pouvoir la débloquer.
-$0Et voilà !
+Ich glaube, ich kann
+sie lösen.
+$0So!
 ]]
 }
 -----------------------
@@ -4550,9 +4597,9 @@ $0Et voilà !
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.finished",
   text = [[
-Fais attention, ça a
-l'air sinistre à
-l'intérieur.
+Sei vorsichtig, da
+drinnen sieht es düster
+aus.
 ]]
 }
 -----------------------
@@ -4560,45 +4607,45 @@ l'intérieur.
 dialog{
   id = "dungeon_1.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda.
-Nous sommes dévoués à
-veiller sur les restes
-de la sainte relique,
-la Triforce, symbole
-laissé par les trois
-déesses après leur
-action sur votre monde.
-Durant des millénaires,
-source de vie et de
-prospérité, la Triforce
-fut aussi source de
-grande convoitise et de
-luttes incessantes
-entre les forces du
-bien et les forces
-maléfiques.
-Aujourd'hui encore, la
-sainte relique est
-menacée.
-Mais l'histoire se
-répète : à chaque fois
-qu'un danger apparut,
-un héros émergea et son
-courage permit de
-repousser les Ténèbres.
-Retrouve mes frères et
-découvre qui est
-derrière tout cela,
-avant que les forces
-des ténèbres plongent
-Hyrule dans le chaos...
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+$2$v... Danke.
+Du hast mir das Leben
+gerettet. Ich bin einer
+der 8 Beschützer, die
+von Prinzessin Zelda
+berufen wurden. Wir
+wachen über die Teile
+der heiligen Reliquie,
+des Triforce, Symbol
+der drei Göttinnen, das
+sie nach ihrem Wirken
+auf Eurer Welt ließen.
+Jahrtausende über war
+das Triforce Quelle des
+Lebens und des
+Wohlstands, jedoch auch
+Ursprung von Gier und
+des unaufhörlichen
+Kampfes zwischen den
+Kräften des Guten und
+des Bösen.
+Wieder einmal ist die
+heilige Reliquie
+bedroht. Doch die
+Geschichte wiederholt
+sich: wann immer eine
+Bedrohung auftauchte,
+erschien ein Held und
+sein Mut konnte die
+Schatten zurückdrängen.
+Finde meine Brüder und
+entdecke, wer hinter
+all dem steckt, bevor
+die Mächte der
+Finsternis Hyrule ins
+Chaos stürzen...
+Möge der Held das
+Land zu Frieden und
+Wohlstand führen!
 ]]
 }
 -----------------------
@@ -4608,7 +4655,7 @@ le Royaume à la paix et
 dialog{
   id = "outside_world.rock_key_required",
   text = [[
-C'est fermé à clé !
+Das ist abgesperrt.
 ]]
 }
 -----------------------
@@ -4617,8 +4664,8 @@ dialog{
   id = "dungeon_2.eye_hint",
   skip = "all",
   text = [[
-Les deux yeux doivent
-être transpercés.
+Die beiden Augen müssen
+durchbohrt werden.
 ]]
 }
 -----------------------
@@ -4627,9 +4674,9 @@ dialog{
   id = "dungeon_2.eye_2_hint",
   skip = "all",
   text = [[
-Les yeux doivent être
-transpercés avec
-persévérance.
+Die Augen müssen
+mit Beharrung
+durchbohrt werden.
 ]]
 }
 -----------------------
@@ -4648,18 +4695,19 @@ dialog{
 dialog{
   id = "fairy_cave.first_time",
   text = [[
-Sois le bienvenu, jeune
-homme plein de sagesse.
-J'attendais ta venue.
-Je suis la Fée des
-Enchantements. Toi qui
-veilles sur la justice,
-permets-moi de t'offrir
-ce présent...
-
-Tu as prouvé par le
-passé que tu méritais
-de le posséder.
+Sei willkommen, 
+weiser junger Mann.
+Ich erwartete Deine
+Ankunft. Ich bin die
+Fee der Verzauberungen.
+Du, der das Recht
+verteidigt, erlaube mir, 
+Dir dieses Geschenk zu
+übergeben.
+Du hast durch Deine
+vergangenen Taten
+bewiesen, dass Du 
+es verdient hast.
 ]]
 }
 -----------------------
@@ -4667,12 +4715,13 @@ de le posséder.
 dialog{
   id = "fairy_cave.restore_health",
   text = [[
-Sois le bienvenu, jeune
-homme plein de sagesse.
+Sei willkommen,
+weiser junger Mann.
 
-Je suis la Fée des
-Enchantements. Ferme
-les yeux et relaxe-toi.
+Ich bin die Fee der
+Verzauberungen. 
+Schließe die Augen und 
+entspanne Dich.
 ]]
 }
 -----------------------
@@ -4680,16 +4729,17 @@ les yeux et relaxe-toi.
 dialog{
   id = "north_fairy_fountain.first_time",
   text = [[
-Sois le bienvenu, jeune
-homme au grand courage.
-J'attendais ta venue.
-Je suis la Fée des
-Voyageurs. Toi qui
-traverses le monde pour
-combattre le mal sans
-relâche, permets-moi de
-te transmettre une
-technique ancestrale...
+Sei willkommen,
+mutiger junger Mann.
+Ich erwartete Deine
+Ankunft. Ich bin die
+Fee der Reisenden.
+Du, der ohne zu ruhen
+die Welt durchquerst
+um das Böse zu 
+bekämpfen, erlaube mir,
+Dir diese urtümliche
+Technik zu überliefern.
 ]]
 }
 -----------------------
@@ -4697,12 +4747,13 @@ technique ancestrale...
 dialog{
   id = "north_fairy_fountain.restore_health",
   text = [[
-Sois le bienvenu, jeune
-homme au grand courage.
+Sei willkommen,
+mutiger junger Mann.
 
-Je suis la Fée des
-Voyageurs. Ferme
-les yeux et relaxe-toi.
+Ich bin die Fee der 
+Reisenden. 
+Schließe die Augen und
+entspanne Dich.
 ]]
 }
 -----------------------
@@ -4711,7 +4762,7 @@ dialog{
   id = "mountain_cave.mountain_sign",
   skip = "all",
   text = [[
-Montagne des Terreurs
+   Berg der Schrecken
         --->
 ]]
 }
@@ -4721,9 +4772,9 @@ dialog{
   id = "mountain_cave.not_much_done",
   skip = "all",
   text = [[
-Si tu lis ce message,
-c'est que tu n'as pas
-beaucoup avancé.
+Wenn Du dieses liest,
+dann bist Du nicht
+weit gekommen.
 ]]
 }
 -----------------------
@@ -4732,9 +4783,9 @@ dialog{
   id = "mountain_cave.patience",
   skip = "all",
   text = [[
-La patience est la
-vertu du vrai héros.
- - Auteur inconnu (?) -
+Geduld ist die Tugend
+des wahren Helden. 
+ - Autor unbekannt -
 ]]
 }
 -----------------------
@@ -4743,8 +4794,8 @@ dialog{
   id = "mountain_cave.almost_done",
   skip = "all",
   text = [[
-Le pire n'est pas
-à venir.
+Das Schlimmste kommt
+nicht mehr.
 ]]
 }
 -----------------------
@@ -4754,7 +4805,7 @@ dialog{
   skip = "all",
   text = [[
 
-     Ancien Château
+     Altes Schloss
          <---
 ]]
 }
@@ -4764,41 +4815,42 @@ dialog{
   id = "billy_cave.hello",
   skip = "current",
   text = [[
-J'espère que tu as
-quelque chose
-d'intéressant à faire
-si tu oses ainsi
-pénétrer dans ma
-caverne.
-Je suis Billy le
-Téméraire, le plus
-grand aventurier de
-tous les temps.
+Ich hoffe, Du hast
+etwas interessantes
+vor, damit Du es 
+wagst meine Höhle 
+zu betreten.
+Ich bin Billy der
+Furchtlose, der 
+größte Abenteurer
+aller Zeiten.
+Ich habe von meiner
+Expedition auf den 
+Berg der Schrecken
+einen unschätzbaren
+Schatz mitgebracht.
+Selbst die Prinzessin
+Zelda könnte ihn nicht
+finden. Es ist eine
+äußerst seltene 
+Pflanze. Und ich bin
+der einzige, der eine
+besitzt. Ich habe alle
+Hindernisse des Bergs
+der Schrecken über-
+wunden, alle Gefahren
+überlebt, und konnte
+mich aus allen 
+schwierigen Lagen
+befreien.
 
 
-Lors de mon expédition
-à la Montagne des
-Terreurs, j'ai rapporté
-un trésor inestimable.
-Même la Princesse Zelda
-ne saurait le trouver.
-C'est une plante
-extrêmement rare.
-
-Et je suis le seul à en
-avoir. J'ai franchi
-tous les obstacles
-de la Montagne des
-Terreurs, affronté tous
-les périls, et je me
-suis sorti de toutes
-les situations.
-
-C'est donc héroïquement
-que j'ai trouvé cette
-fleur d'une valeur
-incomparable :
-un edelweiss !
+Auf ganz heldenhafte 
+Weise habe ich also 
+diese Blume von 
+unvergleichbarem Wert 
+gefunden:
+ein Edelweiß!
 ]]
 }
 -----------------------
@@ -4808,17 +4860,17 @@ dialog{
   skip = "current",
   next = "_unknown",
   text = [[
-Ne compte pas sur moi
-pour te donner mon
-edelweiss gratuitement.
-J'ai été confronté à
-tous les dangers de la
-Montagne des Terreurs
-pour le trouver. Si tu
-n'as rien d'intéressant
-à me proposer, alors
-tu pourras toujours
-courir.
+Glaub bloß nicht, dass 
+ich Dir mein Edelweiß
+kostenlos überlasse.
+Ich bin allen Gefahren
+des Bergs der Schrecken
+entgegengetreten, um es
+zu finden. Wenn Du
+nichts interessantes
+anzubieten hast, kannst
+Du auch gleich wieder
+verschwinden.
 ]]
 }
 -----------------------
@@ -4827,9 +4879,9 @@ dialog{
   id = "billy_cave.without_golden_bars",
   question = true,
   text = [[
-Que me proposes-tu ?
-Un croissant
-Une tarte aux pommes
+Was bietest Du mir an?
+Ein Hörnchen
+Einen Apfelkuchen
 ]]
 }
 -----------------------
@@ -4838,9 +4890,9 @@ dialog{
   id = "billy_cave.with_golden_bars",
   question = true,
   text = [[
-Que me proposes-tu ?
-Des lingots d'or
-Une tarte aux pommes
+Was bietest Du mir an?
+Goldbarren
+Einen Apfelkuchen
 ]]
 }
 -----------------------
@@ -4848,8 +4900,8 @@ Une tarte aux pommes
 dialog{
   id = "billy_cave.give_croissant_without",
   text = [[
-Tu n'as même pas de
-croissant ! Voleur !
+Du besitzt gar kein
+Hörnchen! Dieb!
 ]]
 }
 -----------------------
@@ -4857,8 +4909,9 @@ croissant ! Voleur !
 dialog{
   id = "billy_cave.give_croissant",
   text = [[
-Un croissant ?
-Tu te moques de moi ?
+Ein Hörnchen?
+Willst Du mich
+veräppeln?
 ]]
 }
 -----------------------
@@ -4866,8 +4919,8 @@ Tu te moques de moi ?
 dialog{
   id = "billy_cave.give_apple_pie_without",
   text = [[
-Pfff ! Tu n'as même pas
-de tarte aux pommes !
+Pff! Du hast gar
+keinen Apfelkuchen!
 ]]
 }
 -----------------------
@@ -4875,9 +4928,9 @@ de tarte aux pommes !
 dialog{
   id = "billy_cave.give_apple_pie",
   text = [[
-Non merci, le marché
-est loin d'être
-équitable...
+Nein danke, dieser
+Tausch wäre wirklich
+nicht fair.
 ]]
 }
 -----------------------
@@ -4885,12 +4938,12 @@ est loin d'être
 dialog{
   id = "billy_cave.give_golden_bars",
   text = [[
-Quoi ? Tu as des
-lingots d'or ?$1...
+Was? Du hast
+Goldbarren? $1...
 $0...$0....................
-$3Marché conclu !
-Tiens, voilà ta stupide
-fleur...
+$3Abgemacht!
+Hier, nimm Deine blöde
+Blume...
 ]]
 }
 -----------------------
@@ -4898,10 +4951,10 @@ fleur...
 dialog{
   id = "outside_world.surprise_wall_guy.closed",
   text = [[
-Si tu me donnes quelque
-chose à manger, je te
-laisserai passer de
-l'autre côté de ce mur.
+Wenn Du mir etwas zu
+essen gibst, dann lasse
+ich Dich durch diese
+Absperrung gehen.
 ]]
 }
 -----------------------
@@ -4910,12 +4963,12 @@ dialog{
   id = "outside_world.surprise_wall_guy.give_me_apple_pie",
   question = true,
   text = [[
-Donne-moi cette tarte
-aux pommes !
+Gib mir diesen 
+Apfelkuchen!
 
-Alors ?
-OK
-Pas question
+Na?
+Ok
+Bestimmt nicht
 ]]
 }
 -----------------------
@@ -4923,10 +4976,11 @@ Pas question
 dialog{
   id = "outside_world.surprise_wall_guy.open",
   text = [[
-Des gens croient qu'il
-y a un trésor derrière
-ce mur, mais je n'en ai
-jamais trouvé !
+Einige Leute glauben,
+dass sich hinter dieser
+Mauer ein Schatz
+befindet, aber ich habe
+nie einen gefunden.
 ]]
 }
 -----------------------
@@ -4935,8 +4989,8 @@ dialog{
   id = "outside_world.surprise_wall_guy.thanks",
   next = "outside_world.surprise_wall_guy.open",
   text = [[
-Super ! En remerciement,
-je mange la tarte.
+Super! Als Dank esse
+ich Deinen Kuchen.
 ]]
 }
 -----------------------
@@ -4944,7 +4998,7 @@ je mange la tarte.
 dialog{
   id = "outside_world.surprise_wall_closed",
   text = [[
-C'est fermé !
+Das ist geschlossen.
 ]]
 }
 -----------------------
@@ -4953,7 +5007,7 @@ dialog{
   id = "surprise_wall.direction_0",
   text = [[
 
-        À droite      
+      Nach rechts      
 ]]
 }
 -----------------------
@@ -4962,7 +5016,7 @@ dialog{
   id = "surprise_wall.direction_1",
   text = [[
 
-        En haut        
+       Nach oben        
 ]]
 }
 -----------------------
@@ -4971,7 +5025,7 @@ dialog{
   id = "surprise_wall.direction_2",
   text = [[
 
-        À gauche       
+      Nach links       
 ]]
 }
 -----------------------
@@ -4980,7 +5034,7 @@ dialog{
   id = "surprise_wall.direction_3",
   text = [[
 
-         En bas        
+      Nach unten        
 ]]
 }
 -----------------------
@@ -4988,11 +5042,12 @@ dialog{
 dialog{
   id = "lake_shop.seller",
   text = [[
-Bienvenue à la Boutique
-du Lac ! Nos articles
-sont les moins chers
-de la région.
-Que puis-je pour toi ?
+Willkommen im Laden
+am See! Unsere Waren 
+sind die billigsten
+der Region.
+Was kann ich für 
+Dich tun?
 ]]
 }
 -----------------------
@@ -5000,8 +5055,9 @@ Que puis-je pour toi ?
 dialog{
   id = "lake_shop.apples",
   text = [[
-Trois pommes de marque
-premier prix.
+Drei Qualitätsäpfel
+zu einem günstigen
+Preis.
 ]]
 }
 -----------------------
@@ -5009,8 +5065,9 @@ premier prix.
 dialog{
   id = "lake_shop.bombs",
   text = [[
-Huit bombes. Je te les
-fais à prix coûtant !
+Acht Bomben. Ich 
+verkaufe sie Dir zum 
+Einkaufspreis!
 ]]
 }
 -----------------------
@@ -5018,9 +5075,9 @@ fais à prix coûtant !
 dialog{
   id = "lake_shop.arrows",
   text = [[
-Dix flèches, un
-excellent rapport
-qualité-prix.
+Zehn Pfeile, ein
+hervorragendes Preis-
+Leistungs-Verhältnis.
 ]]
 }
 -----------------------
@@ -5028,9 +5085,9 @@ qualité-prix.
 dialog{
   id = "lake_shop.big_magic_flask",
   text = [[
-Promotion du moment :
-une bouteille d'énergie
-magique.
+Das aktuelle Angebot:
+eine Flasche magischer
+Energie.
 ]]
 }
 -----------------------
@@ -5039,15 +5096,15 @@ dialog{
   id = "chests_game_cave.first_time",
   next = "chests_game_cave.play_question",
   text = [[
-Comment es-tu arrivé
-ici ??
+Wie bist Du hier
+reingekommen?
 
-... Maintenant que tu
-es là, je te propose de
-participer en
-exclusivité à mon
-nouveau jeu. La partie
-coûte 30 Rubis.
+... Nun, wenn Du schon
+hier bist, biete ich
+Dir an, mein ganz neues
+Spiel auszuprobieren.
+Ein Versuch kostet
+30 Rubine.
 ]]
 }
 -----------------------
@@ -5057,8 +5114,8 @@ dialog{
   skip = "current",
   next = "chests_game_cave.play_question",
   text = [[
-Salut ! Une partie
-coûte 30 Rubis.
+Hallo! Ein Spiel
+kostet 30 Rubine.
 ]]
 }
 -----------------------
@@ -5067,9 +5124,9 @@ dialog{
   id = "chests_game_cave.play_question",
   question = true,
   text = [[
-Tu veux jouer ?
-Oui
-Non
+Willst Du spielen ?
+Ja
+Nein
 ]]
 }
 -----------------------
@@ -5078,8 +5135,8 @@ dialog{
   id = "chests_game_cave.not_enough_money",
   skip = "all",
   text = [[
-Tu n'as pas assez de
-Rubis !
+Du hast nicht genug
+Rubine!
 ]]
 }
 -----------------------
@@ -5088,12 +5145,13 @@ dialog{
   id = "chests_game_cave.start_game_wooden_key",
   skip = "all",
   text = [[
-Merci ! Le jeu consiste
-à ouvrir un coffre au
-choix. Son contenu est
-à toi. Le gros lot du
-du jour est une
-magnifique clé en bois.
+Danke! Das Spiel
+besteht darin, eine 
+Truhe Deiner Wahl zu 
+öffnen. Ihr Inhalt
+gehört Dir. Der erste
+Preis ist ein groß-
+artiger Holzschlüssel.
 ]]
 }
 -----------------------
@@ -5102,12 +5160,13 @@ dialog{
   id = "chests_game_cave.start_game_piece_of_heart",
   skip = "all",
   text = [[
-Merci ! Le jeu consiste
-à ouvrir un coffre au
-choix. Son contenu est
-à toi. Le gros lot du
-du jour est un Fragment
-de Coeur.
+Danke! Das Spiel
+besteht darin, eine 
+Truhe Deiner Wahl zu 
+öffnen. Ihr Inhalt
+gehört Dir. Das große
+Los ist heute ein
+Herzteil.
 ]]
 }
 -----------------------
@@ -5116,9 +5175,9 @@ dialog{
   id = "chests_game_cave.start_game",
   skip = "all",
   text = [[
-Merci ! Tu peux ouvrir
-l'un des coffres. Son
-Son contenu est à toi.
+Danke! Du kannst eine
+der Truhen öffnen.
+Ihr Inhalt gehört Dir.
 ]]
 }
 -----------------------
@@ -5127,7 +5186,7 @@ dialog{
   id = "chests_game_cave.already_playing",
   skip = "all",
   text = [[
-Choisis un coffre !
+Wähle Deine Truhe.
 ]]
 }
 -----------------------
@@ -5137,11 +5196,11 @@ dialog{
   skip = "all",
   text = [[
 
-     Bazar du Coin
+ Örtlicher Ramschladen
 
-Le plus grand choix
-d'articles à un prix
-vraiment exceptionnel !
+Die größte Auswahl an
+Waren zu wirklich
+einzigartigen Preisen!
 ]]
 }
 -----------------------
@@ -5150,12 +5209,11 @@ dialog{
   id = "junk_shop.seller",
   skip = "all",
   text = [[
-Bienvenue au Bazar du
-Coin ! Des articles de
-premier choix à des
-prix tout-à-fait
-exceptionnels !
-Sers-toi !
+Herzlich Willkommen im 
+örtlichen Ramschladen!
+Qualitätswaren zu 
+absolut einzigartigen
+Preisen. Greif zu!
 ]]
 }
 -----------------------
@@ -5163,8 +5221,8 @@ Sers-toi !
 dialog{
   id = "junk_shop.croissant",
   text = [[
-Un Croissant. Pour
-récupérer des Coeurs.
+Ein Hörnchen. Um Herzen
+aufzufüllen.
 ]]
 }
 -----------------------
@@ -5172,8 +5230,8 @@ récupérer des Coeurs.
 dialog{
   id = "junk_shop.arrows",
   text = [[
-Des Flèches de modèle
-standard.
+Pfeile in der 
+Standardausführung.
 ]]
 }
 -----------------------
@@ -5181,9 +5239,9 @@ standard.
 dialog{
   id = "junk_shop.red_rupee",
   text = [[
-Un Rubis Rouge en
-promotion. Mais c'est
-le modèle d'expo.
+Ein roter Rubin im
+Angebot. Aber es ist
+das Ausstellungsmodel.
 ]]
 }
 -----------------------
@@ -5191,9 +5249,10 @@ le modèle d'expo.
 dialog{
   id = "junk_shop.mystic_mirror",
   text = [[
-Le Miroir Mystique. On
-dit qu'il peut inverser
-le cours de l'eau !
+Der Zauberpiegel. 
+Es heißt, er könne den
+Richtung von Wasser-
+Läufen umkehren.
 ]]
 }
 -----------------------
@@ -5201,8 +5260,8 @@ le cours de l'eau !
 dialog{
   id = "junk_shop.heart",
   text = [[
-Un Coeur. Pratique si
-tu manques de vitalité.
+Ein Herz. Nützlich wenn
+Dir Lebenskraft fehlt.
 ]]
 }
 -----------------------
@@ -5210,8 +5269,8 @@ tu manques de vitalité.
 dialog{
   id = "junk_shop.bombs",
   text = [[
-Huit Bombes à prix
-spécial.
+Acht Bomben zum
+Spezialpreis.
 ]]
 }
 -----------------------
@@ -5219,8 +5278,8 @@ spécial.
 dialog{
   id = "junk_shop.piece_of_heart",
   text = [[
-Un authentique Fragment
-de Coeur.
+Ein wahrhaftiges 
+Herzteil.
 ]]
 }
 -----------------------
@@ -5228,9 +5287,9 @@ de Coeur.
 dialog{
   id = "junk_shop.pain_au_chocolat",
   text = [[
-Un Pain au Chocolat
-pour récupérer des
-Coeurs.
+Ein Schokobrötchen
+zum Auffüllen von 
+Herzen.
 ]]
 }
 -----------------------
@@ -5239,11 +5298,12 @@ dialog{
   id = "castle.welcome",
   skip = "all",
   text = [[
-Bienvenue dans l'ancien
-château royal, classé
-monument historique.
-Merci de respecter les
-lieux.
+Willkommen im alten
+königlichen Schloss,
+einem historischen
+Bauwerk.
+Bitte respektieren
+sie diesen Ort.
 ]]
 }
 -----------------------
@@ -5252,11 +5312,11 @@ dialog{
   id = "castle.forbidden_stairs",
   skip = "all",
   text = [[
-Ces escaliers mènent à
-l'étage supérieur et à
-la terrasse.
-Cependant, l'accès est
-interdit au public.
+Diese Treppen führen
+zum oberen Stockwerk
+und zu der Terrasse.
+Sie sind jedoch für
+Besucher gesperrt.
 ]]
 }
 -----------------------
@@ -5265,10 +5325,10 @@ dialog{
   id = "castle.forbidden_door",
   skip = "all",
   text = [[
-Je regrette Monsieur,
-mais le passage vers
-les cachots n'est pas
-autorisé au public.
+Verzeihen Sie, aber
+der Zugang zu den
+Verliesen ist für
+Besucher gesperrt.
 ]]
 }
 -----------------------
@@ -5279,9 +5339,10 @@ dialog{
 ........$0....?!$#!@&=!??
 .....$0..................
 
-Comment es-tu arrivé
-ici ? L'accès aux
-cachots est interdit !
+Wie bist Du hier
+reingekommen? Die 
+Verliese sind für
+Besucher gesperrt!
 ]]
 }
 -----------------------
@@ -5290,12 +5351,12 @@ dialog{
   id = "castle.npc_1",
   skip = "all",
   text = [[
-Jadis, ce château
-appartenait à la
-famille royale.
-Aujourd'hui, c'est un
-lieu très prisé par
-les touristes !
+Damals gehörte dieses
+Schloss der königlichen
+Familie.
+Heutzutage ist dieser
+Ort bei Touristen sehr
+beliebt.
 ]]
 }
 -----------------------
@@ -5304,15 +5365,16 @@ dialog{
   id = "castle.npc_2",
   skip = "all",
   text = [[
-Quand on pense aux gens
-qui ont construit ce
-château...
-C'est une prouesse
-architecturale pour
-l'époque. Il faut dire
-qu'ils n'avaient pas
-les moyens modernes
-d'aujourd'hui !
+Man muss nur mal an die
+Menschen denken, die 
+dieses Schloss erbaut
+haben...
+Das war zu der Zeit
+eine architektonische
+Meisterleistung.
+Sie hatten ja damals
+nicht die modernen
+Mittel von heute.
 ]]
 }
 -----------------------
@@ -5321,11 +5383,11 @@ dialog{
   id = "castle.where_is_tom",
   skip = "all",
   text = [[
-Tom, un de nos
-meilleurs soldats, a
-mystérieusement disparu
-alors qu'il était parti
-explorer une caverne.
+Tom, einer unserer
+besten Soldaten, ist
+auf mysteriöse Weise
+verschwunden als er
+eine Höhle erforschte.
 ]]
 }
 -----------------------
@@ -5334,8 +5396,9 @@ dialog{
   id = "castle.npc_3",
   skip = "all",
   text = [[
-Quel luxe ! C'est une
-magnifique demeure !
+Wie luxuriös!
+Was für ein
+wundervolles Bauwerk!
 ]]
 }
 -----------------------
@@ -5344,10 +5407,10 @@ dialog{
   id = "castle.prison",
   skip = "all",
   text = [[
-C'est dans ces sombres
-cachots qu'étaient
-autrefois enfermés les
-prisonniers du Roi.
+In diese dunklen
+Verliese wurden früher
+die Gefangenen des
+Königs gesperrt.
 ]]
 }
 -----------------------
@@ -5356,11 +5419,12 @@ dialog{
   id = "castle.cannon",
   skip = "all",
   text = [[
-Quel splendide canon !
-A l'époque où le Roi
-l'utilisait, il valait
-mieux ne pas faire
-partie de ses ennemis !
+Welch großartige
+Kanone! Als der König
+sie noch benutzte,
+gehörte man wohl
+besser nicht zu seinen
+Feinden.
 ]]
 }
 -----------------------
@@ -5369,21 +5433,22 @@ dialog{
   id = "inferno.first_time",
   next = "inferno.find_fire_stones",
   text = [[
-Qui ose pénétrer sur
-mes terres ? Petit !
-Sache qu'il est très
-grave de déranger le
-grand Inferno, Seigneur
-des Flammes !
-Ton sacrilège ne
-restera pas impuni !
-Pour te racheter, je te
-mets au défi de partir
-à la recherche des
-trois Pierres de Feu
-que j'ai cachées dans
-mes labyrinthes
-lugubres.
+Wer wagt es, meine
+Ländereien zu betreten?
+Kleiner! Wisse dass es
+sehr schlecht ist, den
+großen Inferno, den
+Herr der Flammen zu
+stören. Dieser Frevel
+wird nicht ungestraft
+bleiben.
+Als Wiedergutmachung
+fordere ich Dich dazu
+heraus, die drei Feuer-
+steine zu finden, die
+ich in meinen unheim-
+lichen Labyrinthen 
+versteckt habe.
 ]]
 }
 -----------------------
@@ -5392,18 +5457,19 @@ dialog{
   id = "inferno.find_fire_stones",
   skip = "current",
   text = [[
-Tu subiras trois
-épreuves de courage.
+Du wirst drei Mutproben
+überstehen müssen.
 
-Rivière.
-$0Montagne.
-$0Beaumont.
-Si tu parviens à sortir
-des trois labyrinthes,
-apporte-moi les trois
-Pierres de Feu.
-Ainsi, la rancoeur
-d'Inferno s'apaisera.
+Fluss.
+$0Berg.
+$0Schönberg.
+Solltest Du den Weg
+durch die drei 
+Labyrinthe finden, 
+bring mir die drei 
+Feuersteine. So wirst
+Du den Zorn Infernos
+besänftigen. 
 ]]
 }
 -----------------------
@@ -5412,15 +5478,16 @@ dialog{
   id = "inferno.found_fire_stones",
   question = true,
   text = [[
-Tu as franchi les trois
-épreuves avec succès !
-Je m'incline devant ta
-bravoure. Demande-moi
-ce que tu tu veux et
-j'accompirai ton désir.
-Que puis-je faire ?
-Les pierres noires...
-100 Rubis ?
+Du hast die drei
+Aufgaben bewältigt!
+Dein Mut verdient
+meinen Respekt. Wonach
+auch immer Du fragst,
+ich werde Dir Deinen
+Wunsch erfüllen. Was
+kann ich für Dich tun?
+Dunkle Steine...
+100 Rubine?
 ]]
 }
 -----------------------
@@ -5428,7 +5495,7 @@ Les pierres noires...
 dialog{
   id = "inferno.want_rupees",
   text = [[
-Soit.
+Wie Du wünschst.
 ]]
 }
 -----------------------
@@ -5436,8 +5503,8 @@ Soit.
 dialog{
   id = "inferno.want_rupees_again",
   text = [[
-Tu as déjà bénéficié de
-cette faveur.
+Diesen Wunsch habe ich
+Dir schon erfüllt.
 ]]
 }
 -----------------------
@@ -5445,15 +5512,14 @@ cette faveur.
 dialog{
   id = "inferno.want_black_stones",
   text = [[
-Avant de soulever ces
-pierres noires, tu
-devras affronter les
-périls d'un lieu
-infernal et vaincre de
-nombreux dangers.
-Laisse-moi te
-transporter vers
-l'enfer des flammes...
+Um diese dunklen Steine
+zu heben, musst Du Dich
+den Schrecken eines
+fürchterlichen Ortes 
+stellen und zahlreiche
+Gefahren bezwingen.
+Lass mich Dich zu der
+Fammenhölle bringen...
 ]]
 }
 -----------------------
@@ -5461,12 +5527,12 @@ l'enfer des flammes...
 dialog{
   id = "potion_shop.witch",
   text = [[
-Bienvenue à la Boutique
-de Potions !
-Héhéhé...
-Rouge donne vie, vert
-donne magie, bleu donne
-vie et magie !
+Willkommen im
+Trankladen.
+Hehehe...
+Rot gibt Leben, grün
+gibt Magie, blau gibt
+Leben und Magie.
 ]]
 }
 -----------------------
@@ -5474,15 +5540,15 @@ vie et magie !
 dialog{
   id = "potion_shop.witch_bottle_offered",
   text = [[
-Bienvenue à la Boutique
-de Potions !
-Héhéhé...
-Un Flacon Magique est
-offert à chaque nouveau
-client ! Héhéhé...
-Rouge donne vie, vert
-donne magie, bleu donne
-vie et magie !
+Willkommen im
+Trankladen.
+Hehehe...
+Jeder neue Kunde 
+erhält eine magische
+Flasche! Hehehe...
+Rot gibt Leben, grün
+gibt Magie, blau gibt
+Leben und Magie.
 ]]
 }
 -----------------------
@@ -5490,9 +5556,9 @@ vie et magie !
 dialog{
   id = "potion_shop.no_empty_bottle",
   text = [[
-Sans Flacon vide, tu ne
-peux pas acheter cette
-potion ! Héhéhé...
+Ohne leere Flasche
+kannst Du diesen Trank
+nicht kaufen! Hehehe...
 ]]
 }
 -----------------------
@@ -5500,9 +5566,9 @@ potion ! Héhéhé...
 dialog{
   id = "potion_shop.red_potion",
   text = [[
-La potion rouge :
-restaure la vie !
-Héhéhé...
+Der rote Trank:
+stellt Leben wieder
+her! Hehehe...
 ]]
 }
 -----------------------
@@ -5510,19 +5576,18 @@ Héhéhé...
 dialog{
   id = "potion_shop.green_potion",
   text = [[
-La potion verte :
-restaure ta barre de
-magie ! Héhéhé...
-]]
+Der grüne Trank:
+stellt Magie wieder
+her! Hehehe...]]
 }
 -----------------------
 
 dialog{
   id = "potion_shop.blue_potion",
   text = [[
-La potion bleue :
-restaure vie et magie !
-Héhéhé...
+Der blaue Trank:
+stellt Leben und Magie
+wieder her! Hehehe...
 ]]
 }
 -----------------------
@@ -5530,10 +5595,10 @@ Héhéhé...
 dialog{
   id = "potion_shop.give_bottle",
   text = [[
-Et en tant que nouveau
-client, tu as droit à
-ce Flacon Magique
-gratuit. Héhéhé...
+Und als neuer Kunde
+erhälst Du gratis diese
+magische Flasche.
+Hehehe...
 ]]
 }
 -----------------------
@@ -5542,9 +5607,9 @@ dialog{
   id = "outside_world.vine_start",
   skip = "all",
   text = [[
-La terre semble très
-fertile ici, mais elle
-manque d'humidité...
+Die Erde hier sieht sehr
+fruchtbar aus, aber sie
+ist zu trocken.
 ]]
 }
 -----------------------
@@ -5553,9 +5618,9 @@ dialog{
   id = "cave_to_dungeon_8.hint",
   skip = "all",
   text = [[
-Seul un observateur
-attentif saura suivre
-le chemin.
+Nur ein aufmerksamer
+Beobachter wird dem
+Weg folgen können.
 ]]
 }
 -----------------------
@@ -5564,9 +5629,9 @@ dialog{
   id = "bone_key_cave.hint",
   skip = "all",
   text = [[
-C'est en repoussant la
-lumière que viendra
-la lumière.
+Die Erleuchtung kommt,
+wenn die Beleuchtung
+zurückgedrängt wird.
 ]]
 }
 -----------------------
@@ -5575,8 +5640,8 @@ dialog{
   id = "hidden_palace.door_closed",
   skip = "all",
   text = [[
-Cette porte ne s'ouvre
-pas...
+Diese Tür lässt sich
+nicht öffnen...
 ]]
 }
 -----------------------
@@ -5585,8 +5650,8 @@ dialog{
   id = "hidden_palace.using_bone_key",
   icon = 20,
   text = [[
-$1Tu utilises la Clé
-d'Os...
+$1Du benutzt den
+Knochenschlüssel...
 ]]
 }
 --------------------
@@ -5594,33 +5659,33 @@ d'Os...
 dialog{
   id = "dungeon_2.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda pour
-veiller sur la
-Triforce. L'amulette du
-Solarus, un pendentif
-porté par la Princesse
-Zelda, est le seul
-moyen de reconstituer 
-la Triforce, dont nous
-avons dissimulé les
-huit fragments dans
-tout le royaume.
-Nous sommes ici pour
-veiller sur les huit
-fragments, alors que
-Zelda veille sur
-l'Amulette du Solarus.
-Il ne faut pas qu'elle
-tombe en de mauvaises
-mains. Mais nous avons
-foi en ton courage.
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+$2$v... Danke.
+Du hast mir das Leben
+gerettet. Ich bin einer
+der 8 Beschützer, die
+von Prinzessin Zelda
+berufen wurden um über
+das Triforce zu wachen.
+Einzig das Amulett des
+Solarus, das Prinzessin 
+Zelda trägt, kann das
+Triforce wieder 
+zusammensetzen aus 
+seinen acht Teilen,
+die wir an Orten im
+ganzen Land versteckt
+haben.
+Wir wachen über die
+acht Teile, während
+Zelda das Amulett des
+Solarus schützt.
+Es darf nicht in die
+falschen Hände geraten.
+Aber wir glauben an
+Deinen Mut.
+Möge der Held das
+Land zu Frieden und
+Wohlstand führen!
 ]]
 }
 -----------------------
@@ -5629,7 +5694,7 @@ dialog{
   id = "dungeon_3.arbror_direction_hint",
   text = [[
 
-  Nord : Maître Arbror 
+Norden: Meister Arbror 
 ]]
 }
 -----------------------
@@ -5637,7 +5702,8 @@ dialog{
 dialog{
   id = "dungeon_3.water_drained_somewhere",
   text = [[
-Au loin... un bruit...
+In der Ferne...
+ein Geräusch...
 ]]
 }
 -----------------------
@@ -5645,9 +5711,9 @@ Au loin... un bruit...
 dialog{
   id = "dungeon_3.arbror_hello",
   text = [[
-Ahh !!! Jamais tu ne me
-vaincras, moi, Maître
-Arbror !
+Ahh!!! Niemals wirst Du
+mich besiegen. Ich bin
+Meister Arbor!
 ]]
 }
 -----------------------
@@ -5655,11 +5721,12 @@ Arbror !
 dialog{
   id = "dungeon_3.arbror_killed",
   text = [[
-KARGHHH !!! Je suis
-vaincu mais tu ne t'en
-tireras pas...
-Tu ne réussiras
-jamais...
+ÄÄRGHHH!!! Ich bin
+geschlagen, aber Du
+wirst nicht
+davonkommen...
+Du wirst es nie 
+schaffen...
 ]]
 }
 -----------------------
@@ -5667,24 +5734,27 @@ jamais...
 dialog{
   id = "dungeon_3.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Grâce à toi, cette
-horrible créature ne
-sévira plus jamais.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda.
-La Triforce est
-toujours en danger tant
-que l'un de mes frères
-est encore prisonnier.
-Tu es proche du but.
-Sauve-le et restaure la
-la paix sur le royaume.
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+$2$v... Danke.
+Du hast mir das Leben
+gerettet.
+Dank Dir wird diese
+schreckliche Kreatur
+nie wieder Übles tun.
+Ich bin einer
+der 8 Beschützer, die
+von Prinzessin Zelda
+berufen wurden.
+Das Triforce ist noch
+in Gefahr, denn einer
+meiner Brüder wird
+noch gefangen gehalten.
+Du bist dem Ziel nah.
+Rette ihn und bring
+dem Land Frieden.
+
+Möge der Held das
+Land zu Frieden und
+Wohlstand führen!
 ]]
 }
 -----------------------
@@ -5693,8 +5763,8 @@ dialog{
   id = "dungeon_4.welcome",
   skip = "current",
   text = [[
-        Niveau 4
-   Palais de Beaumont  
+        4. Dungeon
+  Schloss von Schönberg 
 ]]
 }
 -----------------------
@@ -5702,9 +5772,9 @@ dialog{
 dialog{
   id = "dungeon_4.hint_use_map",
   text = [[
-Lorsque les issues
-ne se dévoilent pas,
-sers-toi de ton plan.
+Wenn die Ausgänge 
+verborgen bleiben,
+benutze Deine Karte.
 ]]
 }
 -----------------------
@@ -5712,9 +5782,8 @@ sers-toi de ton plan.
 dialog{
   id = "dungeon_4.hint_chests",
   text = [[
-Le croisement des
-quatre coffres indique
-le chemin.
+Wo sich vier Truhen
+kreuzen ist der Weg.
 ]]
 }
 -----------------------
@@ -5722,9 +5791,9 @@ le chemin.
 dialog{
   id = "dungeon_4.too_cold",
   text = [[
-Il fait beaucoup trop
-froid ici...
-$0Il faut repartir !
+Hier ist es viel zu
+kalt...
+$0Du musst hier weg!
 ]]
 }
 -----------------------
@@ -5732,21 +5801,24 @@ $0Il faut repartir !
 dialog{
   id = "dungeon_4.solarus_child",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Je suis l'un des huit
-protecteurs appelés par
-la Princesse Zelda.
-Tu as fait preuve d'un
-courage remarquable.
-Grâce à toi, nous
-sommes désormais au
-complet et la Triforce
-est en sécurité.
+$2$v... Danke.
+Du hast mir das Leben
+gerettet.
+Ich bin einer
+der 8 Beschützer, die
+von Prinzessin Zelda
+berufen wurden.
+Du hast Deinen
+bemerkenswerten Mut
+unter Beweis gestellt.
+Dank Dir sind wir
+wieder vollzählig und
+das Triforce ist 
+wieder in Sicherheit.
 
-Puisse le héros mener
-le Royaume à la paix et
-à la prospérité !
+Möge der Held das
+Land zu Frieden und
+Wohlstand führen!
 ]]
 }
 -----------------------
@@ -5755,54 +5827,62 @@ dialog{
   id = "dungeon_4.agahnim",
   text = [[
 $1A G A H N I M !
-$3Et oui, lui-même !
+$3Ja, höchstpersönlich!
 
-Le sorcier revenu de
-l'empire des morts !
-Ah ah ah ah ah ah !!!
-Ainsi donc vous avez
-réussi à retrouver les
-quatre gamins.
-Mais cet enfant ne se
-doute pas de ce qui
-l'attend dehors en
-disant que la Triforce
-est en sécurité...
-Ah ah ah ah ah ah !!!
-Sachez, jeune homme,
-que je ne suis pas
-revenu ici pour libérer
-cet infâme Ganon, lui
-qui a un jour osé
-affirmer que je n'étais
-que son alter-ego...
-Je préfère laisser ce
-sombre bandit enfermé
-dans son Monde des
-Ténèbres ! Ainsi je
-garderai la Triforce
-pour moi et je règnerai
-en seul maître...
-Ah ah ah ah ah !
-En sortant d'ici, vous
-constaterez très vite
-que le royaume est déjà
-sous mon contrôle...
-Ah ah ah ah ah ah ah !
+Der Hexer, der von
+dem Reich der Toten 
+zurückkehrte!
+Ha ha ha ha ha ha!
+Also haben Sie es
+geschafft, die vier
+Kinder zu finden.
+Aber dieses Kind ahnt
+nicht, was es draußen
+erwartet, wenn es sagt,
+das Triforce sei
+in Sicherheit...
+Ha ha ha ha ha ha!
+Wisset, junger Mann,
+dass ich nicht hierher
+zurückgekommen bin, um
+diesen unsäglichen
+Ganon zu befreien, 
+ihn, der es eines Tages 
+wagte zu behaupten, ich
+sei nur sein Alter Ego.
+Ich ziehe es vor,
+diesen hinterlistigen 
+Räuber in seinem Reich
+der Schatten zu lassen!
+Dann kann ich das
+Triforce für mich
+behalten und ganz
+alleine herrschen...
+Ha ha ha ha ha ha!
+Wenn ihr diesen Ort
+verlasst, werdet
+ihr sehr schnell
+feststellen, dass ich
+das Land schon längst
+unter meine Kontrolle
+gebracht habe...
+Ha ha ha ha ha ha!
 
-Quant à vous, jeune
-aventurier
-présomptueux, l'heure
-de notre affrontement
-n'est pas encore venue.
-Pour l'instant, je
-rentre au château !
-Ah ah ah ah ah ! Mais
-nous nous reverrons, et
-mes pouvoirs n'auront
-aucune difficulté à
-vous supprimer !
-Ah ah ah ah ah ah !!!
+Was Sie angeht, 
+junger überheblicher
+Abenteurer;
+Die Stunde unseres
+Schlagaustausches ist
+noch nicht gekommen.
+Ich gehe nun erst mal
+zurück zum Schloss.
+Ha ha ha ha ha ha!
+Aber wir werden uns
+wiedersehen und meine
+Kräfte werden Sie
+völlig mühelos aus
+dem Weg räumen!
+Ha ha ha ha ha ha!
 ]]
 }
 -----------------------
@@ -5811,8 +5891,8 @@ dialog{
   id = "dungeon_5.welcome",
   skip = "current",
   text = [[
-        Niveau 5
-     Ancien Château
+      5. Dungeon
+     Altes Schloss
 ]]
 }
 -----------------------
@@ -5821,9 +5901,12 @@ dialog{
   id = "dungeon_5.pots_hint",
   skip = "all",
   text = [[
-La clé de l'énigme est
-de tourner autour des
-pots dans le bon sens.
+Was willst Du tun, um
+das Rätsel zu lösen?
+Lange um den heißen
+Brei herumreden oder
+richtig um die kalten
+Vasen herumlaufen.
 ]]
 }
 -----------------------
@@ -5831,8 +5914,8 @@ pots dans le bon sens.
 dialog{
   id = "dungeon_5.hero_seen_by_guard",
   text = [[
-HALTE !
-On ne bouge plus !
+HALT!
+Keine Bewegung!
 ]]
 }
 -----------------------
@@ -5840,9 +5923,9 @@ On ne bouge plus !
 dialog{
   id = "dungeon_5.prison_1_locked",
   text = [[
-    - Serrure Fer -
-Aucune de tes clés ne
-semble rentrer...
+    - Eisenschloss -
+Keiner Deiner Schlüssel
+scheint zu passen...
 ]]
 }
 -----------------------
@@ -5851,8 +5934,8 @@ dialog{
   id = "dungeon_5.prison_1_use_iron_key",
   icon = 28,
   text = [[
-$1Tu utilises la Clé
-de Fer...
+$1Du benutzt den
+Eisenschlüssel...
 ]]
 }
 --------------------
@@ -5860,8 +5943,8 @@ de Fer...
 dialog{
   id = "dungeon_5.prison_2_locked_1",
   text = [[
-Cette serrure est
-fermée !
+Dieses Schloss ist
+abgesperrt.
 ]]
 }
 -----------------------
@@ -5869,9 +5952,10 @@ fermée !
 dialog{
   id = "dungeon_5.prison_2_locked_2",
   text = [[
-C'est tellement rouillé
-que même la Grande Clé
-n'y ferait rien.
+Das ist so verrostet, 
+dass selbst der große
+Schlüssel nicht 
+helfen würde.
 ]]
 }
 -----------------------
@@ -5879,9 +5963,10 @@ n'y ferait rien.
 dialog{
   id = "dungeon_5.prison_2_locked_3",
   text = [[
-Il y a peut-être moyen
-de forcer cette vieille
-serrure...
+Vielleicht ist es
+möglich, dieses alte
+Schloss irgendwie 
+zu brechen...
 ]]
 }
 -----------------------
@@ -5889,9 +5974,9 @@ serrure...
 dialog{
   id = "dungeon_5.puzzle_solved",
   text = [[
-Dans les profondeurs du
-château, un mécanisme
-se déclenche...
+In den Tiefen des
+Schlosses, wird ein
+Mechanismus ausgelöst.
 ]]
 }
 -----------------------
@@ -5899,12 +5984,13 @@ se déclenche...
 dialog{
   id = "dungeon_5.agahnim_beginning",
   text = [[
-Ainsi donc vous avez
-réussi à échapper à mes
-gardes et à déjouer les
-pièges de mon château.
-Mais votre escapade
-s'arrête là !
+Sie haben es also
+geschafft, meinen
+Wachen zu entkommen
+und die Fallen meines
+Schlosses zu entgehen.
+Aber Ihr kleiner
+Ausflug endet hier!
 ]]
 }
 -----------------------
@@ -5913,23 +5999,23 @@ dialog{
   id = "dungeon_5.agahnim_end",
   text = [[
 ...$0...........$0
-Vous m'avez vaincu
-cette fois...
-Mais nous nous
-reverrons !
+Sie haben mich dieses
+Mal besiegt...
+Aber wir werden uns
+wiedersehen!
 
-Votre petite aventure
-ne change rien...
-Sahasrahla est en mon
-pouvoir et il va me
-révéler où se trouvent
-la Princesse et les
-huit enfants...
-Ah ah ah ah ah !
+Ihr kleines Abenteuer
+ändert gar nichts.
+Sahasrahla ist in
+meiner Gewalt und er
+wird mir verraten, wo
+sich die Prinzessin und
+die acht Kinder sind...
+Ha ha ha ha ha ha!
 
-Sur ce, je dois vous
-laisser. A une
-prochaine fois !
+So, nun habe ich
+aber noch zu tun.
+Bis demnächst!
 ]]
 }
 -----------------------
@@ -5938,8 +6024,8 @@ dialog{
   id = "dungeon_6.welcome",
   skip = "current",
   text = [[
-        Niveau 6
-    Dédale d'Inferno   
+      6. Dungeon
+   Höhle des Inferno   
 ]]
 }
 -----------------------
@@ -5947,9 +6033,8 @@ dialog{
 dialog{
   id = "dungeon_6.torches_hint",
   text = [[
-Les trois lumières
-indiquent l'endroit de
-la chute.
+Die drei Lichter zeigen
+den Ort des Falls.
 ]]
 }
 -----------------------
@@ -5957,8 +6042,8 @@ la chute.
 dialog{
   id = "dungeon_6.dont_fall_hint",
   text = [[
-Ne tombe pas, mais
-saute.
+Fall nicht, sondern
+spring.
 ]]
 }
 -----------------------
@@ -5966,8 +6051,8 @@ saute.
 dialog{
   id = "dungeon_6.close_way_hint",
   text = [[
-Puis referme le chemin
-derrière toi.
+Dann verschließe den
+Weg hinter Dir wieder.
 ]]
 }
 -----------------------
@@ -5975,14 +6060,13 @@ derrière toi.
 dialog{
   id = "dungeon_6.tom",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-Tu as fait beaucoup de
-chemin et traversé de
-nombreuses épreuves
-depuis que nous nous
-sommes rencontrés
-jadis.
+$2$v... Danke.
+Du hast mir das Leben
+gerettet. Du bist weit
+gekommen und hast viele
+Aufgaben erfüllt
+seitdem wir uns damals
+begegneten.
 ]]
 }
 -----------------------
@@ -5990,45 +6074,48 @@ jadis.
 dialog{
   id = "dungeon_6.tom_revelation",
   text = [[
-$2J'ai des choses très
-graves à t'avouer...
-La mort de notre roi
-n'était pas
-accidentelle. C'est moi
-qui l'ai empoisonné.
-J'étais sous le
-contrôle d'Agahnim...
-Il m'avait envoûté et
-j'avais perdu toute
-volonté... Je ne
-pouvais rien faire...
-Ce n'est que lorsque le
-sort a été brisé que
-j'ai réalisé ce qui
-s'était passé... J'ai
-alors décidé de
-m'exiler dans la
-caverne où tu m'as
-rencontré. Puis j'ai
-été fait prisonnier en
-tentant de résister
-lorsque Agahnim a
-envahi le château.
-$v... Tu dois
-maintenant te rendre à
-la Montagne des
-Terreurs. C'est là
-qu'Agahnim est parti à
-la recherche de Zelda.
-Tu dois d'abord libérer
-Sahasrahla avant que le
-sorcier parvienne à
-lui faire avouer où se
-trouvent Zelda et les
-huit enfants...
-Prends donc ceci, c'est
-ma modeste contribution
-pour ta quête...
+$2Ich muss Dir sehr
+schlimme Dinge
+beichten...
+Der Tod unseres Königs
+war kein Unfall. Ich
+war es, der ihn
+vergiftet hat. Ich war
+unter der Kontrolle
+von Agahnim... Er hatte
+mich verzaubert und ich
+hatte jegliche Willens-
+kraft verloren... Ich
+konnte nichts tun...
+Erst als der Zauber
+gebrochen war, bin ich
+mir bewusst geworden,
+was passiert war. Ich
+habe dann beschlossen,
+mich selbst in die 
+Höhle zu verbannen,
+in der Du mir begegnet
+bist. Dann wurde ich
+gefangen genommen, als
+einnehmen wollte und
+ich versuchte,
+Widerstand zu leisten.
+$v... Du musst Dich nun
+zum Berg der Schrecken
+begeben. Agahnim ist
+dorthin gegangen, um
+nach Zelda zu suchen.
+Du musst zunächst
+Sahasrahla befreien,
+bevor der Hexer ihn
+dazu bringen kann, zu
+verraten, wo sich Zelda
+und die acht Kinder
+befinden...
+Nimm noch dies, das ist
+mein bescheidener
+Beitrag zu Deiner
+Suche...
 ]]
 }
 -----------------------
@@ -6037,8 +6124,8 @@ dialog{
   id = "dungeon_7.welcome",
   skip = "current",
   text = [[
-        Niveau 7
-   Temple du Cristal   
+      7. Dungeon
+       Eistempel    
 ]]
 }
 -----------------------
@@ -6057,8 +6144,8 @@ dialog{
 dialog{
   id = "dungeon_7.2f_weak_floor_hint",
   text = [[
-Sous tes pieds dort un
-secret.
+Ein Geheimnis ruht
+unter Deinen Füßen.
 ]]
 }
 -----------------------
@@ -6066,8 +6153,9 @@ secret.
 dialog{
   id = "dungeon_7.2f_dont_fall_alone_hint",
   text = [[
-La solution consistait
-à ne pas tomber seul.
+Die Lösung bestand
+darin, nicht alleine
+zu fallen.
 ]]
 }
 -----------------------
@@ -6075,60 +6163,64 @@ La solution consistait
 dialog{
   id = "dungeon_7.sahasrahla",
   text = [[
-$2$v... Merci.
-Tu m'as sauvé la vie.
-
-Si seulement j'avais pu
-tenir une minute de
-plus...
-Ces bandits m'ont forcé
-à révéler où se
-trouvent Zelda et les
-enfants du Solarus.
-Tu dois maintenant les
-protéger avant qu'il ne
-leur arrive malheur...
-Ils sont cachés dans un
-palais à l'est des
-montagnes. Les huit
-êtres du Solarus
-doivent échapper à
-Agahnim, sans quoi le
-sorcier pourrait
-déjouer le sceau créé
-par l'Amulette du
-Solarus, le pendentif
-porté par Zelda et qui
-est nécessaire à la
-reconstitution de la
-Triforce.
-Le mystère du Solarus
-est contenu dans ce
-pendentif.
-Le possesseur du
-pendentif a la
-possibilité d'invoquer
-le pouvoir du Solarus
-dans le but de sceller
-un objet, un lieu ou
-même un monde, comme le
-firent les sept sages
-lorsqu'ils scellèrent
-la Terre d'Or. Zelda
-est l'héritière de ce
-pouvoir. Elle l'a
-utilisé pour sceller
-les fragments de la
-Triforce, par le biais
-des huit êtres créés
-par le Solarus.
-Ainsi, tant qu'elle
-seule connaît le secret
-de ce pendentif, elle
-seule maîtrise le sceau
-de la Triforce. C'est
-pourquoi tu dois
-protéger le sceau.
+$2$v... Danke.
+Du hast mir das Leben
+gerettet.
+Ach wenn ich nur eine
+Minute länger hätte
+durchhalten können...
+Diese Räuber haben mich
+gezwungen, zu verraten,
+wo sich Zelda und die
+Kinder des Solarus
+befinden.
+Du musst sie nun
+beschützen, damit Ihnen
+nichts Böses zustößt...
+Sie verstecken sich im
+Palast östlich der
+Berge. Die acht Wesen
+des Solarus müssen
+Agahnim entkommen,
+sonst könnte der Hexer
+das Siegel lösen, das
+vom Amulett des Solarus
+erschaffen wurde. Zelda
+trägt dieses Amulett,
+das zur Wiederher-
+stellung des Triforce
+notwendig ist.
+Das Geheimnis des
+Solarus befindet sich
+in diesem Anhänger.
+Der Besitzer des
+Anhängers hat die
+Möglichkeit, die
+Macht des Solarus zu
+beschwören, um einen
+Gegenstand, einen Ort
+oder sogar eine Welt zu
+versiegeln, wie es die
+sieben Weisen taten,
+als sie das Goldene
+Land versiegelten.
+Zelda ist die Erbin
+dieser Macht. Sie hat
+sie benutzt, um die
+Bruchstücke des
+Triforce mithilfe der
+acht Wesen die vom
+Solarus erschaffen
+wurden zu versiegeln.
+Solange sie also die
+einzige ist, die das
+Geheimnis des Anhängers
+kennt, ist sie die
+einzige, die das Siegel
+des Triforce
+beherrscht. Deswegen
+musst Du das Siegel
+schützen.
 ]]
 }
 -----------------------
@@ -6137,9 +6229,9 @@ dialog{
   id = "dungeon_8.welcome",
   skip = "current",
   text = [[
-        Niveau 8
-    Donjon des Pics 
-        Rocheux
+      8. Dungeon
+      Dungeon der
+      Felsnadeln      
 ]]
 }
 -----------------------
@@ -6148,9 +6240,9 @@ dialog{
   id = "dungeon_8.hint_1F",
   skip = "current",
   text = [[
-Pour continuer ton
-chemin, jette-toi dans
-les abysses du donjon.
+Um Deinen Weg fortzu-
+setzen, wirf Dich in die
+Tiefen des Dungeons.
 ]]
 }
 -----------------------
@@ -6159,9 +6251,9 @@ dialog{
   id = "dungeon_8.hint_B1",
   skip = "current",
   text = [[
-Si tu es bloqué,
-combats les pointes par
-les pointes.
+Wenn Du nicht
+weiterkommst, bekämpfe
+die Nadeln mit Nadeln.
 ]]
 }
 -----------------------
@@ -6169,23 +6261,24 @@ les pointes.
 dialog{
   id = "dungeon_8.billy",
   text = [[
-Tu ne pensais peut-être
-pas retrouver ici ton
-vieil ami Billy le
-Téméraire, le plus
-grand héros de tous les
-temps !
-La princesse et les
-huit enfants ne sont
-plus ici.
-Ils avaient en effet
-trouvé refuge dans mon
-palais, et je me suis
-moi-même chargé de les
-livrer à Agahnim...
-
-Maintenant, c'est à ton
-tour de périr !
+Du hast vielleicht
+nicht erwartet, hier
+Deinem alten Freund
+Billy dem Tollkühnen zu
+begegnen, dem größten
+Helden aller Zeiten!
+Die Prinzessin und die
+acht Kinder sind nicht
+mehr hier.
+Sie waren in meinem
+Palast untergekommen
+und ich habe mich
+persönlich darum
+gekümmert, sie Agahnim
+zu übergeben...
+Und nun hat
+Deine letzte Stunde
+geschlagen!
 ]]
 }
 -----------------------
@@ -6193,21 +6286,23 @@ tour de périr !
 dialog{
   id = "dungeon_8.agahnim",
   text = [[
-$1Ce Billy était vraiment
-un incompétent. Puisque
-ni lui, ni mes autres
-serviteurs ne viennent
-à bout de vous, jeune
-parasite, je vais moi-
-même m'occuper de votre
-cas. Vous allez
-disparaître une bonne
-fois pour toutes. Après
-cela, je pourrai enfin
-m'emparer de la
-Triforce et étendre mon
-pouvoir au monde
-entier. Ah ah ah ah !
+$1Dieser Billy war
+nur ein Taugenichts.
+Da weder er noch meine
+anderen Diener Sie
+bezwingen können, junger
+Parasit, werde ich mich
+selbst um Ihren Fall
+kümmern.
+Sie werden ein für
+allemal verschwinden.
+Und dann werde ich
+endlich das Triforce
+an mich nehmen können
+und meine Macht auf
+die ganze Welt 
+ausweiten können.
+Ha ha ha ha ha ha!
 ]]
 }
 -----------------------
@@ -6215,11 +6310,12 @@ entier. Ah ah ah ah !
 dialog{
   id = "dungeon_8.agahnim_middle",
   text = [[
-$1$0...$0.............$0 Vous
-êtes plutôt coriace, je
-dois vous l'accorder.
-Mais que dites-vous de
-cela ?
+$1$0...$0.............$0 Sie
+sind ziemlich hart-
+näckig, das muss ich
+Ihnen lassen.
+Aber was sagen Sie
+dazu?
 ]]
 }
 -----------------------
@@ -6228,21 +6324,21 @@ dialog{
   id = "dungeon_8.agahnim_end",
   text = [[
 $1$0...$0 .........$0
-Je suis vaincu...$0
-C'est la fin...$0
-Je n'ai pas été à la
-hauteur...
+Ich bin geschlagen...$0
+Das ist das Ende...$0
+Ich war Ihnen nicht
+gewachsen...
 
-Je m'incline devant
-votre bravoure.$0
+Ich verbeuge mich vor
+Ihrem Mut.$0
 
-Mais puisque je n'ai
-pas été capable d'en
-finir avec vous, il est
-désormais temps pour
-moi de libérer mon
-Maître...
-Ah ah ah ah ah ah !!!
+Aber da ich nicht in
+der Lage war, mit Ihnen
+fertig zu werden, ist
+nun die Zeit gekommen,
+meinen Meister zu
+befreien.
+Ha ha ha ha ha ha!
 ]]
 }
 -----------------------
@@ -6250,26 +6346,27 @@ Ah ah ah ah ah ah !!!
 dialog{
   id = "dungeon_8.ganon",
   text = [[
-$1Ainsi vous êtes parvenu
-à défaire à nouveau mon
-alter-ego, le sombre
-sorcier Agahnim... Cela
-n'aura servi à rien
-d'autre que de le
-contraindre à me
-libérer. Pour vous
-remercier, je vous
-invite, vous ainsi que
-la Princesse et les
-huit enfants, à me
-rejoindre dans mon
-palais. Je récupèrerai
-ainsi la Triforce, et
-vous serez au premières
-loges pour admirer cet
-évènement.
-Laissez-vous donc
-transporter l'esprit...
+$1Es ist Ihnen also
+schon wieder gelungen,
+mein Alter Ego zu
+bezwingen, den dunklen
+Hexer Agahnim... Dies
+hat nur dazu geführt,
+dass er gezwungen wurde
+mich zu befreien. Um
+Ihnen zu danken, lade
+ich Sie sowie die
+Prinzessin und die acht
+Kinder dazu ein, mich
+in meinem Palast zu
+besuchen. So erhalte
+ich das Triforce
+zurück und Sie werden
+in der ersten Reihe
+stehen, um diesem
+Ereignis beizuwohnen.
+Lassen Sie sich
+verzaubern...
 ]]
 }
 -----------------------
@@ -6278,8 +6375,8 @@ dialog{
   id = "dungeon_9.welcome",
   skip = "current",
   text = [[
-        Niveau 9       
- Temple des Souvenirs  
+      9. Dungeon       
+ Tempel der Erinnerung  
 ]]
 }
 -----------------------
@@ -6288,7 +6385,8 @@ dialog{
   id = "dungeon_9.clockwise_switches_hint",
   skip = "all",
   text = [[
-Tourne comme le temps.
+Drehe Dich 
+wie die Zeit.
 ]]
 }
 -----------------------
@@ -6297,7 +6395,7 @@ dialog{
   id = "dungeon_9.3f_door_b_hint_0",
   skip = "all",
   text = [[
-A droite.
+Rechts.
 ]]
 }
 -----------------------
@@ -6306,7 +6404,7 @@ dialog{
   id = "dungeon_9.3f_door_b_hint_2",
   skip = "all",
   text = [[
-A gauche.
+Links.
 ]]
 }
 -----------------------
@@ -6315,7 +6413,7 @@ dialog{
   id = "dungeon_9.3f_door_b_hint_3",
   skip = "all",
   text = [[
-En bas.
+Unten.
 ]]
 }
 -----------------------
@@ -6324,10 +6422,11 @@ dialog{
   id = "dungeon_9.5f_childs_hint",
   skip = "all",
   text = [[
-$1Pour pouvoir vaincre
-Ganon, les braseros
-doivent être allumés
-dans le sens du temps.
+$1Um Ganon besiegen zu
+können, müssen die
+Fackeln in der Richtung
+der Zeit angezündet
+werden.
 ]]
 }
 -----------------------
@@ -6335,15 +6434,16 @@ dans le sens du temps.
 dialog{
   id = "dungeon_9.boss",
   text = [[
-Vous voilà enfin, jeune
-gringalet.
+Da sind Sie endlich,
+Sie kleiner Wicht.
 
-Cela faisait longtemps
-que j'attendais votre
-venue.
-L'heure de notre
-revanche a sonné !
-Préparez-vous à périr.
+Ich habe schon lange
+auf Ihren Ankunft
+gewartet.
+Die Stunde meiner
+Vergeltung hat
+geschlagen!
+Seid bereit zu sterben.
 ]]
 }
 -----------------------
@@ -6351,21 +6451,22 @@ Préparez-vous à périr.
 dialog{
   id = "dungeon_9.zelda",
   text = [[
-$1$v... Merci.
-Avec cette nouvelle
-victoire sur le mal, tu
-montres une fois encore
-que la sagesse et la
-justice finissent
-toujours par triompher
-sur les forces du
-Malin. Grâce à ce que
-tu as accompli, tu
-permets à notre monde
-de retrouver son
-apparence normale.
-Le Royaume d'Hyrule est
-désormais restauré.
+$1$v... Danke.
+Mit diesem erneuten
+Sieg über das Böse
+zeigst Du wieder
+einmal, dass Weisheit
+und Gerechtigkeit
+schlussendlich immer
+die Kräfte des Bösen
+bezwingen. Mit Deinen
+Taten hilfst Du unserer
+Welt, zu ihrem normalen
+Aussehen zurück zu
+finden.
+Das Königreich Hyrule
+ist letztendlich
+wiederhergestellt. 
 ]]
 }
 -----------------------
@@ -6373,30 +6474,32 @@ désormais restauré.
 dialog{
   id = "dungeon_9.zelda_children",
   text = [[
-$1Je dois aujourd'hui
-détruire ce pendentif.
-Le pouvoir du Solarus
-est trop dangereux. En
-le détruisant, il n'y
-aura plus aucun moyen
-de reconstituer les
-fragments de la
-Triforce, que ce soit
-pour faire le bien,
-comme tu le fis jadis,
-ou pour faire régner la
-terreur, comme
-voulurent le faire
-Agahnim puis Ganondorf.
-Le pendentif pourrait
-permettre, à l'aide du
-pouvoir des huit êtres
-engendrés par l'Essence
-du Solarus, d'annuler
-le Sceau créé.
-C'est pourquoi il est
-nécessaire de le
-détruire.
+$1Ich muss heute diesen
+Anhänger vernichten.
+Die Macht des Solarus
+ist zu gefährlich.
+Mit seiner Vernichtung
+wird es keine Möglich-
+keit mehr geben, die
+Bruchstücke des
+Triforce zusammenzu-
+setzen, sei es um das
+Gute zu tun, wie Du es
+damals tatst, oder um
+mit Schrecken zu
+herrschen, wie es
+Agahnim und dann
+Ganondorf tun wollten.
+Der Anhänger könnte es
+ermöglichen, mithilfe
+der Kräfte der acht
+Wesen, die durch die
+Essenz des Solarus
+geschaffen wurden, das
+geschaffene Siegel zu
+brechen.
+Deswegen muss er
+zerstört werden.
 ]]
 }
 -----------------------
@@ -6404,11 +6507,12 @@ détruire.
 dialog{
   id = "dungeon_9.zelda_end",
   text = [[
-$1C'est terminé.$0
-Le pouvoir du Solarus
-s'est éteint à jamais.
-La Triforce est scellée
-pour l'éternité.
+$1Es ist vorbei.$0
+Die Macht des
+Solarus ist für
+immer erloschen.
+Das Triforce ist
+auf ewig versiegelt.
 ]]
 }
 -----------------------
@@ -6417,8 +6521,8 @@ dialog{
   id = "dungeon_10.welcome",
   skip = "current",
   text = [[
-     Niveau secret     
-     Tour des Cieux    
+     Geheimes Dungeon     
+      Himmelsturm    
 ]]
 }
 -----------------------
@@ -6429,7 +6533,7 @@ dialog{
 $1        Crédits$0
 
 
-    Programmation :
+    Programmierung:
 Christopho$0
 ]]
 }
@@ -6438,7 +6542,7 @@ Christopho$0
 dialog{
   id = "credits_2",
   text = [[
-$1   Maps et énigmes :
+$1  Karten und Rätsel:
 
 
 Christopho$0
@@ -6454,13 +6558,13 @@ Mymy$0
 dialog{
   id = "credits_3",
   text = [[
-$1      Graphismes :     
+$1      Grafiken:     
 Newlink$0
 
 Neovyse
 @PyroNet
 Djipi$0
-$1       Musiques :      
+$1       Musik:      
 Marine
 Metallizer$0
 ]]
@@ -6470,10 +6574,10 @@ Metallizer$0
 dialog{
   id = "credits_4",
   text = [[
-$1       Scénario :      
+$1       Drehbuch:      
 Guillaume F.
 Christopho$0
-$1       Tests :$0      
+$1       Tests:$0      
 
 
 Thyb
@@ -6486,8 +6590,8 @@ BenObiWan$0
 dialog{
   id = "credits_6",
   text = [[
-$1     Remerciements     
-       spéciaux :$0      
+$1     Besonderer     
+       Dank an:$0      
 
 19oj19
 Yohann
@@ -6498,7 +6602,7 @@ MultiSync_XV17$0
 Nintendo$0
 
 
-Merci d'avoir joué !$0
+Danke fürs Spielen !$0
 
 
 

@@ -111,6 +111,14 @@ options.caption.press_action_change_mode	Auf Aktion drücken, um$den Modus zu we
 options.caption.press_action_customize_key	Auf Aktion drücken, um$die Taste zu ändern
 options.caption.press_key			Taste der Tatstatur$oder des joypads drücken
 # name of the video modes (maximum 26 characters)
+options.video_mode.windowed_stretched		640x480 Fenster
+options.video_mode.windowed_scale2x		640x480 Fenster, geglättet
+options.video_mode.windowed_normal		320x240 Fenster
+options.video_mode.fullscreen_normal		Vollbild gestreckt
+options.video_mode.fullscreen_wide		Vollbild gestreckt (breit)
+options.video_mode.fullscreen_scale2x		Vollbild geglättet
+options.video_mode.fullscreen_scale2x_wide	Vollbild geglättet (breit)
+# old video modes kept for compatibility (still used by the built-in pause menu)
 options.video_mode_0				640x480 Fenster
 options.video_mode_1				640x480 Fenster, geglättet
 options.video_mode_2				320x240 Fenster
@@ -118,8 +126,6 @@ options.video_mode_3				Vollbild gestreckt
 options.video_mode_4				Vollbild gestreckt (breit)
 options.video_mode_5				Vollbild geglättet
 options.video_mode_6				Vollbild geglättet (breit)
-options.video_mode_7				Vollbild zentriert
-options.video_mode_8				Vollbild zentriert (breit)
 # column headers of the keyboard/joypad customization table (maximum 10 characters)
 options.commands_column				Steuerung
 options.keyboard_column				Tastatur

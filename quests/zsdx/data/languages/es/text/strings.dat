@@ -110,7 +110,6 @@ inventory.caption.item.bottle_4.6            Botella Mágica$(Hada)
 options.caption.press_action_change_mode     Pulsa Acción para$otro modo de vídeo
 options.caption.press_action_customize_key   Pulsa Acción para$configurar tecla
 options.caption.press_key                    Pulsa alguna tecla$del teclado o mando
-
 # name of video modes (maximum 26 characters)
 options.video_mode.windowed_stretched        Ventana 640x480
 options.video_mode.windowed_scale2x          Ventana 640x480 suavizado

@@ -22,7 +22,7 @@ map.caption.dungeon_name_6		Höhle des Inferno
 map.caption.dungeon_name_7		Eistempel
 map.caption.dungeon_name_8		Dungeon der$Felsnadeln
 map.caption.dungeon_name_9		Tempel der$Erinnerung
-map.caption.dungeon_name_10		??????
+map.caption.dungeon_name_10		Himmelsturm
 
 # Quest status submenu
 quest_status.caption.rupee_bag_1	Geldbeutel
@@ -157,7 +157,7 @@ selection_menu.phase.choose_name	Wie lautet Ihr Name ?
 selection_menu.phase.confirm_erase	Ganz sicher ?
 selection_menu.phase.erase_file		Welcher Spielstand soll gelöscht werden?
 selection_menu.phase.options		Einstellungen
-selection_menu.phase.options.changing	??????
+selection_menu.phase.options.changing	<  > : auswählen, Leertaste : bestätigen
 selection_menu.erase			Löschen
 selection_menu.cancel			Abbruch
 selection_menu.big_yes			JA
@@ -165,12 +165,12 @@ selection_menu.big_no			NEIN
 selection_menu.empty			Leer
 selection_menu.options			Optionen
 selection_menu.back			Zurück
-selection_menu.options.language		??????
+selection_menu.options.language		Sprache
 selection_menu.options.video_mode	Modus
-selection_menu.options.music_volume	??????
-selection_menu.options.sound_volume	??????
+selection_menu.options.music_volume	Musiklautstärke
+selection_menu.options.sound_volume	Tonlautstärke
 
 # Title screen
-title_screen.website		www.zelda-solarus.com
+title_screen.website		www.solarus-games.org
 title_screen.press_space	Bitte Leertaste drücken
 

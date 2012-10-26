@@ -6533,7 +6533,7 @@ dialog{
 $1        Crédits$0
 
 
-    Programmierung:
+    Programmierung:$0
 Christopho$0
 ]]
 }
@@ -6542,14 +6542,14 @@ Christopho$0
 dialog{
   id = "credits_2",
   text = [[
-$1  Karten und Rätsel:
+$1  Karten und Rätsel:$0
 
 
 Christopho$0
 
 
-Metallizer
-Binbin
+Metallizer$0
+Binbin$0
 Mymy$0
 ]]
 }
@@ -6558,14 +6558,14 @@ Mymy$0
 dialog{
   id = "credits_3",
   text = [[
-$1      Grafiken:     
+$1      Grafiken:$0
 Newlink$0
 
-Neovyse
-@PyroNet
+Neovyse$0
+@PyroNet$0
 Djipi$0
-$1       Musik:      
-Marine
+$1       Musik:$0
+Marine$0
 Metallizer$0
 ]]
 }
@@ -6574,15 +6574,13 @@ Metallizer$0
 dialog{
   id = "credits_4",
   text = [[
-$1       Drehbuch:      
-Guillaume F.
+$1       Drehbuch:$0
+Guillaume F.$0
 Christopho$0
-$1       Tests:$0      
+       Deutsche
+     Übersetzung:$0
 
-
-Thyb
-Morwenn
-BenObiWan$0
+Stella$0
 ]]
 }
 -----------------------
@@ -6590,16 +6588,20 @@ BenObiWan$0
 dialog{
   id = "credits_6",
   text = [[
-$1     Besonderer     
-       Dank an:$0      
+$1       Tests:$0
 
-19oj19
-Yohann
+
+Thyb$0
+Morwenn$0
+BenObiWan$0
+$1     Besonderer
+       Dank an:$0
+
+19oj19$0           Yohann$0
+MultiSync_XV17$0   Krytzz$0
 HelpTheWretched$0
-krytzz
-MultiSync_XV17$0
 
-Nintendo$0
+        Nintendo$0
 
 
 Danke fürs Spielen !$0
@@ -6607,7 +6609,7 @@ Danke fürs Spielen !$0
 
 
 
- www.zelda-solarus.com$0
+ www.solarus-games.org$0
 ]]
 }
 -----------------------

@@ -66,7 +66,9 @@ void MapLoader::load_map(Game& game, Map& map) {
   lua_register(l, "properties", l_properties);
 
   // Make the Lua world aware of our map.
-  LuaContext::set_entity_creation_map(l, &map);
+  luaL_newmetatable(l, LuaContext::map_module_name.c_str());
+  lua_pop(l, 1);
+  LuaContext::set_entity_implicit_creation_map(l, &map);
 
   // Execute the Lua code.
   if (lua_pcall(l, 0, 0, 0) != 0) {
@@ -92,7 +94,7 @@ void MapLoader::load_map(Game& game, Map& map) {
 int MapLoader::l_properties(lua_State* l) {
 
   // Retrieve the map to build.
-  Map* map = LuaContext::get_entity_creation_map(l);
+  Map* map = LuaContext::get_entity_implicit_creation_map(l);
   Debug::check_assertion(map != NULL, "No map has not been set in this Lua state");
 
   // Retrieve the map properties from the table parameter.
@@ -184,9 +186,11 @@ int MapLoader::l_properties(lua_State* l) {
     { "stairs",           LuaContext::map_api_create_stairs },
     { NULL, NULL }
   };
-  lua_getglobal(l, "_G");
-  luaL_register(l, NULL, functions);
-  lua_pop(l, 1);
+  const luaL_Reg* function = functions;
+  while (function->name != NULL) {
+    lua_register(l, function->name, function->func);
+    function++;
+  }
 
   return 0;
 }

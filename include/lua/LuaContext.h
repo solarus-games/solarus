@@ -156,8 +156,9 @@ class LuaContext {
     static const std::string& input_get_key_name(InputEvent::KeyboardKey key);
 
     // Entities.
-    static Map* get_entity_creation_map(lua_State* l);
-    static void set_entity_creation_map(lua_State* l, Map* map);
+    static Map& get_entity_creation_map(lua_State* l);
+    static Map* get_entity_implicit_creation_map(lua_State* l);
+    static void set_entity_implicit_creation_map(lua_State* l, Map* map);
 
     // Main loop events (sol.main).
     void main_on_update();

@@ -21,6 +21,8 @@
 #include "DialogBox.h"
 #include "Treasure.h"
 #include "entities/MapEntities.h"
+#include "entities/Tile.h"
+#include "entities/Destination.h"
 #include "entities/Door.h"
 #include "entities/NPC.h"
 #include "entities/Sensor.h"
@@ -130,11 +132,45 @@ void LuaContext::push_map(lua_State* l, Map& map) {
 }
 
 /**
- * @brief Returns the map previously stored by set_entity_creation_map().
+ * @brief Returns the map to be used when creating an entity.
+ *
+ * This function is meant to be called from entity creation functions.
+ * If the first Lua parameter is a map, returns that map and removes it
+ * from the Lua stack.
+ * Otherwise, an implicit map must have been previously set (by calling
+ * set_entity_implicit_creation_map()) and that map is returned.
+ * Therefore, after calling this function; you will have the same Lua stack
+ * in both cases, without worrying about how the map was passed.
+ *
+ * @param l A Lua context.
+ * @return The map where an entity will be created.
+ */
+Map& LuaContext::get_entity_creation_map(lua_State* l) {
+
+  Map* map = NULL;
+
+  if (is_userdata(l, 1, map_module_name)) {
+    // The map is passed as a parameter (typically, by the map script).
+    map = &check_map(l, 1);
+    lua_remove(l, 1);
+  }
+  else {
+    // The map was is implicit (typically, we are loading its data file).
+    map = get_entity_implicit_creation_map(l);
+    Debug::check_assertion(map != NULL,
+        "No implicit creation was been set in this Lua state");
+  }
+
+  return *map;
+}
+
+/**
+ * @brief Returns the map previously stored by
+ * set_entity_implicit_creation_map().
  * @param l A Lua context.
  * @return The map stored in this Lua context or NULL.
  */
-Map* LuaContext::get_entity_creation_map(lua_State* l) {
+Map* LuaContext::get_entity_implicit_creation_map(lua_State* l) {
 
   lua_getfield(l, LUA_REGISTRYINDEX, "map");
   if (lua_isnil(l, -1)) {
@@ -158,7 +194,7 @@ Map* LuaContext::get_entity_creation_map(lua_State* l) {
  * function: map_api_create_enemy or map_api_create_npc, map_api_create_block,
  * etc. depending on your type of entity.
  *
- * In the second case, the map is always passed explicitely as the first
+ * In the second case, the map is always passed explicitly as the first
  * parameter of the entity creation function. For instance:
  * \verbatim
  * map:create_enemy{ x = 160, y = 117, name = "my_enemy", breed = "soldier" }
@@ -170,15 +206,15 @@ Map* LuaContext::get_entity_creation_map(lua_State* l) {
  * \endverbatim
  * To make Lua know the map anyway, call this function before your create
  * your first entity.
- * Then, all entity creation functionss will accept to be called without the
+ * Then, all entity creation functions will accept to be called without the
  * map as first parameter.
  *
  * @param l A Lua context.
  * @param map The map where future entities should be created.
- * NULL forces the map to be explicitely passed (this is the default
+ * NULL forces the map to be explicitly passed (this is the default
  * behavior).
  */
-void LuaContext::set_entity_creation_map(lua_State* l, Map* map) {
+void LuaContext::set_entity_implicit_creation_map(lua_State* l, Map* map) {
 
   if (map == NULL) {
     lua_pushnil(l);
@@ -715,8 +751,20 @@ int LuaContext::map_api_remove_entities(lua_State* l) {
  */
 int LuaContext::map_api_create_tile(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  int tile_pattern_id = check_int_field(l, 1, "pattern");
+
+  MapEntity* entity = new Tile(layer, x, y, width, height, tile_pattern_id);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -726,9 +774,21 @@ int LuaContext::map_api_create_tile(lua_State* l) {
  */
 int LuaContext::map_api_create_destination(lua_State* l) {
 
-  // TODO
-  return 0;
-}
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& name = check_string_field(l, 1, "name");
+  int direction = check_int_field(l, 1, "direction");
+  const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
+
+  MapEntity* entity = new Destination(name, layer, x, y, direction, sprite_name);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
+ }
 
 /**
  * @brief Implementation of \ref lua_api_map_create_teletransporter.
@@ -748,6 +808,8 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
  */
 int LuaContext::map_api_create_pickable(lua_State* l) {
 
+  return 0;
+  /* TODO
   Map& map = check_map(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
   int variant = luaL_checkinteger(l, 3);
@@ -766,6 +828,7 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
 
   push_entity(l, *pickable);
   return 1;
+  */
 }
 
 /**
@@ -775,6 +838,8 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
  */
 int LuaContext::map_api_create_destructible(lua_State* l) {
 
+  return 0;
+  /* TODO
   Map& map = check_map(l, 1);
   const std::string& subtype_name = luaL_checkstring(l, 2);
   int x = luaL_checkinteger(l, 3);
@@ -825,6 +890,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
 
   push_entity(l, *destructible);
   return 1;
+  */
 }
 
 /**
@@ -856,6 +922,8 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
  */
 int LuaContext::map_api_create_enemy(lua_State* l) {
 
+  return 0;
+  /* TODO
   Map& map = check_map(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
   const std::string& breed = luaL_checkstring(l, 3);
@@ -872,6 +940,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
 
   push_enemy(l, *enemy);
   return 1;
+  */
 }
 
 /**
@@ -892,6 +961,8 @@ int LuaContext::map_api_create_npc(lua_State* l) {
  */
 int LuaContext::map_api_create_block(lua_State* l) {
 
+  return 0;
+  /* TODO
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
@@ -939,6 +1010,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
 
   push_entity(l, *block);
   return 1;
+  */
 }
 
 /**
@@ -1058,6 +1130,8 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
  */
 int LuaContext::map_api_create_bomb(lua_State* l) {
 
+  return 0;
+  /* TODO
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
@@ -1068,6 +1142,7 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
 
   push_entity(l, *bomb);
   return 1;
+  */
 }
 
 /**
@@ -1077,6 +1152,8 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
  */
 int LuaContext::map_api_create_explosion(lua_State* l) {
 
+  return 0;
+  /* TODO
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
@@ -1087,6 +1164,7 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
 
   push_entity(l, *explosion);
   return 1;
+  */
 }
 
 /**
@@ -1096,6 +1174,8 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
  */
 int LuaContext::map_api_create_fire(lua_State* l) {
 
+  return 0;
+  /* TODO
   Map& map = check_map(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
@@ -1106,6 +1186,7 @@ int LuaContext::map_api_create_fire(lua_State* l) {
 
   push_entity(l, *fire);
   return 1;
+  */
 }
 
 /**

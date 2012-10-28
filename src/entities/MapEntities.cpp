@@ -190,7 +190,8 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
   MapEntity* entity = find_entity(name);
 
   Debug::check_assertion(entity != NULL, StringConcat()
-      << "Cannot find entity with name '" << name << "'");
+      << "Map '" << map.get_id()
+      << "': Cannot find entity with name '" << name << "'");
 
   return entity;
 }

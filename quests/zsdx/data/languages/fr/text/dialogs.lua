@@ -5410,7 +5410,7 @@ Tu as franchi les trois
 Je m'incline devant ta
 bravoure. Demande-moi
 ce que tu veux et
-j'accompirai ton désir.
+j'accomplirai ton désir.
 Que puis-je faire ?
 Les pierres noires...
 100 Rubis ?

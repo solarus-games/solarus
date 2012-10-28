@@ -105,19 +105,20 @@ void TargetMovement::set_target(MapEntity* target_entity) {
  */
 void TargetMovement::update() {
 
-  int dx = target_x - get_x();
-  int dy = target_y - get_y();
-
   if (System::now() >= next_recomputation_date) {
     recompute_movement();
     next_recomputation_date += recomputation_delay;
   }
 
   // see if the target is reached
-  else if (dx * sign_x <= 0 && dy * sign_y <= 0) {
-    set_xy(target_x, target_y); // because the target movement may have not been very precise
-    stop();
-    finished = true;
+  int dx = target_x - get_x();
+  int dy = target_y - get_y();
+  if (dx * sign_x <= 0 && dy * sign_y <= 0) {
+    if (!test_collision_with_obstacles(dx, dy)) {
+      set_xy(target_x, target_y); // because the target movement may have not been very precise
+      stop();
+      finished = true;
+    }
   }
 
   StraightMovement::update();

@@ -114,7 +114,7 @@ void TargetMovement::update() {
   }
 
   // see if the target is reached
-  if (dx * sign_x <= 0 && dy * sign_y <= 0) {
+  else if (dx * sign_x <= 0 && dy * sign_y <= 0) {
     set_xy(target_x, target_y); // because the target movement may have not been very precise
     stop();
     finished = true;

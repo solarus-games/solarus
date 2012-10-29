@@ -549,6 +549,64 @@ bool LuaContext::opt_boolean_field(
 }
 
 /**
+ * @brief Checks that a table field is a function and returns a ref to it.
+ *
+ * This function acts like lua_getfield() followed by lua_isfunction() and
+ * luaL_ref().
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @return The wanted field as a Lua ref to the function.
+ */
+int LuaContext::check_function_field(
+    lua_State* l, int table_index, const std::string& key) {
+
+  lua_getfield(l, table_index, key.c_str());
+  if (!lua_isfunction(l, -1)) {
+    luaL_argerror(l, table_index, (StringConcat() <<
+          "Bad field '" << key << "' (function expected, got " <<
+          luaL_typename(l, -1)).c_str()
+        );
+  }
+
+  int ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  return ref;
+}
+
+/**
+ * @brief Like check_function_field() but the field is optional.
+ *
+ * This function acts like lua_getfield() followed by lua_isfunction() and
+ * luaL_ref().
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @return The wanted field as a Lua ref to the function, or LUA_REFNIL.
+ */
+int LuaContext::opt_function_field(
+    lua_State* l, int table_index, const std::string& key) {
+
+  lua_getfield(l, table_index, key.c_str());
+  int ref = LUA_REFNIL;
+  if (lua_isnil(l, -1)) {
+    lua_pop(l, 1);
+  }
+  else {
+    if (!lua_isfunction(l, -1)) {
+      luaL_argerror(l, table_index, (StringConcat() <<
+            "Bad field '" << key << "' (function expected, got " <<
+            luaL_typename(l, -1)).c_str()
+          );
+    }
+    ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
+
+  return ref;
+}
+
+/**
  * @brief Creates a reference to the Lua value on top of the stack.
  * @return The reference created.
  */

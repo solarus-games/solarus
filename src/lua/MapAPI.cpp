@@ -23,6 +23,9 @@
 #include "entities/MapEntities.h"
 #include "entities/Tile.h"
 #include "entities/Destination.h"
+#include "entities/Teletransporter.h"
+#include "entities/Pickable.h"
+#include "entities/Destructible.h"
 #include "entities/Door.h"
 #include "entities/NPC.h"
 #include "entities/Sensor.h"
@@ -33,10 +36,7 @@
 #include "entities/Block.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
-#include "entities/Teletransporter.h"
 #include "entities/Hero.h"
-#include "entities/Pickable.h"
-#include "entities/Destructible.h"
 #include "entities/Bomb.h"
 #include "entities/Fire.h"
 #include "movements/Movement.h"
@@ -797,8 +797,32 @@ int LuaContext::map_api_create_destination(lua_State* l) {
  */
 int LuaContext::map_api_create_teletransporter(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  const std::string& name = check_string_field(l, 1, "name");
+  const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
+  const std::string& sound_id = opt_string_field(l, 1, "sound", "");
+  Transition::Style transition_style = Transition::Style(check_int_field(l, 1, "transition"));
+  const std::string& destination_map_id = check_string_field(l, 1, "destination_map");
+  const std::string& destination_name = check_string_field(l, 1, "destination");
+
+  MapEntity* entity = new Teletransporter(
+      name,
+      layer, x, y, width, height,
+      sprite_name,
+      sound_id,
+      transition_style,
+      destination_map_id,
+      destination_name);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -808,27 +832,25 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
  */
 int LuaContext::map_api_create_pickable(lua_State* l) {
 
-  return 0;
-  /* TODO
-  Map& map = check_map(l, 1);
-  const std::string& item_name = luaL_checkstring(l, 2);
-  int variant = luaL_checkinteger(l, 3);
-  int savegame_variable = luaL_checkinteger(l, 4);
-  int x = luaL_checkinteger(l, 5);
-  int y = luaL_checkinteger(l, 6);
-  Layer layer = Layer(luaL_checkinteger(l, 7));
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& treasure_name = check_string_field(l, 1, "item_name");
+  int treasure_variant = check_int_field(l, 1, "variant");
+  int treasure_savegame_variable = opt_int_field(l, 1, "savegame_variable", -1);
 
   Game& game = map.get_game();
-  Pickable* pickable = Pickable::create(
+  MapEntity* entity = Pickable::create(
       game, layer, x, y,
-      Treasure(game, item_name, variant, savegame_variable),
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
       FALLING_MEDIUM, false
       );
-  map.get_entities().add_entity(pickable);
+  map.get_entities().add_entity(entity);
 
-  push_entity(l, *pickable);
+  push_entity(l, *entity);
   return 1;
-  */
 }
 
 /**
@@ -838,59 +860,29 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
  */
 int LuaContext::map_api_create_destructible(lua_State* l) {
 
-  return 0;
-  /* TODO
-  Map& map = check_map(l, 1);
-  const std::string& subtype_name = luaL_checkstring(l, 2);
-  int x = luaL_checkinteger(l, 3);
-  int y = luaL_checkinteger(l, 4);
-  Layer layer = Layer(luaL_checkinteger(l, 5));
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& subtype_name = check_string_field(l, 1, "subtype");
+  const std::string& treasure_name = check_string_field(l, 1, "item_name");
+  int treasure_variant = check_int_field(l, 1, "variant");
+  int treasure_savegame_variable = opt_int_field(l, 1, "savegame_variable", -1);
 
-  // default properties
-  std::string treasure_item = "_random";
-  int treasure_variant = 1;
-  int treasure_savegame_variable = -1;
-  int destruction_callback_ref = LUA_REFNIL;
+  // FIXME the destruction callback cannot be passed as a function at map loading time.
+  // It could be passed as a string though.
+  int destruction_callback_ref = opt_function_field(l, 1, "destruction_callback");
 
-  if (lua_gettop(l) >= 6) {
-    luaL_checktype(l, 6, LUA_TTABLE);
-
-    // traverse the table, looking for properties
-    lua_pushnil(l); // first key
-    while (lua_next(l, 6) != 0) {
-
-      const std::string& key = luaL_checkstring(l, -2);
-      if (key == "treasure_item") {
-        treasure_item = luaL_checkstring(l, -1);
-      }
-      else if (key == "treasure_variant") {
-        treasure_variant = luaL_checkinteger(l, -1);
-      }
-      else if (key == "treasure_savegame_variable") {
-        treasure_savegame_variable = luaL_checkinteger(l, -1);
-      }
-      else if (key == "destruction_callback") {
-        // store the callback into the registry
-        luaL_argcheck(l, lua_isfunction(l, -1), 6,
-            "destruction_callback should be a function");
-        destruction_callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-        lua_pushnil(l);
-      }
-      lua_pop(l, 1); // pop the value, let the key for the iteration
-    }
-  }
-
-  Destructible::Subtype subtype =
-      Destructible::get_subtype_by_name(subtype_name);
-  Destructible* destructible =
-      new Destructible(layer, x, y, subtype, Treasure(map.get_game(),
-          treasure_item, treasure_variant, treasure_savegame_variable));
+  Destructible* destructible = new Destructible(
+      layer, x, y,
+      Destructible::get_subtype_by_name(subtype_name),
+      Treasure(map.get_game(), treasure_name, treasure_variant, treasure_savegame_variable));
   destructible->set_destruction_callback(destruction_callback_ref);
   map.get_entities().add_entity(destructible);
 
   push_entity(l, *destructible);
   return 1;
-  */
 }
 
 /**

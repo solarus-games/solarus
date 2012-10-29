@@ -124,6 +124,12 @@ class LuaContext {
     static bool opt_boolean_field(
         lua_State* l, int table_index, const std::string& key, bool default_value
     );
+    static int check_function_field(
+        lua_State* l, int table_index, const std::string& key
+    );
+    static int opt_function_field(
+        lua_State* l, int table_index, const std::string& key
+    );
 
     // Lua refs.
     int create_ref();

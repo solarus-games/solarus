@@ -1051,7 +1051,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   const std::string& name = check_string_field(l, 1, "name");
   int direction = check_int_field(l, 1, "direction");
-  const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
+  const std::string& sprite_name = check_string_field(l, 1, "sprite");
   bool pushable = check_boolean_field(l, 1, "pushable");
   bool pullable = check_boolean_field(l, 1, "pullable");
   int maximum_moves = check_int_field(l, 1, "maximum_moves");

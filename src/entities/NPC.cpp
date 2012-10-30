@@ -38,7 +38,7 @@
  * @param x x coordinate of the entity to create
  * @param subtype the subtype of interaction
  * @param y y coordinate of the entity to create
- * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
+ * @param sprite_name sprite animation set of the entity, or an empty string to create no sprite
  * @param direction for a generalized NPC: direction for which the interactions are allowed
  * (0 to 4, or -1 for any direction), for a usual NPC: initial direction of the NPC's sprite
  * @param behavior_string indicates what happens when the hero interacts with this NPC:
@@ -111,7 +111,7 @@ bool NPC::is_drawn_in_y_order() {
  */
 void NPC::initialize_sprite(std::string& sprite_name, int initial_direction) {
 
-  if (sprite_name != "_none") {
+  if (!sprite_name.empty()) {
     create_sprite(sprite_name);
     if (initial_direction != -1) {
       get_sprite().set_current_direction(initial_direction);

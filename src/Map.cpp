@@ -44,6 +44,7 @@ Map::Map(const std::string& id):
   game(NULL),
   id(id),
   tileset(NULL),
+  loaded(false),
   started(false),
   destination_name(""),
   entities(NULL),
@@ -236,7 +237,7 @@ int Map::get_height8() {
  * @return true if the map is loaded, false otherwise
  */
 bool Map::is_loaded() {
-  return this->entities != NULL;
+  return loaded;
 }
 
 /**
@@ -262,6 +263,7 @@ void Map::unload() {
       delete dark_surfaces[i];
       dark_surfaces[i] = NULL;
     }
+    loaded = false;
   }
 }
 
@@ -285,6 +287,8 @@ void Map::load(Game &game) {
   dark_surfaces[1] = new Surface("entities/dark1.png");
   dark_surfaces[2] = new Surface("entities/dark2.png");
   dark_surfaces[3] = new Surface("entities/dark3.png");
+
+  loaded = true;
 }
 
 /**

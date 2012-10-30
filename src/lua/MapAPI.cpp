@@ -26,16 +26,21 @@
 #include "entities/Teletransporter.h"
 #include "entities/Pickable.h"
 #include "entities/Destructible.h"
-#include "entities/Door.h"
-#include "entities/NPC.h"
-#include "entities/Sensor.h"
 #include "entities/Chest.h"
-#include "entities/DynamicTile.h"
-#include "entities/Stairs.h"
-#include "entities/Wall.h"
+#include "entities/Jumper.h"
+#include "entities/Enemy.h"
+#include "entities/NPC.h"
 #include "entities/Block.h"
+#include "entities/DynamicTile.h"
 #include "entities/Switch.h"
+#include "entities/Wall.h"
+#include "entities/Sensor.h"
 #include "entities/Crystal.h"
+#include "entities/CrystalBlock.h"
+#include "entities/ShopItem.h"
+#include "entities/ConveyorBelt.h"
+#include "entities/Door.h"
+#include "entities/Stairs.h"
 #include "entities/Hero.h"
 #include "entities/Bomb.h"
 #include "entities/Fire.h"
@@ -866,13 +871,29 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
-  const std::string& treasure_name = check_string_field(l, 1, "item_name");
-  int treasure_variant = check_int_field(l, 1, "variant");
-  int treasure_savegame_variable = opt_int_field(l, 1, "savegame_variable", -1);
+  const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
+  int treasure_variant = check_int_field(l, 1, "treasure_variant");
+  int treasure_savegame_variable = opt_int_field(l, 1, "treasure_savegame_variable", -1);
 
-  // FIXME the destruction callback cannot be passed as a function at map loading time.
-  // It could be passed as a string though.
-  int destruction_callback_ref = opt_function_field(l, 1, "destruction_callback");
+  int destruction_callback_ref = LUA_REFNIL;
+  if (map.is_loaded()) {
+    // We are at map runtime, i.e. running a Lua script.
+    // In this case, we can do more than from the map data file.
+    destruction_callback_ref = opt_function_field(l, 1, "on_destroyed");
+  }
+  else {
+    // We are at map loading time, i.e. parsing a map data file
+    // (that happens to be written in Lua but it could be XML or anything...).
+    // This current Lua state l is only used to parse the map data file.
+    // It knows nothing from the Solarus API (it just reuses these
+    // map_api_create_XXX functions for to avoid to reimplement all of them).
+    // But we don't allow to pass the on_destroyed callback as a function
+    // since it's not the same Lua state.
+    // We also want the map data file, including the on_destroyed field, to be
+    // editable in clear text by a quest editor, so it has to be a string.
+
+    // TODO Allow to pass the on_destroyed callback as a string in this case.
+  }
 
   Destructible* destructible = new Destructible(
       layer, x, y,
@@ -892,8 +913,24 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
  */
 int LuaContext::map_api_create_chest(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  bool big_chest = check_boolean_field(l, 1, "is_big_chest");
+  const std::string& name = check_string_field(l, 1, "name");
+  const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
+  int treasure_variant = check_int_field(l, 1, "treasure_variant");
+  int treasure_savegame_variable = opt_int_field(l, 1, "treasure_savegame_variable", -1);
+
+  Game& game = map.get_game();
+  MapEntity* entity = new Chest(name, layer, x, y, big_chest,
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -903,8 +940,23 @@ int LuaContext::map_api_create_chest(lua_State* l) {
  */
 int LuaContext::map_api_create_jumper(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  const std::string& name = check_string_field(l, 1, "name");
+  int direction = check_int_field(l, 1, "direction");
+  int jump_length = check_int_field(l, 1, "jump_length");
+
+  MapEntity* entity = new Jumper(name, layer, x, y, width, height,
+      direction, jump_length);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -914,25 +966,37 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
  */
 int LuaContext::map_api_create_enemy(lua_State* l) {
 
-  return 0;
-  /* TODO
-  Map& map = check_map(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-  const std::string& breed = luaL_checkstring(l, 3);
-  int layer = luaL_checkinteger(l, 4);
-  int x = luaL_checkinteger(l, 5);
-  int y = luaL_checkinteger(l, 6);
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& name = check_string_field(l, 1, "name");
+  int direction = check_int_field(l, 1, "direction");
+  const std::string& breed = check_string_field(l, 1, "breed");
+  Enemy::Rank rank = Enemy::Rank(check_int_field(l, 1, "rank"));
+  int savegame_variable = opt_int_field(l, 1, "savegame_variable", -1);
+  const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
+  int treasure_variant = check_int_field(l, 1, "treasure_variant");
+  int treasure_savegame_variable = opt_int_field(l, 1, "treasure_savegame_variable", -1);
 
-  MapEntities& entities = map.get_entities();
-  Treasure treasure(map.get_game(), "_random", 1, -1);
-  Enemy* enemy = (Enemy*) Enemy::create(map.get_game(), breed, Enemy::RANK_NORMAL, -1,
-      name, Layer(layer), x, y, 0, treasure);
-  entities.add_entity(enemy);
-  enemy->restart();
+  Game& game = map.get_game();
+  MapEntity* entity = Enemy::create(
+      game, breed, rank, savegame_variable, name,
+      layer, x, y, direction,
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
+  map.get_entities().add_entity(entity);
 
-  push_enemy(l, *enemy);
+  if (map.is_loaded()) {
+    // The enemy is created at runtime.
+    if (entity->get_type() == ENEMY) {
+      // TODO this shouldn't be done from here
+      static_cast<Enemy*>(entity)->restart();
+    }
+  }
+
+  push_entity(l, *entity);
   return 1;
-  */
 }
 
 /**
@@ -942,8 +1006,24 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
  */
 int LuaContext::map_api_create_npc(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& name = check_string_field(l, 1, "name");
+  int direction = check_int_field(l, 1, "direction");
+  NPC::Subtype subtype = NPC::Subtype(check_int_field(l, 1, "subtype"));
+  const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
+  const std::string& behavior = opt_string_field(l, 1, "behavior", "");
+
+  Game& game = map.get_game();
+  MapEntity* entity = new NPC(game, name, layer, x, y, subtype,
+      sprite_name, direction, behavior);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -953,56 +1033,28 @@ int LuaContext::map_api_create_npc(lua_State* l) {
  */
 int LuaContext::map_api_create_block(lua_State* l) {
 
-  return 0;
-  /* TODO
-  Map& map = check_map(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  Layer layer = Layer(luaL_checkinteger(l, 4));
-  const std::string& name = luaL_checkstring(l, 5);
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& name = check_string_field(l, 1, "name");
+  int direction = check_int_field(l, 1, "direction");
+  const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
+  bool pushable = check_boolean_field(l, 1, "pushable");
+  bool pullable = check_boolean_field(l, 1, "pullable");
+  int maximum_moves = check_int_field(l, 1, "maximum_moves");
 
-  // default properties
-  int direction = -1;
-  std::string sprite_name = "entities/block";
-  bool can_be_pushed = true;
-  bool can_be_pulled = false;
-  int maximum_moves = 1;
+  Block* block = new Block(name, layer, x, y, direction,
+      sprite_name, pushable, pullable, maximum_moves);
 
-  if (lua_gettop(l) >= 6) {
-    luaL_checktype(l, 6, LUA_TTABLE);
-
-    // traverse the table, looking for properties
-    lua_pushnil(l); // first key
-    while (lua_next(l, 6) != 0) {
-
-      const std::string& key = luaL_checkstring(l, -2);
-      if (key == "direction") {
-        direction = luaL_checkinteger(l, -1);
-      }
-      else if (key == "sprite_name") {
-        sprite_name = luaL_checkstring(l, -1);
-      }
-      else if (key == "can_be_pushed") {
-        can_be_pushed = lua_toboolean(l, -1) != 0;
-      }
-      else if (key == "can_be_pulled") {
-        can_be_pulled = lua_toboolean(l, -1) != 0;
-      }
-      else if (key == "maximum_moves") {
-        maximum_moves = luaL_checkinteger(l, -1);
-      }
-      lua_pop(l, 1); // pop the value, let the key for the iteration
-    }
+  if (map.is_loaded()) {  // The block is created at runtime.
+    // TODO this shouldn't be done from here
+    block->check_collision_with_detectors(false);
   }
-
-  Block* block = new Block(name, layer, x, y, direction, sprite_name,
-      can_be_pushed, can_be_pulled, maximum_moves);
-  map.get_entities().add_entity(block);
-  block->check_collision_with_detectors(false);
 
   push_entity(l, *block);
   return 1;
-  */
 }
 
 /**
@@ -1012,8 +1064,23 @@ int LuaContext::map_api_create_block(lua_State* l) {
  */
 int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  const std::string& name = check_string_field(l, 1, "name");
+  int tile_pattern_id = check_int_field(l, 1, "pattern");
+  bool enabled_at_start = check_boolean_field(l, 1, "enabled_at_start");
+
+  MapEntity* entity = new DynamicTile(name, layer, x, y, width, height,
+      tile_pattern_id, enabled_at_start);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -1023,8 +1090,22 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
  */
 int LuaContext::map_api_create_switch(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& name = check_string_field(l, 1, "name");
+  Switch::Subtype subtype = Switch::Subtype(check_int_field(l, 1, "subtype"));
+  bool needs_block = check_boolean_field(l, 1, "needs_block");
+  bool inactivate_when_leaving = check_boolean_field(l, 1, "inactivate_when_leaving");
+
+  MapEntity* entity = new Switch(name, layer, x, y,
+      subtype, needs_block, inactivate_when_leaving);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**

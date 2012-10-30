@@ -89,11 +89,12 @@ class Map: public ExportableToLua {
                                    * (usually, the whole map is considered and this rectangle's values are all 0) */
 
     // map state
-    bool started;                         /**< true if this map is the current map */
-    std::string destination_name;   /**< current destination point on the map,
-                                           * or "_same" to keep the hero's coordinates,
-                                           * or "_side0", "_side1", "_side2" or "_side3"
-                                           * to place the hero on a side of the map */
+    bool loaded;                  /**< true if the loading phase is finished */
+    bool started;                 /**< true if this map is the current map */
+    std::string destination_name; /**< current destination point on the map,
+                                   * or "_same" to keep the hero's coordinates,
+                                   * or "_side0", "_side1", "_side2" or "_side3"
+                                   * to place the hero on a side of the map */
 
     MapEntities* entities;        /**< the entities on the map */
     bool suspended;               /**< indicates whether the game is suspended */

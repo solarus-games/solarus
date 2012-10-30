@@ -60,8 +60,9 @@ for _, enemy in ipairs(map:get_entities("s_room_enemy")) do
   function enemy:on_dead()
     if not map:has_entities("s_room_enemy")
         and not se_door:is_open() then
-    sol.audio.play_sound("secret")
-    map:open_doors("se_door")
+      sol.audio.play_sound("secret")
+      map:open_doors("se_door")
+    end
   end
 end
 

@@ -2,6 +2,7 @@ local map = ...
 -- This script is included by the maps of dungeon 5.
 -- It handles sending the hero to prison when a guard sees him.
 
+local hero = map:get_entity("hero")
 local hero_seen = false
 local prison_go_timer = nil
 local prison_dialog_timer = nil
@@ -69,7 +70,7 @@ end
 local guards = map:get_entities("guard_")
 for _, guard in ipairs(guards) do
   local sensors = map:get_entities(guard:get_name() .. "_sensor_")
-  for _, sensor in sensors do
+  for _, sensor in ipairs(sensors) do
     sensor.on_activated = guard_sensor_activated
     sensor.on_activated_repeat = guard_sensor_activated
   end

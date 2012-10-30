@@ -102,7 +102,7 @@ function map:on_started(destination)
     i = math.random(#door_sets)
   end
   for _, door in ipairs(door_sets[i]) do
-    map:set_doors_open(door, true)
+    map:set_doors_open(door:get_name(), true)
   end
 
   init_guards()
@@ -129,7 +129,7 @@ function prison_sensor:on_activated()
   local i = math.random(#door_sets)
   map:set_doors_open("door", false)
   for _, door in ipairs(door_sets[i]) do
-    map:set_doors_open(door, true)
+    map:set_doors_open(door:get_name(), true)
   end
 end
 

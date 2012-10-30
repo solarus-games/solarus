@@ -352,7 +352,9 @@ void Destructible::play_destroy_animation() {
  */
 void Destructible::set_destruction_callback(int destruction_callback_ref) {
 
-  get_lua_context().cancel_callback(this->destruction_callback_ref);
+  if (this->destruction_callback_ref != LUA_REFNIL) {
+    get_lua_context().cancel_callback(this->destruction_callback_ref);
+  }
   this->destruction_callback_ref = destruction_callback_ref;
 }
 

@@ -44,6 +44,7 @@ const std::string Door::key_required_dialog_ids[] = {
 
 /**
  * @brief Creates a door.
+ * @param game The game.
  * @param name name identifying this entity
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
@@ -53,7 +54,7 @@ const std::string Door::key_required_dialog_ids[] = {
  * @param savegame_variable variable where the door's state is saved
  * (can be -1 for the subtype CLOSED)
  */
-Door::Door(const std::string& name, Layer layer, int x, int y,
+Door::Door(Game& game, const std::string& name, Layer layer, int x, int y,
 	     int direction, Subtype subtype, int savegame_variable):
   Detector(COLLISION_FACING_POINT | COLLISION_SPRITE, name, layer, x, y, 16, 16),
   subtype(subtype),
@@ -76,6 +77,14 @@ Door::Door(const std::string& name, Layer layer, int x, int y,
   Sprite& sprite = create_sprite("entities/door", true);
   sprite.set_ignore_suspend(true); // allow the animation while the camera is moving
   set_direction(direction);
+
+  if (savegame_variable != -1) {
+    set_open(game.get_savegame().get_boolean(savegame_variable));
+  }
+  else {
+    set_open(false);
+  }
+  sprite.set_current_direction(direction);
 }
 
 /**

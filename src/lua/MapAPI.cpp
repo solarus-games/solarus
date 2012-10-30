@@ -842,9 +842,9 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
   Layer layer = Layer(check_int_field(l, 1, "layer"));
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
-  const std::string& treasure_name = check_string_field(l, 1, "item_name");
-  int treasure_variant = check_int_field(l, 1, "variant");
-  int treasure_savegame_variable = opt_int_field(l, 1, "savegame_variable", -1);
+  const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
+  int treasure_variant = check_int_field(l, 1, "treasure_variant");
+  int treasure_savegame_variable = opt_int_field(l, 1, "treasure_savegame_variable", -1);
 
   Game& game = map.get_game();
   MapEntity* entity = Pickable::create(
@@ -852,9 +852,14 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
       FALLING_MEDIUM, false
       );
-  map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
+  if (entity == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+    map.get_entities().add_entity(entity);
+    push_entity(l, *entity);
+  }
   return 1;
 }
 
@@ -985,17 +990,22 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
       game, breed, rank, savegame_variable, name,
       layer, x, y, direction,
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
-  map.get_entities().add_entity(entity);
 
-  if (map.is_loaded()) {
-    // The enemy is created at runtime.
-    if (entity->get_type() == ENEMY) {
-      // TODO this shouldn't be done from here
-      static_cast<Enemy*>(entity)->restart();
-    }
+  if (entity == NULL) {
+    lua_pushnil(l);
   }
+  else {
+    map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
+    if (map.is_loaded()) {
+      // The enemy is created at runtime.
+      if (entity->get_type() == ENEMY) {
+        // TODO this shouldn't be done from here
+        static_cast<Enemy*>(entity)->restart();
+      }
+    }
+    push_entity(l, *entity);
+  }
   return 1;
 }
 
@@ -1115,8 +1125,25 @@ int LuaContext::map_api_create_switch(lua_State* l) {
  */
 int LuaContext::map_api_create_wall(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  const std::string& name = check_string_field(l, 1, "name");
+  bool stops_hero = check_boolean_field(l, 1, "stops_hero");
+  bool stops_npcs = check_boolean_field(l, 1, "stops_npcs");
+  bool stops_enemies = check_boolean_field(l, 1, "stops_enemies");
+  bool stops_blocks = check_boolean_field(l, 1, "stops_blocks");
+
+  MapEntity* entity = new Wall(name, layer, x, y, width, height,
+      stops_hero, stops_npcs, stops_enemies, stops_blocks);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -1126,8 +1153,20 @@ int LuaContext::map_api_create_wall(lua_State* l) {
  */
 int LuaContext::map_api_create_sensor(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  const std::string& name = check_string_field(l, 1, "name");
+
+  MapEntity* entity = new Sensor(name, layer, x, y, width, height);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -1137,8 +1176,18 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
  */
 int LuaContext::map_api_create_crystal(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& name = check_string_field(l, 1, "name");
+
+  MapEntity* entity = new Crystal(name, layer, x, y);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -1148,8 +1197,21 @@ int LuaContext::map_api_create_crystal(lua_State* l) {
  */
 int LuaContext::map_api_create_crystal_block(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int width = check_int_field(l, 1, "width");
+  int height = check_int_field(l, 1, "height");
+  CrystalBlock::Subtype subtype = CrystalBlock::Subtype(check_int_field(l, 1, "subtype"));
+
+  Game& game = map.get_game();
+  MapEntity* entity = new CrystalBlock(game, layer, x, y, width, height, subtype);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -1159,8 +1221,31 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
  */
 int LuaContext::map_api_create_shop_item(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& name = check_string_field(l, 1, "name");
+  const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
+  int treasure_variant = check_int_field(l, 1, "treasure_variant");
+  int treasure_savegame_variable = opt_int_field(l, 1, "treasure_savegame_variable", -1);
+  int price = check_int_field(l, 1, "price");
+  const std::string& dialog_id = check_string_field(l, 1, "dialog");
+
+  Game& game = map.get_game();
+  MapEntity* entity = ShopItem::create(game, name, layer, x, y,
+        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
+        price, dialog_id);
+
+  if (entity == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+    map.get_entities().add_entity(entity);
+    push_entity(l, *entity);
+  }
+  return 1;
 }
 
 /**
@@ -1170,8 +1255,18 @@ int LuaContext::map_api_create_shop_item(lua_State* l) {
  */
 int LuaContext::map_api_create_conveyor_belt(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  int direction = check_int_field(l, 1, "direction");
+
+  MapEntity* entity = new ConveyorBelt(layer, x, y, direction);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -1181,8 +1276,23 @@ int LuaContext::map_api_create_conveyor_belt(lua_State* l) {
  */
 int LuaContext::map_api_create_door(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& name = check_string_field(l, 1, "name");
+  int direction = check_int_field(l, 1, "direction");
+  Door::Subtype subtype = Door::Subtype(check_int_field(l, 1, "subtype"));
+  int savegame_variable = opt_int_field(l, 1, "savegame_variable", -1);
+
+  Game& game = map.get_game();
+  MapEntity* entity = new Door(game, name, layer, x, y, direction,
+      subtype, savegame_variable);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**
@@ -1192,8 +1302,20 @@ int LuaContext::map_api_create_door(lua_State* l) {
  */
 int LuaContext::map_api_create_stairs(lua_State* l) {
 
-  // TODO
-  return 0;
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
+  const std::string& name = check_string_field(l, 1, "name");
+  int direction = check_int_field(l, 1, "direction");
+  Stairs::Subtype subtype = Stairs::Subtype(check_int_field(l, 1, "subtype"));
+
+  MapEntity* entity = new Stairs(name, layer, x, y, direction, subtype);
+  map.get_entities().add_entity(entity);
+
+  push_entity(l, *entity);
+  return 1;
 }
 
 /**

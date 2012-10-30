@@ -41,9 +41,10 @@
 #include "entities/ConveyorBelt.h"
 #include "entities/Door.h"
 #include "entities/Stairs.h"
-#include "entities/Hero.h"
 #include "entities/Bomb.h"
+#include "entities/Explosion.h"
 #include "entities/Fire.h"
+#include "entities/Hero.h"
 #include "movements/Movement.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Debug.h"
@@ -1325,19 +1326,17 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
  */
 int LuaContext::map_api_create_bomb(lua_State* l) {
 
-  return 0;
-  /* TODO
-  Map& map = check_map(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  Layer layer = Layer(luaL_checkinteger(l, 4));
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
 
-  Bomb* bomb = new Bomb(layer, x, y);
-  map.get_entities().add_entity(bomb);
+  MapEntity* entity = new Bomb(layer, x, y);
+  map.get_entities().add_entity(entity);
 
-  push_entity(l, *bomb);
+  push_entity(l, *entity);
   return 1;
-  */
 }
 
 /**
@@ -1347,19 +1346,17 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
  */
 int LuaContext::map_api_create_explosion(lua_State* l) {
 
-  return 0;
-  /* TODO
-  Map& map = check_map(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  Layer layer = Layer(luaL_checkinteger(l, 4));
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
 
-  Explosion* explosion = new Explosion(layer, Rectangle(x, y), true);
-  map.get_entities().add_entity(explosion);
+  MapEntity* entity = new Explosion(layer, Rectangle(x, y), true);
+  map.get_entities().add_entity(entity);
 
-  push_entity(l, *explosion);
+  push_entity(l, *entity);
   return 1;
-  */
 }
 
 /**
@@ -1369,19 +1366,17 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
  */
 int LuaContext::map_api_create_fire(lua_State* l) {
 
-  return 0;
-  /* TODO
-  Map& map = check_map(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
-  Layer layer = Layer(luaL_checkinteger(l, 4));
+  Map& map = get_entity_creation_map(l);
+  luaL_checktype(l, 1, LUA_TTABLE);
+  Layer layer = Layer(check_int_field(l, 1, "layer"));
+  int x = check_int_field(l, 1, "x");
+  int y = check_int_field(l, 1, "y");
 
-  Fire* fire = new Fire(layer, Rectangle(x, y));
-  map.get_entities().add_entity(fire);
+  MapEntity* entity = new Fire(layer, Rectangle(x, y));
+  map.get_entities().add_entity(entity);
 
-  push_entity(l, *fire);
+  push_entity(l, *entity);
   return 1;
-  */
 }
 
 /**

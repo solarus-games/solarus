@@ -138,7 +138,7 @@ int MapLoader::l_properties(lua_State* l) {
     map->floor = -99;
   }
   else {
-    std::istringstream iss(floor_name.substr(8));
+    std::istringstream iss(floor_name);
     iss >> map->floor;
   }
 

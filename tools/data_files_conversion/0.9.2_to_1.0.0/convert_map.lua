@@ -222,8 +222,6 @@ local entity_syntaxes = {
     { token_name = "layer" },
     { token_name = "x" },
     { token_name = "y" },
-    { token_name = "width" },
-    { token_name = "height" },
     { token_name = "direction" },
   },
 

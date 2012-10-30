@@ -4838,21 +4838,21 @@ conveyor_belt{
   layer = 1,
   x = 656,
   y = 477,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 1,
   x = 656,
   y = 501,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 656,
   y = 525,
-  width = 0,
+  direction = 0,
 }
 
 chest{

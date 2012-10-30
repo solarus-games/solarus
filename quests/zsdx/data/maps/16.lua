@@ -1773,105 +1773,105 @@ conveyor_belt{
   layer = 0,
   x = 568,
   y = 269,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 584,
   y = 269,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 568,
   y = 285,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 552,
   y = 301,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 568,
   y = 301,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 568,
   y = 317,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 552,
   y = 317,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 552,
   y = 333,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 568,
   y = 333,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 584,
   y = 333,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 600,
   y = 333,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 600,
   y = 317,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 600,
   y = 301,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 584,
   y = 285,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 584,
   y = 301,
-  width = 2,
+  direction = 2,
 }
 
 stairs{

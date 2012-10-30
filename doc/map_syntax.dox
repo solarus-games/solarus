@@ -505,7 +505,7 @@ When the hero walks on a conveyor belt, he is moved automatically in the directi
 of the conveyor belt. The player does not control his movements anymore.
 
 \verbatim
-17	layer	x	y	width	height	direction
+17	layer	x	y	direction
 \endverbatim
 
 \c direction is one of the 8 directions (0 to 7).

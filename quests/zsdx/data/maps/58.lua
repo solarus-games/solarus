@@ -2319,7 +2319,7 @@ conveyor_belt{
   layer = 0,
   x = 424,
   y = 501,
-  width = 4,
+  direction = 4,
 }
 
 destination{

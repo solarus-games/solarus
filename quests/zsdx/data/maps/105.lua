@@ -20196,56 +20196,56 @@ conveyor_belt{
   layer = 1,
   x = 1416,
   y = 1253,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1432,
   y = 1253,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1448,
   y = 1077,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1464,
   y = 1077,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1568,
   y = 1181,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1568,
   y = 1197,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1328,
   y = 1149,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1328,
   y = 1165,
-  width = 6,
+  direction = 6,
 }
 
 destructible{
@@ -20645,21 +20645,21 @@ conveyor_belt{
   layer = 1,
   x = 1144,
   y = 397,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1160,
   y = 397,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1176,
   y = 397,
-  width = 0,
+  direction = 0,
 }
 
 sensor{

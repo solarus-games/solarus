@@ -2727,7 +2727,7 @@ conveyor_belt{
   layer = 0,
   x = 600,
   y = 613,
-  width = 0,
+  direction = 0,
 }
 
 stairs{
@@ -3020,7 +3020,7 @@ conveyor_belt{
   layer = 0,
   x = 152,
   y = 565,
-  width = 0,
+  direction = 0,
 }
 
 wall{

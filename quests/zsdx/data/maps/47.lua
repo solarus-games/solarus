@@ -10367,28 +10367,28 @@ conveyor_belt{
   layer = 1,
   x = 1400,
   y = 397,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1400,
   y = 365,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1400,
   y = 429,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1400,
   y = 333,
-  width = 0,
+  direction = 0,
 }
 
 switch{
@@ -10742,28 +10742,28 @@ conveyor_belt{
   layer = 1,
   x = 1400,
   y = 349,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1400,
   y = 381,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1400,
   y = 413,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1400,
   y = 445,
-  width = 6,
+  direction = 6,
 }
 
 wall{

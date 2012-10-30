@@ -8575,56 +8575,56 @@ conveyor_belt{
   layer = 1,
   x = 2200,
   y = 861,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 1,
   x = 2200,
   y = 877,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1976,
   y = 941,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1976,
   y = 957,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 1,
   x = 2200,
   y = 1117,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 1,
   x = 2200,
   y = 1133,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1976,
   y = 1197,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1976,
   y = 1213,
-  width = 6,
+  direction = 6,
 }
 
 enemy{

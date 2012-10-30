@@ -2550,637 +2550,637 @@ conveyor_belt{
   layer = 0,
   x = 80,
   y = 85,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 96,
   y = 85,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 112,
   y = 85,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 128,
   y = 85,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 80,
   y = 101,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 80,
   y = 133,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 80,
   y = 117,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 80,
   y = 149,
-  width = 1,
+  direction = 1,
 }
 
 conveyor_belt{
   layer = 0,
   x = 80,
   y = 181,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 80,
   y = 197,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 80,
   y = 213,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 96,
   y = 101,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 96,
   y = 117,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 96,
   y = 133,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 96,
   y = 165,
-  width = 1,
+  direction = 1,
 }
 
 conveyor_belt{
   layer = 0,
   x = 96,
   y = 181,
-  width = 5,
+  direction = 5,
 }
 
 conveyor_belt{
   layer = 0,
   x = 96,
   y = 197,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 96,
   y = 213,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 96,
   y = 149,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 112,
   y = 101,
-  width = 5,
+  direction = 5,
 }
 
 conveyor_belt{
   layer = 0,
   x = 112,
   y = 117,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 128,
   y = 117,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 144,
   y = 117,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 128,
   y = 101,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 144,
   y = 85,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 144,
   y = 101,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 160,
   y = 101,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 144,
   y = 133,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 160,
   y = 133,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 160,
   y = 117,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 176,
   y = 85,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 160,
   y = 85,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 128,
   y = 133,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 112,
   y = 133,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 192,
   y = 85,
-  width = 5,
+  direction = 5,
 }
 
 conveyor_belt{
   layer = 0,
   x = 208,
   y = 85,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 224,
   y = 85,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 240,
   y = 85,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 304,
   y = 85,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 288,
   y = 117,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 256,
   y = 85,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 288,
   y = 85,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 304,
   y = 101,
-  width = 5,
+  direction = 5,
 }
 
 conveyor_belt{
   layer = 0,
   x = 304,
   y = 181,
-  width = 5,
+  direction = 5,
 }
 
 conveyor_belt{
   layer = 0,
   x = 304,
   y = 117,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 304,
   y = 165,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 304,
   y = 133,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 304,
   y = 149,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 304,
   y = 197,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 304,
   y = 213,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 288,
   y = 197,
-  width = 5,
+  direction = 5,
 }
 
 conveyor_belt{
   layer = 0,
   x = 288,
   y = 213,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 288,
   y = 181,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 288,
   y = 149,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 288,
   y = 165,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 272,
   y = 85,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 288,
   y = 101,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 288,
   y = 133,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 272,
   y = 101,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 272,
   y = 117,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 240,
   y = 117,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 256,
   y = 117,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 112,
   y = 213,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 144,
   y = 213,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 176,
   y = 213,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 128,
   y = 213,
-  width = 1,
+  direction = 1,
 }
 
 conveyor_belt{
   layer = 0,
   x = 160,
   y = 213,
-  width = 1,
+  direction = 1,
 }
 
 conveyor_belt{
   layer = 0,
   x = 192,
   y = 213,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 208,
   y = 213,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 240,
   y = 213,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 224,
   y = 213,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 256,
   y = 213,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 272,
   y = 197,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 272,
   y = 181,
-  width = 1,
+  direction = 1,
 }
 
 conveyor_belt{
   layer = 0,
   x = 272,
   y = 165,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 272,
   y = 149,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 272,
   y = 133,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 256,
   y = 101,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 240,
   y = 101,
-  width = 1,
+  direction = 1,
 }
 
 conveyor_belt{
   layer = 0,
   x = 208,
   y = 101,
-  width = 1,
+  direction = 1,
 }
 
 conveyor_belt{
   layer = 0,
   x = 192,
   y = 101,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 224,
   y = 101,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 176,
   y = 101,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 176,
   y = 133,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 192,
   y = 117,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 224,
   y = 133,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 208,
   y = 149,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 208,
   y = 133,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 224,
   y = 117,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 208,
   y = 117,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 192,
   y = 133,
-  width = 0,
+  direction = 0,
 }
 
 destination{
@@ -3214,252 +3214,252 @@ conveyor_belt{
   layer = 0,
   x = 192,
   y = 149,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 208,
   y = 165,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 224,
   y = 165,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 240,
   y = 165,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 224,
   y = 149,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 240,
   y = 181,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 224,
   y = 181,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 240,
   y = 133,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 256,
   y = 149,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 256,
   y = 133,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 240,
   y = 149,
-  width = 1,
+  direction = 1,
 }
 
 conveyor_belt{
   layer = 0,
   x = 256,
   y = 165,
-  width = 2,
+  direction = 2,
 }
 
 conveyor_belt{
   layer = 0,
   x = 256,
   y = 181,
-  width = 5,
+  direction = 5,
 }
 
 conveyor_belt{
   layer = 0,
   x = 240,
   y = 197,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 256,
   y = 197,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 192,
   y = 197,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 224,
   y = 197,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 208,
   y = 197,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 112,
   y = 197,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 112,
   y = 181,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 128,
   y = 181,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 128,
   y = 197,
-  width = 3,
+  direction = 3,
 }
 
 conveyor_belt{
   layer = 0,
   x = 144,
   y = 197,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 144,
   y = 181,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 192,
   y = 181,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 176,
   y = 181,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 160,
   y = 181,
-  width = 5,
+  direction = 5,
 }
 
 conveyor_belt{
   layer = 0,
   x = 160,
   y = 197,
-  width = 7,
+  direction = 7,
 }
 
 conveyor_belt{
   layer = 0,
   x = 176,
   y = 197,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 112,
   y = 165,
-  width = 5,
+  direction = 5,
 }
 
 conveyor_belt{
   layer = 0,
   x = 128,
   y = 165,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 144,
   y = 165,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 144,
   y = 149,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 160,
   y = 149,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 0,
   x = 128,
   y = 149,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 112,
   y = 149,
-  width = 3,
+  direction = 3,
 }
 
 destination{
@@ -3854,112 +3854,112 @@ conveyor_belt{
   layer = 0,
   x = 472,
   y = 77,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 488,
   y = 77,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 504,
   y = 77,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 520,
   y = 77,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 456,
   y = 109,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 472,
   y = 93,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 488,
   y = 93,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 504,
   y = 93,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 472,
   y = 109,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 440,
   y = 125,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 440,
   y = 141,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 456,
   y = 157,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 456,
   y = 125,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 456,
   y = 141,
-  width = 0,
+  direction = 0,
 }
 
 conveyor_belt{
   layer = 0,
   x = 440,
   y = 157,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 0,
   x = 440,
   y = 173,
-  width = 6,
+  direction = 6,
 }
 
 chest{

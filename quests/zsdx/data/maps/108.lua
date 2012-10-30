@@ -9330,56 +9330,56 @@ conveyor_belt{
   layer = 1,
   x = 1728,
   y = 1733,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1712,
   y = 1733,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1696,
   y = 1733,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1680,
   y = 1733,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1536,
   y = 1733,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1520,
   y = 1733,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1504,
   y = 1733,
-  width = 4,
+  direction = 4,
 }
 
 conveyor_belt{
   layer = 1,
   x = 1488,
   y = 1733,
-  width = 4,
+  direction = 4,
 }
 
 crystal{

@@ -4146,35 +4146,35 @@ conveyor_belt{
   layer = 1,
   x = 104,
   y = 125,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 1,
   x = 120,
   y = 125,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 1,
   x = 88,
   y = 125,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 1,
   x = 168,
   y = 125,
-  width = 6,
+  direction = 6,
 }
 
 conveyor_belt{
   layer = 1,
   x = 184,
   y = 125,
-  width = 6,
+  direction = 6,
 }
 
 block{
@@ -4193,7 +4193,7 @@ conveyor_belt{
   layer = 1,
   x = 280,
   y = 285,
-  width = 2,
+  direction = 2,
 }
 
 destination{
@@ -4220,7 +4220,7 @@ conveyor_belt{
   layer = 1,
   x = 152,
   y = 125,
-  width = 6,
+  direction = 6,
 }
 
 block{
@@ -4263,7 +4263,7 @@ conveyor_belt{
   layer = 1,
   x = 136,
   y = 341,
-  width = 0,
+  direction = 0,
 }
 
 block{

@@ -17,13 +17,16 @@ function item:on_using()
       game:remove_magic(magic_needed)
 
       -- Create the Somaria block.
-      self.somaria_block = map:create_block(x, y, layer, "somaria_block",
-      {
-	sprite_name = "entities/somaria_block",
-	can_be_pushed = true,
-	can_be_pulled = true,
-	maximum_moves = 2 -- infinite moves
-      })
+      self.somaria_block = map:create_block{
+	name = "somaria_block",
+	x = x,
+	y = y,
+	layer = layer,
+	sprite = "entities/somaria_block",
+	pushable = true,
+	pullable = true,
+	maximum_moves = 2  -- Infinite moves.
+      }
       self.created = true
     else
       -- Reuse the old one.

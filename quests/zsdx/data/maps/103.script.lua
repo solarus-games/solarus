@@ -38,7 +38,14 @@ function map:on_started(destination)
   if map:get_game():get_boolean(625)
     and not map:get_game():get_boolean(626) then
     -- boss killed, heart container not picked
-    map:create_pickable("heart_container", 1, 626, 544, 789, 0)
+    map:create_pickable{
+      treasure_name = "heart_container",
+      treasure_variant = 1,
+      treasure_savegame_variable = 626,
+      x = 544,
+      y = 789,
+      layer = 0
+    }
   end
 
   -- special torch door
@@ -216,7 +223,14 @@ local function repeat_give_arrows()
       { x = 672, y = 885 },
     }
     arrow_xy = positions[math.random(#positions)]
-    map:create_pickable("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 0)
+    map:create_pickable{
+      treasure_name = "arrow",
+      treasure_variant = 3,
+      treasure_savegame_variable = -1,
+      x = arrow_xy.x,
+      y = arrow_xy.y,
+      layer = 0
+    }
   end
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
@@ -270,7 +284,14 @@ end
 function boss:on_dead()
 
   -- create the heart container manually to be sure it won't be in a hole
-  map:create_pickable("heart_container", 1, 626, 544, 789, 0)
+  map:create_pickable{
+    treasure_name = "heart_container",
+    treasure_variant = 1,
+    treasure_savegame_variable = 626,
+    x = 544,
+    y = 789,
+    layer = 0
+  }
   if arrows_timer ~= nil then
     arrows_timer:stop()
     arrows_timer = nil

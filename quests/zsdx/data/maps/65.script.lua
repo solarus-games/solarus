@@ -86,11 +86,15 @@ function map:on_started(destination)
     -- already has the other one
     variant = 3
   end
-  map:create_destructible("pot", 320, 245, 1, {
-    treasure_item = "bomb_bag",
+  map:create_destructible{
+    subtype = "pot",
+    x = 320,
+    y = 245,
+    layer = 1,
+    treasure_name = "bomb_bag",
     treasure_variant = variant,
     treasure_savegame_variable = 510
-  })
+  }
 
   -- initialize doors
   local i = 1

@@ -50,7 +50,13 @@ function item:on_using()
 
     -- release the fairy
     local x, y, layer = map:get_entity("hero"):get_position()
-    map:create_pickable("fairy", 1, -1, x, y, layer)
+    map:create_pickable{
+      treasure_name = "fairy",
+      treasure_variant = 1,
+      x = x,
+      y = y,
+      layer = layer
+    }
     self:set_variant(1) -- make the bottle empty
     self:set_finished()
   end

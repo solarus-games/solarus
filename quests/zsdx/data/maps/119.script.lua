@@ -38,7 +38,14 @@ function map:on_started(destination)
 	  -- the player already has the second one: give the third one instead
 	  variant = 3
 	end
-	map:create_pickable("sword", variant, 298, 440, 157, 1)
+	map:create_pickable{
+	  treasure_name = "sword",
+	  treasure_variant = variant,
+	  treasure_savegame_variable = 298,
+	  x = 440,
+	  y = 157,
+	  layer = 1
+	}
       end
     else
       map:set_entities_enabled("roof_entrance", false)
@@ -69,7 +76,13 @@ local function repeat_give_arrows()
       { x = 472, y = 189 },
     }
     arrow_xy = positions[math.random(#positions)]
-    map:create_pickable("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 1)
+    map:create_pickable{
+      treasure_name = "arrow",
+      treasure_variant = 3,
+      x = arrow_xy.x,
+      y = arrow_xy.y,
+      layer = 1
+    }
   end
   arrows_timer = sol.timer.start(20000, repeat_give_arrows)
 end
@@ -102,7 +115,14 @@ function boss:on_dead()
     -- the player already has the second one: give the third one instead
     variant = 3
   end
-  map:create_pickable("sword", variant, 298, 440, 189, 1)
+  map:create_pickable{
+    treasure_name = "sword",
+    treasure_variant = variant,
+    treasure_savegame_variable = 298,
+    x = 440,
+    y = 189,
+    layer = 1
+  }
   if arrows_timer ~= nil then
     arrows_timer:stop()
     arrows_timer = nil

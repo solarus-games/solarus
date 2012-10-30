@@ -42,7 +42,14 @@ function map:on_started(destination)
       if not map:has_entities("enemy_group1")
         and not map:get_game():get_boolean(200) then
         map:move_camera(616, 552, 250, function()
-          map:create_pickable("small_key", 1, 200, 616, 557, 1)
+          map:create_pickable{
+	    treasure_name = "small_key",
+	    treasure_variant = 1,
+	    treasure_savegame_variable = 200,
+	    x = 616,
+	    y = 557,
+	    layer = 1
+	  }
           sol.audio.play_sound("secret")
         end)
       end
@@ -77,7 +84,14 @@ function map:on_update()
     lock_torches()
     map:move_camera(232, 488, 250, function()
       sol.audio.play_sound("secret")
-      map:create_pickable("small_key", 1, 202, 232, 493, 0)
+      map:create_pickable{
+	treasure_name = "small_key",
+	treasure_variant = 1,
+	treasure_savegame_variable = 202,
+	x = 232,
+	y = 493,
+	layer = 0
+      }
     end)
   end
 end

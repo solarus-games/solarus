@@ -291,9 +291,27 @@ function close_w_room_sensor:on_activated()
   if w_room_door:is_open()
       and not w_room_chest:is_enabled() then
     map:close_doors("w_room_door")
-    map:create_enemy("w_room_enemy_1", "blue_pig_soldier", 1, 752, 877)
-    map:create_enemy("w_room_enemy_2", "red_pig_soldier", 1, 808, 885)
-    map:create_enemy("w_room_enemy_3", "blue_pig_soldier", 1, 864, 877)
+    map:create_enemy{
+      name = "w_room_enemy_1",
+      breed = "blue_pig_soldier",
+      layer = 1,
+      x = 752,
+      y = 877
+    }
+    map:create_enemy{
+      name = "w_room_enemy_2",
+      breed = "red_pig_soldier",
+      layer = 1,
+      x = 808,
+      y = 885
+    }
+    map:create_enemy{
+      name = "w_room_enemy_3",
+      breed = "blue_pig_soldier",
+      layer = 1,
+      x = 864,
+      y = 877
+    }
   end
 end
 

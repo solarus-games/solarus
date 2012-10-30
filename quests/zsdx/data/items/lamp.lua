@@ -35,7 +35,11 @@ function item:create_fire()
   end
 
   local x, y, layer = hero:get_position()
-  self:get_map():create_fire(x + dx, y + dy, layer)
+  self:get_map():create_fire{
+    x = x + dx,
+    y = y + dy,
+    layer = layer
+  }
 end
 
 -- Unlights the oldest torch still lit.

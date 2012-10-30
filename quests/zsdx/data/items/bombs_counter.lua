@@ -28,6 +28,10 @@ function item:create_bomb()
     y = y + 16
   end
 
-  self:get_map():create_bomb(x, y, layer)
+  self:get_map():create_bomb{
+    x = x,
+    y = y,
+    layer = layer
+  }
 end
 

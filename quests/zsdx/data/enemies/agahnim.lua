@@ -161,7 +161,14 @@ end
 function enemy:escape()
 
   local x, y = self:get_position()
-  self:get_map():create_pickable("heart_container", 1, 521, x, y, 0)
+  self:get_map():create_pickable{
+    treasure_name = "heart_container",
+    treasure_variant = 1,
+    treasure_savegame_variable = 521,
+    x = x,
+    y = y,
+    layer = 0
+  }
   self:get_map():get_entity("hero"):unfreeze()
   self:get_game():set_boolean(520, true)
   self:remove()

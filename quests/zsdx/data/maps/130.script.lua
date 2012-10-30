@@ -207,7 +207,13 @@ local function create_pickables()
       item_name = "fairy"
       variant = 1
     end
-    map:create_pickable(item_name, variant, -1, v.x, v.y, 0)
+    map:create_pickable{
+      treasure_name = item_name,
+      treasure_variant = variant,
+      x = v.x,
+      y = v.y,
+      layer = 0
+    }
   end
 end
 
@@ -215,7 +221,13 @@ local function create_bats()
 
   for i, v in ipairs(bats) do
     nb_bats_created = nb_bats_created + 1
-    map:create_enemy("bat_" .. nb_bats_created, "fire_bat", 0, v.x, v.y)
+    map:create_enemy{
+      name = "bat_" .. nb_bats_created,
+      breed = "fire_bat",
+      layer = 0,
+      x = v.x,
+      y = v.y
+    }
   end
 end
 
@@ -237,12 +249,16 @@ local function create_stone()
     y = 205
   end
 
-  map:create_destructible("black_stone", x, y, 0, {
-    treasure_item = "_none",
+  map:create_destructible{
+    subtype = "black_stone",
+    x = x,
+    y = y,
+    layer = 0,
+    treasure_name = "_none",
     destruction_callback = function()
       allow_stone_creation = true
     end
-  })
+  }
   allow_stone_creation = false
 end
 

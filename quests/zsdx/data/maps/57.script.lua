@@ -25,8 +25,13 @@ local function repeat_lava_spawner()
   if not map:get_game():get_boolean(321) then
     nb_spawners_created = nb_spawners_created + 1
     local index = math.random(#spawner_xy)
-    map:create_enemy("spawner_" .. nb_spawners_created,
-        "drakomos_lava_spawner", 1, spawner_xy[index].x, spawner_xy[index].y)
+    map:create_enemy{
+      name = "spawner_" .. nb_spawners_created,
+      breed = "drakomos_lava_spawner",
+      layer = 1,
+      x = spawner_xy[index].x,
+      y = spawner_xy[index].y
+    }
     sol.timer.start(5000 + math.random(10000), repeat_lava_spawner)
   end
 end

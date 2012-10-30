@@ -63,7 +63,11 @@ function cannon:on_interaction()
     sol.audio.play_sound("bomb")
     sol.timer.start(2000, function()
       sol.audio.play_sound("explosion")
-      map:create_explosion(296, 384, 0)
+      map:create_explosion{
+	x = 296,
+	y = 384,
+	layer = 0
+      }
       hero:start_jumping(6, 424, true)
       hero:set_visible(true)
     end)

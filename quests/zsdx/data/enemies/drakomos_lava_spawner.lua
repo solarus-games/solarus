@@ -36,7 +36,12 @@ function enemy:on_restarted()
       end
     else
       local x, y, layer = self:get_position()
-      self:get_map():create_destructible("black_stone", x, y, layer)
+      self:get_map():create_destructible{
+	subtype = "black_stone",
+	x = x,
+	y = y,
+	layer = layer
+      }
     end
   end)
 end

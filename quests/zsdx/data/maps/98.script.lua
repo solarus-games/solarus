@@ -63,7 +63,14 @@ local function enemy_in_group2_dead(enemy)
 
   if not map:has_entities("enemy2")
       and not map:get_game():get_boolean(234) then
-    map:create_pickable("big_key", 1, 234, 672, 80, 1)
+    map:create_pickable{
+      treasure_name = "big_key",
+      treasure_variant = 1,
+      treasure_savegame_variable = 234,
+      x = 672,
+      y = 80,
+      layer = 1
+    }
     sol.audio.play_sound("secret")
     if not door_a:is_open() then
       map:open_doors("door_a")

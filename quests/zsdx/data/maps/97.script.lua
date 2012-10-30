@@ -33,7 +33,11 @@ end
 
 local function explode_block1()
 
-  map:create_explosion(536, 256, 1)
+  map:create_explosion{
+    x = 536,
+    y = 256,
+    layer = 1
+  }
   sol.audio.play_sound("explosion")
   sol.audio.play_sound("secret")
   block1_1:set_enabled(false)
@@ -41,7 +45,11 @@ end
 
 local function explode_block2()
 
-  map:create_explosion(552, 256, 1)
+  map:create_explosion{
+    x = 552,
+    y = 256,
+    layer = 1
+  }
   sol.audio.play_sound("explosion")
   sol.audio.play_sound("secret")
   block2_1:set_enabled(false)
@@ -105,7 +113,14 @@ function switch1_4:on_activated()
     switch1_error()
   else
     sol.audio.play_sound("secret")
-    map:create_pickable("small_key", 1, 227, 144, 504, 0)
+    map:create_pickable{
+      treasure_name = "small_key",
+      treasure_variant = 1,
+      treasure_savegame_variable = 227,
+      x = 144,
+      y = 504,
+      layer = 0
+    }
   end
 end
 
@@ -115,7 +130,14 @@ local function enemy_in_group2_dead(enemy)
       and not map:get_game():get_boolean(221) then
 
     map:move_camera(232, 728, 250, function()
-      map:create_pickable("small_key", 1, 221, 232, 733, 1)
+      map:create_pickable{
+	treasure_name = "small_key",
+	treasure_variant = 1,
+	treasure_savegame_variable = 221,
+	x = 232,
+	y = 733,
+	layer = 1
+      }
       sol.audio.play_sound("secret")
     end)
   end

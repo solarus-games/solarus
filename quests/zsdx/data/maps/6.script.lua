@@ -73,7 +73,11 @@ function edelweiss_sensor:on_activated()
       hero:freeze()
       sol.timer.start(1000, function()
         sol.audio.play_sound("explosion")
-        map:create_explosion(160, 72, 0)
+        map:create_explosion{
+	  x = 160,
+	  y = 72,
+	  layer = 0
+	}
         beaumont_cave_hole:set_enabled(true)
         to_beaumont_cave:set_enabled(true)
         map:get_game():set_boolean(153, true)

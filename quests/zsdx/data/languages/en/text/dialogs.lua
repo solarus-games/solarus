@@ -4687,7 +4687,7 @@ dialog{
   id = "mountain_cave.almost_done",
   skip = "all",
   text = [[
-The worst is yet to
+The worst is not to
 come.
 ]]
 }

@@ -843,8 +843,8 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
   Layer layer = Layer(check_int_field(l, 1, "layer"));
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
-  const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
-  int treasure_variant = check_int_field(l, 1, "treasure_variant");
+  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "_random");
+  int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   int treasure_savegame_variable = opt_int_field(l, 1, "treasure_savegame_variable", -1);
 
   Game& game = map.get_game();
@@ -877,8 +877,8 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
-  const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
-  int treasure_variant = check_int_field(l, 1, "treasure_variant");
+  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "_random");
+  int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   int treasure_savegame_variable = opt_int_field(l, 1, "treasure_savegame_variable", -1);
 
   int destruction_callback_ref = LUA_REFNIL;
@@ -927,7 +927,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
   bool big_chest = check_boolean_field(l, 1, "is_big_chest");
   const std::string& name = check_string_field(l, 1, "name");
   const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
-  int treasure_variant = check_int_field(l, 1, "treasure_variant");
+  int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   int treasure_savegame_variable = opt_int_field(l, 1, "treasure_savegame_variable", -1);
 
   Game& game = map.get_game();
@@ -982,8 +982,8 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
   const std::string& breed = check_string_field(l, 1, "breed");
   Enemy::Rank rank = Enemy::Rank(check_int_field(l, 1, "rank"));
   int savegame_variable = opt_int_field(l, 1, "savegame_variable", -1);
-  const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
-  int treasure_variant = check_int_field(l, 1, "treasure_variant");
+  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "_random");
+  int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   int treasure_savegame_variable = opt_int_field(l, 1, "treasure_savegame_variable", -1);
 
   Game& game = map.get_game();
@@ -1229,7 +1229,7 @@ int LuaContext::map_api_create_shop_item(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   const std::string& name = check_string_field(l, 1, "name");
   const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
-  int treasure_variant = check_int_field(l, 1, "treasure_variant");
+  int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   int treasure_savegame_variable = opt_int_field(l, 1, "treasure_savegame_variable", -1);
   int price = check_int_field(l, 1, "price");
   const std::string& dialog_id = check_string_field(l, 1, "dialog");

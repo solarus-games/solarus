@@ -37,12 +37,12 @@ enum Obstacle {
                                 * and the rest is deep water */
   OBSTACLE_BOTTOM_RIGHT_WATER, /**< the lower-right half of the entity is an obstacle
                                 * and the rest is deep water */
-  OBSTACLE_DEEP_WATER    = -1, /**< the entity is some deep water */
-  OBSTACLE_SHALLOW_WATER = -2, /**< the entity is some shallow water */
-  OBSTACLE_HOLE          = -3, /**< the entity is a hole */
-  OBSTACLE_LADDER        = -4, /**< the entity is a ladder and the hero walks slower on it */
-  OBSTACLE_PRICKLE       = -5, /**< the entity is some prickles */
-  OBSTACLE_LAVA          = -6  /**< the entity is some lava */
+  OBSTACLE_DEEP_WATER,         /**< the entity is some deep water */
+  OBSTACLE_SHALLOW_WATER,      /**< the entity is some shallow water */
+  OBSTACLE_HOLE,               /**< the entity is a hole */
+  OBSTACLE_LADDER,             /**< the entity is a ladder and the hero walks slower on it */
+  OBSTACLE_PRICKLE,            /**< the entity is some prickles */
+  OBSTACLE_LAVA,               /**< the entity is some lava */
 };
 
 #endif

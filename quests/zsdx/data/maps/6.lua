@@ -13824,7 +13824,7 @@ destructible{
   layer = 0,
   x = 112,
   y = 237,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -13833,7 +13833,7 @@ destructible{
   layer = 0,
   x = 336,
   y = 221,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -13842,7 +13842,7 @@ destructible{
   layer = 0,
   x = 344,
   y = 237,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -13851,7 +13851,7 @@ destructible{
   layer = 0,
   x = 344,
   y = 253,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -13860,7 +13860,7 @@ destructible{
   layer = 0,
   x = 328,
   y = 237,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -13869,7 +13869,7 @@ destructible{
   layer = 0,
   x = 328,
   y = 253,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -13878,7 +13878,7 @@ destructible{
   layer = 0,
   x = 328,
   y = 269,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -13973,7 +13973,7 @@ destructible{
   layer = 0,
   x = 240,
   y = 485,
-  subtype = 4,
+  subtype = "black_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -13982,7 +13982,7 @@ destructible{
   layer = 0,
   x = 128,
   y = 357,
-  subtype = 4,
+  subtype = "black_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -13991,7 +13991,7 @@ destructible{
   layer = 0,
   x = 112,
   y = 253,
-  subtype = 4,
+  subtype = "black_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14000,7 +14000,7 @@ destructible{
   layer = 0,
   x = 304,
   y = 405,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14009,7 +14009,7 @@ destructible{
   layer = 0,
   x = 288,
   y = 517,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14018,7 +14018,7 @@ destructible{
   layer = 0,
   x = 376,
   y = 365,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14027,7 +14027,7 @@ destructible{
   layer = 0,
   x = 424,
   y = 357,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14036,7 +14036,7 @@ destructible{
   layer = 0,
   x = 480,
   y = 389,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14045,7 +14045,7 @@ destructible{
   layer = 0,
   x = 472,
   y = 421,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14054,7 +14054,7 @@ destructible{
   layer = 0,
   x = 376,
   y = 469,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14063,7 +14063,7 @@ destructible{
   layer = 0,
   x = 464,
   y = 501,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14072,7 +14072,7 @@ destructible{
   layer = 0,
   x = 488,
   y = 485,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14081,7 +14081,7 @@ destructible{
   layer = 0,
   x = 504,
   y = 341,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14090,7 +14090,7 @@ destructible{
   layer = 0,
   x = 528,
   y = 389,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "fairy",
   treasure_variant = 1,
 }
@@ -14099,7 +14099,7 @@ destructible{
   layer = 0,
   x = 600,
   y = 341,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14108,7 +14108,7 @@ destructible{
   layer = 0,
   x = 600,
   y = 325,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14117,7 +14117,7 @@ destructible{
   layer = 0,
   x = 624,
   y = 325,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14126,7 +14126,7 @@ destructible{
   layer = 0,
   x = 624,
   y = 341,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14135,7 +14135,7 @@ destructible{
   layer = 0,
   x = 592,
   y = 421,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14144,7 +14144,7 @@ destructible{
   layer = 0,
   x = 608,
   y = 453,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "rupee",
   treasure_variant = 3,
   treasure_savegame_variable = 97,
@@ -14154,7 +14154,7 @@ destructible{
   layer = 0,
   x = 648,
   y = 469,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14163,7 +14163,7 @@ destructible{
   layer = 0,
   x = 624,
   y = 533,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14172,7 +14172,7 @@ destructible{
   layer = 0,
   x = 704,
   y = 357,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14181,7 +14181,7 @@ destructible{
   layer = 0,
   x = 744,
   y = 405,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14190,7 +14190,7 @@ destructible{
   layer = 0,
   x = 720,
   y = 469,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "rupee",
   treasure_variant = 3,
   treasure_savegame_variable = 98,
@@ -14200,7 +14200,7 @@ destructible{
   layer = 0,
   x = 728,
   y = 549,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14220,7 +14220,7 @@ destructible{
   layer = 0,
   x = 328,
   y = 525,
-  subtype = 4,
+  subtype = "black_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14229,7 +14229,7 @@ destructible{
   layer = 0,
   x = 568,
   y = 469,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14238,7 +14238,7 @@ destructible{
   layer = 0,
   x = 624,
   y = 389,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "rupee",
   treasure_variant = 3,
   treasure_savegame_variable = 94,
@@ -14248,7 +14248,7 @@ destructible{
   layer = 0,
   x = 640,
   y = 389,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "rupee",
   treasure_variant = 2,
   treasure_savegame_variable = 95,
@@ -14258,7 +14258,7 @@ destructible{
   layer = 0,
   x = 656,
   y = 389,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "rupee",
   treasure_variant = 1,
   treasure_savegame_variable = 96,
@@ -14371,7 +14371,7 @@ destructible{
   layer = 0,
   x = 760,
   y = 485,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14380,7 +14380,7 @@ destructible{
   layer = 0,
   x = 312,
   y = 245,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14819,7 +14819,7 @@ destructible{
   layer = 0,
   x = 280,
   y = 373,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14828,7 +14828,7 @@ destructible{
   layer = 0,
   x = 264,
   y = 373,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14837,7 +14837,7 @@ destructible{
   layer = 0,
   x = 296,
   y = 373,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -14927,7 +14927,7 @@ destructible{
   layer = 0,
   x = 1016,
   y = 317,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15122,7 +15122,7 @@ destructible{
   layer = 0,
   x = 176,
   y = 253,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15131,7 +15131,7 @@ destructible{
   layer = 0,
   x = 160,
   y = 253,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15140,7 +15140,7 @@ destructible{
   layer = 0,
   x = 144,
   y = 253,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15149,7 +15149,7 @@ destructible{
   layer = 0,
   x = 128,
   y = 253,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15158,7 +15158,7 @@ destructible{
   layer = 0,
   x = 128,
   y = 269,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15167,7 +15167,7 @@ destructible{
   layer = 0,
   x = 96,
   y = 253,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15176,7 +15176,7 @@ destructible{
   layer = 0,
   x = 96,
   y = 237,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15185,7 +15185,7 @@ destructible{
   layer = 0,
   x = 160,
   y = 269,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15194,7 +15194,7 @@ destructible{
   layer = 0,
   x = 144,
   y = 269,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15203,7 +15203,7 @@ destructible{
   layer = 0,
   x = 112,
   y = 269,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15212,7 +15212,7 @@ destructible{
   layer = 0,
   x = 96,
   y = 269,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15221,7 +15221,7 @@ destructible{
   layer = 0,
   x = 112,
   y = 285,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15230,7 +15230,7 @@ destructible{
   layer = 0,
   x = 128,
   y = 285,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -15239,7 +15239,7 @@ destructible{
   layer = 0,
   x = 144,
   y = 285,
-  subtype = 5,
+  subtype = "grass",
   treasure_name = "_random",
   treasure_variant = 1,
 }

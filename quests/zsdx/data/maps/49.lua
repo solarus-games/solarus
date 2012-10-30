@@ -6092,7 +6092,7 @@ destructible{
   layer = 1,
   x = 104,
   y = 197,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -6101,7 +6101,7 @@ destructible{
   layer = 1,
   x = 232,
   y = 197,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }

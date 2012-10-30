@@ -5026,7 +5026,7 @@ destructible{
   layer = 0,
   x = 168,
   y = 725,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -5035,7 +5035,7 @@ destructible{
   layer = 0,
   x = 168,
   y = 741,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_random",
   treasure_variant = 1,
 }

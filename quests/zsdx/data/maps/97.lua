@@ -2293,7 +2293,7 @@ destructible{
   layer = 0,
   x = 920,
   y = 221,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = 204,
@@ -2303,7 +2303,7 @@ destructible{
   layer = 0,
   x = 920,
   y = 293,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }

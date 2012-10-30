@@ -953,7 +953,7 @@ destructible{
   layer = 0,
   x = 192,
   y = 181,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "rupee",
   treasure_variant = 1,
 }
@@ -962,7 +962,7 @@ destructible{
   layer = 0,
   x = 208,
   y = 181,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "rupee",
   treasure_variant = 1,
 }
@@ -971,7 +971,7 @@ destructible{
   layer = 0,
   x = 208,
   y = 165,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "rupee",
   treasure_variant = 1,
 }
@@ -980,7 +980,7 @@ destructible{
   layer = 0,
   x = 208,
   y = 197,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -989,7 +989,7 @@ destructible{
   layer = 0,
   x = 192,
   y = 197,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "rupee",
   treasure_variant = 1,
 }
@@ -998,7 +998,7 @@ destructible{
   layer = 0,
   x = 176,
   y = 197,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "rupee",
   treasure_variant = 1,
 }
@@ -1029,7 +1029,7 @@ destructible{
   layer = 0,
   x = 296,
   y = 173,
-  subtype = 3,
+  subtype = "white_stone",
   treasure_name = "_none",
   treasure_variant = 1,
 }

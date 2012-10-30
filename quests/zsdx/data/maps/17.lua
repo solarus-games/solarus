@@ -2813,7 +2813,7 @@ destructible{
   layer = 0,
   x = 608,
   y = 965,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "arrow",
   treasure_variant = 1,
 }
@@ -2822,7 +2822,7 @@ destructible{
   layer = 0,
   x = 584,
   y = 965,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "arrow",
   treasure_variant = 1,
 }

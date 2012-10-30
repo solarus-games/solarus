@@ -5828,7 +5828,7 @@ destructible{
   layer = 1,
   x = 1376,
   y = 1885,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -5837,7 +5837,7 @@ destructible{
   layer = 1,
   x = 1360,
   y = 1965,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -5846,7 +5846,7 @@ destructible{
   layer = 1,
   x = 1376,
   y = 1981,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -5855,7 +5855,7 @@ destructible{
   layer = 1,
   x = 1536,
   y = 1981,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -5864,7 +5864,7 @@ destructible{
   layer = 1,
   x = 1552,
   y = 1901,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -5873,7 +5873,7 @@ destructible{
   layer = 1,
   x = 1656,
   y = 1965,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -5882,7 +5882,7 @@ destructible{
   layer = 1,
   x = 1672,
   y = 1981,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -5891,7 +5891,7 @@ destructible{
   layer = 1,
   x = 1848,
   y = 1901,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -5900,7 +5900,7 @@ destructible{
   layer = 1,
   x = 1848,
   y = 1965,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -5909,7 +5909,7 @@ destructible{
   layer = 1,
   x = 1360,
   y = 1901,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -5918,7 +5918,7 @@ destructible{
   layer = 1,
   x = 1552,
   y = 1965,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -5927,7 +5927,7 @@ destructible{
   layer = 1,
   x = 1672,
   y = 1885,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -5936,7 +5936,7 @@ destructible{
   layer = 1,
   x = 1832,
   y = 1885,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -5945,7 +5945,7 @@ destructible{
   layer = 1,
   x = 1656,
   y = 1901,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "magic_flask",
   treasure_variant = 1,
 }
@@ -5954,7 +5954,7 @@ destructible{
   layer = 1,
   x = 1536,
   y = 1885,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "magic_flask",
   treasure_variant = 1,
 }
@@ -5963,7 +5963,7 @@ destructible{
   layer = 1,
   x = 1832,
   y = 1981,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "magic_flask",
   treasure_variant = 1,
 }

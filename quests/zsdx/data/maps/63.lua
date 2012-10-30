@@ -11599,7 +11599,7 @@ destructible{
   layer = 1,
   x = 416,
   y = 605,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "magic_flask",
   treasure_variant = 1,
 }
@@ -11608,7 +11608,7 @@ destructible{
   layer = 1,
   x = 448,
   y = 605,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "arrow",
   treasure_variant = 2,
 }
@@ -11684,7 +11684,7 @@ destructible{
   layer = 1,
   x = 704,
   y = 189,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -11833,7 +11833,7 @@ destructible{
   layer = 1,
   x = 184,
   y = 437,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -11842,7 +11842,7 @@ destructible{
   layer = 1,
   x = 184,
   y = 453,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "_random",
   treasure_variant = 1,
 }
@@ -11851,7 +11851,7 @@ destructible{
   layer = 1,
   x = 184,
   y = 469,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "bomb",
   treasure_variant = 2,
 }

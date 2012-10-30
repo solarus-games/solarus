@@ -1915,7 +1915,7 @@ destructible{
   layer = 1,
   x = 280,
   y = 61,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "rupee",
   treasure_variant = 2,
 }
@@ -1924,7 +1924,7 @@ destructible{
   layer = 1,
   x = 584,
   y = 61,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -1933,7 +1933,7 @@ destructible{
   layer = 1,
   x = 584,
   y = 445,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "bomb",
   treasure_variant = 1,
 }
@@ -1942,7 +1942,7 @@ destructible{
   layer = 1,
   x = 280,
   y = 445,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "rupee",
   treasure_variant = 2,
 }

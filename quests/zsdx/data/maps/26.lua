@@ -690,7 +690,7 @@ destructible{
   layer = 1,
   x = 272,
   y = 109,
-  subtype = 4,
+  subtype = "black_stone",
   treasure_name = "_none",
   treasure_variant = 1,
 }
@@ -699,7 +699,7 @@ destructible{
   layer = 1,
   x = 256,
   y = 125,
-  subtype = 4,
+  subtype = "black_stone",
   treasure_name = "_none",
   treasure_variant = 1,
 }
@@ -708,7 +708,7 @@ destructible{
   layer = 1,
   x = 272,
   y = 141,
-  subtype = 4,
+  subtype = "black_stone",
   treasure_name = "_none",
   treasure_variant = 1,
 }

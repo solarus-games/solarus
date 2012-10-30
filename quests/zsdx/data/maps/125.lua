@@ -1908,7 +1908,7 @@ destructible{
   layer = 1,
   x = 408,
   y = 205,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -1929,7 +1929,7 @@ destructible{
   layer = 1,
   x = 424,
   y = 205,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -1938,7 +1938,7 @@ destructible{
   layer = 1,
   x = 408,
   y = 221,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -1947,7 +1947,7 @@ destructible{
   layer = 1,
   x = 424,
   y = 221,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -1956,7 +1956,7 @@ destructible{
   layer = 1,
   x = 408,
   y = 237,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -1965,7 +1965,7 @@ destructible{
   layer = 1,
   x = 424,
   y = 237,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -1974,7 +1974,7 @@ destructible{
   layer = 1,
   x = 408,
   y = 253,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -1983,7 +1983,7 @@ destructible{
   layer = 1,
   x = 424,
   y = 253,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -1992,7 +1992,7 @@ destructible{
   layer = 1,
   x = 408,
   y = 269,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -2001,7 +2001,7 @@ destructible{
   layer = 1,
   x = 424,
   y = 269,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -2010,7 +2010,7 @@ destructible{
   layer = 1,
   x = 408,
   y = 285,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }
@@ -2019,7 +2019,7 @@ destructible{
   layer = 1,
   x = 424,
   y = 285,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "heart",
   treasure_variant = 1,
 }

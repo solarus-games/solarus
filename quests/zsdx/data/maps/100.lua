@@ -696,7 +696,7 @@ destructible{
   layer = 1,
   x = 128,
   y = 509,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "fairy",
   treasure_variant = 1,
 }
@@ -705,7 +705,7 @@ destructible{
   layer = 1,
   x = 208,
   y = 509,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "arrow",
   treasure_variant = 3,
 }

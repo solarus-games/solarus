@@ -602,7 +602,7 @@ destructible{
   layer = 0,
   x = 72,
   y = 173,
-  subtype = 0,
+  subtype = "pot",
   treasure_name = "rupee",
   treasure_variant = 1,
 }

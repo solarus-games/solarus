@@ -61,7 +61,15 @@ local entity_syntaxes = {
     { token_name = "layer" },
     { token_name = "x" },
     { token_name = "y" },
-    { token_name = "subtype" },
+    { token_name = "subtype", converter = {
+        [0] = "pot",
+        [2] = "bush",
+        [3] = "white_stone",
+        [4] = "black_stone",
+        [5] = "grass",
+        [6] = "bomb_flower",
+      }
+    },
     { token_name = "treasure_name", token_type = "string" },
     { token_name = "treasure_variant" },
     { token_name = "treasure_savegame_variable", nil_value = -1 },
@@ -345,6 +353,15 @@ function parse_entity(line, line_number)
         error("Line " .. line_number .. ": Unknown type '" .. token_type ..
             " for token '" .. syntax[i].token_name .. "'")
       end
+
+      if syntax[i].converter ~= nil then
+        -- The value has to be converted to a new syntax.
+        value = syntax[i].converter[value]
+        if value == nil then
+          error("Line " .. line_number .. ": Failed to convert the value")
+        end
+      end
+
       if value == syntax[i].nil_value then
         value = nil
       end

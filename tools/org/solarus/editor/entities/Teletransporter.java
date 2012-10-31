@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2009 Christopho, Zelda Solarus - http://www.zelda-solarus.com
+ * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
  * 
- * Zelda: Mystery of Solarus DX is free software; you can redistribute it and/or modify
+ * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.

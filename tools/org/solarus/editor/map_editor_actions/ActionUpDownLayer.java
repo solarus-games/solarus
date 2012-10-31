@@ -79,16 +79,16 @@ public class ActionUpDownLayer extends MapEditorAction {
     @Override
     public void execute() throws ZSDXException {
         for (int i = 0; i < entities.size(); i++) {
-	    map.setEntityLayer(entities.get(i), layersAfter[i]);
-	}
+            map.setEntityLayer(entities.get(i), layersAfter[i]);
+        }
     }
 
     @Override
     public void undo() throws ZSDXException {
         int i = 0;
-	for (MapEntity entity: entities) {
-	    map.setEntityLayer(entity, layersBefore[i]);
-	    i++;
-	}
+        for (MapEntity entity: entities) {
+            map.setEntityLayer(entity, layersBefore[i]);
+            i++;
+        }
     }
 }

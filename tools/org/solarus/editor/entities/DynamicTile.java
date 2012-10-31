@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,15 +35,15 @@ public class DynamicTile extends Tile {
      * @throws MapException if the tile is not valid
      */
     public DynamicTile(Map map) throws MapException {
-	super(map);
+        super(map);
     }
 
     /**
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	super.setPropertiesDefaultValues();
-	setProperty("enabled", true);
+        super.setPropertiesDefaultValues();
+        setProperty("enabled", true);
     }
 
     /**
@@ -53,22 +53,22 @@ public class DynamicTile extends Tile {
      */
     public final Tile createStaticTile() throws ZSDXException {
 
-	String description = toString();
+        String description = toString();
 
-	// remove the name and the 'enabled' boolean
-	int index = description.lastIndexOf('\t');
-	description = description.substring(0, index);
-	index = description.lastIndexOf('\t');
-	description = description.substring(0, index);
-	index = description.lastIndexOf('\t');
-	description = description.substring(0, index + 1);
-	description += getTilePatternId();
+        // remove the name and the 'enabled' boolean
+        int index = description.lastIndexOf('\t');
+        description = description.substring(0, index);
+        index = description.lastIndexOf('\t');
+        description = description.substring(0, index);
+        index = description.lastIndexOf('\t');
+        description = description.substring(0, index + 1);
+        description += getTilePatternId();
 
-	// change the entity type
-	index = description.indexOf('\t');
-	description = EntityType.TILE.getIndex() + description.substring(index);
+        // change the entity type
+        index = description.indexOf('\t');
+        description = EntityType.TILE.getIndex() + description.substring(index);
 
-	return (Tile) createFromString(map, description); 
+        return (Tile) createFromString(map, description);
     }
 
     /**
@@ -76,7 +76,7 @@ public class DynamicTile extends Tile {
      * @return true
      */
     public boolean hasName() {
-	return true;
+        return true;
     }
 }
 

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,14 +43,14 @@ public class MapEditorHistory extends Observable {
      * Maximum number of actions the history can contain.
      */
     private static final int maxSize = 50;
-    
+
     /**
      * Constructor.
      */
     public MapEditorHistory() {
-	
-	actions = new Stack<MapEditorAction>();
-	nextActionIndex = 0;
+
+        actions = new Stack<MapEditorAction>();
+        nextActionIndex = 0;
     }
 
     /**
@@ -60,23 +60,23 @@ public class MapEditorHistory extends Observable {
      */
     public void doAction(MapEditorAction action) throws ZSDXException {
 
-	action.execute();
-	actions.setSize(nextActionIndex + 1);
-	actions.setElementAt(action, nextActionIndex);
-	nextActionIndex++;
+        action.execute();
+        actions.setSize(nextActionIndex + 1);
+        actions.setElementAt(action, nextActionIndex);
+        nextActionIndex++;
 
-	if (lastSave >= nextActionIndex) {
-	    lastSave = -1;
-	}
+        if (lastSave >= nextActionIndex) {
+            lastSave = -1;
+        }
 
-	while (actions.size() > maxSize) {
-	    actions.removeElementAt(0);
-	    nextActionIndex--;
-	    lastSave--;
-	}
+        while (actions.size() > maxSize) {
+            actions.removeElementAt(0);
+            nextActionIndex--;
+            lastSave--;
+        }
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -85,18 +85,18 @@ public class MapEditorHistory extends Observable {
      * occurs while undoing the action
      */
     public void undo() throws ZSDXException {
-	
-	if (!canUndo()) {
-	    throw new MapException("No further undo information");
-	}
-	
-	MapEditorAction action = actions.get(nextActionIndex - 1);
-	action.undo();
 
-	nextActionIndex--;
+        if (!canUndo()) {
+            throw new MapException("No further undo information");
+        }
 
-	setChanged();
-	notifyObservers();
+        MapEditorAction action = actions.get(nextActionIndex - 1);
+        action.undo();
+
+        nextActionIndex--;
+
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -106,17 +106,17 @@ public class MapEditorHistory extends Observable {
      */
     public void redo() throws ZSDXException {
 
-	if (!canRedo()) {
-	    throw new MapException("No further redo information");
-	}
+        if (!canRedo()) {
+            throw new MapException("No further redo information");
+        }
 
-	MapEditorAction action = actions.get(nextActionIndex);
-	action.execute();
+        MapEditorAction action = actions.get(nextActionIndex);
+        action.execute();
 
-	nextActionIndex++;
+        nextActionIndex++;
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -124,7 +124,7 @@ public class MapEditorHistory extends Observable {
      * @return true if the user can undo an action
      */
     public boolean canUndo() {
-	return nextActionIndex > 0;
+        return nextActionIndex > 0;
     }
 
     /**
@@ -132,7 +132,7 @@ public class MapEditorHistory extends Observable {
      * @return true if the user can redo an action
      */
     public boolean canRedo() {
-	return nextActionIndex < actions.size();
+        return nextActionIndex < actions.size();
     }
 
     /**
@@ -140,18 +140,18 @@ public class MapEditorHistory extends Observable {
      * @return true if there has been no modifications, false otherwise
      */
     public boolean isSaved() {
-	return lastSave == nextActionIndex;
+        return lastSave == nextActionIndex;
     }
 
     /**
      * Indicates that the map has just been saved.
      */
     public void setSaved() {
-	
-	if (!isSaved()) {
-	    lastSave = nextActionIndex;
-	    setChanged();
-	    notifyObservers();
-	}
+
+        if (!isSaved()) {
+            lastSave = nextActionIndex;
+            setChanged();
+            notifyObservers();
+        }
     }
 }

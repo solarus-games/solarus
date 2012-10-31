@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,19 +41,19 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
      */
     public ResourceChooser(ResourceType resourceType, boolean showEmptyOption) {
 
-	super();
-	this.resourceType = resourceType;
+        super();
+        this.resourceType = resourceType;
 
-	if (showEmptyOption) {
-	    this.additionalOptions = new KeyValue[] {new KeyValue("", "")};
-	}
-	else {
-	    this.additionalOptions = new KeyValue[] {};
-	}
+        if (showEmptyOption) {
+            this.additionalOptions = new KeyValue[] {new KeyValue("", "")};
+        }
+        else {
+            this.additionalOptions = new KeyValue[] {};
+        }
 
-	Project.addProjectObserver(this);
+        Project.addProjectObserver(this);
 
-	buildList();
+        buildList();
     }
 
     /**
@@ -62,8 +62,8 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
      */
     protected void setAdditionalOptions(KeyValue[] additionalOptions) {
 
-	this.additionalOptions = additionalOptions;
-	reloadList();
+        this.additionalOptions = additionalOptions;
+        reloadList();
     }
 
     /**
@@ -71,29 +71,29 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
      */
     protected void buildList() {
 
-	if (!Project.isLoaded()) {
-	    return;
-	}
+        if (!Project.isLoaded()) {
+            return;
+        }
 
-	for (int i = 0; i < additionalOptions.length; i++) {
-	    addItem(additionalOptions[i]);
-	}
+        for (int i = 0; i < additionalOptions.length; i++) {
+            addItem(additionalOptions[i]);
+        }
 
-	try {
-	    Resource resource = Project.getResource(resourceType);
-	    String[] ids = resource.getIds();
-	    String name;
-	    
-	    for (int i = 0; i < ids.length; i++) {
-		name = resource.getElementName(ids[i]);
-		addItem(new KeyValue(ids[i], name));
-	    }
-	}
-	catch (ZSDXException ex) {
-	    System.err.println("Unexpected error: " + ex.getMessage());
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
+        try {
+            Resource resource = Project.getResource(resourceType);
+            String[] ids = resource.getIds();
+            String name;
+
+            for (int i = 0; i < ids.length; i++) {
+                name = resource.getElementName(ids[i]);
+                addItem(new KeyValue(ids[i], name));
+            }
+        }
+        catch (ZSDXException ex) {
+            System.err.println("Unexpected error: " + ex.getMessage());
+            ex.printStackTrace();
+            System.exit(1);
+        }
     }
 
     /**
@@ -102,29 +102,29 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
      */
     protected void reloadList() {
 
-	String selectedId = getSelectedId();
+        String selectedId = getSelectedId();
 
-	removeAllItems();
-	buildList();
+        removeAllItems();
+        buildList();
 
-	if (selectedId.length() > 0) {
-	    setSelectedId(selectedId);
-	}
+        if (selectedId.length() > 0) {
+            setSelectedId(selectedId);
+        }
     }
-    
+
     /**
      * Returns the id of the currently selected element.
      * @return the id of the selected element, or an empty string if no element is selected
      */
     public String getSelectedId() {
 
-	KeyValue item = (KeyValue) getSelectedItem();
+        KeyValue item = (KeyValue) getSelectedItem();
 
-	if (item == null) {
-	    return "";
-	}
+        if (item == null) {
+            return "";
+        }
 
-	return item.getKey();
+        return item.getKey();
     }
 
     /**
@@ -136,12 +136,12 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
      */
     public void setSelectedId(String id) throws IllegalArgumentException {
 
-	KeyValue item = new KeyValue(id, null);
-	setSelectedItem(item);
+        KeyValue item = new KeyValue(id, null);
+        setSelectedItem(item);
 
-	if (!getSelectedId().equals(id)) {
-	  throw new IllegalArgumentException("No id '" + id + "' in the list");
-	}
+        if (!getSelectedId().equals(id)) {
+          throw new IllegalArgumentException("No id '" + id + "' in the list");
+        }
     }
 
     /**
@@ -149,6 +149,6 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
      * The resource list is then loaded.
      */
     public void currentProjectChanged() {
-	reloadList();
+        reloadList();
     }
 }

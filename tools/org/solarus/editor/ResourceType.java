@@ -33,7 +33,7 @@ public enum ResourceType {
      * @param name name of the resource type
      */
     private ResourceType(boolean idAutoIncremented, String name) {
-	this.idAutoIncremented = idAutoIncremented;
+        this.idAutoIncremented = idAutoIncremented;
         this.name = name;
     }
 
@@ -45,12 +45,12 @@ public enum ResourceType {
      */
     public static ResourceType get(int id) throws ZSDXException {
 
-	try {
+        try {
             return values()[id];
-	}
-	catch (ArrayIndexOutOfBoundsException ex) {
-	    throw new ZSDXException("Unknown resource type '" + id + "'");
-	}
+        }
+        catch (ArrayIndexOutOfBoundsException ex) {
+            throw new ZSDXException("Unknown resource type '" + id + "'");
+        }
     }
 
     /**
@@ -58,7 +58,7 @@ public enum ResourceType {
      * @return the id
      */
     public int getId() {
-	return ordinal();
+        return ordinal();
     }
 
     /**
@@ -67,7 +67,7 @@ public enum ResourceType {
      * @return true if the id is incremented automatically
      */
     public boolean isIdAutoIncremented() {
-	return idAutoIncremented;
+        return idAutoIncremented;
     }
 
     /**

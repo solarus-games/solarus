@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -40,7 +40,7 @@ public class EditDoorComponent extends EditEntityComponent {
      * @param entity the entity to edit
      */
     public EditDoorComponent(Map map, MapEntity entity) {
-	super(map, entity);
+        super(map, entity);
     }
 
     /**
@@ -48,57 +48,57 @@ public class EditDoorComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// saving option
-	saveField = new JCheckBox("Save the door state");
-	addField("Savegame", saveField);
+        // saving option
+        saveField = new JCheckBox("Save the door state");
+        addField("Savegame", saveField);
 
-	// savegame variable
-	savegameVariableField = new NumberChooser(0, 0, 32767);
-	addField("Savegame variable", savegameVariableField);
+        // savegame variable
+        savegameVariableField = new NumberChooser(0, 0, 32767);
+        addField("Savegame variable", savegameVariableField);
 
-	// enable or disable the 'savegame variable' field depending on the check box and the subtype 
-	saveField.addChangeListener(new ChangeListener() {
-	    public void stateChanged(ChangeEvent ev) {
-		savegameVariableField.setEnabled(saveField.isSelected());
-	    }
-	});
+        // enable or disable the 'savegame variable' field depending on the check box and the subtype
+        saveField.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent ev) {
+                savegameVariableField.setEnabled(saveField.isSelected());
+            }
+        });
 
-	subtypeField.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-		if (((Subtype) subtypeField.getValue()).mustBeSaved()) {
-		  savegameVariableField.setEnabled(true);
-		  saveField.setEnabled(false);
-		  saveField.setSelected(true);
-		}
-		else {
-		  saveField.setEnabled(true);
-		  savegameVariableField.setEnabled(true);
-		}
-	    }
-	});
+        subtypeField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                if (((Subtype) subtypeField.getValue()).mustBeSaved()) {
+                  savegameVariableField.setEnabled(true);
+                  saveField.setEnabled(false);
+                  saveField.setSelected(true);
+                }
+                else {
+                  saveField.setEnabled(true);
+                  savegameVariableField.setEnabled(true);
+                }
+            }
+        });
     }
 
     /**
      * Updates the information displayed in the fields.
      */
     public void update() {
-	super.update(); // update the common fields
+        super.update(); // update the common fields
 
-	Door door = (Door) entity;
-	Subtype subtype = (Subtype) door.getSubtype();
+        Door door = (Door) entity;
+        Subtype subtype = (Subtype) door.getSubtype();
 
-	int savegameVariable = door.getIntegerProperty("savegameVariable");
-	if (savegameVariable != -1) {
-	  savegameVariableField.setNumber(savegameVariable);
-	  savegameVariableField.setEnabled(true);
-	  saveField.setSelected(true);
-	}
-	else {
-	  savegameVariableField.setEnabled(false);
-	  saveField.setSelected(false);
-	}
+        int savegameVariable = door.getIntegerProperty("savegameVariable");
+        if (savegameVariable != -1) {
+          savegameVariableField.setNumber(savegameVariable);
+          savegameVariableField.setEnabled(true);
+          saveField.setSelected(true);
+        }
+        else {
+          savegameVariableField.setEnabled(false);
+          saveField.setSelected(false);
+        }
 
-	saveField.setEnabled(!subtype.mustBeSaved());
+        saveField.setEnabled(!subtype.mustBeSaved());
     }
 
     /**
@@ -107,9 +107,9 @@ public class EditDoorComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	int savegameVariable = savegameVariableField.isEnabled() ? 
-		savegameVariableField.getNumber() : -1;
+        int savegameVariable = savegameVariableField.isEnabled() ?
+                savegameVariableField.getNumber() : -1;
 
-	return new ActionEditEntitySpecific(entity, savegameVariable);
+        return new ActionEditEntitySpecific(entity, savegameVariable);
     }
 }

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,7 +33,7 @@ public class Destination extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("destination_point.png", 64, 0, 32, 32)
+        new EntityImageDescription("destination_point.png", 64, 0, 32, 32)
     };
 
     /**
@@ -46,8 +46,8 @@ public class Destination extends MapEntity {
      * @param map the map
      */
     public Destination(Map map) throws MapException {
-	super(map, 16, 16);
-	setDirection(3);
+        super(map, 16, 16);
+        setDirection(3);
     }
 
     /**
@@ -55,7 +55,7 @@ public class Destination extends MapEntity {
      * @return (8,13)
      */
     protected Point getOrigin() {
-	return origin;
+        return origin;
     }
 
     /**
@@ -63,7 +63,7 @@ public class Destination extends MapEntity {
      * @return 4
      */
     public int getNbDirections() {
-	return 4;
+        return 4;
     }
 
     /**
@@ -72,7 +72,7 @@ public class Destination extends MapEntity {
      * @return true
      */
     public boolean canHaveNoDirection() {
-	return true;
+        return true;
     }
 
     /**
@@ -80,7 +80,7 @@ public class Destination extends MapEntity {
      * @return the text to display in the direction chooser for the 'no direction' option
      */
     public String getNoDirectionText() {
-	return "Keep the same direction";
+        return "Keep the same direction";
     }
 
     /**
@@ -88,7 +88,7 @@ public class Destination extends MapEntity {
      * @return true
      */
     public boolean hasName() {
-	return true;
+        return true;
     }
 
     /**
@@ -136,9 +136,9 @@ public class Destination extends MapEntity {
      * @return true if it is valid
      */
     private boolean isSpriteNameValid(String sprite_name) {
-	return sprite_name != null
-	  && sprite_name.length() != 0
-	  && (sprite_name.charAt(0) != '_' || sprite_name.equals("_none"));
+        return sprite_name != null
+          && sprite_name.length() != 0
+          && (sprite_name.charAt(0) != '_' || sprite_name.equals("_none"));
     }
 
     /**

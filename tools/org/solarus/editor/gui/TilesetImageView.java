@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -78,60 +78,60 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      * (if so, the user can only pick a tile pattern)
      */
     public TilesetImageView(boolean editable) {
-	super();
+        super();
 
-	this.editable = editable;
+        this.editable = editable;
 
-	addMouseListener(new TilesetImageMouseListener());
-	addMouseMotionListener(new TilesetImageMouseMotionListener());
+        addMouseListener(new TilesetImageMouseListener());
+        addMouseMotionListener(new TilesetImageMouseMotionListener());
 
-	if (editable) {
-	    JMenuItem item;
-	    JMenuItem itemCancelCreate = new JMenuItem("Cancel");
+        if (editable) {
+            JMenuItem item;
+            JMenuItem itemCancelCreate = new JMenuItem("Cancel");
 
-	    // popup menu to create a tile pattern
-	    popupMenuCreate = new JPopupMenu();
+            // popup menu to create a tile pattern
+            popupMenuCreate = new JPopupMenu();
 
-	    item = new JMenuItem("Create (no obstacle)", Obstacle.NONE.getIcon());
-	    item.addActionListener(new ActionCreateTilePattern(Obstacle.NONE));
-	    popupMenuCreate.add(item);
+            item = new JMenuItem("Create (no obstacle)", Obstacle.NONE.getIcon());
+            item.addActionListener(new ActionCreateTilePattern(Obstacle.NONE));
+            popupMenuCreate.add(item);
 
-	    item = new JMenuItem("Create (obstacle)", Obstacle.OBSTACLE.getIcon());
-	    item.addActionListener(new ActionCreateTilePattern(Obstacle.OBSTACLE));
-	    popupMenuCreate.add(item);
+            item = new JMenuItem("Create (obstacle)", Obstacle.OBSTACLE.getIcon());
+            item.addActionListener(new ActionCreateTilePattern(Obstacle.OBSTACLE));
+            popupMenuCreate.add(item);
 
-	    itemCancelCreate.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-			tileset.unselectTilePattern();
-		    }
-		});
-	    popupMenuCreate.addSeparator();
-	    popupMenuCreate.add(itemCancelCreate);
+            itemCancelCreate.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        tileset.unselectTilePattern();
+                    }
+                });
+            popupMenuCreate.addSeparator();
+            popupMenuCreate.add(itemCancelCreate);
 
-	    // popup menu for a selected tile pattern
-	    popupMenuSelectedTilePattern = new JPopupMenu();
-	    itemsObstacle = new JRadioButtonMenuItem[Obstacle.values().length];
-	    ButtonGroup itemsObstacleGroup = new ButtonGroup();
+            // popup menu for a selected tile pattern
+            popupMenuSelectedTilePattern = new JPopupMenu();
+            itemsObstacle = new JRadioButtonMenuItem[Obstacle.values().length];
+            ButtonGroup itemsObstacleGroup = new ButtonGroup();
 
-	    int i = 0;
-	    for (Obstacle obstacle: Obstacle.values()) {
-		itemsObstacle[i] = new JRadioButtonMenuItem(obstacle.getName(), obstacle.getIcon());
-		itemsObstacle[i].addActionListener(new ActionChangeObstacle(obstacle));
-		popupMenuSelectedTilePattern.add(itemsObstacle[i]);
-		itemsObstacleGroup.add(itemsObstacle[i]);
-		i++;
-	    }
+            int i = 0;
+            for (Obstacle obstacle: Obstacle.values()) {
+                itemsObstacle[i] = new JRadioButtonMenuItem(obstacle.getName(), obstacle.getIcon());
+                itemsObstacle[i].addActionListener(new ActionChangeObstacle(obstacle));
+                popupMenuSelectedTilePattern.add(itemsObstacle[i]);
+                itemsObstacleGroup.add(itemsObstacle[i]);
+                i++;
+            }
 
-	    popupMenuSelectedTilePattern.addSeparator();
+            popupMenuSelectedTilePattern.addSeparator();
 
-	    item = new JMenuItem("Delete");
-	    item.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-			tileset.removeTilePattern();
-		    }
-		});
-	    popupMenuSelectedTilePattern.add(item);
-	}
+            item = new JMenuItem("Delete");
+            item.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        tileset.removeTilePattern();
+                    }
+                });
+            popupMenuSelectedTilePattern.add(item);
+        }
     }
 
     /**
@@ -140,40 +140,40 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      * @return the image size or a default size.
      */
     public Dimension getPreferredSize() {
-	int width, height;
+        int width, height;
 
-	if (!isImageLoaded()) {
-	    width = 0;
-	    height = 0;
-	}
-	else {
-	    Image scaledImage = tileset.getDoubleImage();
-	    width = scaledImage.getWidth(null);
-	    height = scaledImage.getHeight(null);
-	}
+        if (!isImageLoaded()) {
+            width = 0;
+            height = 0;
+        }
+        else {
+            Image scaledImage = tileset.getDoubleImage();
+            width = scaledImage.getWidth(null);
+            height = scaledImage.getHeight(null);
+        }
 
-	return new Dimension(width, height);
+        return new Dimension(width, height);
     }
 
     // interface Scrollable
     public Dimension getPreferredScrollableViewportSize() {
-	return getPreferredSize();
+        return getPreferredSize();
     }
 
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-	return 16;
+        return 16;
     }
 
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-	return 160;
+        return 160;
     }
 
     public boolean getScrollableTracksViewportWidth() {
-	return false;
+        return false;
     }
 
     public boolean getScrollableTracksViewportHeight() {
-	return false;
+        return false;
     }
 
     /**
@@ -182,35 +182,35 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      */
     public void setTileset(Tileset tileset) {
 
-	if (tileset == null) {
+        if (tileset == null) {
 
-	    if (this.tileset != null) {
-		// the tileset has just been closed
+            if (this.tileset != null) {
+                // the tileset has just been closed
 
-		this.tileset.deleteObserver(this);
-		this.tileset = null;
-		repaint();
-	    }
-	}
-	else if (tileset != this.tileset) {
-	    // a tileset has just been loaded
+                this.tileset.deleteObserver(this);
+                this.tileset = null;
+                repaint();
+            }
+        }
+        else if (tileset != this.tileset) {
+            // a tileset has just been loaded
 
-	    if (this.tileset != null) {
-		this.tileset.deleteObserver(this);
-	    }
+            if (this.tileset != null) {
+                this.tileset.deleteObserver(this);
+            }
 
-	    this.tileset = tileset;
-	    tileset.addObserver(this);
+            this.tileset = tileset;
+            tileset.addObserver(this);
 
-	    // initialize the popup menu of the selected tile
-	    update(tileset.getSelectedTilePattern(), null);
+            // initialize the popup menu of the selected tile
+            update(tileset.getSelectedTilePattern(), null);
 
-	    // load the tileset's image
-	    tileset.reloadImage();
-	    update(tileset, null);
-	}
+            // load the tileset's image
+            tileset.reloadImage();
+            update(tileset, null);
+        }
 
-	setSize(getPreferredSize());
+        setSize(getPreferredSize());
     }
 
     /**
@@ -218,31 +218,31 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      */
     public void update(Observable o, Object obj) {
 
-	if (o instanceof Tileset) {
-	    // the tileset has changed
+        if (o instanceof Tileset) {
+            // the tileset has changed
 
-	    TilePattern newSelectedTilePattern = tileset.getSelectedTilePattern();
-	    if (newSelectedTilePattern != currentSelectedTilePattern) {
-		// observe the new selected tile
-		
-		if (currentSelectedTilePattern != null) {
-		    currentSelectedTilePattern.deleteObserver(this);
-		}
-		
-		if (newSelectedTilePattern != null) {
-		    newSelectedTilePattern.addObserver(this);
-		}
-		
-		currentSelectedTilePattern = newSelectedTilePattern;
-	    }
+            TilePattern newSelectedTilePattern = tileset.getSelectedTilePattern();
+            if (newSelectedTilePattern != currentSelectedTilePattern) {
+                // observe the new selected tile
 
-	    // redraw the image
-	    repaint();
-	}
-	else if (o instanceof TilePattern) {
-	    // the selected tile pattern has changed
-	    repaint();
-	}
+                if (currentSelectedTilePattern != null) {
+                    currentSelectedTilePattern.deleteObserver(this);
+                }
+
+                if (newSelectedTilePattern != null) {
+                    newSelectedTilePattern.addObserver(this);
+                }
+
+                currentSelectedTilePattern = newSelectedTilePattern;
+            }
+
+            // redraw the image
+            repaint();
+        }
+        else if (o instanceof TilePattern) {
+            // the selected tile pattern has changed
+            repaint();
+        }
     }
 
     /**
@@ -250,7 +250,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      * @return true if the tileset image exists
      */
     public boolean isImageLoaded() {
-	return tileset != null && tileset.getDoubleImage() != null;
+        return tileset != null && tileset.getDoubleImage() != null;
     }
 
     /**
@@ -259,267 +259,267 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      */
     public void paint(Graphics g) {
 
-	if (isImageLoaded()) { // the image exists
+        if (isImageLoaded()) { // the image exists
 
-	    TilePattern selectedTilePattern = null;
-	    Image scaledImage = tileset.getDoubleImage();
+            TilePattern selectedTilePattern = null;
+            Image scaledImage = tileset.getDoubleImage();
 
-	    // draw the image
-// 	    g.drawImage(scaledImage, 0, 0, scaledImage.getWidth(this) * 2, scaledImage.getHeight(this) * 2, this);
-	    g.drawImage(scaledImage, 0, 0, null);
+            // draw the image
+//             g.drawImage(scaledImage, 0, 0, scaledImage.getWidth(this) * 2, scaledImage.getHeight(this) * 2, this);
+            g.drawImage(scaledImage, 0, 0, null);
 
-	    // determine the selected area
-	    Rectangle selectedRectangle = null;
-	    if (tileset.isSelectingNewTilePattern()) {
+            // determine the selected area
+            Rectangle selectedRectangle = null;
+            if (tileset.isSelectingNewTilePattern()) {
 
-		// the selected tile doesn't exist yet
-		selectedRectangle = tileset.getNewTilePatternArea();
+                // the selected tile doesn't exist yet
+                selectedRectangle = tileset.getNewTilePatternArea();
 
-		if (selectedRectangle.width == 0
-		    || selectedRectangle.height == 0
-		    || tileset.isNewTilePatternAreaOverlapping()) {
-		    // invalid area
-		    g.setColor(Color.RED);
-		}
-		else {
-		    // valid area
-		    g.setColor(Color.GREEN);
-		}
-	    }
-	    else {
-		selectedTilePattern = tileset.getSelectedTilePattern();
+                if (selectedRectangle.width == 0
+                    || selectedRectangle.height == 0
+                    || tileset.isNewTilePatternAreaOverlapping()) {
+                    // invalid area
+                    g.setColor(Color.RED);
+                }
+                else {
+                    // valid area
+                    g.setColor(Color.GREEN);
+                }
+            }
+            else {
+                selectedTilePattern = tileset.getSelectedTilePattern();
 
-		if (selectedTilePattern != null) {
-		    // an existing tile pattern is selected
-		    selectedRectangle = selectedTilePattern.getPositionInTileset();
-		    g.setColor(Color.BLUE);
-		}
-	    }
-	    
-	    // draw the selected rectangle
-	    if (selectedRectangle != null) {
+                if (selectedTilePattern != null) {
+                    // an existing tile pattern is selected
+                    selectedRectangle = selectedTilePattern.getPositionInTileset();
+                    g.setColor(Color.BLUE);
+                }
+            }
 
-		int x1 = selectedRectangle.x * 2;
-		int x2 = (selectedRectangle.x + selectedRectangle.width) * 2 - 1;
-		int y1 = selectedRectangle.y * 2;
-		int y2 = (selectedRectangle.y + selectedRectangle.height) * 2 - 1;
+            // draw the selected rectangle
+            if (selectedRectangle != null) {
 
-		g.drawLine(x1, y1, x2, y1);
-		g.drawLine(x2, y1, x2, y2);
-		g.drawLine(x2, y2, x1, y2);
-		g.drawLine(x1, y2, x1, y1);
+                int x1 = selectedRectangle.x * 2;
+                int x2 = (selectedRectangle.x + selectedRectangle.width) * 2 - 1;
+                int y1 = selectedRectangle.y * 2;
+                int y2 = (selectedRectangle.y + selectedRectangle.height) * 2 - 1;
 
-		g.drawLine(x1, y1 + 1, x2, y1 + 1);
-		g.drawLine(x2 - 1, y1, x2 - 1, y2);
-		g.drawLine(x2, y2 - 1, x1, y2 - 1);
-		g.drawLine(x1 + 1, y2, x1 + 1, y1);
+                g.drawLine(x1, y1, x2, y1);
+                g.drawLine(x2, y1, x2, y2);
+                g.drawLine(x2, y2, x1, y2);
+                g.drawLine(x1, y2, x1, y1);
 
-		// for an animated tile pattern, also draw the separation between the 3 frames
-		if (selectedTilePattern != null && selectedTilePattern.isMultiFrame()) {
+                g.drawLine(x1, y1 + 1, x2, y1 + 1);
+                g.drawLine(x2 - 1, y1, x2 - 1, y2);
+                g.drawLine(x2, y2 - 1, x1, y2 - 1);
+                g.drawLine(x1 + 1, y2, x1 + 1, y1);
 
-		    if (selectedTilePattern.getAnimationSeparation() == TilePattern.AnimationSeparation.HORIZONTAL) {
-			int frame_width = (x2 - x1 + 1) / 3;
-			x1 += frame_width;
-			x2 -= frame_width;
+                // for an animated tile pattern, also draw the separation between the 3 frames
+                if (selectedTilePattern != null && selectedTilePattern.isMultiFrame()) {
 
-			g.drawLine(x2, y1, x2, y2);
-			g.drawLine(x1, y2, x1, y1);
-			g.drawLine(x2 - 1, y1, x2 - 1, y2);
-			g.drawLine(x1 + 1, y2, x1 + 1, y1);
-		    }
-		    else {
-			int frame_height = (y2 - y1 + 1) / 3;
-			y1 += frame_height;
-			y2 -= frame_height;
-			
-			g.drawLine(x1, y1, x2, y1);
-			g.drawLine(x2, y2, x1, y2);
-			g.drawLine(x1, y1 + 1, x2, y1 + 1);
-			g.drawLine(x2, y2 - 1, x1, y2 - 1);
-		    }
-		}
-	    }
+                    if (selectedTilePattern.getAnimationSeparation() == TilePattern.AnimationSeparation.HORIZONTAL) {
+                        int frame_width = (x2 - x1 + 1) / 3;
+                        x1 += frame_width;
+                        x2 -= frame_width;
 
-	}
-	else if (tileset != null) {
+                        g.drawLine(x2, y1, x2, y2);
+                        g.drawLine(x1, y2, x1, y1);
+                        g.drawLine(x2 - 1, y1, x2 - 1, y2);
+                        g.drawLine(x1 + 1, y2, x1 + 1, y1);
+                    }
+                    else {
+                        int frame_height = (y2 - y1 + 1) / 3;
+                        y1 += frame_height;
+                        y2 -= frame_height;
 
-	    // a tileset is open but the image doesn't exist: draw an error message
-	    g.drawString("Please create a tileset image named:", 10, 20);
-	    g.drawString(tileset.getImageFile().getAbsolutePath() + "", 10, 40);
-	    g.drawString("Then click on this area to show the tileset image.", 10, 60);
-	}
+                        g.drawLine(x1, y1, x2, y1);
+                        g.drawLine(x2, y2, x1, y2);
+                        g.drawLine(x1, y1 + 1, x2, y1 + 1);
+                        g.drawLine(x2, y2 - 1, x1, y2 - 1);
+                    }
+                }
+            }
+
+        }
+        else if (tileset != null) {
+
+            // a tileset is open but the image doesn't exist: draw an error message
+            g.drawString("Please create a tileset image named:", 10, 20);
+            g.drawString(tileset.getImageFile().getAbsolutePath() + "", 10, 40);
+            g.drawString("Then click on this area to show the tileset image.", 10, 60);
+        }
     }
 
     /**
      * The mouse listener associated to the tileset image.
      */
     private class TilesetImageMouseListener extends MouseAdapter {
-	
-	/**
-	 * This function is called when the user clicks on the tileset image.
-	 * If no tile pattern was selected, then the tile pattern clicked (if any) is selected.
-	 * For a right click: a popup menu allows to remove the tile pattern clicked
-	 * (if the tileset is editable).
-	 * @param mouseEvent information about the click
-	 */
-	public void mouseClicked(MouseEvent mouseEvent) {
-	    if (isImageLoaded()) {
 
-		Image scaledImage = tileset.getDoubleImage();
-		
-		int x = Math.min(Math.max(mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this)) / 2;
-		int y = Math.min(Math.max(mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this)) / 2;
-		
-		// search the tile pattern clicked
-		int clickedTileId = tileset.getTilePatternIdAt(x, y);
+        /**
+         * This function is called when the user clicks on the tileset image.
+         * If no tile pattern was selected, then the tile pattern clicked (if any) is selected.
+         * For a right click: a popup menu allows to remove the tile pattern clicked
+         * (if the tileset is editable).
+         * @param mouseEvent information about the click
+         */
+        public void mouseClicked(MouseEvent mouseEvent) {
+            if (isImageLoaded()) {
 
-		// a tile pattern was just clicked
-		if (clickedTileId > 0) {
+                Image scaledImage = tileset.getDoubleImage();
 
-		    // select the tile pattern
-		    tileset.setSelectedTilePatternId(clickedTileId);
-		    
-		    // right click: if the tileset is editable, we show a popup menu
-		    if (mouseEvent.getButton() == MouseEvent.BUTTON3 && editable) {
-			Obstacle obstacle = tileset.getSelectedTilePattern().getObstacle();
-			itemsObstacle[obstacle.ordinal()].setSelected(true);
-			popupMenuSelectedTilePattern.show(TilesetImageView.this,
-				mouseEvent.getX(),
-				mouseEvent.getY());
-		    }
-		}
-	    }
-	    else if (tileset != null) {
-		tileset.reloadImage();
-	    }
-	}
-	
-	/**
-	 * This function is called when the mouse button is pressed on the tileset image.
-	 * Only left clicks are considered.
-	 * If a tile pattern was selected, it becomes unselected. Otherwise, the selection 
-	 * for a new tile pattern begins (only if the tileset is editable).
-	 * @param mouseEvent information about the click
-	 */
-	public void mousePressed(MouseEvent mouseEvent) {
+                int x = Math.min(Math.max(mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this)) / 2;
+                int y = Math.min(Math.max(mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this)) / 2;
 
-	    // only consider left clicks
-	    if (isImageLoaded() && mouseEvent.getButton() == MouseEvent.BUTTON1) {
-		
-		Image scaledImage = tileset.getDoubleImage();
+                // search the tile pattern clicked
+                int clickedTileId = tileset.getTilePatternIdAt(x, y);
 
-		int x = Math.min(Math.max(mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this)) / 2;
-		int y = Math.min(Math.max(mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this)) / 2;
+                // a tile pattern was just clicked
+                if (clickedTileId > 0) {
 
-		TilePattern selectedTilePattern = tileset.getSelectedTilePattern();
+                    // select the tile pattern
+                    tileset.setSelectedTilePatternId(clickedTileId);
 
-		if (selectedTilePattern != null && !selectedTilePattern.getPositionInTileset().contains(x,y)) {
-		    // an existing tile pattern was selected and the user pressed the mouse button outside: unselect it
-		    tileset.unselectTilePattern();
-		}
+                    // right click: if the tileset is editable, we show a popup menu
+                    if (mouseEvent.getButton() == MouseEvent.BUTTON3 && editable) {
+                        Obstacle obstacle = tileset.getSelectedTilePattern().getObstacle();
+                        itemsObstacle[obstacle.ordinal()].setSelected(true);
+                        popupMenuSelectedTilePattern.show(TilesetImageView.this,
+                                mouseEvent.getX(),
+                                mouseEvent.getY());
+                    }
+                }
+            }
+            else if (tileset != null) {
+                tileset.reloadImage();
+            }
+        }
 
-		else if (tileset.isSelectingNewTilePattern()) {
-		    // a new tile pattern was selected: unselect it
-		    tileset.unselectTilePattern();
-		}
+        /**
+         * This function is called when the mouse button is pressed on the tileset image.
+         * Only left clicks are considered.
+         * If a tile pattern was selected, it becomes unselected. Otherwise, the selection
+         * for a new tile pattern begins (only if the tileset is editable).
+         * @param mouseEvent information about the click
+         */
+        public void mousePressed(MouseEvent mouseEvent) {
 
-		// begin a selection
-		if (!tileset.isSelectingNewTilePattern() && editable) {
-		    selectionStartPoint = mouseEvent.getPoint();
+            // only consider left clicks
+            if (isImageLoaded() && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 
-		    selectionStartPoint.x = (x + 4) / 8 * 8;
-		    selectionStartPoint.y = (y + 4) / 8 * 8;
-		}
-	    }
-	}
+                Image scaledImage = tileset.getDoubleImage();
 
-	/**
-	 * This function is called when the mouse button is released on the tileset image.
-	 * Only left clicks are considered.
-	 * @param mouseEvent information about the click
-	 */
-	public void mouseReleased(MouseEvent mouseEvent) {
+                int x = Math.min(Math.max(mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this)) / 2;
+                int y = Math.min(Math.max(mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this)) / 2;
 
-	    // only consider left clicks
-	    if (isImageLoaded() && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+                TilePattern selectedTilePattern = tileset.getSelectedTilePattern();
 
-		// keep the new selected tile pattern only if it really exists
-		Rectangle newTilePatternArea = tileset.getNewTilePatternArea();
-		if (tileset.isSelectingNewTilePattern()
-		    && newTilePatternArea != null
-		    && newTilePatternArea.width > 0
-		    && newTilePatternArea.height > 0
-		    && !tileset.isNewTilePatternAreaOverlapping()) {
+                if (selectedTilePattern != null && !selectedTilePattern.getPositionInTileset().contains(x,y)) {
+                    // an existing tile pattern was selected and the user pressed the mouse button outside: unselect it
+                    tileset.unselectTilePattern();
+                }
 
-		    // the area is valid: show a popup menu with an item "Create"
-		    popupMenuCreate.show(TilesetImageView.this,
-					 mouseEvent.getX(),
-					 mouseEvent.getY());
-		}
-		else {
-		    // the area doesn't exist or is not valid: we cancel the selection
-		    selectionStartPoint = null;
-		    selectionCurrentPoint = null;
-		    tileset.unselectTilePattern();
-		    newTilePatternArea = null;
-		}
-	    }
-	}
+                else if (tileset.isSelectingNewTilePattern()) {
+                    // a new tile pattern was selected: unselect it
+                    tileset.unselectTilePattern();
+                }
+
+                // begin a selection
+                if (!tileset.isSelectingNewTilePattern() && editable) {
+                    selectionStartPoint = mouseEvent.getPoint();
+
+                    selectionStartPoint.x = (x + 4) / 8 * 8;
+                    selectionStartPoint.y = (y + 4) / 8 * 8;
+                }
+            }
+        }
+
+        /**
+         * This function is called when the mouse button is released on the tileset image.
+         * Only left clicks are considered.
+         * @param mouseEvent information about the click
+         */
+        public void mouseReleased(MouseEvent mouseEvent) {
+
+            // only consider left clicks
+            if (isImageLoaded() && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+
+                // keep the new selected tile pattern only if it really exists
+                Rectangle newTilePatternArea = tileset.getNewTilePatternArea();
+                if (tileset.isSelectingNewTilePattern()
+                    && newTilePatternArea != null
+                    && newTilePatternArea.width > 0
+                    && newTilePatternArea.height > 0
+                    && !tileset.isNewTilePatternAreaOverlapping()) {
+
+                    // the area is valid: show a popup menu with an item "Create"
+                    popupMenuCreate.show(TilesetImageView.this,
+                                         mouseEvent.getX(),
+                                         mouseEvent.getY());
+                }
+                else {
+                    // the area doesn't exist or is not valid: we cancel the selection
+                    selectionStartPoint = null;
+                    selectionCurrentPoint = null;
+                    tileset.unselectTilePattern();
+                    newTilePatternArea = null;
+                }
+            }
+        }
     }
 
     /**
      * The mouse motion listener associated to the tileset image.
      */
     private class TilesetImageMouseMotionListener extends MouseMotionAdapter {
-	
-	/**
-	 * This method is called when a mouse button is pressed on the component and then dragged.
-	 * It is called again until the mouse button is released.
-	 */
-	public void mouseDragged(MouseEvent mouseEvent) {
 
-	    if (isImageLoaded() && selectionStartPoint != null) {
+        /**
+         * This method is called when a mouse button is pressed on the component and then dragged.
+         * It is called again until the mouse button is released.
+         */
+        public void mouseDragged(MouseEvent mouseEvent) {
 
-		Image scaledImage = tileset.getDoubleImage();
+            if (isImageLoaded() && selectionStartPoint != null) {
 
-		// compute the selected area
-		Point selectionPreviousPoint = selectionCurrentPoint;
-		selectionCurrentPoint = mouseEvent.getPoint();
+                Image scaledImage = tileset.getDoubleImage();
 
-		selectionCurrentPoint.x = Math.min(Math.max(mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this));
-		selectionCurrentPoint.y = Math.min(Math.max(mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this));
+                // compute the selected area
+                Point selectionPreviousPoint = selectionCurrentPoint;
+                selectionCurrentPoint = mouseEvent.getPoint();
 
-		selectionCurrentPoint.x = (selectionCurrentPoint.x + 8) / 16 * 8;
-		selectionCurrentPoint.y = (selectionCurrentPoint.y + 8) / 16 * 8;
-		
-		if (!selectionCurrentPoint.equals(selectionPreviousPoint)) {
+                selectionCurrentPoint.x = Math.min(Math.max(mouseEvent.getX(), 0), scaledImage.getWidth(TilesetImageView.this));
+                selectionCurrentPoint.y = Math.min(Math.max(mouseEvent.getY(), 0), scaledImage.getHeight(TilesetImageView.this));
 
-		    Rectangle newTilePatternArea = new Rectangle();
+                selectionCurrentPoint.x = (selectionCurrentPoint.x + 8) / 16 * 8;
+                selectionCurrentPoint.y = (selectionCurrentPoint.y + 8) / 16 * 8;
 
-		    // the selected area has changed: recalculate the rectangle
-		    if (selectionStartPoint.x < selectionCurrentPoint.x) {
-			newTilePatternArea.x = selectionStartPoint.x;
-			newTilePatternArea.width = selectionCurrentPoint.x - selectionStartPoint.x;
-		    }
-		    else {
-			newTilePatternArea.x = selectionCurrentPoint.x;
-			newTilePatternArea.width = selectionStartPoint.x - selectionCurrentPoint.x;
-		    }
-		    
-		    if (selectionStartPoint.y < selectionCurrentPoint.y) {
-			newTilePatternArea.y = selectionStartPoint.y;
-			newTilePatternArea.height = selectionCurrentPoint.y - selectionStartPoint.y;
-		    }
-		    else {
-			newTilePatternArea.y = selectionCurrentPoint.y;
-			newTilePatternArea.height = selectionStartPoint.y - selectionCurrentPoint.y;
-		    }
-		    
-		    tileset.startSelectingNewTilePattern();
-		    tileset.setNewTilePatternArea(newTilePatternArea);
-		}
-	    }
-	}
+                if (!selectionCurrentPoint.equals(selectionPreviousPoint)) {
+
+                    Rectangle newTilePatternArea = new Rectangle();
+
+                    // the selected area has changed: recalculate the rectangle
+                    if (selectionStartPoint.x < selectionCurrentPoint.x) {
+                        newTilePatternArea.x = selectionStartPoint.x;
+                        newTilePatternArea.width = selectionCurrentPoint.x - selectionStartPoint.x;
+                    }
+                    else {
+                        newTilePatternArea.x = selectionCurrentPoint.x;
+                        newTilePatternArea.width = selectionStartPoint.x - selectionCurrentPoint.x;
+                    }
+
+                    if (selectionStartPoint.y < selectionCurrentPoint.y) {
+                        newTilePatternArea.y = selectionStartPoint.y;
+                        newTilePatternArea.height = selectionCurrentPoint.y - selectionStartPoint.y;
+                    }
+                    else {
+                        newTilePatternArea.y = selectionCurrentPoint.y;
+                        newTilePatternArea.height = selectionStartPoint.y - selectionCurrentPoint.y;
+                    }
+
+                    tileset.startSelectingNewTilePattern();
+                    tileset.setNewTilePatternArea(newTilePatternArea);
+                }
+            }
+        }
     }
 
     /**
@@ -527,33 +527,33 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      */
     private class ActionCreateTilePattern implements ActionListener {
 
-	/**
-	 * Obstacle property to set when the action is invoked.
-	 */
-	private Obstacle obstacle;
+        /**
+         * Obstacle property to set when the action is invoked.
+         */
+        private Obstacle obstacle;
 
-	/**
-	 * Constructor.
-	 * @param obstacle obstacle property of the tile pattern to create
-	 */
-	public ActionCreateTilePattern(Obstacle obstacle) {
-	    this.obstacle = obstacle;
-	}
+        /**
+         * Constructor.
+         * @param obstacle obstacle property of the tile pattern to create
+         */
+        public ActionCreateTilePattern(Obstacle obstacle) {
+            this.obstacle = obstacle;
+        }
 
-	/**
-	 * Method called when the user wants to create a tile pattern.
-	 */
-	public void actionPerformed(ActionEvent ev) {
-	    try {
-		tileset.addTilePattern(obstacle);
-	    }
-	    catch (TilesetException e) {
-		JOptionPane.showMessageDialog(null,
-					      "Unable to create the tile pattern: " + e.getMessage(),
-					      "Error",
-					      JOptionPane.ERROR_MESSAGE);
-	    }
-	}
+        /**
+         * Method called when the user wants to create a tile pattern.
+         */
+        public void actionPerformed(ActionEvent ev) {
+            try {
+                tileset.addTilePattern(obstacle);
+            }
+            catch (TilesetException e) {
+                JOptionPane.showMessageDialog(null,
+                                              "Unable to create the tile pattern: " + e.getMessage(),
+                                              "Error",
+                                              JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     /**
@@ -562,38 +562,38 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
      */
     private class ActionChangeObstacle implements ActionListener {
 
-	/**
-	 * Obstacle property to set when the action is invoked.
-	 */
-	private Obstacle obstacle;
+        /**
+         * Obstacle property to set when the action is invoked.
+         */
+        private Obstacle obstacle;
 
-	/**
-	 * Constructor.
-	 * @param obstacle obstacle property to set when the action is invoked.
-	 */
-	public ActionChangeObstacle(Obstacle obstacle) {
-	    this.obstacle = obstacle;
-	}
+        /**
+         * Constructor.
+         * @param obstacle obstacle property to set when the action is invoked.
+         */
+        public ActionChangeObstacle(Obstacle obstacle) {
+            this.obstacle = obstacle;
+        }
 
-	/**
-	 * Method called when the user sets the type of obstacle of the selected tile pattern.
-	 */
-	public void actionPerformed(ActionEvent ev) {
-	    TilePattern tilePattern = tileset.getSelectedTilePattern();
-	    Obstacle currentObstacle = tilePattern.getObstacle();
+        /**
+         * Method called when the user sets the type of obstacle of the selected tile pattern.
+         */
+        public void actionPerformed(ActionEvent ev) {
+            TilePattern tilePattern = tileset.getSelectedTilePattern();
+            Obstacle currentObstacle = tilePattern.getObstacle();
 
-	    if (currentObstacle != obstacle) {
+            if (currentObstacle != obstacle) {
 
-		try {
-		    tilePattern.setObstacle(obstacle);
-		}
-		catch (TilesetException e) {
-		    JOptionPane.showMessageDialog(null,
-						  "Unable to set this type of obstacle: " + e.getMessage(),
-						  "Error",
-						  JOptionPane.ERROR_MESSAGE);
-		}
-	    }
-	}
+                try {
+                    tilePattern.setObstacle(obstacle);
+                }
+                catch (TilesetException e) {
+                    JOptionPane.showMessageDialog(null,
+                                                  "Unable to set this type of obstacle: " + e.getMessage(),
+                                                  "Error",
+                                                  JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
     }
 }

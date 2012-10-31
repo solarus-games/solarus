@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -46,9 +46,9 @@ public class Resource extends Observable {
      */
     public Resource(boolean idAutoIncremented) {
 
-	this.idAutoIncremented = idAutoIncremented;
-	this.maxId = -1;
-	this.elements = new LinkedHashMap<String, String>();
+        this.idAutoIncremented = idAutoIncremented;
+        this.maxId = -1;
+        this.elements = new LinkedHashMap<String, String>();
     }
 
     /**
@@ -56,7 +56,7 @@ public class Resource extends Observable {
      * @return an iterator over the ids
      */
     public Iterator<String> iterator() {
-	return elements.keySet().iterator();
+        return elements.keySet().iterator();
     }
 
     /**
@@ -64,15 +64,15 @@ public class Resource extends Observable {
      * @return an array with the id of all elements.
      */
     public String[] getIds() {
-	
-	String[] ids = new String[elements.size()];
-	int i = 0;
 
-	for (String id: elements.keySet()) {
-	    ids[i++] = id;
-	}
+        String[] ids = new String[elements.size()];
+        int i = 0;
 
-	return ids;
+        for (String id: elements.keySet()) {
+            ids[i++] = id;
+        }
+
+        return ids;
     }
 
     /**
@@ -81,7 +81,7 @@ public class Resource extends Observable {
      * @return true if it exists in the resource, false otherwise
      */
     public boolean exists(String id) {
-	return elements.containsKey(id);
+        return elements.containsKey(id);
     }
 
     /**
@@ -92,13 +92,13 @@ public class Resource extends Observable {
      */
     public String getElementName(String id) throws ZSDXException {
 
-	String name = elements.get(id);
+        String name = elements.get(id);
 
-	if (name == null) {
-	    throw new ZSDXException("There is no element with id " + id);
-	}
+        if (name == null) {
+            throw new ZSDXException("There is no element with id " + id);
+        }
 
-	return name;
+        return name;
     }
 
     /**
@@ -110,41 +110,41 @@ public class Resource extends Observable {
      */
     public void setElementName(String id, String name) throws ZSDXException {
 
-	if (id.length() == 0) {
-	    throw new ZSDXException("Empty id for element '" + name);
-	}
+        if (id.length() == 0) {
+            throw new ZSDXException("Empty id for element '" + name);
+        }
 
-	if (idAutoIncremented) {
-	    
-	    try {
-		int intId = Integer.parseInt(id);
-		
-		if (intId > maxId) {
-		    maxId = intId;
-		}
-	    }
-	    catch (NumberFormatException ex) {
-		throw new ZSDXException("Invalid id '" + id + "' for element '" + name +
-					"': the value should be an integer number");
-	    }
-	}
+        if (idAutoIncremented) {
 
-	String oldName = elements.get(id);
+            try {
+                int intId = Integer.parseInt(id);
 
-	if (oldName == null || !name.equals(oldName)) {
+                if (intId > maxId) {
+                    maxId = intId;
+                }
+            }
+            catch (NumberFormatException ex) {
+                throw new ZSDXException("Invalid id '" + id + "' for element '" + name +
+                                        "': the value should be an integer number");
+            }
+        }
 
-	    // the element doesn't exist yet, or its name has just been changed
-	    elements.put(id, name);
-	    setChanged();
-	    notifyObservers();
-	}
+        String oldName = elements.get(id);
+
+        if (oldName == null || !name.equals(oldName)) {
+
+            // the element doesn't exist yet, or its name has just been changed
+            elements.put(id, name);
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
      * Removes all elements from the resource.
      */
     public void clear() {
-	elements.clear();
+        elements.clear();
     }
 
     /**
@@ -157,11 +157,11 @@ public class Resource extends Observable {
         if (!idAutoIncremented) {
             throw new IllegalArgumentException("computeNewId() can only be called on auto-incremented ids");
         }
-	maxId++;
+        maxId++;
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
 
-	return Integer.toString(maxId);
+        return Integer.toString(maxId);
     }
 }

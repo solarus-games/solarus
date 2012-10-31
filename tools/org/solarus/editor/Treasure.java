@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 /**
  * Represents a treasure that the player may receive.
  * A treasure may come from a chest, a shop item, an enemy, a destructible item,
- * a pickable item or a script. 
+ * a pickable item or a script.
  * It is composed of the name identifying the item to give, the variant of this item
  * (as an item can have several variants)
  * and an optional savegame variable.
@@ -14,12 +14,12 @@ import java.util.StringTokenizer;
  */
 public class Treasure {
 
-    private String itemName;		/**< id of the item to give, according to items.dat
-					 * (possibly "_none" or "_random") */
-    private int variant;		/**< variant of this item */
-    private int savegameVariable;	/**< index of the boolean variable that stores the
-  					 * treasure's state (found or not found) in the savegame
-  					 * (-1 if it is not saved) */
+    private String itemName;                /**< id of the item to give, according to items.dat
+                                         * (possibly "_none" or "_random") */
+    private int variant;                /**< variant of this item */
+    private int savegameVariable;        /**< index of the boolean variable that stores the
+                                           * treasure's state (found or not found) in the savegame
+                                           * (-1 if it is not saved) */
 
     /**
      * Creates a treasure.
@@ -30,9 +30,9 @@ public class Treasure {
      */
     public Treasure(String itemName, int variant, int savegameVariable) {
 
-	this.itemName = itemName;
-	this.variant = variant;
-	this.savegameVariable = savegameVariable;
+        this.itemName = itemName;
+        this.variant = variant;
+        this.savegameVariable = savegameVariable;
     }
 
     /**
@@ -41,20 +41,20 @@ public class Treasure {
      * variable in that order (separated by whitespaces or tabulations)
      */
     public Treasure(String description) {
-	
-	StringTokenizer tokenizer = new StringTokenizer(description);
-	itemName = tokenizer.nextToken();
-	variant = Integer.parseInt(tokenizer.nextToken());
-	savegameVariable = Integer.parseInt(tokenizer.nextToken());
+
+        StringTokenizer tokenizer = new StringTokenizer(description);
+        itemName = tokenizer.nextToken();
+        variant = Integer.parseInt(tokenizer.nextToken());
+        savegameVariable = Integer.parseInt(tokenizer.nextToken());
     }
 
     /**
      * Returns a string representation of this treasure.
      * The string has the same format as the parameter of the constructor.
-     * @return a string describing this treasure 
+     * @return a string describing this treasure
      */
     public String toString() {
-	return itemName + "\t" + variant + "\t" + savegameVariable;
+        return itemName + "\t" + variant + "\t" + savegameVariable;
     }
 
     /**

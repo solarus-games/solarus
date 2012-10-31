@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,37 +30,37 @@ public class NPC extends MapEntity {
      * Subtypes of NPC.
      */
     public enum Subtype implements EntitySubtype {
-	GENERALIZED_NPC,
-	USUAL_NPC;
+        GENERALIZED_NPC,
+        USUAL_NPC;
 
-	public static final String[] humanNames = {
-	    "Generalized NPC (some solid object)",
-	    "Usual NPC (a person)"
-	};
+        public static final String[] humanNames = {
+            "Generalized NPC (some solid object)",
+            "Usual NPC (a person)"
+        };
 
-	public static Subtype get(int id) {
-	    return values()[id];
-	}
+        public static Subtype get(int id) {
+            return values()[id];
+        }
 
-	public int getId() {
-	    return ordinal();
-	}
+        public int getId() {
+            return ordinal();
+        }
     }
 
     /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("npc.png", 0, 0, 32, 32),
-	new EntityImageDescription("npc.png", 32, 0, 16, 16)
+        new EntityImageDescription("npc.png", 0, 0, 32, 32),
+        new EntityImageDescription("npc.png", 32, 0, 16, 16)
     };
 
     /**
      * Description of the image currently representing this kind of entity.
      */
     public static final EntityImageDescription[] currentImageDescriptions = {
-	generalImageDescriptions[0],
-	new EntityImageDescription("npc.png", 32, 0, 16, 24)
+        generalImageDescriptions[0],
+        new EntityImageDescription("npc.png", 32, 0, 16, 24)
     };
 
     /**
@@ -72,16 +72,16 @@ public class NPC extends MapEntity {
      * Origin point of each type of NPC.
      */
     private static final Point[] origins = {
-	new Point(8, 13),
-	new Point(8, 21)
+        new Point(8, 13),
+        new Point(8, 21)
     };
 
     /**
      * Size of each type of NPC.
      */
     private static final Dimension[] sizes = {
-	new Dimension(16, 16),
-	new Dimension(16, 24)
+        new Dimension(16, 16),
+        new Dimension(16, 24)
     };
 
     /**
@@ -89,8 +89,8 @@ public class NPC extends MapEntity {
      * @param map the map
      */
     public NPC(Map map) throws MapException {
-	super(map, 16, 16);
-	setDirection(3);
+        super(map, 16, 16);
+        setDirection(3);
     }
 
     /**
@@ -98,7 +98,7 @@ public class NPC extends MapEntity {
      * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-	return origins[getSubtypeId()];
+        return origins[getSubtypeId()];
     }
 
     /**
@@ -106,7 +106,7 @@ public class NPC extends MapEntity {
      * @return 4
      */
     public int getNbDirections() {
-	return 4;
+        return 4;
     }
 
     /**
@@ -115,7 +115,7 @@ public class NPC extends MapEntity {
      * @return true if this entity can have the special direction value -1
      */
     public boolean canHaveNoDirection() {
-	return true;
+        return true;
     }
 
     /**
@@ -125,7 +125,7 @@ public class NPC extends MapEntity {
      * @return the text that will be displayed in the direction chooser for the 'no direction' option if any
      */
     public String getNoDirectionText() {
-	return "Any";
+        return "Any";
     }
 
     /**
@@ -133,7 +133,7 @@ public class NPC extends MapEntity {
      * @return true
      */
     public boolean hasName() {
-	return true;
+        return true;
     }
 
     /**
@@ -141,7 +141,7 @@ public class NPC extends MapEntity {
      * @return Obstacle.OBSTACLE
      */
     public Obstacle getObstacle() {
-	return Obstacle.OBSTACLE;
+        return Obstacle.OBSTACLE;
     }
 
     /**
@@ -149,13 +149,13 @@ public class NPC extends MapEntity {
      * @param subtype the subtype of entity
      */
     public void setSubtype(EntitySubtype subtype) throws MapException {
-	super.setSubtype(subtype);
+        super.setSubtype(subtype);
 
-	Dimension size = sizes[getSubtypeId()];
-	setSizeImpl(size.width, size.height);
+        Dimension size = sizes[getSubtypeId()];
+        setSizeImpl(size.width, size.height);
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -164,9 +164,9 @@ public class NPC extends MapEntity {
      * @return true if it is valid
      */
     private boolean isSpriteNameValid(String sprite_name) {
-	return sprite_name != null
-	  && sprite_name.length() != 0
-	  && (sprite_name.charAt(0) != '_' || sprite_name.equals("_none"));
+        return sprite_name != null
+          && sprite_name.length() != 0
+          && (sprite_name.charAt(0) != '_' || sprite_name.equals("_none"));
     }
 
     /**
@@ -175,24 +175,24 @@ public class NPC extends MapEntity {
      * @return true if it is valid
      */
     private boolean isBehaviorValid(String behavior) {
-	return behavior.equals("map")
-	    || behavior.substring(0, 5).equals("item#")
-	    || behavior.substring(0, 7).equals("dialog#");
+        return behavior.equals("map")
+            || behavior.substring(0, 5).equals("item#")
+            || behavior.substring(0, 7).equals("dialog#");
     }
 
     /**
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-	currentImageDescription = currentImageDescriptions[getSubtypeId()];
+        currentImageDescription = currentImageDescriptions[getSubtypeId()];
     }
 
     /**
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("sprite", "");
-	setProperty("behavior", "map");
+        setProperty("sprite", "");
+        setProperty("behavior", "map");
     }
 
     /**
@@ -221,17 +221,17 @@ public class NPC extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-	if (!isSpriteNameValid(getProperty("sprite"))) {
-	    throw new MapException("Invalid sprite name: '" + getProperty("sprite") + "'");
-	}
+        if (!isSpriteNameValid(getProperty("sprite"))) {
+            throw new MapException("Invalid sprite name: '" + getProperty("sprite") + "'");
+        }
 
-	if (!isBehaviorValid(getProperty("behavior"))) {
-	    throw new MapException("Invalid behavior string: '" + getProperty("behavior") + "'");
-	}
+        if (!isBehaviorValid(getProperty("behavior"))) {
+            throw new MapException("Invalid behavior string: '" + getProperty("behavior") + "'");
+        }
 
-	if (getSubtype() == Subtype.USUAL_NPC && getDirection() == -1) {
-	    throw new MapException("A usual NPC must have an initial direction");
-	}
+        if (getSubtype() == Subtype.USUAL_NPC && getDirection() == -1) {
+            throw new MapException("A usual NPC must have an initial direction");
+        }
     }
 
     /**

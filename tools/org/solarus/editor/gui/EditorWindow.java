@@ -114,7 +114,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
                 }
             }
         });
-         
+
        //  for(int i = 0; i < 10; i++) toolBar.add(new JLabel());
         JXTransformer t = new JXTransformer(treeButton);
         t.rotate(- Math.PI / 2);

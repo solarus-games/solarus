@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -61,10 +61,10 @@ public class Project {
      * @param path root path of the project
      */
     private Project(String path) {
-	this.projectPath = path;
-	resourceDatabase = new ResourceDatabase(this);
-	editorImagesLoaded = new TreeMap<String, BufferedImage>();
-	projectImagesLoaded = new TreeMap<String, BufferedImage>();
+        this.projectPath = path;
+        resourceDatabase = new ResourceDatabase(this);
+        editorImagesLoaded = new TreeMap<String, BufferedImage>();
+        projectImagesLoaded = new TreeMap<String, BufferedImage>();
     }
 
     /**
@@ -75,24 +75,24 @@ public class Project {
      */
     public static Project createNew(String path) {
 
-	Project project = new Project(path);
+        Project project = new Project(path);
 
-	try {
-	    project.resourceDatabase.load();
-	    
-	    // if no exception was raised, a project exists (and has been successfully loaded)
-	    project = null;
-	}
-	catch (IOException ex) {
-	    // normal case: there is no project file yet
-	    setCurrentProject(project);
-	}
-	catch (ZSDXException ex) {
-	    // a project exists (and the project file is not valid)
-	    project = null;
-	}
+        try {
+            project.resourceDatabase.load();
 
-	return project;
+            // if no exception was raised, a project exists (and has been successfully loaded)
+            project = null;
+        }
+        catch (IOException ex) {
+            // normal case: there is no project file yet
+            setCurrentProject(project);
+        }
+        catch (ZSDXException ex) {
+            // a project exists (and the project file is not valid)
+            project = null;
+        }
+
+        return project;
     }
 
     /**
@@ -104,32 +104,32 @@ public class Project {
      */
     public static Project createExisting(String path) throws ZSDXException {
 
-	Project project = new Project(path);
+        Project project = new Project(path);
 
-	try {
-	    project.resourceDatabase.load();
-	    
-	    // normal case: a project exists and has been successfully loaded
-	    setCurrentProject(project);
-	}
-	catch (IOException ex) {
-	    // the project doesn't exist
-	    project = null;
-	}
+        try {
+            project.resourceDatabase.load();
 
-	return project;
+            // normal case: a project exists and has been successfully loaded
+            setCurrentProject(project);
+        }
+        catch (IOException ex) {
+            // the project doesn't exist
+            project = null;
+        }
+
+        return project;
     }
-    
+
     /**
      * Sets the specified project as the current ZSDX project.
      * The project observers are notified.
      * @param project the current project
      */
     private static void setCurrentProject(Project project) {
-	currentProject = project;
-	for (ProjectObserver o: observers) {
-	    o.currentProjectChanged();
-	}
+        currentProject = project;
+        for (ProjectObserver o: observers) {
+            o.currentProjectChanged();
+        }
     }
 
     /**
@@ -138,15 +138,15 @@ public class Project {
      * @return the file containing the database of the game resources
      */
     public File getResourceDatabaseFile() {
-	return new File(projectPath + "/data/" + ResourceDatabase.fileName);
+        return new File(projectPath + "/data/" + ResourceDatabase.fileName);
     }
-    
+
     /**
      * Returns whether a project is currently loaded.
      * @return true if a project is loaded
      */
     public static boolean isLoaded() {
-	return currentProject != null;
+        return currentProject != null;
     }
 
     /**
@@ -154,7 +154,7 @@ public class Project {
      * @return the game resource database
      */
     public static ResourceDatabase getResourceDatabase() {
-	return currentProject.resourceDatabase;
+        return currentProject.resourceDatabase;
     }
 
     /**
@@ -163,7 +163,7 @@ public class Project {
      * @return the resource of this type in the current project's resource database
      */
     public static Resource getResource(ResourceType resourceType) {
-	return getResourceDatabase().getResource(resourceType);
+        return getResourceDatabase().getResource(resourceType);
     }
 
     /**
@@ -171,7 +171,7 @@ public class Project {
      * @return the root path
      */
     public static String getRootPath() {
-	return currentProject.projectPath;
+        return currentProject.projectPath;
     }
 
     /**
@@ -179,7 +179,7 @@ public class Project {
      * @return the path of all data files
      */
     public static String getDataPath() {
-	return getRootPath() + "/data";
+        return getRootPath() + "/data";
     }
 
     /**
@@ -191,26 +191,26 @@ public class Project {
      */
     public static BufferedImage getEditorImage(String imageFileName) {
 
-	// see if the image has been already loaded
+        // see if the image has been already loaded
         BufferedImage image = currentProject.editorImagesLoaded.get(imageFileName);
 
-	if (image == null) {
-	    try {
-		String path = "/org/solarus/editor/images/" + imageFileName;
+        if (image == null) {
+            try {
+                String path = "/org/solarus/editor/images/" + imageFileName;
                 URL url = Project.class.getResource(path);
                 if (url == null) {
                     throw new IOException("File not found: " + path);
                 }
-		image = ImageIO.read(url);
-		currentProject.editorImagesLoaded.put(imageFileName, image);
-	    }
-	    catch (IOException ex) {
-		System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
-		ex.printStackTrace();
-		System.exit(1);
-	    }
-	}
-	return image;
+                image = ImageIO.read(url);
+                currentProject.editorImagesLoaded.put(imageFileName, image);
+            }
+            catch (IOException ex) {
+                System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
+                ex.printStackTrace();
+                System.exit(1);
+            }
+        }
+        return image;
     }
 
     /**
@@ -222,22 +222,22 @@ public class Project {
      */
     public static ImageIcon getEditorImageIcon(String imageFileName) {
 
-	ImageIcon icon = null;
-	try {
-	    String path = "/org/solarus/editor/images/" + imageFileName;
-	    URL url = Project.class.getResource(path);
-	    if (url == null) {
-		throw new IOException("File not found: " + path);
-	    }
-	    icon = new ImageIcon(url);
-	}
-	catch (IOException ex) {
-	    System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
+        ImageIcon icon = null;
+        try {
+            String path = "/org/solarus/editor/images/" + imageFileName;
+            URL url = Project.class.getResource(path);
+            if (url == null) {
+                throw new IOException("File not found: " + path);
+            }
+            icon = new ImageIcon(url);
+        }
+        catch (IOException ex) {
+            System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
+            ex.printStackTrace();
+            System.exit(1);
+        }
 
-	return icon;
+        return icon;
     }
 
     /**
@@ -249,24 +249,24 @@ public class Project {
      */
     public static BufferedImage getProjectImage(String imageFileName) {
 
-	// see if the image has been already loaded
+        // see if the image has been already loaded
         BufferedImage image = currentProject.projectImagesLoaded.get(imageFileName);
 
-	if (image == null) {
-	  String path = getDataPath() + "/" + imageFileName;
+        if (image == null) {
+          String path = getDataPath() + "/" + imageFileName;
 
-	  try {
-	    image = ImageIO.read(new File(path));
-	    currentProject.projectImagesLoaded.put(imageFileName, image);
-	  }
-	  catch (IOException ex) {
-	    System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
-	    ex.printStackTrace();
-	    System.exit(1);
-	  }
-	}
+          try {
+            image = ImageIO.read(new File(path));
+            currentProject.projectImagesLoaded.put(imageFileName, image);
+          }
+          catch (IOException ex) {
+            System.err.println("Cannot load image '" + imageFileName + "': " + ex.getMessage());
+            ex.printStackTrace();
+            System.exit(1);
+          }
+        }
 
-	return image;
+        return image;
     }
 
     /**
@@ -274,7 +274,7 @@ public class Project {
      * @return the path of the tileset files
      */
     public static String getTilesetPath() {
-	return getDataPath() + "/tilesets";
+        return getDataPath() + "/tilesets";
     }
 
     /**
@@ -284,7 +284,7 @@ public class Project {
      */
     public static File getTilesetFile(String tilesetId) {
 
-	return new File(getTilesetPath() + "/" + tilesetId + ".lua");
+        return new File(getTilesetPath() + "/" + tilesetId + ".lua");
     }
 
     /**
@@ -293,8 +293,8 @@ public class Project {
      * @return the corresponding tileset file
      */
     public static File getTilesetImageFile(String tilesetId) {
-	
-	return new File(getTilesetPath() + "/" + tilesetId + ".tiles.png");
+
+        return new File(getTilesetPath() + "/" + tilesetId + ".tiles.png");
     }
 
     /**
@@ -303,8 +303,8 @@ public class Project {
      * @return the corresponding tileset entities file
      */
     public static File getTilesetEntitiesImageFile(String tilesetId) {
-	
-	return new File(getTilesetPath() + "/" + tilesetId + ".entities.png");
+
+        return new File(getTilesetPath() + "/" + tilesetId + ".entities.png");
     }
 
     /**
@@ -312,7 +312,7 @@ public class Project {
      * @return the path of the map files
      */
     public static String getMapPath() {
-	return getDataPath() + "/maps";
+        return getDataPath() + "/maps";
     }
 
     /**
@@ -322,7 +322,7 @@ public class Project {
      */
     public static File getMapScriptFile(String mapId) {
 
-	return new File(getMapPath() + "/" + mapId + ".lua");
+        return new File(getMapPath() + "/" + mapId + ".lua");
     }
 
     /**
@@ -332,7 +332,7 @@ public class Project {
      */
     public static File getMapFile(String mapId) {
 
-	return new File(getMapPath() + "/" + mapId + ".dat");
+        return new File(getMapPath() + "/" + mapId + ".dat");
     }
 
     /**
@@ -358,7 +358,7 @@ public class Project {
      * @return the path of the music files
      */
     public static String getMusicPath() {
-	return getDataPath() + "/music";
+        return getDataPath() + "/music";
     }
 
     /**
@@ -375,34 +375,34 @@ public class Project {
      * @return the dialogs file corresponding to this id
      */
     public static File getDialogsFile(String dialogsId) {
-	return new File(getDialogsPath() + File.separator + dialogsId);
+        return new File(getDialogsPath() + File.separator + dialogsId);
     }
-    
+
     /**
      * Adds an object to notify when a project is created or loaded.
      * @param observer the object to notify
      */
     public static void addProjectObserver(ProjectObserver observer) {
-	observers.add(observer);
+        observers.add(observer);
     }
-    
+
     /**
      * Removes an object to notify when a project is created or loaded.
      * @param observer the object to stop notifying
      */
     public static void removeProjectObserver(ProjectObserver observer) {
-	observers.remove(observer);
+        observers.remove(observer);
     }
 
     public static String getEnemyScriptFile(String name) {
-	return getDataPath() + "/enemies/" + name + ".lua";
+        return getDataPath() + "/enemies/" + name + ".lua";
     }
 
     public static String getItemScriptFile(String name) {
-	return getDataPath() + "/items/" + name + ".lua";
+        return getDataPath() + "/items/" + name + ".lua";
     }
 
     public static String getScreenScriptFile(String name) {
-	return getDataPath() + "/screens/" + name + ".lua";
+        return getDataPath() + "/screens/" + name + ".lua";
     }
 }

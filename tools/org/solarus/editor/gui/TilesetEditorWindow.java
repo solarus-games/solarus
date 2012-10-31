@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -56,7 +56,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         GuiTools.setLookAndFeel();
 
         // create the menu bar
-//	createMenuBar();
+//        createMenuBar();
 
         // tile patterns list and tileset image
 
@@ -79,17 +79,17 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         add(tilesetPanel);
         //add(rootPanel);
 
-//	// add a window listener to confirm when the user closes the window
-//	setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-//	addWindowListener(new WindowAdapter() {
-//		public void windowClosing(WindowEvent e) {
-//		    if (checkCurrentFileSaved()) {
-//			dispose();
-//		    }
-//		}
-//	    });
+//        // add a window listener to confirm when the user closes the window
+//        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+//        addWindowListener(new WindowAdapter() {
+//                public void windowClosing(WindowEvent e) {
+//                    if (checkCurrentFileSaved()) {
+//                        dispose();
+//                    }
+//                }
+//            });
 //
-//	loadProject();
+//        loadProject();
     }
 
     public TilesetEditorWindow(String quest, EditorWindow editorWindow, Tileset t) {
@@ -124,8 +124,8 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
 
         tileset.addObserver(parentEditor);
         // enable or disable the menu items
-//	menuItemClose.setEnabled(tileset != null);
-//	menuItemSave.setEnabled(tileset != null);
+//        menuItemClose.setEnabled(tileset != null);
+//        menuItemSave.setEnabled(tileset != null);
 
         // notify the views
         tilePatternsView.setTileset(tileset);

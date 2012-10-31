@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,7 +39,7 @@ public class EditWallComponent extends EditEntityComponent {
      * @param entity the entity to edit
      */
     public EditWallComponent(Map map, MapEntity entity) {
-	super(map, entity);
+        super(map, entity);
     }
 
     /**
@@ -47,34 +47,34 @@ public class EditWallComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// hero
-	stopsHeroField = new JCheckBox("Obstacle for the hero");
-	addField("Hero", stopsHeroField);
+        // hero
+        stopsHeroField = new JCheckBox("Obstacle for the hero");
+        addField("Hero", stopsHeroField);
 
-	// enemies
-	stopsEnemiesField = new JCheckBox("Obstacle for enemies");
-	addField("Enemies", stopsEnemiesField);
+        // enemies
+        stopsEnemiesField = new JCheckBox("Obstacle for enemies");
+        addField("Enemies", stopsEnemiesField);
 
-	// non-playing characters
-	stopsNPCsField = new JCheckBox("Obstacle for non-playing characters");
-	addField("NPCs", stopsNPCsField);
+        // non-playing characters
+        stopsNPCsField = new JCheckBox("Obstacle for non-playing characters");
+        addField("NPCs", stopsNPCsField);
 
-	// blocks
-	stopsBlocksField = new JCheckBox("Obstacle for blocks and statues");
-	addField("Blocks", stopsBlocksField);
+        // blocks
+        stopsBlocksField = new JCheckBox("Obstacle for blocks and statues");
+        addField("Blocks", stopsBlocksField);
     }
 
     /**
      * Updates the information displayed in the fields.
      */
     public void update() {
-	super.update(); // update the common fields
+        super.update(); // update the common fields
 
-	Wall wall = (Wall) entity;
-	stopsHeroField.setSelected(wall.getBooleanProperty("stopsHero"));
-	stopsEnemiesField.setSelected(wall.getBooleanProperty("stopsEnemies"));
-	stopsNPCsField.setSelected(wall.getBooleanProperty("stopsNPCs"));
-	stopsBlocksField.setSelected(wall.getBooleanProperty("stopsBlocks"));
+        Wall wall = (Wall) entity;
+        stopsHeroField.setSelected(wall.getBooleanProperty("stopsHero"));
+        stopsEnemiesField.setSelected(wall.getBooleanProperty("stopsEnemies"));
+        stopsNPCsField.setSelected(wall.getBooleanProperty("stopsNPCs"));
+        stopsBlocksField.setSelected(wall.getBooleanProperty("stopsBlocks"));
     }
 
     /**
@@ -83,8 +83,8 @@ public class EditWallComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	return new ActionEditEntitySpecific(entity, 
-		stopsHeroField.isSelected() ? 1 : 0, stopsEnemiesField.isSelected() ? 1 : 0,
-		stopsNPCsField.isSelected() ? 1 : 0, stopsBlocksField.isSelected() ? 1 : 0);
+        return new ActionEditEntitySpecific(entity,
+                stopsHeroField.isSelected() ? 1 : 0, stopsEnemiesField.isSelected() ? 1 : 0,
+                stopsNPCsField.isSelected() ? 1 : 0, stopsBlocksField.isSelected() ? 1 : 0);
     }
 }

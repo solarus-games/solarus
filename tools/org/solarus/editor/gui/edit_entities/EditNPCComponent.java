@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -43,7 +43,7 @@ public class EditNPCComponent extends EditEntityComponent {
      * @param entity the entity to edit
      */
     public EditNPCComponent(Map map, MapEntity entity) {
-	super(map, entity);
+        super(map, entity);
     }
 
     /**
@@ -51,84 +51,84 @@ public class EditNPCComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// has a sprite?
-	withSpriteField = new JCheckBox("Display a sprite");
-	addField("Visibility", withSpriteField);
+        // has a sprite?
+        withSpriteField = new JCheckBox("Display a sprite");
+        addField("Visibility", withSpriteField);
 
-	// sprite name
-	spriteField = new ResourceChooser(ResourceType.SPRITE, true);
-	addField("Sprite name", spriteField);
+        // sprite name
+        spriteField = new ResourceChooser(ResourceType.SPRITE, true);
+        addField("Sprite name", spriteField);
 
-	// behavior
-	behaviorField = new RadioField("Show a message", "Call the map script", "Call an item script");
-	addField("Action", behaviorField);
+        // behavior
+        behaviorField = new RadioField("Show a message", "Call the map script", "Call an item script");
+        addField("Action", behaviorField);
 
-	// message
-	messageField = new JTextField(15);
-	addField("Message to show", messageField);
+        // message
+        messageField = new JTextField(15);
+        addField("Message to show", messageField);
 
-	// item
-	itemField = new ItemChooser(false, false);
-	addField("Item script to call", itemField);
+        // item
+        itemField = new ItemChooser(false, false);
+        addField("Item script to call", itemField);
 
-	// listeners
-	withSpriteField.addChangeListener(new ChangeListener() {
-	    public void stateChanged(ChangeEvent ev) {
-		spriteField.setEnabled(withSpriteField.isSelected());
-	    }
-	});
+        // listeners
+        withSpriteField.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent ev) {
+                spriteField.setEnabled(withSpriteField.isSelected());
+            }
+        });
 
-	behaviorField.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-		messageField.setEnabled(behaviorField.getSelectedIndex() == 0);
-		itemField.setEnabled(behaviorField.getSelectedIndex() == 2);
-	    }
-	});
+        behaviorField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                messageField.setEnabled(behaviorField.getSelectedIndex() == 0);
+                itemField.setEnabled(behaviorField.getSelectedIndex() == 2);
+            }
+        });
 
-	subtypeField.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
+        subtypeField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
 
-		Subtype subtype = (Subtype) subtypeField.getValue();
-		withSpriteField.setEnabled(subtype != Subtype.USUAL_NPC);
-	    }
-	});
+                Subtype subtype = (Subtype) subtypeField.getValue();
+                withSpriteField.setEnabled(subtype != Subtype.USUAL_NPC);
+            }
+        });
     }
 
     /**
      * Updates the information displayed in the fields.
      */
     public void update() {
-	super.update(); // update the common fields
+        super.update(); // update the common fields
 
-	NPC npc = (NPC) entity;
-	String sprite = npc.getProperty("sprite");
-	String behavior = npc.getProperty("behavior");
-	EntitySubtype subtype = npc.getSubtype();
+        NPC npc = (NPC) entity;
+        String sprite = npc.getProperty("sprite");
+        String behavior = npc.getProperty("behavior");
+        EntitySubtype subtype = npc.getSubtype();
 
-	boolean hasSprite = (!sprite.equals("_none"));
+        boolean hasSprite = (!sprite.equals("_none"));
 
-	withSpriteField.setSelected(hasSprite);
-	spriteField.setSelectedId(hasSprite ? sprite : "");
+        withSpriteField.setSelected(hasSprite);
+        spriteField.setSelectedId(hasSprite ? sprite : "");
 
-	spriteField.setEnabled(hasSprite);
+        spriteField.setEnabled(hasSprite);
 
-	if (behavior.equals("map")) {
-	  behaviorField.setSelectedIndex(1);
-	  messageField.setEnabled(false);
-	  itemField.setEnabled(false);
-	}
-	else if (behavior.substring(0, 5).equals("item#")) {
-	  behaviorField.setSelectedIndex(2);
-	  messageField.setEnabled(false);
-	  itemField.setEnabled(true);
-	  itemField.setSelectedId(behavior.substring(5));
-	}
-	else if (behavior.substring(0, 7).equals("dialog#")) {
-	  behaviorField.setSelectedIndex(0);
-	  messageField.setEnabled(true);
-	  itemField.setEnabled(false);
-	  messageField.setText(behavior.substring(7));
-	}
+        if (behavior.equals("map")) {
+          behaviorField.setSelectedIndex(1);
+          messageField.setEnabled(false);
+          itemField.setEnabled(false);
+        }
+        else if (behavior.substring(0, 5).equals("item#")) {
+          behaviorField.setSelectedIndex(2);
+          messageField.setEnabled(false);
+          itemField.setEnabled(true);
+          itemField.setSelectedId(behavior.substring(5));
+        }
+        else if (behavior.substring(0, 7).equals("dialog#")) {
+          behaviorField.setSelectedIndex(0);
+          messageField.setEnabled(true);
+          itemField.setEnabled(false);
+          messageField.setText(behavior.substring(7));
+        }
     }
 
     /**
@@ -137,20 +137,20 @@ public class EditNPCComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	String sprite = spriteField.getSelectedId();
-	if (!withSpriteField.isSelected()) {
-	    sprite = "_none";
-	}
+        String sprite = spriteField.getSelectedId();
+        if (!withSpriteField.isSelected()) {
+            sprite = "_none";
+        }
 
-	String behavior = "map";
-	if (messageField.isEnabled()) {
-	  behavior = "dialog#" + messageField.getText();
-	}
-	else if (itemField.isEnabled()) {
-	  behavior = "item#" + itemField.getSelectedId();
-	}
+        String behavior = "map";
+        if (messageField.isEnabled()) {
+          behavior = "dialog#" + messageField.getText();
+        }
+        else if (itemField.isEnabled()) {
+          behavior = "item#" + itemField.getSelectedId();
+        }
 
-	return new ActionEditEntitySpecific(entity, sprite, behavior);
+        return new ActionEditEntitySpecific(entity, sprite, behavior);
     }
 }
 

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -130,7 +130,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * Sets the observed map.
-     * @param map the current map, or null if no map is loaded 
+     * @param map the current map, or null if no map is loaded
      */
     public void setMap(Map map) {
 
@@ -451,7 +451,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
     /**
      * Shows the context menu at the coordinates specified by a mouse event.
-     * @param mouseEvent a mouse event 
+     * @param mouseEvent a mouse event
      */
     private void showPopupMenu(MouseEvent mouseEvent) {
         MapViewPopupMenu popupMenu = new MapViewPopupMenu(this);
@@ -565,7 +565,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
      * The current entity selected in the tileset is placed on the map at the mouse location.
      * If the entity is resizable, the resulting state is State.RESIZING_ENTITY.
      * Otherwise it is State.NORMAL.
-     * @returns the entity added (or null if there was a problem) 
+     * @returns the entity added (or null if there was a problem)
      */
     private MapEntity endAddingEntity() {
         MapEntity entityAdded = null;
@@ -573,13 +573,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
         try {
 
-	    // first choose a layer if necessary
-	    if (!entityBeingAdded.hasInitialLayer()) {
-	        Layer layer = map.getLayerInRectangle(entityBeingAdded.getPositionInMap());
+            // first choose a layer if necessary
+            if (!entityBeingAdded.hasInitialLayer()) {
+                Layer layer = map.getLayerInRectangle(entityBeingAdded.getPositionInMap());
                 map.setEntityLayer(entityBeingAdded, layer);
-	    }
+            }
 
-	    // make sure the entity is valid
+            // make sure the entity is valid
             boolean valid = entityBeingAdded.isValid();
 
             if (!valid) {

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -60,11 +60,11 @@ public enum EntityType {
      * if there is no notion of subtype)
      */
     private EntityType(int index, String name, Class<? extends MapEntity> entityClass,
-	    Class<? extends EntitySubtype> subtypeEnum) {
-	this.index = index;
-	this.name = name;
-	this.entityClass = entityClass;
-	this.subtypeEnum = subtypeEnum;
+            Class<? extends EntitySubtype> subtypeEnum) {
+        this.index = index;
+        this.name = name;
+        this.entityClass = entityClass;
+        this.subtypeEnum = subtypeEnum;
     }
 
     /**
@@ -75,13 +75,13 @@ public enum EntityType {
      */
     public static EntityType get(int index) throws NoSuchElementException {
 
-	for (EntityType t: values()) {
-	    if (t.getIndex() == index) {
-		return t;
-	    }
-	}
+        for (EntityType t: values()) {
+            if (t.getIndex() == index) {
+                return t;
+            }
+        }
 
-	throw new NoSuchElementException("Unknown entity type: " + index);
+        throw new NoSuchElementException("Unknown entity type: " + index);
     }
 
     /**
@@ -92,13 +92,13 @@ public enum EntityType {
      */
     public static EntityType get(Class<? extends MapEntity> entityClass) throws NoSuchElementException {
 
-	for (EntityType t: values()) {
-	    if (t.getEntityClass() == entityClass) {
-		return t;
-	    }
-	}
+        for (EntityType t: values()) {
+            if (t.getEntityClass() == entityClass) {
+                return t;
+            }
+        }
 
-	throw new NoSuchElementException("Unknown entity class: " + entityClass.getName());
+        throw new NoSuchElementException("Unknown entity class: " + entityClass.getName());
     }
 
     /**
@@ -106,7 +106,7 @@ public enum EntityType {
      * @return the index
      */
     public int getIndex() {
-	return index;
+        return index;
     }
 
     /**
@@ -114,7 +114,7 @@ public enum EntityType {
      * @return the name of this kind of entity
      */
     public String getName() {
-	return name;
+        return name;
     }
 
     /**
@@ -122,7 +122,7 @@ public enum EntityType {
      * @return the entity class
      */
     public Class<? extends MapEntity> getEntityClass() {
-	return entityClass;
+        return entityClass;
     }
 
     /**
@@ -130,7 +130,7 @@ public enum EntityType {
      * @return the enumeration describing the subtype of this kind of entity
      */
     public Class<? extends EntitySubtype> getSubtypeEnum() {
-	return subtypeEnum;
+        return subtypeEnum;
     }
 
     /**
@@ -138,37 +138,37 @@ public enum EntityType {
      * @return true if this entity type has a subtype
      */
     public boolean hasSubtype() {
-	return getSubtypeEnum() != null;
+        return getSubtypeEnum() != null;
     }
 
     /**
-     * Returns a subtype value corresponding to the specified id.  
+     * Returns a subtype value corresponding to the specified id.
      * @param id id of the subtype to get
      * @return the subtype with this id for the current entity type
      */
     public EntitySubtype getSubtype(int id) {
 
-	EntitySubtype subtype = null;
-	try {
-	    // call the get(int id) public static method from the enumeration 
-	    subtype = (EntitySubtype) subtypeEnum.getMethod("get", int.class).invoke(null, id);
-	}
-	catch (NoSuchMethodException ex) {
-	    System.err.println("The method 'get' is missing in enumeration " + subtypeEnum.getName());
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
-	catch (IllegalAccessException ex) {
-	    System.err.println("Cannot access method 'get' in enumeration " + subtypeEnum.getName() + ": ex.getMessage()");
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
-	catch (InvocationTargetException ex) {
-	    ex.getCause().printStackTrace();
-	    System.exit(1);
-	}
+        EntitySubtype subtype = null;
+        try {
+            // call the get(int id) public static method from the enumeration
+            subtype = (EntitySubtype) subtypeEnum.getMethod("get", int.class).invoke(null, id);
+        }
+        catch (NoSuchMethodException ex) {
+            System.err.println("The method 'get' is missing in enumeration " + subtypeEnum.getName());
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        catch (IllegalAccessException ex) {
+            System.err.println("Cannot access method 'get' in enumeration " + subtypeEnum.getName() + ": ex.getMessage()");
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        catch (InvocationTargetException ex) {
+            ex.getCause().printStackTrace();
+            System.exit(1);
+        }
 
-	return subtype;
+        return subtype;
     }
 
     /**
@@ -178,37 +178,37 @@ public enum EntityType {
      */
     public EntitySubtype getDefaultSubtype() {
 
-	if (!hasSubtype()) {
-	    return null;
-	}
-	return getSubtype(0);
+        if (!hasSubtype()) {
+            return null;
+        }
+        return getSubtype(0);
     }
 
     /**
-     * Returns the human readable name of the specified subtype for the current type. 
+     * Returns the human readable name of the specified subtype for the current type.
      * @param subtype a subtype of the current type
      * @return the human readable name of this subtype
      */
     public String getSubtypeName(EntitySubtype subtype) {
 
-	String name = null;
-	try {
-	    Class<? extends EntitySubtype> subtypeEnum = getSubtypeEnum();
-	    String[] names = (String[]) subtypeEnum.getField("humanNames").get(null);
-	    name = names[((Enum<?>) subtype).ordinal()];
-	}
-	catch (NoSuchFieldException ex) {
-	    System.err.println("The field 'humanNames' is missing in enumeration " + subtypeEnum.getName());
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
-	catch (IllegalAccessException ex) {
-	    System.err.println("Cannot access field 'humanNames' in enumeration " + subtypeEnum.getName() + ": ex.getMessage()");
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
+        String name = null;
+        try {
+            Class<? extends EntitySubtype> subtypeEnum = getSubtypeEnum();
+            String[] names = (String[]) subtypeEnum.getField("humanNames").get(null);
+            name = names[((Enum<?>) subtype).ordinal()];
+        }
+        catch (NoSuchFieldException ex) {
+            System.err.println("The field 'humanNames' is missing in enumeration " + subtypeEnum.getName());
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        catch (IllegalAccessException ex) {
+            System.err.println("Cannot access field 'humanNames' in enumeration " + subtypeEnum.getName() + ": ex.getMessage()");
+            ex.printStackTrace();
+            System.exit(1);
+        }
 
-	return name;
+        return name;
     }
 }
 

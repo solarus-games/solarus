@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -42,7 +42,7 @@ public class EditEnemyComponent extends EditEntityComponent {
      * @param entity the entity to edit
      */
     public EditEnemyComponent(Map map, MapEntity entity) {
-	super(map, entity);
+        super(map, entity);
     }
 
     /**
@@ -50,60 +50,60 @@ public class EditEnemyComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// breed
-	breedField = new ResourceChooser(ResourceType.ENEMY, true);
-	addField("Breed", breedField);
+        // breed
+        breedField = new ResourceChooser(ResourceType.ENEMY, true);
+        addField("Breed", breedField);
 
-	// rank
-	rankField = new EnumerationChooser<Rank>(Rank.class);
-	addField("Rank", rankField);
+        // rank
+        rankField = new EnumerationChooser<Rank>(Rank.class);
+        addField("Rank", rankField);
 
-	// save the enemy or not
-	saveField = new JCheckBox("Save the enemy state");
-	addField("Savegame", saveField);
+        // save the enemy or not
+        saveField = new JCheckBox("Save the enemy state");
+        addField("Savegame", saveField);
 
-	// savegame variable
-	savegameVariableField = new NumberChooser(0, 0, 32767);
-	addField("Enemy savegame variable", savegameVariableField);
+        // savegame variable
+        savegameVariableField = new NumberChooser(0, 0, 32767);
+        addField("Enemy savegame variable", savegameVariableField);
 
-	// treasure
-	treasureField = new TreasureChooser(true, true);
-	addField("Treasure", treasureField);
+        // treasure
+        treasureField = new TreasureChooser(true, true);
+        addField("Treasure", treasureField);
 
-	// enable or disable the 'savegame variable' field depending on the checkbox
-	saveField.addActionListener(new ActionListener() {
-	  public void actionPerformed(ActionEvent ev) {
-	    savegameVariableField.setEnabled(saveField.isSelected());
-	  }
-	});
+        // enable or disable the 'savegame variable' field depending on the checkbox
+        saveField.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent ev) {
+            savegameVariableField.setEnabled(saveField.isSelected());
+          }
+        });
     }
 
     /**
      * Updates the information displayed in the fields.
      */
     public void update() {
-	super.update(); // update the common fields
+        super.update(); // update the common fields
 
-	Enemy enemy = (Enemy) entity;
+        Enemy enemy = (Enemy) entity;
 
-	breedField.setSelectedId(enemy.getProperty("breed"));
-	rankField.setValue(Rank.get(enemy.getIntegerProperty("rank")));
+        breedField.setSelectedId(enemy.getProperty("breed"));
+        rankField.setValue(Rank.get(enemy.getIntegerProperty("rank")));
 
-	int savegameVariable = enemy.getIntegerProperty("savegameVariable");
-	if (savegameVariable != -1) {
-	  savegameVariableField.setNumber(savegameVariable);
-	  savegameVariableField.setEnabled(true);
-	  saveField.setSelected(true);
-	}
-	else {
+        int savegameVariable = enemy.getIntegerProperty("savegameVariable");
+        if (savegameVariable != -1) {
+          savegameVariableField.setNumber(savegameVariable);
+          savegameVariableField.setEnabled(true);
+          saveField.setSelected(true);
+        }
+        else {
           savegameVariableField.setEnabled(false);
-	  saveField.setSelected(false);
-	}
+          saveField.setSelected(false);
+        }
 
-	treasureField.setTreasure(
-		enemy.getProperty("treasureName"),
-		enemy.getIntegerProperty("treasureVariant"),
-		enemy.getIntegerProperty("treasureSavegameVariable"));
+        treasureField.setTreasure(
+                enemy.getProperty("treasureName"),
+                enemy.getIntegerProperty("treasureVariant"),
+                enemy.getIntegerProperty("treasureSavegameVariable"));
     }
 
     /**
@@ -112,15 +112,15 @@ public class EditEnemyComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	int savegameVariable = savegameVariableField.isEnabled() ? 
-		savegameVariableField.getNumber() : -1;
+        int savegameVariable = savegameVariableField.isEnabled() ?
+                savegameVariableField.getNumber() : -1;
 
-	return new ActionEditEntitySpecific(entity,
-		breedField.getSelectedId(),
-		Integer.toString(rankField.getValue().getId()),
-		Integer.toString(savegameVariable),
-		treasureField.getTreasure().getItemName(),
-		Integer.toString(treasureField.getTreasure().getVariant()),
-		Integer.toString(treasureField.getTreasure().getSavegameVariable()));
+        return new ActionEditEntitySpecific(entity,
+                breedField.getSelectedId(),
+                Integer.toString(rankField.getValue().getId()),
+                Integer.toString(savegameVariable),
+                treasureField.getTreasure().getItemName(),
+                Integer.toString(treasureField.getTreasure().getVariant()),
+                Integer.toString(treasureField.getTreasure().getSavegameVariable()));
     }
 }

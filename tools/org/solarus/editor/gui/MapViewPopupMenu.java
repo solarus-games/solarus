@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -53,13 +53,13 @@ public class MapViewPopupMenu extends JPopupMenu {
      * @param map view the map view
      */
     public MapViewPopupMenu(MapView theMapView) {
-	super();
+        super();
 
-	this.mapView = theMapView;
-	this.map = theMapView.getMap();
+        this.mapView = theMapView;
+        this.map = theMapView.getMap();
 
-	selection = map.getEntitySelection();
-	buildMenu();
+        selection = map.getEntitySelection();
+        buildMenu();
     }
 
     /**
@@ -68,110 +68,110 @@ public class MapViewPopupMenu extends JPopupMenu {
      * Edit Resize | Create Convert | Cut Copy Paste | Direction Layer Bring to front Bring to back | Destroy
      */
     private void buildMenu() {
-	JMenuItem item;
+        JMenuItem item;
 
-	if (!selection.isEmpty()) {
-	    // edit
-	    item = new JMenuItem("Edit");
-	    item.addActionListener(new ActionListenerEditEntity());
-	    item.setEnabled(true);
-	    add(item);
+        if (!selection.isEmpty()) {
+            // edit
+            item = new JMenuItem("Edit");
+            item.addActionListener(new ActionListenerEditEntity());
+            item.setEnabled(true);
+            add(item);
 
-	    // resize
-	    item = new JMenuItem("Resize");
-	    item.setEnabled(selection.isResizable());
-	    item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    mapView.startResizingEntity();
-		}
-	    });
-	    add(item);
+            // resize
+            item = new JMenuItem("Resize");
+            item.setEnabled(selection.isResizable());
+            item.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    mapView.startResizingEntity();
+                }
+            });
+            add(item);
 
-	    addSeparator();
-	}
+            addSeparator();
+        }
 
-	// create
-	add(new AddEntitiesMenu(mapView, "Create"));
+        // create
+        add(new AddEntitiesMenu(mapView, "Create"));
 
-	if (selection.getNbEntitiesSelected() == 1) {
+        if (selection.getNbEntitiesSelected() == 1) {
 
-	    MapEntity entity = selection.getEntity(0);
+            MapEntity entity = selection.getEntity(0);
 
-	    if (entity instanceof Tile) {
+            if (entity instanceof Tile) {
 
-		boolean toDynamic = !(entity instanceof DynamicTile);
+                boolean toDynamic = !(entity instanceof DynamicTile);
 
-		String text = toDynamic ? "Convert to dynamic tile" :
-		    "Convert to static tile";
+                String text = toDynamic ? "Convert to dynamic tile" :
+                    "Convert to static tile";
 
-		item = new JMenuItem(text);
-		item.addActionListener(new ActionListenerConvertTile((Tile) entity));
-		add(item);
-	    }
-	}
+                item = new JMenuItem(text);
+                item.addActionListener(new ActionListenerConvertTile((Tile) entity));
+                add(item);
+            }
+        }
 
-	addSeparator();
+        addSeparator();
 
-	if (!selection.isEmpty()) {
-	    // cut
-	    item = new JMenuItem("Cut");
-	    item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    mapView.cutSelectedEntities();
-		}
-	    });
-	    add(item);
+        if (!selection.isEmpty()) {
+            // cut
+            item = new JMenuItem("Cut");
+            item.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ev) {
+                    mapView.cutSelectedEntities();
+                }
+            });
+            add(item);
 
-	    // copy
-	    item = new JMenuItem("Copy");
-	    item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    mapView.copySelectedEntities();
-		}
-	    });
-	    add(item);
-	}
+            // copy
+            item = new JMenuItem("Copy");
+            item.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ev) {
+                    mapView.copySelectedEntities();
+                }
+            });
+            add(item);
+        }
 
-	// paste
-	item = new JMenuItem("Paste");
-	item.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-		mapView.paste();
-	    }
-	});
-	item.setEnabled(mapView.canPaste());
-	add(item);
+        // paste
+        item = new JMenuItem("Paste");
+        item.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                mapView.paste();
+            }
+        });
+        item.setEnabled(mapView.canPaste());
+        add(item);
 
-	if (!selection.isEmpty()) {
+        if (!selection.isEmpty()) {
 
-	    addSeparator();
+            addSeparator();
 
-	    // direction
-	    buildDirectionSubmenu();
+            // direction
+            buildDirectionSubmenu();
 
-	    // layer
-	    buildLayerSubmenu();
+            // layer
+            buildLayerSubmenu();
 
-	    // bring to front / to back
-	    item = new JMenuItem("Bring to front");
-	    item.addActionListener(new ActionListenerBringToFront());
-	    add(item);
+            // bring to front / to back
+            item = new JMenuItem("Bring to front");
+            item.addActionListener(new ActionListenerBringToFront());
+            add(item);
 
-	    item = new JMenuItem("Bring to back");
-	    item.addActionListener(new ActionListenerBringToBack());
-	    add(item);
+            item = new JMenuItem("Bring to back");
+            item.addActionListener(new ActionListenerBringToBack());
+            add(item);
 
-	    addSeparator();
+            addSeparator();
 
-	    item = new JMenuItem("Destroy");
-	    item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    mapView.destroySelectedEntities();
-		}
-	    });
-	    add(item);
+            item = new JMenuItem("Destroy");
+            item.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    mapView.destroySelectedEntities();
+                }
+            });
+            add(item);
 
-	}
+        }
     }
 
     /**
@@ -179,51 +179,51 @@ public class MapViewPopupMenu extends JPopupMenu {
      */
     private void buildDirectionSubmenu() {
 
-	// get the direction data of the selection
-	int nbDirections = selection.getNbDirections();
-	if (nbDirections == 0) {
-	    // if some entities have no direction property, we don't display the 'Direction' submenu
-	    return;
-	}
+        // get the direction data of the selection
+        int nbDirections = selection.getNbDirections();
+        if (nbDirections == 0) {
+            // if some entities have no direction property, we don't display the 'Direction' submenu
+            return;
+        }
 
-	ButtonGroup itemsDirectionsGroup = new ButtonGroup();
-	JMenu menuDirection = new JMenu("Direction");
-	JRadioButtonMenuItem item;
+        ButtonGroup itemsDirectionsGroup = new ButtonGroup();
+        JMenu menuDirection = new JMenu("Direction");
+        JRadioButtonMenuItem item;
 
-	// see whether all selected entities have the same direction
-	int direction = selection.getDirection();
+        // see whether all selected entities have the same direction
+        int direction = selection.getDirection();
 
-	// create a 'no direction' item if all entities have a 'no direction' option
-	String noDirectionText = selection.getNoDirectionText();
-	if (noDirectionText != null) {
-	    item = new JRadioButtonMenuItem(noDirectionText);
-	    item.addActionListener(new ActionListenerChangeDirection(-1));
-	    menuDirection.add(item);
-	    itemsDirectionsGroup.add(item);
-	    
-	    if (direction == -1) {
-		item.setSelected(true);
-	    }
-	}
+        // create a 'no direction' item if all entities have a 'no direction' option
+        String noDirectionText = selection.getNoDirectionText();
+        if (noDirectionText != null) {
+            item = new JRadioButtonMenuItem(noDirectionText);
+            item.addActionListener(new ActionListenerChangeDirection(-1));
+            menuDirection.add(item);
+            itemsDirectionsGroup.add(item);
 
-	// create the normal direction items	
-	for (int i = 0; i < nbDirections; i++) {
-	    String name = (nbDirections == 4) ? DirectionChooser.directionNames4[i] : DirectionChooser.directionNames8[i];
-	    item = new JRadioButtonMenuItem(name);
-	    item.addActionListener(new ActionListenerChangeDirection(i));
-	    menuDirection.add(item);
-	    itemsDirectionsGroup.add(item);
-	    
-	    if (direction == i) {
-		item.setSelected(true);
-	    }
-	}
+            if (direction == -1) {
+                item.setSelected(true);
+            }
+        }
 
-	// add a special item to make all real items unselected
-	item = new JRadioButtonMenuItem();
-	itemsDirectionsGroup.add(item);
+        // create the normal direction items
+        for (int i = 0; i < nbDirections; i++) {
+            String name = (nbDirections == 4) ? DirectionChooser.directionNames4[i] : DirectionChooser.directionNames8[i];
+            item = new JRadioButtonMenuItem(name);
+            item.addActionListener(new ActionListenerChangeDirection(i));
+            menuDirection.add(item);
+            itemsDirectionsGroup.add(item);
 
-	add(menuDirection);
+            if (direction == i) {
+                item.setSelected(true);
+            }
+        }
+
+        // add a special item to make all real items unselected
+        item = new JRadioButtonMenuItem();
+        itemsDirectionsGroup.add(item);
+
+        add(menuDirection);
     }
 
     /**
@@ -231,30 +231,30 @@ public class MapViewPopupMenu extends JPopupMenu {
      */
     public void buildLayerSubmenu() {
 
-	int nbLayers = Layer.values().length;
-	JRadioButtonMenuItem[] itemsLayers = new JRadioButtonMenuItem[nbLayers + 1];
-	ButtonGroup itemsLayersGroup = new ButtonGroup();
+        int nbLayers = Layer.values().length;
+        JRadioButtonMenuItem[] itemsLayers = new JRadioButtonMenuItem[nbLayers + 1];
+        ButtonGroup itemsLayersGroup = new ButtonGroup();
 
-	for (int i = 0; i < nbLayers; i++) {
-	    itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
-	    itemsLayers[i].addActionListener(new ActionListenerChangeLayer(Layer.get(i)));
-	    add(itemsLayers[i]);
-	    itemsLayersGroup.add(itemsLayers[i]);
-	}
-	itemsLayers[nbLayers] = new JRadioButtonMenuItem();
-	itemsLayersGroup.add(itemsLayers[nbLayers]);
+        for (int i = 0; i < nbLayers; i++) {
+            itemsLayers[i] = new JRadioButtonMenuItem(layerNames[i]);
+            itemsLayers[i].addActionListener(new ActionListenerChangeLayer(Layer.get(i)));
+            add(itemsLayers[i]);
+            itemsLayersGroup.add(itemsLayers[i]);
+        }
+        itemsLayers[nbLayers] = new JRadioButtonMenuItem();
+        itemsLayersGroup.add(itemsLayers[nbLayers]);
 
-	// select the appropriate layer item
-	Layer layer = selection.getLayer();
+        // select the appropriate layer item
+        Layer layer = selection.getLayer();
 
-	if (layer != null) {
-	    // if all the selected entities have the same layer, we check its item
-	    itemsLayers[layer.getId()].setSelected(true);
-	}
-	else {
-	    // otherwise we select no item
-	    itemsLayers[nbLayers].setSelected(true);
-	}
+        if (layer != null) {
+            // if all the selected entities have the same layer, we check its item
+            itemsLayers[layer.getId()].setSelected(true);
+        }
+        else {
+            // otherwise we select no item
+            itemsLayers[nbLayers].setSelected(true);
+        }
     }
 
     /**
@@ -263,7 +263,7 @@ public class MapViewPopupMenu extends JPopupMenu {
      * @param y y coordinate of where the popup menu has to be shown
      */
     public void display(int x, int y) {
-	show(mapView, x, y);
+        show(mapView, x, y);
     }
 
     /**
@@ -272,31 +272,31 @@ public class MapViewPopupMenu extends JPopupMenu {
      */
     private class ActionListenerChangeLayer implements ActionListener {
 
-	/**
-	 * Layer to set when the action is invoked.
-	 */
-	private Layer layer;
+        /**
+         * Layer to set when the action is invoked.
+         */
+        private Layer layer;
 
-	/**
-	 * Constructor.
-	 * @param layer layer to set when the action is invoked.
-	 */
-	public ActionListenerChangeLayer(Layer layer) {
-	    this.layer = layer;
-	}
+        /**
+         * Constructor.
+         * @param layer layer to set when the action is invoked.
+         */
+        public ActionListenerChangeLayer(Layer layer) {
+            this.layer = layer;
+        }
 
-	/**
-	 * Method called when the user sets the layer of the selected entities.
-	 */
-	public void actionPerformed(ActionEvent ev) {
-	    try {
-		LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
-		map.getHistory().doAction(new ActionChangeLayer(map, entities, layer));
-	    }
-	    catch (ZSDXException e) {
-		GuiTools.errorDialog("Cannot change the layer: " + e.getMessage());
-	    }
-	}
+        /**
+         * Method called when the user sets the layer of the selected entities.
+         */
+        public void actionPerformed(ActionEvent ev) {
+            try {
+                LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                map.getHistory().doAction(new ActionChangeLayer(map, entities, layer));
+            }
+            catch (ZSDXException e) {
+                GuiTools.errorDialog("Cannot change the layer: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -305,31 +305,31 @@ public class MapViewPopupMenu extends JPopupMenu {
      */
     private class ActionListenerChangeDirection implements ActionListener {
 
-	/**
-	 * Direction to set when the action is invoked.
-	 */
-	private int direction;
+        /**
+         * Direction to set when the action is invoked.
+         */
+        private int direction;
 
-	/**
-	 * Constructor.
-	 * @param direction direction to set when the action is invoked.
-	 */
-	public ActionListenerChangeDirection(int direction) {
-	    this.direction = direction;
-	}
+        /**
+         * Constructor.
+         * @param direction direction to set when the action is invoked.
+         */
+        public ActionListenerChangeDirection(int direction) {
+            this.direction = direction;
+        }
 
-	/**
-	 * Method called when the user sets the direction of the selected entities.
-	 */
-	public void actionPerformed(ActionEvent ev) {
-	    try {
-		LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
-		map.getHistory().doAction(new ActionChangeDirection(map, entities, direction));
-	    }
-	    catch (ZSDXException e) {
-		GuiTools.errorDialog("Cannot change the direction: " + e.getMessage());
-	    }
-	}
+        /**
+         * Method called when the user sets the direction of the selected entities.
+         */
+        public void actionPerformed(ActionEvent ev) {
+            try {
+                LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                map.getHistory().doAction(new ActionChangeDirection(map, entities, direction));
+            }
+            catch (ZSDXException e) {
+                GuiTools.errorDialog("Cannot change the direction: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -338,18 +338,18 @@ public class MapViewPopupMenu extends JPopupMenu {
      */
     private class ActionListenerBringToFront implements ActionListener {
 
-	/**
-	 * Method called when the action is performed.
-	 */
-	public void actionPerformed(ActionEvent ev) {
-	    try {
-		LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
-		map.getHistory().doAction(new ActionBringToFront(map, entities));
-	    }
-	    catch (ZSDXException e) {
-		GuiTools.errorDialog("Cannot bring the entities to front: " + e.getMessage());
-	    }
-	}
+        /**
+         * Method called when the action is performed.
+         */
+        public void actionPerformed(ActionEvent ev) {
+            try {
+                LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                map.getHistory().doAction(new ActionBringToFront(map, entities));
+            }
+            catch (ZSDXException e) {
+                GuiTools.errorDialog("Cannot bring the entities to front: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -358,18 +358,18 @@ public class MapViewPopupMenu extends JPopupMenu {
      */
     private class ActionListenerBringToBack implements ActionListener {
 
-	/**
-	 * Method called when the action is performed.
-	 */
-	public void actionPerformed(ActionEvent ev) {
-	    try {
-		LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
-		map.getHistory().doAction(new ActionBringToBack(map, entities));
-	    }
-	    catch (ZSDXException e) {
-		GuiTools.errorDialog("Cannot bring the entities to back: " + e.getMessage());
-	    }
-	}
+        /**
+         * Method called when the action is performed.
+         */
+        public void actionPerformed(ActionEvent ev) {
+            try {
+                LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
+                map.getHistory().doAction(new ActionBringToBack(map, entities));
+            }
+            catch (ZSDXException e) {
+                GuiTools.errorDialog("Cannot bring the entities to back: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -378,25 +378,25 @@ public class MapViewPopupMenu extends JPopupMenu {
      */
     private class ActionListenerEditEntity implements ActionListener {
 
-	/**
-	 * Constructor.
-	 */
-	public ActionListenerEditEntity() {
-	    
-	}
+        /**
+         * Constructor.
+         */
+        public ActionListenerEditEntity() {
 
-	/**
-	 * Method called when the user clicks on "Edit".
-	 */
-	public void actionPerformed(ActionEvent ev) {
+        }
 
-	    MapEntity entity = map.getEntitySelection().getEntity(0);
+        /**
+         * Method called when the user clicks on "Edit".
+         */
+        public void actionPerformed(ActionEvent ev) {
 
-	    EditEntityDialog dialog = new EditEntityDialog(map, entity);
-	    dialog.setLocationRelativeTo(null);
-	    dialog.pack();
-	    dialog.setVisible(true);
-	}
+            MapEntity entity = map.getEntitySelection().getEntity(0);
+
+            EditEntityDialog dialog = new EditEntityDialog(map, entity);
+            dialog.setLocationRelativeTo(null);
+            dialog.pack();
+            dialog.setVisible(true);
+        }
     }
 
     /**
@@ -404,34 +404,34 @@ public class MapViewPopupMenu extends JPopupMenu {
      */
     private class ActionListenerConvertTile implements ActionListener {
 
-	private Tile tile;
+        private Tile tile;
 
-	/**
-	 * Constructor.
-	 */
-	public ActionListenerConvertTile(Tile tile) {
-	    this.tile = tile;
-	}
+        /**
+         * Constructor.
+         */
+        public ActionListenerConvertTile(Tile tile) {
+            this.tile = tile;
+        }
 
-	/**
-	 * Method called when the user clicks on the item.
-	 */
-	public void actionPerformed(ActionEvent ev) {
+        /**
+         * Method called when the user clicks on the item.
+         */
+        public void actionPerformed(ActionEvent ev) {
 
-	    try {
-		MapEntity newTile;
-		if (tile instanceof DynamicTile) {
-		    newTile = ((DynamicTile) tile).createStaticTile(); 
-		}
-		else {
-		    newTile = tile.createDynamicTile();
-		}
-		// create a dynamic tile
-		map.getHistory().doAction(new ActionReplaceEntity(map, tile, newTile));
-	    }
-	    catch (ZSDXException ex) {
-		GuiTools.errorDialog("Cannot convert this tile: " + ex.getMessage());
-	    }
-	}
+            try {
+                MapEntity newTile;
+                if (tile instanceof DynamicTile) {
+                    newTile = ((DynamicTile) tile).createStaticTile();
+                }
+                else {
+                    newTile = tile.createDynamicTile();
+                }
+                // create a dynamic tile
+                map.getHistory().doAction(new ActionReplaceEntity(map, tile, newTile));
+            }
+            catch (ZSDXException ex) {
+                GuiTools.errorDialog("Cannot convert this tile: " + ex.getMessage());
+            }
+        }
     }
 }

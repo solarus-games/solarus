@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -31,12 +31,12 @@ public abstract class OkCancelDialog extends JDialog {
      * The panel containing the buttons.
      */
     private JPanel bottomPanel;
-    
+
     /**
      * Title of the optional border.
      */
     private String borderTitle;
-    
+
     /**
      * True if the user applied some modifications, false if he cancelled.
      */
@@ -50,66 +50,66 @@ public abstract class OkCancelDialog extends JDialog {
      */
     public OkCancelDialog(String title, boolean showApplyButton) {
 
-	super((Frame) null, title, true);
-	
-	this.appliedModifications = false;
+        super((Frame) null, title, true);
 
-	Container contentPane = getContentPane();
-	contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
-	setResizable(false);
+        this.appliedModifications = false;
 
-	// OK button
-	JButton buttonOK = new JButton("OK");
-	buttonOK.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-		tryToApplyModifications(true);
-	    }
-	});
-	
-	// handle the Enter key
-	getRootPane().setDefaultButton(buttonOK);
+        Container contentPane = getContentPane();
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
+        setResizable(false);
 
-	// Cancel button
-	JButton buttonCancel = new JButton("Cancel");
-	Action cancelAction = new AbstractAction() {
-	    public void actionPerformed(ActionEvent e) {
-		dispose();
-	    }
-	};
-	buttonCancel.addActionListener(cancelAction);
+        // OK button
+        JButton buttonOK = new JButton("OK");
+        buttonOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                tryToApplyModifications(true);
+            }
+        });
 
-	// handle the Escape key
-	KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);	 
-	getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
-	getRootPane().getActionMap().put("ESCAPE", cancelAction);
+        // handle the Enter key
+        getRootPane().setDefaultButton(buttonOK);
 
-	// put the buttons in a component
-	int nbButtons = showApplyButton ? 3 : 2;
-	GridLayout gridLayout = new GridLayout(1, nbButtons); 
-	JPanel buttonPanel = new JPanel(gridLayout);
-	gridLayout.setHgap(10);
+        // Cancel button
+        JButton buttonCancel = new JButton("Cancel");
+        Action cancelAction = new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        };
+        buttonCancel.addActionListener(cancelAction);
 
-	buttonPanel.add(buttonOK);
-	buttonPanel.add(buttonCancel);
-	
-	if (showApplyButton) {
-	    
-	    // Apply button
-	    JButton buttonApply = new JButton("Apply");
-	    buttonApply.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		    tryToApplyModifications(false);
-		}
-	    });
-	    
-	    buttonPanel.add(buttonApply);
-	}
+        // handle the Escape key
+        KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
+        getRootPane().getActionMap().put("ESCAPE", cancelAction);
 
-	bottomPanel = new JPanel();
-	bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
+        // put the buttons in a component
+        int nbButtons = showApplyButton ? 3 : 2;
+        GridLayout gridLayout = new GridLayout(1, nbButtons);
+        JPanel buttonPanel = new JPanel(gridLayout);
+        gridLayout.setHgap(10);
 
-	bottomPanel.add(Box.createHorizontalGlue());
-	bottomPanel.add(buttonPanel);
+        buttonPanel.add(buttonOK);
+        buttonPanel.add(buttonCancel);
+
+        if (showApplyButton) {
+
+            // Apply button
+            JButton buttonApply = new JButton("Apply");
+            buttonApply.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    tryToApplyModifications(false);
+                }
+            });
+
+            buttonPanel.add(buttonApply);
+        }
+
+        bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
+
+        bottomPanel.add(Box.createHorizontalGlue());
+        bottomPanel.add(buttonPanel);
     }
 
     /**
@@ -118,9 +118,9 @@ public abstract class OkCancelDialog extends JDialog {
      * @param title the title
      */
     protected void setBorderTitle(String title) {
-	this.borderTitle = title;
+        this.borderTitle = title;
     }
-    
+
     /**
      * Sets the component to show in the dialog box.
      * The constructor of a subclasses must call this method to set what they
@@ -130,21 +130,21 @@ public abstract class OkCancelDialog extends JDialog {
      * The dialog box will be empty until this method is called.
      */
     protected void setComponent(JComponent component) {
-	
-	JPanel panel = new JPanel();
-	panel.add(component); // create an intermediate panel to give it the possible title border
-	
-	if (borderTitle != null) {
-	    panel.setBorder(BorderFactory.createTitledBorder(borderTitle));
-	}
-		
-	getContentPane().add(panel);
-	getContentPane().add(Box.createVerticalStrut(20));
-	getContentPane().add(bottomPanel);
-	getContentPane().add(Box.createVerticalStrut(10));
-	
+
+        JPanel panel = new JPanel();
+        panel.add(component); // create an intermediate panel to give it the possible title border
+
+        if (borderTitle != null) {
+            panel.setBorder(BorderFactory.createTitledBorder(borderTitle));
+        }
+
+        getContentPane().add(panel);
+        getContentPane().add(Box.createVerticalStrut(20));
+        getContentPane().add(bottomPanel);
+        getContentPane().add(Box.createVerticalStrut(10));
+
     }
-    
+
     /**
      * Takes into account the modifications made by the user in the dialog box.
      * This method is called when the user clicks on OK (or presses the Enter key),
@@ -165,27 +165,27 @@ public abstract class OkCancelDialog extends JDialog {
      * @param closeWindow true to close the window if there is no error
      */
     private void tryToApplyModifications(boolean closeWindow) {
-	try {
-	    applyModifications();
-	    this.appliedModifications = true;
-	    if (closeWindow) {
-		dispose();
-	    }
-	}
-	catch (ZSDXException ex) {
-	    GuiTools.errorDialog(ex.getMessage());
-	}
+        try {
+            applyModifications();
+            this.appliedModifications = true;
+            if (closeWindow) {
+                dispose();
+            }
+        }
+        catch (ZSDXException ex) {
+            GuiTools.errorDialog(ex.getMessage());
+        }
     }
-    
+
     /**
      * Displays the dialog box.
      * @return true if the user applied modifications, false if he cancelled
      */
     public boolean display() {
-	setLocationRelativeTo(null);
- 	pack();
- 	setVisible(true);
- 	
- 	return appliedModifications;
+        setLocationRelativeTo(null);
+         pack();
+         setVisible(true);
+
+         return appliedModifications;
     }
 }

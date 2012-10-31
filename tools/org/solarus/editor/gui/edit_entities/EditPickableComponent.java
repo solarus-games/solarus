@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,7 +35,7 @@ public class EditPickableComponent extends EditEntityComponent {
      * @param entity the entity to edit
      */
     public EditPickableComponent(Map map, MapEntity entity) {
-	super(map, entity);
+        super(map, entity);
     }
 
     /**
@@ -43,23 +43,23 @@ public class EditPickableComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// treasure
-	treasureField = new TreasureChooser(false, false);
-	addField("Treasure", treasureField);
+        // treasure
+        treasureField = new TreasureChooser(false, false);
+        addField("Treasure", treasureField);
     }
 
     /**
      * Updates the information displayed in the fields.
      */
     public void update() {
-	super.update(); // update the common fields
+        super.update(); // update the common fields
 
-	Pickable pickable = (Pickable) entity;
+        Pickable pickable = (Pickable) entity;
 
-	treasureField.setTreasure(
-		pickable.getProperty("treasureName"),
-		pickable.getIntegerProperty("treasureVariant"),
-		pickable.getIntegerProperty("treasureSavegameVariable"));
+        treasureField.setTreasure(
+                pickable.getProperty("treasureName"),
+                pickable.getIntegerProperty("treasureVariant"),
+                pickable.getIntegerProperty("treasureSavegameVariable"));
     }
 
     /**
@@ -68,9 +68,9 @@ public class EditPickableComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	return new ActionEditEntitySpecific(entity, 
-		treasureField.getTreasure().getItemName(),
-		Integer.toString(treasureField.getTreasure().getVariant()),
-		Integer.toString(treasureField.getTreasure().getSavegameVariable()));
+        return new ActionEditEntitySpecific(entity,
+                treasureField.getTreasure().getItemName(),
+                Integer.toString(treasureField.getTreasure().getVariant()),
+                Integer.toString(treasureField.getTreasure().getSavegameVariable()));
     }
 }

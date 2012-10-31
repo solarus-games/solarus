@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,31 +32,31 @@ public class TilePattern extends Observable {
      * Enumeration to identify the animation of a tile pattern.
      */
     public enum Animation {
-	NONE,
-	SEQUENCE_012,
-	SEQUENCE_0121,
-	SELF_SCROLLING,
+        NONE,
+        SEQUENCE_012,
+        SEQUENCE_0121,
+        SELF_SCROLLING,
         PARALLAX_SCROLLING,
         SEQUENCE_012_PARALLAX,
         SEQUENCE_0121_PARALLAX;
 
-	public static final String[] humanNames = {
-	    "None",
-	    "3 frames (1-2-3-1)",
-	    "3 frames (1-2-3-2-1)",
-	    "Scrolling on itself",
+        public static final String[] humanNames = {
+            "None",
+            "3 frames (1-2-3-1)",
+            "3 frames (1-2-3-2-1)",
+            "Scrolling on itself",
             "Parallax scrolling",
             "3 frames (1-2-3-1) + parallax",
             "3 frames (1-2-3-2-1) + parallax",
-	};
+        };
 
-	public static Animation get(int id) {
-	    return values()[id];
-	}
+        public static Animation get(int id) {
+            return values()[id];
+        }
 
-	public int getId() {
-	    return ordinal();
-	}
+        public int getId() {
+            return ordinal();
+        }
     }
 
     /**
@@ -64,43 +64,43 @@ public class TilePattern extends Observable {
      */
     public enum AnimationSeparation {
 
-	HORIZONTAL("animation_separation_horizontal.png"),
-	VERTICAL("animation_separation_vertical.png");
+        HORIZONTAL("animation_separation_horizontal.png"),
+        VERTICAL("animation_separation_vertical.png");
 
-	private String iconFileName;
-	private static ImageIcon[] icons;
+        private String iconFileName;
+        private static ImageIcon[] icons;
 
-	public static final String[] humanNames = {
-	    "Horizontal",
-	    "Vertical",
-	};
+        public static final String[] humanNames = {
+            "Horizontal",
+            "Vertical",
+        };
 
-	private AnimationSeparation(String iconFileName) {
-	    this.iconFileName = iconFileName;
-	}
+        private AnimationSeparation(String iconFileName) {
+            this.iconFileName = iconFileName;
+        }
 
-	public static AnimationSeparation get(int id) {
-	    return values()[id];
-	}
+        public static AnimationSeparation get(int id) {
+            return values()[id];
+        }
 
-	public int getId() {
-	    return ordinal();
-	}
+        public int getId() {
+            return ordinal();
+        }
 
-	public static ImageIcon[] getIcons() {
+        public static ImageIcon[] getIcons() {
 
-	    if (icons == null) {
-		icons = new ImageIcon[values().length];
-		int i = 0;
-		for (AnimationSeparation value: values()) {
-		    icons[i] = Project.getEditorImageIcon(value.iconFileName);
-		    icons[i].setDescription(value.name());
-		    i++;
-		}
-	    }
+            if (icons == null) {
+                icons = new ImageIcon[values().length];
+                int i = 0;
+                for (AnimationSeparation value: values()) {
+                    icons[i] = Project.getEditorImageIcon(value.iconFileName);
+                    icons[i].setDescription(value.name());
+                    i++;
+                }
+            }
 
-	    return icons;
-	}
+            return icons;
+        }
     }
 
     /**
@@ -146,7 +146,7 @@ public class TilePattern extends Observable {
      * @throws TilesetException if the tile size is incorrect
      */
     public TilePattern(Rectangle positionInTileset, Layer defaultLayer, Obstacle obstacle) throws TilesetException {
-	this(positionInTileset, defaultLayer, obstacle, Animation.NONE, AnimationSeparation.HORIZONTAL);
+        this(positionInTileset, defaultLayer, obstacle, Animation.NONE, AnimationSeparation.HORIZONTAL);
     }
 
     /**
@@ -159,22 +159,22 @@ public class TilePattern extends Observable {
      * @throws TilesetException if the pattern size is incorrect
      */
     public TilePattern(Rectangle positionInTileset, Layer defaultLayer, Obstacle obstacle,
-		Animation animation, AnimationSeparation animationSeparation) throws TilesetException {
-	super();
+                Animation animation, AnimationSeparation animationSeparation) throws TilesetException {
+        super();
 
-	// check the width and the height
-	if (positionInTileset.width <= 0 || positionInTileset.height <= 0 ||
-	    positionInTileset.width % 8 != 0 || positionInTileset.height % 8 != 0) {
-	    throw new TilesetException("The size of a tile must be positive and multiple of 8 pixels");
-	}
+        // check the width and the height
+        if (positionInTileset.width <= 0 || positionInTileset.height <= 0 ||
+            positionInTileset.width % 8 != 0 || positionInTileset.height % 8 != 0) {
+            throw new TilesetException("The size of a tile must be positive and multiple of 8 pixels");
+        }
 
-	this.positionInTileset = positionInTileset;
-	this.defaultLayer = defaultLayer;
-	setAnimation(animation);
-	setAnimationSeparation(animationSeparation);
-	setObstacle(obstacle);
+        this.positionInTileset = positionInTileset;
+        this.defaultLayer = defaultLayer;
+        setAnimation(animation);
+        setAnimationSeparation(animationSeparation);
+        setObstacle(obstacle);
 
-	this.images = new BufferedImage[4];
+        this.images = new BufferedImage[4];
     }
 
     /**
@@ -184,7 +184,7 @@ public class TilePattern extends Observable {
      * @return the pattern's rectangle
      */
     public Rectangle getPositionInTileset() {
-	return positionInTileset;
+        return positionInTileset;
     }
 
     /**
@@ -192,7 +192,7 @@ public class TilePattern extends Observable {
      * @return the x coordinate of the tile pattern in the tileset image
      */
     public int getX() {
-	return positionInTileset.x;
+        return positionInTileset.x;
     }
 
     /**
@@ -200,7 +200,7 @@ public class TilePattern extends Observable {
      * @return the y coordinate of the tile pattern in the tileset image
      */
     public int getY() {
-	return positionInTileset.y;
+        return positionInTileset.y;
     }
 
     /**
@@ -211,13 +211,13 @@ public class TilePattern extends Observable {
      */
     public int getWidth() {
 
-	int width = positionInTileset.width;
-	
-	if (isMultiFrame() && animationSeparation == AnimationSeparation.HORIZONTAL) {
-	    width = width / 3;
-	}
+        int width = positionInTileset.width;
 
-	return width;
+        if (isMultiFrame() && animationSeparation == AnimationSeparation.HORIZONTAL) {
+            width = width / 3;
+        }
+
+        return width;
     }
 
     /**
@@ -228,13 +228,13 @@ public class TilePattern extends Observable {
      */
     public int getHeight() {
 
-	int height = positionInTileset.height;
-	
-	if (isMultiFrame() && animationSeparation == AnimationSeparation.VERTICAL) {
-	    height = height / 3;
-	}
+        int height = positionInTileset.height;
 
-	return height;
+        if (isMultiFrame() && animationSeparation == AnimationSeparation.VERTICAL) {
+            height = height / 3;
+        }
+
+        return height;
     }
 
     /**
@@ -242,15 +242,15 @@ public class TilePattern extends Observable {
      * @return the tile pattern's size in pixels
      */
     public Dimension getSize() {
-	return new Dimension(getWidth(), getHeight());
+        return new Dimension(getWidth(), getHeight());
     }
-    
+
     /**
      * Returns the tile pattern's obstacle property.
      * @return the obstacle property
      */
     public Obstacle getObstacle() {
-	return obstacle;
+        return obstacle;
     }
 
     /**
@@ -261,14 +261,14 @@ public class TilePattern extends Observable {
      */
     public void setObstacle(Obstacle obstacle) throws TilesetException {
 
-	// diagonal obstacle: check that the tile is square
-	if (obstacle.isDiagonal() && getWidth() != getHeight()) {
-	    throw new TilesetException("Cannot make a diagonal obstacle on a non-square tile pattern (size is " + getWidth() + "x" + getHeight() + ")");
-	}
+        // diagonal obstacle: check that the tile is square
+        if (obstacle.isDiagonal() && getWidth() != getHeight()) {
+            throw new TilesetException("Cannot make a diagonal obstacle on a non-square tile pattern (size is " + getWidth() + "x" + getHeight() + ")");
+        }
 
-	this.obstacle = obstacle;
-	setChanged();
-	notifyObservers();
+        this.obstacle = obstacle;
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -276,7 +276,7 @@ public class TilePattern extends Observable {
      * @return the default layer of the tile pattern
      */
     public Layer getDefaultLayer() {
-	return defaultLayer;
+        return defaultLayer;
     }
 
     /**
@@ -284,11 +284,11 @@ public class TilePattern extends Observable {
      * @param defaultLayer the default layer of the tile pattern
      */
     public void setDefaultLayer(Layer defaultLayer) {
-	if (defaultLayer != this.defaultLayer) {
-	    this.defaultLayer = defaultLayer;
-	    setChanged();
-	    notifyObservers();
-	}
+        if (defaultLayer != this.defaultLayer) {
+            this.defaultLayer = defaultLayer;
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -296,7 +296,7 @@ public class TilePattern extends Observable {
      * @return the tile pattern's animation type
      */
     public Animation getAnimation() {
-	return animation;
+        return animation;
     }
 
     /**
@@ -310,36 +310,36 @@ public class TilePattern extends Observable {
      */
     public void setAnimation(Animation animation) throws TilesetException {
 
-	if (isMultiFrame(animation)) {
+        if (isMultiFrame(animation)) {
 
-	    // try to set the animation separation
-	    int width = positionInTileset.width;
-	    int height = positionInTileset.height;
+            // try to set the animation separation
+            int width = positionInTileset.width;
+            int height = positionInTileset.height;
 
-	    // try to divide the tile pattern in the biggest direction
-	    if (width >= height) {
-		try {
-		    trySetAnimationSeparation(AnimationSeparation.HORIZONTAL);
-		}
-		catch (TilesetException e) {
-		    trySetAnimationSeparation(AnimationSeparation.VERTICAL);
-		    // an exception is thrown if this doesn't work either
-		}
-	    }
-	    else {
-		try {
-		    trySetAnimationSeparation(AnimationSeparation.VERTICAL);
-		}
-		catch (TilesetException e) {
-		    trySetAnimationSeparation(AnimationSeparation.HORIZONTAL);
-		}
-	    }
-	}
+            // try to divide the tile pattern in the biggest direction
+            if (width >= height) {
+                try {
+                    trySetAnimationSeparation(AnimationSeparation.HORIZONTAL);
+                }
+                catch (TilesetException e) {
+                    trySetAnimationSeparation(AnimationSeparation.VERTICAL);
+                    // an exception is thrown if this doesn't work either
+                }
+            }
+            else {
+                try {
+                    trySetAnimationSeparation(AnimationSeparation.VERTICAL);
+                }
+                catch (TilesetException e) {
+                    trySetAnimationSeparation(AnimationSeparation.HORIZONTAL);
+                }
+            }
+        }
 
-	this.animation = animation;
+        this.animation = animation;
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -347,7 +347,7 @@ public class TilePattern extends Observable {
      * @return true if the tile pattern is multi-frame, false otherwise
      */
     public boolean isMultiFrame() {
-	return isMultiFrame(animation);
+        return isMultiFrame(animation);
     }
 
     /**
@@ -356,7 +356,7 @@ public class TilePattern extends Observable {
      * @return true if this animation is multi-frame
      */
     public boolean isMultiFrame(Animation animation) {
-	return animation == Animation.SEQUENCE_012 || animation == Animation.SEQUENCE_0121
+        return animation == Animation.SEQUENCE_012 || animation == Animation.SEQUENCE_0121
           || animation == Animation.SEQUENCE_012_PARALLAX || animation == Animation.SEQUENCE_0121_PARALLAX;
     }
 
@@ -365,7 +365,7 @@ public class TilePattern extends Observable {
      * @return the type of separation of the 3 animation frames
      */
     public AnimationSeparation getAnimationSeparation() {
-	return animationSeparation;
+        return animationSeparation;
     }
 
     /**
@@ -377,14 +377,14 @@ public class TilePattern extends Observable {
      */
     public void setAnimationSeparation(AnimationSeparation animationSeparation) throws TilesetException {
 
-	if (!isMultiFrame()) {
-	    return;
-	}
+        if (!isMultiFrame()) {
+            return;
+        }
 
-	trySetAnimationSeparation(animationSeparation);
+        trySetAnimationSeparation(animationSeparation);
 
-	setChanged();
-	notifyObservers();
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -394,18 +394,18 @@ public class TilePattern extends Observable {
      * if the size of the 3 frames formed are not multiple of 8.
      */
     private void trySetAnimationSeparation(AnimationSeparation animationSeparation) throws TilesetException {
-	
-	// check that the tile pattern can be separated in 3 frames
-	if (animationSeparation == AnimationSeparation.HORIZONTAL
-	    && positionInTileset.width % 24 != 0) {
-	    throw new TilesetException("Cannot divide the tile in 3 frames : the size of each frame must be a multiple of 8 pixels");
-	}
-	else if (animationSeparation == AnimationSeparation.VERTICAL
-		 && positionInTileset.height % 24 != 0) {
-	    throw new TilesetException("Cannot divide the tile in 3 frames : the size of each frame must be a multiple of 8 pixels");
-	}
 
-	this.animationSeparation = animationSeparation;
+        // check that the tile pattern can be separated in 3 frames
+        if (animationSeparation == AnimationSeparation.HORIZONTAL
+            && positionInTileset.width % 24 != 0) {
+            throw new TilesetException("Cannot divide the tile in 3 frames : the size of each frame must be a multiple of 8 pixels");
+        }
+        else if (animationSeparation == AnimationSeparation.VERTICAL
+                 && positionInTileset.height % 24 != 0) {
+            throw new TilesetException("Cannot divide the tile in 3 frames : the size of each frame must be a multiple of 8 pixels");
+        }
+
+        this.animationSeparation = animationSeparation;
     }
 
     /**
@@ -414,16 +414,16 @@ public class TilePattern extends Observable {
      */
     public boolean equals(Object other) {
 
-	if (!(other instanceof TilePattern)) {
-	    return false;
-	}
+        if (!(other instanceof TilePattern)) {
+            return false;
+        }
 
-	TilePattern tilePattern = (TilePattern) other;
+        TilePattern tilePattern = (TilePattern) other;
 
-	return obstacle == tilePattern.obstacle
-	    && animation == tilePattern.animation
-	    && animationSeparation == tilePattern.animationSeparation
-	    && positionInTileset.equals(tilePattern.positionInTileset);
+        return obstacle == tilePattern.obstacle
+            && animation == tilePattern.animation
+            && animationSeparation == tilePattern.animationSeparation
+            && positionInTileset.equals(tilePattern.positionInTileset);
     }
 
     /**
@@ -433,29 +433,29 @@ public class TilePattern extends Observable {
      */
     public BufferedImage getTileImage(Tileset tileset, double zoom) {
 
-	int index;
-	if (zoom == 0.25) {
-	    index = 0;
-	}
-	else if (zoom == 0.5) {
-	    index = 1;
-	}
-	else if (zoom == 1.0) {
-	    index = 2;
-	}
-	else {
-	    index = 3;
-	}
+        int index;
+        if (zoom == 0.25) {
+            index = 0;
+        }
+        else if (zoom == 0.5) {
+            index = 1;
+        }
+        else if (zoom == 1.0) {
+            index = 2;
+        }
+        else {
+            index = 3;
+        }
 
-	if (images[index] == null) {
-	    int x = (int) Math.round(getX() * zoom);
-	    int y = (int) Math.round(getY() * zoom);
-	    int width = (int) Math.round(getWidth() * zoom);
-	    int height = (int) Math.round(getHeight() * zoom);
-	    images[index] = tileset.getScaledImage(index).getSubimage(x, y, width, height);
-	}
+        if (images[index] == null) {
+            int x = (int) Math.round(getX() * zoom);
+            int y = (int) Math.round(getY() * zoom);
+            int width = (int) Math.round(getWidth() * zoom);
+            int height = (int) Math.round(getHeight() * zoom);
+            images[index] = tileset.getScaledImage(index).getSubimage(x, y, width, height);
+        }
 
-	return images[index];
+        return images[index];
     }
 
     /**
@@ -470,19 +470,19 @@ public class TilePattern extends Observable {
      */
     public void paint(Graphics g, Tileset tileset, int x, int y, double zoom, boolean showTransparency) {
 
-	BufferedImage patternImage = getTileImage(tileset, zoom);
-	int dx = (int) Math.round(x * zoom);
-	int dy = (int) Math.round(y * zoom);
+        BufferedImage patternImage = getTileImage(tileset, zoom);
+        int dx = (int) Math.round(x * zoom);
+        int dy = (int) Math.round(y * zoom);
 
 /*
-	Color bgColor = showTransparency ? null : MapEntity.bgColor;
-	g.drawImage(getTileImage(tileset, zoom), dx, dy, bgColor, this);
+        Color bgColor = showTransparency ? null : MapEntity.bgColor;
+        g.drawImage(getTileImage(tileset, zoom), dx, dy, bgColor, this);
 */
 
         if (!showTransparency) {
-	    g.setColor(MapEntity.bgColor);
-	    g.fillRect(dx, dy, patternImage.getWidth(), patternImage.getHeight());
-	}
-	g.drawImage(patternImage, dx, dy, null);
+            g.setColor(MapEntity.bgColor);
+            g.fillRect(dx, dy, patternImage.getWidth(), patternImage.getHeight());
+        }
+        g.drawImage(patternImage, dx, dy, null);
     }
 }

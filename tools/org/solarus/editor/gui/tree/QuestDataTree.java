@@ -74,7 +74,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
 
     public void addMap(Map map) {
         DefaultMutableTreeNode mapNode = (DefaultMutableTreeNode) treeModel.getChild(treeModel.getRoot(), ResourceType.MAP.ordinal());
-	ResourceElement element = new ResourceElement(ResourceType.MAP, map.getId(), map.getName());
+        ResourceElement element = new ResourceElement(ResourceType.MAP, map.getId(), map.getName());
         ((EditorTreeModel) treeModel).insertNodeInto(new DefaultMutableTreeNode(element), mapNode, mapNode.getChildCount());
         map.addObserver(this);
         repaint();
@@ -82,7 +82,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
 
     public void addTileset(Tileset tileset) {
         DefaultMutableTreeNode tilesetNode = (DefaultMutableTreeNode) treeModel.getChild(treeModel.getRoot(), ResourceType.TILESET.ordinal());
-	ResourceElement element = new ResourceElement(ResourceType.TILESET, tileset.getId(), tileset.getName());
+        ResourceElement element = new ResourceElement(ResourceType.TILESET, tileset.getId(), tileset.getName());
         tilesetNode.add(new DefaultMutableTreeNode(element));
         repaint();
     }
@@ -113,14 +113,14 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
             Resource resource = Project.getResource(resourceType);
             String[] ids = resource.getIds();
 
-	    try {
-		for (int i = 0; i < ids.length; i++) {
-		    parentNode.add(new DefaultMutableTreeNode(new ResourceElement(resourceType, ids[i], resource.getElementName(ids[i]))));
-		}
-	    }
-	    catch (ZSDXException ex) {
-	        GuiTools.errorDialog("Unexpected error while building the quest tree: " + ex.getMessage());
-	    }
+            try {
+                for (int i = 0; i < ids.length; i++) {
+                    parentNode.add(new DefaultMutableTreeNode(new ResourceElement(resourceType, ids[i], resource.getElementName(ids[i]))));
+                }
+            }
+            catch (ZSDXException ex) {
+                GuiTools.errorDialog("Unexpected error while building the quest tree: " + ex.getMessage());
+            }
         }
     }
 
@@ -131,14 +131,14 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
             DefaultMutableTreeNode clickedNode = null;
             try {
                 if (e.getButton() == MouseEvent.BUTTON3) {
-		    // right click: show a popup menu if the element is a map
+                    // right click: show a popup menu if the element is a map
                     int row = QuestDataTree.this.getRowForLocation(e.getX(), e.getY());
                     if (row == -1) {
                         return;
                     }
                     QuestDataTree.this.setSelectionRow(row);
                     clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
-		    ResourceElement element = (ResourceElement) clickedNode.getUserObject();
+                    ResourceElement element = (ResourceElement) clickedNode.getUserObject();
                     if (element.type == ResourceType.MAP) {
                         popupMenu.setMap(element.id);
                         popupMenu.show((JComponent) e.getSource(),
@@ -146,83 +146,83 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                     }
 
                 } else if (e.getClickCount() == 2) {
-		    // double-click: open the clicked file
+                    // double-click: open the clicked file
 
                     clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
-		    if (clickedNode.isLeaf()) {
-			ResourceElement element = (ResourceElement) clickedNode.getUserObject();
+                    if (clickedNode.isLeaf()) {
+                        ResourceElement element = (ResourceElement) clickedNode.getUserObject();
 
-			switch (element.type) {
+                        switch (element.type) {
 
-			    case MAP:
-			    {
-				Map m = new Map(element.id);
-				MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, m);
-				editorWindow.addEditor(mapEditor);
-				m.addObserver(editorWindow);
-				break;
-			    }
+                            case MAP:
+                            {
+                                Map m = new Map(element.id);
+                                MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, m);
+                                editorWindow.addEditor(mapEditor);
+                                m.addObserver(editorWindow);
+                                break;
+                            }
 
-			    case TILESET:
-			    {
-				Tileset t = new Tileset(element.id);
-				TilesetEditorWindow tileEditor = new TilesetEditorWindow(quest, editorWindow, t);
-				editorWindow.addEditor(tileEditor);
-				break;
-			    }
+                            case TILESET:
+                            {
+                                Tileset t = new Tileset(element.id);
+                                TilesetEditorWindow tileEditor = new TilesetEditorWindow(quest, editorWindow, t);
+                                editorWindow.addEditor(tileEditor);
+                                break;
+                            }
 
-			    case LANGUAGE:
-			    {
-				/* TODO uncomment this when the dialog editor works
-				Dialogs d = new Dialogs(element.id);
-				DialogsEditorWindow dialogsEditor = new DialogsEditorWindow(quest, editorWindow, d);
-				editorWindow.addEditor(dialogsEditor);
-				*/
-				File f = Project.getDialogsFile(element.id);
-				FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+                            case LANGUAGE:
+                            {
+                                /* TODO uncomment this when the dialog editor works
+                                Dialogs d = new Dialogs(element.id);
+                                DialogsEditorWindow dialogsEditor = new DialogsEditorWindow(quest, editorWindow, d);
+                                editorWindow.addEditor(dialogsEditor);
+                                */
+                                File f = Project.getDialogsFile(element.id);
+                                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
 
-				editorWindow.addEditor(fileEditor);
-				break;
-			    }
+                                editorWindow.addEditor(fileEditor);
+                                break;
+                            }
 
-			    case ENEMY:
-			    {
-				File f = new File(Project.getEnemyScriptFile(element.id));
-				FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
-				editorWindow.addEditor(fileEditor);
-				break;
-			    }
+                            case ENEMY:
+                            {
+                                File f = new File(Project.getEnemyScriptFile(element.id));
+                                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+                                editorWindow.addEditor(fileEditor);
+                                break;
+                            }
 
-			    case ITEM:
-			    {
-				File f = new File(Project.getItemScriptFile(element.id));
-				FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
-				editorWindow.addEditor(fileEditor);
-				break;
-			    }
+                            case ITEM:
+                            {
+                                File f = new File(Project.getItemScriptFile(element.id));
+                                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+                                editorWindow.addEditor(fileEditor);
+                                break;
+                            }
 
-			    case SPRITE:
-			    {
-				File f = new File(Project.getSpriteFile(element.id).getAbsolutePath());
-				FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
-				editorWindow.addEditor(fileEditor);
-				break;
-			    }
+                            case SPRITE:
+                            {
+                                File f = new File(Project.getSpriteFile(element.id).getAbsolutePath());
+                                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+                                editorWindow.addEditor(fileEditor);
+                                break;
+                            }
 
-			    case SCREEN:
-			    {
-				File f = new File(Project.getScreenScriptFile(element.id));
-				FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
-				editorWindow.addEditor(fileEditor);
-				break;
-			    }
-			}
-		    }
-		}
+                            case SCREEN:
+                            {
+                                File f = new File(Project.getScreenScriptFile(element.id));
+                                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+                                editorWindow.addEditor(fileEditor);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
-	    catch (ZSDXException ex) {
-	        GuiTools.errorDialog(ex.getMessage());
-	    }
+            catch (ZSDXException ex) {
+                GuiTools.errorDialog(ex.getMessage());
+            }
         }
     }
 
@@ -246,18 +246,18 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource() == mapMenu) {
-	        // open the map
-		try {
-		    Map map = new Map(mapId);
-		    MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, map);
-		    editorWindow.addEditor(mapEditor);
-		    map.addObserver(editorWindow);
-		}
-		catch (ZSDXException ex) {
-		    GuiTools.errorDialog("Could not load the map: " + ex.getMessage());
-		}
+                // open the map
+                try {
+                    Map map = new Map(mapId);
+                    MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, map);
+                    editorWindow.addEditor(mapEditor);
+                    map.addObserver(editorWindow);
+                }
+                catch (ZSDXException ex) {
+                    GuiTools.errorDialog("Could not load the map: " + ex.getMessage());
+                }
             } else {
-	        // open the script
+                // open the script
                 File mapScritFile = Project.getMapScriptFile(mapId);
                 FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, mapScritFile);
                 editorWindow.addEditor(fileEditor);
@@ -275,18 +275,18 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
      */
     class ResourceElement {
 
-	public final ResourceType type;
- 	public final String id;
-	public final String name;
+        public final ResourceType type;
+         public final String id;
+        public final String name;
 
-	public ResourceElement(ResourceType type, String id, String name) {
-	    this.type = type;
-	    this.id = id;
-	    this.name = name;
-	}
+        public ResourceElement(ResourceType type, String id, String name) {
+            this.type = type;
+            this.id = id;
+            this.name = name;
+        }
 
-	public String toString() {
-	    return name;
-	}
+        public String toString() {
+            return name;
+        }
     }
 }

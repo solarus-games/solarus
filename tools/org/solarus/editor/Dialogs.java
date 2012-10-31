@@ -82,8 +82,8 @@ public class Dialogs extends Observable {
         setChanged();
         notifyObservers();
 
-	// disable the support of dialogs for now since it's not working
-	throw new ZSDXException("Creating dialogs with the GUI is not working yet, please use a text editor");
+        // disable the support of dialogs for now since it's not working
+        throw new ZSDXException("Creating dialogs with the GUI is not working yet, please use a text editor");
     }
 
     /**
@@ -98,8 +98,8 @@ public class Dialogs extends Observable {
         this.description = "";
         load();
 
-	// disable the support of dialogs for now since it's not working
-	throw new ZSDXException("Editing dialogs with the GUI is not working yet, please use a text editor");
+        // disable the support of dialogs for now since it's not working
+        throw new ZSDXException("Editing dialogs with the GUI is not working yet, please use a text editor");
     }
 
     /**

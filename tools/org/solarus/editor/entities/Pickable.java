@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,8 +29,8 @@ public class Pickable extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("pickable_items.png", 0, 0, 16, 16)
-	// TODO load the sprite instead (for now we always show a green rupee)
+        new EntityImageDescription("pickable_items.png", 0, 0, 16, 16)
+        // TODO load the sprite instead (for now we always show a green rupee)
     };
 
     /**
@@ -43,7 +43,7 @@ public class Pickable extends MapEntity {
      * @param map the map
      */
     public Pickable(Map map) throws MapException {
-	super(map, 16, 16);
+        super(map, 16, 16);
     }
 
     /**
@@ -51,16 +51,16 @@ public class Pickable extends MapEntity {
      * @return (8,13)
      */
     protected Point getOrigin() {
-	return origin;
+        return origin;
     }
 
     /**
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("treasureName", "");
-	setProperty("treasureVariant", 1);
-	setProperty("treasureSavegameVariable", -1);
+        setProperty("treasureName", "");
+        setProperty("treasureVariant", 1);
+        setProperty("treasureSavegameVariable", -1);
     }
 
     /**
@@ -69,18 +69,18 @@ public class Pickable extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-	String treasureName = getProperty("treasureName");
+        String treasureName = getProperty("treasureName");
 
-	if (treasureName.isEmpty()
-		|| treasureName.equals(Item.noneId)
-		|| treasureName.equals(Item.randomId)) {
-	    throw new MapException("The treasure of a pickable item cannot be empty or random");
-	}
+        if (treasureName.isEmpty()
+                || treasureName.equals(Item.noneId)
+                || treasureName.equals(Item.randomId)) {
+            throw new MapException("The treasure of a pickable item cannot be empty or random");
+        }
 
-	int savegameVariable = getIntegerProperty("treasureSavegameVariable");
-	if (savegameVariable < -1 || savegameVariable >= 32768) {
-	    throw new MapException("Invalid savegame variable");
-	}
+        int savegameVariable = getIntegerProperty("treasureSavegameVariable");
+        if (savegameVariable < -1 || savegameVariable >= 32768) {
+            throw new MapException("Invalid savegame variable");
+        }
     }
 }
 

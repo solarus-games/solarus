@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -67,12 +67,12 @@ public class MapViewRenderingOptions {
      * Constructor.
      */
     public MapViewRenderingOptions(MapView mapView) {
-	this.mapView = mapView;
-	this.zoom = 2.0;
-	this.showLayers = new boolean[] {true, true, true};
-	this.showObstacles = true;
-	this.showNonObstacles = true;
-	this.showTransparency = true;
+        this.mapView = mapView;
+        this.zoom = 2.0;
+        this.showLayers = new boolean[] {true, true, true};
+        this.showObstacles = true;
+        this.showNonObstacles = true;
+        this.showTransparency = true;
     }
 
     /**
@@ -80,7 +80,7 @@ public class MapViewRenderingOptions {
      * @return the map
      */
     public Map getMap() {
-	return mapView.getMap();
+        return mapView.getMap();
     }
 
     /**
@@ -88,7 +88,7 @@ public class MapViewRenderingOptions {
      * @return the zoom
      */
     public double getZoom() {
-	return zoom;
+        return zoom;
     }
 
     /**
@@ -96,8 +96,8 @@ public class MapViewRenderingOptions {
      * @param zoom the zoom
      */
     public void setZoom(double zoom) {
-	this.zoom = zoom;
-	mapView.update(getMap(), null);
+        this.zoom = zoom;
+        mapView.update(getMap(), null);
     }
 
     /**
@@ -105,7 +105,7 @@ public class MapViewRenderingOptions {
      * @return for each layer, true if it is shown and false otherwise
      */
     public boolean[] getShowLayers() {
-	return showLayers;
+        return showLayers;
     }
 
     /**
@@ -114,7 +114,7 @@ public class MapViewRenderingOptions {
      * @return true if the entities of this layer are shown, false otherwise
      */
     public boolean getShowLayer(Layer layer) {
-	return showLayers[layer.getId()];
+        return showLayers[layer.getId()];
     }
 
     /**
@@ -124,10 +124,10 @@ public class MapViewRenderingOptions {
      * @param showHighLayer true to show the entities of the high layer
      */
     public void setShowLayers(boolean showLowLayer, boolean showIntermediateLayer, boolean showHighLayer) {
-	showLayers[Layer.LOW.getId()] = showLowLayer;
-	showLayers[Layer.INTERMEDIATE.getId()] = showIntermediateLayer;
-	showLayers[Layer.HIGH.getId()] = showHighLayer;
-	mapView.repaint();
+        showLayers[Layer.LOW.getId()] = showLowLayer;
+        showLayers[Layer.INTERMEDIATE.getId()] = showIntermediateLayer;
+        showLayers[Layer.HIGH.getId()] = showHighLayer;
+        mapView.repaint();
     }
 
     /**
@@ -136,8 +136,8 @@ public class MapViewRenderingOptions {
      * @param show true to make the layer visible, false otherwise
      */
     public void setShowLayer(Layer layer, boolean show) {
-	showLayers[layer.getId()] = show;
-	mapView.repaint();
+        showLayers[layer.getId()] = show;
+        mapView.repaint();
     }
 
     /**
@@ -145,7 +145,7 @@ public class MapViewRenderingOptions {
      * @return true if entities with obstacles are shown.
      */
     public boolean getShowObstacles() {
-	return showObstacles;
+        return showObstacles;
     }
 
     /**
@@ -153,7 +153,7 @@ public class MapViewRenderingOptions {
      * @return true if entities without obstacles are shown.
      */
     public boolean getShowNonObstacles() {
-	return showNonObstacles;
+        return showNonObstacles;
     }
 
     /**
@@ -161,8 +161,8 @@ public class MapViewRenderingOptions {
      * @param showObstacleEntities true to show the entities with obstacles.
      */
     public void setShowObstacles(boolean showObstacles) {
-	this.showObstacles = showObstacles;
-	mapView.repaint();
+        this.showObstacles = showObstacles;
+        mapView.repaint();
     }
 
     /**
@@ -170,8 +170,8 @@ public class MapViewRenderingOptions {
      * @param showNonObstacleEntities true to show the entities without obstacles.
      */
     public void setShowNonObstacles(boolean showNonObstacles) {
-	this.showNonObstacles = showNonObstacles;
-	mapView.repaint();
+        this.showNonObstacles = showNonObstacles;
+        mapView.repaint();
     }
 
     /**
@@ -181,7 +181,7 @@ public class MapViewRenderingOptions {
      * are replaced by a background color.
      */
     public boolean getShowTransparency() {
-	return showTransparency;
+        return showTransparency;
     }
 
     /**
@@ -191,8 +191,8 @@ public class MapViewRenderingOptions {
      *
      */
     public void setShowTransparency(boolean showTransparency) {
-	this.showTransparency = showTransparency;
-	mapView.repaint();
+        this.showTransparency = showTransparency;
+        mapView.repaint();
     }
 
     /**
@@ -202,12 +202,12 @@ public class MapViewRenderingOptions {
      * @return true if this entity is shown with the current options
      */
     public boolean isEntityShown(MapEntity entity) {
-	Layer layer = entity.getLayer();
-	boolean obstacle = entity.getObstacle().isWall();
+        Layer layer = entity.getLayer();
+        boolean obstacle = entity.getObstacle().isWall();
 
-	return showLayers[layer.getId()] &&
-	  ((obstacle && showObstacles) ||
-	   (!obstacle && showNonObstacles));
+        return showLayers[layer.getId()] &&
+          ((obstacle && showObstacles) ||
+           (!obstacle && showNonObstacles));
     }
 }
 

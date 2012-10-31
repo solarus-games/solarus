@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -29,7 +29,7 @@ public class Enemy extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("miscellaneous_entities.png", 48, 32, 16, 16),
+        new EntityImageDescription("miscellaneous_entities.png", 48, 32, 16, 16),
     };
 
     /**
@@ -41,19 +41,19 @@ public class Enemy extends MapEntity {
      * Enemy ranks.
      */
     public enum Rank {
-	NORMAL,
-	MINIBOSS,
-	BOSS;
+        NORMAL,
+        MINIBOSS,
+        BOSS;
 
-	public static final String[] humanNames = {"Normal", "Miniboss", "Boss"};
+        public static final String[] humanNames = {"Normal", "Miniboss", "Boss"};
 
-	public int getId() {
-	    return ordinal();
-	}
+        public int getId() {
+            return ordinal();
+        }
 
-	public static Rank get(int id) {
-	    return values()[id];
-	}
+        public static Rank get(int id) {
+            return values()[id];
+        }
     }
 
     /**
@@ -61,7 +61,7 @@ public class Enemy extends MapEntity {
      * @param map the map
      */
     public Enemy(Map map)throws MapException {
-	super(map, 16, 16);
+        super(map, 16, 16);
         setDirection(3);
     }
 
@@ -82,7 +82,7 @@ public class Enemy extends MapEntity {
      * @return 4
      */
     public int getNbDirections() {
-	return 4;
+        return 4;
     }
 
     /**
@@ -90,19 +90,19 @@ public class Enemy extends MapEntity {
      * @return true
      */
     public boolean hasName() {
-	return true;
+        return true;
     }
 
     /**
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("breed", "");
-	setProperty("rank", Rank.NORMAL.ordinal());
-	setProperty("savegameVariable", -1);
-	setProperty("treasureName", Item.randomId);
-	setProperty("treasureVariant", 1);
-	setProperty("treasureSavegameVariable", -1);
+        setProperty("breed", "");
+        setProperty("rank", Rank.NORMAL.ordinal());
+        setProperty("savegameVariable", -1);
+        setProperty("treasureName", Item.randomId);
+        setProperty("treasureVariant", 1);
+        setProperty("treasureSavegameVariable", -1);
     }
 
     /**
@@ -132,27 +132,27 @@ public class Enemy extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-	String breed = getProperty("breed");
-	if (breed.length() == 0
-	    || breed.indexOf(' ') != -1
-	    || breed.indexOf('\t') != -1) {
-	    throw new MapException("An enemy's breed cannot be empty or have whitespaces");
-	}
+        String breed = getProperty("breed");
+        if (breed.length() == 0
+            || breed.indexOf(' ') != -1
+            || breed.indexOf('\t') != -1) {
+            throw new MapException("An enemy's breed cannot be empty or have whitespaces");
+        }
 
-	int savegameVariable = getIntegerProperty("savegameVariable");
-	if (savegameVariable < -1 || savegameVariable >= 32768) {
-	    throw new MapException("Invalid enemy savegame variable");
-	}
+        int savegameVariable = getIntegerProperty("savegameVariable");
+        if (savegameVariable < -1 || savegameVariable >= 32768) {
+            throw new MapException("Invalid enemy savegame variable");
+        }
 
-	Rank rank = Rank.get(getIntegerProperty("rank"));
-	if (rank != Rank.NORMAL && savegameVariable < 0) {
-	    throw new MapException("This enemy must be saved");
-	}
+        Rank rank = Rank.get(getIntegerProperty("rank"));
+        if (rank != Rank.NORMAL && savegameVariable < 0) {
+            throw new MapException("This enemy must be saved");
+        }
 
-	int treasureSavegameVariable = getIntegerProperty("treasureSavegameVariable");
-	if (treasureSavegameVariable < -1 || treasureSavegameVariable >= 32768) {
-	    throw new MapException("Invalid treasure savegame variable");
-	}
+        int treasureSavegameVariable = getIntegerProperty("treasureSavegameVariable");
+        if (treasureSavegameVariable < -1 || treasureSavegameVariable >= 32768) {
+            throw new MapException("Invalid treasure savegame variable");
+        }
     }
 
     /**

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -38,7 +38,7 @@ public class EditShopItemComponent extends EditEntityComponent {
      * @param entity the entity to edit
      */
     public EditShopItemComponent(Map map, MapEntity entity) {
-	super(map, entity);
+        super(map, entity);
     }
 
     /**
@@ -46,33 +46,33 @@ public class EditShopItemComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// treasure content
-	treasureField = new TreasureChooser(true, false);
-	addField("Treasure", treasureField);
+        // treasure content
+        treasureField = new TreasureChooser(true, false);
+        addField("Treasure", treasureField);
 
-	// price
-	priceField = new NumberChooser(10, 1, 999);
-	addField("Price", priceField);
+        // price
+        priceField = new NumberChooser(10, 1, 999);
+        addField("Price", priceField);
 
-	// description message id
-	messageIdField = new JTextField(15);
-	addField("Description message id", messageIdField);
+        // description message id
+        messageIdField = new JTextField(15);
+        addField("Description message id", messageIdField);
     }
 
     /**
      * Updates the information displayed in the fields.
      */
     public void update() {
-	super.update(); // update the common fields
+        super.update(); // update the common fields
 
-	ShopItem shopItem = (ShopItem) entity;
+        ShopItem shopItem = (ShopItem) entity;
 
-	treasureField.setTreasure(
-		shopItem.getProperty("treasureName"),
-		shopItem.getIntegerProperty("treasureVariant"),
-		shopItem.getIntegerProperty("treasureSavegameVariable"));
-	priceField.setNumber(shopItem.getIntegerProperty("price"));
-	messageIdField.setText(shopItem.getProperty("messageId"));
+        treasureField.setTreasure(
+                shopItem.getProperty("treasureName"),
+                shopItem.getIntegerProperty("treasureVariant"),
+                shopItem.getIntegerProperty("treasureSavegameVariable"));
+        priceField.setNumber(shopItem.getIntegerProperty("price"));
+        messageIdField.setText(shopItem.getProperty("messageId"));
     }
 
     /**
@@ -80,11 +80,11 @@ public class EditShopItemComponent extends EditEntityComponent {
      * @return the specific part of the action made on the entity
      */
     protected ActionEditEntitySpecific getSpecificAction() {
-	return new ActionEditEntitySpecific(entity,
-		treasureField.getTreasure().getItemName(),
-		Integer.toString(treasureField.getTreasure().getVariant()),
-		Integer.toString(treasureField.getTreasure().getSavegameVariable()),
-		Integer.toString(priceField.getNumber()),
-		messageIdField.getText());
+        return new ActionEditEntitySpecific(entity,
+                treasureField.getTreasure().getItemName(),
+                Integer.toString(treasureField.getTreasure().getVariant()),
+                Integer.toString(treasureField.getTreasure().getSavegameVariable()),
+                Integer.toString(priceField.getNumber()),
+                messageIdField.getText());
     }
 }

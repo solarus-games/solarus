@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,36 +35,36 @@ public class EntitySubtypeChooser extends JComboBox {
      * @param entityType the type of entity
      */
     public EntitySubtypeChooser(EntityType entityType) {
-	super();
+        super();
 
-	this.enumeration = entityType.getSubtypeEnum();
+        this.enumeration = entityType.getSubtypeEnum();
 
-	try {
-	    String[] humanNames = (String[]) enumeration.getField("humanNames").get(null);
-	    EntitySubtype[] values = (EntitySubtype[]) enumeration.getMethod("values").invoke(null, (Object[]) null);
-	    for (int i = 0; i < values.length; i++) {
-		addItem(new KeyValue(values[i].getId(), humanNames[i]));
-	    }
-	}
-	catch (NoSuchFieldException ex) {
-	    System.err.println("The field 'humanNames' is missing in enumeration " + enumeration.getName());
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
-	catch (NoSuchMethodException ex) {
-	    System.err.println("The method 'values' is missing in enumeration " + enumeration.getName());
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
-	catch (IllegalAccessException ex) {
-	    System.err.println("Cannot access a member in enumeration " + enumeration.getName() + ": ex.getMessage()");
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
-	catch (InvocationTargetException ex) {
-	    ex.getCause().printStackTrace();
-	    System.exit(1);
-	}
+        try {
+            String[] humanNames = (String[]) enumeration.getField("humanNames").get(null);
+            EntitySubtype[] values = (EntitySubtype[]) enumeration.getMethod("values").invoke(null, (Object[]) null);
+            for (int i = 0; i < values.length; i++) {
+                addItem(new KeyValue(values[i].getId(), humanNames[i]));
+            }
+        }
+        catch (NoSuchFieldException ex) {
+            System.err.println("The field 'humanNames' is missing in enumeration " + enumeration.getName());
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        catch (NoSuchMethodException ex) {
+            System.err.println("The method 'values' is missing in enumeration " + enumeration.getName());
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        catch (IllegalAccessException ex) {
+            System.err.println("Cannot access a member in enumeration " + enumeration.getName() + ": ex.getMessage()");
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        catch (InvocationTargetException ex) {
+            ex.getCause().printStackTrace();
+            System.exit(1);
+        }
     }
 
     /**
@@ -73,27 +73,27 @@ public class EntitySubtypeChooser extends JComboBox {
      */
     public EntitySubtype getValue() {
 
-	EntitySubtype value = null;
-	try {
-	    KeyValue item = (KeyValue) getSelectedItem();
-	    int id = Integer.parseInt(item.getKey());
-	    value = (EntitySubtype) enumeration.getMethod("get", int.class).invoke(null, id);
-	}
-	catch (NoSuchMethodException ex) {
-	    System.err.println("The method 'get' is missing in enumeration " + enumeration.getName());
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
-	catch (IllegalAccessException ex) {
-	    System.err.println("Cannot access method 'get' in enumeration " + enumeration.getName() + ": ex.getMessage()");
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
-	catch (InvocationTargetException ex) {
-	    ex.getCause().printStackTrace();
-	    System.exit(1);
-	}
-	return value;
+        EntitySubtype value = null;
+        try {
+            KeyValue item = (KeyValue) getSelectedItem();
+            int id = Integer.parseInt(item.getKey());
+            value = (EntitySubtype) enumeration.getMethod("get", int.class).invoke(null, id);
+        }
+        catch (NoSuchMethodException ex) {
+            System.err.println("The method 'get' is missing in enumeration " + enumeration.getName());
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        catch (IllegalAccessException ex) {
+            System.err.println("Cannot access method 'get' in enumeration " + enumeration.getName() + ": ex.getMessage()");
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        catch (InvocationTargetException ex) {
+            ex.getCause().printStackTrace();
+            System.exit(1);
+        }
+        return value;
     }
 
     /**
@@ -101,7 +101,7 @@ public class EntitySubtypeChooser extends JComboBox {
      * @param value the value to make selected
      */
     public void setValue(EntitySubtype value) {
-	KeyValue item = new KeyValue(value.getId(), null);
-	setSelectedItem(item);
+        KeyValue item = new KeyValue(value.getId(), null);
+        setSelectedItem(item);
     }
 }

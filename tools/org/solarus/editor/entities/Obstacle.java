@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -51,23 +51,23 @@ public enum Obstacle {
     private static ImageIcon[] icons = null;
 
     public static final String[] humanNames = {
-    	"No obstacle",
-    	"Full obstacle",
-    	"Top right",
-    	"Top left",
-    	"Bottom left",
-    	"Bottom right",
-    	"Empty",
-    	"Top right (water)",
-    	"Top left (water)",
-    	"Bottom left (water)",
-    	"Bottom right (water)",
-    	"Deep water",
-    	"Shallow water",
-    	"Hole",
-    	"Ladder",
-    	"Prickles",
-    	"Lava",
+            "No obstacle",
+            "Full obstacle",
+            "Top right",
+            "Top left",
+            "Bottom left",
+            "Bottom right",
+            "Empty",
+            "Top right (water)",
+            "Top left (water)",
+            "Bottom left (water)",
+            "Bottom right (water)",
+            "Deep water",
+            "Shallow water",
+            "Hole",
+            "Ladder",
+            "Prickles",
+            "Lava",
     };
 
     /**
@@ -76,7 +76,7 @@ public enum Obstacle {
      * @param iconFileName name of the icon file representing this obstacle property
      */
     private Obstacle(String iconFileName) {
-	this.iconFileName = iconFileName;
+        this.iconFileName = iconFileName;
     }
 
     /**
@@ -84,7 +84,7 @@ public enum Obstacle {
      * @return the name
      */
     public String getName() {
-	return humanNames[ordinal()];
+        return humanNames[ordinal()];
     }
 
     /**
@@ -92,7 +92,7 @@ public enum Obstacle {
      * @return true if this is a wall
      */
     public boolean isWall() {
-	return this == OBSTACLE || isDiagonal();
+        return this == OBSTACLE || isDiagonal();
     }
 
     /**
@@ -100,14 +100,14 @@ public enum Obstacle {
      * @return true if this is a diagonal wall
      */
     public boolean isDiagonal() {
-	return this == TOP_RIGHT ||
-	  this == TOP_LEFT ||
-	  this == BOTTOM_LEFT ||
-	  this == BOTTOM_RIGHT ||
-	  this == TOP_RIGHT_WATER ||
-	  this == TOP_LEFT_WATER ||
-	  this == BOTTOM_LEFT_WATER ||
-	  this == BOTTOM_RIGHT_WATER;
+        return this == TOP_RIGHT ||
+          this == TOP_LEFT ||
+          this == BOTTOM_LEFT ||
+          this == BOTTOM_RIGHT ||
+          this == TOP_RIGHT_WATER ||
+          this == TOP_LEFT_WATER ||
+          this == BOTTOM_LEFT_WATER ||
+          this == BOTTOM_RIGHT_WATER;
     }
 
     /**
@@ -115,7 +115,7 @@ public enum Obstacle {
      * @return the icon for this obstacle property
      */
     public ImageIcon getIcon() {
-	return getIcons()[ordinal()];
+        return getIcons()[ordinal()];
     }
 
     /**
@@ -124,16 +124,16 @@ public enum Obstacle {
      */
     public static ImageIcon[] getIcons() {
 
-	if (icons == null) {
-	    icons = new ImageIcon[values().length];
-	    int i = 0;
-	    for (Obstacle value: values()) {
-		icons[i] = Project.getEditorImageIcon(value.iconFileName);
-		icons[i].setDescription(value.name());
-		i++;
-	    }
-	}
-	return icons;
+        if (icons == null) {
+            icons = new ImageIcon[values().length];
+            int i = 0;
+            for (Obstacle value: values()) {
+                icons[i] = Project.getEditorImageIcon(value.iconFileName);
+                icons[i].setDescription(value.name());
+                i++;
+            }
+        }
+        return icons;
     }
 }
 

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -27,39 +27,39 @@ public class ActionChangeTileset extends MapEditorAction {
     private String tilesetIdBefore;
     private String tilesetIdAfter;
     private MapEntities[] allEntitiesBefore;
-    
+
     /**
      * Constructor.
      * @param map the map
      * @param tilesetId id of the new tileset
      */
     public ActionChangeTileset(Map map, String tilesetId) {
-	super(map);
+        super(map);
 
-	this.tilesetIdAfter = tilesetId;
-	this.tilesetIdBefore = map.getTilesetId();
-	this.allEntitiesBefore = new MapEntities[Layer.values().length];
+        this.tilesetIdAfter = tilesetId;
+        this.tilesetIdBefore = map.getTilesetId();
+        this.allEntitiesBefore = new MapEntities[Layer.values().length];
 
-	// copy allEntities
-	MapEntities[] allEntities = map.getAllEntities();
-	for (int i = 0; i < allEntitiesBefore.length; i++ ) {
-	    allEntitiesBefore[i] = new MapEntities(allEntities[i]);
-	}
+        // copy allEntities
+        MapEntities[] allEntities = map.getAllEntities();
+        for (int i = 0; i < allEntitiesBefore.length; i++ ) {
+            allEntitiesBefore[i] = new MapEntities(allEntities[i]);
+        }
     }
 
     /**
      * Executes the action.
      */
     public void execute() throws ZSDXException {
-	map.setTileset(tilesetIdAfter);
+        map.setTileset(tilesetIdAfter);
     }
 
     /**
      * Undoes the action.
      */
     public void undo() throws ZSDXException {
-	map.setTileset(tilesetIdBefore);
-	map.setAllEntities(allEntitiesBefore);
+        map.setTileset(tilesetIdBefore);
+        map.setAllEntities(allEntitiesBefore);
     }
 
 }

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -46,7 +46,7 @@ public class ActionEditEntity extends MapEditorAction {
     private EntitySubtype subtypeAfter;
 
     // additional action specific to each entity type
-    private ActionEditEntitySpecific specificAction; 
+    private ActionEditEntitySpecific specificAction;
 
     /**
      * Constructor.
@@ -66,84 +66,84 @@ public class ActionEditEntity extends MapEditorAction {
      * of the entity
      */
     public ActionEditEntity(Map map, MapEntity entity, String name,
-	    Layer layer, Point position, Dimension size, int direction,
-	    EntitySubtype subtype, ActionEditEntitySpecific specificAction) {
-	super(map);
+            Layer layer, Point position, Dimension size, int direction,
+            EntitySubtype subtype, ActionEditEntitySpecific specificAction) {
+        super(map);
 
-	this.entity = entity;
-	this.specificAction = specificAction;
+        this.entity = entity;
+        this.specificAction = specificAction;
 
-	// name
-	if (entity.hasName()) {
-	    this.nameBefore = entity.getName();
-	    this.nameAfter = name;
-	}
+        // name
+        if (entity.hasName()) {
+            this.nameBefore = entity.getName();
+            this.nameAfter = name;
+        }
 
-	// layer
-	this.layerBefore = entity.getLayer();
-	this.layerAfter = layer;
+        // layer
+        this.layerBefore = entity.getLayer();
+        this.layerAfter = layer;
 
-	// position and size
-	this.positionBefore = new Rectangle(entity.getX(), entity.getY(), 0, 0);
-	this.positionAfter = new Rectangle(position.x, position.y, 0, 0);
+        // position and size
+        this.positionBefore = new Rectangle(entity.getX(), entity.getY(), 0, 0);
+        this.positionAfter = new Rectangle(position.x, position.y, 0, 0);
 
-	// size
-	if (entity.isResizable()) {
-	    this.positionBefore.setSize(entity.getSize());
-	    this.positionAfter.setSize(size);
-	}
+        // size
+        if (entity.isResizable()) {
+            this.positionBefore.setSize(entity.getSize());
+            this.positionAfter.setSize(size);
+        }
 
-	// direction
-	if (entity.hasDirectionProperty()) {
-	    this.directionBefore = entity.getDirection();
-	    this.directionAfter = direction;
-	}
+        // direction
+        if (entity.hasDirectionProperty()) {
+            this.directionBefore = entity.getDirection();
+            this.directionAfter = direction;
+        }
 
-	// subtype
-	if (entity.hasSubtype()) {
-	    this.subtypeBefore = entity.getSubtype();
-	    this.subtypeAfter = subtype;
-	}
+        // subtype
+        if (entity.hasSubtype()) {
+            this.subtypeBefore = entity.getSubtype();
+            this.subtypeAfter = subtype;
+        }
     }
-    
+
     /**
      * Executes the action.
      */
     public void execute() throws ZSDXException {
 
-	// name
-	if (entity.hasName()) {
-	    entity.setName(nameAfter);
-	}
+        // name
+        if (entity.hasName()) {
+            entity.setName(nameAfter);
+        }
 
-	// layer
-	map.setEntityLayer(entity, layerAfter);
+        // layer
+        map.setEntityLayer(entity, layerAfter);
 
-	// position
-	map.setEntityPosition(entity, positionAfter.x, positionAfter.y);
+        // position
+        map.setEntityPosition(entity, positionAfter.x, positionAfter.y);
 
-	// size
-	if (entity.isResizable()) {
-	    map.setEntitySize(entity, positionAfter.width, positionAfter.height);
-	}
+        // size
+        if (entity.isResizable()) {
+            map.setEntitySize(entity, positionAfter.width, positionAfter.height);
+        }
 
-	// direction
-	if (entity.hasDirectionProperty()) {
-	    map.setEntityDirection(entity, directionAfter);
-	}
+        // direction
+        if (entity.hasDirectionProperty()) {
+            map.setEntityDirection(entity, directionAfter);
+        }
 
-	// subtype
-	if (entity.hasSubtype()) {
-	    entity.setSubtype(subtypeAfter);
-	}
+        // subtype
+        if (entity.hasSubtype()) {
+            entity.setSubtype(subtypeAfter);
+        }
 
-	// specific data
-	if (specificAction != null) {
-	    specificAction.execute();
-	}
+        // specific data
+        if (specificAction != null) {
+            specificAction.execute();
+        }
 
-	entity.checkProperties();
-	entity.updateImageDescription();
+        entity.checkProperties();
+        entity.updateImageDescription();
     }
 
     /**
@@ -151,39 +151,39 @@ public class ActionEditEntity extends MapEditorAction {
      */
     public void undo() throws ZSDXException {
 
-	// specific data
-	if (specificAction != null) {
-	    specificAction.undo();
-	}
+        // specific data
+        if (specificAction != null) {
+            specificAction.undo();
+        }
 
-	// subtype
-	if (entity.hasSubtype()) {
-	    entity.setSubtype(subtypeBefore);
-	}
+        // subtype
+        if (entity.hasSubtype()) {
+            entity.setSubtype(subtypeBefore);
+        }
 
-	// direction
-	if (entity.hasDirectionProperty()) {
-	    map.setEntityDirection(entity, directionBefore);
-	}
+        // direction
+        if (entity.hasDirectionProperty()) {
+            map.setEntityDirection(entity, directionBefore);
+        }
 
-	// size
-	if (entity.isResizable()) {
-	    map.setEntitySize(entity, positionBefore.width, positionBefore.height);
-	}
+        // size
+        if (entity.isResizable()) {
+            map.setEntitySize(entity, positionBefore.width, positionBefore.height);
+        }
 
-	// position
-	map.setEntityPosition(entity, positionBefore.x, positionBefore.y);
+        // position
+        map.setEntityPosition(entity, positionBefore.x, positionBefore.y);
 
-	// layer
-	map.setEntityLayer(entity, layerBefore);
+        // layer
+        map.setEntityLayer(entity, layerBefore);
 
-	// name
-	if (entity.hasName()) {
-	    entity.setName(nameBefore);
-	}
+        // name
+        if (entity.hasName()) {
+            entity.setName(nameBefore);
+        }
 
-	entity.updateImageDescription();
-	// note that we don't check the properties: if the entity was
-	// in an invalid state, let the action be undone anyway
+        entity.updateImageDescription();
+        // note that we don't check the properties: if the entity was
+        // in an invalid state, let the action be undone anyway
     }
 }

@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -65,83 +65,83 @@ public class TilePatternsView extends JPanel {
      * Constructor.
      */
     public TilePatternsView() {
-	super();
+        super();
 
-	tilePatternIcons = new ArrayList<TilePatternIcon>();
+        tilePatternIcons = new ArrayList<TilePatternIcon>();
 
-	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-	setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-	// tileset properties
-	// the tile pattern list
-	// view of the current tile pattern
+        // tileset properties
+        // the tile pattern list
+        // view of the current tile pattern
 
-	// tileset properties
-	tilesetPropertiesView = new TilesetPropertiesView();
-	tilesetPropertiesView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
-	tilesetPropertiesView.setAlignmentX(Component.LEFT_ALIGNMENT);
+        // tileset properties
+        tilesetPropertiesView = new TilesetPropertiesView();
+        tilesetPropertiesView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
+        tilesetPropertiesView.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-	// list
-	tilePatternsListModel = new TilePatternsListModel();
-	tilePatternsList = new JList(tilePatternsListModel);
-	tilePatternsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	tilePatternsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-	tilePatternsList.setVisibleRowCount(-1); // make the rows as wide as possible
- 	tilePatternsList.getSelectionModel().addListSelectionListener(new TilePatternListSelectionListener());
-	tilePatternsList.setCellRenderer(new TilePatternListRenderer());
+        // list
+        tilePatternsListModel = new TilePatternsListModel();
+        tilePatternsList = new JList(tilePatternsListModel);
+        tilePatternsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tilePatternsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        tilePatternsList.setVisibleRowCount(-1); // make the rows as wide as possible
+         tilePatternsList.getSelectionModel().addListSelectionListener(new TilePatternListSelectionListener());
+        tilePatternsList.setCellRenderer(new TilePatternListRenderer());
 
-	tilePatternsList.addKeyListener(new KeyAdapter() {
-		public void keyPressed(KeyEvent keyEvent) {
-		    if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
-			if (tileset != null && tileset.getSelectedTilePattern() != null) {
-			    tileset.removeTilePattern();
-			}
-		    }
-		}
-	    });
+        tilePatternsList.addKeyListener(new KeyAdapter() {
+                public void keyPressed(KeyEvent keyEvent) {
+                    if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
+                        if (tileset != null && tileset.getSelectedTilePattern() != null) {
+                            tileset.removeTilePattern();
+                        }
+                    }
+                }
+            });
 
-	JScrollPane listScroller = new JScrollPane(tilePatternsList);
- 	listScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
-	listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JScrollPane listScroller = new JScrollPane(tilePatternsList);
+         listScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        listScroller.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-	// tile view
-	tilePatternView = new TilePatternView();
- 	tilePatternView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
-	tilePatternView.setAlignmentX(Component.LEFT_ALIGNMENT);
+        // tile view
+        tilePatternView = new TilePatternView();
+         tilePatternView.setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
+        tilePatternView.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-	add(tilesetPropertiesView);
-	add(Box.createRigidArea(new Dimension(0, 5)));
-	add(listScroller);
-	add(Box.createRigidArea(new Dimension(0, 5)));
-	add(tilePatternView);
+        add(tilesetPropertiesView);
+        add(Box.createRigidArea(new Dimension(0, 5)));
+        add(listScroller);
+        add(Box.createRigidArea(new Dimension(0, 5)));
+        add(tilePatternView);
     }
 
     /**
      * Sets the tileset observed.
-     * @param tileset the current tileset, or null if there is no tileset 
+     * @param tileset the current tileset, or null if there is no tileset
      */
     public void setTileset(Tileset tileset) {
-	
-	if (tileset != this.tileset) {
 
-	    if (this.tileset != null) {
-		this.tileset.deleteObserver(tilePatternsListModel);
-	    }
+        if (tileset != this.tileset) {
 
-	    this.tileset = tileset;
-	    tilesetPropertiesView.setTileset(tileset);
-	    tilePatternView.setTileset(tileset);
+            if (this.tileset != null) {
+                this.tileset.deleteObserver(tilePatternsListModel);
+            }
 
-	    if (tileset != null) {
-		tileset.addObserver(tilePatternsListModel);
-	    
-		loadIcons();
-		tilePatternsListModel.update(tileset, null);
-	    }
-	    else {
-		repaint();
-	    }
-	}
+            this.tileset = tileset;
+            tilesetPropertiesView.setTileset(tileset);
+            tilePatternView.setTileset(tileset);
+
+            if (tileset != null) {
+                tileset.addObserver(tilePatternsListModel);
+
+                loadIcons();
+                tilePatternsListModel.update(tileset, null);
+            }
+            else {
+                repaint();
+            }
+        }
     }
 
     /**
@@ -149,11 +149,11 @@ public class TilePatternsView extends JPanel {
      */
     private void loadIcons() {
 
-	tilePatternIcons.clear();
+        tilePatternIcons.clear();
 
-	for (TilePattern tilePattern: tileset.getTilePatterns()) {
-	    tilePatternIcons.add(new TilePatternIcon(tilePattern, tileset));
-	}
+        for (TilePattern tilePattern: tileset.getTilePatterns()) {
+            tilePatternIcons.add(new TilePatternIcon(tilePattern, tileset));
+        }
     }
 
     /**
@@ -162,22 +162,22 @@ public class TilePatternsView extends JPanel {
      */
     private class TilePatternListSelectionListener implements ListSelectionListener {
 
-	/**
-	 * This function is called when the selection is changed.
-	 */
-	public void valueChanged(ListSelectionEvent e) {
+        /**
+         * This function is called when the selection is changed.
+         */
+        public void valueChanged(ListSelectionEvent e) {
 
-	    // get the rank of the tile pattern just selected in the list (0 to nbTilePatterns)
-	    int selectedTilePatternRank = tilePatternsList.getSelectedIndex();
+            // get the rank of the tile pattern just selected in the list (0 to nbTilePatterns)
+            int selectedTilePatternRank = tilePatternsList.getSelectedIndex();
 
-	    // select this tile pattern in the tileset
-	    if (selectedTilePatternRank != -1) {
-		tileset.setSelectedTilePatternId(tileset.rankToId(selectedTilePatternRank));
-	    }
-	    else {
-		tileset.unselectTilePattern();
-	    }
-	}
+            // select this tile pattern in the tileset
+            if (selectedTilePatternRank != -1) {
+                tileset.setSelectedTilePatternId(tileset.rankToId(selectedTilePatternRank));
+            }
+            else {
+                tileset.unselectTilePattern();
+            }
+        }
     }
 
     /**
@@ -185,65 +185,65 @@ public class TilePatternsView extends JPanel {
      */
     private class TilePatternsListModel extends AbstractListModel implements Observer {
 
-	/**
-	 * Returns the number of tile patterns.
-	 */
-	public int getSize() {
-	    int size = 0;
+        /**
+         * Returns the number of tile patterns.
+         */
+        public int getSize() {
+            int size = 0;
 
-	    if (tileset != null) {
-		size = tileset.getNbTilePatterns();
-	    }
+            if (tileset != null) {
+                size = tileset.getNbTilePatterns();
+            }
 
-	    return size;
-	}
-	
-	/**
-	 * Returns the a component with a 16*16 image of the specified tile pattern. 
-	 */
-	public Object getElementAt(int rank) {
+            return size;
+        }
 
-	    return tileset.getTilePattern(tileset.rankToId(rank));
-	}
+        /**
+         * Returns the a component with a 16*16 image of the specified tile pattern.
+         */
+        public Object getElementAt(int rank) {
 
-	/**
-	 * This function is called when the tileset changes.
-	 * @param o the tileset
-	 * @param params information about what has changed:
-	 *   - a TilePattern: indicates that this tile pattern has just been created
-	 *   - an Integer: indicates that the tile pattern with this id has just been removed
-	 *   - null: other cases
-	 */
-	public void update(Observable o, Object params) {
+            return tileset.getTilePattern(tileset.rankToId(rank));
+        }
 
-	    // reload the icons if a tile was added or removed
-	    if (params instanceof Integer || params instanceof TilePattern) {
-		loadIcons();
-	    }
+        /**
+         * This function is called when the tileset changes.
+         * @param o the tileset
+         * @param params information about what has changed:
+         *   - a TilePattern: indicates that this tile pattern has just been created
+         *   - an Integer: indicates that the tile pattern with this id has just been removed
+         *   - null: other cases
+         */
+        public void update(Observable o, Object params) {
 
-	    // update the enabled state of the buttons
-	    int tilesetSelectedPatternId = tileset.getSelectedTilePatternId();
-	    int listSelectedRank = tilePatternsList.getSelectedIndex();
+            // reload the icons if a tile was added or removed
+            if (params instanceof Integer || params instanceof TilePattern) {
+                loadIcons();
+            }
 
-	    if (tileset.getSelectedTilePattern() != null) {
-		// an existing tile pattern is selected
-		// make this tile pattern selected in the list
-		int listRank = tileset.idToRank(tilesetSelectedPatternId);
-		if (listRank != listSelectedRank) {
-		    tilePatternsList.setSelectedIndex(listRank);
-		    tilePatternsList.ensureIndexIsVisible(listRank);
-		}
-	    }
-	    else if (tileset.getSelectedTilePattern() == null) {
-		// no tile pattern is selected anymore
-		tilePatternsList.removeSelectionInterval(listSelectedRank, listSelectedRank);
-	    }
-	    // redraw the table
-	    fireContentsChanged(this, 0, tileset.getNbTilePatterns() - 1);
+            // update the enabled state of the buttons
+            int tilesetSelectedPatternId = tileset.getSelectedTilePatternId();
+            int listSelectedRank = tilePatternsList.getSelectedIndex();
 
-	    // notify the tile pattern view
-	    tilePatternView.setCurrentTilePattern(tileset.getSelectedTilePattern());
-	}
+            if (tileset.getSelectedTilePattern() != null) {
+                // an existing tile pattern is selected
+                // make this tile pattern selected in the list
+                int listRank = tileset.idToRank(tilesetSelectedPatternId);
+                if (listRank != listSelectedRank) {
+                    tilePatternsList.setSelectedIndex(listRank);
+                    tilePatternsList.ensureIndexIsVisible(listRank);
+                }
+            }
+            else if (tileset.getSelectedTilePattern() == null) {
+                // no tile pattern is selected anymore
+                tilePatternsList.removeSelectionInterval(listSelectedRank, listSelectedRank);
+            }
+            // redraw the table
+            fireContentsChanged(this, 0, tileset.getNbTilePatterns() - 1);
+
+            // notify the tile pattern view
+            tilePatternView.setCurrentTilePattern(tileset.getSelectedTilePattern());
+        }
     }
 
     /**
@@ -251,17 +251,17 @@ public class TilePatternsView extends JPanel {
      */
     private class TilePatternListRenderer implements ListCellRenderer {
 
-	/**
-	 * Returns a component representing a tile.
-	 */
-	public Component getListCellRendererComponent(JList list, Object value, int rank,
-						      boolean isSelected, boolean cellHasFocus) {
-	    if (rank >= tilePatternIcons.size()) {
-		// the icon doesn't exist yet
-		loadIcons();
-	    }
+        /**
+         * Returns a component representing a tile.
+         */
+        public Component getListCellRendererComponent(JList list, Object value, int rank,
+                                                      boolean isSelected, boolean cellHasFocus) {
+            if (rank >= tilePatternIcons.size()) {
+                // the icon doesn't exist yet
+                loadIcons();
+            }
 
-	    return tilePatternIcons.get(rank);
-	}
+            return tilePatternIcons.get(rank);
+        }
     }
 }

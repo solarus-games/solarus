@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -28,39 +28,39 @@ public class CoordinatesField extends JPanel {
     // subcomponents
     protected JSpinner fieldX;
     protected JSpinner fieldY;
-    
+
     /**
      * Constructor.
      */
     public CoordinatesField() {
-	setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-	fieldX = new JSpinner();
-	fieldY = new JSpinner();
+        fieldX = new JSpinner();
+        fieldY = new JSpinner();
 
-	JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) fieldX.getEditor();
-	editor.getTextField().setColumns(4);
-	editor = (JSpinner.DefaultEditor) fieldY.getEditor();
-	editor.getTextField().setColumns(4);
+        JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) fieldX.getEditor();
+        editor.getTextField().setColumns(4);
+        editor = (JSpinner.DefaultEditor) fieldY.getEditor();
+        editor.getTextField().setColumns(4);
 
-	Dimension size = new Dimension(5, 0);
-	add(fieldX);
-	add(Box.createRigidArea(size));
-	add(new JLabel("x"));
-	add(Box.createRigidArea(size));
-	add(fieldY);
+        Dimension size = new Dimension(5, 0);
+        add(fieldX);
+        add(Box.createRigidArea(size));
+        add(new JLabel("x"));
+        add(Box.createRigidArea(size));
+        add(fieldY);
 
-	setCoordinates(0, 0);
-	setEnabled(false);
+        setCoordinates(0, 0);
+        setEnabled(false);
     }
-        
+
     /**
      * Enables or disables the two text fields.
      * @param enable true to make the text fields enabled, false to disable them
      */
     public void setEnabled(boolean enable) {
-	fieldX.setEnabled(enable);
-	fieldY.setEnabled(enable);
+        fieldX.setEnabled(enable);
+        fieldY.setEnabled(enable);
     }
 
     /**
@@ -69,13 +69,13 @@ public class CoordinatesField extends JPanel {
      * @param dy the difference between two elements of the Y field sequence
      */
     public void setStepSize(int dx, int dy) {
-	SpinnerNumberModel spinnerModel = (SpinnerNumberModel) fieldX.getModel();
-	spinnerModel.setStepSize(dx);
-	
-	spinnerModel = (SpinnerNumberModel) fieldY.getModel();
-	spinnerModel.setStepSize(dy);
+        SpinnerNumberModel spinnerModel = (SpinnerNumberModel) fieldX.getModel();
+        spinnerModel.setStepSize(dx);
+
+        spinnerModel = (SpinnerNumberModel) fieldY.getModel();
+        spinnerModel.setStepSize(dy);
     }
-    
+
     /**
      * Sets the minimum values of the two fields.
      * If the current values are lower than the minimum, they are updated.
@@ -83,28 +83,28 @@ public class CoordinatesField extends JPanel {
      * @param y minimum y value
      */
     public void setMinimum(int x, int y) {
-	SpinnerNumberModel spinnerModel = (SpinnerNumberModel) fieldX.getModel();
-	spinnerModel.setMinimum(x);
-	
-	spinnerModel = (SpinnerNumberModel) fieldY.getModel();
-	spinnerModel.setMinimum(y);
-	
-	if (getXValue() < x) {
-	    setXValue(x);
-	}
-	
-	if (getYValue() < y) {
-	    setYValue(y);
-	}
+        SpinnerNumberModel spinnerModel = (SpinnerNumberModel) fieldX.getModel();
+        spinnerModel.setMinimum(x);
+
+        spinnerModel = (SpinnerNumberModel) fieldY.getModel();
+        spinnerModel.setMinimum(y);
+
+        if (getXValue() < x) {
+            setXValue(x);
+        }
+
+        if (getYValue() < y) {
+            setYValue(y);
+        }
     }
-    
+
     /**
      * Returns the value of the X field.
      * @return x
      */
     private int getXValue() {
-	Number n = (Number) fieldX.getValue();
-	return n.intValue();
+        Number n = (Number) fieldX.getValue();
+        return n.intValue();
     }
 
     /**
@@ -112,8 +112,8 @@ public class CoordinatesField extends JPanel {
      * @return y
      */
     private int getYValue() {
-	Number n = (Number) fieldY.getValue();
-	return n.intValue();
+        Number n = (Number) fieldY.getValue();
+        return n.intValue();
     }
 
     /**
@@ -121,7 +121,7 @@ public class CoordinatesField extends JPanel {
      * @return the coordinates entered
      */
     public Point getCoordinates() {
-	return new Point(getXValue(), getYValue());
+        return new Point(getXValue(), getYValue());
     }
 
     /**
@@ -129,9 +129,9 @@ public class CoordinatesField extends JPanel {
      * @param x the new x value
      */
     public void setXValue(int x) {
-	if (x != getXValue()) {
-	    fieldX.setValue(new Integer(x));
-	}
+        if (x != getXValue()) {
+            fieldX.setValue(new Integer(x));
+        }
     }
 
     /**
@@ -139,9 +139,9 @@ public class CoordinatesField extends JPanel {
      * @param y the new y value
      */
     public void setYValue(int y) {
-	if (y != getYValue()) {
-	    fieldY.setValue(new Integer(y));
-	}
+        if (y != getYValue()) {
+            fieldY.setValue(new Integer(y));
+        }
     }
 
     /**
@@ -150,8 +150,8 @@ public class CoordinatesField extends JPanel {
      * @param y the new y value
      */
     public void setCoordinates(int x, int y) {
-	setXValue(x);
-	setYValue(y);
+        setXValue(x);
+        setYValue(y);
     }
 
     /**
@@ -159,7 +159,7 @@ public class CoordinatesField extends JPanel {
      * @param d the new coordinates
      */
     public void setCoordinates(Point p) {
-	setCoordinates(p.x, p.y);
+        setCoordinates(p.x, p.y);
     }
 
     /**
@@ -168,9 +168,9 @@ public class CoordinatesField extends JPanel {
      */
     public void addChangeListener(final ChangeListener changeListener) {
 
-	// add the change listener to the arrows
-	fieldX.addChangeListener(changeListener);
-	fieldY.addChangeListener(changeListener);
+        // add the change listener to the arrows
+        fieldX.addChangeListener(changeListener);
+        fieldY.addChangeListener(changeListener);
     }
 
     /**
@@ -183,13 +183,13 @@ public class CoordinatesField extends JPanel {
      */
     public boolean hasChanged(ChangeEvent changeEvent, int x, int y) {
 
-	boolean result;
-	if (changeEvent.getSource() == fieldX) {
-	    result = (getXValue() != x);
-	}
-	else {
-	    result = (getYValue() != y);
-	}
-	return result;
+        boolean result;
+        if (changeEvent.getSource() == fieldX) {
+            result = (getXValue() != x);
+        }
+        else {
+            result = (getYValue() != y);
+        }
+        return result;
     }
 }

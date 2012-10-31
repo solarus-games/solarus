@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -35,7 +35,7 @@ public class ResourceDatabase extends Observable {
      * The project.
      */
     private Project project;
-    
+
     /**
      * The resources.
      */
@@ -46,11 +46,11 @@ public class ResourceDatabase extends Observable {
      */
     public ResourceDatabase(Project project) {
 
-	this.project = project;
-	this.resources = new Resource[ResourceType.values().length];
-	for (ResourceType resourceType: ResourceType.values()) {
-	    resources[resourceType.getId()] = new Resource(resourceType.isIdAutoIncremented());
-	}
+        this.project = project;
+        this.resources = new Resource[ResourceType.values().length];
+        for (ResourceType resourceType: ResourceType.values()) {
+            resources[resourceType.getId()] = new Resource(resourceType.isIdAutoIncremented());
+        }
     }
 
     /**
@@ -59,18 +59,18 @@ public class ResourceDatabase extends Observable {
      * @return the resource of this type
      */
     public Resource getResource(ResourceType resourceType) {
-	return resources[resourceType.getId()];
+        return resources[resourceType.getId()];
     }
 
     /**
      * Clears all resources.
      */
     public void clear() {
-	for (ResourceType resourceType: ResourceType.values()) {
-	    getResource(resourceType).clear();
-	}
+        for (ResourceType resourceType: ResourceType.values()) {
+            getResource(resourceType).clear();
+        }
     }
-    
+
     /**
      * Reads the file project_db.dat of the project, i.e. the list
      * of the game resources and their name.
@@ -78,80 +78,80 @@ public class ResourceDatabase extends Observable {
      * @throws IOException if the file could not be loaded
      */
     public void load() throws ZSDXException, IOException {
-	
-	int lineNumber = 0;
 
-	try {
-	    clear();
+        int lineNumber = 0;
 
-	    File dbFile = project.getResourceDatabaseFile();
-	    BufferedReader buff = new BufferedReader(new FileReader(dbFile));
+        try {
+            clear();
 
-	    String line = buff.readLine();
-	    while (line != null) {
+            File dbFile = project.getResourceDatabaseFile();
+            BufferedReader buff = new BufferedReader(new FileReader(dbFile));
 
-		lineNumber++;
+            String line = buff.readLine();
+            while (line != null) {
 
-		if (line.length() != 0 && line.charAt(0) != '#') {
-		    // skip the comments and the empty lines
+                lineNumber++;
 
-		    StringTokenizer tokenizer = new StringTokenizer(line, "\t");
-		    ResourceType resourceType = ResourceType.get(Integer.parseInt(tokenizer.nextToken()));
+                if (line.length() != 0 && line.charAt(0) != '#') {
+                    // skip the comments and the empty lines
 
-		    String id = tokenizer.nextToken();
-		    String name = tokenizer.nextToken();
-		    getResource(resourceType).setElementName(id, name);
-		}
+                    StringTokenizer tokenizer = new StringTokenizer(line, "\t");
+                    ResourceType resourceType = ResourceType.get(Integer.parseInt(tokenizer.nextToken()));
 
-		line = buff.readLine();
-	    }
-	    buff.close();
-	}
-	catch (NoSuchElementException ex) {
-	    throw new ZSDXException(fileName + " line " + lineNumber + ": Value expected");
-	}
-	catch (NumberFormatException ex) {
-	    throw new ZSDXException(fileName + " line " + lineNumber + ": Integer expected");
-	}
-	catch (ZSDXException ex) {
-	    throw new ZSDXException(fileName + " line " + lineNumber + ": " + ex.getMessage());
-	}
+                    String id = tokenizer.nextToken();
+                    String name = tokenizer.nextToken();
+                    getResource(resourceType).setElementName(id, name);
+                }
+
+                line = buff.readLine();
+            }
+            buff.close();
+        }
+        catch (NoSuchElementException ex) {
+            throw new ZSDXException(fileName + " line " + lineNumber + ": Value expected");
+        }
+        catch (NumberFormatException ex) {
+            throw new ZSDXException(fileName + " line " + lineNumber + ": Integer expected");
+        }
+        catch (ZSDXException ex) {
+            throw new ZSDXException(fileName + " line " + lineNumber + ": " + ex.getMessage());
+        }
     }
-    
+
     /**
      * Saves the list of the game resources and their names into the file project_db.dat.
      * @throws IOException if the file could not be written
      */
     public void save() throws IOException {
 
-	try {
-	    
-	    File dbFile = project.getResourceDatabaseFile();
-	    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(dbFile)));
-	    Iterator<String> it;
-	    
-	    // save each resource
-	    for (ResourceType resourceType: ResourceType.values()) {
-		Resource resource = getResource(resourceType);
-		it = resource.iterator();
+        try {
 
-		while (it.hasNext()) {
-		    String id = it.next();
-		    String name = resource.getElementName(id);
-		    out.print(resourceType.getId());
-		    out.print('\t');
-		    out.print(id);
-		    out.print('\t');
-		    out.print(name);
-		    out.println();
-		}
-	    }
-	    out.close();
-	}
-	catch (ZSDXException ex) {
-	    System.err.println("Unexpected error: " + ex.getMessage());
-	    ex.printStackTrace();
-	    System.exit(1);
-	}
+            File dbFile = project.getResourceDatabaseFile();
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(dbFile)));
+            Iterator<String> it;
+
+            // save each resource
+            for (ResourceType resourceType: ResourceType.values()) {
+                Resource resource = getResource(resourceType);
+                it = resource.iterator();
+
+                while (it.hasNext()) {
+                    String id = it.next();
+                    String name = resource.getElementName(id);
+                    out.print(resourceType.getId());
+                    out.print('\t');
+                    out.print(id);
+                    out.print('\t');
+                    out.print(name);
+                    out.println();
+                }
+            }
+            out.close();
+        }
+        catch (ZSDXException ex) {
+            System.err.println("Unexpected error: " + ex.getMessage());
+            ex.printStackTrace();
+            System.exit(1);
+        }
     }
 }

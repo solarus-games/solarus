@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2006-2012 Christopho, Solarus - http://www.solarus-games.org
- * 
+ *
  * Solarus Quest Editor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Zelda: Mystery of Solarus DX is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -39,7 +39,7 @@ public class EditDestinationComponent extends EditEntityComponent {
      * @param entity the entity to edit
      */
     public EditDestinationComponent(Map map, MapEntity entity) {
-	super(map, entity);
+        super(map, entity);
     }
 
     /**
@@ -47,20 +47,20 @@ public class EditDestinationComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// has a sprite?
-	withSpriteField = new JCheckBox("Display a sprite");
-	addField("Visibility", withSpriteField);
+        // has a sprite?
+        withSpriteField = new JCheckBox("Display a sprite");
+        addField("Visibility", withSpriteField);
 
-	// sprite name
-	spriteField = new ResourceChooser(ResourceType.SPRITE, true);
-	addField("Sprite name", spriteField);
+        // sprite name
+        spriteField = new ResourceChooser(ResourceType.SPRITE, true);
+        addField("Sprite name", spriteField);
 
-	// listener
-	withSpriteField.addChangeListener(new ChangeListener() {
-	    public void stateChanged(ChangeEvent ev) {
-		spriteField.setEnabled(withSpriteField.isSelected());
-	    }
-	});
+        // listener
+        withSpriteField.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent ev) {
+                spriteField.setEnabled(withSpriteField.isSelected());
+            }
+        });
     }
 
     /**
@@ -68,17 +68,17 @@ public class EditDestinationComponent extends EditEntityComponent {
      */
     public void update() {
 
-	super.update(); // update the common fields
+        super.update(); // update the common fields
 
-	Destination destination = (Destination) entity;
-	String sprite = destination.getProperty("sprite");
+        Destination destination = (Destination) entity;
+        String sprite = destination.getProperty("sprite");
 
-	boolean hasSprite = (!sprite.equals("_none"));
+        boolean hasSprite = (!sprite.equals("_none"));
 
-	withSpriteField.setSelected(hasSprite);
-	spriteField.setSelectedId(hasSprite ? sprite : "");
+        withSpriteField.setSelected(hasSprite);
+        spriteField.setSelectedId(hasSprite ? sprite : "");
 
-	spriteField.setEnabled(hasSprite);
+        spriteField.setEnabled(hasSprite);
     }
 
     /**
@@ -87,12 +87,12 @@ public class EditDestinationComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	String sprite = spriteField.getSelectedId();
-	if (!withSpriteField.isSelected()) {
-	    sprite = "_none";
-	}
+        String sprite = spriteField.getSelectedId();
+        if (!withSpriteField.isSelected()) {
+            sprite = "_none";
+        }
 
-	return new ActionEditEntitySpecific(entity, sprite);
+        return new ActionEditEntitySpecific(entity, sprite);
     }
 }
 

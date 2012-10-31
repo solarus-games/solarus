@@ -21,6 +21,9 @@ import java.io.*;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import org.luaj.vm2.*;
+import org.luaj.vm2.lib.*;
+import org.luaj.vm2.compiler.*;
 import org.solarus.editor.entities.*;
 
 /**
@@ -995,74 +998,29 @@ public class Map extends Observable {
      */
     public void load() throws ZSDXException {
 
-        int lineNumber = 0;
         try {
-
-            // get the map name in the game resource database
+            // Get the map name in the quest resource database.
             Resource mapResource = Project.getResource(ResourceType.MAP);
             setName(mapResource.getElementName(mapId));
 
             File mapFile = Project.getMapFile(mapId);
-            BufferedReader in = new BufferedReader(new FileReader(mapFile));
+            LuaC.install();
+            LuaTable environment = LuaValue.tableOf();
 
-            // read the map general info
-            // syntax: width height world floor x y small_keys_variable tileset_id music_id
-            String line = in.readLine();
+            environment.set("properties", new PropertiesFunction());
 
-            if (line == null) {
-                throw new ZSDXException("The map file is empty");
-            }
-
-            lineNumber++;
-            StringTokenizer tokenizer = new StringTokenizer(line);
-
-            int width = Integer.parseInt(tokenizer.nextToken());
-            int height = Integer.parseInt(tokenizer.nextToken());
-            setSize(new Dimension(width, height));
-
-            setWorld(Integer.parseInt(tokenizer.nextToken()));
-            setFloor(Integer.parseInt(tokenizer.nextToken()));
-
-            int x = Integer.parseInt(tokenizer.nextToken());
-            int y = Integer.parseInt(tokenizer.nextToken());
-            setLocation(new Point(x, y));
-
-            setSmallKeysVariable(Integer.parseInt(tokenizer.nextToken()));
-            setTileset(tokenizer.nextToken());
-            setMusic(tokenizer.nextToken());
-
-            // read the map entities
-            line = in.readLine();
-            while (line != null) {
-                lineNumber++;
-
-                try {
-                    MapEntity entity = MapEntity.createFromString(this, line);
-                    addEntity(entity);
-                }
-                catch (NoSuchTilePatternException ex) {
-                    badTiles = true;
-                }
-                line = in.readLine();
-            }
-
-            in.close();
-
-            history.setSaved();
-        }
-        catch (NumberFormatException ex) {
-            throw new ZSDXException("Line " + lineNumber + ": Integer expected");
-        }
-        catch (IndexOutOfBoundsException ex) {
-            throw new ZSDXException("Line " + lineNumber + ": Value expected");
-        }
-        catch (ZSDXException ex) {
-            throw new ZSDXException("Line " + lineNumber + ": " + ex.getMessage());
+            LuaFunction code = LoadState.load(new FileInputStream(mapFile),
+                "map", environment);
+            code.call();
         }
         catch (IOException ex) {
             throw new ZSDXException(ex.getMessage());
         }
+        catch (LuaError ex) {
+            throw new ZSDXException("Error when loading the map file: " + ex.getMessage());
+        }
 
+        history.setSaved();
         setChanged();
         notifyObservers();
     }
@@ -1138,4 +1096,45 @@ public class Map extends Observable {
             throw new MapException(ex.getMessage());
         }
     }
+
+    /**
+     * @brief Lua function properties() called by the map data file.
+     */
+    private class PropertiesFunction extends OneArgFunction {
+
+        public LuaValue call(LuaValue arg) {
+
+            LuaTable propertiesTable = arg.checktable();
+
+            /* TODO
+            setSize(new Dimension(width, height));
+            setWorld(world);
+            setFloor(floor);
+            setLocation(new Point(x, y));
+            setSmallKeysVariable(smallKeysVariable);
+            setTileset(tilesetId);
+            setMusic(musicId);
+            */
+            return LuaValue.NIL;
+        }
+    }
+/*
+            line = in.readLine();
+            while (line != null) {
+                lineNumber++;
+
+                try {
+                    MapEntity entity = MapEntity.createFromString(this, line);
+                    addEntity(entity);
+                }
+                catch (NoSuchTilePatternException ex) {
+                    badTiles = true;
+                }
+                line = in.readLine();
+            }
+
+        }
+    }
+    */
 }
+

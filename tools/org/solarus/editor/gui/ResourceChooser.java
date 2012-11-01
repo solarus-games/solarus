@@ -22,7 +22,7 @@ import org.solarus.editor.*;
 /**
  * A combo box component to select an element from the resource database.
  */
-public class ResourceChooser extends JComboBox implements ProjectObserver {
+public class ResourceChooser extends JComboBox<KeyValue> implements ProjectObserver {
 
     /**
      * The kind of resource displayed in the combo box (maps, musics...).

@@ -17,7 +17,6 @@
 package org.solarus.editor;
 
 import java.awt.*;
-import java.awt.image.*;
 
 /**
  * Represents an animation of a sprite.

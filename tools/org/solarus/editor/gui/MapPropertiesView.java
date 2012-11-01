@@ -320,7 +320,7 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to choose the world where this map is.
      */
-    private class WorldField extends JComboBox implements ActionListener {
+    private class WorldField extends JComboBox<KeyValue> implements ActionListener {
 
         /**
          * Constructor.
@@ -416,7 +416,7 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to choose the floor where this map is.
      */
-    private class FloorField extends JComboBox implements ActionListener {
+    private class FloorField extends JComboBox<KeyValue> implements ActionListener {
 
         /**
          * Constructor.

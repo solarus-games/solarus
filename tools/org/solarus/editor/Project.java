@@ -17,7 +17,6 @@
 package org.solarus.editor;
 
 import java.io.*;
-import java.text.*;
 import java.util.*;
 import java.net.*;
 import java.awt.image.*;

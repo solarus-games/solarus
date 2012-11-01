@@ -25,7 +25,7 @@ import org.solarus.editor.entities.*;
  * A combo box to select an entity of a certain type.
  * This component displays the name of the entities of this type in the map.
  */
-public class EntityChooser extends JComboBox {
+public class EntityChooser extends JComboBox<String> {
 
     /**
      * The map.

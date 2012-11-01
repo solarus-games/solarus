@@ -24,7 +24,7 @@ import java.lang.reflect.*;
  * @param e the enumeration type returned and set by getValue() and setValue() respectively
  * (must be a subtype of Enum)
  */
-public class EnumerationChooser<E extends Enum<E>> extends JComboBox {
+public class EnumerationChooser<E extends Enum<E>> extends JComboBox<KeyValue> {
 
     /**
      * The enumeration displayed in this combo box.

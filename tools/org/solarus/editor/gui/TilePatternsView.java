@@ -44,7 +44,7 @@ public class TilePatternsView extends JPanel {
     /**
      * The tile patterns list.
      */
-    private JList tilePatternsList;
+    private JList<TilePattern> tilePatternsList;
 
     /**
      * The tile list pattern model.
@@ -83,7 +83,7 @@ public class TilePatternsView extends JPanel {
 
         // list
         tilePatternsListModel = new TilePatternsListModel();
-        tilePatternsList = new JList(tilePatternsListModel);
+        tilePatternsList = new JList<TilePattern>(tilePatternsListModel);
         tilePatternsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tilePatternsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         tilePatternsList.setVisibleRowCount(-1); // make the rows as wide as possible
@@ -183,7 +183,7 @@ public class TilePatternsView extends JPanel {
     /**
      * List model for the tile patterns list.
      */
-    private class TilePatternsListModel extends AbstractListModel implements Observer {
+    private class TilePatternsListModel extends AbstractListModel<TilePattern> implements Observer {
 
         /**
          * Returns the number of tile patterns.
@@ -201,7 +201,7 @@ public class TilePatternsView extends JPanel {
         /**
          * Returns the a component with a 16*16 image of the specified tile pattern.
          */
-        public Object getElementAt(int rank) {
+        public TilePattern getElementAt(int rank) {
 
             return tileset.getTilePattern(tileset.rankToId(rank));
         }
@@ -249,12 +249,12 @@ public class TilePatternsView extends JPanel {
     /**
      * This class defines how the list elements are displayed.
      */
-    private class TilePatternListRenderer implements ListCellRenderer {
+    private class TilePatternListRenderer implements ListCellRenderer<TilePattern> {
 
         /**
          * Returns a component representing a tile.
          */
-        public Component getListCellRendererComponent(JList list, Object value, int rank,
+        public Component getListCellRendererComponent(JList<? extends TilePattern> list, TilePattern value, int rank,
                                                       boolean isSelected, boolean cellHasFocus) {
             if (rank >= tilePatternIcons.size()) {
                 // the icon doesn't exist yet

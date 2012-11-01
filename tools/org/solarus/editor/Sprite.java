@@ -21,7 +21,6 @@ import java.awt.image.*;
 import java.io.*;
 import java.util.*;
 
-import org.solarus.editor.entities.MapEntity;
 import org.solarus.editor.Map;
 
 /**

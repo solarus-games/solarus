@@ -226,8 +226,8 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
 
                         if (project == null) {
                             GuiTools.warningDialog("A project already exists in this directory.");
-                        } else {
-//                            menuTileset.setEnabled(true);
+                        }else {
+//                             menuTileset.setEnabled(true);
                         }
                     }
                 }

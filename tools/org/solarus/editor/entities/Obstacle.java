@@ -18,7 +18,6 @@ package org.solarus.editor.entities;
 
 import org.solarus.editor.*;
 import javax.swing.*;
-import java.util.*;
 
 /**
  * Enumeration of the obstacle property of the tiles.

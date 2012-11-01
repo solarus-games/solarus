@@ -34,13 +34,6 @@ public class ResourceChooserDialog extends OkCancelDialog {
     private ResourceChooser chooser;
 
     /**
-     * Constants strings describing each resource type.
-     */
-    private static String[] resourceNames = {
-        "map", "tileset", "music"
-    };
-
-    /**
      * Constructor.
      */
     public ResourceChooserDialog(ResourceType resourceType) {

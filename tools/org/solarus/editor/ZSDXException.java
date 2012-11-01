@@ -21,7 +21,7 @@ package org.solarus.editor;
  */
 public class ZSDXException extends Exception {
 
-    /**
+	/**
      * Constructor.
      * @param message error message
      */

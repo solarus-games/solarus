@@ -18,7 +18,6 @@ package org.solarus.editor;
 
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
-import java.util.*;
 
 /**
  * Options indicating how to display the map in the map view of the map editor.

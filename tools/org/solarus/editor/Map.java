@@ -1104,9 +1104,9 @@ public class Map extends Observable {
 
         public LuaValue call(LuaValue arg) {
 
+            /* TODO
             LuaTable propertiesTable = arg.checktable();
 
-            /* TODO
             setSize(new Dimension(width, height));
             setWorld(world);
             setFloor(floor);

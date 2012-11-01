@@ -20,7 +20,6 @@ import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
 import org.solarus.editor.map_editor_actions.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 

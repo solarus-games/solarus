@@ -17,8 +17,6 @@
 
 package org.solarus.editor.gui;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Observer;
 import javax.swing.JPanel;
 import org.solarus.editor.ProjectObserver;

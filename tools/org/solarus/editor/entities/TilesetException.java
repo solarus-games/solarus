@@ -23,12 +23,11 @@ import org.solarus.editor.*;
  */
 public class TilesetException extends ZSDXException {
 
-    /**
+	/**
      * Constructor.
      * @param message error message
      */
     public TilesetException(String message) {
         super(message);
     }
-
 }

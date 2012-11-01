@@ -21,7 +21,7 @@ import javax.swing.*;
 /**
  * A combo box to choose the direction of something.
  */
-public class DirectionChooser extends JComboBox {
+public class DirectionChooser extends JComboBox<KeyValue> {
 
     /**
      * Name of the 4 directions, for the items in the sub menu.

@@ -23,7 +23,7 @@ import org.solarus.editor.entities.*;
 /**
  * A combo box to select a subtype of an entity type.
  */
-public class EntitySubtypeChooser extends JComboBox {
+public class EntitySubtypeChooser extends JComboBox<KeyValue> {
 
     /**
      * The enumeration displayed in this combo box.

@@ -21,7 +21,6 @@ import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
 import org.solarus.editor.map_editor_actions.*;
 import org.solarus.editor.entities.Block.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 /**

@@ -103,7 +103,6 @@ public class EditNPCComponent extends EditEntityComponent {
         NPC npc = (NPC) entity;
         String sprite = npc.getProperty("sprite");
         String behavior = npc.getProperty("behavior");
-        EntitySubtype subtype = npc.getSubtype();
 
         boolean hasSprite = (!sprite.equals("_none"));
 

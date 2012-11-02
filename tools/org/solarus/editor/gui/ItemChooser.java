@@ -55,3 +55,4 @@ public class ItemChooser extends ResourceChooser {
         setAdditionalOptions(additionalOptions);
     }
 }
+

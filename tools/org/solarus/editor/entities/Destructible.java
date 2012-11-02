@@ -147,9 +147,9 @@ public class Destructible extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setProperty("treasureName", Item.randomId);
-        setProperty("treasureVariant", 1);
-        setProperty("treasureSavegameVariable", -1);
+        setProperty("treasure_name", Item.randomId);
+        setIntegerProperty("treasure_variant", null);
+        setIntegerProperty("treasure_savegame_variable", null);
     }
 
     /**
@@ -158,13 +158,26 @@ public class Destructible extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        int variant = getIntegerProperty("treasureVariant");
-        if (variant < 1) {
+        String treasureName = getProperty("treasure_name");
+        if (treasureName == null) {
+            throw new MapException("A treasure must be specified");
+        }
+
+        Integer variant = getIntegerProperty("treasure_variant");
+        if (treasureName != null
+                && !treasureName.equals(Item.noneId)
+                && !name.equals(Item.randomId)
+                && (variant == null || variant < 1)) {
+            throw new MapException("A variant must be defined with this treasure");
+        }
+
+        if (variant != null && variant < 1) {
             throw new MapException("Invalid treasure variant: " + variant);
         }
 
-        int savegameVariable = getIntegerProperty("treasureSavegameVariable");
-        if (savegameVariable < -1 || savegameVariable >= 32768) {
+        Integer savegameVariable = getIntegerProperty("treasure_savegame_variable");
+        if (savegameVariable != null &&
+                (savegameVariable < 0 || savegameVariable >= 32768)) {
             throw new MapException("Invalid treasure savegame variable");
         }
     }

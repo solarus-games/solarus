@@ -91,11 +91,23 @@ public class Destination extends MapEntity {
         return true;
     }
 
+    /*
+     * Updates the description of the image currently representing the entity.
+     * @param name name of the property
+     * @param value value of the property
+     */
+    public void updateImageDescription() {
+
+        if (sprite == null) {
+            currentImageDescription.setRectangle((getDirection() + 1) * 32, 0, 32, 32);
+        }
+    }
+
     /**
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setProperty("sprite", "");
+        setProperty("sprite", null);
     }
 
     /**
@@ -109,7 +121,7 @@ public class Destination extends MapEntity {
 
         if (name.equals("sprite")) {
 
-            if (value.length() > 0 && !value.equals("_none")) {
+            if (value != null) {
                 sprite = new Sprite(value, map);
             }
             else {
@@ -132,13 +144,11 @@ public class Destination extends MapEntity {
 
     /**
      * Returns whether the specified sprite name is valid.
-     * @param sprite_name a sprite name
-     * @return true if it is valid
+     * @param spriteName A sprite name or null.
+     * @return true if it is valid.
      */
-    private boolean isSpriteNameValid(String sprite_name) {
-        return sprite_name != null
-          && sprite_name.length() != 0
-          && (sprite_name.charAt(0) != '_' || sprite_name.equals("_none"));
+    private boolean isSpriteNameValid(String spriteName) {
+        return spriteName == null || !spriteName.isEmpty();
     }
 
     /**

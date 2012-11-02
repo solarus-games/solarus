@@ -71,10 +71,10 @@ public class EditWallComponent extends EditEntityComponent {
         super.update(); // update the common fields
 
         Wall wall = (Wall) entity;
-        stopsHeroField.setSelected(wall.getBooleanProperty("stopsHero"));
-        stopsEnemiesField.setSelected(wall.getBooleanProperty("stopsEnemies"));
-        stopsNPCsField.setSelected(wall.getBooleanProperty("stopsNPCs"));
-        stopsBlocksField.setSelected(wall.getBooleanProperty("stopsBlocks"));
+        stopsHeroField.setSelected(wall.getBooleanProperty("stops_hero"));
+        stopsEnemiesField.setSelected(wall.getBooleanProperty("stops_enemies"));
+        stopsNPCsField.setSelected(wall.getBooleanProperty("stops_npcs"));
+        stopsBlocksField.setSelected(wall.getBooleanProperty("stops_blocks"));
     }
 
     /**

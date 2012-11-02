@@ -43,7 +43,7 @@ public class Teletransporter extends MapEntity {
     private static Image resizableTeletransporterImage;
 
     /**
-     * The sprite representing this teletransporter.
+     * The sprite representing this teletransporter, or null.
      */
     private Sprite sprite;
 
@@ -93,11 +93,11 @@ public class Teletransporter extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setProperty("sprite", "");
-        setProperty("sound", "");
-        setProperty("transition", Transition.FADE.getId());
-        setProperty("destinationMapId", map.getId());
-        setProperty("destinationName", "");
+        setProperty("sprite", null);
+        setProperty("sound", null);
+        setIntegerProperty("transition", Transition.FADE.getId());
+        setProperty("destination_map", map.getId());
+        setProperty("destination", "");
     }
 
     /**
@@ -111,7 +111,7 @@ public class Teletransporter extends MapEntity {
 
         if (name.equals("sprite")) {
 
-            if (value.length() > 0 && !value.equals("_none")) {
+            if (value != null && value.length() > 0) {
                 sprite = new Sprite(value, map);
             }
             else {
@@ -128,8 +128,8 @@ public class Teletransporter extends MapEntity {
 
         String spriteName = getProperty("sprite");
         String soundId = getProperty("sound");
-        String destinationMapId = getProperty("destinationMapId");
-        String destinationName = getProperty("destinationName");
+        String destinationMapId = getProperty("destination_map");
+        String destinationName = getProperty("destination");
 
         if (!isSpriteOrSoundNameValid(spriteName)) {
             throw new MapException("Invalid sprite name: '" + spriteName + "'");
@@ -139,11 +139,11 @@ public class Teletransporter extends MapEntity {
             throw new MapException("Invalid sound id: '" + soundId + "'");
         }
 
-        if (destinationMapId.length() == 0) {
+        if (destinationMapId.isEmpty()) {
             throw new MapException("You must choose a destination map");
         }
 
-        if (destinationName.length() == 0) {
+        if (destinationName.isEmpty()) {
             throw new MapException("You must choose a destination point on the destination map");
         }
 
@@ -155,13 +155,11 @@ public class Teletransporter extends MapEntity {
 
     /**
      * Returns whether the specified teletransporter sprite or sound name is valid.
-     * @param name a sprite or sound name
-     * @return true if it is valid
+     * @param name A sprite or sound name.
+     * @return true if it is valid.
      */
     private boolean isSpriteOrSoundNameValid(String name) {
-        return name != null
-          && name.length() != 0
-          && (name.charAt(0) != '_' || name.equals("_none"));
+        return name == null || !name.isEmpty();
     }
 
     /**

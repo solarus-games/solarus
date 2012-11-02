@@ -150,7 +150,7 @@ public class Jumper extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setProperty("jumpLength", 40);
+        setIntegerProperty("jump_length", 40);
     }
 
     /**
@@ -159,7 +159,7 @@ public class Jumper extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        int jumpLength = getIntegerProperty("jumpLength");
+        int jumpLength = getIntegerProperty("jump_length");
         if (jumpLength < MINIMUM_JUMP_LENGTH) {
             throw new MapException("The minimum jump length is " + MINIMUM_JUMP_LENGTH + " pixels");
         }
@@ -168,6 +168,7 @@ public class Jumper extends MapEntity {
             throw new MapException("The jump length must be a multiple of 8 pixels");
         }
     }
+
     /**
      * Draws the entity on the map editor.
      * @param g graphic context
@@ -269,3 +270,4 @@ public class Jumper extends MapEntity {
         }
     }
 }
+

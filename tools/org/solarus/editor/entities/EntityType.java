@@ -24,64 +24,50 @@ import java.lang.reflect.*;
  */
 public enum EntityType {
 
-    TILE                 (0, "Tile", Tile.class, null),
-    DESTINATION          (1, "Destination", Destination.class, null),
-    TELETRANSPORTER      (2, "Teletransporter", Teletransporter.class, null),
-    PICKABLE             (3, "Pickable item", Pickable.class, null),
-    DESTRUCTIBLE         (4, "Destructible item", Destructible.class, Destructible.Subtype.class),
-    CHEST                (5, "Chest", Chest.class, null),
-    JUMPER               (6, "Jumper", Jumper.class, null),
-    ENEMY                (7, "Enemy", Enemy.class, null),
-    NPC                  (8, "NPC", NPC.class, NPC.Subtype.class),
-    BLOCK                (9, "Block", Block.class, null),
-    DYNAMIC_TILE         (10, "Dynamic tile", DynamicTile.class, null),
-    SWITCH               (11, "Switch", Switch.class, Switch.Subtype.class),
-    WALL                 (12, "Wall", Wall.class, null),
-    SENSOR               (13, "Sensor", Sensor.class, null),
-    CRYSTAL              (14, "Crystal", Crystal.class, null),
-    CRYSTAL_BLOCK        (15, "Crystal block", CrystalBlock.class, CrystalBlock.Subtype.class),
-    SHOP_ITEM            (16, "Shop item", ShopItem.class, null),
-    CONVEYOR_BELT        (17, "Conveyor belt", ConveyorBelt.class, null),
-    DOOR                 (18, "Door", Door.class, Door.Subtype.class),
-    STAIRS               (19, "Stairs", Stairs.class, Stairs.Subtype.class)
+    // Java name          human name           Lua name           class                  subtype enum (optional)
+    TILE                 ("Tile",              "tile",            Tile.class,            null),
+    DESTINATION          ("Destination",       "destination",     Destination.class,     null),
+    TELETRANSPORTER      ("Teletransporter",   "teletransporter", Teletransporter.class, null),
+    PICKABLE             ("Pickable item",     "pickable",        Pickable.class,        null),
+    DESTRUCTIBLE         ("Destructible item", "destructible",    Destructible.class,    Destructible.Subtype.class),
+    CHEST                ("Chest",             "chest",           Chest.class,           null),
+    JUMPER               ("Jumper",            "jumper",          Jumper.class,          null),
+    ENEMY                ("Enemy",             "enemy",           Enemy.class,           null),
+    NPC                  ("NPC",               "npc",             NPC.class,             NPC.Subtype.class),
+    BLOCK                ("Block",             "block",           Block.class,           null),
+    DYNAMIC_TILE         ("Dynamic tile",      "dynamic_tile",    DynamicTile.class,     null),
+    SWITCH               ("Switch",            "switch",          Switch.class,          Switch.Subtype.class),
+    WALL                 ("Wall",              "wall",            Wall.class,            null),
+    SENSOR               ("Sensor",            "sensor",          Sensor.class,          null),
+    CRYSTAL              ("Crystal",           "crystal",         Crystal.class,         null),
+    CRYSTAL_BLOCK        ("Crystal block",     "crystal_block",   CrystalBlock.class,    CrystalBlock.Subtype.class),
+    SHOP_ITEM            ("Shop item",         "shop_item",       ShopItem.class,        null),
+    CONVEYOR_BELT        ("Conveyor belt",     "conveyor_belt",   ConveyorBelt.class,    null),
+    DOOR                 ("Door",              "door",            Door.class,            Door.Subtype.class),
+    STAIRS               ("Stairs",            "stairs",          Stairs.class,          Stairs.Subtype.class)
     ;
 
-    private final int index;
     private Class<? extends MapEntity> entityClass;
     private Class<? extends EntitySubtype> subtypeEnum;
-    private String name;
+    private String humanName;
+    private String luaName;
 
     /**
      * Creates an entity type.
-     * @param index index of the entity type to create
-     * @param name a human readable name describing this entity type
-     * @param entityClass subclass of MapEntity representing the entities of this type
-     * @param subtypeEnum enumeration describing the subtypes of this type (or null
-     * if there is no notion of subtype)
+     * @param humanName A human readable name describing this entity type.
+     * @param luaName Name of this entity type in Lua data files.
+     * @param entityClass Subclass of MapEntity representing the entities of this type.
+     * @param subtypeEnum Enumeration describing the subtypes of this type (or null
+     * if there is no notion of subtype).
      */
-    private EntityType(int index, String name, Class<? extends MapEntity> entityClass,
+    private EntityType(String humanName,
+            String luaName,
+            Class<? extends MapEntity> entityClass,
             Class<? extends EntitySubtype> subtypeEnum) {
-        this.index = index;
-        this.name = name;
+        this.humanName = humanName;
+        this.luaName = luaName;
         this.entityClass = entityClass;
         this.subtypeEnum = subtypeEnum;
-    }
-
-    /**
-     * Returns the entity type with the specified index.
-     * @param index index of the entity type to get
-     * @return the entity type with this index
-     * @throws NoSuchElementException if the index is incorrect
-     */
-    public static EntityType get(int index) throws NoSuchElementException {
-
-        for (EntityType t: values()) {
-            if (t.getIndex() == index) {
-                return t;
-            }
-        }
-
-        throw new NoSuchElementException("Unknown entity type: " + index);
     }
 
     /**
@@ -102,19 +88,19 @@ public enum EntityType {
     }
 
     /**
-     * Returns the index of this entity type.
-     * @return the index
+     * Returns the human name of this kind of entity.
+     * @return The human name of this kind of entity.
      */
-    public int getIndex() {
-        return index;
+    public String getHumanName() {
+        return humanName;
     }
 
     /**
-     * Returns the name of this kind of entity.
-     * @return the name of this kind of entity
+     * Returns the Lua name of this kind of entity.
+     * @return The Lua name of this kind of entity.
      */
-    public String getName() {
-        return name;
+    public String getLuaName() {
+        return luaName;
     }
 
     /**

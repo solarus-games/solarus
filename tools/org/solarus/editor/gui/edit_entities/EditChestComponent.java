@@ -63,9 +63,9 @@ public class EditChestComponent extends EditEntityComponent {
 
         sizeField.setSelectedIndex(chest.isBigChest() ? 1 : 0);
         treasureField.setTreasure(
-                chest.getProperty("treasureName"),
-                chest.getIntegerProperty("treasureVariant"),
-                chest.getIntegerProperty("treasureSavegameVariable"));
+                chest.getProperty("treasure_name"),
+                chest.getIntegerProperty("treasure_variant"),
+                chest.getIntegerProperty("treasure_savegame_variable"));
     }
 
     /**
@@ -74,10 +74,14 @@ public class EditChestComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
+        String treasureName = treasureField.getTreasure().getItemName();
+        Integer treasureVariant = treasureField.getTreasure().getVariant();
+        Integer treasureSavegameVariable = treasureField.getTreasure().getSavegameVariable();
+
         return new ActionEditEntitySpecific(entity,
                 Integer.toString(sizeField.getSelectedIndex()),
-                treasureField.getTreasure().getItemName(),
-                Integer.toString(treasureField.getTreasure().getVariant()),
-                Integer.toString(treasureField.getTreasure().getSavegameVariable()));
+                treasureName,
+                treasureVariant == null ? null : Integer.toString(treasureVariant),
+                treasureSavegameVariable == null ? null : Integer.toString(treasureSavegameVariable));
     }
 }

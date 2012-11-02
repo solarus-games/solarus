@@ -57,7 +57,7 @@ public class EditJumperComponent extends EditEntityComponent {
 
         Jumper jumper = (Jumper) entity;
 
-        jumpLengthField.setNumber(jumper.getIntegerProperty("jumpLength"));
+        jumpLengthField.setNumber(jumper.getIntegerProperty("jump_length"));
     }
 
     /**
@@ -69,3 +69,4 @@ public class EditJumperComponent extends EditEntityComponent {
         return new ActionEditEntitySpecific(entity, jumpLengthField.getNumber());
     }
 }
+

@@ -87,8 +87,8 @@ public class EditDoorComponent extends EditEntityComponent {
         Door door = (Door) entity;
         Subtype subtype = (Subtype) door.getSubtype();
 
-        int savegameVariable = door.getIntegerProperty("savegameVariable");
-        if (savegameVariable != -1) {
+        Integer savegameVariable = door.getIntegerProperty("savegame_variable");
+        if (savegameVariable != null) {
           savegameVariableField.setNumber(savegameVariable);
           savegameVariableField.setEnabled(true);
           saveField.setSelected(true);
@@ -107,8 +107,8 @@ public class EditDoorComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-        int savegameVariable = savegameVariableField.isEnabled() ?
-                savegameVariableField.getNumber() : -1;
+        Integer savegameVariable = savegameVariableField.isEnabled() ?
+                savegameVariableField.getNumber() : null;
 
         return new ActionEditEntitySpecific(entity, savegameVariable);
     }

@@ -73,9 +73,9 @@ public class EditBlockComponent extends EditEntityComponent {
 
     Block block = (Block) entity;
     String sprite = block.getProperty("sprite");
-    boolean canBePushed = block.getBooleanProperty("canBePushed");
-    boolean canBePulled = block.getBooleanProperty("canBePulled");
-    MaximumMoves maximumMoves = MaximumMoves.get(block.getIntegerProperty("maximumMoves"));
+    boolean canBePushed = block.getBooleanProperty("pushable");
+    boolean canBePulled = block.getBooleanProperty("pullable");
+    MaximumMoves maximumMoves = MaximumMoves.get(block.getIntegerProperty("maximum_moves"));
 
     spriteField.setSelectedId(sprite);
     canBePushedField.setSelected(canBePushed);
@@ -101,3 +101,4 @@ public class EditBlockComponent extends EditEntityComponent {
         Integer.toString(maximumMoves.getId()));
   }
 }
+

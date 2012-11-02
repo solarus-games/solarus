@@ -98,11 +98,11 @@ public class Enemy extends MapEntity {
      */
     public void setPropertiesDefaultValues() throws MapException {
         setProperty("breed", "");
-        setProperty("rank", Rank.NORMAL.ordinal());
-        setProperty("savegameVariable", -1);
-        setProperty("treasureName", Item.randomId);
-        setProperty("treasureVariant", 1);
-        setProperty("treasureSavegameVariable", -1);
+        setIntegerProperty("rank", Rank.NORMAL.ordinal());
+        setIntegerProperty("savegame_variable", null);
+        setProperty("treasure_name", Item.randomId);
+        setIntegerProperty("treasure_variant", null);
+        setIntegerProperty("treasure_savegame_variable", null);
     }
 
     /**
@@ -139,18 +139,31 @@ public class Enemy extends MapEntity {
             throw new MapException("An enemy's breed cannot be empty or have whitespaces");
         }
 
-        int savegameVariable = getIntegerProperty("savegameVariable");
-        if (savegameVariable < -1 || savegameVariable >= 32768) {
+        Integer savegameVariable = getIntegerProperty("savegame_variable");
+        if (savegameVariable != null &&
+                (savegameVariable < 0 || savegameVariable >= 32768)) {
             throw new MapException("Invalid enemy savegame variable");
         }
 
-        Rank rank = Rank.get(getIntegerProperty("rank"));
-        if (rank != Rank.NORMAL && savegameVariable < 0) {
-            throw new MapException("This enemy must be saved");
+        String treasureName = getProperty("treasure_name");
+        if (treasureName == null) {
+            throw new MapException("A treasure must be specified");
         }
 
-        int treasureSavegameVariable = getIntegerProperty("treasureSavegameVariable");
-        if (treasureSavegameVariable < -1 || treasureSavegameVariable >= 32768) {
+        Integer variant = getIntegerProperty("treasure_variant");
+        if (!treasureName.equals(Item.noneId)
+                && !name.equals(Item.randomId)
+                && (variant == null || variant < 1)) {
+            throw new MapException("A variant must be defined with this treasure");
+        }
+
+        if (variant != null && variant < 1) {
+            throw new MapException("Invalid treasure variant: " + variant);
+        }
+
+        Integer treasureSavegameVariable = getIntegerProperty("treasure_savegame_variable");
+        if (treasureSavegameVariable != null &&
+                (treasureSavegameVariable < 0 || treasureSavegameVariable >= 32768)) {
             throw new MapException("Invalid treasure savegame variable");
         }
     }

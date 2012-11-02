@@ -85,3 +85,4 @@ public class ActionEditEntitySpecific extends MapEditorAction {
         entity.setProperties(propertiesBefore);
     }
 }
+

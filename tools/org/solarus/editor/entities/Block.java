@@ -127,9 +127,9 @@ public class Block extends MapEntity {
    */
   public void setPropertiesDefaultValues() throws MapException {
     setProperty("sprite", "entities/block");
-    setProperty("canBePushed", true);
-    setProperty("canBePulled", false);
-    setProperty("maximumMoves", MaximumMoves.ONE.getId());
+    setBooleanProperty("pushable", true);
+    setBooleanProperty("pullable", false);
+    setIntegerProperty("maximum_moves", MaximumMoves.ONE.getId());
   }
 
   /**
@@ -143,7 +143,7 @@ public class Block extends MapEntity {
 
     if (name.equals("sprite")) {
 
-      if (value.length() > 0) {
+      if (value != null) {
         sprite = new Sprite(value, map);
       }
       else {
@@ -169,9 +169,7 @@ public class Block extends MapEntity {
    * @return true if it is valid
    */
   private boolean isSpriteNameValid(String sprite_name) {
-    return sprite_name != null
-      && sprite_name.length() != 0
-      && (sprite_name.charAt(0) != '_' || sprite_name.equals("_none"));
+    return sprite_name != null && !sprite_name.isEmpty();
   }
 
   /**

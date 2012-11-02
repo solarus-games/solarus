@@ -19,6 +19,7 @@ package org.solarus.editor.gui;
 import java.awt.*;
 import javax.swing.*;
 import java.lang.reflect.*;
+import java.util.HashMap;
 import org.solarus.editor.*;
 import org.solarus.editor.map_editor_actions.*;
 import org.solarus.editor.entities.*;
@@ -35,27 +36,29 @@ public class EditEntityComponent extends JPanel {
      * or EditEntityComponent itself if this map entity does not introduce
      * specific additional properties.
      */
-    private static final Class<?>[] editEntityComponentClasses = {
-        EditEntityComponent.class,
-        EditDestinationComponent.class,
-        EditTeletransporterComponent.class,
-        EditPickableComponent.class,
-        EditDestructibleComponent.class,
-        EditChestComponent.class,
-        EditJumperComponent.class,
-        EditEnemyComponent.class,
-        EditNPCComponent.class,
-        EditBlockComponent.class,
-        EditDynamicTileComponent.class,
-        EditSwitchComponent.class,
-        EditWallComponent.class,
-        EditEntityComponent.class,
-        EditEntityComponent.class,
-        EditEntityComponent.class,
-        EditShopItemComponent.class,
-        EditEntityComponent.class,
-        EditDoorComponent.class,
-        EditEntityComponent.class,
+    private static final HashMap<EntityType, Class<?>> editEntityComponentClasses =
+        new HashMap<EntityType, Class<?>>();
+    static {
+        editEntityComponentClasses.put(EntityType.TILE, EditEntityComponent.class);
+        editEntityComponentClasses.put(EntityType.DESTINATION, EditDestinationComponent.class);
+        editEntityComponentClasses.put(EntityType.TELETRANSPORTER, EditTeletransporterComponent.class);
+        editEntityComponentClasses.put(EntityType.PICKABLE, EditPickableComponent.class);
+        editEntityComponentClasses.put(EntityType.DESTRUCTIBLE, EditDestructibleComponent.class);
+        editEntityComponentClasses.put(EntityType.CHEST, EditChestComponent.class);
+        editEntityComponentClasses.put(EntityType.JUMPER, EditJumperComponent.class);
+        editEntityComponentClasses.put(EntityType.ENEMY, EditEnemyComponent.class);
+        editEntityComponentClasses.put(EntityType.NPC, EditNPCComponent.class);
+        editEntityComponentClasses.put(EntityType.BLOCK, EditBlockComponent.class);
+        editEntityComponentClasses.put(EntityType.DYNAMIC_TILE, EditDynamicTileComponent.class);
+        editEntityComponentClasses.put(EntityType.SWITCH, EditSwitchComponent.class);
+        editEntityComponentClasses.put(EntityType.WALL, EditWallComponent.class);
+        editEntityComponentClasses.put(EntityType.SENSOR, EditEntityComponent.class);
+        editEntityComponentClasses.put(EntityType.CRYSTAL, EditEntityComponent.class);
+        editEntityComponentClasses.put(EntityType.CRYSTAL_BLOCK, EditEntityComponent.class);
+        editEntityComponentClasses.put(EntityType.SHOP_ITEM, EditShopItemComponent.class);
+        editEntityComponentClasses.put(EntityType.CONVEYOR_BELT, EditEntityComponent.class);
+        editEntityComponentClasses.put(EntityType.DOOR, EditDoorComponent.class);
+        editEntityComponentClasses.put(EntityType.STAIRS, EditEntityComponent.class);
     };
 
     /**
@@ -92,7 +95,7 @@ public class EditEntityComponent extends JPanel {
         this.entity = entity;
 
         setBorder(BorderFactory.createTitledBorder(
-                entity.getType().getName() + " properties"));
+                entity.getType().getHumanName() + " properties"));
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.insets = new Insets(5, 5, 5, 5); // margins
@@ -160,7 +163,7 @@ public class EditEntityComponent extends JPanel {
 
         EditEntityComponent component = null;
 
-        Class<?> componentClass = editEntityComponentClasses[entity.getType().getIndex()];
+        Class<?> componentClass = editEntityComponentClasses.get(entity.getType());
         Constructor<?> constructor;
         try {
             constructor = componentClass.getConstructor(Map.class, MapEntity.class);

@@ -57,9 +57,9 @@ public class EditPickableComponent extends EditEntityComponent {
         Pickable pickable = (Pickable) entity;
 
         treasureField.setTreasure(
-                pickable.getProperty("treasureName"),
-                pickable.getIntegerProperty("treasureVariant"),
-                pickable.getIntegerProperty("treasureSavegameVariable"));
+                pickable.getProperty("treasure_name"),
+                pickable.getIntegerProperty("treasure_variant"),
+                pickable.getIntegerProperty("treasure_savegame_variable"));
     }
 
     /**
@@ -68,9 +68,14 @@ public class EditPickableComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
+        String treasureName = treasureField.getTreasure().getItemName();
+        Integer treasureVariant = treasureField.getTreasure().getVariant();
+        Integer treasureSavegameVariable = treasureField.getTreasure().getSavegameVariable();
+
         return new ActionEditEntitySpecific(entity,
-                treasureField.getTreasure().getItemName(),
-                Integer.toString(treasureField.getTreasure().getVariant()),
-                Integer.toString(treasureField.getTreasure().getSavegameVariable()));
+                treasureName,
+                treasureVariant == null ? null : Integer.toString(treasureVariant),
+                treasureSavegameVariable == null ? null : Integer.toString(treasureSavegameVariable));
     }
 }
+

@@ -110,21 +110,21 @@ public class EditTeletransporterComponent extends EditEntityComponent {
         Teletransporter teletransporter = (Teletransporter) entity;
 
         String sprite = teletransporter.getProperty("sprite");
-        boolean hasSprite = (!sprite.equals("_none"));
+        boolean hasSprite = sprite != null;
         withSpriteField.setSelected(hasSprite);
         spriteField.setSelectedId(hasSprite ? sprite : "");
         spriteField.setEnabled(hasSprite);
 
         String sound = teletransporter.getProperty("sound");
-        boolean hasSound = (!sound.equals("_none"));
+        boolean hasSound = sound != null;
         withSoundField.setSelected(hasSound);
         soundField.setSelectedId(hasSound ? sound : "");
         soundField.setEnabled(hasSound);
 
         transitionField.setValue(Transition.get(teletransporter.getIntegerProperty("transition")));
-        mapField.setSelectedId(teletransporter.getProperty("destinationMapId"));
+        mapField.setSelectedId(teletransporter.getProperty("destination_map"));
 
-        String destinationName = teletransporter.getProperty("destinationName");
+        String destinationName = teletransporter.getProperty("destination");
         if (destinationName.equals("_same")) {
             destinationName = samePointText;
         }
@@ -142,12 +142,12 @@ public class EditTeletransporterComponent extends EditEntityComponent {
 
         String sprite = spriteField.getSelectedId();
         if (!withSpriteField.isSelected()) {
-            sprite = "_none";
+            sprite = null;
         }
 
         String sound = soundField.getSelectedId();
         if (!withSoundField.isSelected()) {
-            sound = "_none";
+            sound = null;
         }
 
         String destinationMapId = mapField.getSelectedId();

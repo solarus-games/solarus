@@ -59,7 +59,7 @@ public class Tile extends MapEntity {
 
         super.setProperty(name, value);
 
-        if (name.equals("tilePatternId")) {
+        if (name.equals("pattern")) {
             if (tileset == null) {
                 return;
             }
@@ -126,7 +126,7 @@ public class Tile extends MapEntity {
      * @return the id of the tile pattern in the tileset.
      */
     public int getTilePatternId() {
-        return getIntegerProperty("tilePatternId");
+        return getIntegerProperty("pattern");
     }
 
     /**
@@ -227,7 +227,7 @@ public class Tile extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setProperty("tilePatternId", -1);
+        setIntegerProperty("pattern", -1);
     }
 
     /**
@@ -237,6 +237,7 @@ public class Tile extends MapEntity {
      */
     public final DynamicTile createDynamicTile() throws ZSDXException {
 
+        /* TODO reimplement properly
         String description = toString();
 
         // add the name and the 'enabled' boolean
@@ -254,6 +255,8 @@ public class Tile extends MapEntity {
         description = EntityType.DYNAMIC_TILE.getIndex() + buff.substring(index);
 
         return (DynamicTile) createFromString(map, description);
+        */
+        throw new MapException("Creating a dynamic tile from a tile is not implemented yet");
     }
 }
 

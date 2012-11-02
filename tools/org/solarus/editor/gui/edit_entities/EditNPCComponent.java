@@ -104,7 +104,7 @@ public class EditNPCComponent extends EditEntityComponent {
         String sprite = npc.getProperty("sprite");
         String behavior = npc.getProperty("behavior");
 
-        boolean hasSprite = (!sprite.equals("_none"));
+        boolean hasSprite = sprite != null;
 
         withSpriteField.setSelected(hasSprite);
         spriteField.setSelectedId(hasSprite ? sprite : "");
@@ -138,7 +138,7 @@ public class EditNPCComponent extends EditEntityComponent {
 
         String sprite = spriteField.getSelectedId();
         if (!withSpriteField.isSelected()) {
-            sprite = "_none";
+            sprite = null;
         }
 
         String behavior = "map";

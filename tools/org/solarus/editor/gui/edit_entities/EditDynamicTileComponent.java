@@ -58,7 +58,7 @@ public class EditDynamicTileComponent extends EditEntityComponent {
 
         DynamicTile dynamicTile = (DynamicTile) entity;
 
-        enabledField.setSelected(dynamicTile.getBooleanProperty("enabled"));
+        enabledField.setSelected(dynamicTile.getBooleanProperty("enabled_at_start"));
     }
 
     /**
@@ -71,3 +71,4 @@ public class EditDynamicTileComponent extends EditEntityComponent {
                 enabledField.isSelected() ? 1 : 0);
     }
 }
+

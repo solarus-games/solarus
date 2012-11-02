@@ -117,3 +117,4 @@ public class NumberChooser extends JSpinner {
         setValue(new Integer(number));
     }
 }
+

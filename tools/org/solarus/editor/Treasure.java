@@ -14,21 +14,22 @@ import java.util.StringTokenizer;
  */
 public class Treasure {
 
-    private String itemName;                /**< id of the item to give, according to items.dat
-                                         * (possibly "_none" or "_random") */
-    private int variant;                /**< variant of this item */
-    private int savegameVariable;        /**< index of the boolean variable that stores the
-                                           * treasure's state (found or not found) in the savegame
-                                           * (-1 if it is not saved) */
+    private String itemName;            /**< id of the item to give, according to items.dat
+                                         * (possibly "_none" or "_random") or null if unspecified. */
+    private Integer variant;            /**< variant of this item (null means unspecified). */
+    private Integer savegameVariable;   /**< index of the boolean variable that stores the
+                                         * treasure's state (found or not found) in the savegame
+                                         * or null for unsaved. */
 
     /**
      * Creates a treasure.
-     * @param itemName name identifying the treasure to give (possibly "_none" or "_random")
-     * @param variant variant of this item
-     * @param savegameVariable savegame variable that stores the treasure's state,
-     * or -1 to make the treasure unsaved
+     * @param itemName Name identifying the treasure to give
+     * (possibly "_none" or "_random") or null if unspecified.
+     * @param variant Variant of this item (null means unspecified).
+     * @param savegameVariable Savegame variable that stores the treasure's state,
+     * or -1 to make the treasure unsaved (null means unsaved).
      */
-    public Treasure(String itemName, int variant, int savegameVariable) {
+    public Treasure(String itemName, Integer variant, Integer savegameVariable) {
 
         this.itemName = itemName;
         this.variant = variant;
@@ -36,30 +37,8 @@ public class Treasure {
     }
 
     /**
-     * Parses a treasure from a string.
-     * @param description a string containing the item name, the variant and the savegame
-     * variable in that order (separated by whitespaces or tabulations)
-     */
-    public Treasure(String description) {
-
-        StringTokenizer tokenizer = new StringTokenizer(description);
-        itemName = tokenizer.nextToken();
-        variant = Integer.parseInt(tokenizer.nextToken());
-        savegameVariable = Integer.parseInt(tokenizer.nextToken());
-    }
-
-    /**
-     * Returns a string representation of this treasure.
-     * The string has the same format as the parameter of the constructor.
-     * @return a string describing this treasure
-     */
-    public String toString() {
-        return itemName + "\t" + variant + "\t" + savegameVariable;
-    }
-
-    /**
      * Returns the id of the item to give.
-     * @return the id of the item (possibly "_none" or "_random")
+     * @return The id of the item (possibly "_none" or "_random") or null.
      */
     public String getItemName() {
         return itemName;
@@ -67,42 +46,51 @@ public class Treasure {
 
     /**
      * Sets the id of the item to give.
-     * @param itemName the name to set (possibly "_none" or "_random")
+     * @param itemName The name to set (possibly "_none" or "_random")
+     * or null for unspecified.
      */
     public void setItemName(String itemName) {
         this.itemName = itemName;
+
+        if (itemName.equals(Item.noneId) || itemName.equals(Item.randomId)) {
+            variant = null;
+        }
+        else if (variant == null) {
+            variant = 1;
+        }
     }
 
     /**
      * Returns the variant of the item to give.
-     * @return the variant
+     * @return The variant (null means unspecified).
      */
-    public int getVariant() {
+    public Integer getVariant() {
         return variant;
     }
 
     /**
      * Sets the variant of the item to give.
-     * @param variant the variant to set
+     * @param variant The variant to set (null means unspecified).
      */
-    public void setVariant(int variant) {
+    public void setVariant(Integer variant) {
         this.variant = variant;
     }
 
     /**
      * Returns the savegame variable that stores the treasure's state.
-     * @return the savegame variable, or -1 if the treasure is not saved
+     * @return The savegame variable (null means unsaved).
      */
-    public int getSavegameVariable() {
+    public Integer getSavegameVariable() {
         return savegameVariable;
     }
 
     /**
      * Sets the savegame variable that stores the treasure's state.
-     * @param savegameVariable the savegame variable to set, or -1
-     * to make the treasure unsaved
+     * @param savegameVariable The savegame variable to set, or -1
+     * to make the treasure unsaved (null means unsaved).
      */
-    public void setSavegameVariable(int savegameVariable) {
+    public void setSavegameVariable(Integer savegameVariable) {
         this.savegameVariable = savegameVariable;
     }
 }
+

@@ -95,11 +95,11 @@ public class Switch extends MapEntity {
 
         if (subtype != this.subtype) {
             if (subtype == Subtype.WALKABLE_INVISIBLE) {
-                setProperty("needsBlock", false);
+                setBooleanProperty("needs_block", false);
             }
             else if (Subtype.isWalkable(subtype)) {
-                setProperty("needsBlock", false);
-                setProperty("disableWhenLeaving", false);
+                setBooleanProperty("needs_block", false);
+                setBooleanProperty("inactivate_when_leaving", false);
             }
             super.setSubtype(subtype);
         }
@@ -109,8 +109,8 @@ public class Switch extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setProperty("needsBlock", false);
-        setProperty("disableWhenLeaving", false);
+        setBooleanProperty("needs_block", false);
+        setBooleanProperty("inactivate_when_leaving", false);
         setSubtype(Subtype.WALKABLE_INVISIBLE);
     }
 
@@ -120,17 +120,17 @@ public class Switch extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        if (getSubtype() == Subtype.WALKABLE_INVISIBLE && getBooleanProperty("needsBlock")) {
+        if (getSubtype() == Subtype.WALKABLE_INVISIBLE && getBooleanProperty("needs_block")) {
             throw new MapException("Cannot put a block on an invisible switch");
         }
 
         if (!isWalkable()) {
 
-            if (getBooleanProperty("needsBlock")) {
+            if (getBooleanProperty("needs_block")) {
                 throw new MapException("Cannot put a block on a non-walkable switch");
             }
 
-            if (getBooleanProperty("disableWhenLeaving")) {
+            if (getBooleanProperty("inactivate_when_leaving")) {
                 throw new MapException("Cannot disable the switch when leaving for a non-walkable switch");
             }
         }

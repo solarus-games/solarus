@@ -72,8 +72,8 @@ public class EditSwitchComponent extends EditEntityComponent {
 
         Switch sw = (Switch) entity;
 
-        needsBlockField.setSelected(sw.getBooleanProperty("needsBlock"));
-        disableWhenLeavingField.setSelected(sw.getBooleanProperty("disableWhenLeaving"));
+        needsBlockField.setSelected(sw.getBooleanProperty("needs_block"));
+        disableWhenLeavingField.setSelected(sw.getBooleanProperty("inactivate_when_leaving"));
         needsBlockField.setEnabled(entity.getSubtype() == Subtype.WALKABLE_VISIBLE);
         disableWhenLeavingField.setEnabled(Subtype.isWalkable(entity.getSubtype()));
     }

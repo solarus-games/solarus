@@ -58,9 +58,9 @@ public class Pickable extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setProperty("treasureName", "");
-        setProperty("treasureVariant", 1);
-        setProperty("treasureSavegameVariable", -1);
+        setProperty("treasure_name", null);
+        setIntegerProperty("treasure_variant", null);
+        setIntegerProperty("treasure_savegame_variable", null);
     }
 
     /**
@@ -69,16 +69,27 @@ public class Pickable extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        String treasureName = getProperty("treasureName");
+        String treasureName = getProperty("treasure_name");
 
-        if (treasureName.isEmpty()
-                || treasureName.equals(Item.noneId)
-                || treasureName.equals(Item.randomId)) {
-            throw new MapException("The treasure of a pickable item cannot be empty or random");
+        if (treasureName == null
+                || treasureName.equals(Item.noneId)) {
+            throw new MapException("The treasure of a pickable item cannot be empty");
         }
 
-        int savegameVariable = getIntegerProperty("treasureSavegameVariable");
-        if (savegameVariable < -1 || savegameVariable >= 32768) {
+        Integer variant = getIntegerProperty("treasure_variant");
+        if (!treasureName.equals(Item.noneId)
+                && !name.equals(Item.randomId)
+                && (variant == null || variant < 1)) {
+            throw new MapException("A variant must be defined with this treasure");
+        }
+
+        if (variant != null && variant < 1) {
+            throw new MapException("Invalid treasure variant: " + variant);
+        }
+
+        Integer savegameVariable = getIntegerProperty("treasure_savegame_variable");
+        if (savegameVariable != null &&
+                (savegameVariable < 0 || savegameVariable >= 32768)) {
             throw new MapException("Invalid savegame variable");
         }
     }

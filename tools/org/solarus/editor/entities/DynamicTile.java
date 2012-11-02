@@ -43,7 +43,7 @@ public class DynamicTile extends Tile {
      */
     public void setPropertiesDefaultValues() throws MapException {
         super.setPropertiesDefaultValues();
-        setProperty("enabled", true);
+        setBooleanProperty("enabled_at_start", true);
     }
 
     /**
@@ -53,6 +53,7 @@ public class DynamicTile extends Tile {
      */
     public final Tile createStaticTile() throws ZSDXException {
 
+        /* TODO reimplement properly
         String description = toString();
 
         // remove the name and the 'enabled' boolean
@@ -69,6 +70,8 @@ public class DynamicTile extends Tile {
         description = EntityType.TILE.getIndex() + description.substring(index);
 
         return (Tile) createFromString(map, description);
+        */
+        throw new MapException("Creating a tile from a dynamic tile is not implemented yet");
     }
 
     /**

@@ -72,7 +72,7 @@ public class EditDestinationComponent extends EditEntityComponent {
         Destination destination = (Destination) entity;
         String sprite = destination.getProperty("sprite");
 
-        boolean hasSprite = (!sprite.equals("_none"));
+        boolean hasSprite = sprite != null;
 
         withSpriteField.setSelected(hasSprite);
         spriteField.setSelectedId(hasSprite ? sprite : "");
@@ -88,7 +88,7 @@ public class EditDestinationComponent extends EditEntityComponent {
 
         String sprite = spriteField.getSelectedId();
         if (!withSpriteField.isSelected()) {
-            sprite = "_none";
+            sprite = null;
         }
 
         return new ActionEditEntitySpecific(entity, sprite);

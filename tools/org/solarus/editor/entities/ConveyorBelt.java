@@ -67,3 +67,4 @@ public class ConveyorBelt extends MapEntity {
         currentImageDescription.setRectangle(getDirection() * 16, 0, 16, 16);
     }
 }
+

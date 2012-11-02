@@ -58,9 +58,9 @@ public class EditDestructibleComponent extends EditEntityComponent {
         Destructible destructible = (Destructible) entity;
 
         treasureField.setTreasure(
-                destructible.getProperty("treasureName"),
-                destructible.getIntegerProperty("treasureVariant"),
-                destructible.getIntegerProperty("treasureSavegameVariable"));
+                destructible.getProperty("treasure_name"),
+                destructible.getIntegerProperty("treasure_variant"),
+                destructible.getIntegerProperty("treasure_savegame_variable"));
     }
 
     /**
@@ -69,10 +69,14 @@ public class EditDestructibleComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
+        String treasureName = treasureField.getTreasure().getItemName();
+        Integer treasureVariant = treasureField.getTreasure().getVariant();
+        Integer treasureSavegameVariable = treasureField.getTreasure().getSavegameVariable();
+
         return new ActionEditEntitySpecific(entity,
-                treasureField.getTreasure().getItemName(),
-                Integer.toString(treasureField.getTreasure().getVariant()),
-                Integer.toString(treasureField.getTreasure().getSavegameVariable()));
+                treasureName,
+                treasureVariant == null ? null : Integer.toString(treasureVariant),
+                treasureSavegameVariable == null ? null : Integer.toString(treasureSavegameVariable));
     }
 }
 

@@ -30,7 +30,7 @@ public class EditShopItemComponent extends EditEntityComponent {
     // specific fields of this type of entity
     private TreasureChooser treasureField;
     private NumberChooser priceField;
-    private JTextField messageIdField;
+    private JTextField dialogIdField;
 
     /**
      * Constructor.
@@ -54,9 +54,9 @@ public class EditShopItemComponent extends EditEntityComponent {
         priceField = new NumberChooser(10, 1, 999);
         addField("Price", priceField);
 
-        // description message id
-        messageIdField = new JTextField(15);
-        addField("Description message id", messageIdField);
+        // description dialog
+        dialogIdField = new JTextField(15);
+        addField("Description dialog id", dialogIdField);
     }
 
     /**
@@ -68,11 +68,11 @@ public class EditShopItemComponent extends EditEntityComponent {
         ShopItem shopItem = (ShopItem) entity;
 
         treasureField.setTreasure(
-                shopItem.getProperty("treasureName"),
-                shopItem.getIntegerProperty("treasureVariant"),
-                shopItem.getIntegerProperty("treasureSavegameVariable"));
+                shopItem.getProperty("treasure_name"),
+                shopItem.getIntegerProperty("treasure_variant"),
+                shopItem.getIntegerProperty("treasure_savegame_variable"));
         priceField.setNumber(shopItem.getIntegerProperty("price"));
-        messageIdField.setText(shopItem.getProperty("messageId"));
+        dialogIdField.setText(shopItem.getProperty("dialog"));
     }
 
     /**
@@ -80,11 +80,16 @@ public class EditShopItemComponent extends EditEntityComponent {
      * @return the specific part of the action made on the entity
      */
     protected ActionEditEntitySpecific getSpecificAction() {
+
+        String treasureName = treasureField.getTreasure().getItemName();
+        Integer treasureVariant = treasureField.getTreasure().getVariant();
+        Integer treasureSavegameVariable = treasureField.getTreasure().getSavegameVariable();
+
         return new ActionEditEntitySpecific(entity,
-                treasureField.getTreasure().getItemName(),
-                Integer.toString(treasureField.getTreasure().getVariant()),
-                Integer.toString(treasureField.getTreasure().getSavegameVariable()),
+                treasureName,
+                treasureVariant == null ? null : Integer.toString(treasureVariant),
+                treasureSavegameVariable == null ? null : Integer.toString(treasureSavegameVariable),
                 Integer.toString(priceField.getNumber()),
-                messageIdField.getText());
+                dialogIdField.getText());
     }
 }

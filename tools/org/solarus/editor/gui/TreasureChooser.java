@@ -16,7 +16,7 @@ import org.solarus.editor.*;
  */
 public class TreasureChooser extends JPanel {
 
-    private Treasure treasure;                        /**< the treasure to edit*/
+    private Treasure treasure;                        /**< the treasure to edit */
 
     // subcomponents
     private ItemChooser itemNameField;
@@ -36,8 +36,8 @@ public class TreasureChooser extends JPanel {
 
         super(new GridBagLayout());
 
-        // create a default treasure
-        treasure = new Treasure("", 1, -1);
+        // create a default, unspecified treasure
+        treasure = new Treasure(null, 1, -1);
 
         // create the subcomponents
         itemNameField = new ItemChooser(includeNone, includeRandom);
@@ -96,7 +96,7 @@ public class TreasureChooser extends JPanel {
                 }
                 else {
                     savegameVariableField.setEnabled(false);
-                    treasure.setSavegameVariable(-1);
+                    treasure.setSavegameVariable(null);
                 }
             }
         });
@@ -119,12 +119,13 @@ public class TreasureChooser extends JPanel {
 
     /**
      * Sets all properties of the treasure represented in this component.
-     * @param itemName name identifying the treasure to give (possibly "_none" or "_random")
-     * @param variant variant of this item
-     * @param savegameVariable savegame variable that stores the treasure's state,
-     * or -1 to make the treasure unsaved
+     * @param itemName Name identifying the treasure to give 
+     * (possibly "_none" or "_random") or null for unspecified.
+     * @param variant Variant of this item (null means unspecified).
+     * @param savegameVariable Savegame variable that stores the treasure's state,
+     * or -1 to make the treasure unsaved (null means unspecified).
      */
-    public void setTreasure(String itemName, int variant, int savegameVariable) {
+    public void setTreasure(String itemName, Integer variant, Integer savegameVariable) {
 
         treasure.setItemName(itemName);
         treasure.setVariant(variant);
@@ -138,17 +139,48 @@ public class TreasureChooser extends JPanel {
      */
     private void update() {
 
-        itemNameField.setSelectedId(treasure.getItemName());
-        variantField.setNumber(treasure.getVariant());
+        // Item name.
+        if (treasure.getItemName() == null) {
+            itemNameField.setSelectedId("");
+        }
+        else {
+            itemNameField.setSelectedId(treasure.getItemName());
+        }
 
-        if (treasure.getSavegameVariable() == -1) {
-            saveField.setSelected(false);
+        // Variant.
+        if (treasure.getItemName() == null
+                || treasure.getItemName() == Item.noneId
+                || treasure.getItemName() == Item.randomId) {
+            variantField.setEnabled(false);
+        }
+        else {
+            variantField.setEnabled(true);
+            if (treasure.getVariant() == null) {
+                variantField.setNumber(1);
+            }
+            else {
+                variantField.setNumber(treasure.getVariant());
+            }
+        }
+
+        // Savegame variable.
+        if (treasure.getItemName() == null
+                || treasure.getVariant() == null) {
+            saveField.setEnabled(false);
             savegameVariableField.setEnabled(false);
         }
         else {
-            saveField.setSelected(true);
-            savegameVariableField.setEnabled(true);
-            savegameVariableField.setNumber(treasure.getSavegameVariable());
+            saveField.setEnabled(true);
+            if (treasure.getSavegameVariable() == null) {
+                saveField.setSelected(false);
+                savegameVariableField.setEnabled(false);
+            }
+            else {
+                saveField.setSelected(true);
+                savegameVariableField.setEnabled(true);
+                savegameVariableField.setNumber(treasure.getSavegameVariable());
+            }
         }
     }
 }
+

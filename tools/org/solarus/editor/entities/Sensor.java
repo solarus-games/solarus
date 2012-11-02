@@ -133,3 +133,4 @@ public class Sensor extends MapEntity {
         drawEntityOutline(g, zoom, new Color(142, 240, 142));
     }
 }
+

@@ -15,13 +15,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.solarus.editor.entities;
+import org.solarus.editor.*;
+import org.solarus.editor.Map;
 
 import java.awt.*;
 import java.lang.reflect.*;
 import java.util.*;
-
-import org.solarus.editor.*;
-import org.solarus.editor.Map;
+import org.luaj.vm2.*;
+import org.luaj.vm2.lib.*;
 
 /**
  * Represents an entity placed on the map with the map editor.
@@ -219,96 +220,71 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Creates a map entity from a string description as returned by toString().
-     * @param map the map (needed for some types of entities)
-     * @param description a string describing the entity, as returned by toString()
-     * @throws MapException if the string is incorrect
+     * Sets all attributes of this entity from a Lua table.
+     * @param table A Lua table containing the properties of the entity.
+     * @throws MapException If the attributes are invalid.
      */
-    public static MapEntity createFromString(Map map, String description) throws MapException {
+    public void setAttributes(LuaTable table) throws MapException {
 
-        int index = description.indexOf('\t');
-        EntityType entityType = EntityType.get(Integer.parseInt(description.substring(0, index)));
+        int x = table.get("x").checkint();
+        int y = table.get("y").checkint();
+        Layer layer = Layer.get(table.get("layer").checkint());
 
-        MapEntity entity = MapEntity.create(map, entityType, entityType.getDefaultSubtype());
-        entity.parse(description.substring(index + 1));
-        entity.updateImageDescription();
+        setLayer(layer);
+        positionInMap.x = x; // for now the origin is (0,0)
+        positionInMap.y = y;
+
+        int width = 0;
+        int height = 0;
+        if (isSizeVariable()) {
+            width = table.get("width").checkint();
+            height = table.get("height").checkint();
+        }
+
+        if (hasName()) {
+            String name = table.get("name").checkjstring();
+            setName(name);
+        }
+
+        if (hasDirectionProperty()) {
+            int direction = table.get("direction").checkint();
+            setDirection(direction);
+        }
+
+        /*
+        if (hasSubtype()) {
+            // FIXME the subtype of destructibles is a string
+            // make getSubtype() accept a string
+            int subtype = table.get("subtype").checkint();
+            setSubtype(getSubtype(subtype));
+        }
+        */
+
+        // specific properties
+        for (String key: specificProperties.keySet()) {
+            try {
+                LuaValue value = table.get(key);
+                if (value.isint() || value.isstring()) {
+                    setProperty(key, value.tojstring());
+                }
+                else if (value.isboolean()) {
+                    setBooleanProperty(key, value.toboolean());
+                }
+            }
+            catch (LuaError ex) {
+                throw new LuaError("Failed to read property '" + key + "' for an entity of type " + getType().getHumanName());
+            }
+        }
+
+        if (isSizeVariable()) {
+            setSize(width, height); // some entities need to know their properties before they can be resized
+        }
+
+        updateImageDescription();
 
         // now the origin is valid
-        entity.setPositionInMap(entity.positionInMap.x, entity.positionInMap.y);
-        entity.setInitialized(true);
-        return entity;
-    }
-
-    /**
-     * Parses the entity.
-     * @param description a string describing the entity, as returned by toString(),
-     * except that the first value is missing (the entity type)
-     * @throws MapException if the line contains an error
-     */
-    protected final void parse(String description) throws MapException {
-
-        String token = null;
-        try {
-            StringTokenizer tokenizer = new StringTokenizer(description, "\t");
-
-            token = tokenizer.nextToken();
-            Layer layer = Layer.get(Integer.parseInt(token));
-
-            token = tokenizer.nextToken();
-            int x = Integer.parseInt(token);
-
-            token = tokenizer.nextToken();
-            int y = Integer.parseInt(token);
-
-            setLayer(layer);
-            positionInMap.x = x; // for now the origin is (0,0)
-            positionInMap.y = y;
-
-            int width = 0;
-            int height = 0;
-            if (isSizeVariable()) {
-                token = tokenizer.nextToken();
-                width = Integer.parseInt(token);
-                token = tokenizer.nextToken();
-                height = Integer.parseInt(token);
-            }
-
-            if (hasName()) {
-                token = tokenizer.nextToken();
-                setName(token);
-            }
-
-            if (hasDirectionProperty()) {
-                token = tokenizer.nextToken();
-                setDirection(Integer.parseInt(token));
-            }
-
-            if (hasSubtype()) {
-                token = tokenizer.nextToken();
-                setSubtype(getSubtype(Integer.parseInt(token)));
-            }
-
-            // specific properties
-            for (String name: specificProperties.keySet()) {
-                token = tokenizer.nextToken();
-                setProperty(name, token);
-            }
-
-            if (isSizeVariable()) {
-                setSize(width, height); // some entities need to know their properties before they can be resized
-            }
-        }
-        catch (NoSuchElementException ex) {
-            if (token == null) {
-                throw new MapException("Value expected, empty line found");
-            }
-            else {
-                throw new MapException("Value expected after '" + token + "'");
-            }
-        }
-        catch (NumberFormatException ex) {
-            throw new MapException("Integer expected, found '" + token + "'");
-        }
+        setPositionInMap(positionInMap.x, positionInMap.y);
+        setInitialized(true);
     }
 
     /**
@@ -321,57 +297,13 @@ public abstract class MapEntity extends Observable {
     public static MapEntity createCopy(Map map, MapEntity other) {
 
         try {
-            return createFromString(map, other.toString());
+            // TODO implement the copy operation
+            throw new MapException("Copying entities is not implemented yet");
         }
         catch (ZSDXException ex) {
             System.err.println("Unexpected error: cannot create a copy of entity '" + other + "'");
             return null;
         }
-    }
-
-    /**
-     * Returns a string describing this entity.
-     * @return a string representation of the entity
-     */
-    public final String toString() {
-
-        StringBuffer buff = new StringBuffer();
-        buff.append(getType().getIndex());
-        buff.append('\t');
-        buff.append(getLayer().getId());
-        buff.append('\t');
-        buff.append(getX());
-        buff.append('\t');
-        buff.append(getY());
-
-        if (isSizeVariable()) {
-            buff.append('\t');
-            buff.append(getWidth());
-            buff.append('\t');
-            buff.append(getHeight());
-        }
-
-        if (hasName()) {
-            buff.append('\t');
-            buff.append(getName());
-        }
-
-        if (hasDirectionProperty()) {
-            buff.append('\t');
-            buff.append(getDirection());
-        }
-
-        if (hasSubtype()) {
-            buff.append('\t');
-            buff.append(getSubtypeId());
-        }
-
-        for (String value: specificProperties.values()) {
-            buff.append('\t');
-            buff.append(value);
-        }
-
-        return buff.toString();
     }
 
     /**
@@ -869,11 +801,10 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns the prefix of the default name for this kind of entity.
+     * Returns the prefix of the default name to give to entities created with this type.
      */
     protected String getDefaultNamePrefix() {
-        EntityType entityType = getType();
-        return entityType.getName().toLowerCase().replace(' ', '_');
+        return getType().getLuaName();
     }
 
     /**
@@ -1253,49 +1184,53 @@ public abstract class MapEntity extends Observable {
     /**
      * Returns whether a value specific to the current entity type is defined.
      * @param name name of the property to look for
-     * @return true if this property has a value
+     * @return true if this property exists.
      */
     public final boolean hasProperty(String name) {
-        return specificProperties.get(name) != null;
+        return specificProperties.containsKey(name);
     }
 
     /**
      * Returns a string value specific to the current entity type.
-     * @param name name of the property to get
-     * @return the value of this property
+     * @param name Name of the property to get.
+     * @param value Value of the property, possibly null.
      */
     public final String getProperty(String name) {
 
-        String value = specificProperties.get(name);
-        if (value == null) {
+        if (!hasProperty(name)) {
             throw new IllegalArgumentException("There is no property with name '" + name +
-                    "' for entity " + getType());
+                    "' for entity " + getType().getHumanName());
         }
+        String value = specificProperties.get(name);
         return value;
     }
 
     /**
      * Returns a integer value specific to the current entity type.
-     * @param name name of the property to get
-     * @return the value of this property
+     * @param name Name of the property to get.
+     * @param value Value of the property, possibly null.
      */
-    public final int getIntegerProperty(String name) {
-        return Integer.parseInt(getProperty(name));
+    public final Integer getIntegerProperty(String name) {
+
+        String value = getProperty(name);
+        return value == null ? null : Integer.parseInt(value);
     }
 
     /**
      * Returns a boolean value specific to the current entity type.
-     * @param name name of the property to get
-     * @return the value of this property
+     * @param name Name of the property to get.
+     * @param value Value of the property, possibly null.
      */
-    public final boolean getBooleanProperty(String name) {
-        return Integer.parseInt(getProperty(name)) != 0;
+    public final Boolean getBooleanProperty(String name) {
+
+        String value = getProperty(name);
+        return value == null ? null : Integer.parseInt(value) != 0;
     }
 
     /**
      * Sets a property specific to the current entity type.
-     * @param name name of the property
-     * @param value value of the property
+     * @param name Name of the property.
+     * @param value Value of the property, possibly null.
      */
     public void setProperty(String name, String value) throws MapException {
         specificProperties.put(name, value);
@@ -1303,19 +1238,19 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Sets a property specific to the current entity type.
-     * @param name name of the property
-     * @param value value of the property
+     * @param name Name of the property.
+     * @param value Value of the property, possibly null.
      */
-    public final void setProperty(String name, int value) throws MapException {
+    public final void setIntegerProperty(String name, Integer value) throws MapException {
         setProperty(name, Integer.toString(value));
     }
 
     /**
      * Sets a property specific to the current entity type.
-     * @param name name of the property
-     * @param value value of the property
+     * @param name Name of the property.
+     * @param value Value of the property, possibly null.
      */
-    public final void setProperty(String name, boolean value) throws MapException {
+    public final void setBooleanProperty(String name, Boolean value) throws MapException {
         setProperty(name, value ? "1" : "0");
     }
 
@@ -1366,3 +1301,4 @@ public abstract class MapEntity extends Observable {
 
     }
 }
+

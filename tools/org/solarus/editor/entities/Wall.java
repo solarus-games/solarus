@@ -72,10 +72,10 @@ public class Wall extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setProperty("stopsHero", true);
-        setProperty("stopsEnemies", true);
-        setProperty("stopsNPCs", true);
-        setProperty("stopsBlocks", true);
+        setBooleanProperty("stops_hero", true);
+        setBooleanProperty("stops_rnemies", true);
+        setBooleanProperty("stops_npcs", true);
+        setBooleanProperty("stops_blocks", true);
     }
 
     /**
@@ -84,10 +84,10 @@ public class Wall extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        if (!getBooleanProperty("stopsHero") &&
-                !getBooleanProperty("stopsEnemies") &&
-                !getBooleanProperty("stopsNPCs") &&
-                !getBooleanProperty("stopsBlocks")) {
+        if (!getBooleanProperty("stops_hero") &&
+                !getBooleanProperty("stops_enemies") &&
+                !getBooleanProperty("stops_npcs") &&
+                !getBooleanProperty("stops_blocks")) {
             throw new MapException("This entity should be obstacle for at least one type of entity to have an effect");
         }
     }
@@ -121,3 +121,4 @@ public class Wall extends MapEntity {
         drawEntityOutline(g, zoom, new Color(240, 142, 142));
     }
 }
+

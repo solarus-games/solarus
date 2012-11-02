@@ -137,12 +137,12 @@ public class AddEntitiesMenu extends JMenu {
         for (ItemDefinition def: itemDefinitions) {
             EntityType type = def.getEntityType();
             if (!def.hasSubtypes()) {
-                item = new JMenuItem(type.getName());
+                item = new JMenuItem(type.getHumanName());
                 item.setMnemonic(def.getKey());
                 item.addActionListener(new ActionListenerAddEntity(type));
             }
             else {
-                item = new JMenu(type.getName());
+                item = new JMenu(type.getHumanName());
                 item.setMnemonic(def.getKey());
 
                 for (EntitySubtype subtype: def.getEntitySubtypes()) {

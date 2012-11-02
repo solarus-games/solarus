@@ -41,11 +41,11 @@ public class ShopItem extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setProperty("treasureName", Item.noneId);
-        setProperty("treasureVariant", 1);
-        setProperty("treasureSavegameVariable", -1);
-        setProperty("price", 0);
-        setProperty("messageId", "");
+        setProperty("treasure_name", null);
+        setIntegerProperty("treasure_variant", null);
+        setIntegerProperty("treasure_savegame_variable", null);
+        setIntegerProperty("price", 0);
+        setProperty("dialog", null);
     }
 
     /**
@@ -54,14 +54,14 @@ public class ShopItem extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        String treasureName = getProperty("treasureName");
-        if (treasureName.isEmpty()
+        String treasureName = getProperty("treasure_name");
+        if (treasureName == null
                 || treasureName.equals(Item.noneId)
                 || treasureName.equals(Item.randomId)) {
             throw new MapException("The treasure of a shop item cannot be empty or random");
         }
 
-        int savegameVariable = getIntegerProperty("treasureSavegameVariable");
+        int savegameVariable = getIntegerProperty("treasure_savegame_variable");
         if (savegameVariable < -1 || savegameVariable >= 32768) {
             throw new MapException("Invalid savegame variable");
         }
@@ -71,9 +71,9 @@ public class ShopItem extends MapEntity {
             throw new MapException("The price must be positive");
         }
 
-        String messageId = getProperty("messageId");
-        if (messageId.length() == 0) {
-            throw new MapException("No description message defined");
+        String dialogId = getProperty("dialog");
+        if (dialogId == null || dialogId.length() == 0) {
+            throw new MapException("No description dialog defined");
         }
     }
 
@@ -100,3 +100,4 @@ public class ShopItem extends MapEntity {
         currentImageDescription = new EntityImageDescription("miscellaneous_entities.png", 0, 64, 64, 64);
     }
 }
+

@@ -89,8 +89,8 @@ public class EditEnemyComponent extends EditEntityComponent {
         breedField.setSelectedId(enemy.getProperty("breed"));
         rankField.setValue(Rank.get(enemy.getIntegerProperty("rank")));
 
-        int savegameVariable = enemy.getIntegerProperty("savegameVariable");
-        if (savegameVariable != -1) {
+        Integer savegameVariable = enemy.getIntegerProperty("savegame_variable");
+        if (savegameVariable != null) {
           savegameVariableField.setNumber(savegameVariable);
           savegameVariableField.setEnabled(true);
           saveField.setSelected(true);
@@ -101,9 +101,9 @@ public class EditEnemyComponent extends EditEntityComponent {
         }
 
         treasureField.setTreasure(
-                enemy.getProperty("treasureName"),
-                enemy.getIntegerProperty("treasureVariant"),
-                enemy.getIntegerProperty("treasureSavegameVariable"));
+                enemy.getProperty("treasure_name"),
+                enemy.getIntegerProperty("treasure_variant"),
+                enemy.getIntegerProperty("treasure_savegame_variable"));
     }
 
     /**
@@ -112,15 +112,19 @@ public class EditEnemyComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-        int savegameVariable = savegameVariableField.isEnabled() ?
-                savegameVariableField.getNumber() : -1;
+        Integer savegameVariable = savegameVariableField.isEnabled() ?
+                savegameVariableField.getNumber() : null;
+        String treasureName = treasureField.getTreasure().getItemName();
+        Integer treasureVariant = treasureField.getTreasure().getVariant();
+        Integer treasureSavegameVariable = treasureField.getTreasure().getSavegameVariable();
 
         return new ActionEditEntitySpecific(entity,
                 breedField.getSelectedId(),
                 Integer.toString(rankField.getValue().getId()),
-                Integer.toString(savegameVariable),
-                treasureField.getTreasure().getItemName(),
-                Integer.toString(treasureField.getTreasure().getVariant()),
-                Integer.toString(treasureField.getTreasure().getSavegameVariable()));
+                savegameVariable == null ? null : Integer.toString(savegameVariable),
+                treasureName,
+                treasureVariant == null ? null : Integer.toString(treasureVariant),
+                treasureSavegameVariable == null ? null : Integer.toString(treasureSavegameVariable));
     }
 }
+

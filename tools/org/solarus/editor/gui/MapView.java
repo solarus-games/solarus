@@ -517,7 +517,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                 if (entityType == EntityType.TILE) {
                     int tileId = map.getTileset().getSelectedTilePatternId();
-                    entityBeingAdded.setProperty("tilePatternId", tileId);
+                    entityBeingAdded.setIntegerProperty("pattern", tileId);
                 }
 
                 Point mousePosition = MouseInfo.getPointerInfo().getLocation();

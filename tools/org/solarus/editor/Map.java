@@ -488,14 +488,14 @@ public class Map extends Observable {
 
     /**
      * Sets the floor of this map.
-     * @param floorName Name of the floor: an empty string, "unknown" of a number.
+     * @param floorName Name of the floor: null, "unknown" of a number.
      * @throws MapException if you specify a floor on the outside world
      * or if you specify an invalid floor
      */
     public void setFloor(String floorName) throws MapException {
 
         int floor;
-        if (floorName.isEmpty()) {
+        if (floorName == null) {
             floor = -100;
         }
         else if (floorName.equals("unknown")) {
@@ -1063,6 +1063,9 @@ public class Map extends Observable {
             LuaTable environment = LuaValue.tableOf();
 
             environment.set("properties", new PropertiesFunction());
+            for (EntityType entityType: EntityType.values()) {
+              environment.set(entityType.getLuaName(), new MapEntityCreationFunction(entityType));
+            }
 
             LuaFunction code = LoadState.load(new FileInputStream(mapFile),
                 "map", environment);
@@ -1169,8 +1172,9 @@ public class Map extends Observable {
                 String worldName = table.get("world").checkjstring();
                 String floorName = table.get("floor").optjstring(null);
                 int smallKeysVariable = table.get("small_key_variable").optint(-1);
-                
-    
+                String tilesetId = table.get("tileset").checkjstring();
+                String musicId = table.get("music").checkjstring();
+
                 setSize(new Dimension(width, height));
                 setWorld(worldName);
                 setFloor(floorName);
@@ -1184,25 +1188,49 @@ public class Map extends Observable {
             catch (ZSDXException ex) {
                 throw new LuaError(ex);
             }
-        }
-    }
-/*
-            line = in.readLine();
-            while (line != null) {
-                lineNumber++;
-
-                try {
-                    MapEntity entity = MapEntity.createFromString(this, line);
-                    addEntity(entity);
-                }
-                catch (NoSuchTilePatternException ex) {
-                    badTiles = true;
-                }
-                line = in.readLine();
+            catch (Exception ex) {
+                ex.printStackTrace();
+                throw ex;
             }
-
         }
     }
-    */
+
+    /**
+     * @brief Lua function called by the map data file to define a map entity.
+     */
+    private class MapEntityCreationFunction extends OneArgFunction {
+
+        private EntityType type;
+
+        /**
+         * @brief Constructor for a specified type of entity.
+         * @param type The type of entity to create.
+         */
+        public MapEntityCreationFunction(EntityType type) {
+            super();
+            this.type = type;
+        }
+
+        public LuaValue call(LuaValue arg) {
+
+            try {
+                LuaTable table = arg.checktable();
+                MapEntity entity = MapEntity.create(Map.this, type, type.getDefaultSubtype());
+                entity.setAttributes(table);
+                addEntity(entity);
+            }
+            catch (NoSuchTilePatternException ex) {
+                badTiles = true;
+            }
+            catch (ZSDXException ex) {
+                throw new LuaError(ex);
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+                throw ex;
+            }
+            return LuaValue.NIL;
+        }
+    }
 }
 

@@ -321,7 +321,7 @@ public class Project {
      */
     public static File getMapScriptFile(String mapId) {
 
-        return new File(getMapPath() + "/" + mapId + ".lua");
+        return new File(getMapPath() + "/" + mapId + ".script.lua");
     }
 
     /**
@@ -331,7 +331,7 @@ public class Project {
      */
     public static File getMapFile(String mapId) {
 
-        return new File(getMapPath() + "/" + mapId + ".dat");
+        return new File(getMapPath() + "/" + mapId + ".lua");
     }
 
     /**

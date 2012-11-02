@@ -210,7 +210,7 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
     }
 
     /**
-     * Loads a map of the project ans sets it as the current map.
+     * Loads a map of the project and sets it as the current map.
      */
     protected void openMap() {
 

@@ -384,6 +384,35 @@ public class Map extends Observable {
 
     /**
      * Sets the world where this map is.
+     * @param world name of the world: "outside_world", "inside_world"
+     * or "dungeon_X" with X between 1 to 20.
+     * @throws MapException if the specified world is incorrect.
+     */
+    public void setWorld(String worldName) throws MapException {
+
+        int world;
+        if (worldName.equals("outside_world")) {
+            world = 0;
+        }
+        else if (worldName.equals("inside_world")) {
+            world = -1;
+        }
+        else if (worldName.substring(0, 8).equals("dungeon_")) {
+            try {
+                world = Integer.parseInt(worldName.substring(8));
+            }
+            catch (NumberFormatException ex) {
+                throw new MapException("Invalid world name: '" + worldName + "'");
+            }
+        }
+        else {
+            throw new MapException("Invalid world name: '" + worldName + "'");
+        }
+        setWorld(world);
+    }
+
+    /**
+     * Sets the world where this map is.
      * @param world the world index: 0 if the map is outside, -1 if it is inside,
      * 1 to 20 if it is in a dungeon
      * @throws MapException if the specified world is incorrect
@@ -455,6 +484,32 @@ public class Map extends Observable {
             setChanged();
             notifyObservers();
         }
+    }
+
+    /**
+     * Sets the floor of this map.
+     * @param floorName Name of the floor: an empty string, "unknown" of a number.
+     * @throws MapException if you specify a floor on the outside world
+     * or if you specify an invalid floor
+     */
+    public void setFloor(String floorName) throws MapException {
+
+        int floor;
+        if (floorName.isEmpty()) {
+            floor = -100;
+        }
+        else if (floorName.equals("unknown")) {
+            floor = -99;
+        }
+        else {
+            try {
+                floor = Integer.parseInt(floorName);
+            }
+            catch (NumberFormatException ex) {
+                throw new MapException("Invalid floor name: '" + floorName + "'");
+            }
+        }
+        setFloor(floor);
     }
 
     /**
@@ -1104,18 +1159,31 @@ public class Map extends Observable {
 
         public LuaValue call(LuaValue arg) {
 
-            /* TODO
-            LuaTable propertiesTable = arg.checktable();
-
-            setSize(new Dimension(width, height));
-            setWorld(world);
-            setFloor(floor);
-            setLocation(new Point(x, y));
-            setSmallKeysVariable(smallKeysVariable);
-            setTileset(tilesetId);
-            setMusic(musicId);
-            */
-            return LuaValue.NIL;
+            try {
+                LuaTable table = arg.checktable();
+    
+                int x = table.get("x").checkint();
+                int y = table.get("y").checkint();
+                int width = table.get("width").checkint();
+                int height = table.get("height").checkint();
+                String worldName = table.get("world").checkjstring();
+                String floorName = table.get("floor").optjstring(null);
+                int smallKeysVariable = table.get("small_key_variable").optint(-1);
+                
+    
+                setSize(new Dimension(width, height));
+                setWorld(worldName);
+                setFloor(floorName);
+                setLocation(new Point(x, y));
+                setSmallKeysVariable(smallKeysVariable);
+                setTileset(tilesetId);
+                setMusic(musicId);
+    
+                return LuaValue.NIL;
+            }
+            catch (ZSDXException ex) {
+                throw new LuaError(ex);
+            }
         }
     }
 /*

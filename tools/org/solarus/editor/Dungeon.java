@@ -180,9 +180,11 @@ public class Dungeon {
 
                 if (entity instanceof Chest) {
                     Chest chest = (Chest) entity;
+                    Integer savegameVariable = chest.getIntegerProperty("treasure_savegame_variable");
                     String section = saveDungeonElement(ini, map, "chest_" + nbChestsSaved,
                             chest.getX(), chest.getY(),
-                            chest.getIntegerProperty("treasureSavegameVariable"), chest.isBigChest());
+                            savegameVariable == null ? -1 : savegameVariable,
+                            chest.isBigChest());
                     updatedSections.add(section);
                     nbChestsSaved++;
                 }
@@ -191,8 +193,10 @@ public class Dungeon {
                     Enemy.Rank rank = Enemy.Rank.get(enemy.getIntegerProperty("rank"));
 
                     if (rank != Enemy.Rank.NORMAL) {
+                        Integer savegameVariable = enemy.getIntegerProperty("savegame_variable");
                         String section = saveDungeonElement(ini, map, "boss_" + nbBossesSaved,
-                                enemy.getX(), enemy.getY(), enemy.getIntegerProperty("savegameVariable"),
+                                enemy.getX(), enemy.getY(),
+                                savegameVariable == null ? -1 : savegameVariable,
                                 rank == Enemy.Rank.BOSS);
                         updatedSections.add(section);
                         nbBossesSaved++;

@@ -866,7 +866,7 @@ door{
   y = 24,
   name = "door",
   direction = 1,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 158,
 }
 
@@ -876,7 +876,7 @@ npc{
   y = 205,
   name = "npc",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager6",
   behavior = "dialog#lake_shop.seller",
 }
@@ -931,7 +931,7 @@ npc{
   y = 245,
   name = "npc_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "dialog#lake_shop.seller",
 }
 

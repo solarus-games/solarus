@@ -250,7 +250,7 @@ stairs{
   y = 328,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -259,7 +259,7 @@ stairs{
   y = 408,
   name = "stairs_2",
   direction = 3,
-  subtype = 2,
+  subtype = "2",
 }
 
 tile{
@@ -955,7 +955,7 @@ npc{
   y = 197,
   name = "sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#caverne_fragments.sign",
 }
@@ -988,7 +988,7 @@ crystal_block{
   y = 208,
   width = 224,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal{

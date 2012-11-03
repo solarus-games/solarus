@@ -1174,7 +1174,7 @@ stairs{
   y = 792,
   name = "stairs",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -1203,7 +1203,7 @@ stairs{
   y = 280,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -1224,7 +1224,7 @@ door{
   y = 536,
   name = "KD05",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 717,
 }
 
@@ -1234,7 +1234,7 @@ door{
   y = 792,
   name = "LD06",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 switch{
@@ -1242,7 +1242,7 @@ switch{
   x = 1080,
   y = 872,
   name = "DB04",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -1259,7 +1259,7 @@ switch{
   x = 1176,
   y = 872,
   name = "DB03",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -1342,7 +1342,7 @@ door{
   y = 744,
   name = "LD06_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 pickable{
@@ -1415,7 +1415,7 @@ door{
   y = 488,
   name = "KD05_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 717,
 }
 
@@ -1425,7 +1425,7 @@ crystal_block{
   y = 320,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{

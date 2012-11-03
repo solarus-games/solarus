@@ -517,7 +517,7 @@ stairs{
   y = 432,
   name = "stairs",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 tile{

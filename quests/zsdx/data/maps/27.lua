@@ -799,7 +799,7 @@ npc{
   y = -11,
   name = "solarus_child",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child1",
   behavior = "map",
 }

@@ -495,7 +495,7 @@ npc{
   y = 109,
   name = "frozen_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/frozen_door",
   behavior = "map",
 }
@@ -506,7 +506,7 @@ npc{
   y = 205,
   name = "frozen_door_opposite",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/frozen_door",
   behavior = "map",
 }

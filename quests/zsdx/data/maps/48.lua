@@ -2437,7 +2437,7 @@ stairs{
   y = 1584,
   name = "stairs_3",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2446,7 +2446,7 @@ stairs{
   y = 1648,
   name = "stairs_4",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2455,7 +2455,7 @@ stairs{
   y = 1704,
   name = "stairs_5",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2464,7 +2464,7 @@ stairs{
   y = 1392,
   name = "stairs_6",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 teletransporter{
@@ -2617,7 +2617,7 @@ switch{
   x = 1040,
   y = 1280,
   name = "CB03",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9908,7 +9908,7 @@ door{
   y = 232,
   name = "LD12",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9917,7 +9917,7 @@ door{
   y = 632,
   name = "LD7_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9926,7 +9926,7 @@ door{
   y = 632,
   name = "LD7",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9935,7 +9935,7 @@ door{
   y = 888,
   name = "KD03",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 710,
 }
 
@@ -9945,7 +9945,7 @@ door{
   y = 888,
   name = "KD03_2",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 710,
 }
 
@@ -9955,7 +9955,7 @@ door{
   y = 1304,
   name = "LD9_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9964,7 +9964,7 @@ door{
   y = 1256,
   name = "LD9",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -9986,7 +9986,7 @@ door{
   y = 1560,
   name = "WW02",
   direction = 1,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 732,
 }
 
@@ -10008,7 +10008,7 @@ switch{
   x = 1056,
   y = 1488,
   name = "CB04",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -10074,7 +10074,7 @@ door{
   y = 744,
   name = "LD8",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -10695,7 +10695,7 @@ crystal_block{
   y = 1184,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -10704,7 +10704,7 @@ crystal_block{
   y = 1120,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -10713,7 +10713,7 @@ crystal_block{
   y = 1136,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -10722,7 +10722,7 @@ crystal_block{
   y = 1376,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -10731,7 +10731,7 @@ crystal_block{
   y = 1392,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -10740,7 +10740,7 @@ crystal_block{
   y = 1440,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 jumper{
@@ -10923,7 +10923,7 @@ door{
   y = 280,
   name = "LD12_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -11226,7 +11226,7 @@ crystal_block{
   y = 576,
   width = 16,
   height = 144,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -11235,7 +11235,7 @@ crystal_block{
   y = 576,
   width = 16,
   height = 144,
-  subtype = 1,
+  subtype = "1",
 }
 
 enemy{
@@ -11291,7 +11291,7 @@ switch{
   x = 744,
   y = 728,
   name = "DB08",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -12040,7 +12040,7 @@ crystal_block{
   y = 576,
   width = 16,
   height = 144,
-  subtype = 1,
+  subtype = "1",
 }
 
 wall{
@@ -12062,7 +12062,7 @@ crystal_block{
   y = 808,
   width = 16,
   height = 64,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -12071,7 +12071,7 @@ crystal_block{
   y = 808,
   width = 16,
   height = 64,
-  subtype = 1,
+  subtype = "1",
 }
 
 destructible{
@@ -12156,7 +12156,7 @@ door{
   y = 792,
   name = "LD8_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -12209,7 +12209,7 @@ npc{
   y = 293,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_8.hint_B1",
 }
@@ -12347,7 +12347,7 @@ stairs{
   y = 792,
   name = "stairs",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -12402,7 +12402,7 @@ stairs{
   y = 24,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 tile{

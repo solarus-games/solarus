@@ -796,7 +796,7 @@ stairs{
   y = 96,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -805,7 +805,7 @@ stairs{
   y = 496,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -814,7 +814,7 @@ stairs{
   y = 400,
   name = "stairs_3",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -823,7 +823,7 @@ stairs{
   y = 320,
   name = "stairs_4",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 block{
@@ -2367,7 +2367,7 @@ npc{
   y = 37,
   name = "interactive_entity_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_1.big_code",
 }

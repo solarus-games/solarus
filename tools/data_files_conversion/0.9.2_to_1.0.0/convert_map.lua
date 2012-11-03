@@ -52,7 +52,7 @@ local entity_syntaxes = {
     { token_name = "x" },
     { token_name = "y" },
     { token_name = "treasure_name", token_type = "string" },
-    { token_name = "treasure_variant" },
+    { token_name = "treasure_variant", nil_value = 0 },
     { token_name = "treasure_savegame_variable", nil_value = -1 },
   },
 
@@ -71,7 +71,7 @@ local entity_syntaxes = {
       }
     },
     { token_name = "treasure_name", token_type = "string" },
-    { token_name = "treasure_variant" },
+    { token_name = "treasure_variant", nil_value = 0 },
     { token_name = "treasure_savegame_variable", nil_value = -1 },
   },
 
@@ -83,7 +83,7 @@ local entity_syntaxes = {
     { token_name = "name", token_type = "string" },
     { token_name = "is_big_chest", token_type = "boolean" },
     { token_name = "treasure_name", token_type = "string" },
-    { token_name = "treasure_variant" },
+    { token_name = "treasure_variant", nil_value = 0 },
     { token_name = "treasure_savegame_variable", nil_value = -1 },
   },
 
@@ -110,7 +110,7 @@ local entity_syntaxes = {
     { token_name = "rank" },
     { token_name = "savegame_variable", nil_value = -1 },
     { token_name = "treasure_name", token_type = "string" },
-    { token_name = "treasure_variant" },
+    { token_name = "treasure_variant", nil_value = 0 },
     { token_name = "treasure_savegame_variable", nil_value = -1 },
   },
 
@@ -121,7 +121,7 @@ local entity_syntaxes = {
     { token_name = "y" },
     { token_name = "name", token_type = "string" },
     { token_name = "direction" },
-    { token_name = "subtype" },
+    { token_name = "subtype", token_type = "string" },
     { token_name = "sprite", token_type = "string", nil_value = "_none" },
     { token_name = "behavior", token_type = "string" },
   },
@@ -157,7 +157,7 @@ local entity_syntaxes = {
     { token_name = "x" },
     { token_name = "y" },
     { token_name = "name", token_type = "string" },
-    { token_name = "subtype" },
+    { token_name = "subtype", token_type = "string" },
     { token_name = "needs_block", token_type = "boolean" },
     { token_name = "inactivate_when_leaving", token_type = "boolean" },
   },
@@ -201,7 +201,7 @@ local entity_syntaxes = {
     { token_name = "y" },
     { token_name = "width" },
     { token_name = "height" },
-    { token_name = "subtype" },
+    { token_name = "subtype", token_type = "string" },
   },
 
   [16] = {
@@ -232,7 +232,7 @@ local entity_syntaxes = {
     { token_name = "y" },
     { token_name = "name", token_type = "string" },
     { token_name = "direction" },
-    { token_name = "subtype" },
+    { token_name = "subtype", token_type = "string" },
     { token_name = "savegame_variable", nil_value = -1 },
   },
 
@@ -243,7 +243,7 @@ local entity_syntaxes = {
     { token_name = "y" },
     { token_name = "name", token_type = "string" },
     { token_name = "direction" },
-    { token_name = "subtype" },
+    { token_name = "subtype", token_type = "string" },
   },
 
 }

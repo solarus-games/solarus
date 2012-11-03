@@ -8233,7 +8233,7 @@ npc{
   y = 125,
   name = "dungeon_7_lock",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 

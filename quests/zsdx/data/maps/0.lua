@@ -39,7 +39,7 @@ npc{
   y = 21,
   name = "fresco",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/fresco",
   behavior = "map",
 }

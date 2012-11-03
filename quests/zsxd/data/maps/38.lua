@@ -895,7 +895,7 @@ npc{
   y = 309,
   name = "fc_torch_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "map",
 }
@@ -917,7 +917,7 @@ npc{
   y = 309,
   name = "fc_torch_1",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "map",
 }

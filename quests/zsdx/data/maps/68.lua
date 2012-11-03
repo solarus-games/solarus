@@ -1734,7 +1734,7 @@ stairs{
   y = 480,
   name = "stairs_2",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1743,7 +1743,7 @@ stairs{
   y = 208,
   name = "stairs_3",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1752,7 +1752,7 @@ stairs{
   y = 384,
   name = "stairs_4",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1761,7 +1761,7 @@ stairs{
   y = 224,
   name = "stairs_6",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1770,7 +1770,7 @@ stairs{
   y = 80,
   name = "stairs_7",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1779,7 +1779,7 @@ stairs{
   y = 296,
   name = "stairs_8",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1788,7 +1788,7 @@ stairs{
   y = 544,
   name = "stairs_9",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1797,7 +1797,7 @@ stairs{
   y = 544,
   name = "stairs_10",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1806,7 +1806,7 @@ stairs{
   y = 80,
   name = "stairs_11",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 switch{
@@ -1814,7 +1814,7 @@ switch{
   x = 344,
   y = 552,
   name = "water_9_on_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1833,7 +1833,7 @@ switch{
   x = 72,
   y = 184,
   name = "water_2_on_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4545,7 +4545,7 @@ stairs{
   y = 408,
   name = "stairs",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -4808,7 +4808,7 @@ stairs{
   y = 24,
   name = "stairs_12",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 jumper{
@@ -4904,7 +4904,7 @@ switch{
   x = 64,
   y = 560,
   name = "water_1_on_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4947,7 +4947,7 @@ switch{
   x = 384,
   y = 64,
   name = "water_4_on_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4966,7 +4966,7 @@ switch{
   x = 576,
   y = 512,
   name = "water_6_on_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }

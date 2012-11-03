@@ -700,7 +700,7 @@ npc{
   y = 125,
   name = "desert.west_house",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager4",
   behavior = "dialog#desert.west_house",
 }

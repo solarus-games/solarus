@@ -961,7 +961,7 @@ stairs{
   y = 480,
   name = "stairs",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 enemy{
@@ -7767,7 +7767,7 @@ switch{
   x = 976,
   y = 1000,
   name = "door_f_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -7811,7 +7811,7 @@ switch{
   x = 48,
   y = 824,
   name = "code_switch_4",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -7821,7 +7821,7 @@ switch{
   x = 96,
   y = 824,
   name = "code_switch_7",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -7831,7 +7831,7 @@ switch{
   x = 144,
   y = 824,
   name = "code_switch_2",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -7841,7 +7841,7 @@ switch{
   x = 48,
   y = 872,
   name = "code_switch_6",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -7851,7 +7851,7 @@ switch{
   x = 96,
   y = 872,
   name = "code_switch_1",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -7861,7 +7861,7 @@ switch{
   x = 144,
   y = 872,
   name = "code_switch_8",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -7871,7 +7871,7 @@ switch{
   x = 96,
   y = 920,
   name = "code_switch_3",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -7881,7 +7881,7 @@ switch{
   x = 144,
   y = 920,
   name = "code_switch_5",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8185,7 +8185,7 @@ door{
   y = 80,
   name = "miniboss_door",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8194,7 +8194,7 @@ door{
   y = 80,
   name = "miniboss_door_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8203,7 +8203,7 @@ door{
   y = 776,
   name = "door_f_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8212,7 +8212,7 @@ door{
   y = 728,
   name = "door_f",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8221,7 +8221,7 @@ door{
   y = 776,
   name = "door_d_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 615,
 }
 
@@ -8231,7 +8231,7 @@ door{
   y = 728,
   name = "door_d",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 615,
 }
 
@@ -8241,7 +8241,7 @@ door{
   y = 568,
   name = "door_a",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 630,
 }
 
@@ -8251,7 +8251,7 @@ door{
   y = 520,
   name = "door_a_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 630,
 }
 
@@ -8261,7 +8261,7 @@ door{
   y = 520,
   name = "door_c_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8270,7 +8270,7 @@ door{
   y = 472,
   name = "door_c",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 617,
 }
 
@@ -8280,7 +8280,7 @@ door{
   y = 312,
   name = "door_b_2",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 616,
 }
 
@@ -8290,7 +8290,7 @@ door{
   y = 312,
   name = "door_b",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 616,
 }
 
@@ -8319,7 +8319,7 @@ door{
   y = 912,
   name = "door",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 610,
 }
 
@@ -8388,7 +8388,7 @@ stairs{
   y = 40,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -8397,7 +8397,7 @@ stairs{
   y = 168,
   name = "stairs_4",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -8406,7 +8406,7 @@ stairs{
   y = 168,
   name = "stairs_5",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -8415,7 +8415,7 @@ stairs{
   y = 520,
   name = "stairs_6",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 sensor{
@@ -9760,7 +9760,7 @@ door{
   y = 520,
   name = "boss_door",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 612,
 }
 
@@ -10005,7 +10005,7 @@ npc{
   y = 125,
   name = "nw_hint_stone",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_7.2f_weak_floor_hint",
 }
@@ -10016,7 +10016,7 @@ npc{
   y = 173,
   name = "torch_1",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -10027,7 +10027,7 @@ npc{
   y = 109,
   name = "torch_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -10038,7 +10038,7 @@ npc{
   y = 173,
   name = "torch_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -10049,7 +10049,7 @@ npc{
   y = 173,
   name = "torch_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -10071,7 +10071,7 @@ npc{
   y = 53,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_7.2f_dont_fall_alone_hint",
 }
@@ -10420,7 +10420,7 @@ switch{
   x = 808,
   y = 672,
   name = "door_d_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -10593,7 +10593,7 @@ door{
   y = 40,
   name = "miniboss_door_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -10943,7 +10943,7 @@ stairs{
   y = 568,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -10952,7 +10952,7 @@ stairs{
   y = 520,
   name = "stairs_7",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -10961,7 +10961,7 @@ stairs{
   y = 264,
   name = "stairs_8",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -10970,7 +10970,7 @@ stairs{
   y = 376,
   name = "stairs_9",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -10979,7 +10979,7 @@ stairs{
   y = 328,
   name = "stairs_10",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -10988,7 +10988,7 @@ stairs{
   y = 328,
   name = "stairs_11",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -10997,7 +10997,7 @@ stairs{
   y = 520,
   name = "stairs_12",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -11006,7 +11006,7 @@ stairs{
   y = 616,
   name = "stairs_13",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -11015,7 +11015,7 @@ stairs{
   y = 600,
   name = "stairs_14",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -11024,7 +11024,7 @@ stairs{
   y = 872,
   name = "stairs_15",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -11138,7 +11138,7 @@ switch{
   x = 320,
   y = 544,
   name = "shortcut_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }

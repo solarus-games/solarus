@@ -231,7 +231,7 @@ stairs{
   y = 440,
   name = "stairs",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 chest{
@@ -4384,7 +4384,7 @@ stairs{
   y = 368,
   name = "stairs_2",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 switch{
@@ -4392,7 +4392,7 @@ switch{
   x = 384,
   y = 552,
   name = "barrier_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }

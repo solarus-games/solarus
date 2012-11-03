@@ -6041,7 +6041,7 @@ npc{
   y = 557,
   name = "water_for_bottle",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#bottle_1",
 }
 
@@ -6186,7 +6186,7 @@ npc{
   y = 541,
   name = "vine_start",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -6196,7 +6196,7 @@ npc{
   y = 525,
   name = "vine",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/vine",
   behavior = "map",
 }
@@ -6246,7 +6246,7 @@ npc{
   y = 69,
   name = "riverfall_detector_e",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#mystic_mirror",
 }
 
@@ -6256,7 +6256,7 @@ npc{
   y = 69,
   name = "riverfall_detector_w",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#mystic_mirror",
 }
 

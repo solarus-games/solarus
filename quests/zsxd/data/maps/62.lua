@@ -1030,7 +1030,7 @@ stairs{
   y = 560,
   name = "stairs",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 chest{
@@ -1050,7 +1050,7 @@ stairs{
   y = 96,
   name = "stairs_2",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 sensor{
@@ -4875,7 +4875,7 @@ door{
   y = 168,
   name = "stupid_run_door_a",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4884,7 +4884,7 @@ door{
   y = 120,
   name = "stupid_run_door_a_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4893,7 +4893,7 @@ door{
   y = 336,
   name = "stupid_run_door_c_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4902,7 +4902,7 @@ door{
   y = 288,
   name = "stupid_run_door_c",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4911,7 +4911,7 @@ door{
   y = 312,
   name = "stupid_run_door_b_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4920,7 +4920,7 @@ door{
   y = 264,
   name = "stupid_run_door_b",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 switch{
@@ -4928,7 +4928,7 @@ switch{
   x = 1304,
   y = 336,
   name = "stupid_run_switch_a",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4938,7 +4938,7 @@ switch{
   x = 1400,
   y = 240,
   name = "stupid_run_switch_b",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4957,7 +4957,7 @@ switch{
   x = 1448,
   y = 72,
   name = "stupid_run_switch_c",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -5201,7 +5201,7 @@ npc{
   y = 333,
   name = "sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#dungeon_1.stupid_run_sign",
 }

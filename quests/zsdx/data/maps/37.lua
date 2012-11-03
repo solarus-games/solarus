@@ -572,7 +572,7 @@ door{
   y = 48,
   name = "door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 928,
 }
 
@@ -593,7 +593,7 @@ npc{
   y = 77,
   name = "billy",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/billy",
   behavior = "map",
 }

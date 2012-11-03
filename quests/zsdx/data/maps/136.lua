@@ -1012,7 +1012,7 @@ door{
   y = 616,
   name = "door",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -1301,7 +1301,7 @@ switch{
   x = 144,
   y = 416,
   name = "holes_a_switch_4",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1311,7 +1311,7 @@ switch{
   x = 152,
   y = 416,
   name = "holes_a_switch_5",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1321,7 +1321,7 @@ switch{
   x = 160,
   y = 416,
   name = "holes_a_switch_6",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1331,7 +1331,7 @@ switch{
   x = 144,
   y = 464,
   name = "holes_b_switch_1",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1341,7 +1341,7 @@ switch{
   x = 152,
   y = 464,
   name = "holes_b_switch_2",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1351,7 +1351,7 @@ switch{
   x = 160,
   y = 464,
   name = "holes_b_switch_3",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1361,7 +1361,7 @@ switch{
   x = 144,
   y = 544,
   name = "holes_a_switch_1",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1371,7 +1371,7 @@ switch{
   x = 152,
   y = 544,
   name = "holes_a_switch_2",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1381,7 +1381,7 @@ switch{
   x = 160,
   y = 544,
   name = "holes_a_switch_3",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }

@@ -3260,7 +3260,7 @@ crystal_block{
   y = 544,
   width = 48,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destructible{
@@ -3287,7 +3287,7 @@ crystal_block{
   y = 528,
   width = 48,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -3296,7 +3296,7 @@ crystal_block{
   y = 512,
   width = 48,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -3305,7 +3305,7 @@ crystal_block{
   y = 528,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destination{
@@ -3334,7 +3334,7 @@ crystal_block{
   y = 552,
   width = 48,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destination{
@@ -3352,7 +3352,7 @@ crystal_block{
   y = 568,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destructible{
@@ -3432,7 +3432,7 @@ switch{
   x = 168,
   y = 240,
   name = "open_barrier_1_switch",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -3442,7 +3442,7 @@ switch{
   x = 168,
   y = 216,
   name = "close_barrier_1_switch",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -3452,7 +3452,7 @@ switch{
   x = 120,
   y = 216,
   name = "close_barrier_2_switch",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -3525,7 +3525,7 @@ crystal_block{
   y = 96,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -3534,7 +3534,7 @@ crystal_block{
   y = 112,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destination{
@@ -3607,7 +3607,7 @@ switch{
   x = 144,
   y = 216,
   name = "open_barrier_2_switch",
-  subtype = 0,
+  subtype = "0",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -3663,7 +3663,7 @@ crystal_block{
   y = 64,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -3672,7 +3672,7 @@ crystal_block{
   y = 80,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -3681,7 +3681,7 @@ crystal_block{
   y = 96,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -3690,7 +3690,7 @@ crystal_block{
   y = 80,
   width = 48,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -3699,7 +3699,7 @@ crystal_block{
   y = 112,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -3708,7 +3708,7 @@ crystal_block{
   y = 96,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -3717,7 +3717,7 @@ crystal_block{
   y = 96,
   width = 32,
   height = 64,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -3726,7 +3726,7 @@ crystal_block{
   y = 96,
   width = 16,
   height = 128,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -3738,7 +3738,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -3750,7 +3749,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -3762,7 +3760,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -3774,7 +3771,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 stairs{
@@ -3783,7 +3779,7 @@ stairs{
   y = 456,
   name = "stairs_1",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -3792,7 +3788,7 @@ stairs{
   y = 376,
   name = "stairs_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -3801,7 +3797,7 @@ stairs{
   y = 600,
   name = "stairs_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -3810,7 +3806,7 @@ stairs{
   y = 24,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -3819,7 +3815,7 @@ stairs{
   y = 176,
   name = "stairs_5",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 tile{

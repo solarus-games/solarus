@@ -494,7 +494,7 @@ npc{
   y = 141,
   name = "sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }

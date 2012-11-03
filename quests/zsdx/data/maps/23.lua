@@ -1814,7 +1814,7 @@ switch{
   x = 64,
   y = 544,
   name = "sw_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1880,7 +1880,7 @@ switch{
   x = 272,
   y = 320,
   name = "map_room_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1916,7 +1916,7 @@ switch{
   x = 128,
   y = 64,
   name = "nw_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1950,7 +1950,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -1962,7 +1961,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -1974,7 +1972,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -1986,7 +1983,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 destination{
@@ -2023,7 +2019,7 @@ door{
   y = 432,
   name = "sw_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -2032,7 +2028,7 @@ door{
   y = 336,
   name = "sw_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -2059,7 +2055,7 @@ door{
   y = 488,
   name = "door",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 58,
 }
 
@@ -2069,7 +2065,7 @@ door{
   y = 488,
   name = "door_2",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 58,
 }
 
@@ -2122,7 +2118,7 @@ stairs{
   y = 256,
   name = "stairs_1",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2131,7 +2127,7 @@ stairs{
   y = 88,
   name = "stairs_2",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2140,7 +2136,7 @@ stairs{
   y = 144,
   name = "stairs_3",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2149,7 +2145,7 @@ stairs{
   y = 448,
   name = "stairs_4",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -2158,7 +2154,7 @@ stairs{
   y = 48,
   name = "stairs_5",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 tile{
@@ -4510,7 +4506,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -4522,7 +4517,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -4534,7 +4528,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -4546,7 +4539,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -4558,7 +4550,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 wall{
@@ -4596,7 +4587,6 @@ enemy{
   breed = "bubble",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 destination{
@@ -4668,7 +4658,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 teletransporter{
@@ -4689,7 +4678,7 @@ crystal_block{
   y = 272,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -4698,7 +4687,7 @@ stairs{
   y = 256,
   name = "stairs_6",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -4707,7 +4696,7 @@ stairs{
   y = 256,
   name = "stairs_7",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -4735,7 +4724,7 @@ door{
   y = 120,
   name = "weak_wall",
   direction = 1,
-  subtype = 6,
+  subtype = "6",
   savegame_variable = 923,
 }
 

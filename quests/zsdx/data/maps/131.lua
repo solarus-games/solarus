@@ -22,7 +22,7 @@ npc{
   y = 13,
   name = "interactive_entity",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/the_end",
   behavior = "map",
 }

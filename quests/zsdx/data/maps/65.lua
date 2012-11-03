@@ -484,7 +484,7 @@ stairs{
   y = 616,
   name = "stairs",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -493,7 +493,7 @@ stairs{
   y = 616,
   name = "stairs_2",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 door{
@@ -502,7 +502,7 @@ door{
   y = 608,
   name = "door_e",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -511,7 +511,7 @@ door{
   y = 608,
   name = "door_e_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 chest{
@@ -4697,7 +4697,7 @@ door{
   y = 736,
   name = "door_f",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4706,7 +4706,7 @@ door{
   y = 784,
   name = "door_g_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4715,7 +4715,7 @@ door{
   y = 736,
   name = "door_g",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4724,7 +4724,7 @@ door{
   y = 496,
   name = "door_d_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4733,7 +4733,7 @@ door{
   y = 448,
   name = "door_d",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4742,7 +4742,7 @@ door{
   y = 376,
   name = "door_b",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4751,7 +4751,7 @@ door{
   y = 376,
   name = "door_b_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 dynamic_tile{
@@ -4771,7 +4771,7 @@ door{
   y = 680,
   name = "weak_wall_b_2",
   direction = 0,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 948,
 }
 
@@ -4899,7 +4899,7 @@ door{
   y = 376,
   name = "door_a",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4908,7 +4908,7 @@ door{
   y = 376,
   name = "door_a_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -4969,7 +4969,7 @@ door{
   y = 496,
   name = "door_c_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4978,7 +4978,7 @@ door{
   y = 448,
   name = "door_c",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -5038,7 +5038,7 @@ stairs{
   y = 24,
   name = "stairs_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -5047,7 +5047,7 @@ stairs{
   y = 784,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -5076,7 +5076,7 @@ door{
   y = 208,
   name = "n_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -5085,7 +5085,7 @@ door{
   y = 160,
   name = "n_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 npc{
@@ -5094,7 +5094,7 @@ npc{
   y = 573,
   name = "guard_1",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/black_knight_soldier",
   behavior = "map",
 }
@@ -5114,7 +5114,7 @@ npc{
   y = 685,
   name = "guard_2",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/black_knight_soldier",
   behavior = "map",
 }
@@ -5133,7 +5133,7 @@ npc{
   y = 325,
   name = "prison_1_lock",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/castle_lock",
   behavior = "map",
 }
@@ -5144,7 +5144,7 @@ npc{
   y = 325,
   name = "prison_2_lock",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/castle_lock",
   behavior = "map",
 }
@@ -5155,7 +5155,7 @@ npc{
   y = 821,
   name = "guard_3",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/black_knight_soldier",
   behavior = "map",
 }
@@ -5184,7 +5184,7 @@ npc{
   y = 917,
   name = "guard_4",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/black_knight_soldier",
   behavior = "map",
 }
@@ -5222,7 +5222,7 @@ npc{
   y = 597,
   name = "guard_6",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/black_knight_soldier",
   behavior = "map",
 }
@@ -5242,7 +5242,7 @@ npc{
   y = 725,
   name = "guard_5",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/black_knight_soldier",
   behavior = "map",
 }
@@ -5487,7 +5487,7 @@ door{
   y = 680,
   name = "weak_wall_b",
   direction = 2,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 948,
 }
 
@@ -5532,7 +5532,7 @@ door{
   y = 496,
   name = "weak_wall_a",
   direction = 1,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 947,
 }
 
@@ -5542,7 +5542,7 @@ door{
   y = 448,
   name = "weak_wall_a_2",
   direction = 3,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 947,
 }
 
@@ -5643,7 +5643,7 @@ door{
   y = 784,
   name = "door_f_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -5665,7 +5665,7 @@ door{
   y = 960,
   name = "door_h_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -5674,7 +5674,7 @@ door{
   y = 960,
   name = "door_h",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{

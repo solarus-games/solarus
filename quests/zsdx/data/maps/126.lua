@@ -1439,7 +1439,7 @@ npc{
   y = 381,
   name = "bone_key_door",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/bone_key_door",
   behavior = "map",
 }

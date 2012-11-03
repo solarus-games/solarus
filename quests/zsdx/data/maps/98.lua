@@ -466,7 +466,7 @@ stairs{
   y = 80,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -475,7 +475,7 @@ stairs{
   y = 352,
   name = "stairs_3",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 door{
@@ -484,7 +484,7 @@ door{
   y = 104,
   name = "door_2",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 232,
 }
 
@@ -515,7 +515,7 @@ stairs{
   y = 160,
   name = "stairs_5",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 tile{
@@ -1808,7 +1808,7 @@ door{
   y = 168,
   name = "door_a",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -1817,7 +1817,7 @@ door{
   y = 168,
   name = "door_a_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 switch{
@@ -1825,7 +1825,7 @@ switch{
   x = 376,
   y = 152,
   name = "switch1_1",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -1948,7 +1948,7 @@ door{
   y = 48,
   name = "door",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 233,
 }
 
@@ -2431,7 +2431,7 @@ stairs{
   y = 88,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{

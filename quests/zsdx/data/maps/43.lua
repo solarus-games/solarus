@@ -241,7 +241,7 @@ stairs{
   y = 920,
   name = "stairs",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -250,7 +250,7 @@ stairs{
   y = 856,
   name = "stairs_2",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 tile{
@@ -5009,7 +5009,7 @@ door{
   y = 728,
   name = "miniboss_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -5018,7 +5018,7 @@ door{
   y = 680,
   name = "miniboss_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -5027,7 +5027,7 @@ door{
   y = 832,
   name = "miniboss_door_3",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -5036,7 +5036,7 @@ door{
   y = 832,
   name = "miniboss_door_4",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -5045,7 +5045,7 @@ door{
   y = 248,
   name = "door",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 906,
 }
 
@@ -5055,7 +5055,7 @@ door{
   y = 200,
   name = "door_2",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 906,
 }
 
@@ -5156,7 +5156,7 @@ stairs{
   y = 24,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5165,7 +5165,7 @@ stairs{
   y = 24,
   name = "stairs_4",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5174,7 +5174,7 @@ stairs{
   y = 488,
   name = "stairs_5",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 pickable{
@@ -5219,7 +5219,7 @@ stairs{
   y = 24,
   name = "stairs_6",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -5315,7 +5315,7 @@ stairs{
   y = 680,
   name = "stairs_7",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -5324,7 +5324,7 @@ door{
   y = 680,
   name = "final_room_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -5333,7 +5333,7 @@ door{
   y = 248,
   name = "boss_door_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -5342,7 +5342,7 @@ door{
   y = 200,
   name = "boss_door_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -5594,7 +5594,7 @@ door{
   y = 680,
   name = "door_4",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 925,
 }
 
@@ -5604,7 +5604,7 @@ door{
   y = 728,
   name = "door_3",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 925,
 }
 

@@ -1125,7 +1125,7 @@ npc{
   y = 613,
   name = "npc",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#bone_key_cave.hint",
 }

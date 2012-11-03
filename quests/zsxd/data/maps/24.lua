@@ -2511,7 +2511,7 @@ crystal_block{
   y = 520,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -2520,7 +2520,7 @@ crystal_block{
   y = 552,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -2529,7 +2529,7 @@ crystal_block{
   y = 64,
   width = 16,
   height = 64,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -2538,7 +2538,7 @@ crystal_block{
   y = 112,
   width = 80,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal{
@@ -2554,7 +2554,7 @@ stairs{
   y = 112,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2563,7 +2563,7 @@ stairs{
   y = 528,
   name = "stairs_5",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2572,7 +2572,7 @@ stairs{
   y = 1008,
   name = "stairs_6",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 enemy{
@@ -2629,7 +2629,7 @@ npc{
   y = 373,
   name = "int",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink7",
   behavior = "map",
 }
@@ -2640,7 +2640,7 @@ npc{
   y = 501,
   name = "int_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink2",
   behavior = "map",
 }
@@ -2651,7 +2651,7 @@ npc{
   y = 533,
   name = "GC32",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -2661,7 +2661,7 @@ npc{
   y = 405,
   name = "GC31",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -2671,7 +2671,7 @@ npc{
   y = 541,
   name = "guichet_31_ici_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#crazy_house.guichet_32_ici",
 }
@@ -2682,7 +2682,7 @@ npc{
   y = 413,
   name = "guichet_31_ici",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#crazy_house.guichet_31_ici",
 }
@@ -8525,7 +8525,7 @@ door{
   y = 472,
   name = "DK2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 141,
 }
 
@@ -8542,7 +8542,7 @@ door{
   y = 696,
   name = "DK9",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 149,
 }
 
@@ -8631,7 +8631,7 @@ crystal_block{
   y = 72,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -8640,7 +8640,7 @@ stairs{
   y = 512,
   name = "stairs_2",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 jumper{
@@ -8716,7 +8716,7 @@ stairs{
   y = 472,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -8778,7 +8778,7 @@ stairs{
   y = 24,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -9049,7 +9049,7 @@ stairs{
   y = 472,
   name = "stairs_7",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 destination{
@@ -9100,7 +9100,7 @@ stairs{
   y = 1592,
   name = "stairs_8",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -9121,7 +9121,7 @@ crystal_block{
   y = 512,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9130,7 +9130,7 @@ crystal_block{
   y = 496,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destructible{
@@ -9373,7 +9373,7 @@ npc{
   y = 525,
   name = "Apothicaire",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager1",
   behavior = "map",
 }
@@ -9393,7 +9393,7 @@ door{
   y = 776,
   name = "bowser_door",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 switch{
@@ -9401,7 +9401,7 @@ switch{
   x = 1656,
   y = 784,
   name = "giga_bouton",
-  subtype = 1,
+  subtype = "1",
   needs_block = true,
   inactivate_when_leaving = false,
 }
@@ -9421,7 +9421,7 @@ door{
   y = 776,
   name = "bowser_door_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -9691,7 +9691,7 @@ npc{
   y = 797,
   name = "directions_3F",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#crazy_house.directions_3F",
 }
@@ -9702,7 +9702,7 @@ npc{
   y = 501,
   name = "directions_3FB",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#crazy_house.directions_3FC",
 }
@@ -9713,7 +9713,7 @@ npc{
   y = 501,
   name = "directions_3FB_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#crazy_house.directions_3FB",
 }
@@ -9724,7 +9724,7 @@ crystal_block{
   y = 336,
   width = 64,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -10047,7 +10047,7 @@ door{
   y = 424,
   name = "DK2_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 141,
 }
 
@@ -10057,7 +10057,7 @@ npc{
   y = 965,
   name = "interactive_entity",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -10068,7 +10068,7 @@ npc{
   y = 965,
   name = "interactive_entity_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -10079,7 +10079,7 @@ npc{
   y = 797,
   name = "directions_3F_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#crazy_house.directions_3F_3",
 }
@@ -10090,7 +10090,7 @@ npc{
   y = 85,
   name = "GC33",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink6",
   behavior = "map",
 }
@@ -10101,7 +10101,7 @@ npc{
   y = 117,
   name = "GC33Front",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -10111,7 +10111,7 @@ npc{
   y = 1005,
   name = "GC36",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -10147,7 +10147,7 @@ door{
   y = 648,
   name = "DK9_2",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 149,
 }
 
@@ -10293,7 +10293,7 @@ npc{
   y = 709,
   name = "hint",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#crazy_house.chemin_de_dieu",
 }
@@ -10303,7 +10303,7 @@ switch{
   x = 1600,
   y = 848,
   name = "barrier_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -10383,7 +10383,7 @@ npc{
   y = 725,
   name = "interactive_entity_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#crazy_house.depot_ici",
 }
@@ -10429,7 +10429,7 @@ npc{
   y = 741,
   name = "PNJA",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/villager3",
   behavior = "dialog#crazy_house.pnja",
 }

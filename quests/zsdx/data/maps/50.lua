@@ -1384,7 +1384,7 @@ stairs{
   y = 304,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 destination{
@@ -1401,7 +1401,7 @@ stairs{
   y = 304,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -1422,7 +1422,7 @@ stairs{
   y = 48,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -1431,7 +1431,7 @@ stairs{
   y = 688,
   name = "stairs_6",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 destination{
@@ -1448,7 +1448,7 @@ door{
   y = 560,
   name = "LD14",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 chest{
@@ -1515,7 +1515,7 @@ crystal_block{
   y = 624,
   width = 32,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1524,7 +1524,7 @@ crystal_block{
   y = 368,
   width = 16,
   height = 96,
-  subtype = 1,
+  subtype = "1",
 }
 
 destructible{
@@ -2338,7 +2338,7 @@ door{
   y = 464,
   name = "LD14_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -6171,7 +6171,7 @@ crystal_block{
   y = 880,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -6180,7 +6180,7 @@ crystal_block{
   y = 880,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -6189,7 +6189,7 @@ crystal_block{
   y = 816,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -6198,7 +6198,7 @@ crystal_block{
   y = 944,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 jumper{
@@ -6284,7 +6284,7 @@ stairs{
   y = 1048,
   name = "stairs_5",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -6337,7 +6337,7 @@ switch{
   x = 392,
   y = 584,
   name = "DB1",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6347,7 +6347,7 @@ switch{
   x = 392,
   y = 696,
   name = "DB2",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6632,7 +6632,7 @@ switch{
   x = 1456,
   y = 912,
   name = "DB3",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6904,7 +6904,7 @@ door{
   y = 1048,
   name = "LD13",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6913,7 +6913,7 @@ door{
   y = 888,
   name = "LD12",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6922,7 +6922,7 @@ door{
   y = 1000,
   name = "LD13_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6931,7 +6931,7 @@ door{
   y = 888,
   name = "LD12_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -7072,7 +7072,7 @@ stairs{
   y = 792,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 wall{

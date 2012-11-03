@@ -355,7 +355,7 @@ npc{
   y = 125,
   name = "wizard_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/wizard",
   behavior = "dialog#desert.small_house",
 }

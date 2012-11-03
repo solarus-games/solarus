@@ -3917,7 +3917,7 @@ stairs{
   y = 624,
   name = "stairs",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -3926,7 +3926,7 @@ stairs{
   y = 320,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 chest{
@@ -3946,7 +3946,7 @@ stairs{
   y = 304,
   name = "stairs_3",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 enemy{
@@ -8439,7 +8439,7 @@ switch{
   x = 768,
   y = 56,
   name = "ne_door_switch",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8635,7 +8635,7 @@ door{
   y = 24,
   name = "weak_wall_red_tunic",
   direction = 1,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 234,
 }
 
@@ -8671,7 +8671,7 @@ door{
   y = 200,
   name = "door",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 235,
 }
 
@@ -8681,7 +8681,7 @@ door{
   y = 248,
   name = "door_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 235,
 }
 
@@ -8738,7 +8738,7 @@ switch{
   x = 128,
   y = 288,
   name = "remove_water_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8953,7 +8953,7 @@ door{
   y = 24,
   name = "ne_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 304,
 }
 

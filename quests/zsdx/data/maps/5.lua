@@ -10612,7 +10612,7 @@ npc{
   y = 405,
   name = "surprise_wall_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.surprise_wall_sign",
 }
@@ -10632,7 +10632,7 @@ npc{
   y = 109,
   name = "billy_cavern_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.billy_cavern_sign",
 }
@@ -10702,7 +10702,7 @@ npc{
   y = 413,
   name = "surprise_wall_guy",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager9",
   behavior = "map",
 }
@@ -10724,7 +10724,7 @@ npc{
   y = 389,
   name = "surprise_wall_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 

@@ -527,7 +527,7 @@ stairs{
   y = 112,
   name = "stairs_1",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 wall{
@@ -562,7 +562,7 @@ stairs{
   y = 120,
   name = "stairs_2",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 door{
@@ -571,7 +571,7 @@ door{
   y = 104,
   name = "door",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -580,7 +580,7 @@ door{
   y = 104,
   name = "door_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{

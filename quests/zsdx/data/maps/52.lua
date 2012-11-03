@@ -347,7 +347,7 @@ npc{
   y = 381,
   name = "ganon_npc",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/ganon",
   behavior = "map",
 }
@@ -404,7 +404,7 @@ stairs{
   y = 64,
   name = "stairs",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 npc{
@@ -413,7 +413,7 @@ npc{
   y = 221,
   name = "agahnim_npc",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/agahnim",
   behavior = "map",
 }

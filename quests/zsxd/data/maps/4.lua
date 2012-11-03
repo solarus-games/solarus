@@ -11915,7 +11915,7 @@ npc{
   y = 277,
   name = "temple_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -11971,7 +11971,7 @@ npc{
   y = 917,
   name = "yoda",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/yoda",
   behavior = "map",
 }
@@ -12009,7 +12009,7 @@ door{
   y = 424,
   name = "door_2",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 67,
 }
 
@@ -12019,7 +12019,7 @@ door{
   y = 424,
   name = "door_3",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 68,
 }
 
@@ -12029,7 +12029,7 @@ door{
   y = 376,
   name = "door_4",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 72,
 }
 
@@ -12039,7 +12039,7 @@ door{
   y = 408,
   name = "door_5",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 69,
 }
 
@@ -12049,7 +12049,7 @@ door{
   y = 408,
   name = "door_6",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 70,
 }
 
@@ -12059,7 +12059,7 @@ door{
   y = 392,
   name = "door_7",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 71,
 }
 
@@ -12121,7 +12121,7 @@ npc{
   y = 485,
   name = "sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_SE.west_sign",
 }

@@ -2159,7 +2159,7 @@ stairs{
   y = 936,
   name = "stairs",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 destination{
@@ -2308,7 +2308,7 @@ stairs{
   y = 792,
   name = "stairs_2",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -2317,7 +2317,7 @@ stairs{
   y = 744,
   name = "stairs_3",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -2326,7 +2326,7 @@ stairs{
   y = 920,
   name = "stairs_4",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -2335,7 +2335,7 @@ stairs{
   y = 792,
   name = "stairs_5",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -2344,7 +2344,7 @@ stairs{
   y = 728,
   name = "stairs_6",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -2353,7 +2353,7 @@ stairs{
   y = 664,
   name = "stairs_7",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -2362,7 +2362,7 @@ stairs{
   y = 904,
   name = "stairs_8",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 destination{
@@ -2403,7 +2403,7 @@ stairs{
   y = 96,
   name = "stairs_9",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 destination{
@@ -2432,7 +2432,7 @@ stairs{
   y = 48,
   name = "stairs_10",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -9222,7 +9222,7 @@ stairs{
   y = 24,
   name = "stairs_11",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -9231,7 +9231,7 @@ stairs{
   y = 24,
   name = "stairs_12",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -9240,7 +9240,7 @@ stairs{
   y = 24,
   name = "stairs_13",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -9399,7 +9399,7 @@ door{
   y = 872,
   name = "evil_tiles_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9408,7 +9408,7 @@ door{
   y = 824,
   name = "evil_tiles_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9417,7 +9417,7 @@ door{
   y = 552,
   name = "evil_tiles_door_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9426,7 +9426,7 @@ door{
   y = 504,
   name = "evil_tiles_door_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{

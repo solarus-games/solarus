@@ -1186,7 +1186,7 @@ stairs{
   y = 896,
   name = "stairs",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1195,7 +1195,7 @@ stairs{
   y = 1056,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1204,7 +1204,7 @@ stairs{
   y = 1056,
   name = "stairs_4",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1213,7 +1213,7 @@ stairs{
   y = 264,
   name = "stairs_3",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1222,7 +1222,7 @@ stairs{
   y = 392,
   name = "stairs_5",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 pickable{
@@ -1263,7 +1263,7 @@ stairs{
   y = 592,
   name = "stairs_11",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1272,7 +1272,7 @@ stairs{
   y = 592,
   name = "stairs_12",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1281,7 +1281,7 @@ stairs{
   y = 328,
   name = "stairs_10",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 door{
@@ -1290,7 +1290,7 @@ door{
   y = 1096,
   name = "door",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 516,
 }
 
@@ -1300,7 +1300,7 @@ door{
   y = 1096,
   name = "door_2",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 516,
 }
 
@@ -10388,7 +10388,7 @@ npc{
   y = 101,
   name = "guard_1",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/black_knight_soldier",
   behavior = "map",
 }
@@ -11090,7 +11090,7 @@ crystal_block{
   y = 192,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -11258,7 +11258,7 @@ stairs{
   y = 24,
   name = "stairs_6",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -11267,7 +11267,7 @@ stairs{
   y = 24,
   name = "stairs_7",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -11276,7 +11276,7 @@ stairs{
   y = 24,
   name = "stairs_8",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -11285,7 +11285,7 @@ stairs{
   y = 104,
   name = "stairs_9",
   direction = 3,
-  subtype = 2,
+  subtype = "2",
 }
 
 jumper{
@@ -11401,7 +11401,7 @@ npc{
   y = 733,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_5.pots_hint",
 }
@@ -11561,7 +11561,7 @@ door{
   y = 552,
   name = "statue_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -11570,7 +11570,7 @@ door{
   y = 504,
   name = "statue_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 npc{
@@ -11579,7 +11579,7 @@ npc{
   y = 477,
   name = "torch_1",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -11590,7 +11590,7 @@ npc{
   y = 461,
   name = "torch_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -11618,7 +11618,7 @@ switch{
   x = 192,
   y = 504,
   name = "statue_switch",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -11629,7 +11629,7 @@ crystal_block{
   y = 528,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 npc{
@@ -11638,7 +11638,7 @@ npc{
   y = 493,
   name = "torch_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -11649,7 +11649,7 @@ door{
   y = 424,
   name = "torches_door_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -11658,7 +11658,7 @@ door{
   y = 376,
   name = "torches_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 conveyor_belt{
@@ -11806,7 +11806,7 @@ npc{
   y = 149,
   name = "guard_2",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/black_knight_soldier",
   behavior = "map",
 }
@@ -11914,7 +11914,7 @@ npc{
   y = 69,
   name = "guard_3",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/black_knight_soldier",
   behavior = "map",
 }

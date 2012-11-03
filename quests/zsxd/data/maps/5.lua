@@ -320,7 +320,7 @@ npc{
   y = 85,
   name = "boulet",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink1",
   behavior = "dialog#maison_boulet.boulet",
 }
@@ -331,7 +331,7 @@ stairs{
   y = 112,
   name = "stairs",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -340,7 +340,7 @@ stairs{
   y = 112,
   name = "stairs_2",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -349,7 +349,7 @@ stairs{
   y = 112,
   name = "stairs_3",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 chest{

@@ -1338,7 +1338,7 @@ stairs{
   y = 88,
   name = "stairs_2",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1347,7 +1347,7 @@ stairs{
   y = 536,
   name = "stairs_3",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1356,7 +1356,7 @@ stairs{
   y = 320,
   name = "stairs_4",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1365,7 +1365,7 @@ stairs{
   y = 328,
   name = "stairs_5",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1374,7 +1374,7 @@ stairs{
   y = 224,
   name = "stairs_6",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1383,7 +1383,7 @@ stairs{
   y = 88,
   name = "stairs_7",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1392,7 +1392,7 @@ stairs{
   y = 88,
   name = "stairs_8",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 switch{
@@ -1400,7 +1400,7 @@ switch{
   x = 792,
   y = 264,
   name = "water_3_on_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1419,7 +1419,7 @@ switch{
   x = 88,
   y = 88,
   name = "water_5_on_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -3831,7 +3831,7 @@ stairs{
   y = 24,
   name = "stairs",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -4109,7 +4109,7 @@ switch{
   x = 480,
   y = 48,
   name = "water_1_on_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4119,7 +4119,7 @@ switch{
   x = 592,
   y = 48,
   name = "water_7_on_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4171,7 +4171,7 @@ switch{
   x = 264,
   y = 232,
   name = "water_6_on_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }

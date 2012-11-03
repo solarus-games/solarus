@@ -257,7 +257,7 @@ stairs{
   y = 112,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 destination{

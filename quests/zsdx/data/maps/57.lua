@@ -1554,7 +1554,7 @@ stairs{
   y = 360,
   name = "stairs",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 destination{
@@ -1615,7 +1615,7 @@ stairs{
   y = 48,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -1624,7 +1624,7 @@ stairs{
   y = 160,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -1633,7 +1633,7 @@ stairs{
   y = 48,
   name = "stairs_4",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -1717,7 +1717,7 @@ door{
   y = 48,
   name = "ne_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -1738,7 +1738,7 @@ stairs{
   y = 96,
   name = "stairs_6",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 tile{
@@ -3989,7 +3989,7 @@ door{
   y = 488,
   name = "door_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 310,
 }
 
@@ -3999,7 +3999,7 @@ door{
   y = 440,
   name = "door_4",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 310,
 }
 
@@ -4009,7 +4009,7 @@ door{
   y = 424,
   name = "door_5",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 311,
 }
 
@@ -4019,7 +4019,7 @@ door{
   y = 376,
   name = "door_6",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 311,
 }
 
@@ -4049,7 +4049,7 @@ stairs{
   y = 24,
   name = "stairs_5",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 wall{
@@ -4184,7 +4184,7 @@ door{
   y = 424,
   name = "boss_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4193,7 +4193,7 @@ door{
   y = 376,
   name = "boss_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -4219,7 +4219,7 @@ npc{
   y = -3,
   name = "tom",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/tom",
   behavior = "map",
 }

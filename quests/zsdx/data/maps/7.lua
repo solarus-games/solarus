@@ -11080,7 +11080,7 @@ stairs{
   y = 864,
   name = "stairs",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 destination{
@@ -11129,7 +11129,7 @@ stairs{
   y = 528,
   name = "stairs_2",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -11138,7 +11138,7 @@ stairs{
   y = 528,
   name = "stairs_3",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 destructible{
@@ -11322,7 +11322,7 @@ npc{
   y = 893,
   name = "iron_lock",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -11373,7 +11373,7 @@ npc{
   y = 893,
   name = "wooden_lock",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -11415,7 +11415,7 @@ npc{
   y = 365,
   name = "junk_shop_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.junk_shop_sign",
 }
@@ -11426,7 +11426,7 @@ npc{
   y = 645,
   name = "inferno",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/inferno",
   behavior = "map",
 }

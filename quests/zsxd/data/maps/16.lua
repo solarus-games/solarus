@@ -810,7 +810,7 @@ npc{
   y = 61,
   name = "interactive_entity_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager5",
   behavior = "map",
 }
@@ -821,7 +821,7 @@ door{
   y = 104,
   name = "door",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 59,
 }
 
@@ -831,7 +831,7 @@ door{
   y = 104,
   name = "door_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 59,
 }
 

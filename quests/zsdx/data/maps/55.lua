@@ -2577,7 +2577,7 @@ crystal_block{
   y = 160,
   width = 80,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -2586,7 +2586,7 @@ crystal_block{
   y = 176,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -2595,7 +2595,7 @@ crystal_block{
   y = 688,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -2604,7 +2604,7 @@ crystal_block{
   y = 688,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal{
@@ -2858,7 +2858,7 @@ crystal_block{
   y = 608,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -2867,7 +2867,7 @@ crystal_block{
   y = 624,
   width = 48,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -2876,7 +2876,7 @@ crystal_block{
   y = 608,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 conveyor_belt{
@@ -3384,7 +3384,7 @@ stairs{
   y = 576,
   name = "stairs_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -3417,7 +3417,7 @@ stairs{
   y = 48,
   name = "stairs",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -3426,7 +3426,7 @@ stairs{
   y = 400,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -3563,7 +3563,7 @@ stairs{
   y = 576,
   name = "stairs_8",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -3572,7 +3572,7 @@ stairs{
   y = 400,
   name = "stairs_10",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -3581,7 +3581,7 @@ stairs{
   y = 400,
   name = "stairs_11",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -3590,7 +3590,7 @@ stairs{
   y = 544,
   name = "stairs_12",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -3599,7 +3599,7 @@ stairs{
   y = 672,
   name = "stairs_13",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -3608,7 +3608,7 @@ stairs{
   y = 672,
   name = "stairs_14",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -3617,7 +3617,7 @@ stairs{
   y = 672,
   name = "stairs_15",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -3626,7 +3626,7 @@ stairs{
   y = 624,
   name = "stairs_16",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -3635,7 +3635,7 @@ stairs{
   y = 624,
   name = "stairs_17",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -3644,7 +3644,7 @@ stairs{
   y = 624,
   name = "stairs_18",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -3653,7 +3653,7 @@ stairs{
   y = 128,
   name = "stairs_19",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -3662,7 +3662,7 @@ stairs{
   y = 184,
   name = "stairs_20",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -3671,7 +3671,7 @@ stairs{
   y = 184,
   name = "stairs_21",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -3680,7 +3680,7 @@ stairs{
   y = 440,
   name = "stairs_22",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -3689,7 +3689,7 @@ stairs{
   y = 640,
   name = "stairs_23",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 sensor{
@@ -7565,7 +7565,7 @@ crystal_block{
   y = 136,
   width = 16,
   height = 96,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -7574,7 +7574,7 @@ crystal_block{
   y = 136,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 jumper{
@@ -7605,7 +7605,7 @@ door{
   y = 176,
   name = "door",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 304,
 }
 
@@ -7615,7 +7615,7 @@ door{
   y = 176,
   name = "door_2",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 304,
 }
 
@@ -7751,7 +7751,7 @@ crystal_block{
   y = 640,
   width = 48,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7760,7 +7760,7 @@ crystal_block{
   y = 656,
   width = 16,
   height = 64,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7769,7 +7769,7 @@ crystal_block{
   y = 576,
   width = 16,
   height = 64,
-  subtype = 1,
+  subtype = "1",
 }
 
 jumper{
@@ -7854,7 +7854,7 @@ crystal_block{
   y = 240,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destructible{
@@ -7969,7 +7969,7 @@ stairs{
   y = 24,
   name = "stairs_4",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -7978,7 +7978,7 @@ stairs{
   y = 24,
   name = "stairs_5",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -7987,7 +7987,7 @@ stairs{
   y = 24,
   name = "stairs_6",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -7996,7 +7996,7 @@ stairs{
   y = 24,
   name = "stairs_7",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -8017,7 +8017,7 @@ stairs{
   y = 24,
   name = "stairs_9",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 wall{
@@ -8183,7 +8183,7 @@ npc{
   y = 37,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_6.dont_fall_hint",
 }
@@ -8194,7 +8194,7 @@ npc{
   y = 37,
   name = "npc_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_6.close_way_hint",
 }
@@ -8204,7 +8204,7 @@ switch{
   x = 840,
   y = 576,
   name = "water_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }

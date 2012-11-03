@@ -1102,7 +1102,7 @@ door{
   y = 440,
   name = "door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 block{
@@ -1346,7 +1346,7 @@ switch{
   x = 376,
   y = 392,
   name = "door_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -1416,7 +1416,7 @@ stairs{
   y = 216,
   name = "stairs",
   direction = 3,
-  subtype = 2,
+  subtype = "2",
 }
 
 chest{

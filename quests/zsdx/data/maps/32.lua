@@ -256,7 +256,7 @@ npc{
   y = 93,
   name = "hint_stone",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }

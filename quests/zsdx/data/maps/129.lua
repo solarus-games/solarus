@@ -743,7 +743,7 @@ crystal_block{
   y = 208,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destructible{
@@ -770,7 +770,7 @@ stairs{
   y = 96,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -779,7 +779,7 @@ stairs{
   y = 96,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -788,7 +788,7 @@ stairs{
   y = 96,
   name = "stairs_3",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -797,7 +797,7 @@ stairs{
   y = 400,
   name = "stairs_4",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 destructible{
@@ -2066,7 +2066,7 @@ crystal_block{
   y = 80,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 chest{
@@ -2086,7 +2086,7 @@ crystal_block{
   y = 128,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 switch{
@@ -2094,7 +2094,7 @@ switch{
   x = 208,
   y = 104,
   name = "switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -2220,7 +2220,7 @@ door{
   y = 104,
   name = "door_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -2229,7 +2229,7 @@ door{
   y = 360,
   name = "door_3",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -2238,7 +2238,7 @@ door{
   y = 456,
   name = "door_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -2247,7 +2247,7 @@ door{
   y = 232,
   name = "door_5",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -2256,7 +2256,7 @@ door{
   y = 104,
   name = "door_6",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -2265,7 +2265,7 @@ door{
   y = 24,
   name = "door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{

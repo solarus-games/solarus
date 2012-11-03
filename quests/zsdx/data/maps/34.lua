@@ -465,7 +465,7 @@ npc{
   y = 85,
   name = "torch_1",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -476,7 +476,7 @@ npc{
   y = 165,
   name = "torch_2",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -487,7 +487,7 @@ npc{
   y = 165,
   name = "torch_3",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -498,7 +498,7 @@ npc{
   y = 85,
   name = "torch_4",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -549,7 +549,7 @@ stairs{
   y = 136,
   name = "stairs_1",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -558,7 +558,7 @@ door{
   y = 136,
   name = "door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{

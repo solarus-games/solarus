@@ -1554,7 +1554,7 @@ switch{
   x = 368,
   y = 160,
   name = "door_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1565,7 +1565,7 @@ door{
   y = 120,
   name = "door",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -1574,7 +1574,7 @@ door{
   y = 120,
   name = "door_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -1611,7 +1611,7 @@ stairs{
   y = 168,
   name = "stairs",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -1632,7 +1632,7 @@ stairs{
   y = 24,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{

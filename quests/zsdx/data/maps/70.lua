@@ -1906,7 +1906,7 @@ npc{
   y = 213,
   name = "game_1_man",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager11",
   behavior = "map",
 }
@@ -2049,7 +2049,7 @@ npc{
   y = 213,
   name = "game_3_man",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager8",
   behavior = "map",
 }
@@ -2152,7 +2152,7 @@ npc{
   y = 213,
   name = "game_2_man",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager2",
   behavior = "map",
 }

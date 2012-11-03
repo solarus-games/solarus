@@ -503,7 +503,7 @@ door{
   y = 64,
   name = "door",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 147,
 }
 
@@ -513,7 +513,7 @@ door{
   y = 64,
   name = "door_2",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 148,
 }
 
@@ -523,7 +523,7 @@ door{
   y = 112,
   name = "door_3",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 149,
 }
 
@@ -533,7 +533,7 @@ door{
   y = 144,
   name = "door_4",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 150,
 }
 
@@ -3486,7 +3486,7 @@ door{
   y = 248,
   name = "door_5",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 151,
 }
 
@@ -3496,7 +3496,7 @@ door{
   y = 312,
   name = "door_6",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 152,
 }
 
@@ -3518,7 +3518,7 @@ npc{
   y = 93,
   name = "torch",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -3536,7 +3536,7 @@ npc{
   y = 317,
   name = "torch_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -3547,7 +3547,7 @@ npc{
   y = 333,
   name = "torch_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -3558,7 +3558,7 @@ npc{
   y = 157,
   name = "torch_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -3569,7 +3569,7 @@ npc{
   y = 93,
   name = "torch_5",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -3594,7 +3594,7 @@ npc{
   y = 205,
   name = "torch_6",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }

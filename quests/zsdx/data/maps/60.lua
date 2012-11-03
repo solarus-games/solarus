@@ -2295,7 +2295,7 @@ stairs{
   y = 992,
   name = "stairs",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 teletransporter{
@@ -2388,7 +2388,7 @@ stairs{
   y = 776,
   name = "stairs_2",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -2397,7 +2397,7 @@ stairs{
   y = 728,
   name = "stairs_3",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -2406,7 +2406,7 @@ stairs{
   y = 904,
   name = "stairs_4",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -2415,7 +2415,7 @@ stairs{
   y = 648,
   name = "stairs_5",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -2424,7 +2424,7 @@ stairs{
   y = 712,
   name = "stairs_6",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -2433,7 +2433,7 @@ stairs{
   y = 776,
   name = "stairs_7",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -2442,7 +2442,7 @@ stairs{
   y = 888,
   name = "stairs_8",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 teletransporter{
@@ -2554,7 +2554,7 @@ npc{
   y = 813,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_4.hint_use_map",
 }
@@ -2565,7 +2565,7 @@ stairs{
   y = 112,
   name = "stairs_9",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 teletransporter{
@@ -2608,7 +2608,7 @@ stairs{
   y = 48,
   name = "stairs_10",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 pickable{
@@ -7799,7 +7799,7 @@ door{
   y = 200,
   name = "hidden_weak_wall_2",
   direction = 1,
-  subtype = 6,
+  subtype = "6",
   savegame_variable = 403,
 }
 
@@ -7867,7 +7867,7 @@ door{
   y = 232,
   name = "door",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 401,
 }
 
@@ -7877,7 +7877,7 @@ door{
   y = 184,
   name = "door_2",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 401,
 }
 
@@ -7913,7 +7913,7 @@ door{
   y = 56,
   name = "door_3",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 402,
 }
 
@@ -7923,7 +7923,7 @@ door{
   y = 56,
   name = "door_4",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 402,
 }
 
@@ -8014,7 +8014,7 @@ door{
   y = 152,
   name = "hidden_weak_wall",
   direction = 3,
-  subtype = 6,
+  subtype = "6",
   savegame_variable = 403,
 }
 
@@ -8188,7 +8188,7 @@ door{
   y = 488,
   name = "door_7",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 406,
 }
 
@@ -8198,7 +8198,7 @@ door{
   y = 536,
   name = "door_8",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 406,
 }
 
@@ -8241,7 +8241,7 @@ door{
   y = 240,
   name = "weak_block",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 410,
 }
 
@@ -8715,7 +8715,7 @@ crystal_block{
   y = 248,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 npc{
@@ -8724,7 +8724,7 @@ npc{
   y = 141,
   name = "npc_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_4.hint_chests",
 }
@@ -8795,7 +8795,7 @@ stairs{
   y = 24,
   name = "stairs_11",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -8804,7 +8804,7 @@ stairs{
   y = 24,
   name = "stairs_12",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -8813,7 +8813,7 @@ stairs{
   y = 24,
   name = "stairs_13",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 dynamic_tile{
@@ -8970,7 +8970,7 @@ door{
   y = 232,
   name = "boss_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8979,7 +8979,7 @@ door{
   y = 184,
   name = "boss_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -9060,7 +9060,7 @@ door{
   y = 232,
   name = "final_room_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -9089,7 +9089,7 @@ stairs{
   y = 232,
   name = "stairs_14",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 destination{

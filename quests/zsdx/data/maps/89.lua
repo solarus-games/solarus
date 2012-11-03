@@ -3281,7 +3281,7 @@ stairs{
   y = 128,
   name = "stairs_10",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -3290,7 +3290,7 @@ stairs{
   y = 272,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -3299,7 +3299,7 @@ stairs{
   y = 960,
   name = "stairs_3",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -3308,7 +3308,7 @@ stairs{
   y = 136,
   name = "stairs_4",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 teletransporter{
@@ -3329,7 +3329,7 @@ stairs{
   y = 784,
   name = "stairs_5",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 door{
@@ -3338,7 +3338,7 @@ door{
   y = 288,
   name = "door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -3347,7 +3347,7 @@ door{
   y = 192,
   name = "door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 npc{
@@ -3356,7 +3356,7 @@ npc{
   y = 869,
   name = "npc",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/castle_guard",
   behavior = "dialog#castle.welcome",
 }
@@ -3367,7 +3367,7 @@ npc{
   y = 877,
   name = "forbidden_door_npc",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/castle_guard",
   behavior = "map",
 }
@@ -3378,7 +3378,7 @@ door{
   y = 560,
   name = "door_3",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -3387,7 +3387,7 @@ door{
   y = 560,
   name = "door_4",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 npc{
@@ -3396,7 +3396,7 @@ npc{
   y = 621,
   name = "npc_4",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager3",
   behavior = "dialog#castle.npc_1",
 }
@@ -3407,7 +3407,7 @@ npc{
   y = 325,
   name = "npc_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/castle_guard",
   behavior = "dialog#castle.where_is_tom",
 }
@@ -3418,7 +3418,7 @@ npc{
   y = 797,
   name = "walking_npc_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink3",
   behavior = "dialog#castle.npc_3",
 }
@@ -3429,7 +3429,7 @@ door{
   y = 416,
   name = "door_5",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -3438,7 +3438,7 @@ door{
   y = 320,
   name = "door_6",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -3456,7 +3456,7 @@ npc{
   y = 325,
   name = "tom",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/tom",
   behavior = "map",
 }
@@ -6473,7 +6473,7 @@ stairs{
   y = 24,
   name = "stairs_6",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 jumper{
@@ -6516,7 +6516,7 @@ stairs{
   y = 24,
   name = "stairs_9",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 npc{
@@ -6525,7 +6525,7 @@ npc{
   y = 61,
   name = "npc_3",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/castle_guard",
   behavior = "dialog#castle.forbidden_stairs",
 }
@@ -6536,7 +6536,7 @@ npc{
   y = 213,
   name = "walking_npc_1",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/villager1",
   behavior = "dialog#castle.npc_2",
 }

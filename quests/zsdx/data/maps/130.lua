@@ -930,7 +930,7 @@ npc{
   y = 157,
   name = "child_1",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child1",
   behavior = "map",
 }
@@ -941,7 +941,7 @@ npc{
   y = 173,
   name = "child_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child2",
   behavior = "map",
 }
@@ -952,7 +952,7 @@ npc{
   y = 157,
   name = "child_3",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child3",
   behavior = "map",
 }
@@ -963,7 +963,7 @@ npc{
   y = 173,
   name = "child_4",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child4",
   behavior = "map",
 }
@@ -974,7 +974,7 @@ npc{
   y = 221,
   name = "child_6",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child2",
   behavior = "map",
 }
@@ -985,7 +985,7 @@ npc{
   y = 277,
   name = "child_7",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child3",
   behavior = "map",
 }
@@ -996,7 +996,7 @@ npc{
   y = 221,
   name = "zelda",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/zelda",
   behavior = "map",
 }
@@ -1028,7 +1028,7 @@ npc{
   y = 125,
   name = "torch_1",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "map",
 }
@@ -1039,7 +1039,7 @@ npc{
   y = 125,
   name = "torch_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "map",
 }
@@ -1050,7 +1050,7 @@ npc{
   y = 365,
   name = "torch_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "map",
 }
@@ -1061,7 +1061,7 @@ npc{
   y = 365,
   name = "torch_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "map",
 }
@@ -2634,7 +2634,7 @@ npc{
   y = 277,
   name = "child_8",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child4",
   behavior = "map",
 }
@@ -2645,7 +2645,7 @@ npc{
   y = 221,
   name = "child_5",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child1",
   behavior = "map",
 }
@@ -3216,7 +3216,7 @@ switch{
   x = 72,
   y = 232,
   name = "distant_switch_3",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -3303,7 +3303,7 @@ switch{
   x = 232,
   y = 72,
   name = "distant_switch_4",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -3390,7 +3390,7 @@ switch{
   x = 392,
   y = 232,
   name = "distant_switch_1",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -3477,7 +3477,7 @@ switch{
   x = 232,
   y = 392,
   name = "distant_switch_2",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }

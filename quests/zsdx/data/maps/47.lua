@@ -430,7 +430,7 @@ stairs{
   y = 1664,
   name = "stairs",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 crystal_block{
@@ -439,7 +439,7 @@ crystal_block{
   y = 1640,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 switch{
@@ -447,7 +447,7 @@ switch{
   x = 712,
   y = 1704,
   name = "BB1",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8789,7 +8789,7 @@ door{
   y = 280,
   name = "boss_door_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8798,7 +8798,7 @@ door{
   y = 376,
   name = "LD6_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 723,
 }
 
@@ -8808,7 +8808,7 @@ door{
   y = 376,
   name = "LD6",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 723,
 }
 
@@ -8818,7 +8818,7 @@ door{
   y = 280,
   name = "boss_key_door",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 730,
 }
 
@@ -8828,7 +8828,7 @@ door{
   y = 1656,
   name = "LD3",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8837,7 +8837,7 @@ door{
   y = 1656,
   name = "LD3_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -8854,7 +8854,7 @@ stairs{
   y = 24,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -8888,7 +8888,7 @@ door{
   y = 384,
   name = "WW01",
   direction = 2,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 731,
 }
 
@@ -8906,7 +8906,7 @@ door{
   y = 1656,
   name = "KD01",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 701,
 }
 
@@ -8928,7 +8928,7 @@ door{
   y = 1560,
   name = "LD2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 block{
@@ -9033,7 +9033,7 @@ crystal_block{
   y = 1128,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9042,7 +9042,7 @@ crystal_block{
   y = 1176,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9051,7 +9051,7 @@ crystal_block{
   y = 1144,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 dynamic_tile{
@@ -9070,7 +9070,7 @@ switch{
   x = 1760,
   y = 1472,
   name = "BB2",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9464,7 +9464,7 @@ stairs{
   y = 792,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -9799,7 +9799,7 @@ door{
   y = 1656,
   name = "LD1",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -9817,7 +9817,7 @@ door{
   y = 536,
   name = "LD5",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -9886,7 +9886,7 @@ npc{
   y = 1437,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_8.hint_1F",
 }
@@ -9906,7 +9906,7 @@ door{
   y = 1656,
   name = "LD1_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -9928,7 +9928,7 @@ door{
   y = 1512,
   name = "LD2_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -10009,7 +10009,7 @@ door{
   y = 488,
   name = "LD5_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 pickable{
@@ -10026,7 +10026,7 @@ switch{
   x = 1072,
   y = 848,
   name = "DB4",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -10046,7 +10046,7 @@ door{
   y = 1000,
   name = "LD4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10055,7 +10055,7 @@ door{
   y = 1048,
   name = "LD4_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -10334,7 +10334,7 @@ door{
   y = 1144,
   name = "KD02",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 703,
 }
 
@@ -10396,7 +10396,7 @@ switch{
   x = 1344,
   y = 304,
   name = "DB06",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -10406,7 +10406,7 @@ switch{
   x = 1424,
   y = 352,
   name = "RPS1",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10416,7 +10416,7 @@ switch{
   x = 1440,
   y = 416,
   name = "RPS2",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10426,7 +10426,7 @@ switch{
   x = 1664,
   y = 368,
   name = "RPS6",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10436,7 +10436,7 @@ switch{
   x = 1664,
   y = 432,
   name = "RPS10",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10446,7 +10446,7 @@ switch{
   x = 1792,
   y = 432,
   name = "RPS11",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10456,7 +10456,7 @@ switch{
   x = 1680,
   y = 464,
   name = "RPS12",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10466,7 +10466,7 @@ switch{
   x = 1712,
   y = 336,
   name = "RPS4",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10476,7 +10476,7 @@ switch{
   x = 1776,
   y = 352,
   name = "RPS5",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10486,7 +10486,7 @@ switch{
   x = 1792,
   y = 304,
   name = "RPS3",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10496,7 +10496,7 @@ switch{
   x = 1808,
   y = 400,
   name = "RPS8",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10506,7 +10506,7 @@ switch{
   x = 1840,
   y = 384,
   name = "RPS7",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10516,7 +10516,7 @@ switch{
   x = 1744,
   y = 416,
   name = "RPS9",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -10605,7 +10605,7 @@ door{
   y = 1656,
   name = "KD01_2",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 701,
 }
 
@@ -10615,7 +10615,7 @@ door{
   y = 1144,
   name = "KD02_2",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 703,
 }
 
@@ -10649,7 +10649,7 @@ door{
   y = 24,
   name = "agahnim_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -10693,7 +10693,7 @@ npc{
   y = 125,
   name = "billy_npc",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/billy",
   behavior = "map",
 }
@@ -10735,7 +10735,7 @@ stairs{
   y = 624,
   name = "stairs_4",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 conveyor_belt{
@@ -10884,7 +10884,7 @@ door{
   y = 232,
   name = "boss_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -12063,7 +12063,7 @@ door{
   y = 232,
   name = "boss_key_door_2",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 730,
 }
 

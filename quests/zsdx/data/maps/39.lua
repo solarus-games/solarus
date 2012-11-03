@@ -5098,7 +5098,7 @@ stairs{
   y = 696,
   name = "stairs_1",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 npc{
@@ -5107,7 +5107,7 @@ npc{
   y = 229,
   name = "hint",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#mountain_cave.almost_done",
 }
@@ -5689,7 +5689,7 @@ stairs{
   y = 24,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5698,7 +5698,7 @@ stairs{
   y = 24,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5707,7 +5707,7 @@ stairs{
   y = 24,
   name = "stairs_4",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5716,7 +5716,7 @@ stairs{
   y = 24,
   name = "stairs_5",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5725,7 +5725,7 @@ stairs{
   y = 24,
   name = "stairs_6",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5734,7 +5734,7 @@ stairs{
   y = 120,
   name = "stairs_7",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5743,7 +5743,7 @@ stairs{
   y = 120,
   name = "stairs_8",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5752,7 +5752,7 @@ stairs{
   y = 120,
   name = "stairs_9",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5761,7 +5761,7 @@ stairs{
   y = 120,
   name = "stairs_10",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5770,7 +5770,7 @@ stairs{
   y = 120,
   name = "stairs_11",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5779,7 +5779,7 @@ stairs{
   y = 216,
   name = "stairs_12",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5788,7 +5788,7 @@ stairs{
   y = 216,
   name = "stairs_13",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5797,7 +5797,7 @@ stairs{
   y = 216,
   name = "stairs_14",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5806,7 +5806,7 @@ stairs{
   y = 216,
   name = "stairs_15",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5815,7 +5815,7 @@ stairs{
   y = 312,
   name = "stairs_16",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5824,7 +5824,7 @@ stairs{
   y = 312,
   name = "stairs_17",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5833,7 +5833,7 @@ stairs{
   y = 312,
   name = "stairs_18",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5842,7 +5842,7 @@ stairs{
   y = 312,
   name = "stairs_19",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5851,7 +5851,7 @@ stairs{
   y = 408,
   name = "stairs_20",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5860,7 +5860,7 @@ stairs{
   y = 408,
   name = "stairs_21",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5869,7 +5869,7 @@ stairs{
   y = 408,
   name = "stairs_22",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5878,7 +5878,7 @@ stairs{
   y = 504,
   name = "stairs_23",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5887,7 +5887,7 @@ stairs{
   y = 504,
   name = "stairs_24",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5896,7 +5896,7 @@ stairs{
   y = 504,
   name = "stairs_25",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5905,7 +5905,7 @@ stairs{
   y = 504,
   name = "stairs_26",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5914,7 +5914,7 @@ stairs{
   y = 600,
   name = "stairs_27",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5923,7 +5923,7 @@ stairs{
   y = 696,
   name = "stairs_28",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -5932,7 +5932,7 @@ stairs{
   y = 696,
   name = "stairs_29",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 tile{

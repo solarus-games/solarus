@@ -14273,7 +14273,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -14285,7 +14284,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -14297,7 +14295,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -14309,7 +14306,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 chest{
@@ -14329,7 +14325,7 @@ npc{
   y = 125,
   name = "beaumont_hill_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.beaumont_hill_sign",
 }
@@ -14402,7 +14398,7 @@ npc{
   y = 109,
   name = "tom",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/tom",
   behavior = "map",
 }
@@ -14908,7 +14904,6 @@ enemy{
   breed = "green_knight_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -14920,7 +14915,6 @@ enemy{
   breed = "blue_knight_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 destructible{
@@ -15034,7 +15028,7 @@ stairs{
   y = 704,
   name = "stairs",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 stairs{
@@ -15043,7 +15037,7 @@ stairs{
   y = 680,
   name = "stairs_2",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 teletransporter{
@@ -15115,7 +15109,7 @@ stairs{
   y = 408,
   name = "stairs_3",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 destructible{

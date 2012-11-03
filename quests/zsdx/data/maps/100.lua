@@ -728,7 +728,7 @@ stairs{
   y = 992,
   name = "stairs",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -737,7 +737,7 @@ stairs{
   y = 448,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 block{

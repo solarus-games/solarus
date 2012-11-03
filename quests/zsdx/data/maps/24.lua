@@ -252,7 +252,7 @@ crystal_block{
   y = 152,
   width = 80,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -261,7 +261,7 @@ stairs{
   y = 192,
   name = "stairs_1",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -270,7 +270,7 @@ stairs{
   y = 48,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 tile{
@@ -4176,7 +4176,7 @@ crystal_block{
   y = 296,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4185,7 +4185,7 @@ crystal_block{
   y = 296,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal{
@@ -4315,7 +4315,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -4327,7 +4326,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 block{
@@ -4363,7 +4361,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -4375,7 +4372,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 switch{
@@ -4383,7 +4379,7 @@ switch{
   x = 952,
   y = 632,
   name = "se_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4460,7 +4456,6 @@ enemy{
   breed = "bubble",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 destination{
@@ -4520,7 +4515,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 door{
@@ -4529,7 +4523,7 @@ door{
   y = 536,
   name = "door",
   direction = 0,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 60,
 }
 
@@ -4539,7 +4533,7 @@ door{
   y = 536,
   name = "door_2",
   direction = 2,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 60,
 }
 
@@ -4549,7 +4543,7 @@ door{
   y = 512,
   name = "se_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4558,7 +4552,7 @@ door{
   y = 464,
   name = "se_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -4753,7 +4747,7 @@ stairs{
   y = 448,
   name = "stairs_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -4762,7 +4756,7 @@ stairs{
   y = 256,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4771,7 +4765,7 @@ door{
   y = 24,
   name = "final_room_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -4819,7 +4813,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -4831,7 +4824,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 conveyor_belt{
@@ -4875,7 +4867,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -4887,7 +4878,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 crystal_block{
@@ -4896,7 +4886,7 @@ crystal_block{
   y = 480,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4905,7 +4895,7 @@ crystal_block{
   y = 464,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4914,7 +4904,7 @@ crystal_block{
   y = 464,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 tile{

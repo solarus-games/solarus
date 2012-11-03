@@ -18004,7 +18004,7 @@ npc{
   y = 925,
   name = "telepathic_booth_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.telepathic_booth_sign",
 }
@@ -18015,7 +18015,7 @@ npc{
   y = 949,
   name = "pastry_shop_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.village.cake_shop_sign",
 }
@@ -18026,7 +18026,7 @@ npc{
   y = 613,
   name = "shop_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.village.shop_sign",
 }
@@ -18037,7 +18037,7 @@ npc{
   y = 605,
   name = "letter_box",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "dialog#outside_world.village.letter_box",
 }
 
@@ -18047,7 +18047,7 @@ npc{
   y = 501,
   name = "hat_man",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink4",
   behavior = "map",
 }
@@ -18058,7 +18058,7 @@ npc{
   y = 957,
   name = "water_for_bottle",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#bottle_1",
 }
 
@@ -18068,7 +18068,7 @@ npc{
   y = 957,
   name = "water_for_bottle_2",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#bottle_1",
 }
 
@@ -18101,7 +18101,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -18113,7 +18112,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 npc{
@@ -18122,7 +18120,7 @@ npc{
   y = 645,
   name = "monkey",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/monkey",
   behavior = "map",
 }
@@ -18166,7 +18164,7 @@ npc{
   y = 597,
   name = "tree_woman",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/villager1",
   behavior = "map",
 }
@@ -18209,7 +18207,7 @@ npc{
   y = 685,
   name = "grand_son",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink1",
   behavior = "dialog#outside_world.village.grand_son_npc",
 }
@@ -18229,7 +18227,7 @@ npc{
   y = 125,
   name = "how_to_save_npc",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink6",
   behavior = "dialog#outside_world.how_to_save_npc",
 }
@@ -18276,7 +18274,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 destructible{
@@ -18366,7 +18363,7 @@ npc{
   y = 157,
   name = "dungeon_2_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -18536,7 +18533,7 @@ door{
   y = 624,
   name = "dungeon_3_entrance_weak_block_2",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 110,
 }
 
@@ -18546,7 +18543,7 @@ door{
   y = 624,
   name = "dungeon_3_entrance_weak_block_3",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 112,
 }
 
@@ -18556,7 +18553,7 @@ door{
   y = 624,
   name = "dungeon_3_entrance_weak_block",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 111,
 }
 
@@ -18599,7 +18596,6 @@ enemy{
   breed = "green_knight_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -18611,7 +18607,6 @@ enemy{
   breed = "blue_knight_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -18623,7 +18618,6 @@ enemy{
   breed = "green_knight_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -18635,7 +18629,6 @@ enemy{
   breed = "red_knight_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 destructible{
@@ -18784,7 +18777,7 @@ stairs{
   y = 392,
   name = "stairs_2",
   direction = 3,
-  subtype = 2,
+  subtype = "2",
 }
 
 teletransporter{
@@ -19446,7 +19439,7 @@ stairs{
   y = 464,
   name = "stairs",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 pickable{

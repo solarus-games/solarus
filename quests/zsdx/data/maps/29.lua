@@ -3550,7 +3550,7 @@ switch{
   x = 304,
   y = 704,
   name = "door_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -3757,7 +3757,7 @@ switch{
   x = 696,
   y = 704,
   name = "final_barrier_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4322,7 +4322,7 @@ switch{
   x = 464,
   y = 400,
   name = "barrier_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4344,7 +4344,7 @@ crystal_block{
   y = 96,
   width = 48,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4353,7 +4353,7 @@ crystal_block{
   y = 112,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4362,7 +4362,7 @@ crystal_block{
   y = 128,
   width = 32,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4371,7 +4371,7 @@ crystal_block{
   y = 160,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 dynamic_tile{
@@ -4391,7 +4391,7 @@ stairs{
   y = 664,
   name = "stairs_1",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -4400,7 +4400,7 @@ stairs{
   y = 616,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -4409,7 +4409,7 @@ stairs{
   y = 376,
   name = "stairs_3",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -4418,7 +4418,7 @@ stairs{
   y = 352,
   name = "stairs_4",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 door{
@@ -4427,7 +4427,7 @@ door{
   y = 352,
   name = "weak_block",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 946,
 }
 
@@ -4459,7 +4459,7 @@ door{
   y = 368,
   name = "door_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4468,7 +4468,7 @@ door{
   y = 368,
   name = "door",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 tile{

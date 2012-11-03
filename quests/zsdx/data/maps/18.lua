@@ -583,7 +583,7 @@ npc{
   y = 69,
   name = "salesman",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager6",
   behavior = "dialog#lyriann_shop.salesman",
 }

@@ -747,7 +747,7 @@ stairs{
   y = 184,
   name = "stairs",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -756,7 +756,7 @@ stairs{
   y = 184,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{

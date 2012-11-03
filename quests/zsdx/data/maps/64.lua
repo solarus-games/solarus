@@ -3615,7 +3615,7 @@ stairs{
   y = 128,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -3624,7 +3624,7 @@ stairs{
   y = 272,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -3633,7 +3633,7 @@ stairs{
   y = 960,
   name = "stairs_3",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 chest{
@@ -3669,7 +3669,7 @@ stairs{
   y = 136,
   name = "stairs_4",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 conveyor_belt{
@@ -3834,7 +3834,7 @@ crystal_block{
   y = 640,
   width = 32,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -3843,7 +3843,7 @@ crystal_block{
   y = 640,
   width = 32,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal{
@@ -3858,7 +3858,7 @@ switch{
   x = 600,
   y = 344,
   name = "e_door_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -3876,7 +3876,7 @@ door{
   y = 416,
   name = "door",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 507,
 }
 
@@ -3886,7 +3886,7 @@ door{
   y = 320,
   name = "door_2",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 507,
 }
 
@@ -3896,7 +3896,7 @@ door{
   y = 288,
   name = "door_3",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 508,
 }
 
@@ -3906,7 +3906,7 @@ door{
   y = 192,
   name = "door_4",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 508,
 }
 
@@ -3928,7 +3928,7 @@ stairs{
   y = 784,
   name = "stairs_9",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 chest{
@@ -3984,7 +3984,7 @@ door{
   y = 856,
   name = "se_door",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -3993,7 +3993,7 @@ door{
   y = 856,
   name = "se_door_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -4035,7 +4035,7 @@ door{
   y = 856,
   name = "door_5",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 513,
 }
 
@@ -4045,7 +4045,7 @@ door{
   y = 856,
   name = "door_6",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 513,
 }
 
@@ -4055,7 +4055,7 @@ npc{
   y = 653,
   name = "torch_1",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -4066,7 +4066,7 @@ npc{
   y = 653,
   name = "torch_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -4077,7 +4077,7 @@ npc{
   y = 749,
   name = "torch_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -4088,7 +4088,7 @@ npc{
   y = 749,
   name = "torch_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -4099,7 +4099,7 @@ door{
   y = 560,
   name = "w_door",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 514,
 }
 
@@ -4109,7 +4109,7 @@ door{
   y = 560,
   name = "w_door_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 514,
 }
 
@@ -4119,7 +4119,7 @@ door{
   y = 528,
   name = "e_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4128,7 +4128,7 @@ door{
   y = 432,
   name = "e_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -4173,7 +4173,7 @@ door{
   y = 488,
   name = "c_door",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 522,
 }
 
@@ -4183,7 +4183,7 @@ door{
   y = 488,
   name = "c_door_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 522,
 }
 
@@ -4229,7 +4229,7 @@ npc{
   y = 629,
   name = "guard_1",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/black_knight_soldier",
   behavior = "map",
 }
@@ -4240,7 +4240,7 @@ crystal_block{
   y = 848,
   width = 80,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4249,7 +4249,7 @@ crystal_block{
   y = 848,
   width = 16,
   height = 96,
-  subtype = 1,
+  subtype = "1",
 }
 
 wall{
@@ -4519,7 +4519,7 @@ switch{
   x = 584,
   y = 656,
   name = "c_door_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -7605,7 +7605,7 @@ stairs{
   y = 24,
   name = "stairs_5",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -7614,7 +7614,7 @@ stairs{
   y = 24,
   name = "stairs_6",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -7623,7 +7623,7 @@ stairs{
   y = 24,
   name = "stairs_7",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 jumper{
@@ -7666,7 +7666,7 @@ stairs{
   y = 24,
   name = "stairs_8",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{

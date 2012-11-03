@@ -456,7 +456,7 @@ stairs{
   y = 616,
   name = "stairs_5",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -465,7 +465,7 @@ stairs{
   y = 616,
   name = "stairs_2",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 tile{
@@ -4570,7 +4570,7 @@ stairs{
   y = 24,
   name = "stairs_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -4579,7 +4579,7 @@ stairs{
   y = 784,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -4637,7 +4637,7 @@ door{
   y = 496,
   name = "door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4646,7 +4646,7 @@ door{
   y = 448,
   name = "door_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4655,7 +4655,7 @@ door{
   y = 784,
   name = "door_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4664,7 +4664,7 @@ door{
   y = 736,
   name = "door_5",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 npc{
@@ -4673,7 +4673,7 @@ npc{
   y = 221,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#castle.prison",
 }
@@ -4702,7 +4702,7 @@ door{
   y = 448,
   name = "weak_wall_a",
   direction = 3,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 947,
 }
 
@@ -4723,7 +4723,7 @@ door{
   y = 496,
   name = "weak_wall_a_2",
   direction = 1,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 947,
 }
 
@@ -4733,7 +4733,7 @@ door{
   y = 680,
   name = "weak_wall_b",
   direction = 0,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 948,
 }
 
@@ -4743,7 +4743,7 @@ door{
   y = 680,
   name = "weak_wall_b_2",
   direction = 2,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 948,
 }
 

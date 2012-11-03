@@ -1384,7 +1384,7 @@ stairs{
   y = 360,
   name = "stairs",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 enemy{
@@ -1441,7 +1441,7 @@ stairs{
   y = 48,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 tile{
@@ -2444,7 +2444,7 @@ stairs{
   y = 184,
   name = "stairs_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 tile{

@@ -664,7 +664,7 @@ npc{
   y = 85,
   name = "grandma",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink8",
   behavior = "map",
 }
@@ -729,7 +729,7 @@ stairs{
   y = 104,
   name = "stairs_1",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 tile{

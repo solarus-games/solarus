@@ -11944,7 +11944,7 @@ npc{
   y = 389,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.old_castle_sign",
 }
@@ -12548,7 +12548,7 @@ switch{
   x = 360,
   y = 824,
   name = "castle_door_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -12571,7 +12571,7 @@ npc{
   y = 389,
   name = "cannon",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/cannon",
   behavior = "map",
 }
@@ -12678,7 +12678,7 @@ stairs{
   y = 272,
   name = "castle_roof_stairs",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 enemy{

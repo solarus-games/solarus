@@ -149,7 +149,7 @@ stairs{
   y = 96,
   name = "stairs",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 tile{
@@ -655,7 +655,7 @@ npc{
   y = 157,
   name = "interactive_entity",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager14",
   behavior = "map",
 }

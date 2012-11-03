@@ -1062,7 +1062,7 @@ stairs{
   y = 208,
   name = "stairs",
   direction = 3,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -1071,7 +1071,7 @@ stairs{
   y = 208,
   name = "stairs_2",
   direction = 3,
-  subtype = 2,
+  subtype = "2",
 }
 
 tile{

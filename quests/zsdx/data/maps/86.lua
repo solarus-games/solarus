@@ -792,7 +792,7 @@ stairs{
   y = 280,
   name = "stairs",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 npc{
@@ -801,7 +801,7 @@ npc{
   y = -11,
   name = "solarus_child",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child2",
   behavior = "map",
 }

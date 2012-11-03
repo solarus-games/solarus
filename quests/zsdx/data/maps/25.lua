@@ -946,7 +946,6 @@ enemy{
   breed = "bubble",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -958,7 +957,6 @@ enemy{
   breed = "bubble",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 wall{
@@ -983,7 +981,6 @@ enemy{
   breed = "minillosaur_egg_fixed",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -995,7 +992,6 @@ enemy{
   breed = "minillosaur_egg_fixed",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -1007,7 +1003,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -1019,7 +1014,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -1031,7 +1025,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -1043,7 +1036,6 @@ enemy{
   breed = "bubble",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 destructible{
@@ -1122,7 +1114,6 @@ enemy{
   breed = "minillosaur_egg_fixed",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 stairs{
@@ -1131,7 +1122,7 @@ stairs{
   y = 336,
   name = "stairs_1",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1140,7 +1131,7 @@ stairs{
   y = 320,
   name = "stairs_2",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1149,7 +1140,7 @@ stairs{
   y = 112,
   name = "stairs_3",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1158,7 +1149,7 @@ stairs{
   y = 80,
   name = "stairs_4",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 wall{
@@ -3787,7 +3778,7 @@ door{
   y = 232,
   name = "boss_door",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 61,
 }
 
@@ -3797,7 +3788,7 @@ door{
   y = 232,
   name = "boss_door_2",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 61,
 }
 
@@ -3807,7 +3798,7 @@ door{
   y = 72,
   name = "miniboss_door_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -3816,7 +3807,7 @@ door{
   y = 72,
   name = "miniboss_door",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -3849,7 +3840,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 jumper{
@@ -3902,7 +3892,7 @@ stairs{
   y = 256,
   name = "stairs_5",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 door{
@@ -3911,7 +3901,7 @@ door{
   y = 256,
   name = "miniboss_door_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{

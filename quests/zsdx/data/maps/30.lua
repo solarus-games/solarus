@@ -3911,7 +3911,7 @@ crystal_block{
   y = 656,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -3920,7 +3920,7 @@ crystal_block{
   y = 656,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -4047,7 +4047,7 @@ crystal_block{
   y = 496,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4056,7 +4056,7 @@ crystal_block{
   y = 480,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal{
@@ -4107,7 +4107,7 @@ crystal_block{
   y = 496,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4116,7 +4116,7 @@ crystal_block{
   y = 512,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4125,7 +4125,7 @@ crystal_block{
   y = 496,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 pickable{
@@ -4152,7 +4152,7 @@ crystal_block{
   y = 400,
   width = 32,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4161,7 +4161,7 @@ crystal_block{
   y = 368,
   width = 32,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4170,7 +4170,7 @@ crystal_block{
   y = 64,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4179,7 +4179,7 @@ crystal_block{
   y = 112,
   width = 64,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4188,7 +4188,7 @@ crystal_block{
   y = 64,
   width = 16,
   height = 96,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4197,7 +4197,7 @@ crystal_block{
   y = 144,
   width = 80,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal{
@@ -4213,7 +4213,7 @@ crystal_block{
   y = 160,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4222,7 +4222,7 @@ crystal_block{
   y = 192,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4231,7 +4231,7 @@ crystal_block{
   y = 176,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4240,7 +4240,7 @@ crystal_block{
   y = 240,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4249,7 +4249,7 @@ crystal_block{
   y = 176,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4258,7 +4258,7 @@ crystal_block{
   y = 256,
   width = 16,
   height = 64,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4267,7 +4267,7 @@ crystal_block{
   y = 320,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4276,7 +4276,7 @@ crystal_block{
   y = 224,
   width = 32,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4285,7 +4285,7 @@ crystal_block{
   y = 336,
   width = 48,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4294,7 +4294,7 @@ crystal_block{
   y = 224,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4303,7 +4303,7 @@ crystal_block{
   y = 272,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4312,7 +4312,7 @@ crystal_block{
   y = 256,
   width = 16,
   height = 96,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4321,7 +4321,7 @@ crystal_block{
   y = 208,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4330,7 +4330,7 @@ crystal_block{
   y = 224,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4339,7 +4339,7 @@ crystal_block{
   y = 320,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4348,7 +4348,7 @@ crystal_block{
   y = 224,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4357,7 +4357,7 @@ crystal_block{
   y = 256,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4366,7 +4366,7 @@ crystal_block{
   y = 288,
   width = 32,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4375,7 +4375,7 @@ crystal_block{
   y = 272,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4384,7 +4384,7 @@ crystal_block{
   y = 288,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 block{
@@ -4405,7 +4405,7 @@ crystal_block{
   y = 416,
   width = 80,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4414,7 +4414,7 @@ crystal_block{
   y = 320,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -4446,7 +4446,7 @@ door{
   y = 464,
   name = "small_key_door_B",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 79,
 }
 
@@ -4476,7 +4476,7 @@ door{
   y = 560,
   name = "small_key_block_A",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 73,
 }
 
@@ -4485,7 +4485,7 @@ switch{
   x = 176,
   y = 528,
   name = "barrier_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4505,7 +4505,7 @@ door{
   y = 464,
   name = "small_key_door_B_2",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 79,
 }
 
@@ -4515,7 +4515,7 @@ door{
   y = 448,
   name = "small_key_door_C",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 80,
 }
 
@@ -4525,7 +4525,7 @@ door{
   y = 352,
   name = "small_key_door_C_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 80,
 }
 
@@ -4629,7 +4629,7 @@ switch{
   x = 832,
   y = 352,
   name = "pegasus_run_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4651,7 +4651,7 @@ stairs{
   y = 272,
   name = "stairs_1",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -4660,7 +4660,7 @@ stairs{
   y = 472,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -4669,7 +4669,7 @@ stairs{
   y = 392,
   name = "stairs_3",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -4678,7 +4678,7 @@ stairs{
   y = 648,
   name = "stairs_4",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -4687,7 +4687,7 @@ stairs{
   y = 592,
   name = "stairs_5",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -4696,7 +4696,7 @@ stairs{
   y = 648,
   name = "stairs_6",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -4705,7 +4705,7 @@ stairs{
   y = 304,
   name = "stairs_7",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -4714,7 +4714,7 @@ stairs{
   y = 48,
   name = "stairs_8",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -4723,7 +4723,7 @@ stairs{
   y = 640,
   name = "stairs_9",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -4732,7 +4732,7 @@ stairs{
   y = 592,
   name = "stairs_10",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 destination{
@@ -4761,7 +4761,7 @@ stairs{
   y = 224,
   name = "stairs_11",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 dynamic_tile{
@@ -4802,7 +4802,7 @@ switch{
   x = 480,
   y = 256,
   name = "right_eye_switch",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4812,7 +4812,7 @@ switch{
   x = 416,
   y = 256,
   name = "left_eye_switch",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4823,7 +4823,7 @@ door{
   y = 80,
   name = "miniboss_door",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4832,7 +4832,7 @@ door{
   y = 80,
   name = "miniboss_door_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4841,7 +4841,7 @@ door{
   y = 48,
   name = "miniboss_door_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -4907,7 +4907,7 @@ switch{
   x = 928,
   y = 112,
   name = "pegasus_run_switch_2",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }

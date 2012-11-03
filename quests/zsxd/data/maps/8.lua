@@ -902,7 +902,7 @@ crystal_block{
   y = 144,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -911,7 +911,7 @@ crystal_block{
   y = 96,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -920,7 +920,7 @@ crystal_block{
   y = 144,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -929,7 +929,7 @@ crystal_block{
   y = 144,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -938,7 +938,7 @@ crystal_block{
   y = 80,
   width = 48,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -947,7 +947,7 @@ crystal_block{
   y = 64,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -956,7 +956,7 @@ crystal_block{
   y = 96,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -965,7 +965,7 @@ crystal_block{
   y = 112,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -974,7 +974,7 @@ crystal_block{
   y = 112,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -983,7 +983,7 @@ crystal_block{
   y = 48,
   width = 96,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -992,7 +992,7 @@ crystal_block{
   y = 64,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -1001,7 +1001,7 @@ crystal_block{
   y = 96,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -1010,7 +1010,7 @@ crystal_block{
   y = 96,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1019,7 +1019,7 @@ crystal_block{
   y = 80,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1028,7 +1028,7 @@ crystal_block{
   y = 160,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -1037,7 +1037,7 @@ crystal_block{
   y = 160,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1046,7 +1046,7 @@ crystal_block{
   y = 144,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -1055,7 +1055,7 @@ crystal_block{
   y = 128,
   width = 64,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1064,7 +1064,7 @@ crystal_block{
   y = 128,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -1073,7 +1073,7 @@ crystal_block{
   y = 176,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -1082,7 +1082,7 @@ crystal_block{
   y = 160,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal{
@@ -1098,7 +1098,7 @@ crystal_block{
   y = 144,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -1107,7 +1107,7 @@ crystal_block{
   y = 160,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal{
@@ -1123,7 +1123,7 @@ crystal_block{
   y = 80,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1132,7 +1132,7 @@ crystal_block{
   y = 160,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -1141,7 +1141,7 @@ crystal_block{
   y = 96,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{

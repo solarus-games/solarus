@@ -1238,7 +1238,7 @@ door{
   y = 432,
   name = "door_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -1307,7 +1307,7 @@ stairs{
   y = 160,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1316,7 +1316,7 @@ stairs{
   y = 320,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1325,7 +1325,7 @@ stairs{
   y = 320,
   name = "stairs_3",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1334,7 +1334,7 @@ stairs{
   y = 320,
   name = "stairs_4",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 wall{
@@ -2990,7 +2990,7 @@ door{
   y = 360,
   name = "door_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -2999,7 +2999,7 @@ door{
   y = 104,
   name = "door",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{

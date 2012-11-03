@@ -2947,7 +2947,7 @@ stairs{
   y = 1008,
   name = "stairs",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 chest{
@@ -2967,7 +2967,7 @@ door{
   y = 496,
   name = "code_door_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 236,
 }
 
@@ -2977,7 +2977,7 @@ door{
   y = 400,
   name = "code_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 236,
 }
 
@@ -2987,7 +2987,7 @@ stairs{
   y = 576,
   name = "stairs_2",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 chest{
@@ -3007,7 +3007,7 @@ stairs{
   y = 88,
   name = "stairs_3",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 sensor{
@@ -3034,7 +3034,7 @@ stairs{
   y = 544,
   name = "stairs_4",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 enemy{
@@ -6421,7 +6421,7 @@ switch{
   x = 968,
   y = 520,
   name = "switch_1",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6431,7 +6431,7 @@ switch{
   x = 1008,
   y = 520,
   name = "switch_2",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6441,7 +6441,7 @@ switch{
   x = 1120,
   y = 520,
   name = "switch_3",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6451,7 +6451,7 @@ switch{
   x = 1160,
   y = 520,
   name = "switch_4",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6510,7 +6510,7 @@ door{
   y = 696,
   name = "door",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 237,
 }
 
@@ -6520,7 +6520,7 @@ door{
   y = 648,
   name = "door_2",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 237,
 }
 
@@ -6777,7 +6777,7 @@ stairs{
   y = 472,
   name = "stairs_5",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -6786,7 +6786,7 @@ stairs{
   y = 472,
   name = "stairs_6",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -6795,7 +6795,7 @@ stairs{
   y = 920,
   name = "stairs_7",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{

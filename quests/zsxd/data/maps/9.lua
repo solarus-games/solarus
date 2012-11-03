@@ -1166,7 +1166,7 @@ npc{
   y = 53,
   name = "interactive_entity",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#geek_house.sign_a",
 }
@@ -1177,7 +1177,7 @@ npc{
   y = 53,
   name = "interactive_entity_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#geek_house.sign_b",
 }
@@ -1188,7 +1188,7 @@ npc{
   y = 117,
   name = "interactive_entity_5",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#geek_house.sign_c",
 }
@@ -1199,7 +1199,7 @@ npc{
   y = 165,
   name = "interactive_entity_6",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#geek_house.sign_e",
 }
@@ -1210,7 +1210,7 @@ npc{
   y = 197,
   name = "interactive_entity_7",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#geek_house.sign_g",
 }
@@ -1221,7 +1221,7 @@ npc{
   y = 117,
   name = "interactive_entity_8",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#geek_house.sign_d",
 }
@@ -1232,7 +1232,7 @@ npc{
   y = 165,
   name = "interactive_entity_9",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#geek_house.sign_f",
 }
@@ -1243,7 +1243,7 @@ npc{
   y = 197,
   name = "interactive_entity_10",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#geek_house.sign_h",
 }
@@ -1254,7 +1254,7 @@ npc{
   y = 253,
   name = "interactive_entity_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#geek_house.sign_i",
 }
@@ -1265,7 +1265,7 @@ npc{
   y = 253,
   name = "interactive_entity_3",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#geek_house.sign_j",
 }
@@ -1276,7 +1276,7 @@ npc{
   y = 157,
   name = "Geek",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager12",
   behavior = "dialog#geek_house.geek",
 }

@@ -1693,7 +1693,7 @@ crystal_block{
   y = 112,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -1702,7 +1702,7 @@ crystal_block{
   y = 80,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal{
@@ -1729,7 +1729,7 @@ npc{
   y = 101,
   name = "smith",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager4",
   behavior = "map",
 }
@@ -1740,7 +1740,7 @@ crystal_block{
   y = 128,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destructible{
@@ -1758,7 +1758,7 @@ crystal_block{
   y = 128,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destination{
@@ -1880,7 +1880,7 @@ stairs{
   y = 296,
   name = "stairs_1",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 tile{

@@ -7531,7 +7531,7 @@ npc{
   y = 237,
   name = "interactive_entity",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_SO_endofgame1",
 }
@@ -7574,7 +7574,7 @@ npc{
   y = 181,
   name = "interactive_entity_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "dialog#outside_fields_SO_mailbox",
 }
 
@@ -7602,7 +7602,7 @@ npc{
   y = 581,
   name = "interactive_entity_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_SO.attente_c",
 }
@@ -7613,7 +7613,7 @@ npc{
   y = 549,
   name = "interactive_entity_5",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_SO.attente_d",
 }
@@ -7624,7 +7624,7 @@ npc{
   y = 613,
   name = "interactive_entity_6",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_SO.attente_b",
 }
@@ -7635,7 +7635,7 @@ npc{
   y = 613,
   name = "interactive_entity_7",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_SO.attente_a",
 }
@@ -7753,7 +7753,7 @@ stairs{
   y = 80,
   name = "stairs",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 teletransporter{
@@ -7884,7 +7884,7 @@ npc{
   y = 533,
   name = "guard",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink4",
   behavior = "map",
 }
@@ -8399,7 +8399,7 @@ npc{
   y = 869,
   name = "forest_monkey",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/monkey",
   behavior = "map",
 }

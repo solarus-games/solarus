@@ -1564,7 +1564,7 @@ stairs{
   y = 864,
   name = "stairs_7",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 enemy{
@@ -8765,7 +8765,7 @@ crystal_block{
   y = 1840,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8774,7 +8774,7 @@ crystal_block{
   y = 1840,
   width = 16,
   height = 64,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8783,7 +8783,7 @@ crystal_block{
   y = 1840,
   width = 48,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8792,7 +8792,7 @@ crystal_block{
   y = 1888,
   width = 64,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8801,7 +8801,7 @@ crystal_block{
   y = 2000,
   width = 128,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8810,7 +8810,7 @@ crystal_block{
   y = 1968,
   width = 192,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8819,7 +8819,7 @@ crystal_block{
   y = 1920,
   width = 64,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8828,7 +8828,7 @@ crystal_block{
   y = 1920,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8837,7 +8837,7 @@ crystal_block{
   y = 1952,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8846,7 +8846,7 @@ crystal_block{
   y = 1920,
   width = 32,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8855,7 +8855,7 @@ crystal_block{
   y = 1840,
   width = 32,
   height = 64,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8864,7 +8864,7 @@ crystal_block{
   y = 1952,
   width = 80,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8873,7 +8873,7 @@ crystal_block{
   y = 1920,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8882,7 +8882,7 @@ crystal_block{
   y = 1872,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8891,7 +8891,7 @@ crystal_block{
   y = 1856,
   width = 80,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8900,7 +8900,7 @@ crystal_block{
   y = 1840,
   width = 80,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8909,7 +8909,7 @@ crystal_block{
   y = 1872,
   width = 64,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8918,7 +8918,7 @@ crystal_block{
   y = 1920,
   width = 64,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8927,7 +8927,7 @@ crystal_block{
   y = 2000,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8936,7 +8936,7 @@ crystal_block{
   y = 1856,
   width = 80,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8945,7 +8945,7 @@ crystal_block{
   y = 1952,
   width = 80,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8954,7 +8954,7 @@ crystal_block{
   y = 2000,
   width = 80,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8963,7 +8963,7 @@ crystal_block{
   y = 1920,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -8972,7 +8972,7 @@ crystal_block{
   y = 1840,
   width = 80,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8981,7 +8981,7 @@ crystal_block{
   y = 1872,
   width = 80,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8990,7 +8990,7 @@ crystal_block{
   y = 1920,
   width = 32,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8999,7 +8999,7 @@ crystal_block{
   y = 1920,
   width = 32,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9008,7 +9008,7 @@ crystal_block{
   y = 1968,
   width = 80,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9017,7 +9017,7 @@ crystal_block{
   y = 1856,
   width = 48,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9026,7 +9026,7 @@ crystal_block{
   y = 1872,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9035,7 +9035,7 @@ crystal_block{
   y = 1952,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9044,7 +9044,7 @@ crystal_block{
   y = 2000,
   width = 48,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9053,7 +9053,7 @@ crystal_block{
   y = 1920,
   width = 16,
   height = 64,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9062,7 +9062,7 @@ crystal_block{
   y = 1936,
   width = 48,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9071,7 +9071,7 @@ crystal_block{
   y = 1920,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9080,7 +9080,7 @@ crystal_block{
   y = 1872,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9089,7 +9089,7 @@ crystal_block{
   y = 1872,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9098,7 +9098,7 @@ crystal_block{
   y = 1920,
   width = 32,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9107,7 +9107,7 @@ crystal_block{
   y = 1952,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9116,7 +9116,7 @@ crystal_block{
   y = 1968,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9125,7 +9125,7 @@ crystal_block{
   y = 1872,
   width = 32,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9134,7 +9134,7 @@ crystal_block{
   y = 1840,
   width = 48,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9143,7 +9143,7 @@ crystal_block{
   y = 1840,
   width = 32,
   height = 96,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9152,7 +9152,7 @@ crystal_block{
   y = 1952,
   width = 32,
   height = 64,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9161,7 +9161,7 @@ crystal_block{
   y = 1888,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9170,7 +9170,7 @@ crystal_block{
   y = 1840,
   width = 32,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9179,7 +9179,7 @@ crystal_block{
   y = 1920,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9188,7 +9188,7 @@ crystal_block{
   y = 1952,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9197,7 +9197,7 @@ crystal_block{
   y = 2000,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9206,7 +9206,7 @@ crystal_block{
   y = 2000,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9215,7 +9215,7 @@ crystal_block{
   y = 1968,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9224,7 +9224,7 @@ crystal_block{
   y = 1968,
   width = 48,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9233,7 +9233,7 @@ crystal_block{
   y = 1920,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9242,7 +9242,7 @@ crystal_block{
   y = 1840,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9251,7 +9251,7 @@ crystal_block{
   y = 1872,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9260,7 +9260,7 @@ crystal_block{
   y = 1872,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9269,7 +9269,7 @@ crystal_block{
   y = 2000,
   width = 80,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9278,7 +9278,7 @@ crystal_block{
   y = 1920,
   width = 32,
   height = 64,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9287,7 +9287,7 @@ crystal_block{
   y = 1920,
   width = 32,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9296,7 +9296,7 @@ crystal_block{
   y = 1888,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9305,7 +9305,7 @@ crystal_block{
   y = 1840,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9314,7 +9314,7 @@ crystal_block{
   y = 1840,
   width = 48,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9323,7 +9323,7 @@ crystal_block{
   y = 1872,
   width = 32,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 conveyor_belt{
@@ -9395,7 +9395,7 @@ crystal_block{
   y = 448,
   width = 32,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9404,7 +9404,7 @@ crystal_block{
   y = 320,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9413,7 +9413,7 @@ crystal_block{
   y = 448,
   width = 32,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9422,7 +9422,7 @@ crystal_block{
   y = 304,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9431,7 +9431,7 @@ crystal_block{
   y = 304,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9440,7 +9440,7 @@ crystal_block{
   y = 320,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9449,7 +9449,7 @@ crystal_block{
   y = 496,
   width = 32,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9458,7 +9458,7 @@ crystal_block{
   y = 608,
   width = 32,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -9467,7 +9467,7 @@ crystal_block{
   y = 400,
   width = 32,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9476,7 +9476,7 @@ crystal_block{
   y = 336,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9485,7 +9485,7 @@ crystal_block{
   y = 352,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -9494,7 +9494,7 @@ crystal_block{
   y = 368,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destination{
@@ -9575,7 +9575,7 @@ stairs{
   y = 280,
   name = "stairs",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -9584,7 +9584,7 @@ stairs{
   y = 280,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -9641,7 +9641,7 @@ stairs{
   y = 1304,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -9650,7 +9650,7 @@ stairs{
   y = 1304,
   name = "stairs_4",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -9659,7 +9659,7 @@ stairs{
   y = 1816,
   name = "stairs_5",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -9668,7 +9668,7 @@ stairs{
   y = 1816,
   name = "stairs_6",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 jumper{
@@ -9821,7 +9821,7 @@ door{
   y = 440,
   name = "weak_wall_a",
   direction = 2,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 867,
 }
 
@@ -9831,7 +9831,7 @@ door{
   y = 440,
   name = "weak_wall_a_2",
   direction = 0,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 867,
 }
 
@@ -9863,7 +9863,7 @@ door{
   y = 792,
   name = "weak_wall_b",
   direction = 1,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 868,
 }
 
@@ -9873,7 +9873,7 @@ door{
   y = 744,
   name = "weak_wall_b_2",
   direction = 3,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 868,
 }
 
@@ -9905,7 +9905,7 @@ door{
   y = 344,
   name = "door",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 869,
 }
 
@@ -9915,7 +9915,7 @@ door{
   y = 344,
   name = "door_2",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 869,
 }
 
@@ -9924,7 +9924,7 @@ switch{
   x = 1120,
   y = 672,
   name = "door_ab_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9954,7 +9954,7 @@ switch{
   x = 1392,
   y = 304,
   name = "chest_a_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -10008,7 +10008,7 @@ door{
   y = 2072,
   name = "door_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 874,
 }
 
@@ -10018,7 +10018,7 @@ door{
   y = 2024,
   name = "door_4",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 874,
 }
 
@@ -10216,7 +10216,7 @@ door{
   y = 488,
   name = "door_5",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 884,
 }
 
@@ -10226,7 +10226,7 @@ door{
   y = 536,
   name = "door_6",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 884,
 }
 
@@ -10236,7 +10236,7 @@ door{
   y = 664,
   name = "door_a",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 870,
 }
 
@@ -10246,7 +10246,7 @@ door{
   y = 664,
   name = "door_a_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 870,
 }
 
@@ -10256,7 +10256,7 @@ door{
   y = 344,
   name = "door_b",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 871,
 }
 
@@ -10266,7 +10266,7 @@ door{
   y = 344,
   name = "door_b_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 871,
 }
 
@@ -10276,7 +10276,7 @@ crystal_block{
   y = 1688,
   width = 128,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 tile{

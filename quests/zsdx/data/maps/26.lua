@@ -719,7 +719,7 @@ npc{
   y = 61,
   name = "torch_1",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -730,7 +730,7 @@ npc{
   y = 189,
   name = "torch_2",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -741,7 +741,7 @@ npc{
   y = 61,
   name = "torch_3",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -752,7 +752,7 @@ npc{
   y = 189,
   name = "torch_4",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -784,7 +784,7 @@ npc{
   y = -11,
   name = "great_fairy",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/great_fairy",
   behavior = "map",
 }

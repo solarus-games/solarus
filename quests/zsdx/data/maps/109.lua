@@ -6037,7 +6037,7 @@ door{
   y = 392,
   name = "door_d_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6046,7 +6046,7 @@ door{
   y = 392,
   name = "door_4",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 885,
 }
 
@@ -6056,7 +6056,7 @@ door{
   y = 720,
   name = "door_b_3",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6065,7 +6065,7 @@ door{
   y = 720,
   name = "door_b_5",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6074,7 +6074,7 @@ door{
   y = 720,
   name = "door_b_6",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -6250,7 +6250,7 @@ door{
   y = 512,
   name = "door_a",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6259,7 +6259,7 @@ door{
   y = 512,
   name = "door_a_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 block{
@@ -6304,7 +6304,7 @@ door{
   y = 600,
   name = "door_b",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6313,7 +6313,7 @@ door{
   y = 648,
   name = "door_b_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6322,7 +6322,7 @@ door{
   y = 720,
   name = "door_b_4",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -6409,7 +6409,7 @@ door{
   y = 808,
   name = "door_c",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6418,7 +6418,7 @@ door{
   y = 856,
   name = "door_c_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6427,7 +6427,7 @@ door{
   y = 1016,
   name = "door_c_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6436,7 +6436,7 @@ door{
   y = 1064,
   name = "door_c_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -6614,7 +6614,7 @@ door{
   y = 512,
   name = "door",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 879,
 }
 
@@ -6624,7 +6624,7 @@ door{
   y = 512,
   name = "door_2",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 879,
 }
 
@@ -6646,7 +6646,7 @@ door{
   y = 440,
   name = "door_d",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6655,7 +6655,7 @@ door{
   y = 304,
   name = "door_d_3",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6664,7 +6664,7 @@ door{
   y = 304,
   name = "door_d_4",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -6734,7 +6734,7 @@ door{
   y = 440,
   name = "door_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 885,
 }
 
@@ -6744,7 +6744,7 @@ npc{
   y = 485,
   name = "child_1",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child1",
   behavior = "map",
 }
@@ -6755,7 +6755,7 @@ npc{
   y = 485,
   name = "child_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child2",
   behavior = "map",
 }
@@ -6766,7 +6766,7 @@ npc{
   y = 485,
   name = "child_3",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child3",
   behavior = "map",
 }
@@ -6777,7 +6777,7 @@ npc{
   y = 485,
   name = "child_4",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child4",
   behavior = "map",
 }
@@ -6788,7 +6788,7 @@ npc{
   y = 589,
   name = "child_5",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child2",
   behavior = "map",
 }
@@ -6799,7 +6799,7 @@ npc{
   y = 589,
   name = "child_6",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child3",
   behavior = "map",
 }
@@ -6810,7 +6810,7 @@ npc{
   y = 589,
   name = "child_7",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child4",
   behavior = "map",
 }
@@ -6821,7 +6821,7 @@ npc{
   y = 589,
   name = "child_8",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/solarus_child1",
   behavior = "map",
 }

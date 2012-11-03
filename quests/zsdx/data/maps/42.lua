@@ -502,7 +502,7 @@ stairs{
   y = 192,
   name = "stairs_6",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 tile{
@@ -10430,7 +10430,7 @@ stairs{
   y = 24,
   name = "stairs",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -10439,7 +10439,7 @@ stairs{
   y = 24,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -10448,7 +10448,7 @@ stairs{
   y = 48,
   name = "stairs_4",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 chest{
@@ -10488,7 +10488,7 @@ stairs{
   y = 840,
   name = "stairs_5",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 wall{
@@ -10576,7 +10576,7 @@ stairs{
   y = 120,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 destination{
@@ -10592,7 +10592,7 @@ switch{
   x = 768,
   y = 960,
   name = "se_door_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -10612,7 +10612,7 @@ door{
   y = 840,
   name = "se_door_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10621,7 +10621,7 @@ door{
   y = 840,
   name = "se_door",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 chest{
@@ -10640,7 +10640,7 @@ switch{
   x = 288,
   y = 160,
   name = "nc_door_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -10660,7 +10660,7 @@ door{
   y = 88,
   name = "nc_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10669,7 +10669,7 @@ door{
   y = 136,
   name = "nc_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -10741,7 +10741,7 @@ stairs{
   y = 24,
   name = "stairs_7",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -10750,7 +10750,7 @@ stairs{
   y = 24,
   name = "stairs_8",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -10759,7 +10759,7 @@ stairs{
   y = 488,
   name = "stairs_9",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10768,7 +10768,7 @@ door{
   y = 280,
   name = "door",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 125,
 }
 
@@ -10778,7 +10778,7 @@ door{
   y = 232,
   name = "door_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 125,
 }
 
@@ -10833,7 +10833,7 @@ switch{
   x = 48,
   y = 864,
   name = "barrier_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }

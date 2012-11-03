@@ -770,7 +770,7 @@ stairs{
   y = 208,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -779,7 +779,7 @@ stairs{
   y = 288,
   name = "stairs_2",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -788,7 +788,7 @@ stairs{
   y = 352,
   name = "stairs_4",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -797,7 +797,7 @@ stairs{
   y = 408,
   name = "stairs_3",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -806,7 +806,7 @@ stairs{
   y = 576,
   name = "stairs_6",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -815,7 +815,7 @@ stairs{
   y = 512,
   name = "stairs_5",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 teletransporter{
@@ -2642,7 +2642,7 @@ stairs{
   y = 632,
   name = "stairs_7",
   direction = 3,
-  subtype = 2,
+  subtype = "2",
 }
 
 destination{

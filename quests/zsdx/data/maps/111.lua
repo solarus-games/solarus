@@ -816,7 +816,7 @@ door{
   y = 48,
   name = "nw_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 block{
@@ -849,7 +849,7 @@ stairs{
   y = 368,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 enemy{
@@ -934,7 +934,7 @@ stairs{
   y = 48,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 tile{
@@ -1706,7 +1706,7 @@ stairs{
   y = 24,
   name = "stairs_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 dynamic_tile{

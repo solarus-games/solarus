@@ -10746,7 +10746,7 @@ npc{
   y = 693,
   name = "panel1_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_NE_girly_sign",
 }
@@ -11111,7 +11111,7 @@ npc{
   y = 165,
   name = "interactive_entity",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_NE.cursed_cave_sign",
 }
@@ -11140,7 +11140,7 @@ npc{
   y = 261,
   name = "interactive_entity_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_NE.indic",
 }
@@ -11151,7 +11151,7 @@ npc{
   y = 29,
   name = "interactive_entity_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_NE.tipiton_sign",
 }
@@ -11429,7 +11429,7 @@ stairs{
   y = 24,
   name = "stairs",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 teletransporter{
@@ -11482,7 +11482,7 @@ stairs{
   y = 920,
   name = "stairs_2",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 destination{
@@ -11577,7 +11577,7 @@ door{
   y = 432,
   name = "door",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 73,
 }
 
@@ -11587,7 +11587,7 @@ door{
   y = 432,
   name = "door_2",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 74,
 }
 
@@ -11623,7 +11623,7 @@ npc{
   y = 965,
   name = "sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_NE.south_sign",
 }

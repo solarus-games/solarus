@@ -6128,7 +6128,7 @@ stairs{
   y = 24,
   name = "stairs",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -6137,7 +6137,7 @@ stairs{
   y = 24,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -6169,7 +6169,7 @@ switch{
   x = 1088,
   y = 608,
   name = "BRoom1",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6180,7 +6180,7 @@ door{
   y = 632,
   name = "LD15",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 chest{
@@ -6200,7 +6200,7 @@ crystal_block{
   y = 672,
   width = 32,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal{
@@ -6216,7 +6216,7 @@ crystal_block{
   y = 592,
   width = 32,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal{
@@ -6232,7 +6232,7 @@ npc{
   y = 293,
   name = "TD01",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }
@@ -6243,7 +6243,7 @@ npc{
   y = 293,
   name = "TD02",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }
@@ -6300,7 +6300,7 @@ crystal_block{
   y = 864,
   width = 112,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -6309,7 +6309,7 @@ crystal_block{
   y = 928,
   width = 112,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -6318,7 +6318,7 @@ crystal_block{
   y = 880,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -6327,7 +6327,7 @@ crystal_block{
   y = 880,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6336,7 +6336,7 @@ door{
   y = 888,
   name = "BD01",
   direction = 2,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 713,
 }
 
@@ -6346,7 +6346,7 @@ crystal_block{
   y = 624,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -6355,7 +6355,7 @@ crystal_block{
   y = 1120,
   width = 16,
   height = 80,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -6364,7 +6364,7 @@ crystal_block{
   y = 1120,
   width = 16,
   height = 80,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -6373,7 +6373,7 @@ crystal_block{
   y = 1120,
   width = 16,
   height = 80,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -6382,7 +6382,7 @@ crystal_block{
   y = 1120,
   width = 16,
   height = 80,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -6391,7 +6391,7 @@ crystal_block{
   y = 1120,
   width = 16,
   height = 80,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -6400,7 +6400,7 @@ crystal_block{
   y = 1120,
   width = 16,
   height = 80,
-  subtype = 0,
+  subtype = "0",
 }
 
 switch{
@@ -6408,7 +6408,7 @@ switch{
   x = 1008,
   y = 560,
   name = "BRoomReset",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6418,7 +6418,7 @@ switch{
   x = 1120,
   y = 608,
   name = "BRoom2",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6428,7 +6428,7 @@ switch{
   x = 1152,
   y = 608,
   name = "BRoom3",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6438,7 +6438,7 @@ switch{
   x = 1088,
   y = 640,
   name = "BRoom4",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6448,7 +6448,7 @@ switch{
   x = 1120,
   y = 640,
   name = "BRoom5",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6458,7 +6458,7 @@ switch{
   x = 1152,
   y = 640,
   name = "BRoom6",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6468,7 +6468,7 @@ switch{
   x = 1088,
   y = 672,
   name = "BRoom7",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6478,7 +6478,7 @@ switch{
   x = 1120,
   y = 672,
   name = "BRoom8",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6488,7 +6488,7 @@ switch{
   x = 1152,
   y = 672,
   name = "BRoom9",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6499,7 +6499,7 @@ door{
   y = 632,
   name = "LD15_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -6508,7 +6508,7 @@ crystal_block{
   y = 1120,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -6517,7 +6517,7 @@ crystal_block{
   y = 1168,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -6526,7 +6526,7 @@ crystal_block{
   y = 1120,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -6535,7 +6535,7 @@ crystal_block{
   y = 1168,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -6544,7 +6544,7 @@ crystal_block{
   y = 1120,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 door{
@@ -6553,7 +6553,7 @@ door{
   y = 1048,
   name = "LD16",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6562,7 +6562,7 @@ door{
   y = 1000,
   name = "LD16_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 switch{
@@ -6570,7 +6570,7 @@ switch{
   x = 1232,
   y = 1152,
   name = "DB16",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -6934,7 +6934,7 @@ door{
   y = 888,
   name = "KD04",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 714,
 }
 
@@ -6944,7 +6944,7 @@ door{
   y = 888,
   name = "BD01_2",
   direction = 0,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 713,
 }
 
@@ -6954,7 +6954,7 @@ door{
   y = 888,
   name = "KD04_2",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 714,
 }
 
@@ -6972,7 +6972,7 @@ stairs{
   y = 1048,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -7015,7 +7015,7 @@ door{
   y = 632,
   name = "LD15_3",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -7024,7 +7024,7 @@ door{
   y = 632,
   name = "LD15_4",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{

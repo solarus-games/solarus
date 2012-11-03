@@ -1016,7 +1016,7 @@ stairs{
   y = 48,
   name = "stairs",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -1025,7 +1025,7 @@ stairs{
   y = 48,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -1046,7 +1046,7 @@ stairs{
   y = 48,
   name = "stairs_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 tile{
@@ -2105,7 +2105,7 @@ stairs{
   y = 24,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 jumper{

@@ -3993,7 +3993,7 @@ door{
   y = 1304,
   name = "miniboss_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -4002,7 +4002,7 @@ door{
   y = 1304,
   name = "miniboss_door_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal{
@@ -4018,7 +4018,7 @@ crystal_block{
   y = 1896,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4027,7 +4027,7 @@ crystal_block{
   y = 1912,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -4036,7 +4036,7 @@ crystal_block{
   y = 1944,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal{
@@ -4052,7 +4052,7 @@ crystal_block{
   y = 1832,
   width = 16,
   height = 192,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -4061,7 +4061,7 @@ crystal_block{
   y = 1832,
   width = 16,
   height = 192,
-  subtype = 1,
+  subtype = "1",
 }
 
 conveyor_belt{
@@ -5104,7 +5104,7 @@ stairs{
   y = 280,
   name = "stairs",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -5137,7 +5137,7 @@ stairs{
   y = 280,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -5146,7 +5146,7 @@ stairs{
   y = 280,
   name = "stairs_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -5179,7 +5179,7 @@ stairs{
   y = 1304,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -5188,7 +5188,7 @@ stairs{
   y = 1304,
   name = "stairs_5",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -5221,7 +5221,7 @@ stairs{
   y = 1816,
   name = "stairs_6",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -5230,7 +5230,7 @@ stairs{
   y = 1816,
   name = "stairs_7",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -5300,7 +5300,7 @@ stairs{
   y = 328,
   name = "stairs_8",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 pickable{
@@ -5974,7 +5974,7 @@ npc{
   y = 1885,
   name = "door_b_hint_1",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }
@@ -5985,7 +5985,7 @@ npc{
   y = 1885,
   name = "door_b_hint_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }
@@ -5996,7 +5996,7 @@ npc{
   y = 1885,
   name = "door_b_hint_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }
@@ -6007,7 +6007,7 @@ npc{
   y = 1885,
   name = "door_b_hint_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }
@@ -6018,7 +6018,7 @@ npc{
   y = 1981,
   name = "door_b_hint_5",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }
@@ -6029,7 +6029,7 @@ npc{
   y = 1981,
   name = "door_b_hint_6",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }
@@ -6040,7 +6040,7 @@ npc{
   y = 1981,
   name = "door_b_hint_7",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }
@@ -6051,7 +6051,7 @@ npc{
   y = 1981,
   name = "door_b_hint_8",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }
@@ -6062,7 +6062,7 @@ door{
   y = 1912,
   name = "door_b",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 864,
 }
 
@@ -6072,7 +6072,7 @@ door{
   y = 1912,
   name = "door_b_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 864,
 }
 
@@ -6510,7 +6510,7 @@ door{
   y = 1328,
   name = "miniboss_e_door",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6519,7 +6519,7 @@ door{
   y = 1328,
   name = "miniboss_e_door_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6528,7 +6528,7 @@ door{
   y = 632,
   name = "door_a",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -6537,7 +6537,7 @@ door{
   y = 632,
   name = "door_a_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{

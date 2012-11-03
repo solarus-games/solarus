@@ -3056,7 +3056,7 @@ npc{
   y = 37,
   name = "sign_7",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3067,7 +3067,7 @@ npc{
   y = 37,
   name = "sign_8",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3078,7 +3078,7 @@ npc{
   y = 53,
   name = "sign_24",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3089,7 +3089,7 @@ npc{
   y = 85,
   name = "sign_6",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3100,7 +3100,7 @@ npc{
   y = 133,
   name = "sign_27",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3111,7 +3111,7 @@ npc{
   y = 133,
   name = "sign_28",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3122,7 +3122,7 @@ npc{
   y = 69,
   name = "sign_9",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3133,7 +3133,7 @@ npc{
   y = 85,
   name = "sign_5",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3144,7 +3144,7 @@ npc{
   y = 117,
   name = "sign_21",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3155,7 +3155,7 @@ npc{
   y = 53,
   name = "sign_23",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3166,7 +3166,7 @@ npc{
   y = 69,
   name = "sign_10",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3177,7 +3177,7 @@ npc{
   y = 37,
   name = "sign_11",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3188,7 +3188,7 @@ npc{
   y = 37,
   name = "sign_12",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3199,7 +3199,7 @@ npc{
   y = 101,
   name = "sign_31",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3210,7 +3210,7 @@ npc{
   y = 101,
   name = "sign_32",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3221,7 +3221,7 @@ npc{
   y = 117,
   name = "sign_22",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3232,7 +3232,7 @@ npc{
   y = 149,
   name = "sign_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3243,7 +3243,7 @@ npc{
   y = 165,
   name = "sign_16",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3254,7 +3254,7 @@ npc{
   y = 181,
   name = "sign_20",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3265,7 +3265,7 @@ npc{
   y = 197,
   name = "sign_29",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3276,7 +3276,7 @@ npc{
   y = 245,
   name = "sign_26",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3287,7 +3287,7 @@ npc{
   y = 245,
   name = "sign_25",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3298,7 +3298,7 @@ npc{
   y = 245,
   name = "sign_17",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3309,7 +3309,7 @@ npc{
   y = 197,
   name = "sign_30",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3320,7 +3320,7 @@ npc{
   y = 197,
   name = "sign_1",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3331,7 +3331,7 @@ npc{
   y = 213,
   name = "sign_13",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3342,7 +3342,7 @@ npc{
   y = 245,
   name = "sign_18",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3353,7 +3353,7 @@ npc{
   y = 213,
   name = "sign_14",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3364,7 +3364,7 @@ npc{
   y = 181,
   name = "sign_19",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3375,7 +3375,7 @@ npc{
   y = 165,
   name = "sign_15",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3386,7 +3386,7 @@ npc{
   y = 197,
   name = "sign_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }
@@ -3397,7 +3397,7 @@ npc{
   y = 149,
   name = "sign_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "map",
 }

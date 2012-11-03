@@ -304,7 +304,7 @@ stairs{
   y = 144,
   name = "stairs_1",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -313,7 +313,7 @@ stairs{
   y = 48,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 tile{
@@ -1456,7 +1456,7 @@ npc{
   y = 117,
   name = "sahasrahla",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/sahasrahla",
   behavior = "map",
 }
@@ -1467,7 +1467,7 @@ npc{
   y = 165,
   name = "library_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "dialog#sahasrahla_house.memories",
 }
 
@@ -1552,7 +1552,7 @@ door{
   y = 104,
   name = "door",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 66,
 }
 
@@ -1562,7 +1562,7 @@ door{
   y = 104,
   name = "door_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 66,
 }
 

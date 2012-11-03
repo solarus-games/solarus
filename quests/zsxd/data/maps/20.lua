@@ -1501,7 +1501,7 @@ stairs{
   y = 304,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 destructible{
@@ -1527,7 +1527,7 @@ switch{
   x = 392,
   y = 408,
   name = "CS3",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1547,7 +1547,7 @@ stairs{
   y = 360,
   name = "stairs_3",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 destructible{
@@ -1576,7 +1576,7 @@ crystal_block{
   y = 264,
   width = 112,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1585,7 +1585,7 @@ crystal_block{
   y = 168,
   width = 48,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 pickable{
@@ -1602,7 +1602,7 @@ stairs{
   y = 360,
   name = "stairs_4",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1611,7 +1611,7 @@ stairs{
   y = 128,
   name = "stairs_5",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 dynamic_tile{
@@ -6864,7 +6864,7 @@ stairs{
   y = 24,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -6899,7 +6899,7 @@ crystal_block{
   y = 256,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -6934,7 +6934,7 @@ npc{
   y = 365,
   name = "welcome_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#crazy_house.welcome_message",
 }
@@ -7130,7 +7130,7 @@ npc{
   y = 325,
   name = "mario_message_1",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -7171,7 +7171,7 @@ npc{
   y = 189,
   name = "npc_1",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager8",
   behavior = "map",
 }
@@ -7182,7 +7182,7 @@ npc{
   y = 189,
   name = "npc_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager8",
   behavior = "map",
 }
@@ -7193,7 +7193,7 @@ door{
   y = 264,
   name = "DK1",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 140,
 }
 
@@ -7274,7 +7274,7 @@ npc{
   y = 349,
   name = "GC12BPerson",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/villager1",
   behavior = "map",
 }
@@ -7285,7 +7285,7 @@ npc{
   y = 349,
   name = "interactive_entity_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager4",
   behavior = "map",
 }
@@ -7296,7 +7296,7 @@ npc{
   y = 341,
   name = "interactive_entity_4",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager9",
   behavior = "dialog#crazy_house.alcoholic_man",
 }
@@ -7307,7 +7307,7 @@ stairs{
   y = 136,
   name = "stairs_6",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -7336,7 +7336,7 @@ door{
   y = 184,
   name = "weak_wall_A",
   direction = 0,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 105,
 }
 
@@ -7346,7 +7346,7 @@ door{
   y = 184,
   name = "weak_wall_A_2",
   direction = 2,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 105,
 }
 
@@ -7397,7 +7397,7 @@ door{
   y = 216,
   name = "DK1_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 140,
 }
 
@@ -7407,7 +7407,7 @@ npc{
   y = 69,
   name = "GC11",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink3",
   behavior = "map",
 }
@@ -7418,7 +7418,7 @@ npc{
   y = 165,
   name = "Accueil_2",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager10",
   behavior = "map",
 }
@@ -7429,7 +7429,7 @@ npc{
   y = 221,
   name = "directionsAccueil",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#crazy_house.directionsAccueil",
 }
@@ -7440,7 +7440,7 @@ npc{
   y = 205,
   name = "AccueilFront",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -7450,7 +7450,7 @@ npc{
   y = 101,
   name = "GC11Front",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -7460,7 +7460,7 @@ npc{
   y = 381,
   name = "GC12A",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -7470,7 +7470,7 @@ npc{
   y = 381,
   name = "GC12B",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -7491,7 +7491,7 @@ npc{
   y = 109,
   name = "guichet_11_stone",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#crazy_house.guichet_11",
 }
@@ -7502,7 +7502,7 @@ npc{
   y = 381,
   name = "interactive_entity",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#crazy_house.guichet_12_sign",
 }

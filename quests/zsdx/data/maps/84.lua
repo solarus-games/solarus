@@ -979,7 +979,7 @@ npc{
   y = 229,
   name = "npc",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager11",
   behavior = "dialog#junk_shop.seller",
 }

@@ -520,7 +520,7 @@ stairs{
   y = 488,
   name = "so_stair_6",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -529,7 +529,7 @@ stairs{
   y = 488,
   name = "so_stair_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 tile{
@@ -1277,7 +1277,7 @@ stairs{
   y = 24,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 destination{
@@ -2577,7 +2577,7 @@ stairs{
   y = 992,
   name = "stairs_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 jumper{

@@ -9931,7 +9931,7 @@ stairs{
   y = 192,
   name = "roof_stairs",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 wall{

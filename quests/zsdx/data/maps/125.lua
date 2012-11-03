@@ -1874,7 +1874,7 @@ crystal_block{
   y = 176,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1883,7 +1883,7 @@ crystal_block{
   y = 192,
   width = 16,
   height = 96,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1892,7 +1892,7 @@ crystal_block{
   y = 192,
   width = 16,
   height = 96,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1901,7 +1901,7 @@ crystal_block{
   y = 288,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -2067,7 +2067,7 @@ stairs{
   y = 104,
   name = "stairs",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -2088,7 +2088,7 @@ stairs{
   y = 104,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 tile{

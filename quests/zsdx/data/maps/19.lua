@@ -610,7 +610,7 @@ npc{
   y = 77,
   name = "seller",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager10",
   behavior = "map",
 }
@@ -621,7 +621,7 @@ npc{
   y = 109,
   name = "seller_talking_place",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 

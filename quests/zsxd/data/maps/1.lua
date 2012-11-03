@@ -13865,7 +13865,7 @@ npc{
   y = 493,
   name = "sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_NO_indic",
 }
@@ -14299,7 +14299,7 @@ npc{
   y = 581,
   name = "panel1_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_fields_NO_goa",
 }
@@ -14338,7 +14338,7 @@ npc{
   y = 829,
   name = "lawn_master",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager13",
   behavior = "dialog#outside_fields_NO.lawn_master",
 }
@@ -14499,7 +14499,7 @@ npc{
   y = 805,
   name = "lady_b",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/villager2",
   behavior = "dialog#outside_fields_NO.lady_b",
 }
@@ -14510,7 +14510,7 @@ npc{
   y = 797,
   name = "interactive_entity",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager9",
   behavior = "dialog#outside_fields_NO.drunk",
 }
@@ -14521,7 +14521,7 @@ npc{
   y = 893,
   name = "guy_a",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink7",
   behavior = "dialog#outside_fields_NO.guy_a",
 }
@@ -14532,7 +14532,7 @@ npc{
   y = 157,
   name = "castle_guard",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/tom",
   behavior = "dialog#outside_fields_NO.castle_guard",
 }
@@ -15080,7 +15080,7 @@ door{
   y = 992,
   name = "door",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 51,
 }
 
@@ -15090,7 +15090,7 @@ door{
   y = 976,
   name = "door_2",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 52,
 }
 
@@ -15100,7 +15100,7 @@ door{
   y = 976,
   name = "door_3",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 53,
 }
 
@@ -15110,7 +15110,7 @@ door{
   y = 976,
   name = "door_4",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 54,
 }
 
@@ -15120,7 +15120,7 @@ door{
   y = 992,
   name = "door_5",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 55,
 }
 

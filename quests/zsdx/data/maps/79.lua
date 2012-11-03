@@ -3426,7 +3426,7 @@ stairs{
   y = 592,
   name = "stairs",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 teletransporter{

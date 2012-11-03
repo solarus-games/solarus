@@ -1328,7 +1328,7 @@ stairs{
   y = 376,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1337,7 +1337,7 @@ stairs{
   y = 264,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 npc{
@@ -1346,7 +1346,7 @@ npc{
   y = 725,
   name = "panel",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#freaking_cave_indic1",
 }
@@ -1396,7 +1396,7 @@ npc{
   y = 133,
   name = "interactive_entity",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#freaking_cave_indic2",
 }
@@ -1512,7 +1512,7 @@ door{
   y = 784,
   name = "trap_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{

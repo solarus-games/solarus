@@ -350,7 +350,7 @@ npc{
   y = 109,
   name = "mini_game_npc",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager7",
   behavior = "map",
 }

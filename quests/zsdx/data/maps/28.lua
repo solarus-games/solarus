@@ -1048,7 +1048,7 @@ door{
   y = 104,
   name = "weak_wall",
   direction = 0,
-  subtype = 6,
+  subtype = "6",
   savegame_variable = 65,
 }
 
@@ -1066,7 +1066,7 @@ npc{
   y = 53,
   name = "bed",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/bed",
   behavior = "map",
 }
@@ -1216,7 +1216,7 @@ npc{
   y = 45,
   name = "snores",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/snores",
   behavior = "map",
 }

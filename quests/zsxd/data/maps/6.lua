@@ -175,7 +175,7 @@ npc{
   y = 157,
   name = "sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#maison_pots.sign",
 }

@@ -1016,7 +1016,7 @@ stairs{
   y = 48,
   name = "stairs",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -1025,7 +1025,7 @@ stairs{
   y = 104,
   name = "stairs_2",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1034,7 +1034,7 @@ stairs{
   y = 312,
   name = "stairs_3",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 enemy{
@@ -2874,7 +2874,7 @@ npc{
   y = 373,
   name = "torch_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -2885,7 +2885,7 @@ npc{
   y = 373,
   name = "torch_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -2896,7 +2896,7 @@ npc{
   y = 69,
   name = "torch_5",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }

@@ -2243,7 +2243,7 @@ stairs{
   y = 168,
   name = "stairs",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2252,7 +2252,7 @@ stairs{
   y = 528,
   name = "stairs_2",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2261,7 +2261,7 @@ stairs{
   y = 656,
   name = "stairs_3",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2270,7 +2270,7 @@ stairs{
   y = 656,
   name = "stairs_4",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2279,7 +2279,7 @@ stairs{
   y = 656,
   name = "stairs_5",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 chest{
@@ -2299,7 +2299,7 @@ npc{
   y = 349,
   name = "torch_1",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -2310,7 +2310,7 @@ npc{
   y = 349,
   name = "torch_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -2368,7 +2368,7 @@ stairs{
   y = 48,
   name = "stairs_6",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -2377,7 +2377,7 @@ stairs{
   y = 400,
   name = "stairs_7",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -2386,7 +2386,7 @@ stairs{
   y = 80,
   name = "stairs_19",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 destructible{
@@ -6788,7 +6788,7 @@ stairs{
   y = 24,
   name = "stairs_8",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -6797,7 +6797,7 @@ stairs{
   y = 24,
   name = "stairs_9",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -6806,7 +6806,7 @@ stairs{
   y = 24,
   name = "stairs_10",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -6815,7 +6815,7 @@ stairs{
   y = 24,
   name = "stairs_11",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -6824,7 +6824,7 @@ stairs{
   y = 24,
   name = "stairs_12",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -6833,7 +6833,7 @@ stairs{
   y = 400,
   name = "stairs_13",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -6842,7 +6842,7 @@ stairs{
   y = 400,
   name = "stairs_14",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -6851,7 +6851,7 @@ stairs{
   y = 552,
   name = "stairs_15",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -6860,7 +6860,7 @@ stairs{
   y = 680,
   name = "stairs_16",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -6869,7 +6869,7 @@ stairs{
   y = 680,
   name = "stairs_17",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 stairs{
@@ -6878,7 +6878,7 @@ stairs{
   y = 680,
   name = "stairs_18",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 teletransporter{
@@ -7009,7 +7009,7 @@ npc{
   y = 37,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_6.torches_hint",
 }

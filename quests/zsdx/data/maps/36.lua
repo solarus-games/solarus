@@ -394,7 +394,7 @@ stairs{
   y = 24,
   name = "stairs_1",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 destructible{

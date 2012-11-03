@@ -221,7 +221,7 @@ stairs{
   y = 376,
   name = "stairs",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 tile{
@@ -1340,7 +1340,7 @@ door{
   y = 360,
   name = "door",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{

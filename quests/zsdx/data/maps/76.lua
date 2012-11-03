@@ -4686,7 +4686,7 @@ crystal_block{
   y = 96,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 chest{
@@ -4706,7 +4706,7 @@ door{
   y = 72,
   name = "door",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 183,
 }
 
@@ -4716,7 +4716,7 @@ door{
   y = 264,
   name = "door_2",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 184,
 }
 
@@ -4726,7 +4726,7 @@ door{
   y = 336,
   name = "door_3",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 185,
 }
 
@@ -4736,7 +4736,7 @@ door{
   y = 144,
   name = "door_4",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 186,
 }
 
@@ -4800,7 +4800,7 @@ switch{
   x = 576,
   y = 384,
   name = "torch_c_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4839,7 +4839,7 @@ switch{
   x = 144,
   y = 384,
   name = "torch_e_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4914,7 +4914,7 @@ switch{
   x = 352,
   y = 216,
   name = "torch_d_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4933,7 +4933,7 @@ switch{
   x = 600,
   y = 48,
   name = "torch_b_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -4952,7 +4952,7 @@ switch{
   x = 648,
   y = 48,
   name = "torch_a_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -5251,7 +5251,7 @@ switch{
   x = 48,
   y = 360,
   name = "torch_b_switch_2",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -5270,7 +5270,7 @@ switch{
   x = 168,
   y = 120,
   name = "torch_a_switch_2",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }

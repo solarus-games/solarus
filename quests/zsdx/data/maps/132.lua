@@ -383,7 +383,7 @@ stairs{
   y = 224,
   name = "stairs",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 wall{

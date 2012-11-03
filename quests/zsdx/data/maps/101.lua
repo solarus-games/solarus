@@ -763,7 +763,7 @@ stairs{
   y = 608,
   name = "stairs",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -772,7 +772,7 @@ stairs{
   y = 384,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 destination{
@@ -801,7 +801,7 @@ stairs{
   y = 544,
   name = "stairs_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -7837,7 +7837,7 @@ npc{
   y = 53,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_7.code",
 }
@@ -7848,7 +7848,7 @@ door{
   y = 792,
   name = "door_a",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -7857,7 +7857,7 @@ door{
   y = 744,
   name = "door_a_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 chest{
@@ -8119,7 +8119,7 @@ door{
   y = 968,
   name = "sw_door",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 604,
 }
 
@@ -8129,7 +8129,7 @@ door{
   y = 968,
   name = "sw_door_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 604,
 }
 
@@ -8138,7 +8138,7 @@ switch{
   x = 40,
   y = 952,
   name = "door_a_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8176,7 +8176,7 @@ door{
   y = 216,
   name = "door",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 605,
 }
 
@@ -8485,7 +8485,7 @@ npc{
   y = 941,
   name = "sign_1",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "map",
 }
@@ -8550,7 +8550,7 @@ door{
   y = 792,
   name = "door_2",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 606,
 }
 
@@ -8560,7 +8560,7 @@ npc{
   y = 941,
   name = "sign_2",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8570,7 +8570,7 @@ npc{
   y = 845,
   name = "sign_3",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8580,7 +8580,7 @@ npc{
   y = 845,
   name = "sign_4",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8590,7 +8590,7 @@ npc{
   y = 893,
   name = "sign_5",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8600,7 +8600,7 @@ npc{
   y = 893,
   name = "sign_6",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8610,7 +8610,7 @@ npc{
   y = 925,
   name = "sign_7",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8620,7 +8620,7 @@ npc{
   y = 925,
   name = "sign_8",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8630,7 +8630,7 @@ npc{
   y = 877,
   name = "sign_9",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8640,7 +8640,7 @@ npc{
   y = 877,
   name = "sign_10",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8650,7 +8650,7 @@ npc{
   y = 957,
   name = "sign_11",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8660,7 +8660,7 @@ npc{
   y = 957,
   name = "sign_12",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8670,7 +8670,7 @@ npc{
   y = 989,
   name = "sign_13",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8680,7 +8680,7 @@ npc{
   y = 989,
   name = "sign_14",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8690,7 +8690,7 @@ npc{
   y = 893,
   name = "sign_15",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8700,7 +8700,7 @@ npc{
   y = 893,
   name = "sign_16",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8710,7 +8710,7 @@ npc{
   y = 861,
   name = "sign_17",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8720,7 +8720,7 @@ npc{
   y = 861,
   name = "sign_18",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8730,7 +8730,7 @@ npc{
   y = 909,
   name = "sign_19",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8740,7 +8740,7 @@ npc{
   y = 909,
   name = "sign_20",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8750,7 +8750,7 @@ npc{
   y = 973,
   name = "sign_21",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8760,7 +8760,7 @@ npc{
   y = 973,
   name = "sign_22",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8770,7 +8770,7 @@ npc{
   y = 861,
   name = "sign_23",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8780,7 +8780,7 @@ npc{
   y = 861,
   name = "sign_24",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8790,7 +8790,7 @@ npc{
   y = 893,
   name = "sign_25",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8800,7 +8800,7 @@ npc{
   y = 893,
   name = "sign_26",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8810,7 +8810,7 @@ npc{
   y = 829,
   name = "sign_27",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8820,7 +8820,7 @@ npc{
   y = 829,
   name = "sign_28",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -8830,7 +8830,7 @@ door{
   y = 968,
   name = "door_b",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8839,7 +8839,7 @@ door{
   y = 968,
   name = "door_b_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 chest{
@@ -8858,7 +8858,7 @@ switch{
   x = 736,
   y = 912,
   name = "door_b_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8963,7 +8963,7 @@ door{
   y = 744,
   name = "door_3",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 606,
 }
 
@@ -8984,7 +8984,7 @@ switch{
   x = 792,
   y = 56,
   name = "ne_door_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = true,
 }
@@ -8995,7 +8995,7 @@ door{
   y = 136,
   name = "ne_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 621,
 }
 
@@ -9005,7 +9005,7 @@ door{
   y = 88,
   name = "ne_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 621,
 }
 
@@ -9313,7 +9313,7 @@ stairs{
   y = 168,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -9334,7 +9334,7 @@ stairs{
   y = 168,
   name = "stairs_5",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -9355,7 +9355,7 @@ stairs{
   y = 40,
   name = "stairs_6",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{

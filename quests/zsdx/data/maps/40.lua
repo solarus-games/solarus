@@ -753,7 +753,7 @@ switch{
   x = 304,
   y = 728,
   name = "ce_door_switch",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -814,7 +814,7 @@ stairs{
   y = 224,
   name = "stairs_1",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -823,7 +823,7 @@ stairs{
   y = 144,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 wall{
@@ -869,7 +869,7 @@ stairs{
   y = 728,
   name = "stairs_4",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 wall{
@@ -891,7 +891,7 @@ stairs{
   y = 528,
   name = "stairs_5",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 wall{
@@ -913,7 +913,7 @@ stairs{
   y = 864,
   name = "stairs_3",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 dynamic_tile{
@@ -8559,7 +8559,7 @@ npc{
   y = 933,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_3.arbror_direction_hint",
 }
@@ -8679,7 +8679,7 @@ npc{
   y = 77,
   name = "torch_1",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -8690,7 +8690,7 @@ npc{
   y = 77,
   name = "torch_2",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -8701,7 +8701,7 @@ npc{
   y = 365,
   name = "torch_3",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -8712,7 +8712,7 @@ npc{
   y = 429,
   name = "torch_4",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -8723,7 +8723,7 @@ npc{
   y = 429,
   name = "torch_5",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "item#lamp",
 }
@@ -8734,7 +8734,7 @@ door{
   y = 104,
   name = "door",
   direction = 0,
-  subtype = 2,
+  subtype = "2",
   savegame_variable = 109,
 }
 
@@ -8744,7 +8744,7 @@ door{
   y = 344,
   name = "torches_door_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 113,
 }
 
@@ -8754,7 +8754,7 @@ door{
   y = 344,
   name = "torches_door",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 113,
 }
 
@@ -8764,7 +8764,7 @@ door{
   y = 568,
   name = "ce_door_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 904,
 }
 
@@ -8774,7 +8774,7 @@ door{
   y = 520,
   name = "ce_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   savegame_variable = 904,
 }
 
@@ -8784,7 +8784,7 @@ door{
   y = 744,
   name = "se_door_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8793,7 +8793,7 @@ door{
   y = 696,
   name = "se_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 jumper{
@@ -9084,7 +9084,7 @@ stairs{
   y = 24,
   name = "stairs",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -9093,7 +9093,7 @@ stairs{
   y = 24,
   name = "stairs_6",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -9102,7 +9102,7 @@ stairs{
   y = 296,
   name = "stairs_7",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -9111,7 +9111,7 @@ stairs{
   y = 360,
   name = "stairs_8",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -9120,7 +9120,7 @@ stairs{
   y = 200,
   name = "stairs_9",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 switch{
@@ -9128,7 +9128,7 @@ switch{
   x = 624,
   y = 768,
   name = "se_door_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9147,7 +9147,7 @@ switch{
   x = 648,
   y = 896,
   name = "c_water_switch",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }

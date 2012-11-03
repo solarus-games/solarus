@@ -1275,7 +1275,7 @@ npc{
   y = 101,
   name = "npc",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/thief",
   behavior = "dialog#shop.near_wizard",
 }
@@ -1286,7 +1286,7 @@ npc{
   y = -11,
   name = "interactive_entity_3",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink2",
   behavior = "map",
 }
@@ -1297,7 +1297,7 @@ npc{
   y = -11,
   name = "interactive_entity_4",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink3",
   behavior = "map",
 }
@@ -1308,7 +1308,7 @@ npc{
   y = 85,
   name = "interactive_entity_5",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink5",
   behavior = "map",
 }
@@ -1319,7 +1319,7 @@ npc{
   y = -11,
   name = "interactive_entity_6",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink6",
   behavior = "map",
 }
@@ -1330,7 +1330,7 @@ npc{
   y = -11,
   name = "interactive_entity_7",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink8",
   behavior = "map",
 }
@@ -1341,7 +1341,7 @@ npc{
   y = -11,
   name = "interactive_entity_9",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager2",
   behavior = "map",
 }
@@ -1352,7 +1352,7 @@ npc{
   y = 69,
   name = "wizard",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/wizard",
   behavior = "dialog#shop.wizard",
 }
@@ -1363,7 +1363,7 @@ npc{
   y = -11,
   name = "interactive_entity_11",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager3",
   behavior = "map",
 }
@@ -1374,7 +1374,7 @@ npc{
   y = -11,
   name = "interactive_entity_14",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager6",
   behavior = "map",
 }
@@ -1385,7 +1385,7 @@ npc{
   y = -11,
   name = "interactive_entity_15",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager7",
   behavior = "map",
 }
@@ -1396,7 +1396,7 @@ npc{
   y = -11,
   name = "interactive_entity_16",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager8",
   behavior = "map",
 }
@@ -1407,7 +1407,7 @@ npc{
   y = -11,
   name = "interactive_entity_17",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager10",
   behavior = "map",
 }
@@ -1418,7 +1418,7 @@ npc{
   y = 77,
   name = "interactive_entity_18",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager11",
   behavior = "dialog#shop.salesman",
 }
@@ -1491,7 +1491,7 @@ npc{
   y = 149,
   name = "last_night_guy",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager2",
   behavior = "dialog#shop.last_night_guy",
 }
@@ -1502,7 +1502,7 @@ npc{
   y = 125,
   name = "pub_woman",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "dialog#shop.pub_woman",
 }
 
@@ -1512,7 +1512,7 @@ npc{
   y = 213,
   name = "lady_a",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/villager1",
   behavior = "dialog#shop.lady_a",
 }

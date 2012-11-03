@@ -3106,7 +3106,7 @@ door{
   y = 304,
   name = "door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -3115,7 +3115,7 @@ door{
   y = 208,
   name = "door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 pickable{
@@ -3132,7 +3132,7 @@ switch{
   x = 400,
   y = 192,
   name = "door_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -3199,7 +3199,7 @@ stairs{
   y = 48,
   name = "stairs",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 tile{

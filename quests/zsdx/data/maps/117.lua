@@ -519,7 +519,7 @@ stairs{
   y = 184,
   name = "stairs",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -540,7 +540,7 @@ npc{
   y = 197,
   name = "npc_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#cave_to_dungeon_8.hint",
 }

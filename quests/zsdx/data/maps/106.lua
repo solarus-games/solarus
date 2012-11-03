@@ -8305,7 +8305,7 @@ door{
   y = 536,
   name = "door_g",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8314,7 +8314,7 @@ door{
   y = 488,
   name = "door_g_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -8407,7 +8407,7 @@ stairs{
   y = 280,
   name = "stairs",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 dynamic_tile{
@@ -8460,7 +8460,7 @@ stairs{
   y = 336,
   name = "stairs_3",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 chest{
@@ -8479,7 +8479,7 @@ switch{
   x = 1696,
   y = 368,
   name = "n_barrier_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8499,7 +8499,7 @@ door{
   y = 488,
   name = "door_b",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8508,7 +8508,7 @@ door{
   y = 536,
   name = "door_b_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8517,7 +8517,7 @@ door{
   y = 744,
   name = "door_b_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8526,7 +8526,7 @@ door{
   y = 792,
   name = "door_b_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -8833,7 +8833,7 @@ switch{
   x = 2512,
   y = 816,
   name = "door_a_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8844,7 +8844,7 @@ door{
   y = 792,
   name = "door_a",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8853,7 +8853,7 @@ door{
   y = 744,
   name = "door_a_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -8882,7 +8882,7 @@ stairs{
   y = 280,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -9424,7 +9424,7 @@ door{
   y = 376,
   name = "door_c",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9433,7 +9433,7 @@ door{
   y = 376,
   name = "door_c_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9442,7 +9442,7 @@ door{
   y = 376,
   name = "door_c_3",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9451,7 +9451,7 @@ door{
   y = 376,
   name = "door_3",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 815,
 }
 
@@ -9461,7 +9461,7 @@ door{
   y = 376,
   name = "door_4",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 815,
 }
 
@@ -9471,7 +9471,7 @@ door{
   y = 376,
   name = "door_c_4",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -9558,7 +9558,7 @@ door{
   y = 488,
   name = "door_d",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9567,7 +9567,7 @@ door{
   y = 536,
   name = "door_d_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 switch{
@@ -9575,7 +9575,7 @@ switch{
   x = 800,
   y = 320,
   name = "nw_switch_1",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9585,7 +9585,7 @@ switch{
   x = 848,
   y = 352,
   name = "nw_switch_2",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9595,7 +9595,7 @@ switch{
   x = 880,
   y = 384,
   name = "nw_switch_3",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9605,7 +9605,7 @@ switch{
   x = 848,
   y = 416,
   name = "nw_switch_4",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9615,7 +9615,7 @@ switch{
   x = 800,
   y = 448,
   name = "nw_switch_5",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9625,7 +9625,7 @@ switch{
   x = 752,
   y = 416,
   name = "nw_switch_6",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9635,7 +9635,7 @@ switch{
   x = 720,
   y = 384,
   name = "nw_switch_7",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9645,7 +9645,7 @@ switch{
   x = 752,
   y = 352,
   name = "nw_switch_8",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9656,7 +9656,7 @@ npc{
   y = 397,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_9.clockwise_switches_hint",
 }
@@ -9866,7 +9866,7 @@ door{
   y = 632,
   name = "door_5",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 817,
 }
 
@@ -9876,7 +9876,7 @@ door{
   y = 632,
   name = "door_6",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 817,
 }
 
@@ -9886,7 +9886,7 @@ door{
   y = 792,
   name = "door_e",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -9895,7 +9895,7 @@ door{
   y = 744,
   name = "door_e_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 switch{
@@ -9903,7 +9903,7 @@ switch{
   x = 1024,
   y = 704,
   name = "door_e_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9986,7 +9986,7 @@ npc{
   y = 845,
   name = "torch_1",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "map",
 }
@@ -9997,7 +9997,7 @@ npc{
   y = 909,
   name = "torch_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "map",
 }
@@ -10008,7 +10008,7 @@ npc{
   y = 989,
   name = "torch_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "map",
 }
@@ -10019,7 +10019,7 @@ npc{
   y = 1053,
   name = "torch_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/torch",
   behavior = "map",
 }
@@ -10440,7 +10440,7 @@ door{
   y = 1048,
   name = "door_f",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10449,7 +10449,7 @@ door{
   y = 1000,
   name = "door_f_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -10523,7 +10523,7 @@ switch{
   x = 1328,
   y = 1232,
   name = "door_g_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -10967,7 +10967,7 @@ door{
   y = 888,
   name = "door",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 813,
 }
 
@@ -10977,7 +10977,7 @@ door{
   y = 888,
   name = "door_2",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 813,
 }
 

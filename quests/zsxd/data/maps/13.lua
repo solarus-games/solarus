@@ -419,7 +419,7 @@ stairs{
   y = 112,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 destination{
@@ -1022,7 +1022,7 @@ stairs{
   y = 184,
   name = "stairs_2",
   direction = 3,
-  subtype = 2,
+  subtype = "2",
 }
 
 enemy{

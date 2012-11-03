@@ -2525,7 +2525,7 @@ switch{
   x = 88,
   y = 328,
   name = "open_barrier_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -2554,7 +2554,7 @@ crystal_block{
   y = 512,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 wall{
@@ -2576,7 +2576,7 @@ crystal_block{
   y = 208,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -2585,7 +2585,7 @@ crystal_block{
   y = 160,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -2594,7 +2594,7 @@ crystal_block{
   y = 176,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -2603,7 +2603,7 @@ crystal_block{
   y = 224,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal{
@@ -2630,7 +2630,7 @@ crystal_block{
   y = 160,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -2639,7 +2639,7 @@ crystal_block{
   y = 128,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 destination{
@@ -2685,7 +2685,7 @@ crystal_block{
   y = 144,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 destination{
@@ -2714,7 +2714,7 @@ crystal_block{
   y = 104,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -2723,7 +2723,7 @@ crystal_block{
   y = 144,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -2732,7 +2732,7 @@ crystal_block{
   y = 160,
   width = 64,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -2741,7 +2741,7 @@ crystal_block{
   y = 176,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -2750,7 +2750,7 @@ crystal_block{
   y = 224,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -2783,7 +2783,7 @@ crystal_block{
   y = 192,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 npc{
@@ -2792,7 +2792,7 @@ npc{
   y = 381,
   name = "tom",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/tom",
   behavior = "map",
 }
@@ -2815,7 +2815,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 dynamic_tile{
@@ -2849,7 +2848,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -2861,7 +2859,6 @@ enemy{
   breed = "bubble",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -2873,7 +2870,6 @@ enemy{
   breed = "bubble",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -2885,7 +2881,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -2897,7 +2892,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -2909,7 +2903,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -2921,7 +2914,6 @@ enemy{
   breed = "bubble",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -2933,7 +2925,6 @@ enemy{
   breed = "bubble",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -2945,7 +2936,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -2957,7 +2947,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -2969,7 +2958,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -2981,7 +2969,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 destructible{
@@ -3029,7 +3016,6 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 wall{
@@ -3103,7 +3089,7 @@ stairs{
   y = 88,
   name = "stairs_1",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -3112,7 +3098,7 @@ stairs{
   y = 464,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -3121,7 +3107,7 @@ stairs{
   y = 368,
   name = "stairs_3",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
 }
 
 destination{
@@ -3138,7 +3124,7 @@ stairs{
   y = 160,
   name = "stairs_4",
   direction = 3,
-  subtype = 3,
+  subtype = "3",
 }
 
 tile{
@@ -3692,7 +3678,7 @@ stairs{
   y = 600,
   name = "stairs_5",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -3701,7 +3687,7 @@ stairs{
   y = 24,
   name = "stairs_6",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 tile{

@@ -8937,7 +8937,7 @@ npc{
   y = 701,
   name = "welcome_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.village.welcome_sign",
 }
@@ -8948,7 +8948,7 @@ npc{
   y = 629,
   name = "rupee_house_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.village.rupee_house_sign",
 }
@@ -8959,7 +8959,7 @@ npc{
   y = 469,
   name = "waterfall_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.village.waterfall_sign",
 }
@@ -8970,7 +8970,7 @@ npc{
   y = 493,
   name = "water_for_bottle",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#bottle_1",
 }
 
@@ -8980,7 +8980,7 @@ npc{
   y = 493,
   name = "water_for_bottle_2",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#bottle_1",
 }
 
@@ -8990,7 +8990,7 @@ npc{
   y = 493,
   name = "water_for_bottle_3",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#bottle_1",
 }
 
@@ -9000,7 +9000,7 @@ npc{
   y = 493,
   name = "water_for_bottle_4",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#bottle_1",
 }
 
@@ -9010,7 +9010,7 @@ npc{
   y = 477,
   name = "water_for_bottle_5",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#bottle_1",
 }
 
@@ -9020,7 +9020,7 @@ npc{
   y = 493,
   name = "water_for_bottle_6",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#bottle_1",
 }
 
@@ -9030,7 +9030,7 @@ npc{
   y = 477,
   name = "water_for_bottle_7",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#bottle_1",
 }
 
@@ -9040,7 +9040,7 @@ npc{
   y = 461,
   name = "water_for_bottle_8",
   direction = -1,
-  subtype = 0,
+  subtype = "0",
   behavior = "item#bottle_1",
 }
 
@@ -9050,7 +9050,7 @@ npc{
   y = 237,
   name = "warning_holes_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.warning_holes_sign",
 }
@@ -9061,7 +9061,7 @@ npc{
   y = 93,
   name = "flower_hole_sign",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#outside_world.flower_hole_sign",
 }
@@ -9562,7 +9562,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -9574,7 +9573,6 @@ enemy{
   breed = "green_knight_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -9586,7 +9584,6 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 npc{
@@ -9595,7 +9592,7 @@ npc{
   y = 685,
   name = "chignon_woman",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/newlink5",
   behavior = "map",
 }
@@ -9606,7 +9603,7 @@ npc{
   y = 469,
   name = "cliff_man",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager14",
   behavior = "dialog#outside_world.village.cliff_man_npc",
 }
@@ -9699,7 +9696,7 @@ npc{
   y = 461,
   name = "tom_cave_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -10142,7 +10139,7 @@ npc{
   y = 45,
   name = "stone_lock",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   behavior = "map",
 }
 
@@ -10266,7 +10263,6 @@ enemy{
   breed = "red_knight_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -10278,7 +10274,6 @@ enemy{
   breed = "green_knight_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 enemy{
@@ -10290,7 +10285,6 @@ enemy{
   breed = "blue_knight_soldier",
   rank = 0,
   treasure_name = "_random",
-  treasure_variant = 0,
 }
 
 teletransporter{

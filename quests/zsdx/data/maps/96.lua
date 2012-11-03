@@ -925,7 +925,7 @@ door{
   y = 344,
   name = "door1_1",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -943,7 +943,7 @@ stairs{
   y = 392,
   name = "stairs",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 door{
@@ -952,7 +952,7 @@ door{
   y = 424,
   name = "door2_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -961,7 +961,7 @@ door{
   y = 424,
   name = "door2_1",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -982,7 +982,7 @@ stairs{
   y = 344,
   name = "stairs_2",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 tile{
@@ -2379,7 +2379,7 @@ switch{
   x = 920,
   y = 528,
   name = "switch1_1",
-  subtype = 3,
+  subtype = "3",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -2416,7 +2416,7 @@ door{
   y = 384,
   name = "door3_2",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -2425,7 +2425,7 @@ door{
   y = 384,
   name = "door3_1",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 block{
@@ -3238,7 +3238,7 @@ stairs{
   y = 24,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 tile{

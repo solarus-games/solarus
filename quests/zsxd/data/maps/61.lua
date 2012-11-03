@@ -2407,7 +2407,7 @@ stairs{
   y = 728,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2416,7 +2416,7 @@ stairs{
   y = 728,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2425,7 +2425,7 @@ stairs{
   y = 912,
   name = "stairs_3",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2434,7 +2434,7 @@ stairs{
   y = 1032,
   name = "stairs_4",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2443,7 +2443,7 @@ stairs{
   y = 1032,
   name = "stairs_5",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
 }
 
 enemy{
@@ -2465,7 +2465,7 @@ stairs{
   y = 784,
   name = "stairs_6",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 door{
@@ -2474,7 +2474,7 @@ door{
   y = 320,
   name = "miniboss_door_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -2483,7 +2483,7 @@ door{
   y = 224,
   name = "miniboss_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 chest{
@@ -2503,7 +2503,7 @@ door{
   y = 720,
   name = "miniboss_door_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -2512,7 +2512,7 @@ door{
   y = 624,
   name = "miniboss_door_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -2521,7 +2521,7 @@ stairs{
   y = 784,
   name = "stairs_7",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2530,7 +2530,7 @@ stairs{
   y = 816,
   name = "stairs_8",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -2539,7 +2539,7 @@ stairs{
   y = 816,
   name = "stairs_9",
   direction = 0,
-  subtype = 4,
+  subtype = "4",
 }
 
 npc{
@@ -2548,7 +2548,7 @@ npc{
   y = 773,
   name = "sign_5",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#dungeon_1.lizarmen_sign",
 }
@@ -10390,7 +10390,7 @@ door{
   y = 744,
   name = "door",
   direction = 0,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 307,
 }
 
@@ -10400,7 +10400,7 @@ door{
   y = 744,
   name = "door_2",
   direction = 2,
-  subtype = 1,
+  subtype = "1",
   savegame_variable = 307,
 }
 
@@ -10639,7 +10639,7 @@ door{
   y = 248,
   name = "wtf_door_5",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10648,7 +10648,7 @@ door{
   y = 200,
   name = "wtf_door_6",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10657,7 +10657,7 @@ door{
   y = 472,
   name = "wtf_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10666,7 +10666,7 @@ door{
   y = 424,
   name = "wtf_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10675,7 +10675,7 @@ door{
   y = 328,
   name = "wtf_door_8",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10684,7 +10684,7 @@ door{
   y = 328,
   name = "wtf_door_3",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10693,7 +10693,7 @@ door{
   y = 328,
   name = "wtf_door_7",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -10702,7 +10702,7 @@ door{
   y = 328,
   name = "wtf_door_4",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -10847,7 +10847,7 @@ door{
   y = 920,
   name = "weak_wall_compass_2",
   direction = 1,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 233,
 }
 
@@ -10857,7 +10857,7 @@ door{
   y = 872,
   name = "weak_wall_compass",
   direction = 3,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 233,
 }
 
@@ -10867,7 +10867,7 @@ door{
   y = 1096,
   name = "weak_wall_red_tunic",
   direction = 3,
-  subtype = 5,
+  subtype = "5",
   savegame_variable = 234,
 }
 
@@ -10915,7 +10915,7 @@ stairs{
   y = 728,
   name = "stairs_10",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -10932,7 +10932,7 @@ switch{
   x = 648,
   y = 840,
   name = "remove_water_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -10952,7 +10952,7 @@ crystal_block{
   y = 712,
   width = 96,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -10961,7 +10961,7 @@ crystal_block{
   y = 696,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -11006,7 +11006,7 @@ npc{
   y = 557,
   name = "sign_4",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#dungeon_1.danger_north_sign",
 }
@@ -11017,7 +11017,7 @@ npc{
   y = 125,
   name = "sign_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#dungeon_1.danger_south_sign",
 }
@@ -11028,7 +11028,7 @@ npc{
   y = 349,
   name = "sign_6",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/sign",
   behavior = "dialog#dungeon_1.danger_west_sign",
 }
@@ -11326,7 +11326,7 @@ stairs{
   y = 968,
   name = "stairs_11",
   direction = 1,
-  subtype = 2,
+  subtype = "2",
 }
 
 door{
@@ -11335,7 +11335,7 @@ door{
   y = 968,
   name = "boss_door",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 239,
 }
 

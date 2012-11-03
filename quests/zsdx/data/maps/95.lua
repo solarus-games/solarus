@@ -1015,7 +1015,7 @@ npc{
   y = 173,
   name = "witch",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/witch",
   behavior = "map",
 }

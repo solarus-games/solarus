@@ -1385,7 +1385,7 @@ crystal_block{
   y = 312,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 chest{
@@ -1405,7 +1405,7 @@ npc{
   y = 653,
   name = "npc",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_2.eye_hint",
 }
@@ -1415,7 +1415,7 @@ switch{
   x = 168,
   y = 504,
   name = "switch_d",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1425,7 +1425,7 @@ switch{
   x = 168,
   y = 440,
   name = "switch_b",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1435,7 +1435,7 @@ switch{
   x = 232,
   y = 440,
   name = "switch_e",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1445,7 +1445,7 @@ switch{
   x = 232,
   y = 504,
   name = "switch_a",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1455,7 +1455,7 @@ switch{
   x = 104,
   y = 504,
   name = "switch_c",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1465,7 +1465,7 @@ switch{
   x = 104,
   y = 440,
   name = "switch_f",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -1476,7 +1476,7 @@ door{
   y = 464,
   name = "door",
   direction = 2,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 82,
 }
 
@@ -1486,7 +1486,7 @@ door{
   y = 464,
   name = "door_2",
   direction = 0,
-  subtype = 3,
+  subtype = "3",
   savegame_variable = 82,
 }
 
@@ -1554,7 +1554,7 @@ crystal_block{
   y = 360,
   width = 48,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1563,7 +1563,7 @@ crystal_block{
   y = 504,
   width = 32,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -1572,7 +1572,7 @@ crystal_block{
   y = 312,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 dynamic_tile{
@@ -1592,7 +1592,7 @@ npc{
   y = 373,
   name = "npc_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_2.eye_2_hint",
 }
@@ -1612,7 +1612,7 @@ crystal_block{
   y = 504,
   width = 48,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -1621,7 +1621,7 @@ crystal_block{
   y = 488,
   width = 48,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 destructible{
@@ -1662,7 +1662,7 @@ stairs{
   y = 400,
   name = "stairs_1",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -1671,7 +1671,7 @@ stairs{
   y = 224,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -1680,7 +1680,7 @@ stairs{
   y = 640,
   name = "stairs_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal{
@@ -1851,7 +1851,7 @@ door{
   y = 560,
   name = "final_room_door",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{
@@ -1872,7 +1872,7 @@ stairs{
   y = 560,
   name = "stairs",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
 }
 
 sensor{
@@ -5117,7 +5117,7 @@ door{
   y = 200,
   name = "door_3",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 83,
 }
 
@@ -5127,7 +5127,7 @@ door{
   y = 152,
   name = "door_4",
   direction = 3,
-  subtype = 4,
+  subtype = "4",
   savegame_variable = 83,
 }
 
@@ -5335,7 +5335,7 @@ stairs{
   y = 48,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -5344,7 +5344,7 @@ stairs{
   y = 304,
   name = "stairs_5",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 pickable{
@@ -5369,7 +5369,7 @@ npc{
   y = 37,
   name = "npc_3",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/hint_stone",
   behavior = "dialog#dungeon_2.code_hint",
 }
@@ -5380,7 +5380,7 @@ door{
   y = 200,
   name = "boss_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -5389,7 +5389,7 @@ door{
   y = 152,
   name = "boss_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{

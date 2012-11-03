@@ -496,7 +496,7 @@ stairs{
   y = 136,
   name = "stairs_1",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 teletransporter{
@@ -517,7 +517,7 @@ stairs{
   y = 24,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -526,7 +526,7 @@ door{
   y = 136,
   name = "door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{

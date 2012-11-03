@@ -355,7 +355,7 @@ stairs{
   y = 992,
   name = "stairs",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 stairs{
@@ -364,7 +364,7 @@ stairs{
   y = 992,
   name = "stairs_2",
   direction = 1,
-  subtype = 4,
+  subtype = "4",
 }
 
 crystal_block{
@@ -373,7 +373,7 @@ crystal_block{
   y = 1040,
   width = 32,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -382,7 +382,7 @@ crystal_block{
   y = 1056,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -391,7 +391,7 @@ crystal_block{
   y = 1056,
   width = 16,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -400,7 +400,7 @@ crystal_block{
   y = 1056,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -409,7 +409,7 @@ crystal_block{
   y = 1040,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -418,7 +418,7 @@ crystal_block{
   y = 1056,
   width = 16,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 tile{
@@ -7453,7 +7453,7 @@ crystal_block{
   y = 552,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -7462,7 +7462,7 @@ crystal_block{
   y = 536,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 chest{
@@ -7482,7 +7482,7 @@ crystal_block{
   y = 824,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7491,7 +7491,7 @@ crystal_block{
   y = 840,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7500,7 +7500,7 @@ crystal_block{
   y = 824,
   width = 64,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -7509,7 +7509,7 @@ crystal_block{
   y = 840,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 wall{
@@ -7570,7 +7570,7 @@ crystal_block{
   y = 840,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7579,7 +7579,7 @@ crystal_block{
   y = 824,
   width = 64,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7588,7 +7588,7 @@ crystal_block{
   y = 840,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -7597,7 +7597,7 @@ crystal_block{
   y = 840,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7606,7 +7606,7 @@ crystal_block{
   y = 840,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 chest{
@@ -7626,7 +7626,7 @@ crystal_block{
   y = 600,
   width = 16,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -7635,7 +7635,7 @@ crystal_block{
   y = 584,
   width = 48,
   height = 16,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -7644,7 +7644,7 @@ crystal_block{
   y = 536,
   width = 48,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7653,7 +7653,7 @@ crystal_block{
   y = 488,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7662,7 +7662,7 @@ crystal_block{
   y = 544,
   width = 16,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7671,7 +7671,7 @@ crystal_block{
   y = 528,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7680,7 +7680,7 @@ crystal_block{
   y = 592,
   width = 32,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 block{
@@ -7701,7 +7701,7 @@ crystal_block{
   y = 1064,
   width = 16,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 enemy{
@@ -7722,7 +7722,7 @@ crystal_block{
   y = 552,
   width = 48,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -7731,7 +7731,7 @@ crystal_block{
   y = 488,
   width = 32,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -7740,7 +7740,7 @@ crystal_block{
   y = 712,
   width = 32,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -7749,7 +7749,7 @@ crystal_block{
   y = 776,
   width = 48,
   height = 32,
-  subtype = 1,
+  subtype = "1",
 }
 
 crystal_block{
@@ -7758,7 +7758,7 @@ crystal_block{
   y = 600,
   width = 32,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 switch{
@@ -7766,7 +7766,7 @@ switch{
   x = 1256,
   y = 536,
   name = "creeper_door_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -7777,7 +7777,7 @@ door{
   y = 552,
   name = "creeper_door_2",
   direction = 0,
-  subtype = 0,
+  subtype = "0",
 }
 
 sensor{
@@ -7795,7 +7795,7 @@ door{
   y = 552,
   name = "creeper_door",
   direction = 2,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -7816,7 +7816,7 @@ crystal_block{
   y = 824,
   width = 32,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -7825,7 +7825,7 @@ crystal_block{
   y = 776,
   width = 48,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 destructible{
@@ -7951,7 +7951,7 @@ crystal_block{
   y = 712,
   width = 16,
   height = 64,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal{
@@ -7967,7 +7967,7 @@ crystal_block{
   y = 824,
   width = 32,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal{
@@ -7983,7 +7983,7 @@ crystal_block{
   y = 712,
   width = 32,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal{
@@ -8008,7 +8008,7 @@ crystal_block{
   y = 760,
   width = 96,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8017,7 +8017,7 @@ crystal_block{
   y = 776,
   width = 16,
   height = 64,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8026,7 +8026,7 @@ crystal_block{
   y = 824,
   width = 128,
   height = 16,
-  subtype = 0,
+  subtype = "0",
 }
 
 crystal_block{
@@ -8035,7 +8035,7 @@ crystal_block{
   y = 840,
   width = 16,
   height = 32,
-  subtype = 0,
+  subtype = "0",
 }
 
 enemy{
@@ -8286,7 +8286,7 @@ stairs{
   y = 920,
   name = "stairs_3",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -8295,7 +8295,7 @@ stairs{
   y = 472,
   name = "stairs_4",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -8304,7 +8304,7 @@ stairs{
   y = 472,
   name = "stairs_5",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 enemy{
@@ -8721,7 +8721,7 @@ crystal_block{
   y = 824,
   width = 32,
   height = 48,
-  subtype = 1,
+  subtype = "1",
 }
 
 enemy{
@@ -8766,7 +8766,7 @@ crystal_block{
   y = 488,
   width = 32,
   height = 48,
-  subtype = 0,
+  subtype = "0",
 }
 
 teletransporter{

@@ -477,7 +477,7 @@ stairs{
   y = 48,
   name = "stairs_4",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 chest{
@@ -497,7 +497,7 @@ stairs{
   y = 888,
   name = "stairs_11",
   direction = 2,
-  subtype = 4,
+  subtype = "4",
 }
 
 dynamic_tile{
@@ -7797,7 +7797,7 @@ stairs{
   y = 840,
   name = "stairs_5",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -7806,7 +7806,7 @@ stairs{
   y = 296,
   name = "stairs_8",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -7815,7 +7815,7 @@ stairs{
   y = 360,
   name = "stairs_9",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 chest{
@@ -7966,7 +7966,7 @@ stairs{
   y = 24,
   name = "stairs",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -7975,7 +7975,7 @@ stairs{
   y = 24,
   name = "stairs_2",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -7984,7 +7984,7 @@ stairs{
   y = 120,
   name = "stairs_3",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 stairs{
@@ -7993,7 +7993,7 @@ stairs{
   y = 24,
   name = "stairs_6",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -8002,7 +8002,7 @@ stairs{
   y = 24,
   name = "stairs_7",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 stairs{
@@ -8011,7 +8011,7 @@ stairs{
   y = 200,
   name = "stairs_10",
   direction = 1,
-  subtype = 1,
+  subtype = "1",
 }
 
 wall{
@@ -8068,7 +8068,7 @@ switch{
   x = 432,
   y = 504,
   name = "n_1f_water_switch",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8079,7 +8079,7 @@ door{
   y = 488,
   name = "e_door",
   direction = 1,
-  subtype = 0,
+  subtype = "0",
 }
 
 door{
@@ -8088,7 +8088,7 @@ door{
   y = 440,
   name = "e_door_2",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
 }
 
 switch{
@@ -8096,7 +8096,7 @@ switch{
   x = 792,
   y = 520,
   name = "e_1f_water_switch_1",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8106,7 +8106,7 @@ switch{
   x = 904,
   y = 520,
   name = "e_1f_water_switch_2",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8117,7 +8117,7 @@ door{
   y = 512,
   name = "door_2",
   direction = 1,
-  subtype = 8,
+  subtype = "8",
   savegame_variable = 120,
 }
 
@@ -8294,7 +8294,7 @@ switch{
   x = 160,
   y = 152,
   name = "barrier_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8558,7 +8558,7 @@ switch{
   x = 936,
   y = 688,
   name = "se_water_switch",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8819,7 +8819,7 @@ switch{
   x = 560,
   y = 152,
   name = "shortcut_a_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8902,7 +8902,7 @@ switch{
   x = 776,
   y = 688,
   name = "shortcut_b_switch",
-  subtype = 2,
+  subtype = "2",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -8978,7 +8978,7 @@ switch{
   x = 480,
   y = 72,
   name = "n_switch",
-  subtype = 1,
+  subtype = "1",
   needs_block = false,
   inactivate_when_leaving = false,
 }
@@ -9009,7 +9009,7 @@ stairs{
   y = 24,
   name = "stairs_12",
   direction = 1,
-  subtype = 3,
+  subtype = "3",
 }
 
 tile{

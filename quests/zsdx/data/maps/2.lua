@@ -1486,7 +1486,7 @@ npc{
   y = 85,
   name = "game_1_man",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager11",
   behavior = "map",
 }
@@ -1638,7 +1638,7 @@ npc{
   y = 85,
   name = "game_3_man",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager8",
   behavior = "map",
 }
@@ -1788,7 +1788,7 @@ npc{
   y = 101,
   name = "game_2_man",
   direction = 3,
-  subtype = 1,
+  subtype = "1",
   sprite = "npc/static_villager2",
   behavior = "map",
 }
@@ -1799,7 +1799,7 @@ npc{
   y = 93,
   name = "slot_machine_left",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/slot_machine",
   behavior = "map",
 }
@@ -1810,7 +1810,7 @@ npc{
   y = 93,
   name = "slot_machine_middle",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/slot_machine",
   behavior = "map",
 }
@@ -1821,7 +1821,7 @@ npc{
   y = 93,
   name = "slot_machine_right",
   direction = 3,
-  subtype = 0,
+  subtype = "0",
   sprite = "entities/slot_machine",
   behavior = "map",
 }

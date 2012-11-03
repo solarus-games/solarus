@@ -998,14 +998,6 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
   }
   else {
     map.get_entities().add_entity(entity);
-
-    if (map.is_loaded()) {
-      // The enemy is created at runtime.
-      if (entity->get_type() == ENEMY) {
-        // TODO this shouldn't be done from here
-        static_cast<Enemy*>(entity)->restart();
-      }
-    }
     push_entity(l, *entity);
   }
   return 1;
@@ -1063,11 +1055,7 @@ int LuaContext::map_api_create_block(lua_State* l) {
 
   Block* block = new Block(name, layer, x, y, direction,
       sprite_name, pushable, pullable, maximum_moves);
-
-  if (map.is_loaded()) {  // The block is created at runtime.
-    // TODO this shouldn't be done from here
-    block->check_collision_with_detectors(false);
-  }
+  map.get_entities().add_entity(block);
 
   push_entity(l, *block);
   return 1;

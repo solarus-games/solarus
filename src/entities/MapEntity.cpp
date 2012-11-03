@@ -226,7 +226,9 @@ bool MapEntity::is_on_map() {
  * Warning: when this function is called during the initialization of a new map,
  * the current map of the game is still the old one.
  *
- * @param map the map
+ * TODO make this function non-virtual and make a virtual function notify_added_to_map(Map& map).
+ *
+ * @param map The map.
  */
 void MapEntity::set_map(Map& map) {
 

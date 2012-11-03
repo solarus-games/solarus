@@ -140,6 +140,23 @@ bool Block::is_destructible_obstacle(Destructible& destructible) {
 }
 
 /**
+ * @brief Sets the map.
+ *
+ * Warning: when this function is called during the map initialization,
+ * the current map of the game is still the old one.
+ *
+ * @param map The map.
+ */
+void Block::set_map(Map& map) {
+
+  Detector::set_map(map);
+  if (map.is_loaded()) {
+    // We are not during the map initialization phase.
+    check_collision_with_detectors(false);
+  }
+}
+
+/**
  * @brief This function is called by the engine when there is a collision with another entity.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision

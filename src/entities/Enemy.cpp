@@ -168,18 +168,23 @@ void Enemy::initialize() {
 /**
  * @brief Sets the map.
  *
- * Warning: as this function is called when initializing the map,
+ * Warning: when this function is called during the map initialization,
  * the current map of the game is still the old one.
  *
- * @param map the map
+ * @param map The map.
  */
 void Enemy::set_map(Map &map) {
 
-  MapEntity::set_map(map);
+  Detector::set_map(map);
 
   if (is_enabled()) {
     initialize();
     enable_pixel_collisions();
+  }
+
+  if (map.is_loaded()) {
+    // We are not during the map initialization phase.
+    restart();
   }
 }
 

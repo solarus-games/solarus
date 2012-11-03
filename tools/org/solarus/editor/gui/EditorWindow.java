@@ -115,12 +115,12 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             }
         });
 
-       //  for(int i = 0; i < 10; i++) toolBar.add(new JLabel());
+        //  for(int i = 0; i < 10; i++) toolBar.add(new JLabel());
         JXTransformer t = new JXTransformer(treeButton);
         t.rotate(- Math.PI / 2);
-       toolBar.add(t);
-       JPanel pToolBar = new JPanel(new BorderLayout());
-       pToolBar.add(toolBar, BorderLayout.NORTH);
+        toolBar.add(t);
+        JPanel pToolBar = new JPanel(new BorderLayout());
+        pToolBar.add(toolBar, BorderLayout.NORTH);
         getContentPane().add(pToolBar, BorderLayout.WEST);
         getContentPane().add(splitPane, BorderLayout.CENTER);
 
@@ -138,7 +138,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             }
         });
 
-//        getToolkit().addAWTEventListener(new ActionOnCurrentEditor(), AWTEvent.KEY_EVENT_MASK);
+        //        getToolkit().addAWTEventListener(new ActionOnCurrentEditor(), AWTEvent.KEY_EVENT_MASK);
 
         // create the menu bar
         createMenuBar();
@@ -148,7 +148,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         } else {
             try {
                 Project.createExisting("../quests/" + quest);
-                  qdt.setRoot(Project.getDataPath());
+                qdt.setRoot(Project.getDataPath());
             } catch (ZSDXException ex) {
                 new ActionListenerLoadProject().actionPerformed(null);
             }
@@ -486,9 +486,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             mapEditor.newMap();
             EditorWindow.this.desktop.addEditor(mapEditor);
             mapEditor.getMap().addObserver(EditorWindow.this);
-           qdt.addMap( mapEditor.getMap());
+            qdt.addMap( mapEditor.getMap());
             qdt.repaint();
-          //   mapEditor.getMap().addObserver(EditorWindow.this.desktop);
+            //   mapEditor.getMap().addObserver(EditorWindow.this.desktop);
         }
     }
 
@@ -575,7 +575,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             mapEditor.getMapView().paste();
         }
     }
-// Specific listeners for tileset editor
+    // Specific listeners for tileset editor
 
     /**
      * Action performed when the user clicks on Tileset > New.
@@ -686,6 +686,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 //            }
 //        }
 //    }
+
     public void stateChanged(ChangeEvent e) {
         update(null, null);
     }

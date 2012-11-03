@@ -17,6 +17,8 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+import java.util.NoSuchElementException;
+
 import org.solarus.editor.*;
 
 /**
@@ -28,15 +30,15 @@ public class Door extends MapEntity {
      * Subtypes of doors.
      */
     public enum Subtype implements EntitySubtype {
-        CLOSED,
-        SMALL_KEY,
-        SMALL_KEY_BLOCK,
-        BIG_KEY,
-        BOSS_KEY,
-        WEAK,
-        VERY_WEAK,
-        OBSOLETE, // this subtype does not exist anymore, its id may be reused in the future
-        WEAK_BLOCK
+        // We use integers ids for historical reasons.
+        CLOSED("0"),
+        SMALL_KEY("1"),
+        SMALL_KEY_BLOCK("2"),
+        BIG_KEY("3"),
+        BOSS_KEY("4"),
+        WEAK("5"),
+        VERY_WEAK("6"),
+        WEAK_BLOCK("8")
         ;
 
         public static final String[] humanNames = {
@@ -47,16 +49,27 @@ public class Door extends MapEntity {
             "Use boss key",
             "Weak",
             "Very weak",
-            "",
             "Weak (block)"
         };
 
-        public static Subtype get(int id) {
-            return values()[id];
+        private String id;
+
+        private Subtype(String id) {
+            this.id = id;
         }
 
-        public int getId() {
-            return ordinal();
+        public String getId() {
+            return id;
+        }
+
+        public static Subtype get(String id) {
+            for (Subtype subtype: values()) {
+                if (subtype.getId().equals(id)) {
+                    return subtype;
+                }
+            }
+            throw new NoSuchElementException(
+                    "No door subtype with id '" + id + "'");
         }
 
         public boolean mustBeSaved() {
@@ -75,7 +88,6 @@ public class Door extends MapEntity {
         new EntityImageDescription("door.png", 104, 48, 16, 16),
         new EntityImageDescription("door.png", 136, 48, 16, 16),
         new EntityImageDescription("door.png", 136, 48, 16, 16),
-        new EntityImageDescription("door.png", 136, 48, 16, 16),
         new EntityImageDescription("door.png", 16, 0, 16, 16),
     };
 
@@ -83,7 +95,7 @@ public class Door extends MapEntity {
      * X coordinate of the door in the tileset entities image for each kind of entity
      * and for the direction top.
      */
-    private static final int[] imageX = { 0, 64, 16, 96, 128, 192, 192, 192, 16 };
+    private static final int[] imageX = { 0, 64, 16, 96, 128, 192, 192, 16 };
 
 
     /**
@@ -158,51 +170,52 @@ public class Door extends MapEntity {
      */
     public void updateImageDescription() {
 
-      String fileName = Project.getTilesetEntitiesImageFile(map.getTileset().getId()).getName();
-      currentImageDescription.setImageFileName("tilesets/" + fileName, false);
-      currentImageDescription.setSize(getWidth(), getHeight());
+        String tilesetId = getMap().getTileset().getId();
+        String fileName = Project.getTilesetEntitiesImageFile(tilesetId).getName();
+        currentImageDescription.setImageFileName("tilesets/" + fileName, false);
+        currentImageDescription.setSize(getWidth(), getHeight());
 
-      if (getSubtype() == Subtype.SMALL_KEY_BLOCK) {
-        currentImageDescription.setXY(16, 0);
-      }
-      else if (getSubtype() == Subtype.WEAK_BLOCK) {
-        currentImageDescription.setXY(32, 0);
-      }
-
-      else {
-        int x = imageX[getSubtype().ordinal()];
-        int y = 0;
-        switch (getDirection()) {
-
-          case 0:
-            x = x / 2 + 112;
-            y = 16;
-            break;
-
-          case 1:
-            y = 48;
-            break;
-
-          case 2:
-            x = x / 2;
-            y = 16;
-            break;
-
-          case 3:
-            y = 64;
-            break;
-
+        if (getSubtype() == Subtype.SMALL_KEY_BLOCK) {
+            currentImageDescription.setXY(16, 0);
         }
-        if (getSubtype() == Subtype.WEAK) {
-          if (getDirection() % 2 == 0) {
-            y += 8;
-          }
-          else {
-            x += 8;
-          }
+        else if (getSubtype() == Subtype.WEAK_BLOCK) {
+            currentImageDescription.setXY(32, 0);
         }
-        currentImageDescription.setXY(x, y);
-      }
+
+        else {
+            int x = imageX[getSubtype().ordinal()];
+            int y = 0;
+            switch (getDirection()) {
+
+            case 0:
+                x = x / 2 + 112;
+                y = 16;
+                break;
+
+            case 1:
+                y = 48;
+                break;
+
+            case 2:
+                x = x / 2;
+                y = 16;
+                break;
+
+            case 3:
+                y = 64;
+                break;
+
+            }
+            if (getSubtype() == Subtype.WEAK) {
+                if (getDirection() % 2 == 0) {
+                    y += 8;
+                }
+                else {
+                    x += 8;
+                }
+            }
+            currentImageDescription.setXY(x, y);
+        }
     }
 
     /**
@@ -227,10 +240,6 @@ public class Door extends MapEntity {
 
         if (savegameVariable == null && mustBeSaved()) {
           throw new MapException("This kind of door must be saved");
-        }
-
-        if (getSubtype() == Subtype.OBSOLETE) {
-          throw new MapException("Illegal subtype of door");
         }
     }
 

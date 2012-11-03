@@ -39,6 +39,20 @@ public class DynamicTile extends Tile {
     }
 
     /**
+     * Creates a new dynamic tile from a regular tile.
+     * @param tile A non dynamic tile to copy.
+     * @throws MapException if the tile is not valid.
+     */
+    public DynamicTile(Tile regularTile) throws MapException {
+        this(regularTile.getMap());
+        setLayer(regularTile.getLayer());
+        setPositionInMap(regularTile.getPositionInMap());
+        setName("tile");
+        setIntegerProperty("pattern", regularTile.getTilePatternId());
+        updateImageDescription();
+    }
+
+    /**
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
@@ -52,26 +66,7 @@ public class DynamicTile extends Tile {
      * @throws ZSDXException if the static tile could not be created
      */
     public final Tile createStaticTile() throws ZSDXException {
-
-        /* TODO reimplement properly
-        String description = toString();
-
-        // remove the name and the 'enabled' boolean
-        int index = description.lastIndexOf('\t');
-        description = description.substring(0, index);
-        index = description.lastIndexOf('\t');
-        description = description.substring(0, index);
-        index = description.lastIndexOf('\t');
-        description = description.substring(0, index + 1);
-        description += getTilePatternId();
-
-        // change the entity type
-        index = description.indexOf('\t');
-        description = EntityType.TILE.getIndex() + description.substring(index);
-
-        return (Tile) createFromString(map, description);
-        */
-        throw new MapException("Creating a tile from a dynamic tile is not implemented yet");
+        return new Tile(this);
     }
 
     /**

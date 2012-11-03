@@ -15,14 +15,15 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.solarus.editor.entities;
+
 import org.solarus.editor.*;
 import org.solarus.editor.Map;
-
+import org.luaj.vm2.*;
 import java.awt.*;
+import java.io.PrintWriter;
 import java.lang.reflect.*;
 import java.util.*;
-import org.luaj.vm2.*;
-import org.luaj.vm2.lib.*;
+
 
 /**
  * Represents an entity placed on the map with the map editor.
@@ -82,12 +83,7 @@ public abstract class MapEntity extends Observable {
     /**
      * The map.
      */
-    protected Map map;
-
-    /**
-     * Indicates that the entity has been initialized.
-     */
-    protected boolean initialized;
+    private Map map;
 
     /**
      * Position of the entity in the map.
@@ -119,7 +115,15 @@ public abstract class MapEntity extends Observable {
     /**
      * All other properties of the entity, specific to each entity type.
      */
-    protected LinkedHashMap<String, String> specificProperties;
+    private LinkedHashMap<String, String> specificProperties;
+
+    /**
+     * Type of each existing property for this entity
+     * (may be String, Integer or Boolean).
+     * This structure is only used to remember what variant
+     * of setProperty() was called.
+     */
+    private HashMap<String, Class<?>> propertyTypes;
 
     /**
      * Color to display instead of the transparent pixels of the image.
@@ -158,6 +162,7 @@ public abstract class MapEntity extends Observable {
         this.layer = Layer.LOW;
         this.positionInMap = new Rectangle(0, 0, width, height);
         this.specificProperties = new LinkedHashMap<String, String>();
+        this.propertyTypes = new HashMap<String, Class<?>>();
 
         if (hasSubtype()) {
             setSubtype(getDefaultSubtype());
@@ -215,7 +220,59 @@ public abstract class MapEntity extends Observable {
             System.exit(1);
         }
 
-        entity.initialized = true;
+        return entity;
+    }
+
+    /**
+     * Creates a copy of the specified entity.
+     * If the entity has a name, a different name is automatically assigned to the copy.
+     * @param map the map
+     * @param other an entity
+     * @return the copy created
+     */
+    public static MapEntity createCopy(Map map, MapEntity other) {
+
+        MapEntity entity = null;
+        try {
+            entity = MapEntity.create(
+                    other.getMap(),
+                    other.getType(),
+                    other.getType().getDefaultSubtype());
+
+            Rectangle otherPositionInMap = other.getPositionInMap();
+
+            entity.setLayer(other.getLayer());
+            entity.positionInMap.x = otherPositionInMap.x; // for now the origin is (0,0)
+            entity.positionInMap.y = otherPositionInMap.y;
+
+            if (other.hasName()) {
+                entity.setName(other.getName());
+            }
+
+            if (other.hasDirectionProperty()) {
+                entity.setDirection(other.getDirection());
+            }
+
+            if (other.hasSubtype()) {
+                entity.setSubtype(other.getSubtype());
+            }
+
+            // specific properties
+            entity.setProperties(other.getProperties());
+
+            if (other.isSizeVariable()) {
+                entity.setSize(other.getWidth(), other.getHeight()); // some entities need to know their properties before they can be resized
+            }
+
+            entity.updateImageDescription();
+
+            // now the origin is valid
+            entity.setPositionInMap(otherPositionInMap.x, otherPositionInMap.y);
+        }
+        catch (ZSDXException ex) {
+            System.err.println("Cannot create a copy of entity '" + other + "'");
+            entity = null;
+        }
         return entity;
     }
 
@@ -224,11 +281,11 @@ public abstract class MapEntity extends Observable {
      * @param table A Lua table containing the properties of the entity.
      * @throws MapException If the attributes are invalid.
      */
-    public void setAttributes(LuaTable table) throws MapException {
+    public void loadFromLua(LuaTable table) throws MapException {
 
+        Layer layer = Layer.get(table.get("layer").checkint());
         int x = table.get("x").checkint();
         int y = table.get("y").checkint();
-        Layer layer = Layer.get(table.get("layer").checkint());
 
         setLayer(layer);
         positionInMap.x = x; // for now the origin is (0,0)
@@ -251,14 +308,10 @@ public abstract class MapEntity extends Observable {
             setDirection(direction);
         }
 
-        /*
         if (hasSubtype()) {
-            // FIXME the subtype of destructibles is a string
-            // make getSubtype() accept a string
-            int subtype = table.get("subtype").checkint();
+            String subtype = table.get("subtype").checkjstring();
             setSubtype(getSubtype(subtype));
         }
-        */
 
         // specific properties
         for (String key: specificProperties.keySet()) {
@@ -284,34 +337,65 @@ public abstract class MapEntity extends Observable {
 
         // now the origin is valid
         setPositionInMap(positionInMap.x, positionInMap.y);
-        setInitialized(true);
     }
 
     /**
-     * Creates a copy of the specified entity.
-     * If the entity has a name, a different name is automatically assigned to the copy.
-     * @param map the map
-     * @param other an entity
-     * @return the copy created
+     * @brief Saves this entity as Lua data to a text file.
+     * @param out The text file to write.
      */
-    public static MapEntity createCopy(Map map, MapEntity other) {
+    public void saveAsLua(PrintWriter out) {
 
-        try {
-            // TODO implement the copy operation
-            throw new MapException("Copying entities is not implemented yet");
-        }
-        catch (ZSDXException ex) {
-            System.err.println("Unexpected error: cannot create a copy of entity '" + other + "'");
-            return null;
-        }
-    }
+        // Entity type.
+        out.println(getType().getLuaName() + "{");
 
-    /**
-     * Sets whether the entity is initialized.
-     * @param initialized true if the entity is initialized
-     */
-    private void setInitialized(boolean initialized) {
-        this.initialized = initialized;
+        // Position in the map.
+        out.println("  layer = " + getLayer().getId() + ",");
+        out.println("  x = " + getX() + ",");
+        out.println("  y = " + getY() + ",");
+        if (isSizeVariable()) {
+          out.println("  width = " + getWidth() + ",");
+          out.println("  height = " + getHeight() + ",");
+        }
+
+        // Entity id.
+        if (hasName()) {
+          out.println("  name = \"" + getName() + "\",");
+        }
+
+        // Direction.
+        if (hasDirectionProperty()) {
+          out.println("  direction = " + getDirection() + ",");
+        }
+
+        // Subtype.
+        if (hasSubtype()) {
+            out.println("  subtype = \"" + getSubtypeId() + "\",");
+        }
+
+        // Properties specific to this type of entity.
+        for (String key: specificProperties.keySet()) {
+
+            if (getProperty(key) != null) {
+                Class<?> propertyType = propertyTypes.get(key);
+                String value = null;
+                if (propertyType == String.class) {
+                    value = '"' + getProperty(key) + '"';
+                }
+                else if (propertyType == Integer.class) {
+                    value = getIntegerProperty(key).toString();
+                }
+                else if (propertyType == Boolean.class) {
+                    value = getBooleanProperty(key) ? "true" : "false";
+                }
+                else {
+                    throw new IllegalStateException("Unknown property type for key '" + key + "'");
+                }
+                out.println("  " + key + " = " + value + ",");
+            }
+        }
+
+        out.println("}");
+        out.println();
     }
 
     /**
@@ -1124,10 +1208,10 @@ public abstract class MapEntity extends Observable {
      * Returns the subtype id of this entity.
      * @return the subtype id
      */
-    public final int getSubtypeId() {
+    public final String getSubtypeId() {
 
         if (subtype == null) {
-            return 0;
+            return null;
         }
 
         return subtype.getId();
@@ -1144,11 +1228,10 @@ public abstract class MapEntity extends Observable {
     /**
      * Returns the subtype corresponding to the specified subtype id
      * for this type of entity.
-     * You might redefine this method to declare a more specific return type.
-     * @param id the subtype id
-     * @return the subtype
+     * @param id The subtype id.
+     * @return The subtype.
      */
-    public final EntitySubtype getSubtype(int id) {
+    public final EntitySubtype getSubtype(String id) {
         return getType().getSubtype(id);
     }
 
@@ -1163,17 +1246,17 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Sets the subtype of this entity.
-     * @param subtype the subtype
-     * @throws MapException if the subtype is not valid
+     * @param subtype The subtype id.
+     * @throws MapException If the subtype is not valid.
      */
-    public final void setSubtypeId(int subtype) throws MapException {
+    public final void setSubtype(String subtype) throws MapException {
         setSubtype(getSubtype(subtype));
     }
 
     /**
      * Sets the subtype of this entity.
-     * @param subtype the subtype to set
-     * @throws MapException if the subtype is not valid
+     * @param subtype The subtype to set.
+     * @throws MapException If the subtype is not valid.1
      */
     public void setSubtype(EntitySubtype subtype) throws MapException {
         this.subtype = subtype;
@@ -1233,6 +1316,12 @@ public abstract class MapEntity extends Observable {
      * @param value Value of the property, possibly null.
      */
     public void setProperty(String name, String value) throws MapException {
+
+        if (!propertyTypes.containsKey(name)) {
+            // Creating the property: let's remember it's a string.
+            propertyTypes.put(name, String.class);
+        }
+
         specificProperties.put(name, value);
     }
 
@@ -1242,7 +1331,12 @@ public abstract class MapEntity extends Observable {
      * @param value Value of the property, possibly null.
      */
     public final void setIntegerProperty(String name, Integer value) throws MapException {
-        setProperty(name, Integer.toString(value));
+
+        if (!propertyTypes.containsKey(name)) {
+            // Creating the property: let's remember it's an integer.
+            propertyTypes.put(name, Integer.class);
+        }
+        setProperty(name, value == null ? null : Integer.toString(value));
     }
 
     /**
@@ -1251,7 +1345,18 @@ public abstract class MapEntity extends Observable {
      * @param value Value of the property, possibly null.
      */
     public final void setBooleanProperty(String name, Boolean value) throws MapException {
-        setProperty(name, value ? "1" : "0");
+
+        if (!propertyTypes.containsKey(name)) {
+            // Creating the property: let's remember it's a boolean.
+            propertyTypes.put(name, Boolean.class);
+        }
+
+        if (value == null) {
+            setProperty(name, null);
+        }
+        else {
+            setProperty(name, value ? "1" : "0");
+        }
     }
 
     /**
@@ -1264,7 +1369,7 @@ public abstract class MapEntity extends Observable {
 
     /**
      * Sets all specific properties of the current entity.
-     * @param properties the specific properties
+     * @param properties The specific properties to copy.
      */
     public final void setProperties(LinkedHashMap<String, String> properties) throws MapException {
 

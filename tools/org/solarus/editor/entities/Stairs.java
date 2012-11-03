@@ -16,6 +16,8 @@
  */
 package org.solarus.editor.entities;
 
+import java.util.NoSuchElementException;
+
 import org.solarus.editor.*;
 
 /**
@@ -28,11 +30,12 @@ public class Stairs extends MapEntity {
      * Subtypes of stairs.
      */
     public enum Subtype implements EntitySubtype {
-        SPIRAL_UPSTAIRS,
-        SPIRAL_DOWNSTAIRS,
-        STRAIGHT_UPSTAIRS,
-        STRAIGHT_DOWNSTAIRS,
-        INSIDE_FLOOR
+        // We use integers ids for historical reasons.
+        SPIRAL_UPSTAIRS("0"),
+        SPIRAL_DOWNSTAIRS("1"),
+        STRAIGHT_UPSTAIRS("2"),
+        STRAIGHT_DOWNSTAIRS("3"),
+        INSIDE_FLOOR("4")
         ;
 
         public static final String[] humanNames = {
@@ -43,12 +46,24 @@ public class Stairs extends MapEntity {
             "Inside a single floor"
         };
 
-        public static Subtype get(int id) {
-            return values()[id];
+        private String id;
+
+        private Subtype(String id) {
+            this.id = id;
         }
 
-        public int getId() {
-            return ordinal();
+        public String getId() {
+            return id;
+        }
+
+        public static Subtype get(String id) {
+            for (Subtype subtype: values()) {
+                if (subtype.getId().equals(id)) {
+                    return subtype;
+                }
+            }
+            throw new NoSuchElementException(
+                    "No stairs subtype with id '" + id + "'");
         }
     }
 

@@ -32,11 +32,12 @@ public interface EntitySubtype {
      * Returns the id corresponding to the enumeration value.
      * @return the id
      */
-    public int getId();
+    public String getId();
 
     /**
      * Returns the index of this value in the enumeration.
      * @return the index
+     * TODO kill this function, it's too dangerous to rely on this
      */
     public int ordinal();
 }

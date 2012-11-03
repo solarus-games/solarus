@@ -122,7 +122,7 @@ public class Destination extends MapEntity {
         if (name.equals("sprite")) {
 
             if (value != null) {
-                sprite = new Sprite(value, map);
+                sprite = new Sprite(value, getMap());
             }
             else {
                 sprite = null;

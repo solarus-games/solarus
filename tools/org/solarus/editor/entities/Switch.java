@@ -16,6 +16,8 @@
  */
 package org.solarus.editor.entities;
 
+import java.util.NoSuchElementException;
+
 import org.solarus.editor.*;
 
 /**
@@ -27,10 +29,11 @@ public class Switch extends MapEntity {
      * Subtypes of switches.
      */
     public enum Subtype implements EntitySubtype {
-        WALKABLE_INVISIBLE,
-        WALKABLE_VISIBLE,
-        ARROW_TARGET,
-        SOLID;
+        // We use integers ids for historical reasons.
+        WALKABLE_INVISIBLE("0"),
+        WALKABLE_VISIBLE("1"),
+        ARROW_TARGET("2"),
+        SOLID("3");
 
         public static final String[] humanNames = {
           "Walkable invisible",
@@ -39,12 +42,24 @@ public class Switch extends MapEntity {
           "Solid"
         };
 
-        public int getId() {
-            return ordinal();
+        private String id;
+
+        private Subtype(String id) {
+            this.id = id;
         }
 
-        public static Subtype get(int id) {
-            return values()[id];
+        public String getId() {
+            return id;
+        }
+
+        public static Subtype get(String id) {
+            for (Subtype subtype: values()) {
+                if (subtype.getId().equals(id)) {
+                    return subtype;
+                }
+            }
+            throw new NoSuchElementException(
+                    "No crystal block subtype with id '" + id + "'");
         }
 
         public static boolean isWalkable(EntitySubtype subtype) {
@@ -140,7 +155,7 @@ public class Switch extends MapEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-        currentImageDescription = generalImageDescriptions[subtype.getId()];
+        currentImageDescription = generalImageDescriptions[subtype.ordinal()];
     }
 }
 

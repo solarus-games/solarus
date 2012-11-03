@@ -112,6 +112,7 @@ public class Sensor extends MapEntity {
             resizableImage = Project.getEditorImage("resizable_sensors.png");
         }
 
+        Rectangle positionInMap = getPositionInMap();
         int x = (int) (positionInMap.x * zoom);
         int y = (int) (positionInMap.y * zoom);
         int w = (int) (positionInMap.width * zoom);
@@ -125,7 +126,7 @@ public class Sensor extends MapEntity {
         int dx2 = (int) (dx1 + 16 * zoom);
         int dy2 = (int) (dy1 + 16 * zoom);
 
-        int sx1 = 32 * getSubtypeId();
+        int sx1 = 0;
         int sx2 = sx1 + 32;
 
         g.drawImage(resizableImage, dx1, dy1, dx2, dy2, sx1, 0, sx2, 32, null);

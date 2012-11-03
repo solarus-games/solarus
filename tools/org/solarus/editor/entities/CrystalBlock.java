@@ -18,6 +18,7 @@ package org.solarus.editor.entities;
 
 import org.solarus.editor.*;
 import java.awt.*;
+import java.util.NoSuchElementException;
 
 /**
  * An orange or blue block that can be raised or lowered with the help of a crystal.
@@ -28,19 +29,33 @@ public class CrystalBlock extends MapEntity {
      * Subtypes of raised blocks.
      */
     public enum Subtype implements EntitySubtype {
-        ORANGE,
-        BLUE;
+        // We use integers ids for historical reasons.
+        ORANGE("0"),
+        BLUE("1");
 
         public static final String[] humanNames = {
-          "Orange (initially lowered)", "Blue (initially raised)"
+            "Orange (initially lowered)",
+            "Blue (initially raised)"
         };
 
-        public int getId() {
-            return ordinal();
+        private String id;
+
+        private Subtype(String id) {
+            this.id = id;
         }
 
-        public static Subtype get(int id) {
-            return values()[id];
+        public String getId() {
+            return id;
+        }
+
+        public static Subtype get(String id) {
+            for (Subtype subtype: values()) {
+                if (subtype.getId().equals(id)) {
+                    return subtype;
+                }
+            }
+            throw new NoSuchElementException(
+                    "No crystal block subtype with id '" + id + "'");
         }
     }
 
@@ -95,7 +110,8 @@ public class CrystalBlock extends MapEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-        currentImageDescription.setX(32 + subtype.getId() * 16);
+        int x = (subtype == Subtype.ORANGE) ? 32 : 48;
+        currentImageDescription.setX(x);
     }
 
     /**
@@ -107,6 +123,7 @@ public class CrystalBlock extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
+        Rectangle positionInMap = getPositionInMap();
         Rectangle rectangle = new Rectangle(positionInMap.x, positionInMap.y,
                 unitarySize.width, unitarySize.height);
 

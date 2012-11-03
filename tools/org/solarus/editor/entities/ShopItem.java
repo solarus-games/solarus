@@ -61,8 +61,20 @@ public class ShopItem extends MapEntity {
             throw new MapException("The treasure of a shop item cannot be empty or random");
         }
 
-        int savegameVariable = getIntegerProperty("treasure_savegame_variable");
-        if (savegameVariable < -1 || savegameVariable >= 32768) {
+        Integer variant = getIntegerProperty("treasure_variant");
+        if (!treasureName.equals(Item.noneId)
+                && !treasureName.equals(Item.randomId)
+                && (variant == null || variant < 1)) {
+            throw new MapException("A variant must be defined with this treasure");
+        }
+
+        if (variant != null && variant < 1) {
+            throw new MapException("Invalid treasure variant: " + variant);
+        }
+
+        Integer savegameVariable = getIntegerProperty("treasure_savegame_variable");
+        if (savegameVariable != null &&
+                (savegameVariable < 0 || savegameVariable >= 32768)) {
             throw new MapException("Invalid savegame variable");
         }
 

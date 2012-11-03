@@ -51,6 +51,19 @@ public class Tile extends MapEntity {
     }
 
     /**
+     * Creates a new tile from a dynamic tile.
+     * @param dynamicTile A dynamic tile to copy.
+     * @throws MapException if the tile is not valid.
+     */
+    public Tile(DynamicTile dynamicTile) throws MapException {
+        this(dynamicTile.getMap());
+        setLayer(dynamicTile.getLayer());
+        setPositionInMap(dynamicTile.getPositionInMap());
+        setIntegerProperty("pattern", dynamicTile.getTilePatternId());
+        updateImageDescription();
+    }
+
+    /**
      * Sets a property specific to a tile.
      * @param name name of the property
      * @param value value of the property
@@ -227,7 +240,7 @@ public class Tile extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setIntegerProperty("pattern", -1);
+        setIntegerProperty("pattern", null);
     }
 
     /**
@@ -236,27 +249,7 @@ public class Tile extends MapEntity {
      * @throws ZSDXException if the dynamic tile could not be created
      */
     public final DynamicTile createDynamicTile() throws ZSDXException {
-
-        /* TODO reimplement properly
-        String description = toString();
-
-        // add the name and the 'enabled' boolean
-        int index = description.lastIndexOf('\t');
-        StringBuffer buff = new StringBuffer(description.substring(0, index));
-        buff.append('\t');
-        buff.append(getDefaultNamePrefix());
-        buff.append('\t');
-        buff.append(getTilePatternId());
-        buff.append('\t');
-        buff.append('1');
-
-        // change the entity type
-        index = description.indexOf('\t');
-        description = EntityType.DYNAMIC_TILE.getIndex() + buff.substring(index);
-
-        return (DynamicTile) createFromString(map, description);
-        */
-        throw new MapException("Creating a dynamic tile from a tile is not implemented yet");
+        return new DynamicTile(this);
     }
 }
 

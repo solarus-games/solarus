@@ -367,8 +367,28 @@ public class Map extends Observable {
     }
 
     /**
+     * Returns the name of the world where this map is.
+     * @return The world name: "outside_world" if the map is outside,
+     * "inside_world" if it is inside,
+     * "dungeon_1" to "dungeon_20" if it is in a dungeon.
+     */
+    public String getWorldName() {
+
+        // TODO make world names free
+        if (world == 0) {
+            return "outside_world";
+        }
+        
+        if (world == -1) {
+            return "inside_world";
+        }
+        
+        return "dungeon_" + world;
+    }
+
+    /**
      * Returns whether this map belongs to a dungeon.
-     * @return true if this map is in a dungeon
+     * @return true if this map is in a dungeon.
      */
     public boolean isInDungeon() {
         return world > 0;
@@ -376,9 +396,17 @@ public class Map extends Observable {
 
     /**
      * Returns whether this map belongs to the outside world.
-     * @return true if this map is in the outside world
+     * @return true if this map is in the outside world.
      */
     public boolean isInOutsideWorld() {
+        return world == 0;
+    }
+
+    /**
+     * Returns whether this map belongs to the inside world.
+     * @return true if this map is in the inside world.
+     */
+    public boolean isInInsideWorld() {
         return world == 0;
     }
 
@@ -455,6 +483,33 @@ public class Map extends Observable {
      */
     public int getFloor() {
         return floor;
+    }
+
+    /**
+     * Returns a String describing the floor of this map.
+     * @return "unknown", null or a string corresponding to a floor number.
+     */
+    public String getFloorName() {
+
+        // TODO store the floor as a string instead of magic numbers.
+        if (floor == -100) {
+            // No floor.
+            return null;
+        }
+        
+        if (floor == -99) {
+            return "unknown";
+        }
+        
+        return Integer.toString(floor);
+    }
+
+    /**
+     * Returns whether this map belongs to a floor.
+     * @return true if there is a floor.
+     */
+    public boolean hasFloor() {
+        return floor != -100;
     }
 
     /**
@@ -543,11 +598,16 @@ public class Map extends Observable {
         if (smallKeysVariable != this.smallKeysVariable) {
 
             if (smallKeysVariable < -1 || smallKeysVariable > 2048) {
-                throw new MapException("Incorrect variable to save the small keys: " + smallKeysVariable);
+                throw new MapException("Invalid variable to save the small keys: " + smallKeysVariable);
             }
 
-            if (isInDungeon() && smallKeysVariable != 205 + 10 * (getWorld() - 1)) {
-                throw new MapException("Cannot change the variable to save the small keys because this map is in a dungeon");
+            if (isInDungeon()) {
+                int expectedVariable = 205 + 10 * (getWorld() - 1);
+                if (smallKeysVariable != expectedVariable) {
+                    throw new MapException("Invalid variable to save the small keys " +
+                            "(we are a dungeon: expected " + expectedVariable
+                            + ", got " + smallKeysVariable + ")");
+                }
             }
 
             this.smallKeysVariable = smallKeysVariable;
@@ -983,6 +1043,14 @@ public class Map extends Observable {
     }
 
     /**
+     * Returns whether this map has a background music.
+     * @return true if the music of this map is different from Music.noneId.
+     */
+    public boolean hasMusic() {
+        return !musicId.equals(Music.noneId);
+    }
+
+    /**
      * Returns the id of the background music of the map.
      * @return the name of the music, i.e. a music file name with the extension,
      * or Music.noneId or Music.unchangedId
@@ -1075,7 +1143,7 @@ public class Map extends Observable {
             throw new ZSDXException(ex.getMessage());
         }
         catch (LuaError ex) {
-            throw new ZSDXException("Error when loading the map file: " + ex.getMessage());
+            throw new ZSDXException("Error when loading the map file: " + ex.getCause().getMessage());
         }
 
         history.setSaved();
@@ -1094,39 +1162,37 @@ public class Map extends Observable {
 
         try {
 
-            // open the map file
+            // Open the map file in writing.
             File mapFile = Project.getMapFile(mapId);
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)));
 
-            // print the map general info
-            // syntax: width height world floor x y small_keys_variable tileset_id music_id
-            out.print(size.width);
-            out.print('\t');
-            out.print(size.height);
-            out.print('\t');
-            out.print(world);
-            out.print('\t');
-            out.print(floor);
-            out.print('\t');
-            out.print(location.x);
-            out.print('\t');
-            out.print(location.y);
-            out.print('\t');
-            out.print(smallKeysVariable);
-            out.print('\t');
-            out.print(tilesetId);
-            out.print('\t');
-            out.print(musicId);
+            // Print the map general info.
+            out.println("properties{");
+            out.println("  x = " + getLocation().x + ",");
+            out.println("  y = " + getLocation().y + ",");
+            out.println("  width = " + getWidth() + ",");
+            out.println("  height = " + getHeight() + ",");
+            out.println("  world = \"" + getWorldName() + "\",");
+            if (hasFloor()) {
+                out.println("  floor = \"" + getFloorName() + "\",");
+            }
+            if (smallKeysVariable != -1) {
+                out.println("  small_keys_variable = " + getSmallKeysVariable() + ",");
+            }
+            out.println("  tileset = \"" + getTilesetId() + "\",");
+            if (hasMusic()) {
+                out.println("  music = \"" + getMusic() + "\",");
+            }
+            out.println("}");
             out.println();
 
             for (Layer layer: Layer.values()) {
 
                 MapEntities entities = allEntities[layer.getId()];
 
-                // print the entities
+                // Print the entities.
                 for (MapEntity entity: entities) {
-                    out.print(entity.toString());
-                    out.println();
+                    entity.saveAsLua(out);
                 }
             }
 
@@ -1171,9 +1237,9 @@ public class Map extends Observable {
                 int height = table.get("height").checkint();
                 String worldName = table.get("world").checkjstring();
                 String floorName = table.get("floor").optjstring(null);
-                int smallKeysVariable = table.get("small_key_variable").optint(-1);
+                int smallKeysVariable = table.get("small_keys_variable").optint(-1);
                 String tilesetId = table.get("tileset").checkjstring();
-                String musicId = table.get("music").checkjstring();
+                String musicId = table.get("music").optjstring(Music.noneId);
 
                 setSize(new Dimension(width, height));
                 setWorld(worldName);
@@ -1186,11 +1252,13 @@ public class Map extends Observable {
                 return LuaValue.NIL;
             }
             catch (ZSDXException ex) {
+                // Error in the input file.
                 throw new LuaError(ex);
             }
             catch (Exception ex) {
+                // Error in the editor.
                 ex.printStackTrace();
-                throw ex;
+                throw new LuaError(ex);
             }
         }
     }
@@ -1216,18 +1284,20 @@ public class Map extends Observable {
             try {
                 LuaTable table = arg.checktable();
                 MapEntity entity = MapEntity.create(Map.this, type, type.getDefaultSubtype());
-                entity.setAttributes(table);
+                entity.loadFromLua(table);
                 addEntity(entity);
             }
             catch (NoSuchTilePatternException ex) {
                 badTiles = true;
             }
             catch (ZSDXException ex) {
+                // Error in the input file.
                 throw new LuaError(ex);
             }
             catch (Exception ex) {
+                // Error in the editor.
                 ex.printStackTrace();
-                throw ex;
+                throw new LuaError(ex);
             }
             return LuaValue.NIL;
         }

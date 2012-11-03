@@ -117,7 +117,7 @@ public class Enemy extends MapEntity {
         if (name.equals("breed")) {
 
             if (value.length() > 0) {
-                sprite = new Sprite("enemies/" + value, map);
+                sprite = new Sprite("enemies/" + value, getMap());
                 setSizeImpl(sprite.getSize(null, 0));
             }
             else {
@@ -152,7 +152,7 @@ public class Enemy extends MapEntity {
 
         Integer variant = getIntegerProperty("treasure_variant");
         if (!treasureName.equals(Item.noneId)
-                && !name.equals(Item.randomId)
+                && !treasureName.equals(Item.randomId)
                 && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
         }

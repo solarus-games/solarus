@@ -17,6 +17,7 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+
 import org.solarus.editor.*;
 
 /**
@@ -96,7 +97,7 @@ public class Teletransporter extends MapEntity {
         setProperty("sprite", null);
         setProperty("sound", null);
         setIntegerProperty("transition", Transition.FADE.getId());
-        setProperty("destination_map", map.getId());
+        setProperty("destination_map", getMap().getId());
         setProperty("destination", "");
     }
 
@@ -112,7 +113,7 @@ public class Teletransporter extends MapEntity {
         if (name.equals("sprite")) {
 
             if (value != null && value.length() > 0) {
-                sprite = new Sprite(value, map);
+                sprite = new Sprite(value, getMap());
             }
             else {
                 sprite = null;
@@ -147,7 +148,7 @@ public class Teletransporter extends MapEntity {
             throw new MapException("You must choose a destination point on the destination map");
         }
 
-        if (destinationMapId.equals(map.getId()) &&
+        if (destinationMapId.equals(getMap().getId()) &&
             destinationName.equals("_same")) {
             throw new MapException("Cannot teleport to the same point on the same map");
         }
@@ -182,6 +183,7 @@ public class Teletransporter extends MapEntity {
                 resizableTeletransporterImage = Project.getEditorImage("resizable_teletransporter.png");
             }
 
+            Rectangle positionInMap = getPositionInMap();
             int x = (int) (positionInMap.x * zoom);
             int y = (int) (positionInMap.y * zoom);
             int w = (int) (positionInMap.width * zoom);

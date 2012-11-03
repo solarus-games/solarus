@@ -17,6 +17,8 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+import java.util.NoSuchElementException;
+
 import org.solarus.editor.*;
 
 /**
@@ -68,13 +70,13 @@ public class Destructible extends MapEntity {
      * Subtypes of destructible items.
      */
     public enum Subtype implements EntitySubtype {
-        POT,
-        SKULL,
-        BUSH,
-        STONE_SMALL_WHITE,
-        STONE_SMALL_BLACK,
-        GRASS,
-        BOMB_FLOWER;
+        POT("pot"),
+        SKULL("skull"),  // TODO remove this (obsolete).
+        BUSH("bush"),
+        STONE_SMALL_WHITE("white_stone"),
+        STONE_SMALL_BLACK("black_stone"),
+        GRASS("grass"),
+        BOMB_FLOWER("bomb_flower");
 
         public static final String[] humanNames = {
             "Pot",
@@ -86,12 +88,24 @@ public class Destructible extends MapEntity {
             "Bomb flower",
         };
 
-        public int getId() {
-            return ordinal();
+        private String id;
+
+        private Subtype(String id) {
+            this.id = id;
         }
 
-        public static Subtype get(int id) {
-            return values()[id];
+        public String getId() {
+            return id;
+        }
+
+        public static Subtype get(String id) {
+            for (Subtype subtype: values()) {
+                if (subtype.getId().equals(id)) {
+                    return subtype;
+                }
+            }
+            throw new NoSuchElementException(
+                    "No destructible item subtype with id '" + id + "'");
         }
     };
 
@@ -134,16 +148,6 @@ public class Destructible extends MapEntity {
     }
 
     /**
-     * Updates the description of the image currently representing the entity.
-     */
-/*    public void updateImageDescription() {
-        int x = getSubtypeId() * 16;
-        int height = (getSubtype() != Subtype.BOMB_FLOWER) ? 16 : 24;
-        currentImageDescription.setX(x);
-        currentImageDescription.setHeight(height);
-    }
-*/
-    /**
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
@@ -158,6 +162,10 @@ public class Destructible extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
+        if (subtype == Subtype.SKULL) {
+            throw new MapException("The skull subtype is obsolete, please use pot instead");
+        }
+
         String treasureName = getProperty("treasure_name");
         if (treasureName == null) {
             throw new MapException("A treasure must be specified");
@@ -166,7 +174,7 @@ public class Destructible extends MapEntity {
         Integer variant = getIntegerProperty("treasure_variant");
         if (treasureName != null
                 && !treasureName.equals(Item.noneId)
-                && !name.equals(Item.randomId)
+                && !treasureName.equals(Item.randomId)
                 && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
         }

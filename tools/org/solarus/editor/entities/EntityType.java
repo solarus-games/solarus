@@ -129,23 +129,26 @@ public enum EntityType {
 
     /**
      * Returns a subtype value corresponding to the specified id.
-     * @param id id of the subtype to get
-     * @return the subtype with this id for the current entity type
+     * @param id Td of the subtype to get.
+     * @return The subtype with this id for the current entity type.
      */
-    public EntitySubtype getSubtype(int id) {
+    public EntitySubtype getSubtype(String id) {
 
         EntitySubtype subtype = null;
         try {
             // call the get(int id) public static method from the enumeration
-            subtype = (EntitySubtype) subtypeEnum.getMethod("get", int.class).invoke(null, id);
+            subtype = (EntitySubtype) subtypeEnum
+                    .getMethod("get", String.class).invoke(null, id);
         }
         catch (NoSuchMethodException ex) {
-            System.err.println("The method 'get' is missing in enumeration " + subtypeEnum.getName());
+            System.err.println("The method 'get' is missing in enumeration "
+                    + subtypeEnum.getName());
             ex.printStackTrace();
             System.exit(1);
         }
         catch (IllegalAccessException ex) {
-            System.err.println("Cannot access method 'get' in enumeration " + subtypeEnum.getName() + ": ex.getMessage()");
+            System.err.println("Cannot access method 'get' in enumeration "
+                    + subtypeEnum.getName() + ": " + ex.getMessage());
             ex.printStackTrace();
             System.exit(1);
         }
@@ -164,10 +167,31 @@ public enum EntityType {
      */
     public EntitySubtype getDefaultSubtype() {
 
-        if (!hasSubtype()) {
-            return null;
+        EntitySubtype defaultSubtype = null;
+        try {
+            if (hasSubtype()) {
+                // Call the values() method from the enumeration.
+                Object values = subtypeEnum.getMethod("values").invoke(null);
+                defaultSubtype = (EntitySubtype) Array.get(values, 0);
+            }
         }
-        return getSubtype(0);
+        catch (NoSuchMethodException ex) {
+            System.err.println("The method 'values' is missing in enumeration "
+                    + subtypeEnum.getName());
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        catch (IllegalAccessException ex) {
+            System.err.println("Cannot access method 'values' in enumeration "
+                    + subtypeEnum.getName() + ": " + ex.getMessage());
+            ex.printStackTrace();
+            System.exit(1);
+        }
+        catch (InvocationTargetException ex) {
+            ex.getCause().printStackTrace();
+            System.exit(1);
+        }
+        return defaultSubtype;
     }
 
     /**

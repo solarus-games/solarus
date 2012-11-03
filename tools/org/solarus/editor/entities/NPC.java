@@ -17,6 +17,7 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+import java.util.NoSuchElementException;
 
 import org.solarus.editor.*;
 
@@ -30,20 +31,33 @@ public class NPC extends MapEntity {
      * Subtypes of NPC.
      */
     public enum Subtype implements EntitySubtype {
-        GENERALIZED_NPC,
-        USUAL_NPC;
+        // We use integers ids for historical reasons.
+        GENERALIZED_NPC("0"),
+        USUAL_NPC("1");
 
         public static final String[] humanNames = {
             "Generalized NPC (some solid object)",
             "Usual NPC (a person)"
         };
 
-        public static Subtype get(int id) {
-            return values()[id];
+        private String id;
+
+        private Subtype(String id) {
+            this.id = id;
         }
 
-        public int getId() {
-            return ordinal();
+        public String getId() {
+            return id;
+        }
+
+        public static Subtype get(String id) {
+            for (Subtype subtype: values()) {
+                if (subtype.getId().equals(id)) {
+                    return subtype;
+                }
+            }
+            throw new NoSuchElementException(
+                    "No NPC subtype with id '" + id + "'");
         }
     }
 
@@ -98,7 +112,7 @@ public class NPC extends MapEntity {
      * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-        return origins[getSubtypeId()];
+        return origins[getSubtype().ordinal()];
     }
 
     /**
@@ -151,7 +165,7 @@ public class NPC extends MapEntity {
     public void setSubtype(EntitySubtype subtype) throws MapException {
         super.setSubtype(subtype);
 
-        Dimension size = sizes[getSubtypeId()];
+        Dimension size = sizes[getSubtype().ordinal()];
         setSizeImpl(size.width, size.height);
 
         setChanged();
@@ -182,7 +196,7 @@ public class NPC extends MapEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
-        currentImageDescription = currentImageDescriptions[getSubtypeId()];
+        currentImageDescription = currentImageDescriptions[getSubtype().ordinal()];
     }
 
     /**
@@ -205,7 +219,7 @@ public class NPC extends MapEntity {
         if (name.equals("sprite")) {
 
             if (value != null) {
-                sprite = new Sprite(value, map);
+                sprite = new Sprite(value, getMap());
             }
             else {
                 sprite = null;

@@ -17,6 +17,7 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+
 import org.solarus.editor.*;
 
 /**
@@ -178,6 +179,7 @@ public class Jumper extends MapEntity {
      */
     public void paint(Graphics g, double zoom, boolean showTransparency) {
 
+        Rectangle positionInMap = getPositionInMap();
         int x = (int) (positionInMap.x * zoom);
         int y = (int) (positionInMap.y * zoom);
         int w = (int) (positionInMap.width * zoom);

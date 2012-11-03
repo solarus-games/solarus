@@ -78,7 +78,7 @@ public class Pickable extends MapEntity {
 
         Integer variant = getIntegerProperty("treasure_variant");
         if (!treasureName.equals(Item.noneId)
-                && !name.equals(Item.randomId)
+                && !treasureName.equals(Item.randomId)
                 && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
         }

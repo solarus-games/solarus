@@ -17,6 +17,7 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+
 import org.solarus.editor.*;
 
 /**
@@ -73,7 +74,7 @@ public class Wall extends MapEntity {
      */
     public void setPropertiesDefaultValues() throws MapException {
         setBooleanProperty("stops_hero", true);
-        setBooleanProperty("stops_rnemies", true);
+        setBooleanProperty("stops_enemies", true);
         setBooleanProperty("stops_npcs", true);
         setBooleanProperty("stops_blocks", true);
     }
@@ -105,6 +106,7 @@ public class Wall extends MapEntity {
             resizableObstacleImage = Project.getEditorImage("resizable_custom_obstacle.png");
         }
 
+        Rectangle positionInMap = getPositionInMap();
         int x1 = (int) (positionInMap.x * zoom);
         int y1 = (int) (positionInMap.y * zoom);
         int w = (int) (positionInMap.width * zoom);

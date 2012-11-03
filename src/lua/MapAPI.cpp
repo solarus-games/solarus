@@ -49,6 +49,7 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Debug.h"
 #include <lua.hpp>
+#include <sstream>
 
 const std::string LuaContext::map_module_name = "sol.map";
 
@@ -1024,12 +1025,16 @@ int LuaContext::map_api_create_npc(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   const std::string& name = check_string_field(l, 1, "name");
   int direction = check_int_field(l, 1, "direction");
-  NPC::Subtype subtype = NPC::Subtype(check_int_field(l, 1, "subtype"));
+  const std::string& subtype_name = check_string_field(l, 1, "subtype");
   const std::string& sprite_name = opt_string_field(l, 1, "sprite", "");
   const std::string& behavior = opt_string_field(l, 1, "behavior", "");
 
+  int subtype;
+  std::istringstream iss(subtype_name);
+  iss >> subtype;
+
   Game& game = map.get_game();
-  MapEntity* entity = new NPC(game, name, layer, x, y, subtype,
+  MapEntity* entity = new NPC(game, name, layer, x, y, NPC::Subtype(subtype),
       sprite_name, direction, behavior);
   map.get_entities().add_entity(entity);
 
@@ -1107,12 +1112,16 @@ int LuaContext::map_api_create_switch(lua_State* l) {
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   const std::string& name = check_string_field(l, 1, "name");
-  Switch::Subtype subtype = Switch::Subtype(check_int_field(l, 1, "subtype"));
+  const std::string& subtype_name = check_string_field(l, 1, "subtype");
   bool needs_block = check_boolean_field(l, 1, "needs_block");
   bool inactivate_when_leaving = check_boolean_field(l, 1, "inactivate_when_leaving");
 
+  int subtype;
+  std::istringstream iss(subtype_name);
+  iss >> subtype;
+
   MapEntity* entity = new Switch(name, layer, x, y,
-      subtype, needs_block, inactivate_when_leaving);
+      Switch::Subtype(subtype), needs_block, inactivate_when_leaving);
   map.get_entities().add_entity(entity);
 
   push_entity(l, *entity);
@@ -1205,10 +1214,15 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   int width = check_int_field(l, 1, "width");
   int height = check_int_field(l, 1, "height");
-  CrystalBlock::Subtype subtype = CrystalBlock::Subtype(check_int_field(l, 1, "subtype"));
+  const std::string& subtype_name = check_string_field(l, 1, "subtype");
+
+  int subtype;
+  std::istringstream iss(subtype_name);
+  iss >> subtype;
 
   Game& game = map.get_game();
-  MapEntity* entity = new CrystalBlock(game, layer, x, y, width, height, subtype);
+  MapEntity* entity = new CrystalBlock(game, layer, x, y, width, height,
+      CrystalBlock::Subtype(subtype));
   map.get_entities().add_entity(entity);
 
   push_entity(l, *entity);
@@ -1284,12 +1298,16 @@ int LuaContext::map_api_create_door(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   const std::string& name = check_string_field(l, 1, "name");
   int direction = check_int_field(l, 1, "direction");
-  Door::Subtype subtype = Door::Subtype(check_int_field(l, 1, "subtype"));
+  const std::string& subtype_name = check_string_field(l, 1, "subtype");
   int savegame_variable = opt_int_field(l, 1, "savegame_variable", -1);
+
+  int subtype;
+  std::istringstream iss(subtype_name);
+  iss >> subtype;
 
   Game& game = map.get_game();
   MapEntity* entity = new Door(game, name, layer, x, y, direction,
-      subtype, savegame_variable);
+      Door::Subtype(subtype), savegame_variable);
   map.get_entities().add_entity(entity);
 
   push_entity(l, *entity);
@@ -1310,9 +1328,14 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   const std::string& name = check_string_field(l, 1, "name");
   int direction = check_int_field(l, 1, "direction");
-  Stairs::Subtype subtype = Stairs::Subtype(check_int_field(l, 1, "subtype"));
+  const std::string& subtype_name = check_string_field(l, 1, "subtype");
 
-  MapEntity* entity = new Stairs(name, layer, x, y, direction, subtype);
+  int subtype;
+  std::istringstream iss(subtype_name);
+  iss >> subtype;
+
+  MapEntity* entity = new Stairs(name, layer, x, y, direction,
+      Stairs::Subtype(subtype));
   map.get_entities().add_entity(entity);
 
   push_entity(l, *entity);

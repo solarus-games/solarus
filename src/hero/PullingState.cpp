@@ -171,7 +171,7 @@ void Hero::PullingState::notify_position_changed() {
     PathMovement *movement = (PathMovement*) hero.get_movement();
 
     bool horizontal = get_sprites().get_animation_direction() % 2 == 0;
-    bool has_reached_grid = movement->get_total_distance_covered() > 8
+    bool has_reached_grid = movement->get_total_distance_covered() >= 16
       && ((horizontal && pulled_entity->is_aligned_to_grid_x())
           || (!horizontal && pulled_entity->is_aligned_to_grid_y()));
 

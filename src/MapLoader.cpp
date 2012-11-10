@@ -22,6 +22,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Music.h"
 #include "entities/Obstacle.h"
 #include "entities/Layer.h"
 #include "entities/Tileset.h"
@@ -108,7 +109,7 @@ int MapLoader::l_properties(lua_State* l) {
   std::string floor_name = LuaContext::opt_string_field(l, 1, "floor", "");
   int small_keys_variable = LuaContext::opt_int_field(l, 1, "small_keys_variable", -1);
   std::string tileset_id = LuaContext::check_string_field(l, 1, "tileset");
-  std::string music_id = LuaContext::check_string_field(l, 1, "music");
+  std::string music_id = LuaContext::opt_string_field(l, 1, "music", Music::none);
 
   // Initialize the map data.
   // TODO implement methods in Map instead to check the values instead of changing directly the fields.

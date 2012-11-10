@@ -128,7 +128,10 @@ function console:execute_code()
 
   -- Set up an environment that gives access to the game, the map and the entities.
   local environment = {}
-  setmetatable(environment, { __index = self.environment_index })
+  setmetatable(environment, {
+    __index = self.environment_index,
+    __newindex = _G
+  })
 
   local success = false
   local code, message = loadstring(self:get_input_text())
@@ -138,7 +141,11 @@ function console:execute_code()
     success, message = pcall(code)
   end
 
-  if not success then
+  if success then
+    if self:get_output_text() == "" then
+      self:set_output_text("Done")
+    end
+  else
     message = message:gsub(".*:1: ", "")
     self:set_output_text(message)
   end
@@ -184,6 +191,7 @@ function console.print(...)
     else
       text = text .. type(arg)
     end
+    text = text .. " "
   end
   console:set_output_text(text)
 end

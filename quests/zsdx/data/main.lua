@@ -23,7 +23,7 @@ function sol.main:debug_on_key_pressed(key, modifiers)
     self:start_savegame("save3.dat")
   elseif key == "f12" and not console.enabled then
     console:start()
-  elseif sol.main.game ~= nil then
+  elseif sol.main.game ~= nil and not console.enabled then
     local game = sol.main.game
     local hero
     if game ~= nil then

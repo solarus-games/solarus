@@ -1013,7 +1013,7 @@ shop_item{
   name = "shop_item_3",
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = "198",
+  treasure_savegame_variable = "b198",
   price = 19,
   dialog = "junk_shop.red_rupee",
 }
@@ -1025,7 +1025,7 @@ shop_item{
   name = "shop_item_4",
   treasure_name = "mystic_mirror",
   treasure_variant = 1,
-  treasure_savegame_variable = "199",
+  treasure_savegame_variable = "b199",
   price = 99,
   dialog = "junk_shop.mystic_mirror",
 }
@@ -1059,7 +1059,7 @@ shop_item{
   name = "shop_item_7",
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "900",
+  treasure_savegame_variable = "b900",
   price = 499,
   dialog = "junk_shop.piece_of_heart",
 }

@@ -5,7 +5,7 @@ properties{
   height = 912,
   world = "dungeon_1",
   floor = "1",
-  small_keys_variable = "dungeon_1.small_keys",
+  small_keys_variable = "dungeon_1_small_keys",
   tileset = "8",
   music = "same",
 }
@@ -2447,7 +2447,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "245",
+  treasure_savegame_variable = "b245",
 }
 
 wall{

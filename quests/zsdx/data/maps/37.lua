@@ -573,7 +573,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "0",
-  savegame_variable = "928",
+  savegame_variable = "b928",
 }
 
 chest{
@@ -584,7 +584,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 5,
-  treasure_savegame_variable = "104",
+  treasure_savegame_variable = "b104",
 }
 
 npc{

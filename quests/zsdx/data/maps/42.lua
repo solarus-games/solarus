@@ -5,7 +5,7 @@ properties{
   height = 1024,
   world = "dungeon_3",
   floor = "2",
-  small_keys_variable = "dungeon_3.small_keys",
+  small_keys_variable = "dungeon_3_small_keys",
   tileset = "14",
   music = "same",
 }
@@ -10459,7 +10459,7 @@ chest{
   is_big_chest = true,
   treasure_name = "hookshot",
   treasure_variant = 1,
-  treasure_savegame_variable = "123",
+  treasure_savegame_variable = "b123",
 }
 
 destination{
@@ -10632,7 +10632,7 @@ chest{
   is_big_chest = false,
   treasure_name = "boss_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "124",
+  treasure_savegame_variable = "b124",
 }
 
 switch{
@@ -10769,7 +10769,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "1",
-  savegame_variable = "125",
+  savegame_variable = "b125",
 }
 
 door{
@@ -10779,7 +10779,7 @@ door{
   name = "door_2",
   direction = 3,
   subtype = "1",
-  savegame_variable = "125",
+  savegame_variable = "b125",
 }
 
 destructible{
@@ -10864,7 +10864,7 @@ pickable{
   y = 461,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "132",
+  treasure_savegame_variable = "b132",
 }
 
 wall{

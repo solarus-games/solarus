@@ -24,17 +24,17 @@ end
 function map:on_started(destination)
 
   -- torches door
-  if map:get_game():get_value("514") then
+  if map:get_game():get_value("b514") then
     lock_torches()
   end
 
   -- middle door
-  if map:get_game():get_value("522") then
+  if map:get_game():get_value("b522") then
     c_door_switch:set_activated(true)
   end
 
   -- block falled from 2F
-  if not map:get_game():get_value("515") then
+  if not map:get_game():get_value("b515") then
     block_from_2f:set_enabled(false)
   end
 end
@@ -68,7 +68,7 @@ end
 
 function map:on_update()
 
-  if not map:get_game():get_value("514")
+  if not map:get_game():get_value("b514")
       and are_all_torches_on() then
     sol.audio.play_sound("secret")
     map:open_doors("w_door")

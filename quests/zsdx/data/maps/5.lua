@@ -10483,7 +10483,7 @@ chest{
   is_big_chest = false,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "20",
+  treasure_savegame_variable = "b20",
 }
 
 chest{
@@ -10494,7 +10494,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = "19",
+  treasure_savegame_variable = "b19",
 }
 
 chest{
@@ -10505,7 +10505,7 @@ chest{
   is_big_chest = false,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "935",
+  treasure_savegame_variable = "b935",
 }
 
 teletransporter{
@@ -10623,7 +10623,7 @@ pickable{
   y = 61,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "21",
+  treasure_savegame_variable = "b21",
 }
 
 npc{

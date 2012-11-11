@@ -960,7 +960,7 @@ destructible{
   subtype = "white_stone",
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = "945",
+  treasure_savegame_variable = "b945",
 }
 
 chest{
@@ -971,7 +971,7 @@ chest{
   is_big_chest = false,
   treasure_name = "bow",
   treasure_variant = 1,
-  treasure_savegame_variable = "26",
+  treasure_savegame_variable = "b26",
 }
 
 chest{
@@ -982,7 +982,7 @@ chest{
   is_big_chest = false,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "27",
+  treasure_savegame_variable = "b27",
 }
 
 destructible{

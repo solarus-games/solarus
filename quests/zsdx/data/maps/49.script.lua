@@ -15,7 +15,7 @@ local map = ...
 local timer
 
 function map:on_started(destination)
-  if not map:get_game():get_value("711") then
+  if not map:get_game():get_value("b711") then
     RC100:set_enabled(false)
   end
   if destination:get_name() == "from_B3_C" then

@@ -862,7 +862,7 @@ chest{
   is_big_chest = false,
   treasure_name = "bottle_4",
   treasure_variant = 1,
-  treasure_savegame_variable = "913",
+  treasure_savegame_variable = "b913",
 }
 
 destination{

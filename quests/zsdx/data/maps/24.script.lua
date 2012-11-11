@@ -6,10 +6,10 @@ function map:on_started(destination)
   if destination:get_name() == "from_1F_hole" then
     -- we are in the boss room
 
-    if map:get_game():get_value("63") then
+    if map:get_game():get_value("b63") then
       -- the boss is already dead
 
-      if map:get_game():get_value("64") then
+      if map:get_game():get_value("b64") then
         -- the heart container was also picked: open the final room door
         map:set_doors_open("final_room_door", true)
       end

@@ -5,7 +5,7 @@ properties{
   height = 1216,
   world = "dungeon_5",
   floor = "0",
-  small_keys_variable = "dungeon_5.small_keys",
+  small_keys_variable = "dungeon_5_small_keys",
   tileset = "12",
   music = "castle",
 }
@@ -3644,7 +3644,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 5,
-  treasure_savegame_variable = "500",
+  treasure_savegame_variable = "b500",
 }
 
 crystal{
@@ -3825,7 +3825,7 @@ chest{
   is_big_chest = false,
   treasure_name = "big_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "503",
+  treasure_savegame_variable = "b503",
 }
 
 crystal_block{
@@ -3877,7 +3877,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "4",
-  savegame_variable = "507",
+  savegame_variable = "b507",
 }
 
 door{
@@ -3887,7 +3887,7 @@ door{
   name = "door_2",
   direction = 3,
   subtype = "4",
-  savegame_variable = "507",
+  savegame_variable = "b507",
 }
 
 door{
@@ -3897,7 +3897,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "3",
-  savegame_variable = "508",
+  savegame_variable = "b508",
 }
 
 door{
@@ -3907,7 +3907,7 @@ door{
   name = "door_4",
   direction = 3,
   subtype = "3",
-  savegame_variable = "508",
+  savegame_variable = "b508",
 }
 
 teletransporter{
@@ -3939,7 +3939,7 @@ chest{
   is_big_chest = false,
   treasure_name = "compass",
   treasure_variant = 1,
-  treasure_savegame_variable = "501",
+  treasure_savegame_variable = "b501",
 }
 
 enemy{
@@ -4036,7 +4036,7 @@ door{
   name = "door_5",
   direction = 0,
   subtype = "1",
-  savegame_variable = "513",
+  savegame_variable = "b513",
 }
 
 door{
@@ -4046,7 +4046,7 @@ door{
   name = "door_6",
   direction = 2,
   subtype = "1",
-  savegame_variable = "513",
+  savegame_variable = "b513",
 }
 
 npc{
@@ -4100,7 +4100,7 @@ door{
   name = "w_door",
   direction = 0,
   subtype = "0",
-  savegame_variable = "514",
+  savegame_variable = "b514",
 }
 
 door{
@@ -4110,7 +4110,7 @@ door{
   name = "w_door_2",
   direction = 2,
   subtype = "0",
-  savegame_variable = "514",
+  savegame_variable = "b514",
 }
 
 door{
@@ -4174,7 +4174,7 @@ door{
   name = "c_door",
   direction = 0,
   subtype = "0",
-  savegame_variable = "522",
+  savegame_variable = "b522",
 }
 
 door{
@@ -4184,7 +4184,7 @@ door{
   name = "c_door_2",
   direction = 2,
   subtype = "0",
-  savegame_variable = "522",
+  savegame_variable = "b522",
 }
 
 destructible{

@@ -970,6 +970,29 @@ void LuaContext::print_stack() {
 }
 
 /**
+ * @brief Returns whether the specified name is a valid Lua identifier.
+ * @param name The name to check.
+ * @return true if the name only contains alphanumeric characters or '_' and
+ * does not start with a digit.
+ */
+bool LuaContext::is_valid_lua_identifier(const std::string& name) {
+
+  if (name[0] >= '0' && name[0] <= '9') {
+    return false;
+  }
+
+  bool valid = true;
+  for (std::string::const_iterator it = name.begin(); it != name.end() && valid; it++) {
+    char character = *it;
+    valid = (character == '_' ||
+        (character >= 'a' && character <= 'z') ||
+        (character >= 'A' && character <= 'Z') ||
+        (character >= '0' && character <= '9'));
+  }
+  return valid;
+}
+
+/**
  * @brief Defines some C++ functions into a Lua table.
  * @param module_name name of the table that will contain the functions
  * (e.g. "sol.main")

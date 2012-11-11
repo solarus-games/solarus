@@ -131,6 +131,11 @@ class LuaContext {
         lua_State* l, int table_index, const std::string& key
     );
 
+    // Lua helpers.
+    static int get_positive_index(lua_State* l, int index);
+    void print_stack();
+    static bool is_valid_lua_identifier(const std::string& name);
+
     // Lua refs.
     int create_ref();
     void destroy_ref(int ref);
@@ -656,10 +661,6 @@ class LuaContext {
     static bool load_file_if_exists(lua_State* l, const std::string& script_name);
     static void do_file(lua_State* l, const std::string& script_name);
     static bool do_file_if_exists(lua_State* l, const std::string& script_name);
-
-    // Lua helper functions.
-    static int get_positive_index(lua_State* l, int index);
-    void print_stack();
 
     // Initialization of modules.
     void register_functions(const std::string& module_name, const luaL_Reg* functions);

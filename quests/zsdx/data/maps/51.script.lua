@@ -18,7 +18,7 @@ local dont_close_LD06 = false
 function map:on_started()
 
   map:set_light(0)
-  if not map:get_game():get_value("725") then
+  if not map:get_game():get_value("b725") then
     STT5:set_enabled(false)
     from_hole_tile:set_enabled(false)
   end

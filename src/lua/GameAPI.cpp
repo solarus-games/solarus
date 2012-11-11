@@ -239,6 +239,13 @@ int LuaContext::game_api_get_value(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
   const std::string& key = luaL_checkstring(l, 2);
 
+  if (!is_valid_lua_identifier(key)) {
+    luaL_argerror(l, 3, (StringConcat() <<
+        "Invalid savegame variable '" << key <<
+        "': the name should only contain alphanumeric characters or '_'" <<
+        " and cannot start with a digit").c_str());
+  }
+
   if (savegame.is_boolean(key)) {
     lua_pushboolean(l, savegame.get_boolean(key));
   }
@@ -263,26 +270,33 @@ int LuaContext::game_api_get_value(lua_State* l) {
 int LuaContext::game_api_set_value(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  const std::string& savegame_variable = luaL_checkstring(l, 2);
+  const std::string& key = luaL_checkstring(l, 2);
 
-  if (savegame_variable[0] == '_') {
+  if (key[0] == '_') {
     luaL_argerror(l, 3, (StringConcat() <<
-        "Invalid savegame variable '" << savegame_variable <<
+        "Invalid savegame variable '" << key <<
         "': names prefixed by '_' are reserved for built-in variables").c_str());
+  }
+
+  if (!is_valid_lua_identifier(key)) {
+    luaL_argerror(l, 3, (StringConcat() <<
+        "Invalid savegame variable '" << key <<
+        "': the name should only contain alphanumeric characters or '_'" <<
+        " and cannot start with a digit").c_str());
   }
 
   switch (lua_type(l, 3)) {
 
     case LUA_TSTRING:
-      savegame.set_string(savegame_variable, lua_tostring(l, 3));
+      savegame.set_string(key, lua_tostring(l, 3));
       break;
 
     case LUA_TNUMBER:
-      savegame.set_integer(savegame_variable, lua_tointeger(l, 3));
+      savegame.set_integer(key, lua_tointeger(l, 3));
       break;
 
     case LUA_TBOOLEAN:
-      savegame.set_integer(savegame_variable, lua_toboolean(l, 3));
+      savegame.set_integer(key, lua_toboolean(l, 3));
       break;
 
     default:

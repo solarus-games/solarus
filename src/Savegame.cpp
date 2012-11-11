@@ -184,6 +184,9 @@ void Savegame::load() {
   // TODO try to parse as Lua, if fail try to convert from version 1 format
   SavegameConverterV1 converter(file_name);
   converter.convert_to_v2(*this);
+
+  // TODO remove (temporary debugging code)
+  save();
 }
 
 /**
@@ -210,7 +213,8 @@ void Savegame::save() {
   }
 
   const std::string& text = oss.str();
-  FileTools::data_file_save_buffer(file_name + ".alpha", text.c_str(), text.size() + 1);
+  // TODO remove ".alpha" once it's stable
+  FileTools::data_file_save_buffer(file_name + ".alpha", text.c_str(), text.size());
   empty = false;
 }
 
@@ -258,6 +262,9 @@ void Savegame::set_game(Game* game) {
  */
 bool Savegame::is_string(const std::string& key) {
 
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
   bool result = false;
   if (saved_values.count(key) > 0) {
     const SavedValue& value = saved_values[key];
@@ -272,6 +279,9 @@ bool Savegame::is_string(const std::string& key) {
  * @return The string value associated with this key or an empty string.
  */
 const std::string& Savegame::get_string(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
 
   if (saved_values.count(key) > 0) {
     const SavedValue& value = saved_values[key];
@@ -291,6 +301,9 @@ const std::string& Savegame::get_string(const std::string& key) {
  */
 void Savegame::set_string(const std::string& key, const std::string& value) {
 
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
   saved_values[key].type = SavedValue::VALUE_STRING;
   saved_values[key].string_data = value;
 }
@@ -301,6 +314,9 @@ void Savegame::set_string(const std::string& key, const std::string& value) {
  * @return true if this value exists and is an integer.
  */
 bool Savegame::is_integer(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
 
   bool result = false;
   if (saved_values.count(key) > 0) {
@@ -316,6 +332,9 @@ bool Savegame::is_integer(const std::string& key) {
  * @return The integer value associated with this key or 0.
  */
 int Savegame::get_integer(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
 
   int result = 0;
   if (saved_values.count(key) > 0) {
@@ -334,6 +353,9 @@ int Savegame::get_integer(const std::string& key) {
  */
 void Savegame::set_integer(const std::string& key, int value) {
 
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
   saved_values[key].type = SavedValue::VALUE_INTEGER;
   saved_values[key].int_data = value;
 }
@@ -344,6 +366,9 @@ void Savegame::set_integer(const std::string& key, int value) {
  * @return true if this value exists and is a boolean.
  */
 bool Savegame::is_boolean(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
 
   bool result = false;
   if (saved_values.count(key) > 0) {
@@ -359,6 +384,9 @@ bool Savegame::is_boolean(const std::string& key) {
  * @return The boolean value associated with this key or false.
  */
 bool Savegame::get_boolean(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
 
   bool result = false;
   if (saved_values.count(key) > 0) {
@@ -376,6 +404,9 @@ bool Savegame::get_boolean(const std::string& key) {
  * @return The boolean value to associate with this key.
  */
 void Savegame::set_boolean(const std::string& key, bool value) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
 
   saved_values[key].type = SavedValue::VALUE_BOOLEAN;
   saved_values[key].int_data = value;

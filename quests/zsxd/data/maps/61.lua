@@ -5,7 +5,7 @@ properties{
   height = 1136,
   world = "dungeon_1",
   floor = "0",
-  small_keys_variable = "dungeon_1.small_keys",
+  small_keys_variable = "dungeon_1_small_keys",
   tileset = "8",
   music = "dark_world_dungeon",
 }
@@ -2454,7 +2454,7 @@ enemy{
   direction = 3,
   breed = "lizarmen",
   rank = 1,
-  savegame_variable = "302",
+  savegame_variable = "b302",
   treasure_name = "fairy",
   treasure_variant = 1,
 }
@@ -2494,7 +2494,7 @@ chest{
   is_big_chest = false,
   treasure_name = "big_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "204",
+  treasure_savegame_variable = "b204",
 }
 
 door{
@@ -10185,7 +10185,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 5,
-  treasure_savegame_variable = "292",
+  treasure_savegame_variable = "b292",
 }
 
 jumper{
@@ -10391,7 +10391,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "1",
-  savegame_variable = "307",
+  savegame_variable = "b307",
 }
 
 door{
@@ -10401,7 +10401,7 @@ door{
   name = "door_2",
   direction = 2,
   subtype = "1",
-  savegame_variable = "307",
+  savegame_variable = "b307",
 }
 
 pickable{
@@ -10749,7 +10749,7 @@ chest{
   is_big_chest = true,
   treasure_name = "bomb_bag",
   treasure_variant = 2,
-  treasure_savegame_variable = "205",
+  treasure_savegame_variable = "b205",
 }
 
 chest{
@@ -10760,7 +10760,7 @@ chest{
   is_big_chest = false,
   treasure_name = "compass",
   treasure_variant = 1,
-  treasure_savegame_variable = "203",
+  treasure_savegame_variable = "b203",
 }
 
 wall{
@@ -10848,7 +10848,7 @@ door{
   name = "weak_wall_compass_2",
   direction = 1,
   subtype = "5",
-  savegame_variable = "233",
+  savegame_variable = "b233",
 }
 
 door{
@@ -10858,7 +10858,7 @@ door{
   name = "weak_wall_compass",
   direction = 3,
   subtype = "5",
-  savegame_variable = "233",
+  savegame_variable = "b233",
 }
 
 door{
@@ -10868,7 +10868,7 @@ door{
   name = "weak_wall_red_tunic",
   direction = 3,
   subtype = "5",
-  savegame_variable = "234",
+  savegame_variable = "b234",
 }
 
 crystal{
@@ -10886,7 +10886,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "248",
+  treasure_savegame_variable = "b248",
 }
 
 destination{
@@ -11336,7 +11336,7 @@ door{
   name = "boss_door",
   direction = 1,
   subtype = "4",
-  savegame_variable = "239",
+  savegame_variable = "b239",
 }
 
 destination{

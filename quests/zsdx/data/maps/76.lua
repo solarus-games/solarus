@@ -4,7 +4,7 @@ properties{
   width = 760,
   height = 520,
   world = "inside_world",
-  small_keys_variable = "integer_1201",
+  small_keys_variable = "i1201",
   tileset = "3",
   music = "cave",
 }
@@ -4697,7 +4697,7 @@ chest{
   is_big_chest = false,
   treasure_name = "iron_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "182",
+  treasure_savegame_variable = "b182",
 }
 
 door{
@@ -4707,7 +4707,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "2",
-  savegame_variable = "183",
+  savegame_variable = "b183",
 }
 
 door{
@@ -4717,7 +4717,7 @@ door{
   name = "door_2",
   direction = 1,
   subtype = "2",
-  savegame_variable = "184",
+  savegame_variable = "b184",
 }
 
 door{
@@ -4727,7 +4727,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "2",
-  savegame_variable = "185",
+  savegame_variable = "b185",
 }
 
 door{
@@ -4737,7 +4737,7 @@ door{
   name = "door_4",
   direction = 1,
   subtype = "2",
-  savegame_variable = "186",
+  savegame_variable = "b186",
 }
 
 dynamic_tile{
@@ -4821,7 +4821,7 @@ destructible{
   subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "187",
+  treasure_savegame_variable = "b187",
 }
 
 destructible{
@@ -4831,7 +4831,7 @@ destructible{
   subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "188",
+  treasure_savegame_variable = "b188",
 }
 
 switch{
@@ -4878,7 +4878,7 @@ destructible{
   subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "189",
+  treasure_savegame_variable = "b189",
 }
 
 destructible{
@@ -4906,7 +4906,7 @@ destructible{
   subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "190",
+  treasure_savegame_variable = "b190",
 }
 
 switch{

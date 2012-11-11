@@ -3648,7 +3648,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 4,
-  treasure_savegame_variable = "70",
+  treasure_savegame_variable = "b70",
 }
 
 destination{
@@ -3970,7 +3970,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rock_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "68",
+  treasure_savegame_variable = "b68",
 }
 
 teletransporter{
@@ -4428,7 +4428,7 @@ door{
   name = "weak_block",
   direction = 1,
   subtype = "8",
-  savegame_variable = "946",
+  savegame_variable = "b946",
 }
 
 dynamic_tile{
@@ -5827,7 +5827,7 @@ chest{
   is_big_chest = false,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "936",
+  treasure_savegame_variable = "b936",
 }
 
 destructible{

@@ -22,7 +22,7 @@ local spawner_xy = {
 
 local function repeat_lava_spawner()
 
-  if not map:get_game():get_value("321") then
+  if not map:get_game():get_value("b321") then
     nb_spawners_created = nb_spawners_created + 1
     local index = math.random(#spawner_xy)
     map:create_enemy{
@@ -53,7 +53,7 @@ end
 
 function start_boss_sensor:on_activated()
 
-  if not map:get_game():get_value("321")
+  if not map:get_game():get_value("b321")
       and not fighting_boss then
 
     start_boss_sensor:set_enabled(false)
@@ -89,7 +89,7 @@ function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 	    map:set_dialog_variable("dungeon_6.tom_revelation", map:get_game():get_player_name())
 	    map:start_dialog("dungeon_6.tom_revelation", function()
 	      local variant = 2
-	      if map:get_game():get_value("939") then
+	      if map:get_game():get_value("b939") then
 		variant = 3
 	      end
 	      hero:start_treasure("quiver", variant, 941)
@@ -107,7 +107,7 @@ end
 
 function hero:on_victory_finished()
   map:get_game():set_dungeon_finished(6)
-  map:get_game():set_value("155", false) -- reopen the rupee house
+  map:get_game():set_value("b155", false) -- reopen the rupee house
   hero:teleport(7, "from_dungeon_6")
 end
 

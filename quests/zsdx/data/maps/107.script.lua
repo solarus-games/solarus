@@ -8,7 +8,7 @@ function map:on_started(destination)
   -- miniboss
   map:set_entities_enabled("miniboss_enemy", false)
   map:set_doors_open("miniboss_e_door", true)
-  if map:get_game():get_value("866") then
+  if map:get_game():get_value("b866") then
     map:set_doors_open("miniboss_door", true)
   end
 end
@@ -37,7 +37,7 @@ local function miniboss_enemy_dead(enemy)
     sol.audio.play_music("southern_shrine")
     sol.audio.play_sound("secret")
     map:open_doors("miniboss_door")
-    map:get_game():set_value("866", true)
+    map:get_game():set_value("b866", true)
   end
 end
 
@@ -49,14 +49,14 @@ end
 local function door_b_hint_interaction(npc)
 
   if not door_b:is_open() then
-    local door_b_next = map:get_game():get_value("dungeon_9.hint_stones") + 1
+    local door_b_next = map:get_game():get_value("i1202") + 1
     local index = tonumber(npc:get_name():match("^door_b_hint_([1-8])$"))
     if index == door_b_next then
       -- correct
       if index < 8 then
         local directions = { 0, 0, 0, 3, 2, 2, 2 }
         map:start_dialog("dungeon_9.3f_door_b_hint_" .. directions[index])
-        map:get_game():set_value("dungeon_9.hint_stones", index)
+        map:get_game():set_value("i1202", index)
       else
         map:move_camera(1928, 1928, 500, function()
           sol.audio.play_sound("secret")
@@ -66,7 +66,7 @@ local function door_b_hint_interaction(npc)
     else
       -- wrong
       sol.audio.play_sound("wrong")
-      map:get_game():set_value("dungeon_9.hint_stones", 0)
+      map:get_game():set_value("i1202", 0)
     end
   end
 end
@@ -78,7 +78,7 @@ end
 -- miniboss
 function start_miniboss_sensor:on_activated()
 
-  if not map:get_game():get_value("866")
+  if not map:get_game():get_value("b866")
       and not fighting_miniboss then
 
     hero:freeze()

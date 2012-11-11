@@ -19,24 +19,24 @@ local arrows_timer
 function map:on_started(destination)
 
   -- block fallen into the hole
-  if map:get_game():get_value("623") then
+  if map:get_game():get_value("b623") then
     nw_block:set_enabled(false)
   end
 
   -- NW door
-  if map:get_game():get_value("624") then
+  if map:get_game():get_value("b624") then
     map:set_doors_open("ne_door", true)
   end
 
   -- door A (timed doors)
-  if map:get_game():get_value("627") then
+  if map:get_game():get_value("b627") then
     door_a_switch:set_activated(true)
   end
 
   -- boss
   map:set_doors_open("boss_door", true)
-  if map:get_game():get_value("625")
-    and not map:get_game():get_value("626") then
+  if map:get_game():get_value("b625")
+    and not map:get_game():get_value("b626") then
     -- boss killed, heart container not picked
     map:create_pickable{
       treasure_name = "heart_container",
@@ -49,7 +49,7 @@ function map:on_started(destination)
   end
 
   -- special torch door
-  if map:get_game():get_value("624") then
+  if map:get_game():get_value("b624") then
     ne_switch:set_activated(true)
   end
 end
@@ -62,7 +62,7 @@ function nw_block:on_moved()
     self:set_enabled(false)
     hole_a:set_enabled(true)
     hole_a_teletransporter:set_enabled(true)
-    map:get_game():set_value("623", true)
+    map:get_game():set_value("b623", true)
     sol.audio.play_sound("jump")
     sol.timer.start(500, function() sol.audio.play_sound("bomb") end)
   end
@@ -70,7 +70,7 @@ end
 
 function map:on_update()
 
-  if not map:get_game():get_value("623") then
+  if not map:get_game():get_value("b623") then
     -- blocks could overlap holes or teletransporters with old versions of the engine,
     -- so we disable the hole A and its teletransporter when necessary
     -- TODO this is not necessary anymore
@@ -237,7 +237,7 @@ end
 
 function start_boss_sensor:on_activated()
 
-  if not map:get_game():get_value("625")
+  if not map:get_game():get_value("b625")
       and not fighting_boss then
     sol.audio.play_music("boss")
     boss:set_enabled(true)

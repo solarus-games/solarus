@@ -163,7 +163,7 @@ bool Chest::can_open() {
   oss << "dungeon_" << get_game().get_current_dungeon().get_number();
   const std::string& dungeon_number = oss.str();
 
-  return get_savegame().get_boolean(dungeon_number + ".big_key");
+  return get_savegame().get_boolean(dungeon_number + "_big_key");
 }
 
 /**

@@ -288,8 +288,8 @@ bool Door::can_open() {
     oss << "dungeon_" << get_game().get_current_dungeon().get_number();
     const std::string& dungeon_number = oss.str();
 
-    return (subtype == BIG_KEY && get_savegame().get_boolean(dungeon_number + ".big_key"))
-        || (subtype == BOSS_KEY && get_savegame().get_boolean(dungeon_number + ".boss_key"));
+    return (subtype == BIG_KEY && get_savegame().get_boolean(dungeon_number + "_big_key"))
+        || (subtype == BOSS_KEY && get_savegame().get_boolean(dungeon_number + "_boss_key"));
   }
 
   return false;

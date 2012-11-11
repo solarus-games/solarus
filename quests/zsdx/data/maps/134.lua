@@ -1427,7 +1427,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 5,
-  treasure_savegame_variable = "942",
+  treasure_savegame_variable = "b942",
 }
 
 tile{

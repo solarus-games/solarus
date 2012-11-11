@@ -4571,7 +4571,7 @@ chest{
   is_big_chest = false,
   treasure_name = "level_4_way",
   treasure_variant = 2,
-  treasure_savegame_variable = "138",
+  treasure_savegame_variable = "b138",
 }
 
 destination{

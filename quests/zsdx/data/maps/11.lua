@@ -1019,7 +1019,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = "25",
+  treasure_savegame_variable = "b25",
 }
 
 destructible{

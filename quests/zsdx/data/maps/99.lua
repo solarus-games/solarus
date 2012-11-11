@@ -5,7 +5,7 @@ properties{
   height = 1032,
   world = "dungeon_10",
   floor = "3",
-  small_keys_variable = "dungeon_10.small_keys",
+  small_keys_variable = "dungeon_10_small_keys",
   tileset = "4",
   music = "same",
 }
@@ -2114,7 +2114,7 @@ chest{
   is_big_chest = false,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "241",
+  treasure_savegame_variable = "b241",
 }
 
 block{

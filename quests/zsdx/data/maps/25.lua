@@ -5,7 +5,7 @@ properties{
   height = 464,
   world = "dungeon_1",
   floor = "1",
-  small_keys_variable = "dungeon_1.small_keys",
+  small_keys_variable = "dungeon_1_small_keys",
   tileset = "5",
   music = "light_world_dungeon",
 }
@@ -1173,7 +1173,7 @@ chest{
   is_big_chest = false,
   treasure_name = "boss_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "57",
+  treasure_savegame_variable = "b57",
 }
 
 tile{
@@ -3779,7 +3779,7 @@ door{
   name = "boss_door",
   direction = 0,
   subtype = "4",
-  savegame_variable = "61",
+  savegame_variable = "b61",
 }
 
 door{
@@ -3789,7 +3789,7 @@ door{
   name = "boss_door_2",
   direction = 2,
   subtype = "4",
-  savegame_variable = "61",
+  savegame_variable = "b61",
 }
 
 door{
@@ -3881,7 +3881,7 @@ enemy{
   direction = 3,
   breed = "khorneth",
   rank = 1,
-  savegame_variable = "62",
+  savegame_variable = "b62",
   treasure_name = "fairy",
   treasure_variant = 1,
 }

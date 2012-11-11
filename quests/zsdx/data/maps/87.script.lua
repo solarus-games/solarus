@@ -42,8 +42,8 @@ function hero:on_victory_finished()
 	  map:start_dialog("dungeon_4.agahnim", function()
 	    sol.timer.start(2000, function()
 	      map:get_game():set_dungeon_finished(4)
-	      map:get_game():set_value("905", true) -- enable the dark world
-	      map:get_game():set_value("155", true) -- break the rupee house
+	      map:get_game():set_value("b905", true) -- enable the dark world
+	      map:get_game():set_value("b155", true) -- break the rupee house
 	      hero:teleport(66, "from_dungeon_4")
 	    end)
 	  end)

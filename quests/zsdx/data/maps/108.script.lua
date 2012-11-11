@@ -6,14 +6,14 @@ local chest_a_timer
 function map:on_started(destination)
 
   -- chest A
-  if map:get_game():get_value("872") then
+  if map:get_game():get_value("b872") then
     chest_a_switch:set_activated(true)
   else
     chest_a:set_enabled(false)
   end
 
   -- chest C
-  if not map:get_game():get_value("876") then
+  if not map:get_game():get_value("b876") then
     chest_c:set_enabled(false)
   end
 end

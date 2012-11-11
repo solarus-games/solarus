@@ -4610,7 +4610,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 5,
-  treasure_savegame_variable = "910",
+  treasure_savegame_variable = "b910",
 }
 
 destructible{
@@ -4703,7 +4703,7 @@ door{
   name = "weak_wall_a",
   direction = 3,
   subtype = "5",
-  savegame_variable = "947",
+  savegame_variable = "b947",
 }
 
 dynamic_tile{
@@ -4724,7 +4724,7 @@ door{
   name = "weak_wall_a_2",
   direction = 1,
   subtype = "5",
-  savegame_variable = "947",
+  savegame_variable = "b947",
 }
 
 door{
@@ -4734,7 +4734,7 @@ door{
   name = "weak_wall_b",
   direction = 0,
   subtype = "5",
-  savegame_variable = "948",
+  savegame_variable = "b948",
 }
 
 door{
@@ -4744,7 +4744,7 @@ door{
   name = "weak_wall_b_2",
   direction = 2,
   subtype = "5",
-  savegame_variable = "948",
+  savegame_variable = "b948",
 }
 
 tile{

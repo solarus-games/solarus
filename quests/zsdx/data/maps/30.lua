@@ -5,7 +5,7 @@ properties{
   height = 768,
   world = "dungeon_2",
   floor = "0",
-  small_keys_variable = "dungeon_2.small_keys",
+  small_keys_variable = "dungeon_2_small_keys",
   tileset = "7",
   music = "light_world_dungeon",
 }
@@ -4038,7 +4038,7 @@ destructible{
   subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "75",
+  treasure_savegame_variable = "b75",
 }
 
 crystal_block{
@@ -4134,7 +4134,7 @@ pickable{
   y = 437,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "71",
+  treasure_savegame_variable = "b71",
 }
 
 destructible{
@@ -4447,7 +4447,7 @@ door{
   name = "small_key_door_B",
   direction = 0,
   subtype = "1",
-  savegame_variable = "79",
+  savegame_variable = "b79",
 }
 
 destructible{
@@ -4467,7 +4467,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "76",
+  treasure_savegame_variable = "b76",
 }
 
 door{
@@ -4477,7 +4477,7 @@ door{
   name = "small_key_block_A",
   direction = 1,
   subtype = "2",
-  savegame_variable = "73",
+  savegame_variable = "b73",
 }
 
 switch{
@@ -4506,7 +4506,7 @@ door{
   name = "small_key_door_B_2",
   direction = 2,
   subtype = "1",
-  savegame_variable = "79",
+  savegame_variable = "b79",
 }
 
 door{
@@ -4516,7 +4516,7 @@ door{
   name = "small_key_door_C",
   direction = 1,
   subtype = "1",
-  savegame_variable = "80",
+  savegame_variable = "b80",
 }
 
 door{
@@ -4526,7 +4526,7 @@ door{
   name = "small_key_door_C_2",
   direction = 3,
   subtype = "1",
-  savegame_variable = "80",
+  savegame_variable = "b80",
 }
 
 destination{
@@ -4609,7 +4609,7 @@ chest{
   is_big_chest = true,
   treasure_name = "pegasus_shoes",
   treasure_variant = 1,
-  treasure_savegame_variable = "86",
+  treasure_savegame_variable = "b86",
 }
 
 teletransporter{
@@ -4861,7 +4861,7 @@ enemy{
   direction = 3,
   breed = "khotor",
   rank = 1,
-  savegame_variable = "92",
+  savegame_variable = "b92",
   treasure_name = "fairy",
   treasure_variant = 1,
 }
@@ -5338,7 +5338,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = "951",
+  treasure_savegame_variable = "b951",
 }
 
 tile{
@@ -7761,7 +7761,7 @@ enemy{
   rank = 0,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "74",
+  treasure_savegame_variable = "b74",
 }
 
 chest{
@@ -7772,7 +7772,7 @@ chest{
   is_big_chest = false,
   treasure_name = "big_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "84",
+  treasure_savegame_variable = "b84",
 }
 
 chest{
@@ -7783,7 +7783,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = "87",
+  treasure_savegame_variable = "b87",
 }
 
 dynamic_tile{

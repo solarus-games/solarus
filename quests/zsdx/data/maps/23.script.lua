@@ -18,7 +18,7 @@ function map:on_started(destination)
 
   map_chest:set_enabled(false)
   compass_chest:set_enabled(false)
-  if map:get_game():get_value("54") then
+  if map:get_game():get_value("b54") then
     map_room_switch:set_activated(true)
   end
 

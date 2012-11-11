@@ -24,21 +24,21 @@ end
 function map:on_started(destination)
 
   -- enable dark world
-  if map:get_game():get_value("905") then
+  if map:get_game():get_value("b905") then
     sol.audio.play_music("dark_world")
     map:set_tileset(13)
   else
     sol.audio.play_music("overworld")
   end
 
-  if map:get_game():get_value("24") then
+  if map:get_game():get_value("b24") then
     -- remove the monkey from Link's house entrance
     monkey:remove()
   else
     monkey_sprite = monkey:get_sprite()
   end
 
-  if map:get_game():get_value("89") then
+  if map:get_game():get_value("b89") then
     -- remove the dungeon 2 door
     remove_dungeon_2_door()
   end
@@ -54,7 +54,7 @@ function map:on_started(destination)
   end
 
   -- smith cave with thiefs
-  if map:get_game():get_value("155") and not map:get_game():get_value("156") then
+  if map:get_game():get_value("b155") and not map:get_game():get_value("b156") then
     to_smith_cave:set_enabled(false)
   else
     to_smith_cave_thiefs:set_enabled(false)
@@ -80,7 +80,7 @@ end
 
 function monkey:on_interaction()
 
-  if not map:get_game():get_value("24") then
+  if not map:get_game():get_value("b24") then
     -- monkey first dialog
     sol.audio.play_sound("monkey")
     map:start_dialog("outside_world.village.monkey", function()
@@ -101,7 +101,7 @@ function monkey:on_interaction()
 	  monkey:start_movement(m)
 	  monkey_sprite:set_animation("jumping")
 	  monkey_jumps = 1
-	  map:get_game():set_value("24", true)
+	  map:get_game():set_value("b24", true)
 	end)
       end
     end)
@@ -117,7 +117,7 @@ function dungeon_2_door:on_interaction()
   if map:get_game():get_item("rock_key"):has_variant() then
     sol.audio.play_sound("door_open")
     sol.audio.play_sound("secret")
-    map:get_game():set_value("89", true)
+    map:get_game():set_value("b89", true)
     remove_dungeon_2_door()
   else
     map:start_dialog("outside_world.rock_key_required")

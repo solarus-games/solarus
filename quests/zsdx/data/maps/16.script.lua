@@ -7,7 +7,7 @@ local sword_price = 75
 function smith:on_interaction()
 
   -- smith dialog
-  if not map:get_game():get_value("30") then
+  if not map:get_game():get_value("b30") then
     -- the player has no sword yet
     map:start_dialog("smith_cave.without_sword", function(answer)
       -- the dialog was the question to buy the sword

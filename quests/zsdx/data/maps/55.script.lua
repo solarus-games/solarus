@@ -27,14 +27,14 @@ local function remove_water_4()
   water_tile_less_3:set_enabled(false)
   map:set_entities_enabled("water_on_jumper", false)
   map:set_entities_enabled("water_off_obstacle", true)
-  map:get_game():set_value("319", true)
+  map:get_game():set_value("b319", true)
   sol.audio.play_sound("secret")
 end
 
 function map:on_started(destination)
 
   -- weak floor
-  if map:get_game():get_value("314") then
+  if map:get_game():get_value("b314") then
     weak_floor:set_enabled(false)
     weak_floor_sensor:set_enabled(false)
   else
@@ -42,7 +42,7 @@ function map:on_started(destination)
   end
 
   -- water
-  if map:get_game():get_value("319") then
+  if map:get_game():get_value("b319") then
     map:set_entities_enabled("water_tile", false)
     map:set_entities_enabled("water_on_jumper", false)
     water_switch:set_activated(true)
@@ -69,13 +69,13 @@ function weak_floor_sensor:on_collision_explosion()
     weak_floor_sensor:set_enabled(false)
     weak_floor_teletransporter:set_enabled(true)
     sol.audio.play_sound("secret")
-    map:get_game():set_value("314", true)
+    map:get_game():set_value("b314", true)
   end
 end
 
 function water_switch:on_activated()
 
-  if not map:get_game():get_value("319") then
+  if not map:get_game():get_value("b319") then
     map:move_camera(616, 192, 250, remove_water, 1000, 2500)
   end
 end

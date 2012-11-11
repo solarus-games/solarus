@@ -5,7 +5,7 @@ properties{
   height = 1296,
   world = "dungeon_9",
   floor = "1",
-  small_keys_variable = "dungeon_9.small_keys",
+  small_keys_variable = "dungeon_9_small_keys",
   tileset = "15",
   music = "southern_shrine",
 }
@@ -8471,7 +8471,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "811",
+  treasure_savegame_variable = "b811",
 }
 
 switch{
@@ -9452,7 +9452,7 @@ door{
   name = "door_3",
   direction = 0,
   subtype = "1",
-  savegame_variable = "815",
+  savegame_variable = "b815",
 }
 
 door{
@@ -9462,7 +9462,7 @@ door{
   name = "door_4",
   direction = 2,
   subtype = "1",
-  savegame_variable = "815",
+  savegame_variable = "b815",
 }
 
 door{
@@ -9867,7 +9867,7 @@ door{
   name = "door_5",
   direction = 0,
   subtype = "1",
-  savegame_variable = "817",
+  savegame_variable = "b817",
 }
 
 door{
@@ -9877,7 +9877,7 @@ door{
   name = "door_6",
   direction = 2,
   subtype = "1",
-  savegame_variable = "817",
+  savegame_variable = "b817",
 }
 
 door{
@@ -10968,7 +10968,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "1",
-  savegame_variable = "813",
+  savegame_variable = "b813",
 }
 
 door{
@@ -10978,7 +10978,7 @@ door{
   name = "door_2",
   direction = 2,
   subtype = "1",
-  savegame_variable = "813",
+  savegame_variable = "b813",
 }
 
 tile{

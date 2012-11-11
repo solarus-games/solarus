@@ -15,7 +15,7 @@ function map:on_started(destination)
   map:set_entities_enabled("pipe_under", true)
   map:set_entities_enabled("pipe_border", false)
 
-  if map:get_game():get_value("621") then
+  if map:get_game():get_value("b621") then
     ne_door_switch:set_activated(true)
     ne_door_switch:set_locked(true)
   end

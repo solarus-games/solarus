@@ -5,7 +5,7 @@ function map:on_started(destination)
 
   map:set_light(0)
 
-  if map:get_game():get_value("934") then
+  if map:get_game():get_value("b934") then
     bone_key_door:remove()
   end
 end
@@ -21,7 +21,7 @@ function bone_key_door:on_interaction()
       sol.audio.play_sound("door_unlocked")
       sol.audio.play_sound("secret")
       bone_key_door:remove()
-      map:get_game():set_value("934", true)
+      map:get_game():set_value("b934", true)
     end)
   end
 end

@@ -5,7 +5,7 @@ function map:on_started(destination)
 
   ganon_npc:set_enabled(false)
   if destination:get_name() == "from_1F" then
-    if map:get_game():get_value("728") then
+    if map:get_game():get_value("b728") then
       -- Agahnim already killed
       agahnim_npc:set_enabled(false)
     end
@@ -14,7 +14,7 @@ end
 
 function start_boss_sensor:on_activated()
 
-  if not map:get_game():get_value("728") then
+  if not map:get_game():get_value("b728") then
 
     map:close_doors("boss_door")
     hero:freeze()

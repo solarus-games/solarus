@@ -138,7 +138,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
 
   // pieces of heart
   {
-    int x = 51 * savegame.get_integer("1030");
+    int x = 51 * savegame.get_integer("i1030");
     Rectangle src_position(x, 0, 51, 50);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 59,
         SOLARUS_SCREEN_HEIGHT_MIDDLE -38);
@@ -173,7 +173,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
       oss << "dungeon_" << i;
       const std::string& dungeon_number = oss.str();
 
-      if (savegame.get_boolean(dungeon_number + ".finished")) {
+      if (savegame.get_boolean(dungeon_number + "_finished")) {
         Rectangle src_position(i * 20, 0, 20, 20);
         dungeons_img.draw_region(src_position, quest_items_surface, dst_positions[i]);
       }

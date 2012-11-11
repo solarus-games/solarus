@@ -40,9 +40,9 @@ local function play_question_dialog_finished(answer)
         chest_open:set_open(false)
       end
 
-      if not map:get_game():get_value("180") then
+      if not map:get_game():get_value("b180") then
         map:start_dialog("chests_game_cave.start_game_wooden_key")
-      elseif not map:get_game():get_value("181") then
+      elseif not map:get_game():get_value("b181") then
         map:start_dialog("chests_game_cave.start_game_piece_of_heart")
       else
         map:start_dialog("chests_game_cave.start_game")
@@ -58,10 +58,10 @@ function mini_game_npc:on_interaction()
 
   if playing then
     map:start_dialog("chests_game_cave.already_playing")
-  elseif not map:get_game():get_value("160") then
+  elseif not map:get_game():get_value("b160") then
     -- first time
     map:start_dialog("chests_game_cave.first_time", play_question_dialog_finished)
-    map:get_game():set_value("160", true)
+    map:get_game():set_value("b160", true)
   else
     map:start_dialog("chests_game_cave.not_first_time", play_question_dialog_finished)
   end
@@ -78,7 +78,7 @@ local function chest_empty(chest)
     local index = math.random(#rewards)
 
     while rewards[index].savegame_variable ~= nil and
-        map:get_game():get_boolean(rewards[index].savegame_variable) do
+        map:get_game():get_value("b" .. rewards[index].savegame_variable) do
       -- don't give a saved reward twice (wooden key or piece of heart)
       index = math.random(#rewards)
     end

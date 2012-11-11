@@ -4,11 +4,11 @@ local map = ...
 -- The player talks to grandma
 function grandma:on_interaction()
 
-  local has_smith_sword = map:get_game():get_value("30")
-  local has_clay_key = map:get_game():get_value("28")
-  local has_finished_lyriann_cave = map:get_game():get_value("37")
-  local has_bow = map:get_game():get_value("26")
-  local has_rock_key = map:get_game():get_value("68")
+  local has_smith_sword = map:get_game():get_value("b30")
+  local has_clay_key = map:get_game():get_value("b28")
+  local has_finished_lyriann_cave = map:get_game():get_value("b37")
+  local has_bow = map:get_game():get_value("b26")
+  local has_rock_key = map:get_game():get_value("b68")
 
   if not has_smith_sword then
     -- beginning: go get a sword

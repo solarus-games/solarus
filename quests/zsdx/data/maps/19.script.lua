@@ -2,11 +2,11 @@ local map = ...
 -- Cake shop
 
 local function has_talked_about_apples()
-  return map:get_game():get_value("46")
+  return map:get_game():get_value("b46")
 end
 
 local function has_obtained_bottle()
-  return map:get_game():get_value("32")
+  return map:get_game():get_value("b32")
 end
 
 local function talk_to_seller()
@@ -20,7 +20,7 @@ end
 
 local function apples_question_finished(answer)
 
-  map:get_game():set_value("46", true)
+  map:get_game():set_value("b46", true)
 
   if answer == 0 then
     if map:get_game():gas_item("apples_counter"):has_variant() then

@@ -60,7 +60,7 @@ end
 
 function map:on_started(destination)
 
-  if map:get_game():get_value("134") then
+  if map:get_game():get_value("b134") then
     -- the player has already given the golden bars and obtained the edelweiss
     billy:remove()
   end
@@ -72,9 +72,9 @@ end
 
 function billy:on_interaction()
 
-  if not map:get_game():get_value("135") then
+  if not map:get_game():get_value("b135") then
     map:start_dialog("billy_cave.hello")
-    map:get_game():set_value("135", true)
+    map:get_game():set_value("b135", true)
   else
     map:start_dialog("billy_cave.what_do_you_have", function()
       if map:get_game():get_item("level_4_way"):get_variant() == 2 then

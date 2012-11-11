@@ -204,7 +204,7 @@ void PauseSubmenuMap::load_dungeon_map_image() {
   oss << "dungeon_" << dungeon.get_number();
   const std::string& dungeon_number = oss.str();
 
-  if (savegame.get_boolean(dungeon_number + ".map")) {
+  if (savegame.get_boolean(dungeon_number + "_map")) {
 
     // load the image of this floor
     oss.str("");
@@ -214,7 +214,7 @@ void PauseSubmenuMap::load_dungeon_map_image() {
     delete floor_map_img;
   }
 
-  if (savegame.get_boolean(dungeon_number + ".compass")) {
+  if (savegame.get_boolean(dungeon_number + "_compass")) {
     hero_point_sprite = NULL;
   }
 
@@ -475,7 +475,7 @@ void PauseSubmenuMap::draw_dungeon_items(Surface& dst_surface) {
   const std::string& dungeon_number = oss.str();
 
   // rooms
-  if (savegame.get_boolean(dungeon_number + ".map")) {
+  if (savegame.get_boolean(dungeon_number + "_map")) {
     Rectangle src_position(0, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 110,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
@@ -483,7 +483,7 @@ void PauseSubmenuMap::draw_dungeon_items(Surface& dst_surface) {
   }
 
   // elements
-  if (savegame.get_boolean(dungeon_number + ".compass")) {
+  if (savegame.get_boolean(dungeon_number + "_compass")) {
     Rectangle src_position(17, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 91,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
@@ -491,7 +491,7 @@ void PauseSubmenuMap::draw_dungeon_items(Surface& dst_surface) {
   }
 
   // big key
-  if (savegame.get_boolean(dungeon_number + ".big_key")) {
+  if (savegame.get_boolean(dungeon_number + "_big_key")) {
     Rectangle src_position(34, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 72,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
@@ -499,7 +499,7 @@ void PauseSubmenuMap::draw_dungeon_items(Surface& dst_surface) {
   }
 
   // boss key
-  if (savegame.get_boolean(dungeon_number + ".boss_key")) {
+  if (savegame.get_boolean(dungeon_number + "_boss_key")) {
     Rectangle src_position(51, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 53,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
@@ -550,7 +550,7 @@ void PauseSubmenuMap::draw_dungeon_floors(Surface& dst_surface) {
   oss << "dungeon_" << game.get_current_dungeon().get_number();
   const std::string& dungeon_number = oss.str();
 
-  if (savegame.get_boolean(dungeon_number + ".compass")
+  if (savegame.get_boolean(dungeon_number + "_compass")
       && boss_floor >= lowest_floor_displayed
       && boss_floor <= highest_floor_displayed) {
 

@@ -7736,7 +7736,7 @@ pickable{
   y = 213,
   treasure_name = "sword",
   treasure_variant = 1,
-  treasure_savegame_variable = "42",
+  treasure_savegame_variable = "b42",
 }
 
 destination{
@@ -7774,7 +7774,7 @@ pickable{
   y = 85,
   treasure_name = "heart_container",
   treasure_variant = 1,
-  treasure_savegame_variable = "64",
+  treasure_savegame_variable = "b64",
 }
 
 destructible{
@@ -7812,7 +7812,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = "45",
+  treasure_savegame_variable = "b45",
 }
 
 destructible{
@@ -7895,7 +7895,7 @@ pickable{
   y = 365,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "44",
+  treasure_savegame_variable = "b44",
 }
 
 destructible{
@@ -8022,7 +8022,7 @@ destructible{
   subtype = "grass",
   treasure_name = "bottle_3",
   treasure_variant = 1,
-  treasure_savegame_variable = "63",
+  treasure_savegame_variable = "b63",
 }
 
 destructible{

@@ -11578,7 +11578,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "8",
-  savegame_variable = "73",
+  savegame_variable = "b73",
 }
 
 door{
@@ -11588,7 +11588,7 @@ door{
   name = "door_2",
   direction = 1,
   subtype = "8",
-  savegame_variable = "74",
+  savegame_variable = "b74",
 }
 
 wall{

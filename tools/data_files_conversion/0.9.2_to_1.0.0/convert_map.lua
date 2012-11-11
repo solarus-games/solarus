@@ -6,6 +6,10 @@
 -- The old format (solarus 0.9.2) is a text file with a specific syntax.
 -- The new format (solarus 1.0.0) is a Lua data file.
 
+local function prepend_b(value)
+  return "b" .. value
+end
+
 -- This table describes the old syntax.
 local entity_syntaxes = {
 
@@ -53,7 +57,7 @@ local entity_syntaxes = {
     { token_name = "y" },
     { token_name = "treasure_name", token_type = "string" },
     { token_name = "treasure_variant", nil_value = 0 },
-    { token_name = "treasure_savegame_variable", token_type = "string", nil_value = "-1" },
+    { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
   },
 
   [4] = {
@@ -72,7 +76,7 @@ local entity_syntaxes = {
     },
     { token_name = "treasure_name", token_type = "string" },
     { token_name = "treasure_variant", nil_value = 0 },
-    { token_name = "treasure_savegame_variable", token_type = "string", nil_value = "-1" },
+    { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
   },
 
   [5] = {
@@ -84,7 +88,7 @@ local entity_syntaxes = {
     { token_name = "is_big_chest", token_type = "boolean" },
     { token_name = "treasure_name", token_type = "string" },
     { token_name = "treasure_variant", nil_value = 0 },
-    { token_name = "treasure_savegame_variable", token_type = "string", nil_value = "-1" },
+    { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
   },
 
   [6] = {
@@ -108,10 +112,10 @@ local entity_syntaxes = {
     { token_name = "direction" },
     { token_name = "breed", token_type = "string" },
     { token_name = "rank" },
-    { token_name = "savegame_variable", token_type = "string", nil_value = "-1" },
+    { token_name = "savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
     { token_name = "treasure_name", token_type = "string" },
     { token_name = "treasure_variant", nil_value = 0 },
-    { token_name = "treasure_savegame_variable", token_type = "string", nil_value = "-1" },
+    { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
   },
 
   [8] = {
@@ -212,7 +216,7 @@ local entity_syntaxes = {
     { token_name = "name", token_type = "string" },
     { token_name = "treasure_name", token_type = "string" },
     { token_name = "treasure_variant" },
-    { token_name = "treasure_savegame_variable", token_type = "string", nil_value = "-1" },
+    { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
     { token_name = "price" },
     { token_name = "dialog", token_type = "string" },
   },
@@ -233,7 +237,7 @@ local entity_syntaxes = {
     { token_name = "name", token_type = "string" },
     { token_name = "direction" },
     { token_name = "subtype", token_type = "string" },
-    { token_name = "savegame_variable", token_type = "string", nil_value = "-1" },
+    { token_name = "savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
   },
 
   [19] = {
@@ -309,9 +313,9 @@ function print_metadata(metadata)
     if metadata.small_keys_variable < 1024 then
       -- It is a small key counter of dungeon.
       local dungeon = (metadata.small_keys_variable - 205) / 10 + 1
-      metadata.small_keys_variable = "dungeon_" .. dungeon .. ".small_keys"
+      metadata.small_keys_variable = "dungeon_" .. dungeon .. "_small_keys"
     else
-      metadata.small_keys_variable = "integer_" .. metadata.small_keys_variable
+      metadata.small_keys_variable = "i" .. metadata.small_keys_variable
     end
     io.write("  small_keys_variable = \"" .. metadata.small_keys_variable .. "\",\n")
   end
@@ -359,16 +363,18 @@ function parse_entity(line, line_number)
             " for token '" .. syntax[i].token_name .. "'")
       end
 
-      if syntax[i].converter ~= nil then
+      if value == syntax[i].nil_value then
+        value = nil
+      elseif syntax[i].converter ~= nil then
         -- The value has to be converted to a new syntax.
-        value = syntax[i].converter[value]
+	if type(syntax[i].converter) == "table" then
+	  value = syntax[i].converter[value]
+	else
+	  value = syntax[i].converter(value)
+	end
         if value == nil then
           error("Line " .. line_number .. ": Failed to convert the value")
         end
-      end
-
-      if value == syntax[i].nil_value then
-        value = nil
       end
 
       entity[i] = {

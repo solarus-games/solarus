@@ -1503,7 +1503,7 @@ pickable{
   y = 93,
   treasure_name = "bomb_bag",
   treasure_variant = 1,
-  treasure_savegame_variable = "56",
+  treasure_savegame_variable = "b56",
 }
 
 door{

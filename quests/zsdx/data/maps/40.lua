@@ -5,7 +5,7 @@ properties{
   height = 1024,
   world = "dungeon_3",
   floor = "0",
-  small_keys_variable = "dungeon_3.small_keys",
+  small_keys_variable = "dungeon_3_small_keys",
   tileset = "14",
   music = "dark_world_dungeon",
 }
@@ -783,7 +783,7 @@ destructible{
   subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "108",
+  treasure_savegame_variable = "b108",
 }
 
 destructible{
@@ -860,7 +860,7 @@ chest{
   is_big_chest = false,
   treasure_name = "map",
   treasure_variant = 1,
-  treasure_savegame_variable = "118",
+  treasure_savegame_variable = "b118",
 }
 
 stairs{
@@ -8735,7 +8735,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "2",
-  savegame_variable = "109",
+  savegame_variable = "b109",
 }
 
 door{
@@ -8745,7 +8745,7 @@ door{
   name = "torches_door_2",
   direction = 0,
   subtype = "0",
-  savegame_variable = "113",
+  savegame_variable = "b113",
 }
 
 door{
@@ -8755,7 +8755,7 @@ door{
   name = "torches_door",
   direction = 2,
   subtype = "0",
-  savegame_variable = "113",
+  savegame_variable = "b113",
 }
 
 door{
@@ -8765,7 +8765,7 @@ door{
   name = "ce_door_2",
   direction = 1,
   subtype = "0",
-  savegame_variable = "904",
+  savegame_variable = "b904",
 }
 
 door{
@@ -8775,7 +8775,7 @@ door{
   name = "ce_door",
   direction = 3,
   subtype = "0",
-  savegame_variable = "904",
+  savegame_variable = "b904",
 }
 
 door{

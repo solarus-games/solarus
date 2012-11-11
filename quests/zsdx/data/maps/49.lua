@@ -5,7 +5,7 @@ properties{
   height = 1408,
   world = "dungeon_8",
   floor = "-2",
-  small_keys_variable = "dungeon_8.small_keys",
+  small_keys_variable = "dungeon_8_small_keys",
   tileset = "9",
   music = "same",
 }
@@ -6191,7 +6191,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 4,
-  treasure_savegame_variable = "712",
+  treasure_savegame_variable = "b712",
 }
 
 crystal_block{
@@ -6256,7 +6256,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 5,
-  treasure_savegame_variable = "711",
+  treasure_savegame_variable = "b711",
 }
 
 teletransporter{
@@ -6291,7 +6291,7 @@ chest{
   is_big_chest = false,
   treasure_name = "boss_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "726",
+  treasure_savegame_variable = "b726",
 }
 
 crystal_block{
@@ -6337,7 +6337,7 @@ door{
   name = "BD01",
   direction = 2,
   subtype = "3",
-  savegame_variable = "713",
+  savegame_variable = "b713",
 }
 
 crystal_block{
@@ -6935,7 +6935,7 @@ door{
   name = "KD04",
   direction = 2,
   subtype = "1",
-  savegame_variable = "714",
+  savegame_variable = "b714",
 }
 
 door{
@@ -6945,7 +6945,7 @@ door{
   name = "BD01_2",
   direction = 0,
   subtype = "3",
-  savegame_variable = "713",
+  savegame_variable = "b713",
 }
 
 door{
@@ -6955,7 +6955,7 @@ door{
   name = "KD04_2",
   direction = 0,
   subtype = "1",
-  savegame_variable = "714",
+  savegame_variable = "b714",
 }
 
 destination{

@@ -13790,7 +13790,7 @@ pickable{
   y = 109,
   treasure_name = "heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "48",
+  treasure_savegame_variable = "b48",
 }
 
 pickable{
@@ -13799,7 +13799,7 @@ pickable{
   y = 109,
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = "49",
+  treasure_savegame_variable = "b49",
 }
 
 pickable{
@@ -13808,7 +13808,7 @@ pickable{
   y = 109,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = "50",
+  treasure_savegame_variable = "b50",
 }
 
 pickable{
@@ -13817,7 +13817,7 @@ pickable{
   y = 109,
   treasure_name = "rupee",
   treasure_variant = 1,
-  treasure_savegame_variable = "51",
+  treasure_savegame_variable = "b51",
 }
 
 destructible{
@@ -13957,7 +13957,7 @@ pickable{
   y = 141,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "14",
+  treasure_savegame_variable = "b14",
 }
 
 pickable{
@@ -13966,7 +13966,7 @@ pickable{
   y = 733,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "15",
+  treasure_savegame_variable = "b15",
 }
 
 destructible{
@@ -14147,7 +14147,7 @@ destructible{
   subtype = "white_stone",
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = "97",
+  treasure_savegame_variable = "b97",
 }
 
 destructible{
@@ -14193,7 +14193,7 @@ destructible{
   subtype = "white_stone",
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = "98",
+  treasure_savegame_variable = "b98",
 }
 
 destructible{
@@ -14241,7 +14241,7 @@ destructible{
   subtype = "white_stone",
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = "94",
+  treasure_savegame_variable = "b94",
 }
 
 destructible{
@@ -14251,7 +14251,7 @@ destructible{
   subtype = "white_stone",
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = "95",
+  treasure_savegame_variable = "b95",
 }
 
 destructible{
@@ -14261,7 +14261,7 @@ destructible{
   subtype = "white_stone",
   treasure_name = "rupee",
   treasure_variant = 1,
-  treasure_savegame_variable = "96",
+  treasure_savegame_variable = "b96",
 }
 
 enemy{
@@ -14316,7 +14316,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = "23",
+  treasure_savegame_variable = "b23",
 }
 
 npc{
@@ -15060,7 +15060,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 4,
-  treasure_savegame_variable = "22",
+  treasure_savegame_variable = "b22",
 }
 
 destination{

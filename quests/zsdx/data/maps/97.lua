@@ -5,7 +5,7 @@ properties{
   height = 1032,
   world = "dungeon_10",
   floor = "1",
-  small_keys_variable = "dungeon_10.small_keys",
+  small_keys_variable = "dungeon_10_small_keys",
   tileset = "4",
   music = "same",
 }
@@ -2296,7 +2296,7 @@ destructible{
   subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "204",
+  treasure_savegame_variable = "b204",
 }
 
 destructible{
@@ -4719,7 +4719,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "2",
-  savegame_variable = "217",
+  savegame_variable = "b217",
 }
 
 door{
@@ -4729,7 +4729,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "2",
-  savegame_variable = "219",
+  savegame_variable = "b219",
 }
 
 wall{
@@ -4765,7 +4765,7 @@ door{
   name = "door_2",
   direction = 1,
   subtype = "2",
-  savegame_variable = "218",
+  savegame_variable = "b218",
 }
 
 door{
@@ -4775,7 +4775,7 @@ door{
   name = "door_4",
   direction = 1,
   subtype = "2",
-  savegame_variable = "220",
+  savegame_variable = "b220",
 }
 
 wall{
@@ -4812,7 +4812,7 @@ chest{
   is_big_chest = false,
   treasure_name = "compass",
   treasure_variant = 1,
-  treasure_savegame_variable = "229",
+  treasure_savegame_variable = "b229",
 }
 
 block{
@@ -5702,7 +5702,7 @@ door{
   name = "door_5",
   direction = 1,
   subtype = "3",
-  savegame_variable = "240",
+  savegame_variable = "b240",
 }
 
 destination{

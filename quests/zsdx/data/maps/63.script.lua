@@ -39,7 +39,7 @@ local function puzzle_solved()
   sol.timer.start(1000, function()
     sol.timer.start(1000, function()
       sol.audio.play_sound("secret")
-      map:get_game():set_value("519", true)
+      map:get_game():set_value("b519", true)
       map:start_dialog("dungeon_5.puzzle_solved", function()
 	hero:unfreeze()
       end)
@@ -50,14 +50,14 @@ function map:on_started(destination)
 
   init_guard(guard_3, {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,4,4,4,4,4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0})
 
-  if map:get_game():get_value("515") then
+  if map:get_game():get_value("b515") then
     weak_floor:set_enabled(false)
     weak_floor_sensor:set_enabled(false)
     weak_floor_block:set_enabled(false)
   end
 
   -- blocks necessary to go back when found the feather
-  if map:get_game():get_value("517") then
+  if map:get_game():get_value("b517") then
     s_block_1:set_position(464, 773)
     s_block_2:set_position(496, 773)
   end
@@ -81,15 +81,15 @@ end
 function save_s_blocks_sensor:on_activated()
 
   if map:get_game():get_item("feather"):has_variant()
-      and not map:get_game():get_value("517") then
+      and not map:get_game():get_value("b517") then
     -- solved the blocks puzzle necessary to exit this floor
-    map:get_game():set_value("517", true)
+    map:get_game():set_value("b517", true)
   end
 end
 
 local function puzzle_sensor_activated(sensor)
   local i = sensor:get_name():match("puzzle_sensor_([1-4])")
-  if i ~= nil and not map:get_game():get_value("519") then
+  if i ~= nil and not map:get_game():get_value("b519") then
     i = tonumber(i)
     if puzzle_next_sensor == 5 and i == 1 then
       puzzle_solved()
@@ -133,7 +133,7 @@ function weak_floor_sensor:on_collision_explosion()
     weak_floor:set_enabled(false)
     weak_floor_sensor:set_enabled(false)
     sol.audio.play_sound("secret")
-    map:get_game():set_value("515", true)
+    map:get_game():set_value("b515", true)
     sol.timer.start(1500, function()
       weak_floor_block:set_enabled(false)
       sol.audio.play_sound("jump")

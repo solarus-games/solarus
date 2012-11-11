@@ -5,7 +5,7 @@ properties{
   height = 1032,
   world = "dungeon_10",
   floor = "-1",
-  small_keys_variable = "dungeon_10.small_keys",
+  small_keys_variable = "dungeon_10_small_keys",
   tileset = "4",
   music = "same",
 }
@@ -485,7 +485,7 @@ door{
   name = "door_2",
   direction = 1,
   subtype = "2",
-  savegame_variable = "232",
+  savegame_variable = "b232",
 }
 
 pickable{
@@ -494,7 +494,7 @@ pickable{
   y = 293,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "231",
+  treasure_savegame_variable = "b231",
 }
 
 enemy{
@@ -1949,7 +1949,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "2",
-  savegame_variable = "233",
+  savegame_variable = "b233",
 }
 
 block{
@@ -2076,7 +2076,7 @@ pickable{
   y = 973,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "230",
+  treasure_savegame_variable = "b230",
 }
 
 block{
@@ -2281,7 +2281,7 @@ chest{
   is_big_chest = true,
   treasure_name = "magic_bar",
   treasure_variant = 2,
-  treasure_savegame_variable = "226",
+  treasure_savegame_variable = "b226",
 }
 
 sensor{

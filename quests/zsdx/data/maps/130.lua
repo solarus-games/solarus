@@ -5,7 +5,7 @@ properties{
   height = 480,
   world = "dungeon_9",
   floor = "unknown",
-  small_keys_variable = "dungeon_9.small_keys",
+  small_keys_variable = "dungeon_9_small_keys",
   tileset = "15",
 }
 
@@ -1009,7 +1009,7 @@ enemy{
   direction = 3,
   breed = "ganon",
   rank = 2,
-  savegame_variable = "881",
+  savegame_variable = "b881",
   treasure_name = "_none",
   treasure_variant = 1,
 }

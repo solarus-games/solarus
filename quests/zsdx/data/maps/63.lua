@@ -5,7 +5,7 @@ properties{
   height = 1216,
   world = "dungeon_5",
   floor = "1",
-  small_keys_variable = "dungeon_5.small_keys",
+  small_keys_variable = "dungeon_5_small_keys",
   tileset = "12",
   music = "castle",
 }
@@ -1291,7 +1291,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "1",
-  savegame_variable = "516",
+  savegame_variable = "b516",
 }
 
 door{
@@ -1301,7 +1301,7 @@ door{
   name = "door_2",
   direction = 2,
   subtype = "1",
-  savegame_variable = "516",
+  savegame_variable = "b516",
 }
 
 wall{
@@ -10428,7 +10428,7 @@ chest{
   is_big_chest = true,
   treasure_name = "feather",
   treasure_variant = 1,
-  treasure_savegame_variable = "504",
+  treasure_savegame_variable = "b504",
 }
 
 block{
@@ -10507,7 +10507,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "505",
+  treasure_savegame_variable = "b505",
 }
 
 block{
@@ -11440,7 +11440,7 @@ pickable{
   y = 749,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "506",
+  treasure_savegame_variable = "b506",
 }
 
 teletransporter{

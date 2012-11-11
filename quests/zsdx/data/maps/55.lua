@@ -5,7 +5,7 @@ properties{
   height = 768,
   world = "dungeon_6",
   floor = "1",
-  small_keys_variable = "dungeon_6.small_keys",
+  small_keys_variable = "dungeon_6_small_keys",
   tileset = "10",
   music = "same",
 }
@@ -3239,7 +3239,7 @@ chest{
   is_big_chest = false,
   treasure_name = "boss_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "301",
+  treasure_savegame_variable = "b301",
 }
 
 destructible{
@@ -3277,7 +3277,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "302",
+  treasure_savegame_variable = "b302",
 }
 
 teletransporter{
@@ -3302,7 +3302,7 @@ chest{
   is_big_chest = false,
   treasure_name = "compass",
   treasure_variant = 1,
-  treasure_savegame_variable = "303",
+  treasure_savegame_variable = "b303",
 }
 
 destination{
@@ -7596,7 +7596,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 5,
-  treasure_savegame_variable = "300",
+  treasure_savegame_variable = "b300",
 }
 
 door{
@@ -7606,7 +7606,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "1",
-  savegame_variable = "304",
+  savegame_variable = "b304",
 }
 
 door{
@@ -7616,7 +7616,7 @@ door{
   name = "door_2",
   direction = 2,
   subtype = "1",
-  savegame_variable = "304",
+  savegame_variable = "b304",
 }
 
 destination{

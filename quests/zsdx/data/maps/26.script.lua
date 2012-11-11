@@ -2,11 +2,11 @@ local map = ...
 -- Fairy cave
 
 local function has_fairy_appeared()
-  return map:get_game():get_value("99")
+  return map:get_game():get_value("b99")
 end
 
 local function has_boomerang_from_fairy()
-  return map:get_game():get_value("100")
+  return map:get_game():get_value("b100")
 end
 
 local function show_fairy()
@@ -42,7 +42,7 @@ function map:on_update()
       and are_all_torches_on() then
 
     sol.audio.play_sound("secret")
-    map:get_game():set_value("99", true)
+    map:get_game():set_value("b99", true)
     show_fairy()
   end
 end

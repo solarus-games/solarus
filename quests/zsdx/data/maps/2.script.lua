@@ -50,7 +50,7 @@ function game_1_man:on_interaction()
   else
 
     -- see if the player can still play
-    local unauthorized = map:get_game():get_value("16")
+    local unauthorized = map:get_game():get_value("b16")
 
     if unauthorized then
       -- the player already won much money
@@ -88,7 +88,7 @@ function game_3_man:on_interaction()
     map:start_dialog("rupee_house.game_3.restart_question", game_3_question_dialog_finished)
   else
     -- see if the player can still play
-    local unauthorized = map:get_game():get_value("17")
+    local unauthorized = map:get_game():get_value("b17")
 
     if unauthorized then
       -- the player already won this game
@@ -283,7 +283,7 @@ function open_game_1_chest(chest)
 
     if amount == 50 then
       -- the maximum reward was found: the game will now refuse to let the hero play again
-      map:get_game():set_value("16", true)
+      map:get_game():set_value("b16", true)
     end
 
     playing_game_1 = false

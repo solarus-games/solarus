@@ -5,7 +5,7 @@ properties{
   height = 240,
   world = "dungeon_4",
   floor = "unknown",
-  small_keys_variable = "dungeon_4.small_keys",
+  small_keys_variable = "dungeon_4_small_keys",
   tileset = "2",
   music = "same",
 }
@@ -899,7 +899,7 @@ chest{
   is_big_chest = false,
   treasure_name = "boss_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "411",
+  treasure_savegame_variable = "b411",
 }
 
 block{

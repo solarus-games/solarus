@@ -5,7 +5,7 @@ properties{
   height = 1040,
   world = "dungeon_8",
   floor = "-4",
-  small_keys_variable = "dungeon_8.small_keys",
+  small_keys_variable = "dungeon_8_small_keys",
   tileset = "9",
   music = "same",
 }
@@ -1225,7 +1225,7 @@ door{
   name = "KD05",
   direction = 1,
   subtype = "1",
-  savegame_variable = "717",
+  savegame_variable = "b717",
 }
 
 door{
@@ -1416,7 +1416,7 @@ door{
   name = "KD05_2",
   direction = 3,
   subtype = "1",
-  savegame_variable = "717",
+  savegame_variable = "b717",
 }
 
 crystal_block{

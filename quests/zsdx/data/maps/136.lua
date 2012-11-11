@@ -1112,7 +1112,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = "944",
+  treasure_savegame_variable = "b944",
 }
 
 enemy{

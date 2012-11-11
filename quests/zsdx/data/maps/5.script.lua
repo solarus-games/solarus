@@ -4,7 +4,7 @@ local map = ...
 function map:on_started(destination)
 
   -- enable dark world
-  if map:get_game():get_value("905") then
+  if map:get_game():get_value("b905") then
     sol.audio.play_music("dark_world")
     map:set_tileset(13)
   else
@@ -16,7 +16,7 @@ function map:on_started(destination)
     surprise_wall_guy:remove()
   end
 
-  if map:get_game():get_value("136") then
+  if map:get_game():get_value("b136") then
     surprise_wall_door_tile:set_enabled(false)
     surprise_wall_door:remove()
   end
@@ -34,7 +34,7 @@ function surprise_wall_guy:on_interaction()
             map:start_dialog("outside_world.surprise_wall_guy.thanks", function()
               surprise_wall_door_tile:set_enabled(false)
               surprise_wall_door:remove()
-              map:get_game():set_value("136", true)
+              map:get_game():set_value("b136", true)
               sol.audio.play_sound("secret")
               sol.audio.play_sound("door_open")
             end)

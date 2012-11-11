@@ -5,7 +5,7 @@ properties{
   height = 624,
   world = "dungeon_1",
   floor = "0",
-  small_keys_variable = "dungeon_1.small_keys",
+  small_keys_variable = "dungeon_1_small_keys",
   tileset = "5",
   music = "light_world_dungeon",
 }
@@ -1872,7 +1872,7 @@ chest{
   is_big_chest = false,
   treasure_name = "map",
   treasure_variant = 1,
-  treasure_savegame_variable = "54",
+  treasure_savegame_variable = "b54",
 }
 
 switch{
@@ -1938,7 +1938,7 @@ chest{
   is_big_chest = false,
   treasure_name = "compass",
   treasure_variant = 1,
-  treasure_savegame_variable = "55",
+  treasure_savegame_variable = "b55",
 }
 
 enemy{
@@ -2056,7 +2056,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "1",
-  savegame_variable = "58",
+  savegame_variable = "b58",
 }
 
 door{
@@ -2066,7 +2066,7 @@ door{
   name = "door_2",
   direction = 2,
   subtype = "1",
-  savegame_variable = "58",
+  savegame_variable = "b58",
 }
 
 wall{
@@ -4418,7 +4418,7 @@ chest{
   is_big_chest = true,
   treasure_name = "glove",
   treasure_variant = 1,
-  treasure_savegame_variable = "5",
+  treasure_savegame_variable = "b5",
 }
 
 jumper{
@@ -4494,7 +4494,7 @@ enemy{
   rank = 0,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "59",
+  treasure_savegame_variable = "b59",
 }
 
 enemy{
@@ -4725,7 +4725,7 @@ door{
   name = "weak_wall",
   direction = 1,
   subtype = "6",
-  savegame_variable = "923",
+  savegame_variable = "b923",
 }
 
 pickable{
@@ -4734,7 +4734,7 @@ pickable{
   y = 93,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = "924",
+  treasure_savegame_variable = "b924",
 }
 
 wall{

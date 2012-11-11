@@ -4,7 +4,7 @@ local map = ...
 function map:on_started(destination)
 
   map:set_doors_open("door", true)
-  if map:get_game():get_value("130") then
+  if map:get_game():get_value("b130") then
     weak_floor:set_enabled(false)
     weak_floor_sensor:set_enabled(false)
   else
@@ -34,7 +34,7 @@ function weak_floor_sensor:on_collision_explosion()
     weak_floor_sensor:set_enabled(false)
     weak_floor_teletransporter:set_enabled(true)
     sol.audio.play_sound("secret")
-    map:get_game():set_value("130", true)
+    map:get_game():set_value("b130", true)
   end
 end
 

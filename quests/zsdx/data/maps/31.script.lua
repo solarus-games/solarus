@@ -131,7 +131,7 @@ function map:on_started(destination)
 
   boss_key_chest:set_enabled(false)
 
-  if map:get_game():get_value("81") then
+  if map:get_game():get_value("b81") then
     -- boss key chest already found
     for switch, _ in pairs(switches_puzzle_order) do
       switch:set_activated(true)
@@ -142,14 +142,14 @@ function map:on_started(destination)
 
   map:set_doors_open("boss_door", true)
   if destination:get_name() == "from_final_room"
-      or map:get_game():get_value("103") then
+      or map:get_game():get_value("b103") then
     map:set_doors_open("final_room_door", true)
   end
 
-  if map:get_game():get_value("103") then
+  if map:get_game():get_value("b103") then
     -- boss heart container already picked
     boss_killed_floor:set_enabled(true)
-  elseif map:get_game():get_value("93") then
+  elseif map:get_game():get_value("b93") then
     -- boss killed, heart container not picked
     map:create_pickable{
       treasure_name = "heart_container",
@@ -164,7 +164,7 @@ end
 
 function start_boss_sensor:on_activated()
 
-  if not map:get_game():get_value("93")
+  if not map:get_game():get_value("b93")
       and not fighting_boss then
     fighting_boss = true
     boss:set_enabled(true)
@@ -175,7 +175,7 @@ end
 function close_boss_door_sensor:on_activated()
 
   if boss_door:is_open()
-      and not map:get_game():get_value("93")
+      and not map:get_game():get_value("b93")
       and not fighting_boss then
     sol.audio.stop_music()
     map:close_doors("boss_door")

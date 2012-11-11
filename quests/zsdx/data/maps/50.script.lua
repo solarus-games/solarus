@@ -14,16 +14,16 @@ local map = ...
 
 function map:on_started(destination)
   map:set_doors_open("LD12", true)
-  if map:get_game():get_value("725") then
+  if map:get_game():get_value("b725") then
     STT5:set_enabled(false)
   end
-  if map:get_game():get_value("720") then
+  if map:get_game():get_value("b720") then
     DB1:set_activated(true)
   end
-  if map:get_game():get_value("721") then
+  if map:get_game():get_value("b721") then
     DB2:set_activated(true)
   end
-  if map:get_game():get_value("720") and map:get_game():get_value("721") then
+  if map:get_game():get_value("b720") and map:get_game():get_value("b721") then
     map:set_doors_open("LD14", true)
   end
 end
@@ -39,7 +39,7 @@ function STT5:on_moved()
       and y >= 893 and y <= 925 then
     STT5:set_enabled(false)
     sol.audio.play_sound("jump")
-    map:get_game():set_value("725", true)
+    map:get_game():set_value("b725", true)
     sol.timer.start(500, function()
       sol.audio.play_sound("bomb")
     end)
@@ -48,8 +48,8 @@ end
 
 function DB1:on_activated()
 
-  map:get_game():set_value("720", true)
-  if map:get_game():get_value("721") then
+  map:get_game():set_value("b720", true)
+  if map:get_game():get_value("b721") then
     map:open_doors("LD14")
     sol.audio.play_sound("secret")
   end
@@ -57,8 +57,8 @@ end
 
 function DB2:on_activated()
 
-  map:get_game():set_value("721", true)
-  if map:get_game():get_value("720") then
+  map:get_game():set_value("b721", true)
+  if map:get_game():get_value("b720") then
     map:open_doors("LD14")
     sol.audio.play_sound("secret")
   end

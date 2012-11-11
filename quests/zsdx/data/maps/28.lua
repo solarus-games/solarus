@@ -1011,7 +1011,7 @@ chest{
   is_big_chest = false,
   treasure_name = "shield",
   treasure_variant = 1,
-  treasure_savegame_variable = "10",
+  treasure_savegame_variable = "b10",
 }
 
 chest{
@@ -1022,7 +1022,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 4,
-  treasure_savegame_variable = "11",
+  treasure_savegame_variable = "b11",
 }
 
 destructible{
@@ -1049,7 +1049,7 @@ door{
   name = "weak_wall",
   direction = 0,
   subtype = "6",
-  savegame_variable = "65",
+  savegame_variable = "b65",
 }
 
 destination{

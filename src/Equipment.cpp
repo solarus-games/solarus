@@ -646,7 +646,7 @@ void Equipment::get_random_item(std::string &item_name, int &variant) {
 const std::string& Equipment::get_item_assigned(int slot) {
 
   // TODO don't hardcode item slots
-  const std::string& savegame_variable = slot == 0 ? "hud.item_slot_left" : "hud.item_slot_right";
+  const std::string& savegame_variable = slot == 0 ? "hud_item_slot_left" : "hud_item_slot_right";
   return savegame.get_string(savegame_variable);
 }
 
@@ -666,7 +666,7 @@ void Equipment::set_item_assigned(int slot, const std::string& item_name) {
     Debug::check_assertion(get_item(item_name).can_be_assigned(), StringConcat() << "The item '" << item_name << "' cannot be assigned");
   }
 
-  const std::string& savegame_variable = slot == 0 ? "hud.item_slot_left" : "hud.item_slot_right";
+  const std::string& savegame_variable = slot == 0 ? "hud_item_slot_left" : "hud_item_slot_right";
   savegame.set_string(savegame_variable, item_name);
 }
 
@@ -847,26 +847,6 @@ void Equipment::notify_ability_used(const std::string &ability_name) {
   for (it = items.begin(); it != items.end(); it++) {
     it->second->notify_ability_used(ability_name);
   }
-}
-
-// dungeons
-
-/**
- * @brief Returns the current dungeon number.
- *
- * The dungeon number returned is between 1 and 40.
- * If the player is not in a dungeon, 0 is returned.
- *
- * @return the number of the current dungeon between 1 and 40, or 0
- */
-int Equipment::get_current_dungeon() {
-
-  Game* game = savegame.get_game();
-  if (game == NULL || !game->is_in_dungeon()) {
-    return 0;
-  }
-
-  return game->get_current_map().get_world_number();
 }
 
 // obtaining items

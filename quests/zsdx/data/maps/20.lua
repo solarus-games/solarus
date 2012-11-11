@@ -2621,7 +2621,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = "955",
+  treasure_savegame_variable = "b955",
 }
 
 crystal_block{
@@ -3669,7 +3669,7 @@ pickable{
   y = 573,
   treasure_name = "heart_container",
   treasure_variant = 1,
-  treasure_savegame_variable = "37",
+  treasure_savegame_variable = "b37",
 }
 
 stairs{

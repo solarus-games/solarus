@@ -12,12 +12,12 @@ function map:on_started(destination)
 
   -- hidden Gibdo and chest
   map:set_entities_enabled("hidden_enemy", false)
-  if not map:get_game():get_value("800") then
+  if not map:get_game():get_value("b800") then
     hidden_chest:set_enabled(false)
   end
 
   -- puzzle A
-  if map:get_game():get_value("802") then
+  if map:get_game():get_value("b802") then
     -- already solved
     map:set_entities_enabled("puzzle_a_red", false)
     map:set_entities_enabled("puzzle_a_switch", false)
@@ -43,7 +43,7 @@ function map:on_started(destination)
   map:set_entities_enabled("bridge", false)
 
   -- west enemies room
-  if not map:get_game():get_value("806") then
+  if not map:get_game():get_value("b806") then
     w_room_chest:set_enabled(false)
   else
     map:set_doors_open("w_room_door", true)
@@ -54,12 +54,12 @@ function map:on_started(destination)
   map:set_doors_open("c_door_s", true)
 
   -- east enemies room
-  if not map:get_game():get_value("808") then
+  if not map:get_game():get_value("b808") then
     e_room_chest:set_enabled(false)
   end
 
   -- north-west chest
-  if not map:get_game():get_value("810") then
+  if not map:get_game():get_value("b810") then
     nw_chest:set_enabled(false)
   else
     nw_switch_1:set_activated(true)
@@ -67,7 +67,7 @@ function map:on_started(destination)
   end
 
   -- shortcut to the boss
-  if not map:get_game():get_value("816") then
+  if not map:get_game():get_value("b816") then
     shortcut:set_enabled(false)
     shortcut_teletransporter:set_enabled(false)
   end
@@ -276,7 +276,7 @@ local function puzzle_a_switch_activated(switch)
       map:move_camera(896, 1896, 250, function()
 	sol.audio.play_sound("chest_appears")
 	puzzle_a_chest:set_enabled(true)
-	map:get_game():set_value("802", true)
+	map:get_game():set_value("b802", true)
       end)
     end
   end

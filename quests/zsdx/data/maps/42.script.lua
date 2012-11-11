@@ -6,7 +6,7 @@ function map:on_started(destination)
   map:set_light(0)
 
   -- weak floor
-  if map:get_game():get_value("133") then
+  if map:get_game():get_value("b133") then
     weak_floor:set_enabled(false)
     weak_floor_sensor:set_enabled(false)
   else
@@ -14,7 +14,7 @@ function map:on_started(destination)
   end
 
   -- piece of heart
-  if map:get_game():get_value("132") then
+  if map:get_game():get_value("b132") then
     barrier:set_enabled(false)
     barrier_switch:set_activated(true)
   end
@@ -52,7 +52,7 @@ function weak_floor_sensor:on_collision_explosion()
     weak_floor_sensor:set_enabled(false)
     weak_floor_teletransporter:set_enabled(true)
     sol.audio.play_sound("secret")
-    map:get_game():set_value("133", true)
+    map:get_game():set_value("b133", true)
   end
 end
 

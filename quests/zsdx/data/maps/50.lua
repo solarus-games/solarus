@@ -5,7 +5,7 @@ properties{
   height = 1296,
   world = "dungeon_8",
   floor = "-3",
-  small_keys_variable = "dungeon_8.small_keys",
+  small_keys_variable = "dungeon_8_small_keys",
   tileset = "9",
   music = "same",
 }
@@ -1459,7 +1459,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = "715",
+  treasure_savegame_variable = "b715",
 }
 
 chest{
@@ -1470,7 +1470,7 @@ chest{
   is_big_chest = false,
   treasure_name = "compass",
   treasure_variant = 1,
-  treasure_savegame_variable = "716",
+  treasure_savegame_variable = "b716",
 }
 
 enemy{
@@ -6360,7 +6360,7 @@ chest{
   is_big_chest = true,
   treasure_name = "shield",
   treasure_variant = 3,
-  treasure_savegame_variable = "719",
+  treasure_savegame_variable = "b719",
 }
 
 block{

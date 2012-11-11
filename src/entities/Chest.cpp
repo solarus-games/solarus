@@ -36,10 +36,10 @@
  * @param x x coordinate of the chest to create
  * @param y y coordinate of the chest to create
  * @param big_chest true to make a big chest, false to make a normal chest
- * @param treasure the treasure in the chest (will be deleted automatically)
+ * @param treasure the treasure in the chest
  */
 Chest::Chest(const std::string &name, Layer layer, int x, int y,
-	     bool big_chest, const Treasure &treasure):
+	     bool big_chest, const Treasure& treasure):
 
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   treasure(treasure),
@@ -161,7 +161,7 @@ bool Chest::is_obstacle_for(MapEntity& other) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Chest::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Chest::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   if (!is_suspended()) {
     entity_overlapping.notify_collision_with_chest(*this);
@@ -192,9 +192,8 @@ void Chest::update() {
       else { // the chest is empty
 
         // mark the treasure as found in the savegame
-        int savegame_variable = treasure.get_savegame_variable();
-        if (savegame_variable != -1) {
-          get_savegame().set_boolean(savegame_variable, true);
+        if (treasure.is_saved()) {
+          get_savegame().set_boolean(treasure.get_savegame_variable(), true);
         }
 
         treasure_given = true;

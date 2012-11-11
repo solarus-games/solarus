@@ -138,7 +138,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
 
   // pieces of heart
   {
-    int x = 51 * savegame.get_integer(1030);
+    int x = 51 * savegame.get_integer("1030");
     Rectangle src_position(x, 0, 51, 50);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 59,
         SOLARUS_SCREEN_HEIGHT_MIDDLE -38);

@@ -51,8 +51,8 @@ class Door: public Detector {
     static const std::string key_required_dialog_ids[]; /**< id of the dialog shown for each subtype */
 
     // properties
-    Subtype subtype;                  /**< subtype of door */
-    int savegame_variable;            /**< variable where the door state is saved */
+    Subtype subtype;                      /**< subtype of door */
+    const std::string savegame_variable;  /**< variable where the door state is saved */
 
     // state
     bool door_open;                   /**< indicates that this door is open */
@@ -64,6 +64,7 @@ class Door: public Detector {
     void set_opening();
     void set_closing();
 
+    bool is_saved();
     bool requires_key();
     bool requires_small_key();
     bool requires_explosion();
@@ -72,21 +73,21 @@ class Door: public Detector {
 
   public:
 
-    Door(Game& game, const std::string &name, Layer layer, int x, int y,
-        int direction, Subtype subtype, int savegame_variable);
+    Door(Game& game, const std::string& name, Layer layer, int x, int y,
+        int direction, Subtype subtype, const std::string& savegame_variable);
     ~Door();
 
     EntityType get_type();
 
-    bool is_obstacle_for(MapEntity &other);
+    bool is_obstacle_for(MapEntity& other);
     void set_suspended(bool suspended);
     void update();
     void draw_on_map();
     std::string get_sword_tapping_sound();
     void action_key_pressed();
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity &entity, Sprite &this_sprite, Sprite &other_sprite);
-    void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity& entity, Sprite& this_sprite, Sprite& other_sprite);
+    void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
 
     bool is_open();
     void open();

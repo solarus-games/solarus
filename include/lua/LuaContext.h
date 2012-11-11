@@ -39,7 +39,7 @@ struct luaL_Reg;
  * have access to a few determined functions.
  *
  * TODO: this class also provides general Lua utilities that should be moved
- * to a separate LuaTools class.
+ * to a separate LuaTools class. And rename this class to SolarusAPI?
  */
 class LuaContext {
 
@@ -157,9 +157,6 @@ class LuaContext {
     void add_drawable(Drawable* drawable);
     void remove_drawable(Drawable* drawable);
     void update_drawables();
-
-    // Input.
-    static const std::string& input_get_key_name(InputEvent::KeyboardKey key);
 
     // Entities.
     static Map& get_entity_creation_map(lua_State* l);
@@ -463,14 +460,8 @@ class LuaContext {
       game_api_is_started,
       game_api_is_suspended,
       game_api_get_map,
-      game_api_get_string,
-      game_api_get_integer,
-      game_api_get_boolean,
-      game_api_set_string,
-      game_api_set_integer,
-      game_api_set_boolean,
-      game_api_get_player_name,
-      game_api_set_player_name,
+      game_api_get_value,
+      game_api_set_value,
       game_api_get_life,
       game_api_set_life,
       game_api_add_life,
@@ -494,7 +485,7 @@ class LuaContext {
       game_api_get_ability,
       game_api_set_ability,
       game_api_get_item,
-      game_api_is_dungeon_finished,
+      game_api_is_dungeon_finished,  // TODO remove
       game_api_set_dungeon_finished,
 
       // Map API.
@@ -840,8 +831,6 @@ class LuaContext {
     std::set<Drawable*> drawables;  /**< All drawable objects created by
                                      * this script. */
 
-    static std::map<InputEvent::KeyboardKey, std::string>
-      input_key_names;              /**< Names of all existing keyboard keys in Lua. */
     static const char* enemy_attack_names[];
     static const char* enemy_hurt_style_names[];
     static const char* enemy_obstacle_behavior_names[];

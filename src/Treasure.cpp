@@ -31,25 +31,28 @@
 /**
  * @brief Creates a new treasure.
  *
- * You must call decide_content() later because the real content of the treasure may differ
- * from the item name you specify, because of random treasures and unauthorized ones.
+ * You must call decide_content() later because the real content of the
+ * treasure may differ from the item name you specify, because of random
+ * treasures and unauthorized ones.
  *
- * @param game the current game (cannot be NULL)
- * @param item_name name of the item to give, according to items.dat
- * ("_random" and "_none" are also accepted)
- * @param variant variant of this item
- * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
- * or -1 if this treasure is not saved
+ * @param game The current game.
+ * @param item_name Name of the item to give, according to items.dat.
+ * ("_random" and "_none" are also accepted).
+ * @param variant Variant of this item.
+ * @param savegame_variable Name of the saved boolean indicating that the
+ * player has found this treasure, or an empty string if this treasure is not
+ * saved.
  */
-Treasure::Treasure(Game& game, const std::string& item_name, int variant, int savegame_variable):
+Treasure::Treasure(Game& game, const std::string& item_name, int variant,
+    const std::string& savegame_variable):
   game(&game),
   item_name(item_name),
   variant(variant),
   savegame_variable(savegame_variable),
   sprite(NULL) {
 
-  // if the treasure is unique, check its state
-  if (savegame_variable != -1 && game.get_savegame().get_boolean(savegame_variable)) {
+  // If the treasure is unique, check its state.
+  if (is_found()) {
     this->item_name = "_none";
     this->variant = 1;
   }
@@ -91,22 +94,24 @@ Treasure& Treasure::operator=(const Treasure& other) {
 }
 
 /**
- * @brief If the treasure is "_random", chooses a random item and variant according to the probabilities of items.dat.
+ * @brief If the treasure is "_random", chooses a random item and variant
+ * according to the probabilities of items.dat.
  *
  * If the item is "_random", this function must be called before any function
  * that needs to know the treasure content:
- * get_item_name(), get_item_properties(), is_empty(), give_to_player() and draw().
+ * get_item_name(), get_item_properties(), is_empty(), give_to_player() and
+ * draw().
  * If the item is not "_random", this function has no effect.
  */
 void Treasure::decide_content() {
 
-  Equipment &equipment = game->get_equipment();
+  Equipment& equipment = game->get_equipment();
   if (item_name == "_random") {
-    // choose a random item
+    // Choose a random item.
     equipment.get_random_item(item_name, variant);
   }
 
-  // check that the item is authorized
+  // Check that the item is authorized.
   if (item_name != "_none"
       && !equipment.can_receive_item(item_name, variant)) {
     item_name = "_none";
@@ -115,8 +120,8 @@ void Treasure::decide_content() {
 }
 
 /**
- * @brief Returns the properties of the item given with this treasure.
- * @return the item properties
+ * @brief Returns the equipment item corresponding to this treasure's content.
+ * @return The equipment item.
  */
 EquipmentItem& Treasure::get_equipment_item() const {
   return game->get_equipment().get_item(get_item_name());
@@ -124,7 +129,7 @@ EquipmentItem& Treasure::get_equipment_item() const {
 
 /**
  * @brief Returns the name of the item.
- * @return the name of the item
+ * @return The name of the item.
  */
 const std::string& Treasure::get_item_name() const {
 
@@ -137,7 +142,7 @@ const std::string& Treasure::get_item_name() const {
 
 /**
  * @brief Returns the variant of the item.
- * @return the variant
+ * @return The variant.
  */
 int Treasure::get_variant() const {
   return variant;
@@ -145,21 +150,22 @@ int Treasure::get_variant() const {
 
 /**
  * @brief Returns whether this treasure is saved.
- * @return true if this treasure is saved
+ * @return true if this treasure is saved.
  */
 bool Treasure::is_saved() const {
-  return get_savegame_variable() != -1;
+  return !get_savegame_variable().empty();
 }
 
 /**
- * @brief Returns whether the player has got this treasure according to the savegame.
+ * @brief Returns whether the player has got this treasure according to th
+ * savegame.
  *
- * Returns false if the treasure possession state is not saved.
+ * Returns false if the treasure is not saved.
  *
- * @return true if the player has found this treasure
+ * @return true if the player has found this treasure.
  */
 bool Treasure::is_found() const {
-  return savegame_variable != -1 && game->get_savegame().get_boolean(savegame_variable);
+  return is_saved() && game->get_savegame().get_boolean(savegame_variable);
 }
 
 /**
@@ -171,10 +177,11 @@ bool Treasure::is_empty() const {
 }
 
 /**
- * @brief Returns the index of the variable where this treasure is saved.
- * @return the savegame variable of this treasure, or -1 if it is not saved
+ * @brief Returns the name of the boolean variable where this treasure is saved.
+ * @return The savegame variable of this treasure, or an empty string if it is
+ * not saved.
  */
-int Treasure::get_savegame_variable() const {
+const std::string& Treasure::get_savegame_variable() const {
   return savegame_variable;
 }
 
@@ -186,16 +193,16 @@ int Treasure::get_savegame_variable() const {
  */
 void Treasure::give_to_player() const {
 
-  // mark the treasure as found in the savegame
-  if (savegame_variable != -1) {
+  // Mark the treasure as found in the savegame.
+  if (is_saved()) {
     game->get_savegame().set_boolean(savegame_variable, true);
   }
 
-  // give the item
-  Equipment &equipment = game->get_equipment();
+  // Give the item to the player.
+  Equipment& equipment = game->get_equipment();
   equipment.add_item(get_item_name(), get_variant());
 
-  // notify the Lua item and the Lua map
+  // Notify the Lua item and the Lua map.
   LuaContext& lua_context = game->get_lua_context();
   lua_context.item_on_obtaining(equipment.get_item(get_item_name()), *this);
   lua_context.hero_on_obtaining_treasure(game->get_hero(), *this);

@@ -69,7 +69,7 @@ PauseMenu::PauseMenu(Game &game):
   answer_text[1]->set_text_color(8, 8, 8);
   answer_text[1]->set_text(StringResource::get_string("save_dialog.no"));
 
-  set_current_submenu(savegame.get_integer(Savegame::PAUSE_LAST_SUBMENU));
+  set_current_submenu(savegame.get_integer("pause.last_submenu"));
 }
 
 /**
@@ -190,7 +190,7 @@ void PauseMenu::update() {
 void PauseMenu::draw(Surface& dst_surface) {
 
   // draw the background for the current submenu
-  int submenu_index = savegame.get_integer(Savegame::PAUSE_LAST_SUBMENU);
+  int submenu_index = savegame.get_integer("pause.last_submenu");
   Rectangle src_position(320 * submenu_index, 0, 320, 240);
   Rectangle dst_position((SOLARUS_SCREEN_WIDTH - 320) / 2, (SOLARUS_SCREEN_HEIGHT - 240) / 2);
   backgrounds_surface->draw_region(src_position, dst_surface, dst_position);
@@ -220,7 +220,7 @@ void PauseMenu::set_current_submenu(int submenu_index) {
   keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_SAVE);
 
   // go to the specified submenu
-  savegame.set_integer(Savegame::PAUSE_LAST_SUBMENU, submenu_index);
+  savegame.set_integer("pause.last_submenu", submenu_index);
 
   if (current_submenu != NULL) {
     delete current_submenu;
@@ -252,7 +252,7 @@ void PauseMenu::set_current_submenu(int submenu_index) {
 void PauseMenu::show_left_submenu() {
 
   Sound::play("pause_closed");
-  int submenu_index = savegame.get_integer(Savegame::PAUSE_LAST_SUBMENU);
+  int submenu_index = savegame.get_integer("pause.last_submenu");
   set_current_submenu((submenu_index + 3) % 4);
 }
 
@@ -262,7 +262,7 @@ void PauseMenu::show_left_submenu() {
 void PauseMenu::show_right_submenu() {
 
   Sound::play("pause_closed");
-  int submenu_index = savegame.get_integer(Savegame::PAUSE_LAST_SUBMENU);
+  int submenu_index = savegame.get_integer("pause.last_submenu");
   set_current_submenu((submenu_index + 1) % 4);
 }
 

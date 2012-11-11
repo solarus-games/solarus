@@ -76,13 +76,11 @@ GameControls::GameControls(Game &game):
     GameKey game_key = (GameKey) (i + 1);
 
     // keyboard
-    int index = Savegame::KEYBOARD_ACTION_KEY + i;
-    InputEvent::KeyboardKey keyboard_symbol = InputEvent::KeyboardKey(savegame.get_integer(index));
-    keyboard_mapping[keyboard_symbol] = game_key;
+    InputEvent::KeyboardKey keyboard_key = get_saved_keyboard_key(game_key);
+    keyboard_mapping[keyboard_key] = game_key;
 
     // joypad
-    index = Savegame::JOYPAD_ACTION_KEY + i;
-    const std::string &joypad_string = savegame.get_string(index);
+    const std::string& joypad_string = get_saved_joypad_string(game_key);
     joypad_mapping[joypad_string] = game_key;
 
     // game key state
@@ -196,12 +194,12 @@ void GameControls::notify_input(InputEvent &event) {
 
 /**
  * @brief This function is called when a low-level keyboard key is pressed.
- * @param keyboard_key_pressed the key pressed
+ * @param keyboard_key_released The key pressed.
  */
-void GameControls::key_pressed(InputEvent::KeyboardKey keyboard_key_pressed) {
+void GameControls::key_pressed(InputEvent::KeyboardKey keyboard_key_released) {
 
   // retrieve the game key corresponding to this keyboard key
-  GameKey game_key = keyboard_mapping[keyboard_key_pressed];
+  GameKey game_key = keyboard_mapping[keyboard_key_released];
 
   if (!customizing) {
 
@@ -218,19 +216,17 @@ void GameControls::key_pressed(InputEvent::KeyboardKey keyboard_key_pressed) {
     if (game_key != key_to_customize) {
       // consider this key as the new mapping for the game key being customized
 
-      InputEvent::KeyboardKey previous_keyboard_key = get_keyboard_key(key_to_customize);
+      InputEvent::KeyboardKey previous_keyboard_control = get_keyboard_key(key_to_customize);
       if (game_key != 0) {
         // this keyboard key was already assigned to a game key
-        keyboard_mapping[previous_keyboard_key] = game_key;
-        int index = Savegame::KEYBOARD_ACTION_KEY + game_key - 1;
-        savegame.set_integer(index, previous_keyboard_key);
+        keyboard_mapping[previous_keyboard_control] = game_key;
+        set_saved_keyboard_key(game_key, keyboard_key_released);
       }
       else {
-        keyboard_mapping.erase(previous_keyboard_key);
+        keyboard_mapping.erase(previous_keyboard_control);
       }
-      keyboard_mapping[keyboard_key_pressed] = key_to_customize;
-      int index = Savegame::KEYBOARD_ACTION_KEY + key_to_customize - 1;
-      savegame.set_integer(index, keyboard_key_pressed);
+      keyboard_mapping[keyboard_key_released] = key_to_customize;
+      set_saved_keyboard_key(key_to_customize, keyboard_key_released);
 
       keys_pressed[key_to_customize - 1] = true;
     }
@@ -239,7 +235,7 @@ void GameControls::key_pressed(InputEvent::KeyboardKey keyboard_key_pressed) {
 
 /**
  * @brief This function is called when a low-level keyboard key is released.
- * @param keyboard_key_released the key released
+ * @param keyboard_control_released The key released.
  */
 void GameControls::key_released(InputEvent::KeyboardKey keyboard_key_released) {
 
@@ -285,15 +281,13 @@ void GameControls::joypad_button_pressed(int button) {
       if (game_key != 0) {
         // this button was already assigned to a game key
         joypad_mapping[previous_joypad_string] = game_key;
-        int index = Savegame::JOYPAD_ACTION_KEY + game_key - 1;
-        savegame.set_string(index, previous_joypad_string);
+        set_saved_joypad_string(game_key, previous_joypad_string);
       }
       else {
         joypad_mapping.erase(previous_joypad_string);
       }
       joypad_mapping[joypad_string] = key_to_customize;
-      int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
-      savegame.set_string(index, joypad_string);
+      set_saved_joypad_string(key_to_customize, joypad_string);
 
       keys_pressed[key_to_customize - 1] = true;
     }
@@ -381,15 +375,13 @@ void GameControls::joypad_axis_moved(int axis, int state) {
         if (game_key != 0) {
           // this axis movement was already assigned to a game key
           joypad_mapping[previous_joypad_string] = game_key;
-          int index = Savegame::JOYPAD_ACTION_KEY + game_key - 1;
-          savegame.set_string(index, previous_joypad_string);
+          set_saved_joypad_string(game_key, previous_joypad_string);
         }
         else {
           joypad_mapping.erase(previous_joypad_string);
         }
         joypad_mapping[joypad_string] = key_to_customize;
-        int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
-        savegame.set_string(index, joypad_string);
+        set_saved_joypad_string(key_to_customize, joypad_string);
 
         keys_pressed[key_to_customize - 1] = true;
       }
@@ -534,15 +526,13 @@ void GameControls::joypad_hat_moved(int hat, int value) {
         if (game_key != 0) {
           // this hat movement was already assigned to a game key
           joypad_mapping[previous_joypad_string] = game_key;
-          int index = Savegame::JOYPAD_ACTION_KEY + game_key - 1;
-          savegame.set_string(index, previous_joypad_string);
+          set_saved_joypad_string(game_key, previous_joypad_string);
         }
         else {
           joypad_mapping.erase(previous_joypad_string);
         }
         joypad_mapping[joypad_string] = key_to_customize;
-        int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
-        savegame.set_string(index, joypad_string);
+        set_saved_joypad_string(key_to_customize, joypad_string);
 
         keys_pressed[key_to_customize - 1] = true;
       }
@@ -625,6 +615,106 @@ const std::string GameControls::get_joypad_string(GameKey game_key) {
 
   Debug::die(StringConcat() << "No joypad action is defined for game key '" << get_key_name(game_key) << "'");
   return "";
+}
+
+/**
+ * @brief Returns the name of the savegame variable that stores the keyboard
+ * mapping of a game key.
+ * @param game_key A game key.
+ * @return The savegame variable that stores the keyboard key for this game key.
+ */
+const std::string& GameControls::get_keyboard_key_savegame_variable(GameKey game_key) {
+
+  static const std::string savegame_variables[] = {
+      "",
+      Savegame::KEY_KEYBOARD_ACTION,
+      Savegame::KEY_KEYBOARD_SWORD,
+      Savegame::KEY_KEYBOARD_ITEM_1,
+      Savegame::KEY_KEYBOARD_ITEM_2,
+      Savegame::KEY_KEYBOARD_PAUSE,
+      Savegame::KEY_KEYBOARD_RIGHT,
+      Savegame::KEY_KEYBOARD_UP,
+      Savegame::KEY_KEYBOARD_LEFT,
+      Savegame::KEY_KEYBOARD_DOWN
+  };
+
+  return savegame_variables[game_key];
+}
+
+/**
+ * @brief Returns the name of the savegame variable that stores the joypad
+ * mapping of a game key.
+ * @param game_key A game key.
+ * @return The savegame variable that stores the joypad action for this game key.
+ */
+const std::string& GameControls::get_joypad_string_savegame_variable(GameKey game_key) {
+
+  static const std::string savegame_variables[] = {
+      "",
+      Savegame::KEY_JOYPAD_ACTION,
+      Savegame::KEY_JOYPAD_SWORD,
+      Savegame::KEY_JOYPAD_ITEM_1,
+      Savegame::KEY_JOYPAD_ITEM_2,
+      Savegame::KEY_JOYPAD_PAUSE,
+      Savegame::KEY_JOYPAD_RIGHT,
+      Savegame::KEY_JOYPAD_UP,
+      Savegame::KEY_JOYPAD_LEFT,
+      Savegame::KEY_JOYPAD_DOWN
+  };
+
+  return savegame_variables[game_key];
+}
+
+/**
+ * @brief Determines from the savegame the low-level keyboard key where the
+ * specified game key is mapped.
+ * @param game_key A game key.
+ * @return The keyboard key corresponding this game key in the savegame.
+ */
+InputEvent::KeyboardKey GameControls::get_saved_keyboard_key(
+    GameKey game_key) {
+
+  const std::string& savegame_variable = get_keyboard_key_savegame_variable(game_key);
+  const std::string& keyboard_key_name = savegame.get_string(savegame_variable);
+  return InputEvent::get_keyboard_key_by_name(keyboard_key_name);
+}
+
+/**
+ * @brief Saves the low-level keyboard key where the specified game key is mapped.
+ * @param game_key A game key.
+ * @return The keyboard key corresponding this game key in the savegame.
+ */
+void GameControls::set_saved_keyboard_key(
+    GameKey game_key, InputEvent::KeyboardKey key) {
+
+  const std::string& savegame_variable = get_keyboard_key_savegame_variable(game_key);
+  const std::string& keyboard_key_name = InputEvent::get_keyboard_key_name(key);
+  savegame.set_string(savegame_variable, keyboard_key_name);
+}
+
+/**
+ * @brief Determines from the savegame the low-level joypad action where the
+ * specified game key is mapped.
+ * @param game_key A game key.
+ * @return The joypad action corresponding this game key in the savegame.
+ */
+const std::string& GameControls::get_saved_joypad_string(
+    GameKey game_key) {
+
+  const std::string& savegame_variable = get_joypad_string_savegame_variable(game_key);
+  return savegame.get_string(savegame_variable);
+}
+
+/**
+ * @brief Saves the low-level joypad action where the specified game key is mapped.
+ * @param game_key A game key.
+ * @return The joypad action corresponding this game key in the savegame.
+ */
+void GameControls::set_saved_joypad_string(
+    GameKey game_key, const std::string& joypad_string) {
+
+  const std::string& savegame_variable = get_joypad_string_savegame_variable(game_key);
+  savegame.set_string(savegame_variable, joypad_string);
 }
 
 // customization

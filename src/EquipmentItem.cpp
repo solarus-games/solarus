@@ -35,7 +35,7 @@ EquipmentItem::EquipmentItem(Equipment& equipment, IniFile& ini):
   equipment(equipment) {
 
   name = ini.get_group();
-  savegame_variable = ini.get_integer_value("savegame_variable", -1);
+  savegame_variable = ini.get_string_value("savegame_variable", "");
   nb_variants = ini.get_integer_value("nb_variants", 1);
   initial_variant = ini.get_integer_value("initial_variant", 0);
 
@@ -257,16 +257,16 @@ const std::string& EquipmentItem::get_name() {
  * @return true if the item is saved
  */
 bool EquipmentItem::is_saved() {
-  return get_savegame_variable() != -1;
+  return !get_savegame_variable().empty();
 }
 
 /**
  * @brief Returns the savegame variable where the item possession state
  * is saved.
- * @return the savegame variable that stores the item possession state,
- * or -1 if the item is not saved
+ * @return The savegame variable that stores the item possession state,
+ * or an empty string if the item is not saved.
  */
-int EquipmentItem::get_savegame_variable() {
+const std::string& EquipmentItem::get_savegame_variable() {
   return savegame_variable;
 }
 
@@ -291,16 +291,16 @@ int EquipmentItem::get_initial_variant() {
  * @return true if this item has a counter
  */
 bool EquipmentItem::has_counter() {
-  return get_counter_savegame_variable() != -1;
+  return !get_counter_savegame_variable().empty();
 }
 
 /**
  * @brief If this item has a counter, returns the savegame variable
  * that stores the value of this counter.
- * @return the savegame variable of the counter, or -1 if there is no counter
- * associated to this item.
+ * @return The savegame variable of the counter, or an empty string if there
+ * is no counter associated to this item.
  */
-int EquipmentItem::get_counter_savegame_variable() {
+const std::string& EquipmentItem::get_counter_savegame_variable() {
   return counter_savegame_variable;
 }
 

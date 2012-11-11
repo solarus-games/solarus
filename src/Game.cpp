@@ -79,7 +79,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   hud = new HUD(*this);
 
   // launch the starting map
-  set_current_map(get_savegame().get_string(Savegame::STARTING_MAP),
+  set_current_map(get_savegame().get_string(Savegame::KEY_STARTING_MAP),
       "", Transition::FADE);
 }
 
@@ -388,8 +388,8 @@ void Game::update_transitions() {
           crystal_state = false;
 
           // save the location
-          get_savegame().set_string(Savegame::STARTING_MAP, next_map->get_id());
-          get_savegame().set_string(Savegame::STARTING_POINT, next_map->get_destination_name());
+          get_savegame().set_string(Savegame::KEY_STARTING_MAP, next_map->get_id());
+          get_savegame().set_string(Savegame::KEY_STARTING_POINT, next_map->get_destination_name());
         }
 
         // before closing the map, draw it on a backup surface for transition effects
@@ -569,7 +569,7 @@ void Game::set_current_map(const std::string& map_id, const std::string &destina
 
   // initialize the destination point, from the specified name or from the savegame
   if (destination_name == "") {
-    next_map->set_destination(get_savegame().get_string(Savegame::STARTING_POINT));
+    next_map->set_destination(get_savegame().get_string(Savegame::KEY_STARTING_POINT));
   }
   else {
     next_map->set_destination(destination_name);

@@ -40,14 +40,8 @@ void LuaContext::register_game_module() {
       { "is_started", game_api_is_started },
       { "is_suspended", game_api_is_suspended },
       { "get_map", game_api_get_map },
-      { "get_string", game_api_get_string },
-      { "get_integer", game_api_get_integer },
-      { "get_boolean", game_api_get_boolean },
-      { "set_string", game_api_set_string },
-      { "set_integer", game_api_set_integer },
-      { "set_boolean", game_api_set_boolean },
-      { "get_player_name", game_api_get_player_name },
-      { "set_player_name", game_api_set_player_name },
+      { "get_value", game_api_get_value },
+      { "set_value", game_api_set_value },
       { "get_life", game_api_get_life },
       { "set_life", game_api_set_life },
       { "add_life", game_api_add_life },
@@ -238,145 +232,65 @@ int LuaContext::game_api_get_map(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_game_get_string.
+ * @brief Implementation of \ref lua_api_game_get_value.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::game_api_get_string(lua_State* l) {
+int LuaContext::game_api_get_value(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int index = luaL_checkinteger(l, 2);
+  const std::string& key = luaL_checkstring(l, 2);
 
-  luaL_argcheck(l, index >= 0 && index < 64, 1,
-      "The index of a savegame string should be between 0 and 63");
+  if (savegame.is_boolean(key)) {
+    lua_pushboolean(l, savegame.get_boolean(key));
+  }
+  else if (savegame.is_integer(key)) {
+    lua_pushinteger(l, savegame.get_integer(key));
+  }
+  else if (savegame.is_string(key)) {
+    lua_pushstring(l, savegame.get_string(key).c_str());
+  }
+  else {
+    lua_pushnil(l);
+  }
 
-  push_string(l, savegame.get_string(index));
   return 1;
 }
 
 /**
- * @brief Implementation of \ref lua_api_game_get_integer.
+ * @brief Implementation of \ref lua_api_game_set_value.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::game_api_get_integer(lua_State* l) {
+int LuaContext::game_api_set_value(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int index = luaL_checkinteger(l, 2);
+  const std::string& savegame_variable = luaL_checkstring(l, 2);
 
-  luaL_argcheck(l, index >= 0 && index < 2048, 1,
-      "The index of a savegame integer should be between 0 and 2047");
+  if (savegame_variable[0] == '_') {
+    luaL_argerror(l, 3, (StringConcat() <<
+        "Invalid savegame variable '" << savegame_variable <<
+        "': names prefixed by '_' are reserved for built-in variables").c_str());
+  }
 
-  lua_pushinteger(l, savegame.get_integer(index));
-  return 1;
-}
+  switch (lua_type(l, 3)) {
 
-/**
- * @brief Implementation of \ref lua_api_game_get_boolean.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_get_boolean(lua_State* l) {
+    case LUA_TSTRING:
+      savegame.set_string(savegame_variable, lua_tostring(l, 3));
+      break;
 
-  Savegame& savegame = check_game(l, 1);
-  int index = luaL_checkinteger(l, 2);
+    case LUA_TNUMBER:
+      savegame.set_integer(savegame_variable, lua_tointeger(l, 3));
+      break;
 
-  luaL_argcheck(l, index >= 0 && index < 32768, 1, (StringConcat()
-      << "Invalid savegame boolean: " << index << " (should be between 0 and 32767").c_str());
+    case LUA_TBOOLEAN:
+      savegame.set_integer(savegame_variable, lua_toboolean(l, 3));
+      break;
 
-  lua_pushboolean(l, savegame.get_boolean(index));
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_set_string.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_set_string(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  int index = luaL_checkinteger(l, 2);
-  const std::string &value = luaL_checkstring(l, 3);
-
-  luaL_argcheck(l, index >= 0 && index < 63, 1, (StringConcat()
-      << "Invalid savegame string: " << index << " (should be between 32 and 63").c_str());
-
-  luaL_argcheck(l, index >= 32, 1, (StringConcat()
-      << "Invalid savegame string: " << index << " (strings below 32 are read-only").c_str());
-
-  savegame.set_string(index, value);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_set_integer.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_set_integer(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  int index = luaL_checkinteger(l, 2);
-  int value = luaL_checkinteger(l, 3);
-
-  luaL_argcheck(l, index >= 0 && index < 2048, 1, (StringConcat()
-      << "Invalid savegame integer: " << index << " (should be between 32 and 63").c_str());
-
-  luaL_argcheck(l, index >= 1024, 1, (StringConcat()
-      << "Invalid savegame integer: " << index << " (integers below 32 are read-only").c_str());
-
-  savegame.set_integer(index, value);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_set_boolean.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_set_boolean(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  int index = luaL_checkinteger(l, 2);
-  bool value = lua_toboolean(l, 3);
-
-  luaL_argcheck(l, index >= 0 && index < 32768, 1, (StringConcat()
-      << "Invalid savegame boolean: " << index << " (should be between 0 and 32767").c_str());
-
-  savegame.set_boolean(index, value);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_get_player_name.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_get_player_name(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-
-  const std::string &name = savegame.get_string(Savegame::PLAYER_NAME);
-
-  push_string(l, name);
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_set_player_name.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_set_player_name(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  const std::string& name = luaL_checkstring(l, 2);
-
-  savegame.set_string(Savegame::PLAYER_NAME, name);
+    default:
+      luaL_argerror(l, 3, (StringConcat() <<
+          "Expected string, number or boolean, got " << luaL_typename(l, 3)).c_str());
+  }
 
   return 0;
 }

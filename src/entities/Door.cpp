@@ -55,7 +55,7 @@ const std::string Door::key_required_dialog_ids[] = {
  * (can be -1 for the subtype CLOSED)
  */
 Door::Door(Game& game, const std::string& name, Layer layer, int x, int y,
-	     int direction, Subtype subtype, int savegame_variable):
+	     int direction, Subtype subtype, const std::string& savegame_variable):
   Detector(COLLISION_FACING_POINT | COLLISION_SPRITE, name, layer, x, y, 16, 16),
   subtype(subtype),
   savegame_variable(savegame_variable),
@@ -78,7 +78,7 @@ Door::Door(Game& game, const std::string& name, Layer layer, int x, int y,
   sprite.set_ignore_suspend(true); // allow the animation while the camera is moving
   set_direction(direction);
 
-  if (savegame_variable != -1) {
+  if (is_saved()) {
     set_open(game.get_savegame().get_boolean(savegame_variable));
   }
   else {
@@ -143,7 +143,7 @@ void Door::set_open(bool door_open) {
   if (is_on_map()) {
     update_dynamic_tiles();
 
-    if (savegame_variable != -1) {
+    if (is_saved()) {
       get_savegame().set_boolean(savegame_variable, door_open);
     }
 
@@ -235,6 +235,14 @@ void Door::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_
 }
 
 /**
+ * @brief Returns whether the state of this door is saved.
+ * @return true if this door is saved.
+ */
+bool Door::is_saved() {
+  return !savegame_variable.empty();
+}
+
+/**
  * @brief Returns whether this door requires a key to be open.
  * @return true if this door requires a key to be open
  */
@@ -315,7 +323,7 @@ void Door::update() {
     set_open(!is_open());
   }
 
-  if (savegame_variable != -1) {
+  if (is_saved()) {
     bool open_in_savegame = get_savegame().get_boolean(savegame_variable);
     if (open_in_savegame && !is_open() && !changing) {
       set_opening();
@@ -350,7 +358,10 @@ void Door::action_key_pressed() {
       Sound::play("door_unlocked");
       Sound::play("door_open");
 
-      get_savegame().set_boolean(savegame_variable, true);
+      if (is_saved()) {
+        get_savegame().set_boolean(savegame_variable, true);
+      }
+
       if (subtype == SMALL_KEY_BLOCK || subtype == WEAK_BLOCK) {
         set_open(true);
       }
@@ -411,7 +422,7 @@ void Door::open() {
 
   set_opening();
 
-  if (savegame_variable != -1) {
+  if (is_saved()) {
     get_savegame().set_boolean(savegame_variable, true);
   }
 }
@@ -463,7 +474,7 @@ void Door::close() {
 
   set_closing();
 
-  if (savegame_variable != -1) {
+  if (is_saved()) {
     get_savegame().set_boolean(savegame_variable, false);
   }
 }

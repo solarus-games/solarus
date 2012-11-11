@@ -17,9 +17,15 @@
 #include "lowlevel/InputEvent.h"
 #include "Configuration.h"
 
-const int InputEvent::KEYBOARD_ENUM_VERSION = 1;
-const InputEvent::KeyboardKey InputEvent::directional_keys[] = { KEY_RIGHT, KEY_UP, KEY_LEFT, KEY_DOWN, KEY_NONE };
-SDL_Joystick *InputEvent::joystick;
+const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
+    KEY_RIGHT,
+    KEY_UP,
+    KEY_LEFT,
+    KEY_DOWN,
+    KEY_NONE
+};
+SDL_Joystick* InputEvent::joystick;
+std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names;
 
 /**
  * @brief Initializes the input event manager.
@@ -39,6 +45,133 @@ void InputEvent::initialize() {
     SDL_JoystickEventState(SDL_IGNORE);
     SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
   }
+
+  // Initialize the map of keyboard key names.
+  keyboard_key_names[InputEvent::KEY_BACKSPACE]             = "backspace";
+  keyboard_key_names[InputEvent::KEY_TABULATION]            = "tab";
+  keyboard_key_names[InputEvent::KEY_CLEAR]                 = "clear";
+  keyboard_key_names[InputEvent::KEY_RETURN]                = "return";
+  keyboard_key_names[InputEvent::KEY_PAUSE]                 = "pause";
+  keyboard_key_names[InputEvent::KEY_ESCAPE]                = "escape";
+  keyboard_key_names[InputEvent::KEY_SPACE]                 = "space";
+  keyboard_key_names[InputEvent::KEY_EXCLAMATION_MARK]      = "!";
+  keyboard_key_names[InputEvent::KEY_DOULE_QUOTE]           = "\"";
+  keyboard_key_names[InputEvent::KEY_HASH]                  = "#";
+  keyboard_key_names[InputEvent::KEY_DOLLAR]                = "$";
+  keyboard_key_names[InputEvent::KEY_AMPERSAND]             = "&";
+  keyboard_key_names[InputEvent::KEY_SINGLE_QUOTE]          = "'";
+  keyboard_key_names[InputEvent::KEY_LEFT_PARENTHESIS]      = "(";
+  keyboard_key_names[InputEvent::KEY_RIGHT_PARENTHESIS]     = ")";
+  keyboard_key_names[InputEvent::KEY_ASTERISK]              = "*";
+  keyboard_key_names[InputEvent::KEY_PLUS]                  = "+";
+  keyboard_key_names[InputEvent::KEY_COMMA]                 = ",";
+  keyboard_key_names[InputEvent::KEY_MINUS]                 = "-";
+  keyboard_key_names[InputEvent::KEY_PERIOD]                = ".";
+  keyboard_key_names[InputEvent::KEY_SLASH]                 = "/";
+  keyboard_key_names[InputEvent::KEY_0]                     = "0";
+  keyboard_key_names[InputEvent::KEY_1]                     = "1";
+  keyboard_key_names[InputEvent::KEY_2]                     = "2";
+  keyboard_key_names[InputEvent::KEY_3]                     = "3";
+  keyboard_key_names[InputEvent::KEY_4]                     = "4";
+  keyboard_key_names[InputEvent::KEY_5]                     = "5";
+  keyboard_key_names[InputEvent::KEY_6]                     = "6";
+  keyboard_key_names[InputEvent::KEY_7]                     = "7";
+  keyboard_key_names[InputEvent::KEY_8]                     = "8";
+  keyboard_key_names[InputEvent::KEY_9]                     = "9";
+  keyboard_key_names[InputEvent::KEY_COLON]                 = ".";
+  keyboard_key_names[InputEvent::KEY_SEMICOLON]             = ":";
+  keyboard_key_names[InputEvent::KEY_LESS]                  = "<";
+  keyboard_key_names[InputEvent::KEY_EQUALS]                = "=";
+  keyboard_key_names[InputEvent::KEY_GREATER]               = ">";
+  keyboard_key_names[InputEvent::KEY_QUESTION_MARK]         = "?";
+  keyboard_key_names[InputEvent::KEY_AT]                    = "@";
+  keyboard_key_names[InputEvent::KEY_LEFT_BRACKET]          = "[";
+  keyboard_key_names[InputEvent::KEY_BACKSLASH]             = "\\";
+  keyboard_key_names[InputEvent::KEY_RIGHT_BRACKET]         = "]";
+  keyboard_key_names[InputEvent::KEY_CARET]                 = "^";
+  keyboard_key_names[InputEvent::KEY_UNDERSCORE]            = "_";
+  keyboard_key_names[InputEvent::KEY_BACKQUOTE]             = "`";
+  keyboard_key_names[InputEvent::KEY_a]                     = "a";
+  keyboard_key_names[InputEvent::KEY_b]                     = "b";
+  keyboard_key_names[InputEvent::KEY_c]                     = "c";
+  keyboard_key_names[InputEvent::KEY_d]                     = "d";
+  keyboard_key_names[InputEvent::KEY_e]                     = "e";
+  keyboard_key_names[InputEvent::KEY_f]                     = "f";
+  keyboard_key_names[InputEvent::KEY_g]                     = "g";
+  keyboard_key_names[InputEvent::KEY_h]                     = "h";
+  keyboard_key_names[InputEvent::KEY_i]                     = "i";
+  keyboard_key_names[InputEvent::KEY_j]                     = "j";
+  keyboard_key_names[InputEvent::KEY_k]                     = "k";
+  keyboard_key_names[InputEvent::KEY_l]                     = "l";
+  keyboard_key_names[InputEvent::KEY_m]                     = "m";
+  keyboard_key_names[InputEvent::KEY_n]                     = "n";
+  keyboard_key_names[InputEvent::KEY_o]                     = "o";
+  keyboard_key_names[InputEvent::KEY_p]                     = "p";
+  keyboard_key_names[InputEvent::KEY_q]                     = "q";
+  keyboard_key_names[InputEvent::KEY_r]                     = "r";
+  keyboard_key_names[InputEvent::KEY_s]                     = "s";
+  keyboard_key_names[InputEvent::KEY_t]                     = "t";
+  keyboard_key_names[InputEvent::KEY_u]                     = "u";
+  keyboard_key_names[InputEvent::KEY_v]                     = "v";
+  keyboard_key_names[InputEvent::KEY_w]                     = "w";
+  keyboard_key_names[InputEvent::KEY_x]                     = "x";
+  keyboard_key_names[InputEvent::KEY_y]                     = "y";
+  keyboard_key_names[InputEvent::KEY_z]                     = "z";
+  keyboard_key_names[InputEvent::KEY_DELETE]                = "delete";
+  keyboard_key_names[InputEvent::KEY_KP0]                   = "kp 0";
+  keyboard_key_names[InputEvent::KEY_KP1]                   = "kp 1";
+  keyboard_key_names[InputEvent::KEY_KP2]                   = "kp 2";
+  keyboard_key_names[InputEvent::KEY_KP3]                   = "kp 3";
+  keyboard_key_names[InputEvent::KEY_KP4]                   = "kp 4";
+  keyboard_key_names[InputEvent::KEY_KP5]                   = "kp 5";
+  keyboard_key_names[InputEvent::KEY_KP6]                   = "kp 6";
+  keyboard_key_names[InputEvent::KEY_KP7]                   = "kp 7";
+  keyboard_key_names[InputEvent::KEY_KP8]                   = "kp 8";
+  keyboard_key_names[InputEvent::KEY_KP9]                   = "kp 9";
+  keyboard_key_names[InputEvent::KEY_KP_PERIOD]             = "kp .";
+  keyboard_key_names[InputEvent::KEY_KP_DIVIDE]             = "kp /";
+  keyboard_key_names[InputEvent::KEY_KP_MULTIPLY]           = "kp *";
+  keyboard_key_names[InputEvent::KEY_KP_MINUS]              = "kp -";
+  keyboard_key_names[InputEvent::KEY_KP_PLUS]               = "kp +";
+  keyboard_key_names[InputEvent::KEY_KP_ENTER]              = "kp return";
+  keyboard_key_names[InputEvent::KEY_KP_EQUALS]             = "kp =";
+  keyboard_key_names[InputEvent::KEY_UP]                    = "up";
+  keyboard_key_names[InputEvent::KEY_DOWN]                  = "down";
+  keyboard_key_names[InputEvent::KEY_RIGHT]                 = "right";
+  keyboard_key_names[InputEvent::KEY_LEFT]                  = "left";
+  keyboard_key_names[InputEvent::KEY_INSERT]                = "insert";
+  keyboard_key_names[InputEvent::KEY_HOME]                  = "home";
+  keyboard_key_names[InputEvent::KEY_END]                   = "end";
+  keyboard_key_names[InputEvent::KEY_PAGE_UP]               = "page up";
+  keyboard_key_names[InputEvent::KEY_PAGE_DOWN]             = "page down";
+  keyboard_key_names[InputEvent::KEY_F1]                    = "f1";
+  keyboard_key_names[InputEvent::KEY_F2]                    = "f2";
+  keyboard_key_names[InputEvent::KEY_F3]                    = "f3";
+  keyboard_key_names[InputEvent::KEY_F4]                    = "f4";
+  keyboard_key_names[InputEvent::KEY_F5]                    = "f5";
+  keyboard_key_names[InputEvent::KEY_F6]                    = "f6";
+  keyboard_key_names[InputEvent::KEY_F7]                    = "f7";
+  keyboard_key_names[InputEvent::KEY_F8]                    = "f8";
+  keyboard_key_names[InputEvent::KEY_F9]                    = "f9";
+  keyboard_key_names[InputEvent::KEY_F10]                   = "f10";
+  keyboard_key_names[InputEvent::KEY_F11]                   = "f11";
+  keyboard_key_names[InputEvent::KEY_F12]                   = "f12";
+  keyboard_key_names[InputEvent::KEY_F13]                   = "f13";
+  keyboard_key_names[InputEvent::KEY_F14]                   = "f14";
+  keyboard_key_names[InputEvent::KEY_F15]                   = "f15";
+  keyboard_key_names[InputEvent::KEY_NUMLOCK]               = "num lock";
+  keyboard_key_names[InputEvent::KEY_CAPSLOCK]              = "caps lock";
+  keyboard_key_names[InputEvent::KEY_SCROLLOCK]             = "scroll lock";
+  keyboard_key_names[InputEvent::KEY_RIGHT_SHIFT]           = "right shift";
+  keyboard_key_names[InputEvent::KEY_LEFT_SHIFT]            = "left shift";
+  keyboard_key_names[InputEvent::KEY_RIGHT_CONTROL]         = "right control";
+  keyboard_key_names[InputEvent::KEY_LEFT_CONTROL]          = "left control";
+  keyboard_key_names[InputEvent::KEY_RIGHT_ALT]             = "right alt";
+  keyboard_key_names[InputEvent::KEY_LEFT_ALT]              = "left alt";
+  keyboard_key_names[InputEvent::KEY_RIGHT_META]            = "right meta";
+  keyboard_key_names[InputEvent::KEY_LEFT_META]             = "left meta";
+  keyboard_key_names[InputEvent::KEY_LEFT_WINDOWS]          = "right windows";
+  keyboard_key_names[InputEvent::KEY_RIGHT_WINDOWS]         = "left windows";
 }
 
 /**
@@ -361,13 +494,29 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key() {
 }
 
 /**
- * @brief Returns the human-readable name of a keyboard key.
- * @param key a keyboard key
- * @return the corresponding name
+ * @brief Returns the Lua name of a keyboard key.
+ * @param key A keyboard key.
+ * @return The corresponding name.
  */
-const std::string InputEvent::get_keyboard_key_name(KeyboardKey key) {
-  // TODO use the names of the Lua API or remove this function
-  return SDL_GetKeyName(SDLKey(key));
+const std::string& InputEvent::get_keyboard_key_name(KeyboardKey key) {
+  return keyboard_key_names[key];
+}
+
+/**
+ * @brief Returns a keyboard key given its name.
+ * @param key The name of a keyboard key.
+ * @return The corresponding key, or KEY_NONE if this name is unknown.
+ */
+InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& keyboard_key_name) {
+
+  // TODO check that this traversal is not significant, otherwise make a reverse mapping.
+  std::map<KeyboardKey, std::string>::iterator it;
+  for (it = keyboard_key_names.begin(); it != keyboard_key_names.end(); it++) {
+    if (it->second == keyboard_key_name) {
+      return it->first;
+    }
+  }
+  return KEY_NONE;
 }
 
 /**

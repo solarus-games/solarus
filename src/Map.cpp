@@ -172,14 +172,13 @@ const Rectangle& Map::get_location() {
 }
 
 /**
- * @brief Returns the index of the variable where the number of small keys for this
- * map is saved.
+ * @brief Returns the name of the boolean variable where the number of small
+ * keys for this map is saved.
  *
- * -1 indicates that the small keys are not enabled on this map.
- *
- * @return the small keys savegame variable
+ * @return The small keys savegame variable, or an empty string if small keys
+ * are not enabled on this map.
  */
-int Map::get_small_keys_variable() {
+const std::string& Map::get_small_keys_variable() {
   return small_keys_variable;
 }
 
@@ -191,7 +190,7 @@ int Map::get_small_keys_variable() {
  * @return true if the small keys are enabled in this map
  */
 bool Map::has_small_keys() {
-  return get_small_keys_variable() != -1;
+  return !get_small_keys_variable().empty();
 }
 
 /**

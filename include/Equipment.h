@@ -39,18 +39,18 @@ class Equipment {
     // items
     std::map<std::string, EquipmentItem*> items;		/**< each item (properties loaded from the file items.dat) */
 
-    int get_ability_savegame_variable(const std::string &ability_name);
+    const std::string get_ability_savegame_variable(const std::string& ability_name);
 
   public:
 
     // creation and destruction
-    Equipment(Savegame &savegame);
+    Equipment(Savegame& savegame);
     ~Equipment();
 
     Savegame& get_savegame();
     Game* get_game();
-    void set_game(Game &game);
-    void set_map(Map &map);
+    void set_game(Game& game);
+    void set_map(Map& map);
 
     void update();
     void set_suspended(bool suspended);
@@ -85,30 +85,30 @@ class Equipment {
     void restore_all_magic();
 
     // equipment items saved
-    EquipmentItem& get_item(const std::string &item_name);
-    bool has_item(const std::string &item_name);
-    int get_item_variant(const std::string &item_name);
-    void set_item_variant(const std::string &item_name, int variant);
-    void remove_item(const std::string &item_name);
+    EquipmentItem& get_item(const std::string& item_name);
+    bool has_item(const std::string& item_name);
+    int get_item_variant(const std::string& item_name);
+    void set_item_variant(const std::string& item_name, int variant);
+    void remove_item(const std::string& item_name);
 
-    int get_item_amount(const std::string &item_name);
-    void set_item_amount(const std::string &item_name, int amount);
-    void add_item_amount(const std::string &item_name, int amount_to_add);
-    void remove_item_amount(const std::string &item_name, int amount_to_remove);
+    int get_item_amount(const std::string& item_name);
+    void set_item_amount(const std::string& item_name, int amount);
+    void add_item_amount(const std::string& item_name, int amount_to_add);
+    void remove_item_amount(const std::string& item_name, int amount_to_remove);
 
-    int get_item_maximum(const std::string &item_name);
-    bool has_item_maximum(const std::string &item_name);
+    int get_item_maximum(const std::string& item_name);
+    bool has_item_maximum(const std::string& item_name);
 
-    void get_random_item(std::string &item_name, int &variant);
+    void get_random_item(std::string& item_name, int& variant);
 
     // item assignments
-    const std::string get_item_assigned(int slot);
-    void set_item_assigned(int slot, const std::string &item_name);
-    int get_item_slot(const std::string &item_name);
+    const std::string& get_item_assigned(int slot);
+    void set_item_assigned(int slot, const std::string& item_name);
+    int get_item_slot(const std::string& item_name);
 
     // small keys
     bool are_small_keys_enabled();
-    int get_small_keys_variable();
+    const std::string& get_small_keys_variable();
 
     bool has_small_key();
     int get_small_keys();
@@ -116,10 +116,10 @@ class Equipment {
     void remove_small_key();
 
     // abilities
-    bool has_ability(const std::string &ability_name, int level = 1);
-    int get_ability(const std::string &ability_name);
-    void set_ability(const std::string &ability_name, int level);
-    void notify_ability_used(const std::string &ability_name);
+    bool has_ability(const std::string& ability_name, int level = 1);
+    int get_ability(const std::string& ability_name);
+    void set_ability(const std::string& ability_name, int level);
+    void notify_ability_used(const std::string& ability_name);
 
     // dungeons
     int get_current_dungeon();
@@ -129,8 +129,8 @@ class Equipment {
 
     // giving items
     void set_initial_items();
-    bool can_receive_item(const std::string &item_name, int variant);
-    void add_item(const std::string &item_name, int variant);
+    bool can_receive_item(const std::string& item_name, int variant);
+    void add_item(const std::string& item_name, int variant);
 };
 
 #endif

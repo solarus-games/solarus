@@ -1460,8 +1460,8 @@ bool LuaContext::on_key_pressed(InputEvent& event) {
   bool handled = false;
   if (find_method("on_key_pressed")) {
 
-    const std::string& key_name = input_get_key_name(event.get_keyboard_key());
-    if (!key_name.empty()) { // This key exists in the Lua API.
+    const std::string& key_name = InputEvent::get_keyboard_key_name(event.get_keyboard_key());
+    if (!key_name.empty()) { // This key exists in the Solarus API.
 
       push_string(l, key_name);
       lua_newtable(l);
@@ -1524,8 +1524,8 @@ bool LuaContext::on_key_released(InputEvent& event) {
   bool handled = false;
   if (find_method("on_key_released")) {
 
-    const std::string& key_name = input_get_key_name(event.get_keyboard_key());
-    if (!key_name.empty()) { // This key exists in the Lua API.
+    const std::string& key_name = InputEvent::get_keyboard_key_name(event.get_keyboard_key());
+    if (!key_name.empty()) { // This key exists in the Solarus API.
       push_string(l, key_name);
       call_function(2, 1, "on_key_released");
       handled = lua_toboolean(l, -1);
@@ -1697,7 +1697,7 @@ void LuaContext::on_obtaining_treasure(const Treasure& treasure) {
   if (find_method("on_obtaining_treasure")) {
     push_string(l, treasure.get_item_name());
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushinteger(l, treasure.get_savegame_variable());
+    lua_pushstring(l, treasure.get_savegame_variable().c_str());
     call_function(4, 0, "on_obtaining_treasure");
   }
 }
@@ -1711,7 +1711,7 @@ void LuaContext::on_obtained_treasure(const Treasure& treasure) {
   if (find_method("on_obtained_treasure")) {
     push_string(l, treasure.get_item_name());
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushinteger(l, treasure.get_savegame_variable());
+    lua_pushstring(l, treasure.get_savegame_variable().c_str());
     call_function(4, 0, "on_obtained_treasure");
   }
 }
@@ -1994,7 +1994,7 @@ void LuaContext::on_obtaining(const Treasure& treasure) {
 
   if (find_method("on_obtaining")) {
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushinteger(l, treasure.get_savegame_variable());
+    lua_pushstring(l, treasure.get_savegame_variable().c_str());
     call_function(3, 0, "on_obtaining");
   }
 }
@@ -2007,7 +2007,7 @@ void LuaContext::on_obtained(const Treasure& treasure) {
 
   if (find_method("on_obtained")) {
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushinteger(l, treasure.get_savegame_variable());
+    lua_pushstring(l, treasure.get_savegame_variable().c_str());
     call_function(3, 0, "on_obtained");
   }
 }

@@ -197,11 +197,10 @@ void ShopItem::update() {
           // give the treasure
           equipment.remove_money(price);
 
-          int savegame_variable = treasure.get_savegame_variable();
           get_hero().start_treasure(treasure);
-          if (savegame_variable != -1) {
+          if (treasure.is_saved()) {
             remove_from_map();
-            get_savegame().set_boolean(savegame_variable, true);
+            get_savegame().set_boolean(treasure.get_savegame_variable(), true);
           }
           get_lua_context().shop_item_on_bought(*this);
         }

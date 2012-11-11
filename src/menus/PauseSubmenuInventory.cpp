@@ -95,7 +95,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu &pause_menu, Game &game):
   }
 
   // initialize the cursor
-  int index = savegame.get_integer(Savegame::INVENTORY_LAST_ITEM_INDEX);
+  int index = savegame.get_integer("pause.inventory.last_item_index");
   int row = index / 7;
   int column = index % 7;
   set_cursor_position(row, column);
@@ -139,7 +139,7 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
   cursor_column = column;
 
   int index = row * 7 + column;
-  savegame.set_integer(Savegame::INVENTORY_LAST_ITEM_INDEX, index);
+  savegame.set_integer("pause.inventory.last_item_index", index);
 
   // update the caption text, show or hide the action icon
   KeysEffect &keys_effect = game.get_keys_effect();

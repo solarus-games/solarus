@@ -234,7 +234,7 @@ void PauseSubmenuMap::load_dungeon_map_image() {
     const std::vector<Dungeon::DungeonElement> &chests = dungeon.get_chests(selected_floor);
     for (unsigned int i = 0; i < chests.size(); i++) {
 
-      if (chests[i].savegame_variable != -1
+      if (!chests[i].savegame_variable.empty()
           && !savegame.get_boolean(chests[i].savegame_variable)) {
 
         int dx = chests[i].big ? 16 : 8;  // TODO change chests origin point to avoid this
@@ -264,7 +264,7 @@ void PauseSubmenuMap::load_dungeon_map_image() {
 
       // TODO also draw minibosses?
       if (bosses[i].big
-          && bosses[i].savegame_variable != -1
+          && !bosses[i].savegame_variable.empty()
           && !savegame.get_boolean(bosses[i].savegame_variable)) {
 
         dst_position.set_xy(bosses[i].x, bosses[i].y);

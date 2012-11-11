@@ -97,8 +97,8 @@ class Enemy: public Detector {
         attack_reactions[ATTACK_NUMBER];  /**< indicates how the enemy reacts to each attack
                                            * (by default, it depends on the attacks) */
     Rank rank;                         /**< is this enemy a normal enemy, a miniboss or a boss? */
-    int savegame_variable;             /**< index of the boolean variable indicating whether this enemy is killed,
-                                        * or -1 if it is not saved */
+    std::string savegame_variable;     /**< name of the boolean variable indicating whether this enemy is killed,
+                                        * or an empty string if it is not saved */
     ObstacleBehavior obstacle_behavior; /**< behavior with obstacles */
     bool drawn_in_y_order;             /**< indicates that the enemy is displayed as the same level as the hero */
 
@@ -135,6 +135,7 @@ class Enemy: public Detector {
     void notify_hurt(MapEntity& source, EnemyAttack attack, int life_points);
     void notify_dead();
     void notify_immobilized();
+    bool is_saved();
 
   public:
 
@@ -142,7 +143,7 @@ class Enemy: public Detector {
     ~Enemy();
 
     static MapEntity* create(Game& game,
-        const std::string& breed, Rank rank, int savegame_variable,
+        const std::string& breed, Rank rank, const std::string& savegame_variable,
         const std::string& name, Layer layer, int x, int y, int direction,
         const Treasure& treasure);
 

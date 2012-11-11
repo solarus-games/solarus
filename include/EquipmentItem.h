@@ -43,10 +43,10 @@ class EquipmentItem: public ExportableToLua {
 
     Equipment& equipment;                /**< the equipment object that manages all items */
     std::string name;                    /**< name that identifies this item */
-    int savegame_variable;               /**< savegame variable that stores the possession state */
+    std::string savegame_variable;       /**< savegame variable that stores the possession state */
     int nb_variants;                     /**< number of variants of this item */
     int initial_variant;                 /**< initial possession state of this item */
-    int counter_savegame_variable;       /**< savegame variable that stores the counter associated to this item
+    std::string counter_savegame_variable;  /**< savegame variable that stores the counter associated to this item
                                           * or -1 if there is no counter */
     int fixed_limit;                     /**< limit of the counter associated to this item, or 0 */
     std::string item_limiting;           /**< name of an item that limits the counter of this item (or an empty string) */
@@ -92,11 +92,11 @@ class EquipmentItem: public ExportableToLua {
 
     const std::string& get_name();
     bool is_saved();
-    int get_savegame_variable();
+    const std::string& get_savegame_variable();
     int get_nb_variants();
     int get_initial_variant();
     bool has_counter();
-    int get_counter_savegame_variable();
+    const std::string& get_counter_savegame_variable();
     bool has_fixed_limit();
     int get_fixed_limit();
     const std::string& get_item_limiting();

@@ -40,7 +40,7 @@ class Dungeon {
      * (a chest or a boss).
      */
     struct DungeonElement {
-      int savegame_variable;    /**< index of the savegame variable that memorizes this element's state (chest open or boss killed) */
+      std::string savegame_variable;    /**< name of the savegame variable that memorizes this element's state (chest open or boss killed) */
       int floor;                /**< the floor where this element appears */
       int x;                    /**< x coordinate of the element on the floor */
       int y;                    /**< y coordinate of the element on the floor */

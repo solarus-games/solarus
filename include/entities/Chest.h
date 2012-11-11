@@ -30,18 +30,19 @@ class Chest: public Detector {
 
   private:
 
-    Treasure treasure;			/**< the treasure placed in this chest (possibly "_none") */
-    bool big_chest;			/**< true for a big chest, false for normal chests */
-    bool open;				/**< true if the chest is open (but the treasure may not have
-					 * been given yet because there is a delay of 500 ms) */
-    bool treasure_given;		/**< true if the chest is open and the treasure has been given to the player */
-    uint32_t treasure_date;		/**< date when the treasure will be given to the player */
+    Treasure treasure;            /**< the treasure placed in this chest (possibly "_none") */
+    bool big_chest;               /**< true for a big chest, false for normal chests */
+    bool open;                    /**< true if the chest is open (but the treasure may not have
+                                   * been given yet because there is a delay of 500 ms) */
+    bool treasure_given;          /**< true if the chest is open and the treasure has been given to the player */
+    uint32_t treasure_date;       /**< date when the treasure will be given to the player */
 
     void initialize_sprite();
 
   public:
 
-    Chest(const std::string &name, Layer layer, int x, int y, bool big_chest, const Treasure &treasure);
+    Chest(const std::string& name, Layer layer, int x, int y,
+        bool big_chest, const Treasure &treasure);
     ~Chest();
 
     EntityType get_type();
@@ -51,7 +52,7 @@ class Chest: public Detector {
     void set_open(bool open);
 
     bool is_obstacle_for(MapEntity& other);
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_enabled(bool enabled);
     void update();
     void action_key_pressed();

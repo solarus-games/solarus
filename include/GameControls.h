@@ -55,8 +55,8 @@ class GameControls {
 
   private:
 
-    Game &game;						/**< the game */
-    Savegame &savegame;					/**< the savegame, which stores the keyboard and joypad mappings of the game keys */
+    Game& game;						/**< the game */
+    Savegame& savegame;					/**< the savegame, which stores the keyboard and joypad mappings of the game keys */
 
     std::string game_key_names[9];			/**< human name of each game key, in the current language */
     std::map<InputEvent::KeyboardKey, GameKey> keyboard_mapping;	/**< associates each game key to the keyboard key that triggers it */
@@ -78,7 +78,12 @@ class GameControls {
     // keyboard mapping
     void key_pressed(InputEvent::KeyboardKey keyboard_key_pressed);
     void key_released(InputEvent::KeyboardKey keyboard_key_released);
-    InputEvent::KeyboardKey get_keyboard_key(GameKey game_key);
+    const std::string& get_keyboard_key_savegame_variable(GameKey game_key);
+    const std::string& get_joypad_string_savegame_variable(GameKey game_key);
+    InputEvent::KeyboardKey get_saved_keyboard_key(GameKey game_key);
+    void set_saved_keyboard_key(GameKey game_key, InputEvent::KeyboardKey key);
+    const std::string& get_saved_joypad_string(GameKey game_key);
+    void set_saved_joypad_string(GameKey game_key, const std::string& joypad_string);
 
     // joypad mapping
     void joypad_button_pressed(int button);
@@ -89,14 +94,16 @@ class GameControls {
   public:
 
     // creation and destruction
-    GameControls(Game &game);
+    GameControls(Game& game);
     ~GameControls();
 
     // controls
-    const std::string & get_key_name(GameKey game_key);
-    const std::string get_keyboard_string(GameKey game_key);
+    InputEvent::KeyboardKey get_keyboard_key(GameKey game_key);
+    const std::string& get_key_name(GameKey game_key);
+    const std::string get_keyboard_string(GameKey game_key);  // TODO replace by the Solarus API names
     const std::string get_joypad_string(GameKey game_key);
-    void notify_input(InputEvent &event);
+
+    void notify_input(InputEvent& event);
     bool is_key_pressed(GameKey game_key);
     int get_wanted_direction8();
 

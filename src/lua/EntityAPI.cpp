@@ -966,9 +966,9 @@ int LuaContext::hero_api_start_jumping(lua_State* l) {
 int LuaContext::hero_api_start_treasure(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
-  const std::string &item_name = luaL_checkstring(l, 2);
+  const std::string& item_name = luaL_checkstring(l, 2);
   int variant = luaL_checkinteger(l, 3);
-  int savegame_variable = luaL_checkinteger(l, 4);
+  const std::string& savegame_variable = luaL_checkstring(l, 4);
 
   hero.start_treasure(
       Treasure(hero.get_game(), item_name, variant, savegame_variable));
@@ -1342,7 +1342,7 @@ int LuaContext::pickable_api_get_treasure(lua_State* l) {
 
   push_string(l, treasure.get_item_name());
   lua_pushinteger(l, treasure.get_variant());
-  lua_pushinteger(l, treasure.get_savegame_variable());
+  lua_pushstring(l, treasure.get_savegame_variable().c_str());
   return 1;
 }
 
@@ -1786,7 +1786,7 @@ int LuaContext::enemy_api_set_treasure(lua_State* l) {
   Enemy& enemy = check_enemy(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
   int variant = luaL_checkinteger(l, 3);
-  int savegame_variable = luaL_checkinteger(l, 4);
+  const std::string& savegame_variable = luaL_checkstring(l, 4);
 
   Treasure treasure(enemy.get_game(), item_name, variant, savegame_variable);
   enemy.set_treasure(treasure);
@@ -1803,7 +1803,7 @@ int LuaContext::enemy_api_set_no_treasure(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
-  Treasure treasure(enemy.get_game(), "_none", 1, -1);
+  Treasure treasure(enemy.get_game(), "_none", 1, "");
   enemy.set_treasure(treasure);
 
   return 0;
@@ -1818,7 +1818,7 @@ int LuaContext::enemy_api_set_random_treasure(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
 
-  Treasure treasure(enemy.get_game(), "_random", 1, -1);
+  Treasure treasure(enemy.get_game(), "_random", 1, "");
   enemy.set_treasure(treasure);
 
   return 0;
@@ -1912,9 +1912,9 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
 
   Game& game = enemy.get_game();
   MapEntities& entities = enemy.get_map().get_entities();
-  Treasure treasure = Treasure(game, "_random", 1, -1);
+  Treasure treasure = Treasure(game, "_random", 1, "");
   Enemy* other_enemy = (Enemy*) Enemy::create(game, breed, Enemy::RANK_NORMAL,
-      -1, name, Layer(layer), x, y, 0, treasure);
+      "", name, Layer(layer), x, y, 0, treasure);
   other_enemy->set_optimization_distance(enemy.get_optimization_distance());
   entities.add_entity(other_enemy);
   other_enemy->restart();

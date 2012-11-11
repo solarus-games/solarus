@@ -99,18 +99,17 @@ void ItemIcon::update() {
     }
 
     // counter index
-    int counter_index = equipment->get_item(current_item).get_counter_savegame_variable();
-    if (counter_index != -1) {
+    if (equipment->get_item(current_item).is_saved()) {
 
       int current_counter_value = equipment->get_item_amount(current_item);
       int current_counter_maximum = equipment->get_item_maximum(current_item);
 
       if (counter_value_displayed != current_counter_value || counter_maximum_displayed != current_counter_maximum) {
-	need_rebuild = true;
-	counter_maximum_displayed = current_counter_maximum;
-	counter_value_displayed = current_counter_value;
-	counter->set_maximum(current_counter_maximum);
-	counter->set_value(counter_value_displayed);
+        need_rebuild = true;
+        counter_maximum_displayed = current_counter_maximum;
+        counter_value_displayed = current_counter_value;
+        counter->set_maximum(current_counter_maximum);
+        counter->set_value(counter_value_displayed);
       }
     }
     else if (counter_value_displayed != -1) {

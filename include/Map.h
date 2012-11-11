@@ -76,8 +76,8 @@ class Map: public ExportableToLua {
                                    * - in the inside world: location of the map relative to the whole world map
                                    * - in a dungeon: location of the map's top-left corner relative to the whole floor */
 
-    int small_keys_variable;      /**< index of the variable of the savegame where the number of small keys
-                                   * of this map is saved (-1 means that the small keys are not enabled on this map) */
+    std::string small_keys_variable;  /**< name of the variable of the savegame where the number of small keys
+                                       * of this map is saved (an empty string if small keys are not enabled on this map) */
 
     // screen
 
@@ -124,7 +124,7 @@ class Map: public ExportableToLua {
     int get_floor();
     bool has_floor();
     const Rectangle& get_location();
-    int get_small_keys_variable();
+    const std::string& get_small_keys_variable();
     bool has_small_keys();
 
     int get_width();

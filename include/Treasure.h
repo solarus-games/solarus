@@ -29,31 +29,23 @@
  * A treasure is represented as the following values:
  * - the item name: a string identitying the nature of the treasure, according to the file items.dat
  * - the variant: indicates the variant of this item
- * - a savegame variable: index of the boolean variable that indicates whether
- *   the player has found this treasure (-1 if the treasure is not saved).
+ * - a savegame variable: name of the saved boolean variable that indicates whether
+ *   the player has found this treasure (empty string if the treasure is not saved).
  */
 class Treasure {
 
-  private:
-
-    Game* game;				/**< the current game */
-    std::string item_name;		/**< content of the treasure (can be "_none") */
-    int variant;			/**< variant of this content */
-    int savegame_variable;		/**< index of the savegame boolean variable corresponding to this treasure,
-					 * or -1 if the treasure state is not saved */
-    Sprite* sprite;			/**< the sprite of the treasure */
-
   public:
 
-    Treasure(Game &game, const std::string& item_name, int variant, int savegame_variable);
-    Treasure(const Treasure &other);
+    Treasure(Game& game, const std::string& item_name, int variant,
+        const std::string& savegame_variable);
+    Treasure(const Treasure& other);
     ~Treasure();
     Treasure& operator=(const Treasure& other);
 
     EquipmentItem& get_equipment_item() const;
     const std::string& get_item_name() const;
     int get_variant() const;
-    int get_savegame_variable() const;
+    const std::string& get_savegame_variable() const;
     bool is_saved() const;
     bool is_empty() const;
 
@@ -62,6 +54,15 @@ class Treasure {
     bool is_found() const;
 
     void draw(Surface& dst_surface, int x, int y);
+
+  private:
+
+    Game* game;                     /**< the current game */
+    std::string item_name;          /**< content of the treasure (can also be "_none" or "_random") */
+    int variant;                    /**< variant of this content */
+    std::string savegame_variable;  /**< name of the savegame boolean variable corresponding to this treasure,
+                                     * or an empty string if the treasure state is not saved */
+    Sprite* sprite;                 /**< the sprite of the treasure (loaded on demand, NULL until required) */
 };
 
 #endif

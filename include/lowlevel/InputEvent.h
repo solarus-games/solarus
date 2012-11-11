@@ -20,6 +20,7 @@
 #include "Common.h"
 #include <SDL.h>
 #include <string>
+#include <map>
 
 /**
  * @brief Represents a low-level event.
@@ -176,14 +177,13 @@ class InputEvent {
       KEY_RIGHT_WINDOWS            = 312
     };
 
-    static const int KEYBOARD_ENUM_VERSION;      /**< version of the Key enumeration above (this prevents from
-                                                  * breaking savegames when the enumeration values are changed) */
-
   private:
 
-    static const KeyboardKey directional_keys[]; /**< array of the keyboard directional keys */
-    static SDL_Joystick *joystick;               /**< the joystick object */
-    SDL_Event internal_event;                    /**< the internal event encapsulated */
+    static const KeyboardKey directional_keys[];  /**< array of the keyboard directional keys */
+    static SDL_Joystick *joystick;                 /**< the joystick object */
+    SDL_Event internal_event;                       /**< the internal event encapsulated */
+    static std::map<KeyboardKey, std::string>
+      keyboard_key_names;                             /**< Names of all existing keyboard keys. */
 
   public:
 
@@ -199,7 +199,7 @@ class InputEvent {
     ~InputEvent();
 
     // retrieve the current event
-    static InputEvent * get_event(); 
+    static InputEvent* get_event();
 
     // global information
     static void set_key_repeat(int delay, int interval);
@@ -215,13 +215,13 @@ class InputEvent {
     // keyboard
     bool is_keyboard_key_pressed();
     bool is_keyboard_key_pressed(KeyboardKey key);
-    bool is_keyboard_key_pressed(const KeyboardKey *keys);
+    bool is_keyboard_key_pressed(const KeyboardKey* keys);
     bool is_keyboard_direction_key_pressed();
     bool is_keyboard_non_direction_key_pressed();
 
     bool is_keyboard_key_released();
     bool is_keyboard_key_released(KeyboardKey key);
-    bool is_keyboard_key_released(const KeyboardKey *keys);
+    bool is_keyboard_key_released(const KeyboardKey* keys);
     bool is_keyboard_direction_key_released();
     bool is_keyboard_non_direction_key_released();
 
@@ -230,7 +230,8 @@ class InputEvent {
     bool is_with_alt();
 
     KeyboardKey get_keyboard_key();
-    static const std::string get_keyboard_key_name(KeyboardKey key);
+    static const std::string& get_keyboard_key_name(InputEvent::KeyboardKey key);
+    static InputEvent::KeyboardKey get_keyboard_key_by_name(const std::string& keyboard_key_name);
 
     bool is_character_pressed();
     const std::string get_character();

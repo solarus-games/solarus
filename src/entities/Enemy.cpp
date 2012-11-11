@@ -64,7 +64,7 @@ Enemy::Enemy(Game& game, const std::string& name, Layer layer, int x, int y,
   can_hurt_hero_running(false),
   minimum_shield_needed(0),
   rank(RANK_NORMAL),
-  savegame_variable(-1),
+  savegame_variable(),
   obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
   drawn_in_y_order(true),
   initialized(false),
@@ -104,21 +104,21 @@ Enemy::~Enemy() {
  * @param breed breed of the enemy to create
  * @param name a name identifying the enemy
  * @param rank rank of the enemy: normal, miniboss or boss
- * @param savegame_variable index of the boolean variable indicating that
+ * @param savegame_variable name of the boolean variable indicating that the enemy is dead
  * @param layer layer of the enemy on the map
  * @param x x position of the enemy on the map
  * @param y y position of the enemy on the map
  * @param direction initial direction of the enemy on the map (0 to 3)
  * this enemy is killed, or -1 if this enemy is not saved
  * @param treasure the pickable item that the enemy drops
- * @return the enemy created (may be NULL)
+ * @return the enemy created (may also be a Pickable or NULL)
  */
 MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank,
-    int savegame_variable, const std::string &name, Layer layer, int x, int y,
+    const std::string& savegame_variable, const std::string &name, Layer layer, int x, int y,
     int direction, const Treasure& treasure) {
 
   // see if the enemy is dead
-  if (savegame_variable != -1
+  if (!savegame_variable.empty()
       && game.get_savegame().get_boolean(savegame_variable)) {
 
     // the enemy is dead: create its pickable treasure (if any) instead
@@ -229,6 +229,14 @@ const std::string& Enemy::get_breed() {
  */
 Enemy::Rank Enemy::get_rank() {
   return rank;
+}
+
+/**
+ * @brief Returns whether the state of this enemy is saved.
+ * @return true if this enemy is saved.
+ */
+bool Enemy::is_saved() {
+  return !savegame_variable.empty();
 }
 
 /**
@@ -1219,7 +1227,7 @@ void Enemy::kill() {
   }
 
   // save the enemy state if required
-  if (savegame_variable != -1) {
+  if (is_saved()) {
     get_savegame().set_boolean(savegame_variable, true);
   }
 }

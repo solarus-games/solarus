@@ -37,7 +37,7 @@ const Rectangle PauseSubmenuMap::outside_world_minimap_size(0, 0, 225, 388);
  * @param pause_menu the pause menu object
  * @param game the game
  */
-PauseSubmenuMap::PauseSubmenuMap(PauseMenu &pause_menu, Game &game):
+PauseSubmenuMap::PauseSubmenuMap(PauseMenu& pause_menu, Game& game):
   PauseSubmenu(pause_menu, game) {
 
   // outside map or inside map (no dungeon): show the world map
@@ -45,13 +45,13 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu &pause_menu, Game &game):
 
     set_caption_text(StringResource::get_string("map.caption.world_map"));
 
-    const Rectangle &real_size = game.get_outside_world_size();
+    const Rectangle& real_size = game.get_outside_world_size();
 
-    Map &map = game.get_current_map();
+    Map& map = game.get_current_map();
     hero_position = map.get_location();
 
     if (map.is_in_outside_world()) {
-      const Rectangle &hero_map_xy = game.get_hero_xy();
+      const Rectangle& hero_map_xy = game.get_hero_xy();
       hero_position.add_xy(hero_map_xy.get_x(), hero_map_xy.get_y());
     }
 
@@ -95,8 +95,8 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu &pause_menu, Game &game):
     // floors
     dungeon_floors_img = new Surface("floors.png", Surface::DIR_LANGUAGE);
 
-    hero_floor = game.get_current_map().get_floor();
-    boss_floor = dungeon.get_boss_floor();
+    hero_floor_name = game.get_current_map().get_floor();
+    boss_floor_name = dungeon.get_boss_floor_name();
 
     highest_floor = dungeon.get_highest_floor();
     lowest_floor = dungeon.get_lowest_floor();
@@ -104,13 +104,17 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu &pause_menu, Game &game):
 
     nb_floors_displayed = dungeon.get_nb_floors_displayed();
 
-    if (hero_floor != -99) {
+    if (hero_floor_name != "unknown") {
+      int hero_floor;
+      std::istringstream iss(hero_floor_name);
+      iss >> hero_floor;
       highest_floor_displayed = dungeon.get_highest_floor_displayed(hero_floor);
+      selected_floor = hero_floor;
     }
     else {
       highest_floor_displayed = highest_floor;
+      selected_floor = lowest_floor;
     }
-    selected_floor = hero_floor != -99 ? hero_floor : lowest_floor;
 
     // map
     dungeon_map_img = new Surface(123, 119);
@@ -451,8 +455,13 @@ void PauseSubmenuMap::draw_dungeon_map(Surface& dst_surface) {
         SOLARUS_SCREEN_HEIGHT_MIDDLE - 54);
   dungeon_map_img->draw(dst_surface, dst_position);
 
-  if (hero_point_sprite != NULL && selected_floor == hero_floor) {
-    hero_point_sprite->draw(*dungeon_map_img, hero_position);
+  if (hero_floor_name != "unknown") {
+    int hero_floor;
+    std::istringstream iss(hero_floor_name);
+    iss >> hero_floor;
+    if (hero_point_sprite != NULL && selected_floor == hero_floor) {
+      hero_point_sprite->draw(*dungeon_map_img, hero_position);
+    }
   }
 }
 
@@ -531,10 +540,15 @@ void PauseSubmenuMap::draw_dungeon_floors(Surface& dst_surface) {
 
   // draw the hero's icon
   int lowest_floor_displayed = highest_floor_displayed - nb_floors_displayed + 1;
-  if (hero_floor >= lowest_floor_displayed && hero_floor <= highest_floor_displayed) {
+  if (hero_floor_name != "unknown") {
+    int hero_floor;
+    std::istringstream iss(hero_floor_name);
+    iss >> hero_floor;
+    if (hero_floor >= lowest_floor_displayed && hero_floor <= highest_floor_displayed) {
 
-    int y = dst_y + (highest_floor_displayed - hero_floor) * 12;
-    hero_head_sprite->draw(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 99, y);
+      int y = dst_y + (highest_floor_displayed - hero_floor) * 12;
+      hero_head_sprite->draw(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 99, y);
+    }
   }
 
   // draw the boss icon
@@ -542,16 +556,21 @@ void PauseSubmenuMap::draw_dungeon_floors(Surface& dst_surface) {
   oss << "dungeon_" << game.get_current_dungeon().get_number();
   const std::string& dungeon_number = oss.str();
 
-  if (savegame.get_boolean(dungeon_number + "_compass")
-      && boss_floor >= lowest_floor_displayed
-      && boss_floor <= highest_floor_displayed) {
+  if (boss_floor_name != "unknown") {
+    int boss_floor;
+    std::istringstream iss(boss_floor_name);
+    iss >> boss_floor;
+    if (savegame.get_boolean(dungeon_number + "_compass")
+        && boss_floor >= lowest_floor_displayed
+        && boss_floor <= highest_floor_displayed) {
 
-    int boss_y = dst_y + (highest_floor_displayed - boss_floor) * 12 + 3;
+      int boss_y = dst_y + (highest_floor_displayed - boss_floor) * 12 + 3;
 
-    Rectangle src_position(78, 0, 8, 8);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 47, boss_y);
+      Rectangle src_position(78, 0, 8, 8);
+      Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 47, boss_y);
 
-    dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
+      dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
+    }
   }
 
   // draw the arrows

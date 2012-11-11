@@ -119,29 +119,8 @@ int MapLoader::l_properties(lua_State* l) {
   map->location.set_xy(x, y);
   map->small_keys_variable = small_keys_variable;
   map->music_id = music_id;
-
-  // TODO store the world as a string in class Map
-  if (world_name == "inside_world") {
-    map->world = -1;
-  }
-  else if (world_name == "outside_world") {
-    map->world = 0;
-  }
-  else if (world_name.substr(0, 8) == "dungeon_") {
-    std::istringstream iss(world_name.substr(8));
-    iss >> map->world;
-  }
-
-  if (floor_name.empty()) {
-    map->floor = -100;
-  }
-  else if (floor_name == "unknown") {
-    map->floor = -99;
-  }
-  else {
-    std::istringstream iss(floor_name);
-    iss >> map->floor;
-  }
+  map->set_world(world_name);
+  map->set_floor(floor_name);
 
   map->tileset = new Tileset(tileset_id);
   map->tileset->load();

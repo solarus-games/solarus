@@ -26,7 +26,10 @@
  * @param dungeon_number a dungeon number between 1 and 20
  */
 Dungeon::Dungeon(int dungeon_number):
-  dungeon_number(dungeon_number), chests(NULL), bosses(NULL), boss_floor(-100) {
+  dungeon_number(dungeon_number),
+  chests(NULL),
+  bosses(NULL),
+  boss_floor_name("") {
 
   load();
 }
@@ -77,7 +80,7 @@ void Dungeon::load() {
   // parse the floors (the floors must be before the chests and the bosses)
   oss.str("");
   oss << "dungeon_" << dungeon_number << ".floor_";
-  const std::string &floor_prefix = oss.str();
+  const std::string& floor_prefix = oss.str();
   lowest_floor = 100;
 
   for (ini.start_group_iteration(); ini.has_more_groups(); ini.next_group()) {
@@ -112,15 +115,15 @@ void Dungeon::load() {
   // parse the rest: chests and bosses
   oss.str("");
   oss << "dungeon_" << dungeon_number << ".map_";
-  const std::string &elements_prefix = oss.str();
+  const std::string& elements_prefix = oss.str();
 
   for (ini.start_group_iteration(); ini.has_more_groups(); ini.next_group()) {
-    const std::string &group_name = ini.get_group();
+    const std::string& group_name = ini.get_group();
 
     if (group_name.substr(0, elements_prefix.length()) == elements_prefix) {
       // we found a group describing an element in this dungeon
 
-      const std::string &suffix = group_name.substr(elements_prefix.length());
+      const std::string& suffix = group_name.substr(elements_prefix.length());
 
       // is it a chest?
       if (suffix.find("chest") != std::string::npos) {
@@ -145,12 +148,18 @@ void Dungeon::load() {
         boss.savegame_variable = ini.get_string_value("save", "");
         boss.big = ini.get_integer_value("big", 0) != 0;
 
-        if (boss.big) {
-          boss_floor = boss.floor;
+        if (boss.floor == -99) { // -99 means a special floor not marked on the map
+          if (boss.big) {
+            boss_floor_name = "unknown";
+          }
         }
-
-        if (boss.floor != -99) { // -99 means a special floor not marked on the map
+        else {
           bosses[boss.floor - lowest_floor].push_back(boss);
+          if (boss.big) {
+            std::ostringstream oss;
+            oss << boss.floor;
+            boss_floor_name = oss.str();
+          }
         }
       }
     }
@@ -186,7 +195,7 @@ int Dungeon::get_highest_floor() {
  * @param floor a floor of this dungeon
  * @return the size of this floor
  */
-const Rectangle & Dungeon::get_floor_size(int floor) {
+const Rectangle& Dungeon::get_floor_size(int floor) {
   return floor_sizes[floor - get_lowest_floor()];
 }
 
@@ -240,8 +249,8 @@ int Dungeon::get_highest_floor_displayed(int current_floor) {
  * @brief Returns the floor where the boss of this dungeon is.
  * @return the floor of the boss
  */
-int Dungeon::get_boss_floor() {
-  return boss_floor;
+const std::string& Dungeon::get_boss_floor_name() {
+  return boss_floor_name;
 }
 
 /**

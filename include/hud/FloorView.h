@@ -31,7 +31,7 @@ class FloorView: public HudElement {
   private:
 
     Map *current_map;
-    int current_floor;
+    std::string current_floor;
     Surface *img_floors;
 
     bool is_floor_displayed;

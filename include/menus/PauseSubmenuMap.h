@@ -56,7 +56,8 @@ class PauseSubmenuMap: public PauseSubmenu {
     Counter *small_keys_counter;
 
     Surface *dungeon_floors_img;
-    int hero_floor, boss_floor, highest_floor, lowest_floor, nb_floors;
+    std::string hero_floor_name, boss_floor_name;
+    int highest_floor, lowest_floor, nb_floors;
     int nb_floors_displayed, highest_floor_displayed, selected_floor;
 
     Surface *dungeon_map_img;

@@ -59,15 +59,12 @@ class Map: public ExportableToLua {
     std::string music_id;         /**< id of the background music of the map:
                                    * can be a valid music, Music::none or Music::unchanged */
 
-    int world;                    /**< the world where this map is:
-                                   * - 0 if the map is in the outside world
-                                   * - -1 if the map is in the inside world
-                                   * - 1 to 20 if the map is in a dungeon */
+    std::string world;            /**< Name of the context where this map is. When changing context,
+                                   * the savegame starting position is set and crystal switches are reset. */
 
-    int floor;                    /**< The floor where this map is:
-                                   * - -16 to 15 for a normal floor
-                                   * - -100 to indicate that there is no floor
-                                   * - -99 for the unknown floor '?' */
+    std::string floor;            /**< The floor where this map is (a number),
+                                   * or an empty string or "unknown".
+                                   * TODO remove the option "unknown" */
 
     Rectangle location;           /**< location of the map in its context: the width and height fields
                                    * indicate the map size in pixel, and the x and y field indicate the position:
@@ -118,13 +115,15 @@ class Map: public ExportableToLua {
     Tileset& get_tileset();
     const std::string& get_tileset_id();
     void set_tileset(const std::string& tileset_id);
-    int get_world_number();
-    bool is_in_dungeon();
-    bool is_in_outside_world();
-    int get_floor();
+    const std::string& get_world();
+    void set_world(const std::string& world);
+    bool is_in_dungeon();  // TODO remove
+    bool is_in_outside_world();  // TODO remove
     bool has_floor();
+    const std::string& get_floor();
+    void set_floor(const std::string& floor);
     const Rectangle& get_location();
-    const std::string& get_small_keys_variable();
+    const std::string& get_small_keys_variable();  // TODO remove
     bool has_small_keys();
 
     int get_width();

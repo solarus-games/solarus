@@ -382,7 +382,7 @@ void Game::update_transitions() {
 
         // special treatments for a transition between two different worlds
         // (e.g. outside world to a dungeon)
-        if (next_map->get_world_number() != current_map->get_world_number()) {
+        if (next_map->get_world() != current_map->get_world()) {
 
           // reset the crystal blocks
           crystal_state = false;
@@ -758,7 +758,7 @@ void Game::set_paused(bool paused) {
  */
 void Game::load_dungeon() {
 
-  if (current_map == NULL || next_map->get_world_number() != current_map->get_world_number()) {
+  if (current_map == NULL || next_map->get_world() != current_map->get_world()) {
 
     if (current_map != NULL && current_map->is_in_dungeon()) {
       delete dungeon;
@@ -766,7 +766,8 @@ void Game::load_dungeon() {
     }
 
     if (next_map->is_in_dungeon()) {
-      dungeon = new Dungeon(next_map->get_world_number());
+      // TODO remove the notion of dungeon
+      dungeon = new Dungeon(next_map->get_world()[8] - '0');
     }
   }
 }

@@ -108,10 +108,18 @@ void Map::set_tileset(const std::string& tileset_id) {
 
 /**
  * @brief Returns the world where this map is.
- * @return 0 if this map is outside, -1 if it is inside, 1 to 20 if it is in a dungeon
+ * @return The world name.
  */
-int Map::get_world_number() {
+const std::string& Map::get_world() {
   return world;
+}
+
+/**
+ * @brief Returns the world where this map is.
+ * @return The world name.
+ */
+void Map::set_world(const std::string& world) {
+  this->world = world;
 }
 
 /**
@@ -119,7 +127,7 @@ int Map::get_world_number() {
  * @return true if this map is in a dungeon
  */
 bool Map::is_in_dungeon() {
-  return get_world_number() > 0;
+  return get_world().substr(0, 8) == "dungeon_";
 }
 
 /**
@@ -127,45 +135,56 @@ bool Map::is_in_dungeon() {
  * @return true if this map is in the oustide world
  */
 bool Map::is_in_outside_world() {
-  return get_world_number() == 0;
+  return get_world() == "outside_world";
+}
+
+/**
+ * @brief Returns whether this map has a floor.
+ *
+ * This function returns true if get_floor() is not an empty string.
+ *
+ * @return true if there is a floor.
+ */
+bool Map::has_floor() {
+  return !get_floor().empty();
 }
 
 /**
  * @brief Returns the floor where this map is.
  *
  * The value returned can be:
- * - a floor number between -16 and 15,
- * - -100 to indicate that there is no floor,
- * - -99 to indicate an unknown floor (the '?' image will be displayed).
+ * - a floor number,
+ * - an empty string to indicate that there is no floor,
+ * - "unknown" to indicate an unknown floor.
  *
- * @return the floor
+ * @return The floor.
  */
-int Map::get_floor() {
+const std::string& Map::get_floor() {
   return floor;
 }
 
 /**
- * @brief Returns whether this map has a floor.
+ * @brief Sets the floor where this map is.
  *
- * This function returns true if get_floor() is not -100.
+ * The value can be:
+ * - a floor number,
+ * - an empty string to indicate that there is no floor,
+ * - "unknown" to indicate an unknown floor.
  *
- * @return true if there is a floor
+ * @param floor The floor.
  */
-bool Map::has_floor() {
-  return get_floor() != -100;
+void Map::set_floor(const std::string& floor) {
+  this->floor = floor;
 }
 
 /**
  * @brief Returns the location of this map in its context.
  *
- * The location returned is:
- * - in the outside world: location of the map's top-left corner
- *   relative to the whole world map
- * - in the inside world: location of the map relative to the whole world map
- * - in a dungeon: location of the map's top-left corner relative to the whole floor
+ * The location returned is the location of the map's top-left corner
+ * relative to its context (its floor or its world).
  * The width and height fields correspond to the map size.
  *
- * @return the location of this map in its context.
+ * @return The location of this map in its context.
  */
 const Rectangle& Map::get_location() {
   return location;

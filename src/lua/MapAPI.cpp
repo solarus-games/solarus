@@ -60,7 +60,14 @@ const std::string LuaContext::map_module_name = "sol.map";
 void LuaContext::register_map_module() {
 
   static const luaL_Reg methods[] = {
+      { "get_id", map_api_get_id },
       { "get_game", map_api_get_game },
+      { "get_world", map_api_get_world },
+      { "get_size", map_api_get_size },
+      { "get_location", map_api_get_location },
+      { "get_floor", map_api_get_floor },
+      { "get_tileset", map_api_get_tileset },
+      { "set_tileset", map_api_set_tileset },
       { "start_dialog", map_api_start_dialog },
       { "set_dialog_variable", map_api_set_dialog_variable },
       { "set_dialog_style", map_api_set_dialog_style },
@@ -69,8 +76,6 @@ void LuaContext::register_map_module() {
       { "set_light", map_api_set_light },
       { "move_camera", map_api_move_camera },
       { "draw_sprite", map_api_draw_sprite },
-      { "get_tileset", map_api_get_tileset },
-      { "set_tileset", map_api_set_tileset },
       { "get_crystal_state", map_api_get_crystal_state },
       { "set_crystal_state", map_api_set_crystal_state },
       { "change_crystal_state", map_api_change_crystal_state },
@@ -298,6 +303,75 @@ int LuaContext::l_camera_restore(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_map_get_id.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_id(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  push_string(l, map.get_id());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_get_world.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_world(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  push_string(l, map.get_world());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_get_floor.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_floor(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  push_string(l, map.get_floor());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_get_size.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::map_api_get_size(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  lua_pushinteger(l, map.get_width());
+  lua_pushinteger(l, map.get_height());
+
+  return 2;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_get_location.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::map_api_get_location(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  lua_pushinteger(l, map.get_location().get_x());
+  lua_pushinteger(l, map.get_location().get_y());
+
+  return 2;
+}
+
+/**
  * @brief Implementation of \ref lua_api_map_get_game.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -307,7 +381,6 @@ int LuaContext::map_api_get_game(lua_State* l) {
   Map& map = check_map(l, 1);
 
   push_game(l, map.get_game().get_savegame());
-
   return 1;
 }
 

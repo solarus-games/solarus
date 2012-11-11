@@ -492,7 +492,14 @@ class LuaContext {
       game_api_get_item,
 
       // Map API.
+      map_api_get_id,
       map_api_get_game,
+      map_api_get_world,
+      map_api_get_floor,
+      map_api_get_size,
+      map_api_get_location,
+      map_api_get_tileset,
+      map_api_set_tileset,
       map_api_start_dialog,
       map_api_set_dialog_variable,
       map_api_set_dialog_style,   // TODO use a string parameter
@@ -501,8 +508,6 @@ class LuaContext {
       map_api_set_light,
       map_api_move_camera,
       map_api_draw_sprite,
-      map_api_get_tileset,
-      map_api_set_tileset,
       map_api_get_crystal_state,
       map_api_set_crystal_state,
       map_api_change_crystal_state,
@@ -519,13 +524,13 @@ class LuaContext {
       map_api_create_tile,
       map_api_create_destination,
       map_api_create_teletransporter,
-      map_api_create_pickable,      // TODO use a table as parameter
-      map_api_create_destructible,  // TODO use a table as parameter
+      map_api_create_pickable,
+      map_api_create_destructible,
       map_api_create_chest,
       map_api_create_jumper,
-      map_api_create_enemy,         // TODO use a table as parameter
+      map_api_create_enemy,
       map_api_create_npc,
-      map_api_create_block,         // TODO use a table as parameter
+      map_api_create_block,
       map_api_create_dynamic_tile,
       map_api_create_switch,
       map_api_create_wall,
@@ -536,9 +541,9 @@ class LuaContext {
       map_api_create_conveyor_belt,
       map_api_create_door,
       map_api_create_stairs,
-      map_api_create_bomb,          // TODO use a table as parameter
-      map_api_create_explosion,     // TODO use a table as parameter
-      map_api_create_fire,          // TODO use a table as parameter
+      map_api_create_bomb,
+      map_api_create_explosion,
+      map_api_create_fire,
 
       // Map entity API.
       entity_api_get_map,

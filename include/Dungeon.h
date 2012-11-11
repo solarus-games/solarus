@@ -58,7 +58,7 @@ class Dungeon {
 
     std::vector<DungeonElement>* chests; /**< properties of each chest for each floor */
     std::vector<DungeonElement>* bosses; /**< properties of each miniboss and boss for each floor */
-    int boss_floor;                      /**< floor of the boss (-100 if there is no boss) */
+    std::string boss_floor_name;         /**< floor of the boss */
 
     void load();
 
@@ -75,14 +75,14 @@ class Dungeon {
     int get_nb_floors();
     int get_lowest_floor();
     int get_highest_floor();
-    const Rectangle & get_floor_size(int floor);
+    const Rectangle& get_floor_size(int floor);
 
     // displaying floors (for the hud and the dungeon map submenu)
     int get_nb_floors_displayed();
     int get_highest_floor_displayed(int current_floor);
 
     // dungeon elements
-    int get_boss_floor();
+    const std::string& get_boss_floor_name();
     const std::vector<DungeonElement> get_bosses(int floor);
     const std::vector<DungeonElement> get_chests(int floor);
 };

@@ -16,12 +16,13 @@
  */
 #include "Savegame.h"
 #include "SavegameConverterV1.h"
-#include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lua/LuaContext.h"
+#include <lua.hpp>
 
 const int Savegame::SAVEGAME_VERSION = 2;
 
@@ -181,12 +182,89 @@ void Savegame::set_default_joypad_controls() {
  */
 void Savegame::load() {
 
-  // TODO try to parse as Lua, if fail try to convert from version 1 format
-  SavegameConverterV1 converter(file_name);
-  converter.convert_to_v2(*this);
+  // Try to parse as Lua first.
+  lua_State* l = lua_open();
+  size_t size;
+  char* buffer;
+  FileTools::data_file_open_buffer(file_name, &buffer, &size);
+  int result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  FileTools::data_file_close_buffer(buffer);
 
-  // TODO remove (temporary debugging code)
-  save();
+  // Call Lua.
+  if (result == 0) {
+    // The buffer was successfully loaded.
+
+    // Make the Lua world aware of this savegame object.
+    lua_pushlightuserdata(l, this);
+    lua_setfield(l, LUA_REGISTRYINDEX, "savegame");
+
+    // Set a special environment to catch every variable declaration.
+    lua_newtable(l);
+                                    // fun env
+    lua_newtable(l);
+                                    // fun env env_mt
+    lua_pushcfunction(l, l_newindex);
+                                    // fun env env_mt __newindex
+    lua_setfield(l, -2, "__newindex");
+                                    // fun env env_mt
+    lua_setmetatable(l, -2);
+                                    // fun env
+    lua_setfenv(l, -2);
+                                    // fun
+
+    if (lua_pcall(l, 0, 0, 0) != 0) {
+      Debug::die(StringConcat() << "Failed to load savegame file '"
+          << file_name << "': " << lua_tostring(l, -1));
+      lua_pop(l, 1);
+    }
+  }
+  else if (result == LUA_ERRSYNTAX) {
+     // Apparently it was not a Lua file. Let's try the obsolete format.
+     SavegameConverterV1 converter(file_name);
+     converter.convert_to_v2(*this);
+     save();
+   }
+
+  lua_close(l);
+}
+
+/**
+ * @brief __newindex function of the environment of the savegame file.
+ *
+ * This special __newindex function catches declaration of global variables
+ * to store them into the savegame.
+ *
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Savegame::l_newindex(lua_State* l) {
+
+  lua_getfield(l, LUA_REGISTRYINDEX, "savegame");
+  Savegame* savegame = static_cast<Savegame*>(lua_touserdata(l, -1));
+  lua_pop(l, 1);
+
+  const std::string& key = luaL_checkstring(l, 2);
+
+  switch (lua_type(l, 3)) {
+
+    case LUA_TBOOLEAN:
+      savegame->set_boolean(key, lua_toboolean(l, 3));
+      break;
+
+    case LUA_TNUMBER:
+      savegame->set_integer(key, lua_tointeger(l, 3));
+      break;
+
+    case LUA_TSTRING:
+      savegame->set_string(key, lua_tostring(l, 3));
+      break;
+
+   default:
+      luaL_argerror(l, 3, (StringConcat() <<
+          "Expected string, number or boolean, got " << luaL_typename(l, 3)).c_str());
+  }
+
+  return 0;
 }
 
 /**
@@ -213,8 +291,7 @@ void Savegame::save() {
   }
 
   const std::string& text = oss.str();
-  // TODO remove ".alpha" once it's stable
-  FileTools::data_file_save_buffer(file_name + ".alpha", text.c_str(), text.size());
+  FileTools::data_file_save_buffer(file_name, text.c_str(), text.size());
   empty = false;
 }
 

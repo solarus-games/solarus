@@ -149,8 +149,8 @@ void EquipmentItem::set_nb_variants(int nb_variants) {
   amounts.clear();
   probabilities.clear();
   for (int i = 0; i < nb_variants; i++) {
-    amounts[i] = 1;
-    probabilities[i] = 0;
+    amounts.push_back(1);
+    probabilities.push_back(0);
   }
 }
 

@@ -287,16 +287,16 @@ int LuaContext::game_api_set_value(lua_State* l) {
 
   switch (lua_type(l, 3)) {
 
-    case LUA_TSTRING:
-      savegame.set_string(key, lua_tostring(l, 3));
+    case LUA_TBOOLEAN:
+      savegame.set_boolean(key, lua_toboolean(l, 3));
       break;
 
     case LUA_TNUMBER:
       savegame.set_integer(key, lua_tointeger(l, 3));
       break;
 
-    case LUA_TBOOLEAN:
-      savegame.set_integer(key, lua_toboolean(l, 3));
+    case LUA_TSTRING:
+      savegame.set_string(key, lua_tostring(l, 3));
       break;
 
     default:

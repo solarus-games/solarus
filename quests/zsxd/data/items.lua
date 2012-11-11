@@ -4,17 +4,15 @@
 
 item{
   name = "feather",
-  savegame_variable = "i1100",
+  savegame_variable = "1100",
   can_be_assigned = true,
-  brandish_when_picked = true,
 }
 
 item{
   name = "bombs_counter",
-  savegame_variable = "i1101",
+  savegame_variable = "1101",
   can_be_assigned = true,
-  counter = "i1024",
-  brandish_when_picked = true,
+  counter = "1024",
 }
 
 item{
@@ -22,7 +20,7 @@ item{
   nb_variants = 3,
   changes_counter = "bombs_counter",
   can_disappear = true,
-  brandish_when_picked = true,
+  brandish_when_picked = false,
   amount_1 = 1,
   probability_1 = 8,
   amount_2 = 3,
@@ -33,10 +31,9 @@ item{
 
 item{
   name = "bomb_bag",
-  savegame_variable = "i1032",
+  savegame_variable = "1032",
   nb_variants = 3,
   limit_for_counter = "bombs_counter",
-  brandish_when_picked = true,
   amount_1 = 10,
   amount_2 = 11,
   amount_3 = 12,
@@ -44,11 +41,10 @@ item{
 
 item{
   name = "bow",
-  savegame_variable = "i1102",
+  savegame_variable = "1102",
   nb_variants = 2,
   can_be_assigned = true,
-  counter = "i1025",
-  brandish_when_picked = true,
+  counter = "1025",
 }
 
 item{
@@ -57,7 +53,7 @@ item{
   changes_counter = "bow",
   shadow = "small",
   can_disappear = true,
-  brandish_when_picked = true,
+  brandish_when_picked = false,
   amount_1 = 1,
   probability_1 = 8,
   amount_2 = 5,
@@ -68,10 +64,9 @@ item{
 
 item{
   name = "quiver",
-  savegame_variable = "i1033",
+  savegame_variable = "1033",
   nb_variants = 3,
   limit_for_counter = "bow",
-  brandish_when_picked = true,
   amount_1 = 10,
   amount_2 = 30,
   amount_3 = 99,
@@ -79,248 +74,213 @@ item{
 
 item{
   name = "boomerang",
-  savegame_variable = "i1103",
+  savegame_variable = "1103",
   can_be_assigned = true,
-  brandish_when_picked = true,
 }
 
 item{
   name = "lamp",
-  savegame_variable = "i1104",
+  savegame_variable = "1104",
   can_be_assigned = true,
-  brandish_when_picked = true,
 }
 
 item{
   name = "hookshot",
-  savegame_variable = "i1105",
+  savegame_variable = "1105",
   can_be_assigned = true,
-  brandish_when_picked = true,
 }
 
 item{
   name = "bottle_1",
-  savegame_variable = "i1106",
+  savegame_variable = "1106",
   nb_variants = 6,
   can_be_assigned = true,
-  brandish_when_picked = true,
 }
 
 item{
   name = "pegasus_shoes",
-  savegame_variable = "i1107",
+  savegame_variable = "1107",
   can_be_assigned = true,
-  brandish_when_picked = true,
 }
 
 item{
   name = "mystic_mirror",
-  savegame_variable = "i1108",
+  savegame_variable = "1108",
   can_be_assigned = true,
-  brandish_when_picked = true,
 }
 
 item{
   name = "cane_of_somaria",
-  savegame_variable = "i1109",
+  savegame_variable = "1109",
   can_be_assigned = true,
-  brandish_when_picked = true,
 }
 
 item{
   name = "apples_counter",
-  savegame_variable = "i1110",
+  savegame_variable = "1110",
   can_be_assigned = true,
-  counter = "i1028",
+  counter = "1028",
   limit = 10,
-  brandish_when_picked = true,
 }
 
 item{
   name = "apple",
   changes_counter = "apples_counter",
   amount = 3,
-  brandish_when_picked = true,
 }
 
 item{
   name = "pains_au_chocolat_counter",
-  savegame_variable = "i1111",
+  savegame_variable = "1111",
   can_be_assigned = true,
-  counter = "i1026",
+  counter = "1026",
   limit = 10,
-  brandish_when_picked = true,
 }
 
 item{
   name = "pain_au_chocolat",
   changes_counter = "pains_au_chocolat_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "croissants_counter",
-  savegame_variable = "i1112",
+  savegame_variable = "1112",
   can_be_assigned = true,
-  counter = "i1027",
+  counter = "1027",
   limit = 10,
-  brandish_when_picked = true,
 }
 
 item{
   name = "croissant",
   changes_counter = "croissants_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "bottle_2",
-  savegame_variable = "i1113",
+  savegame_variable = "1113",
   nb_variants = 6,
   can_be_assigned = true,
-  brandish_when_picked = true,
 }
 
 item{
   name = "rock_key",
-  savegame_variable = "i1114",
-  brandish_when_picked = true,
+  savegame_variable = "1114",
 }
 
 item{
   name = "bone_key",
-  savegame_variable = "i1115",
-  brandish_when_picked = true,
+  savegame_variable = "1115",
 }
 
 item{
   name = "clay_key",
-  savegame_variable = "i1116",
-  brandish_when_picked = true,
+  savegame_variable = "1116",
 }
 
 item{
   name = "apple_pie_counter",
-  savegame_variable = "i1117",
-  counter = "i1132",
+  savegame_variable = "1117",
+  counter = "1132",
   limit = 50,
-  brandish_when_picked = true,
 }
 
 item{
   name = "apple_pie",
   changes_counter = "apple_pie_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "flippers",
-  savegame_variable = "i1118",
-  brandish_when_picked = true,
+  savegame_variable = "1118",
 }
 
 item{
   name = "magic_cape",
-  savegame_variable = "i1119",
-  brandish_when_picked = true,
+  savegame_variable = "1119",
 }
 
 item{
   name = "bottle_3",
-  savegame_variable = "i1120",
+  savegame_variable = "1120",
   nb_variants = 6,
   can_be_assigned = true,
-  brandish_when_picked = true,
 }
 
 item{
   name = "iron_key",
-  savegame_variable = "i1121",
-  brandish_when_picked = true,
+  savegame_variable = "1121",
 }
 
 item{
   name = "stone_key",
-  savegame_variable = "i1122",
-  brandish_when_picked = true,
+  savegame_variable = "1122",
 }
 
 item{
   name = "wooden_key",
-  savegame_variable = "i1123",
-  brandish_when_picked = true,
+  savegame_variable = "1123",
 }
 
 item{
   name = "ice_key",
-  savegame_variable = "i1124",
-  brandish_when_picked = true,
+  savegame_variable = "1124",
 }
 
 item{
   name = "glove",
-  savegame_variable = "i1125",
+  savegame_variable = "1125",
   nb_variants = 2,
-  brandish_when_picked = true,
 }
 
 item{
   name = "fire_stones_counter",
-  savegame_variable = "i1126",
-  counter = "i1029",
+  savegame_variable = "1126",
+  counter = "1029",
   limit = 3,
-  brandish_when_picked = true,
 }
 
 item{
   name = "fire_stone",
   changes_counter = "fire_stones_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "bottle_4",
-  savegame_variable = "i1127",
+  savegame_variable = "1127",
   nb_variants = 6,
   can_be_assigned = true,
-  brandish_when_picked = true,
 }
 
 item{
   name = "tunic",
-  savegame_variable = "i1128",
+  savegame_variable = "1128",
   nb_variants = 3,
   initial_variant = 1,
-  brandish_when_picked = true,
 }
 
 item{
   name = "sword",
-  savegame_variable = "i1129",
+  savegame_variable = "1129",
   nb_variants = 4,
-  brandish_when_picked = true,
 }
 
 item{
   name = "shield",
-  savegame_variable = "i1130",
+  savegame_variable = "1130",
   nb_variants = 3,
-  brandish_when_picked = true,
 }
 
 item{
   name = "world_map",
-  savegame_variable = "i1031",
-  brandish_when_picked = true,
+  savegame_variable = "1031",
 }
 
 item{
   name = "rupee_bag",
-  savegame_variable = "i1034",
+  savegame_variable = "1034",
   nb_variants = 3,
   initial_variant = 1,
   limit_for_counter = "money",
-  brandish_when_picked = true,
   amount_1 = 100,
   amount_2 = 300,
   amount_3 = 999,
@@ -331,36 +291,31 @@ item{
   nb_variants = 2,
   initial_variant = 0,
   limit_for_counter = "magic",
-  brandish_when_picked = true,
   amount_1 = 42,
   amount_2 = 84,
 }
 
 item{
   name = "map",
-  brandish_when_picked = true,
 }
 
 item{
   name = "compass",
-  brandish_when_picked = true,
 }
 
 item{
   name = "big_key",
-  brandish_when_picked = true,
 }
 
 item{
   name = "boss_key",
-  brandish_when_picked = true,
 }
 
 item{
   name = "small_key",
   changes_counter = "small_keys",
   shadow = "small",
-  brandish_when_picked = true,
+  brandish_when_picked = false,
   sound_when_picked = "picked_small_key",
 }
 
@@ -370,7 +325,7 @@ item{
   changes_counter = "money",
   shadow = "small",
   can_disappear = true,
-  brandish_when_picked = true,
+  brandish_when_picked = false,
   sound_when_picked = "picked_rupee",
   amount_1 = 1,
   probability_1 = 50,
@@ -389,7 +344,7 @@ item{
   changes_counter = "magic",
   shadow = "small",
   can_disappear = true,
-  brandish_when_picked = true,
+  brandish_when_picked = false,
   amount_1 = 6,
   probability_1 = 25,
   amount_2 = 42,
@@ -403,19 +358,17 @@ item{
   probability = 100,
   shadow = "small",
   can_disappear = true,
-  brandish_when_picked = true,
+  brandish_when_picked = false,
 }
 
 item{
   name = "heart_container",
-  brandish_when_picked = true,
   sound_when_picked = "heart_container",
   sound_when_brandished = "heart_container",
 }
 
 item{
   name = "piece_of_heart",
-  brandish_when_picked = true,
   sound_when_picked = "piece_of_heart",
   sound_when_brandished = "piece_of_heart",
 }
@@ -425,152 +378,131 @@ item{
   probability = 2,
   shadow = "none",
   can_disappear = true,
-  brandish_when_picked = true,
+  brandish_when_picked = false,
 }
 
 item{
   name = "poivron_counter",
-  savegame_variable = "i1481",
-  counter = "i1471",
+  savegame_variable = "1481",
+  counter = "1471",
   limit = 50,
-  brandish_when_picked = true,
 }
 
 item{
   name = "poivron",
   changes_counter = "poivron_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "balai_counter",
-  savegame_variable = "i1482",
-  counter = "i1472",
+  savegame_variable = "1482",
+  counter = "1472",
   limit = 50,
-  brandish_when_picked = true,
 }
 
 item{
   name = "balai",
   changes_counter = "balai_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "cuillere_counter",
-  savegame_variable = "i1483",
-  counter = "i1473",
+  savegame_variable = "1483",
+  counter = "1473",
   limit = 50,
-  brandish_when_picked = true,
 }
 
 item{
   name = "cuillere",
   changes_counter = "cuillere_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "tapisserie_counter",
-  savegame_variable = "i1484",
-  counter = "i1474",
+  savegame_variable = "1484",
+  counter = "1474",
   limit = 50,
-  brandish_when_picked = true,
 }
 
 item{
   name = "tapisserie",
   changes_counter = "tapisserie_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "roc_magma_counter",
-  savegame_variable = "i1485",
-  counter = "i1475",
+  savegame_variable = "1485",
+  counter = "1475",
   limit = 50,
-  brandish_when_picked = true,
 }
 
 item{
   name = "roc_magma",
   changes_counter = "roc_magma_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "sac_riz_counter",
-  savegame_variable = "i1486",
-  counter = "i1476",
+  savegame_variable = "1486",
+  counter = "1476",
   limit = 50,
-  brandish_when_picked = true,
 }
 
 item{
   name = "sac_riz",
   changes_counter = "sac_riz_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "sac_olive_counter",
-  savegame_variable = "i1487",
-  counter = "i1477",
+  savegame_variable = "1487",
+  counter = "1477",
   limit = 50,
-  brandish_when_picked = true,
 }
 
 item{
   name = "sac_olive",
   changes_counter = "sac_olive_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "bocal_epice_counter",
-  savegame_variable = "i1488",
-  counter = "i1478",
+  savegame_variable = "1488",
+  counter = "1478",
   limit = 50,
-  brandish_when_picked = true,
 }
 
 item{
   name = "bocal_epice",
   changes_counter = "bocal_epice_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "hache_counter",
-  savegame_variable = "i1489",
-  counter = "i1479",
+  savegame_variable = "1489",
+  counter = "1479",
   limit = 50,
-  brandish_when_picked = true,
 }
 
 item{
   name = "hache",
   changes_counter = "hache_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "parfum_counter",
-  savegame_variable = "i1490",
-  counter = "i1480",
+  savegame_variable = "1490",
+  counter = "1480",
   limit = 50,
-  brandish_when_picked = true,
 }
 
 item{
   name = "parfum",
   changes_counter = "parfum_counter",
-  brandish_when_picked = true,
 }
 
 item{
   name = "zelda",
-  savegame_variable = "i1131",
-  brandish_when_picked = true,
+  savegame_variable = "1131",
 }
 

@@ -22,7 +22,7 @@ function print_items(all_groups, all_ids)
     io.write("item{\n")
     io.write("  name = \"" .. item_name .. "\",\n")
     if group.savegame_variable ~= nil and group.savegame_variable ~= "-1" then
-      io.write("  savegame_variable = \"i" .. group.savegame_variable .. "\",\n")
+      io.write("  savegame_variable = \"" .. group.savegame_variable .. "\",\n")
     end
     if group.nb_variants ~= nil then
       io.write("  nb_variants = " .. group.nb_variants .. ",\n")
@@ -34,7 +34,7 @@ function print_items(all_groups, all_ids)
       io.write("  can_be_assigned = " .. group.can_be_assigned .. ",\n")
     end
     if group.counter ~= nil and group.counter ~= "-1" then
-      io.write("  counter = \"i" .. group.counter .. "\",\n")
+      io.write("  counter = \"" .. group.counter .. "\",\n")
     end
     if group.limit ~= nil then
       io.write("  limit = " .. group.limit .. ",\n")
@@ -57,8 +57,8 @@ function print_items(all_groups, all_ids)
     if group.can_disappear ~= nil then
       io.write("  can_disappear = " .. group.can_disappear .. ",\n")
     end
-    if group.brandish_when_pickabled == nil then
-      io.write("  brandish_when_picked = true,\n")
+    if group.brandish_when_picked == "false" then
+      io.write("  brandish_when_picked = false,\n")
     end
     if group.sound_when_picked ~= nil then
       io.write("  sound_when_picked = \"" .. group.sound_when_picked .. "\",\n")

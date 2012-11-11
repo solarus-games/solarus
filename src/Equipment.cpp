@@ -627,7 +627,7 @@ bool Equipment::has_item_maximum(const std::string& item_name) {
  * @param item_name the name of an item randomly chosen (possibly "_none")
  * @param variant variant of this item (also random)
  */
-void Equipment::get_random_item(std::string &item_name, int &variant) {
+void Equipment::get_random_item(std::string& item_name, int& variant) {
 
   int r = Random::get_number(1000);
   int sum = 0;
@@ -1080,6 +1080,7 @@ int Equipment::l_item(lua_State* l) {
   item->set_item_limited(item_limited);
   item->set_item_counter_changed(item_counter_changed);
   item->set_amount(1, amount);
+
   item->set_probability(1, probability);
   item->set_shadow_size(EquipmentItem::get_shadow_size_by_name(shadow_size_name));
   item->set_can_disappear(can_disappear);
@@ -1087,15 +1088,15 @@ int Equipment::l_item(lua_State* l) {
   item->set_sound_when_picked(sound_when_picked);
   item->set_sound_when_brandished(sound_when_brandished);
 
-  for (int i = 0; i < nb_variants; i++) {
+  for (int i = 1; i <= nb_variants; i++) {
     std::ostringstream oss;
     oss << "amount_" << i;
-    amount = LuaContext::opt_int_field(l, 1, oss.str(), 1);
+    amount = LuaContext::opt_int_field(l, 1, oss.str(), amount);
     item->set_amount(i, amount);
 
-    oss.str();
+    oss.str("");
     oss << "probability_" << i;
-    probability = LuaContext::opt_int_field(l, 1, oss.str(), 1);
+    probability = LuaContext::opt_int_field(l, 1, oss.str(), probability);
     item->set_probability(i, probability);
   }
 

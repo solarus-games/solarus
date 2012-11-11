@@ -125,6 +125,8 @@ class Savegame: public ExportableToLua {
     Game* game;             /**< NULL if this savegame is not currently running */
 
     void load();
+    static int l_newindex(lua_State* l);
+
     void set_initial_values();
     void set_default_keyboard_controls();
     void set_default_joypad_controls();

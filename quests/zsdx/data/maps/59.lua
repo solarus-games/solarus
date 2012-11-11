@@ -5,7 +5,7 @@ properties{
   height = 1120,
   world = "dungeon_4",
   floor = "-1",
-  small_keys_variable = 235,
+  small_keys_variable = "235",
   tileset = "11",
   music = "light_world_dungeon",
 }
@@ -9035,7 +9035,7 @@ destructible{
   subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 400,
+  treasure_savegame_variable = "400",
 }
 
 sensor{

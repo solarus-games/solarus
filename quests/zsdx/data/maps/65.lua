@@ -5,7 +5,7 @@ properties{
   height = 1216,
   world = "dungeon_5",
   floor = "-1",
-  small_keys_variable = 245,
+  small_keys_variable = "245",
   tileset = "4",
   music = "castle",
 }
@@ -522,7 +522,7 @@ chest{
   is_big_chest = false,
   treasure_name = "map",
   treasure_variant = 1,
-  treasure_savegame_variable = 509,
+  treasure_savegame_variable = "509",
 }
 
 destructible{
@@ -4772,7 +4772,7 @@ door{
   name = "weak_wall_b_2",
   direction = 0,
   subtype = "5",
-  savegame_variable = 948,
+  savegame_variable = "948",
 }
 
 wall{
@@ -5402,7 +5402,7 @@ enemy{
   rank = 0,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 502,
+  treasure_savegame_variable = "502",
 }
 
 enemy{
@@ -5467,7 +5467,7 @@ chest{
   is_big_chest = false,
   treasure_name = "boss_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 518,
+  treasure_savegame_variable = "518",
 }
 
 dynamic_tile{
@@ -5488,7 +5488,7 @@ door{
   name = "weak_wall_b",
   direction = 2,
   subtype = "5",
-  savegame_variable = 948,
+  savegame_variable = "948",
 }
 
 wall{
@@ -5533,7 +5533,7 @@ door{
   name = "weak_wall_a",
   direction = 1,
   subtype = "5",
-  savegame_variable = 947,
+  savegame_variable = "947",
 }
 
 door{
@@ -5543,7 +5543,7 @@ door{
   name = "weak_wall_a_2",
   direction = 3,
   subtype = "5",
-  savegame_variable = 947,
+  savegame_variable = "947",
 }
 
 wall{

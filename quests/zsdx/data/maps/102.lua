@@ -5,7 +5,7 @@ properties{
   height = 1056,
   world = "dungeon_7",
   floor = "1",
-  small_keys_variable = 265,
+  small_keys_variable = "265",
   tileset = "2",
   music = "same",
 }
@@ -8136,7 +8136,7 @@ chest{
   is_big_chest = true,
   treasure_name = "cane_of_somaria",
   treasure_variant = 1,
-  treasure_savegame_variable = 608,
+  treasure_savegame_variable = "608",
 }
 
 destination{
@@ -8222,7 +8222,7 @@ door{
   name = "door_d_2",
   direction = 1,
   subtype = "0",
-  savegame_variable = 615,
+  savegame_variable = "615",
 }
 
 door{
@@ -8232,7 +8232,7 @@ door{
   name = "door_d",
   direction = 3,
   subtype = "0",
-  savegame_variable = 615,
+  savegame_variable = "615",
 }
 
 door{
@@ -8242,7 +8242,7 @@ door{
   name = "door_a",
   direction = 1,
   subtype = "0",
-  savegame_variable = 630,
+  savegame_variable = "630",
 }
 
 door{
@@ -8252,7 +8252,7 @@ door{
   name = "door_a_2",
   direction = 3,
   subtype = "0",
-  savegame_variable = 630,
+  savegame_variable = "630",
 }
 
 door{
@@ -8271,7 +8271,7 @@ door{
   name = "door_c",
   direction = 3,
   subtype = "0",
-  savegame_variable = 617,
+  savegame_variable = "617",
 }
 
 door{
@@ -8281,7 +8281,7 @@ door{
   name = "door_b_2",
   direction = 0,
   subtype = "1",
-  savegame_variable = 616,
+  savegame_variable = "616",
 }
 
 door{
@@ -8291,7 +8291,7 @@ door{
   name = "door_b",
   direction = 2,
   subtype = "1",
-  savegame_variable = 616,
+  savegame_variable = "616",
 }
 
 destination{
@@ -8310,7 +8310,7 @@ chest{
   is_big_chest = false,
   treasure_name = "big_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 609,
+  treasure_savegame_variable = "609",
 }
 
 door{
@@ -8320,7 +8320,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "2",
-  savegame_variable = 610,
+  savegame_variable = "610",
 }
 
 chest{
@@ -8331,7 +8331,7 @@ chest{
   is_big_chest = false,
   treasure_name = "compass",
   treasure_variant = 1,
-  treasure_savegame_variable = 611,
+  treasure_savegame_variable = "611",
 }
 
 teletransporter{
@@ -9761,7 +9761,7 @@ door{
   name = "boss_door",
   direction = 1,
   subtype = "4",
-  savegame_variable = 612,
+  savegame_variable = "612",
 }
 
 wall{
@@ -9928,7 +9928,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 5,
-  treasure_savegame_variable = 613,
+  treasure_savegame_variable = "613",
 }
 
 destination{
@@ -10062,7 +10062,7 @@ chest{
   is_big_chest = false,
   treasure_name = "magic_flask",
   treasure_variant = 2,
-  treasure_savegame_variable = 614,
+  treasure_savegame_variable = "614",
 }
 
 npc{

@@ -5,7 +5,7 @@ properties{
   height = 1024,
   world = "dungeon_3",
   floor = "1",
-  small_keys_variable = 225,
+  small_keys_variable = "225",
   tileset = "14",
   music = "dark_world_dungeon",
 }
@@ -488,7 +488,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 119,
+  treasure_savegame_variable = "119",
 }
 
 stairs{
@@ -7826,7 +7826,7 @@ chest{
   is_big_chest = false,
   treasure_name = "big_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 129,
+  treasure_savegame_variable = "129",
 }
 
 chest{
@@ -7837,7 +7837,7 @@ chest{
   is_big_chest = false,
   treasure_name = "compass",
   treasure_variant = 1,
-  treasure_savegame_variable = 126,
+  treasure_savegame_variable = "126",
 }
 
 destination{
@@ -8118,7 +8118,7 @@ door{
   name = "door_2",
   direction = 1,
   subtype = "8",
-  savegame_variable = 120,
+  savegame_variable = "120",
 }
 
 block{
@@ -8970,7 +8970,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 6,
-  treasure_savegame_variable = 949,
+  treasure_savegame_variable = "949",
 }
 
 switch{

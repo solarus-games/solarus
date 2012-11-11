@@ -1240,7 +1240,7 @@ destructible{
   subtype = "pot",
   treasure_name = "bottle_1",
   treasure_variant = 1,
-  treasure_savegame_variable = 10,
+  treasure_savegame_variable = "10",
 }
 
 destructible{

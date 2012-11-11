@@ -5,7 +5,7 @@ properties{
   height = 1808,
   world = "dungeon_8",
   floor = "-1",
-  small_keys_variable = 275,
+  small_keys_variable = "275",
   tileset = "9",
   music = "same",
 }
@@ -2489,7 +2489,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 707,
+  treasure_savegame_variable = "707",
 }
 
 block{
@@ -2609,7 +2609,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 706,
+  treasure_savegame_variable = "706",
 }
 
 switch{
@@ -9936,7 +9936,7 @@ door{
   name = "KD03",
   direction = 0,
   subtype = "1",
-  savegame_variable = 710,
+  savegame_variable = "710",
 }
 
 door{
@@ -9946,7 +9946,7 @@ door{
   name = "KD03_2",
   direction = 2,
   subtype = "1",
-  savegame_variable = 710,
+  savegame_variable = "710",
 }
 
 door{
@@ -9987,7 +9987,7 @@ door{
   name = "WW02",
   direction = 1,
   subtype = "5",
-  savegame_variable = 732,
+  savegame_variable = "732",
 }
 
 wall{
@@ -10065,7 +10065,7 @@ chest{
   is_big_chest = false,
   treasure_name = "croissant",
   treasure_variant = 1,
-  treasure_savegame_variable = 718,
+  treasure_savegame_variable = "718",
 }
 
 door{
@@ -11779,7 +11779,7 @@ chest{
   is_big_chest = false,
   treasure_name = "croissant",
   treasure_variant = 1,
-  treasure_savegame_variable = 722,
+  treasure_savegame_variable = "722",
 }
 
 enemy{

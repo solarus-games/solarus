@@ -5120,7 +5120,7 @@ chest{
   is_big_chest = false,
   treasure_name = "fire_stone",
   treasure_variant = 1,
-  treasure_savegame_variable = 106,
+  treasure_savegame_variable = "106",
 }
 
 destination{

@@ -441,7 +441,7 @@ chest{
   is_big_chest = false,
   treasure_name = "bomb_bag",
   treasure_variant = 1,
-  treasure_savegame_variable = 102,
+  treasure_savegame_variable = "102",
 }
 
 tile{

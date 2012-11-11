@@ -5,7 +5,7 @@ properties{
   height = 768,
   world = "dungeon_6",
   floor = "2",
-  small_keys_variable = 255,
+  small_keys_variable = "255",
   tileset = "10",
   music = "same",
 }
@@ -9367,7 +9367,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 305,
+  treasure_savegame_variable = "305",
 }
 
 destructible{
@@ -9533,7 +9533,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "3",
-  savegame_variable = 306,
+  savegame_variable = "306",
 }
 
 door{
@@ -9543,7 +9543,7 @@ door{
   name = "door_2",
   direction = 2,
   subtype = "3",
-  savegame_variable = 306,
+  savegame_variable = "306",
 }
 
 jumper{
@@ -9772,7 +9772,7 @@ door{
   name = "door_5",
   direction = 1,
   subtype = "2",
-  savegame_variable = 307,
+  savegame_variable = "307",
 }
 
 crystal_block{
@@ -10469,7 +10469,7 @@ chest{
   is_big_chest = false,
   treasure_name = "big_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 315,
+  treasure_savegame_variable = "315",
 }
 
 chest{
@@ -10480,7 +10480,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 316,
+  treasure_savegame_variable = "316",
 }
 
 door{
@@ -10490,7 +10490,7 @@ door{
   name = "door_6",
   direction = 1,
   subtype = "2",
-  savegame_variable = 318,
+  savegame_variable = "318",
 }
 
 door{
@@ -10500,7 +10500,7 @@ door{
   name = "torches_door",
   direction = 1,
   subtype = "0",
-  savegame_variable = 323,
+  savegame_variable = "323",
 }
 
 door{
@@ -10510,7 +10510,7 @@ door{
   name = "torches_door_2",
   direction = 3,
   subtype = "0",
-  savegame_variable = 323,
+  savegame_variable = "323",
 }
 
 enemy{

@@ -4024,7 +4024,7 @@ chest{
   is_big_chest = false,
   treasure_name = "fire_stone",
   treasure_variant = 1,
-  treasure_savegame_variable = 154,
+  treasure_savegame_variable = "154",
 }
 
 jumper{

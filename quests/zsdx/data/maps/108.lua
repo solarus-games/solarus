@@ -5,7 +5,7 @@ properties{
   height = 2320,
   world = "dungeon_9",
   floor = "3",
-  small_keys_variable = 285,
+  small_keys_variable = "285",
   tileset = "15",
   music = "southern_shrine",
 }
@@ -9782,7 +9782,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 873,
+  treasure_savegame_variable = "873",
 }
 
 jumper{
@@ -9822,7 +9822,7 @@ door{
   name = "weak_wall_a",
   direction = 2,
   subtype = "5",
-  savegame_variable = 867,
+  savegame_variable = "867",
 }
 
 door{
@@ -9832,7 +9832,7 @@ door{
   name = "weak_wall_a_2",
   direction = 0,
   subtype = "5",
-  savegame_variable = 867,
+  savegame_variable = "867",
 }
 
 dynamic_tile{
@@ -9864,7 +9864,7 @@ door{
   name = "weak_wall_b",
   direction = 1,
   subtype = "5",
-  savegame_variable = 868,
+  savegame_variable = "868",
 }
 
 door{
@@ -9874,7 +9874,7 @@ door{
   name = "weak_wall_b_2",
   direction = 3,
   subtype = "5",
-  savegame_variable = 868,
+  savegame_variable = "868",
 }
 
 dynamic_tile{
@@ -9906,7 +9906,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "1",
-  savegame_variable = 869,
+  savegame_variable = "869",
 }
 
 door{
@@ -9916,7 +9916,7 @@ door{
   name = "door_2",
   direction = 2,
   subtype = "1",
-  savegame_variable = 869,
+  savegame_variable = "869",
 }
 
 switch{
@@ -9946,7 +9946,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 872,
+  treasure_savegame_variable = "872",
 }
 
 switch{
@@ -10009,7 +10009,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "1",
-  savegame_variable = 874,
+  savegame_variable = "874",
 }
 
 door{
@@ -10019,7 +10019,7 @@ door{
   name = "door_4",
   direction = 3,
   subtype = "1",
-  savegame_variable = 874,
+  savegame_variable = "874",
 }
 
 destructible{
@@ -10048,7 +10048,7 @@ chest{
   is_big_chest = true,
   treasure_name = "magic_cape",
   treasure_variant = 1,
-  treasure_savegame_variable = 875,
+  treasure_savegame_variable = "875",
 }
 
 enemy{
@@ -10183,7 +10183,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 876,
+  treasure_savegame_variable = "876",
 }
 
 enemy{
@@ -10217,7 +10217,7 @@ door{
   name = "door_5",
   direction = 3,
   subtype = "1",
-  savegame_variable = 884,
+  savegame_variable = "884",
 }
 
 door{
@@ -10227,7 +10227,7 @@ door{
   name = "door_6",
   direction = 1,
   subtype = "1",
-  savegame_variable = 884,
+  savegame_variable = "884",
 }
 
 door{
@@ -10237,7 +10237,7 @@ door{
   name = "door_a",
   direction = 0,
   subtype = "0",
-  savegame_variable = 870,
+  savegame_variable = "870",
 }
 
 door{
@@ -10247,7 +10247,7 @@ door{
   name = "door_a_2",
   direction = 2,
   subtype = "0",
-  savegame_variable = 870,
+  savegame_variable = "870",
 }
 
 door{
@@ -10257,7 +10257,7 @@ door{
   name = "door_b",
   direction = 0,
   subtype = "0",
-  savegame_variable = 871,
+  savegame_variable = "871",
 }
 
 door{
@@ -10267,7 +10267,7 @@ door{
   name = "door_b_2",
   direction = 2,
   subtype = "0",
-  savegame_variable = 871,
+  savegame_variable = "871",
 }
 
 crystal_block{

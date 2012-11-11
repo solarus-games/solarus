@@ -1553,7 +1553,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "0",
-  savegame_variable = 66,
+  savegame_variable = "66",
 }
 
 door{
@@ -1563,7 +1563,7 @@ door{
   name = "door_2",
   direction = 2,
   subtype = "0",
-  savegame_variable = 66,
+  savegame_variable = "66",
 }
 
 teletransporter{

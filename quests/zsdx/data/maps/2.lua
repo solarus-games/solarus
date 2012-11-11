@@ -1629,7 +1629,7 @@ pickable{
   y = 85,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 17,
+  treasure_savegame_variable = "17",
 }
 
 npc{
@@ -1704,7 +1704,7 @@ pickable{
   y = 157,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 114,
+  treasure_savegame_variable = "114",
 }
 
 pickable{
@@ -1713,7 +1713,7 @@ pickable{
   y = 157,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 115,
+  treasure_savegame_variable = "115",
 }
 
 pickable{
@@ -1722,7 +1722,7 @@ pickable{
   y = 205,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 116,
+  treasure_savegame_variable = "116",
 }
 
 pickable{
@@ -1731,7 +1731,7 @@ pickable{
   y = 285,
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = 117,
+  treasure_savegame_variable = "117",
 }
 
 block{

@@ -5,7 +5,7 @@ properties{
   height = 1056,
   world = "dungeon_7",
   floor = "2",
-  small_keys_variable = 265,
+  small_keys_variable = "265",
   tileset = "2",
   music = "same",
 }
@@ -8606,7 +8606,7 @@ door{
   name = "door_a",
   direction = 0,
   subtype = "0",
-  savegame_variable = 627,
+  savegame_variable = "627",
 }
 
 door{
@@ -8616,7 +8616,7 @@ door{
   name = "door_a_2",
   direction = 2,
   subtype = "0",
-  savegame_variable = 627,
+  savegame_variable = "627",
 }
 
 door{
@@ -8626,7 +8626,7 @@ door{
   name = "ne_door_2",
   direction = 3,
   subtype = "0",
-  savegame_variable = 624,
+  savegame_variable = "624",
 }
 
 door{
@@ -8636,7 +8636,7 @@ door{
   name = "ne_door",
   direction = 1,
   subtype = "0",
-  savegame_variable = 624,
+  savegame_variable = "624",
 }
 
 block{
@@ -9005,7 +9005,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 6,
-  treasure_savegame_variable = 629,
+  treasure_savegame_variable = "629",
 }
 
 wall{
@@ -9281,7 +9281,7 @@ chest{
   is_big_chest = false,
   treasure_name = "boss_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 622,
+  treasure_savegame_variable = "622",
 }
 
 block{
@@ -10296,7 +10296,7 @@ enemy{
   direction = 3,
   breed = "gelidrak",
   rank = 2,
-  savegame_variable = 625,
+  savegame_variable = "625",
   treasure_name = "_none",
   treasure_variant = 1,
 }

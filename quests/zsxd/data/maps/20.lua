@@ -5,7 +5,7 @@ properties{
   height = 496,
   world = "dungeon_2",
   floor = "0",
-  small_keys_variable = 215,
+  small_keys_variable = "215",
   tileset = "0",
   music = "found_items",
 }
@@ -1567,7 +1567,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 103,
+  treasure_savegame_variable = "103",
 }
 
 crystal_block{
@@ -7121,7 +7121,7 @@ pickable{
   y = 149,
   treasure_name = "heart_container",
   treasure_variant = 1,
-  treasure_savegame_variable = 100,
+  treasure_savegame_variable = "100",
 }
 
 npc{
@@ -7142,7 +7142,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 122,
+  treasure_savegame_variable = "122",
 }
 
 chest{
@@ -7153,7 +7153,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 1,
-  treasure_savegame_variable = 109,
+  treasure_savegame_variable = "109",
 }
 
 destination{
@@ -7194,7 +7194,7 @@ door{
   name = "DK1",
   direction = 1,
   subtype = "1",
-  savegame_variable = 140,
+  savegame_variable = "140",
 }
 
 wall{
@@ -7337,7 +7337,7 @@ door{
   name = "weak_wall_A",
   direction = 0,
   subtype = "5",
-  savegame_variable = 105,
+  savegame_variable = "105",
 }
 
 door{
@@ -7347,7 +7347,7 @@ door{
   name = "weak_wall_A_2",
   direction = 2,
   subtype = "5",
-  savegame_variable = 105,
+  savegame_variable = "105",
 }
 
 crystal{
@@ -7398,7 +7398,7 @@ door{
   name = "DK1_2",
   direction = 3,
   subtype = "1",
-  savegame_variable = 140,
+  savegame_variable = "140",
 }
 
 npc{

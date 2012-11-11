@@ -12021,7 +12021,7 @@ pickable{
   y = 845,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 107,
+  treasure_savegame_variable = "107",
 }
 
 destination{
@@ -12689,10 +12689,10 @@ enemy{
   direction = 3,
   breed = "agahnim",
   rank = 2,
-  savegame_variable = 520,
+  savegame_variable = "520",
   treasure_name = "heart_container",
   treasure_variant = 1,
-  treasure_savegame_variable = 521,
+  treasure_savegame_variable = "521",
 }
 
 enemy{

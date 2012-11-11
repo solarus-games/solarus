@@ -466,7 +466,7 @@ chest{
   is_big_chest = false,
   treasure_name = "clay_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 28,
+  treasure_savegame_variable = "28",
 }
 
 destination{

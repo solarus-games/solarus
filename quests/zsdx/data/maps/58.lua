@@ -5,7 +5,7 @@ properties{
   height = 768,
   world = "dungeon_6",
   floor = "0",
-  small_keys_variable = 255,
+  small_keys_variable = "255",
   tileset = "10",
   music = "dark_world_dungeon",
 }
@@ -2290,7 +2290,7 @@ chest{
   is_big_chest = false,
   treasure_name = "map",
   treasure_variant = 1,
-  treasure_savegame_variable = 312,
+  treasure_savegame_variable = "312",
 }
 
 npc{
@@ -6539,7 +6539,7 @@ destructible{
   subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 317,
+  treasure_savegame_variable = "317",
 }
 
 destination{

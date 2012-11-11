@@ -12010,7 +12010,7 @@ door{
   name = "door_2",
   direction = 1,
   subtype = "8",
-  savegame_variable = 67,
+  savegame_variable = "67",
 }
 
 door{
@@ -12020,7 +12020,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "8",
-  savegame_variable = 68,
+  savegame_variable = "68",
 }
 
 door{
@@ -12030,7 +12030,7 @@ door{
   name = "door_4",
   direction = 1,
   subtype = "8",
-  savegame_variable = 72,
+  savegame_variable = "72",
 }
 
 door{
@@ -12040,7 +12040,7 @@ door{
   name = "door_5",
   direction = 1,
   subtype = "8",
-  savegame_variable = 69,
+  savegame_variable = "69",
 }
 
 door{
@@ -12050,7 +12050,7 @@ door{
   name = "door_6",
   direction = 1,
   subtype = "8",
-  savegame_variable = 70,
+  savegame_variable = "70",
 }
 
 door{
@@ -12060,7 +12060,7 @@ door{
   name = "door_7",
   direction = 1,
   subtype = "8",
-  savegame_variable = 71,
+  savegame_variable = "71",
 }
 
 wall{
@@ -12132,7 +12132,7 @@ pickable{
   y = 381,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 75,
+  treasure_savegame_variable = "75",
 }
 
 destructible{

@@ -53,7 +53,7 @@ local entity_syntaxes = {
     { token_name = "y" },
     { token_name = "treasure_name", token_type = "string" },
     { token_name = "treasure_variant", nil_value = 0 },
-    { token_name = "treasure_savegame_variable", nil_value = -1 },
+    { token_name = "treasure_savegame_variable", token_type = "string", nil_value = "-1" },
   },
 
   [4] = {
@@ -72,7 +72,7 @@ local entity_syntaxes = {
     },
     { token_name = "treasure_name", token_type = "string" },
     { token_name = "treasure_variant", nil_value = 0 },
-    { token_name = "treasure_savegame_variable", nil_value = -1 },
+    { token_name = "treasure_savegame_variable", token_type = "string", nil_value = "-1" },
   },
 
   [5] = {
@@ -84,7 +84,7 @@ local entity_syntaxes = {
     { token_name = "is_big_chest", token_type = "boolean" },
     { token_name = "treasure_name", token_type = "string" },
     { token_name = "treasure_variant", nil_value = 0 },
-    { token_name = "treasure_savegame_variable", nil_value = -1 },
+    { token_name = "treasure_savegame_variable", token_type = "string", nil_value = "-1" },
   },
 
   [6] = {
@@ -108,10 +108,10 @@ local entity_syntaxes = {
     { token_name = "direction" },
     { token_name = "breed", token_type = "string" },
     { token_name = "rank" },
-    { token_name = "savegame_variable", nil_value = -1 },
+    { token_name = "savegame_variable", token_type = "string", nil_value = "-1" },
     { token_name = "treasure_name", token_type = "string" },
     { token_name = "treasure_variant", nil_value = 0 },
-    { token_name = "treasure_savegame_variable", nil_value = -1 },
+    { token_name = "treasure_savegame_variable", token_type = "string", nil_value = "-1" },
   },
 
   [8] = {
@@ -212,7 +212,7 @@ local entity_syntaxes = {
     { token_name = "name", token_type = "string" },
     { token_name = "treasure_name", token_type = "string" },
     { token_name = "treasure_variant" },
-    { token_name = "treasure_savegame_variable", nil_value = -1 },
+    { token_name = "treasure_savegame_variable", token_type = "string", nil_value = "-1" },
     { token_name = "price" },
     { token_name = "dialog", token_type = "string" },
   },
@@ -233,7 +233,7 @@ local entity_syntaxes = {
     { token_name = "name", token_type = "string" },
     { token_name = "direction" },
     { token_name = "subtype", token_type = "string" },
-    { token_name = "savegame_variable", nil_value = -1 },
+    { token_name = "savegame_variable", token_type = "string", nil_value = "-1" },
   },
 
   [19] = {
@@ -306,7 +306,7 @@ function print_metadata(metadata)
     io.write("  floor = \"" .. metadata.floor .. "\",\n")
   end
   if metadata.small_keys_variable ~= -1 then
-    io.write("  small_keys_variable = " .. metadata.small_keys_variable .. ",\n")
+    io.write("  small_keys_variable = \"" .. metadata.small_keys_variable .. "\",\n")
   end
   io.write("  tileset = \"" .. metadata.tileset .. "\",\n")
   if metadata.music ~= nil then

@@ -459,7 +459,7 @@ chest{
   is_big_chest = false,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 12,
+  treasure_savegame_variable = "12",
 }
 
 tile{

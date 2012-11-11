@@ -3381,7 +3381,7 @@ chest{
   is_big_chest = false,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 39,
+  treasure_savegame_variable = "39",
 }
 
 chest{
@@ -3392,7 +3392,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 3,
-  treasure_savegame_variable = 40,
+  treasure_savegame_variable = "40",
 }
 
 destructible{

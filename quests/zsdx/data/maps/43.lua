@@ -5,7 +5,7 @@ properties{
   height = 1024,
   world = "dungeon_3",
   floor = "3",
-  small_keys_variable = 225,
+  small_keys_variable = "225",
   tileset = "14",
   music = "dark_world_dungeon",
 }
@@ -4867,10 +4867,10 @@ enemy{
   direction = 3,
   breed = "master_arbror",
   rank = 2,
-  savegame_variable = 902,
+  savegame_variable = "902",
   treasure_name = "heart_container",
   treasure_variant = 1,
-  treasure_savegame_variable = 903,
+  treasure_savegame_variable = "903",
 }
 
 wall{
@@ -5046,7 +5046,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "4",
-  savegame_variable = 906,
+  savegame_variable = "906",
 }
 
 door{
@@ -5056,7 +5056,7 @@ door{
   name = "door_2",
   direction = 3,
   subtype = "4",
-  savegame_variable = 906,
+  savegame_variable = "906",
 }
 
 destination{
@@ -5230,7 +5230,7 @@ enemy{
   direction = 3,
   breed = "mowatulla",
   rank = 1,
-  savegame_variable = 901,
+  savegame_variable = "901",
   treasure_name = "fairy",
   treasure_variant = 1,
 }
@@ -5595,7 +5595,7 @@ door{
   name = "door_4",
   direction = 3,
   subtype = "3",
-  savegame_variable = 925,
+  savegame_variable = "925",
 }
 
 door{
@@ -5605,7 +5605,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "3",
-  savegame_variable = 925,
+  savegame_variable = "925",
 }
 
 destination{

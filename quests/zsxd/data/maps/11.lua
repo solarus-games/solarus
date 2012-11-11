@@ -1457,7 +1457,7 @@ shop_item{
   name = "shop_item_2",
   treasure_name = "rupee_bag",
   treasure_variant = 3,
-  treasure_savegame_variable = 49,
+  treasure_savegame_variable = "49",
   price = 999,
   dialog = "shop.huge_rupee_bag",
 }
@@ -1469,7 +1469,7 @@ shop_item{
   name = "shop_item_3",
   treasure_name = "heart_container",
   treasure_variant = 1,
-  treasure_savegame_variable = 50,
+  treasure_savegame_variable = "50",
   price = 10,
   dialog = "shop.heart_container",
 }

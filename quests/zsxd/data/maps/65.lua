@@ -5,7 +5,7 @@ properties{
   height = 1136,
   world = "dungeon_1",
   floor = "1",
-  small_keys_variable = 205,
+  small_keys_variable = "205",
   tileset = "8",
   music = "same",
 }
@@ -6918,7 +6918,7 @@ door{
   name = "door_10",
   direction = 1,
   subtype = "1",
-  savegame_variable = 254,
+  savegame_variable = "254",
 }
 
 block{
@@ -6988,7 +6988,7 @@ door{
   name = "fight_room_door",
   direction = 0,
   subtype = "0",
-  savegame_variable = 301,
+  savegame_variable = "301",
 }
 
 teletransporter{
@@ -7022,7 +7022,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "1",
-  savegame_variable = 251,
+  savegame_variable = "251",
 }
 
 door{
@@ -7032,7 +7032,7 @@ door{
   name = "door_2",
   direction = 2,
   subtype = "1",
-  savegame_variable = 251,
+  savegame_variable = "251",
 }
 
 door{
@@ -7042,7 +7042,7 @@ door{
   name = "door_3",
   direction = 0,
   subtype = "1",
-  savegame_variable = 255,
+  savegame_variable = "255",
 }
 
 door{
@@ -7052,7 +7052,7 @@ door{
   name = "door_4",
   direction = 2,
   subtype = "1",
-  savegame_variable = 255,
+  savegame_variable = "255",
 }
 
 door{
@@ -7062,7 +7062,7 @@ door{
   name = "door_5",
   direction = 3,
   subtype = "1",
-  savegame_variable = 252,
+  savegame_variable = "252",
 }
 
 door{
@@ -7072,7 +7072,7 @@ door{
   name = "door_6",
   direction = 1,
   subtype = "1",
-  savegame_variable = 252,
+  savegame_variable = "252",
 }
 
 door{
@@ -7082,7 +7082,7 @@ door{
   name = "door_7",
   direction = 3,
   subtype = "1",
-  savegame_variable = 253,
+  savegame_variable = "253",
 }
 
 door{
@@ -7092,7 +7092,7 @@ door{
   name = "door_8",
   direction = 1,
   subtype = "1",
-  savegame_variable = 253,
+  savegame_variable = "253",
 }
 
 door{
@@ -7102,7 +7102,7 @@ door{
   name = "door_9",
   direction = 3,
   subtype = "1",
-  savegame_variable = 254,
+  savegame_variable = "254",
 }
 
 door{
@@ -7112,7 +7112,7 @@ door{
   name = "door_11",
   direction = 3,
   subtype = "1",
-  savegame_variable = 258,
+  savegame_variable = "258",
 }
 
 door{
@@ -7122,7 +7122,7 @@ door{
   name = "door_12",
   direction = 1,
   subtype = "1",
-  savegame_variable = 258,
+  savegame_variable = "258",
 }
 
 door{
@@ -7132,7 +7132,7 @@ door{
   name = "door_13",
   direction = 3,
   subtype = "1",
-  savegame_variable = 257,
+  savegame_variable = "257",
 }
 
 door{
@@ -7142,7 +7142,7 @@ door{
   name = "door_14",
   direction = 1,
   subtype = "1",
-  savegame_variable = 257,
+  savegame_variable = "257",
 }
 
 door{
@@ -7152,7 +7152,7 @@ door{
   name = "door_15",
   direction = 3,
   subtype = "1",
-  savegame_variable = 256,
+  savegame_variable = "256",
 }
 
 door{
@@ -7162,7 +7162,7 @@ door{
   name = "door_16",
   direction = 1,
   subtype = "1",
-  savegame_variable = 256,
+  savegame_variable = "256",
 }
 
 block{
@@ -7268,7 +7268,7 @@ door{
   name = "door_17",
   direction = 1,
   subtype = "8",
-  savegame_variable = 281,
+  savegame_variable = "281",
 }
 
 door{
@@ -7278,7 +7278,7 @@ door{
   name = "door_18",
   direction = 1,
   subtype = "8",
-  savegame_variable = 279,
+  savegame_variable = "279",
 }
 
 door{
@@ -7288,7 +7288,7 @@ door{
   name = "door_19",
   direction = 1,
   subtype = "8",
-  savegame_variable = 278,
+  savegame_variable = "278",
 }
 
 door{
@@ -7298,7 +7298,7 @@ door{
   name = "door_20",
   direction = 1,
   subtype = "8",
-  savegame_variable = 275,
+  savegame_variable = "275",
 }
 
 door{
@@ -7308,7 +7308,7 @@ door{
   name = "door_21",
   direction = 1,
   subtype = "8",
-  savegame_variable = 280,
+  savegame_variable = "280",
 }
 
 door{
@@ -7318,7 +7318,7 @@ door{
   name = "door_22",
   direction = 1,
   subtype = "8",
-  savegame_variable = 272,
+  savegame_variable = "272",
 }
 
 door{
@@ -7328,7 +7328,7 @@ door{
   name = "door_23",
   direction = 1,
   subtype = "8",
-  savegame_variable = 268,
+  savegame_variable = "268",
 }
 
 door{
@@ -7338,7 +7338,7 @@ door{
   name = "door_24",
   direction = 1,
   subtype = "8",
-  savegame_variable = 271,
+  savegame_variable = "271",
 }
 
 door{
@@ -7348,7 +7348,7 @@ door{
   name = "door_25",
   direction = 1,
   subtype = "8",
-  savegame_variable = 273,
+  savegame_variable = "273",
 }
 
 door{
@@ -7358,7 +7358,7 @@ door{
   name = "door_26",
   direction = 1,
   subtype = "8",
-  savegame_variable = 269,
+  savegame_variable = "269",
 }
 
 door{
@@ -7368,7 +7368,7 @@ door{
   name = "door_27",
   direction = 1,
   subtype = "8",
-  savegame_variable = 274,
+  savegame_variable = "274",
 }
 
 door{
@@ -7378,7 +7378,7 @@ door{
   name = "door_28",
   direction = 1,
   subtype = "8",
-  savegame_variable = 277,
+  savegame_variable = "277",
 }
 
 door{
@@ -7388,7 +7388,7 @@ door{
   name = "door_29",
   direction = 1,
   subtype = "8",
-  savegame_variable = 266,
+  savegame_variable = "266",
 }
 
 door{
@@ -7398,7 +7398,7 @@ door{
   name = "door_30",
   direction = 1,
   subtype = "8",
-  savegame_variable = 262,
+  savegame_variable = "262",
 }
 
 door{
@@ -7408,7 +7408,7 @@ door{
   name = "door_31",
   direction = 1,
   subtype = "8",
-  savegame_variable = 267,
+  savegame_variable = "267",
 }
 
 door{
@@ -7418,7 +7418,7 @@ door{
   name = "door_32",
   direction = 1,
   subtype = "8",
-  savegame_variable = 263,
+  savegame_variable = "263",
 }
 
 door{
@@ -7428,7 +7428,7 @@ door{
   name = "door_33",
   direction = 1,
   subtype = "8",
-  savegame_variable = 282,
+  savegame_variable = "282",
 }
 
 door{
@@ -7438,7 +7438,7 @@ door{
   name = "door_34",
   direction = 1,
   subtype = "8",
-  savegame_variable = 276,
+  savegame_variable = "276",
 }
 
 door{
@@ -7448,7 +7448,7 @@ door{
   name = "door_35",
   direction = 1,
   subtype = "8",
-  savegame_variable = 270,
+  savegame_variable = "270",
 }
 
 door{
@@ -7458,7 +7458,7 @@ door{
   name = "door_36",
   direction = 1,
   subtype = "8",
-  savegame_variable = 264,
+  savegame_variable = "264",
 }
 
 door{
@@ -7468,7 +7468,7 @@ door{
   name = "door_37",
   direction = 1,
   subtype = "8",
-  savegame_variable = 265,
+  savegame_variable = "265",
 }
 
 door{
@@ -7478,7 +7478,7 @@ door{
   name = "door_38",
   direction = 1,
   subtype = "8",
-  savegame_variable = 259,
+  savegame_variable = "259",
 }
 
 door{
@@ -7488,7 +7488,7 @@ door{
   name = "door_39",
   direction = 1,
   subtype = "8",
-  savegame_variable = 260,
+  savegame_variable = "260",
 }
 
 door{
@@ -7498,7 +7498,7 @@ door{
   name = "door_40",
   direction = 1,
   subtype = "8",
-  savegame_variable = 261,
+  savegame_variable = "261",
 }
 
 block{
@@ -8296,7 +8296,7 @@ door{
   name = "fight_room_door_2",
   direction = 2,
   subtype = "0",
-  savegame_variable = 301,
+  savegame_variable = "301",
 }
 
 crystal_block{
@@ -12040,7 +12040,7 @@ enemy{
   direction = 3,
   breed = "ganon",
   rank = 2,
-  savegame_variable = 306,
+  savegame_variable = "306",
   treasure_name = "_none",
   treasure_variant = 1,
 }

@@ -4,7 +4,7 @@ properties{
   width = 1280,
   height = 960,
   world = "inside_world",
-  small_keys_variable = 275,
+  small_keys_variable = "275",
   tileset = "9",
 }
 
@@ -443,7 +443,7 @@ enemy{
   direction = 3,
   breed = "agahnim_2",
   rank = 2,
-  savegame_variable = 728,
+  savegame_variable = "728",
   treasure_name = "_none",
   treasure_variant = 1,
 }

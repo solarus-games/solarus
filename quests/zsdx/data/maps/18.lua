@@ -606,7 +606,7 @@ shop_item{
   name = "lamp",
   treasure_name = "lamp",
   treasure_variant = 1,
-  treasure_savegame_variable = 31,
+  treasure_savegame_variable = "31",
   price = 160,
   dialog = "lyriann_shop.lamp",
 }
@@ -629,7 +629,7 @@ shop_item{
   name = "bomb_bag_2",
   treasure_name = "bomb_bag",
   treasure_variant = 2,
-  treasure_savegame_variable = 938,
+  treasure_savegame_variable = "938",
   price = 650,
   dialog = "lyriann_shop.bomb_bag",
 }
@@ -641,7 +641,7 @@ shop_item{
   name = "bomb_bag_3",
   treasure_name = "bomb_bag",
   treasure_variant = 3,
-  treasure_savegame_variable = 938,
+  treasure_savegame_variable = "938",
   price = 650,
   dialog = "lyriann_shop.bomb_bag",
 }
@@ -653,7 +653,7 @@ shop_item{
   name = "quiver_2",
   treasure_name = "quiver",
   treasure_variant = 2,
-  treasure_savegame_variable = 939,
+  treasure_savegame_variable = "939",
   price = 980,
   dialog = "lyriann_shop.quiver",
 }
@@ -665,7 +665,7 @@ shop_item{
   name = "quiver_3",
   treasure_name = "quiver",
   treasure_variant = 3,
-  treasure_savegame_variable = 939,
+  treasure_savegame_variable = "939",
   price = 980,
   dialog = "lyriann_shop.quiver",
 }
@@ -677,7 +677,7 @@ shop_item{
   name = "rupee_bag",
   treasure_name = "rupee_bag",
   treasure_variant = 3,
-  treasure_savegame_variable = 940,
+  treasure_savegame_variable = "940",
   price = 300,
   dialog = "lyriann_shop.rupee_bag",
 }

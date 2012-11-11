@@ -9643,7 +9643,7 @@ pickable{
   y = 109,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 18,
+  treasure_savegame_variable = "18",
 }
 
 wall{

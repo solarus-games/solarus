@@ -242,7 +242,7 @@ chest{
   is_big_chest = false,
   treasure_name = "stone_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 192,
+  treasure_savegame_variable = "192",
 }
 
 tile{
@@ -4139,7 +4139,7 @@ pickable{
   y = 61,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 191,
+  treasure_savegame_variable = "191",
 }
 
 conveyor_belt{

@@ -5,7 +5,7 @@ properties{
   height = 912,
   world = "dungeon_1",
   floor = "1",
-  small_keys_variable = 205,
+  small_keys_variable = "205",
   tileset = "8",
   music = "same",
 }
@@ -3867,7 +3867,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 242,
+  treasure_savegame_variable = "242",
 }
 
 crystal_block{
@@ -9404,7 +9404,7 @@ chest{
   is_big_chest = true,
   treasure_name = "bow",
   treasure_variant = 2,
-  treasure_savegame_variable = 206,
+  treasure_savegame_variable = "206",
 }
 
 wall{
@@ -9473,7 +9473,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "8",
-  savegame_variable = 207,
+  savegame_variable = "207",
 }
 
 door{
@@ -9483,7 +9483,7 @@ door{
   name = "door_2",
   direction = 1,
   subtype = "8",
-  savegame_variable = 209,
+  savegame_variable = "209",
 }
 
 door{
@@ -9493,7 +9493,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "8",
-  savegame_variable = 208,
+  savegame_variable = "208",
 }
 
 door{
@@ -9503,7 +9503,7 @@ door{
   name = "door_4",
   direction = 1,
   subtype = "8",
-  savegame_variable = 210,
+  savegame_variable = "210",
 }
 
 door{
@@ -9513,7 +9513,7 @@ door{
   name = "door_5",
   direction = 1,
   subtype = "8",
-  savegame_variable = 212,
+  savegame_variable = "212",
 }
 
 door{
@@ -9523,7 +9523,7 @@ door{
   name = "door_6",
   direction = 1,
   subtype = "8",
-  savegame_variable = 211,
+  savegame_variable = "211",
 }
 
 door{
@@ -9533,7 +9533,7 @@ door{
   name = "door_7",
   direction = 1,
   subtype = "8",
-  savegame_variable = 213,
+  savegame_variable = "213",
 }
 
 door{
@@ -9543,7 +9543,7 @@ door{
   name = "door_8",
   direction = 1,
   subtype = "8",
-  savegame_variable = 215,
+  savegame_variable = "215",
 }
 
 door{
@@ -9553,7 +9553,7 @@ door{
   name = "door_9",
   direction = 1,
   subtype = "8",
-  savegame_variable = 216,
+  savegame_variable = "216",
 }
 
 door{
@@ -9563,7 +9563,7 @@ door{
   name = "door_10",
   direction = 1,
   subtype = "8",
-  savegame_variable = 218,
+  savegame_variable = "218",
 }
 
 door{
@@ -9573,7 +9573,7 @@ door{
   name = "door_11",
   direction = 1,
   subtype = "8",
-  savegame_variable = 217,
+  savegame_variable = "217",
 }
 
 door{
@@ -9583,7 +9583,7 @@ door{
   name = "door_12",
   direction = 1,
   subtype = "8",
-  savegame_variable = 219,
+  savegame_variable = "219",
 }
 
 door{
@@ -9593,7 +9593,7 @@ door{
   name = "door_13",
   direction = 1,
   subtype = "8",
-  savegame_variable = 220,
+  savegame_variable = "220",
 }
 
 door{
@@ -9603,7 +9603,7 @@ door{
   name = "door_14",
   direction = 1,
   subtype = "8",
-  savegame_variable = 232,
+  savegame_variable = "232",
 }
 
 door{
@@ -9613,7 +9613,7 @@ door{
   name = "door_15",
   direction = 1,
   subtype = "8",
-  savegame_variable = 221,
+  savegame_variable = "221",
 }
 
 door{
@@ -9623,7 +9623,7 @@ door{
   name = "door_16",
   direction = 1,
   subtype = "8",
-  savegame_variable = 222,
+  savegame_variable = "222",
 }
 
 door{
@@ -9633,7 +9633,7 @@ door{
   name = "door_17",
   direction = 1,
   subtype = "8",
-  savegame_variable = 223,
+  savegame_variable = "223",
 }
 
 door{
@@ -9643,7 +9643,7 @@ door{
   name = "door_18",
   direction = 1,
   subtype = "8",
-  savegame_variable = 214,
+  savegame_variable = "214",
 }
 
 door{
@@ -9653,7 +9653,7 @@ door{
   name = "door_19",
   direction = 1,
   subtype = "8",
-  savegame_variable = 224,
+  savegame_variable = "224",
 }
 
 door{
@@ -9663,7 +9663,7 @@ door{
   name = "door_20",
   direction = 1,
   subtype = "8",
-  savegame_variable = 226,
+  savegame_variable = "226",
 }
 
 door{
@@ -9673,7 +9673,7 @@ door{
   name = "door_21",
   direction = 1,
   subtype = "8",
-  savegame_variable = 225,
+  savegame_variable = "225",
 }
 
 door{
@@ -9683,7 +9683,7 @@ door{
   name = "door_22",
   direction = 1,
   subtype = "8",
-  savegame_variable = 228,
+  savegame_variable = "228",
 }
 
 door{
@@ -9693,7 +9693,7 @@ door{
   name = "door_23",
   direction = 1,
   subtype = "8",
-  savegame_variable = 227,
+  savegame_variable = "227",
 }
 
 door{
@@ -9703,7 +9703,7 @@ door{
   name = "door_24",
   direction = 1,
   subtype = "8",
-  savegame_variable = 231,
+  savegame_variable = "231",
 }
 
 door{
@@ -9713,7 +9713,7 @@ door{
   name = "door_25",
   direction = 1,
   subtype = "8",
-  savegame_variable = 230,
+  savegame_variable = "230",
 }
 
 enemy{
@@ -9843,7 +9843,7 @@ door{
   name = "door_26",
   direction = 1,
   subtype = "8",
-  savegame_variable = 229,
+  savegame_variable = "229",
 }
 
 wall{
@@ -10455,7 +10455,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 249,
+  treasure_savegame_variable = "249",
 }
 
 wall{
@@ -10569,7 +10569,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 244,
+  treasure_savegame_variable = "244",
 }
 
 chest{
@@ -10580,7 +10580,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 243,
+  treasure_savegame_variable = "243",
 }
 
 block{

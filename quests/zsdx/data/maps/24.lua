@@ -5,7 +5,7 @@ properties{
   height = 696,
   world = "dungeon_1",
   floor = "-1",
-  small_keys_variable = 205,
+  small_keys_variable = "205",
   tileset = "5",
   music = "light_world_dungeon",
 }
@@ -4524,7 +4524,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "3",
-  savegame_variable = 60,
+  savegame_variable = "60",
 }
 
 door{
@@ -4534,7 +4534,7 @@ door{
   name = "door_2",
   direction = 2,
   subtype = "3",
-  savegame_variable = 60,
+  savegame_variable = "60",
 }
 
 door{
@@ -4563,10 +4563,10 @@ enemy{
   direction = 3,
   breed = "papillosaur_king",
   rank = 2,
-  savegame_variable = 63,
+  savegame_variable = "63",
   treasure_name = "heart_container",
   treasure_variant = 1,
-  treasure_savegame_variable = 64,
+  treasure_savegame_variable = "64",
 }
 
 wall{
@@ -4801,7 +4801,7 @@ chest{
   is_big_chest = false,
   treasure_name = "big_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 56,
+  treasure_savegame_variable = "56",
 }
 
 enemy{
@@ -4855,7 +4855,7 @@ chest{
   is_big_chest = false,
   treasure_name = "croissant",
   treasure_variant = 1,
-  treasure_savegame_variable = 954,
+  treasure_savegame_variable = "954",
 }
 
 enemy{

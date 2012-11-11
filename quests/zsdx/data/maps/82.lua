@@ -2563,7 +2563,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 6,
-  treasure_savegame_variable = 196,
+  treasure_savegame_variable = "196",
 }
 
 destination{

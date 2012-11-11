@@ -663,7 +663,7 @@ shop_item{
   name = "apple_pie",
   treasure_name = "level_4_way",
   treasure_variant = 1,
-  treasure_savegame_variable = 137,
+  treasure_savegame_variable = "137",
   price = 35,
   dialog = "cake_shop.apple_pie",
 }

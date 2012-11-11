@@ -801,7 +801,7 @@ chest{
   is_big_chest = false,
   treasure_name = "bone_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 58,
+  treasure_savegame_variable = "58",
 }
 
 npc{
@@ -822,7 +822,7 @@ door{
   name = "door",
   direction = 2,
   subtype = "0",
-  savegame_variable = 59,
+  savegame_variable = "59",
 }
 
 door{
@@ -832,7 +832,7 @@ door{
   name = "door_2",
   direction = 0,
   subtype = "0",
-  savegame_variable = 59,
+  savegame_variable = "59",
 }
 
 tile{

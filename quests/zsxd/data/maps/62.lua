@@ -5,7 +5,7 @@ properties{
   height = 912,
   world = "dungeon_1",
   floor = "0",
-  small_keys_variable = 205,
+  small_keys_variable = "205",
   tileset = "8",
   music = "dark_world_dungeon",
 }
@@ -1041,7 +1041,7 @@ chest{
   is_big_chest = false,
   treasure_name = "boss_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 201,
+  treasure_savegame_variable = "201",
 }
 
 stairs{
@@ -4997,7 +4997,7 @@ chest{
   is_big_chest = false,
   treasure_name = "map",
   treasure_variant = 1,
-  treasure_savegame_variable = 202,
+  treasure_savegame_variable = "202",
 }
 
 enemy{
@@ -5192,7 +5192,7 @@ pickable{
   y = 61,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 291,
+  treasure_savegame_variable = "291",
 }
 
 npc{

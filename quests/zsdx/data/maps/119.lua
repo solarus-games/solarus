@@ -9994,7 +9994,7 @@ enemy{
   direction = 3,
   breed = "poutroxor",
   rank = 2,
-  savegame_variable = 299,
+  savegame_variable = "299",
   treasure_name = "_none",
   treasure_variant = 1,
 }

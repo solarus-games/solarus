@@ -867,7 +867,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "5",
-  savegame_variable = 158,
+  savegame_variable = "158",
 }
 
 npc{

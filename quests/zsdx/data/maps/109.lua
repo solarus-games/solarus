@@ -5,7 +5,7 @@ properties{
   height = 1264,
   world = "dungeon_9",
   floor = "unknown",
-  small_keys_variable = 285,
+  small_keys_variable = "285",
   tileset = "16",
   music = "tloz_dungeon",
 }
@@ -6047,7 +6047,7 @@ door{
   name = "door_4",
   direction = 3,
   subtype = "1",
-  savegame_variable = 885,
+  savegame_variable = "885",
 }
 
 door{
@@ -6151,7 +6151,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 877,
+  treasure_savegame_variable = "877",
 }
 
 block{
@@ -6351,7 +6351,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 878,
+  treasure_savegame_variable = "878",
 }
 
 wall{
@@ -6615,7 +6615,7 @@ door{
   name = "door",
   direction = 0,
   subtype = "1",
-  savegame_variable = 879,
+  savegame_variable = "879",
 }
 
 door{
@@ -6625,7 +6625,7 @@ door{
   name = "door_2",
   direction = 2,
   subtype = "1",
-  savegame_variable = 879,
+  savegame_variable = "879",
 }
 
 enemy{
@@ -6675,7 +6675,7 @@ enemy{
   direction = 3,
   breed = "khotor",
   rank = 1,
-  savegame_variable = 880,
+  savegame_variable = "880",
   treasure_name = "fairy",
   treasure_variant = 1,
 }
@@ -6735,7 +6735,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "1",
-  savegame_variable = 885,
+  savegame_variable = "885",
 }
 
 npc{

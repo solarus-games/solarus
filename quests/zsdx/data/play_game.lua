@@ -23,6 +23,14 @@ end
 
 -- Useful functions for this quest.
 
+function game:get_player_name()
+  return game:get_value("player_name")
+end
+
+function game:set_player_name(player_name)
+  game:set_value("player_name", player_name)
+end
+
 function game:is_hud_enabled()
   return self.hud_enabled
 end

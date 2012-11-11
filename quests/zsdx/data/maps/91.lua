@@ -3124,7 +3124,7 @@ pickable{
   y = 181,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 917,
+  treasure_savegame_variable = "917",
 }
 
 switch{
@@ -3729,7 +3729,7 @@ chest{
   is_big_chest = false,
   treasure_name = "bottle_3",
   treasure_variant = 1,
-  treasure_savegame_variable = 943,
+  treasure_savegame_variable = "943",
 }
 
 destination{

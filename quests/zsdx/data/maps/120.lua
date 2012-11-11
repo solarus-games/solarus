@@ -1051,7 +1051,7 @@ chest{
   is_big_chest = false,
   treasure_name = "bone_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 926,
+  treasure_savegame_variable = "926",
 }
 
 chest{
@@ -1062,7 +1062,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 6,
-  treasure_savegame_variable = 927,
+  treasure_savegame_variable = "927",
 }
 
 destination{

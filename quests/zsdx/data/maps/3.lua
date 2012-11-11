@@ -17848,7 +17848,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 4,
-  treasure_savegame_variable = 13,
+  treasure_savegame_variable = "13",
 }
 
 destructible{
@@ -18534,7 +18534,7 @@ door{
   name = "dungeon_3_entrance_weak_block_2",
   direction = 1,
   subtype = "8",
-  savegame_variable = 110,
+  savegame_variable = "110",
 }
 
 door{
@@ -18544,7 +18544,7 @@ door{
   name = "dungeon_3_entrance_weak_block_3",
   direction = 1,
   subtype = "8",
-  savegame_variable = 112,
+  savegame_variable = "112",
 }
 
 door{
@@ -18554,7 +18554,7 @@ door{
   name = "dungeon_3_entrance_weak_block",
   direction = 1,
   subtype = "8",
-  savegame_variable = 111,
+  savegame_variable = "111",
 }
 
 destructible{
@@ -18657,7 +18657,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 5,
-  treasure_savegame_variable = 912,
+  treasure_savegame_variable = "912",
 }
 
 destructible{
@@ -19448,7 +19448,7 @@ pickable{
   y = 549,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 922,
+  treasure_savegame_variable = "922",
 }
 
 tile{

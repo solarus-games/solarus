@@ -701,7 +701,7 @@ chest{
   is_big_chest = false,
   treasure_name = "ice_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 195,
+  treasure_savegame_variable = "195",
 }
 
 jumper{

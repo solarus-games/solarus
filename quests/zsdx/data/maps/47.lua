@@ -5,7 +5,7 @@ properties{
   height = 1808,
   world = "dungeon_8",
   floor = "0",
-  small_keys_variable = 275,
+  small_keys_variable = "275",
   tileset = "9",
   music = "dark_world_dungeon",
 }
@@ -8799,7 +8799,7 @@ door{
   name = "LD6_2",
   direction = 0,
   subtype = "0",
-  savegame_variable = 723,
+  savegame_variable = "723",
 }
 
 door{
@@ -8809,7 +8809,7 @@ door{
   name = "LD6",
   direction = 2,
   subtype = "0",
-  savegame_variable = 723,
+  savegame_variable = "723",
 }
 
 door{
@@ -8819,7 +8819,7 @@ door{
   name = "boss_key_door",
   direction = 1,
   subtype = "4",
-  savegame_variable = 730,
+  savegame_variable = "730",
 }
 
 door{
@@ -8889,7 +8889,7 @@ door{
   name = "WW01",
   direction = 2,
   subtype = "5",
-  savegame_variable = 731,
+  savegame_variable = "731",
 }
 
 destination{
@@ -8907,7 +8907,7 @@ door{
   name = "KD01",
   direction = 2,
   subtype = "1",
-  savegame_variable = 701,
+  savegame_variable = "701",
 }
 
 block{
@@ -9083,7 +9083,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 702,
+  treasure_savegame_variable = "702",
 }
 
 destructible{
@@ -9550,7 +9550,7 @@ chest{
   is_big_chest = false,
   treasure_name = "big_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 705,
+  treasure_savegame_variable = "705",
 }
 
 destructible{
@@ -9848,7 +9848,7 @@ destructible{
   subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 704,
+  treasure_savegame_variable = "704",
 }
 
 destructible{
@@ -9877,7 +9877,7 @@ chest{
   is_big_chest = false,
   treasure_name = "map",
   treasure_variant = 1,
-  treasure_savegame_variable = 700,
+  treasure_savegame_variable = "700",
 }
 
 npc{
@@ -10018,7 +10018,7 @@ pickable{
   y = 397,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 724,
+  treasure_savegame_variable = "724",
 }
 
 switch{
@@ -10335,7 +10335,7 @@ door{
   name = "KD02",
   direction = 0,
   subtype = "1",
-  savegame_variable = 703,
+  savegame_variable = "703",
 }
 
 enemy{
@@ -10606,7 +10606,7 @@ door{
   name = "KD01_2",
   direction = 0,
   subtype = "1",
-  savegame_variable = 701,
+  savegame_variable = "701",
 }
 
 door{
@@ -10616,7 +10616,7 @@ door{
   name = "KD02_2",
   direction = 2,
   subtype = "1",
-  savegame_variable = 703,
+  savegame_variable = "703",
 }
 
 wall{
@@ -10660,10 +10660,10 @@ enemy{
   direction = 3,
   breed = "billy",
   rank = 2,
-  savegame_variable = 727,
+  savegame_variable = "727",
   treasure_name = "heart_container",
   treasure_variant = 1,
-  treasure_savegame_variable = 729,
+  treasure_savegame_variable = "729",
 }
 
 sensor{
@@ -12064,7 +12064,7 @@ door{
   name = "boss_key_door_2",
   direction = 3,
   subtype = "4",
-  savegame_variable = 730,
+  savegame_variable = "730",
 }
 
 dynamic_tile{

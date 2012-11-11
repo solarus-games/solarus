@@ -5,7 +5,7 @@ properties{
   height = 768,
   world = "dungeon_2",
   floor = "-1",
-  small_keys_variable = 215,
+  small_keys_variable = "215",
   tileset = "7",
   music = "light_world_dungeon",
 }
@@ -1396,7 +1396,7 @@ chest{
   is_big_chest = false,
   treasure_name = "arrow",
   treasure_variant = 2,
-  treasure_savegame_variable = 72,
+  treasure_savegame_variable = "72",
 }
 
 npc{
@@ -1477,7 +1477,7 @@ door{
   name = "door",
   direction = 2,
   subtype = "3",
-  savegame_variable = 82,
+  savegame_variable = "82",
 }
 
 door{
@@ -1487,7 +1487,7 @@ door{
   name = "door_2",
   direction = 0,
   subtype = "3",
-  savegame_variable = 82,
+  savegame_variable = "82",
 }
 
 destination{
@@ -1538,7 +1538,7 @@ chest{
   is_big_chest = false,
   treasure_name = "compass",
   treasure_variant = 1,
-  treasure_savegame_variable = 85,
+  treasure_savegame_variable = "85",
 }
 
 crystal{
@@ -1641,7 +1641,7 @@ chest{
   is_big_chest = true,
   treasure_name = "rupee_bag",
   treasure_variant = 2,
-  treasure_savegame_variable = 88,
+  treasure_savegame_variable = "88",
 }
 
 block{
@@ -5086,7 +5086,7 @@ chest{
   is_big_chest = false,
   treasure_name = "boss_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 81,
+  treasure_savegame_variable = "81",
 }
 
 jumper{
@@ -5118,7 +5118,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "4",
-  savegame_variable = 83,
+  savegame_variable = "83",
 }
 
 door{
@@ -5128,7 +5128,7 @@ door{
   name = "door_4",
   direction = 3,
   subtype = "4",
-  savegame_variable = 83,
+  savegame_variable = "83",
 }
 
 destination{
@@ -5179,7 +5179,7 @@ chest{
   is_big_chest = false,
   treasure_name = "map",
   treasure_variant = 1,
-  treasure_savegame_variable = 77,
+  treasure_savegame_variable = "77",
 }
 
 destructible{
@@ -5501,7 +5501,7 @@ enemy{
   direction = 3,
   breed = "firebird",
   rank = 2,
-  savegame_variable = 93,
+  savegame_variable = "93",
   treasure_name = "_none",
   treasure_variant = 1,
 }

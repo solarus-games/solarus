@@ -14425,7 +14425,7 @@ pickable{
   y = 861,
   treasure_name = "shield",
   treasure_variant = 1,
-  treasure_savegame_variable = 43,
+  treasure_savegame_variable = "43",
 }
 
 wall{
@@ -15081,7 +15081,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "8",
-  savegame_variable = 51,
+  savegame_variable = "51",
 }
 
 door{
@@ -15091,7 +15091,7 @@ door{
   name = "door_2",
   direction = 1,
   subtype = "8",
-  savegame_variable = 52,
+  savegame_variable = "52",
 }
 
 door{
@@ -15101,7 +15101,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "8",
-  savegame_variable = 53,
+  savegame_variable = "53",
 }
 
 door{
@@ -15111,7 +15111,7 @@ door{
   name = "door_4",
   direction = 1,
   subtype = "8",
-  savegame_variable = 54,
+  savegame_variable = "54",
 }
 
 door{
@@ -15121,7 +15121,7 @@ door{
   name = "door_5",
   direction = 1,
   subtype = "8",
-  savegame_variable = 55,
+  savegame_variable = "55",
 }
 
 wall{

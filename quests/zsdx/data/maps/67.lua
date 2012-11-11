@@ -4,7 +4,7 @@ properties{
   width = 576,
   height = 448,
   world = "inside_world",
-  small_keys_variable = 1200,
+  small_keys_variable = "1200",
   tileset = "3",
   music = "same",
 }
@@ -494,7 +494,7 @@ chest{
   is_big_chest = false,
   treasure_name = "fire_stone",
   treasure_variant = 1,
-  treasure_savegame_variable = 140,
+  treasure_savegame_variable = "140",
 }
 
 door{
@@ -504,7 +504,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "2",
-  savegame_variable = 147,
+  savegame_variable = "147",
 }
 
 door{
@@ -514,7 +514,7 @@ door{
   name = "door_2",
   direction = 1,
   subtype = "2",
-  savegame_variable = 148,
+  savegame_variable = "148",
 }
 
 door{
@@ -524,7 +524,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "2",
-  savegame_variable = 149,
+  savegame_variable = "149",
 }
 
 door{
@@ -534,7 +534,7 @@ door{
   name = "door_4",
   direction = 1,
   subtype = "2",
-  savegame_variable = 150,
+  savegame_variable = "150",
 }
 
 chest{
@@ -545,7 +545,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 141,
+  treasure_savegame_variable = "141",
 }
 
 chest{
@@ -556,7 +556,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 142,
+  treasure_savegame_variable = "142",
 }
 
 chest{
@@ -567,7 +567,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 143,
+  treasure_savegame_variable = "143",
 }
 
 chest{
@@ -578,7 +578,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 144,
+  treasure_savegame_variable = "144",
 }
 
 chest{
@@ -589,7 +589,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 145,
+  treasure_savegame_variable = "145",
 }
 
 chest{
@@ -600,7 +600,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 146,
+  treasure_savegame_variable = "146",
 }
 
 conveyor_belt{
@@ -3487,7 +3487,7 @@ door{
   name = "door_5",
   direction = 1,
   subtype = "2",
-  savegame_variable = 151,
+  savegame_variable = "151",
 }
 
 door{
@@ -3497,7 +3497,7 @@ door{
   name = "door_6",
   direction = 1,
   subtype = "2",
-  savegame_variable = 152,
+  savegame_variable = "152",
 }
 
 teletransporter{

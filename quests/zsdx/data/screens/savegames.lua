@@ -216,7 +216,7 @@ function savegame_menu:read_savegames()
     slot.player_name_text = sol.text_surface.create()
     if sol.game.exists(slot.file_name) then
       -- Existing file.
-      slot.player_name_text:set_text(slot.savegame:get_player_name())
+      slot.player_name_text:set_text(slot.savegame:get_value("player_name"))
 
       -- Hearts.
       local hearts_class = require("hud/hearts")
@@ -947,7 +947,7 @@ function savegame_menu:validate_player_name()
   sol.audio.play_sound("ok")
 
   local savegame = self.slots[self.cursor_position].savegame
-  savegame:set_player_name(self.player_name)
+  savegame:set_value("player_name", self.player_name)
   savegame:save()
   self:read_savegames()
   return true

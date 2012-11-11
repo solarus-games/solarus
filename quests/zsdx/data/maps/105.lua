@@ -5,7 +5,7 @@ properties{
   height = 2320,
   world = "dungeon_9",
   floor = "0",
-  small_keys_variable = 285,
+  small_keys_variable = "285",
   tileset = "15",
   music = "southern_shrine",
 }
@@ -17207,7 +17207,7 @@ door{
   name = "door_4",
   direction = 0,
   subtype = "1",
-  savegame_variable = 883,
+  savegame_variable = "883",
 }
 
 door{
@@ -17235,7 +17235,7 @@ door{
   name = "c_big_key_door_2",
   direction = 1,
   subtype = "3",
-  savegame_variable = 804,
+  savegame_variable = "804",
 }
 
 door{
@@ -17245,7 +17245,7 @@ door{
   name = "c_big_key_door",
   direction = 3,
   subtype = "3",
-  savegame_variable = 804,
+  savegame_variable = "804",
 }
 
 wall{
@@ -17277,7 +17277,7 @@ door{
   name = "door_6",
   direction = 3,
   subtype = "3",
-  savegame_variable = 809,
+  savegame_variable = "809",
 }
 
 door{
@@ -18366,7 +18366,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 6,
-  treasure_savegame_variable = 800,
+  treasure_savegame_variable = "800",
 }
 
 wall{
@@ -18390,7 +18390,7 @@ chest{
   is_big_chest = false,
   treasure_name = "map",
   treasure_variant = 1,
-  treasure_savegame_variable = 801,
+  treasure_savegame_variable = "801",
 }
 
 switch{
@@ -18849,7 +18849,7 @@ door{
   name = "door",
   direction = 2,
   subtype = "1",
-  savegame_variable = 803,
+  savegame_variable = "803",
 }
 
 door{
@@ -18859,7 +18859,7 @@ door{
   name = "door_2",
   direction = 0,
   subtype = "1",
-  savegame_variable = 803,
+  savegame_variable = "803",
 }
 
 teletransporter{
@@ -20044,7 +20044,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 805,
+  treasure_savegame_variable = "805",
 }
 
 enemy{
@@ -20127,7 +20127,7 @@ chest{
   is_big_chest = false,
   treasure_name = "big_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 806,
+  treasure_savegame_variable = "806",
 }
 
 door{
@@ -20171,7 +20171,7 @@ chest{
   is_big_chest = true,
   treasure_name = "tunic",
   treasure_variant = 3,
-  treasure_savegame_variable = 807,
+  treasure_savegame_variable = "807",
 }
 
 destructible{
@@ -20572,7 +20572,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 808,
+  treasure_savegame_variable = "808",
 }
 
 destructible{
@@ -20611,7 +20611,7 @@ door{
   name = "door_5",
   direction = 1,
   subtype = "3",
-  savegame_variable = 809,
+  savegame_variable = "809",
 }
 
 destructible{
@@ -20709,7 +20709,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 810,
+  treasure_savegame_variable = "810",
 }
 
 switch{
@@ -20838,7 +20838,7 @@ destructible{
   subtype = "pot",
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 882,
+  treasure_savegame_variable = "882",
 }
 
 door{
@@ -20848,7 +20848,7 @@ door{
   name = "door_3",
   direction = 2,
   subtype = "1",
-  savegame_variable = 883,
+  savegame_variable = "883",
 }
 
 sensor{

@@ -2907,7 +2907,7 @@ pickable{
   y = 285,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 918,
+  treasure_savegame_variable = "918",
 }
 
 jumper{

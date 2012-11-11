@@ -1720,7 +1720,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 29,
+  treasure_savegame_variable = "29",
 }
 
 npc{
@@ -3077,7 +3077,7 @@ pickable{
   y = 341,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 44,
+  treasure_savegame_variable = "44",
 }
 
 pickable{
@@ -3086,7 +3086,7 @@ pickable{
   y = 341,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 45,
+  treasure_savegame_variable = "45",
 }
 
 pickable{
@@ -3095,7 +3095,7 @@ pickable{
   y = 301,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 43,
+  treasure_savegame_variable = "43",
 }
 
 jumper{

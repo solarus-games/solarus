@@ -5,7 +5,7 @@ properties{
   height = 768,
   world = "dungeon_6",
   floor = "3",
-  small_keys_variable = 255,
+  small_keys_variable = "255",
   tileset = "10",
   music = "dark_world_dungeon",
 }
@@ -1545,7 +1545,7 @@ pickable{
   y = 141,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 309,
+  treasure_savegame_variable = "309",
 }
 
 stairs{
@@ -3904,10 +3904,10 @@ enemy{
   direction = 3,
   breed = "drakomos",
   rank = 2,
-  savegame_variable = 321,
+  savegame_variable = "321",
   treasure_name = "heart_container",
   treasure_variant = 1,
-  treasure_savegame_variable = 322,
+  treasure_savegame_variable = "322",
 }
 
 chest{
@@ -3918,7 +3918,7 @@ chest{
   is_big_chest = true,
   treasure_name = "glove",
   treasure_variant = 2,
-  treasure_savegame_variable = 308,
+  treasure_savegame_variable = "308",
 }
 
 wall{
@@ -3990,7 +3990,7 @@ door{
   name = "door_3",
   direction = 1,
   subtype = "1",
-  savegame_variable = 310,
+  savegame_variable = "310",
 }
 
 door{
@@ -4000,7 +4000,7 @@ door{
   name = "door_4",
   direction = 3,
   subtype = "1",
-  savegame_variable = 310,
+  savegame_variable = "310",
 }
 
 door{
@@ -4010,7 +4010,7 @@ door{
   name = "door_5",
   direction = 1,
   subtype = "4",
-  savegame_variable = 311,
+  savegame_variable = "311",
 }
 
 door{
@@ -4020,7 +4020,7 @@ door{
   name = "door_6",
   direction = 3,
   subtype = "4",
-  savegame_variable = 311,
+  savegame_variable = "311",
 }
 
 destination{

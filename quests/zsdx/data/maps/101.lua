@@ -5,7 +5,7 @@ properties{
   height = 1056,
   world = "dungeon_7",
   floor = "0",
-  small_keys_variable = 265,
+  small_keys_variable = "265",
   tileset = "2",
   music = "dark_world_dungeon",
 }
@@ -7116,7 +7116,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 600,
+  treasure_savegame_variable = "600",
 }
 
 pickable{
@@ -7125,7 +7125,7 @@ pickable{
   y = 173,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 601,
+  treasure_savegame_variable = "601",
 }
 
 destination{
@@ -7828,7 +7828,7 @@ chest{
   is_big_chest = false,
   treasure_name = "map",
   treasure_variant = 1,
-  treasure_savegame_variable = 602,
+  treasure_savegame_variable = "602",
 }
 
 npc{
@@ -7868,7 +7868,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 603,
+  treasure_savegame_variable = "603",
 }
 
 block{
@@ -8120,7 +8120,7 @@ door{
   name = "sw_door",
   direction = 2,
   subtype = "0",
-  savegame_variable = 604,
+  savegame_variable = "604",
 }
 
 door{
@@ -8130,7 +8130,7 @@ door{
   name = "sw_door_2",
   direction = 0,
   subtype = "0",
-  savegame_variable = 604,
+  savegame_variable = "604",
 }
 
 switch{
@@ -8177,7 +8177,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "2",
-  savegame_variable = 605,
+  savegame_variable = "605",
 }
 
 wall{
@@ -8551,7 +8551,7 @@ door{
   name = "door_2",
   direction = 1,
   subtype = "3",
-  savegame_variable = 606,
+  savegame_variable = "606",
 }
 
 npc{
@@ -8850,7 +8850,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 607,
+  treasure_savegame_variable = "607",
 }
 
 switch{
@@ -8964,7 +8964,7 @@ door{
   name = "door_3",
   direction = 3,
   subtype = "3",
-  savegame_variable = 606,
+  savegame_variable = "606",
 }
 
 block{
@@ -8996,7 +8996,7 @@ door{
   name = "ne_door",
   direction = 1,
   subtype = "0",
-  savegame_variable = 621,
+  savegame_variable = "621",
 }
 
 door{
@@ -9006,7 +9006,7 @@ door{
   name = "ne_door_2",
   direction = 3,
   subtype = "0",
-  savegame_variable = 621,
+  savegame_variable = "621",
 }
 
 destructible{

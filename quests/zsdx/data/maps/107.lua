@@ -5,7 +5,7 @@ properties{
   height = 2320,
   world = "dungeon_9",
   floor = "2",
-  small_keys_variable = 285,
+  small_keys_variable = "285",
   tileset = "15",
   music = "southern_shrine",
 }
@@ -5309,7 +5309,7 @@ pickable{
   y = 421,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 818,
+  treasure_savegame_variable = "818",
 }
 
 pickable{
@@ -5318,7 +5318,7 @@ pickable{
   y = 421,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 819,
+  treasure_savegame_variable = "819",
 }
 
 pickable{
@@ -5327,7 +5327,7 @@ pickable{
   y = 453,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 820,
+  treasure_savegame_variable = "820",
 }
 
 pickable{
@@ -5336,7 +5336,7 @@ pickable{
   y = 453,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 821,
+  treasure_savegame_variable = "821",
 }
 
 pickable{
@@ -5345,7 +5345,7 @@ pickable{
   y = 485,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 822,
+  treasure_savegame_variable = "822",
 }
 
 pickable{
@@ -5354,7 +5354,7 @@ pickable{
   y = 485,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 823,
+  treasure_savegame_variable = "823",
 }
 
 pickable{
@@ -5363,7 +5363,7 @@ pickable{
   y = 517,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 824,
+  treasure_savegame_variable = "824",
 }
 
 pickable{
@@ -5372,7 +5372,7 @@ pickable{
   y = 517,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 825,
+  treasure_savegame_variable = "825",
 }
 
 pickable{
@@ -5381,7 +5381,7 @@ pickable{
   y = 549,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 826,
+  treasure_savegame_variable = "826",
 }
 
 pickable{
@@ -5390,7 +5390,7 @@ pickable{
   y = 549,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 827,
+  treasure_savegame_variable = "827",
 }
 
 pickable{
@@ -5399,7 +5399,7 @@ pickable{
   y = 581,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 828,
+  treasure_savegame_variable = "828",
 }
 
 pickable{
@@ -5408,7 +5408,7 @@ pickable{
   y = 581,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 829,
+  treasure_savegame_variable = "829",
 }
 
 pickable{
@@ -5417,7 +5417,7 @@ pickable{
   y = 613,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 830,
+  treasure_savegame_variable = "830",
 }
 
 pickable{
@@ -5426,7 +5426,7 @@ pickable{
   y = 613,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 831,
+  treasure_savegame_variable = "831",
 }
 
 pickable{
@@ -5435,7 +5435,7 @@ pickable{
   y = 645,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 832,
+  treasure_savegame_variable = "832",
 }
 
 pickable{
@@ -5444,7 +5444,7 @@ pickable{
   y = 645,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 833,
+  treasure_savegame_variable = "833",
 }
 
 pickable{
@@ -5453,7 +5453,7 @@ pickable{
   y = 421,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 834,
+  treasure_savegame_variable = "834",
 }
 
 pickable{
@@ -5462,7 +5462,7 @@ pickable{
   y = 421,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 835,
+  treasure_savegame_variable = "835",
 }
 
 pickable{
@@ -5471,7 +5471,7 @@ pickable{
   y = 453,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 836,
+  treasure_savegame_variable = "836",
 }
 
 pickable{
@@ -5480,7 +5480,7 @@ pickable{
   y = 453,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 837,
+  treasure_savegame_variable = "837",
 }
 
 pickable{
@@ -5489,7 +5489,7 @@ pickable{
   y = 485,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 838,
+  treasure_savegame_variable = "838",
 }
 
 pickable{
@@ -5498,7 +5498,7 @@ pickable{
   y = 485,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 839,
+  treasure_savegame_variable = "839",
 }
 
 pickable{
@@ -5507,7 +5507,7 @@ pickable{
   y = 517,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 840,
+  treasure_savegame_variable = "840",
 }
 
 pickable{
@@ -5516,7 +5516,7 @@ pickable{
   y = 517,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 841,
+  treasure_savegame_variable = "841",
 }
 
 pickable{
@@ -5525,7 +5525,7 @@ pickable{
   y = 549,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 842,
+  treasure_savegame_variable = "842",
 }
 
 pickable{
@@ -5534,7 +5534,7 @@ pickable{
   y = 549,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 843,
+  treasure_savegame_variable = "843",
 }
 
 pickable{
@@ -5543,7 +5543,7 @@ pickable{
   y = 581,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 844,
+  treasure_savegame_variable = "844",
 }
 
 pickable{
@@ -5552,7 +5552,7 @@ pickable{
   y = 581,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 845,
+  treasure_savegame_variable = "845",
 }
 
 pickable{
@@ -5561,7 +5561,7 @@ pickable{
   y = 613,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 846,
+  treasure_savegame_variable = "846",
 }
 
 pickable{
@@ -5570,7 +5570,7 @@ pickable{
   y = 613,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 847,
+  treasure_savegame_variable = "847",
 }
 
 pickable{
@@ -5579,7 +5579,7 @@ pickable{
   y = 645,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 848,
+  treasure_savegame_variable = "848",
 }
 
 pickable{
@@ -5588,7 +5588,7 @@ pickable{
   y = 645,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 849,
+  treasure_savegame_variable = "849",
 }
 
 pickable{
@@ -5597,7 +5597,7 @@ pickable{
   y = 677,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 850,
+  treasure_savegame_variable = "850",
 }
 
 pickable{
@@ -5606,7 +5606,7 @@ pickable{
   y = 677,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 851,
+  treasure_savegame_variable = "851",
 }
 
 pickable{
@@ -5615,7 +5615,7 @@ pickable{
   y = 709,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 852,
+  treasure_savegame_variable = "852",
 }
 
 pickable{
@@ -5624,7 +5624,7 @@ pickable{
   y = 709,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 853,
+  treasure_savegame_variable = "853",
 }
 
 pickable{
@@ -5633,7 +5633,7 @@ pickable{
   y = 677,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 854,
+  treasure_savegame_variable = "854",
 }
 
 pickable{
@@ -5642,7 +5642,7 @@ pickable{
   y = 677,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 855,
+  treasure_savegame_variable = "855",
 }
 
 pickable{
@@ -5651,7 +5651,7 @@ pickable{
   y = 709,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 856,
+  treasure_savegame_variable = "856",
 }
 
 pickable{
@@ -5660,7 +5660,7 @@ pickable{
   y = 709,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 857,
+  treasure_savegame_variable = "857",
 }
 
 pickable{
@@ -5669,7 +5669,7 @@ pickable{
   y = 677,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 858,
+  treasure_savegame_variable = "858",
 }
 
 pickable{
@@ -5678,7 +5678,7 @@ pickable{
   y = 677,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 859,
+  treasure_savegame_variable = "859",
 }
 
 pickable{
@@ -5687,7 +5687,7 @@ pickable{
   y = 709,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 860,
+  treasure_savegame_variable = "860",
 }
 
 pickable{
@@ -5696,7 +5696,7 @@ pickable{
   y = 709,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 861,
+  treasure_savegame_variable = "861",
 }
 
 pickable{
@@ -5705,7 +5705,7 @@ pickable{
   y = 677,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 862,
+  treasure_savegame_variable = "862",
 }
 
 pickable{
@@ -5714,7 +5714,7 @@ pickable{
   y = 709,
   treasure_name = "rupee",
   treasure_variant = 2,
-  treasure_savegame_variable = 863,
+  treasure_savegame_variable = "863",
 }
 
 block{
@@ -6063,7 +6063,7 @@ door{
   name = "door_b",
   direction = 0,
   subtype = "0",
-  savegame_variable = 864,
+  savegame_variable = "864",
 }
 
 door{
@@ -6073,7 +6073,7 @@ door{
   name = "door_b_2",
   direction = 2,
   subtype = "0",
-  savegame_variable = 864,
+  savegame_variable = "864",
 }
 
 chest{
@@ -6084,7 +6084,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 4,
-  treasure_savegame_variable = 865,
+  treasure_savegame_variable = "865",
 }
 
 conveyor_belt{

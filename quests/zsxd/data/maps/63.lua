@@ -5,7 +5,7 @@ properties{
   height = 912,
   world = "dungeon_1",
   floor = "0",
-  small_keys_variable = 205,
+  small_keys_variable = "205",
   tileset = "8",
   music = "dark_world_dungeon",
 }
@@ -3937,7 +3937,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 250,
+  treasure_savegame_variable = "250",
 }
 
 stairs{
@@ -8636,7 +8636,7 @@ door{
   name = "weak_wall_red_tunic",
   direction = 1,
   subtype = "5",
-  savegame_variable = 234,
+  savegame_variable = "234",
 }
 
 wall{
@@ -8672,7 +8672,7 @@ door{
   name = "door",
   direction = 3,
   subtype = "1",
-  savegame_variable = 235,
+  savegame_variable = "235",
 }
 
 door{
@@ -8682,7 +8682,7 @@ door{
   name = "door_2",
   direction = 1,
   subtype = "1",
-  savegame_variable = 235,
+  savegame_variable = "235",
 }
 
 wall{
@@ -8954,7 +8954,7 @@ door{
   name = "ne_door",
   direction = 1,
   subtype = "0",
-  savegame_variable = 304,
+  savegame_variable = "304",
 }
 
 dynamic_tile{
@@ -9293,7 +9293,7 @@ enemy{
   rank = 0,
   treasure_name = "heart_container",
   treasure_variant = 1,
-  treasure_savegame_variable = 305,
+  treasure_savegame_variable = "305",
 }
 
 teletransporter{

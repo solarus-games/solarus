@@ -5,7 +5,7 @@ properties{
   height = 1120,
   world = "dungeon_4",
   floor = "0",
-  small_keys_variable = 235,
+  small_keys_variable = "235",
   tileset = "11",
   music = "light_world_dungeon",
 }
@@ -2617,7 +2617,7 @@ pickable{
   y = 1045,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 413,
+  treasure_savegame_variable = "413",
 }
 
 teletransporter{
@@ -2652,7 +2652,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 4,
-  treasure_savegame_variable = 414,
+  treasure_savegame_variable = "414",
 }
 
 chest{
@@ -2663,7 +2663,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 5,
-  treasure_savegame_variable = 418,
+  treasure_savegame_variable = "418",
 }
 
 enemy{
@@ -7800,7 +7800,7 @@ door{
   name = "hidden_weak_wall_2",
   direction = 1,
   subtype = "6",
-  savegame_variable = 403,
+  savegame_variable = "403",
 }
 
 wall{
@@ -7868,7 +7868,7 @@ door{
   name = "door",
   direction = 1,
   subtype = "4",
-  savegame_variable = 401,
+  savegame_variable = "401",
 }
 
 door{
@@ -7878,7 +7878,7 @@ door{
   name = "door_2",
   direction = 3,
   subtype = "4",
-  savegame_variable = 401,
+  savegame_variable = "401",
 }
 
 wall{
@@ -7914,7 +7914,7 @@ door{
   name = "door_3",
   direction = 0,
   subtype = "1",
-  savegame_variable = 402,
+  savegame_variable = "402",
 }
 
 door{
@@ -7924,7 +7924,7 @@ door{
   name = "door_4",
   direction = 2,
   subtype = "1",
-  savegame_variable = 402,
+  savegame_variable = "402",
 }
 
 destination{
@@ -8015,7 +8015,7 @@ door{
   name = "hidden_weak_wall",
   direction = 3,
   subtype = "6",
-  savegame_variable = 403,
+  savegame_variable = "403",
 }
 
 destination{
@@ -8168,7 +8168,7 @@ chest{
   is_big_chest = true,
   treasure_name = "tunic",
   treasure_variant = 2,
-  treasure_savegame_variable = 404,
+  treasure_savegame_variable = "404",
 }
 
 chest{
@@ -8179,7 +8179,7 @@ chest{
   is_big_chest = false,
   treasure_name = "compass",
   treasure_variant = 1,
-  treasure_savegame_variable = 405,
+  treasure_savegame_variable = "405",
 }
 
 door{
@@ -8189,7 +8189,7 @@ door{
   name = "door_7",
   direction = 3,
   subtype = "3",
-  savegame_variable = 406,
+  savegame_variable = "406",
 }
 
 door{
@@ -8199,7 +8199,7 @@ door{
   name = "door_8",
   direction = 1,
   subtype = "3",
-  savegame_variable = 406,
+  savegame_variable = "406",
 }
 
 chest{
@@ -8210,7 +8210,7 @@ chest{
   is_big_chest = false,
   treasure_name = "map",
   treasure_variant = 1,
-  treasure_savegame_variable = 407,
+  treasure_savegame_variable = "407",
 }
 
 dynamic_tile{
@@ -8232,7 +8232,7 @@ chest{
   is_big_chest = false,
   treasure_name = "big_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 409,
+  treasure_savegame_variable = "409",
 }
 
 door{
@@ -8242,7 +8242,7 @@ door{
   name = "weak_block",
   direction = 1,
   subtype = "8",
-  savegame_variable = 410,
+  savegame_variable = "410",
 }
 
 chest{
@@ -8253,7 +8253,7 @@ chest{
   is_big_chest = false,
   treasure_name = "bomb",
   treasure_variant = 2,
-  treasure_savegame_variable = 408,
+  treasure_savegame_variable = "408",
 }
 
 teletransporter{
@@ -9035,10 +9035,10 @@ enemy{
   direction = 3,
   breed = "flora_gohma",
   rank = 2,
-  savegame_variable = 415,
+  savegame_variable = "415",
   treasure_name = "heart_container",
   treasure_variant = 1,
-  treasure_savegame_variable = 416,
+  treasure_savegame_variable = "416",
 }
 
 wall{

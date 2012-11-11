@@ -5,7 +5,7 @@ properties{
   height = 1744,
   world = "dungeon_2",
   floor = "2",
-  small_keys_variable = 215,
+  small_keys_variable = "215",
   tileset = "0",
   music = "found_items",
 }
@@ -2502,7 +2502,7 @@ chest{
   is_big_chest = false,
   treasure_name = "bomb",
   treasure_variant = 2,
-  treasure_savegame_variable = 106,
+  treasure_savegame_variable = "106",
 }
 
 crystal_block{
@@ -8526,7 +8526,7 @@ door{
   name = "DK2",
   direction = 1,
   subtype = "1",
-  savegame_variable = 141,
+  savegame_variable = "141",
 }
 
 crystal{
@@ -8543,7 +8543,7 @@ door{
   name = "DK9",
   direction = 1,
   subtype = "3",
-  savegame_variable = 149,
+  savegame_variable = "149",
 }
 
 chest{
@@ -8554,7 +8554,7 @@ chest{
   is_big_chest = false,
   treasure_name = "glove",
   treasure_variant = 1,
-  treasure_savegame_variable = 120,
+  treasure_savegame_variable = "120",
 }
 
 jumper{
@@ -8576,7 +8576,7 @@ chest{
   is_big_chest = false,
   treasure_name = "big_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 111,
+  treasure_savegame_variable = "111",
 }
 
 destination{
@@ -8596,7 +8596,7 @@ chest{
   is_big_chest = false,
   treasure_name = "rupee",
   treasure_variant = 4,
-  treasure_savegame_variable = 108,
+  treasure_savegame_variable = "108",
 }
 
 wall{
@@ -9895,7 +9895,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 150,
+  treasure_savegame_variable = "150",
 }
 
 chest{
@@ -9906,7 +9906,7 @@ chest{
   is_big_chest = false,
   treasure_name = "small_key",
   treasure_variant = 1,
-  treasure_savegame_variable = 128,
+  treasure_savegame_variable = "128",
 }
 
 chest{
@@ -9917,7 +9917,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 154,
+  treasure_savegame_variable = "154",
 }
 
 chest{
@@ -9928,7 +9928,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 151,
+  treasure_savegame_variable = "151",
 }
 
 chest{
@@ -9939,7 +9939,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 155,
+  treasure_savegame_variable = "155",
 }
 
 chest{
@@ -9950,7 +9950,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 156,
+  treasure_savegame_variable = "156",
 }
 
 chest{
@@ -9961,7 +9961,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 152,
+  treasure_savegame_variable = "152",
 }
 
 chest{
@@ -9972,7 +9972,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 153,
+  treasure_savegame_variable = "153",
 }
 
 chest{
@@ -9983,7 +9983,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 157,
+  treasure_savegame_variable = "157",
 }
 
 chest{
@@ -9994,7 +9994,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 160,
+  treasure_savegame_variable = "160",
 }
 
 chest{
@@ -10005,7 +10005,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 161,
+  treasure_savegame_variable = "161",
 }
 
 chest{
@@ -10016,7 +10016,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 162,
+  treasure_savegame_variable = "162",
 }
 
 chest{
@@ -10027,7 +10027,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 158,
+  treasure_savegame_variable = "158",
 }
 
 chest{
@@ -10038,7 +10038,7 @@ chest{
   is_big_chest = false,
   treasure_name = "_none",
   treasure_variant = 1,
-  treasure_savegame_variable = 159,
+  treasure_savegame_variable = "159",
 }
 
 door{
@@ -10048,7 +10048,7 @@ door{
   name = "DK2_2",
   direction = 3,
   subtype = "1",
-  savegame_variable = 141,
+  savegame_variable = "141",
 }
 
 npc{
@@ -10148,7 +10148,7 @@ door{
   name = "DK9_2",
   direction = 3,
   subtype = "3",
-  savegame_variable = 149,
+  savegame_variable = "149",
 }
 
 jumper{
@@ -10420,7 +10420,7 @@ pickable{
   y = 765,
   treasure_name = "piece_of_heart",
   treasure_variant = 1,
-  treasure_savegame_variable = 114,
+  treasure_savegame_variable = "114",
 }
 
 npc{

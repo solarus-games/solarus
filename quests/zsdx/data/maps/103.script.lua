@@ -41,7 +41,7 @@ function map:on_started(destination)
     map:create_pickable{
       treasure_name = "heart_container",
       treasure_variant = 1,
-      treasure_savegame_variable = 626,
+      treasure_savegame_variable = "b626",
       x = 544,
       y = 789,
       layer = 0
@@ -226,7 +226,6 @@ local function repeat_give_arrows()
     map:create_pickable{
       treasure_name = "arrow",
       treasure_variant = 3,
-      treasure_savegame_variable = -1,
       x = arrow_xy.x,
       y = arrow_xy.y,
       layer = 0
@@ -287,7 +286,7 @@ function boss:on_dead()
   map:create_pickable{
     treasure_name = "heart_container",
     treasure_variant = 1,
-    treasure_savegame_variable = 626,
+    treasure_savegame_variable = "b626",
     x = 544,
     y = 789,
     layer = 0

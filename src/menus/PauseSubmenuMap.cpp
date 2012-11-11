@@ -116,13 +116,6 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu &pause_menu, Game &game):
     dungeon_map_img = new Surface(123, 119);
     dungeon_map_img->set_transparency_color(Color::get_black());
     load_dungeon_map_image();
-
-    if (equipment.has_ability("see_dungeon_minimap_rooms")) {
-      equipment.notify_ability_used("see_dungeon_minimap_rooms");
-    }
-    if (equipment.has_ability("see_dungeon_minimap_elements")) {
-      equipment.notify_ability_used("see_dungeon_minimap_elements");
-    }
   }
 
   hero_head_sprite = new Sprite("menus/hero_head");
@@ -197,7 +190,7 @@ void PauseSubmenuMap::to_dungeon_minimap_coordinates(const Rectangle &floor_coor
  */
 void PauseSubmenuMap::load_dungeon_map_image() {
 
-  Dungeon &dungeon = game.get_current_dungeon();
+  Dungeon& dungeon = game.get_current_dungeon();
   dungeon_map_img->fill_with_color(Color::get_black());
 
   std::ostringstream oss;
@@ -214,10 +207,9 @@ void PauseSubmenuMap::load_dungeon_map_image() {
     delete floor_map_img;
   }
 
-  if (savegame.get_boolean(dungeon_number + "_compass")) {
+  if (!savegame.get_boolean(dungeon_number + "_compass")) {
     hero_point_sprite = NULL;
   }
-
   else {
     // the hero's position
     hero_point_sprite = new Sprite("menus/hero_point");
@@ -235,7 +227,7 @@ void PauseSubmenuMap::load_dungeon_map_image() {
     Rectangle small_chest_src_position(78, 8, 4, 4);
     Rectangle big_chest_src_position(78, 12, 6, 4);
     Rectangle dst_position;
-    const std::vector<Dungeon::DungeonElement> &chests = dungeon.get_chests(selected_floor);
+    const std::vector<Dungeon::DungeonElement>& chests = dungeon.get_chests(selected_floor);
     for (unsigned int i = 0; i < chests.size(); i++) {
 
       if (!chests[i].savegame_variable.empty()
@@ -263,7 +255,7 @@ void PauseSubmenuMap::load_dungeon_map_image() {
     // boss and minibosses
     Rectangle src_position(78, 0, 8, 8);
     
-    const std::vector<Dungeon::DungeonElement> &bosses = dungeon.get_bosses(selected_floor);
+    const std::vector<Dungeon::DungeonElement>& bosses = dungeon.get_bosses(selected_floor);
     for (unsigned int i = 0; i < bosses.size(); i++) {
 
       // TODO also draw minibosses?

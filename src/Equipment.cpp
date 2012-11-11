@@ -92,9 +92,9 @@ void Equipment::set_game(Game& game) {
 
   // if this is a new game, give the initial items
   // (we could not do this before because giving items is a dynamic, in-game operation)
-  if (!game.get_savegame().get_integer(Savegame::KEY_EQUIPMENT_INITIALIZED)) {
+  if (!game.get_savegame().get_boolean(Savegame::KEY_EQUIPMENT_INITIALIZED)) {
     set_initial_items();
-    game.get_savegame().set_integer(Savegame::KEY_EQUIPMENT_INITIALIZED, 1);
+    game.get_savegame().set_boolean(Savegame::KEY_EQUIPMENT_INITIALIZED, 1);
   }
 }
 
@@ -556,7 +556,7 @@ int Equipment::get_item_maximum(const std::string& item_name) {
   else {
     const std::string& item_limiting = item.get_item_limiting();
     Debug::check_assertion(item_limiting.size() != 0,
-	StringConcat() << "No maximum amount for item '" << item_name << "'");
+        StringConcat() << "No maximum amount for item '" << item_name << "'");
     int item_limiting_variant = get_item_variant(item_limiting);
     maximum = get_item(item_limiting).get_other_amount(item_limiting_variant);
   }
@@ -821,7 +821,7 @@ bool Equipment::has_ability(const std::string& ability_name, int level) {
  * @param ability_name the ability to get
  * @return the level of this ability
  */
-int Equipment::get_ability(const std::string &ability_name) {
+int Equipment::get_ability(const std::string& ability_name) {
   return savegame.get_integer(get_ability_savegame_variable(ability_name));
 }
 
@@ -830,7 +830,7 @@ int Equipment::get_ability(const std::string &ability_name) {
  * @param ability_name the ability to set
  * @param level the level of this ability
  */
-void Equipment::set_ability(const std::string &ability_name, int level) {
+void Equipment::set_ability(const std::string& ability_name, int level) {
   savegame.set_integer(get_ability_savegame_variable(ability_name), level);
 }
 
@@ -841,7 +841,7 @@ void Equipment::set_ability(const std::string &ability_name, int level) {
  *
  * @param ability_name the ability used
  */
-void Equipment::notify_ability_used(const std::string &ability_name) {
+void Equipment::notify_ability_used(const std::string& ability_name) {
 
   std::map<std::string, EquipmentItem*>::iterator it;
   for (it = items.begin(); it != items.end(); it++) {

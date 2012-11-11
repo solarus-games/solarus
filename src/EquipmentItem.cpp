@@ -56,7 +56,7 @@ EquipmentItem::EquipmentItem(Equipment& equipment, IniFile& ini):
   probabilities[1] = ini.get_integer_value("probability", probabilities[1]);
 
   allow_assigned = ini.get_boolean_value("can_be_assigned", false);
-  counter_savegame_variable = ini.get_integer_value("counter", -1);
+  counter_savegame_variable = ini.get_string_value("counter", "");
   fixed_limit = ini.get_integer_value("limit", 0);
   item_limiting = "";
   item_limited = ini.get_string_value("limit_for_counter", "");

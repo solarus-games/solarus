@@ -93,7 +93,7 @@ function map:on_started(destination)
     layer = 1,
     treasure_name = "bomb_bag",
     treasure_variant = variant,
-    treasure_savegame_variable = 510
+    treasure_savegame_variable = "b510"
   }
 
   -- initialize doors

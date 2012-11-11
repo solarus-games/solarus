@@ -44,7 +44,7 @@ end
 
 -- Function called when the player has just obtained the sword.
 function hero:on_treasure_obtained(item_name, variant, savegame_variable)
-  if savegame_variable == 30 then
+  if savegame_variable == "b30" then
     map:start_dialog("smith_cave.thank_you")
   end
 end

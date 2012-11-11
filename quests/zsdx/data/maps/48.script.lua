@@ -103,7 +103,7 @@ end
 
 function hero:on_obtaining_treasure(item_name, variant, savegame_variable)
 
-  if savegame_variable == 706 then
+  if savegame_variable == "b706" then
     if timer ~= nil then
       timer:stop()
       timer = nil

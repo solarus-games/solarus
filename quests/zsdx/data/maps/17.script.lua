@@ -45,7 +45,7 @@ function map:on_started(destination)
           map:create_pickable{
 	    treasure_name = "small_key",
 	    treasure_variant = 1,
-	    treasure_savegame_variable = 200,
+	    treasure_savegame_variable = "b200",
 	    x = 616,
 	    y = 557,
 	    layer = 1
@@ -87,7 +87,7 @@ function map:on_update()
       map:create_pickable{
 	treasure_name = "small_key",
 	treasure_variant = 1,
-	treasure_savegame_variable = 202,
+	treasure_savegame_variable = "b202",
 	x = 232,
 	y = 493,
 	layer = 0

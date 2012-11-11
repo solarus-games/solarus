@@ -15,7 +15,8 @@ local lines = file:lines()
 
 for line in file:lines() do
 
-  line = line:gsub("savegame_variable = ", "savegame_variable = i")
+  line = line:gsub("^savegame_variable = ", "savegame_variable = i")
+  line = line:gsub("^counter = ", "counter = i")
   io.write(line .. "\n")
 end
 

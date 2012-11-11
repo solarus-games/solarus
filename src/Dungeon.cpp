@@ -81,13 +81,13 @@ void Dungeon::load() {
   lowest_floor = 100;
 
   for (ini.start_group_iteration(); ini.has_more_groups(); ini.next_group()) {
-    const std::string &group_name = ini.get_group();
+    const std::string& group_name = ini.get_group();
 
     // parse the floors
     if (group_name.substr(0, floor_prefix.length()) == floor_prefix) {
       // we found a group describing a floor of to this dungeon
 
-      const std::string &suffix = group_name.substr(floor_prefix.length());
+      const std::string& suffix = group_name.substr(floor_prefix.length());
 
       int floor;
       std::istringstream iss(suffix);
@@ -99,7 +99,7 @@ void Dungeon::load() {
       floor_sizes.push_back(size);
 
       if (floor < lowest_floor) {
-	lowest_floor = floor;
+        lowest_floor = floor;
       }
     }
   }
@@ -124,34 +124,34 @@ void Dungeon::load() {
 
       // is it a chest?
       if (suffix.find("chest") != std::string::npos) {
-	DungeonElement chest;
-	chest.floor = ini.get_integer_value("floor", 0);
-	chest.x = ini.get_integer_value("x", 0);
-	chest.y = ini.get_integer_value("y", 0);
-	chest.savegame_variable = ini.get_integer_value("save", 0);
-	chest.big = ini.get_integer_value("big", 0) != 0;
+        DungeonElement chest;
+        chest.floor = ini.get_integer_value("floor", 0);
+        chest.x = ini.get_integer_value("x", 0);
+        chest.y = ini.get_integer_value("y", 0);
+        chest.savegame_variable = ini.get_string_value("save", "");
+        chest.big = ini.get_integer_value("big", 0) != 0;
 
-	if (chest.floor != -99) { // -99 means a special floor not marked on the map
-	  chests[chest.floor - lowest_floor].push_back(chest);
-	}
+        if (chest.floor != -99) { // -99 means a special floor not marked on the map
+          chests[chest.floor - lowest_floor].push_back(chest);
+        }
       }
 
       // is it a boss or a miniboss?
       else if (suffix.find("boss") != std::string::npos) {
-	DungeonElement boss;
-	boss.floor = ini.get_integer_value("floor", 0);
-	boss.x = ini.get_integer_value("x", 0);
-	boss.y = ini.get_integer_value("y", 0);
-	boss.savegame_variable = ini.get_integer_value("save", 0);
-	boss.big = ini.get_integer_value("big", 0) != 0;
+        DungeonElement boss;
+        boss.floor = ini.get_integer_value("floor", 0);
+        boss.x = ini.get_integer_value("x", 0);
+        boss.y = ini.get_integer_value("y", 0);
+        boss.savegame_variable = ini.get_string_value("save", "");
+        boss.big = ini.get_integer_value("big", 0) != 0;
 
-	if (boss.big) {
-	  boss_floor = boss.floor;
-	}
+        if (boss.big) {
+          boss_floor = boss.floor;
+        }
 
-	if (boss.floor != -99) { // -99 means a special floor not marked on the map
-	  bosses[boss.floor - lowest_floor].push_back(boss);
-	}
+        if (boss.floor != -99) { // -99 means a special floor not marked on the map
+          bosses[boss.floor - lowest_floor].push_back(boss);
+        }
       }
     }
   }

@@ -48,6 +48,7 @@
 #include "movements/Movement.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 #include <sstream>
 
@@ -848,12 +849,18 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
+        treasure_savegame_variable << "'").c_str());
+  }
+
   Game& game = map.get_game();
   MapEntity* entity = Pickable::create(
       game, layer, x, y,
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
       FALLING_MEDIUM, false
-      );
+  );
 
   if (entity == NULL) {
     lua_pushnil(l);
@@ -881,6 +888,12 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
   const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "_random");
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
+
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
+        treasure_savegame_variable << "'").c_str());
+  }
 
   int destruction_callback_ref = LUA_REFNIL;
   if (map.is_loaded()) {
@@ -930,6 +943,12 @@ int LuaContext::map_api_create_chest(lua_State* l) {
   const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
+
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
+        treasure_savegame_variable << "'").c_str());
+  }
 
   Game& game = map.get_game();
   MapEntity* entity = new Chest(name, layer, x, y, big_chest,
@@ -986,6 +1005,18 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
   const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "_random");
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
+
+  if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'savegame_variable' (invalid savegame variable identifier '" <<
+        savegame_variable << "'").c_str());
+  }
+
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
+        treasure_savegame_variable << "'").c_str());
+  }
 
   Game& game = map.get_game();
   MapEntity* entity = Enemy::create(
@@ -1236,6 +1267,12 @@ int LuaContext::map_api_create_shop_item(lua_State* l) {
   int price = check_int_field(l, 1, "price");
   const std::string& dialog_id = check_string_field(l, 1, "dialog");
 
+  if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'treasure_savegame_variable' (invalid savegame variable identifier '" <<
+        treasure_savegame_variable << "'").c_str());
+  }
+
   Game& game = map.get_game();
   MapEntity* entity = ShopItem::create(game, name, layer, x, y,
         Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
@@ -1288,6 +1325,12 @@ int LuaContext::map_api_create_door(lua_State* l) {
   int direction = check_int_field(l, 1, "direction");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
   const std::string& savegame_variable = opt_string_field(l, 1, "savegame_variable", "");
+
+  if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
+    luaL_argerror(l, 1, (StringConcat() <<
+        "Bad field 'savegame_variable' (invalid savegame variable identifier '" <<
+        savegame_variable << "'").c_str());
+  }
 
   int subtype;
   std::istringstream iss(subtype_name);

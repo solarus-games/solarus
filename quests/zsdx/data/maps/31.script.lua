@@ -154,7 +154,7 @@ function map:on_started(destination)
     map:create_pickable{
       treasure_name = "heart_container",
       treasure_variant = 1,
-      treasure_savegame_variable = 103,
+      treasure_savegame_variable = "b103",
       x = 960,
       y = 437,
       layer = 0
@@ -243,7 +243,7 @@ function boss:on_dead()
   map:create_pickable{
     treasure_name = "heart_container",
     treasure_variant = 1,
-    treasure_savegame_variable = 103,
+    treasure_savegame_variable = "b103",
     x = 960,
     y = 437,
     layer = 0

@@ -154,783 +154,776 @@ height = 2320
 floor = -2
 x = 1344
 y = 624
-save = 712
+save = b712
 big = 0
 
 [dungeon_8.map_49.chest_1]
 floor = -2
 x = 1440
 y = 1152
-save = 711
+save = b711
 big = 0
 
 [dungeon_8.map_49.chest_2]
 floor = -2
 x = 1120
 y = 896
-save = 726
+save = b726
 big = 0
 
 [dungeon_4.map_62.chest_0]
 floor = -99
 x = 152
 y = 40
-save = 411
+save = b411
 big = 0
 
 [dungeon_1.map_25.chest_0]
 floor = 1
 x = 224
 y = 64
-save = 57
+save = b57
 big = 0
 
 [dungeon_1.map_25.boss_0]
 floor = 1
 x = 912
 y = 141
-save = 62
+save = b62
 big = 0
 
 [dungeon_3.map_40.chest_0]
 floor = 0
 x = 936
 y = 432
-save = 118
+save = b118
 big = 0
 
 [dungeon_2.map_31.chest_0]
 floor = -1
 x = 200
 y = 656
-save = 72
+save = b72
 big = 0
 
 [dungeon_2.map_31.chest_1]
 floor = -1
 x = 488
 y = 384
-save = 85
+save = b85
 big = 0
 
 [dungeon_2.map_31.chest_2]
 floor = -1
 x = 608
 y = 448
-save = 88
+save = b88
 big = 1
 
 [dungeon_2.map_31.chest_3]
 floor = -1
 x = 232
 y = 320
-save = 81
+save = b81
 big = 0
 
 [dungeon_2.map_31.chest_4]
 floor = -1
 x = 104
 y = 320
-save = 77
+save = b77
 big = 0
 
 [dungeon_2.map_31.boss_0]
 floor = -1
 x = 960
 y = 365
-save = 93
+save = b93
 big = 1
 
 [dungeon_8.map_50.chest_0]
 floor = -3
 x = 424
 y = 408
-save = 715
+save = b715
 big = 0
 
 [dungeon_8.map_50.chest_1]
 floor = -3
 x = 864
 y = 384
-save = 716
+save = b716
 big = 0
 
 [dungeon_8.map_50.chest_2]
 floor = -3
 x = 792
 y = 888
-save = 719
+save = b719
 big = 1
 
 [dungeon_6.map_58.chest_0]
 floor = 0
 x = 440
 y = 272
-save = 312
+save = b312
 big = 0
 
 [dungeon_2.map_30.chest_0]
 floor = 0
 x = 344
 y = 600
-save = 76
+save = b76
 big = 0
 
 [dungeon_2.map_30.chest_1]
 floor = 0
 x = 440
 y = 56
-save = 86
+save = b86
 big = 1
 
 [dungeon_2.map_30.boss_0]
 floor = 0
 x = 176
 y = 181
-save = 92
+save = b92
 big = 0
 
 [dungeon_2.map_30.chest_2]
 floor = 0
 x = 944
 y = 64
-save = 951
+save = b951
 big = 0
 
 [dungeon_2.map_30.chest_3]
 floor = 0
 x = 656
 y = 216
-save = 84
+save = b84
 big = 0
 
 [dungeon_5.map_65.chest_0]
 floor = -1
 x = 392
 y = 552
-save = 509
+save = b509
 big = 0
 
 [dungeon_5.map_65.chest_1]
 floor = -1
 x = 960
 y = 688
-save = 518
+save = b518
 big = 0
 
 [dungeon_5.map_64.chest_0]
 floor = 0
 x = 600
 y = 816
-save = 500
+save = b500
 big = 0
 
 [dungeon_5.map_64.chest_1]
 floor = 0
 x = 1072
 y = 336
-save = 503
+save = b503
 big = 0
 
 [dungeon_5.map_64.chest_2]
 floor = 0
 x = 1040
 y = 896
-save = 501
+save = b501
 big = 0
 
 [dungeon_6.map_55.chest_0]
 floor = 1
 x = 96
 y = 344
-save = 301
+save = b301
 big = 0
 
 [dungeon_6.map_55.chest_1]
 floor = 1
 x = 968
 y = 464
-save = 302
+save = b302
 big = 0
 
 [dungeon_6.map_55.chest_2]
 floor = 1
 x = 608
 y = 160
-save = 303
+save = b303
 big = 0
 
 [dungeon_6.map_55.chest_3]
 floor = 1
 x = 768
 y = 136
-save = 300
+save = b300
 big = 0
 
 [dungeon_6.map_57.boss_0]
 floor = 3
 x = 272
 y = 224
-save = 321
+save = b321
 big = 1
 
 [dungeon_6.map_57.chest_0]
 floor = 3
 x = 968
 y = 288
-save = 308
+save = b308
 big = 1
 
 [dungeon_1.map_24.chest_0]
 floor = -1
 x = 648
 y = 440
-save = 56
+save = b56
 big = 0
 
 [dungeon_1.map_24.boss_0]
 floor = -1
 x = 648
 y = 144
-save = 63
+save = b63
 big = 1
 
 [dungeon_1.map_23.chest_0]
 floor = 0
 x = 392
 y = 280
-save = 54
+save = b54
 big = 0
 
 [dungeon_1.map_23.chest_1]
 floor = 0
 x = 528
 y = 448
-save = 55
+save = b55
 big = 0
 
 [dungeon_1.map_23.chest_2]
 floor = 0
 x = 288
 y = 488
-save = 5
+save = b5
 big = 1
 
 [dungeon_3.map_42.chest_0]
 floor = 2
 x = 824
 y = 808
-save = 123
+save = b123
 big = 1
 
 [dungeon_3.map_42.chest_1]
 floor = 2
 x = 416
 y = 152
-save = 124
+save = b124
 big = 0
 
 [dungeon_3.map_41.chest_0]
 floor = 1
 x = 944
 y = 880
-save = 119
+save = b119
 big = 0
 
 [dungeon_3.map_41.chest_1]
 floor = 1
 x = 712
 y = 48
-save = 129
+save = b129
 big = 0
 
 [dungeon_3.map_41.chest_2]
 floor = 1
 x = 112
 y = 176
-save = 126
+save = b126
 big = 0
 
 [dungeon_3.map_43.boss_0]
 floor = 3
 x = 252
 y = 533
-save = 902
+save = b902
 big = 1
 
 [dungeon_3.map_43.boss_1]
 floor = 3
 x = 480
 y = 872
-save = 901
+save = b901
 big = 0
 
 [dungeon_6.map_56.chest_0]
 floor = 2
 x = 704
 y = 400
-save = 305
+save = b305
 big = 0
 
 [dungeon_6.map_56.chest_1]
 floor = 2
 x = 520
 y = 400
-save = 315
+save = b315
 big = 0
 
 [dungeon_6.map_56.chest_2]
 floor = 2
 x = 240
 y = 304
-save = 316
+save = b316
 big = 0
 
 [dungeon_4.map_60.chest_0]
 floor = 0
 x = 200
 y = 760
-save = 414
+save = b414
 big = 0
 
 [dungeon_4.map_60.chest_1]
 floor = 0
 x = 208
 y = 656
-save = 418
+save = b418
 big = 0
 
 [dungeon_4.map_60.chest_2]
 floor = 0
 x = 832
 y = 296
-save = 404
+save = b404
 big = 1
 
 [dungeon_4.map_60.chest_3]
 floor = 0
 x = 640
 y = 600
-save = 405
+save = b405
 big = 0
 
 [dungeon_4.map_60.chest_4]
 floor = 0
 x = 472
 y = 376
-save = 407
+save = b407
 big = 0
 
 [dungeon_4.map_60.boss_0]
 floor = 0
 x = 200
 y = 464
-save = 415
+save = b415
 big = 1
 
 [dungeon_5.map_63.chest_0]
 floor = 1
 x = 816
 y = 296
-save = 504
+save = b504
 big = 1
 
 [dungeon_5.map_63.chest_1]
 floor = 1
 x = 880
 y = 872
-save = 505
+save = b505
 big = 0
 
 [dungeon_7.map_101.chest_0]
 floor = 0
 x = 192
 y = 64
-save = 600
+save = b600
 big = 0
 
 [dungeon_7.map_101.chest_1]
 floor = 0
 x = 688
 y = 56
-save = 602
+save = b602
 big = 0
 
 [dungeon_7.map_101.chest_2]
 floor = 0
 x = 104
 y = 680
-save = 603
+save = b603
 big = 0
 
 [dungeon_7.map_101.chest_3]
 floor = 0
 x = 736
 y = 832
-save = 607
+save = b607
 big = 0
 
 [dungeon_7.map_103.chest_0]
 floor = 2
 x = 744
 y = 48
-save = 629
+save = b629
 big = 0
 
 [dungeon_7.map_103.chest_1]
 floor = 2
 x = 456
 y = 72
-save = 622
+save = b622
 big = 0
 
 [dungeon_7.map_103.boss_0]
 floor = 2
 x = 544
 y = 784
-save = 625
+save = b625
 big = 1
 
 [dungeon_7.map_102.chest_0]
 floor = 1
 x = 768
 y = 192
-save = 608
+save = b608
 big = 1
 
 [dungeon_7.map_102.chest_1]
 floor = 1
 x = 448
 y = 880
-save = 609
+save = b609
 big = 0
 
 [dungeon_7.map_102.chest_2]
 floor = 1
 x = 48
 y = 920
-save = 611
+save = b611
 big = 0
 
 [dungeon_7.map_102.chest_3]
 floor = 1
 x = 416
 y = 288
-save = 613
+save = b613
 big = 0
 
 [dungeon_7.map_102.chest_4]
 floor = 1
 x = 176
 y = 56
-save = 614
+save = b614
 big = 0
 
 [dungeon_10.map_98.chest_0]
 floor = -1
 x = 368
 y = 96
-save = 226
+save = b226
 big = 1
 
 [dungeon_10.map_17.chest_0]
 floor = 0
 x = 784
 y = 512
-save = 224
+save = b224
 big = 0
 
 [dungeon_10.map_17.chest_1]
 floor = 0
 x = 288
 y = 48
-save = 222
+save = b222
 big = 0
 
 [dungeon_10.map_17.chest_2]
 floor = 0
 x = 48
 y = 48
-save = 225
+save = b225
 big = 0
 
 [dungeon_10.map_99.chest_0]
 floor = 3
 x = 160
 y = 632
-save = 241
+save = b241
 big = 0
 
 [dungeon_10.map_97.chest_0]
 floor = 1
 x = 880
 y = 184
-save = 229
+save = b229
 big = 0
 
 [dungeon_9.map_108.chest_0]
 floor = 3
 x = 1600
 y = 1648
-save = 873
+save = b873
 big = 0
 
 [dungeon_9.map_105.chest_0]
 floor = 0
 x = 1120
 y = 2032
-save = 800
+save = b800
 big = 0
 
 [dungeon_9.map_105.chest_1]
 floor = 0
 x = 888
 y = 1888
-save = 801
+save = b801
 big = 0
 
 [dungeon_8.map_47.chest_0]
 floor = 0
 x = 1872
 y = 1328
-save = 702
+save = b702
 big = 0
 
 [dungeon_8.map_47.chest_1]
 floor = 0
 x = 800
 y = 384
-save = 705
+save = b705
 big = 0
 
 [dungeon_8.map_47.chest_2]
 floor = 0
 x = 160
 y = 1664
-save = 700
+save = b700
 big = 0
 
 [dungeon_8.map_48.chest_0]
 floor = -1
 x = 1184
 y = 1384
-save = 707
+save = b707
 big = 0
 
 [dungeon_8.map_48.chest_1]
 floor = -1
 x = 1480
 y = 1144
-save = 706
+save = b706
 big = 0
 
 [dungeon_8.map_48.chest_2]
 floor = -1
 x = 2168
 y = 952
-save = 718
+save = b718
 big = 0
 
 [dungeon_8.map_48.chest_3]
 floor = -1
 x = 608
 y = 1088
-save = 722
+save = b722
 big = 0
 
 [dungeon_9.map_105.chest_2]
 floor = 0
 x = 2112
 y = 1408
-save = 805
+save = b805
 big = 0
 
 [dungeon_9.map_105.chest_3]
 floor = 0
 x = 800
 y = 864
-save = 806
+save = b806
 big = 0
 
 [dungeon_9.map_105.chest_4]
 floor = 0
 x = 1136
 y = 864
-save = 807
+save = b807
 big = 1
 
 [dungeon_9.map_105.chest_5]
 floor = 0
 x = 2128
 y = 1112
-save = 808
+save = b808
 big = 0
 
 [dungeon_9.map_105.chest_6]
 floor = 0
 x = 64
 y = 360
-save = 810
+save = b810
 big = 0
 
 [dungeon_9.map_106.chest_0]
 floor = 1
 x = 1800
 y = 320
-save = 811
+save = b811
 big = 0
 
 [dungeon_9.map_106.chest_1]
 floor = 1
 x = 2104
 y = 384
-save = -1
 big = 0
 
 [dungeon_9.map_106.chest_2]
 floor = 1
 x = 2032
 y = 384
-save = -1
 big = 0
 
 [dungeon_9.map_106.chest_3]
 floor = 1
 x = 1984
 y = 384
-save = -1
 big = 0
 
 [dungeon_9.map_106.chest_4]
 floor = 1
 x = 2128
 y = 384
-save = -1
 big = 0
 
 [dungeon_9.map_106.chest_5]
 floor = 1
 x = 2080
 y = 384
-save = -1
 big = 0
 
 [dungeon_9.map_106.chest_6]
 floor = 1
 x = 2008
 y = 384
-save = -1
 big = 0
 
 [dungeon_9.map_106.chest_7]
 floor = 1
 x = 2056
 y = 384
-save = -1
 big = 0
 
 [dungeon_9.map_107.chest_0]
 floor = 2
 x = 2192
 y = 1328
-save = 865
+save = b865
 big = 0
 
 [dungeon_9.map_108.chest_1]
 floor = 3
 x = 1328
 y = 496
-save = 872
+save = b872
 big = 0
 
 [dungeon_9.map_108.chest_2]
 floor = 3
 x = 1600
 y = 2168
-save = 875
+save = b875
 big = 1
 
 [dungeon_9.map_108.chest_3]
 floor = 3
 x = 2080
 y = 696
-save = 876
+save = b876
 big = 0
 
 [dungeon_9.map_109.chest_0]
 floor = -99
 x = 456
 y = 120
-save = 877
+save = b877
 big = 0
 
 [dungeon_9.map_109.chest_1]
 floor = -99
 x = 1064
 y = 680
-save = 878
+save = b878
 big = 0
 
 [dungeon_9.map_109.boss_0]
 floor = -99
 x = 1304
 y = 285
-save = 880
+save = b880
 big = 0
 
 [dungeon_9.map_130.boss_0]
 floor = -99
 x = 240
 y = 189
-save = 881
+save = b881
 big = 1
 
 [dungeon_8.map_47.boss_0]
 floor = 0
 x = 1128
 y = 125
-save = 727
+save = b727
 big = 1
 
 [dungeon_8.map_52.boss_0]
 floor = -99
 x = 632
 y = 373
-save = 728
+save = b728
 big = 1
 
 [dungeon_4.map_60.chest_5]
 floor = 0
 x = 640
 y = 280
-save = 409
+save = b409
 big = 0
 
 [dungeon_4.map_60.chest_6]
 floor = 0
 x = 792
 y = 376
-save = 408
+save = b408
 big = 0
 
 [dungeon_3.map_41.chest_3]
 floor = 1
 x = 272
 y = 48
-save = 949
+save = b949
 big = 0
 
 [dungeon_2.map_30.chest_4]
 floor = 0
 x = 56
 y = 536
-save = 87
+save = b87
 big = 0
 
 [dungeon_1.map_24.chest_1]
 floor = -1
 x = 808
 y = 440
-save = 954
+save = b954
 big = 0
 

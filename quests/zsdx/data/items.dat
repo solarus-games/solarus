@@ -96,7 +96,7 @@ can_be_assigned = true
 [bombs_counter]
 savegame_variable = i1101
 can_be_assigned = true
-counter = 1024
+counter = i1024
 
 [bomb]
 changes_counter = bombs_counter
@@ -121,7 +121,7 @@ amount_3 = 99
 [bow]
 savegame_variable = i1102
 can_be_assigned = true
-counter = 1025
+counter = i1025
 nb_variants = 2
 
 [arrow]
@@ -178,7 +178,7 @@ can_be_assigned = true
 [apples_counter]
 savegame_variable = i1110
 can_be_assigned = true
-counter = 1028
+counter = i1028
 limit = 10
 
 [apple]
@@ -188,7 +188,7 @@ amount = 3
 [pains_au_chocolat_counter]
 savegame_variable = i1111
 can_be_assigned = true
-counter = 1026
+counter = i1026
 limit = 10
 
 [pain_au_chocolat]
@@ -197,7 +197,7 @@ changes_counter = pains_au_chocolat_counter
 [croissants_counter]
 savegame_variable = i1112
 can_be_assigned = true
-counter = 1027
+counter = i1027
 limit = 10
 
 [croissant]
@@ -250,7 +250,7 @@ nb_variants = 2
 
 [fire_stones_counter]
 savegame_variable = i1126
-counter = 1029
+counter = i1029
 limit = 3
 
 [fire_stone]

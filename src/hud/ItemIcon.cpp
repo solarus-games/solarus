@@ -73,10 +73,10 @@ void ItemIcon::update() {
 
   bool need_rebuild = false;
 
-  KeysEffect &keys_effect = game->get_keys_effect();
+  KeysEffect& keys_effect = game->get_keys_effect();
 
   // item assigned
-  const std::string &current_item = equipment->get_item_assigned(slot);
+  const std::string& current_item = equipment->get_item_assigned(slot);
   if (item_displayed != current_item) {
 
     need_rebuild = true;
@@ -98,8 +98,8 @@ void ItemIcon::update() {
       item_sprite->set_current_direction(current_item_variant - 1);
     }
 
-    // counter index
-    if (equipment->get_item(current_item).is_saved()) {
+    // counter
+    if (equipment->get_item(current_item).has_counter()) {
 
       int current_counter_value = equipment->get_item_amount(current_item);
       int current_counter_maximum = equipment->get_item_maximum(current_item);

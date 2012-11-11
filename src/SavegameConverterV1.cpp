@@ -100,7 +100,7 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
     oss << get_integer(STARTING_MAP_INT);
     savegame_v2.set_string(Savegame::KEY_STARTING_MAP, oss.str());
   }
-  savegame_v2.set_boolean(Savegame::KEY_EQUIPMENT_INITIALIZED, get_boolean(EQUIPMENT_INITIALIZED));
+  savegame_v2.set_boolean(Savegame::KEY_EQUIPMENT_INITIALIZED, get_integer(EQUIPMENT_INITIALIZED) != 0);
   savegame_v2.set_integer(Savegame::KEY_CURRENT_LIFE, get_integer(CURRENT_LIFE));
   savegame_v2.set_integer(Savegame::KEY_CURRENT_MONEY, get_integer(CURRENT_MONEY));
   savegame_v2.set_integer(Savegame::KEY_CURRENT_MAGIC, get_integer(CURRENT_MAGIC));

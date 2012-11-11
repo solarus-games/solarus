@@ -66,7 +66,7 @@ local function enemy_in_group2_dead(enemy)
     map:create_pickable{
       treasure_name = "big_key",
       treasure_variant = 1,
-      treasure_savegame_variable = 234,
+      treasure_savegame_variable = "b234",
       x = 672,
       y = 80,
       layer = 1

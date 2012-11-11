@@ -4,14 +4,14 @@ local map = ...
 local playing = false
 local chest_open = nil
 local rewards = {
-  {item_name = "wooden_key", variant = 1, savegame_variable = "180"},
-  {item_name = "wooden_key", variant = 1, savegame_variable = "180"},
-  {item_name = "wooden_key", variant = 1, savegame_variable = "180"},
-  {item_name = "wooden_key", variant = 1, savegame_variable = "180"},
-  {item_name = "wooden_key", variant = 1, savegame_variable = "180"},
-  {item_name = "piece_of_heart", variant = 1, savegame_variable = "181"},
-  {item_name = "piece_of_heart", variant = 1, savegame_variable = "181"},
-  {item_name = "piece_of_heart", variant = 1, savegame_variable = "181"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "b180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "b180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "b180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "b180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "b180"},
+  {item_name = "piece_of_heart", variant = 1, savegame_variable = "b181"},
+  {item_name = "piece_of_heart", variant = 1, savegame_variable = "b181"},
+  {item_name = "piece_of_heart", variant = 1, savegame_variable = "b181"},
   {item_name = "heart", variant = 1},
   {item_name = "rupee", variant = 1},
   {item_name = "rupee", variant = 3},

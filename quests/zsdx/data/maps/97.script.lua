@@ -116,7 +116,7 @@ function switch1_4:on_activated()
     map:create_pickable{
       treasure_name = "small_key",
       treasure_variant = 1,
-      treasure_savegame_variable = 227,
+      treasure_savegame_variable = "b227",
       x = 144,
       y = 504,
       layer = 0
@@ -133,7 +133,7 @@ local function enemy_in_group2_dead(enemy)
       map:create_pickable{
 	treasure_name = "small_key",
 	treasure_variant = 1,
-	treasure_savegame_variable = 221,
+	treasure_savegame_variable = "b221",
 	x = 232,
 	y = 733,
 	layer = 1

@@ -56,8 +56,8 @@ class Dungeon {
     int lowest_floor;                    /**< lowest floor number, between -16 and 15 */
     std::vector<Rectangle> floor_sizes;  /**< size of each floor */
 
-    std::vector<DungeonElement> *chests; /**< properties of each chest for each floor */
-    std::vector<DungeonElement> *bosses; /**< properties of each miniboss and boss for each floor */
+    std::vector<DungeonElement>* chests; /**< properties of each chest for each floor */
+    std::vector<DungeonElement>* bosses; /**< properties of each miniboss and boss for each floor */
     int boss_floor;                      /**< floor of the boss (-100 if there is no boss) */
 
     void load();
@@ -69,7 +69,7 @@ class Dungeon {
     ~Dungeon();
 
     int get_number();
-    const std::string &get_name();
+    const std::string& get_name();
 
     // floors
     int get_nb_floors();

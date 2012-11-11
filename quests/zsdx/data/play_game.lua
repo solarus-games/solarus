@@ -32,14 +32,14 @@ function game:set_player_name(player_name)
 end
 
 function game:is_dungeon_finished(dungeon)
-  return game:get_value("dungeon_" .. dungeon .. ".finished")
+  return game:get_value("dungeon_" .. dungeon .. "_finished")
 end
 
 function game:set_dungeon_finished(dungeon, finished)
   if finished == nil then
     finished = true
   end
-  game:set_value("dungeon_" .. dungeon .. ".finished", finished)
+  game:set_value("dungeon_" .. dungeon .. "_finished", finished)
 end
 
 function game:is_hud_enabled()

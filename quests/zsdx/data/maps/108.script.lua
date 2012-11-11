@@ -64,7 +64,7 @@ end
 function hero:on_obtaining_treasure(item_name, variant, savegame_variable)
 
   -- chest A
-  if savegame_variable == 872 then
+  if savegame_variable == "b872" then
     if chest_a_timer ~= nil then
       chest_a_timer:stop()
       chest_a_timer = nil

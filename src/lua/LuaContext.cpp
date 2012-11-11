@@ -333,9 +333,9 @@ int LuaContext::check_int_field(
   lua_getfield(l, table_index, key.c_str());
   if (!lua_isnumber(l, -1)) {
     luaL_argerror(l, table_index, (StringConcat() <<
-          "Bad field '" << key << "' (integer expected, got " <<
-          luaL_typename(l, -1)).c_str()
-        );
+        "Bad field '" << key << "' (integer expected, got " <<
+        luaL_typename(l, -1)).c_str()
+    );
   }
 
   int value = lua_tointeger(l, -1);
@@ -363,9 +363,9 @@ int LuaContext::opt_int_field(
 
     if (!lua_isnumber(l, -1)) {
       luaL_argerror(l, table_index, (StringConcat() <<
-            "Bad field '" << key << "' (integer expected, got " <<
-            luaL_typename(l, -1)).c_str()
-          );
+          "Bad field '" << key << "' (integer expected, got " <<
+          luaL_typename(l, -1)).c_str()
+      );
     }
     value = lua_tointeger(l, -1);
   }
@@ -390,9 +390,9 @@ double LuaContext::check_number_field(
   lua_getfield(l, table_index, key.c_str());
   if (!lua_isnumber(l, -1)) {
     luaL_argerror(l, table_index, (StringConcat() <<
-          "Bad field '" << key << "' (number expected, got " <<
-          luaL_typename(l, -1)).c_str()
-        );
+        "Bad field '" << key << "' (number expected, got " <<
+        luaL_typename(l, -1)).c_str()
+    );
   }
 
   int value = lua_tonumber(l, -1);
@@ -420,9 +420,9 @@ double LuaContext::opt_number_field(
 
     if (!lua_isnumber(l, -1)) {
       luaL_argerror(l, table_index, (StringConcat() <<
-            "Bad field '" << key << "' (number expected, got " <<
-            luaL_typename(l, -1)).c_str()
-          );
+          "Bad field '" << key << "' (number expected, got " <<
+          luaL_typename(l, -1)).c_str()
+      );
     }
     value = lua_tonumber(l, -1);
   }
@@ -447,9 +447,9 @@ const std::string LuaContext::check_string_field(
   lua_getfield(l, table_index, key.c_str());
   if (!lua_isstring(l, -1)) {
     luaL_argerror(l, table_index, (StringConcat() <<
-          "Bad field '" << key << "' (string expected, got " <<
-          luaL_typename(l, -1)).c_str()
-        );
+        "Bad field '" << key << "' (string expected, got " <<
+        luaL_typename(l, -1)).c_str()
+    );
   }
 
   const std::string& value = lua_tostring(l, -1);
@@ -477,11 +477,11 @@ const std::string LuaContext::opt_string_field(
     value = default_value;
   }
   else {
-     if (!lua_isstring(l, -1)) {
+    if (!lua_isstring(l, -1)) {
       luaL_argerror(l, table_index, (StringConcat() <<
-            "Bad field '" << key << "' (string expected, got " <<
-            luaL_typename(l, -1)).c_str()
-          );
+          "Bad field '" << key << "' (string expected, got " <<
+          luaL_typename(l, -1)).c_str()
+      );
     }
     value = lua_tostring(l, -1);
   }
@@ -507,9 +507,9 @@ bool LuaContext::check_boolean_field(
   lua_getfield(l, table_index, key.c_str());
   if (lua_type(l, -1) != LUA_TBOOLEAN) {
     luaL_argerror(l, table_index, (StringConcat() <<
-          "Bad field '" << key << "' (boolean expected, got " <<
-          luaL_typename(l, -1)).c_str()
-        );
+        "Bad field '" << key << "' (boolean expected, got " <<
+        luaL_typename(l, -1)).c_str()
+    );
   }
 
   bool value = lua_toboolean(l, -1);
@@ -537,9 +537,9 @@ bool LuaContext::opt_boolean_field(
 
     if (lua_type(l, -1) != LUA_TBOOLEAN) {
       luaL_argerror(l, table_index, (StringConcat() <<
-            "Bad field '" << key << "' (boolean expected, got " <<
-            luaL_typename(l, -1)).c_str()
-          );
+          "Bad field '" << key << "' (boolean expected, got " <<
+          luaL_typename(l, -1)).c_str()
+      );
     }
     value = lua_toboolean(l, -1);
   }
@@ -565,9 +565,9 @@ int LuaContext::check_function_field(
   lua_getfield(l, table_index, key.c_str());
   if (!lua_isfunction(l, -1)) {
     luaL_argerror(l, table_index, (StringConcat() <<
-          "Bad field '" << key << "' (function expected, got " <<
-          luaL_typename(l, -1)).c_str()
-        );
+        "Bad field '" << key << "' (function expected, got " <<
+        luaL_typename(l, -1)).c_str()
+    );
   }
 
   int ref = luaL_ref(l, LUA_REGISTRYINDEX);
@@ -596,9 +596,9 @@ int LuaContext::opt_function_field(
   else {
     if (!lua_isfunction(l, -1)) {
       luaL_argerror(l, table_index, (StringConcat() <<
-            "Bad field '" << key << "' (function expected, got " <<
-            luaL_typename(l, -1)).c_str()
-          );
+          "Bad field '" << key << "' (function expected, got " <<
+          luaL_typename(l, -1)).c_str()
+      );
     }
     ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
@@ -977,7 +977,7 @@ void LuaContext::print_stack() {
  */
 bool LuaContext::is_valid_lua_identifier(const std::string& name) {
 
-  if (name[0] >= '0' && name[0] <= '9') {
+  if (name.empty() || (name[0] >= '0' && name[0] <= '9')) {
     return false;
   }
 

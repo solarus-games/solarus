@@ -799,27 +799,6 @@ const std::string Equipment::get_ability_savegame_variable(
   else if (ability_name == "get_back_from_death") {
     savegame_variable = Savegame::KEY_ABILITY_GET_BACK_FROM_DEATH;
   }
-  else if (ability_name == "see_dungeon_minimap_rooms") {
-    // TODO remove hardcoded dungeon notions
-    std::ostringstream oss;
-    oss << "dungeon_" << get_current_dungeon() << ".ability_see_minimap_rooms";
-    savegame_variable = oss.str();
-  }
-  else if (ability_name == "see_dungeon_minimap_elements") {
-    std::ostringstream oss;
-    oss << "dungeon_" << get_current_dungeon() << ".ability_see_minimap_elements";
-    savegame_variable = oss.str();
-  }
-  else if (ability_name == "open_dungeon_big_locks") {
-    std::ostringstream oss;
-    oss << "dungeon_" << get_current_dungeon() << ".ability_open_big_locks";
-    savegame_variable = oss.str();
-  }
-  else if (ability_name == "open_dungeon_boss_locks") {
-    std::ostringstream oss;
-    oss << "dungeon_" << get_current_dungeon() << ".ability_open_boss_locks";
-    savegame_variable = oss.str();
-  }
   else {
     Debug::die(StringConcat() << "Unknown ability '" << ability_name << "'");
   }
@@ -888,39 +867,6 @@ int Equipment::get_current_dungeon() {
   }
 
   return game->get_current_map().get_world_number();
-}
-
-/**
- * @brief Returns whether the player has finished the specified dungeon.
- * @param dungeon a dungeon
- * @return true if the specified dungeon is finished
- */
-bool Equipment::is_dungeon_finished(int dungeon) {
-
-  // TODO remove these hardcoded data
-  std::ostringstream oss;
-  oss << "dungeon_" << dungeon << ".finished";
-  return savegame.get_integer(oss.str()) > 0;
-}
-
-/**
- * @brief Returns whether the player has finished the current dungeon.
- * @return true if the current dungeon is finished
- */
-bool Equipment::is_dungeon_finished() {
-  return is_dungeon_finished(get_current_dungeon());
-}
-
-/**
- * @brief Sets the specified dungeon as finished.
- * @param dungeon a dungeon
- */
-void Equipment::set_dungeon_finished(int dungeon) {
-
-  // TODO remove these hardcoded data
-  std::ostringstream oss;
-  oss << "dungeon_" << dungeon << ".finished";
-  savegame.set_integer(oss.str(), 1);
 }
 
 // obtaining items

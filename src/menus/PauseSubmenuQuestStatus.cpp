@@ -168,7 +168,12 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
             SOLARUS_SCREEN_HEIGHT_MIDDLE - 46)
     };
     for (int i = 0; i < 8; i++) {
-      if (equipment.is_dungeon_finished(i + 1)) {
+
+      std::ostringstream oss;
+      oss << "dungeon_" << i;
+      const std::string& dungeon_number = oss.str();
+
+      if (savegame.get_boolean(dungeon_number + ".finished")) {
         Rectangle src_position(i * 20, 0, 20, 20);
         dungeons_img.draw_region(src_position, quest_items_surface, dst_positions[i]);
       }

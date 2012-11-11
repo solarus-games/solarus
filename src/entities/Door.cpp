@@ -32,7 +32,9 @@
 #include "KeysEffect.h"
 #include "Savegame.h"
 #include "Map.h"
+#include "Dungeon.h"
 #include <list>
+#include <sstream>
 
 const std::string Door::animations[] = {
   "closed", "small_key", "small_key_block", "big_key", "boss_key", "weak", "very_weak", "", "weak_block"
@@ -275,11 +277,22 @@ bool Door::requires_explosion() {
  */
 bool Door::can_open() {
 
-  Equipment &equipment = get_equipment();
+  Equipment& equipment = get_equipment();
+  if (requires_small_key() && equipment.has_small_key()) {
+    return true;
+  }
 
-  return (requires_small_key() && equipment.has_small_key())
-    || (subtype == BIG_KEY && equipment.has_ability("open_dungeon_big_locks"))
-    || (subtype == BOSS_KEY && equipment.has_ability("open_dungeon_boss_locks"));
+  Game& game = get_game();
+  if (game.is_in_dungeon()) {
+    std::ostringstream oss;
+    oss << "dungeon_" << get_game().get_current_dungeon().get_number();
+    const std::string& dungeon_number = oss.str();
+
+    return (subtype == BIG_KEY && get_savegame().get_boolean(dungeon_number + ".big_key"))
+        || (subtype == BOSS_KEY && get_savegame().get_boolean(dungeon_number + ".boss_key"));
+  }
+
+  return false;
 }
 
 /**
@@ -371,12 +384,6 @@ void Door::action_key_pressed() {
 
       if (requires_small_key()) {
         get_equipment().remove_small_key();
-      }
-      else if (subtype == BIG_KEY) {
-        get_equipment().notify_ability_used("open_dungeon_big_locks");
-      }
-      else if (subtype == BOSS_KEY) {
-        get_equipment().notify_ability_used("open_dungeon_boss_locks");
       }
 
       get_hero().check_position();

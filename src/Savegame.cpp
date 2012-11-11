@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Savegame.h"
+#include "SavegameConverterV1.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
@@ -181,6 +182,8 @@ void Savegame::set_default_joypad_controls() {
 void Savegame::load() {
 
   // TODO try to parse as Lua, if fail try to convert from version 1 format
+  SavegameConverterV1 converter(file_name);
+  converter.convert_to_v2(*this);
 }
 
 /**
@@ -188,7 +191,26 @@ void Savegame::load() {
  */
 void Savegame::save() {
 
-  // TODO generate Lua
+  std::ostringstream oss;
+  std::map<std::string, SavedValue>::iterator it;
+  for (it = saved_values.begin(); it != saved_values.end(); it++) {
+    const std::string& key = it->first;
+    oss << key << " = ";
+    const SavedValue& value = it->second;
+    if (value.type == SavedValue::VALUE_BOOLEAN) {
+      oss << (value.int_data ? "true" : "false");
+    }
+    else if (value.type == SavedValue::VALUE_INTEGER) {
+      oss << value.int_data;
+    }
+    else {  // String.
+      oss << "\"" << value.string_data << "\"";
+    }
+    oss << "\n";
+  }
+
+  const std::string& text = oss.str();
+  FileTools::data_file_save_buffer(file_name + ".alpha", text.c_str(), text.size() + 1);
   empty = false;
 }
 

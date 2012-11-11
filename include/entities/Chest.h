@@ -50,6 +50,7 @@ class Chest: public Detector {
 
     bool is_open();
     void set_open(bool open);
+    bool can_open();
 
     bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);

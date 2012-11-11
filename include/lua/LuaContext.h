@@ -485,8 +485,6 @@ class LuaContext {
       game_api_get_ability,
       game_api_set_ability,
       game_api_get_item,
-      game_api_is_dungeon_finished,  // TODO remove
-      game_api_set_dungeon_finished,
 
       // Map API.
       map_api_get_game,

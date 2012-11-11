@@ -200,17 +200,21 @@ void PauseSubmenuMap::load_dungeon_map_image() {
   Dungeon &dungeon = game.get_current_dungeon();
   dungeon_map_img->fill_with_color(Color::get_black());
 
-  if (equipment.has_ability("see_dungeon_minimap_rooms")) {
+  std::ostringstream oss;
+  oss << "dungeon_" << dungeon.get_number();
+  const std::string& dungeon_number = oss.str();
+
+  if (savegame.get_boolean(dungeon_number + ".map")) {
 
     // load the image of this floor
-    std::ostringstream oss;
+    oss.str("");
     oss << "maps/dungeons/map" << dungeon.get_number() << "_" << selected_floor << ".png";
     Surface *floor_map_img = new Surface(oss.str(), Surface::DIR_DATA);
     floor_map_img->draw(*dungeon_map_img);
     delete floor_map_img;
   }
 
-  if (!equipment.has_ability("see_dungeon_minimap_elements")) {
+  if (savegame.get_boolean(dungeon_number + ".compass")) {
     hero_point_sprite = NULL;
   }
 
@@ -466,8 +470,12 @@ void PauseSubmenuMap::draw_dungeon_map(Surface& dst_surface) {
  */
 void PauseSubmenuMap::draw_dungeon_items(Surface& dst_surface) {
 
+  std::ostringstream oss;
+  oss << "dungeon_" << game.get_current_dungeon().get_number();
+  const std::string& dungeon_number = oss.str();
+
   // rooms
-  if (equipment.has_ability("see_dungeon_minimap_rooms")) {
+  if (savegame.get_boolean(dungeon_number + ".map")) {
     Rectangle src_position(0, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 110,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
@@ -475,7 +483,7 @@ void PauseSubmenuMap::draw_dungeon_items(Surface& dst_surface) {
   }
 
   // elements
-  if (equipment.has_ability("see_dungeon_minimap_elements")) {
+  if (savegame.get_boolean(dungeon_number + ".compass")) {
     Rectangle src_position(17, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 91,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
@@ -483,7 +491,7 @@ void PauseSubmenuMap::draw_dungeon_items(Surface& dst_surface) {
   }
 
   // big key
-  if (equipment.has_ability("open_dungeon_big_locks")) {
+  if (savegame.get_boolean(dungeon_number + ".big_key")) {
     Rectangle src_position(34, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 72,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
@@ -491,7 +499,7 @@ void PauseSubmenuMap::draw_dungeon_items(Surface& dst_surface) {
   }
 
   // boss key
-  if (equipment.has_ability("open_dungeon_boss_locks")) {
+  if (savegame.get_boolean(dungeon_number + ".boss_key")) {
     Rectangle src_position(51, 0, 17, 17);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 53,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
@@ -538,7 +546,11 @@ void PauseSubmenuMap::draw_dungeon_floors(Surface& dst_surface) {
   }
 
   // draw the boss icon
-  if (equipment.has_ability("see_dungeon_minimap_elements")
+  std::ostringstream oss;
+  oss << "dungeon_" << game.get_current_dungeon().get_number();
+  const std::string& dungeon_number = oss.str();
+
+  if (savegame.get_boolean(dungeon_number + ".compass")
       && boss_floor >= lowest_floor_displayed
       && boss_floor <= highest_floor_displayed) {
 

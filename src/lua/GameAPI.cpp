@@ -65,8 +65,6 @@ void LuaContext::register_game_module() {
       { "get_ability", game_api_get_ability },
       { "set_ability", game_api_set_ability },
       { "get_item", game_api_get_item },
-      { "is_dungeon_finished", game_api_is_dungeon_finished },
-      { "set_dungeon_finished", game_api_set_dungeon_finished },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -640,37 +638,6 @@ int LuaContext::game_api_get_item(lua_State* l) {
 
   push_item(l, savegame.get_equipment().get_item(item_name));
   return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_is_dungeon_finished.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_is_dungeon_finished(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  int dungeon = luaL_checkinteger(l, 2);
-
-  bool finished = savegame.get_equipment().is_dungeon_finished(dungeon);
-
-  lua_pushboolean(l, finished);
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_set_dungeon_finished.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_set_dungeon_finished(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  int dungeon = luaL_checkinteger(l, 2);
-
-  savegame.get_equipment().set_dungeon_finished(dungeon);
-
-  return 0;
 }
 
 /**

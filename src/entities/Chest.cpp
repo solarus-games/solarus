@@ -24,10 +24,12 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "Map.h"
+#include "Dungeon.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "lua/LuaContext.h"
+#include <sstream>
 
 /**
  * @brief Creates a new chest with the specified treasure.
@@ -147,6 +149,24 @@ void Chest::set_open(bool open) {
 }
 
 /**
+ * @brief Returns whether the player is able to open this chest now.
+ * @return true if this is a small chest or if the player has the big key.
+ */
+bool Chest::can_open() {
+
+  if (!big_chest) {
+    return true;
+  }
+
+  // We are in a dungeon.
+  std::ostringstream oss;
+  oss << "dungeon_" << get_game().get_current_dungeon().get_number();
+  const std::string& dungeon_number = oss.str();
+
+  return get_savegame().get_boolean(dungeon_number + ".big_key");
+}
+
+/**
  * @brief Returns whether this entity is an obstacle for another one when
  * it is enabled.
  * @param other Another entity.
@@ -225,7 +245,7 @@ void Chest::action_key_pressed() {
 
   if (is_enabled() && get_hero().is_free()) {
 
-    if (!big_chest || get_equipment().has_ability("open_dungeon_big_locks")) {
+    if (can_open()) {
       Sound::play("chest_open");
       set_open(true);
       treasure_date = System::now() + 300;

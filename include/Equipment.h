@@ -121,12 +121,6 @@ class Equipment {
     void set_ability(const std::string& ability_name, int level);
     void notify_ability_used(const std::string& ability_name);
 
-    // dungeons
-    int get_current_dungeon();
-    bool is_dungeon_finished(int dungeon);
-    bool is_dungeon_finished();
-    void set_dungeon_finished(int dungeon);
-
     // giving items
     void set_initial_items();
     bool can_receive_item(const std::string& item_name, int variant);

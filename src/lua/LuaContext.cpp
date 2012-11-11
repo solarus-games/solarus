@@ -435,6 +435,7 @@ double LuaContext::opt_number_field(
  * @brief Checks that a table field is a string and returns it.
  *
  * This function acts like lua_getfield() followed by luaL_checkstring().
+ * TODO remove parameter table_index? (always called with 1)
  *
  * @param l A Lua state.
  * @param table_index Index of a table in the stack.

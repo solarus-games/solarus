@@ -21,8 +21,9 @@
 #include "InventoryItem.h"
 #include "EquipmentItem.h"
 #include "Map.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
-#include "lowlevel/IniFile.h"
+#include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Random.h"
@@ -35,16 +36,33 @@ Equipment::Equipment(Savegame& savegame):
   savegame(savegame),
   suspended(true) {
 
-  // load the equipment specification from items.dat
-  IniFile ini("items.dat", IniFile::READ);
-  ini.start_group_iteration();
-  while (ini.has_more_groups()) {
+  // Load the equipment specification from items.lua.
+  // TODO remove this data file, specify everything from each item script.
 
-    EquipmentItem* item = new EquipmentItem(*this, ini);
-    item->increment_refcount();
-    items[ini.get_group()] = item;
-    ini.next_group();
+  // Open the items.lua file in an independent Lua world.
+  const std::string& file_name = "items.lua";
+  lua_State* l = lua_open();
+  size_t size;
+  char* buffer;
+  FileTools::data_file_open_buffer(file_name, &buffer, &size);
+  luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  FileTools::data_file_close_buffer(buffer);
+
+  // Register the item() function to Lua.
+  lua_register(l, "item", l_item);
+
+  // Make the Lua world aware of this equipment object.
+  lua_pushlightuserdata(l, this);
+  lua_setfield(l, LUA_REGISTRYINDEX, "equipment");
+
+  // Call Lua.
+  if (lua_pcall(l, 0, 0, 0) != 0) {
+    Debug::die(StringConcat() << "Failed to load items from file 'items.lua':"
+        << lua_tostring(l, -1));
+    lua_pop(l, 1);
   }
+
+  lua_close(l);
 }
 
 /**
@@ -558,7 +576,7 @@ int Equipment::get_item_maximum(const std::string& item_name) {
     Debug::check_assertion(item_limiting.size() != 0,
         StringConcat() << "No maximum amount for item '" << item_name << "'");
     int item_limiting_variant = get_item_variant(item_limiting);
-    maximum = get_item(item_limiting).get_other_amount(item_limiting_variant);
+    maximum = get_item(item_limiting).get_amount(item_limiting_variant);
   }
 
   return maximum;
@@ -662,8 +680,10 @@ const std::string& Equipment::get_item_assigned(int slot) {
 void Equipment::set_item_assigned(int slot, const std::string& item_name) {
 
   if (item_name.size() != 0) {
-    Debug::check_assertion(has_item(item_name), StringConcat() << "Cannot assign item '" << item_name << "' because the player does not have it");
-    Debug::check_assertion(get_item(item_name).can_be_assigned(), StringConcat() << "The item '" << item_name << "' cannot be assigned");
+    Debug::check_assertion(has_item(item_name), StringConcat()
+        << "Cannot assign item '" << item_name << "' because the player does not have it");
+    Debug::check_assertion(get_item(item_name).get_can_be_assigned(), StringConcat()
+        << "The item '" << item_name << "' cannot be assigned");
   }
 
   const std::string& savegame_variable = slot == 0 ? "hud_item_slot_left" : "hud_item_slot_right";
@@ -949,7 +969,7 @@ void Equipment::add_item(const std::string &item_name, int variant) {
     const std::string& item_limited = item.get_item_limited();
     if (item_limited.size() > 0) {
 
-      int maximum = item.get_other_amount(variant);
+      int maximum = item.get_amount(variant);
 
       // consider built-in counters
       if (item_limited == "life") {
@@ -983,7 +1003,7 @@ void Equipment::add_item(const std::string &item_name, int variant) {
     const std::string &item_counter_changed = item.get_item_counter_changed();
     if (item_counter_changed.size() > 0) {
 
-      int amount = item.get_other_amount(variant);
+      int amount = item.get_amount(variant);
 
       // consider built-in counters
       if (item_counter_changed == "life") {
@@ -1010,5 +1030,75 @@ void Equipment::add_item(const std::string &item_name, int variant) {
       }
     }
   }
+}
+
+/**
+ * @brief Implementation of the item() function of the Lua map data file.
+ *
+ * Defines the properties of the equipment item.
+ *
+ * @param l The Lua state that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int Equipment::l_item(lua_State* l) {
+
+  lua_getfield(l, LUA_REGISTRYINDEX, "equipment");
+  Equipment* equipment = static_cast<Equipment*>(lua_touserdata(l, -1));
+  lua_pop(l, 1);
+
+  // Retrieve the item properties from the table parameter.
+  luaL_checktype(l, 1, LUA_TTABLE);
+
+  const std::string& item_name = LuaContext::check_string_field(l, 1, "name");
+  const std::string& savegame_variable = LuaContext::opt_string_field(l, 1, "savegame_variable", "");
+  int nb_variants = LuaContext::opt_int_field(l, 1, "nb_variants", 1);
+  int initial_variant = LuaContext::opt_int_field(l, 1, "initial_variant", 1);
+  bool can_be_assigned = LuaContext::opt_boolean_field(l, 1, "can_be_assigned", false);
+  const std::string& counter_savegame_variable = LuaContext::opt_string_field(l, 1, "counter", "");
+  int fixed_limit = LuaContext::opt_int_field(l, 1, "limit", 1);
+  const std::string& item_limited = LuaContext::opt_string_field(l, 1, "limit_for_counter", "");
+  const std::string& item_counter_changed = LuaContext::opt_string_field(l, 1, "changes_counter", "");
+  int amount = LuaContext::opt_int_field(l, 1, "amount", 1);
+  int probability = LuaContext::opt_int_field(l, 1, "probability", 0);
+  const std::string& shadow_size_name = LuaContext::opt_string_field(l, 1, "shadow", "big");
+  bool can_disappear = LuaContext::opt_boolean_field(l, 1, "can_disappear", false);
+  bool brandish_when_picked = LuaContext::opt_boolean_field(l, 1, "brandish_when_picked", true);
+  const std::string& sound_when_picked = LuaContext::opt_string_field(l, 1, "sound_when_picked", "picked_item");
+  const std::string& sound_when_brandished = LuaContext::opt_string_field(l, 1, "sound_when_brandished", "treasure");
+
+  EquipmentItem* item = new EquipmentItem(*equipment);
+  item->increment_refcount();
+  equipment->items[item_name] = item;
+
+  item->set_name(item_name);
+  item->set_savegame_variable(savegame_variable);
+  item->set_nb_variants(nb_variants);
+  item->set_initial_variant(initial_variant);
+  item->set_can_be_assigned(can_be_assigned);
+  item->set_counter_savegame_variable(counter_savegame_variable);
+  item->set_fixed_limit(fixed_limit);
+  item->set_item_limited(item_limited);
+  item->set_item_counter_changed(item_counter_changed);
+  item->set_amount(1, amount);
+  item->set_probability(1, probability);
+  item->set_shadow_size(EquipmentItem::get_shadow_size_by_name(shadow_size_name));
+  item->set_can_disappear(can_disappear);
+  item->set_brandish_when_picked(brandish_when_picked);
+  item->set_sound_when_picked(sound_when_picked);
+  item->set_sound_when_brandished(sound_when_brandished);
+
+  for (int i = 0; i < nb_variants; i++) {
+    std::ostringstream oss;
+    oss << "amount_" << i;
+    amount = LuaContext::opt_int_field(l, 1, oss.str(), 1);
+    item->set_amount(i, amount);
+
+    oss.str();
+    oss << "probability_" << i;
+    probability = LuaContext::opt_int_field(l, 1, oss.str(), 1);
+    item->set_probability(i, probability);
+  }
+
+  return 0;
 }
 

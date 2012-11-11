@@ -84,10 +84,10 @@ void MapLoader::load_map(Game& game, Map& map) {
 }
 
 /**
- * @brief Implementation of the properties functions of the Lua map data file.
+ * @brief Implementation of the properties() function of the Lua map data file.
  *
  * Sets the properties of the map: position, dimensions, tileset, music, etc.
- * This function mush be called before any entity creation function.
+ * This function must be called before any entity creation function.
  *
  * @param l The Lua state that is calling this function.
  * @return Number of values to return to Lua.
@@ -105,11 +105,11 @@ int MapLoader::l_properties(lua_State* l) {
   int y = LuaContext::opt_int_field(l, 1, "y", 0);
   int width = LuaContext::check_int_field(l, 1, "width");
   int height = LuaContext::check_int_field(l, 1, "height");
-  std::string world_name = LuaContext::check_string_field(l, 1 , "world");
-  std::string floor_name = LuaContext::opt_string_field(l, 1, "floor", "");
-  std::string small_keys_variable = LuaContext::opt_string_field(l, 1, "small_keys_variable", "");
-  std::string tileset_id = LuaContext::check_string_field(l, 1, "tileset");
-  std::string music_id = LuaContext::opt_string_field(l, 1, "music", Music::none);
+  const std::string& world_name = LuaContext::check_string_field(l, 1 , "world");
+  const std::string& floor_name = LuaContext::opt_string_field(l, 1, "floor", "");
+  const std::string& small_keys_variable = LuaContext::opt_string_field(l, 1, "small_keys_variable", "");
+  const std::string& tileset_id = LuaContext::check_string_field(l, 1, "tileset");
+  const std::string& music_id = LuaContext::opt_string_field(l, 1, "music", Music::none);
 
   // Initialize the map data.
   // TODO implement methods in Map instead to check the values instead of changing directly the fields.

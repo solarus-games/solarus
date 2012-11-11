@@ -21,6 +21,8 @@
 #include <string>
 #include <map>
 
+struct lua_State;
+
 /**
  * @brief Represents the hero's equipment.
  *
@@ -40,6 +42,8 @@ class Equipment {
     std::map<std::string, EquipmentItem*> items;		/**< each item (properties loaded from the file items.dat) */
 
     const std::string get_ability_savegame_variable(const std::string& ability_name);
+
+    static int l_item(lua_State* l);
 
   public:
 

@@ -257,6 +257,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
   int i = 0, j = 0;
 
   // Traverse the table.
+  // TODO rewrite using check_string_field() and others.
   lua_settop(l, 1);
   lua_pushnil(l);
   while (lua_next(l, 1) != 0) {

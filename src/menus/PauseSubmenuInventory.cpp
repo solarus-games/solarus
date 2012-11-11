@@ -149,7 +149,7 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
   set_caption_text(caption_strings[index]);
   if (variant != 0) {
     keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
-    keys_effect.set_item_keys_enabled(equipment.get_item(item_name).can_be_assigned());
+    keys_effect.set_item_keys_enabled(equipment.get_item(item_name).get_can_be_assigned());
   }
   else {
     keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
@@ -350,7 +350,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
   const std::string &item_name = item_names[index];
 
   // if this item is not assignable, do nothing
-  if (!equipment.get_item(item_name).can_be_assigned()) {
+  if (!equipment.get_item(item_name).get_can_be_assigned()) {
     return;
   }
 

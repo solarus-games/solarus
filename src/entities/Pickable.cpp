@@ -98,7 +98,7 @@ Pickable* Pickable::create(Game &game, Layer layer, int x, int y, Treasure treas
 
   // set the item properties
   item->falling_height = falling_height;
-  item->will_disappear = !force_persistent && treasure.get_equipment_item().can_disappear();
+  item->will_disappear = !force_persistent && treasure.get_equipment_item().get_can_disappear();
 
   // initialize the item
   item->initialize_sprites();
@@ -332,7 +332,7 @@ void Pickable::give_item_to_player() {
   }
 
   // give the item
-  if (item.is_brandished_when_picked()) {
+  if (item.get_brandish_when_picked()) {
     get_hero().start_treasure(treasure);
   }
   else {

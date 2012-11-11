@@ -19,7 +19,7 @@ function print_language_list(all_groups, all_ids)
   for _, code in ipairs(all_ids) do
 
     local group = all_groups[code]
-    io.write("language{\n");
+    io.write("language{\n")
     io.write("  code = \"" .. code .. "\",\n")
     io.write("  name = \"" .. group.name .. "\",\n")
     if group.default then

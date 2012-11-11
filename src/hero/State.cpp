@@ -342,7 +342,7 @@ void Hero::State::item_key_pressed(int slot) {
   const std::string item_name = get_equipment().get_item_assigned(slot);
 
   if (item_name.size() > 0
-      && get_equipment().get_item(item_name).can_be_assigned()
+      && get_equipment().get_item(item_name).get_can_be_assigned()
       && get_equipment().has_item(item_name)
       && can_start_inventory_item()) {
 

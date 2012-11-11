@@ -11,19 +11,19 @@ local function check_eye_statues()
     left_eye_switch:set_activated(false)
     right_eye_switch:set_activated(false)
 
-    if not map:get_game():get_boolean(90) then
+    if not map:get_game():get_value("90") then
       sol.audio.play_sound("switch")
       map:move_camera(456, 232, 250, function()
         sol.audio.play_sound("secret")
         open_hidden_stairs()
-        map:get_game():set_boolean(90, true)
+        map:get_game():set_value("90", true)
       end)
-    elseif not map:get_game():get_boolean(91) then
+    elseif not map:get_game():get_value("91") then
       sol.audio.play_sound("switch")
       map:move_camera(520, 320, 250, function()
         sol.audio.play_sound("secret")
         open_hidden_door()
-        map:get_game():set_boolean(91, true)
+        map:get_game():set_value("91", true)
       end)
     end
   end
@@ -42,18 +42,18 @@ end
 function map:on_started(destination)
 
   -- west barrier
-  if map:get_game():get_boolean(78) then
+  if map:get_game():get_value("78") then
     barrier:set_enabled(false)
     barrier_switch:set_activated(true)
   end
 
   -- hidden stairs
-  if map:get_game():get_boolean(90) then
+  if map:get_game():get_value("90") then
     open_hidden_stairs()
   end
 
   -- hidden door
-  if map:get_game():get_boolean(91) then
+  if map:get_game():get_value("91") then
     open_hidden_door()
   end
 
@@ -72,7 +72,7 @@ end
 
 function start_miniboss_sensor:on_activated()
 
-  if not map:get_game():get_boolean(92) and not fighting_miniboss then
+  if not map:get_game():get_value("92") and not fighting_miniboss then
     -- the miniboss is alive
     map:close_doors("miniboss_door")
     hero:freeze()
@@ -96,7 +96,7 @@ function barrier_switch:on_activated()
   map:move_camera(120, 536, 250, function()
     sol.audio.play_sound("secret")
     barrier:set_enabled(false)
-    map:get_game():set_boolean(78, true)
+    map:get_game():set_value("78", true)
   end)
 end
 

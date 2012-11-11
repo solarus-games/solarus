@@ -22,12 +22,12 @@ function map:on_started(destination)
     LO4:set_enabled(false)
   end
 
-  if map:get_game():get_boolean(706) then
+  if map:get_game():get_value("706") then
     CB03:set_activated(true)
   else
     KC03:set_enabled(false)
   end
-  if not map:get_game():get_boolean(707) then
+  if not map:get_game():get_value("707") then
     KC04:set_enabled(false)
   end
 
@@ -70,7 +70,7 @@ end
 
 function CB03:on_activated()
 
-  if not map:get_game():get_boolean(706) then
+  if not map:get_game():get_value("706") then
     map:move_camera(1488, 1152, 250, function()
       KC03:set_enabled(true)
       sol.audio.play_sound("chest_appears")

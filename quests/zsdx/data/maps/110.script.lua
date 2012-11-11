@@ -3,10 +3,10 @@ local map = ...
 
 function puzzle_end_sensor:on_activated()
 
-  if not map:get_game():get_boolean(816) then
+  if not map:get_game():get_value("816") then
     -- the end: make a shortcut from 1F
     sol.audio.play_sound("secret")
-    map:get_game():set_boolean(816, true)
+    map:get_game():set_value("816", true)
   end
 end
 

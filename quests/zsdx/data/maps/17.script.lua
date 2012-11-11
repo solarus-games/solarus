@@ -22,11 +22,11 @@ function map:on_started(destination)
 
   map:set_light(1)
 
-  if map:get_game():get_boolean(201) then
+  if map:get_game():get_value("201") then
     lock_torches()
   end
 
-  if map:get_game():get_boolean(228) then
+  if map:get_game():get_value("228") then
     block_13:set_enabled(false)
   else
     block_saved:set_enabled(false)
@@ -40,7 +40,7 @@ function map:on_started(destination)
   for _, enemy in ipairs(enemy_group1) do
     enemy:on_dead = function()
       if not map:has_entities("enemy_group1")
-        and not map:get_game():get_boolean(200) then
+        and not map:get_game():get_value("200") then
         map:move_camera(616, 552, 250, function()
           map:create_pickable{
 	    treasure_name = "small_key",
@@ -79,8 +79,8 @@ end
 
 function map:on_update()
 
-  if not map:get_game():get_boolean(201) and are_all_torches_on() then
-    map:get_game():set_boolean(201, true)
+  if not map:get_game():get_value("201") and are_all_torches_on() then
+    map:get_game():set_value("201", true)
     lock_torches()
     map:move_camera(232, 488, 250, function()
       sol.audio.play_sound("secret")
@@ -97,6 +97,6 @@ function map:on_update()
 end
 
 function block_13:on_moved()
-  map:get_game():set_boolean(228, true)
+  map:get_game():set_value("228", true)
 end
 

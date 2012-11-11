@@ -5,7 +5,7 @@ local fighting_boss = false
 
 function map:on_started(destination)
 
-  if map:get_game():get_boolean(412) then
+  if map:get_game():get_value("412") then
     weak_floor:set_enabled(false)
     weak_floor_sensor:set_enabled(false)
   else
@@ -42,13 +42,13 @@ function weak_floor_sensor:on_collision_explosion()
     weak_floor_sensor:set_enabled(false)
     weak_floor_teletransporter:set_enabled(true)
     sol.audio.play_sound("secret")
-    map:get_game():set_boolean(412, true)
+    map:get_game():set_value("412", true)
   end
 end
 
 function start_boss_sensor:on_activated()
 
-  if not map:get_game():get_boolean(415)
+  if not map:get_game():get_value("415")
       and not fighting_boss then
     map:close_doors("boss_door")
     map:close_doors("final_room_door")

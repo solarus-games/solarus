@@ -20,7 +20,7 @@ end
 
 function start_miniboss_sensor:on_activated()
 
-  if not map:get_game():get_boolean(62) and not fighting_miniboss then
+  if not map:get_game():get_value("62") and not fighting_miniboss then
     -- the miniboss is alive
     map:close_doors("miniboss_door")
     hero:freeze()

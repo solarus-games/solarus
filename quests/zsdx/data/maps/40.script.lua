@@ -60,24 +60,24 @@ local function remove_c_water_6()
   c_water_tile_less_3:set_enabled(false)
   map:set_entities_enabled("c_water_on_jumper", false)
   map:set_entities_enabled("c_water_off_obstacle", true)
-  map:get_game():set_boolean(121, true)
+  map:get_game():set_value("121", true)
   sol.audio.play_sound("secret")
 end
 
 -- Called when the map starts
 function map:on_started(destination)
 
-  if map:get_game():get_boolean(904) then
+  if map:get_game():get_value("904") then
     -- the door before the five torches is open
     ce_door_switch:set_activated(true)
   end
 
-  if map:get_game():get_boolean(113) then
+  if map:get_game():get_value("113") then
     -- the door after the five torches is open
     lock_torches()
   end
 
-  if map:get_game():get_boolean(121) then
+  if map:get_game():get_value("121") then
     -- the water at the center is removed
     map:set_entities_enabled("c_water_tile", false)
     map:set_entities_enabled("c_water_on_jumper", false)
@@ -85,7 +85,7 @@ function map:on_started(destination)
     map:set_entities_enabled("c_water_off_obstacle", false)
   end
 
-  if map:get_game():get_boolean(122) then
+  if map:get_game():get_value("122") then
     -- the east water is removed
     map:set_entities_enabled("e_water_tile", false)
     map:set_entities_enabled("e_water_tile_out", true)
@@ -94,7 +94,7 @@ function map:on_started(destination)
     map:set_entities_enabled("e_water_off_obstacle", false)
   end
 
-  if map:get_game():get_boolean(131) then
+  if map:get_game():get_value("131") then
     -- the north water is removed
     map:set_entities_enabled("n_water_tile", false)
     map:set_entities_enabled("n_water_tile_out", true)
@@ -116,7 +116,7 @@ end
 
 function map:on_update()
 
-  if not map:get_game():get_boolean(113)
+  if not map:get_game():get_value("113")
     and are_all_torches_on() then
 
     lock_torches()
@@ -149,7 +149,7 @@ end
 
 function c_water_switch:on_activated()
 
-  if not map:get_game():get_boolean(121) then
+  if not map:get_game():get_value("121") then
     map:move_camera(344, 736, 250, remove_c_water, 1000, 3500)
   end
 end

@@ -9,7 +9,7 @@ local directions = {
 
 function map:on_started(destination)
 
-  if map:get_game():get_boolean(139) then
+  if map:get_game():get_value("139") then
     secret_way:set_enabled(false)
   end
 end
@@ -24,7 +24,7 @@ for _, sign in ipairs(map:get_entities("sign_")) do
       elseif next_sign == 32 then
         sol.audio.play_sound("secret")
 	secret_way:set_enabled(false)
-	map:get_game():set_boolean(139, true)
+	map:get_game():set_value("139", true)
       end
       next_sign = next_sign + 1
     else

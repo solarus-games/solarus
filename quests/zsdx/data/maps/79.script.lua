@@ -23,7 +23,7 @@ function map:on_started(destination)
   for i = 1, 7 do
     local chest = map:get_entity("chest_" .. i)
     chest:on_empty = chest_empty
-    if map:get_game():get_boolean(197) then
+    if map:get_game():get_value("197") then
       chest:set_open(true)
     end
   end

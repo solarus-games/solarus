@@ -2,11 +2,11 @@ local map = ...
 -- North Fairy Fountain
 
 local function has_fairy_appeared()
-  return map:get_game():get_boolean(929)
+  return map:get_game():get_value("929")
 end
 
 local function has_tiger_scrolls()
-  return map:get_game():get_boolean(930)
+  return map:get_game():get_value("930")
 end
 
 local function show_fairy()
@@ -41,7 +41,7 @@ function map:on_update()
       and are_all_torches_on() then
 
     sol.audio.play_sound("secret")
-    map:get_game():set_boolean(929, true)
+    map:get_game():set_value("929", true)
     show_fairy()
   end
 end

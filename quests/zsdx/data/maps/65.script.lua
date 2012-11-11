@@ -62,27 +62,27 @@ function map:on_started(destination)
     hero:set_direction(2)
   end
 
-  if not map:get_game():get_boolean(907) then
+  if not map:get_game():get_value("907") then
     -- this door is open until the main entrance door of
     -- the castle is open
     map:set_doors_open("n_door", true)
   end
 
-  if map:get_game():get_boolean(511) then
+  if map:get_game():get_value("511") then
     prison_1_lock:remove()
   end
 
-  if map:get_game():get_boolean(512) then
+  if map:get_game():get_value("512") then
     prison_2_nb_messages = 3
   end
 
-  if not map:get_game():get_boolean(519) then
+  if not map:get_game():get_value("519") then
     boss_key_chest:set_enabled(false)
   end
 
   -- bomb bag 2 or 3
   local variant = 2
-  if map:get_game():get_boolean(938) then
+  if map:get_game():get_value("938") then
     -- already has the other one
     variant = 3
   end
@@ -142,7 +142,7 @@ function prison_1_lock:on_interaction()
       sol.audio.play_sound("secret")
       sol.audio.play_sound("door_open")
       prison_1_lock:remove()
-      map:get_game():set_boolean(511, true)
+      map:get_game():set_value("511", true)
     end)
   end
 end
@@ -156,7 +156,7 @@ function prison_2_lock:on_interaction()
     sol.audio.play_sound("secret")
     sol.audio.play_sound("door_open")
     prison_2_lock:set_position(648, -32)
-    map:get_game():set_boolean(512, true)
+    map:get_game():set_value("512", true)
   end
 end
 

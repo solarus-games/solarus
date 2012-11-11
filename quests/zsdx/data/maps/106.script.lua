@@ -25,7 +25,7 @@ end
 function map:on_started(destination)
 
   -- north barrier
-  if map:get_game():get_boolean(812) then
+  if map:get_game():get_value("812") then
     n_barrier_switch:set_activated(true)
     n_barrier:set_enabled(false)
   end
@@ -46,7 +46,7 @@ function map:on_started(destination)
   end
 
   -- compass
-  if map:get_game():get_boolean(814) then
+  if map:get_game():get_value("814") then
     for i = 1, 7 do
       map:get_entity("compass_chest_" .. i):set_open(true)
     end
@@ -82,7 +82,7 @@ function n_barrier_switch:on_activated()
   sol.audio.play_sound("secret")
   sol.audio.play_sound("door_open")
   n_barrier:set_enabled(false)
-  map:get_game():set_boolean(812, true)
+  map:get_game():set_value("812", true)
 end
 
 -- door A

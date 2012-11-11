@@ -57,17 +57,17 @@ end
 
 function map:on_started(destination)
 
-  if map:get_game():get_boolean(205) then
+  if map:get_game():get_value("205") then
     block1_1:set_enabled(false)
     lock_torches_group1()
   end
 
-  if map:get_game():get_boolean(206) then
+  if map:get_game():get_value("206") then
     block2_1:set_enabled(false)
     lock_torches_group2()
   end
 
-  if map:get_game():get_boolean(227) then
+  if map:get_game():get_value("227") then
     switch1_1:set_activated(true)
     switch1_2:set_activated(true)
     switch1_3:set_activated(true)
@@ -127,7 +127,7 @@ end
 local function enemy_in_group2_dead(enemy)
 
   if not map:has_entities("enemy_group2")
-      and not map:get_game():get_boolean(221) then
+      and not map:get_game():get_value("221") then
 
     map:move_camera(232, 728, 250, function()
       map:create_pickable{
@@ -148,16 +148,16 @@ end
 
 function map:on_update()
 
-  if not map:get_game():get_boolean(205)
+  if not map:get_game():get_value("205")
       and are_group1_torches_on() then
-    map:get_game():set_boolean(205, true)
+    map:get_game():set_value("205", true)
     lock_torches_group1()
     map:move_camera(536, 256, 250, explode_block1)
   end
 
-  if not map:get_game():get_boolean(206)
+  if not map:get_game():get_value("206")
       and are_group2_torches_on() then
-    map:get_game():set_boolean(206, true)
+    map:get_game():set_value("206", true)
     lock_torches_group2()
     map:move_camera(552, 256, 250, explode_block2)
   end

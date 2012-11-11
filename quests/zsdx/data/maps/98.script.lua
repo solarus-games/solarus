@@ -40,18 +40,18 @@ end
 local function drain_water_step_4()
 
   water_tile_less_3:set_enabled(false)
-  map:get_game():set_boolean(297, true)
+  map:get_game():set_value("297", true)
   sol.audio.play_sound("secret")
   set_water_drained()
 end
 
 function map:on_started(destination)
 
-  if map:get_game():get_boolean(234) then
+  if map:get_game():get_value("234") then
     sensor1_1:set_enabled(false)
   end
 
-  if map:get_game():get_boolean(297) then
+  if map:get_game():get_value("297") then
     set_water_drained()
     water_block:set_position(656, 333)
   end
@@ -62,7 +62,7 @@ end
 local function enemy_in_group2_dead(enemy)
 
   if not map:has_entities("enemy2")
-      and not map:get_game():get_boolean(234) then
+      and not map:get_game():get_value("234") then
     map:create_pickable{
       treasure_name = "big_key",
       treasure_variant = 1,
@@ -86,7 +86,7 @@ function sensor1_1:on_activated()
 
   if door_a:is_open()
       and map:has_entities("enemy2")
-      and not map:get_game():get_boolean(234) then
+      and not map:get_game():get_value("234") then
     sol.audio.play_music("boss")
     map:close_doors("door_a")
     map:set_entities_enabled("enemy2", true)

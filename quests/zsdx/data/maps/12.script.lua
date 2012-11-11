@@ -2,23 +2,23 @@ local map = ...
 -- Sahasrahla house
 
 local function has_obtained_world_map()
-  return map:get_game():get_boolean(33)
+  return map:get_game():get_value("33")
 end
 
 local function has_seen_frozen_door()
-  return map:get_game():get_boolean(34)
+  return map:get_game():get_value("34")
 end
 
 local function has_open_frozen_door()
-  return map:get_game():get_boolean(35)
+  return map:get_game():get_value("35")
 end
 
 local function has_obtained_clay_key()
-  return map:get_game():get_boolean(28)
+  return map:get_game():get_value("28")
 end
 
 local function has_obtained_bow()
-  return map:get_game():get_boolean(26)
+  return map:get_game():get_value("26")
 end
 
 local function give_world_map()
@@ -27,7 +27,7 @@ end
 
 function map:on_started(destination)
 
-  if map:get_game():get_boolean(37) then -- if the Lyriann cave is finished
+  if map:get_game():get_value("37") then -- if the Lyriann cave is finished
     map:set_doors_open("door", map:get_game():is_dungeon_finished(1)) -- don't allow the player to obtain the bow until the first dungeon is finished
   end
 

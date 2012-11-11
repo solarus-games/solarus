@@ -24,7 +24,7 @@ function map:on_started(destination)
     map:set_entities_enabled("broken_rupee_house", false)
   else
     -- enable dark world
-    if map:get_game():get_boolean(905) then
+    if map:get_game():get_value("905") then
       sol.audio.play_music("dark_world")
       map:set_tileset(13)
     else
@@ -32,7 +32,7 @@ function map:on_started(destination)
     end
 
     -- broken rupee house
-    if map:get_game():get_boolean(155) then
+    if map:get_game():get_value("155") then
       to_rupee_house:set_enabled(false)
       rupee_house_door:set_enabled(false)
     else
@@ -47,12 +47,12 @@ function map:on_started(destination)
   chignon_woman:get_sprite():set_animation("walking")
 
   -- remove Tom's cave door if open
-  if map:get_game():get_boolean(36) then
+  if map:get_game():get_value("36") then
     remove_village_cave_door()
   end
 
   -- remove the stone lock if open
-  if map:get_game():get_boolean(159) then
+  if map:get_game():get_value("159") then
     remove_stone_lock()
   end
 
@@ -99,7 +99,7 @@ function tom_cave_door:on_interaction()
   if map:get_game():get_item("clay_key"):has_variant() then
     sol.audio.play_sound("door_open")
     sol.audio.play_sound("secret")
-    map:get_game():set_boolean(36, true)
+    map:get_game():set_value("36", true)
     remove_village_cave_door()
   else
     map:start_dialog("outside_world.village.clay_key_required")
@@ -112,7 +112,7 @@ function stone_lock:on_interaction()
   if map:get_game():get_item("stone_key"):has_variant() then
     sol.audio.play_sound("door_open")
     sol.audio.play_sound("secret")
-    map:get_game():set_boolean(159, true)
+    map:get_game():set_value("159", true)
     remove_stone_lock()
   else
     map:start_dialog("outside_world.stone_key_required")

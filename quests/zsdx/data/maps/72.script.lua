@@ -10,7 +10,7 @@ end
 function close_door_sensor:on_activated()
 
   if door:is_open()
-      and not map:get_game():get_boolean(156) then
+      and not map:get_game():get_value("156") then
     map:close_doors("door")
     hero:freeze()
     sol.timer.start(1000, function()
@@ -35,7 +35,7 @@ end
 
 function hero:on_victory_finished()
 
-  map:get_game():set_boolean(156, true)
+  map:get_game():set_value("156", true)
   hero:teleport(3, "out_smith_cave")
 end
 

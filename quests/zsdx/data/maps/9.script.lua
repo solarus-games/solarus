@@ -7,14 +7,14 @@ function map:on_started(destination)
 
   local new_music = nil
 
-  if map:get_game():get_boolean(905) then
+  if map:get_game():get_value("905") then
     -- enable dark world
     new_music = "dark_world"
     map:set_tileset(13)
     map:set_entities_enabled("castle_east_bridge", false)
     map:set_entities_enabled("castle_east_bridge_off", true)
 
-    if map:get_game():get_boolean(907) then
+    if map:get_game():get_value("907") then
       castle_door_switch:set_activated(true)
     else
       castle_door:set_enabled(true)
@@ -24,8 +24,8 @@ function map:on_started(destination)
 
     -- Agahnim fight
     if destination ~= nil and destination:get_name() == "from_dungeon_5_2F_ne"
-        and map:get_game():get_boolean(507)
-        and not map:get_game():get_boolean(520) then
+        and map:get_game():get_value("507")
+        and not map:get_game():get_value("520") then
 
       new_music = "none"
       cannon:remove()
@@ -45,7 +45,7 @@ function castle_door_switch:on_activated()
 
   map:move_camera(296, 552, 250, function()
     castle_door:set_enabled(false)
-    map:get_game():set_boolean(907, true)
+    map:get_game():set_value("907", true)
     sol.audio.play_sound("secret")
     sol.audio.play_sound("door_open")
   end)
@@ -53,7 +53,7 @@ end
 
 function cannon:on_interaction()
 
-  if not map:get_game():get_boolean(905) then
+  if not map:get_game():get_value("905") then
     map:start_dialog("castle.cannon")
   else
     hero:freeze()
@@ -76,8 +76,8 @@ end
 
 function start_boss_sensor:on_activated()
 
-  if map:get_game():get_boolean(507)
-      and not map:get_game():get_boolean(520)
+  if map:get_game():get_value("507")
+      and not map:get_game():get_value("520")
       and not fighting_boss then
 
     -- Agahnim fight

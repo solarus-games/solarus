@@ -6,7 +6,7 @@ local function show_vine()
   map:move_camera(608, 136, 136, function()
     sol.audio.play_sound("secret")
     hero:unfreeze()
-    map:get_game():set_boolean(921, true)
+    map:get_game():set_value("921", true)
   end)
 
   local sprite = vine:get_sprite()
@@ -17,11 +17,11 @@ end
 function map:on_started(destination)
 
   -- enable dark world
-  if map:get_game():get_boolean(905) then
+  if map:get_game():get_value("905") then
     map:set_tileset(13)
   end
 
-  if map:get_game():get_boolean(921) then
+  if map:get_game():get_value("921") then
     -- show the vine
     vine_start:remove()
     vine:remove()
@@ -45,7 +45,7 @@ function vine_start:on_interaction_item(item)
     hero:freeze()
     self:remove()
     item:set_variant(1)  -- make the bottle empty
-    map:get_game():set_boolean(921, true)
+    map:get_game():set_value("921", true)
     sol.audio.play_sound("item_in_water")
     sol.timer.start(1000, show_vine)
     return true

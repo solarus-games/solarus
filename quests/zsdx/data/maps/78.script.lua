@@ -3,7 +3,7 @@ local map = ...
 
 function map:on_started(destination)
 
-  if map:get_game():get_boolean(953) then
+  if map:get_game():get_value("953") then
     barrier:set_enabled(false)
     barrier_2:set_enabled(false)
     barrier_switch:set_activated(true)
@@ -14,7 +14,7 @@ function barrier_switch:on_activated()
 
   map:move_camera(312, 568, 250, function()
     sol.audio.play_sound("secret")
-    map:get_game():set_boolean(953, true)
+    map:get_game():set_value("953", true)
     barrier:set_enabled(false)
     barrier_2:set_enabled(false)
   end)

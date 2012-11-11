@@ -22,12 +22,12 @@ function map:on_started(destination)
   map:set_doors_open("boss_door", true)
 
   -- Hide the map chest if not already opened
-  if not map:get_game():get_boolean(700) then
+  if not map:get_game():get_value("700") then
     MAP:set_enabled(false)
   end
 
   -- Hide the big key chest if not already opened
-  if not map:get_game():get_boolean(705) then
+  if not map:get_game():get_value("705") then
     BK01:set_enabled(false)
   end
 
@@ -46,17 +46,17 @@ function map:on_started(destination)
   end
 
   -- door to Agahnim open if Billy's heart container was picked
-  if map:get_game():get_boolean(729) then
+  if map:get_game():get_value("729") then
     map:set_doors_open("agahnim_door", true)
   end
 
   -- statues puzzle
-  if map:get_game():get_boolean(723) then
+  if map:get_game():get_value("723") then
     DB06:set_activated(true)
   end
 
   -- boss key door and laser
-  if map:get_game():get_boolean(730) then
+  if map:get_game():get_value("730") then
     boss_key_door_laser:remove()
   end
 end
@@ -132,7 +132,7 @@ end
 
 function start_boss_sensor:on_activated()
 
-  if not fighting_boss and not map:get_game():get_boolean(727) then
+  if not fighting_boss and not map:get_game():get_value("727") then
     sol.audio.stop_music()
     map:close_doors("boss_door")
     billy_npc:set_enabled(true)
@@ -180,7 +180,7 @@ for _, enemy in ipairs(map:get_entities("map_enemy")) do
 
     if not map:has_entities("map_enemy") then
       -- Map chest room: kill all enemies and the chest will appear
-      if not map:get_game():get_boolean(700) then
+      if not map:get_game():get_value("700") then
         MAP:set_enabled(true)
         sol.audio.play_sound("chest_appears")
       elseif not LD3:is_open() then
@@ -197,7 +197,7 @@ for _, enemy in ipairs(map:get_entities("room_big_enemy")) do
 
     if not map:has_entities("room_big_enemy") then
       -- Big key chest room: kill all enemies and the chest will appear
-      if not map:get_game():get_boolean(705) then
+      if not map:get_game():get_value("705") then
         BK01:set_enabled(true)
         sol.audio.play_sound("chest_appears")
       end

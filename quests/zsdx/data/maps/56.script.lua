@@ -30,11 +30,11 @@ function map:on_started(destination)
 
   map:set_doors_open("miniboss_door", true)
   map:set_entities_enabled("miniboss_enemy", false)
-  if map:get_game():get_boolean(320) then
+  if map:get_game():get_value("320") then
     map:set_entities_enabled("miniboss_fake_floor", false)
   end
 
-  if map:get_game():get_boolean(323) then
+  if map:get_game():get_value("323") then
     lock_torches()
   end
 end
@@ -66,7 +66,7 @@ end
 
 function start_miniboss_sensor:on_activated()
 
-  if not map:get_game():get_boolean(320)
+  if not map:get_game():get_value("320")
       and not fighting_miniboss then
 
     hero:freeze()
@@ -88,7 +88,7 @@ for _, enemy in ipairs(map:get_entities("miniboss_enemy")) do
     if not map:has_entities("miniboss_enemy") then
       sol.audio.play_music("dark_world_dungeon")
       map:open_doors("miniboss_door")
-      map:get_game():set_boolean(320, true)
+      map:get_game():set_value("320", true)
     end
   end
 end

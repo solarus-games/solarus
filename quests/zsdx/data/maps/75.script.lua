@@ -4,22 +4,22 @@ local map = ...
 local playing = false
 local chest_open = nil
 local rewards = {
-  {item_name = "wooden_key", variant = 1, savegame_variable = 180},
-  {item_name = "wooden_key", variant = 1, savegame_variable = 180},
-  {item_name = "wooden_key", variant = 1, savegame_variable = 180},
-  {item_name = "wooden_key", variant = 1, savegame_variable = 180},
-  {item_name = "wooden_key", variant = 1, savegame_variable = 180},
-  {item_name = "piece_of_heart", variant = 1, savegame_variable = 181},
-  {item_name = "piece_of_heart", variant = 1, savegame_variable = 181},
-  {item_name = "piece_of_heart", variant = 1, savegame_variable = 181},
-  {item_name = "heart", variant = 1, savegame_variable = -1},
-  {item_name = "rupee", variant = 1, savegame_variable = -1},
-  {item_name = "rupee", variant = 3, savegame_variable = -1},
-  {item_name = "rupee", variant = 4, savegame_variable = -1},
-  {item_name = "bomb", variant = 3, savegame_variable = -1},
-  {item_name = "arrow", variant = 3, savegame_variable = -1},
-  {item_name = "magic_flask", variant = 2, savegame_variable = -1},
-  {item_name = "croissant", variant = 1, savegame_variable = -1}
+  {item_name = "wooden_key", variant = 1, savegame_variable = "180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "180"},
+  {item_name = "piece_of_heart", variant = 1, savegame_variable = "181"},
+  {item_name = "piece_of_heart", variant = 1, savegame_variable = "181"},
+  {item_name = "piece_of_heart", variant = 1, savegame_variable = "181"},
+  {item_name = "heart", variant = 1},
+  {item_name = "rupee", variant = 1},
+  {item_name = "rupee", variant = 3},
+  {item_name = "rupee", variant = 4},
+  {item_name = "bomb", variant = 3},
+  {item_name = "arrow", variant = 3},
+  {item_name = "magic_flask", variant = 2},
+  {item_name = "croissant", variant = 1},
 }
 
 function map:on_started(destination)
@@ -40,9 +40,9 @@ local function play_question_dialog_finished(answer)
         chest_open:set_open(false)
       end
 
-      if not map:get_game():get_boolean(180) then
+      if not map:get_game():get_value("180") then
         map:start_dialog("chests_game_cave.start_game_wooden_key")
-      elseif not map:get_game():get_boolean(181) then
+      elseif not map:get_game():get_value("181") then
         map:start_dialog("chests_game_cave.start_game_piece_of_heart")
       else
         map:start_dialog("chests_game_cave.start_game")
@@ -58,10 +58,10 @@ function mini_game_npc:on_interaction()
 
   if playing then
     map:start_dialog("chests_game_cave.already_playing")
-  elseif not map:get_game():get_boolean(160) then
+  elseif not map:get_game():get_value("160") then
     -- first time
     map:start_dialog("chests_game_cave.first_time", play_question_dialog_finished)
-    map:get_game():set_boolean(160, true)
+    map:get_game():set_value("160", true)
   else
     map:start_dialog("chests_game_cave.not_first_time", play_question_dialog_finished)
   end
@@ -77,7 +77,7 @@ local function chest_empty(chest)
     -- choose a random treasure
     local index = math.random(#rewards)
 
-    while rewards[index].savegame_variable ~= -1 and
+    while rewards[index].savegame_variable ~= nil and
         map:get_game():get_boolean(rewards[index].savegame_variable) do
       -- don't give a saved reward twice (wooden key or piece of heart)
       index = math.random(#rewards)

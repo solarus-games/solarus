@@ -5,21 +5,21 @@ local tom_initial_x = 0
 local tom_initial_y = 0
 
 local function has_seen_tom()
-  return map:get_game():get_boolean(47)
+  return map:get_game():get_value("47")
 end
 
 local function has_boomerang_of_tom()
-  return map:get_game():get_boolean(41)
+  return map:get_game():get_value("41")
 end
 
 local function has_finished_cavern()
   -- the cavern is considered has finished if the player has found the heart container
-  return map:get_game():get_boolean(37)
+  return map:get_game():get_value("37")
 end
 
 local function tom_please_help_dialog_finished(answer)
 
-  map:get_game():set_boolean(47, true)
+  map:get_game():set_value("47", true)
   if answer == 0 then
     map:start_dialog("lyriann_cave.tom.accept_help", function()
       hero:start_treasure("boomerang", 1, 41)
@@ -42,7 +42,7 @@ end
 
 local function give_boomerang_back()
   map:get_game():get_item("boomerang"):set_variant(0)
-  map:get_game():set_boolean(41, false)
+  map:get_game():set_value("41", false)
 end
 
 local function start_moving_tom()
@@ -62,7 +62,7 @@ function map:on_started(destination)
     tom:remove()
   end
 
-  if map:get_game():get_boolean(38) then
+  if map:get_game():get_value("38") then
     barrier:set_enabled(false)
     open_barrier_switch:set_activated(true)
   end
@@ -94,7 +94,7 @@ function open_barrier_switch:on_activated()
   map:move_camera(136, 304, 250, function()
     sol.audio.play_sound("secret")
     barrier:set_enabled(false)
-    map:get_game():set_boolean(38, true)
+    map:get_game():set_value("38", true)
   end)
 end
 

@@ -46,7 +46,7 @@ local bonuses_done = {}
 
 function map:on_started(destination)
 
-  if not map:get_game():get_boolean(881) then
+  if not map:get_game():get_value("881") then
     sol.audio.play_music("ganon_appears")
     boss:set_enabled(true)
     zelda:set_enabled(false)
@@ -61,7 +61,7 @@ end
 function map:on_opening_transition_finished(destination)
 
   if destination:get_name() == "from_6f" then
-    if not map:get_game():get_boolean(881) then
+    if not map:get_game():get_value("881") then
       map:start_dialog("dungeon_9.boss", function()
         sol.audio.play_music("ganon_battle")
       end)

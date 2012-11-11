@@ -9,14 +9,14 @@ function map:on_started(destination)
   map:set_doors_open("miniboss_door", true)
   map:set_doors_open("boss_door", true)
   if destination:get_name() == "from_5f_c"
-      or map:get_game():get_boolean(903) then
+      or map:get_game():get_value("903") then
     map:set_doors_open("final_room_door", true)
   end
 end
 
 function start_miniboss_sensor:on_activated()
 
-  if not map:get_game():get_boolean(901)
+  if not map:get_game():get_value("901")
       and not fighting_miniboss then
     -- the miniboss is alive
     map:close_doors("miniboss_door")
@@ -26,7 +26,7 @@ end
 
 function start_miniboss_sensor_2:on_activated()
 
-  if not map:get_game():get_boolean(901)
+  if not map:get_game():get_value("901")
       and not fighting_miniboss then
     hero:freeze()
     sol.audio.stop_music()
@@ -42,7 +42,7 @@ end
 
 function start_boss_sensor:on_activated()
 
-  if not map:get_game():get_boolean(902)
+  if not map:get_game():get_value("902")
       and not fighting_boss then
     hero:freeze()
     map:close_doors("boss_door")

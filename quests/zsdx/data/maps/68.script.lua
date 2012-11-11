@@ -89,7 +89,7 @@ end
 local function fill_water_step_4()
   map:get_entity("water_" .. current_pool_index .. "_less_1"):set_enabled(false)
   map:get_entity("water_" .. current_pool_index .. "_full"):set_enabled(true)
-  map:get_game():set_boolean(savegame_variable + current_pool_index,
+  map:get_game():set_boolean(tostring(savegame_variable + current_pool_index),
     not pools[current_pool_index].initially_filled)
   set_water_filled(current_pool_index)
 end
@@ -116,7 +116,7 @@ end
 
 local function drain_water_step_4()
   map:get_entity("water_" .. current_pool_index .. "_less_3"):set_enabled(false)
-  map:get_game():set_boolean(savegame_variable + current_pool_index,
+  map:get_game():set_boolean(tostring(savegame_variable + current_pool_index),
     pools[current_pool_index].initially_filled)
   set_water_drained(current_pool_index)
 end
@@ -125,7 +125,7 @@ function map:on_started(destination)
 
   -- initialize all pools
   for i, pool in ipairs(pools) do
-    if pool.initially_filled ~= map:get_game():get_boolean(savegame_variable + i) then
+    if pool.initially_filled ~= map:get_game():get_boolean(tostring(savegame_variable + i)) then
       -- this pool is filled
       set_water_filled(i)
     else

@@ -15,7 +15,7 @@ end
 
 function map:on_started(destination)
 
-  if map:get_game():get_boolean(313) then
+  if map:get_game():get_value("313") then
     -- the torches are lit
     lock_torches()
   else
@@ -33,12 +33,12 @@ end
 
 function map:on_update()
 
-  if not map:get_game():get_boolean(313)
+  if not map:get_game():get_value("313")
     and are_all_torches_on() then
 
     sol.audio.play_sound("chest_appears")
     torches_chest:set_enabled(true)
-    map:get_game():set_boolean(313, true)
+    map:get_game():set_value("313", true)
     lock_torches()
   end
 end

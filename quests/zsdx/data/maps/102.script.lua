@@ -34,30 +34,30 @@ function map:on_started(destination)
 
   -- west enemies room
   map:set_doors_open("door_c", true)
-  if map:get_game():get_boolean(616) then
+  if map:get_game():get_value("616") then
     local x, y = w_room_enemy_4:get_position()
     w_room_enemy_4:set_position(x, y, 1)
   end
 
   -- saved door A (code)
-  if map:get_game():get_boolean(630) then
+  if map:get_game():get_value("630") then
     for i = 1, 8 do
       map:get_entity("code_switch_" .. i):set_activated(true)
     end
   end
 
   -- saved door D
-  if map:get_game():get_boolean(615) then
+  if map:get_game():get_value("615") then
     door_d_switch:set_activated(true)
   end
 
   -- torches
-  if map:get_game():get_boolean(618) then
+  if map:get_game():get_value("618") then
     lock_torches()
   end
 
   -- weak floor
-  if map:get_game():get_boolean(619) then
+  if map:get_game():get_value("619") then
     weak_floor:set_enabled(false)
     weak_floor_2:set_enabled(false)
     weak_floor_sensor:set_enabled(false)
@@ -71,17 +71,17 @@ function map:on_started(destination)
 
   -- save the north-west door from 1F
   if destination:get_name() == "from_1f_ne" then
-    map:get_game():set_boolean(621, true)
+    map:get_game():set_value("621", true)
   end
 
   -- block fallen from 3F
-  if not map:get_game():get_boolean(623) then
+  if not map:get_game():get_value("623") then
     from_hole_a_tile:set_enabled(false)
     from_hole_a_block:set_enabled(false)
   end
 
   -- shortcut to the boss
-  local shortcut = map:get_game():get_boolean(628)
+  local shortcut = map:get_game():get_value("628")
   shortcut_switch:set_activated(shortcut)
   map:set_entities_enabled("shortcut_on", shortcut)
   map:set_entities_enabled("shortcut_off", not shortcut)
@@ -107,7 +107,7 @@ close_door_c_sensor_2.on_activated = close_door_c_sensor.on_activated
 -- miniboss
 function start_miniboss_sensor:on_activated()
 
-  if not map:get_game():get_boolean(620)
+  if not map:get_game():get_value("620")
       and not fighting_miniboss then
 
     hero:freeze()
@@ -191,7 +191,7 @@ function shortcut_switch:on_activated()
 
   map:set_entities_enabled("shortcut_on", true)
   map:set_entities_enabled("shortcut_off", false)
-  map:get_game():set_boolean(628, true)
+  map:get_game():set_value("628", true)
   sol.audio.play_sound("secret")
 end
 
@@ -271,7 +271,7 @@ local function miniboss_enemy_dead(enemy)
     sol.audio.play_music("dark_world_dungeon")
     sol.audio.play_sound("secret")
     map:open_doors("miniboss_door")
-    map:get_game():set_boolean(620, true)
+    map:get_game():set_value("620", true)
   end
 end
 for _, enemy in ipairs(map:get_entitites("miniboss_enemy")) do
@@ -280,7 +280,7 @@ end
 
 function map:on_update()
 
-  if not map:get_game():get_boolean(618)
+  if not map:get_game():get_value("618")
     and are_all_torches_on() then
 
     lock_torches()
@@ -300,7 +300,7 @@ function weak_floor_sensor:on_collision_explosion()
     weak_floor_sensor:set_enabled(false)
     weak_floor_teletransporter:set_enabled(true)
     sol.audio.play_sound("secret")
-    map:get_game():set_boolean(619, true)
+    map:get_game():set_value("619", true)
   end
 end
 

@@ -4,17 +4,17 @@ local map = ...
 local tom_sprite = nil
 
 local function is_ladder_activated()
-  return map:get_game():get_boolean(52)
+  return map:get_game():get_value("52")
 end
 
 local function is_beaumont_cave_open()
-  return map:get_game():get_boolean(153)
+  return map:get_game():get_value("153")
 end
 
 function map:on_started(destination)
 
   -- enable dark world
-  if map:get_game():get_boolean(905) then
+  if map:get_game():get_value("905") then
     sol.audio.play_music("dark_world")
     map:set_tileset(13)
   else
@@ -48,7 +48,7 @@ end
 
 function tom_appears_sensor:on_activated()
 
-  local has_finished_tom_cave = map:get_game():get_boolean(37)
+  local has_finished_tom_cave = map:get_game():get_value("37")
   if has_finished_tom_cave
       and not is_ladder_activated() then
     map:start_dialog("outside_world.tom_dungeon_1_entrance.hey", function()
@@ -80,7 +80,7 @@ function edelweiss_sensor:on_activated()
 	}
         beaumont_cave_hole:set_enabled(true)
         to_beaumont_cave:set_enabled(true)
-        map:get_game():set_boolean(153, true)
+        map:get_game():set_value("153", true)
         map:get_game():get_item("level_4_way"):set_variant(0)
         sol.timer.start(1000, function()
           sol.audio.play_sound("secret")
@@ -130,7 +130,7 @@ function tom:on_movement_finished()
 		map:set_entities_enabled("no_ladder", false)
 		tom_appears_sensor:set_enabled(false)
 		sol.audio.play_sound("secret")
-		map:get_game():set_boolean(52, true)
+		map:get_game():set_value("52", true)
 		hero:unfreeze()
 	      end)
 	    end)

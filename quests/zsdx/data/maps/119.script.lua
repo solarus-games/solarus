@@ -17,7 +17,7 @@ function map:on_started(destination)
     map:set_entities_enabled("roof_entrance", false)
   else
     -- enable dark world
-    if map:get_game():get_boolean(905) then
+    if map:get_game():get_value("905") then
       new_music = "dark_mountain"
       map:set_tileset(13)
     else
@@ -27,11 +27,11 @@ function map:on_started(destination)
     -- boss fight
     if destination:get_name() == "from_dungeon_10_5f" then
 
-      if not map:get_game():get_boolean(299) then
+      if not map:get_game():get_value("299") then
 	-- boss not killed yet
         new_music = "none"
         map:set_entities_enabled("enemy", false) -- disable all simple enemies
-      elseif not map:get_game():get_boolean(298) then
+      elseif not map:get_game():get_value("298") then
 	-- boss killed but sword not got yet
 	local variant = 2
 	if map:get_game():get_ability("sword") >= 2 then
@@ -89,7 +89,7 @@ end
 
 function start_boss_sensor:on_activated()
 
-  if not map:get_game():get_boolean(299)
+  if not map:get_game():get_value("299")
       and not fighting_boss then
 
     -- boss fight
@@ -150,7 +150,7 @@ function hero:on_victory_finished()
   map:set_entities_enabled("enemy", true) -- enable simple enemies back
 
   sol.timer.start(1000, function()
-    if map:get_game():get_boolean(905) then
+    if map:get_game():get_value("905") then
       sol.audio.play_music("dark_mountain")
     else
       sol.audio.play_music("overworld")

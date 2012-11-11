@@ -38,7 +38,7 @@ local function remove_se_water_6()
   se_water_tile_less_c:set_enabled(false)
   map:set_entities_enabled("se_water_on_jumper", false)
   map:set_entities_enabled("se_water_off_obstacle", true)
-  map:get_game():set_boolean(128, true)
+  map:get_game():set_value("128", true)
   sol.audio.play_sound("secret")
 end
 
@@ -47,7 +47,7 @@ local function remove_1f_n_water()
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
   map:start_dialog("dungeon_3.water_drained_somewhere")
-  map:get_game():set_boolean(131, true)
+  map:get_game():set_value("131", true)
 end
 
 local function remove_1f_e_water()
@@ -55,18 +55,18 @@ local function remove_1f_e_water()
   sol.audio.play_sound("water_drain_begin")
   sol.audio.play_sound("water_drain")
   map:start_dialog("dungeon_3.water_drained_somewhere")
-  map:get_game():set_boolean(122, true)
+  map:get_game():set_value("122", true)
 end
 
 function map:on_started(destination)
 
-  if map:get_game():get_boolean(127) then
+  if map:get_game():get_value("127") then
     -- the barrier of the compass chest is removed
     barrier:set_enabled(false)
     barrier_switch:set_activated(true)
   end
 
-  if map:get_game():get_boolean(128) then
+  if map:get_game():get_value("128") then
     -- the south-east water is drained
     map:set_entities_enabled("se_water_tile", false)
     map:set_entities_enabled("se_water_tile_out", true)
@@ -75,20 +75,20 @@ function map:on_started(destination)
     map:set_entities_enabled("se_water_off_obstacle", false)
   end
 
-  if map:get_game():get_boolean(908) then
+  if map:get_game():get_value("908") then
     -- shortcut A
     map:set_entities_enabled("shortcut_a", false)
     shortcut_a_switch:set_activated(true)
   end
 
-  if map:get_game():get_boolean(909) then
+  if map:get_game():get_value("909") then
     -- shortcut B
     map:set_entities_enabled("shortcut_b", false)
     shortcut_b_switch:set_activated(true)
   end
 
   -- north chest
-  if map:get_game():get_boolean(950) then
+  if map:get_game():get_value("950") then
     n_switch:set_activated(true)
   else
     n_chest:set_enabled(false)
@@ -123,21 +123,21 @@ function barrier_switch:on_activated()
     map:move_camera(120, 240, 250, function()
       sol.audio.play_sound("secret")
       barrier:set_enabled(false)
-      map:get_game():set_boolean(127, true)
+      map:get_game():set_value("127", true)
     end)
   end
 end
 
 function se_water_switch:on_activated()
 
-  if not map:get_game():get_boolean(128) then
+  if not map:get_game():get_value("128") then
     map:move_camera(912, 896, 250, remove_se_water, 1000, 3500)
   end
 end
 
 function n_1f_water_switch:on_activated()
 
-  if not map:get_game():get_boolean(131) then
+  if not map:get_game():get_value("131") then
     remove_1f_n_water()
   end
 end
@@ -145,7 +145,7 @@ end
 function e_1f_water_switch_1:on_activated()
 
   if e_1f_water_switch_2:is_activated()
-      and not map:get_game():get_boolean(122) then
+      and not map:get_game():get_value("122") then
     remove_1f_e_water()
   end
 end
@@ -153,7 +153,7 @@ end
 function e_1f_water_switch_2:on_activated()
 
   if e_1f_water_switch_1:is_activated()
-      and not map:get_game():get_boolean(122) then
+      and not map:get_game():get_value("122") then
     remove_1f_e_water()
   end
 end
@@ -161,14 +161,14 @@ end
 function shortcut_a_switch:on_activated()
 
   map:set_entities_enabled("shortcut_a", false)
-  map:get_game():set_boolean(908, true)
+  map:get_game():set_value("908", true)
   sol.audio.play_sound("secret")
 end
 
 function shortcut_b_switch:on_activated()
 
   map:set_entities_enabled("shortcut_b", false)
-  map:get_game():set_boolean(909, true)
+  map:get_game():set_value("909", true)
   sol.audio.play_sound("secret")
 end
 
@@ -177,7 +177,7 @@ function n_switch:on_activated()
   map:move_camera(280, 56, 250, function()
     sol.audio.play_sound("chest_appears")
     n_chest:set_enabled(true)
-    map:get_game():set_boolean(950, true)
+    map:get_game():set_value("950", true)
   end)
 end
 

@@ -5,7 +5,6 @@ properties{
   height = 1264,
   world = "dungeon_9",
   floor = "unknown",
-  small_keys_variable = "dungeon_9_small_keys",
   tileset = "16",
   music = "tloz_dungeon",
 }

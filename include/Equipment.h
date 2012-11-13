@@ -110,15 +110,6 @@ class Equipment {
     void set_item_assigned(int slot, const std::string& item_name);
     int get_item_slot(const std::string& item_name);
 
-    // small keys
-    bool are_small_keys_enabled();
-    const std::string& get_small_keys_variable();
-
-    bool has_small_key();
-    int get_small_keys();
-    void add_small_keys(int amount_to_add);
-    void remove_small_key();
-
     // abilities
     bool has_ability(const std::string& ability_name, int level = 1);
     int get_ability(const std::string& ability_name);

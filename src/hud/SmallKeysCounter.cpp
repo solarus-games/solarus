@@ -52,6 +52,7 @@ void SmallKeysCounter::update() {
 
   HudElement::update();
 
+  /* TODO reimplement in Lua
   bool need_rebuild = false;
 
   // enable or disable the counter
@@ -81,6 +82,7 @@ void SmallKeysCounter::update() {
   if (need_rebuild) {
     rebuild();
   }
+  */
 }
 
 /**

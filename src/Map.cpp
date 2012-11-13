@@ -191,28 +191,6 @@ const Rectangle& Map::get_location() {
 }
 
 /**
- * @brief Returns the name of the boolean variable where the number of small
- * keys for this map is saved.
- *
- * @return The small keys savegame variable, or an empty string if small keys
- * are not enabled on this map.
- */
-const std::string& Map::get_small_keys_variable() {
-  return small_keys_variable;
-}
-
-/**
- * @brief Returns whether the small keys are enabled in this map.
- *
- * This function returns true if get_small_keys_variable() is not -1. 
- *
- * @return true if the small keys are enabled in this map
- */
-bool Map::has_small_keys() {
-  return !get_small_keys_variable().empty();
-}
-
-/**
  * @brief Returns the map width in pixels.
  * @return the map width
  */

@@ -4,7 +4,6 @@ properties{
   width = 1280,
   height = 960,
   world = "inside_world",
-  small_keys_variable = "dungeon_8_small_keys",
   tileset = "9",
 }
 

@@ -311,7 +311,6 @@ item{
 
 item{
   name = "small_key",
-  changes_counter = "small_keys",
   shadow = "small",
   brandish_when_picked = false,
   sound_when_picked = "picked_small_key",

@@ -90,7 +90,8 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu& pause_menu, Game& game):
 
     small_keys_counter = new Counter(2, false,
         SOLARUS_SCREEN_WIDTH_MIDDLE - 36, SOLARUS_SCREEN_HEIGHT_MIDDLE + 62);
-    small_keys_counter->set_value(equipment.get_small_keys());
+    // TODO reimplement in Lua
+    // small_keys_counter->set_value(equipment.get_small_keys());
 
     // floors
     dungeon_floors_img = new Surface("floors.png", Surface::DIR_LANGUAGE);

@@ -5,7 +5,6 @@ properties{
   height = 768,
   world = "dungeon_6",
   floor = "2",
-  small_keys_variable = "dungeon_6_small_keys",
   tileset = "10",
   music = "same",
 }

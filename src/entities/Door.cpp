@@ -277,9 +277,11 @@ bool Door::requires_explosion() {
  */
 bool Door::can_open() {
 
-  Equipment& equipment = get_equipment();
-  if (requires_small_key() && equipment.has_small_key()) {
-    return true;
+
+  // TODO replace by if (requires_item() && equipment.has_item(...) && equipment.has_item_amount(...))
+  //Equipment& equipment = get_equipment();
+  if (requires_small_key()) {
+    return true;  // This is temporary. The hardcoded small key type of doors will go away soon.
   }
 
   Game& game = get_game();
@@ -382,9 +384,11 @@ void Door::action_key_pressed() {
         set_opening();
       }
 
+      /* TODO replace by if (requires_item() && item.has_counter()) ... 
       if (requires_small_key()) {
         get_equipment().remove_small_key();
       }
+      */
 
       get_hero().check_position();
     }

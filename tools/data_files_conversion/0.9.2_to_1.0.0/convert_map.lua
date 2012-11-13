@@ -309,16 +309,6 @@ function print_metadata(metadata)
   if metadata.floor then
     io.write("  floor = \"" .. metadata.floor .. "\",\n")
   end
-  if metadata.small_keys_variable ~= -1 then
-    if metadata.small_keys_variable < 1024 then
-      -- It is a small key counter of dungeon.
-      local dungeon = (metadata.small_keys_variable - 205) / 10 + 1
-      metadata.small_keys_variable = "dungeon_" .. dungeon .. "_small_keys"
-    else
-      metadata.small_keys_variable = "i" .. metadata.small_keys_variable
-    end
-    io.write("  small_keys_variable = \"" .. metadata.small_keys_variable .. "\",\n")
-  end
   io.write("  tileset = \"" .. metadata.tileset .. "\",\n")
   if metadata.music ~= nil then
     io.write("  music = \"" .. metadata.music .. "\",\n")

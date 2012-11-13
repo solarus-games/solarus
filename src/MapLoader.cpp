@@ -107,7 +107,6 @@ int MapLoader::l_properties(lua_State* l) {
   int height = LuaContext::check_int_field(l, 1, "height");
   const std::string& world_name = LuaContext::check_string_field(l, 1 , "world");
   const std::string& floor_name = LuaContext::opt_string_field(l, 1, "floor", "");
-  const std::string& small_keys_variable = LuaContext::opt_string_field(l, 1, "small_keys_variable", "");
   const std::string& tileset_id = LuaContext::check_string_field(l, 1, "tileset");
   const std::string& music_id = LuaContext::opt_string_field(l, 1, "music", Music::none);
 
@@ -117,7 +116,6 @@ int MapLoader::l_properties(lua_State* l) {
   map->width8 = width / 8;
   map->height8 = height / 8;
   map->location.set_xy(x, y);
-  map->small_keys_variable = small_keys_variable;
   map->music_id = music_id;
   map->set_world(world_name);
   map->set_floor(floor_name);

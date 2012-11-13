@@ -278,8 +278,7 @@ void EquipmentItem::set_item_limited(const std::string& item_limited) {
  * @brief Returns the name of an item whose counter is changed when obtaining
  * this item.
  *
- * The special names "money", "life", "magic" and "small_keys" may also be
- * returned.
+ * The special names "money", "life" and "magic" may also be returned.
  *
  * @return The name of the item whose counter is changed by this item, or an
  * empty string.
@@ -291,8 +290,7 @@ const std::string& EquipmentItem::get_item_counter_changed() const {
 /**
  * @brief Sets an item whose counter will be changed when obtaining this item.
  *
- * The special names "money", "life", "magic" and "small_keys" are also
- * accepted.
+ * The special names "money", "life" and "magic" are also accepted.
  *
  * @param item_counter_changed Name of an item whose counter is changed by
  * this item, or an empty string.

@@ -607,10 +607,6 @@ bool Equipment::has_item_maximum(const std::string& item_name) {
     result = (get_magic() >= get_max_magic());
   }
   
-  else if (item_counter_changed == "small_keys") {
-    result = false;
-  }
-
   else {
     result = get_item_amount(item_counter_changed) >= get_item_maximum(item_counter_changed);
   }
@@ -706,75 +702,6 @@ int Equipment::get_item_slot(const std::string& item_name) {
   }
 
   return -1;
-}
-
-// small keys
-
-/**
- * @brief Returns whether the small keys are enabled in the current map.
- * @return true if the small keys are enabled in the current map
- */
-bool Equipment::are_small_keys_enabled() {
-  return savegame.get_game()->get_current_map().has_small_keys();
-}
-
-/**
- * @brief Returns the savegame variable where the number of small keys
- * is stored for the current map.
- *
- * Stops with an error message if the small keys are not enabled in the current map.
- *
- * @return the index of the savegame variable that stores the number of small keys
- * for the current map
- */
-const std::string& Equipment::get_small_keys_variable() {
-
-  Debug::check_assertion(are_small_keys_enabled(), "The small keys are not enabled on this map");
-
-  return savegame.get_game()->get_current_map().get_small_keys_variable();
-}
-
-/**
- * @brief Returns whether the player has got at least one small key in the current map.
- *
- * Stops with an error message if the small keys are not enabled in the current map.
- * 
- * @return true if the player has got at least one small key
- */
-bool Equipment::has_small_key() {
-  return get_small_keys() > 0;
-}
-
-/**
- * @brief Returns the current number of small keys of the player in the current map.
- *
- * Stops with an error message if the small keys are not enabled in the current map.
- * 
- * @return the current number of small keys
- */
-int Equipment::get_small_keys() {
-  return savegame.get_integer(get_small_keys_variable());
-}
-
-/**
- * @brief Adds one or several small keys to the player in the current map.
- * @param amount_to_add number of small keys to add
- */
-void Equipment::add_small_keys(int amount_to_add) {
-
-  savegame.set_integer(get_small_keys_variable(), get_small_keys() + amount_to_add);
-}
-
-/**
- * @brief Removes a small key from the player in the current dungeon.
- *
- * Stops with an error message if the player has no more small keys.
- */
-void Equipment::remove_small_key() {
-
-  Debug::check_assertion(has_small_key(), "The player has no small keys");
-
-  savegame.set_integer(get_small_keys_variable(), get_small_keys() - 1);
 }
 
 // abilities
@@ -917,8 +844,7 @@ bool Equipment::can_receive_item(const std::string &item_name, int variant) {
       authorized = get_max_magic() > 0;
     }
     else if (item_counter_changed != "life"
-	    && item_counter_changed != "money"
-	    && item_counter_changed != "small_keys") { // general case
+        && item_counter_changed != "money") { // general case
       // check that the player has unlocked the counter of the item to increase
       const std::string &item_limiting = get_item(item_counter_changed).get_item_limiting();
       authorized = (item_limiting.size() == 0) || has_item(item_limiting);
@@ -1014,9 +940,6 @@ void Equipment::add_item(const std::string &item_name, int variant) {
       }
       else if (item_counter_changed == "magic") {
         add_magic(amount);
-      }
-      else if (item_counter_changed == "small_keys") {
-        add_small_keys(amount);
       }
       else { // general case
 

@@ -4,7 +4,6 @@ properties{
   width = 760,
   height = 520,
   world = "inside_world",
-  small_keys_variable = "i1201",
   tileset = "3",
   music = "cave",
 }

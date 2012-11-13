@@ -159,6 +159,7 @@ bool Chest::can_open() {
   }
 
   // We are in a dungeon.
+  // TODO replace this, use item_needed like doors
   std::ostringstream oss;
   oss << "dungeon_" << get_game().get_current_dungeon().get_number();
   const std::string& dungeon_number = oss.str();

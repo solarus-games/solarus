@@ -39,13 +39,13 @@ quest_status.caption.pieces_of_heart	Fragments de Coeur
 quest_status.caption.tunic_1		Cotte de Mailles$verte
 quest_status.caption.tunic_2		Cotte de Mailles$bleue
 quest_status.caption.tunic_3		Cotte de Mailles$rouge
-quest_status.caption.sword_1		Epée du Courage
-quest_status.caption.sword_2		Glaive Hylien
-quest_status.caption.sword_3		Sabre du Héros
-quest_status.caption.sword_4		Lame Purificatrice
-quest_status.caption.shield_1		Bouclier
-quest_status.caption.shield_2		Bouclier de Feu
-quest_status.caption.shield_3		Bouclier Miroir
+quest_status.caption.sword_1		Epée Nokia
+quest_status.caption.sword_2		Glaive Blackberry
+quest_status.caption.sword_3		Sabre Android
+quest_status.caption.sword_4		Lame Apple
+quest_status.caption.shield_1		Bouclier Dell
+quest_status.caption.shield_2		Bouclier Microsoft
+quest_status.caption.shield_3		Bouclier Apple
 
 # Inventory submenu
 inventory.caption.item.feather.1			Plume

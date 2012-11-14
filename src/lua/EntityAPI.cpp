@@ -967,8 +967,8 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
-  int variant = luaL_checkinteger(l, 3);
-  const std::string& savegame_variable = luaL_checkstring(l, 4);
+  int variant = luaL_optinteger(l, 3, 1);
+  const std::string& savegame_variable = luaL_optstring(l, 4, "");
 
   hero.start_treasure(
       Treasure(hero.get_game(), item_name, variant, savegame_variable));

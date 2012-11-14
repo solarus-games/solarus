@@ -310,7 +310,15 @@ item{
 }
 
 item{
+  -- TODO don't force counters to be saved
+  name = "small_keys_counter",
+  counter = "small_keys",
+  savegame_variable = "small_keys_counter"
+}
+
+item{
   name = "small_key",
+  changes_counter = "small_keys_counter",
   shadow = "small",
   brandish_when_picked = false,
   sound_when_picked = "picked_small_key",

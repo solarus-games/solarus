@@ -21,25 +21,78 @@ function game:on_started()
   self:set_hud_enabled(true)
 end
 
--- Useful functions for this quest.
+-- Useful functions for this specific quest.
 
 function game:get_player_name()
-  return game:get_value("player_name")
+  return self:get_value("player_name")
 end
 
 function game:set_player_name(player_name)
-  game:set_value("player_name", player_name)
+  self:set_value("player_name", player_name)
 end
 
 function game:is_dungeon_finished(dungeon)
-  return game:get_value("dungeon_" .. dungeon .. "_finished")
+  return self:get_value("dungeon_" .. dungeon .. "_finished")
 end
 
 function game:set_dungeon_finished(dungeon, finished)
   if finished == nil then
     finished = true
   end
-  game:set_value("dungeon_" .. dungeon .. "_finished", finished)
+  self:set_value("dungeon_" .. dungeon .. "_finished", finished)
+end
+
+-- Returns whether the current map is in a dungeon.
+function game:is_in_dungeon()
+  return self:get_dungeon() ~= nil
+end
+
+-- Returns whether the current map is in the inside world.
+function game:is_in_inside_world()
+  return self:get_map():get_world() == "inside_world"
+end
+
+-- Returns whether the current map is in the outside world.
+function game:is_in_outside_world()
+  return self:get_map():get_world() == "outside_world"
+end
+
+-- Returns the index of the current dungeon if any, or nil.
+function game:get_dungeon()
+
+  local world = self:get_map():get_world()
+  local index = world:match("^dungeon_([0-9]+)$")
+  if index == nil then
+    return nil
+  end
+
+  return tonumber(index)
+end
+
+-- Returns whether a small key counter exists on the current map.
+function game:are_small_keys_enabled()
+  return self:get_small_keys_savegame_variable() ~= nil
+end
+
+-- Returns the name of the integer variable that stores the number
+-- of small keys for the current map, or nil.
+function game:get_small_keys_savegame_variable()
+
+  local map = self:get_map()
+
+  -- Does the map explicitely defines a small key counter?
+  if map.small_keys_savegame_variable ~= nil then
+    return map.small_keys_savegame_variable
+  end
+
+  -- Are we in a dungeon?
+  local dungeon = self:get_dungeon()
+  if dungeon ~= nil then
+    return "dungeon_" .. dungeon .. "_small_keys"
+  end
+
+  -- No small keys on this map.
+  return nil
 end
 
 function game:is_hud_enabled()

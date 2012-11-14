@@ -1955,7 +1955,7 @@ void LuaContext::on_moved() {
 void LuaContext::on_map_changed(Map& map) {
 
   if (find_method("on_map_changed")) {
-    push_string(l, map.get_id());
+    push_map(l, map);
     call_function(2, 0, "on_map_changed");
   }
 }
@@ -2005,7 +2005,7 @@ void LuaContext::on_variant_changed(int variant) {
 void LuaContext::on_amount_changed(int amount) {
 
   if (find_method("on_amount_changed")) {
-    lua_pushinteger(l, 1);
+    lua_pushinteger(l, amount);
     call_function(2, 0, "on_amount_changed");
   }
 }

@@ -407,7 +407,7 @@ void VideoManager::blit_stretched(Surface& src_surface, Surface& dst_surface) {
   int p = offset;
   for (int i = 0; i < SOLARUS_SCREEN_HEIGHT; i++) {
     for (int j = 0; j < SOLARUS_SCREEN_WIDTH; j++) {
-      dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = src_surface->get_mapped_pixel(i+j, dst_internal_surface->format);
+      dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = src_surface->get_mapped_pixel(i*SOLARUS_SCREEN_WIDTH+j, dst_internal_surface->format);
       p += 2;
     }
 

@@ -199,7 +199,7 @@ else()
   option(SCREEN_SOFTWARE_SURFACE "Use a software surface for the screen." OFF)
 endif()
 if(SCREEN_SOFTWARE_SURFACE)
-  add_definitions(-DSOLARUS_SCREEN_SOFTWARE_SURFACE=\"${SCREEN_SOFTWARE_SURFACE}\")
+  add_definitions(-DSOLARUS_SCREEN_SOFTWARE_SURFACE=1)
 endif()
 
 # files to install with make install

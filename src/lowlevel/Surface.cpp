@@ -286,6 +286,8 @@ SDL_Surface* Surface::get_internal_surface() {
 
 /**
  * @brief Returns the mapped 32bits pixel from internal SDL_PixelFormat to dst_format.
+ * @param idx_pixel the index of the pixel to convert
+ * @param dst_format the destination format
  *
  * This method should be used only by low-level classes.
  *

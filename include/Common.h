@@ -92,7 +92,7 @@
  * @brief Forces a unique video mode.
  */
 #ifndef SOLARUS_SCREEN_FORCE_MODE
-#  ifdef CAANOO
+#  if defined(CAANOO)
 #    define SOLARUS_SCREEN_FORCE_MODE 2
 #  elif defined(PANDORA)
 #    define SOLARUS_SCREEN_FORCE_MODE 5

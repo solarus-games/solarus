@@ -115,7 +115,7 @@ void Sound::initialize(int argc, char** argv) {
     return;
   }
 
-  alGenBuffers(0, NULL);  // Necessary on some systems to avoid errors with the first sound loaded.
+  alGenBuffers(0, AL_NONE);  // Necessary on some systems to avoid errors with the first sound loaded.
 
   initialized = true;
 

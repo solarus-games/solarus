@@ -193,15 +193,6 @@ if(SCREEN_FORCE_MODE)
   add_definitions(-DSOLARUS_SCREEN_FORCE_MODE=${SCREEN_FORCE_MODE})
 endif()
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  option(SCREEN_SOFTWARE_SURFACE "Use a software surface for the screen." ON)
-else()
-  option(SCREEN_SOFTWARE_SURFACE "Use a software surface for the screen." OFF)
-endif()
-if(SCREEN_SOFTWARE_SURFACE)
-  add_definitions(-DSOLARUS_SCREEN_SOFTWARE_SURFACE=\"${SCREEN_SOFTWARE_SURFACE}\")
-endif()
-
 # files to install with make install
 install(TARGETS	solarus
   RUNTIME DESTINATION bin

@@ -1030,7 +1030,6 @@ destructible{
   x = 296,
   y = 173,
   subtype = "white_stone",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

@@ -1456,7 +1456,6 @@ chest{
   y = 80,
   name = "chest_1",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -1466,7 +1465,6 @@ chest{
   y = 80,
   name = "chest_2",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -1476,7 +1474,6 @@ chest{
   y = 80,
   name = "chest_3",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

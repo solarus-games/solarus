@@ -11018,7 +11018,7 @@ destructible{
   x = 888,
   y = 797,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11146,7 +11146,7 @@ destructible{
   x = 424,
   y = 781,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11449,7 +11449,7 @@ destructible{
   x = 384,
   y = 533,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11458,7 +11458,7 @@ destructible{
   x = 400,
   y = 533,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11467,7 +11467,7 @@ destructible{
   x = 904,
   y = 453,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11476,7 +11476,7 @@ destructible{
   x = 240,
   y = 613,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11485,7 +11485,7 @@ destructible{
   x = 216,
   y = 757,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11494,7 +11494,7 @@ destructible{
   x = 536,
   y = 757,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11506,7 +11506,7 @@ enemy{
   direction = 3,
   breed = "blue_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11518,7 +11518,7 @@ enemy{
   direction = 3,
   breed = "red_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11530,7 +11530,7 @@ enemy{
   direction = 3,
   breed = "blue_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

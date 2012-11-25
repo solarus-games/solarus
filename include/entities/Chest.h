@@ -30,7 +30,7 @@ class Chest: public Detector {
 
   private:
 
-    Treasure treasure;            /**< the treasure placed in this chest (possibly "_none") */
+    Treasure treasure;            /**< the treasure placed in this chest (possibly empty) */
     bool big_chest;               /**< true for a big chest, false for normal chests */
     bool open;                    /**< true if the chest is open (but the treasure may not have
                                    * been given yet because there is a delay of 500 ms) */

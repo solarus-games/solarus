@@ -1055,7 +1055,6 @@ destructible{
   x = 200,
   y = 333,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -1123,7 +1122,7 @@ enemy{
   direction = 3,
   breed = "red_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1135,7 +1134,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1147,7 +1146,7 @@ enemy{
   direction = 3,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1159,7 +1158,7 @@ enemy{
   direction = 3,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1171,7 +1170,7 @@ enemy{
   direction = 3,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1183,7 +1182,7 @@ enemy{
   direction = 3,
   breed = "red_helmasaur",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1192,7 +1191,6 @@ destructible{
   x = 216,
   y = 349,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -1201,7 +1199,6 @@ destructible{
   x = 216,
   y = 381,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -1210,7 +1207,6 @@ destructible{
   x = 168,
   y = 397,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -1219,7 +1215,6 @@ destructible{
   x = 152,
   y = 381,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -1228,7 +1223,6 @@ destructible{
   x = 152,
   y = 349,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

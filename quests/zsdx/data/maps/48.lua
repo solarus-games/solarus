@@ -2547,7 +2547,7 @@ enemy{
   direction = 3,
   breed = "red_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2559,7 +2559,7 @@ enemy{
   direction = 3,
   breed = "red_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2571,7 +2571,7 @@ enemy{
   direction = 3,
   breed = "red_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2583,7 +2583,7 @@ enemy{
   direction = 3,
   breed = "red_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2629,7 +2629,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2641,7 +2641,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2653,7 +2653,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -10040,7 +10040,7 @@ enemy{
   direction = 3,
   breed = "skeletor",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -10052,7 +10052,7 @@ enemy{
   direction = 3,
   breed = "skeletor",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -10885,7 +10885,7 @@ destructible{
   x = 1400,
   y = 1453,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -10894,7 +10894,7 @@ destructible{
   x = 1400,
   y = 1485,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -10903,7 +10903,7 @@ destructible{
   x = 1496,
   y = 1485,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -10912,7 +10912,7 @@ destructible{
   x = 1496,
   y = 1453,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -10939,7 +10939,6 @@ destructible{
   x = 488,
   y = 1597,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -10948,7 +10947,6 @@ destructible{
   x = 568,
   y = 1597,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -10957,7 +10955,6 @@ destructible{
   x = 584,
   y = 1597,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -10966,7 +10963,6 @@ destructible{
   x = 600,
   y = 1597,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -10975,7 +10971,6 @@ destructible{
   x = 552,
   y = 1597,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -10984,7 +10979,6 @@ destructible{
   x = 536,
   y = 1597,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -11014,7 +11008,7 @@ enemy{
   direction = 3,
   breed = "laser",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11026,7 +11020,7 @@ enemy{
   direction = 3,
   breed = "globul",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11038,7 +11032,7 @@ enemy{
   direction = 3,
   breed = "globul",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11050,7 +11044,7 @@ enemy{
   direction = 3,
   breed = "globul",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11062,7 +11056,7 @@ enemy{
   direction = 3,
   breed = "globul",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11178,7 +11172,7 @@ enemy{
   direction = 3,
   breed = "gibdo",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11190,7 +11184,7 @@ enemy{
   direction = 3,
   breed = "gibdo",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11202,7 +11196,7 @@ enemy{
   direction = 3,
   breed = "gibdo",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11245,7 +11239,7 @@ enemy{
   direction = 0,
   breed = "pike_auto",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11257,7 +11251,7 @@ enemy{
   direction = 0,
   breed = "pike_auto",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11269,7 +11263,7 @@ enemy{
   direction = 2,
   breed = "pike_auto",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11281,7 +11275,7 @@ enemy{
   direction = 2,
   breed = "pike_auto",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11307,7 +11301,7 @@ destructible{
   x = 688,
   y = 565,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11316,7 +11310,7 @@ destructible{
   x = 704,
   y = 565,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11325,7 +11319,7 @@ destructible{
   x = 720,
   y = 565,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11334,7 +11328,7 @@ destructible{
   x = 736,
   y = 565,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11343,7 +11337,7 @@ destructible{
   x = 752,
   y = 565,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11352,7 +11346,6 @@ destructible{
   x = 752,
   y = 741,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -11361,7 +11354,7 @@ destructible{
   x = 864,
   y = 565,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11370,7 +11363,7 @@ destructible{
   x = 880,
   y = 565,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11379,7 +11372,7 @@ destructible{
   x = 896,
   y = 565,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11388,7 +11381,7 @@ destructible{
   x = 928,
   y = 565,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11714,7 +11707,6 @@ destructible{
   x = 1064,
   y = 1501,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -11789,7 +11781,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11801,7 +11793,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11813,7 +11805,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11825,7 +11817,7 @@ enemy{
   direction = 3,
   breed = "pike_auto",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11837,7 +11829,7 @@ enemy{
   direction = 3,
   breed = "pike_auto",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11849,7 +11841,7 @@ enemy{
   direction = 3,
   breed = "pike_auto",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11932,7 +11924,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11944,7 +11936,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11956,7 +11948,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11968,7 +11960,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11980,7 +11972,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11992,7 +11984,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12078,7 +12070,7 @@ destructible{
   x = 472,
   y = 573,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12096,7 +12088,7 @@ destructible{
   x = 504,
   y = 573,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12105,7 +12097,7 @@ destructible{
   x = 472,
   y = 733,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12123,7 +12115,7 @@ destructible{
   x = 504,
   y = 733,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12218,7 +12210,7 @@ destructible{
   x = 912,
   y = 565,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12230,7 +12222,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12242,7 +12234,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12264,7 +12256,7 @@ destructible{
   x = 688,
   y = 741,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12273,7 +12265,7 @@ destructible{
   x = 704,
   y = 741,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12282,7 +12274,7 @@ destructible{
   x = 720,
   y = 741,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12291,7 +12283,7 @@ destructible{
   x = 736,
   y = 741,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12300,7 +12292,7 @@ destructible{
   x = 928,
   y = 741,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12309,7 +12301,7 @@ destructible{
   x = 864,
   y = 741,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12318,7 +12310,7 @@ destructible{
   x = 880,
   y = 741,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12327,7 +12319,7 @@ destructible{
   x = 896,
   y = 741,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12336,7 +12328,7 @@ destructible{
   x = 912,
   y = 741,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

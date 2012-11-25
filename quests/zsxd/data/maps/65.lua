@@ -7728,7 +7728,6 @@ destructible{
   x = 616,
   y = 709,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 3,
 }
 
@@ -7737,7 +7736,6 @@ destructible{
   x = 616,
   y = 877,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 3,
 }
 
@@ -7746,7 +7744,6 @@ destructible{
   x = 592,
   y = 877,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 3,
 }
 
@@ -7755,7 +7752,6 @@ destructible{
   x = 384,
   y = 877,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 3,
 }
 
@@ -7764,7 +7760,6 @@ destructible{
   x = 360,
   y = 877,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 3,
 }
 
@@ -7773,7 +7768,6 @@ destructible{
   x = 384,
   y = 709,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 3,
 }
 
@@ -7782,7 +7776,6 @@ destructible{
   x = 360,
   y = 709,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 3,
 }
 
@@ -8185,7 +8178,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8197,7 +8190,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8209,7 +8202,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12040,7 +12033,6 @@ enemy{
   breed = "ganon",
   rank = 2,
   savegame_variable = "b306",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

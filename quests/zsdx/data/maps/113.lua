@@ -1459,7 +1459,7 @@ destructible{
   x = 80,
   y = 117,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1468,7 +1468,7 @@ destructible{
   x = 80,
   y = 101,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1477,7 +1477,7 @@ destructible{
   x = 80,
   y = 85,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1486,7 +1486,7 @@ destructible{
   x = 80,
   y = 405,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1504,7 +1504,7 @@ destructible{
   x = 80,
   y = 373,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1516,7 +1516,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1528,7 +1528,7 @@ enemy{
   direction = 3,
   breed = "red_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1540,7 +1540,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1552,7 +1552,7 @@ enemy{
   direction = 3,
   breed = "red_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1564,7 +1564,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1576,7 +1576,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1588,7 +1588,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1600,7 +1600,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1612,7 +1612,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1624,7 +1624,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1636,7 +1636,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1648,7 +1648,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1660,7 +1660,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1672,7 +1672,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

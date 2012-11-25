@@ -261,6 +261,9 @@ void LuaContext::run_item(EquipmentItem& item) {
     // Run it with the item userdata as parameter.
     push_item(l, item);
     call_function(1, 0, file_name);
+
+    // Call the item:on_created() callback.
+    item_on_created(item);
   }
 }
 

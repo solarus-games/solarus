@@ -839,7 +839,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -860,7 +860,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -912,7 +912,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1500,7 +1500,7 @@ destructible{
   x = 536,
   y = 133,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1509,7 +1509,7 @@ destructible{
   x = 536,
   y = 117,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1518,7 +1518,7 @@ destructible{
   x = 520,
   y = 133,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1527,7 +1527,7 @@ destructible{
   x = 520,
   y = 117,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1539,7 +1539,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1551,7 +1551,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

@@ -118,7 +118,6 @@ void Savegame::set_initial_values() {
   ini.set_group("initial");
   const std::string& starting_map_id = ini.get_string_value("starting_map", "");
   const std::string& starting_destination_name = ini.get_string_value("starting_point", "");
-  int max_life = ini.get_integer_value("max_life", 1);
 
   Debug::check_assertion(!starting_map_id.empty(),
       "No starting map defined in quest.dat. Please set the value starting_map to the id of the initial map of your quest.");
@@ -128,8 +127,8 @@ void Savegame::set_initial_values() {
 
   set_string(KEY_STARTING_MAP, starting_map_id);
   set_string(KEY_STARTING_POINT, starting_destination_name);
-  set_integer(KEY_MAX_LIFE, max_life);
-  set_integer(KEY_CURRENT_LIFE, max_life);
+  set_integer(KEY_MAX_LIFE, 1);
+  set_integer(KEY_CURRENT_LIFE, 1);
 }
 
 /**
@@ -221,7 +220,6 @@ void Savegame::load() {
      // Apparently it was not a Lua file. Let's try the obsolete format.
      SavegameConverterV1 converter(file_name);
      converter.convert_to_v2(*this);
-     save();
    }
 
   lua_close(l);

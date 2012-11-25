@@ -68,11 +68,9 @@ EntityType Pickable::get_type() {
  * This method acts like a constructor, except that it can return NULL in several cases:
  * - the treasure is saved and the player already has it,
  * or:
- * - the treasure is empty ("_none"),
+ * - the treasure is empty,
  * or:
- * - the treasure is random ("_random") and the random content chosen is "_none",
- * or:
- * - the item cannot be picked by the hero yet.
+ * - the item cannot be obtained by the hero yet.
  *
  * @param game the current game
  * @param layer layer of the pickable item to create on the map
@@ -119,58 +117,55 @@ bool Pickable::can_be_obstacle() {
  * @brief Creates the sprite of this pickable item,
  * depending on its subtype.
  *
- * The pickable items are represented with two sprites:
- * the item itself and its shadow, except the fairy whose
- * shadow is part of its sprite.
+ * Pickable items represented with two sprites:
+ * the item itself and, for some items, its shadow.
  */
 void Pickable::initialize_sprites() {
 
-  EquipmentItem& item = treasure.get_item();
-
-  // create the shadow
+  // Shadow sprite.
   delete shadow_sprite;
-  switch (item.get_shadow_size()) {
+  EquipmentItem& item = treasure.get_item();
+  const std::string& animation = item.get_shadow();
 
-    case EquipmentItem::SHADOW_SMALL:
-      shadow_sprite = new Sprite("entities/shadow");
-      shadow_sprite->set_current_animation("small");
-      break;
-
-    case EquipmentItem::SHADOW_BIG:
-      shadow_sprite = new Sprite("entities/shadow");
-      shadow_sprite->set_current_animation("big");
-      break;
-
-    case EquipmentItem::SHADOW_NONE:
-      shadow_sprite = NULL;
-      break;
+  bool has_shadow = false;
+  if (!animation.empty()) {
+    shadow_sprite = new Sprite("entities/shadow");
+    has_shadow = shadow_sprite->has_animation(animation);
   }
 
-  // create the sprite and set its animation
+  if (!has_shadow) {
+    // No shadow or no such shadow animation.
+    delete shadow_sprite;
+    shadow_sprite = NULL;
+  }
+  else {
+    shadow_sprite->set_current_animation(animation);
+  }
+
+  // Main sprite.
   create_sprite("entities/items");
-  Sprite &item_sprite = get_sprite();
+  Sprite& item_sprite = get_sprite();
   item_sprite.set_current_animation(treasure.get_item_name());
   item_sprite.set_current_direction(treasure.get_variant() - 1);
   item_sprite.enable_pixel_collisions();
 
-  // set the origin point and the size of the entity
+  // Set the origin point and the size of the entity.
   set_bounding_box_from_sprite();
 
   uint32_t now = System::now();
 
   if (falling_height != FALLING_NONE) {
-
-    allow_pick_date = now + 700;  // the player will be allowed to take the item after 0.7 seconds
+    allow_pick_date = now + 700;  // The player will be allowed to take the item after 0.7 seconds.
     can_be_picked = false;
   }
   else {
     can_be_picked = true;
   }
 
-  // initialize the sprite removal
+  // Initialize the item removal.
   if (will_disappear) {
-    blink_date = now + 8000;      // the item blinks at 8s
-    disappear_date = now + 10000; // the item disappears at 10s
+    blink_date = now + 8000;       // The item blinks after 8s.
+    disappear_date = now + 10000;  // The item disappears after 10s.
   }
 }
 

@@ -121,8 +121,8 @@ void Treasure::check_obtainable() const {
 void Treasure::ensure_obtainable() {
 
   Equipment& equipment = game->get_equipment();
-  if (!equipment.get_item(item_name).is_obtainable()) {
-    item_name = "_none";
+  if (!item_name.empty() && !equipment.get_item(item_name).is_obtainable()) {
+    item_name = "";
     variant = 1;
   }
 }
@@ -178,7 +178,7 @@ bool Treasure::is_found() const {
  * @return true if this treasure is empty
  */
 bool Treasure::is_empty() const {
-  return get_item_name() == "_none";
+  return get_item_name().empty();
 }
 
 /**
@@ -194,7 +194,7 @@ const std::string& Treasure::get_savegame_variable() const {
  * @brief Gives the treasure to the player.
  *
  * Adds the item to the hero's equipment.
- * The item should not be "_none".
+ * The item should not be empty.
  */
 void Treasure::give_to_player() const {
 
@@ -204,12 +204,14 @@ void Treasure::give_to_player() const {
   }
 
   // Give the item to the player.
-  Equipment& equipment = game->get_equipment();
-  equipment.get_item(get_item_name()).set_variant(get_variant());
+  EquipmentItem& item = get_item();
+  if (item.is_saved()) {
+    item.set_variant(get_variant());
+  }
 
   // Notify the Lua item and the Lua map.
   LuaContext& lua_context = game->get_lua_context();
-  lua_context.item_on_obtaining(equipment.get_item(get_item_name()), *this);
+  lua_context.item_on_obtaining(item, *this);
   lua_context.hero_on_obtaining_treasure(game->get_hero(), *this);
 }
 

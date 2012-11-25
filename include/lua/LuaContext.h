@@ -188,6 +188,7 @@ class LuaContext {
     // Equipment item events.
     void item_on_update(EquipmentItem& item);
     void item_on_suspended(EquipmentItem& item, bool suspended);
+    void item_on_created(EquipmentItem& item);
     void item_on_started(EquipmentItem& item);
     void item_on_finished(EquipmentItem& item);
     void item_on_map_changed(EquipmentItem& item, Map& map);
@@ -445,22 +446,6 @@ class LuaContext {
       pixel_movement_api_get_delay,
       pixel_movement_api_set_delay,
 
-      // Equipment item API.
-      item_api_get_game,
-      item_api_get_map,
-      // TODO get_name, get/set_savegame_variable, get/set_amount_savegame_variable, is/set_allowed,
-      // is/set_assignable, get/set_can_disappear, get/set_brandish_when_picked, get/set_shadow,
-      // get/set_sound_when_picked, get/set_sound_when_brandished
-      item_api_has_variant,
-      item_api_get_variant,
-      item_api_set_variant,
-      item_api_has_amount,
-      item_api_get_amount,
-      item_api_set_amount,
-      item_api_add_amount,
-      item_api_remove_amount,
-      item_api_set_finished,
-
       // Game API.
       game_api_exists,
       game_api_delete,
@@ -495,6 +480,40 @@ class LuaContext {
       game_api_get_ability,
       game_api_set_ability,
       game_api_get_item,
+
+      // Equipment item API.
+      item_api_get_name,
+      item_api_get_game,
+      item_api_get_map,
+      item_api_get_savegame_variable,
+      item_api_set_savegame_variable,
+      item_api_get_amount_savegame_variable,
+      item_api_set_amount_savegame_variable,
+      item_api_is_obtainable,
+      item_api_set_obtainable,
+      item_api_is_assignable,
+      item_api_set_assignable,
+      item_api_get_can_disappear,
+      item_api_set_can_disappear,
+      item_api_get_brandish_when_picked,
+      item_api_set_brandish_when_picked,
+      item_api_get_shadow,
+      item_api_set_shadow,
+      item_api_get_sound_when_picked,
+      item_api_set_sound_when_picked,
+      item_api_get_sound_when_brandished,
+      item_api_set_sound_when_brandished,
+      item_api_has_variant,
+      item_api_get_variant,
+      item_api_set_variant,
+      item_api_has_amount,
+      item_api_get_amount,
+      item_api_set_amount,
+      item_api_add_amount,
+      item_api_remove_amount,
+      item_api_get_max_amount,
+      item_api_set_max_amount,
+      item_api_set_finished,
 
       // Map API.
       map_api_get_id,
@@ -633,8 +652,6 @@ class LuaContext {
       enemy_api_set_invincible,
       enemy_api_set_invincible_sprite,
       enemy_api_set_treasure,
-      enemy_api_set_no_treasure,
-      enemy_api_set_random_treasure,
       enemy_api_get_obstacle_behavior,
       enemy_api_set_obstacle_behavior,
       enemy_api_restart,

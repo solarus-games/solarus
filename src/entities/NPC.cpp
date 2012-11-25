@@ -105,7 +105,7 @@ bool NPC::is_drawn_in_y_order() {
 
 /**
  * @brief Creates the sprite specified.
- * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
+ * @param sprite_name sprite animation set of the entity, or an empty string to create no sprite
  * @param initial_direction direction of the entity's sprite (ignored if there is no sprite
  * of if the direction specified is -1)
  */

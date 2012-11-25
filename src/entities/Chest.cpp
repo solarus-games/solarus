@@ -204,7 +204,7 @@ void Chest::update() {
 
       treasure_date = 0;
 
-      if (treasure.get_item_name() != "_none") {
+      if (!treasure.is_empty()) {
         // give a treasure to the player
 
         get_hero().start_treasure(treasure);

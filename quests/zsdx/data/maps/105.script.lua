@@ -296,21 +296,24 @@ function close_w_room_sensor:on_activated()
       breed = "blue_pig_soldier",
       layer = 1,
       x = 752,
-      y = 877
+      y = 877,
+      treasure_name = "random"
     }
     map:create_enemy{
       name = "w_room_enemy_2",
       breed = "red_pig_soldier",
       layer = 1,
       x = 808,
-      y = 885
+      y = 885,
+      treasure_name = "random"
     }
     map:create_enemy{
       name = "w_room_enemy_3",
       breed = "blue_pig_soldier",
       layer = 1,
       x = 864,
-      y = 877
+      y = 877,
+      treasure_name = "random"
     }
   end
 end

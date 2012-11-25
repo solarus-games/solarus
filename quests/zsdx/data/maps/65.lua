@@ -4985,7 +4985,6 @@ destructible{
   x = 304,
   y = 245,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -4994,7 +4993,6 @@ destructible{
   x = 336,
   y = 245,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -5003,7 +5001,6 @@ destructible{
   x = 352,
   y = 245,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -5272,7 +5269,7 @@ enemy{
   direction = 3,
   breed = "green_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5375,7 +5372,7 @@ enemy{
   direction = 3,
   breed = "blue_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5387,7 +5384,7 @@ enemy{
   direction = 3,
   breed = "red_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5412,7 +5409,7 @@ enemy{
   direction = 3,
   breed = "green_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5424,7 +5421,7 @@ enemy{
   direction = 3,
   breed = "green_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5436,7 +5433,7 @@ enemy{
   direction = 3,
   breed = "green_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

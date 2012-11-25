@@ -185,7 +185,6 @@ chest{
   y = 368,
   name = "sword_chest",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
   treasure_savegame_variable = "b931",
 }

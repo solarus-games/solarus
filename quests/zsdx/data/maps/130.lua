@@ -1009,7 +1009,6 @@ enemy{
   breed = "ganon",
   rank = 2,
   savegame_variable = "b881",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

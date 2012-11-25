@@ -59,7 +59,8 @@ Equipment::Equipment(Savegame& savegame):
     if (resource_type == 5) {  // It's an equipment item.
       EquipmentItem* item = new EquipmentItem(*this);
       item->increment_refcount();
-      items[resource_name] = item;
+      item->set_name(resource_id);
+      items[resource_id] = item;
     }
   }
   FileTools::data_file_close(database_file);
@@ -107,7 +108,7 @@ void Equipment::notify_game_started() {
     it->second->notify_game_started();
   }
 
-  // Start the items one they all exist.
+  // Start the items once they all exist.
   for (it = items.begin(); it != items.end(); it++) {
     it->second->start();
   }

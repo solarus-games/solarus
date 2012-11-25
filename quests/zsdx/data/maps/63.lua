@@ -1331,7 +1331,7 @@ enemy{
   direction = 2,
   breed = "pike_detect",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1351,7 +1351,7 @@ enemy{
   direction = 2,
   breed = "pike_detect",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1389,7 +1389,7 @@ enemy{
   direction = 2,
   breed = "pike_detect",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1401,7 +1401,7 @@ enemy{
   direction = 2,
   breed = "pike_detect",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1439,7 +1439,7 @@ enemy{
   direction = 2,
   breed = "pike_detect",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1464,7 +1464,7 @@ enemy{
   direction = 2,
   breed = "pike_detect",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1476,7 +1476,7 @@ enemy{
   direction = 2,
   breed = "pike_detect",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1514,7 +1514,7 @@ enemy{
   direction = 2,
   breed = "pike_detect",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1526,7 +1526,7 @@ enemy{
   direction = 2,
   breed = "pike_detect",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1564,7 +1564,7 @@ enemy{
   direction = 2,
   breed = "pike_detect",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1615,7 +1615,7 @@ enemy{
   direction = 3,
   breed = "green_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1627,7 +1627,7 @@ enemy{
   direction = 3,
   breed = "green_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11842,7 +11842,7 @@ destructible{
   x = 184,
   y = 453,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -11926,7 +11926,7 @@ enemy{
   direction = 3,
   breed = "red_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12094,7 +12094,7 @@ enemy{
   direction = 3,
   breed = "green_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12106,7 +12106,7 @@ enemy{
   direction = 3,
   breed = "blue_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -12118,7 +12118,7 @@ enemy{
   direction = 3,
   breed = "red_knight_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

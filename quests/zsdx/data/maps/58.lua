@@ -2393,7 +2393,7 @@ destructible{
   x = 760,
   y = 629,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2402,7 +2402,7 @@ destructible{
   x = 744,
   y = 629,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2414,7 +2414,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2426,7 +2426,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2438,7 +2438,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2450,7 +2450,7 @@ enemy{
   direction = 3,
   breed = "red_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2462,7 +2462,7 @@ enemy{
   direction = 3,
   breed = "ropa",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2471,7 +2471,7 @@ destructible{
   x = 80,
   y = 173,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6500,7 +6500,7 @@ destructible{
   x = 744,
   y = 133,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6509,7 +6509,7 @@ destructible{
   x = 760,
   y = 117,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6518,7 +6518,7 @@ destructible{
   x = 792,
   y = 133,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6527,7 +6527,7 @@ destructible{
   x = 776,
   y = 117,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7021,7 +7021,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7033,7 +7033,7 @@ enemy{
   direction = 3,
   breed = "ropa",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7045,7 +7045,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7057,7 +7057,7 @@ enemy{
   direction = 3,
   breed = "ropa",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

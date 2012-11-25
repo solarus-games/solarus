@@ -944,7 +944,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 enemy{
@@ -955,7 +955,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 wall{
@@ -979,7 +979,7 @@ enemy{
   direction = 3,
   breed = "minillosaur_egg_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 enemy{
@@ -990,7 +990,7 @@ enemy{
   direction = 3,
   breed = "minillosaur_egg_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 enemy{
@@ -1001,7 +1001,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 enemy{
@@ -1012,7 +1012,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 enemy{
@@ -1023,7 +1023,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 enemy{
@@ -1034,7 +1034,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 destructible{
@@ -1042,7 +1042,7 @@ destructible{
   x = 440,
   y = 77,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1060,7 +1060,7 @@ destructible{
   x = 472,
   y = 77,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1069,7 +1069,7 @@ destructible{
   x = 88,
   y = 85,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1078,7 +1078,7 @@ destructible{
   x = 104,
   y = 109,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1087,7 +1087,7 @@ destructible{
   x = 120,
   y = 85,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1112,7 +1112,7 @@ enemy{
   direction = 3,
   breed = "minillosaur_egg_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 stairs{
@@ -3838,7 +3838,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 jumper{

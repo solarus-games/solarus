@@ -236,8 +236,6 @@ void LuaContext::register_entity_module() {
       { "set_invincible_sprite", enemy_api_set_invincible_sprite },
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "set_treasure", enemy_api_set_treasure },
-      { "set_no_treasure", enemy_api_set_no_treasure },
-      { "set_random_treasure", enemy_api_set_random_treasure },
       { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
       { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
       { "get_optimization_distance", entity_api_get_optimization_distance },
@@ -1784,41 +1782,20 @@ int LuaContext::enemy_api_set_invincible_sprite(lua_State* l) {
 int LuaContext::enemy_api_set_treasure(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  const std::string& item_name = luaL_checkstring(l, 2);
-  int variant = luaL_checkinteger(l, 3);
-  const std::string& savegame_variable = luaL_checkstring(l, 4);
+  std::string item_name, savegame_variable;
+  int variant = 1;
+
+  if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
+    item_name = luaL_checkstring(l, 2);
+  }
+  if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
+    variant = luaL_checkinteger(l, 3);
+  }
+  if (lua_gettop(l) >= 4 && !lua_isnil(l, 4)) {
+    savegame_variable = luaL_checkstring(l, 4);
+  }
 
   Treasure treasure(enemy.get_game(), item_name, variant, savegame_variable);
-  enemy.set_treasure(treasure);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_set_no_treasure.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_set_no_treasure(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  Treasure treasure(enemy.get_game(), "_none", 1, "");
-  enemy.set_treasure(treasure);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_enemy_set_random_treasure.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::enemy_api_set_random_treasure(lua_State* l) {
-
-  Enemy& enemy = check_enemy(l, 1);
-
-  Treasure treasure(enemy.get_game(), "_random", 1, "");
   enemy.set_treasure(treasure);
 
   return 0;
@@ -1912,7 +1889,7 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
 
   Game& game = enemy.get_game();
   MapEntities& entities = enemy.get_map().get_entities();
-  Treasure treasure = Treasure(game, "_random", 1, "");
+  Treasure treasure(game, "", 1, "");
   Enemy* other_enemy = (Enemy*) Enemy::create(game, breed, Enemy::RANK_NORMAL,
       "", name, Layer(layer), x, y, 0, treasure);
   other_enemy->set_optimization_distance(enemy.get_optimization_distance());

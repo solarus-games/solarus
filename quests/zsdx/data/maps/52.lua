@@ -443,7 +443,6 @@ enemy{
   breed = "agahnim_2",
   rank = 2,
   savegame_variable = "b728",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

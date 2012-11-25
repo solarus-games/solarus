@@ -382,7 +382,7 @@ destructible{
   x = 232,
   y = 461,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -391,7 +391,7 @@ destructible{
   x = 232,
   y = 477,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -400,7 +400,7 @@ destructible{
   x = 232,
   y = 493,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -409,7 +409,7 @@ destructible{
   x = 248,
   y = 493,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -418,7 +418,7 @@ destructible{
   x = 248,
   y = 477,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -427,7 +427,7 @@ destructible{
   x = 248,
   y = 461,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -436,7 +436,7 @@ destructible{
   x = 248,
   y = 541,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -445,7 +445,7 @@ destructible{
   x = 248,
   y = 525,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -454,7 +454,7 @@ destructible{
   x = 248,
   y = 509,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -463,7 +463,7 @@ destructible{
   x = 248,
   y = 557,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

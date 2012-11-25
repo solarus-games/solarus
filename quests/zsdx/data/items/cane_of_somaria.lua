@@ -1,7 +1,7 @@
 local item = ...
 item.somaria_block = nil  -- The block created if any.
 
-function item:on_started()
+function item:on_created()
 
   self:set_savegame_variable("i1109")
   self:set_assignable(true)

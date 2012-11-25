@@ -10,6 +10,17 @@ local function prepend_b(value)
   return "b" .. value
 end
 
+local function convert_treasure_name(treasure_name)
+
+  if treasure_name == "_random" then
+    -- Random is no longer a built-in special item.
+    treasure_name = "random"
+  elseif treasure_name == "_none" then
+    treasure_name = nil
+  end
+  return treasure_name
+end
+
 -- This table describes the old syntax.
 local entity_syntaxes = {
 
@@ -55,7 +66,7 @@ local entity_syntaxes = {
     { token_name = "layer" },
     { token_name = "x" },
     { token_name = "y" },
-    { token_name = "treasure_name", token_type = "string" },
+    { token_name = "treasure_name", token_type = "string", converter = convert_treasure_name },
     { token_name = "treasure_variant", nil_value = 0 },
     { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
   },
@@ -74,7 +85,7 @@ local entity_syntaxes = {
         [6] = "bomb_flower",
       }
     },
-    { token_name = "treasure_name", token_type = "string" },
+    { token_name = "treasure_name", token_type = "string", converter = convert_treasure_name },
     { token_name = "treasure_variant", nil_value = 0 },
     { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
   },
@@ -86,7 +97,7 @@ local entity_syntaxes = {
     { token_name = "y" },
     { token_name = "name", token_type = "string" },
     { token_name = "is_big_chest", token_type = "boolean" },
-    { token_name = "treasure_name", token_type = "string" },
+    { token_name = "treasure_name", token_type = "string", converter = convert_treasure_name },
     { token_name = "treasure_variant", nil_value = 0 },
     { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
   },
@@ -113,7 +124,7 @@ local entity_syntaxes = {
     { token_name = "breed", token_type = "string" },
     { token_name = "rank" },
     { token_name = "savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
-    { token_name = "treasure_name", token_type = "string" },
+    { token_name = "treasure_name", token_type = "string", converter = convert_treasure_name },
     { token_name = "treasure_variant", nil_value = 0 },
     { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
   },
@@ -214,7 +225,7 @@ local entity_syntaxes = {
     { token_name = "x" },
     { token_name = "y" },
     { token_name = "name", token_type = "string" },
-    { token_name = "treasure_name", token_type = "string" },
+    { token_name = "treasure_name", token_type = "string", converter = convert_treasure_name },
     { token_name = "treasure_variant" },
     { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
     { token_name = "price" },
@@ -362,9 +373,6 @@ function parse_entity(line, line_number)
 	else
 	  value = syntax[i].converter(value)
 	end
-        if value == nil then
-          error("Line " .. line_number .. ": Failed to convert the value")
-        end
       end
 
       entity[i] = {

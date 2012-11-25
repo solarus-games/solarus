@@ -745,7 +745,7 @@ destructible{
   x = 56,
   y = 93,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -754,7 +754,7 @@ destructible{
   x = 72,
   y = 93,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -763,7 +763,7 @@ destructible{
   x = 88,
   y = 93,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -772,7 +772,7 @@ destructible{
   x = 232,
   y = 93,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -781,7 +781,7 @@ destructible{
   x = 248,
   y = 93,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -790,7 +790,7 @@ destructible{
   x = 264,
   y = 93,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

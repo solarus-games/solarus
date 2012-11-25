@@ -691,7 +691,6 @@ destructible{
   x = 272,
   y = 109,
   subtype = "black_stone",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -700,7 +699,6 @@ destructible{
   x = 256,
   y = 125,
   subtype = "black_stone",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -709,7 +707,6 @@ destructible{
   x = 272,
   y = 141,
   subtype = "black_stone",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

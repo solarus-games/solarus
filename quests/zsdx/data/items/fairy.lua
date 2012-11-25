@@ -2,7 +2,7 @@ local item = ...
 
 -- This script defines the behavior of pickable fairies present on the map.
 
-function item:on_started()
+function item:on_created()
 
   self:set_shadow(nil)
   self:set_can_disappear(true)

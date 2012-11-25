@@ -4,9 +4,9 @@ local item = ...
 item.temporary_lit_torches = {} -- List of torches that will be unlit by timers soon (FIFO).
 item.was_dark_room = false
 
-function item:on_started()
+function item:on_created()
 
-  self:set_savegame_variable("i1103")
+  self:set_savegame_variable("i1104")
   self:set_assignable(true)
 end
 

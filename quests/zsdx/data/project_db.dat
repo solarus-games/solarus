@@ -338,6 +338,7 @@
 4	world_warp	world_warp
 4	wrong	wrong
 4	zora	zora
+5	random	(Random)
 5	feather	Feather
 5	bombs_counter	Bombs counter
 5	bomb	Bombs (x1 / x3 / x8)

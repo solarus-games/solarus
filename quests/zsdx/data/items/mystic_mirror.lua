@@ -6,7 +6,7 @@ local item = ...
 local i = 1  -- Index of the waterfall tiles.
 local timer
 
-function item:on_started()
+function item:on_created()
 
   self:set_savegame_variable("i1108")
   self:set_assignable(true)

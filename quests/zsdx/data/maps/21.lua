@@ -3268,7 +3268,7 @@ destructible{
   x = 48,
   y = 597,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -3277,7 +3277,7 @@ destructible{
   x = 64,
   y = 597,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -3369,7 +3369,6 @@ destructible{
   x = 416,
   y = 325,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -3400,7 +3399,7 @@ destructible{
   x = 120,
   y = 597,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -3409,7 +3408,7 @@ destructible{
   x = 104,
   y = 597,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -3559,7 +3558,7 @@ destructible{
   x = 296,
   y = 253,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -3577,7 +3576,7 @@ destructible{
   x = 248,
   y = 229,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -3737,7 +3736,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 enemy{
@@ -3748,7 +3747,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 enemy{
@@ -3759,7 +3758,7 @@ enemy{
   direction = 3,
   breed = "simple_green_soldier",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 enemy{
@@ -3770,7 +3769,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
 }
 
 stairs{

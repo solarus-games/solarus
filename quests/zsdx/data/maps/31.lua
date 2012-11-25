@@ -1697,7 +1697,7 @@ enemy{
   direction = 3,
   breed = "bubble",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1709,7 +1709,7 @@ enemy{
   direction = 3,
   breed = "skeletor",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1721,7 +1721,7 @@ enemy{
   direction = 3,
   breed = "skeletor",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1785,7 +1785,7 @@ enemy{
   direction = 3,
   breed = "skeletor",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1797,7 +1797,7 @@ enemy{
   direction = 3,
   breed = "skeletor",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1809,7 +1809,7 @@ enemy{
   direction = 3,
   breed = "skeletor",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1827,7 +1827,7 @@ destructible{
   x = 208,
   y = 701,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5399,7 +5399,7 @@ enemy{
   direction = 3,
   breed = "skeletor",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5421,7 +5421,7 @@ destructible{
   x = 488,
   y = 61,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5439,7 +5439,7 @@ destructible{
   x = 520,
   y = 61,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5448,7 +5448,7 @@ destructible{
   x = 520,
   y = 141,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5457,7 +5457,7 @@ destructible{
   x = 488,
   y = 141,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5466,7 +5466,7 @@ destructible{
   x = 504,
   y = 141,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5501,7 +5501,6 @@ enemy{
   breed = "firebird",
   rank = 2,
   savegame_variable = "b93",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

@@ -7583,7 +7583,7 @@ destructible{
   x = 504,
   y = 381,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7592,7 +7592,7 @@ destructible{
   x = 520,
   y = 397,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7645,7 +7645,7 @@ destructible{
   x = 784,
   y = 525,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7654,7 +7654,7 @@ destructible{
   x = 768,
   y = 525,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7663,7 +7663,7 @@ destructible{
   x = 752,
   y = 525,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7672,7 +7672,7 @@ destructible{
   x = 752,
   y = 541,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7681,7 +7681,7 @@ destructible{
   x = 768,
   y = 541,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7690,7 +7690,7 @@ destructible{
   x = 784,
   y = 541,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7699,7 +7699,7 @@ destructible{
   x = 784,
   y = 557,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7708,7 +7708,7 @@ destructible{
   x = 768,
   y = 557,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7726,7 +7726,7 @@ destructible{
   x = 704,
   y = 525,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7782,7 +7782,7 @@ destructible{
   x = 464,
   y = 61,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7791,7 +7791,7 @@ destructible{
   x = 432,
   y = 61,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7800,7 +7800,7 @@ destructible{
   x = 448,
   y = 69,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7810,7 +7810,6 @@ chest{
   y = 24,
   name = "chest_link_house",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
   treasure_savegame_variable = "b45",
 }
@@ -7820,7 +7819,7 @@ destructible{
   x = 568,
   y = 53,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7829,7 +7828,7 @@ destructible{
   x = 944,
   y = 373,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7838,7 +7837,7 @@ destructible{
   x = 960,
   y = 389,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7847,7 +7846,7 @@ destructible{
   x = 960,
   y = 373,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7856,7 +7855,7 @@ destructible{
   x = 960,
   y = 357,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7865,7 +7864,7 @@ destructible{
   x = 976,
   y = 373,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7874,7 +7873,7 @@ destructible{
   x = 976,
   y = 389,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7903,7 +7902,7 @@ destructible{
   x = 792,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7912,7 +7911,7 @@ destructible{
   x = 792,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7921,7 +7920,7 @@ destructible{
   x = 792,
   y = 693,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7930,7 +7929,7 @@ destructible{
   x = 808,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7939,7 +7938,7 @@ destructible{
   x = 808,
   y = 693,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7948,7 +7947,7 @@ destructible{
   x = 808,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7957,7 +7956,7 @@ destructible{
   x = 824,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7966,7 +7965,7 @@ destructible{
   x = 824,
   y = 693,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7975,7 +7974,7 @@ destructible{
   x = 824,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7984,7 +7983,7 @@ destructible{
   x = 840,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7993,7 +7992,7 @@ destructible{
   x = 840,
   y = 693,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8002,7 +8001,7 @@ destructible{
   x = 840,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8011,7 +8010,7 @@ destructible{
   x = 856,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8030,7 +8029,7 @@ destructible{
   x = 856,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8039,7 +8038,7 @@ destructible{
   x = 872,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8048,7 +8047,7 @@ destructible{
   x = 872,
   y = 693,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8057,7 +8056,7 @@ destructible{
   x = 872,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8066,7 +8065,7 @@ destructible{
   x = 888,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8075,7 +8074,7 @@ destructible{
   x = 888,
   y = 693,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8084,7 +8083,7 @@ destructible{
   x = 888,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8093,7 +8092,7 @@ destructible{
   x = 904,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8102,7 +8101,7 @@ destructible{
   x = 904,
   y = 693,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8111,7 +8110,7 @@ destructible{
   x = 904,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8120,7 +8119,7 @@ destructible{
   x = 920,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8129,7 +8128,7 @@ destructible{
   x = 920,
   y = 693,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8138,7 +8137,7 @@ destructible{
   x = 920,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8147,7 +8146,7 @@ destructible{
   x = 936,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8156,7 +8155,7 @@ destructible{
   x = 936,
   y = 693,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8165,7 +8164,7 @@ destructible{
   x = 936,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8174,7 +8173,7 @@ destructible{
   x = 952,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8183,7 +8182,7 @@ destructible{
   x = 952,
   y = 693,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8192,7 +8191,7 @@ destructible{
   x = 952,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8201,7 +8200,7 @@ destructible{
   x = 968,
   y = 677,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8210,7 +8209,7 @@ destructible{
   x = 968,
   y = 693,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8219,7 +8218,7 @@ destructible{
   x = 968,
   y = 709,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8244,7 +8243,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8256,7 +8255,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8268,7 +8267,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8280,7 +8279,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8292,7 +8291,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8304,7 +8303,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8316,7 +8315,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8328,7 +8327,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8340,7 +8339,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8352,7 +8351,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8364,7 +8363,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8376,7 +8375,7 @@ enemy{
   direction = 3,
   breed = "tentacle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

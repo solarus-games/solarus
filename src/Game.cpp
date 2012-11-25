@@ -124,6 +124,7 @@ Game::~Game() {
  * @brief Starts this screen.
  */
 void Game::start() {
+  get_savegame().notify_game_started();
   get_lua_context().game_on_started(*this);
 }
 
@@ -131,8 +132,8 @@ void Game::start() {
  * @brief Ends this screen.
  */
 void Game::stop() {
-  get_equipment().notify_game_finished();
   get_lua_context().game_on_finished(*this);
+  get_savegame().notify_game_finished();
 }
 
 /**

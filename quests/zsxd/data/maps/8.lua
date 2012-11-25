@@ -472,7 +472,6 @@ chest{
   y = 176,
   name = "uselesschest",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

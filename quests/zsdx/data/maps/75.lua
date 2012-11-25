@@ -230,7 +230,6 @@ chest{
   y = 80,
   name = "chest_1",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -240,7 +239,6 @@ chest{
   y = 80,
   name = "chest_2",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -250,7 +248,6 @@ chest{
   y = 80,
   name = "chest_3",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -260,7 +257,6 @@ chest{
   y = 80,
   name = "chest_4",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -270,7 +266,6 @@ chest{
   y = 112,
   name = "chest_5",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -280,7 +275,6 @@ chest{
   y = 112,
   name = "chest_6",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -290,7 +284,6 @@ chest{
   y = 112,
   name = "chest_7",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -300,7 +293,6 @@ chest{
   y = 112,
   name = "chest_8",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -310,7 +302,6 @@ chest{
   y = 144,
   name = "chest_9",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -320,7 +311,6 @@ chest{
   y = 144,
   name = "chest_10",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -330,7 +320,6 @@ chest{
   y = 144,
   name = "chest_11",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -340,7 +329,6 @@ chest{
   y = 144,
   name = "chest_12",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

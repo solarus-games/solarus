@@ -6355,7 +6355,7 @@ destructible{
   x = 408,
   y = 637,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6364,7 +6364,7 @@ destructible{
   x = 424,
   y = 637,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6373,7 +6373,7 @@ destructible{
   x = 440,
   y = 637,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6382,7 +6382,7 @@ destructible{
   x = 536,
   y = 701,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6391,7 +6391,7 @@ destructible{
   x = 552,
   y = 701,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6400,7 +6400,7 @@ destructible{
   x = 568,
   y = 701,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6409,7 +6409,7 @@ destructible{
   x = 376,
   y = 701,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6418,7 +6418,7 @@ destructible{
   x = 392,
   y = 701,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6427,7 +6427,7 @@ destructible{
   x = 232,
   y = 685,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6436,7 +6436,7 @@ destructible{
   x = 128,
   y = 533,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6445,7 +6445,7 @@ destructible{
   x = 144,
   y = 533,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6454,7 +6454,7 @@ destructible{
   x = 152,
   y = 581,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6463,7 +6463,7 @@ destructible{
   x = 168,
   y = 581,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6472,7 +6472,7 @@ destructible{
   x = 184,
   y = 581,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6481,7 +6481,7 @@ destructible{
   x = 216,
   y = 685,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6490,7 +6490,7 @@ destructible{
   x = 216,
   y = 701,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6499,7 +6499,7 @@ destructible{
   x = 232,
   y = 701,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6508,7 +6508,7 @@ destructible{
   x = 264,
   y = 509,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6517,7 +6517,7 @@ destructible{
   x = 280,
   y = 429,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6526,7 +6526,7 @@ destructible{
   x = 632,
   y = 453,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6535,7 +6535,7 @@ destructible{
   x = 632,
   y = 469,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6544,7 +6544,7 @@ destructible{
   x = 184,
   y = 653,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6553,7 +6553,7 @@ destructible{
   x = 248,
   y = 317,
   subtype = "bush",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6565,7 +6565,7 @@ enemy{
   direction = 3,
   breed = "snap_dragon",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6577,7 +6577,7 @@ enemy{
   direction = 3,
   breed = "snap_dragon",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6589,7 +6589,7 @@ enemy{
   direction = 3,
   breed = "ropa",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6601,7 +6601,7 @@ enemy{
   direction = 3,
   breed = "ropa",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6613,7 +6613,7 @@ enemy{
   direction = 3,
   breed = "snap_dragon",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6622,7 +6622,7 @@ destructible{
   x = 176,
   y = 373,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6631,7 +6631,7 @@ destructible{
   x = 192,
   y = 373,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6640,7 +6640,7 @@ destructible{
   x = 208,
   y = 373,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6649,7 +6649,7 @@ destructible{
   x = 192,
   y = 389,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6658,7 +6658,7 @@ destructible{
   x = 208,
   y = 389,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6667,7 +6667,7 @@ destructible{
   x = 224,
   y = 389,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6676,7 +6676,7 @@ destructible{
   x = 120,
   y = 357,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6685,7 +6685,7 @@ destructible{
   x = 120,
   y = 373,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6694,7 +6694,7 @@ destructible{
   x = 136,
   y = 373,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6703,7 +6703,7 @@ destructible{
   x = 136,
   y = 389,
   subtype = "grass",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6712,7 +6712,7 @@ destructible{
   x = 416,
   y = 573,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6721,7 +6721,7 @@ destructible{
   x = 432,
   y = 589,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6730,7 +6730,7 @@ destructible{
   x = 448,
   y = 589,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -6739,7 +6739,7 @@ destructible{
   x = 464,
   y = 573,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9995,7 +9995,6 @@ enemy{
   breed = "poutroxor",
   rank = 2,
   savegame_variable = "b299",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

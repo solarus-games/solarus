@@ -276,7 +276,7 @@ enemy{
   direction = 0,
   breed = "pike_auto",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

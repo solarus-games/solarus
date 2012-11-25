@@ -277,6 +277,7 @@ void Sprite::set_current_direction(int current_direction) {
     Debug::check_assertion(current_direction >= 0
         && current_direction < current_animation->get_nb_directions(),
         StringConcat() << "Invalid direction of sprite '" << get_animation_set_id()
+        << "' in animation '" << current_animation_name
         << "': " << current_direction);
 
     this->current_direction = current_direction;

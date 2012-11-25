@@ -1286,7 +1286,7 @@ destructible{
   x = 136,
   y = 221,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1295,7 +1295,7 @@ destructible{
   x = 136,
   y = 237,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1304,7 +1304,7 @@ destructible{
   x = 216,
   y = 221,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1313,7 +1313,7 @@ destructible{
   x = 216,
   y = 237,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

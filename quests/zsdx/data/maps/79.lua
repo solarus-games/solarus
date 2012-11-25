@@ -4153,7 +4153,7 @@ destructible{
   x = 136,
   y = 301,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -4162,7 +4162,7 @@ destructible{
   x = 152,
   y = 301,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -4171,7 +4171,7 @@ destructible{
   x = 136,
   y = 317,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -4180,7 +4180,7 @@ destructible{
   x = 152,
   y = 317,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -4189,7 +4189,7 @@ destructible{
   x = 136,
   y = 333,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -4198,7 +4198,7 @@ destructible{
   x = 152,
   y = 333,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -4207,7 +4207,7 @@ destructible{
   x = 136,
   y = 349,
   subtype = "white_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -4217,7 +4217,6 @@ chest{
   y = 176,
   name = "chest_1",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -4227,7 +4226,6 @@ chest{
   y = 256,
   name = "chest_2",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -4237,7 +4235,6 @@ chest{
   y = 256,
   name = "chest_3",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -4247,7 +4244,6 @@ chest{
   y = 288,
   name = "chest_4",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -4257,7 +4253,6 @@ chest{
   y = 368,
   name = "chest_5",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -4267,7 +4262,6 @@ chest{
   y = 432,
   name = "chest_6",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -4277,7 +4271,6 @@ chest{
   y = 448,
   name = "chest_7",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 

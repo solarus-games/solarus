@@ -1,8 +1,8 @@
 local item = ...
 
-function item:on_started()
+function item:on_created()
 
-  self:set_savegame_variable("i1028")
+  self:set_savegame_variable("i1110")
   self:set_assignable(true)
   self:set_amount_savegame_variable("i1028")
   self:set_max_amount(10)

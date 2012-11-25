@@ -3246,7 +3246,6 @@ destructible{
   x = 88,
   y = 373,
   subtype = "black_stone",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -3255,7 +3254,6 @@ destructible{
   x = 104,
   y = 389,
   subtype = "black_stone",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -3264,7 +3262,6 @@ destructible{
   x = 120,
   y = 373,
   subtype = "black_stone",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -3762,7 +3759,7 @@ enemy{
   direction = 3,
   breed = "pike_auto",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -3774,7 +3771,7 @@ enemy{
   direction = 3,
   breed = "pike_auto",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -3783,7 +3780,7 @@ destructible{
   x = 376,
   y = 605,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -3792,7 +3789,7 @@ destructible{
   x = 264,
   y = 605,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -3801,7 +3798,7 @@ destructible{
   x = 200,
   y = 605,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7861,7 +7858,7 @@ destructible{
   x = 488,
   y = 221,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -7870,7 +7867,7 @@ destructible{
   x = 504,
   y = 221,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8346,7 +8343,7 @@ enemy{
   direction = 3,
   breed = "ropa",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8358,7 +8355,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

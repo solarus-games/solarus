@@ -2673,7 +2673,7 @@ enemy{
   direction = 3,
   breed = "skeletor",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2685,7 +2685,7 @@ enemy{
   direction = 3,
   breed = "red_bullblin",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8843,7 +8843,7 @@ enemy{
   direction = 3,
   breed = "red_bullblin",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8893,7 +8893,7 @@ enemy{
   direction = 3,
   breed = "skeletor",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8905,7 +8905,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8914,7 +8914,7 @@ destructible{
   x = 600,
   y = 701,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8923,7 +8923,7 @@ destructible{
   x = 600,
   y = 717,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8941,7 +8941,7 @@ destructible{
   x = 680,
   y = 717,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8959,7 +8959,7 @@ destructible{
   x = 696,
   y = 701,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -8986,7 +8986,7 @@ destructible{
   x = 56,
   y = 157,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9004,7 +9004,7 @@ destructible{
   x = 152,
   y = 157,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9107,7 +9107,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9145,7 +9145,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9157,7 +9157,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9169,7 +9169,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9181,7 +9181,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9193,7 +9193,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9205,7 +9205,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9217,7 +9217,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9229,7 +9229,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9241,7 +9241,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9253,7 +9253,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9265,7 +9265,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9277,7 +9277,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9289,7 +9289,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9301,7 +9301,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9313,7 +9313,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9325,7 +9325,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9337,7 +9337,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9349,7 +9349,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9361,7 +9361,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9373,7 +9373,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9385,7 +9385,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9397,7 +9397,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9409,7 +9409,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9421,7 +9421,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9433,7 +9433,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9445,7 +9445,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9457,7 +9457,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9469,7 +9469,7 @@ enemy{
   direction = 0,
   breed = "pike_fixed",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9481,7 +9481,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -9493,7 +9493,7 @@ enemy{
   direction = 3,
   breed = "blue_hardhat_beetle",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

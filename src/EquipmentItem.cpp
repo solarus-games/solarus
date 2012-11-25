@@ -23,13 +23,6 @@
 #include "lowlevel/StringConcat.h"
 #include <map>
 
-const std::string EquipmentItem::shadow_size_names[] = {
-    "none",
-    "small",
-    "big",
-    ""  // Sentinel.
-};
-
 /**
  * @brief Creates the properties of an item by parsing a group of the specified ini file
  *
@@ -46,9 +39,9 @@ EquipmentItem::EquipmentItem(Equipment& equipment):
   assignable(false),
   can_disappear(false),
   brandish_when_picked(true),
-  sound_when_picked(""),
-  sound_when_brandished(""),
-  shadow_size(SHADOW_BIG) {
+  sound_when_picked("picked_item"),
+  sound_when_brandished("treasure"),
+  shadow("big") {
 
 }
 
@@ -270,51 +263,21 @@ void EquipmentItem::set_sound_when_brandished(
 }
 
 /**
- * @brief Returns the size of the shadow to display when this item is on the
- * ground.
- * @return The size of the shadow.
+ * @brief Returns the animation of the shadow sprite to display when this item
+ * is on the ground.
+ * @return The animation of the shadow sprite, or an empty string.
  */
-EquipmentItem::ShadowSize EquipmentItem::get_shadow_size() const {
-  return shadow_size;
+const std::string& EquipmentItem::get_shadow() const {
+  return shadow;
 }
 
 /**
- * @brief Sets the size of the shadow to display when this item is on the
- * ground.
- * @param shadow_size The size of the shadow.
+ * @brief Sets the animation of the shadow sprite to display when this item is
+ * on the ground.
+ * @param shadow The animation of the shadow sprite or an empty string.
  */
-void EquipmentItem::set_shadow_size(ShadowSize shadow_size) {
-  this->shadow_size = shadow_size;
-}
-
-/**
- * @brief Converts a ShadowSize enum value into its name.
- * @param shadow_size A shadow size value.
- * @return The corresponding name.
- */
-const std::string& EquipmentItem::get_shadow_size_name(ShadowSize shadow_size) {
-
-  return shadow_size_names[shadow_size];
-}
-
-/**
- * @brief Gets a ShadowSize enum value from its name.
- * @param shadow_size_name Name of a shadow size value.
- * @return The corresponding ShadowSize value.
- */
-EquipmentItem::ShadowSize EquipmentItem::get_shadow_size_by_name(const std::string& shadow_size_name) {
-
-  int i = 0;
-  while (!shadow_size_names[i].empty()) {
-    if (shadow_size_names[i] == shadow_size_name) {
-      return ShadowSize(i);
-    }
-    ++i;
-  }
-
-  Debug::die(StringConcat() << "Invalid shadow size name: '"
-      << shadow_size_name << "'");
-  throw;
+void EquipmentItem::set_shadow(const std::string& shadow) {
+  this->shadow = shadow;
 }
 
 /**

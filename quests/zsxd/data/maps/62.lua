@@ -4947,7 +4947,6 @@ destructible{
   x = 1384,
   y = 133,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -4966,7 +4965,6 @@ destructible{
   x = 1312,
   y = 349,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -4975,7 +4973,6 @@ destructible{
   x = 1408,
   y = 253,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -4984,7 +4981,6 @@ destructible{
   x = 1456,
   y = 85,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -5007,7 +5003,7 @@ enemy{
   direction = 3,
   breed = "mandible",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5019,7 +5015,7 @@ enemy{
   direction = 3,
   breed = "mandible",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5031,7 +5027,7 @@ enemy{
   direction = 3,
   breed = "mandible",
   rank = 0,
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5210,7 +5206,7 @@ destructible{
   x = 1264,
   y = 549,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5228,7 +5224,7 @@ destructible{
   x = 1296,
   y = 549,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5237,7 +5233,7 @@ destructible{
   x = 1312,
   y = 549,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5246,7 +5242,7 @@ destructible{
   x = 1328,
   y = 549,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5264,7 +5260,7 @@ destructible{
   x = 1280,
   y = 597,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5273,7 +5269,7 @@ destructible{
   x = 1296,
   y = 597,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -5291,7 +5287,7 @@ destructible{
   x = 1328,
   y = 597,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

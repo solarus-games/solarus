@@ -43,8 +43,6 @@ class Equipment {
 
     const std::string get_ability_savegame_variable(const std::string& ability_name);
 
-    static int l_item(lua_State* l);
-
   public:
 
     // creation and destruction

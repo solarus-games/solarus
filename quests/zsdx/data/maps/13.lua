@@ -990,7 +990,7 @@ destructible{
   x = 72,
   y = 157,
   subtype = "black_stone",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -999,7 +999,7 @@ destructible{
   x = 88,
   y = 157,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1008,7 +1008,7 @@ destructible{
   x = 104,
   y = 157,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1017,7 +1017,7 @@ destructible{
   x = 376,
   y = 141,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1026,7 +1026,7 @@ destructible{
   x = 392,
   y = 141,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1035,7 +1035,7 @@ destructible{
   x = 392,
   y = 157,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1044,7 +1044,7 @@ destructible{
   x = 392,
   y = 173,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1053,7 +1053,7 @@ destructible{
   x = 72,
   y = 93,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1062,7 +1062,7 @@ destructible{
   x = 88,
   y = 93,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1071,7 +1071,7 @@ destructible{
   x = 104,
   y = 93,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1096,7 +1096,7 @@ destructible{
   x = 216,
   y = 93,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1105,7 +1105,7 @@ destructible{
   x = 232,
   y = 93,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1114,7 +1114,7 @@ destructible{
   x = 280,
   y = 93,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 

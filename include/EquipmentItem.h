@@ -31,15 +31,6 @@ class EquipmentItem: public ExportableToLua {
 
   public:
 
-    /**
-     * @brief Possible sizes of the shadow of an item placed on the ground.
-     */
-    enum ShadowSize {
-      SHADOW_NONE,
-      SHADOW_SMALL,
-      SHADOW_BIG
-    };
-
     EquipmentItem(Equipment& equipment);
     ~EquipmentItem();
 
@@ -69,10 +60,8 @@ class EquipmentItem: public ExportableToLua {
     void set_sound_when_picked(const std::string& sound_when_picked);
     const std::string& get_sound_when_brandished() const;
     void set_sound_when_brandished(const std::string& sound_when_brandished);
-    ShadowSize get_shadow_size() const;
-    void set_shadow_size(ShadowSize shadow_size);
-    static const std::string& get_shadow_size_name(ShadowSize shadow_size);
-    static ShadowSize get_shadow_size_by_name(const std::string& shadow_size_name);
+    const std::string& get_shadow() const;
+    void set_shadow(const std::string& shadow);
 
     // Current state.
     void update();
@@ -117,9 +106,8 @@ class EquipmentItem: public ExportableToLua {
     bool brandish_when_picked;           /**< when the item is picked on the ground, indicates that the hero
                                           * brandishes it */
     std::string sound_when_picked;       /**< sound to play when the item is picked on the ground (or an empty string) */
-    std::string sound_when_brandished;   /**< sound to play when the item is brandished (or an empty string )*/
-    ShadowSize shadow_size;              /**< size of the shadow when the item is on the ground */
-    static const std::string shadow_size_names[];  /**< Lua name of each shadow size. */
+    std::string sound_when_brandished;   /**< sound to play when the item is brandished (or an empty string) */
+    std::string shadow;                  /**< animation of the shadow sprite when the item is on the ground (or an empty string) */
 };
 
 #endif

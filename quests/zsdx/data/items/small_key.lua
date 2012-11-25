@@ -1,6 +1,6 @@
 local item = ...
 
-function item:on_started()
+function item:on_created()
 
   self:set_shadow("small")
   self:set_brandish_when_picked(false)

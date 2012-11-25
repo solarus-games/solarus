@@ -1508,7 +1508,7 @@ destructible{
   x = 512,
   y = 421,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1517,7 +1517,7 @@ destructible{
   x = 416,
   y = 421,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1536,7 +1536,7 @@ destructible{
   x = 528,
   y = 421,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -1554,7 +1554,6 @@ destructible{
   x = 400,
   y = 421,
   subtype = "pot",
-  treasure_name = "_none",
   treasure_variant = 1,
 }
 
@@ -1564,7 +1563,6 @@ chest{
   y = 384,
   name = "CV1",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
   treasure_savegame_variable = "b103",
 }
@@ -7139,7 +7137,6 @@ chest{
   y = 272,
   name = "CK3",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
   treasure_savegame_variable = "b122",
 }

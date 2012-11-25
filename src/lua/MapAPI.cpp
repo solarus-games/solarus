@@ -918,7 +918,7 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
   Layer layer = Layer(check_int_field(l, 1, "layer"));
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
-  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "_random");
+  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
@@ -958,7 +958,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
   const std::string& subtype_name = check_string_field(l, 1, "subtype");
-  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "_random");
+  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 
@@ -1075,7 +1075,7 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
   const std::string& breed = check_string_field(l, 1, "breed");
   Enemy::Rank rank = Enemy::Rank(check_int_field(l, 1, "rank"));
   const std::string& savegame_variable = opt_string_field(l, 1, "savegame_variable", "");
-  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "_random");
+  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 

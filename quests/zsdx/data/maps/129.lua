@@ -751,7 +751,7 @@ destructible{
   x = 280,
   y = 253,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -760,7 +760,7 @@ destructible{
   x = 408,
   y = 221,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -805,7 +805,7 @@ destructible{
   x = 264,
   y = 317,
   subtype = "pot",
-  treasure_name = "_random",
+  treasure_name = "random",
   treasure_variant = 1,
 }
 
@@ -2075,7 +2075,6 @@ chest{
   y = 48,
   name = "chest",
   is_big_chest = false,
-  treasure_name = "_none",
   treasure_variant = 1,
   treasure_savegame_variable = "b10",
 }

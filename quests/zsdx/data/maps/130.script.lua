@@ -226,7 +226,8 @@ local function create_bats()
       breed = "fire_bat",
       layer = 0,
       x = v.x,
-      y = v.y
+      y = v.y,
+      treasure_name = "random"
     }
   end
 end
@@ -254,7 +255,6 @@ local function create_stone()
     x = x,
     y = y,
     layer = 0,
-    treasure_name = "_none",
     destruction_callback = function()
       allow_stone_creation = true
     end

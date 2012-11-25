@@ -161,7 +161,7 @@ void Enemy::initialize() {
 
   if (!initialized) {
     initialized = true;
-    get_lua_context().notify_enemy_created(*this);
+    get_lua_context().run_enemy(*this);
   }
 }
 
@@ -173,7 +173,7 @@ void Enemy::initialize() {
  *
  * @param map The map.
  */
-void Enemy::set_map(Map &map) {
+void Enemy::set_map(Map& map) {
 
   Detector::set_map(map);
 

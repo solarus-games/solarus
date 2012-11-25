@@ -186,7 +186,6 @@ bool Destructible::test_collision_custom(MapEntity &entity) {
  */
 void Destructible::create_pickable() {
 
-  treasure.decide_content();
   get_entities().add_entity(Pickable::create(get_game(), get_layer(), get_x(), get_y(),
       treasure, FALLING_MEDIUM, false));
 }

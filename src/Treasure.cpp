@@ -19,6 +19,7 @@
 #include "DialogBox.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
 #include "DialogBox.h"
 #include "Counter.h"
 #include "Map.h"
@@ -36,8 +37,8 @@
  * treasures and unauthorized ones.
  *
  * @param game The current game.
- * @param item_name Name of the item to give, according to items.dat.
- * ("_random" and "_none" are also accepted).
+ * @param item_name Name of the item to give, or an empty string to mean no
+ * treasure.
  * @param variant Variant of this item.
  * @param savegame_variable Name of the saved boolean indicating that the
  * player has found this treasure, or an empty string if this treasure is not
@@ -51,16 +52,16 @@ Treasure::Treasure(Game& game, const std::string& item_name, int variant,
   savegame_variable(savegame_variable),
   sprite(NULL) {
 
-  // If the treasure is unique, check its state.
+  // If the treasure is unique and was found, remove it.
   if (is_found()) {
-    this->item_name = "_none";
+    this->item_name = "";
     this->variant = 1;
   }
 }
 
 /**
  * @brief Copy constructor.
- * @param other the treasure to copy
+ * @param other The treasure to copy.
  */
 Treasure::Treasure(const Treasure& other):
   game(other.game),
@@ -89,31 +90,38 @@ Treasure& Treasure::operator=(const Treasure& other) {
   this->item_name = other.item_name;
   this->variant = other.variant;
   this->savegame_variable = other.savegame_variable;
-  this->sprite = other.sprite;
+  this->sprite = NULL;
   return *this;
 }
 
 /**
- * @brief If the treasure is "_random", chooses a random item and variant
- * according to the probabilities of items.dat.
+ * @brief Raises an assertion error if the player cannot obtain this treasure.
+ */
+void Treasure::check_obtainable() const {
+
+  Debug::check_assertion(item_name.empty()
+      || game->get_equipment().get_item(item_name).is_obtainable(),
+      StringConcat() << "Treasure '" << item_name
+      << "' is not allowed, did you call ensure_obtainable()?");
+}
+
+/**
+ * @brief Makes sure that the content of this treasure is allowed.
  *
- * If the item is "_random", this function must be called before any function
+ * If the item is not allowed, the treasure becomes empty.
+ * This function must be called before any function
  * that needs to know the treasure content:
  * get_item_name(), get_item_properties(), is_empty(), give_to_player() and
  * draw().
- * If the item is not "_random", this function has no effect.
+ *
+ * This function is not called automatically because we want to decide to
+ * remove the treasure (or not) as late as possible. The obtainable property
+ * may indeed change after the creation of the treasure.
  */
-void Treasure::decide_content() {
+void Treasure::ensure_obtainable() {
 
   Equipment& equipment = game->get_equipment();
-  if (item_name == "_random") {
-    // Choose a random item.
-    equipment.get_random_item(item_name, variant);
-  }
-
-  // Check that the item is authorized.
-  if (item_name != "_none"
-      && !equipment.can_receive_item(item_name, variant)) {
+  if (!equipment.get_item(item_name).is_obtainable()) {
     item_name = "_none";
     variant = 1;
   }
@@ -123,7 +131,7 @@ void Treasure::decide_content() {
  * @brief Returns the equipment item corresponding to this treasure's content.
  * @return The equipment item.
  */
-EquipmentItem& Treasure::get_equipment_item() const {
+EquipmentItem& Treasure::get_item() const {
   return game->get_equipment().get_item(get_item_name());
 }
 
@@ -133,10 +141,7 @@ EquipmentItem& Treasure::get_equipment_item() const {
  */
 const std::string& Treasure::get_item_name() const {
 
-  Debug::check_assertion(item_name != "_random", "This treasure has a random content and it is not decided yet");
-  Debug::check_assertion(item_name == "_none" || game->get_equipment().can_receive_item(item_name, variant),
-      StringConcat() << "The treasure '" << item_name << "' is not authorized by the equipment, did you call decide_content()?");
-
+  check_obtainable();
   return item_name;
 }
 
@@ -200,7 +205,7 @@ void Treasure::give_to_player() const {
 
   // Give the item to the player.
   Equipment& equipment = game->get_equipment();
-  equipment.add_item(get_item_name(), get_variant());
+  equipment.get_item(get_item_name()).set_variant(get_variant());
 
   // Notify the Lua item and the Lua map.
   LuaContext& lua_context = game->get_lua_context();

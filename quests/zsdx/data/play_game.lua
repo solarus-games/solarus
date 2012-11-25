@@ -2,11 +2,16 @@ local game = ...
 
 function game:on_started()
 
+  -- First run: initialize the equipment.
+  if not game:get_item("tunic"):has_variant() then
+    game:set_initial_equipment()
+  end
+
+  -- Set up the HUD.
   local hearts_class = require("hud/hearts")
   local magic_bar_class = require("hud/magic_bar")
   local rupees_class = require("hud/rupees")
 
-  -- Set up the HUD.
   self.hud = {}
 
   self.hud.hearts = hearts_class:new(self)
@@ -22,6 +27,15 @@ function game:on_started()
 end
 
 -- Useful functions for this specific quest.
+
+function game:set_initial_equipment()
+
+  -- Initially give 3 hearts, the first tunic and the first wallet.
+  self:set_max_life(12)
+  self:set_life(self:get_max_life())
+  self:get_item("tunic"):set_variant(1)
+  self:get_item("rupee_bag"):set_variant(1)
+end
 
 function game:get_player_name()
   return self:get_value("player_name")
@@ -95,6 +109,45 @@ function game:get_small_keys_savegame_variable()
   return nil
 end
 
+-- Returns whether the player has at least one small key.
+-- Raises an error is small keys are not enabled in the current map.
+function game:has_small_key()
+
+  if not self:are_small_keys_enabled() then
+    error("Small keys are not enabled in the current map")
+  end
+
+  local savegame_variable = self:get_small_keys_savegame_variable()
+  return self:get_value(savegame_variable) > 0
+end
+
+-- Adds a small key to the player.
+-- Raises an error is small keys are not enabled in the current map.
+function game:add_small_key()
+
+  if not self:are_small_keys_enabled() then
+    error("Small keys are not enabled in the current map")
+  end
+
+  local savegame_variable = self:get_small_keys_savegame_variable()
+  local num_small_keys = self:get_value(savegame_variable) + 1
+  self:set_value(savegame_variable, num_small_keys)
+end
+
+-- Removes a small key to the player.
+-- Raises an error is small keys are not enabled in the current map
+-- or if the player has no small keys.
+function game:remove_small_key()
+
+  if not self:has_small_key() then
+    error("The player has no small key")
+  end
+
+  local savegame_variable = self:get_small_keys_savegame_variable()
+  local num_small_keys = self:get_value(savegame_variable) - 1
+  self:set_value(savegame_variable, num_small_keys)
+end
+
 function game:is_hud_enabled()
   return self.hud_enabled
 end
@@ -114,7 +167,7 @@ function game:set_hud_enabled(hud_enabled)
   end
 end
 
--- Returns the item name of a bottle with the specified content, or nil.
+-- Returns a bottle with the specified content, or nil.
 function game:get_first_bottle_with(variant)
 
   for i = 1, 4 do

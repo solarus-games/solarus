@@ -42,15 +42,8 @@ EquipmentItem::EquipmentItem(Equipment& equipment):
   equipment(equipment),
   name(""),
   savegame_variable(""),
-  initial_variant(1),
-  counter_savegame_variable(""),
-  fixed_limit(0),
-  item_limiting(""),
-  item_limited(""),
-  item_counter_changed(""),
-  amounts(1, 1),
-  probabilities(1, 0),
-  can_be_assigned(false),
+  obtainable(true),
+  assignable(false),
   can_disappear(false),
   brandish_when_picked(true),
   sound_when_picked(""),
@@ -79,6 +72,14 @@ Equipment& EquipmentItem::get_equipment() const {
  */
 Game* EquipmentItem::get_game() const {
   return equipment.get_game();
+}
+
+/**
+ * @brief Returns the savegame.
+ * @return The savegame.
+ */
+Savegame& EquipmentItem::get_savegame() const {
+  return equipment.get_savegame();
 }
 
 /**
@@ -133,233 +134,48 @@ void EquipmentItem::set_savegame_variable(const std::string& savegame_variable) 
 }
 
 /**
- * @brief Returns the number of variants of this item.
- * @return The number of variants.
+ * @brief Returns whether this item has an amount associated to it.
+ * @return true if this item has an amount.
  */
-int EquipmentItem::get_nb_variants() const {
-  return amounts.size();
+bool EquipmentItem::has_amount() const {
+  return !get_amount_savegame_variable().empty();
 }
 
 /**
- * @brief Sets the number of variants of this item.
- * @return The number of variants.
- */
-void EquipmentItem::set_nb_variants(int nb_variants) {
-
-  amounts.clear();
-  probabilities.clear();
-  for (int i = 0; i < nb_variants; i++) {
-    amounts.push_back(1);
-    probabilities.push_back(0);
-  }
-}
-
-/**
- * @brief Returns the initial possession state of this item.
- * @return The initial variant of this item.
- */
-int EquipmentItem::get_initial_variant() const {
-  return initial_variant;
-}
-
-/**
- * @brief Sets the initial possession state of this item.
- * @param initial_variant The initial variant of this item.
- */
-void EquipmentItem::set_initial_variant(int initial_variant) {
-  this->initial_variant = initial_variant;
-}
-
-/**
- * @brief Returns whether this item has a counter associated to it.
- * @return true if this item has a counter.
- */
-bool EquipmentItem::has_counter() const {
-  return !get_counter_savegame_variable().empty();
-}
-
-/**
- * @brief If this item has a counter, returns the savegame variable
- * that stores the value of this counter.
+ * @brief If this item has an amount, returns the savegame variable
+ * that stores the value of this amount.
  * @return The savegame variable of the counter, or an empty string if there
  * is no counter associated to this item.
  */
-const std::string& EquipmentItem::get_counter_savegame_variable() const {
-  return counter_savegame_variable;
+const std::string& EquipmentItem::get_amount_savegame_variable() const {
+  return amount_savegame_variable;
 }
 
 /**
- * @brief If this item has a counter, sets the savegame variable
- * that stores the value of this counter.
- * @param counter_savegame_variable The savegame variable of the counter
+ * @brief Sets the savegame variable that stores the value of the amount
+ * of this item (if any).
+ * @param counter_savegame_variable The savegame variable of the amount
  * or an empty string.
  */
-void EquipmentItem::set_counter_savegame_variable(
-    const std::string& counter_savegame_variable) {
-  this->counter_savegame_variable = counter_savegame_variable;
+void EquipmentItem::set_amount_savegame_variable(
+    const std::string& amount_savegame_variable) {
+  this->amount_savegame_variable = amount_savegame_variable;
 }
 
 /**
- * @brief Returns whether the counter associated to this item has a fixed limit.
- * @return true if there is a counter with a fixed limit.
+ * @brief Returns whether this item can be obtained by the player.
+ * @return true if this item can be obtained.
  */
-bool EquipmentItem::has_fixed_limit() const {
-  return get_fixed_limit() != 0;
+bool EquipmentItem::is_obtainable() const {
+  return obtainable;
 }
 
 /**
- * @brief Returns the fixed limit of the counter associated to this item (if any).
- * @return The fixed limit of the counter, or 0 if there is no counter
- * or no fixed limit.
+ * @brief Sets whether this item can be obtained by the player.
+ * @param obtainable true to allow the player to obtain this item.
  */
-int EquipmentItem::get_fixed_limit() const {
-  return fixed_limit;
-}
-
-/**
- * @brief Sets the fixed limit of the counter associated to this item (if any).
- * @param fixed_limit The fixed limit of the counter, or 0 if there is no
- * counter or no fixed limit.
- */
-void EquipmentItem::set_fixed_limit(int fixed_limit) {
-  this->fixed_limit = fixed_limit;
-}
-
-/**
- * @brief Returns the name of an item that sets the limit to the counter of
- * this item.
- * @return The name of the item that sets the limit of the counter of this
- * item, or an empty string.
- */
-const std::string& EquipmentItem::get_item_limiting() const {
-  return item_limiting;
-}
-
-/**
- * @brief Sets the an item that acts as a limit to the counter of this item.
- * @param item_limiting Name of the item that acts as a limit to the counter
- * of this item, or an empty string.
- */
-void EquipmentItem::set_item_limiting(const std::string& item_limiting) {
-  this->item_limiting = item_limiting;
-}
-
-/**
- * @brief Returns the name of an item whose counter is limited by this item.
- *
- * The special names "money", "life" and "magic" may also be returned.
- *
- * @return the name of the item whose counter is limited by this item, or an empty string
- */
-const std::string& EquipmentItem::get_item_limited() const {
-  return item_limited;
-}
-
-/**
- * @brief Sets an item whose counter is limited by this item.
- *
- * The built-in names "money", "life" and "magic" are also accepted.
- *
- * @param item_limited The name of the item whose counter is limited by this
- * item, or an empty string.
- */
-void EquipmentItem::set_item_limited(const std::string& item_limited) {
-
-  this->item_limited = item_limited;
-  if (!item_limited.empty()
-      && item_limited != "life"
-      && item_limited != "money"
-      && item_limited != "magic") {
-    equipment.get_item(item_limited).item_limiting = get_name();
-  }
-}
-
-/**
- * @brief Returns the name of an item whose counter is changed when obtaining
- * this item.
- *
- * The special names "money", "life" and "magic" may also be returned.
- *
- * @return The name of the item whose counter is changed by this item, or an
- * empty string.
- */
-const std::string& EquipmentItem::get_item_counter_changed() const {
-  return item_counter_changed;
-}
-
-/**
- * @brief Sets an item whose counter will be changed when obtaining this item.
- *
- * The special names "money", "life" and "magic" are also accepted.
- *
- * @param item_counter_changed Name of an item whose counter is changed by
- * this item, or an empty string.
- */
-void EquipmentItem::set_item_counter_changed(const std::string& item_counter_changed) {
-  this->item_counter_changed = item_counter_changed;
-}
-
-/**
- * @brief Returns the amount associated to the specified variant of the item.
- *
- * This amount applies to the counter indicated by get_item_limited()
- * or get_item_counter_changed().
- *
- * @param variant A variant of this item.
- * @return The amount of this variant.
- */
-int EquipmentItem::get_amount(int variant) const {
-
-  Debug::check_assertion(variant > 0 && variant <= get_nb_variants(), StringConcat() <<
-      "Invalid variant '" << variant << "' for item '" << get_name() << "'");
-
-  return amounts[variant - 1];
-}
-
-/**
- * @brief Sets the amount associated to the specified variant of the item.
- *
- * This amount applies to the counter indicated by get_item_limited()
- * or get_item_counter_changed().
- *
- * @param variant A variant of this item.
- * @param amount The amount to set for this variant.
- */
-void EquipmentItem::set_amount(int variant, int amount) {
-
-  Debug::check_assertion(variant > 0 && variant <= get_nb_variants(), StringConcat() <<
-      "Invalid variant '" << variant << "' for item '" << get_name() << "'");
-
-  this->amounts[variant - 1] = amount;
-}
-
-/**
- * @brief Returns the probability that this item with the specified variant
- * appears when an item is selected randomly.
- * @param variant A variant of this item.
- * @return The probability that this variant of this item appears,
- * between 0 and 1000.
- */
-int EquipmentItem::get_probability(int variant) const {
-
-  Debug::check_assertion(variant > 0 && variant <= get_nb_variants(), StringConcat() <<
-      "Invalid variant '" << variant << "' for item '" << get_name() << "'");
-
-  return probabilities[variant - 1];
-}
-
-/**
- * @brief Sets the probability that this item with the specified variant
- * appears when an item is selected randomly.
- * @param variant A variant of this item.
- * @param probability The probability to set, between 0 and 1000.
- */
-void EquipmentItem::set_probability(int variant, int probability) {
-
-  Debug::check_assertion(variant > 0 && variant <= get_nb_variants(), StringConcat() <<
-      "Invalid variant '" << variant << "' for item '" << get_name() << "'");
-
-  this->probabilities[variant - 1] = probability;
+void EquipmentItem::set_obtainable(bool obtainable) {
+  this->obtainable = obtainable;
 }
 
 /**
@@ -367,17 +183,17 @@ void EquipmentItem::set_probability(int variant, int probability) {
  * and then used explicitly by pressing this item key.
  * @return true if this item can be assigned.
  */
-bool EquipmentItem::get_can_be_assigned() const {
-  return can_be_assigned;
+bool EquipmentItem::is_assignable() const {
+  return assignable;
 }
 
 /**
  * @brief Sets whether this item can be assigned to an item key
  * and then used explicitly by pressing this item key.
- * @param can_be_assigned true if this item can be assigned.
+ * @param assignable true if this item can be assigned.
  */
-void EquipmentItem::set_can_be_assigned(bool can_be_assigned) {
-  this->can_be_assigned = can_be_assigned;
+void EquipmentItem::set_assignable(bool assignable) {
+  this->assignable = assignable;
 }
 
 /**
@@ -521,12 +337,28 @@ void EquipmentItem::set_suspended(bool suspended) {
 }
 
 /**
- * @brief This function is called when a game starts with this equipment item.
- * @param game The game.
+ * @brief This function is called when the game starts.
  */
-void EquipmentItem::notify_game_started(Game& game) {
+void EquipmentItem::notify_game_started() {
 
-  game.get_lua_context().notify_item_created(*this);
+  // Read the Lua script of this item if any.
+  get_lua_context().run_item(*this);
+}
+
+/**
+ * @brief Notifies this item that it was loaded and can now initialize itself.
+ */
+void EquipmentItem::start() {
+
+  get_lua_context().item_on_started(*this);
+}
+
+/**
+ * @brief This function is called before the item script is closed.
+ */
+void EquipmentItem::notify_finished() {
+
+  get_lua_context().item_on_finished(*this);
 }
 
 /**
@@ -596,12 +428,16 @@ void EquipmentItem::notify_movement_changed(Pickable& pickable) {
 /**
  * @brief Returns the possession state of this item.
  *
- * This function only makes sense if the item is saved.
+ * The item must be saved.
  *
  * @return The possessed variant of this item.
  */
-int EquipmentItem::get_current_variant() {
-  return equipment.get_item_variant(get_name());
+int EquipmentItem::get_variant() const {
+
+  Debug::check_assertion(is_saved(), StringConcat()
+      << "The item '" << get_name() << "' is not saved");
+
+  return get_savegame().get_integer(get_savegame_variable());
 }
 
 /**
@@ -611,24 +447,77 @@ int EquipmentItem::get_current_variant() {
  *
  * @param variant The possessed variant of this item.
  */
-void EquipmentItem::set_current_variant(int variant) {
-  equipment.set_item_variant(get_name(), variant);
+void EquipmentItem::set_variant(int variant) {
+
+  Debug::check_assertion(is_saved(), StringConcat()
+      << "The item '" << get_name() << "' is not saved");
+
+  // Set the possession state in the savegame.
+  get_savegame().set_integer(get_savegame_variable(), variant);
+
+  // If we are removing the item, unassign it.
+  if (variant == 0) {
+    if (equipment.get_item_assigned(0) == get_name()) {
+      equipment.set_item_assigned(0, "");
+    }
+    else if (equipment.get_item_assigned(1) == get_name()) {
+      equipment.set_item_assigned(1, "");
+    }
+  }
+
+  // Notify the script.
+  notify_variant_changed(variant);
 }
 
 /**
- * @brief Returns the current value of the counter associated to this item.
+ * @brief Returns the current value of the amount associated to this item.
  * @return The player's current amount of this item.
  */
-int EquipmentItem::get_current_amount() {
-  return equipment.get_item_amount(get_name());
+int EquipmentItem::get_amount() const {
+
+  Debug::check_assertion(has_amount(), StringConcat()
+      << "The item '" << get_name() << "' has no amount");
+
+  return get_savegame().get_integer(get_amount_savegame_variable());
 }
 
 /**
- * @brief Sets the current value of the counter associated to this item.
+ * @brief Sets the current value of the amount associated to this item.
  * @param amount The player's new amount of this item.
  */
-void EquipmentItem::set_current_amount(int amount) {
-  equipment.set_item_amount(get_name(), amount);
+void EquipmentItem::set_amount(int amount) {
+
+  Debug::check_assertion(has_amount(), StringConcat()
+      << "The item '" << get_name() << "' has no amount");
+
+  amount = std::max(0, std::min(get_max_amount(), amount));
+  get_savegame().set_integer(get_amount_savegame_variable(), amount);
+
+  notify_amount_changed(amount);
+}
+
+/**
+ * @brief Returns the maximum value of the amount associated to this item.
+ * @return The maximum amount of this item.
+ */
+int EquipmentItem::get_max_amount() const {
+
+  Debug::check_assertion(has_amount(), StringConcat()
+      << "The item '" << get_name() << "' has no amount");
+
+  return max_amount;
+}
+
+/**
+ * @brief Sets the maximum value of the amount associated to this item.
+ * @param max_amount The maximum amount of this item.
+ */
+void EquipmentItem::set_max_amount(int max_amount) {
+
+  Debug::check_assertion(has_amount(), StringConcat()
+      << "The item '" << get_name() << "' has no amount");
+
+  this->max_amount = max_amount;
 }
 
 /**

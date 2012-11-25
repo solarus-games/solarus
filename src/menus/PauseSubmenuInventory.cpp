@@ -54,15 +54,15 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu &pause_menu, Game &game):
     oss.str("");
     oss << "item_" << k;
     item_names[k] = ini.get_string_value(oss.str());
-    int variant = equipment.get_item_variant(item_names[k]);
     EquipmentItem& item = equipment.get_item(item_names[k]);
+    int variant = item.get_variant();
 
-    if (variant != 0 && item.has_counter()) {
+    if (variant != 0 && item.has_amount()) {
 
       // if the player has the item and this item has an amount, we show a counter
 
-      int amount = equipment.get_item_amount(item_names[k]);
-      int maximum = equipment.get_item_maximum(item_names[k]);
+      int amount = item.get_amount();
+      int maximum = item.get_max_amount();
       int x = SOLARUS_SCREEN_WIDTH_MIDDLE - 100 + (k % 7) * 32;
       int y = SOLARUS_SCREEN_HEIGHT_MIDDLE - 39 + (k / 7) * 32;
 
@@ -144,12 +144,12 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
   // update the caption text, show or hide the action icon
   KeysEffect &keys_effect = game.get_keys_effect();
   const std::string item_name = item_names[index];
-  int variant = equipment.get_item_variant(item_name);
+  int variant = equipment.get_item(item_name).get_variant();
 
   set_caption_text(caption_strings[index]);
   if (variant != 0) {
     keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
-    keys_effect.set_item_keys_enabled(equipment.get_item(item_name).get_can_be_assigned());
+    keys_effect.set_item_keys_enabled(equipment.get_item(item_name).is_assignable());
   }
   else {
     keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
@@ -178,7 +178,7 @@ int PauseSubmenuInventory::get_selected_index() {
  */
 bool PauseSubmenuInventory::is_item_selected() {
   
-  return equipment.has_item(item_names[get_selected_index()]);
+  return equipment.get_item(item_names[get_selected_index()]).get_variant() > 0;
 }
 
 /**
@@ -287,15 +287,15 @@ void PauseSubmenuInventory::draw(Surface& dst_surface) {
       // get the possession state of this item
       const std::string item_name = item_names[k];
 
-      if (equipment.has_item(item_name)) {
+      if (equipment.get_item(item_name).get_variant() > 0) {
 
-	// the player has this item, draw the variant he has
-	sprites[k]->draw(dst_surface, dst_xy.get_x(), dst_xy.get_y());
+        // the player has this item, draw the variant he has
+        sprites[k]->draw(dst_surface, dst_xy.get_x(), dst_xy.get_y());
 
-	// draw the counter (if any)
-	if (counters[k] != NULL) {
-	  counters[k]->draw(dst_surface);
-	}
+        // draw the counter (if any)
+        if (counters[k] != NULL) {
+          counters[k]->draw(dst_surface);
+        }
       }
 
       dst_xy.add_x(32);
@@ -324,7 +324,7 @@ void PauseSubmenuInventory::draw(Surface& dst_surface) {
 void PauseSubmenuInventory::show_info_message() {
 
   const std::string &item_name = item_names[get_selected_index()];
-  int variant = equipment.get_item_variant(item_name);
+  int variant = equipment.get_item(item_name).get_variant();
 
   std::ostringstream oss;
   oss << "_item_description." << item_name << '.' << variant;
@@ -350,7 +350,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
   const std::string &item_name = item_names[index];
 
   // if this item is not assignable, do nothing
-  if (!equipment.get_item(item_name).get_can_be_assigned()) {
+  if (!equipment.get_item(item_name).is_assignable()) {
     return;
   }
 
@@ -362,7 +362,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
   // memorize this item
   this->item_assigned_name = item_name;
   this->item_assigned_sprite = sprites[index];
-  this->item_assigned_variant = equipment.has_item(item_assigned_name);
+  this->item_assigned_variant = equipment.get_item(item_assigned_name).get_variant();
   this->item_assigned_destination = slot;
 
   // play the sound

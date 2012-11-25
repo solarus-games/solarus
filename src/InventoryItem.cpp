@@ -23,14 +23,14 @@
 
 /**
  * @brief Creates a new inventory item.
- * @param game the game
- * @param item_name id of the item to create (according to items.dat)
+ * @param game The game.
+ * @param item_name Id of the item to create.
  */
-InventoryItem::InventoryItem(Game &game, const std::string &item_name):
+InventoryItem::InventoryItem(Game& game, const std::string& item_name):
 
   game(game),
   item_name(item_name),
-  variant(game.get_equipment().get_item_variant(item_name)),
+  variant(game.get_equipment().get_item(item_name).get_variant()),
   finished(true) {
 
 }

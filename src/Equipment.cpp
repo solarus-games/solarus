@@ -36,33 +36,33 @@ Equipment::Equipment(Savegame& savegame):
   savegame(savegame),
   suspended(true) {
 
-  // Load the equipment specification from items.lua.
-  // TODO remove this data file, specify everything from each item script.
+  // TODO implement a separate class that provide the info of project_db.dat.
 
-  // Open the items.lua file in an independent Lua world.
-  const std::string& file_name = "items.lua";
-  lua_State* l = lua_open();
-  size_t size;
-  char* buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  luaL_loadbuffer(l, buffer, size, file_name.c_str());
-  FileTools::data_file_close_buffer(buffer);
+  // Load the list of equipment item names.
+  static const std::string file_name = "project_db.dat";
+  std::istream& database_file = FileTools::data_file_open(file_name);
+  std::string line;
 
-  // Register the item() function to Lua.
-  lua_register(l, "item", l_item);
+  while (std::getline(database_file, line)) {
 
-  // Make the Lua world aware of this equipment object.
-  lua_pushlightuserdata(l, this);
-  lua_setfield(l, LUA_REGISTRYINDEX, "equipment");
+    if (line.size() == 0) {
+      continue;
+    }
 
-  // Call Lua.
-  if (lua_pcall(l, 0, 0, 0) != 0) {
-    Debug::die(StringConcat() << "Failed to load items from file 'items.lua':"
-        << lua_tostring(l, -1));
-    lua_pop(l, 1);
+    int resource_type;
+    std::string resource_id, resource_name;
+    std::istringstream iss(line);
+    FileTools::read(iss, resource_type);
+    FileTools::read(iss, resource_id);
+    FileTools::read(iss, resource_name);
+
+    if (resource_type == 5) {  // It's an equipment item.
+      EquipmentItem* item = new EquipmentItem(*this);
+      item->increment_refcount();
+      items[resource_name] = item;
+    }
   }
-
-  lua_close(l);
+  FileTools::data_file_close(database_file);
 }
 
 /**
@@ -97,22 +97,31 @@ Game* Equipment::get_game() {
 }
 
 /**
- * @brief Sets the current game.
- * @param game the game
+ * @brief Notifies the equipment that the game has just started.
  */
-void Equipment::set_game(Game& game) {
+void Equipment::notify_game_started() {
 
-  // Start the item scripts
+  // Notify the items.
   std::map<std::string, EquipmentItem*>::const_iterator it;
   for (it = items.begin(); it != items.end(); it++) {
-    it->second->notify_game_started(game);
+    it->second->notify_game_started();
   }
 
-  // if this is a new game, give the initial items
-  // (we could not do this before because giving items is a dynamic, in-game operation)
-  if (!game.get_savegame().get_boolean(Savegame::KEY_EQUIPMENT_INITIALIZED)) {
-    set_initial_items();
-    game.get_savegame().set_boolean(Savegame::KEY_EQUIPMENT_INITIALIZED, 1);
+  // Start the items one they all exist.
+  for (it = items.begin(); it != items.end(); it++) {
+    it->second->start();
+  }
+}
+
+/**
+ * @brief Notifies the equipment that the game has is finished.
+ */
+void Equipment::notify_game_finished() {
+
+  // Notify the item scripts.
+  std::map<std::string, EquipmentItem*>::const_iterator it;
+  for (it = items.begin(); it != items.end(); it++) {
+    it->second->notify_finished();
   }
 }
 
@@ -410,246 +419,10 @@ void Equipment::restore_all_magic() {
  */
 EquipmentItem& Equipment::get_item(const std::string& item_name) {
 
-  EquipmentItem* item = items[item_name];
-  Debug::check_assertion(item != NULL,
+  Debug::check_assertion(items.count(item_name) > 0,
       StringConcat() << "Cannot find item with name '" << item_name << "'");
-  return *item;
-}
 
-/**
- * @brief Returns whether the player has obtained the specified saved item.
- *
- * This function can return true only for items that are saved.
- * This function is equivalent to get_item_variant(item_name) != 0.
- *
- * @param item_name name of the item
- * @return true if the player has this item.
- */
-bool Equipment::has_item(const std::string& item_name) {
-
-  return get_item_variant(item_name) != 0;
-}
-
-/**
- * @brief Returns the possession state of the specified saved item.
- *
- * This function makes sense only for items whose possession state is saved.
- *
- * @param item_name Name of the item.
- * @return The variant of this item that the player has.
- */
-int Equipment::get_item_variant(const std::string& item_name) {
-
-  const std::string& savegame_variable = get_item(item_name).get_savegame_variable();
-  if (savegame_variable.empty()) {
-    return 0;
-  }
-
-  return savegame.get_integer(savegame_variable);
-}
-
-/**
- * @brief Sets the possession state of a saved item.
- * @param item_name the item to set
- * @param variant the variant of the item to give to the player,
- * or zero to remove the item
- */
-void Equipment::set_item_variant(const std::string& item_name, int variant) {
-
-  EquipmentItem& item = get_item(item_name);
-  const std::string& savegame_variable = item.get_savegame_variable();
-  Debug::check_assertion(!savegame_variable.empty(), StringConcat()
-      << "The item '" << item_name << "' is not saved");
-  Debug::check_assertion(variant >= 0 && variant <= item.get_nb_variants(),
-      StringConcat() << "Invalid variant '" << variant << "' for item '" << item_name);
-
-  // set the possession state in the savegame
-  savegame.set_integer(savegame_variable, variant);
-
-  // if we are removing the item, unassign it
-  if (variant == 0) {
-    if (get_item_assigned(0) == item_name) {
-      set_item_assigned(0, "");
-    }
-    else if (get_item_assigned(1) == item_name) {
-      set_item_assigned(1, "");
-    }
-  }
-
-  // notify the script
-  get_item(item_name).notify_variant_changed(variant);
-}
-
-/**
- * @brief Removes a saved item from the player.
- *
- * This is equivalent to set_item_variant(item_name, 0).
- *
- * @param item_name the item to remove
- */
-void Equipment::remove_item(const std::string& item_name) {
-  set_item_variant(item_name, 0);
-}
-
-/**
- * @brief Returns the current value of the counter associated to an item.
- * @param item_name name of the item to get
- * @return the player's current amount of this item
- */
-int Equipment::get_item_amount(const std::string& item_name) {
-
-  const std::string& counter_savegame_variable =
-      get_item(item_name).get_counter_savegame_variable();
-  Debug::check_assertion(!counter_savegame_variable.empty(), StringConcat()
-      << "No amount for item '" << item_name << "'");
-
-  return savegame.get_integer(counter_savegame_variable);
-}
-
-/**
- * @brief Sets the current value of the counter of a specified item.
- *
- * The program exits with an error message if the specified amount
- * is not valid.
- *
- * @param item_name name of the item to set
- * @param amount the new amount
- */
-void Equipment::set_item_amount(const std::string& item_name, int amount) {
-
-  const std::string& counter_savegame_variable =
-      get_item(item_name).get_counter_savegame_variable();
-
-  Debug::check_assertion(!counter_savegame_variable.empty(), StringConcat()
-      << "No amount for item '" << item_name << "'");
-
-  amount = std::max(0, std::min(get_item_maximum(item_name), amount));
-  savegame.set_integer(counter_savegame_variable, amount);
-
-  get_item(item_name).notify_amount_changed(amount);
-}
-
-/**
- * @brief Adds an amount of a specified item to the player.
- *
- * If the maximum amount is reached, no more items are added.
- * 
- * @param item_name name of the item to set
- * @param amount_to_add the amount to add
- */
-void Equipment::add_item_amount(const std::string& item_name, int amount_to_add) {
-
-  set_item_amount(item_name, get_item_amount(item_name) + amount_to_add);
-}
-
-/**
- * @brief Removes an amount of a specified item to the player.
- *
- * If the amount reaches zero, no more items are removed.
- * 
- * @param item_name name of the item to set
- * @param amount_to_remove the amount to remove
- */
-void Equipment::remove_item_amount(const std::string& item_name, int amount_to_remove) {
-
-  set_item_amount(item_name, get_item_amount(item_name) - amount_to_remove);
-}
-
-/**
- * @brief Returns the maximum amount value of the specified item.
- * @param item_name name of an item 
- * @return the maximum amount value of this item
- */
-int Equipment::get_item_maximum(const std::string& item_name) {
-
-  // find the maximum as a fixed value or a value that depends on another item
-  int maximum = 0;
-
-  EquipmentItem& item = get_item(item_name);
-  int fixed_limit = item.get_fixed_limit();
-  if (fixed_limit != 0) {
-    maximum = fixed_limit;
-    Debug::check_assertion(maximum > 0, StringConcat() << "No maximum amount for item '" << item_name << "'");
-  }
-  else {
-    const std::string& item_limiting = item.get_item_limiting();
-    Debug::check_assertion(item_limiting.size() != 0,
-        StringConcat() << "No maximum amount for item '" << item_name << "'");
-    int item_limiting_variant = get_item_variant(item_limiting);
-    maximum = get_item(item_limiting).get_amount(item_limiting_variant);
-  }
-
-  return maximum;
-}
-
-/**
- * @brief Returns whether the player cannot get more of the specified item.
- * @param item_name name of an item
- * @return true if the player has the maximum amount of this item
- */
-bool Equipment::has_item_maximum(const std::string& item_name) {
-
-  bool result;
-  const std::string& item_counter_changed = get_item(item_name).get_item_counter_changed();
-  if (item_counter_changed.size() == 0) {
-    result = false;
-  }
-
-  else if (item_counter_changed == "life") {
-    result = (get_life() >= get_max_life());
-  }
-
-  else if (item_counter_changed == "money") {
-    result = (get_money() >= get_max_money());
-  }
-
-  else if (item_counter_changed == "magic") {
-    result = (get_magic() >= get_max_magic());
-  }
-  
-  else {
-    result = get_item_amount(item_counter_changed) >= get_item_maximum(item_counter_changed);
-  }
-
-  return result;
-}
-
-/**
- * @brief Chooses randomly the name and variant of an item, with respect
- * to the probabilities indicated in the file items.dat.
- *
- * This function may choose an item that the player is not authorized to have yet.
- *
- * @param item_name the name of an item randomly chosen (possibly "_none")
- * @param variant variant of this item (also random)
- */
-void Equipment::get_random_item(std::string& item_name, int& variant) {
-
-  int r = Random::get_number(1000);
-  int sum = 0;
-
-  // this can be optimized to avoid always traversing all item properties,
-  // unless we decide to make dynamic probabilities (i.e. call the item scripts to know them)
-  std::map<std::string, EquipmentItem*>::iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
-
-    EquipmentItem* item = it->second;
-    int nb_variants = item->get_nb_variants();
-    for (int i = 1; i <= nb_variants; i++) {
-
-      int prob = item->get_probability(i);
-      sum += prob;
-      if (sum > r) {
-        item_name = it->first;
-        variant = i;
-        return;
-      }
-    }
-  }
-
-  // if the function has not returned yet, then no item was choosen
-  item_name = "_none";
-  variant = 1;
+  return *items[item_name];
 }
 
 /**
@@ -668,7 +441,7 @@ const std::string& Equipment::get_item_assigned(int slot) {
  * @brief Assigns an item to a slot.
  *
  * The program exits with an error message if the specified item
- * cannot be equiped or if the player does not have it.
+ * cannot be assigned or if the player does not have it.
  * 
  * @param slot slot to set (0 for X or 1 for V)
  * @param item_name the item to assign to this slot (may be an empty string)
@@ -676,9 +449,9 @@ const std::string& Equipment::get_item_assigned(int slot) {
 void Equipment::set_item_assigned(int slot, const std::string& item_name) {
 
   if (item_name.size() != 0) {
-    Debug::check_assertion(has_item(item_name), StringConcat()
+    Debug::check_assertion(get_item(item_name).get_variant() > 0, StringConcat()
         << "Cannot assign item '" << item_name << "' because the player does not have it");
-    Debug::check_assertion(get_item(item_name).get_can_be_assigned(), StringConcat()
+    Debug::check_assertion(get_item(item_name).is_assignable(), StringConcat()
         << "The item '" << item_name << "' cannot be assigned");
   }
 
@@ -794,235 +567,5 @@ void Equipment::notify_ability_used(const std::string& ability_name) {
   for (it = items.begin(); it != items.end(); it++) {
     it->second->notify_ability_used(ability_name);
   }
-}
-
-// obtaining items
-
-/**
- * @brief Gives to the player the initial variant of each item saved,
- * according to the file items.dat.
- * 
- * This function is called when the savegame is created.
- */
-void Equipment::set_initial_items() {
-
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-
-  for (it = items.begin(); it != items.end(); it++) {
-
-    EquipmentItem* item = it->second;
-    int initial_variant = item->get_initial_variant();
-    if (initial_variant != 0) {
-      add_item(it->first, initial_variant);
-    }
-  }
-}
-
-/**
- * @brief Retruns whether the player is authorized to have the specified item.
- *
- * The player is not authorized to receive an item if
- * the item increases a counter whose maximum value is currently zero
- * (for example receiving magic without magic bar, receiving bombs without bomb bag, etc.)
- *
- * @param item_name name of the item to test
- * @param variant variant of the item
- * @return true if the player can have this item
- */
-bool Equipment::can_receive_item(const std::string &item_name, int variant) {
-
-  bool authorized = true;
-
-  EquipmentItem& item = get_item(item_name);
-
-  // see if obtaining this item increases the counter of another item
-  const std::string& item_counter_changed = item.get_item_counter_changed();
-  if (item_counter_changed.size() > 0) {
-
-    // consider built-in counters
-    if (item_counter_changed == "magic") {
-      authorized = get_max_magic() > 0;
-    }
-    else if (item_counter_changed != "life"
-        && item_counter_changed != "money") { // general case
-      // check that the player has unlocked the counter of the item to increase
-      const std::string &item_limiting = get_item(item_counter_changed).get_item_limiting();
-      authorized = (item_limiting.size() == 0) || has_item(item_limiting);
-    }
-  }
-
-  return authorized;
-}
-
-/**
- * @brief Adds an item to the equipment.
- *
- * This function can be called with any kind of item and it makes the
- * appropriate modifications on equipment according to the item description in items.dat.
- *
- * @param item_name name of the item to add
- * @param variant variant of this item
- */
-void Equipment::add_item(const std::string &item_name, int variant) {
-
-  EquipmentItem& item = get_item(item_name);
-
-  if (item.is_saved()) {
-
-    // the item is saved
-    set_item_variant(item_name, variant);
-
-    if (item.has_counter()) {
-      // the item has a counter
-
-      // if another item acts as a limit for the counter of this item
-      const std::string& item_limiting = item.get_item_limiting();
-      if (item_limiting.size() > 0) {
-
-        // make sure we have at least the first variant of that item
-        if (!has_item(item_limiting)) {
-
-          // for example, we give the bomb counter: also give the bomb bag
-          set_item_variant(item_limiting, 1);
-        }
-      }
-
-      // set the counter at its maximum value
-      set_item_amount(item_name, get_item_maximum(item_name));
-    }
-
-    // see if this item acts as a limit for another item
-    const std::string& item_limited = item.get_item_limited();
-    if (item_limited.size() > 0) {
-
-      int maximum = item.get_amount(variant);
-
-      // consider built-in counters
-      if (item_limited == "life") {
-        set_max_life(maximum);
-        restore_all_life();
-      }
-      else if (item_limited == "money") {
-        set_max_money(maximum);
-      }
-      else if (item_limited == "magic") {
-        set_max_magic(maximum);
-        restore_all_magic();
-      }
-      else { // general case
-
-        // make sure we have the other item
-        if (!has_item(item_limited)) {
-
-          // for example, we give the bomb bag: also give the bomb counter
-          set_item_variant(item_limited, 1);
-        }
-
-        // make sure the other item has its new maximum value
-        set_item_amount(item_limited, maximum);
-      }
-    }
-  }
-
-  else {
-    // now, see if obtaining this item changes the counter of another item
-    const std::string &item_counter_changed = item.get_item_counter_changed();
-    if (item_counter_changed.size() > 0) {
-
-      int amount = item.get_amount(variant);
-
-      // consider built-in counters
-      if (item_counter_changed == "life") {
-        add_life(amount);
-      }
-      else if (item_counter_changed == "money") {
-        add_money(amount);
-      }
-      else if (item_counter_changed == "magic") {
-        add_magic(amount);
-      }
-      else { // general case
-
-        // make sure the player has the item to increase
-        if (!has_item(item_counter_changed)) {
-          set_item_variant(item_counter_changed, 1);
-        }
-
-        // for example, we give some bombs: increase the bomb counter
-        add_item_amount(item_counter_changed, amount);
-      }
-    }
-  }
-}
-
-/**
- * @brief Implementation of the item() function of the Lua map data file.
- *
- * Defines the properties of the equipment item.
- *
- * @param l The Lua state that is calling this function.
- * @return Number of values to return to Lua.
- */
-int Equipment::l_item(lua_State* l) {
-
-  lua_getfield(l, LUA_REGISTRYINDEX, "equipment");
-  Equipment* equipment = static_cast<Equipment*>(lua_touserdata(l, -1));
-  lua_pop(l, 1);
-
-  // Retrieve the item properties from the table parameter.
-  luaL_checktype(l, 1, LUA_TTABLE);
-
-  const std::string& item_name = LuaContext::check_string_field(l, 1, "name");
-  const std::string& savegame_variable = LuaContext::opt_string_field(l, 1, "savegame_variable", "");
-  int nb_variants = LuaContext::opt_int_field(l, 1, "nb_variants", 1);
-  int initial_variant = LuaContext::opt_int_field(l, 1, "initial_variant", 1);
-  bool can_be_assigned = LuaContext::opt_boolean_field(l, 1, "can_be_assigned", false);
-  const std::string& counter_savegame_variable = LuaContext::opt_string_field(l, 1, "counter", "");
-  int fixed_limit = LuaContext::opt_int_field(l, 1, "limit", 1);
-  const std::string& item_limited = LuaContext::opt_string_field(l, 1, "limit_for_counter", "");
-  const std::string& item_counter_changed = LuaContext::opt_string_field(l, 1, "changes_counter", "");
-  int amount = LuaContext::opt_int_field(l, 1, "amount", 1);
-  int probability = LuaContext::opt_int_field(l, 1, "probability", 0);
-  const std::string& shadow_size_name = LuaContext::opt_string_field(l, 1, "shadow", "big");
-  bool can_disappear = LuaContext::opt_boolean_field(l, 1, "can_disappear", false);
-  bool brandish_when_picked = LuaContext::opt_boolean_field(l, 1, "brandish_when_picked", true);
-  const std::string& sound_when_picked = LuaContext::opt_string_field(l, 1, "sound_when_picked", "picked_item");
-  const std::string& sound_when_brandished = LuaContext::opt_string_field(l, 1, "sound_when_brandished", "treasure");
-
-  EquipmentItem* item = new EquipmentItem(*equipment);
-  item->increment_refcount();
-  equipment->items[item_name] = item;
-
-  item->set_name(item_name);
-  item->set_savegame_variable(savegame_variable);
-  item->set_nb_variants(nb_variants);
-  item->set_initial_variant(initial_variant);
-  item->set_can_be_assigned(can_be_assigned);
-  item->set_counter_savegame_variable(counter_savegame_variable);
-  item->set_fixed_limit(fixed_limit);
-  item->set_item_limited(item_limited);
-  item->set_item_counter_changed(item_counter_changed);
-  item->set_amount(1, amount);
-
-  item->set_probability(1, probability);
-  item->set_shadow_size(EquipmentItem::get_shadow_size_by_name(shadow_size_name));
-  item->set_can_disappear(can_disappear);
-  item->set_brandish_when_picked(brandish_when_picked);
-  item->set_sound_when_picked(sound_when_picked);
-  item->set_sound_when_brandished(sound_when_brandished);
-
-  for (int i = 1; i <= nb_variants; i++) {
-    std::ostringstream oss;
-    oss << "amount_" << i;
-    amount = LuaContext::opt_int_field(l, 1, oss.str(), amount);
-    item->set_amount(i, amount);
-
-    oss.str("");
-    oss << "probability_" << i;
-    probability = LuaContext::opt_int_field(l, 1, oss.str(), probability);
-    item->set_probability(i, probability);
-  }
-
-  return 0;
 }
 

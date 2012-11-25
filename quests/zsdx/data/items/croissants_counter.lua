@@ -1,5 +1,13 @@
 local item = ...
 
+function item:on_started()
+
+  self:set_savegame_variable("i1112")
+  self:set_assignable(true)
+  self:set_amount_savegame_variable("i1027")
+  self:set_max_amount(10)
+end
+
 function item:on_using()
 
   if self:get_amount() == 0 then

@@ -1,5 +1,12 @@
 local item = ...
 
+function item:on_started()
+
+  self:set_savegame_variable("i1101")
+  self:set_amount_savegame_variable("i1024")
+  self:set_assignable(true)
+end
+
 -- Called when the player uses the bombs of his inventory by pressing the corresponding item key.
 function item:on_using()
 

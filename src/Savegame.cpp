@@ -47,7 +47,6 @@ const std::string Savegame::KEY_JOYPAD_RIGHT = "_joypad_right";
 const std::string Savegame::KEY_JOYPAD_UP = "_joypad_up_key";
 const std::string Savegame::KEY_JOYPAD_LEFT = "_joypad_left_key";
 const std::string Savegame::KEY_JOYPAD_DOWN = "_joypad_down_key";
-const std::string Savegame::KEY_EQUIPMENT_INITIALIZED = "_equipment_initialized";
 const std::string Savegame::KEY_CURRENT_LIFE = "_current_life";
 const std::string Savegame::KEY_CURRENT_MONEY = "_current_money";
 const std::string Savegame::KEY_CURRENT_MAGIC = "_current_magic";
@@ -321,15 +320,26 @@ Game* Savegame::get_game() {
 
 /**
  * @brief Sets the game that is running this savegame.
- * @param game A game or NULL.
+ * @param game A game.
  */
-void Savegame::set_game(Game* game) {
+void Savegame::set_game(Game& game) {
+  this->game = &game;
+}
 
-  this->game = game;
-  if (game != NULL) {
-    // Notify the equipment.
-    equipment.set_game(*game);
-  }
+/**
+ * @brief Notifies this savegame that its game starts.
+ */
+void Savegame::notify_game_started() {
+
+  equipment.notify_game_started();
+}
+
+/**
+ * @brief Notifies this savegame that its game is finished.
+ */
+void Savegame::notify_game_finished() {
+
+  equipment.notify_game_finished();
 }
 
 /**

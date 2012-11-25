@@ -92,12 +92,12 @@ class LuaContext {
     void update();
     void set_suspended(bool suspended);
     bool notify_input(InputEvent& event);
-    void notify_map_started(Map& map, Destination* destination);
     void notify_map_suspended(Map& map, bool suspended);
-    void notify_item_created(EquipmentItem& item);
-    void notify_enemy_created(Enemy& enemy);
     void notify_camera_reached_target(Map& map);
     void notify_dialog_finished(int callback_ref, int answer);
+    void run_item(EquipmentItem& item);
+    void run_map(Map& map, Destination* destination);
+    void run_enemy(Enemy& enemy);
 
     // Lua table exploring helpers.
     static int check_int_field(
@@ -188,6 +188,8 @@ class LuaContext {
     // Equipment item events.
     void item_on_update(EquipmentItem& item);
     void item_on_suspended(EquipmentItem& item, bool suspended);
+    void item_on_started(EquipmentItem& item);
+    void item_on_finished(EquipmentItem& item);
     void item_on_map_changed(EquipmentItem& item, Map& map);
     void item_on_pickable_created(EquipmentItem& item, Pickable& pickable);
     void item_on_pickable_movement_changed(EquipmentItem& item, Pickable& pickable, Movement& movement);
@@ -226,7 +228,7 @@ class LuaContext {
     void switch_on_activated(Switch& sw);
     void switch_on_inactivated(Switch& sw);
     void switch_on_left(Switch& sw);
-    void hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure);
+    void hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure);  // TODO push the item instead of its name
     void hero_on_obtained_treasure(Hero& hero, const Treasure& treasure);
     void hero_on_victory_finished(Hero& hero);  // TODO clear the hero events when changing map?
     void sensor_on_activated(Sensor& sensor);
@@ -446,6 +448,9 @@ class LuaContext {
       // Equipment item API.
       item_api_get_game,
       item_api_get_map,
+      // TODO get_name, get/set_savegame_variable, get/set_amount_savegame_variable, is/set_allowed,
+      // is/set_assignable, get/set_can_disappear, get/set_brandish_when_picked, get/set_shadow,
+      // get/set_sound_when_picked, get/set_sound_when_brandished
       item_api_has_variant,
       item_api_get_variant,
       item_api_set_variant,

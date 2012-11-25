@@ -6,6 +6,12 @@ local item = ...
 local i = 1  -- Index of the waterfall tiles.
 local timer
 
+function item:on_started()
+
+  self:set_savegame_variable("i1108")
+  self:set_assignable(true)
+end
+
 function item:on_npc_interaction(npc)
 
   -- Give a hint when looking at the waterfall.

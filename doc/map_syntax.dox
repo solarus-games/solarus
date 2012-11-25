@@ -535,7 +535,7 @@ are disabled.
 When the door is open, this is the opposite.
 
 TODO
-18	layer	x	y	entity_name	direction	sprite_name	item_needed     can_explode	savegame_variable
+18	layer	x	y	entity_name	direction	sprite_name	savegame_variable_required     can_explode	savegame_variable	on_interaction	on_opening	on_opened
 
 \c savegame_variable indicates the index of the boolean value that stores this door's state
 in the savegame.

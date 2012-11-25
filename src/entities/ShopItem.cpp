@@ -23,6 +23,7 @@
 #include "Sprite.h"
 #include "DialogBox.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
 #include "Savegame.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/FileTools.h"
@@ -178,13 +179,14 @@ void ShopItem::update() {
 
       // the player wants to buy the item
       Equipment& equipment = get_equipment();
+      EquipmentItem& item = treasure.get_item();
 
       if (equipment.get_money() < price) {
         // not enough rupees
         Sound::play("wrong");
         get_dialog_box().start_dialog("_shop.not_enough_money");
       }
-      else if (equipment.has_item_maximum(treasure.get_item_name())) {
+      else if (item.has_amount() && item.get_amount() >= item.get_max_amount()) {
         // the player already has the maximum amount of this item
         Sound::play("wrong");
         get_dialog_box().start_dialog("_shop.amount_full");

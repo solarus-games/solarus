@@ -99,7 +99,9 @@ class Savegame: public ExportableToLua {
     // unsaved data
     Equipment& get_equipment();
     Game* get_game();
-    void set_game(Game* game);
+    void set_game(Game& game);
+    void notify_game_started();
+    void notify_game_finished();
 
     virtual const std::string& get_lua_type_name() const;
 

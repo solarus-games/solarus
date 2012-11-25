@@ -66,9 +66,8 @@ void SmallKeysCounter::update() {
     counter = NULL;
     need_rebuild = true;
   }
-  */
 
-  //if (equipment->are_small_keys_enabled()) {
+  if (equipment->are_small_keys_enabled()) {
 
     // current small keys
     int nb_keys = equipment->get_item_amount("small_keys_counter");
@@ -78,7 +77,8 @@ void SmallKeysCounter::update() {
       counter->set_value(nb_keys);
       need_rebuild = true;
     }
-  //}
+  }
+  */
 
   // redraw the surface if something has changed
   if (need_rebuild) {

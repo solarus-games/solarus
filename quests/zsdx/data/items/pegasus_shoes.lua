@@ -1,7 +1,13 @@
 local item = ...
 
--- Let the hero run with the action key or an inventory item key
-item:get_game():set_ability("run", item:get_variant())
+function item:on_started()
+
+  self:set_savegame_variable("i1107")
+  self:set_assignable(true)
+
+  -- Let the hero also run with the action key with old savegames.
+  self:get_game():set_ability("run", self:get_variant())
+end
 
 function item:on_variant_changed(variant)
 

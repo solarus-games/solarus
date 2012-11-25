@@ -173,7 +173,6 @@ void Sound::load_all() {
     std::istream& database_file = FileTools::data_file_open(file_name);
     std::string line;
 
-    // read each animation
     while (std::getline(database_file, line)) {
 
       if (line.size() == 0) {

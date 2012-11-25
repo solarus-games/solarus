@@ -1,5 +1,12 @@
 local item = ...
 
+function item:on_started()
+
+  self:set_savegame_variable("i1102")
+  self:set_amount_savegame_variable("i1025")
+  self:set_assignable(true)
+end
+
 function item:on_using()
 
   if self:get_amount() == 0 then
@@ -29,10 +36,10 @@ end
 
 function item:on_obtaining(variant, savegame_variable)
 
-  if variant == 1 then
-    -- the player just obtained the bow in its variant without arrows:
-    -- we need to set the arrows to zero manually because they are set to their maximum by default
-    self:set_amount(0)
+  local quiver = self:get_game():get_item("quiver")
+  if not quiver:has_variant() then
+    -- Give the first quiver automatically with the bow.
+    quiver:set_variant(1)
   end
 end
 

@@ -19,6 +19,7 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
 #include "StringResource.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Sound.h"
@@ -87,8 +88,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
 
   // rupee bag
   {
-    int rupee_bag = equipment.get_item_variant("rupee_bag");
-    
+    int rupee_bag = equipment.get_item("rupee_bag").get_variant();
+
     Rectangle src_position(rupee_bag * 16, 80, 16, 16);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 100,
         SOLARUS_SCREEN_HEIGHT_MIDDLE - 49);
@@ -100,7 +101,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   }
 
   // bomb bag
-  int bomb_bag = equipment.get_item_variant("bomb_bag");
+  int bomb_bag = equipment.get_item("bomb_bag").get_variant();
   if (bomb_bag != 0) {
     Rectangle src_position(48 + bomb_bag * 16, 80, 16, 16);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 100,
@@ -113,7 +114,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   }
 
   // quiver
-  int quiver = equipment.get_item_variant("quiver");
+  int quiver = equipment.get_item("quiver").get_variant();
   if (quiver != 0) {
     
     Rectangle src_position(96 + quiver * 16, 80, 16, 16);
@@ -127,7 +128,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
   }
 
   // world map
-  if (equipment.has_item("world_map")) {
+  if (equipment.get_item("world_map").get_variant() > 0) {
     Rectangle src_position(0, 80, 16, 16);
     Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 100,
         SOLARUS_SCREEN_HEIGHT_MIDDLE + 44);

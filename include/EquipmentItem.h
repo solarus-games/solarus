@@ -45,35 +45,22 @@ class EquipmentItem: public ExportableToLua {
 
     Equipment& get_equipment() const;
     Game* get_game() const;
+    Savegame& get_savegame() const;
     LuaContext& get_lua_context() const;
 
+    // Properties.
     const std::string& get_name() const;
     void set_name(const std::string& name);
     bool is_saved() const;
     const std::string& get_savegame_variable() const;
     void set_savegame_variable(const std::string& savegame_variable);
-    int get_nb_variants() const;
-    void set_nb_variants(int nv_variants);
-    int get_initial_variant() const;
-    void set_initial_variant(int initial_variant);
-    bool has_counter() const;
-    const std::string& get_counter_savegame_variable() const;
-    void set_counter_savegame_variable(const std::string& counter_savegame_variable);
-    bool has_fixed_limit() const;
-    int get_fixed_limit() const;
-    void set_fixed_limit(int fixed_limit);
-    const std::string& get_item_limiting() const;
-    void set_item_limiting(const std::string& item_limiting);
-    const std::string& get_item_limited() const;
-    void set_item_limited(const std::string& item_limited);
-    const std::string& get_item_counter_changed() const;
-    void set_item_counter_changed(const std::string& item_counter_changed);
-    int get_amount(int variant) const;
-    void set_amount(int variant, int amount);
-    int get_probability(int variant) const;
-    void set_probability(int variant, int probability);
-    bool get_can_be_assigned() const;
-    void set_can_be_assigned(bool can_be_assigned);
+    bool has_amount() const;
+    const std::string& get_amount_savegame_variable() const;
+    void set_amount_savegame_variable(const std::string& amount_savegame_variable);
+    bool is_obtainable() const;
+    void set_obtainable(bool obtainable);
+    bool is_assignable() const;
+    void set_assignable(bool assignable);
     bool get_can_disappear() const;
     void set_can_disappear(bool can_disappear);
     bool get_brandish_when_picked() const;
@@ -87,9 +74,12 @@ class EquipmentItem: public ExportableToLua {
     static const std::string& get_shadow_size_name(ShadowSize shadow_size);
     static ShadowSize get_shadow_size_by_name(const std::string& shadow_size_name);
 
+    // Current state.
     void update();
     void set_suspended(bool suspended);
-    void notify_game_started(Game& game);
+    void start();
+    void notify_game_started();
+    void notify_finished();
     void notify_map_started(Map& map);
     void notify_amount_changed(int amount);
     void notify_variant_changed(int variant);
@@ -98,10 +88,16 @@ class EquipmentItem: public ExportableToLua {
     void notify_pickable_appeared(Pickable& pickable);
     void notify_movement_changed(Pickable& pickable);
 
-    int get_current_variant();
-    void set_current_variant(int variant);
-    int get_current_amount();
-    void set_current_amount(int amount);
+    int get_variant() const;
+    void set_variant(int variant);
+
+    int get_amount() const;
+    void set_amount(int amount);
+    void add_amount(int amount_to_add);
+    void remove_amount(int amount_to_remove);
+
+    int get_max_amount() const;
+    void set_max_amount(int max_amount);
 
     virtual const std::string& get_lua_type_name() const;
 
@@ -110,19 +106,12 @@ class EquipmentItem: public ExportableToLua {
     Equipment& equipment;                /**< the equipment object that manages all items */
     std::string name;                    /**< name that identifies this item */
     std::string savegame_variable;       /**< savegame variable that stores the possession state */
-    int initial_variant;                 /**< initial possession state of this item */
-    std::string counter_savegame_variable;  /**< savegame variable that stores the counter associated to this item
-                                          * or -1 if there is no counter */
-    int fixed_limit;                     /**< limit of the counter associated to this item, or 0 */
-    std::string item_limiting;           /**< name of an item that limits the counter of this item (or an empty string) */
-    std::string item_limited;            /**< name of an item whose counter is limited by this item (or an empty string) */
-    std::string item_counter_changed;    /**< name of an item whose counter is changed by this item (or an empty string) */
-    std::vector<int> amounts;            /**< amount to consider when limited_counter_name or changed_counter_name
-                                          * is defined (for each variant) */
-    std::vector<int> probabilities;      /**< probability of getting this item when a pickable item is choosen
-                                          * randomly (for each variant) */
-    bool can_be_assigned;                /**< indicates that this item can be assigned to an item key an then
-                                          * be used explicitely */
+    std::string amount_savegame_variable; /**< savegame variable that stores the amount associated to this item
+                                          * or an empty string if there is no amount */
+    int max_amount;                      /**< limit of the amount associated to this item, or 0 */
+    bool obtainable;                     /**< whether the player can receive this item */
+    bool assignable;                     /**< indicates that this item can be assigned to an item key an then
+                                          * be used explicitly */
     bool can_disappear;                  /**< when the item is dropped on the ground, indicates that it will disappear
                                           * after some time */
     bool brandish_when_picked;           /**< when the item is picked on the ground, indicates that the hero

@@ -78,33 +78,33 @@ EntityType Pickable::get_type() {
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
- * @param treasure the treasure to give, possibly "_none" or "_random"
+ * @param treasure the treasure to give
  * @param falling_height to make the item fall when it appears
  * @param force_persistent true to make the item stay forever (otherwise, the properties of the item
  * decide if it disappears after some time)
  * @return the pickable item created, or NULL
  */
-Pickable* Pickable::create(Game &game, Layer layer, int x, int y, Treasure treasure,
+Pickable* Pickable::create(Game& game, Layer layer, int x, int y, Treasure treasure,
     FallingHeight falling_height, bool force_persistent) {
 
-  treasure.decide_content();
+  treasure.ensure_obtainable();
 
-  // don't create anything if there is no treasure to give
+  // Don't create anything if there is no treasure to give.
   if (treasure.is_empty()) {
     return NULL;
   }
 
-  Pickable *item = new Pickable(layer, x, y, treasure);
+  Pickable *pickable = new Pickable(layer, x, y, treasure);
 
-  // set the item properties
-  item->falling_height = falling_height;
-  item->will_disappear = !force_persistent && treasure.get_equipment_item().get_can_disappear();
+  // Set the item properties.
+  pickable->falling_height = falling_height;
+  pickable->will_disappear = !force_persistent && treasure.get_item().get_can_disappear();
 
-  // initialize the item
-  item->initialize_sprites();
-  item->initialize_movement();
+  // Initialize the pickable item.
+  pickable->initialize_sprites();
+  pickable->initialize_movement();
 
-  return item;
+  return pickable;
 }
 
 /**
@@ -125,7 +125,7 @@ bool Pickable::can_be_obstacle() {
  */
 void Pickable::initialize_sprites() {
 
-  EquipmentItem& item = treasure.get_equipment_item();
+  EquipmentItem& item = treasure.get_item();
 
   // create the shadow
   delete shadow_sprite;
@@ -140,7 +140,7 @@ void Pickable::initialize_sprites() {
       shadow_sprite = new Sprite("entities/shadow");
       shadow_sprite->set_current_animation("big");
       break;
-    
+
     case EquipmentItem::SHADOW_NONE:
       shadow_sprite = NULL;
       break;
@@ -323,7 +323,7 @@ void Pickable::notify_collision(MapEntity &other_entity, Sprite &other_sprite, S
  */
 void Pickable::give_item_to_player() {
 
-  EquipmentItem& item = treasure.get_equipment_item();
+  EquipmentItem& item = treasure.get_item();
 
   // play the sound
   const std::string& sound_id = item.get_sound_when_picked();

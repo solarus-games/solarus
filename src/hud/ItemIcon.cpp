@@ -90,7 +90,7 @@ void ItemIcon::update() {
 
   if (current_item.size() > 0) {
     // variant of the item
-    int current_item_variant = equipment->get_item_variant(current_item);
+    int current_item_variant = equipment->get_item(current_item).get_variant();
     if (item_variant_displayed != current_item_variant) {
 
       need_rebuild = true;
@@ -99,10 +99,10 @@ void ItemIcon::update() {
     }
 
     // counter
-    if (equipment->get_item(current_item).has_counter()) {
+    if (equipment->get_item(current_item).has_amount()) {
 
-      int current_counter_value = equipment->get_item_amount(current_item);
-      int current_counter_maximum = equipment->get_item_maximum(current_item);
+      int current_counter_value = equipment->get_item(current_item).get_amount();
+      int current_counter_maximum = equipment->get_item(current_item).get_max_amount();
 
       if (counter_value_displayed != current_counter_value || counter_maximum_displayed != current_counter_maximum) {
         need_rebuild = true;

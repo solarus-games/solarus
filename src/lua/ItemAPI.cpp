@@ -126,7 +126,7 @@ int LuaContext::item_api_has_variant(lua_State* l) {
     variant = luaL_checkinteger(l, 2);
   }
 
-  lua_pushboolean(l, item.get_current_variant() >= variant);
+  lua_pushboolean(l, item.get_variant() >= variant);
   return 1;
 }
 
@@ -139,7 +139,7 @@ int LuaContext::item_api_get_variant(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
-  lua_pushinteger(l, item.get_current_variant());
+  lua_pushinteger(l, item.get_variant());
   return 1;
 }
 
@@ -153,7 +153,7 @@ int LuaContext::item_api_set_variant(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   int variant = luaL_checkinteger(l, 2);
 
-  item.set_current_variant(variant);
+  item.set_variant(variant);
 
   return 0;
 }
@@ -168,7 +168,7 @@ int LuaContext::item_api_has_amount(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   int amount = luaL_checkinteger(l, 2);
 
-  lua_pushboolean(l, item.get_current_amount() >= amount);
+  lua_pushboolean(l, item.get_amount() >= amount);
   return 1;
 }
 
@@ -181,7 +181,7 @@ int LuaContext::item_api_get_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
-  lua_pushinteger(l, item.get_current_amount());
+  lua_pushinteger(l, item.get_amount());
   return 1;
 }
 
@@ -194,7 +194,7 @@ int LuaContext::item_api_set_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
   int amount = luaL_checkinteger(l, 2);
-  item.set_current_amount(amount);
+  item.set_amount(amount);
 
   return 0;
 }
@@ -209,7 +209,7 @@ int LuaContext::item_api_add_amount(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   int amount = luaL_checkinteger(l, 2);
 
-  item.set_current_amount(item.get_current_amount() + amount);
+  item.set_amount(item.get_amount() + amount);
 
   return 0;
 }
@@ -224,7 +224,7 @@ int LuaContext::item_api_remove_amount(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   int amount = luaL_checkinteger(l, 2);
 
-  item.set_current_amount(item.get_current_amount() - amount);
+  item.set_amount(item.get_amount() - amount);
 
   return 0;
 }
@@ -272,6 +272,30 @@ void LuaContext::item_on_suspended(EquipmentItem& item, bool suspended) {
 
   push_item(l, item);
   on_suspended(suspended);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_started() method of a Lua equipment item.
+ * @param item An equipment item.
+ */
+void LuaContext::item_on_started(EquipmentItem& item) {
+
+  push_item(l, item);
+  on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_finished() method of a Lua equipment item.
+ * @param item An equipment item.
+ */
+void LuaContext::item_on_finished(EquipmentItem& item) {
+
+  push_item(l, item);
+  on_finished();
+  remove_timers(-1);  // Stop timers and menus associated to this item.
+  remove_menus(-1);
   lua_pop(l, 1);
 }
 

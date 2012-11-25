@@ -1,7 +1,13 @@
 local item = ...
 
-function item:on_obtained(variant, savegame_variable)
-  -- obtaining the boss key gives the built-in ability "open_dungeon_boss_locks"
-  self:get_game():set_ability("open_dungeon_boss_locks", 1)
+function item:on_obtaining(variant, savegame_variable)
+
+  -- Save the possession of the boss key in the current dungeon.
+  local game = self:get_game()
+  local dungeon = game:get_dungeon()
+  if dungeon == nil then
+    error("This map is not in a dungeon")
+  end
+  game:set_value("dungeon_" .. dungeon "_boss_key", true)
 end
 

@@ -68,7 +68,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
 
   // notify objects
   get_savegame().increment_refcount();
-  get_savegame().set_game(this);
+  get_savegame().set_game(*this);
 
   // initialize members
   controls = new GameControls(*this);
@@ -131,6 +131,7 @@ void Game::start() {
  * @brief Ends this screen.
  */
 void Game::stop() {
+  get_equipment().notify_game_finished();
   get_lua_context().game_on_finished(*this);
 }
 

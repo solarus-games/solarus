@@ -4,6 +4,12 @@ local item = ...
 item.temporary_lit_torches = {} -- List of torches that will be unlit by timers soon (FIFO).
 item.was_dark_room = false
 
+function item:on_started()
+
+  self:set_savegame_variable("i1103")
+  self:set_assignable(true)
+end
+
 -- Called when the hero uses the Lamp.
 function item:on_using()
 
@@ -62,8 +68,9 @@ end
 function item:on_obtained(variant, savegame_variable)
 
   -- Give the magic bar if necessary.
-  if self:get_game():get_max_magic() == 0 then
-    self:get_game():set_max_magic(42)
+  local magic_bar = self:get_game():get_item("magic_bar")
+  if not magic_bar:has_variant() then
+    magic_bar:set_variant(1)
   end
 end
 

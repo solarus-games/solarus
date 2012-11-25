@@ -35,11 +35,11 @@ class Equipment {
 
   private:
 
-    Savegame& savegame;							/**< the savegame encapsulated by this equipment object */
-    bool suspended;							/**< indicates that the game is suspended */
+    Savegame& savegame;                          /**< the savegame encapsulated by this equipment object */
+    bool suspended;                              /**< indicates that the game is suspended */
 
     // items
-    std::map<std::string, EquipmentItem*> items;		/**< each item (properties loaded from the file items.dat) */
+    std::map<std::string, EquipmentItem*> items;  /**< each item (properties loaded from item scripts) */
 
     const std::string get_ability_savegame_variable(const std::string& ability_name);
 
@@ -53,7 +53,8 @@ class Equipment {
 
     Savegame& get_savegame();
     Game* get_game();
-    void set_game(Game& game);
+    void notify_game_started();
+    void notify_game_finished();
     void set_map(Map& map);
 
     void update();
@@ -88,22 +89,8 @@ class Equipment {
     void remove_magic(int magic_to_remove);
     void restore_all_magic();
 
-    // equipment items saved
+    // equipment items
     EquipmentItem& get_item(const std::string& item_name);
-    bool has_item(const std::string& item_name);
-    int get_item_variant(const std::string& item_name);
-    void set_item_variant(const std::string& item_name, int variant);
-    void remove_item(const std::string& item_name);
-
-    int get_item_amount(const std::string& item_name);
-    void set_item_amount(const std::string& item_name, int amount);
-    void add_item_amount(const std::string& item_name, int amount_to_add);
-    void remove_item_amount(const std::string& item_name, int amount_to_remove);
-
-    int get_item_maximum(const std::string& item_name);
-    bool has_item_maximum(const std::string& item_name);
-
-    void get_random_item(std::string& item_name, int& variant);
 
     // item assignments
     const std::string& get_item_assigned(int slot);
@@ -115,11 +102,6 @@ class Equipment {
     int get_ability(const std::string& ability_name);
     void set_ability(const std::string& ability_name, int level);
     void notify_ability_used(const std::string& ability_name);
-
-    // giving items
-    void set_initial_items();
-    bool can_receive_item(const std::string& item_name, int variant);
-    void add_item(const std::string& item_name, int variant);
 };
 
 #endif

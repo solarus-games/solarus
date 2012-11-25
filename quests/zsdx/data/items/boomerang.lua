@@ -1,5 +1,11 @@
 local item = ...
 
+function item:on_started()
+
+  self:set_savegame_variable("i1103")
+  self:set_assignable(true)
+end
+
 function item:on_using()
 
   local hero = self:get_map():get_entity("hero")

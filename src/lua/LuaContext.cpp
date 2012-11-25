@@ -199,7 +199,7 @@ bool LuaContext::notify_input(InputEvent& event) {
  * @param destination The destination point used if it's a normal one,
  * NULL otherwise.
  */
-void LuaContext::notify_map_started(Map& map, Destination* destination) {
+void LuaContext::run_map(Map& map, Destination* destination) {
 
   // Compute the file name, depending on the id of the map.
   std::string file_name = std::string("maps/") + map.get_id() + ".script";
@@ -250,7 +250,7 @@ void LuaContext::notify_map_suspended(Map& map, bool suspended) {
  *
  * @param item The item.
  */
-void LuaContext::notify_item_created(EquipmentItem& item) {
+void LuaContext::run_item(EquipmentItem& item) {
 
   // Compute the file name, depending on the id of the equipment item.
   std::string file_name = (std::string) "items/" + item.get_name();
@@ -268,9 +268,10 @@ void LuaContext::notify_item_created(EquipmentItem& item) {
  * @brief Notifies the Lua world that an enemy has just been added to the map.
  *
  * The Lua file of this enemy is automatically loaded.
+ *
  * @param enemy The enemy.
  */
-void LuaContext::notify_enemy_created(Enemy& enemy) {
+void LuaContext::run_enemy(Enemy& enemy) {
 
   // Compute the file name, depending on enemy's breed.
   std::string file_name = (std::string) "enemies/" + enemy.get_breed();

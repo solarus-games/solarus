@@ -2,6 +2,13 @@ local item = ...
 
 -- This script defines the behavior of pickable fairies present on the map.
 
+function item:on_started()
+
+  self:set_shadow(nil)
+  self:set_can_disappear(true)
+  self:set_brandish_when_picked(false)
+end
+
 -- A fairy appears on the map: create its movement.
 function item:on_pickable_created(pickable)
 

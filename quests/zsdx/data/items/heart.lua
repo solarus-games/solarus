@@ -1,9 +1,21 @@
 local item = ...
 
+function item:on_started()
+
+  self:set_shadow("small")
+  self:set_can_disappear(true)
+  self:set_brandish_when_picked(false)
+end
+
+function item:on_obtaining(variant, savegame_variable)
+
+  self:get_game():add_life(4)
+end
+
 function item:on_pickable_created(pickable)
 
   if pickable:get_falling_height() ~= 0 then
-    -- Change the default falling movement by a special one.
+    -- Replace the default falling movement by a special one.
     local trajectory = {
       { 0,  0},
       { 0, -2},

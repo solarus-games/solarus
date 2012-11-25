@@ -156,7 +156,7 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
     int index = 200 + i * 10;
 
     std::ostringstream oss;
-    oss << "dungeon_" << i;
+    oss << "dungeon_" << (i + 1);
     const std::string& dungeon_number = oss.str();
 
     // Dungeon finished (integer replaced by a boolean).

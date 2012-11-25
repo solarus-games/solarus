@@ -135,7 +135,7 @@ int LuaContext::game_api_load(lua_State* l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 
-  Savegame* savegame = new Savegame(file_name);
+  Savegame* savegame = new Savegame(get_lua_context(l).get_main_loop(), file_name);
 
   push_game(l, *savegame);
   return 1;
@@ -170,7 +170,7 @@ int LuaContext::game_api_start(lua_State* l) {
   }
   else {
     // Create a new game to run.
-    MainLoop& main_loop = get_lua_context(l).get_main_loop();
+    MainLoop& main_loop = savegame.get_lua_context().get_main_loop();
     Game* game = new Game(main_loop, &savegame);
     main_loop.set_game(game);
   }
@@ -220,11 +220,11 @@ int LuaContext::game_api_get_map(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   Game* game = savegame.get_game();
-  if (game == NULL) {
+  if (game == NULL || !game->has_current_map()) {
     lua_pushnil(l);
   }
   else {
-    push_map(l, savegame.get_game()->get_current_map());
+    push_map(l, game->get_current_map());
   }
   return 1;
 }

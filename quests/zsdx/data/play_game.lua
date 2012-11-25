@@ -2,11 +2,6 @@ local game = ...
 
 function game:on_started()
 
-  -- First run: initialize the equipment.
-  if not game:get_item("tunic"):has_variant() then
-    game:set_initial_equipment()
-  end
-
   -- Set up the HUD.
   local hearts_class = require("hud/hearts")
   local magic_bar_class = require("hud/magic_bar")
@@ -27,15 +22,6 @@ function game:on_started()
 end
 
 -- Useful functions for this specific quest.
-
-function game:set_initial_equipment()
-
-  -- Initially give 3 hearts, the first tunic and the first wallet.
-  self:set_max_life(12)
-  self:set_life(self:get_max_life())
-  self:get_item("tunic"):set_variant(1)
-  self:get_item("rupee_bag"):set_variant(1)
-end
 
 function game:get_player_name()
   return self:get_value("player_name")

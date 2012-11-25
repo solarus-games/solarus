@@ -68,6 +68,8 @@ void MapLoader::load_map(Game& game, Map& map) {
 
   // Make the Lua world aware of our map.
   luaL_newmetatable(l, LuaContext::map_module_name.c_str());
+  lua_pushcfunction(l, LuaContext::userdata_meta_gc);
+  lua_setfield(l, -2, "__gc");
   lua_pop(l, 1);
   LuaContext::set_entity_implicit_creation_map(l, &map);
 

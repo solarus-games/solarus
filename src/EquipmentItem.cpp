@@ -80,7 +80,7 @@ Savegame& EquipmentItem::get_savegame() const {
  * @return The Lua context where all scripts are run.
  */
 LuaContext& EquipmentItem::get_lua_context() const {
-  return get_game()->get_lua_context();
+  return get_savegame().get_lua_context();
 }
 
 /**
@@ -285,9 +285,7 @@ void EquipmentItem::set_shadow(const std::string& shadow) {
  */
 void EquipmentItem::update() {
 
-  if (get_game() != NULL) {  // Nothing dynamic when there is no game.
-    get_lua_context().item_on_update(*this);
-  }
+  get_lua_context().item_on_update(*this);
 }
 
 /**
@@ -300,16 +298,18 @@ void EquipmentItem::set_suspended(bool suspended) {
 }
 
 /**
- * @brief This function is called when the game starts.
+ * @brief This function is called when the equipment object starts.
  */
-void EquipmentItem::notify_game_started() {
+void EquipmentItem::initialize() {
 
   // Read the Lua script of this item if any.
   get_lua_context().run_item(*this);
 }
 
 /**
- * @brief Notifies this item that it was loaded and can now initialize itself.
+ * @brief Starts this item.
+ *
+ * When this function is called, all equipment items are initialized.
  */
 void EquipmentItem::start() {
 
@@ -317,9 +317,9 @@ void EquipmentItem::start() {
 }
 
 /**
- * @brief This function is called before the item script is closed.
+ * @brief This function is called before the item is destroyed.
  */
-void EquipmentItem::notify_finished() {
+void EquipmentItem::exit() {
 
   get_lua_context().item_on_finished(*this);
 }

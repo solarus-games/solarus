@@ -947,10 +947,20 @@ function savegame_menu:validate_player_name()
   sol.audio.play_sound("ok")
 
   local savegame = self.slots[self.cursor_position].savegame
-  savegame:set_value("player_name", self.player_name)
+  self:set_initial_values(savegame)
   savegame:save()
   self:read_savegames()
   return true
+end
+
+function savegame_menu:set_initial_values(savegame)
+
+  -- Initially give 3 hearts, the first tunic and the first wallet.
+  savegame:set_value("player_name", self.player_name)
+  savegame:set_max_life(12)
+  savegame:set_life(savegame:get_max_life())
+  savegame:get_item("tunic"):set_variant(1)
+  savegame:get_item("rupee_bag"):set_variant(1)
 end
 
 function savegame_menu:start_game(game)

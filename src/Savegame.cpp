@@ -16,6 +16,7 @@
  */
 #include "Savegame.h"
 #include "SavegameConverterV1.h"
+#include "MainLoop.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/IniFile.h"
@@ -66,12 +67,14 @@ const std::string Savegame::KEY_ABILITY_RUN = "_ability_run";
 
 /**
  * @brief Creates a savegame with a specified file name, existing or not.
+ * @param main_loop The Solarus root object.
  * @param file_name Name of the savegame file (can be a new file),
  * relative to the savegames directory, with its extension.
  */
-Savegame::Savegame(const std::string& file_name):
+Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   ExportableToLua(),
   file_name(file_name),
+  main_loop(main_loop),
   equipment(*this),
   game(NULL) {
 
@@ -137,26 +140,22 @@ void Savegame::set_initial_values() {
 void Savegame::set_default_keyboard_controls() {
 
 #ifndef PANDORA
-  set_integer(KEY_KEYBOARD_ACTION, InputEvent::KEY_SPACE);
-  set_integer(KEY_KEYBOARD_SWORD, InputEvent::KEY_c);
-  set_integer(KEY_KEYBOARD_ITEM_1, InputEvent::KEY_x);
-  set_integer(KEY_KEYBOARD_ITEM_2, InputEvent::KEY_v);
-  set_integer(KEY_KEYBOARD_PAUSE, InputEvent::KEY_d);
-  set_integer(KEY_KEYBOARD_RIGHT, InputEvent::KEY_RIGHT);
-  set_integer(KEY_KEYBOARD_UP, InputEvent::KEY_UP);
-  set_integer(KEY_KEYBOARD_LEFT, InputEvent::KEY_LEFT);
-  set_integer(KEY_KEYBOARD_DOWN, InputEvent::KEY_DOWN);
+  set_string(KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(InputEvent::KEY_SPACE));
+  set_string(KEY_KEYBOARD_SWORD, InputEvent::get_keyboard_key_name(InputEvent::KEY_c));
+  set_string(KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(InputEvent::KEY_x));
+  set_string(KEY_KEYBOARD_ITEM_2, InputEvent::get_keyboard_key_name(InputEvent::KEY_v));
+  set_string(KEY_KEYBOARD_PAUSE, InputEvent::get_keyboard_key_name(InputEvent::KEY_d));
 #else
-  set_integer(KEY_KEYBOARD_ACTION, SDLK_PAGEDOWN);
-  set_integer(KEY_KEYBOARD_SWORD, SDLK_HOME);
-  set_integer(KEY_KEYBOARD_ITEM_1, SDLK_PAGEUP);
-  set_integer(KEY_KEYBOARD_ITEM_2, SDLK_END);
-  set_integer(KEY_KEYBOARD_PAUSE, SDLK_LALT);
-  set_integer(KEY_KEYBOARD_RIGHT, InputEvent::KEY_RIGHT);
-  set_integer(KEY_KEYBOARD_UP, InputEvent::KEY_UP);
-  set_integer(KEY_KEYBOARD_LEFT, InputEvent::KEY_LEFT);
-  set_integer(KEY_KEYBOARD_DOWN, InputEvent::KEY_DOWN);
+  set_string(KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_DOWN));
+  set_string(KEY_KEYBOARD_SWORD, InputEvent::get_keyboard_key_name(InputEvent::KEY_HOME));
+  set_string(KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_UP));
+  set_string(KEY_KEYBOARD_ITEM_2, InputEvent::get_keyboard_key_name(InputEvent::KEY_END));
+  set_string(KEY_KEYBOARD_PAUSE, InputEvent::get_keyboard_key_name(InputEvent::KEY_LEFT_ALT));
 #endif
+  set_string(KEY_KEYBOARD_RIGHT, InputEvent::get_keyboard_key_name(InputEvent::KEY_RIGHT));
+  set_string(KEY_KEYBOARD_UP, InputEvent::get_keyboard_key_name(InputEvent::KEY_UP));
+  set_string(KEY_KEYBOARD_LEFT, InputEvent::get_keyboard_key_name(InputEvent::KEY_LEFT));
+  set_string(KEY_KEYBOARD_DOWN, InputEvent::get_keyboard_key_name(InputEvent::KEY_DOWN));
 }
 
 /**
@@ -298,6 +297,22 @@ void Savegame::save() {
  */
 const std::string& Savegame::get_file_name() {
   return file_name;
+}
+
+/**
+ * @brief Returns the Solarus main loop.
+ * @return The main loop.
+ */
+MainLoop& Savegame::get_main_loop() {
+  return main_loop;
+}
+
+/**
+ * @brief Returns the Lua context where this savegame lives.
+ * @return The Lua context.
+ */
+LuaContext& Savegame::get_lua_context() {
+  return main_loop.get_lua_context();
 }
 
 /**

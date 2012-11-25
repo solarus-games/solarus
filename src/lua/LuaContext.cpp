@@ -1238,7 +1238,7 @@ int LuaContext::userdata_meta_gc(lua_State* l) {
 }
 
 /**
- * @brief Implementation of __newindex that allow userdata to be like tables.
+ * @brief Implementation of __newindex that allows userdata to be like tables.
  *
  * Lua code can make "object[key] = value" if object is a userdata with this
  * __newindex metamethod.
@@ -1294,7 +1294,7 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
 }
 
 /**
- * @brief Implementation of __index that allow userdata to be like tables.
+ * @brief Implementation of __index that allows userdata to be like tables.
  *
  * Lua code can get "object[key]" for an arbitrary key previously set.
  *

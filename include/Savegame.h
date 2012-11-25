@@ -75,7 +75,7 @@ class Savegame: public ExportableToLua {
     static const std::string KEY_ABILITY_RUN;
 
     // creation and destruction
-    Savegame(const std::string& file_name);
+    Savegame(MainLoop& main_loop, const std::string& file_name);
     ~Savegame();
 
     // file state
@@ -97,6 +97,8 @@ class Savegame: public ExportableToLua {
     void set_boolean(const std::string& key, bool value);
 
     // unsaved data
+    MainLoop& get_main_loop();
+    LuaContext& get_lua_context();
     Equipment& get_equipment();
     Game* get_game();
     void set_game(Game& game);
@@ -123,6 +125,7 @@ class Savegame: public ExportableToLua {
 
     bool empty;
     std::string file_name;
+    MainLoop& main_loop;
     Equipment equipment;
     Game* game;             /**< NULL if this savegame is not currently running */
 

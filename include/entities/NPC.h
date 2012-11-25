@@ -70,13 +70,13 @@ class NPC: public Detector {
     std::string dialog_to_show;         /**< dialog to show when an interaction occurs, or an empty string */
     std::string item_name;              /**< name of an equipment item to notify when an interaction occurs */
 
-    void initialize_sprite(std::string& sprite_name, int initial_direction);
+    void initialize_sprite(const std::string& sprite_name, int initial_direction);
     void call_script_hero_interaction();
 
   public:
 
     NPC(Game& game, const std::string& name, Layer layer, int x, int y,
-        Subtype subtype, std::string sprite_name,
+        Subtype subtype, const std::string& sprite_name,
         int initial_direction, const std::string& behavior_string);
     ~NPC();
 

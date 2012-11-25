@@ -64,6 +64,17 @@ Equipment::Equipment(Savegame& savegame):
     }
   }
   FileTools::data_file_close(database_file);
+
+  // Load the item scripts.
+  std::map<std::string, EquipmentItem*>::const_iterator it;
+  for (it = items.begin(); it != items.end(); it++) {
+    it->second->initialize();
+  }
+
+  // Start the items once they all exist.
+  for (it = items.begin(); it != items.end(); it++) {
+    it->second->start();
+  }
 }
 
 /**
@@ -101,17 +112,6 @@ Game* Equipment::get_game() {
  * @brief Notifies the equipment that the game has just started.
  */
 void Equipment::notify_game_started() {
-
-  // Notify the items.
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
-    it->second->notify_game_started();
-  }
-
-  // Start the items once they all exist.
-  for (it = items.begin(); it != items.end(); it++) {
-    it->second->start();
-  }
 }
 
 /**
@@ -119,10 +119,10 @@ void Equipment::notify_game_started() {
  */
 void Equipment::notify_game_finished() {
 
-  // Notify the item scripts.
+  // The equipment items will disappear: notify them.
   std::map<std::string, EquipmentItem*>::const_iterator it;
   for (it = items.begin(); it != items.end(); it++) {
-    it->second->notify_finished();
+    it->second->exit();
   }
 }
 

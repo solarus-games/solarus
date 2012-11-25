@@ -64,11 +64,11 @@ class EquipmentItem: public ExportableToLua {
     void set_shadow(const std::string& shadow);
 
     // Current state.
+    void initialize();
+    void exit();
     void update();
     void set_suspended(bool suspended);
     void start();
-    void notify_game_started();
-    void notify_finished();
     void notify_map_started(Map& map);
     void notify_amount_changed(int amount);
     void notify_variant_changed(int variant);

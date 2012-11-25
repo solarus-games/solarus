@@ -37,7 +37,6 @@ MainLoop::MainLoop(int argc, char** argv):
   root_surface(NULL),
   debug_keys(NULL),
   lua_context(NULL),
-  resetting(false),
   exiting(false),
   game(NULL),
   next_game(NULL) {
@@ -107,7 +106,7 @@ void MainLoop::set_exiting() {
 void MainLoop::set_resetting() {
 
   // Reset the program.
-  resetting = true;
+  next_game = NULL;
 }
 
 /**
@@ -156,18 +155,18 @@ void MainLoop::run() {
     update();
 
     // go to another game?
-    if (next_game != game || resetting) {
+    if (next_game != game) {
       if (game != NULL) {
         game->stop();
         delete game;
       }
+
       game = next_game;
 
       if (game != NULL) {
         game->start();
       }
-      else if (resetting) {
-        resetting = false;
+      else {
         lua_context->exit();
         lua_context->initialize();
         Music::play(Music::none);

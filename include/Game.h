@@ -59,7 +59,6 @@ class Game {
     Transition *transition;             /**< the transition currently shown, or NULL if no transition is playing */
 
     // world (i.e. the current set of maps)
-    Dungeon *dungeon;          /**< the dungeon of the current map, of NULL if we are not in a dungeon */
     bool crystal_state;        /**< indicates that a crystal has been enabled (i.e. the orange blocks are raised) */
     static Rectangle outside_world_size; /**< size of the outside world in pixels */
 
@@ -73,8 +72,6 @@ class Game {
     void update_dialog_box();
     void update_transitions();
     void update_gameover_sequence();
-
-    void load_dungeon();
 
   public:
 
@@ -112,8 +109,6 @@ class Game {
 
     // world
     const Rectangle& get_outside_world_size();
-    bool is_in_dungeon();
-    Dungeon& get_current_dungeon();
     bool get_crystal_state();
     void change_crystal_state();
 

@@ -17,7 +17,6 @@
 #include "menus/PauseSubmenuMap.h"
 #include "menus/PauseMenu.h"
 #include "Game.h"
-#include "Dungeon.h"
 #include "Sprite.h"
 #include "Map.h"
 #include "Equipment.h"
@@ -41,7 +40,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu& pause_menu, Game& game):
   PauseSubmenu(pause_menu, game) {
 
   // outside map or inside map (no dungeon): show the world map
-  if (!game.is_in_dungeon()) {
+//  if (!game.is_in_dungeon()) {
 
     set_caption_text(StringResource::get_string("map.caption.world_map"));
 
@@ -74,54 +73,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu& pause_menu, Game& game):
     if (equipment.has_ability("see_outside_world_minimap")) {
       equipment.notify_ability_used("see_outside_world_minimap");
     }
-  }
-
-  // dungeon
-  else {
-
-    Dungeon &dungeon = game.get_current_dungeon();
-
-    // caption text
-    set_caption_text(dungeon.get_name());
-
-    // item icons
-    dungeon_map_background = new Surface("menus/dungeon_map_background.png");
-    dungeon_map_icons = new Surface("menus/dungeon_map_icons.png");
-
-    small_keys_counter = new Counter(2, false,
-        SOLARUS_SCREEN_WIDTH_MIDDLE - 36, SOLARUS_SCREEN_HEIGHT_MIDDLE + 62);
-    // TODO reimplement in Lua
-    // small_keys_counter->set_value(equipment.get_small_keys());
-
-    // floors
-    dungeon_floors_img = new Surface("floors.png", Surface::DIR_LANGUAGE);
-
-    hero_floor_name = game.get_current_map().get_floor();
-    boss_floor_name = dungeon.get_boss_floor_name();
-
-    highest_floor = dungeon.get_highest_floor();
-    lowest_floor = dungeon.get_lowest_floor();
-    nb_floors = dungeon.get_nb_floors();
-
-    nb_floors_displayed = dungeon.get_nb_floors_displayed();
-
-    if (hero_floor_name != "unknown") {
-      int hero_floor;
-      std::istringstream iss(hero_floor_name);
-      iss >> hero_floor;
-      highest_floor_displayed = dungeon.get_highest_floor_displayed(hero_floor);
-      selected_floor = hero_floor;
-    }
-    else {
-      highest_floor_displayed = highest_floor;
-      selected_floor = lowest_floor;
-    }
-
-    // map
-    dungeon_map_img = new Surface(123, 119);
-    dungeon_map_img->set_transparency_color(Color::get_black());
-    load_dungeon_map_image();
-  }
+//  }
 
   hero_head_sprite = new Sprite("menus/hero_head");
   std::ostringstream oss;
@@ -140,143 +92,10 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu& pause_menu, Game& game):
  */
 PauseSubmenuMap::~PauseSubmenuMap() {
 
-  if (!game.is_in_dungeon()) {
-    delete world_map_img;
-  }
-  else {
-    delete dungeon_map_background;
-    delete dungeon_map_icons;
-    delete dungeon_floors_img;
-    delete small_keys_counter;
-    delete dungeon_map_img;
-    delete hero_point_sprite;
-  }
-
+  delete world_map_img;
   delete hero_head_sprite;
   delete up_arrow_sprite;
   delete down_arrow_sprite;
-}
-
-/**
- * @brief Converts some coordinates relative to the dungeon floor into coordinates relative to the minimap displayed.
- * @param floor_coords coordinates relative to the floor
- * @param minimap_coords coordinates relative to the minimap (result of the function)
- * @param floor_size size of the floor
- */
-void PauseSubmenuMap::to_dungeon_minimap_coordinates(const Rectangle &floor_coords,
-    Rectangle &minimap_coords, const Rectangle &floor_size) {
-
-  Rectangle minimap_rectangle(0, 0, 123, 119);
-
-  if ((floor_size.get_width() * 119.0) / (floor_size.get_height() * 123.0) > 1.0) {
-    // the floor height does not use the entire vertical space
-    minimap_rectangle.set_height(floor_size.get_height() * 123 / floor_size.get_width());
-    minimap_rectangle.set_y((119 - minimap_rectangle.get_height()) / 2);
-  }
-  else {
-    // the floor width does not use the entire horizontal space
-    minimap_rectangle.set_width(floor_size.get_width() * 119 / floor_size.get_height());
-    minimap_rectangle.set_x((123 - minimap_rectangle.get_width()) / 2);
-  }
-
-  /*
-  std::cout << "minimap_rectangle.x = " << minimap_rectangle.x << ", floor_coords.x = " << floor_coords.x
-    << ", minimap_rectangle.w = " << minimap_rectangle.w << ", floor_size.w = " << floor_size.w << std::endl;
-    */
-  minimap_coords.set_x(minimap_rectangle.get_x() +
-      floor_coords.get_x() * minimap_rectangle.get_width() / floor_size.get_width());
-  minimap_coords.set_y(minimap_rectangle.get_y() +
-      floor_coords.get_y() * minimap_rectangle.get_height() / floor_size.get_height());
-}
-
-/**
- * @brief Deletes any previous dungeon map image and loads the image
- * corresponding to the selected floor.
- */
-void PauseSubmenuMap::load_dungeon_map_image() {
-
-  Dungeon& dungeon = game.get_current_dungeon();
-  dungeon_map_img->fill_with_color(Color::get_black());
-
-  std::ostringstream oss;
-  oss << "dungeon_" << dungeon.get_number();
-  const std::string& dungeon_number = oss.str();
-
-  if (savegame.get_boolean(dungeon_number + "_map")) {
-
-    // load the image of this floor
-    oss.str("");
-    oss << "maps/dungeons/map" << dungeon.get_number() << "_" << selected_floor << ".png";
-    Surface *floor_map_img = new Surface(oss.str(), Surface::DIR_DATA);
-    floor_map_img->draw(*dungeon_map_img);
-    delete floor_map_img;
-  }
-
-  if (!savegame.get_boolean(dungeon_number + "_compass")) {
-    hero_point_sprite = NULL;
-  }
-  else {
-    // the hero's position
-    hero_point_sprite = new Sprite("menus/hero_point");
-
-    const Rectangle &floor_size = dungeon.get_floor_size(selected_floor);
-
-    hero_position = game.get_current_map().get_location();
-    const Rectangle &hero_map_xy = game.get_hero_xy();
-
-    hero_position.add_xy(hero_map_xy.get_x(), hero_map_xy.get_y());
-
-    to_dungeon_minimap_coordinates(hero_position, hero_position, floor_size);
-
-    // chests
-    Rectangle small_chest_src_position(78, 8, 4, 4);
-    Rectangle big_chest_src_position(78, 12, 6, 4);
-    Rectangle dst_position;
-    const std::vector<Dungeon::DungeonElement>& chests = dungeon.get_chests(selected_floor);
-    for (unsigned int i = 0; i < chests.size(); i++) {
-
-      if (!chests[i].savegame_variable.empty()
-          && !savegame.get_boolean(chests[i].savegame_variable)) {
-
-        int dx = chests[i].big ? 16 : 8;  // TODO change chests origin point to avoid this
-        int dy = chests[i].big ? 21 : 13;
-
-        dst_position.set_xy(chests[i].x + dx, chests[i].y + dy);
-        to_dungeon_minimap_coordinates(dst_position, dst_position, floor_size);
-        dst_position.add_x((chests[i].big) ? -2 : -1);
-        dst_position.add_y(-1);
-
-        if (!chests[i].big) {
-          dungeon_map_icons->draw_region(small_chest_src_position,
-              *dungeon_map_img, dst_position);
-        }
-        else {
-          dungeon_map_icons->draw_region(big_chest_src_position,
-              *dungeon_map_img, dst_position);
-        }
-      }
-    }
-
-    // boss and minibosses
-    Rectangle src_position(78, 0, 8, 8);
-    
-    const std::vector<Dungeon::DungeonElement>& bosses = dungeon.get_bosses(selected_floor);
-    for (unsigned int i = 0; i < bosses.size(); i++) {
-
-      // TODO also draw minibosses?
-      if (bosses[i].big
-          && !bosses[i].savegame_variable.empty()
-          && !savegame.get_boolean(bosses[i].savegame_variable)) {
-
-        dst_position.set_xy(bosses[i].x, bosses[i].y);
-        to_dungeon_minimap_coordinates(dst_position, dst_position, floor_size);
-        dst_position.add_xy(-2, -2);
-
-        dungeon_map_icons->draw_region(src_position, *dungeon_map_img,
-            dst_position);
-      }
-    }
-  }
 }
 
 /**
@@ -298,32 +117,10 @@ void PauseSubmenuMap::key_pressed(GameControls::GameKey key) {
   case GameControls::UP:
   case GameControls::DOWN:
 
-    if (!game.is_in_dungeon()) {
-
-      // move the world map
-      if (equipment.has_ability("see_outside_world_minimap")) {
-        moving_visible_y = (key == GameControls::UP) ? -1 : 1;
-        next_moving_visible_y_date = System::now();
-      }
-    }
-
-    else {
-      // select another floor
-      int new_selected_floor = selected_floor + ((key == GameControls::UP) ? 1 : -1);
-      if (new_selected_floor >= lowest_floor && new_selected_floor <= highest_floor) {
-
-        Sound::play("cursor");
-        hero_head_sprite->restart_animation();
-        selected_floor = new_selected_floor;
-        load_dungeon_map_image();
-
-        if (selected_floor <= highest_floor_displayed - 7) {
-          highest_floor_displayed--;
-        }
-        else if (selected_floor > highest_floor_displayed) {
-          highest_floor_displayed++;
-        }
-      }
+    // move the world map
+    if (equipment.has_ability("see_outside_world_minimap")) {
+      moving_visible_y = (key == GameControls::UP) ? -1 : 1;
+      next_moving_visible_y_date = System::now();
     }
     break;
 
@@ -341,37 +138,34 @@ void PauseSubmenuMap::update() {
   up_arrow_sprite->update();
   down_arrow_sprite->update();
 
-  if (!game.is_in_dungeon()) {
+  GameControls &controls = game.get_controls();
 
-    GameControls &controls = game.get_controls();
+  bool up = controls.is_key_pressed(GameControls::UP);
+  bool down = controls.is_key_pressed(GameControls::DOWN);
 
-    bool up = controls.is_key_pressed(GameControls::UP);
-    bool down = controls.is_key_pressed(GameControls::DOWN);
+  if (moving_visible_y == -1) {
 
-    if (moving_visible_y == -1) {
-
-      if (!up) {
-        moving_visible_y = down ? 1 : 0;
-      }
-      else if (world_minimap_visible_y <= 0) {
-        moving_visible_y = 0;
-      }
+    if (!up) {
+      moving_visible_y = down ? 1 : 0;
     }
-    else if (moving_visible_y == 1) {
-
-      if (!down) {
-        moving_visible_y = up ? -1 : 0;
-      }
-      else if (world_minimap_visible_y >= 388 - 133) {
-        moving_visible_y = 0;
-      }
+    else if (world_minimap_visible_y <= 0) {
+      moving_visible_y = 0;
     }
+  }
+  else if (moving_visible_y == 1) {
 
-    uint32_t now = System::now();
-    if (moving_visible_y != 0 && now >= next_moving_visible_y_date) {
-      world_minimap_visible_y += moving_visible_y;
-      next_moving_visible_y_date += 10;
+    if (!down) {
+      moving_visible_y = up ? -1 : 0;
     }
+    else if (world_minimap_visible_y >= 388 - 133) {
+      moving_visible_y = 0;
+    }
+  }
+
+  uint32_t now = System::now();
+  if (moving_visible_y != 0 && now >= next_moving_visible_y_date) {
+    world_minimap_visible_y += moving_visible_y;
+    next_moving_visible_y_date += 10;
   }
 
   if (hero_point_sprite != NULL) {
@@ -387,12 +181,7 @@ void PauseSubmenuMap::draw(Surface& dst_surface) {
 
   PauseSubmenu::draw(dst_surface);
 
-  if (!game.is_in_dungeon()) {
-    draw_world_map(dst_surface);
-  }
-  else {
-    draw_dungeon_map(dst_surface);
-  }
+  draw_world_map(dst_surface);
 }
 
 /**
@@ -431,158 +220,6 @@ void PauseSubmenuMap::draw_world_map(Surface& dst_surface) {
       down_arrow_sprite->draw(dst_surface,
           SOLARUS_SCREEN_WIDTH_MIDDLE + 51, SOLARUS_SCREEN_HEIGHT_MIDDLE + 68);
     }
-  }
-}
-
-/**
- * @brief Draws the dungeon map submenu.
- * @param dst_surface the destination surface
- */
-void PauseSubmenuMap::draw_dungeon_map(Surface& dst_surface) {
-
-  // show the special background
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 112,
-        SOLARUS_SCREEN_HEIGHT_MIDDLE - 61);
-  dungeon_map_background->draw(dst_surface, dst_position);
-
-  // show the dungeon items
-  draw_dungeon_items(dst_surface);
-
-  // show the floors
-  draw_dungeon_floors(dst_surface);
-
-  // show the map itself
-    dst_position.set_xy(SOLARUS_SCREEN_WIDTH_MIDDLE - 17,
-        SOLARUS_SCREEN_HEIGHT_MIDDLE - 54);
-  dungeon_map_img->draw(dst_surface, dst_position);
-
-  if (hero_floor_name != "unknown") {
-    int hero_floor;
-    std::istringstream iss(hero_floor_name);
-    iss >> hero_floor;
-    if (hero_point_sprite != NULL && selected_floor == hero_floor) {
-      hero_point_sprite->draw(*dungeon_map_img, hero_position);
-    }
-  }
-}
-
-/**
- * @brief Draws the dungeon items.
- * @param dst_surface the destination surface
- */
-void PauseSubmenuMap::draw_dungeon_items(Surface& dst_surface) {
-
-  std::ostringstream oss;
-  oss << "dungeon_" << game.get_current_dungeon().get_number();
-  const std::string& dungeon_number = oss.str();
-
-  // rooms
-  if (savegame.get_boolean(dungeon_number + "_map")) {
-    Rectangle src_position(0, 0, 17, 17);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 110,
-        SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
-    dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
-  }
-
-  // elements
-  if (savegame.get_boolean(dungeon_number + "_compass")) {
-    Rectangle src_position(17, 0, 17, 17);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 91,
-        SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
-    dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
-  }
-
-  // big key
-  if (savegame.get_boolean(dungeon_number + "_big_key")) {
-    Rectangle src_position(34, 0, 17, 17);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 72,
-        SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
-    dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
-  }
-
-  // boss key
-  if (savegame.get_boolean(dungeon_number + "_boss_key")) {
-    Rectangle src_position(51, 0, 17, 17);
-    Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 53,
-        SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
-    dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
-  }
-
-  // small keys
-  Rectangle src_position(68, 0, 9, 17);
-  Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 34,
-      SOLARUS_SCREEN_HEIGHT_MIDDLE + 48);
-  dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
-  small_keys_counter->draw(dst_surface);
-}
-
-/**
- * @brief Draws the dungeon floors.
- * @param dst_surface the destination surface
- */
-void PauseSubmenuMap::draw_dungeon_floors(Surface& dst_surface) {
-
-  // draw some floors
-  int src_y = (15 - highest_floor_displayed) * 12;
-  int src_height = nb_floors_displayed * 12 + 1;
-
-  int dst_y = SOLARUS_SCREEN_HEIGHT_MIDDLE - 50 + (7 - nb_floors_displayed) * 6;
-
-  Rectangle src_position(96, src_y, 32, src_height);
-  Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 81, dst_y);
-  dungeon_floors_img->draw_region(src_position, dst_surface, dst_position);
-
-  // draw the current floor with other colors
-  src_position.set_xy(64, (15 - selected_floor) * 12);
-  src_position.set_height(13);
-
-  dst_position.set_y(dst_y + (highest_floor_displayed - selected_floor) * 12);
-  dungeon_floors_img->draw_region(src_position, dst_surface, dst_position);
-
-  // draw the hero's icon
-  int lowest_floor_displayed = highest_floor_displayed - nb_floors_displayed + 1;
-  if (hero_floor_name != "unknown") {
-    int hero_floor;
-    std::istringstream iss(hero_floor_name);
-    iss >> hero_floor;
-    if (hero_floor >= lowest_floor_displayed && hero_floor <= highest_floor_displayed) {
-
-      int y = dst_y + (highest_floor_displayed - hero_floor) * 12;
-      hero_head_sprite->draw(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 99, y);
-    }
-  }
-
-  // draw the boss icon
-  std::ostringstream oss;
-  oss << "dungeon_" << game.get_current_dungeon().get_number();
-  const std::string& dungeon_number = oss.str();
-
-  if (boss_floor_name != "unknown") {
-    int boss_floor;
-    std::istringstream iss(boss_floor_name);
-    iss >> boss_floor;
-    if (savegame.get_boolean(dungeon_number + "_compass")
-        && boss_floor >= lowest_floor_displayed
-        && boss_floor <= highest_floor_displayed) {
-
-      int boss_y = dst_y + (highest_floor_displayed - boss_floor) * 12 + 3;
-
-      Rectangle src_position(78, 0, 8, 8);
-      Rectangle dst_position(SOLARUS_SCREEN_WIDTH_MIDDLE - 47, boss_y);
-
-      dungeon_map_icons->draw_region(src_position, dst_surface, dst_position);
-    }
-  }
-
-  // draw the arrows
-  if (lowest_floor_displayed > lowest_floor) {
-    down_arrow_sprite->draw(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 71,
-        SOLARUS_SCREEN_HEIGHT_MIDDLE + 31);
-  }
-
-  if (highest_floor_displayed < highest_floor) {
-    up_arrow_sprite->draw(dst_surface, SOLARUS_SCREEN_WIDTH_MIDDLE - 71,
-        SOLARUS_SCREEN_HEIGHT_MIDDLE - 64);
   }
 }
 

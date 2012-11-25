@@ -63,10 +63,6 @@ class PauseSubmenuMap: public PauseSubmenu {
     Surface *dungeon_map_img;
     Sprite *hero_point_sprite;
 
-    void load_dungeon_map_image();
-    static void to_dungeon_minimap_coordinates(const Rectangle &floor_coords,
-	Rectangle &minimap_coords, const Rectangle &floor_size);
-
   public:
 
     PauseSubmenuMap(PauseMenu &pause_menu, Game &game);
@@ -76,9 +72,6 @@ class PauseSubmenuMap: public PauseSubmenu {
     void update();
     void draw(Surface& dst_surface);
     void draw_world_map(Surface& dst_surface);
-    void draw_dungeon_map(Surface& dst_surface);
-    void draw_dungeon_items(Surface& dst_surface);
-    void draw_dungeon_floors(Surface& dst_surface);
 };
 
 #endif

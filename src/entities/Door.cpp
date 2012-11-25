@@ -32,7 +32,6 @@
 #include "KeysEffect.h"
 #include "Savegame.h"
 #include "Map.h"
-#include "Dungeon.h"
 #include <list>
 #include <sstream>
 
@@ -277,24 +276,8 @@ bool Door::requires_explosion() {
  */
 bool Door::can_open() {
 
-
-  // TODO replace by if (requires_item() && equipment.has_item(...) && equipment.has_item_amount(...))
-  //Equipment& equipment = get_equipment();
-  if (requires_small_key()) {
-    return true;  // This is temporary. The hardcoded small key type of doors will go away soon.
-  }
-
-  Game& game = get_game();
-  if (game.is_in_dungeon()) {
-    std::ostringstream oss;
-    oss << "dungeon_" << get_game().get_current_dungeon().get_number();
-    const std::string& dungeon_number = oss.str();
-
-    return (subtype == BIG_KEY && get_savegame().get_boolean(dungeon_number + "_big_key"))
-        || (subtype == BOSS_KEY && get_savegame().get_boolean(dungeon_number + "_boss_key"));
-  }
-
-  return false;
+  // TODO dungeons and small keys are no longer hardcoded: reimplement doors with general properties
+  return true;
 }
 
 /**

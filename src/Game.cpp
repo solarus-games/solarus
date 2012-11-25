@@ -22,7 +22,6 @@
 #include "Equipment.h"
 #include "DialogBox.h"
 #include "Treasure.h"
-#include "Dungeon.h"
 #include "GameoverSequence.h"
 #include "DebugKeys.h"
 #include "lua/LuaContext.h"
@@ -60,7 +59,6 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   previous_map_surface(NULL),
   transition_style(Transition::IMMEDIATE),
   transition(NULL),
-  dungeon(NULL),
   crystal_state(false),
   hud(NULL),
   hud_enabled(true),
@@ -105,7 +103,6 @@ Game::~Game() {
   delete transition;
   delete dialog_box;
   delete pause_menu;
-  delete dungeon;
   delete gameover_sequence;
   delete keys_effect;
   delete hud;
@@ -338,7 +335,6 @@ void Game::update_transitions() {
   if (next_map != NULL && transition == NULL) { // the map has changed (i.e. set_current_map has been called)
 
     if (current_map == NULL) { // special case: no map was playing, so we don't have any out transition to do
-      load_dungeon();
       current_map = next_map;
       next_map = NULL;
     }
@@ -403,7 +399,6 @@ void Game::update_transitions() {
         }
 
         // set the next map
-        load_dungeon();
         current_map->unload();
         current_map->decrement_refcount();
         if (current_map->get_refcount() == 0) {
@@ -598,25 +593,6 @@ const Rectangle& Game::get_outside_world_size() {
 }
 
 /**
- * @brief Returns whether the current map belongs to a dungeon.
- * @return true if the current map is in a dungeon
- */
-bool Game::is_in_dungeon() {
-  return has_current_map() && get_current_map().is_in_dungeon();
-}
-
-/**
- * @brief Returns the dungeon where the current map is.
- *
- * Returns NULL if we are not in a dungeon.
- *
- * @return the current dungeon
- */
-Dungeon& Game::get_current_dungeon() {
-  return *dungeon;
-}
-
-/**
  * @brief Returns the state of the crystal blocks.
  *
  * Returns false if the orange blocks are lowered or true if the blue blocks are lowered.
@@ -749,27 +725,6 @@ void Game::set_paused(bool paused) {
     else {
       delete pause_menu;
       pause_menu = NULL;
-    }
-  }
-}
-
-/**
- * @brief Loads the dungeon data for the current map.
- *
- * This function is called when the map changes.
- */
-void Game::load_dungeon() {
-
-  if (current_map == NULL || next_map->get_world() != current_map->get_world()) {
-
-    if (current_map != NULL && current_map->is_in_dungeon()) {
-      delete dungeon;
-      dungeon = NULL;
-    }
-
-    if (next_map->is_in_dungeon()) {
-      // TODO remove the notion of dungeon
-      dungeon = new Dungeon(next_map->get_world()[8] - '0');
     }
   }
 }

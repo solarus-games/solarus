@@ -17,7 +17,6 @@
 #include "hud/FloorView.h"
 #include "Game.h"
 #include "Map.h"
-#include "Dungeon.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
 #include <sstream>
@@ -100,21 +99,17 @@ void FloorView::rebuild() {
     // if we are in a dungeon, show several floors (but no more than 7)
     if (current_map->is_in_dungeon() && current_floor != "unknown") {
 
+      /*
       Dungeon& dungeon = game->get_current_dungeon();
       highest_floor = dungeon.get_highest_floor();
 
       int nb_floors_displayed = dungeon.get_nb_floors_displayed();
       highest_floor_displayed = dungeon.get_highest_floor_displayed(current_floor_index);
-
-      /*
-      std::cout << "lowest_floor: " << lowest_floor
-	   << ", highest_floor: " << highest_floor
-	   << ", nb_floors: " << nb_floors
-	   << ", current_floor: " << current_floor
-	   << ", highest_floor_displayed: " << highest_floor_displayed
-	   << ", nb_floors_displayed: " << nb_floors_displayed
-	   << endl;
       */
+
+      // temporary (dungeons are no longer hardcoded)
+      highest_floor_displayed = current_floor_index;
+      int nb_floors_displayed = 1;
 
       int src_y = (15 - highest_floor_displayed) * 12;
       int src_height = nb_floors_displayed * 12 + 1;

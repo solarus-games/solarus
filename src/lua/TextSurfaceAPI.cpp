@@ -324,8 +324,10 @@ int LuaContext::text_surface_api_get_text(lua_State* l) {
 int LuaContext::text_surface_api_set_text(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  const std::string& text = luaL_checkstring(l, 2);
-
+  std::string text;
+  if (lua_gettop(l) >= 2 && !lua_isnil(l, 2)) {
+    text = luaL_checkstring(l, 2);
+  }
   text_surface.set_text(text);
 
   return 0;

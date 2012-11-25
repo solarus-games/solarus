@@ -148,16 +148,16 @@ Sets the color used to display the text.
 \subsection lua_api_text_surface_get_text text_surface:get_text()
 
 Returns the string displayed in this object.
-- Return value (string): The current text.
+- Return value (string): The current text (possibly an empty string).
 
 <hr>
 
-\subsection lua_api_text_surface_set_text text_surface:set_text(text)
+\subsection lua_api_text_surface_set_text text_surface:set_text([text])
 
 Sets the string displayed in this object.
 
 The string must be encoded in UTF-8.
-- \c text (string): The text to set.
+- \c text (string): The text to set. \c nil or an empty string mean no text.
 
 <hr>
 

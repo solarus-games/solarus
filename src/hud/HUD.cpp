@@ -19,7 +19,6 @@
 #include "hud/SwordIcon.h"
 #include "hud/PauseIcon.h"
 #include "hud/ItemIcon.h"
-#include "hud/SmallKeysCounter.h"
 #include "hud/FloorView.h"
 #include "Game.h"
 #include "GameControls.h"
@@ -41,7 +40,7 @@ HUD::HUD(Game &game):
   elements[nb_elements++] = new SwordIcon(game, 10, 29);
   elements[nb_elements++] = new PauseIcon(game, -3, 7);
   elements[nb_elements++] = new ActionIcon(game, 23, 51);
-  elements[nb_elements++] = new SmallKeysCounter(game, SOLARUS_SCREEN_WIDTH - 36, SOLARUS_SCREEN_HEIGHT - 18);
+  elements[nb_elements++] = NULL;
   elements[nb_elements++] = new FloorView(game, 5, 70);
 }
 

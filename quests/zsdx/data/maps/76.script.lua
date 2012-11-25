@@ -1,6 +1,11 @@
 local map = ...
 -- Lost Woods cave
 
+function map:on_started()
+  -- Enable small keys on this map.
+  map.small_keys_savegame_variable = "i1201"
+end
+
 local function remove_torch_a()
   sol.audio.play_sound("door_open")
   sol.audio.play_sound("secret")

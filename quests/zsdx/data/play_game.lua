@@ -6,6 +6,7 @@ function game:on_started()
   local hearts_class = require("hud/hearts")
   local magic_bar_class = require("hud/magic_bar")
   local rupees_class = require("hud/rupees")
+  local small_keys_class = require("hud/small_keys")
 
   self.hud = {}
 
@@ -17,6 +18,9 @@ function game:on_started()
 
   self.hud.rupees = rupees_class:new(self)
   self.hud.rupees:set_dst_position(8, -20)
+
+  self.hud.small_keys = small_keys_class:new(self)
+  self.hud.small_keys:set_dst_position(-36, -18)
 
   self:set_hud_enabled(true)
 end
@@ -80,15 +84,17 @@ function game:get_small_keys_savegame_variable()
 
   local map = self:get_map()
 
-  -- Does the map explicitely defines a small key counter?
-  if map.small_keys_savegame_variable ~= nil then
-    return map.small_keys_savegame_variable
-  end
+  if map ~= nil then
+    -- Does the map explicitely defines a small key counter?
+    if map.small_keys_savegame_variable ~= nil then
+      return map.small_keys_savegame_variable
+    end
 
-  -- Are we in a dungeon?
-  local dungeon = self:get_dungeon()
-  if dungeon ~= nil then
-    return "dungeon_" .. dungeon .. "_small_keys"
+    -- Are we in a dungeon?
+    local dungeon = self:get_dungeon()
+    if dungeon ~= nil then
+      return "dungeon_" .. dungeon .. "_small_keys"
+    end
   end
 
   -- No small keys on this map.
@@ -99,12 +105,19 @@ end
 -- Raises an error is small keys are not enabled in the current map.
 function game:has_small_key()
 
+  return self:get_num_small_keys() > 0
+end
+
+-- Returns the number of small keys of the player.
+-- Raises an error is small keys are not enabled in the current map.
+function game:get_num_small_keys()
+
   if not self:are_small_keys_enabled() then
     error("Small keys are not enabled in the current map")
   end
 
   local savegame_variable = self:get_small_keys_savegame_variable()
-  return self:get_value(savegame_variable) > 0
+  return self:get_value(savegame_variable) or 0
 end
 
 -- Adds a small key to the player.
@@ -116,8 +129,7 @@ function game:add_small_key()
   end
 
   local savegame_variable = self:get_small_keys_savegame_variable()
-  local num_small_keys = self:get_value(savegame_variable) + 1
-  self:set_value(savegame_variable, num_small_keys)
+  self:set_value(savegame_variable, self:get_num_small_keys() + 1)
 end
 
 -- Removes a small key to the player.
@@ -130,8 +142,7 @@ function game:remove_small_key()
   end
 
   local savegame_variable = self:get_small_keys_savegame_variable()
-  local num_small_keys = self:get_value(savegame_variable) - 1
-  self:set_value(savegame_variable, num_small_keys)
+  self:set_value(savegame_variable, self:get_num_small_keys() - 1)
 end
 
 function game:is_hud_enabled()

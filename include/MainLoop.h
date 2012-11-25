@@ -47,10 +47,9 @@ class MainLoop {
     Surface* root_surface;      /**< the surface where everything is drawn (always SOLARUS_GAME_WIDTH * SOLARUS_GAME_HEIGHT) */
     DebugKeys* debug_keys;      /**< special keys to debug the game, e.g. to traverse walls (disabled in release mode) */
     LuaContext* lua_context;    /**< the Lua world where scripts are run */
-    bool resetting;             /**< indicates that the program is about to reset */
     bool exiting;               /**< indicates that the program is about to stop */
     Game* game;                 /**< The current game if any, NULL otherwise. */
-    Game* next_game;            /**< The game to start at next cycle. */
+    Game* next_game;            /**< The game to start at next cycle (NULL means resetting the game). */
 
     void notify_input(InputEvent& event);
     void draw();

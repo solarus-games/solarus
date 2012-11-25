@@ -1109,6 +1109,9 @@ void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
                                   // ... userdata
   luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
                                   // ... userdata mt
+  Debug::check_assertion(!lua_isnil(l, -1), StringConcat() <<
+      "Userdata of type '" << userdata.get_lua_type_name()
+      << "' has not metatable, this is a memory leak");
   lua_setmetatable(l, -2);
                                   // ... userdata
 }

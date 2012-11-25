@@ -844,8 +844,11 @@ int LuaContext::map_api_create_tile(lua_State* l) {
   MapEntity* entity = new Tile(layer, x, y, width, height, tile_pattern_id);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -867,8 +870,11 @@ int LuaContext::map_api_create_destination(lua_State* l) {
   MapEntity* entity = new Destination(name, layer, x, y, direction, sprite_name);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
  }
 
 /**
@@ -902,8 +908,11 @@ int LuaContext::map_api_create_teletransporter(lua_State* l) {
       destination_name);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -937,12 +946,15 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
 
   if (entity == NULL) {
     lua_pushnil(l);
+    return 1;
   }
-  else {
-    map.get_entities().add_entity(entity);
+
+  map.get_entities().add_entity(entity);
+  if (map.is_started()) {
     push_entity(l, *entity);
+    return 1;
   }
-  return 1;
+  return 0;
 }
 
 /**
@@ -995,8 +1007,11 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
   destructible->set_destruction_callback(destruction_callback_ref);
   map.get_entities().add_entity(destructible);
 
-  push_entity(l, *destructible);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *destructible);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1028,8 +1043,11 @@ int LuaContext::map_api_create_chest(lua_State* l) {
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1054,8 +1072,11 @@ int LuaContext::map_api_create_jumper(lua_State* l) {
       direction, jump_length);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1099,12 +1120,15 @@ int LuaContext::map_api_create_enemy(lua_State* l) {
 
   if (entity == NULL) {
     lua_pushnil(l);
+    return 1;
   }
-  else {
-    map.get_entities().add_entity(entity);
+
+  map.get_entities().add_entity(entity);
+  if (map.is_started()) {
     push_entity(l, *entity);
+    return 1;
   }
-  return 1;
+  return 0;
 }
 
 /**
@@ -1134,8 +1158,11 @@ int LuaContext::map_api_create_npc(lua_State* l) {
       sprite_name, direction, behavior);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1157,12 +1184,15 @@ int LuaContext::map_api_create_block(lua_State* l) {
   bool pullable = check_boolean_field(l, 1, "pullable");
   int maximum_moves = check_int_field(l, 1, "maximum_moves");
 
-  Block* block = new Block(name, layer, x, y, direction,
+  Block* entity = new Block(name, layer, x, y, direction,
       sprite_name, pushable, pullable, maximum_moves);
-  map.get_entities().add_entity(block);
+  map.get_entities().add_entity(entity);
 
-  push_entity(l, *block);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1187,8 +1217,11 @@ int LuaContext::map_api_create_dynamic_tile(lua_State* l) {
       tile_pattern_id, enabled_at_start);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1216,8 +1249,11 @@ int LuaContext::map_api_create_switch(lua_State* l) {
       Switch::Subtype(subtype), needs_block, inactivate_when_leaving);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1244,8 +1280,11 @@ int LuaContext::map_api_create_wall(lua_State* l) {
       stops_hero, stops_npcs, stops_enemies, stops_blocks);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1267,8 +1306,11 @@ int LuaContext::map_api_create_sensor(lua_State* l) {
   MapEntity* entity = new Sensor(name, layer, x, y, width, height);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1288,8 +1330,11 @@ int LuaContext::map_api_create_crystal(lua_State* l) {
   MapEntity* entity = new Crystal(name, layer, x, y);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1317,8 +1362,11 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
       CrystalBlock::Subtype(subtype));
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1348,17 +1396,20 @@ int LuaContext::map_api_create_shop_item(lua_State* l) {
 
   Game& game = map.get_game();
   MapEntity* entity = ShopItem::create(game, name, layer, x, y,
-        Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
-        price, dialog_id);
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
+      price, dialog_id);
 
   if (entity == NULL) {
     lua_pushnil(l);
+    return 1;
   }
-  else {
-    map.get_entities().add_entity(entity);
+
+  map.get_entities().add_entity(entity);
+  if (map.is_started()) {
     push_entity(l, *entity);
+    return 1;
   }
-  return 1;
+  return 0;
 }
 
 /**
@@ -1378,8 +1429,11 @@ int LuaContext::map_api_create_conveyor_belt(lua_State* l) {
   MapEntity* entity = new ConveyorBelt(layer, x, y, direction);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1414,8 +1468,11 @@ int LuaContext::map_api_create_door(lua_State* l) {
       Door::Subtype(subtype), savegame_variable);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1442,8 +1499,11 @@ int LuaContext::map_api_create_stairs(lua_State* l) {
       Stairs::Subtype(subtype));
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1462,8 +1522,11 @@ int LuaContext::map_api_create_bomb(lua_State* l) {
   MapEntity* entity = new Bomb(layer, x, y);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1482,8 +1545,11 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
   MapEntity* entity = new Explosion(layer, Rectangle(x, y), true);
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**
@@ -1502,8 +1568,11 @@ int LuaContext::map_api_create_fire(lua_State* l) {
   MapEntity* entity = new Fire(layer, Rectangle(x, y));
   map.get_entities().add_entity(entity);
 
-  push_entity(l, *entity);
-  return 1;
+  if (map.is_started()) {
+    push_entity(l, *entity);
+    return 1;
+  }
+  return 0;
 }
 
 /**

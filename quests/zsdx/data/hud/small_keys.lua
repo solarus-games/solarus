@@ -68,6 +68,8 @@ end
 
 function small_keys:on_draw(dst_surface)
 
+  -- FIXME make a boolean self.visible
+  -- to avoid showing a wrong value until the next check.
   if self.game:are_small_keys_enabled() then
     local x, y = self.dst_x, self.dst_y
     local width, height = dst_surface:get_size()

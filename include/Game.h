@@ -73,6 +73,7 @@ class Game {
     void update_dialog_box();
     void update_transitions();
     void update_gameover_sequence();
+    void notify_map_changed();
 
     void load_dungeon();
 

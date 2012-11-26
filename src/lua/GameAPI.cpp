@@ -724,3 +724,15 @@ void LuaContext::game_on_finished(Game& game) {
   lua_pop(l, 1);
 }
 
+/**
+ * @brief Calls the on_changed() method of a Lua game.
+ * @param game A game.
+ * @param map The new active map.
+ */
+void LuaContext::game_on_map_changed(Game& game, Map& map) {
+
+  push_game(l, game.get_savegame());
+  on_map_changed(map);
+  lua_pop(l, 1);
+}
+

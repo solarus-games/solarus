@@ -53,7 +53,7 @@ class Equipment {
     Game* get_game();
     void notify_game_started();
     void notify_game_finished();
-    void set_map(Map& map);
+    void notify_map_changed(Map& map);
 
     void update();
     void set_suspended(bool suspended);

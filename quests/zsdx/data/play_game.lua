@@ -21,6 +21,11 @@ function game:on_started()
   self:set_hud_enabled(true)
 end
 
+function game:on_map_changed(map)
+
+  -- TODO notify the hud
+end
+
 -- Useful functions for this specific quest.
 
 function game:get_player_name()

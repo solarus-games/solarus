@@ -271,12 +271,11 @@ for i = 1, 20 do
   world_names[i] = "dungeon_" .. i
 end
 
-local floor_names = {
+local floors = {
   [-100] = nil,  -- No floor.
-  [-99] = "unknown",
 }
 for i = -16, 15 do
-  floor_names[i] = tostring(i)
+  floors[i] = i
 end
 
 function parse_metadata(line)
@@ -294,7 +293,7 @@ function parse_metadata(line)
   metadata.width = tonumber(width)
   metadata.height = tonumber(height)
   metadata.world = world_names[tonumber(world)]
-  metadata.floor = floor_names[tonumber(floor)]
+  metadata.floor = floors[tonumber(floor)]
 
   if small_keys_variable ~= -1 then
     metadata.small_keys_variable = tonumber(small_keys_variable)
@@ -318,7 +317,7 @@ function print_metadata(metadata)
   io.write("  height = " .. metadata.height .. ",\n")
   io.write("  world = \"" .. metadata.world .. "\",\n")
   if metadata.floor then
-    io.write("  floor = \"" .. metadata.floor .. "\",\n")
+    io.write("  floor = " .. metadata.floor .. ",\n")
   end
   io.write("  tileset = \"" .. metadata.tileset .. "\",\n")
   if metadata.music ~= nil then

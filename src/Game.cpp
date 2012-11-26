@@ -431,6 +431,7 @@ void Game::update_transitions() {
     hero->place_on_destination(*current_map, previous_map_location);
     transition->start();
     current_map->start();
+    notify_map_changed();
   }
 }
 
@@ -572,6 +573,18 @@ void Game::set_current_map(const std::string& map_id, const std::string &destina
     next_map->set_destination(destination_name);
   }
   this->transition_style = transition_style;
+}
+
+/**
+ * @brief Notifies the game objects that the another map has just become active.
+ */
+void Game::notify_map_changed() {
+
+  // Call game:on_map_changed() in Lua.
+  get_lua_context().game_on_map_changed(*this, *current_map);
+
+  // Notify the equipment.
+  get_equipment().notify_map_changed(*current_map);
 }
 
 /**

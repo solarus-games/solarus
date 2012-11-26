@@ -4,7 +4,7 @@ properties{
   width = 1152,
   height = 1216,
   world = "inside_world",
-  floor = "1",
+  floor = 1,
   tileset = "12",
   music = "castle",
 }

@@ -4,7 +4,7 @@ properties{
   width = 656,
   height = 272,
   world = "dungeon_9",
-  floor = "-1",
+  floor = -1,
   tileset = "15",
   music = "southern_shrine",
 }

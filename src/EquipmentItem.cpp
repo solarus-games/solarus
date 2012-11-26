@@ -328,7 +328,7 @@ void EquipmentItem::exit() {
  * @brief This function is called when a map becomes active.
  * @param map The map.
  */
-void EquipmentItem::notify_map_started(Map& map) {
+void EquipmentItem::notify_map_changed(Map& map) {
 
   get_lua_context().item_on_map_changed(*this, map);
 }

@@ -337,7 +337,12 @@ int LuaContext::map_api_get_floor(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
-  push_string(l, map.get_floor());
+  if (!map.has_floor()) {
+    lua_pushnil(l);
+  }
+  else {
+    lua_pushinteger(l, map.get_floor());
+  }
   return 1;
 }
 

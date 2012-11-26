@@ -4,7 +4,6 @@ properties{
   width = 320,
   height = 320,
   world = "dungeon_2",
-  floor = "unknown",
   tileset = "7",
   music = "dungeon_finished",
 }

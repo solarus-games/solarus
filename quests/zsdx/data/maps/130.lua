@@ -4,7 +4,6 @@ properties{
   width = 480,
   height = 480,
   world = "dungeon_9",
-  floor = "unknown",
   tileset = "15",
 }
 

@@ -7,6 +7,7 @@ function game:on_started()
   local magic_bar_class = require("hud/magic_bar")
   local rupees_class = require("hud/rupees")
   local small_keys_class = require("hud/small_keys")
+  local floor_class = require("hud/floor")
 
   self.hud = {}
 
@@ -22,7 +23,23 @@ function game:on_started()
   self.hud.small_keys = small_keys_class:new(self)
   self.hud.small_keys:set_dst_position(-36, -18)
 
+  self.hud.floor = floor_class:new(self)
+  self.hud.floor:set_dst_position(5, 70)
+
   self:set_hud_enabled(true)
+end
+
+-- This event is called when a new map has just become active.
+function game:on_map_changed(map)
+
+  -- Notify the hud.
+  if self.hud_enabled then
+    for _, menu in pairs(self.hud) do
+      if menu.on_map_changed ~= nil then
+        menu:on_map_changed(map)
+      end
+    end
+  end
 end
 
 -- Useful functions for this specific quest.

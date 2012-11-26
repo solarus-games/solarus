@@ -130,12 +130,12 @@ void Equipment::notify_game_finished() {
  * @brief Notifies the equipment system has another map has just been started.
  * @param map the new current map
  */
-void Equipment::set_map(Map& map) {
+void Equipment::notify_map_changed(Map& map) {
 
-  // notify the scripts
+  // Notify the items.
   std::map<std::string, EquipmentItem*>::const_iterator it;
   for (it = items.begin(); it != items.end(); it++) {
-    it->second->notify_map_started(map);
+    it->second->notify_map_changed(map);
   }
 }
 

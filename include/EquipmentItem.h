@@ -69,7 +69,7 @@ class EquipmentItem: public ExportableToLua {
     void update();
     void set_suspended(bool suspended);
     void start();
-    void notify_map_started(Map& map);
+    void notify_map_changed(Map& map);
     void notify_amount_changed(int amount);
     void notify_variant_changed(int variant);
     void notify_inventory_item_used(InventoryItem& inventory_item);

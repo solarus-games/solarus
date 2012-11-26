@@ -211,6 +211,7 @@ class LuaContext {
     bool game_on_input(Game& game, InputEvent& event);
     void game_on_started(Game& game);
     void game_on_finished(Game& game);
+    void game_on_map_changed(Game& game, Map& map);
 
     // Map events.
     void map_on_update(Map& map);

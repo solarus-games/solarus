@@ -4,7 +4,7 @@ properties{
   width = 688,
   height = 616,
   world = "inside_world",
-  floor = "1",
+  floor = 1,
   tileset = "3",
   music = "great_fairy",
 }

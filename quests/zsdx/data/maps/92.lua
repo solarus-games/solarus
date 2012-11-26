@@ -4,7 +4,7 @@ properties{
   width = 960,
   height = 432,
   world = "inside_world",
-  floor = "1",
+  floor = 1,
   tileset = "3",
   music = "cave",
 }

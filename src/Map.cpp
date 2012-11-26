@@ -44,6 +44,7 @@ Map::Map(const std::string& id):
   game(NULL),
   id(id),
   tileset(NULL),
+  floor(NO_FLOOR),
   loaded(false),
   started(false),
   destination_name(""),
@@ -141,39 +142,27 @@ bool Map::is_in_outside_world() {
 /**
  * @brief Returns whether this map has a floor.
  *
- * This function returns true if get_floor() is not an empty string.
+ * This function returns true if the floor is not nil.
  *
  * @return true if there is a floor.
  */
 bool Map::has_floor() {
-  return !get_floor().empty();
+  return get_floor() != NO_FLOOR;
 }
 
 /**
  * @brief Returns the floor where this map is.
- *
- * The value returned can be:
- * - a floor number,
- * - an empty string to indicate that there is no floor,
- * - "unknown" to indicate an unknown floor.
- *
- * @return The floor.
+ * @return The floor or FLOOR_NIL.
  */
-const std::string& Map::get_floor() {
+int Map::get_floor() {
   return floor;
 }
 
 /**
  * @brief Sets the floor where this map is.
- *
- * The value can be:
- * - a floor number,
- * - an empty string to indicate that there is no floor,
- * - "unknown" to indicate an unknown floor.
- *
- * @param floor The floor.
+ * @param floor The floor or FLOOR_NIL.
  */
-void Map::set_floor(const std::string& floor) {
+void Map::set_floor(int floor) {
   this->floor = floor;
 }
 

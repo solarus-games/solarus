@@ -62,9 +62,7 @@ class Map: public ExportableToLua {
     std::string world;            /**< Name of the context where this map is. When changing context,
                                    * the savegame starting position is set and crystal switches are reset. */
 
-    std::string floor;            /**< The floor where this map is (a number),
-                                   * or an empty string or "unknown".
-                                   * TODO remove the option "unknown" */
+    int floor;                    /**< The floor where this map is (possibly NO_FLOOR). */
 
     Rectangle location;           /**< location of the map in its context: the width and height fields
                                    * indicate the map size in pixel, and the x and y field indicate the position:
@@ -117,8 +115,8 @@ class Map: public ExportableToLua {
     bool is_in_dungeon();  // TODO remove
     bool is_in_outside_world();  // TODO remove
     bool has_floor();
-    const std::string& get_floor();
-    void set_floor(const std::string& floor);
+    int get_floor();
+    void set_floor(int floor);
     const Rectangle& get_location();
 
     int get_width();
@@ -183,6 +181,8 @@ class Map: public ExportableToLua {
     void draw();
     void draw_sprite(Sprite &sprite, const Rectangle &xy);
     void draw_sprite(Sprite &sprite, int x, int y);
+
+    static const int NO_FLOOR = -9999;  /**< Represents a non-existent floor (nil in data files). */
 };
 
 /**

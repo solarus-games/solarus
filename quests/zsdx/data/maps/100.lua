@@ -4,7 +4,7 @@ properties{
   width = 1032,
   height = 1032,
   world = "dungeon_10",
-  floor = "4",
+  floor = 4,
   tileset = "4",
   music = "eagle_tower",
 }

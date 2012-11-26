@@ -4,7 +4,7 @@ properties{
   width = 1920,
   height = 496,
   world = "dungeon_2",
-  floor = "0",
+  floor = 0,
   tileset = "0",
   music = "found_items",
 }

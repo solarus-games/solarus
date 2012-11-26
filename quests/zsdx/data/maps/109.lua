@@ -4,7 +4,6 @@ properties{
   width = 1840,
   height = 1264,
   world = "dungeon_9",
-  floor = "unknown",
   tileset = "16",
   music = "tloz_dungeon",
 }

@@ -90,7 +90,6 @@ class LuaContext {
     void initialize();
     void exit();
     void update();
-    void set_suspended(bool suspended);
     bool notify_input(InputEvent& event);
     void notify_map_suspended(Map& map, bool suspended);
     void notify_camera_reached_target(Map& map);
@@ -144,13 +143,12 @@ class LuaContext {
     void cancel_callback(int callback_ref);
 
     // Timers.
-    bool is_new_timer_suspended(void);
     void add_timer(Timer* timer, int context_index, int callback_index);
     void remove_timer(Timer* timer);
     void remove_timers(int context_index);
     void remove_timers();
     void update_timers();
-    void set_suspended_timers(bool suspended);
+    void notify_timers_map_suspended(bool suspended);
 
     // Menus.
     void add_menu(int menu_ref, int context_index);
@@ -320,7 +318,13 @@ class LuaContext {
       timer_api_stop_all,
       timer_api_is_with_sound,
       timer_api_set_with_sound,
-      // TODO get_remaining_time, set_remaining_time
+      timer_api_is_suspended,
+      timer_api_set_suspended,
+      timer_api_is_suspended_with_map,
+      timer_api_set_suspended_with_map,
+      // TODO get_remaining_time, set_remaining_time,
+      // TODO game:is_suspended, timer:is/set_suspended_with_map, sprite:get/set_ignore_suspend
+      // are the same concept, make these names consistent
 
       // Language API.
       language_api_get_language,
@@ -740,33 +744,61 @@ class LuaContext {
         const std::string& module_name);
     static ExportableToLua& check_userdata(lua_State* l, int index,
         const std::string& module_name);
+    static bool is_color(lua_State* l, int index);
     static Color check_color(lua_State* l, int index);
+    static bool is_timer(lua_State* l, int index);
     static Timer& check_timer(lua_State* l, int index);
+    static bool is_drawable(lua_State* l, int index);
     static Drawable& check_drawable(lua_State* l, int index);
+    static bool is_surface(lua_State* l, int index);
     static Surface& check_surface(lua_State* l, int index);
+    static bool is_text_surface(lua_State* l, int index);
     static TextSurface& check_text_surface(lua_State* l, int index);
+    static bool is_sprite(lua_State* l, int index);
     static Sprite& check_sprite(lua_State* l, int index);
+    static bool is_item(lua_State* l, int index);
     static EquipmentItem& check_item(lua_State* l, int index);
+    static bool is_movement(lua_State* l, int index);
     static Movement& check_movement(lua_State* l, int index);
+    static bool is_straight_movement(lua_State* l, int index);
     static StraightMovement& check_straight_movement(lua_State* l, int index);
+    static bool is_random_movement(lua_State* l, int index);
     static RandomMovement& check_random_movement(lua_State* l, int index);
+    static bool is_target_movement(lua_State* l, int index);
     static TargetMovement& check_target_movement(lua_State* l, int index);
+    static bool is_path_movement(lua_State* l, int index);
     static PathMovement& check_path_movement(lua_State* l, int index);
+    static bool is_random_path_movement(lua_State* l, int index);
     static RandomPathMovement& check_random_path_movement(lua_State* l, int index);
+    static bool is_path_finding_movement(lua_State* l, int index);
     static PathFindingMovement& check_path_finding_movement(lua_State* l, int index);
+    static bool is_circle_movement(lua_State* l, int index);
     static CircleMovement& check_circle_movement(lua_State* l, int index);
+    static bool is_jump_movement(lua_State* l, int index);
     static JumpMovement& check_jump_movement(lua_State* l, int index);
+    static bool is_pixel_movement(lua_State* l, int index);
     static PixelMovement& check_pixel_movement(lua_State* l, int index);
+    static bool is_game(lua_State* l, int index);
     static Savegame& check_game(lua_State* l, int index);
+    static bool is_map(lua_State* l, int index);
     static Map& check_map(lua_State* l, int index);
+    static bool is_entity(lua_State* l, int index);
     static MapEntity& check_entity(lua_State* l, int index);
+    static bool is_hero(lua_State* l, int index);
     static Hero& check_hero(lua_State* l, int index);
+    static bool is_npc(lua_State* l, int index);
     static NPC& check_npc(lua_State* l, int index);
+    static bool is_chest(lua_State* l, int index);
     static Chest& check_chest(lua_State* l, int index);
+    static bool is_block(lua_State* l, int index);
     static Block& check_block(lua_State* l, int index);
+    static bool is_switch(lua_State* l, int index);
     static Switch& check_switch(lua_State* l, int index);
+    static bool is_door(lua_State* l, int index);
     static Door& check_door(lua_State* l, int index);
+    static bool is_pickable(lua_State* l, int index);
     static Pickable& check_pickable(lua_State* l, int index);
+    static bool is_enemy(lua_State* l, int index);
     static Enemy& check_enemy(lua_State* l, int index);
 
     // Events.

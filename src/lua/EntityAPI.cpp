@@ -263,6 +263,24 @@ void LuaContext::register_entity_module() {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type entity.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a entity.
+ */
+bool LuaContext::is_entity(lua_State* l, int index) {
+  return is_userdata(l, index, entity_module_name)
+      || is_hero(l, index)
+      || is_npc(l, index)
+      || is_chest(l, index)
+      || is_block(l, index)
+      || is_switch(l, index)
+      || is_door(l, index)
+      || is_pickable(l, index)
+      || is_enemy(l, index);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is an
  * entity and returns it.
  * @param l A Lua context.
@@ -273,15 +291,7 @@ MapEntity& LuaContext::check_entity(lua_State* l, int index) {
 
   MapEntity** entity = NULL;
 
-  if (is_userdata(l, index, entity_module_name)
-      || is_userdata(l, index, entity_hero_module_name)
-      || is_userdata(l, index, entity_npc_module_name)
-      || is_userdata(l, index, entity_chest_module_name)
-      || is_userdata(l, index, entity_block_module_name)
-      || is_userdata(l, index, entity_switch_module_name)
-      || is_userdata(l, index, entity_door_module_name)
-      || is_userdata(l, index, entity_pickable_module_name)
-      || is_userdata(l, index, entity_enemy_module_name)) {
+  if (is_entity(l, index)) {
     entity = static_cast<MapEntity**>(lua_touserdata(l, index));
   }
   else {
@@ -744,6 +754,16 @@ int LuaContext::entity_api_set_optimization_distance(lua_State* l) {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type hero.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a hero.
+ */
+bool LuaContext::is_hero(lua_State* l, int index) {
+  return is_userdata(l, index, entity_hero_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * hero and returns it.
  * @param l A Lua context.
@@ -1069,6 +1089,16 @@ int LuaContext::hero_api_start_hurt(lua_State* l) {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type NPC.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is an NPC.
+ */
+bool LuaContext::is_npc(lua_State* l, int index) {
+  return is_userdata(l, index, entity_npc_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is an
  * NPC and returns it.
  * @param l A Lua context.
@@ -1086,6 +1116,16 @@ NPC& LuaContext::check_npc(lua_State* l, int index) {
  */
 void LuaContext::push_npc(lua_State* l, NPC& npc) {
   push_userdata(l, npc);
+}
+
+/**
+ * @brief Returns whether a value is a userdata of type chest.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a chest.
+ */
+bool LuaContext::is_chest(lua_State* l, int index) {
+  return is_userdata(l, index, entity_chest_module_name);
 }
 
 /**
@@ -1140,6 +1180,16 @@ int LuaContext::chest_api_set_open(lua_State* l) {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type block.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a block.
+ */
+bool LuaContext::is_block(lua_State* l, int index) {
+  return is_userdata(l, index, entity_block_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * block and returns it.
  * @param l A Lua context.
@@ -1171,6 +1221,16 @@ int LuaContext::block_api_reset(lua_State* l) {
   block.reset();
 
   return 0;
+}
+
+/**
+ * @brief Returns whether a value is a userdata of type switch.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a switch.
+ */
+bool LuaContext::is_switch(lua_State* l, int index) {
+  return is_userdata(l, index, entity_switch_module_name);
 }
 
 /**
@@ -1243,6 +1303,16 @@ int LuaContext::switch_api_set_locked(lua_State* l) {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type door.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a door.
+ */
+bool LuaContext::is_door(lua_State* l, int index) {
+  return is_userdata(l, index, entity_door_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * door and returns it.
  * @param l A Lua context.
@@ -1273,6 +1343,16 @@ int LuaContext::door_api_is_open(lua_State* l) {
 
   lua_pushboolean(l, door.is_open());
   return 1;
+}
+
+/**
+ * @brief Returns whether a value is a userdata of type pickable.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a pickable.
+ */
+bool LuaContext::is_pickable(lua_State* l, int index) {
+  return is_userdata(l, index, entity_pickable_module_name);
 }
 
 /**
@@ -1342,6 +1422,16 @@ int LuaContext::pickable_api_get_treasure(lua_State* l) {
   lua_pushinteger(l, treasure.get_variant());
   lua_pushstring(l, treasure.get_savegame_variable().c_str());
   return 1;
+}
+
+/**
+ * @brief Returns whether a value is a userdata of type enemy.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is an enemy.
+ */
+bool LuaContext::is_enemy(lua_State* l, int index) {
+  return is_userdata(l, index, entity_enemy_module_name);
 }
 
 /**

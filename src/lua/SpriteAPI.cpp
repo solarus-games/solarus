@@ -55,6 +55,16 @@ void LuaContext::register_sprite_module() {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type sprite.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a sprite.
+ */
+bool LuaContext::is_sprite(lua_State* l, int index) {
+  return is_userdata(l, index, sprite_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * sprite and returns it.
  * @param l a Lua context

@@ -164,19 +164,6 @@ void LuaContext::update() {
 }
 
 /**
- * @brief This function is called when the game (if any) is being suspended
- * or resumed.
- * @param suspended true if the game is suspended, false if it is resumed.
- */
-void LuaContext::set_suspended(bool suspended) {
-
-  if (l != NULL) {
-    // Notify the timers.
-    set_suspended_timers(suspended);
-  }
-}
-
-/**
  * @brief Notifies Lua that an input event has just occurred.
  *
  * The appropriate callback in sol.main is notified.
@@ -239,7 +226,7 @@ void LuaContext::run_map(Map& map, Destination* destination) {
  */
 void LuaContext::notify_map_suspended(Map& map, bool suspended) {
 
-  set_suspended_timers(suspended);   // Notify timers.
+  notify_timers_map_suspended(suspended);   // Notify timers.
   map_on_suspended(map, suspended);  // Call map:on_suspended()
 }
 
@@ -1181,6 +1168,25 @@ ExportableToLua& LuaContext::check_userdata(lua_State* l, int index,
   ExportableToLua** userdata = static_cast<ExportableToLua**>(
     luaL_checkudata(l, index, module_name.c_str()));
   return **userdata;
+}
+
+/**
+ * @brief Returns whether a value is a color.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value is a color, that is, an array with three integers.
+ */
+bool LuaContext::is_color(lua_State* l, int index) {
+
+  bool result = false;
+  if (lua_type(l, index) != LUA_TTABLE) {
+    lua_rawgeti(l, index, 1);
+    lua_rawgeti(l, index, 2);
+    lua_rawgeti(l, index, 3);
+    result = lua_isnumber(l, -3) && lua_isnumber(l, -2) && lua_isnumber(l, -1);
+    lua_pop(l, 3);
+  }
+  return result;
 }
 
 /**

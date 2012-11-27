@@ -51,6 +51,16 @@ void LuaContext::register_surface_module() {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type surface.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a surface.
+ */
+bool LuaContext::is_surface(lua_State* l, int index) {
+  return is_userdata(l, index, surface_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * surface and returns it.
  * @param l a Lua context

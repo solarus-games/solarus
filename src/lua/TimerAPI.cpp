@@ -42,6 +42,10 @@ void LuaContext::register_timer_module() {
       { "stop", timer_api_stop },
       { "is_with_sound", timer_api_is_with_sound },
       { "set_with_sound", timer_api_set_with_sound },
+      { "is_suspended", timer_api_is_suspended },
+      { "set_suspended", timer_api_set_suspended },
+      { "is_suspended_with_map", timer_api_is_suspended_with_map },
+      { "set_suspended_with_map", timer_api_set_suspended_with_map },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -53,19 +57,13 @@ void LuaContext::register_timer_module() {
 }
 
 /**
- * @brief Returns whether a timer just created should be initially suspended.
- * @return true to initially suspend a new timer
+ * @brief Returns whether a value is a userdata of type timer.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a timer.
  */
-bool LuaContext::is_new_timer_suspended(void) {
-
-  Game* game = main_loop.get_game();
-  if (game != NULL) {
-    // start the timer even if the game is suspended (e.g. a timer started during a camera movement)
-    // except when it is suspended because of a dialog box
-    return game->is_showing_dialog();
-  }
-
-  return false;
+bool LuaContext::is_timer(lua_State* l, int index) {
+  return is_userdata(l, index, timer_module_name);
 }
 
 /**
@@ -113,8 +111,15 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
   timers[timer].callback_ref = callback_ref;
   timers[timer].context = context;
 
-  if (get_lua_context(l).is_new_timer_suspended()) {
-    timer->set_suspended(true);
+  Game* game = main_loop.get_game();
+  if (game != NULL) {
+    // We are during a game: depending on the timer's context,
+    // when the map is suspended, also suspend the timer or not.
+    if (is_map(l, context_index)
+        || is_entity(l, context_index)
+        || is_item(l, context_index)) {
+      timer->set_suspended_with_map(true);
+    }
   }
   timer->increment_refcount();
 }
@@ -228,11 +233,14 @@ void LuaContext::update_timers() {
  * or resumed.
  * @param suspended true if the game is suspended, false if it is resumed.
  */
-void LuaContext::set_suspended_timers(bool suspended) {
+void LuaContext::notify_timers_map_suspended(bool suspended) {
 
   std::map<Timer*, LuaTimerData>::iterator it;
   for (it = timers.begin(); it != timers.end(); ++it) {
-    it->first->set_suspended(suspended);
+    Timer* timer = it->first;
+    if (!suspended || timer->is_suspended_with_map()) {
+      timer->notify_map_suspended(suspended);
+    }
   }
 }
 
@@ -342,11 +350,73 @@ int LuaContext::timer_api_set_with_sound(lua_State* l) {
 
   Timer& timer = check_timer(l, 1);
   bool with_sound = true;
-  if (lua_gettop(l) > 1) {
+  if (lua_gettop(l) >= 2) {
     with_sound = lua_toboolean(l, 2);
   }
 
   timer.set_with_sound(with_sound);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_timer_is_suspended.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::timer_api_is_suspended(lua_State* l) {
+
+  Timer& timer = check_timer(l, 1);
+
+  lua_pushboolean(l, timer.is_suspended());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_timer_set_suspended.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::timer_api_set_suspended(lua_State* l) {
+
+  Timer& timer = check_timer(l, 1);
+  bool suspended = true;
+  if (lua_gettop(l) >= 2) {
+    suspended = lua_toboolean(l, 2);
+  }
+
+  timer.set_suspended(suspended);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_timer_is_suspended_with_map.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::timer_api_is_suspended_with_map(lua_State* l) {
+
+  Timer& timer = check_timer(l, 1);
+
+  lua_pushboolean(l, timer.is_suspended_with_map());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_timer_set_suspended_with_map.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::timer_api_set_suspended_with_map(lua_State* l) {
+
+  Timer& timer = check_timer(l, 1);
+  bool suspended_with_map = true;
+  if (lua_gettop(l) >= 2) {
+    suspended_with_map = lua_toboolean(l, 2);
+  }
+
+  timer.set_suspended_with_map(suspended_with_map);
 
   return 0;
 }

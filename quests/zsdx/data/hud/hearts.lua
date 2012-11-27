@@ -23,6 +23,7 @@ function hearts:initialize(game)
   self.empty_heart_sprite = sol.sprite.create("hud/empty_heart")
   self.nb_max_hearts_displayed = game:get_max_life() / 4
   self.nb_current_hearts_displayed = game:get_life()
+  self.danger_sound_timer = nil
 
   local all_hearts_img = sol.surface.create("hud/hearts.png")
   self.heart_imgs = {  -- Fractions of hearts.
@@ -63,8 +64,8 @@ function hearts:check()
     else
       self.nb_current_hearts_displayed = self.nb_current_hearts_displayed + 1
       if self.game:is_started()
-	  and self.nb_current_hearts_displayed % 4 == 0 then
-	sol.audio.play_sound("heart")
+          and self.nb_current_hearts_displayed % 4 == 0 then
+        sol.audio.play_sound("heart")
       end
     end
   end
@@ -74,13 +75,15 @@ function hearts:check()
 
     if self.game:get_life() <= self.game:get_max_life() / 4
         and not self.game:is_suspended() then
-
       need_rebuild = true
       if self.empty_heart_sprite:get_animation() ~= "danger" then
-	self.empty_heart_sprite:set_animation("danger")
-	sol.timer.start(self.game, 250, function()
-	  self:repeat_danger_sound()
-	end)
+        self.empty_heart_sprite:set_animation("danger")
+        if self.danger_sound_timer == nil then
+          self.danger_sound_timer = sol.timer.start(self.game, 250, function()
+            self:repeat_danger_sound()
+          end)
+          self.danger_sound_timer:set_suspended_with_map(true)
+        end
       end
     elseif self.empty_heart_sprite:get_animation() ~= "normal" then
       need_rebuild = true
@@ -101,13 +104,15 @@ end
 
 function hearts:repeat_danger_sound()
 
-  if self.game:get_life() <= self.game:get_max_life() / 4
-      and not self.game:is_suspended() then
+  if self.game:get_life() <= self.game:get_max_life() / 4 then
 
     sol.audio.play_sound("danger")
-    sol.timer.start(self.game, 750, function()
+    self.danger_sound_timer = sol.timer.start(self.game, 750, function()
       self:repeat_danger_sound()
     end)
+    self.danger_sound_timer:set_suspended_with_map(true)
+  else
+    self.danger_sound_timer = nil
   end
 end
 

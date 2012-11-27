@@ -124,6 +124,16 @@ void LuaContext::register_map_module() {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type map.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a map.
+ */
+bool LuaContext::is_map(lua_State* l, int index) {
+  return is_userdata(l, index, map_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * map and returns it.
  * @param l A Lua context.
@@ -162,7 +172,7 @@ Map& LuaContext::get_entity_creation_map(lua_State* l) {
 
   Map* map = NULL;
 
-  if (is_userdata(l, 1, map_module_name)) {
+  if (is_map(l, 1)) {
     // The map is passed as a parameter (typically, by the map script).
     map = &check_map(l, 1);
     lua_remove(l, 1);

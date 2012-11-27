@@ -16,6 +16,7 @@ end
 function small_keys:initialize(game)
 
   self.game = game
+  self.visible = false
   self.surface = sol.surface.create(40, 8)
   self.surface:set_transparency_color{0, 0, 0}
   self.icon_img = sol.surface.create("hud/small_key_icon.png")
@@ -43,6 +44,12 @@ function small_keys:check()
     end
   end
 
+  local visible = self.game:are_small_keys_enabled()
+  if visible ~= self.visible then
+    self.visible = visible
+    need_rebuild = true
+  end
+
   -- Redraw the surface is something has changed.
   if need_rebuild then
     self:rebuild_surface()
@@ -68,9 +75,7 @@ end
 
 function small_keys:on_draw(dst_surface)
 
-  -- FIXME make a boolean self.visible
-  -- to avoid showing a wrong value until the next check.
-  if self.game:are_small_keys_enabled() then
+  if self.visible then
     local x, y = self.dst_x, self.dst_y
     local width, height = dst_surface:get_size()
     if x < 0 then

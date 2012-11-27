@@ -71,6 +71,16 @@ void LuaContext::register_text_surface_module() {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type text surface.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a text surface.
+ */
+bool LuaContext::is_text_surface(lua_State* l, int index) {
+  return is_userdata(l, index, text_surface_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * text surface and returns it.
  * @param l a Lua context

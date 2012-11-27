@@ -27,6 +27,7 @@
 Timer::Timer(uint32_t delay):
   expiration_date(System::now() + delay),
   finished(false),
+  suspended_with_map(false),
   suspended(false),
   when_suspended(0),
   next_sound_date(0) {
@@ -54,6 +55,57 @@ bool Timer::is_with_sound() {
  */
 void Timer::set_with_sound(bool with_sound) {
   next_sound_date = with_sound ? System::now() : 0;
+}
+
+/**
+ * @brief Returns whether this timer is currently suspended.
+ * @return true if this timer is suspended.
+ */
+bool Timer::is_suspended() {
+  return suspended;
+}
+
+/**
+ * @brief Suspends or resumes the timer.
+ * @param suspended true to suspend the timer, false to resume it
+ */
+void Timer::set_suspended(bool suspended) {
+
+  if (suspended != this->suspended) {
+    this->suspended = suspended;
+
+    uint32_t now = System::now();
+
+    if (suspended) {
+      // the timer is being suspended
+      when_suspended = now;
+    }
+    else {
+      // recalculate the expiration date
+      if (when_suspended != 0) {
+        expiration_date += now - when_suspended;
+        if (is_with_sound()) {
+          next_sound_date += now - when_suspended;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * @brief Returns whether this timer is suspended when the map is suspended.
+ * @return true if this timer is suspended with the map.
+ */
+bool Timer::is_suspended_with_map() {
+  return suspended_with_map;
+}
+
+/**
+ * @brief Sets whether this timer should be suspended when the map is suspended.
+ * @param suspend_with_game true to suspend this timer with the map.
+ */
+void Timer::set_suspended_with_map(bool suspended_with_map) {
+  this->suspended_with_map = suspended_with_map;
 }
 
 /**
@@ -98,27 +150,13 @@ void Timer::update() {
 }
 
 /**
- * @brief Suspends or resumes the timer.
- * @param suspended true to suspend the timer, false to resume it
+ * @brief Notifies this timer that the current map is being suspended or resumed.
+ * @param suspended true if the map is suspended, false if it is resumed.
  */
-void Timer::set_suspended(bool suspended) {
+void Timer::notify_map_suspended(bool suspended) {
 
-  this->suspended = suspended;
-
-  uint32_t now = System::now();
-
-  if (suspended) {
-    // the timer is being suspended
-    when_suspended = now;
-  }
-  else {
-    // recalculate the expiration date
-    if (when_suspended != 0) {
-      expiration_date += now - when_suspended;
-      if (is_with_sound()) {
-        next_sound_date += now - when_suspended;
-      }
-    }
+  if (suspended_with_map || !suspended) {
+    set_suspended(suspended);
   }
 }
 

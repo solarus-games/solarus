@@ -82,6 +82,16 @@ void LuaContext::register_item_module() {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type item.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is an item.
+ */
+bool LuaContext::is_item(lua_State* l, int index) {
+  return is_userdata(l, index, item_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is an
  * equipment item and returns it.
  * @param l A Lua context.

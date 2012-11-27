@@ -206,6 +206,24 @@ void LuaContext::register_movement_module() {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type movement.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a entity.
+ */
+bool LuaContext::is_movement(lua_State* l, int index) {
+  return is_straight_movement(l, index)
+      || is_random_movement(l, index)
+      || is_target_movement(l, index)
+      || is_path_movement(l, index)
+      || is_random_path_movement(l, index)
+      || is_path_finding_movement(l, index)
+      || is_circle_movement(l, index)
+      || is_jump_movement(l, index)
+      || is_pixel_movement(l, index);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * movement (of any subtype) and returns it.
  * @param l a Lua context
@@ -216,15 +234,7 @@ Movement& LuaContext::check_movement(lua_State* l, int index) {
 
   Movement** movement = NULL;
 
-  if (is_userdata(l, index, movement_straight_module_name)
-      || is_userdata(l, index, movement_random_module_name)
-      || is_userdata(l, index, movement_target_module_name)
-      || is_userdata(l, index, movement_path_module_name)
-      || is_userdata(l, index, movement_random_path_module_name)
-      || is_userdata(l, index, movement_path_finding_module_name)
-      || is_userdata(l, index, movement_circle_module_name)
-      || is_userdata(l, index, movement_jump_module_name)
-      || is_userdata(l, index, movement_pixel_module_name)) {
+  if (is_movement(l, index)) {
     movement = static_cast<Movement**>(lua_touserdata(l, index));
   }
   else {
@@ -356,6 +366,16 @@ int LuaContext::movement_api_get_direction4(lua_State* l) {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type straight movement.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a straight movement.
+ */
+bool LuaContext::is_straight_movement(lua_State* l, int index) {
+  return is_userdata(l, index, movement_straight_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * straight movement and returns it.
  * @param l a Lua context
@@ -473,6 +493,16 @@ int LuaContext::straight_movement_api_set_smooth(lua_State* l) {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type random movement.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a random movement.
+ */
+bool LuaContext::is_random_movement(lua_State* l, int index) {
+  return is_userdata(l, index, movement_random_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * random movement and returns it.
  * @param l a Lua context
@@ -576,6 +606,16 @@ int LuaContext::random_movement_api_set_smooth(lua_State* l) {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type target movement.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a target movement.
+ */
+bool LuaContext::is_target_movement(lua_State* l, int index) {
+  return is_userdata(l, index, movement_target_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * target movement and returns it.
  * @param l a Lua context
@@ -674,6 +714,16 @@ int LuaContext::target_movement_api_set_smooth(lua_State* l) {
   movement.set_smooth(smooth);
 
   return 0;
+}
+
+/**
+ * @brief Returns whether a value is a userdata of type path movement.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a path movement.
+ */
+bool LuaContext::is_path_movement(lua_State* l, int index) {
+  return is_userdata(l, index, movement_path_module_name);
 }
 
 /**
@@ -829,6 +879,16 @@ RandomPathMovement& LuaContext::check_random_path_movement(lua_State* l, int ind
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type random path movement.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a random path movement.
+ */
+bool LuaContext::is_random_path_movement(lua_State* l, int index) {
+  return is_userdata(l, index, movement_random_path_module_name);
+}
+
+/**
  * @brief Implementation of \ref lua_api_random_path_movement_get_speed.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
@@ -851,6 +911,16 @@ int LuaContext::random_path_movement_api_set_speed(lua_State* l) {
   int speed = luaL_checkinteger(l, 2);
   movement.set_speed(speed);
   return 0;
+}
+
+/**
+ * @brief Returns whether a value is a userdata of type path finding movement.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a path finding  movement.
+ */
+bool LuaContext::is_path_finding_movement(lua_State* l, int index) {
+  return is_userdata(l, index, movement_path_finding_module_name);
 }
 
 /**
@@ -903,6 +973,16 @@ int LuaContext::path_finding_movement_api_set_speed(lua_State* l) {
   int speed = luaL_checkinteger(l, 2);
   movement.set_speed(speed);
   return 0;
+}
+
+/**
+ * @brief Returns whether a value is a userdata of type circle movement.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a circle movement.
+ */
+bool LuaContext::is_circle_movement(lua_State* l, int index) {
+  return is_userdata(l, index, movement_circle_module_name);
 }
 
 /**
@@ -1148,6 +1228,16 @@ int LuaContext::circle_movement_api_set_loop_delay(lua_State* l) {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type jump movement.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a jump movement.
+ */
+bool LuaContext::is_jump_movement(lua_State* l, int index) {
+  return is_userdata(l, index, movement_jump_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * jump movement and returns it.
  * @param l a Lua context
@@ -1232,6 +1322,16 @@ int LuaContext::jump_movement_api_set_speed(lua_State* l) {
   int speed = luaL_checkinteger(l, 2);
   movement.set_speed(speed);
   return 0;
+}
+
+/**
+ * @brief Returns whether a value is a userdata of type pixel movement.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a pixel movement.
+ */
+bool LuaContext::is_pixel_movement(lua_State* l, int index) {
+  return is_userdata(l, index, movement_pixel_module_name);
 }
 
 /**

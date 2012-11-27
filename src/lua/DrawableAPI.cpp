@@ -24,6 +24,18 @@
  */
 
 /**
+ * @brief Returns whether a value is a userdata of a type.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a drawable.
+ */
+bool LuaContext::is_drawable(lua_State* l, int index) {
+  return is_surface(l, index)
+      || is_text_surface(l, index)
+      || is_sprite(l, index);
+}
+
+/**
  * @brief Check that the userdata at the specified index is a drawable
  * object (surface, text surface of sprite) and returns it.
  * @param l a Lua context
@@ -34,9 +46,7 @@ Drawable& LuaContext::check_drawable(lua_State* l, int index) {
 
   Drawable** drawable = NULL;
 
-  if (is_userdata(l, index, surface_module_name)
-      || is_userdata(l, index, text_surface_module_name)
-      || is_userdata(l, index, sprite_module_name)) {
+  if (is_drawable(l, index)) {
     drawable = static_cast<Drawable**>(lua_touserdata(l, index));
   }
   else {

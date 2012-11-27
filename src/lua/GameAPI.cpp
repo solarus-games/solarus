@@ -78,6 +78,16 @@ void LuaContext::register_game_module() {
 }
 
 /**
+ * @brief Returns whether a value is a userdata of type game.
+ * @param l A Lua context.
+ * @param index An index in the stack.
+ * @return true if the value at this index is a game.
+ */
+bool LuaContext::is_game(lua_State* l, int index) {
+  return is_userdata(l, index, game_module_name);
+}
+
+/**
  * @brief Checks that the userdata at the specified index of the stack is a
  * game and returns it.
  * @param l a Lua context

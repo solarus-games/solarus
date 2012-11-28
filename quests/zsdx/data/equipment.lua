@@ -20,7 +20,7 @@ function game:get_small_keys_savegame_variable()
     -- Are we in a dungeon?
     local dungeon = self:get_dungeon()
     if dungeon ~= nil then
-      return "dungeon_" .. dungeon .. "_small_keys"
+      return "dungeon_" .. dungeon.index .. "_small_keys"
     end
   end
 

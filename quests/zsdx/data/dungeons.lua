@@ -23,4 +23,11 @@ function game:set_dungeon_finished(dungeon, finished)
   self:set_value("dungeon_" .. dungeon .. "_finished", finished)
 end
 
+-- Define the existing dungeons of this quest.
+game.dungeons = {
+  {
+    index = 1,
+    -- TODO floors, size of a floor
+  },
+}
 

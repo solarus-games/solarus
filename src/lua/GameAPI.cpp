@@ -221,6 +221,37 @@ int LuaContext::game_api_is_suspended(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_game_get_starting_location.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_starting_location(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  push_string(l, savegame.get_string(Savegame::KEY_STARTING_MAP));
+  push_string(l, savegame.get_string(Savegame::KEY_STARTING_POINT));
+  return 2;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_set_starting_location.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_starting_location(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  const std::string& map_id = luaL_checkstring(l, 2);
+  const std::string& destination_name = luaL_checkstring(l, 3);
+
+  savegame.set_string(Savegame::KEY_STARTING_MAP, map_id);
+  savegame.set_string(Savegame::KEY_STARTING_POINT, destination_name);
+
+  return 0;
+}
+
+/**
  * @brief Implementation of \ref lua_api_game_get_map.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.

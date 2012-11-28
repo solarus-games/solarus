@@ -955,8 +955,10 @@ end
 
 function savegame_menu:set_initial_values(savegame)
 
-  -- Initially give 3 hearts, the first tunic and the first wallet.
+  savegame:set_starting_location("0", "start_position")
   savegame:set_value("player_name", self.player_name)
+
+  -- Initially give 3 hearts, the first tunic and the first wallet.
   savegame:set_max_life(12)
   savegame:set_life(savegame:get_max_life())
   savegame:get_item("tunic"):set_variant(1)

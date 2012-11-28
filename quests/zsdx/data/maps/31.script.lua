@@ -237,17 +237,19 @@ function boss:on_dying()
   map:set_entities_enabled("boss_floor_sensor", false)
 end
 
-function boss:on_dead()
+if boss ~= nil then
+  function boss:on_dead()
 
-  -- create the heart container manually to be sure it won't be in lava
-  map:create_pickable{
-    treasure_name = "heart_container",
-    treasure_variant = 1,
-    treasure_savegame_variable = "b103",
-    x = 960,
-    y = 437,
-    layer = 0
-  }
-  for _, t in ipairs(timers) do t:stop() end
+    -- create the heart container manually to be sure it won't be in lava
+    map:create_pickable{
+      treasure_name = "heart_container",
+      treasure_variant = 1,
+      treasure_savegame_variable = "b103",
+      x = 960,
+      y = 437,
+      layer = 0
+    }
+    for _, t in ipairs(timers) do t:stop() end
+  end
 end
 

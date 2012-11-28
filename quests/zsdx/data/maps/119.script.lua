@@ -108,24 +108,26 @@ function start_boss_sensor:on_activated()
   end
 end
 
-function boss:on_dead()
-  -- give the second sword
-  local variant = 2
-  if map:get_game():get_ability("sword") == 2 then
-    -- the player already has the second one: give the third one instead
-    variant = 3
-  end
-  map:create_pickable{
-    treasure_name = "sword",
-    treasure_variant = variant,
-    treasure_savegame_variable = "b298",
-    x = 440,
-    y = 189,
-    layer = 1
-  }
-  if arrows_timer ~= nil then
-    arrows_timer:stop()
-    arrows_timer = nil
+if boss ~= nil then
+  function boss:on_dead()
+    -- give the second sword
+    local variant = 2
+    if map:get_game():get_ability("sword") == 2 then
+      -- the player already has the second one: give the third one instead
+      variant = 3
+    end
+    map:create_pickable{
+      treasure_name = "sword",
+      treasure_variant = variant,
+      treasure_savegame_variable = "b298",
+      x = 440,
+      y = 189,
+      layer = 1
+    }
+    if arrows_timer ~= nil then
+      arrows_timer:stop()
+      arrows_timer = nil
+    end
   end
 end
 

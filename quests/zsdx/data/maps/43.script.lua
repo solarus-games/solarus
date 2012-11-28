@@ -58,11 +58,13 @@ function start_boss_sensor:on_activated()
   end
 end
 
-function miniboss:on_dead()
+if miniboss ~= nil then
+  function miniboss:on_dead()
 
-  sol.audio.play_music("dark_world_dungeon")
-  map:open_doors("miniboss_door")
-  map:set_entities_enabled("miniboss_prickles", false)
+    sol.audio.play_music("dark_world_dungeon")
+    map:open_doors("miniboss_door")
+    map:set_entities_enabled("miniboss_prickles", false)
+  end
 end
 
 function hero:on_obtained_treasure(item_name, variant, savegame_variable)

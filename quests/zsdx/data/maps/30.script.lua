@@ -85,10 +85,12 @@ function start_miniboss_sensor:on_activated()
   end
 end
 
-function miniboss:on_dead()
+if miniboss ~= nil then
+  function miniboss:on_dead()
 
-  sol.audio.play_music("light_world_dungeon")
-  map:open_doors("miniboss_door")
+    sol.audio.play_music("light_world_dungeon")
+    map:open_doors("miniboss_door")
+  end
 end
 
 function barrier_switch:on_activated()

@@ -71,44 +71,46 @@ function map:on_opening_transition_finished(destination)
   end
 end
 
-function boss:on_dead()
+if boss ~= nil then
+  function boss:on_dead()
 
-  sol.timer.start(1000, function()
-    hero:freeze()
-    hero:set_direction(3)
-    sol.audio.play_music("victory")
-    sol.timer.start(9000, function()
-      hero:teleport(130, "from_boss")
-    end)
-    sol.timer.start(9100, function()
-      sol.audio.play_music("triforce")
+    sol.timer.start(1000, function()
       hero:freeze()
-      hero:set_direction(1)
-      zelda:set_enabled(true)
-      for i = 1, 8 do
-        local npc = map:get_entity("child_" .. i)
-        npc:set_enabled(true)
-        npc:get_sprite():set_ignore_suspend(true)
-        npc:get_sprite():fade_in()
-      end
+      hero:set_direction(3)
+      sol.audio.play_music("victory")
+      sol.timer.start(9000, function()
+        hero:teleport(130, "from_boss")
+      end)
+      sol.timer.start(9100, function()
+        sol.audio.play_music("triforce")
+        hero:freeze()
+        hero:set_direction(1)
+        zelda:set_enabled(true)
+        for i = 1, 8 do
+          local npc = map:get_entity("child_" .. i)
+          npc:set_enabled(true)
+          npc:get_sprite():set_ignore_suspend(true)
+          npc:get_sprite():fade_in()
+        end
 
-      sol.timer.start(3000, function()
-        map:set_dialog_variable("dungeon_9.zelda", map:get_game():get_player_name())
-        map:start_dialog("dungeon_9.zelda", function()
-          sol.timer.start(1000, function()
-            map:start_dialog("dungeon_9.zelda_children", function()
-              sol.audio.stop_music()
-              sol.audio.play_sound("world_warp")
-              sol.timer.start(1000, function()
-                for i = 1, 8 do
-                  map:get_entity("child_" .. i):get_sprite():fade_out()
-                end
-              end)
-              sol.timer.start(5000, function()
-                map:start_dialog("dungeon_9.zelda_end", function()
-                  sol.timer.start(2000, function()
-                    hero:teleport(8, "from_ending")
-                    -- Yeah! New nested anonymous functions record!
+        sol.timer.start(3000, function()
+          map:set_dialog_variable("dungeon_9.zelda", map:get_game():get_player_name())
+          map:start_dialog("dungeon_9.zelda", function()
+            sol.timer.start(1000, function()
+              map:start_dialog("dungeon_9.zelda_children", function()
+                sol.audio.stop_music()
+                sol.audio.play_sound("world_warp")
+                sol.timer.start(1000, function()
+                  for i = 1, 8 do
+                    map:get_entity("child_" .. i):get_sprite():fade_out()
+                  end
+                end)
+                sol.timer.start(5000, function()
+                  map:start_dialog("dungeon_9.zelda_end", function()
+                    sol.timer.start(2000, function()
+                      hero:teleport(8, "from_ending")
+                      -- Yeah! New nested anonymous functions record!
+                    end)
                   end)
                 end)
               end)
@@ -117,7 +119,7 @@ function boss:on_dead()
         end)
       end)
     end)
-  end)
+  end
 end
 
 local function check_torches()

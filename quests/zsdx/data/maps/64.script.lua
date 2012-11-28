@@ -33,7 +33,7 @@ function map:on_started(destination)
     c_door_switch:set_activated(true)
   end
 
-  -- block falled from 2F
+  -- block fallen from 2F
   if not map:get_game():get_value("b515") then
     block_from_2f:set_enabled(false)
   end

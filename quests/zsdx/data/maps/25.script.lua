@@ -33,10 +33,12 @@ function start_miniboss_sensor:on_activated()
   end
 end
 
-function khorneth:on_dead()
+if khorneth ~= nil then
+  function khorneth:on_dead()
 
-  sol.audio.play_music("light_world_dungeon")
-  map:open_doors("miniboss_door")
+    sol.audio.play_music("light_world_dungeon")
+    map:open_doors("miniboss_door")
+  end
 end
 
 for _, enemy in ipairs(map:get_entities("boss_key_battle")) do

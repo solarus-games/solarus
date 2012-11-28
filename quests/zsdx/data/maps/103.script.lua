@@ -280,20 +280,22 @@ function hero:on_victory_finished()
   hero:teleport(8, "from_dungeon_7")
 end
 
-function boss:on_dead()
+if boss ~= nil then
+  function boss:on_dead()
 
-  -- create the heart container manually to be sure it won't be in a hole
-  map:create_pickable{
-    treasure_name = "heart_container",
-    treasure_variant = 1,
-    treasure_savegame_variable = "b626",
-    x = 544,
-    y = 789,
-    layer = 0
-  }
-  if arrows_timer ~= nil then
-    arrows_timer:stop()
-    arrows_timer = nil
+    -- create the heart container manually to be sure it won't be in a hole
+    map:create_pickable{
+      treasure_name = "heart_container",
+      treasure_variant = 1,
+      treasure_savegame_variable = "b626",
+      x = 544,
+      y = 789,
+      layer = 0
+    }
+    if arrows_timer ~= nil then
+      arrows_timer:stop()
+      arrows_timer = nil
+    end
   end
 end
 

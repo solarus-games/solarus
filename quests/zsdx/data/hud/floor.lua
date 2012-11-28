@@ -49,14 +49,34 @@ end
 function floor_view:rebuild_surface()
 
   self.surface:fill_color{0, 0, 0}
-  local highest_floor, highest_floor_displayed
+
+  local highest_floor_displayed
   local dungeon = self.game:get_dungeon()
 
   if dungeon ~= nil then
     -- We are in a dungeon: show the neighboor floors before the current one.
-    -- TODO
+    local nb_floors = dungeon.highest_floor - dungeon.lowest_floor + 1
+    local nb_floors_displayed = math.min(7, nb_floors)
+
+    -- If there are less 7 floors or less, show them all.
+    if nb_floors <= 7 then
+      highest_floor_displayed = dungeon.highest_floor
+    elseif self.floor >= dungeon.highest_floor - 2 then
+      -- Otherwise we only display 7 floors including the current one.
+      highest_floor_displayed = dungeon.highest_floor
+    elseif self.floor <= dungeon.lowest_floor + 2 then
+      highest_floor_displayed = dungeon.lowest_floor + 6
+    else
+      highest_floor_displayed = self.floor + 3
+    end
+
+    local src_y = (15 - highest_floor_displayed) * 12
+    local src_height = nb_floors_displayed * 12 + 1
+
+    local neighbor_floors_surface = sol.surface.create(
+        self.floors_img, 32, src_y, 32, src_height)
+    neighbor_floors_surface:draw(self.surface)
   else
-    highest_floor = self.floor
     highest_floor_displayed = self.floor
   end
 

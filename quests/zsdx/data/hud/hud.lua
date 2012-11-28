@@ -31,7 +31,7 @@ end
 
 function game:hud_on_map_changed(map)
 
-  if self.hud_enabled then
+  if self:is_hud_enabled() then
     for _, menu in pairs(self.hud) do
       if menu.on_map_changed ~= nil then
         menu:on_map_changed(map)

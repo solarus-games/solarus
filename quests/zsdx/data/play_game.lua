@@ -17,7 +17,7 @@ end
 function game:on_map_changed(map)
 
   -- Notify the hud.
-  self.hud_on_map_changed(map)
+  self:hud_on_map_changed(map)
 end
 
 function game:get_player_name()

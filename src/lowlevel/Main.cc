@@ -35,7 +35,6 @@ static void print_help(int argc, char** argv);
  *   -help               shows a help message
  *   -no-audio           disables sounds and musics
  *   -no-video           disables displaying (used for unitary tests)
- *   -language=l         sets the language l (overrides the one saved in the options file)
  *
  * @param argc number of command-line arguments
  * @param argv command-line arguments
@@ -85,10 +84,7 @@ static void print_help(int argc, char **argv) {
     << std::endl
     << "  -no-audio           disables sounds and musics"
     << std::endl
-    << "  -no-video           disables displaying (may be used for tests)"
-    << std::endl
-    << "  -language=l         sets the language l (replaces the one saved in "
-    "the options file)"
+    << "  -no-video           disables displaying (may be useful for tests)"
     << std::endl;
 }
 

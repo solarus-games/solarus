@@ -60,7 +60,6 @@ class Game {
 
     // world (i.e. the current set of maps)
     bool crystal_state;        /**< indicates that a crystal has been enabled (i.e. the orange blocks are raised) */
-    static Rectangle outside_world_size; /**< size of the outside world in pixels */
 
     // graphics
     HUD *hud;                  /**< the game HUD (displaying hearts, rupees, key icons, etc.) */
@@ -109,7 +108,6 @@ class Game {
         Transition::Style transition_style);
 
     // world
-    const Rectangle& get_outside_world_size();
     bool get_crystal_state();
     void change_crystal_state();
 

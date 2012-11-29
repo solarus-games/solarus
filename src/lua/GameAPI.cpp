@@ -42,6 +42,8 @@ void LuaContext::register_game_module() {
       { "get_map", game_api_get_map },
       { "get_value", game_api_get_value },
       { "set_value", game_api_set_value },
+      { "get_starting_location", game_api_get_starting_location },
+      { "set_starting_location", game_api_set_starting_location },
       { "get_life", game_api_get_life },
       { "set_life", game_api_set_life },
       { "add_life", game_api_add_life },
@@ -221,37 +223,6 @@ int LuaContext::game_api_is_suspended(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_game_get_starting_location.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_get_starting_location(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-
-  push_string(l, savegame.get_string(Savegame::KEY_STARTING_MAP));
-  push_string(l, savegame.get_string(Savegame::KEY_STARTING_POINT));
-  return 2;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_set_starting_location.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_set_starting_location(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  const std::string& map_id = luaL_checkstring(l, 2);
-  const std::string& destination_name = luaL_checkstring(l, 3);
-
-  savegame.set_string(Savegame::KEY_STARTING_MAP, map_id);
-  savegame.set_string(Savegame::KEY_STARTING_POINT, destination_name);
-
-  return 0;
-}
-
-/**
  * @brief Implementation of \ref lua_api_game_get_map.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -344,6 +315,37 @@ int LuaContext::game_api_set_value(lua_State* l) {
       luaL_argerror(l, 3, (StringConcat() <<
           "Expected string, number or boolean, got " << luaL_typename(l, 3)).c_str());
   }
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_get_starting_location.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_starting_location(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  push_string(l, savegame.get_string(Savegame::KEY_STARTING_MAP));
+  push_string(l, savegame.get_string(Savegame::KEY_STARTING_POINT));
+  return 2;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_set_starting_location.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_starting_location(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  const std::string& map_id = luaL_checkstring(l, 2);
+  const std::string& destination_name = luaL_checkstring(l, 3);
+
+  savegame.set_string(Savegame::KEY_STARTING_MAP, map_id);
+  savegame.set_string(Savegame::KEY_STARTING_POINT, destination_name);
 
   return 0;
 }

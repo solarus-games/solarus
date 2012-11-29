@@ -44,7 +44,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu& pause_menu, Game& game):
 
     set_caption_text(StringResource::get_string("map.caption.world_map"));
 
-    const Rectangle& real_size = game.get_outside_world_size();
+    const Rectangle real_size(0, 0, 2080, 3584);
 
     Map& map = game.get_current_map();
     hero_position = map.get_location();

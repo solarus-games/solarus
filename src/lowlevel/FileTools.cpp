@@ -17,7 +17,6 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "lowlevel/IniFile.h"
 #include "Configuration.h"
 #include "StringResource.h"
 #include "DialogResource.h"
@@ -37,28 +36,18 @@ void FileTools::initialize(int argc, char** argv) {
 
   PHYSFS_init(argv[0]);
 
-  // look for the language options
-  const std::string language_flag = "-language=";
-  std::string language_arg = "";
-  for (int i = 1; i < argc; i++) {
-    std::string arg = argv[i];
-    if (arg.find(language_flag) == 0) {
-      language_arg = arg.substr(language_flag.size());
-    }
-  }
-
-  // set the quest path, by default as defined during the build process
+  // Set the quest path, by default as defined during the build process.
   std::string quest_path = SOLARUS_DEFAULT_QUEST;
 
-  // if a command-line argument was specified, use it instead
+  // If a command-line argument was specified, use it instead.
   if (argc > 1 && argv[argc - 1][0] != '-') {
-    // the last parameter is not an option: it is the quest path
+    // The last parameter is not an option: it is the quest path.
     quest_path = argv[argc - 1];
   }
 
-  // now, quest_path may be the path defined as command-line argument,
+  // Now, quest_path may be the path defined as command-line argument,
   // the path defined during the build process, or the current directory
-  // if nothing was specified
+  // if nothing was specified.
 
   std::string dir_quest_path = quest_path + "/data";
   std::string archive_quest_path = quest_path + "/data.solarus";
@@ -66,33 +55,27 @@ void FileTools::initialize(int argc, char** argv) {
   PHYSFS_addToSearchPath(dir_quest_path.c_str(), 1);   // data directory
   PHYSFS_addToSearchPath(archive_quest_path.c_str(), 1); // data.solarus archive
 
-  // check the existence of the quest path
-  if (!FileTools::data_file_exists("quest.dat")) {
+  // Check the existence of a quest at this location.
+  if (!FileTools::data_file_exists("main.lua")) {
     Debug::die(StringConcat() << "No quest was found in the directory '" << quest_path
         << "'. To specify your quest's path, run: "
         << argv[0] << " path/to/quest");
   }
 
-  // then set the write directory to a "SOLARUS_WRITE_DIR/quest_dir" subdirectory of the user home
-
-  // first, create the directory
-   if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
+  // Set the write directory to "$HOME/SOLARUS_WRITE_DIR".
+  if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
      Debug::die(StringConcat() << "Cannot write in user directory:" << PHYSFS_getLastError());
   }
-  IniFile ini("quest.dat", IniFile::READ);
-  ini.set_group("info");
-  std::string write_dir = (std::string) SOLARUS_WRITE_DIR + "/" + ini.get_string_value("write_dir");
+  const std::string& write_dir = (std::string) PHYSFS_getUserDir() + SOLARUS_WRITE_DIR;
   PHYSFS_mkdir(write_dir.c_str());
-
-  // then set this directory as the write directory
-  write_dir = (std::string) PHYSFS_getUserDir() + write_dir;
   if (!PHYSFS_setWriteDir(write_dir.c_str())) {
     Debug::die(StringConcat() << "Cannot set write dir '" << write_dir << "': " << PHYSFS_getLastError());
   }
-  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);     // directory for writing files (savegames and configuration file)
+  // Directory for writing files (savegames and other files created by scripts).
+  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);
 
-  // load the list of languages
-  initialize_languages(language_arg);
+  // Load the list of languages.
+  initialize_languages();
 }
 
 /**
@@ -107,10 +90,8 @@ void FileTools::quit() {
 
 /**
  * @brief Loads the list of available languages.
- * @param arg_language the language specified as command-line argument
- * (or an empty string if not specified)
  */
-void FileTools::initialize_languages(const std::string& arg_language) {
+void FileTools::initialize_languages() {
 
   static const std::string file_name = "languages/languages.lua";
 
@@ -130,17 +111,6 @@ void FileTools::initialize_languages(const std::string& arg_language) {
   }
 
   lua_close(l);
-
-  // set a language
-  if (arg_language.size() != 0) {
-    set_language(arg_language);
-  }
-  else {
-    std::string config_language = Configuration::get_value("language", "");
-    if (config_language.size() != 0) {
-      set_language(config_language);
-    }
-  }
 }
 
 /**

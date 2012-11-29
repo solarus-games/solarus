@@ -36,8 +36,6 @@
 #include "lowlevel/Music.h"
 #include <sstream>
 
-Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from quest.dat
-
 /**
  * @brief Creates a game.
  * @param main_loop The Solarus root object.
@@ -585,24 +583,6 @@ void Game::notify_map_changed() {
 
   // Notify the equipment.
   get_equipment().notify_map_changed(*current_map);
-}
-
-/**
- * @brief Returns the size of the oustide world in pixels.
- * @return the size of the oustide world
- */
-const Rectangle& Game::get_outside_world_size() {
-
-  if (outside_world_size.get_width() == 0) {
-    // first time: read the information
-    IniFile ini("quest.dat", IniFile::READ);
-    ini.set_group("info");
-    int width = ini.get_integer_value("outside_world_width", 0);
-    int height = ini.get_integer_value("outside_world_height", 0);
-    Debug::check_assertion(width > 0 && height > 0, "Missing outside world size in file quest.dat");
-    outside_world_size.set_size(width, height);
-  }
-  return outside_world_size;
 }
 
 /**

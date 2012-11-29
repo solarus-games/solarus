@@ -115,21 +115,6 @@ void Savegame::set_initial_values() {
   // Set the initial controls.
   set_default_keyboard_controls();
   set_default_joypad_controls();
-
-  // Set some other values from the quest file.
-  IniFile ini("quest.dat", IniFile::READ);
-  ini.set_group("initial");
-  const std::string& starting_map_id = ini.get_string_value("starting_map", "");
-  const std::string& starting_destination_name = ini.get_string_value("starting_point", "");
-
-  Debug::check_assertion(!starting_map_id.empty(),
-      "No starting map defined in quest.dat. Please set the value starting_map to the id of the initial map of your quest.");
-  Debug::check_assertion(!starting_destination_name.empty(),
-      "No starting point defined in quest.dat. Please set the value starting_point to the name of the "
-      "destination point where the hero should be placed on the initial map.");
-
-  set_string(KEY_STARTING_MAP, starting_map_id);
-  set_string(KEY_STARTING_POINT, starting_destination_name);
   set_integer(KEY_MAX_LIFE, 1);
   set_integer(KEY_CURRENT_LIFE, 1);
 }

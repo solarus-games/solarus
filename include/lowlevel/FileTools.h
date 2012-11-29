@@ -42,7 +42,7 @@ class FileTools {
     static std::string language_code;                    /**< code of the current language (e.g. "en", "fr", etc.) */
     static std::string default_language_code;            /**< code of the default language */
 
-    static void initialize_languages(const std::string& arg_language);
+    static void initialize_languages();
     static int l_language(lua_State* l);
 
   public:

@@ -17,9 +17,20 @@
 #include "Configuration.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/IniFile.h"
+#include "lowlevel/Debug.h"
 
-const std::string Configuration::file_name = "config.ini";
 const std::string Configuration::group_name = "configuration";
+
+/**
+ * @brief Returns the configuration file name.
+ * @return The configuration file name, relative to the Solarus write directory.
+ */
+const std::string Configuration::get_file_name() {
+
+  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  Debug::check_assertion(!quest_write_dir.empty(), "The quest write directory was not set");
+  return quest_write_dir + "/config.ini";
+}
 
 /**
  * @brief Returns a string value from the configuration file.
@@ -27,8 +38,9 @@ const std::string Configuration::group_name = "configuration";
  * @param default_value the value to return if the configuration file does not exist or does not have the information
  * @return the value as a string
  */
-const std::string Configuration::get_value(const std::string &key, const std::string &default_value) {
+const std::string Configuration::get_value(const std::string& key, const std::string &default_value) {
 
+  const std::string& file_name = get_file_name();
   std::string value = default_value;
 
   if (FileTools::data_file_exists(file_name)) {
@@ -48,8 +60,9 @@ const std::string Configuration::get_value(const std::string &key, const std::st
  * @param default_value the value to return if the configuration file does not exist or does not have the information
  * @return the value as an integer
  */
-int Configuration::get_value(const std::string &key, int default_value) {
+int Configuration::get_value(const std::string& key, int default_value) {
 
+  const std::string& file_name = get_file_name();
   int value = default_value;
 
   if (FileTools::data_file_exists(file_name)) {
@@ -68,9 +81,9 @@ int Configuration::get_value(const std::string &key, int default_value) {
  * @param key name of the value to set
  * @param value the value
  */
-void Configuration::set_value(const std::string &key, const std::string &value) {
+void Configuration::set_value(const std::string& key, const std::string &value) {
 
-  IniFile ini(file_name, IniFile::WRITE);
+  IniFile ini(get_file_name(), IniFile::WRITE);
   ini.set_group(group_name);
   ini.set_string_value(key, value);
   ini.save();
@@ -81,9 +94,9 @@ void Configuration::set_value(const std::string &key, const std::string &value) 
  * @param key name of the value to set
  * @param value the value
  */
-void Configuration::set_value(const std::string &key, int value) {
+void Configuration::set_value(const std::string& key, int value) {
 
-  IniFile ini(file_name, IniFile::WRITE);
+  IniFile ini(get_file_name(), IniFile::WRITE);
   ini.set_group(group_name);
   ini.set_integer_value(key, value);
   ini.save();

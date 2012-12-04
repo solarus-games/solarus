@@ -69,7 +69,7 @@ const std::string Savegame::KEY_ABILITY_RUN = "_ability_run";
  * @brief Creates a savegame with a specified file name, existing or not.
  * @param main_loop The Solarus root object.
  * @param file_name Name of the savegame file (can be a new file),
- * relative to the savegames directory, with its extension.
+ * relative to the quest write directory, with its extension.
  */
 Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   ExportableToLua(),
@@ -78,7 +78,11 @@ Savegame::Savegame(MainLoop& main_loop, const std::string& file_name):
   equipment(*this),
   game(NULL) {
 
-  if (!FileTools::data_file_exists(file_name)) {
+  const std::string& quest_write_dir = FileTools::get_quest_write_dir();
+  Debug::check_assertion(!quest_write_dir.empty(), "The quest write directory was not set");
+  prefixed_file_name = quest_write_dir + "/" + file_name;
+
+  if (!FileTools::data_file_exists(prefixed_file_name)) {
     // This save does not exist yet.
     empty = true;
     set_initial_values();
@@ -168,8 +172,8 @@ void Savegame::load() {
   lua_State* l = lua_open();
   size_t size;
   char* buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  int result = luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size);
+  int result = luaL_loadbuffer(l, buffer, size, prefixed_file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
 
   // Call Lua.
@@ -196,13 +200,13 @@ void Savegame::load() {
 
     if (lua_pcall(l, 0, 0, 0) != 0) {
       Debug::die(StringConcat() << "Failed to load savegame file '"
-          << file_name << "': " << lua_tostring(l, -1));
+          << prefixed_file_name << "': " << lua_tostring(l, -1));
       lua_pop(l, 1);
     }
   }
   else if (result == LUA_ERRSYNTAX) {
      // Apparently it was not a Lua file. Let's try the obsolete format.
-     SavegameConverterV1 converter(file_name);
+     SavegameConverterV1 converter(prefixed_file_name);
      converter.convert_to_v2(*this);
    }
 
@@ -272,7 +276,7 @@ void Savegame::save() {
   }
 
   const std::string& text = oss.str();
-  FileTools::data_file_save_buffer(file_name, text.c_str(), text.size());
+  FileTools::data_file_save_buffer(prefixed_file_name, text.c_str(), text.size());
   empty = false;
 }
 

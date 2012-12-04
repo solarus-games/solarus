@@ -23,6 +23,9 @@
 #include <physfs.h>
 #include <lua.hpp>
 
+std::string FileTools::solarus_write_dir;
+std::string FileTools::quest_write_dir;
+
 std::string FileTools::language_code;
 std::string FileTools::default_language_code;
 std::map<std::string, std::string> FileTools::languages;
@@ -62,17 +65,8 @@ void FileTools::initialize(int argc, char** argv) {
         << argv[0] << " path/to/quest");
   }
 
-  // Set the write directory to "$HOME/SOLARUS_WRITE_DIR".
-  if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
-     Debug::die(StringConcat() << "Cannot write in user directory:" << PHYSFS_getLastError());
-  }
-  const std::string& write_dir = (std::string) PHYSFS_getUserDir() + SOLARUS_WRITE_DIR;
-  PHYSFS_mkdir(write_dir.c_str());
-  if (!PHYSFS_setWriteDir(write_dir.c_str())) {
-    Debug::die(StringConcat() << "Cannot set write dir '" << write_dir << "': " << PHYSFS_getLastError());
-  }
-  // Directory for writing files (savegames and other files created by scripts).
-  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);
+  // Set the engine root write directory.
+  set_solarus_write_dir(SOLARUS_WRITE_DIR);
 
   // Load the list of languages.
   initialize_languages();
@@ -380,5 +374,84 @@ void FileTools::read(std::istream& is, std::string& value) {
   if (!(is >> value)) {
     Debug::die("Cannot read string from input stream");
   }
+}
+
+/**
+ * @brief Returns the directory where the engine can write files.
+ * @returns The directory where the engine can write files, relative to the user's home.
+ */
+const std::string& FileTools::get_solarus_write_dir() {
+  return solarus_write_dir;
+}
+
+/**
+ * @brief Sets the directory where the engine can write files.
+ *
+ * Initially, this directory is set to the preprocessor constant
+ * SOLARUS_WRITE_DIR (by default ".solarus").
+ * You normally don't need to change this, it should have been set correctly
+ * at compilation time to a value that depends on the target system.
+ *
+ * @returns The directory where the engine can write files, relative to the user's home.
+ */
+void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
+
+  FileTools::solarus_write_dir = solarus_write_dir;
+
+  // First check that we can write in the user's home.
+  if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
+     Debug::die(StringConcat() << "Cannot write in user directory:" << PHYSFS_getLastError());
+  }
+
+  // Create the directory.
+  const std::string full_solarus_write_dir(std::string(PHYSFS_getUserDir()) + "/" + solarus_write_dir);
+  PHYSFS_mkdir(full_solarus_write_dir.c_str());
+  if (!PHYSFS_setWriteDir(full_solarus_write_dir.c_str())) {
+    Debug::die(StringConcat() << "Cannot set the quest write directory to '" << solarus_write_dir << "': " << PHYSFS_getLastError());
+  }
+
+  // The quest subdirectory may be new, create it if needed.
+  if (!quest_write_dir.empty()) {
+    set_quest_write_dir(quest_write_dir);
+  }
+
+  // We will also read savegames and configuration files from there.
+  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);
+}
+
+/**
+ * @brief Returns the subdirectory where files specific to the quest are
+ * saved, like savegames and configuration files.
+ * @return The quest write directory, relative to the Solarus write directory,
+ * or an empty string if it has not been set yet.
+ */
+const std::string& FileTools::get_quest_write_dir() {
+  return quest_write_dir;
+}
+
+/**
+ * @brief Sets the subdirectory where files specific to the quest are
+ * saved, like savegames and configuration files.
+ *
+ * You have to call this function before loading or saving savegames and
+ * configuration files.
+ * This directory should typically be named like your quest, to be sure other
+ * quests will not interfere.
+ *
+ * @return The quest write directory, relative to the Solarus write directory.
+ */
+void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
+
+  FileTools::quest_write_dir = quest_write_dir;
+
+  // Create this subdirectory in the Solarus write directory.
+  PHYSFS_mkdir(get_full_quest_write_dir().c_str());
+}
+
+/**
+ * @brief Returns the absolute path of the quest write directory.
+ */
+const std::string FileTools::get_full_quest_write_dir() {
+  return std::string(PHYSFS_getUserDir()) + "/" + get_solarus_write_dir() + "/" + get_quest_write_dir();
 }
 

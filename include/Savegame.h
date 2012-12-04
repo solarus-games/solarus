@@ -124,7 +124,8 @@ class Savegame: public ExportableToLua {
     std::map<std::string, SavedValue> saved_values;
 
     bool empty;
-    std::string file_name;
+    std::string file_name;           /**< Savegame file name relative to the quest write directory. */
+    std::string prefixed_file_name;  /**< Savegame file name relative to the engine write directory. */
     MainLoop& main_loop;
     Equipment equipment;
     Game* game;             /**< NULL if this savegame is not currently running */

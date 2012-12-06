@@ -98,10 +98,7 @@ VideoManager::VideoManager(bool disable_window):
   screen_surface(NULL) {
 
   // initialize the window
-  IniFile ini("quest.dat", IniFile::READ);
-  ini.set_group("info");
-  std::string title_bar = ini.get_string_value("title_bar"); // get the window title bar text (language-independent)
-  SDL_WM_SetCaption(title_bar.c_str(), NULL);
+  SDL_WM_SetCaption("Solarus", NULL);
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 
@@ -130,7 +127,7 @@ VideoManager::VideoManager(bool disable_window):
      }
      */
 
-  set_initial_video_mode();
+  set_default_video_mode();
 }
 
 /**
@@ -229,30 +226,6 @@ void VideoManager::switch_video_mode() {
 }
 
 /**
- * @brief Sets the initial video mode.
- *
- * The initial video mode is read from the configuration file if existing.
- * Otherwise, the default video mode is chosen.
- */
-void VideoManager::set_initial_video_mode() {
-
-  int value = Configuration::get_value("video_mode", -1);
-
-  if (value < 0 || value >= NB_MODES) {
-    set_default_video_mode();
-  }
-  else {
-    VideoMode mode = VideoMode(value);
-    if (!is_mode_supported(mode)) {
-      set_default_video_mode();
-    }
-    else {
-      set_video_mode(mode);
-    }
-  }
-}
-
-/**
  * @brief Sets the default video mode.
  */
 void VideoManager::set_default_video_mode() {
@@ -310,9 +283,6 @@ void VideoManager::set_video_mode(VideoMode mode) {
     this->screen_surface = new Surface(screen_internal_surface);
   }
   this->video_mode = mode;
-
-  // Write the configuration file.
-  Configuration::set_value("video_mode", mode);
 }
 
 /**
@@ -483,5 +453,26 @@ void VideoManager::blit_scale2x(Surface& src_surface, Surface& dst_surface) {
 
   SDL_UnlockSurface(dst_internal_surface);
   SDL_UnlockSurface(src_internal_surface);
+}
+
+/**
+ * @brief Returns the current text of the window title bar.
+ * @return The window title.
+ */
+const std::string VideoManager::get_window_title() {
+
+  char* window_title;
+  char* icon;
+  SDL_WM_GetCaption(&window_title, &icon);
+  return window_title;
+}
+
+/**
+ * @brief Sets the text of the window title bar.
+ * @param window_title The window title to set.
+ */
+void VideoManager::set_window_title(const std::string& window_title) {
+
+  SDL_WM_SetCaption(window_title.c_str(), NULL);
 }
 

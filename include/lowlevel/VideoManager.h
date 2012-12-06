@@ -83,7 +83,6 @@ class VideoManager {
   VideoMode get_video_mode();
   void set_video_mode(VideoMode mode);
   void switch_video_mode();
-  void set_initial_video_mode();
   void set_default_video_mode();
   bool is_mode_supported(VideoMode mode);
   const std::list<VideoMode> get_video_modes();
@@ -92,6 +91,9 @@ class VideoManager {
   bool is_fullscreen();
   void set_fullscreen(bool fullscreen);
   void switch_fullscreen();
+
+  const std::string get_window_title();
+  void set_window_title(const std::string& window_title);
 
   void draw(Surface& src_surface);
 };

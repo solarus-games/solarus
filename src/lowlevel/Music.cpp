@@ -91,8 +91,7 @@ void Music::initialize() {
   spc_decoder = new SpcDecoder();
   it_decoder = new ItDecoder();
 
-  // get the music volume from the configuration file
-  set_volume(Configuration::get_value("music_volume", 100));
+  set_volume(100);
 }
 
 /**

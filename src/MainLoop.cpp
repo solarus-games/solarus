@@ -23,6 +23,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lua/LuaContext.h"
+#include "QuestProperties.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "StringResource.h"
@@ -43,6 +44,11 @@ MainLoop::MainLoop(int argc, char** argv):
 
   // Initialize low-level features (audio, video, files...).
   System::initialize(argc, argv);
+
+  // Read the quest general properties.
+  QuestProperties quest_properties(*this);
+  quest_properties.load();
+
   root_surface = new Surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT);
   root_surface->increment_refcount();
   debug_keys = new DebugKeys(*this);

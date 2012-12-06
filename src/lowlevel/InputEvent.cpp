@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/InputEvent.h"
-#include "Configuration.h"
 
 const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
     KEY_RIGHT,
@@ -37,7 +36,7 @@ void InputEvent::initialize() {
   SDL_EnableKeyRepeat(0, 0);
 
   // initialize the joypad
-  if (SDL_NumJoysticks() > 0 && Configuration::get_value("enable_joystick", 1) == 1) {
+  if (SDL_NumJoysticks() > 0) {
     joystick = SDL_JoystickOpen(0);
   }
   else {

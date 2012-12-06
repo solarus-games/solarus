@@ -24,7 +24,6 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "Configuration.h"
 
 ALCdevice* Sound::device = NULL;
 ALCcontext* Sound::context = NULL;
@@ -118,9 +117,7 @@ void Sound::initialize(int argc, char** argv) {
   alGenBuffers(0, NULL);  // Necessary on some systems to avoid errors with the first sound loaded.
 
   initialized = true;
-
-  // get the sound effects volume from the configuration file
-  set_volume(Configuration::get_value("sound_volume", 100));
+  set_volume(100);
 
   // initialize the music system
   Music::initialize();
@@ -243,7 +240,6 @@ void Sound::set_volume(int volume) {
   Debug::check_assertion(volume >= 0 && volume <= 100,
       StringConcat() << "Illegal volume for sound effects:" << volume);
 
-  Configuration::set_value("sound_volume", volume);
   Sound::volume = volume / 100.0;
 }
 

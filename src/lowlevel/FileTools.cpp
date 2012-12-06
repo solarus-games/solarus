@@ -17,7 +17,6 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "Configuration.h"
 #include "StringResource.h"
 #include "DialogResource.h"
 #include <physfs.h>
@@ -59,7 +58,7 @@ void FileTools::initialize(int argc, char** argv) {
   PHYSFS_addToSearchPath(archive_quest_path.c_str(), 1); // data.solarus archive
 
   // Check the existence of a quest at this location.
-  if (!FileTools::data_file_exists("main.lua")) {
+  if (!FileTools::data_file_exists("quest.lua")) {
     Debug::die(StringConcat() << "No quest was found in the directory '" << quest_path
         << "'. To specify your quest's path, run: "
         << argv[0] << " path/to/quest");
@@ -172,7 +171,6 @@ void FileTools::set_language(const std::string& language_code) {
   Debug::check_assertion(languages.count(language_code) > 0,
       StringConcat() << "Unknown language '" << language_code << "'");
   FileTools::language_code = language_code;
-  Configuration::set_value("language", language_code);
   StringResource::initialize();
   DialogResource::initialize();
 }

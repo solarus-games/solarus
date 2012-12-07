@@ -287,6 +287,8 @@ class LuaContext {
       main_api_is_debug_enabled,
       main_api_get_quest_write_dir,
       main_api_set_quest_write_dir,
+      main_api_load_settings,
+      main_api_save_settings,
       main_api_get_distance,  // TODO remove?
       main_api_get_angle,     // TODO remove?
 

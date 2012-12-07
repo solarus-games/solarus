@@ -18,7 +18,7 @@
 #include "lowlevel/Geometry.h"
 #include "lowlevel/FileTools.h"
 #include "MainLoop.h"
-#include "Timer.h"
+#include "Settings.h"
 #include <lua.hpp>
 #include <sstream>
 #include <cmath>
@@ -38,6 +38,8 @@ void LuaContext::register_main_module() {
       { "is_debug_enabled", main_api_is_debug_enabled },
       { "get_quest_write_dir", main_api_get_quest_write_dir },
       { "set_quest_write_dir", main_api_set_quest_write_dir },
+      { "load_settings", main_api_load_settings },
+      { "save_settings", main_api_save_settings },
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
       { NULL, NULL }
@@ -155,6 +157,36 @@ int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
   FileTools::set_quest_write_dir(quest_write_dir);
 
   return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_main_load_settings.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::main_api_load_settings(lua_State* l) {
+
+  std::string file_name = luaL_optstring(l, 1, "settings.lua");
+
+  bool success = Settings::load(file_name);
+
+  lua_pushboolean(l, success);
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_main_save_settings.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::main_api_save_settings(lua_State* l) {
+
+  std::string file_name = luaL_optstring(l, 1, "settings.lua");
+
+  bool success = Settings::save(file_name);
+
+  lua_pushboolean(l, success);
+  return 1;
 }
 
 /**

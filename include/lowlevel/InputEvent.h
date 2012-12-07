@@ -180,10 +180,10 @@ class InputEvent {
   private:
 
     static const KeyboardKey directional_keys[];  /**< array of the keyboard directional keys */
-    static SDL_Joystick *joystick;                 /**< the joystick object */
-    SDL_Event internal_event;                       /**< the internal event encapsulated */
+    static SDL_Joystick *joystick;                /**< the joystick object if enabled */
+    SDL_Event internal_event;                     /**< the internal event encapsulated */
     static std::map<KeyboardKey, std::string>
-      keyboard_key_names;                             /**< Names of all existing keyboard keys. */
+      keyboard_key_names;                         /**< Names of all existing keyboard keys. */
 
   public:
 
@@ -237,6 +237,9 @@ class InputEvent {
     const std::string get_character();
 
     // joypad
+    static bool is_joypad_enabled();
+    static void set_joypad_enabled(bool joypad_enabled);
+
     bool is_joypad_button_pressed();
     bool is_joypad_button_released();
     int get_joypad_button();

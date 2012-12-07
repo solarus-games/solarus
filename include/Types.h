@@ -32,7 +32,8 @@
 // main classes
 class MainLoop;
 class Screen;
-class Configuration;
+class QuestProperties;
+class Settings;
 class KeysEffect;
 
 // low level

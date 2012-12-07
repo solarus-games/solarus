@@ -23,7 +23,7 @@ const InputEvent::KeyboardKey InputEvent::directional_keys[] = {
     KEY_DOWN,
     KEY_NONE
 };
-SDL_Joystick* InputEvent::joystick;
+SDL_Joystick* InputEvent::joystick = NULL;
 std::map<InputEvent::KeyboardKey, std::string> InputEvent::keyboard_key_names;
 
 /**
@@ -36,14 +36,7 @@ void InputEvent::initialize() {
   SDL_EnableKeyRepeat(0, 0);
 
   // initialize the joypad
-  if (SDL_NumJoysticks() > 0) {
-    joystick = SDL_JoystickOpen(0);
-  }
-  else {
-    joystick = NULL;
-    SDL_JoystickEventState(SDL_IGNORE);
-    SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
-  }
+  set_joypad_enabled(true);
 
   // Initialize the map of keyboard key names.
   keyboard_key_names[InputEvent::KEY_BACKSPACE]             = "backspace";
@@ -553,6 +546,36 @@ const std::string InputEvent::get_character() {
 }
 
 // joypad
+
+/**
+ * @brief Returns whether the joypad support is enabled.
+ * @return true if the joypad is enabled.
+ */
+bool InputEvent::is_joypad_enabled() {
+
+  return joystick != NULL;
+}
+
+/**
+ * @brief Enables or disables the joypad support.
+ * @param joypad_enabled true to enable the joypad, false to disable.
+ */
+void InputEvent::set_joypad_enabled(bool joypad_enabled) {
+
+  if (joypad_enabled != is_joypad_enabled()) {
+
+    if (joypad_enabled && SDL_NumJoysticks() > 0) {
+      SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+      joystick = SDL_JoystickOpen(0);
+    }
+    else {
+      SDL_JoystickClose(joystick);
+      joystick = NULL;
+      SDL_JoystickEventState(SDL_IGNORE);
+      SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
+    }
+  }
+}
 
 /**
  * @brief Returns whether this event is a joypad event

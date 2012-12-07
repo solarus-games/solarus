@@ -21,7 +21,6 @@
 #include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "Configuration.h"
 
 VideoManager *VideoManager::instance = NULL;
 
@@ -52,6 +51,20 @@ const int VideoManager::surface_flags = SDL_SWSURFACE;
 #else
 const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
 #endif
+
+/**
+ * @brief Lua name of each value of the VideoMode enum.
+ */
+const char* VideoManager::video_mode_names[] = {
+  "windowed_stretched",
+  "windowed_scale2x",
+  "windowed_normal",
+  "fullscreen_normal",
+  "fullscreen_wide",
+  "fullscreen_scale2x",
+  "fullscreen_scale2x_wide",
+  NULL
+};
 
 /**
  * @brief Initializes the video system and creates the window.

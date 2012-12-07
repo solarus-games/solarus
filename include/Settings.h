@@ -15,31 +15,23 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SOLARUS_CONFIGURATION_H
-#define SOLARUS_CONFIGURATION_H
+#ifndef SOLARUS_SETTINGS_H
+#define SOLARUS_SETTINGS_H
 
 #include "Common.h"
 #include <string>
 
 /**
- * @brief Stores the global configuration of the program.
+ * @brief Loads and saves the built-in settings of the quest.
  *
- * This class loads and saves the global configuration of the program, such as the language,
- * the screen resolution and the audio volume.
+ * The settings include the language, the video mode and the audio volume.
  */
-class Configuration {
-
-  private:
-
-    static const std::string group_name;    /**< name of the configuration group in the file */
+class Settings {
 
   public:
 
-    static const std::string get_file_name();
-    static const std::string get_value(const std::string& key, const std::string& default_value);
-    static int get_value(const std::string& key, int default_value);
-    static void set_value(const std::string& key, const std::string& value);
-    static void set_value(const std::string& key, int value);
+    static bool load(const std::string& file_name);
+    static bool save(const std::string& file_name);
 };
 
 #endif

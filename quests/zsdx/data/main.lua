@@ -5,11 +5,19 @@ local console = sol.main.load_file("console")()
 -- Event called when the program starts.
 function sol.main:on_started()
 
+  -- Load built-in settings (audio volume, video mode, etc.).
+  sol.main.load_settings()
+
   -- Just need this here, no need to require globally.
   local language_menu = require("screens/language")
 
   -- Show the language menu initially.
   sol.main:start_menu(language_menu:new())
+end
+
+function sol.main:on_finished()
+
+  sol.main.save_settings()
 end
 
 function sol.main:debug_on_key_pressed(key, modifiers)
@@ -30,7 +38,7 @@ function sol.main:debug_on_key_pressed(key, modifiers)
       hero = game:get_map():get_entity("hero")
     end
 
-    -- In-game cheat keys.
+    -- In-game cheating keys.
     if key == "p" then
       game:add_life(12)
     elseif key == "m" then

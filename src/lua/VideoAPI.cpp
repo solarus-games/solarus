@@ -21,20 +21,6 @@
 const std::string LuaContext::video_module_name = "sol.video";
 
 /**
- * @brief Lua name of each value of the VideoManager::VideoMode enum.
- */
-static const char* video_mode_names[] = {
-  "windowed_stretched",
-  "windowed_scale2x",
-  "windowed_normal",
-  "fullscreen_normal",
-  "fullscreen_wide",
-  "fullscreen_scale2x",
-  "fullscreen_scale2x_wide",
-  NULL
-};
-
-/**
  * @brief Initializes the video features provided to Lua.
  */
 void LuaContext::register_video_module() {
@@ -91,7 +77,7 @@ int LuaContext::video_api_get_mode(lua_State *l) {
   VideoManager::VideoMode mode =
     VideoManager::get_instance()->get_video_mode();
 
-  lua_pushstring(l, video_mode_names[mode]);
+  lua_pushstring(l, VideoManager::video_mode_names[mode]);
   return 1;
 }
 
@@ -102,7 +88,7 @@ int LuaContext::video_api_get_mode(lua_State *l) {
  */
 int LuaContext::video_api_set_mode(lua_State *l) {
 
-  int mode = luaL_checkoption(l, 1, NULL, video_mode_names);
+  int mode = luaL_checkoption(l, 1, NULL, VideoManager::video_mode_names);
 
   if (VideoManager::get_instance()->get_video_mode() != mode) {
     VideoManager::get_instance()->set_video_mode(
@@ -140,7 +126,7 @@ int LuaContext::video_api_get_modes(lua_State* l) {
   int i = 1;
   for (it = modes.begin(); it != modes.end(); it++) {
     VideoManager::VideoMode mode = *it;
-    lua_pushstring(l, video_mode_names[mode]);
+    lua_pushstring(l, VideoManager::video_mode_names[mode]);
     lua_rawseti(l, -2, i);
     ++i;
   }
@@ -155,7 +141,7 @@ int LuaContext::video_api_get_modes(lua_State* l) {
  */
 int LuaContext::video_api_is_mode_supported(lua_State *l) {
 
-  int mode = luaL_checkoption(l, 1, NULL, video_mode_names);
+  int mode = luaL_checkoption(l, 1, NULL, VideoManager::video_mode_names);
 
   bool supported = VideoManager::get_instance()->is_mode_supported(
       VideoManager::VideoMode(mode));

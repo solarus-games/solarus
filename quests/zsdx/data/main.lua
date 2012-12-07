@@ -5,10 +5,6 @@ local console = sol.main.load_file("console")()
 -- Event called when the program starts.
 function sol.main:on_started()
 
-  -- Initializations.
-  sol.main.set_title_bar("Zelda Mystery of Solarus DX")
-  sol.main.set_quest_write_dir("zsdx")
-
   -- Just need this here, no need to require globally.
   local language_menu = require("screens/language")
 

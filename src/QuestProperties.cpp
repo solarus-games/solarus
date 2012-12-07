@@ -49,7 +49,7 @@ void QuestProperties::load() {
   lua_State* l = lua_open();
   size_t size;
   char* buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size, true);
+  FileTools::data_file_open_buffer(file_name, &buffer, &size);
   luaL_loadbuffer(l, buffer, size, file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
 
@@ -65,7 +65,7 @@ void QuestProperties::load() {
 
 int QuestProperties::l_quest(lua_State* l) {
 
-  // Retrieve the map properties from the table parameter.
+  // Retrieve the quest properties from the table parameter.
   luaL_checktype(l, 1, LUA_TTABLE);
   const std::string& quest_write_dir = LuaContext::check_string_field(l, 1, "write_dir");
   const std::string& title_bar = LuaContext::check_string_field(l, 1, "title_bar");

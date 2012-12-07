@@ -20,7 +20,6 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "Configuration.h"
 
 const int Music::nb_buffers;
 SpcDecoder* Music::spc_decoder = NULL;
@@ -131,7 +130,6 @@ void Music::set_volume(int volume) {
   Debug::check_assertion(volume >= 0 && volume <= 100,
       StringConcat() << "Illegal volume for music:" << volume);
 
-  Configuration::set_value("music_volume", volume);
   Music::volume = volume / 100.0;
 
   if (current_music != NULL) {

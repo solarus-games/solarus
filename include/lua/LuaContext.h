@@ -285,6 +285,8 @@ class LuaContext {
       main_api_reset,
       main_api_exit,
       main_api_is_debug_enabled,
+      main_api_get_quest_write_dir,
+      main_api_set_quest_write_dir,
       main_api_get_distance,  // TODO remove?
       main_api_get_angle,     // TODO remove?
 
@@ -299,6 +301,8 @@ class LuaContext {
       audio_api_set_music_volume,
 
       // Video API.
+      video_api_get_window_title,
+      video_api_set_window_title,
       video_api_get_mode,
       video_api_set_mode,
       video_api_switch_mode,

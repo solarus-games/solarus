@@ -40,6 +40,8 @@ static const char* video_mode_names[] = {
 void LuaContext::register_video_module() {
 
   static const luaL_Reg functions[] = {
+      { "get_window_title", video_api_get_window_title },
+      { "set_window_title", video_api_set_window_title },
       { "get_mode", video_api_get_mode },
       { "set_mode", video_api_set_mode },
       { "switch_mode", video_api_switch_mode },
@@ -50,6 +52,33 @@ void LuaContext::register_video_module() {
       { NULL, NULL }
   };
   register_functions(video_module_name, functions);
+}
+
+/**
+ * @brief Implementation of \ref lua_api_video_get_window_title.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::video_api_get_window_title(lua_State *l) {
+
+  const std::string& window_title =
+    VideoManager::get_instance()->get_window_title();
+
+  push_string(l, window_title);
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_video_set_window_title.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::video_api_set_window_title(lua_State *l) {
+
+  const std::string& window_title = luaL_checkstring(l, 1);
+
+  VideoManager::get_instance()->set_window_title(window_title);
+  return 1;
 }
 
 /**

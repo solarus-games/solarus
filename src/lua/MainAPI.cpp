@@ -16,6 +16,7 @@
  */
 #include "lua/LuaContext.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/FileTools.h"
 #include "MainLoop.h"
 #include "Timer.h"
 #include <lua.hpp>
@@ -35,6 +36,8 @@ void LuaContext::register_main_module() {
       { "reset", main_api_reset },
       { "exit", main_api_exit },
       { "is_debug_enabled", main_api_is_debug_enabled },
+      { "get_quest_write_dir", main_api_get_quest_write_dir },
+      { "set_quest_write_dir", main_api_set_quest_write_dir },
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
       { NULL, NULL }
@@ -130,11 +133,36 @@ int LuaContext::main_api_is_debug_enabled(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_main_get_quest_write_dir.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::main_api_get_quest_write_dir(lua_State* l) {
+
+  push_string(l, FileTools::get_quest_write_dir());
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_main_set_quest_write_dir.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
+
+  const std::string& quest_write_dir = luaL_checkstring(l, 1);
+
+  FileTools::set_quest_write_dir(quest_write_dir);
+
+  return 0;
+}
+
+/**
  * @brief Implementation of \ref lua_api_main_get_distance.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::main_api_get_distance(lua_State *l) {
+int LuaContext::main_api_get_distance(lua_State* l) {
 
   int x1 = luaL_checkinteger(l, 1);
   int y1 = luaL_checkinteger(l, 2);
@@ -142,8 +170,8 @@ int LuaContext::main_api_get_distance(lua_State *l) {
   int y2 = luaL_checkinteger(l, 4);
 
   int distance = (int) Geometry::get_distance(x1, y1, x2, y2);
-  lua_pushinteger(l, distance);
 
+  lua_pushinteger(l, distance);
   return 1;
 }
 
@@ -152,7 +180,7 @@ int LuaContext::main_api_get_distance(lua_State *l) {
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::main_api_get_angle(lua_State *l) {
+int LuaContext::main_api_get_angle(lua_State* l) {
 
   int x1 = luaL_checkinteger(l, 1);
   int y1 = luaL_checkinteger(l, 2);
@@ -160,8 +188,8 @@ int LuaContext::main_api_get_angle(lua_State *l) {
   int y2 = luaL_checkinteger(l, 4);
 
   double angle = Geometry::get_angle(x1, y1, x2, y2);
-  lua_pushnumber(l, angle);
 
+  lua_pushnumber(l, angle);
   return 1;
 }
 

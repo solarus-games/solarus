@@ -118,7 +118,8 @@ int LuaContext::game_api_exists(lua_State* l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 
-  bool exists = FileTools::data_file_exists(file_name);
+  bool exists = FileTools::data_file_exists(
+      FileTools::get_quest_write_dir() + "/" + file_name);
 
   lua_pushboolean(l, exists);
   return 1;
@@ -133,7 +134,8 @@ int LuaContext::game_api_delete(lua_State* l) {
 
   const std::string& file_name = luaL_checkstring(l, 1);
 
-  FileTools::data_file_delete(file_name);
+  FileTools::data_file_delete(
+      FileTools::get_quest_write_dir() + "/" + file_name);
 
   return 0;
 }

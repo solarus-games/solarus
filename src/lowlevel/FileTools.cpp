@@ -219,9 +219,11 @@ const std::map<std::string, std::string>& FileTools::get_languages() {
 }
 
 /**
- * @brief Returns whether a file exists in the search path.
- * @param file_name a file name relative to a directory from the search path
- * @return true if this file exists
+ * @brief Returns whether a file exists in the quest data directory or
+ * in Solarus write directory.
+ * @param file_name a file name relative to the quest data directory
+ * or to Solarus write directory.
+ * @return true if this file exists.
  */
 bool FileTools::data_file_exists(const std::string& file_name) {
   return PHYSFS_exists(file_name.c_str());
@@ -297,9 +299,9 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
 
 /**
  * @brief Saves a buffer into a data file.
- * @param file_name name of the file to write
- * @param buffer the buffer to save
- * @param size number of bytes to write
+ * @param file_name Name of the file to write, relative to Solarus write directory.
+ * @param buffer The buffer to save.
+ * @param size Number of bytes to write.
  *
  */
 void FileTools::data_file_save_buffer(const std::string& file_name,
@@ -330,7 +332,8 @@ void FileTools::data_file_close_buffer(char* buffer) {
  
 /**
  * @brief Removes a file from the write directory.
- * @param file_name name of the file to delete
+ * @param file_name Name of the file to delete, relative to the Solarus
+ * write directory.
  */
 void FileTools::data_file_delete(const std::string& file_name) {
 
@@ -399,22 +402,24 @@ const std::string& FileTools::get_solarus_write_dir() {
  * You normally don't need to change this, it should have been set correctly
  * at compilation time to a value that depends on the target system.
  *
- * @returns The directory where the engine can write files, relative to the user's home.
+ * @returns The directory where the engine can write files, relative to the user's directory.
  */
 void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
   FileTools::solarus_write_dir = solarus_write_dir;
 
-  // First check that we can write in the user's home.
+  // First check that we can write in a directory.
   if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
-     Debug::die(StringConcat() << "Cannot write in user directory:" << PHYSFS_getLastError());
+     Debug::die(StringConcat() << "Cannot write in user directory '"
+         << PHYSFS_getUserDir() << "': " << PHYSFS_getLastError());
   }
 
   // Create the directory.
-  const std::string full_solarus_write_dir(std::string(PHYSFS_getUserDir()) + "/" + solarus_write_dir);
-  PHYSFS_mkdir(full_solarus_write_dir.c_str());
+  PHYSFS_mkdir(solarus_write_dir.c_str());
+  const std::string& full_solarus_write_dir = PHYSFS_getUserDir() + solarus_write_dir;
   if (!PHYSFS_setWriteDir(full_solarus_write_dir.c_str())) {
-    Debug::die(StringConcat() << "Cannot set the quest write directory to '" << solarus_write_dir << "': " << PHYSFS_getLastError());
+    Debug::die(StringConcat() << "Cannot set Solarus write directory to '"
+        << solarus_write_dir << "': " << PHYSFS_getLastError());
   }
 
   // The quest subdirectory may be new, create it if needed.
@@ -452,7 +457,7 @@ void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
   FileTools::quest_write_dir = quest_write_dir;
 
   // Create this subdirectory in the Solarus write directory.
-  PHYSFS_mkdir(get_full_quest_write_dir().c_str());
+  PHYSFS_mkdir(quest_write_dir.c_str());
 }
 
 /**

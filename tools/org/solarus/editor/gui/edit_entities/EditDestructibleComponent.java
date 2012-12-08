@@ -44,7 +44,7 @@ public class EditDestructibleComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
         // treasure
-        treasureField = new TreasureChooser(true, true);
+        treasureField = new TreasureChooser(true);
         addField("Treasure", treasureField);
     }
 

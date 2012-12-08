@@ -56,14 +56,12 @@ public class ShopItem extends MapEntity {
 
         String treasureName = getProperty("treasure_name");
         if (treasureName == null
-                || treasureName.equals(Item.noneId)
-                || treasureName.equals(Item.randomId)) {
+                || treasureName.equals(Item.noneId)) {
             throw new MapException("The treasure of a shop item cannot be empty or random");
         }
 
         Integer variant = getIntegerProperty("treasure_variant");
         if (!treasureName.equals(Item.noneId)
-                && !treasureName.equals(Item.randomId)
                 && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
         }

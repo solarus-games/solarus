@@ -44,7 +44,7 @@ public class EditPickableComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
         // treasure
-        treasureField = new TreasureChooser(false, false);
+        treasureField = new TreasureChooser(false);
         addField("Treasure", treasureField);
     }
 

@@ -58,12 +58,6 @@ public class Chest extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        boolean bigChest = isBigChest();
-
-        if (bigChest && !getMap().isInDungeon()) {
-                throw new MapException("Cannot have a big chest outside a dungeon");
-        }
-
         String treasureName = getProperty("treasure_name");
         if (treasureName == null) {
             throw new MapException("A treasure must be specified");
@@ -71,7 +65,6 @@ public class Chest extends MapEntity {
 
         Integer variant = getIntegerProperty("treasure_variant");
         if (!treasureName.equals(Item.noneId)
-                && !treasureName.equals(Item.randomId)
                 && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
         }

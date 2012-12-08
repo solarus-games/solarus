@@ -151,7 +151,7 @@ public class Destructible extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setProperty("treasure_name", Item.randomId);
+        setProperty("treasure_name", Item.noneId);
         setIntegerProperty("treasure_variant", null);
         setIntegerProperty("treasure_savegame_variable", null);
     }
@@ -174,7 +174,6 @@ public class Destructible extends MapEntity {
         Integer variant = getIntegerProperty("treasure_variant");
         if (treasureName != null
                 && !treasureName.equals(Item.noneId)
-                && !treasureName.equals(Item.randomId)
                 && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
         }

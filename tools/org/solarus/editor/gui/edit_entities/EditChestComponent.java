@@ -49,7 +49,7 @@ public class EditChestComponent extends EditEntityComponent {
         addField("Chest type", sizeField);
 
         // treasure
-        treasureField = new TreasureChooser(true, false);
+        treasureField = new TreasureChooser(true);
         addField("Treasure", treasureField);
     }
 

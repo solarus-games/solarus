@@ -47,7 +47,7 @@ public class EditShopItemComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
         // treasure content
-        treasureField = new TreasureChooser(true, false);
+        treasureField = new TreasureChooser(true);
         addField("Treasure", treasureField);
 
         // price

@@ -1,7 +1,5 @@
 package org.solarus.editor;
 
-import java.util.StringTokenizer;
-
 /**
  * Represents a treasure that the player may receive.
  * A treasure may come from a chest, a shop item, an enemy, a destructible item,
@@ -46,13 +44,13 @@ public class Treasure {
 
     /**
      * Sets the id of the item to give.
-     * @param itemName The name to set (possibly "_none" or "_random")
+     * @param itemName The name to set (possibly "_none")
      * or null for unspecified.
      */
     public void setItemName(String itemName) {
         this.itemName = itemName;
 
-        if (itemName.equals(Item.noneId) || itemName.equals(Item.randomId)) {
+        if (itemName.equals(Item.noneId)) {
             variant = null;
         }
         else if (variant == null) {

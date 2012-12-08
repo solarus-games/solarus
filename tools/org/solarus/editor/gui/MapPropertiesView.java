@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+
 import java.util.*;
 import org.solarus.editor.*;
 import org.solarus.editor.Map;
@@ -40,12 +41,10 @@ public class MapPropertiesView extends JPanel implements Observer {
     private NameField nameField;
     private SizeField sizeField;
     private WorldField worldField;
-    private JLabel floorLabel;
+    private EnableFloorField enableFloorField;
     private FloorField floorField;
     private JLabel locationLabel;
     private LocationField locationField;
-    private EnableSmallKeysField enableSmallKeysField;
-    private SmallKeysVariableField smallKeysVariableField;
     private TilesetField tilesetField;
     private MusicField musicField;
 
@@ -104,14 +103,14 @@ public class MapPropertiesView extends JPanel implements Observer {
         add(worldField, rightConstraints);
 
         // floor
-        leftConstraints.gridy++;
-        floorLabel = new JLabel("Floor");
-        add(floorLabel, leftConstraints);
-        rightConstraints.gridy++;
-        rightConstraints.fill = GridBagConstraints.HORIZONTAL;
         floorField = new FloorField();
+        enableFloorField = new EnableFloorField();
+        leftConstraints.gridy++;
+        add(enableFloorField, leftConstraints);
+        rightConstraints.gridy++;
+        rightConstraints.fill = GridBagConstraints.NONE;
         add(floorField, rightConstraints);
-
+        
         // location
         leftConstraints.gridy++;
         locationLabel = new JLabel("Location in its world");
@@ -120,15 +119,6 @@ public class MapPropertiesView extends JPanel implements Observer {
         rightConstraints.fill = GridBagConstraints.NONE;
         locationField = new LocationField();
         add(locationField, rightConstraints);
-
-        // small keys variable
-        smallKeysVariableField = new SmallKeysVariableField();
-        enableSmallKeysField = new EnableSmallKeysField();
-        leftConstraints.gridy++;
-        add(enableSmallKeysField, leftConstraints);
-        rightConstraints.gridy++;
-        rightConstraints.fill = GridBagConstraints.NONE;
-        add(smallKeysVariableField, rightConstraints);
 
         // tileset
         leftConstraints.gridy++;
@@ -193,10 +183,9 @@ public class MapPropertiesView extends JPanel implements Observer {
         nameField.update(map);
         worldField.update(map);
         sizeField.update(map);
+        enableFloorField.update(map);
         floorField.update(map);
         locationField.update(map);
-        enableSmallKeysField.update(map);
-        smallKeysVariableField.update(map);
         tilesetField.update(map);
         musicField.update(map);
     }
@@ -320,7 +309,7 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to choose the world where this map is.
      */
-    private class WorldField extends JComboBox<KeyValue> implements ActionListener {
+    private class WorldField extends JTextField implements DocumentListener {
 
         /**
          * Constructor.
@@ -328,13 +317,7 @@ public class MapPropertiesView extends JPanel implements Observer {
         public WorldField() {
             super();
 
-            addItem(new KeyValue(-1, "Inside world"));
-            addItem(new KeyValue(0, "Outside world"));
-            for (int i = 1; i <= 20; i++) {
-                addItem(new KeyValue(i, "Dungeon " + i));
-            }
-
-            addActionListener(this);
+            getDocument().addDocumentListener(this);
             update((Map) null);
         }
 
@@ -346,11 +329,10 @@ public class MapPropertiesView extends JPanel implements Observer {
 
             if (map != null) {
 
-                int currentWorld = map.getWorld();
-                int selectedWorld = getSelectedWorld();
+                String currentWorld = map.getWorld();
 
-                if (selectedWorld != currentWorld) {
-                    setSelectedWorld(currentWorld);
+                if (!currentWorld.equals(getText())) {
+                    setText(currentWorld);
                 }
                 setEnabled(true);
             }
@@ -360,37 +342,17 @@ public class MapPropertiesView extends JPanel implements Observer {
         }
 
         /**
-         * Returns the world currently selected.
-         * @return the world currently selected
+         * This method is called when the user changes the text.
          */
-        public int getSelectedWorld() {
-            KeyValue item = (KeyValue) getSelectedItem();
-            return Integer.parseInt(item.getKey());
-        }
-
-        /**
-         * Selects a world in the combo box.
-         * @param world the world to make selected
-         */
-        public void setSelectedWorld(int world) {
-            KeyValue item = new KeyValue(world, null);
-            setSelectedItem(item);
-        }
-
-        /**
-         * This method is called when the user changes the selected item.
-         * The tileset of the map is changed.
-         */
-        public void actionPerformed(ActionEvent ev) {
+        private void textChanged() {
 
             if (map == null) {
                 return;
             }
 
-            final int selectedWorld = getSelectedWorld();
-            final int currentWorld = map.getWorld();
+            final String currentWorld = map.getWorld();
 
-            if (currentWorld != selectedWorld) {
+            if (currentWorld != getText()) {
 
                 try {
                     map.getHistory().doAction(new MapEditorAction() {
@@ -398,7 +360,7 @@ public class MapPropertiesView extends JPanel implements Observer {
                         private final Map map = MapPropertiesView.this.map;
 
                         public void execute() throws MapException {
-                            map.setWorld(selectedWorld);
+                            map.setWorld(getText());
                         }
 
                         public void undo() throws MapException {
@@ -411,12 +373,96 @@ public class MapPropertiesView extends JPanel implements Observer {
                 }
             }
         }
+
+        @Override
+        public void changedUpdate(DocumentEvent arg0) {
+            textChanged();
+        }
+
+        @Override
+        public void insertUpdate(DocumentEvent arg0) {
+            textChanged();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent arg0) {
+            textChanged();
+        }
     }
 
     /**
-     * Component to choose the floor where this map is.
+     * Component to enable or disable the floor property in this map.
      */
-    private class FloorField extends JComboBox<KeyValue> implements ActionListener {
+    private class EnableFloorField extends JCheckBox implements ActionListener {
+
+        /**
+         * Constructor.
+         */
+        public EnableFloorField() {
+            super("Set a floor:");
+            addActionListener(this);
+            update((Map) null);
+        }
+
+        /**
+         * This method is called when the user changes the value of this field.
+         */
+        public void actionPerformed(ActionEvent ev) {
+
+            final Integer currentFloor = map.getFloor();
+            final boolean currentlyEnabled = (currentFloor != null);
+
+            try {
+                map.getHistory().doAction(new MapEditorAction() {
+    
+                    private final Map map = MapPropertiesView.this.map;
+    
+                    public void execute() throws MapException {
+                        if (currentlyEnabled) { // uncheck the box
+                            map.setFloor(null);
+                        }
+                        else { // check the box
+                            map.setFloor(floorField.getNumber());
+                        }
+                    }
+    
+                    public void undo() throws MapException {
+                        if (currentlyEnabled) { // undo unchecking
+                            map.setFloor(currentFloor);
+                        }
+                        else { // undo checking the box
+                            map.setFloor(null);
+                        }
+                    }
+                });
+            }
+            catch (ZSDXException ex) {
+                GuiTools.errorDialog("Cannot change the floor: " + ex.getMessage());
+            }
+            update(map);
+        }
+
+        /**
+         * This function is called when the map is changed.
+         * The component is updated.
+         */
+        public void update(Observable o) {
+
+            if (map != null) {
+                setSelected(map.getFloor() != null);
+                setEnabled(true);
+            }
+            else {
+                setSelected(false);
+                setEnabled(false);
+            }
+        }
+    }
+
+    /**
+     * Component to choose the floor of this map.
+     */
+    private class FloorField extends NumberChooser implements ChangeListener {
 
         /**
          * Constructor.
@@ -424,89 +470,63 @@ public class MapPropertiesView extends JPanel implements Observer {
         public FloorField() {
             super();
 
-            addItem(new KeyValue(-100, "No floor"));
-            for (int i = -16; i <= 15; i++) {
-                addItem(new KeyValue(i, "Floor " + i));
-            }
-            addItem(new KeyValue(-99, "Unknown floor '?'"));
-
-            addActionListener(this);
+            addChangeListener(this);
+            update((Map) null);
         }
 
         /**
          * This function is called when the map is changed.
-         * The selection is updated.
+         * The component is updated.
          */
         public void update(Observable o) {
 
             if (map != null) {
-
-                int currentFloor = map.getFloor();
-                int selectedFloor = getSelectedFloor();
-
-                if (selectedFloor != currentFloor) {
-                    setSelectedFloor(currentFloor);
+                Integer floor = map.getFloor();
+                if (floor != null) {
+                    setNumber(floor);
+                    setEnabled(true);
                 }
-                setEnabled(!map.isInOutsideWorld());
-                floorLabel.setEnabled(!map.isInOutsideWorld());
+                else {
+                    setEnabled(false);
+                }
             }
             else {
                 setEnabled(false);
-                floorLabel.setEnabled(true);
             }
         }
 
         /**
-         * Returns the dungeon currently selected.
-         * @return the dungeon currently selected (may be -1)
+         * This method is called when the user changes the value of this field.
          */
-        public int getSelectedFloor() {
-            KeyValue item = (KeyValue) getSelectedItem();
-            return Integer.parseInt(item.getKey());
-        }
+        public void stateChanged(ChangeEvent ev) {
 
-        /**
-         * Selects a dungeon in the combo box.
-         * @param dungeon the dungeon to make selected (may be -1)
-         */
-        public void setSelectedFloor(int dungeon) {
-            KeyValue item = new KeyValue(dungeon, null);
-            setSelectedItem(item);
-        }
+            final Integer currentFloor = map.getFloor();
+            final Integer selectedFloor = enableFloorField.isSelected() ? getNumber() : null;
 
-        /**
-         * This method is called when the user changes the selected item.
-         * The tileset of the map is changed.
-         */
-        public void actionPerformed(ActionEvent ev) {
+            if (selectedFloor != currentFloor
+                    || selectedFloor == null
+                    || currentFloor == null
+                    || selectedFloor.intValue() != currentFloor.intValue()) {
 
-            if (map == null) {
-                return;
+              try {
+                map.getHistory().doAction(new MapEditorAction() {
+
+                  private final Map map = MapPropertiesView.this.map;
+
+                  public void execute() throws MapException {
+                    map.setFloor(selectedFloor);
+                  }
+
+                  public void undo() throws MapException {
+                    map.setFloor(currentFloor);
+                  }
+                });
+              }
+              catch (ZSDXException ex) {
+                GuiTools.errorDialog("Cannot change the floor: " + ex.getMessage());
+              }
             }
-
-            final int selectedFloor = getSelectedFloor();
-            final int currentFloor = map.getFloor();
-
-            if (currentFloor != selectedFloor) {
-
-                try {
-                    map.getHistory().doAction(new MapEditorAction() {
-
-                        private final Map map = MapPropertiesView.this.map;
-
-                        public void execute() throws MapException {
-                            map.setFloor(selectedFloor);
-                        }
-
-                        public void undo() throws MapException {
-                            map.setFloor(currentFloor);
-                        }
-                    });
-                }
-                catch (ZSDXException ex) {
-                    GuiTools.errorDialog(ex.getMessage());
-                }
-            }
+            update(map);
         }
     }
 
@@ -573,164 +593,6 @@ public class MapPropertiesView extends JPanel implements Observer {
             else {
                 setEnabled(false);
             }
-        }
-    }
-
-    /**
-     * Component to enable or disable the small keys in this map.
-     */
-    private class EnableSmallKeysField extends JCheckBox implements ActionListener {
-
-        /**
-         * Constructor.
-         */
-        public EnableSmallKeysField() {
-            super("Enable small keys:");
-            addActionListener(this);
-            update((Map) null);
-        }
-
-        /**
-         * This method is called when the user changes the value of this field.
-         */
-        public void actionPerformed(ActionEvent ev) {
-
-            if (map.isInDungeon()) {
-                update(map);
-                return;
-            }
-
-            final int currentSmallKeyVariable = map.getSmallKeysVariable();
-            final boolean currentlyEnabled = (currentSmallKeyVariable != -1);
-
-            try {
-                map.getHistory().doAction(new MapEditorAction() {
-
-                    private final Map map = MapPropertiesView.this.map;
-
-                    public void execute() throws MapException {
-                        if (currentlyEnabled) { // uncheck the box
-                            map.setSmallKeysVariable(-1);
-                        }
-                        else { // check the box
-                            map.setSmallKeysVariable(smallKeysVariableField.getNumber());
-                        }
-                    }
-
-                    public void undo() throws MapException {
-                        if (currentlyEnabled) { // undo unchecking
-                            map.setSmallKeysVariable(currentSmallKeyVariable);
-                        }
-                        else { // undo checking the box
-                            map.setSmallKeysVariable(-1);
-                        }
-                    }
-                });
-            }
-            catch (ZSDXException ex) {
-                GuiTools.errorDialog("Cannot change the keys variable: " + ex.getMessage());
-            }
-            update(map);
-        }
-
-        /**
-         * This function is called when the map is changed.
-         * The component is updated.
-         */
-        public void update(Observable o) {
-
-            if (map != null) {
-                setSelected(map.getSmallKeysVariable() != -1);
-                setEnabled(true);
-            }
-            else {
-                setSelected(false);
-                setEnabled(false);
-            }
-        }
-    }
-
-    /**
-     * Component to choose the variable where the small keys are saved for this map.
-     */
-    private class SmallKeysVariableField extends JPanel implements ChangeListener {
-
-        private JLabel label;
-        private NumberChooser numberChooser;
-
-        /**
-         * Constructor.
-         */
-        public SmallKeysVariableField() {
-            super(new BorderLayout());
-
-            numberChooser = new NumberChooser();
-            numberChooser.addChangeListener(this);
-            add(numberChooser, BorderLayout.EAST);
-            label = new JLabel(" saved in variable ");
-            add(label, BorderLayout.CENTER);
-            update((Map) null);
-        }
-
-        public int getNumber() {
-            return numberChooser.getNumber();
-        }
-
-        public void setEnabled(boolean enable) {
-            super.setEnabled(enable);
-            label.setEnabled(enable);
-            numberChooser.setEnabled(enable);
-        }
-
-        /**
-         * This function is called when the map is changed.
-         * The component is updated.
-         */
-        public void update(Observable o) {
-
-            if (map != null) {
-                numberChooser.setNumber(map.getSmallKeysVariable());
-                setEnabled(map.getSmallKeysVariable() != -1 && !map.isInDungeon());
-            }
-            else {
-                setEnabled(false);
-            }
-        }
-
-        /**
-         * This method is called when the user changes the value of this field.
-         */
-        public void stateChanged(ChangeEvent ev) {
-
-            if (map.isInDungeon()) {
-                update(map);
-                return;
-            }
-
-            final int currentSmallKeyVariable = map.getSmallKeysVariable();
-            final int selectedSmallKeyVariable = enableSmallKeysField.isSelected() ? numberChooser.getNumber() : -1;
-
-            if (selectedSmallKeyVariable != currentSmallKeyVariable) {
-
-              try {
-                map.getHistory().doAction(new MapEditorAction() {
-
-                  private final Map map = MapPropertiesView.this.map;
-
-                  public void execute() throws MapException {
-                    map.setSmallKeysVariable(selectedSmallKeyVariable);
-                  }
-
-                  public void undo() throws MapException {
-                    map.setSmallKeysVariable(currentSmallKeyVariable);
-                  }
-                });
-              }
-              catch (ZSDXException ex) {
-                GuiTools.errorDialog("Cannot change the keys variable: " + ex.getMessage());
-              }
-            }
-            update(map);
         }
     }
 

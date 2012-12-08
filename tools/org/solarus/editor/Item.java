@@ -18,6 +18,7 @@ package org.solarus.editor;
 
 /**
  * This class provides constants to handle the items in the editor.
+ * TODO remove the special value "_none", use an empty string instead
  */
 public class Item {
 
@@ -27,18 +28,7 @@ public class Item {
     public static final String noneId = "_none";
 
     /**
-     * Special id indicating that the item is chosen randomly.
-     */
-    public static final String randomId = "_random";
-
-    /**
      * String indicating that there is no item.
      */
     public static final String noneName = "<None>";
-
-    /**
-     * String indicating that the item is randomly chosen.
-     */
-    public static final String randomName = "<Random>";
-
 }

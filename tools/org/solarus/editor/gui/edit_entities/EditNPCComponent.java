@@ -68,7 +68,7 @@ public class EditNPCComponent extends EditEntityComponent {
         addField("Message to show", messageField);
 
         // item
-        itemField = new ItemChooser(false, false);
+        itemField = new ItemChooser(false);
         addField("Item script to call", itemField);
 
         // listeners

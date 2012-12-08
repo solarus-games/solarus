@@ -30,9 +30,8 @@ public class TreasureChooser extends JPanel {
      * Creates an item chooser, specifying whether the special treasures
      * "None" and "Random" are included.
      * @param includeNone true to include an option "None"
-     * @param includeRandom true to include an option "Random"
      */
-    public TreasureChooser(boolean includeNone, boolean includeRandom) {
+    public TreasureChooser(boolean includeNone) {
 
         super(new GridBagLayout());
 
@@ -40,7 +39,7 @@ public class TreasureChooser extends JPanel {
         treasure = new Treasure(null, 1, -1);
 
         // create the subcomponents
-        itemNameField = new ItemChooser(includeNone, includeRandom);
+        itemNameField = new ItemChooser(includeNone);
         variantField = new NumberChooser(1, 1, Integer.MAX_VALUE);
         saveField = new JCheckBox("Save the treasure state");
         savegameVariableField = new NumberChooser(0, 0, 32767);
@@ -149,8 +148,7 @@ public class TreasureChooser extends JPanel {
 
         // Variant.
         if (treasure.getItemName() == null
-                || treasure.getItemName() == Item.noneId
-                || treasure.getItemName() == Item.randomId) {
+                || treasure.getItemName() == Item.noneId) {
             variantField.setEnabled(false);
         }
         else {

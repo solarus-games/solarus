@@ -14,7 +14,6 @@
   <resources>
     <j2se version="1.6" />
     <jar href="solarus-editor.jar" />
-    <jar href="ini4j.jar" />
   </resources>
   <application-desc main-class="org.solarus.editor.Editor" />
 </jnlp>

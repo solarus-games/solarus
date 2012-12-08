@@ -16,6 +16,7 @@
  */
 package org.solarus.editor.gui;
 
+import java.util.*;
 import javax.swing.*;
 import org.solarus.editor.*;
 
@@ -108,7 +109,12 @@ public class ResourceChooser extends JComboBox<KeyValue> implements ProjectObser
         buildList();
 
         if (selectedId.length() > 0) {
-            setSelectedId(selectedId);
+            try {
+                setSelectedId(selectedId);
+            }
+            catch (NoSuchElementException ex) {
+                // The element no longer exists, nevermind.
+            }
         }
     }
 
@@ -132,15 +138,15 @@ public class ResourceChooser extends JComboBox<KeyValue> implements ProjectObser
      * If the specified element doesn't exist, a IllegalArgumentException is raised.
      * @param id id of the element you want to make selected in the combo box,
      * or an empty string to select no element
-     * @throws IllegalArgumentException if the id specified does not exist in the combo box
+     * @throws NoSuchElementException if the id specified does not exist in the combo box
      */
-    public void setSelectedId(String id) throws IllegalArgumentException {
+    public void setSelectedId(String id) throws NoSuchElementException {
 
         KeyValue item = new KeyValue(id, null);
         setSelectedItem(item);
 
         if (!getSelectedId().equals(id)) {
-          throw new IllegalArgumentException("No id '" + id + "' in the list");
+          throw new NoSuchElementException("No id '" + id + "' in the list");
         }
     }
 

@@ -67,43 +67,20 @@ public class Map extends Observable {
     private Tileset tileset;
 
     /**
-     * Index of the world where this map is:
-     * - 0 if the map is outside
-     * - -1 if the map is inside (by default)
-     * - 1 to 20 if the map is in a dungeon
+     * A name identifying the world where this map is.
+     * This can be used to link maps together.
      */
-    private int world;
+    private String world;
 
     /**
-     * The dungeon where this map is, if any.
+     * Floor of this map, or null if there is no floor.
      */
-    private Dungeon dungeon;
+    private Integer floor;
 
     /**
-     * Floor of this map:
-     * - a floor number between -16 and 15
-     * - -99: special value to indicate an unknown floor, displayed with '?'
-     * - -100: no floor (by default)
-     */
-    private int floor;
-
-    /**
-     * Location of this map in its floor or in its world. It is used to show
-     * Link's position on the map menu.
-     * - For a map in the outside world: coordinates of the top-left corner
-     *   of the map in the whole world.
-     * - For a map in the inside world: location of the map on the outside world.
-     * - For a map in a dungeon: coordinates of the top-left corner of the map
-     * in its floor.
+     * Location of this map in its floor or in its world.
      */
     private Point location;
-
-    /**
-     * Index of the variable of the savegame which stores the number of small keys
-     * of this map.
-     * A value of -1 indicates that this map has no small key counter.
-     */
-    private int smallKeysVariable;
 
     // content of the map
 
@@ -151,9 +128,8 @@ public class Map extends Observable {
         this.tileset = null;
         this.tilesetId = "";
         this.musicId = Music.unchangedId;
-        this.world = -1;
-        this.floor = -100;
-        this.smallKeysVariable = -1;
+        this.world = "";
+        this.floor = null;
 
         initialize();
 
@@ -172,6 +148,15 @@ public class Map extends Observable {
      * @throws ZSDXException if the map could not be loaded
      */
     public Map(String mapId) throws ZSDXException {
+
+        this.size = new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT);
+        this.location = new Point(0, 0);
+        this.tileset = null;
+        this.tilesetId = "";
+        this.musicId = Music.unchangedId;
+        this.world = "";
+        this.floor = null;
+
         this.mapId = mapId;
         initialize();
         load();
@@ -358,150 +343,35 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the index of the world where this map is.
-     * @return the world index: 0 if the map is outside, -1 if it is inside,
-     * 1 to 20 if it is in a dungeon
+     * Returns the world where this map is.
+     * @return the world of this map
      */
-    public int getWorld() {
+    public String getWorld() {
         return world;
     }
 
     /**
-     * Returns the name of the world where this map is.
-     * @return The world name: "outside_world" if the map is outside,
-     * "inside_world" if it is inside,
-     * "dungeon_1" to "dungeon_20" if it is in a dungeon.
-     */
-    public String getWorldName() {
-
-        // TODO make world names free
-        if (world == 0) {
-            return "outside_world";
-        }
-        
-        if (world == -1) {
-            return "inside_world";
-        }
-        
-        return "dungeon_" + world;
-    }
-
-    /**
-     * Returns whether this map belongs to a dungeon.
-     * @return true if this map is in a dungeon.
-     */
-    public boolean isInDungeon() {
-        return world > 0;
-    }
-
-    /**
-     * Returns whether this map belongs to the outside world.
-     * @return true if this map is in the outside world.
-     */
-    public boolean isInOutsideWorld() {
-        return world == 0;
-    }
-
-    /**
-     * Returns whether this map belongs to the inside world.
-     * @return true if this map is in the inside world.
-     */
-    public boolean isInInsideWorld() {
-        return world == 0;
-    }
-
-    /**
      * Sets the world where this map is.
-     * @param world name of the world: "outside_world", "inside_world"
-     * or "dungeon_X" with X between 1 to 20.
-     * @throws MapException if the specified world is incorrect.
+     * @param world name of the world (cannot be null)
      */
-    public void setWorld(String worldName) throws MapException {
+    public void setWorld(String world) {
 
-        int world;
-        if (worldName.equals("outside_world")) {
-            world = 0;
+        if (world == null) {
+            throw new NullPointerException();
         }
-        else if (worldName.equals("inside_world")) {
-            world = -1;
-        }
-        else if (worldName.substring(0, 8).equals("dungeon_")) {
-            try {
-                world = Integer.parseInt(worldName.substring(8));
-            }
-            catch (NumberFormatException ex) {
-                throw new MapException("Invalid world name: '" + worldName + "'");
-            }
-        }
-        else {
-            throw new MapException("Invalid world name: '" + worldName + "'");
-        }
-        setWorld(world);
-    }
-
-    /**
-     * Sets the world where this map is.
-     * @param world the world index: 0 if the map is outside, -1 if it is inside,
-     * 1 to 20 if it is in a dungeon
-     * @throws MapException if the specified world is incorrect
-     */
-    public void setWorld(int world) throws MapException {
-
-        if (world != this.world) {
-
-            if (world > 20 || world < -1) {
-                throw new MapException("Invalid world: " + world);
-            }
-
+        if (!world.equals(this.world)) {
             this.world = world;
-
-            if (!isInDungeon()) { // no dungeon : no floor by default
-                setFloor(-100);
-            }
-            else { // dungeon: first floor by default
-                dungeon = new Dungeon(world);
-                setFloor(dungeon.getDefaultFloor());
-                setSmallKeysVariable(205 + 10 * (world - 1));
-            }
-
             setChanged();
             notifyObservers();
         }
     }
 
     /**
-     * Returns the dungeon where this map is.
-     * @return the dungeon of this map, or null if the map is not in a dungeon
-     */
-    public Dungeon getDungeon() {
-        return dungeon;
-    }
-
-    /**
      * Returns the floor of this map.
-     * @return the floor
+     * @return the floor or null.
      */
-    public int getFloor() {
+    public Integer getFloor() {
         return floor;
-    }
-
-    /**
-     * Returns a String describing the floor of this map.
-     * @return "unknown", null or a string corresponding to a floor number.
-     */
-    public String getFloorName() {
-
-        // TODO store the floor as a string instead of magic numbers.
-        if (floor == -100) {
-            // No floor.
-            return null;
-        }
-        
-        if (floor == -99) {
-            return "unknown";
-        }
-        
-        return Integer.toString(floor);
     }
 
     /**
@@ -509,111 +379,18 @@ public class Map extends Observable {
      * @return true if there is a floor.
      */
     public boolean hasFloor() {
-        return floor != -100;
+        return floor != null;
     }
 
     /**
      * Sets the floor of this map.
-     * @param floor the floor: -100 for no floor, -99 for the unknown floor,
-     * -16 to 15 for a normal floor
-     * @throws MapException if you specify a floor on the oustide world
-     * or if you specify an invalid floor
+     * @param floor the floor (null for no floor)
      */
-    public void setFloor(int floor) throws MapException {
+    public void setFloor(Integer floor) throws MapException {
 
-        if (floor != this.floor) {
-
-            if (floor != -100 && floor != -99 && (floor < -16 || floor > 15)) {
-                throw new MapException("Invalid floor: " + floor);
-            }
-
-            if (isInOutsideWorld() && floor != -100) {
-                throw new MapException("Cannot specify a floor in the outside world");
-            }
-
-            else if (isInDungeon() && floor != -99 && !getDungeon().hasFloor(floor)) {
-                throw new MapException("This floor does not exists in this dungeon");
-            }
-
-            this.floor = floor;
-            setChanged();
-            notifyObservers();
-        }
-    }
-
-    /**
-     * Sets the floor of this map.
-     * @param floorName Name of the floor: null, "unknown" of a number.
-     * @throws MapException if you specify a floor on the outside world
-     * or if you specify an invalid floor
-     */
-    public void setFloor(String floorName) throws MapException {
-
-        int floor;
-        if (floorName == null) {
-            floor = -100;
-        }
-        else if (floorName.equals("unknown")) {
-            floor = -99;
-        }
-        else {
-            try {
-                floor = Integer.parseInt(floorName);
-            }
-            catch (NumberFormatException ex) {
-                throw new MapException("Invalid floor name: '" + floorName + "'");
-            }
-        }
-        setFloor(floor);
-    }
-
-    /**
-     * Returns the index of the savegame variable that stores
-     * the counter of small keys for this map.
-     * @return the variable of the small key counter, or -1 if the small
-     * keys are not enabled for this map
-     */
-    public int getSmallKeysVariable() {
-        return smallKeysVariable;
-    }
-
-    /**
-     * Returns whether the small keys are enabled in this map, i.e. whether
-     * getSmallKeysVariable() does not return -1.
-     * @return true if the small keys are enabled in this map
-     */
-    public boolean hasSmallKeys() {
-        return getSmallKeysVariable() != -1;
-    }
-
-    /**
-     * Sets the index of the savegame variable that stores
-     * the counter of small keys for this map.
-     * -1 means that the small keys are not enabled on this map.
-     * @param keysSavegameVariable the variable of the small key counter
-     * @throws MapException if the specified value is not valid
-     */
-    public void setSmallKeysVariable(int smallKeysVariable) throws MapException {
-
-        if (smallKeysVariable != this.smallKeysVariable) {
-
-            if (smallKeysVariable < -1 || smallKeysVariable > 2048) {
-                throw new MapException("Invalid variable to save the small keys: " + smallKeysVariable);
-            }
-
-            if (isInDungeon()) {
-                int expectedVariable = 205 + 10 * (getWorld() - 1);
-                if (smallKeysVariable != expectedVariable) {
-                    throw new MapException("Invalid variable to save the small keys " +
-                            "(we are a dungeon: expected " + expectedVariable
-                            + ", got " + smallKeysVariable + ")");
-                }
-            }
-
-            this.smallKeysVariable = smallKeysVariable;
-            setChanged();
-            notifyObservers();
-        }
+        this.floor = floor;
+        setChanged();
+        notifyObservers();
     }
 
     /**
@@ -1101,8 +878,12 @@ public class Map extends Observable {
     public void checkValidity() throws MapException {
 
         // check that a tileset is selected
-        if (tilesetId.length() == 0) {
+        if (tilesetId.isEmpty()) {
             throw new MapException("No tileset is selected");
+        }
+
+        if (world.isEmpty()) {
+            throw new MapException("No world is set");
         }
 
         // check that all entities are valid
@@ -1172,12 +953,9 @@ public class Map extends Observable {
             out.println("  y = " + getLocation().y + ",");
             out.println("  width = " + getWidth() + ",");
             out.println("  height = " + getHeight() + ",");
-            out.println("  world = \"" + getWorldName() + "\",");
+            out.println("  world = \"" + getWorld() + "\",");
             if (hasFloor()) {
-                out.println("  floor = \"" + getFloorName() + "\",");
-            }
-            if (smallKeysVariable != -1) {
-                out.println("  small_keys_variable = " + getSmallKeysVariable() + ",");
+                out.println("  floor = " + getFloor() + ",");
             }
             out.println("  tileset = \"" + getTilesetId() + "\",");
             if (hasMusic()) {
@@ -1205,11 +983,6 @@ public class Map extends Observable {
             mapResource.setElementName(mapId, name);
             Project.getResourceDatabase().save();
 
-            // upate the dungeon elements of this map
-            if (isInDungeon()) {
-                Dungeon.saveMapInfo(this);
-            }
-
             // create a script for the map if necessary
             File scriptFile = Project.getMapScriptFile(mapId);
             if (!scriptFile.exists()) {
@@ -1235,17 +1008,18 @@ public class Map extends Observable {
                 int y = table.get("y").checkint();
                 int width = table.get("width").checkint();
                 int height = table.get("height").checkint();
-                String worldName = table.get("world").checkjstring();
-                String floorName = table.get("floor").optjstring(null);
-                int smallKeysVariable = table.get("small_keys_variable").optint(-1);
+                String world = table.get("world").checkjstring();
+                Integer floor = null;
+                if (!table.get("floor").isnil()) {
+                  floor = table.get("floor").checkint();
+                }
                 String tilesetId = table.get("tileset").checkjstring();
                 String musicId = table.get("music").optjstring(Music.noneId);
 
                 setSize(new Dimension(width, height));
-                setWorld(worldName);
-                setFloor(floorName);
+                setWorld(world);
+                setFloor(floor);
                 setLocation(new Point(x, y));
-                setSmallKeysVariable(smallKeysVariable);
                 setTileset(tilesetId);
                 setMusic(musicId);
     

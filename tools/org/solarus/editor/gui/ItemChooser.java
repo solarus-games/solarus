@@ -24,26 +24,19 @@ import org.solarus.editor.*;
 public class ItemChooser extends ResourceChooser {
 
     /**
-     * Creates an item chooser, specifying whether the special items
-     * "None" and "Random" are included.
+     * Creates an item chooser, specifying whether the special item
+     * "None" is included.
      * @param includeNone true to include an option "None"
-     * @param includeRandom true to include an option "Random"
      */
-    public ItemChooser(boolean includeNone, boolean includeRandom) {
+    public ItemChooser(boolean includeNone) {
 
         super(ResourceType.ITEM, false);
 
-        int size = (includeNone && includeRandom) ? 2 : 1;
-        KeyValue[] additionalOptions = new KeyValue[size];
+        KeyValue[] additionalOptions = new KeyValue[1];
         int i = 0;
 
         if (includeNone) {
             additionalOptions[i] = new KeyValue(Item.noneId, Item.noneName);
-            i++;
-        }
-
-        if (includeRandom) {
-            additionalOptions[i] = new KeyValue(Item.randomId, Item.randomName);
             i++;
         }
 

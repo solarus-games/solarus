@@ -108,7 +108,7 @@ void FileTools::initialize_languages() {
 
 /**
  * @brief Function called by Lua to add a language.
-
+ *
  * - Argument 1 (table): properties of the language (keys must be code and
  * name).
  *

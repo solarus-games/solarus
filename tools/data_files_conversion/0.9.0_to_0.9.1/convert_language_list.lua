@@ -6,7 +6,7 @@
 
 -- The old format (solarus 0.9.0) is an ini file and the new one is a Lua file.
 
-dofile("ini_parser.lua")
+dofile("../ini_parser.lua")
 
 function print_language_list(all_groups, all_ids)
 

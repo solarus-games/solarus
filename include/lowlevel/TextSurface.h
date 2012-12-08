@@ -24,6 +24,8 @@
 #include <SDL_ttf.h>
 #include <map>
 
+struct lua_State;
+
 /**
  * @brief Draws a line of text on a surface.
  *
@@ -105,6 +107,7 @@ class TextSurface: public Drawable {
 
     static void initialize();
     static void quit();
+    static int l_font(lua_State* l);
 
     TextSurface(int x, int y);
     TextSurface(int x, int y,

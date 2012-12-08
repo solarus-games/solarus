@@ -30,7 +30,6 @@
 #include "entities/Hero.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
-#include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Music.h"

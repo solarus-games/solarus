@@ -19,7 +19,6 @@
 #include "MainLoop.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
-#include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lua/LuaContext.h"

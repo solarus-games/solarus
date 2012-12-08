@@ -51,7 +51,6 @@ class Random;
 class Geometry;
 class Rectangle;
 class PixelBits;
-class IniFile;
 class InputEvent;
 class Debug;
 class StringConcat;

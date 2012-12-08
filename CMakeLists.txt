@@ -39,7 +39,6 @@ file(
   include/lua/*.h
   include/menus/*.h
   include/movements/*.h
-  include/simpleini/*.h
   include/snes_spc/*.h
 )
 

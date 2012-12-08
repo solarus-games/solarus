@@ -648,7 +648,7 @@ RECURSIVE              = YES
 # excluded from the INPUT source files. This way you can easily exclude a
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE                = ../include/simpleini ../include/snes_spc ../src/snes_spc ../include/lowlevel/osx ../src/lowlevel/osx
+EXCLUDE                = ../include/snes_spc ../src/snes_spc ../include/lowlevel/osx ../src/lowlevel/osx
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or
 # directories that are symbolic links (a Unix filesystem feature) are excluded

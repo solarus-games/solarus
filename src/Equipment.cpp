@@ -65,6 +65,9 @@ Equipment::Equipment(Savegame& savegame):
   }
   FileTools::data_file_close(database_file);
 
+  // Make sure the gc won't destroy the savegame if items scripts use it.
+  get_savegame().increment_refcount();
+
   // Load the item scripts.
   std::map<std::string, EquipmentItem*>::const_iterator it;
   for (it = items.begin(); it != items.end(); it++) {
@@ -75,6 +78,7 @@ Equipment::Equipment(Savegame& savegame):
   for (it = items.begin(); it != items.end(); it++) {
     it->second->start();
   }
+  get_savegame().decrement_refcount();
 }
 
 /**

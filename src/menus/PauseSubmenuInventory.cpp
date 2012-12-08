@@ -19,7 +19,6 @@
 #include "movements/TargetMovement.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Sound.h"
-#include "lowlevel/IniFile.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "DialogBox.h"
@@ -34,6 +33,46 @@
 #include <lua.hpp>
 
 /**
+ * @brief Item to put in each slot of the inventory.
+ *
+ * TODO Items are temporarily hardcoded (again) in order to kill the ini parser dependency.
+ * The pause menu will be scripted soon anyway. In the meantime, ZSXD no longer works.
+ */
+const std::string PauseSubmenuInventory::item_names[] = {
+    "feather",
+    "bombs_counter",
+    "bow",
+    "boomerang",
+    "mystic_mirror",
+    "pegasus_shoes",
+    "bottle_1",
+
+    "lamp",
+    "hookshot",
+    "cane_of_somaria",
+    "apples_counter",
+    "pains_au_chocolat_counter",
+    "croissants_counter",
+    "bottle_2",
+
+    "rock_key",
+    "bone_key",
+    "clay_key",
+    "fire_stones_counter",
+    "flippers",
+    "magic_cape",
+    "bottle_3",
+
+    "iron_key",
+    "stone_key",
+    "wooden_key",
+    "ice_key",
+    "glove",
+    "level_4_way",
+    "bottle_4"
+};
+
+/**
  * @brief Constructor.
  * @param pause_menu the pause menu object
  * @param game the game
@@ -43,17 +82,11 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu &pause_menu, Game &game):
 
   cursor_sprite = new Sprite("menus/pause_cursor");
 
-  IniFile ini = IniFile("hud/inventory.dat", IniFile::READ);
-  ini.set_group("items");
-
   // set the sprites, counters and caption strings
   std::ostringstream oss;
   for (int k = 0; k < 28; k++) {
 
     // get the item, its counter property and the possession state
-    oss.str("");
-    oss << "item_" << k;
-    item_names[k] = ini.get_string_value(oss.str());
     EquipmentItem& item = equipment.get_item(item_names[k]);
     int variant = item.get_variant();
 

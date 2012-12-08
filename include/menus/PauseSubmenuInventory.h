@@ -30,7 +30,7 @@ class PauseSubmenuInventory: public PauseSubmenu {
 
   private:
 
-    std::string item_names[28];                 /**< name of each item displayed in this submenu */
+    static std::string item_names[28];  /**< name of each item displayed in this submenu */
 
     // cursor
     int cursor_row;				/**< row of the inventory cursor, between 0 and 3 */

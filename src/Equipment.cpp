@@ -420,7 +420,7 @@ void Equipment::restore_all_magic() {
  */
 EquipmentItem& Equipment::get_item(const std::string& item_name) {
 
-  Debug::check_assertion(items.count(item_name) > 0,
+  Debug::check_assertion(items.find(item_name) != items.end(),
       StringConcat() << "Cannot find item with name '" << item_name << "'");
 
   return *items[item_name];

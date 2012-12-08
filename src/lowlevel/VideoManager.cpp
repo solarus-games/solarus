@@ -54,6 +54,8 @@ const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
 
 /**
  * @brief Lua name of each value of the VideoMode enum.
+ *
+ * This array is made to be compatible with luaL_checkoption().
  */
 const char* VideoManager::video_mode_names[] = {
   "windowed_stretched",
@@ -157,6 +159,10 @@ VideoManager::~VideoManager() {
  */
 bool VideoManager::is_mode_supported(VideoMode mode) {
 
+  if (mode == NO_MODE) {
+    return false;
+  }
+
   if (forced_mode != NO_MODE && mode != forced_mode) {
     return false;
   }
@@ -256,12 +262,14 @@ void VideoManager::set_default_video_mode() {
 
 /**
  * @brief Sets the video mode.
- *
- * The specified video mode is supposed to be supported.
- *
- * @param mode the video mode
+ * @param mode The video mode to set.
+ * @return true in case of success, false if this mode is not supported.
  */
-void VideoManager::set_video_mode(VideoMode mode) {
+bool VideoManager::set_video_mode(VideoMode mode) {
+
+  if (!is_mode_supported(mode)) {
+    return false;
+  }
 
   int flags = surface_flags;
   int show_cursor;
@@ -296,6 +304,8 @@ void VideoManager::set_video_mode(VideoMode mode) {
     this->screen_surface = new Surface(screen_internal_surface);
   }
   this->video_mode = mode;
+
+  return true;
 }
 
 /**
@@ -320,6 +330,35 @@ const std::list<VideoManager::VideoMode> VideoManager::get_video_modes() {
     }
   }
   return modes;
+}
+
+/**
+ * @brief Returns the name of a video mode.
+ * @param mode A video mode.
+ * @return The name of this mode, or an empty string if the mode is NO_MODE.
+ */
+std::string VideoManager::get_video_mode_name(VideoMode mode) {
+
+  if (mode == NO_MODE) {
+    return "";
+  }
+
+  return video_mode_names[mode];
+}
+
+/**
+ * @brief Returns a video mode given its Lua name.
+ * @param mode_name Lua name of a video mode.
+ * @return The corresponding video mode, or NO_MODE if the name is invalid.
+ */
+VideoManager::VideoMode VideoManager::get_video_mode_by_name(const std::string& mode_name) {
+
+  for (int i = 0; i < NB_MODES; i++) {
+    if (video_mode_names[i] == mode_name) {
+      return VideoMode(i);
+    }
+  }
+  return NO_MODE;
 }
 
 /**

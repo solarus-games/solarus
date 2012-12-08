@@ -65,6 +65,7 @@ class FileTools {
     static const std::string get_full_quest_write_dir();
  
     // Languages.
+    static bool has_language(const std::string& language_code);
     static void set_language(const std::string& language_code);
     static const std::string& get_language();
     static const std::string& get_default_language();

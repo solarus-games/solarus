@@ -127,9 +127,7 @@ int Music::get_volume() {
  */
 void Music::set_volume(int volume) {
 
-  Debug::check_assertion(volume >= 0 && volume <= 100,
-      StringConcat() << "Illegal volume for music:" << volume);
-
+  volume = std::min(100, std::max(0, volume));
   Music::volume = volume / 100.0;
 
   if (current_music != NULL) {

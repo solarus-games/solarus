@@ -159,6 +159,15 @@ int FileTools::l_language(lua_State* l) {
 }
 
 /**
+ * @brief Returns whether a language exists for this quest.
+ * @param language_code Code of the language to test.
+ * @return true if this language exists.
+ */
+bool FileTools::has_language(const std::string& language_code) {
+  return languages.find(language_code) != languages.end();
+}
+
+/**
  * @brief Sets the current language.
  *
  * The language-specific data will be loaded from the directory of this language.
@@ -168,7 +177,7 @@ int FileTools::l_language(lua_State* l) {
  */
 void FileTools::set_language(const std::string& language_code) {
 
-  Debug::check_assertion(languages.count(language_code) > 0,
+  Debug::check_assertion(has_language(language_code),
       StringConcat() << "Unknown language '" << language_code << "'");
   FileTools::language_code = language_code;
   StringResource::initialize();

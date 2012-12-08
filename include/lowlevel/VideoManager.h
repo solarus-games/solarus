@@ -83,11 +83,14 @@ class VideoManager {
   static VideoManager* get_instance();
 
   VideoMode get_video_mode();
-  void set_video_mode(VideoMode mode);
+  bool set_video_mode(VideoMode mode);
   void switch_video_mode();
   void set_default_video_mode();
   bool is_mode_supported(VideoMode mode);
   const std::list<VideoMode> get_video_modes();
+
+  static std::string get_video_mode_name(VideoMode mode);
+  static VideoMode get_video_mode_by_name(const std::string& mode_name);
 
   bool is_fullscreen(VideoMode mode);
   bool is_fullscreen();

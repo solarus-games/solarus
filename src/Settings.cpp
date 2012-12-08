@@ -21,6 +21,7 @@
 #include "lowlevel/Music.h"
 #include "lowlevel/InputEvent.h"
 #include <lua.hpp>
+#include <sstream>
 
 /**
  * @brief Attempts to load the built-in settings from a file.
@@ -38,8 +39,8 @@ bool Settings::load(const std::string& file_name) {
   lua_State* l = lua_open();
   size_t size;
   char* buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size);
+  luaL_loadbuffer(l, buffer, size, prefixed_file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
 
   if (lua_pcall(l, 0, 0, 0) != 0) {
@@ -48,46 +49,48 @@ bool Settings::load(const std::string& file_name) {
     return false;
   }
 
-  // The settings file is valid, we just have to read its values now.
+  // The syntax of the settings file is valid. Read its values now.
 
   // Video mode.
   lua_getglobal(l, "video_mode");
-  if (!lua_isnil(l, 1)) {
-    int mode = luaL_checkoption(l, 1, NULL, VideoManager::video_mode_names);
-    if (VideoManager::get_instance()->get_video_mode() != mode) {
-      VideoManager::get_instance()->set_video_mode(
-          VideoManager::VideoMode(mode));
+  if (lua_isstring(l, 1)) {
+    const std::string& mode_name = lua_tostring(l, 1);
+    VideoManager::VideoMode mode = VideoManager::get_video_mode_by_name(mode_name);
+    if (mode != VideoManager::NO_MODE && mode != VideoManager::get_instance()->get_video_mode()) {
+      VideoManager::get_instance()->set_video_mode(mode);
     }
   }
   lua_pop(l, 1);
 
   // Sound volume.
   lua_getglobal(l, "sound_volume");
-  if (!lua_isnil(l, 1)) {
-    int sound_volume = luaL_checkinteger(l, 1);
+  if (lua_isnumber(l, 1)) {
+    int sound_volume = lua_tointeger(l, 1);
     Sound::set_volume(sound_volume);
   }
   lua_pop(l, 1);
 
   // Music volume.
   lua_getglobal(l, "music_volume");
-  if (!lua_isnil(l, 1)) {
-    int music_volume = luaL_checkinteger(l, 1);
+  if (lua_isnumber(l, 1)) {
+    int music_volume = lua_tointeger(l, 1);
     Music::set_volume(music_volume);
   }
   lua_pop(l, 1);
 
   // Language.
   lua_getglobal(l, "language");
-  if (!lua_isnil(l, 1)) {
-    const std::string& language = luaL_checkstring(l, 1);
-    FileTools::set_language(language);
+  if (lua_isstring(l, 1)) {
+    const std::string& language = lua_tostring(l, 1);
+    if (FileTools::has_language(language)) {
+      FileTools::set_language(language);
+    }
   }
   lua_pop(l, 1);
 
   // Joystick.
   lua_getglobal(l, "joypad_enabled");
-  if (!lua_isnil(l, 1)) {
+  if (lua_isboolean(l, 1)) {
     bool joypad_enabled = lua_toboolean(l, 1);
     InputEvent::set_joypad_enabled(joypad_enabled);
   }
@@ -104,7 +107,18 @@ bool Settings::load(const std::string& file_name) {
  */
 bool Settings::save(const std::string& file_name) {
 
-  // TODO
-  return false;
+  const std::string& prefixed_file_name = FileTools::get_quest_write_dir() + "/" + file_name;
+
+  std::ostringstream oss;
+  VideoManager::VideoMode video_mode = VideoManager::get_instance()->get_video_mode();
+  oss << "video_mode = \"" << VideoManager::video_mode_names[video_mode] << "\"\n";
+  oss << "sound_volume = " << Sound::get_volume() << "\n";
+  oss << "music_volume = " << Music::get_volume() << "\n";
+  oss << "language = \"" << FileTools::get_language() << "\"\n";
+  oss << "enable_joystick = " << (InputEvent::is_joypad_enabled() ? "true" : "false") << "\n";
+
+  const std::string& text = oss.str();
+  FileTools::data_file_save_buffer(prefixed_file_name, text.c_str(), text.size());
+  return true;
 }
 

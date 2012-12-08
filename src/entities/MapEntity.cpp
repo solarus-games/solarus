@@ -1167,7 +1167,9 @@ void MapEntity::set_enabled(bool enabled) {
       sprite.set_suspended(suspended || !enabled);
     }
 
-    notify_enabled(enabled);
+    if (is_on_map()) {
+      notify_enabled(enabled);
+    }
   }
 }
 

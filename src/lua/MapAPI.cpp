@@ -1043,7 +1043,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   bool big_chest = check_boolean_field(l, 1, "is_big_chest");
   const std::string& name = check_string_field(l, 1, "name");
-  const std::string& treasure_name = check_string_field(l, 1, "treasure_name");
+  const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
 

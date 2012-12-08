@@ -58,38 +58,37 @@
 1	7	Brown dungeon (LW)
 1	8	Blue dungeon (DW)
 1	6	Intro
-2	agahnim.spc	Agahnim theme
-2	beginning.spc	Beginning
-2	boss.spc	Boss
-2	castle.spc	Castle
-2	cave.spc	Cave
-2	credits.spc	Credits
-2	dark_mountain.spc	Dark Mountain
-2	dark_world.spc	Dark World
-2	light_world_dungeon.spc	Dungeon (light world)
-2	dark_world_dungeon.spc	Dungeon (dark world)
-2	dungeon_finished.spc	Dungeon finished
-2	excalibur.spc	Excalibur
-2	fanfare.spc	Fanfare
-2	fortune_teller.spc	Fortune Teller
+2	agahnim	Agahnim theme
+2	beginning	Beginning
+2	boss	Boss
+2	castle	Castle
+2	cave	Cave
+2	credits	Credits
+2	dark_mountain	Dark Mountain
+2	dark_world	Dark World
+2	light_world_dungeon	Dungeon (light world)
+2	dark_world_dungeon	Dungeon (dark world)
+2	dungeon_finished	Dungeon finished
+2	excalibur	Excalibur
+2	fanfare	Fanfare
+2	fortune_teller	Fortune Teller
 2	found_items.it	Found Items House
-2	ganon_appears.spc	Ganon appears
-2	ganon_battle.spc	Ganon battle
-2	ganon_theme.spc	Ganon theme
-2	great_fairy.spc	Great Fairy
-2	village.spc	Kakariko Village
-2	legend.spc	Legend
-2	lost_woords.spc	Lost Woods
-2	mini_game.spc	Mini game
-2	overworld.spc	Overworld
-2	sanctuary.spc	Sanctuary
-2	game_over.spc	Selection menu & Game Over
-2	soldiers.spc	Soldiers
-2	rabbit.spc	Turned into a rabbit
-2	title_screen.spc	Title screen 
-2	triforce.spc	Triforce
-2	victory.spc	Victory
-2	zelda.spc	Zelda theme
+2	ganon_appears	Ganon appears
+2	ganon_battle	Ganon battle
+2	ganon_theme	Ganon theme
+2	great_fairy	Great Fairy
+2	village	Kakariko Village
+2	legend	Legend
+2	lost_woords	Lost Woods
+2	mini_game	Mini game
+2	overworld	Overworld
+2	sanctuary	Sanctuary
+2	game_over	Selection menu & Game Over
+2	soldiers	Soldiers
+2	rabbit	Turned into a rabbit
+2	title_screen	Title screen
+2	triforce	Triforce
+2	victory	Victory
 3	entities/sign	Sign
 3	npc/great_fairy	Great Fairy
 3	npc/monkey	Monkey

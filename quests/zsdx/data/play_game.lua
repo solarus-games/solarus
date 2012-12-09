@@ -20,6 +20,14 @@ function game:on_map_changed(map)
   self:hud_on_map_changed(map)
 end
 
+function game:on_paused()
+  self:hud_on_paused()
+end
+
+function game:on_unpaused()
+  self:hud_on_unpaused()
+end
+
 function game:get_player_name()
   return self:get_value("player_name")
 end

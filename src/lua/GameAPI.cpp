@@ -781,3 +781,25 @@ void LuaContext::game_on_map_changed(Game& game, Map& map) {
   lua_pop(l, 1);
 }
 
+/**
+ * @brief Calls the on_paused() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_paused(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_paused();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_unpaused() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_unpaused(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_unpaused();
+  lua_pop(l, 1);
+}
+

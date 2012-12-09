@@ -712,11 +712,13 @@ void Game::set_paused(bool paused) {
   if (paused != is_paused()) {
 
     if (paused) {
-      pause_menu = new PauseMenu(*this);
+      pause_menu = new PauseMenu(*this);  // TODO reimplement in Lua
+      get_lua_context().game_on_paused(*this);
     }
     else {
       delete pause_menu;
       pause_menu = NULL;
+      get_lua_context().game_on_unpaused(*this);
     }
   }
 }

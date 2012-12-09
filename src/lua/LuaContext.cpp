@@ -1441,6 +1441,26 @@ void LuaContext::on_suspended(bool suspended) {
 }
 
 /**
+ * @brief Calls the on_paused() method of the object on top of the stack.
+ */
+void LuaContext::on_paused() {
+
+  if (find_method("on_paused")) {
+    call_function(1, 0, "on_paused");
+  }
+}
+
+/**
+ * @brief Calls the on_unpaused() method of the object on top of the stack.
+ */
+void LuaContext::on_unpaused() {
+
+  if (find_method("on_unpaused")) {
+    call_function(1, 0, "on_unpaused");
+  }
+}
+
+/**
  * @brief Calls an input callback method of the object on top of the stack.
  * @param event The input event to forward.
  * @return \c true if the event was handled and should stop being propagated.

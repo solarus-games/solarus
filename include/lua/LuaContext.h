@@ -210,6 +210,8 @@ class LuaContext {
     void game_on_started(Game& game);
     void game_on_finished(Game& game);
     void game_on_map_changed(Game& game, Map& map);
+    void game_on_paused(Game& game);
+    void game_on_unpaused(Game& game);
 
     // Map events.
     void map_on_update(Map& map);
@@ -540,7 +542,7 @@ class LuaContext {
       map_api_start_dialog,
       map_api_set_dialog_variable,
       map_api_set_dialog_style,   // TODO use a string parameter
-      map_api_set_pause_enabled,  // TODO remove (do this in Lua only)
+      map_api_set_pause_enabled,  // TODO move to game api?
       map_api_get_light,
       map_api_set_light,
       map_api_move_camera,
@@ -817,6 +819,8 @@ class LuaContext {
     void on_pre_draw(Surface& dst_surface);
     void on_post_draw(Surface& dst_surface);
     void on_suspended(bool suspended);
+    void on_paused();
+    void on_unpaused();
     bool on_input(InputEvent& event);
     bool on_key_pressed(InputEvent& event);
     bool on_key_released(InputEvent& event);

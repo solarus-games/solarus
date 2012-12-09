@@ -32,7 +32,7 @@
  * @param game the game
  * @param hero_direction direction of the hero sprite before game over
  */
-GameoverSequence::GameoverSequence(Game &game, int hero_direction):
+GameoverSequence::GameoverSequence(Game& game, int hero_direction):
     game(game),
     music_id(Music::get_current_music_id()),
     gameover_menu_img("gameover_menu.png", Surface::DIR_LANGUAGE),

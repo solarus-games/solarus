@@ -74,6 +74,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const std::string &id) {
  */
 Sprite::Sprite(const std::string &id):
   Drawable(),
+  lua_context(NULL),
   animation_set_id(id),
   animation_set(get_animation_set(id)),
   current_direction(0),
@@ -221,7 +222,7 @@ int Sprite::get_next_frame() const {
  * @brief Returns the current animation of the sprite.
  * @return the name of the current animation of the sprite
  */
-const std::string & Sprite::get_current_animation() const {
+const std::string& Sprite::get_current_animation() const {
   return current_animation_name;
 }
 
@@ -233,11 +234,11 @@ const std::string & Sprite::get_current_animation() const {
  *
  * @param animation_name name of the new animation of the sprite
  */
-void Sprite::set_current_animation(const std::string &animation_name) {
+void Sprite::set_current_animation(const std::string& animation_name) {
 
   if (animation_name != this->current_animation_name || !is_animation_started()) {
 
-    SpriteAnimation *animation = animation_set.get_animation(animation_name);
+    SpriteAnimation* animation = animation_set.get_animation(animation_name);
 
     this->current_animation_name = animation_name;
     this->current_animation = animation;
@@ -307,7 +308,7 @@ void Sprite::set_current_frame(int current_frame) {
   finished = false;
   next_frame_date = System::now() + get_frame_delay();
 
-  frame_changed = (current_frame != this->current_frame);
+  set_frame_changed(current_frame != this->current_frame);
 
   this->current_frame = current_frame;
 }
@@ -318,6 +319,18 @@ void Sprite::set_current_frame(int current_frame) {
  */
 bool Sprite::has_frame_changed() const {
   return frame_changed;
+}
+
+/**
+ * @brief Sets whether the frame has just changed.
+ * @param frame_changed true if the frame has just changed.
+ */
+void Sprite::set_frame_changed(bool frame_changed) {
+
+  this->frame_changed = frame_changed;
+  if (lua_context != NULL) {
+    lua_context->sprite_on_frame_changed(*this, current_animation_name, current_frame);
+  }
 }
 
 /**
@@ -466,7 +479,7 @@ bool Sprite::is_animation_finished() const {
  */
 bool Sprite::is_last_frame_reached() const {
 
-  const SpriteAnimationDirection *direction = current_animation->get_direction(current_direction);
+  const SpriteAnimationDirection* direction = current_animation->get_direction(current_direction);
   return get_current_frame() == direction->get_nb_frames() - 1;
 }
 
@@ -546,12 +559,15 @@ void Sprite::update() {
       // test whether the animation is finished
       if (next_frame == -1) {
         finished = true;
+        if (lua_context != NULL) {
+          lua_context->sprite_on_animation_finished(*this, current_animation_name);
+        }
       }
       else {
         current_frame = next_frame;
         next_frame_date += get_frame_delay();
       }
-      frame_changed = true;
+      set_frame_changed(true);
     }
   }
   else {
@@ -560,7 +576,7 @@ void Sprite::update() {
     if (other_frame != current_frame) {
       current_frame = other_frame;
       next_frame_date = now + get_frame_delay();
-      frame_changed = true;
+      set_frame_changed(true);
     }
   }
 
@@ -623,6 +639,23 @@ Surface& Sprite::get_intermediate_surface() {
     intermediate_surface = new Surface(get_max_size());
   }
   return *intermediate_surface;
+}
+
+/**
+ * @brief Returns the Solarus Lua API.
+ * @return The Lua context, or NULL if Lua callbacks are not enabled for this sprite.
+ */
+LuaContext* Sprite::get_lua_context() const {
+  return lua_context;
+}
+
+/**
+ * @brief Sets the Solarus Lua API.
+ * @param lua_context The Lua context, or NULL to disable Lua callbacks
+ * for this sprite.
+ */
+void Sprite::set_lua_context(LuaContext* lua_context) {
+  this->lua_context = lua_context;
 }
 
 /**

@@ -99,9 +99,13 @@ class Sprite: public Drawable {
     void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
     void draw_transition(Transition& transition);
 
+    LuaContext* get_lua_context() const;
+    void set_lua_context(LuaContext* lua_context);
     const std::string& get_lua_type_name() const;
 
   private:
+
+    LuaContext* lua_context;           /**< The Solarus Lua API (NULL means no callbacks for this sprite). */
 
     // animation set
     static std::map<std::string, SpriteAnimationSet*> all_animation_sets;
@@ -138,6 +142,7 @@ class Sprite: public Drawable {
     static SpriteAnimationSet& get_animation_set(const std::string& id);
     int get_next_frame() const;
     Surface& get_intermediate_surface();
+    void set_frame_changed(bool frame_changed);
 };
 
 #endif

@@ -218,7 +218,9 @@ int LuaContext::drawable_meta_gc(lua_State* l) {
   LuaContext& lua_context = get_lua_context(l);
   Drawable& drawable = check_drawable(l, 1);
 
-  lua_context.remove_drawable(&drawable);
+  if (drawable.get_refcount() == 1) {
+    lua_context.remove_drawable(&drawable);
+  }
   userdata_meta_gc(l);
 
   return 0;

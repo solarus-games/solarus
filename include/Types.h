@@ -94,11 +94,8 @@ class HUD;
 class HudElement;
 class ActionIcon;
 class SwordIcon;
-class PauseIcon;
 class ItemIcon;
 class Counter;
-class SmallKeysCounter;
-class FloorView;
 
 // drawable objects
 class Sprite;

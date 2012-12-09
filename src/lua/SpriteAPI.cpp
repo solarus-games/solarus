@@ -49,6 +49,8 @@ void LuaContext::register_sprite_module() {
   static const luaL_Reg metamethods[] = {
       { "__eq", userdata_meta_eq },
       { "__gc", drawable_meta_gc },
+      { "__newindex", userdata_meta_newindex_as_table },
+      { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
   register_type(sprite_module_name, methods, metamethods);
@@ -91,10 +93,13 @@ void LuaContext::push_sprite(lua_State* l, Sprite& sprite) {
  */
 int LuaContext::sprite_api_create(lua_State* l) {
 
+  LuaContext& lua_context = get_lua_context(l);
+
   const std::string& animation_set_id = luaL_checkstring(l, 1);
 
   Sprite* sprite = new Sprite(animation_set_id);
-  get_lua_context(l).add_drawable(sprite);
+  sprite->set_lua_context(&lua_context);
+  lua_context.add_drawable(sprite);
 
   push_sprite(l, *sprite);
   return 1;
@@ -286,5 +291,33 @@ int LuaContext::sprite_api_synchronize(lua_State *l) {
   }
 
   return 0;
+}
+
+/**
+ * @brief Calls the on_animation_finished() method of a Lua sprite.
+ * @param sprite A sprite whose animation has just finished.
+ * @param animation Name of the animation finished.
+ */
+void LuaContext::sprite_on_animation_finished(Sprite& sprite,
+    const std::string& animation) {
+
+  push_sprite(l, sprite);
+  on_animation_finished(animation);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_frame_changed() method of a Lua sprite.
+ * @param sprite A sprite whose frame has just changed.
+ * @param animation Name of the current animation.
+ * @param animation Name of the sprite animation.
+ * @param frame The new frame.
+ */
+void LuaContext::sprite_on_frame_changed(Sprite& sprite,
+    const std::string& animation, int frame) {
+
+  push_sprite(l, sprite);
+  on_frame_changed(animation, frame);
+  lua_pop(l, 1);
 }
 

@@ -89,18 +89,29 @@ void LuaContext::initialize() {
   luaL_openlibs(l);
 
   // Put a pointer to this LuaContext object in the Lua context.
-  lua_pushstring(l, "sol.cpp_object");
+                                  // --
   lua_pushlightuserdata(l, this);
-  lua_settable(l, LUA_REGISTRYINDEX);  // registry["sol.cpp_object"] = this
+                                  // this
+  lua_setfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
+                                  // --
 
   // Allow userdata to be indexable if they want.
-  lua_pushstring(l, "sol.userdata_tables");
-                                  // "sol..." udata_tables
   lua_newtable(l);
-                                  // "sol..." udata_tables
-  lua_settable(l, LUA_REGISTRYINDEX);  // registry["sol.userdata_tables"] = {}
+                                  // udata_tables
+  lua_newtable(l);
+                                  // udata_tables meta
+  lua_pushstring(l, "__mode");
+                                  // udata_tables meta "__mode"
+  lua_pushstring(l, "k");
+                                  // udata_tables meta "__mode" "k"
+  lua_settable(l, -3);
+                                  // udata_tables meta
+  lua_setmetatable(l, -2);
+                                  // udata_tables
+  lua_setfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
+                                  // --
 
-  // Create the Solarus table that will be available to the script.
+  // Create the sol table that will contain the whole Solarus API.
   lua_newtable(l);
   lua_setglobal(l, "sol");
 
@@ -1699,6 +1710,32 @@ bool LuaContext::on_direction_pressed(InputEvent& event) {
     lua_pop(l, 1);
   }
   return handled;
+}
+
+/**
+ * @brief Calls the on_animation_finished() method of the object on top of the stack.
+ * @param animation Name of the animation finished.
+ */
+void LuaContext::on_animation_finished(const std::string& animation) {
+
+  if (find_method("on_animation_finished")) {
+    push_string(l, animation);
+    call_function(2, 0, "on_animation_finished");
+  }
+}
+
+/**
+ * @brief Calls the on_frame_changed() method of the object on top of the stack.
+ * @param animation Name of the sprite animation.
+ * @param frame The new frame.
+ */
+void LuaContext::on_frame_changed(const std::string& animation, int frame) {
+
+  if (find_method("on_frame_changed")) {
+    push_string(l, animation);
+    lua_pushinteger(l, frame);
+    call_function(3, 0, "on_frame_changed");
+  }
 }
 
 /**

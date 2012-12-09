@@ -298,6 +298,8 @@ MapEntities& MapEntity::get_entities() {
  * @return The Lua context where all scripts are run.
  */
 LuaContext& MapEntity::get_lua_context() {
+
+  Debug::check_assertion(main_loop != NULL, "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
 }
 

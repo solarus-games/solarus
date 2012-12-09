@@ -50,6 +50,7 @@ int ExportableToLua::get_refcount() const {
  * @brief Increments the refcount of this object.
  */
 void ExportableToLua::increment_refcount() {
+
   refcount++;
 }
 
@@ -57,6 +58,7 @@ void ExportableToLua::increment_refcount() {
  * @brief Decrements the refcount of this object.
  */
 void ExportableToLua::decrement_refcount() {
+
   refcount--;
 }
 

@@ -183,6 +183,10 @@ class LuaContext {
     void menus_on_draw(int context_index, Surface& dst_surface);
     bool menus_on_input(int context_index, InputEvent& event);
 
+    // Sprite events.
+    void sprite_on_animation_finished(Sprite& sprite, const std::string& animation);
+    void sprite_on_frame_changed(Sprite& sprite, const std::string& animation, int frame);
+
     // Equipment item events.
     void item_on_update(EquipmentItem& item);
     void item_on_suspended(EquipmentItem& item, bool suspended);
@@ -330,7 +334,7 @@ class LuaContext {
       timer_api_set_suspended,
       timer_api_is_suspended_with_map,
       timer_api_set_suspended_with_map,
-      // TODO get_remaining_time, set_remaining_time,
+      // TODO get_remaining_time, set_remaining_time
       // TODO game:is_suspended, timer:is/set_suspended_with_map, sprite:get/set_ignore_suspend
       // are the same concept, make these names consistent
 
@@ -467,6 +471,9 @@ class LuaContext {
       game_api_start,
       game_api_is_started,
       game_api_is_suspended,
+      game_api_is_paused,
+      game_api_set_paused,
+      game_api_is_showing_dialog,
       game_api_get_map,
       game_api_get_value,
       game_api_set_value,
@@ -830,6 +837,8 @@ class LuaContext {
     bool on_joypad_axis_moved(InputEvent& event);
     bool on_joypad_hat_moved(InputEvent& event);
     bool on_direction_pressed(InputEvent& event);
+    void on_animation_finished(const std::string& animation);
+    void on_frame_changed(const std::string& animation, int frame);
     void on_started(Destination* destination);
     void on_opening_transition_finished(Destination* destination);
     void on_camera_back();
@@ -874,7 +883,7 @@ class LuaContext {
     void on_obstacle_reached(Movement& movement);
     void on_movement_changed(Movement& movement);
     void on_movement_finished();
-    void on_sprite_animation_finished(Sprite& sprite, const std::string& animation);
+    void on_sprite_animation_finished(Sprite& sprite, const std::string& animation);  // TODO remove? use sprite:on_animation_finished instead
     void on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
     void on_hurt(EnemyAttack attack, int life_lost);

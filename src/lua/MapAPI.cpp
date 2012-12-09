@@ -995,6 +995,7 @@ int LuaContext::map_api_create_destructible(lua_State* l) {
         treasure_savegame_variable << "'").c_str());
   }
 
+  // TODO Like enemies, implement this callback at runtime with function destructible:on_destroyed()
   int destruction_callback_ref = LUA_REFNIL;
   if (map.is_loaded()) {
     // We are at map runtime, i.e. running a Lua script.

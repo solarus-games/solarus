@@ -32,12 +32,8 @@ function hearts:initialize(game)
     sol.surface.create(all_hearts_img, 18, 0, 9, 9),  -- 3/4
     sol.surface.create(all_hearts_img, 27, 0, 9, 9)  -- Full heart.
   }
-  for i = 1, 4 do
-    self.heart_imgs[i]:set_transparency_color{0, 0, 0}
-  end
 
   self:check()
-
   self:rebuild_surface()
 end
 

@@ -525,6 +525,7 @@ void TextSurface::rebuild_bitmap() {
   int char_height = bitmap_size.get_height() / 16;
 
   surface = new Surface(char_width * num_chars, char_height);
+  surface->set_transparency_color(bitmap.get_transparency_color());
 
   // Traverse the string again to draw the characters.
   Rectangle dst_position(0, 0);

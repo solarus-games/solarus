@@ -42,40 +42,7 @@ function pause_icon:initialize(game)
     pause_icon:rebuild_surface()
   end
 
-  self:check()
   self:rebuild_surface()
-end
-
-function pause_icon:check()
-
-  local need_rebuild = false
-
-  -- If the hero is below the top-left icons, make them semi-transparent.
-  if self.game ~= nil and self.game:get_map() ~= nil then
-    local hero = self.game:get_map():get_entity("hero")
-    local x, y = hero:get_position()
-    if self.opacity == 255
-        and not self.game:is_suspended()
-        and x < 88
-        and y < 80 then
-      self.surface:set_opacity(96)
-    elseif self.opacity == 96
-        or self.game:is_suspended()
-        or x >= 88
-        or y >= 80 then
-      self.surface:set_opacity(255)
-    end
-  end
-
-  -- Redraw the surface only if something has changed.
-  if need_rebuild then
-    self:rebuild_surface()
-  end
-
-  -- Schedule the next check.
-  sol.timer.start(self.game, 50, function()
-    self:check()
-  end)
 end
 
 function pause_icon:on_paused()

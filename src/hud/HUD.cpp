@@ -23,9 +23,9 @@
 
 /**
  * @brief Constructor.
- * @param game the current game (cannot be NULL)
+ * @param game The current game.
  */
-HUD::HUD(Game &game):
+HUD::HUD(Game& game):
   game(game),
   nb_elements(0),
   showing_dialog(false) {
@@ -33,8 +33,8 @@ HUD::HUD(Game &game):
   elements[nb_elements++] = NULL;
   elements[nb_elements++] = NULL;
   elements[nb_elements++] = NULL;
-  elements[nb_elements++] = new ItemIcon(game, 0, 8, 29);
-  elements[nb_elements++] = new ItemIcon(game, 1, 60, 29);
+  elements[nb_elements++] = NULL;
+  elements[nb_elements++] = NULL;
   elements[nb_elements++] = new SwordIcon(game, 10, 29);
   elements[nb_elements++] = NULL;
   elements[nb_elements++] = new ActionIcon(game, 23, 51);
@@ -72,14 +72,6 @@ void HUD::update_blinking() {
         index = 5;
         break;
 
-      case GameControls::ITEM_1:
-        index = 3;
-        break;
-
-      case GameControls::ITEM_2:
-        index = 4;
-        break;
-
       default:
         break;
     }
@@ -107,8 +99,6 @@ void HUD::update() {
     showing_dialog = true;
 
     // a dialog is shown: hide or move the top-left icons
-    elements[3]->set_visible(false); // item 0
-    elements[4]->set_visible(false); // item 1
     elements[5]->set_position(-11, 17); // sword icon
     elements[7]->set_position(-11, 43); // action icon
   }
@@ -118,8 +108,6 @@ void HUD::update() {
       showing_dialog = false;
 
       // a message is finished: restore the top-left icons
-      elements[3]->set_visible(true); // item 0
-      elements[4]->set_visible(true); // item 1
       elements[5]->set_position(10, 29); // sword icon
       elements[7]->set_position(23, 51); // action icon
     }
@@ -129,15 +117,11 @@ void HUD::update() {
       const Rectangle &hero_xy = game.get_hero_xy();
       if (elements[3]->get_opacity() == 255 && !game.is_suspended()
           && hero_xy.get_x() < 88 && hero_xy.get_y() < 80) {
-        elements[3]->set_opacity(96); // item 0
-        elements[4]->set_opacity(96); // item 1
         elements[5]->set_opacity(96); // sword icon
         elements[7]->set_opacity(96); // action icon
       }
       else if (elements[3]->get_opacity() == 96
           && (hero_xy.get_x() >= 88 || hero_xy.get_y() >= 80 || game.is_suspended())) {
-        elements[3]->set_opacity(255); // item 0
-        elements[4]->set_opacity(255); // item 1
         elements[5]->set_opacity(255); // sword icon
         elements[7]->set_opacity(255); // action icon
       }

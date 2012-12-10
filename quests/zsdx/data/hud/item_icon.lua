@@ -24,7 +24,10 @@ function item_icon:initialize(game, slot)
   self.item_sprite = sol.sprite.create("entities/items")
   self.item_displayed = nil
   self.item_variant_displayed = 0
-  self.amount_text = sol.text_surface.create()
+  self.amount_text = sol.text_surface.create{
+    horizontal_alignment = "center",
+    vertical_alignment = "top"
+  }
   self.amount_displayed = nil
   self.max_amount_displayed = nil
 
@@ -66,8 +69,12 @@ function item_icon:check()
         self.amount_displayed = amount
         self.max_amount_displayed = max_amount
       end
+    elseif self.amount_displayed ~= nil then
+      need_rebuild = true
+      self.amount_displayed = nil
+      self.max_amount_displayed = nil
     end
-  elseif amount_displayed ~= nil then
+  elseif self.amount_displayed ~= nil then
     need_rebuild = true
     self.amount_displayed = nil
     self.max_amount_displayed = nil
@@ -92,7 +99,7 @@ function item_icon:rebuild_surface()
   if not self.game:is_showing_dialog() then
 
     -- Background image.
-    self.background_img:draw(self.surface, 12, 17)
+    self.background_img:draw(self.surface)
 
     if self.item_displayed ~= nil then
       -- Item.
@@ -105,7 +112,7 @@ function item_icon:rebuild_surface()
         else
           self.amount_text:set_font("white_digits")
         end
-        self.amount_text:draw(self.surface, 8, 16)
+        self.amount_text:draw(self.surface, 20, 16)
       end
     end
   end

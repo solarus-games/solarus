@@ -122,7 +122,7 @@ function item:on_ability_used(ability_name)
   if ability_name == "get_back_from_death"
     and self:get_game():has_ability("get_back_from_death") then
 
-    self.bottle_to_make_empty = self:get_first_bottle_with(6)
+    self.bottle_to_make_empty = self:get_game():get_first_bottle_with(6)
   end
 end
 

@@ -375,7 +375,7 @@ void PauseSubmenuInventory::show_info_message() {
  * its destination icon, then the assignment is done.
  * Nothing is done if the item is not assignable.
  *
- * @param slot slot to set (0 for X or 1 for V)
+ * @param slot slot to set (1 or 2)
  */
 void PauseSubmenuInventory::assign_item(int slot) {
 
@@ -405,7 +405,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
   // compute the movement
   int x1 = 60 + 32 * cursor_column;
   int y1 = 75 + 32 * cursor_row;
-  int x2 = (slot == 0) ? 20 : 72;
+  int x2 = (slot == 1) ? 20 : 72;
   int y2 = 46;
 
   item_assigned_movement = new TargetMovement(x2, y2, 500, true);

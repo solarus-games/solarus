@@ -35,6 +35,7 @@ EquipmentItem::EquipmentItem(Equipment& equipment):
   equipment(equipment),
   name(""),
   savegame_variable(""),
+  max_amount(0),
   obtainable(true),
   assignable(false),
   can_disappear(false),

@@ -36,49 +36,6 @@ Equipment::Equipment(Savegame& savegame):
   savegame(savegame),
   suspended(true) {
 
-  // TODO implement a separate class that provide the info of project_db.dat.
-
-  // Load the list of equipment item names.
-  static const std::string file_name = "project_db.dat";
-  std::istream& database_file = FileTools::data_file_open(file_name);
-  std::string line;
-
-  while (std::getline(database_file, line)) {
-
-    if (line.size() == 0) {
-      continue;
-    }
-
-    int resource_type;
-    std::string resource_id, resource_name;
-    std::istringstream iss(line);
-    FileTools::read(iss, resource_type);
-    FileTools::read(iss, resource_id);
-    FileTools::read(iss, resource_name);
-
-    if (resource_type == 5) {  // It's an equipment item.
-      EquipmentItem* item = new EquipmentItem(*this);
-      item->increment_refcount();
-      item->set_name(resource_id);
-      items[resource_id] = item;
-    }
-  }
-  FileTools::data_file_close(database_file);
-
-  // Make sure the gc won't destroy the savegame if items scripts use it.
-  get_savegame().increment_refcount();
-
-  // Load the item scripts.
-  std::map<std::string, EquipmentItem*>::const_iterator it;
-  for (it = items.begin(); it != items.end(); it++) {
-    it->second->initialize();
-  }
-
-  // Start the items once they all exist.
-  for (it = items.begin(); it != items.end(); it++) {
-    it->second->start();
-  }
-  get_savegame().decrement_refcount();
 }
 
 /**
@@ -415,7 +372,53 @@ void Equipment::restore_all_magic() {
   set_magic(get_max_magic());
 }
 
-// saved items
+// items
+
+/**
+ * @brief Runs the Lua script of each equipment item.
+ */
+void Equipment::load_items() {
+
+  // TODO implement a separate class that provide the info of project_db.dat.
+
+  // Load the list of equipment item names.
+  static const std::string file_name = "project_db.dat";
+  std::istream& database_file = FileTools::data_file_open(file_name);
+  std::string line;
+
+  while (std::getline(database_file, line)) {
+
+    if (line.size() == 0) {
+      continue;
+    }
+
+    int resource_type;
+    std::string resource_id, resource_name;
+    std::istringstream iss(line);
+    FileTools::read(iss, resource_type);
+    FileTools::read(iss, resource_id);
+    FileTools::read(iss, resource_name);
+
+    if (resource_type == 5) {  // It's an equipment item.
+      EquipmentItem* item = new EquipmentItem(*this);
+      item->increment_refcount();
+      item->set_name(resource_id);
+      items[resource_id] = item;
+    }
+  }
+  FileTools::data_file_close(database_file);
+
+  // Load the item scripts.
+  std::map<std::string, EquipmentItem*>::const_iterator it;
+  for (it = items.begin(); it != items.end(); it++) {
+    it->second->initialize();
+  }
+
+  // Start the items once they all exist.
+  for (it = items.begin(); it != items.end(); it++) {
+    it->second->start();
+  }
+}
 
 /**
  * @brief Returns an equipment item.

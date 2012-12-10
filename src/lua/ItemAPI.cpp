@@ -492,6 +492,11 @@ int LuaContext::item_api_get_variant(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
 
+  if (!item.is_saved()) {
+    luaL_error(l, (StringConcat()
+        << "Item '" << item.get_name() << "' is not saved").c_str());
+  }
+
   lua_pushinteger(l, item.get_variant());
   return 1;
 }
@@ -505,6 +510,11 @@ int LuaContext::item_api_set_variant(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
   int variant = luaL_checkinteger(l, 2);
+
+  if (!item.is_saved()) {
+    luaL_error(l, (StringConcat()
+        << "Item '" << item.get_name() << "' is not saved").c_str());
+  }
 
   item.set_variant(variant);
 

@@ -88,9 +88,8 @@ class Equipment {
     void restore_all_magic();
 
     // equipment items
+    void load_items();
     EquipmentItem& get_item(const std::string& item_name);
-
-    // item assignments
     EquipmentItem* get_item_assigned(int slot);
     void set_item_assigned(int slot, EquipmentItem* item);
     int get_item_slot(EquipmentItem& item);

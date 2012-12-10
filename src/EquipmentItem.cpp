@@ -420,11 +420,9 @@ void EquipmentItem::set_variant(int variant) {
 
   // If we are removing the item, unassign it.
   if (variant == 0) {
-    if (equipment.get_item_assigned(0) == get_name()) {
-      equipment.set_item_assigned(0, "");
-    }
-    else if (equipment.get_item_assigned(1) == get_name()) {
-      equipment.set_item_assigned(1, "");
+    int slot = equipment.get_item_slot(*this);
+    if (slot != 0) {
+      equipment.set_item_assigned(slot, NULL);
     }
   }
 

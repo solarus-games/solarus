@@ -63,6 +63,8 @@ class Savegame: public ExportableToLua {
     static const std::string KEY_MAX_LIFE;
     static const std::string KEY_MAX_MONEY;
     static const std::string KEY_MAX_MAGIC;
+    static const std::string KEY_ITEM_SLOT_1;
+    static const std::string KEY_ITEM_SLOT_2;
     static const std::string KEY_ABILITY_TUNIC;
     static const std::string KEY_ABILITY_SWORD;
     static const std::string KEY_ABILITY_SHIELD;

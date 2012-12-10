@@ -61,7 +61,7 @@ void LuaContext::register_item_module() {
       { "has_variant", item_api_has_variant },
       { "get_variant", item_api_get_variant },
       { "set_variant", item_api_set_variant },
-      { "has_amoun", item_api_has_amount },
+      { "has_amount", item_api_has_amount },
       { "get_amount", item_api_get_amount },
       { "set_amount", item_api_set_amount },
       { "add_amount", item_api_add_amount },
@@ -519,14 +519,17 @@ int LuaContext::item_api_set_variant(lua_State* l) {
 int LuaContext::item_api_has_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
-  int amount = luaL_checkinteger(l, 2);
-
-  if (!item.has_amount()) {
-    luaL_error(l, (StringConcat() <<
-        "Item '" << item.get_name() << "' has no amount").c_str());
+  if (lua_gettop(l) >= 2) {
+    int amount = luaL_checkinteger(l, 2);
+    if (!item.has_amount()) {
+      luaL_error(l, (StringConcat() <<
+          "Item '" << item.get_name() << "' has no amount").c_str());
+    }
+    lua_pushboolean(l, item.get_amount() >= amount);
   }
-
-  lua_pushboolean(l, item.get_amount() >= amount);
+  else {
+    lua_pushboolean(l, item.has_amount());
+  }
   return 1;
 }
 

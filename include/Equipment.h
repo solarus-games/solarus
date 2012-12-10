@@ -91,9 +91,9 @@ class Equipment {
     EquipmentItem& get_item(const std::string& item_name);
 
     // item assignments
-    const std::string& get_item_assigned(int slot);
-    void set_item_assigned(int slot, const std::string& item_name);
-    int get_item_slot(const std::string& item_name);
+    EquipmentItem* get_item_assigned(int slot);
+    void set_item_assigned(int slot, EquipmentItem* item);
+    int get_item_slot(EquipmentItem& item);
 
     // abilities
     bool has_ability(const std::string& ability_name, int level = 1);

@@ -432,14 +432,25 @@ EquipmentItem& Equipment::get_item(const std::string& item_name) {
 
 /**
  * @brief Returns the item currently assigned to a slot.
- * @param slot slot of the item to get (0 for X or 1 for V)
- * @return name of the item currently assigned to this slot, or an empty string
+ * @param slot Slot of the item to get (1 or 2).
+ * @return The item currently assigned to this slot or NULL.
  */
-const std::string& Equipment::get_item_assigned(int slot) {
+EquipmentItem* Equipment::get_item_assigned(int slot) {
 
   // TODO don't hardcode item slots
-  const std::string& savegame_variable = slot == 0 ? "hud_item_slot_left" : "hud_item_slot_right";
-  return savegame.get_string(savegame_variable);
+
+  Debug::check_assertion(slot >= 1 && slot <= 2, StringConcat() <<
+      "Invalid item slot '" << slot << "'");
+
+  std::ostringstream oss;
+  oss << "_item_slot_" << slot;
+  const std::string& item_name = savegame.get_string(oss.str());
+
+  EquipmentItem* item = NULL;
+  if (!item_name.empty()) {
+    item = &get_item(item_name);
+  }
+  return item;
 }
 
 /**
@@ -448,38 +459,44 @@ const std::string& Equipment::get_item_assigned(int slot) {
  * The program exits with an error message if the specified item
  * cannot be assigned or if the player does not have it.
  * 
- * @param slot slot to set (0 for X or 1 for V)
- * @param item_name the item to assign to this slot (may be an empty string)
+ * @param slot Slot to set (1 or 2).
+ * @param item The item to assign to this slot or NULL to empty the slot.
  */
-void Equipment::set_item_assigned(int slot, const std::string& item_name) {
+void Equipment::set_item_assigned(int slot, EquipmentItem* item) {
 
-  if (item_name.size() != 0) {
-    Debug::check_assertion(get_item(item_name).get_variant() > 0, StringConcat()
-        << "Cannot assign item '" << item_name << "' because the player does not have it");
-    Debug::check_assertion(get_item(item_name).is_assignable(), StringConcat()
-        << "The item '" << item_name << "' cannot be assigned");
+  Debug::check_assertion(slot >= 1 && slot <= 2, StringConcat() <<
+      "Invalid item slot '" << slot << "'");
+
+  std::ostringstream oss;
+  oss << "_item_slot_" << slot;
+
+  if (item != NULL) {
+    Debug::check_assertion(item->get_variant() > 0, StringConcat()
+        << "Cannot assign item '" << item->get_name() << "' because the player does not have it");
+    Debug::check_assertion(item->is_assignable(), StringConcat()
+        << "The item '" << item->get_name() << "' cannot be assigned");
+    savegame.set_string(oss.str(), item->get_name());
   }
-
-  const std::string& savegame_variable = slot == 0 ? "hud_item_slot_left" : "hud_item_slot_right";
-  savegame.set_string(savegame_variable, item_name);
+  else {
+    savegame.set_string(oss.str(), "");
+  }
 }
 
 /**
- * @brief Returns the slot (0 or 1) where the specified item is currently assigned.
- * @param item_name name of the item
- * @return the slot of this item, or -1 if this item is not assigned
+ * @brief Returns the slot (1 or 2) where the specified item is currently assigned.
+ * @param item The item to find.
+ * @return The slot of this item, or 0 if this item is not assigned
  */
-int Equipment::get_item_slot(const std::string& item_name) {
-  
-  if (get_item_assigned(0) == item_name) {
-    return 0;
+int Equipment::get_item_slot(EquipmentItem& item) {
+
+  for (int i = 1; i <= 2; ++i) {
+    EquipmentItem* assigned_item = get_item_assigned(i);
+    if (assigned_item != NULL && assigned_item->get_name() == item.get_name()) {
+      return i;
+    }
   }
 
-  if (get_item_assigned(1) == item_name) {
-    return 1;
-  }
-
-  return -1;
+  return 0;
 }
 
 // abilities

@@ -34,7 +34,7 @@ function game:initialize_hud()
   self.hud.item_icon_1 = item_icon_builder:new(self, 1)
   self.hud.item_icon_1:set_dst_position(11, 29)
 
-  self.hud.item_icon_1 = item_icon_builder:new(self, 2)
+  self.hud.item_icon_2 = item_icon_builder:new(self, 2)
   self.hud.item_icon_2:set_dst_position(63, 29)
 
   self:set_hud_enabled(true)
@@ -45,18 +45,18 @@ end
 function game:check_hud()
 
   -- If the hero is below the top-left icons, make them semi-transparent.
-  if self.game:get_map() ~= nil then
-    local hero = self.get_map():get_entity("hero")
+  if self:get_map() ~= nil then
+    local hero = self:get_map():get_entity("hero")
     local x, y = hero:get_position()
     local opacity = nil
 
     if self.opacity == 255
-        and not self.game:is_suspended()
+        and not self:is_suspended()
         and x < 88
         and y < 80 then
       opacity = 96
     elseif self.opacity == 96
-        or self.game:is_suspended()
+        or self:is_suspended()
         or x >= 88
         or y >= 80 then
       opacity = 255
@@ -69,8 +69,8 @@ function game:check_hud()
     end
   end
 
-  sol.timer.start(self.game, 50, function()
-    self:check()
+  sol.timer.start(self, 50, function()
+    self:check_hud()
   end)
 end
 

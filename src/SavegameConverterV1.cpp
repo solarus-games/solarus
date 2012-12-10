@@ -106,6 +106,8 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
   savegame_v2.set_integer(Savegame::KEY_MAX_LIFE, get_integer(MAX_LIFE));
   savegame_v2.set_integer(Savegame::KEY_MAX_MONEY, get_integer(MAX_MONEY));
   savegame_v2.set_integer(Savegame::KEY_MAX_MAGIC, get_integer(MAX_MAGIC));
+  savegame_v2.set_string(Savegame::KEY_ITEM_SLOT_1, get_string(ITEM_SLOT_0));
+  savegame_v2.set_string(Savegame::KEY_ITEM_SLOT_2, get_string(ITEM_SLOT_1));
 
   savegame_v2.set_string(Savegame::KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_ACTION_KEY))));
@@ -147,8 +149,6 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
 
   // 2. Values that used to be built-in in v1 and become pure data in v2.
   savegame_v2.set_string("player_name", get_string(PLAYER_NAME));
-  savegame_v2.set_string("hud_item_slot_left", get_string(ITEM_SLOT_0));
-  savegame_v2.set_string("hud_item_slot_right", get_string(ITEM_SLOT_1));
   savegame_v2.set_integer("pause_last_submenu", get_integer(PAUSE_LAST_SUBMENU));
   savegame_v2.set_integer("pause_inventory_last_item_index", get_integer(INVENTORY_LAST_ITEM_INDEX));
 

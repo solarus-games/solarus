@@ -94,7 +94,6 @@ class HUD;
 class HudElement;
 class ActionIcon;
 class SwordIcon;
-class ItemIcon;
 class Counter;
 
 // drawable objects

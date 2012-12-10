@@ -17,7 +17,6 @@
 #include "hud/HUD.h"
 #include "hud/ActionIcon.h"
 #include "hud/SwordIcon.h"
-#include "hud/ItemIcon.h"
 #include "Game.h"
 #include "GameControls.h"
 
@@ -115,12 +114,12 @@ void HUD::update() {
 
       // if the hero is below the top-left icons, make them semi-transparent
       const Rectangle &hero_xy = game.get_hero_xy();
-      if (elements[3]->get_opacity() == 255 && !game.is_suspended()
+      if (elements[7]->get_opacity() == 255 && !game.is_suspended()
           && hero_xy.get_x() < 88 && hero_xy.get_y() < 80) {
         elements[5]->set_opacity(96); // sword icon
         elements[7]->set_opacity(96); // action icon
       }
-      else if (elements[3]->get_opacity() == 96
+      else if (elements[7]->get_opacity() == 96
           && (hero_xy.get_x() >= 88 || hero_xy.get_y() >= 80 || game.is_suspended())) {
         elements[5]->set_opacity(255); // sword icon
         elements[7]->set_opacity(255); // action icon

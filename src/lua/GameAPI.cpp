@@ -70,6 +70,8 @@ void LuaContext::register_game_module() {
       { "get_ability", game_api_get_ability },
       { "set_ability", game_api_set_ability },
       { "get_item", game_api_get_item },
+      { "get_item_assigned", game_api_get_item_assigned },
+      { "set_item_assigned", game_api_set_item_assigned },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -753,6 +755,54 @@ int LuaContext::game_api_get_item(lua_State* l) {
 
   push_item(l, savegame.get_equipment().get_item(item_name));
   return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_get_item_assigned.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_item_assigned(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  int slot = luaL_checkinteger(l, 2);
+
+  if (slot < 1 || slot > 2) {
+    luaL_argerror(l, 2, "The item slot should be 1 or 2");
+  }
+
+  EquipmentItem* item = savegame.get_equipment().get_item_assigned(slot);
+
+  if (item == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+    push_item(l, *item);
+  }
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_set_item_assigned.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_set_item_assigned(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  int slot = luaL_checkinteger(l, 2);
+  EquipmentItem* item = NULL;
+  if (!lua_isnil(l, 3)) {
+    item = &check_item(l, 3);
+  }
+
+  if (slot < 1 || slot > 2) {
+    luaL_argerror(l, 2, "The item slot should be 1 or 2");
+  }
+
+  savegame.get_equipment().set_item_assigned(slot, item);
+
+  return 0;
 }
 
 /**

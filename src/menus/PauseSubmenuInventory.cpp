@@ -232,13 +232,13 @@ void PauseSubmenuInventory::key_pressed(GameControls::GameKey key) {
 
   case GameControls::ITEM_1:
     if (is_item_selected()) {
-      assign_item(0);
+      assign_item(1);
     }
     break;
 
   case GameControls::ITEM_2:
     if (is_item_selected()) {
-      assign_item(1);
+      assign_item(2);
     }
     break;
 
@@ -383,7 +383,8 @@ void PauseSubmenuInventory::assign_item(int slot) {
   const std::string &item_name = item_names[index];
 
   // if this item is not assignable, do nothing
-  if (!equipment.get_item(item_name).is_assignable()) {
+  EquipmentItem& item = equipment.get_item(item_name);
+  if (!item.is_assignable()) {
     return;
   }
 
@@ -393,9 +394,9 @@ void PauseSubmenuInventory::assign_item(int slot) {
   }
 
   // memorize this item
-  this->item_assigned_name = item_name;
+  this->item_assigned = &item;
   this->item_assigned_sprite = sprites[index];
-  this->item_assigned_variant = equipment.get_item(item_assigned_name).get_variant();
+  this->item_assigned_variant = item.get_variant();
   this->item_assigned_destination = slot;
 
   // play the sound
@@ -430,13 +431,13 @@ void PauseSubmenuInventory::finish_assigning_item() {
 
   // if the item to assign is already assigned to the other icon, switch the two items
   int slot = item_assigned_destination;
-  const std::string &current_item_name = equipment.get_item_assigned(slot);
-  const std::string &other_item_name = equipment.get_item_assigned(1 - slot);
+  EquipmentItem* current_item = equipment.get_item_assigned(slot);
+  EquipmentItem* other_item = equipment.get_item_assigned(3 - slot);
 
-  if (other_item_name == item_assigned_name) {
-    equipment.set_item_assigned(1 - slot, current_item_name);
+  if (other_item == item_assigned) {
+    equipment.set_item_assigned(3 - slot, current_item);
   }
-  equipment.set_item_assigned(slot, item_assigned_name);
+  equipment.set_item_assigned(slot, item_assigned);
 
   delete item_assigned_movement;
   item_assigned_movement = NULL;

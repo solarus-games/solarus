@@ -372,7 +372,7 @@ class LuaContext {
       text_surface_api_set_font,
       text_surface_api_get_rendering_mode,
       text_surface_api_set_rendering_mode,
-      text_surface_api_get_text_color,
+      text_surface_api_get_text_color,  // TODO rename to get/set_color
       text_surface_api_set_text_color,
       text_surface_api_get_text,
       text_surface_api_set_text,
@@ -502,6 +502,8 @@ class LuaContext {
       game_api_get_ability,
       game_api_set_ability,
       game_api_get_item,
+      game_api_get_item_assigned,
+      game_api_set_item_assigned,
 
       // Equipment item API.
       item_api_get_name,

@@ -231,11 +231,11 @@ void Hero::State::key_pressed(GameControls::GameKey key) {
 
     // use an inventory item
   case GameControls::ITEM_1:
-    item_key_pressed(0);
+    item_key_pressed(1);
     break;
 
   case GameControls::ITEM_2:
-    item_key_pressed(1);
+    item_key_pressed(2);
     break;
 
   default:
@@ -335,18 +335,18 @@ void Hero::State::directional_key_released(int direction4) {
 
 /**
  * @brief Notifies this state that an item key was just pressed.
- * @param slot the slot activated (0 or 1)
+ * @param slot The slot activated (1 or 2).
  */
 void Hero::State::item_key_pressed(int slot) {
 
-  const std::string item_name = get_equipment().get_item_assigned(slot);
+  EquipmentItem* item = get_equipment().get_item_assigned(slot);
 
-  if (item_name.size() > 0
-      && get_equipment().get_item(item_name).is_assignable()
-      && get_equipment().get_item(item_name).get_variant() > 0
+  if (item != NULL
+      && item->is_assignable()
+      && item->get_variant() > 0
       && can_start_inventory_item()) {
 
-    hero.set_state(new InventoryItemState(hero, item_name));
+    hero.set_state(new InventoryItemState(hero, item->get_name()));
   }
 }
 

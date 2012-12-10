@@ -17,14 +17,15 @@ function item_icon:initialize(game, slot)
 
   self.game = game
   self.slot = slot
-  self.surface = sol.surface.create(72, 24)
+  self.surface = sol.surface.create(32, 28)
   self.surface:set_transparency_color{0, 0, 0}
   self.opacity = 255
   self.background_img = sol.surface.create("hud/item_icon_" .. slot .. ".png")
   self.item_sprite = sol.sprite.create("entities/items")
   self.item_displayed = nil
-  self.item_variant_displayed = nil
+  self.item_variant_displayed = 0
   self.amount_text = sol.text_surface.create()
+  self.amount_displayed = nil
   self.max_amount_displayed = nil
 
   self:check()
@@ -35,14 +36,41 @@ function item_icon:check()
 
   local need_rebuild = false
 
+  -- Item assigned.
   local item = self.game:get_item_assigned(self.slot)
   if self.item_displayed ~= item then
     need_rebuild = true
-    self.item_displaued = item
+    self.item_displayed = item
     self.item_variant_displayed = nil
     if item ~= nil then
       self.item_sprite:set_animation(item:get_name())
     end
+  end
+
+  if item ~= nil then
+    -- Variant of the item.
+    local item_variant = item:get_variant()
+    if self.item_variant_displayed ~= item_variant then
+      need_rebuild = true
+      self.item_variant_displayed = item_variant
+      self.item_sprite:set_direction(item_variant - 1)
+    end
+
+    -- Amount.
+    if item:has_amount() then
+      local amount = item:get_amount()
+      local max_amount = item:get_max_amount()
+      if self.amount_displayed ~= amount
+          or self.max_amount_displayed ~= max_amount then
+        need_rebuild = true
+        self.amount_displayed = amount
+        self.max_amount_displayed = max_amount
+      end
+    end
+  elseif amount_displayed ~= nil then
+    need_rebuild = true
+    self.amount_displayed = nil
+    self.max_amount_displayed = nil
   end
 
   -- Redraw the surface only if something has changed.
@@ -69,8 +97,14 @@ function item_icon:rebuild_surface()
     if self.item_displayed ~= nil then
       -- Item.
       self.item_sprite:draw(self.surface, 12, 17)
-      if self.amount_text:get_text() ~= "" then
+      if self.amount_displayed ~= nil then
         -- Amount.
+        self.amount_text:set_text(tostring(self.amount_displayed))
+        if self.amount_displayed == self.max_amount_displayed then
+          self.amount_text:set_font("green_digits")
+        else
+          self.amount_text:set_font("white_digits")
+        end
         self.amount_text:draw(self.surface, 8, 16)
       end
     end

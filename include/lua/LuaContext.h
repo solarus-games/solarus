@@ -359,6 +359,7 @@ class LuaContext {
       surface_api_create,
       surface_api_get_size,
       surface_api_fill_color,
+      surface_api_get_transparency_color,
       surface_api_set_transparency_color,
       surface_api_set_opacity,
 

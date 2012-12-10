@@ -244,8 +244,12 @@ int LuaContext::text_surface_api_get_font(lua_State* l) {
 int LuaContext::text_surface_api_set_font(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  const std::string& font_id= luaL_checkstring(l, 2);
+  const std::string& font_id = luaL_checkstring(l, 2);
 
+  if (!TextSurface::has_font(font_id)) {
+    luaL_argerror(l, 2, (StringConcat() <<
+        "No such font: '" << font_id << "'").c_str());
+  }
   text_surface.set_font(font_id);
 
   return 0;

@@ -190,6 +190,16 @@ TextSurface::~TextSurface() {
 }
 
 /**
+ * @brief Returns whether a font exists.
+ * @param font_id Id of a font.
+ * @return true if this font exists.
+ */
+bool TextSurface::has_font(const std::string& font_id) {
+
+  return fonts.find(font_id) != fonts.end();
+}
+
+/**
  * @brief Returns the font used to draw this text.
  * @return Id of a font.
  */
@@ -199,10 +209,12 @@ const std::string& TextSurface::get_font() {
 
 /**
  * @brief Sets the font to use.
- * @param font_id A font.
+ * @param font_id Id of a font.
  */
 void TextSurface::set_font(const std::string& font_id) {
 
+  Debug::check_assertion(has_font(font_id), StringConcat() <<
+      "No such font: '" << font_id << "'");
   this->font_id = font_id;
   rebuild();
 }

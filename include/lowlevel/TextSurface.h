@@ -115,6 +115,7 @@ class TextSurface: public Drawable {
         VerticalAlignment vertical_alignment);
     ~TextSurface();
 
+    static bool has_font(const std::string& font_id);
     const std::string& get_font();
     void set_font(const std::string& font_id);
     HorizontalAlignment get_horizontal_alignment();

@@ -21,6 +21,7 @@
 #include "Transition.h"
 #include "GameControls.h"
 #include "Savegame.h"
+#include "DialogBox.h"
 
 /**
  * @brief Represents the game currently running.
@@ -62,9 +63,9 @@ class Game {
     bool crystal_state;        /**< indicates that a crystal has been enabled (i.e. the orange blocks are raised) */
 
     // graphics
-    HUD *hud;                  /**< the game HUD (displaying hearts, rupees, key icons, etc.) */
+    HUD* hud;                  /**< the game HUD (displaying hearts, rupees, key icons, etc.) */
     bool hud_enabled;          /**< true if the HUD is currently displayed */
-    DialogBox *dialog_box;     /**< the dialog box manager */
+    DialogBox dialog_box;      /**< the dialog box manager */
 
     // update functions
     void update_keys_effect();

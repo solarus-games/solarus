@@ -20,7 +20,6 @@
 #include "Savegame.h"
 #include "KeysEffect.h"
 #include "Equipment.h"
-#include "DialogBox.h"
 #include "Treasure.h"
 #include "GameoverSequence.h"
 #include "DebugKeys.h"
@@ -59,7 +58,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   crystal_state(false),
   hud(NULL),
   hud_enabled(true),
-  dialog_box(NULL) {
+  dialog_box(*this) {
 
   // notify objects
   get_savegame().increment_refcount();
@@ -67,7 +66,6 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
 
   // initialize members
   controls = new GameControls(*this);
-  dialog_box = new DialogBox(*this);
   hero = new Hero(get_equipment());
   hero->increment_refcount();
   keys_effect = new KeysEffect();
@@ -98,7 +96,6 @@ Game::~Game() {
   Music::play(Music::none);
 
   delete transition;
-  delete dialog_box;
   delete pause_menu;
   delete gameover_sequence;
   delete keys_effect;
@@ -249,7 +246,7 @@ void Game::key_pressed(GameControls::GameKey key) {
 
   // is a message being shown?
   else if (is_showing_dialog()) {
-    dialog_box->key_pressed(key);
+    dialog_box.key_pressed(key);
   }
 
   // is the game paused?
@@ -301,7 +298,7 @@ void Game::update() {
   if (hud_enabled) {
     hud->update();
   }
-  dialog_box->update();
+  dialog_box.update();
 
   // update the pause menu (if the game is paused)
   if (is_paused()) {
@@ -502,7 +499,7 @@ void Game::draw(Surface& dst_surface) {
 
     // draw the dialog box if any
     if (is_showing_dialog()) {
-      dialog_box->draw(dst_surface);
+      dialog_box.draw(dst_surface);
     }
   }
 
@@ -645,7 +642,7 @@ bool Game::is_suspended() {
  * @return true if a dialog box is being shown
  */
 bool Game::is_showing_dialog() {
-  return dialog_box->is_enabled();
+  return dialog_box.is_enabled();
 }
 
 /**
@@ -653,7 +650,7 @@ bool Game::is_showing_dialog() {
  * @return the dialog box manager
  */
 DialogBox& Game::get_dialog_box() {
-  return *dialog_box;
+  return dialog_box;
 }
 
 /**

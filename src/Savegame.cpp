@@ -325,10 +325,10 @@ Game* Savegame::get_game() {
 
 /**
  * @brief Sets the game that is running this savegame.
- * @param game A game.
+ * @param game A game or NULL.
  */
-void Savegame::set_game(Game& game) {
-  this->game = &game;
+void Savegame::set_game(Game* game) {
+  this->game = game;
 }
 
 /**

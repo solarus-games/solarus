@@ -103,7 +103,7 @@ class Savegame: public ExportableToLua {
     LuaContext& get_lua_context();
     Equipment& get_equipment();
     Game* get_game();
-    void set_game(Game& game);
+    void set_game(Game* game);
     void notify_game_started();
     void notify_game_finished();
 

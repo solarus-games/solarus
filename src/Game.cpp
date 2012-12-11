@@ -61,8 +61,8 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   dialog_box(*this) {
 
   // notify objects
-  get_savegame().increment_refcount();
-  get_savegame().set_game(*this);
+  savegame->increment_refcount();
+  savegame->set_game(this);
 
   // initialize members
   controls = new GameControls(*this);
@@ -81,6 +81,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
  */
 Game::~Game() {
 
+  savegame->set_game(NULL);
   savegame->decrement_refcount();
   if (savegame->get_refcount() == 0) {
     // No one is using the savegame anymore (especially not Lua).

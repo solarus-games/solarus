@@ -216,6 +216,8 @@ class LuaContext {
     void game_on_map_changed(Game& game, Map& map);
     void game_on_paused(Game& game);
     void game_on_unpaused(Game& game);
+    bool game_on_command_pressed(Game& game, const std::string& command);
+    bool game_on_command_released(Game& game, const std::string& command);
 
     // Map events.
     void map_on_update(Map& map);
@@ -505,6 +507,13 @@ class LuaContext {
       game_api_get_item,
       game_api_get_item_assigned,
       game_api_set_item_assigned,
+      game_api_is_command_pressed,
+      game_api_get_commands_direction,
+      game_api_get_command_effect,
+      game_api_get_command_keyboard_binding,
+      game_api_set_command_keyboard_binding,
+      game_api_get_command_joypad_binding,
+      game_api_set_command_joypad_binding,
 
       // Equipment item API.
       item_api_get_name,

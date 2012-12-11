@@ -21,7 +21,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
-VideoManager *VideoManager::instance = NULL;
+VideoManager* VideoManager::instance = NULL;
 
 // Resolutions.
 #if defined(SOLARUS_SCREEN_FORCE_MODE) && SOLARUS_SCREEN_FORCE_MODE != -1
@@ -53,10 +53,8 @@ const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
 
 /**
  * @brief Lua name of each value of the VideoMode enum.
- *
- * This array is made to be compatible with luaL_checkoption().
  */
-const char* VideoManager::video_mode_names[] = {
+const std::string VideoManager::video_mode_names[] = {
   "windowed_stretched",
   "windowed_scale2x",
   "windowed_normal",
@@ -64,7 +62,7 @@ const char* VideoManager::video_mode_names[] = {
   "fullscreen_wide",
   "fullscreen_scale2x",
   "fullscreen_scale2x_wide",
-  NULL
+  ""  // Sentinel.
 };
 
 /**

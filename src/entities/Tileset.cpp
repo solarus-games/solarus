@@ -24,12 +24,13 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lua/LuaContext.h"
 #include <lua.hpp>
 
 /**
  * @brief Lua name of each ground type.
  */
-static const char* ground_names[] = {
+static std::string ground_names[] = {
     "traversable",
     "wall",
     "wall_top_right",
@@ -47,7 +48,7 @@ static const char* ground_names[] = {
     "ladder",
     "prickles",
     "lava",
-    NULL
+    ""  // Sentinel.
 };
 
 /**
@@ -252,7 +253,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
   int id = -1, default_layer = -1, width = 0, height = 0;
   int x[] = { -1, -1, -1, -1 };
   int y[] = { -1, -1, -1, -1 };
-  int ground = -1;
+  Obstacle ground = OBSTACLE_NONE;
   std::string scrolling;
   int i = 0, j = 0;
 
@@ -267,7 +268,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
       id = luaL_checkinteger(l, 3);
     }
     else if (key == "ground") {
-      ground = luaL_checkoption(l, 3, NULL, ground_names);
+      ground = LuaContext::check_enum<Obstacle>(l, 3, ground_names);
     }
     else if (key == "default_layer") {
       default_layer = luaL_checkinteger(l, 3);
@@ -324,10 +325,6 @@ int Tileset::l_tile_pattern(lua_State* l) {
     luaL_argerror(l, 1, "Missing id for this tile pattern");
   }
 
-  if (ground == -1) {
-    luaL_argerror(l, 1, "Missing ground for this tile pattern");
-  }
-
   if (default_layer == -1) {
     luaL_argerror(l, 1, "Missing default layer for this tile pattern");
   }
@@ -355,13 +352,13 @@ int Tileset::l_tile_pattern(lua_State* l) {
   if (i == 1) {
     // Single frame.
     if (scrolling.empty()) {
-      tile_pattern = new SimpleTilePattern(Obstacle(ground), x[0], y[0], width, height);
+      tile_pattern = new SimpleTilePattern(ground, x[0], y[0], width, height);
     }
     else if (scrolling == "parallax") {
-      tile_pattern = new ParallaxScrollingTilePattern(Obstacle(ground), x[0], y[0], width, height);
+      tile_pattern = new ParallaxScrollingTilePattern(ground, x[0], y[0], width, height);
     }
     else if (scrolling == "self") {
-      tile_pattern = new SelfScrollingTilePattern(Obstacle(ground), x[0], y[0], width, height);
+      tile_pattern = new SelfScrollingTilePattern(ground, x[0], y[0], width, height);
     }
   }
   else {
@@ -372,7 +369,7 @@ int Tileset::l_tile_pattern(lua_State* l) {
     bool parallax = scrolling == "parallax";
     AnimatedTilePattern::AnimationSequence sequence = (i == 3) ?
         AnimatedTilePattern::ANIMATION_SEQUENCE_012 : AnimatedTilePattern::ANIMATION_SEQUENCE_0121;
-    tile_pattern = new AnimatedTilePattern(Obstacle(ground), sequence, width, height,
+    tile_pattern = new AnimatedTilePattern(ground, sequence, width, height,
         x[0], y[0], x[1], y[1], x[2], y[2], parallax);
   }
 

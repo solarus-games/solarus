@@ -45,7 +45,7 @@ const std::string LuaContext::entity_door_module_name = "sol.entity.door";
 const std::string LuaContext::entity_pickable_module_name = "sol.entity.pickable";
 const std::string LuaContext::entity_enemy_module_name = "sol.entity.enemy";
 
-const char* LuaContext::enemy_attack_names[] = {
+const std::string LuaContext::enemy_attack_names[] = {
   "sword",
   "thrown_item",
   "explosion",
@@ -54,28 +54,28 @@ const char* LuaContext::enemy_attack_names[] = {
   "boomerang",
   "fire",
   "script",
-  NULL
+  ""  // Sentinel.
 };
 
-const char* LuaContext::enemy_hurt_style_names[] = {
+const std::string LuaContext::enemy_hurt_style_names[] = {
   "normal",
   "monster",
   "boss",
-  NULL
+  ""  // Sentinel.
 };
 
-const char* LuaContext::enemy_obstacle_behavior_names[] = {
+const std::string LuaContext::enemy_obstacle_behavior_names[] = {
   "normal",
   "flying",
   "swimming",
-  NULL
+  ""  // Sentinel.
 };
 
-const char* LuaContext::transition_style_names[] = {
+const std::string LuaContext::transition_style_names[] = {
   "immediate",
   "fade",
   "scrolling",
-  NULL
+  ""  // Sentinel.
 };
 
 /**
@@ -794,13 +794,10 @@ int LuaContext::hero_api_teleport(lua_State* l) {
   Hero& hero = check_hero(l, 1);
   const std::string& map_id = luaL_checkstring(l, 2);
   const std::string& destination_name = luaL_checkstring(l, 3);
-  int transition_style = Transition::FADE;
-  if (lua_gettop(l) >= 4) {
-    transition_style = luaL_checkoption(l, 4, NULL, transition_style_names);
-  }
+  Transition::Style transition_style = opt_enum<Transition::Style>(
+      l, 4, transition_style_names, Transition::FADE);
 
-  hero.get_game().set_current_map(map_id, destination_name,
-      Transition::Style(transition_style));
+  hero.get_game().set_current_map(map_id, destination_name, transition_style);
 
   return 0;
 }
@@ -1677,7 +1674,7 @@ int LuaContext::enemy_api_get_hurt_style(lua_State* l) {
 
   Enemy::HurtStyle hurt_style = enemy.get_hurt_style();
 
-  lua_pushstring(l, enemy_hurt_style_names[hurt_style]);
+  push_string(l, enemy_hurt_style_names[hurt_style]);
   return 1;
 }
 
@@ -1689,9 +1686,10 @@ int LuaContext::enemy_api_get_hurt_style(lua_State* l) {
 int LuaContext::enemy_api_set_hurt_style(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  int hurt_style = luaL_checkoption(l, 2, NULL, enemy_hurt_style_names);
+  Enemy::HurtStyle hurt_style = check_enum<Enemy::HurtStyle>(
+      l, 2, enemy_hurt_style_names);
 
-  enemy.set_hurt_style(Enemy::HurtStyle(hurt_style));
+  enemy.set_hurt_style(hurt_style);
 
   return 0;
 }
@@ -1762,20 +1760,20 @@ int LuaContext::enemy_api_set_minimum_shield_needed(lua_State* l) {
 int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  int attack = luaL_checkoption(l, 2, NULL, enemy_attack_names);
+  EnemyAttack attack = check_enum<EnemyAttack>(l, 2, enemy_attack_names);
 
   if (lua_isnumber(l, 3)) {
     int life_points = luaL_checkinteger(l, 3);
     Debug::check_assertion(life_points > 0, StringConcat()
         << "Invalid attack consequence: " << life_points);
-    enemy.set_attack_consequence(EnemyAttack(attack), EnemyReaction::HURT, life_points);
+    enemy.set_attack_consequence(attack, EnemyReaction::HURT, life_points);
   }
   else {
     // TODO: simplify or encapsulate the C++ part of specifying attack consequences
     // (but the important thing is that the Lua API is easy to use)
     const std::string& reaction_name = lua_tostring(l, 3);
     EnemyReaction::ReactionType reaction = EnemyReaction::get_reaction_by_name(reaction_name);
-    enemy.set_attack_consequence(EnemyAttack(attack), reaction);
+    enemy.set_attack_consequence(attack, reaction);
   }
 
   return 0;
@@ -1790,18 +1788,18 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
   Sprite& sprite = check_sprite(l, 2);
-  int attack = luaL_checkoption(l, 3, NULL, enemy_attack_names);
+  EnemyAttack attack = check_enum<EnemyAttack>(l, 3, enemy_attack_names);
 
   if (lua_isnumber(l, 4)) {
     int life_points = luaL_checkinteger(l, 4);
     Debug::check_assertion(life_points > 0, StringConcat()
         << "Invalid attack consequence: " << life_points);
-    enemy.set_attack_consequence_sprite(sprite, EnemyAttack(attack), EnemyReaction::HURT, life_points);
+    enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::HURT, life_points);
   }
   else {
     const std::string& reaction_name = lua_tostring(l, 4);
     EnemyReaction::ReactionType reaction = EnemyReaction::get_reaction_by_name(reaction_name);
-    enemy.set_attack_consequence_sprite(sprite, EnemyAttack(attack), reaction);
+    enemy.set_attack_consequence_sprite(sprite, attack, reaction);
   }
 
   return 0;
@@ -1903,7 +1901,7 @@ int LuaContext::enemy_api_get_obstacle_behavior(lua_State* l) {
 
   Enemy::ObstacleBehavior behavior = enemy.get_obstacle_behavior();
 
-  lua_pushstring(l, enemy_obstacle_behavior_names[behavior]);
+  push_string(l, enemy_obstacle_behavior_names[behavior]);
   return 1;
 }
 
@@ -1915,9 +1913,10 @@ int LuaContext::enemy_api_get_obstacle_behavior(lua_State* l) {
 int LuaContext::enemy_api_set_obstacle_behavior(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  int behavior = luaL_checkoption(l, 2, NULL, enemy_obstacle_behavior_names);
+  Enemy::ObstacleBehavior behavior = check_enum<Enemy::ObstacleBehavior>(
+      l, 2, enemy_obstacle_behavior_names);
 
-  enemy.set_obstacle_behavior(Enemy::ObstacleBehavior(behavior));
+  enemy.set_obstacle_behavior(behavior);
 
   return 0;
 }

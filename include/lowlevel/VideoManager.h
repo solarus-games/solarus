@@ -76,7 +76,7 @@ class VideoManager {
 
  public:
 
-  static const char* video_mode_names[];
+  static const std::string video_mode_names[];
 
   static void initialize(int argc, char** argv);
   static void quit();

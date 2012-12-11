@@ -21,11 +21,11 @@
 #include "entities/Layer.h"
 #include "entities/EnemyAttack.h"
 #include "lowlevel/InputEvent.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <map>
 #include <set>
-
-struct lua_State;
-struct luaL_Reg;
+#include <lua.hpp>
 
 /**
  * @brief This class represents a living Lua context that can execute dynamic
@@ -98,30 +98,34 @@ class LuaContext {
     void run_map(Map& map, Destination* destination);
     void run_enemy(Enemy& enemy);
 
-    // Lua table exploring helpers.
+    // Lua helpers.
     static int check_int_field(
         lua_State* l, int table_index, const std::string& key
     );
     static int opt_int_field(
-        lua_State* l, int table_index, const std::string& key, int default_value
+        lua_State* l, int table_index, const std::string& key,
+        int default_value
     );
     static double check_number_field(
         lua_State* l, int table_index, const std::string& key
     );
     static double opt_number_field(
-        lua_State* l, int table_index, const std::string& key, double default_value
+        lua_State* l, int table_index, const std::string& key,
+        double default_value
     );
     static const std::string check_string_field(
         lua_State* l, int table_index, const std::string& key
     );
     static const std::string opt_string_field(
-        lua_State* l, int table_index, const std::string& key, const std::string& default_value
+        lua_State* l, int table_index, const std::string& key,
+        const std::string& default_value
     );
     static bool check_boolean_field(
         lua_State* l, int table_index, const std::string& key
     );
     static bool opt_boolean_field(
-        lua_State* l, int table_index, const std::string& key, bool default_value
+        lua_State* l, int table_index, const std::string& key,
+        bool default_value
     );
     static int check_function_field(
         lua_State* l, int table_index, const std::string& key
@@ -129,8 +133,25 @@ class LuaContext {
     static int opt_function_field(
         lua_State* l, int table_index, const std::string& key
     );
+    template<typename E>
+    static E check_enum_field(
+        lua_State* l, int table_index, const std::string& key,
+        const std::string names[]
+    );
+    template<typename E>
+    static E opt_enum_field(
+        lua_State* l, int table_index, const std::string& key,
+        const std::string names[], E default_value
+    );
+    template<typename E>
+    static E check_enum(
+        lua_State* l, int index, const std::string names[]
+    );
+    template<typename E>
+    static E opt_enum(
+        lua_State* l, int index, const std::string names[], E default_value
+    );
 
-    // Lua helpers.
     static int get_positive_index(lua_State* l, int index);
     void print_stack();
     static bool is_valid_lua_identifier(const std::string& name);
@@ -923,11 +944,141 @@ class LuaContext {
     std::set<Drawable*> drawables;  /**< All drawable objects created by
                                      * this script. */
 
-    static const char* enemy_attack_names[];
-    static const char* enemy_hurt_style_names[];
-    static const char* enemy_obstacle_behavior_names[];
-    static const char* transition_style_names[];
+    static const std::string enemy_attack_names[];
+    static const std::string enemy_hurt_style_names[];
+    static const std::string enemy_obstacle_behavior_names[];
+    static const std::string transition_style_names[];
 };
+
+/**
+ * @brief Checks whether a value is the name of an enumeration value and
+ * returns this value.
+ *
+ * Raises a Lua error if the value is not a string or if the string cannot
+ * be found in the array.
+ * This is a useful function for mapping strings to C enums.
+ *
+ * This function is similar to luaL_checkoption except that it accepts an
+ * array of std::string instead of char*, and returns a value of enumerated
+ * type E instead of int.
+ *
+ * @param l A Lua state.
+ * @param index Index of a string in the Lua stack.
+ * @param names An array of strings to search in. This array must be
+ * terminated by an empty string.
+ * @return The index (converted to the enumerated type E) where the string was
+ * found in the array.
+ */
+template<typename E>
+E LuaContext::check_enum(
+    lua_State* l, int index, const std::string names[]) {
+
+  Debug::check_assertion(!names[0].empty(), "Invalid list of names");
+
+  const std::string& name = luaL_checkstring(l, index);
+  for (int i = 0; !names[i].empty(); ++i) {
+    if (names[i] == name) {
+      return E(i);
+    }
+  }
+
+  // The value was not found. Build an error message with possible values.
+  std::string allowed_names;
+  for (int i = 0; !names[i].empty(); ++i) {
+    allowed_names += "\"" + names[i] + "\", ";
+  }
+  allowed_names = allowed_names.substr(0, allowed_names.size() - 2);
+
+  luaL_argerror(l, index, (StringConcat() <<
+      "Invalid name '" << name << "'. Allowed names are: " << allowed_names).c_str());
+  throw;  // Make sure the compiler is happy.
+}
+
+/**
+ * @brief Like check_enum but with a default value.
+ *
+ * @param l A Lua state.
+ * @param index Index of a string in the Lua stack.
+ * @param names An array of strings to search in. This array must be
+ * terminated by an empty string.
+ * @param default_value The default value to return.
+ * @return The index (converted to the enumerated type E) where the string was
+ * found in the array.
+ */
+template<typename E>
+E LuaContext::opt_enum(
+    lua_State* l, int index, const std::string names[], E default_value) {
+
+  E value = default_value;
+  if (!lua_isnil(l, index)) {
+    value = check_enum<E>(l, index, names);
+  }
+  return value;
+}
+
+/**
+ * @brief Checks that a table field is the name of an enumeration value and
+ * returns this value.
+ *
+ * This function acts like lua_getfield() followed by check_enum().
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @param names An array of strings to search in. This array must be
+ * terminated by an empty string.
+ * @return The index (converted to the enumerated type E) where the string was
+ * found in the array.
+ */
+template<typename E>
+E LuaContext::check_enum_field(
+    lua_State* l, int table_index, const std::string& key,
+    const std::string names[]) {
+
+  lua_getfield(l, table_index, key.c_str());
+  if (!lua_isstring(l, -1)) {
+    luaL_argerror(l, table_index, (StringConcat() <<
+        "Bad field '" << key << "' (string expected, got " <<
+        luaL_typename(l, -1)).c_str()
+    );
+  }
+
+  E value = check_enum<E>(l, -1, names);
+  lua_pop(l, 1);
+  return value;
+}
+
+/**
+ * @brief Like check_enum_field but with a default value.
+ *
+ * @param l A Lua state.
+ * @param table_index Index of a table in the stack.
+ * @param key Key of the field to get in that table.
+ * @param names An array of strings to search in. This array must be
+ * terminated by an empty string.
+ * @param default_value The default value to return.
+ * @return The index (converted to the enumerated type E) where the string was
+ * found in the array.
+ */
+template<typename E>
+E LuaContext::opt_enum_field(
+    lua_State* l, int table_index, const std::string& key,
+    const std::string names[], E default_value) {
+
+  lua_getfield(l, table_index, key.c_str());
+  E value = default_value;
+  if (!lua_isnil(l, -1)) {
+    if (!lua_isstring(l, -1)) {
+      luaL_argerror(l, table_index, (StringConcat() <<
+          "Bad field '" << key << "' (string expected, got " <<
+          luaL_typename(l, -1)).c_str()
+      );
+    }
+    value = check_enum<E>(l, -1, names);
+  }
+
+  return value;
+}
 
 #endif
 

@@ -77,7 +77,7 @@ int LuaContext::video_api_get_mode(lua_State *l) {
   VideoManager::VideoMode mode =
     VideoManager::get_instance()->get_video_mode();
 
-  lua_pushstring(l, VideoManager::video_mode_names[mode]);
+  push_string(l, VideoManager::video_mode_names[mode]);
   return 1;
 }
 
@@ -88,11 +88,11 @@ int LuaContext::video_api_get_mode(lua_State *l) {
  */
 int LuaContext::video_api_set_mode(lua_State *l) {
 
-  int mode = luaL_checkoption(l, 1, NULL, VideoManager::video_mode_names);
+  VideoManager::VideoMode mode = check_enum<VideoManager::VideoMode>(
+      l, 1, VideoManager::video_mode_names);
 
   if (VideoManager::get_instance()->get_video_mode() != mode) {
-    VideoManager::get_instance()->set_video_mode(
-        VideoManager::VideoMode(mode));
+    VideoManager::get_instance()->set_video_mode(mode);
   }
 
   return 0;
@@ -126,7 +126,7 @@ int LuaContext::video_api_get_modes(lua_State* l) {
   int i = 1;
   for (it = modes.begin(); it != modes.end(); it++) {
     VideoManager::VideoMode mode = *it;
-    lua_pushstring(l, VideoManager::video_mode_names[mode]);
+    push_string(l, VideoManager::video_mode_names[mode]);
     lua_rawseti(l, -2, i);
     ++i;
   }
@@ -141,10 +141,10 @@ int LuaContext::video_api_get_modes(lua_State* l) {
  */
 int LuaContext::video_api_is_mode_supported(lua_State *l) {
 
-  int mode = luaL_checkoption(l, 1, NULL, VideoManager::video_mode_names);
+  VideoManager::VideoMode mode = check_enum<VideoManager::VideoMode>(
+      l, 1, VideoManager::video_mode_names);
 
-  bool supported = VideoManager::get_instance()->is_mode_supported(
-      VideoManager::VideoMode(mode));
+  bool supported = VideoManager::get_instance()->is_mode_supported(mode);
 
   lua_pushboolean(l, supported);
   return 1;

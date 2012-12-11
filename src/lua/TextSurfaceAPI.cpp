@@ -22,16 +22,24 @@
 
 const std::string LuaContext::text_surface_module_name = "sol.text_surface";
 
-static const char* rendering_mode_names[] = {
-    "solid", "antialiasing", NULL
+static const std::string rendering_mode_names[] = {
+    "solid",
+    "antialiasing",
+    ""  // Sentinel.
 };
 
-static const char* horizontal_alignment_names[] = {
-    "left", "center", "right", NULL
+static const std::string horizontal_alignment_names[] = {
+    "left",
+    "center",
+    "right",
+    ""  // Sentinel.
 };
 
-static const char* vertical_alignment_names[] = {
-    "top", "middle", "bottom", NULL
+static const std::string vertical_alignment_names[] = {
+    "top",
+    "middle",
+    "bottom",
+    ""  // Sentinel.
 };
 
 /**
@@ -123,18 +131,19 @@ int LuaContext::text_surface_api_create(lua_State* l) {
         text_surface->set_font(font_id);
       }
       else if (key == "rendering_mode") {
-        int mode = luaL_checkoption(l, 3, NULL, rendering_mode_names);
-        text_surface->set_rendering_mode(TextSurface::RenderingMode(mode));
+        TextSurface::RenderingMode mode =
+            check_enum<TextSurface::RenderingMode>(l, 3, rendering_mode_names);
+        text_surface->set_rendering_mode(mode);
       }
       else if (key == "horizontal_alignment") {
-        int alignment = luaL_checkoption(l, 3, NULL, horizontal_alignment_names);
-        text_surface->set_horizontal_alignment(
-            TextSurface::HorizontalAlignment(alignment));
+        TextSurface::HorizontalAlignment alignment =
+            check_enum<TextSurface::HorizontalAlignment>(l, 3, horizontal_alignment_names);
+        text_surface->set_horizontal_alignment(alignment);
       }
       else if (key == "vertical_alignment") {
-        int alignment = luaL_checkoption(l, 3, NULL, vertical_alignment_names);
-        text_surface->set_vertical_alignment(
-            TextSurface::VerticalAlignment(alignment));
+        TextSurface::VerticalAlignment alignment =
+            check_enum<TextSurface::VerticalAlignment>(l, 3, vertical_alignment_names);
+        text_surface->set_vertical_alignment(alignment);
       }
       else if (key == "text_color") {
         Color color = check_color(l, 3);
@@ -170,9 +179,9 @@ int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
 
-  TextSurface::HorizontalAlignment align = text_surface.get_horizontal_alignment();
+  TextSurface::HorizontalAlignment alignment = text_surface.get_horizontal_alignment();
 
-  lua_pushstring(l, horizontal_alignment_names[align]);
+  push_string(l, horizontal_alignment_names[alignment]);
   return 1;
 }
 
@@ -184,9 +193,10 @@ int LuaContext::text_surface_api_get_horizontal_alignment(lua_State* l) {
 int LuaContext::text_surface_api_set_horizontal_alignment(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  int align = luaL_checkoption(l, 1, NULL, horizontal_alignment_names);
+  TextSurface::HorizontalAlignment alignment = check_enum<TextSurface::HorizontalAlignment>(
+      l, 1, horizontal_alignment_names);
 
-  text_surface.set_horizontal_alignment(TextSurface::HorizontalAlignment(align));
+  text_surface.set_horizontal_alignment(alignment);
 
   return 0;
 }
@@ -200,9 +210,9 @@ int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
 
-  TextSurface::VerticalAlignment align = text_surface.get_vertical_alignment();
+  TextSurface::VerticalAlignment alignment = text_surface.get_vertical_alignment();
 
-  lua_pushstring(l, vertical_alignment_names[align]);
+  push_string(l, vertical_alignment_names[alignment]);
   return 1;
 }
 
@@ -214,9 +224,10 @@ int LuaContext::text_surface_api_get_vertical_alignment(lua_State* l) {
 int LuaContext::text_surface_api_set_vertical_alignment(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  int align = luaL_checkoption(l, 1, NULL, vertical_alignment_names);
+  TextSurface::VerticalAlignment alignment = check_enum<TextSurface::VerticalAlignment>(
+      l, 1, vertical_alignment_names);
 
-  text_surface.set_vertical_alignment(TextSurface::VerticalAlignment(align));
+  text_surface.set_vertical_alignment(alignment);
 
   return 0;
 }
@@ -266,7 +277,7 @@ int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
 
   TextSurface::RenderingMode mode = text_surface.get_rendering_mode();
 
-  lua_pushstring(l, rendering_mode_names[mode]);
+  push_string(l, rendering_mode_names[mode]);
   return 1;
 }
 
@@ -278,9 +289,10 @@ int LuaContext::text_surface_api_get_rendering_mode(lua_State* l) {
 int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  int mode = luaL_checkoption(l, 1, NULL, rendering_mode_names);
+  TextSurface::RenderingMode mode = check_enum<TextSurface::RenderingMode>(
+      l, 1, rendering_mode_names);
 
-  text_surface.set_rendering_mode(TextSurface::RenderingMode(mode));
+  text_surface.set_rendering_mode(mode);
 
   return 0;
 }

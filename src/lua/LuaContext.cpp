@@ -437,7 +437,6 @@ double LuaContext::opt_number_field(
  * @brief Checks that a table field is a string and returns it.
  *
  * This function acts like lua_getfield() followed by luaL_checkstring().
- * TODO remove parameter table_index? (always called with 1)
  *
  * @param l A Lua state.
  * @param table_index Index of a table in the stack.
@@ -2301,7 +2300,7 @@ void LuaContext::on_collision_enemy(Enemy& other_enemy, Sprite& other_sprite, Sp
 void LuaContext::on_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 
   if (find_method("on_custom_attack_received")) {
-    lua_pushstring(l, enemy_attack_names[attack]);
+    push_string(l, enemy_attack_names[attack]);
     if (sprite != NULL) {
       // Pixel-precise collision.
       push_sprite(l, *sprite);
@@ -2321,7 +2320,7 @@ void LuaContext::on_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 void LuaContext::on_hurt(EnemyAttack attack, int life_lost) {
 
   if (find_method("on_hurt")) {
-    lua_pushstring(l, enemy_attack_names[attack]);
+    push_string(l, enemy_attack_names[attack]);
     lua_pushinteger(l, life_lost);
     call_function(3, 0, "on_hurt");
   }

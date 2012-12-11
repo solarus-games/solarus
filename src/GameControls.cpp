@@ -67,8 +67,10 @@ const int GameControls::masks_to_directions8[] = {
  * @brief Constructor.
  * @param game the game
  */
-GameControls::GameControls(Game &game):
-  game(game), savegame(game.get_savegame()), customizing(false) {
+GameControls::GameControls(Game& game):
+  game(game),
+  savegame(game.get_savegame()),
+  customizing(false) {
 
   // load the controls from the savegame
   for (int i = 0; i < 9; i++) {

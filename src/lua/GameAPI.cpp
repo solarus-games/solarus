@@ -72,6 +72,13 @@ void LuaContext::register_game_module() {
       { "get_item", game_api_get_item },
       { "get_item_assigned", game_api_get_item_assigned },
       { "set_item_assigned", game_api_set_item_assigned },
+      { "is_command_pressed", game_api_is_command_pressed },
+      { "get_commands_direction", game_api_get_commands_direction },
+      { "get_command_effect", game_api_get_command_effect },
+      { "get_command_keyboard_binding", game_api_get_command_keyboard_binding },
+      { "set_command_keyboard_binding", game_api_set_command_keyboard_binding },
+      { "get_command_joypad_binding", game_api_get_command_joypad_binding },
+      { "set_command_joypad_binding", game_api_set_command_joypad_binding },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -802,6 +809,41 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
 
   savegame.get_equipment().set_item_assigned(slot, item);
 
+  return 0;
+}
+
+int LuaContext::game_api_is_command_pressed(lua_State* l) {
+  // TODO
+  return 0;
+}
+
+int LuaContext::game_api_get_commands_direction(lua_State* l) {
+  // TODO
+  return 0;
+}
+
+int LuaContext::game_api_get_command_effect(lua_State* l) {
+  // TODO
+  return 0;
+}
+
+int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
+  // TODO
+  return 0;
+}
+
+int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
+  // TODO
+  return 0;
+}
+
+int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
+  // TODO
+  return 0;
+}
+
+int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
+  // TODO
   return 0;
 }
 

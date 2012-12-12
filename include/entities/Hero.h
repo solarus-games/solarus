@@ -22,7 +22,7 @@
 #include "entities/EnemyAttack.h"
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief The hero's entity.
@@ -138,8 +138,8 @@ class Hero: public MapEntity {
     void update();
     void draw_on_map();
     void set_suspended(bool suspended);
-    void key_pressed(GameControls::GameKey key);
-    void key_released(GameControls::GameKey key);
+    void key_pressed(GameCommands::GameCommand key);
+    void key_released(GameCommands::GameCommand key);
 
     /**
      * @name Sprites.

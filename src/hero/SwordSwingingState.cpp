@@ -22,7 +22,7 @@
 #include "movements/StraightMovement.h"
 #include "lowlevel/Geometry.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief Constructor.
@@ -83,7 +83,7 @@ void Hero::SwordSwingingState::update() {
     if (hero.get_movement() == NULL) {
 
       // if the player is still pressing the sword key, start loading the sword
-      if (get_controls().is_key_pressed(GameControls::SWORD)
+      if (get_controls().is_key_pressed(GameCommands::SWORD)
           && !attacked) {
         hero.set_state(new SwordLoadingState(hero));
       }

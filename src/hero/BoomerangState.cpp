@@ -21,7 +21,7 @@
 #include "entities/Boomerang.h"
 #include "lowlevel/Geometry.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 #include "Map.h"
 
 /**

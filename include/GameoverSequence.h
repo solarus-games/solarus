@@ -18,7 +18,7 @@
 #define SOLARUS_GAMEOVER_SEQUENCE_H
 
 #include "Common.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 #include "Sprite.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
@@ -88,7 +88,7 @@ class GameoverSequence {
     // main loop
     void update();
     void draw(Surface& dst_surface);
-    void key_pressed(GameControls::GameKey key);
+    void key_pressed(GameCommands::GameCommand key);
 };
 
 #endif

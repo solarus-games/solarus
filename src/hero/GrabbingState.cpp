@@ -20,7 +20,7 @@
 #include "hero/PullingState.h"
 #include "hero/HeroSprites.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief Constructor.
@@ -60,7 +60,7 @@ void Hero::GrabbingState::update() {
   int sprite_direction8 = get_sprites().get_animation_direction8();
 
   // release the obstacle
-  if (!get_controls().is_key_pressed(GameControls::ACTION)) {
+  if (!get_controls().is_key_pressed(GameCommands::ACTION)) {
     hero.set_state(new FreeState(hero));
   }
 

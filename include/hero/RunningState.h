@@ -18,7 +18,7 @@
 #define SOLARUS_HERO_RUNNING_STATE_H
 
 #include "hero/State.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief The state "Running" of the hero.
@@ -30,13 +30,13 @@ class Hero::RunningState: public Hero::State {
     int phase;                      /**< current phase of the run */
     uint32_t next_phase_date;       /**< date of the next phase */
     uint32_t next_sound_date;       /**< date of the next time a sound is played during the run */
-    GameControls::GameKey key;      /**< the key pressed to make the hero run */
+    GameCommands::GameCommand key;      /**< the key pressed to make the hero run */
 
     bool is_bouncing();
 
   public:
 
-    RunningState(Hero& hero, GameControls::GameKey key);
+    RunningState(Hero& hero, GameCommands::GameCommand key);
     ~RunningState();
 
     void start(State *previous_state);

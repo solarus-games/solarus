@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "KeysEffect.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 #include "Dialog.h"
 #include "Sprite.h"
 #include "lowlevel/Rectangle.h"
@@ -83,7 +83,7 @@ class DialogBox {
     void set_variable(const std::string& dialog_id, int value);
     const std::string& get_variable();
     int get_last_answer();
-    void key_pressed(GameControls::GameKey key);
+    void key_pressed(GameCommands::GameCommand key);
     const std::string& get_dialog_id();
     void show_all_now();
 

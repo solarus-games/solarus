@@ -65,7 +65,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   savegame->set_game(this);
 
   // initialize members
-  controls = new GameControls(*this);
+  controls = new GameCommands(*this);
   hero = new Hero(get_equipment());
   hero->increment_refcount();
   keys_effect = new KeysEffect();
@@ -171,7 +171,7 @@ const Rectangle& Game::get_hero_xy() {
  * @brief Returns the game controls for the keyboard and the joypad.
  * @return the game controls
  */
-GameControls& Game::get_controls() {
+GameCommands& Game::get_controls() {
   return *controls;
 }
 
@@ -230,11 +230,11 @@ bool Game::notify_input(InputEvent& event) {
  * @brief This function is called when a game key is pressed.
  * @param key a key
  */
-void Game::key_pressed(GameControls::GameKey key) {
+void Game::key_pressed(GameCommands::GameCommand key) {
 
   if (!is_suspended()) {
 
-    if (key == GameControls::PAUSE) {
+    if (key == GameCommands::PAUSE) {
       if (can_pause()) {
         set_paused(true);
       }
@@ -265,7 +265,7 @@ void Game::key_pressed(GameControls::GameKey key) {
  * @brief This function is called when a game key is released.
  * @param key a key
  */
-void Game::key_released(GameControls::GameKey key) {
+void Game::key_released(GameCommands::GameCommand key) {
 
   if (!is_suspended()) {
     // if the game is not suspended, the keys apply to the hero

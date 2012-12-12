@@ -375,22 +375,22 @@ void DialogBox::close() {
  * while displaying a dialog.
  * @param key the key pressed
  */
-void DialogBox::key_pressed(GameControls::GameKey key) {
+void DialogBox::key_pressed(GameCommands::GameCommand key) {
 
   switch (key) {
 
     // action key
-    case GameControls::ACTION:
+    case GameCommands::ACTION:
       action_key_pressed();
       break;
 
       // sword key
-    case GameControls::SWORD:
+    case GameCommands::SWORD:
       sword_key_pressed();
       break;
 
-    case GameControls::UP:
-    case GameControls::DOWN:
+    case GameCommands::UP:
+    case GameCommands::DOWN:
       up_or_down_key_pressed();
 
     default:

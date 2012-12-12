@@ -199,21 +199,21 @@ void GameoverSequence::draw(Surface& dst_surface) {
  * @brief This function is called when a game key is pressed.
  * @param key the key pressed
  */
-void GameoverSequence::key_pressed(GameControls::GameKey key) {
+void GameoverSequence::key_pressed(GameCommands::GameCommand key) {
 
   if (state == MENU) {
 
-    if (key == GameControls::DOWN) {
+    if (key == GameCommands::DOWN) {
       Sound::play("cursor");
       cursor_position = (cursor_position + 1) % 4;
       fairy_y = 124 + cursor_position * 16;
     }
-    else if (key == GameControls::UP) {
+    else if (key == GameCommands::UP) {
       Sound::play("cursor");
       cursor_position = (cursor_position + 3) % 4;
       fairy_y = 124 + cursor_position * 16;
     }
-    else if (key == GameControls::ACTION || key == GameControls::SWORD) {
+    else if (key == GameCommands::ACTION || key == GameCommands::SWORD) {
       Sound::play("danger");
       game.get_equipment().add_life(7 * 4);
 

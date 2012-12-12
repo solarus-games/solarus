@@ -52,7 +52,7 @@ class Hero::State {
     Map& get_map();
     Equipment& get_equipment();
     KeysEffect& get_keys_effect();
-    GameControls& get_controls();
+    GameCommands& get_controls();
     DialogBox& get_dialog_box();
     HeroSprites& get_sprites();
 
@@ -67,8 +67,8 @@ class Hero::State {
     virtual void update();
     virtual void draw_on_map();
     virtual void set_suspended(bool suspended);
-    void key_pressed(GameControls::GameKey key);
-    void key_released(GameControls::GameKey key);
+    void key_pressed(GameCommands::GameCommand key);
+    void key_released(GameCommands::GameCommand key);
     virtual void action_key_pressed();
     virtual void action_key_released();
     virtual void sword_key_pressed();

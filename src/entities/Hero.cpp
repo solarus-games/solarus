@@ -329,7 +329,7 @@ void Hero::draw_on_map() {
  * and the game is not suspended.
  * @param key the key pressed
  */
-void Hero::key_pressed(GameControls::GameKey key) {
+void Hero::key_pressed(GameCommands::GameCommand key) {
   state->key_pressed(key);
 }
 
@@ -338,7 +338,7 @@ void Hero::key_pressed(GameControls::GameKey key) {
  * if the game is not suspended.
  * @param key the key released
  */
-void Hero::key_released(GameControls::GameKey key) {
+void Hero::key_released(GameCommands::GameCommand key) {
   state->key_released(key);
 }
 
@@ -2144,13 +2144,13 @@ void Hero::start_lifting(CarriedItem *item_to_lift) {
 void Hero::start_running() {
 
   // the running state may be triggered by the action key or an inventory item key
-  GameControls::GameKey key;
+  GameCommands::GameCommand key;
   if (is_free()) {
-    key = GameControls::ACTION;
+    key = GameCommands::ACTION;
   }
   else {
-    key = get_controls().is_key_pressed(GameControls::ITEM_1) ?
-        GameControls::ITEM_1 : GameControls::ITEM_2;
+    key = get_controls().is_key_pressed(GameCommands::ITEM_1) ?
+        GameCommands::ITEM_1 : GameCommands::ITEM_2;
   }
   set_state(new RunningState(*this, key));
 }

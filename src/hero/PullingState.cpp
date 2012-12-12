@@ -21,7 +21,7 @@
 #include "entities/Detector.h"
 #include "movements/PathMovement.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief Constructor.
@@ -76,7 +76,7 @@ void Hero::PullingState::update() {
     int opposite_direction8 = (get_sprites().get_animation_direction8() + 4) % 8;
 
     // stop pulling if the action key is released or if there is no more obstacle
-    if (!get_controls().is_key_pressed(GameControls::ACTION)
+    if (!get_controls().is_key_pressed(GameCommands::ACTION)
         || !hero.is_facing_obstacle()) {
       hero.set_state(new FreeState(hero));
     }

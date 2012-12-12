@@ -101,9 +101,9 @@ void PauseMenu::quit() {
  * @brief This function is called when a key is pressed.
  * @param key the key pressed
  */
-void PauseMenu::key_pressed(GameControls::GameKey key) {
+void PauseMenu::key_pressed(GameCommands::GameCommand key) {
  
-  if (key == GameControls::PAUSE) {
+  if (key == GameCommands::PAUSE) {
     quit();
     game.set_paused(false);
   }
@@ -111,7 +111,7 @@ void PauseMenu::key_pressed(GameControls::GameKey key) {
   // the user is in one of the submenus
   else if (save_dialog_state == 0) {
 
-    if (key == GameControls::SWORD) {
+    if (key == GameCommands::SWORD) {
 
       Sound::play("message_end");
 
@@ -133,14 +133,14 @@ void PauseMenu::key_pressed(GameControls::GameKey key) {
   }
 
   // the dialog box to save is visible
-  else if (key == GameControls::LEFT || key == GameControls::RIGHT) {
+  else if (key == GameCommands::LEFT || key == GameCommands::RIGHT) {
     // move the cursor
 
     Sound::play("cursor");
     save_dialog_choice = 1 - save_dialog_choice;
     save_dialog_sprite->set_current_animation(save_dialog_choice == 0 ? "left" : "right");
   }
-  else if (key == GameControls::ACTION || key == GameControls::SWORD) {
+  else if (key == GameCommands::ACTION || key == GameCommands::SWORD) {
     // validate a choice
 
     if (save_dialog_state == 1) {

@@ -68,7 +68,7 @@ class StringResource;
 
 // game
 class Game;
-class GameControls;
+class GameCommands;
 class Savegame;
 class Equipment;
 class EquipmentItem;

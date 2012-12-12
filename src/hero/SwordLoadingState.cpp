@@ -25,7 +25,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Geometry.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 #include <sstream>
 
 /**
@@ -75,7 +75,7 @@ void Hero::SwordLoadingState::update() {
     sword_loaded = true;
   }
 
-  if (!get_controls().is_key_pressed(GameControls::SWORD)) {
+  if (!get_controls().is_key_pressed(GameCommands::SWORD)) {
     // the player has just released the sword key
 
     // stop loading the sword, go to the normal state or make a spin attack

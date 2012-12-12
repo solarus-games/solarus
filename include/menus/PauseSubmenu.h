@@ -18,7 +18,7 @@
 #define SOLARUS_PAUSE_SUBMENU_H
 
 #include "Common.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief Abstract class for a submenu of the pause menu.
@@ -51,7 +51,7 @@ class PauseSubmenu {
      *
      * @param key the key pressed
      */
-    virtual void key_pressed(GameControls::GameKey key) = 0;
+    virtual void key_pressed(GameCommands::GameCommand key) = 0;
 
     /**
      * @brief Updates this submenu.

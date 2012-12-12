@@ -244,11 +244,11 @@ void PauseSubmenuQuestStatus::set_cursor_position(int position) {
  * @brief This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
-void PauseSubmenuQuestStatus::key_pressed(GameControls::GameKey key) {
+void PauseSubmenuQuestStatus::key_pressed(GameCommands::GameCommand key) {
 
   switch (key) {
 
-    case GameControls::LEFT:
+    case GameCommands::LEFT:
 
       if (cursor_position <= 3) {
         pause_menu.show_left_submenu();
@@ -268,7 +268,7 @@ void PauseSubmenuQuestStatus::key_pressed(GameControls::GameKey key) {
       }
       break;
 
-    case GameControls::RIGHT:
+    case GameCommands::RIGHT:
 
       if (cursor_position == 4 || cursor_position == 7) {
         pause_menu.show_right_submenu();
@@ -288,12 +288,12 @@ void PauseSubmenuQuestStatus::key_pressed(GameControls::GameKey key) {
       }
       break;
 
-    case GameControls::DOWN:
+    case GameCommands::DOWN:
       Sound::play("cursor");
       set_cursor_position((cursor_position + 1) % 8);
       break;
 
-    case GameControls::UP:
+    case GameCommands::UP:
       Sound::play("cursor");
       set_cursor_position((cursor_position + 7) % 8);
       break;

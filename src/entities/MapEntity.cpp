@@ -323,7 +323,7 @@ KeysEffect& MapEntity::get_keys_effect() {
  * @brief Returns the game controls.
  * @return the controls
  */
-GameControls& MapEntity::get_controls() {
+GameCommands& MapEntity::get_controls() {
   return get_game().get_controls();
 }
 

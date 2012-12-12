@@ -67,7 +67,7 @@ class PauseSubmenuInventory: public PauseSubmenu {
     ~PauseSubmenuInventory();
 
     // main loop
-    void key_pressed(GameControls::GameKey key);
+    void key_pressed(GameCommands::GameCommand key);
     void update();
     void draw(Surface& dst_surface);
 };

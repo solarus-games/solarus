@@ -102,24 +102,24 @@ PauseSubmenuMap::~PauseSubmenuMap() {
  * @brief This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
-void PauseSubmenuMap::key_pressed(GameControls::GameKey key) {
+void PauseSubmenuMap::key_pressed(GameCommands::GameCommand key) {
 
   switch (key) {
 
-  case GameControls::LEFT:
+  case GameCommands::LEFT:
     pause_menu.show_left_submenu();
     break;
 
-  case GameControls::RIGHT:
+  case GameCommands::RIGHT:
     pause_menu.show_right_submenu();
     break;
 
-  case GameControls::UP:
-  case GameControls::DOWN:
+  case GameCommands::UP:
+  case GameCommands::DOWN:
 
     // move the world map
     if (equipment.has_ability("see_outside_world_minimap")) {
-      moving_visible_y = (key == GameControls::UP) ? -1 : 1;
+      moving_visible_y = (key == GameCommands::UP) ? -1 : 1;
       next_moving_visible_y_date = System::now();
     }
     break;
@@ -138,10 +138,10 @@ void PauseSubmenuMap::update() {
   up_arrow_sprite->update();
   down_arrow_sprite->update();
 
-  GameControls &controls = game.get_controls();
+  GameCommands &controls = game.get_controls();
 
-  bool up = controls.is_key_pressed(GameControls::UP);
-  bool down = controls.is_key_pressed(GameControls::DOWN);
+  bool up = controls.is_key_pressed(GameCommands::UP);
+  bool down = controls.is_key_pressed(GameCommands::DOWN);
 
   if (moving_visible_y == -1) {
 

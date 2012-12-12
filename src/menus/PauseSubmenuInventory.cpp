@@ -218,31 +218,31 @@ bool PauseSubmenuInventory::is_item_selected() {
  * @brief This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
-void PauseSubmenuInventory::key_pressed(GameControls::GameKey key) {
+void PauseSubmenuInventory::key_pressed(GameCommands::GameCommand key) {
 
   KeysEffect &keys_effect = game.get_keys_effect();
 
   switch (key) {
 
-  case GameControls::ACTION:
+  case GameCommands::ACTION:
     if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_INFO) {
       show_info_message();
     }
     break;
 
-  case GameControls::ITEM_1:
+  case GameCommands::ITEM_1:
     if (is_item_selected()) {
       assign_item(1);
     }
     break;
 
-  case GameControls::ITEM_2:
+  case GameCommands::ITEM_2:
     if (is_item_selected()) {
       assign_item(2);
     }
     break;
 
-  case GameControls::LEFT:
+  case GameCommands::LEFT:
     if (cursor_column == 0) {
       pause_menu.show_left_submenu();
     }
@@ -252,7 +252,7 @@ void PauseSubmenuInventory::key_pressed(GameControls::GameKey key) {
     }
     break;
 
-  case GameControls::RIGHT:
+  case GameCommands::RIGHT:
     if (cursor_column == 6) {
       pause_menu.show_right_submenu();
     }
@@ -262,12 +262,12 @@ void PauseSubmenuInventory::key_pressed(GameControls::GameKey key) {
     }
     break;
 
-  case GameControls::UP:
+  case GameCommands::UP:
     play_cursor_sound();
     set_cursor_position((cursor_row + 3) % 4, cursor_column);
     break;
 
-  case GameControls::DOWN:
+  case GameCommands::DOWN:
     play_cursor_sound();
     set_cursor_position((cursor_row + 1) % 4, cursor_column);
     break;

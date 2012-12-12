@@ -18,7 +18,7 @@
 #include "hud/ActionIcon.h"
 #include "hud/SwordIcon.h"
 #include "Game.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 
 /**
  * @brief Constructor.
@@ -58,16 +58,16 @@ void HUD::update_blinking() {
 
   // detect whether a key is being customized
   int index = -1;
-  GameControls &controls = game.get_controls();
+  GameCommands &controls = game.get_controls();
   if (controls.is_customizing()) {
-    GameControls::GameKey key = controls.get_key_to_customize();
+    GameCommands::GameCommand key = controls.get_key_to_customize();
     switch (key) {
 
-      case GameControls::ACTION:
+      case GameCommands::ACTION:
         index = 7;
         break;
 
-      case GameControls::SWORD:
+      case GameCommands::SWORD:
         index = 5;
         break;
 

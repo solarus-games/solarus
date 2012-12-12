@@ -121,7 +121,7 @@ KeysEffect& Hero::State::get_keys_effect() {
  * @brief Returns the game controls.
  * @return the controls
  */
-GameControls& Hero::State::get_controls() {
+GameCommands& Hero::State::get_controls() {
   return get_game().get_controls();
 }
 
@@ -198,43 +198,43 @@ void Hero::State::set_suspended(bool suspended) {
  * @brief This function is called when a game key is pressed and the game is not suspended.
  * @param key the key pressed
  */
-void Hero::State::key_pressed(GameControls::GameKey key) {
+void Hero::State::key_pressed(GameCommands::GameCommand key) {
 
   switch (key) {
 
     // action key
-  case GameControls::ACTION:
+  case GameCommands::ACTION:
     action_key_pressed();
     break;
 
     // sword key
-  case GameControls::SWORD:
+  case GameCommands::SWORD:
     sword_key_pressed();
     break;
 
     // move the hero
-  case GameControls::RIGHT:
+  case GameCommands::RIGHT:
     directional_key_pressed(0);
     break;
 
-  case GameControls::UP:
+  case GameCommands::UP:
     directional_key_pressed(1);
     break;
 
-  case GameControls::LEFT:
+  case GameCommands::LEFT:
     directional_key_pressed(2);
     break;
 
-  case GameControls::DOWN:
+  case GameCommands::DOWN:
     directional_key_pressed(3);
     break;
 
     // use an inventory item
-  case GameControls::ITEM_1:
+  case GameCommands::ITEM_1:
     item_key_pressed(1);
     break;
 
-  case GameControls::ITEM_2:
+  case GameCommands::ITEM_2:
     item_key_pressed(2);
     break;
 
@@ -247,39 +247,39 @@ void Hero::State::key_pressed(GameControls::GameKey key) {
  * @brief This function is called when a key is released if the game is not suspended.
  * @param key the key released
  */
-void Hero::State::key_released(GameControls::GameKey key) {
+void Hero::State::key_released(GameCommands::GameCommand key) {
 
   switch (key) {
 
-  case GameControls::ACTION:
+  case GameCommands::ACTION:
     action_key_released();
     break;
 
-  case GameControls::SWORD:
+  case GameCommands::SWORD:
     sword_key_released();
     break;
 
-  case GameControls::RIGHT:
+  case GameCommands::RIGHT:
     directional_key_released(0);
     break;
 
-  case GameControls::UP:
+  case GameCommands::UP:
     directional_key_released(1);
     break;
 
-  case GameControls::LEFT:
+  case GameCommands::LEFT:
     directional_key_released(2);
     break;
 
-  case GameControls::DOWN:
+  case GameCommands::DOWN:
     directional_key_released(3);
     break;
 
-  case GameControls::ITEM_1:
+  case GameCommands::ITEM_1:
     item_key_released(0);
     break;
 
-  case GameControls::ITEM_2:
+  case GameCommands::ITEM_2:
     item_key_released(1);
     break;
 

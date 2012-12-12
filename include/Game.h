@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "Transition.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 #include "Savegame.h"
 #include "DialogBox.h"
 
@@ -46,7 +46,7 @@ class Game {
     bool restarting;           /**< true if the game will be restarted */
 
     // controls
-    GameControls *controls;    /**< this object receives the keyboard and joypad events */
+    GameCommands *controls;    /**< this object receives the keyboard and joypad events */
     KeysEffect *keys_effect;   /**< current effect associated to the main game keys
                                 * (represented on the HUD by the action icon, the objects icons, etc.) */
 
@@ -88,7 +88,7 @@ class Game {
     LuaContext& get_lua_context();
     Hero& get_hero();
     const Rectangle& get_hero_xy();
-    GameControls& get_controls();
+    GameCommands& get_controls();
     KeysEffect& get_keys_effect();
     Savegame& get_savegame();
     Equipment& get_equipment();
@@ -99,8 +99,8 @@ class Game {
     void draw(Surface& dst_surface);
 
     // game controls
-    void key_pressed(GameControls::GameKey key);
-    void key_released(GameControls::GameKey key);
+    void key_pressed(GameCommands::GameCommand key);
+    void key_released(GameCommands::GameCommand key);
 
     // map
     bool has_current_map();

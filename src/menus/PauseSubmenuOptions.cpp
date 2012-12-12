@@ -81,7 +81,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu &pause_menu, Game &game):
 
     game_key_texts[i] = new TextSurface(4, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
     game_key_texts[i]->set_font("fixed");
-    game_key_texts[i]->set_text(controls.get_key_name((GameControls::GameKey) (i + 1)));
+    game_key_texts[i]->set_text(controls.get_key_name((GameCommands::GameCommand) (i + 1)));
 
     keyboard_control_texts[i] = new TextSurface(74, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
     keyboard_control_texts[i]->set_font("fixed");
@@ -140,7 +140,7 @@ void PauseSubmenuOptions::load_control_texts() {
   controls_surface->fill_with_color(Color::get_black());
   for (int i = 0; i < 9; i++) {
 
-    GameControls::GameKey key = (GameControls::GameKey) (i + 1);
+    GameCommands::GameCommand key = (GameCommands::GameCommand) (i + 1);
 
     const std::string &keyboard_text = controls.get_keyboard_string(key);
     keyboard_control_texts[i]->set_text(keyboard_text.substr(0, 9));
@@ -195,29 +195,29 @@ void PauseSubmenuOptions::set_cursor_position(int position) {
  * @brief This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
-void PauseSubmenuOptions::key_pressed(GameControls::GameKey key) {
+void PauseSubmenuOptions::key_pressed(GameCommands::GameCommand key) {
   
   switch (key) {
 
-  case GameControls::LEFT:
+  case GameCommands::LEFT:
     pause_menu.show_left_submenu();
     break;
 
-  case GameControls::RIGHT:
+  case GameCommands::RIGHT:
     pause_menu.show_right_submenu();
     break;
 
-  case GameControls::UP:
+  case GameCommands::UP:
     Sound::play("cursor");
     set_cursor_position((cursor_position + 9) % 10);
     break;
 
-  case GameControls::DOWN:
+  case GameCommands::DOWN:
     Sound::play("cursor");
     set_cursor_position((cursor_position + 1) % 10);
     break;
 
-  case GameControls::ACTION:
+  case GameCommands::ACTION:
     action_key_pressed();
     break;
 
@@ -238,7 +238,7 @@ void PauseSubmenuOptions::action_key_pressed() {
   else {
     set_caption_text(caption_strings[2]);
     cursor_sprite->set_current_animation("small_blink");
-    GameControls::GameKey key_to_customize = (GameControls::GameKey) cursor_position;
+    GameCommands::GameCommand key_to_customize = (GameCommands::GameCommand) cursor_position;
     controls.customize(key_to_customize);
     customizing = true;
 

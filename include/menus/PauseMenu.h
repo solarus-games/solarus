@@ -18,7 +18,7 @@
 #define SOLARUS_PAUSE_MENU_H
 
 #include "Common.h"
-#include "GameControls.h"
+#include "GameCommands.h"
 #include "KeysEffect.h"
 
 /**
@@ -63,7 +63,7 @@ class PauseMenu {
     ~PauseMenu();
     void quit();
 
-    void key_pressed(GameControls::GameKey key);
+    void key_pressed(GameCommands::GameCommand key);
     void update();
     void draw(Surface& dst_surface);
 

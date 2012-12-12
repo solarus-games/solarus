@@ -98,12 +98,12 @@ void PauseMenu::quit() {
 }
 
 /**
- * @brief This function is called when a key is pressed.
- * @param key the key pressed
+ * @brief This function is called when a game command is pressed.
+ * @param command The game command pressed.
  */
-void PauseMenu::key_pressed(GameCommands::GameCommand key) {
+void PauseMenu::notify_command_pressed(GameCommands::GameCommand command) {
  
-  if (key == GameCommands::PAUSE) {
+  if (command == GameCommands::PAUSE) {
     quit();
     game.set_paused(false);
   }
@@ -111,7 +111,7 @@ void PauseMenu::key_pressed(GameCommands::GameCommand key) {
   // the user is in one of the submenus
   else if (save_dialog_state == 0) {
 
-    if (key == GameCommands::SWORD) {
+    if (command == GameCommands::ATTACK) {
 
       Sound::play("message_end");
 
@@ -128,19 +128,19 @@ void PauseMenu::key_pressed(GameCommands::GameCommand key) {
       keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_VALIDATE);
     }
     else {
-      current_submenu->key_pressed(key);
+      current_submenu->key_pressed(command);
     }
   }
 
   // the dialog box to save is visible
-  else if (key == GameCommands::LEFT || key == GameCommands::RIGHT) {
+  else if (command == GameCommands::LEFT || command == GameCommands::RIGHT) {
     // move the cursor
 
     Sound::play("cursor");
     save_dialog_choice = 1 - save_dialog_choice;
     save_dialog_sprite->set_current_animation(save_dialog_choice == 0 ? "left" : "right");
   }
-  else if (key == GameCommands::ACTION || key == GameCommands::SWORD) {
+  else if (command == GameCommands::ACTION || command == GameCommands::ATTACK) {
     // validate a choice
 
     if (save_dialog_state == 1) {

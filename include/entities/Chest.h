@@ -56,7 +56,7 @@ class Chest: public Detector {
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_enabled(bool enabled);
     void update();
-    void action_key_pressed();
+    void notify_action_command_pressed();
     void set_suspended(bool suspended);
 
     virtual const std::string& get_lua_type_name() const;

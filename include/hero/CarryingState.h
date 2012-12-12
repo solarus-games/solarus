@@ -41,7 +41,7 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
     void notify_layer_changed();
     void set_suspended(bool suspended);
     void update();
-    void action_key_pressed();
+    void notify_action_command_pressed();
     bool can_start_sword();
     bool can_take_jumper();
     bool can_take_stairs();

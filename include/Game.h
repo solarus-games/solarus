@@ -36,28 +36,28 @@ class Game {
     // main objects
     MainLoop& main_loop;       /**< the main loop object */
     Savegame* savegame;        /**< the game data saved */
-    Hero *hero;
+    Hero* hero;
 
     // current game state (elements currently shown)
     bool pause_key_available;  /**< indicates that the player is allowed to use the pause key */
-    PauseMenu *pause_menu;     /**< the current pause menu, or NULL if the game is not paused */
-    GameoverSequence *gameover_sequence; /**< the game over sequence (if currently shown) */
+    PauseMenu* pause_menu;     /**< the current pause menu, or NULL if the game is not paused */
+    GameoverSequence* gameover_sequence; /**< the game over sequence (if currently shown) */
     bool resetting;            /**< true if the program will be reset */
     bool restarting;           /**< true if the game will be restarted */
 
     // controls
-    GameCommands *controls;    /**< this object receives the keyboard and joypad events */
-    KeysEffect *keys_effect;   /**< current effect associated to the main game keys
+    GameCommands* commands;    /**< this object receives the keyboard and joypad events */
+    KeysEffect* keys_effect;   /**< current effect associated to the main game keys
                                 * (represented on the HUD by the action icon, the objects icons, etc.) */
 
     // map
-    Map *current_map;          /**< the map currently displayed */
-    Map *next_map;             /**< the map where the hero is going to; if not NULL, it means that the hero 
+    Map* current_map;          /**< the map currently displayed */
+    Map* next_map;             /**< the map where the hero is going to; if not NULL, it means that the hero
                                 * is changing from current_map to next_map */
-    Surface *previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
+    Surface* previous_map_surface;  /**< a copy of the previous map surface for transition effects that display two maps */
 
     Transition::Style transition_style; /**< the transition style between the current map and the next one */
-    Transition *transition;             /**< the transition currently shown, or NULL if no transition is playing */
+    Transition* transition;             /**< the transition currently shown, or NULL if no transition is playing */
 
     // world (i.e. the current set of maps)
     bool crystal_state;        /**< indicates that a crystal has been enabled (i.e. the orange blocks are raised) */
@@ -88,7 +88,7 @@ class Game {
     LuaContext& get_lua_context();
     Hero& get_hero();
     const Rectangle& get_hero_xy();
-    GameCommands& get_controls();
+    GameCommands& get_commands();
     KeysEffect& get_keys_effect();
     Savegame& get_savegame();
     Equipment& get_equipment();
@@ -99,13 +99,13 @@ class Game {
     void draw(Surface& dst_surface);
 
     // game controls
-    void key_pressed(GameCommands::GameCommand key);
-    void key_released(GameCommands::GameCommand key);
+    void notify_command_pressed(GameCommands::GameCommand command);
+    void notify_command_released(GameCommands::GameCommand command);
 
     // map
     bool has_current_map();
     Map& get_current_map();
-    void set_current_map(const std::string& map_id, const std::string &destination_name,
+    void set_current_map(const std::string& map_id, const std::string& destination_name,
         Transition::Style transition_style);
 
     // world

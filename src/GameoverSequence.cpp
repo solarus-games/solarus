@@ -196,24 +196,24 @@ void GameoverSequence::draw(Surface& dst_surface) {
 }
 
 /**
- * @brief This function is called when a game key is pressed.
- * @param key the key pressed
+ * @brief This function is called when a game command is pressed.
+ * @param command The game command pressed.
  */
-void GameoverSequence::key_pressed(GameCommands::GameCommand key) {
+void GameoverSequence::notify_command_pressed(GameCommands::GameCommand command) {
 
   if (state == MENU) {
 
-    if (key == GameCommands::DOWN) {
+    if (command == GameCommands::DOWN) {
       Sound::play("cursor");
       cursor_position = (cursor_position + 1) % 4;
       fairy_y = 124 + cursor_position * 16;
     }
-    else if (key == GameCommands::UP) {
+    else if (command == GameCommands::UP) {
       Sound::play("cursor");
       cursor_position = (cursor_position + 3) % 4;
       fairy_y = 124 + cursor_position * 16;
     }
-    else if (key == GameCommands::ACTION || key == GameCommands::SWORD) {
+    else if (command == GameCommands::ACTION || command == GameCommands::ATTACK) {
       Sound::play("danger");
       game.get_equipment().add_life(7 * 4);
 

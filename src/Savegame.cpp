@@ -30,7 +30,7 @@ const std::string Savegame::KEY_SAVEGAME_VERSION = "_version";
 const std::string Savegame::KEY_STARTING_MAP = "_starting_map";
 const std::string Savegame::KEY_STARTING_POINT = "_starting_point";
 const std::string Savegame::KEY_KEYBOARD_ACTION = "_keyboard_action";
-const std::string Savegame::KEY_KEYBOARD_SWORD = "_keyboard_sword";
+const std::string Savegame::KEY_KEYBOARD_ATTACK = "_keyboard_attack";
 const std::string Savegame::KEY_KEYBOARD_ITEM_1 = "_keyboard_item_1";
 const std::string Savegame::KEY_KEYBOARD_ITEM_2 = "_keyboard_item_2";
 const std::string Savegame::KEY_KEYBOARD_PAUSE = "_keyboard_pause";
@@ -39,7 +39,7 @@ const std::string Savegame::KEY_KEYBOARD_UP = "_keyboard_up";
 const std::string Savegame::KEY_KEYBOARD_LEFT = "_keyboard_left";
 const std::string Savegame::KEY_KEYBOARD_DOWN = "_keyboard_down";
 const std::string Savegame::KEY_JOYPAD_ACTION = "_joypad_action";
-const std::string Savegame::KEY_JOYPAD_SWORD = "_joypad_sword";
+const std::string Savegame::KEY_JOYPAD_ATTACK = "_joypad_attack";
 const std::string Savegame::KEY_JOYPAD_ITEM_1 = "_joypad_item_1";
 const std::string Savegame::KEY_JOYPAD_ITEM_2 = "_joypad_item_2";
 const std::string Savegame::KEY_JOYPAD_PAUSE = "_joypad_pause";
@@ -133,13 +133,13 @@ void Savegame::set_default_keyboard_controls() {
 
 #ifndef PANDORA
   set_string(KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(InputEvent::KEY_SPACE));
-  set_string(KEY_KEYBOARD_SWORD, InputEvent::get_keyboard_key_name(InputEvent::KEY_c));
+  set_string(KEY_KEYBOARD_ATTACK, InputEvent::get_keyboard_key_name(InputEvent::KEY_c));
   set_string(KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(InputEvent::KEY_x));
   set_string(KEY_KEYBOARD_ITEM_2, InputEvent::get_keyboard_key_name(InputEvent::KEY_v));
   set_string(KEY_KEYBOARD_PAUSE, InputEvent::get_keyboard_key_name(InputEvent::KEY_d));
 #else
   set_string(KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_DOWN));
-  set_string(KEY_KEYBOARD_SWORD, InputEvent::get_keyboard_key_name(InputEvent::KEY_HOME));
+  set_string(KEY_KEYBOARD_ATTACK, InputEvent::get_keyboard_key_name(InputEvent::KEY_HOME));
   set_string(KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(InputEvent::KEY_PAGE_UP));
   set_string(KEY_KEYBOARD_ITEM_2, InputEvent::get_keyboard_key_name(InputEvent::KEY_END));
   set_string(KEY_KEYBOARD_PAUSE, InputEvent::get_keyboard_key_name(InputEvent::KEY_LEFT_ALT));
@@ -156,7 +156,7 @@ void Savegame::set_default_keyboard_controls() {
 void Savegame::set_default_joypad_controls() {
 
   set_string(KEY_JOYPAD_ACTION, "button 0");
-  set_string(KEY_JOYPAD_SWORD, "button 1");
+  set_string(KEY_JOYPAD_ATTACK, "button 1");
   set_string(KEY_JOYPAD_ITEM_1, "button 2");
   set_string(KEY_JOYPAD_ITEM_2, "button 3");
   set_string(KEY_JOYPAD_PAUSE, "button 4");

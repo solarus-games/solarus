@@ -49,7 +49,7 @@ class Crystal: public Detector {
     bool is_obstacle_for(MapEntity& other);
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
-    void action_key_pressed();
+    void notify_action_command_pressed();
     void activate(MapEntity& entity_activating);
 
     void update();

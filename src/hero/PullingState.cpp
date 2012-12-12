@@ -72,11 +72,11 @@ void Hero::PullingState::update() {
 
   if (!is_moving_grabbed_entity()) {
 
-    int wanted_direction8 = get_controls().get_wanted_direction8();
+    int wanted_direction8 = get_commands().get_wanted_direction8();
     int opposite_direction8 = (get_sprites().get_animation_direction8() + 4) % 8;
 
     // stop pulling if the action key is released or if there is no more obstacle
-    if (!get_controls().is_key_pressed(GameCommands::ACTION)
+    if (!get_commands().is_command_pressed(GameCommands::ACTION)
         || !hero.is_facing_obstacle()) {
       hero.set_state(new FreeState(hero));
     }

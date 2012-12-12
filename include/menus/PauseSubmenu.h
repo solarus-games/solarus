@@ -49,6 +49,9 @@ class PauseSubmenu {
      *
      * The subclasses should redefine it to react to the key that was just pressed.
      *
+     * TODO this function should be renamed to notify_command_pressed(), but
+     * it does not really matter since the pause menu will be scripted soon.
+     *
      * @param key the key pressed
      */
     virtual void key_pressed(GameCommands::GameCommand key) = 0;

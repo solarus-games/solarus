@@ -230,13 +230,15 @@ void Chest::update() {
 }
 
 /**
- * @brief This function is called when the player interacts with this chest.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  * The hero opens the chest if possible.
  */
-void Chest::action_key_pressed() {
+void Chest::notify_action_command_pressed() {
 
   if (is_enabled() && get_hero().is_free()) {
 

@@ -83,7 +83,7 @@ class DialogBox {
     void set_variable(const std::string& dialog_id, int value);
     const std::string& get_variable();
     int get_last_answer();
-    void key_pressed(GameCommands::GameCommand key);
+    void notify_command_pressed(GameCommands::GameCommand command);
     const std::string& get_dialog_id();
     void show_all_now();
 

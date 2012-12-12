@@ -39,7 +39,7 @@ class Savegame: public ExportableToLua {
     static const std::string KEY_STARTING_MAP;
     static const std::string KEY_STARTING_POINT;
     static const std::string KEY_KEYBOARD_ACTION;
-    static const std::string KEY_KEYBOARD_SWORD;
+    static const std::string KEY_KEYBOARD_ATTACK;
     static const std::string KEY_KEYBOARD_ITEM_1;
     static const std::string KEY_KEYBOARD_ITEM_2;
     static const std::string KEY_KEYBOARD_PAUSE;
@@ -48,7 +48,7 @@ class Savegame: public ExportableToLua {
     static const std::string KEY_KEYBOARD_LEFT;
     static const std::string KEY_KEYBOARD_DOWN;
     static const std::string KEY_JOYPAD_ACTION;
-    static const std::string KEY_JOYPAD_SWORD;
+    static const std::string KEY_JOYPAD_ATTACK;
     static const std::string KEY_JOYPAD_ITEM_1;
     static const std::string KEY_JOYPAD_ITEM_2;
     static const std::string KEY_JOYPAD_PAUSE;

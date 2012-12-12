@@ -31,7 +31,7 @@ class PauseSubmenuOptions: public PauseSubmenu {
 
   private:
 
-    GameCommands &controls;
+    GameCommands &commands;
 
     std::string *video_mode_strings;
     std::string caption_strings[3];

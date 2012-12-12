@@ -138,8 +138,8 @@ class Hero: public MapEntity {
     void update();
     void draw_on_map();
     void set_suspended(bool suspended);
-    void key_pressed(GameCommands::GameCommand key);
-    void key_released(GameCommands::GameCommand key);
+    void notify_command_pressed(GameCommands::GameCommand command);
+    void notify_command_released(GameCommands::GameCommand command);
 
     /**
      * @name Sprites.

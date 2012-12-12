@@ -58,16 +58,16 @@ void HUD::update_blinking() {
 
   // detect whether a key is being customized
   int index = -1;
-  GameCommands &controls = game.get_controls();
-  if (controls.is_customizing()) {
-    GameCommands::GameCommand key = controls.get_key_to_customize();
+  GameCommands& commands = game.get_commands();
+  if (commands.is_customizing()) {
+    GameCommands::GameCommand key = commands.get_command_to_customize();
     switch (key) {
 
       case GameCommands::ACTION:
         index = 7;
         break;
 
-      case GameCommands::SWORD:
+      case GameCommands::ATTACK:
         index = 5;
         break;
 

@@ -91,14 +91,14 @@ void Hero::FreeState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Notifies this state that the action key was just pressed.
+ * @brief Notifies this state that the action command was just pressed.
  */
-void Hero::FreeState::action_key_pressed() {
+void Hero::FreeState::notify_action_command_pressed() {
 
   if (get_keys_effect().is_action_key_acting_on_facing_entity()) {
 
     // action on the facing entity
-    hero.get_facing_entity()->action_key_pressed();
+    hero.get_facing_entity()->notify_action_command_pressed();
   }
   else if (hero.is_facing_point_on_obstacle()) {
 

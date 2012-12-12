@@ -126,15 +126,15 @@ void Hero::SwimmingState::set_animation_walking() {
 }
 
 /**
- * @brief Notifies this state that the action key was just pressed.
+ * @brief Notifies this state that the action command was just pressed.
  */
-void Hero::SwimmingState::action_key_pressed() {
+void Hero::SwimmingState::notify_action_command_pressed() {
   try_swim_faster();
 }
 /**
- * @brief Notifies this state that the sword key was just pressed.
+ * @brief Notifies this state that the attack command was just pressed.
  */
-void Hero::SwimmingState::sword_key_pressed() {
+void Hero::SwimmingState::notify_attack_command_pressed() {
   try_swim_faster();
 }
 

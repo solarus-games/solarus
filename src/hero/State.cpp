@@ -118,11 +118,11 @@ KeysEffect& Hero::State::get_keys_effect() {
 }
 
 /**
- * @brief Returns the game controls.
- * @return the controls
+ * @brief Returns the game commands.
+ * @return The commands.
  */
-GameCommands& Hero::State::get_controls() {
-  return get_game().get_controls();
+GameCommands& Hero::State::get_commands() {
+  return get_game().get_commands();
 }
 
 /**
@@ -195,47 +195,48 @@ void Hero::State::set_suspended(bool suspended) {
 }
 
 /**
- * @brief This function is called when a game key is pressed and the game is not suspended.
- * @param key the key pressed
+ * @brief This function is called when a game command is pressed and the game
+ * is not suspended.
+ * @param command The command pressed.
  */
-void Hero::State::key_pressed(GameCommands::GameCommand key) {
+void Hero::State::notify_command_pressed(GameCommands::GameCommand command) {
 
-  switch (key) {
+  switch (command) {
 
     // action key
   case GameCommands::ACTION:
-    action_key_pressed();
+    notify_action_command_pressed();
     break;
 
     // sword key
-  case GameCommands::SWORD:
-    sword_key_pressed();
+  case GameCommands::ATTACK:
+    notify_attack_command_pressed();
     break;
 
     // move the hero
   case GameCommands::RIGHT:
-    directional_key_pressed(0);
+    notify_direction_command_pressed(0);
     break;
 
   case GameCommands::UP:
-    directional_key_pressed(1);
+    notify_direction_command_pressed(1);
     break;
 
   case GameCommands::LEFT:
-    directional_key_pressed(2);
+    notify_direction_command_pressed(2);
     break;
 
   case GameCommands::DOWN:
-    directional_key_pressed(3);
+    notify_direction_command_pressed(3);
     break;
 
     // use an inventory item
   case GameCommands::ITEM_1:
-    item_key_pressed(1);
+    notify_item_command_pressed(1);
     break;
 
   case GameCommands::ITEM_2:
-    item_key_pressed(2);
+    notify_item_command_pressed(2);
     break;
 
   default:
@@ -244,43 +245,44 @@ void Hero::State::key_pressed(GameCommands::GameCommand key) {
 }
 
 /**
- * @brief This function is called when a key is released if the game is not suspended.
- * @param key the key released
+ * @brief This function is called when a command is released if the game is
+ * not suspended.
+ * @param command The command released.
  */
-void Hero::State::key_released(GameCommands::GameCommand key) {
+void Hero::State::notify_command_released(GameCommands::GameCommand command) {
 
-  switch (key) {
+  switch (command) {
 
   case GameCommands::ACTION:
-    action_key_released();
+    notify_action_command_released();
     break;
 
-  case GameCommands::SWORD:
-    sword_key_released();
+  case GameCommands::ATTACK:
+    notify_attack_command_released();
     break;
 
   case GameCommands::RIGHT:
-    directional_key_released(0);
+    notify_direction_command_released(0);
     break;
 
   case GameCommands::UP:
-    directional_key_released(1);
+    notify_direction_command_released(1);
     break;
 
   case GameCommands::LEFT:
-    directional_key_released(2);
+    notify_direction_command_released(2);
     break;
 
   case GameCommands::DOWN:
-    directional_key_released(3);
+    notify_direction_command_released(3);
     break;
 
   case GameCommands::ITEM_1:
-    item_key_released(0);
+    notify_item_command_released(0);
     break;
 
   case GameCommands::ITEM_2:
-    item_key_released(1);
+    notify_item_command_released(1);
     break;
 
   default:
@@ -289,21 +291,21 @@ void Hero::State::key_released(GameCommands::GameCommand key) {
 }
 
 /**
- * @brief Notifies this state that the action key was just pressed.
+ * @brief Notifies this state that the action command was just pressed.
  */
-void Hero::State::action_key_pressed() {
+void Hero::State::notify_action_command_pressed() {
 }
 
 /**
- * @brief Notifies this state that the action key was just released.
+ * @brief Notifies this state that the action command was just released.
  */
-void Hero::State::action_key_released() {
+void Hero::State::notify_action_command_released() {
 }
 
 /**
- * @brief Notifies this state that the sword key was just pressed.
+ * @brief Notifies this state that the attack command was just pressed.
  */
-void Hero::State::sword_key_pressed() {
+void Hero::State::notify_attack_command_pressed() {
 
   if (!hero.is_suspended()
       && get_keys_effect().get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
@@ -314,30 +316,30 @@ void Hero::State::sword_key_pressed() {
 }
 
 /**
- * @brief Notifies this state that the sword key was just released.
+ * @brief Notifies this state that the attack command was just released.
  */
-void Hero::State::sword_key_released() {
+void Hero::State::notify_attack_command_released() {
 }
 
 /**
- * @brief Notifies this state that a directional key was just pressed.
+ * @brief Notifies this state that a directional command was just pressed.
  * @param direction4 direction of the key (0 to 3)
  */
-void Hero::State::directional_key_pressed(int direction4) {
+void Hero::State::notify_direction_command_pressed(int direction4) {
 }
 
 /**
- * @brief Notifies this state that a directional key was just released.
+ * @brief Notifies this state that a directional command was just released.
  * @param direction4 direction of the key (0 to 3)
  */
-void Hero::State::directional_key_released(int direction4) {
+void Hero::State::notify_direction_command_released(int direction4) {
 }
 
 /**
- * @brief Notifies this state that an item key was just pressed.
+ * @brief Notifies this state that an item command was just pressed.
  * @param slot The slot activated (1 or 2).
  */
-void Hero::State::item_key_pressed(int slot) {
+void Hero::State::notify_item_command_pressed(int slot) {
 
   EquipmentItem* item = get_equipment().get_item_assigned(slot);
 
@@ -351,10 +353,10 @@ void Hero::State::item_key_pressed(int slot) {
 }
 
 /**
- * @brief Notifies this state that an item key was just released.
- * @param slot the slot (0 or 1)
+ * @brief Notifies this state that an item command was just released.
+ * @param slot the slot (1 or 2)
  */
-void Hero::State::item_key_released(int slot) {
+void Hero::State::notify_item_command_released(int slot) {
 }
 
 /**

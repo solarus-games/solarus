@@ -229,12 +229,14 @@ void NPC::notify_collision(MapEntity& entity_overlapping, CollisionMode collisio
 }
 
 /**
- * @brief Notifies this detector that the player is interacting by pressing the action key.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  */
-void NPC::action_key_pressed() {
+void NPC::notify_action_command_pressed() {
 
   Hero& hero = get_hero();
   if (hero.is_free()) {

@@ -76,7 +76,7 @@ class Detector: public MapEntity {
     void check_collision(MapEntity &entity);
     void check_collision(MapEntity &entity, Sprite &sprite);
 
-    virtual void action_key_pressed();
+    virtual void notify_action_command_pressed();
     virtual bool interaction_with_inventory_item(InventoryItem &item);
     virtual bool start_movement_by_hero();
     virtual void stop_movement_by_hero();

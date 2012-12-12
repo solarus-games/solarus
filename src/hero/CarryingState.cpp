@@ -142,9 +142,9 @@ void Hero::CarryingState::update() {
 }
 
 /**
- * @brief Notifies this state that the action key was just pressed.
+ * @brief Notifies this state that the action command was just pressed.
  */
-void Hero::CarryingState::action_key_pressed() {
+void Hero::CarryingState::notify_action_command_pressed() {
 
   if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_THROW) {
     throw_item();

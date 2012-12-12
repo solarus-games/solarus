@@ -65,7 +65,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   savegame->set_game(this);
 
   // initialize members
-  controls = new GameCommands(*this);
+  commands = new GameCommands(*this);
   hero = new Hero(get_equipment());
   hero->increment_refcount();
   keys_effect = new KeysEffect();
@@ -105,7 +105,7 @@ Game::~Game() {
   if (hero->get_refcount() == 0) {
     delete hero;
   }
-  delete controls;
+  delete commands;
 
   if (previous_map_surface != NULL) {
     delete previous_map_surface;
@@ -168,11 +168,11 @@ const Rectangle& Game::get_hero_xy() {
 }
 
 /**
- * @brief Returns the game controls for the keyboard and the joypad.
- * @return the game controls
+ * @brief Returns the game commands mapped to the keyboard and the joypad.
+ * @return The game commands.
  */
-GameCommands& Game::get_controls() {
-  return *controls;
+GameCommands& Game::get_commands() {
+  return *commands;
 }
 
 /**
@@ -219,7 +219,7 @@ bool Game::notify_input(InputEvent& event) {
         // Built-in behavior:
         // the GameControl object will transform the low-level input event into
         // a high-level game control event (i.e. a call to key_pressed() or key_released()).
-        controls->notify_input(event);
+        commands->notify_input(event);
       }
     }
   }
@@ -227,49 +227,49 @@ bool Game::notify_input(InputEvent& event) {
 }
 
 /**
- * @brief This function is called when a game key is pressed.
- * @param key a key
+ * @brief This function is called when a game command is pressed.
+ * @param command A game command.
  */
-void Game::key_pressed(GameCommands::GameCommand key) {
+void Game::notify_command_pressed(GameCommands::GameCommand command) {
 
   if (!is_suspended()) {
 
-    if (key == GameCommands::PAUSE) {
+    if (command == GameCommands::PAUSE) {
       if (can_pause()) {
         set_paused(true);
       }
     }
     else {
       // when the game is not suspended, all other keys apply to the hero
-      hero->key_pressed(key);
+      hero->notify_command_pressed(command);
     }
   }
 
   // is a message being shown?
   else if (is_showing_dialog()) {
-    dialog_box.key_pressed(key);
+    dialog_box.notify_command_pressed(command);
   }
 
   // is the game paused?
   else if (is_paused()) {
-    pause_menu->key_pressed(key);
+    pause_menu->notify_command_pressed(command);
   }
 
   // is the game over sequence shown?
   else if (is_showing_gameover()) {
-    gameover_sequence->key_pressed(key);
+    gameover_sequence->notify_command_pressed(command);
   }
 }
 
 /**
- * @brief This function is called when a game key is released.
- * @param key a key
+ * @brief This function is called when a game command is released.
+ * @param command A game command.
  */
-void Game::key_released(GameCommands::GameCommand key) {
+void Game::notify_command_released(GameCommands::GameCommand command) {
 
   if (!is_suspended()) {
-    // if the game is not suspended, the keys apply to the hero
-    hero->key_released(key);
+    // When the game is not suspended, the command apply to the hero.
+    hero->notify_command_released(command);
   }
 }
 

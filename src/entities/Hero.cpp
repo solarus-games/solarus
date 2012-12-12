@@ -325,21 +325,21 @@ void Hero::draw_on_map() {
 }
 
 /**
- * @brief This function is called when a game key is pressed
+ * @brief This function is called when a game command is pressed
  * and the game is not suspended.
- * @param key the key pressed
+ * @param command The command pressed.
  */
-void Hero::key_pressed(GameCommands::GameCommand key) {
-  state->key_pressed(key);
+void Hero::notify_command_pressed(GameCommands::GameCommand command) {
+  state->notify_command_pressed(command);
 }
 
 /**
- * @brief This function is called when a key is released
+ * @brief This function is called when a game command is released
  * if the game is not suspended.
- * @param key the key released
+ * @param command The command released.
  */
-void Hero::key_released(GameCommands::GameCommand key) {
-  state->key_released(key);
+void Hero::notify_command_released(GameCommands::GameCommand command) {
+  state->notify_command_released(command);
 }
 
 /**
@@ -2143,16 +2143,17 @@ void Hero::start_lifting(CarriedItem *item_to_lift) {
  */
 void Hero::start_running() {
 
-  // the running state may be triggered by the action key or an inventory item key
-  GameCommands::GameCommand key;
+  // The running state may be triggered by the action command or an inventory
+  // item command.
+  GameCommands::GameCommand command;
   if (is_free()) {
-    key = GameCommands::ACTION;
+    command = GameCommands::ACTION;
   }
   else {
-    key = get_controls().is_key_pressed(GameCommands::ITEM_1) ?
+    command = get_commands().is_command_pressed(GameCommands::ITEM_1) ?
         GameCommands::ITEM_1 : GameCommands::ITEM_2;
   }
-  set_state(new RunningState(*this, key));
+  set_state(new RunningState(*this, command));
 }
 
 /**

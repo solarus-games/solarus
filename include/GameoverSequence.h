@@ -79,7 +79,7 @@ class GameoverSequence {
   public:
 
     // creation and destruction
-    GameoverSequence(Game &game, int hero_direction);
+    GameoverSequence(Game& game, int hero_direction);
     ~GameoverSequence();
 
     // state
@@ -88,7 +88,7 @@ class GameoverSequence {
     // main loop
     void update();
     void draw(Surface& dst_surface);
-    void key_pressed(GameCommands::GameCommand key);
+    void notify_command_pressed(GameCommands::GameCommand command);
 };
 
 #endif

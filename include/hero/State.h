@@ -33,15 +33,15 @@ class Hero::State {
 
   private:
 
-    Map *map;				/**< the current map (it may change during this state) */
+    Map* map;                 /**< the current map (it may change during this state) */
 
   protected:
 
-    Hero &hero;				/**< the hero controlled by this state */
-    bool suspended;			/**< indicates whether this state is suspended */
-    uint32_t when_suspended;		/**< indicates when this state was suspended */
+    Hero& hero;               /**< the hero controlled by this state */
+    bool suspended;           /**< indicates whether this state is suspended */
+    uint32_t when_suspended;  /**< indicates when this state was suspended */
 
-    State(Hero &hero);
+    State(Hero& hero);
 
     bool is_current_state();
 
@@ -52,7 +52,7 @@ class Hero::State {
     Map& get_map();
     Equipment& get_equipment();
     KeysEffect& get_keys_effect();
-    GameCommands& get_controls();
+    GameCommands& get_commands();
     DialogBox& get_dialog_box();
     HeroSprites& get_sprites();
 
@@ -60,26 +60,26 @@ class Hero::State {
 
     // creation and destruction
     virtual ~State();
-    virtual void start(State *previous_state);
-    virtual void stop(State *next_state);
+    virtual void start(State* previous_state);
+    virtual void stop(State* next_state);
 
     // game loop
     virtual void update();
     virtual void draw_on_map();
     virtual void set_suspended(bool suspended);
-    void key_pressed(GameCommands::GameCommand key);
-    void key_released(GameCommands::GameCommand key);
-    virtual void action_key_pressed();
-    virtual void action_key_released();
-    virtual void sword_key_pressed();
-    virtual void sword_key_released();
-    virtual void directional_key_pressed(int direction4);
-    virtual void directional_key_released(int direction4);
-    virtual void item_key_pressed(int slot);
-    virtual void item_key_released(int slot);
+    void notify_command_pressed(GameCommands::GameCommand command);
+    void notify_command_released(GameCommands::GameCommand command);
+    virtual void notify_action_command_pressed();
+    virtual void notify_action_command_released();
+    virtual void notify_attack_command_pressed();
+    virtual void notify_attack_command_released();
+    virtual void notify_direction_command_pressed(int direction4);
+    virtual void notify_direction_command_released(int direction4);
+    virtual void notify_item_command_pressed(int slot);
+    virtual void notify_item_command_released(int slot);
 
     // game
-    virtual void set_map(Map &map);
+    virtual void set_map(Map& map);
     virtual bool can_start_gameover_sequence();
 
     // sprites

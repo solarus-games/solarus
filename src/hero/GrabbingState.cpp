@@ -56,11 +56,11 @@ void Hero::GrabbingState::update() {
 
   // the hero is grabbing an obstacle: check the direction pressed
 
-  int wanted_direction8 = get_controls().get_wanted_direction8();
+  int wanted_direction8 = get_commands().get_wanted_direction8();
   int sprite_direction8 = get_sprites().get_animation_direction8();
 
   // release the obstacle
-  if (!get_controls().is_key_pressed(GameCommands::ACTION)) {
+  if (!get_commands().is_command_pressed(GameCommands::ACTION)) {
     hero.set_state(new FreeState(hero));
   }
 

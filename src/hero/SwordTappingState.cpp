@@ -82,8 +82,8 @@ void Hero::SwordTappingState::update() {
 
     const Rectangle& facing_point = hero.get_facing_point();
 
-    if (!get_controls().is_key_pressed(GameCommands::SWORD)
-        || get_controls().get_wanted_direction8() != get_sprites().get_animation_direction8()
+    if (!get_commands().is_command_pressed(GameCommands::ATTACK)
+        || get_commands().get_wanted_direction8() != get_sprites().get_animation_direction8()
         || !get_map().test_collision_with_obstacles(hero.get_layer(), facing_point.get_x(), facing_point.get_y(), hero)) {
       // the sword key has been released, the player has moved or the obstacle is gone
 

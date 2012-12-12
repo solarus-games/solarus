@@ -274,13 +274,14 @@ void Destructible::notify_collision(MapEntity &other_entity, Sprite &other_sprit
 }
 
 /**
- * @brief Notifies this entity that the player is interacting with it.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
- * The hero lifts the item if possible.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  */
-void Destructible::action_key_pressed() {
+void Destructible::notify_action_command_pressed() {
 
   KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
 

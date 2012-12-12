@@ -111,7 +111,7 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
 
   savegame_v2.set_string(Savegame::KEY_KEYBOARD_ACTION, InputEvent::get_keyboard_key_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_ACTION_KEY))));
-  savegame_v2.set_string(Savegame::KEY_KEYBOARD_SWORD, InputEvent::get_keyboard_key_name(
+  savegame_v2.set_string(Savegame::KEY_KEYBOARD_ATTACK, InputEvent::get_keyboard_key_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_SWORD_KEY))));
   savegame_v2.set_string(Savegame::KEY_KEYBOARD_ITEM_1, InputEvent::get_keyboard_key_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_ITEM_1_KEY))));
@@ -128,7 +128,7 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
   savegame_v2.set_string(Savegame::KEY_KEYBOARD_DOWN, InputEvent::get_keyboard_key_name(
       InputEvent::KeyboardKey(get_integer(KEYBOARD_DOWN_KEY))));
   savegame_v2.set_string(Savegame::KEY_JOYPAD_ACTION, get_string(JOYPAD_ACTION_KEY));
-  savegame_v2.set_string(Savegame::KEY_JOYPAD_SWORD, get_string(JOYPAD_SWORD_KEY));
+  savegame_v2.set_string(Savegame::KEY_JOYPAD_ATTACK, get_string(JOYPAD_SWORD_KEY));
   savegame_v2.set_string(Savegame::KEY_JOYPAD_ITEM_1, get_string(JOYPAD_ITEM_1_KEY));
   savegame_v2.set_string(Savegame::KEY_JOYPAD_ITEM_2, get_string(JOYPAD_ITEM_2_KEY));
   savegame_v2.set_string(Savegame::KEY_JOYPAD_PAUSE, get_string(JOYPAD_PAUSE_KEY));

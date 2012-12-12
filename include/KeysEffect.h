@@ -31,6 +31,8 @@
  * open a chest, save the game, use an item, etc.).
  * This class is also used by the HUD to display the five icons
  * representing those keys.
+ *
+ * TODO rename to CommandsEffects
  */
 class KeysEffect {
 

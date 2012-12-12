@@ -376,17 +376,17 @@ void GameCommands::joypad_axis_moved(int axis, int state) {
  */
 void GameCommands::joypad_hat_moved(int hat, int value) {
 
-  // hat in centered position
   if (value == -1) {
+    // Hat in centered position.
 
     for (int i = 0; i < 4; i++) {
 
       std::ostringstream oss;
       oss << "hat " << hat << ' ' << direction_names[i];
-      GameCommand game_key = joypad_mapping[oss.str()];
+      GameCommand command_released = joypad_mapping[oss.str()];
 
-      if (game_key != 0) {
-        game_key_released(game_key);
+      if (command_released != 0) {
+        game_command_released(command_released);
       }
     }
   }
@@ -435,192 +435,181 @@ void GameCommands::joypad_hat_moved(int hat, int value) {
 
     std::ostringstream oss;
     oss << "hat " << hat << ' ' << direction_names[direction_1];
-    const std::string &joypad_string = oss.str();
-    GameCommand game_key = joypad_mapping[joypad_string];
+    const std::string& joypad_string_1 = oss.str();
+    GameCommand command_1 = joypad_mapping[joypad_string_1];
 
-    std::ostringstream oss_inv;
-    oss_inv << "hat " << hat << ' ' << direction_names[(direction_1 + 2) % 4];
-    const std::string &inverse_joypad_string = oss_inv.str();
-    GameCommand inverse_game_key = joypad_mapping[inverse_joypad_string];
+    oss.str("");
+    oss << "hat " << hat << ' ' << direction_names[(direction_1 + 2) % 4];
+    const std::string& inverse_joypad_string_1 = oss.str();
+    GameCommand inverse_command_1 = joypad_mapping[inverse_joypad_string_1];
 
-    GameCommand game_key_2 = NONE;
-    GameCommand inverse_game_key_2 = NONE;
+    GameCommand command_2 = NONE;
+    GameCommand inverse_command_2 = NONE;
 
     if (direction_2 != -1) {
-      std::ostringstream oss;
+      oss.str("");
       oss << "hat " << hat << ' ' << direction_names[direction_2];
-      const std::string &joypad_string_2 = oss.str();
-      game_key_2 = joypad_mapping[joypad_string_2];
+      const std::string& joypad_string_2 = oss.str();
+      command_2 = joypad_mapping[joypad_string_2];
 
-      std::ostringstream oss_inv;
-      oss_inv << "hat " << hat << ' ' << direction_names[(direction_2 + 2) % 4];
-      const std::string &inverse_joypad_string_2 = oss_inv.str();
-      inverse_game_key_2 = joypad_mapping[inverse_joypad_string_2];
+      oss.str("");
+      oss << "hat " << hat << ' ' << direction_names[(direction_2 + 2) % 4];
+      const std::string& inverse_joypad_string_2 = oss.str();
+      inverse_command_2 = joypad_mapping[inverse_joypad_string_2];
     }
     else {
       std::ostringstream oss;
       oss << "hat " << hat << ' ' << direction_names[(direction_1 + 1) % 4];
-      const std::string &joypad_string_2 = oss.str();
-      game_key_2 = joypad_mapping[joypad_string_2];
+      const std::string& joypad_string_2 = oss.str();
+      command_2 = joypad_mapping[joypad_string_2];
 
-      std::ostringstream oss_inv;
-      oss_inv << "hat " << hat << ' ' << direction_names[(direction_1 + 3) % 4];
-      const std::string &inverse_joypad_string_2 = oss_inv.str();
-      inverse_game_key_2 = joypad_mapping[inverse_joypad_string_2];
+      oss.str("");
+      oss << "hat " << hat << ' ' << direction_names[(direction_1 + 3) % 4];
+      const std::string& inverse_joypad_string_2 = oss.str();
+      inverse_command_2 = joypad_mapping[inverse_joypad_string_2];
     }
 
     if (!customizing) {
 
-      // if the key is mapped (otherwise we just ignore it)
-      if (game_key != 0) {
+      // If the key is mapped, notify the game.
+      if (command_1 != 0) {
 
-	// notify the game
-	if (is_key_pressed(inverse_game_key)) {
-	  game_key_released(inverse_game_key);
-	}
-	game_key_pressed(game_key);
+        if (is_command_pressed(inverse_command_1)) {
+          game_command_released(inverse_command_1);
+        }
+        game_command_pressed(command_1);
       }
 
       if (direction_2 != -1) {
-        if (is_key_pressed(inverse_game_key_2)) {
-          game_key_released(inverse_game_key_2);
+        if (is_command_pressed(inverse_command_2)) {
+          game_command_released(inverse_command_2);
         }
-        game_key_pressed(game_key_2);
+        game_command_pressed(command_2);
       }
       else {
-        if (is_key_pressed(game_key_2)) {
-          game_key_released(game_key_2);
+        if (is_command_pressed(command_2)) {
+          game_command_released(command_2);
         }
-        if (is_key_pressed(inverse_game_key_2)) {
-          game_key_released(inverse_game_key_2);
+        if (is_command_pressed(inverse_command_2)) {
+          game_command_released(inverse_command_2);
         }
       }
     }
     else {
       customizing = false;
 
-      if (game_key != key_to_customize) {
-	// consider this hat movement as the new mapping for the game key being customized
+      if (command_1 != command_to_customize) {
+        // Consider this hat movement as the new mapping for the game command being customized.
 
-        const std::string &previous_joypad_string = get_joypad_string(key_to_customize);
-        if (game_key != 0) {
-          // this hat movement was already assigned to a game key
-          joypad_mapping[previous_joypad_string] = game_key;
-          set_saved_joypad_string(game_key, previous_joypad_string);
+        const std::string& previous_joypad_string = get_joypad_binding(command_to_customize);
+        if (command_1 != NONE) {
+          // This hat movement is already assigned to a game command.
+          joypad_mapping[previous_joypad_string] = command_1;
+          set_saved_joypad_binding(command_1, previous_joypad_string);
         }
         else {
           joypad_mapping.erase(previous_joypad_string);
         }
-        joypad_mapping[joypad_string] = key_to_customize;
-        set_saved_joypad_string(key_to_customize, joypad_string);
+        joypad_mapping[joypad_string_1] = command_to_customize;
+        set_saved_joypad_binding(command_to_customize, joypad_string_1);
 
-        keys_pressed[key_to_customize - 1] = true;
+        commands_pressed[command_to_customize] = true;
       }
     }
   }
 }
 
 /**
- * @brief This function is called when a game key is pressed.
+ * @brief This function is called when a game command is pressed.
  *
  * This event may come from the keyboard or the joypad.
  *
- * @param key the game key pressed
+ * @param command The game command pressed.
  */
-void GameCommands::game_key_pressed(GameCommand key) {
+void GameCommands::game_command_pressed(GameCommand command) {
 
-  int index = key - 1;
-  if (keys_pressed[index]) {
+  if (commands_pressed[command]) {
+    // Already known as pressed.
     return;
   }
 
-  keys_pressed[index] = true;
-  game.key_pressed(key);
+  commands_pressed[command] = true;
+  game.notify_command_pressed(command);
 }
 
 /**
- * @brief This function is called when a game key is pressed.
+ * @brief This function is called when a game command is pressed.
  *
  * This event may come from the keyboard or the joypad.
  *
- * @param key the game key pressed
+ * @param command The game command released.
  */
-void GameCommands::game_key_released(GameCommand key) {
+void GameCommands::game_command_released(GameCommand command) {
 
-  int index = key - 1;
-  if (!keys_pressed[index]) {
+  if (!commands_pressed[command]) {
+    // Already known as released.
     return;
   }
 
-  keys_pressed[index] = false;
-  game.key_released(key);
+  commands_pressed[command] = false;
+  game.notify_command_released(command);
 }
 
-
 /**
- * @brief Returns the low-level keyboard key where the specified game key
+ * @brief Returns the low-level keyboard key where the specified game command
  * is currently mapped.
- * @param game_key a game key
- * @return the keyboard key corresponding this game key
+ * @param command A game command.
+ * @return The keyboard key mapped to this game command, or InputEvent::KEY_NONE
+ * if the command is not mapped to a keyboard key.
  */
-InputEvent::KeyboardKey GameCommands::get_keyboard_key(GameCommand game_key) {
+InputEvent::KeyboardKey GameCommands::get_keyboard_binding(GameCommand command) {
 
   std::map<InputEvent::KeyboardKey, GameCommand>::const_iterator it;
   for (it = keyboard_mapping.begin(); it != keyboard_mapping.end(); it++) {
 
-    if (it->second == game_key) {
+    if (it->second == command) {
       return it->first;
     }
   }
 
-  Debug::die(StringConcat() << "No keyboard key is defined for game key '" << get_key_name(game_key) << "'");
   return InputEvent::KEY_NONE;
 }
 
 /**
- * @brief Returns a string representing the keyboard key associated to the
- * specified game command.
- * @param game_command A game command.
- * @return A string representing the associated low-level keyboard key.
+ * @brief Returns a string representing the joypad action where the specified
+ * game command is currently mapped.
+ * @param command A game command.
+ * @return The joypad action mapped to this game command, or an empty string if
+ * this game command is not mapped to a joypad action.
  */
-const std::string& GameCommands::get_keyboard_string(GameCommand game_key) {
-
-  InputEvent::KeyboardKey keyboard_key = get_keyboard_binding(game_key);
-  return InputEvent::get_keyboard_key_name(keyboard_key);
-}
-
-/**
- * @brief Returns a string representing the joypad action where the
- * specified game key is currently mapped.
- * @param game_key a game key
- * @return the joypad action corresponding this game key
- */
-const std::string& GameCommands::get_joypad_string(GameCommand game_key) {
+const std::string& GameCommands::get_joypad_binding(GameCommand command) {
 
   std::map<std::string, GameCommand>::const_iterator it;
   for (it = joypad_mapping.begin(); it != joypad_mapping.end(); it++) {
 
-    if (it->second == game_key) {
+    if (it->second == command) {
       return it->first;
     }
   }
 
-  Debug::die(StringConcat() << "No joypad action is defined for game key '" << get_key_name(game_key) << "'");
-  return "";
+  static const std::string empty_string;
+  return empty_string;
 }
 
 /**
  * @brief Returns the name of the savegame variable that stores the keyboard
- * mapping of a game key.
- * @param game_key A game key.
- * @return The savegame variable that stores the keyboard key for this game key.
+ * mapping of a game command.
+ * @param command A game command.
+ * @return The savegame variable that stores the keyboard key mapped to this
+ * game command, or an empty string if this command is not mapped to a
+ * keyboard key.
  */
-const std::string& GameCommands::get_keyboard_key_savegame_variable(GameCommand game_key) {
+const std::string& GameCommands::get_keyboard_binding_savegame_variable(
+    GameCommand command) {
 
   static const std::string savegame_variables[] = {
-      "",
       Savegame::KEY_KEYBOARD_ACTION,
-      Savegame::KEY_KEYBOARD_SWORD,
+      Savegame::KEY_KEYBOARD_ATTACK,
       Savegame::KEY_KEYBOARD_ITEM_1,
       Savegame::KEY_KEYBOARD_ITEM_2,
       Savegame::KEY_KEYBOARD_PAUSE,
@@ -630,21 +619,22 @@ const std::string& GameCommands::get_keyboard_key_savegame_variable(GameCommand 
       Savegame::KEY_KEYBOARD_DOWN
   };
 
-  return savegame_variables[game_key];
+  return savegame_variables[command];
 }
 
 /**
  * @brief Returns the name of the savegame variable that stores the joypad
- * mapping of a game key.
- * @param game_key A game key.
- * @return The savegame variable that stores the joypad action for this game key.
+ * mapping of a game command.
+ * @param command A game command.
+ * @return The savegame variable that stores the joypad action mapped to this
+ * game command, or an empty string if this command is not mapped to the joypad.
  */
-const std::string& GameCommands::get_joypad_string_savegame_variable(GameCommand game_key) {
+const std::string& GameCommands::get_joypad_binding_savegame_variable(
+    GameCommand command) {
 
   static const std::string savegame_variables[] = {
-      "",
       Savegame::KEY_JOYPAD_ACTION,
-      Savegame::KEY_JOYPAD_SWORD,
+      Savegame::KEY_JOYPAD_ATTACK,
       Savegame::KEY_JOYPAD_ITEM_1,
       Savegame::KEY_JOYPAD_ITEM_2,
       Savegame::KEY_JOYPAD_PAUSE,
@@ -654,106 +644,97 @@ const std::string& GameCommands::get_joypad_string_savegame_variable(GameCommand
       Savegame::KEY_JOYPAD_DOWN
   };
 
-  return savegame_variables[game_key];
+  return savegame_variables[command];
 }
 
 /**
  * @brief Determines from the savegame the low-level keyboard key where the
- * specified game key is mapped.
- * @param game_key A game key.
- * @return The keyboard key corresponding this game key in the savegame.
+ * specified game command is mapped.
+ * @param command A game command.
+ * @return The keyboard key mapped to this game command in the savegame.
  */
-InputEvent::KeyboardKey GameCommands::get_saved_keyboard_key(
-    GameCommand game_key) {
+InputEvent::KeyboardKey GameCommands::get_saved_keyboard_binding(
+    GameCommand command) {
 
-  const std::string& savegame_variable = get_keyboard_key_savegame_variable(game_key);
-  const std::string& keyboard_key_name = savegame.get_string(savegame_variable);
+  const std::string& savegame_variable = get_keyboard_binding_savegame_variable(command);
+  const std::string& keyboard_key_name = get_savegame().get_string(savegame_variable);
   return InputEvent::get_keyboard_key_by_name(keyboard_key_name);
 }
 
 /**
- * @brief Saves the low-level keyboard key where the specified game key is mapped.
- * @param game_key A game key.
- * @return The keyboard key corresponding this game key in the savegame.
+ * @brief Saves the low-level keyboard command where the specified game key is
+ * mapped.
+ * @param command A game command.
+ * @param keyboard_key The keyboard key to map to this game command in the
+ * savegame.
  */
-void GameCommands::set_saved_keyboard_key(
-    GameCommand game_key, InputEvent::KeyboardKey key) {
+void GameCommands::set_saved_keyboard_binding(
+    GameCommand command, InputEvent::KeyboardKey keyboard_key) {
 
-  const std::string& savegame_variable = get_keyboard_key_savegame_variable(game_key);
-  const std::string& keyboard_key_name = InputEvent::get_keyboard_key_name(key);
-  savegame.set_string(savegame_variable, keyboard_key_name);
+  const std::string& savegame_variable = get_keyboard_binding_savegame_variable(command);
+  const std::string& keyboard_key_name = InputEvent::get_keyboard_key_name(keyboard_key);
+  get_savegame().set_string(savegame_variable, keyboard_key_name);
 }
 
 /**
  * @brief Determines from the savegame the low-level joypad action where the
- * specified game key is mapped.
- * @param game_key A game key.
- * @return The joypad action corresponding this game key in the savegame.
+ * specified game command is mapped.
+ * @param command A game command.
+ * @return The joypad action mapped to this game command in the savegame.
  */
-const std::string& GameCommands::get_saved_joypad_string(
-    GameCommand game_key) {
+const std::string& GameCommands::get_saved_joypad_binding(
+    GameCommand command) {
 
-  const std::string& savegame_variable = get_joypad_string_savegame_variable(game_key);
-  return savegame.get_string(savegame_variable);
+  const std::string& savegame_variable = get_joypad_binding_savegame_variable(command);
+  return get_savegame().get_string(savegame_variable);
 }
 
 /**
- * @brief Saves the low-level joypad action where the specified game key is mapped.
- * @param game_key A game key.
- * @return The joypad action corresponding this game key in the savegame.
+ * @brief Saves the low-level joypad action where the specified game command
+ * is mapped.
+ * @param command A game command.
+ * @return The joypad action to map to this game command in the savegame.
  */
-void GameCommands::set_saved_joypad_string(
-    GameCommand game_key, const std::string& joypad_string) {
+void GameCommands::set_saved_joypad_binding(
+    GameCommand command, const std::string& joypad_string) {
 
-  const std::string& savegame_variable = get_joypad_string_savegame_variable(game_key);
-  savegame.set_string(savegame_variable, joypad_string);
+  const std::string& savegame_variable = get_joypad_binding_savegame_variable(command);
+  get_savegame().set_string(savegame_variable, joypad_string);
 }
 
 // customization
 
 /**
- * @brief Notifies the control manager that the specified key is going to be customized.
+ * @brief Sets the specified command to be customized.
  *
  * After this function is called, the next keyboard or joypad event received will
  * not be treated normally; it will be considered as the new keyboard or joypad
- * binding for this game key. Then, the keyboard and joypad events will be treated
+ * binding for this game key. Then, keyboard and joypad events will be treated
  * normally again. Call is_customization_done() to know when this happens.
  *
- * @param key the game key to customize
+ * @param command The command to customize.
  */
-void GameCommands::customize(GameCommand key) {
+void GameCommands::customize(GameCommand command) {
   this->customizing = true;
-  this->key_to_customize = key;
+  this->command_to_customize = command;
 }
 
 /**
- * @brief Returns whether the player is currently customizing a key.
- * @return true if the player is currently customizing a key 
+ * @brief Returns whether the player is currently customizing a command.
+ * @return true if the player is currently customizing a command.
  */
 bool GameCommands::is_customizing() {
   return customizing;
 }
 
 /**
- * @brief When the player is customizing a key, returns the key that is being customized.
- * @return the key being customize
+ * @brief When the player is customizing a command, returns the command that
+ * is being customized.
+ * @return The key being customized.
  */
-GameCommands::GameCommand GameCommands::get_key_to_customize() {
+GameCommands::GameCommand GameCommands::get_command_to_customize() {
 
   Debug::check_assertion(is_customizing(), "The player is not customizing a key");
-  return key_to_customize;
-}
-
-/**
- * @brief Returns whether the customization process started by calling the customize()
- * function is done.
- *
- * This function returns whether the key has received a new binding
- * and the controls are now treated normally again.
- *
- * @return true if no game key is being customized
- */
-bool GameCommands::is_customization_done() {
-  return !customizing;
+  return command_to_customize;
 }
 

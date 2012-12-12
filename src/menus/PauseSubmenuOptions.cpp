@@ -33,7 +33,8 @@
  * @param game the game
  */
 PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu &pause_menu, Game &game):
-  PauseSubmenu(pause_menu, game), controls(game.get_controls()) {
+  PauseSubmenu(pause_menu, game),
+  commands(game.get_commands()) {
 
   // get the strings
   video_mode_strings = new std::string[VideoManager::NB_MODES];
@@ -81,7 +82,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu &pause_menu, Game &game):
 
     game_key_texts[i] = new TextSurface(4, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
     game_key_texts[i]->set_font("fixed");
-    game_key_texts[i]->set_text(controls.get_key_name((GameCommands::GameCommand) (i + 1)));
+    // TODO game_key_texts[i]->set_text(commands::get_command_name(GameCommands::GameCommand(i + 1)));
 
     keyboard_control_texts[i] = new TextSurface(74, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
     keyboard_control_texts[i]->set_font("fixed");
@@ -140,12 +141,13 @@ void PauseSubmenuOptions::load_control_texts() {
   controls_surface->fill_with_color(Color::get_black());
   for (int i = 0; i < 9; i++) {
 
-    GameCommands::GameCommand key = (GameCommands::GameCommand) (i + 1);
+    GameCommands::GameCommand command = GameCommands::GameCommand(i + 1);
 
-    const std::string &keyboard_text = controls.get_keyboard_string(key);
+    const std::string& keyboard_text = InputEvent::get_keyboard_key_name(
+        commands.get_keyboard_binding(command));
     keyboard_control_texts[i]->set_text(keyboard_text.substr(0, 9));
 
-    const std::string &joypad_text = controls.get_joypad_string(key);
+    const std::string& joypad_text = commands.get_joypad_binding(command);
     joypad_control_texts[i]->set_text(joypad_text.substr(0, 9));
 
     game_key_texts[i]->draw(*controls_surface);
@@ -238,8 +240,8 @@ void PauseSubmenuOptions::action_key_pressed() {
   else {
     set_caption_text(caption_strings[2]);
     cursor_sprite->set_current_animation("small_blink");
-    GameCommands::GameCommand key_to_customize = (GameCommands::GameCommand) cursor_position;
-    controls.customize(key_to_customize);
+    GameCommands::GameCommand command_to_customize = (GameCommands::GameCommand) cursor_position;
+    commands.customize(command_to_customize);
     customizing = true;
 
     KeysEffect &keys_effect = game.get_keys_effect();
@@ -260,7 +262,7 @@ void PauseSubmenuOptions::update() {
 
   cursor_sprite->update();
 
-  if (customizing && controls.is_customization_done()) {
+  if (customizing && !commands.is_customizing()) {
     Sound::play("danger");
     customizing = false;
     set_caption_text(caption_strings[1]);

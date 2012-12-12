@@ -371,13 +371,13 @@ void DialogBox::close() {
 }
 
 /**
- * @brief This function is called by the game when a key is pressed
+ * @brief This function is called by the game when a command is pressed
  * while displaying a dialog.
- * @param key the key pressed
+ * @param command The command pressed.
  */
-void DialogBox::key_pressed(GameCommands::GameCommand key) {
+void DialogBox::notify_command_pressed(GameCommands::GameCommand command) {
 
-  switch (key) {
+  switch (command) {
 
     // action key
     case GameCommands::ACTION:
@@ -385,7 +385,7 @@ void DialogBox::key_pressed(GameCommands::GameCommand key) {
       break;
 
       // sword key
-    case GameCommands::SWORD:
+    case GameCommands::ATTACK:
       sword_key_pressed();
       break;
 

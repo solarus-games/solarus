@@ -320,11 +320,11 @@ KeysEffect& MapEntity::get_keys_effect() {
 }
 
 /**
- * @brief Returns the game controls.
- * @return the controls
+ * @brief Returns the game commands.
+ * @return The commands.
  */
-GameCommands& MapEntity::get_controls() {
-  return get_game().get_controls();
+GameCommands& MapEntity::get_commands() {
+  return get_game().get_commands();
 }
 
 /**

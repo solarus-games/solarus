@@ -343,13 +343,15 @@ void Door::draw_on_map() {
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with the door by pressing the action key.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  * The hero opens the door if possible, otherwise a message is shown.
  */
-void Door::action_key_pressed() {
+void Door::notify_action_command_pressed() {
 
   if (get_hero().is_free() && requires_key() && !is_changing()) {
     if (can_open()) {

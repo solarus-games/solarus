@@ -75,7 +75,7 @@ void Hero::SwordLoadingState::update() {
     sword_loaded = true;
   }
 
-  if (!get_controls().is_key_pressed(GameCommands::SWORD)) {
+  if (!get_commands().is_command_pressed(GameCommands::ATTACK)) {
     // the player has just released the sword key
 
     // stop loading the sword, go to the normal state or make a spin attack

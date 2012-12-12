@@ -40,7 +40,7 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     void stop(State *next_state);
     void update();
     void set_suspended(bool suspended);
-    void action_key_pressed();
+    void notify_action_command_pressed();
     void notify_obstacle_reached();
 
     bool is_free();

@@ -30,13 +30,13 @@ class Hero::RunningState: public Hero::State {
     int phase;                      /**< current phase of the run */
     uint32_t next_phase_date;       /**< date of the next phase */
     uint32_t next_sound_date;       /**< date of the next time a sound is played during the run */
-    GameCommands::GameCommand key;      /**< the key pressed to make the hero run */
+    GameCommands::GameCommand command;      /**< the command pressed to make the hero run */
 
     bool is_bouncing();
 
   public:
 
-    RunningState(Hero& hero, GameCommands::GameCommand key);
+    RunningState(Hero& hero, GameCommands::GameCommand command);
     ~RunningState();
 
     void start(State *previous_state);
@@ -44,7 +44,7 @@ class Hero::RunningState: public Hero::State {
     void update();
     void set_suspended(bool suspended);
     bool is_pressing_running_key();
-    void directional_key_pressed(int direction4);
+    void notify_direction_command_pressed(int direction4);
     void notify_obstacle_reached();
     int get_wanted_movement_direction8();
 

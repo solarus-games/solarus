@@ -30,11 +30,11 @@
 /**
  * @brief Constructor.
  * @param hero the hero controlled by this state
- * @param key the game key that triggers running
+ * @param key the game command that triggers running
  */
-Hero::RunningState::RunningState(Hero& hero, GameCommands::GameCommand key):
+Hero::RunningState::RunningState(Hero& hero, GameCommands::GameCommand command):
   State(hero),
-  key(key) {
+  command(command) {
 
 }
 
@@ -146,14 +146,14 @@ bool Hero::RunningState::is_bouncing() {
  */
 bool Hero::RunningState::is_pressing_running_key() {
 
-  return get_controls().is_key_pressed(key);
+  return get_commands().is_command_pressed(command);
 }
 
 /**
  * @brief Notifies this state that a directional key was just pressed.
  * @param direction4 direction of the key (0 to 3)
  */
-void Hero::RunningState::directional_key_pressed(int direction4) {
+void Hero::RunningState::notify_direction_command_pressed(int direction4) {
 
   if (!is_bouncing()
       && direction4 != get_sprites().get_animation_direction()) {

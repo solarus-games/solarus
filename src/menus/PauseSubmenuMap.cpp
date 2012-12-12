@@ -138,10 +138,10 @@ void PauseSubmenuMap::update() {
   up_arrow_sprite->update();
   down_arrow_sprite->update();
 
-  GameCommands &controls = game.get_controls();
+  GameCommands& commands = game.get_commands();
 
-  bool up = controls.is_key_pressed(GameCommands::UP);
-  bool down = controls.is_key_pressed(GameCommands::DOWN);
+  bool up = commands.is_command_pressed(GameCommands::UP);
+  bool down = commands.is_command_pressed(GameCommands::DOWN);
 
   if (moving_visible_y == -1) {
 

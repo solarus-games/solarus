@@ -121,7 +121,7 @@ class MapEntity: public ExportableToLua {
     MapEntities& get_entities();
     Equipment& get_equipment();
     KeysEffect& get_keys_effect();
-    GameCommands& get_controls();
+    GameCommands& get_commands();
     DialogBox& get_dialog_box();
     Savegame& get_savegame();
     Hero& get_hero();

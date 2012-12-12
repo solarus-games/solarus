@@ -46,8 +46,8 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
     void set_animation_stopped();
     void set_animation_walking();
 
-    void action_key_pressed();
-    void sword_key_pressed();
+    void notify_action_command_pressed();
+    void notify_attack_command_pressed();
 
     bool is_stairs_obstacle(Stairs& stairs);
     bool can_take_jumper();

@@ -139,13 +139,15 @@ void ShopItem::notify_collision(MapEntity &entity_overlapping, CollisionMode col
 }
 
 /**
- * @brief Notifies this entity that the player is interacting by pressing the action key.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * when the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  * A dialog is shown to let the hero buy the item.
  */
-void ShopItem::action_key_pressed() {
+void ShopItem::notify_action_command_pressed() {
 
   if (get_hero().is_free()
       && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {

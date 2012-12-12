@@ -338,14 +338,17 @@ void Detector::notify_collision(MapEntity &other_entity, Sprite &other_sprite, S
 }
 
 /**
- * @brief Notifies this detector that the player is interacting with it by pressing the action key.
+ * @brief Notifies this detector that the player is interacting with it by
+ * pressing the action command.
  *
- * This function is called when the player presses the action key
- * while the hero is facing this detector, and the action icon lets him do this.
+ * This function is called when the player presses the action command
+ * while the hero is facing this detector, and the action command effect lets
+ * him do this.
  * By default, nothing happens.
- * Redefine your function in the subclasses to allow the hero to interact with this entity.
+ * Redefine your function in the subclasses to allow the hero to interact with
+ * this entity.
  */
-void Detector::action_key_pressed() {
+void Detector::notify_action_command_pressed() {
 
 }
 

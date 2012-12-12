@@ -96,7 +96,7 @@ void Hero::ConveyorBeltState::update() {
     }
     else {
       // update the sprites direction
-      int keys_direction8 = get_controls().get_wanted_direction8();
+      int keys_direction8 = get_commands().get_wanted_direction8();
       int movement_direction8 = conveyor_belt.get_direction();
 
       int animation_direction = get_sprites().get_animation_direction(keys_direction8, movement_direction8);

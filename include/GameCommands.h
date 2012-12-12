@@ -46,7 +46,7 @@ class GameCommands {
     enum GameCommand {
       NONE = -1,
       ACTION,
-      SWORD,
+      ATTACK,
       ITEM_1,
       ITEM_2,
       PAUSE,
@@ -70,7 +70,6 @@ class GameCommands {
     void customize(GameCommand command);
     bool is_customizing();
     GameCommand get_command_to_customize();
-    bool is_customization_done();
 
   private:
 

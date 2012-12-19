@@ -714,7 +714,6 @@ class LuaContext {
       enemy_api_create_enemy,
 
       // available to all userdata types
-      userdata_meta_eq,
       userdata_meta_gc,
       userdata_meta_newindex_as_table,
       userdata_meta_index_as_table;
@@ -926,6 +925,7 @@ class LuaContext {
 
     // Functions exported to Lua for internal needs.
     static FunctionExportedToLua
+      l_panic,
       l_loader,
       l_get_map_entity_or_global,
       l_camera_do_callback,

@@ -71,7 +71,6 @@ void LuaContext::register_text_surface_module() {
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
-      { "__eq", userdata_meta_eq },
       { "__gc", drawable_meta_gc },
       { NULL, NULL }
   };

@@ -49,7 +49,6 @@ void LuaContext::register_timer_module() {
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
-      { "__eq", userdata_meta_eq },
       { "__gc", userdata_meta_gc },
       { NULL, NULL }
   };

@@ -82,7 +82,6 @@ void LuaContext::register_game_module() {
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
-      { "__eq", userdata_meta_eq },
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },

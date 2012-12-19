@@ -86,6 +86,7 @@ void LuaContext::initialize() {
 
   // Create an execution context.
   l = lua_open();
+  lua_atpanic(l, l_panic);
   luaL_openlibs(l);
 
   // Put a pointer to this LuaContext object in the Lua context.
@@ -95,11 +96,26 @@ void LuaContext::initialize() {
   lua_setfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
                                   // --
 
+  // Create a table that will keep track of all userdata.
+  lua_newtable(l);
+                                  // all_udata
+  lua_newtable(l);
+                                  // all_udata meta
+  lua_pushstring(l, "v");
+                                  // all_udata meta "v"
+  lua_setfield(l, -2, "__mode");
+                                  // all_udata meta
+  lua_setmetatable(l, -2);
+                                  // all_udata
+  lua_setfield(l, LUA_REGISTRYINDEX, "sol.all_userdata");
+                                  // --
+
   // Allow userdata to be indexable if they want.
   lua_newtable(l);
                                   // udata_tables
   lua_newtable(l);
                                   // udata_tables meta
+  // TODO don't make this table weak (keys are light userdata)
   lua_pushstring(l, "__mode");
                                   // udata_tables meta "__mode"
   lua_pushstring(l, "k");
@@ -950,7 +966,7 @@ void LuaContext::print_stack() {
     switch (type) {
 
       case LUA_TSTRING:
-        std::cout << lua_tostring(l, i);
+        std::cout << "\"" << lua_tostring(l, i) << "\"";
         break;
 
       case LUA_TBOOLEAN:
@@ -1098,25 +1114,47 @@ void LuaContext::push_string(lua_State* l, const std::string& text) {
  */
 void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
 
-  // TODO to avoid creating N userdata values for the same pointer,
-  // lookup in userdata_tables whether the userdata already exists.
-  // If yes, don't increment the refcount and don't create a new one, just push it.
-  // => Repetitive update() will no longer constantly allocate new values.
-  // => A special __eq will no longer be needed.
-
-  userdata.increment_refcount();
-                                  // ...
-  ExportableToLua** block_address = static_cast<ExportableToLua**>(
-      lua_newuserdata(l, sizeof(ExportableToLua*)));
-  *block_address = &userdata;
-                                  // ... userdata
-  luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
-                                  // ... userdata mt
-  Debug::check_assertion(!lua_isnil(l, -1), StringConcat() <<
-      "Userdata of type '" << userdata.get_lua_type_name()
-      << "' has not metatable, this is a memory leak");
-  lua_setmetatable(l, -2);
-                                  // ... userdata
+  // See if this userdata already exists.
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.all_userdata");
+                                  // ... all_udata
+  lua_pushlightuserdata(l, &userdata);
+                                  // ... all_udata lightudata
+  lua_gettable(l, -2);
+                                  // ... all_udata udata/nil
+  if (!lua_isnil(l, -1)) {
+                                  // ... all_udata udata
+    lua_remove(l, -2);
+                                  // ... udata
+  }
+  else {
+    // Create a new userdata.
+                                  // ... all_udata nil
+    lua_pop(l, 1);
+                                  // ... all_udata
+    lua_pushlightuserdata(l, &userdata);
+                                  // ... all_udata lightudata
+    userdata.increment_refcount();
+    ExportableToLua** block_address = static_cast<ExportableToLua**>(
+        lua_newuserdata(l, sizeof(ExportableToLua*)));
+    *block_address = &userdata;
+                                  // ... all_udata lightudata udata
+    luaL_getmetatable(l, userdata.get_lua_type_name().c_str());
+                                  // ... all_udata lightudata udata mt
+    Debug::check_assertion(!lua_isnil(l, -1), StringConcat() <<
+        "Userdata of type '" << userdata.get_lua_type_name()
+        << "' has no metatable, this is a memory leak");  // TODO also check __gc
+    lua_setmetatable(l, -2);
+                                  // ... all_udata lightudata udata
+    // Keep track of our new userdata.
+    lua_pushvalue(l, -1);
+                                  // ... all_udata lightudata udata udata
+    lua_insert(l, -4);
+                                  // ... udata all_udata lightudata udata
+    lua_settable(l, -3);
+                                  // ... udata all_udata
+    lua_pop(l, 1);
+                                  // ... udata
+  }
 }
 
 /**
@@ -1225,23 +1263,6 @@ Color LuaContext::check_color(lua_State* l, int index) {
   lua_pop(l, 3);
 
   return color;
-}
-
-/**
- * @brief Compares two userdata of the same type.
- * @param l a Lua state
- * @return number of values to return to Lua
- */
-int LuaContext::userdata_meta_eq(lua_State* l) {
-
-  ExportableToLua** userdata1 =
-      static_cast<ExportableToLua**>(lua_touserdata(l, 1));
-  ExportableToLua** userdata2 =
-      static_cast<ExportableToLua**>(lua_touserdata(l, 2));
-
-  lua_pushboolean(l, *userdata1 == *userdata2);
-
-  return 1;
 }
 
 /**
@@ -2360,6 +2381,20 @@ void LuaContext::on_immobilized() {
   if (find_method("on_immobilized")) {
     call_function(1, 0, "on_immobilized");
   }
+}
+
+/**
+ * @brief Function called when an unprotected Lua error occurs.
+ * @param l The Lua context.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::l_panic(lua_State* l) {
+
+  const std::string& error = luaL_checkstring(l, 1);
+
+  Debug::die(error);
+
+  return 0;
 }
 
 /**

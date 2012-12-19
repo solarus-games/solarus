@@ -114,7 +114,6 @@ void LuaContext::register_map_module() {
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
-      { "__eq", userdata_meta_eq },
       { "__gc", userdata_meta_gc },
       { "__newindex", userdata_meta_newindex_as_table },
       { "__index", userdata_meta_index_as_table },
@@ -200,10 +199,10 @@ Map* LuaContext::get_entity_implicit_creation_map(lua_State* l) {
     return NULL;
   }
 
-  Map& map = check_map(l, -1);
+  Map* map = static_cast<Map*>(lua_touserdata(l, -1));
   lua_pop(l, 1);
 
-  return &map;
+  return map;
 }
 
 /**
@@ -243,7 +242,7 @@ void LuaContext::set_entity_implicit_creation_map(lua_State* l, Map* map) {
     lua_pushnil(l);
   }
   else {
-    push_map(l, *map);
+    lua_pushlightuserdata(l, map);
   }
   lua_setfield(l, LUA_REGISTRYINDEX, "map");
 }

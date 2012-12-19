@@ -25,6 +25,7 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/StringConcat.h"
 #include <sstream>
 
 /**
@@ -82,7 +83,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu &pause_menu, Game &game):
 
     game_key_texts[i] = new TextSurface(4, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
     game_key_texts[i]->set_font("fixed");
-    // TODO game_key_texts[i]->set_text(commands::get_command_name(GameCommands::GameCommand(i + 1)));
+    game_key_texts[i]->set_text(StringConcat() << i);  // TODO show the name instead
 
     keyboard_control_texts[i] = new TextSurface(74, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
     keyboard_control_texts[i]->set_font("fixed");
@@ -141,7 +142,7 @@ void PauseSubmenuOptions::load_control_texts() {
   controls_surface->fill_with_color(Color::get_black());
   for (int i = 0; i < 9; i++) {
 
-    GameCommands::GameCommand command = GameCommands::GameCommand(i + 1);
+    GameCommands::GameCommand command = GameCommands::GameCommand(i);
 
     const std::string& keyboard_text = InputEvent::get_keyboard_key_name(
         commands.get_keyboard_binding(command));

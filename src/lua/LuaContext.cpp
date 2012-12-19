@@ -113,17 +113,6 @@ void LuaContext::initialize() {
   // Allow userdata to be indexable if they want.
   lua_newtable(l);
                                   // udata_tables
-  lua_newtable(l);
-                                  // udata_tables meta
-  // TODO don't make this table weak (keys are light userdata)
-  lua_pushstring(l, "__mode");
-                                  // udata_tables meta "__mode"
-  lua_pushstring(l, "k");
-                                  // udata_tables meta "__mode" "k"
-  lua_settable(l, -3);
-                                  // udata_tables meta
-  lua_setmetatable(l, -2);
-                                  // udata_tables
   lua_setfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // --
 
@@ -135,21 +124,21 @@ void LuaContext::initialize() {
   register_modules();
 
   // Make require() able to load Lua files even from the data.solarus archive.
-                                  // ...
+                                  // --
   lua_getglobal(l, "sol");
-                                  // ... sol
+                                  // -- sol
   lua_pushcfunction(l, l_loader);
-                                  // ... sol loader
+                                  // -- sol loader
   lua_setfield(l, -2, "loader");
-                                  // ... sol
+                                  // -- sol
   luaL_dostring(l, "table.insert(package.loaders, 2, sol.loader)");
-                                  // ... sol
+                                  // -- sol
   lua_pushnil(l);
-                                  // ... sol nil
+                                  // -- sol nil
   lua_setfield(l, -2, "loader");
-                                  // ... sol
+                                  // -- sol
   lua_pop(l, 1);
-                                  // ...
+                                  // --
 
   // Execute the main file.
   do_file(l, "main");

@@ -244,7 +244,7 @@ void PauseSubmenuQuestStatus::set_cursor_position(int position) {
  * @brief This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
-void PauseSubmenuQuestStatus::key_pressed(GameCommands::GameCommand key) {
+void PauseSubmenuQuestStatus::key_pressed(GameCommands::Command key) {
 
   switch (key) {
 

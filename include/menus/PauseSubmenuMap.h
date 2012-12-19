@@ -68,7 +68,7 @@ class PauseSubmenuMap: public PauseSubmenu {
     PauseSubmenuMap(PauseMenu &pause_menu, Game &game);
     ~PauseSubmenuMap();
 
-    void key_pressed(GameCommands::GameCommand key);
+    void key_pressed(GameCommands::Command key);
     void update();
     void draw(Surface& dst_surface);
     void draw_world_map(Surface& dst_surface);

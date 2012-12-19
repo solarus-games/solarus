@@ -43,7 +43,7 @@ class GameCommands {
      *
      * These high-level commands can be mapped onto the keyboard and the joypad.
      */
-    enum GameCommand {
+    enum Command {
       NONE = -1,
       ACTION,
       ATTACK,
@@ -60,55 +60,60 @@ class GameCommands {
     GameCommands(Game& game);
     ~GameCommands();
 
-    InputEvent::KeyboardKey get_keyboard_binding(GameCommand command);
-    const std::string& get_joypad_binding(GameCommand command);
+    InputEvent::KeyboardKey get_keyboard_binding(Command command);
+    const std::string& get_joypad_binding(Command command);
 
     void notify_input(InputEvent& event);
-    bool is_command_pressed(GameCommand command);
+    bool is_command_pressed(Command command);
     int get_wanted_direction8();
 
-    void customize(GameCommand command);
+    void customize(Command command);
     bool is_customizing();
-    GameCommand get_command_to_customize();
+    Command get_command_to_customize();
+
+    static const std::string& get_command_name(Command command);
+    static Command get_command_by_name(const std::string& command_name);
 
   private:
+
+    static const std::string command_names[];
 
     Savegame& get_savegame();
 
     // High-level resulting commands.
-    void game_command_pressed(GameCommand command);
-    void game_command_released(GameCommand command);
+    void game_command_pressed(Command command);
+    void game_command_released(Command command);
 
     // Keyboard mapping.
     void keyboard_key_pressed(InputEvent::KeyboardKey keyboard_key_pressed);
     void keyboard_key_released(InputEvent::KeyboardKey keyboard_key_released);
-    const std::string& get_keyboard_binding_savegame_variable(GameCommand command);
-    InputEvent::KeyboardKey get_saved_keyboard_binding(GameCommand command);
-    void set_saved_keyboard_binding(GameCommand command, InputEvent::KeyboardKey key);
+    const std::string& get_keyboard_binding_savegame_variable(Command command);
+    InputEvent::KeyboardKey get_saved_keyboard_binding(Command command);
+    void set_saved_keyboard_binding(Command command, InputEvent::KeyboardKey key);
 
     // Joypad mapping.
     void joypad_button_pressed(int button);
     void joypad_button_released(int button);
     void joypad_axis_moved(int axis, int direction);
     void joypad_hat_moved(int hat, int direction);
-    const std::string& get_joypad_binding_savegame_variable(GameCommand command);
-    const std::string& get_saved_joypad_binding(GameCommand command);
-    void set_saved_joypad_binding(GameCommand command, const std::string& joypad_string);
+    const std::string& get_joypad_binding_savegame_variable(Command command);
+    const std::string& get_saved_joypad_binding(Command command);
+    void set_saved_joypad_binding(Command command, const std::string& joypad_string);
 
     Game& game;                          /**< The game we are controlling. */
-    std::map<InputEvent::KeyboardKey, GameCommand>
+    std::map<InputEvent::KeyboardKey, Command>
         keyboard_mapping;                /**< Associates each game command to the
                                           * keyboard key that triggers it. */
-    std::map<std::string, GameCommand>
+    std::map<std::string, Command>
         joypad_mapping;                  /**< Associates each game command to the
                                           * joypad action that triggers it. */
-    std::map<GameCommand, bool>
+    std::map<Command, bool>
         commands_pressed;                /**< Memorizes the state of each game command. */
 
     bool customizing;                    /**< Indicates that the next keyboard or
                                           * joypad event will be considered as the
                                           * new binding for a game command. */
-    GameCommand command_to_customize;    /**< The game command being customized
+    Command command_to_customize;    /**< The game command being customized
                                           * when customizing is true. */
 
     static const uint16_t

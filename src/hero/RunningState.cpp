@@ -32,7 +32,7 @@
  * @param hero the hero controlled by this state
  * @param key the game command that triggers running
  */
-Hero::RunningState::RunningState(Hero& hero, GameCommands::GameCommand command):
+Hero::RunningState::RunningState(Hero& hero, GameCommands::Command command):
   State(hero),
   command(command) {
 

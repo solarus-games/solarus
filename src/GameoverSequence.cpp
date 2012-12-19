@@ -199,7 +199,7 @@ void GameoverSequence::draw(Surface& dst_surface) {
  * @brief This function is called when a game command is pressed.
  * @param command The game command pressed.
  */
-void GameoverSequence::notify_command_pressed(GameCommands::GameCommand command) {
+void GameoverSequence::notify_command_pressed(GameCommands::Command command) {
 
   if (state == MENU) {
 

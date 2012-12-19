@@ -102,7 +102,7 @@ PauseSubmenuMap::~PauseSubmenuMap() {
  * @brief This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
-void PauseSubmenuMap::key_pressed(GameCommands::GameCommand key) {
+void PauseSubmenuMap::key_pressed(GameCommands::Command key) {
 
   switch (key) {
 

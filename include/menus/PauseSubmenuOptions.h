@@ -70,7 +70,7 @@ class PauseSubmenuOptions: public PauseSubmenu {
     PauseSubmenuOptions(PauseMenu &pause_menu, Game &game);
     ~PauseSubmenuOptions();
 
-    void key_pressed(GameCommands::GameCommand key);
+    void key_pressed(GameCommands::Command key);
     void update();
     void draw(Surface& dst_surface);
 };

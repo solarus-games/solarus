@@ -872,27 +872,6 @@ void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
 }
 
 /**
- * @brief Notifies a Lua game that an input event has just occurred.
- *
- * The appropriate callback in the game is triggered if it exists.
- *
- * @param event The input event to handle.
- * @param game A game.
- * @return \c true if the event was handled and should stop being propagated.
- */
-bool LuaContext::game_on_input(Game& game, InputEvent& event) {
-
-  bool handled = false;
-  push_game(l, game.get_savegame());
-  handled = on_input(event);
-  if (!handled) {
-    handled = menus_on_input(-1, event);
-  }
-  lua_pop(l, 1);
-  return handled;
-}
-
-/**
  * @brief Calls the on_started() method of a Lua game.
  * @param game A game.
  */
@@ -948,5 +927,60 @@ void LuaContext::game_on_unpaused(Game& game) {
   push_game(l, game.get_savegame());
   on_unpaused();
   lua_pop(l, 1);
+}
+
+/**
+ * @brief Notifies a Lua game that an input event has just occurred.
+ *
+ * The appropriate callback in the game is triggered if it exists.
+ *
+ * @param game A game.
+ * @param event The input event to handle.
+ * @return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::game_on_input(Game& game, InputEvent& event) {
+
+  bool handled = false;
+  push_game(l, game.get_savegame());
+  handled = on_input(event);
+  if (!handled) {
+    handled = menus_on_input(-1, event);
+  }
+  lua_pop(l, 1);
+  return handled;
+}
+
+/**
+ * @brief Calls the on_command_pressed() method of a Lua game.
+ * @param game A game.
+ * @return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command command) {
+
+  bool handled = false;
+  push_game(l, game.get_savegame());
+  handled = on_command_pressed(command);
+  if (!handled) {
+    handled = menus_on_command_pressed(-1, command);
+  }
+  lua_pop(l, 1);
+  return handled;
+}
+
+/**
+ * @brief Calls the on_command_released() method of a Lua game.
+ * @param game A game.
+ * @return \c true if the event was handled and should stop being propagated.
+ */
+bool LuaContext::game_on_command_released(Game& game, GameCommands::Command command) {
+
+  bool handled = false;
+  push_game(l, game.get_savegame());
+  handled = on_command_released(command);
+  if (!handled) {
+    handled = menus_on_command_released(-1, command);
+  }
+  lua_pop(l, 1);
+  return handled;
 }
 

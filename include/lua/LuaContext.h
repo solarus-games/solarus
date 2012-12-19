@@ -18,6 +18,7 @@
 #define SOLARUS_LUA_CONTEXT_H
 
 #include "Common.h"
+#include "GameCommands.h"
 #include "entities/Layer.h"
 #include "entities/EnemyAttack.h"
 #include "lowlevel/InputEvent.h"
@@ -195,14 +196,18 @@ class LuaContext {
     void main_on_finished();
 
     // Menu events.
+    void menu_on_started(int menu_ref);
+    void menu_on_finished(int menu_ref);
     void menu_on_update(int menu_ref);
     void menu_on_draw(int menu_ref, Surface& dst_surface);
     bool menu_on_input(int menu_ref, InputEvent& event);
-    void menu_on_started(int menu_ref);
-    void menu_on_finished(int menu_ref);
+    bool menu_on_command_pressed(int menu_ref, GameCommands::Command command);
+    bool menu_on_command_released(int menu_ref, GameCommands::Command command);
     void menus_on_update(int context_index);
     void menus_on_draw(int context_index, Surface& dst_surface);
     bool menus_on_input(int context_index, InputEvent& event);
+    bool menus_on_command_pressed(int context_index, GameCommands::Command command);
+    bool menus_on_command_released(int context_index, GameCommands::Command command);
 
     // Sprite events.
     void sprite_on_animation_finished(Sprite& sprite, const std::string& animation);
@@ -231,14 +236,14 @@ class LuaContext {
     // Game events.
     void game_on_update(Game& game);
     void game_on_draw(Game& game, Surface& dst_surface);
-    bool game_on_input(Game& game, InputEvent& event);
     void game_on_started(Game& game);
     void game_on_finished(Game& game);
     void game_on_map_changed(Game& game, Map& map);
     void game_on_paused(Game& game);
     void game_on_unpaused(Game& game);
-    bool game_on_command_pressed(Game& game, const std::string& command);
-    bool game_on_command_released(Game& game, const std::string& command);
+    bool game_on_input(Game& game, InputEvent& event);
+    bool game_on_command_pressed(Game& game, GameCommands::Command command);
+    bool game_on_command_released(Game& game, GameCommands::Command command);
 
     // Map events.
     void map_on_update(Map& map);
@@ -861,14 +866,16 @@ class LuaContext {
     void on_paused();
     void on_unpaused();
     bool on_input(InputEvent& event);
-    bool on_key_pressed(InputEvent& event);
+    bool on_key_pressed(InputEvent& event);  // TODO on_raw_key*, on_raw_character_pressed, on_raw_direction_pressed, etc?
     bool on_key_released(InputEvent& event);
     bool on_character_pressed(InputEvent& event);
     bool on_joypad_button_pressed(InputEvent& event);
     bool on_joypad_button_released(InputEvent& event);
     bool on_joypad_axis_moved(InputEvent& event);
     bool on_joypad_hat_moved(InputEvent& event);
-    bool on_direction_pressed(InputEvent& event);
+    bool on_direction_pressed(InputEvent& event);  // TODO remove or rename? confusing with the directions of game commands
+    bool on_command_pressed(GameCommands::Command command);
+    bool on_command_released(GameCommands::Command command);
     void on_animation_finished(const std::string& animation);
     void on_frame_changed(const std::string& animation, int frame);
     void on_started(Destination* destination);

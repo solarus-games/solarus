@@ -190,6 +190,29 @@ int LuaContext::menu_api_stop_all(lua_State* l) {
 }
 
 /**
+ * @brief Calls the on_started() method of a Lua menu.
+ * @param menu_ref A reference to the menu object.
+ */
+void LuaContext::menu_on_started(int menu_ref) {
+
+  push_ref(l, menu_ref);
+  on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_finished() method of a Lua menu.
+ * @param menu_ref A reference to the menu object.
+ */
+void LuaContext::menu_on_finished(int menu_ref) {
+
+  push_ref(l, menu_ref);
+  on_finished();
+  remove_timers(-1);  // Stop timers associated to this menu.
+  lua_pop(l, 1);
+}
+
+/**
  * @brief Calls the on_update() method of a Lua menu.
  * @param menu_ref A reference to the menu object.
  */
@@ -233,26 +256,33 @@ bool LuaContext::menu_on_input(int menu_ref, InputEvent& event) {
 }
 
 /**
- * @brief Calls the on_started() method of a Lua menu.
+ * @brief Calls the on_command_pressed() method of a Lua menu.
  * @param menu_ref A reference to the menu object.
+ * @param command The game command just pressed.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::menu_on_started(int menu_ref) {
+bool LuaContext::menu_on_command_pressed(int menu_ref, GameCommands::Command command) {
 
   push_ref(l, menu_ref);
-  on_started();
+  bool handled = on_command_pressed(command);
   lua_pop(l, 1);
+
+  return handled;
 }
 
 /**
- * @brief Calls the on_finished() method of a Lua menu.
+ * @brief Calls the on_command_released() method of a Lua menu.
  * @param menu_ref A reference to the menu object.
+ * @param command The game command just released.
+ * @return \c true if the event was handled and should stop being propagated.
  */
-void LuaContext::menu_on_finished(int menu_ref) {
+bool LuaContext::menu_on_command_released(int menu_ref, GameCommands::Command command) {
 
   push_ref(l, menu_ref);
-  on_finished();
-  remove_timers(-1);  // Stop timers associated to this menu.
+  bool handled = on_command_released(command);
   lua_pop(l, 1);
+
+  return handled;
 }
 
 /**
@@ -307,7 +337,7 @@ void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
  * @brief Calls the on_input() method of the menus associated to a context.
  * @param context_index Index of an object with menus.
  */
- bool LuaContext::menus_on_input(int context_index, InputEvent& event) {
+bool LuaContext::menus_on_input(int context_index, InputEvent& event) {
 
   const void* context;
   if (lua_type(l, context_index) == LUA_TUSERDATA) {
@@ -324,6 +354,64 @@ void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
     int menu_ref = it->first;
     if (it->second == context) {
       handled = menu_on_input(menu_ref, event);
+    }
+  }
+
+  return handled;
+}
+
+/**
+ * @brief Calls the on_command_pressed() method of the menus associated to a context.
+ * @param context_index Index of an object with menus.
+ * @param command The game command just pressed.
+ */
+bool LuaContext::menus_on_command_pressed(int context_index,
+    GameCommands::Command command) {
+
+  const void* context;
+  if (lua_type(l, context_index) == LUA_TUSERDATA) {
+    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    context = *userdata;
+  }
+  else {
+    context = lua_topointer(l, context_index);
+  }
+
+  bool handled = false;
+  std::map<int, const void*>::reverse_iterator it;
+  for (it = menus.rbegin(); it != menus.rend() && !handled; ++it) {
+    int menu_ref = it->first;
+    if (it->second == context) {
+      handled = menu_on_command_pressed(menu_ref, command);
+    }
+  }
+
+  return handled;
+}
+
+/**
+ * @brief Calls the on_command_released() method of the menus associated to a context.
+ * @param context_index Index of an object with menus.
+ * @param command The game command just released.
+ */
+bool LuaContext::menus_on_command_released(int context_index,
+    GameCommands::Command command) {
+
+  const void* context;
+  if (lua_type(l, context_index) == LUA_TUSERDATA) {
+    ExportableToLua** userdata = (ExportableToLua**) lua_touserdata(l, context_index);
+    context = *userdata;
+  }
+  else {
+    context = lua_topointer(l, context_index);
+  }
+
+  bool handled = false;
+  std::map<int, const void*>::reverse_iterator it;
+  for (it = menus.rbegin(); it != menus.rend() && !handled; ++it) {
+    int menu_ref = it->first;
+    if (it->second == context) {
+      handled = menu_on_command_released(menu_ref, command);
     }
   }
 

@@ -199,7 +199,7 @@ void Hero::State::set_suspended(bool suspended) {
  * is not suspended.
  * @param command The command pressed.
  */
-void Hero::State::notify_command_pressed(GameCommands::GameCommand command) {
+void Hero::State::notify_command_pressed(GameCommands::Command command) {
 
   switch (command) {
 
@@ -249,7 +249,7 @@ void Hero::State::notify_command_pressed(GameCommands::GameCommand command) {
  * not suspended.
  * @param command The command released.
  */
-void Hero::State::notify_command_released(GameCommands::GameCommand command) {
+void Hero::State::notify_command_released(GameCommands::Command command) {
 
   switch (command) {
 

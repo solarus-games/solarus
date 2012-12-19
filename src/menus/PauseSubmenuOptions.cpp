@@ -142,7 +142,7 @@ void PauseSubmenuOptions::load_control_texts() {
   controls_surface->fill_with_color(Color::get_black());
   for (int i = 0; i < 9; i++) {
 
-    GameCommands::GameCommand command = GameCommands::GameCommand(i);
+    GameCommands::Command command = GameCommands::Command(i);
 
     const std::string& keyboard_text = InputEvent::get_keyboard_key_name(
         commands.get_keyboard_binding(command));
@@ -198,7 +198,7 @@ void PauseSubmenuOptions::set_cursor_position(int position) {
  * @brief This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
-void PauseSubmenuOptions::key_pressed(GameCommands::GameCommand key) {
+void PauseSubmenuOptions::key_pressed(GameCommands::Command key) {
   
   switch (key) {
 
@@ -241,7 +241,7 @@ void PauseSubmenuOptions::action_key_pressed() {
   else {
     set_caption_text(caption_strings[2]);
     cursor_sprite->set_current_animation("small_blink");
-    GameCommands::GameCommand command_to_customize = (GameCommands::GameCommand) cursor_position;
+    GameCommands::Command command_to_customize = (GameCommands::Command) cursor_position;
     commands.customize(command_to_customize);
     customizing = true;
 

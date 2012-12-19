@@ -30,13 +30,13 @@ class Hero::RunningState: public Hero::State {
     int phase;                      /**< current phase of the run */
     uint32_t next_phase_date;       /**< date of the next phase */
     uint32_t next_sound_date;       /**< date of the next time a sound is played during the run */
-    GameCommands::GameCommand command;      /**< the command pressed to make the hero run */
+    GameCommands::Command command;      /**< the command pressed to make the hero run */
 
     bool is_bouncing();
 
   public:
 
-    RunningState(Hero& hero, GameCommands::GameCommand command);
+    RunningState(Hero& hero, GameCommands::Command command);
     ~RunningState();
 
     void start(State *previous_state);

@@ -88,7 +88,7 @@ class GameoverSequence {
     // main loop
     void update();
     void draw(Surface& dst_surface);
-    void notify_command_pressed(GameCommands::GameCommand command);
+    void notify_command_pressed(GameCommands::Command command);
 };
 
 #endif

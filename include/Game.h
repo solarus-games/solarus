@@ -99,8 +99,8 @@ class Game {
     void draw(Surface& dst_surface);
 
     // game controls
-    void notify_command_pressed(GameCommands::GameCommand command);
-    void notify_command_released(GameCommands::GameCommand command);
+    void notify_command_pressed(GameCommands::Command command);
+    void notify_command_released(GameCommands::Command command);
 
     // map
     bool has_current_map();

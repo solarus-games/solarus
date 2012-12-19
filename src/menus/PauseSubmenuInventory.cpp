@@ -218,7 +218,7 @@ bool PauseSubmenuInventory::is_item_selected() {
  * @brief This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
-void PauseSubmenuInventory::key_pressed(GameCommands::GameCommand key) {
+void PauseSubmenuInventory::key_pressed(GameCommands::Command key) {
 
   KeysEffect &keys_effect = game.get_keys_effect();
 

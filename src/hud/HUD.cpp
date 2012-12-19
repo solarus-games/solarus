@@ -60,7 +60,7 @@ void HUD::update_blinking() {
   int index = -1;
   GameCommands& commands = game.get_commands();
   if (commands.is_customizing()) {
-    GameCommands::GameCommand key = commands.get_command_to_customize();
+    GameCommands::Command key = commands.get_command_to_customize();
     switch (key) {
 
       case GameCommands::ACTION:

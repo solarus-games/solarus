@@ -1728,6 +1728,38 @@ bool LuaContext::on_direction_pressed(InputEvent& event) {
 }
 
 /**
+ * @brief Calls the on_command_pressed() method of the object on top of the stack.
+ * @param command The game command just pressed.
+ */
+bool LuaContext::on_command_pressed(GameCommands::Command command) {
+
+  bool handled = false;
+  if (find_method("on_command_pressed")) {
+    push_string(l, GameCommands::get_command_name(command));
+    call_function(2, 1, "on_command_pressed");
+    handled = lua_toboolean(l, -1);
+    lua_pop(l, 1);
+  }
+  return handled;
+}
+
+/**
+ * @brief Calls the on_command_released() method of the object on top of the stack.
+ * @param command The game command just pressed.
+ */
+bool LuaContext::on_command_released(GameCommands::Command command) {
+
+  bool handled = false;
+  if (find_method("on_command_released")) {
+    push_string(l, GameCommands::get_command_name(command));
+    call_function(2, 1, "on_command_released");
+    handled = lua_toboolean(l, -1);
+    lua_pop(l, 1);
+  }
+  return handled;
+}
+
+/**
  * @brief Calls the on_animation_finished() method of the object on top of the stack.
  * @param animation Name of the animation finished.
  */

@@ -63,7 +63,7 @@ class PauseMenu {
     ~PauseMenu();
     void quit();
 
-    void notify_command_pressed(GameCommands::GameCommand command);
+    void notify_command_pressed(GameCommands::Command command);
     void update();
     void draw(Surface& dst_surface);
 

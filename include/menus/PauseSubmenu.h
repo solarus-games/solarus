@@ -54,7 +54,7 @@ class PauseSubmenu {
      *
      * @param key the key pressed
      */
-    virtual void key_pressed(GameCommands::GameCommand key) = 0;
+    virtual void key_pressed(GameCommands::Command key) = 0;
 
     /**
      * @brief Updates this submenu.

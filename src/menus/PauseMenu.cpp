@@ -101,7 +101,7 @@ void PauseMenu::quit() {
  * @brief This function is called when a game command is pressed.
  * @param command The game command pressed.
  */
-void PauseMenu::notify_command_pressed(GameCommands::GameCommand command) {
+void PauseMenu::notify_command_pressed(GameCommands::Command command) {
  
   if (command == GameCommands::PAUSE) {
     quit();

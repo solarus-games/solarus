@@ -230,34 +230,40 @@ bool Game::notify_input(InputEvent& event) {
  * @brief This function is called when a game command is pressed.
  * @param command A game command.
  */
-void Game::notify_command_pressed(GameCommands::GameCommand command) {
+void Game::notify_command_pressed(GameCommands::Command command) {
 
-  if (!is_suspended()) {
+  bool handled = get_lua_context().game_on_command_pressed(*this, command);
 
-    if (command == GameCommands::PAUSE) {
-      if (can_pause()) {
-        set_paused(true);
+  if (!handled) {
+    // The Lua script did not override the command: do the built-in behavior.
+
+    if (!is_suspended()) {
+
+      if (command == GameCommands::PAUSE) {
+        if (can_pause()) {
+          set_paused(true);
+        }
+      }
+      else {
+        // when the game is not suspended, all other keys apply to the hero
+        hero->notify_command_pressed(command);
       }
     }
-    else {
-      // when the game is not suspended, all other keys apply to the hero
-      hero->notify_command_pressed(command);
+
+    // is a message being shown?
+    else if (is_showing_dialog()) {
+      dialog_box.notify_command_pressed(command);
     }
-  }
 
-  // is a message being shown?
-  else if (is_showing_dialog()) {
-    dialog_box.notify_command_pressed(command);
-  }
+    // is the game paused?
+    else if (is_paused()) {
+      pause_menu->notify_command_pressed(command);
+    }
 
-  // is the game paused?
-  else if (is_paused()) {
-    pause_menu->notify_command_pressed(command);
-  }
-
-  // is the game over sequence shown?
-  else if (is_showing_gameover()) {
-    gameover_sequence->notify_command_pressed(command);
+    // is the game over sequence shown?
+    else if (is_showing_gameover()) {
+      gameover_sequence->notify_command_pressed(command);
+    }
   }
 }
 
@@ -265,11 +271,17 @@ void Game::notify_command_pressed(GameCommands::GameCommand command) {
  * @brief This function is called when a game command is released.
  * @param command A game command.
  */
-void Game::notify_command_released(GameCommands::GameCommand command) {
+void Game::notify_command_released(GameCommands::Command command) {
 
-  if (!is_suspended()) {
-    // When the game is not suspended, the command apply to the hero.
-    hero->notify_command_released(command);
+  bool handled = get_lua_context().game_on_command_released(*this, command);
+
+  if (!handled) {
+    // The Lua script did not override the command: do the built-in behavior.
+
+    if (!is_suspended()) {
+      // When the game is not suspended, the command apply to the hero.
+      hero->notify_command_released(command);
+    }
   }
 }
 

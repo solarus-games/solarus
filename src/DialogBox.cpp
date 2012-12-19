@@ -375,7 +375,7 @@ void DialogBox::close() {
  * while displaying a dialog.
  * @param command The command pressed.
  */
-void DialogBox::notify_command_pressed(GameCommands::GameCommand command) {
+void DialogBox::notify_command_pressed(GameCommands::Command command) {
 
   switch (command) {
 

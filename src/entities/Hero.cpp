@@ -329,7 +329,7 @@ void Hero::draw_on_map() {
  * and the game is not suspended.
  * @param command The command pressed.
  */
-void Hero::notify_command_pressed(GameCommands::GameCommand command) {
+void Hero::notify_command_pressed(GameCommands::Command command) {
   state->notify_command_pressed(command);
 }
 
@@ -338,7 +338,7 @@ void Hero::notify_command_pressed(GameCommands::GameCommand command) {
  * if the game is not suspended.
  * @param command The command released.
  */
-void Hero::notify_command_released(GameCommands::GameCommand command) {
+void Hero::notify_command_released(GameCommands::Command command) {
   state->notify_command_released(command);
 }
 
@@ -2145,7 +2145,7 @@ void Hero::start_running() {
 
   // The running state may be triggered by the action command or an inventory
   // item command.
-  GameCommands::GameCommand command;
+  GameCommands::Command command;
   if (is_free()) {
     command = GameCommands::ACTION;
   }

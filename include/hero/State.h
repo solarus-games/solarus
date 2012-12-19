@@ -67,8 +67,8 @@ class Hero::State {
     virtual void update();
     virtual void draw_on_map();
     virtual void set_suspended(bool suspended);
-    void notify_command_pressed(GameCommands::GameCommand command);
-    void notify_command_released(GameCommands::GameCommand command);
+    void notify_command_pressed(GameCommands::Command command);
+    void notify_command_released(GameCommands::Command command);
     virtual void notify_action_command_pressed();
     virtual void notify_action_command_released();
     virtual void notify_attack_command_pressed();

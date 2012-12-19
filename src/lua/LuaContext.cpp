@@ -1098,6 +1098,12 @@ void LuaContext::push_string(lua_State* l, const std::string& text) {
  */
 void LuaContext::push_userdata(lua_State* l, ExportableToLua& userdata) {
 
+  // TODO to avoid creating N userdata values for the same pointer,
+  // lookup in userdata_tables whether the userdata already exists.
+  // If yes, don't increment the refcount and don't create a new one, just push it.
+  // => Repetitive update() will no longer constantly allocate new values.
+  // => A special __eq will no longer be needed.
+
   userdata.increment_refcount();
                                   // ...
   ExportableToLua** block_address = static_cast<ExportableToLua**>(

@@ -1016,7 +1016,7 @@ E LuaContext::opt_enum(
     lua_State* l, int index, const std::string names[], E default_value) {
 
   E value = default_value;
-  if (!lua_isnil(l, index)) {
+  if (!lua_isnoneornil(l, index)) {
     value = check_enum<E>(l, index, names);
   }
   return value;

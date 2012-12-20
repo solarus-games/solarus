@@ -1523,11 +1523,6 @@ bool LuaContext::on_input(InputEvent& event) {
     }
   }
 
-  if (event.is_direction_pressed()) {
-    // Keyboard or joypad direction.
-    handled = on_direction_pressed(event) || handled;
-  }
-
   return handled;
 }
 
@@ -1700,27 +1695,6 @@ bool LuaContext::on_joypad_hat_moved(InputEvent& event) {
     lua_pushinteger(l, hat);
     lua_pushinteger(l, direction8);
     call_function(3, 1, "on_joyad_hat_moved");
-    handled = lua_toboolean(l, -1);
-    lua_pop(l, 1);
-  }
-  return handled;
-}
-
-/**
- * @brief Notifies the object on top of the stack
- * that a directional keyboard key was just pressed
- * or that a joypad directional command has just changed.
- * @param event The corresponding input event.
- * @return \c true if the event was handled and should stop being propagated.
- */
-bool LuaContext::on_direction_pressed(InputEvent& event) {
-
-  bool handled = false;
-  if (find_method("on_direction_pressed")) {
-    int direction8 = event.get_direction();
-
-    lua_pushinteger(l, direction8);
-    call_function(2, 1, "on_direction_pressed");
     handled = lua_toboolean(l, -1);
     lua_pop(l, 1);
   }

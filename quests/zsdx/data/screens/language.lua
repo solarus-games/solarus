@@ -75,15 +75,17 @@ end
 
 function language_menu:on_key_pressed(key)
 
-  local handled = true
+  local handled = false
 
   if key == "escape" then
     -- Stop the program.
+    handled = true
     sol.main.exit()
 
   elseif key == "space" or key == "return" then
 
     if not self.finished then
+      handled = true
       local language = self.languages[self.cursor_position]
       sol.language.set_language(language.id)
       self.finished = true
@@ -92,14 +94,45 @@ function language_menu:on_key_pressed(key)
       end)
     end
 
-  else
-    handled = false
+  elseif key == "right" then
+    handled = self:direction_pressed(0)
+  elseif key == "up" then
+    handled = self:direction_pressed(2)
+  elseif key == "left" then
+    handled = self:direction_pressed(4)
+  elseif key == "down" then
+    handled = self:direction_pressed(6)
   end
 
   return handled
 end
 
-function language_menu:on_direction_pressed(direction8)
+function language_menu:on_joypad_axis_moved(axis, state)
+
+  if axis % 2 == 0 then  -- Horizontal axis.
+    if state > 0 then
+      self:direction_pressed(0)
+    elseif state < 0 then
+      self:direction_pressed(4)
+    end
+  else  -- Vertical axis.
+    if state > 0 then
+      self:direction_pressed(2)
+    else
+      self:direction_pressed(6)
+    end
+  end
+end
+
+function language_menu:on_joypad_hat_moved(hat, direction8)
+
+  if direction8 ~= -1 then
+    self:direction_pressed(direction8)
+  end
+end
+
+
+function language_menu:direction_pressed(direction8)
 
   local handled = false
 

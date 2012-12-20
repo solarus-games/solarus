@@ -62,17 +62,24 @@ end
 
 function savegame_menu:on_key_pressed(key)
 
-  local handled = true
+  local handled = false
   if key == "escape" then
-    -- stop the program
+    -- Stop the program.
+    handled = true
     sol.main.exit()
+  elseif key == "right" then
+    handled = self:direction_pressed(0)
+  elseif key == "up" then
+    handled = self:direction_pressed(2)
+  elseif key == "left" then
+    handled = self:direction_pressed(4)
+  elseif key == "down" then
+    handled = self:direction_pressed(6)
   elseif not self.finished then
 
     -- Phase-specific direction_pressed method.
     local method_name = "key_pressed_phase_" .. self.phase
     handled = self[method_name](self, key)
-  else
-    handled = false
   end
 
   return handled
@@ -92,7 +99,31 @@ function savegame_menu:on_joypad_button_pressed(button)
   return handled
 end
 
-function savegame_menu:on_direction_pressed(direction8)
+function savegame_menu:on_joypad_axis_moved(axis, state)
+
+  if axis % 2 == 0 then  -- Horizontal axis.
+    if state > 0 then
+      self:direction_pressed(0)
+    elseif state < 0 then
+      self:direction_pressed(4)
+    end
+  else  -- Vertical axis.
+    if state > 0 then
+      self:direction_pressed(2)
+    else
+      self:direction_pressed(6)
+    end
+  end
+end
+
+function savegame_menu:on_joypad_hat_moved(hat, direction8)
+
+  if direction8 ~= -1 then
+    self:direction_pressed(direction8)
+  end
+end
+
+function savegame_menu:direction_pressed(direction8)
 
   local handled = true
   if self.allow_cursor_move and not self.finished then

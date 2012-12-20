@@ -866,14 +866,13 @@ class LuaContext {
     void on_paused();
     void on_unpaused();
     bool on_input(InputEvent& event);
-    bool on_key_pressed(InputEvent& event);  // TODO on_raw_key*, on_raw_character_pressed, on_raw_direction_pressed, etc?
+    bool on_key_pressed(InputEvent& event);
     bool on_key_released(InputEvent& event);
     bool on_character_pressed(InputEvent& event);
     bool on_joypad_button_pressed(InputEvent& event);
     bool on_joypad_button_released(InputEvent& event);
     bool on_joypad_axis_moved(InputEvent& event);
     bool on_joypad_hat_moved(InputEvent& event);
-    bool on_direction_pressed(InputEvent& event);  // TODO remove or rename? confusing with the directions of game commands
     bool on_command_pressed(GameCommands::Command command);
     bool on_command_released(GameCommands::Command command);
     void on_animation_finished(const std::string& animation);

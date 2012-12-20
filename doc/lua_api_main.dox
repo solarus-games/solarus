@@ -260,22 +260,5 @@ Called when the user moves a joypad hat.
   return \c true, the event won't be propagated to other objects
   (like the game).
 
-<hr>
-
-\subsection lua_api_main_on_direction_pressed sol.main:on_direction_pressed(direction8)
-
-Called when the user presses a directional key of the keyboard or a
-directional button of the joypad.
-- \c direction8 (number): The direction that was pressed (\c 0 to \c 7).
-- Return value (boolean): Indicates whether the event was handled. If you
-  return \c true, the event won't be propagated to other objects
-  (like the game).
-
-\remark This is only a convenient event: the information can already be
-determined with a combination of
-\ref lua_api_main_on_key_pressed,
-\ref lua_api_main_on_joypad_axis_moved and
-\ref lua_api_main_on_joypad_hat_moved.
-
 */
 

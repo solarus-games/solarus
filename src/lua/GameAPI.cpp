@@ -162,6 +162,10 @@ int LuaContext::game_api_load(lua_State* l) {
 
   Savegame* savegame = new Savegame(get_lua_context(l).get_main_loop(), file_name);
 
+  savegame->increment_refcount();
+  savegame->get_equipment().load_items();
+  savegame->decrement_refcount();
+
   push_game(l, *savegame);
   return 1;
 }

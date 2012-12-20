@@ -61,7 +61,9 @@ class GameCommands {
     ~GameCommands();
 
     InputEvent::KeyboardKey get_keyboard_binding(Command command);
+    void set_keyboard_binding(Command command, InputEvent::KeyboardKey keyboard_key);
     const std::string& get_joypad_binding(Command command);
+    void set_joypad_binding(Command command, const std::string& joypad_string);
 
     void notify_input(InputEvent& event);
     bool is_command_pressed(Command command);
@@ -71,12 +73,13 @@ class GameCommands {
     bool is_customizing();
     Command get_command_to_customize();
 
+    static bool is_joypad_string_valid(const std::string& joypad_string);
     static const std::string& get_command_name(Command command);
     static Command get_command_by_name(const std::string& command_name);
 
-  private:
-
     static const std::string command_names[];
+
+  private:
 
     Savegame& get_savegame();
 

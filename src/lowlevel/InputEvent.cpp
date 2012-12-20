@@ -39,6 +39,7 @@ void InputEvent::initialize() {
   set_joypad_enabled(true);
 
   // Initialize the map of keyboard key names.
+  keyboard_key_names[InputEvent::KEY_NONE]                  = "";
   keyboard_key_names[InputEvent::KEY_BACKSPACE]             = "backspace";
   keyboard_key_names[InputEvent::KEY_TABULATION]            = "tab";
   keyboard_key_names[InputEvent::KEY_CLEAR]                 = "clear";
@@ -488,7 +489,7 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key() {
 /**
  * @brief Returns the Lua name of a keyboard key.
  * @param key A keyboard key.
- * @return The corresponding name.
+ * @return The corresponding name (or an empty string for KEY_NONE).
  */
 const std::string& InputEvent::get_keyboard_key_name(KeyboardKey key) {
   return keyboard_key_names[key];
@@ -497,7 +498,7 @@ const std::string& InputEvent::get_keyboard_key_name(KeyboardKey key) {
 /**
  * @brief Returns a keyboard key given its name.
  * @param key The name of a keyboard key.
- * @return The corresponding key, or KEY_NONE if this name is unknown.
+ * @return The corresponding key, or KEY_NONE if this name is empty or unknown.
  */
 InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& keyboard_key_name) {
 

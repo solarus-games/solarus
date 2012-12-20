@@ -206,19 +206,7 @@ void GameCommands::keyboard_key_pressed(InputEvent::KeyboardKey keyboard_key_pre
 
     if (command_pressed != command_to_customize) {
       // Consider this keyboard key as the new mapping for the game command being customized.
-
-      InputEvent::KeyboardKey previous_keyboard_key = get_keyboard_binding(command_to_customize);
-      if (command_pressed != NONE) {
-        // This keyboard key is already assigned to a game command.
-        keyboard_mapping[previous_keyboard_key] = command_pressed;
-        set_saved_keyboard_binding(command_pressed, keyboard_key_pressed);
-      }
-      else {
-        keyboard_mapping.erase(previous_keyboard_key);
-      }
-      keyboard_mapping[keyboard_key_pressed] = command_to_customize;
-      set_saved_keyboard_binding(command_to_customize, keyboard_key_pressed);
-
+      set_keyboard_binding(command_to_customize, keyboard_key_pressed);
       commands_pressed[command_to_customize] = true;
     }
   }
@@ -268,19 +256,7 @@ void GameCommands::joypad_button_pressed(int button) {
 
     if (command_pressed != command_to_customize) {
       // Consider this button as the new mapping for the game command being customized.
-
-      const std::string& previous_joypad_string = get_joypad_binding(command_to_customize);
-      if (command_pressed != NONE) {
-        // This button is already assigned to a game command.
-        joypad_mapping[previous_joypad_string] = command_pressed;
-        set_saved_joypad_binding(command_pressed, previous_joypad_string);
-      }
-      else {
-        joypad_mapping.erase(previous_joypad_string);
-      }
-      joypad_mapping[joypad_string] = command_to_customize;
-      set_saved_joypad_binding(command_to_customize, joypad_string);
-
+      set_joypad_binding(command_to_customize, joypad_string);
       commands_pressed[command_to_customize] = true;
     }
   }
@@ -366,19 +342,7 @@ void GameCommands::joypad_axis_moved(int axis, int state) {
 
       if (command_pressed != command_to_customize) {
         // Consider this axis movement as the new mapping for the game command being customized.
-
-        const std::string& previous_joypad_string = get_joypad_binding(command_to_customize);
-        if (command_pressed != NONE) {
-          // This axis movement is already assigned to a game command.
-          joypad_mapping[previous_joypad_string] = command_pressed;
-          set_saved_joypad_binding(command_pressed, previous_joypad_string);
-        }
-        else {
-          joypad_mapping.erase(previous_joypad_string);
-        }
-        joypad_mapping[joypad_string] = command_to_customize;
-        set_saved_joypad_binding(command_to_customize, joypad_string);
-
+        set_joypad_binding(command_to_customize, joypad_string);
         commands_pressed[command_to_customize] = true;
       }
     }
@@ -516,19 +480,7 @@ void GameCommands::joypad_hat_moved(int hat, int value) {
 
       if (command_1 != command_to_customize) {
         // Consider this hat movement as the new mapping for the game command being customized.
-
-        const std::string& previous_joypad_string = get_joypad_binding(command_to_customize);
-        if (command_1 != NONE) {
-          // This hat movement is already assigned to a game command.
-          joypad_mapping[previous_joypad_string] = command_1;
-          set_saved_joypad_binding(command_1, previous_joypad_string);
-        }
-        else {
-          joypad_mapping.erase(previous_joypad_string);
-        }
-        joypad_mapping[joypad_string_1] = command_to_customize;
-        set_saved_joypad_binding(command_to_customize, joypad_string_1);
-
+        set_joypad_binding(command_to_customize, joypad_string_1);
         commands_pressed[command_to_customize] = true;
       }
     }
@@ -588,6 +540,40 @@ InputEvent::KeyboardKey GameCommands::get_keyboard_binding(Command command) {
 }
 
 /**
+ * @brief Maps the specified keyboard key to a new game command.
+ *
+ * If this key was already mapped to a command, both commands are switched.
+ * (The old command gets the previous key of the new command.)
+ *
+ * @param command A game command.
+ * @param keyboard_key The keyboard key to map to this game command, or InputEvent::KEY_NONE
+ * to unmap the command.
+ */
+void GameCommands::set_keyboard_binding(Command command, InputEvent::KeyboardKey key) {
+
+  InputEvent::KeyboardKey previous_key = get_keyboard_binding(command);
+  Command previous_command = NONE;
+  if (keyboard_mapping.find(key) != keyboard_mapping.end()) {
+    previous_command = keyboard_mapping[key];
+  }
+
+  if (previous_key != InputEvent::KEY_NONE) {
+    // The command was already assigned.
+    if (previous_command != NONE) {
+      // This key is already mapped to a command.
+      keyboard_mapping[previous_key] = previous_command;
+      set_saved_keyboard_binding(previous_command, previous_key);
+    }
+    else {
+      keyboard_mapping.erase(previous_key);
+    }
+  }
+
+  keyboard_mapping[key] = command;
+  set_saved_keyboard_binding(command, key);
+}
+
+/**
  * @brief Returns a string representing the joypad action where the specified
  * game command is currently mapped.
  * @param command A game command.
@@ -606,6 +592,40 @@ const std::string& GameCommands::get_joypad_binding(Command command) {
 
   static const std::string empty_string;
   return empty_string;
+}
+
+/**
+ * @brief Maps the specified joypad action to a new game command.
+ *
+ * If this joypad action was already mapped to a command, both commands are switched.
+ * (The old command gets the previous joypad action of the new command.)
+ *
+ * @param command A game command.
+ * @param joypad_string A string describing the joypad action to map to this
+ * game command, or an empty string to unmap the command.
+ */
+void GameCommands::set_joypad_binding(Command command, const std::string& joypad_string) {
+
+  const std::string& previous_joypad_string = get_joypad_binding(command);
+  Command previous_command = NONE;
+  if (joypad_mapping.find(joypad_string) != joypad_mapping.end()) {
+    previous_command = joypad_mapping[joypad_string];
+  }
+
+  if (!previous_joypad_string.empty()) {
+    // The command was already assigned.
+    if (previous_command != NONE) {
+      // This joypad action is already mapped to a command.
+      joypad_mapping[previous_joypad_string] = previous_command;
+      set_saved_joypad_binding(previous_command, previous_joypad_string);
+    }
+    else {
+      joypad_mapping.erase(previous_joypad_string);
+    }
+  }
+
+  joypad_mapping[joypad_string] = command;
+  set_saved_joypad_binding(command, joypad_string);
 }
 
 /**
@@ -748,6 +768,24 @@ GameCommands::Command GameCommands::get_command_to_customize() {
 
   Debug::check_assertion(is_customizing(), "The player is not customizing a key");
   return command_to_customize;
+}
+
+/**
+ * @brief Returns whether a string describes a valid joypad action.
+ *
+ * The string should have one of the following forms:
+ * - "button X" where X is the index of a joypad button.
+ * - "axis X +" where X is the index of a joypad axis.
+ * - "axis X -" where X is the index of a joypad axis.
+ * - "hat X Y" where X is the index of a joypad hat and Y is a direction (0 to 7).
+ *
+ * @param joypad_string The string to check.
+ * @return true if this string is a valid joypad action.
+ */
+bool GameCommands::is_joypad_string_valid(const std::string& joypad_string) {
+
+  // TODO
+  return true;
 }
 
 /**

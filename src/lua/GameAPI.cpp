@@ -815,38 +815,143 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
   return 0;
 }
 
+/**
+ * @brief Implementation of \ref lua_api_game_is_command_pressed.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
 int LuaContext::game_api_is_command_pressed(lua_State* l) {
-  // TODO
-  return 0;
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  lua_pushboolean(l, commands.is_command_pressed(command));
+
+  return 1;
 }
 
+/**
+ * @brief Implementation of \ref lua_api_game_get_commands_direction.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
 int LuaContext::game_api_get_commands_direction(lua_State* l) {
-  // TODO
-  return 0;
+
+  Savegame& savegame = check_game(l, 1);
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  lua_pushinteger(l, commands.get_wanted_direction8());
+
+  return 1;
 }
 
+/**
+ * @brief Implementation of \ref lua_api_game_get_command_effect.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
 int LuaContext::game_api_get_command_effect(lua_State* l) {
   // TODO
   return 0;
 }
 
+/**
+ * @brief Implementation of \ref lua_api_game_get_command_keyboard_binding.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
 int LuaContext::game_api_get_command_keyboard_binding(lua_State* l) {
-  // TODO
-  return 0;
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  InputEvent::KeyboardKey key = commands.get_keyboard_binding(command);
+  const std::string& key_name = InputEvent::get_keyboard_key_name(key);
+
+  if (key_name.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, key_name);
+  }
+  return 1;
 }
 
+/**
+ * @brief Implementation of \ref lua_api_game_set_command_keyboard_binding.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
 int LuaContext::game_api_set_command_keyboard_binding(lua_State* l) {
-  // TODO
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+  if (lua_gettop(l) <= 3) {
+    luaL_typerror(l, 3, "string or nil");
+  }
+  const std::string& key_name = luaL_optstring(l, 3, "");
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  InputEvent::KeyboardKey key = InputEvent::get_keyboard_key_by_name(key_name);
+  if (!key_name.empty() && key == InputEvent::KEY_NONE) {
+    luaL_argerror(l, 3, (StringConcat() <<
+          "Invalid keyboard key name: '" << key_name << "'").c_str());
+  }
+  commands.set_keyboard_binding(command, key);
+
   return 0;
 }
 
+/**
+ * @brief Implementation of \ref lua_api_game_get_command_joypad_binding.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
 int LuaContext::game_api_get_command_joypad_binding(lua_State* l) {
-  // TODO
-  return 0;
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  const std::string& joypad_string = commands.get_joypad_binding(command);
+
+  if (joypad_string.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, joypad_string);
+  }
+  return 1;
 }
 
+/**
+ * @brief Implementation of \ref lua_api_game_set_command_joypad_binding.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
 int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
-  // TODO
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+  if (lua_gettop(l) <= 3) {
+    luaL_typerror(l, 3, "string or nil");
+  }
+  const std::string& joypad_string = luaL_optstring(l, 3, "");
+
+  if (!joypad_string.empty() && !GameCommands::is_joypad_string_valid(joypad_string)) {
+    luaL_argerror(l, 3, (StringConcat() <<
+          "Invalid joypad string: '" << joypad_string << "'").c_str());
+  }
+  GameCommands& commands = savegame.get_game()->get_commands();
+  commands.set_joypad_binding(command, joypad_string);
+
   return 0;
 }
 

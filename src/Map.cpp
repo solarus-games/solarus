@@ -59,6 +59,9 @@ Map::Map(const std::string& id):
  */
 Map::~Map() {
 
+  Debug::check_assertion(!is_started(),
+      "Deleting a map that is still running. Call Map::leave() before.");
+
   if (is_loaded()) {
     unload();
   }

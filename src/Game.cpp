@@ -81,6 +81,9 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
  */
 Game::~Game() {
 
+  Debug::check_assertion(!current_map->is_started(),
+      "Deleting a game while a map is still running. Call Game::stop() before.");
+
   savegame->set_game(NULL);
   savegame->decrement_refcount();
   if (savegame->get_refcount() == 0) {
@@ -124,6 +127,10 @@ void Game::start() {
  * @brief Ends this screen.
  */
 void Game::stop() {
+
+  if (current_map->is_started()) {
+    current_map->leave();
+  }
   get_lua_context().game_on_finished(*this);
   get_savegame().notify_game_finished();
 }

@@ -241,7 +241,7 @@ void PauseSubmenuOptions::action_key_pressed() {
   else {
     set_caption_text(caption_strings[2]);
     cursor_sprite->set_current_animation("small_blink");
-    GameCommands::Command command_to_customize = (GameCommands::Command) cursor_position;
+    GameCommands::Command command_to_customize = GameCommands::Command(cursor_position - 1);
     commands.customize(command_to_customize);
     customizing = true;
 

@@ -51,7 +51,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(source_files
     ${source_files}
     src/lowlevel/osx/SDLMain.m
+    src/lowlevel/osx/OSXInterface.mm
     include/lowlevel/osx/SDLMain.h
+    include/lowlevel/osx/OSXInterface.h
   )
 endif()
 
@@ -61,9 +63,76 @@ add_library(solarus_static
   STATIC
   ${source_files}
 )
-add_executable(solarus
-  ${main_source_file}
-)
+
+if(NOT SOLARUS_OSX_BUNDLE)
+  add_executable(solarus
+    ${main_source_file}
+  )
+else()
+  # OS Bundle only works with Release mode
+  if(NOT ${CMAKE_BUILD_TYPE} MATCHES "Release")
+    set(CMAKE_BUILD_TYPE Release CACHE STRING
+        "Bundle only works with Release mode" FORCE)
+  endif()
+
+  # Build location, need to be accessible with user privilege
+  set(CMAKE_INSTALL_PREFIX 		${SOLARUS_ENGINE_SOURCE_DIR}/)
+
+  # Path to default files
+  if(NOT SOLARUS_OSX_QUEST)
+    set(SOLARUS_OSX_QUEST 		${SOLARUS_ENGINE_SOURCE_DIR}/quests/zsdx/data.solarus)
+  endif()  
+  if(NOT SOLARUS_OSX_ICON)
+    set(SOLARUS_OSX_ICON 		${SOLARUS_ENGINE_SOURCE_DIR}/osx/Solarus.icns)
+  endif()
+  if(NOT SOLARUS_OSX_INFOPLIST)
+    set(SOLARUS_OSX_INFOPLIST 		${SOLARUS_ENGINE_SOURCE_DIR}/osx/Info.plist)
+  endif()
+
+  # Path to quest
+  get_filename_component(SOLARUS_OSX_QUEST_NAME "${SOLARUS_OSX_QUEST_NAME}" NAME)
+  set(DEFAULT_QUEST "../Resources/${SOLARUS_OSX_QUEST_NAME}" CACHE STRING "Default quest launched")
+
+  # Remove the hardcoded additional link on SDL path
+  set(SDL_FRAMEWORK 			${SDL_LIBRARY})
+  string(REPLACE "-framework Cocoa" "" SDL_FRAMEWORK ${SDL_FRAMEWORK}) 
+
+  # Specify Bundle files
+  add_executable(solarus
+    MACOSX_BUNDLE
+    ${main_source_file}
+    ${SDL_FRAMEWORK}
+    ${SDLIMAGE_LIBRARY}
+    ${SDLTTF_LIBRARY}
+    ${VORBISFILE_LIBRARY}
+    ${OGG_LIBRARY}
+    ${PHYSFS_LIBRARY}
+    ${MODPLUG_LIBRARY}
+    ${SOLARUS_OSX_QUEST}
+    ${SOLARUS_OSX_ICON}
+    ${SOLARUS_OSX_INFOPLIST}
+  )
+
+  # Set right properties on copied files
+  if(CMAKE_VERSION VERSION_LESS 2.8.10.3) 
+    message(WARNING ".framework embed library will not be correctly copied. See http://public.kitware.com/Bug/view.php?id=13784")
+  endif()
+  set_property(SOURCE 
+		${SDL_FRAMEWORK} 
+		${SDLIMAGE_LIBRARY} 
+		${SDLTTF_LIBRARY} 
+		${VORBISFILE_LIBRARY} 
+		${OGG_LIBRARY} 
+		${PHYSFS_LIBRARY} 
+		${MODPLUG_LIBRARY} 
+		PROPERTY MACOSX_PACKAGE_LOCATION Frameworks)
+  set_property(SOURCE 
+		${SOLARUS_OSX_QUEST} 
+		${SOLARUS_OSX_ICON} 
+		PROPERTY MACOSX_PACKAGE_LOCATION Resources)
+  set_property(TARGET solarus 
+		PROPERTY MACOSX_BUNDLE_INFO_PLIST ${SOLARUS_OSX_INFOPLIST})
+endif()
 
 # generate -I flags
 include_directories(
@@ -105,32 +174,41 @@ set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
 # Compilation flags for Mac OS X deployment
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Release")
+   # Build architectures
   if(SOLARUS_ARCH)
     set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Chosen build architecture" FORCE)
   else()
-    if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
-      set(CMAKE_OSX_ARCHITECTURES "ppc;" CACHE STRING "PPC build architecture" FORCE)
-    endif()
-    set(CMAKE_OSX_ARCHITECTURES "${CMAKE_OSX_ARCHITECTURES}i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
+    set(CMAKE_OSX_ARCHITECTURES "i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
   endif()
 
+  # SDK version
   if(SOLARUS_SYSROOT)
-    set(CMAKE_OSX_SYSROOT "${SOLARUS_SYSROOT}" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
-  else()
-    if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
-      set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk" CACHE STRING "Default OS version whose headers you'll use" FORCE)
+    set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_SYSROOT}.sdk" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
+    if(SOLARUS_SYSROOT VERSION_LESS 10.6)
+      add_definitions(-DSOLARUS_DONT_USE_OSX_SANDBOX) 
     endif()
   endif()
 
+  # Deployment version
   if(SOLARUS_DEPLOYMENT)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Chosen oldest OS version supported" FORCE)
   else()
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.5" CACHE STRING "Default oldest OS version supported" FORCE)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.6" CACHE STRING "Default oldest OS version supported" FORCE)
   endif()
-  
+
+  # Embed library search path
   if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
+    set(SOLARUS_OSX_RPATH "@rpath/")
+  else()
+    set(SOLARUS_OSX_RPATH "@executable_path/../Frameworks/")
   endif()
+  set_target_properties(solarus PROPERTIES 
+			BUILD_WITH_INSTALL_RPATH 1 
+			INSTALL_NAME_DIR ${SOLARUS_OSX_RPATH}
+  )
+
+ # Compatiblity settings
   if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
@@ -194,7 +272,13 @@ if(SCREEN_FORCE_MODE)
 endif()
 
 # files to install with make install
-install(TARGETS	solarus
-  RUNTIME DESTINATION bin
-)
+if(NOT SOLARUS_OSX_BUNDLE)
+  install(TARGETS	solarus
+    RUNTIME DESTINATION bin
+  ) 
+else()
+  install(TARGETS	solarus
+    BUNDLE DESTINATION  osx
+  )  
+endif()
 

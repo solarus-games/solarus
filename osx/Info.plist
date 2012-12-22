@@ -6,26 +6,22 @@
 	<string>10K549</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleDocumentTypes</key>
-	<array/>
 	<key>CFBundleExecutable</key>
 	<string>zsdx</string>
 	<key>CFBundleIconFile</key>
 	<string>Solarus.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>solarus-team.SolarusDX</string>
+	<string>solarus-team.Solarus</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>SolarusDX</string>
+	<string>Solarus</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array/>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSApplicationCategoryType</key>
@@ -35,9 +31,7 @@
 	<key>LSMinimumSystemVersionByArchitecture</key>
 	<dict>
 		<key>i386</key>
-		<string>10.5.0</string>
-		<key>ppc</key>
-		<string>10.5.0</string>
+		<string>10.6.0</string>
 		<key>x86_64</key>
 		<string>10.6.0</string>
 	</dict>
@@ -45,11 +39,5 @@
 	<string>SDLMain</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>NSServices</key>
-	<array/>
-	<key>UTExportedTypeDeclarations</key>
-	<array/>
-	<key>UTImportedTypeDeclarations</key>
-	<array/>
 </dict>
 </plist>

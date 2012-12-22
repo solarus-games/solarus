@@ -22,18 +22,3 @@ const char* getUserApplicationSupportDirectory()
     return "~/Library/Application Support/";
 #endif
 }
-
-    
-/**
- * @brief Get the Mac OSX version number from /System/Library/CoreServices/SystemVersion.plist
- *
- * This actually was the recommended way to get the OS version briefly circa 10.0/10.1, and the best way currently available since 10.8
- * Remove this function once Apple release an official way to get the OSX current version, and available from 10.3 to 10.8+
- *
- * @return Get the Mac OSX version number
- */
-const char* getOSXVersion()
-{
-    NSDictionary * sv = [NSDictionary dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
-    return [[sv objectForKey:@"ProductVersion"] cStringUsingEncoding:NSUnicodeStringEncoding];
-}

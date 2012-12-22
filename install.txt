@@ -200,7 +200,7 @@ Here is an example where cmake will produce a CFBundle, build against 10.5 SDK a
 $cmake -DSOLARUS_OSX_BUNDLE=1 -DSOLARUS_SYSROOT="10.5" -DSOLARUS_ARCH="ppc;i386;x86_64" -DSOLARUS_DEPLOYMENT=10.5 .
 
 If you use the SOLARUS_OSX_BUNDLE, you may need to overload default values
-of SOLARUS_OSX_QUEST, SOLARUS_OSX_ICON and SOLARUS_OSX_INFOPLIST, strings which contain path to corresponding files.
+of SOLARUS_OSX_QUEST, SOLARUS_OSX_ICON and SOLARUS_OSX_INFOPLIST flags, strings which contain path to corresponding files.
 
 
 * Deploy on OSX

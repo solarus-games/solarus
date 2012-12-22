@@ -69,7 +69,7 @@ if(NOT SOLARUS_OSX_BUNDLE)
     ${main_source_file}
   )
 else()
-  # OS Bundle only works with Release mode
+  # OSX Bundle only works with Release mode
   if(NOT ${CMAKE_BUILD_TYPE} MATCHES "Release")
     set(CMAKE_BUILD_TYPE Release CACHE STRING
         "Bundle only works with Release mode" FORCE)
@@ -226,7 +226,8 @@ if(DEFAULT_QUEST)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(DEFAULT_WRITE_DIR "Library/Application Support/Solarus")
+  add_definitions(-DSOLARUS_USE_APPLE_PREFIXED_WRITE_DIR)
+  set(DEFAULT_WRITE_DIR "Solarus")
 else()
   set(DEFAULT_WRITE_DIR ".solarus")
 endif()

@@ -21,6 +21,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #ifndef NDEBUG
 #define SOLARUS_ASSERT(condition, message) Debug::check_assertion(condition, message)

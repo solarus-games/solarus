@@ -37,6 +37,8 @@ solarus-0.9.3 (under development)
 * The game screen size can now be set at compilation time.
 * Change the savegames directory on Mac OS X.
 * Improve the support of Mac OS X, Pandora, Caanoo and other platforms.
+* Fix the compilation with Visual C++.
+* Fix the compilation of SimpleIni with gcc 4.7.2.
 * Fix blocks making sometimes only a half move (#33).
 * Fix pixel-precise collisions not always correct (#53).
 * Fix the end of target movement on slow machines (#34).

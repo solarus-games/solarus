@@ -6,6 +6,7 @@ zsdx-1.5.2 (under development)
 * West mountains cave: fix a chest possibly overlapping the hero (#37).
 * Fix wrong displaying of a question in French dialogs (#54).
 * Fix three typos in French dialogs (thanks Stella).
+* Fix a translation error in English dialogs.
 * Fix a wrong empty line in English dialogs.
 
 zsdx-1.5.1 (2012-05-20)

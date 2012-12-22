@@ -28,8 +28,12 @@ static void print_help(int argc, char** argv);
  * Usage: solarus [options] [quest_path]
  *
  * The quest path is the name of a directory that contains either the data
- * directory or the data archive (data.solarus).
- * If the quest path is not set, the current directory is used.
+ * directory ("data") or the data archive ("data.solarus").
+ * If the quest path is not specified, it is set to the preprocessor constant
+ * DEFAULT_QUEST, which is the current directory "." by default.
+ * In all cases, this quest path is relative to the working directory,
+ * or to the solarus executable directory if no quest is found in the working
+ * directory.
  *
  * The following options are supported:
  *   -help               shows a help message

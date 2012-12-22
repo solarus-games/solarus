@@ -54,8 +54,11 @@ void FileTools::initialize(int argc, char** argv) {
   std::string dir_quest_path = quest_path + "/data";
   std::string archive_quest_path = quest_path + "/data.solarus";
 
+  const std::string& base_dir = PHYSFS_getBaseDir();
   PHYSFS_addToSearchPath(dir_quest_path.c_str(), 1);   // data directory
   PHYSFS_addToSearchPath(archive_quest_path.c_str(), 1); // data.solarus archive
+  PHYSFS_addToSearchPath((base_dir + "/" + dir_quest_path).c_str(), 1);
+  PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path).c_str(), 1);
 
   // Check the existence of a quest at this location.
   if (!FileTools::data_file_exists("quest.lua")) {

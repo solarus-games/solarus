@@ -159,7 +159,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * Removes the selected entities from the map.
      * If there is no entity selected, nothing is done.
      */
-    public void removeFromMap() throws ZSDXException {
+    public void removeFromMap() throws QuestEditorException {
 
         if (entities.size() > 0) {
             map.getHistory().doAction(new ActionRemoveEntities(map, entities));
@@ -188,7 +188,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * Changes the layer of the selected entities.
      * @param layer the new layer
      */
-    public void setLayer(Layer layer) throws ZSDXException {
+    public void setLayer(Layer layer) throws QuestEditorException {
 
         map.getHistory().doAction(new ActionChangeLayer(map, entities, layer));
     }
@@ -196,7 +196,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
     /**
      * Brings the selected entities to the front in their layer.
      */
-    public void bringToFront() throws ZSDXException {
+    public void bringToFront() throws QuestEditorException {
 
         map.getHistory().doAction(new ActionBringToFront(map, entities));
     }
@@ -204,7 +204,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
     /**
      * Brings the selected entities to the back in their layer.
      */
-    public void bringToBack() throws ZSDXException {
+    public void bringToBack() throws QuestEditorException {
 
         map.getHistory().doAction(new ActionBringToBack(map, entities));
     }
@@ -291,7 +291,7 @@ public class MapEntitySelection extends Observable implements Iterable<MapEntity
      * Changes the direction of the selected entities.
      * @param direction the new direction
      */
-    public void setDirection(int direction) throws ZSDXException {
+    public void setDirection(int direction) throws QuestEditorException {
 
         map.getHistory().doAction(new ActionChangeDirection(map, entities, direction));
     }

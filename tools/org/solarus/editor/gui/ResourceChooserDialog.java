@@ -53,7 +53,7 @@ public class ResourceChooserDialog extends OkCancelDialog {
     /**
      * Takes into account the modifications made by the user.
      */
-    public void applyModifications() throws ZSDXException {
+    public void applyModifications() throws QuestEditorException {
         id = chooser.getSelectedId();
     }
 

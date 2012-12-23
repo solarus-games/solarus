@@ -184,7 +184,7 @@ public class EditTeletransporterComponent extends EditEntityComponent {
                     destinationField.setMap(null);
                 }
             }
-            catch (ZSDXException ex) {
+            catch (QuestEditorException ex) {
                 GuiTools.warningDialog("The destination map is invalid: " + ex.getMessage());
             }
         }

@@ -40,9 +40,9 @@ public class EditEntityDialog extends OkCancelDialog {
 
     /**
      * Takes into account the modifications made by the user in the dialog box.
-     * @throws ZSDXException if the user has made incorrect modifications
+     * @throws QuestEditorException if the user has made incorrect modifications
      */
-    protected void applyModifications() throws ZSDXException {
+    protected void applyModifications() throws QuestEditorException {
         entityComponent.applyModifications();
     }
 }

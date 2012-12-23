@@ -88,14 +88,14 @@ public class Resource extends Observable {
      * Returns the name of an element from its id.
      * @param id id of an element
      * @return the name of this element
-     * @throws ZSDXException if this element doesn't exist
+     * @throws QuestEditorException if this element doesn't exist
      */
-    public String getElementName(String id) throws ZSDXException {
+    public String getElementName(String id) throws QuestEditorException {
 
         String name = elements.get(id);
 
         if (name == null) {
-            throw new ZSDXException("There is no element with id " + id);
+            throw new QuestEditorException("There is no element with id " + id);
         }
 
         return name;
@@ -106,12 +106,12 @@ public class Resource extends Observable {
      * database, it is added.
      * @param id id of an element
      * @param name the name of the element
-     * @throws ZSDXException if the id is not valid
+     * @throws QuestEditorException if the id is not valid
      */
-    public void setElementName(String id, String name) throws ZSDXException {
+    public void setElementName(String id, String name) throws QuestEditorException {
 
         if (id.length() == 0) {
-            throw new ZSDXException("Empty id for element '" + name);
+            throw new QuestEditorException("Empty id for element '" + name);
         }
 
         if (idAutoIncremented) {
@@ -124,7 +124,7 @@ public class Resource extends Observable {
                 }
             }
             catch (NumberFormatException ex) {
-                throw new ZSDXException("Invalid id '" + id + "' for element '" + name +
+                throw new QuestEditorException("Invalid id '" + id + "' for element '" + name +
                                         "': the value should be an integer number");
             }
         }

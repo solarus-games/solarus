@@ -394,7 +394,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
         try {
             map.getEntitySelection().removeFromMap();
             map.getEntitySelection().unselectAll();
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot remove the entities: " + ex.getMessage());
         }
     }
@@ -421,7 +421,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 copy.move(8, 8);
                 copiedEntities.add(copy);
             }
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
         }
 
         mapEditorWindow.update(null, null);
@@ -437,7 +437,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             }
             map.getHistory().doAction(new ActionAddEntities(map, copiedEntities));
             copySelectedEntities();
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot paste the entities: " + ex.getMessage());
         }
     }
@@ -618,7 +618,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 entityAdded = entityBeingAdded;
                 entityBeingAdded = null;
             }
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot add the entity: " + ex.getMessage());
         }
 
@@ -827,7 +827,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 try {
                     // note that A is not necessarily the top-left corner of the rectangle
                     map.setEntityPosition(selectedEntity, xA, yA, xB, yB);
-                } catch (ZSDXException ex) {
+                } catch (QuestEditorException ex) {
                     GuiTools.errorDialog("Cannot resize the entity: " + ex.getMessage());
                 }
             }
@@ -857,7 +857,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
                 // we make the resizing in one step, this time saving it into the undo/redo history
                 map.getHistory().doAction(new ActionResizeEntity(map, entity, finalPosition));
-            } catch (ZSDXException e) {
+            } catch (QuestEditorException e) {
                 GuiTools.errorDialog("Cannot resize the entity: " + e.getMessage());
             }
         }
@@ -950,7 +950,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
             // we make the whole move in one step, this time saving it into the undo/redo history
             try {
                 map.getHistory().doAction(new ActionMoveEntities(map, entities, total_dx, total_dy));
-            } catch (ZSDXException e) {
+            } catch (QuestEditorException e) {
                 GuiTools.errorDialog("Cannot move the entities: " + e.getMessage());
             }
         }
@@ -1358,7 +1358,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     try {
                         LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
                         map.getHistory().doAction(new ActionBringToFront(map, entities));
-                    } catch (ZSDXException e) {
+                    } catch (QuestEditorException e) {
                         GuiTools.errorDialog("Cannot bring the entities to front: " + e.getMessage());
                     }
                     break;
@@ -1367,7 +1367,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     try {
                         LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
                         map.getHistory().doAction(new ActionBringToBack(map, entities));
-                    } catch (ZSDXException e) {
+                    } catch (QuestEditorException e) {
                         GuiTools.errorDialog("Cannot bring the entities to front: " + e.getMessage());
                     }
                     break;
@@ -1378,7 +1378,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     try {
                         LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
                         map.getHistory().doAction(new ActionUpDownLayer(map, entities, true));
-                    } catch (ZSDXException e) {
+                    } catch (QuestEditorException e) {
                         GuiTools.errorDialog("Cannot change the layer: " + e.getMessage());
                     }
                     break;
@@ -1389,7 +1389,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     try {
                         LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
                         map.getHistory().doAction(new ActionUpDownLayer(map, entities, false));
-                    } catch (ZSDXException e) {
+                    } catch (QuestEditorException e) {
                         GuiTools.errorDialog("Cannot change the layer: " + e.getMessage());
                     }
                     break;

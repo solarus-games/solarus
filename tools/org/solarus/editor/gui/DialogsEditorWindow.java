@@ -46,7 +46,7 @@ import org.solarus.editor.Dialogs;
 import org.solarus.editor.Project;
 import org.solarus.editor.ProjectObserver;
 import org.solarus.editor.ResourceType;
-import org.solarus.editor.ZSDXException;
+import org.solarus.editor.QuestEditorException;
 
 /**
  * Main window of the dialogs editor
@@ -315,7 +315,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
         try {
             Dialogs dialogs = new Dialogs();
             setDialogs(dialogs);
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot create the dialogs: " + ex.getMessage());
         }
     }
@@ -342,7 +342,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
         try {
             Dialogs dialogs = new Dialogs(dialogsId);
             setDialogs(dialogs);
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Could not load the dialogs: " + ex.getMessage());
         }
     }
@@ -366,7 +366,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
             saveCurrentSection();
             repaint();
             dialogs.save();
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Could not save the tileset: " + ex.getMessage());
         }
     }

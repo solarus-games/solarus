@@ -74,10 +74,10 @@ public class ResourceDatabase extends Observable {
     /**
      * Reads the file project_db.dat of the project, i.e. the list
      * of the game resources and their name.
-     * @throws ZSDXException if the file contains an error
+     * @throws QuestEditorException if the file contains an error
      * @throws IOException if the file could not be loaded
      */
-    public void load() throws ZSDXException, IOException {
+    public void load() throws QuestEditorException, IOException {
 
         int lineNumber = 0;
 
@@ -108,13 +108,13 @@ public class ResourceDatabase extends Observable {
             buff.close();
         }
         catch (NoSuchElementException ex) {
-            throw new ZSDXException(fileName + " line " + lineNumber + ": Value expected");
+            throw new QuestEditorException(fileName + " line " + lineNumber + ": Value expected");
         }
         catch (NumberFormatException ex) {
-            throw new ZSDXException(fileName + " line " + lineNumber + ": Integer expected");
+            throw new QuestEditorException(fileName + " line " + lineNumber + ": Integer expected");
         }
-        catch (ZSDXException ex) {
-            throw new ZSDXException(fileName + " line " + lineNumber + ": " + ex.getMessage());
+        catch (QuestEditorException ex) {
+            throw new QuestEditorException(fileName + " line " + lineNumber + ": " + ex.getMessage());
         }
     }
 
@@ -148,7 +148,7 @@ public class ResourceDatabase extends Observable {
             }
             out.close();
         }
-        catch (ZSDXException ex) {
+        catch (QuestEditorException ex) {
             System.err.println("Unexpected error: " + ex.getMessage());
             ex.printStackTrace();
             System.exit(1);

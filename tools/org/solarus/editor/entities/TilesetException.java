@@ -21,7 +21,7 @@ import org.solarus.editor.*;
 /**
  * Exception thrown if the user tries to make something wrong in a tileset.
  */
-public class TilesetException extends ZSDXException {
+public class TilesetException extends QuestEditorException {
 
 	/**
      * Constructor.

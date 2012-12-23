@@ -40,15 +40,15 @@ public enum ResourceType {
      * Returns the value with the specified id.
      * @param id id of the value to get
      * @return the value with this id
-     * @throws ZSDXException if there is no resource type with this id
+     * @throws QuestEditorException if there is no resource type with this id
      */
-    public static ResourceType get(int id) throws ZSDXException {
+    public static ResourceType get(int id) throws QuestEditorException {
 
         try {
             return values()[id];
         }
         catch (ArrayIndexOutOfBoundsException ex) {
-            throw new ZSDXException("Unknown resource type '" + id + "'");
+            throw new QuestEditorException("Unknown resource type '" + id + "'");
         }
     }
 

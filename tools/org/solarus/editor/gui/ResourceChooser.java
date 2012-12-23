@@ -90,7 +90,7 @@ public class ResourceChooser extends JComboBox<KeyValue> implements ProjectObser
                 addItem(new KeyValue(ids[i], name));
             }
         }
-        catch (ZSDXException ex) {
+        catch (QuestEditorException ex) {
             System.err.println("Unexpected error: " + ex.getMessage());
             ex.printStackTrace();
             System.exit(1);

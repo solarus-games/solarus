@@ -246,9 +246,9 @@ public class Tile extends MapEntity {
     /**
      * Creates a dynamic tile with the same properties than this static tile.
      * @return the dynamic tile corresponding to this static tile
-     * @throws ZSDXException if the dynamic tile could not be created
+     * @throws QuestEditorException if the dynamic tile could not be created
      */
-    public final DynamicTile createDynamicTile() throws ZSDXException {
+    public final DynamicTile createDynamicTile() throws QuestEditorException {
         return new DynamicTile(this);
     }
 }

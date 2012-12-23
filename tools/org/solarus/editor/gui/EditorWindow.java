@@ -42,7 +42,7 @@ import org.jdesktop.swinghelper.transformer.JXTransformer;
 import org.solarus.editor.MapEditorHistory;
 import org.solarus.editor.Project;
 import org.solarus.editor.ProjectObserver;
-import org.solarus.editor.ZSDXException;
+import org.solarus.editor.QuestEditorException;
 import org.solarus.editor.gui.tree.QuestDataTree;
 
 /**
@@ -149,7 +149,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             try {
                 Project.createExisting("../quests/" + quest);
                 qdt.setRoot(Project.getDataPath());
-            } catch (ZSDXException ex) {
+            } catch (QuestEditorException ex) {
                 new ActionListenerLoadProject().actionPerformed(null);
             }
         }
@@ -443,7 +443,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
                     qdt.setRoot(projectPath);
                     setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
                 }
-            } catch (ZSDXException ex) {
+            } catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
             }
         }
@@ -518,7 +518,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
             try {
                 mapEditor.getMap().getHistory().undo();
-            } catch (ZSDXException ex) {
+            } catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot undo: " + ex.getMessage());
             }
         }
@@ -534,7 +534,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
             try {
                 mapEditor.getMap().getHistory().redo();
-            } catch (ZSDXException ex) {
+            } catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot redo: " + ex.getMessage());
             }
         }

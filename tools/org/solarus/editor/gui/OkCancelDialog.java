@@ -152,9 +152,9 @@ public abstract class OkCancelDialog extends JDialog {
      * The subclasses must implement this method and do whatever they have to do
      * to apply the user choices. They can throw a ZSDXException which will show
      * an error message.
-     * @throws ZSDXException if the user has made incorrect modifications
+     * @throws QuestEditorException if the user has made incorrect modifications
      */
-    protected abstract void applyModifications() throws ZSDXException;
+    protected abstract void applyModifications() throws QuestEditorException;
 
     /**
      * Takes into account the modifications made by the user in the dialog box.
@@ -172,7 +172,7 @@ public abstract class OkCancelDialog extends JDialog {
                 dispose();
             }
         }
-        catch (ZSDXException ex) {
+        catch (QuestEditorException ex) {
             GuiTools.errorDialog(ex.getMessage());
         }
     }

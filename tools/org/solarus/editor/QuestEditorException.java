@@ -19,13 +19,13 @@ package org.solarus.editor;
 /**
  * Exception thrown if something wrong happens in the editor.
  */
-public class ZSDXException extends Exception {
+public class QuestEditorException extends Exception {
 
 	/**
      * Constructor.
      * @param message error message
      */
-    public ZSDXException(String message) {
+    public QuestEditorException(String message) {
         super(message);
     }
 

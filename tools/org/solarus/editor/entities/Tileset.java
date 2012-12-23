@@ -127,9 +127,9 @@ public class Tileset extends Observable {
 
     /**
      * Creates a new tileset.
-     * @throws ZSDXException if the resource list could not be updated after the map creation
+     * @throws QuestEditorException if the resource list could not be updated after the map creation
      */
-    public Tileset() throws ZSDXException {
+    public Tileset() throws QuestEditorException {
         super();
 
         // FIXME tileset creation is broken because of ids an images
@@ -155,9 +155,9 @@ public class Tileset extends Observable {
     /**
      * Loads an existing tileset.
      * @param tilesetId id of the tileset to load
-     * @throws ZSDXException if the tileset could not be loaded
+     * @throws QuestEditorException if the tileset could not be loaded
      */
-    public Tileset(String tilesetId) throws ZSDXException {
+    public Tileset(String tilesetId) throws QuestEditorException {
         this.selectedTilePatternId = 0; // none
         this.tilePatterns = new TreeMap<Integer,TilePattern>();
         this.tilesetId = tilesetId;
@@ -600,9 +600,9 @@ public class Tileset extends Observable {
 
     /**
      * Loads the tileset from its file.
-     * @throws ZSDXException if the file could not be read
+     * @throws QuestEditorException if the file could not be read
      */
-    public void load() throws ZSDXException {
+    public void load() throws QuestEditorException {
 
         try {
             // get the tileset name in the game resource database
@@ -621,10 +621,10 @@ public class Tileset extends Observable {
             code.call();
         }
         catch (IOException ex) {
-            throw new ZSDXException(ex.getMessage());
+            throw new QuestEditorException(ex.getMessage());
         }
         catch (LuaError ex) {
-            throw new ZSDXException("Error when loading the tileset file: " + ex.getMessage());
+            throw new QuestEditorException("Error when loading the tileset file: " + ex.getMessage());
         }
 
         setChanged();
@@ -633,9 +633,9 @@ public class Tileset extends Observable {
 
     /**
      * Saves the tileset into its file.
-     * @throws ZSDXException if the file could not be written
+     * @throws QuestEditorException if the file could not be written
      */
-    public void save() throws ZSDXException {
+    public void save() throws QuestEditorException {
 
         int lastId = -1;
         try {
@@ -735,7 +735,7 @@ public class Tileset extends Observable {
                 message = "Failed to save tile '" + lastId + "': ";
             }
             message += ex.getMessage();
-            throw new ZSDXException(message);
+            throw new QuestEditorException(message);
         }
     }
 
@@ -744,11 +744,11 @@ public class Tileset extends Observable {
      * @param name The Lua name.
      * @return The corresponding enum value or null.
      */
-    private Obstacle getObstacleByName(String name) throws ZSDXException {
+    private Obstacle getObstacleByName(String name) throws QuestEditorException {
 
         Obstacle obstacle = obstaclesByName.get(name);
         if (obstacle == null) {
-            throw new ZSDXException("Invalid obstacle name: '" + name);
+            throw new QuestEditorException("Invalid obstacle name: '" + name);
         }
         return obstacle;
     }
@@ -758,7 +758,7 @@ public class Tileset extends Observable {
      * @param obstacle The obstacle value.
      * @return The corresponding name.
      */
-    private String getObstacleName(Obstacle obstacle) throws ZSDXException {
+    private String getObstacleName(Obstacle obstacle) throws QuestEditorException {
 
         for (java.util.Map.Entry<String, Obstacle> keyValue: obstaclesByName.entrySet()) {
 
@@ -766,7 +766,7 @@ public class Tileset extends Observable {
                 return keyValue.getKey();
             }
         }
-        throw new ZSDXException("No name for obstacle " + obstacle);
+        throw new QuestEditorException("No name for obstacle " + obstacle);
     }
 
     /**

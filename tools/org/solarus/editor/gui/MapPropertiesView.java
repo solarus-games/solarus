@@ -218,7 +218,7 @@ public class MapPropertiesView extends JPanel implements Observer {
                             String name = textFieldName.getText();
                             map.getHistory().doAction(new ActionRenameMap(map, name));
                         }
-                        catch (ZSDXException ex) {
+                        catch (QuestEditorException ex) {
                             GuiTools.errorDialog("Cannot change the map name: " + ex.getMessage());
                         }
                         update(map);
@@ -281,7 +281,7 @@ public class MapPropertiesView extends JPanel implements Observer {
                     catch (NumberFormatException ex) {
 
                     }
-                    catch (ZSDXException ex) {
+                    catch (QuestEditorException ex) {
                         GuiTools.errorDialog("Cannot change the map size: " + ex.getMessage());
                     }
                     update(map);
@@ -368,7 +368,7 @@ public class MapPropertiesView extends JPanel implements Observer {
                         }
                     });
                 }
-                catch (ZSDXException ex) {
+                catch (QuestEditorException ex) {
                     GuiTools.errorDialog(ex.getMessage());
                 }
             }
@@ -436,7 +436,7 @@ public class MapPropertiesView extends JPanel implements Observer {
                     }
                 });
             }
-            catch (ZSDXException ex) {
+            catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot change the floor: " + ex.getMessage());
             }
             update(map);
@@ -522,7 +522,7 @@ public class MapPropertiesView extends JPanel implements Observer {
                   }
                 });
               }
-              catch (ZSDXException ex) {
+              catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot change the floor: " + ex.getMessage());
               }
             }
@@ -574,7 +574,7 @@ public class MapPropertiesView extends JPanel implements Observer {
             catch (NumberFormatException ex) {
 
             }
-            catch (ZSDXException ex) {
+            catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot change the map location: " + ex.getMessage());
             }
             update(map);
@@ -653,7 +653,7 @@ public class MapPropertiesView extends JPanel implements Observer {
                         GuiTools.warningDialog("Some tiles of the map have been removed because they don't exist in this tileset.");
                     }
                 }
-                catch (ZSDXException ex) {
+                catch (QuestEditorException ex) {
                     GuiTools.errorDialog("Cannot load the tileset '" + selectedTilesetId + "': " + ex.getMessage());
                 }
             }
@@ -713,7 +713,7 @@ public class MapPropertiesView extends JPanel implements Observer {
                 try {
                     map.getHistory().doAction(new ActionChangeMusic(map, music));
                 }
-                catch (ZSDXException ex) {
+                catch (QuestEditorException ex) {
                     GuiTools.errorDialog("Cannot change the background music: " + ex.getMessage());
                 }
             }

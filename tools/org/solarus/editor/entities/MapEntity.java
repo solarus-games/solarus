@@ -269,7 +269,7 @@ public abstract class MapEntity extends Observable {
             // now the origin is valid
             entity.setPositionInMap(otherPositionInMap.x, otherPositionInMap.y);
         }
-        catch (ZSDXException ex) {
+        catch (QuestEditorException ex) {
             System.err.println("Cannot create a copy of entity '" + other + "'");
             entity = null;
         }

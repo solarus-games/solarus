@@ -67,9 +67,9 @@ public class Dialogs extends Observable {
 
     /**
      * Creates a new dialogs file.
-     * @throws ZSDXException if the resource list could not be updated after the dialogs file creation
+     * @throws QuestEditorException if the resource list could not be updated after the dialogs file creation
      */
-    public Dialogs() throws ZSDXException {
+    public Dialogs() throws QuestEditorException {
         super();
 
         /*
@@ -85,15 +85,15 @@ public class Dialogs extends Observable {
         */
 
         // disable the support of dialogs for now since it's not working
-        throw new ZSDXException("Creating dialogs with the GUI is not working yet, please use a text editor");
+        throw new QuestEditorException("Creating dialogs with the GUI is not working yet, please use a text editor");
     }
 
     /**
      * Loads an existing dialogs file.
      * @param dialogsId id of the dialogs file to load
-     * @throws ZSDXException if the dialogs file could not be loaded
+     * @throws QuestEditorException if the dialogs file could not be loaded
      */
-    public Dialogs(String dialogsId) throws ZSDXException {
+    public Dialogs(String dialogsId) throws QuestEditorException {
         this.dialogsId = dialogsId;
         this.sections = new ArrayList<DialogSection>();
         this.filteredSections = new ArrayList<DialogSection>();
@@ -101,14 +101,14 @@ public class Dialogs extends Observable {
         load();
 
         // disable the support of dialogs for now since it's not working
-        throw new ZSDXException("Editing dialogs with the GUI is not working yet, please use a text editor");
+        throw new QuestEditorException("Editing dialogs with the GUI is not working yet, please use a text editor");
     }
 
     /**
      * Loads an existing dialogs file.
-     * @throws ZSDXException if the dialogs file could not be loaded
+     * @throws QuestEditorException if the dialogs file could not be loaded
      */
-    public void load() throws ZSDXException {
+    public void load() throws QuestEditorException {
         String line =  "";
         try {
             // get the dialogs file name in the game resource database
@@ -122,7 +122,7 @@ public class Dialogs extends Observable {
              line = in.readLine();
 
             if (line == null) {
-                throw new ZSDXException("The dialogs file is empty");
+                throw new QuestEditorException("The dialogs file is empty");
             }
             // First step : read the file description.
             // It will ends at the start of the first section
@@ -181,12 +181,12 @@ public class Dialogs extends Observable {
 
         } catch (IOException ioe) {
             //System.out.println(line);
-            throw new ZSDXException(ioe.getMessage());
+            throw new QuestEditorException(ioe.getMessage());
         }
 
     }
 
-    public void save() throws ZSDXException {
+    public void save() throws QuestEditorException {
 
         try {
             File dialogsFile = Project.getDialogsFile(dialogsId);
@@ -200,7 +200,7 @@ public class Dialogs extends Observable {
             out.close();
             saved = true;
         } catch (IOException er) {
-            throw new ZSDXException(er.getMessage());
+            throw new QuestEditorException(er.getMessage());
         }
 
     }

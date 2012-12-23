@@ -86,7 +86,7 @@ public class Project {
             // normal case: there is no project file yet
             setCurrentProject(project);
         }
-        catch (ZSDXException ex) {
+        catch (QuestEditorException ex) {
             // a project exists (and the project file is not valid)
             project = null;
         }
@@ -99,9 +99,9 @@ public class Project {
      * as the current project.
      * @param path root path of the project
      * @return the project created, or null if there is no project in this path
-     * @throws ZSDXException if the project exists but the project file is not valid
+     * @throws QuestEditorException if the project exists but the project file is not valid
      */
-    public static Project createExisting(String path) throws ZSDXException {
+    public static Project createExisting(String path) throws QuestEditorException {
 
         Project project = new Project(path);
 
@@ -331,7 +331,7 @@ public class Project {
      */
     public static File getMapFile(String mapId) {
 
-        return new File(getMapPath() + "/" + mapId + "dat");
+        return new File(getMapPath() + "/" + mapId + ".dat");
     }
 
     /**

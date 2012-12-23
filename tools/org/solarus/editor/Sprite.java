@@ -51,7 +51,7 @@ public class Sprite {
     /**
      * Analyzes the description file of the animation set used by this sprite
      * and builds its animation set.
-     * @throws ZSDXException if there is an error when analyzing the file
+     * @throws QuestEditorException if there is an error when analyzing the file
      */
     public void parse() throws MapException {
 

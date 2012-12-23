@@ -35,7 +35,7 @@ import org.solarus.editor.Map;
 import org.solarus.editor.Project;
 import org.solarus.editor.Resource;
 import org.solarus.editor.ResourceType;
-import org.solarus.editor.ZSDXException;
+import org.solarus.editor.QuestEditorException;
 import org.solarus.editor.entities.Tileset;
 import org.solarus.editor.gui.EditorWindow;
 import org.solarus.editor.gui.FileEditorWindow;
@@ -116,7 +116,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                     parentNode.add(new DefaultMutableTreeNode(new ResourceElement(resourceType, ids[i], resource.getElementName(ids[i]))));
                 }
             }
-            catch (ZSDXException ex) {
+            catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Unexpected error while building the quest tree: " + ex.getMessage());
             }
         }
@@ -210,7 +210,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                     }
                 }
             }
-            catch (ZSDXException ex) {
+            catch (QuestEditorException ex) {
                 GuiTools.errorDialog(ex.getMessage());
             }
         }
@@ -243,7 +243,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                     editorWindow.addEditor(mapEditor);
                     map.addObserver(editorWindow);
                 }
-                catch (ZSDXException ex) {
+                catch (QuestEditorException ex) {
                     GuiTools.errorDialog("Could not load the map: " + ex.getMessage());
                 }
             } else {

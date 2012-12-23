@@ -231,7 +231,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
                         }
                     }
                 }
-            } catch (ZSDXException ex) {
+            } catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
             }
         }
@@ -249,7 +249,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         try {
             Tileset tileset = new Tileset();
             setTileset(tileset);
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot create the tileset: " + ex.getMessage());
         }
     }
@@ -276,7 +276,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         try {
             Tileset tileset = new Tileset(tilesetId);
             setTileset(tileset);
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Could not load the tileset: " + ex.getMessage());
         }
     }
@@ -304,7 +304,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
 
         try {
             tileset.save();
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Could not save the tileset: " + ex.getMessage());
         }
     }

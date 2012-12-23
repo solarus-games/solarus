@@ -118,9 +118,9 @@ public class Map extends Observable {
 
     /**
      * Creates a new map.
-     * @throws ZSDXException if the resource list could not be updated after the map creation
+     * @throws QuestEditorException if the resource list could not be updated after the map creation
      */
-    public Map() throws ZSDXException {
+    public Map() throws QuestEditorException {
         super();
 
         this.size = new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT);
@@ -145,9 +145,9 @@ public class Map extends Observable {
     /**
      * Loads an existing map.
      * @param mapId id of the map to load
-     * @throws ZSDXException if the map could not be loaded
+     * @throws QuestEditorException if the map could not be loaded
      */
-    public Map(String mapId) throws ZSDXException {
+    public Map(String mapId) throws QuestEditorException {
 
         this.size = new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT);
         this.location = new Point(0, 0);
@@ -294,7 +294,7 @@ public class Map extends Observable {
      * not be loaded in this tileset
      * @throws MapException if this tileset could be applied
      */
-    public boolean setTileset(String tilesetId) throws ZSDXException {
+    public boolean setTileset(String tilesetId) throws QuestEditorException {
 
         this.badTiles = false;
 
@@ -898,9 +898,9 @@ public class Map extends Observable {
 
     /**
      * Loads the map from its file.
-     * @throws ZSDXException if the file could not be read
+     * @throws QuestEditorException if the file could not be read
      */
-    public void load() throws ZSDXException {
+    public void load() throws QuestEditorException {
 
         try {
             // Get the map name in the quest resource database.
@@ -921,10 +921,10 @@ public class Map extends Observable {
             code.call();
         }
         catch (IOException ex) {
-            throw new ZSDXException(ex.getMessage());
+            throw new QuestEditorException(ex.getMessage());
         }
         catch (LuaError ex) {
-            throw new ZSDXException("Error when loading the map file: " + ex.getCause().getMessage());
+            throw new QuestEditorException("Error when loading the map file: " + ex.getCause().getMessage());
         }
 
         history.setSaved();
@@ -934,9 +934,9 @@ public class Map extends Observable {
 
     /**
      * Saves the map into its file.
-     * @throws ZSDXException if the file could not be written for various reasons
+     * @throws QuestEditorException if the file could not be written for various reasons
      */
-    public void save() throws ZSDXException {
+    public void save() throws QuestEditorException {
 
         // check that the map is valid
         checkValidity();
@@ -1025,7 +1025,7 @@ public class Map extends Observable {
     
                 return LuaValue.NIL;
             }
-            catch (ZSDXException ex) {
+            catch (QuestEditorException ex) {
                 // Error in the input file.
                 throw new LuaError(ex);
             }
@@ -1064,7 +1064,7 @@ public class Map extends Observable {
             catch (NoSuchTilePatternException ex) {
                 badTiles = true;
             }
-            catch (ZSDXException ex) {
+            catch (QuestEditorException ex) {
                 // Error in the input file.
                 throw new LuaError(ex);
             }

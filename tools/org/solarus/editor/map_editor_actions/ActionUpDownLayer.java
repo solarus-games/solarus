@@ -19,7 +19,7 @@ package org.solarus.editor.map_editor_actions;
 import java.util.LinkedList;
 import org.solarus.editor.Map;
 import org.solarus.editor.MapEditorAction;
-import org.solarus.editor.ZSDXException;
+import org.solarus.editor.QuestEditorException;
 import org.solarus.editor.entities.Layer;
 import org.solarus.editor.entities.MapEntity;
 
@@ -77,14 +77,14 @@ public class ActionUpDownLayer extends MapEditorAction {
     }
 
     @Override
-    public void execute() throws ZSDXException {
+    public void execute() throws QuestEditorException {
         for (int i = 0; i < entities.size(); i++) {
             map.setEntityLayer(entities.get(i), layersAfter[i]);
         }
     }
 
     @Override
-    public void undo() throws ZSDXException {
+    public void undo() throws QuestEditorException {
         int i = 0;
         for (MapEntity entity: entities) {
             map.setEntityLayer(entity, layersBefore[i]);

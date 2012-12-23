@@ -204,7 +204,7 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
             Map map = new Map();
             map.addObserver(parentEditor);
             setMap(map);
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot create the map: " + ex.getMessage());
         }
     }
@@ -235,7 +235,7 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
                 GuiTools.warningDialog("Some tiles of the map have been removed because they don't exist in the tileset.");
             }
             setMap(map);
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Could not load the map: " + ex.getMessage());
         }
     }
@@ -265,7 +265,7 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
             GuiTools.warningDialog("Could not save the map: " + ex.getMessage() + " Click OK to edit the invalid entity now.");
             EditEntityDialog dialog = new EditEntityDialog( getMap(), ex.getEntity());
             dialog.display();
-        } catch (ZSDXException ex) {
+        } catch (QuestEditorException ex) {
             // another problem occured
             GuiTools.errorDialog("Could not save the map: " + ex.getMessage());
         }

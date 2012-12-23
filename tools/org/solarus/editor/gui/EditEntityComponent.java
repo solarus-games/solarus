@@ -245,10 +245,10 @@ public class EditEntityComponent extends JPanel {
      * Creates the map editor action object which corresponds
      * to the modifications indicated in the fields.
      * @return the action object corresponding to the modifications made
-     * @throws ZSDXException if the action could not be created (typically because
+     * @throws QuestEditorException if the action could not be created (typically because
      * some fields are left blank)
      */
-    private ActionEditEntity getAction() throws ZSDXException {
+    private ActionEditEntity getAction() throws QuestEditorException {
 
         String name = entity.hasName() ? nameField.getText() : null;
         Layer layer = layerField.getValue();
@@ -270,20 +270,20 @@ public class EditEntityComponent extends JPanel {
     /**
      * Applies the modifications to the entity.
      * This function calls getAction() and executes it.
-     * @throws ZSDXException if the modifications cannot be applied
+     * @throws QuestEditorException if the modifications cannot be applied
      */
-    public final void applyModifications() throws ZSDXException {
+    public final void applyModifications() throws QuestEditorException {
 
         ActionEditEntity action = getAction();
         try {
             map.getHistory().doAction(action);
         }
-        catch (ZSDXException ex) {
+        catch (QuestEditorException ex) {
 
             try {
                 action.undo(); // undo the action because it may be partially done
             }
-            catch (ZSDXException ex2) {
+            catch (QuestEditorException ex2) {
                 // this is not supposed to happen
                 System.err.println("Unexpected error: could not undo the action: " + ex2.getMessage());
                 ex2.printStackTrace();

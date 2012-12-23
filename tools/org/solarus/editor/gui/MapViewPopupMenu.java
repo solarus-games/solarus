@@ -293,7 +293,7 @@ public class MapViewPopupMenu extends JPopupMenu {
                 LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
                 map.getHistory().doAction(new ActionChangeLayer(map, entities, layer));
             }
-            catch (ZSDXException e) {
+            catch (QuestEditorException e) {
                 GuiTools.errorDialog("Cannot change the layer: " + e.getMessage());
             }
         }
@@ -326,7 +326,7 @@ public class MapViewPopupMenu extends JPopupMenu {
                 LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
                 map.getHistory().doAction(new ActionChangeDirection(map, entities, direction));
             }
-            catch (ZSDXException e) {
+            catch (QuestEditorException e) {
                 GuiTools.errorDialog("Cannot change the direction: " + e.getMessage());
             }
         }
@@ -346,7 +346,7 @@ public class MapViewPopupMenu extends JPopupMenu {
                 LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
                 map.getHistory().doAction(new ActionBringToFront(map, entities));
             }
-            catch (ZSDXException e) {
+            catch (QuestEditorException e) {
                 GuiTools.errorDialog("Cannot bring the entities to front: " + e.getMessage());
             }
         }
@@ -366,7 +366,7 @@ public class MapViewPopupMenu extends JPopupMenu {
                 LinkedList<MapEntity> entities = map.getEntitySelection().getEntities();
                 map.getHistory().doAction(new ActionBringToBack(map, entities));
             }
-            catch (ZSDXException e) {
+            catch (QuestEditorException e) {
                 GuiTools.errorDialog("Cannot bring the entities to back: " + e.getMessage());
             }
         }
@@ -429,7 +429,7 @@ public class MapViewPopupMenu extends JPopupMenu {
                 // create a dynamic tile
                 map.getHistory().doAction(new ActionReplaceEntity(map, tile, newTile));
             }
-            catch (ZSDXException ex) {
+            catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot convert this tile: " + ex.getMessage());
             }
         }

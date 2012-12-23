@@ -50,14 +50,14 @@ public class ActionChangeTileset extends MapEditorAction {
     /**
      * Executes the action.
      */
-    public void execute() throws ZSDXException {
+    public void execute() throws QuestEditorException {
         map.setTileset(tilesetIdAfter);
     }
 
     /**
      * Undoes the action.
      */
-    public void undo() throws ZSDXException {
+    public void undo() throws QuestEditorException {
         map.setTileset(tilesetIdBefore);
         map.setAllEntities(allEntitiesBefore);
     }

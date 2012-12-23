@@ -19,7 +19,7 @@ package org.solarus.editor;
 /**
  * Exception thrown if the user tries to make something wrong in a map.
  */
-public class MapException extends ZSDXException {
+public class MapException extends QuestEditorException {
 
     /**
      * Constructor.

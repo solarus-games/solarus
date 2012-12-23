@@ -109,7 +109,7 @@ public class ActionEditEntity extends MapEditorAction {
     /**
      * Executes the action.
      */
-    public void execute() throws ZSDXException {
+    public void execute() throws QuestEditorException {
 
         // name
         if (entity.hasName()) {
@@ -149,7 +149,7 @@ public class ActionEditEntity extends MapEditorAction {
     /**
      * Undoes the action.
      */
-    public void undo() throws ZSDXException {
+    public void undo() throws QuestEditorException {
 
         // specific data
         if (specificAction != null) {

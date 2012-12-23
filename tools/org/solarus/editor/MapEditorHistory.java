@@ -58,7 +58,7 @@ public class MapEditorHistory extends Observable {
      * @param action the action to execute
      * @throws MapException if an error occurs while undoing the action
      */
-    public void doAction(MapEditorAction action) throws ZSDXException {
+    public void doAction(MapEditorAction action) throws QuestEditorException {
 
         action.execute();
         actions.setSize(nextActionIndex + 1);
@@ -84,7 +84,7 @@ public class MapEditorHistory extends Observable {
      * @throws MapException if there is no action to undo or an error
      * occurs while undoing the action
      */
-    public void undo() throws ZSDXException {
+    public void undo() throws QuestEditorException {
 
         if (!canUndo()) {
             throw new MapException("No further undo information");
@@ -104,7 +104,7 @@ public class MapEditorHistory extends Observable {
      * @throws MapException if there is no action to redo or an error
      * occurs while redoing the action
      */
-    public void redo() throws ZSDXException {
+    public void redo() throws QuestEditorException {
 
         if (!canRedo()) {
             throw new MapException("No further redo information");

@@ -63,9 +63,9 @@ public class DynamicTile extends Tile {
     /**
      * Creates a static tile with the same properties than this dynamic tile.
      * @return the static tile corresponding to this dynamic tile
-     * @throws ZSDXException if the static tile could not be created
+     * @throws QuestEditorException if the static tile could not be created
      */
-    public final Tile createStaticTile() throws ZSDXException {
+    public final Tile createStaticTile() throws QuestEditorException {
         return new Tile(this);
     }
 

@@ -74,14 +74,14 @@ public class ActionEditEntitySpecific extends MapEditorAction {
     /**
      * Executes the action.
      */
-    public void execute() throws ZSDXException {
+    public void execute() throws QuestEditorException {
         entity.setProperties(propertiesAfter);
     }
 
     /**
      * Undoes the action.
      */
-    public void undo() throws ZSDXException {
+    public void undo() throws QuestEditorException {
         entity.setProperties(propertiesBefore);
     }
 }

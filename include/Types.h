@@ -84,17 +84,11 @@ class Camera;
 class Dialog;
 class DialogResource;
 class DialogBox;
+class Counter;
 
 // Lua
 class ExportableToLua;
 class LuaContext;
-
-// HUD
-class HUD;
-class HudElement;
-class ActionIcon;
-class SwordIcon;
-class Counter;
 
 // drawable objects
 class Sprite;

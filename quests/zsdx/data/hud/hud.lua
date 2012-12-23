@@ -11,6 +11,7 @@ function game:initialize_hud()
   local attack_icon_builder = require("hud/attack_icon")
   local pause_icon_builder = require("hud/pause_icon")
   local item_icon_builder = require("hud/item_icon")
+  local action_icon_builder = require("hud/action_icon")
 
   self.hud = {  -- Array for the hud elements and table for other hud info.
     top_left_opacity = 255,
@@ -56,6 +57,11 @@ function game:initialize_hud()
   self.hud[#self.hud + 1] = menu
   self.hud.attack_icon = menu
 
+  menu = action_icon_builder:new(self)
+  menu:set_dst_position(26, 51)
+  self.hud[#self.hud + 1] = menu
+  self.hud.action_icon = menu
+
   self:set_hud_enabled(true)
 
   self:check_hud()
@@ -87,6 +93,7 @@ function game:check_hud()
       self.hud.item_icon_2.surface:set_opacity(opacity)
       self.hud.pause_icon.surface:set_opacity(opacity)
       self.hud.attack_icon.surface:set_opacity(opacity)
+      self.hud.action_icon.surface:set_opacity(opacity)
     end
   end
 

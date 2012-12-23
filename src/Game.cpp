@@ -24,7 +24,6 @@
 #include "GameoverSequence.h"
 #include "DebugKeys.h"
 #include "lua/LuaContext.h"
-#include "hud/HUD.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
 #include "lowlevel/Color.h"
@@ -56,8 +55,6 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   transition_style(Transition::IMMEDIATE),
   transition(NULL),
   crystal_state(false),
-  hud(NULL),
-  hud_enabled(true),
   dialog_box(*this) {
 
   // notify objects
@@ -70,7 +67,6 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   hero->increment_refcount();
   keys_effect = new KeysEffect();
   update_keys_effect();
-  hud = new HUD(*this);
 
   // launch the starting map
   set_current_map(get_savegame().get_string(Savegame::KEY_STARTING_MAP),
@@ -104,7 +100,6 @@ Game::~Game() {
   delete pause_menu;
   delete gameover_sequence;
   delete keys_effect;
-  delete hud;
   hero->decrement_refcount();
   if (hero->get_refcount() == 0) {
     delete hero;
@@ -316,9 +311,6 @@ void Game::update() {
   // update the equipment and HUD
   get_equipment().update();
   update_keys_effect();
-  if (hud_enabled) {
-    hud->update();
-  }
   dialog_box.update();
 
   // update the pause menu (if the game is paused)
@@ -513,11 +505,6 @@ void Game::draw(Surface& dst_surface) {
       gameover_sequence->draw(dst_surface);
     }
 
-    // draw the hud
-    if (hud_enabled) {
-      hud->draw(dst_surface);
-    }
-
     // draw the dialog box if any
     if (is_showing_dialog()) {
       dialog_box.draw(dst_surface);
@@ -672,14 +659,6 @@ bool Game::is_showing_dialog() {
  */
 DialogBox& Game::get_dialog_box() {
   return dialog_box;
-}
-
-/**
- * @brief Sets whether the HUD is currently displayed.
- * @param hud_enabled true to make the HUD displayed
- */
-void Game::set_hud_enabled(bool hud_enabled) {
-  this->hud_enabled = hud_enabled;
 }
 
 /**

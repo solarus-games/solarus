@@ -48,20 +48,15 @@ class KeysEffect {
     enum ActionKeyEffect {
       ACTION_KEY_NONE,     /**< nothing happens when the user presses the Action key and the action icon is not shown */
 
-      ACTION_KEY_VALIDATE, /**< validate a choice */
       ACTION_KEY_NEXT,     /**< display the next message in a dialog */
-      ACTION_KEY_INFO,     /**< display some information about the selected item in the menu */
       ACTION_KEY_RETURN,   /**< exit a dialog or a submenu */
 
       ACTION_KEY_LOOK,     /**< look at something */
       ACTION_KEY_OPEN,     /**< open a door or a chest */
-      ACTION_KEY_ACTION,   /**< perform an action */
       ACTION_KEY_LIFT,     /**< lift an objet */
       ACTION_KEY_THROW,    /**< throw an object */
       ACTION_KEY_GRAB,     /**< grab an object */
-      ACTION_KEY_STOP,     /**< stop an action (for example: using an object which consumes magic) */
       ACTION_KEY_SPEAK,    /**< speak with an NPC */
-      ACTION_KEY_CHANGE,   /**< modify an option */
       ACTION_KEY_SWIM,     /**< swim faster */
       ACTION_KEY_NB
     };
@@ -70,10 +65,7 @@ class KeysEffect {
      * @brief What happens when the user presses the Sword key.
      */
     enum SwordKeyEffect {
-      SWORD_KEY_NONE,      /**< nothing happens when the user presses the Sword key */
-      SWORD_KEY_SAVE,      /**< save the game */
-      SWORD_KEY_RETURN,    /**< exit a submenu */
-      SWORD_KEY_VALIDATE,  /**< validate a choice in the save game dialog */
+      SWORD_KEY_NONE,      /**< nothing happens when the user presses the Attack key */
       SWORD_KEY_SKIP,      /**< skip a message in a dialog */
       SWORD_KEY_SWORD,     /**< swing the sword (this is the case most of the time) */
       SWORD_KEY_NB
@@ -81,6 +73,7 @@ class KeysEffect {
 
     /**
      * @brief What happens when the user presses the Pause key.
+     * TODO these values are not used but they should be.
      */
     enum PauseKeyEffect {
       PAUSE_KEY_NONE,      /**< nothing happens when the user presses the Pause key */

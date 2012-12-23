@@ -21,19 +21,14 @@
  */
 const std::string KeysEffect::action_key_effect_names[] = {
   "",
-  "validate",
   "next",
-  "info",
   "return",
   "look",
   "open",
-  "action",
   "lift",
   "throw",
   "grab",
-  "stop",
   "speak",
-  "change",
   "swim",
   ""  // Sentinel.
 };
@@ -43,9 +38,6 @@ const std::string KeysEffect::action_key_effect_names[] = {
  */
 const std::string KeysEffect::sword_key_effect_names[] = {
   "",
-  "save",
-  "return",
-  "validate",
   "skip",
   "sword",
   ""  // Sentinel.

@@ -13,7 +13,8 @@ function game:initialize_hud()
   local item_icon_builder = require("hud/item_icon")
   local action_icon_builder = require("hud/action_icon")
 
-  self.hud = {  -- Array for the hud elements and table for other hud info.
+  self.hud = {  -- Array for the hud elements, table for other hud info.
+    showing_dialog = false,
     top_left_opacity = 255,
   }
 
@@ -69,8 +70,8 @@ end
 
 function game:check_hud()
 
-  -- If the hero is below the top-left icons, make them semi-transparent.
   if self:get_map() ~= nil then
+    -- If the hero is below the top-left icons, make them semi-transparent.
     local hero = self:get_map():get_entity("hero")
     local x, y = hero:get_position()
     local opacity = nil
@@ -94,6 +95,19 @@ function game:check_hud()
       self.hud.pause_icon.surface:set_opacity(opacity)
       self.hud.attack_icon.surface:set_opacity(opacity)
       self.hud.action_icon.surface:set_opacity(opacity)
+    end
+
+    -- During a dialog, move the action icon and the sword icon.
+    if not self.hud.showing_dialog and
+        self:is_showing_dialog() then
+      self.hud.showing_dialog = true
+      self.hud.action_icon:set_dst_position(0, 33)
+      self.hud.attack_icon:set_dst_position(0, 7)
+    elseif self.hud.showing_dialog and
+        not self:is_showing_dialog() then
+      self.hud.showing_dialog = false
+      self.hud.action_icon:set_dst_position(26, 51)
+      self.hud.attack_icon:set_dst_position(13, 29)
     end
   end
 

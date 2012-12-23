@@ -79,16 +79,18 @@ end
 
 function pause_icon:on_draw(dst_surface)
 
-  local x, y = self.dst_x, self.dst_y
-  local width, height = dst_surface:get_size()
-  if x < 0 then
-    x = width + x
-  end
-  if y < 0 then
-    y = height + y
-  end
+  if not self.game:is_showing_dialog() then
+    local x, y = self.dst_x, self.dst_y
+    local width, height = dst_surface:get_size()
+    if x < 0 then
+      x = width + x
+    end
+    if y < 0 then
+      y = height + y
+    end
 
-  self.surface:draw(dst_surface, x, y)
+    self.surface:draw(dst_surface, x, y)
+  end
 end
 
 return pause_icon

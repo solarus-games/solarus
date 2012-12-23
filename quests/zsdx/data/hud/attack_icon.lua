@@ -46,23 +46,23 @@ end
 function attack_icon:create_icon_img()
 
   local y
-  if self.effect_displayed ~= nil then
-    if self.effect_displayed == "sword" then
-      -- Create an icon with the current sword.
-      y = 96 + 24 * self.sword_displayed
-    else
-      -- Create an icon with the name of the current effect.
-      local effects_y = {
-        ["save"] = 24,
-        ["return"] = 48,
-        ["validate"] = 72,
-        ["skip"] = 96,
-      }
-      y = effects_y[self.effect_displayed]
-    end
-
-    self.current_icon_img = sol.surface.create(self.icons_img, 0, y, 72, 24)
+  if self.effect_displayed == nil then
+    y = 0
+  elseif self.effect_displayed == "sword" then
+    -- Create an icon with the current sword.
+    y = 96 + 24 * self.sword_displayed
+  else
+    -- Create an icon with the name of the current effect.
+    local effects_y = {
+      ["save"] = 24,
+      ["return"] = 48,
+      ["validate"] = 72,
+      ["skip"] = 96,
+    }
+    y = effects_y[self.effect_displayed]
   end
+
+  self.current_icon_img = sol.surface.create(self.icons_img, 0, y, 72, 24)
 end
 
 function attack_icon:check()

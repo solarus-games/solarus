@@ -993,6 +993,7 @@ function savegame_menu:set_initial_values(savegame)
   savegame:set_max_life(12)
   savegame:set_life(savegame:get_max_life())
   savegame:get_item("tunic"):set_variant(1)
+  savegame:set_ability("tunic", 1)
   savegame:get_item("rupee_bag"):set_variant(1)
 end
 

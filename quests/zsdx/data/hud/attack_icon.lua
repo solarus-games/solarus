@@ -24,6 +24,7 @@ function attack_icon:initialize(game)
   self.is_flipping = false
   self.effect_displayed = game:get_command_effect("attack")
   self.sword_displayed = game:get_ability("sword")
+  self.showing_dialog = game:is_showing_dialog()
   self:create_icon_img()
 
   local attack_icon = self
@@ -46,23 +47,26 @@ end
 function attack_icon:create_icon_img()
 
   local y
-  if self.effect_displayed == nil then
-    y = 0
-  elseif self.effect_displayed == "sword" then
-    -- Create an icon with the current sword.
-    y = 96 + 24 * self.sword_displayed
-  else
-    -- Create an icon with the name of the current effect.
-    local effects_indexes = {
-      ["save"] = 1,
-      ["return"] = 2,
-      ["validate"] = 3,
-      ["skip"] = 4,
-    }
-    y = 24 * effects_indexes[self.effect_displayed]
-  end
+  if self.effect_displayed ~= nil or not self.game:is_showing_dialog() then
+    if self.effect_displayed == nil then
+      -- Show an empty icon.
+      y = 0
+    elseif self.effect_displayed == "sword" then
+      -- Create an icon with the current sword.
+      y = 96 + 24 * self.sword_displayed
+    elseif self.effect_displayed ~= nil then
+      -- Create an icon with the name of the current effect.
+      local effects_indexes = {
+        ["save"] = 1,
+        ["return"] = 2,
+        ["validate"] = 3,
+        ["skip"] = 4,
+      }
+      y = 24 * effects_indexes[self.effect_displayed]
+    end
 
-  self.current_icon_img = sol.surface.create(self.icons_img, 0, y, 72, 24)
+    self.current_icon_img = sol.surface.create(self.icons_img, 0, y, 72, 24)
+  end
 end
 
 function attack_icon:check()
@@ -72,13 +76,25 @@ function attack_icon:check()
   if not self.flipping then
     local effect = self.game:get_command_effect("attack")
     local sword = self.game:get_ability("sword")
+    local showing_dialog = self.game:is_showing_dialog()
     if effect ~= self.effect_displayed
-        or sword ~= self.sword_displayed then
+        or sword ~= self.sword_displayed
+        or showing_dialog ~= self.showing_dialog then
+
+      if self.effect_displayed ~= nil then
+        if effect == nil and self.game:is_showing_dialog() then
+          self.icon_flip_sprite:set_animation("disappearing")
+        else
+          self.icon_flip_sprite:set_animation("flip")
+        end
+      else
+        self.icon_flip_sprite:set_animation("appearing")
+      end
       self.effect_displayed = effect
       self.sword_displayed = sword
+      self.showing_dialog = showing_dialog
       self.current_icon_img = nil
       self.is_flipping = true
-      self.icon_flip_sprite:set_frame(0)
       need_rebuild = true
     end
   end

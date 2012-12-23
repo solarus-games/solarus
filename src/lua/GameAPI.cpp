@@ -853,8 +853,90 @@ int LuaContext::game_api_get_commands_direction(lua_State* l) {
  * @return Number of values to return to Lua.
  */
 int LuaContext::game_api_get_command_effect(lua_State* l) {
-  // TODO
-  return 0;
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+
+  Game* game = savegame.get_game();
+  if (game == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+
+    std::string effect_name;
+    switch (command) {
+
+      case GameCommands::ACTION:
+      {
+        KeysEffect::ActionKeyEffect effect = game->get_keys_effect().get_action_key_effect();
+        effect_name = KeysEffect::get_action_key_effect_name(effect);
+        break;
+      }
+
+      case GameCommands::ATTACK:
+      {
+        KeysEffect::SwordKeyEffect effect = game->get_keys_effect().get_sword_key_effect();
+        effect_name = KeysEffect::get_sword_key_effect_name(effect);
+        break;
+      }
+
+      case GameCommands::ITEM_1:
+      {
+        effect_name = game->is_suspended() ? "" : "use_item_1";
+        break;
+      }
+
+      case GameCommands::ITEM_2:
+      {
+        effect_name = game->is_suspended() ? "" : "use_item_2";
+        break;
+      }
+
+      case GameCommands::PAUSE:
+      {
+        KeysEffect::PauseKeyEffect effect = game->get_keys_effect().get_pause_key_effect();
+        effect_name = KeysEffect::get_pause_key_effect_name(effect);
+        break;
+      }
+
+      case GameCommands::RIGHT:
+      {
+        effect_name = game->is_suspended() ? "" : "move_right";
+        break;
+      }
+
+      case GameCommands::UP:
+      {
+        effect_name = game->is_suspended() ? "" : "move_up";
+        break;
+      }
+
+      case GameCommands::LEFT:
+      {
+        effect_name = game->is_suspended() ? "" : "move_left";
+        break;
+      }
+
+      case GameCommands::DOWN:
+      {
+        effect_name = game->is_suspended() ? "" : "move_down";
+        break;
+      }
+
+      default:
+        Debug::die(StringConcat() << "Invalid game command: " << command);
+    }
+
+    if (effect_name.empty()) {
+      lua_pushnil(l);
+    }
+    else {
+      push_string(l, effect_name);
+    }
+  }
+
+  return 1;
 }
 
 /**

@@ -50,14 +50,6 @@ SwordIcon::~SwordIcon() {
 }
 
 /**
- * @brief Returns whether the sword icon is visible.
- * @return true if the sword icon is visible.
- */
-bool SwordIcon::is_visible() {
-  return HudElement::is_visible() && keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_HIDDEN;
-}
-
-/**
  * @brief This function is called repeatedly.
  *
  * It checks whether the icon should change.

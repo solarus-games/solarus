@@ -18,6 +18,7 @@
 #define SOLARUS_KEYS_EFFECT_H
 
 #include "Common.h"
+#include <string>
 
 /**
  * @brief Associate to each game key its current effect on the game.
@@ -33,6 +34,9 @@
  * representing those keys.
  *
  * TODO rename to CommandsEffects
+ * TODO make a single enum for all commands
+ * TODO remove effects that are no longer built-in
+ * TODO rename Sword to Attack
  */
 class KeysEffect {
 
@@ -58,20 +62,21 @@ class KeysEffect {
       ACTION_KEY_STOP,     /**< stop an action (for example: using an object which consumes magic) */
       ACTION_KEY_SPEAK,    /**< speak with an NPC */
       ACTION_KEY_CHANGE,   /**< modify an option */
-      ACTION_KEY_SWIM      /**< swim faster */
+      ACTION_KEY_SWIM,     /**< swim faster */
+      ACTION_KEY_NB
     };
 
     /**
      * @brief What happens when the user presses the Sword key.
      */
     enum SwordKeyEffect {
-      SWORD_KEY_HIDDEN   = -1,   /**< nothing happens when the user presses the Sword key and the sword icon is not shown */
-      SWORD_KEY_NONE     = 0,    /**< nothing happens when the user presses the Sword key */
-      SWORD_KEY_SAVE     = 1,    /**< save the game */
-      SWORD_KEY_RETURN   = 2,    /**< exit a submenu */
-      SWORD_KEY_VALIDATE = 3,    /**< validate a choice in the save game dialog */
-      SWORD_KEY_SKIP     = 4,    /**< skip a message in a dialog */
-      SWORD_KEY_SWORD    = 5     /**< swing the sword (this is the case most of the time) */
+      SWORD_KEY_NONE,      /**< nothing happens when the user presses the Sword key */
+      SWORD_KEY_SAVE,      /**< save the game */
+      SWORD_KEY_RETURN,    /**< exit a submenu */
+      SWORD_KEY_VALIDATE,  /**< validate a choice in the save game dialog */
+      SWORD_KEY_SKIP,      /**< skip a message in a dialog */
+      SWORD_KEY_SWORD,     /**< swing the sword (this is the case most of the time) */
+      SWORD_KEY_NB
     };
 
     /**
@@ -80,7 +85,8 @@ class KeysEffect {
     enum PauseKeyEffect {
       PAUSE_KEY_NONE,      /**< nothing happens when the user presses the Pause key */
       PAUSE_KEY_PAUSE,     /**< open the pause menu */
-      PAUSE_KEY_RETURN     /**< close the pause menu */
+      PAUSE_KEY_RETURN,    /**< close the pause menu */
+      PAUSE_KEY_NB
     };
 
   private:
@@ -112,6 +118,10 @@ class KeysEffect {
     void save_action_key_effect();
     void restore_action_key_effect();
     bool is_action_key_acting_on_facing_entity();
+    static const std::string& get_action_key_effect_name(ActionKeyEffect effect);
+    static ActionKeyEffect get_action_key_effect_by_name(const std::string& effect_name);
+
+    static const std::string action_key_effect_names[];
 
     // sword key
 
@@ -121,6 +131,10 @@ class KeysEffect {
     void set_sword_key_enabled(bool enable);
     void save_sword_key_effect();
     void restore_sword_key_effect();
+    static const std::string& get_sword_key_effect_name(SwordKeyEffect effect);
+    static SwordKeyEffect get_sword_key_effect_by_name(const std::string& effect_name);
+
+    static const std::string sword_key_effect_names[];
 
     // pause key
 
@@ -128,6 +142,10 @@ class KeysEffect {
     void set_pause_key_effect(PauseKeyEffect pause_key_effect);
     bool is_pause_key_enabled();
     void set_pause_key_enabled(bool enable);
+    static const std::string& get_pause_key_effect_name(PauseKeyEffect effect);
+    static PauseKeyEffect get_pause_key_effect_by_name(const std::string& effect_name);
+
+    static const std::string pause_key_effect_names[];
 
     // item keys
     bool are_item_keys_enabled();

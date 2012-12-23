@@ -48,7 +48,6 @@ class SwordIcon: public HudElement {
     SwordIcon(Game &game, int x, int y);
     ~SwordIcon();
 
-    bool is_visible();
     void update();
     void rebuild();
 

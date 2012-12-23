@@ -294,7 +294,8 @@ void DialogBox::show_more_lines() {
     keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
   }
   else {
-    keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
+    // TODO hide the attack icon in this case (SWORD_KEY_HIDDEN no longer exists)
+    keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
   }
 
   // hide the bottom arrow
@@ -540,7 +541,8 @@ void DialogBox::update() {
         end_lines_sprite.set_current_animation("last");
       }
 
-      keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
+      // TODO hide the attack icon in this case (SWORD_KEY_HIDDEN no longer exists)
+      keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
       Sound::play("message_end");
     }
   }

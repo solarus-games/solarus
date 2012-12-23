@@ -94,7 +94,9 @@ class Equipment {
     void set_item_assigned(int slot, EquipmentItem* item);
     int get_item_slot(EquipmentItem& item);
 
-    // abilities
+    // built-in abilities
+    // TODO rename abilities: sword -> attack, tunic -> defense, shield -> protection.
+    // TODO make notify_ability_changed
     bool has_ability(const std::string& ability_name, int level = 1);
     int get_ability(const std::string& ability_name);
     void set_ability(const std::string& ability_name, int level);

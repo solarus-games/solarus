@@ -92,6 +92,7 @@ void Hero::TreasureState::update() {
 
     // the treasure's dialog is over: if the treasure was a tunic,
     // a sword or a shield, we have to reload the hero's sprites now
+    // FIXME do this in scripts (item names are no longer hardcoded) and also do it when giving the ability without treasure
     const std::string &item_name = treasure.get_item_name();
     if (item_name == "tunic" || item_name == "sword" || item_name == "shield") {
       hero.rebuild_equipment();

@@ -24,7 +24,6 @@
 #include "GameoverSequence.h"
 #include "DebugKeys.h"
 #include "lua/LuaContext.h"
-#include "menus/PauseMenu.h"
 #include "entities/Hero.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
@@ -44,7 +43,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   main_loop(main_loop),
   savegame(savegame),
   pause_key_available(true),
-  pause_menu(NULL), 
+  paused(false),
   gameover_sequence(NULL),
   resetting(false),
   restarting(false),
@@ -97,7 +96,6 @@ Game::~Game() {
   Music::play(Music::none);
 
   delete transition;
-  delete pause_menu;
   delete gameover_sequence;
   delete keys_effect;
   hero->decrement_refcount();
@@ -240,27 +238,22 @@ void Game::notify_command_pressed(GameCommands::Command command) {
   if (!handled) {
     // The Lua script did not override the command: do the built-in behavior.
 
-    if (!is_suspended()) {
-
-      if (command == GameCommands::PAUSE) {
-        if (can_pause()) {
-          set_paused(true);
-        }
+    if (command == GameCommands::PAUSE) {
+      if (is_paused()) {
+        set_paused(false);
       }
-      else {
-        // when the game is not suspended, all other keys apply to the hero
-        hero->notify_command_pressed(command);
+      else if (can_pause()) {
+        set_paused(true);
       }
+    }
+    else if (!is_suspended()) {
+      // when the game is not suspended, all other keys apply to the hero
+      hero->notify_command_pressed(command);
     }
 
     // is a message being shown?
     else if (is_showing_dialog()) {
       dialog_box.notify_command_pressed(command);
-    }
-
-    // is the game paused?
-    else if (is_paused()) {
-      pause_menu->notify_command_pressed(command);
     }
 
     // is the game over sequence shown?
@@ -312,11 +305,6 @@ void Game::update() {
   get_equipment().update();
   update_keys_effect();
   dialog_box.update();
-
-  // update the pause menu (if the game is paused)
-  if (is_paused()) {
-    pause_menu->update();
-  }
 
   // update the game over sequence (if any)
   if (is_showing_gameover()) {
@@ -495,13 +483,8 @@ void Game::draw(Surface& dst_surface) {
     }
     current_map->get_visible_surface().draw(dst_surface);
 
-    // draw the pause screen if any
-    if (is_paused()) {
-      pause_menu->draw(dst_surface);
-    }
-
     // draw the game over sequence if any
-    else if (is_showing_gameover()) {
+    if (is_showing_gameover()) {
       gameover_sequence->draw(dst_surface);
     }
 
@@ -612,7 +595,7 @@ void Game::change_crystal_state() {
  * @return true if the game is paused
  */
 bool Game::is_paused() {
-  return pause_menu != NULL;
+  return paused;
 }
 
 /**
@@ -670,8 +653,9 @@ DialogBox& Game::get_dialog_box() {
  * @return true if the player is currently allowed to pause the game
  */
 bool Game::can_pause() {
-  return is_pause_key_available()		// see if the map currently allows the pause key
-    && get_equipment().get_life() > 0;	// don't allow to pause the game if the gameover sequence is about to start
+  return !is_suspended()
+      && is_pause_key_available()         // see if the map currently allows the pause key
+      && get_equipment().get_life() > 0;  // don't allow to pause the game if the gameover sequence is about to start
 }
 
 /**
@@ -708,13 +692,11 @@ void Game::set_paused(bool paused) {
 
   if (paused != is_paused()) {
 
+    this->paused = paused;
     if (paused) {
-      pause_menu = new PauseMenu(*this);  // TODO reimplement in Lua
       get_lua_context().game_on_paused(*this);
     }
     else {
-      delete pause_menu;
-      pause_menu = NULL;
       get_lua_context().game_on_unpaused(*this);
     }
   }

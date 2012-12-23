@@ -20,7 +20,6 @@
 #include "Equipment.h"
 #include "DialogBox.h"
 #include "StringResource.h"
-#include "menus/PauseMenu.h"
 #include "entities/Hero.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"

@@ -40,7 +40,7 @@ class Game {
 
     // current game state (elements currently shown)
     bool pause_key_available;  /**< indicates that the player is allowed to use the pause key */
-    PauseMenu* pause_menu;     /**< the current pause menu, or NULL if the game is not paused */
+    bool paused;               /**< indicates that the game is paused */
     GameoverSequence* gameover_sequence; /**< the game over sequence (if currently shown) */
     bool resetting;            /**< true if the program will be reset */
     bool restarting;           /**< true if the game will be restarted */

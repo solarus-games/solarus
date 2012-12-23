@@ -58,12 +58,6 @@ class StringConcat;
 // menus
 class CustomScreen;
 class CustomMenu;
-class PauseMenu;
-class PauseSubmenu;
-class PauseSubmenuInventory;
-class PauseSubmenuMap;
-class PauseSubmenuQuestStatus;
-class PauseSubmenuOptions;
 class StringResource;
 
 // game

@@ -33,8 +33,8 @@ function sol.main:debug_on_key_pressed(key, modifiers)
     console:start()
   elseif sol.main.game ~= nil and not console.enabled then
     local game = sol.main.game
-    local hero
-    if game ~= nil then
+    local hero = nil
+    if game ~= nil and game:get_map() ~= nil then
       hero = game:get_map():get_entity("hero")
     end
 
@@ -69,12 +69,12 @@ function sol.main:debug_on_key_pressed(key, modifiers)
       game:set_ability("shield", math.max(0, game:get_ability("shield") - 1))
     elseif key == "kp 6" then
       game:set_ability("shield", math.min(3, game:get_ability("shield") + 1))
-    elseif key == "g" then
+    elseif key == "g" and hero ~= nil then
       local x, y, layer = hero:get_position()
       if layer ~= 0 then
 	hero:set_position(x, y, layer - 1)
       end
-    elseif key == "t" then
+    elseif key == "t" and hero ~= nil then
       local x, y, layer = hero:get_position()
       if layer ~= 2 then
 	hero:set_position(x, y, layer + 1)

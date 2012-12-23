@@ -154,7 +154,7 @@ class LuaContext {
     );
 
     static int get_positive_index(lua_State* l, int index);
-    void print_stack();
+    static void print_stack(lua_State* l);
     static bool is_valid_lua_identifier(const std::string& name);
 
     // Lua refs.

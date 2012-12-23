@@ -943,8 +943,9 @@ int LuaContext::get_positive_index(lua_State* l, int index) {
 
 /**
  * @brief Prints on a line the content of the Lua stack for debugging purposes.
+ * @param l A Lua state.
  */
-void LuaContext::print_stack() {
+void LuaContext::print_stack(lua_State* l) {
 
   int i;
   int top = lua_gettop(l);

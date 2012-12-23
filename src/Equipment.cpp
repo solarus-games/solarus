@@ -21,6 +21,7 @@
 #include "InventoryItem.h"
 #include "EquipmentItem.h"
 #include "Map.h"
+#include "entities/Hero.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
@@ -576,7 +577,18 @@ int Equipment::get_ability(const std::string& ability_name) {
  * @param level the level of this ability
  */
 void Equipment::set_ability(const std::string& ability_name, int level) {
+
   savegame.set_integer(get_ability_savegame_variable(ability_name), level);
+
+  Game* game = get_game();
+  if (game != NULL) {
+    if (ability_name == "tunic" ||
+        ability_name == "sword" ||
+        ability_name == "shield") {
+      // The hero's sprites depend on these abilities.
+      game->get_hero().rebuild_equipment();
+    }
+  }
 }
 
 /**

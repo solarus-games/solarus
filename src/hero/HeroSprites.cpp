@@ -148,12 +148,16 @@ HeroSprites::~HeroSprites() {
  */
 void HeroSprites::rebuild_equipment() {
 
+  std::string tunic_animation;
+  std::string sword_animation;
+  std::string shield_animation;
   int animation_direction = -1;
 
   // the hero
   if (tunic_sprite != NULL) {
     // save the animation direction
     animation_direction = tunic_sprite->get_current_direction();
+    tunic_animation = tunic_sprite->get_current_animation();
     delete tunic_sprite;
   }
 
@@ -163,6 +167,9 @@ void HeroSprites::rebuild_equipment() {
 
   tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number - 1]);
   tunic_sprite->enable_pixel_collisions();
+  if (!tunic_animation.empty()) {
+    tunic_sprite->set_current_animation(tunic_animation);
+  }
 
   // the hero's shadow
   if (shadow_sprite == NULL) {
@@ -172,6 +179,9 @@ void HeroSprites::rebuild_equipment() {
 
   // the hero's sword
   if (sword_sprite != NULL) {
+    if (sword_sprite->is_animation_started()) {
+      sword_animation = sword_sprite->get_current_animation();
+    }
     delete sword_sprite;
     delete sword_stars_sprite;
     sword_sprite = NULL;
@@ -183,8 +193,13 @@ void HeroSprites::rebuild_equipment() {
   if (sword_number > 0) {
     // the hero has a sword: get the sprite and the sound
     sword_sprite = new Sprite(sword_sprite_ids[sword_number - 1]);
-    sword_sprite->stop_animation();
     sword_sprite->enable_pixel_collisions();
+    if (sword_animation.empty()) {
+      sword_sprite->stop_animation();
+    }
+    else {
+      sword_sprite->set_current_animation(sword_animation);
+    }
 
     sword_sound_id = sword_sound_ids[sword_number - 1];
 
@@ -194,6 +209,9 @@ void HeroSprites::rebuild_equipment() {
 
   // the hero's shield
   if (shield_sprite != NULL) {
+    if (shield_sprite->is_animation_started()) {
+      shield_animation = shield_sprite->get_current_animation();
+    }
     delete shield_sprite;
     shield_sprite = NULL;
   }
@@ -203,6 +221,12 @@ void HeroSprites::rebuild_equipment() {
   if (shield_number > 0) {
     // the hero has a shield
     shield_sprite = new Sprite(shield_sprite_ids[shield_number - 1]);
+    if (shield_animation.empty()) {
+      shield_sprite->stop_animation();
+    }
+    else {
+      shield_sprite->set_current_animation(shield_animation);
+    }
   }
 
   // the trail

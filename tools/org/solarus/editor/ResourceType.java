@@ -12,8 +12,7 @@ public enum ResourceType {
     SOUND(false, "Sound"),
     ITEM(false, "Item"),
     ENEMY(false, "Enemy"),
-    LANGUAGE(false, "Language"),
-    SCREEN(false, "Screen");
+    LANGUAGE(false, "Language");
 
     /**
      * Indicates that the id of elements from this resource type is an integer
@@ -72,7 +71,7 @@ public enum ResourceType {
 
     /**
      * Returns the name of the resource type
-     * This name will be used in the GUI in the ResourceChooser
+     * This name will be used in the GUI in the ResourceChooser.
      * @return the name of the resource type
      */
     public String getName() {

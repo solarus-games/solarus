@@ -206,14 +206,6 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                                 editorWindow.addEditor(fileEditor);
                                 break;
                             }
-
-                            case SCREEN:
-                            {
-                                File f = new File(Project.getScreenScriptFile(element.id));
-                                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
-                                editorWindow.addEditor(fileEditor);
-                                break;
-                            }
                         }
                     }
                 }

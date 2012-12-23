@@ -76,10 +76,18 @@ function action_icon:check()
   if not self.flipping then
     local effect = self.game:get_command_effect("action")
     if effect ~= self.effect_displayed then
+      if self.effect_displayed ~= nil then
+        if effect ~= nil then
+          self.icon_flip_sprite:set_animation("flip")
+        else
+          self.icon_flip_sprite:set_animation("disappearing")
+        end
+      else
+        self.icon_flip_sprite:set_animation("appearing")
+      end
       self.effect_displayed = effect
       self.current_icon_img = nil
       self.is_flipping = true
-      self.icon_flip_sprite:set_frame(0)
       need_rebuild = true
     end
   end

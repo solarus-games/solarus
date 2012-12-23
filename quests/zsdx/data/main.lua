@@ -59,7 +59,7 @@ function sol.main:debug_on_key_pressed(key, modifiers)
       game:set_max_magic(84)
     elseif key == "kp 1" then
       game:set_ability("tunic", math.max(1, game:get_ability("tunic") - 1))
-    elseif key == "kp 3" then
+    elseif key == "kp 4" then
       game:set_ability("tunic", math.min(3, game:get_ability("tunic") + 1))
     elseif key == "kp 2" then
       game:set_ability("sword", math.max(0, game:get_ability("sword") - 1))

@@ -111,7 +111,7 @@ function item_icon:rebuild_surface()
         else
           self.amount_text:set_font("white_digits")
         end
-        self.amount_text:draw(self.surface, 20, 16)
+        self.amount_text:draw(self.surface, 18, 16)
       end
     end
   end

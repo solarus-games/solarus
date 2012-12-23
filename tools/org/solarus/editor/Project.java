@@ -24,7 +24,7 @@ import javax.swing.*;
 import javax.imageio.*;
 
 /**
- * This class contains the information about the ZSDX project currently open.
+ * This class contains the information about the project currently open.
  * Most of the methods are static: they are applied to the current project.
  */
 public class Project {
@@ -283,7 +283,7 @@ public class Project {
      */
     public static File getTilesetFile(String tilesetId) {
 
-        return new File(getTilesetPath() + "/" + tilesetId + ".lua");
+        return new File(getTilesetPath() + "/" + tilesetId + ".dat");
     }
 
     /**
@@ -321,7 +321,7 @@ public class Project {
      */
     public static File getMapScriptFile(String mapId) {
 
-        return new File(getMapPath() + "/" + mapId + ".script.lua");
+        return new File(getMapPath() + "/" + mapId + ".lua");
     }
 
     /**
@@ -331,7 +331,7 @@ public class Project {
      */
     public static File getMapFile(String mapId) {
 
-        return new File(getMapPath() + "/" + mapId + ".lua");
+        return new File(getMapPath() + "/" + mapId + "dat");
     }
 
     /**

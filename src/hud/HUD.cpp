@@ -16,7 +16,6 @@
  */
 #include "hud/HUD.h"
 #include "hud/ActionIcon.h"
-#include "hud/SwordIcon.h"
 #include "Game.h"
 #include "GameCommands.h"
 
@@ -34,7 +33,7 @@ HUD::HUD(Game& game):
   elements[nb_elements++] = NULL;
   elements[nb_elements++] = NULL;
   elements[nb_elements++] = NULL;
-  elements[nb_elements++] = new SwordIcon(game, 10, 29);
+  elements[nb_elements++] = NULL;
   elements[nb_elements++] = NULL;
   elements[nb_elements++] = new ActionIcon(game, 23, 51);
   elements[nb_elements++] = NULL;
@@ -67,10 +66,6 @@ void HUD::update_blinking() {
         index = 7;
         break;
 
-      case GameCommands::ATTACK:
-        index = 5;
-        break;
-
       default:
         break;
     }
@@ -98,7 +93,6 @@ void HUD::update() {
     showing_dialog = true;
 
     // a dialog is shown: hide or move the top-left icons
-    elements[5]->set_position(-11, 17); // sword icon
     elements[7]->set_position(-11, 43); // action icon
   }
   else if (!game.is_showing_dialog()) {
@@ -107,7 +101,6 @@ void HUD::update() {
       showing_dialog = false;
 
       // a message is finished: restore the top-left icons
-      elements[5]->set_position(10, 29); // sword icon
       elements[7]->set_position(23, 51); // action icon
     }
     else {
@@ -116,12 +109,10 @@ void HUD::update() {
       const Rectangle &hero_xy = game.get_hero_xy();
       if (elements[7]->get_opacity() == 255 && !game.is_suspended()
           && hero_xy.get_x() < 88 && hero_xy.get_y() < 80) {
-        elements[5]->set_opacity(96); // sword icon
         elements[7]->set_opacity(96); // action icon
       }
       else if (elements[7]->get_opacity() == 96
           && (hero_xy.get_x() >= 88 || hero_xy.get_y() >= 80 || game.is_suspended())) {
-        elements[5]->set_opacity(255); // sword icon
         elements[7]->set_opacity(255); // action icon
       }
     }

@@ -1,4 +1,4 @@
--- The icon that shows what the pause key does.
+-- The icon that shows what the pause command does.
 
 local pause_icon = {}
 
@@ -25,7 +25,6 @@ function pause_icon:initialize(game)
 
   local pause_icon = self
   self.icon_flip_sprite = sol.sprite.create("hud/pause_icon_flip")
-  self.icon_flip_sprite:set_ignore_suspend(false)
 
   function self.icon_flip_sprite:on_animation_finished()
     if pause_icon.current_icon_img == nil then

@@ -8,6 +8,7 @@ function game:initialize_hud()
   local rupees_builder = require("hud/rupees")
   local small_keys_builder = require("hud/small_keys")
   local floor_builder = require("hud/floor")
+  local attack_icon_builder = require("hud/attack_icon")
   local pause_icon_builder = require("hud/pause_icon")
   local item_icon_builder = require("hud/item_icon")
 
@@ -36,6 +37,9 @@ function game:initialize_hud()
 
   self.hud.item_icon_2 = item_icon_builder:new(self, 2)
   self.hud.item_icon_2:set_dst_position(63, 29)
+
+  self.hud.attack_icon = attack_icon_builder:new(self)
+  self.hud.attack_icon:set_dst_position(13, 29)
 
   self:set_hud_enabled(true)
 

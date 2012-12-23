@@ -45,7 +45,7 @@ QuestProperties::~QuestProperties() {
 void QuestProperties::load() {
 
   // Read the quest properties file.
-  const std::string& file_name = "quest.lua";
+  const std::string& file_name = "quest.dat";
   lua_State* l = lua_open();
   size_t size;
   char* buffer;

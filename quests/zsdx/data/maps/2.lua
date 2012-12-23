@@ -1,1906 +1,405 @@
-properties{
-  x = 1240,
-  y = 2200,
-  width = 464,
-  height = 336,
-  world = "inside_world",
-  tileset = "0",
-  music = "mini_game",
-}
-
-tile{
-  layer = 0,
-  x = 48,
-  y = 64,
-  width = 368,
-  height = 224,
-  pattern = 2,
-}
-
-tile{
-  layer = 0,
-  x = 160,
-  y = 88,
-  width = 48,
-  height = 8,
-  pattern = 18,
-}
-
-tile{
-  layer = 0,
-  x = 176,
-  y = 64,
-  width = 16,
-  height = 24,
-  pattern = 49,
-}
-
-tile{
-  layer = 0,
-  x = 208,
-  y = 32,
-  width = 96,
-  height = 24,
-  pattern = 49,
-}
-
-tile{
-  layer = 0,
-  x = 48,
-  y = 56,
-  width = 112,
-  height = 8,
-  pattern = 18,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 32,
-  width = 80,
-  height = 24,
-  pattern = 49,
-}
-
-tile{
-  layer = 0,
-  x = 376,
-  y = 128,
-  width = 8,
-  height = 112,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 328,
-  y = 128,
-  width = 8,
-  height = 96,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 200,
-  y = 120,
-  width = 128,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 16,
-  y = 32,
-  width = 24,
-  height = 24,
-  pattern = 45,
-}
-
-tile{
-  layer = 0,
-  x = 16,
-  y = 296,
-  width = 24,
-  height = 24,
-  pattern = 47,
-}
-
-tile{
-  layer = 0,
-  x = 16,
-  y = 56,
-  width = 24,
-  height = 240,
-  pattern = 51,
-}
-
-tile{
-  layer = 0,
-  x = 424,
-  y = 296,
-  width = 24,
-  height = 24,
-  pattern = 48,
-}
-
-tile{
-  layer = 0,
-  x = 40,
-  y = 296,
-  width = 384,
-  height = 24,
-  pattern = 52,
-}
-
-tile{
-  layer = 0,
-  x = 424,
-  y = 32,
-  width = 24,
-  height = 24,
-  pattern = 46,
-}
-
-tile{
-  layer = 0,
-  x = 40,
-  y = 32,
-  width = 128,
-  height = 24,
-  pattern = 49,
-}
-
-tile{
-  layer = 0,
-  x = 328,
-  y = 32,
-  width = 24,
-  height = 24,
-  pattern = 45,
-}
-
-tile{
-  layer = 0,
-  x = 184,
-  y = 32,
-  width = 24,
-  height = 24,
-  pattern = 45,
-}
-
-tile{
-  layer = 0,
-  x = 160,
-  y = 32,
-  width = 24,
-  height = 24,
-  pattern = 46,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 32,
-  width = 24,
-  height = 24,
-  pattern = 46,
-}
-
-tile{
-  layer = 0,
-  x = 240,
-  y = 40,
-  width = 32,
-  height = 16,
-  pattern = 108,
-}
-
-tile{
-  layer = 0,
-  x = 160,
-  y = 56,
-  width = 24,
-  height = 16,
-  pattern = 50,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 56,
-  width = 24,
-  height = 16,
-  pattern = 50,
-}
-
-tile{
-  layer = 0,
-  x = 184,
-  y = 56,
-  width = 24,
-  height = 16,
-  pattern = 51,
-}
-
-tile{
-  layer = 0,
-  x = 328,
-  y = 56,
-  width = 24,
-  height = 16,
-  pattern = 51,
-}
-
-tile{
-  layer = 0,
-  x = 40,
-  y = 56,
-  width = 8,
-  height = 8,
-  pattern = 14,
-}
-
-tile{
-  layer = 0,
-  x = 208,
-  y = 56,
-  width = 8,
-  height = 8,
-  pattern = 14,
-}
-
-tile{
-  layer = 0,
-  x = 424,
-  y = 56,
-  width = 24,
-  height = 240,
-  pattern = 50,
-}
-
-tile{
-  layer = 0,
-  x = 416,
-  y = 56,
-  width = 8,
-  height = 8,
-  pattern = 15,
-}
-
-tile{
-  layer = 0,
-  x = 296,
-  y = 56,
-  width = 8,
-  height = 8,
-  pattern = 15,
-}
-
-tile{
-  layer = 0,
-  x = 152,
-  y = 56,
-  width = 8,
-  height = 8,
-  pattern = 15,
-}
-
-tile{
-  layer = 0,
-  x = 40,
-  y = 288,
-  width = 8,
-  height = 8,
-  pattern = 16,
-}
-
-tile{
-  layer = 0,
-  x = 416,
-  y = 288,
-  width = 8,
-  height = 8,
-  pattern = 17,
-}
-
-tile{
-  layer = 0,
-  x = 40,
-  y = 64,
-  width = 8,
-  height = 224,
-  pattern = 20,
-}
-
-tile{
-  layer = 0,
-  x = 208,
-  y = 64,
-  width = 8,
-  height = 32,
-  pattern = 20,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 64,
-  width = 8,
-  height = 32,
-  pattern = 20,
-}
-
-tile{
-  layer = 0,
-  x = 152,
-  y = 64,
-  width = 8,
-  height = 32,
-  pattern = 19,
-}
-
-tile{
-  layer = 0,
-  x = 296,
-  y = 64,
-  width = 8,
-  height = 32,
-  pattern = 19,
-}
-
-tile{
-  layer = 0,
-  x = 416,
-  y = 64,
-  width = 8,
-  height = 224,
-  pattern = 19,
-}
-
-tile{
-  layer = 0,
-  x = 216,
-  y = 56,
-  width = 80,
-  height = 8,
-  pattern = 18,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 56,
-  width = 64,
-  height = 8,
-  pattern = 18,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 88,
-  width = 48,
-  height = 8,
-  pattern = 18,
-}
-
-tile{
-  layer = 0,
-  x = 48,
-  y = 288,
-  width = 368,
-  height = 8,
-  pattern = 21,
-}
-
-tile{
-  layer = 0,
-  x = 160,
-  y = 96,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 160,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 136,
-  y = 96,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 136,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 112,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 112,
-  y = 96,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 88,
-  y = 96,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 88,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 64,
-  y = 96,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 120,
-  y = 120,
-  width = 16,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 64,
-  y = 104,
-  width = 8,
-  height = 16,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 88,
-  y = 104,
-  width = 8,
-  height = 16,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 112,
-  y = 104,
-  width = 8,
-  height = 16,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 136,
-  y = 104,
-  width = 8,
-  height = 16,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 160,
-  y = 104,
-  width = 8,
-  height = 16,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 232,
-  y = 64,
-  width = 64,
-  height = 32,
-  pattern = 172,
-}
-
-tile{
-  layer = 0,
-  x = 16,
-  y = 112,
-  width = 16,
-  height = 16,
-  pattern = 40,
-}
-
-tile{
-  layer = 0,
-  x = 16,
-  y = 160,
-  width = 24,
-  height = 32,
-  pattern = 132,
-}
-
-tile{
-  layer = 0,
-  x = 16,
-  y = 224,
-  width = 16,
-  height = 16,
-  pattern = 40,
-}
-
-tile{
-  layer = 0,
-  x = 424,
-  y = 160,
-  width = 24,
-  height = 32,
-  pattern = 131,
-}
-
-tile{
-  layer = 0,
-  x = 432,
-  y = 112,
-  width = 16,
-  height = 16,
-  pattern = 39,
-}
-
-tile{
-  layer = 0,
-  x = 432,
-  y = 224,
-  width = 16,
-  height = 16,
-  pattern = 39,
-}
-
-tile{
-  layer = 0,
-  x = 104,
-  y = 296,
-  width = 8,
-  height = 16,
-  pattern = 74,
-}
-
-tile{
-  layer = 0,
-  x = 128,
-  y = 296,
-  width = 8,
-  height = 16,
-  pattern = 75,
-}
-
-tile{
-  layer = 0,
-  x = 112,
-  y = 296,
-  width = 16,
-  height = 16,
-  pattern = 77,
-}
-
-tile{
-  layer = 0,
-  x = 104,
-  y = 320,
-  width = 8,
-  height = 16,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 128,
-  y = 320,
-  width = 8,
-  height = 16,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 296,
-  width = 32,
-  height = 24,
-  pattern = 133,
-}
-
-tile{
-  layer = 0,
-  x = 400,
-  y = 96,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 400,
-  y = 256,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 384,
-  y = 272,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 192,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 192,
-  y = 288,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 280,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 280,
-  y = 152,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 328,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 144,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 280,
-  y = 176,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 176,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 376,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 376,
-  y = 152,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 152,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 328,
-  y = 176,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 176,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 328,
-  y = 200,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 200,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 224,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 328,
-  y = 224,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 224,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 200,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 376,
-  y = 200,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 376,
-  y = 240,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 368,
-  y = 248,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 280,
-  y = 248,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 280,
-  y = 240,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 216,
-  y = 240,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 216,
-  y = 264,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 256,
-  y = 264,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 256,
-  y = 272,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 264,
-  y = 272,
-  width = 120,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 224,
-  y = 264,
-  width = 32,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 224,
-  y = 240,
-  width = 56,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 288,
-  y = 248,
-  width = 80,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 288,
-  y = 176,
-  width = 16,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 312,
-  y = 200,
-  width = 16,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 336,
-  y = 224,
-  width = 16,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 360,
-  y = 200,
-  width = 16,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 336,
-  y = 176,
-  width = 16,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 360,
-  y = 152,
-  width = 16,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 376,
-  y = 96,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 376,
-  y = 56,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 376,
-  y = 64,
-  width = 8,
-  height = 32,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 400,
-  y = 104,
-  width = 8,
-  height = 152,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 128,
-  width = 8,
-  height = 24,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 208,
-  width = 8,
-  height = 16,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 152,
-  width = 8,
-  height = 24,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 280,
-  y = 128,
-  width = 8,
-  height = 24,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 280,
-  y = 184,
-  width = 8,
-  height = 56,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 216,
-  y = 248,
-  width = 8,
-  height = 16,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 192,
-  y = 128,
-  width = 8,
-  height = 160,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 112,
-  y = 312,
-  width = 16,
-  height = 32,
-  pattern = 2,
-}
-
-tile{
-  layer = 0,
-  x = 48,
-  y = 96,
-  width = 16,
-  height = 24,
-  pattern = 173,
-}
-
-tile{
-  layer = 0,
-  x = 96,
-  y = 96,
-  width = 16,
-  height = 24,
-  pattern = 173,
-}
-
-tile{
-  layer = 0,
-  x = 144,
-  y = 96,
-  width = 16,
-  height = 24,
-  pattern = 173,
-}
-
-tile{
-  layer = 0,
-  x = 48,
-  y = 120,
-  width = 16,
-  height = 8,
-  pattern = 11,
-}
-
-tile{
-  layer = 0,
-  x = 96,
-  y = 120,
-  width = 16,
-  height = 8,
-  pattern = 11,
-}
-
-tile{
-  layer = 0,
-  x = 144,
-  y = 120,
-  width = 16,
-  height = 8,
-  pattern = 11,
-}
-
-tile{
-  layer = 0,
-  x = 40,
-  y = 96,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 40,
-  y = 104,
-  width = 8,
-  height = 16,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 96,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 64,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 40,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 56,
-  width = 8,
-  height = 8,
-  pattern = 14,
-}
-
-tile{
-  layer = 0,
-  x = 232,
-  y = 96,
-  width = 64,
-  height = 8,
-  pattern = 11,
-}
-
-tile{
-  layer = 0,
-  x = 224,
-  y = 96,
-  width = 8,
-  height = 8,
-  pattern = 6,
-}
-
-tile{
-  layer = 0,
-  x = 224,
-  y = 64,
-  width = 8,
-  height = 32,
-  pattern = 10,
-}
-
-tile{
-  layer = 0,
-  x = 184,
-  y = 64,
-  width = 24,
-  height = 24,
-  pattern = 56,
-}
-
-tile{
-  layer = 0,
-  x = 160,
-  y = 64,
-  width = 24,
-  height = 24,
-  pattern = 55,
-}
-
-tile{
-  layer = 0,
-  x = 320,
-  y = 64,
-  width = 16,
-  height = 24,
-  pattern = 49,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 64,
-  width = 24,
-  height = 24,
-  pattern = 55,
-}
-
-tile{
-  layer = 0,
-  x = 328,
-  y = 64,
-  width = 24,
-  height = 24,
-  pattern = 56,
-}
-
-tile{
-  layer = 0,
-  x = 296,
-  y = 96,
-  width = 8,
-  height = 8,
-  pattern = 7,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 80,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-tile{
-  layer = 0,
-  x = 112,
-  y = 336,
-  width = 16,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 152,
-  y = 88,
-  width = 8,
-  height = 8,
-  pattern = 24,
-}
-
-tile{
-  layer = 0,
-  x = 296,
-  y = 88,
-  width = 8,
-  height = 8,
-  pattern = 24,
-}
-
-tile{
-  layer = 0,
-  x = 208,
-  y = 88,
-  width = 8,
-  height = 8,
-  pattern = 25,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 88,
-  width = 8,
-  height = 8,
-  pattern = 25,
-}
-
-tile{
-  layer = 0,
-  x = 352,
-  y = 88,
-  width = 8,
-  height = 8,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 200,
-  y = 64,
-  width = 8,
-  height = 16,
-  pattern = 259,
-}
-
-tile{
-  layer = 0,
-  x = 208,
-  y = 64,
-  width = 96,
-  height = 16,
-  pattern = 260,
-}
-
-tile{
-  layer = 0,
-  x = 304,
-  y = 64,
-  width = 8,
-  height = 16,
-  pattern = 261,
-}
-
-tile{
-  layer = 0,
-  x = 232,
-  y = 56,
-  width = 64,
-  height = 32,
-  pattern = 258,
-}
-
-tile{
-  layer = 0,
-  x = 400,
-  y = 120,
-  width = 8,
-  height = 8,
-  pattern = 69,
-}
-
-destination{
-  layer = 0,
-  x = 120,
-  y = 309,
-  name = "main_entrance",
-  direction = 1,
-}
-
-teletransporter{
-  layer = 0,
-  x = 112,
-  y = 320,
-  width = 16,
-  height = 16,
-  name = "to_outside",
-  transition = 1,
-  destination_map = "4",
-  destination = "out_rupee_house",
-}
-
-chest{
-  layer = 0,
-  x = 48,
-  y = 80,
-  name = "chest_1",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 96,
-  y = 80,
-  name = "chest_2",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 144,
-  y = 80,
-  name = "chest_3",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-npc{
-  layer = 0,
-  x = 80,
-  y = 85,
-  name = "game_1_man",
-  direction = 3,
-  subtype = "1",
-  sprite = "npc/static_villager11",
-  behavior = "map",
-}
-
-block{
-  layer = 0,
-  x = 240,
-  y = 141,
-  name = "block_3",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 2,
-}
-
-block{
-  layer = 0,
-  x = 208,
-  y = 157,
-  name = "block_2",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 2,
-}
-
-block{
-  layer = 0,
-  x = 240,
-  y = 173,
-  name = "block_4",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 2,
-}
-
-block{
-  layer = 0,
-  x = 272,
-  y = 157,
-  name = "block_5",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 2,
-}
-
-block{
-  layer = 0,
-  x = 272,
-  y = 189,
-  name = "block_6",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 0,
-}
-
-block{
-  layer = 0,
-  x = 256,
-  y = 189,
-  name = "block_7",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 2,
-}
-
-block{
-  layer = 0,
-  x = 256,
-  y = 205,
-  name = "block_8",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 2,
-}
-
-block{
-  layer = 0,
-  x = 208,
-  y = 189,
-  name = "block_9",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 2,
-}
-
-block{
-  layer = 0,
-  x = 224,
-  y = 189,
-  name = "block_10",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 2,
-}
-
-block{
-  layer = 0,
-  x = 224,
-  y = 205,
-  name = "block_11",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 2,
-}
-
-block{
-  layer = 0,
-  x = 208,
-  y = 221,
-  name = "block_12",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 2,
-}
-
-pickable{
-  layer = 0,
-  x = 400,
-  y = 85,
-  treasure_name = "piece_of_heart",
-  treasure_variant = 1,
-  treasure_savegame_variable = "b17",
-}
-
-npc{
-  layer = 0,
-  x = 368,
-  y = 85,
-  name = "game_3_man",
-  direction = 3,
-  subtype = "1",
-  sprite = "npc/static_villager8",
-  behavior = "map",
-}
-
-dynamic_tile{
-  layer = 0,
-  x = 336,
-  y = 120,
-  width = 16,
-  height = 8,
-  name = "game_3_barrier_1",
-  pattern = 70,
-  enabled_at_start = true,
-}
-
-dynamic_tile{
-  layer = 0,
-  x = 360,
-  y = 120,
-  width = 16,
-  height = 8,
-  name = "game_3_barrier_2",
-  pattern = 70,
-  enabled_at_start = true,
-}
-
-dynamic_tile{
-  layer = 0,
-  x = 384,
-  y = 120,
-  width = 16,
-  height = 8,
-  name = "game_3_barrier_3",
-  pattern = 70,
-  enabled_at_start = true,
-}
-
-dynamic_tile{
-  layer = 0,
-  x = 384,
-  y = 96,
-  width = 16,
-  height = 8,
-  name = "game_3_final_barrier",
-  pattern = 70,
-  enabled_at_start = true,
-}
-
-dynamic_tile{
-  layer = 0,
-  x = 280,
-  y = 160,
-  width = 8,
-  height = 16,
-  name = "game_3_middle_barrier",
-  pattern = 71,
-  enabled_at_start = true,
-}
-
-pickable{
-  layer = 0,
-  x = 224,
-  y = 157,
-  treasure_name = "rupee",
-  treasure_variant = 2,
-  treasure_savegame_variable = "b114",
-}
-
-pickable{
-  layer = 0,
-  x = 256,
-  y = 157,
-  treasure_name = "rupee",
-  treasure_variant = 2,
-  treasure_savegame_variable = "b115",
-}
-
-pickable{
-  layer = 0,
-  x = 240,
-  y = 205,
-  treasure_name = "rupee",
-  treasure_variant = 2,
-  treasure_savegame_variable = "b116",
-}
-
-pickable{
-  layer = 0,
-  x = 408,
-  y = 285,
-  treasure_name = "rupee",
-  treasure_variant = 3,
-  treasure_savegame_variable = "b117",
-}
-
-block{
-  layer = 0,
-  x = 240,
-  y = 221,
-  name = "block_13",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 0,
-}
-
-block{
-  layer = 0,
-  x = 272,
-  y = 221,
-  name = "block_14",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 0,
-}
-
-block{
-  layer = 0,
-  x = 240,
-  y = 157,
-  name = "block_15",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 0,
-}
-
-block{
-  layer = 0,
-  x = 256,
-  y = 173,
-  name = "block_16",
-  direction = -1,
-  sprite = "entities/block",
-  pushable = true,
-  pullable = false,
-  maximum_moves = 0,
-}
-
-npc{
-  layer = 0,
-  x = 224,
-  y = 101,
-  name = "game_2_man",
-  direction = 3,
-  subtype = "1",
-  sprite = "npc/static_villager2",
-  behavior = "map",
-}
-
-npc{
-  layer = 0,
-  x = 240,
-  y = 93,
-  name = "slot_machine_left",
-  direction = 3,
-  subtype = "0",
-  sprite = "entities/slot_machine",
-  behavior = "map",
-}
-
-npc{
-  layer = 0,
-  x = 264,
-  y = 93,
-  name = "slot_machine_middle",
-  direction = 3,
-  subtype = "0",
-  sprite = "entities/slot_machine",
-  behavior = "map",
-}
-
-npc{
-  layer = 0,
-  x = 288,
-  y = 93,
-  name = "slot_machine_right",
-  direction = 3,
-  subtype = "0",
-  sprite = "entities/slot_machine",
-  behavior = "map",
-}
-
-sensor{
-  layer = 0,
-  x = 272,
-  y = 173,
-  width = 16,
-  height = 16,
-  name = "game_3_sensor",
-}
-
-tile{
-  layer = 2,
-  x = 64,
-  y = 312,
-  width = 96,
-  height = 8,
-  pattern = 263,
-}
-
-tile{
-  layer = 2,
-  x = 104,
-  y = 312,
-  width = 32,
-  height = 8,
-  pattern = 153,
-}
-
-tile{
-  layer = 2,
-  x = 0,
-  y = 32,
-  width = 16,
-  height = 304,
-  pattern = 170,
-}
-
-tile{
-  layer = 2,
-  x = 448,
-  y = 32,
-  width = 16,
-  height = 304,
-  pattern = 170,
-}
-
-tile{
-  layer = 2,
-  x = 16,
-  y = 320,
-  width = 432,
-  height = 16,
-  pattern = 170,
-}
-
-tile{
-  layer = 2,
-  x = 0,
-  y = 0,
-  width = 464,
-  height = 32,
-  pattern = 170,
-}
-
-tile{
-  layer = 2,
-  x = 72,
-  y = 304,
-  width = 16,
-  height = 16,
-  pattern = 41,
-}
-
-tile{
-  layer = 2,
-  x = 152,
-  y = 304,
-  width = 16,
-  height = 16,
-  pattern = 41,
-}
+local map = ...
+
+-- Rupee house.
+
+-- Initializations made when the map has just been loaded.
+local playing_game_1 = false
+local playing_game_2 = false
+local playing_game_3 = false
+local already_played_game_1 = false
+local game_1_rewards = {5, 20, 50}  -- Possible rupee rewards in game 1.
+local game_2_bet = 0
+local game_2_reward = 0
+local game_2_man_sprite = nil
+local game_2_timer
+local game_2_slots = {
+  [slot_machine_left] =   {initial_frame = 6, initial_delay = 70, current_delay = 0, symbol = -1},
+  [slot_machine_middle] = {initial_frame = 15, initial_delay = 90, current_delay = 0, symbol = -1},
+  [slot_machine_right] =  {initial_frame = 9, initial_delay = 60, current_delay = 0, symbol = -1}
+}  -- The key is also the entity.
+local game_3_timer
+local game_1_question_dialog_finished
+local game_2_question_dialog_finished
+local game_2_choose_bet_dialog_finished
+local game_3_question_dialog_finished
+local open_game_1_chest
+local game_2_timeout
+
+-- Function called when the map starts.
+function map:on_started(destination)
+
+  chest_1:on_empty = open_game_1_chest
+  chest_2:on_empty = open_game_1_chest
+  chest_3:on_empty = open_game_1_chest
+  for npc, v in pairs(game_2_slots) do
+    npc:get_sprite():set_frame(v.initial_frame)
+    npc:on_interaction = function()
+      map:activate_slot_machine(npc)
+    end
+  end
+  game_2_man_sprite = game_2_man:get_sprite()
+end
+
+-- Function called when the player wants to talk to this non-playing character.
+function game_1_man:on_interaction()
+  -- game 1 dialog
+
+  if playing_game_1 then
+    -- the player is already playing: tell him to choose a chest
+    map:start_dialog("rupee_house.game_1.choose_chest")
+  else
+
+    -- see if the player can still play
+    local unauthorized = map:get_game():get_value("b16")
+
+    if unauthorized then
+      -- the player already won much money
+      map:start_dialog("rupee_house.game_1.not_allowed_to_play")
+    else
+      if not already_played_game_1 then
+        -- first time: long dialog with the game rules
+        map:start_dialog("rupee_house.game_1.intro", game_1_question_dialog_finished)
+      else
+        -- quick dialog to play again
+        map:start_dialog("rupee_house.game_1.play_again_question", game_1_question_dialog_finished)
+      end
+    end
+  end
+end
+
+function game_2_man:on_interaction()
+
+  -- game 2 dialog
+
+  if playing_game_2 then
+    -- the player is already playing: tell him to stop the reels
+    map:start_dialog("rupee_house.game_2.playing")
+  else
+    -- dialog with the game rules
+    map:start_dialog("rupee_house.game_2.intro", game_2_question_dialog_finished)
+  end
+end
+
+function game_3_man:on_interaction()
+  -- game 3 dialog
+
+  if playing_game_3 then
+    -- the player is already playing: let him restart the game
+    map:start_dialog("rupee_house.game_3.restart_question", game_3_question_dialog_finished)
+  else
+    -- see if the player can still play
+    local unauthorized = map:get_game():get_value("b17")
+
+    if unauthorized then
+      -- the player already won this game
+      map:start_dialog("rupee_house.game_3.not_allowed_to_play")
+    else
+      -- game rules
+      map:start_dialog("rupee_house.game_3.intro", game_3_question_dialog_finished)
+    end
+  end
+end
+
+function map:activate_slot_machine(npc)
+
+  if playing_game_2 then
+
+    game_2_man_sprite:set_direction(0)
+    local slot = game_2_slots[npc]
+    if slot.symbol == -1 then
+      -- stop this reel
+
+      local sprite = slot.sprite
+      local current_symbol = math.floor(sprite:get_frame() / 3)
+      slot.symbol = (current_symbol + math.random(2)) % 7
+      slot.current_delay = slot.current_delay + 100
+      sprite:set_frame_delay(slot.current_delay)
+
+      -- test code to win every game:
+      -- for k, v in pairs(game_2_slots) do
+      --    v.symbol = slot.symbol
+      --    v.current_delay = slot.current_delay + 100
+      --    v.sprite:set_frame_delay(v.current_delay)
+      -- end
+
+      sol.audio.play_sound("switch")
+      hero:freeze()
+    end
+  else
+    sol.audio.play_sound("wrong")
+    map:start_dialog("rupee_house.pay_first")
+  end
+end
+
+function game_1_question_dialog_finished(answer)
+
+  if dialog_id == "rupee_house.game_1.intro" or
+    dialog_id == "rupee_house.game_1.play_again_question" then
+
+    if answer == 1 then
+      -- the player does not want to play the game
+      map:start_dialog("rupee_house.game_1.not_playing")
+    else
+      -- wants to play game 1
+
+      if map:get_game():get_money() < 20 then
+	-- not enough money
+	sol.audio.play_sound("wrong")
+	map:start_dialog("rupee_house.not_enough_money")
+
+      else
+	-- enough money: reset the 3 chests, pay and start the game
+        chest_1:set_open(false)
+        chest_2:set_open(false)
+        chest_3:set_open(false)
+
+	map:get_game():remove_money(20)
+	map:start_dialog("rupee_house.game_1.good_luck")
+	playing_game_1 = true
+      end
+    end
+  end
+end
+
+function game_2_question_dialog_finished(answer)
+
+  if answer == 1 then
+    -- don't want to play the game
+    map:start_dialog("rupee_house.game_2.not_playing")
+  else
+    -- wants to play game 2
+    map:start_dialog("rupee_house.game_2.choose_bet", game_2_choose_bet_dialog_finished)
+  end
+end
+
+function game_2_choose_bet_dialog_finished(answer)
+
+  if answer == 0 then
+    -- bet 5 rupees
+    game_2_bet = 5
+  else
+    -- bet 20 rupees
+    game_2_bet = 20
+  end
+
+  if map:get_game():get_money() < game_2_bet then
+    -- not enough money
+    sol.audio.play_sound("wrong")
+    map:start_dialog("rupee_house.not_enough_money")
+  else
+    -- enough money: pay and start the game
+    map:get_game():remove_money(game_2_bet)
+    map:start_dialog("rupee_house.game_2.just_paid")
+    playing_game_2 = true
+
+    -- start the slot machine animations
+    for k, v in pairs(game_2_slots) do
+      v.symbol = -1
+      v.current_delay = v.initial_delay
+      v.sprite:set_animation("started")
+      v.sprite:set_frame_delay(v.current_delay)
+      v.sprite:set_frame(v.initial_frame)
+      v.sprite:set_paused(false)
+    end
+  end
+end
+
+-- Called after the game 3 dialog "do you want to play?" or "do you want to try again?".
+function game_3_question_dialog_finished(answer)
+
+  if answer == 1 then
+    -- don't want to play the game
+    map:start_dialog("rupee_house.game_3.not_playing")
+  else
+    -- wants to play game 3
+
+    if map:get_game():get_money() < 10 then
+      -- not enough money
+      sol.audio.play_sound("wrong")
+      map:start_dialog("rupee_house.not_enough_money")
+
+    else
+      -- enough money: reset the game, pay and start the game
+      reset_blocks()
+      game_3_barrier_1:set_enabled(false)
+      game_3_barrier_2:set_enabled(false)
+      game_3_barrier_3:set_enabled(false)
+      game_3_middle_barrier:set_enabled(false)
+      if game_3_timer ~= nil then
+        game_3_timer:stop()
+        game_3_timer = nil
+      end
+
+      map:get_game():remove_money(10)
+      map:start_dialog("rupee_house.game_3.go", function()
+        game_3_timer = sol.timer.start(8000, function()
+          sol.audio.play_sound("door_closed")
+          game_3_middle_barrier:set_enabled(true)
+        end)
+        game_3_timer:set_with_sound(true)
+        game_3_sensor:set_enabled(true)
+      end)
+      playing_game_3 = true
+    end
+  end
+end
+
+function hero:on_obtained_treasure(item_name, variant, savegame_variable)
+  -- stop game 3 when the player finds the piece of heart
+  if item_name == "piece_of_heart" then
+    game_3_final_barrier:set_enabled(false)
+    sol.audio.play_sound("secret")
+    playing_game_3 = false
+  end
+end
+
+-- Function called when the player opens an empty chest (i.e. a chest
+-- whose feature is to call the script) of game 1.
+function open_game_1_chest(chest)
+
+  if not playing_game_1 then
+    -- trying to open a chest but not playing yet
+    map:start_dialog("rupee_house.pay_first") -- the game man is angry
+    chest:set_open(false) -- close the chest again
+    sol.audio.play_sound("wrong")
+    hero:unfreeze() -- restore the control
+  else
+    -- give a random reward
+    local index = math.random(#game_1_rewards)
+    local amount = game_1_rewards[index]
+    if amount == 50 and not already_played_game_1 then
+      -- don't give 50 rupees at the first attempt
+      amount = 5
+    end
+
+    -- give the rupees
+    if (amount == 5) then
+      hero:start_treasure("rupee", 2, -1)
+    elseif (amount == 20) then
+      hero:start_treasure("rupee", 3, -1)
+    elseif (amount == 50) then
+      hero:start_treasure("rupee", 4, -1)
+    end
+
+    if amount == 50 then
+      -- the maximum reward was found: the game will now refuse to let the hero play again
+      map:get_game():set_value("b16", true)
+    end
+
+    playing_game_1 = false
+    already_played_game_1 = true
+  end
+end
+
+-- Function called when a sensor is activated
+function game_3_sensor:on_activated()
+
+  -- stop the timer when the player reaches this point
+  if game_3_timer ~= nil then
+    game_3_timer:stop()
+    game_3_timer = nil
+  end
+  sol.audio.play_sound("secret")
+  self:set_enabled(false)
+end
+
+-- Updates the slot machine
+function map:on_update()
+
+  if playing_game_2 then
+
+    -- stop the reels when necessary
+    local nb_finished = 0
+    for k, v in pairs(game_2_slots) do
+      if v.sprite:is_paused() then
+	nb_finished = nb_finished + 1
+      end
+    end
+
+    for k, v in pairs(game_2_slots) do
+      local frame = v.sprite:get_frame()
+
+      if not v.sprite:is_paused() and frame == v.symbol * 3 then
+	v.sprite:set_paused(true)
+	v.initial_frame = frame
+	nb_finished = nb_finished + 1
+
+	if nb_finished < 3 then
+	  hero:unfreeze()
+	else
+	  playing_game_2 = false
+	  game_2_timer = sol.timer.start(500, game_2_timeout)
+	end
+      end
+    end
+  end
+end
+
+-- This function gives the reward to the player in the slot machine game
+function game_2_timeout()
+
+  -- see if the player has won
+  local i = 1
+  local green_found = false
+  local blue_found = false
+  local red_found = false
+  local symbols = {-1, -1, -1}
+  for k, v in pairs(game_2_slots) do
+    symbols[i] = v.symbol
+
+    if symbols[i] == 0 then
+      green_found = true
+    elseif symbols[i] == 2 then
+      blue_found = true
+    elseif symbols[i] == 4 then
+      red_found = true
+    end
+
+    i = i + 1
+  end
+
+  if symbols[1] == symbols[2] and symbols[2] == symbols[3] then
+    -- three identical symbols
+
+    if symbols[1] == 0 then -- 3 green rupees
+      map:start_dialog("rupee_house.game_2.reward.green_rupees", game_2_give_reward)
+      game_2_reward = 5 * game_2_bet
+    elseif symbols[1] == 2 then -- 3 blue rupees
+      map:start_dialog("rupee_house.game_2.reward.blue_rupees", game_2_give_reward)
+      game_2_reward = 7 * game_2_bet
+    elseif symbols[1] == 4 then -- 3 red rupees
+      map:start_dialog("rupee_house.game_2.reward.red_rupees", game_2_give_reward)
+      game_2_reward = 10 * game_2_bet
+    elseif symbols[1] == 5 then -- 3 Yoshi
+      map:start_dialog("rupee_house.game_2.reward.yoshi", game_2_give_reward)
+      game_2_reward = 20 * game_2_bet
+    else -- other symbol
+      map:start_dialog("rupee_house.game_2.reward.same_any", game_2_give_reward)
+      game_2_reward = 4 * game_2_bet
+    end
+
+  elseif green_found and blue_found and red_found then
+    -- three rupees with different colors
+    map:start_dialog("rupee_house.game_2.reward.different_rupees", game_2_give_reward)
+    game_2_reward = 15 * game_2_bet
+  else
+    map:start_dialog("rupee_house.game_2.reward.none", game_2_question_dialog_finished)
+    game_2_reward = 0
+  end
+
+  if game_2_reward ~= 0 then
+    sol.audio.play_sound("secret")
+  else
+    sol.audio.play_sound("wrong")
+  end
+
+  hero:unfreeze()
+end
+
+function map:reset_blocks()
+
+  for i = 3, 16 do
+    self:get_entity("block_" .. i):reset()
+  end
+end
 

@@ -1,3 +1,29 @@
-320	240	-1	-100	0	0	-1	6	credits.spc
-1	0	8	13	start_position	3	_none
-8	1	8	13	interactive_entity	3	0	entities/the_end	map
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  world = "inside_world",
+  tileset = "6",
+  music = "credits",
+}
+
+destination{
+  layer = 0,
+  x = 8,
+  y = 13,
+  name = "start_position",
+  direction = 3,
+}
+
+npc{
+  layer = 1,
+  x = 8,
+  y = 13,
+  name = "interactive_entity",
+  direction = 3,
+  subtype = "0",
+  sprite = "entities/the_end",
+  behavior = "map",
+}
+

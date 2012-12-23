@@ -1,491 +1,96 @@
-properties{
-  x = 1792,
-  y = 1640,
-  width = 320,
-  height = 240,
-  world = "inside_world",
-  tileset = "3",
-  music = "mini_game",
+local map = ...
+-- Chests game cave
+
+local playing = false
+local chest_open = nil
+local rewards = {
+  {item_name = "wooden_key", variant = 1, savegame_variable = "b180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "b180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "b180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "b180"},
+  {item_name = "wooden_key", variant = 1, savegame_variable = "b180"},
+  {item_name = "piece_of_heart", variant = 1, savegame_variable = "b181"},
+  {item_name = "piece_of_heart", variant = 1, savegame_variable = "b181"},
+  {item_name = "piece_of_heart", variant = 1, savegame_variable = "b181"},
+  {item_name = "heart", variant = 1},
+  {item_name = "rupee", variant = 1},
+  {item_name = "rupee", variant = 3},
+  {item_name = "rupee", variant = 4},
+  {item_name = "bomb", variant = 3},
+  {item_name = "arrow", variant = 3},
+  {item_name = "magic_flask", variant = 2},
+  {item_name = "croissant", variant = 1},
 }
 
-tile{
-  layer = 0,
-  x = 104,
-  y = 64,
-  width = 112,
-  height = 8,
-  pattern = 216,
-}
+function map:on_started(destination)
 
-tile{
-  layer = 0,
-  x = 80,
-  y = 40,
-  width = 24,
-  height = 24,
-  pattern = 57,
-}
+  if not map:get_game():is_dungeon_finished(6) then
+    mini_game_npc:remove()
+  end
+end
 
-tile{
-  layer = 0,
-  x = 104,
-  y = 40,
-  width = 112,
-  height = 24,
-  pattern = 224,
-}
+local function play_question_dialog_finished(answer)
 
-tile{
-  layer = 0,
-  x = 216,
-  y = 40,
-  width = 24,
-  height = 24,
-  pattern = 58,
-}
+  if answer == 0 then
+    if map:get_game():get_money() >= 30 then
+      map:get_game():remove_money(30)
+      playing = true
 
-tile{
-  layer = 0,
-  x = 80,
-  y = 64,
-  width = 24,
-  height = 112,
-  pattern = 227,
-}
+      if chest_open ~= nil then
+        chest_open:set_open(false)
+      end
 
-tile{
-  layer = 0,
-  x = 104,
-  y = 176,
-  width = 112,
-  height = 24,
-  pattern = 226,
-}
+      if not map:get_game():get_value("b180") then
+        map:start_dialog("chests_game_cave.start_game_wooden_key")
+      elseif not map:get_game():get_value("b181") then
+        map:start_dialog("chests_game_cave.start_game_piece_of_heart")
+      else
+        map:start_dialog("chests_game_cave.start_game")
+      end
+    else
+      sol.audio.play_sound("wrong")
+      map:start_dialog("chests_game_cave.not_enough_money")
+    end
+  end
+end
 
-tile{
-  layer = 0,
-  x = 216,
-  y = 176,
-  width = 24,
-  height = 24,
-  pattern = 60,
-}
+function mini_game_npc:on_interaction()
 
-tile{
-  layer = 0,
-  x = 80,
-  y = 176,
-  width = 24,
-  height = 24,
-  pattern = 59,
-}
+  if playing then
+    map:start_dialog("chests_game_cave.already_playing")
+  elseif not map:get_game():get_value("b160") then
+    -- first time
+    map:start_dialog("chests_game_cave.first_time", play_question_dialog_finished)
+    map:get_game():set_value("b160", true)
+  else
+    map:start_dialog("chests_game_cave.not_first_time", play_question_dialog_finished)
+  end
+end
 
-tile{
-  layer = 0,
-  x = 216,
-  y = 64,
-  width = 24,
-  height = 112,
-  pattern = 225,
-}
+local function chest_empty(chest)
 
-tile{
-  layer = 0,
-  x = 208,
-  y = 64,
-  width = 8,
-  height = 112,
-  pattern = 219,
-}
+  hero:unfreeze()
+  if playing then
 
-tile{
-  layer = 0,
-  x = 104,
-  y = 168,
-  width = 112,
-  height = 8,
-  pattern = 217,
-}
+    chest_open = chest
 
-tile{
-  layer = 0,
-  x = 104,
-  y = 64,
-  width = 8,
-  height = 112,
-  pattern = 218,
-}
+    -- choose a random treasure
+    local index = math.random(#rewards)
 
-tile{
-  layer = 0,
-  x = 112,
-  y = 72,
-  width = 96,
-  height = 96,
-  pattern = 3,
-}
+    while rewards[index].savegame_variable ~= nil and
+        map:get_game():get_value("b" .. rewards[index].savegame_variable) do
+      -- don't give a saved reward twice (wooden key or piece of heart)
+      index = math.random(#rewards)
+    end
 
-tile{
-  layer = 0,
-  x = 144,
-  y = 176,
-  width = 8,
-  height = 16,
-  pattern = 288,
-}
-
-tile{
-  layer = 0,
-  x = 168,
-  y = 176,
-  width = 8,
-  height = 16,
-  pattern = 287,
-}
-
-tile{
-  layer = 0,
-  x = 152,
-  y = 176,
-  width = 16,
-  height = 16,
-  pattern = 294,
-}
-
-tile{
-  layer = 0,
-  x = 152,
-  y = 192,
-  width = 16,
-  height = 32,
-  pattern = 3,
-}
-
-tile{
-  layer = 0,
-  x = 152,
-  y = 224,
-  width = 16,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 0,
-  x = 144,
-  y = 200,
-  width = 8,
-  height = 24,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 168,
-  y = 200,
-  width = 8,
-  height = 24,
-  pattern = 71,
-}
-
-tile{
-  layer = 0,
-  x = 208,
-  y = 64,
-  width = 8,
-  height = 8,
-  pattern = 213,
-}
-
-tile{
-  layer = 0,
-  x = 104,
-  y = 64,
-  width = 8,
-  height = 8,
-  pattern = 212,
-}
-
-tile{
-  layer = 0,
-  x = 104,
-  y = 168,
-  width = 8,
-  height = 8,
-  pattern = 214,
-}
-
-tile{
-  layer = 0,
-  x = 208,
-  y = 168,
-  width = 8,
-  height = 8,
-  pattern = 215,
-}
-
-chest{
-  layer = 0,
-  x = 104,
-  y = 80,
-  name = "chest_1",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 136,
-  y = 80,
-  name = "chest_2",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 168,
-  y = 80,
-  name = "chest_3",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 200,
-  y = 80,
-  name = "chest_4",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 104,
-  y = 112,
-  name = "chest_5",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 136,
-  y = 112,
-  name = "chest_6",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 168,
-  y = 112,
-  name = "chest_7",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 200,
-  y = 112,
-  name = "chest_8",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 104,
-  y = 144,
-  name = "chest_9",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 136,
-  y = 144,
-  name = "chest_10",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 168,
-  y = 144,
-  name = "chest_11",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-chest{
-  layer = 0,
-  x = 200,
-  y = 144,
-  name = "chest_12",
-  is_big_chest = false,
-  treasure_variant = 1,
-}
-
-npc{
-  layer = 0,
-  x = 160,
-  y = 109,
-  name = "mini_game_npc",
-  direction = 3,
-  subtype = "1",
-  sprite = "npc/static_villager7",
-  behavior = "map",
-}
-
-destination{
-  layer = 0,
-  x = 160,
-  y = 189,
-  name = "from_outside",
-  direction = 1,
-}
-
-teletransporter{
-  layer = 0,
-  x = 152,
-  y = 208,
-  width = 16,
-  height = 16,
-  name = "teletransporter",
-  transition = 1,
-  destination_map = "4",
-  destination = "from_chest_game_cave",
-}
-
-tile{
-  layer = 1,
-  x = 120,
-  y = 192,
-  width = 96,
-  height = 8,
-  pattern = 414,
-}
-
-tile{
-  layer = 1,
-  x = 56,
-  y = 16,
-  width = 24,
-  height = 24,
-  pattern = 45,
-}
-
-tile{
-  layer = 1,
-  x = 80,
-  y = 16,
-  width = 160,
-  height = 24,
-  pattern = 49,
-}
-
-tile{
-  layer = 1,
-  x = 240,
-  y = 16,
-  width = 24,
-  height = 24,
-  pattern = 46,
-}
-
-tile{
-  layer = 1,
-  x = 80,
-  y = 200,
-  width = 160,
-  height = 24,
-  pattern = 52,
-}
-
-tile{
-  layer = 1,
-  x = 56,
-  y = 40,
-  width = 24,
-  height = 160,
-  pattern = 51,
-}
-
-tile{
-  layer = 1,
-  x = 56,
-  y = 200,
-  width = 24,
-  height = 24,
-  pattern = 47,
-}
-
-tile{
-  layer = 1,
-  x = 240,
-  y = 200,
-  width = 24,
-  height = 24,
-  pattern = 48,
-}
-
-tile{
-  layer = 1,
-  x = 240,
-  y = 40,
-  width = 24,
-  height = 160,
-  pattern = 50,
-}
-
-tile{
-  layer = 1,
-  x = 144,
-  y = 192,
-  width = 32,
-  height = 8,
-  pattern = 312,
-}
-
-tile{
-  layer = 2,
-  x = 0,
-  y = 0,
-  width = 320,
-  height = 16,
-  pattern = 170,
-}
-
-tile{
-  layer = 2,
-  x = 0,
-  y = 16,
-  width = 56,
-  height = 208,
-  pattern = 170,
-}
-
-tile{
-  layer = 2,
-  x = 264,
-  y = 16,
-  width = 56,
-  height = 208,
-  pattern = 170,
-}
-
-tile{
-  layer = 2,
-  x = 0,
-  y = 224,
-  width = 320,
-  height = 16,
-  pattern = 170,
-}
+    hero:start_treasure(rewards[index].item_name, rewards[index].variant, rewards[index].savegame_variable)
+    playing = false
+  else
+    sol.audio.play_sound("wrong")
+    chest:set_open(false)
+  end
+end
+for _, chest in ipairs(map:get_entities("chest_")) do
+  chest:on_empty = chest_empty
+end
 

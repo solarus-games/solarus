@@ -35,7 +35,7 @@ void TextSurface::initialize() {
   TTF_Init();
 
   // Load the list of available fonts.
-  static const std::string file_name = "text/fonts.lua";
+  static const std::string file_name = "text/fonts.dat";
 
   lua_State* l = lua_open();
   size_t size;

@@ -166,7 +166,7 @@ int LuaContext::main_api_set_quest_write_dir(lua_State* l) {
  */
 int LuaContext::main_api_load_settings(lua_State* l) {
 
-  std::string file_name = luaL_optstring(l, 1, "settings.lua");
+  std::string file_name = luaL_optstring(l, 1, "settings.dat");
 
   bool success = Settings::load(file_name);
 

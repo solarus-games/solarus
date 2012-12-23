@@ -1,121 +1,1078 @@
-320	472	-1	-100	0	0	-1	3	cave.spc
-0	0	40	344	24	64	227
-0	0	48	344	208	64	3
-0	0	40	408	24	24	59
-0	0	64	408	192	24	226
-0	0	256	408	24	24	60
-0	0	256	344	24	64	225
-0	0	40	344	24	64	227
-0	0	64	400	8	8	214
-0	0	72	400	176	8	217
-0	0	248	352	8	48	219
-0	0	248	344	8	8	213
-0	0	248	400	8	8	215
-0	0	64	344	8	8	212
-0	0	64	352	8	48	218
-0	0	72	344	176	8	216
-0	0	40	320	24	24	57
-0	0	64	320	192	24	224
-0	0	256	320	24	24	58
-0	0	144	328	8	24	362
-0	0	168	328	8	24	362
-0	0	144	408	8	16	288
-0	0	168	408	8	16	287
-0	0	152	328	16	24	359
-0	0	152	408	16	16	351
-2	0	152	408	16	16	teletransporter	_none	_none	1	2	from_piece_of_heart_cave
-1	0	160	421	from_outside	1	_none
-19	0	152	328	stairs	1	4
-19	0	152	408	stairs_2	3	2
-0	1	48	176	240	144	2
-0	1	232	272	48	32	340
-0	1	264	272	16	32	323
-0	1	232	224	48	32	340
-0	1	264	224	16	32	323
-0	1	48	48	224	48	2
-0	1	40	96	240	80	340
-0	1	264	96	16	80	323
-0	1	112	424	96	8	414
-0	1	232	256	24	32	340
-0	1	144	320	32	8	363
-0	1	272	48	8	48	182
-0	1	40	48	8	48	181
-0	1	16	16	24	24	45
-0	1	40	16	240	24	49
-0	1	280	16	24	24	46
-0	1	40	312	8	8	16
-0	1	40	40	8	8	14
-0	1	272	312	8	8	17
-0	1	272	40	8	8	15
-0	1	48	40	224	8	179
-0	1	40	40	8	8	14
-0	1	272	176	8	48	182
-0	1	40	176	8	144	181
-0	1	280	432	24	24	48
-0	1	40	432	240	24	52
-0	1	16	432	24	24	47
-0	1	16	40	24	400	51
-0	1	40	96	16	80	321
-0	1	272	312	8	8	69
-0	1	248	312	24	8	70
-0	1	240	312	8	8	69
-0	1	72	312	8	8	69
-0	1	48	312	24	8	70
-0	1	40	312	8	8	69
-0	1	232	224	8	8	328
-0	1	240	224	40	8	332
-0	1	232	232	8	64	333
-0	1	232	296	8	8	329
-0	1	240	296	40	8	334
-0	1	248	256	8	16	335
-0	1	248	248	8	8	336
-0	1	256	248	24	8	334
-0	1	248	272	8	8	339
-0	1	256	272	24	8	332
-0	1	280	40	24	400	50
-0	1	144	424	32	8	312
-0	1	40	96	240	8	332
-0	1	40	168	240	8	334
-0	1	272	256	8	16	182
-3	1	104	85	piece_of_heart	1	-1
-3	1	120	85	piece_of_heart	1	-1
-3	1	136	85	piece_of_heart	1	-1
-3	1	152	85	piece_of_heart	1	-1
-3	1	168	85	piece_of_heart	1	-1
-3	1	184	85	piece_of_heart	1	-1
-3	1	184	69	piece_of_heart	1	-1
-3	1	168	69	piece_of_heart	1	-1
-3	1	152	69	piece_of_heart	1	-1
-3	1	136	69	piece_of_heart	1	-1
-3	1	200	85	piece_of_heart	1	-1
-3	1	216	85	piece_of_heart	1	-1
-3	1	232	85	piece_of_heart	1	-1
-3	1	232	69	piece_of_heart	1	-1
-3	1	216	69	piece_of_heart	1	-1
-3	1	200	69	piece_of_heart	1	-1
-3	1	56	85	piece_of_heart	1	-1
-3	1	72	85	piece_of_heart	1	-1
-3	1	88	85	piece_of_heart	1	-1
-3	1	88	69	piece_of_heart	1	-1
-3	1	72	69	piece_of_heart	1	-1
-3	1	56	69	piece_of_heart	1	-1
-3	1	104	69	piece_of_heart	1	-1
-3	1	120	69	piece_of_heart	1	-1
-3	1	248	69	piece_of_heart	1	-1
-3	1	248	85	piece_of_heart	1	-1
-3	1	264	69	piece_of_heart	1	-1
-3	1	264	85	piece_of_heart	1	-1
-12	1	48	80	224	16	custom_obstacle	1	1	1	1
-8	1	64	197	sign	3	0	entities/sign	dialog#caverne_fragments.sign
-6	1	176	320	64	8	jump_sensor	6	40
-6	1	80	320	64	8	jump_sensor_2	6	40
-15	1	48	208	224	16	1
-14	1	264	269	crystal_switch
-12	1	168	320	8	32	custom_obstacle_3	1	1	1	1
-12	1	144	320	8	32	custom_obstacle_4	1	1	1	1
-14	1	264	197	crystal_switch_2
-0	2	0	456	320	16	170
-0	2	0	0	16	456	170
-0	2	304	16	16	440	170
-0	2	16	0	304	16	170
-0	2	152	424	16	8	347
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 472,
+  world = "inside_world",
+  tileset = "3",
+  music = "cave",
+}
+
+tile{
+  layer = 0,
+  x = 40,
+  y = 344,
+  width = 24,
+  height = 64,
+  pattern = 227,
+}
+
+tile{
+  layer = 0,
+  x = 48,
+  y = 344,
+  width = 208,
+  height = 64,
+  pattern = 3,
+}
+
+tile{
+  layer = 0,
+  x = 40,
+  y = 408,
+  width = 24,
+  height = 24,
+  pattern = 59,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 408,
+  width = 192,
+  height = 24,
+  pattern = 226,
+}
+
+tile{
+  layer = 0,
+  x = 256,
+  y = 408,
+  width = 24,
+  height = 24,
+  pattern = 60,
+}
+
+tile{
+  layer = 0,
+  x = 256,
+  y = 344,
+  width = 24,
+  height = 64,
+  pattern = 225,
+}
+
+tile{
+  layer = 0,
+  x = 40,
+  y = 344,
+  width = 24,
+  height = 64,
+  pattern = 227,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 400,
+  width = 8,
+  height = 8,
+  pattern = 214,
+}
+
+tile{
+  layer = 0,
+  x = 72,
+  y = 400,
+  width = 176,
+  height = 8,
+  pattern = 217,
+}
+
+tile{
+  layer = 0,
+  x = 248,
+  y = 352,
+  width = 8,
+  height = 48,
+  pattern = 219,
+}
+
+tile{
+  layer = 0,
+  x = 248,
+  y = 344,
+  width = 8,
+  height = 8,
+  pattern = 213,
+}
+
+tile{
+  layer = 0,
+  x = 248,
+  y = 400,
+  width = 8,
+  height = 8,
+  pattern = 215,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 344,
+  width = 8,
+  height = 8,
+  pattern = 212,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 352,
+  width = 8,
+  height = 48,
+  pattern = 218,
+}
+
+tile{
+  layer = 0,
+  x = 72,
+  y = 344,
+  width = 176,
+  height = 8,
+  pattern = 216,
+}
+
+tile{
+  layer = 0,
+  x = 40,
+  y = 320,
+  width = 24,
+  height = 24,
+  pattern = 57,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 320,
+  width = 192,
+  height = 24,
+  pattern = 224,
+}
+
+tile{
+  layer = 0,
+  x = 256,
+  y = 320,
+  width = 24,
+  height = 24,
+  pattern = 58,
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 328,
+  width = 8,
+  height = 24,
+  pattern = 362,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 328,
+  width = 8,
+  height = 24,
+  pattern = 362,
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 408,
+  width = 8,
+  height = 16,
+  pattern = 288,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 408,
+  width = 8,
+  height = 16,
+  pattern = 287,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 328,
+  width = 16,
+  height = 24,
+  pattern = 359,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 408,
+  width = 16,
+  height = 16,
+  pattern = 351,
+}
+
+teletransporter{
+  layer = 0,
+  x = 152,
+  y = 408,
+  width = 16,
+  height = 16,
+  name = "teletransporter",
+  transition = 1,
+  destination_map = "2",
+  destination = "from_piece_of_heart_cave",
+}
+
+destination{
+  layer = 0,
+  x = 160,
+  y = 421,
+  name = "from_outside",
+  direction = 1,
+}
+
+stairs{
+  layer = 0,
+  x = 152,
+  y = 328,
+  name = "stairs",
+  direction = 1,
+  subtype = "4",
+}
+
+stairs{
+  layer = 0,
+  x = 152,
+  y = 408,
+  name = "stairs_2",
+  direction = 3,
+  subtype = "2",
+}
+
+tile{
+  layer = 1,
+  x = 48,
+  y = 176,
+  width = 240,
+  height = 144,
+  pattern = 2,
+}
+
+tile{
+  layer = 1,
+  x = 232,
+  y = 272,
+  width = 48,
+  height = 32,
+  pattern = 340,
+}
+
+tile{
+  layer = 1,
+  x = 264,
+  y = 272,
+  width = 16,
+  height = 32,
+  pattern = 323,
+}
+
+tile{
+  layer = 1,
+  x = 232,
+  y = 224,
+  width = 48,
+  height = 32,
+  pattern = 340,
+}
+
+tile{
+  layer = 1,
+  x = 264,
+  y = 224,
+  width = 16,
+  height = 32,
+  pattern = 323,
+}
+
+tile{
+  layer = 1,
+  x = 48,
+  y = 48,
+  width = 224,
+  height = 48,
+  pattern = 2,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 96,
+  width = 240,
+  height = 80,
+  pattern = 340,
+}
+
+tile{
+  layer = 1,
+  x = 264,
+  y = 96,
+  width = 16,
+  height = 80,
+  pattern = 323,
+}
+
+tile{
+  layer = 1,
+  x = 112,
+  y = 424,
+  width = 96,
+  height = 8,
+  pattern = 414,
+}
+
+tile{
+  layer = 1,
+  x = 232,
+  y = 256,
+  width = 24,
+  height = 32,
+  pattern = 340,
+}
+
+tile{
+  layer = 1,
+  x = 144,
+  y = 320,
+  width = 32,
+  height = 8,
+  pattern = 363,
+}
+
+tile{
+  layer = 1,
+  x = 272,
+  y = 48,
+  width = 8,
+  height = 48,
+  pattern = 182,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 48,
+  width = 8,
+  height = 48,
+  pattern = 181,
+}
+
+tile{
+  layer = 1,
+  x = 16,
+  y = 16,
+  width = 24,
+  height = 24,
+  pattern = 45,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 16,
+  width = 240,
+  height = 24,
+  pattern = 49,
+}
+
+tile{
+  layer = 1,
+  x = 280,
+  y = 16,
+  width = 24,
+  height = 24,
+  pattern = 46,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 312,
+  width = 8,
+  height = 8,
+  pattern = 16,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 40,
+  width = 8,
+  height = 8,
+  pattern = 14,
+}
+
+tile{
+  layer = 1,
+  x = 272,
+  y = 312,
+  width = 8,
+  height = 8,
+  pattern = 17,
+}
+
+tile{
+  layer = 1,
+  x = 272,
+  y = 40,
+  width = 8,
+  height = 8,
+  pattern = 15,
+}
+
+tile{
+  layer = 1,
+  x = 48,
+  y = 40,
+  width = 224,
+  height = 8,
+  pattern = 179,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 40,
+  width = 8,
+  height = 8,
+  pattern = 14,
+}
+
+tile{
+  layer = 1,
+  x = 272,
+  y = 176,
+  width = 8,
+  height = 48,
+  pattern = 182,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 176,
+  width = 8,
+  height = 144,
+  pattern = 181,
+}
+
+tile{
+  layer = 1,
+  x = 280,
+  y = 432,
+  width = 24,
+  height = 24,
+  pattern = 48,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 432,
+  width = 240,
+  height = 24,
+  pattern = 52,
+}
+
+tile{
+  layer = 1,
+  x = 16,
+  y = 432,
+  width = 24,
+  height = 24,
+  pattern = 47,
+}
+
+tile{
+  layer = 1,
+  x = 16,
+  y = 40,
+  width = 24,
+  height = 400,
+  pattern = 51,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 96,
+  width = 16,
+  height = 80,
+  pattern = 321,
+}
+
+tile{
+  layer = 1,
+  x = 272,
+  y = 312,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 248,
+  y = 312,
+  width = 24,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 1,
+  x = 240,
+  y = 312,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 72,
+  y = 312,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 48,
+  y = 312,
+  width = 24,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 312,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 232,
+  y = 224,
+  width = 8,
+  height = 8,
+  pattern = 328,
+}
+
+tile{
+  layer = 1,
+  x = 240,
+  y = 224,
+  width = 40,
+  height = 8,
+  pattern = 332,
+}
+
+tile{
+  layer = 1,
+  x = 232,
+  y = 232,
+  width = 8,
+  height = 64,
+  pattern = 333,
+}
+
+tile{
+  layer = 1,
+  x = 232,
+  y = 296,
+  width = 8,
+  height = 8,
+  pattern = 329,
+}
+
+tile{
+  layer = 1,
+  x = 240,
+  y = 296,
+  width = 40,
+  height = 8,
+  pattern = 334,
+}
+
+tile{
+  layer = 1,
+  x = 248,
+  y = 256,
+  width = 8,
+  height = 16,
+  pattern = 335,
+}
+
+tile{
+  layer = 1,
+  x = 248,
+  y = 248,
+  width = 8,
+  height = 8,
+  pattern = 336,
+}
+
+tile{
+  layer = 1,
+  x = 256,
+  y = 248,
+  width = 24,
+  height = 8,
+  pattern = 334,
+}
+
+tile{
+  layer = 1,
+  x = 248,
+  y = 272,
+  width = 8,
+  height = 8,
+  pattern = 339,
+}
+
+tile{
+  layer = 1,
+  x = 256,
+  y = 272,
+  width = 24,
+  height = 8,
+  pattern = 332,
+}
+
+tile{
+  layer = 1,
+  x = 280,
+  y = 40,
+  width = 24,
+  height = 400,
+  pattern = 50,
+}
+
+tile{
+  layer = 1,
+  x = 144,
+  y = 424,
+  width = 32,
+  height = 8,
+  pattern = 312,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 96,
+  width = 240,
+  height = 8,
+  pattern = 332,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 168,
+  width = 240,
+  height = 8,
+  pattern = 334,
+}
+
+tile{
+  layer = 1,
+  x = 272,
+  y = 256,
+  width = 8,
+  height = 16,
+  pattern = 182,
+}
+
+pickable{
+  layer = 1,
+  x = 104,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 120,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 136,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 152,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 168,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 184,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 184,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 168,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 152,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 136,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 200,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 216,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 232,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 232,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 216,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 200,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 56,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 72,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 88,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 88,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 72,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 56,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 104,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 120,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 248,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 248,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 264,
+  y = 69,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 1,
+  x = 264,
+  y = 85,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+}
+
+wall{
+  layer = 1,
+  x = 48,
+  y = 80,
+  width = 224,
+  height = 16,
+  name = "custom_obstacle",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+npc{
+  layer = 1,
+  x = 64,
+  y = 197,
+  name = "sign",
+  direction = 3,
+  subtype = "0",
+  sprite = "entities/sign",
+  behavior = "dialog#caverne_fragments.sign",
+}
+
+jumper{
+  layer = 1,
+  x = 176,
+  y = 320,
+  width = 64,
+  height = 8,
+  name = "jump_sensor",
+  direction = 6,
+  jump_length = 40,
+}
+
+jumper{
+  layer = 1,
+  x = 80,
+  y = 320,
+  width = 64,
+  height = 8,
+  name = "jump_sensor_2",
+  direction = 6,
+  jump_length = 40,
+}
+
+crystal_block{
+  layer = 1,
+  x = 48,
+  y = 208,
+  width = 224,
+  height = 16,
+  subtype = "1",
+}
+
+crystal{
+  layer = 1,
+  x = 264,
+  y = 269,
+  name = "crystal_switch",
+}
+
+wall{
+  layer = 1,
+  x = 168,
+  y = 320,
+  width = 8,
+  height = 32,
+  name = "custom_obstacle_3",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+wall{
+  layer = 1,
+  x = 144,
+  y = 320,
+  width = 8,
+  height = 32,
+  name = "custom_obstacle_4",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+crystal{
+  layer = 1,
+  x = 264,
+  y = 197,
+  name = "crystal_switch_2",
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 456,
+  width = 320,
+  height = 16,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 0,
+  width = 16,
+  height = 456,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 304,
+  y = 16,
+  width = 16,
+  height = 440,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 16,
+  y = 0,
+  width = 304,
+  height = 16,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 152,
+  y = 424,
+  width = 16,
+  height = 8,
+  pattern = 347,
+}
+

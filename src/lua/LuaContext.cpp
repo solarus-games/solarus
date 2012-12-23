@@ -205,7 +205,7 @@ bool LuaContext::notify_input(InputEvent& event) {
 void LuaContext::run_map(Map& map, Destination* destination) {
 
   // Compute the file name, depending on the id of the map.
-  std::string file_name = std::string("maps/") + map.get_id() + ".script";
+  std::string file_name = std::string("maps/") + map.get_id();
 
   // Load the map's code.
   load_file(l, file_name);

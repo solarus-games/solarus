@@ -100,7 +100,7 @@ void Tileset::add_tile_pattern(int id, TilePattern *tile_pattern) {
 void Tileset::load() {
 
   // open the tileset file
-  std::string file_name = std::string("tilesets/") + id + ".lua";
+  std::string file_name = std::string("tilesets/") + id + ".dat";
 
   lua_State* l = lua_open();
   size_t size;

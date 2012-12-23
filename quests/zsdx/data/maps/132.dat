@@ -1,100 +1,937 @@
-640	320	-1	-100	896	328	-1	3	cave
-0	0	64	64	512	192	340
-0	0	560	80	16	160	323
-0	0	64	80	16	160	321
-0	0	64	176	512	8	332
-0	0	88	176	48	48	3
-0	0	80	64	480	16	320
-0	0	504	56	48	96	3
-0	0	64	256	512	24	226
-0	0	64	40	512	24	224
-0	0	40	40	24	24	57
-0	0	576	40	24	24	58
-0	0	576	256	24	24	60
-0	0	576	64	24	192	225
-0	0	40	256	24	24	59
-0	0	40	64	24	192	227
-0	0	64	240	16	16	319
-0	0	80	240	480	16	322
-0	0	64	64	16	16	316
-0	0	560	64	16	16	317
-0	0	560	240	16	16	318
-0	0	104	216	16	24	276
-0	0	96	216	8	24	275
-0	0	120	216	8	24	277
-0	0	64	144	512	32	3
-0	0	64	144	8	32	218
-0	0	568	144	8	32	219
-0	0	64	136	432	8	334
-0	0	560	136	16	8	334
-0	0	552	136	8	8	329
-0	0	552	64	8	72	333
-0	0	496	136	8	8	330
-0	0	496	64	8	72	335
-0	0	504	64	48	8	216
-0	0	64	40	512	24	457
-0	0	64	256	512	24	457
-0	0	88	216	8	8	69
-0	0	88	184	8	32	71
-0	0	88	176	8	8	69
-0	0	128	176	8	8	69
-0	0	128	184	8	32	71
-0	0	128	216	8	8	69
-19	0	104	224	stairs	3	4
-12	0	64	48	512	16	custom_obstacle_3	1	0	1	1
-12	0	64	256	512	16	custom_obstacle_4	1	0	1	1
-7	0	224	312	enemy_4	1	laser	0	-1	_random	1	-1
-7	0	336	264	enemy_6	1	laser	0	-1	_random	1	-1
-7	0	448	312	enemy_5	1	laser	0	-1	_random	1	-1
-7	0	168	48	enemy	3	laser	0	-1	_random	1	-1
-7	0	392	48	enemy_3	3	laser	0	-1	_random	1	-1
-7	0	280	64	enemy_2	3	laser	0	-1	_random	1	-1
-3	0	528	93	piece_of_heart	1	937
-0	1	16	16	24	24	45
-0	1	16	280	24	24	47
-0	1	16	40	24	240	51
-0	1	40	16	560	24	49
-0	1	600	16	24	24	46
-0	1	600	40	24	240	50
-0	1	600	280	24	24	48
-0	1	40	280	560	24	52
-0	1	80	248	64	32	2
-0	1	104	272	16	24	379
-0	1	120	280	8	16	378
-0	1	96	280	8	16	377
-0	1	80	272	16	8	180
-0	1	128	272	16	8	180
-0	1	120	272	8	8	183
-0	1	96	272	8	8	184
-0	1	96	240	32	8	355
-0	1	72	272	8	8	69
-0	1	88	248	8	8	69
-0	1	72	248	8	8	69
-0	1	128	248	8	8	69
-0	1	144	248	8	8	69
-0	1	144	272	8	8	69
-0	1	72	256	8	16	71
-0	1	144	256	8	16	71
-0	1	80	248	8	8	70
-0	1	136	248	8	8	70
-0	1	104	296	16	32	2
-0	1	96	304	8	16	71
-0	1	120	304	8	16	71
-0	1	104	320	16	8	70
-0	1	152	40	32	8	453
-0	1	264	40	32	8	453
-0	1	376	40	32	8	453
-0	1	208	272	32	8	456
-0	1	320	272	32	8	456
-0	1	432	272	32	8	456
-13	1	112	293	16	16	save_solid_ground_sensor
-1	1	112	293	from_outside	1	_none
-2	1	104	304	16	16	teletransporter	_none	_none	1	8	from_laser_cave
-12	1	96	240	8	8	custom_obstacle	1	1	1	1
-12	1	120	240	8	8	custom_obstacle_2	1	1	1	1
-0	2	64	296	96	8	412
-0	2	0	0	640	16	170
-0	2	624	16	16	288	170
-0	2	0	304	640	16	170
-0	2	0	16	16	288	170
-0	2	96	296	32	8	400
+properties{
+  x = 896,
+  y = 328,
+  width = 640,
+  height = 320,
+  world = "inside_world",
+  tileset = "3",
+  music = "cave",
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 64,
+  width = 512,
+  height = 192,
+  pattern = 340,
+}
+
+tile{
+  layer = 0,
+  x = 560,
+  y = 80,
+  width = 16,
+  height = 160,
+  pattern = 323,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 80,
+  width = 16,
+  height = 160,
+  pattern = 321,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 176,
+  width = 512,
+  height = 8,
+  pattern = 332,
+}
+
+tile{
+  layer = 0,
+  x = 88,
+  y = 176,
+  width = 48,
+  height = 48,
+  pattern = 3,
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 64,
+  width = 480,
+  height = 16,
+  pattern = 320,
+}
+
+tile{
+  layer = 0,
+  x = 504,
+  y = 56,
+  width = 48,
+  height = 96,
+  pattern = 3,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 256,
+  width = 512,
+  height = 24,
+  pattern = 226,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 40,
+  width = 512,
+  height = 24,
+  pattern = 224,
+}
+
+tile{
+  layer = 0,
+  x = 40,
+  y = 40,
+  width = 24,
+  height = 24,
+  pattern = 57,
+}
+
+tile{
+  layer = 0,
+  x = 576,
+  y = 40,
+  width = 24,
+  height = 24,
+  pattern = 58,
+}
+
+tile{
+  layer = 0,
+  x = 576,
+  y = 256,
+  width = 24,
+  height = 24,
+  pattern = 60,
+}
+
+tile{
+  layer = 0,
+  x = 576,
+  y = 64,
+  width = 24,
+  height = 192,
+  pattern = 225,
+}
+
+tile{
+  layer = 0,
+  x = 40,
+  y = 256,
+  width = 24,
+  height = 24,
+  pattern = 59,
+}
+
+tile{
+  layer = 0,
+  x = 40,
+  y = 64,
+  width = 24,
+  height = 192,
+  pattern = 227,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 240,
+  width = 16,
+  height = 16,
+  pattern = 319,
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 240,
+  width = 480,
+  height = 16,
+  pattern = 322,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 64,
+  width = 16,
+  height = 16,
+  pattern = 316,
+}
+
+tile{
+  layer = 0,
+  x = 560,
+  y = 64,
+  width = 16,
+  height = 16,
+  pattern = 317,
+}
+
+tile{
+  layer = 0,
+  x = 560,
+  y = 240,
+  width = 16,
+  height = 16,
+  pattern = 318,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 216,
+  width = 16,
+  height = 24,
+  pattern = 276,
+}
+
+tile{
+  layer = 0,
+  x = 96,
+  y = 216,
+  width = 8,
+  height = 24,
+  pattern = 275,
+}
+
+tile{
+  layer = 0,
+  x = 120,
+  y = 216,
+  width = 8,
+  height = 24,
+  pattern = 277,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 144,
+  width = 512,
+  height = 32,
+  pattern = 3,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 144,
+  width = 8,
+  height = 32,
+  pattern = 218,
+}
+
+tile{
+  layer = 0,
+  x = 568,
+  y = 144,
+  width = 8,
+  height = 32,
+  pattern = 219,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 136,
+  width = 432,
+  height = 8,
+  pattern = 334,
+}
+
+tile{
+  layer = 0,
+  x = 560,
+  y = 136,
+  width = 16,
+  height = 8,
+  pattern = 334,
+}
+
+tile{
+  layer = 0,
+  x = 552,
+  y = 136,
+  width = 8,
+  height = 8,
+  pattern = 329,
+}
+
+tile{
+  layer = 0,
+  x = 552,
+  y = 64,
+  width = 8,
+  height = 72,
+  pattern = 333,
+}
+
+tile{
+  layer = 0,
+  x = 496,
+  y = 136,
+  width = 8,
+  height = 8,
+  pattern = 330,
+}
+
+tile{
+  layer = 0,
+  x = 496,
+  y = 64,
+  width = 8,
+  height = 72,
+  pattern = 335,
+}
+
+tile{
+  layer = 0,
+  x = 504,
+  y = 64,
+  width = 48,
+  height = 8,
+  pattern = 216,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 40,
+  width = 512,
+  height = 24,
+  pattern = 457,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 256,
+  width = 512,
+  height = 24,
+  pattern = 457,
+}
+
+tile{
+  layer = 0,
+  x = 88,
+  y = 216,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 0,
+  x = 88,
+  y = 184,
+  width = 8,
+  height = 32,
+  pattern = 71,
+}
+
+tile{
+  layer = 0,
+  x = 88,
+  y = 176,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 0,
+  x = 128,
+  y = 176,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 0,
+  x = 128,
+  y = 184,
+  width = 8,
+  height = 32,
+  pattern = 71,
+}
+
+tile{
+  layer = 0,
+  x = 128,
+  y = 216,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+stairs{
+  layer = 0,
+  x = 104,
+  y = 224,
+  name = "stairs",
+  direction = 3,
+  subtype = "4",
+}
+
+wall{
+  layer = 0,
+  x = 64,
+  y = 48,
+  width = 512,
+  height = 16,
+  name = "custom_obstacle_3",
+  stops_hero = true,
+  stops_enemies = false,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+wall{
+  layer = 0,
+  x = 64,
+  y = 256,
+  width = 512,
+  height = 16,
+  name = "custom_obstacle_4",
+  stops_hero = true,
+  stops_enemies = false,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+enemy{
+  layer = 0,
+  x = 224,
+  y = 312,
+  name = "enemy_4",
+  direction = 1,
+  breed = "laser",
+  rank = 0,
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+enemy{
+  layer = 0,
+  x = 336,
+  y = 264,
+  name = "enemy_6",
+  direction = 1,
+  breed = "laser",
+  rank = 0,
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+enemy{
+  layer = 0,
+  x = 448,
+  y = 312,
+  name = "enemy_5",
+  direction = 1,
+  breed = "laser",
+  rank = 0,
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+enemy{
+  layer = 0,
+  x = 168,
+  y = 48,
+  name = "enemy",
+  direction = 3,
+  breed = "laser",
+  rank = 0,
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+enemy{
+  layer = 0,
+  x = 392,
+  y = 48,
+  name = "enemy_3",
+  direction = 3,
+  breed = "laser",
+  rank = 0,
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+enemy{
+  layer = 0,
+  x = 280,
+  y = 64,
+  name = "enemy_2",
+  direction = 3,
+  breed = "laser",
+  rank = 0,
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+pickable{
+  layer = 0,
+  x = 528,
+  y = 93,
+  treasure_name = "piece_of_heart",
+  treasure_variant = 1,
+  treasure_savegame_variable = "b937",
+}
+
+tile{
+  layer = 1,
+  x = 16,
+  y = 16,
+  width = 24,
+  height = 24,
+  pattern = 45,
+}
+
+tile{
+  layer = 1,
+  x = 16,
+  y = 280,
+  width = 24,
+  height = 24,
+  pattern = 47,
+}
+
+tile{
+  layer = 1,
+  x = 16,
+  y = 40,
+  width = 24,
+  height = 240,
+  pattern = 51,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 16,
+  width = 560,
+  height = 24,
+  pattern = 49,
+}
+
+tile{
+  layer = 1,
+  x = 600,
+  y = 16,
+  width = 24,
+  height = 24,
+  pattern = 46,
+}
+
+tile{
+  layer = 1,
+  x = 600,
+  y = 40,
+  width = 24,
+  height = 240,
+  pattern = 50,
+}
+
+tile{
+  layer = 1,
+  x = 600,
+  y = 280,
+  width = 24,
+  height = 24,
+  pattern = 48,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 280,
+  width = 560,
+  height = 24,
+  pattern = 52,
+}
+
+tile{
+  layer = 1,
+  x = 80,
+  y = 248,
+  width = 64,
+  height = 32,
+  pattern = 2,
+}
+
+tile{
+  layer = 1,
+  x = 104,
+  y = 272,
+  width = 16,
+  height = 24,
+  pattern = 379,
+}
+
+tile{
+  layer = 1,
+  x = 120,
+  y = 280,
+  width = 8,
+  height = 16,
+  pattern = 378,
+}
+
+tile{
+  layer = 1,
+  x = 96,
+  y = 280,
+  width = 8,
+  height = 16,
+  pattern = 377,
+}
+
+tile{
+  layer = 1,
+  x = 80,
+  y = 272,
+  width = 16,
+  height = 8,
+  pattern = 180,
+}
+
+tile{
+  layer = 1,
+  x = 128,
+  y = 272,
+  width = 16,
+  height = 8,
+  pattern = 180,
+}
+
+tile{
+  layer = 1,
+  x = 120,
+  y = 272,
+  width = 8,
+  height = 8,
+  pattern = 183,
+}
+
+tile{
+  layer = 1,
+  x = 96,
+  y = 272,
+  width = 8,
+  height = 8,
+  pattern = 184,
+}
+
+tile{
+  layer = 1,
+  x = 96,
+  y = 240,
+  width = 32,
+  height = 8,
+  pattern = 355,
+}
+
+tile{
+  layer = 1,
+  x = 72,
+  y = 272,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 88,
+  y = 248,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 72,
+  y = 248,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 128,
+  y = 248,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 144,
+  y = 248,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 144,
+  y = 272,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 72,
+  y = 256,
+  width = 8,
+  height = 16,
+  pattern = 71,
+}
+
+tile{
+  layer = 1,
+  x = 144,
+  y = 256,
+  width = 8,
+  height = 16,
+  pattern = 71,
+}
+
+tile{
+  layer = 1,
+  x = 80,
+  y = 248,
+  width = 8,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 1,
+  x = 136,
+  y = 248,
+  width = 8,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 1,
+  x = 104,
+  y = 296,
+  width = 16,
+  height = 32,
+  pattern = 2,
+}
+
+tile{
+  layer = 1,
+  x = 96,
+  y = 304,
+  width = 8,
+  height = 16,
+  pattern = 71,
+}
+
+tile{
+  layer = 1,
+  x = 120,
+  y = 304,
+  width = 8,
+  height = 16,
+  pattern = 71,
+}
+
+tile{
+  layer = 1,
+  x = 104,
+  y = 320,
+  width = 16,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 1,
+  x = 152,
+  y = 40,
+  width = 32,
+  height = 8,
+  pattern = 453,
+}
+
+tile{
+  layer = 1,
+  x = 264,
+  y = 40,
+  width = 32,
+  height = 8,
+  pattern = 453,
+}
+
+tile{
+  layer = 1,
+  x = 376,
+  y = 40,
+  width = 32,
+  height = 8,
+  pattern = 453,
+}
+
+tile{
+  layer = 1,
+  x = 208,
+  y = 272,
+  width = 32,
+  height = 8,
+  pattern = 456,
+}
+
+tile{
+  layer = 1,
+  x = 320,
+  y = 272,
+  width = 32,
+  height = 8,
+  pattern = 456,
+}
+
+tile{
+  layer = 1,
+  x = 432,
+  y = 272,
+  width = 32,
+  height = 8,
+  pattern = 456,
+}
+
+sensor{
+  layer = 1,
+  x = 112,
+  y = 293,
+  width = 16,
+  height = 16,
+  name = "save_solid_ground_sensor",
+}
+
+destination{
+  layer = 1,
+  x = 112,
+  y = 293,
+  name = "from_outside",
+  direction = 1,
+}
+
+teletransporter{
+  layer = 1,
+  x = 104,
+  y = 304,
+  width = 16,
+  height = 16,
+  name = "teletransporter",
+  transition = 1,
+  destination_map = "8",
+  destination = "from_laser_cave",
+}
+
+wall{
+  layer = 1,
+  x = 96,
+  y = 240,
+  width = 8,
+  height = 8,
+  name = "custom_obstacle",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+wall{
+  layer = 1,
+  x = 120,
+  y = 240,
+  width = 8,
+  height = 8,
+  name = "custom_obstacle_2",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+tile{
+  layer = 2,
+  x = 64,
+  y = 296,
+  width = 96,
+  height = 8,
+  pattern = 412,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 0,
+  width = 640,
+  height = 16,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 624,
+  y = 16,
+  width = 16,
+  height = 288,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 304,
+  width = 640,
+  height = 16,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 16,
+  width = 16,
+  height = 288,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 96,
+  y = 296,
+  width = 32,
+  height = 8,
+  pattern = 400,
+}
+

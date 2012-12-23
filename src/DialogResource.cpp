@@ -20,7 +20,7 @@
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
-const std::string DialogResource::file_name = "text/dialogs.lua";
+const std::string DialogResource::file_name = "text/dialogs.dat";
 std::map<std::string, Dialog> DialogResource::dialogs;
 
 /**

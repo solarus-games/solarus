@@ -1,54 +1,491 @@
-320	240	-1	-100	1792	1640	-1	3	mini_game
-0	0	104	64	112	8	216
-0	0	80	40	24	24	57
-0	0	104	40	112	24	224
-0	0	216	40	24	24	58
-0	0	80	64	24	112	227
-0	0	104	176	112	24	226
-0	0	216	176	24	24	60
-0	0	80	176	24	24	59
-0	0	216	64	24	112	225
-0	0	208	64	8	112	219
-0	0	104	168	112	8	217
-0	0	104	64	8	112	218
-0	0	112	72	96	96	3
-0	0	144	176	8	16	288
-0	0	168	176	8	16	287
-0	0	152	176	16	16	294
-0	0	152	192	16	32	3
-0	0	152	224	16	8	70
-0	0	144	200	8	24	71
-0	0	168	200	8	24	71
-0	0	208	64	8	8	213
-0	0	104	64	8	8	212
-0	0	104	168	8	8	214
-0	0	208	168	8	8	215
-5	0	104	80	chest_1	0	_none	1	-1
-5	0	136	80	chest_2	0	_none	1	-1
-5	0	168	80	chest_3	0	_none	1	-1
-5	0	200	80	chest_4	0	_none	1	-1
-5	0	104	112	chest_5	0	_none	1	-1
-5	0	136	112	chest_6	0	_none	1	-1
-5	0	168	112	chest_7	0	_none	1	-1
-5	0	200	112	chest_8	0	_none	1	-1
-5	0	104	144	chest_9	0	_none	1	-1
-5	0	136	144	chest_10	0	_none	1	-1
-5	0	168	144	chest_11	0	_none	1	-1
-5	0	200	144	chest_12	0	_none	1	-1
-8	0	160	109	mini_game_npc	3	1	npc/static_villager7	map
-1	0	160	189	from_outside	1	_none
-2	0	152	208	16	16	teletransporter	_none	_none	1	4	from_chest_game_cave
-0	1	120	192	96	8	414
-0	1	56	16	24	24	45
-0	1	80	16	160	24	49
-0	1	240	16	24	24	46
-0	1	80	200	160	24	52
-0	1	56	40	24	160	51
-0	1	56	200	24	24	47
-0	1	240	200	24	24	48
-0	1	240	40	24	160	50
-0	1	144	192	32	8	312
-0	2	0	0	320	16	170
-0	2	0	16	56	208	170
-0	2	264	16	56	208	170
-0	2	0	224	320	16	170
+properties{
+  x = 1792,
+  y = 1640,
+  width = 320,
+  height = 240,
+  world = "inside_world",
+  tileset = "3",
+  music = "mini_game",
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 64,
+  width = 112,
+  height = 8,
+  pattern = 216,
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 40,
+  width = 24,
+  height = 24,
+  pattern = 57,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 40,
+  width = 112,
+  height = 24,
+  pattern = 224,
+}
+
+tile{
+  layer = 0,
+  x = 216,
+  y = 40,
+  width = 24,
+  height = 24,
+  pattern = 58,
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 64,
+  width = 24,
+  height = 112,
+  pattern = 227,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 176,
+  width = 112,
+  height = 24,
+  pattern = 226,
+}
+
+tile{
+  layer = 0,
+  x = 216,
+  y = 176,
+  width = 24,
+  height = 24,
+  pattern = 60,
+}
+
+tile{
+  layer = 0,
+  x = 80,
+  y = 176,
+  width = 24,
+  height = 24,
+  pattern = 59,
+}
+
+tile{
+  layer = 0,
+  x = 216,
+  y = 64,
+  width = 24,
+  height = 112,
+  pattern = 225,
+}
+
+tile{
+  layer = 0,
+  x = 208,
+  y = 64,
+  width = 8,
+  height = 112,
+  pattern = 219,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 168,
+  width = 112,
+  height = 8,
+  pattern = 217,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 64,
+  width = 8,
+  height = 112,
+  pattern = 218,
+}
+
+tile{
+  layer = 0,
+  x = 112,
+  y = 72,
+  width = 96,
+  height = 96,
+  pattern = 3,
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 176,
+  width = 8,
+  height = 16,
+  pattern = 288,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 176,
+  width = 8,
+  height = 16,
+  pattern = 287,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 176,
+  width = 16,
+  height = 16,
+  pattern = 294,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 192,
+  width = 16,
+  height = 32,
+  pattern = 3,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 224,
+  width = 16,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 0,
+  x = 144,
+  y = 200,
+  width = 8,
+  height = 24,
+  pattern = 71,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 200,
+  width = 8,
+  height = 24,
+  pattern = 71,
+}
+
+tile{
+  layer = 0,
+  x = 208,
+  y = 64,
+  width = 8,
+  height = 8,
+  pattern = 213,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 64,
+  width = 8,
+  height = 8,
+  pattern = 212,
+}
+
+tile{
+  layer = 0,
+  x = 104,
+  y = 168,
+  width = 8,
+  height = 8,
+  pattern = 214,
+}
+
+tile{
+  layer = 0,
+  x = 208,
+  y = 168,
+  width = 8,
+  height = 8,
+  pattern = 215,
+}
+
+chest{
+  layer = 0,
+  x = 104,
+  y = 80,
+  name = "chest_1",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+chest{
+  layer = 0,
+  x = 136,
+  y = 80,
+  name = "chest_2",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+chest{
+  layer = 0,
+  x = 168,
+  y = 80,
+  name = "chest_3",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+chest{
+  layer = 0,
+  x = 200,
+  y = 80,
+  name = "chest_4",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+chest{
+  layer = 0,
+  x = 104,
+  y = 112,
+  name = "chest_5",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+chest{
+  layer = 0,
+  x = 136,
+  y = 112,
+  name = "chest_6",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+chest{
+  layer = 0,
+  x = 168,
+  y = 112,
+  name = "chest_7",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+chest{
+  layer = 0,
+  x = 200,
+  y = 112,
+  name = "chest_8",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+chest{
+  layer = 0,
+  x = 104,
+  y = 144,
+  name = "chest_9",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+chest{
+  layer = 0,
+  x = 136,
+  y = 144,
+  name = "chest_10",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+chest{
+  layer = 0,
+  x = 168,
+  y = 144,
+  name = "chest_11",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+chest{
+  layer = 0,
+  x = 200,
+  y = 144,
+  name = "chest_12",
+  is_big_chest = false,
+  treasure_variant = 1,
+}
+
+npc{
+  layer = 0,
+  x = 160,
+  y = 109,
+  name = "mini_game_npc",
+  direction = 3,
+  subtype = "1",
+  sprite = "npc/static_villager7",
+  behavior = "map",
+}
+
+destination{
+  layer = 0,
+  x = 160,
+  y = 189,
+  name = "from_outside",
+  direction = 1,
+}
+
+teletransporter{
+  layer = 0,
+  x = 152,
+  y = 208,
+  width = 16,
+  height = 16,
+  name = "teletransporter",
+  transition = 1,
+  destination_map = "4",
+  destination = "from_chest_game_cave",
+}
+
+tile{
+  layer = 1,
+  x = 120,
+  y = 192,
+  width = 96,
+  height = 8,
+  pattern = 414,
+}
+
+tile{
+  layer = 1,
+  x = 56,
+  y = 16,
+  width = 24,
+  height = 24,
+  pattern = 45,
+}
+
+tile{
+  layer = 1,
+  x = 80,
+  y = 16,
+  width = 160,
+  height = 24,
+  pattern = 49,
+}
+
+tile{
+  layer = 1,
+  x = 240,
+  y = 16,
+  width = 24,
+  height = 24,
+  pattern = 46,
+}
+
+tile{
+  layer = 1,
+  x = 80,
+  y = 200,
+  width = 160,
+  height = 24,
+  pattern = 52,
+}
+
+tile{
+  layer = 1,
+  x = 56,
+  y = 40,
+  width = 24,
+  height = 160,
+  pattern = 51,
+}
+
+tile{
+  layer = 1,
+  x = 56,
+  y = 200,
+  width = 24,
+  height = 24,
+  pattern = 47,
+}
+
+tile{
+  layer = 1,
+  x = 240,
+  y = 200,
+  width = 24,
+  height = 24,
+  pattern = 48,
+}
+
+tile{
+  layer = 1,
+  x = 240,
+  y = 40,
+  width = 24,
+  height = 160,
+  pattern = 50,
+}
+
+tile{
+  layer = 1,
+  x = 144,
+  y = 192,
+  width = 32,
+  height = 8,
+  pattern = 312,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 16,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 16,
+  width = 56,
+  height = 208,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 264,
+  y = 16,
+  width = 56,
+  height = 208,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 224,
+  width = 320,
+  height = 16,
+  pattern = 170,
+}
+

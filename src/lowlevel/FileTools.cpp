@@ -61,7 +61,7 @@ void FileTools::initialize(int argc, char** argv) {
   PHYSFS_addToSearchPath((base_dir + "/" + archive_quest_path).c_str(), 1);
 
   // Check the existence of a quest at this location.
-  if (!FileTools::data_file_exists("quest.lua")) {
+  if (!FileTools::data_file_exists("quest.dat")) {
     Debug::die(StringConcat() << "No quest was found in the directory '" << quest_path
         << "'. To specify your quest's path, run: "
         << argv[0] << " path/to/quest");
@@ -89,7 +89,7 @@ void FileTools::quit() {
  */
 void FileTools::initialize_languages() {
 
-  static const std::string file_name = "languages/languages.lua";
+  static const std::string file_name = "languages/languages.dat";
 
   // read the languages file
   lua_State* l = lua_open();

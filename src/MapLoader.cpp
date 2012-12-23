@@ -55,7 +55,7 @@ void MapLoader::load_map(Game& game, Map& map) {
   map.game = &game;
 
   // Open the map data file in an independent Lua world.
-  const std::string& file_name = std::string("maps/") + map.get_id() + ".lua";
+  const std::string& file_name = std::string("maps/") + map.get_id() + ".dat";
   lua_State* l = lua_open();
   size_t size;
   char* buffer;

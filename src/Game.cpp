@@ -69,6 +69,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   hero = new Hero(get_equipment());
   hero->increment_refcount();
   keys_effect = new KeysEffect();
+  update_keys_effect();
   hud = new HUD(*this);
 
   // launch the starting map

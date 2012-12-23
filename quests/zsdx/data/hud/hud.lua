@@ -101,8 +101,8 @@ function game:check_hud()
     if not self.hud.showing_dialog and
         self:is_showing_dialog() then
       self.hud.showing_dialog = true
-      self.hud.action_icon:set_dst_position(0, 33)
-      self.hud.attack_icon:set_dst_position(0, 7)
+      self.hud.action_icon:set_dst_position(0, 54)
+      self.hud.attack_icon:set_dst_position(0, 29)
     elseif self.hud.showing_dialog and
         not self:is_showing_dialog() then
       self.hud.showing_dialog = false

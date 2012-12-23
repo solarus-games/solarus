@@ -59,16 +59,12 @@ function pause_icon:rebuild_surface()
 
   self.surface:fill_color{0, 0, 0}
 
-  -- No pause icon during a dialog
-  if not self.game:is_showing_dialog() then
-
-    if self.current_icon_img ~= nil then
-      -- Draw the static image of the icon: "Pause" or "Back".
-      self.current_icon_img:draw(self.surface)
-    else
-      -- Draw the flipping sprite
-      self.icon_flip_sprite:draw(self.surface, 24, 0)
-    end
+  if self.current_icon_img ~= nil then
+    -- Draw the static image of the icon: "Pause" or "Back".
+    self.current_icon_img:draw(self.surface)
+  else
+    -- Draw the flipping sprite
+    self.icon_flip_sprite:draw(self.surface, 24, 0)
   end
 end
 

@@ -19,7 +19,6 @@ function pause_icon:initialize(game)
   self.is_game_paused = false
   self.surface = sol.surface.create(72, 24)
   self.surface:set_transparency_color{0, 0, 0}
-  self.opacity = 255
   self.icons_img = sol.surface.create("pause_icon.png", true)
   self.current_icon_img = sol.surface.create(self.icons_img, 0, 24, 72, 24)
 

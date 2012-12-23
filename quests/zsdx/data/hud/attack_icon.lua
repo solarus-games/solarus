@@ -18,17 +18,19 @@ function attack_icon:initialize(game)
   self.game = game
   self.surface = sol.surface.create(72, 24)
   self.surface:set_transparency_color{0, 0, 0}
-  self.opacity = 255
   self.icons_img = sol.surface.create("sword_icon.png", true)
   self.current_icon_img = sol.surface.create(self.icons_img, 0, 24, 72, 24)
+  self.icon_flip_sprite = sol.sprite.create("hud/sword_icon_flip")
+  self.is_flipping = false
+  self.effect_displayed = game:get_command_effect("attack")
+  self.sword_displayed = game:get_ability("sword")
+  self:create_icon_img()
 
   local attack_icon = self
-  self.icon_flip_sprite = sol.sprite.create("hud/sword_icon_flip")
-
   function self.icon_flip_sprite:on_animation_finished()
-    if attack_icon.current_icon_img == nil then
-      local y = 0 -- TODO look for attack command effect and the current sword.
-      attack_icon.current_icon_img = sol.surface.create(attack_icon.icons_img, 0, y, 72, 24)
+    if attack_icon.is_flipping then
+      attack_icon.is_flipping = false
+      attack_icon:create_icon_img()
       attack_icon:rebuild_surface()
     end
   end
@@ -37,7 +39,59 @@ function attack_icon:initialize(game)
     attack_icon:rebuild_surface()
   end
 
+  self:check()
   self:rebuild_surface()
+end
+
+function attack_icon:create_icon_img()
+
+  local y
+  if self.effect_displayed ~= nil then
+    if self.effect_displayed == "sword" then
+      -- Create an icon with the current sword.
+      y = 96 + 24 * self.sword_displayed
+    else
+      -- Create an icon with the name of the current effect.
+      local effects_y = {
+        ["save"] = 24,
+        ["return"] = 48,
+        ["validate"] = 72,
+        ["skip"] = 96,
+      }
+      y = effects_y[self.effect_displayed]
+    end
+
+    self.current_icon_img = sol.surface.create(self.icons_img, 0, y, 72, 24)
+  end
+end
+
+function attack_icon:check()
+
+  local need_rebuild = false
+
+  if not self.flipping then
+    local effect = self.game:get_command_effect("attack")
+    local sword = self.game:get_ability("sword")
+    if effect ~= self.effect_displayed
+        or sword ~= self.sword_displayed then
+      self.effect_displayed = effect
+      self.sword_displayed = sword
+      self.current_icon_img = nil
+      self.is_flipping = true
+      self.icon_flip_sprite:set_frame(0)
+      need_rebuild = true
+    end
+  end
+
+  -- Redraw the surface only if something has changed.
+  if need_rebuild then
+    self:rebuild_surface()
+  end
+
+  -- Schedule the next check.
+  sol.timer.start(self.game, 50, function()
+    self:check()
+  end)
 end
 
 function attack_icon:rebuild_surface()
@@ -47,7 +101,7 @@ function attack_icon:rebuild_surface()
   if self.current_icon_img ~= nil then
     -- Draw the static image of the icon.
     self.current_icon_img:draw(self.surface)
-  else
+  elseif self.is_flipping then
     -- Draw the flipping sprite
     self.icon_flip_sprite:draw(self.surface, 24, 0)
   end

@@ -209,7 +209,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
     }
 
     /**
-     * Loads a tileset of the project ans sets it as the current tileset.
+     * Loads a tileset of the project and sets it as the current tileset.
      */
     protected void openTileset() {
 

@@ -389,18 +389,15 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         String projectPath = chooser.getProjectPath();
 
         if (projectPath != null) {
-            Project project = Project.createNew(projectPath);
-
-            if (project == null) {
-                GuiTools.warningDialog("A project already exists in this directory.");
-            } else {
+            try {
+                Project.createNew(projectPath);
                 qdt.setRoot(projectPath);
                 setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
             }
+            catch (QuestEditorException ex) {
+                GuiTools.errorDialog("Cannot create the project: " + ex.getMessage());
+            }
         }
-
-
-
     }
 
     /**
@@ -421,16 +418,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         if (projectPath != null) {
             try {
-                Project project = Project.createExisting(projectPath);
-
-                if (project == null) {
-                    if (GuiTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
-                        Project.createNew(projectPath);
-                    }
-                } else {
-                    qdt.setRoot(projectPath);
-                    setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
-                }
+                Project.createExisting(projectPath);
+                qdt.setRoot(projectPath);
+                setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
             }
             catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());

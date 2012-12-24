@@ -70,9 +70,9 @@ public class Project {
      * Creates a new project in the specified path and sets it
      * as the current project.
      * @param path root path of the project
-     * @return the project created, or null if there was already an existing project
+     * @throws QuestEditorException if the project could not be created.
      */
-    public static Project createNew(String path) {
+    public static void createNew(String path) throws QuestEditorException {
 
         Project project = new Project(path);
 
@@ -80,28 +80,21 @@ public class Project {
             project.resourceDatabase.load();
 
             // if no exception was raised, a project exists (and has been successfully loaded)
-            project = null;
+            throw new QuestEditorException("A project already exists in this directory");
         }
         catch (IOException ex) {
             // normal case: there is no project file yet
             setCurrentProject(project);
         }
-        catch (QuestEditorException ex) {
-            // a project exists (and the project file is not valid)
-            project = null;
-        }
-
-        return project;
     }
 
     /**
-     * Loads an existing ZSDX project in the specified path and sets it
+     * Loads an existing project in the specified path and sets it
      * as the current project.
      * @param path root path of the project
-     * @return the project created, or null if there is no project in this path
      * @throws QuestEditorException if the project exists but the project file is not valid
      */
-    public static Project createExisting(String path) throws QuestEditorException {
+    public static void createExisting(String path) throws QuestEditorException {
 
         Project project = new Project(path);
 
@@ -113,10 +106,8 @@ public class Project {
         }
         catch (IOException ex) {
             // the project doesn't exist
-            project = null;
+            throw new QuestEditorException(ex.getMessage());
         }
-
-        return project;
     }
 
     /**

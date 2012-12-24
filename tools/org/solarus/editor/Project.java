@@ -67,7 +67,7 @@ public class Project {
     }
 
     /**
-     * Creates a new ZSDX project in the specified path and sets it
+     * Creates a new project in the specified path and sets it
      * as the current project.
      * @param path root path of the project
      * @return the project created, or null if there was already an existing project

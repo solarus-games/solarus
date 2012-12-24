@@ -35,7 +35,7 @@ public class Project {
     private String projectPath;
 
     /**
-     * The game resources associated to this project.
+     * The resources associated to this project.
      */
     private ResourceDatabase resourceDatabase;
 

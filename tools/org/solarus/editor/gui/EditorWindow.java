@@ -51,8 +51,6 @@ import org.solarus.editor.gui.tree.QuestDataTree;
 public class EditorWindow extends JFrame implements Observer, ProjectObserver, ChangeListener {
 
     private static final String mapEditorClass = "org.solarus.editor.gui.MapEditorWindow";
-    private static final String tilesetEditorClass = "org.solarus.editor.gui.TilesetEditorWindow";
-    private static final String fileEditorClass = "org.solarus.editor.gui.FileEditorWindow";
     private EditorDesktop desktop;
     private QuestDataTree qdt;
     private JMenu menuFile;
@@ -166,10 +164,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         if (desktop.getSelectedComponent() != null) {
             String editorClass = desktop.getSelectedComponent().getClass().getName();
-            //System.out.println(c.getClass().getName());
             boolean isMapEditor = mapEditorClass.equals(editorClass);
-            boolean isTilesetEditor = tilesetEditorClass.equals(editorClass);
-            boolean isFileEditor = fileEditorClass.equals(editorClass);
 
             if (isMapEditor) {
 
@@ -431,19 +426,13 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
                 if (project == null) {
                     if (GuiTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
                         Project.createNew(projectPath);
-
-                        if (project == null) {
-                            GuiTools.warningDialog("A project already exists in this directory.");
-                        } else {
-                            qdt.setRoot(projectPath);
-                            setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
-                        }
                     }
                 } else {
                     qdt.setRoot(projectPath);
                     setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
                 }
-            } catch (QuestEditorException ex) {
+            }
+            catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
             }
         }

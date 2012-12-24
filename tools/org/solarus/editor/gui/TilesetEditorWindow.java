@@ -17,7 +17,6 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.util.Observable;
 import javax.swing.*;
 
@@ -183,62 +182,6 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
     }
 
     /**
-     * Prompts the user for a directory and creates a new project
-     * in that directory.
-     */
-    private void newProject() {
-
-        if (!checkCurrentFileSaved()) {
-            return;
-        }
-
-        ProjectFileChooser chooser = new ProjectFileChooser();
-        String projectPath = chooser.getProjectPath();
-
-        if (projectPath != null) {
-            Project project = Project.createNew(projectPath);
-
-            if (project == null) {
-                GuiTools.warningDialog("A project already exists in this directory.");
-            }
-        }
-    }
-
-    /**
-     * Prompts the user for a directory and loads the project
-     * located in that directory.
-     */
-    private void loadProject() {
-
-        if (!checkCurrentFileSaved()) {
-            return;
-        }
-
-        ProjectFileChooser chooser = new ProjectFileChooser();
-        String projectPath = chooser.getProjectPath();
-
-        if (projectPath != null) {
-            try {
-                Project project = Project.createExisting(projectPath);
-
-                if (project == null) {
-                    if (GuiTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
-                        Project.createNew(projectPath);
-
-                        if (project == null) {
-                            GuiTools.warningDialog("A project already exists in this directory.");
-                        }else {
-//                             menuTileset.setEnabled(true);
-                        }
-                    }
-                }
-            } catch (QuestEditorException ex) {
-                GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
-            }
-        }
-    }
-
-    /**
      * Creates a new tileset in the project and sets it as the current tileset.
      */
     protected void newTileset() {
@@ -321,28 +264,6 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
             tileset.save();
         } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Could not save the tileset: " + ex.getMessage());
-        }
-    }
-
-    /**
-     * Action performed when the user clicks on Project > New project.
-     * Creates a new project, asking to the user the project path.
-     */
-    private class ActionNewProject implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-            newProject();
-        }
-    }
-
-    /**
-     * Action performed when the user clicks on Project > Load project.
-     * Loads an existing project, asking to the user the project path.
-     */
-    private class ActionLoadProject implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-            loadProject();
         }
     }
 }

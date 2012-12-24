@@ -62,6 +62,18 @@ public class GuiTools {
     }
 
     /**
+     * Shows a dialog box with an information message.
+     * @param message message the information message to show
+     */
+    public static void informationDialog(String message) {
+
+        JOptionPane.showMessageDialog(null,
+                                      message,
+                                      "Info",
+                                      JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
      * Shows a dialog box with an error message.
      * @param message message the error message to show
      */

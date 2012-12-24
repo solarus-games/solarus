@@ -85,6 +85,7 @@ public class Project {
         catch (IOException ex) {
             // normal case: there is no project file yet
             setCurrentProject(project);
+            project.createInitialFiles();
         }
     }
 
@@ -124,10 +125,11 @@ public class Project {
 
     /**
      * Returns the file containing the database of the game resources (project_db.dat).
-     * This method can be called event if this project is not the current project.
+     * This method can be called even if this project is not the current project.
      * @return the file containing the database of the game resources
      */
     public File getResourceDatabaseFile() {
+        // We want this method to work when this project is not the current one.
         return new File(projectPath + "/data/" + ResourceDatabase.fileName);
     }
 
@@ -257,6 +259,62 @@ public class Project {
         }
 
         return image;
+    }
+
+    /**
+     * Returns the quest properties file.
+     * @return The quest properties file.
+     */
+    public static File getQuestPropertiesFile() {
+        return new File(getDataPath() + "/quest.dat");
+    }
+
+    /**
+     * Returns the languages path.
+     * @return The languages path.
+     */
+    public static String getLanguagePath() {
+        return getDataPath() + "/languages";
+    }
+
+    /**
+     * Returns the languages directory.
+     * @return The languages directory.
+     */
+    public static File getLanguageDir() {
+        return new File(getLanguagePath());
+    }
+
+    /**
+     * Returns the language list file.
+     * @return The language list file.
+     */
+    public static File getLanguageListFile() {
+        return new File(getLanguagePath() + "/languages.dat");
+    }
+
+    /**
+     * Returns the path of the text directory.
+     * @return The path of the text directory.
+     */
+    public static String getTextPath() {
+        return getDataPath() + "/text";
+    }
+
+    /**
+     * Returns the text directory.
+     * @return The text directory.
+     */
+    public static File getTextDir() {
+        return new File(getTextPath());
+    }
+
+    /**
+     * Returns the fonts file.
+     * @return The font list file.
+     */
+    public static File getFontsFile() {       
+        return new File(getTextPath() + "/fonts.dat");
     }
 
     /**
@@ -392,7 +450,40 @@ public class Project {
         return getDataPath() + "/items/" + name + ".lua";
     }
 
-    public static String getScreenScriptFile(String name) {
-        return getDataPath() + "/screens/" + name + ".lua";
+    /**
+     * Creates the initial files tree of a new project.
+     * @throw QuestEditorException If something went wrong while creating the files.
+     */
+    private void createInitialFiles() throws QuestEditorException {
+
+        try {
+            // Data directory.
+            File dataDir = new File(getDataPath());
+            if (!dataDir.exists()) {
+                if (!dataDir.mkdir()) {
+                    throw new QuestEditorException("Failed to create the \"data\" directory");
+                }
+            }
+    
+            // Create the resource database file.
+            File resourceDatabaseFile = getResourceDatabaseFile();
+            if (!resourceDatabaseFile.createNewFile()) {
+                // This file determines whether the project exists or not.
+                // Therefore, it must not exist in this function.
+                throw new QuestEditorException("Failed to create the resource database file '"
+                        + resourceDatabaseFile.getPath() + "'");
+            }
+
+            // Create the various needed files if not existing.
+            getQuestPropertiesFile().createNewFile();
+            getLanguageDir().mkdir();
+            getLanguageListFile().createNewFile();
+            getTextDir().mkdir();
+            getFontsFile().createNewFile();
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+            throw new QuestEditorException(ex.getMessage());
+        }
     }
 }

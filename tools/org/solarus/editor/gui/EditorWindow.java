@@ -393,6 +393,10 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
                 Project.createNew(projectPath);
                 qdt.setRoot(projectPath);
                 setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
+                GuiTools.informationDialog("Quest successfully created!\n" +
+                		"The next step is to edit some important files\n" +
+                        "(sorry, their edition is not fully supported by this editor yet):\n" +
+                		"project_db.dat, quest.dat, text/fonts.dat, languages/languages.dat");
             }
             catch (QuestEditorException ex) {
                 GuiTools.errorDialog("Cannot create the project: " + ex.getMessage());

@@ -49,7 +49,7 @@ public class ResourceDatabase extends Observable {
         this.project = project;
         this.resources = new Resource[ResourceType.values().length];
         for (ResourceType resourceType: ResourceType.values()) {
-            resources[resourceType.getId()] = new Resource(resourceType.isIdAutoIncremented());
+            resources[resourceType.getId()] = new Resource();
         }
     }
 

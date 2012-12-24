@@ -25,29 +25,15 @@ import java.util.*;
 public class Resource extends Observable {
 
     /**
-     * Id and name of each element.
+     * Id and human-readable name of each element.
      */
     private LinkedHashMap<String, String> elements;
 
     /**
-     * True if the id is an auto-incremented integer, false if it is a custom string.
-     */
-    private boolean idAutoIncremented;
-
-    /**
-     * Maximum id already assigned to an element (used only if autoIncrementId is true).
-     */
-    private int maxId;
-
-    /**
      * Creates the resource.
-     * @param idAutoIncremented true if you want the id to be an auto-incremented integer,
-     * false if you prefer a custom string.
      */
-    public Resource(boolean idAutoIncremented) {
+    public Resource() {
 
-        this.idAutoIncremented = idAutoIncremented;
-        this.maxId = -1;
         this.elements = new LinkedHashMap<String, String>();
     }
 
@@ -95,7 +81,7 @@ public class Resource extends Observable {
         String name = elements.get(id);
 
         if (name == null) {
-            throw new QuestEditorException("There is no element with id " + id);
+            throw new QuestEditorException("There is no element with id '" + id + "'");
         }
 
         return name;
@@ -111,26 +97,10 @@ public class Resource extends Observable {
     public void setElementName(String id, String name) throws QuestEditorException {
 
         if (id.length() == 0) {
-            throw new QuestEditorException("Empty id for element '" + name);
-        }
-
-        if (idAutoIncremented) {
-
-            try {
-                int intId = Integer.parseInt(id);
-
-                if (intId > maxId) {
-                    maxId = intId;
-                }
-            }
-            catch (NumberFormatException ex) {
-                throw new QuestEditorException("Invalid id '" + id + "' for element '" + name +
-                                        "': the value should be an integer number");
-            }
+            throw new QuestEditorException("Empty id for element '" + name  + "'");
         }
 
         String oldName = elements.get(id);
-
         if (oldName == null || !name.equals(oldName)) {
 
             // the element doesn't exist yet, or its name has just been changed
@@ -145,23 +115,5 @@ public class Resource extends Observable {
      */
     public void clear() {
         elements.clear();
-    }
-
-    /**
-     * Computes an id for a new element. This makes sure the id is not used yet.
-     * @return an available id you can assign to a new element
-     */
-    public String computeNewId() {
-
-        // FIXME also generate string IDs
-        if (!idAutoIncremented) {
-            throw new IllegalArgumentException("computeNewId() can only be called on auto-incremented ids");
-        }
-        maxId++;
-
-        setChanged();
-        notifyObservers();
-
-        return Integer.toString(maxId);
     }
 }

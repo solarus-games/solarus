@@ -201,9 +201,18 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
             return;
         }
         try {
-            Map map = new Map();
-            map.addObserver(parentEditor);
-            setMap(map);
+            String mapId = JOptionPane.showInputDialog(null, "Please enter the ID of your new map",
+                    "Map ID", JOptionPane.QUESTION_MESSAGE);
+
+            if (mapId != null) {
+                if (Project.getResource(ResourceType.MAP).exists(mapId)) {
+                    throw new MapException("A map already exists with the ID '" + mapId + "'");
+                }
+
+                Map map = new Map(mapId);
+                map.addObserver(parentEditor);
+                setMap(map);
+            }
         } catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot create the map: " + ex.getMessage());
         }
@@ -229,6 +238,10 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
         }
 
         try {
+            if (!Project.getResource(ResourceType.MAP).exists(mapId)) {
+                throw new MapException("Map with ID '" + mapId + "' does not exist");
+            }
+
             Map map = new Map(mapId);
             map.addObserver(parentEditor);
             if (map.badTiles()) {

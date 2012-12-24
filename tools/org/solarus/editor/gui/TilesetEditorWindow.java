@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Observable;
 import javax.swing.*;
+
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 
@@ -247,9 +248,19 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         }
 
         try {
-            Tileset tileset = new Tileset();
-            setTileset(tileset);
-        } catch (QuestEditorException ex) {
+            String tilesetId = JOptionPane.showInputDialog(null, "Please enter the ID of your new tileset",
+                    "tileset ID", JOptionPane.QUESTION_MESSAGE);
+
+            if (tilesetId != null) {
+                if (Project.getResource(ResourceType.TILESET).exists(tilesetId)) {
+                    throw new MapException("A tileset already exists with the ID '" + tilesetId + "'");
+                }
+
+                Tileset tileset = new Tileset(tilesetId);
+                setTileset(tileset);
+            }
+        }
+        catch (QuestEditorException ex) {
             GuiTools.errorDialog("Cannot create the tileset: " + ex.getMessage());
         }
     }
@@ -274,6 +285,10 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         }
 
         try {
+            if (!Project.getResource(ResourceType.TILESET).exists(tilesetId)) {
+                throw new MapException("Tileset with ID '" + tilesetId + "' does not exist");
+            }
+
             Tileset tileset = new Tileset(tilesetId);
             setTileset(tileset);
         } catch (QuestEditorException ex) {

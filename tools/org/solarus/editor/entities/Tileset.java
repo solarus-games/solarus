@@ -126,42 +126,34 @@ public class Tileset extends Observable {
     }
 
     /**
-     * Creates a new tileset.
-     * @throws QuestEditorException if the resource list could not be updated after the map creation
+     * Creates or loads a tileset.
+     * @param tilesetId Id of the tileset to create (may be a new one or an existing one).
+     * @throws QuestEditorException if the tileset could not be loaded
      */
-    public Tileset() throws QuestEditorException {
-        super();
+    public Tileset(String tilesetId) throws QuestEditorException {
 
-        // FIXME tileset creation is broken because of ids an images
-        this.name = "New tileset";
+        if (!isValidId(tilesetId)) {
+            throw new MapException("Invalid tileset ID: '" + tilesetId + "'");
+        }
+
         this.backgroundColor = Color.BLACK;
         this.isSaved = false;
         this.maxId = 0;
         this.selectedTilePatternId = 0; // none
         this.tilePatterns = new TreeMap<Integer,TilePattern>();
-
-        // compute an id and a name for this tileset
-        this.name = "New tileset";
-        Resource tilesetResource = Project.getResource(ResourceType.TILESET);
-        this.tilesetId = tilesetResource.computeNewId();
-        reloadImage();
-
-        setSaved(true);
-
-        setChanged();
-        notifyObservers();
-    }
-
-    /**
-     * Loads an existing tileset.
-     * @param tilesetId id of the tileset to load
-     * @throws QuestEditorException if the tileset could not be loaded
-     */
-    public Tileset(String tilesetId) throws QuestEditorException {
-        this.selectedTilePatternId = 0; // none
-        this.tilePatterns = new TreeMap<Integer,TilePattern>();
         this.tilesetId = tilesetId;
-        load();
+
+        Resource tilesetResource = Project.getResource(ResourceType.TILESET);
+        if (tilesetResource.exists(tilesetId)) {
+            load();
+        }
+        else {
+            this.name = "New tileset";
+            reloadImage();
+            setSaved(true);
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -170,6 +162,27 @@ public class Tileset extends Observable {
      */
     public String getId() {
         return tilesetId;
+    }
+
+    /**
+     * @brief Returns whether a string is a valid tileset id.
+     * @param mapId The id to check.
+     * @return true if this is legal.
+     */
+    public static boolean isValidId(String tilesetId) {
+
+        if (tilesetId.isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < tilesetId.length(); i++) {
+            char c = tilesetId.charAt(i);
+            if (!Character.isLetterOrDigit(c) && c != '_') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -219,7 +232,6 @@ public class Tileset extends Observable {
 
     /**
      * Reloads the tileset's image.
-     * This function is called when ZSDX root path is changed.
      * The observers are notified with the new image as parameter.
      */
     public void reloadImage() {
@@ -265,33 +277,31 @@ public class Tileset extends Observable {
 
     /**
      * Returns the tileset's image, previously loaded by reloadImage().
-     * @return the tileset's image
+     * @return the tileset's image, or null if the image is not loaded
      */
     public BufferedImage getImage() {
-//         if (image == null) {
-//             reloadImage();
-//         }
         return image;
     }
 
     /**
      * Returns a scaled version of the tileset image, previously loaded by reloadImage().
      * @param zoom an integer representing the scale (0: 25%, 1: 50%, 2: 100%, 3: 200%)
-     * @return the scaled tileset image
+     * @return the scaled tileset image, or null if the image is not loaded
      */
     public BufferedImage getScaledImage(int zoom) {
-//         if (doubleImage == null) {
-//             reloadImage();
-//         }
-        return scaledImages[zoom];
+        return scaledImages == null ? null : scaledImages[zoom];
     }
 
     /**
      * Returns a scaled version of the tileset image, previously loaded by reloadImage().
      * @param zoom the scale (0.25, 0.5, 1 or 2)
-     * @return the scaled tileset image
+     * @return the scaled tileset image, or null if the image is not loaded
      */
     public BufferedImage getScaledImage(double zoom) {
+
+        if (scaledImages == null) {
+            return null;
+        }
 
         int index;
         if (zoom == 0.25) {
@@ -312,10 +322,10 @@ public class Tileset extends Observable {
 
     /**
      * Returns the 200% scaled version of the tileset's image, previously loaded by reloadImage().
-     * @return the tileset's image in 200%
+     * @return the tileset's image in 200%, or null if the image is not loaded
      */
     public BufferedImage getDoubleImage() {
-        return scaledImages[3];
+        return scaledImages == null ? null : scaledImages[3];
     }
 
     /**

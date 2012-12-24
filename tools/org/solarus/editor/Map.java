@@ -117,38 +117,16 @@ public class Map extends Observable {
     public static final int MINIMUM_HEIGHT = 240;
 
     /**
-     * Creates a new map.
-     * @throws QuestEditorException if the resource list could not be updated after the map creation
-     */
-    public Map() throws QuestEditorException {
-        super();
-
-        this.size = new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT);
-        this.location = new Point(0, 0);
-        this.tileset = null;
-        this.tilesetId = "";
-        this.musicId = Music.unchangedId;
-        this.world = "";
-        this.floor = null;
-
-        initialize();
-
-        // compute an id and a name for this map
-        this.name = "New map";
-        Resource mapResource = Project.getResource(ResourceType.MAP);
-        this.mapId = mapResource.computeNewId();
-
-        setChanged();
-        notifyObservers();
-    }
-
-    /**
-     * Loads an existing map.
-     * @param mapId id of the map to load
+     * Creates or loads a map.
+     * @param mapId Id of the map to create (may be a new map or an existing one).
      * @throws QuestEditorException if the map could not be loaded
      */
     public Map(String mapId) throws QuestEditorException {
 
+        if (!isValidId(mapId)) {
+            throw new MapException("Invalid map ID: '" + mapId + "'");
+        }
+
         this.size = new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT);
         this.location = new Point(0, 0);
         this.tileset = null;
@@ -156,10 +134,18 @@ public class Map extends Observable {
         this.musicId = Music.unchangedId;
         this.world = "";
         this.floor = null;
-
         this.mapId = mapId;
         initialize();
-        load();
+
+        Resource mapResource = Project.getResource(ResourceType.MAP);
+        if (mapResource.exists(mapId)) {
+            load();
+        }
+        else {
+            this.name = "New map";
+            setChanged();
+            notifyObservers();
+        }
     }
 
     /**
@@ -181,6 +167,27 @@ public class Map extends Observable {
      */
     public String getId() {
         return mapId;
+    }
+
+    /**
+     * @brief Returns whether a string is a valid map id.
+     * @param mapId The id to check.
+     * @return true if this is legal.
+     */
+    public static boolean isValidId(String mapId) {
+
+        if (mapId.isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < mapId.length(); i++) {
+            char c = mapId.charAt(i);
+            if (!Character.isLetterOrDigit(c) && c != '_') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override

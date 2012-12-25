@@ -28,13 +28,14 @@ local game_2_timeout
 -- Function called when the map starts.
 function map:on_started(destination)
 
-  chest_1:on_empty = open_game_1_chest
-  chest_2:on_empty = open_game_1_chest
-  chest_3:on_empty = open_game_1_chest
+  chest_1.on_empty = open_game_1_chest
+  chest_2.on_empty = open_game_1_chest
+  chest_3.on_empty = open_game_1_chest
   for npc, v in pairs(game_2_slots) do
-    npc:get_sprite():set_frame(v.initial_frame)
-    npc:on_interaction = function()
-      map:activate_slot_machine(npc)
+    v.sprite = npc:get_sprite()
+    v.sprite:set_frame(v.initial_frame)
+    function npc:on_interaction()
+      map:activate_slot_machine(self)
     end
   end
   game_2_man_sprite = game_2_man:get_sprite()
@@ -116,7 +117,7 @@ function map:activate_slot_machine(npc)
       sprite:set_frame_delay(slot.current_delay)
 
       -- test code to win every game:
-      -- for k, v in pairs(game_2_slots) do
+      -- for _, v in pairs(game_2_slots) do
       --    v.symbol = slot.symbol
       --    v.current_delay = slot.current_delay + 100
       --    v.sprite:set_frame_delay(v.current_delay)
@@ -133,30 +134,26 @@ end
 
 function game_1_question_dialog_finished(answer)
 
-  if dialog_id == "rupee_house.game_1.intro" or
-    dialog_id == "rupee_house.game_1.play_again_question" then
+  if answer == 1 then
+    -- the player does not want to play the game
+    map:start_dialog("rupee_house.game_1.not_playing")
+  else
+    -- wants to play game 1
 
-    if answer == 1 then
-      -- the player does not want to play the game
-      map:start_dialog("rupee_house.game_1.not_playing")
+    if map:get_game():get_money() < 20 then
+      -- not enough money
+      sol.audio.play_sound("wrong")
+      map:start_dialog("rupee_house.not_enough_money")
+
     else
-      -- wants to play game 1
+      -- enough money: reset the 3 chests, pay and start the game
+      chest_1:set_open(false)
+      chest_2:set_open(false)
+      chest_3:set_open(false)
 
-      if map:get_game():get_money() < 20 then
-	-- not enough money
-	sol.audio.play_sound("wrong")
-	map:start_dialog("rupee_house.not_enough_money")
-
-      else
-	-- enough money: reset the 3 chests, pay and start the game
-        chest_1:set_open(false)
-        chest_2:set_open(false)
-        chest_3:set_open(false)
-
-	map:get_game():remove_money(20)
-	map:start_dialog("rupee_house.game_1.good_luck")
-	playing_game_1 = true
-      end
+      map:get_game():remove_money(20)
+      map:start_dialog("rupee_house.game_1.good_luck")
+      playing_game_1 = true
     end
   end
 end
@@ -356,6 +353,10 @@ function game_2_timeout()
     end
 
     i = i + 1
+  end
+
+  local function game_2_give_reward()
+    map:get_game():add_money(game_2_reward)
   end
 
   if symbols[1] == symbols[2] and symbols[2] == symbols[3] then

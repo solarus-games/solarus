@@ -1857,8 +1857,8 @@ void LuaContext::on_activated() {
  */
 void LuaContext::on_activated_repeat() {
 
-  if (find_method("on_inactivated_repeat")) {
-    call_function(1, 0, "on_inactivated_repeat");
+  if (find_method("on_activated_repeat")) {
+    call_function(1, 0, "on_activated_repeat");
   }
 }
 

@@ -178,7 +178,7 @@ end
 
 function language_menu:start_title_screen()
 
-  local title_screen = require("screens/title")
+  local title_screen = require("menus/title")
   sol.main:start_menu(title_screen:new())
 end
 

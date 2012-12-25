@@ -222,7 +222,7 @@ end
 
 function title_screen:finish_title()
 
-  local savegame_menu = require("screens/savegames")
+  local savegame_menu = require("menus/savegames")
   sol.audio.stop_music()
   sol.main:start_menu(savegame_menu:new())
 end

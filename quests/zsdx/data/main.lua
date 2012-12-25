@@ -9,7 +9,7 @@ function sol.main:on_started()
   sol.main.load_settings()
 
   -- Just need this here, no need to require globally.
-  local language_menu = require("screens/language")
+  local language_menu = require("menus/language")
 
   -- Show the language menu initially.
   sol.main:start_menu(language_menu:new())

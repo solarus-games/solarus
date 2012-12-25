@@ -149,8 +149,8 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
 
   // 2. Values that used to be built-in in v1 and become pure data in v2.
   savegame_v2.set_string("player_name", get_string(PLAYER_NAME));
-  savegame_v2.set_integer("pause_last_submenu", get_integer(PAUSE_LAST_SUBMENU));
-  savegame_v2.set_integer("pause_inventory_last_item_index", get_integer(INVENTORY_LAST_ITEM_INDEX));
+  savegame_v2.set_integer("pause_last_submenu", get_integer(PAUSE_LAST_SUBMENU) + 1);
+  savegame_v2.set_integer("pause_inventory_last_item_index", get_integer(INVENTORY_LAST_ITEM_INDEX) + 1);
 
   for (int i = 0; i < 40; i++) {
     int index = 200 + i * 10;

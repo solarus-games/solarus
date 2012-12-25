@@ -4,6 +4,7 @@ local game = ...
 sol.main.load_file("dungeons")(game)
 sol.main.load_file("equipment")(game)
 sol.main.load_file("hud/hud")(game)
+sol.main.load_file("menus/pause")(game)
 
 -- Useful functions for this specific quest.
 
@@ -22,9 +23,11 @@ end
 
 function game:on_paused()
   self:hud_on_paused()
+  self:start_pause_menu()
 end
 
 function game:on_unpaused()
+  self:stop_pause_menu()
   self:hud_on_unpaused()
 end
 

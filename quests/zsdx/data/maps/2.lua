@@ -270,12 +270,12 @@ function open_game_1_chest(chest)
     end
 
     -- give the rupees
-    if (amount == 5) then
-      hero:start_treasure("rupee", 2, -1)
-    elseif (amount == 20) then
-      hero:start_treasure("rupee", 3, -1)
-    elseif (amount == 50) then
-      hero:start_treasure("rupee", 4, -1)
+    if amount == 5 then
+      hero:start_treasure("rupee", 2)
+    elseif amount == 20 then
+      hero:start_treasure("rupee", 3)
+    elseif amount == 50 then
+      hero:start_treasure("rupee", 4)
     end
 
     if amount == 50 then

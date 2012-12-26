@@ -251,3 +251,15 @@ SDL_Surface * Surface::get_internal_surface() {
   return internal_surface;
 }
 
+/**
+ * @brief Returns the mapped 32bits pixel from internal pixelFormat to dst_format.
+ *
+ * This method should be used only by low-level classes.
+ *
+ * @return the mapped 32bits pixel
+ */
+uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
+    uint8_t r, g, b, a;
+    SDL_GetRGBA( ((uint32_t*)internal_surface->pixels)[idx_pixel], internal_surface->format, &r, &g, &b, &a);
+    return SDL_MapRGBA(dst_format, r, g, b, a);
+}

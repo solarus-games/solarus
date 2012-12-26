@@ -37,7 +37,7 @@ void TextSurface::initialize() {
   // Load the list of available fonts.
   static const std::string file_name = "text/fonts.dat";
 
-  lua_State* l = lua_open();
+  lua_State* l = luaL_newstate();
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size);

@@ -102,7 +102,7 @@ void Tileset::load() {
   // open the tileset file
   std::string file_name = std::string("tilesets/") + id + ".dat";
 
-  lua_State* l = lua_open();
+  lua_State* l = luaL_newstate();
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size);

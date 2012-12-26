@@ -85,7 +85,7 @@ MainLoop& LuaContext::get_main_loop() {
 void LuaContext::initialize() {
 
   // Create an execution context.
-  l = lua_open();
+  l = luaL_newstate();
   lua_atpanic(l, l_panic);
   luaL_openlibs(l);
 

@@ -36,7 +36,7 @@ bool Settings::load(const std::string& file_name) {
   }
 
   // Read the settings as a Lua data file.
-  lua_State* l = lua_open();
+  lua_State* l = luaL_newstate();
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size);

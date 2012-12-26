@@ -92,7 +92,7 @@ void FileTools::initialize_languages() {
   static const std::string file_name = "languages/languages.dat";
 
   // read the languages file
-  lua_State* l = lua_open();
+  lua_State* l = luaL_newstate();
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(file_name, &buffer, &size);

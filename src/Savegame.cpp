@@ -170,7 +170,7 @@ void Savegame::set_default_joypad_controls() {
 void Savegame::load() {
 
   // Try to parse as Lua first.
-  lua_State* l = lua_open();
+  lua_State* l = luaL_newstate();
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size);

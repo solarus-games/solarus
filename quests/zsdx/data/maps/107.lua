@@ -49,7 +49,7 @@ end
 local function door_b_hint_interaction(npc)
 
   if not door_b:is_open() then
-    local door_b_next = map:get_game():get_value("i1202") + 1
+    local door_b_next = (map:get_game():get_value("i1202") or 0) + 1
     local index = tonumber(npc:get_name():match("^door_b_hint_([1-8])$"))
     if index == door_b_next then
       -- correct

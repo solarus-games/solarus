@@ -79,7 +79,7 @@ function quest_status_submenu:on_started()
 
   -- Pieces of heart.
   local pieces_of_heart_img = sol.surface.create("menus/quest_status_pieces_of_heart.png")
-  local x = 51 * self.game:get_value("i1030")
+  local x = 51 * (self.game:get_value("i1030") or 0)
   local src_surface = sol.surface.create(pieces_of_heart_img, x, 0, 51, 50)
   src_surface:draw(self.quest_items_surface, 101, 82)
   self.caption_text_keys[4] = "quest_status.caption.pieces_of_heart"

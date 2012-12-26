@@ -1,6 +1,57 @@
-320	240	0	-100	0	0	-1	6	none
-1	0	8	13	start_position	3	_none
-0	1	0	0	320	240	3
-0	1	-48	272	320	176	2
-8	1	16	21	fresco	3	0	entities/fresco	map
-10	2	0	0	320	240	black_screen	3	1
+properties{
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  world = "outside_world",
+  tileset = "6",
+}
+
+destination{
+  layer = 0,
+  x = 8,
+  y = 13,
+  name = "start_position",
+  direction = 3,
+}
+
+tile{
+  layer = 1,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  pattern = 3,
+}
+
+tile{
+  layer = 1,
+  x = -48,
+  y = 272,
+  width = 320,
+  height = 176,
+  pattern = 2,
+}
+
+npc{
+  layer = 1,
+  x = 16,
+  y = 21,
+  name = "fresco",
+  direction = 3,
+  subtype = "0",
+  sprite = "entities/fresco",
+  behavior = "map",
+}
+
+dynamic_tile{
+  layer = 2,
+  x = 0,
+  y = 0,
+  width = 320,
+  height = 240,
+  name = "black_screen",
+  pattern = 3,
+  enabled_at_start = true,
+}
+

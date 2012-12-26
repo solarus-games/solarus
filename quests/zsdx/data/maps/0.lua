@@ -1,57 +1,37 @@
-properties{
-  x = 0,
-  y = 0,
-  width = 320,
-  height = 240,
-  world = "outside_world",
-  tileset = "6",
-}
+local map = ...
 
-destination{
-  layer = 0,
-  x = 8,
-  y = 13,
-  name = "start_position",
-  direction = 3,
-}
+-- Intro script.
 
-tile{
-  layer = 1,
-  x = 0,
-  y = 0,
-  width = 320,
-  height = 240,
-  pattern = 3,
-}
+local fresco_index = 0  -- Index of the current fresco.
+local fresco_sprite = nil
 
-tile{
-  layer = 1,
-  x = -48,
-  y = 272,
-  width = 320,
-  height = 176,
-  pattern = 2,
-}
+local function next_fresco()
 
-npc{
-  layer = 1,
-  x = 16,
-  y = 21,
-  name = "fresco",
-  direction = 3,
-  subtype = "0",
-  sprite = "entities/fresco",
-  behavior = "map",
-}
+  if fresco_index < 6 then
+    fresco_index = fresco_index + 1
+    map:start_dialog("intro" .. fresco_index, function()
+      fresco_sprite:fade_out()
+      sol.timer.start(600, next_fresco)
+    end)
+    fresco_sprite:set_animation(fresco_index)
+    fresco_sprite:fade_in()
+  else
+    map:set_dialog_style(0)
+    hero:teleport(28, "from_intro")
+  end
+end
 
-dynamic_tile{
-  layer = 2,
-  x = 0,
-  y = 0,
-  width = 320,
-  height = 240,
-  name = "black_screen",
-  pattern = 3,
-  enabled_at_start = true,
-}
+function map:on_started(destination)
+  hero:freeze()
+  map:get_game():set_hud_enabled(false)
+  map:set_pause_enabled(false)
+  map:set_dialog_style(1)
+  fresco_sprite = fresco:get_sprite()
+  fresco_sprite:set_ignore_suspend(true)
+  map:start_dialog("intro0", function()
+    black_screen:set_enabled(false)
+    sol.audio.play_music("legend")
+    next_fresco()
+  end)
+end
 

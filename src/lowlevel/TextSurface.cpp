@@ -52,7 +52,7 @@ void TextSurface::initialize() {
     // load the font
     size_t size;
     FileTools::data_file_open_buffer(file_name, &fonts[font_id].buffer, &size);
-    fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, size);
+    fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, (int)size);
     fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
     Debug::check_assertion(fonts[font_id].internal_font != NULL, StringConcat() << "Cannot load font from file '" << file_name << "': " << TTF_GetError());
   }

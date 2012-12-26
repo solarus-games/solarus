@@ -344,7 +344,7 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
       << PHYSFS_getLastError());
  
   // save the memory buffer 
-  if (PHYSFS_write(file, buffer, size, 1) == -1) {
+  if (PHYSFS_write(file, buffer, (int)size, 1) == -1) {
     Debug::die(StringConcat() << "Cannot write file '" << file_name
         << "': " << PHYSFS_getLastError());
   }

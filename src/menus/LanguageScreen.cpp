@@ -42,7 +42,7 @@ LanguageScreen::LanguageScreen(Solarus &solarus):
     intermediate_surface = new Surface();
 
     std::map<std::string, std::string> language_map = FileTools::get_languages();
-    nb_languages = language_map.size();
+    nb_languages = (int)language_map.size();
     first_visible_language = 0;
     nb_visible_languages = std::min(nb_languages, max_visible_languages);
     language_texts = new TextSurface*[nb_languages];

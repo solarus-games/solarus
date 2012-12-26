@@ -145,6 +145,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
   if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
+
+  # CFBundle default quest directory.
+  set(DEFAULT_QUEST "../Resources" CACHE STRING "Default quest directory")
 endif()
 
 # solarus options

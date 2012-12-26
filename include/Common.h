@@ -105,7 +105,9 @@
  * @def SOLARUS_SCREEN_SOFTWARE_SURFACE
  * @brief Forces using a software surface for the screen.
  */
-#define SOLARUS_SCREEN_SOFTWARE_SURFACE 0
+#ifndef SOLARUS_SCREEN_SOFTWARE_SURFACE
+#  define SOLARUS_SCREEN_SOFTWARE_SURFACE 0
+#endif
 
 #include "Types.h"
 

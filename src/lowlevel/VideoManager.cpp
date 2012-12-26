@@ -47,11 +47,7 @@ Rectangle VideoManager::default_mode_sizes[] = {
 };
 
 // Properties of SDL surfaces.
-#if defined(SOLARUS_SCREEN_SOFTWARE_SURFACE) && SOLARUS_SCREEN_SOFTWARE_SURFACE != 0
-const int VideoManager::surface_flags = SDL_SWSURFACE;
-#else
 const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
-#endif
 
 /**
  * @brief Switch from windowed to fullscreen or from fullscreen to windowed,

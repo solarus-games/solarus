@@ -101,14 +101,6 @@
 #  endif
 #endif
 
-/**
- * @def SOLARUS_SCREEN_SOFTWARE_SURFACE
- * @brief Forces using a software surface for the screen.
- */
-#ifndef SOLARUS_SCREEN_SOFTWARE_SURFACE
-#  define SOLARUS_SCREEN_SOFTWARE_SURFACE 0
-#endif
-
 #include "Types.h"
 
 #endif

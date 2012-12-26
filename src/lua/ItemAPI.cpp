@@ -552,11 +552,11 @@ int LuaContext::item_api_get_amount(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
 
   if (!item.has_amount()) {
-    luaL_error(l, (StringConcat() <<
-        "Item '" << item.get_name() << "' has no amount").c_str());
+    lua_pushnil(l);
   }
-
-  lua_pushinteger(l, item.get_amount());
+  else {
+    lua_pushinteger(l, item.get_amount());
+  }
   return 1;
 }
 

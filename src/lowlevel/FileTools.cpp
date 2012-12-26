@@ -24,6 +24,10 @@
 #include <physfs.h>
 #include <lua.hpp>
 
+#if defined(SOLARUS_USE_OSX_INTERFACE)
+#   include "lowlevel/osx/OSXInterface.h"
+#endif
+
 std::string FileTools::language_code;
 std::string FileTools::default_language_code;
 std::map<std::string, std::string> FileTools::languages;
@@ -84,7 +88,13 @@ void FileTools::initialize(int argc, char** argv) {
   }
   IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("info");
+
+#if !defined(SOLARUS_USE_OSX_INTERFACE)
   std::string write_dir = (std::string) SOLARUS_WRITE_DIR + "/" + ini.get_string_value("write_dir");
+#else
+  std::string write_dir =  std::string(getUserApplicationSupportDirectory()) 
+                        + (std::string) SOLARUS_WRITE_DIR + "/" + ini.get_string_value("write_dir");
+#endif
   PHYSFS_mkdir(write_dir.c_str());
 
   // then set this directory as the write directory

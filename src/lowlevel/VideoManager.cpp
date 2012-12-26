@@ -47,11 +47,7 @@ Rectangle VideoManager::default_mode_sizes[] = {
 };
 
 // Properties of SDL surfaces.
-#if defined(SOLARUS_SCREEN_SOFTWARE_SURFACE) && SOLARUS_SCREEN_SOFTWARE_SURFACE != 0
-const int VideoManager::surface_flags = SDL_SWSURFACE;
-#else
 const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
-#endif
 
 /**
  * @brief Switch from windowed to fullscreen or from fullscreen to windowed,
@@ -366,15 +362,13 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
   SDL_LockSurface(src_internal_surface);
   SDL_LockSurface(dst_internal_surface);
 
-  uint32_t* src = (uint32_t*) src_internal_surface->pixels;
   uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
 
   int p = offset;
   for (int i = 0; i < SOLARUS_SCREEN_HEIGHT; i++) {
     for (int j = 0; j < SOLARUS_SCREEN_WIDTH; j++) {
-      dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = *src;
+      dst[p] = dst[p + 1] = dst[p + width] = dst[p + width + 1] = src_surface->get_mapped_pixel(i*SOLARUS_SCREEN_WIDTH+j, dst_internal_surface->format);
       p += 2;
-      src++;
     }
 
     p += end_row_increment;
@@ -431,13 +425,13 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
       // compute the color
 
       if (src[b] != src[h] && src[d] != src[f]) {
-        dst[e1] = (src[d] == src[b]) ? src[d] : src[e];
-        dst[e2] = (src[b] == src[f]) ? src[f] : src[e];
-        dst[e3] = (src[d] == src[h]) ? src[d] : src[e];
-        dst[e4] = (src[h] == src[f]) ? src[f] : src[e];
+        dst[e1] = src_surface->get_mapped_pixel((src[d] == src[b]) ? d : e, dst_internal_surface->format);
+        dst[e2] = src_surface->get_mapped_pixel((src[b] == src[f]) ? f : e, dst_internal_surface->format);
+        dst[e3] = src_surface->get_mapped_pixel((src[d] == src[h]) ? d : e, dst_internal_surface->format);
+        dst[e4] = src_surface->get_mapped_pixel((src[h] == src[f]) ? f : e, dst_internal_surface->format);
       }
       else {
-        dst[e1] = dst[e2] = dst[e3] = dst[e4] = src[e];
+        dst[e1] = dst[e2] = dst[e3] = dst[e4] = src_surface->get_mapped_pixel(e, dst_internal_surface->format);
       }
       e1 += 2;
       e++;

@@ -89,16 +89,17 @@ void FileTools::initialize(int argc, char** argv) {
   IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("info");
 
-    //TODO adapt on solarus1.0.0 branch
+  //TODO adapt on solarus1.0.0 branch
 #if !defined(SOLARUS_USE_OSX_INTERFACE)
-    std::string write_dir = (std::string) PHYSFS_getUserDir();
+  std::string write_dir = (std::string) PHYSFS_getUserDir();
 #else
-    std::string write_dir =  std::string( getUserApplicationSupportDirectory() );
+  std::string write_dir =  std::string( getUserApplicationSupportDirectory() );
 #endif
+  write_dir += (std::string) SOLARUS_WRITE_DIR + "/" + ini.get_string_value("write_dir");
+    
   PHYSFS_mkdir(write_dir.c_str());
 
   // then set this directory as the write directory
-  write_dir += (std::string) SOLARUS_WRITE_DIR + "/" + ini.get_string_value("write_dir");
   if (!PHYSFS_setWriteDir(write_dir.c_str())) {
     Debug::die(StringConcat() << "Cannot set write dir '" << write_dir << "': " << PHYSFS_getLastError());
   }

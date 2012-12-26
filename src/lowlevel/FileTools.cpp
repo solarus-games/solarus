@@ -89,13 +89,8 @@ void FileTools::initialize(int argc, char** argv) {
   IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("info");
 
-  //TODO adapt on solarus1.0.0 branch
-#if !defined(SOLARUS_USE_OSX_INTERFACE)
-  std::string write_dir = (std::string) PHYSFS_getUserDir();
-#else
-  std::string write_dir =  std::string( getUserApplicationSupportDirectory() );
-#endif
-  write_dir += (std::string) SOLARUS_WRITE_DIR + "/" + ini.get_string_value("write_dir");
+  std::string write_dir = get_base_write_dir() 
+                        + (std::string) SOLARUS_WRITE_DIR + "/" + ini.get_string_value("write_dir");
     
   PHYSFS_mkdir(write_dir.c_str());
 
@@ -424,5 +419,18 @@ void FileTools::read(std::istream& is, std::string& value) {
   if (!(is >> value)) {
     Debug::die("Cannot read string from input stream");
   }
+}
+
+/**
+ * @brief Return the "privilegied" base write directory, depending on what OS is running
+ * @return The base write directory
+ */
+std::string FileTools::get_base_write_dir() {
+    
+#if !defined(SOLARUS_USE_OSX_INTERFACE)
+  return std::string(PHYSFS_getUserDir());
+#else
+  return std::string(getUserApplicationSupportDirectory());
+#endif
 }
 

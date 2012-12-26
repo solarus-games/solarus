@@ -53,23 +53,9 @@ void LuaContext::add_menu(int menu_ref, int context_index) {
     context = lua_topointer(l, context_index);
   }
 
-  menus[menu_ref] = context;
+  menus.push_back(LuaMenuData(menu_ref, context));
 
   menu_on_started(menu_ref);
-}
-
-/**
- * @brief Unregisters a menu associated to a context.
- * @param menu_ref Lua ref of a menu.
- */
-void LuaContext::remove_menu(int menu_ref) {
-
-  if (menus.count(menu_ref) > 0) {
-
-    menu_on_finished(menu_ref);
-    menus.erase(menu_ref);
-    destroy_ref(menu_ref);
-  }
 }
 
 /**
@@ -89,19 +75,14 @@ void LuaContext::remove_menus(int context_index) {
     context = lua_topointer(l, context_index);
   }
 
-  std::map<int, const void*>::iterator it;
+  std::list<LuaMenuData>::iterator it;
   for (it = menus.begin(); it != menus.end(); ++it) {
-    int menu_ref = it->first;
-    if (it->second == context) {
+    int menu_ref = it->ref;
+    if (it->context == context) {
       menu_on_finished(menu_ref);
-      menus_to_remove.push_back(menu_ref);
+      menus.erase(it);
       destroy_ref(menu_ref);
     }
-  }
-
-  std::list<int>::iterator it2;
-  for (it2 = menus_to_remove.begin(); it2 != menus_to_remove.end(); ++it2) {
-    menus.erase(*it2);
   }
 }
 
@@ -110,10 +91,10 @@ void LuaContext::remove_menus(int context_index) {
  */
 void LuaContext::remove_menus() {
 
-  std::map<int, const void*>::iterator it;
+  std::list<LuaMenuData>::iterator it;
   for (it = menus.begin(); it != menus.end(); ++it) {
 
-    int menu_ref = it->first;
+    int menu_ref = it->ref;
     menu_on_finished(menu_ref);
     destroy_ref(menu_ref);
   }
@@ -149,16 +130,21 @@ int LuaContext::menu_api_start(lua_State *l) {
  */
 int LuaContext::menu_api_stop(lua_State* l) {
 
+  LuaContext& lua_context = get_lua_context(l);
+
   luaL_checktype(l, 1, LUA_TTABLE);
 
   int menu_ref = LUA_REFNIL;
-  std::map<int, const void*>& menus = get_lua_context(l).menus;
-  std::map<int, const void*>::iterator it;
+  std::list<LuaMenuData>& menus = lua_context.menus;
+  std::list<LuaMenuData>::iterator it;
   for (it = menus.begin(); it != menus.end(); it++) {
-    int ref = it->first;
+    int ref = it->ref;
     push_ref(l, ref);
     if (lua_equal(l, 1, -1)) {
       menu_ref = ref;
+      lua_context.menu_on_finished(menu_ref);
+      menus.erase(it);
+      lua_context.destroy_ref(menu_ref);
       break;
     }
   }
@@ -167,7 +153,6 @@ int LuaContext::menu_api_stop(lua_State* l) {
     push_string(l, "Unknown menu.");
     lua_error(l);
   }
-  get_lua_context(l).remove_menu(menu_ref);
 
   return 0;
 }
@@ -300,10 +285,10 @@ void LuaContext::menus_on_update(int context_index) {
     context = lua_topointer(l, context_index);
   }
 
-  std::map<int, const void*>::iterator it;
+  std::list<LuaMenuData>::iterator it;
   for (it = menus.begin(); it != menus.end(); ++it) {
-    int menu_ref = it->first;
-    if (it->second == context) {
+    int menu_ref = it->ref;
+    if (it->context == context) {
       menu_on_update(menu_ref);
     }
   }
@@ -324,10 +309,10 @@ void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
     context = lua_topointer(l, context_index);
   }
 
-  std::map<int, const void*>::iterator it;
+  std::list<LuaMenuData>::iterator it;
   for (it = menus.begin(); it != menus.end(); ++it) {
-    int menu_ref = it->first;
-    if (it->second == context) {
+    int menu_ref = it->ref;
+    if (it->context == context) {
       menu_on_draw(menu_ref, dst_surface);
     }
   }
@@ -349,10 +334,10 @@ bool LuaContext::menus_on_input(int context_index, InputEvent& event) {
   }
 
   bool handled = false;
-  std::map<int, const void*>::reverse_iterator it;
+  std::list<LuaMenuData>::reverse_iterator it;
   for (it = menus.rbegin(); it != menus.rend() && !handled; ++it) {
-    int menu_ref = it->first;
-    if (it->second == context) {
+    int menu_ref = it->ref;
+    if (it->context == context) {
       handled = menu_on_input(menu_ref, event);
     }
   }
@@ -378,10 +363,10 @@ bool LuaContext::menus_on_command_pressed(int context_index,
   }
 
   bool handled = false;
-  std::map<int, const void*>::reverse_iterator it;
+  std::list<LuaMenuData>::reverse_iterator it;
   for (it = menus.rbegin(); it != menus.rend() && !handled; ++it) {
-    int menu_ref = it->first;
-    if (it->second == context) {
+    int menu_ref = it->ref;
+    if (it->context == context) {
       handled = menu_on_command_pressed(menu_ref, command);
     }
   }
@@ -407,10 +392,10 @@ bool LuaContext::menus_on_command_released(int context_index,
   }
 
   bool handled = false;
-  std::map<int, const void*>::reverse_iterator it;
+  std::list<LuaMenuData>::reverse_iterator it;
   for (it = menus.rbegin(); it != menus.rend() && !handled; ++it) {
-    int menu_ref = it->first;
-    if (it->second == context) {
+    int menu_ref = it->ref;
+    if (it->context == context) {
       handled = menu_on_command_released(menu_ref, command);
     }
   }

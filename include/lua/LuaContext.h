@@ -26,6 +26,7 @@
 #include "lowlevel/StringConcat.h"
 #include <map>
 #include <set>
+#include <list>
 #include <lua.hpp>
 
 /**
@@ -174,7 +175,6 @@ class LuaContext {
 
     // Menus.
     void add_menu(int menu_ref, int context_index);
-    void remove_menu(int menu_ref);
     void remove_menus(int context_index);
     void remove_menus();
 
@@ -726,6 +726,19 @@ class LuaContext {
   private:
 
     /**
+     * @brief Data associated to any Lua menu.
+     */
+    struct LuaMenuData {
+      int ref;               /**< Lua ref of the table of the menu. */
+      const void* context;  /**< Lua table or userdata the menu is attached to. */
+
+      LuaMenuData(int ref, const void* context):
+        ref(ref),
+        context(context) {
+      }
+    };
+
+    /**
      * @brief Data associated to any Lua timer.
      */
     struct LuaTimerData {
@@ -941,8 +954,7 @@ class LuaContext {
     lua_State* l;                   /**< The Lua state encapsulated. */
     MainLoop& main_loop;            /**< The Solarus main loop. */
 
-    std::map<int, const void*>
-        menus;                      /**< The menus currently running in their context. */
+    std::list<LuaMenuData> menus;   /**< The menus currently running in their context. */
     std::map<Timer*, LuaTimerData>
         timers;                     /**< The timers currently running, with
                                      * their context and callback. */

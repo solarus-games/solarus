@@ -13,6 +13,7 @@ function game:start_pause_menu()
     quest_status_builder:new(self),
     options_builder:new(self),
   }
+
   local submenu_index = self:get_value("pause_last_submenu") or 1
   if submenu_index <= 0
       or submenu_index > #self.pause_submenus then

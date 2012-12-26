@@ -65,8 +65,9 @@ end
 -- Sets the caption text.
 -- The caption text can have one or two lines, with 20 characters maximum for each line.
 -- If the text you want to display has two lines, use the '$' character to separate them.
-function submenu:set_caption(text)
+function submenu:set_caption(text_key)
 
+  local text = sol.language.get_string(text_key)
   local line1, line2 = text:match("([^$]+)\$(.*)")
   if line1 == nil then
     -- Only one line.
@@ -95,20 +96,22 @@ function submenu:next_submenu()
 
   sol.audio.play_sound("pause_closed")
   sol.menu.stop(self)
+  local submenus = self.game.pause_submenus
   local submenu_index = self.game:get_value("pause_last_submenu")
-  submenu_index = (submenu_index % 4) + 1
+  submenu_index = (submenu_index % #submenus) + 1
   self.game:set_value("pause_last_submenu", submenu_index)
-  sol.menu.start(self.game, self.game.pause_submenus[submenu_index])
+  sol.menu.start(self.game, submenus[submenu_index])
 end
 
 function submenu:previous_submenu()
 
   sol.audio.play_sound("pause_closed")
   sol.menu.stop(self)
+  local submenus = self.game.pause_submenus
   local submenu_index = self.game:get_value("pause_last_submenu")
-  submenu_index = (submenu_index + 2) % 4 + 1
+  submenu_index = (submenu_index + 2) % #submenus + 1
   self.game:set_value("pause_last_submenu", submenu_index)
-  sol.menu.start(self.game, self.game.pause_submenus[submenu_index])
+  sol.menu.start(self.game, submenus[submenu_index])
 end
 
 function submenu:on_command_pressed(command)

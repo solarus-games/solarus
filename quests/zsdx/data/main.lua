@@ -58,17 +58,31 @@ function sol.main:debug_on_key_pressed(key, modifiers)
     elseif key == "kp 9" then
       game:set_max_magic(84)
     elseif key == "kp 1" then
-      game:set_ability("tunic", math.max(1, game:get_ability("tunic") - 1))
+      local tunic = game:get_item("tunic")
+      local variant = math.max(1, tunic:get_variant() - 1)
+      tunic:set_variant(variant)
+      game:set_ability("tunic", variant)
     elseif key == "kp 4" then
-      game:set_ability("tunic", math.min(3, game:get_ability("tunic") + 1))
+      local tunic = game:get_item("tunic")
+      local variant = math.min(3, tunic:get_variant() + 1)
+      tunic:set_variant(variant)
+      game:set_ability("tunic", variant)
     elseif key == "kp 2" then
-      game:set_ability("sword", math.max(0, game:get_ability("sword") - 1))
+      local sword = game:get_item("sword")
+      local variant = math.max(1, sword:get_variant() - 1)
+      sword:set_variant(variant)
     elseif key == "kp 5" then
-      game:set_ability("sword", math.min(4, game:get_ability("sword") + 1))
+      local sword = game:get_item("sword")
+      local variant = math.min(4, sword:get_variant() + 1)
+      sword:set_variant(variant)
     elseif key == "kp 3" then
-      game:set_ability("shield", math.max(0, game:get_ability("shield") - 1))
+      local shield = game:get_item("shield")
+      local variant = math.max(1, shield:get_variant() - 1)
+      shield:set_variant(variant)
     elseif key == "kp 6" then
-      game:set_ability("shield", math.min(3, game:get_ability("shield") + 1))
+      local shield = game:get_item("shield")
+      local variant = math.min(3, shield:get_variant() + 1)
+      shield:set_variant(variant)
     elseif key == "g" and hero ~= nil then
       local x, y, layer = hero:get_position()
       if layer ~= 0 then

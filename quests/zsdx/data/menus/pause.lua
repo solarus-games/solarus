@@ -13,37 +13,24 @@ function game:start_pause_menu()
     quest_status_builder:new(self),
     options_builder:new(self),
   }
-  self.pause_submenu_index = self:get_value("pause_last_submenu") or 1
-  if self.pause_submenu_index <= 0
-      or self.pause_submenu_index > #self.pause_submenus then
-    self.pause_submenu_index = 1
+  local submenu_index = self:get_value("pause_last_submenu") or 1
+  if submenu_index <= 0
+      or submenu_index > #self.pause_submenus then
+    submenu_index = 1
   end
+  self:set_value("pause_last_submenu", submenu_index)
 
   sol.audio.play_sound("pause_open")
-  sol.menu.start(self, self.pause_submenus[self.pause_submenu_index])
+  sol.menu.start(self, self.pause_submenus[submenu_index])
 end
 
 function game:stop_pause_menu()
 
   sol.audio.play_sound("pause_closed")
-  sol.menu.stop(self.pause_submenus[self.pause_submenu_index])
+  local submenu_index = self:get_value("pause_last_submenu")
+  sol.menu.stop(self.pause_submenus[submenu_index])
   self.pause_submenus = {}
-  self:set_value("pause_last_submenu", self.pause_submenu_index)
-end
-
-function game:next_pause_submenu()
-
-  sol.audio.play_sound("pause_closed")
-  sol.menu.stop(self.pause_submenus[self.pause_submenu_index])
-  self.pause_submenu_index = (self.pause_submenu_index % 4) + 1
-  sol.menu.start(self, self.pause_submenus[self.pause_submenu_index])
-end
-
-function game:previous_pause_submenu()
-
-  sol.audio.play_sound("pause_closed")
-  sol.menu.stop(self.pause_submenus[self.pause_submenu_index])
-  self.pause_submenu_index = (self.pause_submenu_index + 2) % 4 + 1
-  sol.menu.start(self, self.pause_submenus[self.pause_submenu_index])
+  self:set_custom_command_effect("action", nil)
+  self:set_custom_command_effect("attack", nil)
 end
 

@@ -694,10 +694,18 @@ void Game::set_paused(bool paused) {
 
     this->paused = paused;
     if (paused) {
+      keys_effect->save_action_key_effect();
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+      keys_effect->save_sword_key_effect();
+      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
+      keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_RETURN);
       get_lua_context().game_on_paused(*this);
     }
     else {
       get_lua_context().game_on_unpaused(*this);
+      keys_effect->restore_action_key_effect();
+      keys_effect->restore_sword_key_effect();
+      keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_PAUSE);
     }
   }
 }

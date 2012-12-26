@@ -22,7 +22,7 @@ function action_icon:initialize(game)
   self.current_icon_img = nil
   self.icon_flip_sprite = sol.sprite.create("hud/action_icon_flip")
   self.is_flipping = false
-  self.effect_displayed = game:get_command_effect("action")
+  self.effect_displayed = game.hud.custom_command_effects["action"] or game:get_command_effect("action")
   self:create_icon_img()
 
   local action_icon = self
@@ -74,7 +74,7 @@ function action_icon:check()
   local need_rebuild = false
 
   if not self.flipping then
-    local effect = self.game:get_command_effect("action")
+    local effect = self.game.hud.custom_command_effects["action"] or self.game:get_command_effect("action")
     if effect ~= self.effect_displayed then
       if self.effect_displayed ~= nil then
         if effect ~= nil then

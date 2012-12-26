@@ -16,6 +16,7 @@ function game:initialize_hud()
   self.hud = {  -- Array for the hud elements, table for other hud info.
     showing_dialog = false,
     top_left_opacity = 255,
+    custom_command_effects = {},
   }
 
   local menu = hearts_builder:new(self)
@@ -166,5 +167,20 @@ function game:set_hud_enabled(hud_enabled)
       end
     end
   end
+end
+
+function game:get_custom_command_effect(command)
+
+  return self.hud.custom_command_effects[command]
+end
+
+-- Make the action (or attack) icon show something else than the
+-- built-in effect or the action (or attack) command.
+-- You are responsible to override the command if you don't want the built-in
+-- effect to be performed.
+-- Set the effect to nil to show the built-in effect again.
+function game:set_custom_command_effect(command, effect)
+
+  self.hud.custom_command_effects[command] = effect
 end
 

@@ -80,7 +80,7 @@ void LuaContext::remove_menus(int context_index) {
     int menu_ref = it->ref;
     if (it->context == context) {
       menu_on_finished(menu_ref);
-      menus.erase(it);
+      menus.erase(it--);
       destroy_ref(menu_ref);
     }
   }

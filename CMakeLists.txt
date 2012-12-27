@@ -50,7 +50,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(source_files
     ${source_files}
     src/lowlevel/osx/SDLMain.m
+    src/lowlevel/osx/OSXInterface.mm
     include/lowlevel/osx/SDLMain.h
+    include/lowlevel/osx/OSXInterface.h
   )
 endif()
 
@@ -104,35 +106,47 @@ set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
 # Compilation flags for Mac OS X deployment
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Release")
+  # Build architectures
   if(SOLARUS_ARCH)
     set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Chosen build architecture" FORCE)
   else()
-    if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
-      set(CMAKE_OSX_ARCHITECTURES "ppc;" CACHE STRING "PPC build architecture" FORCE)
-    endif()
-    set(CMAKE_OSX_ARCHITECTURES "${CMAKE_OSX_ARCHITECTURES}i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
+    set(CMAKE_OSX_ARCHITECTURES "i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
   endif()
 
+  # SDK version
   if(SOLARUS_SYSROOT)
-    set(CMAKE_OSX_SYSROOT "${SOLARUS_SYSROOT}" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
-  else()
-    if(EXISTS /Developer/SDKs/MacOSX10.5.sdk)
-      set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk" CACHE STRING "Default OS version whose headers you'll use" FORCE)
-    endif()
+    set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_SYSROOT}.sdk" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
+    if(SOLARUS_SYSROOT VERSION_LESS 10.6)
+      add_definitions(-DSOLARUS_DONT_USE_OSX_SANDBOX) 
+     endif()
   endif()
 
+  # Deployment version
   if(SOLARUS_DEPLOYMENT)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Chosen oldest OS version supported" FORCE)
   else()
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.5" CACHE STRING "Default oldest OS version supported" FORCE)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.6" CACHE STRING "Default oldest OS version supported" FORCE)
   endif()
   
+  # Embed library search path
   if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
+    set(SOLARUS_OSX_RPATH "@rpath/")
+  else()
+    set(SOLARUS_OSX_RPATH "@executable_path/../Frameworks/")
   endif()
+  set_target_properties(solarus PROPERTIES 
+      BUILD_WITH_INSTALL_RPATH 1 
+      INSTALL_NAME_DIR ${SOLARUS_OSX_RPATH}	
+  )
+
+  # Compatiblity settings
   if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
+
+  # CFBundle default quest directory.
+  set(DEFAULT_QUEST "../Resources" CACHE STRING "Default quest directory")
 endif()
 
 # solarus options
@@ -147,7 +161,8 @@ if(DEFAULT_QUEST)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(DEFAULT_WRITE_DIR "Library/Application Support/Solarus")
+  add_definitions(-DSOLARUS_USE_OSX_INTERFACE)
+  set(DEFAULT_WRITE_DIR "Solarus")
 else()
   set(DEFAULT_WRITE_DIR ".solarus")
 endif()
@@ -190,15 +205,6 @@ endif()
 set(SCREEN_FORCE_MODE ${DEFAULT_SCREEN_FORCE_MODE} CACHE INTEGER "Video mode to force (-1 means no restriction).")
 if(SCREEN_FORCE_MODE)
   add_definitions(-DSOLARUS_SCREEN_FORCE_MODE=${SCREEN_FORCE_MODE})
-endif()
-
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  option(SCREEN_SOFTWARE_SURFACE "Use a software surface for the screen." ON)
-else()
-  option(SCREEN_SOFTWARE_SURFACE "Use a software surface for the screen." OFF)
-endif()
-if(SCREEN_SOFTWARE_SURFACE)
-  add_definitions(-DSOLARUS_SCREEN_SOFTWARE_SURFACE=\"${SCREEN_SOFTWARE_SURFACE}\")
 endif()
 
 # files to install with make install

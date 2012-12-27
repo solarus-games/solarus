@@ -92,7 +92,7 @@
  * @brief Forces a unique video mode.
  */
 #ifndef SOLARUS_SCREEN_FORCE_MODE
-#  ifdef CAANOO
+#  if defined(CAANOO)
 #    define SOLARUS_SCREEN_FORCE_MODE 2
 #  elif defined(PANDORA)
 #    define SOLARUS_SCREEN_FORCE_MODE 5
@@ -102,15 +102,12 @@
 #endif
 
 /**
- * @def SOLARUS_SCREEN_SOFTWARE_SURFACE
- * @brief Forces using a software surface for the screen.
+ * @def SOLARUS_USE_OSX_INTERFACE
+ * @brief Forces using Apple's API on OSX system.
  */
-#ifndef SOLARUS_SCREEN_SOFTWARE_SURFACE
-// On Mac OS X, SDL hardware surfaces are buggy.
+#ifndef SOLARUS_USE_OSX_INTERFACE
 #  ifdef __APPLE__
-#    define SOLARUS_SCREEN_SOFTWARE_SURFACE 1
-#  else
-#    define SOLARUS_SCREEN_SOFTWARE_SURFACE 0
+#    define SOLARUS_USE_OSX_INTERFACE 1
 #  endif
 #endif
 

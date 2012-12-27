@@ -73,15 +73,16 @@ class FileTools {
 
   private:
 
+    static std::string get_base_write_dir();
+    static void initialize_languages();
+    static int l_language(lua_State* l);
+
     static std::string solarus_write_dir;                /**< Directory where the engine can write files, relative to the user's home. */
     static std::string quest_write_dir;                  /**< Write directory of the current quest, relative to solarus_write_dir. */
 
     static std::map<std::string, std::string> languages; /**< The languages available (code -> language name). */
     static std::string language_code;                    /**< Code of the current language (e.g. "en", "fr", etc.). */
     static std::string default_language_code;            /**< Code of the default language. */
-
-    static void initialize_languages();
-    static int l_language(lua_State* l);
 };
 
 #endif

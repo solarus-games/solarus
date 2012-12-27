@@ -285,6 +285,22 @@ SDL_Surface* Surface::get_internal_surface() {
 }
 
 /**
+ * @brief Returns the mapped 32bits pixel from internal SDL_PixelFormat to dst_format.
+ *
+ * This method should be used only by low-level classes, and after lock source internal_surface.
+ *
+ * @param idx_pixel the index of the pixel to convert
+ * @param dst_format the destination format
+ * @return the mapped 32bits pixel
+ */
+uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
+
+  uint8_t r, g, b, a;
+  SDL_GetRGBA(((uint32_t*) internal_surface->pixels)[idx_pixel], internal_surface->format, &r, &g, &b, &a);
+  return SDL_MapRGBA(dst_format, r, g, b, a);
+}
+
+/**
  * @brief Returns the name identifying this type in Lua.
  * @return the name identifying this type in Lua
  */

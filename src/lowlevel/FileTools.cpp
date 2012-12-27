@@ -22,9 +22,12 @@
 #include <physfs.h>
 #include <lua.hpp>
 
+#if defined(SOLARUS_USE_OSX_INTERFACE) && SOLARUS_USE_OSX_INTERFACE != 0
+#  include "lowlevel/osx/OSXInterface.h"
+#endif
+
 std::string FileTools::solarus_write_dir;
 std::string FileTools::quest_write_dir;
-
 std::string FileTools::language_code;
 std::string FileTools::default_language_code;
 std::map<std::string, std::string> FileTools::languages;
@@ -405,7 +408,7 @@ const std::string& FileTools::get_solarus_write_dir() {
  * You normally don't need to change this, it should have been set correctly
  * at compilation time to a value that depends on the target system.
  *
- * @returns The directory where the engine can write files, relative to the user's directory.
+ * @returns The directory where the engine can write files, relative to the base write directory.
  */
 void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
@@ -418,11 +421,11 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
   }
 
   // Create the directory.
-  PHYSFS_mkdir(solarus_write_dir.c_str());
-  const std::string& full_solarus_write_dir = PHYSFS_getUserDir() + solarus_write_dir;
-  if (!PHYSFS_setWriteDir(full_solarus_write_dir.c_str())) {
+  std::string write_dir = get_base_write_dir() + solarus_write_dir;
+  PHYSFS_mkdir(write_dir.c_str());
+  if (!PHYSFS_setWriteDir(write_dir.c_str())) {
     Debug::die(StringConcat() << "Cannot set Solarus write directory to '"
-        << solarus_write_dir << "': " << PHYSFS_getLastError());
+        << write_dir << "': " << PHYSFS_getLastError());
   }
 
   // The quest subdirectory may be new, create it if needed.
@@ -468,5 +471,18 @@ void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
  */
 const std::string FileTools::get_full_quest_write_dir() {
   return std::string(PHYSFS_getUserDir()) + "/" + get_solarus_write_dir() + "/" + get_quest_write_dir();
+}
+
+/**
+ * @brief Returns the privilegied base write directory, depending on the OS.
+ * @return The base write directory.
+ */
+std::string FileTools::get_base_write_dir() {
+    
+#if defined(SOLARUS_USE_OSX_INTERFACE) && SOLARUS_USE_OSX_INTERFACE != 0
+  return std::string(getUserApplicationSupportDirectory());
+#else
+  return std::string(PHYSFS_getUserDir());
+#endif
 }
 

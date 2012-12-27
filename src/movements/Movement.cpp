@@ -147,11 +147,11 @@ void Movement::set_xy(int x, int y) {
 
   if (entity != NULL) {
     entity->set_xy(x, y);
-    notify_position_changed();
   }
   else {
     this->xy.set_xy(x, y);
   }
+  notify_position_changed();
 
   last_move_date = System::now();
 }

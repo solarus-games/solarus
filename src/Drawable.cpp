@@ -139,8 +139,9 @@ void Drawable::update() {
     if (transition->is_finished()) {
 
       if (lua_context != NULL) {
-        lua_context->do_callback(transition_callback_ref);
+        int ref = transition_callback_ref;
         transition_callback_ref = LUA_REFNIL;
+        lua_context->do_callback(ref);
       }
       stop_transition();
     }
@@ -151,8 +152,9 @@ void Drawable::update() {
     if (movement->is_finished()) {
 
       if (lua_context != NULL) {
-        lua_context->do_callback(movement_callback_ref);
+        int ref = movement_callback_ref;
         movement_callback_ref = LUA_REFNIL;
+        lua_context->do_callback(ref);
       }
       stop_movement();
     }

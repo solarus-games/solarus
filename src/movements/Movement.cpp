@@ -347,9 +347,7 @@ void Movement::update() {
 
   if (!finished && is_finished()) {
     finished = true;
-    if (entity != NULL && !entity->is_being_removed()) {
-      notify_movement_finished();
-    }
+    notify_movement_finished();
   }
   else if (finished && !is_finished()) {
     finished = false;

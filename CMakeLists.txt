@@ -205,5 +205,9 @@ endif()
 # files to install with make install
 install(TARGETS	solarus
   RUNTIME DESTINATION bin
-)
+) 
+
+if(SOLARUS_OSX_BUNDLE)
+  include("${SOLARUS_ENGINE_SOURCE_DIR}/cmake/osx/bundle/CMakeLists.txt")
+endif()
 

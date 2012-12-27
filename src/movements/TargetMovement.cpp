@@ -88,6 +88,7 @@ void TargetMovement::set_target(int target_x, int target_y) {
 
   this->target_x = target_x;
   this->target_y = target_y;
+  this->target_entity = NULL;
   recompute_movement();
   next_recomputation_date = System::now() + recomputation_delay;
 }
@@ -99,8 +100,6 @@ void TargetMovement::set_target(int target_x, int target_y) {
 void TargetMovement::set_target(MapEntity* target_entity) {
 
   this->target_entity = target_entity;
-  this->target_x = target_x;
-  this->target_y = target_y;
   recompute_movement();
   next_recomputation_date = System::now() + recomputation_delay;
 }

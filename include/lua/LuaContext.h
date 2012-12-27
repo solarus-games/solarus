@@ -431,6 +431,8 @@ class LuaContext {
 
       // Movement API.
       movement_api_create,
+      movement_api_get_xy,
+      movement_api_set_xy,
       movement_api_get_ignore_obstacles,
       movement_api_set_ignore_obstacles,
       movement_api_get_direction4,

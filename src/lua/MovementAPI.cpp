@@ -58,6 +58,8 @@ void LuaContext::register_movement_module() {
 
   // methods common to all movement types
   static const luaL_Reg common_methods[] = {
+      { "get_xy", movement_api_get_xy },
+      { "set_xy", movement_api_set_xy },
       { "get_ignore_obstacles", movement_api_get_ignore_obstacles },
       { "set_ignore_obstacles", movement_api_set_ignore_obstacles },
       { "get_direction4", movement_api_get_direction4 },
@@ -323,6 +325,36 @@ int LuaContext::movement_api_create(lua_State* l) {
 
   push_movement(l, *movement);
   return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_movement_get_xy.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::movement_api_get_xy(lua_State* l) {
+
+  Movement& movement = check_movement(l, 1);
+
+  lua_pushinteger(l, movement.get_x());
+  lua_pushinteger(l, movement.get_y());
+  return 2;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_movement_set_xy.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::movement_api_set_xy(lua_State* l) {
+
+  Movement& movement = check_movement(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
+
+  movement.set_xy(x, y);
+
+  return 0;
 }
 
 /**

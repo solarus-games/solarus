@@ -24,7 +24,7 @@
 #include <physfs.h>
 #include <lua.hpp>
 
-#if defined(SOLARUS_USE_OSX_INTERFACE)
+#if defined(SOLARUS_USE_OSX_INTERFACE) && SOLARUS_USE_OSX_INTERFACE != 0
 #   include "lowlevel/osx/OSXInterface.h"
 #endif
 
@@ -427,10 +427,10 @@ void FileTools::read(std::istream& is, std::string& value) {
  */
 std::string FileTools::get_base_write_dir() {
     
-#if !defined(SOLARUS_USE_OSX_INTERFACE)
-  return std::string(PHYSFS_getUserDir());
-#else
+#if defined(SOLARUS_USE_OSX_INTERFACE) && SOLARUS_USE_OSX_INTERFACE != 0
   return std::string(getUserApplicationSupportDirectory());
+#else
+  return std::string(PHYSFS_getUserDir());
 #endif
 }
 

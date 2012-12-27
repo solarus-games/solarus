@@ -108,8 +108,6 @@
 #ifndef SOLARUS_USE_OSX_INTERFACE
 #  ifdef __APPLE__
 #    define SOLARUS_USE_OSX_INTERFACE 1
-#  else
-#    define SOLARUS_USE_OSX_INTERFACE 0
 #  endif
 #endif
 

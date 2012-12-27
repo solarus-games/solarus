@@ -213,6 +213,12 @@ class LuaContext {
     void sprite_on_animation_finished(Sprite& sprite, const std::string& animation);
     void sprite_on_frame_changed(Sprite& sprite, const std::string& animation, int frame);
 
+    // Movement events.
+    void movement_on_position_changed(Movement& movement);
+    void movement_on_obstacle_reached(Movement& movement);
+    void movement_on_changed(Movement& movement);
+    void movement_on_finished(Movement& movement);
+
     // Equipment item events.
     void item_on_update(EquipmentItem& item);
     void item_on_suspended(EquipmentItem& item, bool suspended);
@@ -890,6 +896,9 @@ class LuaContext {
     bool on_command_released(GameCommands::Command command);
     void on_animation_finished(const std::string& animation);
     void on_frame_changed(const std::string& animation, int frame);
+    void on_position_changed();
+    void on_obstacle_reached();
+    void on_changed();
     void on_started(Destination* destination);
     void on_opening_transition_finished(Destination* destination);
     void on_camera_back();

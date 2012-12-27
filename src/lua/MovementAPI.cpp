@@ -251,6 +251,8 @@ Movement& LuaContext::check_movement(lua_State* l, int index) {
  * @param movement a movement
  */
 void LuaContext::push_movement(lua_State* l, Movement& movement) {
+
+  movement.set_lua_context(&get_lua_context(l));  // To make callbacks work.
   push_userdata(l, movement);
 }
 
@@ -1455,5 +1457,49 @@ int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
   int delay = luaL_checkinteger(l, 2);
   movement.set_delay(delay);
   return 0;
+}
+
+/**
+ * @brief Calls the on_position_changed() method of a Lua movement.
+ * @param movement A movement.
+ */
+void LuaContext::movement_on_position_changed(Movement& movement) {
+
+  push_movement(l, movement);
+  on_position_changed();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_obstacle_reached() method of a Lua movement.
+ * @param movement A movement.
+ */
+void LuaContext::movement_on_obstacle_reached(Movement& movement) {
+
+  push_movement(l, movement);
+  on_obstacle_reached();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_changed() method of a Lua movement.
+ * @param movement A movement.
+ */
+void LuaContext::movement_on_changed(Movement& movement) {
+
+  push_movement(l, movement);
+  on_changed();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_finished() method of a Lua movement.
+ * @param movement A movement.
+ */
+void LuaContext::movement_on_finished(Movement& movement) {
+
+  push_movement(l, movement);
+  on_finished();
+  lua_pop(l, 1);
 }
 

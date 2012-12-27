@@ -16,6 +16,7 @@
  */
 #include "movements/Movement.h"
 #include "entities/MapEntity.h"
+#include "lua/LuaContext.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "Map.h"
@@ -203,6 +204,10 @@ void Movement::translate_xy(const Rectangle &dxy) {
  */
 void Movement::notify_position_changed() {
 
+  if (lua_context != NULL) {
+    lua_context->movement_on_position_changed(*this);
+  }
+
   if (entity != NULL && !entity->is_being_removed()) {
     entity->notify_position_changed();
   }
@@ -213,6 +218,10 @@ void Movement::notify_position_changed() {
  * because of obstacles.
  */
 void Movement::notify_obstacle_reached() {
+
+  if (lua_context != NULL) {
+    lua_context->movement_on_obstacle_reached(*this);
+  }
 
   if (entity != NULL && !entity->is_being_removed()) {
     entity->notify_obstacle_reached();
@@ -225,6 +234,10 @@ void Movement::notify_obstacle_reached() {
  */
 void Movement::notify_movement_changed() {
 
+  if (lua_context != NULL) {
+    lua_context->movement_on_changed(*this);
+  }
+
   if (entity != NULL && !entity->is_being_removed()) {
     entity->notify_movement_changed();
   }
@@ -234,6 +247,10 @@ void Movement::notify_movement_changed() {
  * @brief Notifies this movement that it has just finished.
  */
 void Movement::notify_movement_finished() {
+
+  if (lua_context != NULL) {
+    lua_context->movement_on_finished(*this);
+  }
 
   if (entity != NULL && !entity->is_being_removed()) {
     entity->notify_movement_finished();

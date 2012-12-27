@@ -1761,6 +1761,36 @@ void LuaContext::on_frame_changed(const std::string& animation, int frame) {
 }
 
 /**
+ * @brief Calls the on_position_changed() method of the object on top of the stack.
+ */
+void LuaContext::on_position_changed() {
+
+  if (find_method("on_position_changed")) {
+    call_function(1, 0, "on_position_changed");
+  }
+}
+
+/**
+ * @brief Calls the on_obstacle_reached() method of the object on top of the stack.
+ */
+void LuaContext::on_obstacle_reached() {
+
+  if (find_method("on_obstacle_reached")) {
+    call_function(1, 0, "on_obstacle_reached");
+  }
+}
+
+/**
+ * @brief Calls the on_changed() method of the object on top of the stack.
+ */
+void LuaContext::on_changed() {
+
+  if (find_method("on_changed")) {
+    call_function(1, 0, "on_changed");
+  }
+}
+
+/**
  * @brief Calls the on_started() method of the object on top of the stack.
  * @param destination The destination point used (NULL if it's a special one).
  */

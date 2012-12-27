@@ -82,6 +82,8 @@ Sprite& LuaContext::check_sprite(lua_State* l, int index) {
  * @param sprite a sprite
  */
 void LuaContext::push_sprite(lua_State* l, Sprite& sprite) {
+
+  sprite.set_lua_context(&get_lua_context(l));  // To make callbacks work.
   push_userdata(l, sprite);
 }
 

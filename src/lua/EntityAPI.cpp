@@ -589,7 +589,6 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
   const std::string& animation_set_id = luaL_checkstring(l, 2);
 
   Sprite& sprite = entity.create_sprite(animation_set_id, true);
-  sprite.set_lua_context(&get_lua_context(l));
 
   push_sprite(l, sprite);
   return 1;

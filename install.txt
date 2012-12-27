@@ -179,40 +179,38 @@ It is necessary to additionally link with libz.
 ---------------------
 
 * Compile on OSX
-The Apple port of solarus currently doesn't use XCode, so you can compile 
-solarus just by doing the default setting with cmake.
+You can compile solarus just by doing the default setting with cmake, or generate the XCode project. Note that if you use XCode, you 
+probably want to pass the SOLARUS_OSX_BUNDLE flag too.
+
 If you got some error on the cmake part, you can edit the CMakeCache.txt to
 manually write the include and library directories that cmake did not find.
 
 By default, you will build against the 10.5 SDK if available, configure 
 10.5 as minimum system version required and produce a multiple
 architectures (Intel 32+64bit, and PPC 32bit) application. 
-Pass SOLARUS_SYSROOT, SOLARUS_DEPLOYMENT or/and SOLARUS_ARCH constants to
-cmake to overload default settings, just like the following example :
+If you build against older SDK, it still works but you will have to pass some additional flag to cmake.
+Here is an example where cmake will produce a CFBundle, build against 10.5 SDK and keep 10.5 full compatibilty.
 
-$ cmake -DSOLARUS_ARCH="ppc;i386" -DSOLARUS_DEPLOYMENT=10.1 .
-
-You also can check what is your binary arch compatibility with
-
-$ file /dylib/or/binary/I/want/to/check
+$ cmake -DSOLARUS_OSX_BUNDLE=1 -DSOLARUS_SYSROOT="10.5" -DSOLARUS_ARCH="ppc;i386;x86_64" -DSOLARUS_DEPLOYMENT=10.5 .
 
 
 * Deploy on OSX
-To deploy a bundle, you need to add a few things to your project.
-The final application is a .app suffixed folder, which typcially contains 
-the executable and all resources it needs. We usually make it once, so you
-should use the one from the official application available on the solarus 
-website, but you perfectly can make your own one.
+You will only build the executable with the default command.
+To build the entire bundle, pass the following flag to cmake
 
-All non-Mac-native frameworks are placed in Solarus.app/Contents/Frameworks/
+$ cmake -DSOLARUS_OSX_BUNDLE=1 .
+
+The final application is a .app suffixed folder, which typcially contains 
+the executable and all resources it needs.
+Pass BUNDLE_NAME , QUEST_PATH , INFOPLIST_PATH and ICON_PATH flags in addition to SOLARUS_OSX_BUNDLE to specify your own configuration.
+
+All non-Mac-native frameworks are placed in ${BUNDLE_NAME}.app/Contents/Frameworks/
 and the main binary and its quest in Solarus.app/Contents/Resources/
 First, you have to check if dependencies search path are correctly integrated,
 just by doing
 
 $ otool -L /dylib/or/binary/I/want/to/check
 
-This command is to use on all dylib, framework binary and the main binary.
-(if you use the "official" bundle, just do it on main binary).
 It show the search path for every dependencies. Just look on the one you embed.
 If one of them has a wrong path, you can modify it with
 

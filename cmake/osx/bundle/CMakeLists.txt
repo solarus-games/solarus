@@ -9,6 +9,7 @@
 # the Bundle.
 # You can add a quest to the project with QUEST_PATH flag, or let it empty 
 # to create a generic solarus Bundle, and add a quest later into it.
+# A default icon and info.plist template are provided.
 #
 # Exportable to XCode
 #
@@ -45,7 +46,7 @@ if(CMAKE_VERSION VERSION_LESS 2.8.11)
   message(WARNING ".framework embed library will not be correctly copied. See http://public.kitware.com/Bug/view.php?id=13784")
 endif()
 add_executable(${BUNDLE_NAME} MACOSX_BUNDLE
-        ${main_source_file}
+		${main_source_file}
 		${ICON_PATH} 
 		${QUEST_PATH}
 

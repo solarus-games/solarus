@@ -57,7 +57,7 @@ Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   size_t size;
   char* buffer;
   FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
-  SDL_RWops* rw = SDL_RWFromMem(buffer, (int)size);
+  SDL_RWops* rw = SDL_RWFromMem(buffer, int(size));
   this->internal_surface = IMG_Load_RW(rw, 0);
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);

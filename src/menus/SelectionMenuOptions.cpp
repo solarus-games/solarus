@@ -249,7 +249,7 @@ void SelectionMenuOptions::load_configuration() {
   // compute the list of languages and set the current one
   std::map<std::string, std::string> language_names = FileTools::get_languages();
   const std::string &current_language_code = Configuration::get_value("language", FileTools::get_default_language());
-  nb_values[0] = (int)language_names.size();
+  nb_values[0] = int(language_names.size());
   all_values[0] = new std::string[nb_values[0]];
   language_codes = new std::string[nb_values[0]];
   std::map<std::string, std::string>::iterator it;

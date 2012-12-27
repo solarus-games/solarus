@@ -155,9 +155,7 @@ void PixelMovement::restart() {
     trajectory_iterator = trajectory.begin();
     next_move_date = System::now() + delay;
 
-    if (get_entity() != NULL) {
-      get_entity()->notify_movement_changed();
-    }
+    notify_movement_changed();
   }
 }
 

@@ -65,6 +65,8 @@ void LuaContext::register_movement_module() {
   };
   static const luaL_Reg common_metamethods[] = {
       { "__gc", userdata_meta_gc },
+      { "__newindex", userdata_meta_newindex_as_table },
+      { "__index", userdata_meta_index_as_table },
       { NULL, NULL }
   };
 

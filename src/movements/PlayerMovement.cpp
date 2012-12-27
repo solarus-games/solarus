@@ -128,11 +128,9 @@ void PlayerMovement::compute_movement() {
     set_angle(Geometry::degrees_to_radians(direction8 * 45));
   }
 
-  if (get_entity() != NULL) {
-    // notify the entity that its movement has just changed:
-    // indeed, the entity may need to update its sprites
-    get_entity()->notify_movement_changed();
-  }
+  // notify the entity that its movement has just changed:
+  // indeed, the entity may need to update its sprites
+  notify_movement_changed();
 }
 
 /**

@@ -122,9 +122,7 @@ void StraightMovement::set_x_speed(double x_speed) {
   initial_xy.set_xy(get_xy());
   finished = false;
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**
@@ -159,9 +157,7 @@ void StraightMovement::set_y_speed(double y_speed) {
   initial_xy.set_xy(get_xy());
   finished = false;
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**
@@ -183,9 +179,7 @@ void StraightMovement::set_speed(double speed) {
   set_y_speed(-speed * std::sin(old_angle));
   this->angle = old_angle;
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**
@@ -208,9 +202,7 @@ void StraightMovement::stop() {
   y_move = 0;
   this->angle = old_angle;
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**
@@ -270,9 +262,7 @@ void StraightMovement::set_angle(double angle) {
   }
   this->angle = angle;
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**

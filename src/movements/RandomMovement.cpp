@@ -95,9 +95,7 @@ void RandomMovement::set_next_direction() {
 
   next_direction_change_date = System::now() + 500 + Random::get_number(1500); // change again in 0.5 to 2 seconds
 
-  if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed();
-  }
+  notify_movement_changed();
 }
 
 /**
@@ -140,6 +138,7 @@ void RandomMovement::set_suspended(bool suspended) {
  */
 void RandomMovement::notify_obstacle_reached() {
 
+  StraightMovement::notify_obstacle_reached();
   set_next_direction();
 }
 

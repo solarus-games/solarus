@@ -38,7 +38,8 @@ Movement::Movement(bool ignore_obstacles):
   when_suspended(0),
   last_collision_box_on_obstacle(-1, -1),
   default_ignore_obstacles(ignore_obstacles),
-  current_ignore_obstacles(ignore_obstacles) {
+  current_ignore_obstacles(ignore_obstacles),
+  lua_context(NULL) {
 
 }
 
@@ -89,7 +90,7 @@ void Movement::set_entity(MapEntity *entity) {
   }
   else {
     this->xy.set_xy(entity->get_xy());
-    entity->notify_movement_changed();
+    notify_movement_changed();
   }
 }
 
@@ -199,7 +200,6 @@ void Movement::translate_xy(const Rectangle &dxy) {
 /**
  * @brief Notifies this movement that the coordinates controlled by it
  * have just been changed.
- * By default, the entity (if any) is notified.
  */
 void Movement::notify_position_changed() {
 
@@ -216,6 +216,27 @@ void Movement::notify_obstacle_reached() {
 
   if (entity != NULL && !entity->is_being_removed()) {
     entity->notify_obstacle_reached();
+  }
+}
+
+/**
+ * @brief Notifies this movement that its characteristics (like speed or angle)
+ * have changed.
+ */
+void Movement::notify_movement_changed() {
+
+  if (entity != NULL && !entity->is_being_removed()) {
+    entity->notify_movement_changed();
+  }
+}
+
+/**
+ * @brief Notifies this movement that it has just finished.
+ */
+void Movement::notify_movement_finished() {
+
+  if (entity != NULL && !entity->is_being_removed()) {
+    entity->notify_movement_finished();
   }
 }
 
@@ -310,7 +331,7 @@ void Movement::update() {
   if (!finished && is_finished()) {
     finished = true;
     if (entity != NULL && !entity->is_being_removed()) {
-      entity->notify_movement_finished();
+      notify_movement_finished();
     }
   }
   else if (finished && !is_finished()) {
@@ -431,5 +452,22 @@ int Movement::get_displayed_direction4() {
  */
 const Rectangle Movement::get_displayed_xy() {
   return get_xy();
+}
+
+/**
+ * @brief Returns the Solarus Lua API.
+ * @return The Lua context, or NULL if Lua callbacks are not enabled for this movement.
+ */
+LuaContext* Movement::get_lua_context() const {
+  return lua_context;
+}
+
+/**
+ * @brief Sets the Solarus Lua API.
+ * @param lua_context The Lua context, or NULL to disable Lua callbacks
+ * for this movement.
+ */
+void Movement::set_lua_context(LuaContext* lua_context) {
+  this->lua_context = lua_context;
 }
 

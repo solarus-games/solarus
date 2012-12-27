@@ -181,7 +181,7 @@ int LuaContext::main_api_load_settings(lua_State* l) {
  */
 int LuaContext::main_api_save_settings(lua_State* l) {
 
-  std::string file_name = luaL_optstring(l, 1, "settings.lua");
+  std::string file_name = luaL_optstring(l, 1, "settings.dat");
 
   bool success = Settings::save(file_name);
 

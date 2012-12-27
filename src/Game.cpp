@@ -219,7 +219,7 @@ bool Game::notify_input(InputEvent& event) {
       if (!handled) {
         // Built-in behavior:
         // the GameControl object will transform the low-level input event into
-        // a high-level game control event (i.e. a call to key_pressed() or key_released()).
+        // a high-level game command event (i.e. a call to command_pressed() or command_released()).
         commands->notify_input(event);
       }
     }

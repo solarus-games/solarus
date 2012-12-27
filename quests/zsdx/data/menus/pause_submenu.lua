@@ -65,17 +65,23 @@ end
 -- Sets the caption text.
 -- The caption text can have one or two lines, with 20 characters maximum for each line.
 -- If the text you want to display has two lines, use the '$' character to separate them.
+-- A value of nil removes the previous caption if any.
 function submenu:set_caption(text_key)
 
-  local text = sol.language.get_string(text_key)
-  local line1, line2 = text:match("([^$]+)\$(.*)")
-  if line1 == nil then
-    -- Only one line.
-    self.caption_text_1:set_text(text)
+  if text_key == nil then
+    self.caption_text_1:set_text(nil)
+    self.caption_text_2:set_text(nil)
   else
-    -- Two lines.
-    self.caption_text_1:set_text(line1)
-    self.caption_text_2:set_text(line2)
+    local text = sol.language.get_string(text_key)
+    local line1, line2 = text:match("([^$]+)\$(.*)")
+    if line1 == nil then
+      -- Only one line.
+      self.caption_text_1:set_text(text)
+    else
+      -- Two lines.
+      self.caption_text_1:set_text(line1)
+      self.caption_text_2:set_text(line2)
+    end
   end
 end
 

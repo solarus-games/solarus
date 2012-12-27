@@ -105,7 +105,7 @@ class Sprite: public Drawable {
 
   private:
 
-    LuaContext* lua_context;           /**< The Solarus Lua API (NULL means no callbacks for this sprite). */
+    LuaContext* lua_context;           /**< The Solarus Lua API (NULL means no callbacks for this sprite). TODO move this to ExportableToLua */
 
     // animation set
     static std::map<std::string, SpriteAnimationSet*> all_animation_sets;

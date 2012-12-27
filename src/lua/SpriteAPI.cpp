@@ -94,14 +94,11 @@ void LuaContext::push_sprite(lua_State* l, Sprite& sprite) {
  */
 int LuaContext::sprite_api_create(lua_State* l) {
 
-  LuaContext& lua_context = get_lua_context(l);
-
   const std::string& animation_set_id = luaL_checkstring(l, 1);
 
   // TODO if the file does not exist, make a Lua error instead of an assertion error.
   Sprite* sprite = new Sprite(animation_set_id);
-  sprite->set_lua_context(&lua_context);
-  lua_context.add_drawable(sprite);
+  get_lua_context(l).add_drawable(sprite);
 
   push_sprite(l, *sprite);
   return 1;

@@ -54,7 +54,7 @@ class Movement: public ExportableToLua {
     bool default_ignore_obstacles;			/**< indicates that this movement normally ignores obstacles */
     bool current_ignore_obstacles;			/**< indicates that this movement currently ignores obstacles */
 
-    LuaContext* lua_context;                            /**< The Solarus Lua API (NULL means no callbacks for this movement). */
+    LuaContext* lua_context;                            /**< The Solarus Lua API (NULL means no callbacks for this sprite). TODO move this to ExportableToLua */
 
   protected:
 

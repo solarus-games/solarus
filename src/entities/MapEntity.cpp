@@ -1001,7 +1001,7 @@ Movement* MapEntity::get_movement() {
  *
  * @param movement the movement to set, or NULL to set no movement
  */
-void MapEntity::set_movement(Movement *movement) {
+void MapEntity::set_movement(Movement* movement) {
 
   this->movement = movement;
   movement->increment_refcount();
@@ -1025,8 +1025,9 @@ void MapEntity::set_movement(Movement *movement) {
 void MapEntity::clear_movement() {
 
   if (movement != NULL) {
-    movement->set_entity(NULL); // tell the movement to forget me
-    old_movements.push_back(movement); // destroy it later
+    movement->set_entity(NULL);         // Tell the movement to forget me.
+    movement->set_lua_context(NULL);    // Stop future Lua callbacks.
+    old_movements.push_back(movement);  // Destroy it later.
     movement = NULL;
   }
 }

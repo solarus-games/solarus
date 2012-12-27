@@ -322,7 +322,6 @@ int LuaContext::movement_api_create(lua_State* l) {
   }
 
   push_movement(l, *movement);
-
   return 1;
 }
 

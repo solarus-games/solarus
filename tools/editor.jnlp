@@ -14,6 +14,7 @@
   <resources>
     <j2se version="1.6" />
     <jar href="solarus-editor.jar" />
+    <jar href="luaj-jse-2.0.2.jar" />
   </resources>
   <application-desc main-class="org.solarus.editor.Editor" />
 </jnlp>

@@ -7,10 +7,10 @@ tar xvf tools.tar
 rm tools.tar
 ./compile
 jar cvmf manifest.mf solarus-editor.jar org
-# keytool -genkey -keystore ../solaruskeystore -alias solaruskey
-# jarsigner -keystore ../solaruskeystore luaj-jse-2.0.2.jar solaruskey
+keytool -genkey -keystore ../solaruskeystore -alias solaruskey
+jarsigner -keystore ../solaruskeystore luaj-jse-2.0.2.jar solaruskey
 jarsigner -keystore ../solaruskeystore solarus-editor.jar solaruskey
 scp solarus-editor.jar solarus@solarus-games.org:www/editor/
-# scp luaj-jse-2.0.2.jar solarus@solarus-games.org:www/editor/
+scp luaj-jse-2.0.2.jar solarus@solarus-games.org:www/editor/
 cd ..
 rm -rf export

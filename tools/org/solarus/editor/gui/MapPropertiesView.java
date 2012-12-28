@@ -307,86 +307,75 @@ public class MapPropertiesView extends JPanel implements Observer {
     }
 
     /**
-     * Component to choose the world where this map is.
+     * Component to change the world of the map.
      */
-    private class WorldField extends JTextField implements DocumentListener {
+    private class WorldField extends JPanel {
+
+        // subcomponents
+        private JTextField textFieldWorld;
+        private JButton buttonSet;
 
         /**
          * Constructor.
          */
         public WorldField() {
             super();
+            setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-            getDocument().addDocumentListener(this);
+            textFieldWorld = new JTextField(10);
+            buttonSet = new JButton("Set");
+
+            ActionListener listener = new ActionListener() {
+                    public void actionPerformed(ActionEvent ev) {
+
+                        try {
+                            final String currentWorld = textFieldWorld.getText();
+                            map.getHistory().doAction(new MapEditorAction() {
+
+                                private final Map map = MapPropertiesView.this.map;
+
+                                public void execute() throws MapException {
+                                    map.setWorld(textFieldWorld.getText());
+                                }
+
+                                public void undo() throws MapException {
+                                    map.setWorld(currentWorld);
+                                }
+                            });
+                        }
+                        catch (QuestEditorException ex) {
+                            GuiTools.errorDialog("Cannot change the map name: " + ex.getMessage());
+                        }
+                        update(map);
+                    }
+                };
+
+            buttonSet.addActionListener(listener);
+            textFieldWorld.addActionListener(listener);
+
+            add(textFieldWorld);
+            add(Box.createRigidArea(new Dimension(5, 0)));
+            add(buttonSet);
+
             update((Map) null);
         }
 
         /**
          * This function is called when the map is changed.
-         * The selection is updated.
+         * The component is updated.
          */
         public void update(Observable o) {
 
             if (map != null) {
-
-                String currentWorld = map.getWorld();
-
-                if (!currentWorld.equals(getText())) {
-                    setText(currentWorld);
-                }
-                setEnabled(true);
+                textFieldWorld.setEnabled(true);
+                buttonSet.setEnabled(true);
+                textFieldWorld.setText(map.getWorld());
             }
             else {
-                setEnabled(false);
+                textFieldWorld.setEnabled(false);
+                buttonSet.setEnabled(false);
+                textFieldWorld.setText("");
             }
-        }
-
-        /**
-         * This method is called when the user changes the text.
-         */
-        private void textChanged() {
-
-            if (map == null) {
-                return;
-            }
-
-            final String currentWorld = map.getWorld();
-
-            if (currentWorld != getText()) {
-
-                try {
-                    map.getHistory().doAction(new MapEditorAction() {
-
-                        private final Map map = MapPropertiesView.this.map;
-
-                        public void execute() throws MapException {
-                            map.setWorld(getText());
-                        }
-
-                        public void undo() throws MapException {
-                            map.setWorld(currentWorld);
-                        }
-                    });
-                }
-                catch (QuestEditorException ex) {
-                    GuiTools.errorDialog(ex.getMessage());
-                }
-            }
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent arg0) {
-            textChanged();
-        }
-
-        @Override
-        public void insertUpdate(DocumentEvent arg0) {
-            textChanged();
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent arg0) {
-            textChanged();
         }
     }
 

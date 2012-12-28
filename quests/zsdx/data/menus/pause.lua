@@ -23,12 +23,6 @@ function game:start_pause_menu()
 
   sol.audio.play_sound("pause_open")
   sol.menu.start(self, self.pause_submenus[submenu_index])
-
-  -- Show the dialog box and HUD above the pause menu.
-  sol.menu.stop(self.dialog_box)
-  sol.menu.start(self, self.dialog_box)
-  self:set_hud_enabled(false)
-  self:set_hud_enabled(true)
 end
 
 function game:stop_pause_menu()

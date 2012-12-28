@@ -56,6 +56,13 @@ function submenu:on_started()
 
   self.game:set_custom_command_effect("action", nil)
   self.game:set_custom_command_effect("attack", "save")
+
+  -- Show this menu below the dialog box and HUD.
+  -- TODO make functions sol.menu.bring_to_front, sol.menu.bring_to_back
+  sol.menu.stop(self.game.dialog_box)
+  sol.menu.start(self.game, self.game.dialog_box)
+  self.game:set_hud_enabled(false)
+  self.game:set_hud_enabled(true)
 end
 
 -- Sets the caption text.

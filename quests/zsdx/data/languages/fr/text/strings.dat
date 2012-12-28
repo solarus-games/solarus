@@ -123,16 +123,16 @@ options.commands_column				Commandes
 options.keyboard_column				Clavier
 options.joypad_column				Joypad
 
-# Game controls customization (maximum 10 characters)
-controls.game_key_1		Action
-controls.game_key_2		Epée
-controls.game_key_3		Obj gauche
-controls.game_key_4		Obj droit
-controls.game_key_5		Pause
-controls.game_key_6		Droite
-controls.game_key_7		Haut
-controls.game_key_8		Gauche
-controls.game_key_9		Bas
+# Game commands customization (maximum 10 characters)
+options.command.action		Action
+options.command.attack		Epée
+options.command.item_1		Obj gauche
+options.command.item_2		Obj droit
+options.command.pause		Pause
+options.command.right		Droite
+options.command.up		Haut
+options.command.left		Gauche
+options.command.down		Bas
 
 # Dialog to save the game
 save_dialog.yes			Oui

@@ -123,16 +123,16 @@ options.commands_column				Steuerung
 options.keyboard_column				Tastatur
 options.joypad_column				Joypad
 
-# Game controls customization (maximum 10 characters)
-controls.game_key_1		Aktion
-controls.game_key_2		Schwert
-controls.game_key_3		Ggstd l.
-controls.game_key_4		Ggstd r.
-controls.game_key_5		Pause
-controls.game_key_6		Rechts
-controls.game_key_7		Oben
-controls.game_key_8		Links
-controls.game_key_9		Unten
+# Game commands customization (maximum 10 characters)
+options.command.action		Aktion
+options.command.attack		Schwert
+options.command.item_1		Ggstd l.
+options.command.item_2		Ggstd r.
+options.command.pause		Pause
+options.command.right		Rechts
+options.command.up		Oben
+options.command.left		Links
+options.command.down		Unten
 
 # Dialog to save the game
 save_dialog.yes			Ja

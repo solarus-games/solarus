@@ -123,16 +123,16 @@ options.commands_column             Controles
 options.keyboard_column             Teclado
 options.joypad_column               Mando
 
-# Game controls customization (maximum 10 characters)
-controls.game_key_1        Acción
-controls.game_key_2        Espada
-controls.game_key_3        Item Izq
-controls.game_key_4        Item Der
-controls.game_key_5        Pausa
-controls.game_key_6        Derecha
-controls.game_key_7        Arriba
-controls.game_key_8        Izquierda
-controls.game_key_9        Abajo
+# Game commands customization (maximum 10 characters)
+options.command.action             Acción
+options.command.attack             Espada
+options.command.item_1             Item Izq
+options.command.item_2             Item Der
+options.command.pause              Pausa
+options.command.right              Derecha
+options.command.up                 Arriba
+options.command.left               Izquierda
+options.command.down               Abajo
 
 # Dialog to save the game
 save_dialog.yes                    Sí

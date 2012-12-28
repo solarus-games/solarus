@@ -118,14 +118,6 @@ options.video_mode.fullscreen_normal		Plein écran étiré
 options.video_mode.fullscreen_wide		Plein écran étiré (large)
 options.video_mode.fullscreen_scale2x		Plein écran lisse
 options.video_mode.fullscreen_scale2x_wide	Plein écran lisse (large)
-# old video modes kept for compatibility (still used by the built-in pause menu)
-options.video_mode_0				Fenêtre 640x480
-options.video_mode_1				Fenêtre 640x480 lisse
-options.video_mode_2				Fenêtre 320x240
-options.video_mode_3				Plein écran étiré
-options.video_mode_4				Plein écran étiré (large)
-options.video_mode_5				Plein écran lisse
-options.video_mode_6				Plein écran lisse (large)
 # column headers of the keyboard/joypad customization table (maximum 10 characters)
 options.commands_column				Commandes
 options.keyboard_column				Clavier

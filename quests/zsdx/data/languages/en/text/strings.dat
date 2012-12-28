@@ -118,14 +118,6 @@ options.video_mode.fullscreen_normal         Fullscreen stretched
 options.video_mode.fullscreen_wide           Fullscreen stretched (large)
 options.video_mode.fullscreen_scale2x        Fullscreen smoothed
 options.video_mode.fullscreen_scale2x_wide   Fullscreen smoothed (large)
-# old video modes kept for compatibility (still used by the built-in pause menu)
-options.video_mode_0                Windowed 640x480
-options.video_mode_1                Windowed 640x480 smoothed
-options.video_mode_2                Windowed 320x240
-options.video_mode_3                Fullscreen stretched
-options.video_mode_4                Fullscreen stretched (large)
-options.video_mode_5                Fullscreen smoothed
-options.video_mode_6                Fullscreen smoothed (large)
 # column headers of the keyboard/joypad customization table (maximum 10 characters)
 options.commands_column             Controls
 options.keyboard_column             Keyboard

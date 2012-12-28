@@ -118,14 +118,6 @@ options.video_mode.fullscreen_normal		Vollbild gestreckt
 options.video_mode.fullscreen_wide		Vollbild gestreckt (breit)
 options.video_mode.fullscreen_scale2x		Vollbild geglättet
 options.video_mode.fullscreen_scale2x_wide	Vollbild geglättet (breit)
-# old video modes kept for compatibility (still used by the built-in pause menu)
-options.video_mode_0				640x480 Fenster
-options.video_mode_1				640x480 Fenster, geglättet
-options.video_mode_2				320x240 Fenster
-options.video_mode_3				Vollbild gestreckt
-options.video_mode_4				Vollbild gestreckt (breit)
-options.video_mode_5				Vollbild geglättet
-options.video_mode_6				Vollbild geglättet (breit)
 # column headers of the keyboard/joypad customization table (maximum 10 characters)
 options.commands_column				Steuerung
 options.keyboard_column				Tastatur

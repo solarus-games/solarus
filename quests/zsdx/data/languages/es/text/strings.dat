@@ -118,14 +118,6 @@ options.video_mode.fullscreen_normal         Pantalla completa estirada
 options.video_mode.fullscreen_wide           Pant comp estirada(grande)
 options.video_mode.fullscreen_scale2x        Pant completa suavizada
 options.video_mode.fullscreen_scale2x_wide   Pant comp suavizad(grande)
-# old video modes kept for compatibility (still used by the built-in pause menu)
-options.video_mode_0                Ventana 640x480
-options.video_mode_1                Ventana 640x480 suavizado
-options.video_mode_2                Ventana 320x240
-options.video_mode_3                Pantalla completa estirada
-options.video_mode_4                Pant comp estirada(grande)
-options.video_mode_5                Pant completa suavizada
-options.video_mode_6                Pant comp suavizad(grande)
 # column headers of the keyboard/joypad customization table (maximum 10 characters)
 options.commands_column             Controles
 options.keyboard_column             Teclado

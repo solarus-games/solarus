@@ -207,6 +207,7 @@ install(TARGETS	solarus
   RUNTIME DESTINATION bin
 ) 
 
+# Also install into CFBundle form
 if(SOLARUS_OSX_BUNDLE)
   include("${SOLARUS_ENGINE_SOURCE_DIR}/cmake/osx/bundle/CMakeLists.txt")
 endif()

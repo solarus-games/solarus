@@ -179,8 +179,8 @@ It is necessary to additionally link with libz.
 ---------------------
 
 * Compile on OSX
-You can compile solarus just by doing the default setting with cmake, or generate the XCode project. Note that if you use XCode, you 
-probably want to pass the SOLARUS_OSX_BUNDLE flag too.
+You can compile solarus just by doing the default setting with cmake, or generate the XCode project. 
+Note that if you use XCode, you probably want to pass the SOLARUS_OSX_BUNDLE flag too.
 
 If you got some error on the cmake part, you can edit the CMakeCache.txt to
 manually write the include and library directories that cmake did not find.
@@ -191,18 +191,21 @@ architectures (Intel 32+64bit, and PPC 32bit) application.
 If you build against older SDK, it still works but you will have to pass some additional flag to cmake.
 Here is an example where cmake will produce a CFBundle, build against 10.5 SDK and keep 10.5 full compatibilty.
 
-$ cmake -DSOLARUS_OSX_BUNDLE=1 -DSOLARUS_SYSROOT="10.5" -DSOLARUS_ARCH="ppc;i386;x86_64" -DSOLARUS_DEPLOYMENT=10.5 .
+$ cmake -DSOLARUS_OSX_BUNDLE="SolarusDX" -DSOLARUS_SYSROOT="10.5" -DSOLARUS_ARCH="ppc;i386;x86_64" -DSOLARUS_DEPLOYMENT=10.5 .
 
 
 * Deploy on OSX
 You will only build the executable with the default command.
 To build the entire bundle, pass the following flag to cmake
 
-$ cmake -DSOLARUS_OSX_BUNDLE=1 .
+$ cmake -DSOLARUS_OSX_BUNDLE="SolarusDX" .
 
-The final application is a .app suffixed folder, which typcially contains 
+Which will install the application into a bundle named "SolarusDX"
+The bundle is a .app suffixed folder, which typcially contains 
 the executable and all resources it needs.
-Pass BUNDLE_NAME , QUEST_PATH , INFOPLIST_PATH and ICON_PATH flags in addition to SOLARUS_OSX_BUNDLE to specify your own configuration.
+Pass SOLARUS_OSX_BUNDLE_QUEST , SOLARUS_OSX_BUNDLE_INFOPLIST and SOLARUS_OSX_BUNDLE_ICON flags 
+in addition to SOLARUS_OSX_BUNDLE to specify your own configuration.
+See ./cmake/osx/bundle/CMakeLists.txt for more details.
 
 All non-Mac-native frameworks are placed in ${BUNDLE_NAME}.app/Contents/Frameworks/
 and the main binary and its quest in Solarus.app/Contents/Resources/

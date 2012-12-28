@@ -71,9 +71,10 @@ end
 
 function game:check_hud()
 
-  if self:get_map() ~= nil then
+  local map = self:get_map()
+  if map ~= nil then
     -- If the hero is below the top-left icons, make them semi-transparent.
-    local hero = self:get_map():get_entity("hero")
+    local hero = map:get_entity("hero")
     local x, y = hero:get_position()
     local opacity = nil
 
@@ -100,12 +101,12 @@ function game:check_hud()
 
     -- During a dialog, move the action icon and the sword icon.
     if not self.hud.showing_dialog and
-        self:is_showing_dialog() then
+        map:is_dialog_enabled() then
       self.hud.showing_dialog = true
       self.hud.action_icon:set_dst_position(0, 54)
       self.hud.attack_icon:set_dst_position(0, 29)
     elseif self.hud.showing_dialog and
-        not self:is_showing_dialog() then
+        not map:is_dialog_enabled() then
       self.hud.showing_dialog = false
       self.hud.action_icon:set_dst_position(26, 51)
       self.hud.attack_icon:set_dst_position(13, 29)

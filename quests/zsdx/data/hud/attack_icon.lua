@@ -24,7 +24,7 @@ function attack_icon:initialize(game)
   self.is_flipping = false
   self.effect_displayed = self.game.hud.custom_command_effects["attack"] or self.game:get_command_effect("attack")
   self.sword_displayed = game:get_ability("sword")
-  self.showing_dialog = game:is_showing_dialog()
+  self.showing_dialog = false
   self:create_icon_img()
 
   local attack_icon = self
@@ -46,8 +46,9 @@ end
 
 function attack_icon:create_icon_img()
 
-  local y
-  if self.effect_displayed ~= nil or not self.game:is_showing_dialog() then
+  local map = self.game:get_map()
+  if self.effect_displayed ~= nil or map == nil or not map:is_dialog_enabled() then
+    local y
     if self.effect_displayed == nil then
       -- Show an empty icon.
       y = 0
@@ -76,13 +77,14 @@ function attack_icon:check()
   if not self.flipping then
     local effect = self.game.hud.custom_command_effects["attack"] or self.game:get_command_effect("attack")
     local sword = self.game:get_ability("sword")
-    local showing_dialog = self.game:is_showing_dialog()
+    local map = self.game:get_map()
+    local showing_dialog = map ~= nil and map:is_dialog_enabled()
     if effect ~= self.effect_displayed
         or sword ~= self.sword_displayed
         or showing_dialog ~= self.showing_dialog then
 
       if self.effect_displayed ~= nil then
-        if effect == nil and self.game:is_showing_dialog() then
+        if effect == nil and showing_dialog then
           self.icon_flip_sprite:set_animation("disappearing")
         else
           self.icon_flip_sprite:set_animation("flip")

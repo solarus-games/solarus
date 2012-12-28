@@ -112,7 +112,7 @@ class Game {
 
     // current game state
     bool is_paused();
-    bool is_showing_dialog();
+    bool is_dialog_enabled();
     bool is_playing_transition();
     bool is_showing_gameover();
     bool is_suspended(); // true if at least one of the three functions above returns true

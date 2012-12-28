@@ -252,7 +252,7 @@ void Game::notify_command_pressed(GameCommands::Command command) {
     }
 
     // is a message being shown?
-    else if (is_showing_dialog()) {
+    else if (is_dialog_enabled()) {
       dialog_box.notify_command_pressed(command);
     }
 
@@ -436,7 +436,7 @@ void Game::update_transitions() {
 void Game::update_keys_effect() {
 
   // when the game is paused or a dialog box is shown, the sword key is not the usual one
-  if (is_paused() || is_showing_dialog()) {
+  if (is_paused() || is_dialog_enabled()) {
     return; // if the game is interrupted for some other reason (e.g. a transition), let the normal sword icon
   }
 
@@ -486,11 +486,6 @@ void Game::draw(Surface& dst_surface) {
     // draw the game over sequence if any
     if (is_showing_gameover()) {
       gameover_sequence->draw(dst_surface);
-    }
-
-    // draw the dialog box if any
-    if (is_showing_dialog()) {
-      dialog_box.draw(dst_surface);
     }
   }
 
@@ -622,17 +617,17 @@ bool Game::is_suspended() {
 
   return current_map == NULL
       || is_paused()
-      || is_showing_dialog()
+      || is_dialog_enabled()
       || is_playing_transition()
       || is_showing_gameover()
       || !current_map->is_camera_fixed_on_hero();
 }
 
 /**
- * @brief Returns whether we are showing a dialog box.
+ * @brief Returns whether a dialog is currently active.
  * @return true if a dialog box is being shown
  */
-bool Game::is_showing_dialog() {
+bool Game::is_dialog_enabled() {
   return dialog_box.is_enabled();
 }
 

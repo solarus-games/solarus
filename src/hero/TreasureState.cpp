@@ -88,7 +88,7 @@ void Hero::TreasureState::update() {
 
   State::update();
 
-  if (!get_game().is_showing_dialog()) {
+  if (!get_game().is_dialog_enabled()) {
 
     // the treasure's dialog is over: if the treasure was a tunic,
     // a sword or a shield, we have to reload the hero's sprites now

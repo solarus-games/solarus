@@ -41,7 +41,6 @@ void LuaContext::register_game_module() {
       { "is_suspended", game_api_is_suspended },
       { "is_paused", game_api_is_paused },
       { "set_paused", game_api_set_paused },
-      { "is_showing_dialog", game_api_is_showing_dialog },
       { "get_map", game_api_get_map },
       { "get_value", game_api_get_value },
       { "set_value", game_api_set_value },
@@ -274,22 +273,6 @@ int LuaContext::game_api_set_paused(lua_State* l) {
   }
 
   return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_is_showing_dialog.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_is_showing_dialog(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-
-  Game* game = savegame.get_game();
-  bool is_showing_dialog = game != NULL && game->is_showing_dialog();
-
-  lua_pushboolean(l, is_showing_dialog);
-  return 1;
 }
 
 /**

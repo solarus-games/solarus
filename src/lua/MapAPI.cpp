@@ -68,9 +68,12 @@ void LuaContext::register_map_module() {
       { "get_floor", map_api_get_floor },
       { "get_tileset", map_api_get_tileset },
       { "set_tileset", map_api_set_tileset },
+      { "is_dialog_enabled", map_api_is_dialog_enabled },
       { "start_dialog", map_api_start_dialog },
       { "set_dialog_variable", map_api_set_dialog_variable },
       { "set_dialog_style", map_api_set_dialog_style },
+      { "set_dialog_position", map_api_set_dialog_position },
+      { "draw_dialog_box", map_api_draw_dialog_box },
       { "set_pause_enabled", map_api_set_pause_enabled },
       { "get_light", map_api_get_light },
       { "set_light", map_api_set_light },
@@ -399,6 +402,19 @@ int LuaContext::map_api_get_game(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_map_is_dialog_enabled.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_is_dialog_enabled(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  lua_pushboolean(l, map.get_game().is_dialog_enabled());
+  return 1;
+}
+
+/**
  * @brief Implementation of \ref lua_api_map_start_dialog.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -446,6 +462,37 @@ int LuaContext::map_api_set_dialog_style(lua_State* l) {
   int style = luaL_checkinteger(l, 2);
 
   map.get_game().get_dialog_box().set_style(DialogBox::Style(style));
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_set_dialog_position.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_dialog_position(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  int position = luaL_checkinteger(l, 2);
+
+  map.get_game().get_dialog_box().set_vertical_position(DialogBox::VerticalPosition(position));
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_draw_dialog_box.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_draw_dialog_box(lua_State* l) {
+
+  // TODO remove the built-in dialog box, draw the dialog box from the script
+  Map& map = check_map(l, 1);
+  Surface& dst_surface = check_surface(l, 2);
+
+  map.get_game().get_dialog_box().draw(dst_surface);
 
   return 0;
 }

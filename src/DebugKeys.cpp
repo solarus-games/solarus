@@ -44,7 +44,7 @@ void DebugKeys::update() {
 #ifdef SOLARUS_DEBUG_KEYS
   Game* game = main_loop.get_game();
   if (InputEvent::is_shift_down()) {
-    if (game != NULL && game->is_showing_dialog()) {
+    if (game != NULL && game->is_dialog_enabled()) {
       game->get_dialog_box().show_all_now();
     }
   }

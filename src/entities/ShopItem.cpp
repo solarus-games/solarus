@@ -162,7 +162,7 @@ void ShopItem::notify_action_command_pressed() {
  */
 void ShopItem::update() {
 
-  if (is_looking_item && !get_game().is_showing_dialog()) {
+  if (is_looking_item && !get_game().is_dialog_enabled()) {
 
     // the description message has just finished
     const std::string question_dialog_id = "_shop.question";
@@ -171,7 +171,7 @@ void ShopItem::update() {
     is_asking_question = true;
     is_looking_item = false;
   }
-  else if (is_asking_question && !get_game().is_showing_dialog()) {
+  else if (is_asking_question && !get_game().is_dialog_enabled()) {
 
     // the question has just finished
     is_asking_question = false;

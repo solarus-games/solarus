@@ -510,7 +510,6 @@ class LuaContext {
       game_api_is_suspended,
       game_api_is_paused,
       game_api_set_paused,
-      game_api_is_showing_dialog,
       game_api_get_map,
       game_api_get_value,
       game_api_set_value,
@@ -592,9 +591,12 @@ class LuaContext {
       map_api_get_location,
       map_api_get_tileset,
       map_api_set_tileset,
+      map_api_is_dialog_enabled,  // TODO script the dialog box, remove set_dialog_style, set_dialog_position, draw_dialog_box
       map_api_start_dialog,
       map_api_set_dialog_variable,
-      map_api_set_dialog_style,   // TODO use a string parameter
+      map_api_set_dialog_style,
+      map_api_set_dialog_position,
+      map_api_draw_dialog_box,
       map_api_set_pause_enabled,  // TODO move to game api?
       map_api_get_light,
       map_api_set_light,

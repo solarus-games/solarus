@@ -72,6 +72,7 @@ class DialogBox {
     // dialog properties
     Game& get_game();
     void set_style(Style style);
+    void set_vertical_position(VerticalPosition vertical_position);
     bool is_enabled();
 
     // current message
@@ -134,7 +135,6 @@ class DialogBox {
     Rectangle question_dst_position;                /**< destination rectangle of the question image (depends on the answer currently selected) */
     Rectangle icon_dst_position;                    /**< destination rectangle of the icon */
 
-    void set_vertical_position(VerticalPosition vertical_position);
     void show_more_lines();
     void show_next_dialog();
     bool is_full();

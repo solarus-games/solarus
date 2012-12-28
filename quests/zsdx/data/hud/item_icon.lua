@@ -95,7 +95,8 @@ function item_icon:rebuild_surface()
   self.surface:fill_color{0, 0, 0}
 
   -- No item icon during a dialog.
-  if not self.game:is_showing_dialog() then
+  local map = self.game:get_map()
+  if map == nil or not map:is_dialog_enabled() then
 
     -- Background image.
     self.background_img:draw(self.surface)
@@ -124,7 +125,8 @@ end
 
 function item_icon:on_draw(dst_surface)
 
-  if not self.game:is_showing_dialog() then
+  local map = self.game:get_map()
+  if map == nil or not map:is_dialog_enabled() then
     local x, y = self.dst_x, self.dst_y
     local width, height = dst_surface:get_size()
     if x < 0 then

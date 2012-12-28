@@ -56,10 +56,6 @@ function submenu:on_started()
 
   self.game:set_custom_command_effect("action", nil)
   self.game:set_custom_command_effect("attack", "save")
-
-  -- Show the HUD above the pause menu.
-  self.game:set_hud_enabled(false)
-  self.game:set_hud_enabled(true)
 end
 
 -- Sets the caption text.

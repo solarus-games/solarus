@@ -70,7 +70,7 @@ public class EditShopItemComponent extends EditEntityComponent {
         treasureField.setTreasure(
                 shopItem.getProperty("treasure_name"),
                 shopItem.getIntegerProperty("treasure_variant"),
-                shopItem.getIntegerProperty("treasure_savegame_variable"));
+                shopItem.getProperty("treasure_savegame_variable"));
         priceField.setNumber(shopItem.getIntegerProperty("price"));
         dialogIdField.setText(shopItem.getProperty("dialog"));
     }
@@ -83,12 +83,12 @@ public class EditShopItemComponent extends EditEntityComponent {
 
         String treasureName = treasureField.getTreasure().getItemName();
         Integer treasureVariant = treasureField.getTreasure().getVariant();
-        Integer treasureSavegameVariable = treasureField.getTreasure().getSavegameVariable();
+        String treasureSavegameVariable = treasureField.getTreasure().getSavegameVariable();
 
         return new ActionEditEntitySpecific(entity,
                 treasureName,
                 treasureVariant == null ? null : Integer.toString(treasureVariant),
-                treasureSavegameVariable == null ? null : Integer.toString(treasureSavegameVariable),
+                treasureSavegameVariable,
                 Integer.toString(priceField.getNumber()),
                 dialogIdField.getText());
     }

@@ -99,10 +99,10 @@ public class Enemy extends MapEntity {
     public void setPropertiesDefaultValues() throws MapException {
         setProperty("breed", "");
         setIntegerProperty("rank", Rank.NORMAL.ordinal());
-        setIntegerProperty("savegame_variable", null);
+        setProperty("savegame_variable", null);
         setProperty("treasure_name", Item.noneId);
         setIntegerProperty("treasure_variant", null);
-        setIntegerProperty("treasure_savegame_variable", null);
+        setProperty("treasure_savegame_variable", null);
     }
 
     /**
@@ -139,9 +139,8 @@ public class Enemy extends MapEntity {
             throw new MapException("An enemy's breed cannot be empty or have whitespaces");
         }
 
-        Integer savegameVariable = getIntegerProperty("savegame_variable");
-        if (savegameVariable != null &&
-                (savegameVariable < 0 || savegameVariable >= 32768)) {
+        String savegameVariable = getProperty("savegame_variable");
+        if (savegameVariable != null && !savegameVariable.isEmpty()) {
             throw new MapException("Invalid enemy savegame variable");
         }
 
@@ -160,9 +159,8 @@ public class Enemy extends MapEntity {
             throw new MapException("Invalid treasure variant: " + variant);
         }
 
-        Integer treasureSavegameVariable = getIntegerProperty("treasure_savegame_variable");
-        if (treasureSavegameVariable != null &&
-                (treasureSavegameVariable < 0 || treasureSavegameVariable >= 32768)) {
+        String treasureSavegameVariable = getProperty("treasure_savegame_variable");
+        if (treasureSavegameVariable != null && !treasureSavegameVariable.isEmpty()) {
             throw new MapException("Invalid treasure savegame variable");
         }
     }

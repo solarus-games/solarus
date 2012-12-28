@@ -103,7 +103,7 @@ public class EditEnemyComponent extends EditEntityComponent {
         treasureField.setTreasure(
                 enemy.getProperty("treasure_name"),
                 enemy.getIntegerProperty("treasure_variant"),
-                enemy.getIntegerProperty("treasure_savegame_variable"));
+                enemy.getProperty("treasure_savegame_variable"));
     }
 
     /**
@@ -116,7 +116,7 @@ public class EditEnemyComponent extends EditEntityComponent {
                 savegameVariableField.getNumber() : null;
         String treasureName = treasureField.getTreasure().getItemName();
         Integer treasureVariant = treasureField.getTreasure().getVariant();
-        Integer treasureSavegameVariable = treasureField.getTreasure().getSavegameVariable();
+        String treasureSavegameVariable = treasureField.getTreasure().getSavegameVariable();
 
         return new ActionEditEntitySpecific(entity,
                 breedField.getSelectedId(),
@@ -124,7 +124,7 @@ public class EditEnemyComponent extends EditEntityComponent {
                 savegameVariable == null ? null : Integer.toString(savegameVariable),
                 treasureName,
                 treasureVariant == null ? null : Integer.toString(treasureVariant),
-                treasureSavegameVariable == null ? null : Integer.toString(treasureSavegameVariable));
+                treasureSavegameVariable);
     }
 }
 

@@ -15,7 +15,7 @@ public class Treasure {
     private String itemName;            /**< id of the item to give, according to items.dat
                                          * (possibly "_none" or "_random") or null if unspecified. */
     private Integer variant;            /**< variant of this item (null means unspecified). */
-    private Integer savegameVariable;   /**< index of the boolean variable that stores the
+    private String savegameVariable;   /**< boolean variable that stores the
                                          * treasure's state (found or not found) in the savegame
                                          * or null for unsaved. */
 
@@ -25,9 +25,9 @@ public class Treasure {
      * (possibly "_none" or "_random") or null if unspecified.
      * @param variant Variant of this item (null means unspecified).
      * @param savegameVariable Savegame variable that stores the treasure's state,
-     * or -1 to make the treasure unsaved (null means unsaved).
+     * or null to make the treasure unsaved (null means unsaved).
      */
-    public Treasure(String itemName, Integer variant, Integer savegameVariable) {
+    public Treasure(String itemName, Integer variant, String savegameVariable) {
 
         this.itemName = itemName;
         this.variant = variant;
@@ -78,7 +78,7 @@ public class Treasure {
      * Returns the savegame variable that stores the treasure's state.
      * @return The savegame variable (null means unsaved).
      */
-    public Integer getSavegameVariable() {
+    public String getSavegameVariable() {
         return savegameVariable;
     }
 
@@ -87,7 +87,7 @@ public class Treasure {
      * @param savegameVariable The savegame variable to set, or -1
      * to make the treasure unsaved (null means unsaved).
      */
-    public void setSavegameVariable(Integer savegameVariable) {
+    public void setSavegameVariable(String savegameVariable) {
         this.savegameVariable = savegameVariable;
     }
 }

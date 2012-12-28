@@ -222,7 +222,7 @@ public class Door extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-        setIntegerProperty("savegame_variable", null);
+        setProperty("savegame_variable", null);
         setDirection(1);
     }
 
@@ -232,9 +232,8 @@ public class Door extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        Integer savegameVariable = getIntegerProperty("savegame_variable");
-        if (savegameVariable != null &&
-                (savegameVariable < 0 || savegameVariable >= 32768)) {
+        String savegameVariable = getProperty("savegame_variable");
+        if (savegameVariable != null && !savegameVariable.isEmpty()) {
             throw new MapException("Invalid door savegame variable");
         }
 

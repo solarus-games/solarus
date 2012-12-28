@@ -22,7 +22,7 @@ public class TreasureChooser extends JPanel {
     private ItemChooser itemNameField;
     private NumberChooser variantField;
     private JCheckBox saveField;
-    private NumberChooser savegameVariableField;
+    private JTextField savegameVariableField;
 
     private GridBagConstraints gridBagConstraints;
 
@@ -36,13 +36,13 @@ public class TreasureChooser extends JPanel {
         super(new GridBagLayout());
 
         // create a default, unspecified treasure
-        treasure = new Treasure(null, 1, -1);
+        treasure = new Treasure(null, 1, null);
 
         // create the subcomponents
         itemNameField = new ItemChooser(includeNone);
         variantField = new NumberChooser(1, 1, Integer.MAX_VALUE);
         saveField = new JCheckBox("Save the treasure state");
-        savegameVariableField = new NumberChooser(0, 0, 32767);
+        savegameVariableField = new JTextField();
 
         // place the subcomponents
         setBorder(BorderFactory.createTitledBorder("Treasure"));
@@ -91,7 +91,7 @@ public class TreasureChooser extends JPanel {
 
                 if (saveField.isSelected()) {
                     savegameVariableField.setEnabled(true);
-                    treasure.setSavegameVariable(savegameVariableField.getNumber());
+                    treasure.setSavegameVariable(savegameVariableField.getText());
                 }
                 else {
                     savegameVariableField.setEnabled(false);
@@ -100,10 +100,10 @@ public class TreasureChooser extends JPanel {
             }
         });
 
-        savegameVariableField.addChangeListener(new ChangeListener() {
+        savegameVariableField.addActionListener(new ActionListener() {
 
-            public void stateChanged(ChangeEvent e) {
-                treasure.setSavegameVariable(savegameVariableField.getNumber());
+            public void actionPerformed(ActionEvent e) {
+                treasure.setSavegameVariable(savegameVariableField.getText());
             }
         });
     }
@@ -124,7 +124,7 @@ public class TreasureChooser extends JPanel {
      * @param savegameVariable Savegame variable that stores the treasure's state,
      * or -1 to make the treasure unsaved (null means unspecified).
      */
-    public void setTreasure(String itemName, Integer variant, Integer savegameVariable) {
+    public void setTreasure(String itemName, Integer variant, String savegameVariable) {
 
         treasure.setItemName(itemName);
         treasure.setVariant(variant);
@@ -176,7 +176,7 @@ public class TreasureChooser extends JPanel {
             else {
                 saveField.setSelected(true);
                 savegameVariableField.setEnabled(true);
-                savegameVariableField.setNumber(treasure.getSavegameVariable());
+                savegameVariableField.setText(treasure.getSavegameVariable());
             }
         }
     }

@@ -49,7 +49,7 @@ public class Chest extends MapEntity {
         setBooleanProperty("is_big_chest", false);
         setProperty("treasure_name", Item.noneId);
         setIntegerProperty("treasure_variant", null);
-        setIntegerProperty("treasure_savegame_variable", null);
+        setProperty("treasure_savegame_variable", null);
     }
 
     /**
@@ -73,9 +73,8 @@ public class Chest extends MapEntity {
             throw new MapException("Invalid treasure variant: " + variant);
         }
 
-        Integer savegameVariable = getIntegerProperty("treasure_savegame_variable");
-        if (savegameVariable != null &&
-                (savegameVariable < 0 || savegameVariable >= 32768)) {
+        String savegameVariable = getProperty("treasure_savegame_variable");
+        if (savegameVariable != null && !savegameVariable.isEmpty()) {
             throw new MapException("Invalid treasure savegame variable");
         }
     }

@@ -49,7 +49,11 @@ public class Treasure {
 
         if (itemName == null) {
             variant = null;
+	    savegameVariable = null;
         }
+	else if (variant == null) {
+	    variant = 1;
+	}
     }
 
     /**

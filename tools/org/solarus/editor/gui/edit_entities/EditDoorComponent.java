@@ -32,7 +32,7 @@ public class EditDoorComponent extends EditEntityComponent {
 
     // specific fields of this kind of entity
     private JCheckBox saveField;
-    private NumberChooser savegameVariableField; // enabled only for certain types of doors
+    private JTextField savegameVariableField; // enabled only for certain types of doors
 
     /**
      * Constructor.
@@ -53,7 +53,7 @@ public class EditDoorComponent extends EditEntityComponent {
         addField("Savegame", saveField);
 
         // savegame variable
-        savegameVariableField = new NumberChooser(0, 0, 32767);
+        savegameVariableField = new JTextField(20);
         addField("Savegame variable", savegameVariableField);
 
         // enable or disable the 'savegame variable' field depending on the check box and the subtype
@@ -87,9 +87,9 @@ public class EditDoorComponent extends EditEntityComponent {
         Door door = (Door) entity;
         Subtype subtype = (Subtype) door.getSubtype();
 
-        Integer savegameVariable = door.getIntegerProperty("savegame_variable");
+        String savegameVariable = door.getProperty("savegame_variable");
         if (savegameVariable != null) {
-          savegameVariableField.setNumber(savegameVariable);
+          savegameVariableField.setText(savegameVariable);
           savegameVariableField.setEnabled(true);
           saveField.setSelected(true);
         }
@@ -107,8 +107,8 @@ public class EditDoorComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-        Integer savegameVariable = savegameVariableField.isEnabled() ?
-                savegameVariableField.getNumber() : null;
+        String savegameVariable = savegameVariableField.isEnabled() ?
+                savegameVariableField.getText() : null;
 
         return new ActionEditEntitySpecific(entity, savegameVariable);
     }

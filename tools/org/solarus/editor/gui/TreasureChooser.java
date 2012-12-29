@@ -78,11 +78,16 @@ public class TreasureChooser extends JPanel {
 		if (itemName.isEmpty()) {
 		    treasure.setItemName(null);
 		    variantField.setEnabled(false);
+		    saveField.setEnabled(false);
 		    savegameVariableField.setEnabled(false);
 		}
 		else {
 		    treasure.setItemName(itemNameField.getSelectedId());
-		    variantField.setEnabled(true);
+		    if (!variantField.isEnabled()) {
+		        variantField.setEnabled(true);
+			variantField.setValue(1);
+		    }
+		    saveField.setEnabled(true);
 		    savegameVariableField.setEnabled(true);
 		}
             }

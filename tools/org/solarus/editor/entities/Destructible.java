@@ -167,10 +167,6 @@ public class Destructible extends MapEntity {
         }
 
         String treasureName = getProperty("treasure_name");
-        if (treasureName == null) {
-            throw new MapException("A treasure must be specified");
-        }
-
         Integer variant = getIntegerProperty("treasure_variant");
         if (treasureName != null && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
@@ -181,7 +177,7 @@ public class Destructible extends MapEntity {
         }
 
         String savegameVariable = getProperty("treasure_savegame_variable");
-        if (savegameVariable != null && !savegameVariable.isEmpty()) {
+        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid treasure savegame variable");
         }
     }

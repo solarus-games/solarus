@@ -85,7 +85,7 @@ public class Pickable extends MapEntity {
         }
 
         String savegameVariable = getProperty("treasure_savegame_variable");
-        if (savegameVariable != null && !savegameVariable.isEmpty()) {
+        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid savegame variable");
         }
     }

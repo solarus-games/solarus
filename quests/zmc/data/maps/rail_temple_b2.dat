@@ -446,6 +446,8 @@ destructible{
   x = 144,
   y = 597,
   subtype = "pot",
+  treasure_name = "bomb",
+  treasure_variant = 1,
 }
 
 destination{

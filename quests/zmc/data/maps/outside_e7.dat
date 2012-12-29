@@ -1,0 +1,243 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 1024,
+  height = 1024,
+  world = "outside",
+  tileset = "1",
+}
+
+tile{
+  layer = 0,
+  x = 344,
+  y = 304,
+  width = 112,
+  height = 112,
+  pattern = 805,
+}
+
+tile{
+  layer = 0,
+  x = 352,
+  y = 312,
+  width = 32,
+  height = 32,
+  pattern = 1228,
+}
+
+tile{
+  layer = 0,
+  x = 416,
+  y = 312,
+  width = 32,
+  height = 32,
+  pattern = 1228,
+}
+
+tile{
+  layer = 0,
+  x = 352,
+  y = 376,
+  width = 32,
+  height = 32,
+  pattern = 1228,
+}
+
+tile{
+  layer = 0,
+  x = 416,
+  y = 376,
+  width = 32,
+  height = 32,
+  pattern = 1228,
+}
+
+tile{
+  layer = 0,
+  x = 328,
+  y = 288,
+  width = 16,
+  height = 144,
+  pattern = 825,
+}
+
+tile{
+  layer = 0,
+  x = 344,
+  y = 416,
+  width = 128,
+  height = 16,
+  pattern = 825,
+}
+
+tile{
+  layer = 0,
+  x = 456,
+  y = 288,
+  width = 16,
+  height = 128,
+  pattern = 825,
+}
+
+tile{
+  layer = 0,
+  x = 344,
+  y = 288,
+  width = 112,
+  height = 16,
+  pattern = 825,
+}
+
+tile{
+  layer = 0,
+  x = 392,
+  y = 416,
+  width = 16,
+  height = 16,
+  pattern = 1080,
+}
+
+tile{
+  layer = 0,
+  x = 328,
+  y = 496,
+  width = 16,
+  height = 32,
+  pattern = 804,
+}
+
+tile{
+  layer = 0,
+  x = 376,
+  y = 496,
+  width = 16,
+  height = 32,
+  pattern = 804,
+}
+
+tile{
+  layer = 0,
+  x = 456,
+  y = 496,
+  width = 16,
+  height = 32,
+  pattern = 804,
+}
+
+tile{
+  layer = 0,
+  x = 408,
+  y = 496,
+  width = 16,
+  height = 32,
+  pattern = 804,
+}
+
+tile{
+  layer = 0,
+  x = 344,
+  y = 504,
+  width = 8,
+  height = 24,
+  pattern = 807,
+}
+
+tile{
+  layer = 0,
+  x = 360,
+  y = 504,
+  width = 8,
+  height = 24,
+  pattern = 807,
+}
+
+tile{
+  layer = 0,
+  x = 392,
+  y = 504,
+  width = 8,
+  height = 24,
+  pattern = 807,
+}
+
+tile{
+  layer = 0,
+  x = 424,
+  y = 504,
+  width = 8,
+  height = 24,
+  pattern = 807,
+}
+
+tile{
+  layer = 0,
+  x = 440,
+  y = 504,
+  width = 8,
+  height = 24,
+  pattern = 807,
+}
+
+tile{
+  layer = 0,
+  x = 352,
+  y = 504,
+  width = 8,
+  height = 24,
+  pattern = 808,
+}
+
+tile{
+  layer = 0,
+  x = 368,
+  y = 504,
+  width = 8,
+  height = 24,
+  pattern = 808,
+}
+
+tile{
+  layer = 0,
+  x = 400,
+  y = 504,
+  width = 8,
+  height = 24,
+  pattern = 808,
+}
+
+tile{
+  layer = 0,
+  x = 432,
+  y = 504,
+  width = 8,
+  height = 24,
+  pattern = 808,
+}
+
+tile{
+  layer = 0,
+  x = 448,
+  y = 504,
+  width = 8,
+  height = 24,
+  pattern = 808,
+}
+
+tile{
+  layer = 0,
+  x = 328,
+  y = 448,
+  width = 144,
+  height = 16,
+  pattern = 806,
+}
+
+tile{
+  layer = 0,
+  x = 328,
+  y = 472,
+  width = 144,
+  height = 16,
+  pattern = 806,
+}
+

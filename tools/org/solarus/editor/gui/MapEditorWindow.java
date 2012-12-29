@@ -196,7 +196,7 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
     /**
      * Creates a new map in the project and sets it as the current map.
      */
-    protected void newMap() {
+    public void newMap() {
         if (!checkCurrentFileSaved()) {
             return;
         }
@@ -287,7 +287,7 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
     /**
      * @return the map
      */
-    protected Map getMap() {
+    public Map getMap() {
         return map;
     }
 

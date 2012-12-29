@@ -52,12 +52,14 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
     private String projectPath;
     private String quest;
     private EditorWindow editorWindow;
+    private QuestDataTreeMapPopupMenu mapPopupMenu;
     private QuestDataTreePopupMenu popupMenu;
     public QuestDataTree(String quest, EditorWindow parent) {
         this.quest = quest;
         this.editorWindow = parent;
         addTreeSelectionListener(this);
         addMouseListener(new QuestDataTreeMouseAdapter());
+        mapPopupMenu = new QuestDataTreeMapPopupMenu();
         popupMenu = new QuestDataTreePopupMenu();
     }
     /**
@@ -137,20 +139,28 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
             DefaultMutableTreeNode clickedNode = null;
             try {
                 if (e.getButton() == MouseEvent.BUTTON3) {
-                    // right click: show a popup menu if the element is a map
-                    int row = QuestDataTree.this.getRowForLocation(e.getX(), e.getY());
-                    if (row == -1) {
-                        return;
-                    }
-                    QuestDataTree.this.setSelectionRow(row);
                     clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
-                    ResourceElement element = (ResourceElement) clickedNode.getUserObject();
-                    if (element.type == ResourceType.MAP) {
-                        popupMenu.setMap(element.id);
-                        popupMenu.show((JComponent) e.getSource(),
-                                e.getX(), e.getY());
+                    if (clickedNode.isLeaf()) {
+                        // right click: show a popup menu if the element is a map
+                        int row = QuestDataTree.this.getRowForLocation(e.getX(), e.getY());
+                        if (row == -1) {
+                            return;
+                        }
+                        QuestDataTree.this.setSelectionRow(row);
+                        clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
+                        ResourceElement element = (ResourceElement) clickedNode.getUserObject();
+                        if (element.type == ResourceType.MAP) {
+                            popupMenu.setMap(element.id);
+                            popupMenu.show((JComponent) e.getSource(),
+                                    e.getX(), e.getY());
+                        }
                     }
-
+                    else {
+                        if (clickedNode.getUserObject().equals(ResourceType.MAP.getName())) {
+                            mapPopupMenu.show((JComponent) e.getSource(),
+                                    e.getX(), e.getY());
+                        }
+                    }
                 } else if (e.getClickCount() == 2) {
                     // double-click: open the clicked file
 
@@ -223,7 +233,27 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
             }
         }
     }
-
+    /**
+     * Popup menu associated to the right click on the map
+     */
+    class QuestDataTreeMapPopupMenu extends JPopupMenu implements ActionListener {    
+        private JMenuItem newMapMenu;
+        public QuestDataTreeMapPopupMenu()
+        {
+            newMapMenu = new JMenuItem("New Map");
+            newMapMenu.addActionListener(this);
+            add(newMapMenu);            
+        }
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow);
+            mapEditor.newMap();
+            editorWindow.addEditor(mapEditor);
+            mapEditor.getMap().addObserver(editorWindow);
+        }
+        
+    }
     /**
      * Popup menu associated to maps in the tree.
      */

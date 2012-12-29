@@ -566,6 +566,18 @@ destination{
   direction = 2,
 }
 
+teletransporter{
+  layer = 1,
+  x = 56,
+  y = 0,
+  width = 16,
+  height = 16,
+  name = "teletransporter_3",
+  transition = 1,
+  destination_map = "lighthouse_1f",
+  destination = "main_entrance",
+}
+
 tile{
   layer = 2,
   x = 0,

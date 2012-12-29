@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import org.solarus.editor.*;
-import org.solarus.editor.Map;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.map_editor_actions.*;
 
@@ -422,6 +421,8 @@ public class MapView extends JComponent implements Observer, Scrollable {
                 copiedEntities.add(copy);
             }
         } catch (QuestEditorException ex) {
+            GuiTools.errorDialog(ex.getMessage());
+            ex.printStackTrace();
         }
 
         mapEditorWindow.update(null, null);

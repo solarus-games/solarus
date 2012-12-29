@@ -78,7 +78,7 @@ end
 function enemy:on_collision_enemy(other_enemy, other_sprite, my_sprite)
 
   if used_sword then
-    if other_enemy:receive_bounced_fireball ~= nil then
+    if other_enemy.receive_bounced_fireball ~= nil then
       other_enemy:receive_bounced_fireball(self)
     end
   end

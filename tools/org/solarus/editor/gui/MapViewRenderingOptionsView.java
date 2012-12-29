@@ -65,16 +65,6 @@ public class MapViewRenderingOptionsView extends JPanel {
         box.addItemListener(new ItemListenerLayer(Layer.HIGH));
         boxesPanel.add(box);
 
-        box = new JCheckBox("Show obstacles");
-        box.setSelected(renderingOptions.getShowObstacles());
-        box.addItemListener(new ItemListenerObstacle(true));
-        boxesPanel.add(box);
-
-        box = new JCheckBox("Show non obstacles");
-        box.setSelected(renderingOptions.getShowNonObstacles());
-        box.addItemListener(new ItemListenerObstacle(false));
-        boxesPanel.add(box);
-
         box = new JCheckBox("Show transparency");
         box.setSelected(renderingOptions.getShowTransparency());
         box.addItemListener(new ItemListenerTransparency());
@@ -127,48 +117,6 @@ public class MapViewRenderingOptionsView extends JPanel {
         }
     }
 
-    /**
-     * Listener invoked when the state of an obstacle checkbox has changed.
-     */
-    private class ItemListenerObstacle implements ItemListener {
-
-        /**
-         * true to control obstacles, false to control non obstacles.
-         */
-        private boolean controlObstacles;
-
-        /**
-         * Constructor.
-         * @param obstacle true to control obstacles, false to control non obstacles.
-         */
-        public ItemListenerObstacle(boolean controlObstacles) {
-            this.controlObstacles = controlObstacles;
-        }
-
-        /**
-         * Method invoked when the user clicks on the checkbox.
-         */
-        public void itemStateChanged(ItemEvent itemEvent) {
-
-            Map map = renderingOptions.getMap();
-
-            if (map != null) {
-                // unselect everything
-                map.getEntitySelection().unselectAll();
-            }
-
-            // get the new checkbox state
-            boolean show = (itemEvent.getStateChange() == ItemEvent.SELECTED);
-
-            // update the options
-            if (controlObstacles) {
-                renderingOptions.setShowObstacles(show);
-            }
-            else {
-                renderingOptions.setShowNonObstacles(show);
-            }
-        }
-    }
     /**
      * Listener invoked when the state of the grid checkbox has changed
      */

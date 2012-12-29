@@ -1,12 +1,10 @@
 ####
 #
-# This CMakeList can be included inside the main CMakeList.txt to generate 
-# a CFBundle. The engine is build from corresponding ${main_source_file} files. 
+# This CMakeList can be included inside the main CMakeList.txt to add a
+# target which generate the CFBundle when building the engine. 
+# The engine is build from corresponding ${main_source_file} files. 
 # The quest, icon and eventually an info.plist template file can be added to the project.
 #
-# Since the MACOSX_BUNDLE property only affect TARGET, which are build or imported 
-# files by the current project, you have to build the engine if you build
-# the Bundle.
 # You can edit the Bundle configuration by passing some flags.
 # SOLARUS_OSX_BUNDLE represent the Bundle name. It's the only obligatory flag.
 # SOLARUS_OSX_BUNDLE_QUEST represent the quest path.
@@ -16,7 +14,10 @@
 # There is a default icon and info.plist template provided, but no quest, so if you 
 # don't specify a quest path, you'll have to add one manually to your generic bundle.
 #
-# Exportable to XCode
+# Exportable to XCode.
+#
+# See https://developer.apple.com/library/mac/#releasenotes/General/SubmittingToMacAppStore/_index.html#//apple_ref/doc/uid/TP40010572
+# to make sure you have a fully 10.8+ and Mac App Store compatible application.
 #
 ####
 
@@ -39,16 +40,15 @@ if(NOT SOLARUS_OSX_BUNDLE_INFOPLIST)
   set(SOLARUS_OSX_BUNDLE_INFOPLIST 	${SOLARUS_BUNDLE_SOURCE_DIR}/Info.plist)
 endif()
 if(NOT SOLARUS_OSX_BUNDLE_ICON)
-  set(SOLARUS_OSX_BUNDLE_ICON         ${SOLARUS_BUNDLE_SOURCE_DIR}/Solarus.icns)
+  set(SOLARUS_OSX_BUNDLE_ICON         	${SOLARUS_BUNDLE_SOURCE_DIR}/Solarus.icns)
 endif()
 
 # Remove the hardcoded additional link on SDL path
-set(SDL_FRAMEWORK 			${SDL_LIBRARY})
-string(REPLACE "-framework Cocoa" "" SDL_FRAMEWORK ${SDL_FRAMEWORK}) 
+string(REPLACE "-framework Cocoa" "" SDL_FRAMEWORK "${SDL_LIBRARY}") 
 
 # Specify Bundle files
 if(CMAKE_VERSION VERSION_LESS 2.8.11) 
-  message(WARNING ".framework embed library will not be correctly copied. See http://public.kitware.com/Bug/view.php?id=13784")
+  message(WARNING ".framework embed library will not be correctly copied with the Makefile Generator. See http://public.kitware.com/Bug/view.php?id=13784")
 endif()
 add_executable(${SOLARUS_OSX_BUNDLE} MACOSX_BUNDLE
 		${main_source_file}
@@ -90,5 +90,5 @@ set_property(TARGET ${SOLARUS_OSX_BUNDLE} PROPERTY
 
 # install
 install(PROGRAMS	${SOLARUS_OSX_BUNDLE}
-  BUNDLE DESTINATION  product/
+  BUNDLE DESTINATION  	local/share/solarus/
 ) 

@@ -5720,7 +5720,6 @@ chest{
   y = 112,
   name = "chest",
   is_big_chest = false,
-  treasure_name = "_none",
 }
 
 tile{
@@ -11014,6 +11013,7 @@ tile{
   height = 40,
   pattern = 511,
 }
+
 
 tile{
   layer = 2,

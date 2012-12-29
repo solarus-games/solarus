@@ -184,7 +184,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
     /**
      * Creates a new tileset in the project and sets it as the current tileset.
      */
-    public void newTileset() {
+    protected void newTileset() {
 
         if (!checkCurrentFileSaved()) {
             return;

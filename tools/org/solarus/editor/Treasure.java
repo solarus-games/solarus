@@ -12,16 +12,18 @@ package org.solarus.editor;
  */
 public class Treasure {
 
-    private String itemName;            /**< id of the item to give (null means none) */
-    private Integer variant;            /**< variant of this item (null means no item) */
-    private String savegameVariable;    /**< boolean variable that stores the
+    private String itemName;            /**< id of the item to give, according to items.dat
+                                         * (possibly "_none" or "_random") or null if unspecified. */
+    private Integer variant;            /**< variant of this item (null means unspecified). */
+    private String savegameVariable;   /**< boolean variable that stores the
                                          * treasure's state (found or not found) in the savegame
                                          * or null for unsaved. */
 
     /**
      * Creates a treasure.
-     * @param itemName Name identifying the treasure to give (null means none).
-     * @param variant Variant of this item (null means no item).
+     * @param itemName Name identifying the treasure to give
+     * (possibly "_none" or "_random") or null if unspecified.
+     * @param variant Variant of this item (null means unspecified).
      * @param savegameVariable Savegame variable that stores the treasure's state,
      * or null to make the treasure unsaved (null means unsaved).
      */
@@ -34,7 +36,7 @@ public class Treasure {
 
     /**
      * Returns the id of the item to give.
-     * @return The id of the item or null.
+     * @return The id of the item (possibly "_none" or "_random") or null.
      */
     public String getItemName() {
         return itemName;
@@ -42,23 +44,23 @@ public class Treasure {
 
     /**
      * Sets the id of the item to give.
-     * @param itemName The name to set (null means none).
+     * @param itemName The name to set (possibly "_none")
+     * or null for unspecified.
      */
     public void setItemName(String itemName) {
         this.itemName = itemName;
 
-        if (itemName == null) {
+        if (itemName.equals(Item.noneId)) {
             variant = null;
-	    savegameVariable = null;
         }
-	else if (variant == null) {
-	    variant = 1;
-	}
+        else if (variant == null) {
+            variant = 1;
+        }
     }
 
     /**
      * Returns the variant of the item to give.
-     * @return The variant (null means no item).
+     * @return The variant (null means unspecified).
      */
     public Integer getVariant() {
         return variant;
@@ -66,7 +68,7 @@ public class Treasure {
 
     /**
      * Sets the variant of the item to give.
-     * @param variant The variant to set (null means no item).
+     * @param variant The variant to set (null means unspecified).
      */
     public void setVariant(Integer variant) {
         this.variant = variant;

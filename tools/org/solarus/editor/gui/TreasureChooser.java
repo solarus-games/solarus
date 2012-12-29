@@ -36,13 +36,13 @@ public class TreasureChooser extends JPanel {
         super(new GridBagLayout());
 
         // create a default, unspecified treasure
-        treasure = new Treasure(null, null, null);
+        treasure = new Treasure(null, 1, null);
 
         // create the subcomponents
         itemNameField = new ItemChooser(includeNone);
         variantField = new NumberChooser(1, 1, Integer.MAX_VALUE);
         saveField = new JCheckBox("Save the treasure state");
-        savegameVariableField = new JTextField(20);
+        savegameVariableField = new JTextField();
 
         // place the subcomponents
         setBorder(BorderFactory.createTitledBorder("Treasure"));
@@ -74,34 +74,14 @@ public class TreasureChooser extends JPanel {
         itemNameField.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
-	        String itemName = itemNameField.getSelectedId();
-		if (itemName.isEmpty()) {
-		    treasure.setItemName(null);
-		    variantField.setEnabled(false);
-		    saveField.setEnabled(false);
-		    savegameVariableField.setEnabled(false);
-		}
-		else {
-		    treasure.setItemName(itemNameField.getSelectedId());
-		    if (!variantField.isEnabled()) {
-		        variantField.setEnabled(true);
-			variantField.setValue(1);
-		    }
-		    saveField.setEnabled(true);
-		    savegameVariableField.setEnabled(true);
-		}
+                treasure.setItemName(itemNameField.getSelectedId());
             }
         });
 
         variantField.addChangeListener(new ChangeListener() {
 
             public void stateChanged(ChangeEvent e) {
-	        if (variantField.isEnabled()) {
-		    treasure.setVariant(variantField.getNumber());
-		}
-		else {
-		    treasure.setVariant(null);
-		}
+                treasure.setVariant(variantField.getNumber());
             }
         });
 
@@ -110,7 +90,6 @@ public class TreasureChooser extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 if (saveField.isSelected()) {
-
                     savegameVariableField.setEnabled(true);
                     treasure.setSavegameVariable(savegameVariableField.getText());
                 }
@@ -139,10 +118,11 @@ public class TreasureChooser extends JPanel {
 
     /**
      * Sets all properties of the treasure represented in this component.
-     * @param itemName Name identifying the treasure to give or null for no treasure.
+     * @param itemName Name identifying the treasure to give 
+     * (possibly "_none" or "_random") or null for unspecified.
      * @param variant Variant of this item (null means unspecified).
      * @param savegameVariable Savegame variable that stores the treasure's state,
-     * or null to make the treasure unsaved (null means unspecified).
+     * or -1 to make the treasure unsaved (null means unspecified).
      */
     public void setTreasure(String itemName, Integer variant, String savegameVariable) {
 
@@ -158,19 +138,26 @@ public class TreasureChooser extends JPanel {
      */
     private void update() {
 
+        // Item name.
         if (treasure.getItemName() == null) {
             itemNameField.setSelectedId("");
-            variantField.setEnabled(false);
         }
         else {
             itemNameField.setSelectedId(treasure.getItemName());
+        }
+
+        // Variant.
+        if (treasure.getItemName() == null
+                || treasure.getItemName() == Item.noneId) {
+            variantField.setEnabled(false);
+        }
+        else {
             variantField.setEnabled(true);
             if (treasure.getVariant() == null) {
                 variantField.setNumber(1);
             }
             else {
-	        Integer variant = treasure.getVariant();
-		variantField.setNumber(variant);
+                variantField.setNumber(treasure.getVariant());
             }
         }
 

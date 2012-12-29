@@ -71,12 +71,14 @@ public class Pickable extends MapEntity {
 
         String treasureName = getProperty("treasure_name");
 
-        if (treasureName == null) {
+        if (treasureName == null
+                || treasureName.equals(Item.noneId)) {
             throw new MapException("The treasure of a pickable item cannot be empty");
         }
 
         Integer variant = getIntegerProperty("treasure_variant");
-        if (treasureName != null && (variant == null || variant < 1)) {
+        if (!treasureName.equals(Item.noneId)
+                && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
         }
 
@@ -85,7 +87,7 @@ public class Pickable extends MapEntity {
         }
 
         String savegameVariable = getProperty("treasure_savegame_variable");
-        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
+        if (savegameVariable != null && !savegameVariable.isEmpty()) {
             throw new MapException("Invalid savegame variable");
         }
     }

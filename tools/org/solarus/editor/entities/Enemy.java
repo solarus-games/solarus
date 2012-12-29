@@ -100,7 +100,7 @@ public class Enemy extends MapEntity {
         setProperty("breed", "");
         setIntegerProperty("rank", Rank.NORMAL.ordinal());
         setProperty("savegame_variable", null);
-        setProperty("treasure_name", null);
+        setProperty("treasure_name", Item.noneId);
         setIntegerProperty("treasure_variant", null);
         setProperty("treasure_savegame_variable", null);
     }
@@ -140,13 +140,18 @@ public class Enemy extends MapEntity {
         }
 
         String savegameVariable = getProperty("savegame_variable");
-        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
+        if (savegameVariable != null && !savegameVariable.isEmpty()) {
             throw new MapException("Invalid enemy savegame variable");
         }
 
         String treasureName = getProperty("treasure_name");
+        if (treasureName == null) {
+            throw new MapException("A treasure must be specified");
+        }
+
         Integer variant = getIntegerProperty("treasure_variant");
-        if (treasureName != null && (variant == null || variant < 1)) {
+        if (!treasureName.equals(Item.noneId)
+                && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
         }
 
@@ -155,7 +160,7 @@ public class Enemy extends MapEntity {
         }
 
         String treasureSavegameVariable = getProperty("treasure_savegame_variable");
-        if (treasureSavegameVariable != null && !isValidSavegameVariable(treasureSavegameVariable)) {
+        if (treasureSavegameVariable != null && !treasureSavegameVariable.isEmpty()) {
             throw new MapException("Invalid treasure savegame variable");
         }
     }

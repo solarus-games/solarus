@@ -33,12 +33,15 @@ public class ItemChooser extends ResourceChooser {
         super(ResourceType.ITEM, false);
 
         KeyValue[] additionalOptions = new KeyValue[1];
+        int i = 0;
 
         if (includeNone) {
-            additionalOptions[0] = new KeyValue("", "(None)");
+            additionalOptions[i] = new KeyValue(Item.noneId, Item.noneName);
+            i++;
         }
-	else {
-            // Add an empty row anyway just to show that the user he has to select another item
+
+        if (i == 0) {
+            // always add an empty row to show to the user that he has to select another item
             additionalOptions[0] = new KeyValue("", "");
         }
 

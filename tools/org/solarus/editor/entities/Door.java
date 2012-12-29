@@ -233,7 +233,7 @@ public class Door extends MapEntity {
     public void checkProperties() throws MapException {
 
         String savegameVariable = getProperty("savegame_variable");
-        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
+        if (savegameVariable != null && !savegameVariable.isEmpty()) {
             throw new MapException("Invalid door savegame variable");
         }
 

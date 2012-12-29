@@ -201,13 +201,13 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         item = new JMenuItem("New quest...");
         item.setMnemonic(KeyEvent.VK_N);
-        item.getAccessibleContext().setAccessibleDescription("Create a new Solarus quest");
+        item.getAccessibleContext().setAccessibleDescription("Create a new ZSDX quest");
         item.addActionListener(new ActionListenerNewProject());
         menu.add(item);
 
         item = new JMenuItem("Load quest...");
         item.setMnemonic(KeyEvent.VK_O);
-        item.getAccessibleContext().setAccessibleDescription("Open an existing Solarus quest");
+        item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX quest");
         item.addActionListener(new ActionListenerLoadProject());
         menu.add(item);
 

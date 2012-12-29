@@ -160,21 +160,7 @@ public class Map extends Observable {
         this.entitySelection = new MapEntitySelection(this);
         this.history = new MapEditorHistory();
     }
-    /**
-     * Delete the files associated to a map
-     * @param id
-     */
-    public static void delete(String id) throws QuestEditorException {
-        File mapFile = Project.getMapFile(id);
-        if (!mapFile.delete()) {
-            throw new QuestEditorException("Can't remove the file " + mapFile.getAbsolutePath());
-        }
-        File mapScriptFile = Project.getMapScriptFile(id);
-        if (!mapScriptFile.delete()) {
-            throw new QuestEditorException("Can't remove the file " + mapScriptFile.getAbsolutePath());            
-        }
-    }
-    
+
     /**
      * Returns the id of the map.
      * @return the id of the map
@@ -922,6 +908,7 @@ public class Map extends Observable {
      * @throws QuestEditorException if the file could not be read
      */
     public void load() throws QuestEditorException {
+
         try {
             // Get the map name in the quest resource database.
             Resource mapResource = Project.getResource(ResourceType.MAP);
@@ -1013,7 +1000,7 @@ public class Map extends Observable {
             throw new MapException(ex.getMessage());
         }
     }
-    
+
     /**
      * @brief Lua function properties() called by the map data file.
      */

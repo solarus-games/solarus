@@ -1394,27 +1394,6 @@ public abstract class MapEntity extends Observable {
 
     }
 
-    /**
-     * @brief Returns whether a string is a valid savegame variable,
-     * that is, a valid Lua identifier.
-     * @param id The savegame variable to check.
-     * @return true if this is a legal Lua identifir.
-     */
-    public static boolean isValidSavegameVariable(String id) {
-
-        if (id.isEmpty()) {
-            return false;
-        }
-
-        for (int i = 0; i < id.length(); i++) {
-            char c = id.charAt(i);
-            if (!Character.isLetterOrDigit(c) && c != '_') {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     /**
      * Changes the tileset used to represent this entity on the map.

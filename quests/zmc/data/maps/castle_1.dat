@@ -1,0 +1,136 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 2048,
+  height = 2048,
+  world = "outside",
+  tileset = "1",
+  music = "dark_mountain",
+}
+
+tile{
+  layer = 0,
+  x = 1656,
+  y = 104,
+  width = 96,
+  height = 16,
+  pattern = 18,
+}
+
+tile{
+  layer = 0,
+  x = 1640,
+  y = 40,
+  width = 16,
+  height = 64,
+  pattern = 20,
+}
+
+tile{
+  layer = 0,
+  x = 1840,
+  y = 32,
+  width = 16,
+  height = 144,
+  pattern = 20,
+}
+
+tile{
+  layer = 0,
+  x = 1768,
+  y = 72,
+  width = 32,
+  height = 176,
+  pattern = 937,
+}
+
+tile{
+  layer = 0,
+  x = 1592,
+  y = 232,
+  width = 192,
+  height = 56,
+  pattern = 918,
+}
+
+tile{
+  layer = 0,
+  x = 1784,
+  y = 240,
+  width = 16,
+  height = 48,
+  pattern = 923,
+}
+
+tile{
+  layer = 0,
+  x = 1768,
+  y = 232,
+  width = 16,
+  height = 16,
+  pattern = 930,
+}
+
+tile{
+  layer = 0,
+  x = 1808,
+  y = 0,
+  width = 16,
+  height = 400,
+  pattern = 126,
+}
+
+tile{
+  layer = 0,
+  x = 1800,
+  y = 0,
+  width = 8,
+  height = 400,
+  pattern = 125,
+}
+
+tile{
+  layer = 0,
+  x = 1840,
+  y = 224,
+  width = 16,
+  height = 64,
+  pattern = 19,
+}
+
+tile{
+  layer = 0,
+  x = 1824,
+  y = 0,
+  width = 16,
+  height = 400,
+  pattern = 25,
+}
+
+tile{
+  layer = 0,
+  x = 1840,
+  y = 400,
+  width = 16,
+  height = 16,
+  pattern = 29,
+}
+
+tile{
+  layer = 0,
+  x = 1824,
+  y = 400,
+  width = 16,
+  height = 16,
+  pattern = 83,
+}
+
+tile{
+  layer = 0,
+  x = 1808,
+  y = 400,
+  width = 16,
+  height = 16,
+  pattern = 82,
+}
+

@@ -3,9 +3,9 @@ properties{
   y = 0,
   width = 320,
   height = 240,
-  world = "Lighthouse",
+  world = "lighthouse",
   floor = 1,
-  tileset = "20",
+  tileset = "lighthouse",
   music = "eagle_tower",
 }
 

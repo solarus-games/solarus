@@ -1,24 +1,28 @@
-0	rail_temple_b2	New map0	outside_a7	New map0	lighthouse_1F	Lighthouse 1F1	1	Light World
-1	13	Dark World
-1	3	Cave
-1	0	House
-1	4	Blue dungeon (LW)
-1	5	Green dungeon (LW)
-1	7	Brown dungeon (LW)
-1	11	Pink dungeon (LW)
-1	8	Blue dungeon (DW)
-1	9	Green dungeon (DW)
-1	10	Orange dungeon (DW)
-1	17	Gray dungeon (DW)
-1	18	Gray-brown dungeon (DW)
-1	19	Gray-blue dungeon (DW)
-1	12	Castle
-1	2	Ice dungeon
-1	14	Forest dungeon
-1	15	Final dungeon
-1	16	Old school dungeon
-1	6	Intro
-1	20	Lighthouse
+0	outside_a7	Outside world A7
+0	outside_e7	Graveyard
+0	lighthouse_1f	Lighthouse 1F
+0	rail_temple_b2	Rail Temple B2
+1	light_world	Light World
+1	dark_world	Dark World
+1	cave	Cave
+1	house	House
+1	blue_dungeon_lw	Blue dungeon (LW)
+1	green_dungeon_lw	Green dungeon (LW)
+1	brown_dungeon_lw	Brown dungeon (LW)
+1	pink_dungeon_lw	Pink dungeon (LW)
+1	blue_dungeon_dw	Blue dungeon (DW)
+1	green_dungeon_dw	Green dungeon (DW)
+1	orange_dungeon_dw	Orange dungeon (DW)
+1	gray_dungeon_dw	Gray dungeon (DW)
+1	graybrown_dungeon_dw	Gray-brown dungeon (DW)
+1	grayblue_dungeon_dw	Gray-blue dungeon (DW)
+1	castle	Castle
+1	ice_dungeon	Ice dungeon
+1	forest_dungeon	Forest dungeon
+1	lighthouse	Lighthouse
+1	final_dungeon	Final dungeon
+1	old_school_dungeon	Old school dungeon
+1	intro	Intro
 2	agahnim	Agahnim theme
 2	beginning	Beginning
 2	boss	Boss

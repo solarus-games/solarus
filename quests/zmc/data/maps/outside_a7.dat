@@ -4,7 +4,7 @@ properties{
   width = 2048,
   height = 2048,
   world = "outside",
-  tileset = "1",
+  tileset = "light_world",
   music = "same",
 }
 

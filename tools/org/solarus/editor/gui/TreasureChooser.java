@@ -74,7 +74,23 @@ public class TreasureChooser extends JPanel {
         itemNameField.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
-                treasure.setItemName(itemNameField.getSelectedId());
+
+	        String itemName = itemNameField.getSelectedId();
+		if (itemName.isEmpty()) {
+		    treasure.setItemName(null);
+		    variantField.setEnabled(false);
+		    saveField.setEnabled(false);
+		    savegameVariableField.setEnabled(false);
+		}
+		else {
+		    treasure.setItemName(itemNameField.getSelectedId());
+		    if (!variantField.isEnabled()) {
+		        variantField.setEnabled(true);
+			variantField.setValue(1);
+		    }
+		    saveField.setEnabled(true);
+		    savegameVariableField.setEnabled(true);
+		}
             }
         });
 

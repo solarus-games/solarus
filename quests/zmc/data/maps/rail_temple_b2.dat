@@ -593,6 +593,14 @@ tile{
   pattern = 314,
 }
 
+destructible{
+  layer = 0,
+  x = 312,
+  y = 269,
+  subtype = "pot",
+  treasure_name = "_none",
+}
+
 tile{
   layer = 1,
   x = 40,
@@ -2147,5 +2155,14 @@ tile{
   width = 8,
   height = 8,
   pattern = 309,
+}
+
+door{
+  layer = 2,
+  x = 384,
+  y = 208,
+  name = "door",
+  direction = 1,
+  subtype = "0",
 }
 

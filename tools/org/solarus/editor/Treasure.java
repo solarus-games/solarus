@@ -52,10 +52,11 @@ public class Treasure {
 
         if (itemName.equals(Item.noneId)) {
             variant = null;
+	    savegameVariable = null;
         }
-        else if (variant == null) {
-            variant = 1;
-        }
+	else if (variant == null) {
+	    variant = 1;
+	}
     }
 
     /**

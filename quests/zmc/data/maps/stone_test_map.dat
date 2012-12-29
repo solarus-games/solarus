@@ -171,8 +171,8 @@ destination{
 
 enemy{
   layer = 1,
-  x = 236,
-  y = 117,
+  x = 260,
+  y = 125,
   name = "stoned_enemy",
   direction = 3,
   breed = "snap_dragon",
@@ -181,15 +181,23 @@ enemy{
 
 wall{
   layer = 1,
-  x = 192,
+  x = 224,
   y = 40,
   width = 16,
   height = 160,
   name = "wall",
   stops_hero = false,
   stops_enemies = true,
-  stops_npcs = true,
+  stops_npcs = false,
   stops_blocks = false,
+}
+
+pickable{
+  layer = 1,
+  x = 104,
+  y = 125,
+  treasure_name = "cane_of_stone",
+  treasure_variant = 1,
 }
 
 tile{

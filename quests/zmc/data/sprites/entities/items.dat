@@ -219,3 +219,6 @@ green_potion entities/items.png 1 0 -1
 
 blue_potion entities/items.png 1 0 -1
 144	80	16	16	8	13	1	1
+
+cane_of_stone entities/items.png 1 0 -1
+720	0	16	16	8	13	1	1

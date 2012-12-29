@@ -1,0 +1,37 @@
+walking enemies/mini_mowatulla.png 4 200 0
+0	0	16	16	8	13	4	4
+0	0	16	16	8	13	4	4
+0	0	16	16	8	13	4	4
+0	0	16	16	8	13	4	4
+
+immobilized enemies/mini_mowatulla.png 4 0 -1
+32	16	16	16	8	13	1	1
+32	16	16	16	8	13	1	1
+32	16	16	16	8	13	1	1
+32	16	16	16	8	13	1	1
+
+shaking enemies/mini_mowatulla.png 4 50 0
+32	16	16	16	8	13	2	2
+32	16	16	16	8	13	2	2
+32	16	16	16	8	13	2	2
+32	16	16	16	8	13	2	2
+
+hurt enemies/mini_mowatulla.png 4 50 0
+0	16	16	16	8	13	3	3
+0	16	16	16	8	13	3	3
+0	16	16	16	8	13	3	3
+0	16	16	16	8	13	3	3
+
+shell enemies/mini_mowatulla.png 4 0 -1
+0	32	16	16	8	13	1	1
+0	32	16	16	8	13	1	1
+0	32	16	16	8	13	1	1
+0	32	16	16	8	13	1	1
+
+
+shell_breaking enemies/mini_mowatulla.png 4 200 -1
+0	32	16	16	8	13	3	3
+0	32	16	16	8	13	3	3
+0	32	16	16	8	13	3	3
+0	32	16	16	8	13	3	3
+

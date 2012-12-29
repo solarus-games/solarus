@@ -1,0 +1,5 @@
+stopped tileset 1 0 -1
+272	168	16	8	8	4	1	1
+
+walking tileset 1 100 0
+272	168	16	8	8	4	3	3

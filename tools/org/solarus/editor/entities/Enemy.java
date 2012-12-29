@@ -100,7 +100,7 @@ public class Enemy extends MapEntity {
         setProperty("breed", "");
         setIntegerProperty("rank", Rank.NORMAL.ordinal());
         setProperty("savegame_variable", null);
-        setProperty("treasure_name", Item.noneId);
+        setProperty("treasure_name", null);
         setIntegerProperty("treasure_variant", null);
         setProperty("treasure_savegame_variable", null);
     }
@@ -146,8 +146,7 @@ public class Enemy extends MapEntity {
 
         String treasureName = getProperty("treasure_name");
         Integer variant = getIntegerProperty("treasure_variant");
-        if (!treasureName.equals(Item.noneId)
-                && (variant == null || variant < 1)) {
+        if (treasureName != null && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
         }
 

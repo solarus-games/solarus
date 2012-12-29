@@ -229,8 +229,9 @@ public abstract class MapEntity extends Observable {
      * @param map the map
      * @param other an entity
      * @return the copy created
+     * @throws QuestEditorException If the entity could not be copied.
      */
-    public static MapEntity createCopy(Map map, MapEntity other) {
+    public static MapEntity createCopy(Map map, MapEntity other) throws QuestEditorException {
 
         MapEntity entity = null;
         try {
@@ -266,14 +267,12 @@ public abstract class MapEntity extends Observable {
 
             entity.updateImageDescription();
 
-            // now the origin is valid
-            entity.setPositionInMap(otherPositionInMap.x, otherPositionInMap.y);
+            return entity;
         }
         catch (QuestEditorException ex) {
-            System.err.println("Cannot create a copy of entity '" + other + "'");
-            entity = null;
+            ex.printStackTrace();
+            throw new QuestEditorException("Failed to copy entity '" + entity + "': " + ex.getMessage());
         }
-        return entity;
     }
 
     /**

@@ -48,11 +48,10 @@ import org.solarus.editor.gui.GuiTools;
  * maps, tilesets, sprites, enemies, etc.
  */
 public class QuestDataTree extends JTree implements TreeSelectionListener, Observer {
-
+    private String projectPath;
     private String quest;
     private EditorWindow editorWindow;
     private QuestDataTreePopupMenu popupMenu;
-
     public QuestDataTree(String quest, EditorWindow parent) {
         this.quest = quest;
         this.editorWindow = parent;
@@ -60,10 +59,18 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
         addMouseListener(new QuestDataTreeMouseAdapter());
         popupMenu = new QuestDataTreePopupMenu();
     }
-
-    public void setRoot(String projectPath) {
+    /**
+     * Reload the tree, rebuilding the model from
+     * the resources.
+     */
+    public void reloadTree() {
         setModel(new EditorTreeModel(projectPath));
-        repaint();
+        repaint();        
+    }
+    
+    public void setRoot(String projectPath) {
+        this.projectPath = projectPath;
+        reloadTree();
     }
 
     public void valueChanged(TreeSelectionEvent e) {
@@ -222,7 +229,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
     class QuestDataTreePopupMenu extends JPopupMenu implements ActionListener {
 
         private String mapId;
-        private JMenuItem mapMenu, scriptMenu;
+        private JMenuItem mapMenu, scriptMenu, deleteMenu;
 
         public QuestDataTreePopupMenu() {
             mapMenu = new JMenuItem("Open Map");
@@ -231,6 +238,9 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
             scriptMenu = new JMenuItem("Open Map Script");
             add(scriptMenu);
             scriptMenu.addActionListener(this);
+            deleteMenu = new JMenuItem("Delete Map");
+            add(deleteMenu);
+            deleteMenu.addActionListener(this);
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -245,6 +255,24 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                 }
                 catch (QuestEditorException ex) {
                     GuiTools.errorDialog("Could not load the map: " + ex.getMessage());
+                }
+            }
+            //delete the map
+            else if (e.getSource() == deleteMenu) {
+                try {
+                    Map.delete(mapId);
+                    Project.getResource(ResourceType.MAP).removeElement(mapId);
+ 
+                    //TODO: Do it in a cleaner way
+                    //Here we reload the whole tree, which is not 
+                    //the most optimized way of removing the child
+                    //from the tree.
+                    reloadTree();
+                    
+                    repaint();
+                }
+                catch (QuestEditorException ex) {
+                    GuiTools.errorDialog("Could not delete the map: " + ex.getMessage());
                 }
             } else {
                 // open the script

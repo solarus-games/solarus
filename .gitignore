@@ -3,6 +3,7 @@
 *.luac
 *.class
 *.pyc
+.DS_Store
 .cproject
 .project
 .classpath

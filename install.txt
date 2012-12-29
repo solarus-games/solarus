@@ -224,3 +224,6 @@ $ install_name_tool -change old_path new_path /dylib/or/binary/I/want/to/modify
 The new_path string usually looks like @rpath/The_dylib.dylib or 
 @rpath/The_framework.framework/Version/A/The_binary on Mac 10.5+.
 Replace @rpath/ by @executable_path/../Frameworks/ on earlier OSX versions.
+
+Finally, see https://developer.apple.com/library/mac/#releasenotes/General/SubmittingToMacAppStore/_index.html#//apple_ref/doc/uid/TP40010572
+to make sure you have a fully 10.8+ and Mac App Store compatible application.

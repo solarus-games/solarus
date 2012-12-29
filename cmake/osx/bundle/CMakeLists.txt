@@ -16,9 +16,6 @@
 #
 # Exportable to XCode.
 #
-# See https://developer.apple.com/library/mac/#releasenotes/General/SubmittingToMacAppStore/_index.html#//apple_ref/doc/uid/TP40010572
-# to make sure you have a fully 10.8+ and Mac App Store compatible application.
-#
 ####
 
 set(SOLARUS_BUNDLE_SOURCE_DIR "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/osx/bundle/")

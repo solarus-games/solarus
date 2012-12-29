@@ -498,6 +498,20 @@ l'aide du Grappin.
 }
 --------------------
 
+-- Canne de Pierre / Cane of Stone
+dialog{
+  id = "_item_description.cane_of_stone.1",
+  icon = 15,
+  skip = "all",
+  next = "_warning_magic",
+  text = [[
+Transforme des
+ennemis en pierre
+afin de les pousser.
+]]
+}
+--------------------
+
 -- Pommes / Apples
 dialog{
   id = "_item_description.apples_counter.1",
@@ -1268,6 +1282,23 @@ Canne de Somaria !$0
 Tu peux créer des
 blocs et t'accrocher
 à l'aide du Grappin.
+]]
+}
+--------------------
+
+-- Canne de Pierre
+dialog{
+  id = "_treasure.cane_of_stone.1",
+  icon = 15,
+  next = "_warning_magic",
+  text = [[
+Tu as trouvé la
+Canne de Pierre !$0
+
+Tu peux transformer
+tes ennemis en 
+pierre 
+afin de les pousser.
 ]]
 }
 --------------------

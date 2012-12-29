@@ -7749,3 +7749,13 @@ tile_pattern{
   height = 16,
 }
 
+tile_pattern{
+  id = 1228,
+  ground = "wall",
+  default_layer = 0,
+  x = 240,
+  y = 240,
+  width = 32,
+  height = 32,
+}
+

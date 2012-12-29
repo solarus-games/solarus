@@ -457,7 +457,7 @@ public class MapPropertiesView extends JPanel implements Observer {
          * Constructor.
          */
         public FloorField() {
-            super();
+            super(0, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
             addChangeListener(this);
             update((Map) null);

@@ -12,7 +12,7 @@
     <all-permissions />
   </security>
   <resources>
-    <j2se version="1.6" />
+    <j2se version="1.6+" />
     <jar href="solarus-editor.jar" />
     <jar href="luaj-jse-2.0.2.jar" />
   </resources>

@@ -140,15 +140,11 @@ public class Enemy extends MapEntity {
         }
 
         String savegameVariable = getProperty("savegame_variable");
-        if (savegameVariable != null && !savegameVariable.isEmpty()) {
+        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid enemy savegame variable");
         }
 
         String treasureName = getProperty("treasure_name");
-        if (treasureName == null) {
-            throw new MapException("A treasure must be specified");
-        }
-
         Integer variant = getIntegerProperty("treasure_variant");
         if (!treasureName.equals(Item.noneId)
                 && (variant == null || variant < 1)) {
@@ -160,7 +156,7 @@ public class Enemy extends MapEntity {
         }
 
         String treasureSavegameVariable = getProperty("treasure_savegame_variable");
-        if (treasureSavegameVariable != null && !treasureSavegameVariable.isEmpty()) {
+        if (treasureSavegameVariable != null && !isValidSavegameVariable(treasureSavegameVariable)) {
             throw new MapException("Invalid treasure savegame variable");
         }
     }

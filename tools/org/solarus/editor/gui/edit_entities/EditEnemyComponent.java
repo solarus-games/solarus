@@ -33,7 +33,7 @@ public class EditEnemyComponent extends EditEntityComponent {
     private ResourceChooser breedField;
     private EnumerationChooser<Enemy.Rank> rankField;
     private JCheckBox saveField;
-    private NumberChooser savegameVariableField;
+    private JTextField savegameVariableField;
     private TreasureChooser treasureField;
 
     /**
@@ -63,7 +63,7 @@ public class EditEnemyComponent extends EditEntityComponent {
         addField("Savegame", saveField);
 
         // savegame variable
-        savegameVariableField = new NumberChooser(0, 0, 32767);
+        savegameVariableField = new JTextField(20);
         addField("Enemy savegame variable", savegameVariableField);
 
         // treasure
@@ -89,9 +89,9 @@ public class EditEnemyComponent extends EditEntityComponent {
         breedField.setSelectedId(enemy.getProperty("breed"));
         rankField.setValue(Rank.get(enemy.getIntegerProperty("rank")));
 
-        Integer savegameVariable = enemy.getIntegerProperty("savegame_variable");
+        String savegameVariable = enemy.getProperty("savegame_variable");
         if (savegameVariable != null) {
-          savegameVariableField.setNumber(savegameVariable);
+          savegameVariableField.setText(savegameVariable);
           savegameVariableField.setEnabled(true);
           saveField.setSelected(true);
         }
@@ -112,8 +112,8 @@ public class EditEnemyComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-        Integer savegameVariable = savegameVariableField.isEnabled() ?
-                savegameVariableField.getNumber() : null;
+        String savegameVariable = savegameVariableField.isEnabled() ?
+                savegameVariableField.getText() : null;
         String treasureName = treasureField.getTreasure().getItemName();
         Integer treasureVariant = treasureField.getTreasure().getVariant();
         String treasureSavegameVariable = treasureField.getTreasure().getSavegameVariable();
@@ -121,7 +121,7 @@ public class EditEnemyComponent extends EditEntityComponent {
         return new ActionEditEntitySpecific(entity,
                 breedField.getSelectedId(),
                 Integer.toString(rankField.getValue().getId()),
-                savegameVariable == null ? null : Integer.toString(savegameVariable),
+                savegameVariable,
                 treasureName,
                 treasureVariant == null ? null : Integer.toString(treasureVariant),
                 treasureSavegameVariable);

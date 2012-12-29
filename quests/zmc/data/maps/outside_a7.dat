@@ -341,6 +341,14 @@ tile{
   pattern = 505,
 }
 
+destination{
+  layer = 0,
+  x = 216,
+  y = 37,
+  name = "test_destination",
+  direction = 3,
+}
+
 tile{
   layer = 2,
   x = 0,

@@ -449,6 +449,14 @@ destructible{
   treasure_name = "_none",
 }
 
+destination{
+  layer = 1,
+  x = 72,
+  y = 77,
+  name = "test_destination",
+  direction = 3,
+}
+
 tile{
   layer = 2,
   x = 0,

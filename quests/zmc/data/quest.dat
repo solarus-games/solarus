@@ -1,0 +1,5 @@
+quest{
+  write_dir = "zmc",
+  title_bar = "Zelda Mercuris' Chest",
+}
+

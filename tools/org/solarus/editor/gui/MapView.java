@@ -358,7 +358,18 @@ public class MapView extends JComponent implements Observer, Scrollable {
                     }
                 } // for
             } // for
-
+            //draw the grid if needed
+            if (renderingOptions.getShowGrid()) {
+                g.setColor(Color.BLACK);
+                // draw the vertical lines
+                for (int i = 0; i < (map.getWidth() / renderingOptions.getGridSize()); i++) {
+                    g.fillRect((int)(i * renderingOptions.getGridSize() * zoom), 0 ,1, (int)(map.getHeight() * zoom));
+                }
+                // draw the horizontal lines
+                for (int i = 0; i < (map.getHeight() / renderingOptions.getGridSize() ); i++) {
+                    g.fillRect(0, (int)(i * renderingOptions.getGridSize() * zoom), (int)(map.getWidth() * zoom), 1);
+                }
+            }
             // special display for some states
             switch (state) {
 

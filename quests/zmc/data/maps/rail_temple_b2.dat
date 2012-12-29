@@ -1,0 +1,496 @@
+properties{
+  x = 0,
+  y = 0,
+  width = 920,
+  height = 656,
+  world = "rail_temple",
+  tileset = "4",
+  music = "same",
+}
+
+tile{
+  layer = 0,
+  x = 112,
+  y = 88,
+  width = 48,
+  height = 24,
+  pattern = 232,
+}
+
+tile{
+  layer = 0,
+  x = 96,
+  y = 112,
+  width = 24,
+  height = 320,
+  pattern = 235,
+}
+
+tile{
+  layer = 0,
+  x = 96,
+  y = 88,
+  width = 24,
+  height = 24,
+  pattern = 57,
+}
+
+tile{
+  layer = 0,
+  x = 96,
+  y = 408,
+  width = 24,
+  height = 24,
+  pattern = 59,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 88,
+  width = 24,
+  height = 24,
+  pattern = 68,
+}
+
+tile{
+  layer = 0,
+  x = 152,
+  y = 48,
+  width = 24,
+  height = 48,
+  pattern = 235,
+}
+
+tile{
+  layer = 1,
+  x = 120,
+  y = 432,
+  width = 48,
+  height = 32,
+  pattern = 405,
+}
+
+tile{
+  layer = 1,
+  x = 32,
+  y = 16,
+  width = 128,
+  height = 24,
+  pattern = 49,
+}
+
+tile{
+  layer = 1,
+  x = 88,
+  y = 112,
+  width = 8,
+  height = 48,
+  pattern = 71,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 48,
+  width = 48,
+  height = 416,
+  pattern = 405,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 464,
+  width = 80,
+  height = 8,
+  pattern = 236,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 40,
+  width = 48,
+  height = 8,
+  pattern = 179,
+}
+
+tile{
+  layer = 1,
+  x = 16,
+  y = 16,
+  width = 24,
+  height = 24,
+  pattern = 45,
+}
+
+tile{
+  layer = 1,
+  x = 16,
+  y = 40,
+  width = 24,
+  height = 432,
+  pattern = 51,
+}
+
+tile{
+  layer = 1,
+  x = 16,
+  y = 472,
+  width = 24,
+  height = 24,
+  pattern = 47,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 472,
+  width = 64,
+  height = 24,
+  pattern = 52,
+}
+
+tile{
+  layer = 1,
+  x = 96,
+  y = 488,
+  width = 24,
+  height = 128,
+  pattern = 51,
+}
+
+tile{
+  layer = 1,
+  x = 96,
+  y = 472,
+  width = 24,
+  height = 24,
+  pattern = 54,
+}
+
+tile{
+  layer = 1,
+  x = 96,
+  y = 616,
+  width = 24,
+  height = 24,
+  pattern = 47,
+}
+
+tile{
+  layer = 1,
+  x = 120,
+  y = 616,
+  width = 640,
+  height = 24,
+  pattern = 52,
+}
+
+tile{
+  layer = 1,
+  x = 760,
+  y = 616,
+  width = 24,
+  height = 24,
+  pattern = 48,
+}
+
+tile{
+  layer = 1,
+  x = 760,
+  y = 424,
+  width = 24,
+  height = 192,
+  pattern = 50,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 464,
+  width = 8,
+  height = 8,
+  pattern = 16,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 192,
+  width = 8,
+  height = 272,
+  pattern = 237,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 48,
+  width = 8,
+  height = 144,
+  pattern = 237,
+}
+
+tile{
+  layer = 1,
+  x = 40,
+  y = 40,
+  width = 8,
+  height = 8,
+  pattern = 14,
+}
+
+tile{
+  layer = 1,
+  x = 88,
+  y = 432,
+  width = 32,
+  height = 32,
+  pattern = 405,
+}
+
+tile{
+  layer = 1,
+  x = 88,
+  y = 424,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 88,
+  y = 160,
+  width = 8,
+  height = 264,
+  pattern = 71,
+}
+
+tile{
+  layer = 1,
+  x = 88,
+  y = 80,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 88,
+  y = 88,
+  width = 8,
+  height = 24,
+  pattern = 71,
+}
+
+tile{
+  layer = 1,
+  x = 88,
+  y = 48,
+  width = 64,
+  height = 32,
+  pattern = 405,
+}
+
+tile{
+  layer = 1,
+  x = 96,
+  y = 80,
+  width = 56,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 1,
+  x = 152,
+  y = 80,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 152,
+  y = 48,
+  width = 8,
+  height = 32,
+  pattern = 71,
+}
+
+tile{
+  layer = 1,
+  x = 88,
+  y = 40,
+  width = 64,
+  height = 8,
+  pattern = 179,
+}
+
+tile{
+  layer = 1,
+  x = 152,
+  y = 40,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 120,
+  y = 464,
+  width = 8,
+  height = 8,
+  pattern = 242,
+}
+
+tile{
+  layer = 1,
+  x = 120,
+  y = 472,
+  width = 8,
+  height = 144,
+  pattern = 237,
+}
+
+tile{
+  layer = 1,
+  x = 120,
+  y = 608,
+  width = 8,
+  height = 8,
+  pattern = 16,
+}
+
+tile{
+  layer = 1,
+  x = 128,
+  y = 608,
+  width = 32,
+  height = 8,
+  pattern = 236,
+}
+
+tile{
+  layer = 1,
+  x = 160,
+  y = 608,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 160,
+  y = 464,
+  width = 8,
+  height = 144,
+  pattern = 71,
+}
+
+tile{
+  layer = 1,
+  x = 160,
+  y = 456,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+tile{
+  layer = 1,
+  x = 128,
+  y = 464,
+  width = 32,
+  height = 144,
+  pattern = 405,
+}
+
+tile{
+  layer = 1,
+  x = 96,
+  y = 424,
+  width = 64,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 1,
+  x = 160,
+  y = 424,
+  width = 8,
+  height = 8,
+  pattern = 69,
+}
+
+switch{
+  layer = 1,
+  x = 136,
+  y = 584,
+  name = "switch",
+  subtype = "1",
+  needs_block = false,
+  inactivate_when_leaving = false,
+}
+
+destructible{
+  layer = 1,
+  x = 144,
+  y = 597,
+  subtype = "pot",
+  treasure_name = "_none",
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 0,
+  width = 160,
+  height = 16,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 16,
+  width = 16,
+  height = 344,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 0,
+  y = 360,
+  width = 16,
+  height = 296,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 16,
+  y = 496,
+  width = 80,
+  height = 144,
+  pattern = 170,
+}
+
+tile{
+  layer = 2,
+  x = 16,
+  y = 640,
+  width = 904,
+  height = 16,
+  pattern = 170,
+}
+

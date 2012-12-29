@@ -1,0 +1,12 @@
+small_closed entities/chest.png 1 0 -1
+0	0	16	16	0	0	1	1
+
+small_open entities/chest.png 1 0 -1
+16	0	16	16	0	0	1	1
+
+big_closed entities/chest.png 1 0 -1
+0	16	32	24	0	0	1	1
+
+big_open entities/chest.png 1 0 -1
+0	40	32	24	0	0	1	1
+

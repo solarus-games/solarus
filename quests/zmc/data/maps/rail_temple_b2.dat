@@ -4,7 +4,7 @@ properties{
   width = 920,
   height = 656,
   world = "rail_temple",
-  tileset = "4",
+  tileset = "blue_dungeon_lw",
   music = "same",
 }
 
@@ -447,6 +447,14 @@ destructible{
   y = 597,
   subtype = "pot",
   treasure_name = "_none",
+}
+
+destination{
+  layer = 1,
+  x = 72,
+  y = 77,
+  name = "test_destination",
+  direction = 3,
 }
 
 tile{

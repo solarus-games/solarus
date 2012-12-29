@@ -4,7 +4,7 @@ properties{
   width = 2048,
   height = 2048,
   world = "outside",
-  tileset = "1",
+  tileset = "light_world",
   music = "same",
 }
 
@@ -339,6 +339,14 @@ tile{
   width = 528,
   height = 16,
   pattern = 505,
+}
+
+destination{
+  layer = 0,
+  x = 216,
+  y = 37,
+  name = "test_destination",
+  direction = 3,
 }
 
 tile{

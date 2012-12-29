@@ -3,6 +3,8 @@
 0	lighthouse_1f	Lighthouse 1F
 0	rail_temple_b2	Rail Temple B2
 0	test_map	Test map
+0	rail_temple_b1	Rail Temple B1
+0	stone_test_map	Stone Test Map
 1	light_world	Light World
 1	dark_world	Dark World
 1	cave	Cave
@@ -264,6 +266,7 @@
 5	red_potion	Red potion
 5	green_potion	Green potion
 5	blue_potion	Blue potion
+5	cane_of_stone	Cane of Stone
 6	bee_guard	Bee Guard
 6	bubble	Bubble
 6	blue_bullblin	Bullblin (blue)

@@ -2210,7 +2210,6 @@ chest{
   y = 112,
   name = "chest",
   is_big_chest = false,
-  treasure_name = "_none",
 }
 
 tile{

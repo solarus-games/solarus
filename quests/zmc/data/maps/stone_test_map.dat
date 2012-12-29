@@ -177,7 +177,6 @@ enemy{
   direction = 3,
   breed = "snap_dragon",
   rank = 0,
-  treasure_name = "_none",
 }
 
 wall{

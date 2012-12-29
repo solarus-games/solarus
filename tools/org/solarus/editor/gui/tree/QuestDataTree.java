@@ -51,6 +51,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
     private String projectPath;
     private String quest;
     private EditorWindow editorWindow;
+    private QuestDataTreeTilesetPopupMenu tilesetPopupMenu;
     private QuestDataTreeMapPopupMenu mapPopupMenu;
     private QuestDataTreePopupMenu popupMenu;
     public QuestDataTree(String quest, EditorWindow parent) {
@@ -58,8 +59,10 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
         this.editorWindow = parent;
         addTreeSelectionListener(this);
         addMouseListener(new QuestDataTreeMouseAdapter());
+        
         mapPopupMenu = new QuestDataTreeMapPopupMenu();
         popupMenu = new QuestDataTreePopupMenu();
+        tilesetPopupMenu = new QuestDataTreeTilesetPopupMenu();
     }
     /**
      * Reload the tree, rebuilding the model from
@@ -155,9 +158,15 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                         }
                     }
                     else {
+                        //Show the popup menu when right-click on map
                         if (clickedNode.getUserObject().equals(ResourceType.MAP.getName())) {
                             mapPopupMenu.show((JComponent) e.getSource(),
                                     e.getX(), e.getY());
+                        }
+                        //Popup menu when right-click on tileset
+                        else if (clickedNode.getUserObject().equals(ResourceType.TILESET.getName())) {
+                            tilesetPopupMenu.show((JComponent) e.getSource(),
+                                    e.getX(), e.getY());                                                      
                         }
                     }
                 } else if (e.getClickCount() == 2) {
@@ -233,7 +242,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
         }
     }
     /**
-     * Popup menu associated to the right click on the map
+     * Popup menu associated to the right click on the map sub-tree
      */
     class QuestDataTreeMapPopupMenu extends JPopupMenu implements ActionListener {    
         private JMenuItem newMapMenu;
@@ -253,6 +262,27 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
         }
         
     }
+    /**
+     * Popup menu associated to the right click on the tileset sub-tree
+     */
+    class QuestDataTreeTilesetPopupMenu extends JPopupMenu implements ActionListener {    
+        private JMenuItem newTilesetMenu;
+        public QuestDataTreeTilesetPopupMenu()
+        {
+            newTilesetMenu = new JMenuItem("New Tileset");
+            newTilesetMenu.addActionListener(this);
+            add(newTilesetMenu);            
+        }
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(quest, editorWindow);
+            tilesetEditor.newTileset();
+            editorWindow.addEditor(tilesetEditor);            
+        }
+        
+    }
+
     /**
      * Popup menu associated to maps in the tree.
      */

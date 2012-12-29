@@ -79,6 +79,11 @@ public class MapViewRenderingOptionsView extends JPanel {
         box.setSelected(renderingOptions.getShowTransparency());
         box.addItemListener(new ItemListenerTransparency());
         boxesPanel.add(box);
+        
+        box = new JCheckBox("Show grid");
+        box.setSelected(renderingOptions.getShowGrid());
+        box.addItemListener(new ItemListenerGrid());
+        boxesPanel.add(box);
 
         add(zoomChooser, BorderLayout.WEST);
         add(boxesPanel, BorderLayout.CENTER);
@@ -164,7 +169,29 @@ public class MapViewRenderingOptionsView extends JPanel {
             }
         }
     }
+    /**
+     * Listener invoked when the state of the grid checkbox has changed
+     */
+    private class ItemListenerGrid implements ItemListener {
+    	/**
+    	 * Constructor
+    	 */
+    	public ItemListenerGrid() {
+    		
+    	}
+        /**
+         * Method invoked when the user clicks on the checkbox.
+         */
+        public void itemStateChanged(ItemEvent itemEvent) {
 
+            // get the new checkbox state
+            boolean show = (itemEvent.getStateChange() == ItemEvent.SELECTED);
+
+            // update the options
+            renderingOptions.setShowGrid(show);
+        }
+
+    }
     /**
      * Listener invoked when the state of the transparency checkbox has changed.
      */

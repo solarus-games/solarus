@@ -61,7 +61,14 @@ public class MapViewRenderingOptions {
      * The transparency seems to make the program much slower with my Linux.
      */
     private boolean showTransparency;
-
+    /**
+     * Tells whether or not the grid is shown
+     */
+    private boolean showGrid;
+    /**
+     * Size of the grid (16 by default)
+     */
+    private int gridSize;
     /**
      * Constructor.
      */
@@ -72,6 +79,8 @@ public class MapViewRenderingOptions {
         this.showObstacles = true;
         this.showNonObstacles = true;
         this.showTransparency = true;
+        this.showGrid = true;
+        this.gridSize = 16;
     }
 
     /**
@@ -191,6 +200,39 @@ public class MapViewRenderingOptions {
      */
     public void setShowTransparency(boolean showTransparency) {
         this.showTransparency = showTransparency;
+        mapView.repaint();
+    }
+    /**
+     * Returns whether or not the grid is rendered.
+     * @return
+     */
+    public boolean getShowGrid()
+    {
+        return showGrid;
+    }
+    /**
+     * Sets whether or not the gird is rendered
+     * @param showGrid true to show the grid, false not to show the grid
+     */
+    public void setShowGrid(boolean showGrid)
+    {
+        this.showGrid = showGrid;
+        mapView.repaint();
+    }
+    /**
+     * Returns the current grid size in the map view
+     * @return
+     */
+    public int getGridSize()
+    {
+        return gridSize;
+    }
+    /**
+     * Sets the grid size in the map view
+     */
+    public void setGridSize(int gridSize)
+    {
+        this.gridSize = gridSize;
         mapView.repaint();
     }
 

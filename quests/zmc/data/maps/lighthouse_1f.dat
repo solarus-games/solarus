@@ -4149,6 +4149,60 @@ tile{
   pattern = 80,
 }
 
+tile{
+  layer = 1,
+  x = 344,
+  y = 352,
+  width = 16,
+  height = 16,
+  pattern = 82,
+}
+
+tile{
+  layer = 1,
+  x = 280,
+  y = 352,
+  width = 16,
+  height = 16,
+  pattern = 83,
+}
+
+tile{
+  layer = 1,
+  x = 280,
+  y = 344,
+  width = 16,
+  height = 8,
+  pattern = 79,
+}
+
+tile{
+  layer = 1,
+  x = 280,
+  y = 368,
+  width = 16,
+  height = 8,
+  pattern = 81,
+}
+
+tile{
+  layer = 1,
+  x = 344,
+  y = 344,
+  width = 16,
+  height = 8,
+  pattern = 78,
+}
+
+tile{
+  layer = 1,
+  x = 344,
+  y = 368,
+  width = 16,
+  height = 8,
+  pattern = 80,
+}
+
 destination{
   layer = 1,
   x = 640,
@@ -4502,6 +4556,15 @@ destructible{
   y = 309,
   subtype = "pot",
   treasure_name = "_none",
+}
+
+door{
+  layer = 1,
+  x = 464,
+  y = 504,
+  name = "door",
+  direction = 1,
+  subtype = "0",
 }
 
 tile{
@@ -5327,6 +5390,24 @@ tile{
   layer = 2,
   x = 656,
   y = 104,
+  width = 8,
+  height = 32,
+  pattern = 162,
+}
+
+tile{
+  layer = 2,
+  x = 296,
+  y = 344,
+  width = 8,
+  height = 32,
+  pattern = 163,
+}
+
+tile{
+  layer = 2,
+  x = 336,
+  y = 344,
   width = 8,
   height = 32,
   pattern = 162,

@@ -1564,6 +1564,14 @@ stairs{
   subtype = "4",
 }
 
+chest{
+  layer = 0,
+  x = 328,
+  y = 208,
+  name = "chest",
+  is_big_chest = false,
+}
+
 tile{
   layer = 1,
   x = 744,

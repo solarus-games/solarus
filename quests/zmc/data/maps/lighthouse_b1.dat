@@ -740,15 +740,6 @@ tile{
 
 tile{
   layer = 1,
-  x = 208,
-  y = 336,
-  width = 16,
-  height = 32,
-  pattern = 594,
-}
-
-tile{
-  layer = 1,
   x = 112,
   y = 112,
   width = 32,
@@ -983,15 +974,6 @@ tile{
 
 tile{
   layer = 1,
-  x = 80,
-  y = 336,
-  width = 32,
-  height = 16,
-  pattern = 594,
-}
-
-tile{
-  layer = 1,
   x = 176,
   y = 304,
   width = 32,
@@ -1073,29 +1055,11 @@ tile{
 
 tile{
   layer = 1,
-  x = 208,
-  y = 80,
-  width = 16,
-  height = 32,
-  pattern = 594,
-}
-
-tile{
-  layer = 1,
   x = 80,
   y = 272,
   width = 32,
   height = 16,
   pattern = 3,
-}
-
-tile{
-  layer = 1,
-  x = 176,
-  y = 240,
-  width = 16,
-  height = 32,
-  pattern = 594,
 }
 
 tile{
@@ -1190,15 +1154,6 @@ tile{
 
 tile{
   layer = 1,
-  x = 80,
-  y = 208,
-  width = 32,
-  height = 16,
-  pattern = 594,
-}
-
-tile{
-  layer = 1,
   x = 128,
   y = 176,
   width = 16,
@@ -1208,74 +1163,11 @@ tile{
 
 tile{
   layer = 1,
-  x = 144,
-  y = 144,
-  width = 32,
-  height = 16,
-  pattern = 594,
-}
-
-tile{
-  layer = 1,
   x = 112,
   y = 112,
   width = 32,
   height = 16,
   pattern = 3,
-}
-
-tile{
-  layer = 1,
-  x = 160,
-  y = 80,
-  width = 16,
-  height = 32,
-  pattern = 594,
-}
-
-tile{
-  layer = 1,
-  x = 208,
-  y = 176,
-  width = 32,
-  height = 32,
-  pattern = 552,
-}
-
-tile{
-  layer = 1,
-  x = 176,
-  y = 272,
-  width = 32,
-  height = 32,
-  pattern = 552,
-}
-
-tile{
-  layer = 1,
-  x = 112,
-  y = 336,
-  width = 32,
-  height = 32,
-  pattern = 552,
-}
-
-tile{
-  layer = 1,
-  x = 80,
-  y = 176,
-  width = 32,
-  height = 32,
-  pattern = 552,
-}
-
-tile{
-  layer = 1,
-  x = 112,
-  y = 80,
-  width = 32,
-  height = 32,
-  pattern = 552,
 }
 
 tile{
@@ -1372,16 +1264,16 @@ tile{
   layer = 1,
   x = 368,
   y = 288,
-  width = 88,
+  width = 96,
   height = 48,
   pattern = 303,
 }
 
 tile{
   layer = 1,
-  x = 504,
+  x = 496,
   y = 344,
-  width = 88,
+  width = 96,
   height = 72,
   pattern = 303,
 }
@@ -1390,7 +1282,7 @@ tile{
   layer = 1,
   x = 368,
   y = 288,
-  width = 88,
+  width = 96,
   height = 8,
   pattern = 247,
 }
@@ -1399,7 +1291,7 @@ tile{
   layer = 1,
   x = 368,
   y = 328,
-  width = 88,
+  width = 96,
   height = 8,
   pattern = 249,
 }
@@ -1467,6 +1359,186 @@ tile{
   pattern = 255,
 }
 
+tile{
+  layer = 1,
+  x = 160,
+  y = 80,
+  width = 16,
+  height = 32,
+  pattern = 3,
+}
+
+tile{
+  layer = 1,
+  x = 208,
+  y = 80,
+  width = 16,
+  height = 32,
+  pattern = 3,
+}
+
+tile{
+  layer = 1,
+  x = 144,
+  y = 144,
+  width = 32,
+  height = 16,
+  pattern = 3,
+}
+
+tile{
+  layer = 1,
+  x = 80,
+  y = 208,
+  width = 32,
+  height = 16,
+  pattern = 3,
+}
+
+tile{
+  layer = 1,
+  x = 176,
+  y = 240,
+  width = 16,
+  height = 32,
+  pattern = 3,
+}
+
+tile{
+  layer = 1,
+  x = 80,
+  y = 336,
+  width = 32,
+  height = 16,
+  pattern = 3,
+}
+
+tile{
+  layer = 1,
+  x = 208,
+  y = 336,
+  width = 16,
+  height = 32,
+  pattern = 3,
+}
+
+tile{
+  layer = 1,
+  x = 496,
+  y = 344,
+  width = 96,
+  height = 8,
+  pattern = 247,
+}
+
+tile{
+  layer = 1,
+  x = 496,
+  y = 408,
+  width = 96,
+  height = 8,
+  pattern = 249,
+}
+
+tile{
+  layer = 1,
+  x = 368,
+  y = 400,
+  width = 128,
+  height = 16,
+  pattern = 2,
+}
+
+tile{
+  layer = 1,
+  x = 112,
+  y = 336,
+  width = 32,
+  height = 8,
+  pattern = 247,
+}
+
+tile{
+  layer = 1,
+  x = 112,
+  y = 360,
+  width = 32,
+  height = 8,
+  pattern = 249,
+}
+
+tile{
+  layer = 1,
+  x = 176,
+  y = 272,
+  width = 32,
+  height = 8,
+  pattern = 247,
+}
+
+tile{
+  layer = 1,
+  x = 176,
+  y = 296,
+  width = 32,
+  height = 8,
+  pattern = 249,
+}
+
+tile{
+  layer = 1,
+  x = 80,
+  y = 176,
+  width = 32,
+  height = 8,
+  pattern = 247,
+}
+
+tile{
+  layer = 1,
+  x = 80,
+  y = 200,
+  width = 32,
+  height = 8,
+  pattern = 249,
+}
+
+tile{
+  layer = 1,
+  x = 208,
+  y = 176,
+  width = 32,
+  height = 8,
+  pattern = 247,
+}
+
+tile{
+  layer = 1,
+  x = 208,
+  y = 200,
+  width = 32,
+  height = 8,
+  pattern = 249,
+}
+
+tile{
+  layer = 1,
+  x = 112,
+  y = 80,
+  width = 32,
+  height = 8,
+  pattern = 247,
+}
+
+tile{
+  layer = 1,
+  x = 112,
+  y = 104,
+  width = 32,
+  height = 8,
+  pattern = 249,
+}
+
 destination{
   layer = 1,
   x = 480,
@@ -1506,13 +1578,91 @@ chest{
   treasure_variant = 4,
 }
 
+dynamic_tile{
+  layer = 1,
+  x = 208,
+  y = 336,
+  width = 16,
+  height = 32,
+  name = "star_tile_A1",
+  pattern = 594,
+  enabled_at_start = true,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 80,
+  y = 336,
+  width = 32,
+  height = 16,
+  name = "star_tile_A2",
+  pattern = 594,
+  enabled_at_start = true,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 176,
+  y = 240,
+  width = 16,
+  height = 32,
+  name = "star_tile_A3",
+  pattern = 594,
+  enabled_at_start = true,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 80,
+  y = 208,
+  width = 32,
+  height = 16,
+  name = "star_tile_A4",
+  pattern = 594,
+  enabled_at_start = true,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 144,
+  y = 144,
+  width = 32,
+  height = 16,
+  name = "star_tile_A5",
+  pattern = 594,
+  enabled_at_start = true,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 160,
+  y = 80,
+  width = 16,
+  height = 32,
+  name = "star_tile_A6",
+  pattern = 594,
+  enabled_at_start = true,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 208,
+  y = 80,
+  width = 16,
+  height = 32,
+  name = "star_tile_A7",
+  pattern = 594,
+  enabled_at_start = true,
+}
+
 chest{
   layer = 1,
   x = 472,
   y = 120,
   name = "chest_2",
   is_big_chest = false,
-  treasure_name = "_none",
+  treasure_name = "small_key",
+  treasure_variant = 1,
 }
 
 destructible{
@@ -1520,7 +1670,6 @@ destructible{
   x = 376,
   y = 77,
   subtype = "pot",
-  treasure_name = "_none",
 }
 
 destructible{
@@ -1528,7 +1677,6 @@ destructible{
   x = 392,
   y = 77,
   subtype = "pot",
-  treasure_name = "_none",
 }
 
 destructible{
@@ -1536,7 +1684,6 @@ destructible{
   x = 376,
   y = 189,
   subtype = "pot",
-  treasure_name = "_none",
 }
 
 destructible{
@@ -1544,7 +1691,6 @@ destructible{
   x = 392,
   y = 189,
   subtype = "pot",
-  treasure_name = "_none",
 }
 
 destructible{
@@ -1552,7 +1698,6 @@ destructible{
   x = 568,
   y = 77,
   subtype = "pot",
-  treasure_name = "_none",
 }
 
 destructible{
@@ -1560,7 +1705,6 @@ destructible{
   x = 584,
   y = 77,
   subtype = "pot",
-  treasure_name = "_none",
 }
 
 destructible{
@@ -1568,7 +1712,6 @@ destructible{
   x = 568,
   y = 189,
   subtype = "pot",
-  treasure_name = "_none",
 }
 
 destructible{
@@ -1576,7 +1719,377 @@ destructible{
   x = 584,
   y = 189,
   subtype = "pot",
-  treasure_name = "_none",
+}
+
+destructible{
+  layer = 1,
+  x = 376,
+  y = 413,
+  subtype = "pot",
+}
+
+destructible{
+  layer = 1,
+  x = 392,
+  y = 413,
+  subtype = "pot",
+}
+
+destructible{
+  layer = 1,
+  x = 408,
+  y = 413,
+  subtype = "pot",
+}
+
+destructible{
+  layer = 1,
+  x = 424,
+  y = 413,
+  subtype = "pot",
+}
+
+destructible{
+  layer = 1,
+  x = 440,
+  y = 413,
+  subtype = "pot",
+}
+
+destructible{
+  layer = 1,
+  x = 456,
+  y = 413,
+  subtype = "pot",
+}
+
+destructible{
+  layer = 1,
+  x = 472,
+  y = 413,
+  subtype = "pot",
+}
+
+destructible{
+  layer = 1,
+  x = 488,
+  y = 413,
+  subtype = "pot",
+}
+
+sensor{
+  layer = 1,
+  x = 216,
+  y = 349,
+  width = 16,
+  height = 32,
+  name = "star_sensor_A1",
+}
+
+sensor{
+  layer = 1,
+  x = 88,
+  y = 349,
+  width = 32,
+  height = 16,
+  name = "star_sensor_A2",
+}
+
+sensor{
+  layer = 1,
+  x = 184,
+  y = 253,
+  width = 16,
+  height = 32,
+  name = "star_sensor_A3",
+}
+
+sensor{
+  layer = 1,
+  x = 88,
+  y = 221,
+  width = 32,
+  height = 16,
+  name = "star_sensor_A4",
+}
+
+sensor{
+  layer = 1,
+  x = 152,
+  y = 157,
+  width = 32,
+  height = 16,
+  name = "star_sensor_A5",
+}
+
+sensor{
+  layer = 1,
+  x = 168,
+  y = 93,
+  width = 16,
+  height = 32,
+  name = "star_sensor_A6",
+}
+
+sensor{
+  layer = 1,
+  x = 216,
+  y = 93,
+  width = 16,
+  height = 32,
+  name = "star_sensor_A7",
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 144,
+  y = 336,
+  width = 16,
+  height = 32,
+  name = "star_tile_B1",
+  pattern = 594,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 176,
+  y = 304,
+  width = 32,
+  height = 16,
+  name = "star_tile_B2",
+  pattern = 594,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 80,
+  y = 272,
+  width = 32,
+  height = 16,
+  name = "star_tile_B3",
+  pattern = 594,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 128,
+  y = 240,
+  width = 16,
+  height = 32,
+  name = "star_tile_B4",
+  pattern = 594,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 128,
+  y = 176,
+  width = 16,
+  height = 32,
+  name = "star_tile_B5",
+  pattern = 594,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 112,
+  y = 112,
+  width = 32,
+  height = 16,
+  name = "star_tile_B6",
+  pattern = 594,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 112,
+  y = 336,
+  width = 32,
+  height = 32,
+  name = "star_floor_A1",
+  pattern = 552,
+  enabled_at_start = true,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 176,
+  y = 272,
+  width = 32,
+  height = 32,
+  name = "star_floor_A2",
+  pattern = 552,
+  enabled_at_start = true,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 80,
+  y = 176,
+  width = 32,
+  height = 32,
+  name = "star_floor_A3",
+  pattern = 552,
+  enabled_at_start = true,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 208,
+  y = 176,
+  width = 32,
+  height = 32,
+  name = "star_floor_A4",
+  pattern = 552,
+  enabled_at_start = true,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 112,
+  y = 80,
+  width = 32,
+  height = 32,
+  name = "star_floor_A5",
+  pattern = 552,
+  enabled_at_start = true,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 176,
+  y = 336,
+  width = 32,
+  height = 32,
+  name = "star_floor_B1",
+  pattern = 552,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 80,
+  y = 304,
+  width = 32,
+  height = 32,
+  name = "star_floor_B2",
+  pattern = 552,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 80,
+  y = 240,
+  width = 32,
+  height = 32,
+  name = "star_floor_B3",
+  pattern = 552,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 144,
+  y = 240,
+  width = 32,
+  height = 32,
+  name = "star_floor_B4",
+  pattern = 552,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 144,
+  y = 176,
+  width = 32,
+  height = 32,
+  name = "star_floor_B5",
+  pattern = 552,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 144,
+  y = 112,
+  width = 32,
+  height = 32,
+  name = "star_floor_B6",
+  pattern = 552,
+  enabled_at_start = false,
+}
+
+dynamic_tile{
+  layer = 1,
+  x = 176,
+  y = 80,
+  width = 32,
+  height = 32,
+  name = "star_floor_B7",
+  pattern = 552,
+  enabled_at_start = false,
+}
+
+sensor{
+  layer = 1,
+  x = 152,
+  y = 349,
+  width = 16,
+  height = 32,
+  name = "star_sensor_B1",
+}
+
+sensor{
+  layer = 1,
+  x = 184,
+  y = 317,
+  width = 32,
+  height = 16,
+  name = "star_sensor_B2",
+}
+
+sensor{
+  layer = 1,
+  x = 88,
+  y = 285,
+  width = 32,
+  height = 16,
+  name = "star_sensor_B3",
+}
+
+sensor{
+  layer = 1,
+  x = 136,
+  y = 253,
+  width = 16,
+  height = 32,
+  name = "star_sensor_B4",
+}
+
+sensor{
+  layer = 1,
+  x = 136,
+  y = 189,
+  width = 16,
+  height = 32,
+  name = "star_sensor_B5",
+}
+
+sensor{
+  layer = 1,
+  x = 120,
+  y = 125,
+  width = 32,
+  height = 16,
+  name = "star_sensor_B6",
 }
 
 tile{

@@ -85,9 +85,9 @@ public class TreasureChooser extends JPanel {
 		else {
 		    treasure.setItemName(itemNameField.getSelectedId());
 		    if (!variantField.isEnabled()) {
-		        variantField.setEnabled(true);
 			variantField.setValue(1);
 		    }
+		    variantField.setEnabled(true);
 		    saveField.setEnabled(true);
 		    savegameVariableField.setEnabled(true);
 		}

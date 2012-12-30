@@ -1777,69 +1777,6 @@ destructible{
   subtype = "pot",
 }
 
-sensor{
-  layer = 1,
-  x = 216,
-  y = 349,
-  width = 16,
-  height = 32,
-  name = "star_sensor_A1",
-}
-
-sensor{
-  layer = 1,
-  x = 88,
-  y = 349,
-  width = 32,
-  height = 16,
-  name = "star_sensor_A2",
-}
-
-sensor{
-  layer = 1,
-  x = 184,
-  y = 253,
-  width = 16,
-  height = 32,
-  name = "star_sensor_A3",
-}
-
-sensor{
-  layer = 1,
-  x = 88,
-  y = 221,
-  width = 32,
-  height = 16,
-  name = "star_sensor_A4",
-}
-
-sensor{
-  layer = 1,
-  x = 152,
-  y = 157,
-  width = 32,
-  height = 16,
-  name = "star_sensor_A5",
-}
-
-sensor{
-  layer = 1,
-  x = 168,
-  y = 93,
-  width = 16,
-  height = 32,
-  name = "star_sensor_A6",
-}
-
-sensor{
-  layer = 1,
-  x = 216,
-  y = 93,
-  width = 16,
-  height = 32,
-  name = "star_sensor_A7",
-}
-
 dynamic_tile{
   layer = 1,
   x = 144,
@@ -2038,58 +1975,160 @@ dynamic_tile{
   enabled_at_start = false,
 }
 
-sensor{
+wall{
   layer = 1,
-  x = 152,
-  y = 349,
-  width = 16,
-  height = 32,
-  name = "star_sensor_B1",
+  x = 208,
+  y = 328,
+  width = 8,
+  height = 8,
+  name = "wall",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
 }
 
-sensor{
+wall{
   layer = 1,
-  x = 184,
-  y = 317,
-  width = 32,
-  height = 16,
-  name = "star_sensor_B2",
+  x = 168,
+  y = 328,
+  width = 8,
+  height = 8,
+  name = "wall_2",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
 }
 
-sensor{
+wall{
   layer = 1,
-  x = 88,
-  y = 285,
-  width = 32,
-  height = 16,
-  name = "star_sensor_B3",
+  x = 168,
+  y = 272,
+  width = 8,
+  height = 8,
+  name = "wall_3",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
 }
 
-sensor{
+wall{
+  layer = 1,
+  x = 112,
+  y = 272,
+  width = 8,
+  height = 8,
+  name = "wall_4",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+wall{
+  layer = 1,
+  x = 112,
+  y = 328,
+  width = 8,
+  height = 8,
+  name = "wall_5",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+wall{
   layer = 1,
   x = 136,
-  y = 253,
-  width = 16,
-  height = 32,
-  name = "star_sensor_B4",
+  y = 144,
+  width = 8,
+  height = 8,
+  name = "wall_6",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
 }
 
-sensor{
+wall{
   layer = 1,
-  x = 136,
-  y = 189,
-  width = 16,
-  height = 32,
-  name = "star_sensor_B5",
+  x = 112,
+  y = 208,
+  width = 8,
+  height = 8,
+  name = "wall_7",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
 }
 
-sensor{
+wall{
   layer = 1,
-  x = 120,
-  y = 125,
-  width = 32,
-  height = 16,
-  name = "star_sensor_B6",
+  x = 176,
+  y = 168,
+  width = 8,
+  height = 8,
+  name = "wall_8",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+wall{
+  layer = 1,
+  x = 176,
+  y = 112,
+  width = 8,
+  height = 8,
+  name = "wall_9",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+wall{
+  layer = 1,
+  x = 104,
+  y = 112,
+  width = 8,
+  height = 8,
+  name = "wall_10",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+wall{
+  layer = 1,
+  x = 200,
+  y = 112,
+  width = 8,
+  height = 8,
+  name = "wall_11",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+wall{
+  layer = 1,
+  x = 112,
+  y = 232,
+  width = 8,
+  height = 8,
+  name = "wall_12",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
 }
 
 tile{

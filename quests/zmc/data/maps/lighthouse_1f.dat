@@ -1790,6 +1790,42 @@ tile{
   pattern = 70,
 }
 
+tile{
+  layer = 0,
+  x = 552,
+  y = 744,
+  width = 16,
+  height = 16,
+  pattern = 276,
+}
+
+tile{
+  layer = 0,
+  x = 712,
+  y = 744,
+  width = 16,
+  height = 16,
+  pattern = 276,
+}
+
+tile{
+  layer = 0,
+  x = 712,
+  y = 648,
+  width = 16,
+  height = 16,
+  pattern = 276,
+}
+
+tile{
+  layer = 0,
+  x = 552,
+  y = 648,
+  width = 16,
+  height = 16,
+  pattern = 276,
+}
+
 stairs{
   layer = 0,
   x = 632,
@@ -1831,7 +1867,7 @@ npc{
   layer = 0,
   x = 560,
   y = 661,
-  name = "torch_1",
+  name = "torch_A1",
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
@@ -1842,7 +1878,7 @@ npc{
   layer = 0,
   x = 560,
   y = 757,
-  name = "torch_2",
+  name = "torch_A3",
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
@@ -1853,7 +1889,7 @@ npc{
   layer = 0,
   x = 720,
   y = 661,
-  name = "torch_3",
+  name = "torch_A2",
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
@@ -1864,7 +1900,7 @@ npc{
   layer = 0,
   x = 720,
   y = 757,
-  name = "torch_4",
+  name = "torch_A4",
   direction = 3,
   subtype = "0",
   sprite = "entities/torch",
@@ -5269,9 +5305,48 @@ destructible{
 
 door{
   layer = 1,
-  x = 464,
+  x = 816,
+  y = 504,
+  name = "torch_door",
+  direction = 1,
+  subtype = "0",
+}
+
+door{
+  layer = 1,
+  x = 496,
   y = 504,
   name = "door",
+  direction = 1,
+  subtype = "1",
+  savegame_variable = "locked_door_A",
+}
+
+destination{
+  layer = 1,
+  x = 480,
+  y = 517,
+  name = "from_2F_B",
+  direction = 3,
+}
+
+teletransporter{
+  layer = 1,
+  x = 472,
+  y = 504,
+  width = 16,
+  height = 16,
+  name = "to_2F_B",
+  transition = 1,
+  destination_map = "lighthouse_2f",
+  destination = "from_1F_B",
+}
+
+stairs{
+  layer = 1,
+  x = 472,
+  y = 504,
+  name = "stairs_5",
   direction = 1,
   subtype = "0",
 }

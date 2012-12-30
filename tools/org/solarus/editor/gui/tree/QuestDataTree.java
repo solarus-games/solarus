@@ -25,6 +25,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -245,6 +246,31 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
                 }
                 catch (QuestEditorException ex) {
                     GuiTools.errorDialog("Could not load the map: " + ex.getMessage());
+                }
+            }
+            //delete the map
+            else if (e.getSource() == deleteMenu) {
+                try {
+                    int answer = JOptionPane.showConfirmDialog(this,
+                            "Are you sure you want to delete the map " + mapId + " ?",
+                            "Are you sure ?",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+                    if (answer == JOptionPane.YES_OPTION) {
+                        Map.delete(mapId);
+                        Project.getResource(ResourceType.MAP).removeElement(mapId);
+     
+                        //TODO: Do it in a cleaner way
+                        //Here we reload the whole tree, which is not 
+                        //the most optimized way of removing the child
+                        //from the tree.
+                        reloadTree();
+                        
+                        repaint();
+                    }
+                }
+                catch (QuestEditorException ex) {
+                    GuiTools.errorDialog("Could not delete the map: " + ex.getMessage());
                 }
             } else {
                 // open the script

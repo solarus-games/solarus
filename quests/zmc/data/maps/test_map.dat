@@ -590,6 +590,18 @@ teletransporter{
   destination = "stone_destination",
 }
 
+teletransporter{
+  layer = 1,
+  x = 184,
+  y = 0,
+  width = 16,
+  height = 16,
+  name = "teletransporter_5",
+  transition = 1,
+  destination_map = "RailTemple",
+  destination = "destination",
+}
+
 tile{
   layer = 2,
   x = 0,

@@ -57,9 +57,9 @@ public class Tile extends MapEntity {
      */
     public Tile(DynamicTile dynamicTile) throws MapException {
         this(dynamicTile.getMap());
+        setIntegerProperty("pattern", dynamicTile.getTilePatternId());
         setLayer(dynamicTile.getLayer());
         setPositionInMap(dynamicTile.getPositionInMap());
-        setIntegerProperty("pattern", dynamicTile.getTilePatternId());
         updateImageDescription();
     }
 

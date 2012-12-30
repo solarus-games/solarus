@@ -39,19 +39,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import org.solarus.editor.DialogSection;
 import org.solarus.editor.Dialogs;
 import org.solarus.editor.Project;
-import org.solarus.editor.ProjectObserver;
 import org.solarus.editor.ResourceType;
 import org.solarus.editor.QuestEditorException;
 
 /**
  * Main window of the dialogs editor
  */
-public class DialogsEditorWindow extends AbstractEditorWindow implements ProjectObserver, ListSelectionListener {
+public class DialogsEditorWindow extends AbstractEditorWindow implements ListSelectionListener {
 
     /**
      * The current Dialogs.
@@ -60,19 +60,19 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
     /**
      * A list wich contains the sections of the current dialogs
      */
-    private JList sectionsList;
+    protected JList<DialogSection> sectionsList;
     /**
      * A textfield for filter the section list
      */
-    private JTextField filter;
+    protected JTextField filter;
     /**
      * Table for section edition
      */
-    private DialogSection currentSection;
+    protected DialogSection currentSection;
     /**
      * S
      */
-    private SectionListModel model;
+    protected SectionListModel model;
     //private DialogSectionTableModel tableModel;
     private JTextField name;
     private JTextArea comments;
@@ -81,7 +81,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
     private JTextField line2;
     private JTextField line3;
     private JCheckBox question;
-    private JComboBox skipAction;
+    private JComboBox<String> skipAction;
     private JTextField nextSection;
     private JTextField nextSection2;
     /**
@@ -100,7 +100,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
     /**
      * Creates a new window.
      */
-    public DialogsEditorWindow(String quest, EditorWindow parentEditor) {
+	public DialogsEditorWindow(String quest, EditorWindow parentEditor) {
         setLayout(new BorderLayout());
 
         Project.addProjectObserver(this);
@@ -109,14 +109,14 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
         GuiTools.setLookAndFeel();
 
         JPanel leftPanel = new JPanel(new BorderLayout());
-        sectionsList = new JList();
+        sectionsList = new JList<>();
         sectionsList.setPreferredSize(new Dimension(250, 800));
         model = new SectionListModel();
 
         sectionsList.setModel(model);
         sectionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         sectionsList.addListSelectionListener(this);
-        listScrollPane = new JScrollPane(sectionsList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        listScrollPane = new JScrollPane(sectionsList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         leftPanel.add(listScrollPane, BorderLayout.CENTER);
         filter = new JTextField();
         filter.setBorder(BorderFactory.createTitledBorder("Filter"));
@@ -132,14 +132,16 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
         newSection = new JButton("Create a new section");
         newSection.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 DialogsEditorWindow.this.model.addSection();
             }
         });
         removeSection = new JButton("Delete selected section");
         removeSection.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 DialogsEditorWindow.this.model.removeSection(currentSection);
             }
         });
@@ -186,7 +188,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
         question = new JCheckBox();
         sectionPanel.add(question);
         sectionPanel.add(new JLabel("Skip Action"));
-        skipAction = new JComboBox(new String[]{DialogSection.SKIP_ACTION_NONE, DialogSection.SKIP_ACTION_CURRENT, DialogSection.SKIP_ACTION_ALL});
+        skipAction = new JComboBox<>(new String[]{DialogSection.SKIP_ACTION_NONE, DialogSection.SKIP_ACTION_CURRENT, DialogSection.SKIP_ACTION_ALL});
         skipAction.setFont(new Font("Courier New", Font.PLAIN, 12));
         sectionPanel.add(skipAction);
         sectionPanel.add(new JLabel("Next Section"));
@@ -221,7 +223,8 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
      * This method is called when a project has just been loaded.
      * The dialogs menu is enabled.
      */
-    public void currentProjectChanged() {
+    @Override
+	public void currentProjectChanged() {
         //menudialogs.setEnabled(true);
 
         if (dialogs != null) {
@@ -260,7 +263,8 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
      * @param o the history
      * @param obj additional parameter
      */
-    public void update(Observable o, Object obj) {
+    @Override
+	public void update(Observable o, Object obj) {
         this.parentEditor.update(o, obj);
     }
 
@@ -269,7 +273,8 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
      * If the dialogs is not saved, we propose to save it.
      * @return false if the user cancelled
      */
-    public boolean checkCurrentFileSaved() {
+    @Override
+	public boolean checkCurrentFileSaved() {
         boolean result = true;
 
         if (dialogs != null && !dialogs.isSaved()) {
@@ -300,7 +305,8 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
      * Give the name of the resource opened in the editor
      * @return the name of the map
      */
-    public String getResourceName() {
+    @Override
+	public String getResourceName() {
         return getDialogs().getName();
     }
 
@@ -361,7 +367,8 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
     /**
      * Saves the current dialogs.
      */
-    public void save() {
+    @Override
+	public void save() {
         try {
             saveCurrentSection();
             repaint();
@@ -389,12 +396,13 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
             nextSection2.setText(newSection.getNextSection2());
         } else {
             sectionsList.setSelectedValue(model.elementAt(0), true);
-            setSection((DialogSection) model.elementAt(0));
+            setSection( model.elementAt(0));
         }
     }
 
-    public void valueChanged(ListSelectionEvent lse) {
-        setSection((DialogSection) sectionsList.getSelectedValue());
+    @Override
+	public void valueChanged(ListSelectionEvent lse) {
+        setSection(sectionsList.getSelectedValue());
         repaint();
     }
 
@@ -412,7 +420,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
         currentSection.setNextSection2(nextSection2.getText());
     }
 
-    public class SectionListModel extends DefaultListModel {
+    public class SectionListModel extends DefaultListModel<DialogSection> {
 
         ArrayList<DialogSection> elements = new ArrayList<DialogSection>();
         ArrayList<DialogSection> filteredElements = new ArrayList<DialogSection>();
@@ -421,14 +429,12 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
         public int getSize() {
             if (filteredElements == null) {
                 return 0;
-            } else {
-                return filteredElements.size();
             }
-
+            return filteredElements.size();
         }
 
         @Override
-        public Object getElementAt(int index) {
+        public DialogSection getElementAt(int index) {
             return filteredElements.get(index);
         }
 
@@ -436,12 +442,12 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
 //            System.out.println("Update du modèle");
 //            fireContentsChanged(this, 0, getSize() - 1);
 //        }
-        private void setItems(ArrayList<DialogSection> sections) {
+        protected void setItems(ArrayList<DialogSection> sections) {
             this.elements = sections;
             filterList("");
         }
 
-        private void filterList(String filter) {
+        protected void filterList(String filter) {
 
             filteredElements.clear();
             if (filter.length() == 0) {
@@ -469,7 +475,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
 
         public void removeSection(DialogSection section) {
             int idx = filteredElements.indexOf(section);
-            sectionsList.setSelectedValue((DialogSection) getElementAt(0), true);
+            sectionsList.setSelectedValue(getElementAt(0), true);
             elements.remove(section);
             filteredElements.remove(section);
             fireContentsChanged(this, 0, getSize());
@@ -480,7 +486,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
 
 //            }
             sectionsList.setPreferredSize(new Dimension(250, sectionsList.getModel().getSize() * 18));
-            setSection((DialogSection) getElementAt(0));
+            setSection(getElementAt(0));
             sectionsList.repaint();
 
         }
@@ -488,13 +494,19 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
 
     public class FilterList implements KeyListener {
 
-        public void keyTyped(KeyEvent e) {
+        @Override
+		public void keyTyped(KeyEvent e) {
+            //nothing to do
+
         }
 
-        public void keyPressed(KeyEvent e) {
+        @Override
+		public void keyPressed(KeyEvent e) {
+            //nothing to do
         }
 
-        public void keyReleased(KeyEvent e) {
+        @Override
+		public void keyReleased(KeyEvent e) {
             model.filterList(filter.getText());
             try {
                 sectionsList.setPreferredSize(new Dimension(250, sectionsList.getModel().getSize() * 18));

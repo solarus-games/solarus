@@ -122,7 +122,7 @@ void GameoverSequence::update() {
         }
         else {
           state = MENU;
-          Music::play("game_over.spc");
+          Music::play("game_over");
           fairy_x = 76;
           fairy_y = 124;
           cursor_position = 0;

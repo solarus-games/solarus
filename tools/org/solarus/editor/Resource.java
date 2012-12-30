@@ -109,7 +109,35 @@ public class Resource extends Observable {
             notifyObservers();
         }
     }
-
+    /**
+     * Add an element to the resource. 
+     * If the element already exists in the database, throws an exception
+     */
+    public void addElement(String id, String name) throws QuestEditorException 
+    {
+        if (elements.get(id) == null) {
+            elements.put(id,name);
+            setChanged();
+            notifyObservers();
+        }
+        else {
+            throw new QuestEditorException("The element " + id + " already exists");
+        }
+    }
+    /**
+     * Removes an element from the resource.
+     * Throws an exception if the element doesn't exist
+     * in the database
+     */
+    public void removeElement(String id) throws QuestEditorException
+    {
+        if (elements.get(id) == null) {
+            throw new QuestEditorException("The element " + id + " doesn't exist in the resource.");
+        }
+        elements.remove(id);
+        setChanged();
+        notifyObservers();
+    }
     /**
      * Removes all elements from the resource.
      */

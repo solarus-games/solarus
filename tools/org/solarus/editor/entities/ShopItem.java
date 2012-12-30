@@ -55,14 +55,12 @@ public class ShopItem extends MapEntity {
     public void checkProperties() throws MapException {
 
         String treasureName = getProperty("treasure_name");
-        if (treasureName == null
-                || treasureName.equals(Item.noneId)) {
+        if (treasureName == null) {
             throw new MapException("The treasure of a shop item cannot be empty or random");
         }
 
         Integer variant = getIntegerProperty("treasure_variant");
-        if (!treasureName.equals(Item.noneId)
-                && (variant == null || variant < 1)) {
+        if (treasureName != null && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
         }
 
@@ -71,7 +69,7 @@ public class ShopItem extends MapEntity {
         }
 
         String savegameVariable = getProperty("treasure_savegame_variable");
-        if (savegameVariable != null && !savegameVariable.isEmpty()) {
+        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid savegame variable");
         }
 

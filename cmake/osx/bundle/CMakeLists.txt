@@ -3,7 +3,7 @@
 # This CMakeList can be included inside the main CMakeList.txt to add a
 # target which generate the CFBundle when building the engine. 
 # The engine is build from corresponding ${main_source_file} files. 
-# The quest, icon an info.plist template file can be added to the project.
+# The quest, icon and an info.plist template file can be added to the project.
 #
 # You can edit the Bundle configuration by passing some flags.
 # SOLARUS_OSX_BUNDLE represent the Bundle name. It's the only obligatory flag.
@@ -87,7 +87,7 @@ set_property(TARGET ${SOLARUS_OSX_BUNDLE} PROPERTY
 get_filename_component(ICON_NAME "${SOLARUS_OSX_BUNDLE_ICON}" NAME)
 set_property(TARGET ${SOLARUS_OSX_BUNDLE} PROPERTY 
 		MACOSX_BUNDLE_BUNDLE_NAME 		${SOLARUS_OSX_BUNDLE}
-		MACOSX_BUNDLE_ICON_FILE 		${SOLARUS_OSX_BUNDLE_ICON}
+		MACOSX_BUNDLE_ICON_FILE 		${ICON_NAME}
 		MACOSX_BUNDLE_BUNDLE_VERSION		${SOLARUS_OSX_BUNDLE_VERSION}
 
 		MACOSX_BUNDLE_GUI_IDENTIFIER		"solarus-team.${MACOSX_BUNDLE_BUNDLE_NAME}"

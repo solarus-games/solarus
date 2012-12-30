@@ -203,7 +203,8 @@ $ cmake -DSOLARUS_OSX_BUNDLE="SolarusDX" .
 Which will install the application into a bundle named "SolarusDX"
 The bundle is a .app suffixed folder, which typcially contains 
 the executable and all resources it needs.
-Pass SOLARUS_OSX_BUNDLE_QUEST , SOLARUS_OSX_BUNDLE_INFOPLIST and SOLARUS_OSX_BUNDLE_ICON flags 
+Pass SOLARUS_OSX_BUNDLE_QUEST , SOLARUS_OSX_BUNDLE_INFOPLIST , 
+SOLARUS_OSX_BUNDLE_ICON and SOLARUS_OSX_BUNDLE_VERSION flags 
 in addition to SOLARUS_OSX_BUNDLE to specify your own configuration.
 See ./cmake/osx/bundle/CMakeLists.txt for more details.
 

@@ -2149,12 +2149,3 @@ tile{
   pattern = 309,
 }
 
-door{
-  layer = 2,
-  x = 384,
-  y = 208,
-  name = "door",
-  direction = 1,
-  subtype = "0",
-}
-

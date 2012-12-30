@@ -3,13 +3,14 @@
 # This CMakeList can be included inside the main CMakeList.txt to add a
 # target which generate the CFBundle when building the engine. 
 # The engine is build from corresponding ${main_source_file} files. 
-# The quest, icon and eventually an info.plist template file can be added to the project.
+# The quest, icon an info.plist template file can be added to the project.
 #
 # You can edit the Bundle configuration by passing some flags.
 # SOLARUS_OSX_BUNDLE represent the Bundle name. It's the only obligatory flag.
 # SOLARUS_OSX_BUNDLE_QUEST represent the quest path.
 # SOLARUS_OSX_BUNDLE_INFOPLIST represent the info.plist template file path.
 # SOLARUS_OSX_BUNDLE_ICON represent the icon path.
+# SOLARUS_OSX_BUNDLE_VERSION represent the version string
 #
 # There is a default icon and info.plist template provided, but no quest, so if you 
 # don't specify a quest path, you'll have to add one manually to your generic bundle.
@@ -19,7 +20,7 @@
 ####
 
 set(SOLARUS_BUNDLE_SOURCE_DIR "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/osx/bundle/")
-set(EXECUTABLE_NAME "solarus")
+set(EXECUTABLE_NAME			"solarus")
 
 # Assertions
 if(NOT SOLARUS_OSX_BUNDLE)
@@ -34,10 +35,13 @@ endif()
 
 # Default files if not specified
 if(NOT SOLARUS_OSX_BUNDLE_INFOPLIST)
-  set(SOLARUS_OSX_BUNDLE_INFOPLIST 	${SOLARUS_BUNDLE_SOURCE_DIR}/Info.plist)
+  set(SOLARUS_OSX_BUNDLE_INFOPLIST	${SOLARUS_BUNDLE_SOURCE_DIR}/Info.plist)
 endif()
 if(NOT SOLARUS_OSX_BUNDLE_ICON)
-  set(SOLARUS_OSX_BUNDLE_ICON         	${SOLARUS_BUNDLE_SOURCE_DIR}/Solarus.icns)
+  set(SOLARUS_OSX_BUNDLE_ICON		${SOLARUS_BUNDLE_SOURCE_DIR}/Solarus.icns)
+endif()
+if(NOT SOLARUS_OSX_BUNDLE_VERSION)
+  set(SOLARUS_OSX_BUNDLE_VERSION	"1.0")
 endif()
 
 # Remove the hardcoded additional link on SDL path
@@ -82,10 +86,18 @@ set_property(TARGET ${SOLARUS_OSX_BUNDLE} PROPERTY
 # Additional Info.plist lines
 get_filename_component(ICON_NAME "${SOLARUS_OSX_BUNDLE_ICON}" NAME)
 set_property(TARGET ${SOLARUS_OSX_BUNDLE} PROPERTY 
-		MACOSX_BUNDLE_BUNDLE_NAME ${SOLARUS_OSX_BUNDLE}
-		MACOSX_BUNDLE_ICON_FILE ${ICON_NAME})
+		MACOSX_BUNDLE_BUNDLE_NAME 		${SOLARUS_OSX_BUNDLE}
+		MACOSX_BUNDLE_ICON_FILE 		${SOLARUS_OSX_BUNDLE_ICON}
+		MACOSX_BUNDLE_BUNDLE_VERSION		${SOLARUS_OSX_BUNDLE_VERSION}
+
+		MACOSX_BUNDLE_GUI_IDENTIFIER		"solarus-team.${MACOSX_BUNDLE_BUNDLE_NAME}"
+		MACOSX_BUNDLE_SHORT_VERSION_STRING	"${MACOSX_BUNDLE_BUNDLE_VERSION}"
+		MACOSX_BUNDLE_LONG_VERSION_STRING	"${MACOSX_BUNDLE_BUNDLE_NAME} Version ${MACOSX_BUNDLE_BUNDLE_VERSION}"
+		MACOSX_BUNDLE_COPYRIGHT			"Copyright 2012, solarus-team. All Rights Reserved."
+		MACOSX_BUNDLE_INFO_STRING		"${MACOSX_BUNDLE_LONG_VERSION_STRING}, ${MACOSX_BUNDLE_COPYRIGHT}"
+)
 
 # install
-install(PROGRAMS	${SOLARUS_OSX_BUNDLE}
-  BUNDLE DESTINATION  	local/share/solarus/
+install(PROGRAMS		${SOLARUS_OSX_BUNDLE}
+  BUNDLE DESTINATION		local/share/solarus/
 ) 

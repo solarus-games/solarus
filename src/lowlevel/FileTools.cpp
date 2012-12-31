@@ -24,6 +24,10 @@
 #include <physfs.h>
 #include <lua.hpp>
 
+#if defined(SOLARUS_USE_OSX_INTERFACE) && SOLARUS_USE_OSX_INTERFACE != 0
+#   include "lowlevel/osx/OSXInterface.h"
+#endif
+
 std::string FileTools::language_code;
 std::string FileTools::default_language_code;
 std::map<std::string, std::string> FileTools::languages;
@@ -79,18 +83,20 @@ void FileTools::initialize(int argc, char** argv) {
   // then set the write directory to a "SOLARUS_WRITE_DIR/quest_dir" subdirectory of the user home
 
   // first, create the directory
-   if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
+   if (!PHYSFS_setWriteDir(get_base_write_dir().c_str())) {
      Debug::die(StringConcat() << "Cannot write in user directory:" << PHYSFS_getLastError());
   }
   IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("info");
-  std::string write_dir = (std::string) SOLARUS_WRITE_DIR + "/" + ini.get_string_value("write_dir");
+
+  std::string write_dir = std::string(SOLARUS_WRITE_DIR) + "/" + ini.get_string_value("write_dir");
+
   PHYSFS_mkdir(write_dir.c_str());
 
   // then set this directory as the write directory
-  write_dir = (std::string) PHYSFS_getUserDir() + write_dir;
-  if (!PHYSFS_setWriteDir(write_dir.c_str())) {
-    Debug::die(StringConcat() << "Cannot set write dir '" << write_dir << "': " << PHYSFS_getLastError());
+  const std::string& full_write_dir = get_base_write_dir() + "/" + write_dir;
+  if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
+    Debug::die(StringConcat() << "Cannot set write dir '" << full_write_dir << "': " << PHYSFS_getLastError());
   }
   PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);     // directory for writing files (savegames and configuration file)
 
@@ -413,5 +419,18 @@ void FileTools::read(std::istream& is, std::string& value) {
   if (!(is >> value)) {
     Debug::die("Cannot read string from input stream");
   }
+}
+
+/**
+ * @brief Return the "privilegied" base write directory, depending on what OS is running
+ * @return The base write directory
+ */
+std::string FileTools::get_base_write_dir() {
+
+#if defined(SOLARUS_USE_OSX_INTERFACE) && SOLARUS_USE_OSX_INTERFACE != 0
+  return std::string(getUserApplicationSupportDirectory());
+#else
+  return std::string(PHYSFS_getUserDir());
+#endif
 }
 

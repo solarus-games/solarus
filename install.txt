@@ -207,7 +207,7 @@ SOLARUS_OSX_BUNDLE_ICON and SOLARUS_OSX_BUNDLE_VERSION flags
 in addition to SOLARUS_OSX_BUNDLE to specify your own configuration.
 See ./cmake/osx/bundle/CMakeLists.txt for more details.
 
-All non-Mac-native frameworks are placed in Solarus.app/Contents/Frameworks/
+All non-Mac-native frameworks are placed in ${SOLARUS_OSX_BUNDLE}.app/Contents/Frameworks/
 You have to do a little verification on them : check if dependencies search
 path are correctly integrated, just by doing
 

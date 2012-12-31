@@ -1,8 +1,8 @@
 ####
 #
-# This CMakeList can be included inside the main CMakeList.txt to add a
+# This CMakeLists can be included inside the main CMakeList.txt to add a
 # target which generate the CFBundle when building the engine. 
-# The engine is build from corresponding ${main_source_file} files. 
+# The engine is build from ${main_source_file} file and solarus_static target. 
 # The quest, icon and an info.plist template file can be added to the project.
 #
 # You can edit the Bundle configuration by passing some flags.
@@ -20,7 +20,7 @@
 ####
 
 set(EXECUTABLE_NAME                     "solarus")
-set(EXECUTABLE_STATIC_NAME              "${EXECUTABLE_NAME}_static")
+set(EXECUTABLE_STATIC_NAME              "solarus_static")
 set(COMPANY_IDENTIFIER                  "${EXECUTABLE_NAME}-team")
 
 set(SOLARUS_BUNDLE_SOURCE_DIR "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/osx/bundle/")
@@ -118,20 +118,22 @@ set_target_properties(${SOLARUS_OSX_BUNDLE} PROPERTIES
 
 # Embed library search path
 if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
-  set(SOLARUS_OSX_RPATH "@rpath/")
+  set(CMAKE_EXE_LINKER_FLAGS         "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
+  set(SOLARUS_OSX_RPATH              "@rpath/")
 else()
-  set(SOLARUS_OSX_RPATH "@executable_path/../Frameworks/")
+  set(SOLARUS_OSX_RPATH              "@executable_path/../Frameworks/")
 endif()
 set_target_properties(${SOLARUS_OSX_BUNDLE} PROPERTIES 
-	BUILD_WITH_INSTALL_RPATH 1 
-	INSTALL_NAME_DIR ${SOLARUS_OSX_RPATH}	
+	BUILD_WITH_INSTALL_RPATH     1 
+	INSTALL_NAME_DIR             ${SOLARUS_OSX_RPATH}	
 )
 
 # CFBundle default quest directory.
-set(DEFAULT_QUEST "../Resources" CACHE STRING "Default quest directory")
+if(NOT DEFAULT_QUEST)
+  set(DEFAULT_QUEST "../Resources" CACHE STRING "Default quest directory")
+endif()
 
 # install
-install(PROGRAMS                          ${SOLARUS_OSX_BUNDLE}
-        BUNDLE DESTINATION                share/solarus/
+install(PROGRAMS                     ${SOLARUS_OSX_BUNDLE}
+	BUNDLE DESTINATION           share/solarus/
 ) 

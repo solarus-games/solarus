@@ -42,6 +42,7 @@ class FileTools {
 
     static void initialize_languages(const std::string& arg_language);
     static int l_language(lua_State* l);
+    static std::string get_base_write_dir();
 
   public:
 

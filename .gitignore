@@ -21,7 +21,7 @@ CMakeFiles/
 Makefile
 cmake_install.cmake
 libsolarus_static.a
-solarus
+/solarus
 error.txt
 quests/*/CMakeFiles/
 quests/*/Makefile

@@ -128,26 +128,11 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
   else()
     set(CMAKE_OSX_DEPLOYMENT_TARGET "10.6" CACHE STRING "Default oldest OS version supported" FORCE)
   endif()
-  
-  # Embed library search path
-  if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
-    set(SOLARUS_OSX_RPATH "@rpath/")
-  else()
-    set(SOLARUS_OSX_RPATH "@executable_path/../Frameworks/")
-  endif()
-  set_target_properties(solarus PROPERTIES 
-      BUILD_WITH_INSTALL_RPATH 1 
-      INSTALL_NAME_DIR ${SOLARUS_OSX_RPATH}	
-  )
 
   # Compatiblity settings
   if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
-
-  # CFBundle default quest directory.
-  set(DEFAULT_QUEST "../Resources" CACHE STRING "Default quest directory")
 endif()
 
 # solarus options

@@ -46,6 +46,20 @@ if(NOT SOLARUS_OSX_BUNDLE_VERSION)
   set(SOLARUS_OSX_BUNDLE_VERSION        "1.0")
 endif()
 
+# Regenerate -l flags for the Bundle target
+target_link_libraries(${SOLARUS_OSX_BUNDLE}
+  solarus_static
+  ${SDL_LIBRARY}
+  ${SDLIMAGE_LIBRARY}
+  ${SDLTTF_LIBRARY}
+  ${OPENAL_LIBRARY}
+  ${LUA_LIBRARY}
+  ${PHYSFS_LIBRARY}
+  ${VORBISFILE_LIBRARY}
+  ${OGG_LIBRARY}
+  ${MODPLUG_LIBRARY}
+)
+
 # Remove the hardcoded additional link on SDL path
 string(REPLACE "-framework Cocoa" "" SDL_FRAMEWORK "${SDL_LIBRARY}") 
 
@@ -100,6 +114,21 @@ set_target_properties(${SOLARUS_OSX_BUNDLE} PROPERTIES
 		MACOSX_BUNDLE_COPYRIGHT              "Copyright 2013, ${COMPANY_IDENTIFIER}."
 		MACOSX_BUNDLE_INFO_STRING            "${MACOSX_BUNDLE_LONG_VERSION_STRING}, ${MACOSX_BUNDLE_COPYRIGHT}"
 )
+
+# Embed library search path
+if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
+  set(SOLARUS_OSX_RPATH "@rpath/")
+else()
+  set(SOLARUS_OSX_RPATH "@executable_path/../Frameworks/")
+endif()
+set_target_properties(${SOLARUS_OSX_BUNDLE} PROPERTIES 
+	BUILD_WITH_INSTALL_RPATH 1 
+	INSTALL_NAME_DIR ${SOLARUS_OSX_RPATH}	
+)
+
+# CFBundle default quest directory.
+set(DEFAULT_QUEST "../Resources" CACHE STRING "Default quest directory")
 
 # install
 install(PROGRAMS                          ${SOLARUS_OSX_BUNDLE}

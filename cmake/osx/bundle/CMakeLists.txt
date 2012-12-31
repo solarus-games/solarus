@@ -20,7 +20,8 @@
 ####
 
 set(EXECUTABLE_NAME                     "solarus")
-set(COMPANY_IDENTIFIER                  "solarus-team")
+set(EXECUTABLE_STATIC_NAME              "${EXECUTABLE_NAME}_static")
+set(COMPANY_IDENTIFIER                  "${EXECUTABLE_NAME}-team")
 
 set(SOLARUS_BUNDLE_SOURCE_DIR "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/osx/bundle/")
 
@@ -48,7 +49,7 @@ endif()
 
 # Regenerate -l flags for the Bundle target
 target_link_libraries(${SOLARUS_OSX_BUNDLE}
-  solarus_static
+  ${EXECUTABLE_STATIC_NAME}
   ${SDL_LIBRARY}
   ${SDLIMAGE_LIBRARY}
   ${SDLTTF_LIBRARY}

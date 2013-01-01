@@ -4,7 +4,7 @@ properties{
   width = 1024,
   height = 1024,
   world = "outside",
-  tileset = "1",
+  tileset = "light_world",
 }
 
 tile{

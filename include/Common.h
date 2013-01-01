@@ -26,15 +26,12 @@
 /**
  * @def SOLARUS_OS_MACOSX OR SOLARUS_OS_IPHONE
  * @brief Define the current platform constants on Apple Systems
- * 
- * TargetConditionals.h behaviour :
- * TARGET_OS_IPHONE is set to 1 on both IPhone and IPhone simulator.
- * TARGET_OS_MAC is set to 1 on both IPhone, IPhone simulator and Mac OS.
  */
 #ifdef __APPLE__
 #  include "TargetConditionals.h"
-#  if TARGET_IPHONE_SIMULATOR == 1 || TARGET_OS_IPHONE == 1
+#  if TARGET_OS_IPHONE == 1
 #    define SOLARUS_OS_IPHONE
+// TARGET_OS_MAC is set to 1 on both IPhone, IPhone simulator and Mac OS.
 #  elif TARGET_OS_MAC == 1
 #    define SOLARUS_OS_MACOSX
 #  endif

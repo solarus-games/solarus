@@ -24,13 +24,32 @@
 #define SOLARUS_COMMON_H
 
 /**
+ * @def SOLARUS_OS_MACOSX OR SOLARUS_OS_IPHONE
+ * @brief Define the current platform constants on Apple Systems
+ * 
+ * TargetConditionals.h behaviour :
+ * TARGET_OS_IPHONE is set to 1 on both IPhone and IPhone simulator.
+ * TARGET_OS_MAC is set to 1 on both IPhone, IPhone simulator and Mac OS.
+ */
+#ifdef __APPLE__
+#  include "TargetConditionals.h"
+#  if TARGET_IPHONE_SIMULATOR == 1 || TARGET_OS_IPHONE == 1
+#    define SOLARUS_OS_IPHONE
+#  elif TARGET_OS_MAC == 1
+#    define SOLARUS_OS_MACOSX
+#  endif
+#endif
+
+#endif
+
+/**
  * @def SOLARUS_DEFAULT_QUEST
  * @brief Path of the quest to run is none is specified at runtime.
  */
 #ifndef SOLARUS_DEFAULT_QUEST
 // if no default quest was specified at compilation time,
 // use the current directory
-#define SOLARUS_DEFAULT_QUEST "."
+#  define SOLARUS_DEFAULT_QUEST "."
 #endif
 
 /**
@@ -38,7 +57,7 @@
  * @brief Where savegames are stored, relative to the user's home directory.
  */
 #ifndef SOLARUS_WRITE_DIR
-#define SOLARUS_WRITE_DIR ".solarus"
+#  define SOLARUS_WRITE_DIR ".solarus"
 #endif
 
 // Game size.
@@ -48,7 +67,7 @@
  * @brief Screen height in pixels.
  */
 #ifndef SOLARUS_SCREEN_WIDTH
-#  ifdef PANDORA
+#  if defined(PANDORA)
 #    define SOLARUS_SCREEN_WIDTH 400
 #  else
 #    define SOLARUS_SCREEN_WIDTH 320
@@ -106,7 +125,7 @@
  * @brief Forces using Apple's API on OSX system.
  */
 #ifndef SOLARUS_USE_OSX_INTERFACE
-#  ifdef __APPLE__
+#  if defined(SOLARUS_OS_MACOSX)
 #    define SOLARUS_USE_OSX_INTERFACE 1
 #  endif
 #endif

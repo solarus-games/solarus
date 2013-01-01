@@ -32,4 +32,5 @@ quests/*/cmake_install.cmake
 quests/*/data.solarus
 quests/zsdx/zsdx
 quests/zsxd/zsxd
+quests/zmc/zmc
 

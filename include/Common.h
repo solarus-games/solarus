@@ -27,7 +27,7 @@
  * @def SOLARUS_OS_MACOSX OR SOLARUS_OS_IPHONE
  * @brief Define the current platform constants on Apple Systems
  */
-#ifdef __APPLE__
+#if defined(__APPLE__)
 #  include "TargetConditionals.h"
 #  if TARGET_OS_IPHONE == 1
 #    define SOLARUS_OS_IPHONE
@@ -35,8 +35,6 @@
 #  elif TARGET_OS_MAC == 1
 #    define SOLARUS_OS_MACOSX
 #  endif
-#endif
-
 #endif
 
 /**

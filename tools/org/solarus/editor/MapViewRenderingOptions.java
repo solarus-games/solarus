@@ -46,22 +46,19 @@ public class MapViewRenderingOptions {
     private boolean[] showLayers;
 
     /**
-     * Tells whether or not the obstacle entities are shown.
-     */
-    private boolean showObstacles;
-
-    /**
-     * Tells whether or not the non obstacle entities are shown.
-     */
-    private boolean showNonObstacles;
-
-    /**
      * True to render the transparency, false to replace the transparent pixels
      * by a background color.
      * The transparency seems to make the program much slower with my Linux.
      */
     private boolean showTransparency;
-
+    /**
+     * Tells whether or not the grid is shown
+     */
+    private boolean showGrid;
+    /**
+     * Size of the grid (16 by default)
+     */
+    private int gridSize;
     /**
      * Constructor.
      */
@@ -69,9 +66,9 @@ public class MapViewRenderingOptions {
         this.mapView = mapView;
         this.zoom = 2.0;
         this.showLayers = new boolean[] {true, true, true};
-        this.showObstacles = true;
-        this.showNonObstacles = true;
         this.showTransparency = true;
+        this.showGrid = true;
+        this.gridSize = 16;
     }
 
     /**
@@ -140,40 +137,6 @@ public class MapViewRenderingOptions {
     }
 
     /**
-     * Returns whether or not the entities with obstacles are shown.
-     * @return true if entities with obstacles are shown.
-     */
-    public boolean getShowObstacles() {
-        return showObstacles;
-    }
-
-    /**
-     * Returns whether or not the entities without obstacles are shown.
-     * @return true if entities without obstacles are shown.
-     */
-    public boolean getShowNonObstacles() {
-        return showNonObstacles;
-    }
-
-    /**
-     * Sets whether or not the entities with obstacles are shown.
-     * @param showObstacleEntities true to show the entities with obstacles.
-     */
-    public void setShowObstacles(boolean showObstacles) {
-        this.showObstacles = showObstacles;
-        mapView.repaint();
-    }
-
-    /**
-     * Sets whether or not the entities without obstacles are shown.
-     * @param showNonObstacleEntities true to show the entities without obstacles.
-     */
-    public void setShowNonObstacles(boolean showNonObstacles) {
-        this.showNonObstacles = showNonObstacles;
-        mapView.repaint();
-    }
-
-    /**
      * Returns true if the transparency is rendered, i.e. if transparent pixels are
      * not drawn.
      * @return true if the transparency is shown, false if the transparent pixels
@@ -193,6 +156,39 @@ public class MapViewRenderingOptions {
         this.showTransparency = showTransparency;
         mapView.repaint();
     }
+    /**
+     * Returns whether or not the grid is rendered.
+     * @return
+     */
+    public boolean getShowGrid()
+    {
+        return showGrid;
+    }
+    /**
+     * Sets whether or not the gird is rendered
+     * @param showGrid true to show the grid, false not to show the grid
+     */
+    public void setShowGrid(boolean showGrid)
+    {
+        this.showGrid = showGrid;
+        mapView.repaint();
+    }
+    /**
+     * Returns the current grid size in the map view
+     * @return
+     */
+    public int getGridSize()
+    {
+        return gridSize;
+    }
+    /**
+     * Sets the grid size in the map view
+     */
+    public void setGridSize(int gridSize)
+    {
+        this.gridSize = gridSize;
+        mapView.repaint();
+    }
 
     /**
      * Returns whether or not an entity is shown, depending on its type,
@@ -204,9 +200,7 @@ public class MapViewRenderingOptions {
         Layer layer = entity.getLayer();
         boolean obstacle = entity.getObstacle().isWall();
 
-        return showLayers[layer.getId()] &&
-          ((obstacle && showObstacles) ||
-           (!obstacle && showNonObstacles));
+        return showLayers[layer.getId()];
     }
 }
 

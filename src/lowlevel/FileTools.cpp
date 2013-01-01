@@ -415,17 +415,18 @@ void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
   FileTools::solarus_write_dir = solarus_write_dir;
 
   // First check that we can write in a directory.
-  if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
+  if (!PHYSFS_setWriteDir(get_base_write_dir().c_str())) {
      Debug::die(StringConcat() << "Cannot write in user directory '"
-         << PHYSFS_getUserDir() << "': " << PHYSFS_getLastError());
+         << get_base_write_dir().c_str()  << "': " << PHYSFS_getLastError());
   }
 
   // Create the directory.
-  std::string write_dir = get_base_write_dir() + solarus_write_dir;
-  PHYSFS_mkdir(write_dir.c_str());
-  if (!PHYSFS_setWriteDir(write_dir.c_str())) {
+  PHYSFS_mkdir(solarus_write_dir.c_str());
+  
+  const std::string& full_write_dir = get_base_write_dir() + "/" + solarus_write_dir;
+  if (!PHYSFS_setWriteDir(full_write_dir.c_str())) {
     Debug::die(StringConcat() << "Cannot set Solarus write directory to '"
-        << write_dir << "': " << PHYSFS_getLastError());
+        << full_write_dir << "': " << PHYSFS_getLastError());
   }
 
   // The quest subdirectory may be new, create it if needed.
@@ -478,7 +479,7 @@ const std::string FileTools::get_full_quest_write_dir() {
  * @return The base write directory.
  */
 std::string FileTools::get_base_write_dir() {
-    
+
 #if defined(SOLARUS_USE_OSX_INTERFACE) && SOLARUS_USE_OSX_INTERFACE != 0
   return std::string(getUserApplicationSupportDirectory());
 #else

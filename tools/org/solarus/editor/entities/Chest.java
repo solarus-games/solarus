@@ -47,7 +47,7 @@ public class Chest extends MapEntity {
      */
     public void setPropertiesDefaultValues() throws MapException {
         setBooleanProperty("is_big_chest", false);
-        setProperty("treasure_name", Item.noneId);
+        setProperty("treasure_name", null);
         setIntegerProperty("treasure_variant", null);
         setProperty("treasure_savegame_variable", null);
     }
@@ -64,8 +64,7 @@ public class Chest extends MapEntity {
         }
 
         Integer variant = getIntegerProperty("treasure_variant");
-        if (!treasureName.equals(Item.noneId)
-                && (variant == null || variant < 1)) {
+        if (treasureName != null && (variant == null || variant < 1)) {
             throw new MapException("A variant must be defined with this treasure");
         }
 
@@ -74,7 +73,7 @@ public class Chest extends MapEntity {
         }
 
         String savegameVariable = getProperty("treasure_savegame_variable");
-        if (savegameVariable != null && !savegameVariable.isEmpty()) {
+        if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid treasure savegame variable");
         }
     }

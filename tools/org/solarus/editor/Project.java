@@ -56,7 +56,7 @@ public class Project {
     private static Project currentProject;
 
     /**
-     * Constructs a ZSDX project with the specified path.
+     * Constructs a Solarus project with the specified path.
      * @param path root path of the project
      */
     private Project(String path) {

@@ -196,6 +196,6 @@ install(TARGETS	solarus
 
 # Also install into CFBundle form
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND SOLARUS_OSX_BUNDLE)
-  include("${SOLARUS_ENGINE_SOURCE_DIR}/cmake/osx/bundle/CMakeLists.txt")
+  include(AddOSXBundleTarget)
 endif()
 

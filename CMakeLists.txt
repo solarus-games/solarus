@@ -125,13 +125,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
   # Deployment version
   if(SOLARUS_DEPLOYMENT)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Chosen oldest OS version supported" FORCE)
-  else()
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.6" CACHE STRING "Default oldest OS version supported" FORCE)
-  endif()
-
-  # Compatiblity settings
-  if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
+    if(SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
+      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
+    endif()
   endif()
 endif()
 

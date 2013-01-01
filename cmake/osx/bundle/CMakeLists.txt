@@ -33,7 +33,7 @@ if(SOLARUS_OSX_BUNDLE STREQUAL "${EXECUTABLE_NAME}")
   message(FATAL_ERROR "There is already a target named ${EXECUTABLE_NAME}, please choose another one for the Bundle")
 endif()
 if(NOT SOLARUS_OSX_BUNDLE_QUEST)
-  message(WARNING "Creating generic bundle. You should add a quest later")
+  message(STATUS "Creating generic bundle. You should add a quest later")
 endif()
 
 # Default files if not specified
@@ -46,20 +46,6 @@ endif()
 if(NOT SOLARUS_OSX_BUNDLE_VERSION)
   set(SOLARUS_OSX_BUNDLE_VERSION        "1.0")
 endif()
-
-# Regenerate -l flags for the Bundle target
-target_link_libraries(${SOLARUS_OSX_BUNDLE}
-  ${EXECUTABLE_STATIC_NAME}
-  ${SDL_LIBRARY}
-  ${SDLIMAGE_LIBRARY}
-  ${SDLTTF_LIBRARY}
-  ${OPENAL_LIBRARY}
-  ${LUA_LIBRARY}
-  ${PHYSFS_LIBRARY}
-  ${VORBISFILE_LIBRARY}
-  ${OGG_LIBRARY}
-  ${MODPLUG_LIBRARY}
-)
 
 # Remove the hardcoded additional link on SDL path
 string(REPLACE "-framework Cocoa" "" SDL_FRAMEWORK "${SDL_LIBRARY}") 
@@ -81,6 +67,20 @@ add_executable(${SOLARUS_OSX_BUNDLE} MACOSX_BUNDLE
 		${OGG_LIBRARY} 
 		${PHYSFS_LIBRARY} 
 		${MODPLUG_LIBRARY}
+)
+
+# Regenerate -l flags for the Bundle target
+target_link_libraries(${SOLARUS_OSX_BUNDLE}
+  ${EXECUTABLE_STATIC_NAME}
+  ${SDL_LIBRARY}
+  ${SDLIMAGE_LIBRARY}
+  ${SDLTTF_LIBRARY}
+  ${OPENAL_LIBRARY}
+  ${LUA_LIBRARY}
+  ${PHYSFS_LIBRARY}
+  ${VORBISFILE_LIBRARY}
+  ${OGG_LIBRARY}
+  ${MODPLUG_LIBRARY}
 )
 
 # Set right properties on copied files

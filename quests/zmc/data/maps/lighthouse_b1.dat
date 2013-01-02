@@ -1667,58 +1667,11 @@ chest{
 
 destructible{
   layer = 1,
-  x = 376,
-  y = 77,
-  subtype = "pot",
-}
-
-destructible{
-  layer = 1,
-  x = 392,
-  y = 77,
-  subtype = "pot",
-}
-
-destructible{
-  layer = 1,
-  x = 376,
-  y = 189,
-  subtype = "pot",
-}
-
-destructible{
-  layer = 1,
-  x = 392,
-  y = 189,
-  subtype = "pot",
-}
-
-destructible{
-  layer = 1,
   x = 568,
   y = 77,
   subtype = "pot",
-}
-
-destructible{
-  layer = 1,
-  x = 584,
-  y = 77,
-  subtype = "pot",
-}
-
-destructible{
-  layer = 1,
-  x = 568,
-  y = 189,
-  subtype = "pot",
-}
-
-destructible{
-  layer = 1,
-  x = 584,
-  y = 189,
-  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
 }
 
 destructible{
@@ -1726,34 +1679,8 @@ destructible{
   x = 376,
   y = 413,
   subtype = "pot",
-}
-
-destructible{
-  layer = 1,
-  x = 392,
-  y = 413,
-  subtype = "pot",
-}
-
-destructible{
-  layer = 1,
-  x = 408,
-  y = 413,
-  subtype = "pot",
-}
-
-destructible{
-  layer = 1,
-  x = 424,
-  y = 413,
-  subtype = "pot",
-}
-
-destructible{
-  layer = 1,
-  x = 440,
-  y = 413,
-  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
 }
 
 destructible{
@@ -2125,6 +2052,118 @@ wall{
   width = 8,
   height = 8,
   name = "wall_12",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+destructible{
+  layer = 1,
+  x = 584,
+  y = 77,
+  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 1,
+  x = 584,
+  y = 189,
+  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 1,
+  x = 568,
+  y = 189,
+  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 1,
+  x = 376,
+  y = 189,
+  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 1,
+  x = 392,
+  y = 189,
+  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 1,
+  x = 376,
+  y = 77,
+  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 1,
+  x = 392,
+  y = 77,
+  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 1,
+  x = 392,
+  y = 413,
+  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 1,
+  x = 408,
+  y = 413,
+  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 1,
+  x = 424,
+  y = 413,
+  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 1,
+  x = 440,
+  y = 413,
+  subtype = "pot",
+  treasure_name = "random",
+  treasure_variant = 1,
+}
+
+wall{
+  layer = 1,
+  x = 136,
+  y = 168,
+  width = 8,
+  height = 8,
+  name = "wall_13",
   stops_hero = true,
   stops_enemies = true,
   stops_npcs = true,

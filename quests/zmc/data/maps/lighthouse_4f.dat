@@ -1899,12 +1899,77 @@ tile{
   pattern = 277,
 }
 
+tile{
+  layer = 1,
+  x = 208,
+  y = 344,
+  width = 8,
+  height = 16,
+  pattern = 73,
+}
+
+tile{
+  layer = 1,
+  x = 184,
+  y = 344,
+  width = 8,
+  height = 16,
+  pattern = 72,
+}
+
+tile{
+  layer = 1,
+  x = 192,
+  y = 344,
+  width = 16,
+  height = 16,
+  pattern = 189,
+}
+
 destination{
   layer = 1,
   x = 440,
   y = 213,
-  name = "from_3F_G",
+  name = "from_3f_g",
   direction = 3,
+}
+
+teletransporter{
+  layer = 1,
+  x = 432,
+  y = 200,
+  width = 16,
+  height = 16,
+  name = "to_3f_g",
+  transition = 1,
+  destination_map = "lighthouse_3f",
+  destination = "from_4f_g",
+}
+
+stairs{
+  layer = 1,
+  x = 432,
+  y = 200,
+  name = "stairs",
+  direction = 1,
+  subtype = "1",
+}
+
+destination{
+  layer = 1,
+  x = 200,
+  y = 357,
+  name = "from_boss_h",
+  direction = 3,
+}
+
+stairs{
+  layer = 1,
+  x = 192,
+  y = 344,
+  name = "stairs_2",
+  direction = 1,
+  subtype = "0",
 }
 
 tile{
@@ -1995,5 +2060,23 @@ tile{
   width = 16,
   height = 16,
   pattern = 278,
+}
+
+tile{
+  layer = 2,
+  x = 184,
+  y = 336,
+  width = 32,
+  height = 8,
+  pattern = 429,
+}
+
+tile{
+  layer = 2,
+  x = 192,
+  y = 336,
+  width = 16,
+  height = 8,
+  pattern = 433,
 }
 

@@ -1543,7 +1543,7 @@ destination{
   layer = 1,
   x = 480,
   y = 277,
-  name = "from_1f_A",
+  name = "from_1f_a",
   direction = 3,
 }
 
@@ -1556,7 +1556,7 @@ teletransporter{
   name = "to_1f_A",
   transition = 1,
   destination_map = "lighthouse_1f",
-  destination = "from_b1_A",
+  destination = "from_b1_a",
 }
 
 stairs{

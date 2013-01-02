@@ -6,6 +6,7 @@ properties{
   world = "lighthouse",
   floor = 0,
   tileset = "lighthouse",
+  music = "eagle_tower",
 }
 
 tile{
@@ -5783,7 +5784,7 @@ destination{
   layer = 1,
   x = 800,
   y = 517,
-  name = "from_b1_A",
+  name = "from_b1_a",
   direction = 3,
 }
 
@@ -5796,7 +5797,7 @@ teletransporter{
   name = "to_b1_A",
   transition = 1,
   destination_map = "lighthouse_b1",
-  destination = "from_1f_A",
+  destination = "from_1f_a",
 }
 
 stairs{
@@ -5848,7 +5849,7 @@ destination{
   layer = 1,
   x = 480,
   y = 517,
-  name = "from_2F_B",
+  name = "from_2f_b",
   direction = 3,
 }
 
@@ -5861,7 +5862,7 @@ teletransporter{
   name = "to_2F_B",
   transition = 1,
   destination_map = "lighthouse_2f",
-  destination = "from_1F_B",
+  destination = "from_1f_b",
 }
 
 stairs{
@@ -6092,6 +6093,64 @@ door{
   y = 440,
   name = "door_9",
   direction = 3,
+  subtype = "0",
+}
+
+destination{
+  layer = 1,
+  x = 480,
+  y = 37,
+  name = "from_2f_c",
+  direction = 3,
+}
+
+destination{
+  layer = 1,
+  x = 712,
+  y = 277,
+  name = "from_2f_d",
+  direction = 3,
+}
+
+teletransporter{
+  layer = 1,
+  x = 472,
+  y = 24,
+  width = 16,
+  height = 16,
+  name = "teletransporter",
+  transition = 1,
+  destination_map = "lighthouse_2f",
+  destination = "from_1f_c",
+}
+
+stairs{
+  layer = 1,
+  x = 472,
+  y = 24,
+  name = "stairs_6",
+  direction = 1,
+  subtype = "0",
+}
+
+teletransporter{
+  layer = 1,
+  x = 704,
+  y = 264,
+  width = 16,
+  height = 16,
+  name = "teletransporter_2",
+  transition = 1,
+  destination_map = "lighthouse_2f",
+  destination = "from_1f_d",
+}
+
+stairs{
+  layer = 1,
+  x = 704,
+  y = 264,
+  name = "stairs_7",
+  direction = 1,
   subtype = "0",
 }
 

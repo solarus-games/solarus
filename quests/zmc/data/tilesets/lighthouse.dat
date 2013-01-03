@@ -3625,3 +3625,13 @@ tile_pattern{
   height = 16,
 }
 
+tile_pattern{
+  id = 633,
+  ground = "traversable",
+  default_layer = 1,
+  x = 48,
+  y = 376,
+  width = 48,
+  height = 48,
+}
+

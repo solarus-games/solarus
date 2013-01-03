@@ -11,6 +11,15 @@ properties{
 
 tile{
   layer = 0,
+  x = 64,
+  y = 304,
+  width = 512,
+  height = 352,
+  pattern = 532,
+}
+
+tile{
+  layer = 0,
   x = 712,
   y = 72,
   width = 176,
@@ -513,6 +522,60 @@ tile{
   pattern = 583,
 }
 
+tile{
+  layer = 0,
+  x = 96,
+  y = 304,
+  width = 480,
+  height = 8,
+  pattern = 311,
+}
+
+tile{
+  layer = 0,
+  x = 64,
+  y = 336,
+  width = 8,
+  height = 288,
+  pattern = 313,
+}
+
+tile{
+  layer = 0,
+  x = 96,
+  y = 648,
+  width = 480,
+  height = 8,
+  pattern = 312,
+}
+
+tile{
+  layer = 0,
+  x = 568,
+  y = 312,
+  width = 8,
+  height = 336,
+  pattern = 314,
+}
+
+tile{
+  layer = 0,
+  x = 568,
+  y = 648,
+  width = 8,
+  height = 8,
+  pattern = 309,
+}
+
+tile{
+  layer = 0,
+  x = 568,
+  y = 304,
+  width = 8,
+  height = 8,
+  pattern = 308,
+}
+
 stairs{
   layer = 0,
   x = 792,
@@ -522,14 +585,13 @@ stairs{
   subtype = "4",
 }
 
-switch{
-  layer = 0,
-  x = 320,
-  y = 472,
-  name = "switch",
-  subtype = "3",
-  needs_block = false,
-  inactivate_when_leaving = false,
+tile{
+  layer = 1,
+  x = 368,
+  y = 48,
+  width = 224,
+  height = 144,
+  pattern = 522,
 }
 
 tile{
@@ -1088,15 +1150,6 @@ tile{
   width = 8,
   height = 144,
   pattern = 238,
-}
-
-tile{
-  layer = 1,
-  x = 368,
-  y = 48,
-  width = 224,
-  height = 144,
-  pattern = 522,
 }
 
 tile{
@@ -3806,6 +3859,69 @@ tile{
   width = 32,
   height = 32,
   pattern = 323,
+}
+
+tile{
+  layer = 1,
+  x = 456,
+  y = 280,
+  width = 48,
+  height = 400,
+  pattern = 523,
+}
+
+tile{
+  layer = 1,
+  x = 488,
+  y = 344,
+  width = 112,
+  height = 32,
+  pattern = 523,
+}
+
+tile{
+  layer = 1,
+  x = 504,
+  y = 584,
+  width = 96,
+  height = 32,
+  pattern = 523,
+}
+
+tile{
+  layer = 1,
+  x = 456,
+  y = 280,
+  width = 48,
+  height = 8,
+  pattern = 179,
+}
+
+tile{
+  layer = 1,
+  x = 592,
+  y = 344,
+  width = 8,
+  height = 32,
+  pattern = 238,
+}
+
+tile{
+  layer = 1,
+  x = 592,
+  y = 584,
+  width = 8,
+  height = 32,
+  pattern = 238,
+}
+
+tile{
+  layer = 1,
+  x = 456,
+  y = 672,
+  width = 48,
+  height = 8,
+  pattern = 236,
 }
 
 door{

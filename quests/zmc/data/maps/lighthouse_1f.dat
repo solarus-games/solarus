@@ -1980,6 +1980,15 @@ npc{
   behavior = "item#lamp",
 }
 
+stairs{
+  layer = 0,
+  x = 832,
+  y = 352,
+  name = "stairs_8",
+  direction = 2,
+  subtype = "4",
+}
+
 tile{
   layer = 1,
   x = 1000,
@@ -5826,25 +5835,6 @@ destructible{
   subtype = "pot",
 }
 
-door{
-  layer = 1,
-  x = 816,
-  y = 504,
-  name = "torch_door",
-  direction = 1,
-  subtype = "0",
-}
-
-door{
-  layer = 1,
-  x = 496,
-  y = 504,
-  name = "door",
-  direction = 1,
-  subtype = "1",
-  savegame_variable = "locked_door_A",
-}
-
 destination{
   layer = 1,
   x = 480,
@@ -6152,6 +6142,51 @@ stairs{
   name = "stairs_7",
   direction = 1,
   subtype = "0",
+}
+
+door{
+  layer = 1,
+  x = 464,
+  y = 504,
+  name = "door",
+  direction = 1,
+  subtype = "1",
+  savegame_variable = "locked_door_A",
+}
+
+door{
+  layer = 1,
+  x = 784,
+  y = 504,
+  name = "torch_door",
+  direction = 1,
+  subtype = "0",
+}
+
+wall{
+  layer = 1,
+  x = 824,
+  y = 344,
+  width = 8,
+  height = 8,
+  name = "wall_7",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
+}
+
+wall{
+  layer = 1,
+  x = 824,
+  y = 368,
+  width = 8,
+  height = 8,
+  name = "wall_8",
+  stops_hero = true,
+  stops_enemies = true,
+  stops_npcs = true,
+  stops_blocks = true,
 }
 
 tile{

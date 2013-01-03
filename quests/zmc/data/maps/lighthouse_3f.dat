@@ -3924,6 +3924,33 @@ tile{
   pattern = 236,
 }
 
+tile{
+  layer = 1,
+  x = 616,
+  y = 128,
+  width = 48,
+  height = 16,
+  pattern = 522,
+}
+
+tile{
+  layer = 1,
+  x = 616,
+  y = 120,
+  width = 48,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 1,
+  x = 616,
+  y = 144,
+  width = 48,
+  height = 8,
+  pattern = 70,
+}
+
 door{
   layer = 1,
   x = 752,

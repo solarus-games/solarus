@@ -711,6 +711,60 @@ tile{
   pattern = 2,
 }
 
+tile{
+  layer = 0,
+  x = 136,
+  y = 424,
+  width = 48,
+  height = 8,
+  pattern = 247,
+}
+
+tile{
+  layer = 0,
+  x = 136,
+  y = 448,
+  width = 16,
+  height = 8,
+  pattern = 249,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 448,
+  width = 16,
+  height = 8,
+  pattern = 249,
+}
+
+tile{
+  layer = 0,
+  x = 136,
+  y = 504,
+  width = 16,
+  height = 8,
+  pattern = 247,
+}
+
+tile{
+  layer = 0,
+  x = 168,
+  y = 504,
+  width = 16,
+  height = 8,
+  pattern = 247,
+}
+
+tile{
+  layer = 0,
+  x = 136,
+  y = 528,
+  width = 48,
+  height = 8,
+  pattern = 249,
+}
+
 destructible{
   layer = 0,
   x = 1120,
@@ -764,6 +818,42 @@ stairs{
   name = "stairs_7",
   direction = 2,
   subtype = "4",
+}
+
+teletransporter{
+  layer = 0,
+  x = 136,
+  y = 424,
+  width = 48,
+  height = 32,
+  name = "teletransporter_2",
+  transition = 1,
+  destination_map = "lighthouse_1f",
+  destination = "_same",
+}
+
+teletransporter{
+  layer = 0,
+  x = 152,
+  y = 456,
+  width = 16,
+  height = 48,
+  name = "teletransporter_4",
+  transition = 1,
+  destination_map = "lighthouse_1f",
+  destination = "_same",
+}
+
+teletransporter{
+  layer = 0,
+  x = 136,
+  y = 504,
+  width = 48,
+  height = 32,
+  name = "teletransporter_3",
+  transition = 1,
+  destination_map = "lighthouse_1f",
+  destination = "_same",
 }
 
 tile{
@@ -903,15 +993,6 @@ tile{
 
 tile{
   layer = 1,
-  x = 928,
-  y = 616,
-  width = 48,
-  height = 8,
-  pattern = 70,
-}
-
-tile{
-  layer = 1,
   x = 904,
   y = 536,
   width = 16,
@@ -980,15 +1061,6 @@ tile{
   width = 8,
   height = 112,
   pattern = 238,
-}
-
-tile{
-  layer = 1,
-  x = 936,
-  y = 624,
-  width = 48,
-  height = 16,
-  pattern = 522,
 }
 
 tile{
@@ -3549,15 +3621,6 @@ tile{
 
 tile{
   layer = 1,
-  x = 936,
-  y = 352,
-  width = 48,
-  height = 16,
-  pattern = 522,
-}
-
-tile{
-  layer = 1,
   x = 616,
   y = 112,
   width = 48,
@@ -3578,15 +3641,6 @@ tile{
   layer = 1,
   x = 792,
   y = 696,
-  width = 16,
-  height = 48,
-  pattern = 522,
-}
-
-tile{
-  layer = 1,
-  x = 1112,
-  y = 456,
   width = 16,
   height = 48,
   pattern = 522,
@@ -4062,60 +4116,6 @@ tile{
 
 tile{
   layer = 1,
-  x = 136,
-  y = 504,
-  width = 16,
-  height = 8,
-  pattern = 247,
-}
-
-tile{
-  layer = 1,
-  x = 168,
-  y = 504,
-  width = 16,
-  height = 8,
-  pattern = 247,
-}
-
-tile{
-  layer = 1,
-  x = 136,
-  y = 528,
-  width = 48,
-  height = 8,
-  pattern = 249,
-}
-
-tile{
-  layer = 1,
-  x = 136,
-  y = 424,
-  width = 48,
-  height = 8,
-  pattern = 247,
-}
-
-tile{
-  layer = 1,
-  x = 136,
-  y = 448,
-  width = 16,
-  height = 8,
-  pattern = 249,
-}
-
-tile{
-  layer = 1,
-  x = 168,
-  y = 448,
-  width = 16,
-  height = 8,
-  pattern = 249,
-}
-
-tile{
-  layer = 1,
   x = 296,
   y = 592,
   width = 48,
@@ -4517,15 +4517,6 @@ tile{
   width = 8,
   height = 48,
   pattern = 71,
-}
-
-tile{
-  layer = 1,
-  x = 936,
-  y = 640,
-  width = 48,
-  height = 8,
-  pattern = 70,
 }
 
 tile{
@@ -5932,6 +5923,51 @@ tile{
   pattern = 519,
 }
 
+tile{
+  layer = 1,
+  x = 936,
+  y = 624,
+  width = 48,
+  height = 16,
+  pattern = 522,
+}
+
+tile{
+  layer = 1,
+  x = 936,
+  y = 640,
+  width = 48,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 1,
+  x = 936,
+  y = 616,
+  width = 48,
+  height = 8,
+  pattern = 70,
+}
+
+tile{
+  layer = 1,
+  x = 1112,
+  y = 456,
+  width = 16,
+  height = 48,
+  pattern = 522,
+}
+
+tile{
+  layer = 1,
+  x = 936,
+  y = 352,
+  width = 48,
+  height = 16,
+  pattern = 522,
+}
+
 destination{
   layer = 1,
   x = 480,
@@ -6356,42 +6392,6 @@ door{
   direction = 2,
   subtype = "1",
   savegame_variable = "locked_door_C",
-}
-
-teletransporter{
-  layer = 1,
-  x = 136,
-  y = 424,
-  width = 48,
-  height = 32,
-  name = "teletransporter_2",
-  transition = 1,
-  destination_map = "lighthouse_1f",
-  destination = "_same",
-}
-
-teletransporter{
-  layer = 1,
-  x = 136,
-  y = 504,
-  width = 48,
-  height = 32,
-  name = "teletransporter_3",
-  transition = 1,
-  destination_map = "lighthouse_1f",
-  destination = "_same",
-}
-
-teletransporter{
-  layer = 1,
-  x = 152,
-  y = 456,
-  width = 16,
-  height = 48,
-  name = "teletransporter_4",
-  transition = 1,
-  destination_map = "lighthouse_1f",
-  destination = "_same",
 }
 
 teletransporter{

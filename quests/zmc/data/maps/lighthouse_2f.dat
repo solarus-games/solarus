@@ -703,6 +703,52 @@ tile{
 }
 
 tile{
+  layer = 0,
+  x = 1080,
+  y = 640,
+  width = 80,
+  height = 16,
+  pattern = 2,
+}
+
+destructible{
+  layer = 0,
+  x = 1120,
+  y = 653,
+  subtype = "pot",
+  treasure_name = "small_key",
+  treasure_variant = 1,
+}
+
+destructible{
+  layer = 0,
+  x = 1104,
+  y = 653,
+  subtype = "pot",
+}
+
+destructible{
+  layer = 0,
+  x = 1088,
+  y = 653,
+  subtype = "pot",
+}
+
+destructible{
+  layer = 0,
+  x = 1136,
+  y = 653,
+  subtype = "pot",
+}
+
+destructible{
+  layer = 0,
+  x = 1152,
+  y = 653,
+  subtype = "pot",
+}
+
+tile{
   layer = 1,
   x = 1008,
   y = 288,
@@ -6274,6 +6320,26 @@ stairs{
   subtype = "0",
 }
 
+door{
+  layer = 1,
+  x = 600,
+  y = 104,
+  name = "door_9",
+  direction = 0,
+  subtype = "1",
+  savegame_variable = "locked_door_C",
+}
+
+door{
+  layer = 1,
+  x = 664,
+  y = 104,
+  name = "door_10",
+  direction = 2,
+  subtype = "1",
+  savegame_variable = "locked_door_C",
+}
+
 tile{
   layer = 2,
   x = 80,
@@ -7356,24 +7422,6 @@ tile{
 
 tile{
   layer = 2,
-  x = 616,
-  y = 104,
-  width = 8,
-  height = 32,
-  pattern = 163,
-}
-
-tile{
-  layer = 2,
-  x = 656,
-  y = 104,
-  width = 8,
-  height = 32,
-  pattern = 162,
-}
-
-tile{
-  layer = 2,
   x = 544,
   y = 16,
   width = 16,
@@ -7397,5 +7445,23 @@ tile{
   width = 8,
   height = 32,
   pattern = 352,
+}
+
+tile{
+  layer = 2,
+  x = 656,
+  y = 104,
+  width = 8,
+  height = 32,
+  pattern = 352,
+}
+
+tile{
+  layer = 2,
+  x = 616,
+  y = 104,
+  width = 8,
+  height = 32,
+  pattern = 353,
 }
 

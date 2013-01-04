@@ -119,7 +119,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
     set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_SYSROOT}.sdk" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
     if(SOLARUS_SYSROOT VERSION_LESS 10.6)
       add_definitions(-DSOLARUS_DONT_USE_OSX_SANDBOX) 
-     endif()
+    endif()
   endif()
 
   # Deployment version
@@ -137,7 +137,11 @@ if(DEBUG_KEYS)
   add_definitions(-DSOLARUS_DEBUG_KEYS)
 endif()
 
-set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(DEFAULT_QUEST "../Resources" CACHE STRING "CFBundle default quest directory")
+else()
+  set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
+endif()
 if(DEFAULT_QUEST)
   add_definitions(-DSOLARUS_DEFAULT_QUEST=\"${DEFAULT_QUEST}\")
 endif()

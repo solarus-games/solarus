@@ -38,21 +38,39 @@
 #endif
 
 /**
+ * @def SOLARUS_USE_OSX_INTERFACE
+ * @brief Forces using Apple's API on OSX system.
+ */
+#ifndef SOLARUS_USE_OSX_INTERFACE
+#  if defined(SOLARUS_OS_MACOSX)
+#    define SOLARUS_USE_OSX_INTERFACE 1
+#  endif
+#endif
+
+/**
  * @def SOLARUS_DEFAULT_QUEST
  * @brief Path of the quest to run is none is specified at runtime.
  */
 #ifndef SOLARUS_DEFAULT_QUEST
 // if no default quest was specified at compilation time,
-// use the current directory
-#  define SOLARUS_DEFAULT_QUEST "."
+// use the current directory, or the resource bundle directory on OSX
+#  if defined(SOLARUS_OS_MACOSX)
+#    define SOLARUS_DEFAULT_QUEST "../Resources"
+#  else
+#    define SOLARUS_DEFAULT_QUEST "."
+#  endif
 #endif
 
 /**
  * @def SOLARUS_WRITE_DIR
- * @brief Where savegames are stored, relative to the user's home directory.
+ * @brief Where savegames are stored, relative to the user base write directory.
  */
 #ifndef SOLARUS_WRITE_DIR
-#  define SOLARUS_WRITE_DIR ".solarus"
+#  if defined(SOLARUS_OS_MACOSX)
+#    define SOLARUS_WRITE_DIR "Solarus"
+#  else
+#    define SOLARUS_WRITE_DIR ".solarus"
+#  endif
 #endif
 
 // Game size.
@@ -112,16 +130,6 @@
 #    define SOLARUS_SCREEN_FORCE_MODE 5
 #  else
 #    define SOLARUS_SCREEN_FORCE_MODE -1
-#  endif
-#endif
-
-/**
- * @def SOLARUS_USE_OSX_INTERFACE
- * @brief Forces using Apple's API on OSX system.
- */
-#ifndef SOLARUS_USE_OSX_INTERFACE
-#  if defined(SOLARUS_OS_MACOSX)
-#    define SOLARUS_USE_OSX_INTERFACE 1
 #  endif
 #endif
 

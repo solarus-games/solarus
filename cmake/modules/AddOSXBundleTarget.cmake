@@ -1,6 +1,6 @@
 ####
 #
-# This CMakeLists can be included inside the main CMakeList.txt to add a
+# This module can be included inside the main CMakeList.txt to add a
 # target which generate the CFBundle when building the engine. 
 # The engine is build from ${main_source_file} file and solarus_static target. 
 # The quest, icon and an info.plist template file can be added to the project.
@@ -128,12 +128,7 @@ set_target_properties(${SOLARUS_OSX_BUNDLE} PROPERTIES
 	INSTALL_NAME_DIR             ${SOLARUS_OSX_RPATH}	
 )
 
-# CFBundle default quest directory.
-if(NOT DEFAULT_QUEST)
-  set(DEFAULT_QUEST "../Resources" CACHE STRING "Default quest directory")
-endif()
-
 # install
 install(PROGRAMS                     ${SOLARUS_OSX_BUNDLE}
-	BUNDLE DESTINATION           share/solarus/
+  BUNDLE DESTINATION                 share/solarus/
 )

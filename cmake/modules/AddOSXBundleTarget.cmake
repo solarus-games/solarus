@@ -35,6 +35,9 @@ endif()
 if(NOT SOLARUS_OSX_BUNDLE_QUEST)
   message(STATUS "Creating generic bundle. You should add a quest later")
 endif()
+if(CMAKE_VERSION VERSION_LESS 2.8.11) 
+  message(WARNING ".framework embed library will not be correctly copied with the Makefile Generator. See http://public.kitware.com/Bug/view.php?id=13784")
+endif()
 
 # Default files if not specified
 if(NOT SOLARUS_OSX_BUNDLE_INFOPLIST)
@@ -51,9 +54,6 @@ endif()
 string(REPLACE "-framework Cocoa" "" SDL_FRAMEWORK "${SDL_LIBRARY}") 
 
 # Specify Bundle files
-if(CMAKE_VERSION VERSION_LESS 2.8.11) 
-  message(WARNING ".framework embed library will not be correctly copied with the Makefile Generator. See http://public.kitware.com/Bug/view.php?id=13784")
-endif()
 add_executable(${SOLARUS_OSX_BUNDLE} MACOSX_BUNDLE
 		${main_source_file}
 		${SOLARUS_OSX_BUNDLE_QUEST}
@@ -134,5 +134,5 @@ set_target_properties(${SOLARUS_OSX_BUNDLE} PROPERTIES
 
 # install
 install(PROGRAMS                     ${SOLARUS_OSX_BUNDLE}
-  BUNDLE DESTINATION                 share/solarus/
+  BUNDLE DESTINATION                 /Applications
 )

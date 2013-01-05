@@ -148,7 +148,7 @@ const Rectangle Surface::get_size() const {
  *
  * Pixels in that color will not be drawn.
  *
- * @param color The transparency color.
+ * @return The transparency color.
  */
 Color Surface::get_transparency_color() {
 

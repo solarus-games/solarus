@@ -102,7 +102,7 @@ bool Timer::is_suspended_with_map() {
 
 /**
  * @brief Sets whether this timer should be suspended when the map is suspended.
- * @param suspend_with_game true to suspend this timer with the map.
+ * @param suspended_with_map true to suspend this timer with the map.
  */
 void Timer::set_suspended_with_map(bool suspended_with_map) {
   this->suspended_with_map = suspended_with_map;

@@ -26,8 +26,7 @@
 /**
  * @brief Represents the game currently running.
  *
- * The game shows the current map and displays all game elements:
- * the map entities, the HUD, the pause menu, the dialog box, etc.
+ * The game shows the current map and handles all game elements.
  */
 class Game {
 
@@ -116,9 +115,6 @@ class Game {
     bool is_playing_transition();
     bool is_showing_gameover();
     bool is_suspended(); // true if at least one of the three functions above returns true
-
-    // HUD
-    void set_hud_enabled(bool hud_enabled);
 
     // pause
     bool can_pause();

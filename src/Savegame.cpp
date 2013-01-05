@@ -387,7 +387,7 @@ const std::string& Savegame::get_string(const std::string& key) {
 /**
  * @brief Sets a string value saved.
  * @param key Name of the value to set.
- * @return The string value to associate with this key.
+ * @param value The string value to associate with this key.
  */
 void Savegame::set_string(const std::string& key, const std::string& value) {
 
@@ -439,7 +439,7 @@ int Savegame::get_integer(const std::string& key) {
 /**
  * @brief Sets an integer value saved.
  * @param key Name of the value to set.
- * @return The integer value to associate with this key.
+ * @param value The integer value to associate with this key.
  */
 void Savegame::set_integer(const std::string& key, int value) {
 
@@ -491,7 +491,7 @@ bool Savegame::get_boolean(const std::string& key) {
 /**
  * @brief Sets a boolean value saved.
  * @param key Name of the value to set.
- * @return The boolean value to associate with this key.
+ * @param value The boolean value to associate with this key.
  */
 void Savegame::set_boolean(const std::string& key, bool value) {
 

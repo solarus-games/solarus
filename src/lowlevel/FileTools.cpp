@@ -408,7 +408,8 @@ const std::string& FileTools::get_solarus_write_dir() {
  * You normally don't need to change this, it should have been set correctly
  * at compilation time to a value that depends on the target system.
  *
- * @returns The directory where the engine can write files, relative to the base write directory.
+ * @param solarus_write_dir The directory where the engine can write files,
+ * relative to the base write directory.
  */
 void FileTools::set_solarus_write_dir(const std::string& solarus_write_dir) {
 
@@ -457,7 +458,8 @@ const std::string& FileTools::get_quest_write_dir() {
  * This directory should typically be named like your quest, to be sure other
  * quests will not interfere.
  *
- * @return The quest write directory, relative to the Solarus write directory.
+ * @param quest_write_dir The quest write directory, relative to the Solarus
+ * write directory.
  */
 void FileTools::set_quest_write_dir(const std::string& quest_write_dir) {
 

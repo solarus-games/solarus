@@ -545,7 +545,7 @@ InputEvent::KeyboardKey GameCommands::get_keyboard_binding(Command command) {
  * (The old command gets the previous key of the new command.)
  *
  * @param command A game command.
- * @param keyboard_key The keyboard key to map to this game command, or InputEvent::KEY_NONE
+ * @param key The keyboard key to map to this game command, or InputEvent::KEY_NONE
  * to unmap the command.
  */
 void GameCommands::set_keyboard_binding(Command command, InputEvent::KeyboardKey key) {

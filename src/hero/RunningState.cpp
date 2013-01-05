@@ -29,8 +29,8 @@
 
 /**
  * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param key the game command that triggers running
+ * @param hero The hero controlled by this state.
+ * @param command The game command that triggers running.
  */
 Hero::RunningState::RunningState(Hero& hero, GameCommands::Command command):
   State(hero),

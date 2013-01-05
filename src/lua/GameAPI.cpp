@@ -1127,6 +1127,7 @@ bool LuaContext::game_on_input(Game& game, InputEvent& event) {
 /**
  * @brief Calls the on_command_pressed() method of a Lua game.
  * @param game A game.
+ * @param command The command pressed.
  * @return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command command) {
@@ -1144,6 +1145,7 @@ bool LuaContext::game_on_command_pressed(Game& game, GameCommands::Command comma
 /**
  * @brief Calls the on_command_released() method of a Lua game.
  * @param game A game.
+ * @param command The command released.
  * @return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::game_on_command_released(Game& game, GameCommands::Command command) {

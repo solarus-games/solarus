@@ -120,7 +120,7 @@ const std::string& Map::get_world() {
 
 /**
  * @brief Returns the world where this map is.
- * @return The world name.
+ * @param world The world name.
  */
 void Map::set_world(const std::string& world) {
   this->world = world;

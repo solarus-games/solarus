@@ -32,7 +32,7 @@ class Savegame: public ExportableToLua {
 
   public:
 
-    static const int SAVEGAME_VERSION;
+    static const int SAVEGAME_VERSION;  /**< Version number of the savegame file format. */
 
     // Keys to built-in values saved.
     static const std::string KEY_SAVEGAME_VERSION;

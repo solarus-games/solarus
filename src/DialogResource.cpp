@@ -111,7 +111,7 @@ int DialogResource::l_dialog(lua_State* l) {
       dialog_id = luaL_checkstring(l, -1);
     }
     else if (key == "icon") {
-      int icon = luaL_checkinteger(l, -1);
+      int icon = int(luaL_checkinteger(l, -1));
       dialog.set_icon(icon);
     }
     else if (key == "skip") {

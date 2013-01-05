@@ -261,7 +261,7 @@ void PixelMovement::notify_step_done(int step_index, bool success) {
  * @return the total number of moves in this trajectory
  */
 int PixelMovement::get_length() {
-  return trajectory.size();
+  return int(trajectory.size());
 }
 
 /**

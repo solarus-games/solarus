@@ -13,7 +13,7 @@ local function chest_empty(chest)
   if nb_chests_open == 7 then
     hero:start_treasure("piece_of_heart", 1, 197)
   else
-    hero:start_treasure("rupee", rupee_reward_variants[nb_chests_open], -1)
+    hero:start_treasure("rupee", rupee_reward_variants[nb_chests_open])
   end
 end
 

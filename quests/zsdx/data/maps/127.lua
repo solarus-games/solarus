@@ -13,7 +13,7 @@ function sword_chest:on_empty()
     -- already got sword 2
     variant = 3
   end
-  hero:start_treasure("sword", variant, -1)
+  hero:start_treasure("sword", variant)
 end
 
 function hero:on_obtaining_treasure(item_name, variant, savegame_variable)

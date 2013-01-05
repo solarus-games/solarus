@@ -75,34 +75,30 @@ public class TreasureChooser extends JPanel {
 
             public void actionPerformed(ActionEvent arg0) {
 
-	        String itemName = itemNameField.getSelectedId();
-		if (itemName.isEmpty()) {
-		    treasure.setItemName(null);
-		    variantField.setEnabled(false);
-		    saveField.setEnabled(false);
-		    savegameVariableField.setEnabled(false);
-		}
-		else {
-		    treasure.setItemName(itemNameField.getSelectedId());
-		    if (!variantField.isEnabled()) {
-			variantField.setValue(1);
-		    }
-		    variantField.setEnabled(true);
-		    saveField.setEnabled(true);
-		    savegameVariableField.setEnabled(true);
-		}
+                String itemName = itemNameField.getSelectedId();
+                if (itemName.isEmpty()) {
+                    treasure.setItemName(null);
+                    variantField.setEnabled(false);
+                }
+                else {
+                    treasure.setItemName(itemNameField.getSelectedId());
+                    if (!variantField.isEnabled()) {
+                        variantField.setValue(1);
+                    }
+                    variantField.setEnabled(true);
+                }
             }
         });
 
         variantField.addChangeListener(new ChangeListener() {
 
             public void stateChanged(ChangeEvent e) {
-	        if (variantField.isEnabled()) {
-		    treasure.setVariant(variantField.getNumber());
-		}
-		else {
-		    treasure.setVariant(null);
-		}
+                if (variantField.isEnabled()) {
+                    treasure.setVariant(variantField.getNumber());
+                }
+                else {
+                    treasure.setVariant(null);
+                }
             }
         });
 
@@ -170,28 +166,20 @@ public class TreasureChooser extends JPanel {
                 variantField.setNumber(1);
             }
             else {
-	        Integer variant = treasure.getVariant();
-		variantField.setNumber(variant);
+                Integer variant = treasure.getVariant();
+                variantField.setNumber(variant);
             }
         }
 
         // Savegame variable.
-        if (treasure.getItemName() == null
-                || treasure.getVariant() == null) {
-            saveField.setEnabled(false);
+        if (treasure.getSavegameVariable() == null) {
+            saveField.setSelected(false);
             savegameVariableField.setEnabled(false);
         }
         else {
-            saveField.setEnabled(true);
-            if (treasure.getSavegameVariable() == null) {
-                saveField.setSelected(false);
-                savegameVariableField.setEnabled(false);
-            }
-            else {
-                saveField.setSelected(true);
-                savegameVariableField.setEnabled(true);
-                savegameVariableField.setText(treasure.getSavegameVariable());
-            }
+            saveField.setSelected(true);
+            savegameVariableField.setEnabled(true);
+            savegameVariableField.setText(treasure.getSavegameVariable());
         }
     }
 }

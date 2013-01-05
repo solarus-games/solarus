@@ -143,7 +143,6 @@ void SavegameConverterV1::convert_to_v2(Savegame& savegame_v2) {
   savegame_v2.set_integer(Savegame::KEY_ABILITY_SWIM, get_integer(ABILITY_SWIM));
   savegame_v2.set_integer(Savegame::KEY_ABILITY_SWORD_KNOWLEDGE, get_integer(ABILITY_SWORD_KNOWLEDGE));
   savegame_v2.set_integer(Savegame::KEY_ABILITY_DETECT_WEAK_WALLS, get_integer(ABILITY_DETECT_WEAK_WALLS));
-  savegame_v2.set_integer(Savegame::KEY_ABILITY_SEE_OUTSIDE_WORLD_MINIMAP, get_integer(ABILITY_SEE_OUTSIDE_WORLD_MINIMAP));
   savegame_v2.set_integer(Savegame::KEY_ABILITY_GET_BACK_FROM_DEATH, get_integer(ABILITY_GET_BACK_FROM_DEATH));
   savegame_v2.set_integer(Savegame::KEY_ABILITY_RUN, get_integer(ABILITY_RUN));
 

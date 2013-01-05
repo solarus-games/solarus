@@ -62,7 +62,6 @@ const std::string Savegame::KEY_ABILITY_LIFT = "_ability_lift";
 const std::string Savegame::KEY_ABILITY_SWIM = "_ability_swim";
 const std::string Savegame::KEY_ABILITY_SWORD_KNOWLEDGE = "_ability_sword_knowledge";
 const std::string Savegame::KEY_ABILITY_DETECT_WEAK_WALLS = "_ability_detect_weak_walls";
-const std::string Savegame::KEY_ABILITY_SEE_OUTSIDE_WORLD_MINIMAP = "_ability_see_outside_world_minimap";
 const std::string Savegame::KEY_ABILITY_GET_BACK_FROM_DEATH = "_ability_get_back_from_death";
 const std::string Savegame::KEY_ABILITY_RUN = "_ability_run";
 

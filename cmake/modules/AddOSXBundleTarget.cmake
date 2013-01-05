@@ -128,15 +128,11 @@ set_target_properties(${SOLARUS_OSX_BUNDLE} PROPERTIES
 	INSTALL_NAME_DIR             ${SOLARUS_OSX_RPATH}	
 )
 
-# Only use the default path definition for the main executable É
+# Use the bundle's resources path for the bundle's executable
 if(DEFAULT_QUEST)
   remove_definitions(-DSOLARUS_DEFAULT_QUEST=\"${DEFAULT_QUEST}\")
-  set_target_properties(${EXECUTABLE_NAME} PROPERTIES 
-	COMPILE_DEFINITIONS -DSOLARUS_DEFAULT_QUEST=\"${DEFAULT_QUEST}\")
 endif()
-# É and use the bundle's resources path for the bundle's executable
-set_target_properties(${SOLARUS_OSX_BUNDLE} PROPERTIES 
-	COMPILE_DEFINITIONS -DSOLARUS_DEFAULT_QUEST=\"../Resources\")
+add_definitions(-DSOLARUS_DEFAULT_QUEST=\"../Resources\")
 
 # install
 install(PROGRAMS                     ${SOLARUS_OSX_BUNDLE}

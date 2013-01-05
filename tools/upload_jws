@@ -8,9 +8,9 @@ rm tools.tar
 ./compile
 jar cvmf manifest.mf solarus-editor.jar org
 # keytool -genkey -keystore ../solaruskeystore -alias solaruskey
-# jarsigner -keystore ../solaruskeystore ini4j.jar solaruskey
+jarsigner -keystore ../solaruskeystore ini4j.jar solaruskey
 jarsigner -keystore ../solaruskeystore solarus-editor.jar solaruskey
-scp solarus-editor.jar solarus@solarus-engine.org:www/editor/
-# scp ini4j.jar solarus@solarus-engine.org:www/editor/
+scp solarus-editor.jar solarus@solarus-engine.org:www/editor/solarus-0.9.2/ 
+scp ini4j.jar solarus@solarus-engine.org:www/editor/solarus-0.9.2/
 cd ..
 rm -rf export

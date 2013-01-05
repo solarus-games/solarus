@@ -721,7 +721,7 @@ bool Script::notify_script(const std::string& function_name, const char* format,
     }
 
     // call the function
-    int nb_results = strlen(format) - i;
+    int nb_results = int(strlen(format)) - i;
     if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
       Debug::print(StringConcat() << "Error in " << function_name << "(): "
           << lua_tostring(l, -1));

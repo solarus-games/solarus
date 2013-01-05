@@ -400,7 +400,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
 
     // read the encoded sound properties
     vorbis_info* info = ov_info(&file, -1);
-    ALsizei sample_rate = info->rate;
+    ALsizei sample_rate = ALsizei(info->rate);
 
     ALenum format = AL_NONE;
     if (info->channels == 1) {
@@ -447,7 +447,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
 
       // copy the samples into an OpenAL buffer
       alGenBuffers(1, &buffer);
-      alBufferData(buffer, AL_FORMAT_STEREO16, (ALshort*) &samples[0], total_bytes_read, sample_rate);
+      alBufferData(buffer, AL_FORMAT_STEREO16, (ALshort*) &samples[0], ALsizei(total_bytes_read), sample_rate);
       if (alGetError() != AL_NO_ERROR) {
         std::cout << "Cannot copy the sound samples into buffer " << buffer << "\n";
         buffer = AL_NONE;

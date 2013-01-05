@@ -162,7 +162,7 @@ void Dungeon::load() {
  * @return the number of floors
  */
 int Dungeon::get_nb_floors() {
-  return floor_sizes.size();
+  return int(floor_sizes.size());
 }
 
 /**

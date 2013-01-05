@@ -11,11 +11,18 @@ game.dungeons = {
   },
 }
 
+-- Make a redundant mapping: map id -> dungeon index
+game.dungeon_indexes = {}
+for index, dungeon in pairs(game.dungeons) do
+  for _, map_id in ipairs(dungeon.maps) do
+    game.dungeon_indexes[map_id] = index
+  end
+end
+
 -- Returns the index of the current dungeon if any, or nil.
 function game:get_dungeon_index()
-  local world = self:get_map():get_world()
-  local index = tonumber(world:match("^dungeon_([0-9]+)$"))
-  return index
+  local map_id = self:get_map():get_id()
+  return self.dungeon_indexes[map_id]
 end
 
 -- Returns the current dungeon if any, or nil.

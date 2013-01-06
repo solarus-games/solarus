@@ -299,7 +299,7 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
   Debug::check_assertion(buffer != NULL, StringConcat()
       << "Cannot allocate memory to read file " << full_file_name);
 
-  PHYSFS_read(file, *buffer, 1, *size);
+  PHYSFS_read(file, *buffer, 1, PHYSFS_uint32(*size));
   PHYSFS_close(file);
 }
 

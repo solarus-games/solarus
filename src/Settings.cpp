@@ -65,7 +65,7 @@ bool Settings::load(const std::string& file_name) {
   // Sound volume.
   lua_getglobal(l, "sound_volume");
   if (lua_isnumber(l, 1)) {
-    int sound_volume = lua_tointeger(l, 1);
+    int sound_volume = int(lua_tointeger(l, 1));
     Sound::set_volume(sound_volume);
   }
   lua_pop(l, 1);
@@ -73,7 +73,7 @@ bool Settings::load(const std::string& file_name) {
   // Music volume.
   lua_getglobal(l, "music_volume");
   if (lua_isnumber(l, 1)) {
-    int music_volume = lua_tointeger(l, 1);
+    int music_volume = int(lua_tointeger(l, 1));
     Music::set_volume(music_volume);
   }
   lua_pop(l, 1);

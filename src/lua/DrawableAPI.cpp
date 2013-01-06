@@ -94,8 +94,8 @@ int LuaContext::drawable_api_draw(lua_State* l) {
 
   Drawable& drawable = check_drawable(l, 1);
   Surface& dst_surface = check_surface(l, 2);
-  int x = luaL_optinteger(l, 3, 0);
-  int y = luaL_optinteger(l, 4, 0);
+  int x = int(luaL_optinteger(l, 3, 0));
+  int y = int(luaL_optinteger(l, 4, 0));
   drawable.draw(dst_surface, x, y);
 
   return 0;

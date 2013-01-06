@@ -101,6 +101,10 @@ class LuaContext {
     void run_enemy(Enemy& enemy);
 
     // Lua helpers.
+    static int check_integer(lua_State* l, int index);
+    static bool is_color(lua_State* l, int index);
+    static Color check_color(lua_State* l, int index);
+
     static int check_int_field(
         lua_State* l, int table_index, const std::string& key
     );
@@ -816,13 +820,11 @@ class LuaContext {
     static void push_pickable(lua_State* l, Pickable& pickable);
     static void push_enemy(lua_State* l, Enemy& enemy);
 
-    // Getting objects from Lua.
+    // Getting userdata objects from Lua.
     static bool is_userdata(lua_State* l, int index,
         const std::string& module_name);
     static ExportableToLua& check_userdata(lua_State* l, int index,
         const std::string& module_name);
-    static bool is_color(lua_State* l, int index);
-    static Color check_color(lua_State* l, int index);
     static bool is_timer(lua_State* l, int index);
     static Timer& check_timer(lua_State* l, int index);
     static bool is_drawable(lua_State* l, int index);

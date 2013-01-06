@@ -475,7 +475,7 @@ int LuaContext::item_api_has_variant(lua_State* l) {
   EquipmentItem& item = check_item(l, 1);
   int variant = 1;
   if (lua_gettop(l) >= 2) {
-    variant = int(luaL_checkinteger(l, 2));
+    variant = check_integer(l, 2);
   }
 
   lua_pushboolean(l, item.get_variant() >= variant);
@@ -508,7 +508,7 @@ int LuaContext::item_api_get_variant(lua_State* l) {
 int LuaContext::item_api_set_variant(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
-  int variant = int(luaL_checkinteger(l, 2));
+  int variant = check_integer(l, 2);
 
   if (!item.is_saved()) {
     luaL_error(l, (StringConcat()
@@ -529,7 +529,7 @@ int LuaContext::item_api_has_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
   if (lua_gettop(l) >= 2) {
-    int amount = int(luaL_checkinteger(l, 2));
+    int amount = check_integer(l, 2);
     if (!item.has_amount()) {
       luaL_error(l, (StringConcat() <<
           "Item '" << item.get_name() << "' has no amount").c_str());
@@ -568,7 +568,7 @@ int LuaContext::item_api_get_amount(lua_State* l) {
 int LuaContext::item_api_set_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
-  int amount = int(luaL_checkinteger(l, 2));
+  int amount = check_integer(l, 2);
 
   if (!item.has_amount()) {
     luaL_error(l, (StringConcat() <<
@@ -588,7 +588,7 @@ int LuaContext::item_api_set_amount(lua_State* l) {
 int LuaContext::item_api_add_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
-  int amount = int(luaL_checkinteger(l, 2));
+  int amount = check_integer(l, 2);
 
   if (!item.has_amount()) {
     luaL_error(l, (StringConcat() <<
@@ -608,7 +608,7 @@ int LuaContext::item_api_add_amount(lua_State* l) {
 int LuaContext::item_api_remove_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
-  int amount = int(luaL_checkinteger(l, 2));
+  int amount = check_integer(l, 2);
 
   if (!item.has_amount()) {
     luaL_error(l, (StringConcat() <<
@@ -646,7 +646,7 @@ int LuaContext::item_api_get_max_amount(lua_State* l) {
 int LuaContext::item_api_set_max_amount(lua_State* l) {
 
   EquipmentItem& item = check_item(l, 1);
-  int max_amount = int(luaL_checkinteger(l, 2));
+  int max_amount = check_integer(l, 2);
 
   if (!item.has_amount()) {
     luaL_error(l, (StringConcat() <<

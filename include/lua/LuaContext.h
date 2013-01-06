@@ -101,7 +101,6 @@ class LuaContext {
     void run_enemy(Enemy& enemy);
 
     // Lua helpers.
-    static int check_integer(lua_State* l, int index);
     static bool is_color(lua_State* l, int index);
     static Color check_color(lua_State* l, int index);
 

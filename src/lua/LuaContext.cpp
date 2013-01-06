@@ -1166,22 +1166,6 @@ void LuaContext::push_color(lua_State* l, const Color& color) {
 }
 
 /**
- * @brief Checks that the value at the given index is an integer and returns it.
- *
- * This function is equivalent to luaL_checkinteger() except that it converts
- * the result to an int.
- *
- * @param l a Lua state
- * @param index an index in the Lua stack
- * @param module_name name identifying the userdata type
- * @return the userdata at this index
- */
-int LuaContext::check_integer(lua_State* l, int index) {
-
-  return int(luaL_checkinteger(l, index));
-}
-
-/**
  * @brief Returns whether a value is a userdata of a given type.
  * @param l a Lua context
  * @param index an index in the stack
@@ -1263,9 +1247,9 @@ Color LuaContext::check_color(lua_State* l, int index) {
   lua_rawgeti(l, index, 1);
   lua_rawgeti(l, index, 2);
   lua_rawgeti(l, index, 3);
-  Color color(check_integer(l, -3),
-    check_integer(l, -2),
-    check_integer(l, -1));
+  Color color(luaL_checkint(l, -3),
+    luaL_checkint(l, -2),
+    luaL_checkint(l, -1));
   lua_pop(l, 3);
 
   return color;

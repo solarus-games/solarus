@@ -96,8 +96,8 @@ int LuaContext::surface_api_create(lua_State* l) {
   }
   else if (lua_type(l, 1) == LUA_TNUMBER) {
     // create an empty surface with the specified size
-    int width = check_integer(l, 1);
-    int height = check_integer(l, 2);
+    int width = luaL_checkint(l, 1);
+    int height = luaL_checkint(l, 2);
     surface = new Surface(width, height);
   }
   else if (lua_type(l, 1) == LUA_TSTRING) {
@@ -110,10 +110,10 @@ int LuaContext::surface_api_create(lua_State* l) {
   else {
     // create from an existing surface
     Surface& other_surface = check_surface(l, 1);
-    int x = int(luaL_optinteger(l, 2, 0));
-    int y = int(luaL_optinteger(l, 3, 0));
-    int width = int(luaL_optinteger(l, 4, other_surface.get_width()));
-    int height = int(luaL_optinteger(l, 5, other_surface.get_height()));
+    int x = luaL_optint(l, 2, 0);
+    int y = luaL_optint(l, 3, 0);
+    int width = luaL_optint(l, 4, other_surface.get_width());
+    int height = luaL_optint(l, 5, other_surface.get_height());
     surface = new Surface(width, height);
     surface->set_transparency_color(other_surface.get_transparency_color());
     other_surface.draw_region(Rectangle(x, y, width, height), *surface);
@@ -151,10 +151,10 @@ int LuaContext::surface_api_fill_color(lua_State* l) {
   Color color = check_color(l, 2);
 
   if (lua_gettop(l) >= 3) {
-    int x = check_integer(l, 3);
-    int y = check_integer(l, 4);
-    int width = check_integer(l, 5);
-    int height = check_integer(l, 6);
+    int x = luaL_checkint(l, 3);
+    int y = luaL_checkint(l, 4);
+    int width = luaL_checkint(l, 5);
+    int height = luaL_checkint(l, 6);
     Rectangle where(x, y, width, height);
     surface.fill_with_color(color, where);
   }
@@ -202,7 +202,7 @@ int LuaContext::surface_api_set_transparency_color(lua_State* l) {
 int LuaContext::surface_api_set_opacity(lua_State* l) {
 
   Surface& surface = check_surface(l, 1);
-  int opacity = check_integer(l, 2);
+  int opacity = luaL_checkint(l, 2);
 
   surface.set_opacity(opacity);
 

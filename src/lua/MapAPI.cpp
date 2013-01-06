@@ -459,7 +459,7 @@ int LuaContext::map_api_set_dialog_variable(lua_State* l) {
 int LuaContext::map_api_set_dialog_style(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  int style = check_integer(l, 2);
+  int style = luaL_checkint(l, 2);
 
   map.get_game().get_dialog_box().set_style(DialogBox::Style(style));
 
@@ -474,7 +474,7 @@ int LuaContext::map_api_set_dialog_style(lua_State* l) {
 int LuaContext::map_api_set_dialog_position(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  int position = check_integer(l, 2);
+  int position = luaL_checkint(l, 2);
 
   map.get_game().get_dialog_box().set_vertical_position(DialogBox::VerticalPosition(position));
 
@@ -535,7 +535,7 @@ int LuaContext::map_api_get_light(lua_State* l) {
 int LuaContext::map_api_set_light(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  int light = check_integer(l, 2);
+  int light = luaL_checkint(l, 2);
 
   map.set_light(light);
 
@@ -550,17 +550,17 @@ int LuaContext::map_api_set_light(lua_State* l) {
 int LuaContext::map_api_move_camera(lua_State* l) {
 
   Map& map = check_map(l, 1);
-  int x = check_integer(l, 2);
-  int y = check_integer(l, 3);
-  int speed = check_integer(l, 4);
+  int x = luaL_checkint(l, 2);
+  int y = luaL_checkint(l, 3);
+  int speed = luaL_checkint(l, 4);
   luaL_checktype(l, 5, LUA_TFUNCTION);
 
   uint32_t delay_before = 1000;
   uint32_t delay_after = 1000;
   if (lua_gettop(l) >= 6) {
-    delay_before = check_integer(l, 6);
+    delay_before = luaL_checkint(l, 6);
     if (lua_gettop(l) >= 7) {
-      delay_after = check_integer(l, 7);
+      delay_after = luaL_checkint(l, 7);
     }
   }
   lua_settop(l, 5); // let the function on top of the stack
@@ -588,8 +588,8 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
 
   Map& map = check_map(l, 1);
   Sprite& sprite = check_sprite(l, 2);
-  int x = check_integer(l, 3);
-  int y = check_integer(l, 4);
+  int x = luaL_checkint(l, 3);
+  int y = luaL_checkint(l, 4);
 
   map.draw_sprite(sprite, x, y);
 

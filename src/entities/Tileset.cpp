@@ -226,9 +226,9 @@ int Tileset::l_background_color(lua_State* l) {
   lua_rawgeti(l, 1, 1);
   lua_rawgeti(l, 1, 2);
   lua_rawgeti(l, 1, 3);
-  Color color(luaL_checkinteger(l, -3),
-    luaL_checkinteger(l, -2),
-    luaL_checkinteger(l, -1));
+  Color color(int(luaL_checkinteger(l, -3)),
+    int(luaL_checkinteger(l, -2)),
+    int(luaL_checkinteger(l, -1)));
   lua_pop(l, 3);
 
   tileset->background_color = color;
@@ -265,25 +265,25 @@ int Tileset::l_tile_pattern(lua_State* l) {
 
     const std::string& key = luaL_checkstring(l, 2);
     if (key == "id") {
-      id = luaL_checkinteger(l, 3);
+      id = int(luaL_checkinteger(l, 3));
     }
     else if (key == "ground") {
       ground = LuaContext::check_enum<Obstacle>(l, 3, ground_names);
     }
     else if (key == "default_layer") {
-      default_layer = luaL_checkinteger(l, 3);
+      default_layer = int(luaL_checkinteger(l, 3));
     }
     else if (key == "x") {
       if (lua_isnumber(l, 3)) {
         // Single frame.
-        x[0] = luaL_checkinteger(l, 3);
+        x[0] = int(luaL_checkinteger(l, 3));
         i = 1;
       }
       else {
         // Multi-frame.
         lua_pushnil(l);
         while (lua_next(l, 3) != 0 && i < 4) {
-          x[i] = luaL_checkinteger(l, 5);
+          x[i] = int(luaL_checkinteger(l, 5));
           ++i;
           lua_pop(l, 1);
         }
@@ -292,24 +292,24 @@ int Tileset::l_tile_pattern(lua_State* l) {
     else if (key == "y") {
       if (lua_isnumber(l, 3)) {
         // Single frame.
-        y[0] = luaL_checkinteger(l, 3);
+        y[0] = int(luaL_checkinteger(l, 3));
         j = 1;
       }
       else {
         // Multi-frame.
         lua_pushnil(l);
         while (lua_next(l, 3) != 0 && j < 4) {
-          y[j] = luaL_checkinteger(l, 5);
+          y[j] = int(luaL_checkinteger(l, 5));
           ++j;
           lua_pop(l, 1);
         }
       }
     }
     else if (key == "width") {
-      width = luaL_checkinteger(l, 3);
+      width = int(luaL_checkinteger(l, 3));
     }
     else if (key == "height") {
-      height = luaL_checkinteger(l, 3);
+      height = int(luaL_checkinteger(l, 3));
     }
     else if (key == "scrolling") {
       scrolling = luaL_checkstring(l, 3);

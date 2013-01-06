@@ -345,7 +345,7 @@ int LuaContext::check_int_field(
     );
   }
 
-  int value = lua_tointeger(l, -1);
+  int value = int(lua_tointeger(l, -1));
   lua_pop(l, 1);
   return value;
 }
@@ -374,7 +374,7 @@ int LuaContext::opt_int_field(
           luaL_typename(l, -1)).c_str()
       );
     }
-    value = lua_tointeger(l, -1);
+    value = int(lua_tointeger(l, -1));
   }
 
   lua_pop(l, 1);
@@ -1247,9 +1247,9 @@ Color LuaContext::check_color(lua_State* l, int index) {
   lua_rawgeti(l, index, 1);
   lua_rawgeti(l, index, 2);
   lua_rawgeti(l, index, 3);
-  Color color(luaL_checkinteger(l, -3),
-    luaL_checkinteger(l, -2),
-    luaL_checkinteger(l, -1));
+  Color color(int(luaL_checkinteger(l, -3)),
+    int(luaL_checkinteger(l, -2)),
+    int(luaL_checkinteger(l, -1)));
   lua_pop(l, 3);
 
   return color;

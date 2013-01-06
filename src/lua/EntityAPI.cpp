@@ -984,6 +984,12 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
   int variant = luaL_optint(l, 3, 1);
   const std::string& savegame_variable = luaL_optstring(l, 4, "");
 
+  if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
+    luaL_argerror(l, 4, (StringConcat() <<
+        "savegame variable identifier expected, got '" <<
+        savegame_variable << "'").c_str());
+  }
+
   hero.start_treasure(
       Treasure(hero.get_game(), item_name, variant, savegame_variable));
 
@@ -1880,6 +1886,12 @@ int LuaContext::enemy_api_set_treasure(lua_State* l) {
   }
   if (lua_gettop(l) >= 4 && !lua_isnil(l, 4)) {
     savegame_variable = luaL_checkstring(l, 4);
+  }
+
+  if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
+    luaL_argerror(l, 4, (StringConcat() <<
+        "savegame variable identifier expected, got '" <<
+        savegame_variable << "'").c_str());
   }
 
   Treasure treasure(enemy.get_game(), item_name, variant, savegame_variable);

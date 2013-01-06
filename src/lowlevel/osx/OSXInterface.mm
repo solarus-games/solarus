@@ -12,12 +12,11 @@
 const char* getUserApplicationSupportDirectory()
 {
 #ifndef SOLARUS_DONT_USE_OSX_SANDBOX          
-    return [[[[[[NSFileManager defaultManager] 
-                URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] 
-               objectAtIndex:0] 
-              absoluteString] 
-             stringByAppendingString:@"/"]
-            cStringUsingEncoding:NSUnicodeStringEncoding];
+    return [[[[[NSFileManager defaultManager] 
+               URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] 
+              objectAtIndex:0] 
+             path]
+            UTF8String];
 #else
     return "~/Library/Application Support/";
 #endif

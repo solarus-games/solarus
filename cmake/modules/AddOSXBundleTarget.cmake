@@ -71,16 +71,16 @@ add_executable(${SOLARUS_OSX_BUNDLE} MACOSX_BUNDLE
 
 # Regenerate -l flags for the Bundle target
 target_link_libraries(${SOLARUS_OSX_BUNDLE}
-${EXECUTABLE_STATIC_NAME}
-${SDL_LIBRARY}
-${SDLIMAGE_LIBRARY}
-${SDLTTF_LIBRARY}
-${OPENAL_LIBRARY}
-${LUA_LIBRARY}
-${PHYSFS_LIBRARY}
-${VORBISFILE_LIBRARY}
-${OGG_LIBRARY}
-${MODPLUG_LIBRARY}
+		${EXECUTABLE_STATIC_NAME}
+		${SDL_LIBRARY}
+		${SDLIMAGE_LIBRARY}
+		${SDLTTF_LIBRARY}
+		${OPENAL_LIBRARY}
+		${LUA_LIBRARY}
+		${PHYSFS_LIBRARY}
+		${VORBISFILE_LIBRARY}
+		${OGG_LIBRARY}
+		${MODPLUG_LIBRARY}
 )
 
 # Set right properties on copied files
@@ -124,8 +124,8 @@ else()
   set(SOLARUS_OSX_RPATH              "@executable_path/../Frameworks/")
 endif()
 set_target_properties(${SOLARUS_OSX_BUNDLE} PROPERTIES 
-	BUILD_WITH_INSTALL_RPATH     1 
-	INSTALL_NAME_DIR             ${SOLARUS_OSX_RPATH}	
+  BUILD_WITH_INSTALL_RPATH           1 
+  INSTALL_NAME_DIR                   ${SOLARUS_OSX_RPATH}	
 )
 
 # Use the bundle's resources path for the bundle's executable

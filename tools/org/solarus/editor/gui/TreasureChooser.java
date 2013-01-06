@@ -1,12 +1,10 @@
 package org.solarus.editor.gui;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.event.*;
+import javax.swing.text.BadLocationException;
 
 import org.solarus.editor.*;
 
@@ -118,10 +116,32 @@ public class TreasureChooser extends JPanel {
             }
         });
 
-        savegameVariableField.addActionListener(new ActionListener() {
+        savegameVariableField.getDocument().addDocumentListener(new DocumentListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                treasure.setSavegameVariable(savegameVariableField.getText());
+            private void setTreasureSavegameVariable() {
+
+                try {
+                    int length = savegameVariableField.getDocument().getLength();
+                    treasure.setSavegameVariable(savegameVariableField.getDocument().getText(0, length));
+                }
+                catch (BadLocationException ex) {
+                    GuiTools.errorDialog(ex.getMessage());
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                setTreasureSavegameVariable();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                setTreasureSavegameVariable();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                setTreasureSavegameVariable();
             }
         });
     }

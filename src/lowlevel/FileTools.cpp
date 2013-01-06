@@ -299,7 +299,7 @@ void FileTools::data_file_open_buffer(const std::string& file_name, char** buffe
   Debug::check_assertion(buffer != NULL, StringConcat()
       << "Cannot allocate memory to read file " << full_file_name);
 
-  PHYSFS_read(file, *buffer, 1, *size);
+  PHYSFS_read(file, *buffer, 1, PHYSFS_uint32(*size));
   PHYSFS_close(file);
 }
 
@@ -320,7 +320,7 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
       << PHYSFS_getLastError());
  
   // save the memory buffer 
-  if (PHYSFS_write(file, buffer, size, 1) == -1) {
+  if (PHYSFS_write(file, buffer, PHYSFS_uint32(size), 1) == -1) {
     Debug::die(StringConcat() << "Cannot write file '" << file_name
         << "': " << PHYSFS_getLastError());
   }

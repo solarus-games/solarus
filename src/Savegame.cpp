@@ -237,7 +237,7 @@ int Savegame::l_newindex(lua_State* l) {
       break;
 
     case LUA_TNUMBER:
-      savegame->set_integer(key, lua_tointeger(l, 3));
+      savegame->set_integer(key, int(lua_tointeger(l, 3)));
       break;
 
     case LUA_TSTRING:

@@ -157,7 +157,7 @@ int LuaContext::sprite_api_get_direction(lua_State* l) {
 int LuaContext::sprite_api_set_direction(lua_State* l) {
 
   Sprite& sprite = check_sprite(l, 1);
-  int direction = luaL_checkinteger(l, 2);
+  int direction = int(luaL_checkinteger(l, 2));
 
   sprite.set_current_direction(direction);
 
@@ -187,7 +187,7 @@ int LuaContext::sprite_api_set_frame(lua_State* l) {
 
   Sprite& sprite = check_sprite(l, 1);
 
-  int frame = luaL_checkinteger(l, 2);
+  int frame = int(luaL_checkinteger(l, 2));
   sprite.set_current_frame(frame);
 
   return 0;
@@ -216,7 +216,7 @@ int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
 
   Sprite& sprite = check_sprite(l, 1);
 
-  uint32_t delay = luaL_checkinteger(l, 2);
+  uint32_t delay = int(luaL_checkinteger(l, 2));
   sprite.set_frame_delay(delay);
 
   return 0;

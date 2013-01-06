@@ -332,17 +332,15 @@ public class MapPropertiesView extends JPanel implements Observer {
 
                     if (!updating) {
                         try {
-                            final String currentWorld = getText();
+                            final String currentWorld = map.getWorld();
                             map.getHistory().doAction(new MapEditorAction() {
 
-                                private final Map map = MapPropertiesView.this.map;
-
                                 public void execute() throws MapException {
-                                    map.setWorld(getText());
+                                    MapPropertiesView.this.map.setWorld(getText());
                                 }
 
                                 public void undo() throws MapException {
-                                    map.setWorld(currentWorld);
+                                    MapPropertiesView.this.map.setWorld(currentWorld);
                                 }
                             });
                         }

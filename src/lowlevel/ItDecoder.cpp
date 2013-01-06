@@ -46,7 +46,7 @@ ItDecoder::~ItDecoder() {
 void ItDecoder::load(void* sound_data, size_t sound_size) {
 
   // load the IT data into the IT library
-  modplug_file = ModPlug_Load((const void*) sound_data, sound_size);
+  modplug_file = ModPlug_Load((const void*) sound_data, int(sound_size));
 }
 
 /**

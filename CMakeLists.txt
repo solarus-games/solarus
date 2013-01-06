@@ -118,35 +118,16 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
     set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_SYSROOT}.sdk" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
     if(SOLARUS_SYSROOT VERSION_LESS 10.6)
       add_definitions(-DSOLARUS_DONT_USE_OSX_SANDBOX) 
-     endif()
+    endif()
   endif()
 
   # Deployment version
   if(SOLARUS_DEPLOYMENT)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Chosen oldest OS version supported" FORCE)
-  else()
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.6" CACHE STRING "Default oldest OS version supported" FORCE)
+    if(SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
+      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
+    endif()
   endif()
-  
-  # Embed library search path
-  if(NOT CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.5")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Xlinker -rpath -Xlinker @loader_path/../Frameworks/" CACHE STRING "Embed frameworks search path" FORCE)
-    set(SOLARUS_OSX_RPATH "@rpath/")
-  else()
-    set(SOLARUS_OSX_RPATH "@executable_path/../Frameworks/")
-  endif()
-  set_target_properties(solarus PROPERTIES 
-      BUILD_WITH_INSTALL_RPATH 1 
-      INSTALL_NAME_DIR ${SOLARUS_OSX_RPATH}	
-  )
-
-  # Compatiblity settings
-  if(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS "10.6")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
-  endif()
-
-  # CFBundle default quest directory.
-  set(DEFAULT_QUEST "../Resources" CACHE STRING "Default quest directory")
 endif()
 
 # solarus options
@@ -161,12 +142,11 @@ if(DEFAULT_QUEST)
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  add_definitions(-DSOLARUS_USE_OSX_INTERFACE)
   set(DEFAULT_WRITE_DIR "Solarus")
 else()
   set(DEFAULT_WRITE_DIR ".solarus")
 endif()
-set(WRITE_DIR ${DEFAULT_WRITE_DIR} CACHE STRING "Directory where Solarus savegames are stored, relative to the user's home directory.")
+set(WRITE_DIR ${DEFAULT_WRITE_DIR} CACHE STRING "Directory where Solarus savegames are stored, relative to the user's base write directory.")
 if(WRITE_DIR)
   add_definitions(-DSOLARUS_WRITE_DIR=\"${WRITE_DIR}\")
 endif()
@@ -210,5 +190,10 @@ endif()
 # files to install with make install
 install(TARGETS	solarus
   RUNTIME DESTINATION bin
-)
+) 
+
+# Also install into CFBundle form
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND SOLARUS_OSX_BUNDLE)
+  include(AddOSXBundleTarget)
+endif()
 

@@ -22,8 +22,8 @@
 #include <physfs.h>
 #include <lua.hpp>
 
-#if defined(SOLARUS_USE_OSX_INTERFACE) && SOLARUS_USE_OSX_INTERFACE != 0
-#  include "lowlevel/osx/OSXInterface.h"
+#if defined(SOLARUS_OS_MACOSX) && SOLARUS_OS_MACOSX != 0
+#   include "lowlevel/osx/OSXInterface.h"
 #endif
 
 std::string FileTools::solarus_write_dir;
@@ -320,7 +320,7 @@ void FileTools::data_file_save_buffer(const std::string& file_name,
       << PHYSFS_getLastError());
  
   // save the memory buffer 
-  if (PHYSFS_write(file, buffer, size, 1) == -1) {
+  if (PHYSFS_write(file, buffer, PHYSFS_uint32(size), 1) == -1) {
     Debug::die(StringConcat() << "Cannot write file '" << file_name
         << "': " << PHYSFS_getLastError());
   }
@@ -482,7 +482,7 @@ const std::string FileTools::get_full_quest_write_dir() {
  */
 std::string FileTools::get_base_write_dir() {
 
-#if defined(SOLARUS_USE_OSX_INTERFACE) && SOLARUS_USE_OSX_INTERFACE != 0
+#if defined(SOLARUS_OS_MACOSX) && SOLARUS_OS_MACOSX != 0
   return std::string(getUserApplicationSupportDirectory());
 #else
   return std::string(PHYSFS_getUserDir());

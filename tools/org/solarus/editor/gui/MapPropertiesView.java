@@ -195,27 +195,23 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to change the name of the map.
      */
-    private class NameField extends JPanel {
+    private class NameField extends JTextField {
 
-        // subcomponents
-        private JTextField textFieldName;
-        private JButton buttonSet;
+        private boolean updating = false;  // To avoid reentrant updates.
 
         /**
          * Constructor.
          */
         public NameField() {
-            super();
-            setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+            super(10);
 
-            textFieldName = new JTextField(10);
-            buttonSet = new JButton("Set");
+            getDocument().addDocumentListener(new DocumentListener() {
 
-            ActionListener listener = new ActionListener() {
-                    public void actionPerformed(ActionEvent ev) {
+                private void textChanged() {
 
+                    if (!updating) {
                         try {
-                            String name = textFieldName.getText();
+                            String name = getText();
                             map.getHistory().doAction(new ActionRenameMap(map, name));
                         }
                         catch (QuestEditorException ex) {
@@ -223,14 +219,23 @@ public class MapPropertiesView extends JPanel implements Observer {
                         }
                         update(map);
                     }
-                };
+                }
 
-            buttonSet.addActionListener(listener);
-            textFieldName.addActionListener(listener);
-
-            add(textFieldName);
-            add(Box.createRigidArea(new Dimension(5, 0)));
-            add(buttonSet);
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    textChanged();
+                }
+                
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    textChanged();
+                }
+                
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    textChanged();
+                }
+            });
 
             update((Map) null);
         }
@@ -241,16 +246,18 @@ public class MapPropertiesView extends JPanel implements Observer {
          */
         public void update(Observable o) {
 
+            updating = true;
             if (map != null) {
-                textFieldName.setEnabled(true);
-                buttonSet.setEnabled(true);
-                textFieldName.setText(map.getName());
+                setEnabled(true);
+                if (!getText().equals(map.getName())) {
+                    setText(map.getName());
+                }
             }
             else {
-                textFieldName.setEnabled(false);
-                buttonSet.setEnabled(false);
-                textFieldName.setText("");
+                setEnabled(false);
+                setText("");
             }
+            updating = false;
         }
     }
 
@@ -309,33 +316,29 @@ public class MapPropertiesView extends JPanel implements Observer {
     /**
      * Component to change the world of the map.
      */
-    private class WorldField extends JPanel {
+    private class WorldField extends JTextField {
 
-        // subcomponents
-        private JTextField textFieldWorld;
-        private JButton buttonSet;
+        private boolean updating = false;  // To avoid reentrant updates.
 
         /**
          * Constructor.
          */
         public WorldField() {
-            super();
-            setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+            super(10);
 
-            textFieldWorld = new JTextField(10);
-            buttonSet = new JButton("Set");
+            getDocument().addDocumentListener(new DocumentListener() {
 
-            ActionListener listener = new ActionListener() {
-                    public void actionPerformed(ActionEvent ev) {
+                private void textChanged() {
 
+                    if (!updating) {
                         try {
-                            final String currentWorld = textFieldWorld.getText();
+                            final String currentWorld = getText();
                             map.getHistory().doAction(new MapEditorAction() {
 
                                 private final Map map = MapPropertiesView.this.map;
 
                                 public void execute() throws MapException {
-                                    map.setWorld(textFieldWorld.getText());
+                                    map.setWorld(getText());
                                 }
 
                                 public void undo() throws MapException {
@@ -344,18 +347,27 @@ public class MapPropertiesView extends JPanel implements Observer {
                             });
                         }
                         catch (QuestEditorException ex) {
-                            GuiTools.errorDialog("Cannot change the map name: " + ex.getMessage());
+                            GuiTools.errorDialog("Cannot change the map's world: " + ex.getMessage());
                         }
                         update(map);
                     }
-                };
+                }
 
-            buttonSet.addActionListener(listener);
-            textFieldWorld.addActionListener(listener);
-
-            add(textFieldWorld);
-            add(Box.createRigidArea(new Dimension(5, 0)));
-            add(buttonSet);
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    textChanged();
+                }
+                
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    textChanged();
+                }
+                
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    textChanged();
+                }
+            });
 
             update((Map) null);
         }
@@ -366,16 +378,18 @@ public class MapPropertiesView extends JPanel implements Observer {
          */
         public void update(Observable o) {
 
+            updating = true;
             if (map != null) {
-                textFieldWorld.setEnabled(true);
-                buttonSet.setEnabled(true);
-                textFieldWorld.setText(map.getWorld());
+                setEnabled(true);
+                if (!getText().equals(map.getWorld())) {
+                    setText(map.getWorld());
+                }
             }
             else {
-                textFieldWorld.setEnabled(false);
-                buttonSet.setEnabled(false);
-                textFieldWorld.setText("");
+                setEnabled(false);
+                setText("");
             }
+            updating = false;
         }
     }
 

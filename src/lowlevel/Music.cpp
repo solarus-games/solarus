@@ -302,7 +302,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
 
   // read the encoded music properties
   vorbis_info* info = ov_info(&ogg_file, -1);
-  ALsizei sample_rate = info->rate;
+  ALsizei sample_rate = ALsizei(info->rate);
 
   ALenum al_format = AL_NONE;
   if (info->channels == 1) {
@@ -319,7 +319,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   long total_bytes_read = 0;
   long remaining_bytes = nb_samples * info->channels * sizeof(ALshort);
   do {
-    bytes_read = ov_read(&ogg_file, ((char*) raw_data) + total_bytes_read, remaining_bytes, 0, 2, 1, &bitstream);
+    bytes_read = ov_read(&ogg_file, ((char*) raw_data) + total_bytes_read, int(remaining_bytes), 0, 2, 1, &bitstream);
     if (bytes_read < 0) {
       if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
         std::cout << "Error while decoding ogg chunk: " << bytes_read << std::endl;
@@ -333,7 +333,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   while (remaining_bytes > 0 && bytes_read > 0);
 
   // put this decoded data into the buffer
-  alBufferData(destination_buffer, al_format, raw_data, total_bytes_read, sample_rate);
+  alBufferData(destination_buffer, al_format, raw_data, ALsizei(total_bytes_read), sample_rate);
 
   delete[] raw_data;
 

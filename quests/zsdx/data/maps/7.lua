@@ -113,7 +113,7 @@ function inferno:on_interaction()
           -- 100 rupees
           if not map:get_game():get_value("b916") then
             map:start_dialog("inferno.want_rupees", function()
-              hero:start_treasure("rupee", 5, 916)
+              hero:start_treasure("rupee", 5, "b916")
             end)
           else
             map:start_dialog("inferno.want_rupees_again")

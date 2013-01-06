@@ -32,7 +32,7 @@ function enemy:on_restarted()
       local son_name = self:get_name() .. "_son_" .. nb_sons_created
       local son = self:create_enemy(son_name, "red_helmasaur", 0, 0)
       if self:get_game():get_life() <= self:get_game():get_max_life() / 3 then
-	son:set_treasure("heart", 1, -1)
+	son:set_treasure("heart", 1)
       end
     else
       local x, y, layer = self:get_position()

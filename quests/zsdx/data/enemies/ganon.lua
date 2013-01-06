@@ -247,7 +247,7 @@ function enemy:throw_bats()
     local son_name = prefix .. nb_bats_created
     local son = self:create_enemy(son_name, "fire_bat", 0, -21, 0)
     if math.random(6) == 1 then
-      son:set_treasure("magic_flask", 1, -1)
+      son:set_treasure("magic_flask", 1)
     end
     son:go_circle(self)
     local go_hero_delay = 2000 + (nb_to_create * 150)

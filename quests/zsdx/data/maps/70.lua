@@ -2,7 +2,7 @@ local map = ...
 -- Broken rupee house
 
 local function give_flippers()
-  hero:start_treasure("flippers", 1, 157)
+  hero:start_treasure("flippers", 1, "b157")
 end
 
 function game_1_man:on_interaction()

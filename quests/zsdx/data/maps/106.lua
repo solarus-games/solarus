@@ -299,7 +299,7 @@ local function compass_chest_empty(chest)
   if index ~= nil then
     if index == chests_puzzle_step then
       if index == 7 then
-	hero:start_treasure("compass", 1, 814)
+	hero:start_treasure("compass", 1, "b814")
       else
         hero:unfreeze()
 	chests_puzzle_step = chests_puzzle_step + 1

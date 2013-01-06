@@ -22,7 +22,7 @@ local function has_obtained_bow()
 end
 
 local function give_world_map()
-  hero:start_treasure("world_map", 1, 33)
+  hero:start_treasure("world_map", 1, "b33")
 end
 
 function map:on_started(destination)

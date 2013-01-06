@@ -56,7 +56,7 @@ function fairy_sensor:on_activated()
     if not has_tiger_scrolls() then
       map:start_dialog("north_fairy_fountain.first_time", function()
         hero:unfreeze()
-        hero:start_treasure("level_4_way", 4, 930)
+        hero:start_treasure("level_4_way", 4, "b930")
       end)
     else
       map:start_dialog("north_fairy_fountain.restore_health", function()

@@ -22,7 +22,7 @@ end
 
 local function give_golden_bars()
   map:start_dialog("billy_cave.give_golden_bars", function()
-    hero:start_treasure("level_4_way", 3, 134)
+    hero:start_treasure("level_4_way", 3, "b134")
   end)
 end
 

@@ -148,7 +148,7 @@ function enemy:repeat_create_son()
     local _, _, layer = body:get_position()
     local son = self:create_enemy(son_name, "snap_dragon", 0, 0, layer)
     if math.random(2) == 1 then
-      son:set_treasure("heart", 1, -1)
+      son:set_treasure("heart", 1)
     end
   end
 

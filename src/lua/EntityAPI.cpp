@@ -419,8 +419,8 @@ int LuaContext::entity_api_get_size(lua_State* l) {
 int LuaContext::entity_api_set_size(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
-  int width = luaL_checkinteger(l, 2);
-  int height = luaL_checkinteger(l, 3);
+  int width = luaL_checkint(l, 2);
+  int height = luaL_checkint(l, 3);
 
   entity.set_size(width, height);
 
@@ -451,8 +451,8 @@ int LuaContext::entity_api_get_origin(lua_State* l) {
 int LuaContext::entity_api_set_origin(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
+  int x = luaL_checkint(l, 2);
+  int y = luaL_checkint(l, 3);
 
   entity.set_origin(x, y);
 
@@ -482,11 +482,11 @@ int LuaContext::entity_api_get_position(lua_State* l) {
 int LuaContext::entity_api_set_position(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
+  int x = luaL_checkint(l, 2);
+  int y = luaL_checkint(l, 3);
   int layer = -1;
   if (lua_gettop(l) >= 4) {
-    layer = luaL_checkinteger(l, 4);
+    layer = luaL_checkint(l, 4);
   }
 
   entity.set_xy(x, y);
@@ -713,8 +713,8 @@ int LuaContext::entity_api_set_layer_independent_collisions(lua_State* l) {
 int LuaContext::entity_api_test_obstacles(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
-  int dx = luaL_checkinteger(l, 2);
-  int dy = luaL_checkinteger(l, 3);
+  int dx = luaL_checkint(l, 2);
+  int dy = luaL_checkint(l, 3);
 
   Rectangle bounding_box = entity.get_bounding_box();
   bounding_box.add_xy(dx, dy);
@@ -745,7 +745,7 @@ int LuaContext::entity_api_get_optimization_distance(lua_State* l) {
 int LuaContext::entity_api_set_optimization_distance(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
-  int distance = luaL_checkinteger(l, 2);
+  int distance = luaL_checkint(l, 2);
 
   entity.set_optimization_distance(distance);
 
@@ -839,7 +839,7 @@ int LuaContext::hero_api_get_direction(lua_State* l) {
 int LuaContext::hero_api_set_direction(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
-  int direction = luaL_checkinteger(l, 2);
+  int direction = luaL_checkint(l, 2);
 
   hero.set_animation_direction(direction);
 
@@ -854,11 +854,11 @@ int LuaContext::hero_api_set_direction(lua_State* l) {
 int LuaContext::hero_api_set_position(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
-  int x = luaL_checkinteger(l, 2);
-  int y = luaL_checkinteger(l, 3);
+  int x = luaL_checkint(l, 2);
+  int y = luaL_checkint(l, 3);
   int layer = -1;
   if (lua_gettop(l) >= 4) {
-    layer = luaL_checkinteger(l, 4);
+    layer = luaL_checkint(l, 4);
   }
 
   hero.set_xy(x, y);
@@ -881,9 +881,9 @@ int LuaContext::hero_api_save_solid_ground(lua_State* l) {
   Hero& hero = check_hero(l, 1);
   int x, y, layer;
   if (lua_gettop(l) >= 2) {
-    x = luaL_checkinteger(l, 2);
-    y = luaL_checkinteger(l, 3);
-    layer = luaL_checkinteger(l, 4);
+    x = luaL_checkint(l, 2);
+    y = luaL_checkint(l, 3);
+    layer = luaL_checkint(l, 4);
   }
   else {
     x = hero.get_x();
@@ -963,8 +963,8 @@ int LuaContext::hero_api_walk(lua_State* l) {
 int LuaContext::hero_api_start_jumping(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
-  int direction = luaL_checkinteger(l, 2);
-  int length = luaL_checkinteger(l, 3);
+  int direction = luaL_checkint(l, 2);
+  int length = luaL_checkint(l, 3);
   bool ignore_obstacles = lua_toboolean(l, 4) != 0;
 
   hero.start_jumping(direction, length, ignore_obstacles, false);
@@ -981,8 +981,14 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
-  int variant = luaL_optinteger(l, 3, 1);
+  int variant = luaL_optint(l, 3, 1);
   const std::string& savegame_variable = luaL_optstring(l, 4, "");
+
+  if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
+    luaL_argerror(l, 4, (StringConcat() <<
+        "savegame variable identifier expected, got '" <<
+        savegame_variable << "'").c_str());
+  }
 
   hero.start_treasure(
       Treasure(hero.get_game(), item_name, variant, savegame_variable));
@@ -1012,8 +1018,8 @@ int LuaContext::hero_api_start_victory(lua_State* l) {
 int LuaContext::hero_api_start_boomerang(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
-  int max_distance = luaL_checkinteger(l, 2);
-  int speed = luaL_checkinteger(l, 3);
+  int max_distance = luaL_checkint(l, 2);
+  int speed = luaL_checkint(l, 3);
   const std::string& tunic_preparing_animation = luaL_checkstring(l, 4);
   const std::string& sprite_name = luaL_checkstring(l, 5);
 
@@ -1073,10 +1079,10 @@ int LuaContext::hero_api_start_running(lua_State* l) {
 int LuaContext::hero_api_start_hurt(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
-  int source_x = luaL_checkinteger(l, 2);
-  int source_y = luaL_checkinteger(l, 3);
-  int life_points = luaL_checkinteger(l, 4);
-  int magic_points = luaL_checkinteger(l, 5);
+  int source_x = luaL_checkint(l, 2);
+  int source_y = luaL_checkint(l, 3);
+  int life_points = luaL_checkint(l, 4);
+  int magic_points = luaL_checkint(l, 5);
 
   hero.hurt(Rectangle(source_x, source_y),
       life_points, magic_points);
@@ -1484,7 +1490,7 @@ int LuaContext::enemy_api_get_life(lua_State* l) {
 int LuaContext::enemy_api_set_life(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  int life = luaL_checkinteger(l, 2);
+  int life = luaL_checkint(l, 2);
 
   enemy.set_life(life);
 
@@ -1499,7 +1505,7 @@ int LuaContext::enemy_api_set_life(lua_State* l) {
 int LuaContext::enemy_api_add_life(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  int points = luaL_checkinteger(l, 2);
+  int points = luaL_checkint(l, 2);
 
   enemy.set_life(enemy.get_life() + points);
 
@@ -1514,7 +1520,7 @@ int LuaContext::enemy_api_add_life(lua_State* l) {
 int LuaContext::enemy_api_remove_life(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  int points = luaL_checkinteger(l, 2);
+  int points = luaL_checkint(l, 2);
 
   enemy.set_life(enemy.get_life() - points);
 
@@ -1542,7 +1548,7 @@ int LuaContext::enemy_api_get_damage(lua_State* l) {
 int LuaContext::enemy_api_set_damage(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  int damage = luaL_checkinteger(l, 2);
+  int damage = luaL_checkint(l, 2);
 
   enemy.set_damage(damage);
 
@@ -1570,7 +1576,7 @@ int LuaContext::enemy_api_get_magic_damage(lua_State* l) {
 int LuaContext::enemy_api_set_magic_damage(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  int magic_damage = luaL_checkinteger(l, 2);
+  int magic_damage = luaL_checkint(l, 2);
 
   enemy.set_magic_damage(magic_damage);
 
@@ -1743,7 +1749,7 @@ int LuaContext::enemy_api_get_minimum_shield_needed(lua_State* l) {
 int LuaContext::enemy_api_set_minimum_shield_needed(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  int shield_level = luaL_checkinteger(l, 2);
+  int shield_level = luaL_checkint(l, 2);
 
   enemy.set_minimum_shield_needed(shield_level);
 
@@ -1761,7 +1767,7 @@ int LuaContext::enemy_api_set_attack_consequence(lua_State* l) {
   EnemyAttack attack = check_enum<EnemyAttack>(l, 2, enemy_attack_names);
 
   if (lua_isnumber(l, 3)) {
-    int life_points = luaL_checkinteger(l, 3);
+    int life_points = luaL_checkint(l, 3);
     Debug::check_assertion(life_points > 0, StringConcat()
         << "Invalid attack consequence: " << life_points);
     enemy.set_attack_consequence(attack, EnemyReaction::HURT, life_points);
@@ -1789,7 +1795,7 @@ int LuaContext::enemy_api_set_attack_consequence_sprite(lua_State* l) {
   EnemyAttack attack = check_enum<EnemyAttack>(l, 3, enemy_attack_names);
 
   if (lua_isnumber(l, 4)) {
-    int life_points = luaL_checkinteger(l, 4);
+    int life_points = luaL_checkint(l, 4);
     Debug::check_assertion(life_points > 0, StringConcat()
         << "Invalid attack consequence: " << life_points);
     enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::HURT, life_points);
@@ -1876,10 +1882,16 @@ int LuaContext::enemy_api_set_treasure(lua_State* l) {
     item_name = luaL_checkstring(l, 2);
   }
   if (lua_gettop(l) >= 3 && !lua_isnil(l, 3)) {
-    variant = luaL_checkinteger(l, 3);
+    variant = luaL_checkint(l, 3);
   }
   if (lua_gettop(l) >= 4 && !lua_isnil(l, 4)) {
     savegame_variable = luaL_checkstring(l, 4);
+  }
+
+  if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
+    luaL_argerror(l, 4, (StringConcat() <<
+        "savegame variable identifier expected, got '" <<
+        savegame_variable << "'").c_str());
   }
 
   Treasure treasure(enemy.get_game(), item_name, variant, savegame_variable);
@@ -1941,7 +1953,7 @@ int LuaContext::enemy_api_restart(lua_State* l) {
 int LuaContext::enemy_api_hurt(lua_State* l) {
 
   Enemy& enemy = check_enemy(l, 1);
-  int life_points = luaL_checkinteger(l, 2);
+  int life_points = luaL_checkint(l, 2);
 
   if (enemy.is_in_normal_state() && !enemy.is_invulnerable()) {
     Hero& hero = enemy.get_map().get_entities().get_hero();
@@ -1962,11 +1974,11 @@ int LuaContext::enemy_api_create_enemy(lua_State* l) {
   Enemy& enemy = check_enemy(l, 1);
   const std::string& name = luaL_checkstring(l, 2);
   const std::string& breed = luaL_checkstring(l, 3);
-  int x = luaL_checkinteger(l, 4);
-  int y = luaL_checkinteger(l, 5);
+  int x = luaL_checkint(l, 4);
+  int y = luaL_checkint(l, 5);
   int layer;
   if (lua_gettop(l) >= 6) {
-    layer = luaL_checkinteger(l, 6);
+    layer = luaL_checkint(l, 6);
   }
   else {
     layer = enemy.get_layer();

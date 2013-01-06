@@ -24,7 +24,7 @@ function smith:on_interaction()
         else
           -- enough money: buy the sword
           map:get_game():remove_money(sword_price)
-          hero:start_treasure("sword", 1, 30)
+          hero:start_treasure("sword", 1, "b30")
         end
       end
     end)

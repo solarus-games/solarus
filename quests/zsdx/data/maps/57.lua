@@ -92,7 +92,7 @@ function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 	      if map:get_game():get_value("b939") then
 		variant = 3
 	      end
-	      hero:start_treasure("quiver", variant, 941)
+	      hero:start_treasure("quiver", variant, "b941")
 	    end)
 	  end)
 	end)

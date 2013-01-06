@@ -357,7 +357,7 @@ int LuaContext::game_api_set_value(lua_State* l) {
       break;
 
     case LUA_TNUMBER:
-      savegame.set_integer(key, lua_tointeger(l, 3));
+      savegame.set_integer(key, int(lua_tointeger(l, 3)));
       break;
 
     case LUA_TSTRING:
@@ -425,7 +425,7 @@ int LuaContext::game_api_get_life(lua_State* l) {
 int LuaContext::game_api_set_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int life = luaL_checkinteger(l, 2);
+  int life = luaL_checkint(l, 2);
 
   savegame.get_equipment().set_life(life);
 
@@ -440,7 +440,7 @@ int LuaContext::game_api_set_life(lua_State* l) {
 int LuaContext::game_api_add_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int life = luaL_checkinteger(l, 2);
+  int life = luaL_checkint(l, 2);
 
   savegame.get_equipment().add_life(life);
 
@@ -455,7 +455,7 @@ int LuaContext::game_api_add_life(lua_State* l) {
 int LuaContext::game_api_remove_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int life = luaL_checkinteger(l, 2);
+  int life = luaL_checkint(l, 2);
 
   savegame.get_equipment().remove_life(life);
 
@@ -485,7 +485,7 @@ int LuaContext::game_api_get_max_life(lua_State* l) {
 int LuaContext::game_api_set_max_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int life = luaL_checkinteger(l, 2);
+  int life = luaL_checkint(l, 2);
 
   savegame.get_equipment().set_max_life(life);
 
@@ -500,7 +500,7 @@ int LuaContext::game_api_set_max_life(lua_State* l) {
 int LuaContext::game_api_add_max_life(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int life = luaL_checkinteger(l, 2);
+  int life = luaL_checkint(l, 2);
 
   Equipment &equipment = savegame.get_equipment();
   equipment.set_max_life(equipment.get_max_life() + life);
@@ -531,7 +531,7 @@ int LuaContext::game_api_get_money(lua_State* l) {
 int LuaContext::game_api_set_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int money = luaL_checkinteger(l, 2);
+  int money = luaL_checkint(l, 2);
 
   savegame.get_equipment().set_money(money);
 
@@ -546,7 +546,7 @@ int LuaContext::game_api_set_money(lua_State* l) {
 int LuaContext::game_api_add_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int money = luaL_checkinteger(l, 2);
+  int money = luaL_checkint(l, 2);
 
   savegame.get_equipment().add_money(money);
 
@@ -561,7 +561,7 @@ int LuaContext::game_api_add_money(lua_State* l) {
 int LuaContext::game_api_remove_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int money = luaL_checkinteger(l, 2);
+  int money = luaL_checkint(l, 2);
 
   savegame.get_equipment().remove_money(money);
 
@@ -591,7 +591,7 @@ int LuaContext::game_api_get_max_money(lua_State* l) {
 int LuaContext::game_api_set_max_money(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int money = luaL_checkinteger(l, 2);
+  int money = luaL_checkint(l, 2);
 
   savegame.get_equipment().set_max_money(money);
 
@@ -621,7 +621,7 @@ int LuaContext::game_api_get_magic(lua_State* l) {
 int LuaContext::game_api_set_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int magic = luaL_checkinteger(l, 2);
+  int magic = luaL_checkint(l, 2);
 
   savegame.get_equipment().set_magic(magic);
 
@@ -636,7 +636,7 @@ int LuaContext::game_api_set_magic(lua_State* l) {
 int LuaContext::game_api_add_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int magic = luaL_checkinteger(l, 2);
+  int magic = luaL_checkint(l, 2);
 
   savegame.get_equipment().add_magic(magic);
 
@@ -651,7 +651,7 @@ int LuaContext::game_api_add_magic(lua_State* l) {
 int LuaContext::game_api_remove_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int magic = luaL_checkinteger(l, 2);
+  int magic = luaL_checkint(l, 2);
 
   savegame.get_equipment().remove_magic(magic);
 
@@ -681,7 +681,7 @@ int LuaContext::game_api_get_max_magic(lua_State* l) {
 int LuaContext::game_api_set_max_magic(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int magic = luaL_checkinteger(l, 2);
+  int magic = luaL_checkint(l, 2);
 
   savegame.get_equipment().set_max_magic(magic);
 
@@ -729,7 +729,7 @@ int LuaContext::game_api_set_ability(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
   const std::string& ability_name = luaL_checkstring(l, 2);
-  int level = luaL_checkinteger(l, 3);
+  int level = luaL_checkint(l, 3);
 
   savegame.get_equipment().set_ability(ability_name, level);
 
@@ -758,7 +758,7 @@ int LuaContext::game_api_get_item(lua_State* l) {
 int LuaContext::game_api_get_item_assigned(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int slot = luaL_checkinteger(l, 2);
+  int slot = luaL_checkint(l, 2);
 
   if (slot < 1 || slot > 2) {
     luaL_argerror(l, 2, "The item slot should be 1 or 2");
@@ -783,7 +783,7 @@ int LuaContext::game_api_get_item_assigned(lua_State* l) {
 int LuaContext::game_api_set_item_assigned(lua_State* l) {
 
   Savegame& savegame = check_game(l, 1);
-  int slot = luaL_checkinteger(l, 2);
+  int slot = luaL_checkint(l, 2);
   EquipmentItem* item = NULL;
   if (!lua_isnil(l, 3)) {
     item = &check_item(l, 3);

@@ -196,10 +196,10 @@ int LuaContext::main_api_save_settings(lua_State* l) {
  */
 int LuaContext::main_api_get_distance(lua_State* l) {
 
-  int x1 = luaL_checkinteger(l, 1);
-  int y1 = luaL_checkinteger(l, 2);
-  int x2 = luaL_checkinteger(l, 3);
-  int y2 = luaL_checkinteger(l, 4);
+  int x1 = luaL_checkint(l, 1);
+  int y1 = luaL_checkint(l, 2);
+  int x2 = luaL_checkint(l, 3);
+  int y2 = luaL_checkint(l, 4);
 
   int distance = (int) Geometry::get_distance(x1, y1, x2, y2);
 
@@ -214,10 +214,10 @@ int LuaContext::main_api_get_distance(lua_State* l) {
  */
 int LuaContext::main_api_get_angle(lua_State* l) {
 
-  int x1 = luaL_checkinteger(l, 1);
-  int y1 = luaL_checkinteger(l, 2);
-  int x2 = luaL_checkinteger(l, 3);
-  int y2 = luaL_checkinteger(l, 4);
+  int x1 = luaL_checkint(l, 1);
+  int y1 = luaL_checkint(l, 2);
+  int x2 = luaL_checkint(l, 3);
+  int y2 = luaL_checkint(l, 4);
 
   double angle = Geometry::get_angle(x1, y1, x2, y2);
 

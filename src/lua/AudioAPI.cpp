@@ -108,7 +108,7 @@ int LuaContext::audio_api_get_sound_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_sound_volume(lua_State* l) {
 
-  int volume = luaL_checkinteger(l, 1);
+  int volume = luaL_checkint(l, 1);
 
   Sound::set_volume(volume);
 
@@ -133,7 +133,7 @@ int LuaContext::audio_api_get_music_volume(lua_State* l) {
  */
 int LuaContext::audio_api_set_music_volume(lua_State* l) {
 
-  int volume = luaL_checkinteger(l, 1);
+  int volume = luaL_checkint(l, 1);
 
   Music::set_volume(volume);
 

@@ -56,7 +56,7 @@ function fairy_sensor:on_activated()
     if not has_boomerang_from_fairy() then
       map:start_dialog("fairy_cave.first_time", function()
         hero:unfreeze()
-        hero:start_treasure("boomerang", 2, 100)
+        hero:start_treasure("boomerang", 2, "b100")
       end)
     else
       map:start_dialog("fairy_cave.restore_health", function()

@@ -24,12 +24,8 @@
 #include <map>
 
 /**
- * @brief Creates the properties of an item by parsing a group of the specified ini file
- *
- * The current group of the ini file describes the item to parse.
- *
- * @param equipment the equipment object that stores all item properties
- * @param ini the ini file to parse
+ * @brief Creates the description of an item.
+ * @param equipment The equipment object that stores all item descriptions.
  */
 EquipmentItem::EquipmentItem(Equipment& equipment):
   equipment(equipment),
@@ -148,7 +144,7 @@ const std::string& EquipmentItem::get_amount_savegame_variable() const {
 /**
  * @brief Sets the savegame variable that stores the value of the amount
  * of this item (if any).
- * @param counter_savegame_variable The savegame variable of the amount
+ * @param amount_savegame_variable The savegame variable of the amount
  * or an empty string.
  */
 void EquipmentItem::set_amount_savegame_variable(

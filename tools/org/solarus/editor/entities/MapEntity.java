@@ -1402,7 +1402,7 @@ public abstract class MapEntity extends Observable {
      */
     public static boolean isValidSavegameVariable(String id) {
 
-        if (id.isEmpty()) {
+        if (id.isEmpty() || Character.isDigit(id.charAt(0))) {
             return false;
         }
 

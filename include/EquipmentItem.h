@@ -82,8 +82,6 @@ class EquipmentItem: public ExportableToLua {
 
     int get_amount() const;
     void set_amount(int amount);
-    void add_amount(int amount_to_add);
-    void remove_amount(int amount_to_remove);
 
     int get_max_amount() const;
     void set_max_amount(int max_amount);

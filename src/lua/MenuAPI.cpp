@@ -297,6 +297,7 @@ void LuaContext::menus_on_update(int context_index) {
 /**
  * @brief Calls the on_draw() method of the menus associated to a context.
  * @param context_index Index of an object with menus.
+ * @param dst_surface The destination surface to draw.
  */
 void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
 
@@ -321,6 +322,8 @@ void LuaContext::menus_on_draw(int context_index, Surface& dst_surface) {
 /**
  * @brief Calls the on_input() method of the menus associated to a context.
  * @param context_index Index of an object with menus.
+ * @param event The input event to handle.
+ * @return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::menus_on_input(int context_index, InputEvent& event) {
 
@@ -349,6 +352,7 @@ bool LuaContext::menus_on_input(int context_index, InputEvent& event) {
  * @brief Calls the on_command_pressed() method of the menus associated to a context.
  * @param context_index Index of an object with menus.
  * @param command The game command just pressed.
+ * @return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::menus_on_command_pressed(int context_index,
     GameCommands::Command command) {
@@ -378,6 +382,7 @@ bool LuaContext::menus_on_command_pressed(int context_index,
  * @brief Calls the on_command_released() method of the menus associated to a context.
  * @param context_index Index of an object with menus.
  * @param command The game command just released.
+ * @return \c true if the event was handled and should stop being propagated.
  */
 bool LuaContext::menus_on_command_released(int context_index,
     GameCommands::Command command) {

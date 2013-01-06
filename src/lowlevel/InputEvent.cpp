@@ -497,7 +497,7 @@ const std::string& InputEvent::get_keyboard_key_name(KeyboardKey key) {
 
 /**
  * @brief Returns a keyboard key given its name.
- * @param key The name of a keyboard key.
+ * @param keyboard_key_name The name of a keyboard key.
  * @return The corresponding key, or KEY_NONE if this name is empty or unknown.
  */
 InputEvent::KeyboardKey InputEvent::get_keyboard_key_by_name(const std::string& keyboard_key_name) {

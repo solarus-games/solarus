@@ -2,8 +2,7 @@
 \page lua_api_surface Surfaces
 
 A surface is a 2D image. Its main feature is that you can draw objects
-on it. Such objects are called drawable objects and they include
-other surfaces, text surfaces and sprites.
+on it.
 
 \section Contents
 

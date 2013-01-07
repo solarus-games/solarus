@@ -7,35 +7,73 @@ a HUD (head-up display) or a pause screen, you can use a menu.
 A menu is an arbitrary Lua table.
 The engine will call events that you define in this table,
 i.e. methods like \ref lua_api_menu_on_started,
-\ref lua_api_menu_on_draw, etc.
+\ref lua_api_menu_on_draw, \ref lua_api_menu_on_key_pressed, etc.
+To make the engine aware of your menu (and call events
+automatically), you attach it to a context such as a
+\ref lua_api_map "map", a \ref lua_api_game "game"
+or even \ref lua_api_main "sol.main".
 
-To make the engine aware of your menu (and call your events
-automatically), you have to attach it to a context
-such as a map, a game or even \c sol.main.
-- If you attach your menu to a map, it is displayed above the map surface.
-  It will disappear when the map changes.
-  It is useful to show head-up information local to a precise map.<br>
-  Example: a counter that only exists on a specific map.<br>
-  See \ref lua_api_map_start_menu.
-- If you attach your menu to the current game, it will be global to all maps.
-  As long as you keep your menu active, it will persist accross map changes.<br>
-  Example: the player's life counter.<br>
-  See \ref lua_api_game_start_menu.
-- If you attach your menu to a whole screen, it means that you create a
-  dedicated new phase of the program to display your menu.
-  The current screen or game is closed and only your menu is shown.<br>
-  Examples: a title screen or a savegame selection screen.<br>
-  See \ref lua_api_main_start_screen.
-- If you attach your menu to \c sol.main, it is displayed above the
-  current screen or game, and persists across screen changes.
-  See \ref lua_api_main_start_menu.
-- If you don't attach your menu to anything, you can still handle it in pure
-  Lua by calling its events manually.
+If you prefer, you can also make menus without this API:
+\ref lua_api_main "sol.main", \ref lua_api_game "game" and
+\ref lua_api_map "map" receive the same events as menus, so you can
+do what you want from there manually.
+The main interest of this API is to receive events automatically.
 
-\todo Like timers, make a function sol.menu.create,
-and pass the context as first parameter.
-\todo Remove the specific notion of screens
-(timers will then have to be associated explicitely to their menu).
+\section Contents
+
+- \ref lua_api_menu_functions
+- \ref lua_api_menu_events
+
+<hr>
+
+\section lua_api_menu_functions Functions of sol.menu
+
+<hr>
+
+\subsection lua_api_menu_start sol.menu.start(context, menu)
+
+Starts a menu in a context.
+
+The Solarus engine will then call the appropriate events on your menu.
+- \c context (map, game or \c sol.main): The context where you menu will belong.
+  Similarly to \ref lua_api_timer "timers", the context determines the lifetime
+  of your menu.
+  - If you set the context to a \ref lua_api_map "map", your menu will be
+    displayed above the map surface. It will be stopped when the player goes to
+    another map.
+    This may be useful to show head-up information local to a precise map.<br>
+    Example: a counter that only exists on a specific map.<br>
+  - If you set context to the current \ref lua_api_game "game", your menu will be
+    global to all maps.
+    As long as you keep your menu active, it will persist accross map changes.<br>
+    Example: the player's life counter.<br>
+  - If you set the context to \ref lua_api_main "sol.main", your menu will be
+    global to the whole program. It can exist outside a game (and it will
+    persist during the game if you don't stop it).
+    Example: the title screen.
+- \c menu (table): The menu to make active.
+
+<hr>
+
+\subsection lua_api_menu_stop sol.menu.stop(menu)
+
+Stops a menu previously activated with \ref lua_api_menu_start.
+
+The Solarus engine will no longer call events on your menu.
+After a menu is stopped, as it is just a regular Lua table, you can keep all
+its data and enable it later again if you want.
+- \c menu (table): The menu to stop.
+
+<hr>
+
+\subsection lua_api_menu_stop_all sol.menu.stop_all(context)
+
+Stops all menus that are currently running in a context.
+- \c context (map, game or \c sol.main): The context where you want to stop
+  menus.
+
+This function is not often needed since menus are automatically stopped when
+their context is stopped.
 
 <hr>
 
@@ -47,17 +85,30 @@ and pass the context as first parameter.
 
 Called at each cycle of the main loop while your menu is active.
 
+Menus of are updated in the following order:
+-# Menus of the current \ref lua_api_game "map" (only when a game is running).
+-# Menus of the current \ref lua_api_game "game" (only when a game is running).
+-# Menus of \ref lua_api_main "sol.main" (the more general ones).
+
+When several menus exist in the same context, they are updated from the first
+one started to the last one started.
+
 <hr>
 
 \subsection lua_api_menu_on_started menu:on_started()
 
 Called when your menu is started.
 
+In other words, this event is triggered when you call \ref lua_api_menu_start.
+
 <hr>
 
 \subsection lua_api_menu_on_finished menu:on_finished()
 
-Called when your menu is destroyed.
+Called when your menu is stopped.
+
+In other words, this event is triggered when you call \ref lua_api_menu_stop
+or when the context of your menu finishes. 
 
 <hr>
 
@@ -68,6 +119,15 @@ Called when your menu has to be redrawn.
 Use this event to draw your menu.
 - \c dst_surface (surface): The surface where your should draw your menu.
 
+Menus of are drawn in the following order:
+-# Menus of the current \ref lua_api_game "map" (only when a game is running).
+-# Menus of the current \ref lua_api_game "game" (only when a game is running).
+-# Menus of \ref lua_api_main "sol.main" (the more general ones).
+
+When several menus exist in the same context, they are drawn from the first
+one started to the last one started.
+This means that most recent menus are drawn above older ones.
+
 <hr>
 
 \subsection lua_api_menu_on_key_pressed menu:on_key_pressed(key, modifiers)
@@ -75,11 +135,20 @@ Use this event to draw your menu.
 Called when the user presses a keyboard key while your menu is active.
 - \c key (string): Name of the raw key that was pressed.
 - \c modifiers (table): A table whose keys indicate what modifiers were
-  down during the event. Possible keys are \c "shift", \c "control" and
-  \c "alt". Values don't matter.
+  down during the event. Possible table keys are \c "shift", \c "control" and
+  \c "alt". Table values don't matter.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
-  (like the game).
+  (like other menus or the built-in game commands).
+
+For all keyboard and joypad events, most recent menus are notified
+first. For example, if a dialog box is shown during the pause menu and appears
+above that pause menu, it will naturally receive keyboard and joypad events first.
+
+When a menu handles the event, it should return \c true to make the event stop
+being propagated. Menus below it won't be not notified.
+On the contrary, if no menu has handled the event, then the engine can handle it
+with a built-in behavior.
 
 \remark This event indicates the raw key pressed. If you want the
 corresponding character instead (if any), see
@@ -90,13 +159,14 @@ corresponding character instead (if any), see
 \subsection lua_api_menu_on_key_released menu:on_key_released(key, modifiers)
 
 Called when the user releases a keyboard key while your menu is active.
+Most recent menus are notified first.
 - \c key (string): Name of the raw key that was released.
 - \c modifiers (table): A table whose keys indicate what modifiers were
-  down during the event. Possible keys are \c "shift", \c "control" and
-  \c "alt". Values don't matter.
+  down during the event. Possible table keys are \c "shift", \c "control" and
+  \c "alt". Table values don't matter.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
-  (like the game).
+  (like other menus or the built-in game commands).
 
 <hr>
 
@@ -104,12 +174,12 @@ Called when the user releases a keyboard key while your menu is active.
 
 Called when the user presses a keyboard key mapped to a character
 while your menu is active.
-
+Most recent menus are notified first.
 - \c character (string): A utf-8 string representing the character that was
 pressed.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
-  (like the game).
+  (like other menus).
 
 \remark When a character key is pressed, two events are called:
 \ref lua_api_menu_on_key_pressed (indicating the raw key)
@@ -124,46 +194,84 @@ strings.
 \subsection lua_api_menu_on_joypad_button_pressed menu:on_joypad_button_pressed(button)
 
 Called when the user presses a joypad button while your menu is active.
+Most recent menus are notified first.
 - \c button (number): Index of the button that was pressed.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
-  (like the game).
+  (like other menus or the built-in game commands).
 
 <hr>
 
 \subsection lua_api_menu_on_joypad_button_released menu:on_joypad_button_released(button)
 
 Called when the user releases a joypad button while your menu is active.
+Most recent menus are notified first.
 - \c button (number): Index of the button that was released.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
-  (like the game).
+  (like other menus or the built-in game commands).
 
 <hr>
 
 \subsection lua_api_menu_on_joypad_axis_moved menu:on_joypad_axis_moved(axis, state)
 
 Called when the user moves a joypad axis while your menu is active.
+Most recent menus are notified first.
 - \c axis (number): Index of the axis that was moved. Usually, \c 0 is an
   horizontal axis and \c 1 is a vertical axis.
 - \c state (number): The new state of the axis that was moved. \c -1 means
   left or up, \c 0 means centered and \c 1 means right or down.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
-  (like the game).
+  (like other menus or the built-in game commands).
 
 <hr>
 
 \subsection lua_api_menu_on_joypad_hat_moved menu:on_joypad_hat_moved(hat, direction8)
 
 Called when the user moves a joypad hat while your menu is active.
+Most recent menus are notified first.
 - \c hat (number): Index of the hat that was moved.
 - \c direction8 (number): The new direction of the hat. \c -1 means that the
   hat is centered. \c 0 to \c 7 indicates that the hat is in one of the eight
   menu directions.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
-  (like the game).
+  (like other menus or the built-in game commands).
+
+<hr>
+
+\subsection lua_api_menu_on_command_pressed menu:on_command_pressed(command)
+
+Called during a game when the player presses a game command
+(a keyboard key or a joypad action mapped to a built-in game behavior).
+You can use this event to override the normal built-in behavior of a game command.
+Most recent menus are notified first.
+- \c command (string): Name of the built-in game command that was pressed (see
+  \ref lua_api_get_command_effect for the list of existing game commands).
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (you are overriding the built-in behavior of pressing this game command).
+
+\remark As the notion of game commands only exist during a game,
+  this event is only called for game menus and map menus.
+
+<hr>
+
+\subsection lua_api_menu_on_command_released menu:on_command_released(command)
+
+Called during a game when the player released a game command
+(a keyboard key or a joypad action mapped to a built-in game behavior).
+You can use this event to override the normal built-in behavior of a game command.
+Most recent menus are notified first.
+- \c command (string): Name of the built-in game command that was released (see
+  \ref lua_api_get_command_effect for the list of existing game commands).
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (you are overriding the built-in behavior of releasing this game command).
+
+\remark As the notion of game commands only exist during a game,
+  this event is only called for game menus and map menus.
 
 */
 

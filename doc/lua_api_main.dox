@@ -184,7 +184,7 @@ Called at each cycle of the program's main loop.
 
 <hr>
 
-\subsection lua_api_main_on_draw main:on_draw(dst_surface)
+\subsection lua_api_main_on_draw sol.main:on_draw(dst_surface)
 
 Called when the program's screen is redrawn.
 

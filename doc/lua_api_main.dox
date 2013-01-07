@@ -2,7 +2,7 @@
 \page lua_api_main General features
 
 \c sol.main contains general features that are global to the execution
-of the program.
+of the program, no matter if a game or some menus are running.
 
 \section Contents
 
@@ -17,10 +17,10 @@ of the program.
 
 \subsection lua_api_main_load_file sol.main.load_file(script_name)
 
-Loads a Lua file into the current context (but does not run it).
+Loads a Lua file (but does not run it).
 
 This function is a replacement to the usual Lua function \c loadfile().
-However, it looks for a file in the quest tree
+The difference is that it looks for a file in the quest tree
 (which may be a directory or an archive).
 
 - \c script_name (string): Name of the Lua file to load, relative to the
@@ -37,8 +37,8 @@ However, it looks for a file in the quest tree
 
 \remark Note however that \c require() can be used normally because it is
   a higher-level function.
-  A specific loader is automatically set so that \c require looks in the
-  archive if necessary.
+  Indeed, a specific loader is automatically set so that \c require() looks in
+  the archive if necessary.
 
 <hr>
 
@@ -47,13 +47,13 @@ However, it looks for a file in the quest tree
 Loads and runs a Lua file into the current context.
 
 This function is a replacement to the usual Lua function \c dofile().
-However, it looks for a file in the quest tree
+The difference is that it looks for a file in the quest tree
 (which may be a directory or an archive).
 The file must exist.
 
 This function is equivalent to <tt>loadfile(script_name)()</tt>.
 
-Use \ref lua_api_main_load_file explicitely if you need to check the existence
+Use \ref lua_api_main_load_file explicitly if you need to check the existence
 of the file or to use parameters and return values.
 - \c script_name (string): Name of the Lua file to execute, relative to the
   root data directory of your quest (without extension).
@@ -62,7 +62,7 @@ of the file or to use parameters and return values.
     
 \subsection lua_api_main_reset sol.main.reset()
 
-Resets the program after the current cycle.
+Resets the whole program after the current cycle.
 Lua will be entirely shut down and then initialized again.
 
 <hr>
@@ -73,46 +73,96 @@ Exits the program after the current cycle.
 
 <hr>
  
-\subsection lua_api_main_start_screen sol.main.start_screen(menu)
+\subsection lua_api_main_is_debug_enabled sol.main.is_debug_enabled()
 
-Ends the menu or game that was running and starts a menu after the current
-cycle.
+Returns whether Solarus is running in debug mode.
 
-- \c menu (table): A table representing the menu to show (see
-  \ref lua_api_menu).
+The debug mode is intended to provide some debugging features to developers,
+such as traversing walls or skipping dialogs with special keys to make the
+development easier.
+Such features are not enabled when the game is compiled in release mode,
+(in other words, regular players cannot cheat).
+You may want to implement additional debugging features when this function
+returns \c true.
+
+- Return value (boolean): \c true if the Solarus engine is running in debug
+  mode.
 
 <hr>
 
-\subsection lua_api_main_is_debug_enabled sol.main.is_debug_enabled()
+\subsection lua_api_main_get_quest_write_dir sol.main.get_quest_write_dir()
 
-Returns whether Solarus is running in debugging mode.
+Returns the subdirectory where files specific to the quest are saved,
+like savegames and configuration files.
 
-The debugging mode provides some debugging features such as traversing walls.
-You may want to implement additional debugging features in this mode.
+- Return value (string): The quest write directory, relative to the Solarus
+  write directory.
 
-- Return value (boolean): \c true if the engine is running in debugging mode.
+<hr>
+
+\subsection lua_api_main_set_quest_write_dir sol.main.set_quest_write_dir(quest_write_dir)
+
+Changes the subdirectory where files specific to the quest are saved,
+like savegames and settings.
+Note that the quest write directory is already set by your \c quest.dat file.
+You usually don't have to call this function, unless you need to change it at
+runtime for some reason.
+
+- \c quest_write_dir (string): The quest write directory, relative to the Solarus
+  write directory.
+
+<hr>
+
+\subsection lua_api_main_load_settings sol.main.load_settings([file_name])
+
+Loads and applies the built-in settings from a file previously saved with
+\ref lua_api_main_save_settings.
+The settings include the language, the video mode and the audio volume.
+- \c file_name (string, optional): Settings file to read, relative to the
+  quest write directory. The default file name is \c settings.dat.
+- Return value (boolean): \c true if settings were successfully loaded and
+  applied.
+
+\remark All these settings can be modified with the Lua API, so you can either
+  use these functions or implement something more fitted to your needs.
+
+<hr>
+
+\subsection lua_api_main_save_settings sol.main.save_settings([file_name])
+
+Saves the built-in settings into a file.
+This file can be reloaded later with \ref lua_api_main_load_settings to
+restore the saved settings.
+The settings include the language, the video mode and the audio volume.
+- \c file_name (string, optional): Settings file to read, relative to the
+  quest write directory. The default file name is \c settings.dat.
+- Return value (boolean): \c true if settings were successfully saved.
+
+\remark All these settings can be modified with the Lua API, so you can either
+  use these functions or implement something more fitted to your needs.
 
 <hr>
 
 \subsection lua_api_main_get_distance sol.main.get_distance(x1, y1, x2, y2)
 
-Returns the distance in pixels between two points.
+Utility function that computes the distance in pixels between two points.
 - \c x1 (number): X coordinate of the first point.
 - \c y1 (number): Y coordinate of the first point.
 - \c x2 (number): X coordinate of the second point.
 - \c y2 (number): Y coordinate of the second point.
-- Return value (number): the distance in pixels
+- Return value (number): The distance in pixels.
 
 <hr>
 
 \subsection lua_api_main_get_angle sol.main.get_angle(x1, y1, x2, y2)
 
-Returns the angle in radians between the x axis and the specified vector.
+Utility function that computes the angle in radians between the x axis and the
+specified vector.
 - \c x1 (number): X coordinate of the first point.
 - \c y1 (number): Y coordinate of the first point.
 - \c x2 (number): X coordinate of the second point.
 - \c y2 (number): Y coordinate of the second point.
-- Return value (number): the angle in radians between the x axis and this
+- Return value (number): The angle in radians between the x axis and this
   vector.
 
 <hr>
@@ -123,25 +173,25 @@ Returns the angle in radians between the x axis and the specified vector.
 
 \subsection lua_api_main_on_update sol.main:on_update()
 
-Called at each cycle of the main loop.
+Called at each cycle of the program's main loop.
+
+\remark This event is very powerful (because it is called at global level of
+  the program) but it may costly if you do heavy operations.
+  Keep in mind that it is called at each cycle.
+  You can usually use other callbacks instead to get notified of when an event
+  happens. You can also use \ref lua_api_timer "timers" if you want to
+  regularly check something.
 
 <hr>
 
-\subsection lua_api_main_on_pre_draw sol.main:on_pre_draw(surface)
+\subsection lua_api_main_on_draw main:on_draw(dst_surface)
 
-Called just before the screen is redrawn.
+Called when the program's screen is redrawn.
 
-Use this event if you want to do something special initially.
-- \c dst_surface (surface): The surface where the screen will be drawn.
-
-<hr>
-
-\subsection lua_api_main_on_post_draw main:on_post_draw(surface)
-
-Called when the screen was just redrawn.
-
-Use this event if you want to draw some additional content.
-- \c dst_surface (surface): The surface where the screen was just drawn.
+Use this event if you want to draw some additional content after
+the game (if a game is started) and the menus (if you have created menus
+on \c sol.main).
+- \c dst_surface (surface): The surface where the screen is drawn.
 
 <hr>
 
@@ -152,8 +202,9 @@ Called at the beginning of the program.
 This function is called when Lua starts.
 In other words, the function is called when the program begins or after it
 was reset.
-In this function, you will usually start an initial screen
+In this function, you will typically start an initial menu
 like a title screen or a language selection screen.
+If you prefer, you can also start immediately a game.
 
 <hr>
 
@@ -175,9 +226,10 @@ Called when the user presses a keyboard key.
   \c "alt". Values don't matter.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
-  (like the game).
+  (like the game) and \ref lua_api_main_on_character_pressed won't be called
+  either.
 
-\remark This event indicates the raw key pressed. If you want the
+\remark This event indicates the raw key pressed. If you want to know the
 corresponding character instead (if any), see
 \ref lua_api_main_on_character_pressed.
 
@@ -201,7 +253,7 @@ Called when the user releases a keyboard key.
 Called when the user presses a keyboard key mapped to a character.
 
 - \c character (string): A utf-8 string representing the character that was
-pressed.
+  pressed.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (like the game).

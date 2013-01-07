@@ -22,8 +22,8 @@ obstacle, that a pressure plate has just been activated
 or that the hero is talking to a particular non-playing character.
 
 The following script files are loaded by the engine when they exist:
-- The main script (\c main.lua): global script that controls the menus before
-  starting a game.
+- The main script (\c main.lua): global script that controls the menus (if any)
+  before starting a game.
 - The script of a map (\c maps/XXXX.lua): controls the map \c XXXX.
   Called when the player enters the map.
 - The script of an enemy (\c enemies/XXXX.lua): controls an enemy whose

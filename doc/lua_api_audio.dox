@@ -13,14 +13,14 @@ You can play musics and sound effects through \c sol.audio.
 
 Plays a sound effect.
 
-A sound cannot be interrupted after you start playing it.
 Several sounds can be played in parallel.
-Unlike musics, sounds files are entirely read before being played.
+In the current version, a sound cannot be interrupted after you start
+playing it.
 
+Unlike musics, sounds files are entirely read before being played.
 A file access is made only the first time you play each sound.
 You can use \ref lua_api_audio_preload_sounds if you want to also avoid this
 initial file access.
-
 - \c sound_id (string): Name of the sound file to play, relative to the
   \c sounds directory and without extension. Currently, <tt>.ogg</tt> is the
   only extension supported.
@@ -35,12 +35,12 @@ If you don't call this function, you can still play sound effects, but the
 first access to each sound effect will require a file access that might be
 perceptible on slow machines.
 It is recommended to call this function at the beginning of the program
-(typically from \ref lua_api_main_on_started or from your first screen).
+(typically from \ref lua_api_main_on_started).
 
 The list of sound files to load is read from the
-\ref project_db project database file.
+\ref project_db "project database" file.
 
-This function does nothing if already called it before.
+This function does nothing if you already called it before.
 
 <hr>
 
@@ -48,9 +48,10 @@ This function does nothing if already called it before.
 
 Plays a music.
 
+If the same music is already playing, this function has no effect.
+If a different music was already playing, it is stopped and replaced by
+the new one.
 Only one music can be played at a time.
-If a music was already playing, it will be stopped and replaced by the new
-one.
 - \c music_id (string): Name of the music file to play, relative to the
   \c musics directory and without extension. The following extensions will be
   tried in this order: \c <tt>.ogg</tt>, \c <tt>.it</tt> and \c <tt>.spc</tt>.
@@ -72,7 +73,8 @@ This is equivalent to <tt>sol.audio.play_music("none")</tt>.
 
 Returns the current volume of sound effects.
 
-This volume applies to all sounds played by \ref lua_api_audio_play_sound.
+This volume applies to all sounds played by \ref lua_api_audio_play_sound
+and by the engine.
 - Return value (number): The current volume of sound effects, as an integer
   between \c 0 (mute) and \c 100 (full volume).
 
@@ -93,8 +95,7 @@ and by the engine.
 
 Returns the current volume of musics.
 
-This volume applies to all musics played by \ref lua_api_audio_play_music
-and by the engine.
+This volume applies to all musics played by \ref lua_api_audio_play_music.
 - Return value (number): The current volume of musics, as an integer
   between \c 0 (no sound effects) and \c 100 (full volume).
 
@@ -104,8 +105,7 @@ and by the engine.
 
 Sets the volume of musics.
 
-This volume applies to all musics played by \ref lua_api_audio_play_music
-and by the engine.
+This volume applies to all musics played by \ref lua_api_audio_play_music.
 - \c volume (number): The new volume of musics, as an integer
   between \c 0 (no music) and \c 100 (full volume).
 

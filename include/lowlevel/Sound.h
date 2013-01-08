@@ -20,8 +20,19 @@
 #include "Common.h"
 #include <list>
 #include <map>
+
+//Fix a pragma warning in official OpenAL headers, works with GCC and Clang
+#if defined(TARGET_OS_MAC)
+#  pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#endif
+
 #include <al.h>
 #include <alc.h>
+
+#if defined(TARGET_OS_MAC)
+#  pragma GCC diagnostic warning "-Wunknown-pragmas"
+#endif
+
 #include <vorbis/vorbisfile.h>
 
 /**

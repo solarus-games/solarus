@@ -28,9 +28,6 @@
  * @brief Define the current platform constants on Apple Systems
  */
 #if defined(__APPLE__)
-// OpenAL headers have a bug on some OSX implementation, so they must be included before the plateform test
-#  include <al.h>
-#  include <alc.h>
 #  include "TargetConditionals.h"
 #  if TARGET_OS_IPHONE == 1
 #    define SOLARUS_OS_IPHONE

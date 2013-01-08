@@ -42,7 +42,7 @@ If the delay is set to zero, the function is called immediately.
 - \c context (map, enemy, game, item, menu or \c sol.main; optional): Determines the lifetime of
   the timer.
   The context is where the timer belongs.<br>
-  If the context gets destroyed before the timer is finished, then
+  If the context gets closed before the timer is finished, then
   the timer is automatically canceled.
   More precisely, the following rules are applied.
   - If you set the context to a \ref lua_api_map "map", the timer is canceled

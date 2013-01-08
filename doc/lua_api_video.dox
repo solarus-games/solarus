@@ -1,38 +1,44 @@
 /**
 \page lua_api_video Video
 
-\c sol.video allows you to change the video mode.
+\c sol.video allows you to manage the window and to change the video mode.
 
 The screen size is fixed at compilation time: it's usually 320*240
 unless you set otherwise with the appropriate compilation flags.
-What we call "screen" or "logcial screen" on this page is the logical
+What we call "screen" or "logical screen" on this page is the logical
 surface where the game or the menus take place.
 Its size never changes at runtime.
 
 At runtime, the video mode can be changed. The video mode determines
-the size of the window and how the logical screen is displayed on this
+the size of the window, whether it runs in fullscreen,
+and how the logical screen is displayed on this
 window when the window is larger.
 
-The video mode is automatically saved (as well as the language and the volume),
-independently of savegames.
+The video mode can be saved and loaded with the global settings,
+as well as the language and the volume, independently of any savegame
+(see \ref lua_api_main_load_settings "sol.main.load_settings()").
 
 Video modes are identified by strings in the Lua API.
 The following modes are implemented:
-  - \c "windowed_stretched" (default): The logical screen is stretched onto a
+  - \c "windowed_stretched" (default): The logical screen is stretched on a
     window of double size.
-  - \c "windowed_scale2x": The logical screen is scaled onto a window of
-    double size with the Scale2X algorithm.
+  - \c "windowed_scale2x": The logical screen is scaled on a window of
+    double size with the
+    <a href="http://scale2x.sourceforge.net/algorithm.html">Scale2X</a>
+    algorithm.
   - \c "windowed_normal": The logical screen is displayed onto a window of the
     same size.
-  - \c "fullscreen_normal": The logical screen is displayed in fullscreen with
-    a resolution of the same size.
+  - \c "fullscreen_normal": The logical screen is stretched on a surface of
+    double size, and then displayed in fullscreen with a resolution of that
+    double size. (That's because many
+    screens don't support very low fullscreen resolutions like 320x240.)
   - \c "fullscreen_wide": The logical screen is stretched on a surface of
     double size and then displayed in fullscreen onto a widescreen resolution
     with two black side bars.
     This video mode is adapted to wide devices.
-  - \c "fullscreen_scale2x": The logical screen is scaled onto a surface of
+  - \c "fullscreen_scale2x": The logical screen is scaled on a surface of
     double size with the Scale2X algorithm, and then displayed in fullscreen
-    with a resolution of this double size.
+    with a resolution of that double size.
   - \c "fullscreen_scale2x_wide": The logical screen is scaled on a surface of
     double size with the Scale2X algorithm, and then displayed in fullscreen
     onto a widescreen resolution with two black side bars.
@@ -46,6 +52,24 @@ The following modes are implemented:
 <hr>
 
 \section lua_api_video_functions Functions of sol.video
+
+<hr>
+
+\subsection lua_api_get_window_title sol.video.get_window_title()
+
+Returns the text of the title bar of the window.
+- Return value (string): The window title.
+
+<hr>
+
+\subsection lua_api_set_window_title sol.video.set_window_title(window_title)
+
+Sets the text of the title bar of the window.
+
+Note that the window title is already specified in your \c quest.dat file.
+You usually don't have to call this function, unless you need to change it
+dynamically for some reason.
+- \c window_title (string): The window title to set.
 
 <hr>
 
@@ -82,7 +106,6 @@ Returns whether a video mode is supported.
 \subsection lua_api_video_get_modes sol.video.get_modes()
 
 Returns an array of all video modes supported.
-- \c video_mode (string): Name of a video mode (see the list above).
 
 <hr>
 
@@ -96,7 +119,8 @@ Returns whether the current video mode is fullscreen.
 \subsection lua_api_video_set_fullscreen sol.video.set_fullscreen([fullscreen])
 
 Turns on or turns off fullscreen, keeping an equivalent video mode.
-- \c fullscreen (boolean, optional): \c true to set fullscreen (default).
+- \c fullscreen (boolean, optional): \c true to set fullscreen (no value means
+  \c true).
 
 */
 

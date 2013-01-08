@@ -104,9 +104,10 @@ like savegames and configuration files.
 
 Changes the subdirectory where files specific to the quest are saved,
 like savegames and settings.
-Note that the quest write directory is already set by your \c quest.dat file.
-You usually don't have to call this function, unless you need to change it at
-runtime for some reason.
+Note that the quest write directory is already specified in your \c quest.dat
+file.
+You usually don't have to call this function, unless you need to change it
+dynamically for some reason.
 
 - \c quest_write_dir (string): The quest write directory, relative to the Solarus
   write directory.

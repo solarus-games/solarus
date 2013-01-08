@@ -117,9 +117,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
   # SDK version
   if(SOLARUS_SYSROOT)
     set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_SYSROOT}.sdk" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
-    if(SOLARUS_SYSROOT VERSION_LESS 10.6)
-      add_definitions(-DSOLARUS_DONT_USE_OSX_SANDBOX) 
-    endif()
   endif()
 
   # Deployment version

@@ -217,7 +217,7 @@ class LuaContext {
     void sprite_on_frame_changed(Sprite& sprite, const std::string& animation, int frame);
 
     // Movement events.
-    void movement_on_position_changed(Movement& movement);
+    void movement_on_position_changed(Movement& movement);  // TODO document
     void movement_on_obstacle_reached(Movement& movement);
     void movement_on_changed(Movement& movement);
     void movement_on_finished(Movement& movement);
@@ -508,7 +508,7 @@ class LuaContext {
       game_api_exists,
       game_api_delete,
       game_api_load,
-      game_api_save,
+      game_api_save,  // TODO allow to change the file name (e.g. to copy)
       game_api_start,
       game_api_is_started,
       game_api_is_suspended,

@@ -50,10 +50,10 @@ Starts a fade-out effect on this object.
 Makes this object move.
 
 Moving a drawable object means that when the objects gets displayed
-somewhere, it is displayed with an offset corresponding to the result of the
+somewhere, it is drawn with an offset corresponding to the result of the
 movement.
 - \c movement (movement): The movement to apply.
-  See \ref lua_api_movement_create to create it.
+  See \ref lua_api_movement_create "sol.movement.create()" to create it.
 - \c callback (function, optional): A function to call when the movement
   finishes.
 

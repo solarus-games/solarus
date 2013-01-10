@@ -11,11 +11,22 @@ A sprite has the following properties:
 - a current direction that indicates where the sprite is facing,
 - a current frame: the index of the current individual image in the sequence.
 
+The animation set of a sprite is composed of one or several PNG images that
+store all the frames, and a data file that describes how frames are
+organized in the PNG images. The data file also indicates the delay to make
+between frames when animating them and other properties like whether the
+animation should loop.
+See \ref sprite_syntax for more information about the format of sprites.
+
+We describe here the Lua API that you can use to show sprites during your
+game or your menus.
+
 \section Contents
 
 - \ref lua_api_sprite_functions
 - \ref lua_api_sprite_drawable_methods
 - \ref lua_api_sprite_methods
+- \ref lua_api_sprite_events
 
 <hr>
 
@@ -27,9 +38,10 @@ A sprite has the following properties:
 
 Creates a sprite.
 - \c animation_set_id (string): Name of the animation set to use. This name
-  must correspond to a valid sprite file in the \c sprites directory
+  must correspond to a valid sprite data file in the \c sprites directory
   (without its extension).
-- Return value (sprite): The sprite created.
+- Return value (sprite): The sprite created, or \nil if the sprite data file
+  could not be loaded.
 
 <hr>
 
@@ -38,7 +50,7 @@ Creates a sprite.
 Sprites are particular drawable objects.
 Thus, they inherit all methods from the type drawable.
 
-See the \ref lua_api_drawable_methods to know these methods.
+See \ref lua_api_drawable_methods to know these methods.
 
 <hr>
 
@@ -59,6 +71,7 @@ Returns the name of the current animation of this sprite.
 
 Sets the current animation of this sprite.
 - \c animation_name (string): Name of the animation to set.
+  This animation must exist in the animation set.
 
 <hr>
 
@@ -96,12 +109,11 @@ Sets the current frame of this sprite.
 
 Returns the delay between two frames of this sprite in the current animation.
 
-This delay is defined by the current animation but may be changed
-by lua_api_sprite_set_frame_delay.
-A value of \c 0 means an infinite delay and
-is only possible for single-frame animations.
+This delay is defined by the current animation but may be overriden
+by \ref lua_api_sprite_set_frame_delay "set_frame_delay()".
 - Return value (number): The delay in milliseconds between two frames in
-  the current animation (\c 0 means infinite).
+  the current animation. \c 0 means infinite
+  and is only allowed for single-frame animations.
 
 <hr>
 
@@ -110,7 +122,7 @@ is only possible for single-frame animations.
 Changes the delay between two frames of this sprite in the current animation.
 
 Use this function if you want to override the normal delay
-(the one defined in the sprite file).
+(the one defined in the sprite data file).
 - \c delay (number): The new delay in milliseconds. \c 0 means infinite
   and is only allowed for single-frame animations.
 
@@ -133,18 +145,47 @@ Pauses or resumes the animation of this sprite.
 
 \subsection lua_api_sprite_set_ignore_suspend sprite:set_ignore_suspend([ignore])
 
-Sets whether the animation should continue even when this sprite is suspended.
-- \c ignore (boolean): \c true to continue animation even when suspended
-  \c false otherwise. No value means \c true.
+During a game, sets whether the animation should continue even when the map is
+suspended.
+- \c ignore (boolean): \c true to continue animation even when the map is
+  suspended, \c false otherwise. No value means \c true.
 
 <hr>
 
 \subsection lua_api_sprite_synchronize sprite:synchronize(reference_sprite)
 
 Synchronizes the frames of this sprite with the frames of a reference sprite.
-The synchronization will be performed whenever their animation names match.
+The synchronization will be performed whenever both animation names match.
+The current sprite will no longer apply its normal frame delay: instead, it
+will now always set its current frame to the current frame of its reference
+sprite.
 - \c reference_sprite (sprite, optional): The reference sprite. \c nil means
   stopping any previous synchronization.
+
+<hr>
+
+\section lua_api_sprite_events Events of the type sprite
+
+Events are callback methods automatically called by the engine if you define
+them.
+
+<hr>
+
+\subsection lua_api_sprite_on_animation_finished sprite:on_animation_finished(animation)
+
+Called when the current animation of this sprite is finished.
+
+If the animation loops, this function is never called.
+Unless you start another animation, the sprite is no longer shown.
+- \c animation: Name of the animation that has just finished.
+
+<hr>
+
+\subsection lua_api_sprite_on_frame_changed sprite:on_frame_changed(animation, frame)
+
+Called whenever the frame of this sprite has changed.
+- \c animation: Name of the current animation.
+- \c frame: The new current frame.
 
 */
 

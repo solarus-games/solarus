@@ -170,6 +170,9 @@ specified vector.
 
 \section lua_api_main_events Events of sol.main
 
+Events are callback methods automatically called by the engine if you define
+them.
+
 <hr>
 
 \subsection lua_api_main_on_update sol.main:on_update()

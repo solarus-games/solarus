@@ -1,8 +1,8 @@
 /**
 \page lua_api_surface Surfaces
 
-A surface is a 2D image. Its main feature is that you can draw objects
-on it.
+A surface is a 2D image. It is essentially a rectangle of pixels.
+Its main feature is that you can draw objects on it.
 
 \section Contents
 
@@ -20,9 +20,9 @@ on it.
 
 Creates an empty surface.
 - \c width (number, optional): Width of the surface to create in pixels.
-  The default value is the width of the screen.
+  The default value is the width of the logical screen.
 - \c height (number, optional): Height of the surface to create in pixels.
-  The default value is the height of the screen.
+  The default value is the height of the logical screen.
 - Return value (surface): The surface created.
 
 <hr>
@@ -45,10 +45,10 @@ Creates a surface as a copy of a region of an existing surface.
 The last four parameters define the region of the existing surface to copy.
 They are optional: by default, the whole surface is copied.
   - \c src_surface (surface): An existing surface.
-  - \c x (integer, optional): X coordinate of the region in pixels.
-  - \c y (integer, optional): X coordinate of the region in pixels.
-  - \c width (integer, optional): Width of the region in pixels.
-  - \c height (integer, optional): Height of the region in pixels.
+  - \c x (integer, optional): X coordinate of the region to copy in pixels.
+  - \c y (integer, optional): X coordinate of the region to copy in pixels.
+  - \c width (integer, optional): Width of the region to copy in pixels.
+  - \c height (integer, optional): Height of the region to copy in pixels.
   - Return value (surface): The surface created.
 
 <hr>
@@ -58,7 +58,7 @@ They are optional: by default, the whole surface is copied.
 Surfaces are particular drawable objects.
 Thus, they inherit all methods from the type drawable.
 
-See the \ref lua_api_drawable_methods to know these methods.
+See \ref lua_api_drawable_methods to know these methods.
 
 <hr>
 
@@ -86,6 +86,14 @@ If no region is specified, the entire surface is filled.
 - \c y (number, optional): Y coordinate of the region to fill on this surface.
 - \c width (number, optional): Width of the region to fill on this surface.
 - \c height (number, optional): Height of the region to fill on this surface.
+
+<hr>
+
+\subsection lua_api_surface_get_transparency_color surface:set_transparency_color()
+
+Returns the transparency color to this surface. Pixels in that color are not
+displayed when this surface is drawn.
+- Return value (table): The color as an array of 3 RGB values (\c 0 to \c 255).
 
 <hr>
 

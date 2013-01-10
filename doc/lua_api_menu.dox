@@ -89,8 +89,8 @@ stopped when their context is closed.
 
 \section lua_api_menu_events Events of a menu
 
-Events are callback functions automatically called by the engine if you
-define them.
+Events are callback methods automatically called by the engine if you define
+them.
 
 <hr>
 

@@ -375,7 +375,10 @@ Removes a menu previously attached to this game with
 
 \section lua_api_game_events Events of a game
 
-The following events are called on the game currently running, if any.
+Events are callback methods automatically called by the engine if you define
+them.
+In the case of a game, they are only called on the game currently running, if
+any.
 
 <hr>
 

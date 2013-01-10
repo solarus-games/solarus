@@ -426,7 +426,7 @@ class LuaContext {
       sprite_api_set_direction,
       sprite_api_get_frame,
       sprite_api_set_frame,
-      sprite_api_get_frame_delay,
+      sprite_api_get_frame_delay,  // TODO use nil for no delay (instead of 0)
       sprite_api_set_frame_delay,
       sprite_api_is_paused,
       sprite_api_set_paused,

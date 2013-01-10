@@ -21,17 +21,22 @@
 #include <list>
 #include <map>
 
-//Fix a pragma warning in the OSX implementation of OpenAL headers, works with GCC 4.2+ and Clang
-
-// If clang, llvm-gcc or gcc >= 4.6, unknown pragmas are ignored, then reset at the initial value after OpenAl headers build
-// If GCC >=4.2 && <= 4.6, unknown pragmas are ignored, then trigger warning after OpenAl headers build, no matter of the initial value
-// If GCC < 4.2 , I don't know if there is a way to desactive unknow-pragmas inside source file, so there is still warnings
+/*** 
+ * Fix a pragma warning in the OSX implementation of OpenAL headers, works with GCC 4.2+, llvm-gcc and Clang
+ *
+ * If clang, llvm-gcc or gcc >= 4.6, unknown pragmas are ignored, then reset at the initial value after OpenAl headers build
+ * If GCC >=4.2 && < 4.6, unknown pragmas are ignored, then trigger warning after OpenAl headers build, no matter of the initial value
+ * If GCC < 4.2 , there is no way to desactive unknow-pragmas inside a specific source file, 
+ * so there still are warnings unless compile manually with -Wno-unknown-pragmas
+ ***/
 #if defined(TARGET_OS_MAC)
 #  if __llvm__ || __clang__ || ( __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 5 ))
 #    pragma GCC diagnostic push
 #  endif
 #  if __llvm__ || __clang__ || ( __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 1 ))
 #    pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#  else
+#    warning "You should manually compile with -Wno-unknown-pragmas flag to avoid warnings"
 #  endif
 #endif
 
@@ -42,9 +47,10 @@
 #  if __llvm__ || __clang__ || ( __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 5 ))
 #    pragma GCC diagnostic pop
 #  endif
-#  if ( __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 1 && __GNUC_MINOR__ < 6))
-#    pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#  if __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 1 && __GNUC_MINOR__ < 6)
+#    pragma GCC diagnostic warning "-Wunknown-pragmas"
 #  endif
+#
 #endif
 
 #include <vorbis/vorbisfile.h>

@@ -46,13 +46,6 @@ Rectangle VideoManager::default_mode_sizes[] = {
   Rectangle(0, 0, 0, 0),                                                 // FULLSCREEN_SCALE2X_WIDE
 };
 
-// Properties of SDL surfaces.
-#if defined(SOLARUS_SCREEN_SOFTWARE_SURFACE) && SOLARUS_SCREEN_SOFTWARE_SURFACE != 0  	
-const int VideoManager::surface_flags = SDL_SWSURFACE; 	
-#else
-const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
-#endif
-
 /**
  * @brief Switch from windowed to fullscreen or from fullscreen to windowed,
  * keeping an equivalent video mode.
@@ -114,6 +107,19 @@ VideoManager* VideoManager::get_instance() {
 }
 
 /**
+ * @brief Returns the appropriate SDL_Surface flag depending on the display resolution.
+ * @param the display mode which you wanted to know the SDL_Surface to use with.
+ * @return the better SDL_Surface flag to use
+ */
+const int VideoManager::get_surface_flag(const VideoMode mode) {
+    //The normal mode is the only one to not access to pixels, so it should be the only one to use hardware surface
+    if(mode == WINDOWED_NORMAL)
+        return SDL_HWSURFACE | SDL_DOUBLEBUF;
+    else 
+        return SDL_SWSURFACE;
+}
+
+/**
  * @brief Constructor.
  */
 VideoManager::VideoManager(bool disable_window):
@@ -132,7 +138,7 @@ VideoManager::VideoManager(bool disable_window):
   for (int i = 0; i < NB_MODES; i++) {
     mode_sizes[i] = default_mode_sizes[i];
   }
-  int flags = surface_flags | SDL_FULLSCREEN;
+  int flags = get_surface_flag(FULLSCREEN_WIDE) | SDL_FULLSCREEN;
   if (SDL_VideoModeOK(768, 480, 32, flags)) {
     mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
     mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);
@@ -179,7 +185,7 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
     return false;
   }
 
-  int flags = surface_flags;
+  int flags = get_surface_flag(mode);
   if (is_fullscreen(mode)) {
     flags |= SDL_FULLSCREEN;
   }
@@ -257,7 +263,7 @@ void VideoManager::set_default_video_mode() {
  */
 void VideoManager::set_video_mode(VideoMode mode) {
 
-  int flags = surface_flags;
+  int flags = get_surface_flag(mode);
   int show_cursor;
   if (is_fullscreen(mode)) {
     flags |= SDL_FULLSCREEN;

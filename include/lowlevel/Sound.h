@@ -21,19 +21,13 @@
 #include <list>
 #include <map>
 
-/*** 
- * Fix a pragma warning in the OSX implementation of OpenAL headers, works with GCC 4.2+, llvm-gcc and Clang
- *
- * If clang, llvm-gcc or gcc >= 4.6, unknown pragmas are ignored, then reset at the initial value after OpenAl headers build
- * If GCC >=4.2 && < 4.6, unknown pragmas are ignored, then trigger warning after OpenAl headers build, no matter of the initial value
- * If GCC < 4.2 , there is no way to desactive unknow-pragmas inside a specific source file, 
- * so there still are warnings unless compile manually with -Wno-unknown-pragmas
- ***/
+
+//Fix a pragma warning in the OSX implementation of OpenAL headers, works with GCC 4.2+, llvm-gcc and Clang
 #if defined(TARGET_OS_MAC)
-#  if __llvm__ || __clang__ || ( __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 5 ))
+#  if __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 5 )
 #    pragma GCC diagnostic push
 #  endif
-#  if __llvm__ || __clang__ || ( __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 1 ))
+#  if __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 1 )
 #    pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #  else
 #    warning "You should manually compile with -Wno-unknown-pragmas flag to avoid warnings"
@@ -43,14 +37,14 @@
 #include <al.h>
 #include <alc.h>
 
+// Reset original behavior, or trigger warning on unknown pragmas if GCC >=4.2 and <4.6
 #if defined(TARGET_OS_MAC)
-#  if __llvm__ || __clang__ || ( __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 5 ))
+#  if __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 5 )
 #    pragma GCC diagnostic pop
 #  endif
-#  if __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 1 && __GNUC_MINOR__ < 6)
+#  if __GNUC__ && (__GNUC__ == 4 && ( __GNUC_MINOR__ > 1 || __GNUC_MINOR__ < 6))
 #    pragma GCC diagnostic warning "-Wunknown-pragmas"
 #  endif
-#
 #endif
 
 #include <vorbis/vorbisfile.h>

@@ -25,11 +25,13 @@ because all movement types don't have the same properties.
 - \ref lua_api_circle_movement_methods
 - \ref lua_api_jump_movement_methods
 - \ref lua_api_pixel_movement_methods
+- \ref lua_api_movement_events
 
 Movements can be applied in-game to map entities, but also
 outside a game, typically in a menu to move a sprite or an image.
-However, some properties of movements (like \c set_ignore_obstacles())
-take effect only when the movement is applied to a map entity
+However, some properties of movements (like \ref
+lua_api_movement_set_ignore_obstacles "set_ignore_obstacles()")
+only take effect when the movement is applied to a map entity
 because they refer to map-specific notions.
 
 <hr>
@@ -67,6 +69,39 @@ then available to get and set its properties.
 <hr>
 
 These methods exist in all movement types.
+
+<hr>
+
+\subsection lua_api_movement_get_xy movement:get_xy()
+
+Returns the coordinates of the object controlled by this movement.
+
+If this movement is attached to a map
+\ref lua_api_entity "entity" during a game,
+the coordinates of that entity are returned but you probably don't need
+this function.
+
+Otherwise, the coordinates returned correspond to the result of the
+movement so far for an object that was initially at position <tt>0,0</tt>
+(or at the position you specified with
+\ref lua_api_movement_set_xy "set_xy()")
+
+<hr>
+
+\subsection lua_api_movement_set_xy movement:set_xy()
+
+Sets the coordinates of the object controlled by this movement.
+
+If this movement is attached to a map
+\ref lua_api_entity "entity" during a game,
+the coordinates are applied to that entity
+but you probably don't need
+this function.
+
+
+Otherwise, the coordinates are stored internally and will be used as a
+reference for a future call to
+\ref lua_api_movement_get_xy "get_xy()".
 
 <hr>
 
@@ -898,6 +933,49 @@ Sets the delay between two steps of the trajectory.
 - \c delay (number): The delay between two steps in milliseconds.
 
 <hr>
+
+\section lua_api_movement_events Events of the type movement
+
+Events are callback methods automatically called by the engine if you define
+them.
+
+<hr>
+
+\subsection lua_api_movement_on_position_changed movement:on_position_changed()
+
+Called when the coordinates controlled by this movement have just changed.
+
+<hr>
+
+\subsection lua_api_movement_on_obstacle_reached movement:on_obstacle_reached()
+
+During a game, called when this movement has just failed to change the
+coordinates because this would lead the map entity controlled into an obstacle
+of the map.
+
+When an obstacle is reached, this event is called instead of
+\ref lua_api_movement_on_position_changed "on_position_changed()".
+
+This event can only be called when all of these conditions are met:
+- A game is currently running.
+- The movement is attached to a map \ref lua_api_entity "entity" (like an
+  enemy, an NPC, etc.).
+- The movement does not ignore obstacles (i.e.
+  \ref lua_api_movement_get_ignore_obstacles "get_ignore_obstacles()" returns
+  \c false).
+
+<hr>
+
+\subsection lua_api_movement_on_changed movement:on_changed()
+
+Called when the characteristics of this movement (like speed or angle) have
+just changed.
+
+<hr>
+
+\subsection lua_api_movement_on_finished movement:on_finished()
+
+Called when this movement has just finished (if there is an end).
 
 */
 

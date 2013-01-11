@@ -55,14 +55,14 @@ The following modes are implemented:
 
 <hr>
 
-\subsection lua_api_get_window_title sol.video.get_window_title()
+\subsection lua_api_video_get_window_title sol.video.get_window_title()
 
 Returns the text of the title bar of the window.
 - Return value (string): The window title.
 
 <hr>
 
-\subsection lua_api_set_window_title sol.video.set_window_title(window_title)
+\subsection lua_api_video_set_window_title sol.video.set_window_title(window_title)
 
 Sets the text of the title bar of the window.
 

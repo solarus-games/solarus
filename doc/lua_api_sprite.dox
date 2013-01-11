@@ -40,7 +40,7 @@ Creates a sprite.
 - \c animation_set_id (string): Name of the animation set to use. This name
   must correspond to a valid sprite data file in the \c sprites directory
   (without its extension).
-- Return value (sprite): The sprite created, or \nil if the sprite data file
+- Return value (sprite): The sprite created, or \c nil if the sprite data file
   could not be loaded.
 
 <hr>

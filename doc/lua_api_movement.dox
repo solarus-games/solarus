@@ -98,7 +98,6 @@ the coordinates are applied to that entity
 but you probably don't need
 this function.
 
-
 Otherwise, the coordinates are stored internally and will be used as a
 reference for a future call to
 \ref lua_api_movement_get_xy "get_xy()".

@@ -68,7 +68,7 @@ class VideoManager {
   VideoManager(bool disable_window);
   ~VideoManager();
 
-  const int get_surface_flag(const VideoMode mode);
+  uint32_t get_surface_flag(const VideoMode mode);
     
   void blit(Surface* src_surface, Surface* dst_surface);
   void blit_stretched(Surface* src_surface, Surface* dst_surface);

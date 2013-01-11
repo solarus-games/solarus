@@ -119,19 +119,6 @@
 #  endif
 #endif
 
-/**  	
- * @def SOLARUS_SCREEN_SOFTWARE_SURFACE
- * @brief Forces using a software surface for the screen.  	
- */	  	
-#ifndef SOLARUS_SCREEN_SOFTWARE_SURFACE
-// On Mac OS X, SDL hardware surfaces are buggy.
-#  if defined(SOLARUS_OS_MACOSX)
-#    define SOLARUS_SCREEN_SOFTWARE_SURFACE 1
-#  else
-#    define SOLARUS_SCREEN_SOFTWARE_SURFACE 0  	
-#  endif
-#endif
-
 #include "Types.h"
 
 #endif

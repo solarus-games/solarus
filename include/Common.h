@@ -23,10 +23,7 @@
 #ifndef SOLARUS_COMMON_H
 #define SOLARUS_COMMON_H
 
-/**
- * @def SOLARUS_OS_MACOSX OR SOLARUS_OS_IPHONE
- * @brief Define the current platform constants on Apple Systems
- */
+// Define the current platform constants on Apple Systems.
 #if defined(__APPLE__)
 #  include "TargetConditionals.h"
 #  if TARGET_OS_IPHONE == 1

@@ -111,10 +111,10 @@ VideoManager* VideoManager::get_instance() {
  * @param the display mode which you wanted to know the SDL_Surface to use with.
  * @return the better SDL_Surface flag to use
  */
-uint32_t VideoManager::get_surface_flag(const VideoMode mode) {
-    uint32_t flag;
+Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
+    Uint32 flag;
     
-    // The normal mode is the only one to not access to pixels, so it should be the only one to use hardware surface
+    // The normal windowed mode is the only one which not access to pixels, so it should be the only one to use hardware surface
     if(mode == WINDOWED_NORMAL)
         flag = SDL_HWSURFACE;
     else 
@@ -124,6 +124,8 @@ uint32_t VideoManager::get_surface_flag(const VideoMode mode) {
 #ifndef SOLARUS_OS_MACOSX
     flag |= SDL_DOUBLEBUF;
 #endif
+    
+    return flag;
 }
 
 /**

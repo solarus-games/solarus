@@ -108,17 +108,17 @@ VideoManager* VideoManager::get_instance() {
 
 /**
  * @brief Returns the appropriate SDL_Surface flag depending on the display resolution.
- * @param the display mode which you wanted to know the SDL_Surface to use with.
+ * @param the display mode which you wanted to know the SDL_Surface flag to use with.
  * @return the better SDL_Surface flag to use
  */
 Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
     Uint32 flag;
     
-    // The normal windowed mode is the only one which not access to pixels, so it should be the only one to use hardware surface
-    if(mode == WINDOWED_NORMAL)
-        flag = SDL_HWSURFACE;
-    else 
+    // Use software surface if there will be pixel access to blit with the mode in parameter
+    if(mode_sizes[mode].get_width() != SOLARUS_SCREEN_WIDTH || mode_sizes[mode].get_height() != SOLARUS_SCREEN_HEIGHT)
         flag = SDL_SWSURFACE;
+    else 
+        flag = SDL_HWSURFACE;
     
     // SDL_DOUBLEBUF is buggy on OSX
 #ifndef SOLARUS_OS_MACOSX

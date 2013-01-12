@@ -258,6 +258,8 @@ SDL_Surface * Surface::get_internal_surface() {
  * If the destination pixel depth format is less than 32-bpp then the unused upper bits of the return value can safely be ignored.
  * This method should be used only by low-level classes, and after lock source internal_surface.
  *
+ * It's the SDL_ConvertSurface() function equivalent for a pixel by pixel uses.
+ *
  * @param idx_pixel the index of the pixel to convert
  * @param dst_format the destination format
  * @return the color-mapped pixel

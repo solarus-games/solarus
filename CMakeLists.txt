@@ -68,7 +68,7 @@ add_executable(solarus
 )
 
 # generate -I flags
-include_directories(
+include_directories(SYSTEM
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/snes_spc
   ${SDL_INCLUDE_DIR}
@@ -107,24 +107,42 @@ set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
 # Compilation flags for Mac OS X deployment
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Release")
+  # Get the current OSX version
+  execute_process(COMMAND sw_vers -productVersion
+    OUTPUT_VARIABLE SOLARUS_CURRENT_OSX_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+
   # Build architectures
-  if(SOLARUS_ARCH)
-    set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Chosen build architecture" FORCE)
-  else()
-    set(CMAKE_OSX_ARCHITECTURES "i386;x86_64;" CACHE STRING "Intel build architecture" FORCE)
+  if(NOT SOLARUS_ARCH)
+    if(${SOLARUS_CURRENT_OSX_VERSION} VERSION_LESS "10.6")
+      set(SOLARUS_ARCH "${SOLARUS_ARCH}ppc;")
+    endif()
+    if(NOT ${SOLARUS_CURRENT_OSX_VERSION} VERSION_LESS "10.4.4")
+      set(SOLARUS_ARCH "${SOLARUS_ARCH}i386;")
+    endif()
+    if(NOT ${SOLARUS_CURRENT_OSX_VERSION} VERSION_LESS "10.5")
+      set(SOLARUS_ARCH "${SOLARUS_ARCH}x86_64;")
+    endif()
   endif()
+  set(CMAKE_OSX_ARCHITECTURES "${SOLARUS_ARCH}" CACHE STRING "Build architecture" FORCE)
 
   # SDK version
-  if(SOLARUS_SYSROOT)
-    set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_SYSROOT}.sdk" CACHE STRING "Chosen OS version whose headers you'll use" FORCE)
+  if(NOT SOLARUS_SYSROOT)
+    if(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION}.sdk)
+      set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION}.sdk")
+    endif()
   endif()
+  set(CMAKE_OSX_SYSROOT "${SOLARUS_SYSROOT}" CACHE STRING "Build SDK" FORCE)
 
   # Deployment version
-  if(SOLARUS_DEPLOYMENT)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Chosen oldest OS version supported" FORCE)
-    if(SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
-      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
-    endif()
+  if(NOT SOLARUS_DEPLOYMENT)
+    set(SOLARUS_DEPLOYMENT "10.6")
+  endif()
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Oldest OS version supported" FORCE)
+
+  # Compatibility options
+  if(SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
 endif()
 

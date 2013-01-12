@@ -20,33 +20,8 @@
 #include "Common.h"
 #include <list>
 #include <map>
-
-
-//Fix a pragma warning in the OSX implementation of OpenAL headers, works with GCC 4.2+, llvm-gcc and Clang
-#if defined(TARGET_OS_MAC)
-#  if __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 5 )
-#    pragma GCC diagnostic push
-#  endif
-#  if __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 1 )
-#    pragma GCC diagnostic ignored "-Wunknown-pragmas"
-#  else
-#    warning "You should manually compile with -Wno-unknown-pragmas flag to avoid warnings"
-#  endif
-#endif
-
 #include <al.h>
 #include <alc.h>
-
-// Reset original behavior, or trigger warning on unknown pragmas if GCC >=4.2 and <4.6
-#if defined(TARGET_OS_MAC)
-#  if __GNUC__ && ( __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ > 5 )
-#    pragma GCC diagnostic pop
-#  endif
-#  if __GNUC__ && (__GNUC__ == 4 && ( __GNUC_MINOR__ > 1 || __GNUC_MINOR__ < 6))
-#    pragma GCC diagnostic warning "-Wunknown-pragmas"
-#  endif
-#endif
-
 #include <vorbis/vorbisfile.h>
 
 /**

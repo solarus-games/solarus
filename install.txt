@@ -190,7 +190,7 @@ support "out of the box" 10.6 version and earlier.
 Pass SOLARUS_SYSROOT, SOLARUS_DEPLOYMENT or/and SOLARUS_ARCH constants to
 cmake to overload default settings, just like the following example :
 
-$ cmake -DSOLARUS_OSX_BUNDLE="SolarusDX" -DSOLARUS_SYSROOT="10.5" -DSOLARUS_ARCH="ppc;i386;x86_64" -DSOLARUS_DEPLOYMENT=10.5 .
+$ cmake -DSOLARUS_OSX_BUNDLE="SolarusDX" -DSOLARUS_SYSROOT="/Developer/SDKs/MacOSX10.5.sdk" -DSOLARUS_ARCH="ppc;i386;x86_64" -DSOLARUS_DEPLOYMENT=10.5 .
 
 
 * Deploy on OSX

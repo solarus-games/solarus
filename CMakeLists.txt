@@ -67,6 +67,12 @@ add_executable(solarus
   ${main_source_file}
 )
 
+# Workaround : -isystem flag isn't correctly set on OSX when using SYSTEM option.
+# Remove this when http://public.kitware.com/Bug/view.php?id=10837 will be accepted.
+if(APPLE)
+  set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem ")
+endif()
+
 # generate -I flags
 include_directories(SYSTEM
   ${SOLARUS_ENGINE_SOURCE_DIR}/include

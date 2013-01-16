@@ -139,7 +139,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
       set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION}.sdk")
     elseif(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_MAJOR_MINOR_VERSION}.sdk)
       set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_MAJOR_MINOR_VERSION}.sdk")
-    elseif(NOT SOLARUS_DEPLOYMENT)
+    elseif(SOLARUS_DEPLOYMENT)
         message(FATAL_ERROR "Please pass the path of the SDK to use into the SOLARUS_SYSROOT flag, or set SOLARUS_DEPLOYMENT to \"\"")
     endif()
   endif()

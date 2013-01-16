@@ -135,15 +135,23 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
 
   # SDK version
   if(NOT SOLARUS_SYSROOT)
-    if(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_MAJOR_MINOR_VERSION}.sdk)
+    if(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION}.sdk)
+      set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION}.sdk")
+    elseif(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_MAJOR_MINOR_VERSION}.sdk)
       set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_MAJOR_MINOR_VERSION}.sdk")
+    elseif(NOT SOLARUS_DEPLOYMENT)
+        message(FATAL_ERROR "Please pass the path of the SDK to use into the SOLARUS_SYSROOT flag, or set SOLARUS_DEPLOYMENT to \"\"")
     endif()
   endif()
   set(CMAKE_OSX_SYSROOT "${SOLARUS_SYSROOT}" CACHE STRING "Build SDK" FORCE)
 
   # Deployment version
   if(NOT SOLARUS_DEPLOYMENT)
-    set(SOLARUS_DEPLOYMENT "10.6")
+    if(NOT ${SOLARUS_CURRENT_OSX_VERSION} VERSION_LESS "10.6")
+      set(SOLARUS_DEPLOYMENT "10.6")
+    else()
+      set(SOLARUS_DEPLOYMENT "10.2.8")
+    endif()
   endif()
   set(CMAKE_OSX_DEPLOYMENT_TARGET "${SOLARUS_DEPLOYMENT}" CACHE STRING "Oldest OS version supported" FORCE)
 

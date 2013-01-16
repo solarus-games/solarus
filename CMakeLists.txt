@@ -73,7 +73,7 @@ if(APPLE)
   set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem ")
 endif()
 
-# generate -I flags
+# generate -isystem flags, or -I flags if not supported
 include_directories(SYSTEM
   ${SOLARUS_ENGINE_SOURCE_DIR}/include
   ${SOLARUS_ENGINE_SOURCE_DIR}/include/snes_spc
@@ -113,10 +113,11 @@ set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
 # Compilation flags for Mac OS X deployment
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Release")
-  # Get the current OSX version
+  # Get the current OSX version as X.X.X and X.X form
   execute_process(COMMAND sw_vers -productVersion
     OUTPUT_VARIABLE SOLARUS_CURRENT_OSX_VERSION
     OUTPUT_STRIP_TRAILING_WHITESPACE)
+  string(REGEX REPLACE "([0-9]+)\\.([0-9]+)\\.[0-9]+[ \t\r\n]*" "\\1.\\2" SOLARUS_CURRENT_OSX_MAJOR_MINOR_VERSION ${SOLARUS_CURRENT_OSX_VERSION})
 
   # Build architectures
   if(NOT SOLARUS_ARCH)
@@ -134,8 +135,8 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
 
   # SDK version
   if(NOT SOLARUS_SYSROOT)
-    if(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION}.sdk)
-      set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION}.sdk")
+    if(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_MAJOR_MINOR_VERSION}.sdk)
+      set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_MAJOR_MINOR_VERSION}.sdk")
     endif()
   endif()
   set(CMAKE_OSX_SYSROOT "${SOLARUS_SYSROOT}" CACHE STRING "Build SDK" FORCE)

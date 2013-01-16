@@ -32,7 +32,7 @@
 #  if TARGET_OS_IPHONE == 1
 #    define SOLARUS_OS_IPHONE
 // TARGET_OS_MAC is set to 1 on both IPhone, IPhone simulator and Mac OS.
-#  elif TARGET_OS_MAC == 1 
+#  elif TARGET_OS_MAC == 1
 #    define SOLARUS_OS_MACOSX
 #  endif
 #endif

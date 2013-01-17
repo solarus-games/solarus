@@ -283,7 +283,7 @@ uint32_t Surface::get_mapped_pixel(int idx_pixel, SDL_PixelFormat* dst_format) {
         default:
             // Manual cast of the pixel into uint32_t
             pixel = *(uint32_t*)((uint8_t*)internal_surface->pixels + idx_pixel * internal_surface->format->BytesPerPixel)
-            & (0xffffffff << (32 - internal_surface->format->BitsPerPixel));         
+            & (0xffffffff << 32 - internal_surface->format->BitsPerPixel);         
     }
     
     SDL_GetRGBA(pixel, internal_surface->format, &r, &g, &b, &a);

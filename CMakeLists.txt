@@ -135,11 +135,11 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
 
   # SDK version
   if(NOT SOLARUS_SYSROOT)
-    # Default SDKs, in order to the earlier naming convention to the older one
+    # Default SDKs, in order from the earlier naming convention to the older one
     if(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION}.sdk)
       set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION}.sdk")
-    elseif(EXISTS /Developer/SDKs/MacOSX{SOLARUS_CURRENT_OSX_VERSION}u.sdk)
-      set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX{SOLARUS_CURRENT_OSX_VERSION}u.sdk")
+    elseif(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION}u.sdk)
+      set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_VERSION}u.sdk")
     elseif(EXISTS /Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_MAJOR_MINOR_VERSION}.sdk)
       set(SOLARUS_SYSROOT "/Developer/SDKs/MacOSX${SOLARUS_CURRENT_OSX_MAJOR_MINOR_VERSION}.sdk")
     endif()

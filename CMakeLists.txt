@@ -169,10 +169,10 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT SOLARUS_IPHONE_BUILD)
   endif()
 
 # Compilation flags for Iphone build and deployment
-elif(SOLARUS_IPHONE_BUILD)
+elif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND SOLARUS_IPHONE_BUILD)
 
   if(NOT SOLARUS_ARCH)
-    set(SOLARUS_ARCH ${ARCHS_STANDARD_32_BIT})
+    set(SOLARUS_ARCH "armv6;armv7;")
   endif()
   set(CMAKE_OSX_ARCHITECTURES ${SOLARUS_ARCH})
 

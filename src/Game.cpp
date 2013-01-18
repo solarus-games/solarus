@@ -218,8 +218,9 @@ bool Game::notify_input(InputEvent& event) {
       handled = current_map->notify_input(event);
       if (!handled) {
         // Built-in behavior:
-        // the GameControl object will transform the low-level input event into
-        // a high-level game command event (i.e. a call to command_pressed() or command_released()).
+        // the GameCommands object will transform the low-level input event into
+        // a high-level game command event (i.e. a command_pressed event or
+        // a command_released event).
         commands->notify_input(event);
       }
     }

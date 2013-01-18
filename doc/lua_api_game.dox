@@ -2,10 +2,30 @@
 \page lua_api_game Games and savegames
 
 This module provides a datatype "game" that represents a savegame.
+On a game object, you can access and modify everything that is saved.
 
-When a game is running, more methods are available
-(like pausing the game, starting a menu, etc.).
+The data saved and restored by the engine are the following:
+- starting location of the player (map and destination on this map),
+- life (maximum and current),
+- money (maximum and current),
+- magic (maximum and current),
+- built-in ability levels (like attacking, swimming, running, etc.).
+- possession state of each saved equipment item,
+- equipment items assigned to an item command,
+- keyboard and joypad associations to game commands,
+- any key-value pair that you need to store for your quest (see
+  \ref lua_api_game_get_value "game:get_value()" and
+  \ref lua_api_game_set_value "game:set_value()").
+
+When a game is running, more features are available
+(like pausing the game, handling game commands, etc.).
 Only one game can be running at a time.
+
+Note that objects of the game type are userdata, but like most Solarus Lua
+types, they can also be accessed like tables.
+This is especially useful for the game type to add, next to the built-in
+game features, your own quest-specific functions and data (like your HUD and
+your pause menu).
 
 \section Contents
 
@@ -22,8 +42,8 @@ Only one game can be running at a time.
 \subsection lua_api_game_exists sol.game.exists(file_name)
 
 Returns whether the specified savegame file exists.
-- \c file_name (string): Name of the file to test, relative to the
-  savegames directory.
+- \c file_name (string): Name of the file to test, relative
+  to the \ref lua_api_main_get_quest_write_dir "quest write directory".
 - Return value (boolean): \c true if this savegame file exists.
 
 <hr>
@@ -32,7 +52,7 @@ Returns whether the specified savegame file exists.
 
 Deletes a savegame file.
 - \c file_name (string): Name of the file to delete, relative
-  to the savegames directory.
+  to the \ref lua_api_main_get_quest_write_dir "quest write directory".
 
 <hr>
 
@@ -40,8 +60,8 @@ Deletes a savegame file.
 
 Loads an existing savegame, or initializes a new one if it does not exist
 (but does not save it).
-- \c file_name (string): Name of a savegame file, relative to the savegames
-  directory.
+- \c file_name (string): Name of a savegame file, relative to the
+  to the \ref lua_api_main_get_quest_write_dir "quest write directory".
 - Return value (game): The loaded (or created) game.
 
 \remark This function does not start the game, it just loads the savegame file.
@@ -62,16 +82,23 @@ Saves this game into its savegame file.
 
 \subsection lua_api_game_start game:start()
 
-Ends the scripted screen or game that was running and runs this game.
+Runs this game.
 
-You can call this function to restart the current game itself,
-even if it was not saved recently (no data will be lost).
+This function is typically called from your savegame menu, when the player
+chooses its savegame file.
+
+If another game was running, it is stopped automatically because only one game
+can be running at a time.
+
+You can also call this function to restart the current game itself,
+even if it was not saved recently (saved data will not be reset).
+This may be useful to restart the game after the game-over screen.
 
 <hr>
 
 \subsection lua_api_game_is_started game:is_started()
 
-Returns whether this game is currently being played.
+Returns whether this game is currently running.
 
 Only one game can be running at a time.
 - Return value (boolean): \c true if this game is running.
@@ -80,9 +107,28 @@ Only one game can be running at a time.
 
 \subsection lua_api_game_is_suspended game:is_suspended()
 
-Returns whether this game is started and is currently suspended.
+Returns whether this game is currently suspended.
 - Return value (boolean): \c true if this game is suspended, for example
-  because it is paused or because a dialog is being shown.
+  because it is paused or because there is a camera sequence.
+  Only possible when the game is running.
+
+<hr>
+
+\subsection lua_api_game_is_paused game:is_paused()
+
+Returns whether this game is currently paused.
+- Return value (boolean): \c true if this game is paused.
+  Only possible when the game is running.
+
+<hr>
+
+\subsection lua_api_game_set_paused game:set_paused(paused)
+
+Pauses or resumes the game explictly.
+
+Note that by default, a built-in game command already exists to pause and
+unpause the game.
+- \c paused (boolean): \c true to pause the game, \c false to unpause it.
   Only possible when the game is running.
 
 <hr>
@@ -96,68 +142,53 @@ Returns the current map.
 <hr>
 
 
-\subsection lua_api_game_get_string game:get_string(index)
+\subsection lua_api_game_get_value game:get_value(key)
 
-Returns a string saved.
-- \c index (number): Index of a string variable to get from the
-  savegame (\c 0 to \c 63).
-- Return value (string): The corresponding string.
-
-<hr>
-
-\subsection lua_api_game_set_string game:set_string(index, value)
-
-Sets a string in the savegame.
-- \c index (number): Index of the string variable to set (\c 32 to \c 63).
-- \c value (string): The string value to set.
+Returns a value saved.
+- \c key (string): Name of the value to get from the savegame.
+- Return value (string, number or boolean): The corresponding value
+  (\c nil if no value is defined with this key).
 
 <hr>
 
-\subsection lua_api_game_get_integer game:get_integer(index)
+\subsection lua_api_game_set_value game:set_value(key, value)
 
-Returns an integer saved.
-- \c index (number): Index of an integer variable to get from the
-  savegame (\c 0 to \c 2047).
-- Return value (number): The corresponding integer.
+Sets a value in the savegame.
 
-<hr>
+This function allows to store arbitrary key-value pairs in the savegame.
+Values can be strings, integers or booleans.
+- \c key (string): Name of the value to save (must contain alphanumeric
+  characters or \c '_' only, and must start with a letter).
+- \c value (string, number or boolean): The value to set.
 
-\subsection lua_api_game_set_integer game:set_integer(index, value)
-
-Sets an integer in the savegame.
-- \c index (number): Index of the integer variable to set (\c 1024 to \c 2047).
-- \c value (number): The integer value to set.
-
-<hr>
-
-\subsection lua_api_game_get_boolean game:get_boolean(index)
-
-Returns a boolean saved.
-- \c index (number): Index of the boolean variable to get from the
-  savegame (\c 0 to \c 32767).
-- Return value (boolean): The corresponding boolean.
+\remark This method changes a value, but remember that the change will be
+  saved in the savegame file only when you call
+  \ref lua_api_game_save "game:save()".
 
 <hr>
 
-\subsection lua_api_game_set_boolean game:set_boolean(index, value)
+\subsection lua_api_game_get_starting_location game:get_starting_location()
 
-Sets an boolean in the savegame.
-- \c index (number): Index of the boolean variable to set (\c 0 to \c 32767).
-- \c value (boolean): The boolean value to set.
-
-<hr>
-
-\subsection lua_api_game_get_player_name game:get_player_name()
-
-Returns the name of the player.
-- Return value (string): Name of the player.
+Returns the location where the hero is placed when this game is started or
+restarted.
+- Return value 1 (string): Id of the starting map.
+- Return value 2 (string): Name of the destination where the hero will be
+  placed on that map.
 
 <hr>
 
-\subsection lua_api_game_set_player_name game:set_player_name(name)
+\subsection lua_api_game_set_starting_location game:set_starting_location(map_id, destination_name)
 
-Sets the name of the player.
-- \c name (string): Name of the player.
+Sets the location where the hero should be placed when this game is started or
+restarted.
+- \c map_id (string): Id of the starting map.
+- \c destination_name (string): Name of the destination where the hero should
+  be placed on that map.
+
+\remark When the hero moves from a map to another map that belongs to a
+  different world (for example, from a dungeon to the outside world), the
+  starting location is automatically set to this point. If this behavior is
+  okay for your quest, you don't need to call this function.
 
 <hr>
 
@@ -172,7 +203,8 @@ Returns the current level of life of the player.
 
 Sets the level of life of the player.
 
-A negative value will be replaced by zero. A value greater than
+A negative value will be replaced by zero.
+A value greater than
 than the maximum level of life will be replaced by the maximum value.
 - \c life (number): Number of life points to set.
 
@@ -181,6 +213,8 @@ than the maximum level of life will be replaced by the maximum value.
 \subsection lua_api_game_add_life game:add_life(life)
 
 Adds some life to the player.
+
+This function makes sure the maximum life is not exceeded.
 - \c life (number): Number of life points to add.
 
 <hr>

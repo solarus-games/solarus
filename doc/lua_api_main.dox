@@ -94,6 +94,9 @@ returns \c true.
 
 Returns the subdirectory where files specific to the quest are saved,
 like savegames and configuration files.
+The quest write directory is specified in your \c quest.dat file and may
+be changed dynamically with
+\ref lua_api_main_get_quest_write_dir "sol.main.set_quest_write_dir()".
 
 - Return value (string): The quest write directory, relative to the Solarus
   write directory.

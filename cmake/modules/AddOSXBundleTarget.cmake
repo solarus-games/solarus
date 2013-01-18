@@ -87,7 +87,7 @@ set_property(SOURCE
 # Workaround : copy libraries with add_custom_command(). 
 # It's not the Xcode way so it's not properly transcribe, but it works with both Unix and Xcode generators.
 # It should be done with set_source_files_properties() and the MACOSX_PACKAGE_LOCATION property, like resources files.
-# Make the change when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
+# TODO : Make the change when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
 macro(copy_into_bundle target library_path destination_directory)
   if(IS_DIRECTORY ${library_path})
     add_custom_command(

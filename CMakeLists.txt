@@ -167,9 +167,10 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT SOLARUS_IPHONE_BUILD)
   if(SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
+endif()
 
 # Compilation flags for Iphone build and deployment
-elif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND SOLARUS_IPHONE_BUILD)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND SOLARUS_IPHONE_BUILD)
 
   if(NOT SOLARUS_ARCH)
     set(SOLARUS_ARCH "armv6;armv7;")
@@ -178,7 +179,7 @@ elif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND SOLARUS_IPHONE_BUILD)
 
   # Don't know how to properly detect the latest developer iphone sdk, hardcoding for my system pending.
   if(NOT SOLARUS_SYSROOT)
-    set(CMAKE_OSX_SYSROOT "/Developer/Plateforms/IPhoneOS.plateform/Developer/SDKs/IPhoneOS4.3.sdk")
+    set(CMAKE_OSX_SYSROOT "/Developer/Platforms/IPhoneOS.platform/Developer/SDKs/IPhoneOS4.3.sdk")
   endif()
   set(CMAKE_OSX_SYSROOT ${SOLARUS_SYSROOT})
 endif()

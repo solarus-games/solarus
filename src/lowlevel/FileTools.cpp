@@ -24,7 +24,7 @@
 #include <physfs.h>
 #include <lua.hpp>
 
-#if defined(SOLARUS_OS_MACOSX)
+#if defined(SOLARUS_OS_MACOSX) || defined(SOLARUS_OS_IPHONE)
 #   include "lowlevel/osx/OSXInterface.h"
 #endif
 
@@ -427,7 +427,7 @@ void FileTools::read(std::istream& is, std::string& value) {
  */
 std::string FileTools::get_base_write_dir() {
 
-#if defined(SOLARUS_OS_MACOSX)
+#if defined(SOLARUS_OS_MACOSX) || defined(SOLARUS_OS_IPHONE)
   return std::string(getUserApplicationSupportDirectory());
 #else
   return std::string(PHYSFS_getUserDir());

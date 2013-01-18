@@ -50,11 +50,17 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   )
   set(source_files
     ${source_files}
-    src/lowlevel/osx/SDLMain.m
     src/lowlevel/osx/OSXInterface.mm
-    include/lowlevel/osx/SDLMain.h
     include/lowlevel/osx/OSXInterface.h
   )
+  # SDL 1.3 avoid to link with SDLMain
+  if(NOT SOLARUS_IPHONE_BUILD)
+    set(source_files
+      ${source_files}
+      src/lowlevel/osx/SDLMain.m
+      include/lowlevel/osx/SDLMain.h
+    )
+  endif()
 endif()
 
 # build the executable
@@ -111,8 +117,9 @@ endif()
 set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "-Werror ${CMAKE_CXX_FLAGS_DEBUG}")
 
-# Compilation flags for Mac OS X deployment
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Release")
+# Compilation flags for Mac OS X build and deployment 
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT SOLARUS_IPHONE_BUILD)
+
   # Get the current OSX version as X.X.X and X.X form
   execute_process(COMMAND sw_vers -productVersion
     OUTPUT_VARIABLE SOLARUS_CURRENT_OSX_VERSION
@@ -160,6 +167,20 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_BUILD_TYPE} MATCHES "Releas
   if(SOLARUS_DEPLOYMENT VERSION_LESS "10.6")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_compact_linkedit" CACHE STRING "Disable 10.6+ features if deploy on older version" FORCE)
   endif()
+
+# Compilation flags for Iphone build and deployment
+elif(SOLARUS_IPHONE_BUILD)
+
+  if(NOT SOLARUS_ARCH)
+    set(SOLARUS_ARCH ${ARCHS_STANDARD_32_BIT})
+  endif()
+  set(CMAKE_OSX_ARCHITECTURES ${SOLARUS_ARCH})
+
+  # Don't know how to properly detect the latest developer iphone sdk, hardcoding for my system pending.
+  if(NOT SOLARUS_SYSROOT)
+    set(CMAKE_OSX_SYSROOT "/Developer/Plateforms/IPhoneOS.plateform/Developer/SDKs/IPhoneOS4.3.sdk")
+  endif()
+  set(CMAKE_OSX_SYSROOT ${SOLARUS_SYSROOT})
 endif()
 
 # solarus options

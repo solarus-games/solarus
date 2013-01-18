@@ -1,5 +1,11 @@
 #include <OSXInterface.h>
-#import <Cocoa/Cocoa.h>
+
+#if defined(SOLARUS_OS_MAC)
+#  import <Cocoa/Cocoa.h>
+#elif defined(SOLARUS_OS_IPHONE)
+#  import <Foundation/Foundation.h>
+#  import <UIKit/UIKit.h>
+#endif
 
 /**
  * @brief Return "~/Library/Application Support/" or equivalent from the official way, which is an 10.6+ Obj-C function.

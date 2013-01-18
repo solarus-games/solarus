@@ -107,7 +107,7 @@ VideoManager* VideoManager::get_instance() {
 }
 
 /**
- * @brief Returns the appropriate SDL_Surface flag depending on the display resolution.
+ * @brief Returns the appropriate SDL_Surface flag depending on the requested display mode and what OS is running.
  * @param the display mode which you wanted to know the SDL_Surface flag to use with.
  * @return the better SDL_Surface flag to use
  */

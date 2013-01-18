@@ -2,7 +2,7 @@
 #
 # This module can be included inside the main CMakeList.txt to add a
 # target which generate the CFBundle when building the engine. 
-# The engine is build from ${main_source_file} file and solarus_static target. 
+# The engine is build from ${main_source_file} file, and solarus and solarus_static target. 
 # The quest, icon and an info.plist template file can be added to the project.
 #
 # You can edit the Bundle configuration by passing some flags.
@@ -29,14 +29,8 @@ set(SOLARUS_BUNDLE_SOURCE_DIR "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/osx/")
 if(NOT SOLARUS_OSX_BUNDLE)
   message(FATAL_ERROR "Bundle name not correctly specified. Set a valid SOLARUS_OSX_BUNDLE value")
 endif()
-if(SOLARUS_OSX_BUNDLE STREQUAL "${EXECUTABLE_NAME}")
-  message(FATAL_ERROR "There is already a target named ${EXECUTABLE_NAME}, please choose another one for the Bundle")
-endif()
 if(NOT SOLARUS_OSX_BUNDLE_QUEST)
   message(STATUS "Creating generic bundle. You should add a quest later")
-endif()
-if(CMAKE_VERSION VERSION_LESS 2.8.11) 
-  message(WARNING ".framework embed library will not be correctly copied with the Makefile Generator. See http://public.kitware.com/Bug/view.php?id=13784")
 endif()
 
 # Default files if not specified
@@ -85,20 +79,41 @@ target_link_libraries(${SOLARUS_OSX_BUNDLE}
 
 # Set right properties on copied files
 set_property(SOURCE 
-		${SDL_FRAMEWORK} 
-		${SDLIMAGE_LIBRARY} 
-		${SDLTTF_LIBRARY} 
-		${VORBISFILE_LIBRARY}
-		${OGG_LIBRARY} 
-		${PHYSFS_LIBRARY} 
-		${MODPLUG_LIBRARY} 
-		PROPERTY MACOSX_PACKAGE_LOCATION Frameworks
-)
-set_property(SOURCE 
 		${SOLARUS_OSX_BUNDLE_QUEST} 
 		${SOLARUS_OSX_BUNDLE_ICON} 
 		PROPERTY MACOSX_PACKAGE_LOCATION Resources
 )
+
+# Workaround : copy libraries with add_custom_command(). 
+# It's not the Xcode way so it's not properly transcribe, but it works with both Unix and Xcode generators.
+# It should be done with set_source_files_properties() and the MACOSX_PACKAGE_LOCATION property, like resources files.
+# Make the change when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
+macro(copy_into_bundle target library_path destination_directory)
+  if(IS_DIRECTORY ${library_path})
+    add_custom_command(
+      TARGET ${target}
+      POST_BUILD
+      COMMAND cp 
+      ARGS -R -L -n ${library_path} "${PROJECT_BINARY_DIR}/${target}.app/Contents/${destination_directory}/"
+    )
+  else()
+    add_custom_command(
+      TARGET ${target}
+      POST_BUILD
+      COMMAND cp 
+      ARGS -n ${library_path} "${PROJECT_BINARY_DIR}/${target}.app/Contents/${destination_directory}/"
+    )	
+  endif()
+endmacro()
+add_custom_command(TARGET ${SOLARUS_OSX_BUNDLE} POST_BUILD COMMAND mkdir ARGS -p "${PROJECT_BINARY_DIR}/${SOLARUS_OSX_BUNDLE}.app/Contents/Frameworks")
+copy_into_bundle(${SOLARUS_OSX_BUNDLE} ${SDL_FRAMEWORK} Frameworks)
+copy_into_bundle(${SOLARUS_OSX_BUNDLE} ${SDLIMAGE_LIBRARY} Frameworks)
+copy_into_bundle(${SOLARUS_OSX_BUNDLE} ${SDLTTF_LIBRARY} Frameworks)
+copy_into_bundle(${SOLARUS_OSX_BUNDLE} ${OPENAL_LIBRARY} Frameworks)
+copy_into_bundle(${SOLARUS_OSX_BUNDLE} ${PHYSFS_LIBRARY} Frameworks)
+copy_into_bundle(${SOLARUS_OSX_BUNDLE} ${VORBISFILE_LIBRARY} Frameworks)
+copy_into_bundle(${SOLARUS_OSX_BUNDLE} ${OGG_LIBRARY} Frameworks)
+copy_into_bundle(${SOLARUS_OSX_BUNDLE} ${MODPLUG_LIBRARY} Frameworks)
 
 # Info.plist template and additional lines
 get_filename_component(SOLARUS_OSX_BUNDLE_ICON_NAME "${SOLARUS_OSX_BUNDLE_ICON}" NAME)
@@ -133,6 +148,9 @@ if(DEFAULT_QUEST)
   remove_definitions(-DSOLARUS_DEFAULT_QUEST=\"${DEFAULT_QUEST}\")
 endif()
 add_definitions(-DSOLARUS_DEFAULT_QUEST=\"../Resources\")
+
+# Code signing
+set_target_properties(${NAME} PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "MacOSX Developer: ${COMPANY_IDENTIFIER}")
 
 # install
 install(PROGRAMS                     ${SOLARUS_OSX_BUNDLE}

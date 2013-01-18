@@ -1,3 +1,16 @@
+####
+# By default, you will build a binary with the maximum of compatibility that yo
+# You may want to produce an optimized (or exotic) binary instead of a standard
+# To do so, overload the following options :
+# 
+# SOLARUS_ARCH represent the build (multi-)architecture.
+# SOLARUS_SYSROOT represent the path to the OSX SDK.
+# SOLARUS_DEPLOYMENT represent the oder OSX version supported.
+#
+# Exportable to XCode.
+####
+
+
 # Get the current OSX version as X.X.X and X.X form
 execute_process(COMMAND sw_vers -productVersion
   OUTPUT_VARIABLE SOLARUS_CURRENT_OSX_VERSION

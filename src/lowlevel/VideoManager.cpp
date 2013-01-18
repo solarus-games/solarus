@@ -115,7 +115,7 @@ Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
     Uint32 flag;
     
 // If the running OS support hardware surface
-#if !defined(SOLARUS_OS_IPHONE)
+#if !defined(SOLARUS_IOS)
     
     // Use software surface if there will be pixel access to blit with the mode in parameter
     if(mode_sizes[mode].get_width() != SOLARUS_SCREEN_WIDTH || mode_sizes[mode].get_height() != SOLARUS_SCREEN_HEIGHT)
@@ -127,7 +127,7 @@ Uint32 VideoManager::get_surface_flag(const VideoMode mode) {
 #endif
     
 // If the running OS support double buffering
-#if !defined(SOLARUS_OS_MACOSX)
+#if !defined(SOLARUS_OSX)
     
     // SDL_DOUBLEBUF is buggy on OSX, but it will surely works when SDL 1.3 will be release
     flag |= SDL_DOUBLEBUF;

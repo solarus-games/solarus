@@ -1,22 +1,22 @@
-#include <OSXInterface.h>
+#include <AppleInterface.h>
 
-#if defined(SOLARUS_OS_MAC)
+#if defined(SOLARUS_IOS)
 #  import <Cocoa/Cocoa.h>
-#elif defined(SOLARUS_OS_IPHONE)
+#elif defined(SOLARUS_OSX)
 #  import <Foundation/Foundation.h>
 #  import <UIKit/UIKit.h>
 #endif
 
 /**
- * @brief Return "~/Library/Application Support/" or equivalent from the official way, which is an 10.6+ Obj-C function.
+ * @brief Return "~/Library/Application Support/" or equivalent from the official way, which is available in OSX 10.6+ and iOS 4.0+.
  *
- * Return a 10.0+ hardcoded equivalent workaround if run on older version
+ * Return a 10.0+ hardcoded equivalent workaround if URLsForDirectory:inDomains: is not found.
  *
  * @return The Application Support folder from the User Domain
  */
 const char* getUserApplicationSupportDirectory()
 {
-    // If current OSX version implement URLsForDirectory:inDomains: method
+    // If the running OS implement URLsForDirectory:inDomains: method
     if ([NSFileManager respondsToSelector:@selector(URLsForDirectory:inDomains:)])
         return [[[[[NSFileManager defaultManager] 
                    URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] 

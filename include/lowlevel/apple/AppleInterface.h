@@ -1,5 +1,5 @@
-#ifndef __OSXINTERFACE_H__
-#define __OSXINTERFACE_H__
+#ifndef __APPLEINTERFACE_H__
+#define __APPLEINTERFACE_H__
 
 // This are C "trampoline" function that will be used
 // to invoke a specific Objective-C method FROM C++

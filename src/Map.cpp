@@ -109,6 +109,7 @@ void Map::set_tileset(const std::string& tileset_id) {
   new_tileset.load();
   tileset->set_images(new_tileset);
   get_entities().notify_tileset_changed();
+  this->tileset_id = tileset_id;
 }
 
 /**

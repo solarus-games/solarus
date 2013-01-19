@@ -814,7 +814,7 @@ void MapEntities::redraw_non_animated_tiles() {
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       Tile& tile = *tiles[layer][i];
       if (!tile.is_animated()) {
-        // ?on-animated tile: optimize its displaying.
+        // Non-animated tile: optimize its displaying.
         tile.draw(*non_animated_tiles_surfaces[layer], map_size);
       }
     }

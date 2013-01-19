@@ -122,6 +122,7 @@ int MapLoader::l_properties(lua_State* l) {
   map->set_world(world_name);
   map->set_floor(floor);
 
+  map->tileset_id = tileset_id;
   map->tileset = new Tileset(tileset_id);
   map->tileset->load();
 

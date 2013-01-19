@@ -56,7 +56,6 @@ class Savegame: public ExportableToLua {
     static const std::string KEY_JOYPAD_UP;
     static const std::string KEY_JOYPAD_LEFT;
     static const std::string KEY_JOYPAD_DOWN;
-    static const std::string KEY_EQUIPMENT_INITIALIZED;
     static const std::string KEY_CURRENT_LIFE;
     static const std::string KEY_CURRENT_MONEY;
     static const std::string KEY_CURRENT_MAGIC;
@@ -67,13 +66,13 @@ class Savegame: public ExportableToLua {
     static const std::string KEY_ITEM_SLOT_2;
     static const std::string KEY_ABILITY_TUNIC;
     static const std::string KEY_ABILITY_SWORD;
+    static const std::string KEY_ABILITY_SWORD_KNOWLEDGE;
     static const std::string KEY_ABILITY_SHIELD;
     static const std::string KEY_ABILITY_LIFT;
     static const std::string KEY_ABILITY_SWIM;
-    static const std::string KEY_ABILITY_SWORD_KNOWLEDGE;
+    static const std::string KEY_ABILITY_RUN;
     static const std::string KEY_ABILITY_DETECT_WEAK_WALLS;
     static const std::string KEY_ABILITY_GET_BACK_FROM_DEATH;
-    static const std::string KEY_ABILITY_RUN;
 
     // creation and destruction
     Savegame(MainLoop& main_loop, const std::string& file_name);

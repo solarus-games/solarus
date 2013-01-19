@@ -26,44 +26,47 @@
 
 const int Savegame::SAVEGAME_VERSION = 2;
 
-const std::string Savegame::KEY_SAVEGAME_VERSION = "_version";
-const std::string Savegame::KEY_STARTING_MAP = "_starting_map";
-const std::string Savegame::KEY_STARTING_POINT = "_starting_point";
-const std::string Savegame::KEY_KEYBOARD_ACTION = "_keyboard_action";
-const std::string Savegame::KEY_KEYBOARD_ATTACK = "_keyboard_attack";
-const std::string Savegame::KEY_KEYBOARD_ITEM_1 = "_keyboard_item_1";
-const std::string Savegame::KEY_KEYBOARD_ITEM_2 = "_keyboard_item_2";
-const std::string Savegame::KEY_KEYBOARD_PAUSE = "_keyboard_pause";
-const std::string Savegame::KEY_KEYBOARD_RIGHT = "_keyboard_right";
-const std::string Savegame::KEY_KEYBOARD_UP = "_keyboard_up";
-const std::string Savegame::KEY_KEYBOARD_LEFT = "_keyboard_left";
-const std::string Savegame::KEY_KEYBOARD_DOWN = "_keyboard_down";
-const std::string Savegame::KEY_JOYPAD_ACTION = "_joypad_action";
-const std::string Savegame::KEY_JOYPAD_ATTACK = "_joypad_attack";
-const std::string Savegame::KEY_JOYPAD_ITEM_1 = "_joypad_item_1";
-const std::string Savegame::KEY_JOYPAD_ITEM_2 = "_joypad_item_2";
-const std::string Savegame::KEY_JOYPAD_PAUSE = "_joypad_pause";
-const std::string Savegame::KEY_JOYPAD_RIGHT = "_joypad_right";
-const std::string Savegame::KEY_JOYPAD_UP = "_joypad_up_key";
-const std::string Savegame::KEY_JOYPAD_LEFT = "_joypad_left_key";
-const std::string Savegame::KEY_JOYPAD_DOWN = "_joypad_down_key";
-const std::string Savegame::KEY_CURRENT_LIFE = "_current_life";
-const std::string Savegame::KEY_CURRENT_MONEY = "_current_money";
-const std::string Savegame::KEY_CURRENT_MAGIC = "_current_magic";
-const std::string Savegame::KEY_MAX_LIFE = "_max_life";
-const std::string Savegame::KEY_MAX_MONEY = "_max_money";
-const std::string Savegame::KEY_MAX_MAGIC = "_max_magic";
-const std::string Savegame::KEY_ITEM_SLOT_1 = "_item_slot_1";
-const std::string Savegame::KEY_ITEM_SLOT_2 = "_item_slot_2";
-const std::string Savegame::KEY_ABILITY_TUNIC = "_ability_tunic";
-const std::string Savegame::KEY_ABILITY_SWORD = "_ability_sword";
-const std::string Savegame::KEY_ABILITY_SHIELD = "_ability_shield";
-const std::string Savegame::KEY_ABILITY_LIFT = "_ability_lift";
-const std::string Savegame::KEY_ABILITY_SWIM = "_ability_swim";
-const std::string Savegame::KEY_ABILITY_SWORD_KNOWLEDGE = "_ability_sword_knowledge";
-const std::string Savegame::KEY_ABILITY_DETECT_WEAK_WALLS = "_ability_detect_weak_walls";
-const std::string Savegame::KEY_ABILITY_GET_BACK_FROM_DEATH = "_ability_get_back_from_death";
-const std::string Savegame::KEY_ABILITY_RUN = "_ability_run";
+const std::string Savegame::KEY_SAVEGAME_VERSION = "_version";         /**< Format of this savegame file. */
+const std::string Savegame::KEY_STARTING_MAP = "_starting_map";        /**< Map id where to start the savegame. */
+const std::string Savegame::KEY_STARTING_POINT = "_starting_point";    /**< Destination name on the starting map. */
+const std::string Savegame::KEY_KEYBOARD_ACTION = "_keyboard_action";  /**< Keyboard key mapped to the action command. */
+const std::string Savegame::KEY_KEYBOARD_ATTACK = "_keyboard_attack";  /**< Keyboard key mapped to the attack command. */
+const std::string Savegame::KEY_KEYBOARD_ITEM_1 = "_keyboard_item_1";  /**< Keyboard key mapped to the item 1 command. */
+const std::string Savegame::KEY_KEYBOARD_ITEM_2 = "_keyboard_item_2";  /**< Keyboard key mapped to the item 2 command. */
+const std::string Savegame::KEY_KEYBOARD_PAUSE = "_keyboard_pause";    /**< Keyboard key mapped to the pause command. */
+const std::string Savegame::KEY_KEYBOARD_RIGHT = "_keyboard_right";    /**< Keyboard key mapped to the right command. */
+const std::string Savegame::KEY_KEYBOARD_UP = "_keyboard_up";          /**< Keyboard key mapped to the up command. */
+const std::string Savegame::KEY_KEYBOARD_LEFT = "_keyboard_left";      /**< Keyboard key mapped to the left command. */
+const std::string Savegame::KEY_KEYBOARD_DOWN = "_keyboard_down";      /**< Keyboard key mapped to the down command. */
+const std::string Savegame::KEY_JOYPAD_ACTION = "_joypad_action";      /**< Joypad string mapped to the action command. */
+const std::string Savegame::KEY_JOYPAD_ATTACK = "_joypad_attack";      /**< Joypad string mapped to the attack command. */
+const std::string Savegame::KEY_JOYPAD_ITEM_1 = "_joypad_item_1";      /**< Joypad string mapped to the item 1 command. */
+const std::string Savegame::KEY_JOYPAD_ITEM_2 = "_joypad_item_2";      /**< Joypad string mapped to the item 2 command. */
+const std::string Savegame::KEY_JOYPAD_PAUSE = "_joypad_pause";        /**< Joypad string mapped to the pause command. */
+const std::string Savegame::KEY_JOYPAD_RIGHT = "_joypad_right";        /**< Joypad string mapped to the right command. */
+const std::string Savegame::KEY_JOYPAD_UP = "_joypad_up_key";          /**< Joypad string mapped to the up command. */
+const std::string Savegame::KEY_JOYPAD_LEFT = "_joypad_left_key";      /**< Joypad string mapped to the left command. */
+const std::string Savegame::KEY_JOYPAD_DOWN = "_joypad_down_key";      /**< Joypad string mapped to the down command. */
+const std::string Savegame::KEY_CURRENT_LIFE = "_current_life";        /**< Number of life points. */
+const std::string Savegame::KEY_CURRENT_MONEY = "_current_money";      /**< Amount of money. */
+const std::string Savegame::KEY_CURRENT_MAGIC = "_current_magic";      /**< Number of magic points. */
+const std::string Savegame::KEY_MAX_LIFE = "_max_life";                /**< Maximum allowed life points. */
+const std::string Savegame::KEY_MAX_MONEY = "_max_money";              /**< Maximum allowed money. */
+const std::string Savegame::KEY_MAX_MAGIC = "_max_magic";              /**< Maximum allowed magic points. */
+const std::string Savegame::KEY_ITEM_SLOT_1 = "_item_slot_1";          /**< Name of the equipment item in slot 1. */
+const std::string Savegame::KEY_ITEM_SLOT_2 = "_item_slot_2";          /**< Name of the equipment item in slot 2. */
+const std::string Savegame::KEY_ABILITY_TUNIC = "_ability_tunic";      /**< Resistance level. */
+const std::string Savegame::KEY_ABILITY_SWORD = "_ability_sword";      /**< Attack level. */
+const std::string Savegame::KEY_ABILITY_SWORD_KNOWLEDGE =
+    "_ability_sword_knowledge";                                        /**< Super spin attack ability level. */
+const std::string Savegame::KEY_ABILITY_SHIELD = "_ability_shield";    /**< Protection level. */
+const std::string Savegame::KEY_ABILITY_LIFT = "_ability_lift";        /**< Lift level. */
+const std::string Savegame::KEY_ABILITY_SWIM = "_ability_swim";        /**< Swim level. */
+const std::string Savegame::KEY_ABILITY_RUN = "_ability_run";          /**< Run level. */
+const std::string Savegame::KEY_ABILITY_DETECT_WEAK_WALLS =
+    "_ability_detect_weak_walls";                                      /**< Weak walls detection level. */
+const std::string Savegame::KEY_ABILITY_GET_BACK_FROM_DEATH =
+    "_ability_get_back_from_death";                                    /**< Resurrection ability level. */
 
 /**
  * @brief Creates a savegame with a specified file name, existing or not.

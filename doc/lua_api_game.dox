@@ -69,11 +69,7 @@ your pause menu).
 - \ref lua_api_game_methods
 - \ref lua_api_game_events
 
-<hr>
-
 \section lua_api_game_functions Functions of sol.game
-
-<hr>
 
 \subsection lua_api_game_exists sol.game.exists(file_name)
 
@@ -82,15 +78,11 @@ Returns whether the specified savegame file exists.
   to the \ref lua_api_main_get_quest_write_dir "quest write directory".
 - Return value (boolean): \c true if this savegame file exists.
 
-<hr>
-
 \subsection lua_api_game_delete sol.game.delete(file_name)
 
 Deletes a savegame file.
 - \c file_name (string): Name of the file to delete, relative
   to the \ref lua_api_main_get_quest_write_dir "quest write directory".
-
-<hr>
 
 \subsection lua_api_game_load sol.game.load(file_name)
 
@@ -104,17 +96,11 @@ Loads an existing savegame, or initializes a new one if it does not exist
 Then you can access the data saved in the file.
 To actually run the game, call \ref lua_api_game_start.
 
-<hr>
-
 \section lua_api_game_methods Methods of the type game
-
-<hr>
 
 \subsection lua_api_game_save game:save()
 
 Saves this game into its savegame file.
-
-<hr>
 
 \subsection lua_api_game_start game:start()
 
@@ -130,16 +116,12 @@ You can also call this function to restart the current game itself,
 even if it was not saved recently (saved data will not be reset).
 This may be useful to restart the game after the game-over screen.
 
-<hr>
-
 \subsection lua_api_game_is_started game:is_started()
 
 Returns whether this game is currently running.
 
 Only one game can be running at a time.
 - Return value (boolean): \c true if this game is running.
-
-<hr>
 
 \subsection lua_api_game_is_suspended game:is_suspended()
 
@@ -148,15 +130,11 @@ Returns whether this game is currently suspended.
   because it is paused or because there is a camera sequence.
   Only possible when the game is running.
 
-<hr>
-
 \subsection lua_api_game_is_paused game:is_paused()
 
 Returns whether this game is currently paused.
 - Return value (boolean): \c true if this game is paused.
   Only possible when the game is running.
-
-<hr>
 
 \subsection lua_api_game_set_paused game:set_paused(paused)
 
@@ -167,15 +145,11 @@ unpause the game.
 - \c paused (boolean): \c true to pause the game, \c false to unpause it.
   Only possible when the game is running.
 
-<hr>
-
 \subsection lua_api_game_get_map game:get_map()
 
 Returns the current map.
 - Return value (\ref lua_api_map "map"): The current map of this game
   (\c nil if this game is not running).
-
-<hr>
 
 \subsection lua_api_game_get_value game:get_value(key)
 
@@ -183,8 +157,6 @@ Returns a value saved.
 - \c key (string): Name of the value to get from the savegame.
 - Return value (string, number or boolean): The corresponding value
   (\c nil if no value is defined with this key).
-
-<hr>
 
 \subsection lua_api_game_set_value game:set_value(key, value)
 
@@ -200,8 +172,6 @@ Values can be strings, integers or booleans.
   saved in the savegame file only when you call
   \ref lua_api_game_save "game:save()".
 
-<hr>
-
 \subsection lua_api_game_get_starting_location game:get_starting_location()
 
 Returns the location where the hero is placed when this game is started or
@@ -209,8 +179,6 @@ restarted.
 - Return value 1 (string): Id of the starting map.
 - Return value 2 (string): Name of the destination where the hero will be
   placed on that map.
-
-<hr>
 
 \subsection lua_api_game_set_starting_location game:set_starting_location(map_id, destination_name)
 
@@ -225,14 +193,10 @@ restarted.
   starting location is automatically set to this point. If this behavior is
   okay for your quest, you don't need to call this function.
 
-<hr>
-
 \subsection lua_api_game_get_life game:get_life()
 
 Returns the current level of life of the player.
 - Return value (number): The current life.
-
-<hr>
 
 \subsection lua_api_game_set_life game:set_life(life)
 
@@ -243,8 +207,6 @@ A value greater than
 than the maximum level of life will be replaced by the maximum value.
 - \c life (number): Number of life points to set.
 
-<hr>
-
 \subsection lua_api_game_add_life game:add_life(life)
 
 Adds some life to the player.
@@ -252,28 +214,20 @@ Adds some life to the player.
 
 \remark Equivalent to <tt>game:set_life(game:get_life() + life)</tt>.
 
-<hr>
-
 \subsection lua_api_game_remove_life game:remove_life(life)
 - \c life (number): Number of life points to remove.
 
 \remark Equivalent to <tt>game:set_life(game:get_life() - life)</tt>.
-
-<hr>
 
 \subsection lua_api_game_get_max_life game:get_max_life()
 
 Returns the maximum level of life of the player.
 - Return value (number): The maximum number of life points.
 
-<hr>
-
 \subsection lua_api_game_set_max_life game:set_max_life(life)
 
 Sets the maximum level of life of the player.
 - \c life (number): Maximum number of life points to set.
-
-<hr>
 
 \subsection lua_api_game_add_max_life game:add_max_life(life)
 
@@ -282,14 +236,10 @@ Increases the maximum level of life of the player.
 
 \remark Equivalent to <tt>game:set_max_life(game:get_max_life() + life)</tt>.
 
-<hr>
-
 \subsection lua_api_game_get_money game:get_money()
 
 Returns the amount of money of the player.
 - Return value (number): The current amount of money.
-
-<hr>
 
 \subsection lua_api_game_set_money game:set_money(money)
 
@@ -300,16 +250,12 @@ A value greater than
 than the maximum amount of money will be replaced by the maximum amount.
 - \c money (number): The amount of money to set.
 
-<hr>
-
 \subsection lua_api_game_add_money game:add_money(money)
 
 Adds some money to the player.
 - \c money (number): Amount of money to add.
 
 \remark Equivalent to <tt>game:set_money(game:get_money() + money)</tt>.
-
-<hr>
 
 \subsection lua_api_game_remove_money game:remove_money(money)
 
@@ -318,28 +264,20 @@ Removes some money from the player.
 
 \remark Equivalent to <tt>game:set_money(game:get_money() - money)</tt>.
 
-<hr>
-
 \subsection lua_api_game_get_max_money game:get_max_money()
 
 Returns the maximum amount of money of the player.
 - Return value (number): The maximum money.
-
-<hr>
 
 \subsection lua_api_game_set_max_money game:set_max_money(money)
 
 Sets the maximum amount of money of the player.
 - \c money (number): Maximum money to set.
 
-<hr>
-
 \subsection lua_api_game_get_magic game:get_magic()
 
 Returns the current number of magic points.
 - Return value (number): The current number of magic points.
-
-<hr>
 
 \subsection lua_api_game_set_magic game:set_magic(magic)
 
@@ -350,16 +288,12 @@ A value greater than
 than the maximum number of magic points will be replaced by that maximum.
 - \c magic (number): The number of magic points to set.
 
-<hr>
-
 \subsection lua_api_game_add_magic game:add_magic(magic)
 
 Adds some magic points to the player.
 - \c magic (number): Number of magic points to add.
 
 \remark Equivalent to <tt>game:set_magic(game:get_magic() + magic)</tt>.
-
-<hr>
 
 \subsection lua_api_game_remove_magic game:remove_magic(magic)
 
@@ -368,21 +302,15 @@ Removes some magic points from the player.
 
 \remark Equivalent to <tt>game:set_magic(game:get_magic() - magic)</tt>.
 
-<hr>
-
 \subsection lua_api_game_get_max_magic game:get_max_magic()
 
 Returns the maximum number of magic points.
 - Return value (number): The maximum number of magic points.
 
-<hr>
-
-\subsection lua_api_game_set_max_magic set_max_magic(magic)
+\subsection lua_api_game_set_max_magic game:set_max_magic(magic)
 
 Sets the maximum number of magic points.
 - \c magic (number): The maximum number of magic points to set.
-
-<hr>
 
 \subsection lua_api_game_has_ability game:has_ability(ability_name)
 
@@ -393,8 +321,6 @@ Returns whether the player has a built-in ability.
 - Return value (boolean): \c true if the player has this ability.
 
 \remark Equivalent to <tt>game:get_ability(ability_name) > 0</tt>.
-
-<hr>
 
 \subsection lua_api_game_get_ability game:get_ability(ability_name)
 
@@ -420,8 +346,6 @@ actions like attacking, swimming or running.
 - Return value (number): Level of this ability
   (\c 0 means not having this ability yet).
 
-<hr>
-
 \subsection lua_api_game_set_ability game:set_ability(ability_name, level)
 
 Sets the level of an ability.
@@ -430,15 +354,11 @@ Sets the level of an ability.
   valid ability names).
 - \c level (number): Level of this ability to set (\c 0 removes the ability).
 
-<hr>
-
 \subsection lua_api_game_get_item game:get_item(item_name)
 
 Returns an equipment item.
 - \c item_name (string): Name of the item to get.
 - Return value (\ref lua_api_item "item"): The corresponding equipment item.
-
-<hr>
 
 \subsection lua_api_game_get_item_assigned game:get_item_assigned(slot)
 
@@ -447,16 +367,12 @@ Returns the equipment item assigned to a slot.
 - Return value (\ref lua_api_item "item"): The equipment item associated to
 this slot (\c nil means none).
 
-<hr>
-
 \subsection lua_api_game_set_item_assigned game:set_item_assigned(slot, item)
 
 Assigns an equipment item to a slot.
 - \c slot (number): The slot to set (\c 1 or \c 2).
 - \c item (\ref lua_api_item "item"): The equipment item to associate to this
   slot, or \c nil to make the slot empty.
-
-<hr>
 
 \subsection lua_api_game_get_command_effect game:get_command_effect(command)
 
@@ -496,8 +412,6 @@ intercepting the events
 \ref lua_api_game_on_command_pressed "game:on_command_pressed()"
 \ref lua_api_game_on_command_released "game:on_command_released()".
 
-<hr>
-
 \subsection lua_api_game_get_command_keyboard_binding game:get_command_keyboard_binding(command)
 
 Returns the keyboard key that triggers the specified game command.
@@ -508,8 +422,6 @@ Returns the keyboard key that triggers the specified game command.
 - Return value (string): Name of the keyboard key that triggers this game
   command, or \c nil if no keyboard key is mapped to this game command.
 
-<hr>
-
 \subsection lua_api_game_set_command_keyboard_binding game:set_command_keyboard_binding(command, key)
 
 Sets the keyboard key that triggers a game command.
@@ -519,8 +431,6 @@ Sets the keyboard key that triggers a game command.
   \c "right", \c "up", \c "left" and \c "down".
 - key (string): Name of the keyboard key that should trigger this game
   command (\c nil means none).
-
-<hr>
 
 \subsection lua_api_game_get_command_joypad_binding game:get_command_joypad_binding(command)
 
@@ -538,8 +448,6 @@ Returns the joypad input that triggers the specified game command.
   - <tt>"hat X Y"</tt> where X is the index of a joypad hat (first is \c 0)
   and Y is a direction (\c 0 to \c 7).
 
-<hr>
-
 \subsection lua_api_game_set_command_joypad_binding game:set_command_joypad_binding(command, joypad_string)
 
 Sets the joypad input that should trigger the specified game command.
@@ -556,8 +464,6 @@ Sets the joypad input that should trigger the specified game command.
   - <tt>"hat X Y"</tt> where X is the index of a joypad hat (first is \c 0)
     and Y is a direction (\c 0 to \c 7).
 
-<hr>
-
 \subsection lua_api_game_is_command_pressed game:is_command_pressed(command)
 
 Returns whether a built-in game command is currently pressed.
@@ -567,8 +473,6 @@ Returns whether a built-in game command is currently pressed.
   \c "right", \c "up", \c "left" and \c "down".
 - Return value (boolean): \c true if this game command is currently pressed by
   the player.
-
-<hr>
 
 \subsection lua_api_game_get_commands_direction game:get_commands_direction()
 
@@ -585,8 +489,6 @@ of directional game commands currently pressed by the player.
   \ref lua_api_game_is_command_pressed "game:is_command_pressed()" four times
   (with the four directional game commands).
 
-<hr>
-
 \section lua_api_game_events Events of a game
 
 Events are callback methods automatically called by the engine if you define
@@ -594,21 +496,15 @@ them.
 In the case of a game, they are only called on the game currently running, if
 any.
 
-<hr>
-
 \subsection lua_api_game_on_started game:on_started()
 
 Called when this game starts running (including when you restart
 the same game).
 
-<hr>
-
 \subsection lua_api_game_on_finished game:on_finished()
 
 Called when this game stops running (including when you restart
 the same game).
-
-<hr>
 
 \subsection lua_api_game_on_update game:on_update()
 
@@ -616,8 +512,6 @@ Called at each cycle of the main loop while this game is running.
 
 \remark As this function is called at each cycle, it is recommended to use other
 solutions when possible, like \ref lua_api_timer "timers" and other events.
-
-<hr>
 
 \subsection lua_api_game_on_draw game:on_draw(dst_surface)
 
@@ -628,8 +522,6 @@ The engine has already drawn the current map as well as the
 Use this event if you want to draw some additional content.
 - \c dst_surface (\ref lua_api_surface "surface"): The surface where the game
   is drawn.
-
-<hr>
 
 \subsection lua_api_game_on_map_changed game:on_map_changed(map)
 
@@ -642,8 +534,6 @@ changed on particular maps.
 
 \remark This event is also called for the first map (when your game starts).
 
-<hr>
-
 \subsection lua_api_game_on_paused game:on_paused()
 
 Called when the game has just been paused.
@@ -654,8 +544,6 @@ game command) or by you (by calling
 
 This function is typically the place where you should start your pause menu.
 
-<hr>
-
 \subsection lua_api_game_on_unpaused game:on_unpaused()
 
 Called when the game is being resumed.
@@ -665,8 +553,6 @@ game command) or by you (by calling
 \ref lua_api_game_set_paused "game:set_paused(false)").
 
 This is probably a good place to stop your pause menu.
-
-<hr>
 
 \subsection lua_api_game_on_key_pressed game:on_key_pressed(key, modifiers)
 
@@ -698,8 +584,6 @@ corresponding character instead (if any), see
 If you want the corresponding higher-level game command (if any), see
 \ref lua_api_game_on_command_pressed "game:on_command_pressed()".
 
-<hr>
-
 \subsection lua_api_game_on_key_released game:on_key_released(key, modifiers)
 
 Called when the user releases a keyboard key while your game is running.
@@ -724,8 +608,6 @@ keyboard key that was released. If yes, the "keyboard released" event will
 be transformed into a "game command released" event
 (see \ref lua_api_game_on_command_released "game:on_command_released()").
 
-<hr>
-
 \subsection lua_api_game_on_character_pressed game:on_character_pressed(character)
 
 Called when the user presses a keyboard key mapped to a character
@@ -749,8 +631,6 @@ is what you want because it
 considers the keyboard's layout and gives you international utf-8
 strings.
 
-<hr>
-
 \subsection lua_api_game_on_joypad_button_pressed game:on_joypad_button_pressed(button)
 
 Called when the user presses a joypad button while your game is running.
@@ -758,16 +638,12 @@ Called when the user presses a joypad button while your game is running.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects.
 
-<hr>
-
 \subsection lua_api_game_on_joypad_button_released game:on_joypad_button_released(button)
 
 Called when the user releases a joypad button while your game is running.
 - \c button (number): Index of the button that was released.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects.
-
-<hr>
 
 \subsection lua_api_game_on_joypad_axis_moved game:on_joypad_axis_moved(axis, state)
 
@@ -779,8 +655,6 @@ Called when the user moves a joypad axis while your game is running.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects.
 
-<hr>
-
 \subsection lua_api_game_on_joypad_hat_moved game:on_joypad_hat_moved(hat, direction8)
 
 Called when the user moves a joypad hat while your game is running.
@@ -790,8 +664,6 @@ Called when the user moves a joypad hat while your game is running.
   main directions.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects.
-
-<hr>
 
 \subsection lua_api_game_on_command_pressed game:on_command_pressed(command)
 
@@ -809,8 +681,6 @@ You can use this event to override the normal built-in behavior of the game comm
 
 \remark This event is not triggered if you already handled its underlying
   low-level keyboard or joypad event.
-
-<hr>
 
 \subsection lua_api_game_on_command_released game:on_command_released(command)
 

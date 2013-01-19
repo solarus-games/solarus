@@ -28,13 +28,7 @@ end)
 - \ref lua_api_timer_functions
 - \ref lua_api_timer_methods
 
-<hr>
-<hr>
-
 \section lua_api_timer_functions Functions of sol.timer
-
-<hr>
-<hr>
 
 \subsection lua_api_timer_start sol.timer.start([context], delay, callback)
 
@@ -89,8 +83,6 @@ If the delay is set to zero, the function is called immediately.
   Usually, you will store the return value only if you need to stop the timer
   explicitly later or to call another method on it.
 
-<hr>
-
 \subsection lua_api_timer_stop_all sol.timer.stop_all(context)
 
 Cancels all timers that are currently running in a context.
@@ -119,13 +111,7 @@ all its timers, because
 you don't want your enemy to perform its next attacks or to make a
 movement during its hurting animation.
 
-<hr>
-<hr>
-
 \section lua_api_timer_methods Methods of the type timer
-
-<hr>
-<hr>
 
 \subsection lua_api_timer_stop timer:stop()
 
@@ -133,14 +119,10 @@ Cancels this timer.
 
 If the timer was already finished or canceled, nothing happens.
 
-<hr>
-
 \subsection lua_api_timer_is_with_sound timer:is_with_sound()
 
 Returns whether a clock sound is played repeatedly during this timer.
 - Return value (boolean): \c true if a clock sound is played with this timer.
-
-<hr>
 
 \subsection lua_api_timer_set_with_sound timer:set_with_sound(with_sound)
 
@@ -148,14 +130,10 @@ Sets whether a clock sound is played repeatedly during this timer.
 - \c with_sound (boolean, optional): \c true to play a clock sound
   repeatedly (no value means \c true).
 
-<hr>
-
 \subsection lua_api_timer_is_suspended timer:is_suspended()
 
 Returns whether this timer is currently suspended.
 - Return value (boolean): \c true if this timer is currently suspended.
-
-<hr>
 
 \subsection lua_api_timer_set_suspended timer:set_suspended([suspended])
 
@@ -163,16 +141,12 @@ Returns whether this timer is currently suspended.
 - \c suspended (boolean, optional): \c true to suspend the timer, \c false to
   unsuspended it (no value means \c true).
 
-<hr>
-
 \subsection lua_api_timer_is_suspended_with_map timer:is_suspended_with_map()
 
 Returns whether this timer gets automatically suspended when the
 \ref lua_api_map "map" is
 suspended.
 - Return value (boolean): \c true if this timer is currently suspended.
-
-<hr>
 
 \subsection lua_api_timer_set_suspended_with_map timer:set_suspended_with_map([suspended_with_map])
 

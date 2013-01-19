@@ -10,13 +10,7 @@ of the program, no matter if a game or some menus are running.
 - \ref lua_api_main_functions
 - \ref lua_api_main_events
 
-<hr>
-<hr>
-
 \section lua_api_main_functions Functions of sol.main
-
-<hr>
-<hr>
 
 \subsection lua_api_main_load_file sol.main.load_file(script_name)
 
@@ -44,8 +38,6 @@ The difference is that it looks for a file in the quest tree
   Indeed, a specific loader is automatically set by the engine
   so that \c require() looks in the archive if necessary.
 
-<hr>
-
 \subsection lua_api_main_do_file sol.main.do_file(script_name)
 
 Loads and runs a Lua file into the current context.
@@ -63,21 +55,15 @@ of the file or to use parameters and return values.
 
 \remark This function is equivalent to <tt>sol.main.load_file(script_name)()</tt>.
 
-<hr>
-    
 \subsection lua_api_main_reset sol.main.reset()
 
 Resets the whole program after the current cycle.
 Lua will be entirely shut down and then initialized again.
 
-<hr>
-
 \subsection lua_api_main_exit sol.main.exit()
 
 Exits the program after the current cycle.
 
-<hr>
- 
 \subsection lua_api_main_is_debug_enabled sol.main.is_debug_enabled()
 
 Returns whether Solarus is running in debug mode.
@@ -93,8 +79,6 @@ returns \c true.
 - Return value (boolean): \c true if the Solarus engine is running in debug
   mode.
 
-<hr>
-
 \subsection lua_api_main_get_quest_write_dir sol.main.get_quest_write_dir()
 
 Returns the subdirectory where files specific to the quest are saved,
@@ -105,8 +89,6 @@ be changed dynamically with
 
 - Return value (string): The quest write directory, relative to the Solarus
   write directory.
-
-<hr>
 
 \subsection lua_api_main_set_quest_write_dir sol.main.set_quest_write_dir(quest_write_dir)
 
@@ -119,8 +101,6 @@ dynamically for some reason.
 
 - \c quest_write_dir (string): The quest write directory, relative to the Solarus
   write directory.
-
-<hr>
 
 \subsection lua_api_main_load_settings sol.main.load_settings([file_name])
 
@@ -136,8 +116,6 @@ The settings include the language, the video mode and the audio volume.
   API, so you can either
   use this function or implement something more fitted to your needs.
 
-<hr>
-
 \subsection lua_api_main_save_settings sol.main.save_settings([file_name])
 
 Saves the built-in settings into a file.
@@ -152,8 +130,6 @@ The settings include the language, the video mode and the audio volume.
   API, so you can either
   use this function or implement something more fitted to your needs.
 
-<hr>
-
 \subsection lua_api_main_get_distance sol.main.get_distance(x1, y1, x2, y2)
 
 Utility function that computes the distance in pixels between two points.
@@ -162,8 +138,6 @@ Utility function that computes the distance in pixels between two points.
 - \c x2 (number): X coordinate of the second point.
 - \c y2 (number): Y coordinate of the second point.
 - Return value (number): The distance in pixels.
-
-<hr>
 
 \subsection lua_api_main_get_angle sol.main.get_angle(x1, y1, x2, y2)
 
@@ -176,16 +150,10 @@ specified vector.
 - Return value (number): The angle in radians between the x axis and this
   vector.
 
-<hr>
-<hr>
-
 \section lua_api_main_events Events of sol.main
 
 Events are callback methods automatically called by the engine if you define
 them.
-
-<hr>
-<hr>
 
 \subsection lua_api_main_on_started sol.main:on_started()
 
@@ -198,16 +166,12 @@ In this function, you will typically start an initial menu
 like a title screen or a language selection screen.
 If you prefer, you can also start immediately a game.
 
-<hr>
-
 \subsection lua_api_main_on_finished sol.main:on_finished()
 
 Called at the end of the program.
 
 This function is called when Lua is about to be shut down, i.e.,
 just before the program stops or is reset. 
-
-<hr>
 
 \subsection lua_api_main_on_update sol.main:on_update()
 
@@ -220,8 +184,6 @@ Called at each cycle of the program's main loop.
   happens. You can also use \ref lua_api_timer "timers" if you want to
   regularly check something.
 
-<hr>
-
 \subsection lua_api_main_on_draw sol.main:on_draw(dst_surface)
 
 Called when the program's screen is redrawn.
@@ -231,8 +193,6 @@ and the menus of \c sol.main (if you have created menus on \c sol.main).
 Use this event if you want to draw some additional content.
 - \c dst_surface (\ref lua_api_surface "surface"): The surface where the
   screen is drawn.
-
-<hr>
 
 \subsection lua_api_main_on_key_pressed sol.main:on_key_pressed(key, modifiers)
 
@@ -251,8 +211,6 @@ Called when the user presses a keyboard key.
 corresponding character instead (if any), see
 \ref lua_api_main_on_character_pressed "sol.main:on_character_pressed()".
 
-<hr>
-
 \subsection lua_api_main_on_key_released sol.main:on_key_released(key, modifiers)
 
 Called when the user releases a keyboard key.
@@ -263,8 +221,6 @@ Called when the user releases a keyboard key.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (like the game).
-
-<hr>
 
 \subsection lua_api_main_on_character_pressed sol.main:on_character_pressed(character)
 
@@ -287,8 +243,6 @@ is what you want because it
 considers the keyboard's layout and gives you international utf-8
 strings.
 
-<hr>
-
 \subsection lua_api_main_on_joypad_button_pressed sol.main:on_joypad_button_pressed(button)
 
 Called when the user presses a joypad button.
@@ -297,8 +251,6 @@ Called when the user presses a joypad button.
   return \c true, the event won't be propagated to other objects
   (like the game).
 
-<hr>
-
 \subsection lua_api_main_on_joypad_button_released sol.main:on_joypad_button_released(button)
 
 Called when the user releases a joypad button.
@@ -306,8 +258,6 @@ Called when the user releases a joypad button.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (like the game).
-
-<hr>
 
 \subsection lua_api_main_on_joypad_axis_moved sol.main:on_joypad_axis_moved(axis, state)
 
@@ -319,8 +269,6 @@ Called when the user moves a joypad axis.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (like the game).
-
-<hr>
 
 \subsection lua_api_main_on_joypad_hat_moved sol.main:on_joypad_hat_moved(hat, direction8)
 

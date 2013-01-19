@@ -11,13 +11,7 @@ A text surface can be seen as a special
 - \ref lua_api_text_surface_inherited_methods
 - \ref lua_api_text_surface_methods
 
-<hr>
-<hr>
-
 \section lua_api_text_surface_functions Functions of sol.text_surface
-
-<hr>
-<hr>
 
 \subsection lua_api_text_surface_create sol.text_surface.create([properties]):
 
@@ -45,9 +39,6 @@ Creates a text surface with the specified properties.
     current language.
   - Return value (text surface): The text surface created.
 
-<hr>
-<hr>
-
 \section lua_api_text_surface_inherited_methods Methods inherited from the type drawable
 
 Text surfaces are particular \ref lua_api_drawable "drawable" objects.
@@ -55,15 +46,9 @@ Therefore, they inherit all methods from the type drawable.
 
 See \ref lua_api_drawable_methods to know these methods.
 
-<hr>
-<hr>
-
 \section lua_api_text_surface_methods Methods of the type text surface
 
 The following methods are specific to text surfaces.
-
-<hr>
-<hr>
 
 \subsection lua_api_text_surface_get_horizontal_alignment text_surface:get_horizontal_alignment()
 
@@ -73,8 +58,6 @@ When you draw the text surface at some
 coordinates on a destination surface, it is anchored at this position.
 - Return value (string): \c "left", \c "center" or \c "right".
 
-<hr>
-
 \subsection lua_api_text_surface_set_horizontal_alignment text_surface:set_horizontal_alignment(horizontal_alignment)
 
 Sets the horizontal alignment of the text.
@@ -82,8 +65,6 @@ Sets the horizontal alignment of the text.
 When you draw the text surface at some
 coordinates on a destination surface, it is anchored at this position.
 - \c horizontal_alignment (string): \c "left", \c "center" or \c "right".
-
-<hr>
 
 \subsection lua_api_text_surface_get_vertical_alignment text_surface:get_vertical_alignment()
 
@@ -93,8 +74,6 @@ When you draw the text surface at some
 coordinates on a destination surface, it is anchored at this position.
 - Return value (string): \c "top", \c "middle" or \c "bottom".
 
-<hr>
-
 \subsection lua_api_text_surface_set_vertical_alignment text_surface:set_vertical_alignment(vertical_alignment)
 
 Sets the vertical alignment of the text.
@@ -103,14 +82,10 @@ When you draw the text surface at some
 coordinates on a destination surface, it is anchored at this position.
 - \c vertical_alignment (string): \c "top", \c "middle" or \c "bottom".
 
-<hr>
-
 \subsection lua_api_text_surface_get_font text_surface:get_font()
 
 Returns the font used to draw this text surface.
 - Return value (string): Id of the font of this text surface.
-
-<hr>
 
 \subsection lua_api_text_surface_set_font text_surface:set_font(font_id)
 
@@ -118,15 +93,11 @@ Sets the font used to draw this text surface.
 - \c font_id (string): Id of the font to apply to this text surface.
   It must be a valid font defined in \c text/fonts.dat.
 
-<hr>
-
 \subsection lua_api_text_surface_get_rendering_mode text_surface:get_rendering_mode()
 
 Returns the rendering mode of the text.
 - Return value (string): \c "solid" (faster)
     or \c "antialiasing" (smooth effect on letters).
-
-<hr>
 
 \subsection lua_api_text_surface_set_rendering_mode text_surface:set_rendering_mode(rendering_mode)
 
@@ -134,28 +105,20 @@ Sets the rendering mode of the text.
 - \c rendering_mode (string): \c "solid" (faster)
     or \c "antialiasing" (smooth effect on letters).
 
-<hr>
-
 \subsection lua_api_text_surface_get_text_color text_surface:get_text_color()
 
 Returns the color used to draw the text.
 - Return value (table): The text color as an array of 3 RGB values (\c 0 to \c 255).
-
-<hr>
 
 \subsection lua_api_text_surface_set_text_color text_surface:set_text_color(text_color)
 
 Sets the color used to draw the text.
 - \c text_color (table): The text color as an array of 3 RGB values (\c 0 to \c 255).
 
-<hr>
-
 \subsection lua_api_text_surface_get_text text_surface:get_text()
 
 Returns the string displayed in this object.
 - Return value (string): The current text (possibly an empty string).
-
-<hr>
 
 \subsection lua_api_text_surface_set_text text_surface:set_text([text])
 
@@ -164,8 +127,6 @@ Sets the string displayed in this object.
 The string must be encoded in UTF-8.
 - \c text (string, optional): The text to set. No value or an empty string mean no text.
 
-<hr>
-
 \subsection lua_api_text_surface_set_text_key text_surface:set_text_key(key)
 
 Sets the text as a localized string in the current language.
@@ -173,8 +134,6 @@ Sets the text as a localized string in the current language.
 
 \remark This function is equivalent to
 <tt>text_surface:set_text(sol.language.get_string(key))</tt>.
-
-<hr>
 
 \subsection lua_api_text_surface_get_size text_surface:get_size()
 

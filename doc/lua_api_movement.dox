@@ -51,13 +51,7 @@ because they refer to \ref lua_api_map "map-specific" notions like obstacles.
 - \ref lua_api_movement_methods
 - \ref lua_api_movement_events
 
-<hr>
-<hr>
-
 \section lua_api_movement_functions Functions of sol.movement
-
-<hr>
-<hr>
 
 \subsection lua_api_movement_create sol.movement.create(movement_type)
 
@@ -81,15 +75,10 @@ then available to get and set its properties.
 - Return value (movement): The movement created. See the sections below to
   know the get and set methods available for your movement type.
 
-<hr>
-<hr>
 
 \section lua_api_movement_methods Methods of all movement types
 
 These methods exist in all movement types.
-
-<hr>
-<hr>
 
 \subsection lua_api_movement_get_xy movement:get_xy()
 
@@ -107,8 +96,6 @@ movement so far for an object that was initially at position <tt>0,0</tt>
 - Return value 1 (number): X coordinate.
 - Return value 2 (number): Y coordinate.
 
-<hr>
-
 \subsection lua_api_movement_set_xy movement:set_xy(x, y)
 
 Sets the coordinates of the object controlled by this movement.
@@ -125,8 +112,6 @@ reference for a future call to
 - \c x (number): X coordinate to set.
 - \c y (number): Y coordinate to set.
 
-<hr>
-
 \subsection lua_api_movement_get_ignore_obstacles movement:get_ignore_obstacles()
 
 Returns whether this movement ignores obstacles of the map.
@@ -136,8 +121,6 @@ yet, it is not an error to
 call this function: the result will have an effect when the movement gets
 attached to a map entity.
 - Return value (boolean): \c true if this movement ignores obstacles.
-
-<hr>
 
 \subsection lua_api_movement_set_ignore_obstacles movement:set_ignore_obstacles([ignore_obstacles])
 
@@ -150,8 +133,6 @@ call this function: your choice will have an effect when the movement gets
 attached to a map entity.
 - \c ignore_obstacles (boolean, optional): \c true to make this movement ignore
   obstacles of the map (no value means \c true).
-
-<hr>
 
 \subsection lua_api_movement_get_direction4 movement:get_direction4()
 
@@ -188,9 +169,6 @@ function enemy:on_movement_changed(movement)
 end
 \endverbatim
 
-<hr>
-<hr>
-
 \section lua_api_movement_events Events of all movement types
 
 Events are callback methods automatically called by the engine if you define
@@ -201,14 +179,9 @@ The following events are common to all movement types.
 \remark All movement events are here (it turns out that no specific movement
   type define additional events).
 
-<hr>
-<hr>
-
 \subsection lua_api_movement_on_position_changed movement:on_position_changed()
 
 Called when the coordinates controlled by this movement have just changed.
-
-<hr>
 
 \subsection lua_api_movement_on_obstacle_reached movement:on_obstacle_reached()
 
@@ -234,14 +207,10 @@ This event can only be called when all of these conditions are met:
   or \ref lua_api_movement_on_obstacle_reached "movement:on_obstacle_reached()"
   is guaranteed to be called.
 
-<hr>
-
 \subsection lua_api_movement_on_changed movement:on_changed()
 
 Called when the characteristics of this movement (like speed or angle) have
 just changed.
-
-<hr>
 
 \subsection lua_api_movement_on_finished movement:on_finished()
 

@@ -3,13 +3,7 @@
 
 You can play musics and sound effects through \c sol.audio.
 
-<hr>
-<hr>
-
 \section lua_api_audio_functions Functions of sol.audio
-
-<hr>
-<hr>
 
 \subsection lua_api_audio_play_sound sol.audio.play_sound(sound_id)
 
@@ -27,8 +21,6 @@ initial file access.
   \c sounds directory and without extension. Currently, <tt>.ogg</tt> is the
   only extension supported.
 
-<hr>
-
 \subsection lua_api_audio_preload_sounds sol.audio.preload_sounds()
 
 Loads all sounds effects into memory for faster future access.
@@ -44,8 +36,6 @@ The list of sound files to load is read from the
 
 This function does nothing if you already called it before.
 
-<hr>
-
 \subsection lua_api_audio_play_music sol.audio.play_music(music_id)
 
 Plays a music.
@@ -60,8 +50,6 @@ Only one music can be played at a time.
   You can also specify the special value \c "none" to stop playing any music,
   or \c "same" to let the music unchanged.
 
-<hr>
-
 \subsection lua_api_audio_stop_music sol.audio.stop_music()
 
 Stops playing music.
@@ -69,8 +57,6 @@ Stops playing music.
 This function has no effect if no music was playing.
 
 \remark This is equivalent to <tt>sol.audio.play_music("none")</tt>.
-
-<hr>
 
 \subsection lua_api_audio_get_sound_volume sol.audio.get_sound_volume()
 
@@ -82,8 +68,6 @@ and by the engine.
 - Return value (number): The current volume of sound effects, as an integer
   between \c 0 (mute) and \c 100 (full volume).
 
-<hr>
-
 \subsection lua_api_audio_set_sound_volume sol.audio.set_sound_volume(volume)
 
 Sets the volume of sound effects.
@@ -94,8 +78,6 @@ and by the engine.
 - \c volume (number): The new volume of sound effects, as an integer
   between \c 0 (mute) and \c 100 (full volume).
 
-<hr>
-
 \subsection lua_api_audio_get_music_volume sol.audio.get_music_volume()
 
 Returns the current volume of musics.
@@ -104,8 +86,6 @@ This volume applies to all musics played by \ref lua_api_audio_play_music.
 "sol.audio.play_music()"
 - Return value (number): The current volume of musics, as an integer
   between \c 0 (no sound effects) and \c 100 (full volume).
-
-<hr>
 
 \subsection lua_api_audio_set_music_volume sol.audio.set_music_volume(volume)
 

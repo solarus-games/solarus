@@ -50,20 +50,12 @@ The following modes are implemented:
   video mode, and \ref lua_api_video_get_modes to know the list of
   video modes supported.
 
-<hr>
-<hr>
-
 \section lua_api_video_functions Functions of sol.video
-
-<hr>
-<hr>
 
 \subsection lua_api_video_get_window_title sol.video.get_window_title()
 
 Returns the text of the title bar of the window.
 - Return value (string): The window title.
-
-<hr>
 
 \subsection lua_api_video_set_window_title sol.video.set_window_title(window_title)
 
@@ -74,21 +66,15 @@ You usually don't have to call this function, unless you need to change it
 dynamically for some reason.
 - \c window_title (string): The window title to set.
 
-<hr>
-
 \subsection lua_api_video_get_mode sol.video.get_mode()
 
 Returns the current video mode.
 - Return value (string): Name of the video mode (see the list above).
 
-<hr>
-
 \subsection lua_api_video_set_mode sol.video.set_mode(video_mode)
 
 Sets the current video mode.
 - \c video_mode (string): Name of the video mode (see the list above).
-
-<hr>
 
 \subsection lua_api_video_switch_mode sol.video.switch_mode()
 
@@ -97,28 +83,20 @@ Sets the next video mode in the list of video modes supported.
 You can use this function if you want to change the video mode without
 specifying which one to use.
 
-<hr>
-
 \subsection lua_api_video_is_mode_supported sol.video.is_mode_supported(video_mode)
 
 Returns whether a video mode is supported.
 - \c video_mode (string): Name of a video mode (see the list above).
-
-<hr>
 
 \subsection lua_api_video_get_modes sol.video.get_modes()
 
 Returns an array of all video modes supported.
 - \c Return value (table): An array of names of all video modes supported.
 
-<hr>
-
 \subsection lua_api_video_is_fullscreen sol.video.is_fullscreen()
 
 Returns whether the current video mode is fullscreen.
 - Return value (boolean): \c true if the video mode is fullscreen.
-
-<hr>
 
 \subsection lua_api_video_set_fullscreen sol.video.set_fullscreen([fullscreen])
 

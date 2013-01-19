@@ -12,9 +12,6 @@ You can define each step of the path and make it repeated if you want.
 - \ref lua_api_path_movement_methods
 - \ref lua_api_path_movement_inherited_events
 
-<hr>
-<hr>
-
 \section lua_api_path_movement_inherited_methods Methods inherited from the type movement
 
 Path movements are particular \ref lua_api_movement "movement" objects.
@@ -22,15 +19,9 @@ Therefore, they inherit all methods from the type movement.
 
 See \ref lua_api_movement_methods to know these methods.
 
-<hr>
-<hr>
-
 \section lua_api_path_movement_methods Methods of the type path movement
 
 The following methods are specific to path movements.
-
-<hr>
-<hr>
 
 \subsection lua_api_path_movement_get_path path_movement:get_path()
 
@@ -38,8 +29,6 @@ Returns the path of this movement.
 - Return value (table): The path as an array of integers. Each value
   is a number between 0 and 7 that represents a step (move of 8 pixels)
   in the path. 0 is East, 1 is North-East, etc.
-
-<hr>
 
 \subsection lua_api_path_movement_set_path path_movement:set_path(path)
 
@@ -63,21 +52,15 @@ function scared_cat:on_interaction()
 end
 \endverbatim
 
-<hr>
-
 \subsection lua_api_path_movement_get_speed path_movement:get_speed()
 
 Returns the speed of this movement.
 - Return value (number): The speed in pixels per second.
 
-<hr>
-
 \subsection lua_api_path_movement_set_speed path_movement:set_speed(speed)
 
 Sets the speed of this movement.
 - \c speed (number): The new speed in pixels per second.
-
-<hr>
 
 \subsection lua_api_path_movement_get_loop path_movement:get_loop()
 
@@ -85,15 +68,11 @@ Returns whether this movement repeats itself once the end of the path is
 reached.
 - Return value (boolean): \c true if the path repeats itself.
 
-<hr>
-
 \subsection lua_api_path_movement_set_loop path_movement:set_loop(loop)
 
 Sets whether this movement repeats itself once the end of the path is
 reached.
 - \c loop (boolean): \c true to make the path repeat itself.
-
-<hr>
 
 \subsection lua_api_path_movement_get_snap_to_grid path_movement:get_snap_to_grid()
 
@@ -108,8 +87,6 @@ not attached to a map entity.
 - Return value (boolean): \c true if this movement automatically snaps its map
   entity to the map grid.
 
-<hr>
-
 \subsection lua_api_path_movement_set_snap_to_grid path_movement:set_snap_to_grid(snap)
 
 Sets whether this movement should automatically snap to the \ref
@@ -123,18 +100,12 @@ not attached to a \ref lua_api_entity "map entity".
 - \c snap (boolean): \c true to make this movement automatically snap its map
   entity to the map grid.
 
-<hr>
-<hr>
-
 \section lua_api_path_movement_inherited_events Events inherited from the type movement
 
 Path movements are particular \ref lua_api_movement "movement" objects.
 Therefore, they inherit all events from the type movement.
 
 See \ref lua_api_movement_events to know these events.
-
-<hr>
-<hr>
 
 */
 

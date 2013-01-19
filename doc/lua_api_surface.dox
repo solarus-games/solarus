@@ -10,13 +10,7 @@ Its main feature is that you can draw objects on it.
 - \ref lua_api_surface_inherited_methods
 - \ref lua_api_surface_methods
 
-<hr>
-<hr>
-
 \section lua_api_surface_functions Functions of sol.surface
-
-<hr>
-<hr>
 
 \subsection lua_api_surface_create_empty sol.surface.create([width, height])
 
@@ -27,8 +21,6 @@ Creates an empty surface.
   The default value is the height of the logical screen.
 - Return value (surface): The surface created.
 
-<hr>
-
 \subsection lua_api_surface_create_from_file sol.surface.create(file_name, [language_specific])
 
 Creates a surface from an image file.
@@ -37,8 +29,6 @@ Creates a surface from an image file.
     from the \c images subdirectory of the current language directory
     (default is \c false and loads the image from the \c sprites directory).
   - Return value (surface): The surface created.
-
-<hr>
 
 \subsection lua_api_surface_create_from_surface sol.surface.create(src_surface, [x, y, width, height])
 
@@ -53,9 +43,6 @@ They are optional: by default, the whole surface is copied.
   - \c height (integer, optional): Height of the region to copy in pixels.
   - Return value (surface): The surface created.
 
-<hr>
-<hr>
-
 \section lua_api_surface_inherited_methods Methods inherited from the type drawable
 
 Surfaces are particular \ref lua_api_drawable "drawable" objects.
@@ -63,23 +50,15 @@ Therefore, they inherit all methods from the type drawable.
 
 See \ref lua_api_drawable_methods to know these methods.
 
-<hr>
-<hr>
-
 \section lua_api_surface_methods Methods of the type surface
 
 The following methods are specific to surfaces.
-
-<hr>
-<hr>
 
 \subsection lua_api_surface_get_size surface:get_size()
 
 Returns the size of this surface.
 - Return value 1 (number): Width of the surface in pixels.
 - Return value 2 (number): Height of the surface in pixels.
-
-<hr>
 
 \subsection lua_api_surface_fill_color surface:fill_color(color, [x, y, width, height])
 
@@ -92,23 +71,17 @@ If no region is specified, the entire surface is filled.
 - \c width (number, optional): Width of the region to fill on this surface.
 - \c height (number, optional): Height of the region to fill on this surface.
 
-<hr>
-
 \subsection lua_api_surface_get_transparency_color surface:set_transparency_color()
 
 Returns the transparency color to this surface. Pixels in that color are not
 displayed when this surface is drawn.
 - Return value (table): The color as an array of 3 RGB values (\c 0 to \c 255).
 
-<hr>
-
 \subsection lua_api_surface_set_transparency_color surface:set_transparency_color(color)
 
 Sets a transparency color to this surface. Pixels in that color won't be
 displayed.
 - \c color (table): The color as an array of 3 RGB values (\c 0 to \c 255).
-
-<hr>
 
 \subsection lua_api_surface_set_opacity surface:set_opacity(opacity)
 

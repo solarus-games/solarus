@@ -35,13 +35,7 @@ automatically whenever they need to be notified.
 - \ref lua_api_menu_functions
 - \ref lua_api_menu_events
 
-<hr>
-<hr>
-
 \section lua_api_menu_functions Functions of sol.menu
-
-<hr>
-<hr>
 
 \subsection lua_api_menu_start sol.menu.start(context, menu)
 
@@ -70,8 +64,6 @@ it is stopped.
   that makes it special is the presence of callback functions (events) as
   described in section \ref lua_api_menu_events.
 
-<hr>
-
 \subsection lua_api_menu_stop sol.menu.stop(menu)
 
 Stops a menu previously activated with \ref lua_api_menu_start
@@ -80,8 +72,6 @@ Stops a menu previously activated with \ref lua_api_menu_start
 After this call, the Solarus engine will no longer call events on your menu.
 But you can restart it later if you want.
 - \c menu (table): The menu to stop.
-
-<hr>
 
 \subsection lua_api_menu_stop_all sol.menu.stop_all(context)
 
@@ -93,16 +83,11 @@ Stops all menus that are currently running in a context.
 This function is not often needed since menus are already automatically
 stopped when their context is closed.
 
-<hr>
-<hr>
 
 \section lua_api_menu_events Events of a menu
 
 Events are callback methods automatically called by the engine if you define
 them.
-
-<hr>
-<hr>
 
 \subsection lua_api_menu_on_started menu:on_started()
 
@@ -111,16 +96,12 @@ Called when your menu is started.
 This event is triggered when you call \ref lua_api_menu_start
 "sol.menu.start()".
 
-<hr>
-
 \subsection lua_api_menu_on_finished menu:on_finished()
 
 Called when your menu is stopped.
 
 This event is triggered when you call \ref lua_api_menu_stop "sol.menu.stop()"
 or when the context of your menu finishes. 
-
-<hr>
 
 \subsection lua_api_menu_on_update menu:on_update()
 
@@ -136,8 +117,6 @@ one that was started to the last one.
 
 \remark As this function is called at each cycle, it is recommended to use other
 solutions when possible, like \ref lua_api_timer "timers" and other events.
-
-<hr>
 
 \subsection lua_api_menu_on_draw menu:on_draw(dst_surface)
 
@@ -155,8 +134,6 @@ Menus of are drawn in the following order:
 When several menus exist in the same context, they are drawn from the first
 one that was started to the last one.
 It means that a newly created menu appears on top of existing ones.
-
-<hr>
 
 \subsection lua_api_menu_on_key_pressed menu:on_key_pressed(key, modifiers)
 
@@ -183,8 +160,6 @@ it with a built-in behavior.
 corresponding character instead (if any), see
 \ref lua_api_menu_on_character_pressed "menu:on_character_pressed()".
 
-<hr>
-
 \subsection lua_api_menu_on_key_released menu:on_key_released(key, modifiers)
 
 Called when the user releases a keyboard key while your menu is active.
@@ -196,8 +171,6 @@ Most recent menus are notified first.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (like other menus or the built-in game commands).
-
-<hr>
 
 \subsection lua_api_menu_on_character_pressed menu:on_character_pressed(character)
 
@@ -221,8 +194,6 @@ is what you want because it
 considers the keyboard's layout and gives you international utf-8
 strings.
 
-<hr>
-
 \subsection lua_api_menu_on_joypad_button_pressed menu:on_joypad_button_pressed(button)
 
 Called when the user presses a joypad button while your menu is active.
@@ -232,8 +203,6 @@ Most recent menus are notified first.
   return \c true, the event won't be propagated to other objects
   (like other menus or the built-in game commands).
 
-<hr>
-
 \subsection lua_api_menu_on_joypad_button_released menu:on_joypad_button_released(button)
 
 Called when the user releases a joypad button while your menu is active.
@@ -242,8 +211,6 @@ Most recent menus are notified first.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (like other menus or the built-in game commands).
-
-<hr>
 
 \subsection lua_api_menu_on_joypad_axis_moved menu:on_joypad_axis_moved(axis, state)
 
@@ -257,8 +224,6 @@ Most recent menus are notified first.
   return \c true, the event won't be propagated to other objects
   (like other menus or the built-in game commands).
 
-<hr>
-
 \subsection lua_api_menu_on_joypad_hat_moved menu:on_joypad_hat_moved(hat, direction8)
 
 Called when the user moves a joypad hat while your menu is active.
@@ -270,8 +235,6 @@ Most recent menus are notified first.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (like other menus or the built-in game commands).
-
-<hr>
 
 \subsection lua_api_menu_on_command_pressed menu:on_command_pressed(command)
 
@@ -291,8 +254,6 @@ Most recent menus are notified first.
 
 \remark This event is not triggered if you already handled the underlying
   low-level keyboard or joypad event.
-
-<hr>
 
 \subsection lua_api_menu_on_command_released menu:on_command_released(command)
 

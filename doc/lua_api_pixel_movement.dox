@@ -24,9 +24,6 @@ usually fit your needs when you move \ref lua_api_npc "NPCs" or
 - \ref lua_api_pixel_movement_methods
 - \ref lua_api_pixel_movement_inherited_events
 
-<hr>
-<hr>
-
 \section lua_api_pixel_movement_inherited_methods Methods inherited from the type movement
 
 Pixel movements are particular \ref lua_api_movement "movement" objects.
@@ -34,23 +31,15 @@ Therefore, they inherit all methods from the type movement.
 
 See \ref lua_api_movement_methods to know these methods.
 
-<hr>
-<hr>
-
 \section lua_api_pixel_movement_methods Methods of the type pixel movement
 
 The following methods are specific to pixel movements.
-
-<hr>
-<hr>
 
 \subsection lua_api_pixel_movement_get_trajectory pixel_movement:get_trajectory()
 
 Returns the trajectory of this movement.
 - Return value (table): An array of all successive translations.
   Each translation is itself an array of two integers (x and y).
-
-<hr>
 
 \subsection lua_api_pixel_movement_set_trajectory pixel_movement:set_trajectory(trajectory)
 
@@ -61,15 +50,11 @@ of the new trajectory.
 - trajectory (table): An array of all successive translations to make.
   Each translation should be an array of two integers (x and y).
 
-<hr>
-
 \subsection lua_api_pixel_movement_get_loop pixel_movement:get_loop()
 
 Returns whether this movement restarts automatically when the trajectory is
 finished.
 - Return value (boolean): \c true if the movement loops.
-
-<hr>
 
 \subsection lua_api_pixel_movement_set_loop pixel_movement:set_loop(loop)
 
@@ -77,22 +62,15 @@ Sets whether this movement should restart automatically when the trajectory is
 finished.
 - \c loop (boolean): \c true to make the movement loop.
 
-<hr>
-
 \subsection lua_api_pixel_movement_get_delay pixel_movement:get_delay()
 
 Returns the delay between two steps of the trajectory.
 - Return value (number): The delay between two steps in milliseconds.
 
-<hr>
-
 \subsection lua_api_pixel_movement_set_delay pixel_movement:set_delay(delay)
 
 Sets the delay between two steps of the trajectory.
 - \c delay (number): The delay between two steps in milliseconds.
-
-<hr>
-<hr>
 
 \section lua_api_pixel_movement_inherited_events Events inherited from the type movement
 
@@ -100,9 +78,6 @@ Pixel movements are particular \ref lua_api_movement "movement" objects.
 Therefore, they inherit all events from the type movement.
 
 See \ref lua_api_movement_events to know these events.
-
-<hr>
-<hr>
 
 */
 

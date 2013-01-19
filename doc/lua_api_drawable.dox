@@ -8,15 +8,9 @@ They include the following types:
 \subpage lua_api_sprite "sprite".
 This page describes the methods common to those types.
 
-<hr>
-<hr>
-
 \section lua_api_drawable_methods Methods of all drawable types
 
 These methods exist in all drawable types.
-
-<hr>
-<hr>
 
 \subsection lua_api_drawable_draw drawable:draw(dst_surface, [x, y])
 
@@ -27,8 +21,6 @@ Draws this object on a destination surface.
 - \c y (number, optional): Y coordinate of where to draw this object.
   (default \c 0).
 
-<hr>
-
 \subsection lua_api_drawable_fade_in drawable:fade_in([delay], [callback])
 
 Starts a fade-in effect on this object.
@@ -37,8 +29,6 @@ Starts a fade-in effect on this object.
 - \c callback (function, optional): A function to call when the
   fade-in effect finishes.
 
-<hr>
-
 \subsection lua_api_drawable_fade_out drawable:fade_out([delay], [callback])
 
 Starts a fade-out effect on this object.
@@ -46,8 +36,6 @@ Starts a fade-out effect on this object.
   frames of the fade-out animation (default \c 20).
 - \c callback (function, optional): A function to call when the
   fade-out effect finishes.
-
-<hr>
 
 \subsection lua_api_drawable_start_movement drawable:start_movement(movement, [callback])
 
@@ -64,8 +52,6 @@ movement.
 \remark Only one movement can be applied at a time on a drawable object.
 If you call this function, any previous movement running on this object is
 stopped.
-
-<hr>
 
 \subsection lua_api_drawable_stop_movement drawable:stop_movement()
 

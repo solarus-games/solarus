@@ -23,9 +23,6 @@ see the \ref lua_api_target_movement "target movement" type.
 - \ref lua_api_path_finding_movement_methods
 - \ref lua_api_path_finding_movement_inherited_events
 
-<hr>
-<hr>
-
 \section lua_api_path_finding_movement_inherited_methods Methods inherited from the type movement
 
 Path finding movements are particular \ref lua_api_movement "movement" objects.
@@ -33,37 +30,24 @@ Therefore, they inherit all methods from the type movement.
 
 See \ref lua_api_movement_methods to know these methods.
 
-<hr>
-<hr>
-
 \section lua_api_path_finding_movement_methods Methods of the type path finding movement
 
 The following methods are specific to path finding movements.
-
-<hr>
-<hr>
 
 \subsection lua_api_path_finding_movement_set_target path_finding_movement:set_target(entity)
 
 Sets the target entity of this movement.
 - \c entity (\ref lua_api_entity "entity"): The entity to target.
 
-<hr>
-
 \subsection lua_api_path_finding_movement_get_speed path_finding_movement:get_speed()
 
 Returns the speed of this movement.
 - Return value (number): The speed in pixels per second.
 
-<hr>
-
 \subsection lua_api_path_finding_movement_set_speed path_finding_movement:set_speed(speed)
 
 Sets the speed of this movement.
 - \c speed (number): The new speed in pixels per second.
-
-<hr>
-<hr>
 
 \section lua_api_path_finding_movement_inherited_events Events inherited from the type movement
 
@@ -71,9 +55,6 @@ Path finding movements are particular \ref lua_api_movement "movement" objects.
 Therefore, they inherit all events from the type movement.
 
 See \ref lua_api_movement_events to know these events.
-
-<hr>
-<hr>
 
 */
 

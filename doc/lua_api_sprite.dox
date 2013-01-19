@@ -28,13 +28,7 @@ game or your menus.
 - \ref lua_api_sprite_methods
 - \ref lua_api_sprite_events
 
-<hr>
-<hr>
-
 \section lua_api_sprite_functions Functions of sol.sprite
-
-<hr>
-<hr>
 
 \subsection lua_api_sprite_create sol.sprite.create(animation_set_id)
 
@@ -45,9 +39,6 @@ Creates a sprite.
 - Return value (sprite): The sprite created, or \c nil if the sprite data file
   could not be loaded.
 
-<hr>
-<hr>
-
 \section lua_api_sprite_inherited_methods Methods inherited from the type drawable
 
 Sprites are particular \ref lua_api_drawable "drawable" objects.
@@ -55,22 +46,14 @@ Therefore, they inherit all methods from the type drawable.
 
 See \ref lua_api_drawable_methods to know these methods.
 
-<hr>
-<hr>
-
 \section lua_api_sprite_methods Methods of the type sprite
 
 The following methods are specific to sprites.
-
-<hr>
-<hr>
 
 \subsection lua_api_sprite_get_animation sprite:get_animation()
 
 Returns the name of the current animation of this sprite.
 - Return value (string): Name of the current animation.
-
-<hr>
 
 \subsection lua_api_sprite_set_animation sprite:set_animation()
 
@@ -78,14 +61,10 @@ Sets the current animation of this sprite.
 - \c animation_name (string): Name of the animation to set.
   This animation must exist in the animation set.
 
-<hr>
-
 \subsection lua_api_sprite_get_direction sprite:get_direction()
 
 Returns the current direction of this sprite.
 - Return value (number): The current direction (the first one is \c 0).
-
-<hr>
 
 \subsection lua_api_sprite_set_direction sprite:set_direction(direction)
 
@@ -93,22 +72,16 @@ Sets the current direction of this sprite.
 - \c direction (number): The direction to set (the first one is \c 0).
   This direction must exist in the current animation.
 
-<hr>
-
 \subsection lua_api_sprite_get_frame sprite:get_frame()
 
 Returns the index of the current frame of this sprite.
 - Return value (number): The current frame (the first one is \c 0).
-
-<hr>
 
 \subsection lua_api_sprite_set_frame sprite:set_frame(frame)
 
 Sets the current frame of this sprite.
 - \c frame (number): The frame to set (the first one is \c 0).
   This frame must exist in the current direction.
-
-<hr>
 
 \subsection lua_api_sprite_get_frame_delay sprite:get_frame_delay()
 
@@ -120,8 +93,6 @@ by \ref lua_api_sprite_set_frame_delay "set_frame_delay()".
   the current animation. \c 0 means infinite
   and is only allowed for single-frame animations.
 
-<hr>
-
 \subsection lua_api_sprite_set_frame_delay sprite:set_frame_delay(delay)
 
 Changes the delay between two frames of this sprite in the current animation.
@@ -131,14 +102,10 @@ Use this function if you want to override the normal delay
 - \c delay (number): The new delay in milliseconds. \c 0 means infinite
   and is only allowed for single-frame animations.
 
-<hr>
-
 \subsection lua_api_sprite_is_paused sprite:is_paused()
 
 Returns whether this sprite is paused.
 - Return value (boolean): \c true if this sprite is paused.
-
-<hr>
 
 \subsection lua_api_sprite_set_paused sprite:set_paused([paused])
 
@@ -146,16 +113,12 @@ Pauses or resumes the animation of this sprite.
 - \c paused (boolean, optional): \c true to pause the sprite,
   \c false to unpause it. No value means \c true.
 
-<hr>
-
 \subsection lua_api_sprite_set_ignore_suspend sprite:set_ignore_suspend([ignore])
 
 During a game, sets whether the animation should continue even when the map is
 suspended.
 - \c ignore (boolean): \c true to continue animation even when the map is
   suspended, \c false otherwise. No value means \c true.
-
-<hr>
 
 \subsection lua_api_sprite_synchronize sprite:synchronize(reference_sprite)
 
@@ -167,16 +130,10 @@ sprite.
 - \c reference_sprite (sprite, optional): The reference sprite. \c nil means
   stopping any previous synchronization.
 
-<hr>
-<hr>
-
 \section lua_api_sprite_events Events of the type sprite
 
 Events are callback methods automatically called by the engine if you define
 them.
-
-<hr>
-<hr>
 
 \subsection lua_api_sprite_on_animation_finished sprite:on_animation_finished(animation)
 
@@ -185,8 +142,6 @@ Called when the current animation of this sprite is finished.
 If the animation loops, this function is never called.
 Unless you start another animation, the sprite is no longer shown.
 - \c animation: Name of the animation that has just finished.
-
-<hr>
 
 \subsection lua_api_sprite_on_frame_changed sprite:on_frame_changed(animation, frame)
 

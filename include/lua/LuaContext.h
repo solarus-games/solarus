@@ -217,7 +217,7 @@ class LuaContext {
     void sprite_on_frame_changed(Sprite& sprite, const std::string& animation, int frame);
 
     // Movement events.
-    void movement_on_position_changed(Movement& movement);  // TODO document
+    void movement_on_position_changed(Movement& movement);
     void movement_on_obstacle_reached(Movement& movement);
     void movement_on_changed(Movement& movement);
     void movement_on_finished(Movement& movement);
@@ -562,8 +562,8 @@ class LuaContext {
       item_api_set_amount_savegame_variable,
       item_api_is_obtainable,
       item_api_set_obtainable,
-      item_api_is_assignable,
-      item_api_set_assignable,
+      item_api_is_assignable,   // TODO remove
+      item_api_set_assignable,  // TODO remove
       item_api_get_can_disappear,
       item_api_set_can_disappear,
       item_api_get_brandish_when_picked,

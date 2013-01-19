@@ -119,7 +119,8 @@ The settings include the language, the video mode and the audio volume.
 \subsection lua_api_main_save_settings sol.main.save_settings([file_name])
 
 Saves the built-in settings into a file.
-This file can be reloaded later with \ref lua_api_main_load_settings to
+This file can be reloaded later with \ref lua_api_main_load_settings
+"sol.main.load_settings()" to
 restore the saved settings.
 The settings include the language, the video mode and the audio volume.
 - \c file_name (string, optional): %Settings file to read, relative to the

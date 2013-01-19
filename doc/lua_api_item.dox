@@ -1,13 +1,291 @@
 /**
 \page lua_api_item Equipment items
 
-The \c sol.item module is available to scripts attached to an item defined in the \c items.dat file.
-\c sol.item can be seen as an object that represents a particular item of the equipment.
-Depending on the current context, \c sol.item may additionally represent an instance of pickable item present on the map
-or an instance of inventory item currently being used by the hero.
+An equipment item represents something that the player can obtain 
+(one or more times and in various forms) and possibly keep.
+The Lua item type described in this page provides various functions to get and
+the possession state of a equipment item, set its properties (like whether the
+item is saved) and control its dynamic behavior
+(like what happens when the player obtains a treasure representing this item).
 
-- \c sol.item.get_variant():
-returns the possession state of the item controlled by this script (0: not possessed, 1: first variant, 2: second variant, etc.)
+A Lua item object represents a kind of treasure
+(and not particular instances of treasures).
+Individual treasures may be represented as
+\ref lua_api_pickable "pickable treasures",
+\ref lua_api_shop_item "shop items" and may be brandished by the
+\ref lua_api_hero "hero".
+For example, multiple treasures of the kind \c "rupee" may exist at the same
+time during the \ref lua_api_game "game", but only one Lua item
+object manages them.
+
+The script file <tt>items/XXXX.lua</tt> defines the item named \c XXXX.
+The corresponding Lua item object is passed as parameter
+of that script. Use the Lua notation \c "..." to get this parameter and store
+it in a regular variable.
+
+A \ref sprite_syntax "sprite" animation named \c XXXX must also exist in
+the sprite <tt>entities/items</tt>: it is used by the engine whenever it needs
+to draw your item on the \ref lua_api_map "map"
+(for example, when a \ref lua_api_pickable "pickable treasure"
+of this kind is created).
+
+Here in a basic example of script for the \c rupee item,
+an item whose only role is to increase the money of the player when he
+obtains a rupee.
+\verbatim
+-- First, we put the parameter into a variable called "rupee".
+-- (In Lua, the notation "..." refers to the parameter(s) of the script.)
+local rupee = ...
+
+-- Event called when the hero obtains a rupee treasure.
+function rupee:on_obtaining()
+  self:get_game():add_money(1)  -- Increase the money of 1 unit.
+end
+\endverbatim
+
+\remark All item scripts are loaded when you create a \ref
+lua_api_game "savegame" object. Indeed, equipment
+items only exist in the context
+of a particular savegame. As shown in the example above,
+you can retrieve that savegame with
+\ref lua_api_item_get_game "item:get_game()".
+
+\section Contents
+
+- \ref lua_api_item_methods
+- \ref lua_api_item_events
+
+\section lua_api_item_methods Methods of the type item
+
+\subsection lua_api_item_get_name item:get_name()
+
+Returns the name of this item.
+- Return value (string): The name that identifies this item.
+
+\subsection lua_api_item_get_game item:get_game()
+
+Returns the game where this item belongs.
+- Return value (\ref lua_api_game "game"): The game that contains this item.
+
+\remark The game is not necessarily running.
+
+\subsection lua_api_item_get_map item:get_map()
+
+Returns the current map.
+- Return value (\ref lua_api_map "map"): The current map, or \c nil if the
+  game is not running.
+
+\subsection lua_api_item_get_savegame_variable item:get_savegame_variable()
+
+Returns the name of the integer savegame value that stores the possession state
+of this item.
+- Return value (string): The savegame variable that stores the possessed
+  variant of this item, or \c nil if this item is not saved.
+
+\subsection lua_api_item_set_savegame_variable item:set_savegame_variable(savegame_variable)
+
+Sets the name of the integer savegame value that stores the possession state
+of this item.
+
+You should call this function at initialization time if you want your item to
+be saved.
+- \c savegame_variable (string): The savegame variable that should stored the
+  possessed variant of this item, or \c nil to make this item unsaved.
+
+\subsection lua_api_item_get_amount_savegame_variable item:get_amount_savegame_variable()
+
+Returns the name of the integer savegame value that stores the amount
+associated to this item.
+- Return value (string): The savegame variable that stores the possessed
+  amount of this item, or \c nil if this item has no associated amount.
+
+\subsection lua_api_item_set_amount_savegame_variable item:set_amount_savegame_variable()
+
+Returns the name of the integer savegame value that stores the amount
+of this item.
+
+You should call this function at initialization time if you want your item to
+store an amount (in addition to its possession state).
+This is typically used for items like the bow and the counter of bombs.
+- Return value (string): The savegame variable that should store the possessed
+  amount of this item, or \c nil to make this item have no associated amount.
+
+\subsection lua_api_item_is_obtainable item:is_obtainable()
+
+Returns whether the player is allowed to obtain this item.
+
+If not, any treasure representing this item is automatically replaced by
+an empty treasure.
+- Return value (boolean): \c true if this item is obtainable.
+
+\subsection lua_api_item_set_obtainable item:set_obtainable([obtainable])
+
+Sets whether the player is allowed to obtain this item.
+
+If not, any treasure representing this item is automatically replaced by
+an empty treasure. There is no risk that the player can obtain it or even see
+it during the \ref lua_api_game "game".
+You can use this feature to hide some items while the player
+has not the necessary equipment. For example, you can make arrows
+unobtainable until the player has the bow. You can also make magic jars
+unobtainable until the player has magic power.
+- Return value (boolean): \c true if this item is obtainable (no value means
+  \c true).
+
+\subsection lua_api_item_is_assignable item:is_assignable()
+
+Returns whether this item can be assigned to an item slot.
+
+When the item is assigned to a slot, the player can use it by
+pressing the \ref lua_api_game "game command" of this slot.
+Some items are meant to be used by pressing a command (like the bow),
+other are not supposed to (like a key or a rupee).
+When the player uses your item, the event \ref lua_api_item_on_using
+"item:on_using()" is triggered.
+- Return value (boolean): \c true if this item is assignable.
+
+\subsection lua_api_item_set_assignable item:set_assignable([assignable])
+
+Sets whether this item should be assignable to an item slot.
+
+When the item is assigned to a slot, the player can use it by
+pressing the \ref lua_api_game "game command" of this slot.
+Some items are meant to be used by pressing a command (like the bow),
+other are not supposed to (like a key or a rupee).
+When the player uses your item, the event \ref lua_api_item_on_using
+"item:on_using()" is triggered.
+
+Intially, an item is not assignable. Call this function at initialization
+time if you want your item to be assignable.
+- \c assignable (boolean): \c true if this item is assignable (no value means
+  \c true).
+
+\subsection lua_api_item_get_can_disappear item:get_can_disappear()
+
+Returns whether \ref lua_api_pickable "pickable treasures" of this kind
+disappears after a few seconds when they are dropped by an \ref lua_api_enemy
+"enemy" or a \ref lua_api_destructible "destructible entity".
+- Return value (boolean): \c true if pickable treasures of this kind can
+  disappear.
+
+\subsection lua_api_item_set_can_disappear item:set_can_disappear([can_disappear])
+
+Sets whether \ref lua_api_pickable "pickable treasures" of this kind should
+disappear after a few seconds when they are dropped by an \ref lua_api_enemy
+"enemy" or a \ref lua_api_destructible "destructible entity".
+
+Intially, an item cannot disappear. Call this function at initialization
+time if you want your item to be ephemeral.
+- \c can_disappear (boolean): \c true to make such pickable treasures
+  disappear after a few seconds (no value means \c true).
+
+\remark This property only applies to \ref lua_api_pickable
+  "pickable treasures" dropped dynamically (by \ref lua_api_enemy "enemies"
+  and \ref lua_api_destructible "destructible entities").
+  Pickable treasures already present on the \ref lua_api_map "map" when it
+  starts don't disappear with time.
+
+\subsection lua_api_item_get_brandish_when_picked item:get_brandish_when_picked()
+
+Returns whether the hero brandishes treasures of this kind when he
+\ref lua_api_pickable "picks" them
+on the ground.
+- Return value (boolean): \c true if the hero brandish such treasures.
+
+\subsection lua_api_item_set_brandish_when_picked item:set_brandish_when_picked([brandish_when_picked])
+
+Sets whether the hero should brandish treasures of this kind when he
+\ref lua_api_pickable "picks" them on the ground.
+
+Treasures coming from a \ref lua_api_chest "chest" are always brandished, even
+the most basic ones like simple rupees.
+However, when treasures are \ref lua_api_pickable "picked" on the ground
+(like rupees dropped by an \ref lua_api_enemy "enemy"),
+you may want the hero not to brandish them.
+
+Intially, this property is \c true. Call this function
+if you don't want your item to be brandished when it is picked on the
+ground.
+- \c brandish_when_picked (boolean): \c true if the hero should brandish such
+  treasures (no value means \c true).
+
+\subsection lua_api_item_get_shadow item:get_shadow()
+
+Returns the name of the animation representing the shadow of this item
+in the sprite \c "entities/shadow".
+- Return value (string): Name of the shadow animation adapted to this item
+  in the sprite \c "entities/shadow". \c nil means no shadow displayed.
+
+\subsection lua_api_item_set_shadow item:set_shadow(shadow_animation)
+
+Sets the name of the animation that should represent the shadow of this item
+in the sprite \c "entities/shadow".
+
+When the engine needs to show a treasure representing your item, it sometimes
+also wants to display a shadow (in addition of the treasure's main sprite).
+For example, \ref lua_api_pickable "pickable treasures"
+dropped by enemies always have a shadow.
+
+The default shadow animation is \c "big". You should call this function at
+initialization time if your item sprite is larger or smaller than usual.
+- shadow_animation (string): Name of the shadow animation in the sprite
+  \c "entities/shadow" to set for this item. \c nil means that no shadow
+  will be displayed.
+
+\remark To draw a treasure, the engine relies on two sprites: the treasure's
+  main sprite (\c entities/item) and the shadow's sprite (\c entities/shadow).
+  Both sprites and their appropriate animations must exist for each item so
+  that treasures can be displayed correctly.
+
+\subsection lua_api_item_get_sound_when_picked item:get_sound_when_picked()
+
+Returns the sound played when the hero
+\ref lua_api_pickable "picks a treasure" of this kind.
+- Return value (string): Name of the sound played when the hero picks a
+  treasure of this kind (\c nil means no sound).
+
+\subsection lua_api_item_set_sound_when_picked item:set_sound_when_picked(sound_when_picked)
+
+Sets the sound to play when the hero
+\ref lua_api_pickable "picks a treasure" of this kind.
+
+The default sound is \c "picked_item".
+- sound_when_picked (string): Name of the sound to play
+  (as in \ref lua_api_audio_play_sound "sol.audio.play_sound()")
+  when the hero picks a treasure of this kind (\c nil means no sound).
+
+\subsection lua_api_item_get_sound_when_brandished item:get_sound_when_brandished()
+
+Returns the sound played when the hero brandishes a treasure of this kind.
+- Return value (string): Name of the sound played when the hero brandishes a
+  treasure of this kind (\c nil means no sound).
+
+\subsection lua_api_item_set_sound_when_brandished item:set_sound_when_brandished(sound_when_brandished)
+
+Sets the sound to play when the hero
+brandishes a treasure of this kind.
+
+The hero can brandish treasures in various situations: when opening a
+\ref lua_api_chest "chest", when buying a \ref lua_api_shop_item "shop item",
+when picking up a \ref lua_api_pickable "pickable treasure" (unless  
+you called \ref lua_api_item_set_brandish_when_picked
+"item:set_brandish_when_picked(false)"), and also when you call
+\ref lua_api_hero_start_treasure "hero:start_treasure()" directly.
+
+The default sound is \c "treasure".
+- sound_when_brandished (string): Name of the sound to play
+  (as in \ref lua_api_audio_play_sound "sol.audio.play_sound()")
+  when the hero brandishes a treasure of this kind (\c nil means no sound).
+
+
+
+
+\subsection lua_api_item_get_variant item:get_variant()
+
+Returns the possession state of this item (only for a saved item).
+- Return value (number): The possession state (\c 0: not possessed,
+  \c 1: first variant, \c 2: second variant, etc.).
+
 
 - \c sol.item.set_variant(variant):
 sets the possession state of the item controlled by this script (0: not possessed, 1: first variant, 2: second variant, etc.)

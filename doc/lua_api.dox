@@ -42,11 +42,11 @@ interact with the C++ engine.
 
 Most types of the Lua API
 (\ref lua_api_game "game",
-\ref lua_api_game "item",
-\ref lua_api_game "map",
-\ref lua_api_game "entity",
-\ref lua_api_game "movement" and
-\ref lua_api_game "sprite")
+\ref lua_api_item "item",
+\ref lua_api_map "map",
+\ref lua_api_entity "entity",
+\ref lua_api_movement "movement" and
+\ref lua_api_sprite "sprite")
 are Lua userdata that have something special: they can also be indexed like
 tables.
 This mechanism is used by the engine when it needs to call callback methods
@@ -71,7 +71,7 @@ See the specification page of each feature for more details.
 - \subpage lua_api_timer "sol.timer": making an action later with a delay.
 - \subpage lua_api_drawable "sol.sprite, sol.surface, sol.text_surface":
   displaying animated images, fixed images or text, respectively.
-- \subpage lua_api_movement "sol.movement": creating and managing movements.
+- \subpage lua_api_movement "sol.movement": moving objects.
 - \subpage lua_api_game "sol.game": handling data saved
   (life, equipment, etc.) and running a game.
 - \subpage lua_api_item "sol.item": controls a particular type of

@@ -7,7 +7,7 @@ Its main feature is that you can draw objects on it.
 \section Contents
 
 - \ref lua_api_surface_functions
-- \ref lua_api_surface_drawable_methods
+- \ref lua_api_surface_inherited_methods
 - \ref lua_api_surface_methods
 
 <hr>
@@ -56,7 +56,7 @@ They are optional: by default, the whole surface is copied.
 <hr>
 <hr>
 
-\section lua_api_surface_drawable_methods Methods inherited from the type drawable
+\section lua_api_surface_inherited_methods Methods inherited from the type drawable
 
 Surfaces are particular \ref lua_api_drawable "drawable" objects.
 Therefore, they inherit all methods from the type drawable.

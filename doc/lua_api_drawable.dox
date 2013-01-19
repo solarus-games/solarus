@@ -1,5 +1,5 @@
 /**
-\page lua_api_drawable %Drawable objects
+\page lua_api_drawable Drawable objects
 
 %Drawable objects are things that can be drawn on a destination surface.
 They include the following types:
@@ -12,6 +12,8 @@ This page describes the methods common to those types.
 <hr>
 
 \section lua_api_drawable_methods Methods of all drawable types
+
+These methods exist in all drawable types.
 
 <hr>
 <hr>

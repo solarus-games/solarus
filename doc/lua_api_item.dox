@@ -228,7 +228,7 @@ dropped by enemies always have a shadow.
 
 The default shadow animation is \c "big". You should call this function at
 initialization time if your item sprite is larger or smaller than usual.
-- shadow_animation (string): Name of the shadow animation in the sprite
+- \c shadow_animation (string): Name of the shadow animation in the sprite
   \c "entities/shadow" to set for this item. \c nil means that no shadow
   will be displayed.
 
@@ -250,9 +250,13 @@ Sets the sound to play when the hero
 \ref lua_api_pickable "picks a treasure" of this kind.
 
 The default sound is \c "picked_item".
-- sound_when_picked (string): Name of the sound to play
+- \c sound_when_picked (string): Name of the sound to play
   (as in \ref lua_api_audio_play_sound "sol.audio.play_sound()")
   when the hero picks a treasure of this kind (\c nil means no sound).
+
+\remark This sound is always played, even if the treasure
+  is also brandished then (i.e. if \ref lua_api_item_get_brandish_when_picked
+  "item:get_brandish_when_picked()" returns \c true).
 
 \subsection lua_api_item_get_sound_when_brandished item:get_sound_when_brandished()
 
@@ -273,7 +277,7 @@ you called \ref lua_api_item_set_brandish_when_picked
 \ref lua_api_hero_start_treasure "hero:start_treasure()" directly.
 
 The default sound is \c "treasure".
-- sound_when_brandished (string): Name of the sound to play
+- \c sound_when_brandished (string): Name of the sound to play
   (as in \ref lua_api_audio_play_sound "sol.audio.play_sound()")
   when the hero brandishes a treasure of this kind (\c nil means no sound).
 

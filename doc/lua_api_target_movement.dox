@@ -18,9 +18,9 @@ the target.
 If you set the \c smooth property to \c true, it will try to avoid simple
 obstacles by moving to a side.
 This is usually enough for simple enemies that target the hero.
-If you want a more complex technique that calculates a intelligent path to
+If you want a more complex technique that calculates an intelligent path to
 the target,
-see the \ref lua_api_path_finding_movement "path finding movement".
+see the \ref lua_api_path_finding_movement "path finding movement" type.
 
 \section Contents
 
@@ -71,7 +71,7 @@ East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 - Return value (number): The angle in radians. 
 
 \remark If you prefer a value in a 4-direction system, see
-\ref lua_api_movement_get_direction4 "movement:get_direction4()"
+\ref lua_api_movement_get_direction4 "movement:get_direction4()".
 
 \subsection lua_api_target_movement_is_smooth target_movement:is_smooth()
 

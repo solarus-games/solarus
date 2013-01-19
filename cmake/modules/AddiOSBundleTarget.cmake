@@ -146,6 +146,7 @@ set_target_properties(${SOLARUS_OSX_BUNDLE} PROPERTIES
 # Use the bundle's resources path for the bundle's executable
 if(DEFAULT_QUEST)
   remove_definitions(-DSOLARUS_DEFAULT_QUEST=\"${DEFAULT_QUEST}\")
+  unset(DEFAULT_QUEST CACHE)
 endif()
 set(DEFAULT_QUEST "../Resources" CACHE STRING "Path to the quest to launch with a bundle" FORCE)
 add_definitions(-DSOLARUS_DEFAULT_QUEST=\"../Resources\")

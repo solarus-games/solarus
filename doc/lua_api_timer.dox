@@ -29,9 +29,11 @@ end)
 - \ref lua_api_timer_methods
 
 <hr>
+<hr>
 
 \section lua_api_timer_functions Functions of sol.timer
 
+<hr>
 <hr>
 
 \subsection lua_api_timer_start sol.timer.start([context], delay, callback)
@@ -39,7 +41,13 @@ end)
 Sets a function to be called after a delay.
 
 If the delay is set to zero, the function is called immediately.
-- \c context (map, enemy, game, item, menu or \c sol.main; optional): Determines the lifetime of
+- \c context (\ref lua_api_map "map",
+  \ref lua_api_game "game",
+  \ref lua_api_item "item",
+  \ref lua_api_enemy "enemy",
+  \ref lua_api_menu "menu"
+  or
+  \ref lua_api_main "sol.main"; optional): Determines the lifetime of
   the timer.
   The context is where the timer belongs.<br>
   If the context gets closed before the timer is finished, then
@@ -70,7 +78,8 @@ If the delay is set to zero, the function is called immediately.
     Example: dumping some global information periodically while the program is
     running.
   - If you don't specify a context, then a default context is set for you:
-    the current map during a game, and \c sol.main if no game is running.
+    the current \ref lua_api_map "map" during a \ref lua_api_game "game",
+    and \ref lua_api_main "sol.main" if no game is running.
 - \c delay (number): Delay before calling the function in milliseconds.
 - \c callback (function): The function to be called when the timer finishes.
 - Return value (timer): The timer created (or \c nil if \c delay is \c 0).
@@ -85,27 +94,37 @@ If the delay is set to zero, the function is called immediately.
 \subsection lua_api_timer_stop_all sol.timer.stop_all(context)
 
 Cancels all timers that are currently running in a context.
-- \c context (map, enemy, game, item, menu or \c sol.main): The context where you
+- \c context (\ref lua_api_map "map",
+  \ref lua_api_game "game",
+  \ref lua_api_item "item",
+  \ref lua_api_enemy "enemy",
+  \ref lua_api_menu "menu"
+  or
+  \ref lua_api_main "sol.main"): The context where you
   want to stop timers.
 
 This function is equivalent to calling \ref lua_api_timer_stop on each timer
 of the context.
-It may allows you to avoid to store explicitly all your timers.
+It may allow you to avoid to store explicitly all your timers.
 
 Keep in mind that timers are already automatically stopped when their context
-finishes: when the player goes to another map, map timers are canceled,
-when an enemy is killed, its timers are canceled, etc.
-
-But the end of a context is not the only reason why you may want its timers
-to be canceled.
-Typically, when an enemy is hurt, you may want to cancel all its timers, because
+finishes: when the player goes to another \ref lua_api_map "map",
+map timers are canceled,
+when an \ref lua_api_enemy "enemy" is killed, its timers are canceled, etc.
+In all these cases, you don't need this function.
+But there are situations where you need to cancel explictly the timers of a
+context.
+Typically, when an \ref lua_api_enemy "enemy" is hurt, you may want to cancel
+all its timers, because
 you don't want your enemy to perform its next attacks or to make a
 movement during its hurting animation.
 
 <hr>
+<hr>
 
 \section lua_api_timer_methods Methods of the type timer
 
+<hr>
 <hr>
 
 \subsection lua_api_timer_stop timer:stop()
@@ -148,7 +167,8 @@ Returns whether this timer is currently suspended.
 
 \subsection lua_api_timer_is_suspended_with_map timer:is_suspended_with_map()
 
-Returns whether this timer gets automatically suspended when the map is
+Returns whether this timer gets automatically suspended when the
+\ref lua_api_map "map" is
 suspended.
 - Return value (boolean): \c true if this timer is currently suspended.
 
@@ -156,7 +176,8 @@ suspended.
 
 \subsection lua_api_timer_set_suspended_with_map timer:set_suspended_with_map([suspended_with_map])
 
-Sets whether this timer should automatically be suspended when the map gets
+Sets whether this timer should automatically be suspended when the
+\ref lua_api_map "map" gets
 suspended.
 
 The map is suspended by the engine in a few cases, like when the game is
@@ -165,7 +186,9 @@ When it happens, all map entities stop moving and most sprites stop their
 animation.
 With this setting, you can choose whether your timer gets suspended too.
 
-By default, map timers, enemy timers and item timers are suspended with the
+By default, \ref lua_api_map "map" timers,
+\ref lua_api_enemy "enemy" timers and
+\ref lua_api_item "item" timers are suspended with the
 map.
 - \c suspended_with_map (boolean, optional): \c true to suspend the timer when
   the map is suspended, \c false to continue (no value means \c true).

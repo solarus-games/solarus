@@ -7,7 +7,7 @@ which animations are available and describes, for each animation,
 a sequence of images in each direction.
 
 A sprite has the following properties:
-- a current animation from its animation set (like "walking" or "hurt"),
+- a current animation from its animation set (like \c "walking" or \c "hurt"),
 - a current direction that indicates where the sprite is facing,
 - a current frame: the index of the current individual image in the sequence.
 
@@ -29,9 +29,11 @@ game or your menus.
 - \ref lua_api_sprite_events
 
 <hr>
+<hr>
 
 \section lua_api_sprite_functions Functions of sol.sprite
 
+<hr>
 <hr>
 
 \subsection lua_api_sprite_create sol.sprite.create(animation_set_id)
@@ -44,20 +46,23 @@ Creates a sprite.
   could not be loaded.
 
 <hr>
+<hr>
 
 \section lua_api_sprite_drawable_methods Methods inherited from the type drawable
 
-Sprites are particular drawable objects.
-Thus, they inherit all methods from the type drawable.
+Sprites are particular \ref lua_api_drawable "drawable" objects.
+Therefore, they inherit all methods from the type drawable.
 
 See \ref lua_api_drawable_methods to know these methods.
 
+<hr>
 <hr>
 
 \section lua_api_sprite_methods Methods of the type sprite
 
 The following methods are specific to sprites.
 
+<hr>
 <hr>
 
 \subsection lua_api_sprite_get_animation sprite:get_animation()
@@ -163,12 +168,14 @@ sprite.
   stopping any previous synchronization.
 
 <hr>
+<hr>
 
 \section lua_api_sprite_events Events of the type sprite
 
 Events are callback methods automatically called by the engine if you define
 them.
 
+<hr>
 <hr>
 
 \subsection lua_api_sprite_on_animation_finished sprite:on_animation_finished(animation)
@@ -185,7 +192,7 @@ Unless you start another animation, the sprite is no longer shown.
 
 Called whenever the frame of this sprite has changed.
 - \c animation: Name of the current animation.
-- \c frame: The new current frame.
+- \c frame: The new current frame (the first one is \c 0).
 
 */
 

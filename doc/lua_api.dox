@@ -1,9 +1,9 @@
 /**
-\page lua_api Lua scripting API specification
+\page lua_api Solarus Lua API reference
 
 This is the API specification of Lua functions, methods, callbacks
 and types defined by Solarus.
-This documentation page is intented to quest makers who want to need to write
+This documentation page is intented to quest makers who want to write
 scripts for their maps, items, enemies and menus.
 For the point of view of the engine, see the documentation of the C++ class
 LuaContext.
@@ -23,13 +23,13 @@ or that the hero is talking to a particular non-playing character.
 
 The following script files are loaded by the engine when they exist:
 - The main script (\c main.lua): global script that controls the menus (if any)
-  before starting a game.
+  before starting a game and decides to start a game.
 - The script of a map (\c maps/XXXX.lua): controls the map \c XXXX.
   Called when the player enters the map.
 - The script of an enemy (\c enemies/XXXX.lua): controls an enemy whose
-  breed is \c XXXX. Called when an enemy of this breed is added to the map.
+  breed is \c XXXX. Called when an enemy of this breed is created on the map.
 - The script of an item (\c items/XXXX.lua): controls the item named
-  \c XXXX in \c items.dat. Called when the game starts.
+  \c XXXX. Called when a \ref lua_api_game "savegame" is loaded or created.
 
 All these various scripts run in the same Lua state.
 In other words, they share global values.
@@ -37,28 +37,31 @@ In other words, they share global values.
 Interactions between your Lua world and the engine
 are managed through a predefined global table called \c sol.
 The whole Solarus Lua API is available in the \c sol table.
-It contains modules, functions, types and values that allow you to
+It contains functions, types and values that allow you to
 interact with the C++ engine.
 
-Most types exported by the engine to Lua API, like
-\ref lua_api_game "game",
+Most types of the Lua API
+(\ref lua_api_game "game",
 \ref lua_api_game "item",
 \ref lua_api_game "map",
 \ref lua_api_game "entity",
 \ref lua_api_game "movement" and
-\ref lua_api_game "sprite",
+\ref lua_api_game "sprite")
 are Lua userdata that have something special: they can also be indexed like
 tables.
-Therefore, you can extend these objects with your own functions and data.
-This is very useful in the \ref lua_api_game "game"
+This mechanism is used by the engine when it needs to call callback methods
+that you defined on your objects.
+But you can also extend these objects with your own functions and data.
+This is very useful in the \ref lua_api_game "game" and
+\ref lua_api_map "map" objects
 to implement and store everything that is not built-in
-in the Solarus
-engine: your pause menu, your HUD, or some properties and utility functions
+in the Solarus API:
+your pause menu, your HUD, a puzzle,
+or some properties and utility functions
 specific to your quest.
-All data internal to each \ref lua_api_map "map" script can also be stored in
-the map object itself this way.
 
-The following modules are defined in the \c sol table.
+The following features are defined in the global \c sol table.
+See the specification page of each feature for more details.
 
 - \subpage lua_api_main "sol.main": some general-purpose features.
 - \subpage lua_api_audio "sol.audio": playing musics and sounds.
@@ -78,8 +81,6 @@ The following modules are defined in the \c sol table.
 - \subpage lua_api_entity "sol.entity": controls entities placed on the map
   (only during a game), like the hero, enemies, chests, non-playing
   characters, etc.
-
-See the specification page of each module for more details.
 
 */
 

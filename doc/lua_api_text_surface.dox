@@ -4,7 +4,6 @@
 A text surface is a single line of text that you can display.
 A text surface can be seen as a special
 \ref lua_api_surface "surface" able to contain text.
-\c sol.text_surface provides features to handle text surfaces.
 
 \section Contents
 
@@ -13,9 +12,11 @@ A text surface can be seen as a special
 - \ref lua_api_text_surface_methods
 
 <hr>
+<hr>
 
 \section lua_api_text_surface_functions Functions of sol.text_surface
 
+<hr>
 <hr>
 
 \subsection lua_api_text_surface_create sol.text_surface.create([properties]):
@@ -45,20 +46,23 @@ Creates a text surface with the specified properties.
   - Return value (text surface): The text surface created.
 
 <hr>
+<hr>
 
 \section lua_api_text_surface_drawable_methods Methods inherited from the type drawable
 
-Text surfaces are particular drawable objects.
-Thus, they inherit all methods from the type drawable.
+Text surfaces are particular \ref lua_api_drawable "drawable" objects.
+Therefore, they inherit all methods from the type drawable.
 
 See \ref lua_api_drawable_methods to know these methods.
 
+<hr>
 <hr>
 
 \section lua_api_text_surface_methods Methods of the type text surface
 
 The following methods are specific to text surfaces.
 
+<hr>
 <hr>
 
 \subsection lua_api_text_surface_get_horizontal_alignment text_surface:get_horizontal_alignment()

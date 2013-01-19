@@ -1,7 +1,8 @@
 /**
 \page lua_api_movement Movements
 
-If you need to move an enemy of the map, a sprite in a menu
+If you need to move an \ref lua_api_enemy "enemy" of the map,
+a \ref lua_api_sprite "sprite" in a menu
 or anything, you can create a
 movement object and set its properties.
 There are several types of movements. They differ by the kind of trajectory
@@ -27,17 +28,22 @@ because all movement types don't have the same properties.
 - \ref lua_api_pixel_movement_methods
 - \ref lua_api_movement_events
 
-Movements can be applied in-game to map entities, but also
-outside a game, typically in a menu to move a sprite or an image.
+Movements can be applied in-game to \ref lua_api_entity "map entities",
+but also
+outside a game, typically in a \ref lua_api_menu "menu"
+to move a \ref lua_api_sprite "sprite" or an \ref lua_api_surface "image".
 However, some properties of movements (like \ref
-lua_api_movement_set_ignore_obstacles "set_ignore_obstacles()")
-only take effect when the movement is applied to a map entity
-because they refer to map-specific notions.
+lua_api_movement_set_ignore_obstacles "movement:set_ignore_obstacles()")
+only take effect in the case of a \ref lua_api_entity
+"map entity"
+because they refer to \ref lua_api_map "map-specific" notions.
 
+<hr>
 <hr>
 
 \section lua_api_movement_functions Functions of sol.movement
 
+<hr>
 <hr>
 
 \subsection lua_api_movement_create sol.movement.create(movement_type)
@@ -63,44 +69,48 @@ then available to get and set its properties.
   know the get and set methods available for your movement type.
 
 <hr>
+<hr>
 
 \section lua_api_movement_methods Methods of all movement types
 
-<hr>
-
 These methods exist in all movement types.
 
+<hr>
 <hr>
 
 \subsection lua_api_movement_get_xy movement:get_xy()
 
 Returns the coordinates of the object controlled by this movement.
 
-If this movement is attached to a map
-\ref lua_api_entity "entity" during a game,
+If this movement is attached to a
+\ref lua_api_entity "map entity" during a \ref lua_api_game "game",
 the coordinates of that entity are returned but you probably don't need
 this function.
 
 Otherwise, the coordinates returned correspond to the result of the
 movement so far for an object that was initially at position <tt>0,0</tt>
 (or at the position you specified with
-\ref lua_api_movement_set_xy "set_xy()")
+\ref lua_api_movement_set_xy "movement:set_xy()").
+- Return value 1 (number): X coordinate.
+- Return value 2 (number): Y coordinate.
 
 <hr>
 
-\subsection lua_api_movement_set_xy movement:set_xy()
+\subsection lua_api_movement_set_xy movement:set_xy(x, y)
 
 Sets the coordinates of the object controlled by this movement.
 
-If this movement is attached to a map
-\ref lua_api_entity "entity" during a game,
+If this movement is attached to a
+\ref lua_api_entity "map entity" during a \ref lua_api_game "game",
 the coordinates are applied to that entity
 but you probably don't need
 this function.
 
 Otherwise, the coordinates are stored internally and will be used as a
 reference for a future call to
-\ref lua_api_movement_get_xy "get_xy()".
+\ref lua_api_movement_get_xy "movement:get_xy()".
+- \c x (number): X coordinate to set.
+- \c y (number): Y coordinate to set.
 
 <hr>
 
@@ -108,7 +118,8 @@ reference for a future call to
 
 Returns whether this movement ignores obstacles of the map.
 
-If the movement is not attached to a map entity yet, it is not an error to
+If the movement is not attached to a \ref lua_api_entity "map entity"
+yet, it is not an error to
 call this function: the result will have an effect when the movement gets
 attached to a map entity.
 - Return value (boolean): \c true if this movement ignores obstacles.
@@ -120,11 +131,12 @@ attached to a map entity.
 Sets whether a map entity controlled by this movement should ignore obstacles of
 the map.
 
-If the movement is not attached to a map entity yet, it is not an error to
+If the movement is not attached to a \ref lua_api_entity "map entity" yet,
+it is not an error to
 call this function: your choice will have an effect when the movement gets
 attached to a map entity.
 - \c ignore_obstacles (boolean, optional): \c true to make this movement ignore
-  obstacles of the map (default \c true).
+  obstacles of the map (no value means \c true).
 
 <hr>
 
@@ -137,7 +149,8 @@ East is 0, North is 1, West is 2, South is 3.
 As the real trajectory does not necessarily follows one of the four main
 directions, it will be converted to the closest one.
 
-If you use this movement to control a sprite (or a map entity that has a sprite),
+If you use this movement to control a \ref lua_api_sprite "sprite"
+(or a \ref lua_api_entity "map entity" that has a sprite),
 you can use this function to make the sprite face the direction of the
 movement.
 - Return value (number): The closest direction corresponding to the
@@ -148,14 +161,14 @@ Example of use:
 -- Example of code from an enemy script.
 
 -- This function is called when the enemy should start or restart its movement.
-function self:on_restart()
+function enemy:on_restarted()
   -- Create a movement that makes random straight trajectories.
   local movement = sol.movement.create("random")
   self:start_movement(movement)
 end
 
--- This function is called when a property of the enemy's movement changes.
-function self:on_movement_changed(movement)
+-- This function is called when the trajectory has changed.
+function enemy:on_movement_changed(movement)
   -- The angle of the movement has changed: update the sprite accordingly.
   local direction = movement:get_direction4()
   self:get_sprite():set_direction(direction)
@@ -163,16 +176,16 @@ end
 \endverbatim
 
 <hr>
+<hr>
 
 \section lua_api_straight_movement_methods Methods of the type straight movement
-
-<hr>
 
 These methods are specific to the straight movement type.
 
 A straight movement follows a rectilinear trajectory. You can define the
 trajectory as an angle and a speed.
 
+<hr>
 <hr>
 
 \subsection lua_api_straight_movement_get_speed straight_movement:get_speed()
@@ -199,7 +212,7 @@ East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 - Return value (number): The angle in radians. 
 
 \remark If you prefer a value in a 4-direction system, see
-\ref lua_api_movement_get_direction4.
+\ref lua_api_movement_get_direction4 "movement:get_direction4()".
 
 <hr>
 
@@ -219,7 +232,7 @@ Negative values and values greater to <tt>2 * math.pi</tt> are also accepted.
 Returns the maximum distance of this movement.
 
 The movement will stop when this distance is reached.
-- Return value (number): The maximum distance in pixels (0 means no limit).
+- Return value (number): The maximum distance in pixels (\c 0 means no limit).
 
 <hr>
 
@@ -228,33 +241,34 @@ The movement will stop when this distance is reached.
 Sets the maximum distance of this movement.
 
 The movement will stop when this distance is reached.
-- \c max_distance (number): The maximum distance in pixels (0 means no limit).
+- \c max_distance (number): The maximum distance in pixels (\c 0 means no limit).
 
 <hr>
 
 \subsection lua_api_straight_movement_is_smooth straight_movement:is_smooth()
 
 Returns whether this movement adjusts its trajectory when an obstacle of the
-map is reached.
-This property has no effect if the movement is not attached to a map entity
+\ref lua_api_map "map" is reached.
+This property has no effect if the movement is not attached to a
+\ref lua_api_entity "map entity"
 or if the movement ignores obstacles.
-- Return value (boolean): \c true if this movement is smooth
+- Return value (boolean): \c true if this movement is smooth.
 
 <hr>
 
-\subsection lua_api_straight_movement_set_smooth straight_movement:set_smooth(smooth)
+\subsection lua_api_straight_movement_set_smooth straight_movement:set_smooth([smooth])
 
 Sets whether this movement should adjust its trajectory when an obstacle of the
-map is reached.
-This property has no effect if the movement is not attached to a map entity
+\ref lua_api_map "map" is reached.
+This property has no effect if the movement is not attached to a
+\ref lua_api_entityt "map entity"
 or if the movement ignores obstacles.
-- \c smooth (boolean): \c true to make this movement smooth (default \c true).
+- \c smooth (boolean): \c true to make this movement smooth (no value means \c true).
 
+<hr>
 <hr>
 
 \section lua_api_random_movement_methods Methods of the type random movement
-
-<hr>
 
 These methods are specific to the random movement type.
 
@@ -262,6 +276,7 @@ This type of movement is a rectilinear movement whose trajectory changes
 randomly over time. It can be seen as a particular case of the straight
 movement type, where the angle is automatically changed after random delays.
 
+<hr>
 <hr>
 
 \subsection lua_api_random_movement_get_speed random_movement:get_speed()
@@ -287,7 +302,7 @@ East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 - Return value (number): The angle in radians. 
 
 \remark If you prefer a value in a 4-direction system, see
-\ref lua_api_movement_get_direction4.
+\ref lua_api_movement_get_direction4 "movement:get_direction4()"
 
 <hr>
 
@@ -297,7 +312,7 @@ Returns the maximum distance of this movement.
 
 If the movement goes further than this distance, it
 automatically comes back towards the initial position.
-- Return value (number): The maximum distance in pixels (0 means no limit).
+- Return value (number): The maximum distance in pixels (\c 0 means no limit).
 
 <hr>
 
@@ -307,44 +322,48 @@ Sets the maximum distance of this movement.
 
 If the movement goes further than this distance, it
 automatically comes back towards the initial position.
-- \c max_distance (number): The maximum distance in pixels (0 means no limit).
+- \c max_distance (number): The maximum distance in pixels (\c 0 means no limit).
 
 <hr>
 
 \subsection lua_api_random_movement_is_smooth random_movement:is_smooth()
 
 Returns whether this movement adjusts its trajectory when an obstacle of the
-map is reached.
-This property has no effect if the movement is not attached to a map entity
+\ref lua_api_map "map" is reached.
+This property has no effect if the movement is not attached to a
+\ref lua_api_entity "map entity"
 or if the movement ignores obstacles.
-- Return value (boolean): \c true if this movement is smooth
+- Return value (boolean): \c true if this movement is smooth.
 
 <hr>
 
-\subsection lua_api_random_movement_set_smooth random_movement:set_smooth(smooth)
+\subsection lua_api_random_movement_set_smooth random_movement:set_smooth([smooth])
 
 Sets whether this movement should adjust its trajectory when an obstacle of the
-map is reached.
-This property has no effect if the movement is not attached to a map entity
+\ref lua_api_map "map" is reached.
+This property has no effect if the movement is not attached to a
+\ref lua_api_entity "map entity"
 or if the movement ignores obstacles.
-- \c smooth (boolean): \c true to make this movement smooth (default \c true).
+- \c smooth (boolean): \c true to make this movement smooth (no value means \c true).
 
+<hr>
 <hr>
 
 \section lua_api_target_movement_methods Methods of the type target movement
 
-<hr>
-
 These methods are specific to the target movement type.
 
 A target movement goes towards a target point.
-The target point can be a fixed point of an entity of the map.
+The target point can be a fixed point of an \ref lua_api_entity "entity"
+of the \ref lua_api_map "map".
 If the target is a moving map entity, the movement updates its angle to
 continue to go towards the entity.
-By default, the target is the hero if there is a current map.
+By default, the target is the \ref lua_api_entity "hero" when a
+\ref lua_api_game "game" is running.
 
 This type of movement can be seen as a particular case of the
-straight movement type, where the angle is set automatically to go towards
+\ref lua_api_straight_movement_methods "straight movement" type,
+where the angle is set automatically to go towards
 the target.
 
 \remark This type of movement goes straight towards the target.
@@ -356,16 +375,18 @@ the target,
 see the \ref lua_api_path_finding_movement_methods "path finding movement".
 
 <hr>
+<hr>
 
 \subsection lua_api_target_movement_set_target target_movement:set_target(x, y), target_movement:set_target(entity)
 
-Sets the target of this movement as a fixed point of a map entity.
+Sets the target of this movement as a fixed point or a
+\ref lua_api_entity "map entity".
 
 To target a fixed point:
 - \c x (integer): X coordinate of the target.
 - \c y (integer): Y coordinate of the target.
 
-To target a map entity:
+To target a map entity (only during a \ref lua_api_game "game"):
 - \c entity (entity): The entity to target.
 
 <hr>
@@ -394,33 +415,34 @@ East is 0, North is <tt>math.pi / 2</tt>, West is \c math.pi, South is
 - Return value (number): The angle in radians. 
 
 \remark If you prefer a value in a 4-direction system, see
-\ref lua_api_movement_get_direction4.
+\ref lua_api_movement_get_direction4 "movement:get_direction4()"
 
 <hr>
 
 \subsection lua_api_target_movement_is_smooth target_movement:is_smooth()
 
 Returns whether this movement adjusts its trajectory when an obstacle of the
-map is reached.
-This property has no effect if the movement is not attached to a map entity
+\ref lua_api_map "map" is reached.
+This property has no effect if the movement is not attached to a
+\ref lua_api_entity "map entity"
 or if the movement ignores obstacles.
-- Return value (boolean): \c true if this movement is smooth
+- Return value (boolean): \c true if this movement is smooth.
 
 <hr>
 
 \subsection lua_api_target_movement_set_smooth target_movement:set_smooth(smooth)
 
 Sets whether this movement should adjust its trajectory when an obstacle of the
-map is reached.
-This property has no effect if the movement is not attached to a map entity
+\ref lua_api_map "map" is reached.
+This property has no effect if the movement is not attached to a
+\ref lua_api_entity "map entity"
 or if the movement ignores obstacles.
 - \c smooth (boolean): \c true to make this movement smooth
 
 <hr>
+<hr>
 
 \section lua_api_path_movement_methods Methods of the type path movement
-
-<hr>
 
 These methods are specific to the path movement type.
 
@@ -429,6 +451,7 @@ A path movement follows a specified path on an 8*8 pixels grid, in an
 A path is a succession of steps of 8 pixels in one of the 8 main directions.
 You can define each step of the path and make it repeated if you want.
 
+<hr>
 <hr>
 
 \subsection lua_api_path_movement_get_path path_movement:get_path()
@@ -521,10 +544,9 @@ not attached to a map entity.
   entity to the map grid.
 
 <hr>
+<hr>
 
 \section lua_api_random_path_movement_methods Methods of the type random path movement
-
-<hr>
 
 These methods are specific to the random path movement type.
 
@@ -548,6 +570,7 @@ end
 \endverbatim
 
 <hr>
+<hr>
 
 \subsection lua_api_random_path_movement_get_speed random_path_movement:get_speed()
 
@@ -562,26 +585,29 @@ Sets the speed of this movement.
 - \c speed (number): The new speed in pixels per second.
 
 <hr>
+<hr>
 
 \section lua_api_path_finding_movement_methods Methods of the type path finding movement
-
-<hr>
 
 These methods are specific to the path finding movement type.
 
 A path finding movement is a particular
 \ref lua_api_path_movement_methods "path movement" where
 the path is calculated to reach a target.
-The target is a map entity (by default the hero). The movement calculates
+The target is a \ref lua_api_entity "map entity"
+(by default the \ref lua_api_hero "hero"). The movement calculates
 repeatedly the shortest path towards the target entity, taking into account
-obstacles of the map.
+obstacles of the \ref lua_api_map "map".
+With this type of movement, an entity is capable of finding its way in a maze.
 
 \remark This type of movement computes a precise path on the map grid and
-avoids complex obstacles by using an advanced A.I. algorithm (A*).
+avoids complex obstacles by using a sophisticated A.I. algorithm
+(<a href="http://en.wikipedia.org/wiki/A*">A*</a>).
 If you just need to go straight towards a target,
 which may be more natural for basic enemies,
-see the \ref lua_api_target_movement_methods "target movement".
+see the \ref lua_api_target_movement_methods "target movement" type.
 
+<hr>
 <hr>
 
 \subsection lua_api_path_finding_movement_set_target path_finding_movement:set_target(entity)
@@ -604,27 +630,28 @@ Sets the speed of this movement.
 - \c speed (number): The new speed in pixels per second.
 
 <hr>
+<hr>
 
 \section lua_api_circle_movement_methods Methods of the type circle movement
-
-<hr>
 
 These methods are specific to the circle movement type.
 
 A circle movement makes a circular trajectory around a center point or
-a map entity.
+a \ref lua_api_entity "map entity".
 
+<hr>
 <hr>
 
 \subsection lua_api_circle_movement_set_center circle_movement:set_center(x, y), circle_movement:set_center(entity, [dx, dy])
 
-Sets the center of this movement as a fixed point of a map entity.
+Sets the center of this movement as a fixed point or a \ref lua_api_entity
+"map entity".
 
 To make circles around a fixed point:
 - \c x (integer): X coordinate of the center.
 - \c y (integer): Y coordinate of the center.
 
-To make circles around a map entity:
+To make circles around a map entity (only during a \ref lua_api_game "game"):
 - \c entity (entity): The center entity.
 - \c dx (number, optional): X offset to add to the center entity's coordinates
   (default 0).
@@ -637,7 +664,9 @@ To make circles around a map entity:
 
 Returns the radius of circles to make.
 
-If \ref lua_api_circle_movement_get_radius_speed is not 0,
+If \ref lua_api_circle_movement_get_radius_speed
+"circle_movement:get_radius_speed()"
+is not 0,
 radius changes are made gradually.
 - Return value (number): The wanted radius in pixels.
 
@@ -647,7 +676,9 @@ radius changes are made gradually.
 
 Sets the radius of circles to make.
 
-If \ref lua_api_circle_movement_get_radius_speed is not 0,
+If \ref lua_api_circle_movement_get_radius_speed
+"circle_movement:get_radius_speed()"
+is not 0,
 the radius will be updated gradually.
 - \c radius (number): The new wanted radius in pixels.
 
@@ -717,7 +748,7 @@ Sets the speed of the angle variation.
 Returns the maximum number of rotations of this movement.
 
 When this number of rotations is reached, the movement stops.
-- Return value (number): The maximum number of rotations to make (0
+- Return value (number): The maximum number of rotations to make (\c 0
   means infinite).
 
 <hr>
@@ -727,16 +758,18 @@ When this number of rotations is reached, the movement stops.
 Sets the maximum number of rotations of this movement.
 
 When this number of rotations is reached, the movement stops.
-- \c max_rotations (number): The maximum number of rotations to make (0
+- \c max_rotations (number): The maximum number of rotations to make (\c 0
   means infinite).
 
-\remark The movement is stopped by automatically setting its radius to 0.
+\remark The movement stops itself by setting its radius to 0.
 Therefore, if the radius is set to change gradually (see
-\ref lua_api_circle_movement_get_radius_speed),
+\ref lua_api_circle_movement_get_radius_speed
+"circle_movement:get_radius_speed()"),
 the movement will continue for a while until the radius reaches 0.
 
-\remark When the movement has stopped, it will then restart if it was set
-to loop (see \ref lua_api_circle_movement_get_loop_delay),
+\remark When the movement has stopped, it restarts later if it was set
+to loop (see \ref lua_api_circle_movement_get_loop_delay
+"circle_movement:get_loop_delay()"),
 and again, possibly gradually.
 
 <hr>
@@ -747,7 +780,7 @@ Returns the maximum duration of this movement.
 
 When this delay is reached, the movement stops.
 - Return value (number): The duration of the movement in milliseconds
-  (0 means infinite).
+  (\c 0 means infinite).
 
 <hr>
 
@@ -757,15 +790,17 @@ Sets the maximum duration of this movement.
 
 When this delay is reached, the movement stops.
 - \c duration (number): The duration of the movement in milliseconds
-  (0 means infinite).
+  (\c 0 means infinite).
 
 \remark The movement is stopped by automatically setting its radius to 0.
 Therefore, if the radius is set to change gradually (see
-\ref lua_api_circle_movement_get_radius_speed),
+\ref lua_api_circle_movement_get_radius_speed
+"circle_movement:get_radius_speed()"),
 the movement will continue for a while until the radius reaches 0.
 
 \remark When the movement has stopped, it will then restart if it was set
-to loop (see \ref lua_api_circle_movement_set_loop_delay),
+to loop (see \ref lua_api_circle_movement_set_loop_delay
+"circle_movement:set_loop_delay()"),
 and again, possibly gradually.
 
 <hr>
@@ -773,7 +808,7 @@ and again, possibly gradually.
 \subsection lua_api_circle_movement_get_loop_delay circle_movement:get_loop_delay()
 
 Returns the delay after which this movement restarts.
-- Return value (number): The restart delay in milliseconds (0 means no
+- Return value (number): The restart delay in milliseconds (\c 0 means no
   restart).
 
 <hr>
@@ -781,7 +816,7 @@ Returns the delay after which this movement restarts.
 \subsection lua_api_circle_movement_set_loop_delay circle_movement:set_loop_delay(loop_delay)
 
 Sets the delay after which this movement restarts.
-- \c loop_delay (number): The restart delay in milliseconds (0 means no
+- \c loop_delay (number): The restart delay in milliseconds (\c 0 means no
   restart).
 
 \remark This delay is applied if the movement get stopped by reaching the
@@ -791,13 +826,13 @@ or the
 
 \remark When the movement restarts, the radius starts from 0 and gets back
 to its previous value, possibly gradually
-(see \ref lua_api_circle_movement_set_radius_speed).
+(see \ref lua_api_circle_movement_set_radius_speed
+"circle_movement:set_radius_speed()").
 
+<hr>
 <hr>
 
 \section lua_api_jump_movement_methods Methods of the type jump movement
-
-<hr>
 
 These methods are specific to the jump movement type.
 
@@ -812,13 +847,14 @@ For now, the baseline can only have one of the 8 main
 directions. This restriction may be removed in the future.
 
 <hr>
+<hr>
 
 \subsection lua_api_jump_movement_get_direction8 jump_movement:get_direction8()
 
 Returns the direction of the baseline of this jump.
 The baseline always has one of the 8 main directions.
 0 is East, 1 is North-East, etc.
-- Return value (number): The direction (0 to 7).
+- Return value (number): The direction (\c 0 to \c 7).
 
 <hr>
 
@@ -827,7 +863,7 @@ The baseline always has one of the 8 main directions.
 Sets the direction of the baseline of this jump.
 The baseline always has one of the 8 main directions.
 0 is East, 1 is North-East, etc.
-- \c direction8 (number): The direction (0 to 7).
+- \c direction8 (number): The direction (\c 0 to \c 7).
 
 <hr>
 
@@ -855,14 +891,13 @@ Returns the speed of this movement.
 \subsection lua_api_jump_movement_set_speed jump_movement:set_speed(speed)
 
 Sets the speed of this movement.
-- \c speed (number): The new speed in pixels per second. 0 means to set
+- \c speed (number): The new speed in pixels per second. \c 0 means to set
   automatically a speed based on the distance of the jump.
 
 <hr>
+<hr>
 
 \section lua_api_pixel_movement_methods Methods of the type pixel movement
-
-<hr>
 
 These methods are specific to the pixel movement type.
 
@@ -880,8 +915,10 @@ Instead, you can set the delay between each translation.
 want to specify pixel-by-pixel trajectories. Higher-level types of movements
 like \ref lua_api_path_movement_methods "path movement" or
 \ref lua_api_target_movement_methods "target movement"
-usually fit your needs.
+usually fit your needs when you move \ref lua_api_npc "NPCs" or
+\ref lua_api_enemy "enemies".
 
+<hr>
 <hr>
 
 \subsection lua_api_pixel_movement_get_trajectory pixel_movement:get_trajectory()
@@ -932,12 +969,14 @@ Sets the delay between two steps of the trajectory.
 - \c delay (number): The delay between two steps in milliseconds.
 
 <hr>
+<hr>
 
-\section lua_api_movement_events Events of the type movement
+\section lua_api_movement_events Events of a movement
 
 Events are callback methods automatically called by the engine if you define
 them.
 
+<hr>
 <hr>
 
 \subsection lua_api_movement_on_position_changed movement:on_position_changed()
@@ -948,20 +987,27 @@ Called when the coordinates controlled by this movement have just changed.
 
 \subsection lua_api_movement_on_obstacle_reached movement:on_obstacle_reached()
 
-During a game, called when this movement has just failed to change the
-coordinates because this would lead the map entity controlled into an obstacle
-of the map.
+During a \ref lua_api_game "game",
+called when the coordinates controlled by this movement have just failed to
+change because they would lead the \ref lua_api_entity "map entity"
+controlled into an obstacle of the \ref lua_api_map "map".
 
 When an obstacle is reached, this event is called instead of
-\ref lua_api_movement_on_position_changed "on_position_changed()".
+\ref lua_api_movement_on_position_changed "movement:on_position_changed()".
 
 This event can only be called when all of these conditions are met:
-- A game is currently running.
-- The movement is attached to a map \ref lua_api_entity "entity" (like an
-  enemy, an NPC, etc.).
+- A \ref lua_api_game "game" is currently running.
+- The movement is attached to a \ref lua_api_entity "map entity" (like an
+  \ref lua_api_enemy "enemy", an \ref lua_api_npc "NPC", etc.).
 - The movement does not ignore obstacles (i.e.
-  \ref lua_api_movement_get_ignore_obstacles "get_ignore_obstacles()" returns
+  \ref lua_api_movement_get_ignore_obstacles
+  "movement:get_ignore_obstacles()" returns
   \c false).
+
+\remark When the movement attemps to change the coordinates, one of
+  \ref lua_api_movement_on_position_changed "movement:on_position_changed()"
+  or \ref lua_api_movement_on_obstacle_reached "movement:on_obstacle_reached()"
+  is guaranteed to be called.
 
 <hr>
 

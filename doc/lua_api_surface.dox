@@ -11,9 +11,11 @@ Its main feature is that you can draw objects on it.
 - \ref lua_api_surface_methods
 
 <hr>
+<hr>
 
 \section lua_api_surface_functions Functions of sol.surface
 
+<hr>
 <hr>
 
 \subsection lua_api_surface_create_empty sol.surface.create([width, height])
@@ -52,20 +54,23 @@ They are optional: by default, the whole surface is copied.
   - Return value (surface): The surface created.
 
 <hr>
+<hr>
 
 \section lua_api_surface_drawable_methods Methods inherited from the type drawable
 
-Surfaces are particular drawable objects.
-Thus, they inherit all methods from the type drawable.
+Surfaces are particular \ref lua_api_drawable "drawable" objects.
+Therefore, they inherit all methods from the type drawable.
 
 See \ref lua_api_drawable_methods to know these methods.
 
+<hr>
 <hr>
 
 \section lua_api_surface_methods Methods of the type surface
 
 The following methods are specific to surfaces.
 
+<hr>
 <hr>
 
 \subsection lua_api_surface_get_size surface:get_size()

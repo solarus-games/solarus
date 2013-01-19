@@ -14,9 +14,11 @@ See the \ref languages "Quest data files specification"
 page for more information.
 
 <hr>
+<hr>
 
 \section lua_api_language_functions Functions of sol.language
 
+<hr>
 <hr>
 
 \subsection lua_api_language_get_language sol.language.get_language()
@@ -79,7 +81,7 @@ Translated dialogs are defined in the file \c text/dialogs.dat of the
 language-specific directory (e.g. \c languages/en/text/dialogs.dat).
 - \c key (string): Key of the dialog to get. This dialog must exist in
   \c dialogs.dat.
-- Return value (string): The corresponding dialog in \c dialogs.lua
+- Return value (string): The corresponding dialog in \c dialogs.dat.
 
 \todo This function is not implemented yet.
 

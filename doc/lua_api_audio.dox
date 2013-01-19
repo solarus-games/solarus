@@ -4,9 +4,11 @@
 You can play musics and sound effects through \c sol.audio.
 
 <hr>
+<hr>
 
 \section lua_api_audio_functions Functions of sol.audio
 
+<hr>
 <hr>
 
 \subsection lua_api_audio_play_sound sol.audio.play_sound(sound_id)
@@ -65,7 +67,8 @@ Only one music can be played at a time.
 Stops playing music.
 
 This function has no effect if no music was playing.
-This is equivalent to <tt>sol.audio.play_music("none")</tt>.
+
+\remark This is equivalent to <tt>sol.audio.play_music("none")</tt>.
 
 <hr>
 
@@ -74,6 +77,7 @@ This is equivalent to <tt>sol.audio.play_music("none")</tt>.
 Returns the current volume of sound effects.
 
 This volume applies to all sounds played by \ref lua_api_audio_play_sound
+"sol.audio.play_sound()"
 and by the engine.
 - Return value (number): The current volume of sound effects, as an integer
   between \c 0 (mute) and \c 100 (full volume).
@@ -85,6 +89,7 @@ and by the engine.
 Sets the volume of sound effects.
 
 This volume applies to all sounds played by \ref lua_api_audio_play_sound
+"sol.audio.play_sound()"
 and by the engine.
 - \c volume (number): The new volume of sound effects, as an integer
   between \c 0 (mute) and \c 100 (full volume).
@@ -96,6 +101,7 @@ and by the engine.
 Returns the current volume of musics.
 
 This volume applies to all musics played by \ref lua_api_audio_play_music.
+"sol.audio.play_music()"
 - Return value (number): The current volume of musics, as an integer
   between \c 0 (no sound effects) and \c 100 (full volume).
 
@@ -106,6 +112,7 @@ This volume applies to all musics played by \ref lua_api_audio_play_music.
 Sets the volume of musics.
 
 This volume applies to all musics played by \ref lua_api_audio_play_music.
+"sol.audio.play_music()"
 - \c volume (number): The new volume of musics, as an integer
   between \c 0 (no music) and \c 100 (full volume).
 

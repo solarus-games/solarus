@@ -45,14 +45,17 @@ The following modes are implemented:
     This video mode is adapted to wide devices.
 
 \remark On some platforms, some video modes may be unavailable or disabled
-  at compilation time. Use \ref lua_api_video_is_mode_supported to test a
+  at compilation time. Use \ref lua_api_video_is_mode_supported
+  "sol.video.is_mode_supported()" to test a
   video mode, and \ref lua_api_video_get_modes to know the list of
   video modes supported.
 
 <hr>
+<hr>
 
 \section lua_api_video_functions Functions of sol.video
 
+<hr>
 <hr>
 
 \subsection lua_api_video_get_window_title sol.video.get_window_title()
@@ -96,7 +99,7 @@ specifying which one to use.
 
 <hr>
 
-\subsection lua_api_video_is_mode_supported sol.video.is_mode_supported()
+\subsection lua_api_video_is_mode_supported sol.video.is_mode_supported(video_mode)
 
 Returns whether a video mode is supported.
 - \c video_mode (string): Name of a video mode (see the list above).
@@ -106,6 +109,7 @@ Returns whether a video mode is supported.
 \subsection lua_api_video_get_modes sol.video.get_modes()
 
 Returns an array of all video modes supported.
+- \c Return value (table): An array of names of all video modes supported.
 
 <hr>
 

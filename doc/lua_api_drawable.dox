@@ -1,23 +1,25 @@
 /**
-\page lua_api_drawable Drawable objects
+\page lua_api_drawable %Drawable objects
 
-Drawable objects are things that can be drawn on a destination surface.
+%Drawable objects are things that can be drawn on a destination surface.
 They include the following types:
-\subpage lua_api_surface,
-\subpage lua_api_text_surface and
-\subpage lua_api_sprite.
+\subpage lua_api_surface "surface",
+\subpage lua_api_text_surface "text surface" and
+\subpage lua_api_sprite "sprite".
 This page describes the methods common to those types.
 
+<hr>
 <hr>
 
 \section lua_api_drawable_methods Methods of all drawable types
 
 <hr>
+<hr>
 
 \subsection lua_api_drawable_draw drawable:draw(dst_surface, [x, y])
 
 Draws this object on a destination surface.
-- \c dst_surface (surface): The destination surface.
+- \c dst_surface (\ref lua_api_surface "surface"): The destination surface.
 - \c x (number, optional): X coordinate of where to draw this object
   (default \c 0).
 - \c y (number, optional): Y coordinate of where to draw this object.
@@ -29,7 +31,7 @@ Draws this object on a destination surface.
 
 Starts a fade-in effect on this object.
 - \c delay (number, optional): Delay in milliseconds between two
-  frames of the fade-in animation (default is \c 20).
+  frames of the fade-in animation (default \c 20).
 - \c callback (function, optional): A function to call when the
   fade-in effect finishes.
 
@@ -39,7 +41,7 @@ Starts a fade-in effect on this object.
 
 Starts a fade-out effect on this object.
 - \c delay (number, optional): Delay in milliseconds between two
-  frames of the fade-out animation (default is \c 20).
+  frames of the fade-out animation (default \c 20).
 - \c callback (function, optional): A function to call when the
   fade-out effect finishes.
 
@@ -52,7 +54,7 @@ Makes this object move.
 Moving a drawable object means that when the objects gets displayed
 somewhere, it is drawn with an offset corresponding to the result of the
 movement.
-- \c movement (movement): The movement to apply.
+- \c movement (\ref lua_api_movement "movement"): The movement to apply.
   See \ref lua_api_movement_create "sol.movement.create()" to create it.
 - \c callback (function, optional): A function to call when the movement
   finishes.

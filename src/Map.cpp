@@ -101,13 +101,14 @@ const std::string& Map::get_tileset_id() {
  * This function keeps the tiles of the previous tileset and loads the
  * image of the new tileset.
  *
- * @param tileset_id of the new tileset
+ * @param tileset_id Id of the new tileset.
  */
 void Map::set_tileset(const std::string& tileset_id) {
 
   Tileset new_tileset(tileset_id);
   new_tileset.load();
   tileset->set_images(new_tileset);
+  get_entities().notify_tileset_changed();
 }
 
 /**
@@ -632,8 +633,8 @@ void Map::start() {
 
   this->started = true;
   this->visible_surface->set_opacity(255);
-  get_lua_context().run_map(*this, get_destination());
   this->entities->notify_map_started();
+  get_lua_context().run_map(*this, get_destination());
   Music::play(music_id);
 }
 

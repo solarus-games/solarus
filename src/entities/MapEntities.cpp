@@ -329,6 +329,16 @@ void MapEntities::notify_map_opening_transition_finished() {
 }
 
 /**
+ * @brief Notifies this entity manager that the tileset of the map has
+ * changed.
+ */
+void MapEntities::notify_tileset_changed() {
+
+  // Redraw optimized tiles (i.e. non animated ones).
+  redraw_non_animated_tiles();
+}
+
+/**
  * @brief Adds a tile on the map.
  *
  * This function is called for each tile when loading the map.
@@ -721,9 +731,8 @@ void MapEntities::update() {
 }
 
 /**
- * @brief Draws all non-animated tiles on intermediate surfaces.
- *
- * They are drawn only once and then these surfaces are drawn on the screen.
+ * @brief Determines which rectangles are animated and draws all non-animated
+ * rectangles of tiles on intermediate surfaces.
  */
 void MapEntities::build_non_animated_tiles() {
 
@@ -782,6 +791,44 @@ void MapEntities::build_non_animated_tiles() {
       Tile& tile = *tiles[layer][i];
       if (tile.is_animated() || overlaps_animated_tile(tile)) {
         tiles_in_animated_regions[layer].push_back(&tile);
+      }
+    }
+  }
+}
+
+/**
+ * @brief Draws all non-animated rectangles of tiles on intermediate surfaces.
+ *
+ * This function is similar to build_non_animated_tiles() except that it
+ * assumes that animated and non-animated rectangles were already determined.
+ *
+ * This function is called when the tileset changes.
+ */
+void MapEntities::redraw_non_animated_tiles() {
+
+  const Rectangle map_size(0, 0, map.get_width(), map.get_height());
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+
+    non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta());
+
+    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
+      Tile& tile = *tiles[layer][i];
+      if (!tile.is_animated()) {
+        // ?on-animated tile: optimize its displaying.
+        tile.draw(*non_animated_tiles_surfaces[layer], map_size);
+      }
+    }
+
+    // Erase rectangles that contain animated tiles.
+    int index = 0;
+    for (int y = 0; y < map.get_height(); y += 8) {
+      for (int x = 0; x < map.get_width(); x += 8) {
+
+        if (animated_tiles[layer][index]) {
+          Rectangle animated_square(x, y, 8, 8);
+          non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta(), animated_square);
+        }
+        index++;
       }
     }
   }

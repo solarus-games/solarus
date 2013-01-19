@@ -94,23 +94,6 @@ them.
 
 <hr>
 
-\subsection lua_api_menu_on_update menu:on_update()
-
-Called at each cycle of the main loop while your menu is active.
-
-Menus of are updated in the following order:
--# %Map menus (only during a game).
--# %Game menus (only during a game).
--# Main menus (the more general ones).
-
-When several menus exist in the same context, they are updated from the first
-one that was started to the last one.
-
-As this function is called at each cycle, it is recommended to use other
-solutions when possible, like \ref lua_api_timer "timers" and other events.
-
-<hr>
-
 \subsection lua_api_menu_on_started menu:on_started()
 
 Called when your menu is started.
@@ -125,6 +108,23 @@ Called when your menu is stopped.
 
 This event is triggered when you call \ref lua_api_menu_stop
 or when the context of your menu finishes. 
+
+<hr>
+
+\subsection lua_api_menu_on_update menu:on_update()
+
+Called at each cycle of the main loop while your menu is active.
+
+Menus of are updated in the following order:
+-# %Map menus (only during a game).
+-# %Game menus (only during a game).
+-# Main menus (the more general ones).
+
+When several menus exist in the same context, they are updated from the first
+one that was started to the last one.
+
+\remark As this function is called at each cycle, it is recommended to use other
+solutions when possible, like \ref lua_api_timer "timers" and other events.
 
 <hr>
 
@@ -193,7 +193,7 @@ Called when the user presses a keyboard key mapped to a character
 while your menu is active.
 Most recent menus are notified first.
 - \c character (string): A utf-8 string representing the character that was
-pressed.
+  pressed.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (like other menus).
@@ -251,7 +251,7 @@ Most recent menus are notified first.
 - \c hat (number): Index of the hat that was moved.
 - \c direction8 (number): The new direction of the hat. \c -1 means that the
   hat is centered. \c 0 to \c 7 indicates that the hat is in one of the eight
-  menu directions.
+  main directions.
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (like other menus or the built-in game commands).
@@ -262,10 +262,11 @@ Most recent menus are notified first.
 
 Called during a game when the player presses a game command
 (a keyboard key or a joypad action mapped to a built-in game behavior).
-You can use this event to override the normal built-in behavior of a game command.
+You can use this event to override the normal built-in behavior of the game
+command.
 Most recent menus are notified first.
 - \c command (string): Name of the built-in game command that was pressed (see
-  \ref lua_api_game_get_command_effect for the list of existing game commands).
+  \ref lua_api_game "game" for the list of existing game commands).
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (you are overriding the built-in behavior of pressing this game command).
@@ -273,7 +274,7 @@ Most recent menus are notified first.
 \remark As the notion of game commands only exist during a game,
   this event is only called for game menus and map menus.
 
-\remark This event is not triggered if you already handled its underlying
+\remark This event is not triggered if you already handled the underlying
   low-level keyboard or joypad event.
 
 <hr>
@@ -282,10 +283,11 @@ Most recent menus are notified first.
 
 Called during a game when the player released a game command
 (a keyboard key or a joypad action mapped to a built-in game behavior).
-You can use this event to override the normal built-in behavior of a game command.
+You can use this event to override the normal built-in behavior of the game
+command.
 Most recent menus are notified first.
 - \c command (string): Name of the built-in game command that was released (see
-  \ref lua_api_game_get_command_effect for the list of existing game commands).
+  \ref lua_api_game "game" for the list of existing game commands).
 - Return value (boolean): Indicates whether the event was handled. If you
   return \c true, the event won't be propagated to other objects
   (you are overriding the built-in behavior of releasing this game command).
@@ -293,7 +295,7 @@ Most recent menus are notified first.
 \remark As the notion of game commands only exist during a game,
   this event is only called for game menus and map menus.
 
-\remark This event is not triggered if you already handled its underlying
+\remark This event is not triggered if you already handled the underlying
   low-level keyboard or joypad event.
 
 */

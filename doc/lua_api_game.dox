@@ -1,5 +1,5 @@
 /**
-\page lua_api_game Games and savegames
+\page lua_api_game Game
 
 This module provides a datatype "game" that represents a savegame.
 On a game object, you can access and modify everything that is saved.
@@ -21,8 +21,44 @@ When a game is running, more features are available
 (like pausing the game, handling game commands, etc.).
 Only one game can be running at a time.
 
-Note that objects of the game type are userdata, but like most Solarus Lua
-types, they can also be accessed like tables.
+An important concept that comes with the game is the notion of
+game commands.
+%Game commands are built-in game actions that can be mapped to a
+low-level keyboard or joypad input.
+They can be seen as an abstraction of the keyboard and the joypad.
+%Game commands are like a virtual game device that provides
+the the following buttons:
+- \c "action": Contextual action such as talking, swimming, throwing, etc.
+- \c "attack": Main attack (using the sword). Also used to skip dialogs.
+- \c "pause": Pausing or unpausing the game.
+- \c "item_1": Using the equipment item placed in slot 1 (see \ref
+  lua_api_game_get_item_assigned "game:get_item_assigned()")
+- \c "item_2": Using the equipment item placed in slot 2 (see \ref
+  lua_api_game_get_item_assigned "game:get_item_assigned()")
+- \c "right": Moving to the right.
+- \c "left": Moving to the left.
+- \c "up": Moving to the top.
+- \c "down": Moving to the bottom.
+
+Of course, these virtual commands are mapped to real, low-level inputs from
+the keyboard and/or the joypad.
+You script can control which keyboard and joypad inputs are associated to
+each game command.
+
+When a game command is pressed,
+no matter if the command came from the keyboard or the joypad,
+the engine performs some built-in behavior by
+default (like pausing the game or moving the hero to the right).
+But you can also extend or override this behavior,
+because the engine notifies you first
+(see \ref lua_api_game_on_command_pressed "game:on_command_pressed()").
+Therefore, you usually don't have to worry about the underlying keyboard or
+joypad input (but if you want to, you can, and the callbacks are exactly the
+sames as in \ref
+lua_api_main "sol.main" and in \ref lua_api_menu "menus").
+
+Note finally that objects of the game type are userdata, but like most Solarus
+Lua types, they can also be accessed like tables.
 This is especially useful for the game type to add, next to the built-in
 game features, your own quest-specific functions and data (like your HUD and
 your pause menu).
@@ -136,7 +172,7 @@ unpause the game.
 \subsection lua_api_game_get_map game:get_map()
 
 Returns the current map.
-- Return value (\lua_api_map "map"): The current map of this game
+- Return value (\ref lua_api_map "map"): The current map of this game
   (\c nil if this game is not running).
 
 <hr>
@@ -426,27 +462,14 @@ Assigns an equipment item to a slot.
 
 Returns the current built-in effect of a game command.
 
-%Game commands are built-in game actions that can be mapped to a
-low-level keyboard or joypad input.
-The engine implements the following game commands:
-- \c "action": Contextual action such as talking, swimming, throwing, etc.
-- \c "attack": Main attack (using the sword). Also used to skip dialogs.
-- \c "pause": Pausing or unpausing the game.
-- \c "item_1": Using the equipment item placed in slot 1 (see \ref
-  lua_api_game_get_item_assigned "game:get_item_assigned()")
-- \c "item_2": Using the equipment item placed in slot 2 (see \ref
-  lua_api_game_get_item_assigned "game:get_item_assigned()")
-- \c "right": Moving to the right.
-- \c "left": Moving to the left.
-- \c "up": Moving to the top.
-- \c "down": Moving to the bottom.
-
 This function is useful if you want to show a HUD that indicates to the player
 the current
 effect of pressing a game command, especially for command \c "action" whose
 effect changes a lot depending on the context.
-- \c command (string): Name of a game command (see the list of valid game
-  commands above).
+- \c command (string): Name of a game command.
+  Valid commands are
+  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
+  \c "right", \c "up", \c "left" and \c "down".
 - Return value (string): A string describing the current built-in effect of
   this game command. \c nil means that this command has currently no built-in
   effect (for example because the game is paused). Possible values are:
@@ -478,9 +501,10 @@ intercepting the events
 \subsection lua_api_game_get_command_keyboard_binding game:get_command_keyboard_binding(command)
 
 Returns the keyboard key that triggers the specified game command.
-- \c command (string): Name of a game command (see \ref
-  lua_api_game_get_command_effect "game:get_command_effect()" for the list
-  of valid game commands).
+- \c command (string): Name of a game command.
+  Valid commands are
+  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
+  \c "right", \c "up", \c "left" and \c "down".
 - Return value (string): Name of the keyboard key that triggers this game
   command, or \c nil if no keyboard key is mapped to this game command.
 
@@ -489,9 +513,10 @@ Returns the keyboard key that triggers the specified game command.
 \subsection lua_api_game_set_command_keyboard_binding game:set_command_keyboard_binding(command, key)
 
 Sets the keyboard key that triggers a game command.
-- \c command (string): Name of a game command (see \ref
-  lua_api_game_get_command_effect "game:get_command_effect()" for the list
-  of valid game commands).
+- \c command (string): Name of a game command.
+  Valid commands are
+  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
+  \c "right", \c "up", \c "left" and \c "down".
 - key (string): Name of the keyboard key that should trigger this game
   command (\c nil means none).
 
@@ -500,9 +525,10 @@ Sets the keyboard key that triggers a game command.
 \subsection lua_api_game_get_command_joypad_binding game:get_command_joypad_binding(command)
 
 Returns the joypad input that triggers the specified game command.
-- \c command (string): Name of a game command (see \ref
-  lua_api_game_get_command_effect "game:get_command_effect()" for the list
-  of valid game commands).
+- \c command (string): Name of a game command.
+  Valid commands are
+  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
+  \c "right", \c "up", \c "left" and \c "down".
 - Return value (string): A string describing what joypad input triggers this
   game command, or \c nil if no joypad input is mapped to this game command.
   This string can have one of the following forms:
@@ -517,9 +543,10 @@ Returns the joypad input that triggers the specified game command.
 \subsection lua_api_game_set_command_joypad_binding game:set_command_joypad_binding(command, joypad_string)
 
 Sets the joypad input that should trigger the specified game command.
-- \c command (string): Name of a game command (see \ref
-  lua_api_game_get_command_effect "game:get_command_effect()" for the list
-  of valid game commands).
+- \c command (string): Name of a game command.
+  Valid commands are
+  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
+  \c "right", \c "up", \c "left" and \c "down".
 - joypad_string (string): A string describing what joypad input should trigger
   this game command (\c nil means none).
   This string must have one of the following forms:
@@ -534,9 +561,10 @@ Sets the joypad input that should trigger the specified game command.
 \subsection lua_api_game_is_command_pressed game:is_command_pressed(command)
 
 Returns whether a built-in game command is currently pressed.
-- \c command (string): Name of a game command (see \ref
-  lua_api_game_get_command_effect "game:get_command_effect()" for the list
-  of valid game commands).
+- \c command (string): Name of a game command.
+  Valid commands are
+  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
+  \c "right", \c "up", \c "left" and \c "down".
 - Return value (boolean): \c true if this game command is currently pressed by
   the player.
 
@@ -568,39 +596,236 @@ any.
 
 <hr>
 
-\subsection lua_api_game_on_update game:on_update()
-
-Called at each cycle of the main loop while this game is running.
-
-<hr>
-
-\subsection lua_api_game_on_pre_draw game:on_pre_draw(surface)
-
-Called just before the game is drawn.
-
-Use this event if you want to do something special initially.
-- \c dst_surface (surface): The surface where the game will be drawn.
-
-<hr>
-
-\subsection lua_api_game_on_post_draw game:on_post_draw(surface)
-
-Called when the game was just drawn.
-
-Use this event if you want to draw some additional content.
-- \c dst_surface (surface): The surface where the game was just drawn.
-
-<hr>
-
 \subsection lua_api_game_on_started game:on_started()
 
-Called when this game starts running.
+Called when this game starts running (including when you restart
+the same game).
 
 <hr>
 
 \subsection lua_api_game_on_finished game:on_finished()
 
-Called when this game stops running.
+Called when this game stops running (including when you restart
+the same game).
+
+<hr>
+
+\subsection lua_api_game_on_update game:on_update()
+
+Called at each cycle of the main loop while this game is running.
+
+\remark As this function is called at each cycle, it is recommended to use other
+solutions when possible, like \ref lua_api_timer "timers" and other events.
+
+<hr>
+
+\subsection lua_api_game_on_draw game:on_draw(dst_surface)
+
+Called when the game has just been redrawn by the engine.
+
+The engine has already drawn the current map as well as the
+\ref lua_api_menu "menus" of this game is any.
+Use this event if you want to draw some additional content.
+- \c dst_surface (\ref lua_api_surface "surface"): The surface where the game
+  is drawn.
+
+<hr>
+
+\subsection lua_api_game_on_map_changed game:on_map_changed(map)
+
+Called when the player has just entered a map.
+
+The new map is already started at this point.
+For example, you may use this event if some parts of your HUD needs to be
+changed on particular maps.
+- \c map (\ref lua_api_map "map"): The new active map.
+
+\remark This event is also called for the first map (when your game starts).
+
+<hr>
+
+\subsection lua_api_game_on_paused game:on_paused()
+
+Called when the game has just been paused.
+
+The game may have been paused by the player (by pressing the \c "pause"
+game command) or by you (by calling
+\ref lua_api_game_set_paused "game:set_paused(true)").
+
+This function is typically the place where you should start your pause menu.
+
+<hr>
+
+\subsection lua_api_game_on_unpaused game:on_unpaused()
+
+Called when the game is being resumed.
+
+The game may have been unpaused by the player (by pressing the \c "pause"
+game command) or by you (by calling
+\ref lua_api_game_set_paused "game:set_paused(false)").
+
+This is probably a good place to stop your pause menu.
+
+<hr>
+
+\subsection lua_api_game_on_key_pressed game:on_key_pressed(key, modifiers)
+
+Called when the user presses a keyboard key while your game is running.
+- \c key (string): Name of the raw key that was pressed.
+- \c modifiers (table): A table whose keys indicate what modifiers were
+  down during the event. Possible table keys are \c "shift", \c "control" and
+  \c "alt". Table values don't matter.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+  If you return \c false or nothing, the event will continue its propagation
+  in this order: to the game \ref lua_api_menu "menus" if any,
+  to the current map (including its own menus if any),
+  and then to the game commands.
+
+If you handle the event, you should return \c true to make the event stop
+being propagated. The \ref lua_api_menu "menus"
+of your game (if any) and the current map won't be not notified in this case.
+On the contrary, if neither your game, its menus nor the current map handle
+the event, then the engine handles it with a built-in behavior.
+This built-in behavior is to check whether a game command is mapped to the
+keyboard key that was pressed. If yes, the keyboard pressed event will
+be transformed into a game command pressed event
+(see \ref lua_api_game_on_command_pressed "game:on_command_pressed()").
+
+\remark This event indicates the raw keyboard key pressed. If you want the
+corresponding character instead (if any), see
+\ref lua_api_game_on_character_pressed "game:on_character_pressed()".
+If you want the corresponding higher-level game command (if any), see
+\ref lua_api_game_on_command_pressed "game:on_command_pressed()".
+
+<hr>
+
+\subsection lua_api_game_on_key_released game:on_key_released(key, modifiers)
+
+Called when the user releases a keyboard key while your game is running.
+- \c key (string): Name of the raw key that was released.
+- \c modifiers (table): A table whose keys indicate what modifiers were
+  down during the event. Possible table keys are \c "shift", \c "control" and
+  \c "alt". Table values don't matter.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+  If you return \c false or nothing, the event will continue its propagation
+  in this order: to the game \ref lua_api_menu "menus" if any,
+  to the current map (including its own menus if any),
+  and then to the game commands.
+
+If you handle the event, you should return \c true to make the event stop
+being propagated. The \ref lua_api_menu "menus"
+of your game (if any) and the current map won't be not notified in this case.
+On the contrary, if neither your game, its menus nor the current map handle
+the event, then the engine handles it with a built-in behavior.
+This built-in behavior is to check whether a game command is mapped to the
+keyboard key that was released. If yes, the "keyboard released" event will
+be transformed into a "game command released" event
+(see \ref lua_api_game_on_command_released "game:on_command_released()").
+
+<hr>
+
+\subsection lua_api_game_on_character_pressed game:on_character_pressed(character)
+
+Called when the user presses a keyboard key mapped to a character
+while your game is running.
+- \c character (string): A utf-8 string representing the character that was
+  pressed.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+  If you return \c false or nothing, the event will continue its propagation
+  in this order: to the game \ref lua_api_menu "menus" if any
+  and then to the current map (including its own menus if any).
+
+\remark When a character key is pressed, two events are called:
+\ref lua_api_game_on_key_pressed "game:on_key_pressed()"
+(indicating the raw key)
+and \ref lua_api_game_on_character_pressed "game:on_character_pressed()"
+(indicating the utf-8 character).
+If your game needs to input text from the user,
+\ref lua_api_game_on_character_pressed "game:on_character_pressed()"
+is what you want because it
+considers the keyboard's layout and gives you international utf-8
+strings.
+
+<hr>
+
+\subsection lua_api_game_on_joypad_button_pressed game:on_joypad_button_pressed(button)
+
+Called when the user presses a joypad button while your game is running.
+- \c button (number): Index of the button that was pressed.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+
+<hr>
+
+\subsection lua_api_game_on_joypad_button_released game:on_joypad_button_released(button)
+
+Called when the user releases a joypad button while your game is running.
+- \c button (number): Index of the button that was released.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+
+<hr>
+
+\subsection lua_api_game_on_joypad_axis_moved game:on_joypad_axis_moved(axis, state)
+
+Called when the user moves a joypad axis while your game is running.
+- \c axis (number): Index of the axis that was moved. Usually, \c 0 is an
+  horizontal axis and \c 1 is a vertical axis.
+- \c state (number): The new state of the axis that was moved. \c -1 means
+  left or up, \c 0 means centered and \c 1 means right or down.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+
+<hr>
+
+\subsection lua_api_game_on_joypad_hat_moved game:on_joypad_hat_moved(hat, direction8)
+
+Called when the user moves a joypad hat while your game is running.
+- \c hat (number): Index of the hat that was moved.
+- \c direction8 (number): The new direction of the hat. \c -1 means that the
+  hat is centered. \c 0 to \c 7 indicates that the hat is in one of the eight
+  main directions.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+
+<hr>
+
+\subsection lua_api_game_on_command_pressed game:on_command_pressed(command)
+
+Called when the player presses a game command
+(a keyboard key or a joypad action mapped to a built-in game behavior)
+while this game is running.
+You can use this event to override the normal built-in behavior of the game command.
+- \c command (string): Name of the built-in game command that was pressed.
+  Possible commands are
+  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
+  \c "right", \c "up", \c "left" and \c "down".
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (you are overriding the built-in behavior of pressing this game command).
+
+\remark This event is not triggered if you already handled its underlying
+  low-level keyboard or joypad event.
+
+<hr>
+
+\subsection lua_api_game_on_command_released game:on_command_released(command)
+
+Called when the player released a game command
+(a keyboard key or a joypad action mapped to a built-in game behavior).
+while this game is running.
+You can use this event to override the normal built-in behavior of the game command.
+- \c command (string): Name of the built-in game command that was released.
+  Possible commands are
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (you are overriding the built-in behavior of releasing this game command).
+
+\remark This event is not triggered if you already handled its underlying
+  low-level keyboard or joypad event.
 
 */
 

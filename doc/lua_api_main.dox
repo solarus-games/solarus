@@ -178,6 +178,28 @@ them.
 
 <hr>
 
+\subsection lua_api_main_on_started sol.main:on_started()
+
+Called at the beginning of the program.
+
+This function is called when Lua starts.
+In other words, the function is called when the program begins or after it
+was reset.
+In this function, you will typically start an initial menu
+like a title screen or a language selection screen.
+If you prefer, you can also start immediately a game.
+
+<hr>
+
+\subsection lua_api_main_on_finished sol.main:on_finished()
+
+Called at the end of the program.
+
+This function is called when Lua is about to be shut down, i.e.,
+just before the program stops or is reset. 
+
+<hr>
+
 \subsection lua_api_main_on_update sol.main:on_update()
 
 Called at each cycle of the program's main loop.
@@ -199,28 +221,6 @@ Use this event if you want to draw some additional content after
 the game (if a game is started) and the menus (if you have created menus
 on \c sol.main).
 - \c dst_surface (surface): The surface where the screen is drawn.
-
-<hr>
-
-\subsection lua_api_main_on_started sol.main:on_started()
-
-Called at the beginning of the program.
-
-This function is called when Lua starts.
-In other words, the function is called when the program begins or after it
-was reset.
-In this function, you will typically start an initial menu
-like a title screen or a language selection screen.
-If you prefer, you can also start immediately a game.
-
-<hr>
-
-\subsection lua_api_main_on_finished sol.main:on_finished()
-
-Called at the end of the program.
-
-This function is called when Lua is about to be shut down, i.e.,
-just before the program stops or is reset. 
 
 <hr>
 

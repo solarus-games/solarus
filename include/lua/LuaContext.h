@@ -257,13 +257,13 @@ class LuaContext {
     // Map events.
     void map_on_update(Map& map);
     void map_on_draw(Map& map, Surface& dst_surface);
-    bool map_on_input(Map& map, InputEvent& event);
     void map_on_suspended(Map& map, bool suspended);
     void map_on_started(Map& map, Destination* destination);
     void map_on_finished(Map& map);
     void map_on_opening_transition_finished(Map& map,
         Destination* destination);
     void map_on_camera_back(Map& map);
+    bool map_on_input(Map& map, InputEvent& event);
 
     // Map entity events.
     // TODO entity_on_created
@@ -518,7 +518,7 @@ class LuaContext {
       game_api_get_value,
       game_api_set_value,  // TODO allow nil (delete a value)
       game_api_get_starting_location,
-      game_api_set_starting_location,
+      game_api_set_starting_location,  // TODO don't do it automatically, use on_map_changed
       game_api_get_life,
       game_api_set_life,
       game_api_add_life,

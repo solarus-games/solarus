@@ -73,7 +73,7 @@ endif (NOT DEFINED CMAKE_INSTALL_NAME_TOOL)
 if (NOT DEFINED IOS_PLATFORM)
 	set (IOS_PLATFORM "OS")
 endif (NOT DEFINED IOS_PLATFORM)
-set (IOS_PLATFORM ${IOS_PLATFORM} CACHE STRING "Type of iOS Platform")
+set (IOS_PLATFORM ${IOS_PLATFORM} CACHE STRING "Type of iOS Platform" FORCE)
 
 # Check the platform selection and setup for developer root
 if (${IOS_PLATFORM} STREQUAL "OS")
@@ -88,7 +88,7 @@ endif (${IOS_PLATFORM} STREQUAL "OS")
 if (NOT DEFINED CMAKE_IOS_DEVELOPER_ROOT)
 	set (CMAKE_IOS_DEVELOPER_ROOT "/Developer/Platforms/${IOS_PLATFORM_LOCATION}/Developer")
 endif (NOT DEFINED CMAKE_IOS_DEVELOPER_ROOT)
-set (CMAKE_IOS_DEVELOPER_ROOT ${CMAKE_IOS_DEVELOPER_ROOT} CACHE PATH "Location of iOS Platform")
+set (CMAKE_IOS_DEVELOPER_ROOT ${CMAKE_IOS_DEVELOPER_ROOT} CACHE PATH "Location of iOS Platform" FORCE)
 
 # Find and use the most recent iOS sdk 
 if (NOT DEFINED CMAKE_IOS_SDK_ROOT)
@@ -102,17 +102,17 @@ if (NOT DEFINED CMAKE_IOS_SDK_ROOT)
 	endif (_CMAKE_IOS_SDKS)
 	message (STATUS "Toolchain using default iOS SDK: ${CMAKE_IOS_SDK_ROOT}")
 endif (NOT DEFINED CMAKE_IOS_SDK_ROOT)
-set (CMAKE_IOS_SDK_ROOT ${CMAKE_IOS_SDK_ROOT} CACHE PATH "Location of the selected iOS SDK")
+set (CMAKE_IOS_SDK_ROOT ${CMAKE_IOS_SDK_ROOT} CACHE PATH "Location of the selected iOS SDK" FORCE)
 
 # Set the sysroot default to the most recent SDK
-set (CMAKE_OSX_SYSROOT ${CMAKE_IOS_SDK_ROOT} CACHE PATH "Sysroot used for iOS support")
+set (CMAKE_OSX_SYSROOT ${CMAKE_IOS_SDK_ROOT} CACHE PATH "Sysroot used for iOS support" FORCE)
 
 # set the architecture for iOS - using ARCHS_STANDARD_32_BIT sets armv6,armv7 and appears to be XCode's standard. 
 # The other value that works is ARCHS_UNIVERSAL_IPHONE_OS but that sets armv7 only
-set (CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD_32_BIT)" CACHE string  "Build architecture for iOS")
+set (CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD_32_BIT)" CACHE string  "Build architecture for iOS" FORCE)
 
 # Set the find root to the iOS developer roots and to user defined paths
-set (CMAKE_FIND_ROOT_PATH ${CMAKE_IOS_DEVELOPER_ROOT} ${CMAKE_IOS_SDK_ROOT} ${CMAKE_PREFIX_PATH} CACHE string  "iOS find search path root")
+set (CMAKE_FIND_ROOT_PATH ${CMAKE_IOS_DEVELOPER_ROOT} ${CMAKE_IOS_SDK_ROOT} ${CMAKE_PREFIX_PATH} CACHE string  "iOS find search path root" FORCE)
 
 # default to searching for frameworks first
 set (CMAKE_FIND_FRAMEWORK FIRST)

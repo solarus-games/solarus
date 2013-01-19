@@ -799,38 +799,6 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_game_is_command_pressed.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_is_command_pressed(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  GameCommands::Command command = check_enum<GameCommands::Command>(
-      l, 2, GameCommands::command_names);
-
-  GameCommands& commands = savegame.get_game()->get_commands();
-  lua_pushboolean(l, commands.is_command_pressed(command));
-
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_get_commands_direction.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_get_commands_direction(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-
-  GameCommands& commands = savegame.get_game()->get_commands();
-  lua_pushinteger(l, commands.get_wanted_direction8());
-
-  return 1;
-}
-
-/**
  * @brief Implementation of \ref lua_api_game_get_command_effect.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -1018,6 +986,38 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
   commands.set_joypad_binding(command, joypad_string);
 
   return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_is_command_pressed.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_is_command_pressed(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  lua_pushboolean(l, commands.is_command_pressed(command));
+
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_get_commands_direction.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_commands_direction(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  lua_pushinteger(l, commands.get_wanted_direction8());
+
+  return 1;
 }
 
 /**

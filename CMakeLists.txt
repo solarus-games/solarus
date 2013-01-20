@@ -190,7 +190,7 @@ install(TARGETS	solarus
 
 # Also install into CFBundle form if requested or iOS build
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  if(SOLARUS_OSX_BUNDLE OR SOLARUS_IOS_BUILD)
+  if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
     include(AddCFBundleTarget)
   endif()
 endif()

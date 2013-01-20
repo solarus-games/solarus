@@ -100,10 +100,8 @@ set_property(SOURCE
   PROPERTY MACOSX_PACKAGE_LOCATION Resources
 )
 
-# Workaround : copy libraries with add_custom_command(). 
-# It's not the Xcode way so it's not properly transcribe, but it works with both Unix and Xcode generators.
-# It should be done with set_source_files_properties() and the MACOSX_PACKAGE_LOCATION property, like resources files.
-# TODO : Make the change when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
+# Workaround : copy libraries with add_custom_command() for Makefile Generator.
+# TODO : Remove when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
 macro(copy_into_bundle target library_path destination_directory)
   if(IS_DIRECTORY ${library_path})
     add_custom_command(
@@ -121,10 +119,18 @@ macro(copy_into_bundle target library_path destination_directory)
     )	
   endif()
 endmacro()
-if(NOT SOLARUS_IOS_BUILD)
-  add_custom_command(TARGET ${SOLARUS_BUNDLE} POST_BUILD COMMAND mkdir ARGS -p "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Frameworks")
+if(NOT XCODE)
+  if(NOT SOLARUS_IOS_BUILD)
+    add_custom_command(TARGET ${SOLARUS_BUNDLE} POST_BUILD COMMAND mkdir ARGS -p "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Frameworks")
+  endif()
   foreach(LIB ${SOLARUS_BUNDLE_COPIED_LIBRARIES})
     copy_into_bundle(${SOLARUS_BUNDLE} ${LIB} Frameworks)
+  endforeach()
+  
+# Proper way, buggy with Makefile Generator for now.
+else()
+  foreach(LIB ${SOLARUS_BUNDLE_COPIED_LIBRARIES})
+    set_source_properties(${LIB} PROPERTIES MACOSX_PACKAGE_LOCATION Frameworks)
   endforeach()
 endif()
 
@@ -167,7 +173,9 @@ set(DEFAULT_QUEST "../Resources" CACHE STRING "Path to the quest to launch with 
 add_definitions(-DSOLARUS_DEFAULT_QUEST=\"../Resources\")
 
 # Code signing
-set_target_properties(${NAME} PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "${SOLARUS_OS_HARDWARE} Developer: ${COMPANY_IDENTIFIER}")
+if(XCODE)
+  set_target_properties(${NAME} PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "${SOLARUS_OS_HARDWARE} Developer: ${COMPANY_IDENTIFIER}")
+endif()
 
 # install
 install(PROGRAMS                     ${SOLARUS_BUNDLE}

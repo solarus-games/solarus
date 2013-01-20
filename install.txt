@@ -180,7 +180,7 @@ It is necessary to additionally link with libz.
 
 * Compile on OSX
 You can compile solarus just by doing the default setting with cmake, or generate the XCode project. 
-Note that if you use XCode, you probably want to pass the SOLARUS_OSX_BUNDLE flag too.
+Note that if you use XCode, you probably want to pass the SOLARUS_BUNDLE flag too.
 
 By default, you will build a binary with the maximum of compatibility that you're OSX version can offer. 
 You may want to produce an optimized (or exotic) binary instead of a standard one.
@@ -194,17 +194,17 @@ $ cmake -DSOLARUS_SYSROOT="/Developer/SDKs/MacOSX10.5.sdk" -DSOLARUS_ARCH="ppc;i
 You will only build the executable with the default command.
 To build the entire bundle, pass the following flag to cmake
 
-$ cmake -DSOLARUS_OSX_BUNDLE="SolarusDX" .
+$ cmake -DSOLARUS_BUNDLE="SolarusDX" .
 
 Which will install the application into a bundle named "SolarusDX"
 A bundle is a .app suffixed folder, which typcially contains 
 the executable and all resources it needs.
-Pass SOLARUS_OSX_BUNDLE_QUEST , SOLARUS_OSX_BUNDLE_INFOPLIST , 
-SOLARUS_OSX_BUNDLE_ICON and SOLARUS_OSX_BUNDLE_VERSION flags 
-in addition to SOLARUS_OSX_BUNDLE to specify your own configuration.
+Pass SOLARUS_BUNDLE_QUEST , SOLARUS_BUNDLE_INFOPLIST , 
+SOLARUS_BUNDLE_ICON and SOLARUS_BUNDLE_VERSION flags 
+in addition to SOLARUS_BUNDLE to specify your own configuration.
 See ./cmake/modules/AddOSXBundleTarget.cmake for more details.
 
-All non-Mac-native frameworks are placed in ${SOLARUS_OSX_BUNDLE}.app/Contents/Frameworks/
+All non-Mac-native frameworks are placed in ${SOLARUS_BUNDLE}.app/Contents/Frameworks/
 You have to do a little verification on them : check if dependencies search
 path are correctly integrated, just by doing
 

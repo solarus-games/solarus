@@ -52,7 +52,7 @@
  * @brief Where savegames are stored, relative to the user base write directory.
  */
 #ifndef SOLARUS_WRITE_DIR
-#  if defined(SOLARUS_OS_OSX)
+#  if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
 #    define SOLARUS_WRITE_DIR "Solarus"
 #  else
 #    define SOLARUS_WRITE_DIR ".solarus"

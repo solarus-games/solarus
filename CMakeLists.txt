@@ -188,13 +188,10 @@ install(TARGETS	solarus
   RUNTIME DESTINATION bin
 ) 
 
-# Also install into CFBundle form if requested
+# Also install into CFBundle form if requested or iOS build
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  if(SOLARUS_OSX_BUNDLE)
-    include(AddOSXBundleTarget)
-  # Force to use a CFBundle when Iphone build
-  elif(SOLARUS_IOS_BUILD)
-    include(AddiOSBundleTarget)
+  if(SOLARUS_OSX_BUNDLE OR SOLARUS_IOS_BUILD)
+    include(AddCFBundleTarget)
   endif()
 endif()
 

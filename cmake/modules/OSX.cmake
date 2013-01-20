@@ -10,7 +10,6 @@
 # Exportable to XCode.
 ####
 
-
 # Get the current OSX version as X.X.X and X.X form
 execute_process(COMMAND sw_vers -productVersion
   OUTPUT_VARIABLE SOLARUS_CURRENT_OSX_VERSION

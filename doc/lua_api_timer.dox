@@ -156,8 +156,8 @@ suspended.
 
 The map is suspended by the engine in a few cases, like when the game is
 paused or when the camera is being moved by a script.
-When it happens, all map entities stop moving and most sprites stop their
-animation.
+When this happens, all \ref lua_api_entity "map entities" stop moving and most
+\ref lua_api_sprite "sprites" stop their animation.
 With this setting, you can choose whether your timer gets suspended too.
 
 By default, \ref lua_api_map "map" timers,

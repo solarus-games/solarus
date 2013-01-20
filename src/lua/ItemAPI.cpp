@@ -694,6 +694,30 @@ int LuaContext::item_api_set_finished(lua_State* l) {
 }
 
 /**
+ * @brief Calls the on_started() method of a Lua equipment item.
+ * @param item An equipment item.
+ */
+void LuaContext::item_on_started(EquipmentItem& item) {
+
+  push_item(l, item);
+  on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_finished() method of a Lua equipment item.
+ * @param item An equipment item.
+ */
+void LuaContext::item_on_finished(EquipmentItem& item) {
+
+  push_item(l, item);
+  on_finished();
+  remove_timers(-1);  // Stop timers and menus associated to this item.
+  remove_menus(-1);
+  lua_pop(l, 1);
+}
+
+/**
  * @brief Calls the on_update() method of a Lua equipment item.
  * @param item An equipment item.
  */
@@ -724,30 +748,6 @@ void LuaContext::item_on_created(EquipmentItem& item) {
 
   push_item(l, item);
   on_created();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_started() method of a Lua equipment item.
- * @param item An equipment item.
- */
-void LuaContext::item_on_started(EquipmentItem& item) {
-
-  push_item(l, item);
-  on_started();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_finished() method of a Lua equipment item.
- * @param item An equipment item.
- */
-void LuaContext::item_on_finished(EquipmentItem& item) {
-
-  push_item(l, item);
-  on_finished();
-  remove_timers(-1);  // Stop timers and menus associated to this item.
-  remove_menus(-1);
   lua_pop(l, 1);
 }
 

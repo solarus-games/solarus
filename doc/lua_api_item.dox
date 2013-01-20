@@ -2,17 +2,19 @@
 \page lua_api_item Equipment items
 
 An equipment item represents something that the player can obtain 
-(one or more times and in various forms) and possibly keep.
+(one or more times, in various forms and with several variants) and possibly
+keep.
 The Lua item type described in this page provides various functions to get and
 the possession state of a equipment item, set its properties (like whether the
-item is saved) and control its dynamic behavior
-(like what happens when the player obtains a treasure representing this item).
+item is saved and has an amount) and control its dynamic behavior
+(like what happens when the player uses this item).
 
 A Lua item object represents a kind of treasure
 (and not particular instances of treasures).
 Individual treasures may be represented as
 \ref lua_api_pickable "pickable treasures",
-\ref lua_api_shop_item "shop items" and may be brandished by the
+\ref lua_api_chests "chests",
+\ref lua_api_shop_item "shop items", and may be brandished by the
 \ref lua_api_hero "hero".
 For example, multiple treasures of the kind \c "rupee" may exist at the same
 time during the \ref lua_api_game "game", but only one Lua item
@@ -22,12 +24,6 @@ The script file <tt>items/XXXX.lua</tt> defines the item named \c XXXX.
 The corresponding Lua item object is passed as parameter
 of that script. Use the Lua notation \c "..." to get this parameter and store
 it in a regular variable.
-
-A \ref sprite_syntax "sprite" animation named \c XXXX must also exist in
-the sprite <tt>entities/items</tt>: it is used by the engine whenever it needs
-to draw your item on the \ref lua_api_map "map"
-(for example, when a \ref lua_api_pickable "pickable treasure"
-of this kind is created).
 
 Here in a basic example of script for the \c rupee item,
 an item whose only role is to increase the money of the player when he
@@ -50,6 +46,12 @@ of a particular savegame. As shown in the example above,
 you can retrieve that savegame with
 \ref lua_api_item_get_game "item:get_game()".
 
+\remark A \ref sprite_syntax "sprite" animation named \c XXXX must also exist in
+the sprite <tt>entities/items</tt>: it is used by the engine whenever it needs
+to draw your item on the \ref lua_api_map "map"
+(for example, when a \ref lua_api_pickable "pickable treasure"
+of this kind is created).
+
 \section Contents
 
 - \ref lua_api_item_methods
@@ -60,20 +62,22 @@ you can retrieve that savegame with
 \subsection lua_api_item_get_name item:get_name()
 
 Returns the name of this item.
-- Return value (string): The name that identifies this item.
+- Return value (string): The name that identifies this item. It is also the
+  file name of the item script (without the extension).
 
 \subsection lua_api_item_get_game item:get_game()
 
 Returns the game where this item belongs.
 - Return value (\ref lua_api_game "game"): The game that contains this item.
 
-\remark The game is not necessarily running.
+\remark Items only exist in the context of a game, but the game is not
+  necessarily running.
 
 \subsection lua_api_item_get_map item:get_map()
 
 Returns the current map.
 - Return value (\ref lua_api_map "map"): The current map, or \c nil if the
-  game is not running.
+  \ref lua_api_game "game" is not running.
 
 \subsection lua_api_item_get_savegame_variable item:get_savegame_variable()
 
@@ -105,7 +109,7 @@ Returns the name of the integer savegame value that stores the amount
 of this item.
 
 You should call this function at initialization time if you want your item to
-store an amount (in addition to its possession state).
+store an amount (in addition to its possessed variant).
 This is typically used for items like the bow and the counter of bombs.
 - Return value (string): The savegame variable that should store the possessed
   amount of this item, or \c nil to make this item have no associated amount.
@@ -128,8 +132,8 @@ it during the \ref lua_api_game "game".
 You can use this feature to hide some items while the player
 has not the necessary equipment. For example, you can make arrows
 unobtainable until the player has the bow. You can also make magic jars
-unobtainable until the player has magic power.
-- Return value (boolean): \c true if this item is obtainable (no value means
+unobtainable until the player has a magic bar.
+- Return value (boolean, optional): \c true if this item is obtainable (no value means
   \c true).
 
 \subsection lua_api_item_is_assignable item:is_assignable()
@@ -137,7 +141,7 @@ unobtainable until the player has magic power.
 Returns whether this item can be assigned to an item slot.
 
 When the item is assigned to a slot, the player can use it by
-pressing the \ref lua_api_game "game command" of this slot.
+pressing the \ref lua_api_game "game command" of that slot.
 Some items are meant to be used by pressing a command (like the bow),
 other are not supposed to (like a key or a rupee).
 When the player uses your item, the event \ref lua_api_item_on_using
@@ -155,9 +159,9 @@ other are not supposed to (like a key or a rupee).
 When the player uses your item, the event \ref lua_api_item_on_using
 "item:on_using()" is triggered.
 
-Intially, an item is not assignable. Call this function at initialization
+By default, an item is not assignable. Call this function at initialization
 time if you want your item to be assignable.
-- \c assignable (boolean): \c true if this item is assignable (no value means
+- \c assignable (boolean, optional): \c true if this item is assignable (no value means
   \c true).
 
 \subsection lua_api_item_get_can_disappear item:get_can_disappear()
@@ -174,15 +178,15 @@ Sets whether \ref lua_api_pickable "pickable treasures" of this kind should
 disappear after a few seconds when they are dropped by an \ref lua_api_enemy
 "enemy" or a \ref lua_api_destructible "destructible entity".
 
-Intially, an item cannot disappear. Call this function at initialization
+By default, an item cannot disappear. Call this function at initialization
 time if you want your item to be ephemeral.
-- \c can_disappear (boolean): \c true to make such pickable treasures
+- \c can_disappear (boolean, optional): \c true to make such pickable treasures
   disappear after a few seconds (no value means \c true).
 
 \remark This property only applies to \ref lua_api_pickable
   "pickable treasures" dropped dynamically (by \ref lua_api_enemy "enemies"
   and \ref lua_api_destructible "destructible entities").
-  Pickable treasures already present on the \ref lua_api_map "map" when it
+  Pickable treasures already present on the \ref lua_api_map "map" when the map
   starts don't disappear with time.
 
 \subsection lua_api_item_get_brandish_when_picked item:get_brandish_when_picked()
@@ -203,11 +207,11 @@ However, when treasures are \ref lua_api_pickable "picked" on the ground
 (like rupees dropped by an \ref lua_api_enemy "enemy"),
 you may want the hero not to brandish them.
 
-Intially, this property is \c true. Call this function
+By default, this property is \c true. Call this function
 if you don't want your item to be brandished when it is picked on the
 ground.
-- \c brandish_when_picked (boolean): \c true if the hero should brandish such
-  treasures (no value means \c true).
+- \c brandish_when_picked (boolean, optional): \c true if the hero should
+  brandish such treasures (no value means \c true).
 
 \subsection lua_api_item_get_shadow item:get_shadow()
 
@@ -224,7 +228,7 @@ in the sprite \c "entities/shadow".
 When the engine needs to show a treasure representing your item, it sometimes
 also wants to display a shadow (in addition of the treasure's main sprite).
 For example, \ref lua_api_pickable "pickable treasures"
-dropped by enemies always have a shadow.
+dropped by enemies normally have a shadow.
 
 The default shadow animation is \c "big". You should call this function at
 initialization time if your item sprite is larger or smaller than usual.
@@ -234,7 +238,7 @@ initialization time if your item sprite is larger or smaller than usual.
 
 \remark To draw a treasure, the engine relies on two sprites: the treasure's
   main sprite (\c entities/item) and the shadow's sprite (\c entities/shadow).
-  Both sprites and their appropriate animations must exist for each item so
+  Both sprites and their appropriate animations must exist so
   that treasures can be displayed correctly.
 
 \subsection lua_api_item_get_sound_when_picked item:get_sound_when_picked()
@@ -281,8 +285,14 @@ The default sound is \c "treasure".
   (as in \ref lua_api_audio_play_sound "sol.audio.play_sound()")
   when the hero brandishes a treasure of this kind (\c nil means no sound).
 
+\subsection lua_api_item_has_variant item:has_variant([variant])
 
+Returns whether the player owns at least the specified variant of this item
+(only for a saved item).
+- \c variant (number, optional): The variant to check (default \c 1).
+- Return value (boolean): \c true if the player has at least this variant.
 
+\remark Equivalent to <tt>item:get_variant() >= variant</tt>.
 
 \subsection lua_api_item_get_variant item:get_variant()
 
@@ -290,112 +300,306 @@ Returns the possession state of this item (only for a saved item).
 - Return value (number): The possession state (\c 0: not possessed,
   \c 1: first variant, \c 2: second variant, etc.).
 
+\remark Equivalent to
+<tt>item:get_game():get_value(item:get_savegame_variable())</tt>.
 
-- \c sol.item.set_variant(variant):
-sets the possession state of the item controlled by this script (0: not possessed, 1: first variant, 2: second variant, etc.)
+\subsection lua_api_item_set_variant item:set_variant(variant)
 
-- \c sol.item.get_amount():
-returns the amount of the item controlled by this script (only for an item with amount)
+Sets the possession state of this item (only for a saved item).
+- \c variant (number): The new possession state to set (\c 0: not possessed,
+  \c 1: first variant, \c 2: second variant, etc.)
 
-- \c sol.item.set_amount(amount):
-sets the amount of the item controlled by this script (only for an item with a counter)
+\remark Equivalent to
+<tt>item:get_game():set_value(item:get_savegame_variable(), variant)</tt>.
 
-- \c sol.item.add_amount(amount):
-increases the amount of the item controlled by this script (only for an item with a counter)
+\subsection lua_api_item_has_amount item:has_amount([amount])
 
-- \c sol.item.remove_amount(amount):
-decreases the amount of the item controlled by this script (only for an item with a counter)
+Returns whether this item has an associated amount,
+or whether the player has at least the specified value.
+- \c amount (number, optional): The amount to check. If this parameter is not
+  set, this function only tests whether an amount value exists for the item.
+- Return value (boolean): If an amount is specified, return \c true if the
+  player has at least that amount. Otherwise, returns \c true if the item has
+  an amount value.
 
-- \c sol.item.get_sprite():
-returns the sprite representing the current pickable item
-(can be called only when there is a current pickable item in the context)
+\remark If an amount is specified, this method is equivalent to
+  <tt>item:get_amount() >= amount</tt>. Otherwise, this method is equivalent
+  to <tt>item:get_amount_savegame_variable() ~= nil</tt>.
 
-- \c sol.item.get_movement():
-returns the movement of the current pickable item
-(can be called only when there is a current pickable item in the context)
+\subsection lua_api_item_get_amount item:get_amount()
 
-- \c sol.item.start_movement(movement):
-gives another movement to the current pickable item instead of the default one
-(can be called only when there is a current pickable item in the context)
+Returns the amount associated to this item (only for an item with an amount
+value).
+- Return value (number): The associated amount.
 
-- \c sol.item.get_position():
-Returns the position of the current pickable item (returns x, y and the layer).
-Can be called only when there is a current pickable item in the context.
+\remark Equivalent to
+<tt>item:get_game():get_value(item:get_amount_savegame_variable())</tt>.
 
-- \c sol.item.set_position(x, y, layer):
-Sets the position of the current pickable item.
-The layer is optional: by default, it is unchanged.
-Can be called only when there is a current pickable item in the context.
+\subsection lua_api_item_set_amount item:set_amount(amount)
 
-- \c sol.item.set_layer_independent_collisions(independent):
-sets whether the collisions with the current pickable item should be detected
-from every layer
-(can be called only when there is a current pickable item in the context)
+Sets the amount associated to this item (only for an item with an amount
+value).
+A negative amount will be replaced by \c 0.
+An amount greater than \ref lua_api_item_get_max_amount
+"item:get_max_amount()" will be replaced by that maximum value.
+- \c amount (number): The amount to set.
 
-- \c sol.item.set_finished():
-notifies the hero that he has finished using the current inventory item and can get back to a normal state
-(can be called only when the hero is currently using the inventory item controlled by this script)
+\subsection lua_api_item_add_amount item:add_amount(amount)
 
-- \c event_update():
-called at each cycle (so take care of the performances)
+Increases the amount associated to this item (only for an item with an amount
+value), without exceeding the maximum amount.
+- \c amount (number): The amount to add.
 
-- \c event_set_suspended(suspended):
-called when the game is suspended or resumed
+\subsection lua_api_item_remove_amount item:remove_amount(amount)
 
-- \c event_map_changed(new_map_id):
-called when a map becomes the current map
+Decreases the amount associated to this item (only for an item with an amount
+value), without going below \c 0.
+- \c amount (number): The amount to remove.
 
-- \c event_dialog_started(dialog_id):
-(triggered only if this item script started the dialog):
-called when a dialog box starts
+\subsection lua_api_item_get_max_amount item:get_max_amount()
 
-- \c event_dialog_finished(dialog_id, answer):
-(triggered only if this item script started the dialog):
-called when a dialog finishes (i.e. once its last group of 3 lines
-is finished)
+Returns the maximum amount associated to this item
+(only for an item with an amount value).
+- Return value (number): The maximum amount.
 
-- \c event_npc_interaction(npc_name):
-(triggered only if the npc has the property to notify the item controlled by this script):
-called when the hero interacts with an NPC by pressing the action key
+\subsection lua_api_item_set_max_amount item:set_max_amount(max_amount)
 
-- \c event_npc_interaction_finished(npc_name):
-(triggered only if the NPC has the property to notify the item controlled by this script):
-called when the hero has just interacted with an NPC by pressing the action key
+Sets the maximum amount associated to this item
+(only for an item with an amount value).
+This maximum value is used in \ref lua_api_item_set_amount
+"item:set_amount()" and \ref lua_api_item_add_amount
+"item:add_amount()" to make a limit.
+- \c max_amount (number): The maximum amount to set.
 
-- \c event_npc_interaction_item(npc_name, item_name, variant):
-(triggered only if the NPC has the property to notify the item controlled by this script):
-called when the hero interacts with an NPC by using ANY inventory item;
-returns true if an interaction actually happened
+\remark The maximum amount of an item is not saved automatically.
+  Only the current variant (see \ref lua_api_item_set_savegame_variable
+  "item:set_savegame_variable()") and the current amount (see \ref
+  lua_api_item_set_amount_savegame_variable
+  "item:set_amount_savegame_variable()") are saved by the engine.
+  Therefore, you have to set the maximum amount of appropriate items when
+  they are loaded (typically from event \ref lua_api_item_on_started
+  "item:on_started()").
 
-- \c event_npc_interaction_item_finished(npc_name, item_name, variant):
-(triggered only if the NPC has the property to notify the item controlled by this script):
-called when the hero has just interacted with an NPC by using ANY inventory item
+\subsection lua_api_item_set_finished item:set_finished()
 
-- \c event_npc_collision_fire(npc_name):
-(triggered only if the NPC has the property to notify the item controlled by this script):
-called when some fire touches an NPC
+Notifies the engine that using this item is finished and that the hero can
+get back to a normal state.
 
-- \c event_appear(variant, savegame_variable, falling_height):
-Called when a pickable item whose type is controlled by this script has
-just appeared on the map.
+When the player uses this item (by pressing an item \ref lua_api_game
+"game command"), your item script takes full control of the
+\ref lua_api_hero "hero" (event
+\ref lua_api_item_on_using "item:on_using()" is called) and you have to
+program the item's behavior. When it is finished, call this function
+to restore normal control to the player.
 
-- \c event_movement_changed():
-called when something changes in the movement of a pickable item whose type is controlled by this script
+This method should only be called when the hero is using this item.
 
-- \c event_obtaining(variant, savegame_variable):
-called when the player is obtaining a treasure corresponding to the item controlled by this script
+\section lua_api_item_events Events of an item
 
-- \c event_obtained(variant, savegame_variable):
-called when the player has finished brandishing a treasure corresponding to the item controlled by this script
+Events are callback methods automatically called by the engine if you define
+them.
+In the case of a game, they are only called on the game currently running, if
+any.
 
-- \c event_variant_changed(variant):
-called when the saved possession state of the item controlled by this script has just changed
+\subsection lua_api_item_on_created item:on_created()
 
-- \c event_amount_changed(amount):
-called when the amount of the item controlled by this script has just changed
+Called when your item script is being created, that is, when the
+\ref lua_api_game "game" object is being created.
 
-- \c event_use():
-called when the hero starts using the item controlled by this script from his inventory
+In this event, you should initialize your item.
+
+\remark All items scripts are not loaded yet at this time.
+  Your item is being loaded, but you don't know the status of ther ones.
+  Unless your item is the last one to be
+  initialized, other items are not ready. If your item needs to get
+  some properties from other items in its initialization, use \ref
+  lua_api_item_on_started "item:on_started()" instead.
+
+\subsection lua_api_item_on_started item:on_started()
+
+Called when your item starts, that is, once all items are created.
+
+At this time, all items scripts are loaded and their
+\ref lua_api_item_on_created "on_created()" events have been called.
+
+You can use this event to make initializations that depend on other items.
+Such initializations could not be done earlier
+from \ref lua_api_item_on_created "item:on_created()", because all items
+did not exist at that time.
+
+\subsection lua_api_item_on_finished item:on_finished()
+
+Called when the \ref lua_api_game "game" stops running.
+
+\subsection lua_api_item_on_update item:on_update()
+
+Called at each cycle of the main loop while the
+\ref lua_api_game "game" is running.
+
+\remark As this function is called at each cycle, it is recommended to use other
+solutions when possible, like \ref lua_api_timer "timers" and other events.
+
+\subsection lua_api_item_on_suspended item:on_suspended(suspended)
+
+Called when the \ref lua_api_map "map" is being suspended or resumed.
+Only possible when the \ref lua_api_game "game" is running.
+
+The map is suspended by the engine in a few cases, like when the game is
+paused or when the camera is being moved by a script.
+When this happens, all \ref lua_api_entity "map entities" stop moving and most
+\ref lua_api_sprite "sprites" stop their animation.
+Your item may need to be notified.
+- \c suspended (boolean): \c true if the map is being suspended, \c false if
+  it is being resumed.
+
+\subsection lua_api_item_on_map_changed item:on_map_changed(map)
+
+Called when the player has just entered a \ref lua_api_map "map".
+Only possible when the \ref lua_api_game "game" is running.
+
+The new map is already started at this point.
+- \c map (\ref lua_api_map "map"): The new active map.
+
+\remark This event is also called for the first map (when your \ref
+lua_api_game "game" starts).
+
+\subsection lua_api_item_on_pickable_created item:on_pickable_created(pickable)
+
+Called when a \ref lua_api_pickable "pickable treasure" of your item's
+kind is created on the \ref lua_api_map "map".
+Only possible when the \ref lua_api_game "game" is running.
+
+If you need to do something special when a pickable treasure of this kind
+appears on the \ref lua_api_map "map", like setting a particular
+\ref lua_api_movement "movement", you can use this event.
+- \c pickable (\ref lua_api_pickable "pickable treasure"): The pickable
+  treasure just created.
+
+\subsection lua_api_item_on_pickable_movement_changed item:on_pickable_movement_changed(pickable, movement)
+
+Called when the \ref lua_api_movement "movement" of a \ref lua_api_pickable
+"pickable treasure" of your item's kind changes.
+Only possible when the \ref lua_api_game "game" is running.
+- \c pickable (\ref lua_api_pickable "pickable treasure"): A pickable
+  treasure.
+- \c movement (\ref lua_api_movement "movement"): The movement that has
+  changed.
+
+\todo This event is redundant with \ref lua_api_movement_on_changed
+  "movement:on_changed()". It will be removed in a future version.
+
+\subsection lua_api_item_on_obtaining item:on_obtaining(variant, savegame_variable)
+
+Called when the hero is obtaining a treasure of this kind of item.
+Only possible when the \ref lua_api_game "game" is running.
+- \c variant (number): The variant of item (because some items may have several
+  variants). \c 1 is the first variant, \c 2 is the second variant, etc.
+- \c savegame_variable (string): Name of the boolean saved value that stores
+  the state of the treasure being obtained.
+  \c nil means that the treasure is not saved.
+
+\remark If the treasure is brandished, this function is called immediately
+  (before the dialog starts). If you want to do something after the treasure's
+  dialog, see \ref lua_api_item_on_obtained "item:on_obtained()".
+
+\subsection lua_api_item_on_obtained item:on_obtained(variant, savegame_variable).
+
+Like \ref lua_api_item_on_obtaining "item:on_obtaining()",
+but in the case of a brandished treasure, this event is called after the
+treasure's dialog.
+Only possible when the \ref lua_api_game "game" is running.
+- \c variant (number): The variant of item (because some items may have several
+  variants). \c 1 is the first variant, \c 2 is the second variant, etc.
+- \c savegame_variable (string): Name of the boolean saved value that stores
+  the state of the treasure just obtained.
+  \c nil means that the treasure is not saved.
+
+\subsection lua_api_item_on_variant_changed item:on_variant_changed(variant)
+
+Called when the possessed variant of this item has just changed.
+Only for saved items.
+
+This event is triggered whenever the variant changes: it can be when the hero
+obtains a treasure of this item's kind, or when you call
+\ref lua_api_item_set_variant "item:set_variant()" explicitly.
+- \c variant (number): The new variant possessed (possibly \c 0).
+
+\subsection lua_api_item_on_amount_changed item:on_amount_changed(amount)
+
+Called when the possessed amount of this item has just changed.
+Only for items with an associated amount.
+
+This event is triggered when you call
+\ref lua_api_item_set_amount "item:set_amount()",
+\ref lua_api_item_add_amount "item:add_amount()",
+\ref lua_api_item_remove_amount "item:remove_amount()",
+- \c amount (number): The new amount possessed (possibly \c 0).
+
+\subsection lua_api_item_on_using item:on_using()
+
+Called when the player is using this item.
+Only possible when the \ref lua_api_game "game" is running,
+and only for \ref lua_api_set_assignable "assignable items".
+
+The player is using your item (by pressing an item \ref lua_api_game
+"game command"). You now have full control of the \ref lua_api_hero "hero".
+From this event, you have to program the item's behavior.
+For example, your item can remove some magic points and perform an special
+attack that kills all enemies nearby.
+When you have finished, call \ref lua_api_item_set_finished
+"item:set_finished()" to restore normal control to the player.
+
+\remark There is another event for the special case of giving an item
+  to an \ref lua_api_npc "non-playing character".
+  If the \ref lua_api_hero "hero" uses an item in front of an
+  \ref lua_api_npc "NPC" whose property is to notify your item,
+  then event \ref lua_api_item_on_npc_interaction_item
+  "item:on_npc_interaction_item()" is triggered first. If that event is
+  defined and returns \c true, then \ref lua_api_item_on_using
+  "item:on_using()" is not called (the interaction is considered
+  done).
+
+\subsection lua_api_item_on_ability_used item:on_ability_used(ability_name)
+
+Called when the player has just performed a built-in ability.
+Only possible when the \ref lua_api_game "game" is running.
+
+Built-in abilities indicate whether the hero can perform some built-in
+actions like attacking, swimming or running.
+See \ref lua_api_game_get_ability "game:get_ability()" for more details.
+- \c ability_name (string): Name of the ability that was used.
+
+\subsection lua_api_item_on_npc_interaction item:on_npc_interaction(npc)
+
+Called when the \ref lua_api_hero "hero" interacts
+(the player pressed the \ref lua_api_game "action command") in front of an
+\ref lua_api_npc "NPC" whose property is to notify your item.
+Only possible when the \ref lua_api_game "game" is running.
+- \c npc (\ref lua_api_npc "NPC"): A non-playing character.
+
+\subsection lua_api_item_on_npc_interaction_item on_npc_interaction_item(npc, item_used)
+
+Called when the \ref lua_api_hero "hero" uses any item
+(the player pressed an \ref lua_api_game "item command") with an
+\ref lua_api_npc "NPC" whose property is to notify your item.
+Only possible when the \ref lua_api_game "game" is running.
+- \c npc (\ref lua_api_npc "NPC"): A non-playing character.
+- \c item_used (item): The item currently used by the player.
+  This is not necessarily your item. The reason why your item gets notified
+  is because the NPC is related to your item. But the player may be using
+  another item.
+- Return value (boolean): \c true if an interaction happened. If you return
+  \c false or nothing, then \ref lua_api_item_on_using
+  "item_used:on_using()" will be called (just like if there was no NPC in
+  front of the hero).
+
+\subsection lua_api_item_on_npc_collision_fire item:on_npc_collision_fire(npc)
+
+Called when an \ref lua_api_npc "NPC" whose property is to notify your item
+touches \ref lua_api_fire "fire".
+Only possible when the \ref lua_api_game "game" is running.
+- \c npc (\ref lua_api_npc "npc"): A non-playing character that touches fire
+  and has the property to notify your item.
 
 */
 

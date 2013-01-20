@@ -92,8 +92,10 @@ Loads an existing savegame, or initializes a new one if it does not exist
   to the \ref lua_api_main_get_quest_write_dir "quest write directory".
 - Return value (game): The loaded (or created) game.
 
-\remark This function does not start the game, it just loads the savegame file.
-Then you can access the data saved in the file.
+\remark This function does not start the game, it just loads the savegame file
+and initializes all \ref lua_api_item "equipment item scripts".
+Then you can access the data saved in the savegame file and use the API of
+equipment items.
 To actually run the game, call \ref lua_api_game_start.
 
 \section lua_api_game_methods Methods of the type game

@@ -1,8 +1,8 @@
 #include <AppleInterface.h>
 
-#if defined(SOLARUS_IOS)
+#if defined(SOLARUS_OSX)
 #  import <Cocoa/Cocoa.h>
-#elif defined(SOLARUS_OSX)
+#elif defined(SOLARUS_IOS)
 #  import <Foundation/Foundation.h>
 #  import <UIKit/UIKit.h>
 #endif

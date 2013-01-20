@@ -52,15 +52,7 @@ add_executable(${SOLARUS_OSX_BUNDLE} MACOSX_BUNDLE
 		${main_source_file}
 		${SOLARUS_OSX_BUNDLE_QUEST}
 		${SOLARUS_OSX_BUNDLE_INFOPLIST}
-		${SOLARUS_OSX_BUNDLE_ICON} 
-
-		${SDL_FRAMEWORK} 
-		${SDLIMAGE_LIBRARY} 
-		${SDLTTF_LIBRARY}
-		${VORBISFILE_LIBRARY} 
-		${OGG_LIBRARY} 
-		${PHYSFS_LIBRARY} 
-		${MODPLUG_LIBRARY}
+		${SOLARUS_OSX_BUNDLE_ICON}
 )
 
 # Regenerate -l flags for the Bundle target
@@ -152,7 +144,7 @@ set(DEFAULT_QUEST "../Resources" CACHE STRING "Path to the quest to launch with 
 add_definitions(-DSOLARUS_DEFAULT_QUEST=\"../Resources\")
 
 # Code signing
-set_target_properties(${NAME} PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "MacOSX Developer: ${COMPANY_IDENTIFIER}")
+set_target_properties(${NAME} PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "IPhone Developer: ${COMPANY_IDENTIFIER}")
 
 # install
 install(PROGRAMS                     ${SOLARUS_OSX_BUNDLE}

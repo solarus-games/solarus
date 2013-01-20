@@ -25,7 +25,7 @@
 #include <lua.hpp>
 
 #if defined(SOLARUS_OSX) || defined(SOLARUS_IOS)
-#   include "lowlevel/osx/OSXInterface.h"
+#   include "lowlevel/apple/AppleInterface.h"
 #endif
 
 std::string FileTools::language_code;

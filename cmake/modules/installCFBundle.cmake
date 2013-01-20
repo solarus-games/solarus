@@ -2,7 +2,7 @@
 #
 # This module can be included inside the main CMakeList.txt to add a
 # target which generate the CFBundle when building the engine. 
-# The engine is build from ${main_source_file} file, and solarus and solarus_static target. 
+# The engine is build from the 'solarus' target. 
 # The quest, icon and an info.plist template file can be added to the project.
 #
 # You can edit the Bundle configuration by passing some flags.
@@ -30,9 +30,8 @@ if(NOT SOLARUS_BUNDLE_QUEST)
 endif()
 
 # Configuration variable
-set(EXECUTABLE_NAME                   "solarus")
-set(EXECUTABLE_STATIC_NAME            "solarus_static")
-set(COMPANY_IDENTIFIER                "${EXECUTABLE_NAME}-team")
+set(EXECUTABLE_MAIN_NAME              "solarus")
+set(COMPANY_IDENTIFIER                "${EXECUTABLE_MAIN_NAME}-team")
 
 # OS-specific configuration variable
 if(SOLARUS_IOS_BUILD)
@@ -70,28 +69,23 @@ if(NOT SOLARUS_BUNDLE_VERSION)
   set(SOLARUS_BUNDLE_VERSION        "1.0")
 endif()
 
-# Specify Bundle files
-add_executable(${SOLARUS_BUNDLE} MACOSX_BUNDLE
-  ${main_source_file}
+# Add the CFBundle target
+add_custom_target(${SOLARUS_BUNDLE}
+  SOURCES
   ${SOLARUS_BUNDLE_QUEST}
   ${SOLARUS_BUNDLE_INFOPLIST}
   ${SOLARUS_BUNDLE_ICON} 
   ${SOLARUS_BUNDLE_COPIED_LIBRARIES}
 )
 
-# Regenerate -l flags for the Bundle target
-target_link_libraries(${SOLARUS_BUNDLE}
-  ${EXECUTABLE_STATIC_NAME}
-  ${SDL_LIBRARY}
-  ${SDLIMAGE_LIBRARY}
-  ${SDLTTF_LIBRARY}
-  ${OPENAL_LIBRARY}
-  ${LUA_LIBRARY}
-  ${PHYSFS_LIBRARY}
-  ${VORBISFILE_LIBRARY}
-  ${OGG_LIBRARY}
-  ${MODPLUG_LIBRARY}
+# Set right properties on main and bundle target
+set_property(GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS 1)
+set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES 
+  BUNDLE        TRUE
+  MACOSX_BUNDLE TRUE
+  OUTPUT_NAME   ${SOLARUS_BUNDLE}
 )
+add_dependencies(${EXECUTABLE_MAIN_NAME} ${SOLARUS_BUNDLE})
 
 # Set right properties on copied files
 set_property(SOURCE 
@@ -103,20 +97,22 @@ set_property(SOURCE
 # Workaround : copy libraries with add_custom_command() for Makefile Generator.
 # TODO : Remove when http://public.kitware.com/Bug/view.php?id=13784 will be accepted.
 macro(copy_into_bundle target library_path destination_directory)
-  if(IS_DIRECTORY ${library_path})
-    add_custom_command(
-      TARGET ${target}
-      POST_BUILD
-      COMMAND cp 
-      ARGS -R -L -n ${library_path} "${PROJECT_BINARY_DIR}/${target}.app/Contents/${destination_directory}/"
-    )
-  else()
-    add_custom_command(
-      TARGET ${target}
-      POST_BUILD
-      COMMAND cp 
-      ARGS -n ${library_path} "${PROJECT_BINARY_DIR}/${target}.app/Contents/${destination_directory}/"
-    )	
+  if(NOT EXISTS ${library_path})
+    if(IS_DIRECTORY ${library_path})
+      add_custom_command(
+        TARGET ${target}
+        POST_BUILD
+        COMMAND cp 
+        ARGS -R -L -n ${library_path} "${PROJECT_BINARY_DIR}/${target}.app/Contents/${destination_directory}/"
+      )
+    else()
+      add_custom_command(
+        TARGET ${target}
+        POST_BUILD
+        COMMAND cp 
+        ARGS -n ${library_path} "${PROJECT_BINARY_DIR}/${target}.app/Contents/${destination_directory}/"
+      )	
+    endif()
   endif()
 endmacro()
 if(NOT XCODE)

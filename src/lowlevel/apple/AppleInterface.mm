@@ -1,4 +1,4 @@
-#include <AppleInterface.h>
+#include <lowlevel/apple/AppleInterface.h>
 
 #if defined(SOLARUS_OSX)
 #  import <Cocoa/Cocoa.h>

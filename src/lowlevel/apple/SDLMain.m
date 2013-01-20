@@ -6,7 +6,7 @@
 */
 
 #include "SDL.h"
-#include "SDLMain.h"
+#include "lowlevel/apple/SDLMain.h"
 #include <sys/param.h> /* for MAXPATHLEN */
 #include <unistd.h>
 

@@ -45,9 +45,6 @@ file(
 
 # additional source files for Mac OS
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  include_directories(
-    ${SOLARUS_ENGINE_SOURCE_DIR}/include/lowlevel/osx
-  )
   set(source_files
     ${source_files}
     src/lowlevel/apple/AppleInterface.mm
@@ -183,15 +180,12 @@ if(SCREEN_FORCE_MODE)
   add_definitions(-DSOLARUS_SCREEN_FORCE_MODE=${SCREEN_FORCE_MODE})
 endif()
 
-# files to install with make install
-install(TARGETS	solarus
-  RUNTIME DESTINATION bin
-) 
-
-# Also install into CFBundle form if requested or iOS build
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
-    include(AddCFBundleTarget)
-  endif()
+# files to install with make install, into CFBundle form if requested or iOS build
+if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
+  include(installCFBundle)
+else()
+  install(TARGETS	solarus
+    RUNTIME DESTINATION bin
+  )
 endif()
 

@@ -23,9 +23,9 @@ object manages them.
 The script file <tt>items/XXXX.lua</tt> defines the item named \c XXXX.
 The corresponding Lua item object is passed as parameter
 of that script. Use the Lua notation \c "..." to get this parameter and store
-it in a regular variable.
+it into a regular variable.
 
-Here in a basic example of script for the \c rupee item,
+Here is a basic example of script for the \c rupee item,
 an item whose only role is to increase the money of the player when he
 obtains a rupee.
 \verbatim

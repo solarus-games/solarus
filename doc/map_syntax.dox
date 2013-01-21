@@ -17,7 +17,7 @@ XXXX is the id of the map (an integer on four digits).
 This page describes the syntax of this file.
 Another file \c maps/mapXXXX.lua contains the script of the map,
 i.e. the dynamic events that occur on the map.
-See the \ref lua_api to know how a map script can
+See the \ref lua_api_map to know how a map script can
 interact with the game.
 
 Most of the information listed above is given in the first line of

@@ -1,11 +1,13 @@
 /**
 \page lua_api_map Map
 
+\tableofcontents
+
 Maps are areas where the \ref lua_api_game "game" takes place.
 They may be rooms, houses, entire dungeon floors, parts of the outside
 world or any place.
 The active map contains many objects called
-\ref "map entities" (or just "entities" to be short).
+\ref lua_api_entity "map entities" (or just "entities" to be short).
 %Map entities include everything that has a position on the map:
 the \ref lua_api_hero "hero",
 the \ref lua_api_tile "tiles",
@@ -13,33 +15,61 @@ the \ref lua_api_enemy "enemies",
 the \ref lua_api_pickable "pickable treasures", etc.
 See the \ref lua_api_entity "entity API" for more details.
 
-A map has a rectangular size in pixels.
-Its graphic skin is called a \ref tileset_syntax "tileset". The tileset
-defines the small bricks used to draw \ref lua_api_tile "tiles"
-and some other \ref lua_api_entity "entities" that also depend on the skin.
-For example, you can have a forest tileset, a castle tileset, etc.
-Each map has only one tileset.
+\section lua_api_map_features Map features
 
-A map can contain many types of map entities.
-Entities can be either declared in the
+\subsection lua_api_map_features_position Position of entities
+
+A map has a rectangular size in pixels. The width and the height are always
+multiples of 8 pixels, and most \ref lua_api_entity "map entities" usually
+stay aligned on a grid of squares of 8*8 pixels (except when they are moving).
+
+Thus, each \ref lua_api_entity "entity" has some coordinates <tt>X,Y</tt>
+on the map. But its position is also defined by a third value: its layer.
+The map has 3 distinct layers that are stacked: the low layer, the
+intermediate layer and the high layer.
+Each layer has its own set of entities.
+Layers allow to implement maps with multi-level content, like a bridge
+between two higher platforms. The \ref lua_api_hero "hero" 
+(as well as \ref lua_api_enemy "enemies" and any other
+\ref lua_api_entity "map entity") is then able to
+walk either above or under the bridge, depending on his layer.
+Entities like \ref lua_api_stairs "stairs" and
+\ref lua_api_jumper "jumpers" can change the layer of the hero
+automatically, and you can also do that from your Lua script.
+
+\subsection lua_api_map_features_tileset Tileset
+
+The graphic skin of a map is called a \ref tileset_syntax "tileset". The
+tileset defines the small patterns used to draw \ref lua_api_tile "tiles"
+and also some other \ref lua_api_entity "entities" that may depend on the
+skin.
+For example, you can have a forest tileset, a castle tileset, etc.
+Each map has only one tileset, but tilesets have no special size limitation.
+
+\subsection lua_api_map_features_files Map files
+
+A map can contain many types of \ref lua_api_entity "entities".
+%Map entities can be either declared in the
 map data file or created dynamically.
 Thus, a map named \c XXXX is managed by two distinct files:
 - In the data file <tt>maps/XXXX.dat</tt> are declared all entities that
-  initially compose the map (most importantly: the
+  initially compose your map (most importantly: the
   \ref lua_api_tile "tiles").
   You normally don't need to edit this file by hand:
   you can use the quest editor
-  (but if you want, \ref map_syntax "here is the syntax").
-- In the script file <tt>maps/XXXX.lua</tt>, you define the dynamic behavior
+  (but if you want to, \ref map_syntax "here is the syntax").
+- In the script file <tt>maps/XXXX.lua</tt> (which is optional),
+  you define the dynamic behavior
   of your map, using the features of the map Lua type described on this page
-  (but also of the rest of the Solarus API).
+  (but the rest of the Solarus API will also be very useful).
 
-When the player enters a map, the engine first creates the entities
+When the player enters a map, the engine first creates the \ref lua_api_entity
+"entities"
 declared in the map data file
 <tt>maps/XXXX.dat</tt>, and then it runs your script
 <tt>maps/XXXX.lua</tt>.
-The Lua map object is passed as parameter
-of your script.
+The Lua map object is passed as parameter of your script
+(any Lua script is implicitly a function and can have parameters).
 Use the Lua notation \c "..." to get this parameter and store
 it into a regular variable.
 
@@ -77,6 +107,8 @@ making a \ref lua_api_chest "treasure chest" appear when some
 showing a dialog with an \ref lua_api_npc "NPC" that depends on
 whether the player has accomplished a particular action before, etc. 
 
+\subsection lua_api_map_features_lifetime Lifetime of maps
+
 At any moment, during the \ref lua_api_game "game",
 only one map is active:
 the one drawn on the game screen.
@@ -88,16 +120,26 @@ your Lua map object will be a new one the second time.
 Your entities will be reloaded as specified in the
 \ref map_syntax "map data file" and your map script will be executed again.
 
-TODO the game object persists accross map changes
+If you want some data or behavior to persist when the player comes back,
+like the position of an \ref lua_api_npc "NPC" or whether a puzzle was solved,
+you can store the information into the \ref lua_api_game_set_value "savegame".
+Alternatively, if you don't want these data to be saved, but you want to
+remember it during the current \ref lua_api_game "game" session,
+you can store the information as a field the
+\ref lua_api_game "game" object. The game object persists until the player
+stops playing and comes back to the title screen or restarts the game.
+
+\remark Some entities save their state automatically if you want, like
+whether a \ref lua_api_chest "treasure chest" is open, whether a
+\ref lua_api_door "door" is open or whether an \ref lua_api_enemy "enemy"
+is killed. Therefore, you have nothing to do for such entities: they keep
+their state.
+
+\subsection lua_api_map_features_table Accessing maps like tables
 
 TODO map accessed like table (example)
 
-\section Contents
-
-- \ref lua_api_map_methods
-- \ref lua_api_map_events
-
-
+\section lua_api_map_methods Methods of the type map
 
 - \c sol.map.dialog_start(dialog_id):
 Show a dialog box.

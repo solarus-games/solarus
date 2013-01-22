@@ -4,31 +4,46 @@
 This is the API specification of Lua functions, methods, callbacks
 and types defined by Solarus.
 This documentation page is intented to quest makers who want to write
-scripts for their maps, items, enemies and menus.
-For the point of view of the engine, see the documentation of the C++ class
-LuaContext.
+scripts for their
+\ref lua_api_map "maps",
+\ref lua_api_item "items",
+\ref lua_api_enemy "enemies" and
+\ref lua_api_menus "menus".
+For the point of view of the C++ code of the engine,
+see the documentation of class LuaContext.
 
-Most of the data types defined in the C++ engine (like sprites, map entities,
-movements, savagames, etc.) are exported as Lua types in the scripting API of
-Solarus.
-We give here the full specification of these types and the functions available
+Most of the data types defined in the C++ engine (like
+\ref lua_api_sprite "sprites",
+\ref lua_api_entity "map entities",
+\ref lua_api_movement "movements",
+\ref lua_api_game "savagames", etc.)
+are exported as Lua types in the scripting API of Solarus.
+We give here the full reference of these types and the functions available
 for each type.
 The API exports C++ functions and C++ datatypes that may be used by your scripts.
-Examples of such features are creating a sprite, drawing an image or moving
-an enemy.
+Examples of such features are
+\ref lua_api_sprite_create "creating a sprite",
+\ref lua_api_drawable_draw "drawing an image" or
+\ref lua_api_enemy_start_movement "moving an enemy".
 In the opposite way, Solarus will also call your own Lua functions (if you
-define them), for example to notify your script that an enemy has reached an
-obstacle, that a pressure plate has just been activated
-or that the hero is talking to a particular non-playing character.
+define them), for example to notify your script that
+\ref lua_api_enemy_on_obstacle_reached "an enemy has reached an obstacle",
+that \ref lua_api_switch_on_activated "a pressure plate has just been activated"
+or that the \ref lua_api_hero "hero" is
+\ref lua_api_npc_on_interaction "talking to a particular non-playing character".
 
 The following script files are loaded by the engine when they exist:
-- The main script (\c main.lua): global script that controls the menus (if any)
-  before starting a game and decides to start a game.
-- The script of a map (\c maps/XXXX.lua): controls the map \c XXXX.
+- The main script (\c main.lua): global script that controls the \ref
+  lua_api_menu "menus" (if any)
+  before starting a \ref lua_api_game "game" and decides to start a game.
+- The script of a \ref lua_api_map "map" (\c maps/XXXX.lua): controls the
+  map \c XXXX.
   Called when the player enters the map.
-- The script of an enemy (\c enemies/XXXX.lua): controls an enemy whose
+- The script of an \ref lua_api_enemy "enemy" (\c enemies/XXXX.lua):
+  controls an enemy whose
   breed is \c XXXX. Called when an enemy of this breed is created on the map.
-- The script of an item (\c items/XXXX.lua): controls the item named
+- The script of an \ref lua_api_item "item" (\c items/XXXX.lua): controls the
+  equipment item named
   \c XXXX. Called when a \ref lua_api_game "savegame" is loaded or created.
 
 All these various scripts run in the same Lua state.
@@ -49,7 +64,7 @@ Most types of the Lua API
 \ref lua_api_sprite "sprite")
 are Lua userdata that have something special: they can also be indexed like
 tables.
-This mechanism is used by the engine when it needs to call callback methods
+This mechanism is used by the engine when it needs to invoke callback methods
 that you defined on your objects.
 But you can also extend these objects with your own functions and data.
 This is very useful in the \ref lua_api_game "game" and
@@ -76,7 +91,7 @@ See the specification page of each feature for more details.
   (life, equipment, etc.) and running a game.
 - \subpage lua_api_item "sol.item": controls a particular type of
   equipment item and its behavior.
-- \subpage lua_api_map "sol.map": handling the current map and $its
+- \subpage lua_api_map "sol.map": handling the current map and its
   properties (only during a game).
 - \subpage lua_api_entity "sol.entity": controls entities placed on the map
   (only during a game), like the hero, enemies, chests, non-playing

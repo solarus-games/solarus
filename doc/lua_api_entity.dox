@@ -1,6 +1,8 @@
 /**
 \page lua_api_entity Map entities
 
+\tableofcontents
+
 Objects placed on the \ref lua_api_map "map"
 are called map entities (or just entities).
 

@@ -1,14 +1,11 @@
 /**
 \page lua_api_main General features
 
+\tableofcontents
+
 \c sol.main contains general features and utility functions
 that are global to the execution
 of the program, no matter if a game or some menus are running.
-
-\section Contents
-
-- \ref lua_api_main_functions
-- \ref lua_api_main_events
 
 \section lua_api_main_functions Functions of sol.main
 

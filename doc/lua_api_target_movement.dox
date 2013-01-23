@@ -1,6 +1,8 @@
 /**
 \page lua_api_target_movement Target movement
 
+\tableofcontents
+
 A target movement goes towards a target point.
 The target point can be a fixed point of an \ref lua_api_entity "entity"
 of the \ref lua_api_map "map".
@@ -22,13 +24,7 @@ If you want a more complex technique that calculates an intelligent path to
 the target,
 see the \ref lua_api_path_finding_movement "path finding movement" type.
 
-\section Contents
-
-- \ref lua_api_target_movement_inherited_methods
-- \ref lua_api_target_movement_methods
-- \ref lua_api_target_movement_inherited_events
-
-\section lua_api_target_movement_inherited_methods Methods inherited from the type movement
+\section lua_api_target_movement_inherited_methods Methods inherited from movement
 
 Target movements are particular \ref lua_api_movement "movement" objects.
 Therefore, they inherit all methods from the type movement.
@@ -91,7 +87,7 @@ This property has no effect if the movement is not attached to a
 or if the movement ignores obstacles.
 - \c smooth (boolean): \c true to make this movement smooth
 
-\section lua_api_target_movement_inherited_events Events inherited from the type movement
+\section lua_api_target_movement_inherited_events Events inherited from movement
 
 Target movements are particular \ref lua_api_movement "movement" objects.
 Therefore, they inherit all events from the type movement.

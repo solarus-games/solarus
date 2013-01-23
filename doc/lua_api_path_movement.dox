@@ -1,18 +1,14 @@
 /**
 \page lua_api_path_movement Path movement
 
+\tableofcontents
+
 A path movement follows a specified path on an 8*8 pixels grid, in an
 8-direction system.
 A path is a succession of steps of 8 pixels in one of the 8 main directions.
 You can define each step of the path and make it repeated if you want.
 
-\section Contents
-
-- \ref lua_api_path_movement_inherited_methods
-- \ref lua_api_path_movement_methods
-- \ref lua_api_path_movement_inherited_events
-
-\section lua_api_path_movement_inherited_methods Methods inherited from the type movement
+\section lua_api_path_movement_inherited_methods Methods inherited from movement
 
 Path movements are particular \ref lua_api_movement "movement" objects.
 Therefore, they inherit all methods from the type movement.
@@ -100,7 +96,7 @@ not attached to a \ref lua_api_entity "map entity".
 - \c snap (boolean): \c true to make this movement automatically snap its map
   entity to the map grid.
 
-\section lua_api_path_movement_inherited_events Events inherited from the type movement
+\section lua_api_path_movement_inherited_events Events inherited from movement
 
 Path movements are particular \ref lua_api_movement "movement" objects.
 Therefore, they inherit all events from the type movement.

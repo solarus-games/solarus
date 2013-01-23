@@ -15,9 +15,9 @@ the \ref lua_api_enemy "enemies",
 the \ref lua_api_pickable "pickable treasures", etc.
 See the \ref lua_api_entity "entity API" for more details.
 
-\section lua_api_map_features Map features
+\section lua_api_map_overview Overview
 
-\subsection lua_api_map_features_position Position of entities
+\subsection lua_api_map_overview_position Position of entities
 
 A map has a rectangular size in pixels. The width and the height are always
 multiples of 8 pixels, and most \ref lua_api_entity "map entities" usually
@@ -37,7 +37,7 @@ Entities like \ref lua_api_stairs "stairs" and
 \ref lua_api_jumper "jumpers" can change the layer of the hero
 automatically, and you can also do that from your Lua script.
 
-\subsection lua_api_map_features_tileset Tileset
+\subsection lua_api_map_overview_tileset Tileset
 
 The graphic skin of a map is called a \ref tileset_syntax "tileset". The
 tileset defines the small patterns used to draw \ref lua_api_tile "tiles"
@@ -46,7 +46,7 @@ skin.
 For example, you can have a forest tileset, a castle tileset, etc.
 Each map has only one tileset, but tilesets have no special size limitation.
 
-\subsection lua_api_map_features_files Map files
+\subsection lua_api_map_overview_files Map files
 
 A map can contain many types of \ref lua_api_entity "entities".
 %Map entities can be either declared in the
@@ -107,7 +107,7 @@ making a \ref lua_api_chest "treasure chest" appear when some
 showing a dialog with an \ref lua_api_npc "NPC" that depends on
 whether the player has accomplished a particular action before, etc. 
 
-\subsection lua_api_map_features_lifetime Lifetime of maps
+\subsection lua_api_map_overview_lifetime Lifetime of maps
 
 At any moment, during the \ref lua_api_game "game",
 only one map is active:
@@ -135,7 +135,7 @@ whether a \ref lua_api_chest "treasure chest" is open, whether a
 is killed. Therefore, you have nothing to do for such entities: they keep
 their state.
 
-\subsection lua_api_map_features_table Accessing maps like tables
+\subsection lua_api_map_overview_table Accessing maps like tables
 
 TODO map accessed like table (example)
 

@@ -1,15 +1,11 @@
 /**
 \page lua_api_text_surface Text surfaces
 
+\tableofcontents
+
 A text surface is a single line of text that you can display.
 A text surface can be seen as a special
 \ref lua_api_surface "surface" able to contain text.
-
-\section Contents
-
-- \ref lua_api_text_surface_functions
-- \ref lua_api_text_surface_inherited_methods
-- \ref lua_api_text_surface_methods
 
 \section lua_api_text_surface_functions Functions of sol.text_surface
 
@@ -39,7 +35,7 @@ Creates a text surface with the specified properties.
     current language.
   - Return value (text surface): The text surface created.
 
-\section lua_api_text_surface_inherited_methods Methods inherited from the type drawable
+\section lua_api_text_surface_inherited_methods Methods inherited from drawable
 
 Text surfaces are particular \ref lua_api_drawable "drawable" objects.
 Therefore, they inherit all methods from the type drawable.

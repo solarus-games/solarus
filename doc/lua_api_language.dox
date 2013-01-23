@@ -1,8 +1,11 @@
 /**
 \page lua_api_language Language functions
 
+\tableofcontents
+
 \c sol.language lets you get and set the current language
 and manage language-specific data.
+
 Each language is identified by a code (like \c "en", \c "fr") and has a
 human-readable name (like \c "English", \c "Français").
 The language code corresponds to the name of the directory with files

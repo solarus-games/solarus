@@ -1,6 +1,8 @@
 /**
 \page lua_api_audio Audio
 
+\tableofcontents
+
 You can play musics and sound effects through \c sol.audio.
 
 \section lua_api_audio_functions Functions of sol.audio

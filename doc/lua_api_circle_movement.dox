@@ -1,16 +1,12 @@
 /**
 \page lua_api_circle_movement Circle movement
 
+\tableofcontents
+
 A circle movement makes a circular trajectory around a center point or
 a \ref lua_api_entity "map entity".
 
-\section Contents
-
-- \ref lua_api_circle_movement_inherited_methods
-- \ref lua_api_circle_movement_methods
-- \ref lua_api_circle_movement_inherited_events
-
-\section lua_api_circle_movement_inherited_methods Methods inherited from the type movement
+\section lua_api_circle_movement_inherited_methods Methods inherited from movement
 
 Circle movements are particular \ref lua_api_movement "movement" objects.
 Therefore, they inherit all methods from the type movement.
@@ -176,7 +172,7 @@ to its previous value, possibly gradually
 (see \ref lua_api_circle_movement_set_radius_speed
 "circle_movement:set_radius_speed()").
 
-\section lua_api_circle_movement_inherited_events Events inherited from the type movement
+\section lua_api_circle_movement_inherited_events Events inherited from movement
 
 Circle movements are particular \ref lua_api_movement "movement" objects.
 Therefore, they inherit all events from the type movement.

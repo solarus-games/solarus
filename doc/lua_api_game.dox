@@ -1,9 +1,15 @@
 /**
 \page lua_api_game Game
 
-This module provides a datatype "game" that represents a savegame.
-On a game object, you can access and modify everything that is saved.
+\tableofcontents
 
+This module provides a datatype "game" that represents a savegame.
+
+\section lua_api_game_intro Overview
+
+\subsection lua_api_game_intro_save Saved data
+
+On a game object, you can access and modify everything that is saved.
 The data saved and restored by the engine are the following:
 - starting location of the player (map and destination on this map),
 - life (maximum and current),
@@ -20,6 +26,8 @@ The data saved and restored by the engine are the following:
 When a game is running, more features are available
 (like pausing the game, handling game commands, etc.).
 Only one game can be running at a time.
+
+\subsection lua_api_game_intro_commands Game commands
 
 An important concept that comes with the game is the notion of
 game commands.
@@ -57,17 +65,13 @@ joypad input (but if you want to, you can, and the callbacks are exactly the
 sames as in \ref
 lua_api_main "sol.main" and in \ref lua_api_menu "menus").
 
-Note finally that objects of the game type are userdata, but like most Solarus
+\subsection lua_api_game_intro_table Accessing the game like tables
+
+Objects of the game type are userdata, but like most Solarus
 Lua types, they can also be accessed like tables.
 This is especially useful for the game type to add, next to the built-in
 game features, your own quest-specific functions and data (like your HUD and
 your pause menu).
-
-\section Contents
-
-- \ref lua_api_game_functions
-- \ref lua_api_game_methods
-- \ref lua_api_game_events
 
 \section lua_api_game_functions Functions of sol.game
 

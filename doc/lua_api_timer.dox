@@ -1,6 +1,8 @@
 /**
 \page lua_api_timer Timers
 
+\tableofcontents
+
 Timers allow you to call a function in the future with a specified delay.
 
 Here is a first example of use:
@@ -22,11 +24,6 @@ sol.timer.start(1000, function()
   sol.audio.play_sound("secret")
 end)
 \endverbatim
-
-\section Contents
-
-- \ref lua_api_timer_functions
-- \ref lua_api_timer_methods
 
 \section lua_api_timer_functions Functions of sol.timer
 

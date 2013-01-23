@@ -1,6 +1,8 @@
 /**
 \page lua_api_video Video
 
+\tableofcontents
+
 \c sol.video allows you to manage the window and to change the video mode.
 
 The screen size is fixed at compilation time: it's usually 320*240

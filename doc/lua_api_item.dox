@@ -1,6 +1,8 @@
 /**
 \page lua_api_item Equipment items
 
+\tableofcontents
+
 An equipment item represents something that the player can obtain 
 (one or more times, in various forms and with several variants) and possibly
 keep.
@@ -51,11 +53,6 @@ the sprite <tt>entities/items</tt>: it is used by the engine whenever it needs
 to draw your item on the \ref lua_api_map "map"
 (for example, when a \ref lua_api_pickable "pickable treasure"
 of this kind is created).
-
-\section Contents
-
-- \ref lua_api_item_methods
-- \ref lua_api_item_events
 
 \section lua_api_item_methods Methods of the type item
 
@@ -141,7 +138,7 @@ unobtainable until the player has a magic bar.
 Returns whether this item can be assigned to an item slot.
 
 When the item is assigned to a slot, the player can use it by
-pressing the \ref lua_api_game "game command" of that slot.
+pressing the \ref lua_api_game_intro_commands "game command" of that slot.
 Some items are meant to be used by pressing a command (like the bow),
 other are not supposed to (like a key or a rupee).
 When the player uses your item, the event \ref lua_api_item_on_using
@@ -153,7 +150,7 @@ When the player uses your item, the event \ref lua_api_item_on_using
 Sets whether this item should be assignable to an item slot.
 
 When the item is assigned to a slot, the player can use it by
-pressing the \ref lua_api_game "game command" of this slot.
+pressing the \ref lua_api_game_intro_commands "game command" of this slot.
 Some items are meant to be used by pressing a command (like the bow),
 other are not supposed to (like a key or a rupee).
 When the player uses your item, the event \ref lua_api_item_on_using
@@ -385,7 +382,8 @@ This maximum value is used in \ref lua_api_item_set_amount
 Notifies the engine that using this item is finished and that the hero can
 get back to a normal state.
 
-When the player uses this item (by pressing an item \ref lua_api_game
+When the player uses this item (by pressing an item
+\ref lua_api_game_intro_commands
 "game command"), your item script takes full control of the
 \ref lua_api_hero "hero" (event
 \ref lua_api_item_on_using "item:on_using()" is called) and you have to
@@ -541,7 +539,8 @@ Called when the player is using this item.
 Only possible when the \ref lua_api_game "game" is running,
 and only for \ref lua_api_set_assignable "assignable items".
 
-The player is using your item (by pressing an item \ref lua_api_game
+The player is using your item (by pressing an item
+\ref lua_api_game_intro_commands
 "game command"). You now have full control of the \ref lua_api_hero "hero".
 From this event, you have to program the item's behavior.
 For example, your item can remove some magic points and perform an special
@@ -572,7 +571,8 @@ See \ref lua_api_game_get_ability "game:get_ability()" for more details.
 \subsection lua_api_item_on_npc_interaction item:on_npc_interaction(npc)
 
 Called when the \ref lua_api_hero "hero" interacts
-(the player pressed the \ref lua_api_game "action command") in front of an
+(the player pressed the \ref lua_api_game_intro_commands "action command")
+in front of an
 \ref lua_api_npc "NPC" whose property is to notify your item.
 Only possible when the \ref lua_api_game "game" is running.
 - \c npc (\ref lua_api_npc "NPC"): A non-playing character.
@@ -580,7 +580,7 @@ Only possible when the \ref lua_api_game "game" is running.
 \subsection lua_api_item_on_npc_interaction_item on_npc_interaction_item(npc, item_used)
 
 Called when the \ref lua_api_hero "hero" uses any item
-(the player pressed an \ref lua_api_game "item command") with an
+(the player pressed an \ref lua_api_game_intro_commands "item command") with an
 \ref lua_api_npc "NPC" whose property is to notify your item.
 Only possible when the \ref lua_api_game "game" is running.
 - \c npc (\ref lua_api_npc "NPC"): A non-playing character.

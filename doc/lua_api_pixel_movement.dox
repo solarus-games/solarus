@@ -1,6 +1,8 @@
 /**
 \page lua_api_pixel_movement Pixel movement
 
+\tableofcontents
+
 A pixel movement makes a succession of basic translations,
 where each translation is a pixel-precise specified move
 (for example <tt>(+2,-1)</tt>).
@@ -18,13 +20,7 @@ like \ref lua_api_path_movement_methods "path movement" or
 usually fit your needs when you move \ref lua_api_npc "NPCs" or
 \ref lua_api_enemy "enemies".
 
-\section Contents
-
-- \ref lua_api_pixel_movement_inherited_methods
-- \ref lua_api_pixel_movement_methods
-- \ref lua_api_pixel_movement_inherited_events
-
-\section lua_api_pixel_movement_inherited_methods Methods inherited from the type movement
+\section lua_api_pixel_movement_inherited_methods Methods inherited from movement
 
 Pixel movements are particular \ref lua_api_movement "movement" objects.
 Therefore, they inherit all methods from the type movement.
@@ -72,7 +68,7 @@ Returns the delay between two steps of the trajectory.
 Sets the delay between two steps of the trajectory.
 - \c delay (number): The delay between two steps in milliseconds.
 
-\section lua_api_pixel_movement_inherited_events Events inherited from the type movement
+\section lua_api_pixel_movement_inherited_events Events inherited from movement
 
 Pixel movements are particular \ref lua_api_movement "movement" objects.
 Therefore, they inherit all events from the type movement.

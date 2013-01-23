@@ -1,6 +1,8 @@
 /**
 \page lua_api_drawable Drawable objects
 
+\tableofcontents
+
 %Drawable objects are things that can be drawn on a destination surface.
 They include the following types:
 \subpage lua_api_surface "surface",

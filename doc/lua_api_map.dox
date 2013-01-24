@@ -61,7 +61,7 @@ Thus, a map named \c XXXX is managed by two distinct files:
 - In the script file <tt>maps/XXXX.lua</tt> (which is optional),
   you define the dynamic behavior
   of your map, using the features of the map Lua type described on this page
-  (but the rest of the Solarus API will also be very useful).
+  (and the rest of the Solarus API will also be very useful).
 
 When the player enters a map, the engine first creates the \ref lua_api_entity
 "entities"
@@ -69,7 +69,7 @@ declared in the map data file
 <tt>maps/XXXX.dat</tt>, and then it runs your script
 <tt>maps/XXXX.lua</tt>.
 The Lua map object is passed as parameter of your script
-(any Lua script is implicitly a function and can have parameters).
+(remember that any Lua script is implicitly a function and can have parameters).
 Use the Lua notation \c "..." to get this parameter and store
 it into a regular variable.
 
@@ -124,7 +124,7 @@ If you want some data or behavior to persist when the player comes back,
 like the position of an \ref lua_api_npc "NPC" or whether a puzzle was solved,
 you can store the information into the \ref lua_api_game_set_value "savegame".
 Alternatively, if you don't want these data to be saved, but you want to
-remember it during the current \ref lua_api_game "game" session,
+remember then during the current \ref lua_api_game "game" session,
 you can store the information as a field the
 \ref lua_api_game "game" object. The game object persists until the player
 stops playing and comes back to the title screen or restarts the game.
@@ -137,7 +137,113 @@ their state.
 
 \subsection lua_api_map_overview_table Accessing maps like tables
 
-TODO map accessed like table (example)
+Like other essential Solarus types (including \ref lua_api_game "game",
+\ref lua_api_item "items" and
+\ref lua_api_entity "map entities"),
+a fundamental property of maps is that even if they
+are userdata, they can also be used like Lua tables.
+
+This property is actually what allows you to define callbacks on your map.
+But you can store any data in your map object,
+including new functions specific to your particular map.
+Here is an example that uses this feature:
+\verbatim
+-- Example of a map with 3 switches to activate in the correct order.
+-- We assume that 3 switches exist with names "switch_1", "switch_2" and "switch_3".
+local map = ...
+
+function map:on_started()
+  map.next_switch_index = 1
+  -- Equivalent to: map["next_switch_index"] = 1
+end
+
+-- Called when the player walks on the switch named "switch_1".
+function switch_1:on_activated()
+  -- Check that switch_1 is the correct switch to activate.
+  map:check_switch(self)
+end
+
+function switch_2:on_activated()
+  map:check_switch(self)
+end
+
+function switch_3:on_activated()
+  map:check_switch(self)
+end
+
+function map:check_switch(switch)
+  if switch:get_name() == "switch_" .. map.next_switch_index then
+    -- Okay so far.
+    map.next_switch_index = map.next_switch_index + 1
+    if map.next_switch_index > 3 then
+      -- Finished!
+      sol.audio.play_sound("secret")
+      map:start_dialog("congratulations")
+    end
+  else
+    -- Wrong switch: reset the puzzle.
+    sol.audio.play_sound("wrong")
+    switch_1:set_activated(false)
+    switch_2:set_activated(false)
+    switch_3:set_activated(false)
+    map.next_switch_index = 1
+  end
+end
+\endverbatim
+In this example, you see that we add two values to the map object, like it
+was a table:
+\c next_switch_index (a number) and
+\c check_switch (a function).
+
+But the example has some issues.
+The three \ref lua_api_switch "switches" are managed by duplicated code.
+This is error-prone because and one day, we will probably want to make a similar
+puzzle with 50 entities instead of just 3.
+To make your map easier to maintain, the following and equivalent version is
+much preferred:
+\verbatim
+local map = ...
+
+-- Get the number of entities starting with "switch_".
+map.nb_switches = map:get_entities_count("switch_")
+
+function map:on_started()
+  map.next_switch_index = 1
+end
+
+function switch_1:on_activated()
+  map:check_switch(self)
+end
+
+for i = 2, map.nb_switches do
+  -- Define the same on_activated() method as switch_1
+  map_get_entity("switch_" .. i).on_activated = switch_1.on_activated
+end
+
+function map:check_switch(switch)
+  if switch:get_name() == "switch_" .. map.next_switch_index then
+    -- Okay so far.
+    map.next_switch_index = map.next_switch_index + 1
+    if map.next_switch_index > map.nb_switches then
+      -- Finished!
+      sol.audio.play_sound("secret")
+      map:start_dialog("congratulations")
+    end
+  else
+    -- Wrong switch: reset the puzzle.
+    sol.audio.play_sound("wrong")
+    for i = 1, map.nb_switches do
+      map:get_entity("switch_" .. i):set_activated(false)
+    end
+    map.next_switch_index = 1
+  end
+end
+\endverbatim
+
+This improved version is more evolutive: it does not even hardcode the number
+of \ref lua_api_switch "switches" in the puzzle.
+Thus, if you add switch called \c "switch_4" from the editor,
+the script will be directly take it into account in the puzzle.
 
 \section lua_api_map_methods Methods of the type map
 

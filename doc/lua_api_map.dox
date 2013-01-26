@@ -51,7 +51,7 @@ Each map has only one tileset, but tilesets have no special size limitation.
 A map can contain many types of \ref lua_api_entity "entities".
 %Map entities can be either declared in the
 map data file or created dynamically.
-Thus, a map named \c XXXX is managed by two distinct files:
+Thus, a map with id \c XXXX is managed by two distinct files:
 - In the data file <tt>maps/XXXX.dat</tt> are declared all entities that
   initially compose your map (most importantly: the
   \ref lua_api_tile "tiles").
@@ -246,6 +246,108 @@ Thus, if you add switch called \c "switch_4" from the editor,
 the script will be directly take it into account in the puzzle.
 
 \section lua_api_map_methods Methods of the type map
+
+\subsection lua_api_map_get_id map:get_id()
+
+Returns the id of this map.
+- Return value (string): Id of the map.
+
+\remark This id appears in the name of \ref
+  lua_api_map_overview_files "map files".
+
+\subsection lua_api_map_get_game map:get_game()
+
+Returns the current game.
+- Return value (\ref lua_api_game "game"): The game that is currently running
+  the map.
+
+\subsection lua_api_map_get_world map:get_world()
+
+Returns the world name that was set on this map.
+
+The world name is a property defined in the
+\ref lua_api_map_overview_files "map data file".
+Worlds allow to group maps together.
+The world can be any arbitrary name. Maps that have the same world name
+are considered to be part of the same environment.
+For example, your map can be in a world named \c "outside_world",
+\c "dungeon_1" or \c "some_scary_cave".
+
+The world property is used to decide when to set the starting location of
+the player (the place where he starts when loading his
+\ref lua_api_game "savegame").
+The starting location is automatically set by the engine
+when the world changes (not when the map changes).
+
+Some other features may also rely on the world property, like the state of
+\ref lua_api_crystal_switch "crystal switches". Their state persists
+between all maps of the current world and is reset when the world changes.
+- Return value (string): Name of the world of the current map.
+
+\subsection lua_api_get_floor map:get_floor()
+
+Returns the floor of the current map if any.
+
+The floor is an optional property defined in the
+\ref lua_api_map_overview_files "map data file".
+
+The engine does not do anything particular with this floor property.
+But you can use it in scripts,
+for example to show the current floor on the HUD
+when it changes or to make a minimap \ref lua_api_menu "menu".
+- Return value (number): The current floor. \c 0 is the first floor, \c 1
+  is the second floor, \c -1 is the first basement floor, etc.
+  \c nil means that this map is not part of a floor system.
+
+\subsection lua_api_get_size map:get_size()
+
+Returns the size of this map in pixels.
+- Return value 1 (number): The width in pixels (always a multiple of 8).
+- Return value 2 (number): The height in pixels (always a multiple of 8).
+
+\subsection lua_api_get_location map:get_location()
+
+Returns the x,y location of this map in its
+\ref lua_api_map_get_world "world".
+
+The engine uses this information to implement scrolling between two adjacent
+maps.
+
+For example, you can also use this property in scripts if you want to show
+the position
+of the hero on the minimap \ref lua_api_menu "menu" of your outside
+\ref lua_api_map_get_world "world".
+Indeed, your outside world is probably not a single map, but it is usually
+composed of several adjacent maps.
+- Return value 1 (number): X position of the top-left corner of this map
+  relative to its world.
+- Return value 2 (number): Y position of the top-left corner of this map
+  relative to its world.
+
+\subsection lua_api_get_tileset map:get_tileset()
+
+Returns the name of the \ref lua_api_map_overview_tileset "tileset"
+of the current map.
+- Return value (string): Id of the current tileset.
+
+\subsection lua_api_set_tileset map:set_tileset(tileset_id)
+
+Changes the \ref lua_api_map_overview_tileset "tileset"
+of the current map.
+
+It is your responsability to make sure that
+the new tileset is be compatible with the previous one:
+every tile of the previous tileset must exist in the new one
+and have the exact same properties, and only the images can differ.
+Internally, this function actually keeps the data of the previous tileset
+and only loads the image of the new tileset.
+- \c tileset_id (string): Id of the new tileset to set.
+
+\remark If the new tileset is not compatible with the previous one,
+  tiles will be displayed with wrong graphics.
+
+
+
 
 - \c sol.map.dialog_start(dialog_id):
 Show a dialog box.

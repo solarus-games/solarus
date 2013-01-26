@@ -1900,9 +1900,9 @@ dialog{
 Du hast den Master-
 schlüssel gefunden!
 Du kannst nun in das
-Versteck des Herrn"
-dieses Dungeons"
-vordringen."
+Versteck des Herrn
+dieses Dungeons
+vordringen.
 ]]
 }
 --------------------
@@ -2278,9 +2278,9 @@ dialog{
 Hui, das ist viel zu
 schwer!
 
-Das wirst Du nie
-aus eigener Kraft
-heben können.
+Mit bloßen Händen
+wirst Du das nicht
+hochheben können.
 ]]
 }
 -----------------------
@@ -2376,7 +2376,7 @@ dialog{
   text = [[
         3. Dungeon       
         Höhle von 
-      Meister Arbor
+     Meister Arbror
 ]]
 }
 -----------------------
@@ -2550,7 +2550,7 @@ Ein Schokobrötchen
 stellt 3 Herzen
 wieder her.
 Was willst Du tun?
-Ein Brötchen essen
+Brötchen essen
 Nichts
 ]]
 }
@@ -2566,7 +2566,7 @@ Mit einem Hörnchen
 kannst Du 7 Herzen
 auffüllen.
 Was willst Du tun?
-Ein Hörnchen essen
+Hörnchen essen
 Nichts
 ]]
 }
@@ -2639,6 +2639,7 @@ dialog{
   text = [[
 $2Es heißt, ein junger
 Mann in grünen Kleidern
+
 begab sich auf ein
 Abenteuer, erforschte
 verlorene Tempel und
@@ -2653,11 +2654,11 @@ dialog{
   id = "intro3",
   skip = "current",
   text = [[
-$2Der, den man den
-Helden nannte, konnte
+$2Der Held, wie man
+ihn nannte, konnte
 schließlich das Unheil
 zurückdrängen. Dank
-seines Mutes, besiegte
+seines Mutes besiegte
 er Ganondorf, der sich
 in einer gewaltigen
 Pyramide mitten im
@@ -2824,7 +2825,7 @@ dialog{
   id = "outside_world.village.chignon_woman",
   skip = "all",
   text = [[
-Wenn das blaue Icon"
+Wenn das blaue Icon
 erscheint, zeigt es
 Dir, was Du mit der
 Aktionstaste (Leer-
@@ -2913,7 +2914,7 @@ Glaubst Du, das stimmt?
 dialog{
   id = "outside_world.village.rupee_house_sign",
   text = [[
-    - Haus der Rubine -  
+   - Haus der Rubine -  
   Spaß haben und dabei 
     Geld verdienen!
 ]]
@@ -2928,7 +2929,7 @@ dialog{
   id = "outside_world.village.waterfall_sign",
   text = [[
 Genießen Sie das
-frische Quellwasser von
+frische Quellwasser
 unseres Wasserfalls!
   Lydianns Touristen-
       information
@@ -2974,8 +2975,8 @@ dialog{
   skip = "all",
   next = "outside_world.village.tree_woman.long_text",
   text = [[
-Blickst Du nicht mit"
-der Steuerung durch?"
+Blickst Du nicht mit
+der Steuerung durch?
 Lass es mich erklären.
 ]]
 }
@@ -2995,9 +2996,10 @@ dem grünen Icon. Mit
 ihr kannst Du einen
 Schwertschlag ausführen.
 Im Pausemodus ändert
-sich das Icon und Dir
-an, dass Du mit C das
-Spiel speichern kannst.
+sich das Icon und zeigt
+Dir an, dass Du mit C
+das Spiel speichern
+kannst.
 Wenn Du mit jemandem
 sprichst, kannst Du mit
 dieser Taste das
@@ -3008,7 +3010,7 @@ was Du mit C machen
 kannst. Die anderen
 Icons entsprechen den
 Tasten um C herum: mit
-dem orange Icon
+dem orangen Icon
 (Taste D) kannst Du das
 Spiel pausieren. Das
 blaue Icon (Leertaste)
@@ -3025,7 +3027,6 @@ auch im Optionsmenü
 ändern kannst. Du
 kannst dann sogar mit
 einem Joypad spielen!
-
 Alles verstanden?
 Ja, alles klar.
 Nee, überhaupt nicht!
@@ -3292,7 +3293,7 @@ Nein, lieber nicht.
 
 -- Coffre-mystère : quand on refuse de jouer
 -- C'est un clin d'oeil à Link's Awakening, dans le stand
--- de pêche tout au début du jeu, quand on refuse de jouer ou de rejouer
+-- de pêche tout au début du jeu, quand on refuse de jouer ou de rejouer (version fr/engl gardée)
 dialog{
   id = "rupee_house.game_1.not_playing",
   text = [[
@@ -3318,6 +3319,7 @@ Symbolen aufzustellen,
 um ein Vielfaches
 Deines Einsatzes zu
 gewinnen.
+
 
 Und, willst Du spielen?
 Ja
@@ -3630,7 +3632,7 @@ Für diese Dinge bin
 ich zu alt.
 Du solltest zum Schmied
 in die Höhle nord-
-westlich des Dorfes
+westlich des Dorfs
 gehen. Er ist nicht
 sehr umgänglich, aber
 er kann Dir sicherlich
@@ -3666,7 +3668,7 @@ dialog{
   text = [[
 Mit diesem Schlüssel
 kannst Du die Grotte im
-Norden des Dorfes
+Norden des Dorfs
 betreten.
 ]]
 }
@@ -3682,7 +3684,7 @@ der vier entführten
 Kinder befinde sich in
 einem finsteren Dungeon
 im Wald südlich des
-Dorfes...
+Dorfs...
 Worauf wartest Du noch?
 Geh hin!
 ]]
@@ -3838,10 +3840,10 @@ Ich habe gehört, es
 soll einen Durchgang
 durch die Bäume im
 Norden geben.
-Es heißt, Meister Arbor
-geistert durch diesen
-vom Fluss überfluteten
-Ort.
+Es heißt, Meister
+Arbror geistert durch
+diesen vom Fluss
+überfluteten Ort.
 ]]
 }
 -----------------------
@@ -3948,7 +3950,7 @@ dialog{
   id = "smith_cave.thank_you",
   text = [[
 Danke schön. Um einen
-Schlag durchzuführen,
+Schlag auszuführen,
 drücke auf C. Halte die
 Taste C gedrückt, um
 einen Wirbelangriff
@@ -4128,7 +4130,7 @@ dialog{
   text = [[
 Oh, Du hast noch nicht
 genug Äpfel... Komm
-einfach später nochmal
+einfach später nochmal.
 ]]
 }
 -----------------------
@@ -4277,7 +4279,7 @@ Gratuliere, Du hast
 alle Herausforderungen
 der Waldgrotte
 gemeistert. Geh ruhig 
-in meinen Keller um 
+in meinen Keller, um 
 nach nützlichen Dingen 
 zu suchen, bevor 
 Du Dein Abenteuer 
@@ -4343,7 +4345,7 @@ Wenn Du mal nicht mehr
 weiterweißt, vergiss
 nicht zu Oma Lyly zu
 gehen. Sie wohnt im 
-Osten des Dorfes. Sie 
+Osten des Dorfs. Sie 
 ist eine alte Freundin
 und weiß alles über
 die Umgebung.
@@ -4420,8 +4422,8 @@ Ich habe versagt. Ich
 konnte unseren König
 nicht schützen.
 Gib mir eine Chance,
-das wieder gut zu 
-machen.
+das wiedergutzumachen.
+
 Darf ich Dir helfen?
 Ja
 Nein
@@ -4477,7 +4479,7 @@ Du Dich fortbewegst.
 
 Was willst Du tun?
 Weitermachen.
-Bumerang zurückgeben.
+Bumerang abgeben.
 ]]
 }
 -----------------------
@@ -4610,15 +4612,16 @@ dialog{
 $2$v... Danke.
 Du hast mir das Leben
 gerettet. Ich bin einer
-der 8 Beschützer, die
-von Prinzessin Zelda
-berufen wurden. Wir
-wachen über die Teile
-der heiligen Reliquie,
-des Triforce, Symbol
-der drei Göttinnen, das
-sie nach ihrem Wirken
-auf Eurer Welt ließen.
+der acht Beschützer,
+die von Prinzessin
+Zelda berufen wurden.
+Wir wachen über die
+Teile der heiligen
+Reliquie, des Triforce,
+Symbol der drei
+Göttinnen, das sie nach
+ihrem Wirken auf Eurer
+Welt ließen.
 Jahrtausende über war
 das Triforce Quelle des
 Lebens und des
@@ -4632,7 +4635,7 @@ Wieder einmal ist die
 heilige Reliquie
 bedroht. Doch die
 Geschichte wiederholt
-sich: wann immer eine
+sich: Wann immer eine
 Bedrohung auftauchte,
 erschien ein Held und
 sein Mut konnte die
@@ -4675,7 +4678,7 @@ dialog{
   skip = "all",
   text = [[
 Die Augen müssen
-mit Beharrung
+mit Beharren
 durchbohrt werden.
 ]]
 }
@@ -4735,7 +4738,7 @@ Ich erwartete Deine
 Ankunft. Ich bin die
 Fee der Reisenden.
 Du, der ohne zu ruhen
-die Welt durchquerst
+die Welt durchquerst,
 um das Böse zu 
 bekämpfen, erlaube mir,
 Dir diese urtümliche
@@ -4816,8 +4819,8 @@ dialog{
   skip = "current",
   text = [[
 Ich hoffe, Du hast
-etwas interessantes
-vor, damit Du es 
+etwas Interessantes
+vor, damit Du es,
 wagst meine Höhle 
 zu betreten.
 Ich bin Billy der
@@ -4942,8 +4945,8 @@ Was? Du hast
 Goldbarren? $1...
 $0...$0....................
 $3Abgemacht!
-Hier, nimm Deine blöde
-Blume...
+Hier, nimm Deine
+blöde Blume...
 ]]
 }
 -----------------------
@@ -5124,7 +5127,7 @@ dialog{
   id = "chests_game_cave.play_question",
   question = true,
   text = [[
-Willst Du spielen ?
+Willst Du spielen?
 Ja
 Nein
 ]]
@@ -5250,9 +5253,9 @@ dialog{
   id = "junk_shop.mystic_mirror",
   text = [[
 Der Zauberpiegel. 
-Es heißt, er könne den
+Es heißt, er könne die
 Richtung von Wasser-
-Läufen umkehren.
+läufen umkehren.
 ]]
 }
 -----------------------
@@ -5369,7 +5372,7 @@ Man muss nur mal an die
 Menschen denken, die 
 dieses Schloss erbaut
 haben...
-Das war zu der Zeit
+Zu der Zeit war das
 eine architektonische
 Meisterleistung.
 Sie hatten ja damals
@@ -5423,8 +5426,8 @@ Welch großartige
 Kanone! Als der König
 sie noch benutzte,
 gehörte man wohl
-besser nicht zu seinen
-Feinden.
+besser nicht zu
+seinen Feinden.
 ]]
 }
 -----------------------
@@ -5438,7 +5441,7 @@ Ländereien zu betreten?
 Kleiner! Wisse dass es
 sehr schlecht ist, den
 großen Inferno, den
-Herr der Flammen zu
+Herrn der Flammen zu
 stören. Dieser Frevel
 wird nicht ungestraft
 bleiben.
@@ -5480,12 +5483,14 @@ dialog{
   text = [[
 Du hast die drei
 Aufgaben bewältigt!
+
 Dein Mut verdient
-meinen Respekt. Wonach
-auch immer Du fragst,
-ich werde Dir Deinen
-Wunsch erfüllen. Was
-kann ich für Dich tun?
+meinen Respekt.
+Wonach auch immer
+Du fragst, ich werde
+Dir Deinen Wunsch
+erfüllen. Was kann
+ich für Dich tun?
 Dunkle Steine...
 100 Rubine?
 ]]
@@ -5629,9 +5634,9 @@ dialog{
   id = "bone_key_cave.hint",
   skip = "all",
   text = [[
-Die Erleuchtung kommt,
-wenn die Beleuchtung
-zurückgedrängt wird.
+Denn vom Zurückwerfen
+des Lichtes kommt das
+Licht.
 ]]
 }
 -----------------------
@@ -5662,13 +5667,14 @@ dialog{
 $2$v... Danke.
 Du hast mir das Leben
 gerettet. Ich bin einer
-der 8 Beschützer, die
-von Prinzessin Zelda
-berufen wurden um über
-das Triforce zu wachen.
-Einzig das Amulett des
-Solarus, das Prinzessin 
-Zelda trägt, kann das
+der acht Beschützer,
+die von Prinzessin
+Zelda berufen wurden,
+um über das Triforce zu
+wachen. Einzig das
+Amulett des Solarus,
+das Prinzessin Zelda
+trägt, kann das
 Triforce wieder 
 zusammensetzen aus 
 seinen acht Teilen,
@@ -5713,7 +5719,7 @@ dialog{
   text = [[
 Ahh!!! Niemals wirst Du
 mich besiegen. Ich bin
-Meister Arbor!
+Meister Arbror!
 ]]
 }
 -----------------------
@@ -5740,8 +5746,8 @@ gerettet.
 Dank Dir wird diese
 schreckliche Kreatur
 nie wieder Übles tun.
-Ich bin einer
-der 8 Beschützer, die
+Ich bin einer der
+acht Beschützer, die
 von Prinzessin Zelda
 berufen wurden.
 Das Triforce ist noch
@@ -5764,7 +5770,7 @@ dialog{
   skip = "current",
   text = [[
         4. Dungeon
-  Schloss von Schönberg 
+ Schloss von Schönberg 
 ]]
 }
 -----------------------
@@ -5804,8 +5810,8 @@ dialog{
 $2$v... Danke.
 Du hast mir das Leben
 gerettet.
-Ich bin einer
-der 8 Beschützer, die
+Ich bin einer der
+acht Beschützer, die
 von Prinzessin Zelda
 berufen wurden.
 Du hast Deinen
@@ -5870,9 +5876,9 @@ Ha ha ha ha ha ha!
 
 Was Sie angeht, 
 junger überheblicher
-Abenteurer;
+Abenteurer:
 Die Stunde unseres
-Schlagaustausches ist
+Schlagabtauschs ist
 noch nicht gekommen.
 Ich gehe nun erst mal
 zurück zum Schloss.
@@ -5905,8 +5911,8 @@ Was willst Du tun, um
 das Rätsel zu lösen?
 Lange um den heißen
 Brei herumreden oder
-richtig um die kalten
-Vasen herumlaufen.
+endlich um die kalten
+Töpfe herumlaufen?
 ]]
 }
 -----------------------
@@ -5975,7 +5981,7 @@ dialog{
   id = "dungeon_5.puzzle_solved",
   text = [[
 In den Tiefen des
-Schlosses, wird ein
+Schlosses wird ein
 Mechanismus ausgelöst.
 ]]
 }
@@ -5988,7 +5994,7 @@ Sie haben es also
 geschafft, meinen
 Wachen zu entkommen
 und die Fallen meines
-Schlosses zu entgehen.
+Schlosses zu umgehen.
 Aber Ihr kleiner
 Ausflug endet hier!
 ]]
@@ -6009,10 +6015,10 @@ Ihr kleines Abenteuer
 Sahasrahla ist in
 meiner Gewalt und er
 wird mir verraten, wo
-sich die Prinzessin und
-die acht Kinder sind...
+sich die Prinzessin
+und die acht Kinder
+verstecken...
 Ha ha ha ha ha ha!
-
 So, nun habe ich
 aber noch zu tun.
 Bis demnächst!
@@ -6052,7 +6058,7 @@ dialog{
   id = "dungeon_6.close_way_hint",
   text = [[
 Dann verschließe den
-Weg hinter Dir wieder.
+Weg hinter Dir.
 ]]
 }
 -----------------------
@@ -6064,7 +6070,7 @@ $2$v... Danke.
 Du hast mir das Leben
 gerettet. Du bist weit
 gekommen und hast viele
-Aufgaben erfüllt
+Aufgaben erfüllt,
 seitdem wir uns damals
 begegneten.
 ]]
@@ -6080,26 +6086,27 @@ beichten...
 Der Tod unseres Königs
 war kein Unfall. Ich
 war es, der ihn
-vergiftet hat. Ich war
-unter der Kontrolle
-von Agahnim... Er hatte
+vergiftete. Ich stand
+unter Agahnims
+Einfluss... Er hatte
 mich verzaubert und ich
 hatte jegliche Willens-
 kraft verloren... Ich
 konnte nichts tun...
 Erst als der Zauber
-gebrochen war, bin ich
-mir bewusst geworden,
-was passiert war. Ich
+gebrochen war, wurde
+mir bewusst, was
+passiert war. Ich
 habe dann beschlossen,
 mich selbst in die 
 Höhle zu verbannen,
 in der Du mir begegnet
-bist. Dann wurde ich
-gefangen genommen, als
-einnehmen wollte und
-ich versuchte,
-Widerstand zu leisten.
+bist. Als Agahnim das
+Schloss einnehmen
+wollte, versuchte ich
+Widertand zu leisten
+und wurde gefangen
+genommen.
 $v... Du musst Dich nun
 zum Berg der Schrecken
 begeben. Agahnim ist
@@ -6166,7 +6173,7 @@ dialog{
 $2$v... Danke.
 Du hast mir das Leben
 gerettet.
-Ach wenn ich nur eine
+Ach, wenn ich nur eine
 Minute länger hätte
 durchhalten können...
 Diese Räuber haben mich
@@ -6185,14 +6192,14 @@ Agahnim entkommen,
 sonst könnte der Hexer
 das Siegel lösen, das
 vom Amulett des Solarus
-erschaffen wurde. Zelda
-trägt dieses Amulett,
-das zur Wiederher-
-stellung des Triforce
-notwendig ist.
-Das Geheimnis des
-Solarus befindet sich
-in diesem Anhänger.
+erschaffen wurde. Das
+Amulett wird von Zelda
+getragen und ist zur
+Wiederherstellung des
+Triforce notwendig.
+In diesem Anhänger
+befindet sich das
+Geheimnis des Solarus.
 Der Besitzer des
 Anhängers hat die
 Möglichkeit, die
@@ -6206,12 +6213,12 @@ als sie das Goldene
 Land versiegelten.
 Zelda ist die Erbin
 dieser Macht. Sie hat
-sie benutzt, um die
+sie genutzt, um die
 Bruchstücke des
 Triforce mithilfe der
-acht Wesen die vom
+acht Wesen, die vom
 Solarus erschaffen
-wurden zu versiegeln.
+wurden, zu versiegeln.
 Solange sie also die
 einzige ist, die das
 Geheimnis des Anhängers
@@ -6334,7 +6341,7 @@ Ihrem Mut.$0
 
 Aber da ich nicht in
 der Lage war, mit Ihnen
-fertig zu werden, ist
+fertigzuwerden, ist
 nun die Zeit gekommen,
 meinen Meister zu
 befreien.
@@ -6438,7 +6445,7 @@ Da sind Sie endlich,
 Sie kleiner Wicht.
 
 Ich habe schon lange
-auf Ihren Ankunft
+auf Ihre Ankunft
 gewartet.
 Die Stunde meiner
 Vergeltung hat
@@ -6461,9 +6468,9 @@ schlussendlich immer
 die Kräfte des Bösen
 bezwingen. Mit Deinen
 Taten hilfst Du unserer
-Welt, zu ihrem normalen
-Aussehen zurück zu
-finden.
+Welt, zu ihrem
+normalen Aussehen
+zurückzufinden.
 Das Königreich Hyrule
 ist letztendlich
 wiederhergestellt. 
@@ -6530,7 +6537,7 @@ dialog{
 dialog{
   id = "credits_1",
   text = [[
-$1        Crédits$0
+$1      Mitwirkende$0
 
 
     Programmierung:$0
@@ -6580,7 +6587,7 @@ Christopho$0
        Deutsche
      Übersetzung:$0
 
-Stella$0
+Elenya$0
 ]]
 }
 -----------------------
@@ -6594,7 +6601,7 @@ $1       Tests:$0
 Thyb$0
 Morwenn$0
 BenObiWan$0
-$1     Besonderer
+$1    Besonderer
        Dank an:$0
 
 19oj19$0           Yohann$0

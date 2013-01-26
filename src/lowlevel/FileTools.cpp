@@ -167,6 +167,7 @@ int FileTools::l_language(lua_State* l) {
 
   std::string code;
   std::string name;
+  bool is_default = false;
 
   // traverse the table, looking for properties
   lua_pushnil(l); // first key
@@ -180,10 +181,7 @@ int FileTools::l_language(lua_State* l) {
       name = luaL_checkstring(l, -1);
     }
     else if (key == "default") {
-      bool is_default = lua_toboolean(l, -1);
-      if (is_default) {
-        default_language_code = language_code;
-      }
+      is_default = lua_toboolean(l, -1);
     }
     else {
       luaL_error(l, (StringConcat() << "Invalid key '" << key << "'").c_str());
@@ -200,6 +198,10 @@ int FileTools::l_language(lua_State* l) {
   }
 
   languages[code] = name;
+
+  if (is_default) {
+    default_language_code = code;
+  }
 
   return 0;
 }

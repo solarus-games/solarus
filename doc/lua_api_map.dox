@@ -190,10 +190,19 @@ function map:check_switch(switch)
   end
 end
 \endverbatim
-In this example, you see that we add two values to the map object, like it
+In this example, you see that we add three values to the map object, like it
 was a table:
-\c next_switch_index (a number) and
+\c next_switch_index (a number),
+\c on_started (a function) and
 \c check_switch (a function).
+Actually, we also use this feature on the three switches:
+we add a value \c on_activated on them.
+
+\remark You may wonder how we can access \c switch_1, \c switch_2
+and \c switch_3 without declaring them. There is a mechanism that makes all
+named \ref lua_api_entity "entities" directly accessible in the environment
+of the map script. See \ref lua_api_map_get_entity "map:get_entity()"
+for more details.
 
 But the example has some issues.
 The three \ref lua_api_switch "switches" are managed by duplicated code.
@@ -284,7 +293,7 @@ Some other features may also rely on the world property, like the state of
 between all maps of the current world and is reset when the world changes.
 - Return value (string): Name of the world of the current map.
 
-\subsection lua_api_get_floor map:get_floor()
+\subsection lua_api_map_get_floor map:get_floor()
 
 Returns the floor of the current map if any.
 
@@ -299,13 +308,13 @@ when it changes or to make a minimap \ref lua_api_menu "menu".
   is the second floor, \c -1 is the first basement floor, etc.
   \c nil means that this map is not part of a floor system.
 
-\subsection lua_api_get_size map:get_size()
+\subsection lua_api_map_get_size map:get_size()
 
 Returns the size of this map in pixels.
 - Return value 1 (number): The width in pixels (always a multiple of 8).
 - Return value 2 (number): The height in pixels (always a multiple of 8).
 
-\subsection lua_api_get_location map:get_location()
+\subsection lua_api_map_get_location map:get_location()
 
 Returns the x,y location of this map in its
 \ref lua_api_map_get_world "world".
@@ -324,13 +333,13 @@ composed of several adjacent maps.
 - Return value 2 (number): Y position of the top-left corner of this map
   relative to its world.
 
-\subsection lua_api_get_tileset map:get_tileset()
+\subsection lua_api_map_get_tileset map:get_tileset()
 
 Returns the name of the \ref lua_api_map_overview_tileset "tileset"
 of the current map.
 - Return value (string): Id of the current tileset.
 
-\subsection lua_api_set_tileset map:set_tileset(tileset_id)
+\subsection lua_api_map_set_tileset map:set_tileset(tileset_id)
 
 Changes the \ref lua_api_map_overview_tileset "tileset"
 of the current map.
@@ -346,54 +355,357 @@ and only loads the image of the new tileset.
 \remark If the new tileset is not compatible with the previous one,
   tiles will be displayed with wrong graphics.
 
+\subsection lua_api_map_set_tileset map:is_dialog_enabled()
 
+Returns whether the dialog box is currently active.
+- Return value (boolean): \c true if a dialog is being shown.
 
+\subsection lua_api_map_start_dialog map:start_dialog(dialog_id)
 
-- \c sol.map.dialog_start(dialog_id):
-Show a dialog box.
+Shows a dialog box.
 
-- \c sol.map.dialog_set_variable(dialog_id, value):
-Specifies a value to display inside a dialog (for example the
-player's name). In this dialog, the sequence \c $v will
-be substituted by this value.
+The dialog box must not be already active.
+- \c dialog_id (string): Id of the dialog to show.
+  The corresponding dialog must exist in the \c dialogs.dat
+  file of the current \ref lua_api_language "language".
 
-- \c sol.map.dialog_set_style(style):
-Sets the style of the dialog box for subsequent dialogs (0: usual dialog box,
-1: no dialog box, only display the text)
+\subsection lua_api_map_set_dialog_variable map:set_dialog_variable(dialog_id, value):
 
-- \c sol.map.hud_set_pause_enabled(bool enabled):
-Allows or disallows to pause the game (and thus to save the game).
+Sets a value to display inside a dialog.
 
-- \c sol.map.hud_set_enabled(enabled):
-Hides or restores the HUD (the player can still use his items
-and pause the game).
+This function must be used if part of the text is only
+known at runtime: for example if you want to display in a dialog
+the name of the player or some number computed by your script.
 
-- \c sol.map.light_get():
-returns the current light level of the map
+In the specified dialog, the special sequence \c $v will
+be substituded by this value.
+This function should be called before starting the dialog.
+If the same dialog is displayed several times,
+calling this function only once is sufficient.
+- \c dialog_id (string): Id of the dialog where this value should be
+  substituted.
 
-- \c sol.map.light_set(light_level):
-sets the light level of the map (0: no light, positive values: full light)
+\remark For now, you cannot make a dialog with multiple variables.
+  You will have to make several dialogs instead.
 
-- \c sol.map.camera_move(x, y, speed, function, delay_before, delay_after):
-moves the camera to a target point (a usual speed value is 250),
-waits a delay in milliseconds (default is 1000), calls a function,
-waits another delay (default is 1000) and restores the camera;
-the game is suspended during the whole sequence
+\subsection lua_api_map_set_dialog_style map:set_dialog_style(style)
 
-- \c sol.map.tileset_get():
-returns the id of the tileset of this map
+Sets the style of the dialog box for subsequent dialogs.
+- \c style (number): \c 0 for a usual dialog box,
+  1 for no dialog box (only the text is displayed).
 
-- \c sol.map.tileset_set(tileset_id):
-Changes the tileset used to draw the map.
-The new tileset must be compatible with the previous one,
-i.e. every tile of the previous tileset must exist in the new one
-and have the same properties.
-This function keeps the tiles of the previous tileset and loads the
-image of the new tileset.
+\remark This function will be removed in a future version because the
+  dialog box will become scriptable (you will have full control of how to
+  draw your dialog box).
 
-- \c sol.map.sprite_display(sprite, x, y):
-Displays a sprite at the given position (relative to the the map top-left
-corner). The origin point of the sprite will be displayed at this location.
+\subsection lua_api_map_set_dialog_position map:set_dialog_position(position)
+
+Sets the vertical position of the dialog box.
+- \c position (number): \c 0 for automatic (let the engine choose so that
+  the dialog box does not hide the player), \c 1 for the top of the screen,
+  \2 for the bottom of the screen.
+
+\remark This function will be removed in a future version because the
+  dialog box will become scriptable (you will have full control of how to
+  draw your dialog box).
+
+\subsection lua_api_map_draw_dialog_box map:draw_dialog_box()
+
+Draws the dialog box on the screen.
+
+When a dialog is active, call this function at an appropriate moment
+(for example, after your pause menu but before your HUD).
+
+\remark This function will be removed in a future version because the
+  dialog box will become scriptable (you will have full control of drawing
+  your dialog box).
+
+\subsection lua_api_map_set_pause_enabled map:set_pause_enabled(pause_enabled)
+
+Sets whether the player can pause the \ref lua_api_game "game".
+- \c pause_enabled (boolean): \c true to allow the player to pause the
+  game.
+
+\remark This function applies to the built-in \ref
+  lua_api_game_features_command "pause command".
+  Your script can still pause the game explicitly by calling
+  \ref lua_api_game_set_paused "game:set_paused()".
+
+\subsection lua_api_map_get_light map:get_light()
+
+Returns the current light level of the map.
+- Return value (number): The light level (\c 0: no light except near the
+  \ref lua_api_hero "hero", \c 1: full light).
+
+\subsection lua_api_map_set_light map:set_light(light)
+
+Sets the light level of the map.
+- \c light (number): The light level to set (\c 0: no light except near the
+  \ref lua_api_hero "hero", \c 1: full light).
+
+\subsection lua_api_map_move_camera map:move_camera(x, y, speed, callback, [delay_before], [delay_after])
+
+Initiates a camera moving sequence.
+
+Normally, the camera is always centered on the \ref lua_api_hero "hero".
+You can use this function to temporarily move the camera somewhere else,
+like to a place where a \ref lua_api_chest "chest" or an
+\ref lua_api_enemy "enemy" will appear.
+
+The whole sequence happens as follows.
+The camera moves towards a target point.
+When the target is reached, after a first delay,
+your callback function is called.
+Then, after a second delay, the camera moves back towards the hero.
+
+The game is suspended during the whole sequence (meaning that
+the hero and other \ref lua_api_entity "map entities" cannot move).
+- x (number): X coordinate of the target, relative to the map's top-left corner.
+- y (number): Y coordinate of the target, relative to the map's top-left corner.
+- speed (number): Speed of the camera movement in pixels per second
+  (a recommended value is \c 250).
+- callback (function): A function to be called when the camera reaches the
+  target (after \c delay_before).
+- delay_before (number, optional): A delay in milliseconds before calling
+  your function once the target is reached (default \c 1000).
+- delay_after (number, optional): A delay in milliseconds after calling
+  your function, before the camera goes back (default \c 1000).
+
+Example of use:
+\verbatim
+-- Show a chest when the hero activates a switch.
+function my_switch:on_activated()
+  local x, y = my_chest:get_position()
+  map:move_camera(x, y, 250, function()
+    sol.audio.play_sound("chest_appears")
+    my_chest:set_enabled(true)
+  end)
+end
+\endverbatim
+
+\remark Note that this method is asynchronous.
+  Like \ref lua_api_timer "timers", this function it returns immediately.
+  Your callback will be automatically called later by the engine.
+
+\subsection lua_api_map_draw_sprite map:draw_sprite(sprite, x, y)
+
+Draws a \ref lua_api_sprite "sprite" at the given map coordinates.
+
+This function can be used as an alternative to
+\ref lua_api_drawable_draw "sprite:draw()" in order to draw the sprite
+relative to the map (instead of relative to the screen).
+
+More precisely, the origin point of the sprite will be displayed at this
+location, relative to the the top-left corner of the map.
+
+Normally, \ref lua_api_entity "map entities" automatically draw their
+sprites, so you don't have to call this function.
+However, you may need this function if you did not associate your sprite
+to the entity for some reason (see in particular
+\ref lua_api_enemy_create_sprite "enemy:create_sprite"),
+or if you want to draw something relative to map coordinates but
+without using a map entity.
+
+\subsection lua_api_map_get_crystal_state map:get_crystal_state()
+
+Returns the configuration of \ref lua_api_crystal_block
+"crystal switches".
+- Return value (boolean): \c false initially (orange blocks lowered),
+  \c true otherwise (blue blocks lowered).
+
+\subsection lua_api_map_set_crystal_state map:set_crystal_state(state)
+
+Sets the configuration of \ref lua_api_crystal_block
+"crystal switches".
+
+This state persists accross maps of the same \ref lua_api_map_get_world
+"world", and is reset when the world changes and when the
+\ref lua_api_game "savegame" is reloaded.
+- \c inverted (boolean): \c false to set the initial configuration
+  (orange blocks lowered), \c true to the modified one (blue blocks lowered).
+
+\subsection lua_api_map_change_crystal_state map:change_crystal_state()
+
+Inverts the configuration of \ref lua_api_crystal_block
+"crystal switches".
+
+\remark Equivalent to
+<tt>map:set_crystal_state(not map:get_crystal_state())</tt>.
+
+\subsection lua_api_map_open_doors map:open_doors(prefix)
+
+Opens the \ref lua_api_door "doors"
+whose name starts with the specified prefix,
+enables or disables relative
+\ref lua_api_dynamic_tile "dynamic tiles" accordingly
+and plays the \c "door_open" \ref lua_api_audio_play_sound
+"sound".
+
+Opening a door may be more complex than just modifying
+a single \ref lua_api_door "door entity".
+Indeed, there is often a corresponding door is the adjacent
+room that you also want to open (that corresponding
+door is another \ref lua_api_entity "entity").
+Name both doors with the same prefix, and you can use this function to
+open both of them.
+
+Furthermore, you sometimes want \ref
+lua_api_dynamic_tile "dynamic tiles"
+to be shown or hidden depending on the state of a door.
+When a door is open,
+all dynamic tiles whose prefix is the door's name
+followed by <tt>_open</tt> or <tt>_closed</tt> are automatically
+enabled or disabled, respectively.
+- \c prefix (string): Prefix of the name of doors to open.
+
+\remark The doors will be really closed once the opening animation of
+  their sprite is finished. However, they immediately become obstalces.
+
+\subsection lua_api_map_close_doors map:close_doors(prefix)
+
+Closes the \ref lua_api_door "doors"
+whose name starts with the specified prefix,
+enables or disables relative
+\ref lua_api_dynamic_tile "dynamic tiles" accordingly
+and plays the \c "door_closed" \ref lua_api_audio_play_sound
+"sound".
+
+Closing a door may be more complex than just modifying
+a single \ref lua_api_door "door entity".
+Indeed, there is often a corresponding door is the adjacent
+room that you also want to open (that corresponding
+door is another \ref lua_api_entity "entity").
+Name both doors with the same prefix, and you can use this function to
+close both of them.
+
+Furthermore, you sometimes want \ref
+lua_api_dynamic_tile "dynamic tiles"
+to be shown or hidden depending on the state of a door.
+When a door is closed,
+all dynamic tiles whose prefix is the door's name
+followed by <tt>_open</tt> or <tt>_closed</tt> are automatically
+disabled or enabled, respectively.
+- \c prefix (string): Prefix of the name of doors to close.
+
+\subsection lua_api_map_set_doors_open map:set_doors_open(prefix, [open])
+
+Like \ref lua_api_map_open_doors "map:open_doors()" or
+\ref lua_api_map_close_doors "map:close_doors()",
+but does not play any sound or any sprite animation.
+
+This function is intended to be called when you don't want the player
+to notice the change, typically when your map starts
+(i.e. from the \ref lua_api_map_on_started map:on_started() event).
+- \c prefix (string): Prefix of the name of doors to set.
+- \c open (boolean, optional): \c true to open the doors, \c false
+  to close them (no value means \c true).
+
+\subsection lua_api_map_get_entity map:get_entity(name)
+
+Returns the \ref lua_api_entity "map entity" with the specified name
+if it exists on this map. 
+Entity names are unique (two entities cannot exist on the map
+with the same name at the same time).
+
+As a convenient feature, map entities can also be accessed directly
+through the environment of the \ref lua_api_map_overview_files "map script".
+In other words, you can just write <tt>bob:get_position()</tt> as an
+equivalent to <tt>map:get_entity("bob"):get_position()</tt>.
+- \c name (string): Name of the map entity to get.
+- Return value (\ref lua_api_entity "entity"): The corresponding entity,
+  or \c nil if there exists no entity with this name on the map.
+
+\remark Technical note for curious Lua experts:
+  the mechanism that makes map entities
+  directly accessible in the map script environment is lazy
+  (it is implemented as an \c __index metamethod). Entities are imported
+  to the Lua side only when your script requests them.
+  If you have thousands of named entities in your map, you won't have
+  thousands of useless objects living in Lua.
+  Only the ones your script tries to access are imported.
+
+\subsection lua_api_map_has_entity map:has_entity(name)
+
+Returns whether there currently exists a
+\ref lua_api_entity "map entity" with the specified name on the map.
+- \c name (string): Name of the \ref lua_api_entity "map entity" to check.
+- Return value (boolean): \c true if such an entity exists.
+
+\remark Equivalent to <tt>map:get_entity(name) ~= nil</tt> (but a bit
+  lighter because it avoids to export the entity to Lua).
+
+\subsection lua_api_map_get_entities map:get_entities(prefix)
+
+Returns all \ref lua_api_entity "map entities"
+whose name has the specified prefix.
+- \c prefix (string): Prefix of the entities to get.
+- Return value (table): An array of all existing entities with this prefix.
+
+\subsection lua_api_map_get_entities_count map:get_entities_count(prefix)
+
+Returns the number of \ref lua_api_entity "map entities"
+having the specified prefix.
+- \c prefix (string): Prefix of the entities to count.
+- Return value (number): The number of entities having this prefix on the map.
+
+\remark Equivalent to <tt>#map:get_entities(prefix)</tt> (but avoids the
+  table creation and the export of entities to Lua).
+
+\subsection lua_api_map_has_entities map:has_entities(prefix)
+
+Returns whether there exists at least one \ref lua_api_entity
+"map entity" having the specified prefix.
+
+This function can be used for example to checker whether a group of
+\ref lua_api_enemy "enemies" is dead.
+- \c prefix (string): Prefix of the entities to check.
+- Return value (boolean): \c true if at least one entity with this prefix
+  exists on the map.
+
+\remark Equivalent to <tt>map:get_entities_count(prefix) > 0</tt> but faster
+  when there are a lot of entities
+  (because it stops searching as soon as there is a match).
+
+\subsection lua_api_map_set_entities_enabled map:set_entities_enabled(prefix, [enabled])
+
+Enables or disables all \ref lua_api_entity "map entities" having
+the specified prefix.
+
+Disabled entities are not displayed and are not updated.
+Therefore, they don't move and their collisions are no longer detected.
+But they still exist and can be enabled back later.
+- \c prefix (string): Prefix of the entities to change.
+- \c enable (boolean): \c true to enable them, \c false to disable them
+  (no value means \c true).
+
+\remark Equivalent to calling \ref lua_api_entity_set_enabled
+  "entity:set_enabled()" on a group of entities.
+
+\subsection lua_api_map_remove_entities map:remove_entities(prefix)
+
+Removes and destroys all \ref lua_api_entity "map entities"
+having the specified prefix.
+
+Once an entity is removed, it no longer exists on the map.
+A good practice is to avoid keeping references to destroyed entities in your
+scripts so that they can be garbage-collected by Lua.
+- \c prefix (string): Prefix of the entities to remove from the map.
+
+\remark Equivalent to calling \ref lua_api_entity_remove
+  "entity:remove()" on a group of entities.
+
+\subsection lua_api_map_create_destination map:create_destination(properties)
+
+Creates an entity of type
+\ref lua_api_destination "destination"
+on the map.
+- \c properties (table): A table that describles all properties of the entity
+  to create on the map. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - TODO
+- Return value (\ref lua_api_destination "destination"): The entity created.
 
 */
 

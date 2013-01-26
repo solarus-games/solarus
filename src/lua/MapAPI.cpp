@@ -315,6 +315,19 @@ int LuaContext::l_camera_restore(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_map_get_game.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_get_game(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+
+  push_game(l, map.get_game().get_savegame());
+  return 1;
+}
+
+/**
  * @brief Implementation of \ref lua_api_map_get_id.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -389,16 +402,31 @@ int LuaContext::map_api_get_location(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_get_game.
+ * @brief Implementation of \ref lua_api_map_get_tileset.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
-int LuaContext::map_api_get_game(lua_State* l) {
+int LuaContext::map_api_get_tileset(lua_State* l) {
 
   Map& map = check_map(l, 1);
 
-  push_game(l, map.get_game().get_savegame());
+  push_string(l, map.get_tileset_id());
   return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_map_set_tileset.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::map_api_set_tileset(lua_State* l) {
+
+  Map& map = check_map(l, 1);
+  const std::string& tileset_id = luaL_checkstring(l, 2);
+
+  map.set_tileset(tileset_id);
+
+  return 0;
 }
 
 /**
@@ -592,34 +620,6 @@ int LuaContext::map_api_draw_sprite(lua_State* l) {
   int y = luaL_checkint(l, 4);
 
   map.draw_sprite(sprite, x, y);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_get_tileset.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_get_tileset(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-
-  push_string(l, map.get_tileset_id());
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_map_set_tileset.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::map_api_set_tileset(lua_State* l) {
-
-  Map& map = check_map(l, 1);
-  const std::string& tileset_id = luaL_checkstring(l, 2);
-
-  map.set_tileset(tileset_id);
 
   return 0;
 }

@@ -1,7 +1,8 @@
+####
 # This file is based off of the Platform/Darwin.cmake and Platform/UnixPaths.cmake
 # files which are included with CMake 2.8.4
 # It has been altered for iOS development
-
+#
 # Options:
 #
 # IOS_PLATFORM = OS (default) or SIMULATOR
@@ -17,6 +18,7 @@
 #   By default this location is automatcially chosen based on the CMAKE_IOS_DEVELOPER_ROOT value.
 #   In this case it will always be the most up-to-date SDK found in the CMAKE_IOS_DEVELOPER_ROOT path.
 #   If set manually, this will force the use of a specific SDK version
+####
 
 # Standard settings
 set (CMAKE_SYSTEM_NAME Darwin)

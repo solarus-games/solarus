@@ -202,7 +202,7 @@ the executable and all resources it needs.
 Pass SOLARUS_BUNDLE_QUEST , SOLARUS_BUNDLE_INFOPLIST , 
 SOLARUS_BUNDLE_ICON and SOLARUS_BUNDLE_VERSION flags 
 in addition to SOLARUS_BUNDLE to specify your own configuration.
-See ./cmake/modules/AddOSXBundleTarget.cmake for more details.
+See ./cmake/modules/installCFBundle.cmake for more details.
 
 All non-Mac-native frameworks are placed in ${SOLARUS_BUNDLE}.app/Contents/Frameworks/
 You have to do a little verification on them : check if dependencies search

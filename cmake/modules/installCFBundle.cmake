@@ -1,5 +1,4 @@
 ####
-#
 # This module can be included inside the main CMakeList.txt to add a
 # target which generate the CFBundle when building the engine. 
 # The engine is build from the 'solarus' target. 
@@ -18,7 +17,6 @@
 # If ${SOLARUS_IOS_BUILD} is defined, an IPone Bundle will be created.
 #
 # Exportable to XCode.
-#
 ####
 
 # Assertions

@@ -686,7 +686,7 @@ But they still exist and can be enabled back later.
 Removes and destroys all \ref lua_api_entity "map entities"
 having the specified prefix.
 
-Once an entity is removed, it no longer exists on the map.
+Once an entity is removed, it is destroyed and it no longer exists on the map.
 A good practice is to avoid keeping references to destroyed entities in your
 scripts so that they can be garbage-collected by Lua.
 - \c prefix (string): Prefix of the entities to remove from the map.
@@ -700,12 +700,82 @@ Creates an entity of type
 \ref lua_api_destination "destination"
 on the map.
 - \c properties (table): A table that describles all properties of the entity
-  to create on the map. Its key-value pairs must be:
+  to create. Its key-value pairs must be:
   - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
   - \c x (number): X coordinate on the map.
   - \c y (number): Y coordinate on the map.
-  - TODO
+  - \c direction (number): Direction that the hero takes when arriving on
+    the destination, between \c 0 (East) and \c 3 (South) or \c -1 to keep
+    his direction unchanged).
+  - \c sprite_name (string, optional): Name of the animation set of a
+    \ref lua_api_sprite "sprite" to create for the destination.
+    No value means no sprite (the destination will then be invisible).
 - Return value (\ref lua_api_destination "destination"): The entity created.
+
+\subsection lua_api_map_create_teletransporter map:create_teletransporter(properties)
+
+Creates an entity of type
+\ref lua_api_teletransporter "teletransporter"
+on the map.
+- \c properties (table): A table that describles all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c width (number): Width of the entity in pixels.
+  - \c height (number): Height of the entity in pixels.
+  - \c sprite_name (string, optional): Name of the animation set of a
+    \ref lua_api_sprite "sprite" to create for the teletransporter.
+    No value means no sprite (the teletransporter will then be invisible).
+  - \c sound_id (string, optional): Sound to \ref lua_api_audio_play_sound
+    "play" when the \ref lua_api_hero "hero" uses the
+    teletransporter. No value means no sound.
+  - \c transition_style (number): Style of transition to play when the hero
+    uses the teletransporter. \c 0: immediate (no transition), \c 1:
+    fade-out effect, \c 2: scrolling between maps.
+  - \c destination_map_id (string): Id of the map to transport to (can be
+    the current map).
+  - \c destination_name (string): Location on the destination map.
+    Can be the name of a \ref lua_api_destination "destination" entity,
+    the special value \c "_same" to keep the hero's coordinates,
+    or the special value \c "_side" to place on hero on the corresponding side
+    of an adjacent map (normally used with the scrolling transition style).
+- Return value (\ref lua_api_teletransporter "teletransporter"): The entity
+  created.
+
+\subsection lua_api_map_create_pickable map:create_pickable(properties)
+
+Creates an entity of type
+\ref lua_api_pickable "pickable treasure"
+on the map.
+- \c properties (table): A table that describles all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c treasure_name (string, optional): Kind of treasure to create
+    (the name of an \ref lua_api_item "equipment item").
+    If this value is not set, or corresponds to a
+    \ref lua_api_item_is_obtainable "non obtainable" item, then
+    no entity is created and \c nil is returned.
+  - \c treasure_variant (number, optional): Variant of the treasure
+    (because some \ref lua_api_item "items" may have several variants).
+    The default value is \c 1 (the first variant).
+  - \c treasure_savegame_variable (string, optional): Name of the boolean
+    value that stores in the \ref lua_api_game "savegame"
+    whether this pickable treasure was found.
+    No value means that the treasure is not saved.
+    If the treasure is saved and the player already has it, then no entity
+    is be created and \c nil is returned.
+- Return value (\ref lua_api_pickable "pickable treasure"): The pickable
+  treasure created, or \c nil if the item is not set, not
+  \ref lua_api_item_is_obtainable "obtainable", or if the pickable treasure is
+  already found (for a saved one).
 
 */
 

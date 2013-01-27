@@ -1615,7 +1615,7 @@ int LuaContext::map_api_create_explosion(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_.
+ * @brief Implementation of \ref lua_api_map_create_fire.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */

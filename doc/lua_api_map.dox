@@ -765,7 +765,8 @@ on the map.
     \ref lua_api_item_is_obtainable "non obtainable" item, then
     no entity is created and \c nil is returned.
   - \c treasure_variant (number, optional): Variant of the treasure
-    (because some \ref lua_api_item "items" may have several variants).
+    (because some \ref lua_api_item "equipment items"
+    may have several variants).
     The default value is \c 1 (the first variant).
   - \c treasure_savegame_variable (string, optional): Name of the boolean
     value that stores in the \ref lua_api_game "savegame"
@@ -778,9 +779,11 @@ on the map.
   \ref lua_api_item_is_obtainable "obtainable", or if the pickable treasure is
   already found (for a saved one).
 
-\remark The possessed variant of the \ref lua_api_item "item"
-  is saved independently of the state of the \ref lua_api_pickable
-  "pickable treasure" (found or not found).
+\remark The state of the pickable treasure (obtained or not)
+  and the possessed variant of the \ref lua_api_item "item"
+  (a number)
+  are two independent values that have different meanings
+  and are saved separately.
 
 \subsection lua_api_map_create_destructible map:create_destructible(properties)
 
@@ -796,18 +799,21 @@ on the map.
   - \c subtype_name (string): The kind of destructible object to create:
     \c "pot", \c "bush", \c "stone_small_white", \c "stone_small_black",
     \c "grass" or \c "bomb_flower".
-  - \c treasure_name (string, optional): Kind of treasure to hide in the
+  - \c treasure_name (string, optional): Kind of
+    \ref lua_api_pickable "pickable treasure" to hide in the
     destructible object
     (the name of an \ref lua_api_item "equipment item").
     If this value is not set, or corresponds to a
     \ref lua_api_item_is_obtainable "non obtainable" item, then
     no treasure is placed in the destructible object.
   - \c treasure_variant (number, optional): Variant of the treasure if any
-    (because some \ref lua_api_item "items" may have several variants).
+    (because some \ref lua_api_item "equipment items"
+    may have several variants).
     The default value is \c 1 (the first variant).
   - \c treasure_savegame_variable (string, optional): Name of the boolean
     value that stores in the \ref lua_api_game "savegame"
-    whether the treasure hidden in the destructible object was found.
+    whether the \ref lua_api_pickable "pickable treasure"
+    hidden in the destructible object was found.
     No value means that the treasure (if any) is not saved.
     If the treasure is saved and the player already has it, then no
     treasure is put in the destructible object.
@@ -816,17 +822,21 @@ on the map.
 - Return value (\ref lua_api_destructible "destructible object"): The
   destructible object created.
 
-\remark The possessed variant of the \ref lua_api_item "item" placed in the
-  \ref lua_api_destructible "destructible object"
-  is saved independently of the treasure's state (found or not).
+\remark The state of the treasure placed in the destructible
+  object (obtained or not)
+  and the possessed variant of the \ref lua_api_item "item"
+  (a number)
+  are two independent values that have different meanings
+  and are saved separately.
 
-\subsection lua_api_create_chest map:create_chest(properties)
+\subsection lua_api_map_create_chest map:create_chest(properties)
 
 Creates an entity of type
 \ref lua_api_chest "treasure chest"
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -839,7 +849,8 @@ on the map.
     \ref lua_api_item_is_obtainable "non obtainable" item, then
     the chest will be empty.
   - \c treasure_variant (number, optional): Variant of the treasure
-    (because some \ref lua_api_item "items" may have several variants).
+    (because some \ref lua_api_item "equipment items"
+    may have several variants).
     The default value is \c 1 (the first variant).
   - \c treasure_savegame_variable (string, optional): Name of the boolean
     value that stores in the \ref lua_api_game "savegame"
@@ -849,9 +860,123 @@ on the map.
     treasure is placed in the chest (the chest will appear empty).
 - Return value (\ref lua_api_chest "chest"): The treasure chest created.
 
-\remark The possessed variant of the \ref lua_api_item "item" placed in the
-  \ref lua_api_chest "chest" is saved independently of the chest state
-  (open or closed).
+\remark The state of the treasure chest (obtained or not)
+  and the possessed variant of its \ref lua_api_item "item"
+  \ref lua_api_chest "chest" (a number)
+  are two independent values that have different meanings
+  and are saved separately.
+
+\subsection lua_api_map_create_jumper map:create_jumper(properties)
+
+Creates an entity of type
+\ref lua_api_jumper "jumper"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c width (number): Width of the entity in pixels.
+  - \c height (number): Height of the entity in pixels.
+  - \c direction (number): Direction of the jump, between \c 0 (East)
+    and \c 7 (South-East).
+    If the direction is horizontal, the width must be \c 8 pixels.
+    If the direction is vertical, the height must be \c 8 pixels.
+    If the direction is diagonal, the size must be square. 
+  - \c jump_length (number): Length of the baseline of the jump in pixels
+    (see the \ref lua_api_jump_movement "jump movement" page for details).
+- Return value (\ref lua_api_jumper "jumper"): The jumper created.
+
+\subsection lua_api_map_create_enemy map:create_enemy(properties)
+
+Creates an entity of type
+\ref lua_api_enemy "enemy"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c direction (number): Initial direction of the enemy, between
+    \c 0 (East) and \c 3 (South).
+  - \c breed (string): Kind of enemy to create.
+  - \c rank (number): \c 0 for a normal enemy, \c 1 for a miniboss,
+    \c 2 for a boss.
+  - \c savegame_variable (number, optional): Name of the boolean value that
+    stores in the \ref lua_api_game "savegame" whether this enemy is dead.
+    No value means that the enemy is not saved.
+    If the enemy is saved and was already killed, then no enemy is created.
+    Instead, its \ref lua_api_pickable "pickable treasure" is created if it
+    is a saved one.
+  - \c treasure_name (string, optional): Kind of
+    \ref lua_api_pickable "pickable treasure" to drop when the
+    enemy is killed
+    (the name of an \ref lua_api_item "equipment item").
+    If this value is not set, or corresponds to a
+    \ref lua_api_item_is_obtainable "non obtainable" item, then
+    the enemy won't drop anything.
+  - \c treasure_variant (number, optional): Variant of the treasure
+    (because some \ref lua_api_item "equipment items"
+    may have several variants).
+    The default value is \c 1 (the first variant).
+  - \c treasure_savegame_variable (string, optional): Name of the boolean
+    value that stores in the \ref lua_api_game "savegame"
+    whether the \ref lua_api_pickable "pickable treasure"
+    of this enemy was obtained.
+    No value means that the state of the treasure is not saved.
+    If the treasure is saved and the player already has it, then the
+    enemy won't drop anything.
+- Return value (\ref lua_api_enemy "enemy" or \ref lua_api_pickable
+  "pickable treasure"): The enemy created, except when it is a saved enemy
+  that is already dead.
+  In this case, if the enemy dropped a saved
+  treasure that is not obtained yet, this
+  \ref lua_api_pickable "pickable treasure" is created and returned.
+  Otherwise, \c nil is returned.
+
+\remark The state of the enemy (alive or dead),
+  the state of its treasure dropped (obtained or not)
+  and the possessed variant of the \ref lua_api_item "item" dropped (a number)
+  are three independent values that have different meanings and
+  are saved separately.
+
+\subsection lua_api_map_create_npc map:create_npc(properties)
+
+Creates an entity of type
+\ref lua_api_npc "non-playing character" (NPC)
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c direction (number): Initial direction of the NPC's sprite, between
+    \c 0 (East) and \c 3 (South).
+  - \c subtype (number): Kind of NPC to create: \c 1 for a usual NPC who the
+    player can talk to,
+    \c 0 for a generalized NPC (not necessarily a person).
+    See the \ref lua_api_npc "NPC documentation" for more details.
+  - \c sprite_name (string, optional): Name of the animation set of a
+    \ref lua_api_sprite "sprite" to create for the NPC.
+    No value means no sprite (the NPC will then be invisible).
+  - \c behavior (string, optional): What to do when there is an interaction
+    with the NPC.
+    - \c "dialog#XXXX": Starts the dialog with id \c XXXX when the player
+      talks to this NPC.
+    - \c "map": Forwards events to the map script
+      (for example, calls the \ref lua_api_npc_on_interaction
+      "on_interaction()" event of the NPC).
+    - \c "item#XXXX": Forwards events to an \ref lua_api_item
+      "equipment item" script
+      (for example, calls the \ref lua_api_item_on_npc_interaction
+      "on_interaction()" event of the equipment item with id \c XXXX).
+- Return value (\ref lua_api_npc "NPC"): the NPC created.
 
 */
 

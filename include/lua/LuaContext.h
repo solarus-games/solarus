@@ -627,7 +627,7 @@ class LuaContext {
       map_api_create_chest,
       map_api_create_jumper,
       map_api_create_enemy,
-      map_api_create_npc,
+      map_api_create_npc,  // TODO use a real string for the subtype, improve the behavior syntax
       map_api_create_block,
       map_api_create_dynamic_tile,
       map_api_create_switch,

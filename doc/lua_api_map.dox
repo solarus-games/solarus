@@ -712,7 +712,8 @@ on the map.
   - \c sprite_name (string, optional): Name of the animation set of a
     \ref lua_api_sprite "sprite" to create for the destination.
     No value means no sprite (the destination will then be invisible).
-- Return value (\ref lua_api_destination "destination"): The entity created.
+- Return value (\ref lua_api_destination "destination"): The destination
+  created.
 
 \subsection lua_api_map_create_teletransporter map:create_teletransporter(properties)
 
@@ -744,8 +745,8 @@ on the map.
     the special value \c "_same" to keep the hero's coordinates,
     or the special value \c "_side" to place on hero on the corresponding side
     of an adjacent map (normally used with the scrolling transition style).
-- Return value (\ref lua_api_teletransporter "teletransporter"): The entity
-  created.
+- Return value (\ref lua_api_teletransporter "teletransporter"): The
+  teletransporter created.
 
 \subsection lua_api_map_create_pickable map:create_pickable(properties)
 
@@ -776,6 +777,81 @@ on the map.
   treasure created, or \c nil if the item is not set, not
   \ref lua_api_item_is_obtainable "obtainable", or if the pickable treasure is
   already found (for a saved one).
+
+\remark The possessed variant of the \ref lua_api_item "item"
+  is saved independently of the state of the \ref lua_api_pickable
+  "pickable treasure" (found or not found).
+
+\subsection lua_api_map_create_destructible map:create_destructible(properties)
+
+Creates an entity of type
+\ref lua_api_destructible "destructible object"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c subtype_name (string): The kind of destructible object to create:
+    \c "pot", \c "bush", \c "stone_small_white", \c "stone_small_black",
+    \c "grass" or \c "bomb_flower".
+  - \c treasure_name (string, optional): Kind of treasure to hide in the
+    destructible object
+    (the name of an \ref lua_api_item "equipment item").
+    If this value is not set, or corresponds to a
+    \ref lua_api_item_is_obtainable "non obtainable" item, then
+    no treasure is placed in the destructible object.
+  - \c treasure_variant (number, optional): Variant of the treasure if any
+    (because some \ref lua_api_item "items" may have several variants).
+    The default value is \c 1 (the first variant).
+  - \c treasure_savegame_variable (string, optional): Name of the boolean
+    value that stores in the \ref lua_api_game "savegame"
+    whether the treasure hidden in the destructible object was found.
+    No value means that the treasure (if any) is not saved.
+    If the treasure is saved and the player already has it, then no
+    treasure is put in the destructible object.
+  - \c on_destroyed (function, optional): A function to be called when the
+    \ref lua_api_hero "hero" lifts the destructible object.
+- Return value (\ref lua_api_destructible "destructible object"): The
+  destructible object created.
+
+\remark The possessed variant of the \ref lua_api_item "item" placed in the
+  \ref lua_api_destructible "destructible object"
+  is saved independently of the treasure's state (found or not).
+
+\subsection lua_api_create_chest map:create_chest(properties)
+
+Creates an entity of type
+\ref lua_api_chest "treasure chest"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c big_chest (boolean): \c true to create a big chest, \c false for a
+    normal chest.
+  - \c treasure_name (string, optional): Kind of treasure to place in the chest
+    (the name of an \ref lua_api_item "equipment item").
+    If this value is not set, or corresponds to a
+    \ref lua_api_item_is_obtainable "non obtainable" item, then
+    the chest will be empty.
+  - \c treasure_variant (number, optional): Variant of the treasure
+    (because some \ref lua_api_item "items" may have several variants).
+    The default value is \c 1 (the first variant).
+  - \c treasure_savegame_variable (string, optional): Name of the boolean
+    value that stores in the \ref lua_api_game "savegame"
+    whether this chest is open.
+    No value means that the state of the treasure is not saved.
+    If the treasure is saved and the player already has it, then no
+    treasure is placed in the chest (the chest will appear empty).
+- Return value (\ref lua_api_chest "chest"): The treasure chest created.
+
+\remark The possessed variant of the \ref lua_api_item "item" placed in the
+  \ref lua_api_chest "chest" is saved independently of the chest state
+  (open or closed).
 
 */
 

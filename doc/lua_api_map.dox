@@ -978,5 +978,78 @@ on the map.
       "on_interaction()" event of the equipment item with id \c XXXX).
 - Return value (\ref lua_api_npc "NPC"): the NPC created.
 
+\subsection lua_api_map_create_block map:create_block(properties)
+
+Creates an entity of type
+\ref lua_api_block "block"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c direction (number): The only direction where the block can be moved,
+    between \c 0 (East) and \c 3 (South).
+    \c -1 means no restriction and allows the block to be moved in any of the
+    four directions.
+  - \c sprite_name (string): Name of the animation set of a
+    \ref lua_api_sprite "sprite" to create for the block.
+  - \c pushable (boolean): \c true to allow the block to be pushed.
+  - \c pullable (boolean): \c true to allow the block to be pulled.
+  - \c maximum_moves (number): \c Indicates how many times the block can be
+    moved (\c 0: none, \c 1: once, \c 2: infinite).
+- Return value (\ref lua_api_block "block"): the block created.
+
+\subsection lua_api_map_create_dynamic_tile map:create_dynamic_tile(properties)
+
+Creates an entity of type
+\ref lua_api_dynamic_tile "dynamic tile"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate of the top-left corner of the dynamic tile on
+    the map.
+  - \c y (number): Y coordinate of the top-left corner of the dynamic tile on
+    the map.
+  - \c width (number): Width of the dynamic tile in pixels. The tile pattern
+    will be repeated horizontally to fit to this width.
+  - \c height (number): Height of the entity in pixels. The tile pattern
+    will be repeated vertically to fit to this height.
+  - \c tile_pattern_id (number): Id of the tile pattern to use from the tileset.
+  - \c enabled_at_start (boolean): \c true to make the dynamic tile enabled,
+    \c false to make it disabled.
+- Return value (\ref lua_api_dynamic_tile "dynamic tile"): the dynamic tile
+  created.
+
+\subsection lua_api_map_create_switch map:create_switch(properties)
+
+Creates an entity of type
+\ref lua_api_switch "switch"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c subtype (number): Kind of switch to create: \c 0 for a walkable,
+    invisible pressure plate, \c 1 for a walkable, visible pressure plate,
+    \c 2 for an invisible switch that can be activated by shooting an arrow,
+    \c 3 for a solid switch that can be activated with the sword.
+  - \c needs_block (boolean): if \c true, the switch can only be activated by
+    a \ref lua_api_block "block" (only for a walkable switch).
+  - \c inactivate_when_leaving (boolean): if \c true, the switch becomes
+    inactivated when the \ref lua_api_hero "hero" or the \ref "block"
+    leaves it (only for a walkable switch).
+- Return value (\ref lua_api_switch "switch"): the switch created.
+
+
+
 */
 

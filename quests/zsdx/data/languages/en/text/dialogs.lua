@@ -533,14 +533,14 @@ recover Hearts.
 }
 --------------------
 
--- Pains au Chocolat / Pains au Chocolat
+-- Pains au Chocolat / Chocolate Croissants
 dialog{
   id = "_item_description.pains_au_chocolat_counter.1",
   icon = 17,
   skip = "all",
   text = [[
-Eat a Pain au
-Chocolat to recover
+Eat a Chocolate
+Croissant to recover
 three Hearts.
 ]]
 }
@@ -958,10 +958,10 @@ dialog{
   text = [[
 You captured a
 Fairy! It will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
+you in a time of
+need. You can also
+use it at any time
+to recover Hearts!
 ]]
 }
 --------------------
@@ -1044,10 +1044,10 @@ dialog{
   text = [[
 You captured a
 Fairy! It will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
+you in a time of
+need. You can also
+use it at any time
+to recover Hearts!
 ]]
 }
 --------------------
@@ -1129,10 +1129,10 @@ dialog{
   text = [[
 You captured a
 Fairy! It will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
+you in a time of
+need. You can also
+use it at any time
+to recover Hearts!
 ]]
 }
 --------------------
@@ -1214,10 +1214,10 @@ dialog{
   text = [[
 You captured a
 Fairy! It will help
-you in time of need.
-You can also use it
-whenever you want to
-recover your Hearts!
+you in a time of
+need. You can also
+use it at any time
+to recover Hearts!
 ]]
 }
 --------------------
@@ -1288,11 +1288,11 @@ dialog{
   id = "_treasure.pain_au_chocolat.1",
   icon = 17,
   text = [[
-You found a Pain au
-Chocolat!$0
+You found a
+Chocolate Croissant!$0
 
-Eat a Pain au
-Chocolat to recover
+Eat a Chocolate
+Croissant to recover
 some life.
 ]]
 }
@@ -2497,16 +2497,16 @@ Nothing
 }
 --------------------
 
--- Use chocolate bread
+-- Use a Chocolate Croissant
 dialog{
   id = "use_pains_au_chocolat",
   icon = 17,
   question = true,
   text = [[
-A Pain au Chocolat
-restores three
-hearts. What do you
-want to do?
+A Chocolate
+Croissant restores
+three hearts. What
+do you want to do?
 Eat one
 Nothing
 ]]
@@ -2703,7 +2703,7 @@ dialog{
   next = "_unknown",
   text = [[
 Help! Everyone is
-scared since the night!
+afraid tonight!
 
 The village has been
 surrounded by
@@ -2715,10 +2715,11 @@ monsters!
 dialog{
   id = "outside_world.village.monkey.without_shield",
   text = [[
-I do not know what is
+I don't know what is
 happening, but I
 wouldn't leave town
-without protection.
+without protection if
+I were you.
 ]]
 }
 -----------------------
@@ -2727,11 +2728,11 @@ without protection.
 dialog{
   id = "outside_world.village.monkey.with_shield",
   text = [[
-I do not know what is
+I don't know what is
 happening, but you are
 right to at least have
 a Shield with you...
-Be cautious!
+Be careful!
 ]]
 }
 -----------------------
@@ -2745,15 +2746,14 @@ If you do not know
 what to do at one
 point in your journey,
 you should go see
-Grandma Lyly, she
+Grandma Lyly. She
 loves giving advice
 and guiding
 adventurers.
 She lives next to
-the Rupees' House.
-But I don't know
-much more, I'm just
-a kid!
+the Rupee House.
+I don't know anything
+else, I'm just a kid!
 ]]
 }
 -----------------------
@@ -2772,7 +2772,7 @@ are examining, it will
 trigger several actions
 such as looking,
 talking, reading a sign,
-lifting a vase...
+lifting a vase, etc.
 Keep an eye on the icon
 to know when you can 
 interact with your
@@ -2801,9 +2801,9 @@ dialog{
 Did you know that
 you can jump off
 certain cliffs ?
-It could allow you
-to reach particular
-spots.
+That might help you
+reach places that are
+difficult to access.
 ]]
 }
 -----------------------
@@ -2815,7 +2815,7 @@ dialog{
   text = [[
 If you are in need of
 Rupees, I recommend not
-going to the Rupees'
+going to the Rupee
 House, as you might
 just end up needing
 even more Rupees!
@@ -2848,7 +2848,7 @@ true ?
 dialog{
   id = "outside_world.village.rupee_house_sign",
   text = [[
-   - Rupees' House -
+   - Rupee House -
 Earn some Rupees
 while having fun!
 ]]
@@ -3686,7 +3686,7 @@ having taken Sahasrahla
 away, but that is not
 possible!
 Moreover some culprits
-ransacked the Rupees'
+ransacked the Rupee
 House!
 ]]
 }
@@ -3966,8 +3966,8 @@ dialog{
   id = "cake_shop.pain_au_chocolat",
   next = "_unknown",
   text = [[
-A delicious Pain au
-Chocolat that will
+A delicious Chocolate
+Croissant that will
 restore three Hearts.
 ]]
 }
@@ -5166,8 +5166,8 @@ Heart.
 dialog{
   id = "junk_shop.pain_au_chocolat",
   text = [[
-A Pain au Chocolat for
-recovering Hearts.
+A Chocolate Croissant
+for recovering Hearts.
 ]]
 }
 -----------------------

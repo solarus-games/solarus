@@ -511,7 +511,7 @@ Coeurs.
 }
 --------------------
 
--- Pains au Chocolat / Pains au Chocolat
+-- Pains au Chocolat / Chocolate Croissants
 dialog{
   id = "_item_description.pains_au_chocolat_counter.1",
   icon = 17,

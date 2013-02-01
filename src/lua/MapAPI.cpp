@@ -887,13 +887,22 @@ int LuaContext::map_api_remove_entities(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_tile.
+ * @brief Implementation of the tile creation function.
+ *
+ * Tiles cannot be created dynamically:
+ * they can only be declared in the map data file.
+ *
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
 int LuaContext::map_api_create_tile(lua_State* l) {
 
   Map& map = get_entity_creation_map(l);
+
+  // Should not happen: create_tile is not in the map metatable.
+  Debug::check_assertion(!map.is_started(),
+      "Cannot create a tile when the map is already started");
+
   luaL_checktype(l, 1, LUA_TTABLE);
   Layer layer = Layer(check_int_field(l, 1, "layer"));
   int x = check_int_field(l, 1, "x");
@@ -905,10 +914,6 @@ int LuaContext::map_api_create_tile(lua_State* l) {
   MapEntity* entity = new Tile(layer, x, y, width, height, tile_pattern_id);
   map.get_entities().add_entity(entity);
 
-  if (map.is_started()) {
-    push_entity(l, *entity);
-    return 1;
-  }
   return 0;
 }
 
@@ -1432,7 +1437,7 @@ int LuaContext::map_api_create_crystal_block(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_map_create_shop_item.
+ * @brief Implementation of \ref lua_api_map_create_shop_treasure.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -1638,6 +1643,31 @@ int LuaContext::map_api_create_fire(lua_State* l) {
 }
 
 /**
+ * @brief Calls the on_started() method of a Lua map.
+ * @param map A map.
+ * @param destination The destination point used (NULL if it's a special one).
+ */
+void LuaContext::map_on_started(Map& map, Destination* destination) {
+
+  push_map(l, map);
+  on_started(destination);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_finished() method of a Lua map.
+ * @param map A map.
+ */
+void LuaContext::map_on_finished(Map& map) {
+
+  push_map(l, map);
+  on_finished();
+  remove_timers(-1);  // Stop timers and menus associated to this map.
+  remove_menus(-1);
+  lua_pop(l, 1);
+}
+
+/**
  * @brief Calls the on_update() method of a Lua map.
  * @param map A map.
  */
@@ -1692,31 +1722,6 @@ void LuaContext::map_on_suspended(Map& map, bool suspended) {
 
   push_map(l, map);
   on_suspended(suspended);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_started() method of a Lua map.
- * @param map A map.
- * @param destination The destination point used (NULL if it's a special one).
- */
-void LuaContext::map_on_started(Map& map, Destination* destination) {
-
-  push_map(l, map);
-  on_started(destination);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_finished() method of a Lua map.
- * @param map A map.
- */
-void LuaContext::map_on_finished(Map& map) {
-
-  push_map(l, map);
-  on_finished();
-  remove_timers(-1);  // Stop timers and menus associated to this map.
-  remove_menus(-1);
   lua_pop(l, 1);
 }
 

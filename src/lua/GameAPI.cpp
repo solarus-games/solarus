@@ -1021,6 +1021,30 @@ int LuaContext::game_api_get_commands_direction(lua_State* l) {
 }
 
 /**
+ * @brief Calls the on_started() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_started(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_finished() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_finished(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_finished();
+  remove_timers(-1);  // Stop timers and menus associated to this game.
+  remove_menus(-1);
+  lua_pop(l, 1);
+}
+
+/**
  * @brief Calls the on_update() method of a Lua game.
  * @param game A game.
  */
@@ -1042,30 +1066,6 @@ void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
   push_game(l, game.get_savegame());
   menus_on_draw(-1, dst_surface);
   on_draw(dst_surface);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_started() method of a Lua game.
- * @param game A game.
- */
-void LuaContext::game_on_started(Game& game) {
-
-  push_game(l, game.get_savegame());
-  on_started();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_finished() method of a Lua game.
- * @param game A game.
- */
-void LuaContext::game_on_finished(Game& game) {
-
-  push_game(l, game.get_savegame());
-  on_finished();
-  remove_timers(-1);  // Stop timers and menus associated to this game.
-  remove_menus(-1);
   lua_pop(l, 1);
 }
 

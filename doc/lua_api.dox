@@ -8,7 +8,7 @@ scripts for their
 \ref lua_api_map "maps",
 \ref lua_api_item "items",
 \ref lua_api_enemy "enemies" and
-\ref lua_api_menus "menus".
+\ref lua_api_menu "menus".
 For the point of view of the C++ code of the engine,
 see the documentation of class LuaContext.
 

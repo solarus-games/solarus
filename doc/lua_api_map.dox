@@ -17,7 +17,7 @@ See the \ref lua_api_entity "entity API" for more details.
 
 \section lua_api_map_overview Overview
 
-\subsection lua_api_map_overview_position Position of entities
+\subsection lua_api_map_overview_position Coordinates and layer
 
 A map has a rectangular size in pixels. The width and the height are always
 multiples of 8 pixels, and most \ref lua_api_entity "map entities" usually
@@ -355,7 +355,7 @@ and only loads the image of the new tileset.
 \remark If the new tileset is not compatible with the previous one,
   tiles will be displayed with wrong graphics.
 
-\subsection lua_api_map_set_tileset map:is_dialog_enabled()
+\subsection lua_api_map_is_dialog_enabled map:is_dialog_enabled()
 
 Returns whether the dialog box is currently active.
 - Return value (boolean): \c true if a dialog is being shown.
@@ -427,7 +427,7 @@ Sets whether the player can pause the \ref lua_api_game "game".
   game.
 
 \remark This function applies to the built-in \ref
-  lua_api_game_features_command "pause command".
+  lua_api_game_intro_commands "pause command".
   Your script can still pause the game explicitly by calling
   \ref lua_api_game_set_paused "game:set_paused()".
 
@@ -648,7 +648,7 @@ having the specified prefix.
 - \c prefix (string): Prefix of the entities to count.
 - Return value (number): The number of entities having this prefix on the map.
 
-\remark Equivalent to <tt>#map:get_entities(prefix)</tt> (but avoids the
+\remark Equivalent to <tt>map:get_entities(prefix)</tt> (but avoids the
   table creation and the export of entities to Lua).
 
 \subsection lua_api_map_has_entities map:has_entities(prefix)
@@ -1048,7 +1048,8 @@ on the map.
   - \c needs_block (boolean): if \c true, the switch can only be activated by
     a \ref lua_api_block "block" (only for a walkable switch).
   - \c inactivate_when_leaving (boolean): if \c true, the switch becomes
-    inactivated when the \ref lua_api_hero "hero" or the \ref "block"
+    inactivated when the \ref lua_api_hero "hero" or the \ref
+    lua_api_block "block"
     leaves it (only for a walkable switch).
 - Return value (\ref lua_api_switch "switch"): the switch created.
 
@@ -1214,11 +1215,11 @@ on the map.
 - Return value (\ref lua_api_door "door"): The \ref lua_api_door
   "door" created.
 
-\remark Doors are currently being reworked because small keys, big keys and
+\todo Doors are currently being reworked because small keys, big keys and
   boss keys no longer exist in the engine.
   In the meantime, doors that require small keys, big keys or boss keys are
   not implemented and the player can always open them.
-  The future door API will allow to customize what allows to open the door:
+  The future door API will let you customize what allows to open the door:
   an \ref lua_api_item "equipment item" or a \ref lua_api_game
   "savegame variable".
 
@@ -1246,6 +1247,232 @@ on the map.
       \ref lua_api_hero "hero").
 - Return value (\ref lua_api_stairs "stairs"): the
   stairs created.
+
+\subsection lua_api_map_create_bomb map:create_bomb(properties)
+
+Creates an entity of type
+\ref lua_api_bomb "bomb"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+- Return value (\ref lua_api_bomb "bomb"): the
+  bomb created.
+
+\subsection lua_api_map_create_explosion map:create_explosion(properties)
+
+Creates an entity of type
+\ref lua_api_explosion "explosion"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+- Return value (\ref lua_api_explosion "explosion"): the
+  explosion created.
+
+\subsection lua_api_map_create_fire map:create_fire(properties)
+
+Creates an entity of type
+\ref lua_api_fire "fire"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+- Return value (\ref lua_api_fire "fire"): the
+  fire created.
+
+\section lua_api_map_events Events of a map
+
+Events are callback methods automatically called by the engine if you define
+them.
+In the case of maps, they are only called on the current map.
+
+\subsection lua_api_map_on_started map:on_started()
+
+Called when this map starts (when the player enters it).
+
+\subsection lua_api_map_on_finished map:on_finished()
+
+Called when this map stops (when the player leaves it).
+
+\subsection lua_api_map_on_update map:on_update()
+
+Called at each cycle of the main loop while this map is the current one.
+
+\remark As this function is called at each cycle, it is recommended to use other
+solutions when possible, like \ref lua_api_timer "timers" and other events.
+
+\subsection lua_api_map_on_draw map:on_draw(dst_surface)
+
+Called when the map has just been redrawn by the engine.
+
+The engine has already drawn the map as well as the
+\ref lua_api_menu "menus" of this map is any.
+Use this event if you want to draw some additional content.
+- \c dst_surface (\ref lua_api_surface "surface"): The surface where the map
+  is drawn. This surface represents the visible part of the screen, not the
+  whole map.
+
+\subsection lua_api_map_on_suspended map:on_suspended(suspended)
+
+Called when the map has just been suspended or resumed.
+
+The map is suspended by the engine in a few cases, like when the \ref
+lua_api_game "game" is
+paused or when the camera is being moved by a script.
+When this happens, all \ref lua_api_entity "map entities" stop moving and most
+\ref lua_api_sprite "sprites" stop their animation.
+- \c suspended (boolean): \c true if the map was just suspended, \c
+  false if it was resumed.
+
+\subsection lua_api_map_on_opening_transition_finished map:on_opening_transition_finished()
+
+When the map begins, called when the opening transition effect finishes.
+After that moment, the player has the control of the \ref
+lua_api_hero "hero".
+
+\subsection lua_api_map_on_camera_back map:on_camera_back()
+
+After a camera sequence (see \ref lua_api_map_move_camera "map:move_camera()"),
+this event is triggered when the camera gets back to the \ref lua_api_hero
+"hero".
+
+\subsection lua_api_map_on_key_pressed map:on_key_pressed(key, modifiers)
+
+Called when the user presses a keyboard key while your map is active.
+- \c key (string): Name of the raw key that was pressed.
+- \c modifiers (table): A table whose keys indicate what modifiers were
+  down during the event. Possible table keys are \c "shift", \c "control" and
+  \c "alt". Table values don't matter.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+  If you return \c false or nothing, the event will continue its propagation
+  to the \ref lua_api_game_intro_commands "commands".
+
+\remark This event indicates the raw keyboard key pressed. If you want the
+corresponding character instead (if any), see
+\ref lua_api_map_on_character_pressed "map:on_character_pressed()".
+If you want the corresponding higher-level game command (if any), see
+\ref lua_api_map_on_command_pressed "map:on_command_pressed()".
+
+\subsection lua_api_map_on_key_released map:on_key_released(key, modifiers)
+
+Called when the user releases a keyboard key while your map is active.
+- \c key (string): Name of the raw key that was released.
+- \c modifiers (table): A table whose keys indicate what modifiers were
+  down during the event. Possible table keys are \c "shift", \c "control" and
+  \c "alt". Table values don't matter.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+  If you return \c false or nothing, the event will continue its propagation
+  to the \ref lua_api_game_intro_commands "commands".
+
+\remark This event indicates the raw keyboard key pressed. If you want the
+corresponding character instead (if any), see
+\ref lua_api_map_on_character_pressed "map:on_character_pressed()".
+If you want the corresponding higher-level game command (if any), see
+\ref lua_api_map_on_command_pressed "map:on_command_pressed()".
+
+\subsection lua_api_map_on_character_pressed map:on_character_pressed(character)
+
+Called when the user presses a keyboard key mapped to a character
+while your map is active.
+- \c character (string): A utf-8 string representing the character that was
+  pressed.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+  If you return \c false or nothing, the event will continue its propagation
+  to the \ref lua_api_game_intro_commands "commands".
+
+\remark When a character key is pressed, two events are called:
+\ref lua_api_map_on_key_pressed "map:on_key_pressed()"
+(indicating the raw key)
+and \ref lua_api_map_on_character_pressed "map:on_character_pressed()"
+(indicating the utf-8 character).
+If your script needs to input text from the user,
+\ref lua_api_map_on_character_pressed "map:on_character_pressed()"
+is what you want because it
+considers the keyboard's layout and gives you international utf-8
+strings.
+
+\subsection lua_api_map_on_joypad_button_pressed map:on_joypad_button_pressed(button)
+
+Called when the user presses a joypad button while your map is active.
+- \c button (number): Index of the button that was pressed.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+
+\subsection lua_api_map_on_joypad_button_released map:on_joypad_button_released(button)
+
+Called when the user releases a joypad button while your map is active.
+- \c button (number): Index of the button that was released.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+
+\subsection lua_api_map_on_joypad_axis_moved map:on_joypad_axis_moved(axis, state)
+
+Called when the user moves a joypad axis while your map is active.
+- \c axis (number): Index of the axis that was moved. Usually, \c 0 is an
+  horizontal axis and \c 1 is a vertical axis.
+- \c state (number): The new state of the axis that was moved. \c -1 means
+  left or up, \c 0 means centered and \c 1 means right or down.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+
+\subsection lua_api_map_on_joypad_hat_moved map:on_joypad_hat_moved(hat, direction8)
+
+Called when the user moves a joypad hat while your map is active.
+- \c hat (number): Index of the hat that was moved.
+- \c direction8 (number): The new direction of the hat. \c -1 means that the
+  hat is centered. \c 0 to \c 7 indicates that the hat is in one of the eight
+  main directions.
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects.
+
+\subsection lua_api_map_on_command_pressed map:on_command_pressed(command)
+
+Called when the player presses a \ref lua_api_game_intro_commands
+"game command"
+(a keyboard key or a joypad action mapped to a built-in game behavior)
+while this map is active.
+You can use this event to override the normal built-in behavior of the game
+command.
+- \c command (string): Name of the built-in game command that was pressed.
+  Possible commands are
+  \c "action", \c "attack", \c "pause", \c "item_1", \c "item_2",
+  \c "right", \c "up", \c "left" and \c "down".
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (you are overriding the built-in behavior of pressing this game command).
+
+\remark This event is not triggered if you already handled its underlying
+  low-level keyboard or joypad event.
+
+\subsection lua_api_map_on_command_released map:on_command_released(command)
+
+Called when the player released a \ref lua_api_game_intro_commands
+"game command"
+(a keyboard key or a joypad action mapped to a built-in game behavior).
+while this map is active.
+You can use this event to override the normal built-in behavior of the game
+command.
+- \c command (string): Name of the built-in game command that was released.
+  Possible commands are
+- Return value (boolean): Indicates whether the event was handled. If you
+  return \c true, the event won't be propagated to other objects
+  (you are overriding the built-in behavior of releasing this game command).
+
+\remark This event is not triggered if you already handled its underlying
+  low-level keyboard or joypad event.
 
 */
 

@@ -192,11 +192,11 @@ class LuaContext {
     static void set_entity_implicit_creation_map(lua_State* l, Map* map);
 
     // Main loop events (sol.main).
+    void main_on_started();
+    void main_on_finished();
     void main_on_update();
     void main_on_draw(Surface& dst_surface);
     bool main_on_input(InputEvent& event);
-    void main_on_started();
-    void main_on_finished();
 
     // Menu events.
     void menu_on_started(int menu_ref);
@@ -243,10 +243,10 @@ class LuaContext {
     void item_on_npc_collision_fire(EquipmentItem& item, NPC& npc);
 
     // Game events.
-    void game_on_update(Game& game);
-    void game_on_draw(Game& game, Surface& dst_surface);
     void game_on_started(Game& game);
     void game_on_finished(Game& game);
+    void game_on_update(Game& game);
+    void game_on_draw(Game& game, Surface& dst_surface);
     void game_on_map_changed(Game& game, Map& map);
     void game_on_paused(Game& game);
     void game_on_unpaused(Game& game);
@@ -255,11 +255,11 @@ class LuaContext {
     bool game_on_command_released(Game& game, GameCommands::Command command);
 
     // Map events.
+    void map_on_started(Map& map, Destination* destination);
+    void map_on_finished(Map& map);
     void map_on_update(Map& map);
     void map_on_draw(Map& map, Surface& dst_surface);
     void map_on_suspended(Map& map, bool suspended);
-    void map_on_started(Map& map, Destination* destination);
-    void map_on_finished(Map& map);
     void map_on_opening_transition_finished(Map& map,
         Destination* destination);
     void map_on_camera_back(Map& map);
@@ -635,7 +635,7 @@ class LuaContext {
       map_api_create_sensor,
       map_api_create_crystal,
       map_api_create_crystal_block,
-      map_api_create_shop_item,
+      map_api_create_shop_item,  // TODO rename to shop treasure
       map_api_create_conveyor_belt,
       map_api_create_door,
       map_api_create_stairs,

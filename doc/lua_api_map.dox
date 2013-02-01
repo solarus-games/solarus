@@ -779,7 +779,8 @@ on the map.
   \ref lua_api_item_is_obtainable "obtainable", or if the pickable treasure is
   already found (for a saved one).
 
-\remark The state of the pickable treasure (obtained or not)
+\remark The state of the \ref lua_api_pickable
+  "pickable treasure" (obtained or not)
   and the possessed variant of the \ref lua_api_item "item"
   (a number)
   are two independent values that have different meanings
@@ -822,7 +823,8 @@ on the map.
 - Return value (\ref lua_api_destructible "destructible object"): The
   destructible object created.
 
-\remark The state of the treasure placed in the destructible
+\remark The state of the \ref lua_api_pickable "pickable treasure"
+  placed in the destructible
   object (obtained or not)
   and the possessed variant of the \ref lua_api_item "item"
   (a number)
@@ -860,9 +862,9 @@ on the map.
     treasure is placed in the chest (the chest will appear empty).
 - Return value (\ref lua_api_chest "chest"): The treasure chest created.
 
-\remark The state of the treasure chest (obtained or not)
+\remark The state of the \ref lua_api_chest "treasure chest"
+  (obtained or not)
   and the possessed variant of its \ref lua_api_item "item"
-  \ref lua_api_chest "chest" (a number)
   are two independent values that have different meanings
   and are saved separately.
 
@@ -938,8 +940,9 @@ on the map.
   \ref lua_api_pickable "pickable treasure" is created and returned.
   Otherwise, \c nil is returned.
 
-\remark The state of the enemy (alive or dead),
-  the state of its treasure dropped (obtained or not)
+\remark The state of the \ref lua_api_enemy "enemy" (alive or dead),
+  the state of its \ref lua_api_pickable "treasure dropped"
+  (obtained or not)
   and the possessed variant of the \ref lua_api_item "item" dropped (a number)
   are three independent values that have different meanings and
   are saved separately.
@@ -1049,7 +1052,200 @@ on the map.
     leaves it (only for a walkable switch).
 - Return value (\ref lua_api_switch "switch"): the switch created.
 
+\subsection lua_api_map_create_wall map:create_wall(properties)
 
+Creates an entity of type
+\ref lua_api_switch "wall"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c width (number): Width of the entity in pixels.
+  - \c height (number): Height of the entity in pixels.
+  - \c stops_hero (boolean): \c true to make the wall stop the
+    \ref lua_api_hero "hero".
+  - \c stops_npcs (boolean): \c true to make the wall stop
+    \ref lua_api_npc "non-playing characters".
+  - \c stops_enemies (boolean): \c true to make the wall stop
+    \ref lua_api_enemies "enemies".
+  - \c stops_blocks (boolean): \c true to make the wall stop
+    \ref lua_api_block "blocks".
+- Return value (\ref lua_api_wall "wall"): the wall created.
+
+\subsection lua_api_map_create_sensor map:create_sensor(properties)
+
+Creates an entity of type
+\ref lua_api_sensor "sensor"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c width (number): Width of the entity in pixels.
+  - \c height (number): Height of the entity in pixels.
+- Return value (\ref lua_api_sensor "sensor"): the sensor created.
+
+\subsection lua_api_map_create_crystal map:create_crystal(properties)
+
+Creates an entity of type
+\ref lua_api_crystal "crystal"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+- Return value (\ref lua_api_crystal "crystal"): the crystal created.
+
+\subsection lua_api_map_create_crystal_block map:create_crystal_block(properties)
+
+Creates an entity of type
+\ref lua_api_crystal_block "crystal block"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c width (number): Width of the entity in pixels.
+  - \c height (number): Height of the entity in pixels.
+  - \c subtype (number): Kind of crystal block to create: \c 0 for a
+    block initially lowered (orange), \c 1 for a block initially raised (blue).
+- Return value (\ref lua_api_crystal_block "crystal block"): the crystal block
+  created.
+
+\subsection lua_api_map_create_shop_treasure map:create_shop_treasure(properties)
+
+Creates an entity of type
+\ref lua_api_shop_treasure "shop treasure"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c price (number): Money amount required to buy the treasure.
+  - \c dialog_id (string): Id of the dialog to show when the
+    \ref lua_api_hero "hero" asks for information about the treasure.
+  - \c treasure_name (string): Kind of treasure to sell
+    (the name of an \ref lua_api_item "equipment item").
+    If this value or corresponds to a
+    \ref lua_api_item_is_obtainable "non obtainable" item, then
+    the shop treasure is not created and \c nil is returned.
+  - \c treasure_variant (number, optional): Variant of the treasure
+    (because some \ref lua_api_item "equipment items"
+    may have several variants).
+    The default value is \c 1 (the first variant).
+  - \c treasure_savegame_variable (string, optional): Name of the boolean
+    value that stores in the \ref lua_api_game "savegame"
+    whether the player purchased this treasure.
+    No value means that the state of the treasure is not saved.
+    If the treasure is saved and the player already has it, then the
+    shop treasure is not created and \c nil is returned.
+- Return value (\ref lua_api_shop_treasure "shop treasure"): The shop
+  treasure created, or \c nil if the item is not
+  \ref lua_api_item_is_obtainable "obtainable", or if the shop treasure was
+  already purchased (for a saved one).
+
+\remark The state of the \ref lua_api_shop_treasure
+  "shop treasure" (purchased or not)
+  and the possessed variant of its \ref lua_api_item "item"
+  (a number)
+  are two independent values that have different meanings
+  and are saved separately.
+
+\subsection lua_api_map_create_conveyor_belt map:create_conveyor_belt(properties)
+
+Creates an entity of type
+\ref lua_api_conveyor_belt "conveyor belt"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c direction (number): Direction where the conveyor belt moves the
+    \ref lua_api_hero "hero" between \c 0 (East)
+    and \c 7 (South-East).
+- Return value (\ref lua_api_conveyor_belt "conveyor belt"): the
+  conveyor belt created.
+
+\subsection lua_api_map_create_door map:create_door(properties)
+
+Creates an entity of type
+\ref lua_api_door "door"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c direction (number): Direction of the door, between
+    \c 0 (East of the room) and \c 3 (South of the room).
+  - \c subtype (number): Kind of door to create: 
+    - \c 0: Door to open with some mechanism.
+    - \c 1: Door to open with a small key.
+    - \c 2: Block to open with a small key.
+    - \c 3: Door to open with a big key.
+    - \c 4: Door to open with the boss key.
+    - \c 6: Wall to blast with an explosion (visible weakness).
+    - \c 6: Wall to blast with an explosion (more visible weakness).
+    - \c 8: Block to blast with an explosion (visible weakness).
+  - \c savegame_variable (number, optional): Name of the boolean value that
+    stores in the \ref lua_api_game "savegame" whether this door is open.
+    No value means that the door is not saved.
+    If the door is saved and was already opened, then it appears open.
+- Return value (\ref lua_api_door "door"): The \ref lua_api_door
+  "door" created.
+
+\remark Doors are currently being reworked because small keys, big keys and
+  boss keys no longer exist in the engine.
+  In the meantime, doors that require small keys, big keys or boss keys are
+  not implemented and the player can always open them.
+  The future door API will allow to customize what allows to open the door:
+  an \ref lua_api_item "equipment item" or a \ref lua_api_game
+  "savegame variable".
+
+\subsection lua_api_map_create_stairs map:create_stairs(properties)
+
+Creates an entity of type
+\ref lua_api_stairs "stairs"
+on the map.
+- \c properties (table): A table that describes all properties of the entity
+  to create. Its key-value pairs must be:
+  - \c name (string): Name identifying the entity.
+  - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+    \c 2: high).
+  - \c x (number): X coordinate on the map.
+  - \c y (number): Y coordinate on the map.
+  - \c direction (number): Direction where the stairs should be turned
+    (same meaning as \ref lua_api_door "doors")
+    between \c 0 (East) and \c 7 (South-East).
+  - \c subtype (number): Kind of door to create: 
+    - \c 0: Spiral staircase going upstairs.
+    - \c 1: Spiral staircase going downstairs.
+    - \c 2: Straight staircase going upstairs.
+    - \c 3: Straight staircase going downstairs.
+    - \c 4: Small stairs inside a single floor (change the layer of the
+      \ref lua_api_hero "hero").
+- Return value (\ref lua_api_stairs "stairs"): the
+  stairs created.
 
 */
 

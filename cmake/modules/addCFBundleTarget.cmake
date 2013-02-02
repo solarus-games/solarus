@@ -1,7 +1,7 @@
 ####
 # This module can be included inside the main CMakeList.txt to add a
 # target which generate the CFBundle when building the engine. 
-# The engine is build from the 'solarus' target. 
+# The bundle is build as 'solarus' target and from ${main_source_file}. 
 # The quest, icon and an info.plist template file can be added to the project.
 #
 # You can edit the Bundle configuration by passing some flags.
@@ -29,19 +29,18 @@ endif()
 
 # Configuration variable
 set(EXECUTABLE_MAIN_NAME              "solarus")
-set(EXECUTABLE_STATIC_NAME            "${EXECUTABLE_MAIN_NAME}_static")
 set(COMPANY_IDENTIFIER                "${EXECUTABLE_MAIN_NAME}-team")
 
 # OS-specific configuration variable
 if(SOLARUS_IOS_BUILD)
   set(SOLARUS_OS_SOFTWARE             "iOS")
   set(SOLARUS_OS_HARDWARE             "IPhone")
-  set(SOLARUS_BUNDLE_DESTINATION      "usr/share")
+  set(SOLARUS_INSTALL_DESTINATION      "usr/share")
   set(SOLARUS_BUNDLE_COPIED_LIBRARIES "")
 else()
   set(SOLARUS_OS_SOFTWARE             "OSX")
   set(SOLARUS_OS_HARDWARE             "MacOSX")
-  set(SOLARUS_BUNDLE_DESTINATION      "/Applications")
+  set(SOLARUS_INSTALL_DESTINATION      "/Applications")
 
   # Remove the hardcoded additional link on SDL path
   string(REPLACE "-framework Cocoa" "" SDL_FRAMEWORK "${SDL_LIBRARY}") 
@@ -68,28 +67,16 @@ if(NOT SOLARUS_BUNDLE_VERSION)
   set(SOLARUS_BUNDLE_VERSION        "1.0")
 endif()
 
-# Replace the main target by the CFBundle one
-add_executable(${SOLARUS_BUNDLE} MACOSX_BUNDLE
+# Add executable target into CFBundle form and rename it as requested
+add_executable(${EXECUTABLE_MAIN_NAME} MACOSX_BUNDLE
   ${main_source_file}
   ${SOLARUS_BUNDLE_QUEST}
   ${SOLARUS_BUNDLE_INFOPLIST}
   ${SOLARUS_BUNDLE_ICON} 
   ${SOLARUS_BUNDLE_COPIED_LIBRARIES}
 )
-set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES EXCLUDE_FROM_ALL TRUE)
-
-# Regenerate -l flags for the bundle target
-target_link_libraries(${SOLARUS_BUNDLE}
-  ${EXECUTABLE_STATIC_NAME}
-  ${SDL_LIBRARY}
-  ${SDLIMAGE_LIBRARY}
-  ${SDLTTF_LIBRARY}
-  ${OPENAL_LIBRARY}
-  ${LUA_LIBRARY}
-  ${PHYSFS_LIBRARY}
-  ${VORBISFILE_LIBRARY}
-  ${OGG_LIBRARY}
-  ${MODPLUG_LIBRARY}
+set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
+  OUTPUT_NAME   ${SOLARUS_BUNDLE}
 )
 
 # Set right properties on copied files
@@ -122,7 +109,7 @@ macro(copy_into_bundle target library_path destination_directory)
 endmacro()
 if(NOT XCODE)
   if(NOT SOLARUS_IOS_BUILD)
-    add_custom_command(TARGET ${SOLARUS_BUNDLE} POST_BUILD COMMAND mkdir ARGS -p "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Frameworks")
+    add_custom_command(TARGET ${EXECUTABLE_MAIN_NAME} POST_BUILD COMMAND mkdir ARGS -p "${PROJECT_BINARY_DIR}/${SOLARUS_BUNDLE}.app/Contents/Frameworks")
   endif()
   foreach(LIB ${SOLARUS_BUNDLE_COPIED_LIBRARIES})
     copy_into_bundle(${SOLARUS_BUNDLE} ${LIB} Frameworks)
@@ -137,7 +124,7 @@ endif()
 
 # Info.plist template and additional lines
 get_filename_component(SOLARUS_BUNDLE_ICON_NAME "${SOLARUS_BUNDLE_ICON}" NAME)
-set_target_properties(${SOLARUS_BUNDLE} PROPERTIES
+set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES
 		MACOSX_BUNDLE_INFO_PLIST             "${SOLARUS_BUNDLE_INFOPLIST}"
 
 		MACOSX_BUNDLE_BUNDLE_NAME            ${SOLARUS_BUNDLE}
@@ -159,7 +146,7 @@ if(NOT SOLARUS_IOS_BUILD)
   else()
     set(SOLARUS_RPATH                  "@executable_path/../Frameworks/")
   endif()
-  set_target_properties(${SOLARUS_BUNDLE} PROPERTIES 
+  set_target_properties(${EXECUTABLE_MAIN_NAME} PROPERTIES 
     BUILD_WITH_INSTALL_RPATH           1 
     INSTALL_NAME_DIR                   ${SOLARUS_RPATH}	
   )
@@ -177,8 +164,3 @@ add_definitions(-DSOLARUS_DEFAULT_QUEST=\"../Resources\")
 if(XCODE)
   set_target_properties(${NAME} PROPERTIES XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "${SOLARUS_OS_HARDWARE} Developer: ${COMPANY_IDENTIFIER}")
 endif()
-
-# install
-install(PROGRAMS                     ${SOLARUS_BUNDLE}
-  BUNDLE DESTINATION                 ${SOLARUS_BUNDLE_DESTINATION}
-)

@@ -6,6 +6,7 @@ if(COMMAND cmake_policy)
 endif()
 
 set(CMAKE_MODULE_PATH "${SOLARUS_ENGINE_SOURCE_DIR}/cmake/modules/")
+set(SOLARUS_INSTALL_DESTINATION "bin")
 
 # find the headers and the libraries of dependencies
 find_package(SDL REQUIRED)
@@ -66,9 +67,15 @@ add_library(solarus_static
   STATIC
   ${source_files}
 )
-add_executable(solarus
-  ${main_source_file}
-)
+
+#Add executable target, into CFBundle form if requested or iOS build
+if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
+  include(addCFBundleTarget)
+else()
+  add_executable(solarus
+    ${main_source_file}
+  )
+endif()
 
 # Workaround : -isystem flag isn't correctly set on OSX when using SYSTEM option.
 # TODO : Remove this when http://public.kitware.com/Bug/view.php?id=10837 will be accepted.
@@ -180,12 +187,8 @@ if(SCREEN_FORCE_MODE)
   add_definitions(-DSOLARUS_SCREEN_FORCE_MODE=${SCREEN_FORCE_MODE})
 endif()
 
-# files to install with make install, into CFBundle form if requested or iOS build
-if(SOLARUS_BUNDLE OR SOLARUS_IOS_BUILD)
-  include(installCFBundle)
-else()
-  install(TARGETS	solarus
-    RUNTIME DESTINATION bin
-  )
-endif()
+# files to install with make install
+install(TARGETS	solarus
+  RUNTIME DESTINATION ${SOLARUS_INSTALL_DESTINATION}
+)
 

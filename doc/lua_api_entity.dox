@@ -86,6 +86,54 @@ These methods exist in all entity types.
 Returns the map this entity belongs to.
 - Return value (\ref lua_api_map "map"): The map that contains this entity.
 
+\subsection lua_api_entity_get_name entity:get_name()
+
+Returns the name of this map entity.
+
+The name uniquely identifies the entity on the map.
+- Return value (string): The name of this entity, or an empty string if the
+  entity has no name (because some types of entities don't have a name).
+
+\subsection lua_api_entity_exists entity:exists()
+
+Returns whether this entity still exists on the map.
+
+If you refer from Lua to an entity that no longer exists in the C++ side,
+this function return \c false.
+An entity gets destroyed when you call
+\ref lua_api_entity_remove "entity:remove()"
+or when the engine removes it
+(for example an \ref lua_api_enemy "enemy" that gets killed
+or a \ref lua_api_pickable "pickable treasure" that gets picked up).
+- Return value (boolean): \c true if the entity exists, \c false if it was
+  destroyed.
+
+\subsection lua_api_entity_remove entity:remove()
+
+Removes this entity from the map and destroys it.
+
+After the entity is destroyed, \ref lua_api_entity_exists
+"entity:exists()" returns \c false and there is no reason to keep a
+reference to it (though it is harmless).
+
+\subsection lua_api_entity_is_enabled entity:is_enabled()
+
+Returns whether this entity is enabled.
+
+When an entity is disabled, it is not displayed on the map, it does
+not move and does not detect collisions.
+- Return value (boolean): \c true if this entity is enabled.
+
+\subsection lua_api_entity_set_enabled entity:set_enabled([enabled])
+
+Enables or disables this entity.
+
+When an entity is disabled, it is not displayed on the map, it does
+not move and does not detect collisions.
+- \c enabled (boolean): \c true to enable the entity, \c false to
+  disable it (no value means \c true).
+
+
 
 - \c sol.map.treasure_give(item_name, variant, savegame_variable):
 gives a treasure to the player (without using a chest)

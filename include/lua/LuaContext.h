@@ -645,7 +645,7 @@ class LuaContext {
 
       // Map entity API.
       entity_api_get_map,
-      entity_api_get_name,
+      entity_api_get_name,  // TODO return nil if no name
       entity_api_exists,
       entity_api_remove,
       entity_api_is_enabled,

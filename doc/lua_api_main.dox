@@ -139,7 +139,7 @@ Utility function that computes the distance in pixels between two points.
 
 \subsection lua_api_main_get_angle sol.main.get_angle(x1, y1, x2, y2)
 
-Utility function that computes the angle in radians between the x axis and the
+Utility function that computes the angle in radians between the X axis and the
 specified vector.
 - \c x1 (number): X coordinate of the first point.
 - \c y1 (number): Y coordinate of the first point.

@@ -23,8 +23,8 @@ Sets the center of this movement as a fixed point or a \ref lua_api_entity
 "map entity".
 
 To make circles around a fixed point:
-- \c x (integer): X coordinate of the center.
-- \c y (integer): Y coordinate of the center.
+- \c x (number): X coordinate of the center.
+- \c y (number): Y coordinate of the center.
 
 To make circles around a map entity (only during a \ref lua_api_game "game"):
 - \c entity (\ref lua_api_entity "entity"): The center entity.

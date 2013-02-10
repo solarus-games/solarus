@@ -26,6 +26,7 @@ Entities can also have a name that uniquely identifies them on the map.
 This is useful to access them from the \ref lua_api_map "map API".
 
 Here are the existing types of entities.
+- \subpage lua_api_hero "Hero": The character controlled by the player.
 - \subpage lua_api_tile "Tile": A small brick that composes a piece of the
   \ref lua_api_map "map", with a pattern picked
   from the tileset.
@@ -70,6 +71,8 @@ Here are the existing types of entities.
 - \subpage lua_api_stairs "Stairs": %Stairs between two \ref lua_api_map "maps"
   or to a platform of a single map.
 
+TODO carried item, boomerang, explosion, arrow, bomb, fire, hookshot?
+
 \remark Note that \ref lua_api_sprite "sprites" and \ref lua_api_movement
 "movements" are not map entities, but they can be attached to map entities
 (to display them and to move them, respectively).
@@ -98,13 +101,13 @@ The name uniquely identifies the entity on the map.
 
 Returns whether this entity still exists on the map.
 
-If you refer from Lua to an entity that no longer exists in the C++ side,
-this function return \c false.
 An entity gets destroyed when you call
 \ref lua_api_entity_remove "entity:remove()"
 or when the engine removes it
 (for example an \ref lua_api_enemy "enemy" that gets killed
 or a \ref lua_api_pickable "pickable treasure" that gets picked up).
+If you refer from Lua to an entity that no longer exists in the C++ side,
+this method returns \c false.
 - Return value (boolean): \c true if the entity exists, \c false if it was
   destroyed.
 
@@ -114,7 +117,7 @@ Removes this entity from the map and destroys it.
 
 After the entity is destroyed, \ref lua_api_entity_exists
 "entity:exists()" returns \c false and there is no reason to keep a
-reference to it (though it is harmless).
+reference to it in the Lua side (though it is harmless).
 
 \subsection lua_api_entity_is_enabled entity:is_enabled()
 
@@ -122,6 +125,7 @@ Returns whether this entity is enabled.
 
 When an entity is disabled, it is not displayed on the map, it does
 not move and does not detect collisions.
+But it still exists, it still has a position and it can be enabled again later.
 - Return value (boolean): \c true if this entity is enabled.
 
 \subsection lua_api_entity_set_enabled entity:set_enabled([enabled])
@@ -130,351 +134,116 @@ Enables or disables this entity.
 
 When an entity is disabled, it is not displayed on the map, it does
 not move and does not detect collisions.
+But it still exists, it still has a position and it can be enabled again later.
 - \c enabled (boolean): \c true to enable the entity, \c false to
   disable it (no value means \c true).
 
+\subsection lua_api_entity_get_size entity:get_size()
+
+Returns the size of the bounding box of this entity.
+
+The bounding box determines the position of the entity on the map.
+It is a rectangle whose width and height are usually multiples
+of 8 pixels.
+The bounding box is used to detect whether the entity overlaps obstacles or
+other entities.
+- Return value 1 (number): Width of the entity in pixels.
+- Return value 2 (number): Height of the entity in pixels.
+
+\remark Note that the \ref lua_api_sprite "sprites" of an entity may have a
+  different size than the entity itself.
+
+\subsection lua_api_entity_get_origin entity:get_origin()
+
+Returns the origin point of this entity, relative to the top-left corner
+of the bounding box.
+
+When an entity is located at some coordinates on the \ref lua_api_map "map",
+the origin points determines what exact point of the entity's bounding box
+is at those coordinates.
+It is not necessarily the top-left corner of the entity's
+bounding box.
+
+The origin point is usually be the central point of contact between the entity
+and the ground. For example, the origin point of the \ref lua_api_hero "hero",
+\ref lua_api_enemies "enemies", \ref lua_api_npc
+"non-playing characters" and most entities
+is the center of their shadow.
+Thus, for entities of size (<tt>16,16</tt>), the origin point is
+often (<tt>8,13</tt>).
+
+This origin point property allows entities of different sizes to have
+comparable reference points that can be used by the engine.
+Indeed, when two enemies overlap, the engine needs to determine which one
+has to be displayed first
+(it is always the one with the lowest Y coordinate).
+Sometimes, the engine also needs to compute an angle between two entities,
+for example to push away an enemy that was just hit.
+Using the top-left corner of their bounding box would not give the correct
+angle (unless both entities had the same size).
+
+The origin point is also the point of synchronization of an entity with its
+\ref lua_api_sprite "sprites" (because again, an entity that has a given
+size may have sprites with different sizes).
+- Return value 1 (number): X coordinate of the origin point in pixels,
+  relative to the top-left corner of the entity's bounding box.
+- Return value 2 (number): Y coordinate of the origin point in pixels,
+  relative to the top-left corner of the entity's bounding box.
+
+\subsection lua_api_entity_get_position entity:get_position()
+
+Returns the position of this entity on the \ref lua_api_map "map"
+(coordinates and layer).
+- Return value 1 (number): X coordinate of the \ref lua_api_entity_get_origin
+  "origin point" of the entity,
+  relative to the top-left corner of the map.
+- Return value 2 (number): Y coordinate of the \ref lua_api_entity_get_origin
+  "origin point" of the entity,
+  relative to the top-left corner of the map.
+- Return value 3 (number): Layer where the entity is on the map
+  (\c 0: low layer, \c 1: intermediate layer, \c 2: high layer).
+
+\subsection lua_api_entity_get_distance entity:get_distance(x, y), entity:get_distance(other_entity)
+
+Returns the distance in pixels between this map entity and a point or another
+map entity.
+
+To compute the distance to a specified point:
+- \c x (number): X coordinate of the point.
+- \c y (number): Y coordinate of the point.
+- Return value (number): The distance in pixels between the origin point of
+  this entity and the point.
+
+To compute the distance to another map entity:
+- \c other_entity (entity): The entity to compute the distance to.
+- Return value (number): The distance in pixels between the origin point of
+  this entity and the origin point of the other entity.
+
+\subsection lua_api_entity_get_angle entity:get_angle(x, y), entity:get_angle(other_entity)
+
+Returns the angle between the X axis and the vector that joins this entity
+to a point.
+
+To compute the angle to a specified point:
+- \c x (number): X coordinate of the point.
+- \c y (number): Y coordinate of the point.
+- Return value (number): The angle in radians between the origin point of
+  this entity and the specified point.
+
+To compute the angle to another map entity:
+- \c other_entity (entity): The entity to compute the angle to.
+- Return value (number): The angle in radians between the origin point of
+  this entity and the origin point of the other entity.
+
+\section lua_api_entity_events Events of all entity types
+
+Events are callback methods automatically called by the engine if you define
+them.
 
+\subsection lua_api_entity_on_removed entity:on_removed()
 
-- \c sol.map.treasure_give(item_name, variant, savegame_variable):
-gives a treasure to the player (without using a chest)
-
-- \c sol.map.hero_freeze():
-prevents the hero from moving until you call \c sol.map.hero_unfreeze()
-
-- \c sol.map.hero_unfreeze():
-restores the control to the hero, typically after a call to \c sol.map.hero_freeze()
-
-- \c sol.map.hero_set_map(map_id, destination_point, transition):
-Sends the hero on a map (possibly the same one), see Transition::Style for the values of transition.
-
-- \c sol.map.hero_set_visible(visible):
-Hides or unhides the hero. The player can continue to control him even if
-he is invisible.
-
-- \c sol.map.hero_get_direction():
-Returns the direction of the hero's sprites (0 to 3).
-
-- \c sol.map.hero_set_direction(direction4):
-Sets the direction of the hero's sprites (0 to 3).
-
-- \c sol.map.hero_get_position():
-Returns the coordinates and the layer of the hero (3 return values).
-
-- \c sol.map.hero_set_position(x, y, layer):
-Sets the coordinates and the layer of the hero.
-The layer is optional: by default, it is unchanged.
-
-- \c sol.map.hero_align_on_sensor(sensor_name):
-places the hero's bounding box exactly on the rectangle of a sensor
-
-- \c sol.map.hero_save_solid_ground(x, y, layer):
-Memorizes a position to go back to if the hero falls into a hole or other bad
-ground. This replaces the usual behavior which is going back to the previous
-solid position just before falling.
-The arguments are optional: by default, they correspond to the current
-position of the hero. But if you provide them, you must set all three of them,
-otherwise they are ignored.
-
-- \c sol.map.hero_reset_solid_ground():
-Forgets a position that was previously memorized by
-\c sol.map.hero_set_solid_ground() (if any).
-The usual behavior is restored: the hero will now just get
-back to where he was just before falling, instead going to of a memorized
-position.
-
-- \c sol.map.hero_walk(path, loop, ignore_obstacles):
-Makes the hero move with the specified path and a walking animation.
-The player cannot control him during the movement.
-
-- \c sol.map.hero_start_jumping(direction8, length, ignore_obstacles):
-makes the hero jump towards the specified direction (0 to 7)
-
-- \c sol.map.hero_start_victory_sequence():
-Makes the hero brandish his sword for a victory.
-When the animation finishes,
-\c event_hero_victory_sequence_finished will be called in the map script.
-
-- \c sol.map.hero_start_boomerang(max_distance, speed, tunic_preparing_animation, sprite_name):
-Makes the hero throw a boomerang.
-\c tunic_preparing_animation is the name of the animation that the
-hero's tunic sprite should take while preparing the boomerang.
-\c sprite_name is the animation set id to use to draw the boomerang then.
-
-- \c sol.map.hero_start_bow():
-makes the hero shoot an arrow
-
-- \c sol.map.hero_start_running():
-makes the hero run
-
-- \c sol.map.hero_start_hurt(source_x, source_y, life_points, magic_points):
-Hurts the hero. The number of life points will be reduced with the tunic level.
-
-- \c sol.map.npc_is_enabled(npc_name):
-returns whether an NPC is enabled
-
-- \c sol.map.npc_set_enabled(npc_name, enable):
-enables or disables an NPC
-
-- \c sol.map.npc_set_group_enabled(npc_prefix, enable):
-enables or disables all NPCs having a common prefix
-
-- \c sol.map.npc_get_position(npc):
-Returns the position of an NPC (x, y and layer).
-
-- \c sol.map.npc_set_position(npc, x, y, layer):
-Sets the position of an NPC. The layer is optional
-(by default, it is unchanged).
-
-- \c sol.map.npc_start_movement(npc, movement):
-starts a movement on an NPC
-
-- \c sol.map.npc_stop_movement(npc, movement):
-stops the movement of an NPC
-
-- \c sol.map.npc_get_sprite(npc):
-Returns the sprite of an NPC. Your script can then use the
-\c sol.main.sprite_* functions on it.
-
-- \c sol.map.npc_remove(npc):
-removes an NPC from the map
-
-- \c sol.map.npc_exists(npc):
-checks the existence of an NPC
-
-- \c sol.map.chest_is_open(chest_name):
-returns the state of a chest
-
-- \c sol.map.chest_set_open(chest_name, open):
-sets the state of a chest (without giving or reseting its content)
-
-- \c sol.map.chest_is_enabled(chest_name):
-returns whether a chest is enabled
-
-- \c sol.map.chest_set_enabled(chest_name, enable):
-enables or disables a chest
-
-- \c sol.map.chest_set_group_enabled(chests_prefix, enable):
-enables or disables all chests having a common prefix
-
-- \c sol.map.tile_is_enabled(tile_name):
-returns whether a dynamic tile is enabled
-
-- \c sol.map.tile_set_enabled(tile_name, enable):
-enables or disables a dynamic tile
-
-- \c sol.map.tile_set_group_enabled(tiles_prefix, enable):
-enables or disables all dynamic tiles having a common prefix
-
-- \c sol.map.stairs_is_enabled(stairs_name):
-returns whether some stairs are enabled
-
-- \c sol.map.stairs_set_enabled(stairs_name, enable):
-enables or disables some stairs
-
-- \c sol.map.stairs_set_group_enabled(stairs_prefix, enable):
-enables or disables all stairs having a common prefix
-
-- \c sol.map.obstacle_is_enabled(custom_obstacle_name):
-returns whether a custom obstacle is enabled
-
-- \c sol.map.obstacle_set_enabled(custom_obstacle_name, enable):
-enables or disables a custom obstacle
-
-- \c sol.map.obstacle_set_group_enabled(custom_obstacles_prefix, enable):
-enables or disables all custom obstacles having a common prefix
-
-- \c sol.map.sensor_is_enabled(sensor_name):
-returns whether a sensor is enabled
-
-- \c sol.map.sensor_set_enabled(sensor_name, enable):
-enables or disables a sensor
-
-- \c sol.map.sensor_set_group_enabled(sensors_prefix, enable):
-enables or disables all sensors having a common prefix
-
-- \c sol.map.jumper_is_enabled(jumper_name):
-returns whether a jumper is enabled
-
-- \c sol.map.jumper_set_enabled(jumper_name, enable):
-enables or disables a jumper
-
-- \c sol.map.jumper_set_group_enabled(jumpers_prefix, enable):
-enables or disables all jumpers having a common prefix
-
-- \c sol.map.crystal_is_enabled(crystal_name):
-returns whether a crystal is enabled (i.e. whether it is visible)  
-
-- \c sol.map.crystal_set_enabled(crystal_name, enable):
-enables or disables a crystal
-
-- \c sol.map.crystal_set_group_enabled(crystals_prefix, enable):
-enables or disables all crystals having a common prefix
-
-- \c sol.map.crystal_get_state()
-returns the state of crystal blocks (false: initial, true: modified)
-
-- \c sol.map.crystal_set_state(state)
-sets the state of crystal blocks (false: initial, true: modified)
-
-- \c sol.map.crystal_change_state()
-inverts the state of crystal blocks
-
-- \c sol.map.teletransporter_is_enabled(teletransporter_name):
-returns whether a teletransporter is enabled
-
-- \c sol.map.teletransporter_set_enabled(teletransporter_name, enable):
-enables or disables a teletransporter
-
-- \c sol.map.teletransporter_set_group_enabled(teletransporters_prefix, enable):
-enables or disables all teletransporters having a common prefix
-
-- \c sol.map.block_is_enabled(block_name):
-returns whether a block is enabled
-
-- \c sol.map.block_set_enabled(block_name, enable):
-enables or disables a block
-
-- \c sol.map.block_set_group_enabled(blocks_prefix, enable):
-enables or disables all blocks having a common prefix
-
-- \c sol.map.block_reset(block_name):
-places a block where it was when the map started
-
-- \c sol.map.block_reset_all():
-resets all blocks of the map
-
-- \c sol.map.block_get_position(block_name):
-Returns the position of a block (3 return values: x, y, layer).
-
-- \c sol.map.block_set_position(block_name, x, y, layer):
-Sets the position of a block.
-The layer is optional (by default, it is unchanged).
-
-- \c sol.map.shop_item_exists(shop_item_name):
-Returns whether a shop item exists on the map.
-
-- \c sol.map.shop_item_remove(shop_item_name):
-Removes a shop item from the map if it exists.
-
-- \c sol.map.switch_is_activated(switch_name):
-returns whether a switch is activated
-
-- \c sol.map.switch_set_activated(switch_name, activated):
-activates or inactivates a switch
-
-- \c sol.map.switch_set_locked(switch_name, locked):
-locks a switch in its current state or unlocks it
-
-- \c sol.map.switch_is_enabled(switch_name):
-returns whether a switch is enabled (i.e. visible)
-
-- \c sol.map.switch_set_enabled(switch_name, enable):
-enables or disables a switch
-
-- \c sol.map.switch_set_group_enabled(switches_prefix, enable):
-enables or disables all switches having a common prefix
-
-- \c sol.map.door_open(door_prefix):
-Opens one or several doors, playing their animation and sound.
-If some doors with this prefix are already open, nothing happens for them.
-
-- \c sol.map.door_close(door_prefix):
-Closes one or several doors, playing their animation and sound.
-Nothing happens if some doors with this prefix are already closed.
-
-- \c sol.map.door_is_open(door_name):
-returns whether a door is open
-
-- \c sol.map.door_set_open(door_name, open):
-changes immediately the state of a door (without playing animation and sound)
-
-- \c sol.map.pickable_create(item_name, variant, savegame_variable, x, y, layer):
-creates a pickable treasure and places it on the map
-
-- \c sol.map.destructible_create(subtype, x, y, layer, properties):
-Creates a destructible item and places it on the map.
-\c subtype can be "pot", "bush", "white_stone", "black_stone", "grass"
-or "bomb_flower".
-\c properties is optional. If provided, it is a table
-whose key-value pairs can be:
-  - \c treasure_name (string, default "_random"): treasure under the
-    destructible item, can also be "_none" or "_random",
-  - \c treasure_variant (integer, default 1): variant of this treasure,
-  - \c treasure_savegame_variable (integer, default -1): savegame
-    variable of this treasure (-1 means not saved),
-  - \c destruction_callback (function, default nil): a function that will
-    be called when the destructible item is destroyed.
-
-- \c sol.map.block_create(x, y, layer, name, properties):
-Creates a block and places it on the map.
-\c properties is optional. If provided, it is a table
-whose key-value pairs can be:
-  - \c direction (integer, 0 to 3 or -1 to allow the block to move in any direction (default is -1)),
-  - \c sprite_name (string, default "entities/block"),
-  - \c can_be_pushed (boolean, default true),
-  - \c can_be_pulled (boolean, default false),
-  - \c maximum_moves (integer: 0 for no
-move, 1 for one move only (default), 2 for infinite moves)
-
-- \c sol.map.bomb_create(x, y, layer):
-creates a bomb and places it on the map
-
-- \c sol.map.explosion_create(x, y, layer):
-creates an explosion on the map
-
-- \c sol.map.fire_create(x, y, layer):
-creates some fire on the map
-
-- \c sol.map.arrow_remove()
-removes any arrow currently thrown on the map
-
-- \c sol.map.enemy_create(enemy_name, breed, layer, x, y):
-Creates an enemy on the map.
-
-- \c sol.map.enemy_remove(enemy_name):
-Removes an enemy from the map.
-
-- \c sol.map.enemy_remove_group(enemies_name_prefix):
-Removes a group of enemies from the map.
-
-- \c sol.map.enemy_is_enabled(enemy_name):
-returns whether an enemy is enabled
-
-- \c sol.map.enemy_set_enabled(enemy_name, enable):
-enables or disables an enemy
-
-- \c sol.map.enemy_set_group_enabled(enemies_prefix, enable):
-enables or disables all enemies having a common prefix
-
-- \c sol.map.enemy_is_dead(enemy_name):
-returns whether an enemy is dead
-
-- \c sol.map.enemy_is_group_dead(enemies_name_prefix):
-returns whether all enemies having a common prefix are dead
-
-- \c sol.map.enemy_get_group_count(enemies_name_prefix):
-Returns the number of living enemies of the map whose name starts with the specified prefix.
-
-- \c sol.map.enemy_get_position(enemy_name):
-Returns the current position of an enemy on the map.
-Three values are returned: x, y and the layer (0 to 2).
-
-- \c sol.map.enemy_set_position(enemy_name, x, y, layer):
-Sets the positions of an enemy on the map. The layer is optional:
-by default, it is unchanged.
-
-- \c sol.map.enemy_set_treasure(enemy_name, item_name, variant, savegame_variable):
-Sets the treasure of an enemy.
-
-- \c sol.map.enemy_set_no_treasure(enemy_name):
-Sets no treasure for an enemy.
-
-- \c sol.map.enemy_set_random_treasure(enemy_name):
-Sets a random treasure for an enemy.
-
-- \c sol.map.enemy_get_sprite(enemy_name):
-Returns the sprite of an enemy (if the enemy has several sprites, the first
-one created is returned)
+Called when this entity is about to be removed from the map
+(and therefore destroyed).
 
 */
 

@@ -41,8 +41,8 @@ Sets the target of this movement as a fixed point or a
 \ref lua_api_entity "map entity".
 
 To target a fixed point:
-- \c x (integer): X coordinate of the target.
-- \c y (integer): Y coordinate of the target.
+- \c x (number): X coordinate of the target.
+- \c y (number): Y coordinate of the target.
 
 To target a map entity (only during a \ref lua_api_game "game"):
 - \c entity (\ref lua_api_entity "entity"): The entity to target.

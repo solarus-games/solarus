@@ -110,8 +110,6 @@ void LuaContext::register_entity_module() {
 
   // Hero.
   static const luaL_Reg hero_methods[] = {
-      { "freeze", hero_api_freeze },
-      { "unfreeze", hero_api_unfreeze },
       { "teleport", hero_api_teleport },
       { "set_visible", hero_api_set_visible },
       { "get_direction", hero_api_get_direction },
@@ -119,7 +117,9 @@ void LuaContext::register_entity_module() {
       { "set_position", hero_api_set_position },
       { "save_solid_ground", hero_api_save_solid_ground },
       { "reset_solid_ground", hero_api_reset_solid_ground },
-      { "walk", hero_api_walk },
+      { "freeze", hero_api_freeze },
+      { "unfreeze", hero_api_unfreeze },
+      { "walk", hero_api_walk },  // TODO make a more general start_movement
       { "start_jumping", hero_api_start_jumping },
       { "start_treasure", hero_api_start_treasure },
       { "start_victory", hero_api_start_victory},
@@ -794,6 +794,9 @@ int LuaContext::hero_api_teleport(lua_State* l) {
   const std::string& destination_name = luaL_checkstring(l, 3);
   Transition::Style transition_style = opt_enum<Transition::Style>(
       l, 4, transition_style_names, Transition::FADE);
+
+  // FIXME check that destination_name is not empty
+  // TODO don't allow side destinations and scrolling?
 
   hero.get_game().set_current_map(map_id, destination_name, transition_style);
 

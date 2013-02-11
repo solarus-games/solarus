@@ -1,0 +1,11 @@
+
+- \c sol.map.switch_is_activated(switch_name):
+returns whether a switch is activated
+
+- \c sol.map.switch_set_activated(switch_name, activated):
+activates or inactivates a switch
+
+- \c sol.map.switch_set_locked(switch_name, locked):
+locks a switch in its current state or unlocks it
+
+

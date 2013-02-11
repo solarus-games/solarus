@@ -1,0 +1,16 @@
+- \c sol.map.chest_is_open(chest_name):
+returns the state of a chest
+
+- \c sol.map.chest_set_open(chest_name, open):
+sets the state of a chest (without giving or reseting its content)
+
+- \c sol.map.chest_is_enabled(chest_name):
+returns whether a chest is enabled
+
+- \c sol.map.chest_set_enabled(chest_name, enable):
+enables or disables a chest
+
+- \c sol.map.chest_set_group_enabled(chests_prefix, enable):
+enables or disables all chests having a common prefix
+
+

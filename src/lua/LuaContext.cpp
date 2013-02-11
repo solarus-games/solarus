@@ -1844,6 +1844,7 @@ void LuaContext::on_obtaining_treasure(const Treasure& treasure) {
     push_string(l, treasure.get_item_name());
     lua_pushinteger(l, treasure.get_variant());
     lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    // FIXME push nil if the treasure is not saved
     call_function(4, 0, "on_obtaining_treasure");
   }
 }
@@ -1858,6 +1859,7 @@ void LuaContext::on_obtained_treasure(const Treasure& treasure) {
     push_string(l, treasure.get_item_name());
     lua_pushinteger(l, treasure.get_variant());
     lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    // FIXME push nil if the treasure is not saved
     call_function(4, 0, "on_obtained_treasure");
   }
 }

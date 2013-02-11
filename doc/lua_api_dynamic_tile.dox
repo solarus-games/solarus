@@ -1,0 +1,11 @@
+
+- \c sol.map.tile_is_enabled(tile_name):
+returns whether a dynamic tile is enabled
+
+- \c sol.map.tile_set_enabled(tile_name, enable):
+enables or disables a dynamic tile
+
+- \c sol.map.tile_set_group_enabled(tiles_prefix, enable):
+enables or disables all dynamic tiles having a common prefix
+
+

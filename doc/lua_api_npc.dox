@@ -1,0 +1,34 @@
+
+- \c sol.map.npc_is_enabled(npc_name):
+returns whether an NPC is enabled
+
+- \c sol.map.npc_set_enabled(npc_name, enable):
+enables or disables an NPC
+
+- \c sol.map.npc_set_group_enabled(npc_prefix, enable):
+enables or disables all NPCs having a common prefix
+
+- \c sol.map.npc_get_position(npc):
+Returns the position of an NPC (x, y and layer).
+
+- \c sol.map.npc_set_position(npc, x, y, layer):
+Sets the position of an NPC. The layer is optional
+(by default, it is unchanged).
+
+- \c sol.map.npc_start_movement(npc, movement):
+starts a movement on an NPC
+
+- \c sol.map.npc_stop_movement(npc, movement):
+stops the movement of an NPC
+
+- \c sol.map.npc_get_sprite(npc):
+Returns the sprite of an NPC. Your script can then use the
+\c sol.main.sprite_* functions on it.
+
+- \c sol.map.npc_remove(npc):
+removes an NPC from the map
+
+- \c sol.map.npc_exists(npc):
+checks the existence of an NPC
+
+

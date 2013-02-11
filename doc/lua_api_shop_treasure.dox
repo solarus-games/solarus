@@ -1,0 +1,8 @@
+
+- \c sol.map.shop_item_exists(shop_item_name):
+Returns whether a shop item exists on the map.
+
+- \c sol.map.shop_item_remove(shop_item_name):
+Removes a shop item from the map if it exists.
+
+

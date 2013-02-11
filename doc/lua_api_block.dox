@@ -1,0 +1,10 @@
+
+- \c sol.map.block_reset(block_name):
+places a block where it was when the map started
+
+- \c sol.map.block_reset_all():
+resets all blocks of the map
+
+- \c sol.map.block_set_position(block_name, x, y, layer):
+Sets the position of a block.
+The layer is optional (by default, it is unchanged).

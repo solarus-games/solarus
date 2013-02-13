@@ -2050,6 +2050,77 @@ void LuaContext::hero_on_victory_finished(Hero& hero) {
 }
 
 /**
+ * @brief Calls the on_movement_finished() method of a Lua NPC.
+ * @param npc An NPC.
+ */
+void LuaContext::npc_on_movement_finished(NPC& npc) {
+
+  push_npc(l, npc);
+  on_movement_finished();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_interaction() method of a Lua NPC.
+ * @param npc An NPC.
+ */
+void LuaContext::npc_on_interaction(NPC& npc) {
+
+  push_npc(l, npc);
+  on_interaction();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_interaction_item() method of a Lua NPC.
+ * @param npc An NPC.
+ * @param item_used The equipment item used.
+ * @return \c true if an interaction occurred.
+ */
+bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
+
+  push_npc(l, npc);
+  bool result = on_interaction_item(item_used);
+  lua_pop(l, 1);
+  return result;
+}
+
+/**
+ * @brief Calls the on_collision_fire() method of a Lua NPC.
+ * @param npc An NPC.
+ */
+void LuaContext::npc_on_collision_fire(NPC& npc) {
+
+  push_npc(l, npc);
+  on_collision_fire();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_moved() method of a Lua block.
+ * @param block a block.
+ */
+void LuaContext::block_on_moved(Block& block) {
+
+  push_block(l, block);
+  on_moved();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_empty() method of a Lua chest.
+ * @param chest A chest.
+ * @return \c true if the on_empty() method is defined.
+ */
+bool LuaContext::chest_on_empty(Chest& chest) {
+
+  push_chest(l, chest);
+  bool result = on_empty();
+  lua_pop(l, 1);
+  return result;
+}
+
+/**
  * @brief Calls the on_activated() method of a Lua switch.
  * @param sw A switch.
  */
@@ -2116,63 +2187,25 @@ void LuaContext::sensor_on_collision_explosion(Sensor& sensor) {
 }
 
 /**
- * @brief Calls the on_movement_finished() method of a Lua NPC.
- * @param npc An NPC.
+ * @brief Calls the on_open() method of a Lua door.
+ * @param door A door.
  */
-void LuaContext::npc_on_movement_finished(NPC& npc) {
+void LuaContext::door_on_open(Door& door) {
 
-  push_npc(l, npc);
-  on_movement_finished();
+  push_door(l, door);
+  on_open();
   lua_pop(l, 1);
 }
 
 /**
- * @brief Calls the on_interaction() method of a Lua NPC.
- * @param npc An NPC.
+ * @brief Calls the on_closed() method of a Lua door.
+ * @param door A door.
  */
-void LuaContext::npc_on_interaction(NPC& npc) {
+void LuaContext::door_on_closed(Door& door) {
 
-  push_npc(l, npc);
-  on_interaction();
+  push_door(l, door);
+  on_closed();
   lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_interaction_item() method of a Lua NPC.
- * @param npc An NPC.
- * @param item_used The equipment item used.
- * @return \c true if an interaction occurred.
- */
-bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
-
-  push_npc(l, npc);
-  bool result = on_interaction_item(item_used);
-  lua_pop(l, 1);
-  return result;
-}
-
-/**
- * @brief Calls the on_collision_fire() method of a Lua NPC.
- * @param npc An NPC.
- */
-void LuaContext::npc_on_collision_fire(NPC& npc) {
-
-  push_npc(l, npc);
-  on_collision_fire();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_empty() method of a Lua chest.
- * @param chest A chest.
- * @return \c true if the on_empty() method is defined.
- */
-bool LuaContext::chest_on_empty(Chest& chest) {
-
-  push_chest(l, chest);
-  bool result = on_empty();
-  lua_pop(l, 1);
-  return result;
 }
 
 /**
@@ -2196,39 +2229,6 @@ void LuaContext::shop_item_on_bought(ShopItem& shop_item) {
 
   push_entity(l, shop_item);
   on_bought();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_open() method of a Lua door.
- * @param door A door.
- */
-void LuaContext::door_on_open(Door& door) {
-
-  push_door(l, door);
-  on_open();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_closed() method of a Lua door.
- * @param door A door.
- */
-void LuaContext::door_on_closed(Door& door) {
-
-  push_door(l, door);
-  on_closed();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_moved() method of a Lua block.
- * @param block a block.
- */
-void LuaContext::block_on_moved(Block& block) {
-
-  push_block(l, block);
-  on_moved();
   lua_pop(l, 1);
 }
 

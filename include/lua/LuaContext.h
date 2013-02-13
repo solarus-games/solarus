@@ -268,25 +268,26 @@ class LuaContext {
     // Map entity events.
     // TODO entity_on_created
     void entity_on_removed(MapEntity& entity);
-    void switch_on_activated(Switch& sw);
-    void switch_on_inactivated(Switch& sw);
-    void switch_on_left(Switch& sw);
     void hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure);  // TODO push the item instead of its name
     void hero_on_obtained_treasure(Hero& hero, const Treasure& treasure);
     void hero_on_victory_finished(Hero& hero);  // TODO clear the hero events when changing map?
-    void sensor_on_activated(Sensor& sensor);
-    void sensor_on_activated_repeat(Sensor& sensor);
-    void sensor_on_collision_explosion(Sensor& sensor);
+    // TODO add destination_on_activated
     void npc_on_movement_finished(NPC& npc);
     void npc_on_interaction(NPC& npc);
     bool npc_on_interaction_item(NPC& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(NPC& npc);
     bool chest_on_empty(Chest& chest);
-    bool shop_item_on_buying(ShopItem& shop_item);
-    void shop_item_on_bought(ShopItem& shop_item);
+    void block_on_moved(Block& block);
+    void switch_on_activated(Switch& sw);
+    void switch_on_inactivated(Switch& sw);
+    void switch_on_left(Switch& sw);
+    void sensor_on_activated(Sensor& sensor);
+    void sensor_on_activated_repeat(Sensor& sensor);
+    void sensor_on_collision_explosion(Sensor& sensor);
     void door_on_open(Door& door);
     void door_on_closed(Door& door);
-    void block_on_moved(Block& block);
+    bool shop_item_on_buying(ShopItem& shop_item);
+    void shop_item_on_bought(ShopItem& shop_item);
     void enemy_on_update(Enemy& enemy);
     void enemy_on_suspended(Enemy& enemy, bool suspended);
     void enemy_on_created(Enemy& enemy);

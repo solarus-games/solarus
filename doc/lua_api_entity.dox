@@ -38,13 +38,13 @@ Here are the existing types of entities.
 - \subpage lua_api_pickable "Pickable treasure": A treasure placed on the ground
   and that the \ref lua_api_hero "hero" can pick up.
 - \subpage lua_api_destructible "Destructible object": An entity that can be cut
-  or lift by \ref lua_api_hero "hero", and that may hide a
+  or lifted by \ref lua_api_hero "hero", and that may hide a
   \ref lua_api_pickable "pickable treasure".
 - \subpage lua_api_chest "Chest": A chest that contains a treasure.
-- \subpage lua_api_jumper "Jumper": When walking on it, the \ref lua_api_hero
-  "hero" jumps into a direction.
 - \subpage lua_api_enemy "Enemy": A bad guy (possibly a boss) who may also drop
   a \ref lua_api_pickable "pickable treasure" when killed.
+- \subpage lua_api_jumper "Jumper": When walking on it, the \ref lua_api_hero
+  "hero" jumps into a direction.
 - \subpage lua_api_npc "Non-playing character" (NPC): Somebody or something the
   \ref lua_api_hero "hero" can interact with.
 - \subpage lua_api_block "Block": An entity that the \ref lua_api_hero "hero"

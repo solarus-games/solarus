@@ -1,0 +1,54 @@
+/**
+\page lua_api_teletransporter Teletransporter
+
+\tableofcontents
+
+A teletransporter is a detector that sends the
+\ref lua_api_hero "hero" to another place when he walks on it.
+
+This type of \ref lua_api_entity "map entity" can be declared in the
+\ref lua_api_map_overview_files "map data file".
+It can also be created dynamically with
+\ref lua_api_map_create_teletransporter "map:create_teletransporter()".
+
+\section lua_api_teletransporter_overview Overview
+
+A teletransporter can send the \ref lua_api_hero "hero" to one of the
+following kind of places.
+- A \ref lua_api_destination "destination" entity, on the same \ref
+  lua_api_map "map" or on another one.
+- The same coordinates on another \ref lua_api_map "map".
+- The side of an adjacent map (only possible for a teletransporter placed
+  on a side of the current \ref lua_api_map "map").
+
+Teletransporters may either have a sprite or be invisible.
+Their size is free, but the minimum size is
+the size of the \ref lua_api_hero "hero" (16x16 pixels).
+
+\note You can also teletransport the \ref lua_api_hero "hero" explicitly
+with \ref lua_api_hero_teleport "hero:teleport()".
+
+\section lua_api_teletransporter_inherited_methods Methods inherited from map entity
+
+Teletransporters are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all methods from the type map entity.
+
+See \ref lua_api_entity_methods to know these methods.
+
+\section lua_api_teletransporter_methods Methods of the type teletransporter
+
+None.
+
+\section lua_api_teletransporter_inherited_events Events inherited from map entity
+
+Teletransporters are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all events from the type map entity.
+
+See \ref lua_api_entity_events to know these events.
+
+\section lua_api_teletransporter_events Events of the type teletransporter
+
+None.
+
+*/
+

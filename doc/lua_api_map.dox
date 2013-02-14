@@ -797,7 +797,8 @@ on the map.
     \c 2: high).
   - \c x (number): X coordinate on the map.
   - \c y (number): Y coordinate on the map.
-  - \c subtype_name (string): The kind of destructible object to create:
+  - \c subtype_name (string): The kind of
+    \ref lua_api_destructible "destructible object" to create:
     \c "pot", \c "bush", \c "stone_small_white", \c "stone_small_black",
     \c "grass" or \c "bomb_flower".
   - \c treasure_name (string, optional): Kind of

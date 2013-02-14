@@ -217,7 +217,7 @@ Therefore, it inherits all events from the type map entity.
 
 See \ref lua_api_entity_events to know these events.
 
-\section lua_api_hero_events Events of the hero
+\section lua_api_hero_events Events of the type hero
 
 The following events are specific to the hero.
 

@@ -1,5 +1,5 @@
 /**
-\page lua_api_chest Block
+\page lua_api_block Block
 
 \tableofcontents
 
@@ -10,7 +10,7 @@ that may be pushed or pulled by the
 This type of \ref lua_api_entity "map entity" can be declared in the
 \ref lua_api_map_overview_files "map data file".
 It can also be created dynamically with
-\ref lua_api_map_create_npc "map:create_npc()".
+\ref lua_api_map_create_npc "map:create_block()".
 
 \section lua_api_block_overview Overview
 
@@ -83,4 +83,6 @@ The following events are specific to blocks.
 
 Called when the \ref lua_api_hero "hero" has just moved this block
 of a step.
+
+*/
 

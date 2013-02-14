@@ -6,7 +6,7 @@
 The hero is the character controlled by the player.
 There is always exactly one hero on the current map.
 
-\ref lua_api_hero_overview Overview
+\section lua_api_hero_overview Overview
 
 The name of the hero
 (as returned by \ref lua_api_entity_get_name
@@ -64,7 +64,7 @@ Returns the direction of the hero's \ref lua_api_sprite "sprites".
   (East) and 3 (South).
 
 \remark: The direction of the hero's sprites may be different from both the
-  direction pressed by the \ref lua_api_get_commands_direction "player's
+  direction pressed by the \ref lua_api_game_get_commands_direction "player's
   commands" and from the actual direction of the hero's \ref lua_api_movement
   "movement".
 
@@ -75,7 +75,7 @@ Sets the direction of the hero's \ref lua_api_sprite "sprites".
   (East) and 3 (South).
 
 \remark: The direction of the hero's sprites may be different from both the
-  direction pressed by the \ref lua_api_get_commands_direction "player's
+  direction pressed by the \ref lua_api_game_get_commands_direction "player's
   commands" and from the actual direction of the hero's \ref lua_api_movement
   "movement".
 

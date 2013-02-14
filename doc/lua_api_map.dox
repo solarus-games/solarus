@@ -1073,7 +1073,7 @@ on the map.
   - \c stops_npcs (boolean): \c true to make the wall stop
     \ref lua_api_npc "non-playing characters".
   - \c stops_enemies (boolean): \c true to make the wall stop
-    \ref lua_api_enemies "enemies".
+    \ref lua_api_enemy "enemies".
   - \c stops_blocks (boolean): \c true to make the wall stop
     \ref lua_api_block "blocks".
 - Return value (\ref lua_api_wall "wall"): the wall created.

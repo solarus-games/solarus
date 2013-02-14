@@ -537,7 +537,7 @@ This event is triggered when you call
 
 Called when the player is using this item.
 Only possible when the \ref lua_api_game "game" is running,
-and only for \ref lua_api_set_assignable "assignable items".
+and only for \ref lua_api_item_set_assignable "assignable items".
 
 The player is using your item (by pressing an item
 \ref lua_api_game_intro_commands

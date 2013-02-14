@@ -38,7 +38,7 @@ performances at runtime.
 
 \note There exists situations where you want to create, remove,
 show or hide a tile from your script.
-\ref lua_api_dynamic_tiles "Dynamic tiles" are made for that.
+\ref lua_api_dynamic_tile "Dynamic tiles" are made for that.
 Dynamic tiles are like normal tiles, except that they are not optimized
 as explained above, and they have a name.
 You can access them from your script and call methods such as

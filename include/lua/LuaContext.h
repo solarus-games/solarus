@@ -645,6 +645,7 @@ class LuaContext {
       map_api_create_fire,
 
       // Map entity API.
+      // TODO entity:get_type()
       entity_api_get_map,
       entity_api_get_name,  // TODO return nil if no name
       entity_api_exists,
@@ -663,7 +664,7 @@ class LuaContext {
       entity_api_get_sprite,
       entity_api_create_sprite,
       entity_api_remove_sprite,
-      entity_api_get_movement,
+      entity_api_get_movement,  // TODO also add to NPC
       entity_api_start_movement,  // TODO register on all entity types?
       entity_api_stop_movement,
       entity_api_has_layer_independent_collisions,
@@ -698,7 +699,7 @@ class LuaContext {
       door_api_is_open,
       pickable_api_get_followed_entity,
       pickable_api_get_falling_height,
-      pickable_api_get_treasure,
+      pickable_api_get_treasure,  // TODO return the item, not the item name
       enemy_api_get_breed,
       enemy_api_get_life,
       enemy_api_set_life,

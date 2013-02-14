@@ -166,7 +166,7 @@ bounding box.
 
 The origin point is usually be the central point of contact between the entity
 and the ground. For example, the origin point of the \ref lua_api_hero "hero",
-\ref lua_api_enemies "enemies", \ref lua_api_npc
+\ref lua_api_enemy "enemies", \ref lua_api_npc
 "non-playing characters" and most entities
 is the center of their shadow.
 Thus, for entities of size (<tt>16,16</tt>), the origin point is

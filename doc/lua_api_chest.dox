@@ -61,6 +61,9 @@ again.
 
 \section lua_api_chest_inherited_events Events inherited from map entity
 
+Events are callback methods automatically called by the engine if you define
+them.
+
 Chests are particular \ref lua_api_entity "map entities".
 Therefore, they inherit all events from the type map entity.
 
@@ -68,8 +71,7 @@ See \ref lua_api_entity_events to know these events.
 
 \section lua_api_chest_events Events of the type chest
 
-Events are callback methods automatically called by the engine if you define
-them.
+The following events are specific to chests.
 
 \subsection lua_api_chest_on_empty chest:on_empty()
 

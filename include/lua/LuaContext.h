@@ -272,7 +272,7 @@ class LuaContext {
     void hero_on_obtained_treasure(Hero& hero, const Treasure& treasure);
     void hero_on_victory_finished(Hero& hero);  // TODO clear the hero events when changing map?
     // TODO add destination_on_activated
-    void npc_on_movement_finished(NPC& npc);
+    void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now)
     void npc_on_interaction(NPC& npc);
     bool npc_on_interaction_item(NPC& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(NPC& npc);
@@ -656,7 +656,7 @@ class LuaContext {
       entity_api_get_origin,
       entity_api_set_origin,
       entity_api_get_position,
-      entity_api_set_position,
+      entity_api_set_position,  // TODO register on all entity types
       entity_api_get_distance,
       entity_api_get_angle,
       entity_api_snap_to_grid,
@@ -664,13 +664,13 @@ class LuaContext {
       entity_api_create_sprite,
       entity_api_remove_sprite,
       entity_api_get_movement,
-      entity_api_start_movement,
+      entity_api_start_movement,  // TODO register on all entity types?
       entity_api_stop_movement,
       entity_api_has_layer_independent_collisions,
       entity_api_set_layer_independent_collisions,
-      entity_api_test_obstacles,
+      entity_api_test_obstacles,  // TODO register on all entity types
       entity_api_get_optimization_distance,
-      entity_api_set_optimization_distance,
+      entity_api_set_optimization_distance,  // TODO register on all entity types
       hero_api_teleport,
       hero_api_set_visible,
       hero_api_get_direction,

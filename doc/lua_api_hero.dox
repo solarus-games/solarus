@@ -6,12 +6,19 @@
 The hero is the character controlled by the player.
 There is always exactly one hero on the current map.
 
-His name (as returned by \ref lua_api_entity_get_name
+\ref lua_api_hero_overview Overview
+
+The name of the hero
+(as returned by \ref lua_api_entity_get_name
 "entity:get_name()") is always \c "hero".
 Therefore, from a map script, you can access the hero with
 <tt>map:get_entity("hero")</tt> or directly with the
 \c hero variable (see \ref lua_api_map_get_entity "map:get_entity()"
 for more details).
+
+His size is always 16x16 pixels and his sprites
+(tunic, sword, shield, shadow, etc.)
+are managed by the engine.
 
 We describe here the Lua API that you can use to change the hero's state.
 
@@ -211,6 +218,9 @@ he cannot be hurt (for example when he is brandishing a treasure).
   "game:remove_life()".
 
 \section lua_api_hero_inherited_events Events inherited from map entity
+
+Events are callback methods automatically called by the engine if you define
+them.
 
 The hero is a particular \ref lua_api_entity "map entity".
 Therefore, it inherits all events from the type map entity.

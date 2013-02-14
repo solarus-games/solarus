@@ -130,6 +130,8 @@ sprite.
 Events are callback methods automatically called by the engine if you define
 them.
 
+The following events are specific to sprites.
+
 \subsection lua_api_sprite_on_animation_finished sprite:on_animation_finished(animation)
 
 Called when the current animation of this sprite is finished.

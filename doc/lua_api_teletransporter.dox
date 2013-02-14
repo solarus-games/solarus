@@ -41,6 +41,9 @@ None.
 
 \section lua_api_teletransporter_inherited_events Events inherited from map entity
 
+Events are callback methods automatically called by the engine if you define
+them.
+
 Teletransporters are particular \ref lua_api_entity "map entities".
 Therefore, they inherit all events from the type map entity.
 

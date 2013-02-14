@@ -590,8 +590,8 @@ Only possible when the \ref lua_api_game "game" is running.
   another item.
 - Return value (boolean): \c true if an interaction happened. If you return
   \c false or nothing, then \ref lua_api_item_on_using
-  "item_used:on_using()" will be called (just like if there was no NPC in
-  front of the hero).
+  "item_used:on_using()" will be called
+  (just like if there was no %NPC in front of the hero).
 
 \subsection lua_api_item_on_npc_collision_fire item:on_npc_collision_fire(npc)
 

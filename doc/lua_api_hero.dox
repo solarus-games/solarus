@@ -54,8 +54,8 @@ Hides or shows the hero.
 
 The player continues to control the hero even when he is invisible.
 He can fight enemies do everything as usual.
-- \c visible (boolean): \c true to show the hero, \c false to hide him
-  (no value means \c true).
+- \c visible (boolean, optional): \c true to show the hero, \c false to hide
+  him. No value means \c true.
 
 \subsection lua_api_hero_get_direction hero:get_direction()
 

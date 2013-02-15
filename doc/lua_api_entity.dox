@@ -54,10 +54,10 @@ Here are the existing types of entities.
   are fixed and optimized for performance).
 - \subpage lua_api_switch "Switch": A button or another mechanism that the \ref
   lua_api_hero "hero" can activate.
-- \subpage lua_api_wall "Wall": An invisible obstacle that stops some kinds of
-  entities.
 - \subpage lua_api_sensor "Sensor": An invisible sensor that triggers something
   when the \ref lua_api_hero "hero" overlaps it.
+- \subpage lua_api_wall "Wall": An invisible obstacle that stops some kinds of
+  entities.
 - \subpage lua_api_crystal "Crystal": A switch that lowers or raises
   \ref lua_api_crystal_block "crystal blocks".
 - \subpage lua_api_crystal_block "Crystal block": A block that can be lowered
@@ -135,8 +135,8 @@ Enables or disables this entity.
 When an entity is disabled, it is not displayed on the map, it does
 not move and does not detect collisions.
 But it still exists, it still has a position and it can be enabled again later.
-- \c enabled (boolean): \c true to enable the entity, \c false to
-  disable it (no value means \c true).
+- \c enabled (boolean, optional): \c true to enable the entity, \c false to
+  disable it. No value means \c true.
 
 \subsection lua_api_entity_get_size entity:get_size()
 

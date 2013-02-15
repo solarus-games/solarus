@@ -502,24 +502,24 @@ Normally, \ref lua_api_entity "map entities" automatically draw their
 sprites, so you don't have to call this function.
 However, you may need this function if you did not associate your sprite
 to the entity for some reason (see in particular
-\ref lua_api_enemy_create_sprite "enemy:create_sprite"),
+\ref lua_api_enemy_create_sprite "enemy:create_sprite()"),
 or if you want to draw something relative to map coordinates but
 without using a map entity.
 
 \subsection lua_api_map_get_crystal_state map:get_crystal_state()
 
 Returns the configuration of \ref lua_api_crystal_block
-"crystal switches".
+"crystal blocks".
 - Return value (boolean): \c false initially (orange blocks lowered),
   \c true otherwise (blue blocks lowered).
 
 \subsection lua_api_map_set_crystal_state map:set_crystal_state(state)
 
 Sets the configuration of \ref lua_api_crystal_block
-"crystal switches".
+"crystal blocks".
 
 This state persists accross maps of the same \ref lua_api_map_get_world
-"world", and is reset when the world changes and when the
+"world". It is reset when the world changes and when the
 \ref lua_api_game "savegame" is reloaded.
 - \c inverted (boolean): \c false to set the initial configuration
   (orange blocks lowered), \c true to the modified one (blue blocks lowered).
@@ -527,7 +527,7 @@ This state persists accross maps of the same \ref lua_api_map_get_world
 \subsection lua_api_map_change_crystal_state map:change_crystal_state()
 
 Inverts the configuration of \ref lua_api_crystal_block
-"crystal switches".
+"crystal blocks".
 
 \remark Equivalent to
 <tt>map:set_crystal_state(not map:get_crystal_state())</tt>.

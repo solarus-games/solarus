@@ -16,7 +16,7 @@ A Lua item object represents a kind of treasure
 Individual treasures may be represented as
 \ref lua_api_pickable "pickable treasures",
 \ref lua_api_chest "chests",
-\ref lua_api_shop_item "shop items", and may be brandished by the
+\ref lua_api_shop_treasure "shop treasures", and may be brandished by the
 \ref lua_api_hero "hero".
 For example, multiple treasures of the kind \c "rupee" may exist at the same
 time during the \ref lua_api_game "game", but only one Lua item
@@ -271,7 +271,8 @@ Sets the sound to play when the hero
 brandishes a treasure of this kind.
 
 The hero can brandish treasures in various situations: when opening a
-\ref lua_api_chest "chest", when buying a \ref lua_api_shop_item "shop item",
+\ref lua_api_chest "chest", when buying a
+\ref lua_api_shop_treasure "shop treasure",
 when picking up a \ref lua_api_pickable "pickable treasure" (unless  
 you called \ref lua_api_item_set_brandish_when_picked
 "item:set_brandish_when_picked(false)"), and also when you call

@@ -284,7 +284,7 @@ class LuaContext {
     void sensor_on_activated(Sensor& sensor);
     void sensor_on_activated_repeat(Sensor& sensor);
     void sensor_on_collision_explosion(Sensor& sensor);
-    void door_on_open(Door& door);
+    void door_on_open(Door& door);  // TODO rename to door:on_opened()
     void door_on_closed(Door& door);
     bool shop_item_on_buying(ShopItem& shop_item);
     void shop_item_on_bought(ShopItem& shop_item);

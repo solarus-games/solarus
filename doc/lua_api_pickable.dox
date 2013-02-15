@@ -79,7 +79,7 @@ even if they are not on the same layer.
 - Return value (boolean): \c true if this entity detects collisions even
   with entities on other layers.
 
-\subsection lua_api_pickable_set_layer_independent_collisions pickable:set_layer_independent_collisions(independent)
+\subsection lua_api_pickable_set_layer_independent_collisions pickable:set_layer_independent_collisions([independent])
 
 Sets whether this pickable treasure can detect collisions with entities
 even if they are not on the same layer.
@@ -90,7 +90,8 @@ For example,
 you can call this method if your pickable treasure is a flying object that
 should be able to be picked by the \ref lua_api_hero "hero" no matter his
 current layer.
-- \c independent (boolean): \c true to make this entity detect collisions even
+- \c independent (boolean, optional): \c true to make this entity detect
+  collisions even
   with entities on other layers. No value means \c true.
 
 \subsection lua_api_pickable_get_followed_entity pickable:get_followed_entity()

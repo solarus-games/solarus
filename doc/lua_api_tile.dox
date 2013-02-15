@@ -13,7 +13,8 @@ of placing many times the same tile on the map.
 Tiles can also overlap each other.
 
 For some reasons explained below, tiles are not accessible from Lua.
-When you need to access a tile from Lua (typically, to hide it),
+When you need to access a tile from Lua (typically, to make it
+appear or disappear),
 use a \ref lua_api_dynamic_tile "dynamic tile" instead.
 
 \subsection lua_api_tile_overview_performance Tiles are designed for performance
@@ -37,7 +38,7 @@ You can declare a huge number of tiles on your map without degrading
 performances at runtime.
 
 \note There exists situations where you want to create, remove,
-show or hide a tile from your script.
+enable or disable a tile from your script.
 \ref lua_api_dynamic_tile "Dynamic tiles" are made for that.
 Dynamic tiles are like normal tiles, except that they are not optimized
 as explained above, and they have a name.

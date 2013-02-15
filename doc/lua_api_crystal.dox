@@ -1,0 +1,48 @@
+/**
+\page lua_api_crystal Crystal
+
+\tableofcontents
+
+A crystal is a switch that lowers or raises alternatively some
+special colored blocks in the ground
+called \ref lua_api_crystal_block "crystal blocks".
+
+This type of \ref lua_api_entity "map entity" can be declared in the
+\ref lua_api_map_overview_files "map data file".
+It can also be created dynamically with
+\ref lua_api_map_create_crystal "map:create_crystal()".
+
+\section lua_api_crystal_overview Overview
+
+A crystal is essentially a solid switch that
+\ref lua_api_map_change_crystal_state "inverts the
+configuration" of \ref lua_api_crystal_block "crystal blocks"
+when activated.
+
+\section lua_api_crystal_inherited_methods Methods inherited from map entity
+
+Crystals are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all methods from the type map entity.
+
+See \ref lua_api_entity_methods to know these methods.
+
+\section lua_api_crystal_methods Methods of the type crystal
+
+None.
+
+\section lua_api_crystal_inherited_events Events inherited from map entity
+
+Events are callback methods automatically called by the engine if you define
+them.
+
+Crystals are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all events from the type map entity.
+
+See \ref lua_api_entity_events to know these events.
+
+\section lua_api_crystal_events Events of the type crystal
+
+None.
+
+*/
+

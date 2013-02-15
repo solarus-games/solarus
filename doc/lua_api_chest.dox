@@ -51,12 +51,12 @@ Returns the state of this chest (open or closed).
 - Return value (boolean): \c true if this chest is open, \c false if it is
   closed.
 
-\subsection lua_api_chest_set_open chest:set_open(open)
+\subsection lua_api_chest_set_open chest:set_open([open])
 
 Sets the state of this chest (open or closed).
 If you close the chest, its content (if any) is restored and can be obtained
 again.
-- \c open (boolean): \c true to make the chest open, \c false
+- \c open (boolean, optional): \c true to make the chest open, \c false
   to make it closed. No value means \c true.
 
 \section lua_api_chest_inherited_events Events inherited from map entity

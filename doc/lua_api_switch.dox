@@ -15,12 +15,15 @@ It can also be created dynamically with
 A switch may be activated by the
 \ref lua_api_hero "hero",
 by a \ref lua_api_block "block"
-or by an \ref lua_api_arrow "arrow",
+or by an
+\ref lua_api_arrow "arrow",
 depending on its subtype.
 The following subtypes of switches are available:
 - walkable, invisible pressure plate,
 - walkable, visible pressure plate,
-- Invisible button to be activated by shooting an \ref lua_api_arrow "arrow".
+- Invisible button to be activated by shooting an
+  \ref lua_api_arrow "arrow" shot by the
+  \ref lua_api_hero_start_bow "bow",
 - Solid switch to be activated with the sword or other weapons.
 
 When a switch is activated, the event
@@ -76,7 +79,7 @@ it can no longer be activated or inactivated
 \remark The method \ref lua_api_switch_set_activated "switch:set_activated()"
   works even on a locked switch.
 
-\section lua_api_chest_inherited_events Events inherited from map entity
+\section lua_api_switch_inherited_events Events inherited from map entity
 
 Events are callback methods automatically called by the engine if you define
 them.

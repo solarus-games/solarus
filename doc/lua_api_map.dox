@@ -289,7 +289,7 @@ The starting location is automatically set by the engine
 when the world changes (not when the map changes).
 
 Some other features may also rely on the world property, like the state of
-\ref lua_api_crystal_switch "crystal switches". Their state persists
+\ref lua_api_crystal_block "crystal blocks". Their state persists
 between all maps of the current world and is reset when the world changes.
 - Return value (string): Name of the world of the current map.
 
@@ -1206,7 +1206,7 @@ on the map.
     - \c 2: Block to open with a small key.
     - \c 3: Door to open with a big key.
     - \c 4: Door to open with the boss key.
-    - \c 6: Wall to blast with an explosion (visible weakness).
+    - \c 5: Wall to blast with an explosion (visible weakness).
     - \c 6: Wall to blast with an explosion (more visible weakness).
     - \c 8: Block to blast with an explosion (visible weakness).
   - \c savegame_variable (number, optional): Name of the boolean value that

@@ -27,7 +27,9 @@ Use \ref lua_api_entity_set_enabled "dynamic_tile:set_enabled()" to this end.
   the state of a \ref lua_api_door "door".
   If you give the appropriate name to your dynamic tile, the engine will
   enable or disable it depending on whether the door is open or closed.
-  See the documentation of \ref lua_api_door "doors" for more information.
+  See the documentation of
+  \ref lua_api_map_open_doors "map:open_doors()"
+  for more information.
 
 \section lua_api_dynamic_tile_inherited_methods Methods inherited from map entity
 

@@ -3,7 +3,7 @@
 
 \tableofcontents
 
-A crystal block is a colored obstacle
+A crystal block is a colored low wall
 that may be raised or lowered in the ground.
 
 This type of \ref lua_api_entity "map entity" can be declared in the

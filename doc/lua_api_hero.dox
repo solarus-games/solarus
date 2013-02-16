@@ -5,6 +5,8 @@
 
 The hero is the character controlled by the player.
 There is always exactly one hero on the current map.
+The hero is automatically created by the engine:
+you cannot create or remove him.
 
 \section lua_api_hero_overview Overview
 

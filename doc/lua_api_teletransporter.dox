@@ -21,9 +21,10 @@ following kind of places.
 - The side of an adjacent map (only possible for a teletransporter placed
   on a side of the current \ref lua_api_map "map").
 
-Teletransporters may either have a sprite or be invisible.
-Their size is free, but the minimum size is
-the size of the \ref lua_api_hero "hero" (16x16 pixels).
+Teletransporters can have any size,
+but like all entities, their width and height
+must be multiples of 8 pixels.
+The minimum size if 16x16 pixels (the size of the hero).
 
 \note You can also teletransport the \ref lua_api_hero "hero" explicitly
 with \ref lua_api_hero_teleport "hero:teleport()".

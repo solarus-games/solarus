@@ -30,48 +30,56 @@ Here are the existing types of entities.
 - \subpage lua_api_tile "Tile": A small brick that composes a piece of the
   \ref lua_api_map "map", with a pattern picked
   from the tileset.
+- \subpage lua_api_dynamic_tile "Dynamic tile": A special
+  \ref lua_api_tile "tile"
+  that can be enabled or disabled dynamically (\ref lua_api_tile "usual tiles"
+  are optimized away at runtime).
+- \subpage lua_api_teletransporter "Teletransporter": When walking on it, the
+  \ref lua_api_hero "hero" is transported somewhere, possibly on
+  the same \ref lua_api_map "map" or another map.
 - \subpage lua_api_destination "Destination": A possible destination place for
   \ref lua_api_teletransporter "teletransporters".
-- \subpage lua_api_teletransporter "Teletransporter": When walking on it, the
-  \ref lua_api_hero "hero" is transported to a destination, possibly on
-  the same \ref lua_api_map "map" or another map.
 - \subpage lua_api_pickable "Pickable treasure": A treasure placed on the ground
   and that the \ref lua_api_hero "hero" can pick up.
 - \subpage lua_api_destructible "Destructible object": An entity that can be cut
   or lifted by \ref lua_api_hero "hero", and that may hide a
   \ref lua_api_pickable "pickable treasure".
 - \subpage lua_api_chest "Chest": A chest that contains a treasure.
+- \subpage lua_api_shop_treasure "Shop treasure": A treasure that the \ref
+  lua_api_hero "hero" can buy for a price.
 - \subpage lua_api_enemy "Enemy": A bad guy (possibly a boss) who may also drop
   a \ref lua_api_pickable "pickable treasure" when killed.
-- \subpage lua_api_jumper "Jumper": When walking on it, the \ref lua_api_hero
-  "hero" jumps into a direction.
 - \subpage lua_api_npc "Non-playing character" (NPC): Somebody or something the
   \ref lua_api_hero "hero" can interact with.
 - \subpage lua_api_block "Block": An entity that the \ref lua_api_hero "hero"
   can push or pull.
-- \subpage lua_api_dynamic_tile "Dynamic tile": A special tile
-  that can be enabled or disabled dynamically (\ref lua_api_tile "usual tiles"
-  are fixed and optimized for performance).
+- \subpage lua_api_jumper "Jumper": When walking on it, the \ref lua_api_hero
+  "hero" jumps into a direction.
 - \subpage lua_api_switch "Switch": A button or another mechanism that the \ref
   lua_api_hero "hero" can activate.
-- \subpage lua_api_sensor "Sensor": An invisible sensor that triggers something
-  when the \ref lua_api_hero "hero" overlaps it.
-- \subpage lua_api_wall "Wall": An invisible obstacle that stops some kinds of
+- \subpage lua_api_sensor "Sensor": An invisible detector that detects the
+  presence of the \ref lua_api_hero "hero".
+- \subpage lua_api_wall "Wall": An invisible object that stops some kinds of
   entities.
 - \subpage lua_api_crystal "Crystal": A switch that lowers or raises
   \ref lua_api_crystal_block "crystal blocks".
-- \subpage lua_api_crystal_block "Crystal block": A block that can be lowered
-  (travserable) or raised (obstacle) with using \ref lua_api_crystal "crystal".
-- \subpage lua_api_shop_treasure "Shop treasure": A treasure that the \ref
-  lua_api_hero "hero" can buy for a price.
+- \subpage lua_api_crystal_block "Crystal block": A low wall that can be
+  lowered
+  (travserable) or raised (obstacle) using a \ref lua_api_crystal "crystal".
 - \subpage lua_api_conveyor_belt "Conveyor belt": When walking on it, the \ref
   lua_api_hero "hero" is moved into a direction.
 - \subpage lua_api_door "Door": A door to open with an \ref lua_api_item
   "equipment item" or another condition.
 - \subpage lua_api_stairs "Stairs": %Stairs between two \ref lua_api_map "maps"
   or to a platform of a single map.
+- \subpage lua_api_bomb "Bomb": A bomb that will explode after a few seconds
+  and that may be lifted by the \ref lua_api_hero "hero".
+- \subpage lua_api_explosion "Explosion": An explosion that can hurt the
+  \ref lua_api_hero "hero" and the \ref lua_api_enemy "enemies".
+- \subpage lua_api_fire "Fire": A flame that can hurt
+  \ref lua_api_enemy "enemies" and interact with other entities.
 
-TODO carried item, boomerang, explosion, arrow, bomb, fire, hookshot?
+TODO arrow, boomerang, hookshot, carried item
 
 \remark Note that \ref lua_api_sprite "sprites" and \ref lua_api_movement
 "movements" are not map entities, but they can be attached to map entities

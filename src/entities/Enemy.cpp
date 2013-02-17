@@ -829,33 +829,6 @@ void Enemy::notify_movement_finished() {
 }
 
 /**
- * @brief Notifies this entity that the frame of one of its sprites has just changed.
- * @param sprite the sprite
- * @param animation the current animation
- * @param frame the new frame
- */
-void Enemy::notify_sprite_frame_changed(
-    Sprite& sprite, const std::string& animation, int frame) {
-
-  Detector::notify_sprite_frame_changed(sprite, animation, frame);
-  get_lua_context().enemy_on_sprite_frame_changed(
-      *this, sprite, animation, frame);
-}
-
-/**
- * @brief Notifies this entity that the animation of one of its sprites
- * has just finished.
- * @param sprite the sprite
- * @param animation the animation just finished
- */
-void Enemy::notify_sprite_animation_finished(
-    Sprite& sprite, const std::string& animation) {
-
-  Detector::notify_sprite_animation_finished(sprite, animation);
-  get_lua_context().enemy_on_sprite_animation_finished(*this, sprite, animation);
-}
-
-/**
  * @brief Notifies the enemy that a collision was just detected with another entity
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision

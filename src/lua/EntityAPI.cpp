@@ -2391,35 +2391,6 @@ void LuaContext::enemy_on_movement_finished(Enemy& enemy) {
 }
 
 /**
- * @brief Calls the on_sprite_animation_finished() method of a Lua enemy.
- * @param enemy An enemy.
- * @param sprite A sprite whose animation has just finished.
- * @param animation Name of the animation finished.
- */
-void LuaContext::enemy_on_sprite_animation_finished(Enemy& enemy,
-    Sprite& sprite, const std::string& animation) {
-
-  push_enemy(l, enemy);
-  on_sprite_animation_finished(sprite, animation);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_sprite_frame_changed() method of a Lua enemy.
- * @param enemy An enemy.
- * @param sprite A sprite whose animation frame has just changed.
- * @param animation Name of the sprite animation.
- * @param frame The new frame.
- */
-void LuaContext::enemy_on_sprite_frame_changed(Enemy& enemy,
-    Sprite& sprite, const std::string& animation, int frame) {
-
-  push_enemy(l, enemy);
-  on_sprite_frame_changed(sprite, animation, frame);
-  lua_pop(l, 1);
-}
-
-/**
  * @brief Calls the on_collision_enemy() method of a Lua enemy.
  * @param enemy An enemy.
  * @param other_enemy Another enemy colliding with the first one.

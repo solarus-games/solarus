@@ -36,7 +36,6 @@ function enemy:on_created()
 
   self:set_life(1000000)
   self:set_damage(16)
-  self:create_sprite("enemies/ganon")
   self:set_optimization_distance(0)
   self:set_size(32, 32)
   self:set_origin(16, 29)
@@ -48,6 +47,13 @@ function enemy:on_created()
   self:set_attack_consequence("thrown_item", "immobilized")
   self:set_pushed_back_when_hurt(false)
   self:set_push_hero_on_sword(true)
+
+  local sprite = self:create_sprite("enemies/ganon")
+  function sprite:on_animation_finished(animation)
+    if animation == "jumping" then
+      enemy:finish_jump()
+    end
+  end
 end
 
 function enemy:on_restarted()
@@ -145,13 +151,6 @@ function enemy:finish_jump()
   self:set_attack_consequence("thrown_item", "immobilized")
   self:set_can_attack(true)
   self:restart()
-end
-
-function enemy:on_sprite_animation_finished(sprite, animation)
-
-  if animation == "jumping" then
-    self:finish_jump()
-  end
 end
 
 function enemy:destroy_floor(prefix, first, last)

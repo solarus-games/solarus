@@ -618,22 +618,6 @@ Called when the
 \ref lua_api_movement "movement"
 of the enemy is finished (if there is an end).
 
-\subsection lua_api_enemy_on_sprite_animation_finished enemy:on_sprite_animation_finished(sprite, animation)
-
-called when the animation of a
-\ref lua_api_sprite "sprite" of this enemy has just finished.
-- \c sprite (\ref lua_api_sprite "sprite"): A sprite of this enemy.
-- \c animation (string): Name of the animation that has just finished
-  in this sprite.
-
-\subsection lua_api_enemy_on_sprite_frame_changed enemy:on_sprite_frame_changed(sprite, animation, frame)
-
-Called whenever the frame of a \ref lua_api_sprite "sprite"
-of this enemy has changed.
-- \c sprite (\ref lua_api_sprite "sprite"): A sprite of this enemy.
-- \c animation (string): Name of the current animation in this sprite.
-- \c frame (number): The new current frame (the first one is \c 0).
-
 \subsection lua_api_enemy_on_collision_enemy enemy:on_collision_enemy(other_enemy, other_sprite, my_sprite)
 
 Called when a \ref lua_api_sprite "sprite"

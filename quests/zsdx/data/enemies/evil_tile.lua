@@ -9,7 +9,14 @@ function enemy:on_created()
 
   self:set_life(1)
   self:set_damage(4)
-  self:create_sprite("enemies/evil_tile")
+
+  local sprite = self:create_sprite("enemies/evil_tile")
+  function sprite:on_animation_finished(animation)
+    if state == "destroying" then
+      enemy:remove()
+    end
+  end
+
   self:set_size(16, 16)
   self:set_origin(8, 13)
   self:set_invincible()
@@ -66,13 +73,6 @@ function enemy:disappear()
     if timer ~= nil then
       timer:stop()
     end
-  end
-end
-
-function enemy:on_sprite_animation_finished(sprite, animation)
-
-  if state == "destroying" then
-    self:remove()
   end
 end
 

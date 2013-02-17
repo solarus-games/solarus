@@ -2302,36 +2302,6 @@ void LuaContext::on_movement_finished() {
 }
 
 /**
- * @brief Calls the on_sprite_animation_finished() method of the object on top of the stack.
- * @param sprite A sprite whose animation has just finished.
- * @param animation Name of the animation finished.
- */
-void LuaContext::on_sprite_animation_finished(Sprite& sprite, const std::string& animation) {
-
-  if (find_method("on_sprite_animation_finished")) {
-    push_sprite(l, sprite);
-    push_string(l, animation);
-    call_function(3, 0, "on_sprite_animation_finished");
-  }
-}
-
-/**
- * @brief Calls the on_sprite_frame_changed() method of the object on top of the stack.
- * @param sprite A sprite whose animation frame has just changed.
- * @param animation Name of the sprite animation.
- * @param frame The new frame.
- */
-void LuaContext::on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
-
-  if (find_method("on_sprite_frame_changed")) {
-    push_sprite(l, sprite);
-    push_string(l, animation);
-    lua_pushinteger(l, frame);
-    call_function(4, 0, "on_sprite_frame_changed");
-  }
-}
-
-/**
  * @brief Calls the on_collision_enemy() method of the object on top of the stack.
  * @param other_enemy Another enemy colliding with the object on top of the stack.
  * @param other_sprite Colliding sprite of the other enemy.

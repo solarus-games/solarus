@@ -290,7 +290,7 @@ class LuaContext {
     void shop_item_on_bought(ShopItem& shop_item);
     void enemy_on_update(Enemy& enemy);
     void enemy_on_suspended(Enemy& enemy, bool suspended);
-    void enemy_on_created(Enemy& enemy);
+    void enemy_on_created(Enemy& enemy);  // TODO remove?
     void enemy_on_enabled(Enemy& enemy);
     void enemy_on_disabled(Enemy& enemy);
     void enemy_on_restarted(Enemy& enemy);
@@ -300,10 +300,6 @@ class LuaContext {
     void enemy_on_obstacle_reached(Enemy& enemy, Movement& movement);
     void enemy_on_movement_changed(Enemy& enemy, Movement& movement);
     void enemy_on_movement_finished(Enemy& enemy);
-    void enemy_on_sprite_animation_finished(Enemy& enemy,
-        Sprite& sprite, const std::string& animation);
-    void enemy_on_sprite_frame_changed(Enemy& enemy,
-        Sprite& sprite, const std::string& animation, int frame);
     void enemy_on_collision_enemy(Enemy& enemy,
         Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
     void enemy_on_custom_attack_received(Enemy& enemy,
@@ -951,8 +947,6 @@ class LuaContext {
     void on_obstacle_reached(Movement& movement);
     void on_movement_changed(Movement& movement);
     void on_movement_finished();
-    void on_sprite_animation_finished(Sprite& sprite, const std::string& animation);  // TODO remove? use sprite:on_animation_finished instead
-    void on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
     void on_hurt(EnemyAttack attack, int life_lost);
     void on_dying();

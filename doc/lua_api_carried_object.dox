@@ -1,0 +1,28 @@
+/**
+\page lua_api_carried_object Carried object
+
+\tableofcontents
+
+A carried object is a
+\ref lua_api_entity "entity" that the \ref lua_api_hero "hero"
+lifts or is carrying.
+
+This type of entity is entirely created and managed by the engine.
+You cannot create or access a carried object from Lua.
+
+\section lua_api_carried_object_overview Overview
+
+A carried object is created automatically by the engine when
+the \ref lua_api_hero "hero" lifts a
+\ref lua_api_entity "map entity".
+Map entities that can be lifted include
+\ref lua_api_destructible "destructible objects"
+and \ref lua_api_bomb "bombs".
+The carried object takes the sprite and the features of the lifted entity
+it is created from. 
+
+The hero can then walk with his carried object and throw it.
+He can even go to another map: the carried object is preserved.
+
+*/
+

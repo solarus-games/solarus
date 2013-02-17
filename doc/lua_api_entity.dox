@@ -44,6 +44,8 @@ Here are the existing types of entities.
 - \subpage lua_api_destructible "Destructible object": An entity that can be cut
   or lifted by \ref lua_api_hero "hero", and that may hide a
   \ref lua_api_pickable "pickable treasure".
+- \subpage lua_api_carried_object "Carried object": A \ref lua_api_destructible
+  "destructible object" lifted and carried by the \ref lua_api_hero "hero".
 - \subpage lua_api_chest "Chest": A chest that contains a treasure.
 - \subpage lua_api_shop_treasure "Shop treasure": A treasure that the \ref
   lua_api_hero "hero" can buy for a price.
@@ -78,8 +80,11 @@ Here are the existing types of entities.
   \ref lua_api_hero "hero" and the \ref lua_api_enemy "enemies".
 - \subpage lua_api_fire "Fire": A flame that can hurt
   \ref lua_api_enemy "enemies" and interact with other entities.
-
-TODO arrow, boomerang, hookshot, carried item
+- \subpage lua_api_arrow "Arrow": An arrow shot by the bow.
+- \subpage lua_api_hookshot "Hookshot": A hookshot shot by the
+  \ref lua_api_hero "hero".
+- \subpage lua_api_boomerang "Boomerang": A boomerang shot by the
+  \ref lua_api_hero "hero".
 
 \remark Note that \ref lua_api_sprite "sprites" and \ref lua_api_movement
 "movements" are not map entities, but they can be attached to map entities

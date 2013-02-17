@@ -18,7 +18,7 @@ It cannot be declared in the
 Fire is typically created with an
 \ref lua_api_item "equipment item" like a lamp.
 
-Fire hurts \ref lua_api_enemies "enemies"
+Fire hurts \ref lua_api_enemy "enemies"
 that are sensible to it.
 It does not hurt the \ref lua_api_hero "hero".
 

@@ -1,327 +1,685 @@
 /**
-\page lua_api_enemy Enemies
+\page lua_api_enemy Enemy
 
-The \c sol.enemy module is available to scripts attached to an enemy.
-\c sol.enemy represents a particular instance of enemy.
-Each breed of enemy is controlled by a Lua script.
-If several enemies of the same breed exist on the map, they all have their
-own Lua world, which means they don't share global values.
+\tableofcontents
 
-- \c sol.enemy.get_name():
-returns the name of the current enemy
+An enemy is a bad guy that hurts the \ref lua_api_hero
+"hero" when touching him.
 
-- \c sol.enemy.get_life():
-returns the current level of life of the enemy
+This type of \ref lua_api_entity "map entity" can be declared in the
+\ref lua_api_map_overview_files "map data file".
+It can also be created dynamically with
+\ref lua_api_map_create_enemy "map:create_enemy()".
 
-- \c sol.enemy.set_life(life):
-sets the level of life of the enemy
-(default is 1 when the enemy is created)
+\section lua_api_enemy_overview Overview
 
-- \c sol.enemy.add_life(life):
-adds some life to the enemy
+Enemies can exist in various breeds.
+Each breed corresponds to a model of enemy with
+its the behavior, its
+\ref lua_api_sprite "sprites" and its
+\ref lua_api_movement "movements".
 
-- \c sol.enemy.remove_life(life):
-remove some life from the enemy
+The script file <tt>enemies/XXXX.lua</tt> defines the enemy breed
+\c XXXX.
+This script is executed every time an enemy of that model is created.
+The corresponding Lua enemy object is passed as parameter
+of that script. Use the Lua notation \c "..." to get this parameter and store
+it into a regular variable.
 
-- \c sol.enemy.get_damage():
-returns the number of life points that the enemy removes from the hero when touching him
-(when the hero's defense level is minimal)
+Here is a basic example of script for the enemy breed \c "tentacle",
+a simple model of enemy that just follows the hero.
+\verbatim
+-- First, we put the parameter into a variable called "enemy".
+-- (In Lua, the notation "..." refers to the parameter(s) of the script.)
+local enemy = ...
 
-- \c sol.enemy.set_damage(damage):
-sets the number of life points that the enemy removes from the hero when touching him
-(when the hero's defense level is minimal)
-(default is 1)
+-- Called when the enemy was just created on the map.
+function enemy:on_created()
 
-- \c sol.enemy.get_magic_damage():
-returns the number of magic points that the enemy removes from the hero when touching him
+  -- Define the properties of this enemy.
+  self:set_life(1)
+  self:set_damage(2)
+  self:create_sprite("enemies/tentacle")
+  self:set_size(16, 16)
+  self:set_origin(8, 13)
+end
 
-- \c sol.enemy.set_magic_damage(magic_damage):
-sets the number of magic points that the enemy removes from the hero when touching him
-(default is 0)
+-- Called when the enemy should start or restart its movement
+-- (for example if the enemy has just been created or was just hurt).
+function enemy:on_restarted()
 
-- \c sol.enemy.is_pushed_back_when_hurt():
-returns whether the enemy is pushed away when it is hurt
+  -- Create a movement that walks toward the hero.
+  local m = sol.movement.create("target")
+  m:set_speed(32)
+  self:start_movement(m)
+end
+\endverbatim
 
-- \c sol.enemy.set_pushed_back_when_hurt(pushed_back_when_hurt):
-sets whether the enemy is pushed away when it is hurt
-(default is true)
+Such a script is all what you need to define a model of enemy.
+The engine handles for you the detection of collisions with the
+\ref lua_api_hero "hero" or his weapons,
+hurts the hero or the enemy when appropriate,
+removes the enemy when it gets killed, etc.
+But you can customize everything using the API described on this page,
+like what kind of attacks can hurt the enemy.
+You can also make complex enemies composed of several sprites, and set
+different behavior to each sprite. This is very useful to program a boss.
 
-- \c sol.enemy.get_push_hero_on_sword():
-returns whether the hero is pushed away when he strikes the enemy with the sword
+Basic enemies often have the same behavior.
+To avoid duplication of code,
+you can factorize some code into a generic file
+and call it from each enemy breed script
+with \c require(),
+\ref lua_api_main_do_file "sol.main.do_file()"
+or 
+\ref lua_api_main_load_file "sol.main.load_file()".
 
-- \c sol.enemy.set_push_hero_on_sword(push_hero_on_sword):
-sets whether the hero is pushed away when he strikes the enemy with the sword
-(default is false)
+\section lua_api_enemy_inherited_methods Methods inherited from map entity
 
-- \c sol.enemy.get_can_hurt_hero_running(can_hurt_hero_running):
-returns whether the enemy can hurt the hero even when the hero is running
+Enemies are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all methods from the type map entity.
 
-- \c sol.enemy.set_can_hurt_hero_running(can_hurt_hero_running):
-sets whether the enemy can hurt the hero even when the hero is running
-(default is false)
+See \ref lua_api_entity_methods to know these methods.
 
-- \c sol.enemy.get_hurt_style():
-returns the style of sounds and animations to play when the enemy is hurt:
-"normal", "monster" or "boss"
+\section lua_api_enemy_methods Methods of the type enemy
 
-- \c sol.enemy.set_hurt_style(style):
-sets the style of sounds and animations to play when the enemy is hurt:
-"normal", "monster" or "boss" (default is "normal" for usual enemies
-and "boss" for bosses and minibosses)
+The following methods are specific to enemies.
 
-- \c sol.enemy.get_can_attack():
-returns whether the enemy can currently attack the hero
+\subsection lua_api_enemy_get_breed enemy:get_breed()
 
-- \c sol.enemy.set_can_attack(can_attack):
-Sets whether the enemy can currently attack the hero (default is true).
+Returns the breed (the model) of this enemy.
+- Return value (string): The enemy's breed.
+
+\subsection lua_api_enemy_get_life enemy:get_life()
+
+Returns the current life of this enemy.
+- Return value (number): Number of health points of the enemy.
+
+\subsection lua_api_enemy_set_life enemy:set_life(life)
+
+Sets the current life of this enemy.
+
+The default value is \c 1.
+- \c life (number): Number of health points to set. A value of \c 0
+  kills the enemy.
+
+\subsection lua_api_enemy_add_life enemy:add_life(life)
+
+Adds some life to the enemy.
+- \c life (number): Number of health points to add.
+
+\remark Equivalent to <tt>enemy:set_life(enemy:get_life() + life)</tt>
+
+\subsection lua_api_enemy_remove_life enemy:remove_life(life)
+
+Removes some life from the enemy.
+- \c life (number): Number of health points to remove.
+
+\remark Equivalent to <tt>enemy:set_life(enemy:get_life() - life)</tt>
+
+\subsection lua_api_enemy_get_damage enemy:get_damage()
+
+Returns the number of life points that the enemy removes from the
+\ref lua_api_hero "hero" when touching him.
+This number will be
+divided by the level of resistance ability of the player (his tunic).
+- Return value (number): Damage inflicted to the hero.
+
+\subsection lua_api_enemy_set_damage enemy:set_damage(damage)
+
+Sets the number of life points that the enemy removes from the
+\ref lua_api_hero "hero" when touching him.
+This number will be
+divided by the level of resistance ability of the player (his tunic).
+
+The default value is \c 1.
+- \c damage (number): Damage inflicted to the hero.
+
+\subsection lua_api_enemy_get_magic_damage enemy:get_magic_damage()
+
+Returns the number of magic points that the enemy removes from the
+\ref lua_api_hero "hero" when touching him.
+- Return value (number): Magic damage inflicted to the hero.
+
+\subsection lua_api_enemy_set_magic_damage enemy:set_magic_damage(magic_damage)
+
+Sets the number of magic points that the enemy removes from the
+\ref lua_api_hero "hero" when touching him.
+
+The default value is \c 0.
+- \c magic_damage (number): Magic damage inflicted to the hero.
+
+\subsection lua_api_enemy_is_pushed_back_when_hurt enemy:is_pushed_back_when_hurt()
+
+Returns whether the enemy is pushed away when it is hurt.
+- Return value (boolean): \c true if the enemy is pushed away when hurt.
+
+\subsection lua_api_enemy_set_pushed_back_when_hurt enemy:set_pushed_back_when_hurt(pushed_back_when_hurt)
+
+Sets whether the enemy should be pushed away when it is hurt.
+
+The default value is \c true.
+- \c pushed_back_when_hurt (boolean): \c true to make the enemy pushed away
+  when hurt.
+
+\subsection lua_api_enemy_get_push_hero_on_sword enemy:get_push_hero_on_sword()
+
+Returns whether the
+\ref lua_api_hero "hero" is pushed away when he hits
+this enemy with his sword.
+- Return value (boolean): \c true if the hero is pushed away when hitting
+  this enemy with his sword.
+
+\subsection lua_api_enemy_set_push_hero_on_sword enemy:set_push_hero_on_sword(push_hero_on_sword)
+
+Sets whether the
+\ref lua_api_hero "hero" should be pushed away when he hits
+this enemy with his sword.
+
+The default value is \c false.
+- \c push_hero_on_sword (boolean): \c true to push the hero away when
+  hitting this enemy with his sword.
+
+\subsection lua_api_enemy_get_can_hurt_hero_running enemy_get_can_hurt_hero_running()
+
+Returns whether this enemy can hurt the
+\ref lua_api_hero "hero" even when the hero is running.
+- Return value (boolean): \c true if the hero can be hurt by this enemy
+  even when running.
+
+\subsection lua_api_enemy_set_can_hurt_hero_running enemy:set_can_hurt_hero_running(can_hurt_hero_running)
+
+Sets whether this enemy can hurt the
+\ref lua_api_hero "hero" even when the hero is running.
+
+The default value is \c false.
+- \c can_hurt_hero_running (boolean): \c true so that the hero can be hurt
+  by this enemy even when running.
+
+\subsection lua_api_enemy_get_hurt_style enemy:get_hurt_style()
+
+Returns the style of sounds and animations to play when this enemy is hurt.
+- Return value (string): \c "normal", \c "monster" or \c "boss".
+
+\subsection lua_api_enemy_set_hurt_style enemy:set_hurt_style(hurt_style)
+
+Sets the style of sounds and animations to play when this enemy is hurt.
+The default values are \c "normal" for usual enemies
+and \c "boss" for bosses and minibosses.
+- \c hurt_style (string): \c "normal", \c "monster" or \c "boss".
+
+\subsection lua_api_enemy_get_can_attack enemy:get_can_attack()
+
+Returns whether this enemy can currently attack the
+\ref lua_api_hero "hero".
+- Return value (boolean): \c true if the enemy can currently attack the hero.
+
+\subsection lua_api_enemy_set_can_attack enemy:set_can_attack(can_attack)
+
+Sets whether this enemy can currently attack the
+\ref lua_api_hero "hero".
+
 When the enemy restarts after being hurt, \c can_attack is always
-reset to true.
+set to \c true.
+- \c can_attack (boolean): \c true to allow the enemy to attack the hero.
 
-- \c sol.enemy.get_minimum_shield_needed():
-returns the minimum hero's level of shield that allows him to stop attacks from this enemy
-(0 means that he cannot stop the attacks)
+\subsection lua_api_enemy_get_minimum_shield_needed enemy:get_minimum_shield_needed()
 
-- \c sol.enemy.set_minimum_shield_needed(shield_level):
-returns the minimum hero's level of shield that allows him to stop attacks from this enemy
-(0 means that he cannot stop the attacks and is the default)
+Returns the level of protection (if any)
+that stops attacks from this enemy.
 
-- \c sol.enemy.set_attack_consequence(attack, consequence):
-Sets how the enemy reacts when it receives an attack.
-\c attack can be "sword", "thrown_item", "explosion",
-"arrow", "hookshot", "boomerang", or "fire".
-\c consequence can be an integer that indicates the number
-of life points to remove, or the string
-"ignored", "protected", "immobilize" or "custom".
-This reaction will be applied unless the sprite that receives the attack
-has a specific reaction (see \c sol.enemy.set_attack_consequence_sprite). 
+If the player has a protection
+\ref lua_api_game_get_ability "ability" greater than or equal to
+this value, he will stop attacks from this enemy if he is facing the direction
+of the enemy.
+The special value of \c 0 means that attacks cannot be stopped with the
+protection ability.
+Returns the required level of protection to stop attacks from this enemy.
+- Return value (number): The level of protection that stops attacks from
+  this enemy. A value of \c 0 means that the hero cannot stop the attacks.
 
-- \c sol.enemy.set_attack_consequence_sprite(sprite, attack, consequence):
-Sets how the enemy reacts when a particular sprite receives an attack.
-\c attack and \c consequence can have the same values
-as \c sol.enemy.set_attack_consequence.
+\subsection lua_api_enemy_set_minimum_shield_needed enemy:set_minimum_shield_needed(minimum_shield_needed)
 
-- \c sol.enemy.set_default_attack_consequences():
-Sets the default attack consequences for the enemy.
+Sets a level of protection that stops attacks from this enemy.
 
-- \c sol.enemy.set_default_attack_consequences_sprite(sprite):
-Sets the default attack consequences for a particular sprite of the enemy.
+If the player has a protection
+\ref lua_api_game_get_ability "ability" greater than or equal to
+this value, he will stop attacks from this enemy if he is facing the direction
+of the enemy.
+The special value of \c 0 means that attacks cannot be stopped with the
+protection ability.
+The default value is \c 0.
+- \c minimum_shield_needed (number): The level of protection that stops
+  attacks from this enemy.
+  A value of \c 0 means that the hero cannot stop the attacks.
 
-- \c sol.enemy.set_invincible():
-Makes the enemy ignore all attacks.
-Equivalent to calling \c sol.enemy.set_attack_consequence(attack,
-"ignored") for each attack.
+\subsection lua_api_enemy_set_attack_consequence enemy:set_attack_consequence(attack, consequence)
 
-- \c sol.enemy.set_invincible_sprite(sprite):
-Makes a particular sprite of the enemy ignore all attacks.
-Equivalent to calling \c sol.enemy.set_attack_consequence_sprite(sprite,
-attack, "ignored") for each attack.
+Sets how this enemy reacts when it receives an attack.
 
-- \c sol.enemy.set_layer_independent_collisions(independent):
-Sets whether the collisions with the enemy should be detected
-from every layer (default is false).
+Recall that enemies may have several \ref lua_api_sprite "sprites".
+This attack consequence applies to all sprites of the enemy,
+unless the ones that you override with
+\ref lua_api_enemy_set_attack_consequence_sprite
+"enemy:set_attack_consequence_sprite()".
+- \c attack (string): Name of an attack against the enemy:
+  "sword", "thrown_item", "explosion", "arrow", "hookshot",
+  "boomerang" or "fire".
+- \c consequence (number or string): Indicates what happens when this enemy
+  receives the attack. It may be:
+  - A positive integer: The enemy is hurt and loses this number of life points.
+  - \c "ignored": Nothing happens. The weapon (if any) traverses the enemy.
+  - \c "protected": The enemy stops the attack. A attack failure sound is
+    played.
+  - \c "immobilize": The enemy is immobilized for a few seconds.
+  - \c "custom": Event \ref lua_api_enemy_on_custom_attack_received
+    "enemy:on_custom_attack_received()" is called.
 
-- \c sol.enemy.set_treasure(item_name, variant, savegame_variable):
-Sets the treasure of the enemy.
-\c item_name can be the name of a valid item, "_none"
-or "_random".
-\c savegame_variable can be -1 if you don't want the item
-to be saved.
+\subsection lua_api_enemy_set_attack_consequence_sprite enemy:set_attack_consequence_sprite(sprite, attack, consequence):
 
-- \c sol.enemy.set_no_treasure():
-Sets no treasure of the enemy.
-Equivalent to \c sol.enemy.set_treasure("_none", 1, -1).
+Sets how this enemy reacts when one of its \ref lua_api_sprite "sprites"
+receives an attack.
+This method overrides for a particular sprite the attack consequences defined
+by \ref lua_api_enemy_set_attack_consequence
+"enemy:set_attack_consequence()".
+- \c sprite (\ref lua_api_sprite "sprite"): A sprite of this enemy.
+- \c attack (string): Name of an attack against the enemy:
+  "sword", "thrown_item", "explosion", "arrow", "hookshot",
+  "boomerang" or "fire".
+- \c consequence (number or string): Indicates what happens when this sprite
+  receives the attack. The possible values are the same as in
+  \ref lua_api_enemy_set_attack_consequence
+  "enemy:set_attack_consequence()".
 
-- \c sol.enemy.set_random_treasure():
-Sets a random treasure for the enemy (this is the default behavior).
-Equivalent to \c sol.enemy.set_treasure("_random", 1, -1).
+\subsection lua_api_enemy_set_default_attack_consequences enemy:set_default_attack_consequences()
 
-- \c sol.enemy.get_obstacle_behavior():
-Returns how the enemy behaves with obstacles: "normal", "flying" or "swimming".
+Restores the default attack consequences for this enemy and its sprites.
 
-- \c sol.enemy.set_obstacle_behavior(behavior):
-Sets how the enemy behaves with obstacles: "normal", "flying" or "swimming".
-"flying" will ignore obstacles like holes, water or lava.
-"swimming" will ignore water.
+\subsection lua_api_enemy_set_default_attack_consequences_sprite enemy:set_default_attack_consequences_sprite(sprite)
 
-- \c sol.enemy.get_optimization_distance(distance):
-Returns the optimization threshold. Above this distance from the visible area
+Restores the default attack consequences for a particular sprite of this enemy.
+- \c sprite (\ref lua_api_sprite "sprite"): A sprite of this enemy.
+
+\subsection lua_api_enemy_set_invincible enemy:set_invincible()
+
+Makes this enemy ignore all attacks.
+
+Equivalent to calling
+<tt>lua_api_enemy_set_attack_consequence(attack, "ignored")</tt>
+for each attack.
+
+\subsection lua_api_enemy_set_invincible_sprite enemy:set_invincible_sprite(sprite)
+
+Makes a sprite of this enemy ignore all attacks.
+
+Equivalent to calling
+<tt>lua_api_enemy_set_attack_consequence_sprite(sprite, attack, "ignored")</tt>
+for each attack.
+- \c sprite (\ref lua_api_sprite "sprite"): A sprite of this enemy.
+
+\subsection lua_api_enemy_set_layer_independent_collisions enemy:set_layer_independent_collisions([independent])
+
+Sets whether this enemy can detect collisions with entities
+even if they are not on the same layer.
+
+By default, enemies can only have collisions with entities on the
+same layer.
+If you set this property to \c true, this enemy will be able to hurt
+the \ref lua_api_hero "hero" even from a different layer.
+- \c independent (boolean, optional): \c true to make this enemy detect
+  collisions even
+  with entities on other layers. No value means \c true.
+
+\subsection lua_api_enemy_set_treasure enemy:set_treasure([item_name, [variant, [savegame_variable]]])
+
+Sets the \ref lua_api_pickable
+"pickable treasure" that will drop this enemy when killed.
+- \c item_name (string, optional): Name of an \ref lua_api_item
+  "equipment item".
+  \c nil or no value means no item.
+- \c variant (number, optional): Variant of this equipment item
+  (\c 1 means the first variant). The default value is \c 1.
+- \c savegame_variable (string, optional): Name of the boolean
+  value that stores in the \ref lua_api_game "savegame"
+  whether the treasure dropped is found.
+  \c nil or no value means that the treasure is not saved.
+
+\subsection lua_api_enemy_get_obstacle_behavior enemy:get_obstacle_behavior()
+
+Returns how the enemy behaves with obstacles.
+- Return value (string): \c "normal", \c "flying" or \c "swimming".
+
+\subsection lua_api_enemy_set_obstacle_behavior enemy:set_obstacle_behavior(obstacle_behavior)
+
+Sets how this enemy should behave with obstacles.
+The default value is \c "normal".
+\c "swimming" allow the enemy to traverse water.
+\c "flying" allows the enemy to traverse holes, water and lava.
+- \c obstacle_behavior (string): \c "normal", \c "flying" or \c "swimming".
+
+\subsection lua_api_enemy_get_optimization_distance enemy:get_optimization_distance()
+
+Returns the optimization threshold of this enemy.
+
+Above this distance from the visible area
 of the map, the enemy will be suspended.
-A value of 0 means an infinite distance (the enemy is never optimized away).
+A value of \c 0 means an infinite distance (the enemy is never optimized away).
+- Return value (number): The optimization distance in pixels.
 
-- \c sol.enemy.set_optimization_distance(distance):
-Sets the optimization threshold. Above this distance from the visible area
-of the map, the enemy will be suspended. The default value is usually fine,
+\subsection lua_api_enemy_set_optimization_distance enemy:set_optimization_distance(optimization_distance)
+
+Sets the optimization threshold of this enemy.
+
+Above this distance from the visible area
+of the map, the enemy will be suspended.
+A value of \c 0 means an infinite distance (the enemy is never optimized away).
+The default value is usually fine,
 but you may need to increase it in some cases, for example for a boss in a
-huge room. A value of 0 means an infinite distance (the enemy is never
-optimized away).
+huge room.
+- \c optimization_distance (number): The optimization distance to set in
+  pixels.
 
-- \c sol.enemy.get_size():
-Returns the size of the enemy's bounding box (two return values: width and height in pixels).
+\subsection lua_api_enemy_set_size enemy:set_size(width, height)
 
-- \c sol.enemy.set_size(width, height):
-Sets the size of the enemy's bounding box (default: 16, 16).
+Sets the size of the bounding box of this enemy.
+
+The default value is 16x16 pixels.
 This is the effective size used to detect obstacles when moving,
-but the sprite of the enemy may be larger, especially for a boss.
+but the \ref lua_api_sprite "sprite"
+of the enemy may be larger, especially for a boss.
+- \c width (number): Width of the enemy in pixels.
+- \c height (number): Height of the enemy in pixels.
 
-- \c sol.enemy.get_origin():
-Returns the coordinates of the origin point of the enemy, relative to its
-bounding box top-left corner (two returns values: x and y).
+\subsection lua_api_enemy_set_origin enemy:set_origin(origin_x, origin_y)
 
-- \c sol.enemy.set_origin(x, y):
-Sets the coordinates of the origin point of the enemy, relative to its
-bounding box top-left corner (default: 0, 0).
+Sets the origin point of this enemy, relative to the top-left corner
+of its bounding box.
 
-- \c sol.enemy.get_position():
-Returns the current position of the enemy on the map
-(i.e. the position of its origin point relative to the map's top-left corner).
-Three values are returned: x, y and the layer.
+This origin point property allows entities of different sizes to have
+comparable reference points that can be used by the engine.
+Indeed, when two enemies overlap, the engine needs to determine which one
+has to be displayed first
+(it is always the one with the lowest Y coordinate).
+Sometimes, the engine also needs to compute an angle between two entities,
+for example to push away an enemy that was just hit.
+Using the top-left corner of their bounding box would not give the correct
+angle (unless both entities had the same size).
 
-- \c sol.enemy.set_position(x, y, layer):
-Sets the position of the enemy on the map
-(i.e. the position of its origin point relative to the map's top-left corner).
-The layer is optional: by default, is is unchanged.
+The origin point is also the point of synchronization of an entity with its
+\ref lua_api_sprite "sprites" (because again, an entity that has a given
+size may have sprites with different sizes).
 
-- \c sol.enemy.get_distance_to_hero():
-Returns the distance in pixels between the enemy and the hero.
+The default values is \c 0x0 and should be changed for most enemies.
+See \ref lua_api_entity_get_origin "entity:get_origin()" for more explanations
+about the origin point.
+- \c origin_x (number): X coordinate of the origin point in pixels,
+  relative to the top-left corner of the enemy's bounding box.
+- \c origin_y (number): Y coordinate of the origin point in pixels,
+  relative to the top-left corner of the enemy's bounding box.
 
-- \c sol.enemy.get_angle_to_hero():
-Returns the angle in radians of the vector from the enemy to the hero.
+\subsection lua_api_enemy_set_position enemy:set_position(x, y, [layer]):
 
-- \c sol.enemy.test_obstacles(dx, dy):
-Returns whether there would be a collision if the enemy was translated
-with the given parameters.
+Changes the position of this enemy
+on the map (coordinates and layer).
+The \ref lua_api_entity_get_origin "origin point" of the
+enemy gets placed at these coordinates,
+relative to the map's top-left corner.
+- \c x (number): X coordinate to set.
+- \c y (number): Y coordinate to set.
+- \c layer (number, optional): Layer to set
+  (\c 0: low layer, \c 1: intermediate layer, \c 2: high layer).
+  By default, the layer is unchanged.
 
-- \c sol.enemy.snap_to_grid():
-Makes sure the enemy's top-left corner is aligned with the 8*8 grid of the map.
+\subsection lua_api_enemy_test_obstacles enemy:test_obstacles(dx, dy)
+
+Returns whether there would be a collision with obstacles
+if this enemy was translated.
+- \c dx (number): X component of the translation in pixels.
+- \c dx (number): Y component of the translation in pixels.
+
+\subsection lua_api_enemy_snap_to_grid enemy:snap_to_grid()
+
+Makes sure this enemy's top-left corner is aligned with the 8*8 grid
+of the \ref lua_api_map "map".
 Be careful: this function does not check collisions with obstacles.
 
-- \c sol.enemy.get_movement():
-Returns the current movement of the enemy.
+\subsection lua_api_enemy_get_movement enemy:get_movement()
 
-- \c sol.enemy.start_movement(movement):
-Sets a movement to the enemy (any previous movement is destroyed).
+Returns the current movement of this enemy.
+- Return value (\ref lua_api_movement "movement"): The current movement,
+  or \c nil if the enemy is not moving.
 
-- \c sol.enemy.stop_movement():
-Stops and destroys the current movement of the enemy (if any).
+\subsection lua_api_enemy_start_movement enemy:start_movement(movement)
 
-- \c sol.enemy.restart():
-Restarts the enemy. This plays animation "walking" on its sprites
-and triggers event_restart().
+Starts a movement on this enemy.
+- \c movement (\ref lua_api_movement "movememt"): The movement to set.
 
-- \c sol.enemy.hurt(life_points):
-Hurts the enemy.
+\subsection lua_api_enemy_stop_movement enemy:stop_movement()
 
-- \c sol.enemy.create_sprite(animation_set):
-Creates a sprite attached to the enemy and returns it.
+Stops the movement (if any) of this enemy.
 
-- \c sol.enemy.remove_sprite(sprite):
-Removes and destroys a sprite of this enemy. If \c sprite is not
-specified, the first sprite that was created is removed.
+\subsection lua_api_enemy_restart enemy:restart()
 
-- \c sol.enemy.get_sprite():
-Returns the sprite of the enemy. If the enemy has several sprites, the first
-one that was created is returned.
-If you have created several sprites, this function is probably not for you:
-you should memorize the return value of each call to
-\c sol.enemy.create_sprite instead.
+Restarts this enemy.
 
-- \c sol.enemy.create_son(enemy_name, breed, x, y, layer):
-Creates another enemy, specifying its coordinates as relative to the current
-enemy. The layer is optional: by default, the enemy is created on the same
-layer as the current one.
+This plays animation \c "walking" on its
+\ref lua_api_sprite "sprites"
+and calls the event \ref lua_api_enemy_on_restarted "enemy:on_restarted()".
 
-- \c sol.enemy.get_father():
-Returns the name of the father of the enemy (if any).
-The father is the enemy that created
-the current one by calling \c sol.enemy.create_son,
-Returns an empty string if the current enemy has no father.
+\subsection lua_api_enemy_hurt enemy:hurt(life_points)
 
-- \c sol.enemy.send_message(dst_enemy, message):
-Sends a string message to another enemy.
-His function event_message_received() will be called,
-and then \c sol.enemy.send_message will return.
+Hurts this enemy if possible.
 
-- \c event_update():
-called at each cycle (so take care of the performances)
+The enemy is not hurt if he is currently invulnerable
+(for example because he is already in the process of being hurt).
+- \c life_points (number): Number of life points to remove from the enemy.
 
-- \c event_set_suspended(suspended):
-called when the game is suspended or resumed
+\subsection lua_api_enemy_get_sprite enemy:get_sprite()
 
-- \c event_dialog_started(dialog_id):
-(triggered only if this enemy script started the dialog):
-called when a dialog starts
+Returns the \ref lua_api_sprite "sprite" of this enemy,
+as created by
+\ref lua_api_enemy_create_sprite "enemy:create_sprite()".
+- Return value (\ref lua_api_sprite "sprite"): The first sprite created for
+ this enemy.
 
-- \c event_dialog_finished(dialog_id, answer):
-(triggered only if this enemy script started the dialog):
-called when a dialog finishes (i.e. once its last group of 3 lines is finished)
+\remark If the enemy has several sprites, the first one created is returned.
+  For the other sprites, you cannot use this function.
+  However, you can just store the return values of your calls to
+  \ref lua_api_enemy_create_sprite "enemy:create_sprite()".
 
-- \c event_appear():
-called when an instance of the enemy controlled by this script has just been created on the map
+\subsection lua_api_enemy_create_sprite enemy:create_sprite(sprite_name)
 
-- \c event_enabled():
-called when the enemy has just been enabled
+Creates a \ref lua_api_sprite "sprite" for this enemy.
+- \c sprite_name (string): Name of the animation set of the
+  sprite to create.
+- Return value (\ref lua_api_sprite "sprite"): The sprite created.
 
-- \c event_disabled():
-called when the enemy has just been disabled
+\remark If you don't create a sprite, your enemy will be invisible.
 
-- \c event_restart():
-Called when the enemy is restarting its movement because
-something happended (for example the enemy has just been created,
+\subsection lua_api_enemy_remove_sprite enemy:remove_sprite([sprite])
+
+Removes and destroys a
+\ref lua_api_sprite "sprite" of this enemy.
+
+The sprite must have been created before by
+\ref lua_api_enemy_create_sprite "enemy:create_sprite()".
+- \c sprite (\ref lua_api_sprite "sprite"): The sprite to remove.
+  The default value is the first sprite that was created.
+
+\subsection lua_api_enemy_create_enemy enemy:create_enemy(name, breed, x, y, [layer])
+
+Creates another enemy on the \ref lua_api_map "map",
+specifying its coordinates as relative to the current enemy.
+- \c name (string): Name identifying the new entity.
+  It must be unique in the map.
+- \c breed (string): Model of enemy to create.
+- \c x (number): X coordinate of the new enemy, relative to the current one.
+- \c y (number): Y coordinate of the new enemy, relative to the current one.
+- \c layer (number, optional): Layer of the new enemy
+  (\c 0: low, \c 1: intermediate, \c 2: high).
+  By default, the layer is the one of the current enemy.
+- Return value (enemy): The enemy created.
+
+\section lua_api_enemy_inherited_events Events inherited from map entity
+
+Events are callback methods automatically called by the engine if you define
+them.
+
+Enemies are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all events from the type map entity.
+
+See \ref lua_api_entity_events to know these events.
+
+\section lua_api_enemy_events Events of the type enemy
+
+The following events are specific to enemies.
+
+\subsection lua_api_enemy_on_update enemy:on_update()
+
+Called at each cycle while this enemy is alive.
+
+\remark As this function is called at each cycle, it is recommended to use other
+solutions when possible, like \ref lua_api_timer "timers" and other events.
+
+\subsection lua_api_enemy_on_suspended enemy:on_suspended(suspended)
+
+Called when the \ref lua_api_map "map"
+has just been suspended or resumed.
+
+The map is suspended by the engine in a few cases, like when the \ref
+lua_api_game "game" is
+paused or when the camera is being moved by a script.
+When this happens, all \ref lua_api_entity "map entities" stop moving and most
+\ref lua_api_sprite "sprites" stop their animation.
+- \c suspended (boolean): \c true if the map was just suspended, \c
+  false if it was resumed.
+
+\subsection lua_api_enemy_on_created enemy:on_created()
+
+called when this enemy has just been created on the
+\ref lua_api_map "map".
+
+\subsection lua_api_enemy_on_enabled enemy:on_enabled()
+
+called when this enemy has just been
+\ref lua_api_entity_is_enabled "enabled".
+
+\subsection lua_api_enemy_on_disabled enemy:on_disabled()
+
+called when this enemy has just been
+\ref lua_api_entity_is_enabled "disabled".
+
+\subsection lua_api_enemy_on_restarted enemy:on_restarted()
+
+Called when this enemy should start or restart its
+\ref lua_api_movement "movement" because
+something happended
+(for example the enemy has just been created,
 or it was just hurt).
-If your enemy moves, it is usual to create its movement in this function.
+If your enemy should move, this is the right place
+to create its movement.
 
-- \c event_pre_display():
-called just before the enemy is displayed (you may display additional things below the enemy)
+\subsection lua_api_enemy_on_pre_draw enemy:on_pre_draw()
 
-- \c event_post_display():
-called just after the enemy is displayed (you may display additional things above the enemy)
+Called just before the enemy is drawn on the map.
+You may display additional things below the enemy.
 
-- \c event_position_changed(x, y):
-called when the enemy has moved
+\subsection lua_api_enemy_on_post_draw enemy:on_post_draw()
 
-- \c event_layer_changed(layer):
-called when the layer of the enemy has changed
+Called just after the enemy is drawn on the map.
+You may display additional things above the enemy.
 
-- \c event_obstacle_reached():
-called when the movement of the enemy was stopped because of an obstacle.
+\subsection lua_api_enemy_on_position_changed enemy:on_position_changed(x, y, layer)
 
-- \c event_movement_changed(movement):
-called when something changes in the movement of the enemy
+Called when the coordinates of this enemy have just changed.
+- \c x (number): The new X coordinate of the enemy.
+- \c y (number): The new Y coordinate of the enemy.
+- \c layer (number): The new layer of the enemy.
 
-- \c event_movement_finished(movement):
-called when the movement of the enemy is finished
+\subsection lua_api_enemy_on_obstacle_reached enemy:on_obstacle_reached(movement)
 
-- \c event_sprite_frame_changed(sprite, animation, frame):
-called when the current frame of a sprite of the enemy has changed
+Called when the \ref lua_api_movement "movement"
+of this enemy was stopped because of an obstacle.
 
-- \c event_sprite_animation_finished(sprite, animation):
-called when the animation of a sprite of the enemy has just finished
+When an obstacle is reached, this event is called instead of
+\ref lua_api_enemy_on_position_changed "enemy:on_position_changed()".
+- \c movement (\ref lua_api_movement "movement"): The movement of the enemy.
 
-- \c event_collision_enemy(other_name, other_sprite, my_sprite):
-called when the enemy detects a collision with another enemy
+\subsection lua_api_enemy_on_movement_changed enemy:on_movement_changed(movement)
 
-- \c event_custom_attack_received(attack, sprite):
-Called when the enemy receives an attack with a custom effect.
-\c attack can be "sword", "thrown_item", "explosion",
-"arrow", "hookshot", "boomerang", or "fire".
+Called when some characteristics of this enemy's
+\ref lua_api_movement "movement"
+(like the speed or the angle) have just changed.
+- \c movement (\ref lua_api_movement "movement"): The movement of the enemy.
+
+\subsection lua_api_enemy_on_movement_finished enemy:on_movement_finished()
+
+Called when the
+\ref lua_api_movement "movement"
+of the enemy is finished (if there is an end).
+
+\subsection lua_api_enemy_on_sprite_animation_finished enemy:on_sprite_animation_finished(sprite, animation)
+
+called when the animation of a
+\ref lua_api_sprite "sprite" of this enemy has just finished.
+- \c sprite (\ref lua_api_sprite "sprite"): A sprite of this enemy.
+- \c animation (string): Name of the animation that has just finished
+  in this sprite.
+
+\subsection lua_api_enemy_on_sprite_frame_changed enemy:on_sprite_frame_changed(sprite, animation, frame)
+
+Called whenever the frame of a \ref lua_api_sprite "sprite"
+of this enemy has changed.
+- \c sprite (\ref lua_api_sprite "sprite"): A sprite of this enemy.
+- \c animation (string): Name of the current animation in this sprite.
+- \c frame (number): The new current frame (the first one is \c 0).
+
+\subsection lua_api_enemy_on_collision_enemy enemy:on_collision_enemy(other_enemy, other_sprite, my_sprite)
+
+Called when a \ref lua_api_sprite "sprite"
+of this enemy overlaps another enemy's sprite.
+- \c other_enemy (enemy): Another enemy.
+- \c other_sprite (\ref lua_api_sprite "sprite"): A sprite of that other enemy.
+- \c my_sprite (\ref lua_api_sprite "sprite"): A sprite of the current enemy.
+
+\subsection lua_api_enemy_on_custom_attack_received enemy:on_custom_attack_received(attack, sprite)
+
+Called when this enemy receives an attack with a custom effect.
+
+This function is called if you
+\ref lua_api_enemy_set_attack_consequence "consequence of the attack"
+to \c "custom".
 You have to define what happens, for example hurting the enemy, making a
-special reaction, etc. If the attacks comes from a pixel-precise collision
-test, the sprite that receives the attack is passed as a parameter.
+special reaction, etc.
+- \c attack (string): The attack that was received:
+  \c "sword", \c "thrown_item", \c "explosion",
+  \c "arrow", \c "hookshot", \c "boomerang" or \c "fire".
+- \c sprite (\ref lua_api_sprite "sprite"): The sprite of this enemy
+  that receives the attack, or \c nil if the attack does not come from a
+  pixel-precise collision.
 
-- \c event_hurt(attack, life_lost):
-Called when the enemy is hurt.
-\c attack can be "sword", "thrown_item", "explosion",
-"arrow", "hookshot", "boomerang", or "fire".
-This function is called after removing \c life_lost life points.
+\subsection lua_api_enemy_on_hurt enemy:on_hurt(attack, life_lost)
 
-- \c event_dead():
-called when the enemy is killed and has finished to die
+Called when this enemy was just hurt.
+- \c The attack that was received:
+  \c "sword", \c "thrown_item", \c "explosion",
+  \c "arrow", \c "hookshot", \c "boomerang" or \c "fire".
+- \c life_lost (number): The number of life points just lost by the enemy.
 
-- \c event_immobilized():
-called when the enemy is immobilized
+\subsection lua_api_enemy_on_dying enemy:on_dying()
 
-- \c event_message_received(src_enemy, message):
-Called when the enemy receives a string message from another enemy.
+Called when the enemy's life comes to \c 0.
+At this point, the dying animation of the enemy starts and a sound
+is played.
+The enemy will be removed from the map when the dying animation ends.
+
+\subsection lua_api_enemy_on_dead enemy:on_dead()
+
+Called when the enemy's dying animation is finished.
+
+\subsection lua_api_enemy_on_immobilized enemy:on_immobilized():
+
+Called when the enemy is immobilized.
 
 */
 

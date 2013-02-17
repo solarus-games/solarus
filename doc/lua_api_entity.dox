@@ -169,7 +169,7 @@ other entities.
 \subsection lua_api_entity_get_origin entity:get_origin()
 
 Returns the origin point of this entity, relative to the top-left corner
-of the bounding box.
+of its bounding box.
 
 When an entity is located at some coordinates on the \ref lua_api_map "map",
 the origin points determines what exact point of the entity's bounding box

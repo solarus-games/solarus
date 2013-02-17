@@ -35,7 +35,7 @@ See \ref lua_api_entity_methods to know these methods.
 
 \section lua_api_pickable_methods Methods of the type pickable
 
-\subsection lua_api_npc_get_sprite npc:get_sprite()
+\subsection lua_api_pickable_get_sprite pickable:get_sprite()
 
 Returns the sprite of this pickable treasure.
 - Return value (\ref lua_api_sprite "sprite"): The sprite of this pickable
@@ -45,6 +45,9 @@ Returns the sprite of this pickable treasure.
 
 Changes the position of this pickable treasure
 on the map (coordinates and layer).
+The \ref lua_api_entity_get_origin "origin point" of the
+pickable treasure gets placed at these coordinates,
+relative to the map's top-left corner.
 - \c x (number): X coordinate to set.
 - \c y (number): Y coordinate to set.
 - \c layer (number, optional): Layer to set
@@ -60,7 +63,7 @@ Returns the movement (if any) of this pickable treasure.
 \subsection lua_api_pickable_start_movement pickable:start_movement(movement)
 
 Starts a movement on this pickable treasure.
-- \c movement (\ref lua_api_movement): The movement to set.
+- \c movement (\ref lua_api_movement "movement"): The movement to set.
 
 \remark By default, when a pickable treasure is created dynamically,
 the engine starts a
@@ -71,13 +74,6 @@ so that it looks like the pickable treasure is falling.
 \subsection lua_api_pickable_stop_movement pickable:stop_movement()
 
 Stops the movement (if any) of this pickable treasure.
-
-\subsection lua_api_pickable_has_layer_independent_collisions pickable:has_layer_independent_collisions()
-
-Returns whether this pickable treasure can detect collisions with entities
-even if they are not on the same layer.
-- Return value (boolean): \c true if this entity detects collisions even
-  with entities on other layers.
 
 \subsection lua_api_pickable_set_layer_independent_collisions pickable:set_layer_independent_collisions([independent])
 
@@ -90,8 +86,8 @@ For example,
 you can call this method if your pickable treasure is a flying object that
 should be able to be picked by the \ref lua_api_hero "hero" no matter his
 current layer.
-- \c independent (boolean, optional): \c true to make this entity detect
-  collisions even
+- \c independent (boolean, optional): \c true to make this pickable treasure
+  detect collisions even
   with entities on other layers. No value means \c true.
 
 \subsection lua_api_pickable_get_followed_entity pickable:get_followed_entity()

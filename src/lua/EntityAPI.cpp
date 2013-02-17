@@ -412,7 +412,7 @@ int LuaContext::entity_api_get_size(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_set_size.
+ * @brief Implementation of \ref lua_api_enemy_set_size.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -444,7 +444,7 @@ int LuaContext::entity_api_get_origin(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_set_origin.
+ * @brief Implementation of \ref lua_api_enemy_set_origin.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -475,7 +475,12 @@ int LuaContext::entity_api_get_position(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_set_position.
+ * @brief Implementation of
+ * \ref lua_api_hero_set_position,
+ * \ref lua_api_npc_set_position,
+ * \ref lua_api_block_set_position,
+ * \ref lua_api_pickable_set_position and
+ * \ref lua_api_enemy_set_position.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -501,7 +506,7 @@ int LuaContext::entity_api_set_position(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_snap_to_grid.
+ * @brief Implementation of \ref lua_api_enemy_snap_to_grid.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -561,7 +566,10 @@ int LuaContext::entity_api_get_angle(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_get_sprite.
+ * @brief Implementation of
+ * \ref lua_api_npc_get_sprite,
+ * \ref lua_api_pickable_get_sprite and
+ * \ref lua_api_enemy_get_sprite.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -579,7 +587,7 @@ int LuaContext::entity_api_get_sprite(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_create_sprite.
+ * @brief Implementation of \ref lua_api_enemy_create_sprite.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -595,7 +603,7 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_remove_sprite.
+ * @brief Implementation of \ref lua_api_enemy_remove_sprite.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -616,7 +624,9 @@ int LuaContext::entity_api_remove_sprite(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_get_movement.
+ * @brief Implementation of
+ * \ref lua_api_pickable_get_movement and
+ * \ref lua_api_enemy_get_movement.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -636,7 +646,10 @@ int LuaContext::entity_api_get_movement(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_start_movement.
+ * @brief Implementation of
+ * \ref lua_api_npc_start_movement,
+ * \ref lua_api_pickable_start_movement and
+ * \ref lua_api_enemy_start_movement.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -652,7 +665,10 @@ int LuaContext::entity_api_start_movement(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_stop_movement.
+ * @brief Implementation of
+ * \ref lua_api_npc_stop_movement,
+ * \ref lua_api_pickable_stop_movement and
+ * \ref lua_api_enemy_stop_movement.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -666,7 +682,8 @@ int LuaContext::entity_api_stop_movement(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_has_layer_independent_collisions.
+ * @brief Implementation of
+ * lua_api_entity_has_layer_independent_collisions (TODO).
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -685,7 +702,9 @@ int LuaContext::entity_api_has_layer_independent_collisions(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_set_layer_independent_collisions.
+ * @brief Implementation of
+ * \ref lua_api_pickable_set_layer_independent_collisions and
+ * \ref lua_api_enemy_set_layer_independent_collisions.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -706,7 +725,7 @@ int LuaContext::entity_api_set_layer_independent_collisions(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_test_obstacles.
+ * @brief Implementation of \ref lua_api_enemy_test_obstacles.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -725,7 +744,7 @@ int LuaContext::entity_api_test_obstacles(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_get_optimization_distance.
+ * @brief Implementation of \ref lua_api_enemy_get_optimization_distance.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -738,7 +757,7 @@ int LuaContext::entity_api_get_optimization_distance(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_set_optimization_distance.
+ * @brief Implementation of \ref lua_api_enemy_set_optimization_distance.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */

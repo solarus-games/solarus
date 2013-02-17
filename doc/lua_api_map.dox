@@ -906,7 +906,7 @@ on the map.
   - \c y (number): Y coordinate on the map.
   - \c direction (number): Initial direction of the enemy, between
     \c 0 (East) and \c 3 (South).
-  - \c breed (string): Kind of enemy to create.
+  - \c breed (string): Model of enemy to create.
   - \c rank (number): \c 0 for a normal enemy, \c 1 for a miniboss,
     \c 2 for a boss.
   - \c savegame_variable (number, optional): Name of the boolean value that

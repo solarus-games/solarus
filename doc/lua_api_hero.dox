@@ -84,6 +84,9 @@ Sets the direction of the hero's \ref lua_api_sprite "sprites".
 \subsection lua_api_hero_set_position hero:set_position(x, y, [layer])
 
 Changes the position of the hero on the map (coordinates and layer).
+The \ref lua_api_entity_get_origin "origin point" of the
+hero gets placed at these coordinates,
+relative to the map's top-left corner.
 
 Unlike \ref lua_api_hero_teleport "hero:teleport()", the hero is placed
 instantly at that position.

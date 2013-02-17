@@ -4,8 +4,8 @@
 \tableofcontents
 
 A carried object is a
-\ref lua_api_entity "entity" that the \ref lua_api_hero "hero"
-lifts or is carrying.
+\ref lua_api_entity "map entity" that the \ref lua_api_hero "hero"
+is lifting, carrying or throwing.
 
 This type of entity is entirely created and managed by the engine.
 You cannot create or access a carried object from Lua.

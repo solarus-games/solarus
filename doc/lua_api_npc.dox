@@ -75,6 +75,9 @@ The following methods are specific to non-playing characters.
 \subsection lua_api_npc_set_position npc:set_position(x, y, [layer]):
 
 Changes the position of this %NPC on the map (coordinates and layer).
+The \ref lua_api_entity_get_origin "origin point" of the
+%NPC gets placed at these coordinates,
+relative to the map's top-left corner.
 - \c x (number): X coordinate to set.
 - \c y (number): Y coordinate to set.
 - \c layer (number, optional): Layer to set
@@ -84,7 +87,7 @@ Changes the position of this %NPC on the map (coordinates and layer).
 \subsection lua_api_npc_start_movement npc:start_movement(movement)
 
 Starts a movement on this %NPC.
-- \c movement (\ref lua_api_movement): The movement to set.
+- \c movement (\ref lua_api_movement "movememt"): The movement to set.
 
 \subsection lua_api_npc_stop_movement npc:stop_movement()
 

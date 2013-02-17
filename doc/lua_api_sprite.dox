@@ -138,13 +138,13 @@ Called when the current animation of this sprite is finished.
 
 If the animation loops, this function is never called.
 Unless you start another animation, the sprite is no longer shown.
-- \c animation: Name of the animation that has just finished.
+- \c animation (string): Name of the animation that has just finished.
 
 \subsection lua_api_sprite_on_frame_changed sprite:on_frame_changed(animation, frame)
 
 Called whenever the frame of this sprite has changed.
-- \c animation: Name of the current animation.
-- \c frame: The new current frame (the first one is \c 0).
+- \c animation (string): Name of the current animation.
+- \c frame (number): The new current frame (the first one is \c 0).
 
 */
 

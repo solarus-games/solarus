@@ -268,9 +268,9 @@ class LuaContext {
     // Map entity events.
     // TODO entity_on_created
     void entity_on_removed(MapEntity& entity);
-    void hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure);  // TODO push the item instead of its name
-    void hero_on_obtained_treasure(Hero& hero, const Treasure& treasure);
-    void hero_on_victory_finished(Hero& hero);  // TODO clear the hero events when changing map?
+    void hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure);  // TODO replace by chest:on_obtaining
+    void hero_on_obtained_treasure(Hero& hero, const Treasure& treasure);  // TODO replace by chest:on_obtained
+    void hero_on_victory_finished(Hero& hero);  // TODO replace by a callback parameter to hero:start_victory
     // TODO add destination_on_activated
     void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now)
     void npc_on_interaction(NPC& npc);

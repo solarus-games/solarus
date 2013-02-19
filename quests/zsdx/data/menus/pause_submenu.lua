@@ -80,6 +80,7 @@ function submenu:set_caption(text_key)
     if line1 == nil then
       -- Only one line.
       self.caption_text_1:set_text(text)
+      self.caption_text_2:set_text(nil)
     else
       -- Two lines.
       self.caption_text_1:set_text(line1)

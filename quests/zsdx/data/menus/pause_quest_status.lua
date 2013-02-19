@@ -196,6 +196,7 @@ function quest_status_submenu:on_draw(dst_surface)
   local x = width / 2 - 160
   local y = height / 2 - 120
   self:draw_background(dst_surface)
+  self:draw_caption(dst_surface)
   self.quest_items_surface:draw(dst_surface, x, y)
   self.cursor_sprite:draw(dst_surface, x + self.cursor_sprite_x, y + self.cursor_sprite_y)
   self:draw_save_dialog_if_any(dst_surface)

@@ -25,6 +25,7 @@ end
 function map_submenu:on_draw(dst_surface)
 
   self:draw_background(dst_surface)
+  self:draw_caption(dst_surface)
   self:draw_save_dialog_if_any(dst_surface)
 end
 

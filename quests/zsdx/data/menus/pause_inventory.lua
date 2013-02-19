@@ -190,6 +190,7 @@ end
 function inventory_submenu:on_draw(dst_surface)
 
   self:draw_background(dst_surface)
+  self:draw_caption(dst_surface)
 
   -- Draw each inventory item.
   local y = 82

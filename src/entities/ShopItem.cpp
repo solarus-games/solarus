@@ -48,7 +48,7 @@ ShopItem::ShopItem(const std::string& name, Layer layer, int x, int y,
   treasure(treasure),
   price(price),
   dialog_id(dialog_id),
-  price_digits(x + 12, y + 21, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP),
+  price_digits(0, 0, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP),
   rupee_icon_sprite("entities/rupee_icon"),
   is_looking_item(false),
   is_asking_question(false) {

@@ -1517,8 +1517,11 @@ int LuaContext::map_api_create_door(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   const std::string& name = check_string_field(l, 1, "name");
   int direction = check_int_field(l, 1, "direction");
-  const std::string& subtype_name = check_string_field(l, 1, "subtype");
+  const std::string& sprite_name = check_string_field(l, 1, "sprite_name");
   const std::string& savegame_variable = opt_string_field(l, 1, "savegame_variable", "");
+  bool explosion_required = opt_boolean_field(l, 1, "explosion_required", false);
+  const std::string& savegame_variable_required = opt_string_field(l, 1, "savegame_variable_required", "");
+  const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog_id", "");
 
   if (!savegame_variable.empty() && !is_valid_lua_identifier(savegame_variable)) {
     luaL_argerror(l, 1, (StringConcat() <<
@@ -1526,17 +1529,20 @@ int LuaContext::map_api_create_door(lua_State* l) {
         savegame_variable << "'").c_str());
   }
 
-  int subtype;
-  std::istringstream iss(subtype_name);
-  iss >> subtype;
-
   Game& game = map.get_game();
-  MapEntity* entity = new Door(game, name, layer, x, y, direction,
-      Door::Subtype(subtype), savegame_variable);
-  map.get_entities().add_entity(entity);
+  Door* door = new Door(
+      game,
+      name, layer, x, y,
+      direction,
+      sprite_name,
+      savegame_variable);
+  door->set_explosion_required(explosion_required);
+  door->set_savegame_variable_required(savegame_variable_required);
+  door->set_cannot_open_dialog_id(cannot_open_dialog_id);
+  map.get_entities().add_entity(door);
 
   if (map.is_started()) {
-    push_entity(l, *entity);
+    push_entity(l, *door);
     return 1;
   }
   return 0;

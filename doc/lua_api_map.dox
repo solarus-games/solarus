@@ -909,7 +909,7 @@ on the map.
   - \c breed (string): Model of enemy to create.
   - \c rank (number): \c 0 for a normal enemy, \c 1 for a miniboss,
     \c 2 for a boss.
-  - \c savegame_variable (number, optional): Name of the boolean value that
+  - \c savegame_variable (string, optional): Name of the boolean value that
     stores in the \ref lua_api_game "savegame" whether this enemy is dead.
     No value means that the enemy is not saved.
     If the enemy is saved and was already killed, then no enemy is created.
@@ -1200,29 +1200,42 @@ on the map.
   - \c y (number): Y coordinate on the map.
   - \c direction (number): Direction of the door, between
     \c 0 (East of the room) and \c 3 (South of the room).
-  - \c subtype (number): Kind of door to create: 
-    - \c 0: Door to open with some mechanism.
-    - \c 1: Door to open with a small key.
-    - \c 2: Block to open with a small key.
-    - \c 3: Door to open with a big key.
-    - \c 4: Door to open with the boss key.
-    - \c 5: Wall to blast with an explosion (visible weakness).
-    - \c 6: Wall to blast with an explosion (more visible weakness).
-    - \c 8: Block to blast with an explosion (visible weakness).
-  - \c savegame_variable (number, optional): Name of the boolean value that
+  - \c sprite_name (string): Name of the animation set of the
+    \ref lua_api_sprite "sprite" to create for the door.
+    The sprite must have an animation \c "closed", that will be shown while
+    the door is closed.
+    Note that when the door is open, no sprite is displayed.
+    Optionally, they sprite can also have animations \c "opening"
+    and \c "closing",
+    that will be shown (if they exist) while the door is being opened or closed,
+    respectively. If they don't exist, the door will get opened or closed
+    instantly.
+  - \c savegame_variable (string, optional): Name of the boolean value that
     stores in the \ref lua_api_game "savegame" whether this door is open.
     No value means that the door is not saved.
     If the door is saved and was already opened, then it appears open.
+  - \c explosion_required (boolean, optional): Indicates that this door should
+    be opened by an \ref lua_api_explosion "explosion".
+    No value means \c false.
+  - \c savegame_variable_required (string, optional): Indicates that the door
+    should be opened by pressing the
+    \ref lua_api_game_intro_commands "action command" in front of it,
+    provided that this saved variable has the correct value.
+    More precisely, the player will be allowed to open the door
+    if the value is either \c true or
+    an integer greater than \c 0.
+    The typical usage is to specify a savegame variable that says whether the
+    player has found a certain key.
+    No value means that the door is not meant to be opened by pressing the
+    action command.
+  - \c cannot_open_dialog_id (string, optional): When the door should be
+    opened by pressing the action command
+    (see \c savegame_variable_required above), id of the
+    dialog to show in case of failure.
+    No value means no dialog shown when trying to open the door without the
+    correct saved value.
 - Return value (\ref lua_api_door "door"): The \ref lua_api_door
   "door" created.
-
-\todo Doors are currently being reworked because small keys, big keys and
-  boss keys no longer exist in the engine.
-  In the meantime, doors that require small keys, big keys or boss keys are
-  not implemented and the player can always open them.
-  The future door API will let you customize what allows to open the door:
-  an \ref lua_api_item "equipment item" or a \ref lua_api_game
-  "savegame variable".
 
 \subsection lua_api_map_create_stairs map:create_stairs(properties)
 

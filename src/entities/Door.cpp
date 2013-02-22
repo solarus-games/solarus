@@ -35,48 +35,42 @@
 #include <list>
 #include <sstream>
 
-const std::string Door::animations[] = {
-  "closed", "small_key", "small_key_block", "big_key", "boss_key", "weak", "very_weak", "", "weak_block"
-};
-
-const std::string Door::key_required_dialog_ids[] = {
-  "", "_small_key_required", "_small_key_required", "_big_key_required", "_boss_key_required", "", "", "", ""
-};
-
 /**
  * @brief Creates a door.
  * @param game The game.
- * @param name name identifying this entity
- * @param layer layer of the entity to create
- * @param x x coordinate of the entity to create
- * @param y y coordinate of the entity to create
- * @param direction direction of the door
- * @param subtype the subtype of door
- * @param savegame_variable variable where the door's state is saved
- * (can be -1 for the subtype CLOSED)
+ * @param name Name identifying this entity.
+ * @param layer Layer of the entity to create.
+ * @param x X coordinate of the entity to create.
+ * @param y Y coordinate of the entity to create.
+ * @param direction Direction of the door.
+ * @param sprite_name Name of the animation set of the
+ * sprite to create for the door.
+ * The sprite must have an animation \c "closed", that will be shown while
+ * the door is closed. Optionally, they sprite can also have animations
+ * \c "opening" and \c "closing", that will be shown (if they exist)
+ * while the door is being opened or closed, respectively.
+ * If they don't exist, the door will get opened or closed instantly.
+ * @param savegame_variable Boolean variable where the door's state is saved
+ * (an empty string lets the door unsaved).
  */
-Door::Door(Game& game, const std::string& name, Layer layer, int x, int y,
-	     int direction, Subtype subtype, const std::string& savegame_variable):
+Door::Door(Game& game,
+    const std::string& name,
+    Layer layer, int x, int y,
+    int direction,
+    const std::string& sprite_name,
+    const std::string& savegame_variable):
   Detector(COLLISION_FACING_POINT | COLLISION_SPRITE, name, layer, x, y, 16, 16),
-  subtype(subtype),
   savegame_variable(savegame_variable),
+  explosion_required(false),
+  savegame_variable_required(),
+  cannot_open_dialog_id(),
   door_open(true),
   changing(false),
   initialized(false),
   next_hint_sound_date(0) {
 
-  if (subtype == SMALL_KEY_BLOCK || subtype == WEAK_BLOCK) {
-    set_size(16, 16);
-  }
-  else if (direction % 2 == 0) {
-    set_size(16, 32);
-  }
-  else {
-    set_size(32, 16);
-  }
-
-  Sprite& sprite = create_sprite("entities/door", true);
-  sprite.set_ignore_suspend(true); // allow the animation while the camera is moving
+  Sprite& sprite = create_sprite(sprite_name, true);
+  sprite.set_ignore_suspend(true);  // Continue the animation while the camera is moving.
   set_direction(direction);
 
   if (is_saved()) {
@@ -116,7 +110,7 @@ bool Door::is_obstacle_for(MapEntity &other) {
  * @brief Returns whether this door is open.
  * @return true if this door is open
  */
-bool Door::is_open() {
+bool Door::is_open() const {
   return door_open;
 }
 
@@ -132,7 +126,7 @@ void Door::set_open(bool door_open) {
     set_collision_modes(COLLISION_NONE); // to avoid being the hero's facing entity
   }
   else {
-    get_sprite().set_current_animation(animations[subtype]);
+    get_sprite().set_current_animation("closed");
     set_collision_modes(COLLISION_FACING_POINT | COLLISION_SPRITE);
 
     // ensure that we are not closing the door on the hero
@@ -191,16 +185,17 @@ void Door::notify_collision(MapEntity &entity_overlapping, CollisionMode collisi
 
   if (!is_open()
       && entity_overlapping.is_hero()
-      && requires_key()
+      && is_savegame_variable_required()
       && !is_changing()) {
 
-    Hero &hero = (Hero&) entity_overlapping;
+    Hero& hero = static_cast<Hero&>(entity_overlapping);
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero.is_free()) {
+        && hero.is_free()) {
 
       // we show the action icon
-      get_keys_effect().set_action_key_effect(can_open() ? KeysEffect::ACTION_KEY_OPEN : KeysEffect::ACTION_KEY_LOOK);
+      get_keys_effect().set_action_key_effect(can_open() ?
+          KeysEffect::ACTION_KEY_OPEN : KeysEffect::ACTION_KEY_LOOK);
     }
   }
 }
@@ -208,17 +203,17 @@ void Door::notify_collision(MapEntity &entity_overlapping, CollisionMode collisi
 /**
  * @brief Notifies this detector that a pixel-perfect collision was just detected with another sprite.
  *
- * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
+ * This function is called by check_collision(MapEntity&, Sprite&) when another entity's
  * sprite overlaps a sprite of this detector.
  *
  * @param other_entity the entity overlapping this detector
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Door::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
+void Door::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
 
   if (other_entity.get_type() == EXPLOSION) {
-    notify_collision_with_explosion((Explosion&) other_entity, other_sprite);
+    notify_collision_with_explosion(static_cast<Explosion&>(other_entity), other_sprite);
   }
 }
 
@@ -228,56 +223,122 @@ void Door::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprit
  * @param explosion the explosion
  * @param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
-void Door::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+void Door::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) {
 
-  if (requires_explosion() && !is_open() && !changing) {
+  if (is_explosion_required() && !is_open() && !changing) {
     set_opening();
   }
 }
 
 /**
  * @brief Returns whether the state of this door is saved.
- * @return true if this door is saved.
+ * @return \c true if this door is saved.
  */
-bool Door::is_saved() {
-  return !savegame_variable.empty();
+bool Door::is_saved() const {
+  return !get_savegame_variable().empty();
 }
 
 /**
- * @brief Returns whether this door requires a key to be open.
- * @return true if this door requires a key to be open
+ * @brief Returns the name of the boolean saved variable that stores the
+ * state of this door.
+ * @return The savegame variable, or an empty string if this door is not saved.
  */
-bool Door::requires_key() {
-  return requires_small_key() || subtype == BIG_KEY || subtype == BOSS_KEY;
+const std::string& Door::get_savegame_variable() const {
+  return savegame_variable;
+}
+
+
+/**
+ * @brief Returns whether a savegame variable allows the player to open this
+ * door.
+ * @return \c true if this door can be opened from a savegame variable.
+ */
+bool Door::is_savegame_variable_required() const {
+  return !savegame_variable_required.empty();
 }
 
 /**
- * @brief Returns whether this door must be open with a small key.
- * @return true if this door must be open with a small key
- */
-bool Door::requires_small_key() {
-  return subtype == SMALL_KEY || subtype == SMALL_KEY_BLOCK;
-}
-
-/**
- * @brief Returns whether this door must be open with an explosion.
- * @return true if this door must be open with an explosion
- */
-bool Door::requires_explosion() {
-  return subtype == WEAK || subtype == VERY_WEAK || subtype == WEAK_BLOCK;
-}
-
-/**
- * @brief Returns whether the player has the right key to open this door.
+ * @brief Returns the savegame variable (if any) that allows the player
+ * to open this door.
  *
- * If the door cannot be open with a key, false is returned.
+ * If this savegame variable has a boolean value, the player can open
+ * the door if the value is \c true.
+ * If this savegame variable has an integer value, the player can open
+ * the door if the value is greater than zero.
  *
- * @return true if the player has the key corresponding to this door
+ * @return The savegame variable required, or an empty string if this door
+ * cannot be opened from a savegame variable.
  */
-bool Door::can_open() {
+const std::string& Door::get_savegame_variable_required() const {
+  return savegame_variable_required;
+}
 
-  // TODO dungeons and small keys are no longer hardcoded: reimplement doors with general properties
-  return true;
+/**
+ * @brief Sets the savegame variable (if any) that allows the player
+ * to open this door.
+ * @param savegame_variable_required The savegame variable required,
+ * or an empty string if this door cannot be opened from a savegame variable.
+ */
+void Door::set_savegame_variable_required(const std::string& savegame_variable_required) {
+  this->savegame_variable_required = savegame_variable_required;
+}
+
+/**
+ * @brief Returns whether the player has the required value of savegame
+ * variable to open this door.
+ *
+ * If the door cannot be open with a savegame variable, 'c false is returned.
+ *
+ * @return \c true if the savegame variable has the required value to open
+ * this door.
+ */
+bool Door::can_open() const {
+
+  const std::string& savegame_variable = get_savegame_variable();
+
+  if (savegame_variable.empty()) {
+    return false;
+  }
+
+  return get_savegame().get_boolean(savegame_variable)
+      || get_savegame().get_integer(savegame_variable) > 0;
+}
+
+/**
+ * @brief Returns whether this door should be opened with an explosion.
+ * @return \c true if this door should be opened with an explosion.
+ */
+bool Door::is_explosion_required() const {
+  return explosion_required;
+}
+
+/**
+ * @brief Sets whether this door should be opened with an explosion.
+ * @param explosion_required \c true if this door should be opened with an
+ * explosion.
+ */
+void Door::set_explosion_required(bool explosion_required) {
+  this->explosion_required = explosion_required;
+}
+
+/**
+ * @brief Returns the id of the dialog to show if the player interacts with
+ * the door but cannot open it.
+ * @return The id of the "cannot open" dialog for this door
+ * (an empty string means no dialog).
+ */
+const std::string& Door::get_cannot_open_dialog_id() const {
+  return cannot_open_dialog_id;
+}
+
+/**
+ * @brief Sets the id of the dialog to show if the player interacts with
+ * the door but cannot open it.
+ * @param cannot_open_dialog_id The id of the "cannot open" dialog for this door
+ * (an empty string means no dialog).
+ */
+void Door::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) {
+  this->cannot_open_dialog_id = cannot_open_dialog_id;
 }
 
 /**
@@ -306,8 +367,7 @@ void Door::update() {
   }
 
   if (!is_open()
-      && requires_explosion()
-      && subtype != WEAK_BLOCK
+      && is_explosion_required()
       && get_equipment().has_ability("detect_weak_walls")
       && Geometry::get_distance(get_center_point(), get_hero().get_center_point()) < 40
       && !is_suspended()
@@ -353,7 +413,7 @@ void Door::draw_on_map() {
  */
 void Door::notify_action_command_pressed() {
 
-  if (get_hero().is_free() && requires_key() && !is_changing()) {
+  if (get_hero().is_free() && is_savegame_variable_required() && !is_changing()) {
     if (can_open()) {
       Sound::play("door_unlocked");
       Sound::play("door_open");
@@ -362,34 +422,23 @@ void Door::notify_action_command_pressed() {
         get_savegame().set_boolean(savegame_variable, true);
       }
 
-      if (subtype == SMALL_KEY_BLOCK || subtype == WEAK_BLOCK) {
-        set_open(true);
-      }
-      else {
-        set_opening();
-      }
-
-      /* TODO replace by if (requires_item() && item.has_counter()) ... 
-      if (requires_small_key()) {
-        get_equipment().remove_small_key();
-      }
-      */
+      set_opening();
 
       get_hero().check_position();
     }
-    else {
+    else if (!cannot_open_dialog_id.empty()) {
       Sound::play("wrong");
-      get_dialog_box().start_dialog(key_required_dialog_ids[subtype]);
+      get_dialog_box().start_dialog(cannot_open_dialog_id);
     }
   }
 }
 
 /**
  * @brief This function is called when the player is tapping his sword against this detector.
- * @return the sound to play when tapping this detector with the sword
+ * @return The sound to play when tapping this detector with the sword.
  */
 std::string Door::get_sword_tapping_sound() {
-  return requires_explosion() ? "sword_tapping_weak_wall" : "sword_tapping";
+  return is_explosion_required() ? "sword_tapping_weak_wall" : "sword_tapping";
 }
 
 /**
@@ -399,8 +448,6 @@ std::string Door::get_sword_tapping_sound() {
  * Nothing is done if the door is already in the process of being open.
  */
 void Door::open() {
-
-  Debug::check_assertion(subtype == CLOSED, "This kind of door cannot be open or closed directly");
 
   Debug::check_assertion(!is_open() || changing,
       StringConcat() << "Door '" << get_name() << "' is already open");
@@ -428,17 +475,8 @@ void Door::open() {
  */
 void Door::set_opening() {
 
-  std::string animation = "";
-  if (requires_key()) {
-    animation = "opening_key";
-  }
-  else if (!requires_explosion()) {
-    animation = "opening";
-  }
-  // TODO add the animation of a weak wall destroyed by an explosion
-
-  if (animation.size() > 0) {
-    get_sprite().set_current_animation(animation);
+  if (get_sprite().has_animation("opening")) {
+    get_sprite().set_current_animation("opening");
     changing = true;
   }
   else {
@@ -480,7 +518,9 @@ void Door::close() {
  */
 void Door::set_closing() {
 
-  get_sprite().set_current_animation("opening");
+  if (get_sprite().has_animation("closing")) {
+    get_sprite().set_current_animation("closing");
+  }
   changing = true;
 }
 
@@ -488,7 +528,7 @@ void Door::set_closing() {
  * @brief Returns true if the door is currently being open or closed.
  * @return true if the door is currently being open or closed
  */
-bool Door::is_changing() {
+bool Door::is_changing() const {
   return changing;
 }
 

@@ -32,31 +32,11 @@ See
 \ref lua_api_map_open_doors "map:open_doors()"
 for more information about these mechanisms.
 
-Doors currently provide predefined behaviors depending on their subtype.
-Each subtype of door determines all its properties:
-the condition to open the door, its sprite, its size,
-and the dialogs (if any) shown when the \ref lua_api_hero "hero"
-interacts with the door.
-The following subtypes of doors are defined:
-- %Door to open with some mechanism.
-- %Door to open with a small key.
-- %Block to open with a small key.
-- %Door to open with a big key.
-- %Door to open with the boss key.
-- %Wall to blast with an explosion (visible weakness).
-- %Wall to blast with an explosion (more visible weakness).
-- %Block to blast with an explosion (visible weakness).
-
-\todo Doors are currently being reworked because small keys, big keys and
-  boss keys no longer exist in the engine.
-  A future door API will let you customize what allows the player
-  to open the door:
-  an \ref lua_api_item "equipment item", a \ref lua_api_game
-  "savegame variable", an \ref lua_api_explosion "explosion".
-  There will be no more predefined subtypes of doors.
-  In the meantime, in the current development version,
-  the player can always open doors
-  that require small keys, big keys or boss keys.
+A door may be opened by one or several means depending on your choice:
+- by pressing the \ref lua_api_game_intro_commands "action command"
+  in front of the door when a specified savegame variable is set,
+- with an \ref lua_api_explosion "explosion",
+- or explicitly by calling \ref lua_api_map_open_doors "map:open_doors()".
 
 \section lua_api_door_inherited_methods Methods inherited from map entity
 

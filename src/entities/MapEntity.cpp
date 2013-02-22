@@ -281,7 +281,7 @@ Map& MapEntity::get_map() {
  * @brief Returns the game that is running the map where this entity is.
  * @return the game
  */
-Game& MapEntity::get_game() {
+Game& MapEntity::get_game() const {
   return map->get_game();
 }
 
@@ -289,7 +289,7 @@ Game& MapEntity::get_game() {
  * @brief Returns the entities of the current map.
  * @return the entities
  */
-MapEntities& MapEntity::get_entities() {
+MapEntities& MapEntity::get_entities() const {
   return map->get_entities();
 }
 
@@ -297,7 +297,7 @@ MapEntities& MapEntity::get_entities() {
  * @brief Returns the shared Lua context.
  * @return The Lua context where all scripts are run.
  */
-LuaContext& MapEntity::get_lua_context() {
+LuaContext& MapEntity::get_lua_context() const {
 
   Debug::check_assertion(main_loop != NULL, "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
@@ -307,7 +307,7 @@ LuaContext& MapEntity::get_lua_context() {
  * @brief Returns the current equipment.
  * @return the equipment
  */
-Equipment& MapEntity::get_equipment() {
+Equipment& MapEntity::get_equipment() const {
   return get_game().get_equipment();
 }
 
@@ -315,7 +315,7 @@ Equipment& MapEntity::get_equipment() {
  * @brief Returns the keys effect manager.
  * @return the keys effect
  */
-KeysEffect& MapEntity::get_keys_effect() {
+KeysEffect& MapEntity::get_keys_effect() const {
   return get_game().get_keys_effect();
 }
 
@@ -323,7 +323,7 @@ KeysEffect& MapEntity::get_keys_effect() {
  * @brief Returns the game commands.
  * @return The commands.
  */
-GameCommands& MapEntity::get_commands() {
+GameCommands& MapEntity::get_commands() const {
   return get_game().get_commands();
 }
 
@@ -331,7 +331,7 @@ GameCommands& MapEntity::get_commands() {
  * @brief Returns the dialog box manager.
  * @return the dialog box
  */
-DialogBox& MapEntity::get_dialog_box() {
+DialogBox& MapEntity::get_dialog_box() const {
   return get_game().get_dialog_box();
 }
 
@@ -339,7 +339,7 @@ DialogBox& MapEntity::get_dialog_box() {
  * @brief Returns the savegame.
  * @return the savegame
  */
-Savegame& MapEntity::get_savegame() {
+Savegame& MapEntity::get_savegame() const {
   return get_game().get_savegame();
 }
 
@@ -348,7 +348,7 @@ Savegame& MapEntity::get_savegame() {
  * @brief Returns the hero
  * @return the hero
  */
-Hero& MapEntity::get_hero() {
+Hero& MapEntity::get_hero() const {
   return get_entities().get_hero();
 }
 

@@ -117,14 +117,14 @@ class MapEntity: public ExportableToLua {
     void set_direction(int direction);
 
     // easy access to various game objects
-    LuaContext& get_lua_context();
-    MapEntities& get_entities();
-    Equipment& get_equipment();
-    KeysEffect& get_keys_effect();
-    GameCommands& get_commands();
-    DialogBox& get_dialog_box();
-    Savegame& get_savegame();
-    Hero& get_hero();
+    LuaContext& get_lua_context() const;
+    MapEntities& get_entities() const;
+    Equipment& get_equipment() const;
+    KeysEffect& get_keys_effect() const;
+    GameCommands& get_commands() const;
+    DialogBox& get_dialog_box() const;
+    Savegame& get_savegame() const;
+    Hero& get_hero() const;
 
   public:
 
@@ -138,7 +138,7 @@ class MapEntity: public ExportableToLua {
      * @brief Returns the type of entity.
      * @return the type of entity
      */
-    virtual EntityType get_type() = 0;
+    virtual EntityType get_type() = 0;  // TODO make const
     bool is_hero();
     virtual bool is_detector();
     virtual bool can_be_obstacle();
@@ -151,7 +151,7 @@ class MapEntity: public ExportableToLua {
     Map& get_map();
     virtual void notify_map_started();
     virtual void notify_map_opening_transition_finished();
-    Game& get_game();
+    Game& get_game() const;
 
     // position in the map
     Layer get_layer();

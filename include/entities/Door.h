@@ -23,58 +23,23 @@
 /**
  * @brief A door that may be open or closed.
  *
- * Depending on the type of door, it can be open with a key,
- * with an explosion or by the script of the map.
+ * It can be open by one of the following means depending on your choice:
+ * - by pressing the action key when a specified savegame variable is set,
+ * - with an explosion if the door is set to be sensible to explosions,
+ * - or explicitly by a Lua script.
+ *
+ * The state of a door can be saved.
  */
 class Door: public Detector {
 
   public:
 
-    /**
-     * @brief The different kinds of doors.
-     */
-    enum Subtype {
-      CLOSED             = 0,         /**< usual closed door */
-      SMALL_KEY          = 1,         /**< a small key is required to open the door */
-      SMALL_KEY_BLOCK    = 2,         /**< a block to open with a small key (this does not look like a door) */
-      BIG_KEY            = 3,         /**< the big key is required to open the door (only in a dungeon) */
-      BOSS_KEY           = 4,         /**< the boss key is required to open the door (only in a dungeon) */
-      WEAK               = 5,         /**< a weak wall to blast with an explosion */
-      VERY_WEAK          = 6,         /**< same as WEAK but more visible */
-      // 7 is obsolete
-      WEAK_BLOCK         = 8          /**< a block to blast with an explosion */
-    };
-
-  private:
-
-    static const std::string animations[];              /**< sprite animation name of each subtype */
-    static const std::string key_required_dialog_ids[]; /**< id of the dialog shown for each subtype */
-
-    // properties
-    Subtype subtype;                      /**< subtype of door */
-    const std::string savegame_variable;  /**< variable where the door state is saved */
-
-    // state
-    bool door_open;                   /**< indicates that this door is open */
-    bool changing;                    /**< indicates that the door is being open or closed */
-    bool initialized;                 /**< true if update() was called at least once */
-    uint32_t next_hint_sound_date;    /**< if the player has the ability to detect weak walls,
-                                       * indicates when a hint sound is played next time */
-
-    void set_opening();
-    void set_closing();
-
-    bool is_saved();
-    bool requires_key();
-    bool requires_small_key();
-    bool requires_explosion();
-    bool can_open();
-    void update_dynamic_tiles();
-
-  public:
-
-    Door(Game& game, const std::string& name, Layer layer, int x, int y,
-        int direction, Subtype subtype, const std::string& savegame_variable);
+    Door(Game& game,
+        const std::string& name,
+        Layer layer, int x, int y,
+        int direction,
+        const std::string& sprite_name,
+        const std::string& savegame_variable);
     ~Door();
 
     EntityType get_type();
@@ -89,13 +54,46 @@ class Door: public Detector {
     void notify_collision(MapEntity& entity, Sprite& this_sprite, Sprite& other_sprite);
     void notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping);
 
-    bool is_open();
+    // Properties.
+    bool is_saved() const;
+    const std::string& get_savegame_variable() const;
+    bool is_savegame_variable_required() const;
+    const std::string& get_savegame_variable_required() const;
+    void set_savegame_variable_required(const std::string& savegame_variable_to_open);
+    bool is_explosion_required() const;
+    void set_explosion_required(bool explosion_required);
+    const std::string& get_cannot_open_dialog_id() const;
+    void set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id);
+
+    // State.
+    bool can_open() const;
+    bool is_open() const;
     void open();
     void close();
     void set_open(bool open);
-    bool is_changing();
+    bool is_changing() const;
 
     virtual const std::string& get_lua_type_name() const;
+
+  private:
+
+    void set_opening();
+    void set_closing();
+    void update_dynamic_tiles();
+
+    // Properties.
+    const std::string savegame_variable;          /**< Boolean variable that saves the door state. */
+    bool explosion_required;                      /**< Indicates that an explosion can open the door. */
+    std::string savegame_variable_required;       /**< Boolean or integer saved variable (if any) that allows to open the door. */
+    std::string cannot_open_dialog_id;            /**< Dialog to show if the door cannot be opened
+                                                   * (only if \c savegame_variable_to_open is not empty). */
+
+    // State.
+    bool door_open;                               /**< Indicates that this door is open. */
+    bool changing;                                /**< Indicates that the door is being opened or closed. */
+    bool initialized;                             /**< \c true if update() was called at least once. */
+    uint32_t next_hint_sound_date;                /**< If the player has the ability to detect weak walls,
+                                                   * indicates when a hint sound is played next time. */
 };
 
 #endif

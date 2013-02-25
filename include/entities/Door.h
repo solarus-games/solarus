@@ -23,7 +23,9 @@
 /**
  * @brief A door that may be open or closed.
  *
- * It can be open by one of the following means depending on your choice:
+ * It can be opened by one of the following means depending on your choice:
+ * - by pressing the action key (TODO),
+ * - by pressing the action key when the player has a specified equipment item (TODO),
  * - by pressing the action key when a specified savegame variable is set,
  * - with an explosion if the door is set to be sensible to explosions,
  * - or explicitly by a Lua script.
@@ -33,6 +35,19 @@
 class Door: public Detector {
 
   public:
+
+    /**
+     * @brief The different kinds of doors.
+     *
+     * The subtype indicates how the door can be opened.
+     */
+    enum OpeningMode {
+      OPENING_NONE,
+      OPENING_BY_INTERACTION,
+      OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+      OPENING_BY_INTERACTION_IF_ITEM,
+      OPENING_BY_EXPLOSION
+    };
 
     Door(Game& game,
         const std::string& name,

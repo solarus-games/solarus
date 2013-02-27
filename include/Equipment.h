@@ -89,6 +89,7 @@ class Equipment {
 
     // equipment items
     void load_items();
+    bool item_exists(const std::string& item_name);
     EquipmentItem& get_item(const std::string& item_name);
     EquipmentItem* get_item_assigned(int slot);
     void set_item_assigned(int slot, EquipmentItem* item);

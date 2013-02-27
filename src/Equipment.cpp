@@ -422,13 +422,23 @@ void Equipment::load_items() {
 }
 
 /**
+ * @brief Returns whether an equipment item with the specified name exists.
+ * @param item_name Name of the item to check.
+ * @return \c true if such an item exists.
+ */
+bool Equipment::item_exists(const std::string& item_name) {
+  return items.find(item_name) != items.end();
+}
+
+
+/**
  * @brief Returns an equipment item.
  * @param item_name name of the item to get
  * @return the corresponding item
  */
 EquipmentItem& Equipment::get_item(const std::string& item_name) {
 
-  Debug::check_assertion(items.find(item_name) != items.end(),
+  Debug::check_assertion(item_exists(item_name),
       StringConcat() << "Cannot find item with name '" << item_name << "'");
 
   return *items[item_name];

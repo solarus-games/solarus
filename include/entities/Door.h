@@ -37,16 +37,16 @@ class Door: public Detector {
   public:
 
     /**
-     * @brief The different kinds of doors.
+     * @brief The different possible ways of opening a door.
      *
-     * The subtype indicates how the door can be opened.
+     * Note that any kind door can always be opened manually from Lua.
      */
-    enum OpeningMode {
-      OPENING_NONE,
-      OPENING_BY_INTERACTION,
-      OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
-      OPENING_BY_INTERACTION_IF_ITEM,
-      OPENING_BY_EXPLOSION
+    enum OpeningMethod {
+      OPENING_NONE,                                 /**< Can only be opened from Lua. */
+      OPENING_BY_INTERACTION,                       /**< Can be opened by pressing the action command. */
+      OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,  /**< Can be opened by pressing the action command, provided that a savegame variable has the correct value. */
+      OPENING_BY_INTERACTION_IF_ITEM,               /**< Can be opened by pressing the action command, provided that the player has a specific equipment item. */
+      OPENING_BY_EXPLOSION                          /**< Can be opened by an explosion. */
     };
 
     Door(Game& game,
@@ -72,11 +72,13 @@ class Door: public Detector {
     // Properties.
     bool is_saved() const;
     const std::string& get_savegame_variable() const;
-    bool is_savegame_variable_required() const;
-    const std::string& get_savegame_variable_required() const;
-    void set_savegame_variable_required(const std::string& savegame_variable_to_open);
-    bool is_explosion_required() const;
-    void set_explosion_required(bool explosion_required);
+    OpeningMethod get_opening_method() const;
+    void set_opening_method(OpeningMethod opening_method);
+    bool is_interaction_required() const;
+    const std::string& get_opening_condition() const;
+    void set_opening_condition(const std::string& opening_condition);
+    bool is_opening_condition_consumed() const;
+    void set_opening_condition_consumed(bool opening_condition_consumed);
     const std::string& get_cannot_open_dialog_id() const;
     void set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id);
 
@@ -90,6 +92,8 @@ class Door: public Detector {
 
     virtual const std::string& get_lua_type_name() const;
 
+    static const std::string opening_method_names[];
+
   private:
 
     void set_opening();
@@ -98,10 +102,18 @@ class Door: public Detector {
 
     // Properties.
     const std::string savegame_variable;          /**< Boolean variable that saves the door state. */
-    bool explosion_required;                      /**< Indicates that an explosion can open the door. */
-    std::string savegame_variable_required;       /**< Boolean or integer saved variable (if any) that allows to open the door. */
-    std::string cannot_open_dialog_id;            /**< Dialog to show if the door cannot be opened
-                                                   * (only if \c savegame_variable_to_open is not empty). */
+    OpeningMethod opening_method;                 /**< How this door can be opened. */
+    std::string opening_condition;                /**< Condition required to open the door: a savegame variable if
+                                                   * the opening mode is \c OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+                                                   * or an equipment item name if the opening mode is
+                                                   * \c OPENING_BY_INTERACTION_IF_ITEM. */
+    bool opening_condition_consumed;              /**< Indicates that the savegame variable
+                                                   * (in the case of \c OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE)
+                                                   * or the item's possession state
+                                                   * (in the case of \c OPENING_BY_INTERACTION_IF_ITEM)
+                                                   * should be consumed when opening the door. */
+    std::string cannot_open_dialog_id;            /**< Dialog to show if the door cannot be opened,
+                                                   * or an empty string. */
 
     // State.
     bool door_open;                               /**< Indicates that this door is open. */

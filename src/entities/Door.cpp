@@ -31,9 +31,22 @@
 #include "Equipment.h"
 #include "KeysEffect.h"
 #include "Savegame.h"
+#include "EquipmentItem.h"
 #include "Map.h"
 #include <list>
 #include <sstream>
+
+/**
+ * @brief Lua name of each value of the OpeningMethod enum.
+ */
+const std::string Door::opening_method_names[] = {
+  "none",
+  "interaction",
+  "interaction_if_savegame_variable",
+  "interaction_if_item",
+  "explosion",
+  ""  // Sentinel.
+};
 
 /**
  * @brief Creates a door.
@@ -61,8 +74,9 @@ Door::Door(Game& game,
     const std::string& savegame_variable):
   Detector(COLLISION_FACING_POINT | COLLISION_SPRITE, name, layer, x, y, 16, 16),
   savegame_variable(savegame_variable),
-  explosion_required(false),
-  savegame_variable_required(),
+  opening_method(OPENING_NONE),
+  opening_condition(),
+  opening_condition_consumed(false),
   cannot_open_dialog_id(),
   door_open(true),
   changing(false),
@@ -184,8 +198,8 @@ void Door::update_dynamic_tiles() {
 void Door::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
   if (!is_open()
+      && is_interaction_required()
       && entity_overlapping.is_hero()
-      && is_savegame_variable_required()
       && !is_changing()) {
 
     Hero& hero = static_cast<Hero&>(entity_overlapping);
@@ -225,7 +239,9 @@ void Door::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprit
  */
 void Door::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) {
 
-  if (is_explosion_required() && !is_open() && !changing) {
+  if (get_opening_method() == OPENING_BY_EXPLOSION
+      && !is_open()
+      && !changing) {
     set_opening();
   }
 }
@@ -247,83 +263,165 @@ const std::string& Door::get_savegame_variable() const {
   return savegame_variable;
 }
 
-
 /**
- * @brief Returns whether a savegame variable allows the player to open this
- * door.
- * @return \c true if this door can be opened from a savegame variable.
+ * @brief Returns the opening method of this door.
+ * @return How this door can be opened.
  */
-bool Door::is_savegame_variable_required() const {
-  return !savegame_variable_required.empty();
+Door::OpeningMethod Door::get_opening_method() const {
+  return opening_method;
 }
 
 /**
- * @brief Returns the savegame variable (if any) that allows the player
- * to open this door.
- *
- * If this savegame variable has a boolean value, the player can open
- * the door if the value is \c true.
- * If this savegame variable has an integer value, the player can open
- * the door if the value is greater than zero.
- *
- * @return The savegame variable required, or an empty string if this door
- * cannot be opened from a savegame variable.
+ * @brief Returns whether this door should be opened by pressing the action
+ * command in front of it.
+ * @return \c true if the opening method is one of OPENING_BY_INTERACTION,
+ * OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE or
+ * OPENING_BY_INTERACTION_IF_ITEM.
  */
-const std::string& Door::get_savegame_variable_required() const {
-  return savegame_variable_required;
+bool Door::is_interaction_required() const {
+
+  return opening_method == OPENING_BY_INTERACTION
+    || opening_method == OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE
+    || opening_method == OPENING_BY_INTERACTION_IF_ITEM;
 }
 
 /**
- * @brief Sets the savegame variable (if any) that allows the player
- * to open this door.
- * @param savegame_variable_required The savegame variable required,
- * or an empty string if this door cannot be opened from a savegame variable.
+ * @brief Sets the opening method of this door.
+ * @param opening_method How this door should be opened.
  */
-void Door::set_savegame_variable_required(const std::string& savegame_variable_required) {
-  this->savegame_variable_required = savegame_variable_required;
+void Door::set_opening_method(OpeningMethod opening_method) {
+  this->opening_method = opening_method;
 }
 
 /**
- * @brief Returns whether the player has the required value of savegame
- * variable to open this door.
+ * @brief Returns the savegame variable or the equipment item name required to
+ * open this door.
  *
- * If the door cannot be open with a savegame variable, 'c false is returned.
+ * A savegame variable is returned if the opening mode is
+ * OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE.
+ * The hero is allowed to open the door if this saved value is either
+ * \c true, an integer greater than zero or a non-empty string.
  *
- * @return \c true if the savegame variable has the required value to open
- * this door.
+ * An equipment item's name is returned if the opening mode is
+ * OPENING_BY_INTERACTION_IF_ITEM.
+ * The hero is allowed to open the door if he has that item.
+ *
+ * For the other opening modes, this setting has no effect.
+ *
+ * @return The savegame variable or the equipment item name required.
+ */
+const std::string& Door::get_opening_condition() const {
+  return opening_condition;
+}
+
+/**
+ * @brief Sets the savegame variable or the equipment item name required to
+ * open this door.
+ *
+ * You must set a savegame variable if the opening mode is
+ * OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE.
+ * The hero will be allowed to open the door if this saved value is either
+ * \c true, an integer greater than zero or a non-empty string.
+ *
+ * You must set an equipment item's name if the opening mode is
+ * OPENING_BY_INTERACTION_IF_ITEM.
+ * The hero will be allowed to open the door if he has that item.
+ *
+ * For the other opening modes, this setting has no effect.
+ *
+ * @return The savegame variable or the equipment item name required.
+ */
+void Door::set_opening_condition(const std::string& opening_condition) {
+  this->opening_condition = opening_condition;
+}
+
+/**
+ * @brief Returns whether the required condition (see
+ * get_opening_condition()) gets consumed when opening the door.
+ *
+ * If this setting is \c true, here is the behavior when the hero opens
+ * the door:
+ * - If the opening mode is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+ *   then the required savegame variable is either:
+ *   - set to \c false if it is a boolean,
+ *   - decremented if it is an integer,
+ *   - set to an empty string if it is a string.
+ * - If the opening mode is OPENING_BY_INTERACTION_IF_ITEM, then:
+ *   - if the required item has an amount, the amount is decremented.
+ *   - if the required item has no amount, its possession state is set to zero.
+ * - With other opening modes, this setting has no effect.
+ */
+bool Door::is_opening_condition_consumed() const {
+  return opening_condition_consumed;
+}
+
+/**
+ * @brief Sets whether the required condition (see
+ * get_opening_condition()) gets consumed when opening the door.
+ *
+ * If this setting is \c true, here is the behavior when the hero opens
+ * the door:
+ * - If the opening mode is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+ *   then the required savegame variable is either:
+ *   - set to \c false if it is a boolean,
+ *   - decremented if it is an integer,
+ *   - set to an empty string if it is a string.
+ * - If the opening mode is OPENING_BY_INTERACTION_IF_ITEM, then:
+ *   - if the required item has an amount, the amount is decremented.
+ *   - if the required item has no amount, its possession state is set to zero.
+ * - With other opening modes, this setting has no effect.
+ */
+void Door::set_opening_condition_consumed(bool opening_condition_consumed) {
+   this->opening_condition_consumed = opening_condition_consumed;
+}
+
+/**
+ * @brief Returns whether the required conditions are met to open this door.
+ * @return \c true if the hero can currently open the door by pressing the
+ * action command.
  */
 bool Door::can_open() const {
 
-  const std::string& savegame_variable = get_savegame_variable();
+  switch (get_opening_method()) {
 
-  if (savegame_variable.empty()) {
-    return false;
+  case OPENING_BY_INTERACTION:
+    // No condition: the hero can always open the door.
+    return true;
+
+  case OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE:
+  {
+    // The hero can open the door if a savegame variable is set.
+    const std::string& required_savegame_variable = get_opening_condition();
+    if (required_savegame_variable.empty()) {
+      return false;
+    }
+    return get_savegame().get_boolean(required_savegame_variable)
+      || get_savegame().get_integer(required_savegame_variable) > 0
+      || !get_savegame().get_string(required_savegame_variable).empty();
   }
 
-  return get_savegame().get_boolean(savegame_variable)
-      || get_savegame().get_integer(savegame_variable) > 0;
+  case OPENING_BY_INTERACTION_IF_ITEM:
+  {
+    // The hero can open the door if he has an item.
+    const std::string& required_item_name = get_opening_condition();
+    if (required_item_name.empty()) {
+      return false;
+    }
+    const EquipmentItem& item = get_equipment().get_item(required_item_name);
+    return item.is_saved()
+      && item.get_variant() > 0
+      && (!item.has_amount() || item.get_amount() > 0);
+  }
+
+  default:
+    return false;
+  }
 }
 
 /**
- * @brief Returns whether this door should be opened with an explosion.
- * @return \c true if this door should be opened with an explosion.
- */
-bool Door::is_explosion_required() const {
-  return explosion_required;
-}
-
-/**
- * @brief Sets whether this door should be opened with an explosion.
- * @param explosion_required \c true if this door should be opened with an
- * explosion.
- */
-void Door::set_explosion_required(bool explosion_required) {
-  this->explosion_required = explosion_required;
-}
-
-/**
- * @brief Returns the id of the dialog to show if the player interacts with
- * the door but cannot open it.
+ * @brief Returns the id of the dialog to show when the player presses the action
+ * command on the door but cannot open it (i.e. if can_open() is false).
+ *
  * @return The id of the "cannot open" dialog for this door
  * (an empty string means no dialog).
  */
@@ -332,8 +430,8 @@ const std::string& Door::get_cannot_open_dialog_id() const {
 }
 
 /**
- * @brief Sets the id of the dialog to show if the player interacts with
- * the door but cannot open it.
+ * @brief Sets the id of the dialog to show when the player presses the action
+ * command on the door but cannot open it (i.e. if can_open() is false).
  * @param cannot_open_dialog_id The id of the "cannot open" dialog for this door
  * (an empty string means no dialog).
  */
@@ -367,7 +465,7 @@ void Door::update() {
   }
 
   if (!is_open()
-      && is_explosion_required()
+      && get_opening_method() == OPENING_BY_EXPLOSION
       && get_equipment().has_ability("detect_weak_walls")
       && Geometry::get_distance(get_center_point(), get_hero().get_center_point()) < 40
       && !is_suspended()
@@ -413,7 +511,11 @@ void Door::draw_on_map() {
  */
 void Door::notify_action_command_pressed() {
 
-  if (get_hero().is_free() && is_savegame_variable_required() && !is_changing()) {
+  if (get_hero().is_free()
+      && is_interaction_required()
+      && !is_changing()) {
+    // The action command is indeed the method to open the door.
+
     if (can_open()) {
       Sound::play("door_unlocked");
       Sound::play("door_open");
@@ -438,13 +540,14 @@ void Door::notify_action_command_pressed() {
  * @return The sound to play when tapping this detector with the sword.
  */
 std::string Door::get_sword_tapping_sound() {
-  return is_explosion_required() ? "sword_tapping_weak_wall" : "sword_tapping";
+
+  return get_opening_method() == OPENING_BY_EXPLOSION ?
+    "sword_tapping_weak_wall" : "sword_tapping";
 }
 
 /**
  * @brief Starts opening the door and plays the corresponding animations.
  *
- * This function can be called only for a door with subtype CLOSED.
  * Nothing is done if the door is already in the process of being open.
  */
 void Door::open() {

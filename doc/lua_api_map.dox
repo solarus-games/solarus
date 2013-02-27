@@ -1213,27 +1213,55 @@ on the map.
   - \c savegame_variable (string, optional): Name of the boolean value that
     stores in the \ref lua_api_game "savegame" whether this door is open.
     No value means that the door is not saved.
-    If the door is saved and was already opened, then it appears open.
-  - \c explosion_required (boolean, optional): Indicates that this door should
-    be opened by an \ref lua_api_explosion "explosion".
-    No value means \c false.
-  - \c savegame_variable_required (string, optional): Indicates that the door
-    should be opened by pressing the
-    \ref lua_api_game_intro_commands "action command" in front of it,
-    provided that this saved variable has the correct value.
-    More precisely, the player will be allowed to open the door
-    if the value is either \c true or
-    an integer greater than \c 0.
-    The typical usage is to specify a savegame variable that says whether the
-    player has found a certain key.
-    No value means that the door is not meant to be opened by pressing the
-    action command.
-  - \c cannot_open_dialog_id (string, optional): When the door should be
-    opened by pressing the action command
-    (see \c savegame_variable_required above), id of the
-    dialog to show in case of failure.
-    No value means no dialog shown when trying to open the door without the
-    correct saved value.
+    If the door is saved as open, then it appears open.
+  - \c opening_method (string, optional): How the door is supposed to be
+    opened by the player. Must be one of:
+    - \c "none" (default): Cannot be opened by the player. You can only open it
+      from Lua.
+    - \c "interaction": Can be opened by pressing the
+      \ref lua_api_game_intro_commands "action command" in front of it.
+    - \c "interaction_if_savegame_variable": Can be opened by pressing the
+      \ref lua_api_game_intro_commands "action command" in front of it,
+      provided that a specific savegame variable is set.
+    - \c "interaction_if_item": Can be opened by pressing the
+      \ref lua_api_game_intro_commands "action command" in front of it,
+      provided that the player has a specific \ref lua_api_item
+      "equipment item".
+    - \c "explosion": Can be opened by an explosion.
+  - \c opening_condition (string, optional): The condition required to open the
+    door.
+    Only for opening methods \c "interaction_if_savegame_variable" and
+    \c "interaction_if_item".
+    - For opening method \c "interaction_if_savegame_variable",
+      it must be the name of a savegame variable.
+      The \ref lua_api_hero "hero"
+      will be allowed to open the door if this saved value is either
+      \c true, an integer greater than zero or a non-empty string.
+    - For opening method \c "interaction_if_item",
+      it must be the name of an \ref lua_api_item "equipment item".
+      The hero will be allowed to open the door if he has that item and,
+      for items with an amount, if the amount is greater than zero.
+    - For other opening methods, this setting has no effect.
+  - \c opening_condition_consumed (boolean, optional): Whether opening the
+    door should consume the savegame variable or the \ref lua_api_item
+    "equipment item" that was required.
+    The default setting is \c false.
+    If you set it to \c true, the following rules are applied when the
+    \ref lua_api_hero "hero" successfully opens the door:
+    - For opening method \c "interaction_if_savegame_variable",
+      the savegame variable that was required is reset to \c false,
+      \c 0 or \c "" (depending on its type).
+    - For opening method is \c "interaction_if_item", the equipment
+      item that was required is removed. This means setting its
+      \ref lua_api_item_set_variant "possessed variant" to \c 0, unless it has
+      an associated amount: in this case, the amount is decremented.
+    - With other opening methods, this setting has no effect.
+  - \c cannot_open_dialog_id (string, optional): When the door is supposed to
+    be opened by interacting with it
+    (see \c opening_method above), id of the dialog to show in case of failure,
+    that is, if the opening condition required is not met.
+    If you don't set this value, no dialog will be shown when trying to open
+    the door without the correct conditions.
 - Return value (\ref lua_api_door "door"): The \ref lua_api_door
   "door" created.
 
@@ -1250,9 +1278,9 @@ on the map.
   - \c x (number): X coordinate on the map.
   - \c y (number): Y coordinate on the map.
   - \c direction (number): Direction where the stairs should be turned
-    (same meaning as \ref lua_api_door "doors")
-    between \c 0 (East) and \c 7 (South-East).
-  - \c subtype (number): Kind of door to create: 
+    between \c 0 (East of the room) and \c 3 (South of the room).
+    For stairs inside a single floor, this is the direction of going upstairs.
+  - \c subtype (number): Kind of stairs to create: 
     - \c 0: Spiral staircase going upstairs.
     - \c 1: Spiral staircase going downstairs.
     - \c 2: Straight staircase going upstairs.

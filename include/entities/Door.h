@@ -23,14 +23,17 @@
 /**
  * @brief A door that may be open or closed.
  *
- * It can be opened by one of the following means depending on your choice:
- * - by pressing the action key (TODO),
- * - by pressing the action key when the player has a specified equipment item (TODO),
- * - by pressing the action key when a specified savegame variable is set,
- * - with an explosion if the door is set to be sensible to explosions,
- * - or explicitly by a Lua script.
+ * It can be opened by one of the following methods depending on your choice:
+ * - by pressing the action key,
+ * - by pressing the action key when a specific savegame variable is set,
+ * - by pressing the action key when the player has a specific equipment item,
+ * - with an explosion,
+ * - or only explicitly by a Lua script.
  *
  * The state of a door can be saved.
+ *
+ * TODO For opening method OPENING_BY_INTERACTION_IF_ITEM, allow to interact
+ * with the item command.
  */
 class Door: public Detector {
 
@@ -99,6 +102,7 @@ class Door: public Detector {
     void set_opening();
     void set_closing();
     void update_dynamic_tiles();
+    void consume_opening_condition();
 
     // Properties.
     const std::string savegame_variable;          /**< Boolean variable that saves the door state. */
@@ -107,9 +111,9 @@ class Door: public Detector {
                                                    * the opening mode is \c OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
                                                    * or an equipment item name if the opening mode is
                                                    * \c OPENING_BY_INTERACTION_IF_ITEM. */
-    bool opening_condition_consumed;              /**< Indicates that the savegame variable
+    bool opening_condition_consumed;              /**< Indicates that the required savegame variable
                                                    * (in the case of \c OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE)
-                                                   * or the item's possession state
+                                                   * or the required item
                                                    * (in the case of \c OPENING_BY_INTERACTION_IF_ITEM)
                                                    * should be consumed when opening the door. */
     std::string cannot_open_dialog_id;            /**< Dialog to show if the door cannot be opened,

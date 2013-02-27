@@ -304,9 +304,10 @@ void Door::set_opening_method(OpeningMethod opening_method) {
  *
  * An equipment item's name is returned if the opening mode is
  * OPENING_BY_INTERACTION_IF_ITEM.
- * The hero is allowed to open the door if he has that item.
+ * The hero is allowed to open the door if he has that item and,
+ * for items with an amount, if the amount is greater than zero.
  *
- * For the other opening modes, this setting has no effect.
+ * For the other opening methods, this setting has no effect.
  *
  * @return The savegame variable or the equipment item name required.
  */
@@ -325,51 +326,59 @@ const std::string& Door::get_opening_condition() const {
  *
  * You must set an equipment item's name if the opening mode is
  * OPENING_BY_INTERACTION_IF_ITEM.
- * The hero will be allowed to open the door if he has that item.
+ * The hero will be allowed to open the door if he has that item and,
+ * for items with an amount, if the amount is greater than zero.
  *
- * For the other opening modes, this setting has no effect.
+ * For the other opening methods, this setting has no effect.
  *
- * @return The savegame variable or the equipment item name required.
+ * @param opening_condition The savegame variable or the equipment item name
+ * required.
  */
 void Door::set_opening_condition(const std::string& opening_condition) {
   this->opening_condition = opening_condition;
 }
 
 /**
- * @brief Returns whether the required condition (see
- * get_opening_condition()) gets consumed when opening the door.
+ * @brief Returns whether opening this door consumes the condition that
+ * was required.
  *
  * If this setting is \c true, here is the behavior when the hero opens
  * the door:
- * - If the opening mode is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+ * - If the opening method is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
  *   then the required savegame variable is either:
  *   - set to \c false if it is a boolean,
  *   - decremented if it is an integer,
  *   - set to an empty string if it is a string.
- * - If the opening mode is OPENING_BY_INTERACTION_IF_ITEM, then:
+ * - If the opening method is OPENING_BY_INTERACTION_IF_ITEM, then:
  *   - if the required item has an amount, the amount is decremented.
  *   - if the required item has no amount, its possession state is set to zero.
- * - With other opening modes, this setting has no effect.
+ * - With other opening methods, this setting has no effect.
+ *
+ * @return \c true if opening this door consumes the condition that was
+ * required.
  */
 bool Door::is_opening_condition_consumed() const {
   return opening_condition_consumed;
 }
 
 /**
- * @brief Sets whether the required condition (see
- * get_opening_condition()) gets consumed when opening the door.
+ * @brief Sets whether opening this door should consume the condition that
+ * was required.
  *
  * If this setting is \c true, here is the behavior when the hero opens
  * the door:
- * - If the opening mode is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+ * - If the opening method is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
  *   then the required savegame variable is either:
  *   - set to \c false if it is a boolean,
  *   - decremented if it is an integer,
  *   - set to an empty string if it is a string.
- * - If the opening mode is OPENING_BY_INTERACTION_IF_ITEM, then:
+ * - If the opening method is OPENING_BY_INTERACTION_IF_ITEM, then:
  *   - if the required item has an amount, the amount is decremented.
  *   - if the required item has no amount, its possession state is set to zero.
- * - With other opening modes, this setting has no effect.
+ * - With other opening methods, this setting has no effect.
+ *
+ * @param opening_condition_consumed \c true if opening this door should
+ * consume the condition that was required.
  */
 void Door::set_opening_condition_consumed(bool opening_condition_consumed) {
    this->opening_condition_consumed = opening_condition_consumed;
@@ -384,37 +393,37 @@ bool Door::can_open() const {
 
   switch (get_opening_method()) {
 
-  case OPENING_BY_INTERACTION:
-    // No condition: the hero can always open the door.
-    return true;
+    case OPENING_BY_INTERACTION:
+      // No condition: the hero can always open the door.
+      return true;
 
-  case OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE:
-  {
-    // The hero can open the door if a savegame variable is set.
-    const std::string& required_savegame_variable = get_opening_condition();
-    if (required_savegame_variable.empty()) {
-      return false;
+    case OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE:
+    {
+      // The hero can open the door if a savegame variable is set.
+      const std::string& required_savegame_variable = get_opening_condition();
+      if (required_savegame_variable.empty()) {
+        return false;
+      }
+      return get_savegame().get_boolean(required_savegame_variable)
+        || get_savegame().get_integer(required_savegame_variable) > 0
+        || !get_savegame().get_string(required_savegame_variable).empty();
     }
-    return get_savegame().get_boolean(required_savegame_variable)
-      || get_savegame().get_integer(required_savegame_variable) > 0
-      || !get_savegame().get_string(required_savegame_variable).empty();
-  }
 
-  case OPENING_BY_INTERACTION_IF_ITEM:
-  {
-    // The hero can open the door if he has an item.
-    const std::string& required_item_name = get_opening_condition();
-    if (required_item_name.empty()) {
-      return false;
+    case OPENING_BY_INTERACTION_IF_ITEM:
+    {
+      // The hero can open the door if he has an item.
+      const std::string& required_item_name = get_opening_condition();
+      if (required_item_name.empty()) {
+        return false;
+      }
+      const EquipmentItem& item = get_equipment().get_item(required_item_name);
+      return item.is_saved()
+        && item.get_variant() > 0
+        && (!item.has_amount() || item.get_amount() > 0);
     }
-    const EquipmentItem& item = get_equipment().get_item(required_item_name);
-    return item.is_saved()
-      && item.get_variant() > 0
-      && (!item.has_amount() || item.get_amount() > 0);
-  }
 
-  default:
-    return false;
+    default:
+      return false;
   }
 }
 
@@ -524,6 +533,10 @@ void Door::notify_action_command_pressed() {
         get_savegame().set_boolean(savegame_variable, true);
       }
 
+      if (is_opening_condition_consumed()) {
+        consume_opening_condition();
+      }
+
       set_opening();
 
       get_hero().check_position();
@@ -532,6 +545,57 @@ void Door::notify_action_command_pressed() {
       Sound::play("wrong");
       get_dialog_box().start_dialog(cannot_open_dialog_id);
     }
+  }
+}
+
+/**
+ * @brief Consumes the savegame variable or the equipment item that was required
+ * to open the door.
+ */
+void Door::consume_opening_condition() {
+
+  switch (get_opening_method()) {
+
+    case OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE:
+    {
+      // Reset or decrement the savegame variable that was required.
+      const std::string& required_savegame_variable = get_opening_condition();
+      Savegame& savegame = get_savegame();
+      if (!required_savegame_variable.empty()) {
+        if (savegame.is_boolean(required_savegame_variable)) {
+          savegame.set_boolean(required_savegame_variable, false);
+        }
+        else if (savegame.is_integer(required_savegame_variable)) {
+          int current_value = savegame.get_integer(required_savegame_variable);
+          savegame.set_integer(required_savegame_variable, current_value - 1);
+        }
+        else if (savegame.is_string(required_savegame_variable)) {
+          savegame.set_string(required_savegame_variable, "");
+        }
+      }
+      break;
+    }
+
+    case OPENING_BY_INTERACTION_IF_ITEM:
+    {
+      // Remove the equipment item that was required.
+      if (!opening_condition.empty()) {
+        EquipmentItem& item = get_equipment().get_item(opening_condition);
+        if (item.is_saved() && item.get_variant() > 0) {
+          if (item.has_amount()) {
+            item.set_amount(item.get_amount() - 1);
+          }
+          else {
+            item.set_variant(0);
+          }
+        }
+      }
+      break;
+    }
+
+    default:
+      // Ignored.
+      break;
   }
 }
 

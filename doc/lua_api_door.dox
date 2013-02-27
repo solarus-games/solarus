@@ -3,8 +3,8 @@
 
 \tableofcontents
 
-A door is an obstacle that can be opened by the hero
-under some conditions or by Lua.
+A door is an obstacle that can be opened by Lua,
+and optionally by the hero under some conditions.
 
 This type of \ref lua_api_entity "map entity" can be declared in the
 \ref lua_api_map_overview_files "map data file".
@@ -32,11 +32,26 @@ See
 \ref lua_api_map_open_doors "map:open_doors()"
 for more information about these mechanisms.
 
-A door may be opened by one or several means depending on your choice:
-- by pressing the \ref lua_api_game_intro_commands "action command"
-  in front of the door when a specified savegame variable is set,
-- with an \ref lua_api_explosion "explosion",
-- or explicitly by calling \ref lua_api_map_open_doors "map:open_doors()".
+A door may be opened by one of the following methods:
+- \c "none": Cannot be opened by the player. You can only open it
+  explicitly by calling \ref lua_api_map_open_doors "map:open_doors()".
+- \c "interaction": Can be opened by pressing the
+  \ref lua_api_game_intro_commands "action command" in front of it.
+- \c "interaction_if_savegame_variable": Can be opened by pressing the
+  \ref lua_api_game_intro_commands "action command" in front of it,
+   provided that a specific savegame variable is set.
+- \c "interaction_if_item": Can be opened by pressing the
+  \ref lua_api_game_intro_commands "action command" in front of it,
+  provided that the player has a specific \ref lua_api_item
+  "equipment item".
+- \c "explosion": Can be opened by an explosion.
+
+For doors whose opening method is
+\c "interaction_if_savegame_variable" or \c "interaction_if_item",
+you can specify which savegame variable or \ref lua_api_item
+"equipment item" is required.
+You can also choose whether opening the door should consume
+the savegame variable of equipment item that was required.
 
 \section lua_api_door_inherited_methods Methods inherited from map entity
 

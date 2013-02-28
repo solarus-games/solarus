@@ -198,7 +198,6 @@ void Door::update_dynamic_tiles() {
 void Door::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   if (!is_open()
-      && is_interaction_required()
       && entity_overlapping.is_hero()
       && !is_changing()) {
 
@@ -526,9 +525,7 @@ void Door::draw_on_map() {
 void Door::notify_action_command_pressed() {
 
   if (get_hero().is_free()
-      && is_interaction_required()
       && !is_changing()) {
-    // The action command is indeed the method to open the door.
 
     if (can_open()) {
       Sound::play("door_unlocked");

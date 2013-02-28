@@ -1256,12 +1256,9 @@ on the map.
       \ref lua_api_item_set_variant "possessed variant" to \c 0, unless it has
       an associated amount: in this case, the amount is decremented.
     - With other opening methods, this setting has no effect.
-  - \c cannot_open_dialog_id (string, optional): When the door is supposed to
-    be opened by interacting with it
-    (see \c opening_method above), id of the dialog to show in case of failure,
-    that is, if the opening condition required is not met.
-    If you don't set this value, no dialog will be shown when trying to open
-    the door without the correct conditions.
+  - \c cannot_open_dialog_id (string, optional): Id of the dialog to show
+    if the hero fails to open the door.
+    If you don't set this value, no dialog is shown.
 - Return value (\ref lua_api_door "door"): The \ref lua_api_door
   "door" created.
 

@@ -497,7 +497,7 @@ stairs{
 
 door{
   layer = 0,
-  x = 432,
+  x = 440,
   y = 608,
   name = "door_e",
   direction = 0,
@@ -506,7 +506,7 @@ door{
 
 door{
   layer = 0,
-  x = 528,
+  x = 536,
   y = 608,
   name = "door_e_2",
   direction = 2,
@@ -4693,7 +4693,7 @@ tile{
 door{
   layer = 1,
   x = 256,
-  y = 736,
+  y = 744,
   name = "door_f",
   direction = 3,
   sprite = "entities/door_normal",
@@ -4702,7 +4702,7 @@ door{
 door{
   layer = 1,
   x = 688,
-  y = 784,
+  y = 792,
   name = "door_g_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4711,7 +4711,7 @@ door{
 door{
   layer = 1,
   x = 688,
-  y = 736,
+  y = 744,
   name = "door_g",
   direction = 3,
   sprite = "entities/door_normal",
@@ -4720,7 +4720,7 @@ door{
 door{
   layer = 1,
   x = 256,
-  y = 496,
+  y = 504,
   name = "door_d_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4729,7 +4729,7 @@ door{
 door{
   layer = 1,
   x = 256,
-  y = 448,
+  y = 456,
   name = "door_d",
   direction = 3,
   sprite = "entities/door_normal",
@@ -4737,7 +4737,7 @@ door{
 
 door{
   layer = 1,
-  x = 456,
+  x = 464,
   y = 376,
   name = "door_b",
   direction = 0,
@@ -4746,7 +4746,7 @@ door{
 
 door{
   layer = 1,
-  x = 504,
+  x = 512,
   y = 376,
   name = "door_b_2",
   direction = 2,
@@ -4766,7 +4766,7 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 776,
+  x = 784,
   y = 680,
   name = "weak_wall_b_2",
   direction = 0,
@@ -4895,7 +4895,7 @@ destination{
 
 door{
   layer = 1,
-  x = 776,
+  x = 784,
   y = 376,
   name = "door_a",
   direction = 0,
@@ -4904,7 +4904,7 @@ door{
 
 door{
   layer = 1,
-  x = 824,
+  x = 832,
   y = 376,
   name = "door_a_2",
   direction = 2,
@@ -4966,7 +4966,7 @@ wall{
 door{
   layer = 1,
   x = 688,
-  y = 496,
+  y = 504,
   name = "door_c_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4975,7 +4975,7 @@ door{
 door{
   layer = 1,
   x = 688,
-  y = 448,
+  y = 456,
   name = "door_c",
   direction = 3,
   sprite = "entities/door_normal",
@@ -5070,7 +5070,7 @@ teletransporter{
 door{
   layer = 1,
   x = 952,
-  y = 208,
+  y = 216,
   name = "n_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -5079,7 +5079,7 @@ door{
 door{
   layer = 1,
   x = 952,
-  y = 160,
+  y = 168,
   name = "n_door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -5480,7 +5480,7 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 824,
+  x = 832,
   y = 680,
   name = "weak_wall_b",
   direction = 2,
@@ -5527,7 +5527,7 @@ dynamic_tile{
 door{
   layer = 1,
   x = 1040,
-  y = 496,
+  y = 504,
   name = "weak_wall_a",
   direction = 1,
   sprite = "entities/door_weak_wall",
@@ -5538,7 +5538,7 @@ door{
 door{
   layer = 1,
   x = 1040,
-  y = 448,
+  y = 456,
   name = "weak_wall_a_2",
   direction = 3,
   sprite = "entities/door_weak_wall",
@@ -5640,7 +5640,7 @@ wall{
 door{
   layer = 1,
   x = 256,
-  y = 784,
+  y = 792,
   name = "door_f_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -5661,7 +5661,7 @@ wall{
 
 door{
   layer = 1,
-  x = 456,
+  x = 464,
   y = 960,
   name = "door_h_2",
   direction = 0,
@@ -5670,7 +5670,7 @@ door{
 
 door{
   layer = 1,
-  x = 504,
+  x = 512,
   y = 960,
   name = "door_h",
   direction = 2,

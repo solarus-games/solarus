@@ -1548,7 +1548,7 @@ wall{
 
 door{
   layer = 1,
-  x = 232,
+  x = 240,
   y = 104,
   name = "door",
   direction = 0,
@@ -1558,7 +1558,7 @@ door{
 
 door{
   layer = 1,
-  x = 280,
+  x = 288,
   y = 104,
   name = "door_2",
   direction = 2,

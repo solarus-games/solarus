@@ -2013,7 +2013,7 @@ teletransporter{
 door{
   layer = 0,
   x = 160,
-  y = 432,
+  y = 440,
   name = "sw_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -2022,7 +2022,7 @@ door{
 door{
   layer = 0,
   x = 160,
-  y = 336,
+  y = 344,
   name = "sw_door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -2048,7 +2048,7 @@ sensor{
 
 door{
   layer = 0,
-  x = 288,
+  x = 296,
   y = 488,
   name = "door",
   direction = 0,
@@ -2062,7 +2062,7 @@ door{
 
 door{
   layer = 0,
-  x = 384,
+  x = 392,
   y = 488,
   name = "door_2",
   direction = 2,
@@ -4725,7 +4725,7 @@ dynamic_tile{
 door{
   layer = 1,
   x = 600,
-  y = 120,
+  y = 128,
   name = "weak_wall",
   direction = 1,
   sprite = "entities/door_very_weak_wall",

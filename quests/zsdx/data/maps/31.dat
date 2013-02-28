@@ -1471,7 +1471,7 @@ switch{
 
 door{
   layer = 0,
-  x = 384,
+  x = 392,
   y = 464,
   name = "door",
   direction = 2,
@@ -1484,7 +1484,7 @@ door{
 
 door{
   layer = 0,
-  x = 288,
+  x = 296,
   y = 464,
   name = "door_2",
   direction = 0,
@@ -1853,7 +1853,7 @@ wall{
 door{
   layer = 0,
   x = 944,
-  y = 560,
+  y = 568,
   name = "final_room_door",
   direction = 3,
   sprite = "entities/door_normal",
@@ -5119,7 +5119,7 @@ jumper{
 door{
   layer = 1,
   x = 944,
-  y = 200,
+  y = 208,
   name = "door_3",
   direction = 1,
   sprite = "entities/door_boss_key",
@@ -5132,7 +5132,7 @@ door{
 door{
   layer = 1,
   x = 944,
-  y = 152,
+  y = 160,
   name = "door_4",
   direction = 3,
   sprite = "entities/door_boss_key",
@@ -5388,7 +5388,7 @@ npc{
 door{
   layer = 1,
   x = 944,
-  y = 200,
+  y = 208,
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -5397,7 +5397,7 @@ door{
 door{
   layer = 1,
   x = 944,
-  y = 152,
+  y = 160,
   name = "boss_door_2",
   direction = 3,
   sprite = "entities/door_normal",

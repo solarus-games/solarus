@@ -8529,7 +8529,7 @@ sensor{
 door{
   layer = 1,
   x = 848,
-  y = 824,
+  y = 832,
   name = "door_b",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8538,7 +8538,7 @@ door{
 door{
   layer = 1,
   x = 848,
-  y = 776,
+  y = 784,
   name = "door_b_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8547,7 +8547,7 @@ door{
 door{
   layer = 1,
   x = 1008,
-  y = 856,
+  y = 864,
   name = "door_c_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8556,7 +8556,7 @@ door{
 door{
   layer = 1,
   x = 1008,
-  y = 808,
+  y = 816,
   name = "door_c",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8565,7 +8565,7 @@ door{
 door{
   layer = 1,
   x = 816,
-  y = 952,
+  y = 960,
   name = "door_d_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8574,7 +8574,7 @@ door{
 door{
   layer = 1,
   x = 816,
-  y = 904,
+  y = 912,
   name = "door_d",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8583,7 +8583,7 @@ door{
 door{
   layer = 1,
   x = 960,
-  y = 968,
+  y = 976,
   name = "door_e_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8592,7 +8592,7 @@ door{
 door{
   layer = 1,
   x = 960,
-  y = 920,
+  y = 928,
   name = "door_e",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8600,7 +8600,7 @@ door{
 
 door{
   layer = 1,
-  x = 888,
+  x = 896,
   y = 624,
   name = "door_a",
   direction = 0,
@@ -8610,7 +8610,7 @@ door{
 
 door{
   layer = 1,
-  x = 936,
+  x = 944,
   y = 624,
   name = "door_a_2",
   direction = 2,
@@ -8621,7 +8621,7 @@ door{
 door{
   layer = 1,
   x = 944,
-  y = 280,
+  y = 288,
   name = "ne_door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8631,7 +8631,7 @@ door{
 door{
   layer = 1,
   x = 944,
-  y = 328,
+  y = 336,
   name = "ne_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -10270,7 +10270,7 @@ sensor{
 door{
   layer = 1,
   x = 328,
-  y = 520,
+  y = 528,
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_normal",

@@ -8743,7 +8743,7 @@ door{
 
 door{
   layer = 1,
-  x = 552,
+  x = 560,
   y = 344,
   name = "torches_door_2",
   direction = 0,
@@ -8753,7 +8753,7 @@ door{
 
 door{
   layer = 1,
-  x = 600,
+  x = 608,
   y = 344,
   name = "torches_door",
   direction = 2,
@@ -8764,7 +8764,7 @@ door{
 door{
   layer = 1,
   x = 720,
-  y = 568,
+  y = 576,
   name = "ce_door_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8774,7 +8774,7 @@ door{
 door{
   layer = 1,
   x = 720,
-  y = 520,
+  y = 528,
   name = "ce_door",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8784,7 +8784,7 @@ door{
 door{
   layer = 1,
   x = 784,
-  y = 744,
+  y = 752,
   name = "se_door_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8793,7 +8793,7 @@ door{
 door{
   layer = 1,
   x = 784,
-  y = 696,
+  y = 704,
   name = "se_door",
   direction = 3,
   sprite = "entities/door_normal",

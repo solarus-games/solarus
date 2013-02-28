@@ -8075,7 +8075,7 @@ switch{
 door{
   layer = 1,
   x = 840,
-  y = 488,
+  y = 496,
   name = "e_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8084,7 +8084,7 @@ door{
 door{
   layer = 1,
   x = 840,
-  y = 440,
+  y = 448,
   name = "e_door_2",
   direction = 3,
   sprite = "entities/door_normal",

@@ -2215,7 +2215,7 @@ wall{
 
 door{
   layer = 1,
-  x = 24,
+  x = 32,
   y = 104,
   name = "door_2",
   direction = 2,
@@ -2224,7 +2224,7 @@ door{
 
 door{
   layer = 1,
-  x = 24,
+  x = 32,
   y = 360,
   name = "door_3",
   direction = 2,
@@ -2234,7 +2234,7 @@ door{
 door{
   layer = 1,
   x = 368,
-  y = 456,
+  y = 464,
   name = "door_4",
   direction = 3,
   sprite = "entities/door_normal",
@@ -2242,7 +2242,7 @@ door{
 
 door{
   layer = 1,
-  x = 472,
+  x = 480,
   y = 232,
   name = "door_5",
   direction = 0,
@@ -2251,7 +2251,7 @@ door{
 
 door{
   layer = 1,
-  x = 472,
+  x = 480,
   y = 104,
   name = "door_6",
   direction = 0,
@@ -2261,7 +2261,7 @@ door{
 door{
   layer = 1,
   x = 112,
-  y = 24,
+  y = 32,
   name = "door",
   direction = 1,
   sprite = "entities/door_normal",

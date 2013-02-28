@@ -9904,7 +9904,7 @@ tile{
 door{
   layer = 1,
   x = 152,
-  y = 232,
+  y = 240,
   name = "LD12",
   direction = 3,
   sprite = "entities/door_normal",
@@ -9912,7 +9912,7 @@ door{
 
 door{
   layer = 1,
-  x = 664,
+  x = 672,
   y = 632,
   name = "LD7_2",
   direction = 2,
@@ -9921,7 +9921,7 @@ door{
 
 door{
   layer = 1,
-  x = 616,
+  x = 624,
   y = 632,
   name = "LD7",
   direction = 0,
@@ -9930,7 +9930,7 @@ door{
 
 door{
   layer = 1,
-  x = 936,
+  x = 944,
   y = 888,
   name = "KD03",
   direction = 0,
@@ -9944,7 +9944,7 @@ door{
 
 door{
   layer = 1,
-  x = 984,
+  x = 992,
   y = 888,
   name = "KD03_2",
   direction = 2,
@@ -9959,7 +9959,7 @@ door{
 door{
   layer = 1,
   x = 520,
-  y = 1304,
+  y = 1312,
   name = "LD9_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -9968,7 +9968,7 @@ door{
 door{
   layer = 1,
   x = 520,
-  y = 1256,
+  y = 1264,
   name = "LD9",
   direction = 3,
   sprite = "entities/door_normal",
@@ -9990,7 +9990,7 @@ wall{
 door{
   layer = 1,
   x = 504,
-  y = 1560,
+  y = 1568,
   name = "WW02",
   direction = 1,
   sprite = "entities/door_weak_wall",
@@ -10079,7 +10079,7 @@ chest{
 door{
   layer = 1,
   x = 792,
-  y = 744,
+  y = 752,
   name = "LD8",
   direction = 3,
   sprite = "entities/door_normal",
@@ -10928,7 +10928,7 @@ destructible{
 door{
   layer = 1,
   x = 152,
-  y = 280,
+  y = 288,
   name = "LD12_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -12153,7 +12153,7 @@ dynamic_tile{
 door{
   layer = 1,
   x = 792,
-  y = 792,
+  y = 800,
   name = "LD8_2",
   direction = 1,
   sprite = "entities/door_normal",

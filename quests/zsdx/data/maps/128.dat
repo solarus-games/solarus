@@ -1235,7 +1235,7 @@ tile{
 door{
   layer = 0,
   x = 240,
-  y = 432,
+  y = 440,
   name = "door_3",
   direction = 3,
   sprite = "entities/door_normal",
@@ -2986,7 +2986,7 @@ jumper{
 
 door{
   layer = 1,
-  x = 472,
+  x = 480,
   y = 360,
   name = "door_2",
   direction = 0,
@@ -2995,7 +2995,7 @@ door{
 
 door{
   layer = 1,
-  x = 24,
+  x = 32,
   y = 104,
   name = "door",
   direction = 2,

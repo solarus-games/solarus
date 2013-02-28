@@ -2963,7 +2963,7 @@ chest{
 door{
   layer = 0,
   x = 1056,
-  y = 496,
+  y = 504,
   name = "code_door_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -2973,7 +2973,7 @@ door{
 door{
   layer = 0,
   x = 1056,
-  y = 400,
+  y = 408,
   name = "code_door",
   direction = 3,
   sprite = "entities/door_normal",
@@ -6506,7 +6506,7 @@ jumper{
 door{
   layer = 1,
   x = 1056,
-  y = 696,
+  y = 704,
   name = "door",
   direction = 1,
   sprite = "entities/door_big_key",
@@ -6519,7 +6519,7 @@ door{
 door{
   layer = 1,
   x = 1056,
-  y = 648,
+  y = 656,
   name = "door_2",
   direction = 3,
   sprite = "entities/door_big_key",

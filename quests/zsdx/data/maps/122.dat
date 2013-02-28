@@ -1286,7 +1286,7 @@ wall{
 door{
   layer = 0,
   x = 240,
-  y = 816,
+  y = 824,
   name = "door_3",
   direction = 3,
   sprite = "entities/door_normal",
@@ -2278,7 +2278,7 @@ tile{
 
 door{
   layer = 1,
-  x = 24,
+  x = 32,
   y = 488,
   name = "door",
   direction = 2,
@@ -2288,7 +2288,7 @@ door{
 door{
   layer = 1,
   x = 240,
-  y = 408,
+  y = 416,
   name = "door_2",
   direction = 1,
   sprite = "entities/door_normal",

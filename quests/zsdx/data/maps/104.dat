@@ -1560,7 +1560,7 @@ switch{
 
 door{
   layer = 1,
-  x = 296,
+  x = 304,
   y = 120,
   name = "door",
   direction = 0,
@@ -1569,7 +1569,7 @@ door{
 
 door{
   layer = 1,
-  x = 344,
+  x = 352,
   y = 120,
   name = "door_2",
   direction = 2,

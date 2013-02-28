@@ -3773,7 +3773,7 @@ wall{
 
 door{
   layer = 1,
-  x = 536,
+  x = 544,
   y = 232,
   name = "boss_door",
   direction = 0,
@@ -3786,7 +3786,7 @@ door{
 
 door{
   layer = 1,
-  x = 584,
+  x = 592,
   y = 232,
   name = "boss_door_2",
   direction = 2,
@@ -3799,7 +3799,7 @@ door{
 
 door{
   layer = 1,
-  x = 632,
+  x = 640,
   y = 72,
   name = "miniboss_door_2",
   direction = 0,
@@ -3808,7 +3808,7 @@ door{
 
 door{
   layer = 1,
-  x = 680,
+  x = 688,
   y = 72,
   name = "miniboss_door",
   direction = 2,
@@ -3903,7 +3903,7 @@ stairs{
 door{
   layer = 1,
   x = 840,
-  y = 256,
+  y = 264,
   name = "miniboss_door_3",
   direction = 1,
   sprite = "entities/door_normal",

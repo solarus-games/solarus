@@ -569,7 +569,7 @@ tile{
 door{
   layer = 0,
   x = 80,
-  y = 48,
+  y = 56,
   name = "door",
   direction = 1,
   sprite = "entities/door_normal",

@@ -8180,7 +8180,7 @@ destination{
 
 door{
   layer = 1,
-  x = 808,
+  x = 816,
   y = 80,
   name = "miniboss_door",
   direction = 0,
@@ -8189,7 +8189,7 @@ door{
 
 door{
   layer = 1,
-  x = 856,
+  x = 864,
   y = 80,
   name = "miniboss_door_2",
   direction = 2,
@@ -8199,7 +8199,7 @@ door{
 door{
   layer = 1,
   x = 1024,
-  y = 776,
+  y = 784,
   name = "door_f_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8208,7 +8208,7 @@ door{
 door{
   layer = 1,
   x = 1024,
-  y = 728,
+  y = 736,
   name = "door_f",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8217,7 +8217,7 @@ door{
 door{
   layer = 1,
   x = 712,
-  y = 776,
+  y = 784,
   name = "door_d_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8227,7 +8227,7 @@ door{
 door{
   layer = 1,
   x = 712,
-  y = 728,
+  y = 736,
   name = "door_d",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8237,7 +8237,7 @@ door{
 door{
   layer = 1,
   x = 56,
-  y = 568,
+  y = 576,
   name = "door_a",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8247,7 +8247,7 @@ door{
 door{
   layer = 1,
   x = 56,
-  y = 520,
+  y = 528,
   name = "door_a_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8257,7 +8257,7 @@ door{
 door{
   layer = 1,
   x = 248,
-  y = 520,
+  y = 528,
   name = "door_c_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8266,7 +8266,7 @@ door{
 door{
   layer = 1,
   x = 248,
-  y = 472,
+  y = 480,
   name = "door_c",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8275,7 +8275,7 @@ door{
 
 door{
   layer = 1,
-  x = 136,
+  x = 144,
   y = 312,
   name = "door_b_2",
   direction = 0,
@@ -8289,7 +8289,7 @@ door{
 
 door{
   layer = 1,
-  x = 184,
+  x = 192,
   y = 312,
   name = "door_b",
   direction = 2,
@@ -9768,7 +9768,7 @@ sensor{
 door{
   layer = 1,
   x = 328,
-  y = 520,
+  y = 528,
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_boss_key",
@@ -10604,7 +10604,7 @@ enemy{
 door{
   layer = 1,
   x = 936,
-  y = 40,
+  y = 48,
   name = "miniboss_door_3",
   direction = 1,
   sprite = "entities/door_normal",

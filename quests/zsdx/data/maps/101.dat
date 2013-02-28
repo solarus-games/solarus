@@ -7844,7 +7844,7 @@ npc{
 door{
   layer = 1,
   x = 272,
-  y = 792,
+  y = 800,
   name = "door_a",
   direction = 1,
   sprite = "entities/door_normal",
@@ -7853,7 +7853,7 @@ door{
 door{
   layer = 1,
   x = 272,
-  y = 744,
+  y = 752,
   name = "door_a_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8114,7 +8114,7 @@ jumper{
 
 door{
   layer = 1,
-  x = 392,
+  x = 400,
   y = 968,
   name = "sw_door",
   direction = 2,
@@ -8124,7 +8124,7 @@ door{
 
 door{
   layer = 1,
-  x = 344,
+  x = 352,
   y = 968,
   name = "sw_door_2",
   direction = 0,
@@ -8550,7 +8550,7 @@ destructible{
 door{
   layer = 1,
   x = 520,
-  y = 792,
+  y = 800,
   name = "door_2",
   direction = 1,
   sprite = "entities/door_big_key",
@@ -8832,7 +8832,7 @@ npc{
 
 door{
   layer = 1,
-  x = 712,
+  x = 720,
   y = 968,
   name = "door_b",
   direction = 2,
@@ -8841,7 +8841,7 @@ door{
 
 door{
   layer = 1,
-  x = 664,
+  x = 672,
   y = 968,
   name = "door_b_2",
   direction = 0,
@@ -8966,7 +8966,7 @@ sensor{
 door{
   layer = 1,
   x = 520,
-  y = 744,
+  y = 752,
   name = "door_3",
   direction = 3,
   sprite = "entities/door_big_key",
@@ -9001,7 +9001,7 @@ switch{
 door{
   layer = 1,
   x = 904,
-  y = 136,
+  y = 144,
   name = "ne_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -9011,7 +9011,7 @@ door{
 door{
   layer = 1,
   x = 904,
-  y = 88,
+  y = 96,
   name = "ne_door_2",
   direction = 3,
   sprite = "entities/door_normal",

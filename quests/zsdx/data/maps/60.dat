@@ -7795,7 +7795,7 @@ wall{
 door{
   layer = 1,
   x = 632,
-  y = 200,
+  y = 208,
   name = "hidden_weak_wall_2",
   direction = 1,
   sprite = "entities/door_very_weak_wall",
@@ -7864,7 +7864,7 @@ teletransporter{
 door{
   layer = 1,
   x = 88,
-  y = 232,
+  y = 240,
   name = "door",
   direction = 1,
   sprite = "entities/door_boss_key",
@@ -7877,7 +7877,7 @@ door{
 door{
   layer = 1,
   x = 88,
-  y = 184,
+  y = 192,
   name = "door_2",
   direction = 3,
   sprite = "entities/door_boss_key",
@@ -7915,7 +7915,7 @@ wall{
 
 door{
   layer = 1,
-  x = 680,
+  x = 688,
   y = 56,
   name = "door_3",
   direction = 0,
@@ -7929,7 +7929,7 @@ door{
 
 door{
   layer = 1,
-  x = 728,
+  x = 736,
   y = 56,
   name = "door_4",
   direction = 2,
@@ -8025,7 +8025,7 @@ destination{
 door{
   layer = 1,
   x = 632,
-  y = 152,
+  y = 160,
   name = "hidden_weak_wall",
   direction = 3,
   sprite = "entities/door_very_weak_wall",
@@ -8200,7 +8200,7 @@ chest{
 door{
   layer = 1,
   x = 832,
-  y = 488,
+  y = 496,
   name = "door_7",
   direction = 3,
   sprite = "entities/door_big_key",
@@ -8213,7 +8213,7 @@ door{
 door{
   layer = 1,
   x = 832,
-  y = 536,
+  y = 544,
   name = "door_8",
   direction = 1,
   sprite = "entities/door_big_key",
@@ -8989,7 +8989,7 @@ destructible{
 door{
   layer = 1,
   x = 88,
-  y = 232,
+  y = 240,
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8998,7 +8998,7 @@ door{
 door{
   layer = 1,
   x = 88,
-  y = 184,
+  y = 192,
   name = "boss_door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -9079,7 +9079,7 @@ wall{
 door{
   layer = 1,
   x = 184,
-  y = 232,
+  y = 240,
   name = "final_room_door",
   direction = 1,
   sprite = "entities/door_normal",

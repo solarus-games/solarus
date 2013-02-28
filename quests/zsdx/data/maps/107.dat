@@ -3989,7 +3989,7 @@ tile{
 door{
   layer = 1,
   x = 1560,
-  y = 1304,
+  y = 1312,
   name = "miniboss_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -3998,7 +3998,7 @@ door{
 door{
   layer = 1,
   x = 1768,
-  y = 1304,
+  y = 1312,
   name = "miniboss_door_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -6057,7 +6057,7 @@ npc{
 
 door{
   layer = 1,
-  x = 1896,
+  x = 1904,
   y = 1912,
   name = "door_b",
   direction = 0,
@@ -6067,7 +6067,7 @@ door{
 
 door{
   layer = 1,
-  x = 1944,
+  x = 1952,
   y = 1912,
   name = "door_b_2",
   direction = 2,
@@ -6505,7 +6505,7 @@ enemy{
 
 door{
   layer = 1,
-  x = 1896,
+  x = 1904,
   y = 1328,
   name = "miniboss_e_door",
   direction = 0,
@@ -6514,7 +6514,7 @@ door{
 
 door{
   layer = 1,
-  x = 1944,
+  x = 1952,
   y = 1328,
   name = "miniboss_e_door_2",
   direction = 2,
@@ -6523,7 +6523,7 @@ door{
 
 door{
   layer = 1,
-  x = 2216,
+  x = 2224,
   y = 632,
   name = "door_a",
   direction = 0,
@@ -6532,7 +6532,7 @@ door{
 
 door{
   layer = 1,
-  x = 2264,
+  x = 2272,
   y = 632,
   name = "door_a_2",
   direction = 2,

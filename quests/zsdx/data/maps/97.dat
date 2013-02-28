@@ -5713,7 +5713,7 @@ stairs{
 door{
   layer = 1,
   x = 200,
-  y = 344,
+  y = 352,
   name = "door_5",
   direction = 1,
   sprite = "entities/door_big_key",

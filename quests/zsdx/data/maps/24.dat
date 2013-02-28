@@ -4509,7 +4509,7 @@ enemy{
 
 door{
   layer = 1,
-  x = 864,
+  x = 872,
   y = 536,
   name = "door",
   direction = 0,
@@ -4522,7 +4522,7 @@ door{
 
 door{
   layer = 1,
-  x = 912,
+  x = 920,
   y = 536,
   name = "door_2",
   direction = 2,
@@ -4536,7 +4536,7 @@ door{
 door{
   layer = 1,
   x = 944,
-  y = 512,
+  y = 520,
   name = "se_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4545,7 +4545,7 @@ door{
 door{
   layer = 1,
   x = 944,
-  y = 464,
+  y = 472,
   name = "se_door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -4757,7 +4757,7 @@ stairs{
 door{
   layer = 1,
   x = 632,
-  y = 24,
+  y = 32,
   name = "final_room_door",
   direction = 1,
   sprite = "entities/door_normal",

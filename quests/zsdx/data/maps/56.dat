@@ -9509,7 +9509,7 @@ crystal_block{
 
 door{
   layer = 1,
-  x = 872,
+  x = 880,
   y = 56,
   name = "miniboss_door",
   direction = 0,
@@ -9518,7 +9518,7 @@ door{
 
 door{
   layer = 1,
-  x = 920,
+  x = 928,
   y = 56,
   name = "miniboss_door_2",
   direction = 2,
@@ -9527,7 +9527,7 @@ door{
 
 door{
   layer = 1,
-  x = 584,
+  x = 592,
   y = 56,
   name = "door",
   direction = 0,
@@ -9540,7 +9540,7 @@ door{
 
 door{
   layer = 1,
-  x = 632,
+  x = 640,
   y = 56,
   name = "door_2",
   direction = 2,
@@ -10121,7 +10121,7 @@ crystal_block{
 
 door{
   layer = 1,
-  x = 872,
+  x = 880,
   y = 248,
   name = "miniboss_door_3",
   direction = 0,
@@ -10130,7 +10130,7 @@ door{
 
 door{
   layer = 1,
-  x = 920,
+  x = 928,
   y = 248,
   name = "miniboss_door_4",
   direction = 2,
@@ -10140,7 +10140,7 @@ door{
 door{
   layer = 1,
   x = 1048,
-  y = 24,
+  y = 32,
   name = "miniboss_door_5",
   direction = 1,
   sprite = "entities/door_normal",
@@ -10509,7 +10509,7 @@ door{
 door{
   layer = 1,
   x = 344,
-  y = 120,
+  y = 128,
   name = "torches_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -10519,7 +10519,7 @@ door{
 door{
   layer = 1,
   x = 344,
-  y = 72,
+  y = 80,
   name = "torches_door_2",
   direction = 3,
   sprite = "entities/door_normal",

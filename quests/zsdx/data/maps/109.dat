@@ -6032,7 +6032,7 @@ tile{
 door{
   layer = 0,
   x = 1360,
-  y = 392,
+  y = 400,
   name = "door_d_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -6041,7 +6041,7 @@ door{
 door{
   layer = 0,
   x = 1360,
-  y = 392,
+  y = 400,
   name = "door_4",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -6054,7 +6054,7 @@ door{
 
 door{
   layer = 0,
-  x = 584,
+  x = 592,
   y = 720,
   name = "door_b_3",
   direction = 0,
@@ -6063,7 +6063,7 @@ door{
 
 door{
   layer = 0,
-  x = 888,
+  x = 896,
   y = 720,
   name = "door_b_5",
   direction = 0,
@@ -6072,7 +6072,7 @@ door{
 
 door{
   layer = 0,
-  x = 936,
+  x = 944,
   y = 720,
   name = "door_b_6",
   direction = 2,
@@ -6248,7 +6248,7 @@ wall{
 
 door{
   layer = 0,
-  x = 280,
+  x = 288,
   y = 512,
   name = "door_a",
   direction = 0,
@@ -6257,7 +6257,7 @@ door{
 
 door{
   layer = 0,
-  x = 328,
+  x = 336,
   y = 512,
   name = "door_a_2",
   direction = 2,
@@ -6303,7 +6303,7 @@ enemy{
 door{
   layer = 0,
   x = 448,
-  y = 600,
+  y = 608,
   name = "door_b",
   direction = 3,
   sprite = "entities/door_normal",
@@ -6312,7 +6312,7 @@ door{
 door{
   layer = 0,
   x = 448,
-  y = 648,
+  y = 656,
   name = "door_b_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -6320,7 +6320,7 @@ door{
 
 door{
   layer = 0,
-  x = 632,
+  x = 640,
   y = 720,
   name = "door_b_4",
   direction = 2,
@@ -6408,7 +6408,7 @@ enemy{
 door{
   layer = 0,
   x = 752,
-  y = 808,
+  y = 816,
   name = "door_c",
   direction = 3,
   sprite = "entities/door_normal",
@@ -6417,7 +6417,7 @@ door{
 door{
   layer = 0,
   x = 752,
-  y = 856,
+  y = 864,
   name = "door_c_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -6426,7 +6426,7 @@ door{
 door{
   layer = 0,
   x = 752,
-  y = 1016,
+  y = 1024,
   name = "door_c_3",
   direction = 3,
   sprite = "entities/door_normal",
@@ -6435,7 +6435,7 @@ door{
 door{
   layer = 0,
   x = 752,
-  y = 1064,
+  y = 1072,
   name = "door_c_4",
   direction = 1,
   sprite = "entities/door_normal",
@@ -6612,7 +6612,7 @@ enemy{
 
 door{
   layer = 0,
-  x = 584,
+  x = 592,
   y = 512,
   name = "door",
   direction = 0,
@@ -6626,7 +6626,7 @@ door{
 
 door{
   layer = 0,
-  x = 632,
+  x = 640,
   y = 512,
   name = "door_2",
   direction = 2,
@@ -6653,7 +6653,7 @@ enemy{
 door{
   layer = 0,
   x = 1360,
-  y = 440,
+  y = 448,
   name = "door_d",
   direction = 1,
   sprite = "entities/door_normal",
@@ -6661,7 +6661,7 @@ door{
 
 door{
   layer = 0,
-  x = 1544,
+  x = 1552,
   y = 304,
   name = "door_d_3",
   direction = 2,
@@ -6670,7 +6670,7 @@ door{
 
 door{
   layer = 0,
-  x = 1496,
+  x = 1504,
   y = 304,
   name = "door_d_4",
   direction = 0,
@@ -6741,7 +6741,7 @@ wall{
 door{
   layer = 0,
   x = 1360,
-  y = 440,
+  y = 448,
   name = "door_3",
   direction = 1,
   sprite = "entities/door_small_key",

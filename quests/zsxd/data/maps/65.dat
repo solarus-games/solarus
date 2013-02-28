@@ -6913,7 +6913,7 @@ block{
 door{
   layer = 1,
   x = 56,
-  y = 1000,
+  y = 1008,
   name = "door_10",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -6986,7 +6986,7 @@ block{
 
 door{
   layer = 1,
-  x = 280,
+  x = 288,
   y = 712,
   name = "fight_room_door",
   direction = 0,
@@ -7020,7 +7020,7 @@ teletransporter{
 
 door{
   layer = 1,
-  x = 456,
+  x = 464,
   y = 504,
   name = "door",
   direction = 0,
@@ -7034,7 +7034,7 @@ door{
 
 door{
   layer = 1,
-  x = 504,
+  x = 512,
   y = 504,
   name = "door_2",
   direction = 2,
@@ -7048,7 +7048,7 @@ door{
 
 door{
   layer = 1,
-  x = 456,
+  x = 464,
   y = 1048,
   name = "door_3",
   direction = 0,
@@ -7062,7 +7062,7 @@ door{
 
 door{
   layer = 1,
-  x = 504,
+  x = 512,
   y = 1048,
   name = "door_4",
   direction = 2,
@@ -7077,7 +7077,7 @@ door{
 door{
   layer = 1,
   x = 56,
-  y = 568,
+  y = 576,
   name = "door_5",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -7091,7 +7091,7 @@ door{
 door{
   layer = 1,
   x = 56,
-  y = 616,
+  y = 624,
   name = "door_6",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -7105,7 +7105,7 @@ door{
 door{
   layer = 1,
   x = 56,
-  y = 760,
+  y = 768,
   name = "door_7",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -7119,7 +7119,7 @@ door{
 door{
   layer = 1,
   x = 56,
-  y = 808,
+  y = 816,
   name = "door_8",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -7133,7 +7133,7 @@ door{
 door{
   layer = 1,
   x = 56,
-  y = 952,
+  y = 960,
   name = "door_9",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -7147,7 +7147,7 @@ door{
 door{
   layer = 1,
   x = 888,
-  y = 568,
+  y = 576,
   name = "door_11",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -7161,7 +7161,7 @@ door{
 door{
   layer = 1,
   x = 888,
-  y = 616,
+  y = 624,
   name = "door_12",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -7175,7 +7175,7 @@ door{
 door{
   layer = 1,
   x = 888,
-  y = 760,
+  y = 768,
   name = "door_13",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -7189,7 +7189,7 @@ door{
 door{
   layer = 1,
   x = 888,
-  y = 808,
+  y = 816,
   name = "door_14",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -7203,7 +7203,7 @@ door{
 door{
   layer = 1,
   x = 896,
-  y = 952,
+  y = 960,
   name = "door_15",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -7217,7 +7217,7 @@ door{
 door{
   layer = 1,
   x = 896,
-  y = 1000,
+  y = 1008,
   name = "door_16",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -8371,7 +8371,7 @@ wall{
 
 door{
   layer = 1,
-  x = 328,
+  x = 336,
   y = 712,
   name = "fight_room_door_2",
   direction = 2,
@@ -12165,7 +12165,7 @@ stairs{
 door{
   layer = 1,
   x = 1072,
-  y = 920,
+  y = 928,
   name = "boss_door",
   direction = 3,
   sprite = "entities/door_normal",

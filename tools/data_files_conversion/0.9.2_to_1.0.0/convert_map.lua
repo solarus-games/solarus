@@ -29,7 +29,34 @@ end
 
 -- Doors have completely changed. There are no more predefined door subtypes:
 -- instead, everything is customizable.
-local function convert_door_subtype(subtype)
+local function convert_door_subtype(subtype, entity)
+
+  if subtype ~= 2 and subtype ~= 8 then
+
+    -- First determine x, y and direction because coordinates need to be fixed.
+    local index_x, index_y, direction
+    for i, v in ipairs(entity) do
+      if v.key == "x" then
+        index_x = i
+      elseif v.key == "y" then
+        index_y = i
+      elseif v.key == "direction" then
+        direction = v.value
+      end
+    end
+    if index_x == nil or index_y == nil or direction == nil then
+      error("Line " .. line_number .. ": Could not determine x, y or direction for this door")
+    end
+
+    if direction % 2 == 0 then
+      -- Horizontal door.
+      entity[index_x].value = entity[index_x].value + 8
+    else
+      -- Vertical door.
+      entity[index_y].value = entity[index_y].value + 8
+    end
+
+  end
 
   if subtype == 0 then
     -- Normal closed door.
@@ -485,7 +512,7 @@ function parse_entity(line)
           if type(syntax[i].converter) == "table" then
             value = syntax[i].converter[value]
           else
-            value = syntax[i].converter(value)
+            value = syntax[i].converter(value, entity)
           end
         end
 

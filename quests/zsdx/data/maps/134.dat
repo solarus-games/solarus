@@ -1099,7 +1099,7 @@ destination{
 door{
   layer = 1,
   x = 368,
-  y = 440,
+  y = 448,
   name = "door",
   direction = 3,
   sprite = "entities/door_normal",

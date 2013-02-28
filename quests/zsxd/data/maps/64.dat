@@ -7772,7 +7772,7 @@ switch{
 
 door{
   layer = 1,
-  x = 1192,
+  x = 1200,
   y = 552,
   name = "creeper_door_2",
   direction = 0,
@@ -7790,7 +7790,7 @@ sensor{
 
 door{
   layer = 1,
-  x = 1240,
+  x = 1248,
   y = 552,
   name = "creeper_door",
   direction = 2,

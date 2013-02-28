@@ -1008,7 +1008,7 @@ destination{
 
 door{
   layer = 1,
-  x = 56,
+  x = 64,
   y = 616,
   name = "door",
   direction = 2,

@@ -1336,7 +1336,7 @@ enemy{
 
 door{
   layer = 1,
-  x = 248,
+  x = 256,
   y = 360,
   name = "door",
   direction = 0,

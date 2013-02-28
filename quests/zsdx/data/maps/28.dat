@@ -1043,7 +1043,7 @@ destination{
 
 door{
   layer = 0,
-  x = 328,
+  x = 336,
   y = 104,
   name = "weak_wall",
   direction = 0,

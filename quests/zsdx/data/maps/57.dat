@@ -1713,7 +1713,7 @@ destructible{
 door{
   layer = 0,
   x = 1048,
-  y = 48,
+  y = 56,
   name = "ne_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -3985,7 +3985,7 @@ destructible{
 door{
   layer = 1,
   x = 736,
-  y = 488,
+  y = 496,
   name = "door_3",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -3999,7 +3999,7 @@ door{
 door{
   layer = 1,
   x = 736,
-  y = 440,
+  y = 448,
   name = "door_4",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -4013,7 +4013,7 @@ door{
 door{
   layer = 1,
   x = 256,
-  y = 424,
+  y = 432,
   name = "door_5",
   direction = 1,
   sprite = "entities/door_boss_key",
@@ -4026,7 +4026,7 @@ door{
 door{
   layer = 1,
   x = 256,
-  y = 376,
+  y = 384,
   name = "door_6",
   direction = 3,
   sprite = "entities/door_boss_key",
@@ -4194,7 +4194,7 @@ sensor{
 door{
   layer = 1,
   x = 256,
-  y = 424,
+  y = 432,
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4203,7 +4203,7 @@ door{
 door{
   layer = 1,
   x = 256,
-  y = 376,
+  y = 384,
   name = "boss_door_2",
   direction = 3,
   sprite = "entities/door_normal",

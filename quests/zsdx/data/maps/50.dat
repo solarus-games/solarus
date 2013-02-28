@@ -1444,7 +1444,7 @@ destination{
 door{
   layer = 0,
   x = 552,
-  y = 560,
+  y = 568,
   name = "LD14",
   direction = 1,
   sprite = "entities/door_normal",
@@ -2334,7 +2334,7 @@ wall{
 door{
   layer = 0,
   x = 552,
-  y = 464,
+  y = 472,
   name = "LD14_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -6899,7 +6899,7 @@ destructible{
 door{
   layer = 1,
   x = 1432,
-  y = 1048,
+  y = 1056,
   name = "LD13",
   direction = 1,
   sprite = "entities/door_normal",
@@ -6907,7 +6907,7 @@ door{
 
 door{
   layer = 1,
-  x = 1304,
+  x = 1312,
   y = 888,
   name = "LD12",
   direction = 2,
@@ -6917,7 +6917,7 @@ door{
 door{
   layer = 1,
   x = 1432,
-  y = 1000,
+  y = 1008,
   name = "LD13_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -6925,7 +6925,7 @@ door{
 
 door{
   layer = 1,
-  x = 1256,
+  x = 1264,
   y = 888,
   name = "LD12_2",
   direction = 0,

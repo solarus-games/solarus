@@ -567,7 +567,7 @@ stairs{
 
 door{
   layer = 0,
-  x = 352,
+  x = 360,
   y = 104,
   name = "door",
   direction = 2,
@@ -576,7 +576,7 @@ door{
 
 door{
   layer = 0,
-  x = 256,
+  x = 264,
   y = 104,
   name = "door_2",
   direction = 0,

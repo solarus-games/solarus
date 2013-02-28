@@ -817,7 +817,7 @@ npc{
 
 door{
   layer = 1,
-  x = 152,
+  x = 160,
   y = 104,
   name = "door",
   direction = 2,
@@ -827,7 +827,7 @@ door{
 
 door{
   layer = 1,
-  x = 104,
+  x = 112,
   y = 104,
   name = "door_2",
   direction = 0,

@@ -2470,7 +2470,7 @@ stairs{
 door{
   layer = 0,
   x = 1032,
-  y = 320,
+  y = 328,
   name = "miniboss_door_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -2479,7 +2479,7 @@ door{
 door{
   layer = 0,
   x = 1032,
-  y = 224,
+  y = 232,
   name = "miniboss_door",
   direction = 3,
   sprite = "entities/door_normal",
@@ -2499,7 +2499,7 @@ chest{
 door{
   layer = 0,
   x = 1072,
-  y = 720,
+  y = 728,
   name = "miniboss_door_4",
   direction = 1,
   sprite = "entities/door_normal",
@@ -2508,7 +2508,7 @@ door{
 door{
   layer = 0,
   x = 1072,
-  y = 624,
+  y = 632,
   name = "miniboss_door_3",
   direction = 3,
   sprite = "entities/door_normal",
@@ -10385,7 +10385,7 @@ wall{
 
 door{
   layer = 1,
-  x = 472,
+  x = 480,
   y = 744,
   name = "door",
   direction = 0,
@@ -10399,7 +10399,7 @@ door{
 
 door{
   layer = 1,
-  x = 520,
+  x = 528,
   y = 744,
   name = "door_2",
   direction = 2,
@@ -10643,7 +10643,7 @@ enemy{
 door{
   layer = 1,
   x = 448,
-  y = 248,
+  y = 256,
   name = "wtf_door_5",
   direction = 1,
   sprite = "entities/door_normal",
@@ -10652,7 +10652,7 @@ door{
 door{
   layer = 1,
   x = 448,
-  y = 200,
+  y = 208,
   name = "wtf_door_6",
   direction = 3,
   sprite = "entities/door_normal",
@@ -10661,7 +10661,7 @@ door{
 door{
   layer = 1,
   x = 448,
-  y = 472,
+  y = 480,
   name = "wtf_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -10670,7 +10670,7 @@ door{
 door{
   layer = 1,
   x = 448,
-  y = 424,
+  y = 432,
   name = "wtf_door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -10678,7 +10678,7 @@ door{
 
 door{
   layer = 1,
-  x = 280,
+  x = 288,
   y = 328,
   name = "wtf_door_8",
   direction = 0,
@@ -10687,7 +10687,7 @@ door{
 
 door{
   layer = 1,
-  x = 584,
+  x = 592,
   y = 328,
   name = "wtf_door_3",
   direction = 0,
@@ -10696,7 +10696,7 @@ door{
 
 door{
   layer = 1,
-  x = 328,
+  x = 336,
   y = 328,
   name = "wtf_door_7",
   direction = 2,
@@ -10705,7 +10705,7 @@ door{
 
 door{
   layer = 1,
-  x = 632,
+  x = 640,
   y = 328,
   name = "wtf_door_4",
   direction = 2,
@@ -10851,7 +10851,7 @@ wall{
 door{
   layer = 1,
   x = 592,
-  y = 920,
+  y = 928,
   name = "weak_wall_compass_2",
   direction = 1,
   sprite = "entities/door_weak_wall",
@@ -10862,7 +10862,7 @@ door{
 door{
   layer = 1,
   x = 592,
-  y = 872,
+  y = 880,
   name = "weak_wall_compass",
   direction = 3,
   sprite = "entities/door_weak_wall",
@@ -10873,7 +10873,7 @@ door{
 door{
   layer = 1,
   x = 848,
-  y = 1096,
+  y = 1104,
   name = "weak_wall_red_tunic",
   direction = 3,
   sprite = "entities/door_weak_wall",
@@ -11341,7 +11341,7 @@ stairs{
 door{
   layer = 1,
   x = 1056,
-  y = 968,
+  y = 976,
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_boss_key",

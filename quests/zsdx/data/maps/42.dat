@@ -10606,7 +10606,7 @@ destructible{
 
 door{
   layer = 1,
-  x = 696,
+  x = 704,
   y = 840,
   name = "se_door_2",
   direction = 0,
@@ -10615,7 +10615,7 @@ door{
 
 door{
   layer = 1,
-  x = 744,
+  x = 752,
   y = 840,
   name = "se_door",
   direction = 2,
@@ -10654,7 +10654,7 @@ destructible{
 door{
   layer = 1,
   x = 344,
-  y = 88,
+  y = 96,
   name = "nc_door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -10663,7 +10663,7 @@ door{
 door{
   layer = 1,
   x = 344,
-  y = 136,
+  y = 144,
   name = "nc_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -10762,7 +10762,7 @@ stairs{
 door{
   layer = 1,
   x = 704,
-  y = 280,
+  y = 288,
   name = "door",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -10776,7 +10776,7 @@ door{
 door{
   layer = 1,
   x = 704,
-  y = 232,
+  y = 240,
   name = "door_2",
   direction = 3,
   sprite = "entities/door_small_key",

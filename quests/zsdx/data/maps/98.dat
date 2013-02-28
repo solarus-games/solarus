@@ -1807,7 +1807,7 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 536,
+  x = 544,
   y = 168,
   name = "door_a",
   direction = 2,
@@ -1816,7 +1816,7 @@ door{
 
 door{
   layer = 1,
-  x = 488,
+  x = 496,
   y = 168,
   name = "door_a_2",
   direction = 0,

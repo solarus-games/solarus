@@ -3335,7 +3335,7 @@ stairs{
 door{
   layer = 0,
   x = 112,
-  y = 288,
+  y = 296,
   name = "door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -3344,7 +3344,7 @@ door{
 door{
   layer = 0,
   x = 112,
-  y = 192,
+  y = 200,
   name = "door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -3374,7 +3374,7 @@ npc{
 
 door{
   layer = 0,
-  x = 272,
+  x = 280,
   y = 560,
   name = "door_3",
   direction = 0,
@@ -3383,7 +3383,7 @@ door{
 
 door{
   layer = 0,
-  x = 368,
+  x = 376,
   y = 560,
   name = "door_4",
   direction = 2,
@@ -3426,7 +3426,7 @@ npc{
 door{
   layer = 0,
   x = 800,
-  y = 416,
+  y = 424,
   name = "door_5",
   direction = 1,
   sprite = "entities/door_normal",
@@ -3435,7 +3435,7 @@ door{
 door{
   layer = 0,
   x = 800,
-  y = 320,
+  y = 328,
   name = "door_6",
   direction = 3,
   sprite = "entities/door_normal",

@@ -8524,9 +8524,9 @@ door{
   y = 472,
   name = "DK2",
   direction = 1,
-  opening_condition = "dungeon_2_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_2_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b141",
@@ -8545,10 +8545,10 @@ door{
   y = 696,
   name = "DK9",
   direction = 1,
+  sprite = "entities/door_big_key",
   opening_condition = "dungeon_2_big_key",
-  cannot_open_dialog_id = "_big_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_big_key",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b149",
 }
 
@@ -9399,7 +9399,7 @@ door{
   y = 776,
   name = "bowser_door",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 switch{
@@ -9426,7 +9426,7 @@ door{
   y = 776,
   name = "bowser_door_2",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -10039,9 +10039,9 @@ door{
   y = 424,
   name = "DK2_2",
   direction = 3,
-  opening_condition = "dungeon_2_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_2_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b141",
@@ -10143,10 +10143,10 @@ door{
   y = 648,
   name = "DK9_2",
   direction = 3,
+  sprite = "entities/door_big_key",
   opening_condition = "dungeon_2_big_key",
-  cannot_open_dialog_id = "_big_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_big_key",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b149",
 }
 

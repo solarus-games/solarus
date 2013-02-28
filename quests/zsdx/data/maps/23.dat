@@ -2016,7 +2016,7 @@ door{
   y = 432,
   name = "sw_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -2025,7 +2025,7 @@ door{
   y = 336,
   name = "sw_door_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -2052,9 +2052,9 @@ door{
   y = 488,
   name = "door",
   direction = 0,
-  opening_condition = "dungeon_1_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_1_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b58",
@@ -2066,9 +2066,9 @@ door{
   y = 488,
   name = "door_2",
   direction = 2,
-  opening_condition = "dungeon_1_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_1_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b58",
@@ -4728,8 +4728,8 @@ door{
   y = 120,
   name = "weak_wall",
   direction = 1,
+  sprite = "entities/door_very_weak_wall",
   opening_method = "explosion",
-  sprite_name = "entities/door_very_weak_wall",
   savegame_variable = "b923",
 }
 

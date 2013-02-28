@@ -3992,7 +3992,7 @@ door{
   y = 1304,
   name = "miniboss_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -4001,7 +4001,7 @@ door{
   y = 1304,
   name = "miniboss_door_2",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 crystal{
@@ -6061,7 +6061,7 @@ door{
   y = 1912,
   name = "door_b",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
   savegame_variable = "b864",
 }
 
@@ -6071,7 +6071,7 @@ door{
   y = 1912,
   name = "door_b_2",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
   savegame_variable = "b864",
 }
 
@@ -6509,7 +6509,7 @@ door{
   y = 1328,
   name = "miniboss_e_door",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6518,7 +6518,7 @@ door{
   y = 1328,
   name = "miniboss_e_door_2",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6527,7 +6527,7 @@ door{
   y = 632,
   name = "door_a",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6536,7 +6536,7 @@ door{
   y = 632,
   name = "door_a_2",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 wall{

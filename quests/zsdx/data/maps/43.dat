@@ -5008,7 +5008,7 @@ door{
   y = 728,
   name = "miniboss_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -5017,7 +5017,7 @@ door{
   y = 680,
   name = "miniboss_door_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -5026,7 +5026,7 @@ door{
   y = 832,
   name = "miniboss_door_3",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -5035,7 +5035,7 @@ door{
   y = 832,
   name = "miniboss_door_4",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -5044,10 +5044,10 @@ door{
   y = 248,
   name = "door",
   direction = 1,
+  sprite = "entities/door_boss_key",
   opening_condition = "dungeon_3_boss_key",
-  cannot_open_dialog_id = "_boss_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_boss_key",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b906",
 }
 
@@ -5057,10 +5057,10 @@ door{
   y = 200,
   name = "door_2",
   direction = 3,
+  sprite = "entities/door_boss_key",
   opening_condition = "dungeon_3_boss_key",
-  cannot_open_dialog_id = "_boss_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_boss_key",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b906",
 }
 
@@ -5329,7 +5329,7 @@ door{
   y = 680,
   name = "final_room_door",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -5338,7 +5338,7 @@ door{
   y = 248,
   name = "boss_door_2",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -5347,7 +5347,7 @@ door{
   y = 200,
   name = "boss_door_3",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -5599,10 +5599,10 @@ door{
   y = 680,
   name = "door_4",
   direction = 3,
+  sprite = "entities/door_big_key",
   opening_condition = "dungeon_3_big_key",
-  cannot_open_dialog_id = "_big_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_big_key",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b925",
 }
 
@@ -5612,10 +5612,10 @@ door{
   y = 728,
   name = "door_3",
   direction = 1,
+  sprite = "entities/door_big_key",
   opening_condition = "dungeon_3_big_key",
-  cannot_open_dialog_id = "_big_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_big_key",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b925",
 }
 

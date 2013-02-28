@@ -821,7 +821,7 @@ door{
   y = 104,
   name = "door",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
   savegame_variable = "b59",
 }
 
@@ -831,7 +831,7 @@ door{
   y = 104,
   name = "door_2",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
   savegame_variable = "b59",
 }
 

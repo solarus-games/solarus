@@ -8078,7 +8078,7 @@ door{
   y = 488,
   name = "e_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -8087,7 +8087,7 @@ door{
   y = 440,
   name = "e_door_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 switch{
@@ -8116,8 +8116,8 @@ door{
   y = 512,
   name = "door_2",
   direction = 1,
+  sprite = "entities/door_weak_block",
   opening_method = "explosion",
-  sprite_name = "entities/door_weak_block",
   savegame_variable = "b120",
 }
 

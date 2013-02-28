@@ -501,7 +501,7 @@ door{
   y = 608,
   name = "door_e",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -510,7 +510,7 @@ door{
   y = 608,
   name = "door_e_2",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 chest{
@@ -4696,7 +4696,7 @@ door{
   y = 736,
   name = "door_f",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -4705,7 +4705,7 @@ door{
   y = 784,
   name = "door_g_2",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -4714,7 +4714,7 @@ door{
   y = 736,
   name = "door_g",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -4723,7 +4723,7 @@ door{
   y = 496,
   name = "door_d_2",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -4732,7 +4732,7 @@ door{
   y = 448,
   name = "door_d",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -4741,7 +4741,7 @@ door{
   y = 376,
   name = "door_b",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -4750,7 +4750,7 @@ door{
   y = 376,
   name = "door_b_2",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 dynamic_tile{
@@ -4770,8 +4770,8 @@ door{
   y = 680,
   name = "weak_wall_b_2",
   direction = 0,
+  sprite = "entities/door_weak_wall",
   opening_method = "explosion",
-  sprite_name = "entities/door_weak_wall",
   savegame_variable = "b948",
 }
 
@@ -4899,7 +4899,7 @@ door{
   y = 376,
   name = "door_a",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -4908,7 +4908,7 @@ door{
   y = 376,
   name = "door_a_2",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 wall{
@@ -4969,7 +4969,7 @@ door{
   y = 496,
   name = "door_c_2",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -4978,7 +4978,7 @@ door{
   y = 448,
   name = "door_c",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 destructible{
@@ -5073,7 +5073,7 @@ door{
   y = 208,
   name = "n_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -5082,7 +5082,7 @@ door{
   y = 160,
   name = "n_door_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 npc{
@@ -5484,8 +5484,8 @@ door{
   y = 680,
   name = "weak_wall_b",
   direction = 2,
+  sprite = "entities/door_weak_wall",
   opening_method = "explosion",
-  sprite_name = "entities/door_weak_wall",
   savegame_variable = "b948",
 }
 
@@ -5530,8 +5530,8 @@ door{
   y = 496,
   name = "weak_wall_a",
   direction = 1,
+  sprite = "entities/door_weak_wall",
   opening_method = "explosion",
-  sprite_name = "entities/door_weak_wall",
   savegame_variable = "b947",
 }
 
@@ -5541,8 +5541,8 @@ door{
   y = 448,
   name = "weak_wall_a_2",
   direction = 3,
+  sprite = "entities/door_weak_wall",
   opening_method = "explosion",
-  sprite_name = "entities/door_weak_wall",
   savegame_variable = "b947",
 }
 
@@ -5643,7 +5643,7 @@ door{
   y = 784,
   name = "door_f_2",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 wall{
@@ -5665,7 +5665,7 @@ door{
   y = 960,
   name = "door_h_2",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -5674,7 +5674,7 @@ door{
   y = 960,
   name = "door_h",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 wall{

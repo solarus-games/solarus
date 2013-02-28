@@ -1716,7 +1716,7 @@ door{
   y = 48,
   name = "ne_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 enemy{
@@ -3988,9 +3988,9 @@ door{
   y = 488,
   name = "door_3",
   direction = 1,
-  opening_condition = "dungeon_6_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_6_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b310",
@@ -4002,9 +4002,9 @@ door{
   y = 440,
   name = "door_4",
   direction = 3,
-  opening_condition = "dungeon_6_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_6_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b310",
@@ -4016,10 +4016,10 @@ door{
   y = 424,
   name = "door_5",
   direction = 1,
+  sprite = "entities/door_boss_key",
   opening_condition = "dungeon_6_boss_key",
-  cannot_open_dialog_id = "_boss_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_boss_key",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b311",
 }
 
@@ -4029,10 +4029,10 @@ door{
   y = 376,
   name = "door_6",
   direction = 3,
+  sprite = "entities/door_boss_key",
   opening_condition = "dungeon_6_boss_key",
-  cannot_open_dialog_id = "_boss_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_boss_key",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b311",
 }
 
@@ -4197,7 +4197,7 @@ door{
   y = 424,
   name = "boss_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -4206,7 +4206,7 @@ door{
   y = 376,
   name = "boss_door_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 destination{

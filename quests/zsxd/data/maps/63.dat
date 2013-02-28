@@ -8634,8 +8634,8 @@ door{
   y = 24,
   name = "weak_wall_red_tunic",
   direction = 1,
+  sprite = "entities/door_weak_wall",
   opening_method = "explosion",
-  sprite_name = "entities/door_weak_wall",
   savegame_variable = "b234",
 }
 
@@ -8671,9 +8671,9 @@ door{
   y = 200,
   name = "door",
   direction = 3,
-  opening_condition = "dungeon_1_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_1_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b235",
@@ -8685,9 +8685,9 @@ door{
   y = 248,
   name = "door_2",
   direction = 1,
-  opening_condition = "dungeon_1_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_1_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b235",
@@ -8960,7 +8960,7 @@ door{
   y = 24,
   name = "ne_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
   savegame_variable = "b304",
 }
 

@@ -1012,7 +1012,7 @@ door{
   y = 616,
   name = "door",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 wall{

@@ -1047,8 +1047,8 @@ door{
   y = 104,
   name = "weak_wall",
   direction = 0,
+  sprite = "entities/door_very_weak_wall",
   opening_method = "explosion",
-  sprite_name = "entities/door_very_weak_wall",
   savegame_variable = "b65",
 }
 

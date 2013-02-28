@@ -34,13 +34,13 @@ local function convert_door_subtype(subtype)
   if subtype == 0 then
     -- Normal closed door.
     return {
-      sprite_name = "entities/door_normal",
+      sprite = "entities/door_normal",
     }
 
   elseif subtype == 1 then
     -- Small key.
     return {
-      sprite_name = "entities/door_small_key",
+      sprite = "entities/door_small_key",
       opening_method = "interaction_if_savegame_variable",
       opening_condition = metadata.small_keys_variable,
       opening_condition_consumed = true,
@@ -50,7 +50,7 @@ local function convert_door_subtype(subtype)
   elseif subtype == 2 then
     -- Small key block.
     return {
-      sprite_name = "entities/door_small_key_block",
+      sprite = "entities/door_small_key_block",
       opening_method = "interaction_if_savegame_variable",
       opening_condition = metadata.small_keys_variable,
       opening_condition_consumed = true,
@@ -63,7 +63,7 @@ local function convert_door_subtype(subtype)
       error("Line " .. line_number .. ": Big key doors are only allowed in dungeons")
     end
     return {
-      sprite_name = "entities/door_big_key",
+      sprite = "entities/door_big_key",
       opening_method = "interaction_if_savegame_variable",
       opening_condition = "dungeon_" .. metadata.dungeon .. "_big_key",
       cannot_open_dialog_id = "_big_key_required",
@@ -75,7 +75,7 @@ local function convert_door_subtype(subtype)
       error("Line " .. line_number .. ": Boss key doors are only allowed in dungeons")
     end
     return {
-      sprite_name = "entities/door_boss_key",
+      sprite = "entities/door_boss_key",
       opening_method = "interaction_if_savegame_variable",
       opening_condition = "dungeon_" .. metadata.dungeon .. "_boss_key",
       cannot_open_dialog_id = "_boss_key_required",
@@ -84,21 +84,21 @@ local function convert_door_subtype(subtype)
   elseif subtype == 5 then
     -- Weak wall.
     return {
-      sprite_name = "entities/door_weak_wall",
+      sprite = "entities/door_weak_wall",
       opening_method = "explosion",
     }
 
   elseif subtype == 6 then
     -- Very weak wall.
     return {
-      sprite_name = "entities/door_very_weak_wall",
+      sprite = "entities/door_very_weak_wall",
       opening_method = "explosion",
     }
 
   elseif subtype == 8 then
     -- Weak block.
     return {
-      sprite_name = "entities/door_weak_block",
+      sprite = "entities/door_weak_block",
       opening_method = "explosion",
     }
 

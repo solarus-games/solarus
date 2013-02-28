@@ -7776,7 +7776,7 @@ door{
   y = 552,
   name = "creeper_door_2",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -7794,7 +7794,7 @@ door{
   y = 552,
   name = "creeper_door",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 enemy{

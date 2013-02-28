@@ -11577,8 +11577,8 @@ door{
   y = 432,
   name = "door",
   direction = 1,
+  sprite = "entities/door_weak_block",
   opening_method = "explosion",
-  sprite_name = "entities/door_weak_block",
   savegame_variable = "b73",
 }
 
@@ -11588,8 +11588,8 @@ door{
   y = 432,
   name = "door_2",
   direction = 1,
+  sprite = "entities/door_weak_block",
   opening_method = "explosion",
-  sprite_name = "entities/door_weak_block",
   savegame_variable = "b74",
 }
 

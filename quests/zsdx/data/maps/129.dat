@@ -2219,7 +2219,7 @@ door{
   y = 104,
   name = "door_2",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -2228,7 +2228,7 @@ door{
   y = 360,
   name = "door_3",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -2237,7 +2237,7 @@ door{
   y = 456,
   name = "door_4",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -2246,7 +2246,7 @@ door{
   y = 232,
   name = "door_5",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -2255,7 +2255,7 @@ door{
   y = 104,
   name = "door_6",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -2264,7 +2264,7 @@ door{
   y = 24,
   name = "door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 teletransporter{

@@ -1340,7 +1340,7 @@ door{
   y = 360,
   name = "door",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 wall{

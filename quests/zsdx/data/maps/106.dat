@@ -8304,7 +8304,7 @@ door{
   y = 536,
   name = "door_g",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -8313,7 +8313,7 @@ door{
   y = 488,
   name = "door_g_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 wall{
@@ -8497,7 +8497,7 @@ door{
   y = 488,
   name = "door_b",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -8506,7 +8506,7 @@ door{
   y = 536,
   name = "door_b_2",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -8515,7 +8515,7 @@ door{
   y = 744,
   name = "door_b_3",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -8524,7 +8524,7 @@ door{
   y = 792,
   name = "door_b_4",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 enemy{
@@ -8821,7 +8821,7 @@ door{
   y = 792,
   name = "door_a",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -8830,7 +8830,7 @@ door{
   y = 744,
   name = "door_a_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 destination{
@@ -9386,7 +9386,7 @@ door{
   y = 376,
   name = "door_c",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -9395,7 +9395,7 @@ door{
   y = 376,
   name = "door_c_2",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -9404,7 +9404,7 @@ door{
   y = 376,
   name = "door_c_3",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -9413,9 +9413,9 @@ door{
   y = 376,
   name = "door_3",
   direction = 0,
-  opening_condition = "dungeon_9_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b815",
@@ -9427,9 +9427,9 @@ door{
   y = 376,
   name = "door_4",
   direction = 2,
-  opening_condition = "dungeon_9_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b815",
@@ -9441,7 +9441,7 @@ door{
   y = 376,
   name = "door_c_4",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -9528,7 +9528,7 @@ door{
   y = 488,
   name = "door_d",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -9537,7 +9537,7 @@ door{
   y = 536,
   name = "door_d_2",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 switch{
@@ -9828,9 +9828,9 @@ door{
   y = 632,
   name = "door_5",
   direction = 0,
-  opening_condition = "dungeon_9_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b817",
@@ -9842,9 +9842,9 @@ door{
   y = 632,
   name = "door_6",
   direction = 2,
-  opening_condition = "dungeon_9_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b817",
@@ -9856,7 +9856,7 @@ door{
   y = 792,
   name = "door_e",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -9865,7 +9865,7 @@ door{
   y = 744,
   name = "door_e_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 switch{
@@ -10409,7 +10409,7 @@ door{
   y = 1048,
   name = "door_f",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -10418,7 +10418,7 @@ door{
   y = 1000,
   name = "door_f_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 enemy{
@@ -10935,9 +10935,9 @@ door{
   y = 888,
   name = "door",
   direction = 0,
-  opening_condition = "dungeon_9_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b813",
@@ -10949,9 +10949,9 @@ door{
   y = 888,
   name = "door_2",
   direction = 2,
-  opening_condition = "dungeon_9_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b813",

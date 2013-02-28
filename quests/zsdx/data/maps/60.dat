@@ -7798,8 +7798,8 @@ door{
   y = 200,
   name = "hidden_weak_wall_2",
   direction = 1,
+  sprite = "entities/door_very_weak_wall",
   opening_method = "explosion",
-  sprite_name = "entities/door_very_weak_wall",
   savegame_variable = "b403",
 }
 
@@ -7867,10 +7867,10 @@ door{
   y = 232,
   name = "door",
   direction = 1,
+  sprite = "entities/door_boss_key",
   opening_condition = "dungeon_4_boss_key",
-  cannot_open_dialog_id = "_boss_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_boss_key",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b401",
 }
 
@@ -7880,10 +7880,10 @@ door{
   y = 184,
   name = "door_2",
   direction = 3,
+  sprite = "entities/door_boss_key",
   opening_condition = "dungeon_4_boss_key",
-  cannot_open_dialog_id = "_boss_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_boss_key",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b401",
 }
 
@@ -7919,9 +7919,9 @@ door{
   y = 56,
   name = "door_3",
   direction = 0,
-  opening_condition = "dungeon_4_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_4_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b402",
@@ -7933,9 +7933,9 @@ door{
   y = 56,
   name = "door_4",
   direction = 2,
-  opening_condition = "dungeon_4_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_4_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b402",
@@ -8028,8 +8028,8 @@ door{
   y = 152,
   name = "hidden_weak_wall",
   direction = 3,
+  sprite = "entities/door_very_weak_wall",
   opening_method = "explosion",
-  sprite_name = "entities/door_very_weak_wall",
   savegame_variable = "b403",
 }
 
@@ -8203,10 +8203,10 @@ door{
   y = 488,
   name = "door_7",
   direction = 3,
+  sprite = "entities/door_big_key",
   opening_condition = "dungeon_4_big_key",
-  cannot_open_dialog_id = "_big_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_big_key",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b406",
 }
 
@@ -8216,10 +8216,10 @@ door{
   y = 536,
   name = "door_8",
   direction = 1,
+  sprite = "entities/door_big_key",
   opening_condition = "dungeon_4_big_key",
-  cannot_open_dialog_id = "_big_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_big_key",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b406",
 }
 
@@ -8262,8 +8262,8 @@ door{
   y = 240,
   name = "weak_block",
   direction = 1,
+  sprite = "entities/door_weak_block",
   opening_method = "explosion",
-  sprite_name = "entities/door_weak_block",
   savegame_variable = "b410",
 }
 
@@ -8992,7 +8992,7 @@ door{
   y = 232,
   name = "boss_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -9001,7 +9001,7 @@ door{
   y = 184,
   name = "boss_door_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 destructible{
@@ -9082,7 +9082,7 @@ door{
   y = 232,
   name = "final_room_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 destination{

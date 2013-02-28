@@ -6035,7 +6035,7 @@ door{
   y = 392,
   name = "door_d_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6044,9 +6044,9 @@ door{
   y = 392,
   name = "door_4",
   direction = 3,
-  opening_condition = "dungeon_9_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b885",
@@ -6058,7 +6058,7 @@ door{
   y = 720,
   name = "door_b_3",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6067,7 +6067,7 @@ door{
   y = 720,
   name = "door_b_5",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6076,7 +6076,7 @@ door{
   y = 720,
   name = "door_b_6",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 destination{
@@ -6252,7 +6252,7 @@ door{
   y = 512,
   name = "door_a",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6261,7 +6261,7 @@ door{
   y = 512,
   name = "door_a_2",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 block{
@@ -6306,7 +6306,7 @@ door{
   y = 600,
   name = "door_b",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6315,7 +6315,7 @@ door{
   y = 648,
   name = "door_b_2",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6324,7 +6324,7 @@ door{
   y = 720,
   name = "door_b_4",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -6411,7 +6411,7 @@ door{
   y = 808,
   name = "door_c",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6420,7 +6420,7 @@ door{
   y = 856,
   name = "door_c_2",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6429,7 +6429,7 @@ door{
   y = 1016,
   name = "door_c_3",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6438,7 +6438,7 @@ door{
   y = 1064,
   name = "door_c_4",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -6616,9 +6616,9 @@ door{
   y = 512,
   name = "door",
   direction = 0,
-  opening_condition = "dungeon_9_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b879",
@@ -6630,9 +6630,9 @@ door{
   y = 512,
   name = "door_2",
   direction = 2,
-  opening_condition = "dungeon_9_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b879",
@@ -6656,7 +6656,7 @@ door{
   y = 440,
   name = "door_d",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6665,7 +6665,7 @@ door{
   y = 304,
   name = "door_d_3",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -6674,7 +6674,7 @@ door{
   y = 304,
   name = "door_d_4",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 enemy{
@@ -6744,9 +6744,9 @@ door{
   y = 440,
   name = "door_3",
   direction = 1,
-  opening_condition = "dungeon_9_small_keys",
+  sprite = "entities/door_small_key",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_small_key",
+  opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b885",

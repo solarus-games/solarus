@@ -816,7 +816,7 @@ door{
   y = 48,
   name = "nw_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 block{

@@ -1518,7 +1518,7 @@ int LuaContext::map_api_create_door(lua_State* l) {
   int y = check_int_field(l, 1, "y");
   const std::string& name = check_string_field(l, 1, "name");
   int direction = check_int_field(l, 1, "direction");
-  const std::string& sprite_name = check_string_field(l, 1, "sprite_name");
+  const std::string& sprite_name = check_string_field(l, 1, "sprite");
   const std::string& savegame_variable = opt_string_field(l, 1, "savegame_variable", "");
   Door::OpeningMethod opening_method = opt_enum_field<Door::OpeningMethod>(l, 1, "opening_method",
       Door::opening_method_names, Door::OPENING_NONE);

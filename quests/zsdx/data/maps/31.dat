@@ -1475,10 +1475,10 @@ door{
   y = 464,
   name = "door",
   direction = 2,
+  sprite = "entities/door_big_key",
   opening_condition = "dungeon_2_big_key",
-  cannot_open_dialog_id = "_big_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_big_key",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b82",
 }
 
@@ -1488,10 +1488,10 @@ door{
   y = 464,
   name = "door_2",
   direction = 0,
+  sprite = "entities/door_big_key",
   opening_condition = "dungeon_2_big_key",
-  cannot_open_dialog_id = "_big_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_big_key",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b82",
 }
 
@@ -1856,7 +1856,7 @@ door{
   y = 560,
   name = "final_room_door",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 teletransporter{
@@ -5122,10 +5122,10 @@ door{
   y = 200,
   name = "door_3",
   direction = 1,
+  sprite = "entities/door_boss_key",
   opening_condition = "dungeon_2_boss_key",
-  cannot_open_dialog_id = "_boss_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_boss_key",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b83",
 }
 
@@ -5135,10 +5135,10 @@ door{
   y = 152,
   name = "door_4",
   direction = 3,
+  sprite = "entities/door_boss_key",
   opening_condition = "dungeon_2_boss_key",
-  cannot_open_dialog_id = "_boss_key_required",
   opening_method = "interaction_if_savegame_variable",
-  sprite_name = "entities/door_boss_key",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b83",
 }
 
@@ -5391,7 +5391,7 @@ door{
   y = 200,
   name = "boss_door",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -5400,7 +5400,7 @@ door{
   y = 152,
   name = "boss_door_2",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 enemy{

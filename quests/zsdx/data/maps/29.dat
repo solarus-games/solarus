@@ -4427,8 +4427,8 @@ door{
   y = 352,
   name = "weak_block",
   direction = 1,
+  sprite = "entities/door_weak_block",
   opening_method = "explosion",
-  sprite_name = "entities/door_weak_block",
   savegame_variable = "b946",
 }
 
@@ -4460,7 +4460,7 @@ door{
   y = 368,
   name = "door_2",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -4469,7 +4469,7 @@ door{
   y = 368,
   name = "door",
   direction = 0,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 tile{

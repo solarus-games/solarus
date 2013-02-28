@@ -1289,7 +1289,7 @@ door{
   y = 816,
   name = "door_3",
   direction = 3,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 teletransporter{
@@ -2282,7 +2282,7 @@ door{
   y = 488,
   name = "door",
   direction = 2,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 door{
@@ -2291,7 +2291,7 @@ door{
   y = 408,
   name = "door_2",
   direction = 1,
-  sprite_name = "entities/door_normal",
+  sprite = "entities/door_normal",
 }
 
 wall{

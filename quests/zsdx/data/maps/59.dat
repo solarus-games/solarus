@@ -9398,7 +9398,7 @@ door{
   y = 872,
   name = "evil_tiles_door",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -9407,7 +9407,7 @@ door{
   y = 824,
   name = "evil_tiles_door_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -9416,7 +9416,7 @@ door{
   y = 552,
   name = "evil_tiles_door_3",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -9425,7 +9425,7 @@ door{
   y = 504,
   name = "evil_tiles_door_4",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 enemy{

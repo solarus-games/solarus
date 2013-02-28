@@ -483,7 +483,11 @@ door{
   y = 104,
   name = "door_2",
   direction = 1,
-  subtype = "2",
+  opening_condition = "dungeon_10_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b232",
 }
 
@@ -1807,7 +1811,7 @@ door{
   y = 168,
   name = "door_a",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -1816,7 +1820,7 @@ door{
   y = 168,
   name = "door_a_2",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 switch{
@@ -1947,7 +1951,11 @@ door{
   y = 48,
   name = "door",
   direction = 1,
-  subtype = "2",
+  opening_condition = "dungeon_10_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b233",
 }
 

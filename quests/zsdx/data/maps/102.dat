@@ -8184,7 +8184,7 @@ door{
   y = 80,
   name = "miniboss_door",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8193,7 +8193,7 @@ door{
   y = 80,
   name = "miniboss_door_2",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8202,7 +8202,7 @@ door{
   y = 776,
   name = "door_f_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8211,7 +8211,7 @@ door{
   y = 728,
   name = "door_f",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8220,7 +8220,7 @@ door{
   y = 776,
   name = "door_d_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b615",
 }
 
@@ -8230,7 +8230,7 @@ door{
   y = 728,
   name = "door_d",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b615",
 }
 
@@ -8240,7 +8240,7 @@ door{
   y = 568,
   name = "door_a",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b630",
 }
 
@@ -8250,7 +8250,7 @@ door{
   y = 520,
   name = "door_a_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b630",
 }
 
@@ -8260,7 +8260,7 @@ door{
   y = 520,
   name = "door_c_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8269,7 +8269,7 @@ door{
   y = 472,
   name = "door_c",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b617",
 }
 
@@ -8279,7 +8279,11 @@ door{
   y = 312,
   name = "door_b_2",
   direction = 0,
-  subtype = "1",
+  opening_condition = "dungeon_7_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b616",
 }
 
@@ -8289,7 +8293,11 @@ door{
   y = 312,
   name = "door_b",
   direction = 2,
-  subtype = "1",
+  opening_condition = "dungeon_7_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b616",
 }
 
@@ -8318,7 +8326,11 @@ door{
   y = 912,
   name = "door",
   direction = 1,
-  subtype = "2",
+  opening_condition = "dungeon_7_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b610",
 }
 
@@ -9759,7 +9771,10 @@ door{
   y = 520,
   name = "boss_door",
   direction = 1,
-  subtype = "4",
+  opening_condition = "dungeon_7_boss_key",
+  cannot_open_dialog_id = "_boss_key_required",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_boss_key",
   savegame_variable = "b612",
 }
 
@@ -10592,7 +10607,7 @@ door{
   y = 40,
   name = "miniboss_door_3",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 sensor{

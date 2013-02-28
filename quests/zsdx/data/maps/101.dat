@@ -7847,7 +7847,7 @@ door{
   y = 792,
   name = "door_a",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -7856,7 +7856,7 @@ door{
   y = 744,
   name = "door_a_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 chest{
@@ -8118,7 +8118,7 @@ door{
   y = 968,
   name = "sw_door",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b604",
 }
 
@@ -8128,7 +8128,7 @@ door{
   y = 968,
   name = "sw_door_2",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b604",
 }
 
@@ -8175,7 +8175,11 @@ door{
   y = 216,
   name = "door",
   direction = 1,
-  subtype = "2",
+  opening_condition = "dungeon_7_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b605",
 }
 
@@ -8549,7 +8553,10 @@ door{
   y = 792,
   name = "door_2",
   direction = 1,
-  subtype = "3",
+  opening_condition = "dungeon_7_big_key",
+  cannot_open_dialog_id = "_big_key_required",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_big_key",
   savegame_variable = "b606",
 }
 
@@ -8829,7 +8836,7 @@ door{
   y = 968,
   name = "door_b",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8838,7 +8845,7 @@ door{
   y = 968,
   name = "door_b_2",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 chest{
@@ -8962,7 +8969,10 @@ door{
   y = 744,
   name = "door_3",
   direction = 3,
-  subtype = "3",
+  opening_condition = "dungeon_7_big_key",
+  cannot_open_dialog_id = "_big_key_required",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_big_key",
   savegame_variable = "b606",
 }
 
@@ -8994,7 +9004,7 @@ door{
   y = 136,
   name = "ne_door",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b621",
 }
 
@@ -9004,7 +9014,7 @@ door{
   y = 88,
   name = "ne_door_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b621",
 }
 

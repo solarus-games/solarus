@@ -2182,7 +2182,7 @@ door{
   y = 336,
   name = "door",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 sensor{

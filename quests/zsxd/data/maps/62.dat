@@ -4874,7 +4874,7 @@ door{
   y = 168,
   name = "stupid_run_door_a",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -4883,7 +4883,7 @@ door{
   y = 120,
   name = "stupid_run_door_a_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -4892,7 +4892,7 @@ door{
   y = 336,
   name = "stupid_run_door_c_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -4901,7 +4901,7 @@ door{
   y = 288,
   name = "stupid_run_door_c",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -4910,7 +4910,7 @@ door{
   y = 312,
   name = "stupid_run_door_b_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -4919,7 +4919,7 @@ door{
   y = 264,
   name = "stupid_run_door_b",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 switch{

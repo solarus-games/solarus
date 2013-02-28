@@ -1223,7 +1223,11 @@ door{
   y = 536,
   name = "KD05",
   direction = 1,
-  subtype = "1",
+  opening_condition = "dungeon_8_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b717",
 }
 
@@ -1233,7 +1237,7 @@ door{
   y = 792,
   name = "LD06",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 switch{
@@ -1341,7 +1345,7 @@ door{
   y = 744,
   name = "LD06_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 pickable{
@@ -1414,7 +1418,11 @@ door{
   y = 488,
   name = "KD05_2",
   direction = 3,
-  subtype = "1",
+  opening_condition = "dungeon_8_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b717",
 }
 

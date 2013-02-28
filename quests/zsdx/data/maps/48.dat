@@ -9907,7 +9907,7 @@ door{
   y = 232,
   name = "LD12",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -9916,7 +9916,7 @@ door{
   y = 632,
   name = "LD7_2",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -9925,7 +9925,7 @@ door{
   y = 632,
   name = "LD7",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -9934,7 +9934,11 @@ door{
   y = 888,
   name = "KD03",
   direction = 0,
-  subtype = "1",
+  opening_condition = "dungeon_8_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b710",
 }
 
@@ -9944,7 +9948,11 @@ door{
   y = 888,
   name = "KD03_2",
   direction = 2,
-  subtype = "1",
+  opening_condition = "dungeon_8_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b710",
 }
 
@@ -9954,7 +9962,7 @@ door{
   y = 1304,
   name = "LD9_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -9963,7 +9971,7 @@ door{
   y = 1256,
   name = "LD9",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 wall{
@@ -9985,7 +9993,8 @@ door{
   y = 1560,
   name = "WW02",
   direction = 1,
-  subtype = "5",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_wall",
   savegame_variable = "b732",
 }
 
@@ -10073,7 +10082,7 @@ door{
   y = 744,
   name = "LD8",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 teletransporter{
@@ -10922,7 +10931,7 @@ door{
   y = 280,
   name = "LD12_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 sensor{
@@ -12147,7 +12156,7 @@ door{
   y = 792,
   name = "LD8_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 sensor{

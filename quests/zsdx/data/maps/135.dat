@@ -2559,7 +2559,7 @@ door{
   y = 360,
   name = "door",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 wall{

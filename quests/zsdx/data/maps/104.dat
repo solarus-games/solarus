@@ -1564,7 +1564,7 @@ door{
   y = 120,
   name = "door",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -1573,7 +1573,7 @@ door{
   y = 120,
   name = "door_2",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 destination{

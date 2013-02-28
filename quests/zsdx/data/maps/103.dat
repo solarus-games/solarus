@@ -8532,7 +8532,7 @@ door{
   y = 824,
   name = "door_b",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8541,7 +8541,7 @@ door{
   y = 776,
   name = "door_b_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8550,7 +8550,7 @@ door{
   y = 856,
   name = "door_c_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8559,7 +8559,7 @@ door{
   y = 808,
   name = "door_c",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8568,7 +8568,7 @@ door{
   y = 952,
   name = "door_d_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8577,7 +8577,7 @@ door{
   y = 904,
   name = "door_d",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8586,7 +8586,7 @@ door{
   y = 968,
   name = "door_e_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8595,7 +8595,7 @@ door{
   y = 920,
   name = "door_e",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -8604,7 +8604,7 @@ door{
   y = 624,
   name = "door_a",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b627",
 }
 
@@ -8614,7 +8614,7 @@ door{
   y = 624,
   name = "door_a_2",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b627",
 }
 
@@ -8624,7 +8624,7 @@ door{
   y = 280,
   name = "ne_door_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b624",
 }
 
@@ -8634,7 +8634,7 @@ door{
   y = 328,
   name = "ne_door",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b624",
 }
 
@@ -10273,7 +10273,7 @@ door{
   y = 520,
   name = "boss_door",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 enemy{

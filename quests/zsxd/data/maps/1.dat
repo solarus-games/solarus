@@ -15080,7 +15080,8 @@ door{
   y = 992,
   name = "door",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b51",
 }
 
@@ -15090,7 +15091,8 @@ door{
   y = 976,
   name = "door_2",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b52",
 }
 
@@ -15100,7 +15102,8 @@ door{
   y = 976,
   name = "door_3",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b53",
 }
 
@@ -15110,7 +15113,8 @@ door{
   y = 976,
   name = "door_4",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b54",
 }
 
@@ -15120,7 +15124,8 @@ door{
   y = 992,
   name = "door_5",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b55",
 }
 

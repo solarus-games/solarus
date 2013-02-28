@@ -6,28 +6,128 @@
 -- The old format (solarus 0.9.2) is a text file with a specific syntax.
 -- The new format (solarus 1.0.0) is a Lua data file.
 
+local line_number = 1
+local metadata  -- Map meta information.
+
+-- Converts an old index of boolean savegame variables
+-- to a valid savegame variable name.
 local function prepend_b(value)
   return "b" .. value
 end
 
+-- Returns the small keys savegame variable of this map in the new savegame format.
+local function convert_small_keys_variable(world, small_keys_variable)
+
+  if world > 0 then
+    -- We are in a dungeon.
+    small_keys_variable = "dungeon_" .. world .. "_small_keys"
+  else
+    small_keys_variable = "i" .. small_keys_variable
+  end
+  return small_keys_variable
+end
+
+-- Doors have completely changed. There are no more predefined door subtypes:
+-- instead, everything is customizable.
+local function convert_door_subtype(subtype)
+
+  if subtype == 0 then
+    -- Normal closed door.
+    return {
+      sprite_name = "entities/door_normal",
+    }
+
+  elseif subtype == 1 then
+    -- Small key.
+    return {
+      sprite_name = "entities/door_small_key",
+      opening_method = "interaction_if_savegame_variable",
+      opening_condition = metadata.small_keys_variable,
+      opening_condition_consumed = true,
+      cannot_open_dialog_id = "_small_key_required",
+    }
+
+  elseif subtype == 2 then
+    -- Small key block.
+    return {
+      sprite_name = "entities/door_small_key_block",
+      opening_method = "interaction_if_savegame_variable",
+      opening_condition = metadata.small_keys_variable,
+      opening_condition_consumed = true,
+      cannot_open_dialog_id = "_small_key_required",
+    }
+
+  elseif subtype == 3 then
+    -- Big key.
+    if metadata.dungeon == nil then
+      error("Line " .. line_number .. ": Big key doors are only allowed in dungeons")
+    end
+    return {
+      sprite_name = "entities/door_big_key",
+      opening_method = "interaction_if_savegame_variable",
+      opening_condition = "dungeon_" .. metadata.dungeon .. "_big_key",
+      cannot_open_dialog_id = "_big_key_required",
+    }
+
+  elseif subtype == 4 then
+    -- Boss key.
+    if metadata.dungeon == nil then
+      error("Line " .. line_number .. ": Boss key doors are only allowed in dungeons")
+    end
+    return {
+      sprite_name = "entities/door_boss_key",
+      opening_method = "interaction_if_savegame_variable",
+      opening_condition = "dungeon_" .. metadata.dungeon .. "_boss_key",
+      cannot_open_dialog_id = "_boss_key_required",
+    }
+
+  elseif subtype == 5 then
+    -- Weak wall.
+    return {
+      sprite_name = "entities/door_weak_wall",
+      opening_method = "explosion",
+    }
+
+  elseif subtype == 6 then
+    -- Very weak wall.
+    return {
+      sprite_name = "entities/door_very_weak_wall",
+      opening_method = "explosion",
+    }
+
+  elseif subtype == 8 then
+    -- Weak block.
+    return {
+      sprite_name = "entities/door_weak_block",
+      opening_method = "explosion",
+    }
+
+  else
+    error("Line " .. line_number .. ": Illegal door subtype: '" .. subtype .. "'")
+  end
+end
+
+-- The syntax of treasure names has slightly changed:
+-- "_none" and "_random" no longer exist.
 local function convert_treasure_name(treasure_name)
 
   if treasure_name == "_random" then
-    -- Random is no longer a built-in special item.
+    -- Random is no longer built-in.
     treasure_name = "random"
   elseif treasure_name == "_none" then
+    -- "_none" is just replaced by nil.
     treasure_name = nil
   end
   return treasure_name
 end
 
--- This table describes the old syntax.
+-- This table fully describes the old syntax of each entity and how to convert
+-- it to the new format.
 local entity_syntaxes = {
 
-  -- entity type id -> entity line syntax
+  -- Entity type id -> entity line syntax.
   [0] = {
     entity_type_name = "tile",
-    -- token index -> token name and token type (default int)
     { token_name = "layer" },
     { token_name = "x" },
     { token_name = "y" },
@@ -247,7 +347,7 @@ local entity_syntaxes = {
     { token_name = "y" },
     { token_name = "name", token_type = "string" },
     { token_name = "direction" },
-    { token_name = "subtype", token_type = "string" },
+    { token_name = "subtype", converter = convert_door_subtype },
     { token_name = "savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
   },
 
@@ -263,6 +363,7 @@ local entity_syntaxes = {
 
 }
 
+-- Old world number -> new world name.
 local world_names = {
   [-1] = "inside_world",
   [0] = "outside_world"
@@ -271,6 +372,7 @@ for i = 1, 20 do
   world_names[i] = "dungeon_" .. i
 end
 
+-- Old floor number -> new floor number.
 local floors = {
   [-100] = nil,  -- No floor.
 }
@@ -278,25 +380,32 @@ for i = -16, 15 do
   floors[i] = i
 end
 
+-- Parses the metadata line from the old syntax.
 function parse_metadata(line)
 
   local metadata = {}
+
   local width, height, world, floor, x, y, small_keys_variable, tileset, music =
     line:match("^([0-9]+)%s+([0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([a-zA-Z0-9_]+)%s+([a-zA-Z0-9_]+)")
 
   if width == nil then
-    error("Line 1: Invalid map metadata")
+    error("Line " .. line_number .. ": Invalid map metadata")
   end
 
+  -- Store all the meta information with the new semantics.
   metadata.x = tonumber(x)
   metadata.y = tonumber(y)
   metadata.width = tonumber(width)
   metadata.height = tonumber(height)
-  metadata.world = world_names[tonumber(world)]
+  local world_number = tonumber(world)
+  metadata.world = world_names[world_number]
+  if world_number > 0 then
+    metadata.dungeon = world_number
+  end
   metadata.floor = floors[tonumber(floor)]
 
   if small_keys_variable ~= -1 then
-    metadata.small_keys_variable = tonumber(small_keys_variable)
+    metadata.small_keys_variable = convert_small_keys_variable(world_number, tonumber(small_keys_variable))
   end
 
   metadata.tileset = tileset
@@ -308,6 +417,7 @@ function parse_metadata(line)
   return metadata
 end
 
+-- Outputs the metadata part with the new syntax.
 function print_metadata(metadata)
 
   io.write("properties{\n")
@@ -326,7 +436,8 @@ function print_metadata(metadata)
   io.write("}\n\n")
 end
 
-function parse_entity(line, line_number)
+-- Parses a map entity from a line with the old syntax.
+function parse_entity(line)
 
   local entity = {}
   local entity_type_id = nil
@@ -352,7 +463,7 @@ function parse_entity(line, line_number)
         else
           value = false
         end
-      elseif token_type == nil then  -- Integer.
+      elseif token_type == "integer" or token_type == nil then  -- Default is integer.
         value = tonumber(token)
         if value == nil then
           error("Line " .. line_number .. ": Number expected for token '" ..
@@ -364,21 +475,36 @@ function parse_entity(line, line_number)
       end
 
       if value == syntax[i].nil_value then
-        value = nil
-      elseif syntax[i].converter ~= nil then
-        -- The value has to be converted to a new syntax.
-	if type(syntax[i].converter) == "table" then
-	  value = syntax[i].converter[value]
-	else
-	  value = syntax[i].converter(value)
-	end
+        entity[#entity + 1] = {
+          key = syntax[i].token_name,
+          value = nil
+        }
+      else
+        if syntax[i].converter ~= nil then
+          -- The value has to be converted to a new syntax.
+          if type(syntax[i].converter) == "table" then
+            value = syntax[i].converter[value]
+          else
+            value = syntax[i].converter(value)
+          end
+        end
+
+        if type(value) == "table" then
+          -- Multi-valued element.
+          for k, v in pairs(value) do
+            entity[#entity + 1] = {
+              key = k,
+              value = v
+            }
+          end
+        else
+          -- Single value.
+          entity[#entity + 1] = {
+            key = syntax[i].token_name,
+            value = value
+          }
+        end
       end
-
-      entity[i] = {
-        key = syntax[i].token_name,
-        value = value
-      }
-
       i = i + 1
     end
   end
@@ -386,6 +512,7 @@ function parse_entity(line, line_number)
   return entity
 end
 
+-- Outputs a map entity with the new syntax.
 function print_entity(entity)
 
   io.write("" .. entity.entity_type_name .. "{\n")
@@ -417,15 +544,13 @@ local first_line = lines()
 if first_line == nil then
   error("Empty map data file")
 end
-local metadata = parse_metadata(first_line)
+metadata = parse_metadata(first_line)
 print_metadata(metadata)
 
-
-local line_number = 1
 for line in file:lines() do
 
   line_number = line_number + 1
-  local entity = parse_entity(line, line_number)
+  local entity = parse_entity(line)
   print_entity(entity)
 end
 

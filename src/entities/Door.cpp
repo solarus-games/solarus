@@ -195,7 +195,7 @@ void Door::update_dynamic_tiles() {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Door::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Door::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   if (!is_open()
       && is_interaction_required()
@@ -207,9 +207,14 @@ void Door::notify_collision(MapEntity &entity_overlapping, CollisionMode collisi
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
         && hero.is_free()) {
 
-      // we show the action icon
-      get_keys_effect().set_action_key_effect(can_open() ?
-          KeysEffect::ACTION_KEY_OPEN : KeysEffect::ACTION_KEY_LOOK);
+      if (can_open()) {
+        // The action command opens the door.
+        get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_OPEN);
+      }
+      else if (!get_cannot_open_dialog_id().empty()) {
+        // The action command shows a dialog.
+        get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+      }
     }
   }
 }

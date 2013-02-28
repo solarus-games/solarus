@@ -7601,7 +7601,11 @@ door{
   y = 176,
   name = "door",
   direction = 0,
-  subtype = "1",
+  opening_condition = "dungeon_6_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b304",
 }
 
@@ -7611,7 +7615,11 @@ door{
   y = 176,
   name = "door_2",
   direction = 2,
-  subtype = "1",
+  opening_condition = "dungeon_6_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b304",
 }
 

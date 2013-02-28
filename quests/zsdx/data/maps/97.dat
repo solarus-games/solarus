@@ -4717,7 +4717,11 @@ door{
   y = 792,
   name = "door",
   direction = 1,
-  subtype = "2",
+  opening_condition = "dungeon_10_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b217",
 }
 
@@ -4727,7 +4731,11 @@ door{
   y = 616,
   name = "door_3",
   direction = 1,
-  subtype = "2",
+  opening_condition = "dungeon_10_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b219",
 }
 
@@ -4763,7 +4771,11 @@ door{
   y = 792,
   name = "door_2",
   direction = 1,
-  subtype = "2",
+  opening_condition = "dungeon_10_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b218",
 }
 
@@ -4773,7 +4785,11 @@ door{
   y = 616,
   name = "door_4",
   direction = 1,
-  subtype = "2",
+  opening_condition = "dungeon_10_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b220",
 }
 
@@ -5700,7 +5716,10 @@ door{
   y = 344,
   name = "door_5",
   direction = 1,
-  subtype = "3",
+  opening_condition = "dungeon_10_big_key",
+  cannot_open_dialog_id = "_big_key_required",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_big_key",
   savegame_variable = "b240",
 }
 

@@ -1447,7 +1447,7 @@ door{
   y = 560,
   name = "LD14",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 chest{
@@ -2337,7 +2337,7 @@ door{
   y = 464,
   name = "LD14_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 enemy{
@@ -6902,7 +6902,7 @@ door{
   y = 1048,
   name = "LD13",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -6911,7 +6911,7 @@ door{
   y = 888,
   name = "LD12",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -6920,7 +6920,7 @@ door{
   y = 1000,
   name = "LD13_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -6929,7 +6929,7 @@ door{
   y = 888,
   name = "LD12_2",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 sensor{

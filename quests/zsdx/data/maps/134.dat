@@ -1102,7 +1102,7 @@ door{
   y = 440,
   name = "door",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 block{

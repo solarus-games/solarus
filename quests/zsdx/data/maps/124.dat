@@ -4064,7 +4064,7 @@ door{
   y = 24,
   name = "door_8",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -4073,7 +4073,7 @@ door{
   y = 360,
   name = "door_5",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -4082,7 +4082,7 @@ door{
   y = 712,
   name = "door_7",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -4091,7 +4091,7 @@ door{
   y = 24,
   name = "door_4",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -4100,7 +4100,7 @@ door{
   y = 24,
   name = "door_3",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -4109,7 +4109,7 @@ door{
   y = 24,
   name = "door_2",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -4118,7 +4118,7 @@ door{
   y = 104,
   name = "door",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 destructible{

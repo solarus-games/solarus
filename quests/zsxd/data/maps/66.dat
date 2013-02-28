@@ -9471,7 +9471,8 @@ door{
   y = 776,
   name = "door",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b207",
 }
 
@@ -9481,7 +9482,8 @@ door{
   y = 776,
   name = "door_2",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b209",
 }
 
@@ -9491,7 +9493,8 @@ door{
   y = 792,
   name = "door_3",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b208",
 }
 
@@ -9501,7 +9504,8 @@ door{
   y = 792,
   name = "door_4",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b210",
 }
 
@@ -9511,7 +9515,8 @@ door{
   y = 792,
   name = "door_5",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b212",
 }
 
@@ -9521,7 +9526,8 @@ door{
   y = 776,
   name = "door_6",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b211",
 }
 
@@ -9531,7 +9537,8 @@ door{
   y = 776,
   name = "door_7",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b213",
 }
 
@@ -9541,7 +9548,8 @@ door{
   y = 792,
   name = "door_8",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b215",
 }
 
@@ -9551,7 +9559,8 @@ door{
   y = 792,
   name = "door_9",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b216",
 }
 
@@ -9561,7 +9570,8 @@ door{
   y = 776,
   name = "door_10",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b218",
 }
 
@@ -9571,7 +9581,8 @@ door{
   y = 776,
   name = "door_11",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b217",
 }
 
@@ -9581,7 +9592,8 @@ door{
   y = 792,
   name = "door_12",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b219",
 }
 
@@ -9591,7 +9603,8 @@ door{
   y = 792,
   name = "door_13",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b220",
 }
 
@@ -9601,7 +9614,8 @@ door{
   y = 792,
   name = "door_14",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b232",
 }
 
@@ -9611,7 +9625,8 @@ door{
   y = 776,
   name = "door_15",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b221",
 }
 
@@ -9621,7 +9636,8 @@ door{
   y = 776,
   name = "door_16",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b222",
 }
 
@@ -9631,7 +9647,8 @@ door{
   y = 792,
   name = "door_17",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b223",
 }
 
@@ -9641,7 +9658,8 @@ door{
   y = 776,
   name = "door_18",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b214",
 }
 
@@ -9651,7 +9669,8 @@ door{
   y = 776,
   name = "door_19",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b224",
 }
 
@@ -9661,7 +9680,8 @@ door{
   y = 792,
   name = "door_20",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b226",
 }
 
@@ -9671,7 +9691,8 @@ door{
   y = 776,
   name = "door_21",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b225",
 }
 
@@ -9681,7 +9702,8 @@ door{
   y = 824,
   name = "door_22",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b228",
 }
 
@@ -9691,7 +9713,8 @@ door{
   y = 776,
   name = "door_23",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b227",
 }
 
@@ -9701,7 +9724,8 @@ door{
   y = 792,
   name = "door_24",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b231",
 }
 
@@ -9711,7 +9735,8 @@ door{
   y = 824,
   name = "door_25",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b230",
 }
 
@@ -9841,7 +9866,8 @@ door{
   y = 808,
   name = "door_26",
   direction = 1,
-  subtype = "8",
+  opening_method = "explosion",
+  sprite_name = "entities/door_weak_block",
   savegame_variable = "b229",
 }
 
@@ -10719,7 +10745,7 @@ door{
   y = 696,
   name = "fight_door",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -10728,7 +10754,7 @@ door{
   y = 648,
   name = "fight_door_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 wall{

@@ -502,7 +502,11 @@ door{
   y = 64,
   name = "door",
   direction = 1,
-  subtype = "2",
+  opening_condition = "i1200",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b147",
 }
 
@@ -512,7 +516,11 @@ door{
   y = 64,
   name = "door_2",
   direction = 1,
-  subtype = "2",
+  opening_condition = "i1200",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b148",
 }
 
@@ -522,7 +530,11 @@ door{
   y = 112,
   name = "door_3",
   direction = 1,
-  subtype = "2",
+  opening_condition = "i1200",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b149",
 }
 
@@ -532,7 +544,11 @@ door{
   y = 144,
   name = "door_4",
   direction = 1,
-  subtype = "2",
+  opening_condition = "i1200",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b150",
 }
 
@@ -3485,7 +3501,11 @@ door{
   y = 248,
   name = "door_5",
   direction = 1,
-  subtype = "2",
+  opening_condition = "i1200",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b151",
 }
 
@@ -3495,7 +3515,11 @@ door{
   y = 312,
   name = "door_6",
   direction = 1,
-  subtype = "2",
+  opening_condition = "i1200",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key_block",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b152",
 }
 

@@ -6179,7 +6179,7 @@ door{
   y = 632,
   name = "LD15",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 chest{
@@ -6335,7 +6335,10 @@ door{
   y = 888,
   name = "BD01",
   direction = 2,
-  subtype = "3",
+  opening_condition = "dungeon_8_big_key",
+  cannot_open_dialog_id = "_big_key_required",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_big_key",
   savegame_variable = "b713",
 }
 
@@ -6498,7 +6501,7 @@ door{
   y = 632,
   name = "LD15_2",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 crystal_block{
@@ -6552,7 +6555,7 @@ door{
   y = 1048,
   name = "LD16",
   direction = 1,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -6561,7 +6564,7 @@ door{
   y = 1000,
   name = "LD16_2",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 switch{
@@ -6933,7 +6936,11 @@ door{
   y = 888,
   name = "KD04",
   direction = 2,
-  subtype = "1",
+  opening_condition = "dungeon_8_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b714",
 }
 
@@ -6943,7 +6950,10 @@ door{
   y = 888,
   name = "BD01_2",
   direction = 0,
-  subtype = "3",
+  opening_condition = "dungeon_8_big_key",
+  cannot_open_dialog_id = "_big_key_required",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_big_key",
   savegame_variable = "b713",
 }
 
@@ -6953,7 +6963,11 @@ door{
   y = 888,
   name = "KD04_2",
   direction = 0,
-  subtype = "1",
+  opening_condition = "dungeon_8_small_keys",
+  opening_method = "interaction_if_savegame_variable",
+  sprite_name = "entities/door_small_key",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b714",
 }
 
@@ -7014,7 +7028,7 @@ door{
   y = 632,
   name = "LD15_3",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 door{
@@ -7023,7 +7037,7 @@ door{
   y = 632,
   name = "LD15_4",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 destination{

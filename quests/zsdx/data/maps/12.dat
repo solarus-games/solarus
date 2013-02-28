@@ -1552,7 +1552,7 @@ door{
   y = 104,
   name = "door",
   direction = 0,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b66",
 }
 
@@ -1562,7 +1562,7 @@ door{
   y = 104,
   name = "door_2",
   direction = 2,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
   savegame_variable = "b66",
 }
 

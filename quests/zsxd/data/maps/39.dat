@@ -1512,7 +1512,7 @@ door{
   y = 784,
   name = "trap_door",
   direction = 3,
-  subtype = "0",
+  sprite_name = "entities/door_normal",
 }
 
 teletransporter{

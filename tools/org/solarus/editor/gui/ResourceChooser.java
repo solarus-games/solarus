@@ -135,7 +135,7 @@ public class ResourceChooser extends JComboBox<KeyValue> implements ProjectObser
 
     /**
      * Changes the currently selected element.
-     * If the specified element doesn't exist, a IllegalArgumentException is raised.
+     * If the specified element doesn't exist, a NoSuchElementException is raised.
      * @param id id of the element you want to make selected in the combo box,
      * or an empty string to select no element
      * @throws NoSuchElementException if the id specified does not exist in the combo box

@@ -1417,6 +1417,17 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Returns whether the specified string is an existing sprite name,
+     * @param spriteName A sprite name.
+     * @return true if a sprite exists with this name.
+     */
+    public static boolean isValidSpriteName(String spriteName) {
+
+        return spriteName != null &&
+          Project.getResource(ResourceType.SPRITE).exists(spriteName);
+    }
+
+    /**
      * Changes the tileset used to represent this entity on the map.
      * By default, nothing is done since most of the entities do not use the tileset.
      * @param tileset the tileset

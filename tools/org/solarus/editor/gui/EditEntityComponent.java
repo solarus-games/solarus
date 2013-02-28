@@ -192,17 +192,21 @@ public class EditEntityComponent extends JPanel {
     }
 
     /**
-     * Adds a field in the component.
-     * @param label name displayed of the field
-     * @param field the field to add (can be a JTextField, a JComboBox, etc.)
+     * Adds a field in the component: label and component.
+     * @param name Displayed name of the field.
+     * @param field The field to add (can be a JTextField, a JComboBox, etc.).
+     * @return The JLabel created to display the name.
      */
-    protected void addField(String label, JComponent field) {
+    protected JLabel addField(String name, JComponent field) {
 
+        JLabel label = new JLabel(name);
         gridBagConstraints.gridx = 0;
-        add(new JLabel(label), gridBagConstraints);
+        add(label, gridBagConstraints);
         gridBagConstraints.gridx = 1;
         add(field, gridBagConstraints);
         gridBagConstraints.gridy++;
+
+        return label;
     }
 
     /**
@@ -293,3 +297,4 @@ public class EditEntityComponent extends JPanel {
         }
     }
 }
+

@@ -173,15 +173,6 @@ public class NPC extends MapEntity {
     }
 
     /**
-     * Returns whether the specified sprite name id is valid
-     * @param spriteName a sprite name or null
-     * @return true if it is valid
-     */
-    private boolean isSpriteNameValid(String spriteName) {
-        return spriteName == null || !spriteName.isEmpty();
-    }
-
-    /**
      * Returns whether the specified behavior string is valid
      * @param behavior a behavior string
      * @return true if it is valid
@@ -218,7 +209,7 @@ public class NPC extends MapEntity {
 
         if (name.equals("sprite")) {
 
-            if (value != null) {
+            if (isValidSpriteName(value)) {
                 sprite = new Sprite(value, getMap());
             }
             else {
@@ -233,7 +224,8 @@ public class NPC extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-        if (!isSpriteNameValid(getProperty("sprite"))) {
+        String spriteName = getProperty("sprite");
+        if (spriteName != null && !isValidSpriteName(spriteName)) {
             throw new MapException("Invalid sprite name: '" + getProperty("sprite") + "'");
         }
 

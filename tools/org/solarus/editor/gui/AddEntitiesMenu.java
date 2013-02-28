@@ -61,16 +61,7 @@ public class AddEntitiesMenu extends JMenu {
         ),
         new ItemDefinition(EntityType.SHOP_ITEM, KeyEvent.VK_H),
         new ItemDefinition(EntityType.CONVEYOR_BELT, KeyEvent.VK_V),
-        new ItemDefinition(EntityType.DOOR, KeyEvent.VK_R,
-                Door.Subtype.CLOSED,
-                Door.Subtype.SMALL_KEY,
-                Door.Subtype.SMALL_KEY_BLOCK,
-                Door.Subtype.BIG_KEY,
-                Door.Subtype.BOSS_KEY,
-                Door.Subtype.WEAK,
-                Door.Subtype.VERY_WEAK,
-                Door.Subtype.WEAK_BLOCK
-        ),
+        new ItemDefinition(EntityType.DOOR, KeyEvent.VK_R),
         new ItemDefinition(EntityType.STAIRS, KeyEvent.VK_S,
                 CrystalBlock.Subtype.ORANGE,
                 CrystalBlock.Subtype.BLUE

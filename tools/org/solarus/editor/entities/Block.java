@@ -158,18 +158,9 @@ public class Block extends MapEntity {
    */
   public void checkProperties() throws MapException {
 
-    if (!isSpriteNameValid(getProperty("sprite"))) {
+    if (!isValidSpriteName(getProperty("sprite"))) {
       throw new MapException("Invalid sprite name: '" + getProperty("sprite") + "'");
     }
-  }
-
-  /**
-   * Returns whether the specified sprite name id is valid
-   * @param sprite_name a sprite name
-   * @return true if it is valid
-   */
-  private boolean isSpriteNameValid(String sprite_name) {
-    return sprite_name != null && !sprite_name.isEmpty();
   }
 
   /**

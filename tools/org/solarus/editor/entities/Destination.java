@@ -137,18 +137,9 @@ public class Destination extends MapEntity {
     public void checkProperties() throws MapException {
 
         String spriteName = getProperty("sprite");
-        if (!isSpriteNameValid(spriteName)) {
+        if (spriteName != null && !isValidSpriteName(spriteName)) {
             throw new MapException("Invalid sprite name: '" + spriteName + "'");
         }
-    }
-
-    /**
-     * Returns whether the specified sprite name is valid.
-     * @param spriteName A sprite name or null.
-     * @return true if it is valid.
-     */
-    private boolean isSpriteNameValid(String spriteName) {
-        return spriteName == null || !spriteName.isEmpty();
     }
 
     /**

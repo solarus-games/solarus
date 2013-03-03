@@ -317,6 +317,16 @@ Equivalent to calling
 for each attack.
 - \c sprite (\ref lua_api_sprite "sprite"): A sprite of this enemy.
 
+\subsection lua_api_enemy_has_layer_independent_collisions enemy:has_layer_independent_collisions()
+
+Returns whether this enemy can detect collisions with entities
+even if they are not on the same layer.
+
+By default, enemies can only have collisions with entities on the
+same layer.
+- Return value (boolean): \c true if this enemy can
+  detect collisions even with entities on other layers.
+
 \subsection lua_api_enemy_set_layer_independent_collisions enemy:set_layer_independent_collisions([independent])
 
 Sets whether this enemy can detect collisions with entities

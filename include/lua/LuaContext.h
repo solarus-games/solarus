@@ -662,7 +662,7 @@ class LuaContext {
       entity_api_get_movement,  // TODO also add to NPC
       entity_api_start_movement,  // TODO register on all entity types?
       entity_api_stop_movement,
-      entity_api_has_layer_independent_collisions,  // TODO never registered
+      entity_api_has_layer_independent_collisions,
       entity_api_set_layer_independent_collisions,
       entity_api_test_obstacles,  // TODO register on all entity types
       entity_api_get_optimization_distance,

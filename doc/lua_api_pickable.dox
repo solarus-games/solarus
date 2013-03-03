@@ -75,6 +75,16 @@ so that it looks like the pickable treasure is falling.
 
 Stops the movement (if any) of this pickable treasure.
 
+\subsection lua_api_pickable_has_layer_independent_collisions pickable:has_layer_independent_collisions()
+
+Returns whether this pickable treasure can detect collisions with entities
+even if they are not on the same layer.
+
+By default, pickable treasures can only have collisions with entities on the
+same layer.
+- Return value (boolean): \c true if this pickable treasure can
+  detect collisions even with entities on other layers.
+
 \subsection lua_api_pickable_set_layer_independent_collisions pickable:set_layer_independent_collisions([independent])
 
 Sets whether this pickable treasure can detect collisions with entities

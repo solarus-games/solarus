@@ -85,8 +85,8 @@ Returns the delay between two frames of this sprite in the current animation.
 This delay is defined by the current animation but may be overriden
 by \ref lua_api_sprite_set_frame_delay "set_frame_delay()".
 - Return value (number): The delay in milliseconds between two frames in
-  the current animation. \c 0 means infinite
-  and is only allowed for single-frame animations.
+  the current animation. \c nil means infinite and
+  it is only allowed for single-frame animations. 
 
 \subsection lua_api_sprite_set_frame_delay sprite:set_frame_delay(delay)
 
@@ -94,7 +94,7 @@ Changes the delay between two frames of this sprite in the current animation.
 
 Use this function if you want to override the normal delay
 (the one defined in the sprite data file).
-- \c delay (number): The new delay in milliseconds. \c 0 means infinite
+- \c delay (number): The new delay in milliseconds. \c nil means infinite
   and is only allowed for single-frame animations.
 
 \subsection lua_api_sprite_is_paused sprite:is_paused()

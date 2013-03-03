@@ -202,7 +202,13 @@ int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
 
   const Sprite& sprite = check_sprite(l, 1);
 
-  lua_pushinteger(l, sprite.get_frame_delay());
+  uint32_t frame_delay = sprite.get_frame_delay();
+  if (frame_delay == 0) {
+    lua_pushnil(l);
+  }
+  else {
+    lua_pushinteger(l, frame_delay);
+  }
 
   return 1;
 }
@@ -215,8 +221,11 @@ int LuaContext::sprite_api_get_frame_delay(lua_State* l) {
 int LuaContext::sprite_api_set_frame_delay(lua_State* l) {
 
   Sprite& sprite = check_sprite(l, 1);
+  uint32_t delay = 0;
+  if (!lua_isnil(l, 2)) {
+    delay = uint32_t(luaL_checkint(l, 2));
+  }
 
-  uint32_t delay = uint32_t(luaL_checkint(l, 2));
   sprite.set_frame_delay(delay);
 
   return 0;

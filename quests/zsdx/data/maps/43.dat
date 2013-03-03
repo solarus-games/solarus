@@ -5004,8 +5004,8 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 608,
-  y = 736,
+  x = 616,
+  y = 728,
   name = "miniboss_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -5013,8 +5013,8 @@ door{
 
 door{
   layer = 1,
-  x = 608,
-  y = 688,
+  x = 616,
+  y = 680,
   name = "miniboss_door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -5022,8 +5022,8 @@ door{
 
 door{
   layer = 1,
-  x = 688,
-  y = 832,
+  x = 680,
+  y = 840,
   name = "miniboss_door_3",
   direction = 0,
   sprite = "entities/door_normal",
@@ -5031,8 +5031,8 @@ door{
 
 door{
   layer = 1,
-  x = 736,
-  y = 832,
+  x = 728,
+  y = 840,
   name = "miniboss_door_4",
   direction = 2,
   sprite = "entities/door_normal",
@@ -5040,8 +5040,8 @@ door{
 
 door{
   layer = 1,
-  x = 112,
-  y = 256,
+  x = 120,
+  y = 248,
   name = "door",
   direction = 1,
   sprite = "entities/door_boss_key",
@@ -5053,8 +5053,8 @@ door{
 
 door{
   layer = 1,
-  x = 112,
-  y = 208,
+  x = 120,
+  y = 200,
   name = "door_2",
   direction = 3,
   sprite = "entities/door_boss_key",
@@ -5325,8 +5325,8 @@ stairs{
 
 door{
   layer = 1,
-  x = 240,
-  y = 688,
+  x = 248,
+  y = 680,
   name = "final_room_door",
   direction = 3,
   sprite = "entities/door_normal",
@@ -5334,8 +5334,8 @@ door{
 
 door{
   layer = 1,
-  x = 112,
-  y = 256,
+  x = 120,
+  y = 248,
   name = "boss_door_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -5343,8 +5343,8 @@ door{
 
 door{
   layer = 1,
-  x = 112,
-  y = 208,
+  x = 120,
+  y = 200,
   name = "boss_door_3",
   direction = 3,
   sprite = "entities/door_normal",
@@ -5595,8 +5595,8 @@ destructible{
 
 door{
   layer = 1,
-  x = 608,
-  y = 688,
+  x = 616,
+  y = 680,
   name = "door_4",
   direction = 3,
   sprite = "entities/door_big_key",
@@ -5608,8 +5608,8 @@ door{
 
 door{
   layer = 1,
-  x = 608,
-  y = 736,
+  x = 616,
+  y = 728,
   name = "door_3",
   direction = 1,
   sprite = "entities/door_big_key",

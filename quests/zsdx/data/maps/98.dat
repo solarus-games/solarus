@@ -1807,8 +1807,8 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 544,
-  y = 168,
+  x = 536,
+  y = 176,
   name = "door_a",
   direction = 2,
   sprite = "entities/door_normal",
@@ -1816,8 +1816,8 @@ door{
 
 door{
   layer = 1,
-  x = 496,
-  y = 168,
+  x = 488,
+  y = 176,
   name = "door_a_2",
   direction = 0,
   sprite = "entities/door_normal",

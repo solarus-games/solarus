@@ -8784,8 +8784,8 @@ tile{
 
 door{
   layer = 1,
-  x = 1112,
-  y = 288,
+  x = 1120,
+  y = 280,
   name = "boss_door_3",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8793,8 +8793,8 @@ door{
 
 door{
   layer = 1,
-  x = 1264,
-  y = 376,
+  x = 1256,
+  y = 384,
   name = "LD6_2",
   direction = 0,
   sprite = "entities/door_normal",
@@ -8803,8 +8803,8 @@ door{
 
 door{
   layer = 1,
-  x = 1312,
-  y = 376,
+  x = 1304,
+  y = 384,
   name = "LD6",
   direction = 2,
   sprite = "entities/door_normal",
@@ -8813,8 +8813,8 @@ door{
 
 door{
   layer = 1,
-  x = 1112,
-  y = 288,
+  x = 1120,
+  y = 280,
   name = "boss_key_door",
   direction = 1,
   sprite = "entities/door_boss_key",
@@ -8826,8 +8826,8 @@ door{
 
 door{
   layer = 1,
-  x = 352,
-  y = 1656,
+  x = 344,
+  y = 1664,
   name = "LD3",
   direction = 2,
   sprite = "entities/door_normal",
@@ -8835,8 +8835,8 @@ door{
 
 door{
   layer = 1,
-  x = 304,
-  y = 1656,
+  x = 296,
+  y = 1664,
   name = "LD3_2",
   direction = 0,
   sprite = "entities/door_normal",
@@ -8886,8 +8886,8 @@ wall{
 
 door{
   layer = 1,
-  x = 672,
-  y = 384,
+  x = 664,
+  y = 392,
   name = "WW01",
   direction = 2,
   sprite = "entities/door_weak_wall",
@@ -8905,8 +8905,8 @@ destination{
 
 door{
   layer = 1,
-  x = 992,
-  y = 1656,
+  x = 984,
+  y = 1664,
   name = "KD01",
   direction = 2,
   sprite = "entities/door_small_key",
@@ -8931,8 +8931,8 @@ block{
 
 door{
   layer = 1,
-  x = 1752,
-  y = 1568,
+  x = 1760,
+  y = 1560,
   name = "LD2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -9802,8 +9802,8 @@ sensor{
 
 door{
   layer = 1,
-  x = 1584,
-  y = 1656,
+  x = 1576,
+  y = 1664,
   name = "LD1",
   direction = 0,
   sprite = "entities/door_normal",
@@ -9820,8 +9820,8 @@ sensor{
 
 door{
   layer = 1,
-  x = 1752,
-  y = 544,
+  x = 1760,
+  y = 536,
   name = "LD5",
   direction = 1,
   sprite = "entities/door_normal",
@@ -9909,8 +9909,8 @@ destructible{
 
 door{
   layer = 1,
-  x = 1632,
-  y = 1656,
+  x = 1624,
+  y = 1664,
   name = "LD1_2",
   direction = 2,
   sprite = "entities/door_normal",
@@ -9931,8 +9931,8 @@ wall{
 
 door{
   layer = 1,
-  x = 1752,
-  y = 1520,
+  x = 1760,
+  y = 1512,
   name = "LD2_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -10012,8 +10012,8 @@ enemy{
 
 door{
   layer = 1,
-  x = 1752,
-  y = 496,
+  x = 1760,
+  y = 488,
   name = "LD5_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -10049,8 +10049,8 @@ destructible{
 
 door{
   layer = 1,
-  x = 1112,
-  y = 1008,
+  x = 1120,
+  y = 1000,
   name = "LD4",
   direction = 3,
   sprite = "entities/door_normal",
@@ -10058,8 +10058,8 @@ door{
 
 door{
   layer = 1,
-  x = 1112,
-  y = 1056,
+  x = 1120,
+  y = 1048,
   name = "LD4_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -10337,8 +10337,8 @@ wall{
 
 door{
   layer = 1,
-  x = 1584,
-  y = 1144,
+  x = 1576,
+  y = 1152,
   name = "KD02",
   direction = 0,
   sprite = "entities/door_small_key",
@@ -10612,8 +10612,8 @@ enemy{
 
 door{
   layer = 1,
-  x = 944,
-  y = 1656,
+  x = 936,
+  y = 1664,
   name = "KD01_2",
   direction = 0,
   sprite = "entities/door_small_key",
@@ -10626,8 +10626,8 @@ door{
 
 door{
   layer = 1,
-  x = 1632,
-  y = 1144,
+  x = 1624,
+  y = 1152,
   name = "KD02_2",
   direction = 2,
   sprite = "entities/door_small_key",
@@ -10664,8 +10664,8 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 1112,
-  y = 32,
+  x = 1120,
+  y = 24,
   name = "agahnim_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -10899,8 +10899,8 @@ wall{
 
 door{
   layer = 1,
-  x = 1112,
-  y = 240,
+  x = 1120,
+  y = 232,
   name = "boss_door",
   direction = 3,
   sprite = "entities/door_normal",
@@ -12078,8 +12078,8 @@ dynamic_tile{
 
 door{
   layer = 2,
-  x = 1112,
-  y = 240,
+  x = 1120,
+  y = 232,
   name = "boss_key_door_2",
   direction = 3,
   sprite = "entities/door_boss_key",

@@ -812,8 +812,8 @@ tile{
 
 door{
   layer = 0,
-  x = 88,
-  y = 56,
+  x = 96,
+  y = 48,
   name = "nw_door",
   direction = 1,
   sprite = "entities/door_normal",

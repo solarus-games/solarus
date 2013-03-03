@@ -9394,8 +9394,8 @@ enemy{
 
 door{
   layer = 1,
-  x = 800,
-  y = 880,
+  x = 808,
+  y = 872,
   name = "evil_tiles_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -9403,8 +9403,8 @@ door{
 
 door{
   layer = 1,
-  x = 800,
-  y = 832,
+  x = 808,
+  y = 824,
   name = "evil_tiles_door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -9412,8 +9412,8 @@ door{
 
 door{
   layer = 1,
-  x = 800,
-  y = 560,
+  x = 808,
+  y = 552,
   name = "evil_tiles_door_3",
   direction = 1,
   sprite = "entities/door_normal",
@@ -9421,8 +9421,8 @@ door{
 
 door{
   layer = 1,
-  x = 800,
-  y = 512,
+  x = 808,
+  y = 504,
   name = "evil_tiles_door_4",
   direction = 3,
   sprite = "entities/door_normal",

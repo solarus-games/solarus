@@ -7185,8 +7185,8 @@ npc{
 
 door{
   layer = 1,
-  x = 848,
-  y = 272,
+  x = 856,
+  y = 264,
   name = "DK1",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -7332,8 +7332,8 @@ teletransporter{
 
 door{
   layer = 1,
-  x = 1616,
-  y = 184,
+  x = 1608,
+  y = 192,
   name = "weak_wall_A",
   direction = 0,
   sprite = "entities/door_weak_wall",
@@ -7343,8 +7343,8 @@ door{
 
 door{
   layer = 1,
-  x = 1664,
-  y = 184,
+  x = 1656,
+  y = 192,
   name = "weak_wall_A_2",
   direction = 2,
   sprite = "entities/door_weak_wall",
@@ -7395,8 +7395,8 @@ jumper{
 
 door{
   layer = 1,
-  x = 848,
-  y = 224,
+  x = 856,
+  y = 216,
   name = "DK1_2",
   direction = 3,
   sprite = "entities/door_small_key",

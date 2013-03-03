@@ -10741,8 +10741,8 @@ sensor{
 
 door{
   layer = 1,
-  x = 752,
-  y = 704,
+  x = 760,
+  y = 696,
   name = "fight_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -10750,8 +10750,8 @@ door{
 
 door{
   layer = 1,
-  x = 752,
-  y = 656,
+  x = 760,
+  y = 648,
   name = "fight_door_2",
   direction = 3,
   sprite = "entities/door_normal",

@@ -1508,8 +1508,8 @@ pickable{
 
 door{
   layer = 0,
-  x = 440,
-  y = 792,
+  x = 448,
+  y = 784,
   name = "trap_door",
   direction = 3,
   sprite = "entities/door_normal",

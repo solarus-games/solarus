@@ -522,8 +522,8 @@ stairs{
 
 door{
   layer = 0,
-  x = 144,
-  y = 144,
+  x = 152,
+  y = 136,
   name = "door",
   direction = 1,
   sprite = "entities/door_normal",

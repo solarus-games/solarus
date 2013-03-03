@@ -4441,8 +4441,8 @@ crystal{
 
 door{
   layer = 0,
-  x = 520,
-  y = 464,
+  x = 512,
+  y = 472,
   name = "small_key_door_B",
   direction = 0,
   sprite = "entities/door_small_key",
@@ -4507,8 +4507,8 @@ destructible{
 
 door{
   layer = 0,
-  x = 616,
-  y = 464,
+  x = 608,
+  y = 472,
   name = "small_key_door_B_2",
   direction = 2,
   sprite = "entities/door_small_key",
@@ -4521,8 +4521,8 @@ door{
 
 door{
   layer = 0,
-  x = 440,
-  y = 456,
+  x = 448,
+  y = 448,
   name = "small_key_door_C",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -4535,8 +4535,8 @@ door{
 
 door{
   layer = 0,
-  x = 440,
-  y = 360,
+  x = 448,
+  y = 352,
   name = "small_key_door_C_2",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -4837,8 +4837,8 @@ switch{
 
 door{
   layer = 0,
-  x = 296,
-  y = 80,
+  x = 288,
+  y = 88,
   name = "miniboss_door",
   direction = 0,
   sprite = "entities/door_normal",
@@ -4846,8 +4846,8 @@ door{
 
 door{
   layer = 0,
-  x = 392,
-  y = 80,
+  x = 384,
+  y = 88,
   name = "miniboss_door_2",
   direction = 2,
   sprite = "entities/door_normal",
@@ -4855,8 +4855,8 @@ door{
 
 door{
   layer = 0,
-  x = 160,
-  y = 56,
+  x = 168,
+  y = 48,
   name = "miniboss_door_3",
   direction = 1,
   sprite = "entities/door_normal",

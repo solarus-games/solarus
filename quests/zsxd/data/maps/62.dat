@@ -4870,8 +4870,8 @@ jumper{
 
 door{
   layer = 1,
-  x = 1256,
-  y = 176,
+  x = 1264,
+  y = 168,
   name = "stupid_run_door_a",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4879,8 +4879,8 @@ door{
 
 door{
   layer = 1,
-  x = 1256,
-  y = 128,
+  x = 1264,
+  y = 120,
   name = "stupid_run_door_a_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -4888,8 +4888,8 @@ door{
 
 door{
   layer = 1,
-  x = 1440,
-  y = 344,
+  x = 1448,
+  y = 336,
   name = "stupid_run_door_c_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4897,8 +4897,8 @@ door{
 
 door{
   layer = 1,
-  x = 1440,
-  y = 296,
+  x = 1448,
+  y = 288,
   name = "stupid_run_door_c",
   direction = 3,
   sprite = "entities/door_normal",
@@ -4906,8 +4906,8 @@ door{
 
 door{
   layer = 1,
-  x = 1272,
-  y = 320,
+  x = 1280,
+  y = 312,
   name = "stupid_run_door_b_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4915,8 +4915,8 @@ door{
 
 door{
   layer = 1,
-  x = 1272,
-  y = 272,
+  x = 1280,
+  y = 264,
   name = "stupid_run_door_b",
   direction = 3,
   sprite = "entities/door_normal",

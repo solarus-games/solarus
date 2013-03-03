@@ -1285,8 +1285,8 @@ stairs{
 
 door{
   layer = 0,
-  x = 528,
-  y = 1096,
+  x = 520,
+  y = 1104,
   name = "door",
   direction = 0,
   sprite = "entities/door_small_key",
@@ -1299,8 +1299,8 @@ door{
 
 door{
   layer = 0,
-  x = 624,
-  y = 1096,
+  x = 616,
+  y = 1104,
   name = "door_2",
   direction = 2,
   sprite = "entities/door_small_key",
@@ -11564,8 +11564,8 @@ teletransporter{
 
 door{
   layer = 1,
-  x = 416,
-  y = 560,
+  x = 424,
+  y = 552,
   name = "statue_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -11573,8 +11573,8 @@ door{
 
 door{
   layer = 1,
-  x = 416,
-  y = 512,
+  x = 424,
+  y = 504,
   name = "statue_door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -11652,8 +11652,8 @@ npc{
 
 door{
   layer = 1,
-  x = 368,
-  y = 432,
+  x = 376,
+  y = 424,
   name = "torches_door_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -11661,8 +11661,8 @@ door{
 
 door{
   layer = 1,
-  x = 368,
-  y = 384,
+  x = 376,
+  y = 376,
   name = "torches_door",
   direction = 3,
   sprite = "entities/door_normal",

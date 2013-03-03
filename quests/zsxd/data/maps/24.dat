@@ -8520,8 +8520,8 @@ sensor{
 
 door{
   layer = 1,
-  x = 136,
-  y = 480,
+  x = 144,
+  y = 472,
   name = "DK2",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -8541,8 +8541,8 @@ crystal{
 
 door{
   layer = 1,
-  x = 1512,
-  y = 704,
+  x = 1520,
+  y = 696,
   name = "DK9",
   direction = 1,
   sprite = "entities/door_big_key",
@@ -9395,8 +9395,8 @@ sensor{
 
 door{
   layer = 1,
-  x = 592,
-  y = 776,
+  x = 584,
+  y = 784,
   name = "bowser_door",
   direction = 0,
   sprite = "entities/door_normal",
@@ -9422,8 +9422,8 @@ destructible{
 
 door{
   layer = 1,
-  x = 640,
-  y = 776,
+  x = 632,
+  y = 784,
   name = "bowser_door_2",
   direction = 2,
   sprite = "entities/door_normal",
@@ -10035,8 +10035,8 @@ chest{
 
 door{
   layer = 1,
-  x = 136,
-  y = 432,
+  x = 144,
+  y = 424,
   name = "DK2_2",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -10139,8 +10139,8 @@ wall{
 
 door{
   layer = 1,
-  x = 1512,
-  y = 656,
+  x = 1520,
+  y = 648,
   name = "DK9_2",
   direction = 3,
   sprite = "entities/door_big_key",

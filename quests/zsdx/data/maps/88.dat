@@ -4633,8 +4633,8 @@ destructible{
 
 door{
   layer = 1,
-  x = 256,
-  y = 504,
+  x = 264,
+  y = 496,
   name = "door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4642,8 +4642,8 @@ door{
 
 door{
   layer = 1,
-  x = 256,
-  y = 456,
+  x = 264,
+  y = 448,
   name = "door_3",
   direction = 3,
   sprite = "entities/door_normal",
@@ -4651,8 +4651,8 @@ door{
 
 door{
   layer = 1,
-  x = 688,
-  y = 792,
+  x = 696,
+  y = 784,
   name = "door_4",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4660,8 +4660,8 @@ door{
 
 door{
   layer = 1,
-  x = 688,
-  y = 744,
+  x = 696,
+  y = 736,
   name = "door_5",
   direction = 3,
   sprite = "entities/door_normal",
@@ -4698,8 +4698,8 @@ destructible{
 
 door{
   layer = 1,
-  x = 1040,
-  y = 456,
+  x = 1048,
+  y = 448,
   name = "weak_wall_a",
   direction = 3,
   sprite = "entities/door_weak_wall",
@@ -4720,8 +4720,8 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 1040,
-  y = 504,
+  x = 1048,
+  y = 496,
   name = "weak_wall_a_2",
   direction = 1,
   sprite = "entities/door_weak_wall",
@@ -4731,8 +4731,8 @@ door{
 
 door{
   layer = 1,
-  x = 784,
-  y = 680,
+  x = 776,
+  y = 688,
   name = "weak_wall_b",
   direction = 0,
   sprite = "entities/door_weak_wall",
@@ -4742,8 +4742,8 @@ door{
 
 door{
   layer = 1,
-  x = 832,
-  y = 680,
+  x = 824,
+  y = 688,
   name = "weak_wall_b_2",
   direction = 2,
   sprite = "entities/door_weak_wall",

@@ -4060,8 +4060,8 @@ tile{
 
 door{
   layer = 1,
-  x = 880,
-  y = 32,
+  x = 888,
+  y = 24,
   name = "door_8",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4069,8 +4069,8 @@ door{
 
 door{
   layer = 1,
-  x = 992,
-  y = 360,
+  x = 984,
+  y = 368,
   name = "door_5",
   direction = 0,
   sprite = "entities/door_normal",
@@ -4078,8 +4078,8 @@ door{
 
 door{
   layer = 1,
-  x = 496,
-  y = 720,
+  x = 504,
+  y = 712,
   name = "door_7",
   direction = 3,
   sprite = "entities/door_normal",
@@ -4087,8 +4087,8 @@ door{
 
 door{
   layer = 1,
-  x = 624,
-  y = 32,
+  x = 632,
+  y = 24,
   name = "door_4",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4096,8 +4096,8 @@ door{
 
 door{
   layer = 1,
-  x = 368,
-  y = 32,
+  x = 376,
+  y = 24,
   name = "door_3",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4105,8 +4105,8 @@ door{
 
 door{
   layer = 1,
-  x = 112,
-  y = 32,
+  x = 120,
+  y = 24,
   name = "door_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4114,8 +4114,8 @@ door{
 
 door{
   layer = 1,
-  x = 32,
-  y = 104,
+  x = 24,
+  y = 112,
   name = "door",
   direction = 2,
   sprite = "entities/door_normal",

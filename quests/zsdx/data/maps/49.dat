@@ -6175,8 +6175,8 @@ switch{
 
 door{
   layer = 1,
-  x = 992,
-  y = 632,
+  x = 984,
+  y = 640,
   name = "LD15",
   direction = 2,
   sprite = "entities/door_normal",
@@ -6331,8 +6331,8 @@ crystal_block{
 
 door{
   layer = 1,
-  x = 1408,
-  y = 888,
+  x = 1400,
+  y = 896,
   name = "BD01",
   direction = 2,
   sprite = "entities/door_big_key",
@@ -6497,8 +6497,8 @@ switch{
 
 door{
   layer = 1,
-  x = 944,
-  y = 632,
+  x = 936,
+  y = 640,
   name = "LD15_2",
   direction = 0,
   sprite = "entities/door_normal",
@@ -6551,8 +6551,8 @@ crystal_block{
 
 door{
   layer = 1,
-  x = 792,
-  y = 1056,
+  x = 800,
+  y = 1048,
   name = "LD16",
   direction = 1,
   sprite = "entities/door_normal",
@@ -6560,8 +6560,8 @@ door{
 
 door{
   layer = 1,
-  x = 792,
-  y = 1008,
+  x = 800,
+  y = 1000,
   name = "LD16_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -6932,8 +6932,8 @@ enemy{
 
 door{
   layer = 1,
-  x = 1312,
-  y = 888,
+  x = 1304,
+  y = 896,
   name = "KD04",
   direction = 2,
   sprite = "entities/door_small_key",
@@ -6946,8 +6946,8 @@ door{
 
 door{
   layer = 1,
-  x = 1360,
-  y = 888,
+  x = 1352,
+  y = 896,
   name = "BD01_2",
   direction = 0,
   sprite = "entities/door_big_key",
@@ -6959,8 +6959,8 @@ door{
 
 door{
   layer = 1,
-  x = 1264,
-  y = 888,
+  x = 1256,
+  y = 896,
   name = "KD04_2",
   direction = 0,
   sprite = "entities/door_small_key",
@@ -7024,8 +7024,8 @@ sensor{
 
 door{
   layer = 1,
-  x = 1312,
-  y = 632,
+  x = 1304,
+  y = 640,
   name = "LD15_3",
   direction = 2,
   sprite = "entities/door_normal",
@@ -7033,8 +7033,8 @@ door{
 
 door{
   layer = 1,
-  x = 1264,
-  y = 632,
+  x = 1256,
+  y = 640,
   name = "LD15_4",
   direction = 0,
   sprite = "entities/door_normal",

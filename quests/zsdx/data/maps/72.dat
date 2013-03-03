@@ -2178,8 +2178,8 @@ enemy{
 
 door{
   layer = 0,
-  x = 112,
-  y = 344,
+  x = 120,
+  y = 336,
   name = "door",
   direction = 3,
   sprite = "entities/door_normal",

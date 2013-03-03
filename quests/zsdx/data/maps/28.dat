@@ -1043,8 +1043,8 @@ destination{
 
 door{
   layer = 0,
-  x = 336,
-  y = 104,
+  x = 328,
+  y = 112,
   name = "weak_wall",
   direction = 0,
   sprite = "entities/door_very_weak_wall",

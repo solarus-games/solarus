@@ -7597,8 +7597,8 @@ chest{
 
 door{
   layer = 1,
-  x = 880,
-  y = 176,
+  x = 872,
+  y = 184,
   name = "door",
   direction = 0,
   sprite = "entities/door_small_key",
@@ -7611,8 +7611,8 @@ door{
 
 door{
   layer = 1,
-  x = 928,
-  y = 176,
+  x = 920,
+  y = 184,
   name = "door_2",
   direction = 2,
   sprite = "entities/door_small_key",

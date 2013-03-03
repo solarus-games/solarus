@@ -2704,8 +2704,8 @@ stairs{
 
 door{
   layer = 0,
-  x = 912,
-  y = 816,
+  x = 920,
+  y = 808,
   name = "door",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -2718,8 +2718,8 @@ door{
 
 door{
   layer = 0,
-  x = 912,
-  y = 720,
+  x = 920,
+  y = 712,
   name = "door_2",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -2918,8 +2918,8 @@ crystal{
 
 door{
   layer = 0,
-  x = 624,
-  y = 872,
+  x = 616,
+  y = 880,
   name = "eye_door",
   direction = 0,
   sprite = "entities/door_normal",
@@ -2927,8 +2927,8 @@ door{
 
 door{
   layer = 0,
-  x = 720,
-  y = 872,
+  x = 712,
+  y = 880,
   name = "eye_door_2",
   direction = 2,
   sprite = "entities/door_normal",
@@ -7131,8 +7131,8 @@ enemy{
 
 door{
   layer = 1,
-  x = 168,
-  y = 408,
+  x = 176,
+  y = 400,
   name = "weak_door",
   direction = 1,
   sprite = "entities/door_very_weak_wall",
@@ -7703,8 +7703,8 @@ jumper{
 
 door{
   layer = 1,
-  x = 768,
-  y = 136,
+  x = 760,
+  y = 144,
   name = "door_3",
   direction = 0,
   sprite = "entities/door_small_key",
@@ -7717,8 +7717,8 @@ door{
 
 door{
   layer = 1,
-  x = 816,
-  y = 136,
+  x = 808,
+  y = 144,
   name = "door_4",
   direction = 2,
   sprite = "entities/door_small_key",

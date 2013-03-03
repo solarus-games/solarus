@@ -1560,8 +1560,8 @@ switch{
 
 door{
   layer = 1,
-  x = 304,
-  y = 120,
+  x = 296,
+  y = 128,
   name = "door",
   direction = 0,
   sprite = "entities/door_normal",
@@ -1569,8 +1569,8 @@ door{
 
 door{
   layer = 1,
-  x = 352,
-  y = 120,
+  x = 344,
+  y = 128,
   name = "door_2",
   direction = 2,
   sprite = "entities/door_normal",

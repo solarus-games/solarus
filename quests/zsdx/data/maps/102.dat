@@ -8180,8 +8180,8 @@ destination{
 
 door{
   layer = 1,
-  x = 816,
-  y = 80,
+  x = 808,
+  y = 88,
   name = "miniboss_door",
   direction = 0,
   sprite = "entities/door_normal",
@@ -8189,8 +8189,8 @@ door{
 
 door{
   layer = 1,
-  x = 864,
-  y = 80,
+  x = 856,
+  y = 88,
   name = "miniboss_door_2",
   direction = 2,
   sprite = "entities/door_normal",
@@ -8198,8 +8198,8 @@ door{
 
 door{
   layer = 1,
-  x = 1024,
-  y = 784,
+  x = 1032,
+  y = 776,
   name = "door_f_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8207,8 +8207,8 @@ door{
 
 door{
   layer = 1,
-  x = 1024,
-  y = 736,
+  x = 1032,
+  y = 728,
   name = "door_f",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8216,8 +8216,8 @@ door{
 
 door{
   layer = 1,
-  x = 712,
-  y = 784,
+  x = 720,
+  y = 776,
   name = "door_d_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8226,8 +8226,8 @@ door{
 
 door{
   layer = 1,
-  x = 712,
-  y = 736,
+  x = 720,
+  y = 728,
   name = "door_d",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8236,8 +8236,8 @@ door{
 
 door{
   layer = 1,
-  x = 56,
-  y = 576,
+  x = 64,
+  y = 568,
   name = "door_a",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8246,8 +8246,8 @@ door{
 
 door{
   layer = 1,
-  x = 56,
-  y = 528,
+  x = 64,
+  y = 520,
   name = "door_a_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8256,8 +8256,8 @@ door{
 
 door{
   layer = 1,
-  x = 248,
-  y = 528,
+  x = 256,
+  y = 520,
   name = "door_c_2",
   direction = 1,
   sprite = "entities/door_normal",
@@ -8265,8 +8265,8 @@ door{
 
 door{
   layer = 1,
-  x = 248,
-  y = 480,
+  x = 256,
+  y = 472,
   name = "door_c",
   direction = 3,
   sprite = "entities/door_normal",
@@ -8275,8 +8275,8 @@ door{
 
 door{
   layer = 1,
-  x = 144,
-  y = 312,
+  x = 136,
+  y = 320,
   name = "door_b_2",
   direction = 0,
   sprite = "entities/door_small_key",
@@ -8289,8 +8289,8 @@ door{
 
 door{
   layer = 1,
-  x = 192,
-  y = 312,
+  x = 184,
+  y = 320,
   name = "door_b",
   direction = 2,
   sprite = "entities/door_small_key",
@@ -9767,8 +9767,8 @@ sensor{
 
 door{
   layer = 1,
-  x = 328,
-  y = 528,
+  x = 336,
+  y = 520,
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_boss_key",
@@ -10603,8 +10603,8 @@ enemy{
 
 door{
   layer = 1,
-  x = 936,
-  y = 48,
+  x = 944,
+  y = 40,
   name = "miniboss_door_3",
   direction = 1,
   sprite = "entities/door_normal",

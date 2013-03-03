@@ -817,8 +817,8 @@ npc{
 
 door{
   layer = 1,
-  x = 160,
-  y = 104,
+  x = 152,
+  y = 112,
   name = "door",
   direction = 2,
   sprite = "entities/door_normal",
@@ -827,8 +827,8 @@ door{
 
 door{
   layer = 1,
-  x = 112,
-  y = 104,
+  x = 104,
+  y = 112,
   name = "door_2",
   direction = 0,
   sprite = "entities/door_normal",

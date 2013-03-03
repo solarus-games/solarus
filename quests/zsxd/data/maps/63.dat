@@ -8630,8 +8630,8 @@ teletransporter{
 
 door{
   layer = 1,
-  x = 848,
-  y = 32,
+  x = 856,
+  y = 24,
   name = "weak_wall_red_tunic",
   direction = 1,
   sprite = "entities/door_weak_wall",
@@ -8667,8 +8667,8 @@ wall{
 
 door{
   layer = 1,
-  x = 448,
-  y = 208,
+  x = 456,
+  y = 200,
   name = "door",
   direction = 3,
   sprite = "entities/door_small_key",
@@ -8681,8 +8681,8 @@ door{
 
 door{
   layer = 1,
-  x = 448,
-  y = 256,
+  x = 456,
+  y = 248,
   name = "door_2",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -8956,8 +8956,8 @@ wall{
 
 door{
   layer = 1,
-  x = 1056,
-  y = 32,
+  x = 1064,
+  y = 24,
   name = "ne_door",
   direction = 1,
   sprite = "entities/door_normal",

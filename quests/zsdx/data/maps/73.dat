@@ -862,8 +862,8 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 152,
-  y = 32,
+  x = 160,
+  y = 24,
   name = "door",
   direction = 1,
   sprite = "entities/door_weak_wall",

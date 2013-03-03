@@ -1219,8 +1219,8 @@ teletransporter{
 
 door{
   layer = 1,
-  x = 1120,
-  y = 544,
+  x = 1128,
+  y = 536,
   name = "KD05",
   direction = 1,
   sprite = "entities/door_small_key",
@@ -1233,8 +1233,8 @@ door{
 
 door{
   layer = 1,
-  x = 1120,
-  y = 800,
+  x = 1128,
+  y = 792,
   name = "LD06",
   direction = 1,
   sprite = "entities/door_normal",
@@ -1341,8 +1341,8 @@ enemy{
 
 door{
   layer = 1,
-  x = 1120,
-  y = 752,
+  x = 1128,
+  y = 744,
   name = "LD06_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -1414,8 +1414,8 @@ block{
 
 door{
   layer = 1,
-  x = 1120,
-  y = 496,
+  x = 1128,
+  y = 488,
   name = "KD05_2",
   direction = 3,
   sprite = "entities/door_small_key",

@@ -3102,8 +3102,8 @@ teletransporter{
 
 door{
   layer = 0,
-  x = 416,
-  y = 312,
+  x = 424,
+  y = 304,
   name = "door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -3111,8 +3111,8 @@ door{
 
 door{
   layer = 0,
-  x = 416,
-  y = 216,
+  x = 424,
+  y = 208,
   name = "door_2",
   direction = 3,
   sprite = "entities/door_normal",

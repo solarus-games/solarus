@@ -3870,8 +3870,8 @@ crystal{
 
 door{
   layer = 0,
-  x = 800,
-  y = 424,
+  x = 808,
+  y = 416,
   name = "door",
   direction = 1,
   sprite = "entities/door_boss_key",
@@ -3883,8 +3883,8 @@ door{
 
 door{
   layer = 0,
-  x = 800,
-  y = 328,
+  x = 808,
+  y = 320,
   name = "door_2",
   direction = 3,
   sprite = "entities/door_boss_key",
@@ -3896,8 +3896,8 @@ door{
 
 door{
   layer = 0,
-  x = 112,
-  y = 296,
+  x = 120,
+  y = 288,
   name = "door_3",
   direction = 1,
   sprite = "entities/door_big_key",
@@ -3909,8 +3909,8 @@ door{
 
 door{
   layer = 0,
-  x = 112,
-  y = 200,
+  x = 120,
+  y = 192,
   name = "door_4",
   direction = 3,
   sprite = "entities/door_big_key",
@@ -3990,8 +3990,8 @@ enemy{
 
 door{
   layer = 0,
-  x = 840,
-  y = 856,
+  x = 832,
+  y = 864,
   name = "se_door",
   direction = 0,
   sprite = "entities/door_normal",
@@ -3999,8 +3999,8 @@ door{
 
 door{
   layer = 0,
-  x = 936,
-  y = 856,
+  x = 928,
+  y = 864,
   name = "se_door_2",
   direction = 2,
   sprite = "entities/door_normal",
@@ -4041,8 +4041,8 @@ enemy{
 
 door{
   layer = 0,
-  x = 280,
-  y = 856,
+  x = 272,
+  y = 864,
   name = "door_5",
   direction = 0,
   sprite = "entities/door_small_key",
@@ -4055,8 +4055,8 @@ door{
 
 door{
   layer = 0,
-  x = 376,
-  y = 856,
+  x = 368,
+  y = 864,
   name = "door_6",
   direction = 2,
   sprite = "entities/door_small_key",
@@ -4113,8 +4113,8 @@ npc{
 
 door{
   layer = 0,
-  x = 280,
-  y = 560,
+  x = 272,
+  y = 568,
   name = "w_door",
   direction = 0,
   sprite = "entities/door_normal",
@@ -4123,8 +4123,8 @@ door{
 
 door{
   layer = 0,
-  x = 376,
-  y = 560,
+  x = 368,
+  y = 568,
   name = "w_door_2",
   direction = 2,
   sprite = "entities/door_normal",
@@ -4133,8 +4133,8 @@ door{
 
 door{
   layer = 0,
-  x = 1032,
-  y = 536,
+  x = 1040,
+  y = 528,
   name = "e_door",
   direction = 1,
   sprite = "entities/door_normal",
@@ -4142,8 +4142,8 @@ door{
 
 door{
   layer = 0,
-  x = 1032,
-  y = 440,
+  x = 1040,
+  y = 432,
   name = "e_door_2",
   direction = 3,
   sprite = "entities/door_normal",
@@ -4186,8 +4186,8 @@ destructible{
 
 door{
   layer = 0,
-  x = 456,
-  y = 488,
+  x = 448,
+  y = 496,
   name = "c_door",
   direction = 0,
   sprite = "entities/door_normal",
@@ -4196,8 +4196,8 @@ door{
 
 door{
   layer = 0,
-  x = 552,
-  y = 488,
+  x = 544,
+  y = 496,
   name = "c_door_2",
   direction = 2,
   sprite = "entities/door_normal",

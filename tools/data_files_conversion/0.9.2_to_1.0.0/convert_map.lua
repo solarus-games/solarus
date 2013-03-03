@@ -49,11 +49,11 @@ local function convert_door_subtype(subtype, entity)
     end
 
     if direction % 2 == 0 then
-      -- Horizontal door.
-      entity[index_x].value = entity[index_x].value + 8
-    else
-      -- Vertical door.
+      -- Door to the west or to the east.
       entity[index_y].value = entity[index_y].value + 8
+    else
+      -- Door to the north of to the south.
+      entity[index_x].value = entity[index_x].value + 8
     end
 
   end

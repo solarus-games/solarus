@@ -75,7 +75,7 @@ Called when the player has just bought this treasure.
 \remark This event is called right after the more general events
   \ref lua_api_item_on_obtaining "item:on_obtaining()"
   and
-  \ref lua_api_hero_on_obtaining_treasure "hero:on_obtaining_treasure()".
+  \ref lua_api_map_on_obtaining_treasure "map:on_obtaining_treasure()".
   Those two events are called no matter how the treasure is being obtained:
   from a \ref lua_api_chest "chest",
   from a \ref lua_api_pickable "pickable treasure",

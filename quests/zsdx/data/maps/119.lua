@@ -141,22 +141,19 @@ end
 function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
-    hero:start_victory()
+    hero:start_victory(function()
+      map:get_game():set_dungeon_finished(10)
+      hero:teleport(119, "from_dungeon_10")
+      map:set_entities_enabled("enemy", true) -- enable simple enemies back
+
+      sol.timer.start(1000, function()
+        if map:get_game():get_value("b905") then
+          sol.audio.play_music("dark_mountain")
+        else
+          sol.audio.play_music("overworld")
+        end
+      end)
+    end)
   end
-end
-
-function hero:on_victory_finished()
-
-  map:get_game():set_dungeon_finished(10)
-  hero:teleport(119, "from_dungeon_10")
-  map:set_entities_enabled("enemy", true) -- enable simple enemies back
-
-  sol.timer.start(1000, function()
-    if map:get_game():get_value("b905") then
-      sol.audio.play_music("dark_mountain")
-    else
-      sol.audio.play_music("overworld")
-    end
-  end)
 end
 

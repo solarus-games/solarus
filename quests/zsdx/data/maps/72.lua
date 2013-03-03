@@ -26,16 +26,13 @@ end
 local function enemy_dead(enemy)
 
   if not map:has_entities("enemy") then
-    hero:start_victory()
+    hero:start_victory(function()
+      map:get_game():set_value("b156", true)
+      hero:teleport(3, "out_smith_cave")
+    end)
   end
 end
 for _, enemy in ipairs(map.get_entities("enemy")) do
   enemy.on_dead = enemy_dead
-end
-
-function hero:on_victory_finished()
-
-  map:get_game():set_value("b156", true)
-  hero:teleport(3, "out_smith_cave")
 end
 

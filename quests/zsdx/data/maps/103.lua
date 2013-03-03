@@ -268,16 +268,14 @@ function hero:on_obtained_treasure(item_name, variant, savegame_variable)
       map:move_camera(544, 712, 100, function()
 	map:set_dialog_variable("dungeon_7.sahasrahla", map:get_game():get_player_name())
 	map:start_dialog("dungeon_7.sahasrahla", function()
-	  hero:start_victory()
+	  hero:start_victory(function()
+            map:get_game():set_dungeon_finished(7)
+            hero:teleport(8, "from_dungeon_7")
+          end)
 	end)
       end)
     end)
   end
-end
-
-function hero:on_victory_finished()
-  map:get_game():set_dungeon_finished(7)
-  hero:teleport(8, "from_dungeon_7")
 end
 
 if boss ~= nil then

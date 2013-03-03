@@ -26,13 +26,10 @@ end
 function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "sword" then
-    hero:start_victory()
+    hero:start_victory(function()
+      hero:unfreeze()
+      sol.audio.play_music("light_world_dungeon")
+    end)
   end
-end
-
-function hero:on_victory_finished()
-
-  hero:unfreeze()
-  sol.audio.play_music("light_world_dungeon")
 end
 

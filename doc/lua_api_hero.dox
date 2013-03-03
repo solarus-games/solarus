@@ -170,12 +170,15 @@ Gives a treasure to the player. The hero will brandish the treasure.
   No value means that the state of the treasure is not saved.
   It is allowed (though strange) to give the same saved treasure twice.
 
-\subsection lua_api_hero_start_victory hero:start_victory()
+\subsection lua_api_hero_start_victory hero:start_victory([callback])
 
 Makes the hero brandish his sword for a victory.
-When the animation finishes, the event
-\ref lua_api_hero_on_victory_finished "hero:on_victory_finished()"
-is called.
+- \c callback (function, optional): A function to call when the victory
+  sequence finishes. If you don't define it, the default behavior is to
+  restore control to the player.
+  If you define it, you can do other things, like teletransporting the hero
+  somewhere else. To restore the control to the player, call
+  \ref lua_api_hero_unfreeze "hero:unfreeze()".
 
 \subsection lua_api_hero_start_boomerang hero:start_boomerang(max_distance, speed, tunic_preparing_animation, sprite_name)
 
@@ -263,11 +266,6 @@ dialog (if any) finishes.
   value that stores in the \ref lua_api_game "savegame"
   whether this treasure is found,
   or \c nil if this treasure is not saved.
-
-\subsection lua_api_hero_on_victory_finished hero:on_victory_finished()
-
-Called when a victory sequence started with \ref lua_api_hero_start_victory
-"hero:start_victory()" is finished.
 
 */
 

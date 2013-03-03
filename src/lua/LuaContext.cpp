@@ -1865,16 +1865,6 @@ void LuaContext::on_obtained_treasure(const Treasure& treasure) {
 }
 
 /**
- * @brief Calls the on_victory_finished() method of the object on top of the stack.
- */
-void LuaContext::on_victory_finished() {
-
-  if (find_method("on_victory_finished")) {
-    call_function(1, 0, "on_victory_finished");
-  }
-}
-
-/**
  * @brief Calls the on_activated() method of the object on top of the stack.
  */
 void LuaContext::on_activated() {

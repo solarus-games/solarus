@@ -270,7 +270,6 @@ class LuaContext {
     void entity_on_removed(MapEntity& entity);
     void hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure);  // TODO replace by chest:on_obtaining
     void hero_on_obtained_treasure(Hero& hero, const Treasure& treasure);  // TODO replace by chest:on_obtained
-    void hero_on_victory_finished(Hero& hero);  // TODO replace by a callback parameter to hero:start_victory
     // TODO add destination_on_activated
     void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now)
     void npc_on_interaction(NPC& npc);
@@ -908,7 +907,6 @@ class LuaContext {
     void on_camera_back();
     void on_obtaining_treasure(const Treasure& treasure);
     void on_obtained_treasure(const Treasure& treasure);
-    void on_victory_finished();
     void on_activated();
     void on_activated_repeat();
     void on_inactivated();

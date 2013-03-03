@@ -308,7 +308,7 @@ class Hero: public MapEntity {
     void start_jumping(int direction8, int distance, bool ignore_obstacles,
         bool with_sound, uint32_t movement_delay = 0);
     void start_freezed();
-    void start_victory();
+    void start_victory(int callback_ref);
     void start_lifting(CarriedItem* item_to_lift);
     void start_running();
     void start_grabbing();

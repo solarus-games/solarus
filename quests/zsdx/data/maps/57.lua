@@ -100,14 +100,11 @@ function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 
     end)
   elseif item_name == "quiver" then
-    hero:start_victory()
+    hero:start_victory(function()
+      map:get_game():set_dungeon_finished(6)
+      map:get_game():set_value("b155", false) -- reopen the rupee house
+      hero:teleport(7, "from_dungeon_6")
+    end)
   end
-end
-
-
-function hero:on_victory_finished()
-  map:get_game():set_dungeon_finished(6)
-  map:get_game():set_value("b155", false) -- reopen the rupee house
-  hero:teleport(7, "from_dungeon_6")
 end
 

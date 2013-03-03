@@ -26,12 +26,13 @@ class Hero::VictoryState: public Hero::State {
 
   private:
     
-    uint32_t end_victory_date;         /**< date when the victory animation stops */
-    bool finished;                     /**< indicates that the victory sequence is finished */
+    uint32_t end_victory_date;         /**< Date when the victory animation stops. */
+    bool finished;                     /**< Indicates that the victory sequence is finished. */
+    int callback_ref;                  /**< Lua ref to a function to call when the sequence finishes. */
 
   public:
 
-    VictoryState(Hero& hero);
+    VictoryState(Hero& hero, int callback_ref);
     ~VictoryState();
 
     void start(State* previous_state);

@@ -1026,8 +1026,14 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
 int LuaContext::hero_api_start_victory(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
+  int callback_ref = LUA_REFNIL;
+  if (lua_gettop(l) >= 2) {
+    luaL_checktype(l, 2, LUA_TFUNCTION);
+    lua_settop(l, 2);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
 
-  hero.start_victory();
+  hero.start_victory(callback_ref);
 
   return 0;
 }
@@ -2054,17 +2060,6 @@ void LuaContext::hero_on_obtained_treasure(Hero& hero, const Treasure& treasure)
 
   push_hero(l, hero);
   on_obtained_treasure(treasure);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_victory_finished() method of a Lua hero.
- * @param hero The hero.
- */
-void LuaContext::hero_on_victory_finished(Hero& hero) {
-
-  push_hero(l, hero);
-  on_victory_finished();
   lua_pop(l, 1);
 }
 

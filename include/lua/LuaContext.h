@@ -271,7 +271,7 @@ class LuaContext {
     // TODO entity_on_created
     void entity_on_removed(MapEntity& entity);
     // TODO add destination_on_activated
-    void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now)
+    void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now) and add a callback to entity:start_movement()
     void npc_on_interaction(NPC& npc);
     bool npc_on_interaction_item(NPC& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(NPC& npc);

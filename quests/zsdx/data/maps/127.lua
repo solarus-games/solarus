@@ -16,16 +16,16 @@ function sword_chest:on_empty()
   hero:start_treasure("sword", variant)
 end
 
-function map:on_obtaining_treasure(item_name, variant, savegame_variable)
+function map:on_obtaining_treasure(item, variant, savegame_variable)
 
-  if item_name == "sword" then
+  if item:get_name() == "sword" then
     sol.audio.play_music("excalibur")
   end
 end
 
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item, variant, savegame_variable)
 
-  if item_name == "sword" then
+  if item:get_name() == "sword" then
     hero:start_victory(function()
       hero:unfreeze()
       sol.audio.play_music("light_world_dungeon")

@@ -170,9 +170,9 @@ function weak_wall_b:on_open()
   sol.audio.play_sound("secret")
 end
 
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item, variant, savegame_variable)
 
-  if item_name == "boss_key" then
+  if item:get_name() == "boss_key" then
     -- the hero was unfreezed by the chest, so cancel a possible previous guard
     -- (putting chests in the area of guards is probably not a good idea)
     map:cancel_prison()

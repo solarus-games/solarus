@@ -131,16 +131,16 @@ if boss ~= nil then
   end
 end
 
-function map:on_obtaining_treasure(item_name, variant, savegame_variable)
+function map:on_obtaining_treasure(item, variant, savegame_variable)
 
-  if item_name == "sword" then
+  if item:get_name() == "sword" then
     sol.audio.play_music("excalibur")
   end
 end
 
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item, variant, savegame_variable)
 
-  if item_name == "sword" then
+  if item:get_name() == "sword" then
     hero:start_victory(function()
       map:get_game():set_dungeon_finished(10)
       hero:teleport(119, "from_dungeon_10")

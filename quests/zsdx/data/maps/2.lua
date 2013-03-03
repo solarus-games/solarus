@@ -241,9 +241,9 @@ function game_3_question_dialog_finished(answer)
   end
 end
 
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item, variant, savegame_variable)
   -- stop game 3 when the player finds the piece of heart
-  if item_name == "piece_of_heart" then
+  if item:get_name() == "piece_of_heart" then
     game_3_final_barrier:set_enabled(false)
     sol.audio.play_sound("secret")
     playing_game_3 = false

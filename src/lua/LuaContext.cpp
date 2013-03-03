@@ -1841,10 +1841,14 @@ void LuaContext::on_camera_back() {
 void LuaContext::on_obtaining_treasure(const Treasure& treasure) {
 
   if (find_method("on_obtaining_treasure")) {
-    push_string(l, treasure.get_item_name());
+    push_item(l, treasure.get_item());
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushstring(l, treasure.get_savegame_variable().c_str());
-    // FIXME push nil if the treasure is not saved
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    }
     call_function(4, 0, "on_obtaining_treasure");
   }
 }
@@ -1856,10 +1860,14 @@ void LuaContext::on_obtaining_treasure(const Treasure& treasure) {
 void LuaContext::on_obtained_treasure(const Treasure& treasure) {
 
   if (find_method("on_obtained_treasure")) {
-    push_string(l, treasure.get_item_name());
+    push_item(l, treasure.get_item());
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushstring(l, treasure.get_savegame_variable().c_str());
-    // FIXME push nil if the treasure is not saved
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    }
     call_function(4, 0, "on_obtained_treasure");
   }
 }
@@ -2132,7 +2140,12 @@ void LuaContext::on_obtaining(const Treasure& treasure) {
 
   if (find_method("on_obtaining")) {
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    }
     call_function(3, 0, "on_obtaining");
   }
 }
@@ -2145,7 +2158,12 @@ void LuaContext::on_obtained(const Treasure& treasure) {
 
   if (find_method("on_obtained")) {
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    }
     call_function(3, 0, "on_obtained");
   }
 }

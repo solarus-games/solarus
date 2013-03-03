@@ -1395,12 +1395,11 @@ After a camera sequence (see \ref lua_api_map_move_camera "map:move_camera()"),
 this event is triggered when the camera gets back to the \ref lua_api_hero
 "hero".
 
-\subsection lua_api_map_on_obtaining_treasure map:on_obtaining_treasure(treasure_name, treasure_variant, treasure_savegame_variable)
+\subsection lua_api_map_on_obtaining_treasure map:on_obtaining_treasure(treasure_item, treasure_variant, treasure_savegame_variable)
 
 Called when the \ref lua_api_hero "hero" is obtaining a treasure on this map,
 before the treasure's dialog (if any).
-- \c treasure_item (string): Kind of treasure being obtained
-  (the name of an \ref lua_api_item "equipment item").
+- \c treasure_item (\ref lua_api_item "item"): Equipment item being obtained.
 - \c treasure_variant (number): Variant of the treasure
   (because some \ref lua_api_item "equipment items"
   may have several variants).
@@ -1409,12 +1408,11 @@ before the treasure's dialog (if any).
   whether this treasure is found,
   or \c nil if this treasure is not saved.
 
-\subsection lua_api_map_on_obtained_treasure map:on_obtained_treasure(treasure_name, treasure_variant, treasure_savegame_variable)
+\subsection lua_api_map_on_obtained_treasure map:on_obtained_treasure(treasure_item, treasure_variant, treasure_savegame_variable)
 
 Called after the \ref lua_api_hero "hero" has obtained a treasure on this map,
 when the treasure's dialog (if any) finishes.
-- \c treasure_item (string): Kind of treasure obtained
-  (the name of an \ref lua_api_item "equipment item").
+- \c treasure_item (\ref lua_api_item "item"): Equipment item being obtained.
 - \c treasure_variant (number): Variant of the treasure
   (because some \ref lua_api_item "equipment items"
   may have several variants).

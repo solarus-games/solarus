@@ -21,9 +21,9 @@ red_potion.on_buying = potion_buying
 green_potion.on_buying = potion_buying
 blue_potion.on_buying = potion_buying
 
-function map:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item, variant, savegame_variable)
 
-  if item_name:find("_potion$")
+  if item:get_name():find("_potion$")
       and not map:get_game():get_value("b911") then
     -- tell the player we juste gave him the bottle 2
     map:get_game():set_value("b911", true)

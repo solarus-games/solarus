@@ -22,7 +22,13 @@ local function has_obtained_bow()
 end
 
 local function give_world_map()
-  hero:start_treasure("world_map", 1, "b33")
+  hero:start_treasure("world_map", 1, "b33", function()
+    map:start_dialog("sahasrahla_house.quest_accepted", function()
+      if not door:is_open() then
+        map:open_doors("door")
+      end
+    end)
+  end)
 end
 
 function map:on_started(destination)
@@ -68,19 +74,8 @@ function sahasrahla:on_interaction()
     -- the player should now go downstairs to obtain the bow
     map:start_dialog("sahasrahla_house.dungeon_1_finished")
   else
-    -- Sahsrahla has nothing special to say
+    -- Sahsrahla has nothing special to sayhero
     map:start_dialog("sahasrahla_house.default")
-  end
-end
-
--- Function called when the player has just obtained a treasure
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
-  if item_name == "world_map" and variant == 1 then
-    map:start_dialog("sahasrahla_house.quest_accepted", function()
-      if not door:is_open() then
-        map:open_doors("door")
-      end
-      end)
   end
 end
 

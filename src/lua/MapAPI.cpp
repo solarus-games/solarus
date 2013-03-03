@@ -1783,3 +1783,27 @@ void LuaContext::map_on_camera_back(Map& map) {
   lua_pop(l, 1);
 }
 
+/**
+ * @brief Calls the on_obtaining_treasure() method of a Lua map.
+ * @param map A map.
+ * @param treasure A treasure the hero is about to obtain on that map.
+ */
+void LuaContext::map_on_obtaining_treasure(Map& map, const Treasure& treasure) {
+
+  push_map(l, map);
+  on_obtaining_treasure(treasure);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_obtained_treasure() method of a Lua map.
+ * @param map A map.
+ * @param treasure The treasure just obtained.
+ */
+void LuaContext::map_on_obtained_treasure(Map& map, const Treasure& treasure) {
+
+  push_map(l, map);
+  on_obtained_treasure(treasure);
+  lua_pop(l, 1);
+}
+

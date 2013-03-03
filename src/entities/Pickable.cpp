@@ -332,7 +332,7 @@ void Pickable::give_item_to_player() {
 
   // give the item
   if (item.get_brandish_when_picked()) {
-    get_hero().start_treasure(treasure);
+    get_hero().start_treasure(treasure, LUA_REFNIL);
   }
   else {
     treasure.give_to_player();

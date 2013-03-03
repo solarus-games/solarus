@@ -153,7 +153,7 @@ Makes the hero jump towards the specified direction.
   traverse obstacles during this movement (default \c false).
   Make sure the movement does not end inside an obstacle.
 
-\subsection lua_api_hero_start_treasure hero:start_treasure(treasure_item, [treasure_variant, [treasure_savegame_variable]])
+\subsection lua_api_hero_start_treasure hero:start_treasure(treasure_item, [treasure_variant, [treasure_savegame_variable, [callback]]])
 
 Gives a treasure to the player. The hero will brandish the treasure.
 - \c treasure_name (string, optional): Kind of treasure to give
@@ -169,6 +169,8 @@ Gives a treasure to the player. The hero will brandish the treasure.
   whether this treasure is found.
   No value means that the state of the treasure is not saved.
   It is allowed (though strange) to give the same saved treasure twice.
+- \c callback (function, optional): A function to call when the treasure's
+  dialog finishes.
 
 \subsection lua_api_hero_start_victory hero:start_victory([callback])
 
@@ -237,35 +239,7 @@ See \ref lua_api_entity_events to know these events.
 
 \section lua_api_hero_events Events of the type hero
 
-The following events are specific to the hero.
-
-\subsection lua_api_hero_on_obtaining_treasure hero:on_obtaining_treasure(treasure_name, treasure_variant, treasure_savegame_variable)
-
-Called when the hero is obtaining a treasure, before the treasure's
-dialog (if any).
-- \c treasure_item (string): Kind of treasure being obtained
-  (the name of an \ref lua_api_item "equipment item").
-- \c treasure_variant (number): Variant of the treasure
-  (because some \ref lua_api_item "equipment items"
-  may have several variants).
-- \c treasure_savegame_variable (string): Name of the boolean
-  value that stores in the \ref lua_api_game "savegame"
-  whether this treasure is found,
-  or \c nil if this treasure is not saved.
-
-\subsection lua_api_hero_on_obtained_treasure hero:on_obtained_treasure(treasure_name, treasure_variant, treasure_savegame_variable)
-
-Called after the hero has obtained a treasure, when the treasure's
-dialog (if any) finishes.
-- \c treasure_item (string): Kind of treasure obtained
-  (the name of an \ref lua_api_item "equipment item").
-- \c treasure_variant (number): Variant of the treasure
-  (because some \ref lua_api_item "equipment items"
-  may have several variants).
-- \c treasure_savegame_variable (string): Name of the boolean
-  value that stores in the \ref lua_api_game "savegame"
-  whether this treasure is found,
-  or \c nil if this treasure is not saved.
+None.
 
 */
 

@@ -241,7 +241,7 @@ function game_3_question_dialog_finished(answer)
   end
 end
 
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
   -- stop game 3 when the player finds the piece of heart
   if item_name == "piece_of_heart" then
     game_3_final_barrier:set_enabled(false)

@@ -24,28 +24,16 @@ function smith:on_interaction()
         else
           -- enough money: buy the sword
           map:get_game():remove_money(sword_price)
-          hero:start_treasure("sword", 1, "b30")
+          sol.audio.play_sound("treasure")
+          hero:start_treasure("sword", 1, "b30" function()
+            map:start_dialog("smith_cave.thank_you")
+          end)
         end
       end
     end)
   else
     -- the player already has the sword
     map:start_dialog("smith_cave.with_sword")
-  end
-end
-
--- Function called when the player is obtaining a treasure.
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
-
-  if item_name == "sword" and variant == 1 then
-    sol.audio.play_sound("treasure")
-  end
-end
-
--- Function called when the player has just obtained a treasure.
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
-  if savegame_variable == "b30" and variant == 1 then
-    map:start_dialog("smith_cave.thank_you")
   end
 end
 

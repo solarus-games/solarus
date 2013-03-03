@@ -27,15 +27,17 @@ class Hero::TreasureState: public Hero::State {
 
   private:
 
-    Treasure treasure;		/**< the treasure to give to the hero */
+    Treasure treasure;       /**< the treasure to give to the hero */
+    int callback_ref;        /**< Lua ref of a function to call when the
+                              * treasure's dialog finishes. */
 
   public:
 
-    TreasureState(Hero &hero, const Treasure &treasure);
+    TreasureState(Hero& hero, const Treasure& treasure, int callback_ref);
     ~TreasureState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     void draw_on_map();
     CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);

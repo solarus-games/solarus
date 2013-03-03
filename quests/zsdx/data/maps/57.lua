@@ -69,7 +69,7 @@ function start_boss_sensor:on_activated()
   end
 end
 
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.audio.play_music("victory")
@@ -92,18 +92,15 @@ function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 	      if map:get_game():get_value("b939") then
 		variant = 3
 	      end
-	      hero:start_treasure("quiver", variant, "b941")
+	      hero:start_treasure("quiver", variant, "b941", function()
+                map:get_game():set_dungeon_finished(6)
+                map:get_game():set_value("b155", false) -- reopen the rupee house
+                hero:teleport(7, "from_dungeon_6")
+              end)
 	    end)
 	  end)
 	end)
       end)
-
-    end)
-  elseif item_name == "quiver" then
-    hero:start_victory(function()
-      map:get_game():set_dungeon_finished(6)
-      map:get_game():set_value("b155", false) -- reopen the rupee house
-      hero:teleport(7, "from_dungeon_6")
     end)
   end
 end

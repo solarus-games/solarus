@@ -255,7 +255,7 @@ function w_room_sensor:on_activated()
 end
 w_room_sensor_2.on_activated = w_room_sensor.on_activated
 
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.audio.play_music("victory")

@@ -101,7 +101,7 @@ function map:on_camera_back()
   timer:set_with_sound(true)
 end
 
-function hero:on_obtaining_treasure(item_name, variant, savegame_variable)
+function map:on_obtaining_treasure(item_name, variant, savegame_variable)
 
   if savegame_variable == "b706" then
     if timer ~= nil then

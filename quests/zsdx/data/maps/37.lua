@@ -22,7 +22,10 @@ end
 
 local function give_golden_bars()
   map:start_dialog("billy_cave.give_golden_bars", function()
-    hero:start_treasure("level_4_way", 3, "b134")
+    hero:start_treasure("level_4_way", 3, "b134", function()
+      -- got the edelweiss: make Billy leave
+      billy_leave()
+    end)
   end)
 end
 
@@ -96,14 +99,6 @@ function billy:on_interaction()
         end)
       end
     end)
-  end
-end
-
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
-
-  if item_name == "level_4_way" and variant == 3 then
-    -- got the edelweiss: make Billy leave
-    billy_leave()
   end
 end
 

@@ -263,13 +263,13 @@ class LuaContext {
     void map_on_opening_transition_finished(Map& map,
         Destination* destination);
     void map_on_camera_back(Map& map);
+    void map_on_obtaining_treasure(Map& map, const Treasure& treasure);
+    void map_on_obtained_treasure(Map& map, const Treasure& treasure);
     bool map_on_input(Map& map, InputEvent& event);
 
     // Map entity events.
     // TODO entity_on_created
     void entity_on_removed(MapEntity& entity);
-    void hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure);  // TODO replace by chest:on_obtaining
-    void hero_on_obtained_treasure(Hero& hero, const Treasure& treasure);  // TODO replace by chest:on_obtained
     // TODO add destination_on_activated
     void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now)
     void npc_on_interaction(NPC& npc);

@@ -202,7 +202,7 @@ void Chest::update() {
       if (!treasure.is_empty()) {
         // give a treasure to the player
 
-        get_hero().start_treasure(treasure);
+        get_hero().start_treasure(treasure, LUA_REFNIL);
         treasure_given = true;
       }
       else { // the chest is empty

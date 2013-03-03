@@ -98,7 +98,7 @@ function start_boss_sensor:on_activated()
   end
 end
 
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     map:get_game():set_dungeon_finished(5)

@@ -1012,8 +1012,15 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
         savegame_variable << "'").c_str());
   }
 
+  int callback_ref = LUA_REFNIL;
+  if (lua_gettop(l) >= 4) {
+    luaL_checktype(l, 4, LUA_TFUNCTION);
+    lua_settop(l, 4);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
+
   hero.start_treasure(
-      Treasure(hero.get_game(), item_name, variant, savegame_variable));
+      Treasure(hero.get_game(), item_name, variant, savegame_variable), callback_ref);
 
   return 0;
 }
@@ -2036,30 +2043,6 @@ void LuaContext::entity_on_removed(MapEntity& entity) {
   push_entity(l, entity);
   on_removed();
   remove_timers(-1);  // Stop timers associated to this entity.
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_obtaining_treasure() method of a Lua hero.
- * @param hero The hero.
- * @param treasure A treasure the hero is about to obtain.
- */
-void LuaContext::hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure) {
-
-  push_hero(l, hero);
-  on_obtaining_treasure(treasure);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_obtained_treasure() method of a Lua hero.
- * @param hero The hero.
- * @param treasure The treasure just obtained.
- */
-void LuaContext::hero_on_obtained_treasure(Hero& hero, const Treasure& treasure) {
-
-  push_hero(l, hero);
-  on_obtained_treasure(treasure);
   lua_pop(l, 1);
 }
 

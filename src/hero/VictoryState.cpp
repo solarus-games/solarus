@@ -83,7 +83,7 @@ void Hero::VictoryState::update() {
   if (!finished && System::now() >= end_victory_date) {
     finished = true;
     if (callback_ref != LUA_REFNIL) {
-      // The eehavior defined by Lua.
+      // The behavior is defined by Lua.
       get_lua_context().do_callback(callback_ref);
       callback_ref = LUA_REFNIL;
     }

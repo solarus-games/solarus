@@ -27,11 +27,16 @@
 
 /**
  * @brief Constructor.
- * @param hero the hero controlled by this state
- * @param treasure the treasure to give to the hero
+ * @param hero The hero controlled by this state.
+ * @param treasure The treasure to give to the hero.
+ * @param callback_ref Lua ref to a function to call when the
+ * treasure's dialog finishes (possibly LUA_REFNIL).
  */
-Hero::TreasureState::TreasureState(Hero &hero, const Treasure &treasure):
-  State(hero), treasure(treasure) {
+Hero::TreasureState::TreasureState(Hero& hero, const Treasure& treasure,
+    int callback_ref):
+  State(hero),
+  treasure(treasure),
+  callback_ref(callback_ref) {
 
 }
 
@@ -66,7 +71,8 @@ void Hero::TreasureState::start(State *previous_state) {
   // show a message
   std::ostringstream oss;
   oss << "_treasure." << treasure.get_item_name() << "." << treasure.get_variant();
-  get_dialog_box().start_dialog(oss.str());
+  get_dialog_box().start_dialog(oss.str(), callback_ref);
+  callback_ref = LUA_REFNIL;
 }
 
 /**
@@ -79,6 +85,7 @@ void Hero::TreasureState::stop(State *next_state) {
 
   // restore the sprite's direction
   get_sprites().restore_animation_direction();
+  get_lua_context().cancel_callback(callback_ref);
 }
 
 /**
@@ -93,7 +100,7 @@ void Hero::TreasureState::update() {
     // the treasure's dialog is over: if the treasure was a tunic,
     // a sword or a shield, we have to reload the hero's sprites now
     // FIXME do this in scripts (item names are no longer hardcoded) and also do it when giving the ability without treasure
-    const std::string &item_name = treasure.get_item_name();
+    const std::string& item_name = treasure.get_item_name();
     if (item_name == "tunic" || item_name == "sword" || item_name == "shield") {
       hero.rebuild_equipment();
     }
@@ -101,7 +108,7 @@ void Hero::TreasureState::update() {
     // Notify the Lua item and the Lua map.
     LuaContext& lua_context = get_lua_context();
     lua_context.item_on_obtained(get_equipment().get_item(item_name), treasure);
-    lua_context.hero_on_obtained_treasure(hero, treasure);
+    lua_context.map_on_obtained_treasure(get_map(), treasure);
 
     if (is_current_state()) { // because the script may have changed the state
       hero.set_state(new FreeState(hero));

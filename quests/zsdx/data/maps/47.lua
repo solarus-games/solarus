@@ -205,7 +205,7 @@ for _, enemy in ipairs(map:get_entities("room_big_enemy")) do
   end
 end
 
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.audio.play_music("victory")

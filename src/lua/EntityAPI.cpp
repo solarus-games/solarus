@@ -335,7 +335,13 @@ int LuaContext::entity_api_get_name(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
 
-  push_string(l, entity.get_name());
+  const std::string& name = entity.get_name();
+  if (name.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, name);
+  }
   return 1;
 }
 

@@ -784,7 +784,8 @@ const Rectangle MapEntity::get_center_point() {
 
 /**
  * @brief Returns the name of the entity (if any).
- * @return the name of the entity, or an empty string if the entity is not identifiable
+ * @return the name of the entity, or an empty string if
+ * the entity has no name.
  */
 const std::string& MapEntity::get_name() const {
   return name;

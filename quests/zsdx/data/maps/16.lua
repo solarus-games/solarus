@@ -34,17 +34,17 @@ function smith:on_interaction()
   end
 end
 
--- Function called when the player is obtaining the sword.
-function hero:on_treasure_obtaining(item_name, variant, savegame_variable)
+-- Function called when the player is obtaining a treasure.
+function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 
-  if item_name == "sword" then
+  if item_name == "sword" and variant == 1 then
     sol.audio.play_sound("treasure")
   end
 end
 
--- Function called when the player has just obtained the sword.
-function hero:on_treasure_obtained(item_name, variant, savegame_variable)
-  if savegame_variable == "b30" then
+-- Function called when the player has just obtained a treasure.
+function hero:on_obtained_treasure(item_name, variant, savegame_variable)
+  if savegame_variable == "b30" and variant == 1 then
     map:start_dialog("smith_cave.thank_you")
   end
 end

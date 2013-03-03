@@ -24,7 +24,7 @@ function map:on_started(destination)
   end
 end
 
-function hero:on_treasure_obtained(item_name, variant, savegame_variable)
+function hero:on_obtained_treasure(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.timer.start(9000, function()

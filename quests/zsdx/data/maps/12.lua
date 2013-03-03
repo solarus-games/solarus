@@ -74,7 +74,13 @@ function sahasrahla:on_interaction()
 end
 
 -- Function called when the player has just obtained a treasure
-function hero:on_treasure_obtained(item_name, variant, savegame_variable)
-   map:start_dialog("sahasrahla_house.quest_accepted")
+function hero:on_obtained_treasure(item_name, variant, savegame_variable)
+  if item_name == "world_map" and variant == 1 then
+    map:start_dialog("sahasrahla_house.quest_accepted", function()
+      if not door:is_open() then
+        map:open_doors("door")
+      end
+      end)
+  end
 end
 

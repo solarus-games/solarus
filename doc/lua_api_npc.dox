@@ -72,27 +72,6 @@ See \ref lua_api_entity_methods to know these methods.
 
 The following methods are specific to non-playing characters.
 
-\subsection lua_api_npc_set_position npc:set_position(x, y, [layer]):
-
-Changes the position of this %NPC on the map (coordinates and layer).
-The \ref lua_api_entity_get_origin "origin point" of the
-%NPC gets placed at these coordinates,
-relative to the map's top-left corner.
-- \c x (number): X coordinate to set.
-- \c y (number): Y coordinate to set.
-- \c layer (number, optional): Layer to set
-  (\c 0: low layer, \c 1: intermediate layer, \c 2: high layer).
-  By default, the layer is unchanged.
-
-\subsection lua_api_npc_start_movement npc:start_movement(movement)
-
-Starts a movement on this %NPC.
-- \c movement (\ref lua_api_movement "movememt"): The movement to set.
-
-\subsection lua_api_npc_stop_movement npc:stop_movement()
-
-Stops the movement (if any) of this %NPC.
-
 \subsection lua_api_npc_get_sprite npc:get_sprite()
 
 Returns the sprite of this %NPC.

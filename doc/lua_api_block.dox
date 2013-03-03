@@ -56,18 +56,6 @@ its counter of moves.
 It means that the hero will be able to move again
 a block that could be moved only once and that already moved.
 
-\subsection lua_api_block_set_position block:set_position(x, y, [layer]):
-
-Changes the position of this block on the map (coordinates and layer).
-The \ref lua_api_entity_get_origin "origin point" of the
-block gets placed at these coordinates,
-relative to the map's top-left corner.
-- \c x (number): X coordinate to set.
-- \c y (number): Y coordinate to set.
-- \c layer (number, optional): Layer to set
-  (\c 0: low layer, \c 1: intermediate layer, \c 2: high layer).
-  By default, the layer is unchanged.
-
 \section lua_api_block_inherited_events Events inherited from map entity
 
 Events are callback methods automatically called by the engine if you define

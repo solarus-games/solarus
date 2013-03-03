@@ -41,40 +41,6 @@ Returns the sprite of this pickable treasure.
 - Return value (\ref lua_api_sprite "sprite"): The sprite of this pickable
   treasure.
 
-\subsection lua_api_pickable_set_position pickable:set_position(x, y, [layer]):
-
-Changes the position of this pickable treasure
-on the map (coordinates and layer).
-The \ref lua_api_entity_get_origin "origin point" of the
-pickable treasure gets placed at these coordinates,
-relative to the map's top-left corner.
-- \c x (number): X coordinate to set.
-- \c y (number): Y coordinate to set.
-- \c layer (number, optional): Layer to set
-  (\c 0: low layer, \c 1: intermediate layer, \c 2: high layer).
-  By default, the layer is unchanged.
-
-\subsection lua_api_pickable_get_movement pickable:get_movement()
-
-Returns the movement (if any) of this pickable treasure.
-- Return value (\ref lua_api_movement "movement"): The movement of this
-  pickable treasure, or \c nil if no movement is set.
-
-\subsection lua_api_pickable_start_movement pickable:start_movement(movement)
-
-Starts a movement on this pickable treasure.
-- \c movement (\ref lua_api_movement "movement"): The movement to set.
-
-\remark By default, when a pickable treasure is created dynamically,
-the engine starts a
-\ref lua_api_movement "movement" that makes it
-bounce of a few pixels over the ground during a fraction of second
-so that it looks like the pickable treasure is falling.
-
-\subsection lua_api_pickable_stop_movement pickable:stop_movement()
-
-Stops the movement (if any) of this pickable treasure.
-
 \subsection lua_api_pickable_has_layer_independent_collisions pickable:has_layer_independent_collisions()
 
 Returns whether this pickable treasure can detect collisions with entities
@@ -131,7 +97,7 @@ bounce of a few pixels over the ground during a fraction of second.
 The number of pixels, the duration
 and the number of bounces of the movement depends on this height.
 If you want to override that movement,
-(by calling \ref lua_api_pickable_start_movement
+(by calling \ref lua_api_entity_start_movement
 "pickable:start_movement()"), you may also want to make it
 dependent of the falling height.
 - Return value (number): An integer indicating how high the pickable treasure

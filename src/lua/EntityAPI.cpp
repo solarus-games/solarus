@@ -94,8 +94,16 @@ void LuaContext::register_entity_module() {
       { "get_size", entity_api_get_size },
       { "get_origin", entity_api_get_origin },
       { "get_position", entity_api_get_position },
+      { "set_position", entity_api_set_position },
+      { "snap_to_grid", entity_api_snap_to_grid },
       { "get_distance", entity_api_get_distance },
       { "get_angle", entity_api_get_angle},
+      { "get_optimization_distance", entity_api_get_optimization_distance },
+      { "set_optimization_distance", entity_api_set_optimization_distance },
+      { "test_obstacles", entity_api_test_obstacles },
+      { "get_movement", entity_api_get_movement },
+      { "start_movement", entity_api_start_movement },
+      { "stop_movement", entity_api_stop_movement },
       { NULL, NULL }
   };
   static const luaL_Reg common_metamethods[] = {
@@ -114,12 +122,11 @@ void LuaContext::register_entity_module() {
       { "set_visible", hero_api_set_visible },
       { "get_direction", hero_api_get_direction },
       { "set_direction", hero_api_set_direction },
-      { "set_position", hero_api_set_position },
       { "save_solid_ground", hero_api_save_solid_ground },
       { "reset_solid_ground", hero_api_reset_solid_ground },
       { "freeze", hero_api_freeze },
       { "unfreeze", hero_api_unfreeze },
-      { "walk", hero_api_walk },  // TODO make a more general start_movement
+      { "walk", hero_api_walk },  // TODO use the more general start_movement
       { "start_jumping", hero_api_start_jumping },
       { "start_treasure", hero_api_start_treasure },
       { "start_victory", hero_api_start_victory},
@@ -136,10 +143,7 @@ void LuaContext::register_entity_module() {
 
   // Non-playing character.
   static const luaL_Reg npc_methods[] = {
-      { "start_movement", entity_api_start_movement },
-      { "stop_movement", entity_api_stop_movement },
       { "get_sprite", entity_api_get_sprite },
-      { "set_position", entity_api_set_position },
       { NULL, NULL }
   };
   register_functions(entity_npc_module_name, common_methods);
@@ -159,7 +163,6 @@ void LuaContext::register_entity_module() {
   // Block.
   static const luaL_Reg block_methods[] = {
       { "reset", block_api_reset },
-      { "set_position", entity_api_set_position },
       { NULL, NULL }
   };
   register_functions(entity_block_module_name, common_methods);
@@ -189,10 +192,6 @@ void LuaContext::register_entity_module() {
   // Pickable.
   static const luaL_Reg pickable_methods[] = {
       { "get_sprite", entity_api_get_sprite },
-      { "set_position", entity_api_set_position },
-      { "get_movement", entity_api_get_movement },
-      { "start_movement", entity_api_start_movement },
-      { "stop_movement", entity_api_stop_movement },
       { "has_layer_independent_collisions", entity_api_has_layer_independent_collisions },
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "get_followed_entity", pickable_api_get_followed_entity },
@@ -239,16 +238,8 @@ void LuaContext::register_entity_module() {
       { "set_treasure", enemy_api_set_treasure },
       { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
       { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
-      { "get_optimization_distance", entity_api_get_optimization_distance },
-      { "set_optimization_distance", entity_api_set_optimization_distance },
       { "set_size", entity_api_set_size },
       { "set_origin", entity_api_set_origin },
-      { "set_position", entity_api_set_position },
-      { "test_obstacles", entity_api_test_obstacles },
-      { "snap_to_grid", entity_api_snap_to_grid },
-      { "get_movement", entity_api_get_movement },
-      { "start_movement", entity_api_start_movement },
-      { "stop_movement", entity_api_stop_movement },
       { "restart", enemy_api_restart },
       { "hurt", enemy_api_hurt },
       { "get_sprite", entity_api_get_sprite },
@@ -503,12 +494,11 @@ int LuaContext::entity_api_set_position(lua_State* l) {
   }
 
   entity.set_xy(x, y);
-
   if (layer != -1) {
     MapEntities& entities = entity.get_map().get_entities();
     entities.set_entity_layer(entity, Layer(layer));
   }
-  entity.check_collision_with_detectors(false);
+  entity.notify_position_changed();
 
   return 0;
 }
@@ -872,31 +862,6 @@ int LuaContext::hero_api_set_direction(lua_State* l) {
   int direction = luaL_checkint(l, 2);
 
   hero.set_animation_direction(direction);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_hero_set_position.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::hero_api_set_position(lua_State* l) {
-
-  Hero& hero = check_hero(l, 1);
-  int x = luaL_checkint(l, 2);
-  int y = luaL_checkint(l, 3);
-  int layer = -1;
-  if (lua_gettop(l) >= 4) {
-    layer = luaL_checkint(l, 4);
-  }
-
-  hero.set_xy(x, y);
-  if (layer != -1) {
-    MapEntities& entities = hero.get_map().get_entities();
-    entities.set_entity_layer(hero, Layer(layer));
-  }
-  hero.check_position();
 
   return 0;
 }

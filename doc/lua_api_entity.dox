@@ -218,6 +218,30 @@ Returns the position of this entity on the \ref lua_api_map "map"
 - Return value 3 (number): Layer where the entity is on the map
   (\c 0: low layer, \c 1: intermediate layer, \c 2: high layer).
 
+\subsection lua_api_entity_set_position entity:set_position(x, y, [layer]):
+
+Changes instantly the position of this entity on the map
+(coordinates and layer).
+The \ref lua_api_entity_get_origin "origin point" of the
+entity gets placed at these coordinates,
+relative to the map's top-left corner.
+Any previous movement or other action performed by the entity
+continues normally.
+- \c x (number): X coordinate to set.
+- \c y (number): Y coordinate to set.
+- \c layer (number, optional): Layer to set
+  (\c 0: low layer, \c 1: intermediate layer, \c 2: high layer).
+  By default, the layer is unchanged.
+
+\remark Be careful: this function does not check collisions with obstacles.
+
+\subsection lua_api_entity_snap_to_grid entity:snap_to_grid()
+
+Makes sure this entity's top-left corner is aligned with the 8*8 grid
+of the \ref lua_api_map "map".
+
+\remark Be careful: this function does not check collisions with obstacles.
+
 \subsection lua_api_entity_get_distance entity:get_distance(x, y), entity:get_distance(other_entity)
 
 Returns the distance in pixels between this map entity and a point or another
@@ -249,6 +273,52 @@ To compute the angle to another map entity:
 - \c other_entity (entity): The entity to compute the angle to.
 - Return value (number): The angle in radians between the origin point of
   this entity and the origin point of the other entity.
+
+\subsection lua_api_entity_get_optimization_distance entity:get_optimization_distance()
+
+Returns the optimization threshold of this map entity.
+
+Above this distance from the visible area
+of the map, the entity will be suspended.
+A value of \c 0 means an infinite distance (the entity is never optimized away).
+- Return value (number): The optimization distance in pixels.
+
+\subsection lua_api_entity_set_optimization_distance entity:set_optimization_distance(optimization_distance)
+
+Sets the optimization threshold of this map entity.
+
+Above this distance from the visible area
+of the map, the entity will be suspended.
+A value of \c 0 means an infinite distance (the entity is never optimized away).
+The default value depends on the type of entity and is usually fine,
+but you may need to increase it in some cases, for example for an \ref lua_api_enemy "enemy" in a huge room.
+- \c optimization_distance (number): The optimization distance to set in pixels.
+
+\subsection lua_api_entity_test_obstacles entity:test_obstacles(dx, dy)
+
+Returns whether there would be a collision with obstacles
+if this map entity was translated.
+- \c dx (number): X component of the translation in pixels
+  (\c 0 means the current X position).
+- \c dx (number): Y component of the translation in pixels
+  (\c 0 means the current Y position).
+- Return value (boolean): \c true if there would be a collision in this
+position.
+
+\subsection lua_api_entity_get_movement entity:get_movement()
+
+Returns the current movement of this map entity.
+- Return value (\ref lua_api_movement "movement"): The current movement,
+  or \c nil if the entity is not moving.
+
+\subsection lua_api_entity_start_movement entity:start_movement(movement)
+
+Starts a movement on this map entity.
+- \c movement (\ref lua_api_movement "movememt"): The movement to set.
+
+\subsection lua_api_entity_stop_movement entity:stop_movement()
+
+Stops the movement (if any) of this entity.
 
 \section lua_api_entity_events Events of all entity types
 

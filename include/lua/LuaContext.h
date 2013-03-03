@@ -652,26 +652,25 @@ class LuaContext {
       entity_api_get_origin,
       entity_api_set_origin,
       entity_api_get_position,
-      entity_api_set_position,  // TODO register on all entity types
+      entity_api_set_position,
       entity_api_get_distance,
       entity_api_get_angle,
       entity_api_snap_to_grid,
       entity_api_get_sprite,
       entity_api_create_sprite,
       entity_api_remove_sprite,
-      entity_api_get_movement,  // TODO also add to NPC
-      entity_api_start_movement,  // TODO register on all entity types?
+      entity_api_get_movement,
+      entity_api_start_movement,
       entity_api_stop_movement,
       entity_api_has_layer_independent_collisions,
       entity_api_set_layer_independent_collisions,
-      entity_api_test_obstacles,  // TODO register on all entity types
+      entity_api_test_obstacles,
       entity_api_get_optimization_distance,
-      entity_api_set_optimization_distance,  // TODO register on all entity types
+      entity_api_set_optimization_distance,
       hero_api_teleport,
       hero_api_set_visible,
       hero_api_get_direction,
       hero_api_set_direction,
-      hero_api_set_position,
       hero_api_save_solid_ground,
       hero_api_reset_solid_ground,
       hero_api_freeze,

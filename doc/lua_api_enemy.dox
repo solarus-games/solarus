@@ -367,28 +367,6 @@ The default value is \c "normal".
 \c "flying" allows the enemy to traverse holes, water and lava.
 - \c obstacle_behavior (string): \c "normal", \c "flying" or \c "swimming".
 
-\subsection lua_api_enemy_get_optimization_distance enemy:get_optimization_distance()
-
-Returns the optimization threshold of this enemy.
-
-Above this distance from the visible area
-of the map, the enemy will be suspended.
-A value of \c 0 means an infinite distance (the enemy is never optimized away).
-- Return value (number): The optimization distance in pixels.
-
-\subsection lua_api_enemy_set_optimization_distance enemy:set_optimization_distance(optimization_distance)
-
-Sets the optimization threshold of this enemy.
-
-Above this distance from the visible area
-of the map, the enemy will be suspended.
-A value of \c 0 means an infinite distance (the enemy is never optimized away).
-The default value is usually fine,
-but you may need to increase it in some cases, for example for a boss in a
-huge room.
-- \c optimization_distance (number): The optimization distance to set in
-  pixels.
-
 \subsection lua_api_enemy_set_size enemy:set_size(width, height)
 
 Sets the size of the bounding box of this enemy.
@@ -426,47 +404,6 @@ about the origin point.
   relative to the top-left corner of the enemy's bounding box.
 - \c origin_y (number): Y coordinate of the origin point in pixels,
   relative to the top-left corner of the enemy's bounding box.
-
-\subsection lua_api_enemy_set_position enemy:set_position(x, y, [layer]):
-
-Changes the position of this enemy
-on the map (coordinates and layer).
-The \ref lua_api_entity_get_origin "origin point" of the
-enemy gets placed at these coordinates,
-relative to the map's top-left corner.
-- \c x (number): X coordinate to set.
-- \c y (number): Y coordinate to set.
-- \c layer (number, optional): Layer to set
-  (\c 0: low layer, \c 1: intermediate layer, \c 2: high layer).
-  By default, the layer is unchanged.
-
-\subsection lua_api_enemy_test_obstacles enemy:test_obstacles(dx, dy)
-
-Returns whether there would be a collision with obstacles
-if this enemy was translated.
-- \c dx (number): X component of the translation in pixels.
-- \c dx (number): Y component of the translation in pixels.
-
-\subsection lua_api_enemy_snap_to_grid enemy:snap_to_grid()
-
-Makes sure this enemy's top-left corner is aligned with the 8*8 grid
-of the \ref lua_api_map "map".
-Be careful: this function does not check collisions with obstacles.
-
-\subsection lua_api_enemy_get_movement enemy:get_movement()
-
-Returns the current movement of this enemy.
-- Return value (\ref lua_api_movement "movement"): The current movement,
-  or \c nil if the enemy is not moving.
-
-\subsection lua_api_enemy_start_movement enemy:start_movement(movement)
-
-Starts a movement on this enemy.
-- \c movement (\ref lua_api_movement "movememt"): The movement to set.
-
-\subsection lua_api_enemy_stop_movement enemy:stop_movement()
-
-Stops the movement (if any) of this enemy.
 
 \subsection lua_api_enemy_restart enemy:restart()
 

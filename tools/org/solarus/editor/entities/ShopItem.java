@@ -93,14 +93,6 @@ public class ShopItem extends MapEntity {
     }
 
     /**
-     * Returns whether the entity has an identifier.
-     * @return true
-     */
-    public boolean hasName() {
-        return true;
-    }
-
-    /**
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {

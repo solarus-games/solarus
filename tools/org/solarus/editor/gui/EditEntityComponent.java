@@ -103,7 +103,7 @@ public class EditEntityComponent extends JPanel {
         gridBagConstraints.gridy = 0;
 
         // name
-        if (entity.hasName()) {
+        if (entity.canHaveName()) {
             nameField = new JTextField(15);
             addField("Name", nameField);
         }
@@ -216,8 +216,13 @@ public class EditEntityComponent extends JPanel {
      */
     public void update() {
 
-        if (entity.hasName()) {
-            nameField.setText(entity.getName());
+        if (entity.canHaveName()) {
+            if (entity.hasName()) {
+                nameField.setText(entity.getName());
+            }
+            else {
+                nameField.setText("");
+            }
         }
 
         layerField.setValue(entity.getLayer());
@@ -254,7 +259,10 @@ public class EditEntityComponent extends JPanel {
      */
     private ActionEditEntity getAction() throws QuestEditorException {
 
-        String name = entity.hasName() ? nameField.getText() : null;
+        String name = null;
+        if (entity.canHaveName()) {
+            name = nameField.getText().isEmpty() ? null : nameField.getText();
+        }
         Layer layer = layerField.getValue();
         Point position = positionField.getCoordinates();
         Dimension size = null;

@@ -83,14 +83,6 @@ public class Destination extends MapEntity {
         return "Keep the same direction";
     }
 
-    /**
-     * Returns whether the entity has an identifier.
-     * @return true
-     */
-    public boolean hasName() {
-        return true;
-    }
-
     /*
      * Updates the description of the image currently representing the entity.
      * @param name name of the property

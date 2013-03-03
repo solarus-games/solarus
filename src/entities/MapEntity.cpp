@@ -101,7 +101,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
 
 /**
  * @brief Creates an entity, specifying its position, its name and its direction.
- * @param name a name identifying the entity
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param direction direction of the entity
  * @param layer layer of the entity
  * @param x x position of the entity

@@ -88,7 +88,8 @@ class Destructible: public Detector {
   public:
 
     // creation and destruction
-    Destructible(Layer layer, int x, int y, Subtype subtype, const Treasure &treasure);
+    Destructible(const std::string& name, Layer layer, int x, int y,
+        Subtype subtype, const Treasure &treasure);
     ~Destructible();
 
     EntityType get_type();

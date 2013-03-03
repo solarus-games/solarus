@@ -606,6 +606,8 @@ Returns the \ref lua_api_entity "map entity" with the specified name
 if it exists on this map. 
 Entity names are unique (two entities cannot exist on the map
 with the same name at the same time).
+The name is optional: some entities may have no name. In this case, you cannot
+access them from this function.
 
 As a convenient feature, map entities can also be accessed directly
 through the environment of the \ref lua_api_map_overview_files "map script".
@@ -701,7 +703,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describles all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -722,7 +724,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describles all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -755,6 +757,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describles all properties of the entity
   to create. Its key-value pairs must be:
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -793,6 +796,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -839,7 +843,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -876,7 +880,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -899,7 +903,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -955,7 +959,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -989,7 +993,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1013,8 +1017,10 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
+  - \c name (string, optional): Name identifying the entity or \c nil.
+  - \c name (string, optional): Name identifying the entity or \c nil.
     \c 2: high).
   - \c x (number): X coordinate of the top-left corner of the dynamic tile on
     the map.
@@ -1037,7 +1043,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1061,7 +1067,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1085,7 +1091,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1101,7 +1107,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1115,7 +1121,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1134,7 +1140,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1176,6 +1182,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1193,7 +1200,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1269,7 +1276,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
-  - \c name (string): Name identifying the entity.
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1294,6 +1301,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1308,6 +1316,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.
@@ -1322,6 +1331,7 @@ Creates an entity of type
 on the map.
 - \c properties (table): A table that describes all properties of the entity
   to create. Its key-value pairs must be:
+  - \c name (string, optional): Name identifying the entity or \c nil.
   - \c layer (number): Layer on the map (\c 0: low, \c 1: intermediate,
     \c 2: high).
   - \c x (number): X coordinate on the map.

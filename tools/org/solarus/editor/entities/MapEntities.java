@@ -100,21 +100,16 @@ public class MapEntities implements Iterable<MapEntity> {
     }
 
     /**
-     * Returns an entity, specifying its type and its name.
-     * @param type the type of entity
-     * @param name the name of the entity
-     * @return the entity, or null if there is no entity with this name
+     * Returns an entity, specifying its name.
+     * @param name The name of the entity to get (cannot be null).
+     * @return The entity, or null if there is no entity with this name.
      */
-    public MapEntity getEntityWithName(EntityType type, String name) {
+    public MapEntity getEntityWithName(String name) {
 
-        Class<? extends MapEntity> cl = type.getEntityClass();
+        for (MapEntity e: dynamicEntities) {
 
-        if (MapEntity.class.isAssignableFrom(cl)) {
-            for (MapEntity e: dynamicEntities) {
-
-                if (cl.isInstance(e) && e.hasName() && e.getName().equals(name)) {
-                    return e;
-                }
+            if (e.hasName() && e.getName().equals(name)) {
+                return e;
             }
         }
 

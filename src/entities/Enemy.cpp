@@ -123,7 +123,7 @@ MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank,
 
     // the enemy is dead: create its pickable treasure (if any) instead
     if (treasure.is_saved() && !game.get_savegame().get_boolean(treasure.get_savegame_variable())) {
-      return Pickable::create(game, layer, x, y, treasure, FALLING_NONE, true);
+      return Pickable::create(game, "", layer, x, y, treasure, FALLING_NONE, true);
     }
     return NULL;
   }
@@ -679,7 +679,7 @@ void Enemy::update() {
       Rectangle xy;
       xy.set_x(get_top_left_x() + Random::get_number(get_width()));
       xy.set_y(get_top_left_y() + Random::get_number(get_height()));
-      get_entities().add_entity(new Explosion(LAYER_HIGH, xy, false));
+      get_entities().add_entity(new Explosion("", LAYER_HIGH, xy, false));
       Sound::play("explosion");
 
       next_explosion_date = now + 200;
@@ -694,7 +694,8 @@ void Enemy::update() {
   if (is_killed() && is_dying_animation_finished()) {
 
     // create the pickable treasure if any
-    get_entities().add_entity(Pickable::create(get_game(), get_layer(), get_x(), get_y(),
+    get_entities().add_entity(Pickable::create(get_game(),
+        "", get_layer(), get_x(), get_y(),
         treasure, FALLING_HIGH, false));
 
     // notify Lua

@@ -96,13 +96,6 @@ public class Door extends MapEntity {
     }
 
     /**
-     * Returns whether the entity has an identifier.
-     * @return true
-     */
-    public boolean hasName() {
-        return true;
-    }
-    /**
      * Returns the number of possible directions of the entity.
      * @return 4
      */

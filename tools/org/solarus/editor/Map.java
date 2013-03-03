@@ -599,15 +599,14 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns an entity, specifying its type and its name.
-     * @param type the type of entity
-     * @param name the name of the entity
-     * @return the entity, or null if there is no entity with this name
+     * Returns an entity, specifying its name.
+     * @param name The name of the entity to get (cannot be null)
+     * @return The entity, or null if there is no entity with this name
      */
-    public MapEntity getEntityWithName(EntityType type, String name) {
+    public MapEntity getEntityWithName(String name) {
 
         for (Layer layer: Layer.values()) {
-            MapEntity entity = allEntities[layer.getId()].getEntityWithName(type, name);
+            MapEntity entity = allEntities[layer.getId()].getEntityWithName(name);
             if (entity != null) {
                 return entity;
             }

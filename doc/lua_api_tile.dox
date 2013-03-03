@@ -23,6 +23,7 @@ Tiles are fixed: they are only declared in the map data file.
 Actually, most of them don't even exist at runtime.
 You cannot create them dynamically: unlike other types of
 map entities, there is no method <tt>map:create_tile()</tt>.
+You cannot access them dynamically either.
 
 Most tiles don't exist individually at runtime,
 because the engine makes a special performance treatment to them.
@@ -41,7 +42,7 @@ performances at runtime.
 enable or disable a tile from your script.
 \ref lua_api_dynamic_tile "Dynamic tiles" are made for that.
 Dynamic tiles are like normal tiles, except that they are not optimized
-as explained above, and they have a name.
+as explained above: they do exist at runtime.
 You can access them from your script and call methods such as
 \ref lua_api_entity_set_enabled "dynamic_tile:set_enabled()".
 

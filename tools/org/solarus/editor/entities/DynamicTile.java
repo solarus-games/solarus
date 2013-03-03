@@ -68,13 +68,5 @@ public class DynamicTile extends Tile {
     public final Tile createStaticTile() throws QuestEditorException {
         return new Tile(this);
     }
-
-    /**
-     * Returns whether the entity has an identifier.
-     * @return true
-     */
-    public boolean hasName() {
-        return true;
-    }
 }
 

@@ -21,13 +21,15 @@
 
 /**
  * @brief Creates a new conveyor belt.
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
  * @param direction direction of the conveyor belt
  */
-ConveyorBelt::ConveyorBelt(Layer layer, int x, int y, int direction):
-  Detector(COLLISION_RECTANGLE, "", layer, x, y, 16, 16) {
+ConveyorBelt::ConveyorBelt(const std::string& name,
+    Layer layer, int x, int y, int direction):
+  Detector(COLLISION_RECTANGLE, name, layer, x, y, 16, 16) {
 
   set_origin(8, 13);
   create_sprite("entities/conveyor_belt");
@@ -55,7 +57,7 @@ EntityType ConveyorBelt::get_type() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool ConveyorBelt::is_obstacle_for(MapEntity &other) {
+bool ConveyorBelt::is_obstacle_for(MapEntity& other) {
 
   return other.is_conveyor_belt_obstacle(*this);
 }
@@ -65,7 +67,7 @@ bool ConveyorBelt::is_obstacle_for(MapEntity &other) {
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void ConveyorBelt::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void ConveyorBelt::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   const Rectangle &xy_move = direction_to_xy_move(get_direction());
   entity_overlapping.notify_collision_with_conveyor_belt(*this, xy_move.get_x(), xy_move.get_y());

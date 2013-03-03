@@ -30,7 +30,7 @@ class Fire: public Detector {
 
   public:
 
-    Fire(Layer layer, const Rectangle& xy);
+    Fire(const std::string& name, Layer layer, const Rectangle& xy);
     ~Fire();
 
     EntityType get_type();

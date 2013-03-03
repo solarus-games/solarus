@@ -36,7 +36,7 @@ using std::list;
  * @param game the game
  * @param map the map (not loaded yet)
  */
-MapEntities::MapEntities(Game &game, Map &map):
+MapEntities::MapEntities(Game& game, Map& map):
   game(game),
   map(map),
   hero(game.get_hero()),
@@ -203,7 +203,7 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
  */
 MapEntity* MapEntities::find_entity(const std::string& name) {
 
-  if (named_entities.count(name) == 0) {
+  if (named_entities.find(name) == named_entities.end()) {
     return NULL;
   }
 
@@ -500,7 +500,7 @@ void MapEntities::add_tile(Tile *tile) {
  *
  * @param entity the entity to add (can be NULL)
  */
-void MapEntities::add_entity(MapEntity *entity) {
+void MapEntities::add_entity(MapEntity* entity) {
 
   if (entity == NULL) {
     return;
@@ -566,7 +566,8 @@ void MapEntities::add_entity(MapEntity *entity) {
 
   const std::string& name = entity->get_name();
   if (!name.empty()) {
-    Debug::check_assertion(named_entities.count(name) == 0, StringConcat()
+    Debug::check_assertion(named_entities.find(name) == named_entities.end(),
+        StringConcat()
         << "Error: an entity with name '" << name << "' already exists.");
     named_entities[name] = entity;
   }

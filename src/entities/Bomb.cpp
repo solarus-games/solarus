@@ -32,12 +32,13 @@
  *
  * Creates a bomb.
  *
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
  */
-Bomb::Bomb(Layer layer, int x, int y):
-  Detector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16),
+Bomb::Bomb(const std::string& name, Layer layer, int x, int y):
+  Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   explosion_date(System::now() + 6000) {
 
   create_sprite("entities/bomb");
@@ -276,7 +277,7 @@ void Bomb::update() {
  */
 void Bomb::explode() {
 
-  get_entities().add_entity(new Explosion(get_layer(), get_center_point(), true));
+  get_entities().add_entity(new Explosion("", get_layer(), get_center_point(), true));
   Sound::play("explosion");
   remove_from_map();
 }

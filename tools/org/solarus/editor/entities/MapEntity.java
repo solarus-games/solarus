@@ -51,9 +51,6 @@ import java.util.*;
  *       - public String getNoDirectionText() (only when canHaveNoDirections() is true):
  *           returns the text to display in the GUI for the special direction 'none'
  *           (default is "No direction")
- *   - Redefine if necessary the hasName() method:
- *       public boolean hasName(): indicates whether the entity has a
- *       name property, i.e. if it is identifiable (default is false)
  *   - Redefine if necessary the hasInitialLayer() method:
  *       public boolean hasInitialLayer(): indicates that your entity already
  *       knows on what layer to be created. If you return false, the layer will
@@ -102,8 +99,7 @@ public abstract class MapEntity extends Observable {
     protected int direction;
 
     /**
-     * String identifying the entity.
-     * Not used by all kinds of entities.
+     * Name identifying the entity or null.
      */
     protected String name;
 
@@ -285,7 +281,11 @@ public abstract class MapEntity extends Observable {
         Layer layer = Layer.get(table.get("layer").checkint());
         int x = table.get("x").checkint();
         int y = table.get("y").checkint();
+        String name = table.get("name").optjstring(null);
 
+        if (name != null) {
+            setName(name);
+        }
         setLayer(layer);
         positionInMap.x = x; // for now the origin is (0,0)
         positionInMap.y = y;
@@ -295,11 +295,6 @@ public abstract class MapEntity extends Observable {
         if (isSizeVariable()) {
             width = table.get("width").checkint();
             height = table.get("height").checkint();
-        }
-
-        if (hasName()) {
-            String name = table.get("name").checkjstring();
-            setName(name);
         }
 
         if (hasDirectionProperty()) {
@@ -799,44 +794,50 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Returns whether the entity has a name.
-     * By default, an entity has no name and this function returns false.
-     * The subclasses which represent identifiable entities should return true.
-     * @return true if the entity has a name, false otherwise
+     * Returns whether this kind of entity is allowed to have a name.
+     *
+     * This function returns true by default.
+     *
+     * @return true if the entity can have a name.
      */
-    public boolean hasName() {
-        return false;
+    public boolean canHaveName() {
+        return true;
     }
 
     /**
-     * Returns the name of the entity.
-     * The name of an entity permits to identify it.
-     * @return the entity's name, or null if this entity is not identifiable
+     * Returns whether the entity has a name.
+     * @return true if the entity has a name, false otherwise.
      */
-    public String getName() {
+    public final boolean hasName() {
+        return name != null;
+    }
+
+    /**
+     * Returns the name of the entity if any.
+     * @return the entity's name, or null if this entity has no name.
+     */
+    public final String getName() {
         return name;
     }
 
     /**
      * Changes the name of the entity.
-     * The entity must be identifiable (i.e. hasName() returns true).
-     * By default, an entity is not identifiable and this method throws an exception.
      * If the name specified is already used, another name is automatically set.
-     * @param name the new entity's name
-     * @throws UnsupportedOperationException if the entity is not identifiable
+     * @param name the new entity's name (possibly null).
      * @throws MapException if this name is not valid
      */
-    public void setName(String name) throws UnsupportedOperationException, MapException {
+    public final void setName(String name) throws MapException {
 
-        if (!hasName()) {
-            throw new UnsupportedOperationException("This entity is not identifiable");
+        if (name == null) {
+            this.name = null;
+            return;
         }
 
         if (name.indexOf(' ') != -1 || name.indexOf('\t') != -1) {
             throw new MapException("The entity name cannot have whitespaces");
         }
 
-        MapEntity other = map.getEntityWithName(getType(), name);
+        MapEntity other = map.getEntityWithName(name);
         if (other != null && other != this) {
 
             int counter = 2;
@@ -866,14 +867,14 @@ public abstract class MapEntity extends Observable {
             }
 
             counter = 2;
-            while (map.getEntityWithName(getType(), prefix.toString() + counter) != null) {
+            while (map.getEntityWithName(prefix.toString() + counter) != null) {
                 counter++;
             }
             name = prefix.toString() + counter;
         }
 
         // debug
-        other = map.getEntityWithName(getType(), name);
+        other = map.getEntityWithName(name);
         if (other != null && other != this) {
             throw new MapException("An entity with this name already exists and I was unable to compute a new one");
         }

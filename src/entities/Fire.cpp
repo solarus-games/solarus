@@ -20,11 +20,12 @@
 
 /**
  * @brief Creates some fire.
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the fire entity to create
  * @param xy coordinates of the fire
  */
-Fire::Fire(Layer layer, const Rectangle& xy):
-  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, "", layer, xy.get_x(), xy.get_y(), 16, 16) {
+Fire::Fire(const std::string& name, Layer layer, const Rectangle& xy):
+  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, name, layer, xy.get_x(), xy.get_y(), 16, 16) {
 
   // initialize the entity
   create_sprite("entities/fire");

@@ -24,6 +24,8 @@ Some entities are fixed, other move according to a
 
 Entities can also have a name that uniquely identifies them on the map.
 This is useful to access them from the \ref lua_api_map "map API".
+The name is optional, but if an entity has a name, it must be unique on the
+map.
 
 Here are the existing types of entities.
 - \subpage lua_api_hero "Hero": The character controlled by the player.
@@ -107,8 +109,8 @@ Returns the map this entity belongs to.
 Returns the name of this map entity.
 
 The name uniquely identifies the entity on the map.
-- Return value (string): The name of this entity, or an empty string if the
-  entity has no name (because some types of entities don't have a name).
+- Return value (string): The name of this entity, or \c nil if the
+  entity has no name (because the name is optional).
 
 \subsection lua_api_entity_exists entity:exists()
 

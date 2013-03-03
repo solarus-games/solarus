@@ -44,18 +44,19 @@ class CrystalBlock: public Detector {
     bool orange_raised;                /**< true if the orange blocks are raised,
 					* false if the blue blocks are raised */
 
-    bool try_jump(Hero &hero, const Rectangle &collision_box,
+    bool try_jump(Hero& hero, const Rectangle& collision_box,
 	int jump_direction, int jump_length);
 
   public:
 
-    CrystalBlock(Game &game, Layer layer, int x, int y, int width, int height, Subtype subtype);
+    CrystalBlock(Game& game, const std::string& name,
+        Layer layer, int x, int y, int width, int height, Subtype subtype);
     ~CrystalBlock();
 
     EntityType get_type();
 
-    bool is_obstacle_for(MapEntity &other);
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+    bool is_obstacle_for(MapEntity& other);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
 
     void update();
     void draw_on_map();

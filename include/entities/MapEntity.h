@@ -73,9 +73,8 @@ class MapEntity: public ExportableToLua {
 
     // other data, used for some kinds of entities only
 
-    std::string name;                           /**< name of the entity, not used for all kinds of entities;
-                                                 * the name identifies the entity in the game (an empty string
-                                                 * indicates that the entity has no name) */
+    std::string name;                           /**< Name of the entity or an empty string.
+                                                 * The name uniquely identifies the entity in the map. */
 
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
@@ -109,7 +108,7 @@ class MapEntity: public ExportableToLua {
     // creation
     MapEntity();
     MapEntity(Layer layer, int x, int y, int width, int height);
-    MapEntity(const std::string &name, int direction, Layer layer, int x, int y, int width, int height);
+    MapEntity(const std::string& name, int direction, Layer layer, int x, int y, int width, int height);
 
     void clear_old_movements();
     void clear_old_sprites();

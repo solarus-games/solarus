@@ -546,7 +546,7 @@ class LuaContext {
       game_api_get_command_joypad_binding,
       game_api_set_command_joypad_binding,
       game_api_is_command_pressed,
-      game_api_get_commands_direction,  // TODO return nil instead of -1
+      game_api_get_commands_direction,
 
       // Equipment item API.
       item_api_get_name,

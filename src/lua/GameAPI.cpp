@@ -1015,7 +1015,13 @@ int LuaContext::game_api_get_commands_direction(lua_State* l) {
   Savegame& savegame = check_game(l, 1);
 
   GameCommands& commands = savegame.get_game()->get_commands();
-  lua_pushinteger(l, commands.get_wanted_direction8());
+  int wanted_direction8 = commands.get_wanted_direction8();
+  if (wanted_direction8 == -1) {
+    lua_pushnil(l);
+  }
+  else {
+    lua_pushinteger(l, wanted_direction8);
+  }
 
   return 1;
 }

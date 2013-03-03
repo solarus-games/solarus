@@ -485,7 +485,7 @@ Returns whether a built-in game command is currently pressed.
 Returns the direction (in an 8-direction system) formed by the combination
 of directional game commands currently pressed by the player.
 - Return value (number): The direction wanted by the player (\c 0 to 7),
-  or \c -1 for no direction. No direction means that no directional command
+  or \c nil for no direction. No direction means that no directional command
   is pressed, or that contradictory directional commands are pressed,
   like left and right at the same time (impossible with most joypads, but
   easy with a keyboard).

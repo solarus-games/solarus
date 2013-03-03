@@ -157,22 +157,23 @@ Returns the current map.
 - Return value (\ref lua_api_map "map"): The current map of this game
   (\c nil if this game is not running).
 
-\subsection lua_api_game_get_value game:get_value(key)
+\subsection lua_api_game_get_value game:get_value(savegame_variable)
 
 Returns a value saved.
-- \c key (string): Name of the value to get from the savegame.
+- \c savegame_variable (string): Name of the value to get from the savegame.
 - Return value (string, number or boolean): The corresponding value
   (\c nil if no value is defined with this key).
 
-\subsection lua_api_game_set_value game:set_value(key, value)
+\subsection lua_api_game_set_value game:set_value(savegame_variable, value)
 
 Sets a value in the savegame.
 
-This function allows to store arbitrary key-value pairs in the savegame.
+This function allows to store key-value pairs in the savegame.
 Values can be strings, integers or booleans.
-- \c key (string): Name of the value to save (must contain alphanumeric
-  characters or \c '_' only, and must start with a letter).
-- \c value (string, number or boolean): The value to set.
+- \c savegame_variable (string): Name of the value to save (must contain
+  alphanumeric characters or \c '_' only, and must start with a letter).
+- \c value (string, number or boolean): The value to set, or \c nil to unset
+  this value.
 
 \remark This method changes a value, but remember that the change will be
   saved in the savegame file only when you call

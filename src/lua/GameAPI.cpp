@@ -364,6 +364,10 @@ int LuaContext::game_api_set_value(lua_State* l) {
       savegame.set_string(key, lua_tostring(l, 3));
       break;
 
+    case LUA_TNIL:
+      savegame.unset(key);
+      break;
+
     default:
       luaL_argerror(l, 3, (StringConcat() <<
           "Expected string, number or boolean, got " << luaL_typename(l, 3)).c_str());

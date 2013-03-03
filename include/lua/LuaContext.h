@@ -512,7 +512,7 @@ class LuaContext {
       game_api_set_paused,
       game_api_get_map,
       game_api_get_value,
-      game_api_set_value,  // TODO allow nil (delete a value)
+      game_api_set_value,
       game_api_get_starting_location,
       game_api_set_starting_location,  // TODO don't do it automatically, use on_map_changed
       game_api_get_life,

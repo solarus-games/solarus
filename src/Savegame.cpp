@@ -505,6 +505,18 @@ void Savegame::set_boolean(const std::string& key, bool value) {
 }
 
 /**
+ * @brief Unsets a value saved.
+ * @param key Name of the value to unset.
+ */
+void Savegame::unset(const std::string& key) {
+
+  Debug::check_assertion(LuaContext::is_valid_lua_identifier(key), StringConcat() <<
+      "Savegame variable '" << key << "' is not a valid key");
+
+  saved_values.erase(key);
+}
+
+/**
  * @brief Returns the name identifying this type in Lua.
  * @return The name identifying this type in Lua.
  */

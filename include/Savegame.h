@@ -87,14 +87,13 @@ class Savegame: public ExportableToLua {
     bool is_string(const std::string& key);
     const std::string& get_string(const std::string& key);
     void set_string(const std::string& key, const std::string& value);
-
     bool is_integer(const std::string& key);
     int get_integer(const std::string& key);
     void set_integer(const std::string& key, int value);
-
     bool is_boolean(const std::string& key);
     bool get_boolean(const std::string& key);
     void set_boolean(const std::string& key, bool value);
+    void unset(const std::string& key);
 
     // unsaved data
     MainLoop& get_main_loop();

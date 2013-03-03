@@ -26,7 +26,7 @@ Creates a text surface with the specified properties.
     defined in \c text/fonts.dat.
   - \c rendering_mode (string, default \c "solid"): \c "solid" (faster)
     or \c "antialiasing" (smooth effect on letters).
-  - \c text_color (table, default white): color of the text to draw
+  - \c color (table, default white): color of the text to draw
     (array of 3 RGB values between 0 and 255)
   - \c text (string, default \c ""): The text to show
     (must be valid UTF-8).
@@ -101,15 +101,15 @@ Sets the rendering mode of the text.
 - \c rendering_mode (string): \c "solid" (faster)
     or \c "antialiasing" (smooth effect on letters).
 
-\subsection lua_api_text_surface_get_text_color text_surface:get_text_color()
+\subsection lua_api_text_surface_get_color text_surface:get_color()
 
 Returns the color used to draw the text.
 - Return value (table): The text color as an array of 3 RGB values (\c 0 to \c 255).
 
-\subsection lua_api_text_surface_set_text_color text_surface:set_text_color(text_color)
+\subsection lua_api_text_surface_set_color text_surface:set_color(color)
 
 Sets the color used to draw the text.
-- \c text_color (table): The text color as an array of 3 RGB values (\c 0 to \c 255).
+- \c color (table): The text color as an array of 3 RGB values (\c 0 to \c 255).
 
 \subsection lua_api_text_surface_get_text text_surface:get_text()
 

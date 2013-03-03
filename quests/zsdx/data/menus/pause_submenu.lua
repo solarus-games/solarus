@@ -22,23 +22,23 @@ function submenu:on_started()
   self.question_text_1 = sol.text_surface.create{
     horizontal_alignment = "center",
     vertical_alignment = "middle",
-    text_color = {8, 8, 8},
+    color = {8, 8, 8},
   }
   self.question_text_2 = sol.text_surface.create{
     horizontal_alignment = "center",
     vertical_alignment = "middle",
-    text_color = {8, 8, 8},
+    color = {8, 8, 8},
   }
   self.answer_text_1 = sol.text_surface.create{
     horizontal_alignment = "center",
     vertical_alignment = "middle",
-    text_color = {8, 8, 8},
+    color = {8, 8, 8},
     text_key = "save_dialog.yes",
   }
   self.answer_text_2 = sol.text_surface.create{
     horizontal_alignment = "center",
     vertical_alignment = "middle",
-    text_color = {8, 8, 8},
+    color = {8, 8, 8},
     text_key = "save_dialog.no",
   }
 

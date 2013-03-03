@@ -23,7 +23,7 @@ local function apples_question_finished(answer)
   map:get_game():set_value("b46", true)
 
   if answer == 0 then
-    if map:get_game():gas_item("apples_counter"):has_variant() then
+    if map:get_game():get_item("apples_counter"):has_variant() then
       if map:get_game():get_item("apples_counter"):has_amount(6) then
         map:start_dialog("cake_shop.thank_you", function()
           hero:start_treasure("bottle_1", 1, "b32")

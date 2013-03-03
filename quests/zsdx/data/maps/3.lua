@@ -175,7 +175,7 @@ function monkey:on_movement_finished()
   end
 end
 
-function dungeon_3_entrance_weak_block:on_open()
+function dungeon_3_entrance_weak_block:on_opened()
   sol.audio.play_sound("secret") -- play the sound only once
 end
 

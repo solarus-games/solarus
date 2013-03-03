@@ -84,7 +84,7 @@ See \ref lua_api_entity_events to know these events.
 
 The following events are specific to doors.
 
-\subsection lua_api_door_on_open door:on_open()
+\subsection lua_api_door_on_opened door:on_opened()
 
 Called when this door has just been opened.
 

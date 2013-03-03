@@ -76,7 +76,7 @@ for _, enemy in ipairs(map:get_entities("compass_room_battle")) do
   end
 end
 
-function weak_wall:on_open()
+function weak_wall:on_opened()
 
   sol.audio.play_sound("secret")
 end

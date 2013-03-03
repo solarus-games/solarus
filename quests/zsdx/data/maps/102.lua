@@ -237,7 +237,7 @@ for _, switch in ipairs(map:get_entities("code_switch_")) do
   switch.on_activated = code_switch_activated
 end
 
-function door_b:on_open()
+function door_b:on_opened()
 
   -- put the last enemy of the room on the hero's layer
   if w_room_enemy_4 ~= nil then

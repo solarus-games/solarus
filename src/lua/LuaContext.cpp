@@ -2041,12 +2041,12 @@ void LuaContext::on_bought() {
 }
 
 /**
- * @brief Calls the on_open() method of the object on top of the stack.
+ * @brief Calls the on_opened() method of the object on top of the stack.
  */
-void LuaContext::on_open() {
+void LuaContext::on_opened() {
 
-  if (find_method("on_open")) {
-    call_function(1, 0, "on_open");
+  if (find_method("on_opened")) {
+    call_function(1, 0, "on_opened");
   }
 }
 

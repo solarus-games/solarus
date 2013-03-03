@@ -220,12 +220,12 @@ function map:on_obtained_treasure(item, variant, savegame_variable)
   end
 end
 
-function boss_key_door:on_open()
+function boss_key_door:on_opened()
 
   boss_key_door_laser:remove()
 end
 
-function WW01:on_open()
+function WW01:on_opened()
 
   sol.audio.play_sound("secret")
 end

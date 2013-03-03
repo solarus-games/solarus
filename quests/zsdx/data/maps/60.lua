@@ -24,12 +24,12 @@ function map:on_opening_transition_finished(destination)
   end
 end
 
-function hidden_weak_wall:on_open()
+function hidden_weak_wall:on_opened()
 
   sol.audio.play_sound("secret")
 end
 
-function weak_block:on_open()
+function weak_block:on_opened()
 
   sol.audio.play_sound("secret")
 end

@@ -138,7 +138,7 @@ for _, enemy in ipairs(map:get_entities("LD9_enemy")) do
   end
 end
 
-function WW02:on_open()
+function WW02:on_opened()
 
   sol.audio.play_sound("secret")
 end

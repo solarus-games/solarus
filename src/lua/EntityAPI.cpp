@@ -2145,13 +2145,13 @@ void LuaContext::sensor_on_collision_explosion(Sensor& sensor) {
 }
 
 /**
- * @brief Calls the on_open() method of a Lua door.
+ * @brief Calls the on_opened() method of a Lua door.
  * @param door A door.
  */
-void LuaContext::door_on_open(Door& door) {
+void LuaContext::door_on_opened(Door& door) {
 
   push_door(l, door);
-  on_open();
+  on_opened();
   lua_pop(l, 1);
 }
 

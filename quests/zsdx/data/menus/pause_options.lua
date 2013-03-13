@@ -46,8 +46,8 @@ function options_submenu:on_started()
   self.command_texts = {}
   self.keyboard_texts = {}
   self.joypad_texts = {}
-  local command_names = { "action", "attack", "item_1", "item_2", "pause", "left", "right", "up", "down" }
-  for i = 1, #command_names do
+  self.command_names = { "action", "attack", "item_1", "item_2", "pause", "left", "right", "up", "down" }
+  for i = 1, #self.command_names do
 
     self.command_texts[i] = sol.text_surface.create{
       horizontal_alignment = "left",
@@ -81,8 +81,22 @@ function options_submenu:on_started()
   self.game:set_custom_command_effect("action", "change")
 end
 
+-- Loads the text displayed for each game command, for the
+-- keyboard and the joypad.
 function options_submenu:load_command_texts()
-  -- TODO
+
+  self.commands_surface:fill_color{0, 0, 0}
+  for i = 1, #self.command_names do
+    local keyboard_binding = self.game:get_command_keyboard_binding(self.command_names[i])
+    local joypad_binding = self.game:get_command_joypad_binding(self.command_names[i])
+    self.keyboard_texts[i]:set_text(keyboard_binding:sub(1, 9))
+    self.joypad_texts[i]:set_text(joypad_binding:sub(1, 9))
+
+    local y = 16 * i - 14
+    self.command_texts[i]:draw(self.commands_surface, 4, y)
+    self.keyboard_texts[i]:draw(self.commands_surface, 74, y)
+    self.joypad_texts[i]:draw(self.commands_surface, 143, y)
+  end
 end
 
 function options_submenu:set_cursor_position()
@@ -94,6 +108,7 @@ function options_submenu:on_draw(dst_surface)
   self:draw_background(dst_surface)
   self:draw_caption(dst_surface)
   self:draw_save_dialog_if_any(dst_surface)
+  -- TODO
 end
 
 function options_submenu:on_command_pressed(command)
@@ -107,6 +122,8 @@ function options_submenu:on_command_pressed(command)
     elseif command == "right" then
       self:next_submenu()
       handled = true
+    else
+      -- TODO
     end
   end
 

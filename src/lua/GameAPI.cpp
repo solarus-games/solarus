@@ -19,6 +19,7 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -69,6 +70,7 @@ void LuaContext::register_game_module() {
       { "get_ability", game_api_get_ability },
       { "set_ability", game_api_set_ability },
       { "get_item", game_api_get_item },
+      { "has_item", game_api_has_item },
       { "get_item_assigned", game_api_get_item_assigned },
       { "set_item_assigned", game_api_set_item_assigned },
       { "is_command_pressed", game_api_is_command_pressed },
@@ -752,6 +754,20 @@ int LuaContext::game_api_get_item(lua_State* l) {
   const std::string& item_name = luaL_checkstring(l, 2);
 
   push_item(l, savegame.get_equipment().get_item(item_name));
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_has_item.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_has_item(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  const std::string& item_name = luaL_checkstring(l, 2);
+
+  lua_pushboolean(l, savegame.get_equipment().get_item(item_name).get_variant() > 0);
   return 1;
 }
 

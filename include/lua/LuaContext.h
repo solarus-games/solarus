@@ -538,6 +538,7 @@ class LuaContext {
       game_api_get_ability,
       game_api_set_ability,
       game_api_get_item,
+      game_api_has_item,
       game_api_get_item_assigned,
       game_api_set_item_assigned,
       game_api_is_command_pressed,

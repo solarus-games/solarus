@@ -2,7 +2,7 @@ local submenu = require("menus/pause_submenu")
 local map_submenu = submenu:new()
 
 local outside_world_size = { width = 2080, height = 3584 }
-local outside_world_minimap_size = { width = 255, height = 388 }
+local outside_world_minimap_size = { width = 225, height = 388 }
 
 function map_submenu:on_started()
 
@@ -27,7 +27,7 @@ function map_submenu:on_started()
 
     if self.game:has_item("world_map") then
       self.world_minimap_img = sol.surface.create("menus/outside_world_map.png")
-      self.world_minimap_visible_y = math.min(outside_world_minimap_size.height - 133, math.max(hero_minimap_y - 66))
+      self.world_minimap_visible_y = math.min(outside_world_minimap_size.height - 133, math.max(0, hero_minimap_y - 65))
     else
       self.world_minimap_img = sol.surface.create("menus/outside_world_clouds.png")
       self.world_minimap_visible_y = 0
@@ -70,44 +70,36 @@ function map_submenu:on_command_pressed(command)
       if self.game:has_item("world_map") then
 
         local dy = 0
+        if command == "up" then dy = -1 else dy = 1
+        end
+
         function repeat_move_world_minimap()
           local up = self.game:is_command_pressed("up")
           local down = self.game:is_command_pressed("down")
           if dy == -1 then
             if not up then
-              if down then
-                dy = 1
-              else
-                dy = 0
+              if down then dy = 1 else dy = 0
               end
             elseif self.world_minimap_visible_y <= 0 then
               dy = 0
             end
           elseif dy == 1 then
             if not down then
-              if up then
-                dy = -1
-              else
-                dy = 0
+              if up then dy = -1 else dy = 0
               end
-            elseif self.world_minimap_visible_y > outside_world_minimap_size.height - 133 then
+            elseif self.world_minimap_visible_y > outside_world_minimap_size.height - 134 then
               dy = 0
             end
           end
 
           if dy ~= 0 then
-            self.world_minimap_visible_y = self.world_minimap_visible_y + dy
+            self.world_minimap_visible_y = self.world_minimap_visible_y + dy * 3
             self:rebuild_world_minimap_visible_surface()
-            sol.timer.start(10, repeat_move_world_minimap)
+            sol.timer.start(20, repeat_move_world_minimap)
           end
         end  -- function
 
-        if command == "up" then
-          repeat_move_world_minimap(-1)
-        else
-          repeat_move_world_minimap(1)
-        end
-
+        repeat_move_world_minimap()
       end
     else
       -- We are in a dungeon: select another floor.
@@ -127,13 +119,14 @@ function map_submenu:on_draw(dst_surface)
 
   self:draw_background(dst_surface)
   self:draw_caption(dst_surface)
-  self:draw_save_dialog_if_any(dst_surface)
 
   if not self.game:is_in_dungeon() then
     self:draw_world_minimap(dst_surface)
   else
     -- TODO
   end
+
+  self:draw_save_dialog_if_any(dst_surface)
 end
 
 function map_submenu:draw_world_minimap(dst_surface)
@@ -154,7 +147,7 @@ function map_submenu:draw_world_minimap(dst_surface)
       self.up_arrow_sprite:draw(dst_surface, 211, 55)
     end
 
-    if self.world_minimap_visible_y < outside_world_minimap_size.height - 133 then
+    if self.world_minimap_visible_y < outside_world_minimap_size.height - 134 then
       self.down_arrow_sprite:draw(dst_surface, 96, 188)
       self.down_arrow_sprite:draw(dst_surface, 211, 188)
     end

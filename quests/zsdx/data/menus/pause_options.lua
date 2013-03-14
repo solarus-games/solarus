@@ -71,6 +71,7 @@ function options_submenu:on_started()
   self.down_arrow_sprite = sol.sprite.create("menus/arrow")
   self.down_arrow_sprite:set_direction(3)
   self.cursor_sprite = sol.sprite.create("menus/options_cursor")
+  self.cursor_position = nil
   self:set_cursor_position(1)
 
   self.game:set_custom_command_effect("action", "change")
@@ -108,8 +109,8 @@ function options_submenu:set_cursor_position(position)
     self.cursor_position = position
     if position == 1 then  -- Video mode.
       self:set_caption("options.caption.press_action_change_mode")
-      self.cursor_sprite.x = 104
-      self.cursor_sprite.y = 62
+      self.cursor_sprite.x = 102
+      self.cursor_sprite.y = 61
       self.cursor_sprite:set_animation("big")
     else  -- Customization of a command.
       self:set_caption("options.caption.press_action_customize_key")
@@ -138,7 +139,6 @@ function options_submenu:on_draw(dst_surface)
 
   self:draw_background(dst_surface)
   self:draw_caption(dst_surface)
-  self:draw_save_dialog_if_any(dst_surface)
 
   -- Cursor.
   self.cursor_sprite:draw(dst_surface, self.cursor_sprite.x, self.cursor_sprite.y)
@@ -153,13 +153,15 @@ function options_submenu:on_draw(dst_surface)
   -- Arrows.
   if self.commands_visible_y > 0 then
     self.up_arrow_sprite:draw(dst_surface, 96, 96)
-    self.up_arrow_sprite:draw(dst_surface, 251, 96)
+    self.up_arrow_sprite:draw(dst_surface, 211, 96)
   end
 
   if self.commands_visible_y < 60 then
     self.down_arrow_sprite:draw(dst_surface, 96, 182)
-    self.down_arrow_sprite:draw(dst_surface, 251, 182)
+    self.down_arrow_sprite:draw(dst_surface, 211, 182)
   end
+
+  self:draw_save_dialog_if_any(dst_surface)
 end
 
 function options_submenu:on_command_pressed(command)

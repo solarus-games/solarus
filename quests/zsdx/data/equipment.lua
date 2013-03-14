@@ -92,13 +92,12 @@ end
 function game:has_bottle()
 
   for i = 1, 4 do
-    local item = self:get_item("bottle_" .. i)
-    if item:has_variant() then
-      return item
+    if self:has_item("bottle_" .. i) then
+      return true
     end
   end
 
-  return nil
+  return false
 end
 
 function game:has_bottle_with(variant)

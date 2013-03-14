@@ -5,7 +5,7 @@ local function potion_buying(shop_item)
 
   local bottle_2 = map:get_game():get_item("bottle_2")
   if not map:get_game():get_value("b911")
-      and bottle_2:has_variant() then
+      and not bottle_2:has_variant() then
     -- give bottle 2
     bottle_2:set_variant(1)
   end

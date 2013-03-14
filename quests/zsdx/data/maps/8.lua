@@ -43,7 +43,7 @@ end
 function dungeon_7_lock:on_interaction()
 
   -- open the door if the player has the ice key
-  if map:get_game():get_item("ice_key"):has_variant() then
+  if map:get_game():has_item("ice_key") then
     sol.audio.play_sound("door_open")
     sol.audio.play_sound("secret")
     map:get_game():set_value("b919", true)

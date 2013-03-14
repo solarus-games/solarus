@@ -13,7 +13,7 @@ end
 -- Function called when the player presses the action key on the door
 function bone_key_door:on_interaction()
 
-  if not map:get_game():get_item("bone_key"):has_variant() then
+  if not map:get_game():has_item("bone_key") then
     map:start_dialog("hidden_palace.door_closed")
   else
     map:start_dialog("hidden_palace.using_bone_key", function()

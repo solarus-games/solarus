@@ -42,7 +42,7 @@ function map:on_started(destination)
     quiver_3:remove()
     rupee_bag:remove()
 
-    if map:get_game():get_item("rupee_bag"):has_variant(2)
+    if map:get_game():has_item("rupee_bag")
         and not map:get_game():is_dungeon_finished(2) then
       lamp:remove()
     end

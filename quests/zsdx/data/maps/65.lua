@@ -135,7 +135,7 @@ end
 
 function prison_1_lock:on_interaction()
 
-  if not map:get_game():get_item("iron_key"):has_variant() then
+  if not map:get_game():has_item("iron_key") then
     map:start_dialog("dungeon_5.prison_1_locked")
   else
     map:start_dialog("dungeon_5.prison_1_use_iron_key", function()

@@ -80,7 +80,7 @@ end
 
 function save_s_blocks_sensor:on_activated()
 
-  if map:get_game():get_item("feather"):has_variant()
+  if map:get_game():has_item("feather")
       and not map:get_game():get_value("b517") then
     -- solved the blocks puzzle necessary to exit this floor
     map:get_game():set_value("b517", true)

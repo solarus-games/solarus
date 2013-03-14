@@ -96,7 +96,7 @@ end
 function tom_cave_door:on_interaction()
 
   -- open the door if the player has the clay key
-  if map:get_game():get_item("clay_key"):has_variant() then
+  if map:get_game():has_item("clay_key") then
     sol.audio.play_sound("door_open")
     sol.audio.play_sound("secret")
     map:get_game():set_value("b36", true)
@@ -109,7 +109,7 @@ end
 function stone_lock:on_interaction()
 
   -- open the door if the player has the stone key
-  if map:get_game():get_item("stone_key"):has_variant() then
+  if map:get_game():has_item("stone_key") then
     sol.audio.play_sound("door_open")
     sol.audio.play_sound("secret")
     map:get_game():set_value("b159", true)

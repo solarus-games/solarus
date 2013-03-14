@@ -32,7 +32,7 @@ function map_submenu:on_started()
       self.world_minimap_img = sol.surface.create("menus/outside_world_clouds.png")
       self.world_minimap_visible_y = 0
     end
-    self:rebuild_world_minimap_visible_surface()
+    self.world_minimap_visible_surface = sol.surface.create(self.world_minimap_img, 0, self.world_minimap_visible_y, 255, 133)
 
   else
     -- In a dungeon.
@@ -69,37 +69,24 @@ function map_submenu:on_command_pressed(command)
       -- Move the outside world minimap.
       if self.game:has_item("world_map") then
 
-        local dy = 0
-        if command == "up" then dy = -1 else dy = 1
+        local angle
+        if command == "up" then
+          angle = math.pi / 2
+        else
+          angle = 3 * math.pi / 2
         end
 
-        function repeat_move_world_minimap()
-          local up = self.game:is_command_pressed("up")
-          local down = self.game:is_command_pressed("down")
-          if dy == -1 then
-            if not up then
-              if down then dy = 1 else dy = 0
-              end
-            elseif self.world_minimap_visible_y <= 0 then
-              dy = 0
-            end
-          elseif dy == 1 then
-            if not down then
-              if up then dy = -1 else dy = 0
-              end
-            elseif self.world_minimap_visible_y > outside_world_minimap_size.height - 134 then
-              dy = 0
-            end
-          end
+        local movement = sol.movement.create("straight")
+        movement:set_speed(96)
+        movement:set_angle(angle)
+        --movement:set_max_distance()
+        self.world_minimap_img:start_movement(movement)
 
-          if dy ~= 0 then
-            self.world_minimap_visible_y = self.world_minimap_visible_y + dy * 3
-            self:rebuild_world_minimap_visible_surface()
-            sol.timer.start(20, repeat_move_world_minimap)
-          end
-        end  -- function
-
-        repeat_move_world_minimap()
+        local submenu = self
+        function movement:on_position_changed()
+          _, self.world_minimap_visible_y = self:get_xy()
+          submenu.world_minimap_visible_surface = sol.surface.create(submenu.world_minimap_img, 0, self.world_minimap_visible_y, 255, 133)
+        end
       end
     else
       -- We are in a dungeon: select another floor.
@@ -108,11 +95,6 @@ function map_submenu:on_command_pressed(command)
     handled = true
   end
   return handled
-end
-
-function map_submenu:rebuild_world_minimap_visible_surface()
-
-  self.world_minimap_visible_surface = sol.surface.create(self.world_minimap_img, 0, self.world_minimap_visible_y, 255, 133)
 end
 
 function map_submenu:on_draw(dst_surface)

@@ -367,7 +367,8 @@ class LuaContext {
       timer_api_set_suspended,
       timer_api_is_suspended_with_map,
       timer_api_set_suspended_with_map,
-      // TODO add get_remaining_time, set_remaining_time
+      // TODO add get_remaining_time, set_remaining_time,
+      // TODO allow to repeat a timer automatically
       // TODO remove is_with_sound, set_with_sound (do this in pure Lua, possibly with a second timer)
       // TODO game:is_suspended, timer:is/set_suspended_with_map, sprite:get/set_ignore_suspend
       // are the same concept, make these names consistent

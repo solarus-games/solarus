@@ -78,6 +78,7 @@ void LuaContext::register_game_module() {
       { "set_command_keyboard_binding", game_api_set_command_keyboard_binding },
       { "get_command_joypad_binding", game_api_get_command_joypad_binding },
       { "set_command_joypad_binding", game_api_set_command_joypad_binding },
+      { "capture_command_binding", game_api_capture_command_binding },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -988,6 +989,30 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
   }
   GameCommands& commands = savegame.get_game()->get_commands();
   commands.set_joypad_binding(command, joypad_string);
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_capture_command_binding.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_capture_command_binding(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+
+  int callback_ref = LUA_REFNIL;
+  if (lua_gettop(l) >= 3) {
+    luaL_checktype(l, 3, LUA_TFUNCTION);
+    lua_settop(l, 3);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  commands.customize(command, callback_ref);
 
   return 0;
 }

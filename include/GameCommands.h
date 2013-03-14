@@ -69,7 +69,7 @@ class GameCommands {
     bool is_command_pressed(Command command);
     int get_wanted_direction8();
 
-    void customize(Command command);
+    void customize(Command command, int callback_ref);
     bool is_customizing();
     Command get_command_to_customize();
 
@@ -116,8 +116,10 @@ class GameCommands {
     bool customizing;                    /**< Indicates that the next keyboard or
                                           * joypad event will be considered as the
                                           * new binding for a game command. */
-    Command command_to_customize;    /**< The game command being customized
+    Command command_to_customize;        /**< The game command being customized
                                           * when customizing is true. */
+    int customize_callback_ref;          /**< Lua ref to a function to call
+                                          * when the customization finishes. */
 
     static const uint16_t
         direction_masks[4];              /**< Bit mask associated to each direction:

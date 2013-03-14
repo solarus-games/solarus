@@ -23,6 +23,7 @@
 #include "entities/Hero.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lua/LuaContext.h"
 
 /**
  * @brief Lua name of each value of the Command enum.
@@ -41,10 +42,10 @@ const std::string GameCommands::command_names[] = {
 };
 
 const std::string GameCommands::direction_names[4] = {
-    "right",
-    "up",
-    "left",
-    "down"
+  "right",
+  "up",
+  "left",
+  "down"
 };
 
 const uint16_t GameCommands::direction_masks[4] = {
@@ -80,7 +81,8 @@ const int GameCommands::masks_to_directions8[] = {
 GameCommands::GameCommands(Game& game):
   game(game),
   customizing(false),
-  command_to_customize(NONE){
+  command_to_customize(NONE),
+  customize_callback_ref(LUA_REFNIL) {
 
   // Load the commands from the savegame.
   for (int i = 0; i < NB_COMMANDS; i++) {
@@ -104,6 +106,8 @@ GameCommands::GameCommands(Game& game):
  * @brief Destructor.
  */
 GameCommands::~GameCommands() {
+
+  game.get_lua_context().cancel_callback(customize_callback_ref);
 }
 
 /**
@@ -208,6 +212,8 @@ void GameCommands::keyboard_key_pressed(InputEvent::KeyboardKey keyboard_key_pre
       set_keyboard_binding(command_to_customize, keyboard_key_pressed);
       commands_pressed[command_to_customize] = true;
     }
+    game.get_lua_context().do_callback(customize_callback_ref);
+    customize_callback_ref = LUA_REFNIL;
   }
 }
 
@@ -344,6 +350,8 @@ void GameCommands::joypad_axis_moved(int axis, int state) {
         set_joypad_binding(command_to_customize, joypad_string);
         commands_pressed[command_to_customize] = true;
       }
+      game.get_lua_context().do_callback(customize_callback_ref);
+      customize_callback_ref = LUA_REFNIL;
     }
   }
 }
@@ -482,6 +490,8 @@ void GameCommands::joypad_hat_moved(int hat, int value) {
         set_joypad_binding(command_to_customize, joypad_string_1);
         commands_pressed[command_to_customize] = true;
       }
+      game.get_lua_context().do_callback(customize_callback_ref);
+      customize_callback_ref = LUA_REFNIL;
     }
   }
 }
@@ -741,13 +751,16 @@ void GameCommands::set_saved_joypad_binding(
  * After this function is called, the next keyboard or joypad event received will
  * not be treated normally; it will be considered as the new keyboard or joypad
  * binding for this game key. Then, keyboard and joypad events will be treated
- * normally again. Call is_customization_done() to know when this happens.
+ * normally again.
  *
  * @param command The command to customize.
+ * @param callback_ref Lua ref to a function to call when the customization
+ * finishes, or LUA_REFNIL.
  */
-void GameCommands::customize(Command command) {
+void GameCommands::customize(Command command, int callback_ref) {
   this->customizing = true;
   this->command_to_customize = command;
+  this->customize_callback_ref = callback_ref;
 }
 
 /**

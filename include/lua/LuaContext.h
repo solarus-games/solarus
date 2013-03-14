@@ -540,13 +540,14 @@ class LuaContext {
       game_api_get_item,
       game_api_get_item_assigned,
       game_api_set_item_assigned,
+      game_api_is_command_pressed,
+      game_api_get_commands_direction,
       game_api_get_command_effect,  // TODO also return "run" for action command
       game_api_get_command_keyboard_binding,
       game_api_set_command_keyboard_binding,
       game_api_get_command_joypad_binding,
       game_api_set_command_joypad_binding,
-      game_api_is_command_pressed,
-      game_api_get_commands_direction,
+      game_api_capture_command_binding,
 
       // Equipment item API.
       item_api_get_name,

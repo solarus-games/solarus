@@ -9,6 +9,7 @@ function options_submenu:on_started()
     horizontal_alignment = "right",
     vertical_alignment = "top",
     font = "fixed",
+    text_key = "options.video_mode." .. sol.video.get_mode(),
   }
 
   self.command_column_text = sol.text_surface.create{
@@ -47,7 +48,7 @@ function options_submenu:on_started()
       horizontal_alignment = "left",
       vertical_alignment = "top",
       font = "fixed",
-      text_key = "options.command." .. command_names[i],
+      text_key = "options.command." .. self.command_names[i],
     }
 
     self.keyboard_texts[i] = sol.text_surface.create{
@@ -91,6 +92,13 @@ function options_submenu:load_command_texts()
     self.keyboard_texts[i]:draw(self.commands_surface, 74, y)
     self.joypad_texts[i]:draw(self.commands_surface, 143, y)
   end
+
+  self:rebuild_commands_surface()
+end
+
+function options_submenu:rebuild_commands_surface()
+
+  self.commands_visible_surface = sol.surface.create(self.commands_surface, 0, self.commands_visible_y, 215, 84)
 end
 
 function options_submenu:set_cursor_position(position)
@@ -118,11 +126,11 @@ function options_submenu:set_cursor_position(position)
       end
 
       self.cursor_sprite.x = 55
-      self.cursor_sprite.y = 88 + 16 * (position - self.highest_visible_key)
+      self.cursor_sprite.y = 88 + 16 * (position - self.commands_highest_visible)
       self.cursor_sprite:set_animation("small")
     end
 
-    self.commands_visible_surface = sol.surface.create(self.commands_surface, 0, self.commands_visible_y, 215, 84)
+    self:rebuild_commands_surface()
   end
 end
 
@@ -137,9 +145,10 @@ function options_submenu:on_draw(dst_surface)
 
   -- Text.
   self.video_mode_text:draw(dst_surface, 264, 62)
-  self.keyboard_text:draw(dst_surface, 153, 83)
-  self.joypad_text:draw(dst_surface, 229, 83)
-  self.commands_visible_surface:blit(dst_surface, 53, 102)
+  self.command_column_text:draw(dst_surface, 84, 83)
+  self.keyboard_column_text:draw(dst_surface, 153, 83)
+  self.joypad_column_text:draw(dst_surface, 229, 83)
+  self.commands_visible_surface:draw(dst_surface, 53, 102)
 
   -- Arrows.
   if self.commands_visible_y > 0 then
@@ -182,11 +191,12 @@ function options_submenu:on_command_pressed(command)
       if self.cursor_position == 1 then
         -- Change the video mode.
         sol.video.switch_mode()
+        self.video_mode_text:set_text_key("options.video_mode." .. sol.video.get_mode())
       else
         -- Customize a game command.
-        self:set_caption_text("options.caption.press_key")
+        self:set_caption("options.caption.press_key")
         self.cursor_sprite:set_animation("small_blink")
-        local command_to_customize = self.command_names[self.cursor_position]
+        local command_to_customize = self.command_names[self.cursor_position - 1]
         self.game:capture_command_binding(command_to_customize, function()
           sol.audio.play_sound("danger")
           self:set_caption("options.caption.press_action_customize_key")

@@ -35,8 +35,10 @@ class Drawable: public ExportableToLua {
     virtual ~Drawable();
 
     // dynamic effects
-    void start_movement(Movement& movement, int callback_ref, LuaContext* lua_context);
+    void start_movement(Movement& movement);
     void stop_movement();
+    const Rectangle& get_xy();
+    void set_xy(const Rectangle& xy);
 
     void start_transition(Transition& transition, int callback_ref, LuaContext* lua_context);
     void stop_transition();
@@ -75,14 +77,12 @@ class Drawable: public ExportableToLua {
 
   private:
 
-    Rectangle last_position;      /**< position of this object after its last
-                                   * movement */
-    Movement* movement;           /**< a movement applied, or NULL (will be
-                                   * deleted then if unused elsewhere) */
-    int movement_callback_ref;    /**< Lua registry ref of a function to call
-                                   * when the movement finishes */
-    Transition* transition;       /**< a transition applied, or NULL
-                                   * (will be deleted then) */
+    Rectangle xy;                 /**< Current position of this object
+                                   * (result of movements). */
+    Movement* movement;           /**< A movement applied, or NULL (will be
+                                   * deleted then if unused elsewhere). */
+    Transition* transition;       /**< A transition applied, or NULL
+                                   * (will be deleted then). */
     int transition_callback_ref;  /**< Lua registry ref of a function to call
                                    * when the transition finishes */
     LuaContext* lua_context;      /**< The Lua world used for callbacks. */

@@ -186,6 +186,11 @@ class LuaContext {
     void remove_drawable(Drawable* drawable);
     void update_drawables();
 
+    // Movements.
+    void start_movement_on_point(Movement& movement, int point_index);
+    void stop_movement_on_point(Movement& movement);
+    void update_movements();
+
     // Entities.
     static Map& get_entity_creation_map(lua_State* l);
     static Map* get_entity_implicit_creation_map(lua_State* l);
@@ -271,7 +276,7 @@ class LuaContext {
     // TODO entity_on_created
     void entity_on_removed(MapEntity& entity);
     // TODO add destination_on_activated
-    void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now) and add a callback to entity:start_movement()
+    void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now)
     void npc_on_interaction(NPC& npc);
     bool npc_on_interaction_item(NPC& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(NPC& npc);
@@ -386,8 +391,6 @@ class LuaContext {
       drawable_api_draw,
       drawable_api_fade_in,
       drawable_api_fade_out,
-      drawable_api_start_movement,
-      drawable_api_stop_movement,
       drawable_meta_gc,
 
       // Surface API.
@@ -418,7 +421,7 @@ class LuaContext {
       // Sprite API.
       sprite_api_create,
       sprite_api_get_animation,
-      sprite_api_set_animation,
+      sprite_api_set_animation,  // TODO allow to pass the on_animation_finished callback as a parameter?
       sprite_api_get_direction,
       sprite_api_set_direction,
       sprite_api_get_frame,
@@ -436,6 +439,8 @@ class LuaContext {
       movement_api_set_xy,
       movement_api_get_ignore_obstacles,
       movement_api_set_ignore_obstacles,
+      movement_api_start,
+      movement_api_stop,
       movement_api_get_direction4,
       straight_movement_api_get_speed,
       straight_movement_api_set_speed,
@@ -663,8 +668,6 @@ class LuaContext {
       entity_api_create_sprite,
       entity_api_remove_sprite,
       entity_api_get_movement,
-      entity_api_start_movement,
-      entity_api_stop_movement,
       entity_api_has_layer_independent_collisions,
       entity_api_set_layer_independent_collisions,
       entity_api_test_obstacles,

@@ -33,8 +33,8 @@ More precisely, what happens can be one of the following.
   for instance \ref lua_api_item_on_npc_interaction "item:on_npc_interaction()".
   or \ref lua_api_item_on_npc_interaction_item "item:on_npc_interaction_item()".
 
-An %NPC can move if you associate a movement to it:
-see \ref lua_api_entity_start_movement "npc:start_movement()".
+An %NPC can move if you apply a movement to it by calling
+\ref lua_api_movement_start "movement:start(npc)".
 
 The size of an %NPC is always 16x16 pixels
 (like the \ref lua_api_hero "hero")

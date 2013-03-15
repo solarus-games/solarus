@@ -24,7 +24,7 @@ The API exports C++ functions and C++ datatypes that may be used by your scripts
 Examples of such features are
 \ref lua_api_sprite_create "creating a sprite",
 \ref lua_api_drawable_draw "drawing an image" or
-\ref lua_api_entity_start_movement "moving an enemy".
+\ref lua_api_movement_start "moving an enemy".
 In the opposite way, Solarus will also call your own Lua functions (if you
 define them), for example to notify your script that
 \ref lua_api_enemy_on_obstacle_reached "an enemy has reached an obstacle",

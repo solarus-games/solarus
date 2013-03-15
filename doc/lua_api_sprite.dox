@@ -50,7 +50,7 @@ The following methods are specific to sprites.
 Returns the name of the current animation of this sprite.
 - Return value (string): Name of the current animation.
 
-\subsection lua_api_sprite_set_animation sprite:set_animation()
+\subsection lua_api_sprite_set_animation sprite:set_animation(animation_name)
 
 Sets the current animation of this sprite.
 - \c animation_name (string): Name of the animation to set.

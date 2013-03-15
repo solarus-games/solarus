@@ -39,8 +39,6 @@ void LuaContext::register_surface_module() {
       { "draw", drawable_api_draw },
       { "fade_in", drawable_api_fade_in },
       { "fade_out", drawable_api_fade_out },
-      { "start_movement", drawable_api_start_movement },
-      { "stop_movement", drawable_api_stop_movement },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {

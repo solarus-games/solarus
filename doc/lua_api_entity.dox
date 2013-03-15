@@ -311,15 +311,6 @@ Returns the current movement of this map entity.
 - Return value (\ref lua_api_movement "movement"): The current movement,
   or \c nil if the entity is not moving.
 
-\subsection lua_api_entity_start_movement entity:start_movement(movement)
-
-Starts a movement on this map entity.
-- \c movement (\ref lua_api_movement "movememt"): The movement to set.
-
-\subsection lua_api_entity_stop_movement entity:stop_movement()
-
-Stops the movement (if any) of this entity.
-
 \section lua_api_entity_events Events of all entity types
 
 Events are callback methods automatically called by the engine if you define

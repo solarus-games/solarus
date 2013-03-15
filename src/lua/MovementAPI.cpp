@@ -60,6 +60,8 @@ void LuaContext::register_movement_module() {
   static const luaL_Reg common_methods[] = {
       { "get_xy", movement_api_get_xy },
       { "set_xy", movement_api_set_xy },
+      { "start", movement_api_start },
+      { "stop", movement_api_stop },
       { "get_ignore_obstacles", movement_api_get_ignore_obstacles },
       { "set_ignore_obstacles", movement_api_set_ignore_obstacles },
       { "get_direction4", movement_api_get_direction4 },
@@ -206,6 +208,21 @@ void LuaContext::register_movement_module() {
   register_functions(movement_pixel_module_name, common_methods);
   register_type(movement_pixel_module_name, pixel_movement_methods,
       common_metamethods);
+
+  // Create the table that will store the movements applied to x,y points.
+                                  // ...
+  lua_newtable(l);
+                                  // ... movements
+  lua_newtable(l);
+                                  // ... movements meta
+  lua_pushstring(l, "v");
+                                  // ... movements meta "v"
+  lua_setfield(l, -2, "__mode");
+                                  // ... movements meta
+  lua_setmetatable(l, -2);
+                                  // ... movements
+  lua_setfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");
+                                  // ...
 }
 
 /**
@@ -256,6 +273,100 @@ void LuaContext::push_movement(lua_State* l, Movement& movement) {
 
   movement.set_lua_context(&get_lua_context(l));  // To make callbacks work.
   push_userdata(l, movement);
+}
+
+/**
+ * @brief Starts moving an x,y point.
+ *
+ * The point is a Lua array of two elements (x and y).
+ * It may be initially empty.
+ *
+ * @param movement The movement to apply to the points.
+ * @param point_index Index of the x,y array in the Lua stack.
+ */
+void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
+
+                                  // ...
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");
+                                  // ... movements
+  push_movement(l, movement);
+                                  // ... movements movement
+  lua_pushvalue(l, point_index);
+                                  // ... movements movement xy
+  lua_rawgeti(l, -1, 1);
+                                  // ... movements movement xy x/nil
+  if (lua_isnil(l, -1)) {
+                                  // ... movements movement xy nil
+    lua_pop(l, 1);
+                                  // ... movements movement xy
+    lua_pushinteger(l, 0);
+                                  // ... movements movement xy 0
+    lua_rawseti(l, -2, 1);
+                                  // ... movements movement xy
+  }
+  lua_rawgeti(l, -1, 2);
+                                  // ... movements movement xy y/nil
+  if (lua_isnil(l, -1)) {
+                                  // ... movements movement xy nil
+    lua_pop(l, 1);
+                                  // ... movements movement xy
+    lua_pushinteger(l, 0);
+                                  // ... movements movement xy 0
+    lua_rawseti(l, -2, 2);
+                                  // ... movements movement xy
+  }
+
+  lua_settable(l, -3);
+                                  // ... movements
+  lua_pop(l, 1);
+                                  // ...
+}
+
+/**
+ * @brief Stops moving an x,y point.
+ * @param movement The movement to stop.
+ */
+void LuaContext::stop_movement_on_point(Movement& movement) {
+
+                                  // ...
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");
+                                  // ... movements
+  push_movement(l, movement);
+                                  // ... movements movement
+  lua_pushnil(l);
+                                  // ... movements movement nil
+  lua_settable(l, -3);
+                                  // ... movements
+  lua_pop(l, 1);
+                                  // ...
+}
+
+/**
+ * @brief Updates all movements applied to x,y points.
+ *
+ * Movements applied to map entities or drawables are already updated
+ * by the entity or the drawable.
+ * This may change in the future in order to unify the handling of movements.
+ */
+void LuaContext::update_movements() {
+
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");
+  lua_pushnil(l);  // First key.
+  while (lua_next(l, -2)) {
+                                  // ... movements movement xy
+    Movement& movement = check_movement(l, -2);
+    const Rectangle& old_xy = movement.get_xy();
+    movement.update();
+    const Rectangle& new_xy = movement.get_xy();
+    if (!new_xy.equals_xy(old_xy)) {
+      lua_pushinteger(l, new_xy.get_x());
+      lua_rawseti(l, -2, 1);
+      lua_pushinteger(l, new_xy.get_y());
+      lua_rawseti(l, -2, 2);
+    }
+    lua_pop(l, 1);  // Pop the value, keep the key for next iteration.
+  }
+  lua_pop(l, 1);  // Pop the movements table.
 }
 
 /**
@@ -336,8 +447,9 @@ int LuaContext::movement_api_get_xy(lua_State* l) {
 
   Movement& movement = check_movement(l, 1);
 
-  lua_pushinteger(l, movement.get_x());
-  lua_pushinteger(l, movement.get_y());
+  const Rectangle& xy = movement.get_xy();
+  lua_pushinteger(l, xy.get_x());
+  lua_pushinteger(l, xy.get_y());
   return 2;
 }
 
@@ -358,6 +470,77 @@ int LuaContext::movement_api_set_xy(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_movement_start.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::movement_api_start(lua_State* l) {
+
+  LuaContext& lua_context = get_lua_context(l);
+
+  Movement& movement = check_movement(l, 1);
+
+  int callback_ref = LUA_REFNIL;
+  if (lua_gettop(l) >= 3) {
+    luaL_checktype(l, 3, LUA_TFUNCTION);
+    lua_settop(l, 3);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+    movement.set_lua_context(&lua_context);
+    movement.set_finished_callback(callback_ref);
+  }
+
+  if (lua_type(l, 2) == LUA_TTABLE) {
+    lua_context.start_movement_on_point(movement, 2);
+  }
+  else if (is_entity(l, 2)) {
+    MapEntity& entity = check_entity(l, 2);
+    entity.clear_movement();
+    entity.set_movement(&movement);
+  }
+  else if (is_drawable(l, 2)) {
+    Drawable& drawable = check_drawable(l, 2);
+    drawable.start_movement(movement);
+  }
+  else {
+    lua_context.cancel_callback(callback_ref);
+    luaL_typerror(l, 2, "table, entity or drawable");
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_movement_stop.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::movement_api_stop(lua_State* l) {
+
+  LuaContext& lua_context = get_lua_context(l);
+
+  Movement& movement = check_movement(l, 1);
+
+  MapEntity* entity = movement.get_entity();
+  if (entity != NULL) {
+    // The object controlled is a map entity.
+    entity->clear_movement();
+  }
+  else {
+    Drawable* drawable = movement.get_drawable();
+    if (drawable != NULL) {
+      // The object controlled is a drawable.
+      drawable->stop_movement();
+    }
+    else {
+      // The object controoled is a point.
+      lua_context.stop_movement_on_point(movement);
+    }
+  }
+
+  return 0;
+}
+
+/**
  * @brief Implementation of \ref lua_api_movement_get_ignore_obstacles.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
@@ -365,6 +548,7 @@ int LuaContext::movement_api_set_xy(lua_State* l) {
 int LuaContext::movement_api_get_ignore_obstacles(lua_State* l) {
 
   Movement& movement = check_movement(l, 1);
+
   lua_pushboolean(l, movement.are_obstacles_ignored());
   return 1;
 }

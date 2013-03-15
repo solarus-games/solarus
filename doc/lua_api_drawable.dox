@@ -39,25 +39,5 @@ Starts a fade-out effect on this object.
 - \c callback (function, optional): A function to call when the
   fade-out effect finishes.
 
-\subsection lua_api_drawable_start_movement drawable:start_movement(movement, [callback])
-
-Makes this object move.
-
-Moving a drawable object means that when the objects gets displayed
-somewhere, it is drawn with an offset corresponding to the result of the
-movement.
-- \c movement (\ref lua_api_movement "movement"): The movement to apply.
-  See \ref lua_api_movement_create "sol.movement.create()" to create it.
-- \c callback (function, optional): A function to call when the movement
-  finishes.
-
-\remark Only one movement can be applied at a time on a drawable object.
-If you call this function, any previous movement running on this object is
-stopped.
-
-\subsection lua_api_drawable_stop_movement drawable:stop_movement()
-
-Stops the movement of this drawable object, if any.
-
 */
 

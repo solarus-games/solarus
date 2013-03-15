@@ -102,8 +102,6 @@ void LuaContext::register_entity_module() {
       { "set_optimization_distance", entity_api_set_optimization_distance },
       { "test_obstacles", entity_api_test_obstacles },
       { "get_movement", entity_api_get_movement },
-      { "start_movement", entity_api_start_movement },
-      { "stop_movement", entity_api_stop_movement },
       { NULL, NULL }
   };
   static const luaL_Reg common_metamethods[] = {
@@ -126,7 +124,7 @@ void LuaContext::register_entity_module() {
       { "reset_solid_ground", hero_api_reset_solid_ground },
       { "freeze", hero_api_freeze },
       { "unfreeze", hero_api_unfreeze },
-      { "walk", hero_api_walk },  // TODO use the more general start_movement
+      { "walk", hero_api_walk },  // TODO use the more general movement:start
       { "start_jumping", hero_api_start_jumping },
       { "start_treasure", hero_api_start_treasure },
       { "start_victory", hero_api_start_victory},
@@ -637,40 +635,10 @@ int LuaContext::entity_api_get_movement(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_start_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::entity_api_start_movement(lua_State* l) {
-
-  MapEntity& entity = check_entity(l, 1);
-  Movement& movement = check_movement(l, 2);
-
-  entity.clear_movement();
-  entity.set_movement(&movement);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_entity_stop_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::entity_api_stop_movement(lua_State* l) {
-
-  MapEntity& entity = check_entity(l, 1);
-
-  entity.clear_movement();
-
-  return 0;
-}
-
-/**
  * @brief Implementation of
  * \ref lua_api_pickable_has_layer_independent_collisions and
  * \ref lua_api_enemy_has_layer_independent_collisions.
- * @param l The Lua context that is calling this function.
+  @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
 int LuaContext::entity_api_has_layer_independent_collisions(lua_State* l) {

@@ -170,45 +170,6 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_drawable_start_movement.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int LuaContext::drawable_api_start_movement(lua_State* l) {
-
-  Drawable& drawable = check_drawable(l, 1);
-  Movement& movement = check_movement(l, 2);
-
-  // the next argument (if any) is the callback
-  bool callback = lua_gettop(l) >= 3;
-
-  int callback_ref = LUA_REFNIL;
-  if (callback) {
-    luaL_checktype(l, 3, LUA_TFUNCTION);
-    lua_settop(l, 3);
-    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  }
-
-  drawable.start_movement(movement, callback_ref, &get_lua_context(l));
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_drawable_stop_movement.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
- */
-int LuaContext::drawable_api_stop_movement(lua_State* l) {
-
-  Drawable& drawable = check_drawable(l, 1);
-
-  drawable.stop_movement();
-
-  return 0;
-}
-
-/**
  * @brief Finalizer of types sprite, surface and text surface.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua

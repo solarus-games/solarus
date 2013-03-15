@@ -97,8 +97,8 @@ bounce of a few pixels over the ground during a fraction of second.
 The number of pixels, the duration
 and the number of bounces of the movement depends on this height.
 If you want to override that movement,
-(by calling \ref lua_api_entity_start_movement
-"pickable:start_movement()"), you may also want to make it
+(by calling \ref lua_api_movement_start
+"movement:start(pickable)"), you may also want to make it
 dependent of the falling height.
 - Return value (number): An integer indicating how high the pickable treasure
   falls from at creation time, between \c 0 (not falling at all)

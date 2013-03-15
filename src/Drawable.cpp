@@ -25,9 +25,8 @@
  * @brief Constructor.
  */
 Drawable::Drawable():
-  last_position(),
+  xy(),
   movement(NULL),
-  movement_callback_ref(LUA_REFNIL),
   transition(NULL),
   transition_callback_ref(LUA_REFNIL),
   lua_context(NULL) {
@@ -49,17 +48,11 @@ Drawable::~Drawable() {
  * Any previous movement is stopped.
  *
  * @param movement The movement to apply.
- * @param callback_ref A Lua registry ref to the function to call when
- * the movement finishes, or LUA_REFNIL.
- * @param lua_context The Lua world for the callback (or NULL).
  */
-void Drawable::start_movement(Movement& movement,
-    int callback_ref, LuaContext* lua_context) {
+void Drawable::start_movement(Movement& movement) {
 
   stop_movement();
   this->movement = &movement;
-  this->movement_callback_ref = callback_ref;
-  this->lua_context = lua_context;
   movement.increment_refcount();
 }
 
@@ -72,20 +65,29 @@ void Drawable::stop_movement() {
 
   if (movement != NULL) {
 
-    // keep the position after the movement
-    last_position.add_xy(movement->get_xy());
-
     movement->decrement_refcount();
     if (movement->get_refcount() == 0) {
       delete movement;
     }
   }
   movement = NULL;
+}
 
-  if (lua_context != NULL) {
-    lua_context->cancel_callback(this->movement_callback_ref);
-    movement_callback_ref = LUA_REFNIL;
-  }
+/**
+ * @brief Returns the coordinates of this drawable object as defined by its
+ * movement.
+ * @return The coordinates of this drawable object.
+ */
+const Rectangle& Drawable::get_xy() {
+  return xy;
+}
+
+/**
+ * @brief Sets the coordinates of this drawable object.
+ * @param xy The new coordinates of this drawable object.
+ */
+void Drawable::set_xy(const Rectangle& xy) {
+  this->xy.set_xy(xy);
 }
 
 /**
@@ -111,7 +113,7 @@ void Drawable::start_transition(Transition& transition,
 }
 
 /**
- * @brief Stops the transition effect applied to this object, if any
+ * @brief Stops the transition effect applied to this object, if any.
  *
  * The transition is deleted.
  */
@@ -150,12 +152,6 @@ void Drawable::update() {
   if (movement != NULL) {
     movement->update();
     if (movement->is_finished()) {
-
-      if (lua_context != NULL) {
-        int ref = movement_callback_ref;
-        movement_callback_ref = LUA_REFNIL;
-        lua_context->do_callback(ref);
-      }
       stop_movement();
     }
   }
@@ -190,10 +186,7 @@ void Drawable::draw(Surface& dst_surface, int x, int y) {
 void Drawable::draw(Surface& dst_surface,
     Rectangle dst_position) {
 
-  dst_position.add_xy(last_position);
-  if (movement != NULL) {
-    dst_position.add_xy(movement->get_xy());
-  }
+  dst_position.add_xy(xy);
 
   if (transition != NULL) {
     draw_transition(*transition);

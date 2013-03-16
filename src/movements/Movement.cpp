@@ -76,7 +76,7 @@ MapEntity* Movement::get_entity() const {
  */
 void Movement::set_entity(MapEntity* entity) {
 
-  Debug::check_assertion(entity == NULL, "This movement is already assigned to a drawable");
+  Debug::check_assertion(drawable == NULL, "This movement is already assigned to a drawable");
 
   this->entity = entity;
 

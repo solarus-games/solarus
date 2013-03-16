@@ -942,9 +942,9 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
   }
 
   int callback_ref = LUA_REFNIL;
-  if (lua_gettop(l) >= 4) {
-    luaL_checktype(l, 4, LUA_TFUNCTION);
-    lua_settop(l, 4);
+  if (lua_gettop(l) >= 5) {
+    luaL_checktype(l, 5, LUA_TFUNCTION);
+    lua_settop(l, 5);
     callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
   }
 

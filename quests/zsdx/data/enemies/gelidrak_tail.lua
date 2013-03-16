@@ -39,7 +39,7 @@ function enemy:on_restarted()
     m:set_speed(64)
     m:set_ignore_obstacles(true)
     m:set_loop(true)
-    self:start_movement(m)
+    m:start(self)
   else
     self:stop_movement()
     sol.timer.start(self, retracted_delay, function()
@@ -47,7 +47,7 @@ function enemy:on_restarted()
       local m = sol.movement.create("target")
       m:set_speed(48)
       m:set_target(x, y - 112)
-      self:start_movement(m)
+      m:start(self)
     end)
   end
 end

@@ -40,7 +40,7 @@ local function billy_leave()
     m:set_path{4,4,4,4,4,4,4}
     m:set_speed(48)
     m:set_ignore_obstacles(true)
-    billy:start_movement(m)
+    m:start(billy)
     sprite:set_animation("walking")
   elseif billy_leave_step == 2 then
     sprite:set_direction(1)
@@ -52,7 +52,7 @@ local function billy_leave()
     local m = sol.movement.create("path")
     m:set_path{2,2,2,2,2,2,2,2}
     m:set_speed(48)
-    billy:start_movement(m)
+    m:start(billy)
     sprite:set_animation("walking")
   else
     map:close_doors("door")

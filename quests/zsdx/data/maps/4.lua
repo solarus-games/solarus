@@ -43,7 +43,7 @@ function map:on_started(destination)
 
   local m = sol.movement.create("random_path")
   m:set_speed(32)
-  chignon_woman:start_movement(m)
+  m:start(chignon_woman)
   chignon_woman:get_sprite():set_animation("walking")
 
   -- remove Tom's cave door if open

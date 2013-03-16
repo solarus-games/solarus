@@ -80,7 +80,7 @@ function map_submenu:on_command_pressed(command)
         movement:set_speed(96)
         movement:set_angle(angle)
         --movement:set_max_distance()
-        self.world_minimap_img:start_movement(movement)
+        movement:start(self.world_minimap_img)
 
         local submenu = self
         function movement:on_position_changed()

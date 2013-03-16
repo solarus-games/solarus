@@ -72,7 +72,7 @@ function enemy:go(direction4)
     m:set_angle(angle)
     m:set_max_distance(104)
     m:set_smooth(false)
-    self:start_movement(m)
+    m:start(self)
   end
 end
 
@@ -103,7 +103,7 @@ function enemy:go_back()
     m:set_speed(64)
     m:set_target(initial_xy.x, initial_xy.y)
     m:set_smooth(false)
-    self:start_movement(m)
+    m:start(self)
     sol.audio.play_sound("sword_tapping")
 
   elseif state == "going_back" then

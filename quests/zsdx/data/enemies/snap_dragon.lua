@@ -44,7 +44,7 @@ function enemy:go_random()
   m:set_speed(48)
   m:set_angle(angle)
   m:set_max_distance(24 + math.random(96))
-  self:start_movement(m)
+  m:start(self)
 
   sprite:set_direction(rand4 - 1)
 

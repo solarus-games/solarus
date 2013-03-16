@@ -61,7 +61,7 @@ function enemy:go(direction8)
   local m = sol.movement.create("straight")
   m:set_speed(80)
   m:set_angle(direction8 * math.pi / 4)
-  self:start_movement(m)
+  m:start(self)
   last_direction8 = direction8
 end
 

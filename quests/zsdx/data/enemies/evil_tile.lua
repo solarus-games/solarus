@@ -34,7 +34,7 @@ function enemy:on_restarted()
   local m = sol.movement.create("path")
   m:set_path{2,2}
   m:set_speed(16)
-  self:start_movement(m)
+  m:start(self)
   timer = sol.timer.start(self, 2000, function() self:go_hero() end)
   state = "raising"
 end
@@ -46,7 +46,7 @@ function enemy:go_hero()
   m:set_speed(192)
   m:set_angle(angle)
   m:set_smooth(false)
-  self:start_movement(m)
+  m:start(self)
   state = "attacking"
 end
 

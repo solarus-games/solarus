@@ -23,7 +23,7 @@ local function init_guard(guard, x, y, direction, path)
     m:set_speed(72)
     m:set_loop(true)
     m:set_ignore_obstacles(true)
-    guard:start_movement(m)
+    m:start(guard)
     sprite:set_animation("walking")
   else
     sprite:set_animation("stopped")

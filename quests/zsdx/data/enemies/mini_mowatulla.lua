@@ -24,11 +24,11 @@ function enemy:on_restarted()
     sprite:set_animation("shell")
     local m = sol.movement.create("target")
     m:set_speed(64)
-    self:start_movement(m)
+    m:start(self)
   else
     local m = sol.movement.create("path_finding")
     m:set_speed(64)
-    self:start_movement(m)
+    m:start(self)
   end
 end
 

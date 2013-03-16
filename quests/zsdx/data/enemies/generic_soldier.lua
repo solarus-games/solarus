@@ -141,14 +141,14 @@ function enemy:on_custom_attack_received(attack, sprite)
     movement:set_angle(angle)
     movement:set_max_distance(26)
     movement:set_smooth(true)
-    self:start_movement(movement)
+    movement:start(self)
   end
 end
 
 function enemy:go_random()
   local movement = sol.movement.create("random_path")
   movement:set_speed(properties.normal_speed)
-  self:start_movement(movement)
+  movement:start(self)
   being_pushed = false
   going_hero = false
 end
@@ -156,7 +156,7 @@ end
 function enemy:go_hero()
   local movement = sol.movement.create("target")
   movement:set_speed(properties.faster_speed)
-  self:start_movement(movement)
+  movement:start(self)
   being_pushed = false
   going_hero = true
 end

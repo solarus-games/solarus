@@ -14,7 +14,7 @@ local function seen_by_guard(guard)
   guard:get_sprite():set_animation("walking")
   local m = sol.movement.create("target")
   m:set_speed(96)
-  guard:start_movement(m)
+  m:start(guard)
   sol.audio.play_sound("hero_seen")
   prison_dialog_timer = sol.timer.start(500, function()
     if prison_dialog_timer ~= nil then

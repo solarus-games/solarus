@@ -12,7 +12,7 @@ local function init_guard(guard, path)
   m:set_speed(48)
   m:set_loop(true)
   m:set_ignore_obstacles(true)
-  guard:start_movement(m)
+  m:start(guard)
   guard:get_sprite():set_animation("walking")
 end
 

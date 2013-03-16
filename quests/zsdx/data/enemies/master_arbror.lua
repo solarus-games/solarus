@@ -37,7 +37,7 @@ function enemy:go()
   local m = sol.movement.create("random")
   m:set_speed(16)
   m:set_max_distance(16)
-  self:start_movement(m)
+  m:start(self)
   for _, t in ipairs(timers) do t:stop() end
   timers[#timers + 1] = sol.timer.start(self, math.random(2000, 3000), function()
     self:prepare_son()

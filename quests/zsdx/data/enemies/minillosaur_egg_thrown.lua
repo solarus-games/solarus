@@ -26,7 +26,7 @@ function enemy:on_restarted()
     m:set_angle(angle)
     m:set_max_distance(180)
     m:set_smooth(false)
-    self:start_movement(m)
+    m:start(self)
   else
     self:go_hero()
   end
@@ -80,7 +80,7 @@ function enemy:go_hero()
   self:snap_to_grid()
   local m = sol.movement.create("path_finding")
   m:set_speed(40)
-  self:start_movement(m)
+  m:start(self)
   self:set_default_attack_consequences()
   in_egg = false
 end

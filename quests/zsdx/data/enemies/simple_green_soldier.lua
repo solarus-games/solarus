@@ -26,7 +26,7 @@ function enemy:on_restarted()
 
   local m = sol.movement.create("straight")
   m:set_speed(0)
-  self:start_movement(m)
+  m:start(self)
   local direction4 = math.random(4) - 1
   self:go(direction4)
 end

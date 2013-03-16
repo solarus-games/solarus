@@ -10,7 +10,7 @@ local function random_walk(npc)
 
   local m = sol.movement.create("random_path")
   m:set_speed(32)
-  npc:start_movement(m)
+  m:start(npc)
   npc:get_sprite():set_animation("walking")
 end
 
@@ -98,7 +98,7 @@ function monkey:on_interaction()
 	  m:set_distance(24)
 	  m:set_ignore_obstacles(true)
 	  m:set_speed(monkey_jump_speed)
-	  monkey:start_movement(m)
+          m:start(monkey)
 	  monkey_sprite:set_animation("jumping")
 	  monkey_jumps = 1
 	  map:get_game():set_value("b24", true)
@@ -153,7 +153,7 @@ function monkey:on_movement_finished()
       m:set_distance(56)
       m:set_ignore_obstacles(true)
       m:set_speed(monkey_jump_speed)
-      monkey:start_movement(m)
+      m:start(monkey)
       monkey_sprite:set_animation("jumping")
       monkey_jumps = 2
     end)
@@ -165,7 +165,7 @@ function monkey:on_movement_finished()
     m:set_distance(64)
     m:set_ignore_obstacles(true)
     m:set_speed(monkey_jump_speed)
-    monkey:start_movement(m)
+    m:start(monkey)
     monkey_sprite:set_animation("jumping")
     monkey_jumps = 3
   else

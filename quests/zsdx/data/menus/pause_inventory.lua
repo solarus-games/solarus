@@ -281,7 +281,7 @@ function inventory_submenu:assign_item(slot)
   movement:set_xy(x1, y1)
   movement:set_target(x2, y2)
   movement:set_speed(500)
-  self.item_assigned_sprite:start_movement(movement, function()
+  movement:start(self.item_assigned_sprite, function()
     self:finish_assigning_item()
   end)
 end

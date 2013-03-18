@@ -286,6 +286,8 @@ void LuaContext::push_movement(lua_State* l, Movement& movement) {
  */
 void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
 
+  int x = 0;
+  int y = 0;
                                   // ...
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");
                                   // ... movements
@@ -304,6 +306,12 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
     lua_rawseti(l, -2, 1);
                                   // ... movements movement xy
   }
+  else {
+                                  // ... movements movement xy x
+    x = luaL_checkinteger(l, -1);
+    lua_pop(l, 1);
+                                  // ... movements movement xy
+  }
   lua_rawgeti(l, -1, 2);
                                   // ... movements movement xy y/nil
   if (lua_isnil(l, -1)) {
@@ -314,12 +322,20 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
                                   // ... movements movement xy 0
     lua_rawseti(l, -2, 2);
                                   // ... movements movement xy
+    movement.set_y(0);
+  }
+  else {
+                                  // ... movements movement xy y
+    y = luaL_checkinteger(l, -1);
+    lua_pop(l, 1);
+                                  // ... movements movement xy
   }
 
   lua_settable(l, -3);
                                   // ... movements
   lua_pop(l, 1);
                                   // ...
+  movement.set_xy(x, y);
 }
 
 /**
@@ -353,17 +369,8 @@ void LuaContext::update_movements() {
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");
   lua_pushnil(l);  // First key.
   while (lua_next(l, -2)) {
-                                  // ... movements movement xy
     Movement& movement = check_movement(l, -2);
-    const Rectangle& old_xy = movement.get_xy();
     movement.update();
-    const Rectangle& new_xy = movement.get_xy();
-    if (!new_xy.equals_xy(old_xy)) {
-      lua_pushinteger(l, new_xy.get_x());
-      lua_rawseti(l, -2, 1);
-      lua_pushinteger(l, new_xy.get_y());
-      lua_rawseti(l, -2, 2);
-    }
     lua_pop(l, 1);  // Pop the value, keep the key for next iteration.
   }
   lua_pop(l, 1);  // Pop the movements table.
@@ -479,6 +486,7 @@ int LuaContext::movement_api_start(lua_State* l) {
   LuaContext& lua_context = get_lua_context(l);
 
   Movement& movement = check_movement(l, 1);
+  movement_api_stop(l);  // First, stop any previous movement.
 
   int callback_ref = LUA_REFNIL;
   if (lua_gettop(l) >= 3) {
@@ -1680,7 +1688,29 @@ int LuaContext::pixel_movement_api_set_delay(lua_State* l) {
  */
 void LuaContext::movement_on_position_changed(Movement& movement) {
 
+                                  // ...
   push_movement(l, movement);
+                                  // ... movement
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.movements_on_points");
+                                  // ... movement movements
+  lua_pushvalue(l, -2);
+                                  // ... movement movements movement
+  lua_gettable(l, -2);
+                                  // ... movement movements xy/nil
+  if (!lua_isnil(l, -1)) {
+                                  // ... movement movements xy
+    const Rectangle& xy = movement.get_xy();
+    lua_pushinteger(l, xy.get_x());
+                                  // ... movement movements xy x
+    lua_rawseti(l, -2, 1);
+                                  // ... movement movements xy
+    lua_pushinteger(l, xy.get_y());
+                                  // ... movement movements xy y
+    lua_rawseti(l, -2, 2);
+                                  // ... movement movements xy
+  }
+  lua_pop(l, 2);
+                                  // ... movement
   on_position_changed();
   lua_pop(l, 1);
 }

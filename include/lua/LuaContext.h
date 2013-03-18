@@ -391,6 +391,7 @@ class LuaContext {
       drawable_api_draw,
       drawable_api_fade_in,
       drawable_api_fade_out,
+      // TODO add drawable:get_movement()
       drawable_meta_gc,
 
       // Surface API.

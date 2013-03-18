@@ -20,19 +20,22 @@ function map_submenu:on_started()
       hero_absolute_y = hero_absolute_y + hero_map_y
     end
 
-    local hero_minimap_x = hero_absolute_x * outside_world_minimap_size.width / outside_world_size.width
-    local hero_minimap_y = hero_absolute_y * outside_world_minimap_size.height / outside_world_size.height
+    local hero_minimap_x = math.floor(hero_absolute_x * outside_world_minimap_size.width / outside_world_size.width)
+    local hero_minimap_y = math.floor(hero_absolute_y * outside_world_minimap_size.height / outside_world_size.height)
     self.hero_x = hero_minimap_x + 40
     self.hero_y = hero_minimap_y + 53
 
+    self.world_minimap_movement = nil
+    self.world_minimap_visible_xy = {0, 0}
     if self.game:has_item("world_map") then
       self.world_minimap_img = sol.surface.create("menus/outside_world_map.png")
-      self.world_minimap_visible_y = math.min(outside_world_minimap_size.height - 133, math.max(0, hero_minimap_y - 65))
+      self.world_minimap_visible_xy[2] = math.min(outside_world_minimap_size.height - 133, math.max(0, hero_minimap_y - 65))
     else
       self.world_minimap_img = sol.surface.create("menus/outside_world_clouds.png")
-      self.world_minimap_visible_y = 0
+      self.world_minimap_visible_xy[2] = 0
     end
-    self.world_minimap_visible_surface = sol.surface.create(self.world_minimap_img, 0, self.world_minimap_visible_y, 255, 133)
+    self.world_minimap_visible_surface = sol.surface.create(self.world_minimap_img,
+        self.world_minimap_visible_xy[1], self.world_minimap_visible_xy[2], 255, 133)
 
   else
     -- In a dungeon.
@@ -69,23 +72,45 @@ function map_submenu:on_command_pressed(command)
       -- Move the outside world minimap.
       if self.game:has_item("world_map") then
 
-        local angle
-        if command == "up" then
-          angle = math.pi / 2
-        else
-          angle = 3 * math.pi / 2
-        end
+        if (command == "up" and self.world_minimap_visible_xy[2] > 0) or
+            (command == "down" and self.world_minimap_visible_xy[2] < outside_world_minimap_size.height - 134) then
 
-        local movement = sol.movement.create("straight")
-        movement:set_speed(96)
-        movement:set_angle(angle)
-        --movement:set_max_distance()
-        movement:start(self.world_minimap_img)
+            local angle
+            if command == "up" then
+              angle = math.pi / 2
+            else
+              angle = 3 * math.pi / 2
+            end
 
-        local submenu = self
-        function movement:on_position_changed()
-          _, self.world_minimap_visible_y = self:get_xy()
-          submenu.world_minimap_visible_surface = sol.surface.create(submenu.world_minimap_img, 0, self.world_minimap_visible_y, 255, 133)
+          if self.world_minimap_movement ~= nil then
+            self.world_minimap_movement:stop()
+          end
+
+          local movement = sol.movement.create("straight")
+          movement:set_speed(96)
+          movement:set_angle(angle)
+          --movement:set_max_distance()
+          local submenu = self
+
+          function movement:on_position_changed()
+            local x, y = self:get_xy()
+            if (command == "up" and submenu.world_minimap_visible_xy[2] > 0) or
+                (command == "down" and submenu.world_minimap_visible_xy[2] < outside_world_minimap_size.height - 134) then
+              submenu.world_minimap_visible_surface = sol.surface.create(submenu.world_minimap_img,
+                  submenu.world_minimap_visible_xy[1], submenu.world_minimap_visible_xy[2], 255, 133)
+            else
+              self:stop()
+              submenu.world_minimap_movement = nil
+            end
+          end
+
+          function movement:on_finished()
+            self:stop()
+            submenu.world_minimap_movement = nil
+          end
+
+          movement:start(self.world_minimap_visible_xy)
+          self.world_minimap_movement = movement
         end
       end
     else
@@ -118,18 +143,18 @@ function map_submenu:draw_world_minimap(dst_surface)
 
   if self.game:has_item("world_map") then
     -- Draw the hero's position.
-    local hero_visible_y = self.hero_y - self.world_minimap_visible_y
+    local hero_visible_y = self.hero_y - self.world_minimap_visible_xy[2]
     if hero_visible_y >= 51 and hero_visible_y <= 133 + 51 then
       self.hero_head_sprite:draw(dst_surface, self.hero_x, hero_visible_y)
     end
 
     -- Draw the arrows.
-    if self.world_minimap_visible_y > 0 then
+    if self.world_minimap_visible_xy[2] > 0 then
       self.up_arrow_sprite:draw(dst_surface, 96, 55)
       self.up_arrow_sprite:draw(dst_surface, 211, 55)
     end
 
-    if self.world_minimap_visible_y < outside_world_minimap_size.height - 134 then
+    if self.world_minimap_visible_xy[2] < outside_world_minimap_size.height - 134 then
       self.down_arrow_sprite:draw(dst_surface, 96, 188)
       self.down_arrow_sprite:draw(dst_surface, 211, 188)
     end

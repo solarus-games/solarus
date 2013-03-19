@@ -278,11 +278,11 @@ void LuaContext::push_movement(lua_State* l, Movement& movement) {
 /**
  * @brief Starts moving an x,y point.
  *
- * The point is a Lua array of two elements (x and y).
- * It may be initially empty.
+ * The point is a Lua table with two fields x and y.
+ * Fields x and y may be initially missing.
  *
  * @param movement The movement to apply to the points.
- * @param point_index Index of the x,y array in the Lua stack.
+ * @param point_index Index of the x,y table in the Lua stack.
  */
 void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
 
@@ -295,7 +295,7 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
                                   // ... movements movement
   lua_pushvalue(l, point_index);
                                   // ... movements movement xy
-  lua_rawgeti(l, -1, 1);
+  lua_getfield(l, -1, "x");
                                   // ... movements movement xy x/nil
   if (lua_isnil(l, -1)) {
                                   // ... movements movement xy nil
@@ -303,7 +303,7 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
                                   // ... movements movement xy
     lua_pushinteger(l, 0);
                                   // ... movements movement xy 0
-    lua_rawseti(l, -2, 1);
+    lua_setfield(l, -2, "x");
                                   // ... movements movement xy
   }
   else {
@@ -312,7 +312,7 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
     lua_pop(l, 1);
                                   // ... movements movement xy
   }
-  lua_rawgeti(l, -1, 2);
+  lua_getfield(l, -1, "y");
                                   // ... movements movement xy y/nil
   if (lua_isnil(l, -1)) {
                                   // ... movements movement xy nil
@@ -320,7 +320,7 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
                                   // ... movements movement xy
     lua_pushinteger(l, 0);
                                   // ... movements movement xy 0
-    lua_rawseti(l, -2, 2);
+    lua_setfield(l, -2, "y");
                                   // ... movements movement xy
     movement.set_y(0);
   }
@@ -1702,11 +1702,11 @@ void LuaContext::movement_on_position_changed(Movement& movement) {
     const Rectangle& xy = movement.get_xy();
     lua_pushinteger(l, xy.get_x());
                                   // ... movement movements xy x
-    lua_rawseti(l, -2, 1);
+    lua_setfield(l, -2, "x");
                                   // ... movement movements xy
     lua_pushinteger(l, xy.get_y());
                                   // ... movement movements xy y
-    lua_rawseti(l, -2, 2);
+    lua_setfield(l, -2, "y");
                                   // ... movement movements xy
   }
   lua_pop(l, 2);

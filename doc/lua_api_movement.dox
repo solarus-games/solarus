@@ -83,8 +83,11 @@ Starts this movement on an object.
 - \c object_to_move (\ref lua_api_entity "map entity",
   \ref lua_api_drawable "drawable object" or table):
   The object to move. It may be a map entity, a drawable object
-  or an array of two values (X and Y).
-  An empty array will be initialized with <tt>{0, 0}</tt>.
+  or a table with two fields \c x and \c y.
+  In the case of the table, if the fields \c x and \c y don't exist, they are
+  created and initialized to \c 0.
+  
+  An empty table will be initialized with <tt>{x = 0, y = 0}</tt>.
 - \c callback (function, optional): A function to call when the movement
   finishes.
 

@@ -26,16 +26,16 @@ function map_submenu:on_started()
     self.hero_y = hero_minimap_y + 53
 
     self.world_minimap_movement = nil
-    self.world_minimap_visible_xy = {0, 0}
+    self.world_minimap_visible_xy = {x = 0, y = 0}
     if self.game:has_item("world_map") then
       self.world_minimap_img = sol.surface.create("menus/outside_world_map.png")
-      self.world_minimap_visible_xy[2] = math.min(outside_world_minimap_size.height - 133, math.max(0, hero_minimap_y - 65))
+      self.world_minimap_visible_xy.y = math.min(outside_world_minimap_size.height - 133, math.max(0, hero_minimap_y - 65))
     else
       self.world_minimap_img = sol.surface.create("menus/outside_world_clouds.png")
-      self.world_minimap_visible_xy[2] = 0
+      self.world_minimap_visible_xy.y = 0
     end
     self.world_minimap_visible_surface = sol.surface.create(self.world_minimap_img,
-        self.world_minimap_visible_xy[1], self.world_minimap_visible_xy[2], 255, 133)
+        self.world_minimap_visible_xy.x, self.world_minimap_visible_xy.y, 255, 133)
 
   else
     -- In a dungeon.
@@ -72,8 +72,8 @@ function map_submenu:on_command_pressed(command)
       -- Move the outside world minimap.
       if self.game:has_item("world_map") then
 
-        if (command == "up" and self.world_minimap_visible_xy[2] > 0) or
-            (command == "down" and self.world_minimap_visible_xy[2] < outside_world_minimap_size.height - 134) then
+        if (command == "up" and self.world_minimap_visible_xy.y > 0) or
+            (command == "down" and self.world_minimap_visible_xy.y < outside_world_minimap_size.height - 134) then
 
             local angle
             if command == "up" then
@@ -89,15 +89,20 @@ function map_submenu:on_command_pressed(command)
           local movement = sol.movement.create("straight")
           movement:set_speed(96)
           movement:set_angle(angle)
-          --movement:set_max_distance()
           local submenu = self
 
           function movement:on_position_changed()
             local x, y = self:get_xy()
-            if (command == "up" and submenu.world_minimap_visible_xy[2] > 0) or
-                (command == "down" and submenu.world_minimap_visible_xy[2] < outside_world_minimap_size.height - 134) then
+            if (command == "up" and submenu.world_minimap_visible_xy.y > 0) or
+                (command == "down" and submenu.world_minimap_visible_xy.y < outside_world_minimap_size.height - 134) then
               submenu.world_minimap_visible_surface = sol.surface.create(submenu.world_minimap_img,
-                  submenu.world_minimap_visible_xy[1], submenu.world_minimap_visible_xy[2], 255, 133)
+                  submenu.world_minimap_visible_xy.x, submenu.world_minimap_visible_xy.y, 255, 133)
+
+              if not submenu.game:is_command_pressed("up")
+                  and not submenu.game:is_command_pressed("down") then
+                self:stop()
+                submenu.world_minimap_movement = nil
+              end
             else
               self:stop()
               submenu.world_minimap_movement = nil
@@ -143,18 +148,18 @@ function map_submenu:draw_world_minimap(dst_surface)
 
   if self.game:has_item("world_map") then
     -- Draw the hero's position.
-    local hero_visible_y = self.hero_y - self.world_minimap_visible_xy[2]
+    local hero_visible_y = self.hero_y - self.world_minimap_visible_xy.y
     if hero_visible_y >= 51 and hero_visible_y <= 133 + 51 then
       self.hero_head_sprite:draw(dst_surface, self.hero_x, hero_visible_y)
     end
 
     -- Draw the arrows.
-    if self.world_minimap_visible_xy[2] > 0 then
+    if self.world_minimap_visible_xy.y > 0 then
       self.up_arrow_sprite:draw(dst_surface, 96, 55)
       self.up_arrow_sprite:draw(dst_surface, 211, 55)
     end
 
-    if self.world_minimap_visible_xy[2] < outside_world_minimap_size.height - 134 then
+    if self.world_minimap_visible_xy.y < outside_world_minimap_size.height - 134 then
       self.down_arrow_sprite:draw(dst_surface, 96, 188)
       self.down_arrow_sprite:draw(dst_surface, 211, 188)
     end

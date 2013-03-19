@@ -74,6 +74,14 @@ void Drawable::stop_movement() {
 }
 
 /**
+ * @brief Returns the current movement of this drawable object.
+ * @return The object's movement, or NULL if there is no movement.
+ */
+Movement* Drawable::get_movement() {
+  return movement;
+}
+
+/**
  * @brief Returns the coordinates of this drawable object as defined by its
  * movement.
  * @return The coordinates of this drawable object.

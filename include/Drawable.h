@@ -37,6 +37,7 @@ class Drawable: public ExportableToLua {
     // dynamic effects
     void start_movement(Movement& movement);
     void stop_movement();
+    Movement* get_movement();
     const Rectangle& get_xy();
     void set_xy(const Rectangle& xy);
 

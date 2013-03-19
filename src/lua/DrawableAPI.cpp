@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "movements/Movement.h"
 #include "Drawable.h"
 #include "TransitionFade.h"
 #include <lua.hpp>
@@ -167,6 +168,26 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
   drawable.start_transition(*transition, callback_ref, &get_lua_context(l));
 
   return 0;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_drawable_get_movement.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_get_movement(lua_State* l) {
+
+  Drawable& drawable = check_drawable(l, 1);
+
+  Movement* movement = drawable.get_movement();
+  if (movement == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+    push_userdata(l, *movement);
+  }
+
+  return 1;
 }
 
 /**

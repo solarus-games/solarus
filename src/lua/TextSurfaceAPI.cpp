@@ -64,6 +64,7 @@ void LuaContext::register_text_surface_module() {
       { "set_text_key", text_surface_api_set_text_key },
       { "get_size", text_surface_api_get_size },
       { "draw", drawable_api_draw },
+      { "draw_region", drawable_api_draw_region },
       { "fade_in", drawable_api_fade_in },
       { "fade_out", drawable_api_fade_out },
       { "get_movement", drawable_api_get_movement },

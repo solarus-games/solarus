@@ -23,6 +23,19 @@ Draws this object on a destination surface.
 - \c y (number, optional): Y coordinate of where to draw this object.
   (default \c 0).
 
+\subsection lua_api_drawable_draw_region drawable:draw_region(region_x, region_y, region_width, region_height, dst_surface, [x, y])
+
+Draws a subrectangle of this object on a destination surface.
+- \c region_x (number): X coordinate of the subrectangle to draw.
+- \c region_y (number): Y coordinate of the subrectangle to draw.
+- \c region_width (number): Width of the subrectangle to draw.
+- \c region_height (number): Height of the subrectangle to draw.
+- \c dst_surface (\ref lua_api_surface "surface"): The destination surface.
+- \c x (number, optional): X coordinate of where to draw this rectangle
+  on the destination surface (default \c 0).
+- \c y (number, optional): Y coordinate of where to draw this rectangle.
+  on the destination surface (default \c 0).
+
 \subsection lua_api_drawable_fade_in drawable:fade_in([delay], [callback])
 
 Starts a fade-in effect on this object.

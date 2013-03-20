@@ -40,6 +40,7 @@ void LuaContext::register_sprite_module() {
       { "set_ignore_suspend", sprite_api_set_ignore_suspend },
       { "synchronize", sprite_api_synchronize },
       { "draw", drawable_api_draw },
+      { "draw_region", drawable_api_draw_region },
       { "fade_in", drawable_api_fade_in },
       { "fade_out", drawable_api_fade_out },
       { "get_movement", drawable_api_get_movement },

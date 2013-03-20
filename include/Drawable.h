@@ -47,7 +47,9 @@ class Drawable: public ExportableToLua {
     // drawing with effects
     void draw(Surface& dst_surface);
     void draw(Surface& dst_surface, int x, int y);
-    void draw(Surface& dst_surface, Rectangle dst_position);
+    void draw(Surface& dst_surface, const Rectangle& dst_position);
+    void draw_region(const Rectangle& region,
+        Surface& dst_surface, const Rectangle& dst_position);
 
     /**
      * @brief Draws this object without applying dynamic effects.
@@ -55,11 +57,25 @@ class Drawable: public ExportableToLua {
      * Redefine this function to draw your object onto the destination
      * surface.
      *
-     * @param dst_surface the destination surface
-     * @param dst_position coordinates on the destination surface
+     * @param dst_surface The destination surface.
+     * @param dst_position Coordinates on the destination surface.
      */
     virtual void raw_draw(Surface& dst_surface,
         const Rectangle& dst_position) = 0;
+
+    /**
+     * @brief Draws a subrectangle of this object without applying dynamic
+     * effects.
+     *
+     * Redefine this function to draw your object onto the destination
+     * surface.
+     *
+     * @param region The subrectangle to draw in this object.
+     * @param dst_surface The destination surface.
+     * @param dst_position Coordinates on the destination surface.
+     */
+    virtual void raw_draw_region(const Rectangle& region,
+        Surface& dst_surface, const Rectangle& dst_position) = 0;
 
     /**
      * @brief Draws a transition effect on this drawable object.

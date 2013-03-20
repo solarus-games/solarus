@@ -158,12 +158,13 @@ bool Sprite::are_pixel_collisions_enabled() const {
 }
 
 /**
- * @brief Returns the size of a frame for the current animation and the current direction.
- * @return the size of a frame
+ * @brief Returns the size of the current frame.
+ * @return A rectangle whose size is the size of the current frame.
+ * X and Y are set to zero.
  */
-const Rectangle& Sprite::get_size() const {
+Rectangle Sprite::get_size() const {
 
-  const SpriteAnimation *animation = animation_set.get_animation(current_animation_name);
+  const SpriteAnimation* animation = animation_set.get_animation(current_animation_name);
   return animation->get_direction(current_direction)->get_size();
 }
 
@@ -181,7 +182,7 @@ const Rectangle& Sprite::get_max_size() const {
  */
 const Rectangle& Sprite::get_origin() const {
 
-  const SpriteAnimation *animation = animation_set.get_animation(current_animation_name);
+  const SpriteAnimation* animation = animation_set.get_animation(current_animation_name);
   return animation->get_direction(current_direction)->get_origin();
 }
 
@@ -311,6 +312,16 @@ void Sprite::set_current_frame(int current_frame) {
   set_frame_changed(current_frame != this->current_frame);
 
   this->current_frame = current_frame;
+}
+
+/**
+ * @brief Returns the rectangle of the current frame.
+ * @return The current frame's rectangle.
+ */
+const Rectangle& Sprite::get_current_frame_rectangle() const {
+
+  const SpriteAnimation* animation = animation_set.get_animation(current_animation_name);
+  return animation->get_direction(current_direction)->get_frame(current_frame);
 }
 
 /**
@@ -594,9 +605,9 @@ void Sprite::update() {
 /**
  * @brief Draws the sprite on a surface, with its current animation,
  * direction and frame.
- * @param dst_surface the destination surface
- * @param dst_position coordinates on the destination surface
- * (the origin will be placed at this position)
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates on the destination surface
+ * (the origin will be placed at this position).
  */
 void Sprite::raw_draw(Surface& dst_surface,
     const Rectangle& dst_position) {
@@ -611,8 +622,27 @@ void Sprite::raw_draw(Surface& dst_surface,
     else {
       current_animation->draw(*intermediate_surface, dst_position,
         current_direction, current_frame);
-      intermediate_surface->draw(dst_surface);
+      intermediate_surface->draw_region(get_size(), dst_surface);
     }
+  }
+}
+
+/**
+ * @brief Draws a subrectangle of the current frame of this sprite.
+ * @param region The subrectangle to draw, relative to the top-left corner
+ * of the current frame.
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates on the destination surface.
+ */
+void Sprite::raw_draw_region(const Rectangle& region,
+    Surface& dst_surface, const Rectangle& dst_position) {
+
+  if (!is_animation_finished()
+      && (blink_delay == 0 || blink_is_sprite_visible)) {
+
+    current_animation->draw(get_intermediate_surface(), dst_position,
+        current_direction, current_frame);
+    get_intermediate_surface().draw_region(region, dst_surface);
   }
 }
 

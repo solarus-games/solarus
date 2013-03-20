@@ -37,6 +37,7 @@ void LuaContext::register_surface_module() {
       { "set_transparency_color", surface_api_set_transparency_color },
       { "set_opacity", surface_api_set_opacity },
       { "draw", drawable_api_draw },
+      { "draw_region", drawable_api_draw_region },
       { "fade_in", drawable_api_fade_in },
       { "fade_out", drawable_api_fade_out },
       { "get_movement", drawable_api_get_movement },

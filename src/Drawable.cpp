@@ -192,14 +192,35 @@ void Drawable::draw(Surface& dst_surface, int x, int y) {
  * (will be added to the position obtained by previous movements)
  */
 void Drawable::draw(Surface& dst_surface,
-    Rectangle dst_position) {
+    const Rectangle& dst_position) {
 
-  dst_position.add_xy(xy);
+  Rectangle dst_position2(dst_position);
+  dst_position2.add_xy(xy);
 
   if (transition != NULL) {
     draw_transition(*transition);
   }
 
-  raw_draw(dst_surface, dst_position);
+  raw_draw(dst_surface, dst_position2);
+}
+
+/**
+ * @brief Draws a subrectangle of this object, applying dynamic effects.
+ * @param region The rectangle to draw in this object.
+ * @param dst_surface The destination surface
+ * @param dst_position Position on this surface
+ * (will be added to the position obtained by previous movements).
+ */
+void Drawable::draw_region(const Rectangle& region,
+    Surface& dst_surface, const Rectangle& dst_position) {
+
+  Rectangle dst_position2(dst_position);
+  dst_position2.add_xy(xy);
+
+  if (transition != NULL) {
+    draw_transition(*transition);
+  }
+
+  raw_draw_region(region, dst_surface, dst_position2);
 }
 

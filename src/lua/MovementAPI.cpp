@@ -308,7 +308,7 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
   }
   else {
                                   // ... movements movement xy x
-    x = luaL_checkinteger(l, -1);
+    x = luaL_checkint(l, -1);
     lua_pop(l, 1);
                                   // ... movements movement xy
   }
@@ -326,7 +326,7 @@ void LuaContext::start_movement_on_point(Movement& movement, int point_index) {
   }
   else {
                                   // ... movements movement xy y
-    y = luaL_checkinteger(l, -1);
+    y = luaL_checkint(l, -1);
     lua_pop(l, 1);
                                   // ... movements movement xy
   }

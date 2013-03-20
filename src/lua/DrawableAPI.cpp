@@ -103,6 +103,30 @@ int LuaContext::drawable_api_draw(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_drawable_draw_region.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::drawable_api_draw_region(lua_State* l) {
+
+  Drawable& drawable = check_drawable(l, 1);
+  Rectangle region(
+      luaL_checkint(l, 2),
+      luaL_checkint(l, 3),
+      luaL_checkint(l, 4),
+      luaL_checkint(l, 5)
+  );
+  Surface& dst_surface = check_surface(l, 6);
+  Rectangle dst_position(
+     luaL_optint(l, 7, 0),
+     luaL_optint(l, 8, 0)
+  );
+  drawable.draw_region(region, dst_surface, dst_position);
+
+  return 0;
+}
+
+/**
  * @brief Implementation of \ref lua_api_drawable_fade_in.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua

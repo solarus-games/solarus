@@ -26,19 +26,6 @@ Creates a surface from an image file.
     (default is \c false and loads the image from the \c sprites directory).
   - Return value (surface): The surface created.
 
-\subsection lua_api_surface_create_from_surface sol.surface.create(src_surface, [x, y, width, height])
-
-Creates a surface as a copy of a region of an existing surface.
-
-The last four parameters define the region of the existing surface to copy.
-They are optional: by default, the whole surface is copied.
-  - \c src_surface (surface): An existing surface.
-  - \c x (integer, optional): X coordinate of the region to copy in pixels.
-  - \c y (integer, optional): X coordinate of the region to copy in pixels.
-  - \c width (integer, optional): Width of the region to copy in pixels.
-  - \c height (integer, optional): Height of the region to copy in pixels.
-  - Return value (surface): The surface created.
-
 \section lua_api_surface_inherited_methods Methods inherited from drawable
 
 Surfaces are particular \ref lua_api_drawable "drawable" objects.

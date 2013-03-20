@@ -39,6 +39,14 @@ function map_submenu:on_started()
 
   else
     -- In a dungeon.
+    local dungeon_index = self.game:get_dungeon_index()
+
+    -- Caption text.
+    self.set_caption("map.caption.dungeon_name_" .. dungeon_index)
+
+    -- Item icons.
+    self.dungeon_map_background_img = sol.surface.create("menus/dungeon_map_background.png")
+    self.dungeon_map_icons_img = sol.surface.create("menus/dungeon_map_icons.png")
     -- TODO
   end
 

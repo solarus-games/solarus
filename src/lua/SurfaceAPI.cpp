@@ -108,15 +108,7 @@ int LuaContext::surface_api_create(lua_State* l) {
         Surface::DIR_LANGUAGE : Surface::DIR_SPRITES);
   }
   else {
-    // create from an existing surface
-    Surface& other_surface = check_surface(l, 1);
-    int x = luaL_optint(l, 2, 0);
-    int y = luaL_optint(l, 3, 0);
-    int width = luaL_optint(l, 4, other_surface.get_width());
-    int height = luaL_optint(l, 5, other_surface.get_height());
-    surface = new Surface(width, height);
-    surface->set_transparency_color(other_surface.get_transparency_color());
-    other_surface.draw_region(Rectangle(x, y, width, height), *surface);
+    luaL_typerror(l, 1, "number, string or no value");
   }
 
   get_lua_context(l).add_drawable(surface);

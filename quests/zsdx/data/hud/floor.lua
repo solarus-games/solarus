@@ -73,9 +73,7 @@ function floor_view:rebuild_surface()
     local src_y = (15 - highest_floor_displayed) * 12
     local src_height = nb_floors_displayed * 12 + 1
 
-    local neighbor_floors_surface = sol.surface.create(
-        self.floors_img, 32, src_y, 32, src_height)
-    neighbor_floors_surface:draw(self.surface)
+    self.floors_img:draw_region(32, src_y, 32, src_height, self.surface)
   else
     highest_floor_displayed = self.floor
   end
@@ -93,9 +91,7 @@ function floor_view:rebuild_surface()
     dst_y = (highest_floor_displayed - self.floor) * 12
   end
 
-  local current_floor_surface = sol.surface.create(
-      self.floors_img, 0, src_y, 32, 13)
-  current_floor_surface:draw(self.surface, 0, dst_y)
+  self.floors_img:draw(0, src_y, 32, 13, self.surface, 0, dst_y)
 end
 
 function floor_view:set_dst_position(x, y)

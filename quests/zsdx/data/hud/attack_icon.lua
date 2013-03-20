@@ -19,19 +19,19 @@ function attack_icon:initialize(game)
   self.surface = sol.surface.create(72, 24)
   self.surface:set_transparency_color{0, 0, 0}
   self.icons_img = sol.surface.create("sword_icon.png", true)
-  self.current_icon_img = nil
+  self.icon_region_y = nil
   self.icon_flip_sprite = sol.sprite.create("hud/sword_icon_flip")
   self.is_flipping = false
   self.effect_displayed = self.game.hud.custom_command_effects["attack"] or self.game:get_command_effect("attack")
   self.sword_displayed = game:get_ability("sword")
   self.showing_dialog = false
-  self:create_icon_img()
+  self:compute_icon_region_y()
 
   local attack_icon = self
   function self.icon_flip_sprite:on_animation_finished()
     if attack_icon.is_flipping then
       attack_icon.is_flipping = false
-      attack_icon:create_icon_img()
+      attack_icon:compute_icon_region_y()
       attack_icon:rebuild_surface()
     end
   end
@@ -44,17 +44,16 @@ function attack_icon:initialize(game)
   self:rebuild_surface()
 end
 
-function attack_icon:create_icon_img()
+function attack_icon:compute_icon_region_y()
 
   local map = self.game:get_map()
   if self.effect_displayed ~= nil or map == nil or not map:is_dialog_enabled() then
-    local y
     if self.effect_displayed == nil then
       -- Show an empty icon.
-      y = 0
+      self.icon_region_y = 0
     elseif self.effect_displayed == "sword" then
       -- Create an icon with the current sword.
-      y = 96 + 24 * self.sword_displayed
+      self.icon_region_y = 96 + 24 * self.sword_displayed
     elseif self.effect_displayed ~= nil then
       -- Create an icon with the name of the current effect.
       local effects_indexes = {
@@ -63,10 +62,8 @@ function attack_icon:create_icon_img()
         ["validate"] = 3,
         ["skip"] = 4,
       }
-      y = 24 * effects_indexes[self.effect_displayed]
+      self.icon_region_y = 24 * effects_indexes[self.effect_displayed]
     end
-
-    self.current_icon_img = sol.surface.create(self.icons_img, 0, y, 72, 24)
   end
 end
 
@@ -95,7 +92,7 @@ function attack_icon:check()
       self.effect_displayed = effect
       self.sword_displayed = sword
       self.showing_dialog = showing_dialog
-      self.current_icon_img = nil
+      self.icon_region_y = nil
       self.is_flipping = true
       need_rebuild = true
     end
@@ -116,9 +113,9 @@ function attack_icon:rebuild_surface()
 
   self.surface:fill_color{0, 0, 0}
 
-  if self.current_icon_img ~= nil then
+  if self.icon_region_y ~= nil then
     -- Draw the static image of the icon.
-    self.current_icon_img:draw(self.surface)
+    self.icons_img:draw_region(0, self.icon_region_y, 72, 24, self.surface)
   elseif self.is_flipping then
     -- Draw the flipping sprite
     self.icon_flip_sprite:draw(self.surface, 24, 0)

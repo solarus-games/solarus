@@ -93,13 +93,6 @@ function options_submenu:load_command_texts()
     self.keyboard_texts[i]:draw(self.commands_surface, 74, y)
     self.joypad_texts[i]:draw(self.commands_surface, 143, y)
   end
-
-  self:rebuild_commands_surface()
-end
-
-function options_submenu:rebuild_commands_surface()
-
-  self.commands_visible_surface = sol.surface.create(self.commands_surface, 0, self.commands_visible_y, 215, 84)
 end
 
 function options_submenu:set_cursor_position(position)
@@ -130,8 +123,6 @@ function options_submenu:set_cursor_position(position)
       self.cursor_sprite.y = 88 + 16 * (position - self.commands_highest_visible)
       self.cursor_sprite:set_animation("small")
     end
-
-    self:rebuild_commands_surface()
   end
 end
 
@@ -148,7 +139,8 @@ function options_submenu:on_draw(dst_surface)
   self.command_column_text:draw(dst_surface, 84, 83)
   self.keyboard_column_text:draw(dst_surface, 153, 83)
   self.joypad_column_text:draw(dst_surface, 229, 83)
-  self.commands_visible_surface:draw(dst_surface, 53, 102)
+  self.commands_surface:draw_region(0, self.commands_visible_y, 215, 84,
+      dst_surface, 53, 102)
 
   -- Arrows.
   if self.commands_visible_y > 0 then

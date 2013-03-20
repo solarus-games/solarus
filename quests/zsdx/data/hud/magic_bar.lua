@@ -85,9 +85,7 @@ function magic_bar:rebuild_surface()
   self.container_sprite:draw(self.surface)
 
   -- Current magic.
-  local current_magic_bar_img = sol.surface.create(self.magic_bar_img,
-      46, 24, 2 + self.magic_displayed, 8)
-  current_magic_bar_img:draw(self.surface)
+  self.magic_bar_img:draw_region(46, 24, 2 + self.magic_displayed, 8, self.surface)
 end
 
 function magic_bar:set_dst_position(x, y)

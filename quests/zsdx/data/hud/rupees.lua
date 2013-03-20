@@ -23,12 +23,7 @@ function rupees:initialize(game)
     horizontal_alignment = "left",
   }
   self.digits_text:set_text(game:get_money())
-  local rupee_icon_img = sol.surface.create("hud/rupee_icon.png")
-  self.rupee_icon_imgs = {
-    sol.surface.create(rupee_icon_img, 0, 0, 12, 12),
-    sol.surface.create(rupee_icon_img, 12, 0, 12, 12),
-    sol.surface.create(rupee_icon_img, 24, 0, 12, 12),
-  }
+  self.rupee_icons_img = sol.surface.create("hud/rupee_icon.png")
   self.rupee_bag_displayed = self.game:get_item("rupee_bag"):get_variant()
   self.money_displayed = self.game:get_money()
 
@@ -84,8 +79,8 @@ function rupees:rebuild_surface()
 
   self.surface:fill_color{0, 0, 0}
 
-  -- Max money (icons).
-  self.rupee_icon_imgs[self.rupee_bag_displayed]:draw(self.surface)
+  -- Max money (icon).
+  self.rupee_icons_img:draw_region((self.rupee_bag_displayed - 1) * 12, 0, 12, 12, self.surface)
 
   -- Current rupee (counter).
   local max_money = self.game:get_max_money()

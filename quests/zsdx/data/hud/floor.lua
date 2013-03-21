@@ -91,7 +91,7 @@ function floor_view:rebuild_surface()
     dst_y = (highest_floor_displayed - self.floor) * 12
   end
 
-  self.floors_img:draw(0, src_y, 32, 13, self.surface, 0, dst_y)
+  self.floors_img:draw_region(0, src_y, 32, 13, self.surface, 0, dst_y)
 end
 
 function floor_view:set_dst_position(x, y)

@@ -34,15 +34,13 @@ function map_submenu:on_started()
       self.world_minimap_img = sol.surface.create("menus/outside_world_clouds.png")
       self.world_minimap_visible_xy.y = 0
     end
-    self.world_minimap_visible_surface = sol.surface.create(self.world_minimap_img,
-        self.world_minimap_visible_xy.x, self.world_minimap_visible_xy.y, 255, 133)
 
   else
     -- In a dungeon.
     local dungeon_index = self.game:get_dungeon_index()
 
     -- Caption text.
-    self.set_caption("map.caption.dungeon_name_" .. dungeon_index)
+    self:set_caption("map.caption.dungeon_name_" .. dungeon_index)
 
     -- Item icons.
     self.dungeon_map_background_img = sol.surface.create("menus/dungeon_map_background.png")
@@ -100,26 +98,17 @@ function map_submenu:on_command_pressed(command)
           local submenu = self
 
           function movement:on_position_changed()
-            local x, y = self:get_xy()
-            if (command == "up" and submenu.world_minimap_visible_xy.y > 0) or
-                (command == "down" and submenu.world_minimap_visible_xy.y < outside_world_minimap_size.height - 134) then
-              submenu.world_minimap_visible_surface = sol.surface.create(submenu.world_minimap_img,
-                  submenu.world_minimap_visible_xy.x, submenu.world_minimap_visible_xy.y, 255, 133)
-
-              if not submenu.game:is_command_pressed("up")
-                  and not submenu.game:is_command_pressed("down") then
-                self:stop()
-                submenu.world_minimap_movement = nil
-              end
-            else
+            if not submenu.game:is_command_pressed("up")
+                and not submenu.game:is_command_pressed("down") then
               self:stop()
               submenu.world_minimap_movement = nil
             end
-          end
 
-          function movement:on_finished()
-            self:stop()
-            submenu.world_minimap_movement = nil
+            if (command == "up" and submenu.world_minimap_visible_xy.y <= 0) or
+                (command == "down" and submenu.world_minimap_visible_xy.y >= outside_world_minimap_size.height - 134) then
+              self:stop()
+              submenu.world_minimap_movement = nil
+            end
           end
 
           movement:start(self.world_minimap_visible_xy)
@@ -152,7 +141,9 @@ end
 function map_submenu:draw_world_minimap(dst_surface)
 
   -- Draw the minimap.
-  self.world_minimap_visible_surface:draw(dst_surface, 48, 59)
+  self.world_minimap_img:draw_region(
+      self.world_minimap_visible_xy.x, self.world_minimap_visible_xy.y, 255, 133,
+      dst_surface, 48, 59)
 
   if self.game:has_item("world_map") then
     -- Draw the hero's position.

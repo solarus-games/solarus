@@ -245,6 +245,20 @@ int LuaContext::drawable_api_get_movement(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_drawable_stop_movement.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_stop_movement(lua_State* l) {
+
+  Drawable& drawable = check_drawable(l, 1);
+
+  drawable.stop_movement();
+
+  return 0;
+}
+
+/**
  * @brief Finalizer of types sprite, surface and text surface.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua

@@ -74,5 +74,9 @@ Returns the current movement of this drawable object.
 - Return value (\ref lua_api_movement "movement"): The current movement,
   or \c nil if the drawable object is not moving.
 
+\subsection lua_api_drawable_stop_movement drawable:stop_movement()
+
+Stops the current movement of this drawable object if any.
+
 */
 

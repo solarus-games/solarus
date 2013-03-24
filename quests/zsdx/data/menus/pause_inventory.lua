@@ -306,6 +306,7 @@ function inventory_submenu:finish_assigning_item()
   end
   self.game:set_item_assigned(slot, self.item_assigned)
 
+  self.item_assigned_sprite:stop_movement()
   self.item_assigned_sprite = nil
   self.item_assigned = nil
 end

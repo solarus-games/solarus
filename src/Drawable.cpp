@@ -160,7 +160,7 @@ void Drawable::update() {
 
   if (movement != NULL) {
     movement->update();
-    if (movement->is_finished()) {
+    if (movement != NULL && movement->is_finished()) {
       stop_movement();
     }
   }

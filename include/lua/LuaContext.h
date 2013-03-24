@@ -395,6 +395,7 @@ class LuaContext {
       drawable_api_get_xy,
       drawable_api_set_xy,
       drawable_api_get_movement,
+      drawable_api_stop_movement,
       drawable_meta_gc,
 
       // Surface API.

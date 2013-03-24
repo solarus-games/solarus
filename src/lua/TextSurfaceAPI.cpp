@@ -70,6 +70,7 @@ void LuaContext::register_text_surface_module() {
       { "get_xy", drawable_api_get_xy },
       { "set_xy", drawable_api_set_xy },
       { "get_movement", drawable_api_get_movement },
+      { "stop_movement", drawable_api_stop_movement },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {

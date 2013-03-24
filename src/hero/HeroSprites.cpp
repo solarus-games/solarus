@@ -670,7 +670,7 @@ void HeroSprites::notify_map_started() {
   }
 
   if (is_ground_visible()) {
-    ground_sprite->set_map(hero.get_map());
+    ground_sprite->set_tileset(hero.get_map().get_tileset());
   }
 }
 
@@ -1184,7 +1184,7 @@ void HeroSprites::create_ground(Ground ground) {
 
   delete ground_sprite;
   ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
-  ground_sprite->set_map(hero.get_map());
+  ground_sprite->set_tileset(hero.get_map().get_tileset());
   if (hero.get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation(walking ? "walking" : "stopped");
   }

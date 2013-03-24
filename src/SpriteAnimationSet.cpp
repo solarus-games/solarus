@@ -132,18 +132,18 @@ SpriteAnimationSet::~SpriteAnimationSet() {
 }
 
 /**
- * @brief When the sprite is displayed on a map, sets the map.
+ * @brief When the sprite is displayed on a map, sets the tileset.
  *
  * This function must be called if this sprite image depends on the map's tileset.
  *
- * @param map the map
+ * @param tileset The tileset.
  */
-void SpriteAnimationSet::set_map(Map &map) {
+void SpriteAnimationSet::set_tileset(Tileset& tileset) {
 
   std::map<std::string, SpriteAnimation*>::const_iterator it;
 
   for (it = animations.begin(); it != animations.end(); it++) {
-    it->second->set_map(map);
+    it->second->set_tileset(tileset);
   }
 }
 

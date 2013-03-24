@@ -46,7 +46,7 @@ class Sprite: public Drawable {
     Sprite(const std::string& id);
     ~Sprite();
 
-    void set_map(Map& map);
+    void set_tileset(Tileset& tileset);
 
     // animation set
     const std::string& get_animation_set_id() const;

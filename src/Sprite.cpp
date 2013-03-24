@@ -129,16 +129,15 @@ SpriteAnimationSet& Sprite::get_animation_set() {
 }
 
 /**
- * @brief When the sprite is drawn on a map, sets the map.
+ * @brief When the sprite is drawn on a map, sets the tileset.
  *
  * This function must be called if this sprite image depends on the map's tileset.
  *
- * @param map the map
+ * @param tileset The tileset.
  */
-void Sprite::set_map(Map &map) {
-  animation_set.set_map(map);
+void Sprite::set_tileset(Tileset& tileset) {
+  animation_set.set_tileset(tileset);
 }
-
 
 /**
  * @brief Enables the pixel-perfect collision detection for the animation set of this sprite.

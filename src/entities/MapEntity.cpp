@@ -235,7 +235,7 @@ void MapEntity::set_map(Map& map) {
   this->main_loop = &map.get_game().get_main_loop();
   this->map = &map;
   if (&get_game().get_current_map() == &map) {
-    set_sprites_map(map);
+    notify_tileset_changed();
   }
 }
 
@@ -243,23 +243,6 @@ void MapEntity::set_map(Map& map) {
  * @brief Notifies this entity that its map has just become active.
  */
 void MapEntity::notify_map_started() {
-
-  set_sprites_map(*map);
-}
-
-/**
- * @brief Notifies the sprites of this entity that they belong to a map.
- *
- * This is useful for tileset-dependent sprites such as doors and blocks.
- */
-void MapEntity::set_sprites_map(Map& map) {
-
-  std::list<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
-
-    Sprite& sprite = *(*it);
-    sprite.set_map(map);
-  }
 }
 
 /**
@@ -267,6 +250,21 @@ void MapEntity::set_sprites_map(Map& map) {
  * of the map is finished.
  */
 void MapEntity::notify_map_opening_transition_finished() {
+}
+
+/**
+ * @brief Notifies this entity that the tileset of the map has just changed.
+ *
+ * This is useful for tileset-dependent sprites such as doors and blocks.
+ */
+void MapEntity::notify_tileset_changed() {
+
+  std::list<Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+
+    Sprite& sprite = *(*it);
+    sprite.set_tileset(get_map().get_tileset());
+  }
 }
 
 /**

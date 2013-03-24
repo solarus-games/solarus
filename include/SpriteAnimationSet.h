@@ -42,7 +42,7 @@ class SpriteAnimationSet {
     SpriteAnimationSet(const std::string& id);
     ~SpriteAnimationSet();
 
-    void set_map(Map &map);
+    void set_tileset(Tileset& tileset);
 
     bool has_animation(const std::string& animation_name) const;
     const SpriteAnimation* get_animation(const std::string& animation_name) const;

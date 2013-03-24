@@ -307,8 +307,10 @@ void MapEntities::notify_map_started() {
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity *entity = *i;
     entity->notify_map_started();
+    entity->notify_tileset_changed();
   }
   hero.notify_map_started();
+  hero.notify_tileset_changed();
 
   // pre-render non-animated tiles
   build_non_animated_tiles();
@@ -336,6 +338,13 @@ void MapEntities::notify_tileset_changed() {
 
   // Redraw optimized tiles (i.e. non animated ones).
   redraw_non_animated_tiles();
+
+  list<MapEntity*>::iterator i;
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+    MapEntity* entity = *i;
+    entity->notify_tileset_changed();
+  }
+  hero.notify_map_opening_transition_finished();
 }
 
 /**

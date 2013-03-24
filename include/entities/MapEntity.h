@@ -98,8 +98,6 @@ class MapEntity: public ExportableToLua {
     static const int
         default_optimization_distance = 400;    /**< default value */
 
-    void set_sprites_map(Map& map);
-
   protected:
 
     bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
@@ -150,6 +148,7 @@ class MapEntity: public ExportableToLua {
     Map& get_map();
     virtual void notify_map_started();
     virtual void notify_map_opening_transition_finished();
+    virtual void notify_tileset_changed();
     Game& get_game() const;
 
     // position in the map

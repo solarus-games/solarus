@@ -25,7 +25,7 @@ function smith:on_interaction()
           -- enough money: buy the sword
           map:get_game():remove_money(sword_price)
           sol.audio.play_sound("treasure")
-          hero:start_treasure("sword", 1, "b30" function()
+          hero:start_treasure("sword", 1, "b30", function()
             map:start_dialog("smith_cave.thank_you")
           end)
         end

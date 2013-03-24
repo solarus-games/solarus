@@ -7,14 +7,24 @@ game.dungeons = {
     floor_height = 696,
     lowest_floor = -1,
     highest_floor = 1,
-    maps = { "23", "24", "25", "27" }
+    maps = { "23", "24", "25", "27" },
+    boss = {
+      floor = -1,
+      x = 648,
+      y = 144,
+    },
   },
   [2] = {
     floor_width = 1152,
     floor_height = 768,
     lowest_floor = -1,
     highest_floor = 0,
-    maps = { "30", "31" }
+    maps = { "30", "31" },
+    boss = {
+      floor = -1,
+      x = 960,
+      y = 365,
+    },
   },
   [3] = {
     floor_width = 1024,
@@ -22,27 +32,42 @@ game.dungeons = {
     lowest_floor = 0,
     highest_floor = 4,
     maps = { "40", "41", "42", "43", "85" },
+    boss = {
+      floor = 3,
+      x = 252,
+      y = 533,
+    },
   },
   [4] = {
     floor_width = 960,
     floor_height = 1120,
     lowest_floor = -1,
     highest_floor = 0,
-    maps = { "59", "60", "62" }
+    maps = { "59", "60", "62" },
+    boss = {
+      floor = 0,
+      x = 200,
+      y = 464,
+    },
   },
   [5] = {
     floor_width = 1152,
     floor_height = 1216,
     lowest_floor = -1,
     highest_floor = 1,
-    maps = { "63", "64", "65" }
+    maps = { "63", "64", "65" },
   },
   [6] = {
     floor_width = 1152,
     floor_height = 768,
     lowest_floor = 0,
     highest_floor = 3,
-    maps = { "55", "56", "57", "58" }
+    maps = { "55", "56", "57", "58" },
+    boss = {
+      floor = 3,
+      x = 272,
+      y = 224,
+    },
   },
   [7] = {
     floor_width = 1104,
@@ -50,6 +75,11 @@ game.dungeons = {
     lowest_floor = 0,
     highest_floor = 2,
     maps = { "101", "102", "103" },
+    boss = {
+      floor = 2,
+      x = 544,
+      y = 784,
+    },
   },
   [8] = {
     floor_width = 2256,
@@ -70,7 +100,7 @@ game.dungeons = {
     floor_height = 1032,
     lowest_floor = -1,
     highest_floor = 4,
-    maps = { "17", "97", "98", "99" }
+    maps = { "17", "97", "98", "99" },
   },
 }
 
@@ -89,14 +119,38 @@ function game:get_dungeon()
   return self.dungeons[index]
 end
 
-function game:is_dungeon_finished(dungeon)
-  return self:get_value("dungeon_" .. dungeon .. "_finished")
+function game:is_dungeon_finished(dungeon_index)
+  return self:get_value("dungeon_" .. dungeon_index .. "_finished")
 end
 
-function game:set_dungeon_finished(dungeon, finished)
+function game:set_dungeon_finished(dungeon_index, finished)
   if finished == nil then
     finished = true
   end
-  self:set_value("dungeon_" .. dungeon .. "_finished", finished)
+  self:set_value("dungeon_" .. dungeon_index .. "_finished", finished)
+end
+
+function game:has_dungeon_map(dungeon_index)
+
+  dungeon_index = dungeon_index or self:get_dungeon_index()
+  return self:get_value("dungeon_" .. dungeon_index .. "_map")
+end
+
+function game:has_dungeon_compass(dungeon_index)
+
+  dungeon_index = dungeon_index or self:get_dungeon_index()
+  return self:get_value("dungeon_" .. dungeon_index .. "_compass")
+end
+
+function game:has_dungeon_big_key(dungeon_index)
+
+  dungeon_index = dungeon_index or self:get_dungeon_index()
+  return self:get_value("dungeon_" .. dungeon_index .. "_big_key")
+end
+
+function game:has_dungeon_boss_key(dungeon_index)
+
+  dungeon_index = dungeon_index or self:get_dungeon_index()
+  return self:get_value("dungeon_" .. dungeon_index .. "_boss_key")
 end
 

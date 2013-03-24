@@ -27,7 +27,8 @@ function floor_view:on_map_changed(map)
 
   local need_rebuild = false
   local floor = map:get_floor()
-  if floor == nil or floor == self.floor then
+  if floor == self.floor
+      or (floor == nil and self.game:get_dungeon() == nil) then
     -- No floor or unchanged floor.
     self.visible = false
   else
@@ -53,7 +54,7 @@ function floor_view:rebuild_surface()
   local highest_floor_displayed
   local dungeon = self.game:get_dungeon()
 
-  if dungeon ~= nil then
+  if dungeon ~= nil and self.floor ~= nil then
     -- We are in a dungeon: show the neighboor floors before the current one.
     local nb_floors = dungeon.highest_floor - dungeon.lowest_floor + 1
     local nb_floors_displayed = math.min(7, nb_floors)

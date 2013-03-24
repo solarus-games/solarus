@@ -311,6 +311,10 @@ Returns the current movement of this map entity.
 - Return value (\ref lua_api_movement "movement"): The current movement,
   or \c nil if the entity is not moving.
 
+\subsection lua_api_entity_stop_movement entity:stop_movement()
+
+Stops the current movement of this map entity if any.
+
 \section lua_api_entity_events Events of all entity types
 
 Events are callback methods automatically called by the engine if you define

@@ -102,6 +102,7 @@ void LuaContext::register_entity_module() {
       { "set_optimization_distance", entity_api_set_optimization_distance },
       { "test_obstacles", entity_api_test_obstacles },
       { "get_movement", entity_api_get_movement },
+      { "stop_movement", entity_api_stop_movement },
       { NULL, NULL }
   };
   static const luaL_Reg common_metamethods[] = {
@@ -632,6 +633,20 @@ int LuaContext::entity_api_get_movement(lua_State* l) {
   }
 
   return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_entity_stop_movement.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::entity_api_stop_movement(lua_State* l) {
+
+  MapEntity& entity = check_entity(l, 1);
+
+  entity.clear_movement();
+
+  return 0;
 }
 
 /**

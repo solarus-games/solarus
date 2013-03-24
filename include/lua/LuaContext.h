@@ -670,6 +670,7 @@ class LuaContext {
       entity_api_create_sprite,
       entity_api_remove_sprite,
       entity_api_get_movement,
+      entity_api_stop_movement,
       entity_api_has_layer_independent_collisions,
       entity_api_set_layer_independent_collisions,
       entity_api_test_obstacles,

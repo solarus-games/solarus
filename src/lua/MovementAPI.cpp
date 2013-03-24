@@ -540,7 +540,7 @@ int LuaContext::movement_api_stop(lua_State* l) {
       drawable->stop_movement();
     }
     else {
-      // The object controoled is a point.
+      // The object controlled is a point.
       lua_context.stop_movement_on_point(movement);
     }
   }

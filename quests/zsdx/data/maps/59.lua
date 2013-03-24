@@ -10,22 +10,16 @@ function map:on_started(destination)
   -- evil tiles
   map:set_entities_enabled("evil_tile_", false)
   map:set_doors_open("evil_tiles_door", true)
-  map:init_evil_tiles()
-end
-
-function close_door_a_sensor:on_activated()
-
-  if door_a:is_open() then
-    map:close_doors("door_a")
-  end
 end
 
 function evil_tiles_sensor_1:on_activated()
 
   if evil_tiles_door:is_open()
-      and evil_tile_1 ~= nil then
+      and evil_tile_enemy_1 ~= nil then
     map:close_doors("evil_tiles_door")
-    sol.timer.start(2000, start_evil_tiles)
+    sol.timer.start(2000, function()
+      map:start_evil_tiles()
+    end)
   end
 end
 

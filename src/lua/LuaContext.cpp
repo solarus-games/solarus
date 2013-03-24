@@ -864,16 +864,20 @@ void LuaContext::load_file(lua_State* l, const std::string& script_name) {
  * If the file does not exist, the stack is left intact and false is returned.
  *
  * @param l A Lua state.
- * @param script_name File name of the script without extension,
+ * @param script_name File name of the script with or without extension,
  * relative to the data directory.
  * @return true if the file exists and was loaded.
  */
 bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_name) {
 
-  // Determine the file name (.lua).
-  std::ostringstream oss;
-  oss << script_name << ".lua";
-  std::string file_name = oss.str();
+  // Determine the file name (possibly adding ".lua").
+  std::string file_name(script_name);
+
+  if (!FileTools::data_file_exists(file_name)) {
+    std::ostringstream oss;
+    oss << script_name << ".lua";
+    file_name = oss.str();
+  }
 
   if (FileTools::data_file_exists(file_name)) {
     // Load the file.

@@ -47,7 +47,7 @@ function map_submenu:on_started()
     self.dungeon_map_icons_img = sol.surface.create("menus/dungeon_map_icons.png")
     self.small_keys_text = sol.text_surface.create{
       font = "white_digits",
-      horizontal_alignment = "left",
+      horizontal_alignment = "right",
       vertical_alignment = "top",
       text = self.game:get_num_small_keys()
     }
@@ -259,7 +259,7 @@ function map_submenu:draw_dungeon_items(dst_surface)
 
   -- Small keys.
   self.dungeon_map_icons_img:draw_region(68, 0, 9, 17, dst_surface, 126, 168)
-  self.small_keys_text:draw(dst_surface, 124, 182)
+  self.small_keys_text:draw(dst_surface, 140, 180)
 end
 
 function map_submenu:draw_dungeon_floors(dst_surface)
@@ -337,6 +337,7 @@ function map_submenu:to_dungeon_minimap_coordinates(x, y)
   return x, y
 end
 
+-- Rebuilds the minimap of the current floor of the dungeon.
 function map_submenu:load_dungeon_map_image()
 
   self.dungeon_map_img:fill_color{0, 0, 0}
@@ -349,6 +350,7 @@ function map_submenu:load_dungeon_map_image()
   end
 
   if self.game:has_dungeon_compass() then
+    -- Hero.
     self.hero_point_sprite = sol.sprite.create("menus/hero_point")
 
     local hero_absolute_x, hero_absolute_y = self.game:get_map():get_location()
@@ -359,8 +361,90 @@ function map_submenu:load_dungeon_map_image()
     self.hero_x, self.hero_y = self:to_dungeon_minimap_coordinates(
         hero_absolute_x, hero_absolute_y)
 
-    -- TODO chests and boss
+    -- Boss.
+    local boss = self.dungeon.boss
+    if boss ~= nil
+        and boss.floor == self.selected_floor
+        and boss.savegame_variable ~= nil
+        and not self.game:get_value(boss.savegame_variable) then
+      local dst_x, dst_y = self:to_dungeon_minimap_coordinates(boss.x, boss.y) 
+      self.dungeon_map_icons_img:draw_region(78, 0, 8, 8,
+          self.dungeon_map_img, dst_x, dst_y)
+    end
+
+    -- Chests.
+    if self.dungeon.chests == nil then
+      -- Lazily load the chest information.
+      self:load_chests()
+    end
+    for _, chest in ipairs(self.dungeon.chests) do
+
+      if chest.floor == self.selected_floor
+          and chest.savegame_variable ~= nil
+          and not self.game:get_value(chest.savegame_variable) then
+        local dx, dy
+
+        -- TODO change chests origin point to avoid this.
+        if chest.big then
+          -- Big chest.
+          dx, dy = 16, 21
+        else
+          -- Small chest.
+          dx, dy = 8, 13
+        end
+        local dst_x, dst_y = self:to_dungeon_minimap_coordinates(
+            chest.x + dx, chest.y + dy)
+        dst_y = dst_y - 1
+        if chest.big then
+          dst_x = dst_x - 1
+          self.dungeon_map_icons_img:draw_region(78, 12, 6, 4,
+          self.dungeon_map_img, dst_x, dst_y)
+        else
+          dst_x = dst_x - 2
+          self.dungeon_map_icons_img:draw_region(78, 8, 4, 4,
+          self.dungeon_map_img, dst_x, dst_y)
+        end
+      end
+    end
   end
+end
+
+function map_submenu:load_chests()
+
+  local dungeon = self.dungeon
+
+  dungeon.chests = {}
+  local environment = {
+
+    properties = function(map_properties)
+      dungeon.chests.current_floor = map_properties.floor
+    end,
+
+    chest = function(chest_properties) 
+      if dungeon.chests.current_floor ~= nil then
+        dungeon.chests[#dungeon.chests + 1] = {
+          floor = dungeon.chests.current_floor,
+          x = chest_properties.x,
+          y = chest_properties.y,
+          big = chest_properties.is_big_chest,
+          savegame_variable = chest_properties.treasure_savegame_variable,
+        }
+      end
+    end,
+  }
+  setmetatable(environment, {
+    __index = function()
+      return function() end
+    end
+  })
+
+  for _, map_id in ipairs(self.dungeon.maps) do
+    local chunk = sol.main.load_file("maps/" .. map_id .. ".dat")
+    setfenv(chunk, environment)
+    chunk()
+  end
+
+  dungeon.chests.current_floor = nil
 end
 
 return map_submenu

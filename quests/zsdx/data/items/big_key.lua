@@ -4,10 +4,10 @@ function item:on_obtaining(variant, savegame_variable)
 
   -- Save the possession of the big key in the current dungeon.
   local game = self:get_game()
-  local dungeon = game:get_dungeon()
+  local dungeon = game:get_dungeon_index()
   if dungeon == nil then
     error("This map is not in a dungeon")
   end
-  game:set_value("dungeon_" .. dungeon "_big_key", true)
+  game:set_value("dungeon_" .. dungeon .. "_big_key", true)
 end
 

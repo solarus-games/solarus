@@ -34,9 +34,10 @@ function floor_view:on_map_changed(map)
   else
     -- Show the floor view during 3 seconds.
     self.visible = true
-    sol.timer.start(self, 3000, function()
+    local timer = sol.timer.start(3000, function()
       self.visible = false
     end)
+    timer:set_suspended_with_map(false)
     need_rebuild = true
   end
 

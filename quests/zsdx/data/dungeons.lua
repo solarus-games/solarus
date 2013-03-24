@@ -12,6 +12,7 @@ game.dungeons = {
       floor = -1,
       x = 648,
       y = 144,
+      savegame_variable = "b63",
     },
   },
   [2] = {
@@ -24,6 +25,7 @@ game.dungeons = {
       floor = -1,
       x = 960,
       y = 365,
+      savegame_variable = "b93",
     },
   },
   [3] = {
@@ -36,6 +38,7 @@ game.dungeons = {
       floor = 3,
       x = 252,
       y = 533,
+      savegame_variable = "b902",
     },
   },
   [4] = {
@@ -48,6 +51,7 @@ game.dungeons = {
       floor = 0,
       x = 200,
       y = 464,
+      savegame_variable = "b415",
     },
   },
   [5] = {
@@ -67,6 +71,7 @@ game.dungeons = {
       floor = 3,
       x = 272,
       y = 224,
+      savegame_variable = "b321",
     },
   },
   [7] = {
@@ -79,6 +84,7 @@ game.dungeons = {
       floor = 2,
       x = 544,
       y = 784,
+      savegame_variable = "b625",
     },
   },
   [8] = {
@@ -87,6 +93,12 @@ game.dungeons = {
     lowest_floor = -4,
     highest_floor = 0,
     maps = { "47", "48", "49", "50", "51", "52", "53" },
+    boss = {
+      floor = 0,
+      x = 1128,
+      y = 125,
+      savegame_variable = "b727",
+    },
   },
   [9] = {
     floor_width = 2576,

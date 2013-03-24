@@ -18,7 +18,7 @@ The difference is that it looks for a file in the quest tree
 (which may be a directory or an archive).
 
 - \c script_name (string): Name of the Lua file to load, relative to the
-  root data directory of your quest (without extension).
+  root data directory of your quest (with our without extension).
 - Return value (function): A function representing the chunk loaded,
   or \c nil if the file does not exist or could not be loaded.
 
@@ -48,7 +48,7 @@ Use \ref lua_api_main_load_file "sol.main.load_file()"
 explicitly if you need to check the existence
 of the file or to use parameters and return values.
 - \c script_name (string): Name of the Lua file to execute, relative to the
-  root data directory of your quest (without extension).
+  root data directory of your quest (with or without extension).
 
 \remark This function is equivalent to <tt>sol.main.load_file(script_name)()</tt>.
 

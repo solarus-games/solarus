@@ -57,7 +57,9 @@ function inventory_submenu:on_started()
 
         self.counters[k] = sol.text_surface.create{
           horizontal_alignment = "center",
-          vertical_alignment = "top"
+          vertical_alignment = "top",
+          text = item:get_amount(),
+          font = "white_digits",
         }
       end
 
@@ -206,7 +208,7 @@ function inventory_submenu:on_draw(dst_surface)
         -- The player has this item: draw it.
         self.sprites[k]:draw(dst_surface, x, y)
         if self.counters[k] ~= nil then
-          self.counters[k]:draw(dst_surface, x + 8, y + 12)
+          self.counters[k]:draw(dst_surface, x + 8, y)
         end
       end
       x = x + 32

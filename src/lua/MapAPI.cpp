@@ -1005,11 +1005,12 @@ int LuaContext::map_api_create_pickable(lua_State* l) {
         treasure_savegame_variable << "'").c_str());
   }
 
+  FallingHeight falling_height = map.is_loaded() ? FALLING_MEDIUM : FALLING_NONE;
   Game& game = map.get_game();
   MapEntity* entity = Pickable::create(
       game, name, layer, x, y,
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
-      FALLING_MEDIUM, false
+      falling_height, false
   );
 
   if (entity == NULL) {

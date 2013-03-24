@@ -154,6 +154,24 @@ public class Sprite {
     }
 
     /**
+     * Returns whether the specified animation exists.
+     * @param animationName Name of an animation.
+     * @return true if such an animation exists.
+     */
+    public boolean hasAnimation(String animationName) {
+        return animations.containsKey(animationName);
+    }
+
+    /**
+     * Returns an animation of this sprite.
+     * @param animationName Name of the animation to get
+     * @return The corresponding animation.
+     */
+    public SpriteAnimation getAnimation(String animationName) {
+        return animations.get(animationName);
+    }
+
+    /**
      * Returns a frame of this sprite.
      * @param animationName name of animation to use (null to pick the default one)
      * @param direction direction of animation

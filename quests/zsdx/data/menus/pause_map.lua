@@ -81,6 +81,7 @@ function map_submenu:on_started()
     self:load_dungeon_map_image()
   end
 
+  -- Common to dungeons and outside dungeons.
   self.hero_head_sprite = sol.sprite.create("menus/hero_head")
   self.hero_head_sprite:set_animation("tunic" .. self.game:get_item("tunic"):get_variant())
   self.up_arrow_sprite = sol.sprite.create("menus/arrow")
@@ -409,18 +410,23 @@ function map_submenu:load_dungeon_map_image()
   end
 end
 
+-- Parses all map data files of the current dungeon in order to determine the
+-- position of its chests.
 function map_submenu:load_chests()
 
   local dungeon = self.dungeon
-
   dungeon.chests = {}
+
+  -- Here is the magic: set up a special environment to load map data files.
   local environment = {
 
     properties = function(map_properties)
+      -- Remember the floor to be used for subsequent chests.
       dungeon.chests.current_floor = map_properties.floor
     end,
 
     chest = function(chest_properties) 
+      -- Get the info about this chest and store it into the dungeon table.
       if dungeon.chests.current_floor ~= nil then
         dungeon.chests[#dungeon.chests + 1] = {
           floor = dungeon.chests.current_floor,
@@ -432,6 +438,8 @@ function map_submenu:load_chests()
       end
     end,
   }
+
+  -- Make any other function a no-op (tile(), enemy(), block(), etc.).
   setmetatable(environment, {
     __index = function()
       return function() end
@@ -439,11 +447,18 @@ function map_submenu:load_chests()
   })
 
   for _, map_id in ipairs(self.dungeon.maps) do
+
+    -- Load the map data file as Lua.
     local chunk = sol.main.load_file("maps/" .. map_id .. ".dat")
+
+    -- Apply our special environment (with functions properties() and chest()).
     setfenv(chunk, environment)
+
+    -- Run it.
     chunk()
   end
 
+  -- Cleanup temporary value.
   dungeon.chests.current_floor = nil
 end
 

@@ -87,6 +87,7 @@ void Movement::set_entity(MapEntity* entity) {
     this->xy.set_xy(entity->get_xy());
     notify_movement_changed();
   }
+  notify_object_controlled();
 }
 
 /**
@@ -119,6 +120,15 @@ void Movement::set_drawable(Drawable* drawable) {
     this->xy.set_xy(drawable->get_xy());
     notify_movement_changed();
   }
+  notify_object_controlled();
+}
+
+/**
+ * @brief Notifies this movement that the object it controls has changed.
+ *
+ * Does nothing by default.
+ */
+void Movement::notify_object_controlled() {
 }
 
 /**
@@ -253,8 +263,10 @@ void Movement::notify_position_changed() {
     lua_context->movement_on_position_changed(*this);
   }
 
-  if (entity != NULL && !entity->is_being_removed()) {
-    entity->notify_position_changed();
+  if (entity != NULL) {
+    if (!entity->is_being_removed()) {
+      entity->notify_position_changed();
+    }
   }
 }
 

@@ -46,13 +46,11 @@ RandomMovement::~RandomMovement() {
 }
 
 /**
- * @brief Sets the entity to be controlled by this movement object.
- * @param entity the entity to control
+ * @brief Notifies this movement that the object it controls has changed.
  */
-void RandomMovement::set_entity(MapEntity *entity) {
+void RandomMovement::notify_object_controlled() {
 
-  Movement::set_entity(entity);
-
+  StraightMovement::notify_object_controlled();
   set_max_distance(max_distance);
 }
 

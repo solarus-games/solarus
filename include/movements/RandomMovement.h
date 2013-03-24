@@ -46,7 +46,7 @@ class RandomMovement: public StraightMovement {
     RandomMovement(int speed, int max_distance = 0);
     ~RandomMovement();
 
-    void set_entity(MapEntity *entity);
+    virtual void notify_object_controlled();
     void update();
     void set_suspended(bool suspended);
 

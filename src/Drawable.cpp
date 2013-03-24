@@ -53,6 +53,7 @@ void Drawable::start_movement(Movement& movement) {
 
   stop_movement();
   this->movement = &movement;
+  movement.set_drawable(this);
   movement.increment_refcount();
 }
 

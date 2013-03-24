@@ -232,8 +232,7 @@ function inventory_submenu:show_info_message()
   local item_name = item_names[self:get_selected_index() + 1]
   local variant = self.game:get_item(item_name):get_variant()
 
-  -- FIXME the dialog is shown behind the pause menu
-  -- TODO position of the dialog (top or bottom)
+  -- FIXME position of the dialog (top or bottom)
   self.game:set_custom_command_effect("action", nil)
   self.game:get_map():start_dialog("_item_description." .. item_name .. "." .. variant, function()
     self.game:set_custom_command_effect("action", "info")
@@ -277,8 +276,8 @@ function inventory_submenu:assign_item(slot)
   local x2 = (slot == 1) and 20 or 72
   local y2 = 46
 
+  self.item_assigned_sprite:set_xy(x1, y1)
   local movement = sol.movement.create("target")
-  movement:set_xy(x1, y1)
   movement:set_target(x2, y2)
   movement:set_speed(500)
   movement:start(self.item_assigned_sprite, function()

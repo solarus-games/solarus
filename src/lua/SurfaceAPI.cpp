@@ -40,6 +40,8 @@ void LuaContext::register_surface_module() {
       { "draw_region", drawable_api_draw_region },
       { "fade_in", drawable_api_fade_in },
       { "fade_out", drawable_api_fade_out },
+      { "get_xy", drawable_api_get_xy },
+      { "set_xy", drawable_api_set_xy },
       { "get_movement", drawable_api_get_movement },
       { NULL, NULL }
   };

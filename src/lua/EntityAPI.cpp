@@ -458,7 +458,7 @@ int LuaContext::entity_api_set_origin(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_get_position
+ * @brief Implementation of \ref lua_api_entity_get_position.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */

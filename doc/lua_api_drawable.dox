@@ -52,6 +52,22 @@ Starts a fade-out effect on this object.
 - \c callback (function, optional): A function to call when the
   fade-out effect finishes.
 
+\subsection lua_api_get_xy drawable:get_xy()
+
+Returns the coordinates where this drawable object is drawn.
+
+They can be modified by a \ref lua_api_movement "movement"
+or by \ref lua_api_drawable_set_xy "drawable:set_xy()".
+- Return value 1 (number): X coordinate of the drawable object.
+- Return value 2 (number): Y coordinate of the drawable object.
+
+\subsection lua_api_set_xy drawable:set_xy(x, y)
+
+Sets the coordinates where this drawable object is drawn.
+
+- \c x (number): X coordinate to set.
+- \c y (number): Y coordinate to set.
+
 \subsection lua_api_drawable_get_movement drawable:get_movement()
 
 Returns the current movement of this drawable object.

@@ -195,6 +195,36 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_drawable_set_xy.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_get_xy(lua_State* l) {
+
+  Drawable& drawable = check_drawable(l, 1);
+
+  lua_pushinteger(l, drawable.get_xy().get_x());
+  lua_pushinteger(l, drawable.get_xy().get_y());
+  return 2;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_drawable_set_xy.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_set_xy(lua_State* l) {
+
+  Drawable& drawable = check_drawable(l, 1);
+  int x = luaL_checkint(l, 2);
+  int y = luaL_checkint(l, 3);
+
+  drawable.set_xy(Rectangle(x, y));
+
+  return 0;
+}
+
+/**
  * @brief Implementation of \ref lua_api_drawable_get_movement.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.

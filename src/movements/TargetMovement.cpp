@@ -80,6 +80,17 @@ TargetMovement::~TargetMovement() {
 }
 
 /**
+ * @brief Notifies this movement that the object it controls has changed.
+ */
+void TargetMovement::notify_object_controlled() {
+
+  StraightMovement::notify_object_controlled();
+
+  // Coordinates have changed: compute a new trajectory.
+  recompute_movement();
+}
+
+/**
  * @brief Changes the target of this movement.
  * @param target_x x coordinate of the target point
  * @param target_y y coordinate of the target point

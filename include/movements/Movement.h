@@ -74,9 +74,10 @@ class Movement: public ExportableToLua {
 
     // object controlled
     MapEntity* get_entity() const;
-    virtual void set_entity(MapEntity* entity);
+    void set_entity(MapEntity* entity);
     Drawable* get_drawable() const;
-    virtual void set_drawable(Drawable* drawable);
+    void set_drawable(Drawable* drawable);
+    virtual void notify_object_controlled();
 
     // update
     virtual void update(); // called repeatedly

@@ -150,12 +150,11 @@ void PathMovement::set_snap_to_grid(bool snap_to_grid) {
 }
 
 /**
- * @brief Sets the entity to be controlled by this movement object.
- * @param entity the entity to control
+ * @brief Notifies this movement that the object it controls has changed.
  */
-void PathMovement::set_entity(MapEntity* entity) {
+void PathMovement::notify_object_controlled() {
 
-  Movement::set_entity(entity);
+  PixelMovement::notify_object_controlled();
   restart();
 }
 

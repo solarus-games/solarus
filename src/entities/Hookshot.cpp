@@ -410,7 +410,7 @@ void Hookshot::notify_collision_with_destructible(Destructible& destructible, Co
 
     if (destructible.can_explode()) {
       destructible.explode();
-      remove_from_map();
+      go_back();
     }
     else {
       attach_to(destructible);

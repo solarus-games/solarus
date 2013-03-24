@@ -1343,12 +1343,12 @@ int LuaContext::map_api_create_wall(lua_State* l) {
   int width = check_int_field(l, 1, "width");
   int height = check_int_field(l, 1, "height");
   bool stops_hero = check_boolean_field(l, 1, "stops_hero");
-  bool stops_npcs = check_boolean_field(l, 1, "stops_npcs");
   bool stops_enemies = check_boolean_field(l, 1, "stops_enemies");
+  bool stops_npcs = check_boolean_field(l, 1, "stops_npcs");
   bool stops_blocks = check_boolean_field(l, 1, "stops_blocks");
 
   MapEntity* entity = new Wall(name, layer, x, y, width, height,
-      stops_hero, stops_npcs, stops_enemies, stops_blocks);
+      stops_hero, stops_enemies, stops_npcs, stops_blocks);
   map.get_entities().add_entity(entity);
 
   if (map.is_started()) {

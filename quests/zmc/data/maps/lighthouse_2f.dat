@@ -6079,39 +6079,51 @@ teletransporter{
 door{
   layer = 1,
   x = 344,
-  y = 344,
+  y = 352,
   name = "door",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
   x = 280,
-  y = 344,
+  y = 352,
   name = "door_2",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
   x = 344,
-  y = 584,
+  y = 592,
   name = "door_3",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
   savegame_variable = "locked_door_C",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
 }
 
 door{
   layer = 1,
   x = 280,
-  y = 584,
+  y = 592,
   name = "door_4",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
   savegame_variable = "locked_door_C",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
 }
 
 destination{
@@ -6133,38 +6145,46 @@ destructible{
 
 door{
   layer = 1,
-  x = 872,
+  x = 880,
   y = 264,
   name = "door_5",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
-  x = 872,
+  x = 880,
   y = 200,
   name = "door_6",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
-  x = 784,
+  x = 792,
   y = 744,
   name = "door_7",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
   x = 664,
-  y = 824,
+  y = 832,
   name = "door_8",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 switch{
@@ -6329,7 +6349,7 @@ teletransporter{
 stairs{
   layer = 1,
   x = 544,
-  y = 24,
+  y = 56,
   name = "stairs_5",
   direction = 1,
   subtype = "0",
@@ -6377,21 +6397,29 @@ stairs{
 door{
   layer = 1,
   x = 600,
-  y = 104,
+  y = 112,
   name = "door_9",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
   savegame_variable = "locked_door_C",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
 }
 
 door{
   layer = 1,
   x = 664,
-  y = 104,
+  y = 112,
   name = "door_10",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
   savegame_variable = "locked_door_C",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
 }
 
 teletransporter{

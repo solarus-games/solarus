@@ -6078,75 +6078,95 @@ destructible{
 door{
   layer = 1,
   x = 600,
-  y = 344,
+  y = 352,
   name = "door_2",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
   x = 280,
-  y = 344,
+  y = 352,
   name = "door_3",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
   x = 344,
-  y = 344,
+  y = 352,
   name = "door_4",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
   x = 664,
-  y = 344,
+  y = 352,
   name = "door_5",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
-  x = 784,
+  x = 792,
   y = 264,
   name = "door_6",
   direction = 1,
-  subtype = "3",
+  sprite = "entities/door_big_key",
   savegame_variable = "locked_door_B",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog_id = "_big_key_required",
 }
 
 door{
   layer = 1,
-  x = 784,
+  x = 792,
   y = 200,
   name = "door_7",
   direction = 3,
-  subtype = "3",
+  sprite = "entities/door_big_key",
   savegame_variable = "locked_door_B",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog_id = "_big_key_required",
 }
 
 door{
   layer = 1,
-  x = 1104,
+  x = 1112,
   y = 504,
   name = "door_8",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
-  x = 1104,
+  x = 1112,
   y = 440,
   name = "door_9",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 destination{
@@ -6209,21 +6229,27 @@ stairs{
 
 door{
   layer = 1,
-  x = 464,
+  x = 472,
   y = 504,
   name = "door",
   direction = 1,
-  subtype = "1",
+  sprite = "entities/door_small_key",
   savegame_variable = "locked_door_A",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
 }
 
 door{
   layer = 1,
-  x = 784,
+  x = 792,
   y = 504,
   name = "torch_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 wall{

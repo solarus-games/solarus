@@ -5,8 +5,8 @@ game.dungeons = {
  [3] = {
     floor_width = 1280,
     floor_height = 960,
-    lowest_floor = 1,
-    highest_floor = 4,
+    lowest_floor = -1,
+    highest_floor = 3,
     maps = { "lighthouse_b1", "lighthouse_1f", "lighthouse_2f", "lighthouse_3f", "lighthouse_4f" },
   }
 }

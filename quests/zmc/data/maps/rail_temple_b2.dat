@@ -4,6 +4,7 @@ properties{
   width = 920,
   height = 656,
   world = "rail_temple",
+  floor = -2,
   tileset = "blue_dungeon_lw",
   music = "same",
 }

@@ -77,6 +77,14 @@
 3	npc/castle_guard	Castle guard
 3	entities/castle_lock	Castle prison lock
 3	entities/destination	Destination of teletransporter
+3	entities/door_normal	Door (normal)
+3	entities/door_small_key	Door (small key)
+3	entities/door_small_key_block	Door (small key block)
+3	entities/door_big_key	Door (big key)
+3	entities/door_boss_key	Door (boss key)
+3	entities/door_weak_wall	Door (weak wall)
+3	entities/door_very_weak_wall	Door (very weak wall)
+3	entities/door_weak_block	Door (weak block)
 3	entities/frozen_door	Frozen door
 3	npc/ganon	Ganon
 3	npc/great_fairy	Great Fairy

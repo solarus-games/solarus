@@ -3953,12 +3953,16 @@ tile{
 
 door{
   layer = 1,
-  x = 752,
+  x = 792,
   y = 392,
   name = "door",
   direction = 1,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
   savegame_variable = "locked_door_E",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_boss_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog_id = "_boss_key_required",
 }
 
 destructible{
@@ -4143,22 +4147,30 @@ chest{
 
 door{
   layer = 1,
-  x = 784,
+  x = 792,
   y = 264,
   name = "door_2",
   direction = 1,
-  subtype = "1",
+  sprite = "entities/door_small_key",
   savegame_variable = "locked_door_D",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
 }
 
 door{
   layer = 1,
-  x = 784,
+  x = 792,
   y = 200,
   name = "door_5",
   direction = 3,
-  subtype = "1",
+  sprite = "entities/door_small_key",
   savegame_variable = "locked_door_D",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
 }
 
 door{
@@ -4167,26 +4179,32 @@ door{
   y = 592,
   name = "door_6",
   direction = 2,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
   savegame_variable = "weak_wall_A",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
   x = 984,
-  y = 344,
+  y = 352,
   name = "door_3",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
   layer = 1,
   x = 920,
-  y = 344,
+  y = 352,
   name = "door_4",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -4195,8 +4213,10 @@ door{
   y = 352,
   name = "door_7",
   direction = 2,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
   savegame_variable = "weak_wall_A",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 destination{
@@ -5315,7 +5335,7 @@ tile{
 tile{
   layer = 2,
   x = 936,
-  y = 120,
+  y = 792,
   width = 8,
   height = 32,
   pattern = 353,
@@ -5324,9 +5344,9 @@ tile{
 tile{
   layer = 2,
   x = 936,
-  y = 792,
+  y = 120,
   width = 8,
   height = 32,
-  pattern = 353,
+  pattern = 163,
 }
 

@@ -920,11 +920,11 @@ destination{
 
 door{
   layer = 0,
-  x = 200,
+  x = 208,
   y = 344,
   name = "door1_1",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -948,19 +948,19 @@ stairs{
 door{
   layer = 0,
   x = 464,
-  y = 424,
+  y = 432,
   name = "door2_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 0,
   x = 368,
-  y = 424,
+  y = 432,
   name = "door2_1",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 teletransporter{
@@ -2412,19 +2412,19 @@ wall{
 door{
   layer = 1,
   x = 824,
-  y = 384,
+  y = 392,
   name = "door3_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 776,
-  y = 384,
+  y = 392,
   name = "door3_1",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 block{

@@ -31,7 +31,7 @@ class Bomb: public Detector {
 
   public:
 
-    Bomb(Layer layer, int x, int y);
+    Bomb(const std::string& name, Layer layer, int x, int y);
     ~Bomb();
 
     EntityType get_type();

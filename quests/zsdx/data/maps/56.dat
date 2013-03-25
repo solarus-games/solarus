@@ -9510,38 +9510,44 @@ crystal_block{
 door{
   layer = 1,
   x = 872,
-  y = 56,
+  y = 64,
   name = "miniboss_door",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 920,
-  y = 56,
+  y = 64,
   name = "miniboss_door_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 584,
-  y = 56,
+  y = 64,
   name = "door",
   direction = 0,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_6_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b306",
 }
 
 door{
   layer = 1,
   x = 632,
-  y = 56,
+  y = 64,
   name = "door_2",
   direction = 2,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_6_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b306",
 }
 
@@ -9770,7 +9776,11 @@ door{
   y = 352,
   name = "door_5",
   direction = 1,
-  subtype = "2",
+  sprite = "entities/door_small_key_block",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_6_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b307",
 }
 
@@ -10112,28 +10122,28 @@ crystal_block{
 door{
   layer = 1,
   x = 872,
-  y = 248,
+  y = 256,
   name = "miniboss_door_3",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 920,
-  y = 248,
+  y = 256,
   name = "miniboss_door_4",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 1048,
+  x = 1056,
   y = 24,
   name = "miniboss_door_5",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destination{
@@ -10488,27 +10498,31 @@ door{
   y = 48,
   name = "door_6",
   direction = 1,
-  subtype = "2",
+  sprite = "entities/door_small_key_block",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_6_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b318",
 }
 
 door{
   layer = 1,
-  x = 344,
+  x = 352,
   y = 120,
   name = "torches_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b323",
 }
 
 door{
   layer = 1,
-  x = 344,
+  x = 352,
   y = 72,
   name = "torches_door_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b323",
 }
 

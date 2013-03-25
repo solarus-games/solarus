@@ -17,6 +17,7 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+
 import org.solarus.editor.*;
 
 /**
@@ -30,8 +31,12 @@ public class Pickable extends MapEntity {
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
         new EntityImageDescription("pickable_items.png", 0, 0, 16, 16)
-        // TODO load the sprite instead (for now we always show a green rupee)
     };
+
+    /**
+     * The sprite representing this entity.
+     */
+    private Sprite sprite;
 
     /**
      * Origin point of a pickable item.
@@ -44,6 +49,7 @@ public class Pickable extends MapEntity {
      */
     public Pickable(Map map) throws MapException {
         super(map, 16, 16);
+        sprite = new Sprite("entities/items", map);
     }
 
     /**
@@ -87,6 +93,31 @@ public class Pickable extends MapEntity {
         String savegameVariable = getProperty("treasure_savegame_variable");
         if (savegameVariable != null && !isValidSavegameVariable(savegameVariable)) {
             throw new MapException("Invalid savegame variable");
+        }
+    }
+
+    /**
+     * Draws this entity on the map editor.
+     * @param g graphic context
+     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
+     * @param showTransparency true to make transparent pixels,
+     * false to replace them by a background color
+     */
+    public void paint(Graphics g, double zoom, boolean showTransparency) {
+
+        // Display the sprite of the treasure.
+        String animation = getProperty("treasure_name");
+        int direction = getIntegerProperty("treasure_variant") - 1;
+
+        if (sprite.hasAnimation(animation) &&
+                direction <= sprite.getAnimation(animation).getNbDirections()) {
+    
+            sprite.paint(g, zoom, showTransparency,
+                    getX(), getY(), animation, direction, 0);
+        }
+        else {
+            // Display a default image.
+            super.paint(g, zoom, showTransparency);
         }
     }
 }

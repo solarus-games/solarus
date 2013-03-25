@@ -103,7 +103,7 @@ public class EditEntityComponent extends JPanel {
         gridBagConstraints.gridy = 0;
 
         // name
-        if (entity.hasName()) {
+        if (entity.canHaveName()) {
             nameField = new JTextField(15);
             addField("Name", nameField);
         }
@@ -192,17 +192,21 @@ public class EditEntityComponent extends JPanel {
     }
 
     /**
-     * Adds a field in the component.
-     * @param label name displayed of the field
-     * @param field the field to add (can be a JTextField, a JComboBox, etc.)
+     * Adds a field in the component: label and component.
+     * @param name Displayed name of the field.
+     * @param field The field to add (can be a JTextField, a JComboBox, etc.).
+     * @return The JLabel created to display the name.
      */
-    protected void addField(String label, JComponent field) {
+    protected JLabel addField(String name, JComponent field) {
 
+        JLabel label = new JLabel(name);
         gridBagConstraints.gridx = 0;
-        add(new JLabel(label), gridBagConstraints);
+        add(label, gridBagConstraints);
         gridBagConstraints.gridx = 1;
         add(field, gridBagConstraints);
         gridBagConstraints.gridy++;
+
+        return label;
     }
 
     /**
@@ -212,8 +216,13 @@ public class EditEntityComponent extends JPanel {
      */
     public void update() {
 
-        if (entity.hasName()) {
-            nameField.setText(entity.getName());
+        if (entity.canHaveName()) {
+            if (entity.hasName()) {
+                nameField.setText(entity.getName());
+            }
+            else {
+                nameField.setText("");
+            }
         }
 
         layerField.setValue(entity.getLayer());
@@ -250,7 +259,10 @@ public class EditEntityComponent extends JPanel {
      */
     private ActionEditEntity getAction() throws QuestEditorException {
 
-        String name = entity.hasName() ? nameField.getText() : null;
+        String name = null;
+        if (entity.canHaveName()) {
+            name = nameField.getText().isEmpty() ? null : nameField.getText();
+        }
         Layer layer = layerField.getValue();
         Point position = positionField.getCoordinates();
         Dimension size = null;
@@ -293,3 +305,4 @@ public class EditEntityComponent extends JPanel {
         }
     }
 }
+

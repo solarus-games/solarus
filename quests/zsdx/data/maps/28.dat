@@ -1044,10 +1044,11 @@ destination{
 door{
   layer = 0,
   x = 328,
-  y = 104,
+  y = 112,
   name = "weak_wall",
   direction = 0,
-  subtype = "6",
+  sprite = "entities/door_very_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b65",
 }
 

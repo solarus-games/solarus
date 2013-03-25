@@ -29,7 +29,7 @@ function enemy:on_restarted()
   -- Set the movement.
   local m = sol.movement.create("random_path")
   m:set_speed(40)
-  self:start_movement(m)
+  m:start(self)
 
   chain:set_enabled(true)
 end

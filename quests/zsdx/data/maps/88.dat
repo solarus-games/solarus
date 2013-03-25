@@ -4633,38 +4633,38 @@ destructible{
 
 door{
   layer = 1,
-  x = 256,
+  x = 264,
   y = 496,
   name = "door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 256,
+  x = 264,
   y = 448,
   name = "door_3",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 688,
+  x = 696,
   y = 784,
   name = "door_4",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 688,
+  x = 696,
   y = 736,
   name = "door_5",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 npc{
@@ -4698,11 +4698,12 @@ destructible{
 
 door{
   layer = 1,
-  x = 1040,
+  x = 1048,
   y = 448,
   name = "weak_wall_a",
   direction = 3,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b947",
 }
 
@@ -4719,31 +4720,34 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 1040,
+  x = 1048,
   y = 496,
   name = "weak_wall_a_2",
   direction = 1,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b947",
 }
 
 door{
   layer = 1,
   x = 776,
-  y = 680,
+  y = 688,
   name = "weak_wall_b",
   direction = 0,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b948",
 }
 
 door{
   layer = 1,
   x = 824,
-  y = 680,
+  y = 688,
   name = "weak_wall_b_2",
   direction = 2,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b948",
 }
 

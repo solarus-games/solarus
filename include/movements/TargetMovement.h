@@ -57,6 +57,7 @@ class TargetMovement: public StraightMovement {
     int get_moving_speed();
     void set_moving_speed(int moving_speed);
 
+    virtual void notify_object_controlled();
     bool is_finished();
     void update();
 

@@ -5004,57 +5004,63 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 608,
+  x = 616,
   y = 728,
   name = "miniboss_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 608,
+  x = 616,
   y = 680,
   name = "miniboss_door_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 680,
-  y = 832,
+  y = 840,
   name = "miniboss_door_3",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 728,
-  y = 832,
+  y = 840,
   name = "miniboss_door_4",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 112,
+  x = 120,
   y = 248,
   name = "door",
   direction = 1,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
+  opening_condition = "dungeon_3_boss_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b906",
 }
 
 door{
   layer = 1,
-  x = 112,
+  x = 120,
   y = 200,
   name = "door_2",
   direction = 3,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
+  opening_condition = "dungeon_3_boss_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b906",
 }
 
@@ -5319,29 +5325,29 @@ stairs{
 
 door{
   layer = 1,
-  x = 240,
+  x = 248,
   y = 680,
   name = "final_room_door",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 112,
+  x = 120,
   y = 248,
   name = "boss_door_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 112,
+  x = 120,
   y = 200,
   name = "boss_door_3",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -5589,21 +5595,27 @@ destructible{
 
 door{
   layer = 1,
-  x = 608,
+  x = 616,
   y = 680,
   name = "door_4",
   direction = 3,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_3_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b925",
 }
 
 door{
   layer = 1,
-  x = 608,
+  x = 616,
   y = 728,
   name = "door_3",
   direction = 1,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_3_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b925",
 }
 

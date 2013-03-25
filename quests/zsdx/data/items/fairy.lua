@@ -18,7 +18,7 @@ function item:on_pickable_created(pickable)
   movement:set_speed(28)
   movement:set_ignore_obstacles(true)
   movement:set_max_distance(40)  -- Don't go too far.
-  pickable:start_movement(movement)
+  movement:start(pickable)
 
   -- Put the fairy on the highest layer to show it above all walls.
   local x, y = pickable:get_position()

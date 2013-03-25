@@ -25,7 +25,7 @@
 /**
  * @brief An item possibly possessed by the player.
  *
- * Its properties are loaded from the data file items.dat.
+ * Its properties are controlled by the script of the item.
  */
 class EquipmentItem: public ExportableToLua {
 

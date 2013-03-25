@@ -4510,39 +4510,45 @@ enemy{
 door{
   layer = 1,
   x = 864,
-  y = 536,
+  y = 544,
   name = "door",
   direction = 0,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_1_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b60",
 }
 
 door{
   layer = 1,
   x = 912,
-  y = 536,
+  y = 544,
   name = "door_2",
   direction = 2,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_1_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b60",
 }
 
 door{
   layer = 1,
-  x = 944,
+  x = 952,
   y = 512,
   name = "se_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 944,
+  x = 952,
   y = 464,
   name = "se_door_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 enemy{
@@ -4750,11 +4756,11 @@ stairs{
 
 door{
   layer = 1,
-  x = 632,
+  x = 640,
   y = 24,
   name = "final_room_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 teletransporter{

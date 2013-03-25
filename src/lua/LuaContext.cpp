@@ -173,6 +173,7 @@ void LuaContext::exit() {
 void LuaContext::update() {
 
   update_drawables();
+  update_movements();
   update_timers();
 
   // Call sol.main.on_update().
@@ -863,16 +864,20 @@ void LuaContext::load_file(lua_State* l, const std::string& script_name) {
  * If the file does not exist, the stack is left intact and false is returned.
  *
  * @param l A Lua state.
- * @param script_name File name of the script without extension,
+ * @param script_name File name of the script with or without extension,
  * relative to the data directory.
  * @return true if the file exists and was loaded.
  */
 bool LuaContext::load_file_if_exists(lua_State* l, const std::string& script_name) {
 
-  // Determine the file name (.lua).
-  std::ostringstream oss;
-  oss << script_name << ".lua";
-  std::string file_name = oss.str();
+  // Determine the file name (possibly adding ".lua").
+  std::string file_name(script_name);
+
+  if (!FileTools::data_file_exists(file_name)) {
+    std::ostringstream oss;
+    oss << script_name << ".lua";
+    file_name = oss.str();
+  }
 
   if (FileTools::data_file_exists(file_name)) {
     // Load the file.
@@ -1841,9 +1846,14 @@ void LuaContext::on_camera_back() {
 void LuaContext::on_obtaining_treasure(const Treasure& treasure) {
 
   if (find_method("on_obtaining_treasure")) {
-    push_string(l, treasure.get_item_name());
+    push_item(l, treasure.get_item());
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    }
     call_function(4, 0, "on_obtaining_treasure");
   }
 }
@@ -1855,20 +1865,15 @@ void LuaContext::on_obtaining_treasure(const Treasure& treasure) {
 void LuaContext::on_obtained_treasure(const Treasure& treasure) {
 
   if (find_method("on_obtained_treasure")) {
-    push_string(l, treasure.get_item_name());
+    push_item(l, treasure.get_item());
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    }
     call_function(4, 0, "on_obtained_treasure");
-  }
-}
-
-/**
- * @brief Calls the on_victory_finished() method of the object on top of the stack.
- */
-void LuaContext::on_victory_finished() {
-
-  if (find_method("on_victory_finished")) {
-    call_function(1, 0, "on_victory_finished");
   }
 }
 
@@ -2041,12 +2046,12 @@ void LuaContext::on_bought() {
 }
 
 /**
- * @brief Calls the on_open() method of the object on top of the stack.
+ * @brief Calls the on_opened() method of the object on top of the stack.
  */
-void LuaContext::on_open() {
+void LuaContext::on_opened() {
 
-  if (find_method("on_open")) {
-    call_function(1, 0, "on_open");
+  if (find_method("on_opened")) {
+    call_function(1, 0, "on_opened");
   }
 }
 
@@ -2140,7 +2145,12 @@ void LuaContext::on_obtaining(const Treasure& treasure) {
 
   if (find_method("on_obtaining")) {
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    }
     call_function(3, 0, "on_obtaining");
   }
 }
@@ -2153,7 +2163,12 @@ void LuaContext::on_obtained(const Treasure& treasure) {
 
   if (find_method("on_obtained")) {
     lua_pushinteger(l, treasure.get_variant());
-    lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    if (!treasure.is_saved()) {
+      lua_pushnil(l);
+    }
+    else {
+      lua_pushstring(l, treasure.get_savegame_variable().c_str());
+    }
     call_function(3, 0, "on_obtained");
   }
 }
@@ -2296,36 +2311,6 @@ void LuaContext::on_movement_finished() {
 
   if (find_method("on_movement_finished")) {
     call_function(1, 0, "on_movement_finished");
-  }
-}
-
-/**
- * @brief Calls the on_sprite_animation_finished() method of the object on top of the stack.
- * @param sprite A sprite whose animation has just finished.
- * @param animation Name of the animation finished.
- */
-void LuaContext::on_sprite_animation_finished(Sprite& sprite, const std::string& animation) {
-
-  if (find_method("on_sprite_animation_finished")) {
-    push_sprite(l, sprite);
-    push_string(l, animation);
-    call_function(3, 0, "on_sprite_animation_finished");
-  }
-}
-
-/**
- * @brief Calls the on_sprite_frame_changed() method of the object on top of the stack.
- * @param sprite A sprite whose animation frame has just changed.
- * @param animation Name of the sprite animation.
- * @param frame The new frame.
- */
-void LuaContext::on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
-
-  if (find_method("on_sprite_frame_changed")) {
-    push_sprite(l, sprite);
-    push_string(l, animation);
-    lua_pushinteger(l, frame);
-    call_function(4, 0, "on_sprite_frame_changed");
   }
 }
 

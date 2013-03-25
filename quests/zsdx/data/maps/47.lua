@@ -205,9 +205,9 @@ for _, enemy in ipairs(map:get_entities("room_big_enemy")) do
   end
 end
 
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item, variant, savegame_variable)
 
-  if item_name == "heart_container" then
+  if item:get_name() == "heart_container" then
     sol.audio.play_music("victory")
     hero:freeze()
     hero:set_direction(3)
@@ -220,12 +220,12 @@ function hero:on_obtained_treasure(item_name, variant, savegame_variable)
   end
 end
 
-function boss_key_door:on_open()
+function boss_key_door:on_opened()
 
   boss_key_door_laser:remove()
 end
 
-function WW01:on_open()
+function WW01:on_opened()
 
   sol.audio.play_sound("secret")
 end

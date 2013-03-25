@@ -3870,41 +3870,53 @@ crystal{
 
 door{
   layer = 0,
-  x = 800,
+  x = 808,
   y = 416,
   name = "door",
   direction = 1,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
+  opening_condition = "dungeon_5_boss_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b507",
 }
 
 door{
   layer = 0,
-  x = 800,
+  x = 808,
   y = 320,
   name = "door_2",
   direction = 3,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
+  opening_condition = "dungeon_5_boss_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b507",
 }
 
 door{
   layer = 0,
-  x = 112,
+  x = 120,
   y = 288,
   name = "door_3",
   direction = 1,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_5_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b508",
 }
 
 door{
   layer = 0,
-  x = 112,
+  x = 120,
   y = 192,
   name = "door_4",
   direction = 3,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_5_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b508",
 }
 
@@ -3979,19 +3991,19 @@ enemy{
 door{
   layer = 0,
   x = 832,
-  y = 856,
+  y = 864,
   name = "se_door",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 0,
   x = 928,
-  y = 856,
+  y = 864,
   name = "se_door_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destructible{
@@ -4030,20 +4042,28 @@ enemy{
 door{
   layer = 0,
   x = 272,
-  y = 856,
+  y = 864,
   name = "door_5",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_5_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b513",
 }
 
 door{
   layer = 0,
   x = 368,
-  y = 856,
+  y = 864,
   name = "door_6",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_5_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b513",
 }
 
@@ -4094,39 +4114,39 @@ npc{
 door{
   layer = 0,
   x = 272,
-  y = 560,
+  y = 568,
   name = "w_door",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b514",
 }
 
 door{
   layer = 0,
   x = 368,
-  y = 560,
+  y = 568,
   name = "w_door_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b514",
 }
 
 door{
   layer = 0,
-  x = 1032,
+  x = 1040,
   y = 528,
   name = "e_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 0,
-  x = 1032,
+  x = 1040,
   y = 432,
   name = "e_door_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destructible{
@@ -4167,20 +4187,20 @@ destructible{
 door{
   layer = 0,
   x = 448,
-  y = 488,
+  y = 496,
   name = "c_door",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b522",
 }
 
 door{
   layer = 0,
   x = 544,
-  y = 488,
+  y = 496,
   name = "c_door_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b522",
 }
 

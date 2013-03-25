@@ -31,13 +31,15 @@
 
 /**
  * @brief Creates a pickable item with the specified subtype.
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
  * @param treasure the treasure to give when the item is picked
  */
-Pickable::Pickable(Layer layer, int x, int y, const Treasure &treasure):
-  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, "", layer, x, y, 0, 0),
+Pickable::Pickable(const std::string& name, Layer layer,
+    int x, int y, const Treasure &treasure):
+  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, name, layer, x, y, 0, 0),
   treasure(treasure),
   shadow_sprite(NULL),
   shadow_xy(Rectangle(x, y)),
@@ -73,6 +75,7 @@ EntityType Pickable::get_type() {
  * - the item cannot be obtained by the hero yet.
  *
  * @param game the current game
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
@@ -82,7 +85,8 @@ EntityType Pickable::get_type() {
  * decide if it disappears after some time)
  * @return the pickable item created, or NULL
  */
-Pickable* Pickable::create(Game& game, Layer layer, int x, int y, Treasure treasure,
+Pickable* Pickable::create(Game& game, const std::string& name,
+    Layer layer, int x, int y, Treasure treasure,
     FallingHeight falling_height, bool force_persistent) {
 
   treasure.ensure_obtainable();
@@ -92,7 +96,7 @@ Pickable* Pickable::create(Game& game, Layer layer, int x, int y, Treasure treas
     return NULL;
   }
 
-  Pickable *pickable = new Pickable(layer, x, y, treasure);
+  Pickable *pickable = new Pickable(name, layer, x, y, treasure);
 
   // Set the item properties.
   pickable->falling_height = falling_height;
@@ -328,7 +332,7 @@ void Pickable::give_item_to_player() {
 
   // give the item
   if (item.get_brandish_when_picked()) {
-    get_hero().start_treasure(treasure);
+    get_hero().start_treasure(treasure, LUA_REFNIL);
   }
   else {
     treasure.give_to_player();

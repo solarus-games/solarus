@@ -7773,10 +7773,10 @@ switch{
 door{
   layer = 1,
   x = 1192,
-  y = 552,
+  y = 560,
   name = "creeper_door_2",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -7791,10 +7791,10 @@ sensor{
 door{
   layer = 1,
   x = 1240,
-  y = 552,
+  y = 560,
   name = "creeper_door",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 enemy{

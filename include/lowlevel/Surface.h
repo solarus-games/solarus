@@ -74,6 +74,8 @@ class Surface: public Drawable {
 
     // implementation from Drawable
     void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
+    void raw_draw_region(const Rectangle& region,
+        Surface& dst_surface, const Rectangle& dst_position);
     void draw_transition(Transition& transition);
 
   private:

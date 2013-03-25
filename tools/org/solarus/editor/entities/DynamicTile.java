@@ -53,6 +53,15 @@ public class DynamicTile extends Tile {
     }
 
     /**
+     * Returns whether this kind of entity is allowed to have a name.
+     * @return true.
+     */
+    public boolean canHaveName() {
+        // As DynamicTile inherits Tile, we have to redefine this method.
+        return true;
+    }
+
+    /**
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
@@ -67,14 +76,6 @@ public class DynamicTile extends Tile {
      */
     public final Tile createStaticTile() throws QuestEditorException {
         return new Tile(this);
-    }
-
-    /**
-     * Returns whether the entity has an identifier.
-     * @return true
-     */
-    public boolean hasName() {
-        return true;
     }
 }
 

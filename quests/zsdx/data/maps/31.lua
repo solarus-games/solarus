@@ -216,9 +216,9 @@ function boss_floor_sensor_2:on_activated()
   end
 end
 
-function hero:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item, variant, savegame_variable)
 
-  if item_name == "heart_container" then
+  if item:get_name() == "heart_container" then
     sol.timer.start(9000, function()
       sol.audio.play_sound("secret")
       map:open_doors("final_room_door")

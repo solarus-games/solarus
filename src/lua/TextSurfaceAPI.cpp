@@ -57,16 +57,19 @@ void LuaContext::register_text_surface_module() {
       { "set_font", text_surface_api_set_font },
       { "get_rendering_mode", text_surface_api_get_rendering_mode },
       { "set_rendering_mode", text_surface_api_set_rendering_mode },
-      { "get_text_color", text_surface_api_get_text_color },
-      { "set_text_color", text_surface_api_set_text_color },
+      { "get_color", text_surface_api_get_color },
+      { "set_color", text_surface_api_set_color },
       { "get_text", text_surface_api_get_text },
       { "set_text", text_surface_api_set_text },
       { "set_text_key", text_surface_api_set_text_key },
       { "get_size", text_surface_api_get_size },
       { "draw", drawable_api_draw },
+      { "draw_region", drawable_api_draw_region },
       { "fade_in", drawable_api_fade_in },
       { "fade_out", drawable_api_fade_out },
-      { "start_movement", drawable_api_start_movement },
+      { "get_xy", drawable_api_get_xy },
+      { "set_xy", drawable_api_set_xy },
+      { "get_movement", drawable_api_get_movement },
       { "stop_movement", drawable_api_stop_movement },
       { NULL, NULL }
   };
@@ -144,7 +147,7 @@ int LuaContext::text_surface_api_create(lua_State* l) {
             check_enum<TextSurface::VerticalAlignment>(l, 3, vertical_alignment_names);
         text_surface->set_vertical_alignment(alignment);
       }
-      else if (key == "text_color") {
+      else if (key == "color") {
         Color color = check_color(l, 3);
         text_surface->set_text_color(color);
       }
@@ -297,31 +300,31 @@ int LuaContext::text_surface_api_set_rendering_mode(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_text_surface_get_text_color.
+ * @brief Implementation of \ref lua_api_text_surface_get_color.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::text_surface_api_get_text_color(lua_State* l) {
+int LuaContext::text_surface_api_get_color(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
 
-  const Color& text_color = text_surface.get_text_color();
+  const Color& color = text_surface.get_text_color();
 
-  push_color(l, text_color);
+  push_color(l, color);
   return 1;
 }
 
 /**
- * @brief Implementation of \ref lua_api_text_surface_set_text_color.
+ * @brief Implementation of \ref lua_api_text_surface_set_color.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */
-int LuaContext::text_surface_api_set_text_color(lua_State* l) {
+int LuaContext::text_surface_api_set_color(lua_State* l) {
 
   TextSurface& text_surface = check_text_surface(l, 1);
-  const Color& text_color = check_color(l, 2);
+  const Color& color = check_color(l, 2);
 
-  text_surface.set_text_color(text_color);
+  text_surface.set_text_color(color);
 
   return 0;
 }

@@ -17,10 +17,10 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lua/LuaContext.h"
 #include "StringResource.h"
 #include "DialogResource.h"
 #include <physfs.h>
-#include <lua.hpp>
 
 #if defined(SOLARUS_OS_MACOSX) && SOLARUS_OS_MACOSX != 0
 #   include "lowlevel/osx/OSXInterface.h"
@@ -125,41 +125,14 @@ int FileTools::l_language(lua_State* l) {
 
   luaL_checktype(l, 1, LUA_TTABLE);
 
-  std::string code;
-  std::string name;
-
-  // traverse the table, looking for properties
-  lua_pushnil(l); // first key
-  while (lua_next(l, 1) != 0) {
-
-    const std::string& key = luaL_checkstring(l, -2);
-    if (key == "code") {
-      code = luaL_checkstring(l, -1);
-    }
-    else if (key == "name") {
-      name = luaL_checkstring(l, -1);
-    }
-    else if (key == "default") {
-      bool is_default = lua_toboolean(l, -1);
-      if (is_default) {
-        default_language_code = language_code;
-      }
-    }
-    else {
-      luaL_error(l, (StringConcat() << "Invalid key '" << key << "'").c_str());
-    }
-    lua_pop(l, 1); // pop the value, let the key for the iteration
-  }
-
-  if (code.empty()) {
-    luaL_error(l, "The code of this language is missing");
-  }
-
-  if (name.empty()) {
-    luaL_error(l, "The name of this language is missing");
-  }
+  std::string code = LuaContext::check_string_field(l, 1, "code");
+  std::string name = LuaContext::check_string_field(l, 1, "name");
+  bool is_default = LuaContext::opt_boolean_field(l, 1, "default", false);
 
   languages[code] = name;
+  if (is_default) {
+    default_language_code = code;
+  }
 
   return 0;
 }

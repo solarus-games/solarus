@@ -2216,55 +2216,55 @@ wall{
 door{
   layer = 1,
   x = 24,
-  y = 104,
+  y = 112,
   name = "door_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 24,
-  y = 360,
+  y = 368,
   name = "door_3",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 368,
+  x = 376,
   y = 456,
   name = "door_4",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 472,
-  y = 232,
+  y = 240,
   name = "door_5",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 472,
-  y = 104,
+  y = 112,
   name = "door_6",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 112,
+  x = 120,
   y = 24,
   name = "door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 teletransporter{

@@ -1561,19 +1561,19 @@ switch{
 door{
   layer = 1,
   x = 296,
-  y = 120,
+  y = 128,
   name = "door",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 344,
-  y = 120,
+  y = 128,
   name = "door_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destination{

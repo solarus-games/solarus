@@ -19,15 +19,13 @@ function solarus_child:on_interaction()
     map:move_camera(160, 120, 100, function()
       map:set_dialog_variable("dungeon_1.solarus_child", map:get_game():get_player_name())
       map:start_dialog("dungeon_1.solarus_child", function()
-        hero:start_victory()
+        hero:start_victory(function()
+          map:get_game():set_dungeon_finished(1)
+          self:teleport(6, "from_dungeon_1_1F")
+          map:set_pause_enabled(true)
+        end)
       end)
     end)
   end
-end
-
-function hero:on_hero_victory_finished()
-  map:get_game():set_dungeon_finished(1)
-  self:teleport(6, "from_dungeon_1_1F")
-  map:set_pause_enabled(true)
 end
 

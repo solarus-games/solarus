@@ -1,0 +1,82 @@
+/**
+\page lua_api_drawable Drawable objects
+
+\tableofcontents
+
+%Drawable objects are things that can be drawn on a destination surface.
+They include the following types:
+\subpage lua_api_surface "surface",
+\subpage lua_api_text_surface "text surface" and
+\subpage lua_api_sprite "sprite".
+This page describes the methods common to those types.
+
+\section lua_api_drawable_methods Methods of all drawable types
+
+These methods exist in all drawable types.
+
+\subsection lua_api_drawable_draw drawable:draw(dst_surface, [x, y])
+
+Draws this object on a destination surface.
+- \c dst_surface (\ref lua_api_surface "surface"): The destination surface.
+- \c x (number, optional): X coordinate of where to draw this object
+  (default \c 0).
+- \c y (number, optional): Y coordinate of where to draw this object.
+  (default \c 0).
+
+\subsection lua_api_drawable_draw_region drawable:draw_region(region_x, region_y, region_width, region_height, dst_surface, [x, y])
+
+Draws a subrectangle of this object on a destination surface.
+- \c region_x (number): X coordinate of the subrectangle to draw.
+- \c region_y (number): Y coordinate of the subrectangle to draw.
+- \c region_width (number): Width of the subrectangle to draw.
+- \c region_height (number): Height of the subrectangle to draw.
+- \c dst_surface (\ref lua_api_surface "surface"): The destination surface.
+- \c x (number, optional): X coordinate of where to draw this rectangle
+  on the destination surface (default \c 0).
+- \c y (number, optional): Y coordinate of where to draw this rectangle.
+  on the destination surface (default \c 0).
+
+\subsection lua_api_drawable_fade_in drawable:fade_in([delay], [callback])
+
+Starts a fade-in effect on this object.
+- \c delay (number, optional): Delay in milliseconds between two
+  frames of the fade-in animation (default \c 20).
+- \c callback (function, optional): A function to call when the
+  fade-in effect finishes.
+
+\subsection lua_api_drawable_fade_out drawable:fade_out([delay], [callback])
+
+Starts a fade-out effect on this object.
+- \c delay (number, optional): Delay in milliseconds between two
+  frames of the fade-out animation (default \c 20).
+- \c callback (function, optional): A function to call when the
+  fade-out effect finishes.
+
+\subsection lua_api_get_xy drawable:get_xy()
+
+Returns the coordinates where this drawable object is drawn.
+
+They can be modified by a \ref lua_api_movement "movement"
+or by \ref lua_api_drawable_set_xy "drawable:set_xy()".
+- Return value 1 (number): X coordinate of the drawable object.
+- Return value 2 (number): Y coordinate of the drawable object.
+
+\subsection lua_api_set_xy drawable:set_xy(x, y)
+
+Sets the coordinates where this drawable object is drawn.
+
+- \c x (number): X coordinate to set.
+- \c y (number): Y coordinate to set.
+
+\subsection lua_api_drawable_get_movement drawable:get_movement()
+
+Returns the current movement of this drawable object.
+- Return value (\ref lua_api_movement "movement"): The current movement,
+  or \c nil if the drawable object is not moving.
+
+\subsection lua_api_drawable_stop_movement drawable:stop_movement()
+
+Stops the current movement of this drawable object if any.
+
+*/
+

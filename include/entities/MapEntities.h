@@ -73,9 +73,12 @@ class MapEntities {
     void remove_boomerang();
     void remove_arrows();
 
-    // game loop
+    // map events
     void notify_map_started();
     void notify_map_opening_transition_finished();
+    void notify_tileset_changed();
+
+    // game loop
     void set_suspended(bool suspended);
     void update();
     void draw();
@@ -87,6 +90,7 @@ class MapEntities {
     void add_tile(Tile *tile);
     void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
     void build_non_animated_tiles();
+    void redraw_non_animated_tiles();
     bool overlaps_animated_tile(Tile& tile);
     void remove_marked_entities();
     void update_crystal_blocks();

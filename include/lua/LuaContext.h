@@ -186,17 +186,22 @@ class LuaContext {
     void remove_drawable(Drawable* drawable);
     void update_drawables();
 
+    // Movements.
+    void start_movement_on_point(Movement& movement, int point_index);
+    void stop_movement_on_point(Movement& movement);
+    void update_movements();
+
     // Entities.
     static Map& get_entity_creation_map(lua_State* l);
     static Map* get_entity_implicit_creation_map(lua_State* l);
     static void set_entity_implicit_creation_map(lua_State* l, Map* map);
 
     // Main loop events (sol.main).
+    void main_on_started();
+    void main_on_finished();
     void main_on_update();
     void main_on_draw(Surface& dst_surface);
     bool main_on_input(InputEvent& event);
-    void main_on_started();
-    void main_on_finished();
 
     // Menu events.
     void menu_on_started(int menu_ref);
@@ -223,16 +228,16 @@ class LuaContext {
     void movement_on_finished(Movement& movement);
 
     // Equipment item events.
-    void item_on_update(EquipmentItem& item);
-    void item_on_suspended(EquipmentItem& item, bool suspended);
     void item_on_created(EquipmentItem& item);
     void item_on_started(EquipmentItem& item);
     void item_on_finished(EquipmentItem& item);
+    void item_on_update(EquipmentItem& item);
+    void item_on_suspended(EquipmentItem& item, bool suspended);
     void item_on_map_changed(EquipmentItem& item, Map& map);
     void item_on_pickable_created(EquipmentItem& item, Pickable& pickable);
     void item_on_pickable_movement_changed(EquipmentItem& item, Pickable& pickable, Movement& movement);  // TODO remove this, use movement:on_changed instead
     void item_on_obtaining(EquipmentItem& item, const Treasure& treasure);
-    void item_on_obtained(EquipmentItem& item, const Treasure& treasure);
+    void item_on_obtained(EquipmentItem& item, const Treasure& treasure);  // FIXME call from picked items too
     void item_on_variant_changed(EquipmentItem& item, int variant);
     void item_on_amount_changed(EquipmentItem& item, int amount);
     void item_on_using(EquipmentItem& item);
@@ -243,10 +248,10 @@ class LuaContext {
     void item_on_npc_collision_fire(EquipmentItem& item, NPC& npc);
 
     // Game events.
-    void game_on_update(Game& game);
-    void game_on_draw(Game& game, Surface& dst_surface);
     void game_on_started(Game& game);
     void game_on_finished(Game& game);
+    void game_on_update(Game& game);
+    void game_on_draw(Game& game, Surface& dst_surface);
     void game_on_map_changed(Game& game, Map& map);
     void game_on_paused(Game& game);
     void game_on_unpaused(Game& game);
@@ -255,41 +260,41 @@ class LuaContext {
     bool game_on_command_released(Game& game, GameCommands::Command command);
 
     // Map events.
-    void map_on_update(Map& map);
-    void map_on_draw(Map& map, Surface& dst_surface);
-    bool map_on_input(Map& map, InputEvent& event);
-    void map_on_suspended(Map& map, bool suspended);
     void map_on_started(Map& map, Destination* destination);
     void map_on_finished(Map& map);
+    void map_on_update(Map& map);
+    void map_on_draw(Map& map, Surface& dst_surface);
+    void map_on_suspended(Map& map, bool suspended);
     void map_on_opening_transition_finished(Map& map,
         Destination* destination);
     void map_on_camera_back(Map& map);
+    void map_on_obtaining_treasure(Map& map, const Treasure& treasure);
+    void map_on_obtained_treasure(Map& map, const Treasure& treasure);
+    bool map_on_input(Map& map, InputEvent& event);
 
     // Map entity events.
     // TODO entity_on_created
     void entity_on_removed(MapEntity& entity);
-    void switch_on_activated(Switch& sw);
-    void switch_on_inactivated(Switch& sw);
-    void switch_on_left(Switch& sw);
-    void hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure);  // TODO push the item instead of its name
-    void hero_on_obtained_treasure(Hero& hero, const Treasure& treasure);
-    void hero_on_victory_finished(Hero& hero);  // TODO clear the hero events when changing map?
-    void sensor_on_activated(Sensor& sensor);
-    void sensor_on_activated_repeat(Sensor& sensor);
-    void sensor_on_collision_explosion(Sensor& sensor);
-    void npc_on_movement_finished(NPC& npc);
+    // TODO add destination_on_activated
+    void npc_on_movement_finished(NPC& npc);  // TODO remove (movement:on_finished() exists now)
     void npc_on_interaction(NPC& npc);
     bool npc_on_interaction_item(NPC& npc, EquipmentItem& item_used);
     void npc_on_collision_fire(NPC& npc);
     bool chest_on_empty(Chest& chest);
+    void block_on_moved(Block& block);
+    void switch_on_activated(Switch& sw);
+    void switch_on_inactivated(Switch& sw);
+    void switch_on_left(Switch& sw);
+    void sensor_on_activated(Sensor& sensor);
+    void sensor_on_activated_repeat(Sensor& sensor);
+    void sensor_on_collision_explosion(Sensor& sensor);
+    void door_on_opened(Door& door);
+    void door_on_closed(Door& door);
     bool shop_item_on_buying(ShopItem& shop_item);
     void shop_item_on_bought(ShopItem& shop_item);
-    void door_on_open(Door& door);
-    void door_on_closed(Door& door);
-    void block_on_moved(Block& block);
     void enemy_on_update(Enemy& enemy);
     void enemy_on_suspended(Enemy& enemy, bool suspended);
-    void enemy_on_created(Enemy& enemy);
+    void enemy_on_created(Enemy& enemy);  // TODO remove?
     void enemy_on_enabled(Enemy& enemy);
     void enemy_on_disabled(Enemy& enemy);
     void enemy_on_restarted(Enemy& enemy);
@@ -299,10 +304,6 @@ class LuaContext {
     void enemy_on_obstacle_reached(Enemy& enemy, Movement& movement);
     void enemy_on_movement_changed(Enemy& enemy, Movement& movement);
     void enemy_on_movement_finished(Enemy& enemy);
-    void enemy_on_sprite_animation_finished(Enemy& enemy,
-        Sprite& sprite, const std::string& animation);
-    void enemy_on_sprite_frame_changed(Enemy& enemy,
-        Sprite& sprite, const std::string& animation, int frame);
     void enemy_on_collision_enemy(Enemy& enemy,
         Enemy& other_enemy, Sprite& other_sprite, Sprite& this_sprite);
     void enemy_on_custom_attack_received(Enemy& enemy,
@@ -371,7 +372,9 @@ class LuaContext {
       timer_api_set_suspended,
       timer_api_is_suspended_with_map,
       timer_api_set_suspended_with_map,
-      // TODO get_remaining_time, set_remaining_time
+      // TODO add get_remaining_time, set_remaining_time,
+      // TODO allow to repeat a timer automatically
+      // TODO remove is_with_sound, set_with_sound (do this in pure Lua, possibly with a second timer)
       // TODO game:is_suspended, timer:is/set_suspended_with_map, sprite:get/set_ignore_suspend
       // are the same concept, make these names consistent
 
@@ -386,9 +389,12 @@ class LuaContext {
 
       // Drawable API (i.e. common to surfaces, text surfaces and sprites).
       drawable_api_draw,
+      drawable_api_draw_region,
       drawable_api_fade_in,
       drawable_api_fade_out,
-      drawable_api_start_movement,
+      drawable_api_get_xy,
+      drawable_api_set_xy,
+      drawable_api_get_movement,
       drawable_api_stop_movement,
       drawable_meta_gc,
 
@@ -410,8 +416,8 @@ class LuaContext {
       text_surface_api_set_font,
       text_surface_api_get_rendering_mode,
       text_surface_api_set_rendering_mode,
-      text_surface_api_get_text_color,  // TODO rename to get/set_color
-      text_surface_api_set_text_color,
+      text_surface_api_get_color,
+      text_surface_api_set_color,
       text_surface_api_get_text,
       text_surface_api_set_text,
       text_surface_api_set_text_key,
@@ -420,7 +426,7 @@ class LuaContext {
       // Sprite API.
       sprite_api_create,
       sprite_api_get_animation,
-      sprite_api_set_animation,
+      sprite_api_set_animation,  // TODO allow to pass the on_animation_finished callback as a parameter?
       sprite_api_get_direction,
       sprite_api_set_direction,
       sprite_api_get_frame,
@@ -438,6 +444,8 @@ class LuaContext {
       movement_api_set_xy,
       movement_api_get_ignore_obstacles,
       movement_api_set_ignore_obstacles,
+      movement_api_start,
+      movement_api_stop,
       movement_api_get_direction4,
       straight_movement_api_get_speed,
       straight_movement_api_set_speed,
@@ -507,7 +515,7 @@ class LuaContext {
       game_api_exists,
       game_api_delete,
       game_api_load,
-      game_api_save,
+      game_api_save,  // TODO allow to change the file name (e.g. to copy)
       game_api_start,
       game_api_is_started,
       game_api_is_suspended,
@@ -517,7 +525,7 @@ class LuaContext {
       game_api_get_value,
       game_api_set_value,
       game_api_get_starting_location,
-      game_api_set_starting_location,
+      game_api_set_starting_location,  // TODO don't do it automatically, use on_map_changed
       game_api_get_life,
       game_api_set_life,
       game_api_add_life,
@@ -541,15 +549,17 @@ class LuaContext {
       game_api_get_ability,
       game_api_set_ability,
       game_api_get_item,
+      game_api_has_item,
       game_api_get_item_assigned,
       game_api_set_item_assigned,
       game_api_is_command_pressed,
       game_api_get_commands_direction,
-      game_api_get_command_effect,
+      game_api_get_command_effect,  // TODO also return "run" for action command
       game_api_get_command_keyboard_binding,
       game_api_set_command_keyboard_binding,
       game_api_get_command_joypad_binding,
       game_api_set_command_joypad_binding,
+      game_api_capture_command_binding,
 
       // Equipment item API.
       item_api_get_name,
@@ -561,8 +571,8 @@ class LuaContext {
       item_api_set_amount_savegame_variable,
       item_api_is_obtainable,
       item_api_set_obtainable,
-      item_api_is_assignable,
-      item_api_set_assignable,
+      item_api_is_assignable,   // TODO remove
+      item_api_set_assignable,  // TODO remove
       item_api_get_can_disappear,
       item_api_set_can_disappear,
       item_api_get_brandish_when_picked,
@@ -603,8 +613,8 @@ class LuaContext {
       map_api_set_pause_enabled,  // TODO move to game api?
       map_api_get_light,
       map_api_set_light,
-      map_api_move_camera,
-      map_api_draw_sprite,
+      map_api_move_camera,  // TODO get_camera_position
+      map_api_draw_sprite,  // TODO allow to also draw a surface or a text surface
       map_api_get_crystal_state,
       map_api_set_crystal_state,
       map_api_change_crystal_state,
@@ -620,21 +630,21 @@ class LuaContext {
       map_api_remove_entities,
       map_api_create_tile,
       map_api_create_destination,
-      map_api_create_teletransporter,
+      map_api_create_teletransporter,  // TODO stringify transition_style
       map_api_create_pickable,
       map_api_create_destructible,
       map_api_create_chest,
       map_api_create_jumper,
       map_api_create_enemy,
-      map_api_create_npc,
-      map_api_create_block,
+      map_api_create_npc,  // TODO use a real string for the subtype, improve the behavior syntax
+      map_api_create_block,  // Allow direction to be nil, make maximum_moves really be the limit (nil means no limit)
       map_api_create_dynamic_tile,
       map_api_create_switch,
       map_api_create_wall,
       map_api_create_sensor,
       map_api_create_crystal,
       map_api_create_crystal_block,
-      map_api_create_shop_item,
+      map_api_create_shop_item,  // TODO rename to shop treasure
       map_api_create_conveyor_belt,
       map_api_create_door,
       map_api_create_stairs,
@@ -643,6 +653,7 @@ class LuaContext {
       map_api_create_fire,
 
       // Map entity API.
+      // TODO entity:get_type()
       entity_api_get_map,
       entity_api_get_name,
       entity_api_exists,
@@ -662,7 +673,6 @@ class LuaContext {
       entity_api_create_sprite,
       entity_api_remove_sprite,
       entity_api_get_movement,
-      entity_api_start_movement,
       entity_api_stop_movement,
       entity_api_has_layer_independent_collisions,
       entity_api_set_layer_independent_collisions,
@@ -673,7 +683,6 @@ class LuaContext {
       hero_api_set_visible,
       hero_api_get_direction,
       hero_api_set_direction,
-      hero_api_set_position,
       hero_api_save_solid_ground,
       hero_api_reset_solid_ground,
       hero_api_freeze,
@@ -696,7 +705,7 @@ class LuaContext {
       door_api_is_open,
       pickable_api_get_followed_entity,
       pickable_api_get_falling_height,
-      pickable_api_get_treasure,
+      pickable_api_get_treasure,  // TODO return the item, not the item name
       enemy_api_get_breed,
       enemy_api_get_life,
       enemy_api_set_life,
@@ -909,7 +918,6 @@ class LuaContext {
     void on_camera_back();
     void on_obtaining_treasure(const Treasure& treasure);
     void on_obtained_treasure(const Treasure& treasure);
-    void on_victory_finished();
     void on_activated();
     void on_activated_repeat();
     void on_inactivated();
@@ -925,7 +933,7 @@ class LuaContext {
     bool on_empty();
     bool on_buying();
     void on_bought();
-    void on_open();
+    void on_opened();
     void on_closed();
     void on_moved();
     void on_map_changed(Map& map);
@@ -948,8 +956,6 @@ class LuaContext {
     void on_obstacle_reached(Movement& movement);
     void on_movement_changed(Movement& movement);
     void on_movement_finished();
-    void on_sprite_animation_finished(Sprite& sprite, const std::string& animation);  // TODO remove? use sprite:on_animation_finished instead
-    void on_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     void on_custom_attack_received(EnemyAttack attack, Sprite* sprite);
     void on_hurt(EnemyAttack attack, int life_lost);
     void on_dying();

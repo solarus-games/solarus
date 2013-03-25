@@ -51,17 +51,19 @@ SpriteAnimationDirection::~SpriteAnimationDirection() {
 
 /**
  * @brief Returns the size of a frame.
- * @return the size of a frame
+ * @return The size of a frame.
  */
-const Rectangle & SpriteAnimationDirection::get_size() const {
-  return frames[0];
+Rectangle SpriteAnimationDirection::get_size() const {
+
+  Debug::check_assertion(nb_frames > 0, "Invalid number of frames");
+  return Rectangle(0, 0, frames[0].get_width(), frames[0].get_height());
 }
 
 /**
  * @brief Returns the origin point of a frame.
  * @return the origin point of a frame
  */
-const Rectangle & SpriteAnimationDirection::get_origin() const {
+const Rectangle& SpriteAnimationDirection::get_origin() const {
   return origin;
 }
 
@@ -78,7 +80,7 @@ int SpriteAnimationDirection::get_nb_frames() const {
  * @param frame a frame number
  * @return the rectangle of this frame
  */
-const Rectangle & SpriteAnimationDirection::get_frame(int frame) const {
+const Rectangle& SpriteAnimationDirection::get_frame(int frame) const {
   return frames[frame];
 }
 

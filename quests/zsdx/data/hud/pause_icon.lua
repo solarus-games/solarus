@@ -20,18 +20,17 @@ function pause_icon:initialize(game)
   self.surface = sol.surface.create(72, 24)
   self.surface:set_transparency_color{0, 0, 0}
   self.icons_img = sol.surface.create("pause_icon.png", true)
-  self.current_icon_img = sol.surface.create(self.icons_img, 0, 24, 72, 24)
+  self.icon_region_y = 24
 
   local pause_icon = self
   self.icon_flip_sprite = sol.sprite.create("hud/pause_icon_flip")
 
   function self.icon_flip_sprite:on_animation_finished()
-    if pause_icon.current_icon_img == nil then
-      local y = 24
+    if pause_icon.icon_region_y == nil then
+      pause_icon.icon_region_y = 24
       if pause_icon.game:is_paused() then
-        y = 48
+        pause_icon.icon_region_y = 48
       end
-      pause_icon.current_icon_img = sol.surface.create(pause_icon.icons_img, 0, y, 72, 24)
       pause_icon:rebuild_surface()
     end
   end
@@ -44,13 +43,13 @@ function pause_icon:initialize(game)
 end
 
 function pause_icon:on_paused()
-  self.current_icon_img = nil
+  self.icon_region_y = nil
   self.icon_flip_sprite:set_frame(0)
   self:rebuild_surface()
 end
 
 function pause_icon:on_unpaused()
-  self.current_icon_img = nil
+  self.icon_region_y = nil
   self.icon_flip_sprite:set_frame(0)
   self:rebuild_surface()
 end
@@ -59,9 +58,9 @@ function pause_icon:rebuild_surface()
 
   self.surface:fill_color{0, 0, 0}
 
-  if self.current_icon_img ~= nil then
+  if self.icon_region_y ~= nil then
     -- Draw the static image of the icon: "Pause" or "Back".
-    self.current_icon_img:draw(self.surface)
+    self.icons_img:draw_region(0, self.icon_region_y, 72, 24, self.surface)
   else
     -- Draw the flipping sprite
     self.icon_flip_sprite:draw(self.surface, 24, 0)

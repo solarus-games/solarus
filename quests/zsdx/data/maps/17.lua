@@ -57,7 +57,7 @@ function map:on_started(destination)
   end
 end
 
-function weak_door:on_open()
+function weak_door:on_opened()
   sol.audio.play_sound("secret")
 end
 

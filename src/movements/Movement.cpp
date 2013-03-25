@@ -20,18 +20,18 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "Map.h"
-
-int Movement::next_unique_id = 0;
+#include "Drawable.h"
 
 /**
  * @brief Constructor.
- * @param ignore_obstacles when there is a map and the movement is attached to an entity of this map,
- * indicates whether the movement should ignore obstacles
+ * @param ignore_obstacles When there is a map and the movement is attached to
+ * an entity of this map, indicates whether the movement should ignore
+ * obstacles.
  */
 Movement::Movement(bool ignore_obstacles):
 
-  unique_id(next_unique_id++),
   entity(NULL),
+  drawable(NULL),
   xy(0, 0),
   last_move_date(0),
   finished(false),
@@ -40,7 +40,8 @@ Movement::Movement(bool ignore_obstacles):
   last_collision_box_on_obstacle(-1, -1),
   default_ignore_obstacles(ignore_obstacles),
   current_ignore_obstacles(ignore_obstacles),
-  lua_context(NULL) {
+  lua_context(NULL),
+  finished_callback_ref(LUA_REFNIL) {
 
 }
 
@@ -49,18 +50,9 @@ Movement::Movement(bool ignore_obstacles):
  */
 Movement::~Movement() {
 
-}
-
-/**
- * @brief Returns the unique id of this movement.
- *
- * It is guaranteed that no other movement instance will have the same id as this one
- * during the execution of the program, even after this instance is deleted.
- *
- * @return the unique id of this movement
- */
-int Movement::get_unique_id() {
-  return unique_id;
+  if (get_lua_context() != NULL) {
+    get_lua_context()->cancel_callback(finished_callback_ref);
+  }
 }
 
 /**
@@ -68,7 +60,7 @@ int Movement::get_unique_id() {
  * @return the entity controlled by this movement, or NULL if this movement
  * is not attached to a map entity
  */
-MapEntity* Movement::get_entity() {
+MapEntity* Movement::get_entity() const {
   return entity;
 }
 
@@ -79,10 +71,12 @@ MapEntity* Movement::get_entity() {
  * However, some subclasses of Movement may require a non NULL entity because they
  * implement movements that depend on the map content (e.g. to handle the collisions).
  *
- * @param entity the entity to control, or NULL if the movement should not be
- * attached to a map entity
+ * @param entity The entity to control, or NULL if the movement should not be
+ * attached to a map entity.
  */
-void Movement::set_entity(MapEntity *entity) {
+void Movement::set_entity(MapEntity* entity) {
+
+  Debug::check_assertion(drawable == NULL, "This movement is already assigned to a drawable");
 
   this->entity = entity;
 
@@ -93,6 +87,48 @@ void Movement::set_entity(MapEntity *entity) {
     this->xy.set_xy(entity->get_xy());
     notify_movement_changed();
   }
+  notify_object_controlled();
+}
+
+/**
+ * @brief Returns the drawable controlled by this movement (if any).
+ * @return The drawable controlled by this movement, or NULL if this movement
+ * is not attached to a drawable.
+ */
+Drawable* Movement::get_drawable() const {
+  return drawable;
+}
+
+/**
+ * @brief Sets the drawable to be controlled by this movement object.
+ *
+ * This entity can be NULL if your movement applies to something else than a drawable.
+ *
+ * @param drawable The drawable to control, or NULL if the movement should not be
+ * attached to a drawable.
+ */
+void Movement::set_drawable(Drawable* drawable) {
+
+  Debug::check_assertion(entity == NULL, "This movement is already assigned to an entity");
+
+  this->drawable = drawable;
+
+  if (drawable == NULL) {
+    this->xy.set_xy(0, 0);
+  }
+  else {
+    this->xy.set_xy(drawable->get_xy());
+    notify_movement_changed();
+  }
+  notify_object_controlled();
+}
+
+/**
+ * @brief Notifies this movement that the object it controls has changed.
+ *
+ * Does nothing by default.
+ */
+void Movement::notify_object_controlled() {
 }
 
 /**
@@ -101,7 +137,7 @@ void Movement::set_entity(MapEntity *entity) {
  */
 int Movement::get_x() {
 
-  return (entity != NULL) ? entity->get_x() : xy.get_x();
+  return get_xy().get_x();
 }
 
 /**
@@ -110,21 +146,32 @@ int Movement::get_x() {
  */
 int Movement::get_y() {
 
-  return (entity != NULL) ? entity->get_y() : xy.get_y();
+  return get_xy().get_y();
 }
 
 /**
  * @brief Returns the coordinates of the object controlled by this movement.
- * @return the coordinates of the object controlled by this movement
+ * @return The coordinates of the object controlled by this movement.
  */
 const Rectangle Movement::get_xy() {
 
-  return (entity != NULL) ? entity->get_xy() : xy;
+  if (entity != NULL) {
+    // The object controlled is a map entity.
+    return entity->get_xy();
+  }
+
+  if (drawable != NULL) {
+    // The object controlled is a drawable.
+    return drawable->get_xy();
+  }
+
+  // The object controlled is a point.
+  return xy;
 }
 
 /**
  * @brief Sets the x position of the object controlled by this movement.
- * @param x the new x position
+ * @param x The new x position
  */
 void Movement::set_x(int x) {
   set_xy(x, get_y());
@@ -132,36 +179,43 @@ void Movement::set_x(int x) {
 
 /**
  * @brief Sets the y position of the object controlled by this movement.
- * @param y the new y position
+ * @param y The new y position.
  */
 void Movement::set_y(int y) {
   set_xy(get_x(), y);
 }
 
 /**
- * @brief Sets the position of the entity or the point controlled by this movement.
- * @param x the new x position
- * @param y the new y position
+ * @brief Sets the position of the object controlled by this movement.
+ * @param x The new x position.
+ * @param y The new y position.
  */
 void Movement::set_xy(int x, int y) {
-
-  if (entity != NULL) {
-    entity->set_xy(x, y);
-  }
-  else {
-    this->xy.set_xy(x, y);
-  }
-  notify_position_changed();
-
-  last_move_date = System::now();
+  set_xy(Rectangle(x, y));
 }
 
 /**
- * @brief Sets the position of the entity or the point controlled by this movement.
- * @param xy the new coordinates (only x and y are used, the size of the rectangle is ignored)
+ * @brief Sets the position of the object controlled by this movement.
+ * @param xy The new coordinates (only x and y are used, the size of
+ * the rectangle is ignored).
  */
-void Movement::set_xy(const Rectangle &xy) {
-  set_xy(xy.get_x(), xy.get_y());
+void Movement::set_xy(const Rectangle& xy) {
+
+  if (entity != NULL) {
+    // The object controlled is a map entity.
+    entity->set_xy(xy);
+  }
+
+  else if (drawable != NULL) {
+    // The object controlled is a drawable.
+    drawable->set_xy(xy);
+  }
+
+  // The object controlled is a point.
+  this->xy.set_xy(xy);
+
+  notify_position_changed();
+  last_move_date = System::now();
 }
 
 /**
@@ -204,12 +258,15 @@ void Movement::translate_xy(const Rectangle &dxy) {
  */
 void Movement::notify_position_changed() {
 
+  LuaContext* lua_context = get_lua_context();
   if (lua_context != NULL) {
     lua_context->movement_on_position_changed(*this);
   }
 
-  if (entity != NULL && !entity->is_being_removed()) {
-    entity->notify_position_changed();
+  if (entity != NULL) {
+    if (!entity->is_being_removed()) {
+      entity->notify_position_changed();
+    }
   }
 }
 
@@ -219,6 +276,7 @@ void Movement::notify_position_changed() {
  */
 void Movement::notify_obstacle_reached() {
 
+  LuaContext* lua_context = get_lua_context();
   if (lua_context != NULL) {
     lua_context->movement_on_obstacle_reached(*this);
   }
@@ -234,6 +292,7 @@ void Movement::notify_obstacle_reached() {
  */
 void Movement::notify_movement_changed() {
 
+  LuaContext* lua_context = get_lua_context();
   if (lua_context != NULL) {
     lua_context->movement_on_changed(*this);
   }
@@ -248,7 +307,9 @@ void Movement::notify_movement_changed() {
  */
 void Movement::notify_movement_finished() {
 
+  LuaContext* lua_context = get_lua_context();
   if (lua_context != NULL) {
+    lua_context->do_callback(finished_callback_ref);
     lua_context->movement_on_finished(*this);
   }
 
@@ -371,7 +432,7 @@ bool Movement::test_collision_with_obstacles(int dx, int dy) {
     return false;
   }
 
-  Map &map = entity->get_map();
+  Map& map = entity->get_map();
 
   // place the collision box where we want to check the collisions
   Rectangle collision_box = entity->get_bounding_box();
@@ -484,5 +545,26 @@ LuaContext* Movement::get_lua_context() const {
  */
 void Movement::set_lua_context(LuaContext* lua_context) {
   this->lua_context = lua_context;
+}
+
+/**
+ * @brief Returns the Lua registry ref to the function to call when this
+ * movement finishes.
+ * @return The Lua ref to a function, or LUA_REFNIL.
+ */
+int Movement::get_finished_callback() const {
+  return finished_callback_ref;
+}
+
+/**
+ * @brief Sets the function to call when this movement finishes.
+ * @param finished_callback_ref The Lua ref to a function, or LUA_REFNIL.
+ */
+void Movement::set_finished_callback(int finished_callback_ref) {
+
+  Debug::check_assertion(get_lua_context() != NULL, "Undefined Lua context");
+
+  get_lua_context()->cancel_callback(this->finished_callback_ref);
+  this->finished_callback_ref = finished_callback_ref;
 }
 

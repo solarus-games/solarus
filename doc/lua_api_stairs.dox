@@ -1,0 +1,80 @@
+/**
+\page lua_api_stairs Stairs
+
+\tableofcontents
+
+%Stairs make fancy animations, movements and sounds when the
+\ref lua_api_hero "hero" takes them.
+
+This type of \ref lua_api_entity "map entity" can be declared in the
+\ref lua_api_map_overview_files "map data file".
+It can also be created dynamically with
+\ref lua_api_map_create_stairs "map:create_stairs()".
+
+\section lua_api_stairs_overview Overview
+
+%Stairs are here to provide class transitions between two
+\ref lua_api_map "maps" or two 
+\ref lua_api_map_overview_position "layers" on the same map,
+linked by
+\ref lua_api_tile "tiles" that look like stairs.
+
+They don't provide any fundamental feature: you can already use
+\ref lua_api_teletransporter "teletransporters"
+and
+\ref lua_api_destination "destinations"
+to make the \ref lua_api_hero "hero" go from a map to another one.
+And you can use
+\ref lua_api_sensor "sensors"
+to make him go from a layer to another on the same map.
+But they add fanciness to these transitions:
+the sound of climbing or going down stairs,
+a special movement and appropriate sprite animations.
+
+For stairs that transport the hero to a different
+\ref lua_api_map "map",
+you still have to use a
+\ref lua_api_teletransporter "teletransporter"
+and a
+\ref lua_api_destination "destination".
+Indeed, the stairs are additional, they don't replace teletransporters and
+destinations.
+You just have put all three entities
+(the stairs, a teletransporter and a destination) at the same coordinates
+at it works.
+
+Stairs that move from a layer to another layer
+inside the same map work differently.
+They change this layer automatically for the hero.
+They must be placed on the lowest one of those two layers.
+
+%Stairs are invisible: you are supposed to place appropriate tiles where you
+make stairs. Their size is always 16x16 pixels.
+
+\section lua_api_stairs_inherited_methods Methods inherited from map entity
+
+Stairs are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all methods from the type map entity.
+
+See \ref lua_api_entity_methods to know these methods.
+
+\section lua_api_stairs_methods Methods of the type stairs
+
+None.
+
+\section lua_api_stairs_inherited_events Events inherited from map entity
+
+Events are callback methods automatically called by the engine if you define
+them.
+
+Stairs are particular \ref lua_api_entity "map entities".
+Therefore, they inherit all events from the type map entity.
+
+See \ref lua_api_entity_events to know these events.
+
+\section lua_api_stairs_events Events of the type stairs
+
+None.
+
+*/
+

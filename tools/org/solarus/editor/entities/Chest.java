@@ -91,14 +91,6 @@ public class Chest extends MapEntity {
     }
 
     /**
-     * Returns whether the entity has an identifier.
-     * @return true
-     */
-    public boolean hasName() {
-        return true;
-    }
-
-    /**
      * Sets a property specific to this kind of entity.
      * @param name name of the property
      * @param value value of the property

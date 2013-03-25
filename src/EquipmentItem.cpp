@@ -134,8 +134,8 @@ bool EquipmentItem::has_amount() const {
 /**
  * @brief If this item has an amount, returns the savegame variable
  * that stores the value of this amount.
- * @return The savegame variable of the counter, or an empty string if there
- * is no counter associated to this item.
+ * @return The savegame variable of the amount, or an empty string if there
+ * is no amount associated to this item.
  */
 const std::string& EquipmentItem::get_amount_savegame_variable() const {
   return amount_savegame_variable;

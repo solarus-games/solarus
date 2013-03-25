@@ -1009,10 +1009,10 @@ destination{
 door{
   layer = 1,
   x = 56,
-  y = 616,
+  y = 624,
   name = "door",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 wall{

@@ -34,7 +34,7 @@
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
- * @param direction the only direction where the block can be pushed
+ * @param direction the only direction where the block can be moved
  * or -1 to allow it to be pushed in any direction
  * @param sprite_name animation set id of the sprite for this block
  * @param can_be_pushed true to allow the hero to push this block

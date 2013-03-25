@@ -46,7 +46,7 @@ class Sprite: public Drawable {
     Sprite(const std::string& id);
     ~Sprite();
 
-    void set_map(Map& map);
+    void set_tileset(Tileset& tileset);
 
     // animation set
     const std::string& get_animation_set_id() const;
@@ -56,7 +56,7 @@ class Sprite: public Drawable {
     bool are_pixel_collisions_enabled() const;
 
     // size and origin point
-    const Rectangle& get_size() const;
+    Rectangle get_size() const;
     const Rectangle& get_max_size() const;
     const Rectangle& get_origin() const;
 
@@ -68,6 +68,7 @@ class Sprite: public Drawable {
     void set_current_direction(int current_direction);
     int get_current_frame() const;
     void set_current_frame(int current_frame);
+    const Rectangle& get_current_frame_rectangle() const;
     uint32_t get_frame_delay() const;
     void set_frame_delay(uint32_t frame_delay);
     void set_synchronized_to(Sprite* other);
@@ -97,6 +98,8 @@ class Sprite: public Drawable {
     // udpate and draw
     void update();
     void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
+    void raw_draw_region(const Rectangle& region,
+        Surface& dst_surface, const Rectangle& dst_position);
     void draw_transition(Transition& transition);
 
     LuaContext* get_lua_context() const;

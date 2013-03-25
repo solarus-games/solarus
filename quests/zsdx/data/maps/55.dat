@@ -7598,20 +7598,28 @@ chest{
 door{
   layer = 1,
   x = 872,
-  y = 176,
+  y = 184,
   name = "door",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_6_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b304",
 }
 
 door{
   layer = 1,
   x = 920,
-  y = 176,
+  y = 184,
   name = "door_2",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_6_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b304",
 }
 

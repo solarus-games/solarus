@@ -61,7 +61,7 @@ function map:on_camera_back()
   end
 end
 
-function hero:on_obtaining_treasure(item_name, variant, savegame_variable)
+function map:on_obtaining_treasure(item, variant, savegame_variable)
 
   -- chest A
   if savegame_variable == "b872" then
@@ -82,11 +82,11 @@ function chest_c_enemy_1:on_dead()
 end
 chest_c_enemy_2.on_dead = chest_c_enemy_1.on_dead
 
-function weak_wall_a:on_open()
+function weak_wall_a:on_opened()
   sol.audio.play_sound("secret")
 end
 
-function weak_wall_b:on_open()
+function weak_wall_b:on_opened()
   sol.audio.play_sound("secret")
 end
  

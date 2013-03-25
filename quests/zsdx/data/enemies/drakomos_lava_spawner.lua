@@ -14,8 +14,14 @@ function enemy:on_created()
 
   self:set_life(1)
   self:set_damage(1)
-  self:create_sprite("enemies/drakomos_lava_spawner")
   self:set_invincible()
+
+  local sprite = self:create_sprite("enemies/drakomos_lava_spawner")
+  function sprite:on_animation_finished(animation)
+    if animation == "disappearing" then
+      enemy:set_enabled(false)
+    end
+  end
 end
 
 function enemy:on_restarted()
@@ -44,12 +50,5 @@ function enemy:on_restarted()
       }
     end
   end)
-end
-
-function enemy:on_sprite_animation_finished(sprite, animation)
-
-  if animation == "disappearing" then
-    self:set_enabled(false)
-  end
 end
 

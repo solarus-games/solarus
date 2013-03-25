@@ -226,6 +226,34 @@ int LuaContext::main_api_get_angle(lua_State* l) {
 }
 
 /**
+ * @brief Calls sol.main.on_started() if it exists.
+ *
+ * This function is called when the engine requests Lua to show an
+ * initial screen, i.e. at the beginning of the program
+ * or when the program is reset.
+ */
+void LuaContext::main_on_started() {
+
+  push_main(l);
+  on_started();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls sol.main.on_finished() if it exists.
+ *
+ * This function is called when the program is reset or stopped.
+ */
+void LuaContext::main_on_finished() {
+
+  push_main(l);
+  on_finished();
+  remove_timers(-1);  // Stop timers associated to sol.main.
+  remove_menus(-1);  // Stop menus associated to sol.main.
+  lua_pop(l, 1);
+}
+
+/**
  * @brief Calls sol.main.on_update() if it exists.
  *
  * This function is called at each cycle by the main loop.
@@ -268,33 +296,5 @@ bool LuaContext::main_on_input(InputEvent& event) {
   }
   lua_pop(l, 1);
   return handled;
-}
-
-/**
- * @brief Calls sol.main.on_started() if it exists.
- *
- * This function is called when the engine requests Lua to show an
- * initial screen, i.e. at the beginning of the program
- * or when the program is reset.
- */
-void LuaContext::main_on_started() {
-
-  push_main(l);
-  on_started();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls sol.main.on_finished() if it exists.
- *
- * This function is called when the program is reset or stopped.
- */
-void LuaContext::main_on_finished() {
-
-  push_main(l);
-  on_finished();
-  remove_timers(-1);  // Stop timers associated to sol.main.
-  remove_menus(-1);  // Stop menus associated to sol.main.
-  lua_pop(l, 1);
 }
 

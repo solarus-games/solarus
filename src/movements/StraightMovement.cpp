@@ -53,13 +53,11 @@ StraightMovement::~StraightMovement() {
 }
 
 /**
- * @brief Sets the entity to be controlled by this movement object.
- * @param entity the entity to control, or NULL if the movement is not
- * attached to a map entity
+ * @brief Notifies this movement that the object it controls has changed.
  */
-void StraightMovement::set_entity(MapEntity* entity) {
+void StraightMovement::notify_object_controlled() {
 
-  Movement::set_entity(entity);
+  Movement::notify_object_controlled();
   initial_xy.set_xy(get_xy());
 }
 

@@ -2469,20 +2469,20 @@ stairs{
 
 door{
   layer = 0,
-  x = 1032,
+  x = 1040,
   y = 320,
   name = "miniboss_door_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 0,
-  x = 1032,
+  x = 1040,
   y = 224,
   name = "miniboss_door",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 chest{
@@ -2498,20 +2498,20 @@ chest{
 
 door{
   layer = 0,
-  x = 1072,
+  x = 1080,
   y = 720,
   name = "miniboss_door_4",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 0,
-  x = 1072,
+  x = 1080,
   y = 624,
   name = "miniboss_door_3",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 stairs{
@@ -10386,20 +10386,28 @@ wall{
 door{
   layer = 1,
   x = 472,
-  y = 744,
+  y = 752,
   name = "door",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_1_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b307",
 }
 
 door{
   layer = 1,
   x = 520,
-  y = 744,
+  y = 752,
   name = "door_2",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_1_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b307",
 }
 
@@ -10634,74 +10642,74 @@ enemy{
 
 door{
   layer = 1,
-  x = 448,
+  x = 456,
   y = 248,
   name = "wtf_door_5",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 448,
+  x = 456,
   y = 200,
   name = "wtf_door_6",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 448,
+  x = 456,
   y = 472,
   name = "wtf_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 448,
+  x = 456,
   y = 424,
   name = "wtf_door_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 280,
-  y = 328,
+  y = 336,
   name = "wtf_door_8",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 584,
-  y = 328,
+  y = 336,
   name = "wtf_door_3",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 328,
-  y = 328,
+  y = 336,
   name = "wtf_door_7",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 632,
-  y = 328,
+  y = 336,
   name = "wtf_door_4",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destructible{
@@ -10842,31 +10850,34 @@ wall{
 
 door{
   layer = 1,
-  x = 592,
+  x = 600,
   y = 920,
   name = "weak_wall_compass_2",
   direction = 1,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b233",
 }
 
 door{
   layer = 1,
-  x = 592,
+  x = 600,
   y = 872,
   name = "weak_wall_compass",
   direction = 3,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b233",
 }
 
 door{
   layer = 1,
-  x = 848,
+  x = 856,
   y = 1096,
   name = "weak_wall_red_tunic",
   direction = 3,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b234",
 }
 
@@ -11329,11 +11340,14 @@ stairs{
 
 door{
   layer = 1,
-  x = 1056,
+  x = 1064,
   y = 968,
   name = "boss_door",
   direction = 1,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
+  opening_condition = "dungeon_1_boss_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b239",
 }
 

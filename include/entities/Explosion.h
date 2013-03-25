@@ -34,7 +34,8 @@ class Explosion: public Detector {
 
   public:
 
-    Explosion(Layer layer, const Rectangle &xy, bool with_damages);
+    Explosion(const std::string& name, Layer layer, const Rectangle& xy,
+        bool with_damages);
     ~Explosion();
 
     EntityType get_type();

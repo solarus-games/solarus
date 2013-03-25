@@ -8733,66 +8733,70 @@ door{
   y = 104,
   name = "door",
   direction = 0,
-  subtype = "2",
+  sprite = "entities/door_small_key_block",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b109",
 }
 
 door{
   layer = 1,
   x = 552,
-  y = 344,
+  y = 352,
   name = "torches_door_2",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b113",
 }
 
 door{
   layer = 1,
   x = 600,
-  y = 344,
+  y = 352,
   name = "torches_door",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b113",
 }
 
 door{
   layer = 1,
-  x = 720,
+  x = 728,
   y = 568,
   name = "ce_door_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b904",
 }
 
 door{
   layer = 1,
-  x = 720,
+  x = 728,
   y = 520,
   name = "ce_door",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b904",
 }
 
 door{
   layer = 1,
-  x = 784,
+  x = 792,
   y = 744,
   name = "se_door_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 784,
+  x = 792,
   y = 696,
   name = "se_door",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 jumper{

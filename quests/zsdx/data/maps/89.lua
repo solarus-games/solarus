@@ -5,7 +5,7 @@ local function random_walk(npc)
 
   local m = sol.movement.create("random_path")
   m:set_speed(32)
-  npc:start_movement(m)
+  m:start(npc)
   npc:get_sprite():set_animation("walking")
 end
 
@@ -48,7 +48,7 @@ function forbidden_door_npc:on_interaction()
       local m = sol.movement.create("path")
       m:set_path{2,2}
       m:set_speed(32)
-      self:start_movement(m)
+      m:start(self)
       self:get_sprite():set_animation("walking")
       hero:freeze()
     end)
@@ -72,7 +72,7 @@ function forbidden_door_sensor:on_activated()
     local m = sol.movement.create("path")
     m:set_path{6,6}
     m:set_speed(32)
-    forbidden_door_npc:start_movement(m)
+    m:start(forbidden_door_npc)
     forbidden_door_npc:get_sprite():set_animation("walking")
     hero:freeze()
   end

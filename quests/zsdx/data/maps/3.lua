@@ -10,7 +10,7 @@ local function random_walk(npc)
 
   local m = sol.movement.create("random_path")
   m:set_speed(32)
-  npc:start_movement(m)
+  m:start(npc)
   npc:get_sprite():set_animation("walking")
 end
 
@@ -98,7 +98,7 @@ function monkey:on_interaction()
 	  m:set_distance(24)
 	  m:set_ignore_obstacles(true)
 	  m:set_speed(monkey_jump_speed)
-	  monkey:start_movement(m)
+          m:start(monkey)
 	  monkey_sprite:set_animation("jumping")
 	  monkey_jumps = 1
 	  map:get_game():set_value("b24", true)
@@ -114,7 +114,7 @@ end
 function dungeon_2_door:on_interaction()
 
   -- open the door if the player has the Rock Key
-  if map:get_game():get_item("rock_key"):has_variant() then
+  if map:get_game():has_item("rock_key") then
     sol.audio.play_sound("door_open")
     sol.audio.play_sound("secret")
     map:get_game():set_value("b89", true)
@@ -153,7 +153,7 @@ function monkey:on_movement_finished()
       m:set_distance(56)
       m:set_ignore_obstacles(true)
       m:set_speed(monkey_jump_speed)
-      monkey:start_movement(m)
+      m:start(monkey)
       monkey_sprite:set_animation("jumping")
       monkey_jumps = 2
     end)
@@ -165,7 +165,7 @@ function monkey:on_movement_finished()
     m:set_distance(64)
     m:set_ignore_obstacles(true)
     m:set_speed(monkey_jump_speed)
-    monkey:start_movement(m)
+    m:start(monkey)
     monkey_sprite:set_animation("jumping")
     monkey_jumps = 3
   else
@@ -175,7 +175,7 @@ function monkey:on_movement_finished()
   end
 end
 
-function dungeon_3_entrance_weak_block:on_open()
+function dungeon_3_entrance_weak_block:on_opened()
   sol.audio.play_sound("secret") -- play the sound only once
 end
 

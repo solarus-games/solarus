@@ -32,7 +32,7 @@ class SpriteAnimationDirection {
 
     const int nb_frames;    /**< number of frames in this sequence */
     Rectangle* frames;      /**< position of each frame of the sequence on the image */
-    Rectangle origin;       /**< coordinate of the sprite's origin from the
+    Rectangle origin;       /**< coordinates of the sprite's origin from the
                              * upper-left corner of its image. */
 
     PixelBits** pixel_bits; /**< bit masks representing the non-transparent pixels of each frame,
@@ -46,7 +46,7 @@ class SpriteAnimationDirection {
     ~SpriteAnimationDirection();
 
     // size and origin point
-    const Rectangle& get_size() const;
+    Rectangle get_size() const;
     const Rectangle& get_origin() const;
 
     // frames

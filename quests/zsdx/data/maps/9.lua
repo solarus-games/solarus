@@ -98,9 +98,9 @@ function start_boss_sensor:on_activated()
   end
 end
 
-function hero:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item, variant, savegame_variable)
 
-  if item_name == "heart_container" then
+  if item:get_name() == "heart_container" then
     map:get_game():set_dungeon_finished(5)
     sol.timer.start(9000, function()
       hero:teleport(9, "from_dungeon_5_1F")

@@ -1219,21 +1219,25 @@ teletransporter{
 
 door{
   layer = 1,
-  x = 1120,
+  x = 1128,
   y = 536,
   name = "KD05",
   direction = 1,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_8_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b717",
 }
 
 door{
   layer = 1,
-  x = 1120,
+  x = 1128,
   y = 792,
   name = "LD06",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 switch{
@@ -1337,11 +1341,11 @@ enemy{
 
 door{
   layer = 1,
-  x = 1120,
+  x = 1128,
   y = 744,
   name = "LD06_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 pickable{
@@ -1410,11 +1414,15 @@ block{
 
 door{
   layer = 1,
-  x = 1120,
+  x = 1128,
   y = 488,
   name = "KD05_2",
   direction = 3,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_8_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b717",
 }
 

@@ -1549,20 +1549,20 @@ wall{
 door{
   layer = 1,
   x = 232,
-  y = 104,
+  y = 112,
   name = "door",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b66",
 }
 
 door{
   layer = 1,
   x = 280,
-  y = 104,
+  y = 112,
   name = "door_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b66",
 }
 

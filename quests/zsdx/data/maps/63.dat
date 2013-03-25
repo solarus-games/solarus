@@ -1286,20 +1286,28 @@ stairs{
 door{
   layer = 0,
   x = 520,
-  y = 1096,
+  y = 1104,
   name = "door",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_5_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b516",
 }
 
 door{
   layer = 0,
   x = 616,
-  y = 1096,
+  y = 1104,
   name = "door_2",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_5_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b516",
 }
 
@@ -11556,20 +11564,20 @@ teletransporter{
 
 door{
   layer = 1,
-  x = 416,
+  x = 424,
   y = 552,
   name = "statue_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 416,
+  x = 424,
   y = 504,
   name = "statue_door_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 npc{
@@ -11644,20 +11652,20 @@ npc{
 
 door{
   layer = 1,
-  x = 368,
+  x = 376,
   y = 424,
   name = "torches_door_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 368,
+  x = 376,
   y = 376,
   name = "torches_door",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 conveyor_belt{

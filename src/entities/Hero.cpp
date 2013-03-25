@@ -2072,10 +2072,12 @@ void Hero::start_free_or_carrying() {
 
 /**
  * @brief Makes the hero brandish a treasure.
- * @param treasure the treasure to give him (you have to delete it after the hero brandishes it)
+ * @param treasure The treasure to give him.
+ * @param callback_ref Lua ref to a function to call when the
+ * treasure's dialog finishes (possibly LUA_REFNIL).
  */
-void Hero::start_treasure(const Treasure &treasure) {
-  set_state(new TreasureState(*this, treasure));
+void Hero::start_treasure(const Treasure& treasure, int callback_ref) {
+  set_state(new TreasureState(*this, treasure, callback_ref));
 }
 
 /**
@@ -2114,9 +2116,11 @@ void Hero::start_jumping(int direction8, int distance, bool ignore_obstacles,
 
 /**
  * @brief Makes the hero brandish his sword meaning a victory.
+ * @param callback_ref Lua ref to a function to call when the
+ * victory sequence finishes (possibly LUA_REFNIL).
  */
-void Hero::start_victory() {
-  set_state(new VictoryState(*this));
+void Hero::start_victory(int callback_ref) {
+  set_state(new VictoryState(*this, callback_ref));
 }
 
 /**

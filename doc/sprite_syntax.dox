@@ -1,7 +1,7 @@
 /**
 \page sprite_syntax Sprite syntax specification
 
-A sprite is an animated image that can be displayed on the screen or attached to an entity of the map.
+A sprite is an animated image that can be displayed on a surface or attached to an entity of the map.
 More precisely, a sprite displays images from an animation set with a current animation, a current direction and a current frame.
 Several sprites displayed at the same time can share the same animation set and have different states (i.e. different animations, directions and frames).
 

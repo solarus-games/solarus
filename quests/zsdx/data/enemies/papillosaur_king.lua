@@ -53,7 +53,7 @@ function enemy:go()
     m = sol.movement.create("target")
     m:set_speed(boss_movement_speed)
   end
-  self:start_movement(m)
+  m:start(self)
 end
 
 function enemy:egg_phase_soon()

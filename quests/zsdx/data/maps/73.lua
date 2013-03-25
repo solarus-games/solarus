@@ -10,7 +10,7 @@ function map:on_started(destination)
   end
 end
 
-function door:on_open()
+function door:on_opened()
 
   sol.audio.play_sound("secret")
 end

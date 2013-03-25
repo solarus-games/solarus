@@ -101,7 +101,7 @@ function map:on_camera_back()
   timer:set_with_sound(true)
 end
 
-function hero:on_obtaining_treasure(item_name, variant, savegame_variable)
+function map:on_obtaining_treasure(item, variant, savegame_variable)
 
   if savegame_variable == "b706" then
     if timer ~= nil then
@@ -138,7 +138,7 @@ for _, enemy in ipairs(map:get_entities("LD9_enemy")) do
   end
 end
 
-function WW02:on_open()
+function WW02:on_opened()
 
   sol.audio.play_sound("secret")
 end

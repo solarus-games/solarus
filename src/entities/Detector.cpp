@@ -24,8 +24,7 @@
 /**
  * @brief Constructor.
  * @param collision_modes the detector's collision mode(s)
- * @param name a name identifying the detector (or an empty string if you
- * don't need to identify the detector)
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the detector
  * @param x x position of the detector's rectangle
  * @param y y position of the detector's rectangle

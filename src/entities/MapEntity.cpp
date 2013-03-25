@@ -101,7 +101,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
 
 /**
  * @brief Creates an entity, specifying its position, its name and its direction.
- * @param name a name identifying the entity
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param direction direction of the entity
  * @param layer layer of the entity
  * @param x x position of the entity
@@ -235,7 +235,7 @@ void MapEntity::set_map(Map& map) {
   this->main_loop = &map.get_game().get_main_loop();
   this->map = &map;
   if (&get_game().get_current_map() == &map) {
-    set_sprites_map(map);
+    notify_tileset_changed();
   }
 }
 
@@ -243,23 +243,6 @@ void MapEntity::set_map(Map& map) {
  * @brief Notifies this entity that its map has just become active.
  */
 void MapEntity::notify_map_started() {
-
-  set_sprites_map(*map);
-}
-
-/**
- * @brief Notifies the sprites of this entity that they belong to a map.
- *
- * This is useful for tileset-dependent sprites such as doors and blocks.
- */
-void MapEntity::set_sprites_map(Map& map) {
-
-  std::list<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
-
-    Sprite& sprite = *(*it);
-    sprite.set_map(map);
-  }
 }
 
 /**
@@ -267,6 +250,21 @@ void MapEntity::set_sprites_map(Map& map) {
  * of the map is finished.
  */
 void MapEntity::notify_map_opening_transition_finished() {
+}
+
+/**
+ * @brief Notifies this entity that the tileset of the map has just changed.
+ *
+ * This is useful for tileset-dependent sprites such as doors and blocks.
+ */
+void MapEntity::notify_tileset_changed() {
+
+  std::list<Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+
+    Sprite& sprite = *(*it);
+    sprite.set_tileset(get_map().get_tileset());
+  }
 }
 
 /**
@@ -281,7 +279,7 @@ Map& MapEntity::get_map() {
  * @brief Returns the game that is running the map where this entity is.
  * @return the game
  */
-Game& MapEntity::get_game() {
+Game& MapEntity::get_game() const {
   return map->get_game();
 }
 
@@ -289,7 +287,7 @@ Game& MapEntity::get_game() {
  * @brief Returns the entities of the current map.
  * @return the entities
  */
-MapEntities& MapEntity::get_entities() {
+MapEntities& MapEntity::get_entities() const {
   return map->get_entities();
 }
 
@@ -297,7 +295,7 @@ MapEntities& MapEntity::get_entities() {
  * @brief Returns the shared Lua context.
  * @return The Lua context where all scripts are run.
  */
-LuaContext& MapEntity::get_lua_context() {
+LuaContext& MapEntity::get_lua_context() const {
 
   Debug::check_assertion(main_loop != NULL, "This entity is not fully constructed yet");
   return main_loop->get_lua_context();
@@ -307,7 +305,7 @@ LuaContext& MapEntity::get_lua_context() {
  * @brief Returns the current equipment.
  * @return the equipment
  */
-Equipment& MapEntity::get_equipment() {
+Equipment& MapEntity::get_equipment() const {
   return get_game().get_equipment();
 }
 
@@ -315,7 +313,7 @@ Equipment& MapEntity::get_equipment() {
  * @brief Returns the keys effect manager.
  * @return the keys effect
  */
-KeysEffect& MapEntity::get_keys_effect() {
+KeysEffect& MapEntity::get_keys_effect() const {
   return get_game().get_keys_effect();
 }
 
@@ -323,7 +321,7 @@ KeysEffect& MapEntity::get_keys_effect() {
  * @brief Returns the game commands.
  * @return The commands.
  */
-GameCommands& MapEntity::get_commands() {
+GameCommands& MapEntity::get_commands() const {
   return get_game().get_commands();
 }
 
@@ -331,7 +329,7 @@ GameCommands& MapEntity::get_commands() {
  * @brief Returns the dialog box manager.
  * @return the dialog box
  */
-DialogBox& MapEntity::get_dialog_box() {
+DialogBox& MapEntity::get_dialog_box() const {
   return get_game().get_dialog_box();
 }
 
@@ -339,7 +337,7 @@ DialogBox& MapEntity::get_dialog_box() {
  * @brief Returns the savegame.
  * @return the savegame
  */
-Savegame& MapEntity::get_savegame() {
+Savegame& MapEntity::get_savegame() const {
   return get_game().get_savegame();
 }
 
@@ -348,7 +346,7 @@ Savegame& MapEntity::get_savegame() {
  * @brief Returns the hero
  * @return the hero
  */
-Hero& MapEntity::get_hero() {
+Hero& MapEntity::get_hero() const {
   return get_entities().get_hero();
 }
 
@@ -784,7 +782,8 @@ const Rectangle MapEntity::get_center_point() {
 
 /**
  * @brief Returns the name of the entity (if any).
- * @return the name of the entity, or an empty string if the entity is not identifiable
+ * @return the name of the entity, or an empty string if
+ * the entity has no name.
  */
 const std::string& MapEntity::get_name() const {
   return name;

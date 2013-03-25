@@ -4,15 +4,12 @@ local enemy = ...
 
 local timer
 
-function enemy:on_created()
-
-  self:set_life(3)
-  self:set_damage(4)
-  self:create_sprite("enemies/snap_dragon")
-  self:set_hurt_style("normal")
-  self:set_size(16, 16)
-  self:set_origin(8, 13)
-end
+enemy:set_life(3)
+enemy:set_damage(4)
+enemy:set_hurt_style("normal")
+enemy:set_size(16, 16)
+enemy:set_origin(8, 13)
+local sprite = enemy:create_sprite("enemies/snap_dragon")
 
 function enemy:on_restarted()
 
@@ -47,9 +44,8 @@ function enemy:go_random()
   m:set_speed(48)
   m:set_angle(angle)
   m:set_max_distance(24 + math.random(96))
-  self:start_movement(m)
+  m:start(self)
 
-  local sprite = self:get_sprite()
   sprite:set_direction(rand4 - 1)
 
   if timer ~= nil then
@@ -60,10 +56,10 @@ function enemy:go_random()
   end)
 end
 
-function enemy:on_sprite_animation_finished(sprite, animation)
+function sprite:on_animation_finished(animation)
 
   if animation == "bite" then
-    sprite:set_animation("walking")
+    self:set_animation("walking")
   end
 end
 

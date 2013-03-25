@@ -86,14 +86,6 @@ public class Switch extends MapEntity {
     }
 
     /**
-     * Returns whether the entity has an identifier.
-     * @return true
-     */
-    public boolean hasName() {
-        return true;
-    }
-
-    /**
      * Returns whether this switch is walkable.
      * @return true if the subtype is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
      */

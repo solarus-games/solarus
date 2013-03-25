@@ -303,12 +303,12 @@ class Hero: public MapEntity {
     void start_next_state();
     void start_free();
     void start_free_or_carrying();
-    void start_treasure(const Treasure &treasure);
+    void start_treasure(const Treasure& treasure, int callback_ref);
     void start_forced_walking(const std::string &path, bool loop, bool ignore_obstacles);
     void start_jumping(int direction8, int distance, bool ignore_obstacles,
         bool with_sound, uint32_t movement_delay = 0);
     void start_freezed();
-    void start_victory();
+    void start_victory(int callback_ref);
     void start_lifting(CarriedItem* item_to_lift);
     void start_running();
     void start_grabbing();

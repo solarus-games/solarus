@@ -1285,11 +1285,11 @@ wall{
 
 door{
   layer = 0,
-  x = 240,
+  x = 248,
   y = 816,
   name = "door_3",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 teletransporter{
@@ -2279,19 +2279,19 @@ tile{
 door{
   layer = 1,
   x = 24,
-  y = 488,
+  y = 496,
   name = "door",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 240,
+  x = 248,
   y = 408,
   name = "door_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 wall{

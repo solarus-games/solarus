@@ -19,6 +19,7 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -69,6 +70,7 @@ void LuaContext::register_game_module() {
       { "get_ability", game_api_get_ability },
       { "set_ability", game_api_set_ability },
       { "get_item", game_api_get_item },
+      { "has_item", game_api_has_item },
       { "get_item_assigned", game_api_get_item_assigned },
       { "set_item_assigned", game_api_set_item_assigned },
       { "is_command_pressed", game_api_is_command_pressed },
@@ -78,6 +80,7 @@ void LuaContext::register_game_module() {
       { "set_command_keyboard_binding", game_api_set_command_keyboard_binding },
       { "get_command_joypad_binding", game_api_get_command_joypad_binding },
       { "set_command_joypad_binding", game_api_set_command_joypad_binding },
+      { "capture_command_binding", game_api_capture_command_binding },
       { NULL, NULL }
   };
   static const luaL_Reg metamethods[] = {
@@ -362,6 +365,10 @@ int LuaContext::game_api_set_value(lua_State* l) {
 
     case LUA_TSTRING:
       savegame.set_string(key, lua_tostring(l, 3));
+      break;
+
+    case LUA_TNIL:
+      savegame.unset(key);
       break;
 
     default:
@@ -751,6 +758,20 @@ int LuaContext::game_api_get_item(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_game_has_item.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_has_item(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+  const std::string& item_name = luaL_checkstring(l, 2);
+
+  lua_pushboolean(l, savegame.get_equipment().get_item(item_name).get_variant() > 0);
+  return 1;
+}
+
+/**
  * @brief Implementation of \ref lua_api_game_get_item_assigned.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -796,38 +817,6 @@ int LuaContext::game_api_set_item_assigned(lua_State* l) {
   savegame.get_equipment().set_item_assigned(slot, item);
 
   return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_is_command_pressed.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_is_command_pressed(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-  GameCommands::Command command = check_enum<GameCommands::Command>(
-      l, 2, GameCommands::command_names);
-
-  GameCommands& commands = savegame.get_game()->get_commands();
-  lua_pushboolean(l, commands.is_command_pressed(command));
-
-  return 1;
-}
-
-/**
- * @brief Implementation of \ref lua_api_game_get_commands_direction.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::game_api_get_commands_direction(lua_State* l) {
-
-  Savegame& savegame = check_game(l, 1);
-
-  GameCommands& commands = savegame.get_game()->get_commands();
-  lua_pushinteger(l, commands.get_wanted_direction8());
-
-  return 1;
 }
 
 /**
@@ -1021,28 +1010,65 @@ int LuaContext::game_api_set_command_joypad_binding(lua_State* l) {
 }
 
 /**
- * @brief Calls the on_update() method of a Lua game.
- * @param game A game.
+ * @brief Implementation of \ref lua_api_game_capture_command_binding.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-void LuaContext::game_on_update(Game& game) {
+int LuaContext::game_api_capture_command_binding(lua_State* l) {
 
-  push_game(l, game.get_savegame());
-  on_update();
-  menus_on_update(-1);
-  lua_pop(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+
+  int callback_ref = LUA_REFNIL;
+  if (lua_gettop(l) >= 3) {
+    luaL_checktype(l, 3, LUA_TFUNCTION);
+    lua_settop(l, 3);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  commands.customize(command, callback_ref);
+
+  return 0;
 }
 
 /**
- * @brief Calls the on_draw() method of a Lua game.
- * @param game A game.
- * @param dst_surface The destination surface.
+ * @brief Implementation of \ref lua_api_game_is_command_pressed.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
+int LuaContext::game_api_is_command_pressed(lua_State* l) {
 
-  push_game(l, game.get_savegame());
-  menus_on_draw(-1, dst_surface);
-  on_draw(dst_surface);
-  lua_pop(l, 1);
+  Savegame& savegame = check_game(l, 1);
+  GameCommands::Command command = check_enum<GameCommands::Command>(
+      l, 2, GameCommands::command_names);
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  lua_pushboolean(l, commands.is_command_pressed(command));
+
+  return 1;
+}
+
+/**
+ * @brief Implementation of \ref lua_api_game_get_commands_direction.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::game_api_get_commands_direction(lua_State* l) {
+
+  Savegame& savegame = check_game(l, 1);
+
+  GameCommands& commands = savegame.get_game()->get_commands();
+  int wanted_direction8 = commands.get_wanted_direction8();
+  if (wanted_direction8 == -1) {
+    lua_pushnil(l);
+  }
+  else {
+    lua_pushinteger(l, wanted_direction8);
+  }
+
+  return 1;
 }
 
 /**
@@ -1066,6 +1092,31 @@ void LuaContext::game_on_finished(Game& game) {
   on_finished();
   remove_timers(-1);  // Stop timers and menus associated to this game.
   remove_menus(-1);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_update() method of a Lua game.
+ * @param game A game.
+ */
+void LuaContext::game_on_update(Game& game) {
+
+  push_game(l, game.get_savegame());
+  on_update();
+  menus_on_update(-1);
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_draw() method of a Lua game.
+ * @param game A game.
+ * @param dst_surface The destination surface.
+ */
+void LuaContext::game_on_draw(Game& game, Surface& dst_surface) {
+
+  push_game(l, game.get_savegame());
+  menus_on_draw(-1, dst_surface);
+  on_draw(dst_surface);
   lua_pop(l, 1);
 }
 

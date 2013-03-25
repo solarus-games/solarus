@@ -3774,39 +3774,45 @@ wall{
 door{
   layer = 1,
   x = 536,
-  y = 232,
+  y = 240,
   name = "boss_door",
   direction = 0,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
+  opening_condition = "dungeon_1_boss_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b61",
 }
 
 door{
   layer = 1,
   x = 584,
-  y = 232,
+  y = 240,
   name = "boss_door_2",
   direction = 2,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
+  opening_condition = "dungeon_1_boss_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b61",
 }
 
 door{
   layer = 1,
   x = 632,
-  y = 72,
+  y = 80,
   name = "miniboss_door_2",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 680,
-  y = 72,
+  y = 80,
   name = "miniboss_door",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destination{
@@ -3896,11 +3902,11 @@ stairs{
 
 door{
   layer = 1,
-  x = 840,
+  x = 848,
   y = 256,
   name = "miniboss_door_3",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 sensor{

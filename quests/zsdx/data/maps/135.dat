@@ -2556,10 +2556,10 @@ destructible{
 door{
   layer = 1,
   x = 24,
-  y = 360,
+  y = 368,
   name = "door",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 wall{

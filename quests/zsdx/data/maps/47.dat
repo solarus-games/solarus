@@ -8784,59 +8784,62 @@ tile{
 
 door{
   layer = 1,
-  x = 1112,
+  x = 1120,
   y = 280,
   name = "boss_door_3",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 1256,
-  y = 376,
+  y = 384,
   name = "LD6_2",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b723",
 }
 
 door{
   layer = 1,
   x = 1304,
-  y = 376,
+  y = 384,
   name = "LD6",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b723",
 }
 
 door{
   layer = 1,
-  x = 1112,
+  x = 1120,
   y = 280,
   name = "boss_key_door",
   direction = 1,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
+  opening_condition = "dungeon_8_boss_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b730",
 }
 
 door{
   layer = 1,
   x = 344,
-  y = 1656,
+  y = 1664,
   name = "LD3",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 296,
-  y = 1656,
+  y = 1664,
   name = "LD3_2",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destination{
@@ -8884,10 +8887,11 @@ wall{
 door{
   layer = 1,
   x = 664,
-  y = 384,
+  y = 392,
   name = "WW01",
   direction = 2,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b731",
 }
 
@@ -8902,10 +8906,14 @@ destination{
 door{
   layer = 1,
   x = 984,
-  y = 1656,
+  y = 1664,
   name = "KD01",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_8_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b701",
 }
 
@@ -8923,11 +8931,11 @@ block{
 
 door{
   layer = 1,
-  x = 1752,
+  x = 1760,
   y = 1560,
   name = "LD2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 block{
@@ -9795,10 +9803,10 @@ sensor{
 door{
   layer = 1,
   x = 1576,
-  y = 1656,
+  y = 1664,
   name = "LD1",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -9812,11 +9820,11 @@ sensor{
 
 door{
   layer = 1,
-  x = 1752,
+  x = 1760,
   y = 536,
   name = "LD5",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 teletransporter{
@@ -9902,10 +9910,10 @@ destructible{
 door{
   layer = 1,
   x = 1624,
-  y = 1656,
+  y = 1664,
   name = "LD1_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 wall{
@@ -9923,11 +9931,11 @@ wall{
 
 door{
   layer = 1,
-  x = 1752,
+  x = 1760,
   y = 1512,
   name = "LD2_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 enemy{
@@ -10004,11 +10012,11 @@ enemy{
 
 door{
   layer = 1,
-  x = 1752,
+  x = 1760,
   y = 488,
   name = "LD5_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 pickable{
@@ -10041,20 +10049,20 @@ destructible{
 
 door{
   layer = 1,
-  x = 1112,
+  x = 1120,
   y = 1000,
   name = "LD4",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 1112,
+  x = 1120,
   y = 1048,
   name = "LD4_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -10330,10 +10338,14 @@ wall{
 door{
   layer = 1,
   x = 1576,
-  y = 1144,
+  y = 1152,
   name = "KD02",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_8_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b703",
 }
 
@@ -10601,20 +10613,28 @@ enemy{
 door{
   layer = 1,
   x = 936,
-  y = 1656,
+  y = 1664,
   name = "KD01_2",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_8_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b701",
 }
 
 door{
   layer = 1,
   x = 1624,
-  y = 1144,
+  y = 1152,
   name = "KD02_2",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_8_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b703",
 }
 
@@ -10644,11 +10664,11 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 1112,
+  x = 1120,
   y = 24,
   name = "agahnim_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 enemy{
@@ -10879,11 +10899,11 @@ wall{
 
 door{
   layer = 1,
-  x = 1112,
+  x = 1120,
   y = 232,
   name = "boss_door",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destination{
@@ -12058,11 +12078,14 @@ dynamic_tile{
 
 door{
   layer = 2,
-  x = 1112,
+  x = 1120,
   y = 232,
   name = "boss_key_door_2",
   direction = 3,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
+  opening_condition = "dungeon_8_boss_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b730",
 }
 

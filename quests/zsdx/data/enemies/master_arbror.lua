@@ -8,27 +8,23 @@ local vulnerable = false
 local initial_life = 8
 local timers = {}
 
-function enemy:on_created()
-
-  self:set_life(initial_life)
-  self:set_damage(4)
-  self:create_sprite("enemies/master_arbror")
-  self:set_optimization_distance(0)
-  self:set_size(16, 16)
-  self:set_origin(8, 13)
-  self:set_pushed_back_when_hurt(false)
-  self:set_invincible()
-  self:set_attack_consequence("sword", "protected")
-  self:set_attack_consequence("arrow", "protected")
-  self:set_attack_consequence("boomerang", "protected")
-  self:set_attack_consequence("hookshot", "protected")
-  self:set_push_hero_on_sword(true)
-  self:set_can_hurt_hero_running(true)
-end
+enemy:set_life(initial_life)
+enemy:set_damage(4)
+enemy:set_optimization_distance(0)
+enemy:set_size(16, 16)
+enemy:set_origin(8, 13)
+enemy:set_pushed_back_when_hurt(false)
+enemy:set_invincible()
+enemy:set_attack_consequence("sword", "protected")
+enemy:set_attack_consequence("arrow", "protected")
+enemy:set_attack_consequence("boomerang", "protected")
+enemy:set_attack_consequence("hookshot", "protected")
+enemy:set_push_hero_on_sword(true)
+enemy:set_can_hurt_hero_running(true)
+local sprite = enemy:create_sprite("enemies/master_arbror")
 
 function enemy:on_restarted()
 
-  local sprite = self:get_sprite()
   if not vulnerable then
     self:go()
   else
@@ -41,7 +37,7 @@ function enemy:go()
   local m = sol.movement.create("random")
   m:set_speed(16)
   m:set_max_distance(16)
-  self:start_movement(m)
+  m:start(self)
   for _, t in ipairs(timers) do t:stop() end
   timers[#timers + 1] = sol.timer.start(self, math.random(2000, 3000), function()
     self:prepare_son()
@@ -52,7 +48,6 @@ function enemy:on_hurt(attack, life_lost)
 
   local life = self:get_life()
   if life <= 0 then
-    local sprite = self:get_sprite()
     sprite:set_ignore_suspend(true)
     self:get_map():start_dialog("dungeon_3.arbror_killed")
     for _, t in ipairs(timers) do t:stop() end
@@ -72,10 +67,8 @@ end
 
 function enemy:prepare_son()
 
-  local sprite = self:get_sprite()
   if not vulnerable and sprite:get_animation() == "walking" then
     if #sons < nb_sons_immobilized_needed then
-      local sprite = self:get_sprite()
       sprite:set_animation("preparing_son")
       sol.audio.play_sound("hero_pushes")
       timers[#timers + 1] = sol.timer.start(self, 1000, function() self:create_son() end)
@@ -110,27 +103,27 @@ function enemy:get_nb_sons_immobilized()
   return count
 end
 
-function enemy:on_sprite_animation_finished(sprite, animation)
+function sprite:on_animation_finished(animation)
 
   if animation == "preparing_son" then
-    sprite:set_animation("walking")
-    self:restart()
+    self:set_animation("walking")
+    enemy:restart()
   elseif animation == "son_immobilized" then
 
-    if self:get_nb_sons_immobilized() >= nb_sons_immobilized_needed
+    if enemy:get_nb_sons_immobilized() >= nb_sons_immobilized_needed
         and not vulnerable then
 
       vulnerable = true
-      self:set_attack_consequence("sword", 1)
-      self:set_attack_consequence("arrow", 2)
-      self:stop_movement()
-      sprite:set_animation("vulnerable")
+      enemy:set_attack_consequence("sword", 1)
+      enemy:set_attack_consequence("arrow", 2)
+      enemy:stop_movement()
+      self:set_animation("vulnerable")
       sol.audio.play_sound("boss_hurt")
       for _, t in ipairs(timers) do t:stop() end
-      timers[#timers + 1] = sol.timer.start(self, 4000, function() self:stop_vulnerable() end)
-      self:remove_sons()
+      timers[#timers + 1] = sol.timer.start(enemy, 4000, function() enemy:stop_vulnerable() end)
+      enemy:remove_sons()
     else
-      sprite:set_animation("walking")
+      self:set_animation("walking")
     end
   end
 end
@@ -138,7 +131,6 @@ end
 function enemy:son_started_immobilized()
 
   if get_nb_sons_immobilized() < nb_sons_immobilized_needed then
-    local sprite = self:get_sprite()
     local animation = sprite:get_animation()
 
     if animation == "preparing_son" then

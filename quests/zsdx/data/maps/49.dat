@@ -6176,10 +6176,10 @@ switch{
 door{
   layer = 1,
   x = 984,
-  y = 632,
+  y = 640,
   name = "LD15",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 chest{
@@ -6332,10 +6332,13 @@ crystal_block{
 door{
   layer = 1,
   x = 1400,
-  y = 888,
+  y = 896,
   name = "BD01",
   direction = 2,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_8_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b713",
 }
 
@@ -6495,10 +6498,10 @@ switch{
 door{
   layer = 1,
   x = 936,
-  y = 632,
+  y = 640,
   name = "LD15_2",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 crystal_block{
@@ -6548,20 +6551,20 @@ crystal_block{
 
 door{
   layer = 1,
-  x = 792,
+  x = 800,
   y = 1048,
   name = "LD16",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 792,
+  x = 800,
   y = 1000,
   name = "LD16_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 switch{
@@ -6930,30 +6933,41 @@ enemy{
 door{
   layer = 1,
   x = 1304,
-  y = 888,
+  y = 896,
   name = "KD04",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_8_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b714",
 }
 
 door{
   layer = 1,
   x = 1352,
-  y = 888,
+  y = 896,
   name = "BD01_2",
   direction = 0,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_8_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b713",
 }
 
 door{
   layer = 1,
   x = 1256,
-  y = 888,
+  y = 896,
   name = "KD04_2",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_8_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b714",
 }
 
@@ -7011,19 +7025,19 @@ sensor{
 door{
   layer = 1,
   x = 1304,
-  y = 632,
+  y = 640,
   name = "LD15_3",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 1256,
-  y = 632,
+  y = 640,
   name = "LD15_4",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destination{

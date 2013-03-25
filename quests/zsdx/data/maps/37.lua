@@ -22,7 +22,10 @@ end
 
 local function give_golden_bars()
   map:start_dialog("billy_cave.give_golden_bars", function()
-    hero:start_treasure("level_4_way", 3, "b134")
+    hero:start_treasure("level_4_way", 3, "b134", function()
+      -- got the edelweiss: make Billy leave
+      billy_leave()
+    end)
   end)
 end
 
@@ -37,7 +40,7 @@ local function billy_leave()
     m:set_path{4,4,4,4,4,4,4}
     m:set_speed(48)
     m:set_ignore_obstacles(true)
-    billy:start_movement(m)
+    m:start(billy)
     sprite:set_animation("walking")
   elseif billy_leave_step == 2 then
     sprite:set_direction(1)
@@ -49,7 +52,7 @@ local function billy_leave()
     local m = sol.movement.create("path")
     m:set_path{2,2,2,2,2,2,2,2}
     m:set_speed(48)
-    billy:start_movement(m)
+    m:start(billy)
     sprite:set_animation("walking")
   else
     map:close_doors("door")
@@ -96,14 +99,6 @@ function billy:on_interaction()
         end)
       end
     end)
-  end
-end
-
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
-
-  if item_name == "level_4_way" and variant == 3 then
-    -- got the edelweiss: make Billy leave
-    billy_leave()
   end
 end
 

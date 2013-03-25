@@ -3988,20 +3988,20 @@ tile{
 
 door{
   layer = 1,
-  x = 1560,
+  x = 1568,
   y = 1304,
   name = "miniboss_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 1768,
+  x = 1776,
   y = 1304,
   name = "miniboss_door_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 crystal{
@@ -6058,20 +6058,20 @@ npc{
 door{
   layer = 1,
   x = 1896,
-  y = 1912,
+  y = 1920,
   name = "door_b",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b864",
 }
 
 door{
   layer = 1,
   x = 1944,
-  y = 1912,
+  y = 1920,
   name = "door_b_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b864",
 }
 
@@ -6506,37 +6506,37 @@ enemy{
 door{
   layer = 1,
   x = 1896,
-  y = 1328,
+  y = 1336,
   name = "miniboss_e_door",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 1944,
-  y = 1328,
+  y = 1336,
   name = "miniboss_e_door_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 2216,
-  y = 632,
+  y = 640,
   name = "door_a",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 2264,
-  y = 632,
+  y = 640,
   name = "door_a_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 wall{

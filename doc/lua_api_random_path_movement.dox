@@ -1,0 +1,55 @@
+/**
+\page lua_api_random_path_movement Random path movement
+
+\tableofcontents
+
+The random path movement is a particular case of
+\ref lua_api_path_movement "path movement",
+where the path is chosen automatically.
+The resulting movement is composed of repeated random steps 
+in the four main directions only and with a length that is a multiple of
+8 pixels.
+
+\remark This movement is a typical random walk movement.
+You will probably use it for \ref lua_api_npc "NPCs".
+
+Example of use:
+\verbatim
+-- Example of code from a map script.
+-- Assume that there is an NPC called "bob" on this map.
+function sol.map:on_started()
+  -- The map has just started: make bob walk.
+  bob:start_movement(sol.movement.create("random_path"))
+end
+\endverbatim
+
+\section lua_api_random_path_movement_inherited_methods Methods inherited from movement
+
+Random path movements are particular \ref lua_api_movement "movement" objects.
+Therefore, they inherit all methods from the type movement.
+
+See \ref lua_api_movement_methods to know these methods.
+
+\section lua_api_random_path_movement_methods Methods of the type random path movement
+
+The following methods are specific to random path movements.
+
+\subsection lua_api_random_path_movement_get_speed random_path_movement:get_speed()
+
+Returns the speed of this movement.
+- Return value (number): The speed in pixels per second.
+
+\subsection lua_api_random_path_movement_set_speed random_path_movement:set_speed(speed)
+
+Sets the speed of this movement.
+- \c speed (number): The new speed in pixels per second.
+
+\section lua_api_random_path_movement_inherited_events Events inherited from movement
+
+Random path movements are particular \ref lua_api_movement "movement" objects.
+Therefore, they inherit all events from the type movement.
+
+See \ref lua_api_movement_events to know these events.
+
+*/
+

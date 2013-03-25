@@ -168,6 +168,16 @@ public class Tile extends MapEntity {
     }
 
     /**
+     * Returns whether this kind of entity is allowed to have a name.
+     * @return false.
+     */
+    public boolean canHaveName() {
+        // Tiles are not allowed to have a name because they are optimized away
+        // at runtime during the game.
+        return false;
+    }
+
+    /**
      * Returns whether or not the entity is resizable.
      * A tile is resizable (i.e. its pattern can be replicated
      * horizontally or vertically).

@@ -24,9 +24,9 @@ function map:on_started(destination)
   end
 end
 
-function hero:on_treasure_obtained(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item, variant, savegame_variable)
 
-  if item_name == "heart_container" then
+  if item:get_name() == "heart_container" then
     sol.timer.start(9000, function()
       map:open_doors("final_room_door")
       sol.audio.play_sound("secret")

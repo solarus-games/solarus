@@ -12,7 +12,7 @@ local function init_guard(guard, path)
   m:set_speed(48)
   m:set_loop(true)
   m:set_ignore_obstacles(true)
-  guard:start_movement(m)
+  m:start(guard)
   guard:get_sprite():set_animation("walking")
 end
 
@@ -80,7 +80,7 @@ end
 
 function save_s_blocks_sensor:on_activated()
 
-  if map:get_game():get_item("feather"):has_variant()
+  if map:get_game():has_item("feather")
       and not map:get_game():get_value("b517") then
     -- solved the blocks puzzle necessary to exit this floor
     map:get_game():set_value("b517", true)

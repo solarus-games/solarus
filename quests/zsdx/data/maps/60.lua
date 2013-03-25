@@ -24,12 +24,12 @@ function map:on_opening_transition_finished(destination)
   end
 end
 
-function hidden_weak_wall:on_open()
+function hidden_weak_wall:on_opened()
 
   sol.audio.play_sound("secret")
 end
 
-function weak_block:on_open()
+function weak_block:on_opened()
 
   sol.audio.play_sound("secret")
 end
@@ -62,9 +62,9 @@ function start_boss_sensor:on_activated()
   end
 end
 
-function hero:on_obtained_treasure(item_name, variant, savegame_variable)
+function map:on_obtained_treasure(item, variant, savegame_variable)
 
-  if item_name == "heart_container" then
+  if item:get_name() == "heart_container" then
     sol.timer.start(9000, function()
       map:open_doors("final_room_door")
       sol.audio.play_sound("secret")

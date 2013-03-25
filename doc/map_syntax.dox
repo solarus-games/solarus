@@ -17,7 +17,7 @@ XXXX is the id of the map (an integer on four digits).
 This page describes the syntax of this file.
 Another file \c maps/mapXXXX.lua contains the script of the map,
 i.e. the dynamic events that occur on the map.
-See the \ref lua_api to know how a map script can
+See the \ref lua_api_map to know how a map script can
 interact with the game.
 
 Most of the information listed above is given in the first line of
@@ -335,8 +335,8 @@ Subtypes of NPCs:
 - 1: a usual NPC (a sprite is required, with four directions and the animations "stopped" and possibly "walking")
 
 \c direction has a different meaning depending on the subtype of NPC.
-For a usual NPC, it indicates the initial direction of its sprite (0 to 4)
-For a generalized NPC, it indicates the direction where the interaction is possible (0 to 4,
+For a usual NPC, it indicates the initial direction of its sprite (0 to 3)
+For a generalized NPC, it indicates the direction where the interaction is possible (0 to 3,
 or -1 to allow the interaction in any direction). For example, if the direction is 3,
 the interaction will be started only if the hero touches the south face of the entity.
 

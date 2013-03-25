@@ -8528,113 +8528,113 @@ sensor{
 
 door{
   layer = 1,
-  x = 848,
+  x = 856,
   y = 824,
   name = "door_b",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 848,
+  x = 856,
   y = 776,
   name = "door_b_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 1008,
+  x = 1016,
   y = 856,
   name = "door_c_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 1008,
+  x = 1016,
   y = 808,
   name = "door_c",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 816,
+  x = 824,
   y = 952,
   name = "door_d_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 816,
+  x = 824,
   y = 904,
   name = "door_d",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 960,
+  x = 968,
   y = 968,
   name = "door_e_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 960,
+  x = 968,
   y = 920,
   name = "door_e",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 888,
-  y = 624,
+  y = 632,
   name = "door_a",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b627",
 }
 
 door{
   layer = 1,
   x = 936,
-  y = 624,
+  y = 632,
   name = "door_a_2",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b627",
 }
 
 door{
   layer = 1,
-  x = 944,
+  x = 952,
   y = 280,
   name = "ne_door_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b624",
 }
 
 door{
   layer = 1,
-  x = 944,
+  x = 952,
   y = 328,
   name = "ne_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b624",
 }
 
@@ -10269,11 +10269,11 @@ sensor{
 
 door{
   layer = 1,
-  x = 328,
+  x = 336,
   y = 520,
   name = "boss_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 enemy{

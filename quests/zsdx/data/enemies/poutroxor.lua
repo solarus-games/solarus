@@ -36,7 +36,7 @@ function enemy:on_restarted()
   if phase == 1 then
     local m = sol.movement.create("random")
     m:set_speed(32)
-    self:start_movement(m)
+    m:start(self)
     for _, t in ipairs(timers) do t:stop() end
     timers[#timers + 1] = sol.timer.start(self, math.random(2000, 3000), function()
       self:skeleton_attack()
@@ -44,7 +44,7 @@ function enemy:on_restarted()
   else
     local m = sol.movement.create("random")
     m:set_speed(80)
-    self:start_movement(m)
+    m:start(self)
     for _, t in ipairs(timers) do t:stop() end
     timers[#timers + 1] = sol.timer.start(self, math.random(3000, 5000), function()
       self:big_attack()

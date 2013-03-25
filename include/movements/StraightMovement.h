@@ -77,7 +77,7 @@ class StraightMovement: public Movement {
     StraightMovement(bool ignore_obstacles, bool smooth);
     virtual ~StraightMovement();
 
-    virtual void set_entity(MapEntity* entity);
+    virtual void notify_object_controlled();
     virtual void update();
     virtual void set_suspended(bool suspended);
     bool has_to_move_now();

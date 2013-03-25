@@ -7794,11 +7794,12 @@ wall{
 
 door{
   layer = 1,
-  x = 632,
+  x = 640,
   y = 200,
   name = "hidden_weak_wall_2",
   direction = 1,
-  subtype = "6",
+  sprite = "entities/door_very_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b403",
 }
 
@@ -7862,21 +7863,27 @@ teletransporter{
 
 door{
   layer = 1,
-  x = 88,
+  x = 96,
   y = 232,
   name = "door",
   direction = 1,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
+  opening_condition = "dungeon_4_boss_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b401",
 }
 
 door{
   layer = 1,
-  x = 88,
+  x = 96,
   y = 184,
   name = "door_2",
   direction = 3,
-  subtype = "4",
+  sprite = "entities/door_boss_key",
+  opening_condition = "dungeon_4_boss_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_boss_key_required",
   savegame_variable = "b401",
 }
 
@@ -7909,20 +7916,28 @@ wall{
 door{
   layer = 1,
   x = 680,
-  y = 56,
+  y = 64,
   name = "door_3",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_4_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b402",
 }
 
 door{
   layer = 1,
   x = 728,
-  y = 56,
+  y = 64,
   name = "door_4",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_4_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b402",
 }
 
@@ -8009,11 +8024,12 @@ destination{
 
 door{
   layer = 1,
-  x = 632,
+  x = 640,
   y = 152,
   name = "hidden_weak_wall",
   direction = 3,
-  subtype = "6",
+  sprite = "entities/door_very_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b403",
 }
 
@@ -8183,21 +8199,27 @@ chest{
 
 door{
   layer = 1,
-  x = 832,
+  x = 840,
   y = 488,
   name = "door_7",
   direction = 3,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_4_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b406",
 }
 
 door{
   layer = 1,
-  x = 832,
+  x = 840,
   y = 536,
   name = "door_8",
   direction = 1,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_4_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b406",
 }
 
@@ -8240,7 +8262,8 @@ door{
   y = 240,
   name = "weak_block",
   direction = 1,
-  subtype = "8",
+  sprite = "entities/door_weak_block",
+  opening_method = "explosion",
   savegame_variable = "b410",
 }
 
@@ -8965,20 +8988,20 @@ destructible{
 
 door{
   layer = 1,
-  x = 88,
+  x = 96,
   y = 232,
   name = "boss_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 88,
+  x = 96,
   y = 184,
   name = "boss_door_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destructible{
@@ -9055,11 +9078,11 @@ wall{
 
 door{
   layer = 1,
-  x = 184,
+  x = 192,
   y = 232,
   name = "final_room_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destination{

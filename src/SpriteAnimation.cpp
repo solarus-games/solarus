@@ -16,7 +16,6 @@
  */
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
-#include "Map.h"
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
@@ -60,16 +59,16 @@ SpriteAnimation::~SpriteAnimation() {
 }
 
 /**
- * @brief When the sprite is displayed on a map, sets the map.
+ * @brief When the sprite is displayed on a map, sets the tileset.
  *
  * This function must be called if this sprite image depends on the map's tileset.
  *
- * @param map the map
+ * @param tileset The tileset.
  */
-void SpriteAnimation::set_map(Map &map) {
+void SpriteAnimation::set_tileset(Tileset& tileset) {
 
   if (!src_image_loaded) {
-    this->src_image = &map.get_tileset().get_entities_image();
+    this->src_image = &tileset.get_entities_image();
     if (should_enable_pixel_collisions) {
       disable_pixel_collisions(); // to force creating the images again
       do_enable_pixel_collisions();
@@ -90,7 +89,7 @@ int SpriteAnimation::get_nb_directions() const {
  * @param direction the direction
  * @return the sequence of images corresponding to this direction
  */
-const SpriteAnimationDirection * SpriteAnimation::get_direction(int direction) const {
+const SpriteAnimationDirection* SpriteAnimation::get_direction(int direction) const {
   return directions[direction];
 }
 

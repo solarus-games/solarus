@@ -85,6 +85,44 @@ public class SpriteAnimation {
     }
 
     /**
+     * Returns the number of directions in this animation.
+     * @return The number of directions.
+     */
+    public int getNbDirections() {
+        return directions.length;
+    }
+
+    /**
+     * Returns a direction in this animation.
+     * @param direction Index of the direction to get (the first one is 0).
+     * @return The corresponding direction.
+     */
+    public SpriteAnimationDirection getDirection(int direction) {
+        return directions[direction];
+    }
+
+    /**
+     * @brief Returns the time interval between two frames.
+     *
+     * This delay is the same for all directions.
+     *
+     * @return The interval in milliseconds between two frames.
+     * 0 means infinite (only possible when there is one frame).
+     */
+    public int getFrameDelay() {
+        return frameDelay;
+    }
+
+    /**
+     * @brief Returns the frame where the animation loops.
+     * @returns The index of a frame where to the sprite loops after the last
+     * frame, or -1 if there is no loop.
+     */
+    public int getLoopOnFrame() {
+        return loopOnFrame;
+    }
+
+    /**
      * Displays a frame of this sprite.
      * @param g graphic context
      * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)

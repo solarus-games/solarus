@@ -53,7 +53,7 @@ public class ActionEditEntity extends MapEditorAction {
      * @param map the map
      * @param entity the entity edited
      * @param name the new name of the entity (or null if
-     * the entity is not identifiable)
+     * the entity has no name)
      * @param layer the new layer of the entity
      * @param position the new position of the entity
      * @param size the new size of the entity (or null if
@@ -74,7 +74,7 @@ public class ActionEditEntity extends MapEditorAction {
         this.specificAction = specificAction;
 
         // name
-        if (entity.hasName()) {
+        if (entity.canHaveName()) {
             this.nameBefore = entity.getName();
             this.nameAfter = name;
         }
@@ -112,7 +112,7 @@ public class ActionEditEntity extends MapEditorAction {
     public void execute() throws QuestEditorException {
 
         // name
-        if (entity.hasName()) {
+        if (entity.canHaveName()) {
             entity.setName(nameAfter);
         }
 
@@ -178,7 +178,7 @@ public class ActionEditEntity extends MapEditorAction {
         map.setEntityLayer(entity, layerBefore);
 
         // name
-        if (entity.hasName()) {
+        if (entity.canHaveName()) {
             entity.setName(nameBefore);
         }
 

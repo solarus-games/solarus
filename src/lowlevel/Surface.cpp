@@ -223,16 +223,33 @@ void Surface::fill_with_color(Color& color, const Rectangle& where) {
 }
 
 /**
- * @brief Blits this surface on another surface.
- * @param dst_surface the destination surface
- * @param dst_position coordinates on the destination surface
+ * @brief Draws this surface on another surface.
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates on the destination surface.
  */
 void Surface::raw_draw(Surface& dst_surface,
     const Rectangle& dst_position) {
 
+  // Make a copy of the rectangle because SDL_BlitSurface modifies it.
   Rectangle dst_position2(dst_position);
-  SDL_BlitSurface(internal_surface, NULL, dst_surface.internal_surface,
-      dst_position2.get_internal_rect());
+  SDL_BlitSurface(internal_surface, NULL,
+      dst_surface.internal_surface, dst_position2.get_internal_rect());
+}
+
+/**
+ * @brief Draws a subrectangle of this surface on another surface.
+ * @param region The subrectangle to draw in this object.
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates on the destination surface.
+ */
+void Surface::raw_draw_region(const Rectangle& region,
+    Surface& dst_surface, const Rectangle& dst_position) {
+
+  // Make a copy of the rectangle because SDL_BlitSurface modifies it.
+  Rectangle region2(region);
+  Rectangle dst_position2(dst_position);
+  SDL_BlitSurface(internal_surface, region2.get_internal_rect(),
+      dst_surface.internal_surface, dst_position2.get_internal_rect());
 }
 
 /**

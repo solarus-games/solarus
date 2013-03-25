@@ -862,11 +862,12 @@ dynamic_tile{
 
 door{
   layer = 1,
-  x = 152,
+  x = 160,
   y = 24,
   name = "door",
   direction = 1,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b158",
 }
 

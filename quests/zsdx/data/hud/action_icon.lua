@@ -19,17 +19,17 @@ function action_icon:initialize(game)
   self.surface = sol.surface.create(72, 24)
   self.surface:set_transparency_color{0, 0, 0}
   self.icons_img = sol.surface.create("action_icon.png", true)
-  self.current_icon_img = nil
+  self.icon_region_y = nil
   self.icon_flip_sprite = sol.sprite.create("hud/action_icon_flip")
   self.is_flipping = false
   self.effect_displayed = game.hud.custom_command_effects["action"] or game:get_command_effect("action")
-  self:create_icon_img()
+  self:compute_icon_region_y()
 
   local action_icon = self
   function self.icon_flip_sprite:on_animation_finished()
     if action_icon.is_flipping then
       action_icon.is_flipping = false
-      action_icon:create_icon_img()
+      action_icon:compute_icon_region_y()
       action_icon:rebuild_surface()
     end
   end
@@ -42,7 +42,7 @@ function action_icon:initialize(game)
   self:rebuild_surface()
 end
 
-function action_icon:create_icon_img()
+function action_icon:compute_icon_region_y()
 
   local y
   if self.effect_displayed ~= nil then
@@ -63,9 +63,7 @@ function action_icon:create_icon_img()
       ["change"] = 13,
       ["swim"] = 14,
     }
-    y = 24 * effects_indexes[self.effect_displayed]
-
-    self.current_icon_img = sol.surface.create(self.icons_img, 0, y, 72, 24)
+    self.icon_region_y = 24 * effects_indexes[self.effect_displayed]
   end
 end
 
@@ -86,7 +84,7 @@ function action_icon:check()
         self.icon_flip_sprite:set_animation("appearing")
       end
       self.effect_displayed = effect
-      self.current_icon_img = nil
+      self.icon_region_y = nil
       self.is_flipping = true
       need_rebuild = true
     end
@@ -107,9 +105,9 @@ function action_icon:rebuild_surface()
 
   self.surface:fill_color{0, 0, 0}
 
-  if self.current_icon_img ~= nil then
+  if self.icon_region_y ~= nil then
     -- Draw the static image of the icon.
-    self.current_icon_img:draw(self.surface)
+    self.icons_img:draw_region(0, self.icon_region_y, 72, 24, self.surface)
   elseif self.is_flipping then
     -- Draw the flipping sprite
     self.icon_flip_sprite:draw(self.surface, 24, 0)

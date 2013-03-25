@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/LuaContext.h"
+#include "movements/Movement.h"
 #include "Drawable.h"
 #include "TransitionFade.h"
 #include <lua.hpp>
@@ -102,6 +103,30 @@ int LuaContext::drawable_api_draw(lua_State* l) {
 }
 
 /**
+ * @brief Implementation of \ref lua_api_drawable_draw_region.
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int LuaContext::drawable_api_draw_region(lua_State* l) {
+
+  Drawable& drawable = check_drawable(l, 1);
+  Rectangle region(
+      luaL_checkint(l, 2),
+      luaL_checkint(l, 3),
+      luaL_checkint(l, 4),
+      luaL_checkint(l, 5)
+  );
+  Surface& dst_surface = check_surface(l, 6);
+  Rectangle dst_position(
+     luaL_optint(l, 7, 0),
+     luaL_optint(l, 8, 0)
+  );
+  drawable.draw_region(region, dst_surface, dst_position);
+
+  return 0;
+}
+
+/**
  * @brief Implementation of \ref lua_api_drawable_fade_in.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
@@ -170,34 +195,59 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_drawable_start_movement.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * @brief Implementation of \ref lua_api_drawable_set_xy.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
-int LuaContext::drawable_api_start_movement(lua_State* l) {
+int LuaContext::drawable_api_get_xy(lua_State* l) {
 
   Drawable& drawable = check_drawable(l, 1);
-  Movement& movement = check_movement(l, 2);
 
-  // the next argument (if any) is the callback
-  bool callback = lua_gettop(l) >= 3;
+  lua_pushinteger(l, drawable.get_xy().get_x());
+  lua_pushinteger(l, drawable.get_xy().get_y());
+  return 2;
+}
 
-  int callback_ref = LUA_REFNIL;
-  if (callback) {
-    luaL_checktype(l, 3, LUA_TFUNCTION);
-    lua_settop(l, 3);
-    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
-  }
+/**
+ * @brief Implementation of \ref lua_api_drawable_set_xy.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_set_xy(lua_State* l) {
 
-  drawable.start_movement(movement, callback_ref, &get_lua_context(l));
+  Drawable& drawable = check_drawable(l, 1);
+  int x = luaL_checkint(l, 2);
+  int y = luaL_checkint(l, 3);
+
+  drawable.set_xy(Rectangle(x, y));
 
   return 0;
 }
 
 /**
+ * @brief Implementation of \ref lua_api_drawable_get_movement.
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
+ */
+int LuaContext::drawable_api_get_movement(lua_State* l) {
+
+  Drawable& drawable = check_drawable(l, 1);
+
+  Movement* movement = drawable.get_movement();
+  if (movement == NULL) {
+    lua_pushnil(l);
+  }
+  else {
+    push_userdata(l, *movement);
+  }
+
+  return 1;
+}
+
+/**
  * @brief Implementation of \ref lua_api_drawable_stop_movement.
- * @param l the Lua context that is calling this function
- * @return number of values to return to Lua
+ * @param l The Lua context that is calling this function.
+ * @return Number of values to return to Lua.
  */
 int LuaContext::drawable_api_stop_movement(lua_State* l) {
 

@@ -39,7 +39,7 @@ function enemy:go_hero()
   m:set_angle(angle)
   m:set_max_distance(320)
   m:set_ignore_obstacles(true)
-  self:start_movement(m)
+  m:start(self)
 end
 
 -- Makes circles around the boss.
@@ -51,6 +51,6 @@ function enemy:go_circle(center_entity)
   m:set_center_dy(-21)
   m:set_initial_angle(90)
   m:set_angle_speed(150)
-  self:start_movement(m)
+  m:start(self)
 end
 

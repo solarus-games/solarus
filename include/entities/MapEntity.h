@@ -73,9 +73,8 @@ class MapEntity: public ExportableToLua {
 
     // other data, used for some kinds of entities only
 
-    std::string name;                           /**< name of the entity, not used for all kinds of entities;
-                                                 * the name identifies the entity in the game (an empty string
-                                                 * indicates that the entity has no name) */
+    std::string name;                           /**< Name of the entity or an empty string.
+                                                 * The name uniquely identifies the entity in the map. */
 
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
@@ -99,8 +98,6 @@ class MapEntity: public ExportableToLua {
     static const int
         default_optimization_distance = 400;    /**< default value */
 
-    void set_sprites_map(Map& map);
-
   protected:
 
     bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */
@@ -109,7 +106,7 @@ class MapEntity: public ExportableToLua {
     // creation
     MapEntity();
     MapEntity(Layer layer, int x, int y, int width, int height);
-    MapEntity(const std::string &name, int direction, Layer layer, int x, int y, int width, int height);
+    MapEntity(const std::string& name, int direction, Layer layer, int x, int y, int width, int height);
 
     void clear_old_movements();
     void clear_old_sprites();
@@ -117,14 +114,14 @@ class MapEntity: public ExportableToLua {
     void set_direction(int direction);
 
     // easy access to various game objects
-    LuaContext& get_lua_context();
-    MapEntities& get_entities();
-    Equipment& get_equipment();
-    KeysEffect& get_keys_effect();
-    GameCommands& get_commands();
-    DialogBox& get_dialog_box();
-    Savegame& get_savegame();
-    Hero& get_hero();
+    LuaContext& get_lua_context() const;
+    MapEntities& get_entities() const;
+    Equipment& get_equipment() const;
+    KeysEffect& get_keys_effect() const;
+    GameCommands& get_commands() const;
+    DialogBox& get_dialog_box() const;
+    Savegame& get_savegame() const;
+    Hero& get_hero() const;
 
   public:
 
@@ -138,7 +135,7 @@ class MapEntity: public ExportableToLua {
      * @brief Returns the type of entity.
      * @return the type of entity
      */
-    virtual EntityType get_type() = 0;
+    virtual EntityType get_type() = 0;  // TODO make const
     bool is_hero();
     virtual bool is_detector();
     virtual bool can_be_obstacle();
@@ -151,7 +148,8 @@ class MapEntity: public ExportableToLua {
     Map& get_map();
     virtual void notify_map_started();
     virtual void notify_map_opening_transition_finished();
-    Game& get_game();
+    virtual void notify_tileset_changed();
+    Game& get_game() const;
 
     // position in the map
     Layer get_layer();

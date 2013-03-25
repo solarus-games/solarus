@@ -51,6 +51,7 @@ const Destructible::Features Destructible::features[] = {
 
 /**
  * @brief Creates a new destructible item with the specified subtype.
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the destructible item to create on the map
  * @param x x coordinate of the destructible item to create
  * @param y y coordinate of the destructible item to create
@@ -58,10 +59,10 @@ const Destructible::Features Destructible::features[] = {
  * @param treasure the pickable item that appears when the destructible
  * item is lifted or cut
  */
-Destructible::Destructible(Layer layer, int x, int y,
+Destructible::Destructible(const std::string& name, Layer layer, int x, int y,
     Subtype subtype, const Treasure &treasure):
 
-  Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
+  Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
   subtype(subtype),
   treasure(treasure),
   is_being_cut(false),
@@ -186,7 +187,8 @@ bool Destructible::test_collision_custom(MapEntity &entity) {
  */
 void Destructible::create_pickable() {
 
-  get_entities().add_entity(Pickable::create(get_game(), get_layer(), get_x(), get_y(),
+  get_entities().add_entity(Pickable::create(get_game(),
+      "", get_layer(), get_x(), get_y(),
       treasure, FALLING_MEDIUM, false));
 }
 
@@ -390,7 +392,7 @@ bool Destructible::can_explode() {
  * @brief Creates an explosion on the item.
  */
 void Destructible::explode() {
-  get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
+  get_entities().add_entity(new Explosion("", get_layer(), get_xy(), true));
   Sound::play("explosion");
 }
 

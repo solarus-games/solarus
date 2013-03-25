@@ -55,7 +55,7 @@ function enemy:on_restarted()
   local m = sol.movement.create("target")
   m:set_speed(speed)
   m:set_target(initial_xy.x, initial_xy.y)
-  self:start_movement(m)
+  m:start(self)
   for _, t in ipairs(timers) do t:stop() end
 
   self:repeat_create_son()
@@ -117,7 +117,7 @@ function enemy:on_movement_finished(movement)
   local m = sol.movement.create("random")
   m:set_speed(speed)
   m:set_max_distance(24)
-  self:start_movement(m)
+  m:start(self)
 end
 
 function enemy:on_hurt(attack, life_lost)

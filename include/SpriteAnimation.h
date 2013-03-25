@@ -52,7 +52,7 @@ class SpriteAnimation {
         uint32_t frame_interval, int loop_on_frame);
     ~SpriteAnimation();
 
-    void set_map(Map &map);
+    void set_tileset(Tileset& tileset);
 
     int get_next_frame(int current_direction, int current_frame) const;
     void draw(Surface& dst_surface, const Rectangle& dst_position,

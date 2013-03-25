@@ -210,8 +210,6 @@ class Enemy: public Detector {
     void notify_layer_changed();
     void notify_movement_changed();
     void notify_movement_finished();
-    void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
-    void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
     void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);

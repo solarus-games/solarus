@@ -57,7 +57,9 @@ function inventory_submenu:on_started()
 
         self.counters[k] = sol.text_surface.create{
           horizontal_alignment = "center",
-          vertical_alignment = "top"
+          vertical_alignment = "top",
+          text = item:get_amount(),
+          font = "white_digits",
         }
       end
 
@@ -190,6 +192,7 @@ end
 function inventory_submenu:on_draw(dst_surface)
 
   self:draw_background(dst_surface)
+  self:draw_caption(dst_surface)
 
   -- Draw each inventory item.
   local y = 82
@@ -205,7 +208,7 @@ function inventory_submenu:on_draw(dst_surface)
         -- The player has this item: draw it.
         self.sprites[k]:draw(dst_surface, x, y)
         if self.counters[k] ~= nil then
-          self.counters[k]:draw(dst_surface, x + 8, y + 12)
+          self.counters[k]:draw(dst_surface, x + 8, y)
         end
       end
       x = x + 32
@@ -231,8 +234,7 @@ function inventory_submenu:show_info_message()
   local item_name = item_names[self:get_selected_index() + 1]
   local variant = self.game:get_item(item_name):get_variant()
 
-  -- FIXME the dialog is shown behind the pause menu
-  -- TODO position of the dialog (top or bottom)
+  -- FIXME position of the dialog (top or bottom)
   self.game:set_custom_command_effect("action", nil)
   self.game:get_map():start_dialog("_item_description." .. item_name .. "." .. variant, function()
     self.game:set_custom_command_effect("action", "info")
@@ -276,11 +278,11 @@ function inventory_submenu:assign_item(slot)
   local x2 = (slot == 1) and 20 or 72
   local y2 = 46
 
+  self.item_assigned_sprite:set_xy(x1, y1)
   local movement = sol.movement.create("target")
-  movement:set_xy(x1, y1)
   movement:set_target(x2, y2)
   movement:set_speed(500)
-  self.item_assigned_sprite:start_movement(movement, function()
+  movement:start(self.item_assigned_sprite, function()
     self:finish_assigning_item()
   end)
 end
@@ -306,6 +308,7 @@ function inventory_submenu:finish_assigning_item()
   end
   self.game:set_item_assigned(slot, self.item_assigned)
 
+  self.item_assigned_sprite:stop_movement()
   self.item_assigned_sprite = nil
   self.item_assigned = nil
 end

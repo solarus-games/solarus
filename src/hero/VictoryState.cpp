@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/VictoryState.h"
+#include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "lua/LuaContext.h"
 #include "lowlevel/System.h"
@@ -24,12 +25,15 @@
 
 /**
  * @brief Constructor.
- * @param hero the hero controlled by this state
+ * @param hero The hero controlled by this state.
+ * @param callback_ref Lua ref to a function to call when the
+ * victory sequence finishes (possibly LUA_REFNIL).
  */
-Hero::VictoryState::VictoryState(Hero& hero):
+Hero::VictoryState::VictoryState(Hero& hero, int callback_ref):
   State(hero),
   end_victory_date(0),
-  finished(false) {
+  finished(false),
+  callback_ref(callback_ref) {
 
 }
 
@@ -66,6 +70,7 @@ void Hero::VictoryState::stop(State* next_state) {
 
   State::stop(next_state);
   get_sprites().set_ignore_suspend(false);
+  get_lua_context().cancel_callback(callback_ref);
 }
 
 /**
@@ -77,7 +82,15 @@ void Hero::VictoryState::update() {
 
   if (!finished && System::now() >= end_victory_date) {
     finished = true;
-    get_lua_context().hero_on_victory_finished(hero);
+    if (callback_ref != LUA_REFNIL) {
+      // The behavior is defined by Lua.
+      get_lua_context().do_callback(callback_ref);
+      callback_ref = LUA_REFNIL;
+    }
+    else {
+      // By default, get back to the normal state.
+      hero.set_state(new FreeState(hero));
+    }
   }
 }
 

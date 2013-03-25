@@ -35,8 +35,11 @@ class Drawable: public ExportableToLua {
     virtual ~Drawable();
 
     // dynamic effects
-    void start_movement(Movement& movement, int callback_ref, LuaContext* lua_context);
+    void start_movement(Movement& movement);
     void stop_movement();
+    Movement* get_movement();
+    const Rectangle& get_xy();
+    void set_xy(const Rectangle& xy);
 
     void start_transition(Transition& transition, int callback_ref, LuaContext* lua_context);
     void stop_transition();
@@ -44,7 +47,9 @@ class Drawable: public ExportableToLua {
     // drawing with effects
     void draw(Surface& dst_surface);
     void draw(Surface& dst_surface, int x, int y);
-    void draw(Surface& dst_surface, Rectangle dst_position);
+    void draw(Surface& dst_surface, const Rectangle& dst_position);
+    void draw_region(const Rectangle& region,
+        Surface& dst_surface, const Rectangle& dst_position);
 
     /**
      * @brief Draws this object without applying dynamic effects.
@@ -52,11 +57,25 @@ class Drawable: public ExportableToLua {
      * Redefine this function to draw your object onto the destination
      * surface.
      *
-     * @param dst_surface the destination surface
-     * @param dst_position coordinates on the destination surface
+     * @param dst_surface The destination surface.
+     * @param dst_position Coordinates on the destination surface.
      */
     virtual void raw_draw(Surface& dst_surface,
         const Rectangle& dst_position) = 0;
+
+    /**
+     * @brief Draws a subrectangle of this object without applying dynamic
+     * effects.
+     *
+     * Redefine this function to draw your object onto the destination
+     * surface.
+     *
+     * @param region The subrectangle to draw in this object.
+     * @param dst_surface The destination surface.
+     * @param dst_position Coordinates on the destination surface.
+     */
+    virtual void raw_draw_region(const Rectangle& region,
+        Surface& dst_surface, const Rectangle& dst_position) = 0;
 
     /**
      * @brief Draws a transition effect on this drawable object.
@@ -75,14 +94,12 @@ class Drawable: public ExportableToLua {
 
   private:
 
-    Rectangle last_position;      /**< position of this object after its last
-                                   * movement */
-    Movement* movement;           /**< a movement applied, or NULL (will be
-                                   * deleted then if unused elsewhere) */
-    int movement_callback_ref;    /**< Lua registry ref of a function to call
-                                   * when the movement finishes */
-    Transition* transition;       /**< a transition applied, or NULL
-                                   * (will be deleted then) */
+    Rectangle xy;                 /**< Current position of this object
+                                   * (result of movements). */
+    Movement* movement;           /**< A movement applied, or NULL (will be
+                                   * deleted then if unused elsewhere). */
+    Transition* transition;       /**< A transition applied, or NULL
+                                   * (will be deleted then). */
     int transition_callback_ref;  /**< Lua registry ref of a function to call
                                    * when the transition finishes */
     LuaContext* lua_context;      /**< The Lua world used for callbacks. */

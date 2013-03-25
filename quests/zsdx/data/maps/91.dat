@@ -3102,20 +3102,20 @@ teletransporter{
 
 door{
   layer = 0,
-  x = 416,
+  x = 424,
   y = 304,
   name = "door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 0,
-  x = 416,
+  x = 424,
   y = 208,
   name = "door_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 pickable{

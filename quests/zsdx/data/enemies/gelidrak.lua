@@ -56,7 +56,7 @@ function enemy:on_restarted()
     sprite:set_animation("walking")
     local m = sol.movement.create("random")
     m:set_speed(32)
-    self:start_movement(m)
+    m:start(self)
   end
   current_xy.x, current_xy.y = self:get_position()
 end

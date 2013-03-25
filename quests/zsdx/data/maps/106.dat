@@ -8300,20 +8300,20 @@ tile{
 
 door{
   layer = 1,
-  x = 1744,
+  x = 1752,
   y = 536,
   name = "door_g",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 1744,
+  x = 1752,
   y = 488,
   name = "door_g_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 wall{
@@ -8493,38 +8493,38 @@ destructible{
 
 door{
   layer = 1,
-  x = 2072,
+  x = 2080,
   y = 488,
   name = "door_b",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 2072,
+  x = 2080,
   y = 536,
   name = "door_b_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 2072,
+  x = 2080,
   y = 744,
   name = "door_b_3",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 2072,
+  x = 2080,
   y = 792,
   name = "door_b_4",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 enemy{
@@ -8817,20 +8817,20 @@ switch{
 
 door{
   layer = 1,
-  x = 2392,
+  x = 2400,
   y = 792,
   name = "door_a",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 2392,
+  x = 2400,
   y = 744,
   name = "door_a_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 destination{
@@ -9383,57 +9383,65 @@ enemy{
 door{
   layer = 1,
   x = 1256,
-  y = 376,
+  y = 384,
   name = "door_c",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 936,
-  y = 376,
+  y = 384,
   name = "door_c_2",
   direction = 0,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 1304,
-  y = 376,
+  y = 384,
   name = "door_c_3",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
   x = 1256,
-  y = 376,
+  y = 384,
   name = "door_3",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_9_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b815",
 }
 
 door{
   layer = 1,
   x = 1304,
-  y = 376,
+  y = 384,
   name = "door_4",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_9_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b815",
 }
 
 door{
   layer = 1,
   x = 984,
-  y = 376,
+  y = 384,
   name = "door_c_4",
   direction = 2,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 sensor{
@@ -9516,20 +9524,20 @@ enemy{
 
 door{
   layer = 1,
-  x = 792,
+  x = 800,
   y = 488,
   name = "door_d",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 792,
+  x = 800,
   y = 536,
   name = "door_d_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 switch{
@@ -9817,39 +9825,47 @@ enemy{
 door{
   layer = 1,
   x = 936,
-  y = 632,
+  y = 640,
   name = "door_5",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_9_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b817",
 }
 
 door{
   layer = 1,
   x = 984,
-  y = 632,
+  y = 640,
   name = "door_6",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_9_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b817",
 }
 
 door{
   layer = 1,
-  x = 1112,
+  x = 1120,
   y = 792,
   name = "door_e",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 1112,
+  x = 1120,
   y = 744,
   name = "door_e_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 switch{
@@ -10389,20 +10405,20 @@ block{
 
 door{
   layer = 1,
-  x = 792,
+  x = 800,
   y = 1048,
   name = "door_f",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 door{
   layer = 1,
-  x = 792,
+  x = 800,
   y = 1000,
   name = "door_f_2",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
 }
 
 enemy{
@@ -10916,20 +10932,28 @@ dynamic_tile{
 door{
   layer = 1,
   x = 2216,
-  y = 888,
+  y = 896,
   name = "door",
   direction = 0,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_9_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b813",
 }
 
 door{
   layer = 1,
   x = 2264,
-  y = 888,
+  y = 896,
   name = "door_2",
   direction = 2,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_9_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b813",
 }
 

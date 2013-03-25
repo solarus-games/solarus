@@ -36,7 +36,7 @@ using std::list;
  * @param game the game
  * @param map the map (not loaded yet)
  */
-MapEntities::MapEntities(Game &game, Map &map):
+MapEntities::MapEntities(Game& game, Map& map):
   game(game),
   map(map),
   hero(game.get_hero()),
@@ -203,7 +203,7 @@ MapEntity* MapEntities::get_entity(const std::string& name) {
  */
 MapEntity* MapEntities::find_entity(const std::string& name) {
 
-  if (named_entities.count(name) == 0) {
+  if (named_entities.find(name) == named_entities.end()) {
     return NULL;
   }
 
@@ -307,8 +307,10 @@ void MapEntities::notify_map_started() {
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity *entity = *i;
     entity->notify_map_started();
+    entity->notify_tileset_changed();
   }
   hero.notify_map_started();
+  hero.notify_tileset_changed();
 
   // pre-render non-animated tiles
   build_non_animated_tiles();
@@ -324,6 +326,23 @@ void MapEntities::notify_map_opening_transition_finished() {
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity* entity = *i;
     entity->notify_map_opening_transition_finished();
+  }
+  hero.notify_map_opening_transition_finished();
+}
+
+/**
+ * @brief Notifies this entity manager that the tileset of the map has
+ * changed.
+ */
+void MapEntities::notify_tileset_changed() {
+
+  // Redraw optimized tiles (i.e. non animated ones).
+  redraw_non_animated_tiles();
+
+  list<MapEntity*>::iterator i;
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+    MapEntity* entity = *i;
+    entity->notify_tileset_changed();
   }
   hero.notify_map_opening_transition_finished();
 }
@@ -490,7 +509,7 @@ void MapEntities::add_tile(Tile *tile) {
  *
  * @param entity the entity to add (can be NULL)
  */
-void MapEntities::add_entity(MapEntity *entity) {
+void MapEntities::add_entity(MapEntity* entity) {
 
   if (entity == NULL) {
     return;
@@ -556,7 +575,8 @@ void MapEntities::add_entity(MapEntity *entity) {
 
   const std::string& name = entity->get_name();
   if (!name.empty()) {
-    Debug::check_assertion(named_entities.count(name) == 0, StringConcat()
+    Debug::check_assertion(named_entities.find(name) == named_entities.end(),
+        StringConcat()
         << "Error: an entity with name '" << name << "' already exists.");
     named_entities[name] = entity;
   }
@@ -721,9 +741,8 @@ void MapEntities::update() {
 }
 
 /**
- * @brief Draws all non-animated tiles on intermediate surfaces.
- *
- * They are drawn only once and then these surfaces are drawn on the screen.
+ * @brief Determines which rectangles are animated and draws all non-animated
+ * rectangles of tiles on intermediate surfaces.
  */
 void MapEntities::build_non_animated_tiles() {
 
@@ -782,6 +801,44 @@ void MapEntities::build_non_animated_tiles() {
       Tile& tile = *tiles[layer][i];
       if (tile.is_animated() || overlaps_animated_tile(tile)) {
         tiles_in_animated_regions[layer].push_back(&tile);
+      }
+    }
+  }
+}
+
+/**
+ * @brief Draws all non-animated rectangles of tiles on intermediate surfaces.
+ *
+ * This function is similar to build_non_animated_tiles() except that it
+ * assumes that animated and non-animated rectangles were already determined.
+ *
+ * This function is called when the tileset changes.
+ */
+void MapEntities::redraw_non_animated_tiles() {
+
+  const Rectangle map_size(0, 0, map.get_width(), map.get_height());
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+
+    non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta());
+
+    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
+      Tile& tile = *tiles[layer][i];
+      if (!tile.is_animated()) {
+        // Non-animated tile: optimize its displaying.
+        tile.draw(*non_animated_tiles_surfaces[layer], map_size);
+      }
+    }
+
+    // Erase rectangles that contain animated tiles.
+    int index = 0;
+    for (int y = 0; y < map.get_height(); y += 8) {
+      for (int x = 0; x < map.get_width(); x += 8) {
+
+        if (animated_tiles[layer][index]) {
+          Rectangle animated_square(x, y, 8, 8);
+          non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta(), animated_square);
+        }
+        index++;
       }
     }
   }

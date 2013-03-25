@@ -2962,21 +2962,21 @@ chest{
 
 door{
   layer = 0,
-  x = 1056,
+  x = 1064,
   y = 496,
   name = "code_door_2",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b236",
 }
 
 door{
   layer = 0,
-  x = 1056,
+  x = 1064,
   y = 400,
   name = "code_door",
   direction = 3,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b236",
 }
 
@@ -6505,21 +6505,27 @@ jumper{
 
 door{
   layer = 1,
-  x = 1056,
+  x = 1064,
   y = 696,
   name = "door",
   direction = 1,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_1_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b237",
 }
 
 door{
   layer = 1,
-  x = 1056,
+  x = 1064,
   y = 648,
   name = "door_2",
   direction = 3,
-  subtype = "3",
+  sprite = "entities/door_big_key",
+  opening_condition = "dungeon_1_big_key",
+  opening_method = "interaction_if_savegame_variable",
+  cannot_open_dialog_id = "_big_key_required",
   savegame_variable = "b237",
 }
 

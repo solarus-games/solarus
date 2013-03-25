@@ -125,7 +125,8 @@ bool Chest::is_open() {
  * If you don't change the chest state, this function has no effect.
  * If you make the chest opened, its sprite is updated but this function does not give any treasure
  * to the player.
- * If you close the chest, its sprite is updated and the chest will then be empty.
+ * If you close the chest, its sprite is updated and the chest will contain
+ * its initial treasure again.
  *
  * @param open true to open the chest, false to close it
  */
@@ -201,7 +202,7 @@ void Chest::update() {
       if (!treasure.is_empty()) {
         // give a treasure to the player
 
-        get_hero().start_treasure(treasure);
+        get_hero().start_treasure(treasure, LUA_REFNIL);
         treasure_given = true;
       }
       else { // the chest is empty

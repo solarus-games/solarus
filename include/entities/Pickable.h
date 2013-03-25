@@ -48,7 +48,8 @@ class Pickable: public Detector {
     MapEntity* entity_followed;                 /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
 
     // creation and initialization
-    Pickable(Layer layer, int x, int y, const Treasure &treasure);
+    Pickable(const std::string& name, Layer layer, int x, int y,
+        const Treasure& treasure);
 
     void initialize_sprites();
     void initialize_movement();
@@ -60,8 +61,9 @@ class Pickable: public Detector {
   public:
 
     // creation and destruction
-    static Pickable* create(Game &game, Layer layer, int x, int y, Treasure treasure,
-	FallingHeight falling_height, bool force_persistent);
+    static Pickable* create(Game& game, const std::string& name,
+        Layer layer, int x, int y, Treasure treasure,
+        FallingHeight falling_height, bool force_persistent);
 
     ~Pickable();
 

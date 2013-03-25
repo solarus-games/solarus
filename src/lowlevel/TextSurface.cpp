@@ -582,8 +582,8 @@ void TextSurface::rebuild_ttf() {
  * (by set_x(), set_y() or set_position())
  * plus the parameter dst_position.
  *
- * @param dst_surface the destination surface
- * @param dst_position coordinates on the destination surface
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates on the destination surface.
  */
 void TextSurface::raw_draw(Surface& dst_surface,
     const Rectangle& dst_position) {
@@ -593,6 +593,23 @@ void TextSurface::raw_draw(Surface& dst_surface,
     Rectangle dst_position2(text_position);
     dst_position2.add_xy(dst_position);
     surface->raw_draw(dst_surface, dst_position2);
+  }
+}
+
+/**
+ * @brief Draws a subrectangle of this text surface on another surface.
+ * @param region The subrectangle to draw in this object.
+ * @param dst_surface The destination surface.
+ * @param dst_position Coordinates on the destination surface.
+ */
+void TextSurface::raw_draw_region(const Rectangle& region,
+    Surface& dst_surface, const Rectangle& dst_position) {
+
+  if (surface != NULL) {
+
+    Rectangle dst_position2(text_position);
+    dst_position2.add_xy(dst_position);
+    surface->raw_draw_region(region, dst_surface, dst_position2);
   }
 }
 

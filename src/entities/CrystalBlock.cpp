@@ -28,6 +28,7 @@
 /**
  * @brief Creates a new crystal block.
  * @param game the current game
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
@@ -35,8 +36,9 @@
  * @param height height of the block (the pattern can be repeated)
  * @param subtype subtype of raised block
  */
-CrystalBlock::CrystalBlock(Game &game, Layer layer, int x, int y, int width, int height, Subtype subtype):
-  Detector(COLLISION_RECTANGLE, "", layer, x, y, width, height),
+CrystalBlock::CrystalBlock(Game& game, const std::string& name,
+    Layer layer, int x, int y, int width, int height, Subtype subtype):
+  Detector(COLLISION_RECTANGLE, name, layer, x, y, width, height),
   subtype(subtype) {
 
   create_sprite("entities/crystal_block");
@@ -82,7 +84,7 @@ bool CrystalBlock::is_raised() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool CrystalBlock::is_obstacle_for(MapEntity &other) {
+bool CrystalBlock::is_obstacle_for(MapEntity& other) {
 
   // if this block is lowered, it is obviously not an obstacle
   if (!is_raised()) {
@@ -98,13 +100,13 @@ bool CrystalBlock::is_obstacle_for(MapEntity &other) {
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void CrystalBlock::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void CrystalBlock::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping.is_hero() && is_raised()) {
 
     // see if we have to make fim fall
 
-    Hero &hero = (Hero&) entity_overlapping;
+    Hero& hero = static_cast<Hero&>(entity_overlapping);
     if (hero.can_control_movement()) {
 
       Rectangle collision_box = hero.get_bounding_box();
@@ -119,35 +121,35 @@ void CrystalBlock::notify_collision(MapEntity &entity_overlapping, CollisionMode
       const Rectangle &hero_center = hero.get_center_point();
 
       if (hero_center.get_y() < y1) {
-	// fall to the north
-	collision_box.set_y(y1 - 16);
-	jump_direction = 2;
-	jump_length = hero.get_top_left_y() + 16 - y1;
-	jumped = try_jump(hero, collision_box, jump_direction, jump_length);
+        // fall to the north
+        collision_box.set_y(y1 - 16);
+        jump_direction = 2;
+        jump_length = hero.get_top_left_y() + 16 - y1;
+        jumped = try_jump(hero, collision_box, jump_direction, jump_length);
       }
       else if (hero_center.get_y() >= y2) {
-	// fall to the south
-	collision_box.set_y(y2);
-	jump_direction = 6;
-	jump_length = y2 - hero.get_top_left_y();
-	jumped = try_jump(hero, collision_box, jump_direction, jump_length);
+        // fall to the south
+        collision_box.set_y(y2);
+        jump_direction = 6;
+        jump_length = y2 - hero.get_top_left_y();
+        jumped = try_jump(hero, collision_box, jump_direction, jump_length);
       }
 
       if (!jumped) {
-	if (hero_center.get_x() >= x2) {
-	  // fall to the east
-	  collision_box.set_x(x2);
-	  jump_direction = 0;
-	  jump_length = x2 - hero.get_top_left_x();
-	  try_jump(hero, collision_box, jump_direction, jump_length);
-	}
-	else if (hero_center.get_x() < x1) {
-	  // fall to the west
-	  collision_box.set_x(x1 - 16);
-	  jump_direction = 4;
-	  jump_length = hero.get_top_left_x() + 16 - x1;
-	  try_jump(hero, collision_box, jump_direction, jump_length);
-	}
+        if (hero_center.get_x() >= x2) {
+          // fall to the east
+          collision_box.set_x(x2);
+          jump_direction = 0;
+          jump_length = x2 - hero.get_top_left_x();
+          try_jump(hero, collision_box, jump_direction, jump_length);
+        }
+        else if (hero_center.get_x() < x1) {
+          // fall to the west
+          collision_box.set_x(x1 - 16);
+          jump_direction = 4;
+          jump_length = hero.get_top_left_x() + 16 - x1;
+          try_jump(hero, collision_box, jump_direction, jump_length);
+        }
       }
     }
   }
@@ -162,8 +164,8 @@ void CrystalBlock::notify_collision(MapEntity &entity_overlapping, CollisionMode
  * @return true if the jump was done, i.e. if the collision box was overlapping
  * no obstacle and no raised crystal block.
  */
-bool CrystalBlock::try_jump(Hero &hero, const Rectangle &collision_box,
-				  int jump_direction, int jump_length) {
+bool CrystalBlock::try_jump(Hero& hero, const Rectangle& collision_box,
+    int jump_direction, int jump_length) {
 
   // jump if there is no collision and no other raised crystal blocks
   if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, hero)
@@ -207,7 +209,7 @@ void CrystalBlock::update() {
  */
 void CrystalBlock::draw_on_map() {
 
-  Sprite &sprite = get_sprite();
+  Sprite& sprite = get_sprite();
 
   int x1 = get_top_left_x();
   int y1 = get_top_left_y();

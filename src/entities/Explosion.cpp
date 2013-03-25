@@ -25,12 +25,14 @@
 
 /**
  * @brief Creates an explosion.
+ * @param name Unique name identifying the entity on the map or an empty string.
  * @param layer layer of the explosion
  * @param xy coordinates of the center of the explosion
  * @param with_damages true to hurt the hero and the enemies
  */
-Explosion::Explosion(Layer layer, const Rectangle &xy, bool with_damages):
-  Detector(COLLISION_SPRITE | COLLISION_RECTANGLE, "", layer, xy.get_x(), xy.get_y(), 48, 48) {
+Explosion::Explosion(const std::string& name, Layer layer,
+    const Rectangle& xy, bool with_damages):
+  Detector(COLLISION_SPRITE | COLLISION_RECTANGLE, name, layer, xy.get_x(), xy.get_y(), 48, 48) {
 
   // initialize the entity
   create_sprite("entities/explosion");

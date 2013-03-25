@@ -51,14 +51,17 @@ public class MapViewRenderingOptions {
      * The transparency seems to make the program much slower with my Linux.
      */
     private boolean showTransparency;
+
     /**
-     * Tells whether or not the grid is shown
+     * Tells whether or not the grid is shown.
      */
     private boolean showGrid;
+
     /**
-     * Size of the grid (16 by default)
+     * Size of a square of the grid (16 pixels by default).
      */
     private int gridSize;
+
     /**
      * Constructor.
      */
@@ -67,7 +70,7 @@ public class MapViewRenderingOptions {
         this.zoom = 2.0;
         this.showLayers = new boolean[] {true, true, true};
         this.showTransparency = true;
-        this.showGrid = true;
+        this.showGrid = false;
         this.gridSize = 16;
     }
 
@@ -156,36 +159,36 @@ public class MapViewRenderingOptions {
         this.showTransparency = showTransparency;
         mapView.repaint();
     }
+
     /**
      * Returns whether or not the grid is rendered.
-     * @return
+     * @return true if the grid is shown.
      */
-    public boolean getShowGrid()
-    {
+    public boolean getShowGrid() {
         return showGrid;
     }
+
     /**
-     * Sets whether or not the gird is rendered
-     * @param showGrid true to show the grid, false not to show the grid
+     * Sets whether or not the gird is rendered.
+     * @param showGrid true to show the grid.
      */
-    public void setShowGrid(boolean showGrid)
-    {
+    public void setShowGrid(boolean showGrid) {
         this.showGrid = showGrid;
         mapView.repaint();
     }
     /**
      * Returns the current grid size in the map view
-     * @return
+     * @return The size of a square of the grid in pixels.
      */
-    public int getGridSize()
-    {
+    public int getGridSize() {
         return gridSize;
     }
+
     /**
-     * Sets the grid size in the map view
+     * Sets the grid size in the map view.
+     * @param gridSize The size of a square of the grid in pixels.
      */
-    public void setGridSize(int gridSize)
-    {
+    public void setGridSize(int gridSize) {
         this.gridSize = gridSize;
         mapView.repaint();
     }
@@ -198,8 +201,6 @@ public class MapViewRenderingOptions {
      */
     public boolean isEntityShown(MapEntity entity) {
         Layer layer = entity.getLayer();
-        boolean obstacle = entity.getObstacle().isWall();
-
         return showLayers[layer.getId()];
     }
 }

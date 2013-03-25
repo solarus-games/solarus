@@ -8630,11 +8630,12 @@ teletransporter{
 
 door{
   layer = 1,
-  x = 848,
+  x = 856,
   y = 24,
   name = "weak_wall_red_tunic",
   direction = 1,
-  subtype = "5",
+  sprite = "entities/door_weak_wall",
+  opening_method = "explosion",
   savegame_variable = "b234",
 }
 
@@ -8666,21 +8667,29 @@ wall{
 
 door{
   layer = 1,
-  x = 448,
+  x = 456,
   y = 200,
   name = "door",
   direction = 3,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_1_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b235",
 }
 
 door{
   layer = 1,
-  x = 448,
+  x = 456,
   y = 248,
   name = "door_2",
   direction = 1,
-  subtype = "1",
+  sprite = "entities/door_small_key",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_1_small_keys",
+  opening_condition_consumed = true,
+  cannot_open_dialog_id = "_small_key_required",
   savegame_variable = "b235",
 }
 
@@ -8947,11 +8956,11 @@ wall{
 
 door{
   layer = 1,
-  x = 1056,
+  x = 1064,
   y = 24,
   name = "ne_door",
   direction = 1,
-  subtype = "0",
+  sprite = "entities/door_normal",
   savegame_variable = "b304",
 }
 

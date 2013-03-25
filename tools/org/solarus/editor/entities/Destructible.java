@@ -88,7 +88,7 @@ public class Destructible extends MapEntity {
             "Bomb flower",
         };
 
-        private String id;
+        private final String id;
 
         private Subtype(String id) {
             this.id = id;

@@ -145,6 +145,8 @@ class TextSurface: public Drawable {
     const Rectangle get_size();
 
     void raw_draw(Surface& dst_surface, const Rectangle& dst_position);
+    void raw_draw_region(const Rectangle& region,
+        Surface& dst_surface, const Rectangle& dst_position);
     void draw_transition(Transition& transition);
 
     const std::string& get_lua_type_name() const;

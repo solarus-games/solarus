@@ -34,7 +34,7 @@ public class EditNPCComponent extends EditEntityComponent {
     private JCheckBox withSpriteField;
     private ResourceChooser spriteField;
     private RadioField behaviorField;
-    private JTextField messageField;
+    private JTextField dialogField;
     private ItemChooser itemField;
 
     /**
@@ -63,9 +63,9 @@ public class EditNPCComponent extends EditEntityComponent {
         behaviorField = new RadioField("Show a message", "Call the map script", "Call an item script");
         addField("Action", behaviorField);
 
-        // message
-        messageField = new JTextField(15);
-        addField("Message to show", messageField);
+        // dialog
+        dialogField = new JTextField(15);
+        addField("Dialog id to show", dialogField);
 
         // item
         itemField = new ItemChooser(false);
@@ -80,7 +80,7 @@ public class EditNPCComponent extends EditEntityComponent {
 
         behaviorField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                messageField.setEnabled(behaviorField.getSelectedIndex() == 0);
+                dialogField.setEnabled(behaviorField.getSelectedIndex() == 0);
                 itemField.setEnabled(behaviorField.getSelectedIndex() == 2);
             }
         });
@@ -113,20 +113,20 @@ public class EditNPCComponent extends EditEntityComponent {
 
         if (behavior.equals("map")) {
           behaviorField.setSelectedIndex(1);
-          messageField.setEnabled(false);
+          dialogField.setEnabled(false);
           itemField.setEnabled(false);
         }
         else if (behavior.substring(0, 5).equals("item#")) {
           behaviorField.setSelectedIndex(2);
-          messageField.setEnabled(false);
+          dialogField.setEnabled(false);
           itemField.setEnabled(true);
           itemField.setSelectedId(behavior.substring(5));
         }
         else if (behavior.substring(0, 7).equals("dialog#")) {
           behaviorField.setSelectedIndex(0);
-          messageField.setEnabled(true);
+          dialogField.setEnabled(true);
           itemField.setEnabled(false);
-          messageField.setText(behavior.substring(7));
+          dialogField.setText(behavior.substring(7));
         }
     }
 
@@ -142,8 +142,8 @@ public class EditNPCComponent extends EditEntityComponent {
         }
 
         String behavior = "map";
-        if (messageField.isEnabled()) {
-          behavior = "dialog#" + messageField.getText();
+        if (dialogField.isEnabled()) {
+          behavior = "dialog#" + dialogField.getText();
         }
         else if (itemField.isEnabled()) {
           behavior = "item#" + itemField.getSelectedId();

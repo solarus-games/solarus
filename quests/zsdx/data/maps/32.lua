@@ -5,7 +5,7 @@ function hint_stone:on_interaction()
 
   if not map:get_game():is_dungeon_finished(1) then
     map:start_dialog("telepathic_booth.not_working")
-  elseif not map:get_game():get_item("bow"):has_variant() then
+  elseif not map:get_game():has_item("bow") then
     map:start_dialog("telepathic_booth.go_sahasrahla")
     map:set_dialog_variable("telepathic_booth.go_sahasrahla", map:get_game():get_player_name())
   elseif not map:get_game():is_dungeon_finished(2) then

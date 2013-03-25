@@ -25,9 +25,8 @@
  * @brief Constructor.
  */
 Drawable::Drawable():
-  last_position(),
+  xy(),
   movement(NULL),
-  movement_callback_ref(LUA_REFNIL),
   transition(NULL),
   transition_callback_ref(LUA_REFNIL),
   lua_context(NULL) {
@@ -49,17 +48,12 @@ Drawable::~Drawable() {
  * Any previous movement is stopped.
  *
  * @param movement The movement to apply.
- * @param callback_ref A Lua registry ref to the function to call when
- * the movement finishes, or LUA_REFNIL.
- * @param lua_context The Lua world for the callback (or NULL).
  */
-void Drawable::start_movement(Movement& movement,
-    int callback_ref, LuaContext* lua_context) {
+void Drawable::start_movement(Movement& movement) {
 
   stop_movement();
   this->movement = &movement;
-  this->movement_callback_ref = callback_ref;
-  this->lua_context = lua_context;
+  movement.set_drawable(this);
   movement.increment_refcount();
 }
 
@@ -72,20 +66,37 @@ void Drawable::stop_movement() {
 
   if (movement != NULL) {
 
-    // keep the position after the movement
-    last_position.add_xy(movement->get_xy());
-
     movement->decrement_refcount();
     if (movement->get_refcount() == 0) {
       delete movement;
     }
   }
   movement = NULL;
+}
 
-  if (lua_context != NULL) {
-    lua_context->cancel_callback(this->movement_callback_ref);
-    movement_callback_ref = LUA_REFNIL;
-  }
+/**
+ * @brief Returns the current movement of this drawable object.
+ * @return The object's movement, or NULL if there is no movement.
+ */
+Movement* Drawable::get_movement() {
+  return movement;
+}
+
+/**
+ * @brief Returns the coordinates of this drawable object as defined by its
+ * movement.
+ * @return The coordinates of this drawable object.
+ */
+const Rectangle& Drawable::get_xy() {
+  return xy;
+}
+
+/**
+ * @brief Sets the coordinates of this drawable object.
+ * @param xy The new coordinates of this drawable object.
+ */
+void Drawable::set_xy(const Rectangle& xy) {
+  this->xy.set_xy(xy);
 }
 
 /**
@@ -111,7 +122,7 @@ void Drawable::start_transition(Transition& transition,
 }
 
 /**
- * @brief Stops the transition effect applied to this object, if any
+ * @brief Stops the transition effect applied to this object, if any.
  *
  * The transition is deleted.
  */
@@ -149,13 +160,7 @@ void Drawable::update() {
 
   if (movement != NULL) {
     movement->update();
-    if (movement->is_finished()) {
-
-      if (lua_context != NULL) {
-        int ref = movement_callback_ref;
-        movement_callback_ref = LUA_REFNIL;
-        lua_context->do_callback(ref);
-      }
+    if (movement != NULL && movement->is_finished()) {
       stop_movement();
     }
   }
@@ -188,17 +193,35 @@ void Drawable::draw(Surface& dst_surface, int x, int y) {
  * (will be added to the position obtained by previous movements)
  */
 void Drawable::draw(Surface& dst_surface,
-    Rectangle dst_position) {
+    const Rectangle& dst_position) {
 
-  dst_position.add_xy(last_position);
-  if (movement != NULL) {
-    dst_position.add_xy(movement->get_xy());
-  }
+  Rectangle dst_position2(dst_position);
+  dst_position2.add_xy(xy);
 
   if (transition != NULL) {
     draw_transition(*transition);
   }
 
-  raw_draw(dst_surface, dst_position);
+  raw_draw(dst_surface, dst_position2);
+}
+
+/**
+ * @brief Draws a subrectangle of this object, applying dynamic effects.
+ * @param region The rectangle to draw in this object.
+ * @param dst_surface The destination surface
+ * @param dst_position Position on this surface
+ * (will be added to the position obtained by previous movements).
+ */
+void Drawable::draw_region(const Rectangle& region,
+    Surface& dst_surface, const Rectangle& dst_position) {
+
+  Rectangle dst_position2(dst_position);
+  dst_position2.add_xy(xy);
+
+  if (transition != NULL) {
+    draw_transition(*transition);
+  }
+
+  raw_draw_region(region, dst_surface, dst_position2);
 }
 

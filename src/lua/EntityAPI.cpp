@@ -94,8 +94,15 @@ void LuaContext::register_entity_module() {
       { "get_size", entity_api_get_size },
       { "get_origin", entity_api_get_origin },
       { "get_position", entity_api_get_position },
+      { "set_position", entity_api_set_position },
+      { "snap_to_grid", entity_api_snap_to_grid },
       { "get_distance", entity_api_get_distance },
       { "get_angle", entity_api_get_angle},
+      { "get_optimization_distance", entity_api_get_optimization_distance },
+      { "set_optimization_distance", entity_api_set_optimization_distance },
+      { "test_obstacles", entity_api_test_obstacles },
+      { "get_movement", entity_api_get_movement },
+      { "stop_movement", entity_api_stop_movement },
       { NULL, NULL }
   };
   static const luaL_Reg common_metamethods[] = {
@@ -110,16 +117,15 @@ void LuaContext::register_entity_module() {
 
   // Hero.
   static const luaL_Reg hero_methods[] = {
-      { "freeze", hero_api_freeze },
-      { "unfreeze", hero_api_unfreeze },
       { "teleport", hero_api_teleport },
       { "set_visible", hero_api_set_visible },
       { "get_direction", hero_api_get_direction },
       { "set_direction", hero_api_set_direction },
-      { "set_position", hero_api_set_position },
       { "save_solid_ground", hero_api_save_solid_ground },
       { "reset_solid_ground", hero_api_reset_solid_ground },
-      { "walk", hero_api_walk },
+      { "freeze", hero_api_freeze },
+      { "unfreeze", hero_api_unfreeze },
+      { "walk", hero_api_walk },  // TODO use the more general movement:start
       { "start_jumping", hero_api_start_jumping },
       { "start_treasure", hero_api_start_treasure },
       { "start_victory", hero_api_start_victory},
@@ -136,10 +142,7 @@ void LuaContext::register_entity_module() {
 
   // Non-playing character.
   static const luaL_Reg npc_methods[] = {
-      { "start_movement", entity_api_start_movement },
-      { "stop_movement", entity_api_stop_movement },
       { "get_sprite", entity_api_get_sprite },
-      { "set_position", entity_api_set_position },
       { NULL, NULL }
   };
   register_functions(entity_npc_module_name, common_methods);
@@ -159,7 +162,6 @@ void LuaContext::register_entity_module() {
   // Block.
   static const luaL_Reg block_methods[] = {
       { "reset", block_api_reset },
-      { "set_position", entity_api_set_position },
       { NULL, NULL }
   };
   register_functions(entity_block_module_name, common_methods);
@@ -189,10 +191,7 @@ void LuaContext::register_entity_module() {
   // Pickable.
   static const luaL_Reg pickable_methods[] = {
       { "get_sprite", entity_api_get_sprite },
-      { "set_position", entity_api_set_position },
-      { "get_movement", entity_api_get_movement },
-      { "start_movement", entity_api_start_movement },
-      { "stop_movement", entity_api_stop_movement },
+      { "has_layer_independent_collisions", entity_api_has_layer_independent_collisions },
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "get_followed_entity", pickable_api_get_followed_entity },
       { "get_falling_height", pickable_api_get_falling_height },
@@ -233,20 +232,13 @@ void LuaContext::register_entity_module() {
       { "set_default_attack_consequences_sprite", enemy_api_set_default_attack_consequences_sprite },
       { "set_invincible", enemy_api_set_invincible },
       { "set_invincible_sprite", enemy_api_set_invincible_sprite },
+      { "has_layer_independent_collisions", entity_api_has_layer_independent_collisions },
       { "set_layer_independent_collisions", entity_api_set_layer_independent_collisions },
       { "set_treasure", enemy_api_set_treasure },
       { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
       { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
-      { "get_optimization_distance", entity_api_get_optimization_distance },
-      { "set_optimization_distance", entity_api_set_optimization_distance },
       { "set_size", entity_api_set_size },
       { "set_origin", entity_api_set_origin },
-      { "set_position", entity_api_set_position },
-      { "test_obstacles", entity_api_test_obstacles },
-      { "snap_to_grid", entity_api_snap_to_grid },
-      { "get_movement", entity_api_get_movement },
-      { "start_movement", entity_api_start_movement },
-      { "stop_movement", entity_api_stop_movement },
       { "restart", enemy_api_restart },
       { "hurt", enemy_api_hurt },
       { "get_sprite", entity_api_get_sprite },
@@ -335,7 +327,13 @@ int LuaContext::entity_api_get_name(lua_State* l) {
 
   MapEntity& entity = check_entity(l, 1);
 
-  push_string(l, entity.get_name());
+  const std::string& name = entity.get_name();
+  if (name.empty()) {
+    lua_pushnil(l);
+  }
+  else {
+    push_string(l, name);
+  }
   return 1;
 }
 
@@ -412,7 +410,7 @@ int LuaContext::entity_api_get_size(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_set_size.
+ * @brief Implementation of \ref lua_api_enemy_set_size.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -444,7 +442,7 @@ int LuaContext::entity_api_get_origin(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_set_origin.
+ * @brief Implementation of \ref lua_api_enemy_set_origin.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -460,7 +458,7 @@ int LuaContext::entity_api_set_origin(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_get_position
+ * @brief Implementation of \ref lua_api_entity_get_position.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -490,12 +488,11 @@ int LuaContext::entity_api_set_position(lua_State* l) {
   }
 
   entity.set_xy(x, y);
-
   if (layer != -1) {
     MapEntities& entities = entity.get_map().get_entities();
     entities.set_entity_layer(entity, Layer(layer));
   }
-  entity.check_collision_with_detectors(false);
+  entity.notify_position_changed();
 
   return 0;
 }
@@ -561,7 +558,10 @@ int LuaContext::entity_api_get_angle(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_get_sprite.
+ * @brief Implementation of
+ * \ref lua_api_npc_get_sprite,
+ * \ref lua_api_pickable_get_sprite and
+ * \ref lua_api_enemy_get_sprite.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -579,7 +579,7 @@ int LuaContext::entity_api_get_sprite(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_create_sprite.
+ * @brief Implementation of \ref lua_api_enemy_create_sprite.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -595,7 +595,7 @@ int LuaContext::entity_api_create_sprite(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_remove_sprite.
+ * @brief Implementation of \ref lua_api_enemy_remove_sprite.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -636,22 +636,6 @@ int LuaContext::entity_api_get_movement(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_start_movement.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::entity_api_start_movement(lua_State* l) {
-
-  MapEntity& entity = check_entity(l, 1);
-  Movement& movement = check_movement(l, 2);
-
-  entity.clear_movement();
-  entity.set_movement(&movement);
-
-  return 0;
-}
-
-/**
  * @brief Implementation of \ref lua_api_entity_stop_movement.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
@@ -666,8 +650,10 @@ int LuaContext::entity_api_stop_movement(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_has_layer_independent_collisions.
- * @param l The Lua context that is calling this function.
+ * @brief Implementation of
+ * \ref lua_api_pickable_has_layer_independent_collisions and
+ * \ref lua_api_enemy_has_layer_independent_collisions.
+  @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
 int LuaContext::entity_api_has_layer_independent_collisions(lua_State* l) {
@@ -685,7 +671,9 @@ int LuaContext::entity_api_has_layer_independent_collisions(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_entity_set_layer_independent_collisions.
+ * @brief Implementation of
+ * \ref lua_api_pickable_set_layer_independent_collisions and
+ * \ref lua_api_enemy_set_layer_independent_collisions.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */
@@ -795,6 +783,9 @@ int LuaContext::hero_api_teleport(lua_State* l) {
   Transition::Style transition_style = opt_enum<Transition::Style>(
       l, 4, transition_style_names, Transition::FADE);
 
+  // FIXME check that destination_name is not empty
+  // TODO don't allow side destinations and scrolling?
+
   hero.get_game().set_current_map(map_id, destination_name, transition_style);
 
   return 0;
@@ -842,31 +833,6 @@ int LuaContext::hero_api_set_direction(lua_State* l) {
   int direction = luaL_checkint(l, 2);
 
   hero.set_animation_direction(direction);
-
-  return 0;
-}
-
-/**
- * @brief Implementation of \ref lua_api_hero_set_position.
- * @param l The Lua context that is calling this function.
- * @return Number of values to return to Lua.
- */
-int LuaContext::hero_api_set_position(lua_State* l) {
-
-  Hero& hero = check_hero(l, 1);
-  int x = luaL_checkint(l, 2);
-  int y = luaL_checkint(l, 3);
-  int layer = -1;
-  if (lua_gettop(l) >= 4) {
-    layer = luaL_checkint(l, 4);
-  }
-
-  hero.set_xy(x, y);
-  if (layer != -1) {
-    MapEntities& entities = hero.get_map().get_entities();
-    entities.set_entity_layer(hero, Layer(layer));
-  }
-  hero.check_position();
 
   return 0;
 }
@@ -990,8 +956,15 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
         savegame_variable << "'").c_str());
   }
 
+  int callback_ref = LUA_REFNIL;
+  if (lua_gettop(l) >= 5) {
+    luaL_checktype(l, 5, LUA_TFUNCTION);
+    lua_settop(l, 5);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
+
   hero.start_treasure(
-      Treasure(hero.get_game(), item_name, variant, savegame_variable));
+      Treasure(hero.get_game(), item_name, variant, savegame_variable), callback_ref);
 
   return 0;
 }
@@ -1004,8 +977,14 @@ int LuaContext::hero_api_start_treasure(lua_State* l) {
 int LuaContext::hero_api_start_victory(lua_State* l) {
 
   Hero& hero = check_hero(l, 1);
+  int callback_ref = LUA_REFNIL;
+  if (lua_gettop(l) >= 2) {
+    luaL_checktype(l, 2, LUA_TFUNCTION);
+    lua_settop(l, 2);
+    callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
 
-  hero.start_victory();
+  hero.start_victory(callback_ref);
 
   return 0;
 }
@@ -2012,38 +1991,74 @@ void LuaContext::entity_on_removed(MapEntity& entity) {
 }
 
 /**
- * @brief Calls the on_obtaining_treasure() method of a Lua hero.
- * @param hero The hero.
- * @param treasure A treasure the hero is about to obtain.
+ * @brief Calls the on_movement_finished() method of a Lua NPC.
+ * @param npc An NPC.
  */
-void LuaContext::hero_on_obtaining_treasure(Hero& hero, const Treasure& treasure) {
+void LuaContext::npc_on_movement_finished(NPC& npc) {
 
-  push_hero(l, hero);
-  on_obtaining_treasure(treasure);
+  push_npc(l, npc);
+  on_movement_finished();
   lua_pop(l, 1);
 }
 
 /**
- * @brief Calls the on_obtained_treasure() method of a Lua hero.
- * @param hero The hero.
- * @param treasure The treasure just obtained.
+ * @brief Calls the on_interaction() method of a Lua NPC.
+ * @param npc An NPC.
  */
-void LuaContext::hero_on_obtained_treasure(Hero& hero, const Treasure& treasure) {
+void LuaContext::npc_on_interaction(NPC& npc) {
 
-  push_hero(l, hero);
-  on_obtained_treasure(treasure);
+  push_npc(l, npc);
+  on_interaction();
   lua_pop(l, 1);
 }
 
 /**
- * @brief Calls the on_victory_finished() method of a Lua hero.
- * @param hero The hero.
+ * @brief Calls the on_interaction_item() method of a Lua NPC.
+ * @param npc An NPC.
+ * @param item_used The equipment item used.
+ * @return \c true if an interaction occurred.
  */
-void LuaContext::hero_on_victory_finished(Hero& hero) {
+bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
 
-  push_hero(l, hero);
-  on_victory_finished();
+  push_npc(l, npc);
+  bool result = on_interaction_item(item_used);
   lua_pop(l, 1);
+  return result;
+}
+
+/**
+ * @brief Calls the on_collision_fire() method of a Lua NPC.
+ * @param npc An NPC.
+ */
+void LuaContext::npc_on_collision_fire(NPC& npc) {
+
+  push_npc(l, npc);
+  on_collision_fire();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_moved() method of a Lua block.
+ * @param block a block.
+ */
+void LuaContext::block_on_moved(Block& block) {
+
+  push_block(l, block);
+  on_moved();
+  lua_pop(l, 1);
+}
+
+/**
+ * @brief Calls the on_empty() method of a Lua chest.
+ * @param chest A chest.
+ * @return \c true if the on_empty() method is defined.
+ */
+bool LuaContext::chest_on_empty(Chest& chest) {
+
+  push_chest(l, chest);
+  bool result = on_empty();
+  lua_pop(l, 1);
+  return result;
 }
 
 /**
@@ -2113,63 +2128,25 @@ void LuaContext::sensor_on_collision_explosion(Sensor& sensor) {
 }
 
 /**
- * @brief Calls the on_movement_finished() method of a Lua NPC.
- * @param npc An NPC.
+ * @brief Calls the on_opened() method of a Lua door.
+ * @param door A door.
  */
-void LuaContext::npc_on_movement_finished(NPC& npc) {
+void LuaContext::door_on_opened(Door& door) {
 
-  push_npc(l, npc);
-  on_movement_finished();
+  push_door(l, door);
+  on_opened();
   lua_pop(l, 1);
 }
 
 /**
- * @brief Calls the on_interaction() method of a Lua NPC.
- * @param npc An NPC.
+ * @brief Calls the on_closed() method of a Lua door.
+ * @param door A door.
  */
-void LuaContext::npc_on_interaction(NPC& npc) {
+void LuaContext::door_on_closed(Door& door) {
 
-  push_npc(l, npc);
-  on_interaction();
+  push_door(l, door);
+  on_closed();
   lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_interaction_item() method of a Lua NPC.
- * @param npc An NPC.
- * @param item_used The equipment item used.
- * @return \c true if an interaction occurred.
- */
-bool LuaContext::npc_on_interaction_item(NPC& npc, EquipmentItem& item_used) {
-
-  push_npc(l, npc);
-  bool result = on_interaction_item(item_used);
-  lua_pop(l, 1);
-  return result;
-}
-
-/**
- * @brief Calls the on_collision_fire() method of a Lua NPC.
- * @param npc An NPC.
- */
-void LuaContext::npc_on_collision_fire(NPC& npc) {
-
-  push_npc(l, npc);
-  on_collision_fire();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_empty() method of a Lua chest.
- * @param chest A chest.
- * @return \c true if the on_empty() method is defined.
- */
-bool LuaContext::chest_on_empty(Chest& chest) {
-
-  push_chest(l, chest);
-  bool result = on_empty();
-  lua_pop(l, 1);
-  return result;
 }
 
 /**
@@ -2193,39 +2170,6 @@ void LuaContext::shop_item_on_bought(ShopItem& shop_item) {
 
   push_entity(l, shop_item);
   on_bought();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_open() method of a Lua door.
- * @param door A door.
- */
-void LuaContext::door_on_open(Door& door) {
-
-  push_door(l, door);
-  on_open();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_closed() method of a Lua door.
- * @param door A door.
- */
-void LuaContext::door_on_closed(Door& door) {
-
-  push_door(l, door);
-  on_closed();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_moved() method of a Lua block.
- * @param block a block.
- */
-void LuaContext::block_on_moved(Block& block) {
-
-  push_block(l, block);
-  on_moved();
   lua_pop(l, 1);
 }
 
@@ -2365,35 +2309,6 @@ void LuaContext::enemy_on_movement_finished(Enemy& enemy) {
 
   push_enemy(l, enemy);
   on_movement_finished();
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_sprite_animation_finished() method of a Lua enemy.
- * @param enemy An enemy.
- * @param sprite A sprite whose animation has just finished.
- * @param animation Name of the animation finished.
- */
-void LuaContext::enemy_on_sprite_animation_finished(Enemy& enemy,
-    Sprite& sprite, const std::string& animation) {
-
-  push_enemy(l, enemy);
-  on_sprite_animation_finished(sprite, animation);
-  lua_pop(l, 1);
-}
-
-/**
- * @brief Calls the on_sprite_frame_changed() method of a Lua enemy.
- * @param enemy An enemy.
- * @param sprite A sprite whose animation frame has just changed.
- * @param animation Name of the sprite animation.
- * @param frame The new frame.
- */
-void LuaContext::enemy_on_sprite_frame_changed(Enemy& enemy,
-    Sprite& sprite, const std::string& animation, int frame) {
-
-  push_enemy(l, enemy);
-  on_sprite_frame_changed(sprite, animation, frame);
   lua_pop(l, 1);
 }
 

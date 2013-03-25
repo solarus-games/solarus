@@ -83,14 +83,6 @@ public class Destination extends MapEntity {
         return "Keep the same direction";
     }
 
-    /**
-     * Returns whether the entity has an identifier.
-     * @return true
-     */
-    public boolean hasName() {
-        return true;
-    }
-
     /*
      * Updates the description of the image currently representing the entity.
      * @param name name of the property
@@ -137,18 +129,9 @@ public class Destination extends MapEntity {
     public void checkProperties() throws MapException {
 
         String spriteName = getProperty("sprite");
-        if (!isSpriteNameValid(spriteName)) {
+        if (spriteName != null && !isValidSpriteName(spriteName)) {
             throw new MapException("Invalid sprite name: '" + spriteName + "'");
         }
-    }
-
-    /**
-     * Returns whether the specified sprite name is valid.
-     * @param spriteName A sprite name or null.
-     * @return true if it is valid.
-     */
-    private boolean isSpriteNameValid(String spriteName) {
-        return spriteName == null || !spriteName.isEmpty();
     }
 
     /**

@@ -9,7 +9,14 @@ function enemy:on_created()
 
   self:set_life(1)
   self:set_damage(4)
-  self:create_sprite("enemies/evil_tile")
+
+  local sprite = self:create_sprite("enemies/evil_tile")
+  function sprite:on_animation_finished(animation)
+    if state == "destroying" then
+      enemy:remove()
+    end
+  end
+
   self:set_size(16, 16)
   self:set_origin(8, 13)
   self:set_invincible()
@@ -27,7 +34,7 @@ function enemy:on_restarted()
   local m = sol.movement.create("path")
   m:set_path{2,2}
   m:set_speed(16)
-  self:start_movement(m)
+  m:start(self)
   timer = sol.timer.start(self, 2000, function() self:go_hero() end)
   state = "raising"
 end
@@ -39,7 +46,7 @@ function enemy:go_hero()
   m:set_speed(192)
   m:set_angle(angle)
   m:set_smooth(false)
-  self:start_movement(m)
+  m:start(self)
   state = "attacking"
 end
 
@@ -66,13 +73,6 @@ function enemy:disappear()
     if timer ~= nil then
       timer:stop()
     end
-  end
-end
-
-function enemy:on_sprite_animation_finished(sprite, animation)
-
-  if state == "destroying" then
-    self:remove()
   end
 end
 

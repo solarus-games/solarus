@@ -29,7 +29,7 @@ function enemy:on_restarted()
   m:set_path{direction4 * 2}
   m:set_speed(192)
   m:set_loop(true)
-  self:start_movement(m)
+  m:start(self)
 end
 
 function enemy:on_obstacle_reached()

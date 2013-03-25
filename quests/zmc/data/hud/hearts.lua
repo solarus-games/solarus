@@ -25,13 +25,7 @@ function hearts:initialize(game)
   self.nb_current_hearts_displayed = game:get_life()
   self.danger_sound_timer = nil
 
-  local all_hearts_img = sol.surface.create("hud/hearts.png")
-  self.heart_imgs = {  -- Fractions of hearts.
-    sol.surface.create(all_hearts_img,  0, 0, 9, 9),  -- 1/4
-    sol.surface.create(all_hearts_img,  9, 0, 9, 9),  -- 2/4
-    sol.surface.create(all_hearts_img, 18, 0, 9, 9),  -- 3/4
-    sol.surface.create(all_hearts_img, 27, 0, 9, 9)  -- Full heart.
-  }
+  self.all_hearts_img = sol.surface.create("hud/hearts.png")
 
   self:check()
   self:rebuild_surface()
@@ -123,7 +117,7 @@ function hearts:rebuild_surface()
     self.empty_heart_sprite:draw(self.surface, x, y)
     if i < math.floor(self.nb_current_hearts_displayed / 4) then
       -- This heart is full.
-      self.heart_imgs[4]:draw(self.surface, x, y)
+      self.all_hearts_img:draw_region(27, 0, 9, 9, self.surface, x, y)
     end
   end
 
@@ -132,7 +126,7 @@ function hearts:rebuild_surface()
   local remaining_fraction = self.nb_current_hearts_displayed % 4
   if remaining_fraction ~= 0 then
     local x, y = (i % 10) * 9, math.floor(i / 10) * 9
-    self.heart_imgs[remaining_fraction]:draw(self.surface, x, y)
+    self.all_hearts_img:draw_region((remaining_fraction - 1) * 9, 0, 9, 9, self.surface, x, y)
   end
 end
 

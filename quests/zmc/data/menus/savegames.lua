@@ -643,14 +643,14 @@ function savegame_menu:key_pressed_phase_options(key)
 	sol.audio.play_sound("ok")
 	self.left_arrow_sprite:set_frame(0)
 	self.right_arrow_sprite:set_frame(0)
-	option.label_text:set_text_color{255, 255, 255}
-	option.value_text:set_text_color{255, 255, 0}
+	option.label_text:set_color{255, 255, 255}
+	option.value_text:set_color{255, 255, 0}
 	self.title_text:set_text_key("selection_menu.phase.options.changing")
 	self.modifying_option = true
       else
 	sol.audio.play_sound("danger")
-	option.label_text:set_text_color{255, 255, 0}
-	option.value_text:set_text_color{255, 255, 255}
+	option.label_text:set_color{255, 255, 0}
+	option.value_text:set_color{255, 255, 255}
 	self.left_arrow_sprite:set_frame(0)
 	self.right_arrow_sprite:set_frame(0)
 	self.title_text:set_text_key("selection_menu.phase.options")
@@ -755,7 +755,7 @@ function savegame_menu:set_options_cursor_position(position)
   if self.options_cursor_position <= #self.options then
     -- An option line was previously selected.
     local option = self.options[self.options_cursor_position]
-    option.label_text:set_text_color{255, 255, 255}
+    option.label_text:set_color{255, 255, 255}
   end
 
   self.options_cursor_position = position
@@ -766,7 +766,7 @@ function savegame_menu:set_options_cursor_position(position)
   if position <= #self.options then
     -- An option line is now selected.
     local option = self.options[self.options_cursor_position]
-    option.label_text:set_text_color{255, 255, 0}
+    option.label_text:set_color{255, 255, 0}
   end
 end
 

@@ -11,34 +11,31 @@ end
 
 function submenu:on_started()
 
-  local submenu_index = self.game:get_value("pause_last_submenu")
-  local background_surfaces = sol.surface.create("pause_submenus.png", true)
-  self.background_surface = sol.surface.create(background_surfaces,
-      320 * (submenu_index - 1), 0, 320, 240)
-  self.background_surface:set_opacity(216)
+  self.background_surfaces = sol.surface.create("pause_submenus.png", true)
+  self.background_surfaces:set_opacity(216)
   self.save_dialog_sprite = sol.sprite.create("menus/pause_save_dialog")
   self.save_dialog_state = 0
 
   self.question_text_1 = sol.text_surface.create{
     horizontal_alignment = "center",
     vertical_alignment = "middle",
-    text_color = {8, 8, 8},
+    color = {8, 8, 8},
   }
   self.question_text_2 = sol.text_surface.create{
     horizontal_alignment = "center",
     vertical_alignment = "middle",
-    text_color = {8, 8, 8},
+    color = {8, 8, 8},
   }
   self.answer_text_1 = sol.text_surface.create{
     horizontal_alignment = "center",
     vertical_alignment = "middle",
-    text_color = {8, 8, 8},
+    color = {8, 8, 8},
     text_key = "save_dialog.yes",
   }
   self.answer_text_2 = sol.text_surface.create{
     horizontal_alignment = "center",
     vertical_alignment = "middle",
-    text_color = {8, 8, 8},
+    color = {8, 8, 8},
     text_key = "save_dialog.no",
   }
 
@@ -80,6 +77,7 @@ function submenu:set_caption(text_key)
     if line1 == nil then
       -- Only one line.
       self.caption_text_1:set_text(text)
+      self.caption_text_2:set_text(nil)
     else
       -- Two lines.
       self.caption_text_1:set_text(line1)
@@ -189,9 +187,11 @@ end
 
 function submenu:draw_background(dst_surface)
 
-  local submenu_index = self.game:get_value("last_pause_submenu")
+  local submenu_index = self.game:get_value("pause_last_submenu")
   local width, height = dst_surface:get_size()
-  self.background_surface:draw(dst_surface, (width - 320) / 2, (height - 240) / 2)
+  self.background_surfaces:draw_region(
+      320 * (submenu_index - 1), 0, 320, 240,
+      dst_surface, (width - 320) / 2, (height - 240) / 2)
 end
 
 function submenu:draw_save_dialog_if_any(dst_surface)

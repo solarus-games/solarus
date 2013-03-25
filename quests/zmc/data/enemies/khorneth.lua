@@ -3,40 +3,43 @@ local enemy = ...
 -- The boss Khorneth from @PyroNet.
 -- Khorneth has two blades that must be destroyed first.
 
-local main_sprite = nil
-local left_blade_sprite = nil
-local right_blade_sprite = nil
 
 -- State.
 local left_blade_life = 4
 local right_blade_life = 4
 local blade_attack = false
 
-function enemy:on_created()
+-- Sprites.
+local main_sprite = enemy:create_sprite("enemies/khorneth")
+local left_blade_sprite = enemy:create_sprite("enemies/khorneth_left_blade")
+local right_blade_sprite = enemy:create_sprite("enemies/khorneth_right_blade")
+-- When a blade sprite has the same animation than the
+-- main sprite, synchronize their frames
+left_blade_sprite:synchronize(main_sprite)
+right_blade_sprite:synchronize(main_sprite)
 
-  self:set_life(5)
-  self:set_damage(2)
-  self:set_pushed_back_when_hurt(false)
-  main_sprite = self:create_sprite("enemies/khorneth")
-  left_blade_sprite = self:create_sprite("enemies/khorneth_left_blade")
-  right_blade_sprite = self:create_sprite("enemies/khorneth_right_blade")
-  self:set_size(40, 48)
-  self:set_origin(20, 25)
-  self:set_invincible()
-  self:set_attack_consequence_sprite(left_blade_sprite, "sword", "custom")
-  self:set_attack_consequence_sprite(right_blade_sprite, "sword", "custom")
+-- Properties.
+enemy:set_life(5)
+enemy:set_damage(2)
+enemy:set_pushed_back_when_hurt(false)
+enemy:set_size(40, 48)
+enemy:set_origin(20, 25)
+enemy:set_invincible()
+enemy:set_attack_consequence_sprite(left_blade_sprite, "sword", "custom")
+enemy:set_attack_consequence_sprite(right_blade_sprite, "sword", "custom")
 
-  -- When a blade sprite has the same animation than the
-  -- main sprite, synchronize their frames
-  left_blade_sprite:synchronize(main_sprite)
-  right_blade_sprite:synchronize(main_sprite)
+function main_sprite:on_animation_finished(animation)
+  if blade_attack then
+    blade_attack = false
+    enemy:restart()
+  end
 end
 
 function enemy:on_restarted()
 
   local m = sol.movement.create("random_path")
   m:set_speed(48)
-  self:start_movement(m)
+  m:start(self)
 
   -- Schedule a blade attack
   if self:has_blade() then
@@ -120,14 +123,6 @@ function enemy:start_blade_attack()
     end
 
     self:stop_movement()
-  end
-end
-
-function enemy:on_sprite_animation_finished(sprite, animation)
-
-  if blade_attack and sprite == main_sprite then
-    blade_attack = false
-    self:restart()
   end
 end
 

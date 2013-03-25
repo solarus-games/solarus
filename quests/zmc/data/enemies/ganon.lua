@@ -36,7 +36,6 @@ function enemy:on_created()
 
   self:set_life(1000000)
   self:set_damage(16)
-  self:create_sprite("enemies/ganon")
   self:set_optimization_distance(0)
   self:set_size(32, 32)
   self:set_origin(16, 29)
@@ -48,6 +47,13 @@ function enemy:on_created()
   self:set_attack_consequence("thrown_item", "immobilized")
   self:set_pushed_back_when_hurt(false)
   self:set_push_hero_on_sword(true)
+
+  local sprite = self:create_sprite("enemies/ganon")
+  function sprite:on_animation_finished(animation)
+    if animation == "jumping" then
+      enemy:finish_jump()
+    end
+  end
 end
 
 function enemy:on_restarted()
@@ -56,7 +62,7 @@ function enemy:on_restarted()
     if not vulnerable then
       m = sol.movement.create("path_finding")
       m:set_speed(64)
-      self:start_movement(m)
+      m:start(self)
       self:set_hurt_style("normal")
       if not attack_scheduled then
 	self:schedule_attack()
@@ -102,7 +108,7 @@ function enemy:jump()
   local m = sol.movement.create("target")
   m:set_speed(128)
   m:set_target(240, 245)
-  self:start_movement(m)
+  m:start(self)
   sol.audio.play_sound("jump")
   local sprite = self:get_sprite()
   sprite:set_animation("jumping")
@@ -145,13 +151,6 @@ function enemy:finish_jump()
   self:set_attack_consequence("thrown_item", "immobilized")
   self:set_can_attack(true)
   self:restart()
-end
-
-function enemy:on_sprite_animation_finished(sprite, animation)
-
-  if animation == "jumping" then
-    self:finish_jump()
-  end
 end
 
 function enemy:destroy_floor(prefix, first, last)
@@ -247,7 +246,7 @@ function enemy:throw_bats()
     local son_name = prefix .. nb_bats_created
     local son = self:create_enemy(son_name, "fire_bat", 0, -21, 0)
     if math.random(6) == 1 then
-      son:set_treasure("magic_flask", 1, -1)
+      son:set_treasure("magic_flask", 1)
     end
     son:go_circle(self)
     local go_hero_delay = 2000 + (nb_to_create * 150)

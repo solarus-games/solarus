@@ -188,8 +188,6 @@ function console.print(...)
     local arg = select(i, ...)
     if type(arg) == "string" or type(arg) == "number" then
       text = text .. arg
-    elseif type(arg) == "boolean" then
-      text = text .. (arg and "true" or "false")
     else
       text = text .. type(arg)
     end

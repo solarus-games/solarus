@@ -161,9 +161,9 @@ end
 function language_menu:set_cursor_position(cursor_position)
 
   if self.cursor_position ~= nil then
-    self.languages[self.cursor_position].text:set_text_color{255, 255, 255}
+    self.languages[self.cursor_position].text:set_color{255, 255, 255}
   end
-  self.languages[cursor_position].text:set_text_color{255, 255, 0}
+  self.languages[cursor_position].text:set_color{255, 255, 0}
 
   if cursor_position < self.first_visible_language then
     self.first_visible_language = cursor_position

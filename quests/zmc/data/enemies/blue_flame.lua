@@ -27,6 +27,6 @@ function enemy:go(angle)
   m:set_angle(angle)
   m:set_ignore_obstacles(true)
   m:set_max_distance(320)
-  self:start_movement(m)
+  m:start(self)
 end
 

@@ -83,6 +83,6 @@ function enemy:on_restarted()
   m:set_max_rotations(4)
   m:set_loop(2000)
   m:set_angle_speed(360)
-  self:start_movement(m)
+  m:start(self)
 end
 

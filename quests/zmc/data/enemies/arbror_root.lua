@@ -12,7 +12,6 @@ function enemy:on_created()
 
   self:set_life(1)
   self:set_damage(4)
-  self:create_sprite("enemies/arbror_root")
   self:set_size(64, 16)
   self:set_origin(28, 6)
   self:set_invincible()
@@ -22,6 +21,13 @@ function enemy:on_created()
   self:set_attack_consequence("sword", "protected")
   self:set_push_hero_on_sword(true)
   self:set_can_hurt_hero_running(true)
+
+  local sprite = self:create_sprite("enemies/arbror_root")
+  function sprite:on_animation_finished(animation)
+    if animation == "disappearing" then
+      enemy:remove()
+    end
+  end
 end
 
 function enemy:on_restarted()
@@ -51,7 +57,7 @@ function enemy:go()
   if not self.immobilized then
     local m = sol.movement.movement_create("path_finding")
     m:set_speed(self.speed)
-    self:start_movement(m)
+    m:start(self)
   end
 end
 
@@ -87,13 +93,6 @@ function enemy:disappear()
       self.timer:stop()
     end
     self.disappearing = true
-  end
-end
-
-function enemy:on_sprite_animation_finished(sprite, animation)
-
-  if animation == "disappearing" then
-    self:remove()
   end
 end
 

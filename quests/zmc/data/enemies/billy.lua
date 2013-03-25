@@ -61,14 +61,14 @@ end
 function enemy:go_random()
   local m = sol.movement.create("random_path")
   m:set_speed(48)
-  self:start_movement(m)
+  m:start(self)
   going_hero = false
 end
 
 function enemy:go_hero()
   local m = sol.movement.create("target")
   m:set_speed(72)
-  self:start_movement(m)
+  m:start(self)
   going_hero = true
 end
 

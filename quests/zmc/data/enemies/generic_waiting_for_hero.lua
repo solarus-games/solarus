@@ -74,7 +74,6 @@ function enemy:on_created()
 
   self:set_life(properties.life)
   self:set_damage(properties.damage)
-  self:create_sprite(properties.sprite)
   self:set_hurt_style(properties.hurt_style)
   self:set_pushed_back_when_hurt(properties.pushed_when_hurt)
   self:set_push_hero_on_sword(properties.push_hero_on_sword)
@@ -84,7 +83,20 @@ function enemy:on_created()
   if not properties.obstacle_behavior == nil then
     self:set_obstacle_behavior(properties.obstacle_behavior)
   end
-  local sprite = self:get_sprite()
+
+  local sprite = self:create_sprite(properties.sprite)
+  function sprite:on_animation_finished(animation)
+    -- If the awakening transition is finished, make the enemy go toward the hero.
+    if animation == properties.awaking_animation then
+      self:set_animation(properties.normal_animation)
+      enemy:set_size(16, 16)
+      enemy:set_origin(8, 13)
+      enemy:snap_to_grid()
+      enemy:set_default_attack_consequences()
+      awaken = true
+      enemy:go_hero()
+    end
+  end
   sprite:set_animation(properties.asleep_animation)
 end
 
@@ -141,21 +153,6 @@ function enemy:check_hero()
   timer = sol.timer.start(self, 1000, function() self:check_hero() end)
 end
 
---  The animation of a sprite is finished.
-function enemy:on_sprite_animation_finished(sprite, animation)
-
-  -- If the awakening transition is finished, make the enemy go toward the hero.
-  if animation == properties.awaking_animation then
-    sprite:set_animation(properties.normal_animation)
-    self:set_size(16, 16)
-    self:set_origin(8, 13)
-    self:snap_to_grid()
-    self:set_default_attack_consequences()
-    awaken = true
-    self:go_hero()
-  end
-end
-
 function enemy:wake_up()
 
   self:stop_movement()
@@ -170,7 +167,7 @@ function enemy:go_random()
 
   local m = sol.movement.create("random")
   m:set_speed(properties.normal_speed)
-  self:start_movement(m)
+  m:start(self)
   going_hero = false
 end
 
@@ -178,7 +175,7 @@ function enemy:go_hero()
 
   local m = sol.movement.create("target")
   m:set_speed(properties.faster_speed)
-  self:start_movement(m)
+  m:start(self)
   going_hero = true
 end
 

@@ -56,7 +56,7 @@ function enemy:go_back()
   m:set_speed(16)
   m:set_target(x, y + 48)
   m:set_ignore_obstacles(true)
-  self:start_movement(m)
+  m:start(self)
 end
 
 function enemy:on_movement_finished(movement)
@@ -65,7 +65,7 @@ function enemy:on_movement_finished(movement)
   m:set_speed(16)
   m:set_max_distance(16)
   m:set_ignore_obstacles(true)
-  self:start_movement(m)
+  m:start(self)
   timers[#timers + 1] = sol.timer.start(self, 5000, function() self:go_back() end)
 end
 

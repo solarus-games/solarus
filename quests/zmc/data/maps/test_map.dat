@@ -554,8 +554,8 @@ teletransporter{
   height = 16,
   name = "teletransporter_2",
   transition = 1,
-  destination_map = "rail_temple_b2",
-  destination = "destination",
+  destination_map = "rail_temple_1f",
+  destination = "tmp",
 }
 
 destination{

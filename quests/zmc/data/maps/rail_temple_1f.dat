@@ -2431,6 +2431,24 @@ chest{
   is_big_chest = false,
 }
 
+enemy{
+  layer = 0,
+  x = 360,
+  y = 1357,
+  direction = 3,
+  breed = "blue_dogman",
+  rank = 0,
+}
+
+enemy{
+  layer = 0,
+  x = 496,
+  y = 1477,
+  direction = 3,
+  breed = "tentacle",
+  rank = 0,
+}
+
 tile{
   layer = 1,
   x = 680,
@@ -3615,7 +3633,7 @@ tile{
   x = 584,
   y = 1400,
   width = 16,
-  height = 48,
+  height = 112,
   pattern = 649,
 }
 
@@ -11426,8 +11444,8 @@ door{
 
 destination{
   layer = 1,
-  x = 528,
-  y = 1645,
+  x = 2120,
+  y = 2917,
   name = "tmp",
   direction = 1,
 }
@@ -11714,8 +11732,8 @@ tile{
   layer = 2,
   x = 0,
   y = 1696,
-  width = 640,
-  height = 16,
+  width = 736,
+  height = 104,
   pattern = 170,
 }
 
@@ -11723,18 +11741,9 @@ tile{
   layer = 2,
   x = 640,
   y = 1008,
-  width = 16,
-  height = 704,
+  width = 96,
+  height = 688,
   pattern = 170,
-}
-
-tile{
-  layer = 2,
-  x = 584,
-  y = 1728,
-  width = 16,
-  height = 8,
-  pattern = 616,
 }
 
 tile{

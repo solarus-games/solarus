@@ -1441,42 +1441,6 @@ tile{
 
 tile{
   layer = 0,
-  x = 1048,
-  y = 160,
-  width = 8,
-  height = 16,
-  pattern = 907,
-}
-
-tile{
-  layer = 0,
-  x = 1056,
-  y = 160,
-  width = 16,
-  height = 16,
-  pattern = 905,
-}
-
-tile{
-  layer = 0,
-  x = 1072,
-  y = 160,
-  width = 8,
-  height = 16,
-  pattern = 908,
-}
-
-tile{
-  layer = 0,
-  x = 1048,
-  y = 168,
-  width = 32,
-  height = 8,
-  pattern = 906,
-}
-
-tile{
-  layer = 0,
   x = 1080,
   y = 160,
   width = 16,
@@ -5691,6 +5655,60 @@ tile{
   layer = 0,
   x = 176,
   y = 392,
+  width = 32,
+  height = 8,
+  pattern = 523,
+}
+
+tile{
+  layer = 0,
+  x = 1056,
+  y = 160,
+  width = 16,
+  height = 16,
+  pattern = 681,
+}
+
+tile{
+  layer = 0,
+  x = 1048,
+  y = 160,
+  width = 8,
+  height = 16,
+  pattern = 907,
+}
+
+tile{
+  layer = 0,
+  x = 1072,
+  y = 160,
+  width = 8,
+  height = 16,
+  pattern = 908,
+}
+
+tile{
+  layer = 0,
+  x = 1048,
+  y = 176,
+  width = 32,
+  height = 8,
+  pattern = 906,
+}
+
+tile{
+  layer = 0,
+  x = 944,
+  y = 104,
+  width = 32,
+  height = 8,
+  pattern = 523,
+}
+
+tile{
+  layer = 0,
+  x = 944,
+  y = 200,
   width = 32,
   height = 8,
   pattern = 523,
@@ -11013,7 +11031,6 @@ tile{
   height = 40,
   pattern = 511,
 }
-
 
 tile{
   layer = 2,

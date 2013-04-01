@@ -5,7 +5,7 @@ properties{
   height = 2736,
   world = "rail_temple",
   floor = -1,
-  tileset = "blue_dungeon_lw",
+  tileset = "mine",
   music = "same",
 }
 
@@ -106,15 +106,6 @@ tile{
   width = 416,
   height = 192,
   pattern = 303,
-}
-
-tile{
-  layer = 0,
-  x = 736,
-  y = 240,
-  width = 320,
-  height = 80,
-  pattern = 405,
 }
 
 tile{
@@ -236,15 +227,6 @@ tile{
 
 tile{
   layer = 1,
-  x = 920,
-  y = 312,
-  width = 96,
-  height = 24,
-  pattern = 52,
-}
-
-tile{
-  layer = 1,
   x = 560,
   y = 32,
   width = 24,
@@ -259,15 +241,6 @@ tile{
   width = 24,
   height = 24,
   pattern = 47,
-}
-
-tile{
-  layer = 1,
-  x = 960,
-  y = 312,
-  width = 16,
-  height = 16,
-  pattern = 77,
 }
 
 tile{
@@ -380,42 +353,6 @@ tile{
 
 tile{
   layer = 1,
-  x = 784,
-  y = 280,
-  width = 8,
-  height = 16,
-  pattern = 75,
-}
-
-tile{
-  layer = 1,
-  x = 760,
-  y = 280,
-  width = 8,
-  height = 16,
-  pattern = 74,
-}
-
-tile{
-  layer = 1,
-  x = 976,
-  y = 312,
-  width = 8,
-  height = 16,
-  pattern = 75,
-}
-
-tile{
-  layer = 1,
-  x = 952,
-  y = 312,
-  width = 8,
-  height = 16,
-  pattern = 74,
-}
-
-tile{
-  layer = 1,
   x = 896,
   y = 368,
   width = 144,
@@ -479,29 +416,11 @@ tile{
 
 tile{
   layer = 1,
-  x = 976,
-  y = 376,
-  width = 8,
-  height = 16,
-  pattern = 73,
-}
-
-tile{
-  layer = 1,
-  x = 952,
-  y = 376,
-  width = 8,
-  height = 16,
-  pattern = 72,
-}
-
-tile{
-  layer = 1,
-  x = 960,
-  y = 376,
-  width = 16,
-  height = 16,
-  pattern = 76,
+  x = 920,
+  y = 312,
+  width = 96,
+  height = 24,
+  pattern = 52,
 }
 
 tile{
@@ -650,24 +569,6 @@ tile{
 
 tile{
   layer = 2,
-  x = 760,
-  y = 296,
-  width = 32,
-  height = 8,
-  pattern = 188,
-}
-
-tile{
-  layer = 2,
-  x = 952,
-  y = 328,
-  width = 32,
-  height = 8,
-  pattern = 188,
-}
-
-tile{
-  layer = 2,
   x = 560,
   y = 304,
   width = 320,
@@ -682,14 +583,5 @@ tile{
   width = 24,
   height = 24,
   pattern = 45,
-}
-
-tile{
-  layer = 2,
-  x = 952,
-  y = 368,
-  width = 32,
-  height = 8,
-  pattern = 187,
 }
 

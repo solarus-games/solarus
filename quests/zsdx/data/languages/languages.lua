@@ -19,8 +19,3 @@ language{
   name = "Deutsch"
 }
 
---language{
--- code = "zh",
---  name = "Chinese"
---}
-

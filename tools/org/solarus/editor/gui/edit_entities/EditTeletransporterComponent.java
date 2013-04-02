@@ -23,6 +23,7 @@ import org.solarus.editor.map_editor_actions.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.util.NoSuchElementException;
 
 /**
  * A component to edit a teletransporter.
@@ -122,7 +123,12 @@ public class EditTeletransporterComponent extends EditEntityComponent {
         soundField.setEnabled(hasSound);
 
         transitionField.setValue(Transition.get(teletransporter.getIntegerProperty("transition")));
-        mapField.setSelectedId(teletransporter.getProperty("destination_map"));
+        try {
+            mapField.setSelectedId(teletransporter.getProperty("destination_map"));
+        }
+        catch (NoSuchElementException ex) {
+            mapField.setSelectedId("");
+        }
 
         String destinationName = teletransporter.getProperty("destination");
         if (destinationName.equals("_same")) {

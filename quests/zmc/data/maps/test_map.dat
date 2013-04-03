@@ -578,30 +578,6 @@ teletransporter{
   destination = "main_entrance",
 }
 
-teletransporter{
-  layer = 1,
-  x = 152,
-  y = 224,
-  width = 16,
-  height = 16,
-  name = "teletransporter_4",
-  transition = 1,
-  destination_map = "stone_test_map",
-  destination = "stone_destination",
-}
-
-teletransporter{
-  layer = 1,
-  x = 184,
-  y = 0,
-  width = 16,
-  height = 16,
-  name = "teletransporter_5",
-  transition = 1,
-  destination_map = "RailTemple",
-  destination = "destination",
-}
-
 tile{
   layer = 2,
   x = 0,

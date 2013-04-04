@@ -2014,13 +2014,13 @@ bool LuaContext::on_npc_interaction_item(NPC& npc, EquipmentItem& item_used) {
     push_item(l, item_used);
     bool success = call_function(3, 1, "on_npc_interaction_item");
     if (!success) {
-      // Something was wrong in the script: don't propage the event to other objects.
+      // Something was wrong in the script: don't propagate the event to other objects.
       interacted = true;
     }
     else {
       interacted = lua_toboolean(l, -1);
+      lua_pop(l, 1);
     }
-    lua_pop(l, 1);
   }
   return interacted;
 }
@@ -2047,7 +2047,7 @@ bool LuaContext::on_interaction_item(EquipmentItem& item) {
     push_item(l, item);
     bool success = call_function(2, 1, "on_interaction_item");
     if (!success) {
-      // Something was wrong in the script: don't propage the event to other objects.
+      // Something was wrong in the script: don't propagate the event to other objects.
       interacted = true;
     }
     else {

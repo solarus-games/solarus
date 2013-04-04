@@ -134,7 +134,7 @@ end
 
 function game_1_question_dialog_finished(answer)
 
-  if answer == 1 then
+  if answer == 2 then
     -- the player does not want to play the game
     map:start_dialog("rupee_house.game_1.not_playing")
   else
@@ -160,7 +160,7 @@ end
 
 function game_2_question_dialog_finished(answer)
 
-  if answer == 1 then
+  if answer == 2 then
     -- don't want to play the game
     map:start_dialog("rupee_house.game_2.not_playing")
   else
@@ -171,7 +171,7 @@ end
 
 function game_2_choose_bet_dialog_finished(answer)
 
-  if answer == 0 then
+  if answer == 1 then
     -- bet 5 rupees
     game_2_bet = 5
   else
@@ -204,7 +204,7 @@ end
 -- Called after the game 3 dialog "do you want to play?" or "do you want to try again?".
 function game_3_question_dialog_finished(answer)
 
-  if answer == 1 then
+  if answer == 2 then
     -- don't want to play the game
     map:start_dialog("rupee_house.game_3.not_playing")
   else

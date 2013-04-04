@@ -29,7 +29,7 @@ function surprise_wall_guy:on_interaction()
       if map:get_game():get_item("level_4_way").get_variant() == 1 then
         -- the player has the apple pie
         map:start_dialog("outside_world.surprise_wall_guy.give_me_apple_pie", function(answer)
-          if answer == 0 then
+          if answer == 1 then
             map:get_game():get_item("level_4_way"):set_variant(0)
             map:start_dialog("outside_world.surprise_wall_guy.thanks", function()
               surprise_wall_door_tile:set_enabled(false)

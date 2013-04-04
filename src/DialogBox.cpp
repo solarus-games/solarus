@@ -373,18 +373,13 @@ void DialogBox::close() {
   callback_ref = LUA_REFNIL;
   dialog_id = "";
 
-  // restore the action and sword keys
+  // Restore the action and sword keys.
   KeysEffect& keys_effect = game.get_keys_effect();
   keys_effect.set_action_key_effect(action_key_effect_saved);
   keys_effect.set_sword_key_effect(sword_key_effect_saved);
 
-  if (!skipped) {
-    // A dialog was just finished: notify Lua.
-    game.get_lua_context().notify_dialog_finished(previous_callback_ref, last_answer);
-  }
-  else {
-    game.get_lua_context().cancel_callback(previous_callback_ref);
-  }
+  // A dialog was just finished: notify Lua.
+  game.get_lua_context().notify_dialog_finished(previous_callback_ref, skipped, last_answer);
 }
 
 /**

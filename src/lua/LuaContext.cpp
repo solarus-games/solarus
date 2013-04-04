@@ -313,13 +313,26 @@ void LuaContext::notify_camera_reached_target(Map& map) {
 /**
  * @brief Notifies Lua that a dialog is finished.
  * @param callback_ref Lua ref of the function to call, if any.
- * @param answer Answer of the dialog if there was a question.
+ * @param skipped true if the dialog was skipped.
+ * @param answer Answer of the dialog 0 or 1, or -1 if there was no question.
  */
-void LuaContext::notify_dialog_finished(int callback_ref, int answer) {
+void LuaContext::notify_dialog_finished(int callback_ref, bool skipped, int answer) {
 
   if (callback_ref != LUA_REFNIL) {
     push_callback(callback_ref);
-    lua_pushinteger(l, answer);
+    if (skipped) {
+      lua_pushstring(l, "skipped");
+    }
+    else {
+      // The meaning of the answer parameter is different in the Lua API.
+      if (answer == 1) {
+        answer = 2;  // Second answer.
+      }
+      else {
+        answer = 1;  // First answer or no question.
+      }
+      lua_pushinteger(l, answer);
+    }
     call_function(1, 0, "dialog callback");
     destroy_ref(callback_ref);
   }

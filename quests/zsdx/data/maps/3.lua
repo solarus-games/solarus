@@ -135,8 +135,10 @@ end
 
 function tree_woman:on_interaction()
 
-  map:start_dialog("outside_world.village.tree_woman", function()
-    hero:start_treasure("rupee", 1)
+  map:start_dialog("outside_world.village.tree_woman", function(answer)
+    if answer ~= "skipped" then
+      hero:start_treasure("rupee", 1)
+    end
   end)
 end
 

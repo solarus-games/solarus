@@ -95,7 +95,7 @@ class LuaContext {
     bool notify_input(InputEvent& event);
     void notify_map_suspended(Map& map, bool suspended);
     void notify_camera_reached_target(Map& map);
-    void notify_dialog_finished(int callback_ref, int answer);
+    void notify_dialog_finished(int callback_ref, bool skipped, int answer);
     void run_item(EquipmentItem& item);
     void run_map(Map& map, Destination* destination);
     void run_enemy(Enemy& enemy);

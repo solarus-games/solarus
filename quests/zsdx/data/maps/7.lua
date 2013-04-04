@@ -104,7 +104,7 @@ function inferno:on_interaction()
       map:start_dialog("inferno.find_fire_stones")
     else
       map:start_dialog("inferno.found_fire_stones", function(answer)
-        if answer == 0 then
+        if answer == 1 then
           -- black stones
           map:start_dialog("inferno.want_black_stones", function()
             inferno_open()

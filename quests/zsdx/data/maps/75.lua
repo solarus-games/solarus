@@ -31,7 +31,7 @@ end
 
 local function play_question_dialog_finished(answer)
 
-  if answer == 0 then
+  if answer == 1 then
     if map:get_game():get_money() >= 30 then
       map:get_game():remove_money(30)
       playing = true

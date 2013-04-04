@@ -118,6 +118,7 @@ class Game {
 
     // pause
     bool can_pause();
+    bool can_unpause();
     bool is_pause_key_available();
     void set_pause_key_available(bool pause_key_available);
     void set_paused(bool paused);

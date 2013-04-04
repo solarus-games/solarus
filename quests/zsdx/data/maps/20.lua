@@ -27,6 +27,11 @@ local function tom_please_help_dialog_finished(answer)
   end
 end
 
+local function give_boomerang_back()
+  map:get_game():get_item("boomerang"):set_variant(0)
+  map:get_game():set_value("b41", false)
+end
+
 local function tom_go_back()
 
   give_boomerang_back()
@@ -36,13 +41,8 @@ local function tom_go_back()
     m:set_path{2,2,2,2,2,2,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}
     m:set_speed(48)
     m:start(tom)
-    tom_sprite:set_animation("walking")
+    tom:get_sprite():set_animation("walking")
   end
-end
-
-local function give_boomerang_back()
-  map:get_game():get_item("boomerang"):set_variant(0)
-  map:get_game():set_value("b41", false)
 end
 
 local function start_moving_tom()

@@ -73,7 +73,8 @@ function item:on_npc_interaction(npc)
       if first_empty_bottle ~= nil then
         map:start_dialog("found_water", function(answer)
 	  if answer == 1 then
-	    map:treasure_give(first_empty_bottle:get_name(), 2, -1)
+            local hero = map:get_entity("hero")
+            hero:start_treasure(first_empty_bottle:get_name(), 2, nil)
 	  end
 	end)
       else
@@ -88,7 +89,7 @@ end
 function item:on_npc_interaction_item(npc, item_used)
 
   if item_used:get_name():find("^bottle")
-      and name:get_name():find("^water_for_bottle") then
+      and npc:get_name():find("^water_for_bottle") then
     -- the hero interacts with a place where he can get some water:
     -- no matter whether he pressed the action key or the item key of a bottle, we do the same thing
     self:on_npc_interaction(npc)

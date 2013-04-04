@@ -783,7 +783,9 @@ int LuaContext::hero_api_teleport(lua_State* l) {
   Transition::Style transition_style = opt_enum<Transition::Style>(
       l, 4, transition_style_names, Transition::FADE);
 
-  // FIXME check that destination_name is not empty
+  if (destination_name.empty()) {
+    luaL_argerror(l, 3, "Empty destination name");
+  }
   // TODO don't allow side destinations and scrolling?
 
   hero.get_game().set_current_map(map_id, destination_name, transition_style);

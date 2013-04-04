@@ -234,36 +234,38 @@ bool Game::notify_input(InputEvent& event) {
  */
 void Game::notify_command_pressed(GameCommands::Command command) {
 
-  bool handled = get_lua_context().game_on_command_pressed(*this, command);
+  // Is a dialog being shown?
+  if (is_dialog_enabled()) {
+    dialog_box.notify_command_pressed(command);
+  }
 
-  if (!handled) {
-    // The Lua script did not override the command: do the built-in behavior.
+  // Is the game over sequence shown?
+  else if (is_showing_gameover()) {
+    gameover_sequence->notify_command_pressed(command);
+  }
 
-    if (command == GameCommands::PAUSE) {
-      if (is_paused()) {
-        if (can_unpause()) {
-          set_paused(false);
+  else {
+    bool handled = get_lua_context().game_on_command_pressed(*this, command);
+
+    if (!handled) {
+      // The Lua script did not override the command: do the built-in behavior.
+
+      if (command == GameCommands::PAUSE) {
+        if (is_paused()) {
+          if (can_unpause()) {
+            set_paused(false);
+          }
+        }
+        else {
+          if (can_pause()) {
+            set_paused(true);
+          }
         }
       }
-      else {
-        if (can_pause()) {
-          set_paused(true);
-        }
+      else if (!is_suspended()) {
+        // when the game is not suspended, all other keys apply to the hero
+        hero->notify_command_pressed(command);
       }
-    }
-    else if (!is_suspended()) {
-      // when the game is not suspended, all other keys apply to the hero
-      hero->notify_command_pressed(command);
-    }
-
-    // is a message being shown?
-    else if (is_dialog_enabled()) {
-      dialog_box.notify_command_pressed(command);
-    }
-
-    // is the game over sequence shown?
-    else if (is_showing_gameover()) {
-      gameover_sequence->notify_command_pressed(command);
     }
   }
 }

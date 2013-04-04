@@ -85,6 +85,7 @@ void Hero::TreasureState::stop(State *next_state) {
   // restore the sprite's direction
   get_sprites().restore_animation_direction();
   get_lua_context().cancel_callback(callback_ref);
+  callback_ref = LUA_REFNIL;
 }
 
 /**

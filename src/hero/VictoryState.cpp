@@ -71,6 +71,7 @@ void Hero::VictoryState::stop(State* next_state) {
   State::stop(next_state);
   get_sprites().set_ignore_suspend(false);
   get_lua_context().cancel_callback(callback_ref);
+  callback_ref = LUA_REFNIL;
 }
 
 /**

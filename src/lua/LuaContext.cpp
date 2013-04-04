@@ -1323,8 +1323,7 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
    * This redirection is totally transparent from the Lua side.
    */
 
-  lua_pushstring(l, "sol.userdata_tables");
-  lua_gettable(l, LUA_REGISTRYINDEX);
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
   lua_pushlightuserdata(l, *userdata);
                                   // ... udata_tables udata
@@ -1382,8 +1381,7 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
       static_cast<ExportableToLua**>(lua_touserdata(l, 1));
 
   bool found = false;
-  lua_pushstring(l, "sol.userdata_tables");
-  lua_gettable(l, LUA_REGISTRYINDEX);
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
   lua_pushlightuserdata(l, *userdata);
                                   // ... udata_tables udata

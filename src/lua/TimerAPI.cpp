@@ -105,7 +105,6 @@ void LuaContext::add_timer(Timer* timer, int context_index, int callback_index) 
 
   lua_pushvalue(l, callback_index);
   int callback_ref = create_ref();
-  lua_pop(l, 1);
 
   timers[timer].callback_ref = callback_ref;
   timers[timer].context = context;
@@ -214,10 +213,8 @@ void LuaContext::update_timers() {
     timer->update();
     if (timer->is_finished()) {
       do_callback(it->second.callback_ref);
-      lua_pushlightuserdata(l, (void*) it->second.context);
+      it->second.callback_ref = LUA_REFNIL;
       timers_to_remove.push_back(timer);
-      lua_pop(l, 1);
-      break;
     }
   }
 

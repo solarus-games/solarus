@@ -46,6 +46,10 @@ DialogBox::DialogBox(Game& game):
   game(game),
   callback_ref(LUA_REFNIL),
   vertical_position(POSITION_AUTO),
+  skip_mode(Dialog::SKIP_NONE),
+  icon_number(-1),
+  skipped(false),
+  last_answer(-1),
   dialog_surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT),
   box_img("hud/dialog_box.png"),
   icons_img("hud/dialog_icons.png"),
@@ -235,6 +239,7 @@ void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref) {
     this->skip_mode = Dialog::SKIP_NONE;
     this->char_delay = char_delays[SPEED_FAST];
     this->dialog_id = dialog_id;
+    this->last_answer = -1;
   }
 
   // initialize the dialog data
@@ -254,9 +259,6 @@ void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref) {
   }
   if (dialog.is_question()) {
     this->last_answer = 0;
-  }
-  else {
-    this->last_answer = -1;
   }
   question_dst_position.set_y(box_dst_position.get_y() + 27);
 

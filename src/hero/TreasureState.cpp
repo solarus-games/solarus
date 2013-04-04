@@ -71,8 +71,7 @@ void Hero::TreasureState::start(State *previous_state) {
   // show a message
   std::ostringstream oss;
   oss << "_treasure." << treasure.get_item_name() << "." << treasure.get_variant();
-  get_dialog_box().start_dialog(oss.str(), callback_ref);
-  callback_ref = LUA_REFNIL;
+  get_dialog_box().start_dialog(oss.str());
 }
 
 /**
@@ -81,7 +80,7 @@ void Hero::TreasureState::start(State *previous_state) {
  */
 void Hero::TreasureState::stop(State *next_state) {
 
-  State::start(next_state);
+  State::stop(next_state);
 
   // restore the sprite's direction
   get_sprites().restore_animation_direction();
@@ -107,6 +106,8 @@ void Hero::TreasureState::update() {
 
     // Notify the Lua item and the Lua map.
     LuaContext& lua_context = get_lua_context();
+    lua_context.do_callback(callback_ref);
+    callback_ref = LUA_REFNIL;
     lua_context.item_on_obtained(get_equipment().get_item(item_name), treasure);
     lua_context.map_on_obtained_treasure(get_map(), treasure);
 

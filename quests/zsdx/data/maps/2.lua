@@ -217,7 +217,7 @@ function game_3_question_dialog_finished(answer)
 
     else
       -- enough money: reset the game, pay and start the game
-      reset_blocks()
+      map:reset_blocks()
       game_3_barrier_1:set_enabled(false)
       game_3_barrier_2:set_enabled(false)
       game_3_barrier_3:set_enabled(false)

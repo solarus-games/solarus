@@ -37,7 +37,7 @@ function map:on_started(destination)
       rupee_house_door:set_enabled(false)
     else
       to_broken_rupee_house:set_enabled(false)
-      broken_rupee_house:set_enabled(false)
+      map:set_entities_enabled("broken_rupee_house", false)
     end
   end
 

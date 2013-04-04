@@ -313,13 +313,26 @@ void LuaContext::notify_camera_reached_target(Map& map) {
 /**
  * @brief Notifies Lua that a dialog is finished.
  * @param callback_ref Lua ref of the function to call, if any.
- * @param answer Answer of the dialog if there was a question.
+ * @param skipped true if the dialog was skipped.
+ * @param answer Answer of the dialog 0 or 1, or -1 if there was no question.
  */
-void LuaContext::notify_dialog_finished(int callback_ref, int answer) {
+void LuaContext::notify_dialog_finished(int callback_ref, bool skipped, int answer) {
 
   if (callback_ref != LUA_REFNIL) {
     push_callback(callback_ref);
-    lua_pushinteger(l, answer);
+    if (skipped) {
+      lua_pushstring(l, "skipped");
+    }
+    else {
+      // The meaning of the answer parameter is different in the Lua API.
+      if (answer == 1) {
+        answer = 2;  // Second answer.
+      }
+      else {
+        answer = 1;  // First answer or no question.
+      }
+      lua_pushinteger(l, answer);
+    }
     call_function(1, 0, "dialog callback");
     destroy_ref(callback_ref);
   }
@@ -935,15 +948,21 @@ bool LuaContext::do_file_if_exists(lua_State* l, const std::string& script_name)
 /**
  * @brief For an index in the Lua stack, returns an equivalent positive index.
  * @param l A Lua state.
- * @param index An index in the stack (positive or negative).
+ * @param index An index in the stack (positive or negative, but not a pseudo-index).
  * @return The corresponding positive index.
  */
 int LuaContext::get_positive_index(lua_State* l, int index) {
 
+  int positive_index = index;
   if (index < 0) {
-    index = lua_gettop(l) + index + 1;
+    positive_index = lua_gettop(l) + index + 1;
   }
-  return index;
+
+  Debug::check_assertion(positive_index > 0 && positive_index <= lua_gettop(l),
+      StringConcat() <<  "Invalid index " << index << ": stack has "
+      << lua_gettop(l) << " elements");
+
+  return positive_index;
 }
 
 /**
@@ -1304,8 +1323,7 @@ int LuaContext::userdata_meta_newindex_as_table(lua_State* l) {
    * This redirection is totally transparent from the Lua side.
    */
 
-  lua_pushstring(l, "sol.userdata_tables");
-  lua_gettable(l, LUA_REGISTRYINDEX);
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
   lua_pushlightuserdata(l, *userdata);
                                   // ... udata_tables udata
@@ -1363,8 +1381,7 @@ int LuaContext::userdata_meta_index_as_table(lua_State* l) {
       static_cast<ExportableToLua**>(lua_touserdata(l, 1));
 
   bool found = false;
-  lua_pushstring(l, "sol.userdata_tables");
-  lua_gettable(l, LUA_REGISTRYINDEX);
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.userdata_tables");
                                   // ... udata_tables
   lua_pushlightuserdata(l, *userdata);
                                   // ... udata_tables udata
@@ -1564,9 +1581,15 @@ bool LuaContext::on_key_pressed(InputEvent& event) {
         lua_pushboolean(l, 1);
         lua_setfield(l, -2, "alt");
       }
-      call_function(3, 1, "on_key_pressed");
-      handled = lua_toboolean(l, -1);
-      lua_pop(l, 1);
+      bool success = call_function(3, 1, "on_key_pressed");
+      if (!success) {
+        // Something was wrong in the script: don't propagate the input to other objects.
+        handled = true;
+      }
+      else {
+        handled = lua_toboolean(l, -1);
+        lua_pop(l, 1);
+      }
     }
     else {
       // The method exists but the key is unknown.
@@ -1589,9 +1612,15 @@ bool LuaContext::on_character_pressed(InputEvent& event) {
 
     const std::string& character = event.get_character();
     push_string(l, character);
-    call_function(2, 1, "on_character_pressed");
-    handled = lua_toboolean(l, -1);
-    lua_pop(l, 1);
+    bool success = call_function(2, 1, "on_character_pressed");
+    if (!success) {
+      // Something was wrong in the script: don't propagate the input to other objects.
+      handled = true;
+    }
+    else {
+      handled = lua_toboolean(l, -1);
+      lua_pop(l, 1);
+    }
   }
   return handled;
 }
@@ -1611,9 +1640,15 @@ bool LuaContext::on_key_released(InputEvent& event) {
     const std::string& key_name = InputEvent::get_keyboard_key_name(event.get_keyboard_key());
     if (!key_name.empty()) { // This key exists in the Solarus API.
       push_string(l, key_name);
-      call_function(2, 1, "on_key_released");
-      handled = lua_toboolean(l, -1);
-      lua_pop(l, 1);
+      bool success = call_function(2, 1, "on_key_released");
+      if (!success) {
+        // Something was wrong in the script: don't propagate the input to other objects.
+        handled = true;
+      }
+      else {
+        handled = lua_toboolean(l, -1);
+        lua_pop(l, 1);
+      }
     }
     else {
       // The method exists but the key is unknown.
@@ -1636,9 +1671,15 @@ bool LuaContext::on_joypad_button_pressed(InputEvent& event) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_function(2, 1, "on_joyad_button_pressed");
-    handled = lua_toboolean(l, -1);
-    lua_pop(l, 1);
+    bool success = call_function(2, 1, "on_joyad_button_pressed");
+    if (!success) {
+      // Something was wrong in the script: don't propagate the input to other objects.
+      handled = true;
+    }
+    else {
+      handled = lua_toboolean(l, -1);
+      lua_pop(l, 1);
+    }
   }
   return handled;
 }
@@ -1656,9 +1697,15 @@ bool LuaContext::on_joypad_button_released(InputEvent& event) {
     int button = event.get_joypad_button();
 
     lua_pushinteger(l, button);
-    call_function(2, 1, "on_joyad_button_released");
-    handled = lua_toboolean(l, -1);
-    lua_pop(l, 1);
+    bool success = call_function(2, 1, "on_joyad_button_released");
+    if (!success) {
+      // something was wrong in the script: don't propagate the input to other objects.
+      handled = true;
+    }
+    else {
+      handled = lua_toboolean(l, -1);
+      lua_pop(l, 1);
+    }
   }
   return handled;
 }
@@ -1678,9 +1725,15 @@ bool LuaContext::on_joypad_axis_moved(InputEvent& event) {
 
     lua_pushinteger(l, axis);
     lua_pushinteger(l, state);
-    call_function(3, 1, "on_joyad_axis_moved");
-    handled = lua_toboolean(l, -1);
-    lua_pop(l, 1);
+    bool success = call_function(3, 1, "on_joyad_axis_moved");
+    if (!success) {
+      // something was wrong in the script: don't propagate the input to other objects.
+      handled = true;
+    }
+    else {
+      handled = lua_toboolean(l, -1);
+      lua_pop(l, 1);
+    }
   }
   return handled;
 }
@@ -1700,9 +1753,15 @@ bool LuaContext::on_joypad_hat_moved(InputEvent& event) {
 
     lua_pushinteger(l, hat);
     lua_pushinteger(l, direction8);
-    call_function(3, 1, "on_joyad_hat_moved");
-    handled = lua_toboolean(l, -1);
-    lua_pop(l, 1);
+    bool success = call_function(3, 1, "on_joyad_hat_moved");
+    if (!success) {
+      // something was wrong in the script: don't propagate the input to other objects.
+      handled = true;
+    }
+    else {
+      handled = lua_toboolean(l, -1);
+      lua_pop(l, 1);
+    }
   }
   return handled;
 }
@@ -1716,9 +1775,15 @@ bool LuaContext::on_command_pressed(GameCommands::Command command) {
   bool handled = false;
   if (find_method("on_command_pressed")) {
     push_string(l, GameCommands::get_command_name(command));
-    call_function(2, 1, "on_command_pressed");
-    handled = lua_toboolean(l, -1);
-    lua_pop(l, 1);
+    bool success = call_function(2, 1, "on_command_pressed");
+    if (!success) {
+      // Something was wrong in the script: don't propagate the command to other objects.
+      handled = true;
+    }
+    else {
+      handled = lua_toboolean(l, -1);
+      lua_pop(l, 1);
+    }
   }
   return handled;
 }
@@ -1732,9 +1797,15 @@ bool LuaContext::on_command_released(GameCommands::Command command) {
   bool handled = false;
   if (find_method("on_command_released")) {
     push_string(l, GameCommands::get_command_name(command));
-    call_function(2, 1, "on_command_released");
-    handled = lua_toboolean(l, -1);
-    lua_pop(l, 1);
+    bool success = call_function(2, 1, "on_command_released");
+    if (!success) {
+      // Something was wrong in the script: don't propagate the command to other objects.
+      handled = true;
+    }
+    else {
+      handled = lua_toboolean(l, -1);
+      lua_pop(l, 1);
+    }
   }
   return handled;
 }
@@ -1941,8 +2012,14 @@ bool LuaContext::on_npc_interaction_item(NPC& npc, EquipmentItem& item_used) {
   if (find_method("on_npc_interaction_item")) {
     push_npc(l, npc);
     push_item(l, item_used);
-    call_function(3, 1, "on_npc_interaction_item");
-    interacted = lua_toboolean(l, -1);
+    bool success = call_function(3, 1, "on_npc_interaction_item");
+    if (!success) {
+      // Something was wrong in the script: don't propage the event to other objects.
+      interacted = true;
+    }
+    else {
+      interacted = lua_toboolean(l, -1);
+    }
     lua_pop(l, 1);
   }
   return interacted;
@@ -1968,9 +2045,15 @@ bool LuaContext::on_interaction_item(EquipmentItem& item) {
   bool interacted = false;
   if (find_method("on_interaction_item")) {
     push_item(l, item);
-    call_function(2, 1, "on_interaction_item");
-    interacted = lua_toboolean(l, -1);
-    lua_pop(l, 1);
+    bool success = call_function(2, 1, "on_interaction_item");
+    if (!success) {
+      // Something was wrong in the script: don't propage the event to other objects.
+      interacted = true;
+    }
+    else {
+      interacted = lua_toboolean(l, -1);
+      lua_pop(l, 1);
+    }
   }
   return interacted;
 }
@@ -2028,9 +2111,15 @@ bool LuaContext::on_buying() {
 
   bool can_buy = true;
   if (find_method("on_buying")) {
-    call_function(1, 1, "on_buying");
-    can_buy = lua_toboolean(l, -1);
-    lua_pop(l, 1);
+    bool success = call_function(1, 1, "on_buying");
+    if (!success) {
+      // Something was wrong in the script: don't let the player buy the item.
+      can_buy = false;
+    }
+    else {
+      can_buy = lua_toboolean(l, -1);
+      lua_pop(l, 1);
+    }
   }
   return can_buy;
 }

@@ -233,11 +233,19 @@ function inventory_submenu:show_info_message()
 
   local item_name = item_names[self:get_selected_index() + 1]
   local variant = self.game:get_item(item_name):get_variant()
+  local map = self.game:get_map()
 
-  -- FIXME position of the dialog (top or bottom)
+  -- Position of the dialog (top or bottom).
+  if self.cursor_row >= 2 then
+    map:set_dialog_position(1)  -- Top of the screen.
+  else
+    map:set_dialog_position(2)  -- Bottom of the screen.
+  end
+
   self.game:set_custom_command_effect("action", nil)
-  self.game:get_map():start_dialog("_item_description." .. item_name .. "." .. variant, function()
+  map:start_dialog("_item_description." .. item_name .. "." .. variant, function()
     self.game:set_custom_command_effect("action", "info")
+    map:set_dialog_position(0)  -- Back to automatic position.
   end)
 
 end

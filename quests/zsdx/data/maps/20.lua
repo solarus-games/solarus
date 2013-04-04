@@ -20,7 +20,7 @@ end
 local function tom_please_help_dialog_finished(answer)
 
   map:get_game():set_value("b47", true)
-  if answer == 0 then
+  if answer == 1 then
     map:start_dialog("lyriann_cave.tom.accept_help", function()
       hero:start_treasure("boomerang", 1, "b41")
     end)
@@ -110,7 +110,7 @@ function tom:on_interaction()
     end
   elseif has_boomerang_of_tom() then
     map:start_dialog("lyriann_cave.tom.not_finished", function(answer)
-      if answer == 1 then
+      if answer == 2 then
         give_boomerang_back()
         map:start_dialog("lyriann_cave.tom.gave_boomerang_back")
       end

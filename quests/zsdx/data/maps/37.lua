@@ -83,7 +83,7 @@ function billy:on_interaction()
       if map:get_game():get_item("level_4_way"):get_variant() == 2 then
         -- the player has the golden bars
         map:start_dialog("billy_cave.with_golden_bars", function(answer)
-          if answer == 0 then
+          if answer == 1 then
             give_golden_bars()
           else
             give_apple_pie()
@@ -91,7 +91,7 @@ function billy:on_interaction()
         end)
       else
         map:start_dialog("billy_cave.without_golden_bars", function(answer)
-          if answer == 0 then
+          if answer == 1 then
             give_croissant()
           else
             give_apple_pie()

@@ -18,7 +18,7 @@ function item:on_using()
   elseif variant == 2 then
     -- ask the hero to pour away the water
     map:start_dialog("use_bottle_with_water", function(answer)
-      if answer == 0 then
+      if answer == 1 then
 	-- empty the water
 	self:set_variant(1) -- make the bottle empty
 	sol.audio.play_sound("item_in_water")
@@ -72,7 +72,7 @@ function item:on_npc_interaction(npc)
       local first_empty_bottle = game:get_first_empty_bottle()
       if first_empty_bottle ~= nil then
         map:start_dialog("found_water", function(answer)
-	  if answer == 0 then
+	  if answer == 1 then
 	    map:treasure_give(first_empty_bottle:get_name(), 2, -1)
 	  end
 	end)

@@ -45,6 +45,7 @@ const uint32_t DialogBox::char_delays[] = {
 DialogBox::DialogBox(Game& game):
   game(game),
   callback_ref(LUA_REFNIL),
+  vertical_position(POSITION_AUTO),
   dialog_surface(SOLARUS_SCREEN_WIDTH, SOLARUS_SCREEN_HEIGHT),
   box_img("hud/dialog_box.png"),
   icons_img("hud/dialog_icons.png"),
@@ -91,7 +92,15 @@ bool DialogBox::is_enabled() {
 }
 
 /**
- * @brief Sets the dialog box style for all subsequent dialogs.
+ * @brief Returns the dialog box style.
+ * @param style The new style to set.
+ */
+DialogBox::Style DialogBox::get_style() {
+  return style;
+}
+
+/**
+ * @brief Sets the dialog box style for subsequent dialogs.
  *
  * The default style is DialogBox::STYLE_WITH_FRAME.
  *
@@ -107,33 +116,19 @@ void DialogBox::set_style(Style style) {
 }
 
 /**
- * @brief Sets the vertical position of the dialog box.
- * @param vertical_position the vertical position
+ * @brief Returns the vertical position of the dialog box.
+ * @return The vertical position.
+ */
+DialogBox::VerticalPosition DialogBox::get_vertical_position() {
+  return vertical_position;
+}
+
+/**
+ * @brief Sets the vertical position of the dialog box for subsequent dialogs.
+ * @param vertical_position The vertical position.
  */
 void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
-
-  if (vertical_position == POSITION_AUTO) {
-    // determine the position
-    const Rectangle& camera_position = game.get_current_map().get_camera_position();
-    vertical_position = POSITION_BOTTOM;
-
-    if (game.get_hero().get_y() >= camera_position.get_y() + 130) {
-      vertical_position = POSITION_TOP;
-    }
-  }
-
-  // set the coordinates of graphic objects
-  int x = SOLARUS_SCREEN_WIDTH_MIDDLE - 110;
-  int y = (vertical_position == POSITION_TOP) ? 32
-      : SOLARUS_SCREEN_HEIGHT - 96;
-
-  if (style == STYLE_WITHOUT_FRAME) {
-    y += (vertical_position == POSITION_TOP) ? (-24) : 24;
-  }
-
-  box_dst_position.set_xy(x, y);
-  question_dst_position.set_xy(x + 18, y + 27);
-  icon_dst_position.set_xy(x + 18, y + 22);
+  this->vertical_position = vertical_position;
 }
 
 /**
@@ -223,10 +218,8 @@ void DialogBox::start_dialog(const std::string& dialog_id) {
  *
  * @param dialog_id of the dialog
  * @param callback_ref Lua ref of a function to call when the dialog finishes.
- * @param vertical_position vertical position where to display the dialog box (default: auto)
  */
-void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref,
-    VerticalPosition vertical_position) {
+void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref) {
 
   Debug::check_assertion(!is_enabled() || is_full(), StringConcat()
       << "Cannot start dialog '" << dialog_id
@@ -268,7 +261,30 @@ void DialogBox::start_dialog(const std::string& dialog_id, int callback_ref,
   question_dst_position.set_y(box_dst_position.get_y() + 27);
 
   if (first) {
-    set_vertical_position(vertical_position);
+
+    // Determine the position.
+    bool top = false;
+    if (vertical_position == POSITION_TOP) {
+      top = true;
+    }
+    else if (vertical_position == POSITION_AUTO) {
+      const Rectangle& camera_position = game.get_current_map().get_camera_position();
+      if (game.get_hero().get_y() >= camera_position.get_y() + 130) {
+        top = true;
+      }
+    }
+
+    // Set the coordinates of graphic objects.
+    int x = SOLARUS_SCREEN_WIDTH_MIDDLE - 110;
+    int y = top ? 32 : SOLARUS_SCREEN_HEIGHT - 96;
+
+    if (style == STYLE_WITHOUT_FRAME) {
+      y += top ? (-24) : 24;
+    }
+
+    box_dst_position.set_xy(x, y);
+    question_dst_position.set_xy(x + 18, y + 27);
+    icon_dst_position.set_xy(x + 18, y + 22);
   }
 
   // start displaying text
@@ -357,18 +373,13 @@ void DialogBox::close() {
   callback_ref = LUA_REFNIL;
   dialog_id = "";
 
-  // restore the action and sword keys
+  // Restore the action and sword keys.
   KeysEffect& keys_effect = game.get_keys_effect();
   keys_effect.set_action_key_effect(action_key_effect_saved);
   keys_effect.set_sword_key_effect(sword_key_effect_saved);
 
-  if (!skipped) {
-    // A dialog was just finished: notify Lua.
-    game.get_lua_context().notify_dialog_finished(previous_callback_ref, last_answer);
-  }
-  else {
-    game.get_lua_context().cancel_callback(previous_callback_ref);
-  }
+  // A dialog was just finished: notify Lua.
+  game.get_lua_context().notify_dialog_finished(previous_callback_ref, skipped, last_answer);
 }
 
 /**

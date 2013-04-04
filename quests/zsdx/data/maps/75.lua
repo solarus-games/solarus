@@ -31,7 +31,7 @@ end
 
 local function play_question_dialog_finished(answer)
 
-  if answer == 0 then
+  if answer == 1 then
     if map:get_game():get_money() >= 30 then
       map:get_game():remove_money(30)
       playing = true
@@ -91,6 +91,6 @@ local function chest_empty(chest)
   end
 end
 for _, chest in ipairs(map:get_entities("chest_")) do
-  chest:on_empty = chest_empty
+  chest.on_empty = chest_empty
 end
 

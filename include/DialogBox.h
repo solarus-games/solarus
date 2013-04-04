@@ -71,14 +71,15 @@ class DialogBox {
 
     // dialog properties
     Game& get_game();
+    Style get_style();
     void set_style(Style style);
+    VerticalPosition get_vertical_position();
     void set_vertical_position(VerticalPosition vertical_position);
     bool is_enabled();
 
     // current message
     void start_dialog(const std::string& dialog_id);
-    void start_dialog(const std::string& dialog_id, int callback_ref,
-        VerticalPosition vertical_position = POSITION_AUTO);
+    void start_dialog(const std::string& dialog_id, int callback_ref);
     bool is_letter_sound_enabled();
     void set_variable(const std::string& dialog_id, const std::string &value);
     void set_variable(const std::string& dialog_id, int value);
@@ -106,6 +107,7 @@ class DialogBox {
     std::map<std::string, std::string> variables;   /**< variables to display in dialogs */
     int callback_ref;                               /**< Lua ref of a function to call when the dialog finishes. */
     Style style;                                    /**< style of the dialog box */
+    VerticalPosition vertical_position;             /**< vertical position of the dialog box */
     Dialog::SkipMode skip_mode;                     /**< indicates what happens when the user tries to skip the dialog */
     int icon_number;                                /* index of the 16*16 icon displayed, or -1 if there is no icon */
     bool skipped;                                   /* true if the user has skipped the dialog (SKIP_ALL) */

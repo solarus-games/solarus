@@ -66,6 +66,7 @@ function enemy:disappear()
   if state ~= "destroying" then
     state = "destroying"
     local sprite = self:get_sprite()
+    self:set_attack_consequence("sword", "ignored")
     self:set_can_attack(false)
     self:stop_movement()
     sprite:set_animation("destroy")

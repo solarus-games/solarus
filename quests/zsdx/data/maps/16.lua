@@ -12,7 +12,7 @@ function smith:on_interaction()
     map:start_dialog("smith_cave.without_sword", function(answer)
       -- the dialog was the question to buy the sword
 
-      if answer == 1 then
+      if answer == 2 then
         -- the player does not want to buy the sword
         map:start_dialog("smith_cave.not_buying")
       else

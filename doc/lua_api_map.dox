@@ -360,7 +360,7 @@ and only loads the image of the new tileset.
 Returns whether the dialog box is currently active.
 - Return value (boolean): \c true if a dialog is being shown.
 
-\subsection lua_api_map_start_dialog map:start_dialog(dialog_id)
+\subsection lua_api_map_start_dialog map:start_dialog(dialog_id, [callback])
 
 Shows a dialog box.
 
@@ -368,6 +368,14 @@ The dialog box must not be already active.
 - \c dialog_id (string): Id of the dialog to show.
   The corresponding dialog must exist in the \c dialogs.dat
   file of the current \ref lua_api_language "language".
+- \c callback (function, optional): A function to be called when the dialog
+  finishes. An \c answer parameter is passed to your function:
+  - \c 1 if the player has validated the dialog (and with the first
+  answer if there was a question),
+  - \c 2 if the player has validated the dialog with the second answer
+  (only possible if there was a question),
+  - \c "skipped" if the player has skipped the dialog
+  (only possible if the dialog was skippable).
 
 \subsection lua_api_map_set_dialog_variable map:set_dialog_variable(dialog_id, value):
 

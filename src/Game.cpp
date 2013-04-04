@@ -234,32 +234,38 @@ bool Game::notify_input(InputEvent& event) {
  */
 void Game::notify_command_pressed(GameCommands::Command command) {
 
-  bool handled = get_lua_context().game_on_command_pressed(*this, command);
+  // Is a dialog being shown?
+  if (is_dialog_enabled()) {
+    dialog_box.notify_command_pressed(command);
+  }
 
-  if (!handled) {
-    // The Lua script did not override the command: do the built-in behavior.
+  // Is the game over sequence shown?
+  else if (is_showing_gameover()) {
+    gameover_sequence->notify_command_pressed(command);
+  }
 
-    if (command == GameCommands::PAUSE) {
-      if (is_paused()) {
-        set_paused(false);
+  else {
+    bool handled = get_lua_context().game_on_command_pressed(*this, command);
+
+    if (!handled) {
+      // The Lua script did not override the command: do the built-in behavior.
+
+      if (command == GameCommands::PAUSE) {
+        if (is_paused()) {
+          if (can_unpause()) {
+            set_paused(false);
+          }
+        }
+        else {
+          if (can_pause()) {
+            set_paused(true);
+          }
+        }
       }
-      else if (can_pause()) {
-        set_paused(true);
+      else if (!is_suspended()) {
+        // when the game is not suspended, all other keys apply to the hero
+        hero->notify_command_pressed(command);
       }
-    }
-    else if (!is_suspended()) {
-      // when the game is not suspended, all other keys apply to the hero
-      hero->notify_command_pressed(command);
-    }
-
-    // is a message being shown?
-    else if (is_dialog_enabled()) {
-      dialog_box.notify_command_pressed(command);
-    }
-
-    // is the game over sequence shown?
-    else if (is_showing_gameover()) {
-      gameover_sequence->notify_command_pressed(command);
     }
   }
 }
@@ -643,15 +649,25 @@ DialogBox& Game::get_dialog_box() {
 /**
  * @brief Returns whether the player is currently allowed to pause the game.
  *
- * He can pause the game if the pause key is enabled
+ * He can pause the game if the pause command is enabled
  * and if his life is greater than zero.
  *
- * @return true if the player is currently allowed to pause the game
+ * @return true if the player is currently allowed to pause the game.
  */
 bool Game::can_pause() {
   return !is_suspended()
       && is_pause_key_available()         // see if the map currently allows the pause key
       && get_equipment().get_life() > 0;  // don't allow to pause the game if the gameover sequence is about to start
+}
+
+/**
+ * @brief Returns whether the player is currently allowed to unpause the game.
+ * @return true if the player is currently allowed to unpause the game.
+ */
+bool Game::can_unpause() {
+  return is_paused()
+      && is_pause_key_available()
+      && !is_dialog_enabled();
 }
 
 /**

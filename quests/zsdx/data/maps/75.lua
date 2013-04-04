@@ -91,6 +91,6 @@ local function chest_empty(chest)
   end
 end
 for _, chest in ipairs(map:get_entities("chest_")) do
-  chest:on_empty = chest_empty
+  chest.on_empty = chest_empty
 end
 

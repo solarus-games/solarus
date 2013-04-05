@@ -41,7 +41,6 @@ class Game {
     bool pause_key_available;  /**< indicates that the player is allowed to use the pause key */
     bool paused;               /**< indicates that the game is paused */
     GameoverSequence* gameover_sequence; /**< the game over sequence (if currently shown) */
-    bool resetting;            /**< true if the program will be reset */
     bool restarting;           /**< true if the game will be restarted */
 
     // controls
@@ -129,7 +128,6 @@ class Game {
     // game over
     void start_gameover_sequence();
     void get_back_from_death();
-    void reset();
     void restart();
 };
 

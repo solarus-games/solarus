@@ -106,13 +106,21 @@ void MainLoop::set_exiting() {
 }
 
 /**
- * @brief Marks the current screen as finished and sets the initial screen
+ * @brief Returns whether the program is being reset.
+ */
+bool MainLoop::is_resetting() {
+
+  return game != NULL && next_game == NULL;
+}
+
+/**
+ * @brief Marks the current game as finished and sets the initial screen
  * to be started at the next cycle.
  */
 void MainLoop::set_resetting() {
 
   // Reset the program.
-  next_game = NULL;
+  set_game(NULL);
 }
 
 /**
@@ -128,6 +136,11 @@ Game* MainLoop::get_game() {
  * @param game The new game to start, or NULL to start no game.
  */
 void MainLoop::set_game(Game* game) {
+
+  if (this->game != NULL) {
+    this->game->stop();
+  }
+
   this->next_game = game;
 }
 
@@ -163,7 +176,6 @@ void MainLoop::run() {
     // go to another game?
     if (next_game != game) {
       if (game != NULL) {
-        game->stop();
         delete game;
       }
 
@@ -214,6 +226,7 @@ void MainLoop::run() {
   if (game != NULL) {
     game->stop();
     delete game;
+    game = NULL;
   }
 }
 

@@ -45,7 +45,6 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   pause_key_available(true),
   paused(false),
   gameover_sequence(NULL),
-  resetting(false),
   restarting(false),
   keys_effect(NULL),
   current_map(NULL),
@@ -80,11 +79,13 @@ Game::~Game() {
   Debug::check_assertion(!current_map->is_started(),
       "Deleting a game while a map is still running. Call Game::stop() before.");
 
-  savegame->set_game(NULL);
-  savegame->decrement_refcount();
-  if (savegame->get_refcount() == 0) {
-    // No one is using the savegame anymore (especially not Lua).
-    delete savegame;
+  if (savegame != NULL) {
+    savegame->set_game(NULL);
+    savegame->decrement_refcount();
+    if (savegame->get_refcount() == 0) {
+      // No one is using the savegame anymore (especially not Lua).
+      delete savegame;
+    }
   }
 
   current_map->unload();
@@ -110,7 +111,7 @@ Game::~Game() {
 }
 
 /**
- * @brief Starts this screen.
+ * @brief Starts this game.
  */
 void Game::start() {
   get_savegame().notify_game_started();
@@ -118,7 +119,7 @@ void Game::start() {
 }
 
 /**
- * @brief Ends this screen.
+ * @brief Ends this game.
  */
 void Game::stop() {
 
@@ -298,8 +299,8 @@ void Game::update() {
   // update the transitions between maps
   update_transitions();
 
-  if (resetting || restarting) {
-    return; // the game may have just been reset
+  if (restarting) {
+    return; // the game is restarting
   }
 
   // update the map
@@ -357,13 +358,10 @@ void Game::update_transitions() {
     transition = NULL;
 
     MainLoop& main_loop = get_main_loop();
-    if (resetting) {
-      current_map->unload();
-      main_loop.set_resetting();
-    }
-    else if (restarting) {
+    if (restarting) {
       current_map->unload();
       main_loop.set_game(new Game(main_loop, savegame));
+      savegame->decrement_refcount();
       savegame = NULL;  // The new game is the owner.
     }
     else if (transition_direction == Transition::OUT) {
@@ -422,7 +420,7 @@ void Game::update_transitions() {
   }
 
   // if a map has just been set as the current map, start it and play the in transition
-  if (!current_map->is_started()) {
+  if (!restarting && !main_loop.is_resetting() && !current_map->is_started()) {
     transition = Transition::create(transition_style, Transition::IN, this);
 
     if (previous_map_surface != NULL) {
@@ -720,16 +718,6 @@ void Game::set_paused(bool paused) {
       keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_PAUSE);
     }
   }
-}
-
-/**
- * @brief Ends the game and goes back to the initial screen.
- */
-void Game::reset() {
-
-  transition = Transition::create(Transition::FADE, Transition::OUT, this);
-  transition->start();
-  resetting = true;
 }
 
 /**

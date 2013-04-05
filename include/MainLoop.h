@@ -36,6 +36,7 @@ class MainLoop {
     void set_exiting();
     bool is_exiting();
     void set_resetting();
+    bool is_resetting();
     Game* get_game();
     void set_game(Game* game);
 

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "GameoverSequence.h"
+#include "MainLoop.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Sprite.h"
@@ -226,7 +227,7 @@ void GameoverSequence::notify_command_pressed(GameCommands::Command command) {
 
         case 1: // save and quit
           game.get_savegame().save();
-          game.reset();
+          game.get_main_loop().set_resetting();
           break;
 
         case 2: // continue without saving
@@ -234,7 +235,7 @@ void GameoverSequence::notify_command_pressed(GameCommands::Command command) {
           break;
 
         case 3: // quit without saving
-          game.reset();
+          game.get_main_loop().set_resetting();
           break;
       }
     }

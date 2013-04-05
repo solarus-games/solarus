@@ -70,6 +70,9 @@ TargetMovement::TargetMovement(MapEntity* target_entity, int moving_speed,
   next_recomputation_date(System::now()),
   finished(false) {
 
+  if (this->target_entity != NULL) {
+    this->target_entity->increment_refcount();
+  }
 }
 
 /**
@@ -77,6 +80,12 @@ TargetMovement::TargetMovement(MapEntity* target_entity, int moving_speed,
  */
 TargetMovement::~TargetMovement() {
 
+  if (this->target_entity != NULL) {
+    this->target_entity->decrement_refcount();
+    if (this->target_entity->get_refcount() == 0) {
+      delete this->target_entity;
+    }
+  }
 }
 
 /**
@@ -97,6 +106,13 @@ void TargetMovement::notify_object_controlled() {
  */
 void TargetMovement::set_target(int target_x, int target_y) {
 
+  if (this->target_entity != NULL) {
+    this->target_entity->decrement_refcount();
+    if (this->target_entity->get_refcount() == 0) {
+      delete this->target_entity;
+    }
+  }
+
   this->target_x = target_x;
   this->target_y = target_y;
   this->target_entity = NULL;
@@ -110,7 +126,19 @@ void TargetMovement::set_target(int target_x, int target_y) {
  */
 void TargetMovement::set_target(MapEntity* target_entity) {
 
+  if (this->target_entity != NULL) {
+    this->target_entity->decrement_refcount();
+    if (this->target_entity->get_refcount() == 0) {
+      delete this->target_entity;
+    }
+  }
+
   this->target_entity = target_entity;
+
+  if (this->target_entity != NULL) {
+    this->target_entity->increment_refcount();
+  }
+
   recompute_movement();
   next_recomputation_date = System::now() + recomputation_delay;
 }
@@ -136,6 +164,10 @@ void TargetMovement::set_moving_speed(int moving_speed) {
  * @brief Updates the movement.
  */
 void TargetMovement::update() {
+
+  if (target_entity != NULL && target_entity->is_being_removed()) {
+    set_target(NULL);
+  }
 
   if (System::now() >= next_recomputation_date) {
     recompute_movement();

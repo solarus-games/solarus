@@ -56,6 +56,12 @@ CircleMovement::CircleMovement(bool ignore_obstacles):
  */
 CircleMovement::~CircleMovement() {
 
+  if (this->center_entity != NULL) {
+    this->center_entity->decrement_refcount();
+    if (this->center_entity->get_refcount() == 0) {
+      delete this->center_entity;
+    }
+  }
 }
 
 /**
@@ -65,7 +71,14 @@ CircleMovement::~CircleMovement() {
  *
  * @param center_point center of the circles to make
  */
-void CircleMovement::set_center(const Rectangle &center_point) {
+void CircleMovement::set_center(const Rectangle& center_point) {
+
+  if (this->center_entity != NULL) {
+    this->center_entity->decrement_refcount();
+    if (this->center_entity->get_refcount() == 0) {
+      delete this->center_entity;
+    }
+  }
 
   this->center_entity = NULL;
   this->center_point = center_point;
@@ -83,7 +96,15 @@ void CircleMovement::set_center(const Rectangle &center_point) {
  */
 void CircleMovement::set_center(MapEntity& center_entity, int x, int y) {
 
+  if (this->center_entity != NULL) {
+    this->center_entity->decrement_refcount();
+    if (this->center_entity->get_refcount() == 0) {
+      delete this->center_entity;
+    }
+  }
+
   this->center_entity = &center_entity;
+  this->center_entity->increment_refcount();
   this->center_point.set_xy(x, y);
   recompute_position();
 }
@@ -300,6 +321,12 @@ void CircleMovement::set_loop(uint32_t delay) {
 void CircleMovement::update() {
 
   Movement::update();
+
+  if (center_entity != NULL && center_entity->is_being_removed()) {
+    set_center(Rectangle(
+          center_entity->get_x() + center_point.get_x(),
+          center_entity->get_y() + center_point.get_y()));
+  }
 
   if (is_suspended()) {
     return;

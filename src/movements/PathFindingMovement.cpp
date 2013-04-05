@@ -39,6 +39,12 @@ PathFindingMovement::PathFindingMovement(int speed):
  */
 PathFindingMovement::~PathFindingMovement() {
 
+  if (target != NULL) {
+    target->decrement_refcount();
+    if (target->get_refcount() == 0) {
+      delete target;
+    }
+  }
 }
 
 /**
@@ -47,6 +53,7 @@ PathFindingMovement::~PathFindingMovement() {
 void PathFindingMovement::set_target(MapEntity& target) {
 
   this->target = &target;
+  target.increment_refcount();
   next_recomputation_date = System::now() + 100;
 }
 
@@ -56,6 +63,15 @@ void PathFindingMovement::set_target(MapEntity& target) {
 void PathFindingMovement::update() {
 
   PathMovement::update();
+
+  if (target != NULL && target->is_being_removed()) {
+    target->decrement_refcount();
+    if (target->get_refcount() == 0) {
+      delete target;
+    }
+    target = NULL;
+  }
+
 
   if (is_suspended()) {
     return;
@@ -81,27 +97,29 @@ void PathFindingMovement::update() {
  */
 void PathFindingMovement::recompute_movement() { 
 
-  PathFinding path_finding(get_entity()->get_map(), *get_entity(), *target);
-  std::string path = path_finding.compute_path();
+  if (target != NULL) {
+    PathFinding path_finding(get_entity()->get_map(), *get_entity(), *target);
+    std::string path = path_finding.compute_path();
 
-  uint32_t min_delay;
-  if (path.size() == 0) {
-    // the target is too far or there is no path
-    path = create_random_path();
+    uint32_t min_delay;
+    if (path.size() == 0) {
+      // the target is too far or there is no path
+      path = create_random_path();
 
-    // no path was found: no need to try again very soon
-    // (note that the A* algorithm is very costly when it explores all nodes without finding a solution)
-    min_delay = 3000;
+      // no path was found: no need to try again very soon
+      // (note that the A* algorithm is very costly when it explores all nodes without finding a solution)
+      min_delay = 3000;
+    }
+    else {
+      // a path was found: we need to update it frequently (and the A* algorithm is much faster in general when there is a solution)
+      min_delay = 300;
+    }
+    // compute a new path every random delay to avoid
+    // having all path-finding entities of the map compute a path at the same time
+    next_recomputation_date = System::now() + min_delay + Random::get_number(200);
+
+    set_path(path);
   }
-  else {
-    // a path was found: we need to update it frequently (and the A* algorithm is much faster in general when there is a solution)
-    min_delay = 300;
-  }
-  // compute a new path every random delay to avoid
-  // having all path-finding entities of the map compute a path at the same time
-  next_recomputation_date = System::now() + min_delay + Random::get_number(200);
-
-  set_path(path);
 }
 
 /**

@@ -45,6 +45,7 @@ Game::Game(MainLoop& main_loop, Savegame* savegame):
   pause_key_available(true),
   paused(false),
   gameover_sequence(NULL),
+  started(false),
   restarting(false),
   keys_effect(NULL),
   current_map(NULL),
@@ -114,6 +115,7 @@ Game::~Game() {
  * @brief Starts this game.
  */
 void Game::start() {
+  started = true;
   get_savegame().notify_game_started();
   get_lua_context().game_on_started(*this);
 }
@@ -128,6 +130,7 @@ void Game::stop() {
   }
   get_lua_context().game_on_finished(*this);
   get_savegame().notify_game_finished();
+  started = false;
 }
 
 /**
@@ -420,7 +423,7 @@ void Game::update_transitions() {
   }
 
   // if a map has just been set as the current map, start it and play the in transition
-  if (!restarting && !main_loop.is_resetting() && !current_map->is_started()) {
+  if (started && !current_map->is_started()) {
     transition = Transition::create(transition_style, Transition::IN, this);
 
     if (previous_map_surface != NULL) {

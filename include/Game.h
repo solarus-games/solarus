@@ -41,6 +41,7 @@ class Game {
     bool pause_key_available;  /**< indicates that the player is allowed to use the pause key */
     bool paused;               /**< indicates that the game is paused */
     GameoverSequence* gameover_sequence; /**< the game over sequence (if currently shown) */
+    bool started;              /**< true if this game is running, false if it is not yet started or being closed. */
     bool restarting;           /**< true if the game will be restarted */
 
     // controls

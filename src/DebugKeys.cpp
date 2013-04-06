@@ -23,7 +23,7 @@
 
 /**
  * @brief Constructor.
- * @param main_loop the Solarus main loop object
+ * @param main_loop The Solarus main loop object.
  */
 DebugKeys::DebugKeys(MainLoop& main_loop):
   main_loop(main_loop) {
@@ -34,6 +34,14 @@ DebugKeys::DebugKeys(MainLoop& main_loop):
  */
 DebugKeys::~DebugKeys() {
 
+}
+
+/**
+ * @brief Returns the Solarus main loop object.
+ * @return The Solarus main loop object.
+ */
+MainLoop& DebugKeys::get_main_loop() {
+  return main_loop;
 }
 
 /**

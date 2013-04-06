@@ -39,6 +39,8 @@ class DebugKeys {
     DebugKeys(MainLoop& main_loop);
     ~DebugKeys();
 
+    MainLoop& get_main_loop();
+
     void update();
 };
 

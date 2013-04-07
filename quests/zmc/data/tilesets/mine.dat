@@ -3495,3 +3495,43 @@ tile_pattern{
   height = 16,
 }
 
+tile_pattern{
+  id = 738,
+  ground = "wall_bottom_left",
+  default_layer = 1,
+  x = 200,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tile_pattern{
+  id = 739,
+  ground = "wall_bottom_right",
+  default_layer = 1,
+  x = 216,
+  y = 0,
+  width = 16,
+  height = 16,
+}
+
+tile_pattern{
+  id = 740,
+  ground = "wall_top_right",
+  default_layer = 1,
+  x = 200,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+
+tile_pattern{
+  id = 741,
+  ground = "wall_top_left",
+  default_layer = 1,
+  x = 216,
+  y = 16,
+  width = 16,
+  height = 16,
+}
+

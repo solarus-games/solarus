@@ -693,16 +693,18 @@ void Enemy::update() {
 
   if (is_killed() && is_dying_animation_finished()) {
 
-    // create the pickable treasure if any
+    // Create the pickable treasure if any.
     get_entities().add_entity(Pickable::create(get_game(),
         "", get_layer(), get_x(), get_y(),
         treasure, FALLING_HIGH, false));
 
-    // notify Lua
-    notify_dead();
-
-    // remove the enemy
+    // Remove the enemy.
     remove_from_map();
+
+    // Notify Lua that this enemy is dead.
+    // We need to do this after remove_from_map() so that this enemy is
+    // considered dead in functions like map:has_entities(prefix).
+    notify_dead();
   }
 
   get_lua_context().enemy_on_update(*this);

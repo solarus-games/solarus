@@ -608,6 +608,19 @@ The enemy will be removed from the map when the dying animation ends.
 
 Called when the enemy's dying animation is finished.
 
+At this point, the enemy no longer exists on the map.
+In other words,
+\ref lua_api_entity_exists "enemy:exists()" returns \c false,
+trying to get the enemy from its name returns \c nil,
+and functions like
+\ref lua_api_map_get_entities_count "map:get_entities(prefix)"
+won't find this enemy.
+
+This means that you can safely use
+\ref lua_api_map_has_entities "map:has_entities(prefix)" from
+<tt>enemy:on_dead()</tt> to detect when all enemies with a common prefix
+are dead.
+
 \subsection lua_api_enemy_on_immobilized enemy:on_immobilized():
 
 Called when the enemy is immobilized.

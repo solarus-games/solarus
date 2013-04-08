@@ -351,7 +351,7 @@ local function print_dialogs(output_file, dialogs)
   output_file:write([[
 -- This is a Lua dialog file for solarus 0.9.1 or greater.
 -- This dialog file was converted from the 0.9.0 ini syntax using the script
--- tools/data_files_conversion/0.9.0_to_0.9.1/convert_dialogs.lua.
+-- tools/data_files_conversion/0.9.0_to_0.9.1/dialogs_converter.lua.
 
 ]])
 

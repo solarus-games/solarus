@@ -12,6 +12,7 @@ function language_list_converter.convert(quest_path)
   -- Read the 0.9.0 file.
   local input_file = io.open(quest_path .. "/data/languages/languages.dat")
   local all_groups, all_ids = ini_parser.parse(input_file)
+  input_file:close()
 
   -- Write the 0.9.1 file.
   local output_file = io.open(quest_path .. "/data/languages/languages.dat", "w")
@@ -19,7 +20,7 @@ function language_list_converter.convert(quest_path)
   output_file:write([[
 -- This is a Lua language list file for solarus 0.9.1 or greater.
 -- This file was converted from the 0.9.0 ini syntax using the script
--- tools/data_files_conversion/0.9.0_to_0.9.1/convert_language_list.lua.
+-- tools/data_files_conversion/0.9.0_to_0.9.1/language_list_converter.lua.
 
 ]])
 

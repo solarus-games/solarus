@@ -15,6 +15,11 @@ function quest_db_loader.load_quest_db(quest_path)
 
   local resources = {}
 
+  -- Create a table for each type of resource.
+  for _, resource_type_name in resource_type_names do
+    resources[resource_type_name] = {}
+  end
+
   local file, error_message = io.open(quest_path .. "/data/project_db.dat")
   if file == nil then
     error("Cannot read project_db.dat file: " .. error_message)
@@ -41,11 +46,7 @@ function quest_db_loader.load_quest_db(quest_path)
       error("Line " .. line_number .. ": Wrong resource name")
     end
 
-    resources[#resources + 1] = {
-      ["resource_type"] = resource_type_name,
-      ["resource_id"] = resource_id,
-      ["human_name"] = resource_human_name,
-    }
+    resources[resource_type_name][resource_id] = "human_name"
   end
 
   return resources

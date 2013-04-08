@@ -195,7 +195,7 @@ int LuaContext::drawable_api_fade_out(lua_State* l) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_drawable_set_xy.
+ * @brief Implementation of \ref lua_api_drawable_get_xy.
  * @param l The Lua context that is calling this function.
  * @return Number of values to return to Lua.
  */

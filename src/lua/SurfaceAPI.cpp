@@ -84,9 +84,8 @@ void LuaContext::push_surface(lua_State* l, Surface& surface) {
 }
 
 /**
- * @brief Implementation of \ref lua_api_surface_create_empty,
- * \ref lua_api_surface_create_from_file and
- * \ref lua_api_surface_create_from_surface.
+ * @brief Implementation of \ref lua_api_surface_create_empty and
+ * \ref lua_api_surface_create_from_file.
  * @param l the Lua context that is calling this function
  * @return number of values to return to Lua
  */

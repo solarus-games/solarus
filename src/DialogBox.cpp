@@ -97,7 +97,7 @@ bool DialogBox::is_enabled() {
 
 /**
  * @brief Returns the dialog box style.
- * @param style The new style to set.
+ * @return The current style.
  */
 DialogBox::Style DialogBox::get_style() {
   return style;

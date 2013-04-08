@@ -81,7 +81,7 @@ local function pipe_sensor_in_activated(sensor)
   end
 end
 for _, sensor in ipairs(map:get_entities("pipe_in_")) do
-  sensor:on_activated = pipe_sensor_in_activated
+  sensor.on_activated = pipe_sensor_in_activated
 end
 
 local function pipe_sensor_out_activated(sensor)
@@ -95,7 +95,7 @@ local function pipe_sensor_out_activated(sensor)
   end
 end
 for _, sensor in ipairs(map:get_entities("pipe_out_")) do
-  sensor:on_activated = pipe_sensor_out_activated
+  sensor.on_activated = pipe_sensor_out_activated
 end
 
 local function hide_hero_sensor_activated(sensor)
@@ -104,7 +104,7 @@ local function hide_hero_sensor_activated(sensor)
   hero:set_visible(false)
 end
 for _, sensor in ipairs(map:get_entities("hide_hero_sensor")) do
-  sensor:on_activated = hide_hero_sensor_activated
+  sensor.on_activated = hide_hero_sensor_activated
 end
 
 local function unhide_hero_sensor_activated(sensor)
@@ -113,7 +113,7 @@ local function unhide_hero_sensor_activated(sensor)
   hero:set_visible(true)
 end
 for _, sensor in ipairs(map:get_entities("unhide_hero_sensor")) do
-  sensor:on_activated = unhide_hero_sensor_activated
+  sensor.on_activated = unhide_hero_sensor_activated
 end
 
 local function sign_interaction(sign)
@@ -138,7 +138,7 @@ local function sign_interaction(sign)
 end
 -- sign maze
 for _, sign in ipairs(map:get_entities("sign_")) do
-  sign:on_interaction = sign_interaction
+  sign.on_interaction = sign_interaction
 end
 
 -- door A

@@ -1,13 +1,14 @@
 -- Very basic ini parser used to load old data files from solarus 0.9.0.
 
+local ini_parser = {}
+
 -- Reads an arbitrary ini file and returns a table with all groups and
 -- an array with all their ids.
-function ini_parse(file)
+function ini_parser.parse(file)
 
-  file = file or io.stdin
   local all_ids = {}      -- array of all group ids
   local all_groups = {}   -- table of all groups
-  local group = {}        -- current group
+  local group = nil       -- current group
   local line_number = 0
 
   for line in file:lines() do
@@ -22,7 +23,7 @@ function ini_parse(file)
 
       if id then
         -- new group
-        if group.id ~= nil then
+        if group ~= nil and group.id ~= nil then
           if all_groups[group.id] then
             error("Duplicate group '" .. group.id .. "'")
           end
@@ -37,13 +38,12 @@ function ini_parse(file)
         -- line with a value
         group[key] = value
       else
-        print("-- Warning: ignoring invalid line " .. line_number .. ": '"
-            .. line .. "'")
+        error("Line " .. line_number .. ": This is not an ini file: '" .. line .. "'")
       end
     end
   end
 
-  if #all_ids == 0 then
+  if group == nil then
     error("No groups were found. Is this an ini file?")
   end
 
@@ -52,4 +52,6 @@ function ini_parse(file)
 
   return all_groups, all_ids
 end
+
+return ini_parser
 

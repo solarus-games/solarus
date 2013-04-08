@@ -112,7 +112,6 @@ The current types of resources are:
 - 5: an item (the id is the name of the item's Lua script without its extension),
 - 6: an enemy (the id is the name of the enemy's Lua script without its extension),
 - 7: a language (the id is the language code),
-- 8: a screen script (the id is the name of the screen's Lua script without its extension).
 
 \section sounds Sounds
 

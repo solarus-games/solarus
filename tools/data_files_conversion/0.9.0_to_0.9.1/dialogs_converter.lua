@@ -1,6 +1,6 @@
 #!/usr/bin/lua
 
--- This script reads a dialog file with the format of solarus 0.9.0
+-- This module reads a dialog file with the format of solarus 0.9.0
 -- and converts it into the format of solarus 0.9.1.
 
 -- The old format (solarus 0.9.0) is an ini file.
@@ -95,16 +95,18 @@
 -- }
 -- -----------------------
 
+local dialogs_converter = {}
+
 -- Reads the ini file and returns a table with all messages and
 -- an array with all their ids
-function parse_ini()
+local function parse_ini_dialogs(input_file)
 
   local all_ids = {}      -- array of all message ids
   local all_messages = {} -- table of all messages
-  local message = {}      -- current message
+  local message = nil     -- current message
   local line_number = 0
 
-  for line in io.lines() do
+  for line in input_file:lines() do
 
     line_number = line_number + 1
 
@@ -124,7 +126,7 @@ function parse_ini()
 
       if id then
         -- new message
-        if message.id ~= nil then
+        if message ~= nil and message.id ~= nil then
           if all_messages[message.id] then
             error("Duplicate message '" .. message.id .. "'")
           end
@@ -161,7 +163,7 @@ function parse_ini()
         message.line3 = line3
       elseif comment then
         -- comments
-        if not comment:find("^[-| \t]*|[-| \t]*$") then -- skip line size comments
+        if message ~= nil and not comment:find("^[-| \t]*|[-| \t]*$") then -- skip line size comments
           if message.line1 or message.line2 or message.line3 then
             if message.comments_after == nil then
               message.comments_after = {}
@@ -175,13 +177,12 @@ function parse_ini()
           end
         end
       else
-        print("-- Warning: ignoring invalid line " .. line_number .. ": '"
-            .. line .. "'")
+        error("Line " .. line_number .. ": This is not an ini file: '" .. line .. "'")
       end
     end
   end
 
-  if #all_ids == 0 then
+  if message == nil then
     error("No messages were found. Is this a solarus 0.9.0 dialog file?")
   end
 
@@ -198,8 +199,7 @@ function find_previous(all_messages)
   for k, v in pairs(all_messages) do
     if v.next and v.next ~= "_unknown" then
       if all_messages[v.next] == nil then
-        error("Error in message '" .. k .. "': no such next message '"
-            .. v.next .. "'")
+        error("Line " .. line_number .. ": This is not an ini file: '" .. line .. "'")
       end
       if all_messages[v.next].previous == nil then
         all_messages[v.next].previous = {}
@@ -222,7 +222,7 @@ function find_previous(all_messages)
 end
 
 -- Print verbose messages about what can_be_merged() does.
-function debug_can_be_merged(all_messages, id)
+local function debug_can_be_merged(all_messages, id)
 
   local message = all_messages[id]
   if message == nil then
@@ -256,7 +256,7 @@ end
 -- into a sequence.
 -- Note that if the dialogs don't follow the 0.9.0 conventions for successive
 -- messages, there is no perfect way to be sure
-function can_be_merged(all_messages, id)
+local function can_be_merged(all_messages, id)
 
   -- debug_can_be_merged(all_messages, id)
 
@@ -283,7 +283,7 @@ end
 
 -- Merges individual messages into dialogs (sequences of messages) and
 -- returns them.
-function merge_messages(all_messages, all_ids)
+local function merge_messages(all_messages, all_ids)
 
   -- group messages together
   local sequences = {}
@@ -345,61 +345,80 @@ function merge_messages(all_messages, all_ids)
   return dialogs
 end
 
--- Prints the dialogs on stdout in the 0.9.1 syntax
-function print_dialogs(dialogs) 
+-- Prints the dialogs on an output file in the 0.9.1 syntax
+local function print_dialogs(output_file, dialogs) 
 
-  print([[
+  output_file:write([[
 -- This is a Lua dialog file for solarus 0.9.1 or greater.
 -- This dialog file was converted from the 0.9.0 ini syntax using the script
 -- tools/data_files_conversion/0.9.0_to_0.9.1/convert_dialogs.lua.
+
 ]])
 
   for _, v in ipairs(dialogs) do
 
     if v.comments then
       for _, c in ipairs(v.comments) do
-        io.write("-- " .. c .. "\n")
+        output_file:write("-- " .. c .. "\n")
       end
     end
-    io.write("dialog{\n")
-    io.write("  id = \"" .. v.id .. "\",\n")
+    output_file:write("dialog{\n")
+    output_file:write("  id = \"" .. v.id .. "\",\n")
     if v.icon then
-      io.write("  icon = " .. v.icon .. ",\n")
+      output_file:write("  icon = " .. v.icon .. ",\n")
     end
     if v.skip then
-      io.write("  skip = \"" .. v.skip .. "\",\n")
+      output_file:write("  skip = \"" .. v.skip .. "\",\n")
     end
     if v.question then
-      io.write("  question = true,\n")
+      output_file:write("  question = true,\n")
     end
     if v.next then
-      io.write("  next = \"" .. v.next .. "\",\n")
+      output_file:write("  next = \"" .. v.next .. "\",\n")
     end
     if v.next2 then
-      io.write("  next2 = \"" .. v.next2 .. "\",\n")
+      output_file:write("  next2 = \"" .. v.next2 .. "\",\n")
     end
     if not v.text then
       error("Dialog '" .. v.id .. "' has no text")
     end
-    io.write("  text = [[\n")
-    io.write(v.text)
-    io.write("]]\n")
-    io.write("}\n")
+    output_file:write("  text = [[\n")
+    output_file:write(v.text)
+    output_file:write("]]\n")
+    output_file:write("}\n")
     if v.icon then
-      io.write("--------------------\n\n")
+      output_file:write("--------------------\n\n")
     else
-      io.write("-----------------------\n\n")
+      output_file:write("-----------------------\n\n")
     end
     if v.comments_after then
       for _, c in ipairs(v.comments_after) do
-        io.write("-- " .. c .. "\n")
+        output_file:write("-- " .. c .. "\n")
       end
     end
   end
 end
 
-local all_messages, all_ids = parse_ini()
-find_previous(all_messages)
-local dialogs = merge_messages(all_messages, all_ids)
-print_dialogs(dialogs)
+function dialogs_converter.convert(quest_path, language_id)
+
+  local input_file, error_message = io.open(
+      quest_path .. "/data/languages/" .. language_id .. "/text/dialogs.dat")
+  if input_file == nil then
+    error("Cannot open old dialog file for reading: " .. error_message)
+  end
+
+  local all_messages, all_ids = parse_ini_dialogs(input_file)
+  find_previous(all_messages)
+  local dialogs = merge_messages(all_messages, all_ids)
+
+  local output_file = io.open(
+      quest_path .. "/data/languages/" .. language_id .. "/text/dialogs.dat",
+      "w")
+  if input_file == nil then
+    error("Cannot open new dialog file for writing: " .. error_message)
+  end
+  print_dialogs(output_file, dialogs)
+end
+
+return dialogs_converter
 

@@ -6,7 +6,7 @@
 
 -- The old format (solarus 0.9.0) is an ini file and the new one is a Lua file.
 
-dofile("../ini_parser.lua")
+require("../ini_parser")
 
 function print_font_list(all_groups, all_ids)
 
@@ -32,7 +32,7 @@ function print_font_list(all_groups, all_ids)
   end
 end
 
-local all_groups, all_ids = ini_parse()
+local all_groups, all_ids = ini_parse.parse(io.stdin)
 
 print_font_list(all_groups, all_ids)
 

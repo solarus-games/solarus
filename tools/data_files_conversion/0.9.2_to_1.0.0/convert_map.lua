@@ -15,6 +15,47 @@ local function prepend_b(value)
   return "b" .. value
 end
 
+-- Teletransporters no longer have a subtype.
+-- They have sprite and sound instead.
+local function convert_teletransporter_subtype(subtype, entity)
+
+  if subtype == 0 then
+    -- Invisible teletransporter: no sprite and no sound.
+    return nil
+
+  elseif subtype == 1 then
+    -- Yellow teletransporter.
+    return {
+      sprite = "entities/teletransporter",
+      sound = "warp",
+    }
+
+  else
+    error("Line " .. line_number .. ": Illegal teletransporter subtype: '" .. subtype .. "'")
+  end
+end
+
+-- Sensors no longer have a subtype.
+-- They must be scripted now.
+local function convert_sensor_subtype(subtype, entity)
+
+  if subtype == 0 then
+    -- Custom sensor: no problem.
+    return nil
+  end
+
+  local name = ""
+  for _, v in ipairs(entity) do
+    if v.key == "name" then
+      name = v.value
+    end
+  end
+
+  io.stderr:write("Warning: Line " .. line_number .. ", sensor '" .. name
+      .. "': sensors no longer have a subtype. You will have to script its behavior.\n") 
+  return nil
+end
+
 -- Returns the small keys savegame variable of this map in the new savegame format.
 local function convert_small_keys_variable(world, small_keys_variable)
 
@@ -170,7 +211,11 @@ local entity_syntaxes = {
     { token_name = "y" },
     { token_name = "name", token_type = "string" },
     { token_name = "direction" },
-    { token_name = "sprite", token_type = "string", nil_value = "_none" },
+    { token_name = "sprite", converter = {
+        [0] = nil,
+        [1] = "entities/destination",
+      }
+    },
   },
 
   [2] = {
@@ -181,8 +226,7 @@ local entity_syntaxes = {
     { token_name = "width" },
     { token_name = "height" },
     { token_name = "name", token_type = "string" },
-    { token_name = "sprite", token_type = "string", nil_value = "_none" },
-    { token_name = "sound", token_type = "string", nil_value = "_none" },
+    { token_name = "subtype", converter = convert_teletransporter_subtype },
     { token_name = "transition" },
     { token_name = "destination_map", token_type = "string" },
     { token_name = "destination", token_type = "string" },
@@ -326,6 +370,7 @@ local entity_syntaxes = {
     { token_name = "width" },
     { token_name = "height" },
     { token_name = "name", token_type = "string" },
+    { token_name = "subtype", converter = convert_sensor_subtype },
   },
 
   [14] = {

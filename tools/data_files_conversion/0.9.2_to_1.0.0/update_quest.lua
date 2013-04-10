@@ -24,10 +24,20 @@ local quest_db_loader = require("quest_db_loader")
 local resources = quest_db_loader.load_quest_db(quest_path)
 
 -- Convert tilesets.
--- TODO
+print("  Converting tilesets...")
+for old_id, human_name in pairs(resources["tileset"]) do
+  print("    Tileset " .. old_id .. " (" .. human_name .. ")")
+  -- TODO
+end
+print("  All tilesets were converted.")
 
 -- Convert maps.
--- TODO
+print("  Converting maps...")
+for old_id, human_name in pairs(resources["map"]) do
+  print("    Map " .. old_id .. " (" .. human_name .. ")")
+  -- TODO
+end
+print("  All maps were converted.")
 
 print("Update successful!")
 

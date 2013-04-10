@@ -1,3 +1,4 @@
+local quest_db_loader = {}
 
 local resource_type_names = {
   [0] = "map",
@@ -16,7 +17,7 @@ function quest_db_loader.load_quest_db(quest_path)
   local resources = {}
 
   -- Create a table for each type of resource.
-  for _, resource_type_name in resource_type_names do
+  for _, resource_type_name in pairs(resource_type_names) do
     resources[resource_type_name] = {}
   end
 
@@ -46,7 +47,7 @@ function quest_db_loader.load_quest_db(quest_path)
       error("Line " .. line_number .. ": Wrong resource name")
     end
 
-    resources[resource_type_name][resource_id] = "human_name"
+    resources[resource_type_name][resource_id] = resource_human_name
   end
 
   return resources

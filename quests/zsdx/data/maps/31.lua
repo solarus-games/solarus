@@ -129,7 +129,9 @@ end
 
 function map:on_started(destination)
 
-  boss_key_chest:set_enabled(false)
+  if not boss_key_chest:is_open() then
+    boss_key_chest:set_enabled(false)
+  end
 
   if map:get_game():get_value("b81") then
     -- boss key chest already found

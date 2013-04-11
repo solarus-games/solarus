@@ -18,7 +18,7 @@ function map:on_started(destination)
   if map:get_game():get_value("b313") then
     -- the torches are lit
     lock_torches()
-  else
+  elseif not torches_chest:is_open() then
     torches_chest:set_enabled(false)
   end
 end

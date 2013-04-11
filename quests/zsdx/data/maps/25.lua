@@ -5,7 +5,9 @@ local fighting_miniboss = false
 
 function map:on_started(destination)
 
-  boss_key_chest:set_enabled(false)
+  if not boss_key_chest:is_open() then
+    boss_key_chest:set_enabled(false)
+  end
   map:set_doors_open("stairs_door", true)
   map:set_doors_open("miniboss_door", true)
 end

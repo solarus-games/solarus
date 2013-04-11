@@ -2286,7 +2286,7 @@ chest{
   y = 96,
   name = "chest1_1",
   sprite = "entities/big_chest",
-  opening_method = "interaction_if_item",
+  opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_10_big_key",
   cannot_open_dialog = "_big_key_required",
   treasure_name = "magic_bar",

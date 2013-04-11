@@ -4693,7 +4693,7 @@ chest{
   x = 360,
   y = 48,
   name = "chest",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_name = "iron_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b182",

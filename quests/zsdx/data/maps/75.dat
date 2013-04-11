@@ -229,7 +229,7 @@ chest{
   x = 104,
   y = 80,
   name = "chest_1",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -238,7 +238,7 @@ chest{
   x = 136,
   y = 80,
   name = "chest_2",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -247,7 +247,7 @@ chest{
   x = 168,
   y = 80,
   name = "chest_3",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -256,7 +256,7 @@ chest{
   x = 200,
   y = 80,
   name = "chest_4",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -265,7 +265,7 @@ chest{
   x = 104,
   y = 112,
   name = "chest_5",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -274,7 +274,7 @@ chest{
   x = 136,
   y = 112,
   name = "chest_6",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -283,7 +283,7 @@ chest{
   x = 168,
   y = 112,
   name = "chest_7",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -292,7 +292,7 @@ chest{
   x = 200,
   y = 112,
   name = "chest_8",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -301,7 +301,7 @@ chest{
   x = 104,
   y = 144,
   name = "chest_9",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -310,7 +310,7 @@ chest{
   x = 136,
   y = 144,
   name = "chest_10",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -319,7 +319,7 @@ chest{
   x = 168,
   y = 144,
   name = "chest_11",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -328,7 +328,7 @@ chest{
   x = 200,
   y = 144,
   name = "chest_12",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 

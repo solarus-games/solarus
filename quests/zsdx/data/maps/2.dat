@@ -1455,7 +1455,7 @@ chest{
   x = 48,
   y = 80,
   name = "chest_1",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -1464,7 +1464,7 @@ chest{
   x = 96,
   y = 80,
   name = "chest_2",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -1473,7 +1473,7 @@ chest{
   x = 144,
   y = 80,
   name = "chest_3",
-  sprite_name = "entities/chest",
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 

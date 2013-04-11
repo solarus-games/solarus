@@ -1,4 +1,4 @@
-# Language: Chinese
+# Language: English
 
 # This file contains the strings displayed during the game in the current language.
 # Each line represents a string, representing by its key and then its value.
@@ -109,30 +109,32 @@ inventory.caption.item.bottle_4.6            Magic Bottle$(Fairy)
 # Options submenu
 options.caption.press_action_change_mode     Press Action to$switch video mode
 options.caption.press_action_customize_key   Press Action to$configure this key
-options.caption.press_key                    Press any key on$the keyboard or joypad
+options.caption.press_key           Press any key on$the keyboard or joypad
 # name of video modes (maximum 26 characters)
-options.video_mode.windowed_stretched        Windowed 640x480
-options.video_mode.windowed_scale2x          Windowed 640x480 smoothed
-options.video_mode.windowed_normal           Windowed 320x240
-options.video_mode.fullscreen_normal         Fullscreen stretched
-options.video_mode.fullscreen_wide           Fullscreen stretched (large)
-options.video_mode.fullscreen_scale2x        Fullscreen smoothed
-options.video_mode.fullscreen_scale2x_wide   Fullscreen smoothed (large)
+options.video_mode_0                Windowed 640x480
+options.video_mode_1                Windowed 640x480 smoothed
+options.video_mode_2                Windowed 320x240
+options.video_mode_3                Fullscreen stretched
+options.video_mode_4                Fullscreen stretched (large)
+options.video_mode_5                Fullscreen smoothed
+options.video_mode_6                Fullscreen smoothed (large)
+options.video_mode_7                Fullscreen centered
+options.video_mode_8                Fullscreen centered (large)
 # column headers of the keyboard/joypad customization table (maximum 10 characters)
 options.commands_column             Controls
 options.keyboard_column             Keyboard
 options.joypad_column               Joypad
 
-# Game commands customization (maximum 10 characters)
-options.command.action             Action
-options.command.attack             Sword
-options.command.item_1             Left Item
-options.command.item_2             Right Item
-options.command.pause              Pause
-options.command.right              Right
-options.command.up                 Up
-options.command.left               Left
-options.command.down               Down
+# Game controls customization (maximum 10 characters)
+controls.game_key_1        Action
+controls.game_key_2        Sword
+controls.game_key_3        Left Item
+controls.game_key_4        Right Item
+controls.game_key_5        Pause
+controls.game_key_6        Right
+controls.game_key_7        Up
+controls.game_key_8        Left
+controls.game_key_9        Down
 
 # Dialog to save the game
 save_dialog.yes                    Yes
@@ -143,8 +145,7 @@ save_dialog.continue_question_0    Would you like to
 save_dialog.continue_question_1    keep playing?
 
 # Savegame selection menu (maximum 45 characters)
-#selection_menu.phase.select_file         Select a file
-selection_menu.phase.select_file         這是正體字，用注音符號打字。我寫「中文」。
+selection_menu.phase.select_file         Select a file
 selection_menu.phase.choose_mode         Choose a game mode
 selection_menu.phase.choose_name         What's your name?
 selection_menu.phase.confirm_erase       Are you sure?

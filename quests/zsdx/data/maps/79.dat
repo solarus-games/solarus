@@ -4216,7 +4216,7 @@ chest{
   x = 128,
   y = 176,
   name = "chest_1",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -4225,7 +4225,7 @@ chest{
   x = 432,
   y = 256,
   name = "chest_2",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -4234,7 +4234,7 @@ chest{
   x = 464,
   y = 256,
   name = "chest_3",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -4243,7 +4243,7 @@ chest{
   x = 272,
   y = 288,
   name = "chest_4",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -4252,7 +4252,7 @@ chest{
   x = 400,
   y = 368,
   name = "chest_5",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -4261,7 +4261,7 @@ chest{
   x = 64,
   y = 432,
   name = "chest_6",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -4270,7 +4270,7 @@ chest{
   x = 256,
   y = 448,
   name = "chest_7",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 

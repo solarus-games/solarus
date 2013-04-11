@@ -53399,7 +53399,7 @@ chest{
   x = 136,
   y = 2184,
   name = "chest",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_name = "cane_of_somaria",
   treasure_variant = 1,
 }

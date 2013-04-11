@@ -4568,7 +4568,7 @@ chest{
   x = 336,
   y = 16,
   name = "chest",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_name = "level_4_way",
   treasure_variant = 2,
   treasure_savegame_variable = "b138",

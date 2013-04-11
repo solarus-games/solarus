@@ -8467,7 +8467,7 @@ chest{
   x = 1800,
   y = 320,
   name = "chest",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b811",
@@ -9196,7 +9196,7 @@ chest{
   x = 2104,
   y = 384,
   name = "compass_chest_1",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -9205,7 +9205,7 @@ chest{
   x = 2032,
   y = 384,
   name = "compass_chest_2",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -9214,7 +9214,7 @@ chest{
   x = 1984,
   y = 384,
   name = "compass_chest_3",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -9223,7 +9223,7 @@ chest{
   x = 2128,
   y = 384,
   name = "compass_chest_4",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -9232,7 +9232,7 @@ chest{
   x = 2080,
   y = 384,
   name = "compass_chest_5",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -9241,7 +9241,7 @@ chest{
   x = 2008,
   y = 384,
   name = "compass_chest_6",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 
@@ -9250,7 +9250,7 @@ chest{
   x = 2056,
   y = 384,
   name = "compass_chest_7",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_variant = 1,
 }
 

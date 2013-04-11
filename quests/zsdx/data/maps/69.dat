@@ -4019,7 +4019,7 @@ chest{
   x = 520,
   y = 464,
   name = "chest_2",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_name = "fire_stone",
   treasure_variant = 1,
   treasure_savegame_variable = "b154",

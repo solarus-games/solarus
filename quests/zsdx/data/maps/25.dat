@@ -1169,7 +1169,7 @@ chest{
   x = 96,
   y = 64,
   name = "boss_key_chest",
-  is_big_chest = false,
+  sprite_name = "entities/chest",
   treasure_name = "boss_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b57",

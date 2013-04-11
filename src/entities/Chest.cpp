@@ -23,6 +23,7 @@
 #include "Sprite.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "EquipmentItem.h"
 #include "Map.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
@@ -31,25 +32,43 @@
 #include <sstream>
 
 /**
- * @brief Creates a new chest with the specified treasure.
- * @param name name identifying this chest
- * @param layer layer of the chest to create on the map
- * @param x x coordinate of the chest to create
- * @param y y coordinate of the chest to create
- * @param big_chest true to make a big chest, false to make a normal chest
- * @param treasure the treasure in the chest
+ * @brief Lua name of each value of the OpeningMethod enum.
  */
-Chest::Chest(const std::string &name, Layer layer, int x, int y,
-	     bool big_chest, const Treasure& treasure):
+const std::string Chest::opening_method_names[] = {
+  "interaction",
+  "interaction_if_savegame_variable",
+  "interaction_if_item",
+  ""  // Sentinel.
+};
+
+/**
+ * @brief Creates a new chest with the specified treasure.
+ * @param name Name identifying this chest.
+ * @param layer Layer of the chest to create on the map.
+ * @param x X coordinate of the chest to create.
+ * @param y Y coordinate of the chest to create.
+ * @param sprite_name Name of the animation set of the
+ * sprite to create for the chest. It must have animations "open" and "closed".
+ * @param treasure The treasure in the chest.
+ */
+Chest::Chest(
+    const std::string& name,
+    Layer layer,
+    int x,
+    int y,
+    const std::string& sprite_name,
+    const Treasure& treasure):
 
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   treasure(treasure),
-  big_chest(big_chest),
   open(treasure.is_found()),
   treasure_given(open),
   treasure_date(0) {
 
-  initialize_sprite();
+  // Create the sprite.
+  Sprite& sprite = create_sprite(sprite_name);
+  std::string animation = is_open() ? "open" : "closed";
+  sprite.set_current_animation(animation);
 }
 
 /**
@@ -72,31 +91,7 @@ EntityType Chest::get_type() {
  * as the hero.
  */
 bool Chest::is_drawn_in_y_order() {
-  return big_chest;
-}
-
-/**
- * @brief Creates the chest sprite depending on its size and the savegame.
- */
-void Chest::initialize_sprite() {
-
-  // create the sprite
-  create_sprite("entities/chest");
-  Sprite &sprite = get_sprite();
-
-  // set its animation
-  std::string animation = big_chest ? "big_" : "small_";
-  animation += is_open() ? "open" : "closed";
-  sprite.set_current_animation(animation);
-
-  // set the entity size
-  if (big_chest) {
-    set_origin(0, -8);
-    set_size(32, 16);
-  }
-  else {
-    set_size(16, 16);
-  }
+  return true;
 }
 
 /**
@@ -138,11 +133,11 @@ void Chest::set_open(bool open) {
 
     if (open) {
       // open the chest
-      get_sprite().set_current_animation(big_chest ? "big_open" : "small_open");
+      get_sprite().set_current_animation("open");
     }
     else {
       // close the chest
-      get_sprite().set_current_animation(big_chest ? "big_closed" : "small_closed");
+      get_sprite().set_current_animation("closed");
       treasure_given = false;
     }
   }
@@ -154,12 +149,178 @@ void Chest::set_open(bool open) {
  */
 bool Chest::can_open() {
 
-  if (!big_chest) {
-    return true;
-  }
+  switch (get_opening_method()) {
 
-  // TODO since dungeons are no longer hardcoded, make chests more general
-  return true;
+    case OPENING_BY_INTERACTION:
+      // No condition: the hero can always open the chest.
+      return true;
+
+    case OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE:
+    {
+      // The hero can open the chest if a savegame variable is set.
+      const std::string& required_savegame_variable = get_opening_condition();
+      if (required_savegame_variable.empty()) {
+        return false;
+      }
+
+      Savegame& savegame = get_savegame();
+      if (savegame.is_boolean(required_savegame_variable)) {
+        return savegame.get_boolean(required_savegame_variable);
+      }
+
+      if (savegame.is_integer(required_savegame_variable)) {
+        return savegame.get_integer(required_savegame_variable) > 0;
+      }
+
+      if (savegame.is_string(required_savegame_variable)) {
+        return !savegame.get_string(required_savegame_variable).empty();
+      }
+    }
+
+    case OPENING_BY_INTERACTION_IF_ITEM:
+    {
+      // The hero can open the chest if he has an item.
+      const std::string& required_item_name = get_opening_condition();
+      if (required_item_name.empty()) {
+        return false;
+      }
+      const EquipmentItem& item = get_equipment().get_item(required_item_name);
+      return item.is_saved()
+        && item.get_variant() > 0
+        && (!item.has_amount() || item.get_amount() > 0);
+    }
+
+    default:
+      return false;
+  }
+}
+
+/**
+ * @brief Returns the opening method of this chest.
+ * @return How this chest can be opened.
+ */
+Chest::OpeningMethod Chest::get_opening_method() const {
+  return opening_method;
+}
+
+/**
+ * @brief Sets the opening method of this chest.
+ * @param opening_method How this chest should be opened.
+ */
+void Chest::set_opening_method(OpeningMethod opening_method) {
+  this->opening_method = opening_method;
+}
+
+/**
+ * @brief Returns the savegame variable or the equipment item name required to
+ * open this chest.
+ *
+ * A savegame variable is returned if the opening mode is
+ * OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE.
+ * The hero is allowed to open the chest if this saved value is either
+ * \c true, an integer greater than zero or a non-empty string.
+ *
+ * An equipment item's name is returned if the opening mode is
+ * OPENING_BY_INTERACTION_IF_ITEM.
+ * The hero is allowed to open the chest if he has that item and,
+ * for items with an amount, if the amount is greater than zero.
+ *
+ * For the other opening methods, this setting has no effect.
+ *
+ * @return The savegame variable or the equipment item name required.
+ */
+const std::string& Chest::get_opening_condition() const {
+  return opening_condition;
+}
+
+/**
+ * @brief Sets the savegame variable or the equipment item name required to
+ * open this chest.
+ *
+ * You must set a savegame variable if the opening mode is
+ * OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE.
+ * The hero will be allowed to open the chest if this saved value is either
+ * \c true, an integer greater than zero or a non-empty string.
+ *
+ * You must set an equipment item's name if the opening mode is
+ * OPENING_BY_INTERACTION_IF_ITEM.
+ * The hero will be allowed to open the chest if he has that item and,
+ * for items with an amount, if the amount is greater than zero.
+ *
+ * For the other opening methods, this setting has no effect.
+ *
+ * @param opening_condition The savegame variable or the equipment item name
+ * required.
+ */
+void Chest::set_opening_condition(const std::string& opening_condition) {
+  this->opening_condition = opening_condition;
+}
+
+/**
+ * @brief Returns whether opening this chest consumes the condition that
+ * was required.
+ *
+ * If this setting is \c true, here is the behavior when the hero opens
+ * the chest:
+ * - If the opening method is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+ *   then the required savegame variable is either:
+ *   - set to \c false if it is a boolean,
+ *   - decremented if it is an integer,
+ *   - set to an empty string if it is a string.
+ * - If the opening method is OPENING_BY_INTERACTION_IF_ITEM, then:
+ *   - if the required item has an amount, the amount is decremented.
+ *   - if the required item has no amount, its possession state is set to zero.
+ * - With other opening methods, this setting has no effect.
+ *
+ * @return \c true if opening this chest consumes the condition that was
+ * required.
+ */
+bool Chest::is_opening_condition_consumed() const {
+  return opening_condition_consumed;
+}
+
+/**
+ * @brief Sets whether opening this chest should consume the condition that
+ * was required.
+ *
+ * If this setting is \c true, here is the behavior when the hero opens
+ * the chest:
+ * - If the opening method is OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE,
+ *   then the required savegame variable is either:
+ *   - set to \c false if it is a boolean,
+ *   - decremented if it is an integer,
+ *   - set to an empty string if it is a string.
+ * - If the opening method is OPENING_BY_INTERACTION_IF_ITEM, then:
+ *   - if the required item has an amount, the amount is decremented.
+ *   - if the required item has no amount, its possession state is set to zero.
+ * - With other opening methods, this setting has no effect.
+ *
+ * @param opening_condition_consumed \c true if opening this chest should
+ * consume the condition that was required.
+ */
+void Chest::set_opening_condition_consumed(bool opening_condition_consumed) {
+   this->opening_condition_consumed = opening_condition_consumed;
+}
+
+/**
+ * @brief Returns the id of the dialog to show when the player presses the action
+ * command on the chest but cannot open it (i.e. if can_open() is false).
+ *
+ * @return The id of the "cannot open" dialog for this chest
+ * (an empty string means no dialog).
+ */
+const std::string& Chest::get_cannot_open_dialog_id() const {
+  return cannot_open_dialog_id;
+}
+
+/**
+ * @brief Sets the id of the dialog to show when the player presses the action
+ * command on the chest but cannot open it (i.e. if can_open() is false).
+ * @param cannot_open_dialog_id The id of the "cannot open" dialog for this chest
+ * (an empty string means no dialog).
+ */
+void Chest::set_cannot_open_dialog_id(const std::string& cannot_open_dialog_id) {
+  this->cannot_open_dialog_id = cannot_open_dialog_id;
 }
 
 /**
@@ -251,9 +412,9 @@ void Chest::notify_action_command_pressed() {
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
       get_hero().start_freezed();
     }
-    else {
+    else if (!get_cannot_open_dialog_id().empty()) {
       Sound::play("wrong");
-      get_dialog_box().start_dialog("_big_key_required");
+      get_dialog_box().start_dialog(get_cannot_open_dialog_id());
     }
   }
 }

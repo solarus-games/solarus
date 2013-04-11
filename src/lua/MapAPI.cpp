@@ -1105,10 +1105,15 @@ int LuaContext::map_api_create_chest(lua_State* l) {
   Layer layer = Layer(check_int_field(l, 1, "layer"));
   int x = check_int_field(l, 1, "x");
   int y = check_int_field(l, 1, "y");
-  bool big_chest = check_boolean_field(l, 1, "is_big_chest");
   const std::string& treasure_name = opt_string_field(l, 1, "treasure_name", "");
   int treasure_variant = opt_int_field(l, 1, "treasure_variant", 1);
   const std::string& treasure_savegame_variable = opt_string_field(l, 1, "treasure_savegame_variable", "");
+  const std::string& sprite_name = check_string_field(l, 1, "sprite");
+  Chest::OpeningMethod opening_method = opt_enum_field<Chest::OpeningMethod>(l, 1, "opening_method",
+      Chest::opening_method_names, Chest::OPENING_BY_INTERACTION);
+  const std::string& opening_condition = opt_string_field(l, 1, "opening_condition", "");
+  bool opening_condition_consumed = opt_boolean_field(l, 1, "opening_condition_consumed", false);
+  const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog_id", "");
 
   if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
     luaL_argerror(l, 1, (StringConcat() <<
@@ -1117,12 +1122,39 @@ int LuaContext::map_api_create_chest(lua_State* l) {
   }
 
   Game& game = map.get_game();
-  MapEntity* entity = new Chest(name, layer, x, y, big_chest,
+
+  if (opening_method == Chest::OPENING_BY_INTERACTION_IF_SAVEGAME_VARIABLE) {
+    if (!is_valid_lua_identifier(opening_condition)) {
+      luaL_argerror(l, 1, (StringConcat() <<
+          "Bad field 'opening_condition' (expected a valid savegame variable identifier, got '" <<
+          opening_condition << "'").c_str());
+    }
+  }
+
+  else if (opening_method == Chest::OPENING_BY_INTERACTION_IF_ITEM) {
+    if (!opening_condition.empty() || !game.get_equipment().item_exists(opening_condition)) {
+      luaL_argerror(l, 1, (StringConcat() <<
+          "Bad field 'opening_condition' (there is no equipment item with name '" <<
+          opening_condition << "'").c_str());
+    }
+    EquipmentItem& item = game.get_equipment().get_item(opening_condition);
+    if (!item.is_saved()) {
+      luaL_argerror(l, 1, (StringConcat() <<
+          "Bad field 'opening_condition' (the possession state of equipment item '" <<
+          opening_condition << "' is not saved").c_str());
+    }
+  }
+
+  Chest* chest = new Chest(name, layer, x, y, sprite_name,
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
-  map.get_entities().add_entity(entity);
+  chest->set_opening_method(opening_method);
+  chest->set_opening_condition(opening_condition);
+  chest->set_opening_condition_consumed(opening_condition_consumed);
+  chest->set_cannot_open_dialog_id(cannot_open_dialog_id);
+  map.get_entities().add_entity(chest);
 
   if (map.is_started()) {
-    push_entity(l, *entity);
+    push_entity(l, *chest);
     return 1;
   }
   return 0;

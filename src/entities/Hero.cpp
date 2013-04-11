@@ -1623,7 +1623,7 @@ void Hero::notify_collision_with_chest(Chest& chest) {
       && is_facing_direction4(1)
       && !chest.is_open()) {
 
-    // we show the 'open' icon, even if this is a big chest and the player does not have the big key
+    // We show the 'open' icon even if the chest cannot be opened yet.
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_OPEN);
   }
 }

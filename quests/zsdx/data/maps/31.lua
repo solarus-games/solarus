@@ -231,13 +231,12 @@ function map:on_obtained_treasure(item, variant, savegame_variable)
   end
 end
 
-function boss:on_dying()
-
-  boss_restore_floor(false)
-  map:set_entities_enabled("boss_floor_sensor", false)
-end
-
 if boss ~= nil then
+  function boss:on_dying()
+    boss_restore_floor(false)
+    map:set_entities_enabled("boss_floor_sensor", false)
+  end
+
   function boss:on_dead()
 
     -- create the heart container manually to be sure it won't be in lava

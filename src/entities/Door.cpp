@@ -408,9 +408,19 @@ bool Door::can_open() const {
       if (required_savegame_variable.empty()) {
         return false;
       }
-      return get_savegame().get_boolean(required_savegame_variable)
-        || get_savegame().get_integer(required_savegame_variable) > 0
-        || !get_savegame().get_string(required_savegame_variable).empty();
+
+      Savegame& savegame = get_savegame();
+      if (savegame.is_boolean(required_savegame_variable)) {
+        return savegame.get_boolean(required_savegame_variable);
+      }
+
+      if (savegame.is_integer(required_savegame_variable)) {
+        return savegame.get_integer(required_savegame_variable) > 0;
+      }
+
+      if (savegame.is_string(required_savegame_variable)) {
+        return !savegame.get_string(required_savegame_variable).empty();
+      }
     }
 
     case OPENING_BY_INTERACTION_IF_ITEM:

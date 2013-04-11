@@ -1,12 +1,11 @@
-#!/usr/bin/lua
-
--- This script reads a map data file with the format of solarus 0.9.2
+-- This module reads a map data file with the format of solarus 0.9.2
 -- and converts it into the format of solarus 1.0.0.
-
 -- The old format (solarus 0.9.2) is a text file with a specific syntax.
 -- The new format (solarus 1.0.0) is a Lua data file.
 
-local line_number = 1
+local map_converter = {}
+
+local line_number
 local metadata  -- Map meta information.
 
 -- Converts an old index of boolean savegame variables
@@ -44,6 +43,8 @@ local function convert_sensor_subtype(subtype, entity)
     return nil
   end
 
+  -- Sensor with a built-in behavior: tell the user that this behavior
+  -- no longer exists.
   local name = ""
   for _, v in ipairs(entity) do
     if v.key == "name" then
@@ -51,21 +52,9 @@ local function convert_sensor_subtype(subtype, entity)
     end
   end
 
-  io.stderr:write("Warning: Line " .. line_number .. ", sensor '" .. name
-      .. "': sensors no longer have a subtype. You will have to script its behavior.\n") 
+  io.stderr:write("Warning: Map " .. metadata.map_id .. ", line " .. line_number .. " (entity '" .. name
+      .. ")': sensors no longer have built-in subtypes. You will have to script its behavior.\n") 
   return nil
-end
-
--- Returns the small keys savegame variable of this map in the new savegame format.
-local function convert_small_keys_variable(world, small_keys_variable)
-
-  if world > 0 then
-    -- We are in a dungeon.
-    small_keys_variable = "dungeon_" .. world .. "_small_keys"
-  else
-    small_keys_variable = "i" .. small_keys_variable
-  end
-  return small_keys_variable
 end
 
 -- Doors have completely changed. There are no more predefined door subtypes:
@@ -187,6 +176,18 @@ local function convert_treasure_name(treasure_name)
     treasure_name = nil
   end
   return treasure_name
+end
+
+-- Returns the small keys savegame variable of this map in the new savegame format.
+local function convert_small_keys_variable(world, small_keys_variable)
+
+  if world > 0 then
+    -- We are in a dungeon.
+    small_keys_variable = "dungeon_" .. world .. "_small_keys"
+  else
+    small_keys_variable = "i" .. small_keys_variable
+  end
+  return small_keys_variable
 end
 
 -- This table fully describes the old syntax of each entity and how to convert
@@ -398,7 +399,7 @@ local entity_syntaxes = {
     { token_name = "y" },
     { token_name = "name", token_type = "string" },
     { token_name = "treasure_name", token_type = "string", converter = convert_treasure_name },
-    { token_name = "treasure_variant" },
+    { token_name = "treasure_variant", nil_value = 0 },
     { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },
     { token_name = "price" },
     { token_name = "dialog", token_type = "string" },
@@ -445,20 +446,21 @@ for i = 1, 20 do
 end
 
 -- Old floor number -> new floor number.
+-- -100 and -99 are replaced by nil.
 local floors = {
-  [-100] = nil,  -- No floor.
 }
 for i = -16, 15 do
   floors[i] = i
 end
 
 -- Parses the metadata line from the old syntax.
-function parse_metadata(line)
+-- Returns a table containing the map metadata.
+local function parse_metadata(line)
 
   local metadata = {}
 
   local width, height, world, floor, x, y, small_keys_variable, tileset, music =
-    line:match("^([0-9]+)%s+([0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([a-zA-Z0-9_]+)%s+([a-zA-Z0-9_]+)")
+    line:match("^([0-9]+)%s+([0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([-0-9]+)%s+([a-zA-Z0-9_]+)%s+([a-zA-Z0-9_.]+)")
 
   if width == nil then
     error("Line " .. line_number .. ": Invalid map metadata")
@@ -482,34 +484,38 @@ function parse_metadata(line)
 
   metadata.tileset = tileset
 
-  if music ~= "none" then
-    metadata.music = music
+  if music == "none" then
+    music = nil
+  else
+    -- Remove the extension of the file name.
+    music = music:gsub("%.[^.]*$", "")
   end
+  metadata.music = music
 
   return metadata
 end
 
 -- Outputs the metadata part with the new syntax.
-function print_metadata(metadata)
+local function print_metadata(output_file)
 
-  io.write("properties{\n")
-  io.write("  x = " .. metadata.x .. ",\n")
-  io.write("  y = " .. metadata.y .. ",\n")
-  io.write("  width = " .. metadata.width .. ",\n")
-  io.write("  height = " .. metadata.height .. ",\n")
-  io.write("  world = \"" .. metadata.world .. "\",\n")
-  if metadata.floor then
-    io.write("  floor = " .. metadata.floor .. ",\n")
+  output_file:write("properties{\n")
+  output_file:write("  x = " .. metadata.x .. ",\n")
+  output_file:write("  y = " .. metadata.y .. ",\n")
+  output_file:write("  width = " .. metadata.width .. ",\n")
+  output_file:write("  height = " .. metadata.height .. ",\n")
+  output_file:write("  world = \"" .. metadata.world .. "\",\n")
+  if metadata.floor ~= nil then
+    output_file:write("  floor = " .. metadata.floor .. ",\n")
   end
-  io.write("  tileset = \"" .. metadata.tileset .. "\",\n")
+  output_file:write("  tileset = \"" .. metadata.tileset .. "\",\n")
   if metadata.music ~= nil then
-    io.write("  music = \"" .. metadata.music .. "\",\n")
+    output_file:write("  music = \"" .. metadata.music .. "\",\n")
   end
-  io.write("}\n\n")
+  output_file:write("}\n\n")
 end
 
 -- Parses a map entity from a line with the old syntax.
-function parse_entity(line)
+local function parse_entity(line)
 
   local entity = {}
   local entity_type_id = nil
@@ -585,9 +591,9 @@ function parse_entity(line)
 end
 
 -- Outputs a map entity with the new syntax.
-function print_entity(entity)
+local function print_entity(output_file, entity)
 
-  io.write("" .. entity.entity_type_name .. "{\n")
+  output_file:write("" .. entity.entity_type_name .. "{\n")
   for i, v in ipairs(entity) do
     local value
     if type(v.value) == "string" then
@@ -602,27 +608,46 @@ function print_entity(entity)
       value = v.value
     end
     if value ~= nil then
-      io.write("  " .. v.key .. " = " .. value .. ",\n")
+      output_file:write("  " .. v.key .. " = " .. value .. ",\n")
     end
   end
-  io.write("}\n\n")
+  output_file:write("}\n\n")
 end
 
-local file = io.stdin
-local lines = file:lines()
+function map_converter.convert(quest_path, map_id)
 
--- The first line is the map metadata.
-local first_line = lines()
-if first_line == nil then
-  error("Empty map data file")
+  line_number = 1
+  metadata = nil
+
+  local input_file_name = string.format(quest_path .. "/data/maps/map%04d.dat", map_id)
+  local input_file, error_message = io.open(input_file_name)
+  if input_file == nil then
+    error("Cannot open old map file for reading: " .. error_message)
+  end
+  local lines = input_file:lines()
+
+  local output_file_name = quest_path .. "/data/maps/" .. map_id .. ".dat"
+  local output_file, error_message = io.open(output_file_name, "w")
+  if output_file == nil then
+    error("Cannot open new map file for writing: " .. error_message)
+  end
+
+  -- The first line is the map metadata.
+  local first_line = lines()
+  if first_line == nil then
+    error("Empty map data file")
+  end
+  metadata = parse_metadata(first_line)
+  metadata.map_id = map_id
+
+  print_metadata(output_file)
+
+  for line in lines do
+    line_number = line_number + 1
+    local entity = parse_entity(line)
+    print_entity(output_file, entity)
+  end
 end
-metadata = parse_metadata(first_line)
-print_metadata(metadata)
 
-for line in file:lines() do
-
-  line_number = line_number + 1
-  local entity = parse_entity(line)
-  print_entity(entity)
-end
+return map_converter
 

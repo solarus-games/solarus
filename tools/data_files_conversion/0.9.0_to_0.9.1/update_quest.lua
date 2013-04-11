@@ -14,14 +14,15 @@ print("Updating your quest " .. quest_path .. " from Solarus 0.9.0 to Solarus 0.
 print("It is recommended to backup your quest files before.")
 
 -- Convert the language list file.
-local language_list_converter = require("language_list_converter")
 print("  Converting the language list file...")
+local language_list_converter = require("language_list_converter")
 local language_ids = language_list_converter.convert(quest_path)
 
 -- Convert the dialogs.
+print("  Converting dialogs...")
 local dialogs_converter = require("dialogs_converter")
 for _, language_id in ipairs(language_ids) do
-  print("  Converting the dialogs of language " .. language_id .. "...")
+  print("  Language '" .. language_id .. "'...")
   dialogs_converter.convert(quest_path, language_id)
 end
 

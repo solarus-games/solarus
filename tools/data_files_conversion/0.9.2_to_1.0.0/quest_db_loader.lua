@@ -12,6 +12,9 @@ local resource_type_names = {
 }
 
 -- Reads the project_db.dat file and returns a table of all quest resources.
+-- Each key is the name of a resource type ("map", "tileset", "sound", etc)
+-- and each value is an array of resources ordered as in project_db.dat.
+-- A resources is a table with two elements "id" and "human_name".
 function quest_db_loader.load_quest_db(quest_path)
 
   local resources = {}
@@ -47,7 +50,11 @@ function quest_db_loader.load_quest_db(quest_path)
       error("Line " .. line_number .. ": Wrong resource name")
     end
 
-    resources[resource_type_name][resource_id] = resource_human_name
+    local resources_of_current_type = resources[resource_type_name]
+    resources_of_current_type[#resources_of_current_type + 1] = {
+      id = resource_id,
+      human_name = resource_human_name
+    }
   end
 
   return resources

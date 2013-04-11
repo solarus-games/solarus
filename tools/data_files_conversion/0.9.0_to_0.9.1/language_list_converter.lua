@@ -11,6 +11,9 @@ function language_list_converter.convert(quest_path)
 
   -- Read the 0.9.0 file.
   local input_file = io.open(quest_path .. "/data/languages/languages.dat")
+  if input_file == nil then
+    error("Cannot open old language list file for reading: " .. error_message)
+  end
   local all_groups, all_ids = ini_parser.parse(input_file)
   input_file:close()
 

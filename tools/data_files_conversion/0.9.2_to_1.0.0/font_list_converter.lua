@@ -11,6 +11,9 @@ function font_list_converter.convert(quest_path)
 
   -- Read the 0.9.2 file.
   local input_file = io.open(quest_path .. "/data/text/fonts.dat")
+  if input_file == nil then
+    error("Cannot open old font list file for reading: " .. error_message)
+  end
   local all_groups, all_ids = ini_parser.parse(input_file)
   input_file:close()
 
@@ -40,5 +43,4 @@ function font_list_converter.convert(quest_path)
 end
 
 return font_list_converter
-
 

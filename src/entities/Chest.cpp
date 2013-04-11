@@ -91,7 +91,7 @@ EntityType Chest::get_type() {
  * as the hero.
  */
 bool Chest::is_drawn_in_y_order() {
-  return true;
+  return get_sprite().get_max_size().get_height() > get_height();
 }
 
 /**

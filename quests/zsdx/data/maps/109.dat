@@ -6147,8 +6147,8 @@ dynamic_tile{
 
 chest{
   layer = 0,
-  x = 456,
-  y = 120,
+  x = 464,
+  y = 133,
   name = "chest_a",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -6347,8 +6347,8 @@ sensor{
 
 chest{
   layer = 0,
-  x = 1064,
-  y = 680,
+  x = 1072,
+  y = 693,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "small_key",

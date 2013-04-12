@@ -1333,8 +1333,8 @@ tile{
 
 chest{
   layer = 1,
-  x = 72,
-  y = 184,
+  x = 80,
+  y = 197,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "bomb",
@@ -1344,8 +1344,8 @@ chest{
 
 chest{
   layer = 1,
-  x = 256,
-  y = 536,
+  x = 264,
+  y = 549,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "rupee",

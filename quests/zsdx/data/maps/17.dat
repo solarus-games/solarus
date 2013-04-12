@@ -6767,8 +6767,8 @@ block{
 
 chest{
   layer = 1,
-  x = 784,
-  y = 512,
+  x = 792,
+  y = 525,
   name = "chest",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -7410,8 +7410,8 @@ crystal_block{
 
 chest{
   layer = 1,
-  x = 288,
-  y = 48,
+  x = 296,
+  y = 61,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -7810,8 +7810,8 @@ crystal{
 
 chest{
   layer = 1,
-  x = 48,
-  y = 48,
+  x = 56,
+  y = 61,
   name = "chest_3",
   sprite = "entities/chest",
   treasure_name = "map",

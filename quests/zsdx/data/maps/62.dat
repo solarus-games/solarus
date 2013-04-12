@@ -891,8 +891,8 @@ block{
 
 chest{
   layer = 1,
-  x = 152,
-  y = 40,
+  x = 160,
+  y = 53,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "boss_key",

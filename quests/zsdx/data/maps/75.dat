@@ -226,8 +226,8 @@ tile{
 
 chest{
   layer = 0,
-  x = 104,
-  y = 80,
+  x = 112,
+  y = 93,
   name = "chest_1",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -235,8 +235,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 136,
-  y = 80,
+  x = 144,
+  y = 93,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -244,8 +244,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 168,
-  y = 80,
+  x = 176,
+  y = 93,
   name = "chest_3",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -253,8 +253,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 200,
-  y = 80,
+  x = 208,
+  y = 93,
   name = "chest_4",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -262,8 +262,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 104,
-  y = 112,
+  x = 112,
+  y = 125,
   name = "chest_5",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -271,8 +271,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 136,
-  y = 112,
+  x = 144,
+  y = 125,
   name = "chest_6",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -280,8 +280,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 168,
-  y = 112,
+  x = 176,
+  y = 125,
   name = "chest_7",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -289,8 +289,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 200,
-  y = 112,
+  x = 208,
+  y = 125,
   name = "chest_8",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -298,8 +298,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 104,
-  y = 144,
+  x = 112,
+  y = 157,
   name = "chest_9",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -307,8 +307,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 136,
-  y = 144,
+  x = 144,
+  y = 157,
   name = "chest_10",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -316,8 +316,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 168,
-  y = 144,
+  x = 176,
+  y = 157,
   name = "chest_11",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -325,8 +325,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 200,
-  y = 144,
+  x = 208,
+  y = 157,
   name = "chest_12",
   sprite = "entities/chest",
   treasure_variant = 1,

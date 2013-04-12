@@ -4690,8 +4690,8 @@ crystal_block{
 
 chest{
   layer = 1,
-  x = 360,
-  y = 48,
+  x = 368,
+  y = 61,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "iron_key",

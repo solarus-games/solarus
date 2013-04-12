@@ -10477,8 +10477,8 @@ tile{
 
 chest{
   layer = 0,
-  x = 840,
-  y = 616,
+  x = 848,
+  y = 629,
   name = "Chest",
   sprite = "entities/chest",
   treasure_name = "piece_of_heart",
@@ -10488,8 +10488,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 512,
-  y = 424,
+  x = 520,
+  y = 437,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "rupee",
@@ -10499,8 +10499,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 392,
-  y = 848,
+  x = 400,
+  y = 861,
   name = "Chest_3",
   sprite = "entities/chest",
   treasure_name = "piece_of_heart",

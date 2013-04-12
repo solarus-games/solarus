@@ -10627,8 +10627,8 @@ door{
 
 chest{
   layer = 1,
-  x = 416,
-  y = 152,
+  x = 424,
+  y = 165,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "boss_key",

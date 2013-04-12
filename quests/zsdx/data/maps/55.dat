@@ -3232,8 +3232,8 @@ dynamic_tile{
 
 chest{
   layer = 0,
-  x = 96,
-  y = 344,
+  x = 104,
+  y = 357,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "boss_key",
@@ -3267,8 +3267,8 @@ destructible{
 
 chest{
   layer = 0,
-  x = 968,
-  y = 464,
+  x = 976,
+  y = 477,
   name = "chest_3",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -3292,8 +3292,8 @@ teletransporter{
 
 chest{
   layer = 0,
-  x = 608,
-  y = 160,
+  x = 616,
+  y = 173,
   name = "chest_4",
   sprite = "entities/chest",
   treasure_name = "compass",
@@ -7586,8 +7586,8 @@ jumper{
 
 chest{
   layer = 1,
-  x = 768,
-  y = 136,
+  x = 776,
+  y = 149,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "rupee",

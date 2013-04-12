@@ -853,8 +853,8 @@ wall{
 
 chest{
   layer = 0,
-  x = 936,
-  y = 432,
+  x = 944,
+  y = 445,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "map",

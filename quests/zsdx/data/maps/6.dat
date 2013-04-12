@@ -14310,8 +14310,8 @@ enemy{
 
 chest{
   layer = 0,
-  x = 728,
-  y = 24,
+  x = 736,
+  y = 37,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "rupee",
@@ -15054,8 +15054,8 @@ teletransporter{
 
 chest{
   layer = 0,
-  x = 280,
-  y = 608,
+  x = 288,
+  y = 621,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "rupee",

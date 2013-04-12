@@ -481,8 +481,8 @@ stairs{
 
 chest{
   layer = 0,
-  x = 944,
-  y = 880,
+  x = 952,
+  y = 893,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -7819,8 +7819,8 @@ stairs{
 
 chest{
   layer = 1,
-  x = 712,
-  y = 48,
+  x = 720,
+  y = 61,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "big_key",
@@ -7830,8 +7830,8 @@ chest{
 
 chest{
   layer = 1,
-  x = 112,
-  y = 176,
+  x = 120,
+  y = 189,
   name = "chest_3",
   sprite = "entities/chest",
   treasure_name = "compass",
@@ -8962,8 +8962,8 @@ dynamic_tile{
 
 chest{
   layer = 1,
-  x = 272,
-  y = 48,
+  x = 280,
+  y = 61,
   name = "n_chest",
   sprite = "entities/chest",
   treasure_name = "rupee",

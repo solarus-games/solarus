@@ -1389,8 +1389,8 @@ crystal_block{
 
 chest{
   layer = 0,
-  x = 200,
-  y = 656,
+  x = 208,
+  y = 669,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "arrow",
@@ -1537,8 +1537,8 @@ teletransporter{
 
 chest{
   layer = 0,
-  x = 488,
-  y = 384,
+  x = 496,
+  y = 397,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "compass",
@@ -5088,8 +5088,8 @@ crystal{
 
 chest{
   layer = 1,
-  x = 232,
-  y = 320,
+  x = 240,
+  y = 333,
   name = "boss_key_chest",
   sprite = "entities/chest",
   treasure_name = "boss_key",
@@ -5187,8 +5187,8 @@ teletransporter{
 
 chest{
   layer = 1,
-  x = 104,
-  y = 320,
+  x = 112,
+  y = 333,
   name = "map_chest",
   sprite = "entities/chest",
   treasure_name = "map",

@@ -181,8 +181,8 @@ tile{
 
 chest{
   layer = 1,
-  x = 64,
-  y = 368,
+  x = 72,
+  y = 381,
   name = "sword_chest",
   sprite = "entities/chest",
   treasure_variant = 1,

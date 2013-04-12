@@ -578,8 +578,8 @@ door{
 
 chest{
   layer = 0,
-  x = 200,
-  y = 136,
+  x = 208,
+  y = 149,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "rupee",

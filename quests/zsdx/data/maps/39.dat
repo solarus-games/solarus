@@ -5114,8 +5114,8 @@ npc{
 
 chest{
   layer = 0,
-  x = 272,
-  y = 624,
+  x = 280,
+  y = 637,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "fire_stone",

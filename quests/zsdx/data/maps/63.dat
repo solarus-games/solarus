@@ -10511,8 +10511,8 @@ conveyor_belt{
 
 chest{
   layer = 1,
-  x = 880,
-  y = 872,
+  x = 888,
+  y = 885,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "small_key",

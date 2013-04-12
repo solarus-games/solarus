@@ -2557,8 +2557,8 @@ tile{
 
 chest{
   layer = 0,
-  x = 256,
-  y = 64,
+  x = 264,
+  y = 77,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "rupee",

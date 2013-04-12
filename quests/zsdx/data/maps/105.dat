@@ -18372,8 +18372,8 @@ destructible{
 
 chest{
   layer = 1,
-  x = 1120,
-  y = 2032,
+  x = 1128,
+  y = 2045,
   name = "hidden_chest",
   sprite = "entities/chest",
   treasure_name = "rupee",
@@ -18396,8 +18396,8 @@ wall{
 
 chest{
   layer = 1,
-  x = 888,
-  y = 1888,
+  x = 896,
+  y = 1901,
   name = "puzzle_a_chest",
   sprite = "entities/chest",
   treasure_name = "map",
@@ -20057,8 +20057,8 @@ destructible{
 
 chest{
   layer = 1,
-  x = 2112,
-  y = 1408,
+  x = 2120,
+  y = 1421,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -20140,8 +20140,8 @@ enemy{
 
 chest{
   layer = 1,
-  x = 800,
-  y = 864,
+  x = 808,
+  y = 877,
   name = "w_room_chest",
   sprite = "entities/chest",
   treasure_name = "big_key",
@@ -20588,8 +20588,8 @@ wall{
 
 chest{
   layer = 1,
-  x = 2128,
-  y = 1112,
+  x = 2136,
+  y = 1125,
   name = "e_room_chest",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -20728,8 +20728,8 @@ crystal{
 
 chest{
   layer = 1,
-  x = 64,
-  y = 360,
+  x = 72,
+  y = 373,
   name = "nw_chest",
   sprite = "entities/chest",
   treasure_name = "small_key",

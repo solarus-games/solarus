@@ -434,8 +434,8 @@ destructible{
 
 chest{
   layer = 0,
-  x = 152,
-  y = 152,
+  x = 160,
+  y = 165,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "bomb_bag",

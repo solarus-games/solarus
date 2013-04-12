@@ -453,8 +453,8 @@ teletransporter{
 
 chest{
   layer = 0,
-  x = 88,
-  y = 40,
+  x = 96,
+  y = 53,
   name = "Chest",
   sprite = "entities/chest",
   treasure_name = "piece_of_heart",

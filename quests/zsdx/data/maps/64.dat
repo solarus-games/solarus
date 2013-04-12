@@ -3637,8 +3637,8 @@ stairs{
 
 chest{
   layer = 0,
-  x = 600,
-  y = 816,
+  x = 608,
+  y = 829,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "rupee",
@@ -3817,8 +3817,8 @@ block{
 
 chest{
   layer = 0,
-  x = 1072,
-  y = 336,
+  x = 1080,
+  y = 349,
   name = "chest_3",
   sprite = "entities/chest",
   treasure_name = "big_key",
@@ -3943,8 +3943,8 @@ stairs{
 
 chest{
   layer = 0,
-  x = 1040,
-  y = 896,
+  x = 1048,
+  y = 909,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "compass",

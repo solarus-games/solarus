@@ -8464,8 +8464,8 @@ stairs{
 
 chest{
   layer = 1,
-  x = 1800,
-  y = 320,
+  x = 1808,
+  y = 333,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -9193,8 +9193,8 @@ destination{
 
 chest{
   layer = 1,
-  x = 2104,
-  y = 384,
+  x = 2112,
+  y = 397,
   name = "compass_chest_1",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -9202,8 +9202,8 @@ chest{
 
 chest{
   layer = 1,
-  x = 2032,
-  y = 384,
+  x = 2040,
+  y = 397,
   name = "compass_chest_2",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -9211,8 +9211,8 @@ chest{
 
 chest{
   layer = 1,
-  x = 1984,
-  y = 384,
+  x = 1992,
+  y = 397,
   name = "compass_chest_3",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -9220,8 +9220,8 @@ chest{
 
 chest{
   layer = 1,
-  x = 2128,
-  y = 384,
+  x = 2136,
+  y = 397,
   name = "compass_chest_4",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -9229,8 +9229,8 @@ chest{
 
 chest{
   layer = 1,
-  x = 2080,
-  y = 384,
+  x = 2088,
+  y = 397,
   name = "compass_chest_5",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -9238,8 +9238,8 @@ chest{
 
 chest{
   layer = 1,
-  x = 2008,
-  y = 384,
+  x = 2016,
+  y = 397,
   name = "compass_chest_6",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -9247,8 +9247,8 @@ chest{
 
 chest{
   layer = 1,
-  x = 2056,
-  y = 384,
+  x = 2064,
+  y = 397,
   name = "compass_chest_7",
   sprite = "entities/chest",
   treasure_variant = 1,

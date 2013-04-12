@@ -2482,8 +2482,8 @@ teletransporter{
 
 chest{
   layer = 0,
-  x = 1184,
-  y = 1384,
+  x = 1192,
+  y = 1397,
   name = "KC04",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -2602,8 +2602,8 @@ wall{
 
 chest{
   layer = 0,
-  x = 1480,
-  y = 1144,
+  x = 1488,
+  y = 1157,
   name = "KC03",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -10067,8 +10067,8 @@ enemy{
 
 chest{
   layer = 1,
-  x = 2168,
-  y = 952,
+  x = 2176,
+  y = 965,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "croissant",
@@ -11773,8 +11773,8 @@ wall{
 
 chest{
   layer = 1,
-  x = 608,
-  y = 1088,
+  x = 616,
+  y = 1101,
   name = "CC02",
   sprite = "entities/chest",
   treasure_name = "croissant",

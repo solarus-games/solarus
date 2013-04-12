@@ -460,8 +460,8 @@ tile{
 
 chest{
   layer = 0,
-  x = 152,
-  y = 232,
+  x = 160,
+  y = 245,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "clay_key",

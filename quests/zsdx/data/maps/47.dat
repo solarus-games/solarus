@@ -9084,8 +9084,8 @@ switch{
 
 chest{
   layer = 1,
-  x = 1872,
-  y = 1328,
+  x = 1880,
+  y = 1341,
   name = "KC01",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -9551,8 +9551,8 @@ wall{
 
 chest{
   layer = 1,
-  x = 800,
-  y = 384,
+  x = 808,
+  y = 397,
   name = "BK01",
   sprite = "entities/chest",
   treasure_name = "big_key",
@@ -9878,8 +9878,8 @@ destructible{
 
 chest{
   layer = 1,
-  x = 160,
-  y = 1664,
+  x = 168,
+  y = 1677,
   name = "MAP",
   sprite = "entities/chest",
   treasure_name = "map",

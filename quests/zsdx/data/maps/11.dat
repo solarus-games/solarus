@@ -1013,8 +1013,8 @@ tile{
 
 chest{
   layer = 1,
-  x = 200,
-  y = 40,
+  x = 208,
+  y = 53,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "rupee",

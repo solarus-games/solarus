@@ -515,8 +515,8 @@ door{
 
 chest{
   layer = 0,
-  x = 392,
-  y = 552,
+  x = 400,
+  y = 565,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "map",
@@ -5458,8 +5458,8 @@ destructible{
 
 chest{
   layer = 1,
-  x = 960,
-  y = 688,
+  x = 968,
+  y = 701,
   name = "boss_key_chest",
   sprite = "entities/chest",
   treasure_name = "boss_key",

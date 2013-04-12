@@ -1420,8 +1420,8 @@ stairs{
 
 chest{
   layer = 1,
-  x = 304,
-  y = 80,
+  x = 312,
+  y = 93,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "rupee",

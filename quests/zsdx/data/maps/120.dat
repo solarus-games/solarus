@@ -1045,8 +1045,8 @@ sensor{
 
 chest{
   layer = 1,
-  x = 88,
-  y = 48,
+  x = 96,
+  y = 61,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "bone_key",
@@ -1056,8 +1056,8 @@ chest{
 
 chest{
   layer = 1,
-  x = 216,
-  y = 48,
+  x = 224,
+  y = 61,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "rupee",

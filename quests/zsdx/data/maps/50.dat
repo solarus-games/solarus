@@ -1452,8 +1452,8 @@ door{
 
 chest{
   layer = 0,
-  x = 424,
-  y = 408,
+  x = 432,
+  y = 421,
   name = "KC05",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -1463,8 +1463,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 864,
-  y = 384,
+  x = 872,
+  y = 397,
   name = "CMP",
   sprite = "entities/chest",
   treasure_name = "compass",

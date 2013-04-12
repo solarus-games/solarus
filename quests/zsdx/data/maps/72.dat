@@ -1691,8 +1691,8 @@ crystal{
 
 chest{
   layer = 0,
-  x = 88,
-  y = 280,
+  x = 96,
+  y = 293,
   name = "chest",
   sprite = "entities/chest",
   treasure_variant = 1,

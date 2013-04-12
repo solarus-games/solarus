@@ -1166,8 +1166,8 @@ wall{
 
 chest{
   layer = 0,
-  x = 96,
-  y = 64,
+  x = 104,
+  y = 77,
   name = "boss_key_chest",
   sprite = "entities/chest",
   treasure_name = "boss_key",

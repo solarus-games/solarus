@@ -2107,8 +2107,8 @@ enemy{
 
 chest{
   layer = 1,
-  x = 160,
-  y = 632,
+  x = 168,
+  y = 645,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "piece_of_heart",

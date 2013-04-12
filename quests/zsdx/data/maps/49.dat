@@ -6184,8 +6184,8 @@ door{
 
 chest{
   layer = 1,
-  x = 1344,
-  y = 624,
+  x = 1352,
+  y = 637,
   name = "RC50",
   sprite = "entities/chest",
   treasure_name = "rupee",
@@ -6249,8 +6249,8 @@ npc{
 
 chest{
   layer = 1,
-  x = 1440,
-  y = 1152,
+  x = 1448,
+  y = 1165,
   name = "RC100",
   sprite = "entities/chest",
   treasure_name = "rupee",
@@ -6284,8 +6284,8 @@ teletransporter{
 
 chest{
   layer = 1,
-  x = 1120,
-  y = 896,
+  x = 1128,
+  y = 909,
   name = "XK01",
   sprite = "entities/chest",
   treasure_name = "boss_key",

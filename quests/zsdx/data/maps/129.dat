@@ -2071,8 +2071,8 @@ crystal_block{
 
 chest{
   layer = 1,
-  x = 288,
-  y = 48,
+  x = 296,
+  y = 61,
   name = "chest",
   sprite = "entities/chest",
   treasure_variant = 1,

@@ -1452,8 +1452,8 @@ teletransporter{
 
 chest{
   layer = 0,
-  x = 48,
-  y = 80,
+  x = 56,
+  y = 93,
   name = "chest_1",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -1461,8 +1461,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 96,
-  y = 80,
+  x = 104,
+  y = 93,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_variant = 1,
@@ -1470,8 +1470,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 144,
-  y = 80,
+  x = 152,
+  y = 93,
   name = "chest_3",
   sprite = "entities/chest",
   treasure_variant = 1,

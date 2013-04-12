@@ -3722,8 +3722,8 @@ jumper{
 
 chest{
   layer = 1,
-  x = 560,
-  y = 304,
+  x = 568,
+  y = 317,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "bottle_3",

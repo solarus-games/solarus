@@ -3374,8 +3374,8 @@ destructible{
 
 chest{
   layer = 0,
-  x = 80,
-  y = 184,
+  x = 88,
+  y = 197,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "piece_of_heart",
@@ -3385,8 +3385,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 368,
-  y = 168,
+  x = 376,
+  y = 181,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "rupee",

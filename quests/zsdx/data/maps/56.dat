@@ -9360,8 +9360,8 @@ crystal_block{
 
 chest{
   layer = 1,
-  x = 704,
-  y = 400,
+  x = 712,
+  y = 413,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -10472,8 +10472,8 @@ destination{
 
 chest{
   layer = 1,
-  x = 520,
-  y = 400,
+  x = 528,
+  y = 413,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "big_key",
@@ -10483,8 +10483,8 @@ chest{
 
 chest{
   layer = 1,
-  x = 240,
-  y = 304,
+  x = 248,
+  y = 317,
   name = "chest_3",
   sprite = "entities/chest",
   treasure_name = "small_key",

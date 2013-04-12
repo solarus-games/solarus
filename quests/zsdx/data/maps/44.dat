@@ -53396,8 +53396,8 @@ block{
 
 chest{
   layer = 1,
-  x = 136,
-  y = 2184,
+  x = 144,
+  y = 2197,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "cane_of_somaria",

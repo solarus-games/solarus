@@ -2645,8 +2645,8 @@ teletransporter{
 
 chest{
   layer = 0,
-  x = 200,
-  y = 760,
+  x = 208,
+  y = 773,
   name = "chest_6",
   sprite = "entities/chest",
   treasure_name = "rupee",
@@ -2656,8 +2656,8 @@ chest{
 
 chest{
   layer = 0,
-  x = 208,
-  y = 656,
+  x = 216,
+  y = 669,
   name = "chest_7",
   sprite = "entities/chest",
   treasure_name = "rupee",
@@ -8191,8 +8191,8 @@ chest{
 
 chest{
   layer = 1,
-  x = 640,
-  y = 600,
+  x = 648,
+  y = 613,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "compass",
@@ -8228,8 +8228,8 @@ door{
 
 chest{
   layer = 1,
-  x = 472,
-  y = 376,
+  x = 480,
+  y = 389,
   name = "chest_3",
   sprite = "entities/chest",
   treasure_name = "map",
@@ -8250,8 +8250,8 @@ dynamic_tile{
 
 chest{
   layer = 1,
-  x = 640,
-  y = 280,
+  x = 648,
+  y = 293,
   name = "chest_4",
   sprite = "entities/chest",
   treasure_name = "big_key",
@@ -8272,8 +8272,8 @@ door{
 
 chest{
   layer = 1,
-  x = 792,
-  y = 376,
+  x = 800,
+  y = 389,
   name = "chest_5",
   sprite = "entities/chest",
   treasure_name = "bomb",

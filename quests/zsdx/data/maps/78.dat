@@ -236,8 +236,8 @@ stairs{
 
 chest{
   layer = 0,
-  x = 552,
-  y = 384,
+  x = 560,
+  y = 397,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "stone_key",

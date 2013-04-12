@@ -3642,8 +3642,8 @@ block{
 
 chest{
   layer = 0,
-  x = 464,
-  y = 336,
+  x = 472,
+  y = 349,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "rupee",
@@ -3964,8 +3964,8 @@ conveyor_belt{
 
 chest{
   layer = 0,
-  x = 688,
-  y = 64,
+  x = 696,
+  y = 77,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "rock_key",
@@ -5822,8 +5822,8 @@ jumper{
 
 chest{
   layer = 1,
-  x = 72,
-  y = 616,
+  x = 80,
+  y = 629,
   name = "chest_3",
   sprite = "entities/chest",
   treasure_name = "piece_of_heart",

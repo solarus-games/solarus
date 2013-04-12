@@ -9775,8 +9775,8 @@ jumper{
 
 chest{
   layer = 1,
-  x = 1600,
-  y = 1648,
+  x = 1608,
+  y = 1661,
   name = "chest_b",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -9950,8 +9950,8 @@ destructible{
 
 chest{
   layer = 1,
-  x = 1328,
-  y = 496,
+  x = 1336,
+  y = 509,
   name = "chest_a",
   sprite = "entities/chest",
   treasure_name = "small_key",
@@ -10197,8 +10197,8 @@ wall{
 
 chest{
   layer = 1,
-  x = 2080,
-  y = 696,
+  x = 2088,
+  y = 709,
   name = "chest_c",
   sprite = "entities/chest",
   treasure_name = "small_key",

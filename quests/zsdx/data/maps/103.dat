@@ -8998,8 +8998,8 @@ wall{
 
 chest{
   layer = 1,
-  x = 744,
-  y = 48,
+  x = 752,
+  y = 61,
   name = "chest",
   sprite = "entities/chest",
   treasure_name = "rupee",
@@ -9274,8 +9274,8 @@ enemy{
 
 chest{
   layer = 1,
-  x = 456,
-  y = 72,
+  x = 464,
+  y = 85,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "boss_key",

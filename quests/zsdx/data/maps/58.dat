@@ -2283,8 +2283,8 @@ stairs{
 
 chest{
   layer = 0,
-  x = 440,
-  y = 272,
+  x = 448,
+  y = 285,
   name = "torches_chest",
   sprite = "entities/chest",
   treasure_name = "map",

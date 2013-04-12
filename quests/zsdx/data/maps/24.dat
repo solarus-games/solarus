@@ -4790,8 +4790,8 @@ wall{
 
 chest{
   layer = 1,
-  x = 648,
-  y = 440,
+  x = 656,
+  y = 453,
   name = "chest_2",
   sprite = "entities/chest",
   treasure_name = "big_key",
@@ -4844,8 +4844,8 @@ conveyor_belt{
 
 chest{
   layer = 1,
-  x = 808,
-  y = 440,
+  x = 816,
+  y = 453,
   name = "chest_3",
   sprite = "entities/chest",
   treasure_name = "croissant",

@@ -57,6 +57,50 @@ local function convert_sensor_subtype(subtype, entity)
   return nil
 end
 
+-- Chests no longer have an is_big_chest boolean property:
+-- instead, everything is customizable.
+local function convert_chest_is_big(is_big_chest, entity)
+
+  -- First determine x, y because coordinates need to be fixed
+  -- (the origin point has changed).
+  local index_x, index_y
+  for i, v in ipairs(entity) do
+    if v.key == "x" then
+      index_x = i
+    elseif v.key == "y" then
+      index_y = i
+    end
+  end
+
+  if index_x == nil or index_y == nil then
+    error("Line " .. line_number .. ": Could not determine x, y or direction for this chest")
+  end
+
+  if is_big_chest == 0 then
+    -- Normal chest.
+    entity[index_x].value = entity[index_x].value + 8
+    entity[index_y].value = entity[index_y].value + 13
+    return {
+      sprite = "entities/chest"
+    }
+  else
+    -- Big chest.
+    entity[index_x].value = entity[index_x].value + 16
+    entity[index_y].value = entity[index_y].value + 21
+
+    if metadata.dungeon == nil then
+      error("Line " .. line_number .. ": Big chest are only allowed in dungeons")
+    end
+
+    return {
+      sprite = "entities/big_chest",
+      opening_method = "interaction_if_savegame_variable",
+      opening_condition = "dungeon_" .. metadata.dungeon .. "_big_key",
+      cannot_open_dialog_id = "_big_key_required",
+    }
+  end
+end
+
 -- Doors have completely changed. There are no more predefined door subtypes:
 -- instead, everything is customizable.
 local function convert_door_subtype(subtype, entity)
@@ -268,7 +312,7 @@ local entity_syntaxes = {
     { token_name = "x" },
     { token_name = "y" },
     { token_name = "name", token_type = "string" },
-    { token_name = "is_big_chest", token_type = "boolean" },
+    { token_name = "is_big_chest", converter = convert_chest_is_big },
     { token_name = "treasure_name", token_type = "string", converter = convert_treasure_name },
     { token_name = "treasure_variant", nil_value = 0 },
     { token_name = "treasure_savegame_variable", token_type = "string", converter = prepend_b, nil_value = "-1" },

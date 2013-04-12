@@ -421,6 +421,8 @@ bool Door::can_open() const {
       if (savegame.is_string(required_savegame_variable)) {
         return !savegame.get_string(required_savegame_variable).empty();
       }
+
+      return false;
     }
 
     case OPENING_BY_INTERACTION_IF_ITEM:

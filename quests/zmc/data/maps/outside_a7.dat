@@ -5734,10 +5734,10 @@ npc{
 
 chest{
   layer = 0,
-  x = 1936,
-  y = 112,
+  x = 1944,
+  y = 125,
   name = "chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
 }
 
 tile{

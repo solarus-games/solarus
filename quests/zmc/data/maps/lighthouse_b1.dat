@@ -1570,10 +1570,10 @@ stairs{
 
 chest{
   layer = 1,
-  x = 256,
-  y = 208,
+  x = 264,
+  y = 221,
   name = "chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 4,
 }
@@ -1657,10 +1657,10 @@ dynamic_tile{
 
 chest{
   layer = 1,
-  x = 472,
-  y = 120,
+  x = 480,
+  y = 133,
   name = "chest_2",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
 }

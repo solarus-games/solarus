@@ -1928,10 +1928,10 @@ stairs{
 
 chest{
   layer = 0,
-  x = 1168,
-  y = 352,
+  x = 1176,
+  y = 365,
   name = "chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
 }

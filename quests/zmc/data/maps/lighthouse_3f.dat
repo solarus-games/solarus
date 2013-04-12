@@ -4075,10 +4075,13 @@ destructible{
 
 chest{
   layer = 1,
-  x = 784,
-  y = 72,
+  x = 800,
+  y = 93,
   name = "chest",
-  is_big_chest = true,
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_big_key",
+  cannot_open_dialog = "_big_key_required",
   treasure_name = "bow",
   treasure_variant = 1,
 }
@@ -4137,10 +4140,10 @@ wall{
 
 chest{
   layer = 1,
-  x = 792,
-  y = 832,
+  x = 800,
+  y = 845,
   name = "chest_2",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "map",
   treasure_variant = 1,
 }

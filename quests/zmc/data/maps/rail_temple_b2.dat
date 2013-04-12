@@ -1298,9 +1298,9 @@ tile{
 
 chest{
   layer = 0,
-  x = 328,
-  y = 224,
-  is_big_chest = false,
+  x = 344,
+  y = 249,
+  sprite = "entities/chest",
 }
 
 stairs{

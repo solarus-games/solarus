@@ -4532,9 +4532,9 @@ wall{
 
 chest{
   layer = 0,
-  x = 2800,
-  y = 2288,
-  is_big_chest = false,
+  x = 2808,
+  y = 2301,
+  sprite = "entities/chest",
 }
 
 enemy{
@@ -29133,9 +29133,9 @@ switch{
 
 chest{
   layer = 1,
-  x = 1536,
-  y = 2560,
-  is_big_chest = false,
+  x = 1544,
+  y = 2573,
+  sprite = "entities/chest",
 }
 
 block{
@@ -29193,9 +29193,9 @@ npc{
 
 chest{
   layer = 1,
-  x = 2096,
-  y = 1424,
-  is_big_chest = false,
+  x = 2104,
+  y = 1437,
+  sprite = "entities/chest",
 }
 
 block{
@@ -29251,51 +29251,51 @@ npc{
 
 chest{
   layer = 1,
-  x = 2304,
-  y = 872,
-  is_big_chest = false,
+  x = 2312,
+  y = 885,
+  sprite = "entities/chest",
 }
 
 chest{
   layer = 1,
-  x = 2352,
-  y = 872,
-  is_big_chest = false,
+  x = 2360,
+  y = 885,
+  sprite = "entities/chest",
 }
 
 chest{
   layer = 1,
-  x = 2256,
-  y = 872,
-  is_big_chest = false,
+  x = 2264,
+  y = 885,
+  sprite = "entities/chest",
 }
 
 chest{
   layer = 1,
-  x = 2280,
-  y = 824,
-  is_big_chest = false,
+  x = 2288,
+  y = 837,
+  sprite = "entities/chest",
 }
 
 chest{
   layer = 1,
-  x = 2328,
-  y = 824,
-  is_big_chest = false,
+  x = 2336,
+  y = 837,
+  sprite = "entities/chest",
 }
 
 chest{
   layer = 1,
-  x = 2280,
-  y = 920,
-  is_big_chest = false,
+  x = 2288,
+  y = 933,
+  sprite = "entities/chest",
 }
 
 chest{
   layer = 1,
-  x = 2328,
-  y = 920,
-  is_big_chest = false,
+  x = 2336,
+  y = 933,
+  sprite = "entities/chest",
 }
 
 npc{
@@ -29367,16 +29367,16 @@ switch{
 
 chest{
   layer = 1,
-  x = 1184,
-  y = 240,
-  is_big_chest = false,
+  x = 1192,
+  y = 253,
+  sprite = "entities/chest",
 }
 
 chest{
   layer = 1,
-  x = 1472,
-  y = 240,
-  is_big_chest = false,
+  x = 1480,
+  y = 253,
+  sprite = "entities/chest",
 }
 
 block{

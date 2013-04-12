@@ -6226,10 +6226,10 @@ destructible{
 
 chest{
   layer = 1,
-  x = 1200,
-  y = 544,
+  x = 1208,
+  y = 557,
   name = "chest_2",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "big_key",
   treasure_variant = 1,
 }
@@ -6272,10 +6272,10 @@ destructible{
 
 chest{
   layer = 1,
-  x = 472,
-  y = 832,
+  x = 480,
+  y = 845,
   name = "chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "compass",
   treasure_variant = 1,
 }

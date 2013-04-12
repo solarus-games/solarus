@@ -2459,9 +2459,9 @@ tile{
 
 chest{
   layer = 0,
-  x = 336,
-  y = 1856,
-  is_big_chest = false,
+  x = 344,
+  y = 1869,
+  sprite = "entities/chest",
 }
 
 stairs{
@@ -2513,9 +2513,9 @@ npc{
 
 chest{
   layer = 0,
-  x = 752,
-  y = 1232,
-  is_big_chest = false,
+  x = 760,
+  y = 1245,
+  sprite = "entities/chest",
 }
 
 destructible{
@@ -6326,9 +6326,9 @@ wall{
 
 chest{
   layer = 1,
-  x = 832,
-  y = 2536,
-  is_big_chest = false,
+  x = 840,
+  y = 2549,
+  sprite = "entities/chest",
 }
 
 enemy{

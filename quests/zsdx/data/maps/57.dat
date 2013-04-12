@@ -3911,8 +3911,8 @@ enemy{
 
 chest{
   layer = 1,
-  x = 968,
-  y = 288,
+  x = 984,
+  y = 309,
   name = "chest",
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",

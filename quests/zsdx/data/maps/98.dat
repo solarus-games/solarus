@@ -2282,8 +2282,8 @@ dynamic_tile{
 
 chest{
   layer = 1,
-  x = 368,
-  y = 96,
+  x = 384,
+  y = 117,
   name = "chest1_1",
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",

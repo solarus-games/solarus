@@ -10452,8 +10452,8 @@ stairs{
 
 chest{
   layer = 1,
-  x = 824,
-  y = 808,
+  x = 840,
+  y = 829,
   name = "chest",
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",

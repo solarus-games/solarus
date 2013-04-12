@@ -4416,8 +4416,8 @@ teletransporter{
 
 chest{
   layer = 1,
-  x = 160,
-  y = 488,
+  x = 176,
+  y = 509,
   name = "chest_6",
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",

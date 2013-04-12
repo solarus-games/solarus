@@ -20184,8 +20184,8 @@ block{
 
 chest{
   layer = 1,
-  x = 1136,
-  y = 864,
+  x = 1152,
+  y = 885,
   name = "chest_2",
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",

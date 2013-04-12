@@ -10429,8 +10429,8 @@ destination{
 
 chest{
   layer = 1,
-  x = 816,
-  y = 296,
+  x = 832,
+  y = 317,
   name = "chest",
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",

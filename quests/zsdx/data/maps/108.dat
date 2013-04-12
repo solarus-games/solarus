@@ -10059,8 +10059,8 @@ destructible{
 
 chest{
   layer = 1,
-  x = 1600,
-  y = 2168,
+  x = 1616,
+  y = 2189,
   name = "chest",
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",

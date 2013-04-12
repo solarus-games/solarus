@@ -8129,8 +8129,8 @@ jumper{
 
 chest{
   layer = 1,
-  x = 768,
-  y = 192,
+  x = 784,
+  y = 213,
   name = "chest",
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",

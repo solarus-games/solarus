@@ -383,18 +383,7 @@ function map_submenu:load_dungeon_map_image()
       if chest.floor == self.selected_floor
           and chest.savegame_variable ~= nil
           and not self.game:get_value(chest.savegame_variable) then
-        local dx, dy
-
-        -- TODO change chests origin point to avoid this.
-        if chest.big then
-          -- Big chest.
-          dx, dy = 16, 21
-        else
-          -- Small chest.
-          dx, dy = 8, 13
-        end
-        local dst_x, dst_y = self:to_dungeon_minimap_coordinates(
-            chest.x + dx, chest.y + dy)
+        local dst_x, dst_y = self:to_dungeon_minimap_coordinates(chest.x, chest.y)
         dst_y = dst_y - 1
         if chest.big then
           dst_x = dst_x - 1
@@ -432,7 +421,7 @@ function map_submenu:load_chests()
           floor = dungeon.chests.current_floor,
           x = chest_properties.x,
           y = chest_properties.y,
-          big = chest_properties.is_big_chest,
+          big = (chest_properties.sprite == "entities/big_chest"),
           savegame_variable = chest_properties.treasure_savegame_variable,
         }
       end

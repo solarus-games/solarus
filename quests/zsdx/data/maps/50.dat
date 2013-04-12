@@ -6353,8 +6353,8 @@ switch{
 
 chest{
   layer = 1,
-  x = 792,
-  y = 888,
+  x = 808,
+  y = 909,
   name = "chest",
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",

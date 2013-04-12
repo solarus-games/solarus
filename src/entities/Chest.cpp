@@ -69,6 +69,8 @@ Chest::Chest(
   Sprite& sprite = create_sprite(sprite_name);
   std::string animation = is_open() ? "open" : "closed";
   sprite.set_current_animation(animation);
+
+  set_origin(get_width() / 2, get_height() - 3);
 }
 
 /**

@@ -234,7 +234,7 @@ public class EditDoorComponent extends EditEntityComponent {
             openingCondition = requiredItemField.getSelectedId();
             openingConditionConsumed = requiredItemConsumedField.isSelected();
         }
-        String cannotOpenDialog = showCannotOpenDialogField.isEnabled() ?
+        String cannotOpenDialog = showCannotOpenDialogField.isSelected() ?
                 cannotOpenDialogField.getText() : null;
 
         return new ActionEditEntitySpecific(entity,

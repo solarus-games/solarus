@@ -144,7 +144,6 @@ public class Door extends MapEntity {
         }
     }
 
-
     /**
      * Checks the specific properties.
      * @throws MapException if a property is not valid

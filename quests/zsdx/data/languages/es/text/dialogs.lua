@@ -4833,7 +4833,7 @@ dialog{
   text = [[
 La clave para el
 puzzle consiste en
-girar las jarras en la
+rodear las jarras en la
 dirección correcta.
 ]]
 }

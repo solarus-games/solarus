@@ -691,6 +691,15 @@ function map_converter.convert(quest_path, map_id)
     local entity = parse_entity(line)
     print_entity(output_file, entity)
   end
+
+  input_file:close()
+  output_file:close()
+
+  -- Remove the map file with its old name.
+  local success, error_message = os.remove(input_file_name)
+  if not success then
+    error("Failed to remove old map file '" .. input_file_name .. "': " .. error_message)
+  end
 end
 
 return map_converter

@@ -121,7 +121,7 @@ function tileset_converter.convert(quest_path, tileset_id)
   -- Remove the tileset file with its old name.
   local success, error_message = os.remove(input_file_name)
   if not success then
-    error("Failed to remove tileset file '" .. input_file_name .. "': " .. error_message)
+    error("Failed to remove old tileset file '" .. input_file_name .. "': " .. error_message)
   end
 
   -- Rename both PNG files of the tileset.

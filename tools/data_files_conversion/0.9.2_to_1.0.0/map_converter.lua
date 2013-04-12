@@ -92,6 +92,11 @@ local function convert_chest_is_big(is_big_chest, entity)
       error("Line " .. line_number .. ": Big chest are only allowed in dungeons")
     end
 
+    io.stderr:write("Warning: Map " .. metadata.map_id .. ", line "
+        .. line_number .. " (entity '" .. name .. ")': Big chests have now "
+        .. "the same collision box as normal ones (16x16). Use tiles to make "
+        .. "sure your chest is not travserable.\n")
+
     return {
       sprite = "entities/big_chest",
       opening_method = "interaction_if_savegame_variable",

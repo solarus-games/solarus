@@ -1867,10 +1867,12 @@ chest{
   x = 272,
   y = 293,
   name = "map_chest",
-  sprite = "entities/chest",
   treasure_name = "map",
   treasure_variant = 1,
   treasure_savegame_variable = "b54",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 switch{
@@ -1932,10 +1934,12 @@ chest{
   x = 408,
   y = 461,
   name = "compass_chest",
-  sprite = "entities/chest",
   treasure_name = "compass",
   treasure_variant = 1,
   treasure_savegame_variable = "b55",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 enemy{
@@ -1947,6 +1951,7 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 enemy{
@@ -1958,6 +1963,7 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 enemy{
@@ -1969,6 +1975,7 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 enemy{
@@ -1980,6 +1987,7 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 destination{
@@ -2017,6 +2025,8 @@ door{
   name = "sw_door",
   direction = 1,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -2026,6 +2036,8 @@ door{
   name = "sw_door_2",
   direction = 3,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 sensor{
@@ -2053,11 +2065,11 @@ door{
   name = "door",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b58",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_1_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b58",
 }
 
 door{
@@ -2067,11 +2079,11 @@ door{
   name = "door_2",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b58",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_1_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b58",
 }
 
 wall{
@@ -4393,6 +4405,15 @@ tile{
   pattern = 70,
 }
 
+tile{
+  layer = 1,
+  x = 160,
+  y = 504,
+  width = 32,
+  height = 8,
+  pattern = 70,
+}
+
 sensor{
   layer = 1,
   x = 432,
@@ -4419,13 +4440,14 @@ chest{
   x = 176,
   y = 509,
   name = "chest_6",
-  sprite = "entities/big_chest",
-  opening_method = "interaction_if_savegame_variable",
-  opening_condition = "dungeon_1_big_key",
-  cannot_open_dialog = "_big_key_required",
   treasure_name = "glove",
   treasure_variant = 1,
   treasure_savegame_variable = "b5",
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_1_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 jumper{
@@ -4513,6 +4535,7 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 enemy{
@@ -4524,6 +4547,7 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 enemy{
@@ -4535,6 +4559,7 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 enemy{
@@ -4546,6 +4571,7 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 enemy{
@@ -4557,6 +4583,7 @@ enemy{
   breed = "tentacle",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 wall{
@@ -4594,6 +4621,7 @@ enemy{
   breed = "bubble",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 destination{
@@ -4665,6 +4693,7 @@ enemy{
   breed = "simple_green_soldier",
   rank = 0,
   treasure_name = "random",
+  treasure_variant = 1,
 }
 
 teletransporter{
@@ -4732,8 +4761,9 @@ door{
   name = "weak_wall",
   direction = 1,
   sprite = "entities/door_very_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b923",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 pickable{

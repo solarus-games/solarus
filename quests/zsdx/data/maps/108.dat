@@ -8758,6 +8758,15 @@ tile{
   pattern = 325,
 }
 
+tile{
+  layer = 1,
+  x = 1600,
+  y = 2176,
+  width = 32,
+  height = 16,
+  pattern = 70,
+}
+
 crystal_block{
   layer = 1,
   x = 1376,
@@ -9778,10 +9787,12 @@ chest{
   x = 1608,
   y = 1661,
   name = "chest_b",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b873",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 jumper{
@@ -9821,8 +9832,9 @@ door{
   name = "weak_wall_a",
   direction = 2,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b867",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9832,8 +9844,9 @@ door{
   name = "weak_wall_a_2",
   direction = 0,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b867",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 dynamic_tile{
@@ -9865,8 +9878,9 @@ door{
   name = "weak_wall_b",
   direction = 1,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b868",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9876,8 +9890,9 @@ door{
   name = "weak_wall_b_2",
   direction = 3,
   sprite = "entities/door_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b868",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 dynamic_tile{
@@ -9909,11 +9924,11 @@ door{
   name = "door",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b869",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b869",
 }
 
 door{
@@ -9923,11 +9938,11 @@ door{
   name = "door_2",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b869",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b869",
 }
 
 switch{
@@ -9953,10 +9968,12 @@ chest{
   x = 1336,
   y = 509,
   name = "chest_a",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b872",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 switch{
@@ -10018,11 +10035,11 @@ door{
   name = "door_3",
   direction = 1,
   sprite = "entities/door_small_key",
+  savegame_variable = "b874",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b874",
 }
 
 door{
@@ -10032,11 +10049,11 @@ door{
   name = "door_4",
   direction = 3,
   sprite = "entities/door_small_key",
+  savegame_variable = "b874",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b874",
 }
 
 destructible{
@@ -10062,13 +10079,14 @@ chest{
   x = 1616,
   y = 2189,
   name = "chest",
-  sprite = "entities/big_chest",
-  opening_method = "interaction_if_savegame_variable",
-  opening_condition = "dungeon_9_big_key",
-  cannot_open_dialog = "_big_key_required",
   treasure_name = "magic_cape",
   treasure_variant = 1,
   treasure_savegame_variable = "b875",
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_9_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 enemy{
@@ -10200,10 +10218,12 @@ chest{
   x = 2088,
   y = 709,
   name = "chest_c",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b876",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 enemy{
@@ -10237,11 +10257,11 @@ door{
   name = "door_5",
   direction = 3,
   sprite = "entities/door_small_key",
+  savegame_variable = "b884",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b884",
 }
 
 door{
@@ -10251,11 +10271,11 @@ door{
   name = "door_6",
   direction = 1,
   sprite = "entities/door_small_key",
+  savegame_variable = "b884",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b884",
 }
 
 door{
@@ -10266,6 +10286,8 @@ door{
   direction = 0,
   sprite = "entities/door_normal",
   savegame_variable = "b870",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -10276,6 +10298,8 @@ door{
   direction = 2,
   sprite = "entities/door_normal",
   savegame_variable = "b870",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -10286,6 +10310,8 @@ door{
   direction = 0,
   sprite = "entities/door_normal",
   savegame_variable = "b871",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -10296,6 +10322,8 @@ door{
   direction = 2,
   sprite = "entities/door_normal",
   savegame_variable = "b871",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 crystal_block{

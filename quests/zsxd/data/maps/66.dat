@@ -3863,10 +3863,12 @@ chest{
   x = 160,
   y = 77,
   name = "chest_6",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b242",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 crystal_block{
@@ -9327,6 +9329,15 @@ tile{
   pattern = 242,
 }
 
+tile{
+  layer = 1,
+  x = 864,
+  y = 336,
+  width = 32,
+  height = 16,
+  pattern = 70,
+}
+
 dynamic_tile{
   layer = 1,
   x = 816,
@@ -9400,13 +9411,14 @@ chest{
   x = 880,
   y = 349,
   name = "chest",
-  sprite = "entities/big_chest",
-  opening_method = "interaction_if_savegame_variable",
-  opening_condition = "dungeon_2_big_key",
-  cannot_open_dialog = "_big_key_required",
   treasure_name = "bow",
   treasure_variant = 2,
   treasure_savegame_variable = "b206",
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_2_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 wall{
@@ -9475,8 +9487,9 @@ door{
   name = "door",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b207",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9486,8 +9499,9 @@ door{
   name = "door_2",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b209",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9497,8 +9511,9 @@ door{
   name = "door_3",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b208",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9508,8 +9523,9 @@ door{
   name = "door_4",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b210",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9519,8 +9535,9 @@ door{
   name = "door_5",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b212",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9530,8 +9547,9 @@ door{
   name = "door_6",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b211",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9541,8 +9559,9 @@ door{
   name = "door_7",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b213",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9552,8 +9571,9 @@ door{
   name = "door_8",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b215",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9563,8 +9583,9 @@ door{
   name = "door_9",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b216",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9574,8 +9595,9 @@ door{
   name = "door_10",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b218",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9585,8 +9607,9 @@ door{
   name = "door_11",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b217",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9596,8 +9619,9 @@ door{
   name = "door_12",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b219",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9607,8 +9631,9 @@ door{
   name = "door_13",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b220",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9618,8 +9643,9 @@ door{
   name = "door_14",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b232",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9629,8 +9655,9 @@ door{
   name = "door_15",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b221",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9640,8 +9667,9 @@ door{
   name = "door_16",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b222",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9651,8 +9679,9 @@ door{
   name = "door_17",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b223",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9662,8 +9691,9 @@ door{
   name = "door_18",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b214",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9673,8 +9703,9 @@ door{
   name = "door_19",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b224",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9684,8 +9715,9 @@ door{
   name = "door_20",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b226",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9695,8 +9727,9 @@ door{
   name = "door_21",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b225",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9706,8 +9739,9 @@ door{
   name = "door_22",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b228",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9717,8 +9751,9 @@ door{
   name = "door_23",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b227",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9728,8 +9763,9 @@ door{
   name = "door_24",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b231",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9739,8 +9775,9 @@ door{
   name = "door_25",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b230",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 enemy{
@@ -9870,8 +9907,9 @@ door{
   name = "door_26",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b229",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 wall{
@@ -10480,10 +10518,12 @@ chest{
   x = 880,
   y = 389,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b249",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 wall{
@@ -10594,10 +10634,12 @@ chest{
   x = 696,
   y = 829,
   name = "fight_chest",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b244",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -10605,10 +10647,12 @@ chest{
   x = 160,
   y = 349,
   name = "chest_5",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b243",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 block{
@@ -10749,6 +10793,8 @@ door{
   name = "fight_door",
   direction = 1,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -10758,6 +10804,8 @@ door{
   name = "fight_door_2",
   direction = 3,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 wall{

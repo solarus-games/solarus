@@ -1448,6 +1448,8 @@ door{
   name = "LD14",
   direction = 1,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -1455,10 +1457,12 @@ chest{
   x = 432,
   y = 421,
   name = "KC05",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b715",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -1466,10 +1470,12 @@ chest{
   x = 872,
   y = 397,
   name = "CMP",
-  sprite = "entities/chest",
   treasure_name = "compass",
   treasure_variant = 1,
   treasure_savegame_variable = "b716",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 enemy{
@@ -2338,6 +2344,8 @@ door{
   name = "LD14_2",
   direction = 3,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 enemy{
@@ -6002,6 +6010,15 @@ tile{
   pattern = 435,
 }
 
+tile{
+  layer = 1,
+  x = 792,
+  y = 896,
+  width = 32,
+  height = 16,
+  pattern = 70,
+}
+
 destination{
   layer = 1,
   x = 1240,
@@ -6356,13 +6373,14 @@ chest{
   x = 808,
   y = 909,
   name = "chest",
-  sprite = "entities/big_chest",
-  opening_method = "interaction_if_savegame_variable",
-  opening_condition = "dungeon_8_big_key",
-  cannot_open_dialog = "_big_key_required",
   treasure_name = "shield",
   treasure_variant = 3,
   treasure_savegame_variable = "b719",
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_8_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 block{
@@ -6906,6 +6924,8 @@ door{
   name = "LD13",
   direction = 1,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -6915,6 +6935,8 @@ door{
   name = "LD12",
   direction = 2,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -6924,6 +6946,8 @@ door{
   name = "LD13_2",
   direction = 3,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -6933,6 +6957,8 @@ door{
   name = "LD12_2",
   direction = 0,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 sensor{

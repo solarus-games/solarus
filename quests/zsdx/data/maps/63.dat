@@ -1290,11 +1290,11 @@ door{
   name = "door",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b516",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_5_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b516",
 }
 
 door{
@@ -1304,11 +1304,11 @@ door{
   name = "door_2",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b516",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_5_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b516",
 }
 
 wall{
@@ -10324,6 +10324,15 @@ tile{
   pattern = 69,
 }
 
+tile{
+  layer = 1,
+  x = 816,
+  y = 304,
+  width = 32,
+  height = 16,
+  pattern = 70,
+}
+
 sensor{
   layer = 1,
   x = 704,
@@ -10432,13 +10441,14 @@ chest{
   x = 832,
   y = 317,
   name = "chest",
-  sprite = "entities/big_chest",
-  opening_method = "interaction_if_savegame_variable",
-  opening_condition = "dungeon_5_big_key",
-  cannot_open_dialog = "_big_key_required",
   treasure_name = "feather",
   treasure_variant = 1,
   treasure_savegame_variable = "b504",
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_5_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 block{
@@ -10514,10 +10524,12 @@ chest{
   x = 888,
   y = 885,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b505",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 block{
@@ -11572,6 +11584,8 @@ door{
   name = "statue_door",
   direction = 1,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -11581,6 +11595,8 @@ door{
   name = "statue_door_2",
   direction = 3,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 npc{
@@ -11660,6 +11676,8 @@ door{
   name = "torches_door_2",
   direction = 1,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -11669,6 +11687,8 @@ door{
   name = "torches_door",
   direction = 3,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 conveyor_belt{

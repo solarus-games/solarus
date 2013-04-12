@@ -2916,6 +2916,15 @@ tile{
   pattern = 320,
 }
 
+tile{
+  layer = 0,
+  x = 1360,
+  y = 72,
+  width = 32,
+  height = 16,
+  pattern = 70,
+}
+
 teletransporter{
   layer = 0,
   x = 1536,
@@ -2954,10 +2963,12 @@ chest{
   x = 1376,
   y = 1021,
   name = "chest",
-  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b246",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -2968,6 +2979,8 @@ door{
   direction = 1,
   sprite = "entities/door_normal",
   savegame_variable = "b236",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -2978,6 +2991,8 @@ door{
   direction = 3,
   sprite = "entities/door_normal",
   savegame_variable = "b236",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 stairs{
@@ -2994,13 +3009,14 @@ chest{
   x = 1376,
   y = 85,
   name = "chest_2",
-  sprite = "entities/big_chest",
-  opening_method = "interaction_if_savegame_variable",
-  opening_condition = "dungeon_2_big_key",
-  cannot_open_dialog = "_big_key_required",
   treasure_name = "feather",
   treasure_variant = 1,
   treasure_savegame_variable = "b238",
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_2_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 stairs{
@@ -6513,10 +6529,11 @@ door{
   name = "door",
   direction = 1,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_1_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b237",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_1_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 door{
@@ -6526,10 +6543,11 @@ door{
   name = "door_2",
   direction = 3,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_1_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b237",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_1_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 wall{

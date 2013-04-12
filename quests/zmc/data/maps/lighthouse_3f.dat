@@ -576,6 +576,15 @@ tile{
   pattern = 308,
 }
 
+tile{
+  layer = 0,
+  x = 784,
+  y = 80,
+  width = 32,
+  height = 16,
+  pattern = 70,
+}
+
 stairs{
   layer = 0,
   x = 792,
@@ -583,6 +592,20 @@ stairs{
   name = "stairs",
   direction = 3,
   subtype = "4",
+}
+
+chest{
+  layer = 0,
+  x = 800,
+  y = 93,
+  name = "chest",
+  treasure_name = "bow",
+  treasure_variant = 1,
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_3_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 tile{
@@ -4073,19 +4096,6 @@ destructible{
   treasure_variant = 2,
 }
 
-chest{
-  layer = 1,
-  x = 800,
-  y = 93,
-  name = "chest",
-  sprite = "entities/big_chest",
-  opening_method = "interaction_if_savegame_variable",
-  opening_condition = "dungeon_3_big_key",
-  cannot_open_dialog = "_big_key_required",
-  treasure_name = "bow",
-  treasure_variant = 1,
-}
-
 wall{
   layer = 1,
   x = 768,
@@ -4143,9 +4153,11 @@ chest{
   x = 800,
   y = 845,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "map",
   treasure_variant = 1,
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 door{

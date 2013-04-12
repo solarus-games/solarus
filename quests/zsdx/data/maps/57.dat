@@ -1717,6 +1717,8 @@ door{
   name = "ne_door",
   direction = 1,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 enemy{
@@ -3882,6 +3884,15 @@ tile{
   pattern = 397,
 }
 
+tile{
+  layer = 1,
+  x = 968,
+  y = 296,
+  width = 32,
+  height = 16,
+  pattern = 70,
+}
+
 wall{
   layer = 1,
   x = 128,
@@ -3914,13 +3925,14 @@ chest{
   x = 984,
   y = 309,
   name = "chest",
-  sprite = "entities/big_chest",
-  opening_method = "interaction_if_savegame_variable",
-  opening_condition = "dungeon_6_big_key",
-  cannot_open_dialog = "_big_key_required",
   treasure_name = "glove",
   treasure_variant = 2,
   treasure_savegame_variable = "b308",
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_6_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 wall{
@@ -3992,11 +4004,11 @@ door{
   name = "door_3",
   direction = 1,
   sprite = "entities/door_small_key",
+  savegame_variable = "b310",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_6_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b310",
 }
 
 door{
@@ -4006,11 +4018,11 @@ door{
   name = "door_4",
   direction = 3,
   sprite = "entities/door_small_key",
+  savegame_variable = "b310",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_6_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b310",
 }
 
 door{
@@ -4020,10 +4032,11 @@ door{
   name = "door_5",
   direction = 1,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_6_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b311",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_6_boss_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_boss_key_required",
 }
 
 door{
@@ -4033,10 +4046,11 @@ door{
   name = "door_6",
   direction = 3,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_6_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b311",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_6_boss_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_boss_key_required",
 }
 
 destination{
@@ -4201,6 +4215,8 @@ door{
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -4210,6 +4226,8 @@ door{
   name = "boss_door_2",
   direction = 3,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 destination{

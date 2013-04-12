@@ -2648,10 +2648,12 @@ chest{
   x = 208,
   y = 773,
   name = "chest_6",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 4,
   treasure_savegame_variable = "b414",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -2659,10 +2661,12 @@ chest{
   x = 216,
   y = 669,
   name = "chest_7",
-  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 5,
   treasure_savegame_variable = "b418",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 enemy{
@@ -7636,6 +7640,15 @@ tile{
   pattern = 455,
 }
 
+tile{
+  layer = 1,
+  x = 832,
+  y = 304,
+  width = 32,
+  height = 16,
+  pattern = 70,
+}
+
 wall{
   layer = 1,
   x = 784,
@@ -7799,8 +7812,9 @@ door{
   name = "hidden_weak_wall_2",
   direction = 1,
   sprite = "entities/door_very_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b403",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 wall{
@@ -7868,10 +7882,11 @@ door{
   name = "door",
   direction = 1,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_4_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b401",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_4_boss_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_boss_key_required",
 }
 
 door{
@@ -7881,10 +7896,11 @@ door{
   name = "door_2",
   direction = 3,
   sprite = "entities/door_boss_key",
-  opening_condition = "dungeon_4_boss_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b401",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_4_boss_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_boss_key_required",
 }
 
 wall{
@@ -7920,11 +7936,11 @@ door{
   name = "door_3",
   direction = 0,
   sprite = "entities/door_small_key",
+  savegame_variable = "b402",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_4_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b402",
 }
 
 door{
@@ -7934,11 +7950,11 @@ door{
   name = "door_4",
   direction = 2,
   sprite = "entities/door_small_key",
+  savegame_variable = "b402",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_4_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b402",
 }
 
 destination{
@@ -8029,8 +8045,9 @@ door{
   name = "hidden_weak_wall",
   direction = 3,
   sprite = "entities/door_very_weak_wall",
-  opening_method = "explosion",
   savegame_variable = "b403",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 destination{
@@ -8180,13 +8197,14 @@ chest{
   x = 848,
   y = 317,
   name = "chest",
-  sprite = "entities/big_chest",
-  opening_method = "interaction_if_savegame_variable",
-  opening_condition = "dungeon_4_big_key",
-  cannot_open_dialog = "_big_key_required",
   treasure_name = "tunic",
   treasure_variant = 2,
   treasure_savegame_variable = "b404",
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_4_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 chest{
@@ -8194,10 +8212,12 @@ chest{
   x = 648,
   y = 613,
   name = "chest_2",
-  sprite = "entities/chest",
   treasure_name = "compass",
   treasure_variant = 1,
   treasure_savegame_variable = "b405",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -8207,10 +8227,11 @@ door{
   name = "door_7",
   direction = 3,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_4_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b406",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_4_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 door{
@@ -8220,10 +8241,11 @@ door{
   name = "door_8",
   direction = 1,
   sprite = "entities/door_big_key",
-  opening_condition = "dungeon_4_big_key",
-  opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b406",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_4_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 chest{
@@ -8231,10 +8253,12 @@ chest{
   x = 480,
   y = 389,
   name = "chest_3",
-  sprite = "entities/chest",
   treasure_name = "map",
   treasure_variant = 1,
   treasure_savegame_variable = "b407",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 dynamic_tile{
@@ -8253,10 +8277,12 @@ chest{
   x = 648,
   y = 293,
   name = "chest_4",
-  sprite = "entities/chest",
   treasure_name = "big_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b409",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -8266,8 +8292,9 @@ door{
   name = "weak_block",
   direction = 1,
   sprite = "entities/door_weak_block",
-  opening_method = "explosion",
   savegame_variable = "b410",
+  opening_method = "explosion",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -8275,10 +8302,12 @@ chest{
   x = 800,
   y = 389,
   name = "chest_5",
-  sprite = "entities/chest",
   treasure_name = "bomb",
   treasure_variant = 2,
   treasure_savegame_variable = "b408",
+  sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 teletransporter{
@@ -8996,6 +9025,8 @@ door{
   name = "boss_door",
   direction = 1,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -9005,6 +9036,8 @@ door{
   name = "boss_door_2",
   direction = 3,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 destructible{
@@ -9086,6 +9119,8 @@ door{
   name = "final_room_door",
   direction = 1,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 destination{

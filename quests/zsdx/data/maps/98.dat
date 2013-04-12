@@ -484,11 +484,11 @@ door{
   name = "door_2",
   direction = 1,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b232",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_10_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b232",
 }
 
 pickable{
@@ -1772,6 +1772,15 @@ tile{
   pattern = 392,
 }
 
+tile{
+  layer = 1,
+  x = 368,
+  y = 104,
+  width = 32,
+  height = 16,
+  pattern = 70,
+}
+
 dynamic_tile{
   layer = 1,
   x = 864,
@@ -1812,6 +1821,8 @@ door{
   name = "door_a",
   direction = 2,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 door{
@@ -1821,6 +1832,8 @@ door{
   name = "door_a_2",
   direction = 0,
   sprite = "entities/door_normal",
+  opening_method = "none",
+  opening_condition_consumed = false,
 }
 
 switch{
@@ -1952,11 +1965,11 @@ door{
   name = "door",
   direction = 1,
   sprite = "entities/door_small_key_block",
+  savegame_variable = "b233",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_10_small_keys",
   opening_condition_consumed = true,
   cannot_open_dialog = "_small_key_required",
-  savegame_variable = "b233",
 }
 
 block{
@@ -2285,13 +2298,14 @@ chest{
   x = 384,
   y = 117,
   name = "chest1_1",
-  sprite = "entities/big_chest",
-  opening_method = "interaction_if_savegame_variable",
-  opening_condition = "dungeon_10_big_key",
-  cannot_open_dialog = "_big_key_required",
   treasure_name = "magic_bar",
   treasure_variant = 2,
   treasure_savegame_variable = "b226",
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_10_big_key",
+  opening_condition_consumed = false,
+  cannot_open_dialog = "_big_key_required",
 }
 
 sensor{
@@ -2429,7 +2443,7 @@ teletransporter{
   y = 88,
   width = 16,
   height = 16,
-  name = "entrance_E_1",
+  name = "entrance_E_2",
   transition = 1,
   destination_map = "17",
   destination = "entrance_E_1",

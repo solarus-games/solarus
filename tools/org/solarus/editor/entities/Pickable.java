@@ -66,7 +66,7 @@ public class Pickable extends MapEntity {
     public void setPropertiesDefaultValues() throws MapException {
         setProperty("treasure_name", null);
         setIntegerProperty("treasure_variant", null);
-        setIntegerProperty("treasure_savegame_variable", null);
+        setProperty("treasure_savegame_variable", null);
     }
 
     /**

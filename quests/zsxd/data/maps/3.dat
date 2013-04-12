@@ -7806,10 +7806,10 @@ destructible{
 
 chest{
   layer = 0,
-  x = 560,
-  y = 24,
+  x = 568,
+  y = 37,
   name = "chest_link_house",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b45",
 }

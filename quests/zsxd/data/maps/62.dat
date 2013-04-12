@@ -1034,10 +1034,10 @@ stairs{
 
 chest{
   layer = 0,
-  x = 1304,
-  y = 736,
+  x = 1312,
+  y = 749,
   name = "chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "boss_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b201",
@@ -4986,10 +4986,10 @@ destructible{
 
 chest{
   layer = 1,
-  x = 984,
-  y = 144,
+  x = 992,
+  y = 157,
   name = "chest_2",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "map",
   treasure_variant = 1,
   treasure_savegame_variable = "b202",

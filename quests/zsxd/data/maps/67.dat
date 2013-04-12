@@ -2440,10 +2440,10 @@ dynamic_tile{
 
 chest{
   layer = 1,
-  x = 256,
-  y = 432,
+  x = 264,
+  y = 445,
   name = "chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b245",

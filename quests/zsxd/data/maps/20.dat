@@ -1559,10 +1559,10 @@ destructible{
 
 chest{
   layer = 0,
-  x = 1248,
-  y = 384,
+  x = 1256,
+  y = 397,
   name = "CV1",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b103",
 }
@@ -7133,20 +7133,20 @@ npc{
 
 chest{
   layer = 1,
-  x = 408,
-  y = 272,
+  x = 416,
+  y = 285,
   name = "CK3",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b122",
 }
 
 chest{
   layer = 1,
-  x = 1272,
-  y = 216,
+  x = 1280,
+  y = 229,
   name = "CR3",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 1,
   treasure_savegame_variable = "b109",

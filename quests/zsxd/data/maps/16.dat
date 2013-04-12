@@ -795,10 +795,10 @@ teletransporter{
 
 chest{
   layer = 1,
-  x = 88,
-  y = 72,
+  x = 96,
+  y = 85,
   name = "chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "bone_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b58",

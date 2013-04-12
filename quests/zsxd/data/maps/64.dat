@@ -7466,10 +7466,10 @@ crystal_block{
 
 chest{
   layer = 1,
-  x = 1400,
-  y = 792,
+  x = 1408,
+  y = 805,
   name = "chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b241",
@@ -7610,10 +7610,10 @@ crystal_block{
 
 chest{
   layer = 1,
-  x = 456,
-  y = 928,
+  x = 464,
+  y = 941,
   name = "chest_2",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b247",

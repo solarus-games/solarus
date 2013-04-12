@@ -3860,10 +3860,10 @@ stairs{
 
 chest{
   layer = 0,
-  x = 152,
-  y = 64,
+  x = 160,
+  y = 77,
   name = "chest_6",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b242",
@@ -9397,10 +9397,13 @@ teletransporter{
 
 chest{
   layer = 1,
-  x = 864,
-  y = 328,
+  x = 880,
+  y = 349,
   name = "chest",
-  is_big_chest = true,
+  sprite = "entities/big_chest",
+  opening_method = "interaction_if_savegame_variable",
+  opening_condition = "dungeon_2_big_key",
+  cannot_open_dialog_id = "_big_key_required",
   treasure_name = "bow",
   treasure_variant = 2,
   treasure_savegame_variable = "b206",
@@ -10474,10 +10477,10 @@ wall{
 
 chest{
   layer = 1,
-  x = 872,
-  y = 376,
+  x = 880,
+  y = 389,
   name = "chest_3",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b249",
@@ -10588,10 +10591,10 @@ jumper{
 
 chest{
   layer = 1,
-  x = 688,
-  y = 816,
+  x = 696,
+  y = 829,
   name = "fight_chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b244",
@@ -10599,10 +10602,10 @@ chest{
 
 chest{
   layer = 1,
-  x = 152,
-  y = 336,
+  x = 160,
+  y = 349,
   name = "chest_5",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b243",

@@ -2487,10 +2487,10 @@ door{
 
 chest{
   layer = 0,
-  x = 1040,
-  y = 104,
+  x = 1048,
+  y = 117,
   name = "chest_2",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "big_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b204",
@@ -10178,10 +10178,10 @@ destructible{
 
 chest{
   layer = 1,
-  x = 400,
-  y = 912,
+  x = 408,
+  y = 925,
   name = "chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 5,
   treasure_savegame_variable = "b292",
@@ -10750,10 +10750,10 @@ destructible{
 
 chest{
   layer = 1,
-  x = 664,
-  y = 952,
+  x = 672,
+  y = 965,
   name = "chest_4",
-  is_big_chest = true,
+  sprite = "entities/chest",
   treasure_name = "bomb_bag",
   treasure_variant = 2,
   treasure_savegame_variable = "b205",
@@ -10761,10 +10761,10 @@ chest{
 
 chest{
   layer = 1,
-  x = 768,
-  y = 960,
+  x = 776,
+  y = 973,
   name = "chest_3",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "compass",
   treasure_variant = 1,
   treasure_savegame_variable = "b203",
@@ -10890,10 +10890,10 @@ crystal{
 
 chest{
   layer = 1,
-  x = 152,
-  y = 336,
+  x = 160,
+  y = 349,
   name = "small_key_danger_chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b248",

@@ -468,10 +468,10 @@ destination{
 
 chest{
   layer = 0,
-  x = 96,
-  y = 176,
+  x = 104,
+  y = 189,
   name = "uselesschest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
 }
 

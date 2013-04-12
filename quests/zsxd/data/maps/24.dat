@@ -2495,10 +2495,10 @@ tile{
 
 chest{
   layer = 0,
-  x = 144,
-  y = 520,
+  x = 152,
+  y = 533,
   name = "chest",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "bomb",
   treasure_variant = 2,
   treasure_savegame_variable = "b106",
@@ -8554,10 +8554,10 @@ door{
 
 chest{
   layer = 1,
-  x = 1488,
-  y = 528,
+  x = 1496,
+  y = 541,
   name = "IGC",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "glove",
   treasure_variant = 1,
   treasure_savegame_variable = "b120",
@@ -8576,10 +8576,10 @@ jumper{
 
 chest{
   layer = 1,
-  x = 144,
-  y = 368,
+  x = 152,
+  y = 381,
   name = "chest_3",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "big_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b111",
@@ -8596,10 +8596,10 @@ destination{
 
 chest{
   layer = 1,
-  x = 2952,
-  y = 56,
+  x = 2960,
+  y = 69,
   name = "CR2",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 4,
   treasure_savegame_variable = "b108",
@@ -9894,20 +9894,20 @@ block{
 
 chest{
   layer = 1,
-  x = 1456,
-  y = 528,
+  x = 1464,
+  y = 541,
   name = "chest_5",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b150",
 }
 
 chest{
   layer = 1,
-  x = 1456,
-  y = 560,
+  x = 1464,
+  y = 573,
   name = "CK4",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
   treasure_savegame_variable = "b128",
@@ -9915,120 +9915,120 @@ chest{
 
 chest{
   layer = 1,
-  x = 1488,
-  y = 560,
+  x = 1496,
+  y = 573,
   name = "chest_2",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b154",
 }
 
 chest{
   layer = 1,
-  x = 1520,
-  y = 528,
+  x = 1528,
+  y = 541,
   name = "chest_7",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b151",
 }
 
 chest{
   layer = 1,
-  x = 1520,
-  y = 560,
+  x = 1528,
+  y = 573,
   name = "chest_8",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b155",
 }
 
 chest{
   layer = 1,
-  x = 1552,
-  y = 560,
+  x = 1560,
+  y = 573,
   name = "chest_9",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b156",
 }
 
 chest{
   layer = 1,
-  x = 1552,
-  y = 528,
+  x = 1560,
+  y = 541,
   name = "chest_10",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b152",
 }
 
 chest{
   layer = 1,
-  x = 1584,
-  y = 528,
+  x = 1592,
+  y = 541,
   name = "chest_11",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b153",
 }
 
 chest{
   layer = 1,
-  x = 1584,
-  y = 560,
+  x = 1592,
+  y = 573,
   name = "chest_12",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b157",
 }
 
 chest{
   layer = 1,
-  x = 1520,
-  y = 592,
+  x = 1528,
+  y = 605,
   name = "chest_13",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b160",
 }
 
 chest{
   layer = 1,
-  x = 1552,
-  y = 592,
+  x = 1560,
+  y = 605,
   name = "chest_14",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b161",
 }
 
 chest{
   layer = 1,
-  x = 1584,
-  y = 592,
+  x = 1592,
+  y = 605,
   name = "chest_15",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b162",
 }
 
 chest{
   layer = 1,
-  x = 1456,
-  y = 592,
+  x = 1464,
+  y = 605,
   name = "chest_16",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b158",
 }
 
 chest{
   layer = 1,
-  x = 1488,
-  y = 592,
+  x = 1496,
+  y = 605,
   name = "chest_17",
-  is_big_chest = false,
+  sprite = "entities/chest",
   treasure_variant = 1,
   treasure_savegame_variable = "b159",
 }

@@ -29055,7 +29055,7 @@ door{
   sprite = "entities/door_very_weak_wall",
   opening_method = "none",
   opening_condition_consumed = false,
-  cannot_open_dialog_id = "",
+  cannot_open_dialog = "",
 }
 
 destination{

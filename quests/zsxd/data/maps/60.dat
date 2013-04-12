@@ -2997,7 +2997,7 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_2_big_key",
-  cannot_open_dialog_id = "_big_key_required",
+  cannot_open_dialog = "_big_key_required",
   treasure_name = "feather",
   treasure_variant = 1,
   treasure_savegame_variable = "b238",
@@ -6515,7 +6515,7 @@ door{
   sprite = "entities/door_big_key",
   opening_condition = "dungeon_1_big_key",
   opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog_id = "_big_key_required",
+  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b237",
 }
 
@@ -6528,7 +6528,7 @@ door{
   sprite = "entities/door_big_key",
   opening_condition = "dungeon_1_big_key",
   opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog_id = "_big_key_required",
+  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b237",
 }
 

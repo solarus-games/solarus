@@ -96,7 +96,7 @@ local function convert_chest_is_big(is_big_chest, entity)
       sprite = "entities/big_chest",
       opening_method = "interaction_if_savegame_variable",
       opening_condition = "dungeon_" .. metadata.dungeon .. "_big_key",
-      cannot_open_dialog_id = "_big_key_required",
+      cannot_open_dialog = "_big_key_required",
     }
   end
 end
@@ -145,7 +145,7 @@ local function convert_door_subtype(subtype, entity)
       opening_method = "interaction_if_savegame_variable",
       opening_condition = metadata.small_keys_variable,
       opening_condition_consumed = true,
-      cannot_open_dialog_id = "_small_key_required",
+      cannot_open_dialog = "_small_key_required",
     }
 
   elseif subtype == 2 then
@@ -155,7 +155,7 @@ local function convert_door_subtype(subtype, entity)
       opening_method = "interaction_if_savegame_variable",
       opening_condition = metadata.small_keys_variable,
       opening_condition_consumed = true,
-      cannot_open_dialog_id = "_small_key_required",
+      cannot_open_dialog = "_small_key_required",
     }
 
   elseif subtype == 3 then
@@ -167,7 +167,7 @@ local function convert_door_subtype(subtype, entity)
       sprite = "entities/door_big_key",
       opening_method = "interaction_if_savegame_variable",
       opening_condition = "dungeon_" .. metadata.dungeon .. "_big_key",
-      cannot_open_dialog_id = "_big_key_required",
+      cannot_open_dialog = "_big_key_required",
     }
 
   elseif subtype == 4 then
@@ -179,7 +179,7 @@ local function convert_door_subtype(subtype, entity)
       sprite = "entities/door_boss_key",
       opening_method = "interaction_if_savegame_variable",
       opening_condition = "dungeon_" .. metadata.dungeon .. "_boss_key",
-      cannot_open_dialog_id = "_boss_key_required",
+      cannot_open_dialog = "_boss_key_required",
     }
 
   elseif subtype == 5 then

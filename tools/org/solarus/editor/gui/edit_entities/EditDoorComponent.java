@@ -153,7 +153,7 @@ public class EditDoorComponent extends EditEntityComponent {
         Door.OpeningMethod openingMethod = Door.OpeningMethod.get(door.getProperty("opening_method"));
         String openingCondition = door.getProperty("opening_condition");
         boolean openingConditionConsumed = door.getBooleanProperty("opening_condition_consumed");
-        String cannotOpenDialog = door.getProperty("cannot_open_dialog_id");
+        String cannotOpenDialog = door.getProperty("cannot_open_dialog");
 
         try {
           spriteField.setSelectedId(sprite);

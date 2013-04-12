@@ -3780,7 +3780,7 @@ door{
   sprite = "entities/door_boss_key",
   opening_condition = "dungeon_1_boss_key",
   opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog_id = "_boss_key_required",
+  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b61",
 }
 
@@ -3793,7 +3793,7 @@ door{
   sprite = "entities/door_boss_key",
   opening_condition = "dungeon_1_boss_key",
   opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog_id = "_boss_key_required",
+  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b61",
 }
 

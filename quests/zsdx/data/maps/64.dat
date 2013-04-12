@@ -3877,7 +3877,7 @@ door{
   sprite = "entities/door_boss_key",
   opening_condition = "dungeon_5_boss_key",
   opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog_id = "_boss_key_required",
+  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b507",
 }
 
@@ -3890,7 +3890,7 @@ door{
   sprite = "entities/door_boss_key",
   opening_condition = "dungeon_5_boss_key",
   opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog_id = "_boss_key_required",
+  cannot_open_dialog = "_boss_key_required",
   savegame_variable = "b507",
 }
 
@@ -3903,7 +3903,7 @@ door{
   sprite = "entities/door_big_key",
   opening_condition = "dungeon_5_big_key",
   opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog_id = "_big_key_required",
+  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b508",
 }
 
@@ -3916,7 +3916,7 @@ door{
   sprite = "entities/door_big_key",
   opening_condition = "dungeon_5_big_key",
   opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog_id = "_big_key_required",
+  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b508",
 }
 
@@ -4049,7 +4049,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_5_small_keys",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b513",
 }
 
@@ -4063,7 +4063,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_5_small_keys",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b513",
 }
 

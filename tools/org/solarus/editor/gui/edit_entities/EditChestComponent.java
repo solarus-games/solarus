@@ -160,7 +160,7 @@ public class EditChestComponent extends EditEntityComponent {
         Chest.OpeningMethod openingMethod = Chest.OpeningMethod.get(chest.getProperty("opening_method"));
         String openingCondition = chest.getProperty("opening_condition");
         boolean openingConditionConsumed = chest.getBooleanProperty("opening_condition_consumed");
-        String cannotOpenDialog = chest.getProperty("cannot_open_dialog_id");
+        String cannotOpenDialog = chest.getProperty("cannot_open_dialog");
 
         try {
           spriteField.setSelectedId(sprite);

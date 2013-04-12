@@ -6048,7 +6048,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b885",
 }
 
@@ -6620,7 +6620,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b879",
 }
 
@@ -6634,7 +6634,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b879",
 }
 
@@ -6748,7 +6748,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_9_small_keys",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b885",
 }
 

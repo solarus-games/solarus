@@ -506,7 +506,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b147",
 }
 
@@ -520,7 +520,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b148",
 }
 
@@ -534,7 +534,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b149",
 }
 
@@ -548,7 +548,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b150",
 }
 
@@ -3505,7 +3505,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b151",
 }
 
@@ -3519,7 +3519,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "i1200",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b152",
 }
 

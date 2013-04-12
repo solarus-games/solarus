@@ -121,7 +121,7 @@ public class Door extends MapEntity {
         setProperty("opening_method", OpeningMethod.BY_SCRIPT_ONLY.getId());
         setProperty("opening_condition", null);
         setBooleanProperty("opening_condition_consumed", false);
-        setProperty("cannot_open_dialog_id", null);
+        setProperty("cannot_open_dialog", null);
     }
 
     /**

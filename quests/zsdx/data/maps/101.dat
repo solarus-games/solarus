@@ -8179,7 +8179,7 @@ door{
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_7_small_keys",
   opening_condition_consumed = true,
-  cannot_open_dialog_id = "_small_key_required",
+  cannot_open_dialog = "_small_key_required",
   savegame_variable = "b605",
 }
 
@@ -8556,7 +8556,7 @@ door{
   sprite = "entities/door_big_key",
   opening_condition = "dungeon_7_big_key",
   opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog_id = "_big_key_required",
+  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b606",
 }
 
@@ -8972,7 +8972,7 @@ door{
   sprite = "entities/door_big_key",
   opening_condition = "dungeon_7_big_key",
   opening_method = "interaction_if_savegame_variable",
-  cannot_open_dialog_id = "_big_key_required",
+  cannot_open_dialog = "_big_key_required",
   savegame_variable = "b606",
 }
 

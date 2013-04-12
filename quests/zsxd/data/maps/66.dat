@@ -9403,7 +9403,7 @@ chest{
   sprite = "entities/big_chest",
   opening_method = "interaction_if_savegame_variable",
   opening_condition = "dungeon_2_big_key",
-  cannot_open_dialog_id = "_big_key_required",
+  cannot_open_dialog = "_big_key_required",
   treasure_name = "bow",
   treasure_variant = 2,
   treasure_savegame_variable = "b206",

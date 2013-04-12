@@ -1113,7 +1113,7 @@ int LuaContext::map_api_create_chest(lua_State* l) {
       Chest::opening_method_names, Chest::OPENING_BY_INTERACTION);
   const std::string& opening_condition = opt_string_field(l, 1, "opening_condition", "");
   bool opening_condition_consumed = opt_boolean_field(l, 1, "opening_condition_consumed", false);
-  const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog_id", "");
+  const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog", "");
 
   if (!treasure_savegame_variable.empty() && !is_valid_lua_identifier(treasure_savegame_variable)) {
     luaL_argerror(l, 1, (StringConcat() <<
@@ -1568,7 +1568,7 @@ int LuaContext::map_api_create_door(lua_State* l) {
       Door::opening_method_names, Door::OPENING_NONE);
   const std::string& opening_condition = opt_string_field(l, 1, "opening_condition", "");
   bool opening_condition_consumed = opt_boolean_field(l, 1, "opening_condition_consumed", false);
-  const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog_id", "");
+  const std::string& cannot_open_dialog_id = opt_string_field(l, 1, "cannot_open_dialog", "");
 
   Game& game = map.get_game();
 

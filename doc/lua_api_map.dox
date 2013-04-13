@@ -856,8 +856,6 @@ on the map.
     \c 2: high).
   - \c x (number): X coordinate on the map.
   - \c y (number): Y coordinate on the map.
-  - \c big_chest (boolean): \c true to create a big chest, \c false for a
-    normal chest.
   - \c treasure_name (string, optional): Kind of treasure to place in the chest
     (the name of an \ref lua_api_item "equipment item").
     If this value is not set, or corresponds to a
@@ -873,6 +871,51 @@ on the map.
     No value means that the state of the treasure is not saved.
     If the treasure is saved and the player already has it, then no
     treasure is placed in the chest (the chest will appear empty).
+  - \c sprite (string): Name of the animation set of the
+    \ref lua_api_sprite "sprite" to create for the chest.
+    The sprite must have animations \c "open" and \c "closed".
+  - \c opening_method (string, optional): Specifies the permissions for the
+    hero to open the chest. Must be one of:
+    - \c "interaction" (default): Can be opened by pressing the
+      \ref lua_api_game_intro_commands "action command" in front of it.
+    - \c "interaction_if_savegame_variable": Can be opened by pressing the
+      \ref lua_api_game_intro_commands "action command" in front of it,
+      provided that a specific savegame variable is set.
+    - \c "interaction_if_item": Can be opened by pressing the
+      \ref lua_api_game_intro_commands "action command" in front of it,
+      provided that the player has a specific \ref lua_api_item
+      "equipment item".
+  - \c opening_condition (string, optional): The condition required to open the
+    chest.
+    Only for opening methods \c "interaction_if_savegame_variable" and
+    \c "interaction_if_item".
+    - For opening method \c "interaction_if_savegame_variable",
+      it must be the name of a savegame variable.
+      The \ref lua_api_hero "hero"
+      will be allowed to open the chest if this saved value is either
+      \c true, an integer greater than zero or a non-empty string.
+    - For opening method \c "interaction_if_item",
+      it must be the name of an \ref lua_api_item "equipment item".
+      The hero will be allowed to open the chest if he has that item and,
+      for items with an amount, if the amount is greater than zero.
+    - For the default opening method (\c "interaction"),
+      this setting has no effect.
+  - \c opening_condition_consumed (boolean, optional): Whether opening the
+    chest should consume the savegame variable or the \ref lua_api_item
+    "equipment item" that was required.
+    The default setting is \c false.
+    If you set it to \c true, the following rules are applied when the
+    \ref lua_api_hero "hero" successfully opens the chest:
+    - For opening method \c "interaction_if_savegame_variable",
+      the savegame variable that was required is reset to \c false,
+      \c 0 or \c "" (depending on its type).
+    - For opening method is \c "interaction_if_item", the equipment
+      item that was required is removed. This means setting its
+      \ref lua_api_item_set_variant "possessed variant" to \c 0, unless it has
+      an associated amount: in this case, the amount is decremented.
+  - \c cannot_open_dialog_id (string, optional): Id of the dialog to show
+    if the hero fails to open the chest.
+    If you don't set this value, no dialog is shown.
 - Return value (\ref lua_api_chest "chest"): The treasure chest created.
 
 \remark The state of the \ref lua_api_chest "treasure chest"

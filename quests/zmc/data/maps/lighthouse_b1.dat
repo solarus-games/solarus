@@ -1573,9 +1573,9 @@ chest{
   x = 264,
   y = 221,
   name = "chest",
+  sprite = "entities/chest",
   treasure_name = "rupee",
   treasure_variant = 4,
-  sprite = "entities/chest",
 }
 
 dynamic_tile{
@@ -1586,6 +1586,7 @@ dynamic_tile{
   height = 32,
   name = "star_tile_A1",
   pattern = 594,
+  enabled_at_start = true,
 }
 
 dynamic_tile{
@@ -1596,6 +1597,7 @@ dynamic_tile{
   height = 16,
   name = "star_tile_A2",
   pattern = 594,
+  enabled_at_start = true,
 }
 
 dynamic_tile{
@@ -1606,6 +1608,7 @@ dynamic_tile{
   height = 32,
   name = "star_tile_A3",
   pattern = 594,
+  enabled_at_start = true,
 }
 
 dynamic_tile{
@@ -1616,6 +1619,7 @@ dynamic_tile{
   height = 16,
   name = "star_tile_A4",
   pattern = 594,
+  enabled_at_start = true,
 }
 
 dynamic_tile{
@@ -1626,6 +1630,7 @@ dynamic_tile{
   height = 16,
   name = "star_tile_A5",
   pattern = 594,
+  enabled_at_start = true,
 }
 
 dynamic_tile{
@@ -1636,6 +1641,7 @@ dynamic_tile{
   height = 32,
   name = "star_tile_A6",
   pattern = 594,
+  enabled_at_start = true,
 }
 
 dynamic_tile{
@@ -1646,6 +1652,7 @@ dynamic_tile{
   height = 32,
   name = "star_tile_A7",
   pattern = 594,
+  enabled_at_start = true,
 }
 
 chest{
@@ -1653,9 +1660,9 @@ chest{
   x = 480,
   y = 133,
   name = "chest_2",
+  sprite = "entities/chest",
   treasure_name = "small_key",
   treasure_variant = 1,
-  sprite = "entities/chest",
 }
 
 destructible{
@@ -1771,6 +1778,7 @@ dynamic_tile{
   height = 32,
   name = "star_floor_A1",
   pattern = 552,
+  enabled_at_start = true,
 }
 
 dynamic_tile{
@@ -1781,6 +1789,7 @@ dynamic_tile{
   height = 32,
   name = "star_floor_A2",
   pattern = 552,
+  enabled_at_start = true,
 }
 
 dynamic_tile{
@@ -1791,6 +1800,7 @@ dynamic_tile{
   height = 32,
   name = "star_floor_A3",
   pattern = 552,
+  enabled_at_start = true,
 }
 
 dynamic_tile{
@@ -1801,6 +1811,7 @@ dynamic_tile{
   height = 32,
   name = "star_floor_A4",
   pattern = 552,
+  enabled_at_start = true,
 }
 
 dynamic_tile{
@@ -1811,6 +1822,7 @@ dynamic_tile{
   height = 32,
   name = "star_floor_A5",
   pattern = 552,
+  enabled_at_start = true,
 }
 
 dynamic_tile{

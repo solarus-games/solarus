@@ -4535,6 +4535,8 @@ chest{
   x = 2808,
   y = 2301,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 enemy{
@@ -4543,6 +4545,7 @@ enemy{
   y = 1357,
   direction = 3,
   breed = "blue_dogman",
+  rank = 0,
 }
 
 enemy{
@@ -4551,6 +4554,7 @@ enemy{
   y = 1477,
   direction = 3,
   breed = "tentacle",
+  rank = 0,
 }
 
 block{
@@ -34208,6 +34212,8 @@ door{
   name = "boss_weak_wall",
   direction = 2,
   sprite = "entities/door_very_weak_wall",
+  opening_method = "none",
+  opening_condition_consumed = false,
   cannot_open_dialog = "",
 }
 
@@ -34289,6 +34295,8 @@ chest{
   x = 1544,
   y = 2573,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 block{
@@ -34341,6 +34349,7 @@ npc{
   y = 1437,
   direction = 3,
   subtype = "0",
+  behavior = "map",
 }
 
 chest{
@@ -34348,6 +34357,8 @@ chest{
   x = 2104,
   y = 1437,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 block{
@@ -34389,6 +34400,7 @@ npc{
   y = 1253,
   direction = 3,
   subtype = "0",
+  behavior = "map",
 }
 
 npc{
@@ -34397,6 +34409,7 @@ npc{
   y = 1141,
   direction = 3,
   subtype = "0",
+  behavior = "map",
 }
 
 chest{
@@ -34404,6 +34417,8 @@ chest{
   x = 2312,
   y = 885,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -34411,6 +34426,8 @@ chest{
   x = 2360,
   y = 885,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -34418,6 +34435,8 @@ chest{
   x = 2264,
   y = 885,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -34425,6 +34444,8 @@ chest{
   x = 2288,
   y = 837,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -34432,6 +34453,8 @@ chest{
   x = 2336,
   y = 837,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -34439,6 +34462,8 @@ chest{
   x = 2288,
   y = 933,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -34446,6 +34471,8 @@ chest{
   x = 2336,
   y = 933,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 npc{
@@ -34454,6 +34481,7 @@ npc{
   y = 837,
   direction = 3,
   subtype = "0",
+  behavior = "map",
 }
 
 npc{
@@ -34462,6 +34490,7 @@ npc{
   y = 837,
   direction = 3,
   subtype = "0",
+  behavior = "map",
 }
 
 npc{
@@ -34470,6 +34499,7 @@ npc{
   y = 949,
   direction = 3,
   subtype = "0",
+  behavior = "map",
 }
 
 npc{
@@ -34478,6 +34508,7 @@ npc{
   y = 949,
   direction = 3,
   subtype = "0",
+  behavior = "map",
 }
 
 block{
@@ -34516,6 +34547,8 @@ chest{
   x = 1192,
   y = 253,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 chest{
@@ -34523,6 +34556,8 @@ chest{
   x = 1480,
   y = 253,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 block{

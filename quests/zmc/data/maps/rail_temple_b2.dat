@@ -1301,6 +1301,8 @@ chest{
   x = 336,
   y = 237,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 stairs{
@@ -1317,6 +1319,7 @@ enemy{
   y = 517,
   direction = 3,
   breed = "tentacle",
+  rank = 0,
 }
 
 enemy{
@@ -1325,6 +1328,7 @@ enemy{
   y = 453,
   direction = 3,
   breed = "blue_hardhat_beetle",
+  rank = 0,
 }
 
 enemy{
@@ -1333,6 +1337,7 @@ enemy{
   y = 368,
   direction = 3,
   breed = "bubble",
+  rank = 0,
 }
 
 enemy{
@@ -1341,6 +1346,7 @@ enemy{
   y = 181,
   direction = 3,
   breed = "blue_hardhat_beetle",
+  rank = 0,
 }
 
 enemy{
@@ -1349,6 +1355,7 @@ enemy{
   y = 157,
   direction = 3,
   breed = "tentacle",
+  rank = 0,
 }
 
 npc{
@@ -1358,6 +1365,7 @@ npc{
   direction = 3,
   subtype = "0",
   sprite = "entities/hint_stone",
+  behavior = "map",
 }
 
 tile{

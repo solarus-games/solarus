@@ -656,6 +656,22 @@ public class Map extends Observable {
     }
 
     /**
+     * Changes the position of an entity on the map, by specifying the coordinates
+     * of its origin point.
+     * @param entity an entity
+     * @param x x coordinate of the origin point
+     * @param y y coordinate of the origin point
+     * @throws MapException if the coordinates are not multiple of 8
+     */
+    public void setEntityPositionUnchecked(MapEntity entity, int x, int y) {
+        entity.setPositionInMapUnchecked(x, y);
+        entity.updateImageDescription();
+
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
      * Changes the position of an entity on the map, by specifying two points.
      * The entity is resized (i.e. repeatX and repeatY are updated) so that
      * it fits exactly in the rectangle formed by the two points.
@@ -715,6 +731,7 @@ public class Map extends Observable {
     public void moveEntities(List<MapEntity> entities, int dx, int dy) throws MapException {
 
         for (MapEntity entity: entities) {
+            entity.setAlignedToGrid();
             entity.move(dx, dy);
         }
 
@@ -909,8 +926,11 @@ public class Map extends Observable {
         // check that all entities are valid
         for (MapEntities entities: allEntities) {
             for (MapEntity entity: entities) {
-                if (!entity.isValid()) {
-                    throw new InvalidEntityException("The map contains an invalid entity.", entity);
+                try {
+                    entity.checkValidity();
+                }
+                catch (MapException ex) {
+                    throw new InvalidEntityException(ex.getMessage(), entity);
                 }
             }
         }
@@ -959,9 +979,8 @@ public class Map extends Observable {
 
         // check that the map is valid
         checkValidity();
-
+        
         try {
-
             // Open the map file in writing.
             File mapFile = Project.getMapFile(mapId);
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(mapFile)));

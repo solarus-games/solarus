@@ -1298,9 +1298,11 @@ tile{
 
 chest{
   layer = 0,
-  x = 344,
-  y = 249,
+  x = 336,
+  y = 237,
   sprite = "entities/chest",
+  opening_method = "interaction",
+  opening_condition_consumed = false,
 }
 
 stairs{

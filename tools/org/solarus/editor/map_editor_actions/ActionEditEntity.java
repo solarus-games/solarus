@@ -172,7 +172,7 @@ public class ActionEditEntity extends MapEditorAction {
         }
 
         // position
-        map.setEntityPosition(entity, positionBefore.x, positionBefore.y);
+        map.setEntityPositionUnchecked(entity, positionBefore.x, positionBefore.y);
 
         // layer
         map.setEntityLayer(entity, layerBefore);

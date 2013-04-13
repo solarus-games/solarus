@@ -330,7 +330,7 @@ public abstract class MapEntity extends Observable {
         updateImageDescription();
 
         // now the origin is valid
-        setPositionInMap(positionInMap.x, positionInMap.y);
+        setPositionInMapUnchecked(positionInMap.x, positionInMap.y);
     }
 
     /**
@@ -408,27 +408,37 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Checks the entity validity. An entity must be valid before it is saved.
-     * @return true if the entity is valid
+     * Returns whether the entity is valid.
+     * An invalid entity can be loaded but must be fixed before it is saved.
+     * @return true if the entity is valid.
      */
     public final boolean isValid() {
 
         try {
-            // check the common properties
-            checkPositionTopLeft(positionInMap.x, positionInMap.y);
-
-            if (isResizable()) {
-                checkSize(positionInMap.width, positionInMap.height);
-            }
-
-            // check the specific properties
-            checkProperties();
-
+            checkValidity();
             return true;
         }
         catch (MapException ex) {
             return false;
         }
+    }
+
+    /**
+     * Checks the entity's validity.
+     * An invalid entity can be loaded but must be fixed before it is saved.
+     * @throws MapException If the entity is not valid.
+     */
+    public final void checkValidity() throws MapException {
+
+        // Check the common properties.
+        checkPositionTopLeft(positionInMap.x, positionInMap.y);
+
+        if (isResizable()) {
+            checkSize(positionInMap.width, positionInMap.height);
+        }
+
+        // Check the specific properties.
+        checkProperties();
     }
 
     /**
@@ -518,10 +528,11 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
-     * Changes the position of the entity on the map, by specifying the coordinates of its hotspot.
+     * Changes the position of the entity on the map, by specifying the
+     * coordinates of its origin point.
      * The size of the entity is not changed.
-     * @param x x coordinate of the hotspot
-     * @param y y coordinate of the hotspot
+     * @param x x coordinate of the origin point.
+     * @param y y coordinate of the origin point.
      * @throws MapException if the coordinates of the top-left corner are not divisible by 8
      */
     public void setPositionInMap(int x, int y) throws MapException {
@@ -529,6 +540,21 @@ public abstract class MapEntity extends Observable {
         // calculate the new coordinates of the top-left corner
         Point origin = getOrigin();
         setPositionTopLeft(x - origin.x, y - origin.y);
+    }
+
+    /**
+     * Changes the position of the entity on the map, by specifying the
+     * coordinates of its origin point.
+     * The size of the entity is not changed.
+     * @param x x coordinate of the origin point.
+     * @param y y coordinate of the origin point.
+     * @throws MapException if the coordinates of the top-left corner are not divisible by 8
+     */
+    public void setPositionInMapUnchecked(int x, int y) {
+
+        // calculate the new coordinates of the top-left corner
+        Point origin = getOrigin();
+        setPositionTopLeftUnchecked(x - origin.x, y - origin.y);
     }
 
     /**
@@ -541,11 +567,11 @@ public abstract class MapEntity extends Observable {
     protected void checkPositionTopLeft(int x, int y) throws MapException {
 
         if (x % 8 != 0) {
-            throw new MapException("Wrong x value (" + x + "): the coordinates of the top-left corner must divisible by 8");
+            throw new MapException("Wrong upper-left corner x value (" + x + "): coordinates must be aligned to the grid (divisible by 8)");
         }
 
         if (y % 8 != 0) {
-            throw new MapException("Wrong y value (" + y + "): the coordinates of the top-left corner must divisible by 8");
+            throw new MapException("Wrong upper-left corner y value (" + y + "): coordinates must be aligned to the grid (divisible by 8)");
         }
     }
 
@@ -559,7 +585,7 @@ public abstract class MapEntity extends Observable {
     public void setPositionTopLeft(int x, int y) throws MapException {
 
         checkPositionTopLeft(x, y);
-        setPositionTopLeftImpl(x, y);
+        setPositionTopLeftUnchecked(x, y);
 
         // notify
         setChanged();
@@ -572,9 +598,30 @@ public abstract class MapEntity extends Observable {
      * @param x x coordinate of the top-left corner
      * @param y y coordinate of the top-left corner
      */
-    protected void setPositionTopLeftImpl(int x, int y) throws MapException {
+    protected void setPositionTopLeftUnchecked(int x, int y) {
         positionInMap.x = x;
         positionInMap.y = y;
+    }
+
+    /**
+     * Returns whether the top-left corner of this entity is aligned to the
+     * 8*8 grid.
+     */
+    public boolean isAlignedToGrid() {
+        return positionInMap.x % 8 == 0 && positionInMap.y % 8 == 0;
+    }
+
+    /**
+     * Makes sure the top-left corner of this entity is aligned to the 8*8 grid.
+     */
+    public void setAlignedToGrid() {
+        int x = positionInMap.x + 4;
+        positionInMap.x = x - x % 8;
+        int y = positionInMap.y + 4;
+        positionInMap.y = y - y % 8;
+
+        setChanged();
+        notifyObservers();
     }
 
     /**

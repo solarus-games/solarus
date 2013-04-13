@@ -275,7 +275,13 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
             getMap().save();
         } catch (InvalidEntityException ex) {
             // the map contains an invalid entity
-            GuiTools.warningDialog("Could not save the map: " + ex.getMessage() + " Click OK to edit the invalid entity now.");
+            String name = ex.getEntity().getName();
+            GuiTools.warningDialog(
+                    "Cannot not save the map for now: there is an invalid entity." +
+                    "\n  Type of entity: " + ex.getEntity().getType().getHumanName() +
+                    (name == null ? "" : ("\n  Name: '" + ex.getEntity().getName() + "'")) +
+                    "\n  " + ex.getMessage() +
+                    "\nClick OK to fix the entity now.");
             EditEntityDialog dialog = new EditEntityDialog( getMap(), ex.getEntity());
             dialog.display();
         } catch (QuestEditorException ex) {
